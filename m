@@ -1,23 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com
- [IPv6:2a00:1450:4864:20::336])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7FB4F10E664
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Aug 2023 20:57:55 +0000 (UTC)
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-3fe1e44fd2bso26665e9.0
- for <igt-dev@lists.freedesktop.org>; Thu, 03 Aug 2023 13:57:55 -0700 (PDT)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 09EE010E0E6
+ for <igt-dev@lists.freedesktop.org>; Sun,  6 Aug 2023 16:48:09 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Sun,  6 Aug 2023 22:17:28 +0530
+Message-Id: <20230806164729.1016167-4-swati2.sharma@intel.com>
+In-Reply-To: <20230806164729.1016167-1-swati2.sharma@intel.com>
+References: <20230806164729.1016167-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-References: <20230731141021.2854827-5-janusz.krzysztofik@linux.intel.com>
- <20230731141021.2854827-6-janusz.krzysztofik@linux.intel.com>
-In-Reply-To: <20230731141021.2854827-6-janusz.krzysztofik@linux.intel.com>
-From: Rae Moar <rmoar@google.com>
-Date: Thu, 3 Aug 2023 16:57:43 -0400
-Message-ID: <CA+GJov5G_JWJM3Rw14O-CTioEoB_aTf4SyM-G+tCKEP_txc8yw@mail.gmail.com>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [igt-dev] [PATCH v3 1/3] kunit: Report the count of test suites
- in a module
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 3/4] tests/kms: use dp-mst helpers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,83 +18,128 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: David Gow <davidgow@google.com>, linux-kernel@vger.kernel.org,
- igt-dev@lists.freedesktop.org, Brendan Higgins <brendan.higgins@linux.dev>,
- linux-kselftest@vger.kernel.org, intel-xe@lists.freedesktop.org,
- kunit-dev@googlegroups.com
+Cc: ankit.k.nautiyal@freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Jul 31, 2023 at 10:12=E2=80=AFAM Janusz Krzysztofik
-<janusz.krzysztofik@linux.intel.com> wrote:
->
-> According to KTAP specification[1], results should always start from a
-> header that provides a TAP protocol version, followed by a test plan with
-> a count of items to be executed.  That pattern should be followed at each
-> nesting level.  In the current implementation of the top-most, i.e., test
-> suite level, those rules apply only for test suites built into the kernel=
-,
-> executed and reported on boot.  Results submitted to dmesg from kunit tes=
-t
-> modules loaded later are missing those top-level headers.
->
-> As a consequence, if a kunit test module provides more than one test suit=
-e
-> then, without the top level test plan, external tools that are parsing
-> dmesg for kunit test output are not able to tell how many test suites
-> should be expected and whether to continue parsing after complete output
-> from the first test suite is collected.
->
-> Submit the top-level headers also from the kunit test module notifier
-> initialization callback.
->
-> [1] https://docs.kernel.org/dev-tools/ktap.html#
->
-> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> ---
+Remove duplicate code and use helpers instead.
 
-Hi!
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ tests/kms_content_protection.c | 33 ++-------------------------------
+ tests/kms_display_modes.c      | 34 ++--------------------------------
+ 2 files changed, 4 insertions(+), 63 deletions(-)
 
-I think this is a really great idea to improve the KTAP compatibility
-for module output. I do agree with Mauro and I wonder if this could be
-replaced with using kunit_exec_run_tests. However, if the output of
-1..0 for a module with no KUnit tests run is not wanted, I am ok with
-this change as is.
-
-LGTM.
-
-Tested-by: Rae Moar <rmoar@google.com>
-
--Rae
-
->  lib/kunit/test.c | 5 +++++
->  1 file changed, 5 insertions(+)
->
-> diff --git a/lib/kunit/test.c b/lib/kunit/test.c
-> index 84e4666555c94..a29ca1acc4d81 100644
-> --- a/lib/kunit/test.c
-> +++ b/lib/kunit/test.c
-> @@ -729,6 +729,11 @@ EXPORT_SYMBOL_GPL(__kunit_test_suites_exit);
->  #ifdef CONFIG_MODULES
->  static void kunit_module_init(struct module *mod)
->  {
-> +       if (mod->num_kunit_suites > 0) {
-> +               pr_info("KTAP version 1\n");
-> +               pr_info("1..%d\n", mod->num_kunit_suites);
-> +       }
-> +
->         __kunit_test_suites_init(mod->kunit_suites, mod->num_kunit_suites=
-);
->  }
->
-> --
-> 2.41.0
->
-> --
-> You received this message because you are subscribed to the Google Groups=
- "KUnit Development" group.
-> To unsubscribe from this group and stop receiving emails from it, send an=
- email to kunit-dev+unsubscribe@googlegroups.com.
-> To view this discussion on the web visit https://groups.google.com/d/msgi=
-d/kunit-dev/20230731141021.2854827-6-janusz.krzysztofik%40linux.intel.com.
+diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+index 6cdf81a28..325b9bf0d 100644
+--- a/tests/kms_content_protection.c
++++ b/tests/kms_content_protection.c
+@@ -534,42 +534,15 @@ test_content_protection(enum igt_commit_style s, int content_type)
+ 		igt_cleanup_uevents(data.uevent_monitor);
+ }
+ 
+-static int parse_path_blob(char *blob_data)
+-{
+-	int connector_id;
+-	char *encoder;
+-
+-	encoder = strtok(blob_data, ":");
+-	igt_assert_f(!strcmp(encoder, "mst"), "PATH connector property expected to have 'mst'\n");
+-
+-	connector_id = atoi(strtok(NULL, "-"));
+-
+-	return connector_id;
+-}
+-
+ static bool output_is_dp_mst(igt_output_t *output, int i)
+ {
+-	drmModePropertyBlobPtr path_blob = NULL;
+-	uint64_t path_blob_id;
+-	drmModeConnector *connector = output->config.connector;
+-	struct kmstest_connector_config config;
+-	const char *encoder;
+ 	int connector_id;
+ 	static int prev_connector_id;
+ 
+-	kmstest_get_connector_config(data.drm_fd, output->config.connector->connector_id, -1, &config);
+-	encoder = kmstest_encoder_type_str(config.encoder->encoder_type);
+-
+-	if (strcmp(encoder, "DP MST"))
++	if(igt_check_output_is_dp_mst(data.drm_fd, output))
+ 		return false;
+ 
+-	igt_assert(kmstest_get_property(data.drm_fd, connector->connector_id,
+-		   DRM_MODE_OBJECT_CONNECTOR, "PATH", NULL,
+-		   &path_blob_id, NULL));
+-
+-	igt_assert(path_blob = drmModeGetPropertyBlob(data.drm_fd, path_blob_id));
+-
+-	connector_id = parse_path_blob((char *) path_blob->data);
++	connector_id = igt_get_dp_mst_connector_id(data.drm_fd, output);
+ 
+ 	/*
+ 	 * Discarding outputs of other DP MST topology.
+@@ -582,8 +555,6 @@ static bool output_is_dp_mst(igt_output_t *output, int i)
+ 			return false;
+ 	}
+ 
+-	drmModeFreePropertyBlob(path_blob);
+-
+ 	return true;
+ }
+ 
+diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
+index 93d91ef5b..e6b828c36 100644
+--- a/tests/kms_display_modes.c
++++ b/tests/kms_display_modes.c
+@@ -77,45 +77,15 @@ static drmModeModeInfo *get_mode(igt_output_t *output)
+ 	return required_mode;
+ }
+ 
+-static int parse_path_blob(char *blob_data)
+-{
+-	int connector_id;
+-	char *encoder;
+-
+-	encoder = strtok(blob_data, ":");
+-	igt_assert_f(!strcmp(encoder, "mst"), "PATH connector property expected to have 'mst'\n");
+-
+-	connector_id = atoi(strtok(NULL, "-"));
+-
+-	return connector_id;
+-}
+-
+ static bool output_is_dp_mst(data_t *data, igt_output_t *output, int i)
+ {
+-	drmModePropertyBlobPtr path_blob = NULL;
+-	uint64_t path_blob_id;
+-	drmModeConnector *connector = output->config.connector;
+-	struct kmstest_connector_config config;
+-	const char *encoder;
+ 	int connector_id;
+ 	static int prev_connector_id;
+ 
+-	kmstest_get_connector_config(data->drm_fd, output->config.connector->connector_id,
+-				     -1, &config);
+-	encoder = kmstest_encoder_type_str(config.encoder->encoder_type);
+-
+-	if (strcmp(encoder, "DP MST"))
++	if(igt_check_output_is_dp_mst(data->drm_fd, output))
+ 		return false;
+ 
+-	igt_assert(kmstest_get_property(data->drm_fd, connector->connector_id,
+-		   DRM_MODE_OBJECT_CONNECTOR, "PATH", NULL,
+-		   &path_blob_id, NULL));
+-
+-	igt_assert(path_blob = drmModeGetPropertyBlob(data->drm_fd, path_blob_id));
+-
+-	connector_id = parse_path_blob((char *) path_blob->data);
+-
+-	drmModeFreePropertyBlob(path_blob);
++	connector_id = igt_get_dp_mst_connector_id(data->drm_fd, output);
+ 
+ 	/*
+ 	 * Discarding outputs of other DP MST topology.
+-- 
+2.25.1
