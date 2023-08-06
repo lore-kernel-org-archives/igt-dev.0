@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2DBE610E011
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 03:56:22 +0000 (UTC)
-From: janga.rahul.kumar@intel.com
-To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
- janga.rahul.kumar@intel.com
-Date: Mon,  7 Aug 2023 09:28:03 +0530
-Message-Id: <20230807035805.1054349-2-janga.rahul.kumar@intel.com>
-In-Reply-To: <20230807035805.1054349-1-janga.rahul.kumar@intel.com>
-References: <20230807035805.1054349-1-janga.rahul.kumar@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B336510E0E6
+ for <igt-dev@lists.freedesktop.org>; Sun,  6 Aug 2023 16:48:10 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Sun,  6 Aug 2023 22:17:29 +0530
+Message-Id: <20230806164729.1016167-5-swati2.sharma@intel.com>
+In-Reply-To: <20230806164729.1016167-1-swati2.sharma@intel.com>
+References: <20230806164729.1016167-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/3] lib/xe: Add support to reset all GT's
+Subject: [igt-dev] [PATCH i-g-t 4/4] tests/kms_color: skip deep-color test
+ for mst
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,143 +19,52 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: sai.gowtham.ch@intel.com, kunal1.joshi@intel.com
+Cc: ankit.k.nautiyal@freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+In intel driver, for MST streams pipe_bpp is restricted to 8bpc.
+So, deep-color >= 10bpc will never work for DP-MST even if panel
+supports 10bpc.
 
-Introduce xe gt library.
+Test checks panel supports 10bpc and tries to find such a
+combination of mode that can really work with 10bpc. So, with
+n1 modes in MST1 and n2 modes in MST2, test will try n1xn2 times
+and eventually SKIP. However, trying with these many combinations
+it is leading to excessive logging ultimately killing the test.
 
-Add support to check GT reset and force reset all GT's.
+Once KMD FIXME, is resolved this MST constraint can be removed.
 
-Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Anna Karas <anna.karas@intel.com>
-Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-Tested-by: Kunal Joshi <kunal1.joshi@intel.com>
+Fixes: https://gitlab.freedesktop.org/drm/intel/-/issues/8615
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- lib/meson.build |  1 +
- lib/xe/xe_gt.c  | 62 +++++++++++++++++++++++++++++++++++++++++++++++++
- lib/xe/xe_gt.h  | 27 +++++++++++++++++++++
- 3 files changed, 90 insertions(+)
- create mode 100644 lib/xe/xe_gt.c
- create mode 100644 lib/xe/xe_gt.h
+ tests/kms_color.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/lib/meson.build b/lib/meson.build
-index ce11c0715..b7bfcf4f0 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -103,6 +103,7 @@ lib_sources = [
- 	'igt_dsc.c',
- 	'xe/xe_compute.c',
- 	'xe/xe_compute_square_kernels.c',
-+	'xe/xe_gt.c',
- 	'xe/xe_ioctl.c',
- 	'xe/xe_query.c',
- 	'xe/xe_spin.c',
-diff --git a/lib/xe/xe_gt.c b/lib/xe/xe_gt.c
-new file mode 100644
-index 000000000..9cad739be
---- /dev/null
-+++ b/lib/xe/xe_gt.c
-@@ -0,0 +1,62 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ *
-+ * Authors:
-+ *    Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-+ */
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index b15b9572c..4a410c039 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -847,8 +847,17 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
+ 		igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 10);
+ 		igt_output_set_pipe(output, p);
+ 
+-		if (is_intel_device(data->drm_fd) &&
+-		    !igt_max_bpc_constraint(&data->display, p, output, 10))
++		/*
++		 * In intel driver, for MST streams pipe_bpp is
++		 * restricted to 8bpc. So, deep-color >= 10bpc
++		 * will never work for DP-MST even if the panel
++		 * supports 10bpc. Once KMD FIXME, is resolved
++		 * this MST constraint can be removed.
++		 */
++		if (is_intel_device(data->drm_fd) && igt_check_output_is_dp_mst(data->drm_fd, output))
++			continue;
 +
-+#include <fcntl.h>
-+
-+#include "xe_gt.h"
-+
-+/**
-+ * has_xe_gt_reset:
-+ * @fd: open xe drm file descriptor
-+ *
-+ * Check gt force reset sysfs entry is available or not
-+ *
-+ * Returns: reset sysfs entry available
-+ */
-+bool has_xe_gt_reset(int fd)
-+{
-+	char reset_sysfs_path[100];
-+	struct stat st;
-+	int gt;
-+	int reset_sysfs_fd = -1;
-+	int sysfs_fd = -1;
-+
-+	igt_assert_eq(fstat(fd, &st), 0);
-+	sysfs_fd = igt_sysfs_open(fd);
-+
-+	igt_assert(sysfs_fd != -1);
-+	xe_for_each_gt(fd, gt) {
-+		sprintf(reset_sysfs_path, "/sys/kernel/debug/dri/%d/gt%d/force_reset",
-+				minor(st.st_rdev), gt);
-+		reset_sysfs_fd = openat(sysfs_fd, reset_sysfs_path, O_RDONLY);
-+
-+		if (reset_sysfs_fd == -1) {
-+			close(sysfs_fd);
-+			return 0;
-+		}
-+
-+		close(reset_sysfs_fd);
-+	}
-+
-+	close(sysfs_fd);
-+	return 1;
-+}
-+
-+/**
-+ * xe_force_gt_reset_all:
-+ *
-+ * Forces reset of all the GT's.
-+ */
-+void xe_force_gt_reset_all(int xe_fd)
-+{
-+	int gt;
-+
-+	xe_for_each_gt(xe_fd, gt)
-+		xe_force_gt_reset(xe_fd, gt);
-+}
-+
-diff --git a/lib/xe/xe_gt.h b/lib/xe/xe_gt.h
-new file mode 100644
-index 000000000..e075ebf62
---- /dev/null
-+++ b/lib/xe/xe_gt.h
-@@ -0,0 +1,27 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ *
-+ * Authors:
-+ *    Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-+ */
-+
-+#include <dirent.h>
-+#include <stdint.h>
-+#include <sys/stat.h>
-+
-+#include "igt_core.h"
-+#include "igt_sysfs.h"
-+#include "xe_ioctl.h"
-+#include "xe_query.h"
-+
-+#ifdef __linux__
-+#include <sys/sysmacros.h>
-+#else
-+#define major(__v__) (((__v__) >> 8) & 0xff)
-+#define minor(__v__) ((__v__) & 0xff)
-+#endif
-+
-+bool has_xe_gt_reset(int fd);
-+void xe_force_gt_reset_all(int fd);
-+
++		if (is_intel_device(data->drm_fd) && !igt_max_bpc_constraint(&data->display, p, output, 10))
+ 			continue;
+ 
+ 		data->color_depth = 10;
 -- 
 2.25.1
