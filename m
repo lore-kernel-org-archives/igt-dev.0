@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 19E3310E310
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 17:04:39 +0000 (UTC)
-Message-ID: <49c3e53b-c110-bfd5-7f18-a4c80773c0fd@intel.com>
-Date: Mon, 7 Aug 2023 22:34:05 +0530
-Content-Language: en-US
-To: Mohammed Thasleem <mohammed.thasleem@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20230718110852.2965553-2-anshuman.gupta@intel.com>
- <20230807093201.70650-1-mohammed.thasleem@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20230807093201.70650-1-mohammed.thasleem@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative;
+ boundary="===============3372282388742858017=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v4 3/3] lib/igt_kms: Add helper with DPMS to
- turn on and off the displays
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Rob Clark" <robdclark@gmail.com>
+Date: Mon, 07 Aug 2023 17:26:40 -0000
+Message-ID: <169142920088.13176.9209682764996442121@emeril.freedesktop.org>
+References: <20230807163634.205167-1-robdclark@gmail.com>
+In-Reply-To: <20230807163634.205167-1-robdclark@gmail.com>
+Subject: [igt-dev] =?utf-8?b?4peLIENJLnhlQkFUOiBpbmZvIGZvciB0ZXN0cy9rbXNf?=
+ =?utf-8?q?plane=3A_Handle_hw_without_legacy_gamma_support_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,122 +17,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Thasleem,
+--===============3372282388742858017==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On Mon-07-08-2023 03:02 pm, Mohammed Thasleem wrote:
-> From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> 
-> This helper will turn on and off the displays with the help of DPMS
-> properties set to ON and OFF.
-> 
-> v2: Use IGT_CRTC_ACTIVE for displays On/Off.
-> 
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> Signed-off-by: Thasleem, Mohammed <mohammed.thasleem@intel.com>
-> ---
->   lib/igt_kms.c | 50 ++++++++++++++++++++++++++++++++++++++++++++++++++
->   lib/igt_kms.h |  3 +++
->   2 files changed, 53 insertions(+)
-> 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index f2b0eed57..97283d55e 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -6029,3 +6029,53 @@ bool i915_pipe_output_combo_valid(igt_display_t *display)
->   	 */
->   	return igt_check_bigjoiner_support(display);
->   }
-> +
-> +void igt_dpms_turn_on_display(int drm_fd)
+== Series Details ==
 
-As per the commit message, looks there is no involvement of DPMS. Please 
-fix the helper names accordingly.
+Series: tests/kms_plane: Handle hw without legacy gamma support (rev2)
+URL   : https://patchwork.freedesktop.org/series/121551/
+State : info
 
-> +{
-> +	igt_display_t display;
-> +	igt_output_t *output;
-> +	enum pipe pipe;
-> +
-> +	if (!drmModeGetResources(drm_fd))
-> +		return;
-> +
-> +	igt_display_require(&display, drm_fd);
-> +	igt_display_reset(&display);
-> +
-> +	for_each_connected_output(&display, output) {
-> +		for_each_pipe(&display, pipe) {
-> +			igt_display_reset(&display);
+== Summary ==
 
-There are 2 problems here:
+Participating hosts:
+bat-pvc-2
+bat-atsm-2
+bat-dg2-oem2
+bat-adlp-7
+Missing hosts results[0]:
+Results: [IGTPW_9529](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9529/index.html)
 
-1) This reset call will disable the previous the pipe. Please check:
-igt_display_reset()-->igt_pipe_reset()
 
-2) With this combination of loops, multiple pipes will try to use the 
-same output which is not allowed again.
 
-> +			igt_output_set_pipe(output, pipe);
-> +			igt_pipe_set_prop_value(&display, pipe, IGT_CRTC_ACTIVE, 1);
-> +		}
-> +	}
-> +
-> +	igt_display_commit2(&display, COMMIT_ATOMIC);
-> +
-> +	igt_display_fini(&display);
-> +}
-> +
-> +void igt_dpms_turn_off_display(int drm_fd)
-> +{
-> +	igt_display_t display;
-> +	igt_output_t *output;
-> +	enum pipe pipe;
-> +
-> +	if (!drmModeGetResources(drm_fd))
-> +		return;
-> +
-> +	igt_display_require(&display, drm_fd);
-> +	igt_display_reset(&display);
-> +
-> +	for_each_connected_output(&display, output) {
-> +		for_each_pipe(&display, pipe) {
-> +			igt_display_reset(&display);
-> +			igt_output_set_pipe(output, pipe);
-> +			igt_pipe_set_prop_value(&display, pipe, IGT_CRTC_ACTIVE, 0);
-> +		}
-> +	}
-> +
-> +	igt_display_commit2(&display, COMMIT_ATOMIC);
-> +
-> +	igt_display_fini(&display);
-> +}
+--===============3372282388742858017==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-As there is a code duplication in these functions, we can re-write as:
 
-void igt_display_toggle(int drm_fd, bool on_off) {
-     <...>
-     igt_pipe_set_prop_value(&display, pipe, IGT_CRTC_ACTIVE, on_off);
-     <...>
-}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
 
-#define igt_display_on(drm_fd) igt_display_toggle(drm_fd, true)
-#define igt_display_off(drm_fd) igt_display_toggle(drm_fd, false)
 
-- Bhanu
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_plane: Handle hw without legacy gamma support (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/121551/">https://patchwork.freedesktop.org/series/121551/</a></td></tr>
+<tr><td><b>State:</b></td><td>info</td></tr>
 
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index 1b6988c17..32d20d683 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -1005,4 +1005,7 @@ bool igt_check_bigjoiner_support(igt_display_t *display);
->   bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode);
->   bool i915_pipe_output_combo_valid(igt_display_t *display);
->   
-> +void igt_dpms_turn_on_display(int drm_fd);
-> +void igt_dpms_turn_off_display(int drm_fd);
-> +
->   #endif /* __IGT_KMS_H__ */
+</table>
+
+
+    <p>Participating hosts:<br />
+bat-pvc-2<br />
+bat-atsm-2<br />
+bat-dg2-oem2<br />
+bat-adlp-7<br />
+Missing hosts results[0]:<br />
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9529/index.html">IGTPW_9529</a></p>
+
+</body>
+</html>
+
+--===============3372282388742858017==--
