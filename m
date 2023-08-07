@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com
- [IPv6:2a00:1450:4864:20::22f])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9A5B710E202
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 15:57:57 +0000 (UTC)
-Received: by mail-lj1-x22f.google.com with SMTP id
- 38308e7fff4ca-2b9a828c920so71695961fa.1
- for <igt-dev@lists.freedesktop.org>; Mon, 07 Aug 2023 08:57:57 -0700 (PDT)
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com
+ [IPv6:2a00:1450:4864:20::231])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EC42989C93
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 15:59:24 +0000 (UTC)
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2b9bb097c1bso72335291fa.0
+ for <igt-dev@lists.freedesktop.org>; Mon, 07 Aug 2023 08:59:24 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230802211958.7027-1-robdclark@gmail.com>
- <20230807143359.5feiqklzbx7vqx5n@kamilkon-desk1>
-In-Reply-To: <20230807143359.5feiqklzbx7vqx5n@kamilkon-desk1>
+ <20230807143532.ppgblfmecpxhuwdw@kamilkon-desk1>
+In-Reply-To: <20230807143532.ppgblfmecpxhuwdw@kamilkon-desk1>
 From: Rob Clark <robdclark@gmail.com>
-Date: Mon, 7 Aug 2023 08:57:42 -0700
-Message-ID: <CAF6AEGuj6VtmH1dn1pEeCPQNUA4Uh-7muf+BaidgXiMOModRLg@mail.gmail.com>
+Date: Mon, 7 Aug 2023 08:59:11 -0700
+Message-ID: <CAF6AEGug+gsW1x6gp9rZPmjsGZw=furQ6eZeXyKw668mZV7hiw@mail.gmail.com>
 To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Rob Clark <robdclark@gmail.com>, Rob Clark <robdclark@chromium.org>
@@ -30,10 +30,27 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Aug 7, 2023 at 7:34=E2=80=AFAM Kamil Konieczny
+On Mon, Aug 7, 2023 at 7:35=E2=80=AFAM Kamil Konieczny
 <kamil.konieczny@linux.intel.com> wrote:
 >
 > Hi Rob,
+>
+> one more nit I just spot:
+>
+> tests/msm: Add submitoverhead benchmark
+> ---------------------^
+> this needs to be splitted into two words:
+>
+> tests/msm: Add submit overhead benchmark
+>
+
+The name is "submitoverhead".. like "drawoverhead" in piglit
+
+BR,
+-R
+
+> Regards,
+> Kamil
 >
 > On 2023-08-02 at 14:19:54 -0700, Rob Clark wrote:
 > > From: Rob Clark <robdclark@chromium.org>
@@ -60,18 +77,7 @@ e
 > >       'msm_shrink',
 > > -     'msm_submit'
 > > +     'msm_submit',
-> -- ^^^^^
 > > +        'msm_submitoverhead',
-> -- ^^^^^^^^
-> Looks like inconsistent use of spaces/tab?
-
-Hmm, it seems my vim really dislikes tabs in meson.build files and
-wants to turn them into spaces.  (Which, tbh, tab indented meson.build
-isn't a thing I've seen anywhere else.)
-
-BR,
--R
-
 > >  ]
 > >
 > >  chamelium_progs =3D [
@@ -85,15 +91,6 @@ ead.c
 > > +/*
 > > + * Copyright =C2=A9 2023 Google, Inc.
 > > + *
->
-> Use SPDX licence (look into other tests and/or check with perl script
-> checkpatch.pl from LInux kernel).
->
-> Rest looks ok.
->
-> Regards,
-> Kamil
->
 > > + * Permission is hereby granted, free of charge, to any person obtaini=
 ng a
 > > + * copy of this software and associated documentation files (the "Soft=
