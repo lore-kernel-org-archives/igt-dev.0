@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com
  [205.220.180.131])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4A91510E06A
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 22:48:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 50EC510E06A
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 22:48:52 +0000 (UTC)
 From: Abhinav Kumar <quic_abhinavk@quicinc.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Mon, 7 Aug 2023 15:48:25 -0700
-Message-ID: <20230807224828.27288-1-quic_abhinavk@quicinc.com>
+Date: Mon, 7 Aug 2023 15:48:27 -0700
+Message-ID: <20230807224828.27288-3-quic_abhinavk@quicinc.com>
+In-Reply-To: <20230807224828.27288-1-quic_abhinavk@quicinc.com>
+References: <20230807224828.27288-1-quic_abhinavk@quicinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t 0/3] add support for passing yuv writeback
- output format
+Subject: [igt-dev] [PATCH i-g-t 2/3] lib/igt_fb: allow
+ igt_fb_get_fnv1a_crc() to handle YUV formats
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,30 +26,36 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-MSM display pipeline has support for writeback to handle YUV formats.
-Currently the kms_writeback supports hard-codes the writeback output
-format to DRM_FORMAT_XRGB8888. This series makes the necessary changes
-in the lib and kms_writeback to allow passing DRM YUV formats to
-kms_writeback.
+To validate YUV formats for writeback, allow igt_fb_get_fnv1a_crc()
+to handle YUV formats.
 
-The default kms_writeback shall still use only DRM_FORMAT_XRGB8888.
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+---
+ lib/igt_fb.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Additional formats can be passed using the command line.
-
-Sample usage of this would be:
-
-./kms_writeback -f <name of the DRM YUV fmt from igt_fb>
-
-
-Abhinav Kumar (3):
-  lib/igt_fb: add a helper to find drm_id from matching string
-  lib/igt_fb: allow igt_fb_get_fnv1a_crc() to handle YUV formats
-  tests/kms_writeback: allow writeback to output custom format
-
- lib/igt_fb.c          | 33 +++++++++++++++++++++++++++++++--
- lib/igt_fb.h          |  3 +++
- tests/kms_writeback.c | 35 +++++++++++++++++++++++++----------
- 3 files changed, 59 insertions(+), 12 deletions(-)
-
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 55ef63cc71dc..1e3deeaf551a 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -4755,7 +4755,7 @@ int igt_fb_get_fnv1a_crc(struct igt_fb *fb, igt_crc_t *crc)
+ 	if (fb->num_planes != 1)
+ 		return -EINVAL;
+ 
+-	if (fb->drm_format != DRM_FORMAT_XRGB8888)
++	if (!igt_format_is_yuv(fb->drm_format) || fb->drm_format != DRM_FORMAT_XRGB8888)
+ 		return -EINVAL;
+ 
+ 	ptr = igt_fb_map_buffer(fb->fd, fb);
+@@ -4782,7 +4782,8 @@ int igt_fb_get_fnv1a_crc(struct igt_fb *fb, igt_crc_t *crc)
+ 		for (x = 0; x < fb->width; x++) {
+ 			unsigned int i;
+ 			uint32_t pixel = le32_to_cpu(line[x]);
+-			pixel &= 0x00ffffff;
++			if (fb->drm_format == DRM_FORMAT_XRGB8888)
++				pixel &= 0x00ffffff;
+ 
+ 			for (i = 0; i < sizeof(pixel); i++) {
+ 				uint8_t component = (pixel >> (i * 8)) & 0xff;
 -- 
 2.40.1
