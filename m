@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com
- [IPv6:2607:f8b0:4864:20::431])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7C6CF10E2F8
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 16:54:15 +0000 (UTC)
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-687087d8ddaso4571836b3a.1
- for <igt-dev@lists.freedesktop.org>; Mon, 07 Aug 2023 09:54:15 -0700 (PDT)
-From: Rob Clark <robdclark@gmail.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon,  7 Aug 2023 09:54:11 -0700
-Message-ID: <20230807165411.206456-1-robdclark@gmail.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AD73910E30E
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 17:03:02 +0000 (UTC)
+Message-ID: <ce8dfaaa-8f54-2960-0dff-6748b89da50d@intel.com>
+Date: Mon, 7 Aug 2023 22:32:19 +0530
+Content-Language: en-US
+To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20230806164729.1016167-1-swati2.sharma@intel.com>
+ <20230806164729.1016167-3-swati2.sharma@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20230806164729.1016167-3-swati2.sharma@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3] tests/kms_plane: Handle hw without legacy
- gamma support
+Subject: Re: [igt-dev] [PATCH i-g-t 2/4] lib/igt_kms: add helper for dp-mst
+ connector id
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,36 +22,83 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rob Clark <robdclark@chromium.org>
+Cc: ankit.k.nautiyal@freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Rob Clark <robdclark@chromium.org>
+Hi Swati,
 
-Skip the tests which require legacy gamma, instead of failing, if the hw
-does not support legacy gamma.
+On Sun-06-08-2023 10:17 pm, Swati Sharma wrote:
+> Helper is added which returns dp-mst connector id.
+> 
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> ---
+>   lib/igt_kms.c | 40 ++++++++++++++++++++++++++++++++++++++++
+>   lib/igt_kms.h |  1 +
+>   2 files changed, 41 insertions(+)
+> 
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 6034ff70c..c0bfa73fe 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -6050,3 +6050,43 @@ bool igt_check_output_is_dp_mst(int drm_fd, igt_output_t *output)
+>   
+>   	return true;
+>   }
+> +
+> +static int parse_path_blob(char *blob_data)
+> +{
+> +	int connector_id;
+> +	char *encoder;
+> +
+> +	encoder = strtok(blob_data, ":");
+> +	igt_assert_f(!strcmp(encoder, "mst"), "PATH connector property expected to have 'mst'\n");
+> +
+> +	connector_id = atoi(strtok(NULL, "-"));
+> +
+> +	return connector_id;
+> +}
+> +
+> +/**
+> + * igt_get_dp_mst_connector_id
+> + * @drmfd: Handle to open drm device
+> + * @output: Target output
+> + *
+> + * Returns: dp-mst connector id.
+> + */
+> +int igt_get_dp_mst_connector_id(int drm_fd, igt_output_t *output)
+> +{
+> +	drmModePropertyBlobPtr path_blob = NULL;
+> +	uint64_t path_blob_id;
+> +	drmModeConnector *connector = output->config.connector;
+> +	int connector_id;
+> +
+> +	igt_assert(kmstest_get_property(drm_fd, connector->connector_id,
+> +		   DRM_MODE_OBJECT_CONNECTOR, "PATH", NULL,
+> +		   &path_blob_id, NULL));
 
-v2: igt_require(lut_size > 0) instead
-v3: simplify patch
+Looks this path_blob is already preserved at &output->config.connector_path.
 
-Signed-off-by: Rob Clark <robdclark@chromium.org>
----
- tests/kms_plane.c | 2 ++
- 1 file changed, 2 insertions(+)
+- Bhanu
 
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index 67cff61d6cd1..44cad2bf2491 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -469,6 +469,8 @@ static void set_legacy_lut(data_t *data, enum pipe pipe,
- 	lut_size = crtc->gamma_size;
- 	drmModeFreeCrtc(crtc);
- 
-+	igt_require(lut_size > 0);
-+
- 	lut = malloc(sizeof(uint16_t) * lut_size);
- 
- 	for (i = 0; i < lut_size; i++)
--- 
-2.41.0
+> +
+> +	igt_assert(path_blob = drmModeGetPropertyBlob(drm_fd, path_blob_id));
+> +
+> +	connector_id = parse_path_blob((char *) path_blob->data);
+> +
+> +	drmModeFreePropertyBlob(path_blob);
+> +
+> +	return connector_id;
+> +}
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index 9a46e7a5c..6f978ed55 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -1005,5 +1005,6 @@ bool igt_check_bigjoiner_support(igt_display_t *display);
+>   bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode);
+>   bool i915_pipe_output_combo_valid(igt_display_t *display);
+>   bool igt_check_output_is_dp_mst(int drmfd, igt_output_t *output);
+> +int igt_get_dp_mst_connector_id(int drm_fd, igt_output_t *output);
+>   
+>   #endif /* __IGT_KMS_H__ */
