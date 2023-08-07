@@ -1,24 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com
- [IPv6:2a00:1450:4864:20::231])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EC42989C93
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 15:59:24 +0000 (UTC)
-Received: by mail-lj1-x231.google.com with SMTP id
- 38308e7fff4ca-2b9bb097c1bso72335291fa.0
- for <igt-dev@lists.freedesktop.org>; Mon, 07 Aug 2023 08:59:24 -0700 (PDT)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6BAC310E2BB
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 16:30:13 +0000 (UTC)
+Message-ID: <e6ad0cd1-fa68-01fd-a6ad-a106117767fd@intel.com>
+Date: Mon, 7 Aug 2023 21:59:50 +0530
+To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20230806164729.1016167-1-swati2.sharma@intel.com>
+ <20230806164729.1016167-3-swati2.sharma@intel.com>
+Content-Language: en-US
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20230806164729.1016167-3-swati2.sharma@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-References: <20230802211958.7027-1-robdclark@gmail.com>
- <20230807143532.ppgblfmecpxhuwdw@kamilkon-desk1>
-In-Reply-To: <20230807143532.ppgblfmecpxhuwdw@kamilkon-desk1>
-From: Rob Clark <robdclark@gmail.com>
-Date: Mon, 7 Aug 2023 08:59:11 -0700
-Message-ID: <CAF6AEGug+gsW1x6gp9rZPmjsGZw=furQ6eZeXyKw668mZV7hiw@mail.gmail.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Rob Clark <robdclark@gmail.com>, Rob Clark <robdclark@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [igt-dev] [PATCH] tests/msm: Add submitoverhead benchmark
+Subject: Re: [igt-dev] [PATCH i-g-t 2/4] lib/igt_kms: add helper for dp-mst
+ connector id
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,198 +22,95 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: ankit.k.nautiyal@freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Aug 7, 2023 at 7:35=E2=80=AFAM Kamil Konieczny
-<kamil.konieczny@linux.intel.com> wrote:
->
-> Hi Rob,
->
-> one more nit I just spot:
->
-> tests/msm: Add submitoverhead benchmark
-> ---------------------^
-> this needs to be splitted into two words:
->
-> tests/msm: Add submit overhead benchmark
->
+Hi Swati,
 
-The name is "submitoverhead".. like "drawoverhead" in piglit
+On Sun-06-08-2023 10:17 pm, Swati Sharma wrote:
+> Helper is added which returns dp-mst connector id.
+> 
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> ---
+>   lib/igt_kms.c | 40 ++++++++++++++++++++++++++++++++++++++++
+>   lib/igt_kms.h |  1 +
+>   2 files changed, 41 insertions(+)
+> 
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 6034ff70c..c0bfa73fe 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -6050,3 +6050,43 @@ bool igt_check_output_is_dp_mst(int drm_fd, igt_output_t *output)
+>   
+>   	return true;
+>   }
+> +
+> +static int parse_path_blob(char *blob_data)
+> +{
+> +	int connector_id;
+> +	char *encoder;
+> +
+> +	encoder = strtok(blob_data, ":");
+> +	igt_assert_f(!strcmp(encoder, "mst"), "PATH connector property expected to have 'mst'\n");
+> +
+> +	connector_id = atoi(strtok(NULL, "-"));
+> +
+> +	return connector_id;
+> +}
+> +
+> +/**
+> + * igt_get_dp_mst_connector_id
+> + * @drmfd: Handle to open drm device
+> + * @output: Target output
+> + *
+> + * Returns: dp-mst connector id.
+> + */
+> +int igt_get_dp_mst_connector_id(int drm_fd, igt_output_t *output)
+> +{
+> +	drmModePropertyBlobPtr path_blob = NULL;
+> +	uint64_t path_blob_id;
+> +	drmModeConnector *connector = output->config.connector;
+> +	int connector_id;
+> +
+> +	igt_assert(kmstest_get_property(drm_fd, connector->connector_id,
+> +		   DRM_MODE_OBJECT_CONNECTOR, "PATH", NULL,
+> +		   &path_blob_id, NULL));
+> +
+> +	igt_assert(path_blob = drmModeGetPropertyBlob(drm_fd, path_blob_id));
+> +
+> +	connector_id = parse_path_blob((char *) path_blob->data);
+> +
+> +	drmModeFreePropertyBlob(path_blob);
+> +
+> +	return connector_id;
 
-BR,
--R
+I can write this helper as:
 
-> Regards,
-> Kamil
->
-> On 2023-08-02 at 14:19:54 -0700, Rob Clark wrote:
-> > From: Rob Clark <robdclark@chromium.org>
-> >
-> > Something for profiling CPU overhead of submit ioctl.  Not really a
-> > functional test, but it is convenient to re-use the i-g-t infrastructur=
-e
-> > for this.
-> >
-> > Signed-off-by: Rob Clark <robdclark@chromium.org>
-> > ---
-> >  tests/meson.build              |   3 +-
-> >  tests/msm/msm_submitoverhead.c | 104 +++++++++++++++++++++++++++++++++
-> >  2 files changed, 106 insertions(+), 1 deletion(-)
-> >  create mode 100644 tests/msm/msm_submitoverhead.c
-> >
-> > diff --git a/tests/meson.build b/tests/meson.build
-> > index 944a0941f9fd..ca918337ebf6 100644
-> > --- a/tests/meson.build
-> > +++ b/tests/meson.build
-> > @@ -302,7 +302,8 @@ msm_progs =3D [
-> >       'msm_mapping',
-> >       'msm_recovery',
-> >       'msm_shrink',
-> > -     'msm_submit'
-> > +     'msm_submit',
-> > +        'msm_submitoverhead',
-> >  ]
-> >
-> >  chamelium_progs =3D [
-> > diff --git a/tests/msm/msm_submitoverhead.c b/tests/msm/msm_submitoverh=
-ead.c
-> > new file mode 100644
-> > index 000000000000..d88d6d999ab9
-> > --- /dev/null
-> > +++ b/tests/msm/msm_submitoverhead.c
-> > @@ -0,0 +1,104 @@
-> > +/*
-> > + * Copyright =C2=A9 2023 Google, Inc.
-> > + *
-> > + * Permission is hereby granted, free of charge, to any person obtaini=
-ng a
-> > + * copy of this software and associated documentation files (the "Soft=
-ware"),
-> > + * to deal in the Software without restriction, including without limi=
-tation
-> > + * the rights to use, copy, modify, merge, publish, distribute, sublic=
-ense,
-> > + * and/or sell copies of the Software, and to permit persons to whom t=
-he
-> > + * Software is furnished to do so, subject to the following conditions=
-:
-> > + *
-> > + * The above copyright notice and this permission notice (including th=
-e next
-> > + * paragraph) shall be included in all copies or substantial portions =
-of the
-> > + * Software.
-> > + *
-> > + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXP=
-RESS OR
-> > + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABI=
-LITY,
-> > + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT =
-SHALL
-> > + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES O=
-R OTHER
-> > + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARI=
-SING
-> > + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER=
- DEALINGS
-> > + * IN THE SOFTWARE.
-> > + */
-> > +
-> > +#include "igt.h"
-> > +#include "igt_msm.h"
-> > +
-> > +/*
-> > + * Not as much a test, as a kernel submit overhead benchmark.  Generat=
-es lots
-> > + * of submit ioctls with various size #s of buffers attached for measu=
-ring
-> > + * and profiling kernel submit CPU overhead.
-> > + */
-> > +
-> > +#define MAX_BOS 1000
-> > +
-> > +igt_main
-> > +{
-> > +     struct msm_device *dev =3D NULL;
-> > +     struct msm_pipe *pipe =3D NULL;
-> > +     struct msm_bo *bos[MAX_BOS];
-> > +     struct drm_msm_gem_submit_bo bos_table[MAX_BOS];
-> > +     static const int sizes[] =3D {
-> > +             10, 100, 250, 500, 1000,
-> > +     };
-> > +
-> > +     igt_fixture {
-> > +             struct drm_msm_gem_submit req;
-> > +
-> > +             dev =3D igt_msm_dev_open();
-> > +             pipe =3D igt_msm_pipe_open(dev, 0);
-> > +             for (int i =3D 0; i < MAX_BOS; i++) {
-> > +                     bos[i] =3D igt_msm_bo_new(dev, 0x1000, MSM_BO_WC)=
-;
-> > +                     bos_table[i] =3D (struct drm_msm_gem_submit_bo) {
-> > +                             .handle =3D bos[i]->handle,
-> > +                             /*
-> > +                              * We don't bother testing BO_READ since
-> > +                              * mesa doesn't use that anymore
-> > +                              */
-> > +                             .flags  =3D MSM_SUBMIT_BO_WRITE,
-> > +                     };
-> > +             }
-> > +
-> > +             /*
-> > +              * Prime the pump, so first submit doesn't take the overh=
-ead
-> > +              * of allocating backing pages:
-> > +              */
-> > +             req =3D (struct drm_msm_gem_submit) {
-> > +                     .flags   =3D pipe->pipe | MSM_SUBMIT_FENCE_FD_OUT=
-,
-> > +                     .queueid =3D pipe->submitqueue_id,
-> > +                     .nr_bos  =3D ARRAY_SIZE(bos_table),
-> > +                     .bos     =3D VOID2U64(bos_table),
-> > +             };
-> > +             do_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req);
-> > +             igt_wait_and_close(req.fence_fd);
-> > +     }
-> > +
-> > +     for (int i =3D 0; i < ARRAY_SIZE(sizes); i++) {
-> > +             for (int mode =3D 0; mode < 2; mode++) {
-> > +                     const char *modestr =3D mode ? "-no-implicit-sync=
-" : "";
-> > +                     const uint32_t modeflags =3D mode ? MSM_SUBMIT_NO=
-_IMPLICIT : 0;
-> > +                     igt_subtest_f("submitbench-%u-bos%s", sizes[i], m=
-odestr) {
-> > +                             struct drm_msm_gem_submit req =3D {
-> > +                                     .flags   =3D pipe->pipe | modefla=
-gs,
-> > +                                     .queueid =3D pipe->submitqueue_id=
-,
-> > +                                     .nr_bos  =3D sizes[i],
-> > +                                     .bos     =3D VOID2U64(bos_table),
-> > +                             };
-> > +                             unsigned iterations =3D 0;
-> > +                             igt_for_milliseconds(2000) {
-> > +                                     do_ioctl(dev->fd, DRM_IOCTL_MSM_G=
-EM_SUBMIT, &req);
-> > +                                     iterations++;
-> > +                             }
-> > +                             igt_info("%u-bos: %u iterations\n", sizes=
-[i], iterations);
-> > +                     }
-> > +             }
-> > +     }
-> > +
-> > +     igt_fixture {
-> > +             for (int i =3D 0; i < MAX_BOS; i++) {
-> > +                     igt_msm_bo_free(bos[i]);
-> > +             }
-> > +             igt_msm_pipe_close(pipe);
-> > +             igt_msm_dev_close(dev);
-> > +     }
-> > +}
-> > --
-> > 2.41.0
-> >
+int igt_get_dp_mst_connector_id() {
+     if igt_check_output_is_dp_mst()
+         return 0; // Not sure if connector_id can be zero
+
+     <get PATH property & parse the connector id outof it>
+     return connector_id;
+}
+
+Test:
+You can directly call igt_get_dp_mst_connector_id(), no need to check 
+for the output type (dp-mst).
+
+- Bhanu
+
+> +}
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index 9a46e7a5c..6f978ed55 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -1005,5 +1005,6 @@ bool igt_check_bigjoiner_support(igt_display_t *display);
+>   bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode);
+>   bool i915_pipe_output_combo_valid(igt_display_t *display);
+>   bool igt_check_output_is_dp_mst(int drmfd, igt_output_t *output);
+> +int igt_get_dp_mst_connector_id(int drm_fd, igt_output_t *output);
+>   
+>   #endif /* __IGT_KMS_H__ */
