@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5A1D510E37E
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 815DA10E380
  for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 20:02:32 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  8 Aug 2023 01:24:41 +0530
-Message-Id: <20230807195500.4103092-2-bhanuprakash.modem@intel.com>
+Date: Tue,  8 Aug 2023 01:24:44 +0530
+Message-Id: <20230807195500.4103092-5-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230807195500.4103092-1-bhanuprakash.modem@intel.com>
 References: <20230807195500.4103092-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 01/20] lib: Add tiling support for XE
+Subject: [igt-dev] [i-g-t V3 04/20] tests/kms_addfb_basic: Add tiling
+ support for XE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,111 +23,131 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Remove the tiling restrictions in all libraries those used by
-the Xe driver.
+Remove the tiling restrictions in Xe specific tests
 
+V2: - Update Xe fast-feedback testlist & blocklist
+
+Fixes: 8c3b02be3 (tests/kms_addfb_basic: Add XE support)
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- lib/igt_draw.c     |  5 +----
- lib/igt_fb.c       |  8 ++++----
- lib/intel_bufops.c | 13 +++++++++----
- 3 files changed, 14 insertions(+), 12 deletions(-)
+ tests/intel-ci/xe-fast-feedback.testlist | 11 +++++++++++
+ tests/intel-ci/xe.blocklist.txt          |  2 --
+ tests/kms_addfb_basic.c                  | 17 ++++++++++++-----
+ 3 files changed, 23 insertions(+), 7 deletions(-)
 
-diff --git a/lib/igt_draw.c b/lib/igt_draw.c
-index 13b90702c..476778a13 100644
---- a/lib/igt_draw.c
-+++ b/lib/igt_draw.c
-@@ -677,14 +677,11 @@ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
- 	int ver = intel_display_ver(devid);
- 	int pitch;
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+index f7c6b62f5..89030d363 100644
+--- a/tests/intel-ci/xe-fast-feedback.testlist
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -183,7 +183,13 @@ igt@xe_vm@munmap-style-unbind-userptr-inval-front
+ igt@xe_waitfence@abstime
+ igt@xe_waitfence@reltime
+ igt@kms_addfb_basic@addfb25-bad-modifier
++igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
+ igt@kms_addfb_basic@addfb25-modifier-no-flag
++igt@kms_addfb_basic@addfb25-x-tiled-legacy
++igt@kms_addfb_basic@addfb25-x-tiled-mismatch-legacy
++igt@kms_addfb_basic@addfb25-yf-tiled-legacy
++igt@kms_addfb_basic@addfb25-y-tiled-legacy
++igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
+ igt@kms_addfb_basic@bad-pitch-0
+ igt@kms_addfb_basic@bad-pitch-1024
+ igt@kms_addfb_basic@bad-pitch-128
+@@ -193,7 +199,11 @@ igt@kms_addfb_basic@bad-pitch-63
+ igt@kms_addfb_basic@bad-pitch-65536
+ igt@kms_addfb_basic@bad-pitch-999
+ igt@kms_addfb_basic@basic
++igt@kms_addfb_basic@basic-x-tiled-legacy
++igt@kms_addfb_basic@basic-y-tiled-legacy
+ igt@kms_addfb_basic@bo-too-small
++igt@kms_addfb_basic@bo-too-small-due-to-tiling
++igt@kms_addfb_basic@framebuffer-vs-set-tiling
+ igt@kms_addfb_basic@invalid-get-prop
+ igt@kms_addfb_basic@invalid-get-prop-any
+ igt@kms_addfb_basic@invalid-set-prop
+@@ -201,6 +211,7 @@ igt@kms_addfb_basic@invalid-set-prop-any
+ igt@kms_addfb_basic@no-handle
+ igt@kms_addfb_basic@size-max
+ igt@kms_addfb_basic@small-bo
++igt@kms_addfb_basic@tile-pitch-mismatch
+ igt@kms_addfb_basic@too-high
+ igt@kms_addfb_basic@too-wide
+ igt@kms_addfb_basic@unused-handle
+diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
+index 805939507..358f44e6a 100644
+--- a/tests/intel-ci/xe.blocklist.txt
++++ b/tests/intel-ci/xe.blocklist.txt
+@@ -70,8 +70,6 @@ igt@kms_big_fb@(4|x|y|yf)-tiled-.*
+ igt@kms_flip@2x-flip-vs-fences
+ igt@kms_flip@flip-vs-fences(-interruptible)
+ igt@kms_addfb_basic@clobberred-modifier
+-igt@kms_addfb_basic@.*-tiling
+-igt@kms_addfb_basic@.*-(4|x|y|yf)-.*
+ igt@kms_async_flips@.*
+ igt@kms_plane_multiple@tiling-(4|x|y|yf)
+ igt@kms_cursor_legacy@flip-vs-cursor-busy-crc-(atomic|legacy)
+diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
+index 065f21975..9a6344376 100644
+--- a/tests/kms_addfb_basic.c
++++ b/tests/kms_addfb_basic.c
+@@ -391,7 +391,7 @@ static void tiling_tests(int fd)
  
--	if (tiling)
--		igt_require_i915(fd);
--
- 	dst = create_buf(fd, cmd_data->bops, buf, tiling);
- 	ibb = intel_bb_create(fd, PAGE_SIZE);
- 	intel_bb_add_intel_buf(ibb, dst, true);
+ 	igt_subtest_group {
+ 		igt_fixture {
+-			igt_require_i915(fd);
++			igt_require_intel(fd);
+ 			tiled_x_bo = igt_create_bo_with_dimensions(fd, 1024, 1024,
+ 				DRM_FORMAT_XRGB8888, I915_FORMAT_MOD_X_TILED,
+ 				1024*4, NULL, NULL, NULL);
+@@ -410,7 +410,8 @@ static void tiling_tests(int fd)
+ 		f.pitches[0] = 1024*4;
+ 		igt_describe("Check if addfb2 and rmfb call works for basic x-tiling test");
+ 		igt_subtest("basic-x-tiled-legacy") {
+-			igt_require(gem_available_fences(fd) > 0);
++			if (is_i915_device(fd))
++				igt_require(gem_available_fences(fd) > 0);
+ 			f.handles[0] = tiled_x_bo;
  
--	if (is_i915_device(fd) && HAS_4TILE(intel_get_drm_devid(fd))) {
-+	if (HAS_4TILE(intel_get_drm_devid(fd))) {
- 		int buf_height = buf->size / buf->stride;
+ 			do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f);
+@@ -420,6 +421,7 @@ static void tiling_tests(int fd)
  
- 		switch (buf->bpp) {
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 8f5e3db9f..1114c447b 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -482,7 +482,7 @@ void igt_get_fb_tile_size(int fd, uint64_t modifier, int fb_bpp,
- 		break;
- 	case I915_FORMAT_MOD_Yf_TILED:
- 	case I915_FORMAT_MOD_Yf_TILED_CCS:
--		igt_require_i915(fd);
-+		igt_require_intel(fd);
- 		switch (fb_bpp) {
- 		case 8:
- 			*width_ret = 64;
-@@ -755,7 +755,7 @@ static uint32_t calc_plane_stride(struct igt_fb *fb, int plane)
- 		(fb->plane_bpp[plane] / 8);
+ 		igt_describe("Check if addfb2 call works for x and y tiling");
+ 		igt_subtest("framebuffer-vs-set-tiling") {
++			igt_require_i915(fd);
+ 			igt_require(gem_available_fences(fd) > 0);
+ 			f.handles[0] = gem_bo;
  
- 	if (fb->modifier != DRM_FORMAT_MOD_LINEAR &&
--	    is_i915_device(fb->fd) &&
-+	    is_intel_device(fb->fd) &&
- 	    intel_display_ver(intel_get_drm_devid(fb->fd)) <= 3) {
- 		uint32_t stride;
+@@ -434,6 +436,7 @@ static void tiling_tests(int fd)
+ 		igt_describe("Test that addfb2 call fails correctly for pitches mismatch");
+ 			f.pitches[0] = 512*4;
+ 		igt_subtest("tile-pitch-mismatch") {
++			igt_require_i915(fd);
+ 			igt_require(gem_available_fences(fd) > 0);
+ 			f.handles[0] = tiled_x_bo;
  
-@@ -824,7 +824,7 @@ static uint32_t calc_plane_stride(struct igt_fb *fb, int plane)
- static uint64_t calc_plane_size(struct igt_fb *fb, int plane)
- {
- 	if (fb->modifier != DRM_FORMAT_MOD_LINEAR &&
--	    is_i915_device(fb->fd) &&
-+	    is_intel_device(fb->fd) &&
- 	    intel_display_ver(intel_get_drm_devid(fb->fd)) <= 3) {
- 		uint64_t size = (uint64_t) fb->strides[plane] *
- 			fb->plane_height[plane];
-@@ -901,7 +901,7 @@ static unsigned int get_plane_alignment(struct igt_fb *fb, int color_plane)
- 	unsigned int tile_row_size;
- 	unsigned int alignment;
+@@ -443,8 +446,12 @@ static void tiling_tests(int fd)
+ 		igt_describe("Test that addfb2 call fails correctly for basic y-tiling test");
+ 		f.pitches[0] = 1024*4;
+ 		igt_subtest("basic-y-tiled-legacy") {
+-			igt_require(!gem_has_lmem(fd));
+-			igt_require(gem_available_fences(fd) > 0);
++			if (is_i915_device(fd)) {
++				igt_require(!gem_has_lmem(fd));
++				igt_require(gem_available_fences(fd) > 0);
++			} else {
++				igt_require(!xe_has_vram(fd));
++			}
+ 			f.handles[0] = tiled_y_bo;
  
--	if (!(is_i915_device(fb->fd) &&
-+	if (!(is_intel_device(fb->fd) &&
- 	      is_gen12_ccs_modifier(fb->modifier) &&
- 	      is_yuv_semiplanar_plane(fb, color_plane)))
- 		return 0;
-diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-index 524757933..2c91adb88 100644
---- a/lib/intel_bufops.c
-+++ b/lib/intel_bufops.c
-@@ -927,7 +927,8 @@ static void __intel_buf_init(struct buf_ops *bops,
- 	/* Store gem bo size */
- 	buf->bo_size = size;
+ 			do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
+@@ -995,7 +1002,7 @@ igt_main
+ 		size_tests(fd);
  
--	set_hw_tiled(bops, buf);
-+	if (bops->driver == INTEL_DRIVER_I915)
-+		set_hw_tiled(bops, buf);
- }
+ 		igt_fixture
+-			igt_require_i915(fd);
++			igt_require_intel(fd);
  
- /**
-@@ -1502,14 +1503,18 @@ static struct buf_ops *__buf_ops_create(int fd, bool check_idempotency)
- 		  bops->intel_gen, bops->supported_tiles,
- 		  bops->driver == INTEL_DRIVER_I915 ? "i915" : "xe");
+ 		addfb25_ytile(fd);
  
--	/* No tiling support in XE. */
- 	if (bops->driver == INTEL_DRIVER_XE) {
--		bops->supported_hw_tiles = TILE_NONE;
--
- 		bops->linear_to_x = copy_linear_to_x;
- 		bops->x_to_linear = copy_x_to_linear;
- 		bops->linear_to_y = copy_linear_to_y;
- 		bops->y_to_linear = copy_y_to_linear;
-+		bops->linear_to_tile4 = copy_linear_to_tile4;
-+		bops->tile4_to_linear = copy_tile4_to_linear;
-+
-+		bops->linear_to_yf = NULL;
-+		bops->yf_to_linear = NULL;
-+		bops->linear_to_ys = NULL;
-+		bops->ys_to_linear = NULL;
- 
- 		return bops;
- 	}
 -- 
 2.40.0
