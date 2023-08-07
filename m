@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 18B2710E011
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 04:02:22 +0000 (UTC)
-From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Mon, 7 Aug 2023 04:02:18 +0000
-Message-ID: <MW3PR11MB4748FC11AE90BB7669AE852EAE0CA@MW3PR11MB4748.namprd11.prod.outlook.com>
-References: <20230725071622.206601-1-janga.rahul.kumar@intel.com>
- <20230725071622.206601-3-janga.rahul.kumar@intel.com>
- <20230725180418.mxnqokdcfp52rbmq@kamilkon-desk1>
-In-Reply-To: <20230725180418.mxnqokdcfp52rbmq@kamilkon-desk1>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6487D10E0C7
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 13:38:35 +0000 (UTC)
+Message-ID: <0e1efb88-c729-f487-3173-84c8472f4d7e@linux.intel.com>
+Date: Mon, 7 Aug 2023 15:38:27 +0200
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] lib/xe: Add hang library support
+Content-Language: en-US
+To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
+References: <20230804102454.948216-1-marcin.bernatowicz@linux.intel.com>
+ <20230804102454.948216-2-marcin.bernatowicz@linux.intel.com>
+ <20230807065429.mpsfyen5embizlup@zkempczy-mobl2>
+From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20230807065429.mpsfyen5embizlup@zkempczy-mobl2>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/xe_spin: introduced
+ xe_spin_opts; fixed duration xe_spin
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,105 +23,546 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>, "Joshi,
- Kunal1" <kunal1.joshi@intel.com>, "Gandi, Ramadevi" <ramadevi.gandi@intel.com>
+Cc: igt-dev@lists.freedesktop.org, mauro.chehab@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS2FtaWwgS29uaWVjem55
-IDxrYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tPg0KPiBTZW50OiAyNSBKdWx5IDIwMjMg
-MjM6MzQNCj4gVG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IENjOiBLdW1hciwg
-SmFuZ2EgUmFodWwgPGphbmdhLnJhaHVsLmt1bWFyQGludGVsLmNvbT47IEdhbmRpLCBSYW1hZGV2
-aQ0KPiA8cmFtYWRldmkuZ2FuZGlAaW50ZWwuY29tPjsgQ2gsIFNhaSBHb3d0aGFtIDxzYWkuZ293
-dGhhbS5jaEBpbnRlbC5jb20+Ow0KPiBKb3NoaSwgS3VuYWwxIDxrdW5hbDEuam9zaGlAaW50ZWwu
-Y29tPg0KPiBTdWJqZWN0OiBSZTogW2lndC1kZXZdIFtQQVRDSCBpLWctdCAyLzJdIGxpYi94ZTog
-QWRkIGhhbmcgbGlicmFyeSBzdXBwb3J0DQo+IA0KPiBIaSBKYW5nYSwNCj4gDQo+IE9uIDIwMjMt
-MDctMjUgYXQgMTI6NDY6MjIgKzA1MzAsIGphbmdhLnJhaHVsLmt1bWFyQGludGVsLmNvbSB3cm90
-ZToNCj4gPiBGcm9tOiBKYW5nYSBSYWh1bCBLdW1hciA8amFuZ2EucmFodWwua3VtYXJAaW50ZWwu
-Y29tPg0KPiA+DQo+ID4gQWRkIGhhbmcgbGlicmFyeSBzdXBwb3J0IHVzaW5nIHNwaW5uZXJzLg0K
-PiA+DQo+ID4gQ2M6IFNhaSBHb3d0aGFtIENoIDxzYWkuZ293dGhhbS5jaEBpbnRlbC5jb20+DQo+
-ID4gQ2M6IEt1bmFsIEpvc2hpIDxrdW5hbDEuam9zaGlAaW50ZWwuY29tPg0KPiA+IFNpZ25lZC1v
-ZmYtYnk6IEphbmdhIFJhaHVsIEt1bWFyIDxqYW5nYS5yYWh1bC5rdW1hckBpbnRlbC5jb20+DQo+
-ID4gLS0tDQo+ID4gIGxpYi9pZ3RfZ3QuYyAgICAgIHwgMjEgKysrKysrKysrKysrKysrKysrKysr
-DQo+IC0tLS0tLSBeXl5eXl4NCj4gTW92ZSB0aGlzIGNoYW5nZSBpbnRvIHNlcGFyYXRlIHBhdGNo
-Lg0KPiANCj4gPiAgbGliL3hlL3hlX2lvY3RsLmMgfCAyMCArKysrKysrKysrKysrKysrKysrKyAg
-bGliL3hlL3hlX2lvY3RsLmggfCAgNg0KPiA+ICsrKysrKw0KPiA+ICAzIGZpbGVzIGNoYW5nZWQs
-IDQ3IGluc2VydGlvbnMoKykNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9saWIvaWd0X2d0LmMgYi9s
-aWIvaWd0X2d0LmMgaW5kZXggMmNlNDY0YmE2Li42ODIxMTc5Y2ENCj4gPiAxMDA2NDQNCj4gPiAt
-LS0gYS9saWIvaWd0X2d0LmMNCj4gPiArKysgYi9saWIvaWd0X2d0LmMNCj4gPiBAQCAtMTcwLDYg
-KzE3MCwxNSBAQCBzdGF0aWMgdm9pZCBjb250ZXh0X3NldF9iYW4oaW50IGZkLCB1bnNpZ25lZCBj
-dHgsDQo+ID4gdW5zaWduZWQgYmFuKQ0KPiA+DQo+ID4gIGlndF9oYW5nX3QgaWd0X2FsbG93X2hh
-bmcoaW50IGZkLCB1bnNpZ25lZCBjdHgsIHVuc2lnbmVkIGZsYWdzKSAgew0KPiA+ICsJaWYgKGlz
-X3hlX2RldmljZShmZCkpIHsNCj4gPiArCQlpZiAoIWlndF9jaGVja19ib29sZWFuX2Vudl92YXIo
-IklHVF9IQU5HIiwgdHJ1ZSkpDQo+ID4gKwkJCWlndF9za2lwKCJoYW5nIGluamVjdGlvbiBkaXNh
-YmxlZCBieSB1c2VyDQo+IFtJR1RfSEFORz0wXVxuIik7DQo+ID4gKw0KPiA+ICsJCWlndF9yZXF1
-aXJlKGhhc19ncHVfcmVzZXQoZmQpKTsNCj4gPiArDQo+ID4gKwkJcmV0dXJuIChzdHJ1Y3QgaWd0
-X2hhbmcpeyAwLCBjdHgsIDAsIGZsYWdzIH07DQo+ID4gKyAgICAgICB9DQo+ID4gKw0KPiANCj4g
-TW92ZSBjb2RlIGFmdGVyIGRlY2xhcmF0aW9ucyBvZiB2YXJzLg0KPiANCj4gPiAgCXN0cnVjdCBk
-cm1faTkxNV9nZW1fY29udGV4dF9wYXJhbSBwYXJhbSA9IHsNCj4gPiAgCQkuY3R4X2lkID0gY3R4
-LA0KPiA+ICAJfTsNCj4gPiBAQCAtMjE5LDYgKzIyOCw5IEBAIGlndF9oYW5nX3QgaWd0X2FsbG93
-X2hhbmcoaW50IGZkLCB1bnNpZ25lZCBjdHgsDQo+ID4gdW5zaWduZWQgZmxhZ3MpDQo+ID4NCj4g
-PiAgdm9pZCBpZ3RfZGlzYWxsb3dfaGFuZyhpbnQgZmQsIGlndF9oYW5nX3QgYXJnKSAgew0KPiA+
-ICsJaWYgKGlzX3hlX2RldmljZShmZCkpDQo+ID4gKwkJcmV0dXJuOw0KPiA+ICsNCj4gPiAgCWNv
-bnRleHRfc2V0X2JhbihmZCwgYXJnLmN0eCwgYXJnLmJhbik7DQo+ID4NCj4gPiAgCWlmICgoYXJn
-LmZsYWdzICYgSEFOR19BTExPV19DQVBUVVJFKSA9PSAwKSB7IEBAIC0yOTAsNiArMzAyLDkgQEAN
-Cj4gPiBzdGF0aWMgYm9vbCBoYXNfY3R4X2V4ZWMoaW50IGZkLCB1bnNpZ25lZCByaW5nLCB1aW50
-MzJfdCBjdHgpICBzdGF0aWMNCj4gPiBpZ3RfaGFuZ190IF9faWd0X2hhbmdfY3R4KGludCBmZCwg
-dWludDY0X3QgYWhuZCwgdWludDMyX3QgY3R4LCBpbnQgcmluZywNCj4gPiAgCQkJCSB1bnNpZ25l
-ZCBmbGFncykNCj4gPiAgew0KPiA+ICsJaWYgKGlzX3hlX2RldmljZShmZCkpDQo+ID4gKwkJcmV0
-dXJuIHhlX2hhbmdfZW5naW5lKGZkLCBhaG5kLCBjdHgsIHJpbmcsIGZsYWdzKTsNCj4gPiArDQo+
-IA0KPiBNb3ZlIHRoaXMgYWZ0ZXIgdmFyIGRlY2xhdGFyaW9ucy4NCj4gDQo+ID4gIAlzdHJ1Y3Qg
-ZHJtX2k5MTVfZ2VtX2NvbnRleHRfcGFyYW0gcGFyYW07DQo+ID4gIAlpZ3Rfc3Bpbl90ICpzcGlu
-Ow0KPiA+ICAJdW5zaWduZWQgYmFuOw0KPiA+IEBAIC0zNzIsNiArMzg3LDEyIEBAIHZvaWQgaWd0
-X3Bvc3RfaGFuZ19yaW5nKGludCBmZCwgaWd0X2hhbmdfdCBhcmcpDQo+ID4gIAlpZiAoIWFyZy5z
-cGluKQ0KPiA+ICAJCXJldHVybjsNCj4gPg0KPiA+ICsJaWYgKGlzX3hlX2RldmljZShmZCkpIHsN
-Cj4gPiArCQlpZ3Rfc3Bpbl9mcmVlKGZkLCBhcmcuc3Bpbik7DQo+ID4gKwkJeGVfcG9zdF9oYW5n
-X3JpbmcoZmQsIGFyZyk7DQo+IA0KPiBJdCBsb29rcyBsaWtlIHNwaW5uZXIgaXMgbm90IHVzZWQg
-aGVyZT8NCkluIHBvc3QgaGFuZywgd2UgZnJlZSB0aGUgc3Bpbm5lci4NCj4gDQo+ID4gKwkJcmV0
-dXJuOw0KPiA+ICsJfQ0KPiA+ICsNCj4gPiAgCWdlbV9zeW5jKGZkLCBhcmcuc3Bpbi0+aGFuZGxl
-KTsgLyogV2FpdCB1bnRpbCBpdCBoYW5ncyAqLw0KPiA+ICAJaWd0X3NwaW5fZnJlZShmZCwgYXJn
-LnNwaW4pOw0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL2xpYi94ZS94ZV9pb2N0bC5jIGIvbGliL3hl
-L3hlX2lvY3RsLmMgaW5kZXgNCj4gPiA0ODhhYTIxOGUuLjVlYzg1MjM5YSAxMDA2NDQNCj4gPiAt
-LS0gYS9saWIveGUveGVfaW9jdGwuYw0KPiA+ICsrKyBiL2xpYi94ZS94ZV9pb2N0bC5jDQo+ID4g
-QEAgLTUyMCw2ICs1MjAsMjYgQEAgdm9pZCB4ZV9mb3JjZV9ndF9yZXNldChpbnQgZmQsIGludCBn
-dCkNCj4gPiAgCXN5c3RlbShyZXNldF9zdHJpbmcpOw0KPiA+ICB9DQo+ID4NCj4gPiArDQo+ID4g
-K2lndF9oYW5nX3QgeGVfaGFuZ19lbmdpbmUoaW50IGZkLCB1aW50NjRfdCBhaG5kLCB1aW50MzJf
-dCBjdHgsIGludCByaW5nLA0KPiA+ICsJCQkJdW5zaWduZWQgZmxhZ3MpDQo+ID4gK3sNCj4gPiAr
-CXVpbnQzMl90IHZtOw0KPiA+ICsJdW5zaWduZWQgaW50IGVuZ2luZTsNCj4gPiArCWlndF9zcGlu
-X3QgKnNwaW5fdDsNCj4gDQo+IEFkZCBuZXdsaW5lLg0KPiANCj4gPiArCXZtID0geGVfdm1fY3Jl
-YXRlKGZkLCAwLCAwKTsNCj4gPiArCWVuZ2luZSA9IHhlX2VuZ2luZV9jcmVhdGVfY2xhc3MoZmQs
-IHZtLA0KPiBEUk1fWEVfRU5HSU5FX0NMQVNTX0NPUFkpOw0KPiAtLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBeIE9ubHkgb25lIGVuZ2luZSBjbGFzcyBoZXJl
-Pw0KPiANCj4gPiArDQo+ID4gKwlzcGluX3QgPSBpZ3Rfc3Bpbl9uZXcoZmQsIC5haG5kID0gYWhu
-ZCwgLmVuZ2luZSA9IGVuZ2luZSwgLnZtID0gdm0sDQo+ID4gKy5mbGFncyA9IElHVF9TUElOX05P
-X1BSRUVNUFRJT04pOw0KPiANCj4gQWRkIG5ld2xpbmUuDQo+IA0KPiA+ICsJcmV0dXJuIChpZ3Rf
-aGFuZ190KXsgc3Bpbl90LCBlbmdpbmUsIDAsIGZsYWdzIH07DQo+IA0KPiBVbnVzZWQgcmluZyB2
-YXI/DQpVcGRhdGVkIGl0IGluIHYyLiANCj4gDQo+ID4gK30NCj4gPiArDQo+ID4gK3ZvaWQgeGVf
-cG9zdF9oYW5nX3JpbmcoaW50IGZkLCBpZ3RfaGFuZ190IGFyZykgew0KPiA+ICsJeGVfZW5naW5l
-X2Rlc3Ryb3koZmQsIGFyZy5jdHgpOw0KPiA+ICsJeGVfdm1fZGVzdHJveShmZCwgYXJnLnNwaW4t
-PnZtKTsNCj4gPiArfQ0KPiA+ICsNCj4gPiAgdm9pZCB4ZV92bV9tYWR2aXNlKGludCBmZCwgdWlu
-dDMyX3Qgdm0sIHVpbnQ2NF90IGFkZHIsIHVpbnQ2NF90IHNpemUsDQo+ID4gIAkJICAgdWludDMy
-X3QgcHJvcGVydHksIHVpbnQzMl90IHZhbHVlKSAgeyBkaWZmIC0tZ2l0DQo+ID4gYS9saWIveGUv
-eGVfaW9jdGwuaCBiL2xpYi94ZS94ZV9pb2N0bC5oIGluZGV4IDVhNTI4YjM0NS4uMGU5NzA4MTk0
-DQo+ID4gMTAwNjQ0DQo+ID4gLS0tIGEvbGliL3hlL3hlX2lvY3RsLmgNCj4gPiArKysgYi9saWIv
-eGUveGVfaW9jdGwuaA0KPiA+IEBAIC0xNSw2ICsxNSw5IEBADQo+ID4gICNpbmNsdWRlIDxzdGRp
-bnQuaD4NCj4gPiAgI2luY2x1ZGUgPHhlX2RybS5oPg0KPiA+DQo+ID4gKyNpbmNsdWRlICJsaWIv
-aWd0X2d0LmgiDQo+ID4gKyNpbmNsdWRlICJ4ZV9zcGluLmgiDQo+ID4gKw0KPiANCj4gQXJlIHlv
-dSB1c2luZyBuZXcgaW9jdGw/IElmIG5vdCBtYXliZSBhZGQgeGVfaGFuZyBhbmQgeGVfcG9zdF9o
-YW5nIHRvIG90aGVyDQo+IGxpYnJhcnk/IE9yIGNyZWF0ZSBuZXcgb25lPw0KSW50cm9kdWNlZCB4
-ZV9ndCBsaWJyYXJ5IGFuZCBtb3ZlZCBoYW5nIGFuZCByZXN0IGhlbHBlcnMgb2YgeGUgaW50byBp
-dC4NCj4gDQo+IFJlZ2FyZHMsDQo+IEthbWlsDQo+IA0KPiA+ICB1aW50MzJfdCB4ZV9jc19wcmVm
-ZXRjaF9zaXplKGludCBmZCk7ICB1aW50MzJfdCB4ZV92bV9jcmVhdGUoaW50IGZkLA0KPiA+IHVp
-bnQzMl90IGZsYWdzLCB1aW50NjRfdCBleHQpOyAgaW50ICBfX3hlX3ZtX2JpbmQoaW50IGZkLCB1
-aW50MzJfdCB2bSwNCj4gPiB1aW50MzJfdCBlbmdpbmUsIHVpbnQzMl90IGJvLCBAQCAtODksNiAr
-OTIsOSBAQCBpbnQ2NF90DQo+ID4geGVfd2FpdF91ZmVuY2VfYWJzdGltZShpbnQgZmQsIHVpbnQ2
-NF90ICphZGRyLCB1aW50NjRfdCB2YWx1ZSwgIHZvaWQNCj4gPiB4ZV9mb3JjZV9ndF9yZXNldChp
-bnQgZmQsIGludCBndCk7ICB2b2lkIHhlX2ZvcmNlX2d0X3Jlc2V0X2FsbChpbnQNCj4gPiBmZCk7
-ICBib29sIGhhc194ZV9ndF9yZXNldChpbnQgZmQpOw0KPiA+ICtpZ3RfaGFuZ190IHhlX2hhbmdf
-ZW5naW5lKGludCBmZCwgdWludDY0X3QgYWhuZCwgdWludDMyX3QgY3R4LCBpbnQgcmluZywNCj4g
-PiArCQkJCXVuc2lnbmVkIGZsYWdzKTsNCj4gPiArdm9pZCB4ZV9wb3N0X2hhbmdfcmluZyhpbnQg
-ZmQsIGlndF9oYW5nX3QgYXJnKTsNCj4gPiAgdm9pZCB4ZV92bV9tYWR2aXNlKGludCBmZCwgdWlu
-dDMyX3Qgdm0sIHVpbnQ2NF90IGFkZHIsIHVpbnQ2NF90IHNpemUsDQo+ID4gIAkJICAgdWludDMy
-X3QgcHJvcGVydHksIHVpbnQzMl90IHZhbHVlKTsNCj4gPg0KPiA+IC0tDQo+ID4gMi4yNS4xDQo+
-ID4NCg==
+
+
+On 8/7/2023 8:54 AM, Zbigniew Kempczyński wrote:
+> On Fri, Aug 04, 2023 at 10:24:53AM +0000, Marcin Bernatowicz wrote:
+>> Introduced struct xe_spin_opts for xe_spin initialization,
+>> adjusted tests to new xe_spin_init signature.
+>>
+>> Extended spinner with fixed duration capability. It allows
+>> to prepare fixed duration (ex. 10ms) workloads and take workloads/second
+>> measurements, a handy utility for scheduling tests.
+>>
+>> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+>> ---
+>>   lib/xe/xe_spin.c            | 121 ++++++++++++++++++++++++++++++------
+>>   lib/xe/xe_spin.h            |  23 ++++++-
+>>   tests/xe/xe_dma_buf_sync.c  |   6 +-
+>>   tests/xe/xe_exec_balancer.c |   9 ++-
+>>   tests/xe/xe_exec_reset.c    |  24 ++++---
+>>   tests/xe/xe_exec_threads.c  |   7 ++-
+>>   tests/xe/xe_vm.c            |   9 +--
+>>   7 files changed, 154 insertions(+), 45 deletions(-)
+>>
+>> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
+>> index cd9c1a7d3..44fca2258 100644
+>> --- a/lib/xe/xe_spin.c
+>> +++ b/lib/xe/xe_spin.c
+>> @@ -16,41 +16,126 @@
+>>   #include "xe_ioctl.h"
+>>   #include "xe_spin.h"
+>>   
+>> +static int read_timestamp_frequency(int fd, int gt_id)
+> 
+> I would use uint32_t as clock_freq is u32.
+ok
+> 
+>> +{
+>> +	struct xe_device *dev = xe_device_get(fd);
+>> +
+>> +	igt_assert(dev && dev->gts && dev->gts->num_gt);
+>> +	igt_assert(gt_id >= 0 && gt_id <= dev->gts->num_gt);
+>> +
+>> +	return dev->gts->gts[gt_id].clock_freq;
+>> +}
+>> +
+>> +static uint64_t div64_u64_round_up(const uint64_t x, const uint64_t y)
+>> +{
+> 
+> Assert on divisor == 0 to avoid sigfpe surprise?
+ok
+> 
+>> +	return (x + y - 1) / y;
+>> +}
+>> +
+>> +/**
+>> + * duration_to_ctx_ticks:
+>> + * @fd: opened device
+>> + * @gt_id: tile id
+>> + * @duration_ns: duration in nanoseconds to be converted to context timestamp ticks
+>> + * @return: duration converted to context timestamp ticks, 0 on failure.
+>> + */
+>> +uint32_t duration_to_ctx_ticks(int fd, int gt_id, uint64_t duration_ns)
+>> +{
+>> +	int f = read_timestamp_frequency(fd, gt_id);
+>> +	uint64_t ctx_ticks = div64_u64_round_up(duration_ns * f, NSEC_PER_SEC);
+>> +
+> 
+> Same as above, f as uint32_t.
+> 
+>> +	return ctx_ticks > XE_SPIN_MAX_CTX_TICKS ? 0 : ctx_ticks;
+>> +}
+> 
+> Hmm. For 19MHz clock spinner time must be less than 223 seconds.
+> For IGT test it is huge value.
+> I would just assert if ctx_ticks is >= XE_SPIN_MAX_CTX_TICKS.
+
+will add igt_assert_lt_u64(ctx_ticks, XE_SPIN_MAX_CTX_TICKS);
+
+> 
+>> +
+>> +#define MI_SRM_CS_MMIO				(1 << 19)
+>> +#define MI_LRI_CS_MMIO				(1 << 19)
+>> +#define MI_LRR_DST_CS_MMIO			(1 << 19)
+>> +#define MI_LRR_SRC_CS_MMIO			(1 << 18)
+>> +#define CTX_TIMESTAMP 0x3a8;
+>> +#define CS_GPR(x) (0x600 + 8 * (x))
+>> +enum { START_TS, NOW_TS };
+>> +
+>>   /**
+>>    * xe_spin_init:
+>>    * @spin: pointer to mapped bo in which spinner code will be written
+>> - * @addr: offset of spinner within vm
+>> - * @preempt: allow spinner to be preempted or not
+>> + * @opts: pointer to spinner initialization options
+>>    */
+>> -void xe_spin_init(struct xe_spin *spin, uint64_t addr, bool preempt)
+>> +void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
+>>   {
+>> -	uint64_t batch_offset = (char *)&spin->batch - (char *)spin;
+>> -	uint64_t batch_addr = addr + batch_offset;
+>> -	uint64_t start_offset = (char *)&spin->start - (char *)spin;
+>> -	uint64_t start_addr = addr + start_offset;
+>> -	uint64_t end_offset = (char *)&spin->end - (char *)spin;
+>> -	uint64_t end_addr = addr + end_offset;
+>> +	uint64_t loop_addr;
+>> +	uint64_t start_addr = opts->addr + offsetof(struct xe_spin, start);
+>> +	uint64_t end_addr = opts->addr + offsetof(struct xe_spin, end);
+>> +	uint64_t ticks_delta_addr = opts->addr + offsetof(struct xe_spin, ticks_delta);
+>> +	uint64_t pad_addr = opts->addr + offsetof(struct xe_spin, pad);
+> 
+> Nice, offsetof() makes this code clearer.
+> 
+>>   	int b = 0;
+>>   
+>>   	spin->start = 0;
+>>   	spin->end = 0xffffffff;
+>> +	spin->ticks_delta = 0;
+>> +
+>> +	if (opts->ctx_ticks) {
+>> +		/* store start timestamp */
+>> +		spin->batch[b++] = MI_LOAD_REGISTER_IMM(1) | MI_LRI_CS_MMIO;
+>> +		spin->batch[b++] = CS_GPR(START_TS) + 4;
+>> +		spin->batch[b++] = 0;
+>> +		spin->batch[b++] = MI_LOAD_REGISTER_REG | MI_LRR_DST_CS_MMIO | MI_LRR_SRC_CS_MMIO;
+>> +		spin->batch[b++] = CTX_TIMESTAMP;
+>> +		spin->batch[b++] = CS_GPR(START_TS);
+>> +	}
+>> +
+>> +	loop_addr = opts->addr + (char *)&spin->batch[b] - (char *)spin;
+> 
+> loop_addr = opts->addr + b * sizeof(uint32_t);
+> 
+> looks more readable imo.
+
+ok
+> 
+>>   
+>>   	spin->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
+>>   	spin->batch[b++] = start_addr;
+>>   	spin->batch[b++] = start_addr >> 32;
+>>   	spin->batch[b++] = 0xc0ffee;
+>>   
+>> -	if (preempt)
+>> +	if (opts->preempt)
+>>   		spin->batch[b++] = (0x5 << 23);
+>>   
+>> +	if (opts->ctx_ticks) {
+>> +		spin->batch[b++] = MI_LOAD_REGISTER_IMM(1) | MI_LRI_CS_MMIO;
+>> +		spin->batch[b++] = CS_GPR(NOW_TS) + 4;
+>> +		spin->batch[b++] = 0;
+>> +		spin->batch[b++] = MI_LOAD_REGISTER_REG | MI_LRR_DST_CS_MMIO | MI_LRR_SRC_CS_MMIO;
+>> +		spin->batch[b++] = CTX_TIMESTAMP;
+>> +		spin->batch[b++] = CS_GPR(NOW_TS);
+>> +
+>> +		/* delta = now - start; inverted to match COND_BBE */
+>> +		spin->batch[b++] = MI_MATH(4);
+>> +		spin->batch[b++] = MI_MATH_LOAD(MI_MATH_REG_SRCA, MI_MATH_REG(NOW_TS));
+>> +		spin->batch[b++] = MI_MATH_LOAD(MI_MATH_REG_SRCB, MI_MATH_REG(START_TS));
+>> +		spin->batch[b++] = MI_MATH_SUB;
+>> +		spin->batch[b++] = MI_MATH_STOREINV(MI_MATH_REG(NOW_TS), MI_MATH_REG_ACCU);
+>> +
+>> +		/* Save delta for reading by COND_BBE */
+>> +		spin->batch[b++] = MI_STORE_REGISTER_MEM | MI_SRM_CS_MMIO | 2;
+>> +		spin->batch[b++] = CS_GPR(NOW_TS);
+>> +		spin->batch[b++] = ticks_delta_addr;
+>> +		spin->batch[b++] = ticks_delta_addr >> 32;
+>> +
+>> +		/* Delay between SRM and COND_BBE to post the writes */
+>> +		for (int n = 0; n < 8; n++) {
+>> +			spin->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
+>> +			spin->batch[b++] = pad_addr;
+>> +			spin->batch[b++] = pad_addr >> 32;
+>> +			spin->batch[b++] = 0xc0ffee;
+>> +		}
+>> +
+>> +		/* Break if delta [time elapsed] > ns */
+>> +		spin->batch[b++] = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | 2;
+>> +		spin->batch[b++] = ~(opts->ctx_ticks);
+>> +		spin->batch[b++] = ticks_delta_addr;
+>> +		spin->batch[b++] = ticks_delta_addr >> 32;
+>> +	}
+> 
+> Ok, this part looks good for me.
+> 
+>> +
+>>   	spin->batch[b++] = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | 2;
+>>   	spin->batch[b++] = 0;
+>>   	spin->batch[b++] = end_addr;
+>>   	spin->batch[b++] = end_addr >> 32;
+>>   
+>>   	spin->batch[b++] = MI_BATCH_BUFFER_START | 1 << 8 | 1;
+>> -	spin->batch[b++] = batch_addr;
+>> -	spin->batch[b++] = batch_addr >> 32;
+>> +	spin->batch[b++] = loop_addr;
+>> +	spin->batch[b++] = loop_addr >> 32;
+>>   
+>>   	igt_assert(b <= ARRAY_SIZE(spin->batch));
+>>   }
+>> @@ -106,6 +191,7 @@ xe_spin_create(int fd, const struct igt_spin_factory *opt)
+>>   		.num_syncs = 1,
+>>   		.syncs = to_user_pointer(&sync),
+>>   	};
+>> +	struct xe_spin_opts spin_opts = {};
+>>   
+>>   	igt_assert(ahnd);
+>>   	spin = calloc(1, sizeof(struct igt_spin));
+>> @@ -132,11 +218,9 @@ xe_spin_create(int fd, const struct igt_spin_factory *opt)
+>>   	addr = intel_allocator_alloc_with_strategy(ahnd, spin->handle, bo_size, 0, ALLOC_STRATEGY_LOW_TO_HIGH);
+>>   	xe_vm_bind_sync(fd, spin->vm, spin->handle, 0, addr, bo_size);
+>>   
+>> -	if (!(opt->flags & IGT_SPIN_NO_PREEMPTION))
+>> -		xe_spin_init(xe_spin, addr, true);
+>> -	else
+>> -		xe_spin_init(xe_spin, addr, false);
+>> -
+>> +	spin_opts.addr = addr;
+>> +	spin_opts.preempt = !(opt->flags & IGT_SPIN_NO_PREEMPTION);
+>> +	xe_spin_init(xe_spin, &spin_opts);
+> 
+> Or just:
+> 	xe_spin_init(xe_spin, .addr = addr,
+> 			      .preempt = !(opt->flags & IGT_SPIN_NO_PREEMPTION));
+> 
+> ?
+> 
+> See comment below.
+> 
+>>   	exec.exec_queue_id = spin->engine;
+>>   	exec.address = addr;
+>>   	sync.handle = spin->syncobj;
+>> @@ -191,6 +275,7 @@ void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
+>>   	size_t bo_size = xe_get_default_alignment(fd);
+>>   	uint32_t vm, bo, exec_queue, syncobj;
+>>   	struct xe_spin *spin;
+>> +	struct xe_spin_opts spin_opts = { .addr = addr, .preempt = true };
+>>   	struct drm_xe_sync sync = {
+>>   		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
+>>   	};
+>> @@ -211,7 +296,7 @@ void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
+>>   	exec_queue = xe_exec_queue_create(fd, vm, hwe, 0);
+>>   	syncobj = syncobj_create(fd, 0);
+>>   
+>> -	xe_spin_init(spin, addr, true);
+>> +	xe_spin_init(spin, &spin_opts);
+>>   	exec.exec_queue_id = exec_queue;
+>>   	exec.address = addr;
+>>   	sync.handle = syncobj;
+>> diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
+>> index c84db175d..14053a07e 100644
+>> --- a/lib/xe/xe_spin.h
+>> +++ b/lib/xe/xe_spin.h
+>> @@ -15,15 +15,34 @@
+>>   #include "xe_query.h"
+>>   #include "lib/igt_dummyload.h"
+>>   
+>> +#define XE_SPIN_MAX_CTX_TICKS UINT32_MAX - 1000
+>> +
+>> +/** struct xe_spin_opts
+>> + *
+>> + * @addr: offset of spinner within vm
+>> + * @preempt: allow spinner to be preempted or not
+>> + * @ctx_ticks: number of ticks after which spinner is stopped, applied if > 0
+>> + *
+>> + * Used to initialize struct xe_spin spinner behavior.
+>> + */
+>> +struct xe_spin_opts {
+>> +	uint64_t addr;
+>> +	bool preempt;
+>> +	uint32_t ctx_ticks;
+>> +};
+>> +
+>>   /* Mapped GPU object */
+>>   struct xe_spin {
+>> -	uint32_t batch[16];
+>> +	uint32_t batch[128];
+>>   	uint64_t pad;
+>>   	uint32_t start;
+>>   	uint32_t end;
+>> +	uint32_t ticks_delta;
+>>   };
+>> +
+>>   igt_spin_t *xe_spin_create(int fd, const struct igt_spin_factory *opt);
+>> -void xe_spin_init(struct xe_spin *spin, uint64_t addr, bool preempt);
+>> +uint32_t duration_to_ctx_ticks(int fd, int gt_id, uint64_t ns);
+>> +void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts);
+> 
+> I would add:
+> 
+> #define xe_spin_init_opts(fd, ...) \
+> 	xe_spin_init(fd, &((xe_spin_opts){__VA_ARGS__}))
+> 
+> to call xe_spin_init() indirectly with .k = v initialization.
+
+ok, sounds good
+
+> 
+>>   bool xe_spin_started(struct xe_spin *spin);
+>>   void xe_spin_sync_wait(int fd, struct igt_spin *spin);
+>>   void xe_spin_wait_started(struct xe_spin *spin);
+>> diff --git a/tests/xe/xe_dma_buf_sync.c b/tests/xe/xe_dma_buf_sync.c
+>> index 29d675154..627f4c1e5 100644
+>> --- a/tests/xe/xe_dma_buf_sync.c
+>> +++ b/tests/xe/xe_dma_buf_sync.c
+>> @@ -144,7 +144,6 @@ test_export_dma_buf(struct drm_xe_engine_class_instance *hwe0,
+>>   		uint64_t sdi_offset = (char *)&data[i]->data - (char *)data[i];
+>>   		uint64_t sdi_addr = addr + sdi_offset;
+>>   		uint64_t spin_offset = (char *)&data[i]->spin - (char *)data[i];
+>> -		uint64_t spin_addr = addr + spin_offset;
+>>   		struct drm_xe_sync sync[2] = {
+>>   			{ .flags = DRM_XE_SYNC_SYNCOBJ, },
+>>   			{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
+>> @@ -153,14 +152,15 @@ test_export_dma_buf(struct drm_xe_engine_class_instance *hwe0,
+>>   			.num_batch_buffer = 1,
+>>   			.syncs = to_user_pointer(sync),
+>>   		};
+>> +		struct xe_spin_opts spin_opts = { .addr = addr + spin_offset, .preempt = true };
+>>   		uint32_t syncobj;
+>>   		int b = 0;
+>>   		int sync_fd;
+>>   
+>>   		/* Write spinner on FD[0] */
+>> -		xe_spin_init(&data[i]->spin, spin_addr, true);
+>> +		xe_spin_init(&data[i]->spin, &spin_opts);
+>>   		exec.exec_queue_id = exec_queue[0];
+>> -		exec.address = spin_addr;
+>> +		exec.address = spin_opts.addr;
+>>   		xe_exec(fd[0], &exec);
+>>   
+>>   		/* Export prime BO as sync file and veify business */
+>> diff --git a/tests/xe/xe_exec_balancer.c b/tests/xe/xe_exec_balancer.c
+>> index f364a4b7a..d7d8dd8fb 100644
+>> --- a/tests/xe/xe_exec_balancer.c
+>> +++ b/tests/xe/xe_exec_balancer.c
+>> @@ -52,6 +52,7 @@ static void test_all_active(int fd, int gt, int class)
+>>   	struct {
+>>   		struct xe_spin spin;
+>>   	} *data;
+>> +	struct xe_spin_opts spin_opts = { .preempt = false };
+>>   	struct drm_xe_engine_class_instance *hwe;
+>>   	struct drm_xe_engine_class_instance eci[MAX_INSTANCE];
+>>   	int i, num_placements = 0;
+>> @@ -90,16 +91,14 @@ static void test_all_active(int fd, int gt, int class)
+>>   	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
+>>   
+>>   	for (i = 0; i < num_placements; i++) {
+>> -		uint64_t spin_offset = (char *)&data[i].spin - (char *)data;
+>> -		uint64_t spin_addr = addr + spin_offset;
+>> -
+>> -		xe_spin_init(&data[i].spin, spin_addr, false);
+>> +		spin_opts.addr = addr + (char *)&data[i].spin - (char *)data;
+>> +		xe_spin_init(&data[i].spin, &spin_opts);
+>>   		sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
+>>   		sync[1].flags |= DRM_XE_SYNC_SIGNAL;
+>>   		sync[1].handle = syncobjs[i];
+>>   
+>>   		exec.exec_queue_id = exec_queues[i];
+>> -		exec.address = spin_addr;
+>> +		exec.address = spin_opts.addr;
+>>   		xe_exec(fd, &exec);
+>>   		xe_spin_wait_started(&data[i].spin);
+>>   	}
+>> diff --git a/tests/xe/xe_exec_reset.c b/tests/xe/xe_exec_reset.c
+>> index a2d33baf1..be6bbada6 100644
+>> --- a/tests/xe/xe_exec_reset.c
+>> +++ b/tests/xe/xe_exec_reset.c
+>> @@ -44,6 +44,7 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci)
+>>   	size_t bo_size;
+>>   	uint32_t bo = 0;
+>>   	struct xe_spin *spin;
+>> +	struct xe_spin_opts spin_opts = { .addr = addr, .preempt = false };
+>>   
+>>   	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
+>>   	bo_size = sizeof(*spin);
+>> @@ -60,7 +61,7 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci)
+>>   	sync[0].handle = syncobj_create(fd, 0);
+>>   	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
+>>   
+>> -	xe_spin_init(spin, addr, false);
+>> +	xe_spin_init(spin, &spin_opts);
+>>   
+>>   	sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
+>>   	sync[1].flags |= DRM_XE_SYNC_SIGNAL;
+>> @@ -165,6 +166,7 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
+>>   		uint64_t pad;
+>>   		uint32_t data;
+>>   	} *data;
+>> +	struct xe_spin_opts spin_opts = { .preempt = false };
+>>   	struct drm_xe_engine_class_instance *hwe;
+>>   	struct drm_xe_engine_class_instance eci[MAX_INSTANCE];
+>>   	int i, j, b, num_placements = 0, bad_batches = 1;
+>> @@ -236,7 +238,6 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
+>>   		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
+>>   		uint64_t batch_addr = base_addr + batch_offset;
+>>   		uint64_t spin_offset = (char *)&data[i].spin - (char *)data;
+>> -		uint64_t spin_addr = base_addr + spin_offset;
+>>   		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
+>>   		uint64_t sdi_addr = base_addr + sdi_offset;
+>>   		uint64_t exec_addr;
+>> @@ -247,8 +248,9 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
+>>   			batches[j] = batch_addr;
+>>   
+>>   		if (i < bad_batches) {
+>> -			xe_spin_init(&data[i].spin, spin_addr, false);
+>> -			exec_addr = spin_addr;
+>> +			spin_opts.addr = base_addr + spin_offset;
+>> +			xe_spin_init(&data[i].spin, &spin_opts);
+>> +			exec_addr = spin_opts.addr;
+>>   		} else {
+>>   			b = 0;
+>>   			data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
+>> @@ -368,6 +370,7 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
+>>   		uint64_t pad;
+>>   		uint32_t data;
+>>   	} *data;
+>> +	struct xe_spin_opts spin_opts = { .preempt = false };
+>>   	int i, b;
+>>   
+>>   	igt_assert(n_exec_queues <= MAX_N_EXECQUEUES);
+>> @@ -417,15 +420,15 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
+>>   		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
+>>   		uint64_t batch_addr = base_addr + batch_offset;
+>>   		uint64_t spin_offset = (char *)&data[i].spin - (char *)data;
+>> -		uint64_t spin_addr = base_addr + spin_offset;
+>>   		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
+>>   		uint64_t sdi_addr = base_addr + sdi_offset;
+>>   		uint64_t exec_addr;
+>>   		int e = i % n_exec_queues;
+>>   
+>>   		if (!i) {
+>> -			xe_spin_init(&data[i].spin, spin_addr, false);
+>> -			exec_addr = spin_addr;
+>> +			spin_opts.addr = base_addr + spin_offset;
+>> +			xe_spin_init(&data[i].spin, &spin_opts);
+>> +			exec_addr = spin_opts.addr;
+>>   		} else {
+>>   			b = 0;
+>>   			data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
+>> @@ -539,6 +542,7 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
+>>   		uint64_t exec_sync;
+>>   		uint32_t data;
+>>   	} *data;
+>> +	struct xe_spin_opts spin_opts = { .preempt = false };
+>>   	int i, b;
+>>   
+>>   	igt_assert(n_exec_queues <= MAX_N_EXECQUEUES);
+>> @@ -593,15 +597,15 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
+>>   		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
+>>   		uint64_t batch_addr = base_addr + batch_offset;
+>>   		uint64_t spin_offset = (char *)&data[i].spin - (char *)data;
+>> -		uint64_t spin_addr = base_addr + spin_offset;
+>>   		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
+>>   		uint64_t sdi_addr = base_addr + sdi_offset;
+>>   		uint64_t exec_addr;
+>>   		int e = i % n_exec_queues;
+>>   
+>>   		if (!i) {
+>> -			xe_spin_init(&data[i].spin, spin_addr, false);
+>> -			exec_addr = spin_addr;
+>> +			spin_opts.addr = base_addr + spin_offset;
+>> +			xe_spin_init(&data[i].spin, &spin_opts);
+>> +			exec_addr = spin_opts.addr;
+>>   		} else {
+>>   			b = 0;
+>>   			data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
+>> diff --git a/tests/xe/xe_exec_threads.c b/tests/xe/xe_exec_threads.c
+>> index e64c1639a..ff4ebc280 100644
+>> --- a/tests/xe/xe_exec_threads.c
+>> +++ b/tests/xe/xe_exec_threads.c
+>> @@ -486,6 +486,7 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+>>   		uint64_t pad;
+>>   		uint32_t data;
+>>   	} *data;
+>> +	struct xe_spin_opts spin_opts = { .preempt = false };
+>>   	int i, j, b, hang_exec_queue = n_exec_queues / 2;
+>>   	bool owns_vm = false, owns_fd = false;
+>>   
+>> @@ -562,15 +563,15 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+>>   		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
+>>   		uint64_t batch_addr = addr + batch_offset;
+>>   		uint64_t spin_offset = (char *)&data[i].spin - (char *)data;
+>> -		uint64_t spin_addr = addr + spin_offset;
+>>   		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
+>>   		uint64_t sdi_addr = addr + sdi_offset;
+>>   		uint64_t exec_addr;
+>>   		int e = i % n_exec_queues;
+>>   
+>>   		if (flags & HANG && e == hang_exec_queue && i == e) {
+>> -			xe_spin_init(&data[i].spin, spin_addr, false);
+>> -			exec_addr = spin_addr;
+>> +			spin_opts.addr = addr + spin_offset;
+>> +			xe_spin_init(&data[i].spin, &spin_opts);
+>> +			exec_addr = spin_opts.addr;
+>>   		} else {
+>>   			b = 0;
+>>   			data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
+>> diff --git a/tests/xe/xe_vm.c b/tests/xe/xe_vm.c
+>> index e42c04e33..87604a407 100644
+>> --- a/tests/xe/xe_vm.c
+>> +++ b/tests/xe/xe_vm.c
+>> @@ -727,6 +727,7 @@ test_bind_execqueues_independent(int fd, struct drm_xe_engine_class_instance *ec
+>>   		uint64_t pad;
+>>   		uint32_t data;
+>>   	} *data;
+>> +	struct xe_spin_opts spin_opts = { .preempt = true };
+>>   	int i, b;
+>>   
+>>   	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
+>> @@ -755,14 +756,14 @@ test_bind_execqueues_independent(int fd, struct drm_xe_engine_class_instance *ec
+>>   		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
+>>   		uint64_t sdi_addr = addr + sdi_offset;
+>>   		uint64_t spin_offset = (char *)&data[i].spin - (char *)data;
+>> -		uint64_t spin_addr = addr + spin_offset;
+>>   		int e = i;
+>>   
+>>   		if (i == 0) {
+>> -			/* Cork 1st exec_queue with a spinner */
+>> -			xe_spin_init(&data[i].spin, spin_addr, true);
+>> +			/* Cork 1st engine with a spinner */
+>> +			spin_opts.addr = addr + spin_offset;
+>> +			xe_spin_init(&data[i].spin, &spin_opts);
+>>   			exec.exec_queue_id = exec_queues[e];
+>> -			exec.address = spin_addr;
+>> +			exec.address = spin_opts.addr;
+>>   			sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
+>>   			sync[1].flags |= DRM_XE_SYNC_SIGNAL;
+>>   			sync[1].handle = syncobjs[e];
+>> -- 
+>> 2.30.2
+>>
+> 
+> Generally looks good to me, address my nits and:
+> 
+> Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+
+Thanks for review,
+Marcin
+> 
+> --
+> Zbigniew
