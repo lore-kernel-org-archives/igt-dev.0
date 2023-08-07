@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2FE1C10E1DF
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 09:24:57 +0000 (UTC)
-From: Lukasz Laguna <lukasz.laguna@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 98AC810E1E1
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 09:40:01 +0000 (UTC)
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon,  7 Aug 2023 11:24:46 +0200
-Message-Id: <20230807092446.7805-1-lukasz.laguna@intel.com>
+Date: Mon,  7 Aug 2023 15:02:01 +0530
+Message-Id: <20230807093201.70650-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20230718110852.2965553-2-anshuman.gupta@intel.com>
+References: <20230718110852.2965553-2-anshuman.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] lib/xe_query: add helper getting available
- VRAM
+Subject: [igt-dev] [PATCH v4 3/3] lib/igt_kms: Add helper with DPMS to turn
+ on and off the displays
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,83 +19,95 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: mauro.chehab@intel.com
+Cc: Thasleem@freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Helper allows to read available VRAM of a specified device and GT.
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-v2:
-- Query for current memory usage instead of using cached one (Zbigniew)
-v3:
-- Reacquire mem_region pointer (Zbigniew)
-v4:
-- Update value of used memory only in xe_dev
+This helper will turn on and off the displays with the help of DPMS
+properties set to ON and OFF.
 
-Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
+v2: Use IGT_CRTC_ACTIVE for displays On/Off.
+
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+Signed-off-by: Thasleem, Mohammed <mohammed.thasleem@intel.com>
 ---
- lib/xe/xe_query.c | 35 +++++++++++++++++++++++++++++++++++
- lib/xe/xe_query.h |  1 +
- 2 files changed, 36 insertions(+)
+ lib/igt_kms.c | 50 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_kms.h |  3 +++
+ 2 files changed, 53 insertions(+)
 
-diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index 8963c7b06..c356abe1e 100644
---- a/lib/xe/xe_query.c
-+++ b/lib/xe/xe_query.c
-@@ -630,6 +630,41 @@ uint64_t xe_visible_vram_size(int fd, int gt)
- 
- 	return visible_size;
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index f2b0eed57..97283d55e 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -6029,3 +6029,53 @@ bool i915_pipe_output_combo_valid(igt_display_t *display)
+ 	 */
+ 	return igt_check_bigjoiner_support(display);
  }
-+/**
-+ * xe_vram_available:
-+ * @fd: xe device fd
-+ * @gt: gt
-+ *
-+ * Returns available vram of xe device @fd and @gt.
-+ */
-+uint64_t xe_vram_available(int fd, int gt)
++
++void igt_dpms_turn_on_display(int drm_fd)
 +{
-+	struct xe_device *xe_dev;
-+	int region_idx;
-+	struct drm_xe_query_mem_region *mem_region;
-+	struct drm_xe_query_mem_usage *mem_usage;
++	igt_display_t display;
++	igt_output_t *output;
++	enum pipe pipe;
 +
-+	xe_dev = find_in_cache(fd);
-+	igt_assert(xe_dev);
++	if (!drmModeGetResources(drm_fd))
++		return;
 +
-+	region_idx = ffs(native_region_for_gt(xe_dev->gts, gt)) - 1;
-+	mem_region = &xe_dev->mem_usage->regions[region_idx];
++	igt_display_require(&display, drm_fd);
++	igt_display_reset(&display);
 +
-+	if (XE_IS_CLASS_VRAM(mem_region)) {
-+		uint64_t available_vram;
-+
-+		mem_usage = xe_query_mem_usage_new(fd);
-+		pthread_mutex_lock(&cache.cache_mutex);
-+		mem_region->used = mem_usage->regions[region_idx].used;
-+		available_vram = mem_region->total_size - mem_region->used;
-+		pthread_mutex_unlock(&cache.cache_mutex);
-+		free(mem_usage);
-+
-+		return available_vram;
++	for_each_connected_output(&display, output) {
++		for_each_pipe(&display, pipe) {
++			igt_display_reset(&display);
++			igt_output_set_pipe(output, pipe);
++			igt_pipe_set_prop_value(&display, pipe, IGT_CRTC_ACTIVE, 1);
++		}
 +	}
 +
-+	return 0;
++	igt_display_commit2(&display, COMMIT_ATOMIC);
++
++	igt_display_fini(&display);
 +}
++
++void igt_dpms_turn_off_display(int drm_fd)
++{
++	igt_display_t display;
++	igt_output_t *output;
++	enum pipe pipe;
++
++	if (!drmModeGetResources(drm_fd))
++		return;
++
++	igt_display_require(&display, drm_fd);
++	igt_display_reset(&display);
++
++	for_each_connected_output(&display, output) {
++		for_each_pipe(&display, pipe) {
++			igt_display_reset(&display);
++			igt_output_set_pipe(output, pipe);
++			igt_pipe_set_prop_value(&display, pipe, IGT_CRTC_ACTIVE, 0);
++		}
++	}
++
++	igt_display_commit2(&display, COMMIT_ATOMIC);
++
++	igt_display_fini(&display);
++}
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 1b6988c17..32d20d683 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1005,4 +1005,7 @@ bool igt_check_bigjoiner_support(igt_display_t *display);
+ bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode);
+ bool i915_pipe_output_combo_valid(igt_display_t *display);
  
- /**
-  * xe_get_default_alignment:
-diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-index 1b74c58ab..20dbfa12c 100644
---- a/lib/xe/xe_query.h
-+++ b/lib/xe/xe_query.h
-@@ -97,6 +97,7 @@ unsigned int xe_number_hw_engines(int fd);
- bool xe_has_vram(int fd);
- uint64_t xe_vram_size(int fd, int gt);
- uint64_t xe_visible_vram_size(int fd, int gt);
-+uint64_t xe_vram_available(int fd, int gt);
- uint32_t xe_get_default_alignment(int fd);
- uint32_t xe_va_bits(int fd);
- uint16_t xe_dev_id(int fd);
++void igt_dpms_turn_on_display(int drm_fd);
++void igt_dpms_turn_off_display(int drm_fd);
++
+ #endif /* __IGT_KMS_H__ */
 -- 
-2.40.0
+2.25.1
