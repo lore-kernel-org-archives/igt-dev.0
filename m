@@ -1,15 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============2723218547143982303=="
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com
+ [IPv6:2a00:1450:4864:20::134])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2F36410E37A
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 18:29:13 +0000 (UTC)
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-4fe3b86cec1so7446069e87.2
+ for <igt-dev@lists.freedesktop.org>; Mon, 07 Aug 2023 11:29:13 -0700 (PDT)
+Message-ID: <90bf29f0-a403-5cd0-680f-fc8595e64627@gmail.com>
+Date: Mon, 7 Aug 2023 21:29:04 +0300
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Rob Clark" <robdclark@gmail.com>
-Date: Mon, 07 Aug 2023 18:04:56 -0000
-Message-ID: <169143149679.13176.14452225286658991434@emeril.freedesktop.org>
-References: <20230807163659.205382-1-robdclark@gmail.com>
-In-Reply-To: <20230807163659.205382-1-robdclark@gmail.com>
-Subject: [igt-dev] =?utf-8?b?4peLIENJLnhlQkFUOiBpbmZvIGZvciB0ZXN0cy9tc206?=
- =?utf-8?q?_Add_submitoverhead_benchmark_=28rev2=29?=
+Content-Language: en-US
+To: Rob Clark <robdclark@gmail.com>, igt-dev@lists.freedesktop.org
+References: <20230807165411.206456-1-robdclark@gmail.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+In-Reply-To: <20230807165411.206456-1-robdclark@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH v3] tests/kms_plane: Handle hw without legacy
+ gamma support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,71 +25,59 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Reply-To: juhapekka.heikkila@gmail.com
+Cc: Rob Clark <robdclark@chromium.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2723218547143982303==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Rob,
 
-== Series Details ==
+On 7.8.2023 19.54, Rob Clark wrote:
+> From: Rob Clark <robdclark@chromium.org>
+> 
+> Skip the tests which require legacy gamma, instead of failing, if the hw
+> does not support legacy gamma.
+> 
+> v2: igt_require(lut_size > 0) instead
+> v3: simplify patch
+> 
+> Signed-off-by: Rob Clark <robdclark@chromium.org>
+> ---
+>   tests/kms_plane.c | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+> index 67cff61d6cd1..44cad2bf2491 100644
+> --- a/tests/kms_plane.c
+> +++ b/tests/kms_plane.c
+> @@ -469,6 +469,8 @@ static void set_legacy_lut(data_t *data, enum pipe pipe,
+>   	lut_size = crtc->gamma_size;
+>   	drmModeFreeCrtc(crtc);
+>   
+> +	igt_require(lut_size > 0);
+> +
 
-Series: tests/msm: Add submitoverhead benchmark (rev2)
-URL   : https://patchwork.freedesktop.org/series/121909/
-State : info
+Is this something you really want on your hw? This lut stuff is 
+originally coming from this patch
 
-== Summary ==
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/commit/093fa482371795c3aa246509994eb21907f501b9
 
-Participating hosts:
-bat-pvc-2
-bat-atsm-2
-bat-dg2-oem2
-bat-adlp-7
-Missing hosts results[0]:
-Results: [IGTPW_9530](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9530/index.html)
+where it is mentioned:
 
+---
+We also abuse the legacy LUT to drop the precision down to 6 bits
+so that still errors causes by the RGB<->YCbCr conversion end up
+being ignored.
+---
 
+With your change you'd skip testing of all available pixel 
+formats/modifiers combos on your driver while originally this feature is 
+mostly intended just to avoid hitting Intel hw related anomalies. Do 
+those tests work for you if you just not set that lut?
 
---===============2723218547143982303==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+/Juha-Pekka
 
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/msm: Add submitoverhead benchmark (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/121909/">https://patchwork.freedesktop.org/series/121909/</a></td></tr>
-<tr><td><b>State:</b></td><td>info</td></tr>
-
-</table>
-
-
-    <p>Participating hosts:<br />
-bat-pvc-2<br />
-bat-atsm-2<br />
-bat-dg2-oem2<br />
-bat-adlp-7<br />
-Missing hosts results[0]:<br />
-Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9530/index.html">IGTPW_9530</a></p>
-
-</body>
-</html>
-
---===============2723218547143982303==--
+>   	lut = malloc(sizeof(uint16_t) * lut_size);
+>   
+>   	for (i = 0; i < lut_size; i++)
