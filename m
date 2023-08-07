@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9991E10E205
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 10:42:56 +0000 (UTC)
-From: "Hogander, Jouni" <jouni.hogander@intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-Date: Mon, 7 Aug 2023 10:42:51 +0000
-Message-ID: <f6550b4ee9b6b1ccbb99a7e6e68b99272253aa28.camel@intel.com>
-References: <20230807091538.3172571-1-ankit.k.nautiyal@intel.com>
-In-Reply-To: <20230807091538.3172571-1-ankit.k.nautiyal@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <AC0E7B9DB05DD3488516C442A66F9FBC@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Content-Type: multipart/alternative;
+ boundary="===============4668964387491010051=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/kms_dsc_helper.c: Fix helper
- to check dsc with output_format
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Lukasz Laguna" <lukasz.laguna@intel.com>
+Date: Mon, 07 Aug 2023 10:55:30 -0000
+Message-ID: <169140573001.13176.14629600324378226260@emeril.freedesktop.org>
+References: <20230807092446.7805-1-lukasz.laguna@intel.com>
+In-Reply-To: <20230807092446.7805-1-lukasz.laguna@intel.com>
+Subject: [igt-dev] =?utf-8?b?4peLIENJLnhlQkFUOiBpbmZvIGZvciBsaWIveGVfcXVl?=
+ =?utf-8?q?ry=3A_add_helper_getting_available_VRAM_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,46 +17,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gTW9uLCAyMDIzLTA4LTA3IGF0IDE0OjQ1ICswNTMwLCBBbmtpdCBOYXV0aXlhbCB3cm90ZToK
-PiBGaXggdGhlIGNvbmRpdGlvbiB0aGF0IGNoZWNrcyB3aGV0aGVyIERTQyBpcyBzdXBwb3J0ZWQg
-d2l0aCBnaXZlbgo+IG91dHB1dCBmb3JtYXQgaW4gaXNfZHNjX291dHB1dF9mb3JtYXRfc3VwcG9y
-dGVkLgo+IAo+IEZpeGVzOiBjMzY1OTIyZjAxYzEyICh0ZXN0cy9pOTE1L2ttc19kc2M6IEVuYWJs
-ZSB2YWxpZGF0aW9uIGZvciBWRFNDCj4gb3V0cHV0IGZvcm1hdHMpCj4gQ2M6IFN3YXRpIFNoYXJt
-YSA8c3dhdGkyLnNoYXJtYUBpbnRlbC5jb20+Cj4gQ2M6IEpvdW5pIEhfZ2FuZGVyIDxqb3VuaS5o
-b2dhbmRlckBpbnRlbC5jb20+Cj4gU2lnbmVkLW9mZi1ieTogQW5raXQgTmF1dGl5YWwgPGFua2l0
-LmsubmF1dGl5YWxAaW50ZWwuY29tPgoKUmV2aWV3ZWQtYnk6IEpvdW5pIEjDtmdhbmRlciA8am91
-bmkuaG9nYW5kZXJAaW50ZWwuY29tPgo+IC0tLQo+IMKgdGVzdHMvaTkxNS9rbXNfZHNjX2hlbHBl
-ci5jIHwgMTUgKysrKysrKy0tLS0tLS0tCj4gwqAxIGZpbGUgY2hhbmdlZCwgNyBpbnNlcnRpb25z
-KCspLCA4IGRlbGV0aW9ucygtKQo+IAo+IGRpZmYgLS1naXQgYS90ZXN0cy9pOTE1L2ttc19kc2Nf
-aGVscGVyLmMKPiBiL3Rlc3RzL2k5MTUva21zX2RzY19oZWxwZXIuYwo+IGluZGV4IGFlNTllZGI2
-YmVjOS4uMTYwMzY0Y2QyOGJmIDEwMDY0NAo+IC0tLSBhL3Rlc3RzL2k5MTUva21zX2RzY19oZWxw
-ZXIuYwo+ICsrKyBiL3Rlc3RzL2k5MTUva21zX2RzY19oZWxwZXIuYwo+IEBAIC0xMzMsMTMgKzEz
-MywxMiBAQCBzdGF0aWMgYm9vbAo+IGlzX2RzY19vdXRwdXRfZm9ybWF0X3N1cHBvcnRlZF9ieV9w
-bGF0Zm9ybShpbnQgZGlzcF92ZXIsIGVudW0gZHNjX291Cj4gwqBib29sIGlzX2RzY19vdXRwdXRf
-Zm9ybWF0X3N1cHBvcnRlZChpbnQgZHJtZmQsIGludCBkaXNwX3ZlciwKPiBpZ3Rfb3V0cHV0X3Qg
-Km91dHB1dCwKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGVudW0gZHNjX291dHB1dF9mb3JtYXQKPiBvdXRwdXRf
-Zm9ybWF0KQo+IMKgewo+IC3CoMKgwqDCoMKgwqDCoGlmICghKGlndF9pc19kc2Nfb3V0cHV0X2Zv
-cm1hdF9zdXBwb3J0ZWRfYnlfc2luayhkcm1mZCwKPiBvdXRwdXQtPm5hbWUsIG91dHB1dF9mb3Jt
-YXQpKSAmJgo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgIChpc19kc2Nfb3V0cHV0X2Zvcm1hdF9z
-dXBwb3J0ZWRfYnlfcGxhdGZvcm0oZGlzcF92ZXIsCj4gb3V0cHV0X2Zvcm1hdCkpKSB7Cj4gLcKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpZ3RfZGVidWcoIkRTQyAlcyBvdXRw
-dXQgZm9ybWF0IG5vdCBzdXBwb3J0ZWQgb24KPiBjb25uZWN0b3IgJXNcbiIsCj4gLcKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAKPiBrbXN0
-ZXN0X2RzY19vdXRwdXRfZm9ybWF0X3N0cihvdXRwdXRfZm9ybWF0KSwKPiAtwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBvdXRwdXQtPm5h
-bWUpOwo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0
-dXJuIGZhbHNlOwo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9Cj4gK8KgwqDCoMKg
-wqDCoMKgaWYgKGlzX2RzY19vdXRwdXRfZm9ybWF0X3N1cHBvcnRlZF9ieV9wbGF0Zm9ybShkaXNw
-X3ZlciwKPiBvdXRwdXRfZm9ybWF0KSAmJgo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoCBpZ3RfaXNf
-ZHNjX291dHB1dF9mb3JtYXRfc3VwcG9ydGVkX2J5X3NpbmsoZHJtZmQsIG91dHB1dC0KPiA+bmFt
-ZSwgb3V0cHV0X2Zvcm1hdCkpCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldHVy
-biB0cnVlOwo+IMKgCj4gLcKgwqDCoMKgwqDCoMKgcmV0dXJuIHRydWU7Cj4gK8KgwqDCoMKgwqDC
-oMKgaWd0X2RlYnVnKCJEU0MgJXMgb3V0cHV0IGZvcm1hdCBub3Qgc3VwcG9ydGVkIG9uIGNvbm5l
-Y3Rvcgo+ICVzXG4iLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBrbXN0ZXN0
-X2RzY19vdXRwdXRfZm9ybWF0X3N0cihvdXRwdXRfZm9ybWF0KSwKPiBvdXRwdXQtPm5hbWUpOwo+
-ICsKPiArwqDCoMKgwqDCoMKgwqByZXR1cm4gZmFsc2U7Cj4gwqB9Cgo=
+--===============4668964387491010051==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: lib/xe_query: add helper getting available VRAM (rev4)
+URL   : https://patchwork.freedesktop.org/series/121704/
+State : info
+
+== Summary ==
+
+Participating hosts:
+bat-pvc-2
+bat-atsm-2
+bat-dg2-oem2
+bat-adlp-7
+Missing hosts results[0]:
+Results: [IGTPW_9526](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9526/index.html)
+
+
+
+--===============4668964387491010051==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/xe_query: add helper getting available VRAM (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/121704/">https://patchwork.freedesktop.org/series/121704/</a></td></tr>
+<tr><td><b>State:</b></td><td>info</td></tr>
+
+</table>
+
+
+    <p>Participating hosts:<br />
+bat-pvc-2<br />
+bat-atsm-2<br />
+bat-dg2-oem2<br />
+bat-adlp-7<br />
+Missing hosts results[0]:<br />
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9526/index.html">IGTPW_9526</a></p>
+
+</body>
+</html>
+
+--===============4668964387491010051==--
