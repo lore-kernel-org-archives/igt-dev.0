@@ -1,21 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 50F9110E011
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 04:41:20 +0000 (UTC)
-From: "Hogander, Jouni" <jouni.hogander@intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Modem,
- Bhanuprakash" <bhanuprakash.modem@intel.com>
-Date: Mon, 7 Aug 2023 04:41:16 +0000
-Message-ID: <645bb5dcaa343e562df30d9aa735fb5345002109.camel@intel.com>
-References: <20230804084237.3940595-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230804084237.3940595-1-bhanuprakash.modem@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <DFA2C29B67BED84F8077157018B1B17B@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B183710E1B8
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 03:34:46 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon,  7 Aug 2023 05:34:39 +0200
+Message-Id: <20230807033439.44097-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t] tests/i915/kms_psr: Fix to use proper API to
- support XE
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] lib/intel_ctx|fb: Rename engine to
+ exec_queue in xe lib for completion
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,42 +22,107 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCAyMDIzLTA4LTA0IGF0IDE0OjEyICswNTMwLCBCaGFudXByYWthc2ggTW9kZW0gd3Jv
-dGU6Cj4gQXMgb2xkIEFQSSBpcyBub3QgYXdhcmUgb2YgWEUgbWVtb3J5IHJlYXNvbiwgdXBkYXRl
-IHRoZQo+IHN1YnRlc3Qgd2l0aCB0aGUgbmV3IG9uZSB0byBjcmVhdGUgdGhlIGJ1ZmZlciBmb3Ig
-WEUgZHJpdmVyLgo+IAo+IGludGVsX2J1Zl9jcmVhdGVfdXNpbmdfaGFuZGxlKCkgLS0+IGludGVs
-X2J1Zl9jcmVhdGVfZnVsbCgpCj4gCj4gRml4ZXM6IGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9w
-Lm9yZy9kcm0veGUva2VybmVsLy0vaXNzdWVzLzMzNwo+IENjOiBKb3VuaSBIw7ZnYW5kZXIgPGpv
-dW5pLmhvZ2FuZGVyQGludGVsLmNvbT4KPiBDYzogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymln
-bmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+Cj4gU2lnbmVkLW9mZi1ieTogQmhhbnVwcmFrYXNo
-IE1vZGVtIDxiaGFudXByYWthc2gubW9kZW1AaW50ZWwuY29tPgoKUmV2aWV3ZWQtYnk6IEpvdW5p
-IEjDtmdhbmRlciA8am91bmkuaG9nYW5kZXJAaW50ZWwuY29tPgoKPiAtLS0KPiDCoHRlc3RzL2k5
-MTUva21zX3Bzci5jIHwgOCArKysrKystLQo+IMKgMSBmaWxlIGNoYW5nZWQsIDYgaW5zZXJ0aW9u
-cygrKSwgMiBkZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9rbXNfcHNy
-LmMgYi90ZXN0cy9pOTE1L2ttc19wc3IuYwo+IGluZGV4IDNmOGY4M2I0Mi4uNTdhNzQ5ZmZiIDEw
-MDY0NAo+IC0tLSBhL3Rlc3RzL2k5MTUva21zX3Bzci5jCj4gKysrIGIvdGVzdHMvaTkxNS9rbXNf
-cHNyLmMKPiBAQCAtMzUsNiArMzUsNyBAQAo+IMKgI2luY2x1ZGUgPHN0ZGlvLmg+Cj4gwqAjaW5j
-bHVkZSA8c3RyaW5nLmg+Cj4gwqAjaW5jbHVkZSAieGUveGVfaW9jdGwuaCIKPiArI2luY2x1ZGUg
-InhlL3hlX3F1ZXJ5LmgiCj4gwqAKPiDCoGVudW0gb3BlcmF0aW9ucyB7Cj4gwqDCoMKgwqDCoMKg
-wqDCoFBBR0VfRkxJUCwKPiBAQCAtMTQ0LDYgKzE0NSw5IEBAIHN0YXRpYyBzdHJ1Y3QgaW50ZWxf
-YnVmCj4gKmNyZWF0ZV9idWZfZnJvbV9mYihkYXRhX3QgKmRhdGEsCj4gwqB7Cj4gwqDCoMKgwqDC
-oMKgwqDCoHVpbnQzMl90IG5hbWUsIGhhbmRsZSwgdGlsaW5nLCBzdHJpZGUsIHdpZHRoLCBoZWln
-aHQsIGJwcCwKPiBzaXplOwo+IMKgwqDCoMKgwqDCoMKgwqBzdHJ1Y3QgaW50ZWxfYnVmICpidWY7
-Cj4gK8KgwqDCoMKgwqDCoMKgZW51bSBpbnRlbF9kcml2ZXIgZHJpdmVyID0gYnVmX29wc19nZXRf
-ZHJpdmVyKGRhdGEtPmJvcHMpOwo+ICvCoMKgwqDCoMKgwqDCoHVpbnQ2NF90IHJlZ2lvbiA9IChk
-cml2ZXIgPT0gSU5URUxfRFJJVkVSX1hFKSA/Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdnJhbV9pZl9wb3NzaWJsZShkYXRh
-LT5kcm1fZmQsIDApIDogLQo+IDE7Cj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgaWd0X2Fzc2VydF9l
-cShmYi0+b2Zmc2V0c1swXSwgMCk7Cj4gwqAKPiBAQCAtMTU5LDggKzE2Myw4IEBAIHN0YXRpYyBz
-dHJ1Y3QgaW50ZWxfYnVmCj4gKmNyZWF0ZV9idWZfZnJvbV9mYihkYXRhX3QgKmRhdGEsCj4gwqAK
-PiDCoMKgwqDCoMKgwqDCoMKgbmFtZSA9IGdlbV9mbGluayhkYXRhLT5kcm1fZmQsIGZiLT5nZW1f
-aGFuZGxlKTsKPiDCoMKgwqDCoMKgwqDCoMKgaGFuZGxlID0gZ2VtX29wZW4oZGF0YS0+ZHJtX2Zk
-LCBuYW1lKTsKPiAtwqDCoMKgwqDCoMKgwqBidWYgPSBpbnRlbF9idWZfY3JlYXRlX3VzaW5nX2hh
-bmRsZShkYXRhLT5ib3BzLCBoYW5kbGUsCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB3
-aWR0aCwgaGVpZ2h0LCBicHAsIDAsCj4gdGlsaW5nLCAwKTsKPiArwqDCoMKgwqDCoMKgwqBidWYg
-PSBpbnRlbF9idWZfY3JlYXRlX2Z1bGwoZGF0YS0+Ym9wcywgaGFuZGxlLCB3aWR0aCwKPiBoZWln
-aHQsCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgIGJwcCwgMCwgdGlsaW5nLCAwLCBzaXplLCBzdHJpZGUsCj4gcmVn
-aW9uKTsKPiDCoMKgwqDCoMKgwqDCoMKgaW50ZWxfYnVmX3NldF9vd25lcnNoaXAoYnVmLCB0cnVl
-KTsKPiDCoAo+IMKgwqDCoMKgwqDCoMKgwqByZXR1cm4gYnVmOwoK
+To avoid confusion in the future lets align to current naming
+nomenclature.
+
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Francois Dugast <francois.dugast@intel.com>
+---
+ lib/igt_fb.c    | 8 ++++----
+ lib/intel_ctx.c | 8 ++++----
+ lib/intel_ctx.h | 4 ++--
+ 3 files changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 8f5e3db9f5..af3b4588a2 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -2852,7 +2852,7 @@ static void blitcopy(const struct igt_fb *dst_fb,
+ 	uint32_t src_cc = src_fb->modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC ? 1 : 0;
+ 	uint32_t dst_cc = dst_fb->modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC ? 1 : 0;
+ 	intel_ctx_t *xe_ctx;
+-	uint32_t vm, engine;
++	uint32_t vm, exec_queue;
+ 	bool is_xe = is_xe_device(dst_fb->fd);
+ 	bool is_i915 = is_i915_device(dst_fb->fd);
+ 
+@@ -2881,8 +2881,8 @@ static void blitcopy(const struct igt_fb *dst_fb,
+ 							  mem_region) == 0);
+ 	} else if (is_xe) {
+ 		vm = xe_vm_create(dst_fb->fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
+-		engine = xe_exec_queue_create(dst_fb->fd, vm, &inst, 0);
+-		xe_ctx = intel_ctx_xe(dst_fb->fd, vm, engine, 0, 0, 0);
++		exec_queue = xe_exec_queue_create(dst_fb->fd, vm, &inst, 0);
++		xe_ctx = intel_ctx_xe(dst_fb->fd, vm, exec_queue, 0, 0, 0);
+ 		mem_region = vram_if_possible(dst_fb->fd, 0);
+ 
+ 		ahnd = intel_allocator_open_full(dst_fb->fd, xe_ctx->vm, 0, 0,
+@@ -3007,7 +3007,7 @@ static void blitcopy(const struct igt_fb *dst_fb,
+ 
+ 	if(is_xe) {
+ 		gem_close(dst_fb->fd, xe_bb);
+-		xe_exec_queue_destroy(dst_fb->fd, engine);
++		xe_exec_queue_destroy(dst_fb->fd, exec_queue);
+ 		xe_vm_destroy(dst_fb->fd, vm);
+ 		free(xe_ctx);
+ 	}
+diff --git a/lib/intel_ctx.c b/lib/intel_ctx.c
+index 364ede76f5..f927b7df86 100644
+--- a/lib/intel_ctx.c
++++ b/lib/intel_ctx.c
+@@ -398,11 +398,11 @@ unsigned int intel_ctx_engine_class(const intel_ctx_t *ctx, unsigned int engine)
+  * intel_ctx_xe:
+  * @fd: open i915 drm file descriptor
+  * @vm: vm
+- * @engine: engine
++ * @exec_queue: exec queue
+  *
+  * Returns an intel_ctx_t representing the xe context.
+  */
+-intel_ctx_t *intel_ctx_xe(int fd, uint32_t vm, uint32_t engine,
++intel_ctx_t *intel_ctx_xe(int fd, uint32_t vm, uint32_t exec_queue,
+ 			  uint32_t sync_in, uint32_t sync_bind, uint32_t sync_out)
+ {
+ 	intel_ctx_t *ctx;
+@@ -412,7 +412,7 @@ intel_ctx_t *intel_ctx_xe(int fd, uint32_t vm, uint32_t engine,
+ 
+ 	ctx->fd = fd;
+ 	ctx->vm = vm;
+-	ctx->engine = engine;
++	ctx->exec_queue = exec_queue;
+ 	ctx->sync_in = sync_in;
+ 	ctx->sync_bind = sync_bind;
+ 	ctx->sync_out = sync_out;
+@@ -427,7 +427,7 @@ int __intel_ctx_xe_exec(const intel_ctx_t *ctx, uint64_t ahnd, uint64_t bb_offse
+ 		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
+ 	};
+ 	struct drm_xe_exec exec = {
+-		.exec_queue_id = ctx->engine,
++		.exec_queue_id = ctx->exec_queue,
+ 		.syncs = (uintptr_t)syncs,
+ 		.num_syncs = 2,
+ 		.address = bb_offset,
+diff --git a/lib/intel_ctx.h b/lib/intel_ctx.h
+index 59d0360ada..cefc2c2208 100644
+--- a/lib/intel_ctx.h
++++ b/lib/intel_ctx.h
+@@ -71,7 +71,7 @@ typedef struct intel_ctx {
+ 	/* Xe */
+ 	int fd;
+ 	uint32_t vm;
+-	uint32_t engine;
++	uint32_t exec_queue;
+ 	uint32_t sync_in;
+ 	uint32_t sync_bind;
+ 	uint32_t sync_out;
+@@ -89,7 +89,7 @@ void intel_ctx_destroy(int fd, const intel_ctx_t *ctx);
+ 
+ unsigned int intel_ctx_engine_class(const intel_ctx_t *ctx, unsigned int engine);
+ 
+-intel_ctx_t *intel_ctx_xe(int fd, uint32_t vm, uint32_t engine,
++intel_ctx_t *intel_ctx_xe(int fd, uint32_t vm, uint32_t exec_queue,
+ 			  uint32_t sync_in, uint32_t sync_bind, uint32_t sync_out);
+ int __intel_ctx_xe_exec(const intel_ctx_t *ctx, uint64_t ahnd, uint64_t bb_offset);
+ void intel_ctx_xe_exec(const intel_ctx_t *ctx, uint64_t ahnd, uint64_t bb_offset);
+-- 
+2.34.1
