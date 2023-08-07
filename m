@@ -1,11 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4BFC210E29C
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 14:34:37 +0000 (UTC)
-Date: Mon, 7 Aug 2023 16:33:59 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6AC0310E29C
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 14:35:36 +0000 (UTC)
+Date: Mon, 7 Aug 2023 16:35:32 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230807143359.5feiqklzbx7vqx5n@kamilkon-desk1>
+Message-ID: <20230807143532.ppgblfmecpxhuwdw@kamilkon-desk1>
 References: <20230802211958.7027-1-robdclark@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -26,6 +26,17 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Rob,
+
+one more nit I just spot:
+
+tests/msm: Add submitoverhead benchmark
+---------------------^
+this needs to be splitted into two words:
+
+tests/msm: Add submit overhead benchmark
+
+Regards,
+Kamil
 
 On 2023-08-02 at 14:19:54 -0700, Rob Clark wrote:
 > From: Rob Clark <robdclark@chromium.org>
@@ -51,11 +62,7 @@ On 2023-08-02 at 14:19:54 -0700, Rob Clark wrote:
 >  	'msm_shrink',
 > -	'msm_submit'
 > +	'msm_submit',
--- ^^^^^
 > +        'msm_submitoverhead',
--- ^^^^^^^^
-Looks like inconsistent use of spaces/tab?
-
 >  ]
 >  
 >  chamelium_progs = [
@@ -68,15 +75,6 @@ Looks like inconsistent use of spaces/tab?
 > +/*
 > + * Copyright © 2023 Google, Inc.
 > + *
-
-Use SPDX licence (look into other tests and/or check with perl script
-checkpatch.pl from LInux kernel).
-
-Rest looks ok.
-
-Regards,
-Kamil
-
 > + * Permission is hereby granted, free of charge, to any person obtaining a
 > + * copy of this software and associated documentation files (the "Software"),
 > + * to deal in the Software without restriction, including without limitation
