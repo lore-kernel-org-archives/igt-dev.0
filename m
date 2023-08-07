@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3BC6510E390
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 20:02:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9FD0610E37F
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 20:02:51 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  8 Aug 2023 01:24:58 +0530
-Message-Id: <20230807195500.4103092-19-bhanuprakash.modem@intel.com>
+Date: Tue,  8 Aug 2023 01:24:59 +0530
+Message-Id: <20230807195500.4103092-20-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230807195500.4103092-1-bhanuprakash.modem@intel.com>
 References: <20230807195500.4103092-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 18/20] tests/intel-ci: Update Xe ffb testlist &
- blocklist for kms_frontbuffer_tracking
+Subject: [igt-dev] [i-g-t V3 19/20] tests/intel-ci: Drop tiling tests from
+ xe blocklist
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,39 +23,25 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add kms_frontbuffer_tracking tests back to xe fast-feedback testlist and
-drop them from xe blocklist.
+Drop tiling tests from the xe blocklist, since those are
+no more invalid for XE.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/intel-ci/xe-fast-feedback.testlist | 1 +
- tests/intel-ci/xe.blocklist.txt          | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ tests/intel-ci/xe.blocklist.txt | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index 89030d363..db8d3eb45 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -240,6 +240,7 @@ igt@kms_flip@basic-plain-flip
- igt@kms_force_connector_basic@force-connector-state
- igt@kms_force_connector_basic@force-edid
- igt@kms_force_connector_basic@prune-stale-modes
-+igt@kms_frontbuffer_tracking@basic
- igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24
- igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12
- igt@kms_pipe_crc_basic@hang-read-crc
 diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
-index b89b0b951..3b7c565bd 100644
+index 3b7c565bd..0d1ce1f98 100644
 --- a/tests/intel-ci/xe.blocklist.txt
 +++ b/tests/intel-ci/xe.blocklist.txt
-@@ -56,7 +56,7 @@ igt@kms_bw@.*-(5|6|7|8)-displays-.*
- igt@kms_draw_crc@draw-method-(mmap-cpu|mmap-gtt|pwrite)
- igt@kms_pipe_b_c_ivb@.*
- igt@kms_pwrite_crc
--igt@kms_frontbuffer_tracking@.*
-+igt@kms_frontbuffer_tracking@.*-(cpu|gtt|pwrite)
- igt@kms_fbcon_fbt@(fbc|psr)(-suspend)
- igt@kms_fence_pin_leak
- igt@kms_busy@.*
+@@ -66,7 +66,6 @@ igt@kms_legacy_colorkey@invalid-plane
+ igt@kms_flip@2x-flip-vs-fences
+ igt@kms_flip@flip-vs-fences(-interruptible)
+ igt@kms_addfb_basic@clobberred-modifier
+-igt@kms_plane_multiple@tiling-(4|x|y|yf)
+ igt@kms_cursor_legacy@flip-vs-cursor-busy-crc-(atomic|legacy)
+ igt@kms_rotation_crc@exhaust-fences
+ igt@kms_force_connector_basic@force-load-detect
 -- 
 2.40.0
