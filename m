@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============7709900410778760838=="
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2DBE610E011
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 03:56:22 +0000 (UTC)
+From: janga.rahul.kumar@intel.com
+To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
+ janga.rahul.kumar@intel.com
+Date: Mon,  7 Aug 2023 09:28:03 +0530
+Message-Id: <20230807035805.1054349-2-janga.rahul.kumar@intel.com>
+In-Reply-To: <20230807035805.1054349-1-janga.rahul.kumar@intel.com>
+References: <20230807035805.1054349-1-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Swati Sharma" <swati2.sharma@intel.com>
-Date: Sun, 06 Aug 2023 17:27:19 -0000
-Message-ID: <169134283922.23663.13588126923273119058@emeril.freedesktop.org>
-References: <20230806164729.1016167-1-swati2.sharma@intel.com>
-In-Reply-To: <20230806164729.1016167-1-swati2.sharma@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_dp-mst_help?=
- =?utf-8?q?ers?=
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/3] lib/xe: Add support to reset all GT's
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,73 +20,143 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: sai.gowtham.ch@intel.com, kunal1.joshi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7709900410778760838==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 
-== Series Details ==
+Introduce xe gt library.
 
-Series: dp-mst helpers
-URL   : https://patchwork.freedesktop.org/series/122070/
-State : info
+Add support to check GT reset and force reset all GT's.
 
-== Summary ==
+Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Anna Karas <anna.karas@intel.com>
+Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+Tested-by: Kunal Joshi <kunal1.joshi@intel.com>
+---
+ lib/meson.build |  1 +
+ lib/xe/xe_gt.c  | 62 +++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/xe/xe_gt.h  | 27 +++++++++++++++++++++
+ 3 files changed, 90 insertions(+)
+ create mode 100644 lib/xe/xe_gt.c
+ create mode 100644 lib/xe/xe_gt.h
 
-Participating hosts:
-bat-pvc-2
-bat-atsm-2
-bat-dg2-oem2
-bat-adlp-7
-Missing hosts results[1]:
-bat-dg2-oem2
-Results: [IGTPW_9522](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9522/index.html)
-
-
-
---===============7709900410778760838==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>dp-mst helpers</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122070/">https://patchwork.freedesktop.org/series/122070/</a></td></tr>
-<tr><td><b>State:</b></td><td>info</td></tr>
-
-</table>
-
-
-    <p>Participating hosts:<br />
-bat-pvc-2<br />
-bat-atsm-2<br />
-bat-dg2-oem2<br />
-bat-adlp-7<br />
-Missing hosts results[1]:<br />
-bat-dg2-oem2<br />
-Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9522/index.html">IGTPW_9522</a></p>
-
-</body>
-</html>
-
---===============7709900410778760838==--
+diff --git a/lib/meson.build b/lib/meson.build
+index ce11c0715..b7bfcf4f0 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -103,6 +103,7 @@ lib_sources = [
+ 	'igt_dsc.c',
+ 	'xe/xe_compute.c',
+ 	'xe/xe_compute_square_kernels.c',
++	'xe/xe_gt.c',
+ 	'xe/xe_ioctl.c',
+ 	'xe/xe_query.c',
+ 	'xe/xe_spin.c',
+diff --git a/lib/xe/xe_gt.c b/lib/xe/xe_gt.c
+new file mode 100644
+index 000000000..9cad739be
+--- /dev/null
++++ b/lib/xe/xe_gt.c
+@@ -0,0 +1,62 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2023 Intel Corporation
++ *
++ * Authors:
++ *    Janga Rahul Kumar <janga.rahul.kumar@intel.com>
++ */
++
++#include <fcntl.h>
++
++#include "xe_gt.h"
++
++/**
++ * has_xe_gt_reset:
++ * @fd: open xe drm file descriptor
++ *
++ * Check gt force reset sysfs entry is available or not
++ *
++ * Returns: reset sysfs entry available
++ */
++bool has_xe_gt_reset(int fd)
++{
++	char reset_sysfs_path[100];
++	struct stat st;
++	int gt;
++	int reset_sysfs_fd = -1;
++	int sysfs_fd = -1;
++
++	igt_assert_eq(fstat(fd, &st), 0);
++	sysfs_fd = igt_sysfs_open(fd);
++
++	igt_assert(sysfs_fd != -1);
++	xe_for_each_gt(fd, gt) {
++		sprintf(reset_sysfs_path, "/sys/kernel/debug/dri/%d/gt%d/force_reset",
++				minor(st.st_rdev), gt);
++		reset_sysfs_fd = openat(sysfs_fd, reset_sysfs_path, O_RDONLY);
++
++		if (reset_sysfs_fd == -1) {
++			close(sysfs_fd);
++			return 0;
++		}
++
++		close(reset_sysfs_fd);
++	}
++
++	close(sysfs_fd);
++	return 1;
++}
++
++/**
++ * xe_force_gt_reset_all:
++ *
++ * Forces reset of all the GT's.
++ */
++void xe_force_gt_reset_all(int xe_fd)
++{
++	int gt;
++
++	xe_for_each_gt(xe_fd, gt)
++		xe_force_gt_reset(xe_fd, gt);
++}
++
+diff --git a/lib/xe/xe_gt.h b/lib/xe/xe_gt.h
+new file mode 100644
+index 000000000..e075ebf62
+--- /dev/null
++++ b/lib/xe/xe_gt.h
+@@ -0,0 +1,27 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2023 Intel Corporation
++ *
++ * Authors:
++ *    Janga Rahul Kumar <janga.rahul.kumar@intel.com>
++ */
++
++#include <dirent.h>
++#include <stdint.h>
++#include <sys/stat.h>
++
++#include "igt_core.h"
++#include "igt_sysfs.h"
++#include "xe_ioctl.h"
++#include "xe_query.h"
++
++#ifdef __linux__
++#include <sys/sysmacros.h>
++#else
++#define major(__v__) (((__v__) >> 8) & 0xff)
++#define minor(__v__) ((__v__) & 0xff)
++#endif
++
++bool has_xe_gt_reset(int fd);
++void xe_force_gt_reset_all(int fd);
++
+-- 
+2.25.1
