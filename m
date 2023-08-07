@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com
  [205.220.180.131])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 50EC510E06A
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 22:48:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3A19D10E06A
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 22:48:51 +0000 (UTC)
 From: Abhinav Kumar <quic_abhinavk@quicinc.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Mon, 7 Aug 2023 15:48:27 -0700
-Message-ID: <20230807224828.27288-3-quic_abhinavk@quicinc.com>
+Date: Mon, 7 Aug 2023 15:48:26 -0700
+Message-ID: <20230807224828.27288-2-quic_abhinavk@quicinc.com>
 In-Reply-To: <20230807224828.27288-1-quic_abhinavk@quicinc.com>
 References: <20230807224828.27288-1-quic_abhinavk@quicinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t 2/3] lib/igt_fb: allow
- igt_fb_get_fnv1a_crc() to handle YUV formats
+Subject: [igt-dev] [PATCH i-g-t 1/3] lib/igt_fb: add a helper to find drm_id
+ from matching string
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,36 +26,75 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-To validate YUV formats for writeback, allow igt_fb_get_fnv1a_crc()
-to handle YUV formats.
+In preparation to support multiple output formats for writeback,
+add a helper which takes the drm format string from the format_desc
+as input and returns the matching drm_id.
 
 Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 ---
- lib/igt_fb.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ lib/igt_fb.c | 28 ++++++++++++++++++++++++++++
+ lib/igt_fb.h |  3 +++
+ 2 files changed, 31 insertions(+)
 
 diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 55ef63cc71dc..1e3deeaf551a 100644
+index 8f5e3db9f50b..55ef63cc71dc 100644
 --- a/lib/igt_fb.c
 +++ b/lib/igt_fb.c
-@@ -4755,7 +4755,7 @@ int igt_fb_get_fnv1a_crc(struct igt_fb *fb, igt_crc_t *crc)
- 	if (fb->num_planes != 1)
- 		return -EINVAL;
+@@ -384,6 +384,18 @@ static const struct format_desc_struct *lookup_drm_format(uint32_t drm_format)
+ 	return NULL;
+ }
  
--	if (fb->drm_format != DRM_FORMAT_XRGB8888)
-+	if (!igt_format_is_yuv(fb->drm_format) || fb->drm_format != DRM_FORMAT_XRGB8888)
- 		return -EINVAL;
++static const struct format_desc_struct *lookup_drm_format_str(const char *name)
++{
++	const struct format_desc_struct *format;
++
++	for_each_format(format) {
++		if (!strcmp(format->name, name))
++			return format;
++	}
++
++	return NULL;
++}
++
+ /**
+  * igt_format_is_yuv_semiplanar:
+  * @format: drm fourcc pixel format code
+@@ -4657,6 +4669,22 @@ const char *igt_format_str(uint32_t drm_format)
+ 	return f ? f->name : "invalid";
+ }
  
- 	ptr = igt_fb_map_buffer(fb->fd, fb);
-@@ -4782,7 +4782,8 @@ int igt_fb_get_fnv1a_crc(struct igt_fb *fb, igt_crc_t *crc)
- 		for (x = 0; x < fb->width; x++) {
- 			unsigned int i;
- 			uint32_t pixel = le32_to_cpu(line[x]);
--			pixel &= 0x00ffffff;
-+			if (fb->drm_format == DRM_FORMAT_XRGB8888)
-+				pixel &= 0x00ffffff;
- 
- 			for (i = 0; i < sizeof(pixel); i++) {
- 				uint8_t component = (pixel >> (i * 8)) & 0xff;
++/**
++ * igt_drm_format_str_to_format:
++ * @drm_format: name string of drm_format in format_desc[] table
++ *
++ * Returns:
++ * The drm_id for the format string from the format_desc[] table.
++ */
++uint32_t igt_drm_format_str_to_format(const char *drm_format)
++{
++	const struct format_desc_struct *f = lookup_drm_format_str(drm_format);
++
++	igt_assert_f(f, "can't find a DRM format for (%s)\n", drm_format);
++
++	return f->drm_id;
++}
++
+ /**
+  * igt_fb_supported_format:
+  * @drm_format: drm fourcc to test.
+diff --git a/lib/igt_fb.h b/lib/igt_fb.h
+index 73bdfc8669d8..834aaef54dea 100644
+--- a/lib/igt_fb.h
++++ b/lib/igt_fb.h
+@@ -215,6 +215,9 @@ const char *igt_format_str(uint32_t drm_format);
+ bool igt_fb_supported_format(uint32_t drm_format);
+ bool igt_format_is_yuv(uint32_t drm_format);
+ bool igt_format_is_yuv_semiplanar(uint32_t format);
++
++uint32_t igt_drm_format_str_to_format(const char *drm_format);
++
+ bool igt_format_is_fp16(uint32_t drm_format);
+ int igt_format_plane_bpp(uint32_t drm_format, int plane);
+ void igt_format_array_fill(uint32_t **formats_array, unsigned int *count,
 -- 
 2.40.1
