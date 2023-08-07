@@ -1,13 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: Brendan Higgins <brendan.higgins@linux.dev>,
- David Gow <davidgow@google.com>
-Date: Sat,  5 Aug 2023 00:52:21 +0200
-Message-ID: <20230804225220.8005-5-janusz.krzysztofik@linux.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 18B2710E011
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 04:02:22 +0000 (UTC)
+From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Mon, 7 Aug 2023 04:02:18 +0000
+Message-ID: <MW3PR11MB4748FC11AE90BB7669AE852EAE0CA@MW3PR11MB4748.namprd11.prod.outlook.com>
+References: <20230725071622.206601-1-janga.rahul.kumar@intel.com>
+ <20230725071622.206601-3-janga.rahul.kumar@intel.com>
+ <20230725180418.mxnqokdcfp52rbmq@kamilkon-desk1>
+In-Reply-To: <20230725180418.mxnqokdcfp52rbmq@kamilkon-desk1>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v4 0/3] kunit: Expose some built-in features to
- modules
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] lib/xe: Add hang library support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,52 +23,105 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Rae Moar <rmoar@google.com>,
- igt-dev@lists.freedesktop.org, linux-kselftest@vger.kernel.org,
- intel-xe@lists.freedesktop.org, kunit-dev@googlegroups.com
+Cc: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>, "Joshi,
+ Kunal1" <kunal1.joshi@intel.com>, "Gandi, Ramadevi" <ramadevi.gandi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Submit the top-level headers also from the kunit test module notifier
-initialization callback, so external tools that are parsing dmesg for
-kunit test output are able to tell how many test suites should be expected
-and whether to continue parsing after complete output from the first test
-suite is collected.
-
-Extend kunit module notifier initialization callback with a processing
-path for only listing the tests provided by a module if the kunit action
-parameter is set to "list", so external tools can obtain a list of test
-cases to be executed in advance and can make a better job on assigning
-kernel messages interleaved with kunit output to specific tests. 
-
-Use test filtering functions in kunit module notifier callback functions,
-so external tools are able to execute individual test cases from kunit
-test modules in order to still better isolate their potential impact on
-kernel messages that appear interleaved with output from other tests.
-    
-v4: Use kunit_exec_run_tests() (Mauro, Rae), but prevent it from
-    emitting the headers when called on load of non-test modules, 
-  - don't use a different list format, use kunit_exec_list_tests() (Rae),
-  - refresh on top of newly introduced attributes patches, handle newly
-    introduced kunit.action=list_attr case (Rae).
-v3: Fix CONFIG_GLOB, required by filtering functions, not selected when
-    building as a module.
-v2: Fix new name of a structure moved to kunit namespace not updated
-    across all uses.
-
-Janusz Krzysztofik (3):
-  kunit: Report the count of test suites in a module
-  kunit: Make 'list' action available to kunit test modules
-  kunit: Allow kunit test modules to use test filtering
-
- include/kunit/test.h |  21 ++++++++
- lib/kunit/Kconfig    |   2 +-
- lib/kunit/executor.c | 115 +++++++++++++++++++++++++------------------
- lib/kunit/test.c     |  40 ++++++++++++++-
- 4 files changed, 128 insertions(+), 50 deletions(-)
-
-
-base-commit: 5a175d369c702ce08c9feb630125c9fc7a9e1370
--- 
-2.41.0
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS2FtaWwgS29uaWVjem55
+IDxrYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tPg0KPiBTZW50OiAyNSBKdWx5IDIwMjMg
+MjM6MzQNCj4gVG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IENjOiBLdW1hciwg
+SmFuZ2EgUmFodWwgPGphbmdhLnJhaHVsLmt1bWFyQGludGVsLmNvbT47IEdhbmRpLCBSYW1hZGV2
+aQ0KPiA8cmFtYWRldmkuZ2FuZGlAaW50ZWwuY29tPjsgQ2gsIFNhaSBHb3d0aGFtIDxzYWkuZ293
+dGhhbS5jaEBpbnRlbC5jb20+Ow0KPiBKb3NoaSwgS3VuYWwxIDxrdW5hbDEuam9zaGlAaW50ZWwu
+Y29tPg0KPiBTdWJqZWN0OiBSZTogW2lndC1kZXZdIFtQQVRDSCBpLWctdCAyLzJdIGxpYi94ZTog
+QWRkIGhhbmcgbGlicmFyeSBzdXBwb3J0DQo+IA0KPiBIaSBKYW5nYSwNCj4gDQo+IE9uIDIwMjMt
+MDctMjUgYXQgMTI6NDY6MjIgKzA1MzAsIGphbmdhLnJhaHVsLmt1bWFyQGludGVsLmNvbSB3cm90
+ZToNCj4gPiBGcm9tOiBKYW5nYSBSYWh1bCBLdW1hciA8amFuZ2EucmFodWwua3VtYXJAaW50ZWwu
+Y29tPg0KPiA+DQo+ID4gQWRkIGhhbmcgbGlicmFyeSBzdXBwb3J0IHVzaW5nIHNwaW5uZXJzLg0K
+PiA+DQo+ID4gQ2M6IFNhaSBHb3d0aGFtIENoIDxzYWkuZ293dGhhbS5jaEBpbnRlbC5jb20+DQo+
+ID4gQ2M6IEt1bmFsIEpvc2hpIDxrdW5hbDEuam9zaGlAaW50ZWwuY29tPg0KPiA+IFNpZ25lZC1v
+ZmYtYnk6IEphbmdhIFJhaHVsIEt1bWFyIDxqYW5nYS5yYWh1bC5rdW1hckBpbnRlbC5jb20+DQo+
+ID4gLS0tDQo+ID4gIGxpYi9pZ3RfZ3QuYyAgICAgIHwgMjEgKysrKysrKysrKysrKysrKysrKysr
+DQo+IC0tLS0tLSBeXl5eXl4NCj4gTW92ZSB0aGlzIGNoYW5nZSBpbnRvIHNlcGFyYXRlIHBhdGNo
+Lg0KPiANCj4gPiAgbGliL3hlL3hlX2lvY3RsLmMgfCAyMCArKysrKysrKysrKysrKysrKysrKyAg
+bGliL3hlL3hlX2lvY3RsLmggfCAgNg0KPiA+ICsrKysrKw0KPiA+ICAzIGZpbGVzIGNoYW5nZWQs
+IDQ3IGluc2VydGlvbnMoKykNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9saWIvaWd0X2d0LmMgYi9s
+aWIvaWd0X2d0LmMgaW5kZXggMmNlNDY0YmE2Li42ODIxMTc5Y2ENCj4gPiAxMDA2NDQNCj4gPiAt
+LS0gYS9saWIvaWd0X2d0LmMNCj4gPiArKysgYi9saWIvaWd0X2d0LmMNCj4gPiBAQCAtMTcwLDYg
+KzE3MCwxNSBAQCBzdGF0aWMgdm9pZCBjb250ZXh0X3NldF9iYW4oaW50IGZkLCB1bnNpZ25lZCBj
+dHgsDQo+ID4gdW5zaWduZWQgYmFuKQ0KPiA+DQo+ID4gIGlndF9oYW5nX3QgaWd0X2FsbG93X2hh
+bmcoaW50IGZkLCB1bnNpZ25lZCBjdHgsIHVuc2lnbmVkIGZsYWdzKSAgew0KPiA+ICsJaWYgKGlz
+X3hlX2RldmljZShmZCkpIHsNCj4gPiArCQlpZiAoIWlndF9jaGVja19ib29sZWFuX2Vudl92YXIo
+IklHVF9IQU5HIiwgdHJ1ZSkpDQo+ID4gKwkJCWlndF9za2lwKCJoYW5nIGluamVjdGlvbiBkaXNh
+YmxlZCBieSB1c2VyDQo+IFtJR1RfSEFORz0wXVxuIik7DQo+ID4gKw0KPiA+ICsJCWlndF9yZXF1
+aXJlKGhhc19ncHVfcmVzZXQoZmQpKTsNCj4gPiArDQo+ID4gKwkJcmV0dXJuIChzdHJ1Y3QgaWd0
+X2hhbmcpeyAwLCBjdHgsIDAsIGZsYWdzIH07DQo+ID4gKyAgICAgICB9DQo+ID4gKw0KPiANCj4g
+TW92ZSBjb2RlIGFmdGVyIGRlY2xhcmF0aW9ucyBvZiB2YXJzLg0KPiANCj4gPiAgCXN0cnVjdCBk
+cm1faTkxNV9nZW1fY29udGV4dF9wYXJhbSBwYXJhbSA9IHsNCj4gPiAgCQkuY3R4X2lkID0gY3R4
+LA0KPiA+ICAJfTsNCj4gPiBAQCAtMjE5LDYgKzIyOCw5IEBAIGlndF9oYW5nX3QgaWd0X2FsbG93
+X2hhbmcoaW50IGZkLCB1bnNpZ25lZCBjdHgsDQo+ID4gdW5zaWduZWQgZmxhZ3MpDQo+ID4NCj4g
+PiAgdm9pZCBpZ3RfZGlzYWxsb3dfaGFuZyhpbnQgZmQsIGlndF9oYW5nX3QgYXJnKSAgew0KPiA+
+ICsJaWYgKGlzX3hlX2RldmljZShmZCkpDQo+ID4gKwkJcmV0dXJuOw0KPiA+ICsNCj4gPiAgCWNv
+bnRleHRfc2V0X2JhbihmZCwgYXJnLmN0eCwgYXJnLmJhbik7DQo+ID4NCj4gPiAgCWlmICgoYXJn
+LmZsYWdzICYgSEFOR19BTExPV19DQVBUVVJFKSA9PSAwKSB7IEBAIC0yOTAsNiArMzAyLDkgQEAN
+Cj4gPiBzdGF0aWMgYm9vbCBoYXNfY3R4X2V4ZWMoaW50IGZkLCB1bnNpZ25lZCByaW5nLCB1aW50
+MzJfdCBjdHgpICBzdGF0aWMNCj4gPiBpZ3RfaGFuZ190IF9faWd0X2hhbmdfY3R4KGludCBmZCwg
+dWludDY0X3QgYWhuZCwgdWludDMyX3QgY3R4LCBpbnQgcmluZywNCj4gPiAgCQkJCSB1bnNpZ25l
+ZCBmbGFncykNCj4gPiAgew0KPiA+ICsJaWYgKGlzX3hlX2RldmljZShmZCkpDQo+ID4gKwkJcmV0
+dXJuIHhlX2hhbmdfZW5naW5lKGZkLCBhaG5kLCBjdHgsIHJpbmcsIGZsYWdzKTsNCj4gPiArDQo+
+IA0KPiBNb3ZlIHRoaXMgYWZ0ZXIgdmFyIGRlY2xhdGFyaW9ucy4NCj4gDQo+ID4gIAlzdHJ1Y3Qg
+ZHJtX2k5MTVfZ2VtX2NvbnRleHRfcGFyYW0gcGFyYW07DQo+ID4gIAlpZ3Rfc3Bpbl90ICpzcGlu
+Ow0KPiA+ICAJdW5zaWduZWQgYmFuOw0KPiA+IEBAIC0zNzIsNiArMzg3LDEyIEBAIHZvaWQgaWd0
+X3Bvc3RfaGFuZ19yaW5nKGludCBmZCwgaWd0X2hhbmdfdCBhcmcpDQo+ID4gIAlpZiAoIWFyZy5z
+cGluKQ0KPiA+ICAJCXJldHVybjsNCj4gPg0KPiA+ICsJaWYgKGlzX3hlX2RldmljZShmZCkpIHsN
+Cj4gPiArCQlpZ3Rfc3Bpbl9mcmVlKGZkLCBhcmcuc3Bpbik7DQo+ID4gKwkJeGVfcG9zdF9oYW5n
+X3JpbmcoZmQsIGFyZyk7DQo+IA0KPiBJdCBsb29rcyBsaWtlIHNwaW5uZXIgaXMgbm90IHVzZWQg
+aGVyZT8NCkluIHBvc3QgaGFuZywgd2UgZnJlZSB0aGUgc3Bpbm5lci4NCj4gDQo+ID4gKwkJcmV0
+dXJuOw0KPiA+ICsJfQ0KPiA+ICsNCj4gPiAgCWdlbV9zeW5jKGZkLCBhcmcuc3Bpbi0+aGFuZGxl
+KTsgLyogV2FpdCB1bnRpbCBpdCBoYW5ncyAqLw0KPiA+ICAJaWd0X3NwaW5fZnJlZShmZCwgYXJn
+LnNwaW4pOw0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL2xpYi94ZS94ZV9pb2N0bC5jIGIvbGliL3hl
+L3hlX2lvY3RsLmMgaW5kZXgNCj4gPiA0ODhhYTIxOGUuLjVlYzg1MjM5YSAxMDA2NDQNCj4gPiAt
+LS0gYS9saWIveGUveGVfaW9jdGwuYw0KPiA+ICsrKyBiL2xpYi94ZS94ZV9pb2N0bC5jDQo+ID4g
+QEAgLTUyMCw2ICs1MjAsMjYgQEAgdm9pZCB4ZV9mb3JjZV9ndF9yZXNldChpbnQgZmQsIGludCBn
+dCkNCj4gPiAgCXN5c3RlbShyZXNldF9zdHJpbmcpOw0KPiA+ICB9DQo+ID4NCj4gPiArDQo+ID4g
+K2lndF9oYW5nX3QgeGVfaGFuZ19lbmdpbmUoaW50IGZkLCB1aW50NjRfdCBhaG5kLCB1aW50MzJf
+dCBjdHgsIGludCByaW5nLA0KPiA+ICsJCQkJdW5zaWduZWQgZmxhZ3MpDQo+ID4gK3sNCj4gPiAr
+CXVpbnQzMl90IHZtOw0KPiA+ICsJdW5zaWduZWQgaW50IGVuZ2luZTsNCj4gPiArCWlndF9zcGlu
+X3QgKnNwaW5fdDsNCj4gDQo+IEFkZCBuZXdsaW5lLg0KPiANCj4gPiArCXZtID0geGVfdm1fY3Jl
+YXRlKGZkLCAwLCAwKTsNCj4gPiArCWVuZ2luZSA9IHhlX2VuZ2luZV9jcmVhdGVfY2xhc3MoZmQs
+IHZtLA0KPiBEUk1fWEVfRU5HSU5FX0NMQVNTX0NPUFkpOw0KPiAtLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBeIE9ubHkgb25lIGVuZ2luZSBjbGFzcyBoZXJl
+Pw0KPiANCj4gPiArDQo+ID4gKwlzcGluX3QgPSBpZ3Rfc3Bpbl9uZXcoZmQsIC5haG5kID0gYWhu
+ZCwgLmVuZ2luZSA9IGVuZ2luZSwgLnZtID0gdm0sDQo+ID4gKy5mbGFncyA9IElHVF9TUElOX05P
+X1BSRUVNUFRJT04pOw0KPiANCj4gQWRkIG5ld2xpbmUuDQo+IA0KPiA+ICsJcmV0dXJuIChpZ3Rf
+aGFuZ190KXsgc3Bpbl90LCBlbmdpbmUsIDAsIGZsYWdzIH07DQo+IA0KPiBVbnVzZWQgcmluZyB2
+YXI/DQpVcGRhdGVkIGl0IGluIHYyLiANCj4gDQo+ID4gK30NCj4gPiArDQo+ID4gK3ZvaWQgeGVf
+cG9zdF9oYW5nX3JpbmcoaW50IGZkLCBpZ3RfaGFuZ190IGFyZykgew0KPiA+ICsJeGVfZW5naW5l
+X2Rlc3Ryb3koZmQsIGFyZy5jdHgpOw0KPiA+ICsJeGVfdm1fZGVzdHJveShmZCwgYXJnLnNwaW4t
+PnZtKTsNCj4gPiArfQ0KPiA+ICsNCj4gPiAgdm9pZCB4ZV92bV9tYWR2aXNlKGludCBmZCwgdWlu
+dDMyX3Qgdm0sIHVpbnQ2NF90IGFkZHIsIHVpbnQ2NF90IHNpemUsDQo+ID4gIAkJICAgdWludDMy
+X3QgcHJvcGVydHksIHVpbnQzMl90IHZhbHVlKSAgeyBkaWZmIC0tZ2l0DQo+ID4gYS9saWIveGUv
+eGVfaW9jdGwuaCBiL2xpYi94ZS94ZV9pb2N0bC5oIGluZGV4IDVhNTI4YjM0NS4uMGU5NzA4MTk0
+DQo+ID4gMTAwNjQ0DQo+ID4gLS0tIGEvbGliL3hlL3hlX2lvY3RsLmgNCj4gPiArKysgYi9saWIv
+eGUveGVfaW9jdGwuaA0KPiA+IEBAIC0xNSw2ICsxNSw5IEBADQo+ID4gICNpbmNsdWRlIDxzdGRp
+bnQuaD4NCj4gPiAgI2luY2x1ZGUgPHhlX2RybS5oPg0KPiA+DQo+ID4gKyNpbmNsdWRlICJsaWIv
+aWd0X2d0LmgiDQo+ID4gKyNpbmNsdWRlICJ4ZV9zcGluLmgiDQo+ID4gKw0KPiANCj4gQXJlIHlv
+dSB1c2luZyBuZXcgaW9jdGw/IElmIG5vdCBtYXliZSBhZGQgeGVfaGFuZyBhbmQgeGVfcG9zdF9o
+YW5nIHRvIG90aGVyDQo+IGxpYnJhcnk/IE9yIGNyZWF0ZSBuZXcgb25lPw0KSW50cm9kdWNlZCB4
+ZV9ndCBsaWJyYXJ5IGFuZCBtb3ZlZCBoYW5nIGFuZCByZXN0IGhlbHBlcnMgb2YgeGUgaW50byBp
+dC4NCj4gDQo+IFJlZ2FyZHMsDQo+IEthbWlsDQo+IA0KPiA+ICB1aW50MzJfdCB4ZV9jc19wcmVm
+ZXRjaF9zaXplKGludCBmZCk7ICB1aW50MzJfdCB4ZV92bV9jcmVhdGUoaW50IGZkLA0KPiA+IHVp
+bnQzMl90IGZsYWdzLCB1aW50NjRfdCBleHQpOyAgaW50ICBfX3hlX3ZtX2JpbmQoaW50IGZkLCB1
+aW50MzJfdCB2bSwNCj4gPiB1aW50MzJfdCBlbmdpbmUsIHVpbnQzMl90IGJvLCBAQCAtODksNiAr
+OTIsOSBAQCBpbnQ2NF90DQo+ID4geGVfd2FpdF91ZmVuY2VfYWJzdGltZShpbnQgZmQsIHVpbnQ2
+NF90ICphZGRyLCB1aW50NjRfdCB2YWx1ZSwgIHZvaWQNCj4gPiB4ZV9mb3JjZV9ndF9yZXNldChp
+bnQgZmQsIGludCBndCk7ICB2b2lkIHhlX2ZvcmNlX2d0X3Jlc2V0X2FsbChpbnQNCj4gPiBmZCk7
+ICBib29sIGhhc194ZV9ndF9yZXNldChpbnQgZmQpOw0KPiA+ICtpZ3RfaGFuZ190IHhlX2hhbmdf
+ZW5naW5lKGludCBmZCwgdWludDY0X3QgYWhuZCwgdWludDMyX3QgY3R4LCBpbnQgcmluZywNCj4g
+PiArCQkJCXVuc2lnbmVkIGZsYWdzKTsNCj4gPiArdm9pZCB4ZV9wb3N0X2hhbmdfcmluZyhpbnQg
+ZmQsIGlndF9oYW5nX3QgYXJnKTsNCj4gPiAgdm9pZCB4ZV92bV9tYWR2aXNlKGludCBmZCwgdWlu
+dDMyX3Qgdm0sIHVpbnQ2NF90IGFkZHIsIHVpbnQ2NF90IHNpemUsDQo+ID4gIAkJICAgdWludDMy
+X3QgcHJvcGVydHksIHVpbnQzMl90IHZhbHVlKTsNCj4gPg0KPiA+IC0tDQo+ID4gMi4yNS4xDQo+
+ID4NCg==
