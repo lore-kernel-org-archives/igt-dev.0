@@ -1,15 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============7795412909236531890=="
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com
+ [IPv6:2a00:1450:4864:20::133])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D30A810E20E
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 19:57:54 +0000 (UTC)
+Received: by mail-lf1-x133.google.com with SMTP id
+ 2adb3069b0e04-4fe58faa5cfso5515381e87.3
+ for <igt-dev@lists.freedesktop.org>; Mon, 07 Aug 2023 12:57:54 -0700 (PDT)
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Rob Clark" <robdclark@gmail.com>
-Date: Mon, 07 Aug 2023 19:18:36 -0000
-Message-ID: <169143591664.13179.4952247703053477317@emeril.freedesktop.org>
-References: <20230807165411.206456-1-robdclark@gmail.com>
-In-Reply-To: <20230807165411.206456-1-robdclark@gmail.com>
-Subject: [igt-dev] =?utf-8?b?4peLIENJLnhlQkFUOiBpbmZvIGZvciB0ZXN0cy9rbXNf?=
- =?utf-8?q?plane=3A_Handle_hw_without_legacy_gamma_support_=28rev3=29?=
+References: <20230807163634.205167-1-robdclark@gmail.com>
+ <f0aee465-3e20-dac2-a16c-5bcff746e0d6@intel.com>
+In-Reply-To: <f0aee465-3e20-dac2-a16c-5bcff746e0d6@intel.com>
+From: Rob Clark <robdclark@gmail.com>
+Date: Mon, 7 Aug 2023 12:57:40 -0700
+Message-ID: <CAF6AEGsyu-0NDr1OCNo99LJ-8_3=Qf-SYmaZWt35BO6sY7eEnA@mail.gmail.com>
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [igt-dev] [PATCH v2] tests/kms_plane: Handle hw without legacy
+ gamma support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,71 +25,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Rob Clark <robdclark@chromium.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7795412909236531890==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Mon, Aug 7, 2023 at 11:57=E2=80=AFAM Modem, Bhanuprakash
+<bhanuprakash.modem@intel.com> wrote:
+>
+>
+>
+> On Mon-07-08-2023 10:06 pm, Rob Clark wrote:
+> > From: Rob Clark <robdclark@chromium.org>
+> >
+> > Skip the tests which require legacy gamma, instead of failing, if the h=
+w
+> > does not support legacy gamma.
+> >
+> > v2: igt_require(lut_size > 0) instead
+> >
+> > Signed-off-by: Rob Clark <robdclark@chromium.org>
+> > ---
+> >   tests/kms_plane.c | 9 ++++++---
+> >   1 file changed, 6 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+> > index 67cff61d6cd1..2df1d2f0aeee 100644
+> > --- a/tests/kms_plane.c
+> > +++ b/tests/kms_plane.c
+> > @@ -463,19 +463,22 @@ static void set_legacy_lut(data_t *data, enum pip=
+e pipe,
+> >       igt_pipe_t *pipe_obj =3D &data->display.pipes[pipe];
+> >       drmModeCrtc *crtc;
+> >       uint16_t *lut;
+> > -     int i, lut_size;
+> > +     int i, lut_size, ret;
+> >
+> >       crtc =3D drmModeGetCrtc(data->drm_fd, pipe_obj->crtc_id);
+> >       lut_size =3D crtc->gamma_size;
+> >       drmModeFreeCrtc(crtc);
+> >
+> > +     igt_require(lut_size > 0);
+> > +
+> >       lut =3D malloc(sizeof(uint16_t) * lut_size);
+> >
+> >       for (i =3D 0; i < lut_size; i++)
+> >               lut[i] =3D (i * 0xffff / (lut_size - 1)) & mask;
+> >
+> > -     igt_assert_eq(drmModeCrtcSetGamma(data->drm_fd, pipe_obj->crtc_id=
+,
+> > -                                       lut_size, lut, lut, lut), 0);
+> > +     ret =3D drmModeCrtcSetGamma(data->drm_fd, pipe_obj->crtc_id,
+> > +                               lut_size, lut, lut, lut);
+> > +     igt_assert_eq(ret, 0);
+>
+> Unrelated change. What is wrong with this check?
 
-== Series Details ==
-
-Series: tests/kms_plane: Handle hw without legacy gamma support (rev3)
-URL   : https://patchwork.freedesktop.org/series/121551/
-State : info
-
-== Summary ==
-
-Participating hosts:
-bat-pvc-2
-bat-atsm-2
-bat-dg2-oem2
-bat-adlp-7
-Missing hosts results[0]:
-Results: [IGTPW_9531](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9531/index.html)
+yes, please see v3
 
 
-
---===============7795412909236531890==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_plane: Handle hw without legacy gamma support (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/121551/">https://patchwork.freedesktop.org/series/121551/</a></td></tr>
-<tr><td><b>State:</b></td><td>info</td></tr>
-
-</table>
-
-
-    <p>Participating hosts:<br />
-bat-pvc-2<br />
-bat-atsm-2<br />
-bat-dg2-oem2<br />
-bat-adlp-7<br />
-Missing hosts results[0]:<br />
-Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9531/index.html">IGTPW_9531</a></p>
-
-</body>
-</html>
-
---===============7795412909236531890==--
+> - Bhanu
+>
+> >
+> >       free(lut);
+> >   }
