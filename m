@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E876C10E37F
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 20:02:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DEE2810E37E
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 20:02:32 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  8 Aug 2023 01:24:47 +0530
-Message-Id: <20230807195500.4103092-8-bhanuprakash.modem@intel.com>
+Date: Tue,  8 Aug 2023 01:24:46 +0530
+Message-Id: <20230807195500.4103092-7-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230807195500.4103092-1-bhanuprakash.modem@intel.com>
 References: <20230807195500.4103092-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 07/20] tests/kms_plane_scaling: Add tiling
+Subject: [igt-dev] [i-g-t V3 06/20] tests/kms_plane_lowres: Add tiling
  support for XE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -25,26 +25,39 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Remove the tiling restrictions in Xe specific tests
 
-Fixes: 28bc56a8b (tests/kms_plane_scaling: Add XE support)
+V2: - Update XE blocklist
+
+Fixes: 129983d07 (tests/kms_plane_lowers: Add XE support)
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_plane_scaling.c | 4 ----
- 1 file changed, 4 deletions(-)
+ tests/intel-ci/xe.blocklist.txt | 1 -
+ tests/kms_plane_lowres.c        | 3 ---
+ 2 files changed, 4 deletions(-)
 
-diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index 920290e4d..2fcd10faf 100644
---- a/tests/kms_plane_scaling.c
-+++ b/tests/kms_plane_scaling.c
-@@ -545,10 +545,6 @@ static void test_scaler_with_modifier_pipe(data_t *d,
- 		for (int i = 0; i < ARRAY_SIZE(modifiers); i++) {
- 			uint64_t modifier = modifiers[i];
+diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
+index 358f44e6a..01495c7c9 100644
+--- a/tests/intel-ci/xe.blocklist.txt
++++ b/tests/intel-ci/xe.blocklist.txt
+@@ -76,6 +76,5 @@ igt@kms_cursor_legacy@flip-vs-cursor-busy-crc-(atomic|legacy)
+ igt@kms_rotation_crc@primary-(4|x|y|yf)-tiled-.*
+ igt@kms_rotation_crc@exhaust-fences
+ igt@kms_force_connector_basic@force-load-detect
+-igt@kms_plane_lowres@tiling-(4|x|y|yf)
+ igt@kms_.*@.*hang.*
+ ##################################################################
+diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
+index 7aaf83c41..63841247f 100644
+--- a/tests/kms_plane_lowres.c
++++ b/tests/kms_plane_lowres.c
+@@ -269,9 +269,6 @@ static void run_test(data_t *data, uint64_t modifier)
+ 	if(!igt_display_has_format_mod(&data->display, DRM_FORMAT_XRGB8888, modifier))
+ 		return;
  
--			if (is_xe_device(d->drm_fd) &&
--			    modifier != DRM_FORMAT_MOD_LINEAR)
--				continue;
+-	if (is_xe_device(data->drm_fd) && modifier != DRM_FORMAT_MOD_LINEAR)
+-		return;
 -
- 			if (igt_plane_has_format_mod(plane, format, modifier))
- 				check_scaling_pipe_plane_rot(d, plane,
- 							     format, modifier,
+ 	for_each_pipe(&data->display, pipe) {
+ 		for_each_valid_output_on_pipe(&data->display, pipe, output) {
+ 			data->pipe = pipe;
 -- 
 2.40.0
