@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============7965051077854701270=="
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
-Date: Mon, 07 Aug 2023 12:41:10 -0000
-Message-ID: <169141207075.13176.12606190315319988994@emeril.freedesktop.org>
-References: <20230718110852.2965553-1-anshuman.gupta@intel.com>
-In-Reply-To: <20230718110852.2965553-1-anshuman.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_vram_d3cold?=
- =?utf-8?q?_threshold_test_=28rev4=29?=
+To: "Janusz Krzysztofik" <janusz.krzysztofik@linux.intel.com>
+Date: Mon, 07 Aug 2023 12:43:45 -0000
+Message-ID: <169141222585.13178.5223879999972232024@emeril.freedesktop.org>
+References: <20230807102352.4607-5-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20230807102352.4607-5-janusz.krzysztofik@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBrdW5p?=
+ =?utf-8?q?t=3A_Expose_some_built-in_features_to_modules_=28rev5=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,65 +23,17 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7965051077854701270==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
 == Series Details ==
 
-Series: vram d3cold threshold test (rev4)
-URL   : https://patchwork.freedesktop.org/series/119914/
-State : info
+Series: kunit: Expose some built-in features to modules (rev5)
+URL   : https://patchwork.freedesktop.org/series/121535/
+State : failure
 
 == Summary ==
 
-Participating hosts:
-bat-pvc-2
-bat-atsm-2
-bat-dg2-oem2
-bat-adlp-7
-Missing hosts results[0]:
-Results: [IGTPW_9527](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9527/index.html)
+Applying: kunit: Report the count of test suites in a module
+Patch failed at 0001 kunit: Report the count of test suites in a module
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
 
-
-
---===============7965051077854701270==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>vram d3cold threshold test (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/119914/">https://patchwork.freedesktop.org/series/119914/</a></td></tr>
-<tr><td><b>State:</b></td><td>info</td></tr>
-
-</table>
-
-
-    <p>Participating hosts:<br />
-bat-pvc-2<br />
-bat-atsm-2<br />
-bat-dg2-oem2<br />
-bat-adlp-7<br />
-Missing hosts results[0]:<br />
-Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9527/index.html">IGTPW_9527</a></p>
-
-</body>
-</html>
-
---===============7965051077854701270==--
