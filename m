@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Mon, 7 Aug 2023 18:14:53 -0400
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-Message-ID: <ZNFs3Y65lM1mbjth@intel.com>
-References: <20230803220248.871666-1-lucas.demarchi@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20230803220248.871666-1-lucas.demarchi@intel.com>
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com
+ [205.220.180.131])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4A91510E06A
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 22:48:50 +0000 (UTC)
+From: Abhinav Kumar <quic_abhinavk@quicinc.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Mon, 7 Aug 2023 15:48:25 -0700
+Message-ID: <20230807224828.27288-1-quic_abhinavk@quicinc.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [Intel-xe] [PATCH igt] tests/xe_debugfs: Skip test
- for tile count
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH i-g-t 0/3] add support for passing yuv writeback
+ output format
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,41 +19,35 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, intel-xe@lists.freedesktop.org
+Cc: petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Aug 03, 2023 at 03:02:48PM -0700, Lucas De Marchi wrote:
-> Once upon a time in xe, tile count and gt count were the same thing.
-> This is not necessarily true anymore. Example: Meteor Lake has just
-> one tile, but 2 GTs (one for graphics, one for media).
-> 
-> There's little value in comparing what the kernel exports via ioctl
-> from what the kernel exports via debugfs. Just remove the test.
-> 
-> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+MSM display pipeline has support for writeback to handle YUV formats.
+Currently the kms_writeback supports hard-codes the writeback output
+format to DRM_FORMAT_XRGB8888. This series makes the necessary changes
+in the lib and kms_writeback to allow passing DRM YUV formats to
+kms_writeback.
 
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+The default kms_writeback shall still use only DRM_FORMAT_XRGB8888.
 
-> ---
->  tests/xe/xe_debugfs.c | 3 ---
->  1 file changed, 3 deletions(-)
-> 
-> diff --git a/tests/xe/xe_debugfs.c b/tests/xe/xe_debugfs.c
-> index 5434d4645..e51d03661 100644
-> --- a/tests/xe/xe_debugfs.c
-> +++ b/tests/xe/xe_debugfs.c
-> @@ -104,9 +104,6 @@ test_base(int fd, struct drm_xe_query_config *config)
->  
->  	igt_assert(igt_debugfs_search(fd, "info", reference));
->  
-> -	sprintf(reference, "tile_count %lld", config->info[XE_QUERY_CONFIG_GT_COUNT]);
-> -	igt_assert(igt_debugfs_search(fd, "info", reference));
-> -
->  	switch (config->info[XE_QUERY_CONFIG_VA_BITS]) {
->  	case 48:
->  		val = 3;
-> -- 
-> 2.40.1
-> 
+Additional formats can be passed using the command line.
+
+Sample usage of this would be:
+
+./kms_writeback -f <name of the DRM YUV fmt from igt_fb>
+
+
+Abhinav Kumar (3):
+  lib/igt_fb: add a helper to find drm_id from matching string
+  lib/igt_fb: allow igt_fb_get_fnv1a_crc() to handle YUV formats
+  tests/kms_writeback: allow writeback to output custom format
+
+ lib/igt_fb.c          | 33 +++++++++++++++++++++++++++++++--
+ lib/igt_fb.h          |  3 +++
+ tests/kms_writeback.c | 35 +++++++++++++++++++++++++----------
+ 3 files changed, 59 insertions(+), 12 deletions(-)
+
+-- 
+2.40.1
