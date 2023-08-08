@@ -1,22 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6C05510E0C8
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Aug 2023 14:16:19 +0000 (UTC)
-Message-ID: <6c3298bd-faa5-0ccf-e20c-e54c0488205a@intel.com>
-Date: Tue, 8 Aug 2023 19:45:51 +0530
-To: "Nilawar, Badal" <badal.nilawar@intel.com>, Anshuman Gupta
- <anshuman.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20230801132540.563102-1-anshuman.gupta@intel.com>
- <5549034d-a1c3-14d4-31b3-5c6db2641ec1@intel.com>
- <a79232f9-a5f0-4c67-c1de-8b958b90d3b9@intel.com>
- <3ba39a1c-ffa0-f288-3600-7add5f28720b@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EEFDD10E0A1
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Aug 2023 14:36:16 +0000 (UTC)
+From: "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>
+To: "Dec, Katarzyna" <katarzyna.dec@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Tue, 8 Aug 2023 14:36:13 +0000
+Message-ID: <MW4PR11MB705626EF4F74BFE45B09D6BAB30DA@MW4PR11MB7056.namprd11.prod.outlook.com>
+References: <20230808140426.591392-1-himal.prasad.ghimiray@intel.com>
+ <IA1PR11MB6097BD42060E26B149E2FB89E20DA@IA1PR11MB6097.namprd11.prod.outlook.com>
+In-Reply-To: <IA1PR11MB6097BD42060E26B149E2FB89E20DA@IA1PR11MB6097.namprd11.prod.outlook.com>
 Content-Language: en-US
-From: Riana Tauro <riana.tauro@intel.com>
-In-Reply-To: <3ba39a1c-ffa0-f288-3600-7add5f28720b@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] test/perf_pmu: Dump drpc on C6 failure
+Subject: Re: [igt-dev] [PATCH i-g-t 0/2] Add documentation details in tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,182 +26,65 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Hi Kasha,
 
+> -----Original Message-----
+> From: Dec, Katarzyna <katarzyna.dec@intel.com>
+> Sent: 08 August 2023 19:49
+> To: Ghimiray, Himal Prasad <himal.prasad.ghimiray@intel.com>; igt-
+> dev@lists.freedesktop.org
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>; Dixit, Ashutosh
+> <ashutosh.dixit@intel.com>
+> Subject: RE: [PATCH i-g-t 0/2] Add documentation details in tests
+>=20
+> Hello @Ghimiray, Himal Prasad ,
+>=20
+> Good to see doc update. However when I applied both patches IGT do not
+> build. Error I see:
 
-On 8/4/2023 6:23 PM, Nilawar, Badal wrote:
-> 
-> 
-> On 02-08-2023 15:08, Riana Tauro wrote:
->>
->>
->> On 8/2/2023 3:06 PM, Riana Tauro wrote:
->>> Hi Anshuman
->>>
->>> On 8/1/2023 6:55 PM, Anshuman Gupta wrote:
->>>> Dump drpc debugfs on RC6/MC6 failure, it will be useful to
->>>> debug any C6 failure issue by using drpc debugfs debug info.
->>>>
->>>> Co-developed-by: Badal Nilawar <badal.nilawar@intel.com>
->>>> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
->>>> ---
->>>>   tests/i915/perf_pmu.c | 61 
->>>> +++++++++++++++++++++++++++++--------------
->>>>   1 file changed, 42 insertions(+), 19 deletions(-)
->>>>
->>>> diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
->>>> index 58f4a82a2..bcd6db799 100644
->>>> --- a/tests/i915/perf_pmu.c
->>>> +++ b/tests/i915/perf_pmu.c
->>>> @@ -256,6 +256,18 @@ IGT_TEST_DESCRIPTION("Test the i915 pmu perf 
->>>> interface");
->>>>   const double tolerance = 0.05f;
->>>>   const unsigned long batch_duration_ns = 500e6;
->>>> +char *drpc;
->>>> +const char *no_debug_data = "\0";
->>>> +
->>>> +static char *get_drpc(int i915, int gt_id)
->>>> +{
->>>> +    int gt_dir;
->>>> +
->>>> +    gt_dir = igt_debugfs_gt_dir(i915, gt_id);
->>>> +    igt_assert(gt_dir != -1);
->>>> +    return igt_sysfs_get(gt_dir, "drpc");
->>>> +}
->>>> +
->>>>   static int open_pmu(int i915, uint64_t config)
->>>>   {
->>>>       int fd;
->>>> @@ -336,17 +348,19 @@ static uint64_t pmu_read_multi(int fd, 
->>>> unsigned int num, uint64_t *val)
->>>>       return buf[1];
->>>>   }
->>>> -#define __assert_within_epsilon(x, ref, tol_up, tol_down) \
->>>> +#define __assert_within_epsilon(x, ref, tol_up, tol_down, 
->>>> debug_data) \
->>>>       igt_assert_f((double)(x) <= (1.0 + (tol_up)) * (double)(ref) && \
->>>>                (double)(x) >= (1.0 - (tol_down)) * (double)(ref), \
->>>> -             "'%s' != '%s' (%f not within +%.1f%%/-%.1f%% tolerance 
->>>> of %f)\n",\
->>>> +             "'%s' != '%s' (%f not within +%.1f%%/-%.1f%% tolerance 
->>>> of %f)\n%s\n",\
->>>>                #x, #ref, (double)(x), \
->>>>                (tol_up) * 100.0, (tol_down) * 100.0, \
->>>> -             (double)(ref))
->>>> +             (double)(ref), debug_data)
->>>>   #define assert_within_epsilon(x, ref, tolerance) \
->>>> -    __assert_within_epsilon(x, ref, tolerance, tolerance)
->>>> +    __assert_within_epsilon(x, ref, tolerance, tolerance, "\0")
->> no_debug_data can be used hereWith this change
-
-Reviewed-by: Riana Tauro <riana.tauro@intel.com>
->>>> +#define assert_within_epsilon_dump(x, ref, tolerance, debug_data) \
->>>> +    __assert_within_epsilon(x, ref, tolerance, tolerance, debug_data)
->>> debug instead of dump?
->>>>   /*
->>>>    * Helper for cases where we assert on time spent sleeping 
->>>> (directly or
->>>>    * indirectly), so make it more robust by ensuring the system 
->>>> sleep time
->>>> @@ -1822,7 +1836,7 @@ test_frequency(int gem_fd, unsigned int gt)
->>>>        * On thermally throttled devices we cannot be sure maximum 
->>>> frequency
->>>>        * can be reached so use larger tolerance downards.
->>>>        */
->>>> -    __assert_within_epsilon(max[0], max_freq, tolerance, 0.15f);
->>>> +    __assert_within_epsilon(max[0], max_freq, tolerance, 0.15f, 
->>>> no_debug_data);
->>>>   }
->>>>   static void
->>>> @@ -1967,7 +1981,8 @@ test_rc6(int gem_fd, unsigned int gt, unsigned 
->>>> int num_gt, unsigned int flags)
->>>>           }
->>>>       }
->>>> -    igt_require(wait_for_rc6(fd[0], 1, pmus, test_idx));
->>>> +    igt_require_f(wait_for_rc6(fd[0], 1, pmus, test_idx),
->>>> +              "failed to enter rc6/mc6 \n%s\n", drpc = 
->>>> get_drpc(gem_fd, test_idx));
->>> test_idx is assigned to pmus in this function. Safer to use gt.
-> test_idx indicate gt under test so it is ok to use test_idx here.
-
-Okay. Thanks for the clarification
-> 
-> Regards,
-> Badal
->>>
->>> Thanks
->>> Riana
->>>>       /* While idle check full RC6. */
->>>>       ts[0] = pmu_read_multi(fd[0], pmus, prev);
->>>> @@ -1977,9 +1992,11 @@ test_rc6(int gem_fd, unsigned int gt, 
->>>> unsigned int num_gt, unsigned int flags)
->>>>       for (gt_ = 0; gt_ < pmus; gt_++) {
->>>>           igt_debug("gt%u: idle rc6=%"PRIu64", slept=%lu, 
->>>> perf=%"PRIu64"\n",
->>>>                 gt_, idle[gt_] - prev[gt_], slept, ts[1] - ts[0]);
->>>> -        assert_within_epsilon(idle[gt_] - prev[gt_],
->>>> -                      ts[1] - ts[0],
->>>> -                      tolerance);
->>>> +        drpc = get_drpc(gem_fd, gt_);
->>>> +        assert_within_epsilon_dump(idle[gt_] - prev[gt_],
->>>> +                       ts[1] - ts[0],
->>>> +                       tolerance, drpc);
->>>> +        free(drpc);
->>>>       }
->>>>       if (flags & TEST_S3) {
->>>> @@ -2005,7 +2022,8 @@ test_rc6(int gem_fd, unsigned int gt, unsigned 
->>>> int num_gt, unsigned int flags)
->>>>           }
->>>>       }
->>>> -    igt_assert(wait_for_rc6(fd[0], 5, pmus, test_idx));
->>>> +    igt_require_f(wait_for_rc6(fd[0], 5, pmus, test_idx),
->>>> +              "failed to enter rc6/mc6 \n%s\n", drpc = 
->>>> get_drpc(gem_fd, test_idx));
->>>>       ts[0] = pmu_read_multi(fd[0], pmus, prev);
->>>>       slept = measured_usleep(duration_ns / 1000);
->>>> @@ -2014,9 +2032,11 @@ test_rc6(int gem_fd, unsigned int gt, 
->>>> unsigned int num_gt, unsigned int flags)
->>>>       for (gt_ = 0; gt_ < pmus; gt_++) {
->>>>           igt_debug("gt%u: idle rc6=%"PRIu64", slept=%lu, 
->>>> perf=%"PRIu64"\n",
->>>>                 gt_, idle[gt_] - prev[gt_], slept, ts[1] - ts[0]);
->>>> -        assert_within_epsilon(idle[gt_] - prev[gt_],
->>>> -                      ts[1] - ts[0],
->>>> -                      tolerance);
->>>> +        drpc = get_drpc(gem_fd, gt_);
->>>> +        assert_within_epsilon_dump(idle[gt_] - prev[gt_],
->>>> +                       ts[1] - ts[0],
->>>> +                       tolerance, drpc);
->>>> +        free(drpc);
->>>>       }
->>>>       /* Wake up device and check no RC6. */
->>>> @@ -2048,14 +2068,16 @@ test_rc6(int gem_fd, unsigned int gt, 
->>>> unsigned int num_gt, unsigned int flags)
->>>>       for (gt_ = 0; gt_ < pmus; gt_++) {
->>>>           igt_debug("gt%u: busy rc6=%"PRIu64", slept=%lu, 
->>>> perf=%"PRIu64"\n",
->>>>                 gt_, busy[gt_] - prev[gt_], slept, ts[1] - ts[0]);
->>>> +        drpc = get_drpc(gem_fd, gt_);
->>>>           if (gt_ == test_idx || (flags & TEST_ALL))
->>>> -            assert_within_epsilon(busy[gt_] - prev[gt_],
->>>> -                          0.0,
->>>> -                          tolerance);
->>>> +            assert_within_epsilon_dump(busy[gt_] - prev[gt_],
->>>> +                           0.0,
->>>> +                           tolerance, drpc);
->>>>           else
->>>> -            assert_within_epsilon(busy[gt_] - prev[gt_],
->>>> -                          ts[1] - ts[0],
->>>> -                          tolerance);
->>>> +            assert_within_epsilon_dump(busy[gt_] - prev[gt_],
->>>> +                           ts[1] - ts[0],
->>>> +                           tolerance, drpc);
->>>> +        free(drpc);
->>>>       }
->>>>   }
->>>> @@ -2720,6 +2742,7 @@ igt_main
->>>>       igt_fixture {
->>>>           intel_ctx_destroy(fd, ctx);
->>>>           drm_close_driver(fd);
->>>> +        free(drpc);
->>>>       }
->>>>       igt_subtest("module-unload") {
+Sorry for typo. Fixing and updating new patch.=20
+>=20
+> kdec5@kdec5-desk:~/Projects/igt-gpu-tools$ make ninja -C build
+> ninja: Entering directory `build'
+> [5/7] Generating docs/testplan/xe_tests.rst with a custom command
+> FAILED: docs/testplan/xe_tests.rst
+> /home/kdec5/Projects/igt-gpu-tools/scripts/igt_doc.py --config
+> /home/kdec5/Projects/igt-gpu-tools/tests/xe/xe_test_config.json --rest
+> docs/testplan/xe_tests.rst --check-testlist --igt-build-path
+> /home/kdec5/Projects/igt-gpu-tools/build
+> /home/kdec5/Projects/igt-gpu-tools/tests/xe/xe_sysfs_tile.c:10: Error:
+> unrecognized line. Need to add field at /home/kdec5/Projects/igt-gpu-
+> tools/tests/xe/xe_test_config.json?
+>         =3D=3D> Sub-category : Total vram per tile [7/7] Generating
+> docs/testplan/i915_tests.rst with a custom command
+> ninja: build stopped: subcommand failed.
+> make: *** [Makefile:10: all] Error 1
+>=20
+> Kasia
+>=20
+> -----Original Message-----
+> From: Ghimiray, Himal Prasad <himal.prasad.ghimiray@intel.com>
+> Sent: Tuesday, August 8, 2023 4:04 PM
+> To: igt-dev@lists.freedesktop.org
+> Cc: Ghimiray, Himal Prasad <himal.prasad.ghimiray@intel.com>; Dec,
+> Katarzyna <katarzyna.dec@intel.com>; Kamil Konieczny
+> <kamil.konieczny@linux.intel.com>; Dixit, Ashutosh
+> <ashutosh.dixit@intel.com>
+> Subject: [PATCH i-g-t 0/2] Add documentation details in tests
+>=20
+> Add documentation details in tests.
+>=20
+> Cc: Katarzyna Dec <katarzyna.dec@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+>=20
+> Himal Prasad Ghimiray (2):
+>   tests/xe_sysfs_tile: Update documentation fields.
+>   tests/xe_uevent: Update documentation fields.
+>=20
+>  tests/xe/xe_sysfs_tile.c | 2 ++
+>  tests/xe/xe_uevent.c     | 2 ++
+>  2 files changed, 4 insertions(+)
+>=20
+> --
+> 2.25.1
