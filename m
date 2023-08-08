@@ -1,20 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from NAM04-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam04on2042.outbound.protection.outlook.com [40.107.101.42])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 404B510E0DD
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Aug 2023 20:34:17 +0000 (UTC)
-Message-ID: <7d6c8d73-cc6b-baa9-2100-e374c0f68fbc@amd.com>
-Date: Tue, 8 Aug 2023 14:33:19 -0600
+ (mail-mw2nam04on2041.outbound.protection.outlook.com [40.107.101.41])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4A8F410E21D
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Aug 2023 20:34:29 +0000 (UTC)
+Message-ID: <f1246df7-48c1-2a5b-b6e1-e3caf837f354@amd.com>
+Date: Tue, 8 Aug 2023 14:34:25 -0600
+Content-Language: en-US
 To: Aurabindo Pillai <aurabindo.pillai@amd.com>, igt-dev@lists.freedesktop.org
 References: <20230808152419.1454608-1-aurabindo.pillai@amd.com>
-Content-Language: en-US
+ <20230808152419.1454608-2-aurabindo.pillai@amd.com>
 From: Alex Hung <alex.hung@amd.com>
-In-Reply-To: <20230808152419.1454608-1-aurabindo.pillai@amd.com>
+In-Reply-To: <20230808152419.1454608-2-aurabindo.pillai@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v3 1/2] lib/amdgpu: Add helper functions to
- return MALL support
+Subject: Re: [igt-dev] [PATCH v3 2/2] tests/amdgpu: Add test for MALL static
+ screen cache scanout
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,102 +30,219 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Reviewed-by: Alex Hung <alex.hung@amd.com>
 
 On 2023-08-08 09:24, Aurabindo Pillai wrote:
-> Reads the debugfs file exposed by AMDGPU DM that can be used to find out
-> whether the hardware supports certain features, like MALL (Memory access
-> at last level)
+> MALL stands for memory access at last level.
+> 
+> This test is to verify that the display scanout is triggered from MALL cache instead
+> of GPU VRAM when the contents of the screen is idle for some time.
+> 
+> Requires UMR userspace utility from
+> https://gitlab.freedesktop.org/tomstdenis/umr to read MALL register
+> value.
+> 
+> This test commits a test pattern FB, sleeps for some
+> time, and then reads back the MALL status register to check if display
+> refresh from static screen is triggered.
+> 
+> Changes in v2:
+> 
+> Added possibility to skip the test on Asics that do not support MALL
+> 
+> Changes in v3:
+> 
+> Aded comment in source code about the MALL delay time necessary to
+> trigger idle optimizations.
 > 
 > Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
 > ---
->   lib/igt_amd.c | 52 +++++++++++++++++++++++++++++++++++++++++++++++++++
->   lib/igt_amd.h |  3 +++
->   2 files changed, 55 insertions(+)
+>   tests/amdgpu/amd_mall.c  | 169 +++++++++++++++++++++++++++++++++++++++
+>   tests/amdgpu/meson.build |   1 +
+>   2 files changed, 170 insertions(+)
+>   create mode 100644 tests/amdgpu/amd_mall.c
 > 
-> diff --git a/lib/igt_amd.c b/lib/igt_amd.c
-> index 8da405649..a4dba6bad 100644
-> --- a/lib/igt_amd.c
-> +++ b/lib/igt_amd.c
-> @@ -1144,6 +1144,57 @@ void igt_amd_allow_edp_hotplug_detect(int drm_fd, char *connector_name, bool ena
->   	close(hpd_fd);
->   }
->   
-> +static bool get_dm_capabilites(int drm_fd, char *buf, size_t size) {
-> +	int ret, fd;
-> +	bool has_capablities = amd_has_debugfs(drm_fd, DEBUGFS_DM_CAPABILITIES);
+> diff --git a/tests/amdgpu/amd_mall.c b/tests/amdgpu/amd_mall.c
+> new file mode 100644
+> index 000000000..c50d046ee
+> --- /dev/null
+> +++ b/tests/amdgpu/amd_mall.c
+> @@ -0,0 +1,169 @@
+> +/*
+> + * Copyright 2023 Advanced Micro Devices, Inc.
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining a
+> + * copy of this software and associated documentation files (the "Software"),
+> + * to deal in the Software without restriction, including without limitation
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice shall be included in
+> + * all copies or substantial portions of the Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
+> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+> + * OTHER DEALINGS IN THE SOFTWARE.
+> + */
 > +
-> +	if (!has_capablities)
-> +		return false;
+> +#include "igt.h"
+> +#include "igt_amd.h"
+> +#include "igt_core.h"
+> +#include <fcntl.h>
 > +
-> +	fd = igt_debugfs_dir(drm_fd);
-> +	if (fd < 0) {
-> +		igt_warn("Couldn't open debugfs directory\n");
-> +		return -1;
+> +IGT_TEST_DESCRIPTION("Test display refresh from MALL cache");
+> +
+> +/*
+> + * Time needed in seconds for vblank irq count to reach 0.
+> + * Typically about 5 seconds.
+> + */
+> +
+> +#define MALL_SETTLE_DELAY 10
+> +
+> +/* Common test data. */
+> +typedef struct data {
+> +	igt_display_t display;
+> +	igt_plane_t *primary;
+> +	igt_output_t *output;
+> +	igt_pipe_t *pipe;
+> +	igt_pipe_crc_t *pipe_crc;
+> +	drmModeModeInfo *mode;
+> +	enum pipe pipe_id;
+> +	int fd;
+> +	int w;
+> +	int h;
+> +} data_t;
+> +
+> +struct line_check {
+> +	int found;
+> +	const char *substr;
+> +};
+> +
+> +/* Common test setup. */
+> +static void test_init(data_t *data)
+> +{
+> +	igt_display_t *display = &data->display;
+> +	bool mall_capable = false;
+> +
+> +	/* It doesn't matter which pipe we choose on amdpgu. */
+> +	data->pipe_id = PIPE_A;
+> +	data->pipe = &data->display.pipes[data->pipe_id];
+> +
+> +	igt_display_reset(display);
+> +
+> +	mall_capable =  igt_amd_is_mall_capable(data->fd);
+> +	igt_require_f(mall_capable, "Requires hardware that supports MALL cache\n");
+> +
+> +	/* find a connected output */
+> +	data->output = NULL;
+> +	for (int i=0; i < data->display.n_outputs; ++i) {
+> +		drmModeConnector *connector = data->display.outputs[i].config.connector;
+> +		if (connector->connection == DRM_MODE_CONNECTED) {
+> +			data->output = &data->display.outputs[i];
+> +		}
 > +	}
+> +	igt_require_f(data->output, "Requires a connected display\n");
 > +
-> +	ret = igt_debugfs_simple_read(fd, DEBUGFS_DM_CAPABILITIES, buf, (int) size);
-> +	igt_assert_f(ret >= 0, "Reading %s failed.\n", DEBUGFS_DM_CAPABILITIES);
+> +	data->mode = igt_output_get_mode(data->output);
+> +	igt_assert(data->mode);
 > +
-> +	close(fd);
+> +	data->primary =
+> +		igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
 > +
-> +	if (ret < 0)
-> +		return false;
+> +	data->pipe_crc = igt_pipe_crc_new(data->fd, data->pipe_id,
+> +					  IGT_PIPE_CRC_SOURCE_AUTO);
 > +
-> +	return true;
+> +	igt_output_set_pipe(data->output, data->pipe_id);
+> +
+> +	data->w = data->mode->hdisplay;
+> +	data->h = data->mode->vdisplay;
 > +}
 > +
-> +/**
-> + * @brief check if AMDGPU mall_capable interface entry exist and defined
-> + *
-> + * @param drm_fd DRM file descriptor
-> + * @return true if mall_capable debugfs interface exists and defined
-> + * @return false otherwise
-> + */
-> +bool igt_amd_is_mall_capable(int drm_fd)
+> +/* Common test cleanup. */
+> +static void test_fini(data_t *data)
 > +{
-> +	char buf[1024], mall_read[10];
-> +	char *mall_loc;
+> +	igt_pipe_crc_free(data->pipe_crc);
+> +	igt_display_reset(&data->display);
+> +	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
+> +}
 > +
-> +	if (!get_dm_capabilites(drm_fd, buf, 1024))
-> +		return false;
+> +static bool check_cmd_output(const char *line, void *data)
+> +{
+> +	struct line_check *check = data;
 > +
-> +	mall_loc = strstr(buf,"mall: ");
-> +	if (!mall_loc)
-> +		return false;
-> +
-> +	sscanf(mall_loc, "mall: %s", mall_read);
-> +
-> +	if (!strcmp(mall_read, "yes"))
-> +		return true;
+> +	if (strstr(line, check->substr)) {
+> +		check->found++;
+> +	}
 > +
 > +	return false;
 > +}
+> +static void test_mall_ss(data_t *data)
+> +{
+> +	igt_display_t *display = &data->display;
+> +	igt_fb_t rfb;
+> +	int exec_ret;
+> +	struct line_check line = {0};
 > +
->   /**
->    * @brief check if AMDGPU DM visual confirm debugfs interface entry exist and defined
->    *
-> @@ -1156,6 +1207,7 @@ bool igt_amd_has_visual_confirm(int drm_fd)
->   	return amd_has_debugfs(drm_fd, DEBUGFS_DM_VISUAL_CONFIRM);
->   }
->   
+> +	test_init(data);
 > +
->   /**
->    * @brief Read amdgpu DM visual confirm debugfs interface
->    *
-> diff --git a/lib/igt_amd.h b/lib/igt_amd.h
-> index d57390405..6f538a195 100644
-> --- a/lib/igt_amd.h
-> +++ b/lib/igt_amd.h
-> @@ -52,6 +52,7 @@
->   
->   /* amdgpu DM interface entries */
->   #define DEBUGFS_DM_VISUAL_CONFIRM "amdgpu_dm_visual_confirm"
-> +#define DEBUGFS_DM_CAPABILITIES "amdgpu_dm_capabilities"
->   
->   enum amd_dsc_clock_force {
->   	DSC_AUTOMATIC = 0,
-> @@ -194,4 +195,6 @@ void igt_amd_allow_edp_hotplug_detect(int drm_fd, char *connector_name, bool ena
->   bool igt_amd_has_visual_confirm(int drm_fd);
->   int  igt_amd_get_visual_confirm(int drm_fd);
->   bool igt_amd_set_visual_confirm(int drm_fd, enum amdgpu_debug_visual_confirm option);
+> +	igt_create_pattern_fb(data->fd, data->w, data->h, DRM_FORMAT_XRGB8888, 0, &rfb);
+> +	igt_plane_set_fb(data->primary, &rfb);
+> +	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
 > +
-> +bool igt_amd_is_mall_capable(int drm_fd);
->   #endif /* IGT_AMD_H */
+> +	sleep(MALL_SETTLE_DELAY);
+> +
+> +	igt_system_cmd(exec_ret, "umr -O bits -r *.*.HUBP0_HUBP_MALL_STATUS | grep MALL_IN_USE");
+> +
+> +	igt_skip_on_f(exec_ret != IGT_EXIT_SUCCESS, "Error running UMR\n");
+> +
+> +	line.substr = "1 (0x00000001)";
+> +	igt_log_buffer_inspect(check_cmd_output, &line);
+> +
+> +	igt_assert_eq(line.found, 1);
+> +
+> +	igt_remove_fb(data->fd, &rfb);
+> +	test_fini(data);
+> +}
+> +
+> +igt_main
+> +{
+> +	data_t data;
+> +
+> +	igt_skip_on_simulation();
+> +
+> +	memset(&data, 0, sizeof(data));
+> +
+> +	igt_fixture
+> +	{
+> +		data.fd = drm_open_driver_master(DRIVER_AMDGPU);
+> +
+> +		kmstest_set_vt_graphics_mode();
+> +
+> +		igt_display_require(&data.display, data.fd);
+> +		igt_require(data.display.is_atomic);
+> +		igt_display_require_output(&data.display);
+> +	}
+> +
+> +	igt_describe("Tests whether display scanout is triggered from MALL cache instead "
+> +		     "of GPU VRAM when screen contents are idle");
+> +	igt_subtest("static-screen") test_mall_ss(&data);
+> +
+> +	igt_fixture
+> +	{
+> +		igt_display_fini(&data.display);
+> +	}
+> +}
+> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+> index 336acdb00..6c6166167 100644
+> --- a/tests/amdgpu/meson.build
+> +++ b/tests/amdgpu/meson.build
+> @@ -34,6 +34,7 @@ if libdrm_amdgpu.found()
+>   			  'amd_vcn',
+>   			  'amd_vm',
+>   			  'amd_vrr_range',
+> +			  'amd_mall',
+>   			]
+>   	amdgpu_deps += libdrm_amdgpu
+>   endif
