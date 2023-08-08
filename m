@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3262A10E152
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 99D5E10E084
  for <igt-dev@lists.freedesktop.org>; Tue,  8 Aug 2023 01:00:24 +0000 (UTC)
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon,  7 Aug 2023 18:00:03 -0700
-Message-ID: <20230808010017.37819-7-ashutosh.dixit@intel.com>
+Date: Mon,  7 Aug 2023 18:00:09 -0700
+Message-ID: <20230808010017.37819-13-ashutosh.dixit@intel.com>
 In-Reply-To: <20230808010017.37819-1-ashutosh.dixit@intel.com>
 References: <20230808010017.37819-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 06/20] tests/i915/perf: Skip not ready tests
- for xe
+Subject: [igt-dev] [PATCH i-g-t 12/20] tests/i915/perf: Don't load module
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,53 +22,42 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SSEU config feature is not ready in the xe driver. The other tests need
-more work in IGT to port to xe. Skip these till they are ready.
+Because now the perf code is being shared between i915 and xe, we have two
+modules to load and can't decide which to load unless we've loaded one. So
+to avoid the chicken and egg issue, don't load any module. The default
+module in the system should automatically get loaded.
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/perf.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ tests/i915/perf.c | 16 ----------------
+ 1 file changed, 16 deletions(-)
 
 diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 6ab371857847..9fb11f9e0730 100644
+index 7cbf3f7ca287..e0afbbc45ea2 100644
 --- a/tests/i915/perf.c
 +++ b/tests/i915/perf.c
-@@ -6147,12 +6147,14 @@ igt_main
- 		 */
- 		igt_describe("Verify exclusivity of perf streams with sample oa option");
- 		igt_subtest("gen12-group-exclusive-stream-sample-oa") {
-+			igt_require(!is_xe_device(drm_fd));
- 			igt_require(intel_gen(devid) >= 12);
- 			test_group_exclusive_stream(ctx, true);
- 		}
+@@ -5952,22 +5952,6 @@ igt_main
+ 	const intel_ctx_t *ctx;
+ 	const struct intel_execution_engine2 *e;
  
- 		igt_describe("Verify exclusivity of perf streams with ctx handle");
- 		igt_subtest("gen12-group-exclusive-stream-ctx-handle") {
-+			igt_require(!is_xe_device(drm_fd));
- 			igt_require(intel_gen(devid) >= 12);
- 			test_group_exclusive_stream(ctx, false);
- 		}
-@@ -6177,14 +6179,18 @@ igt_main
- 		}
+-	igt_fixture {
+-		struct stat sb;
+-
+-		/*
+-		 * Prior tests may have unloaded i915 or failed while
+-		 * loading/unloading i915. Load i915 here before we stat the
+-		 * files.
+-		 */
+-		drm_load_module(DRIVER_INTEL);
+-
+-		igt_require(stat(i9xe.sysctl_path_paranoid, &sb)
+-			    == 0);
+-		igt_require(stat(i9xe.sysctl_path_max_sample_rate, &sb)
+-			    == 0);
+-	}
+-
+ 	igt_subtest("i915-ref-count")
+ 		test_i915_ref_count();
  
- 		igt_describe("Verify invalid SSEU opening parameters");
--		igt_subtest_with_dynamic("global-sseu-config-invalid")
-+		igt_subtest_with_dynamic("global-sseu-config-invalid") {
-+			igt_require(!is_xe_device(drm_fd));
- 			__for_random_engine_in_each_group(perf_oa_groups, ctx, e)
- 				test_global_sseu_config_invalid(ctx, e);
-+		}
- 
- 		igt_describe("Verify specifying SSEU opening parameters");
--		igt_subtest_with_dynamic("global-sseu-config")
-+		igt_subtest_with_dynamic("global-sseu-config") {
-+			igt_require(!is_xe_device(drm_fd));
- 			__for_random_engine_in_each_group(perf_oa_groups, ctx, e)
- 				test_global_sseu_config(ctx, e);
-+		}
- 	}
- 
- 	igt_subtest("invalid-create-userspace-config")
 -- 
 2.41.0
