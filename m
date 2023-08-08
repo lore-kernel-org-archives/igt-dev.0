@@ -1,23 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1627C10E025
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Aug 2023 04:54:30 +0000 (UTC)
-Message-ID: <35177016-d838-b86c-8ea4-9284e3870714@intel.com>
-Date: Tue, 8 Aug 2023 10:24:12 +0530
-Content-Language: en-US
-To: "Sharma, Swati2" <swati2.sharma@intel.com>, "Hogander, Jouni"
- <jouni.hogander@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-References: <20230807091538.3172571-1-ankit.k.nautiyal@intel.com>
- <f6550b4ee9b6b1ccbb99a7e6e68b99272253aa28.camel@intel.com>
- <2a23551c-f80c-c259-9341-03e4ef8dc139@intel.com>
-From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-In-Reply-To: <2a23551c-f80c-c259-9341-03e4ef8dc139@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/alternative;
+ boundary="===============1947949954788145341=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/kms_dsc_helper.c: Fix helper
- to check dsc with output_format
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Abhinav Kumar" <quic_abhinavk@quicinc.com>
+Date: Tue, 08 Aug 2023 05:27:59 -0000
+Message-ID: <169147247970.13859.7167705857788122438@emeril.freedesktop.org>
+References: <20230808034713.6805-1-quic_abhinavk@quicinc.com>
+In-Reply-To: <20230808034713.6805-1-quic_abhinavk@quicinc.com>
+Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_add_support?=
+ =?utf-8?q?_for_passing_yuv_writeback_output_format_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,86 +17,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Thanks for the reviews and comments.
+--===============1947949954788145341==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-I have addressed the comments and sent the updated version.
+== Series Details ==
 
-Seems like due to change in the subject line, patch work created a new link:
+Series: add support for passing yuv writeback output format (rev2)
+URL   : https://patchwork.freedesktop.org/series/122125/
+State : info
 
-https://patchwork.freedesktop.org/series/122137/
+== Summary ==
 
-Sorry for the confusion.
+Participating hosts:
+bat-pvc-2
+bat-atsm-2
+bat-dg2-oem2
+bat-adlp-7
+Missing hosts results[0]:
+Results: [IGTPW_9536](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9536/index.html)
 
 
-Regards,
 
-Ankit
+--===============1947949954788145341==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 8/7/2023 7:25 PM, Sharma, Swati2 wrote:
-> Hi Ankit,
->
-> Thanks for the patch.
-> Nitpick: Please remove .c from binary name in subject.
-> Also, please add
-> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9062
->
-> Rest LGTM.
-> Tested-by: Swati Sharma <swati2.sharma@intel.com>
->
-> On 07-Aug-23 4:12 PM, Hogander, Jouni wrote:
->> On Mon, 2023-08-07 at 14:45 +0530, Ankit Nautiyal wrote:
->>> Fix the condition that checks whether DSC is supported with given
->>> output format in is_dsc_output_format_supported.
->>>
->>> Fixes: c365922f01c12 (tests/i915/kms_dsc: Enable validation for VDSC
->>> output formats)
->>> Cc: Swati Sharma <swati2.sharma@intel.com>
->>> Cc: Jouni H_gander <jouni.hogander@intel.com>
->>> Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
->>
->> Reviewed-by: Jouni Högander <jouni.hogander@intel.com>
->>> ---
->>>   tests/i915/kms_dsc_helper.c | 15 +++++++--------
->>>   1 file changed, 7 insertions(+), 8 deletions(-)
->>>
->>> diff --git a/tests/i915/kms_dsc_helper.c
->>> b/tests/i915/kms_dsc_helper.c
->>> index ae59edb6bec9..160364cd28bf 100644
->>> --- a/tests/i915/kms_dsc_helper.c
->>> +++ b/tests/i915/kms_dsc_helper.c
->>> @@ -133,13 +133,12 @@ static bool
->>> is_dsc_output_format_supported_by_platform(int disp_ver, enum dsc_ou
->>>   bool is_dsc_output_format_supported(int drmfd, int disp_ver,
->>> igt_output_t *output,
->>>                                      enum dsc_output_format
->>> output_format)
->>>   {
->>> -       if (!(igt_is_dsc_output_format_supported_by_sink(drmfd,
->>> output->name, output_format)) &&
->>> - (is_dsc_output_format_supported_by_platform(disp_ver,
->>> output_format))) {
->>> -                   igt_debug("DSC %s output format not supported on
->>> connector %s\n",
->>> -
->>> kmstest_dsc_output_format_str(output_format),
->>> -                              output->name);
->>> -                       return false;
->>> -               }
->>> +       if (is_dsc_output_format_supported_by_platform(disp_ver,
->>> output_format) &&
->>> +           igt_is_dsc_output_format_supported_by_sink(drmfd, output-
->>>> name, output_format))
->>> +               return true;
->>>   -       return true;
->>> +       igt_debug("DSC %s output format not supported on connector
->>> %s\n",
->>> + kmstest_dsc_output_format_str(output_format),
->>> output->name);
->>> +
->>> +       return false;
->>>   }
->>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>add support for passing yuv writeback output format (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122125/">https://patchwork.freedesktop.org/series/122125/</a></td></tr>
+<tr><td><b>State:</b></td><td>info</td></tr>
+
+</table>
+
+
+    <p>Participating hosts:<br />
+bat-pvc-2<br />
+bat-atsm-2<br />
+bat-dg2-oem2<br />
+bat-adlp-7<br />
+Missing hosts results[0]:<br />
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9536/index.html">IGTPW_9536</a></p>
+
+</body>
+</html>
+
+--===============1947949954788145341==--
