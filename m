@@ -1,21 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D6AA510E04E
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Aug 2023 10:08:56 +0000 (UTC)
-Message-ID: <39dfd7cb-7f1b-94b2-3ffb-ad926422eb99@intel.com>
-Date: Tue, 8 Aug 2023 15:38:43 +0530
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1DDF510E091
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Aug 2023 10:36:45 +0000 (UTC)
+From: "Hogander, Jouni" <jouni.hogander@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Tue, 8 Aug 2023 10:36:36 +0000
+Message-ID: <d1139e50f3e1e283dd69654ee6000630a2036eeb.camel@intel.com>
+References: <20230622054543.3360732-1-jouni.hogander@intel.com>
+In-Reply-To: <20230622054543.3360732-1-jouni.hogander@intel.com>
 Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
- <20230629144910.3055377-48-bhanuprakash.modem@intel.com>
-From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <20230629144910.3055377-48-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <3D25FF8AD80E28458ADCA2D27D99EDA0@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [V5 i-g-t 47/81] tests/kms_dp_tiled_display: Document
- each subtest for testplan
+Subject: Re: [igt-dev] [PATCH i-g-t v6 0/4] Testcases for dirtyfb ioctl
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,52 +25,41 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-On 6/29/2023 8:18 PM, Bhanuprakash Modem wrote:
-> Add documentation for all kms tests which is used by IGT testplan
-> documentation.
->
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
-> ---
->   tests/kms_tiled_display.c | 21 +++++++++++++++++++++
->   1 file changed, 21 insertions(+)
->
-> diff --git a/tests/kms_tiled_display.c b/tests/kms_tiled_display.c
-> index eba1b2764..4652ef4e4 100644
-> --- a/tests/kms_tiled_display.c
-> +++ b/tests/kms_tiled_display.c
-> @@ -36,12 +36,33 @@
->    * the displays supported by the kernel at the moment.
->    */
->   
-> +/**
-> + * TEST: kms dp tiled display
-> + * Category: Display
-> + * Description: Test for Transcoder Port Sync for Display Port Tiled Displays
-> + */
->   #include "igt.h"
->   #include "poll.h"
->   #include "drm_mode.h"
->   #include "drm_fourcc.h"
->   #include "igt_edid.h"
->   
-> +/**
-> + * SUBTEST: basic-test-%s
-> + * Description: Make sure the Tiled CRTCs are synchronized and we get page flips
-> + *              for all tiled CRTCs in one vblank (%arg[1]).
-> + * Driver requirement: any
-> + * Functionality: tiled_display
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * arg[1]:
-> + *
-> + * @pattern:                  executes on real panel
-> + * @pattern-with-chamelium:   executes on chamelium.
-> + */
-> +
->   IGT_TEST_DESCRIPTION("Test for genlocked CRTCs with tiled displays");
->   
->   typedef struct {
+T24gVGh1LCAyMDIzLTA2LTIyIGF0IDA4OjQ1ICswMzAwLCBKb3VuaSBIw7ZnYW5kZXIgd3JvdGU6
+Cj4gVGhpcyBwYXRjaHNldCBpcyBhZGRpbmcgbmV3IHRlc3RjYXNlcyBmb3IgZGlydHlmYiBpb2N0
+bCB3aXRoIGZlYXR1cmVzCj4gbGlrZSBGQkMsIFBTUiBhbmQgRFJSUy4KPiAKPiBBbHNvIHNvbWUg
+aGVscGVycyBhcmUgc3BsaXQgZnJvbSBrbXNfZnJvbnRidWZmZXJfdHJhY2tpbmcgdG8gYmUKPiBz
+aGFyZWQKPiB3aXRoIGEgbmV3IHRlc3RjYXNlcy4KClRoZXNlcyBwYXRjaGVzIGFyZSBub3cgbWVy
+Z2VkLiBUaGFuayB5b3UgZm9yIHJldmlld3MuCgpCUiwKCkpvdW5pIEjDtmdhbmRlcgoKPiAKPiB2
+NjoKPiDCoC0gUGVyZm9ybSBpZ3RfZGlzcGxheV9yZXNldCBpbiBwcmVwYXJlCj4gdjU6Cj4gwqAt
+IE1vZGlmaWNhdGlvbnMgdG8gc3VwcG9ydCBYZSBhcyB3ZWxsCj4gdjQ6Cj4gwqAtIERvY3VtZW50
+IGxpYnJhcnkgaW50ZXJmYWNlIGZ1bmN0aW9ucwo+IMKgLSBDaGVjayBjb25uZWN0b3IgdHlwZSBp
+cyBlRFAgd2hlbiBQU1IgaXMgdGVzdGVkCj4gdjM6Cj4gwqAtIFVzZSBzcGlubmVyCj4gwqAtIERy
+b3AgYWxsb2NhdGluZyBiaWcgZnJhbWJ1ZmZlcnMKPiB2MjoKPiDCoC0gTW92ZSBmYmMgYW5kIGRy
+cnMgaW50byBsaWJpZ3QKPiDCoC0gQ2hhbmdlIHRlc3RjYXNlIGxpY2Vuc2UgY29tbWVudAo+IMKg
+LSBNb3ZlIGRpc2FibGVfZmVhdHVyZXMgYW5kIGRvIG5vdCBhcHBseSBmb3IgRkVBVFVSRV9ERUZB
+VUxUCj4gCj4gQ2M6IFZpbGxlIFN5cmrDpGzDpCA8dmlsbGUuc3lyamFsYUBsaW51eC5pbnRlbC5j
+b20+Cj4gQ2M6IE1hYXJ0ZW4gTGFua2hvcnN0IDxtYWFydGVuLmxhbmtob3JzdEBsaW51eC5pbnRl
+bC5jb20+Cj4gQ2M6IEthbWlsIEtvbmllY3pueSA8a2FtaWwua29uaWVjem55QGxpbnV4LmludGVs
+LmNvbT4KPiAKPiBKb3VuaSBIw7ZnYW5kZXIgKDQpOgo+IMKgIHRlc3RzL2k5MTUva21zX2Zyb250
+YnVmZmVyX3RyYWNraW5nOiBTcGxpdCBmYmMgaW50byBsaWJyYXJ5Cj4gwqAgdGVzdHMvaTkxNS9r
+bXNfZnJvbnRidWZmZXJfdHJhY2tpbmc6IFNwbGl0IGRycnMgaW50byBsaWJyYXJ5Cj4gwqAgbGli
+L3hlL3hlX3NwaW46IEhhbmRsZSBzcGlubmVyIHRpbWVyIGZvciBYZSBhcyB3ZWxsCj4gwqAgdGVz
+dHMva21zX2RpcnR5ZmI6IEFkZCBuZXcgdGVzdCBmb3IgZGlydHlmYiBpb2N0bAo+IAo+IMKgbGli
+L2k5MTUvaW50ZWxfZHJycy5jwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfCAxMzMg
+KysrKysrKysrKysKPiDCoGxpYi9pOTE1L2ludGVsX2RycnMuaMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgIHzCoCAxNyArKwo+IMKgbGliL2k5MTUvaW50ZWxfZmJjLmPCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoCA5NiArKysrKysrKwo+IMKgbGliL2k5MTUvaW50
+ZWxfZmJjLmjCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoCAxOSArKwo+IMKg
+bGliL21lc29uLmJ1aWxkwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqAgfMKgwqAgMiArCj4gwqBsaWIveGUveGVfc3Bpbi5jwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgIHzCoMKgIDggKwo+IMKgdGVzdHMvaTkxNS9rbXNfZGlydHlmYi5j
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfCAzMDMKPiArKysrKysrKysrKysrKysrKysrKysr
+KysrKwo+IMKgdGVzdHMvaTkxNS9rbXNfZnJvbnRidWZmZXJfdHJhY2tpbmcuYyB8IDE0MCArKy0t
+LS0tLS0tLS0KPiDCoHRlc3RzL21lc29uLmJ1aWxkwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoCB8wqDCoCAxICsKPiDCoDkgZmlsZXMgY2hhbmdlZCwgNTk2IGluc2VydGlv
+bnMoKyksIDEyMyBkZWxldGlvbnMoLSkKPiDCoGNyZWF0ZSBtb2RlIDEwMDY0NCBsaWIvaTkxNS9p
+bnRlbF9kcnJzLmMKPiDCoGNyZWF0ZSBtb2RlIDEwMDY0NCBsaWIvaTkxNS9pbnRlbF9kcnJzLmgK
+PiDCoGNyZWF0ZSBtb2RlIDEwMDY0NCBsaWIvaTkxNS9pbnRlbF9mYmMuYwo+IMKgY3JlYXRlIG1v
+ZGUgMTAwNjQ0IGxpYi9pOTE1L2ludGVsX2ZiYy5oCj4gwqBjcmVhdGUgbW9kZSAxMDA2NDQgdGVz
+dHMvaTkxNS9rbXNfZGlydHlmYi5jCj4gCgo=
