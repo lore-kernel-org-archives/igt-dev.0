@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com
- [205.220.180.131])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 264DC10E22E
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Aug 2023 03:47:31 +0000 (UTC)
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Mon, 7 Aug 2023 20:47:12 -0700
-Message-ID: <20230808034713.6805-4-quic_abhinavk@quicinc.com>
-In-Reply-To: <20230808034713.6805-1-quic_abhinavk@quicinc.com>
-References: <20230808034713.6805-1-quic_abhinavk@quicinc.com>
+Content-Type: multipart/alternative;
+ boundary="===============5093607137364939960=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t v2 3/3] tests/kms_writeback: allow writeback
- to output custom format
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Abhinav Kumar" <quic_abhinavk@quicinc.com>
+Date: Tue, 08 Aug 2023 04:37:06 -0000
+Message-ID: <169146942660.13860.2750179964038092352@emeril.freedesktop.org>
+References: <20230808034713.6805-1-quic_abhinavk@quicinc.com>
+In-Reply-To: <20230808034713.6805-1-quic_abhinavk@quicinc.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgYWRkIHN1?=
+ =?utf-8?q?pport_for_passing_yuv_writeback_output_format_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,158 +17,287 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In some display pipelines, such as MSM, the writeback block is
-capable of writing in an output format other than DRM_FORMAT_XRGB8888
-such as DRM_FORMAT_NV12.
+--===============5093607137364939960==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-To allow validation of these formats, allow kms_writeback to
-take a command line argument which supports passing the writeback's
-output fb format to something other than DRM_FORMAT_XRGB8888.
+== Series Details ==
 
-The DRM_FORMAT_XRGB8888 checks have been relaxed to allow YUV formats
-as those are the ones verified while adding support for this feature
-with MSM boards.
+Series: add support for passing yuv writeback output format (rev2)
+URL   : https://patchwork.freedesktop.org/series/122125/
+State : success
 
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
----
- tests/kms_writeback.c | 34 ++++++++++++++++++++++++----------
- 1 file changed, 24 insertions(+), 10 deletions(-)
+== Summary ==
 
-diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
-index db1f0884fcd0..002e14f70156 100644
---- a/tests/kms_writeback.c
-+++ b/tests/kms_writeback.c
-@@ -45,6 +45,8 @@ typedef struct {
- 	bool custom_mode;
- 	bool list_modes;
- 	bool dump_check;
-+	bool wb_yuv_fmt;
-+	uint32_t format;
- 	int mode_index;
- 	drmModeModeInfo user_mode;
- } data_t;
-@@ -75,7 +77,6 @@ static bool check_writeback_config(igt_display_t *display, igt_output_t *output,
- {
- 	igt_fb_t input_fb, output_fb;
- 	igt_plane_t *plane;
--	uint32_t writeback_format = DRM_FORMAT_XRGB8888;
- 	uint64_t modifier = DRM_FORMAT_MOD_LINEAR;
- 	int width, height, ret;
- 
-@@ -89,7 +90,8 @@ static bool check_writeback_config(igt_display_t *display, igt_output_t *output,
- 	igt_assert(ret >= 0);
- 
- 	ret = igt_create_fb(display->drm_fd, width, height,
--			    writeback_format, modifier, &output_fb);
-+			    data.wb_yuv_fmt ? data.format : DRM_FORMAT_XRGB8888,
-+			    modifier, &output_fb);
- 	igt_assert(ret >= 0);
- 
- 	plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-@@ -266,7 +268,8 @@ static void fill_fb(igt_fb_t *fb, uint32_t pixel)
- 	uint32_t *ptr;
- 	int64_t pixel_count, i;
- 
--	igt_assert(fb->drm_format == DRM_FORMAT_XRGB8888);
-+	igt_assert(igt_format_is_yuv(fb->drm_format) ||
-+			fb->drm_format == DRM_FORMAT_XRGB8888);
- 
- 	ptr = igt_fb_map_buffer(fb->fd, fb);
- 	igt_assert(ptr);
-@@ -364,7 +367,7 @@ static void writeback_check_output(igt_output_t *output, igt_plane_t *plane,
- 	writeback_sequence(output, plane, input_fb, out_fbs, 2);
- 
- 	fb_id = igt_create_fb(output_fb->fd, output_fb->width, output_fb->height,
--			      DRM_FORMAT_XRGB8888,
-+			      data.wb_yuv_fmt ? data.format : DRM_FORMAT_XRGB8888,
- 			      igt_fb_mod_to_tiling(0),
- 			      &second_out_fb);
- 	igt_require(fb_id > 0);
-@@ -404,8 +407,10 @@ static void commit_and_dump_fb(igt_display_t *display, igt_output_t *output, igt
- 
- 	path_name = getenv("IGT_FRAME_DUMP_PATH");
- 	file_name = getenv("FRAME_PNG_FILE_NAME");
--	fb_id = igt_create_fb(display->drm_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
--				igt_fb_mod_to_tiling(0), &output_fb);
-+
-+	fb_id = igt_create_fb(display->drm_fd, mode->hdisplay, mode->vdisplay,
-+			      data.wb_yuv_fmt ? data.format : DRM_FORMAT_XRGB8888,
-+			      igt_fb_mod_to_tiling(0), &output_fb);
- 	igt_require(fb_id > 0);
- 
- 	do_single_commit(output, plane, input_fb, &output_fb);
-@@ -454,6 +459,11 @@ static int opt_handler(int option, int option_index, void *_data)
- 	case 'd':
- 		data.dump_check = true;
- 		break;
-+	case 'f':
-+		data.wb_yuv_fmt = true;
-+		data.format = igt_drm_format_str_to_format(optarg);
-+		igt_info("writeback format = %s\n", igt_format_str(data.format));
-+		break;
- 	default:
- 		return IGT_OPT_HANDLER_ERROR;
- 	}
-@@ -462,6 +472,8 @@ static int opt_handler(int option, int option_index, void *_data)
- 
- const char *help_str =
- 	" --list-modes | -l List of writeback connector modes\n"
-+	" --writeback-yuv-format | -f Test yuv output format for writeback\n"
-+	" <name of the fourcc format as documented in the format_desc of igt_fb>\n"
- 	" --built-in | -b Commits a built-in mode\n"
- 	" --custom | -c Commits a custom mode inputted by user"
- 	" <clock MHz>,<hdisp>,<hsync-start>,<hsync-end>,<htotal>,"
-@@ -475,10 +487,11 @@ static const struct option long_options[] = {
- 	{ .name = "built-in", .has_arg = true, .val = 'b', },
- 	{ .name = "custom", .has_arg = true, .val = 'c', },
- 	{ .name = "dump", .has_arg = false, .val = 'd', },
-+	{ .name = "writeback-yuv-format", .has_arg = true, .val = 'f', },
- 	{}
- };
- 
--igt_main_args("b:c:dl", long_options, help_str, opt_handler, NULL)
-+igt_main_args("b:c:f:dl", long_options, help_str, opt_handler, NULL)
- {
- 	igt_display_t display;
- 	igt_output_t *output;
-@@ -490,6 +503,7 @@ igt_main_args("b:c:dl", long_options, help_str, opt_handler, NULL)
- 	memset(&display, 0, sizeof(display));
- 
- 	igt_fixture {
-+		igt_info("entering igt_fixture\n");
- 		display.drm_fd = drm_open_driver_master(DRIVER_ANY);
- 		igt_display_require(&display, display.drm_fd);
- 
-@@ -560,7 +574,7 @@ igt_main_args("b:c:dl", long_options, help_str, opt_handler, NULL)
- 		igt_skip_on(data.dump_check || data.list_modes);
- 		fb_id = igt_create_fb(display.drm_fd, mode.hdisplay / 2,
- 				      mode.vdisplay / 2,
--				      DRM_FORMAT_XRGB8888,
-+				      data.wb_yuv_fmt ? data.format : DRM_FORMAT_XRGB8888,
- 				      DRM_FORMAT_MOD_LINEAR,
- 				      &invalid_output_fb);
- 		igt_require(fb_id > 0);
-@@ -576,7 +590,7 @@ igt_main_args("b:c:dl", long_options, help_str, opt_handler, NULL)
- 
- 		igt_skip_on(data.dump_check || data.list_modes);
- 		fb_id = igt_create_fb(display.drm_fd, mode.hdisplay, mode.vdisplay,
--				      DRM_FORMAT_XRGB8888,
-+				      data.wb_yuv_fmt ? data.format : DRM_FORMAT_XRGB8888,
- 				      DRM_FORMAT_MOD_LINEAR,
- 				      &output_fb);
- 		igt_require(fb_id > 0);
-@@ -592,7 +606,7 @@ igt_main_args("b:c:dl", long_options, help_str, opt_handler, NULL)
- 
- 		igt_skip_on(data.dump_check || data.list_modes);
- 		fb_id = igt_create_fb(display.drm_fd, mode.hdisplay, mode.vdisplay,
--				      DRM_FORMAT_XRGB8888,
-+				      data.wb_yuv_fmt ? data.format : DRM_FORMAT_XRGB8888,
- 				      igt_fb_mod_to_tiling(0),
- 				      &output_fb);
- 		igt_require(fb_id > 0);
--- 
-2.40.1
+CI Bug Log - changes from CI_DRM_13489 -> IGTPW_9536
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/index.html
+
+Participating hosts (43 -> 41)
+------------------------------
+
+  Missing    (2): fi-kbl-soraka fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_9536 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-rkl-11600:       [PASS][1] -> [FAIL][2] ([i915#7940])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13489/fi-rkl-11600/igt@i915_pm_rpm@module-reload.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/fi-rkl-11600/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live@gt_mocs:
+    - bat-mtlp-8:         [PASS][3] -> [DMESG-FAIL][4] ([i915#7059])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13489/bat-mtlp-8/igt@i915_selftest@live@gt_mocs.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/bat-mtlp-8/igt@i915_selftest@live@gt_mocs.html
+    - bat-mtlp-6:         [PASS][5] -> [DMESG-FAIL][6] ([i915#7059])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13489/bat-mtlp-6/igt@i915_selftest@live@gt_mocs.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/bat-mtlp-6/igt@i915_selftest@live@gt_mocs.html
+
+  * igt@i915_selftest@live@reset:
+    - bat-rpls-1:         [PASS][7] -> [ABORT][8] ([i915#4983] / [i915#7461] / [i915#8347] / [i915#8384])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13489/bat-rpls-1/igt@i915_selftest@live@reset.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/bat-rpls-1/igt@i915_selftest@live@reset.html
+
+  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
+    - bat-rpls-2:         NOTRUN -> [SKIP][9] ([i915#7828])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/bat-rpls-2/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc:
+    - bat-rpls-2:         NOTRUN -> [SKIP][10] ([i915#1845])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/bat-rpls-2/igt@kms_pipe_crc_basic@suspend-read-crc.html
+
+  * igt@kms_psr@cursor_plane_move:
+    - bat-rplp-1:         NOTRUN -> [SKIP][11] ([i915#1072]) +1 similar issue
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/bat-rplp-1/igt@kms_psr@cursor_plane_move.html
+
+  * igt@kms_psr@primary_mmap_gtt:
+    - bat-rplp-1:         NOTRUN -> [ABORT][12] ([i915#8434] / [i915#8442] / [i915#8668])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_pm_rpm@basic-rte:
+    - fi-kbl-x1275:       [FAIL][13] ([i915#8843]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13489/fi-kbl-x1275/igt@i915_pm_rpm@basic-rte.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/fi-kbl-x1275/igt@i915_pm_rpm@basic-rte.html
+
+  * igt@i915_selftest@live@migrate:
+    - bat-dg2-11:         [DMESG-WARN][15] ([i915#7699]) -> [PASS][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13489/bat-dg2-11/igt@i915_selftest@live@migrate.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/bat-dg2-11/igt@i915_selftest@live@migrate.html
+
+  * igt@i915_suspend@basic-s3-without-i915:
+    - bat-rpls-2:         [ABORT][17] ([i915#6687] / [i915#7978] / [i915#8668]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13489/bat-rpls-2/igt@i915_suspend@basic-s3-without-i915.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/bat-rpls-2/igt@i915_suspend@basic-s3-without-i915.html
+
+  
+#### Warnings ####
+
+  * igt@i915_pm_rpm@basic-pci-d3-state:
+    - bat-adlp-9:         [FAIL][19] -> [FAIL][20] ([i915#7940])
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13489/bat-adlp-9/igt@i915_pm_rpm@basic-pci-d3-state.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/bat-adlp-9/igt@i915_pm_rpm@basic-pci-d3-state.html
+
+  * igt@kms_psr@primary_page_flip:
+    - bat-rplp-1:         [ABORT][21] ([i915#8442] / [i915#8668] / [i915#8860]) -> [SKIP][22] ([i915#1072])
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13489/bat-rplp-1/igt@kms_psr@primary_page_flip.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/bat-rplp-1/igt@kms_psr@primary_page_flip.html
+
+  
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
+  [i915#7059]: https://gitlab.freedesktop.org/drm/intel/issues/7059
+  [i915#7461]: https://gitlab.freedesktop.org/drm/intel/issues/7461
+  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+  [i915#7940]: https://gitlab.freedesktop.org/drm/intel/issues/7940
+  [i915#7978]: https://gitlab.freedesktop.org/drm/intel/issues/7978
+  [i915#8347]: https://gitlab.freedesktop.org/drm/intel/issues/8347
+  [i915#8384]: https://gitlab.freedesktop.org/drm/intel/issues/8384
+  [i915#8434]: https://gitlab.freedesktop.org/drm/intel/issues/8434
+  [i915#8442]: https://gitlab.freedesktop.org/drm/intel/issues/8442
+  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
+  [i915#8843]: https://gitlab.freedesktop.org/drm/intel/issues/8843
+  [i915#8860]: https://gitlab.freedesktop.org/drm/intel/issues/8860
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7420 -> IGTPW_9536
+
+  CI-20190529: 20190529
+  CI_DRM_13489: ba0acfd5bae2ff82ebfd23d50d4e80020fa9c4c1 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_9536: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/index.html
+  IGT_7420: 7420
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/index.html
+
+--===============5093607137364939960==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>add support for passing yuv writeback output format (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122125/">https://patchwork.freedesktop.org/series/122125/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13489 -&gt; IGTPW_9536</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/index.html</p>
+<h2>Participating hosts (43 -&gt; 41)</h2>
+<p>Missing    (2): fi-kbl-soraka fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_9536 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13489/fi-rkl-11600/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/fi-rkl-11600/igt@i915_pm_rpm@module-reload.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7940">i915#7940</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_mocs:</p>
+<ul>
+<li>
+<p>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13489/bat-mtlp-8/igt@i915_selftest@live@gt_mocs.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/bat-mtlp-8/igt@i915_selftest@live@gt_mocs.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7059">i915#7059</a>)</p>
+</li>
+<li>
+<p>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13489/bat-mtlp-6/igt@i915_selftest@live@gt_mocs.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/bat-mtlp-6/igt@i915_selftest@live@gt_mocs.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7059">i915#7059</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13489/bat-rpls-1/igt@i915_selftest@live@reset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/bat-rpls-1/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7461">i915#7461</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8347">i915#8347</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8384">i915#8384</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/bat-rpls-2/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/bat-rpls-2/igt@kms_pipe_crc_basic@suspend-read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@cursor_plane_move:</p>
+<ul>
+<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/bat-rplp-1/igt@kms_psr@cursor_plane_move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_mmap_gtt:</p>
+<ul>
+<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8434">i915#8434</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8442">i915#8442</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@basic-rte:</p>
+<ul>
+<li>fi-kbl-x1275:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13489/fi-kbl-x1275/igt@i915_pm_rpm@basic-rte.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8843">i915#8843</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/fi-kbl-x1275/igt@i915_pm_rpm@basic-rte.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@migrate:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13489/bat-dg2-11/igt@i915_selftest@live@migrate.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/bat-dg2-11/igt@i915_selftest@live@migrate.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s3-without-i915:</p>
+<ul>
+<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13489/bat-rpls-2/igt@i915_suspend@basic-s3-without-i915.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7978">i915#7978</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/bat-rpls-2/igt@i915_suspend@basic-s3-without-i915.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
+<ul>
+<li>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13489/bat-adlp-9/igt@i915_pm_rpm@basic-pci-d3-state.html">FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/bat-adlp-9/igt@i915_pm_rpm@basic-pci-d3-state.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7940">i915#7940</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_page_flip:</p>
+<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13489/bat-rplp-1/igt@kms_psr@primary_page_flip.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8442">i915#8442</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8860">i915#8860</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/bat-rplp-1/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7420 -&gt; IGTPW_9536</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13489: ba0acfd5bae2ff82ebfd23d50d4e80020fa9c4c1 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_9536: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9536/index.html<br />
+  IGT_7420: 7420</p>
+
+</body>
+</html>
+
+--===============5093607137364939960==--
