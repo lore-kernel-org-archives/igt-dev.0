@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7BDAB10E152
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5F22110E14B
  for <igt-dev@lists.freedesktop.org>; Tue,  8 Aug 2023 01:00:24 +0000 (UTC)
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon,  7 Aug 2023 18:00:07 -0700
-Message-ID: <20230808010017.37819-11-ashutosh.dixit@intel.com>
+Date: Mon,  7 Aug 2023 18:00:05 -0700
+Message-ID: <20230808010017.37819-9-ashutosh.dixit@intel.com>
 In-Reply-To: <20230808010017.37819-1-ashutosh.dixit@intel.com>
 References: <20230808010017.37819-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 10/20] tests/i915/perf: Support only
- default_engine_group for xe
+Subject: [igt-dev] [PATCH i-g-t 08/20] tests/i915/perf: Fix sysfs functions
+ for xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,35 +23,49 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Engine groups are currently not supported for XE. Support only
-default_engine_group.
+Make sure that we can read freq_rp0 and rc6_residency from sysfs for
+xe. The sysfs paths and files names are different for xe.
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/perf.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tests/i915/perf.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
 diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index ef2d56e319f8..6f10e1d035cb 100644
+index 03af968d9484..292afda9a434 100644
 --- a/tests/i915/perf.c
 +++ b/tests/i915/perf.c
-@@ -5726,6 +5726,9 @@ static struct perf_engine_group *get_engine_groups(int i915, uint32_t *num_group
- 	struct perf_engine_group *groups = NULL;
- 	uint32_t id = UINT32_MAX, num_grps = 0, i = 0, j;
+@@ -643,7 +643,20 @@ sysfs_read(enum i915_attr_id id)
+ {
+ 	unsigned long value;
+ 
+-	igt_assert(igt_sysfs_rps_scanf(sysfs, id, "%lu", &value) == 1);
++	if (is_xe_device(drm_fd)) {
++		switch (id) {
++		case RPS_RP0_FREQ_MHZ:
++			igt_assert(igt_sysfs_scanf(sysfs, "device/tile0/gt0/freq_rp0", "%lu", &value) == 1);
++			break;
++		case RC6_RESIDENCY_MS:
++			igt_assert(igt_sysfs_scanf(sysfs, "device/tile0/gt0/rc6_residency", "%lu", &value) == 1);
++			break;
++		default:
++			igt_assert(0);
++		}
++	} else {
++		igt_assert(igt_sysfs_rps_scanf(sysfs, id, "%lu", &value) == 1);
++	}
+ 
+ 	return value;
+ }
+@@ -5436,6 +5449,9 @@ static int perf_sysfs_open(int i915)
+ {
+ 	int dirfd, gt;
  
 +	if (is_xe_device(drm_fd))
-+		return default_engine_group(num_groups);
++		return igt_sysfs_open(drm_fd);
 +
- 	qinfo = query_engine_info(i915);
- 	if (!qinfo)
- 		return default_engine_group(num_groups);
-@@ -5996,6 +5999,7 @@ igt_main
- 		write_u64_file(i9xe.sysctl_path_max_sample_rate, 100000);
- 
- 		gt_max_freq_mhz = sysfs_read(RPS_RP0_FREQ_MHZ);
-+
- 		perf_oa_groups = get_engine_groups(drm_fd, &num_perf_oa_groups);
- 		igt_assert(perf_oa_groups && num_perf_oa_groups);
- 
+ 	/* use the first available sysfs interface */
+ 	for_each_sysfs_gt_dirfd(i915, dirfd, gt)
+ 		break;
 -- 
 2.41.0
