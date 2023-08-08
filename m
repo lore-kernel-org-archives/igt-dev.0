@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============5259772140306464887=="
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com
+ [205.220.180.131])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C1FEA10E3E7
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Aug 2023 16:57:26 +0000 (UTC)
+Message-ID: <c33b3960-4a45-3e97-6728-26eabc4f36ec@quicinc.com>
+Date: Tue, 8 Aug 2023 09:57:21 -0700
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Andrzej Hajda" <andrzej.hajda@intel.com>
-Date: Tue, 08 Aug 2023 16:44:47 -0000
-Message-ID: <169151308720.13861.14828211047563835553@emeril.freedesktop.org>
-References: <20230808113842.3213560-1-andrzej.hajda@intel.com>
-In-Reply-To: <20230808113842.3213560-1-andrzej.hajda@intel.com>
-Subject: [igt-dev] =?utf-8?b?4peLIENJLnhlQkFUOiBpbmZvIGZvciBpOTE1L2dlbV9l?=
- =?utf-8?q?xec=5Fawait=3A_Avoid_DG2_conflicts_=28rev3=29?=
+Content-Language: en-US
+To: Rob Clark <robdclark@gmail.com>, <igt-dev@lists.freedesktop.org>
+References: <20230808145334.24277-1-robdclark@gmail.com>
+ <20230808145334.24277-2-robdclark@gmail.com>
+From: Abhinav Kumar <quic_abhinavk@quicinc.com>
+In-Reply-To: <20230808145334.24277-2-robdclark@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH 2/2] tests/kms_plane: Skip QCOM_COMPRESSED
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,75 +22,41 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Rob Clark <robdclark@chromium.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============5259772140306464887==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: i915/gem_exec_await: Avoid DG2 conflicts (rev3)
-URL   : https://patchwork.freedesktop.org/series/120309/
-State : info
-
-== Summary ==
-
-Participating hosts:
-bat-pvc-2
-bat-atsm-2
-bat-dg2-oem2
-bat-adlp-7
-Missing hosts results[2]:
-bat-dg2-oem2
-bat-adlp-7
-Results: [IGTPW_9538](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9538/index.html)
 
 
+On 8/8/2023 7:53 AM, Rob Clark wrote:
+> From: Rob Clark <robdclark@chromium.org>
+> 
+> We don't know how to generate valid compressed/UBWC data in igt, so
+> don't try.
+> 
+> Signed-off-by: Rob Clark <robdclark@chromium.org>
 
---===============5259772140306464887==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Tested-by: Abhinav Kumar <quic_abhinavk@quicinc.com> # sc7280
 
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>i915/gem_exec_await: Avoid DG2 conflicts (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/120309/">https://patchwork.freedesktop.org/series/120309/</a></td></tr>
-<tr><td><b>State:</b></td><td>info</td></tr>
-
-</table>
-
-
-    <p>Participating hosts:<br />
-bat-pvc-2<br />
-bat-atsm-2<br />
-bat-dg2-oem2<br />
-bat-adlp-7<br />
-Missing hosts results[2]:<br />
-bat-dg2-oem2<br />
-bat-adlp-7<br />
-Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9538/index.html">IGTPW_9538</a></p>
-
-</body>
-</html>
-
---===============5259772140306464887==--
+> ---
+>   tests/kms_plane.c | 5 +++++
+>   1 file changed, 5 insertions(+)
+> 
+> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+> index a444cdca23e2..8e7dc75d349c 100644
+> --- a/tests/kms_plane.c
+> +++ b/tests/kms_plane.c
+> @@ -1011,6 +1011,11 @@ static bool test_format_plane(data_t *data, enum pipe pipe,
+>   		    f.modifier != DRM_FORMAT_MOD_LINEAR)
+>   			continue;
+>   
+> +		/* igt doesn't know how to sw generate UBWC: */
+> +		if (is_msm_device(data->drm_fd) &&
+> +		    f.modifier == DRM_FORMAT_MOD_QCOM_COMPRESSED)
+> +			continue;
+> +
+>   		if (f.format == ref.format &&
+>   		    f.modifier == ref.modifier)
+>   			continue;
