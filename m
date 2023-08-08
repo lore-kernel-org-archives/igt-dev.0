@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8DFCE10E106
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Aug 2023 11:38:58 +0000 (UTC)
-From: Andrzej Hajda <andrzej.hajda@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1B2EF10E106
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Aug 2023 11:45:00 +0000 (UTC)
+From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  8 Aug 2023 13:38:42 +0200
-Message-Id: <20230808113842.3213560-1-andrzej.hajda@intel.com>
+Date: Tue,  8 Aug 2023 14:44:41 +0300
+Message-Id: <20230808114441.949938-1-jouni.hogander@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] i915/gem_exec_await: Avoid DG2 conflicts
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_dirtyfb: Add missing files
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,349 +17,630 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Chris Wilson <chris.p.wilson@linux.intel.com>,
- Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Chris Wilson <chris.p.wilson@linux.intel.com>
+Previously applied patches:
 
-DG2 is restricted in what contexts/engines can be run concurrently, if
-we submit a non-preemptible context on both rcs/ccs it will only run one
-at a time. Progress (heartbeats) along ccs will be blocked by rcs, and
-vice versa. This is independent of the ccs switch holdout w/a.
-Since this is not required for constructing a wide set of active fences
-(a fence is active until it has been signaled, whether it is running on
-HW or waiting to run is irrelevant to the signal state), refactor the
-context construction to be favourable for DG2.
+tests/i915/kms_frontbuffer_tracking: Split drrs into library
+tests/i915/kms_frontbuffer_tracking: Split fbc into library
+tests/kms_dirtyfb: Add new test for dirtyfb ioctl
 
-v2: fixed include order, added comment about op placeholder
+were missing new files. Fix current build breakage by adding these
+missing files.
 
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/5892
-Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
-[ahajda: adjust to upstream driver]
-Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
 ---
- tests/i915/gem_exec_await.c | 181 ++++++++++++++++--------------------
- 1 file changed, 81 insertions(+), 100 deletions(-)
+ lib/i915/intel_drrs.c    | 133 +++++++++++++++++
+ lib/i915/intel_drrs.h    |  17 +++
+ lib/i915/intel_fbc.c     |  96 +++++++++++++
+ lib/i915/intel_fbc.h     |  19 +++
+ tests/i915/kms_dirtyfb.c | 303 +++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 568 insertions(+)
+ create mode 100644 lib/i915/intel_drrs.c
+ create mode 100644 lib/i915/intel_drrs.h
+ create mode 100644 lib/i915/intel_fbc.c
+ create mode 100644 lib/i915/intel_fbc.h
+ create mode 100644 tests/i915/kms_dirtyfb.c
 
-diff --git a/tests/i915/gem_exec_await.c b/tests/i915/gem_exec_await.c
-index 53b7bac2f96..0652b649b11 100644
---- a/tests/i915/gem_exec_await.c
-+++ b/tests/i915/gem_exec_await.c
-@@ -25,12 +25,24 @@
- #include <sys/ioctl.h>
- #include <sys/signal.h>
- 
-+#include "drmtest.h"
- #include "i915/gem.h"
- #include "i915/gem_create.h"
--#include "igt.h"
-+#include "i915/gem_engine_topology.h"
-+#include "i915/gem_mman.h"
-+#include "i915/gem_submission.h"
-+#include "i915/gem_vm.h"
-+#include "igt_aux.h"
-+#include "igt_core.h"
- #include "igt_rand.h"
- #include "igt_sysfs.h"
-+#include "igt_types.h"
- #include "igt_vgem.h"
-+#include "intel_chipset.h"
-+#include "intel_ctx.h"
-+#include "intel_gpu_commands.h"
-+#include "ioctl_wrappers.h"
+diff --git a/lib/i915/intel_drrs.c b/lib/i915/intel_drrs.c
+new file mode 100644
+index 000000000..2f83e1394
+--- /dev/null
++++ b/lib/i915/intel_drrs.c
+@@ -0,0 +1,133 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2023 Intel Corporation
++ */
 +
- /**
-  * TEST: gem exec await
-  * Category: Infrastructure
-@@ -66,7 +78,7 @@ static void xchg_obj(void *array, unsigned i, unsigned j)
- }
- 
- #define CONTEXTS 0x1
--static void wide(int fd, const intel_ctx_t *ctx, int ring_size,
-+static void wide(int fd, intel_ctx_cfg_t *cfg, int ring_size,
- 		 int timeout, unsigned int flags)
- {
- 	const struct intel_execution_engine2 *engine;
-@@ -75,7 +87,6 @@ static void wide(int fd, const intel_ctx_t *ctx, int ring_size,
- 	struct {
- 		struct drm_i915_gem_exec_object2 *obj;
- 		struct drm_i915_gem_exec_object2 exec[2];
--		struct drm_i915_gem_relocation_entry reloc;
- 		struct drm_i915_gem_execbuffer2 execbuf;
- 		const intel_ctx_t *ctx;
- 		uint32_t *cmd;
-@@ -83,9 +94,13 @@ static void wide(int fd, const intel_ctx_t *ctx, int ring_size,
- 	struct drm_i915_gem_exec_object2 *obj;
- 	struct drm_i915_gem_execbuffer2 execbuf;
- 	unsigned engines[I915_EXEC_RING_MASK + 1], nengine;
-+	const intel_ctx_t *ctx;
- 	unsigned long count;
- 	double time;
--	uint64_t ahnd = get_reloc_ahnd(fd, 0); /* just offset provider */
++#include <fcntl.h>
 +
-+	__gem_vm_create(fd, &cfg->vm);
-+	if (__intel_ctx_create(fd, cfg, &ctx))
-+		ctx = intel_ctx_0(fd);
- 
- 	nengine = 0;
- 	for_each_ctx_engine(fd, ctx, engine) {
-@@ -102,7 +117,7 @@ static void wide(int fd, const intel_ctx_t *ctx, int ring_size,
- 	igt_assert(exec);
- 
- 	igt_require_memory(nengine*(2 + ring_size), 4096, CHECK_RAM);
--	obj = calloc(nengine*ring_size + 1, sizeof(*obj));
-+	obj = calloc(nengine * (ring_size  + 1) + 1, sizeof(*obj));
- 	igt_assert(obj);
- 
- 	for (unsigned e = 0; e < nengine; e++) {
-@@ -111,69 +126,63 @@ static void wide(int fd, const intel_ctx_t *ctx, int ring_size,
- 		for (unsigned n = 0; n < ring_size; n++)  {
- 			exec[e].obj[n].handle = gem_create(fd, 4096);
- 			exec[e].obj[n].flags = EXEC_OBJECT_WRITE;
--			exec[e].obj[n].offset = get_offset(ahnd, exec[e].obj[n].handle,
--							   4096, 0);
--			if (ahnd)
--				exec[e].obj[n].flags |= EXEC_OBJECT_PINNED;
--
--			obj[e*ring_size + n].handle = exec[e].obj[n].handle;
--			obj[e*ring_size + n].offset = exec[e].obj[n].offset;
-+			obj[e * ring_size + n] = exec[e].obj[n];
- 		}
- 
- 		exec[e].execbuf.buffers_ptr = to_user_pointer(exec[e].exec);
--		exec[e].execbuf.buffer_count = 1;
--		exec[e].execbuf.flags = (engines[e] |
--					 I915_EXEC_NO_RELOC |
--					 I915_EXEC_HANDLE_LUT);
-+		exec[e].execbuf.buffer_count = 2;
-+		exec[e].execbuf.flags = engines[e];
-+		exec[e].execbuf.rsvd1 = ctx->id;
- 
- 		if (flags & CONTEXTS) {
--			exec[e].ctx = intel_ctx_create(fd, &ctx->cfg);
-+			exec[e].ctx = intel_ctx_create(fd, cfg);
- 			exec[e].execbuf.rsvd1 = exec[e].ctx->id;
--		} else {
--			exec[e].execbuf.rsvd1 = ctx->id;
- 		}
- 
--		exec[e].exec[0].handle = gem_create(fd, 4096);
--		exec[e].exec[0].offset = get_offset(ahnd, exec[e].exec[0].handle,
--						    4096, 0);
--		if (ahnd)
--			exec[e].exec[0].flags = EXEC_OBJECT_PINNED;
--
--		exec[e].cmd = gem_mmap__device_coherent(fd, exec[e].exec[0].handle,
--							0, 4096, PROT_WRITE);
--
--		gem_set_domain(fd, exec[e].exec[0].handle,
--			       I915_GEM_DOMAIN_WC, I915_GEM_DOMAIN_WC);
--		exec[e].cmd[0] = MI_BATCH_BUFFER_END;
--
--		gem_execbuf(fd, &exec[e].execbuf);
--		exec[e].exec[1] = exec[e].exec[0];
--		exec[e].execbuf.buffer_count = 2;
--
--		exec[e].reloc.target_handle = 1; /* recurse */
--		exec[e].reloc.offset = sizeof(uint32_t);
--		exec[e].reloc.read_domains = I915_GEM_DOMAIN_COMMAND;
--		if (gen < 4)
--			exec[e].reloc.delta = 1;
--
--		exec[e].exec[1].relocs_ptr = to_user_pointer(&exec[e].reloc);
--		exec[e].exec[1].relocation_count = !ahnd ? 1 : 0;
-+		exec[e].exec[1].handle = gem_create(fd, 4096);
-+		obj[nengine * ring_size + e] = exec[e].exec[1];
- 	}
- 
--	obj[nengine*ring_size].handle = gem_create(fd, 4096);
--	gem_write(fd, obj[nengine*ring_size].handle, 0, &bbe, sizeof(bbe));
--
--	obj[nengine*ring_size].offset = get_offset(ahnd, obj[nengine*ring_size].handle,
--						   4096, 0);
--	if (ahnd)
--		obj[nengine*ring_size].flags |= EXEC_OBJECT_PINNED;
-+	obj[nengine * (ring_size + 1)].handle = gem_create(fd, 4096);
-+	gem_write(fd, obj[nengine * (ring_size + 1)].handle, 0,
-+		  &bbe, sizeof(bbe));
- 
- 	memset(&execbuf, 0, sizeof(execbuf));
--	execbuf.buffers_ptr = to_user_pointer(&obj[nengine*ring_size]);
--	execbuf.buffer_count = 1;
--	gem_execbuf(fd, &execbuf); /* tag the object as a batch in the GTT */
- 	execbuf.buffers_ptr = to_user_pointer(obj);
--	execbuf.buffer_count = nengine*ring_size + 1;
-+	execbuf.buffer_count = nengine * (ring_size + 1) + 1;
-+	execbuf.rsvd1 = ctx->id;
-+	gem_execbuf(fd, &execbuf); /* tag the object as a batch in the GTT */
-+	for (unsigned e = 0; e < nengine; e++) {
-+		uint64_t address;
-+		uint32_t *cs;
++#include "igt.h"
++#include "igt_sysfs.h"
 +
-+		for (unsigned n = 0; n < ring_size; n++) {
-+			obj[e * ring_size + n].flags |= EXEC_OBJECT_PINNED;
-+			exec[e].obj[n] = obj[e * ring_size + n];
-+		}
-+		exec[e].exec[1] = obj[nengine * ring_size + e];
-+		exec[e].exec[1].flags |= EXEC_OBJECT_PINNED;
-+		address = exec[e].exec[1].offset;
++#include "intel_drrs.h"
 +
-+		exec[e].cmd = gem_mmap__device_coherent(fd, exec[e].exec[1].handle,
-+							0, 4096, PROT_WRITE);
-+		cs = exec[e].cmd;
++/**
++ * intel_is_drrs_supported:
++ * @device: fd of the device
++ * @pipe: Display pipe
++ *
++ * Check if DRRS is supported on given pipe.
++ *
++ * Returns:
++ * true if DRRS is supported and false otherwise.
++ */
++bool intel_is_drrs_supported(int device, enum pipe pipe)
++{
++	char buf[256];
++	int dir;
 +
-+		*cs++ = MI_NOOP; /* placeholder for MI_ARB_CHECK */
-+		if (gen >= 8) {
-+			*cs++ = MI_BATCH_BUFFER_START | 1 << 8 | 1;
-+			*cs++ = address;
-+			*cs++ = address >> 32;
-+		} else if (gen >= 6) {
-+			*cs++ = MI_BATCH_BUFFER_START | 1 << 8;
-+			*cs++ = address;
-+		} else {
-+			*cs++ = MI_BATCH_BUFFER_START | 2 << 6;
-+			if (gen < 4)
-+				address |= 1;
-+			*cs++ = address;
++	dir = igt_debugfs_pipe_dir(device, pipe, O_DIRECTORY);
++	igt_require_fd(dir);
++	igt_debugfs_simple_read(dir, "i915_drrs_status", buf, sizeof(buf));
++	close(dir);
++	if (*buf == '\0')
++		return false;
++
++	return !strcasestr(buf, "DRRS enabled:");
++}
++
++/**
++ * intel_output_has_drrs
++ * @device: fd of the device
++ * @output: Display output
++ *
++ * Check if drrs used on given output.
++ *
++ * Returns:
++ * true if DRRS is used and false otherwise.
++ */
++bool intel_output_has_drrs(int device, igt_output_t *output)
++{
++	char buf[256];
++	int dir;
++
++	dir = igt_debugfs_connector_dir(device, output->name, O_DIRECTORY);
++	igt_require_fd(dir);
++	igt_debugfs_simple_read(dir, "i915_drrs_type", buf, sizeof(buf));
++	close(dir);
++
++	return strstr(buf, "seamless");
++}
++
++static void drrs_set(int device, enum pipe pipe, unsigned int val)
++{
++	char buf[2];
++	int dir, ret;
++
++	igt_debug("Manually %sabling DRRS. %u\n", val ? "en" : "dis", val);
++	snprintf(buf, sizeof(buf), "%d", val);
++
++	dir = igt_debugfs_pipe_dir(device, pipe, O_DIRECTORY);
++	igt_require_fd(dir);
++	ret = igt_sysfs_write(dir, "i915_drrs_ctl", buf, sizeof(buf) - 1);
++
++	/*
++	 * drrs_enable() is called on DRRS capable platform only,
++	 * whereas drrs_disable() is called on all platforms.
++	 * So handle the failure of debugfs_write only for drrs_enable().
++	 */
++	if (val)
++		igt_assert_f(ret == (sizeof(buf) - 1), "debugfs_write failed");
++}
++
++/**
++ * intel_drrs_enable:
++ * @device: fd of the device
++ * @pipe: Display pipe
++ *
++ * Enable DRRS on given pipe
++ *
++ * Returns:
++ * none
++ */
++void intel_drrs_enable(int device, enum pipe pipe)
++{
++	drrs_set(device, pipe, 1);
++}
++
++/**
++ * intel_drrs_disable:
++ * @device: fd of the device
++ * @pipe: Display pipe
++ *
++ * Disable DRRS on given pipe
++ *
++ * Returns:
++ * none
++ */
++void intel_drrs_disable(int device, enum pipe pipe)
++{
++	drrs_set(device, pipe, 0);
++}
++
++/**
++ * intel_is_drrs_inactive:
++ * @device: fd of the device
++ * @pipe: Display pipe
++ *
++ * Check if drrs is inactive on given pipe
++ *
++ * Returns:
++ * true if inactive and false otherwise
++ */
++bool intel_is_drrs_inactive(int device, enum pipe pipe)
++{
++	char buf[256];
++	int dir;
++
++	dir = igt_debugfs_pipe_dir(device, pipe, O_DIRECTORY);
++	igt_require_fd(dir);
++	igt_debugfs_simple_read(dir, "i915_drrs_status", buf, sizeof(buf));
++	close(dir);
++
++	return strstr(buf, "DRRS active: no");
++}
+diff --git a/lib/i915/intel_drrs.h b/lib/i915/intel_drrs.h
+new file mode 100644
+index 000000000..d4d27a5f9
+--- /dev/null
++++ b/lib/i915/intel_drrs.h
+@@ -0,0 +1,17 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2022 Intel Corporation
++ */
++
++#ifndef INTEL_DRRS_H
++#define INTEL_DRRS_H
++
++#include "igt.h"
++
++bool intel_is_drrs_supported(int device, enum pipe pipe);
++bool intel_output_has_drrs(int device, igt_output_t *output);
++void intel_drrs_enable(int device, enum pipe pipe);
++void intel_drrs_disable(int device, enum pipe pipe);
++bool intel_is_drrs_inactive(int device, enum pipe pipe);
++
++#endif
+diff --git a/lib/i915/intel_fbc.c b/lib/i915/intel_fbc.c
+new file mode 100644
+index 000000000..a885b2f97
+--- /dev/null
++++ b/lib/i915/intel_fbc.c
+@@ -0,0 +1,96 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2023 Intel Corporation
++ */
++
++#include <fcntl.h>
++
++#include "igt.h"
++
++#include "intel_fbc.h"
++
++#define FBC_STATUS_BUF_LEN 128
++
++/**
++ * intel_fbc_supported_on_chipset:
++ * @device: fd of the device
++ * @pipe: Display pipe
++ *
++ * Check if FBC is supported by chipset on given pipe.
++ *
++ * Returns:
++ * true if FBC is supported and false otherwise.
++ */
++bool intel_fbc_supported_on_chipset(int device, enum pipe pipe)
++{
++	char buf[FBC_STATUS_BUF_LEN];
++	int dir;
++
++	dir = igt_debugfs_pipe_dir(device, pipe, O_DIRECTORY);
++	igt_require_fd(dir);
++	igt_debugfs_simple_read(dir, "i915_fbc_status", buf, sizeof(buf));
++	close(dir);
++	if (*buf == '\0')
++		return false;
++
++	return !strstr(buf, "FBC unsupported on this chipset\n");
++}
++
++static bool _intel_fbc_is_enabled(int device, enum pipe pipe, int log_level, char *last_fbc_buf)
++{
++	char buf[FBC_STATUS_BUF_LEN];
++	bool print = true;
++	int dir;
++
++	dir = igt_debugfs_pipe_dir(device, pipe, O_DIRECTORY);
++	igt_require_fd(dir);
++	igt_debugfs_simple_read(dir, "i915_fbc_status", buf, sizeof(buf));
++	close(dir);
++	if (log_level != IGT_LOG_DEBUG)
++		last_fbc_buf[0] = '\0';
++	else if (strcmp(last_fbc_buf, buf))
++		strcpy(last_fbc_buf, buf);
++	else
++		print = false;
++
++	if (print)
++		igt_log(IGT_LOG_DOMAIN, log_level, "fbc_is_enabled():\n%s\n", buf);
++
++	return strstr(buf, "FBC enabled\n");
++}
++
++/**
++ * intel_fbc_is_enabled:
++ * @device: fd of the device
++ * @pipe: Display pipe
++ * @log_level: Wanted loglevel
++ *
++ * Check if FBC is enabled on given pipe. Loglevel can be used to
++ * control at which loglevel current state is printed out.
++ *
++ * Returns:
++ * true if FBC is enabled.
++ */
++bool intel_fbc_is_enabled(int device, enum pipe pipe, int log_level)
++{
++	char last_fbc_buf[FBC_STATUS_BUF_LEN] = {'\0'};
++
++	return _intel_fbc_is_enabled(device, pipe, log_level, last_fbc_buf);
++}
++
++/**
++ * intel_fbc_wait_until_enabled:
++ * @device: fd of the device
++ * @pipe: Display pipe
++ *
++ * Wait until fbc is enabled. Used timeout is constant 2 seconds.
++ *
++ * Returns:
++ * true if FBC got enabled.
++ */
++bool intel_fbc_wait_until_enabled(int device, enum pipe pipe)
++{
++	char last_fbc_buf[FBC_STATUS_BUF_LEN] = {'\0'};
++
++	return igt_wait(_intel_fbc_is_enabled(device, pipe, IGT_LOG_DEBUG, last_fbc_buf), 2000, 1);
++}
+diff --git a/lib/i915/intel_fbc.h b/lib/i915/intel_fbc.h
+new file mode 100644
+index 000000000..901bf984b
+--- /dev/null
++++ b/lib/i915/intel_fbc.h
+@@ -0,0 +1,19 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2022 Intel Corporation
++ */
++
++#ifndef INTEL_FBC_H
++#define INTEL_FBC_H
++
++#include "igt.h"
++
++#define intel_fbc_enable(device) igt_set_module_param_int(device, "enable_fbc", 1)
++#define intel_fbc_disable(device) igt_set_module_param_int(device, "enable_fbc", 0)
++
++bool intel_fbc_supported_on_chipset(int device, enum pipe pipe);
++bool intel_fbc_wait_until_enabled(int device, enum pipe pipe);
++bool intel_fbc_is_enabled(int device, enum pipe pipe, int log_level);
++
++#endif
++
+diff --git a/tests/i915/kms_dirtyfb.c b/tests/i915/kms_dirtyfb.c
+new file mode 100644
+index 000000000..4e49574a2
+--- /dev/null
++++ b/tests/i915/kms_dirtyfb.c
+@@ -0,0 +1,303 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2023 Intel Corporation
++ */
++
++#include <sys/types.h>
++
++#include "igt.h"
++#include "igt_psr.h"
++
++#include "i915/intel_drrs.h"
++#include "i915/intel_fbc.h"
++
++#include "xe/xe_query.h"
++
++IGT_TEST_DESCRIPTION("Test the DIRTYFB ioctl is working properly with "
++		     "its related features: FBC, PSR and DRRS");
++
++#ifndef PAGE_ALIGN
++#ifndef PAGE_SIZE
++#define PAGE_SIZE 4096
++#endif
++#define PAGE_ALIGN(x) ALIGN(x, PAGE_SIZE)
++#endif
++
++typedef struct {
++	int drm_fd;
++	int debugfs_fd;
++	igt_display_t display;
++	drmModeModeInfo *mode;
++	igt_output_t *output;
++	igt_pipe_crc_t *pipe_crc;
++	enum pipe pipe;
++
++	struct igt_fb fbs[3];
++
++	igt_crc_t ref_crc;
++
++	struct buf_ops *bops;
++	enum {
++		FEATURE_NONE  = 0,
++		FEATURE_PSR   = 1,
++		FEATURE_FBC   = 2,
++		FEATURE_DRRS  = 4,
++		FEATURE_COUNT = 8,
++		FEATURE_DEFAULT = 8,
++	} feature;
++} data_t;
++
++static const char *feature_str(int feature)
++{
++	switch (feature) {
++	case FEATURE_NONE:
++		return "nop";
++	case FEATURE_FBC:
++		return "fbc";
++	case FEATURE_PSR:
++		return "psr";
++	case FEATURE_DRRS:
++		return "drrs";
++	case FEATURE_DEFAULT:
++		return "default";
++	default:
++		igt_assert(false);
++	}
++}
++
++static bool check_support(data_t *data)
++{
++	switch (data->feature) {
++	case FEATURE_NONE:
++		return true;
++	case FEATURE_FBC:
++		return intel_fbc_supported_on_chipset(data->drm_fd, data->pipe);
++	case FEATURE_PSR:
++		if (data->output->config.connector->connector_type !=
++		    DRM_MODE_CONNECTOR_eDP)
++			return false;
++		return psr_sink_support(data->drm_fd, data->debugfs_fd,
++					PSR_MODE_1);
++	case FEATURE_DRRS:
++		return intel_is_drrs_supported(data->drm_fd, data->pipe) &&
++			intel_output_has_drrs(data->drm_fd, data->output);
++	case FEATURE_DEFAULT:
++		return true;
++	default:
++		igt_assert(false);
++	}
++}
++
++static void enable_feature(data_t *data)
++{
++	switch (data->feature) {
++	case FEATURE_NONE:
++		break;
++	case FEATURE_FBC:
++		intel_fbc_enable(data->drm_fd);
++		break;
++	case FEATURE_PSR:
++		psr_enable(data->drm_fd, data->debugfs_fd, PSR_MODE_1);
++		break;
++	case FEATURE_DRRS:
++		intel_drrs_enable(data->drm_fd, data->pipe);
++		break;
++	case FEATURE_DEFAULT:
++		break;
++	default:
++		igt_assert(false);
++	}
++}
++
++static void check_feature(data_t *data)
++{
++	switch (data->feature) {
++	case FEATURE_NONE:
++		break;
++	case FEATURE_FBC:
++		igt_assert_f(intel_fbc_wait_until_enabled(data->drm_fd,
++							  data->pipe),
++			     "FBC still disabled");
++		break;
++	case FEATURE_PSR:
++		igt_assert_f(psr_wait_entry(data->debugfs_fd, PSR_MODE_1),
++			     "PSR still disabled\n");
++		break;
++	case FEATURE_DRRS:
++		igt_assert_f(intel_is_drrs_inactive(data->drm_fd, data->pipe),
++			     "DRRS INACTIVE\n");
++		break;
++	case FEATURE_DEFAULT:
++		break;
++	default:
++		igt_assert(false);
++	}
++}
++
++static void disable_features(data_t *data)
++{
++	intel_fbc_disable(data->drm_fd);
++	psr_disable(data->drm_fd, data->debugfs_fd);
++	intel_drrs_disable(data->drm_fd, data->pipe);
++}
++
++static void prepare(data_t *data)
++{
++	igt_plane_t *primary;
++
++	igt_skip_on(!check_support(data));
++
++	igt_display_reset(&data->display);
++
++	data->mode = igt_output_get_mode(data->output);
++
++	igt_output_set_pipe(data->output, data->pipe);
++
++	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
++					 IGT_PIPE_CRC_SOURCE_AUTO);
++
++	igt_create_color_fb(data->drm_fd, data->mode->hdisplay,
++			    data->mode->vdisplay, DRM_FORMAT_XRGB8888,
++			    DRM_FORMAT_MOD_LINEAR, 0.0, 1.0, 0.0,
++			    &data->fbs[0]);
++
++	igt_draw_rect_fb(data->drm_fd, data->bops, 0, &data->fbs[0],
++			 IGT_DRAW_RENDER, 0, 0, data->fbs[0].width,
++			 data->fbs[0].height, 0xFF);
++
++	primary = igt_output_get_plane_type(data->output,
++					    DRM_PLANE_TYPE_PRIMARY);
++
++	igt_plane_set_fb(primary, &data->fbs[0]);
++
++	if (data->feature != FEATURE_DEFAULT)
++		disable_features(data);
++
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
++
++	igt_pipe_crc_collect_crc(data->pipe_crc, &data->ref_crc);
++
++	igt_create_color_fb(data->drm_fd,  data->mode->hdisplay,
++			    data->mode->vdisplay, DRM_FORMAT_XRGB8888,
++			    DRM_FORMAT_MOD_LINEAR, 0.0, 1.0, 0.0,
++			    &data->fbs[1]);
++	igt_draw_rect_fb(data->drm_fd, data->bops, 0, &data->fbs[1],
++			 IGT_DRAW_RENDER, 0, 0, data->fbs[1].width,
++			 data->fbs[1].height, 0xFF);
++
++	igt_create_color_fb(data->drm_fd, data->mode->hdisplay,
++			     data->mode->vdisplay, DRM_FORMAT_XRGB8888,
++			    DRM_FORMAT_MOD_LINEAR, 0.0, 1.0, 0.0,
++			    &data->fbs[2]);
++
++	igt_plane_set_fb(primary, &data->fbs[2]);
++
++	enable_feature(data);
++
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
++
++	check_feature(data);
++}
++
++static void cleanup(data_t *data)
++{
++	igt_remove_fb(data->drm_fd, &data->fbs[0]);
++	igt_remove_fb(data->drm_fd, &data->fbs[1]);
++	igt_remove_fb(data->drm_fd, &data->fbs[2]);
++
++	igt_pipe_crc_free(data->pipe_crc);
++
++	igt_output_set_pipe(data->output, PIPE_NONE);
++
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
++}
++
++static void run_test(data_t *data)
++{
++	igt_crc_t crc;
++	struct intel_buf *src, *dst;
++	struct intel_bb *ibb;
++	igt_spin_t *spin;
++	uint32_t devid = intel_get_drm_devid(data->drm_fd);
++	igt_render_copyfunc_t rendercopy = igt_get_render_copyfunc(devid);
++	int r;
++
++	igt_skip_on(!rendercopy);
++
++	src = intel_buf_create_full(data->bops, data->fbs[1].gem_handle,
++				    data->fbs[1].width,
++				    data->fbs[1].height,
++				    igt_drm_format_to_bpp(data->fbs[1].drm_format),
++				    0,
++				    igt_fb_mod_to_tiling(data->fbs[1].modifier),
++				    0, 0, 0, is_xe_device(data->drm_fd) ?
++				    system_memory(data->drm_fd) : 0);
++	dst = intel_buf_create_full(data->bops, data->fbs[2].gem_handle,
++				    data->fbs[2].width,
++				    data->fbs[2].height,
++				    igt_drm_format_to_bpp(data->fbs[2].drm_format),
++				    0, igt_fb_mod_to_tiling(data->fbs[2].modifier),
++				    0, 0, 0, is_xe_device(data->drm_fd) ?
++				    system_memory(data->drm_fd) : 0);
++	ibb = intel_bb_create(data->drm_fd, PAGE_SIZE);
++
++	spin = igt_spin_new(data->drm_fd, .ahnd = ibb->allocator_handle);
++	igt_spin_set_timeout(spin, NSEC_PER_SEC);
++
++	rendercopy(ibb, src, 0, 0, data->fbs[2].width, data->fbs[2].height, dst, 0, 0);
++
++	/* Perfom dirtyfb right after initiating rendercopy */
++	r = drmModeDirtyFB(data->drm_fd, data->fbs[2].fb_id, NULL, 0);
++	igt_assert(r == 0 || r == -ENOSYS);
++
++	/* Ensure rendercopy is complete */
++	intel_bb_sync(ibb);
++
++	igt_pipe_crc_collect_crc(data->pipe_crc, &crc);
++	igt_assert_crc_equal(&crc, &data->ref_crc);
++
++	igt_spin_free(data->drm_fd, spin);
++	intel_bb_destroy(ibb);
++	intel_buf_destroy(src);
++	intel_buf_destroy(dst);
++}
++
++igt_main
++{
++	data_t data = {};
++
++	igt_fixture {
++		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
++		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
++		kmstest_set_vt_graphics_mode();
++
++		igt_display_require(&data.display, data.drm_fd);
++
++		data.bops = buf_ops_create(data.drm_fd);
++
++		igt_display_reset(&data.display);
++	}
++
++	igt_describe("Test dirtyFB ioctl");
++	igt_subtest_with_dynamic("dirtyfb-ioctl") {
++		data.pipe = PIPE_A;
++		for_each_valid_output_on_pipe(&data.display, data.pipe,
++					      data.output) {
++			for (data.feature = FEATURE_DEFAULT; data.feature > 0;
++			     data.feature = data.feature >> 1) {
++				igt_dynamic_f("%s-%s", feature_str(data.feature),
++					      igt_output_name(data.output)) {
++					prepare(&data);
++					run_test(&data);
++					cleanup(&data);
++				}
++			}
 +		}
 +	}
- 
- 	intel_detect_and_clear_missed_interrupts(fd);
- 
-@@ -182,42 +191,22 @@ static void wide(int fd, const intel_ctx_t *ctx, int ring_size,
- 	igt_until_timeout(timeout) {
- 		struct timespec start, now;
- 		for (unsigned e = 0; e < nengine; e++) {
--			uint64_t address;
--			int i;
--
- 			if (flags & CONTEXTS) {
- 				intel_ctx_destroy(fd, exec[e].ctx);
--				exec[e].ctx = intel_ctx_create(fd, &ctx->cfg);
-+				exec[e].ctx = intel_ctx_create(fd, cfg);
- 				exec[e].execbuf.rsvd1 = exec[e].ctx->id;
- 			}
- 
--			exec[e].reloc.presumed_offset = exec[e].exec[1].offset;
--			address = (exec[e].reloc.presumed_offset +
--				   exec[e].reloc.delta);
- 			gem_set_domain(fd, exec[e].exec[1].handle,
- 				       I915_GEM_DOMAIN_WC, I915_GEM_DOMAIN_WC);
-+			exec[e].cmd[0] = MI_ARB_CHECK;
- 
--			i = 0;
--			exec[e].cmd[i] = MI_BATCH_BUFFER_START;
--			if (gen >= 8) {
--				exec[e].cmd[i] |= 1 << 8 | 1;
--				exec[e].cmd[++i] = address;
--				exec[e].cmd[++i] = address >> 32;
--			} else if (gen >= 6) {
--				exec[e].cmd[i] |= 1 << 8;
--				exec[e].cmd[++i] = address;
--			} else {
--				exec[e].cmd[i] |= 2 << 6;
--				exec[e].cmd[++i] = address;
--			}
--
--			exec[e].exec[0] = obj[nengine*ring_size];
-+			exec[e].exec[0] = obj[nengine * (ring_size + 1)];
- 			gem_execbuf(fd, &exec[e].execbuf);
- 
- 			for (unsigned n = 0; n < ring_size; n++) {
- 				exec[e].exec[0] = exec[e].obj[n];
- 				gem_execbuf(fd, &exec[e].execbuf);
--				exec[e].obj[n].offset = exec[e].exec[0].offset;
- 			}
- 		}
- 
-@@ -225,10 +214,7 @@ static void wide(int fd, const intel_ctx_t *ctx, int ring_size,
- 
- 		clock_gettime(CLOCK_MONOTONIC, &start);
- 		for (unsigned e = 0; e < nengine; e++) {
--			execbuf.flags = (engines[e] |
--					 I915_EXEC_NO_RELOC |
--					 I915_EXEC_HANDLE_LUT);
--			execbuf.rsvd1 = ctx->id;
-+			execbuf.flags = engines[e];
- 			gem_execbuf(fd, &execbuf);
- 		}
- 		clock_gettime(CLOCK_MONOTONIC, &now);
-@@ -245,43 +231,40 @@ static void wide(int fd, const intel_ctx_t *ctx, int ring_size,
- 	igt_info("%s: %'lu cycles: %.3fus\n",
- 		 __func__, count, time*1e6 / count);
- 
--	gem_close(fd, obj[nengine*ring_size].handle);
-+	for (unsigned n = 0; n < nengine * (ring_size + 1) + 1; n++)
-+		gem_close(fd, obj[n].handle);
- 	free(obj);
- 
- 	for (unsigned e = 0; e < nengine; e++) {
- 		if (flags & CONTEXTS)
- 			intel_ctx_destroy(fd, exec[e].ctx);
- 
--		for (unsigned n = 0; n < ring_size; n++) {
--			gem_close(fd, exec[e].obj[n].handle);
--			put_offset(ahnd, exec[e].obj[n].handle);
--		}
--		free(exec[e].obj);
--
- 		munmap(exec[e].cmd, 4096);
--		gem_close(fd, exec[e].exec[1].handle);
--		put_offset(ahnd, exec[e].exec[1].handle);
-+		free(exec[e].obj);
- 	}
- 	free(exec);
--	put_ahnd(ahnd);
 +
-+	intel_ctx_destroy(fd, ctx);
-+	__gem_vm_destroy(fd, cfg->vm);
-+	cfg->vm = 0;
- }
- 
- #define TIMEOUT 20
- 
- igt_main
- {
-+	intel_ctx_cfg_t cfg;
- 	int ring_size = 0;
--	int device = -1;
--	const intel_ctx_t *ctx;
-+	igt_fd_t(device);
- 
- 	igt_fixture {
- 
- 		device = drm_open_driver(DRIVER_INTEL);
- 		igt_require_gem(device);
- 		gem_submission_print_method(device);
--		ctx = intel_ctx_create_all_physical(device);
-+		cfg = intel_ctx_cfg_all_physical(device);
- 
--		ring_size = gem_submission_measure(device, &ctx->cfg, ALL_ENGINES);
-+		ring_size = gem_submission_measure(device, &cfg, ALL_ENGINES);
- 
- 		igt_info("Ring size: %d batches\n", ring_size);
- 		igt_require(ring_size > 0);
-@@ -290,16 +273,14 @@ igt_main
- 	}
- 
- 	igt_subtest("wide-all")
--		wide(device, ctx, ring_size, TIMEOUT, 0);
-+		wide(device, &cfg, ring_size, TIMEOUT, 0);
- 
- 	igt_subtest("wide-contexts") {
- 		gem_require_contexts(device);
--		wide(device, ctx, ring_size, TIMEOUT, CONTEXTS);
-+		wide(device, &cfg, ring_size, TIMEOUT, CONTEXTS);
- 	}
- 
- 	igt_fixture {
- 		igt_stop_hang_detector();
--		intel_ctx_destroy(device, ctx);
--		drm_close_driver(device);
- 	}
- }
++	igt_fixture {
++		buf_ops_destroy(data.bops);
++		igt_display_fini(&data.display);
++		close(data.drm_fd);
++	}
++}
 -- 
 2.34.1
