@@ -1,25 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2F1F910E55A
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Aug 2023 15:13:14 +0000 (UTC)
-Received: from linux.intel.com (unknown [10.252.3.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 2414A580D98
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Aug 2023 08:13:13 -0700 (PDT)
-Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qU7Lb-005cPN-0Y
- for igt-dev@lists.freedesktop.org; Thu, 10 Aug 2023 17:13:11 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 34CC910E049
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Aug 2023 19:40:45 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 10 Aug 2023 17:10:30 +0200
-Message-ID: <20230810151303.1338975-2-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230810151303.1338975-1-mauro.chehab@linux.intel.com>
-References: <20230810151303.1338975-1-mauro.chehab@linux.intel.com>
+Date: Wed,  9 Aug 2023 01:10:32 +0530
+Message-Id: <20230808194036.1045626-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 1/2] xe_test_config.json: mark some
- fields are mandatory at subtest level
+Subject: [igt-dev] [PATCH i-g-t 0/4] dp-mst helpers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,59 +20,24 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+DP-MST helpers are created to remove duplicate code.
+Also, fix is added for excessive logging in deep-color
+test seen on mst setup.
 
-Some IGT Xe tests were added without proper documentation.
-Currently, igt_doc.py doesn't know what fields are mandatory or
-not, so it can't enforce it.
+v2: -addressed review comments from Bhanu
 
-Add a field to mark those.
+Swati Sharma (4):
+  lib/igt_kms: add helper to check if output is mst
+  lib/igt_kms: add helper for dp-mst connector id
+  tests/kms: use dp-mst helpers
+  tests/kms_color: skip deep-color test for mst
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- tests/xe/xe_test_config.json | 5 +++++
- 1 file changed, 5 insertions(+)
+ lib/igt_kms.c                  | 52 ++++++++++++++++++++++++++++++++++
+ lib/igt_kms.h                  |  2 ++
+ tests/kms_color.c              | 13 +++++++--
+ tests/kms_content_protection.c | 33 ++-------------------
+ tests/kms_display_modes.c      | 34 ++--------------------
+ 5 files changed, 69 insertions(+), 65 deletions(-)
 
-diff --git a/tests/xe/xe_test_config.json b/tests/xe/xe_test_config.json
-index 08c39de74384..8fb65d02d840 100644
---- a/tests/xe/xe_test_config.json
-+++ b/tests/xe/xe_test_config.json
-@@ -5,6 +5,7 @@
-     "fields": {
-         "Category": {
-             "_properties_": {
-+                "mandatory": true,
-                 "description": "Contains the major group for the tested functionality, being hardware, software or firmware"
-             },
-             "Mega feature": {
-@@ -13,10 +14,12 @@
-                 },
-                 "Sub-category": {
-                     "_properties_": {
-+                        "mandatory": true,
-                         "description": "Contains the the technical feature/functionality"
-                     },
-                     "Functionality": {
-                         "_properties_": {
-+                            "mandatory": true,
-                             "description": "Groups page table tests on buckets containg more detailed functionality"
-                         },
-                         "Feature": {
-@@ -27,6 +30,7 @@
-                     },
-                     "Run type": {
-                         "_properties_": {
-+                            "mandatory": true,
-                             "description": "Defines what category of testlist it belongs",
-                             "order": [
-                                 "boot",
-@@ -75,6 +79,7 @@
-         },
-         "Description" : {
-             "_properties_": {
-+                "mandatory": true,
-                 "description": "Provides a description for the test/subtest."
-             }
-         }
 -- 
-2.41.0
+2.25.1
