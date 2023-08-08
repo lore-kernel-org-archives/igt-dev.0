@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============8945036677126171781=="
+ boundary="===============5519000377097302412=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Anshuman Gupta" <anshuman.gupta@intel.com>
-Date: Tue, 08 Aug 2023 17:39:50 -0000
-Message-ID: <169151639015.13861.4051826399690271117@emeril.freedesktop.org>
-References: <20230808115913.1064831-1-anshuman.gupta@intel.com>
-In-Reply-To: <20230808115913.1064831-1-anshuman.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?b?4peLIENJLnhlQkFUOiBpbmZvIGZvciBBZGQgdnJhbV9k?=
- =?utf-8?q?3cold=5Fthreshold_test?=
+To: "Hogander, Jouni" <jouni.hogander@intel.com>
+Date: Tue, 08 Aug 2023 18:34:49 -0000
+Message-ID: <169151968944.13860.4125364092363429693@emeril.freedesktop.org>
+References: <20230808121751.971567-1-jouni.hogander@intel.com>
+In-Reply-To: <20230808121751.971567-1-jouni.hogander@intel.com>
+Subject: [igt-dev] =?utf-8?b?4peLIENJLnhlQkFUOiBpbmZvIGZvciB0ZXN0cy9rbXNf?=
+ =?utf-8?q?dirtyfb=3A_Add_missing_files_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,15 +23,15 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8945036677126171781==
+--===============5519000377097302412==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Add vram_d3cold_threshold test
-URL   : https://patchwork.freedesktop.org/series/122154/
+Series: tests/kms_dirtyfb: Add missing files (rev2)
+URL   : https://patchwork.freedesktop.org/series/122151/
 State : info
 
 == Summary ==
@@ -41,15 +41,14 @@ bat-pvc-2
 bat-atsm-2
 bat-dg2-oem2
 bat-adlp-7
-Missing hosts results[3]:
-bat-pvc-2
+Missing hosts results[2]:
 bat-dg2-oem2
 bat-adlp-7
-Results: [IGTPW_9539](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9539/index.html)
+Results: [IGTPW_9540](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9540/index.html)
 
 
 
---===============8945036677126171781==
+--===============5519000377097302412==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -69,8 +68,8 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Add vram_d3cold_threshold test</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122154/">https://patchwork.freedesktop.org/series/122154/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/kms_dirtyfb: Add missing files (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122151/">https://patchwork.freedesktop.org/series/122151/</a></td></tr>
 <tr><td><b>State:</b></td><td>info</td></tr>
 
 </table>
@@ -81,13 +80,12 @@ bat-pvc-2<br />
 bat-atsm-2<br />
 bat-dg2-oem2<br />
 bat-adlp-7<br />
-Missing hosts results[3]:<br />
-bat-pvc-2<br />
+Missing hosts results[2]:<br />
 bat-dg2-oem2<br />
 bat-adlp-7<br />
-Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9539/index.html">IGTPW_9539</a></p>
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9540/index.html">IGTPW_9540</a></p>
 
 </body>
 </html>
 
---===============8945036677126171781==--
+--===============5519000377097302412==--
