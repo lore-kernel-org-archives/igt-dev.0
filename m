@@ -1,21 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B8F4810E0CB
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Aug 2023 15:23:12 +0000 (UTC)
-From: "Dec, Katarzyna" <katarzyna.dec@intel.com>
-To: "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Tue, 8 Aug 2023 15:22:36 +0000
-Message-ID: <IA1PR11MB6097BD7206A314661253436BE20DA@IA1PR11MB6097.namprd11.prod.outlook.com>
-References: <20230808144913.600790-1-himal.prasad.ghimiray@intel.com>
- <20230808144913.600790-3-himal.prasad.ghimiray@intel.com>
-In-Reply-To: <20230808144913.600790-3-himal.prasad.ghimiray@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam11on2042.outbound.protection.outlook.com [40.107.223.42])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2163210E0CB
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Aug 2023 15:24:24 +0000 (UTC)
+From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Tue, 8 Aug 2023 11:24:19 -0400
+Message-ID: <20230808152419.1454608-2-aurabindo.pillai@amd.com>
+In-Reply-To: <20230808152419.1454608-1-aurabindo.pillai@amd.com>
+References: <20230808152419.1454608-1-aurabindo.pillai@amd.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 2/2] tests/xe_uevent: Update
- documentation fields.
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH v3 2/2] tests/amdgpu: Add test for MALL static
+ screen cache scanout
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,44 +25,221 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LGTM
-Reviewed-by: Katarzyna Dec <katarzyna.dec@intel.com>
+MALL stands for memory access at last level.
 
------Original Message-----
-From: Ghimiray, Himal Prasad <himal.prasad.ghimiray@intel.com>=20
-Sent: Tuesday, August 8, 2023 4:49 PM
-To: igt-dev@lists.freedesktop.org
-Cc: Ghimiray, Himal Prasad <himal.prasad.ghimiray@intel.com>; Dec, Katarzyn=
-a <katarzyna.dec@intel.com>; Kamil Konieczny <kamil.konieczny@linux.intel.c=
-om>; Kumar, Janga Rahul <janga.rahul.kumar@intel.com>
-Subject: [PATCH i-g-t v2 2/2] tests/xe_uevent: Update documentation fields.
+This test is to verify that the display scanout is triggered from MALL cache instead
+of GPU VRAM when the contents of the screen is idle for some time.
 
-- Update functionality and sub-category fields.
+Requires UMR userspace utility from
+https://gitlab.freedesktop.org/tomstdenis/umr to read MALL register
+value.
 
-v2
-- Fix compilation failure.
+This test commits a test pattern FB, sleeps for some
+time, and then reads back the MALL status register to check if display
+refresh from static screen is triggered.
 
-Cc: Katarzyna Dec <katarzyna.dec@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Changes in v2:
+
+Added possibility to skip the test on Asics that do not support MALL
+
+Changes in v3:
+
+Aded comment in source code about the MALL delay time necessary to
+trigger idle optimizations.
+
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
 ---
- tests/xe/xe_uevent.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tests/amdgpu/amd_mall.c  | 169 +++++++++++++++++++++++++++++++++++++++
+ tests/amdgpu/meson.build |   1 +
+ 2 files changed, 170 insertions(+)
+ create mode 100644 tests/amdgpu/amd_mall.c
 
-diff --git a/tests/xe/xe_uevent.c b/tests/xe/xe_uevent.c index 91b14990a..4=
-dc49057c 100644
---- a/tests/xe/xe_uevent.c
-+++ b/tests/xe/xe_uevent.c
-@@ -6,6 +6,8 @@
- /**
-  * TEST: cause fake gt reset failure and listen uevent from KMD
-  * SUBTEST:fake_reset_uevent_listener
-+ * Functionality: uevent
-+ * Sub-category: GT reset failure uevent
-  * Description:
-  *		Test creates uevent listener and causes fake reset failure for gt0
-  *		and returns success if uevent is sent by driver and listened by listen=
-er.
---
-2.25.1
+diff --git a/tests/amdgpu/amd_mall.c b/tests/amdgpu/amd_mall.c
+new file mode 100644
+index 000000000..c50d046ee
+--- /dev/null
++++ b/tests/amdgpu/amd_mall.c
+@@ -0,0 +1,169 @@
++/*
++ * Copyright 2023 Advanced Micro Devices, Inc.
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
++ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
++ * OTHER DEALINGS IN THE SOFTWARE.
++ */
++
++#include "igt.h"
++#include "igt_amd.h"
++#include "igt_core.h"
++#include <fcntl.h>
++
++IGT_TEST_DESCRIPTION("Test display refresh from MALL cache");
++
++/*
++ * Time needed in seconds for vblank irq count to reach 0.
++ * Typically about 5 seconds.
++ */
++
++#define MALL_SETTLE_DELAY 10
++
++/* Common test data. */
++typedef struct data {
++	igt_display_t display;
++	igt_plane_t *primary;
++	igt_output_t *output;
++	igt_pipe_t *pipe;
++	igt_pipe_crc_t *pipe_crc;
++	drmModeModeInfo *mode;
++	enum pipe pipe_id;
++	int fd;
++	int w;
++	int h;
++} data_t;
++
++struct line_check {
++	int found;
++	const char *substr;
++};
++
++/* Common test setup. */
++static void test_init(data_t *data)
++{
++	igt_display_t *display = &data->display;
++	bool mall_capable = false;
++
++	/* It doesn't matter which pipe we choose on amdpgu. */
++	data->pipe_id = PIPE_A;
++	data->pipe = &data->display.pipes[data->pipe_id];
++
++	igt_display_reset(display);
++
++	mall_capable =  igt_amd_is_mall_capable(data->fd);
++	igt_require_f(mall_capable, "Requires hardware that supports MALL cache\n");
++
++	/* find a connected output */
++	data->output = NULL;
++	for (int i=0; i < data->display.n_outputs; ++i) {
++		drmModeConnector *connector = data->display.outputs[i].config.connector;
++		if (connector->connection == DRM_MODE_CONNECTED) {
++			data->output = &data->display.outputs[i];
++		}
++	}
++	igt_require_f(data->output, "Requires a connected display\n");
++
++	data->mode = igt_output_get_mode(data->output);
++	igt_assert(data->mode);
++
++	data->primary =
++		igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
++
++	data->pipe_crc = igt_pipe_crc_new(data->fd, data->pipe_id,
++					  IGT_PIPE_CRC_SOURCE_AUTO);
++
++	igt_output_set_pipe(data->output, data->pipe_id);
++
++	data->w = data->mode->hdisplay;
++	data->h = data->mode->vdisplay;
++}
++
++/* Common test cleanup. */
++static void test_fini(data_t *data)
++{
++	igt_pipe_crc_free(data->pipe_crc);
++	igt_display_reset(&data->display);
++	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
++}
++
++static bool check_cmd_output(const char *line, void *data)
++{
++	struct line_check *check = data;
++
++	if (strstr(line, check->substr)) {
++		check->found++;
++	}
++
++	return false;
++}
++static void test_mall_ss(data_t *data)
++{
++	igt_display_t *display = &data->display;
++	igt_fb_t rfb;
++	int exec_ret;
++	struct line_check line = {0};
++
++	test_init(data);
++
++	igt_create_pattern_fb(data->fd, data->w, data->h, DRM_FORMAT_XRGB8888, 0, &rfb);
++	igt_plane_set_fb(data->primary, &rfb);
++	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++
++	sleep(MALL_SETTLE_DELAY);
++
++	igt_system_cmd(exec_ret, "umr -O bits -r *.*.HUBP0_HUBP_MALL_STATUS | grep MALL_IN_USE");
++
++	igt_skip_on_f(exec_ret != IGT_EXIT_SUCCESS, "Error running UMR\n");
++
++	line.substr = "1 (0x00000001)";
++	igt_log_buffer_inspect(check_cmd_output, &line);
++
++	igt_assert_eq(line.found, 1);
++
++	igt_remove_fb(data->fd, &rfb);
++	test_fini(data);
++}
++
++igt_main
++{
++	data_t data;
++
++	igt_skip_on_simulation();
++
++	memset(&data, 0, sizeof(data));
++
++	igt_fixture
++	{
++		data.fd = drm_open_driver_master(DRIVER_AMDGPU);
++
++		kmstest_set_vt_graphics_mode();
++
++		igt_display_require(&data.display, data.fd);
++		igt_require(data.display.is_atomic);
++		igt_display_require_output(&data.display);
++	}
++
++	igt_describe("Tests whether display scanout is triggered from MALL cache instead "
++		     "of GPU VRAM when screen contents are idle");
++	igt_subtest("static-screen") test_mall_ss(&data);
++
++	igt_fixture
++	{
++		igt_display_fini(&data.display);
++	}
++}
+diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+index 336acdb00..6c6166167 100644
+--- a/tests/amdgpu/meson.build
++++ b/tests/amdgpu/meson.build
+@@ -34,6 +34,7 @@ if libdrm_amdgpu.found()
+ 			  'amd_vcn',
+ 			  'amd_vm',
+ 			  'amd_vrr_range',
++			  'amd_mall',
+ 			]
+ 	amdgpu_deps += libdrm_amdgpu
+ endif
+-- 
+2.41.0
