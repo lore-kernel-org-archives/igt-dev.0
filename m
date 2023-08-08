@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0C73710E0F8
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Aug 2023 19:40:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AB59610E0F8
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Aug 2023 19:40:51 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  9 Aug 2023 01:10:34 +0530
-Message-Id: <20230808194036.1045626-3-swati2.sharma@intel.com>
+Date: Wed,  9 Aug 2023 01:10:36 +0530
+Message-Id: <20230808194036.1045626-5-swati2.sharma@intel.com>
 In-Reply-To: <20230808194036.1045626-1-swati2.sharma@intel.com>
 References: <20230808194036.1045626-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/4] lib/igt_kms: add helper for dp-mst
- connector id
+Subject: [igt-dev] [PATCH i-g-t 4/4] tests/kms_color: skip deep-color test
+ for mst
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,65 +23,47 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Helper is added which returns dp-mst connector id.
+In intel driver, for MST streams pipe_bpp is restricted to 8bpc.
+So, deep-color >= 10bpc will never work for DP-MST even if panel
+supports 10bpc.
 
-v2: -use connector_path instead of blob (Bhanu)
+Test checks panel supports 10bpc and tries to find such a
+combination of mode that can really work with 10bpc. So, with
+n1 modes in MST1 and n2 modes in MST2, test will try n1xn2 times
+and eventually SKIP. However, trying with these many combinations
+it is leading to excessive logging ultimately killing the test.
 
+Once KMD FIXME, is resolved this MST constraint can be removed.
+
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8615
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- lib/igt_kms.c | 31 +++++++++++++++++++++++++++++++
- lib/igt_kms.h |  1 +
- 2 files changed, 32 insertions(+)
+ tests/kms_color.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index b3a9375ee..0ae952c39 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -6060,3 +6060,34 @@ bool igt_check_output_is_dp_mst(int drm_fd, igt_output_t *output)
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index b15b9572c..4a410c039 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -847,8 +847,17 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
+ 		igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 10);
+ 		igt_output_set_pipe(output, p);
  
- 	return true;
- }
+-		if (is_intel_device(data->drm_fd) &&
+-		    !igt_max_bpc_constraint(&data->display, p, output, 10))
++		/*
++		 * In intel driver, for MST streams pipe_bpp is
++		 * restricted to 8bpc. So, deep-color >= 10bpc
++		 * will never work for DP-MST even if the panel
++		 * supports 10bpc. Once KMD FIXME, is resolved
++		 * this MST constraint can be removed.
++		 */
++		if (is_intel_device(data->drm_fd) && igt_check_output_is_dp_mst(data->drm_fd, output))
++			continue;
 +
-+static int parse_path_connector(char *connector_path)
-+{
-+	int connector_id;
-+	char *encoder;
-+
-+	encoder = strtok(connector_path, ":");
-+	igt_assert_f(!strcmp(encoder, "mst"), "PATH connector property expected to have 'mst'\n");
-+
-+	connector_id = atoi(strtok(NULL, "-"));
-+
-+	return connector_id;
-+}
-+
-+/**
-+ * igt_get_dp_mst_connector_id
-+ * @drmfd: Handle to open drm device
-+ * @output: Target output
-+ *
-+ * Returns: dp-mst connector id.
-+ */
-+int igt_get_dp_mst_connector_id(igt_output_t *output)
-+{
-+	int connector_id;
-+	char *connector_path;
-+
-+	connector_path = output->config.connector_path;
-+	connector_id = parse_path_connector(connector_path);
-+
-+	return connector_id;
-+}
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index d8d6ccfe5..e67de4ecd 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1014,5 +1014,6 @@ bool igt_check_bigjoiner_support(igt_display_t *display);
- bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode);
- bool i915_pipe_output_combo_valid(igt_display_t *display);
- bool igt_check_output_is_dp_mst(int drmfd, igt_output_t *output);
-+int igt_get_dp_mst_connector_id(igt_output_t *output);
++		if (is_intel_device(data->drm_fd) && !igt_max_bpc_constraint(&data->display, p, output, 10))
+ 			continue;
  
- #endif /* __IGT_KMS_H__ */
+ 		data->color_depth = 10;
 -- 
 2.25.1
