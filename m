@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from madras.collabora.co.uk (madras.collabora.co.uk
- [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A62A210E19D
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Aug 2023 21:04:48 +0000 (UTC)
-From: =?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>
-To: tvrtko.ursulin@intel.com, robdclark@chromium.org,
- kamil.konieczny@linux.intel.com, igt-dev@lists.freedesktop.org
-Date: Tue,  8 Aug 2023 22:03:31 +0100
-Message-ID: <20230808210437.977482-2-adrian.larumbe@collabora.com>
-In-Reply-To: <20230808210437.977482-1-adrian.larumbe@collabora.com>
-References: <20230808210437.977482-1-adrian.larumbe@collabora.com>
+Content-Type: multipart/alternative;
+ boundary="===============8456284532328783785=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 2/2] lib/igt_drm_fdinfo.c: refactor region array
- population code
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Dec, Katarzyna" <katarzyna.dec@intel.com>
+Date: Tue, 08 Aug 2023 21:26:49 -0000
+Message-ID: <169153000904.13861.7640815919422076743@emeril.freedesktop.org>
+References: <20230808144913.600790-1-himal.prasad.ghimiray@intel.com>
+In-Reply-To: <20230808144913.600790-1-himal.prasad.ghimiray@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_Add_documen?=
+ =?utf-8?q?tation_details_in_tests_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,113 +17,75 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: adrian.larumbe@collabora.com, kernel@collabora.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The same sequence of operations is being done every time a DRM memory
-region key:value pair is found in the DRM fdinfo file. Refactor them all
-into a macro to avoid code reduplication.
+--===============8456284532328783785==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Adrián Larumbe <adrian.larumbe@collabora.com>
----
- lib/igt_drm_fdinfo.c | 64 +++++++++++++-------------------------------
- 1 file changed, 19 insertions(+), 45 deletions(-)
+== Series Details ==
 
-diff --git a/lib/igt_drm_fdinfo.c b/lib/igt_drm_fdinfo.c
-index f5a5b8e19dc3..b72822894782 100644
---- a/lib/igt_drm_fdinfo.c
-+++ b/lib/igt_drm_fdinfo.c
-@@ -191,6 +191,19 @@ out:
- 	return found;
- }
- 
-+#define UPDATE_REGION(idx, region, val)					\
-+	do {								\
-+		if (idx >= 0) {						\
-+			info->region_mem[idx].region = val;		\
-+			if (!regions_found[idx]) {			\
-+				info->num_regions++;			\
-+				regions_found[idx] = true;		\
-+				if (idx > info->last_region_index)	\
-+					info->last_region_index = idx;	\
-+			}						\
-+		}							\
-+	} while (0)
-+
- unsigned int
- __igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info,
- 		       const char **name_map, unsigned int map_entries,
-@@ -245,63 +258,24 @@ __igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info,
- 		} else if (!strncmp(l, "drm-total-", 10)) {
- 			idx = parse_region(l, info, strlen("drm-total-"),
- 					   region_map, region_entries, &val);
--			if (idx >= 0) {
--				info->region_mem[idx].total = val;
--				if (!regions_found[idx]) {
--					info->num_regions++;
--					regions_found[idx] = true;
--					if (idx > info->last_region_index)
--						info->last_region_index = idx;
--				}
--			}
-+			UPDATE_REGION(idx, total, val);
- 		} else if (!strncmp(l, "drm-shared-", 11)) {
- 			idx = parse_region(l, info, strlen("drm-shared-"),
- 					   region_map, region_entries, &val);
--			if (idx >= 0) {
--				info->region_mem[idx].shared = val;
--				if (!regions_found[idx]) {
--					info->num_regions++;
--					regions_found[idx] = true;
--					if (idx > info->last_region_index)
--						info->last_region_index = idx;
--				}
--			}
-+			UPDATE_REGION(idx, shared, val);
-+
- 		} else if (!strncmp(l, "drm-resident-", 13)) {
- 			idx = parse_region(l, info, strlen("drm-resident-"),
- 					   region_map, region_entries, &val);
--			if (idx >= 0) {
--				info->region_mem[idx].resident = val;
--				if (!regions_found[idx]) {
--					info->num_regions++;
--					regions_found[idx] = true;
--					if (idx > info->last_region_index)
--						info->last_region_index = idx;
--				}
--			}
-+			UPDATE_REGION(idx, resident, val);
- 		} else if (!strncmp(l, "drm-purgeable-", 14)) {
- 			idx = parse_region(l, info, strlen("drm-purgeable-"),
- 					   region_map, region_entries, &val);
--			if (idx >= 0) {
--				info->region_mem[idx].purgeable = val;
--				if (!regions_found[idx]) {
--					info->num_regions++;
--					regions_found[idx] = true;
--					if (idx > info->last_region_index)
--						info->last_region_index = idx;
--				}
--			}
-+			UPDATE_REGION(idx, purgeable, val);
- 		} else if (!strncmp(l, "drm-active-", 11)) {
- 			idx = parse_region(l, info, strlen("drm-active-"),
- 					   region_map, region_entries, &val);
--			if (idx >= 0) {
--				info->region_mem[idx].active = val;
--				if (!regions_found[idx]) {
--					info->num_regions++;
--					regions_found[idx] = true;
--					if (idx > info->last_region_index)
--						info->last_region_index = idx;
--				}
--			}
-+			UPDATE_REGION(idx, active, val);
- 		}
- 	}
- 
--- 
-2.41.0
+Series: Add documentation details in tests (rev4)
+URL   : https://patchwork.freedesktop.org/series/122158/
+State : info
+
+== Summary ==
+
+Participating hosts:
+bat-pvc-2
+bat-atsm-2
+bat-dg2-oem2
+bat-adlp-7
+Missing hosts results[2]:
+bat-dg2-oem2
+bat-adlp-7
+Results: [IGTPW_9543](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9543/index.html)
+
+
+
+--===============8456284532328783785==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add documentation details in tests (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122158/">https://patchwork.freedesktop.org/series/122158/</a></td></tr>
+<tr><td><b>State:</b></td><td>info</td></tr>
+
+</table>
+
+
+    <p>Participating hosts:<br />
+bat-pvc-2<br />
+bat-atsm-2<br />
+bat-dg2-oem2<br />
+bat-adlp-7<br />
+Missing hosts results[2]:<br />
+bat-dg2-oem2<br />
+bat-adlp-7<br />
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9543/index.html">IGTPW_9543</a></p>
+
+</body>
+</html>
+
+--===============8456284532328783785==--
