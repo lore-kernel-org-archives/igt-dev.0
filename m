@@ -1,16 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============8150880991729271760=="
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com
+ [IPv6:2a00:1450:4864:20::32a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 43FD610E3AA
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Aug 2023 07:47:40 +0000 (UTC)
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-3fe1e44fd2bso43485e9.0
+ for <igt-dev@lists.freedesktop.org>; Tue, 08 Aug 2023 00:47:40 -0700 (PDT)
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-Date: Tue, 08 Aug 2023 07:20:39 -0000
-Message-ID: <169147923957.13861.15299480658267644642@emeril.freedesktop.org>
-References: <20230808044747.3274795-1-ankit.k.nautiyal@intel.com>
-In-Reply-To: <20230808044747.3274795-1-ankit.k.nautiyal@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_tests/i915/?=
- =?utf-8?q?kms=5Fdsc=5Fhelper=3A_Fix_helper_to_check_dsc_with_output=5Ffor?=
- =?utf-8?q?mat?=
+References: <20230807102352.4607-5-janusz.krzysztofik@linux.intel.com>
+ <20230807102352.4607-6-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20230807102352.4607-6-janusz.krzysztofik@linux.intel.com>
+From: David Gow <davidgow@google.com>
+Date: Tue, 8 Aug 2023 15:47:25 +0800
+Message-ID: <CABVgOS=_rZuP5CJm2_5H27GOkvEGsJ08=qUgj6sSEQPk5ZfGkA@mail.gmail.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature";
+ micalg=sha-256; boundary="000000000000bcb5470602649316"
+Subject: Re: [igt-dev] [PATCH v5 1/3] kunit: Report the count of test suites
+ in a module
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,69 +25,359 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: linux-kernel@vger.kernel.org, Rae Moar <rmoar@google.com>,
+ igt-dev@lists.freedesktop.org, Brendan Higgins <brendan.higgins@linux.dev>,
+ linux-kselftest@vger.kernel.org, intel-xe@lists.freedesktop.org,
+ kunit-dev@googlegroups.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8150880991729271760==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+--000000000000bcb5470602649316
+Content-Type: text/plain; charset="UTF-8"
 
-== Series Details ==
+On Mon, 7 Aug 2023 at 18:28, Janusz Krzysztofik
+<janusz.krzysztofik@linux.intel.com> wrote:
+>
+> According to KTAP specification[1], results should always start from a
+> header that provides a TAP protocol version, followed by a test plan with
+> a count of items to be executed.  That pattern should be followed at each
+> nesting level.  In the current implementation of the top-most, i.e., test
+> suite level, those rules apply only for test suites built into the kernel,
+> executed and reported on boot.  Results submitted to dmesg from kunit test
+> modules loaded later are missing those top-level headers.
+>
+> As a consequence, if a kunit test module provides more than one test suite
+> then, without the top level test plan, external tools that are parsing
+> dmesg for kunit test output are not able to tell how many test suites
+> should be expected and whether to continue parsing after complete output
+> from the first test suite is collected.
+>
+> Submit the top-level headers also from the kunit test module notifier
+> initialization callback.
+>
+> v3: Fix new name of a structure moved to kunit namespace not updated in
+>     executor_test functions (lkp@intel.com).
+> v2: Use kunit_exec_run_tests() (Mauro, Rae), but prevent it from
+>     emitting the headers when called on load of non-test modules.
+>
+> [1] https://docs.kernel.org/dev-tools/ktap.html#
+>
+> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Cc: Rae Moar <rmoar@google.com>
+> ---
 
-Series: tests/i915/kms_dsc_helper: Fix helper to check dsc with output_format
-URL   : https://patchwork.freedesktop.org/series/122137/
-State : info
+Thanks! This is a long overdue feature, and it seems to work well here.
 
-== Summary ==
+Reviewed-by: David Gow <davidgow@google.com>
 
-Participating hosts:
-bat-atsm-2
-bat-dg2-oem2
-bat-adlp-7
-Missing hosts results[0]:
-Results: [IGTPW_9537](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9537/index.html)
-
-
-
---===============8150880991729271760==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/i915/kms_dsc_helper: Fix helper to check dsc with output_format</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122137/">https://patchwork.freedesktop.org/series/122137/</a></td></tr>
-<tr><td><b>State:</b></td><td>info</td></tr>
-
-</table>
+Cheers,
+-- David
 
 
-    <p>Participating hosts:<br />
-bat-atsm-2<br />
-bat-dg2-oem2<br />
-bat-adlp-7<br />
-Missing hosts results[0]:<br />
-Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9537/index.html">IGTPW_9537</a></p>
+>  include/kunit/test.h      |  8 ++++++++
+>  lib/kunit/executor.c      | 42 +++++++++++++++++++++------------------
+>  lib/kunit/executor_test.c | 36 ++++++++++++++++++++++-----------
+>  lib/kunit/test.c          |  6 +++++-
+>  4 files changed, 60 insertions(+), 32 deletions(-)
+>
+> diff --git a/include/kunit/test.h b/include/kunit/test.h
+> index 011e0d6bb506c..3d002e6b252f2 100644
+> --- a/include/kunit/test.h
+> +++ b/include/kunit/test.h
+> @@ -256,6 +256,12 @@ struct kunit_suite {
+>         int suite_init_err;
+>  };
+>
+> +/* Stores an array of suites, end points one past the end */
+> +struct kunit_suite_set {
+> +       struct kunit_suite * const *start;
+> +       struct kunit_suite * const *end;
+> +};
+> +
+>  /**
+>   * struct kunit - represents a running instance of a test.
+>   *
+> @@ -317,6 +323,8 @@ int __kunit_test_suites_init(struct kunit_suite * const * const suites, int num_
+>
+>  void __kunit_test_suites_exit(struct kunit_suite **suites, int num_suites);
+>
+> +void kunit_exec_run_tests(struct kunit_suite_set *suite_set, bool builtin);
+> +
+>  #if IS_BUILTIN(CONFIG_KUNIT)
+>  int kunit_run_all_tests(void);
+>  #else
+> diff --git a/lib/kunit/executor.c b/lib/kunit/executor.c
+> index dc295150c4e57..5ef90c334eb0f 100644
+> --- a/lib/kunit/executor.c
+> +++ b/lib/kunit/executor.c
+> @@ -104,13 +104,7 @@ kunit_filter_glob_tests(const struct kunit_suite *const suite, const char *test_
+>  static char *kunit_shutdown;
+>  core_param(kunit_shutdown, kunit_shutdown, charp, 0644);
+>
+> -/* Stores an array of suites, end points one past the end */
+> -struct suite_set {
+> -       struct kunit_suite * const *start;
+> -       struct kunit_suite * const *end;
+> -};
+> -
+> -static void kunit_free_suite_set(struct suite_set suite_set)
+> +static void kunit_free_suite_set(struct kunit_suite_set suite_set)
+>  {
+>         struct kunit_suite * const *suites;
+>
+> @@ -119,16 +113,17 @@ static void kunit_free_suite_set(struct suite_set suite_set)
+>         kfree(suite_set.start);
+>  }
+>
+> -static struct suite_set kunit_filter_suites(const struct suite_set *suite_set,
+> -                                           const char *filter_glob,
+> -                                               char *filters,
+> -                                               char *filter_action,
+> -                                           int *err)
+> +static struct kunit_suite_set
+> +kunit_filter_suites(const struct kunit_suite_set *suite_set,
+> +                   const char *filter_glob,
+> +                   char *filters,
+> +                   char *filter_action,
+> +                   int *err)
+>  {
+>         int i, j, k;
+>         int filter_count = 0;
+>         struct kunit_suite **copy, **copy_start, *filtered_suite, *new_filtered_suite;
+> -       struct suite_set filtered = {NULL, NULL};
+> +       struct kunit_suite_set filtered = {NULL, NULL};
+>         struct kunit_glob_filter parsed_glob;
+>         struct kunit_attr_filter *parsed_filters = NULL;
+>
+> @@ -230,17 +225,24 @@ static void kunit_handle_shutdown(void)
+>
+>  }
+>
+> -static void kunit_exec_run_tests(struct suite_set *suite_set)
+> +#endif
+> +
+> +void kunit_exec_run_tests(struct kunit_suite_set *suite_set, bool builtin)
+>  {
+>         size_t num_suites = suite_set->end - suite_set->start;
+>
+> -       pr_info("KTAP version 1\n");
+> -       pr_info("1..%zu\n", num_suites);
+> +       if (builtin || num_suites) {
+> +               pr_info("KTAP version 1\n");
+> +               pr_info("1..%zu\n", num_suites);
+> +       }
+>
+>         __kunit_test_suites_init(suite_set->start, num_suites);
+>  }
+>
+> -static void kunit_exec_list_tests(struct suite_set *suite_set, bool include_attr)
+> +#if IS_BUILTIN(CONFIG_KUNIT)
+> +
+> +static void kunit_exec_list_tests(struct kunit_suite_set *suite_set,
+> +                                 bool include_attr)
+>  {
+>         struct kunit_suite * const *suites;
+>         struct kunit_case *test_case;
+> @@ -265,7 +267,9 @@ static void kunit_exec_list_tests(struct suite_set *suite_set, bool include_attr
+>
+>  int kunit_run_all_tests(void)
+>  {
+> -       struct suite_set suite_set = {__kunit_suites_start, __kunit_suites_end};
+> +       struct kunit_suite_set suite_set = {
+> +               __kunit_suites_start, __kunit_suites_end,
+> +       };
+>         int err = 0;
+>         if (!kunit_enabled()) {
+>                 pr_info("kunit: disabled\n");
+> @@ -282,7 +286,7 @@ int kunit_run_all_tests(void)
+>         }
+>
+>         if (!action_param)
+> -               kunit_exec_run_tests(&suite_set);
+> +               kunit_exec_run_tests(&suite_set, true);
+>         else if (strcmp(action_param, "list") == 0)
+>                 kunit_exec_list_tests(&suite_set, false);
+>         else if (strcmp(action_param, "list_attr") == 0)
+> diff --git a/lib/kunit/executor_test.c b/lib/kunit/executor_test.c
+> index 3e0a1c99cb4e8..4084071d0eb5b 100644
+> --- a/lib/kunit/executor_test.c
+> +++ b/lib/kunit/executor_test.c
+> @@ -43,8 +43,10 @@ static void parse_filter_test(struct kunit *test)
+>  static void filter_suites_test(struct kunit *test)
+>  {
+>         struct kunit_suite *subsuite[3] = {NULL, NULL};
+> -       struct suite_set suite_set = {.start = subsuite, .end = &subsuite[2]};
+> -       struct suite_set got;
+> +       struct kunit_suite_set suite_set = {
+> +               .start = subsuite, .end = &subsuite[2],
+> +       };
+> +       struct kunit_suite_set got;
+>         int err = 0;
+>
+>         subsuite[0] = alloc_fake_suite(test, "suite1", dummy_test_cases);
+> @@ -67,8 +69,10 @@ static void filter_suites_test(struct kunit *test)
+>  static void filter_suites_test_glob_test(struct kunit *test)
+>  {
+>         struct kunit_suite *subsuite[3] = {NULL, NULL};
+> -       struct suite_set suite_set = {.start = subsuite, .end = &subsuite[2]};
+> -       struct suite_set got;
+> +       struct kunit_suite_set suite_set = {
+> +               .start = subsuite, .end = &subsuite[2],
+> +       };
+> +       struct kunit_suite_set got;
+>         int err = 0;
+>
+>         subsuite[0] = alloc_fake_suite(test, "suite1", dummy_test_cases);
+> @@ -94,8 +98,10 @@ static void filter_suites_test_glob_test(struct kunit *test)
+>  static void filter_suites_to_empty_test(struct kunit *test)
+>  {
+>         struct kunit_suite *subsuite[3] = {NULL, NULL};
+> -       struct suite_set suite_set = {.start = subsuite, .end = &subsuite[2]};
+> -       struct suite_set got;
+> +       struct kunit_suite_set suite_set = {
+> +               .start = subsuite, .end = &subsuite[2],
+> +       };
+> +       struct kunit_suite_set got;
+>         int err = 0;
+>
+>         subsuite[0] = alloc_fake_suite(test, "suite1", dummy_test_cases);
+> @@ -144,8 +150,10 @@ static struct kunit_case dummy_attr_test_cases[] = {
+>  static void filter_attr_test(struct kunit *test)
+>  {
+>         struct kunit_suite *subsuite[3] = {NULL, NULL};
+> -       struct suite_set suite_set = {.start = subsuite, .end = &subsuite[2]};
+> -       struct suite_set got;
+> +       struct kunit_suite_set suite_set = {
+> +               .start = subsuite, .end = &subsuite[2],
+> +       };
+> +       struct kunit_suite_set got;
+>         int err = 0;
+>
+>         subsuite[0] = alloc_fake_suite(test, "normal_suite", dummy_attr_test_cases);
+> @@ -179,8 +187,10 @@ static void filter_attr_test(struct kunit *test)
+>  static void filter_attr_empty_test(struct kunit *test)
+>  {
+>         struct kunit_suite *subsuite[3] = {NULL, NULL};
+> -       struct suite_set suite_set = {.start = subsuite, .end = &subsuite[2]};
+> -       struct suite_set got;
+> +       struct kunit_suite_set suite_set = {
+> +               .start = subsuite, .end = &subsuite[2],
+> +       };
+> +       struct kunit_suite_set got;
+>         int err = 0;
+>
+>         subsuite[0] = alloc_fake_suite(test, "suite1", dummy_attr_test_cases);
+> @@ -197,8 +207,10 @@ static void filter_attr_empty_test(struct kunit *test)
+>  static void filter_attr_skip_test(struct kunit *test)
+>  {
+>         struct kunit_suite *subsuite[2] = {NULL};
+> -       struct suite_set suite_set = {.start = subsuite, .end = &subsuite[1]};
+> -       struct suite_set got;
+> +       struct kunit_suite_set suite_set = {
+> +               .start = subsuite, .end = &subsuite[1],
+> +       };
+> +       struct kunit_suite_set got;
+>         int err = 0;
+>
+>         subsuite[0] = alloc_fake_suite(test, "suite", dummy_attr_test_cases);
+> diff --git a/lib/kunit/test.c b/lib/kunit/test.c
+> index cb9797fa6303f..8b2808068497f 100644
+> --- a/lib/kunit/test.c
+> +++ b/lib/kunit/test.c
+> @@ -736,7 +736,11 @@ EXPORT_SYMBOL_GPL(__kunit_test_suites_exit);
+>  #ifdef CONFIG_MODULES
+>  static void kunit_module_init(struct module *mod)
+>  {
+> -       __kunit_test_suites_init(mod->kunit_suites, mod->num_kunit_suites);
+> +       struct kunit_suite_set suite_set = {
+> +               mod->kunit_suites, mod->kunit_suites + mod->num_kunit_suites,
+> +       };
+> +
+> +       kunit_exec_run_tests(&suite_set, false);
+>  }
+>
+>  static void kunit_module_exit(struct module *mod)
+> --
+> 2.41.0
+>
 
-</body>
-</html>
+--000000000000bcb5470602649316
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
---===============8150880991729271760==--
+MIIPnwYJKoZIhvcNAQcCoIIPkDCCD4wCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
+ggz5MIIEtjCCA56gAwIBAgIQeAMYYHb81ngUVR0WyMTzqzANBgkqhkiG9w0BAQsFADBMMSAwHgYD
+VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSMzETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
+AxMKR2xvYmFsU2lnbjAeFw0yMDA3MjgwMDAwMDBaFw0yOTAzMTgwMDAwMDBaMFQxCzAJBgNVBAYT
+AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSowKAYDVQQDEyFHbG9iYWxTaWduIEF0bGFz
+IFIzIFNNSU1FIENBIDIwMjAwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCvLe9xPU9W
+dpiHLAvX7kFnaFZPuJLey7LYaMO8P/xSngB9IN73mVc7YiLov12Fekdtn5kL8PjmDBEvTYmWsuQS
+6VBo3vdlqqXZ0M9eMkjcKqijrmDRleudEoPDzTumwQ18VB/3I+vbN039HIaRQ5x+NHGiPHVfk6Rx
+c6KAbYceyeqqfuJEcq23vhTdium/Bf5hHqYUhuJwnBQ+dAUcFndUKMJrth6lHeoifkbw2bv81zxJ
+I9cvIy516+oUekqiSFGfzAqByv41OrgLV4fLGCDH3yRh1tj7EtV3l2TngqtrDLUs5R+sWIItPa/4
+AJXB1Q3nGNl2tNjVpcSn0uJ7aFPbAgMBAAGjggGKMIIBhjAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0l
+BBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMEMBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFHzM
+CmjXouseLHIb0c1dlW+N+/JjMB8GA1UdIwQYMBaAFI/wS3+oLkUkrk1Q+mOai97i3Ru8MHsGCCsG
+AQUFBwEBBG8wbTAuBggrBgEFBQcwAYYiaHR0cDovL29jc3AyLmdsb2JhbHNpZ24uY29tL3Jvb3Ry
+MzA7BggrBgEFBQcwAoYvaHR0cDovL3NlY3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvcm9vdC1y
+My5jcnQwNgYDVR0fBC8wLTAroCmgJ4YlaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9yb290LXIz
+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
+9IGQSBx2i4m+hGXJpET+MEwGA1UdIARFMEMwQQYJKwYBBAGgMgEoMDQwMgYIKwYBBQUHAgEWJmh0
+dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAwGA1UdEwEB/wQCMAAwgZoGCCsG
+AQUFBwEBBIGNMIGKMD4GCCsGAQUFBzABhjJodHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9jYS9n
+c2F0bGFzcjNzbWltZWNhMjAyMDBIBggrBgEFBQcwAoY8aHR0cDovL3NlY3VyZS5nbG9iYWxzaWdu
+LmNvbS9jYWNlcnQvZ3NhdGxhc3Izc21pbWVjYTIwMjAuY3J0MB8GA1UdIwQYMBaAFHzMCmjXouse
+LHIb0c1dlW+N+/JjMEYGA1UdHwQ/MD0wO6A5oDeGNWh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20v
+Y2EvZ3NhdGxhc3Izc21pbWVjYTIwMjAuY3JsMA0GCSqGSIb3DQEBCwUAA4IBAQCRI3Z4cAidgFcv
+Usqdz765x6KMZSfg/WtFrYg8ewsP2NpCxVM2+EhPyyEQ0k0DhtzdtGoI/Ug+jdFDyCKB9P2+EPLh
+iMjMnFILp7Zs4r18ECHlvZuDZfH9m0BchXIxu5jLIuQyKUWrCRDZZEDNr510ZhhVfYSFPA8ms1nk
+jyzYFOHYQyv5IfML/3IBFKlON5OZa+V8EZYULYcNkp03DdWglafj7SXZ1/XgAbVYrC381UvrsYN8
+jndVvoa1GWwe+NVlIIK7Q3uAjV3qLEDQpaNPg1rr0oAn6YmvTccjVMqj2YNwN+RHhKNzgRGxY5ct
+FaN+8fXZhRhpv3bVbAWuPZXoMYICajCCAmYCAQEwaDBUMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQ
+R2xvYmFsU2lnbiBudi1zYTEqMCgGA1UEAxMhR2xvYmFsU2lnbiBBdGxhcyBSMyBTTUlNRSBDQSAy
+MDIwAhABAz5xDls09r2CKyYRqnNbMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCDW
+39fS2BpQs3E5K678v/zRuFglL4oO6SmXBbbmJPNl9zAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcB
+MBwGCSqGSIb3DQEJBTEPFw0yMzA4MDgwNzQ3MzhaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUD
+BAEqMAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsG
+CSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAAVaWQwqXwlGiQTKITakv
+eM1ycMAd1t6yAs6mIT7RGTCmYN4xYdNfu+10g4FpgC7J0nNv30qA7zZxHewl/muG/Yr9HldnepOb
+U4zANPRT4JZqZ8tmbmgSliT6SPLn5Pm2BYnwXlYVMbzuFiKp246LXSsJG8s9uz588OHo55XwqCKj
+tAr5BtvV/tGYDu5iOXbY5LOM/2PHwdBN3VNsF92UDKYwtcpTo+r1kNvmY7sPPI/DbN/0GA57SVNI
+njSY6/5vTgFvz5StS3BfjrEWiwoEn2av5F4XVaqOvY0KMedwIEfmAZ78QVZbfOecMxx1XG3j8I+X
+pDUw7wzIq3TNw/jNIg==
+--000000000000bcb5470602649316--
