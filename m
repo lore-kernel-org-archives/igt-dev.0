@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============0422573957909131401=="
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5723E10E084
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Aug 2023 01:00:23 +0000 (UTC)
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon,  7 Aug 2023 17:59:57 -0700
+Message-ID: <20230808010017.37819-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Rob Clark" <robdclark@gmail.com>
-Date: Tue, 08 Aug 2023 00:55:03 -0000
-Message-ID: <169145610325.13861.2447098029524828787@emeril.freedesktop.org>
-References: <20230807201245.214280-1-robdclark@gmail.com>
-In-Reply-To: <20230807201245.214280-1-robdclark@gmail.com>
-Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_series_star?=
- =?utf-8?q?ting_with_=5B1/2=5D_tests/kms=5Fplane=3A_Handle_hw_without_lega?=
- =?utf-8?q?cy_gamma_support?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 00/20] Extend i915/perf for testing Xe OA
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,71 +16,48 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0422573957909131401==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+* Share i915 perf code between i915 and Xe.
+* A few shortcuts, but hopefully sufficient for testing initial Xe OA
+  patches.
 
-== Series Details ==
+v2: s/xe_engine/xe_exec_queue/
 
-Series: series starting with [1/2] tests/kms_plane: Handle hw without legacy gamma support
-URL   : https://patchwork.freedesktop.org/series/122122/
-State : info
+Ashutosh Dixit (20):
+  drm-uapi/xe_drm: OA changes
+  lib/xe/xe_query: Add xe_gts interface
+  lib/i915/perf: Add xe_perf_for_fd
+  lib/i915/perf: Derive topology info for xe devices
+  tests/i915/perf: Track variables across i915 and xe
+  tests/i915/perf: Skip not ready tests for xe
+  tests/i915/perf: Fix i915_perf_revision for use with xe
+  tests/i915/perf: Fix sysfs functions for xe
+  tests/i915/perf: Fix test_i915_ref_count for xe
+  tests/i915/perf: Support only default_engine_group for xe
+  tests/i915/perf: Only iterate over render engines for xe
+  tests/i915/perf: Don't load module
+  tests/i915/perf: Move test_sysctl_defaults after the fixture
+  tests/i915/perf: Fix has_class_instance for xe
+  tests/i915/perf: Temporarily skip render_copy for xe
+  tests/i915/perf: Skip intel_ctx_create_all_physical for xe
+  tests/i915/perf: Skip __for_each_render_engine for xe
+  tests/i915/perf: Fix buf_map for xe
+  tests/i915/perf: Use engine_id in gen12_test_mi_rpc for xe
+  HAX: Add OA tests to xe-fast-feedback.testlist
 
-== Summary ==
+ include/drm-uapi/xe_drm.h                | 257 ++++++++++++++++++++++-
+ lib/i915/perf.c                          | 169 ++++++++++++++-
+ lib/i915/perf.h                          |   1 +
+ lib/meson.build                          |   2 +-
+ lib/xe/xe_query.c                        |   8 +
+ lib/xe/xe_query.h                        |   1 +
+ tests/i915/perf.c                        | 234 ++++++++++++++-------
+ tests/intel-ci/xe-fast-feedback.testlist |  43 ++++
+ tests/intel-ci/xe.blocklist.txt          |   1 -
+ 9 files changed, 637 insertions(+), 79 deletions(-)
 
-Participating hosts:
-bat-pvc-2
-bat-atsm-2
-bat-dg2-oem2
-bat-adlp-7
-Missing hosts results[0]:
-Results: [IGTPW_9533](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9533/index.html)
-
-
-
---===============0422573957909131401==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [1/2] tests/kms_plane: Handle hw without legacy gamma support</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122122/">https://patchwork.freedesktop.org/series/122122/</a></td></tr>
-<tr><td><b>State:</b></td><td>info</td></tr>
-
-</table>
-
-
-    <p>Participating hosts:<br />
-bat-pvc-2<br />
-bat-atsm-2<br />
-bat-dg2-oem2<br />
-bat-adlp-7<br />
-Missing hosts results[0]:<br />
-Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9533/index.html">IGTPW_9533</a></p>
-
-</body>
-</html>
-
---===============0422573957909131401==--
+-- 
+2.41.0
