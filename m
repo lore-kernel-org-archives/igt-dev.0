@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============8907732096319871098=="
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Sharma, Swati2" <swati2.sharma@intel.com>
-Date: Tue, 08 Aug 2023 15:49:43 -0000
-Message-ID: <169150978306.13860.13891037766069971236@emeril.freedesktop.org>
-References: <20230806164729.1016167-1-swati2.sharma@intel.com>
-In-Reply-To: <20230806164729.1016167-1-swati2.sharma@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_dp-mst_h?=
- =?utf-8?q?elpers?=
+To: "Hogander, Jouni" <jouni.hogander@intel.com>
+Date: Tue, 08 Aug 2023 15:51:31 -0000
+Message-ID: <169150989171.13861.513359914488137936@emeril.freedesktop.org>
+References: <20230808122759.978258-1-jouni.hogander@intel.com>
+In-Reply-To: <20230808122759.978258-1-jouni.hogander@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBzZXJp?=
+ =?utf-8?q?es_starting_with_=5Bi-g-t=2C1/3=5D_Revert_=22tests/kms=5Fdirtyf?=
+ =?utf-8?q?b=3A_Add_new_test_for_dirtyfb_ioctl=22?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,67 +24,30 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8907732096319871098==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
 == Series Details ==
 
-Series: dp-mst helpers
-URL   : https://patchwork.freedesktop.org/series/122070/
+Series: series starting with [i-g-t,1/3] Revert "tests/kms_dirtyfb: Add new test for dirtyfb ioctl"
+URL   : https://patchwork.freedesktop.org/series/122156/
 State : failure
 
 == Summary ==
 
-Participating hosts:
-bat-pvc-2
-bat-atsm-2
-bat-dg2-oem2
-bat-adlp-7
-Missing hosts results[1]:
-bat-dg2-oem2
-Results: [IGTPW_9522](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9522/index.html)
+Applying: Revert "tests/kms_dirtyfb: Add new test for dirtyfb ioctl"
+Using index info to reconstruct a base tree...
+M	tests/meson.build
+Falling back to patching base and 3-way merge...
+No changes -- Patch already applied.
+Applying: Revert "tests/i915/kms_frontbuffer_tracking: Split drrs into library"
+Using index info to reconstruct a base tree...
+M	lib/meson.build
+M	tests/i915/kms_frontbuffer_tracking.c
+Falling back to patching base and 3-way merge...
+Auto-merging tests/i915/kms_frontbuffer_tracking.c
+CONFLICT (content): Merge conflict in tests/i915/kms_frontbuffer_tracking.c
+Auto-merging lib/meson.build
+CONFLICT (content): Merge conflict in lib/meson.build
+Patch failed at 0002 Revert "tests/i915/kms_frontbuffer_tracking: Split drrs into library"
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
 
-
-
---===============8907732096319871098==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>dp-mst helpers</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122070/">https://patchwork.freedesktop.org/series/122070/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-</table>
-
-
-    <p>Participating hosts:<br />
-bat-pvc-2<br />
-bat-atsm-2<br />
-bat-dg2-oem2<br />
-bat-adlp-7<br />
-Missing hosts results[1]:<br />
-bat-dg2-oem2<br />
-Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9522/index.html">IGTPW_9522</a></p>
-
-</body>
-</html>
-
---===============8907732096319871098==--
