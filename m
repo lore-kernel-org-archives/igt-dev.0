@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0347D10E238
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Aug 2023 05:36:12 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A337510E232
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Aug 2023 05:38:37 +0000 (UTC)
 From: "B, Jeevan" <jeevan.b@intel.com>
 To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Wed, 9 Aug 2023 05:36:01 +0000
-Message-ID: <DM4PR11MB6312D8EED03F61D728B5D91B9012A@DM4PR11MB6312.namprd11.prod.outlook.com>
+Date: Wed, 9 Aug 2023 05:38:27 +0000
+Message-ID: <DM4PR11MB6312F22D0AE86C53F6BA4F899012A@DM4PR11MB6312.namprd11.prod.outlook.com>
 References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
- <20230629144910.3055377-43-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230629144910.3055377-43-bhanuprakash.modem@intel.com>
+ <20230629144910.3055377-22-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230629144910.3055377-22-bhanuprakash.modem@intel.com>
 Content-Language: en-US
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [V5 i-g-t 42/81] tests/kms_cursor_edge_walk: Document
+Subject: Re: [igt-dev] [V5 i-g-t 21/81] tests/i915/kms_flip_tiling: Document
  each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -30,10 +30,11 @@ List-ID: <igt-dev@lists.freedesktop.org>
 > -----Original Message-----
 > From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
 > Bhanuprakash Modem
-> Sent: Thursday, June 29, 2023 8:19 PM
+> Sent: Thursday, June 29, 2023 8:18 PM
 > To: igt-dev@lists.freedesktop.org
-> Subject: [igt-dev] [V5 i-g-t 42/81] tests/kms_cursor_edge_walk: Document
-> each subtest for testplan
+> Subject: [igt-dev] [V5 i-g-t 21/81] tests/i915/kms_flip_tiling: Document =
+each
+> subtest for testplan
 >=20
 > Add documentation for all kms tests which is used by IGT testplan
 > documentation.
@@ -43,46 +44,33 @@ LGTM.
 Reviewed-by: Jeevan B <jeevan.b@intel.com>
 
 > ---
->  tests/kms_cursor_edge_walk.c | 26 ++++++++++++++++++++++++++
->  1 file changed, 26 insertions(+)
+>  tests/i915/kms_flip_tiling.c | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
 >=20
-> diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
-> index 462b51e20..9010aa0f7 100644
-> --- a/tests/kms_cursor_edge_walk.c
-> +++ b/tests/kms_cursor_edge_walk.c
-> @@ -28,6 +28,32 @@
->  #include <stdbool.h>
->  #include <stdio.h>
+> diff --git a/tests/i915/kms_flip_tiling.c b/tests/i915/kms_flip_tiling.c =
+index
+> 02a5fe8e3..6cb85e9d3 100644
+> --- a/tests/i915/kms_flip_tiling.c
+> +++ b/tests/i915/kms_flip_tiling.c
+> @@ -30,6 +30,19 @@
 >  #include <string.h>
+>=20
+>  #include "igt.h"
 > +/**
-> + * TEST: kms cursor edge walk
+> + * TEST: kms flip tiling
 > + * Category: Display
-> + * Description: Exercise CHV pipe C cursor fail
+> + * Description: Test page flips and tiling scenarios
 > + *
-> + * SUBTEST: %s-%s
-> + * Description: Checking cursor size %arg[1] by walking %arg[2] of
-> +screen
+> + * SUBTEST: flip-change-tiling
+> + * Description: Check pageflip between modifiers
 > + * Driver requirement: any
-> + * Functionality: cursor
+> + * Functionality: kms_gem_interop
 > + * Mega feature: General Display Features
 > + * Run type: FULL
 > + * Test category: functionality test
-> + *
-> + * arg[1]:
-> + *
-> + * @128x128:          128x128
-> + * @256x256:          256x256
-> + * @64x64:            64x64
-> + *
-> + * arg[2]:
-> + *
-> + * @left-edge:        Left edge
-> + * @right-edge:       Right edge
-> + * @top-bottom:       Top to bottom
-> + * @top-edge:         Top edge
 > + */
 >=20
->  IGT_TEST_DESCRIPTION("Exercise CHV pipe C cursor fail");
+>  IGT_TEST_DESCRIPTION("Test page flips and tiling scenarios");
 >=20
 > --
 > 2.40.0
