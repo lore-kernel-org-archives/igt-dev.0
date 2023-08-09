@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1425A10E40A
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Aug 2023 08:08:59 +0000 (UTC)
-Date: Thu, 17 Aug 2023 10:08:54 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230817080854.3xocvqtt6gfi4y6h@kamilkon-desk1>
-References: <20230817054916.525796-1-bhanuprakash.modem@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============2539525282513765615=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230817054916.525796-1-bhanuprakash.modem@intel.com>
-Subject: Re: [igt-dev] [i-g-t] meson_options: Disable testplan by default
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 09 Aug 2023 16:55:44 -0000
+Message-ID: <169160014436.10297.1887634617502192953@emeril.freedesktop.org>
+References: <20230809144845.653231-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230809144845.653231-1-mauro.chehab@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4peLIENJLnhlQkFUOiBpbmZvIGZvciB4ZV9saXZlX2t0?=
+ =?utf-8?q?est=3A_remove_wa_from_the_testlist?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,38 +16,75 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Bhanuprakash,
+--===============2539525282513765615==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 2023-08-17 at 11:19:16 +0530, Bhanuprakash Modem wrote:
-> Disable testplan until we fully enabled it.
-> 
-> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+== Series Details ==
 
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Series: xe_live_ktest: remove wa from the testlist
+URL   : https://patchwork.freedesktop.org/series/122233/
+State : info
 
-> ---
->  meson_options.txt | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/meson_options.txt b/meson_options.txt
-> index 12b5bb3c3..63f30b123 100644
-> --- a/meson_options.txt
-> +++ b/meson_options.txt
-> @@ -22,6 +22,7 @@ option('man',
->  
->  option('testplan',
->         type : 'feature',
-> +       value : 'disabled',
->         description : 'Build testplan documentation pages in ReST and html')
->  
->  option('sphinx',
-> -- 
-> 2.40.0
-> 
+== Summary ==
+
+Participating hosts:
+bat-pvc-2
+bat-atsm-2
+bat-dg2-oem2
+bat-adlp-7
+Missing hosts results[1]:
+bat-pvc-2
+Results: [IGTPW_9556](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9556/index.html)
+
+
+
+--===============2539525282513765615==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>xe_live_ktest: remove wa from the testlist</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122233/">https://patchwork.freedesktop.org/series/122233/</a></td></tr>
+<tr><td><b>State:</b></td><td>info</td></tr>
+
+</table>
+
+
+    <p>Participating hosts:<br />
+bat-pvc-2<br />
+bat-atsm-2<br />
+bat-dg2-oem2<br />
+bat-adlp-7<br />
+Missing hosts results[1]:<br />
+bat-pvc-2<br />
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9556/index.html">IGTPW_9556</a></p>
+
+</body>
+</html>
+
+--===============2539525282513765615==--
 
