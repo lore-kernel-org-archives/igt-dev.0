@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4B36210E232
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Aug 2023 05:33:39 +0000 (UTC)
-Message-ID: <d543501b-1402-7f1f-06be-5f63212c5bff@intel.com>
-Date: Wed, 9 Aug 2023 11:03:30 +0530
-MIME-Version: 1.0
-Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0347D10E238
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Aug 2023 05:36:12 +0000 (UTC)
+From: "B, Jeevan" <jeevan.b@intel.com>
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Wed, 9 Aug 2023 05:36:01 +0000
+Message-ID: <DM4PR11MB6312D8EED03F61D728B5D91B9012A@DM4PR11MB6312.namprd11.prod.outlook.com>
 References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
- <20230629144910.3055377-54-bhanuprakash.modem@intel.com>
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20230629144910.3055377-54-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [V5 i-g-t 53/81] tests/kms_hdr: Document each subtest
- for testplan
+ <20230629144910.3055377-43-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230629144910.3055377-43-bhanuprakash.modem@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [V5 i-g-t 42/81] tests/kms_cursor_edge_walk: Document
+ each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,92 +27,62 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LGTM.
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
-
-On 29-Jun-23 8:18 PM, Bhanuprakash Modem wrote:
+> -----Original Message-----
+> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
+> Bhanuprakash Modem
+> Sent: Thursday, June 29, 2023 8:19 PM
+> To: igt-dev@lists.freedesktop.org
+> Subject: [igt-dev] [V5 i-g-t 42/81] tests/kms_cursor_edge_walk: Document
+> each subtest for testplan
+>=20
 > Add documentation for all kms tests which is used by IGT testplan
 > documentation.
-> 
+>=20
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+LGTM.
+Reviewed-by: Jeevan B <jeevan.b@intel.com>
+
 > ---
->   tests/kms_hdr.c | 52 +++++++++++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 52 insertions(+)
-> 
-> diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-> index ba19761e2..0442cc168 100644
-> --- a/tests/kms_hdr.c
-> +++ b/tests/kms_hdr.c
-> @@ -20,6 +20,11 @@
->    * OTHER DEALINGS IN THE SOFTWARE.
->    */
->   
+>  tests/kms_cursor_edge_walk.c | 26 ++++++++++++++++++++++++++
+>  1 file changed, 26 insertions(+)
+>=20
+> diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
+> index 462b51e20..9010aa0f7 100644
+> --- a/tests/kms_cursor_edge_walk.c
+> +++ b/tests/kms_cursor_edge_walk.c
+> @@ -28,6 +28,32 @@
+>  #include <stdbool.h>
+>  #include <stdio.h>
+>  #include <string.h>
 > +/**
-> + * TEST: kms hdr
+> + * TEST: kms cursor edge walk
 > + * Category: Display
-> + * Description: Test HDR metadata interfaces and bpc switch
-> + */
->   #include "igt.h"
->   #include <fcntl.h>
->   #include <termios.h>
-> @@ -208,6 +213,21 @@ static bool has_max_bpc(igt_output_t *output)
->   	       igt_output_get_prop(output, IGT_CONNECTOR_MAX_BPC);
->   }
->   
-> +/**
-> + * SUBTEST: bpc-%s
-> + * Description: Tests switching between different display output bpc modes %arg[1]
+> + * Description: Exercise CHV pipe C cursor fail
+> + *
+> + * SUBTEST: %s-%s
+> + * Description: Checking cursor size %arg[1] by walking %arg[2] of
+> +screen
 > + * Driver requirement: any
-> + * Functionality: kms_hdr
+> + * Functionality: cursor
 > + * Mega feature: General Display Features
 > + * Run type: FULL
 > + * Test category: functionality test
 > + *
 > + * arg[1]:
 > + *
-> + * @switch:              default
-> + * @switch-dpms:         with dpms
-> + * @switch-suspend:      with suspend
+> + * @128x128:          128x128
+> + * @256x256:          256x256
+> + * @64x64:            64x64
+> + *
+> + * arg[2]:
+> + *
+> + * @left-edge:        Left edge
+> + * @right-edge:       Right edge
+> + * @top-bottom:       Top to bottom
+> + * @top-edge:         Top edge
 > + */
->   static void test_bpc_switch(data_t *data, uint32_t flags)
->   {
->   	igt_display_t *display = &data->display;
-> @@ -561,6 +581,38 @@ static bool has_hdr(igt_output_t *output)
->   	return igt_output_has_prop(output, IGT_CONNECTOR_HDR_OUTPUT_METADATA);
->   }
->   
-> +/**
-> + * SUBTEST: invalid-hdr
-> + * Description: Test to ensure HDR is not enabled on non-HDR panel
-> + * Driver requirement: any
-> + * Functionality: kms_hdr
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: invalid-metadata-sizes
-> + * Description: Tests invalid HDR metadata sizes
-> + * Driver requirement: any
-> + * Functionality: kms_hdr
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: static-%s
-> + * Description: Tests %arg[1].
-> + * Driver requirement: any
-> + * Functionality: kms_hdr
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * arg[1]:
-> + *
-> + * @swap:                    swapping static HDR metadata
-> + * @toggle:                  entering and exiting HDR mode
-> + * @toggle-dpms:             static toggle with dpms
-> + * @toggle-suspend:          static toggle with suspend
-> + */
->   static void test_hdr(data_t *data, uint32_t flags)
->   {
->   	igt_display_t *display = &data->display;
+>=20
+>  IGT_TEST_DESCRIPTION("Exercise CHV pipe C cursor fail");
+>=20
+> --
+> 2.40.0
