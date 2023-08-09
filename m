@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6351710E25E
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Aug 2023 08:03:07 +0000 (UTC)
-Message-ID: <d4ee9b70-3ae8-fc05-4d34-f4db9ceaeae8@intel.com>
-Date: Wed, 9 Aug 2023 13:29:29 +0530
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1518910E25E
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Aug 2023 08:12:33 +0000 (UTC)
+Message-ID: <d94003bf-a92a-4ab1-4f93-afb43c7c23fb@intel.com>
+Date: Wed, 9 Aug 2023 13:42:27 +0530
 MIME-Version: 1.0
 Content-Language: en-US
 To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
  igt-dev@lists.freedesktop.org
 References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
- <20230629144910.3055377-71-bhanuprakash.modem@intel.com>
+ <20230629144910.3055377-80-bhanuprakash.modem@intel.com>
 From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20230629144910.3055377-71-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230629144910.3055377-80-bhanuprakash.modem@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [V5 i-g-t 70/81] tests/kms_scaling_modes: Document
- each subtest for testplan
+Subject: Re: [igt-dev] [V5 i-g-t 79/81] tests/kms_writeback: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,46 +27,68 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 29-Jun-23 8:18 PM, Bhanuprakash Modem wrote:
+LGTM
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+
+On 29-Jun-23 8:19 PM, Bhanuprakash Modem wrote:
 > Add documentation for all kms tests which is used by IGT testplan
 > documentation.
 > 
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > ---
->   tests/kms_scaling_modes.c | 20 ++++++++++++++++++++
->   1 file changed, 20 insertions(+)
+>   tests/kms_writeback.c | 42 ++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 42 insertions(+)
 > 
-> diff --git a/tests/kms_scaling_modes.c b/tests/kms_scaling_modes.c
-> index 31b806ae2..88e6471b8 100644
-> --- a/tests/kms_scaling_modes.c
-> +++ b/tests/kms_scaling_modes.c
-> @@ -25,6 +25,26 @@
->    */
->   
->   #include "igt.h"
+> diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
+> index db1f0884f..8c6f3fdc3 100644
+> --- a/tests/kms_writeback.c
+> +++ b/tests/kms_writeback.c
+> @@ -32,6 +32,48 @@
+>   #include "igt_core.h"
+>   #include "igt_fb.h"
+>   #include "sw_sync.h"
 > +/**
-> + * TEST: kms scaling modes
+> + * TEST: kms writeback
 > + * Category: Display
-> + * Description: Test display scaling modes
+> + * Description: This test validates the expected behavior of the writeback
+> + *              connectors feature by checking if the target device support
+> + *              writeback; it validates bad and good combination, check color
+> + *              format, and check the output result by using CRC.
 > + *
-> + * SUBTEST: scaling-mode-%s
-> + * Description: Tests %arg[1] display scaling mode
+> + * SUBTEST: writeback-check-output
+> + * Description: Check writeback output with CRC validation
 > + * Driver requirement: any
-> + * Functionality: plane
-
-scaling, eDP should be added in functionality.
-
+> + * Functionality: kms_core
 > + * Mega feature: General Display Features
 > + * Run type: FULL
 > + * Test category: functionality test
 > + *
-> + * arg[1]:
+> + * SUBTEST: writeback-fb-id
+> + * Description: Validate WRITEBACK_FB_ID with valid and invalid options
+> + * Driver requirement: any
+> + * Functionality: kms_core
+> + * Mega feature: General Display Features
+> + * Run type: FULL
+> + * Test category: functionality test
 > + *
-> + * @center:           center
-> + * @full:             full
-> + * @full-aspect:      full aspect
-> + * @none:             none (no scaling)
+> + * SUBTEST: writeback-invalid-parameters
+> + * Description: Writeback has a couple of parameters linked together(output
+> + *              framebuffer and fence); this test goes throughthe combination
+> + *              of possible bad options
+> + * Driver requirement: any
+> + * Functionality: kms_core
+> + * Mega feature: General Display Features
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * SUBTEST: writeback-pixel-formats
+> + * Description: Check the writeback format
+> + * Driver requirement: any
+> + * Functionality: kms_core
+> + * Mega feature: General Display Features
+> + * Run type: FULL
+> + * Test category: functionality test
 > + */
 >   
->   IGT_TEST_DESCRIPTION("Test display scaling modes");
->   
+>   IGT_TEST_DESCRIPTION(
+>      "This test validates the expected behavior of the writeback connectors "
