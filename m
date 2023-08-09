@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 761A810E245
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Aug 2023 08:15:12 +0000 (UTC)
-Message-ID: <c8399b7c-85d8-4f8f-b4f7-2e065814edd6@intel.com>
-Date: Wed, 9 Aug 2023 13:45:06 +0530
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C423110E25E
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Aug 2023 07:59:44 +0000 (UTC)
+Message-ID: <139a2a20-0ee0-5bf8-378b-686541b43a6b@intel.com>
+Date: Wed, 9 Aug 2023 13:26:14 +0530
 MIME-Version: 1.0
 Content-Language: en-US
 To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
  igt-dev@lists.freedesktop.org
 References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
- <20230629144910.3055377-15-bhanuprakash.modem@intel.com>
+ <20230629144910.3055377-58-bhanuprakash.modem@intel.com>
 From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20230629144910.3055377-15-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230629144910.3055377-58-bhanuprakash.modem@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [V5 i-g-t 14/81] tests/i915/kms_cdclk: Document each
- subtest for testplan
+Subject: Re: [igt-dev] [V5 i-g-t 57/81] tests/kms_panel_fitting: Document
+ each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,72 +27,47 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LGTM
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
-
 On 29-Jun-23 8:18 PM, Bhanuprakash Modem wrote:
 > Add documentation for all kms tests which is used by IGT testplan
 > documentation.
 > 
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > ---
->   tests/i915/kms_cdclk.c | 32 ++++++++++++++++++++++++++++++++
->   1 file changed, 32 insertions(+)
+>   tests/kms_panel_fitting.c | 21 +++++++++++++++++++++
+>   1 file changed, 21 insertions(+)
 > 
-> diff --git a/tests/i915/kms_cdclk.c b/tests/i915/kms_cdclk.c
-> index 40eca24f0..276cda4c4 100644
-> --- a/tests/i915/kms_cdclk.c
-> +++ b/tests/i915/kms_cdclk.c
-> @@ -24,6 +24,11 @@
->    *  Swati Sharma <swati2.sharma@intel.com>
->    */
->   
+> diff --git a/tests/kms_panel_fitting.c b/tests/kms_panel_fitting.c
+> index ae1c65928..82d34831a 100644
+> --- a/tests/kms_panel_fitting.c
+> +++ b/tests/kms_panel_fitting.c
+> @@ -26,6 +26,27 @@
+>   #include <limits.h>
+>   #include <math.h>
+>   #include <sys/stat.h>
 > +/**
-> + * TEST: kms cdclk
+> + * TEST: kms panel fitting
 > + * Category: Display
-> + * Description: Test cdclk features : crawling and squashing
-> + */
->   #include "igt.h"
->   
->   IGT_TEST_DESCRIPTION("Test cdclk features : crawling and squashing");
-> @@ -248,6 +253,16 @@ static void test_mode_transition(data_t *data, enum pipe pipe, igt_output_t *out
->   	igt_remove_fb(display->drm_fd, &fb);
->   }
->   
-> +/**
-> + * SUBTEST: mode-transition-all-outputs
-> + * Description: Mode transition (low to high) test to validate cdclk frequency
-> + *              change by simultaneous modesets on all pipes with valid outputs.
+> + * Description: Test display panel fitting
+> + *
+> + * SUBTEST: atomic-fastset
+> + * Description: Tests panel fitting usages with atomic fastset.
 > + * Driver requirement: any
-> + * Functionality: kms_core
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + */
->   static void test_mode_transition_on_all_outputs(data_t *data)
->   {
->   	igt_display_t *display = &data->display;
-> @@ -344,6 +359,23 @@ static void test_mode_transition_on_all_outputs(data_t *data)
->   	igt_remove_fb(data->drm_fd, &fb);
->   }
->   
-> +/**
-> + * SUBTEST: mode-transition
-> + * Description: Mode transition (low to high) test to validate cdclk frequency change.
-> + * Driver requirement: any
-> + * Functionality: kms_core
+> + * Functionality: eDP, panel_fitting
+
+scaling should also be added as part of functionality.
+
 > + * Mega feature: General Display Features
 > + * Run type: FULL
 > + * Test category: functionality test
 > + *
-> + * SUBTEST: plane-scaling
-> + * Description: Plane scaling test to validate cdclk frequency change.
+> + * SUBTEST: legacy
+> + * Description: Tests panel fitting usages with legacy style commit.
 > + * Driver requirement: any
-> + * Functionality: kms_core
+> + * Functionality: eDP, panel_fitting
 > + * Mega feature: General Display Features
 > + * Run type: FULL
 > + * Test category: functionality test
 > + */
->   static void run_cdclk_test(data_t *data, uint32_t flags)
->   {
->   	igt_display_t *display = &data->display;
+>   
+>   IGT_TEST_DESCRIPTION("Test display panel fitting");
+>   
