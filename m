@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============6779672149036139544=="
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com
+ [205.220.180.131])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 68B1F10E009
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Aug 2023 22:24:24 +0000 (UTC)
+From: Jessica Zhang <quic_jesszhan@quicinc.com>
+Date: Wed, 9 Aug 2023 15:24:02 -0700
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jessica Zhang" <quic_jesszhan@quicinc.com>
-Date: Wed, 09 Aug 2023 22:17:37 -0000
-Message-ID: <169161945799.10297.11599351521316677644@emeril.freedesktop.org>
-References: <20230809-kms-plane-fix-v1-1-bcbae991c5d4@quicinc.com>
-In-Reply-To: <20230809-kms-plane-fix-v1-1-bcbae991c5d4@quicinc.com>
-Subject: [igt-dev] =?utf-8?b?4peLIENJLnhlQkFUOiBpbmZvIGZvciB0ZXN0cy9rbXNf?=
- =?utf-8?q?plane=3A_Skip_plane_position_test_if_primary_ID_=3E_sprite_ID?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20230809-kms-plane-fix-v2-1-314eb86af313@quicinc.com>
+To: <igt-dev@lists.freedesktop.org>
+Subject: [igt-dev] [PATCH i-g-t v2] tests/kms_plane: Skip plane position
+ test if primary ID > sprite ID
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,73 +19,53 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============6779672149036139544==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Currently, IGT assumes that the primary plane in
+test_plane_position_with_output() will always be committed under the
+sprite plane. This will not always hold true if the plane_id of the
+primary plane is greater than the plane_id of the sprite as the DRM
+framework will calculate a higher normalized-zpos for planes with larger
+plane_id's if the zpos property isn't set [1].
 
-== Series Details ==
+Since this is a non-atomic test, we won't be able to explicitly set the
+zpos property. So instead, skip testing the plane position test output for
+cases where the primary plane ID is greater than the sprite plane ID
 
-Series: tests/kms_plane: Skip plane position test if primary ID > sprite ID
-URL   : https://patchwork.freedesktop.org/series/122245/
-State : info
+[1] https://elixir.bootlin.com/linux/v6.5-rc5/source/drivers/gpu/drm/drm_blend.c#L431
 
-== Summary ==
+Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+---
+Changes in v2:
+- Mention that plane-position-* is a non-atomic test
+---
+ tests/kms_plane.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Participating hosts:
-bat-pvc-2
-bat-atsm-2
-bat-dg2-oem2
-bat-adlp-7
-Missing hosts results[1]:
-bat-pvc-2
-Results: [IGTPW_9557](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9557/index.html)
+diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+index 67cff61d6cd1..15116b33b764 100644
+--- a/tests/kms_plane.c
++++ b/tests/kms_plane.c
+@@ -225,6 +225,12 @@ test_plane_position_with_output(data_t *data,
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 	sprite = igt_output_get_plane(output, plane);
+ 
++	if (primary->drm_plane->plane_id > sprite->drm_plane->plane_id) {
++		igt_info("primary plane ID (%d) > sprite plane ID (%d), skipping plane %d\n",
++				primary->drm_plane->plane_id, sprite->drm_plane->plane_id, plane);
++		return;
++	}
++
+ 	create_fb_for_mode(data, mode, &green, &rect, 1, &primary_fb);
+ 	igt_plane_set_fb(primary, &primary_fb);
+ 
 
+---
+base-commit: f12c2533941c9dfce43f455a02b7986605692b29
+change-id: 20230808-kms-plane-fix-8b4e489e78b1
 
-
---===============6779672149036139544==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_plane: Skip plane position test if primary ID &gt; sprite ID</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122245/">https://patchwork.freedesktop.org/series/122245/</a></td></tr>
-<tr><td><b>State:</b></td><td>info</td></tr>
-
-</table>
-
-
-    <p>Participating hosts:<br />
-bat-pvc-2<br />
-bat-atsm-2<br />
-bat-dg2-oem2<br />
-bat-adlp-7<br />
-Missing hosts results[1]:<br />
-bat-pvc-2<br />
-Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9557/index.html">IGTPW_9557</a></p>
-
-</body>
-</html>
-
---===============6779672149036139544==--
+Best regards,
+-- 
+Jessica Zhang <quic_jesszhan@quicinc.com>
