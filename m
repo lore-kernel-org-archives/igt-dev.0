@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AC25D10E232
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Aug 2023 04:54:46 +0000 (UTC)
-Message-ID: <6db693b0-4fb4-2b06-cb32-997c24fa0e02@intel.com>
-Date: Wed, 9 Aug 2023 10:24:40 +0530
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3EFC110E232
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Aug 2023 05:02:20 +0000 (UTC)
+From: Nidhi Gupta <nidhi1.gupta@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed,  9 Aug 2023 10:27:40 +0530
+Message-Id: <20230809045740.275175-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
- <20230629144910.3055377-32-bhanuprakash.modem@intel.com>
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20230629144910.3055377-32-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [V5 i-g-t 31/81] tests/kms_3d: Document each subtest
- for testplan
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v4] tests/kms_plane_cursor: Handle invalid
+ pipe in big joiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,44 +17,65 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LGTM
+If any pipe is invalid in big joiner currently test throws
+as skip for all the pipes as it is within the dynamic subtest
+block.
+Fixed in IGT by not executing the subtest if valid combo of pipe
+and output not found for big joiner and go on to check for the
+next pipe.
 
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+v2: Fix commit subject and message (Bhanu)
+    Fix nitpicks (Bhanu)
 
-On 29-Jun-23 8:18 PM, Bhanuprakash Modem wrote:
-> Add documentation for all kms tests which is used by IGT testplan
-> documentation.
-> 
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->   tests/kms_3d.c | 13 +++++++++++++
->   1 file changed, 13 insertions(+)
-> 
-> diff --git a/tests/kms_3d.c b/tests/kms_3d.c
-> index c7a9d42d2..df0b54b37 100644
-> --- a/tests/kms_3d.c
-> +++ b/tests/kms_3d.c
-> @@ -24,6 +24,19 @@
->   
->   #include "igt.h"
->   #include "xe/xe_query.h"
-> +/**
-> + * TEST: kms 3d
-> + * Category: Display
-> + * Description: Tests 3D mode setting.
-> + *
-> + * SUBTEST:
-> + * Description: Tests 3D mode setting.
-> + * Driver requirement: any
-> + * Functionality: stereoscopic
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + */
->   
->   IGT_TEST_DESCRIPTION("Tests 3D mode setting.");
->   
+v3: Have pipe/output valid combo before checking
+    for big joiner for the pipe. (Bhanu)
+
+v4: Move igt_display_reset (Bhanu)
+
+Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+---
+ tests/kms_plane_cursor.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
+index a7acb18e1..f7917ae57 100644
+--- a/tests/kms_plane_cursor.c
++++ b/tests/kms_plane_cursor.c
+@@ -77,17 +77,12 @@ static void test_init(data_t *data, enum pipe pipe_id, igt_output_t *output)
+ 	data->pipe = &data->display.pipes[data->pipe_id];
+ 	data->output = output;
+ 
+-	igt_display_reset(display);
+-
+ 	data->mode = igt_output_get_mode(data->output);
+ 
+ 	data->primary = igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
+ 	data->overlay = igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_OVERLAY);
+ 	data->cursor = igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_CURSOR);
+ 
+-	igt_output_set_pipe(data->output, data->pipe_id);
+-	igt_require(i915_pipe_output_combo_valid(display));
+-
+ 	igt_info("Using (pipe %s + %s) to run the subtest.\n",
+ 		 kmstest_pipe_name(data->pipe_id), igt_output_name(data->output));
+ 
+@@ -310,6 +305,12 @@ igt_main
+ 							     DRM_PLANE_TYPE_OVERLAY))
+ 					continue;
+ 
++				igt_display_reset(display);
++
++				igt_output_set_pipe(output, pipe);
++				if (!i915_pipe_output_combo_valid(&data.display))
++					continue;
++
+ 				test_init(&data, pipe, output);
+ 
+ 				for (j = 0; j < ARRAY_SIZE(cursor_sizes); j++) {
+-- 
+2.25.1
