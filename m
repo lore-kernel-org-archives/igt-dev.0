@@ -1,22 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3762A10E232
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Aug 2023 05:16:39 +0000 (UTC)
-Message-ID: <5b8c4875-439a-bdb4-4e91-f8a03beb0f9f@intel.com>
-Date: Wed, 9 Aug 2023 10:46:23 +0530
-To: "Gupta, Anshuman" <anshuman.gupta@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-References: <20230804103111.21214-1-riana.tauro@intel.com>
- <20230804103111.21214-5-riana.tauro@intel.com>
- <CY5PR11MB6211CD6AA06C9A8722F04C85950DA@CY5PR11MB6211.namprd11.prod.outlook.com>
-Content-Language: en-US
-From: Riana Tauro <riana.tauro@intel.com>
-In-Reply-To: <CY5PR11MB6211CD6AA06C9A8722F04C85950DA@CY5PR11MB6211.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9638810E232
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Aug 2023 05:18:19 +0000 (UTC)
+Message-ID: <8713d52c-56c1-d68c-4704-250511671c83@intel.com>
+Date: Wed, 9 Aug 2023 10:48:14 +0530
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 4/4] tests/xe: Add a test that
- validates residency during s2idle
+Content-Language: en-US
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
+ <20230629144910.3055377-53-bhanuprakash.modem@intel.com>
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20230629144910.3055377-53-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [V5 i-g-t 52/81] tests/kms_hdmi_inject: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,168 +23,55 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Nilawar, Badal" <badal.nilawar@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Anshuman
+LGTM.
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 
-Thanks for the review
-
-On 8/8/2023 2:05 PM, Gupta, Anshuman wrote:
+On 29-Jun-23 8:18 PM, Bhanuprakash Modem wrote:
+> Add documentation for all kms tests which is used by IGT testplan
+> documentation.
 > 
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>   tests/kms_hdmi_inject.c | 25 +++++++++++++++++++++++++
+>   1 file changed, 25 insertions(+)
 > 
->> -----Original Message-----
->> From: Tauro, Riana <riana.tauro@intel.com>
->> Sent: Friday, August 4, 2023 4:01 PM
->> To: igt-dev@lists.freedesktop.org
->> Cc: Tauro, Riana <riana.tauro@intel.com>; Gupta, Anshuman
->> <anshuman.gupta@intel.com>; Dixit, Ashutosh <ashutosh.dixit@intel.com>;
->> Belgaumkar, Vinay <vinay.belgaumkar@intel.com>; Nilawar, Badal
->> <badal.nilawar@intel.com>; Sundaresan, Sujaritha
->> <sujaritha.sundaresan@intel.com>
->> Subject: [PATCH i-g-t v2 4/4] tests/xe: Add a test that validates residency during
->> s2idle
->>
->> During s2idle, the device is powered up and GT C6 enabled so we expect the
->> residency to increase across suspend.
->> Add a test that validates the residency over a s2idle cycle is within the threshold.
->>
->> v2: skip d3cold disable for igfx (Anshuman)
->>
->> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
->> ---
->>   tests/xe/xe_pm_residency.c | 56 ++++++++++++++++++++++++++++++++++----
->>   1 file changed, 51 insertions(+), 5 deletions(-)
->>
->> diff --git a/tests/xe/xe_pm_residency.c b/tests/xe/xe_pm_residency.c index
->> 4936de166..78d820aee 100644
->> --- a/tests/xe/xe_pm_residency.c
->> +++ b/tests/xe/xe_pm_residency.c
->> @@ -10,8 +10,10 @@
->>    * Functionality: GT C States
->>    * Test category: functionality test
->>    */
->> +#include <limits.h>
->>
->>   #include "igt.h"
->> +#include "igt_device.h"
->>   #include "igt_sysfs.h"
->>
->>   #include "xe/xe_query.h"
->> @@ -29,6 +31,11 @@ const double tolerance = 0.1;
->>   		     (tol) * 100.0, (tol) * 100.0, \
->>   		     (double)(ref))
->>
->> +enum test_type {
->> +	TEST_S2IDLE,
->> +	TEST_SLEEP,
-> How about TEST_IDLE ?
-Will change this
->> +};
->> +
->>   /**
->>    * SUBTEST: gt-c6-on-idle
->>    * Description: Validate GT C6 state on idle @@ -38,9 +45,22 @@ const double
->> tolerance = 0.1;
->>    * Description: basic residency test to validate idle residency
->>    *		measured over a time interval is within the tolerance
->>    * Run type: FULL
->> + *
->> + * SUBTEST: gt-c6-freeze
->> + * Description: Validate idle residency measured over suspend(s2idle)
->> + *              is within the tolerance
->> + * Run type: FULL
->>    */
->>   IGT_TEST_DESCRIPTION("Tests for gtidle properties");
->>
->> +static unsigned long walltime_ms(void)
->> +{
->> +	struct timespec ts;
->> +
->> +	clock_gettime(CLOCK_REALTIME, &ts);
->> +	return ts.tv_sec * 1000 + ts.tv_nsec / 1000000; }
->> +
->>   static unsigned int measured_usleep(unsigned int usec)  {
->>   	struct timespec ts = { };
->> @@ -69,15 +89,25 @@ static unsigned long read_idle_residency(int fd, int gt)
->>   	return residency;
->>   }
->>
->> -static void test_idle_residency(int fd, int gt)
->> +static void test_idle_residency(int fd, int gt, enum test_type flag)
->>   {
->>   	unsigned long elapsed_ms, residency_start, residency_end;
->>
->>   	igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 1), "GT not in C6\n");
->>
->> -	residency_start = read_idle_residency(fd, gt);
->> -	elapsed_ms = measured_usleep(SLEEP_DURATION * 1000) / 1000;
->> -	residency_end = read_idle_residency(fd, gt);
->> +	if (flag == TEST_S2IDLE) {
->> +		residency_start = read_idle_residency(fd, gt);
->> +		elapsed_ms -= walltime_ms();
->> +		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE,
->> SUSPEND_TEST_NONE);
->> +		elapsed_ms += walltime_ms();
->> +		residency_end = read_idle_residency(fd, gt);
->> +	}
->> +
->> +	if (flag == TEST_SLEEP) {
->> +		residency_start = read_idle_residency(fd, gt);
->> +		elapsed_ms = measured_usleep(SLEEP_DURATION * 1000) /
->> 1000;
->> +		residency_end = read_idle_residency(fd, gt);
->> +	}
->>
->>   	igt_info("Measured %lums of idle residency in %lums\n",
->>   		 residency_end - residency_start, elapsed_ms); @@ -88,6
->> +118,8 @@ static void test_idle_residency(int fd, int gt)  igt_main  {
->>   	int fd, gt;
-> Nit: Declare fd and gt after d3cold_allowed.
-Will fix this in the next revision
-
-Thanks
-Riana
-> Thanks,
-> Anshuman.
->> +	char pci_slot_name[NAME_MAX];
->> +	uint32_t d3cold_allowed;
->>
->>   	igt_fixture {
->>   		fd = drm_open_driver(DRIVER_XE);
->> @@ -99,10 +131,24 @@ igt_main
->>   		xe_for_each_gt(fd, gt)
->>   			igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 1),
->> "GT not in C6\n");
->>
->> +	igt_describe("Validate idle residency measured over suspend cycle is
->> within the tolerance");
->> +	igt_subtest("gt-c6-freeze") {
->> +		if (xe_has_vram(fd)) {
->> +			igt_device_get_pci_slot_name(fd, pci_slot_name);
->> +			igt_pm_get_d3cold_allowed(pci_slot_name,
->> &d3cold_allowed);
->> +			igt_pm_set_d3cold_allowed(pci_slot_name, 0);
->> +		}
->> +		xe_for_each_gt(fd, gt)
->> +			test_idle_residency(fd, gt, TEST_S2IDLE);
->> +
->> +		if (xe_has_vram(fd))
->> +			igt_pm_set_d3cold_allowed(pci_slot_name,
->> d3cold_allowed);
->> +	}
->> +
->>   	igt_describe("Validate idle residency measured over a time interval is
->> within the tolerance");
->>   	igt_subtest("idle-residency")
->>   		xe_for_each_gt(fd, gt)
->> -			test_idle_residency(fd, gt);
->> +			test_idle_residency(fd, gt, TEST_SLEEP);
->>
->>   	igt_fixture {
->>   		close(fd);
->> --
->> 2.40.0
-> 
+> diff --git a/tests/kms_hdmi_inject.c b/tests/kms_hdmi_inject.c
+> index 9aa5c59fc..436f34a8c 100644
+> --- a/tests/kms_hdmi_inject.c
+> +++ b/tests/kms_hdmi_inject.c
+> @@ -30,6 +30,31 @@
+>   #include "igt_edid.h"
+>   #include "igt_eld.h"
+>   #include "xe/xe_query.h"
+> +/**
+> + * TEST: kms hdmi inject
+> + * Category: Display
+> + * Description: Test that in-kernel EDID parsing is producing expected results
+> + *              by forcing a HDMI connector with a known EDID and checking that
+> + *              the metadata exposed to user space matches.
+> + *
+> + * SUBTEST: inject-4k
+> + * Description: Make sure that 4K modes exposed by DRM match the forced EDID and
+> + *              modesetting using it succeed.
+> + * Driver requirement: any
+> + * Functionality: force_connector
+> + * Mega feature: HDMI
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * SUBTEST: inject-audio
+> + * Description: Make sure that audio information exposed by ALSA match the forced
+> + *              EDID.
+> + * Driver requirement: any
+> + * Functionality: force_connector
+> + * Mega feature: Disply Audio
+> + * Run type: FULL
+> + * Test category: functionality test
+> + */
+>   
+>   #define HDISPLAY_4K	3840
+>   #define VDISPLAY_4K	2160
