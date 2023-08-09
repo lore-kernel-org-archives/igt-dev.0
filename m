@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============2281281083306120483=="
+From: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+To: intel-gfx@lists.freedesktop.org,
+	igt-dev@lists.freedesktop.org
+Date: Tue,  8 Aug 2023 17:50:14 -0700
+Message-Id: <20230809005014.3451790-1-vinay.belgaumkar@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Swati Sharma" <swati2.sharma@intel.com>
-Date: Wed, 09 Aug 2023 00:12:30 -0000
-Message-ID: <169153995088.10296.13994538623531618812@emeril.freedesktop.org>
-References: <20230808194036.1045626-1-swati2.sharma@intel.com>
-In-Reply-To: <20230808194036.1045626-1-swati2.sharma@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_dp-mst_help?=
- =?utf-8?q?ers_=28rev2=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/i915_pm_freq_api: Ignore zero
+ register value
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,77 +15,78 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2281281083306120483==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Register read for requested_freq can return 0 when system is
+in runtime_pm. Make allowance for this case.
 
-== Series Details ==
+Link: https://gitlab.freedesktop.org/drm/intel/issues/8736
+Link: https://gitlab.freedesktop.org/drm/intel/issues/8989
 
-Series: dp-mst helpers (rev2)
-URL   : https://patchwork.freedesktop.org/series/122070/
-State : info
+Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+---
+ tests/i915/i915_pm_freq_api.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-== Summary ==
-
-Participating hosts:
-bat-pvc-2
-bat-atsm-2
-bat-dg2-oem2
-bat-adlp-7
-Missing hosts results[3]:
-bat-pvc-2
-bat-dg2-oem2
-bat-adlp-7
-Results: [IGTPW_9545](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9545/index.html)
-
-
-
---===============2281281083306120483==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>dp-mst helpers (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122070/">https://patchwork.freedesktop.org/series/122070/</a></td></tr>
-<tr><td><b>State:</b></td><td>info</td></tr>
-
-</table>
-
-
-    <p>Participating hosts:<br />
-bat-pvc-2<br />
-bat-atsm-2<br />
-bat-dg2-oem2<br />
-bat-adlp-7<br />
-Missing hosts results[3]:<br />
-bat-pvc-2<br />
-bat-dg2-oem2<br />
-bat-adlp-7<br />
-Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9545/index.html">IGTPW_9545</a></p>
-
-</body>
-</html>
-
---===============2281281083306120483==--
+diff --git a/tests/i915/i915_pm_freq_api.c b/tests/i915/i915_pm_freq_api.c
+index cf21cc936..9c71411ee 100644
+--- a/tests/i915/i915_pm_freq_api.c
++++ b/tests/i915/i915_pm_freq_api.c
+@@ -88,6 +88,7 @@ static void test_freq_basic_api(int dirfd, int gt)
+ static void test_reset(int i915, int dirfd, int gt, int count)
+ {
+ 	uint32_t rpn = get_freq(dirfd, RPS_RPn_FREQ_MHZ);
++	uint32_t req_freq;
+ 	int fd;
+ 
+ 	for (int i = 0; i < count; i++) {
+@@ -95,14 +96,18 @@ static void test_reset(int i915, int dirfd, int gt, int count)
+ 		igt_assert(set_freq(dirfd, RPS_MIN_FREQ_MHZ, rpn) > 0);
+ 		igt_assert(set_freq(dirfd, RPS_MAX_FREQ_MHZ, rpn) > 0);
+ 		usleep(ACT_FREQ_LATENCY_US);
+-		igt_assert_eq(get_freq(dirfd, RPS_CUR_FREQ_MHZ), rpn);
++		req_freq = get_freq(dirfd, RPS_CUR_FREQ_MHZ);
++		if (req_freq)
++			igt_assert_eq(req_freq, rpn);
+ 
+ 		/* Manually trigger a GT reset */
+ 		fd = igt_debugfs_gt_open(i915, gt, "reset", O_WRONLY);
+ 		igt_require(fd >= 0);
+ 		igt_ignore_warn(write(fd, "1\n", 2));
+ 
+-		igt_assert_eq(get_freq(dirfd, RPS_CUR_FREQ_MHZ), rpn);
++		req_freq = get_freq(dirfd, RPS_CUR_FREQ_MHZ);
++		if (req_freq)
++			igt_assert_eq(req_freq, rpn);
+ 	}
+ 	close(fd);
+ }
+@@ -110,17 +115,22 @@ static void test_reset(int i915, int dirfd, int gt, int count)
+ static void test_suspend(int i915, int dirfd, int gt)
+ {
+ 	uint32_t rpn = get_freq(dirfd, RPS_RPn_FREQ_MHZ);
++	uint32_t req_freq;
+ 
+ 	igt_assert(set_freq(dirfd, RPS_MIN_FREQ_MHZ, rpn) > 0);
+ 	igt_assert(set_freq(dirfd, RPS_MAX_FREQ_MHZ, rpn) > 0);
+ 	usleep(ACT_FREQ_LATENCY_US);
+-	igt_assert_eq(get_freq(dirfd, RPS_CUR_FREQ_MHZ), rpn);
++	req_freq = get_freq(dirfd, RPS_CUR_FREQ_MHZ);
++	if (req_freq)
++		igt_assert_eq(req_freq, rpn);
+ 
+ 	/* Manually trigger a suspend */
+ 	igt_system_suspend_autoresume(SUSPEND_STATE_S3,
+ 				      SUSPEND_TEST_NONE);
+ 
+-	igt_assert_eq(get_freq(dirfd, RPS_CUR_FREQ_MHZ), rpn);
++	req_freq = get_freq(dirfd, RPS_CUR_FREQ_MHZ);
++	if (req_freq)
++		igt_assert_eq(req_freq, rpn);
+ }
+ 
+ int i915 = -1;
+-- 
+2.38.1
