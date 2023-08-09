@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 36FF710E092
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Aug 2023 12:17:36 +0000 (UTC)
-Message-ID: <1218b190-0ba4-a26b-201e-71ea7817083d@intel.com>
-Date: Wed, 9 Aug 2023 17:47:29 +0530
+Content-Type: multipart/alternative;
+ boundary="===============4039852456714290620=="
 MIME-Version: 1.0
-Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
- <20230629144910.3055377-68-bhanuprakash.modem@intel.com>
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20230629144910.3055377-68-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [V5 i-g-t 67/81] tests/kms_properties: Document each
- subtest for testplan
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Daniel Mrzyglod" <daniel.t.mrzyglod@intel.com>
+Date: Wed, 09 Aug 2023 12:26:59 -0000
+Message-ID: <169158401977.10294.5978343054339705927@emeril.freedesktop.org>
+References: <20230809094426.111590-1-daniel.t.mrzyglod@intel.com>
+In-Reply-To: <20230809094426.111590-1-daniel.t.mrzyglod@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_tests/intel?=
+ =?utf-8?q?-ci=3A_fix_xe-fast-feedback=2Etestlist?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,77 +17,73 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LGTM
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+--===============4039852456714290620==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 29-Jun-23 8:18 PM, Bhanuprakash Modem wrote:
-> Add documentation for all kms tests which is used by IGT testplan
-> documentation.
-> 
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->   tests/kms_properties.c | 40 ++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 40 insertions(+)
-> 
-> diff --git a/tests/kms_properties.c b/tests/kms_properties.c
-> index 8645808d1..197c72065 100644
-> --- a/tests/kms_properties.c
-> +++ b/tests/kms_properties.c
-> @@ -28,6 +28,31 @@
->   #include <stdio.h>
->   #include <string.h>
->   #include <time.h>
-> +/**
-> + * TEST: kms properties
-> + * Category: Display
-> + *
-> + * SUBTEST: %s-properties-%s
-> + * Description: Tests %arg[1] properties with %arg[2] commit
-> + * Driver requirement: any
-> + * Functionality: kms_core
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * arg[1]:
-> + *
-> + * @connector:       Connector
-> + * @crtc:            CRTC
-> + * @plane:           Plane
-> + * @invalid:         Invalid (connector/crtc/plane)
-> + *
-> + * arg[2]:
-> + *
-> + * @atomic:          atomic
-> + * @legacy:          legacy
-> + */
-> +
->   
->   struct additional_test {
->   	const char *name;
-> @@ -687,6 +712,21 @@ static void expect_no_props(int fd, uint32_t obj_type, uint32_t obj_id)
->   	igt_assert_neq(drmIoctl(fd, DRM_IOCTL_MODE_OBJ_GETPROPERTIES, &properties), 0);
->   }
->   
-> +/**
-> + * SUBTEST: get_properties-sanity-%s
-> + * Description: Test validates the properties of all planes, crtc and connectors
-> + *              with %arg[1] commit
-> + * Driver requirement: any
-> + * Functionality: kms_core
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * arg[1]:
-> + *
-> + * @atomic:          atomic
-> + * @non-atomic:      legacy
-> + */
->   static void get_prop_sanity(igt_display_t *display, bool atomic)
->   {
->   	int fd = display->drm_fd;
+== Series Details ==
+
+Series: tests/intel-ci: fix xe-fast-feedback.testlist
+URL   : https://patchwork.freedesktop.org/series/122213/
+State : info
+
+== Summary ==
+
+Participating hosts:
+bat-pvc-2
+bat-atsm-2
+bat-dg2-oem2
+bat-adlp-7
+Missing hosts results[1]:
+bat-pvc-2
+Results: [IGTPW_9553](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9553/index.html)
+
+
+
+--===============4039852456714290620==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel-ci: fix xe-fast-feedback.testlist</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122213/">https://patchwork.freedesktop.org/series/122213/</a></td></tr>
+<tr><td><b>State:</b></td><td>info</td></tr>
+
+</table>
+
+
+    <p>Participating hosts:<br />
+bat-pvc-2<br />
+bat-atsm-2<br />
+bat-dg2-oem2<br />
+bat-adlp-7<br />
+Missing hosts results[1]:<br />
+bat-pvc-2<br />
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9553/index.html">IGTPW_9553</a></p>
+
+</body>
+</html>
+
+--===============4039852456714290620==--
