@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B387D10E405
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Aug 2023 08:56:53 +0000 (UTC)
-Message-ID: <7e0032f0-9c6b-10c1-bb05-d1493d8f9623@intel.com>
-Date: Wed, 9 Aug 2023 14:26:48 +0530
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
- <20230629144910.3055377-70-bhanuprakash.modem@intel.com>
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20230629144910.3055377-70-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [V5 i-g-t 69/81] tests/kms_rotation_crc: Document
- each subtest for testplan
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Jouni_H=C3=B6gander?= <jouni.hogander@intel.com>
+Date: Wed, 09 Aug 2023 09:01:22 -0000
+Message-ID: <169157168206.10296.1582107588608084852@emeril.freedesktop.org>
+References: <20230809083345.1759961-1-jouni.hogander@intel.com>
+In-Reply-To: <20230809083345.1759961-1-jouni.hogander@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_T?=
+ =?utf-8?q?estcases_for_dirtyfb_ioctl_=28rev9=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,183 +17,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+== Series Details ==
 
-On 29-Jun-23 8:18 PM, Bhanuprakash Modem wrote:
-> Add documentation for all kms tests which is used by IGT testplan
-> documentation.
-> 
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->   tests/kms_rotation_crc.c | 130 +++++++++++++++++++++++++++++++++++++++
->   1 file changed, 130 insertions(+)
-> 
-> diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
-> index 5ad04407d..6009afe95 100644
-> --- a/tests/kms_rotation_crc.c
-> +++ b/tests/kms_rotation_crc.c
-> @@ -22,6 +22,11 @@
->    *
->    */
->   
-> +/**
-> + * TEST: kms rotation crc
-> + * Category: Display
-> + * Description: Tests different rotations with different planes & formats
-> + */
->   #include "igt.h"
->   #include "igt_vec.h"
->   #include <math.h>
-> @@ -474,6 +479,97 @@ static bool test_format(data_t *data,
->   	return true;
->   }
->   
-> +/**
-> + * SUBTEST: %s-rotation-180
-> + * Description: Rotation test with 180 degree for %arg[1] planes
-> + * Driver requirement: any
-> + * Functionality: rotation
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * arg[1]:
-> + *
-> + * @primary:    primary
-> + * @sprite:     sprite
-> + * @cursor:     cursor
-> + */
-> +
-> +/**
-> + * SUBTEST: %s-rotation-%d
-> + * Description: Rotation test with %arg[2] degree for %arg[1] planes of gen9+
-> + * Driver requirement: any
-> + * Functionality: rotation
+Series: Testcases for dirtyfb ioctl (rev9)
+URL   : https://patchwork.freedesktop.org/series/116130/
+State : warning
 
-Should we add plane in functionality too?
-Same with other subtests.
+== Summary ==
 
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * arg[1]:
-> + *
-> + * @primary:    primary
-> + * @sprite:     sprite
-> + *
-> + * arg[2].values: 90, 270
-> + */
-> +
-> +/**
-> + * SUBTEST: bad-%s
-> + * Description: Checking unsupported %arg[1] for gen9+ with 90 degree of rotation
-> + * Driver requirement: any
-> + * Functionality: rotation
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * arg[1]:
-> + *
-> + * @pixel-format:       pixel format
-> + * @tiling:             tiling
-> + */
-> +
-> +/**
-> + * SUBTEST: primary-%s-tiled-reflect-x-%d
-> + * Description: Test for %arg[1] & %arg[2] degree rotation on primary plane
-> + * Driver requirement: any
-> + * Functionality: rotation
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * arg[1]:
-> + *
-> + * @4:      4 tiling
-> + * @x:      x tiling
-> + * @y:      y tiling
-> + * @yf:     yf tiling
-> + *
-> + * arg[2].values: 0, 180
-> + */
-> +
-> +/**
-> + * SUBTEST: primary-%s-tiled-reflect-x-%d
-> + * Description: Test for %arg[1] & %arg[2] degree rotation on primary plane
-> + * Driver requirement: any
-> + * Functionality: rotation
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * arg[1]:
-> + *
-> + * @y:      y tiling
-> + * @yf:     yf tiling
-> + *
-> + * arg[2].values: 90, 270
-> + *
-> + * SUBTEST: sprite-rotation-90-pos-100-0
-> + * Description: Rotation test with 90 degree for a plane of gen9+ with given position
-> + * Driver requirement: any
-> + * Functionality: rotation
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + */
->   static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_format)
->   {
->   	igt_display_t *display = &data->display;
-> @@ -792,6 +888,31 @@ static bool reusecrcfromlastround(planeinfos p[2], int lastroundp1format,
->   
->   	return true;
->   }
-> +
-> +/**
-> + * SUBTEST: multiplane-rotation
-> + * Description: Rotation test on both planes by making them fully visible
-> + * Driver requirement: any
-> + * Functionality: rotation
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: multiplane-rotation-cropping-%s
-> + * Description: Rotation test on both planes by cropping left/%arg[1] corner of
-> + *              primary plane and right/%arg[1] corner of sprite plane
-> + * Driver requirement: any
-> + * Functionality: rotation
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * arg[1]:
-> + *
-> + * @bottom:   bottom
-> + * @top:      top
-> + */
-> +
->   /*
->    * Here is pipe parameter which is now used only for first pipe.
->    * It is left here if this test ever was wanted to be run on
-> @@ -993,6 +1114,15 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
->   	igt_require_f(found, "No valid pipe/output combo found.\n");
->   }
->   
-> +/**
-> + * SUBTEST: exhaust-fences
-> + * Description: This test intends to check for fence leaks exhaustively
-> + * Driver requirement: i915
-> + * Functionality: rotation
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + */
->   static void test_plane_rotation_exhaust_fences(data_t *data,
->   					       enum pipe pipe,
->   					       igt_output_t *output,
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/956386 for the overview.
+
+containers:igt has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/46985415):
+  Downloading artifacts for build:tests-fedora (46985400)...
+  Downloading artifacts from coordinator... ok        host=gitlab.freedesktop.org id=46985400 responseStatus=200 OK token=64_7kjsm
+  section_end:1691571392:download_artifacts
+  section_start:1691571392:step_script
+  Executing "step_script" stage of the job script
+  Using docker image sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176 for registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 with digest registry.freedesktop.org/wayland/ci-templates/buildah@sha256:7dbcf22cd2c1c7d49db0dc7b4ab207c3d6a4a09bd81cc3b71a688d3727d8749f ...
+  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh
+  Checking if the user of the pipeline is allowed...
+  Checking if the job's project is part of a well-known group...
+  Thank you for contributing to freedesktop.org
+  $ podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  Login Succeeded!
+  $ .gitlab-ci/pull-or-rebuild.sh igt Dockerfile igt
+  Error: could not get runtime: error configuring CNI network plugin: could not create new watcher too many open files
+  section_end:1691571393:step_script
+  section_start:1691571393:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1691571394:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/956386
