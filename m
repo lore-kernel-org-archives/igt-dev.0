@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8EF2E10E23F
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Aug 2023 07:01:37 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BE0A010E240
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Aug 2023 07:01:39 +0000 (UTC)
 From: Riana Tauro <riana.tauro@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  9 Aug 2023 12:36:35 +0530
-Message-Id: <20230809070640.270414-1-riana.tauro@intel.com>
+Date: Wed,  9 Aug 2023 12:36:36 +0530
+Message-Id: <20230809070640.270414-2-riana.tauro@intel.com>
+In-Reply-To: <20230809070640.270414-1-riana.tauro@intel.com>
+References: <20230809070640.270414-1-riana.tauro@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 0/5] Modify igt_pm functions and add GT
- C6 freeze test
+Subject: [igt-dev] [PATCH i-g-t v3 1/5] lib/igt_device: Add a function to
+ get the pci slot name
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,33 +24,71 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-1) Modify igt_pm d3cold_allowed get/set tests
-2) Change i915 suspend and xe pm tests to use the igt_pm
-   d3cold_allowed functions
-3) Add a test to validate residency across s2idle
+The existing d3cold_allowed get/set functions in igt_pm uses
+igt_device_card as a function argument. Xe tests cannot use
+this function as they use pci_device.
+To have a common library function for both i915 and xe, use a
+common parameter between both igt_device_card and
+pci_device ie.pci_slot_name.
 
-Rev2: Add justification for change in commit message
-      Skip disabling d3cold_allowed for igfx
+Add a helper function to get this pci slot name.
 
-Rev3: change test flag enum
-      assert if pci_slot_name is NULL
+v2: Add justification for change in commit message (Anshuman)
+v3: assert if pci_slot_name is NULL (Anshuman)
 
-Riana Tauro (5):
-  lib/igt_device: Add a function to get the pci slot name
-  lib/igt_pm: change d3cold_allowed function parameters
-  tests/xe: use igt_pm library functions
-  tests/xe: Add a test that validates residency during s2idle
-  HAX: Add gt-c6-freeze to xe-fast-feedback.testlist
+Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
+---
+ lib/igt_device.c | 22 ++++++++++++++++++++++
+ lib/igt_device.h |  1 +
+ 2 files changed, 23 insertions(+)
 
- lib/igt_device.c                         | 22 ++++++++++
- lib/igt_device.h                         |  1 +
- lib/igt_pm.c                             | 22 +++++-----
- lib/igt_pm.h                             |  4 +-
- tests/i915/i915_suspend.c                |  8 ++--
- tests/intel-ci/xe-fast-feedback.testlist |  1 +
- tests/xe/xe_pm.c                         | 43 +++---------------
- tests/xe/xe_pm_residency.c               | 56 +++++++++++++++++++++---
- 8 files changed, 99 insertions(+), 58 deletions(-)
-
+diff --git a/lib/igt_device.c b/lib/igt_device.c
+index 49b771221..41007fba3 100644
+--- a/lib/igt_device.c
++++ b/lib/igt_device.c
+@@ -23,6 +23,7 @@
+  */
+ #include <sys/types.h>
+ #include <fcntl.h>
++#include <limits.h>
+ 
+ #include <sys/stat.h>
+ #ifdef __linux__
+@@ -287,3 +288,24 @@ igt_device_get_pci_root_port(int fd)
+ 
+ 	return prev;
+ }
++
++/**
++ * igt_device_get_pci_slot_name:
++ * @fd: the device.
++ * @pci_slot_name: pci slot name
++ *
++ * Looks up the graphics pci device using libpciaccess
++ * and gets the slot name
++ */
++void igt_device_get_pci_slot_name(int fd, char *pci_slot_name)
++{
++	struct pci_device *pci_dev;
++
++	pci_dev = __igt_device_get_pci_device(fd, 0);
++	igt_require(pci_dev);
++
++	snprintf(pci_slot_name, NAME_MAX, "%04x:%02x:%02x.%01x",
++		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
++
++	igt_assert(pci_slot_name);
++}
+diff --git a/lib/igt_device.h b/lib/igt_device.h
+index 800a0fcc3..dad7bb047 100644
+--- a/lib/igt_device.h
++++ b/lib/igt_device.h
+@@ -36,4 +36,5 @@ struct pci_device *igt_device_get_pci_device(int fd);
+ struct pci_device *__igt_device_get_pci_device(int fd, unsigned int vf_id);
+ struct pci_device *igt_device_get_pci_root_port(int fd);
+ 
++void igt_device_get_pci_slot_name(int fd, char *pci_slot_name);
+ #endif /* __IGT_DEVICE_H__ */
 -- 
 2.40.0
