@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9F37510E420
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Aug 2023 11:52:34 +0000 (UTC)
-Message-ID: <0b5da5c2-f4ec-87c4-de2d-eb15fd9fff36@intel.com>
-Date: Wed, 9 Aug 2023 17:22:29 +0530
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 33D9C10E41D
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Aug 2023 12:05:38 +0000 (UTC)
+Message-ID: <12e3ef42-fe49-8682-303a-8f4025b38930@intel.com>
+Date: Wed, 9 Aug 2023 17:35:19 +0530
 MIME-Version: 1.0
 Content-Language: en-US
 To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
  igt-dev@lists.freedesktop.org
 References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
- <20230629144910.3055377-24-bhanuprakash.modem@intel.com>
+ <20230629144910.3055377-40-bhanuprakash.modem@intel.com>
 From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20230629144910.3055377-24-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230629144910.3055377-40-bhanuprakash.modem@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [V5 i-g-t 23/81] tests/i915/kms_legacy_colorkey:
- Document each subtest for testplan
+Subject: Re: [igt-dev] [V5 i-g-t 39/81] tests/kms_concurrent: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,47 +27,52 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+LGTM
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+
 On 29-Jun-23 8:18 PM, Bhanuprakash Modem wrote:
 > Add documentation for all kms tests which is used by IGT testplan
 > documentation.
 > 
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > ---
->   tests/i915/kms_legacy_colorkey.c | 21 +++++++++++++++++++++
->   1 file changed, 21 insertions(+)
+>   tests/kms_concurrent.c | 26 ++++++++++++++++++++++++++
+>   1 file changed, 26 insertions(+)
 > 
-> diff --git a/tests/i915/kms_legacy_colorkey.c b/tests/i915/kms_legacy_colorkey.c
-> index 450cb2e3f..fb1952113 100644
-> --- a/tests/i915/kms_legacy_colorkey.c
-> +++ b/tests/i915/kms_legacy_colorkey.c
-> @@ -24,6 +24,27 @@
->   #include "igt.h"
->   #include <errno.h>
+> diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
+> index d915a98b2..f5fe321a2 100644
+> --- a/tests/kms_concurrent.c
+> +++ b/tests/kms_concurrent.c
+> @@ -24,6 +24,32 @@
 >   
+>   #include "igt.h"
+>   #include "drmtest.h"
 > +/**
-> + * TEST: kms legacy colorkey
+> + * TEST: kms concurrent
 > + * Category: Display
-> + * Description: Check that the legacy set colorkey ioctl only works on sprite planes.
+> + * Description: Test atomic mode setting concurrently with multiple planes and
+> + *              screen resolution
 > + *
-> + * SUBTEST: basic
-> + * Description: Test to check the legacy set colorkey ioctl only works for sprite planes.
-
-Test description and subtest description is same.
-
-> + * Driver requirement: i915
-> + * Functionality: xorg_xv
+> + * SUBTEST: pipe-%s
+> + * Description: Test atomic mode setting concurrently with multiple planes and
+> + *              screen resolution on %arg[1].
+> + * Driver requirement: any
+> + * Functionality: kms_core
 > + * Mega feature: General Display Features
 > + * Run type: FULL
 > + * Test category: functionality test
 > + *
-> + * SUBTEST: invalid-plane
-> + * Description: Check invalid plane id's, zero and outrange
-> + * Driver requirement: i915
-> + * Functionality: xorg_xv
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
+> + * arg[1]:
+> + *
+> + * @A:      pipe A
+> + * @B:      pipe B
+> + * @C:      pipe C
+> + * @D:      pipe D
+> + * @E:      pipe E
+> + * @F:      pipe F
+> + * @G:      pipe G
+> + * @H:      pipe H
 > + */
 >   
->   IGT_TEST_DESCRIPTION("Check that the legacy set colorkey ioctl only works on sprite planes.");
+>   IGT_TEST_DESCRIPTION("Test atomic mode setting concurrently with multiple planes and screen resolution");
 >   
