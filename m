@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D66F610E03D
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Aug 2023 09:44:40 +0000 (UTC)
-From: Daniel Mrzyglod <daniel.t.mrzyglod@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed,  9 Aug 2023 11:44:26 +0200
-Message-ID: <20230809094426.111590-1-daniel.t.mrzyglod@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============7040576205868360624=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/intel-ci: fix
- xe-fast-feedback.testlist
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Jouni_H=C3=B6gander?= <jouni.hogander@intel.com>
+Date: Wed, 09 Aug 2023 10:19:01 -0000
+Message-ID: <169157634130.10295.1354575132449551992@emeril.freedesktop.org>
+References: <20230809083345.1759961-1-jouni.hogander@intel.com>
+In-Reply-To: <20230809083345.1759961-1-jouni.hogander@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_Testcases_f?=
+ =?utf-8?q?or_dirtyfb_ioctl_=28rev9=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,40 +17,73 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: rodrigo.vivi@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This patch revert testplan change for igt@xe_query
-where query-engines which is a proper HW engine test.
+--===============7040576205868360624==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This patch fix the line which propably occured by mistake.
--igt@xe_query@query-engines
-+igt@xe_query@query-execqueues
+== Series Details ==
 
-Fixes: 481fe148f034 ("xe: Rename engine to exec_queue")
+Series: Testcases for dirtyfb ioctl (rev9)
+URL   : https://patchwork.freedesktop.org/series/116130/
+State : info
 
-Signed-off-by: Daniel Mrzyglod <daniel.t.mrzyglod@intel.com>
-Cc: francois.dugast@intel.com
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
----
- tests/intel-ci/xe-fast-feedback.testlist | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+== Summary ==
 
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index f7c6b62f5f08..a5ed24aa084b 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -147,7 +147,7 @@ igt@xe_pm_residency@gt-c6-on-idle
- igt@xe_prime_self_import@basic-with_one_bo
- igt@xe_prime_self_import@basic-with_fd_dup
- #igt@xe_prime_self_import@basic-llseek-size
--igt@xe_query@query-execqueues
-+igt@xe_query@query-engines
- igt@xe_query@query-mem-usage
- igt@xe_query@query-gts
- igt@xe_query@query-config
--- 
-2.41.0
+Participating hosts:
+bat-pvc-2
+bat-atsm-2
+bat-dg2-oem2
+bat-adlp-7
+Missing hosts results[1]:
+bat-pvc-2
+Results: [IGTPW_9551](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9551/index.html)
+
+
+
+--===============7040576205868360624==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Testcases for dirtyfb ioctl (rev9)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/116130/">https://patchwork.freedesktop.org/series/116130/</a></td></tr>
+<tr><td><b>State:</b></td><td>info</td></tr>
+
+</table>
+
+
+    <p>Participating hosts:<br />
+bat-pvc-2<br />
+bat-atsm-2<br />
+bat-dg2-oem2<br />
+bat-adlp-7<br />
+Missing hosts results[1]:<br />
+bat-pvc-2<br />
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9551/index.html">IGTPW_9551</a></p>
+
+</body>
+</html>
+
+--===============7040576205868360624==--
