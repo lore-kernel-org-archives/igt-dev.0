@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1FD0F10E0EB
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Aug 2023 03:23:28 +0000 (UTC)
-Message-ID: <84a3b967-2e3b-07d6-aa67-cfe0593a5a24@intel.com>
-Date: Wed, 9 Aug 2023 08:53:12 +0530
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9779B10E0EB
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Aug 2023 03:27:52 +0000 (UTC)
+Message-ID: <257b12f3-8fd8-6768-4a53-c29720750e04@intel.com>
+Date: Wed, 9 Aug 2023 08:57:34 +0530
 Content-Language: en-US
 To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
  <igt-dev@lists.freedesktop.org>
 References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
- <20230629144910.3055377-50-bhanuprakash.modem@intel.com>
+ <20230629144910.3055377-12-bhanuprakash.modem@intel.com>
 From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <20230629144910.3055377-50-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230629144910.3055377-12-bhanuprakash.modem@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [V5 i-g-t 49/81] tests/kms_flip_event_leak: Document
+Subject: Re: [igt-dev] [V5 i-g-t 11/81] tests/i915/kms_big_joiner: Document
  each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -33,46 +33,73 @@ On 6/29/2023 8:18 PM, Bhanuprakash Modem wrote:
 > documentation.
 >
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 > ---
->   tests/kms_flip_event_leak.c | 19 +++++++++++++++++++
->   1 file changed, 19 insertions(+)
+>   tests/i915/kms_big_joiner.c | 33 +++++++++++++++++++++++++++++++++
+>   1 file changed, 33 insertions(+)
 >
-> diff --git a/tests/kms_flip_event_leak.c b/tests/kms_flip_event_leak.c
-> index 423ce40df..a1b614771 100644
-> --- a/tests/kms_flip_event_leak.c
-> +++ b/tests/kms_flip_event_leak.c
-> @@ -30,6 +30,25 @@
+> diff --git a/tests/i915/kms_big_joiner.c b/tests/i915/kms_big_joiner.c
+> index 2ff23398a..c448853c5 100644
+> --- a/tests/i915/kms_big_joiner.c
+> +++ b/tests/i915/kms_big_joiner.c
+> @@ -24,6 +24,11 @@
+>    *  Karthik B S <karthik.b.s@intel.com>
+>    */
 >   
->   #include "igt_device.h"
->   #include "xe/xe_query.h"
 > +/**
-> + * TEST: kms flip event leak
+> + * TEST: kms big joiner
 > + * Category: Display
-> + * Description: This test tries to provoke the kernel into leaking a pending
-> + *              page flip event when the fd is closed before the flip has
-> + *              completed. The test itself won't fail even if the kernel leaks
-> + *              the event, but the resulting dmesg WARN will indicate a failure.
-> + *
-> + * SUBTEST: basic
-> + * Description: This test tries to provoke the kernel into leaking a pending
-> + *              page flip event when the fd is closed before the flip has
-> + *              completed. The test itself won't fail even if the kernel leaks
-> + *              the event, but the resulting dmesg WARN will indicate a failure.
-
-Hi,
-
-The test and subtest description are same? I understand that there is 
-only one subtest currently, but could the test description be updated to 
-be more a high level description may be?
-
-Thanks,
-Karthik.B.S
+> + * Description: Test big joiner
+> + */
+>   #include "igt.h"
+>   
+>   #define MAX_HDISPLAY_PER_PIPE 5120
+> @@ -40,6 +45,16 @@ typedef struct {
+>   	uint32_t big_joiner_output[2];
+>   } data_t;
+>   
+> +/**
+> + * SUBTEST: invalid-modeset
+> + * Description: Verify if the modeset on the adjoining pipe is rejected when
+> + *              the pipe is active with a big joiner modeset
 > + * Driver requirement: any
-> + * Functionality: kms_core
-> + * Mega feature: General Display Features
+> + * Functionality: 2p1p
+> + * Mega feature: Bigjoiner
 > + * Run type: FULL
 > + * Test category: functionality test
 > + */
+>   static void test_invalid_modeset(data_t *data)
+>   {
+>   	igt_output_t *output;
+> @@ -80,6 +95,15 @@ static void test_invalid_modeset(data_t *data)
+>   	igt_assert_lt(ret, 0);
+>   }
 >   
->   typedef struct {
->   	int drm_fd;
+> +/**
+> + * SUBTEST: basic
+> + * Description: Verify the basic modeset on big joiner mode on all pipes
+> + * Driver requirement: any
+> + * Functionality: 2p1p
+> + * Mega feature: Bigjoiner
+> + * Run type: FULL
+> + * Test category: functionality test
+> + */
+>   static void test_basic_modeset(data_t *data)
+>   {
+>   	drmModeModeInfo *mode;
+> @@ -118,6 +142,15 @@ static void test_basic_modeset(data_t *data)
+>   	igt_display_commit2(display, COMMIT_ATOMIC);
+>   }
+>   
+> +/**
+> + * SUBTEST: 2x-modeset
+> + * Description: Verify simultaneous modeset on 2 big joiner outputs
+> + * Driver requirement: any
+> + * Functionality: 2p1p
+> + * Mega feature: Bigjoiner
+> + * Run type: FULL
+> + * Test category: functionality test
+> + */
+>   static void test_dual_display(data_t *data)
+>   {
+>   	drmModeModeInfo *mode;
