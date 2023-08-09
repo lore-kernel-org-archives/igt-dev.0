@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============1016837681388485473=="
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F07A210E12A
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Aug 2023 03:51:00 +0000 (UTC)
+Message-ID: <9f3fb24b-8092-2412-3026-a6c0a126e623@intel.com>
+Date: Wed, 9 Aug 2023 09:20:40 +0530
+Content-Language: en-US
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
+ <20230629144910.3055377-41-bhanuprakash.modem@intel.com>
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <20230629144910.3055377-41-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Vinay Belgaumkar" <vinay.belgaumkar@intel.com>
-Date: Wed, 09 Aug 2023 03:44:41 -0000
-Message-ID: <169155268142.10297.17910837646962368835@emeril.freedesktop.org>
-References: <20230809005014.3451790-1-vinay.belgaumkar@intel.com>
-In-Reply-To: <20230809005014.3451790-1-vinay.belgaumkar@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_tests/i915?=
- =?utf-8?q?=5Fpm=5Ffreq=5Fapi=3A_Ignore_zero_register_value?=
+Subject: Re: [igt-dev] [V5 i-g-t 40/81] tests/kms_content_protection:
+ Document each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,75 +23,130 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1016837681388485473==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi,
 
-== Series Details ==
+On 6/29/2023 8:18 PM, Bhanuprakash Modem wrote:
+> Add documentation for all kms tests which is used by IGT testplan
+> documentation.
+>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>   tests/kms_content_protection.c | 81 ++++++++++++++++++++++++++++++++++
+>   1 file changed, 81 insertions(+)
+>
+> diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+> index 6cdf81a28..50929d8d5 100644
+> --- a/tests/kms_content_protection.c
+> +++ b/tests/kms_content_protection.c
+> @@ -22,6 +22,11 @@
+>    *
+>    */
+>   
+> +/**
+> + * TEST: kms content protection
+> + * Category: Display
+> + * Description: Test content protection (HDCP)
+> + */
+>   #include <poll.h>
+>   #include <fcntl.h>
+>   #include <sys/epoll.h>
+> @@ -485,6 +490,66 @@ test_fini(igt_output_t *output, enum igt_commit_style s)
+>   	igt_display_commit2(&data.display, s);
+>   }
+>   
+> +/**
+> + * SUBTEST: LIC
+> + * Description: Test for the integrity of link.
+> + * Driver requirement: any
+> + * Functionality: hdcp
+> + * Mega feature: HDCP
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * SUBTEST: content_type_change
+> + * Description: Test the content type change when the content protection already
+> + *              enabled
+> + * Driver requirement: any
+> + * Functionality: hdcp, hdcp2.2
+> + * Mega feature: HDCP
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * SUBTEST: mei_interface
+> + * Description: Test the teardown and rebuild of the interface between Intel
+> + *              and mei hdcp.
+> + * Driver requirement: any
+> + * Functionality: hdcp, hdcp2.2
 
-Series: tests/i915_pm_freq_api: Ignore zero register value
-URL   : https://patchwork.freedesktop.org/series/122187/
-State : info
+Since we're explicitly mentioning HDCP2.2, could/should the other 
+component be hdcp1.4 instead of just hdcp?
 
-== Summary ==
-
-Participating hosts:
-bat-pvc-2
-bat-atsm-2
-bat-dg2-oem2
-bat-adlp-7
-Missing hosts results[2]:
-bat-dg2-oem2
-bat-adlp-7
-Results: [IGTPW_9548](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9548/index.html)
-
-
-
---===============1016837681388485473==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/i915_pm_freq_api: Ignore zero register value</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122187/">https://patchwork.freedesktop.org/series/122187/</a></td></tr>
-<tr><td><b>State:</b></td><td>info</td></tr>
-
-</table>
-
-
-    <p>Participating hosts:<br />
-bat-pvc-2<br />
-bat-atsm-2<br />
-bat-dg2-oem2<br />
-bat-adlp-7<br />
-Missing hosts results[2]:<br />
-bat-dg2-oem2<br />
-bat-adlp-7<br />
-Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9548/index.html">IGTPW_9548</a></p>
-
-</body>
-</html>
-
---===============1016837681388485473==--
+Thanks,
+Karthik.B.S
+> + * Mega feature: HDCP
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * SUBTEST: srm
+> + * Description: This test writes the facsimile SRM into the /lib/firmware/ and
+> + *              check the kernel parsing of it by invoking the hdcp authentication.
+> + * Driver requirement: any
+> + * Functionality: hdcp
+> + * Mega feature: HDCP
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * SUBTEST: uevent
+> + * Description: Test to detect the HDCP status change when we are reading the
+> + *              uevent sent with the corresponding connector id and property id.
+> + * Driver requirement: any
+> + * Functionality: hdcp
+> + * Mega feature: HDCP
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * SUBTEST: %s
+> + * Description: Test content protection with %arg[1]
+> + * Driver requirement: any
+> + * Functionality: hdcp
+> + * Mega feature: HDCP
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * arg[1]:
+> + *
+> + * @atomic:         atomic modesetting
+> + * @atomic-dpms:    DPMS ON/OFF during atomic modesetting.
+> + * @legacy:         legacy style commit
+> + * @type1:          content type 1 that can be handled only through HDCP2.2.
+> + */
+>   static void
+>   test_content_protection(enum igt_commit_style s, int content_type)
+>   {
+> @@ -602,6 +667,22 @@ static void test_cp_lic_on_mst(igt_output_t *mst_outputs[], int valid_outputs, b
+>   	}
+>   }
+>   
+> +/**
+> + * SUBTEST: dp-mst-%s
+> + * Description: Test Content protection %arg[1] over DP MST.
+> + * Driver requirement: any
+> + * Functionality: hdcp
+> + * Mega feature: HDCP
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * arg[1]:
+> + *
+> + * @lic-type-0:   Type 0 with LIC
+> + * @lic-type-1:   Type 1 with LIC.
+> + * @type-0:       Type 0
+> + * @type-1:       Type 1
+> + */
+>   static void
+>   test_content_protection_mst(int content_type)
+>   {
