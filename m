@@ -1,23 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4803710E452
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Aug 2023 14:48:52 +0000 (UTC)
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.252.1.158])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 345D35808EF
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Aug 2023 07:48:51 -0700 (PDT)
-Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qTkUT-002k1I-0y
- for igt-dev@lists.freedesktop.org; Wed, 09 Aug 2023 16:48:49 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed,  9 Aug 2023 16:48:45 +0200
-Message-ID: <20230809144845.653231-1-mauro.chehab@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============6705374858034086763=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] xe_live_ktest: remove wa from the testlist
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Anshuman Gupta" <anshuman.gupta@intel.com>
+Date: Wed, 09 Aug 2023 15:02:15 -0000
+Message-ID: <169159333555.10294.9101414301833146514@emeril.freedesktop.org>
+References: <20230809130802.1182409-1-anshuman.gupta@intel.com>
+In-Reply-To: <20230809130802.1182409-1-anshuman.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?b?4peLIENJLnhlQkFUOiBpbmZvIGZvciB0ZXN0L3BlcmZf?=
+ =?utf-8?q?pmu=3A_Dump_drpc_on_C6_failure_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,34 +17,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+--===============6705374858034086763==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-The workaround selftest is not a live test. It is meant to run
-via kunit.py, as part of the driver-independent validation.
+== Series Details ==
 
-So, remove it from IGT.
+Series: test/perf_pmu: Dump drpc on C6 failure (rev2)
+URL   : https://patchwork.freedesktop.org/series/121728/
+State : info
 
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- tests/xe/xe_live_ktest.c | 1 -
- 1 file changed, 1 deletion(-)
+== Summary ==
 
-diff --git a/tests/xe/xe_live_ktest.c b/tests/xe/xe_live_ktest.c
-index f0cbf4f623bc..53cc8c186215 100644
---- a/tests/xe/xe_live_ktest.c
-+++ b/tests/xe/xe_live_ktest.c
-@@ -40,7 +40,6 @@ static const struct kunit_tests live_tests[] = {
- 	{ "xe_migrate_test",	"migrate" },
- 	{ "xe_pci_test",	"pci" },
- 	{ "xe_rtp_test",	"rtp" },
--	{ "xe_wa_test",		"wa" },
- };
- 
- igt_main
--- 
-2.41.0
+Participating hosts:
+bat-pvc-2
+bat-atsm-2
+bat-dg2-oem2
+bat-adlp-7
+Missing hosts results[0]:
+Results: [IGTPW_9555](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9555/index.html)
+
+
+
+--===============6705374858034086763==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>test/perf_pmu: Dump drpc on C6 failure (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/121728/">https://patchwork.freedesktop.org/series/121728/</a></td></tr>
+<tr><td><b>State:</b></td><td>info</td></tr>
+
+</table>
+
+
+    <p>Participating hosts:<br />
+bat-pvc-2<br />
+bat-atsm-2<br />
+bat-dg2-oem2<br />
+bat-adlp-7<br />
+Missing hosts results[0]:<br />
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9555/index.html">IGTPW_9555</a></p>
+
+</body>
+</html>
+
+--===============6705374858034086763==--
