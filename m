@@ -1,20 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1379A10E105
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Aug 2023 20:16:48 +0000 (UTC)
-Message-ID: <db4adaf0-5ab2-a751-2420-2d13c782e671@intel.com>
-Date: Thu, 10 Aug 2023 01:46:42 +0530
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com
+ [205.220.180.131])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EA6B510E10A
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Aug 2023 21:12:31 +0000 (UTC)
+From: Jessica Zhang <quic_jesszhan@quicinc.com>
+Date: Wed, 9 Aug 2023 14:12:20 -0700
 MIME-Version: 1.0
-Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230629144910.3055377-19-bhanuprakash.modem@intel.com>
-From: "Gupta, Nidhi1" <nidhi1.gupta@intel.com>
-In-Reply-To: <20230629144910.3055377-19-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [V5, i-g-t,
- 18/81] tests/i915/kms_fbcon_fbt: Document each subtest for testplan
+Message-ID: <20230809-kms-plane-fix-v1-1-bcbae991c5d4@quicinc.com>
+To: <igt-dev@lists.freedesktop.org>
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane: Skip plane position test
+ if primary ID > sprite ID
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,71 +23,45 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LGTM
-Reviewed-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+Currently, IGT assumes that the primary plane in
+test_plane_position_with_output() will always be committed under the
+sprite plane. This will not always hold true if the plane_id of the
+primary plane is greater than the plane_id of the sprite as the DRM
+framework will calculate a higher normalized-zpos for planes with larger
+plane_id's if the zpos property isn't set [1].
 
-On 6/29/2023 8:18 PM, Bhanuprakash Modem wrote:
-> Add documentation for all kms tests which is used by IGT testplan
-> documentation.
-> 
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->   tests/i915/kms_fbcon_fbt.c | 42 ++++++++++++++++++++++++++++++++++++++
->   1 file changed, 42 insertions(+)
-> 
-> diff --git a/tests/i915/kms_fbcon_fbt.c b/tests/i915/kms_fbcon_fbt.c
-> index 71c5285f1..990d31a23 100644
-> --- a/tests/i915/kms_fbcon_fbt.c
-> +++ b/tests/i915/kms_fbcon_fbt.c
-> @@ -32,6 +32,48 @@
->   #include <sys/stat.h>
->   #include <fcntl.h>
->   
-> +/**
-> + * TEST: kms fbcon fbt
-> + * Category: Display
-> + * Description: Test the relationship between fbcon and the frontbuffer tracking
-> + *              infrastructure.
-> + *
-> + * SUBTEST: fbc
-> + * Description: Test the relationship between fbcon and the frontbuffer tracking
-> + *              infrastructure with fbc enabled.
-> + * Driver requirement: any
-> + * Functionality: fbc, fbcon
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: fbc-suspend
-> + * Description: Suspend test to validate  the relationship between fbcon and the
-> + *              frontbuffer tracking infrastructure with fbc enabled.
-> + * Driver requirement: any
-> + * Functionality: fbc, fbcon
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: psr
-> + * Description: Test the relationship between fbcon and the frontbuffer tracking
-> + *              infrastructure with psr enabled.
-> + * Driver requirement: any
-> + * Functionality: fbcon, psr
-> + * Mega feature: PSR
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: psr-suspend
-> + * Description: Suspend test to validate the relationship between fbcon and the
-> + *              frontbuffer tracking infrastructure with psr enabled.
-> + * Driver requirement: any
-> + * Functionality: fbcon, psr
-> + * Mega feature: PSR
-> + * Run type: FULL
-> + * Test category: functionality test
-> + */
->   
->   IGT_TEST_DESCRIPTION("Test the relationship between fbcon and the frontbuffer "
->   		     "tracking infrastructure.");
+Thus, skip testing the plane position test output for cases where the
+primary plane ID is greater than the sprite plane ID
 
+[1] https://elixir.bootlin.com/linux/v6.5-rc5/source/drivers/gpu/drm/drm_blend.c#L431
+
+Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+---
+ tests/kms_plane.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+index 67cff61d6cd1..15116b33b764 100644
+--- a/tests/kms_plane.c
++++ b/tests/kms_plane.c
+@@ -225,6 +225,12 @@ test_plane_position_with_output(data_t *data,
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 	sprite = igt_output_get_plane(output, plane);
+ 
++	if (primary->drm_plane->plane_id > sprite->drm_plane->plane_id) {
++		igt_info("primary plane ID (%d) > sprite plane ID (%d), skipping plane %d\n",
++				primary->drm_plane->plane_id, sprite->drm_plane->plane_id, plane);
++		return;
++	}
++
+ 	create_fb_for_mode(data, mode, &green, &rect, 1, &primary_fb);
+ 	igt_plane_set_fb(primary, &primary_fb);
+ 
+
+---
+base-commit: f12c2533941c9dfce43f455a02b7986605692b29
+change-id: 20230808-kms-plane-fix-8b4e489e78b1
+
+Best regards,
 -- 
-~Nidhi Gupta
+Jessica Zhang <quic_jesszhan@quicinc.com>
