@@ -1,20 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam12on20621.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:fe59::621])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C344B10E555
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Aug 2023 14:53:04 +0000 (UTC)
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam04on2043.outbound.protection.outlook.com [40.107.101.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 74BBF10E555
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Aug 2023 14:53:05 +0000 (UTC)
 From: Hersen Wu <hersenxs.wu@amd.com>
 To: <igt-dev@lists.freedesktop.org>, <rodrigo.siqueira@amd.com>,
  <aurabindo.pillai@amd.com>, <alex.hung@amd.com>, <stylon.wang@amd.com>,
  <hamza.mahfooz@amd.com>, <sunpeng.li@amd.com>
-Date: Thu, 10 Aug 2023 10:52:56 -0400
-Message-ID: <20230810145257.88389-1-hersenxs.wu@amd.com>
+Date: Thu, 10 Aug 2023 10:52:57 -0400
+Message-ID: <20230810145257.88389-2-hersenxs.wu@amd.com>
+In-Reply-To: <20230810145257.88389-1-hersenxs.wu@amd.com>
+References: <20230810145257.88389-1-hersenxs.wu@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH 1/2] [i-g-t] lib/igt_kms: Re-try display_require
- if require output is not valid
+Subject: [igt-dev] [PATCH 2/2] [i-g-t] tests/amdgpu: Fix display tests be
+ skipped intermittently
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,84 +28,248 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add igt_display_setup to re-try igt_display_require.
-
-At entry of each test, display setup is done by
-igt_display_require and igt_display_require_output.
-igt display require output may not be valid yet,
-this will let test be skipped. By re-try
-igt_display_require, require output could be valid.
-This will fix test case intermittent skip issue.
+Use igt_display_setup to re-try igt_display_require if
+igt dislay require output is not valid. If previous test
+run suspend-resume test, current test igt display require
+output may not be valid after initial igt_display_require.
+This will let current test be skipped. By re-try
+igt_display_require, igt display require output could be
+valid.
 
 Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
 ---
- lib/igt_kms.c | 19 +++++++++++++++++++
- lib/igt_kms.h | 16 ++++++++++++++++
- 2 files changed, 35 insertions(+)
+ tests/amdgpu/amd_assr.c                | 3 +--
+ tests/amdgpu/amd_bypass.c              | 3 +--
+ tests/amdgpu/amd_color.c               | 3 +--
+ tests/amdgpu/amd_dp_dsc.c              | 6 +++---
+ tests/amdgpu/amd_freesync_video_mode.c | 3 +--
+ tests/amdgpu/amd_hotplug.c             | 3 +--
+ tests/amdgpu/amd_ilr.c                 | 3 +--
+ tests/amdgpu/amd_link_settings.c       | 3 +--
+ tests/amdgpu/amd_max_bpc.c             | 3 +--
+ tests/amdgpu/amd_mem_leak.c            | 3 +--
+ tests/amdgpu/amd_mode_switch.c         | 5 ++---
+ tests/amdgpu/amd_plane.c               | 3 +--
+ tests/amdgpu/amd_psr.c                 | 5 ++---
+ tests/amdgpu/amd_vrr_range.c           | 3 +--
+ 14 files changed, 18 insertions(+), 31 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index e0959ccff..5506e2eb2 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -2862,6 +2862,25 @@ void igt_display_require_output(igt_display_t *display)
- 	igt_skip("No valid crtc/connector combinations found.\n");
- }
+diff --git a/tests/amdgpu/amd_assr.c b/tests/amdgpu/amd_assr.c
+index fc2367f99..6f4884d3b 100644
+--- a/tests/amdgpu/amd_assr.c
++++ b/tests/amdgpu/amd_assr.c
+@@ -281,9 +281,8 @@ igt_main
  
-+/**
-+ * is_igt_display_require_output_valid:
-+ * @display: A pointer to an #igt_display_t structure
-+ *
-+ * Checks whether there's a valid @pipe/@output combination for the given @display
-+ * Returns: true if a valid combination of @pipe and @output is found, or false
-+ * if not found
-+ */
-+bool is_igt_display_require_output_valid(igt_display_t *display)
-+{
-+	enum pipe pipe;
-+	igt_output_t *output;
-+
-+	for_each_pipe_with_valid_output(display, pipe, output)
-+		return true;
-+
-+	return false;
-+}
-+
- /**
-  * igt_display_require_output_on_pipe:
-  * @display: A pointer to an #igt_display_t structure
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 91355c910..350966214 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -485,6 +485,7 @@ int  igt_display_drop_events(igt_display_t *display);
- int  igt_display_get_n_pipes(igt_display_t *display);
- void igt_display_require_output(igt_display_t *display);
- void igt_display_require_output_on_pipe(igt_display_t *display, enum pipe pipe);
-+bool is_igt_display_require_output_valid(igt_display_t *display);
+ 		kmstest_set_vt_graphics_mode();
  
- const char *igt_output_name(igt_output_t *output);
- drmModeModeInfo *igt_output_get_mode(igt_output_t *output);
-@@ -722,6 +723,21 @@ uint64_t igt_plane_get_prop(igt_plane_t *plane, enum igt_atomic_plane_properties
- 		igt_plane_set_prop_changed(plane, prop); \
- 	} while (0)
+-		igt_display_require(&data.display, data.fd);
++		igt_display_setup(&data.display, data.fd, 2);
+ 		igt_require(data.display.is_atomic);
+-		igt_display_require_output(&data.display);
+ 	}
  
-+#define IGT_DISPLAY_REQUIRE_OUTPUT_VALID_MAX_RETRY_TIMES 5
+ 	igt_describe("Test ASSR on connected DP/eDP links");
+diff --git a/tests/amdgpu/amd_bypass.c b/tests/amdgpu/amd_bypass.c
+index d192a30ea..1c2756ae1 100644
+--- a/tests/amdgpu/amd_bypass.c
++++ b/tests/amdgpu/amd_bypass.c
+@@ -387,9 +387,8 @@ igt_main
+ 
+ 		kmstest_set_vt_graphics_mode();
+ 
+-		igt_display_require(&data.display, data.drm_fd);
++		igt_display_setup(&data.display, data.drm_fd, 2);
+ 		igt_require(data.display.is_atomic);
+-		igt_display_require_output(&data.display);
+ 	}
+ 
+ 	igt_subtest("8bpc-bypass-mode")
+diff --git a/tests/amdgpu/amd_color.c b/tests/amdgpu/amd_color.c
+index 34002ed88..6918f2b3c 100644
+--- a/tests/amdgpu/amd_color.c
++++ b/tests/amdgpu/amd_color.c
+@@ -404,9 +404,8 @@ igt_main
+ 
+ 		kmstest_set_vt_graphics_mode();
+ 
+-		igt_display_require(&data.display, data.fd);
++		igt_display_setup(&data.display, data.fd, 2);
+ 		igt_require(data.display.is_atomic);
+-		igt_display_require_output(&data.display);
+ 	}
+ 
+ 	igt_subtest("crtc-linear-degamma") test_crtc_linear_degamma(&data);
+diff --git a/tests/amdgpu/amd_dp_dsc.c b/tests/amdgpu/amd_dp_dsc.c
+index e782ce84a..aa5e2ed08 100644
+--- a/tests/amdgpu/amd_dp_dsc.c
++++ b/tests/amdgpu/amd_dp_dsc.c
+@@ -526,12 +526,12 @@ igt_main
+ 	{
+ 		data.fd = drm_open_driver_master(DRIVER_ANY);
+ 
+-		igt_display_require(&data.display, data.fd);
++		kmstest_set_vt_graphics_mode();
 +
-+#define igt_display_setup(display, fd, delay) \
-+	for (int j__ = 0; j__ < IGT_DISPLAY_REQUIRE_OUTPUT_VALID_MAX_RETRY_TIMES; j__++) { \
-+		igt_display_require(display, fd); \
-+		if (is_igt_display_require_output_valid(display)) { \
-+			if (j__ > 0) \
-+				igt_info("retry times:%d delay:%d seconds\n", j__, delay * j__); \
-+			break; \
-+		} \
-+		sleep(delay); \
-+		if (j__ == IGT_DISPLAY_REQUIRE_OUTPUT_VALID_MAX_RETRY_TIMES - 1) \
-+			igt_skip("No valid crtc/connector combinations found.\n"); \
-+	}
-+
- extern bool igt_plane_try_prop_enum(igt_plane_t *plane,
- 				    enum igt_atomic_plane_properties prop,
- 				    const char *val);
++		igt_display_setup(&data.display, data.fd, 2);
+ 		igt_require(data.display.is_atomic);
+-		igt_display_require_output(&data.display);
+ 
+ 		igt_amd_require_dsc(&data.display, data.fd);
+-		kmstest_set_vt_graphics_mode();
+ 	}
+ 
+ 	igt_describe("Forces DSC on/off & ensures it is reset properly");
+diff --git a/tests/amdgpu/amd_freesync_video_mode.c b/tests/amdgpu/amd_freesync_video_mode.c
+index 7716598dc..54c2121a8 100644
+--- a/tests/amdgpu/amd_freesync_video_mode.c
++++ b/tests/amdgpu/amd_freesync_video_mode.c
+@@ -871,9 +871,8 @@ igt_main {
+ 			igt_skip("Not an amdgpu driver.\n");
+ 		}
+ 		kmstest_set_vt_graphics_mode();
+-		igt_display_require(&data.display, data.drm_fd);
++		igt_display_setup(&data.display, data.drm_fd, 2);
+ 		igt_require(data.display.is_atomic);
+-		igt_display_require_output(&data.display);
+ 	}
+ 
+ 	/* Expectation: Modeset happens instantaneously without blanking */
+diff --git a/tests/amdgpu/amd_hotplug.c b/tests/amdgpu/amd_hotplug.c
+index c13bf49d3..73e3fef35 100644
+--- a/tests/amdgpu/amd_hotplug.c
++++ b/tests/amdgpu/amd_hotplug.c
+@@ -165,9 +165,8 @@ igt_main
+ 
+ 		kmstest_set_vt_graphics_mode();
+ 
+-		igt_display_require(&data.display, data.fd);
++		igt_display_setup(&data.display, data.fd, 2);
+ 		igt_require(data.display.is_atomic);
+-		igt_display_require_output(&data.display);
+ 
+ 		igt_amd_require_hpd(&data.display, data.fd);
+ 	}
+diff --git a/tests/amdgpu/amd_ilr.c b/tests/amdgpu/amd_ilr.c
+index 50ca93a14..ca63e9c28 100644
+--- a/tests/amdgpu/amd_ilr.c
++++ b/tests/amdgpu/amd_ilr.c
+@@ -264,9 +264,8 @@ igt_main
+ 
+ 		kmstest_set_vt_graphics_mode();
+ 
+-		igt_display_require(&data.display, data.drm_fd);
++		igt_display_setup(&data.display, data.drm_fd, 2);
+ 		igt_require(data.display.is_atomic);
+-		igt_display_require_output(&data.display);
+ 	}
+ 
+ 	igt_describe("Test ILR by trying training link rate at all supported ILRs");
+diff --git a/tests/amdgpu/amd_link_settings.c b/tests/amdgpu/amd_link_settings.c
+index 6a7e8cc53..4509e7f9c 100644
+--- a/tests/amdgpu/amd_link_settings.c
++++ b/tests/amdgpu/amd_link_settings.c
+@@ -237,9 +237,8 @@ igt_main
+ 
+ 		kmstest_set_vt_graphics_mode();
+ 
+-		igt_display_require(&data.display, data.drm_fd);
++		igt_display_setup(&data.display, data.drm_fd, 2);
+ 		igt_require(data.display.is_atomic);
+-		igt_display_require_output(&data.display);
+ 	}
+ 
+ 	igt_describe("Retrieves all link settings configurations and retrains "
+diff --git a/tests/amdgpu/amd_max_bpc.c b/tests/amdgpu/amd_max_bpc.c
+index effe830a2..9fe71d946 100644
+--- a/tests/amdgpu/amd_max_bpc.c
++++ b/tests/amdgpu/amd_max_bpc.c
+@@ -132,9 +132,8 @@ igt_main
+ 
+ 		kmstest_set_vt_graphics_mode();
+ 
+-		igt_display_require(&data.display, data.fd);
++		igt_display_setup(&data.display, data.fd, 2);
+ 		igt_require(data.display.is_atomic);
+-		igt_display_require_output(&data.display);
+ 	}
+ 
+ 	igt_describe("Tests overly high 'max bpc' should not affect 4K modes on HDMI");
+diff --git a/tests/amdgpu/amd_mem_leak.c b/tests/amdgpu/amd_mem_leak.c
+index e4a4b5c47..7fc7f608c 100644
+--- a/tests/amdgpu/amd_mem_leak.c
++++ b/tests/amdgpu/amd_mem_leak.c
+@@ -219,9 +219,8 @@ igt_main
+ 
+ 		kmstest_set_vt_graphics_mode();
+ 
+-		igt_display_require(&data.display, data.fd);
++		igt_display_setup(&data.display, data.fd, 5);
+ 		igt_require(data.display.is_atomic);
+-		igt_display_require_output(&data.display);
+ 	}
+ 
+ 	igt_describe("Test memory leaks after resume from suspend");
+diff --git a/tests/amdgpu/amd_mode_switch.c b/tests/amdgpu/amd_mode_switch.c
+index 270b1b9f6..5b69269b9 100644
+--- a/tests/amdgpu/amd_mode_switch.c
++++ b/tests/amdgpu/amd_mode_switch.c
+@@ -191,9 +191,8 @@ igt_main
+ 
+ 		kmstest_set_vt_graphics_mode();
+ 
+-		igt_display_require(&data.display, data.fd);
+-		igt_require(&data.display.is_atomic);
+-		igt_display_require_output(&data.display);
++		igt_display_setup(&data.display, data.fd, 2);
++		igt_require(data.display.is_atomic);
+ 	}
+ 
+ 	for (i = 0; i < MAX_PIPES; i++) {
+diff --git a/tests/amdgpu/amd_plane.c b/tests/amdgpu/amd_plane.c
+index ee7de5778..6dadca37f 100644
+--- a/tests/amdgpu/amd_plane.c
++++ b/tests/amdgpu/amd_plane.c
+@@ -910,9 +910,8 @@ igt_main
+ 
+ 		kmstest_set_vt_graphics_mode();
+ 
+-		igt_display_require(&data.display, data.fd);
++		igt_display_setup(&data.display, data.fd, 2);
+ 		igt_require(data.display.is_atomic);
+-		igt_display_require_output(&data.display);
+ 	}
+ 
+ 	igt_describe("MPO with 4K planes");
+diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
+index 9da161a09..d753f0499 100644
+--- a/tests/amdgpu/amd_psr.c
++++ b/tests/amdgpu/amd_psr.c
+@@ -715,9 +715,8 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 
+ 		kmstest_set_vt_graphics_mode();
+ 
+-		igt_display_require(&data.display, data.fd);
+-		igt_require(&data.display.is_atomic);
+-		igt_display_require_output(&data.display);
++		igt_display_setup(&data.display, data.fd, 2);
++		igt_require(data.display.is_atomic);
+ 
+ 		/* check if visual confirm option available */
+ 		if (opt.visual_confirm) {
+diff --git a/tests/amdgpu/amd_vrr_range.c b/tests/amdgpu/amd_vrr_range.c
+index a77895622..a626e607d 100644
+--- a/tests/amdgpu/amd_vrr_range.c
++++ b/tests/amdgpu/amd_vrr_range.c
+@@ -388,9 +388,8 @@ igt_main
+ 
+ 		kmstest_set_vt_graphics_mode();
+ 
+-		igt_display_require(&data.display, data.fd);
++		igt_display_setup(&data.display, data.fd, 2);
+ 		igt_require(data.display.is_atomic);
+-		igt_display_require_output(&data.display);
+ 	}
+ 
+ 	igt_describe("Hard coded Freesync EDID parsing");
 -- 
 2.25.1
