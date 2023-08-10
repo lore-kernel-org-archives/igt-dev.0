@@ -1,16 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7184510E4B9
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Aug 2023 06:01:53 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 10 Aug 2023 08:01:47 +0200
-Message-Id: <20230810060147.398558-1-zbigniew.kempczynski@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BC11110E4B9
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Aug 2023 06:03:00 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="------------oLSAl4KlaWJdKwC6wlwjAM2W"
+Message-ID: <b11abf0b-259d-b404-47ac-e31b7511f7c7@intel.com>
+Date: Thu, 10 Aug 2023 11:32:10 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] lib/intel_ctx|fb: Rename engine to
- exec_queue in xe lib for completion
+Content-Language: en-US
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20230629144910.3055377-9-bhanuprakash.modem@intel.com>
+From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
+In-Reply-To: <20230629144910.3055377-9-bhanuprakash.modem@intel.com>
+Subject: Re: [igt-dev] [V5, i-g-t,
+ 08/81] tests/chamelium/kms_chamelium_frames: Document each subtest
+ for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,108 +27,382 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-To avoid confusion in the future lets align to current naming
-nomenclature.
+This is a multi-part message in MIME format.
+--------------oLSAl4KlaWJdKwC6wlwjAM2W
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Francois Dugast <francois.dugast@intel.com>
-Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
+
+On 6/29/2023 8:17 PM, Bhanuprakash Modem wrote:
+> Add documentation for all kms tests which is used by IGT testplan
+> documentation.
+>
+> Signed-off-by: Bhanuprakash Modem<bhanuprakash.modem@intel.com>
+> ---
+>   tests/chamelium/kms_chamelium_frames.c | 101 ++++++++++++++++++++++++-
+>   1 file changed, 99 insertions(+), 2 deletions(-)
+>
+> diff --git a/tests/chamelium/kms_chamelium_frames.c b/tests/chamelium/kms_chamelium_frames.c
+> index a56afada4..698681c4c 100644
+> --- a/tests/chamelium/kms_chamelium_frames.c
+> +++ b/tests/chamelium/kms_chamelium_frames.c
+> @@ -25,10 +25,10 @@
+>    */
+>   
+>   /**
+> - * TEST: Tests to capture frames using chamelium
+> + * TEST: kms chamelium frames
+>    * Category: Display
+> + * Description: Tests requiring a Chamelium board
+>    */
+> -
+>   #include "igt_eld.h"
+>   #include "igt_infoframe.h"
+>   #include "kms_chamelium_helper.h"
+> @@ -547,6 +547,7 @@ static void prepare_randomized_plane(chamelium_data_t *data,
+>    * Run type: BAT
+>    * Functionality: dp
+>    * Mega feature: DP
+> + * Driver requirement: any
+>    *
+>    * SUBTEST: hdmi-crc-fast
+>    * Description: Pick the first mode of the IGT base EDID, display and capture
+> @@ -555,6 +556,23 @@ static void prepare_randomized_plane(chamelium_data_t *data,
+>    * Run type: BAT
+>    * Functionality: hdmi
+>    * Mega feature: HDMI
+> + * Driver requirement: any
+> + */
+> +
+> +/**
+> + * SUBTEST: hdmi-%s-formats
+> + * Description: Pick the first mode of the IGT base EDID, display and capture a
+> + *              few frames, then check captured frames are correct
+> + * Test category: functionality test
+> + * Run type: FULL
+> + * Functionality: hdmi
+> + * Mega feature: HDMI
+> + * Driver requirement: any
+> + *
+> + * arg[1]:
+> + *
+> + * @crc-nonplanar:     CRC with non planar formats
+> + * @cmp-planar:        Compare with planar formats
+>    */
+>   static const char test_display_one_mode_desc[] =
+>   	"Pick the first mode of the IGT base EDID, display and capture a few "
+> @@ -592,6 +610,39 @@ static void test_display_one_mode(chamelium_data_t *data,
+>   	drmModeFreeConnector(connector);
+>   }
+>   
+> +/**
+> + * SUBTEST: vga-frame-dump
+> + * Description: For each mode of the IGT base EDID, display and capture a few
+> + *              frames, then check captured frames are correct
+> + * Test category: functionality test
+> + * Run type: FULL
+> + * Functionality: vga
+> + * Mega feature: VGA
+> + * Driver requirement: any
+> + *
+> + * SUBTEST: dp-crc-%s
+> + * Description: For each mode of the IGT base EDID, display and capture a %arg[1]
+> + *              frame(s), then check captured frame(s) are correct
+> + * Test category: functionality test
+> + * Run type: FULL
+> + * Functionality: dp
+> + * Mega feature: DP
+> + * Driver requirement: any
+> + *
+> + * SUBTEST: hdmi-crc-%s
+> + * Description: For each mode of the IGT base EDID, display and capture a %arg[1]
+> + *              frame(s), then check captured frame(s) are correct
+> + * Test category: functionality test
+> + * Run type: FULL
+> + * Functionality: hdmi
+> + * Mega feature: HDMI
+> + * Driver requirement: any
+> + *
+> + * arg[1]:
+> + *
+> + * @single:    single
+> + * @multiple:  multiple
+> + */
+>   static const char test_display_all_modes_desc[] =
+>   	"For each mode of the IGT base EDID, display and capture a few "
+>   	"frames, then check captured frames are correct";
+> @@ -650,6 +701,27 @@ static void test_display_all_modes(chamelium_data_t *data,
+>   	} while (++i < count_modes);
+>   }
+>   
+> +/**
+> + * SUBTEST: dp-frame-dump
+> + * Description: For each mode of the IGT base EDID, display and capture a few
+> + *              frames, then download the captured frames and compare them
+> + *              bit-by-bit to the sent ones
+> + * Test category: functionality test
+> + * Run type: FULL
+> + * Functionality: dp
+> + * Mega feature: DP
+> + * Driver requirement: any
+> + *
+> + * SUBTEST: hdmi-frame-dump
+> + * Description: For each mode of the IGT base EDID, display and capture a few
+> + *              frames, then download the captured frames and compare them
+> + *              bit-by-bit to the sent ones
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: hdmi
+> + * Mega feature: HDMI
+> + * Driver requirement: any
+> + */
+>   static const char test_display_frame_dump_desc[] =
+>   	"For each mode of the IGT base EDID, display and capture a few "
+>   	"frames, then download the captured frames and compare them "
+> @@ -718,6 +790,16 @@ static void test_display_frame_dump(chamelium_data_t *data,
+>   	} while (++i < count_modes);
+>   }
+>   
+> +/**
+> + * SUBTEST: hdmi-aspect-ratio
+> + * Description: Pick a mode with a picture aspect-ratio, capture AVI InfoFrames
+>
+> + *              and check they include the relevant fields
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: hdmi
+> + * Mega feature: HDMI
+> + * Driver requirement: any
+> + */
+>   static const char test_display_aspect_ratio_desc[] =
+>   	"Pick a mode with a picture aspect-ratio, capture AVI InfoFrames and "
+>   	"check they include the relevant fields";
+> @@ -798,6 +880,21 @@ static void test_display_aspect_ratio(chamelium_data_t *data,
+>   	drmModeFreeConnector(connector);
+>   }
+>   
+> +/**
+> + * SUBTEST: hdmi-%s-planes-random
+> + * Description: Setup a few overlay planes with random parameters, capture the
+> + *              frame and check it matches the expected output
+> + * Test category: functionality test
+> + * Run type: FULL
+> + * Functionality: hdmi
+> + * Mega feature: HDMI
+> + * Driver requirement: any
+> + *
+> + * arg[1]:
+> + *
+> + * @crc:     CRC check
+> + * @cmp:     Compare
+> + */
+>   static const char test_display_planes_random_desc[] =
+>   	"Setup a few overlay planes with random parameters, capture the frame "
+>   	"and check it matches the expected output";
+
+1) Same for all chamelium tests, we should have a some identifier for 
+getting testlist
+    for chamelium test
+
+2) Plane random test is not used now, do we need something additional so 
+that we don't run it on CI?
+
+3) Here we can add mega feature as frame integrity
+
+
+--------------oLSAl4KlaWJdKwC6wlwjAM2W
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 6/29/2023 8:17 PM, Bhanuprakash
+      Modem wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:20230629144910.3055377-9-bhanuprakash.modem@intel.com">
+      <pre class="moz-quote-pre" wrap="">Add documentation for all kms tests which is used by IGT testplan
+documentation.
+
+Signed-off-by: Bhanuprakash Modem <a class="moz-txt-link-rfc2396E" href="mailto:bhanuprakash.modem@intel.com">&lt;bhanuprakash.modem@intel.com&gt;</a>
 ---
- lib/igt_fb.c    | 8 ++++----
- lib/intel_ctx.c | 8 ++++----
- lib/intel_ctx.h | 4 ++--
- 3 files changed, 10 insertions(+), 10 deletions(-)
+ tests/chamelium/kms_chamelium_frames.c | 101 ++++++++++++++++++++++++-
+ 1 file changed, 99 insertions(+), 2 deletions(-)
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 8f5e3db9f5..af3b4588a2 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -2852,7 +2852,7 @@ static void blitcopy(const struct igt_fb *dst_fb,
- 	uint32_t src_cc = src_fb->modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC ? 1 : 0;
- 	uint32_t dst_cc = dst_fb->modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC ? 1 : 0;
- 	intel_ctx_t *xe_ctx;
--	uint32_t vm, engine;
-+	uint32_t vm, exec_queue;
- 	bool is_xe = is_xe_device(dst_fb->fd);
- 	bool is_i915 = is_i915_device(dst_fb->fd);
- 
-@@ -2881,8 +2881,8 @@ static void blitcopy(const struct igt_fb *dst_fb,
- 							  mem_region) == 0);
- 	} else if (is_xe) {
- 		vm = xe_vm_create(dst_fb->fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
--		engine = xe_exec_queue_create(dst_fb->fd, vm, &inst, 0);
--		xe_ctx = intel_ctx_xe(dst_fb->fd, vm, engine, 0, 0, 0);
-+		exec_queue = xe_exec_queue_create(dst_fb->fd, vm, &inst, 0);
-+		xe_ctx = intel_ctx_xe(dst_fb->fd, vm, exec_queue, 0, 0, 0);
- 		mem_region = vram_if_possible(dst_fb->fd, 0);
- 
- 		ahnd = intel_allocator_open_full(dst_fb->fd, xe_ctx->vm, 0, 0,
-@@ -3007,7 +3007,7 @@ static void blitcopy(const struct igt_fb *dst_fb,
- 
- 	if(is_xe) {
- 		gem_close(dst_fb->fd, xe_bb);
--		xe_exec_queue_destroy(dst_fb->fd, engine);
-+		xe_exec_queue_destroy(dst_fb->fd, exec_queue);
- 		xe_vm_destroy(dst_fb->fd, vm);
- 		free(xe_ctx);
- 	}
-diff --git a/lib/intel_ctx.c b/lib/intel_ctx.c
-index 364ede76f5..f927b7df86 100644
---- a/lib/intel_ctx.c
-+++ b/lib/intel_ctx.c
-@@ -398,11 +398,11 @@ unsigned int intel_ctx_engine_class(const intel_ctx_t *ctx, unsigned int engine)
-  * intel_ctx_xe:
-  * @fd: open i915 drm file descriptor
-  * @vm: vm
-- * @engine: engine
-+ * @exec_queue: exec queue
-  *
-  * Returns an intel_ctx_t representing the xe context.
+diff --git a/tests/chamelium/kms_chamelium_frames.c b/tests/chamelium/kms_chamelium_frames.c
+index a56afada4..698681c4c 100644
+--- a/tests/chamelium/kms_chamelium_frames.c
++++ b/tests/chamelium/kms_chamelium_frames.c
+@@ -25,10 +25,10 @@
   */
--intel_ctx_t *intel_ctx_xe(int fd, uint32_t vm, uint32_t engine,
-+intel_ctx_t *intel_ctx_xe(int fd, uint32_t vm, uint32_t exec_queue,
- 			  uint32_t sync_in, uint32_t sync_bind, uint32_t sync_out)
- {
- 	intel_ctx_t *ctx;
-@@ -412,7 +412,7 @@ intel_ctx_t *intel_ctx_xe(int fd, uint32_t vm, uint32_t engine,
  
- 	ctx->fd = fd;
- 	ctx->vm = vm;
--	ctx->engine = engine;
-+	ctx->exec_queue = exec_queue;
- 	ctx->sync_in = sync_in;
- 	ctx->sync_bind = sync_bind;
- 	ctx->sync_out = sync_out;
-@@ -427,7 +427,7 @@ int __intel_ctx_xe_exec(const intel_ctx_t *ctx, uint64_t ahnd, uint64_t bb_offse
- 		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
- 	};
- 	struct drm_xe_exec exec = {
--		.exec_queue_id = ctx->engine,
-+		.exec_queue_id = ctx->exec_queue,
- 		.syncs = (uintptr_t)syncs,
- 		.num_syncs = 2,
- 		.address = bb_offset,
-diff --git a/lib/intel_ctx.h b/lib/intel_ctx.h
-index 59d0360ada..cefc2c2208 100644
---- a/lib/intel_ctx.h
-+++ b/lib/intel_ctx.h
-@@ -71,7 +71,7 @@ typedef struct intel_ctx {
- 	/* Xe */
- 	int fd;
- 	uint32_t vm;
--	uint32_t engine;
-+	uint32_t exec_queue;
- 	uint32_t sync_in;
- 	uint32_t sync_bind;
- 	uint32_t sync_out;
-@@ -89,7 +89,7 @@ void intel_ctx_destroy(int fd, const intel_ctx_t *ctx);
+ /**
+- * TEST: Tests to capture frames using chamelium
++ * TEST: kms chamelium frames
+  * Category: Display
++ * Description: Tests requiring a Chamelium board
+  */
+-
+ #include "igt_eld.h"
+ #include "igt_infoframe.h"
+ #include "kms_chamelium_helper.h"
+@@ -547,6 +547,7 @@ static void prepare_randomized_plane(chamelium_data_t *data,
+  * Run type: BAT
+  * Functionality: dp
+  * Mega feature: DP
++ * Driver requirement: any
+  *
+  * SUBTEST: hdmi-crc-fast
+  * Description: Pick the first mode of the IGT base EDID, display and capture
+@@ -555,6 +556,23 @@ static void prepare_randomized_plane(chamelium_data_t *data,
+  * Run type: BAT
+  * Functionality: hdmi
+  * Mega feature: HDMI
++ * Driver requirement: any
++ */
++
++/**
++ * SUBTEST: hdmi-%s-formats
++ * Description: Pick the first mode of the IGT base EDID, display and capture a
++ *              few frames, then check captured frames are correct
++ * Test category: functionality test
++ * Run type: FULL
++ * Functionality: hdmi
++ * Mega feature: HDMI
++ * Driver requirement: any
++ *
++ * arg[1]:
++ *
++ * @crc-nonplanar:     CRC with non planar formats
++ * @cmp-planar:        Compare with planar formats
+  */
+ static const char test_display_one_mode_desc[] =
+ 	"Pick the first mode of the IGT base EDID, display and capture a few "
+@@ -592,6 +610,39 @@ static void test_display_one_mode(chamelium_data_t *data,
+ 	drmModeFreeConnector(connector);
+ }
  
- unsigned int intel_ctx_engine_class(const intel_ctx_t *ctx, unsigned int engine);
++/**
++ * SUBTEST: vga-frame-dump
++ * Description: For each mode of the IGT base EDID, display and capture a few
++ *              frames, then check captured frames are correct
++ * Test category: functionality test
++ * Run type: FULL
++ * Functionality: vga
++ * Mega feature: VGA
++ * Driver requirement: any
++ *
++ * SUBTEST: dp-crc-%s
++ * Description: For each mode of the IGT base EDID, display and capture a %arg[1]
++ *              frame(s), then check captured frame(s) are correct
++ * Test category: functionality test
++ * Run type: FULL
++ * Functionality: dp
++ * Mega feature: DP
++ * Driver requirement: any
++ *
++ * SUBTEST: hdmi-crc-%s
++ * Description: For each mode of the IGT base EDID, display and capture a %arg[1]
++ *              frame(s), then check captured frame(s) are correct
++ * Test category: functionality test
++ * Run type: FULL
++ * Functionality: hdmi
++ * Mega feature: HDMI
++ * Driver requirement: any
++ *
++ * arg[1]:
++ *
++ * @single:    single
++ * @multiple:  multiple
++ */
+ static const char test_display_all_modes_desc[] =
+ 	"For each mode of the IGT base EDID, display and capture a few "
+ 	"frames, then check captured frames are correct";
+@@ -650,6 +701,27 @@ static void test_display_all_modes(chamelium_data_t *data,
+ 	} while (++i &lt; count_modes);
+ }
  
--intel_ctx_t *intel_ctx_xe(int fd, uint32_t vm, uint32_t engine,
-+intel_ctx_t *intel_ctx_xe(int fd, uint32_t vm, uint32_t exec_queue,
- 			  uint32_t sync_in, uint32_t sync_bind, uint32_t sync_out);
- int __intel_ctx_xe_exec(const intel_ctx_t *ctx, uint64_t ahnd, uint64_t bb_offset);
- void intel_ctx_xe_exec(const intel_ctx_t *ctx, uint64_t ahnd, uint64_t bb_offset);
--- 
-2.34.1
++/**
++ * SUBTEST: dp-frame-dump
++ * Description: For each mode of the IGT base EDID, display and capture a few
++ *              frames, then download the captured frames and compare them
++ *              bit-by-bit to the sent ones
++ * Test category: functionality test
++ * Run type: FULL
++ * Functionality: dp
++ * Mega feature: DP
++ * Driver requirement: any
++ *
++ * SUBTEST: hdmi-frame-dump
++ * Description: For each mode of the IGT base EDID, display and capture a few
++ *              frames, then download the captured frames and compare them
++ *              bit-by-bit to the sent ones
++ * Test category: functionality test
++ * Run type: BAT
++ * Functionality: hdmi
++ * Mega feature: HDMI
++ * Driver requirement: any
++ */
+ static const char test_display_frame_dump_desc[] =
+ 	"For each mode of the IGT base EDID, display and capture a few "
+ 	"frames, then download the captured frames and compare them "
+@@ -718,6 +790,16 @@ static void test_display_frame_dump(chamelium_data_t *data,
+ 	} while (++i &lt; count_modes);
+ }
+ 
++/**
++ * SUBTEST: hdmi-aspect-ratio
++ * Description: Pick a mode with a picture aspect-ratio, capture AVI InfoFrames<pre>
+</pre>
++ *              and check they include the relevant fields
++ * Test category: functionality test
++ * Run type: BAT
++ * Functionality: hdmi
++ * Mega feature: HDMI
++ * Driver requirement: any
++ */
+ static const char test_display_aspect_ratio_desc[] =
+ 	"Pick a mode with a picture aspect-ratio, capture AVI InfoFrames and "
+ 	"check they include the relevant fields";
+@@ -798,6 +880,21 @@ static void test_display_aspect_ratio(chamelium_data_t *data,
+ 	drmModeFreeConnector(connector);
+ }
+ 
++/**
++ * SUBTEST: hdmi-%s-planes-random
++ * Description: Setup a few overlay planes with random parameters, capture the
++ *              frame and check it matches the expected output
++ * Test category: functionality test
++ * Run type: FULL
++ * Functionality: hdmi
++ * Mega feature: HDMI
++ * Driver requirement: any
++ *
++ * arg[1]:
++ *
++ * @crc:     CRC check
++ * @cmp:     Compare
++ */
+ static const char test_display_planes_random_desc[] =
+ 	"Setup a few overlay planes with random parameters, capture the frame "
+ 	"and check it matches the expected output";</pre>
+    </blockquote>
+    <p>
+      1) Same for all chamelium tests, we should have a some identifier
+      for getting testlist<br>
+         for chamelium test<br>
+      <br>
+      2) Plane random test is not used now, do we need something
+      additional so that we don't run it on CI?</p>
+    <p>3) Here we can add mega feature as frame integrity<br>
+    </p>
+    <br>
+  </body>
+</html>
+
+--------------oLSAl4KlaWJdKwC6wlwjAM2W--
