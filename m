@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com
- [205.220.168.131])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 666BC10E5F5
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Aug 2023 20:24:04 +0000 (UTC)
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Thu, 10 Aug 2023 13:23:39 -0700
-Message-ID: <20230810202340.2388-2-quic_abhinavk@quicinc.com>
-In-Reply-To: <20230810202340.2388-1-quic_abhinavk@quicinc.com>
-References: <20230810202340.2388-1-quic_abhinavk@quicinc.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1417910E5AE
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Aug 2023 21:23:31 +0000 (UTC)
+From: janga.rahul.kumar@intel.com
+To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
+ janga.rahul.kumar@intel.com
+Date: Fri, 11 Aug 2023 02:55:18 +0530
+Message-Id: <20230810212521.1405970-1-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t v3 1/2] lib/igt_fb: add a helper to find
- drm_id from matching string
+Subject: [igt-dev] [PATCH i-g-t 0/3] Add Xe lib support for hang & GT reset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,84 +17,44 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: sai.gowtham.ch@intel.com, kunal1.joshi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In preparation to support multiple output formats for writeback,
-add a helper which takes the drm format string from the format_desc
-as input and returns the matching drm_id.
+From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 
-changes in v2:
-	- none
-changes in v3:
-	- none
+Add library support for hang and resetting all the GT's.
 
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
----
- lib/igt_fb.c | 28 ++++++++++++++++++++++++++++
- lib/igt_fb.h |  3 +++
- 2 files changed, 31 insertions(+)
+v2:
+Create xe library for GT which contains hang and reset helpers.(kamil)
+Create separate patch for igt gt lib changes.(kamil)
+Extend hang library to support all rings.
+Correct Indentation issues. (kamil/Anna)
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 8f5e3db9f50b..55ef63cc71dc 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -384,6 +384,18 @@ static const struct format_desc_struct *lookup_drm_format(uint32_t drm_format)
- 	return NULL;
- }
- 
-+static const struct format_desc_struct *lookup_drm_format_str(const char *name)
-+{
-+	const struct format_desc_struct *format;
-+
-+	for_each_format(format) {
-+		if (!strcmp(format->name, name))
-+			return format;
-+	}
-+
-+	return NULL;
-+}
-+
- /**
-  * igt_format_is_yuv_semiplanar:
-  * @format: drm fourcc pixel format code
-@@ -4657,6 +4669,22 @@ const char *igt_format_str(uint32_t drm_format)
- 	return f ? f->name : "invalid";
- }
- 
-+/**
-+ * igt_drm_format_str_to_format:
-+ * @drm_format: name string of drm_format in format_desc[] table
-+ *
-+ * Returns:
-+ * The drm_id for the format string from the format_desc[] table.
-+ */
-+uint32_t igt_drm_format_str_to_format(const char *drm_format)
-+{
-+	const struct format_desc_struct *f = lookup_drm_format_str(drm_format);
-+
-+	igt_assert_f(f, "can't find a DRM format for (%s)\n", drm_format);
-+
-+	return f->drm_id;
-+}
-+
- /**
-  * igt_fb_supported_format:
-  * @drm_format: drm fourcc to test.
-diff --git a/lib/igt_fb.h b/lib/igt_fb.h
-index 73bdfc8669d8..834aaef54dea 100644
---- a/lib/igt_fb.h
-+++ b/lib/igt_fb.h
-@@ -215,6 +215,9 @@ const char *igt_format_str(uint32_t drm_format);
- bool igt_fb_supported_format(uint32_t drm_format);
- bool igt_format_is_yuv(uint32_t drm_format);
- bool igt_format_is_yuv_semiplanar(uint32_t format);
-+
-+uint32_t igt_drm_format_str_to_format(const char *drm_format);
-+
- bool igt_format_is_fp16(uint32_t drm_format);
- int igt_format_plane_bpp(uint32_t drm_format, int plane);
- void igt_format_array_fill(uint32_t **formats_array, unsigned int *count,
+v3:
+Skip hang config for render engine request on PVC (Gowtham)
+Extend force reset (Gowtham)
+
+Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Anna Karas <anna.karas@intel.com>
+Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+Tested-by: Kunal Joshi <kunal1.joshi@intel.com>
+
+Janga Rahul Kumar (3):
+  lib/xe: Add support to reset all GT's
+  lib/xe: Add hang library support
+  lib/igt_gt: Extend hang library support to XE
+
+ lib/igt_gt.c    |  29 +++++++++--
+ lib/meson.build |   1 +
+ lib/xe/xe_gt.c  | 130 ++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/xe/xe_gt.h  |  32 ++++++++++++
+ 4 files changed, 188 insertions(+), 4 deletions(-)
+ create mode 100644 lib/xe/xe_gt.c
+ create mode 100644 lib/xe/xe_gt.h
+
 -- 
-2.40.1
+2.25.1
