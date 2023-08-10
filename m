@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D2F9D10E6B3
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Aug 2023 16:18:51 +0000 (UTC)
-Date: Fri, 11 Aug 2023 18:18:38 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230811161838.6vvpzwj56evaaoj3@kamilkon-desk1>
-References: <20230810101142.1071985-1-swati2.sharma@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============3125190258246165823=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230810101142.1071985-1-swati2.sharma@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/kms_dsc_helper:
- %s/platform/source
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>
+Date: Thu, 10 Aug 2023 23:40:09 -0000
+Message-ID: <169171080988.4957.6888208750464666010@emeril.freedesktop.org>
+References: <20230810212521.1405970-1-janga.rahul.kumar@intel.com>
+In-Reply-To: <20230810212521.1405970-1-janga.rahul.kumar@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_Add_Xe_lib_?=
+ =?utf-8?q?support_for_hang_=26_GT_reset_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,54 +17,69 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Swati,
+--===============3125190258246165823==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-small nit regarding subject, imho better:
-rename by_platform to by_source
+== Series Details ==
 
-Also it looks better without '%'.
+Series: Add Xe lib support for hang & GT reset (rev4)
+URL   : https://patchwork.freedesktop.org/series/121292/
+State : info
 
-On 2023-08-10 at 15:41:42 +0530, Swati Sharma wrote:
-> Rename function from platform to source.
--------- ^
-Technically speaking you rename a word in function, not all name
-so it may be written here. Also maybe write few words why?
+== Summary ==
 
-Regards,
-Kamil
+Participating hosts:
+bat-atsm-2
+bat-dg2-oem2
+bat-adlp-7
+Missing hosts results[0]:
+Results: [IGTPW_9574](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9574/index.html)
 
-> 
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> ---
->  tests/i915/kms_dsc_helper.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/i915/kms_dsc_helper.c b/tests/i915/kms_dsc_helper.c
-> index df999c9bd..44edd5ca9 100644
-> --- a/tests/i915/kms_dsc_helper.c
-> +++ b/tests/i915/kms_dsc_helper.c
-> @@ -120,7 +120,7 @@ void force_dsc_output_format(int drmfd, igt_output_t *output,
->  }
->  
->  /* YCbCr420 DSC is supported on display version 14+ with DSC1.2a */
-> -static bool is_dsc_output_format_supported_by_platform(int disp_ver, enum dsc_output_format output_format)
-> +static bool is_dsc_output_format_supported_by_source(int disp_ver, enum dsc_output_format output_format)
->  {
->  	if (disp_ver < 14 && output_format == DSC_FORMAT_YCBCR420) {
->  		igt_debug("Output format DSC YCBCR420 not supported on D13 and older platforms\n");
-> @@ -133,7 +133,7 @@ static bool is_dsc_output_format_supported_by_platform(int disp_ver, enum dsc_ou
->  bool is_dsc_output_format_supported(int drmfd, int disp_ver, igt_output_t *output,
->  				    enum dsc_output_format output_format)
->  {
-> -	if (!is_dsc_output_format_supported_by_platform(disp_ver, output_format))
-> +	if (!is_dsc_output_format_supported_by_source(disp_ver, output_format))
->  		return false;
->  
->  	if (!igt_is_dsc_output_format_supported_by_sink(drmfd, output->name, output_format)) {
-> -- 
-> 2.25.1
-> 
+
+
+--===============3125190258246165823==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add Xe lib support for hang &amp; GT reset (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/121292/">https://patchwork.freedesktop.org/series/121292/</a></td></tr>
+<tr><td><b>State:</b></td><td>info</td></tr>
+
+</table>
+
+
+    <p>Participating hosts:<br />
+bat-atsm-2<br />
+bat-dg2-oem2<br />
+bat-adlp-7<br />
+Missing hosts results[0]:<br />
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9574/index.html">IGTPW_9574</a></p>
+
+</body>
+</html>
+
+--===============3125190258246165823==--
