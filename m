@@ -1,23 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0B45C10E077
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Aug 2023 07:20:01 +0000 (UTC)
-Message-ID: <894144eb-44a2-44d3-bbea-93bf231018fb@intel.com>
-Date: Mon, 14 Aug 2023 12:49:41 +0530
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
- <20230811184655.157060-51-bhanuprakash.modem@intel.com>
- <d1616c9c-973d-4398-9b02-a2f0774d30f8@intel.com>
- <850d7b56-3e24-2d8f-40f2-1d7d388bf8aa@intel.com>
-Content-Language: en-US
-From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <850d7b56-3e24-2d8f-40f2-1d7d388bf8aa@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9C6B310E50A
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Aug 2023 11:23:23 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 10 Aug 2023 16:52:59 +0530
+Message-Id: <20230810112259.1072622-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t V6 50/81] tests/kms_getfb: Document each
- subtest for testplan
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/intel-ci: chamelium specific
+ fast-feedback
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,172 +21,61 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+In BAT, we hardly have chamelium setups. So, to optimize
+execution remove chamelium tests from fast-feedback and create
+a separate fast-feedback testlist specific to
+chamelium tests only.
 
-On 8/14/2023 12:35 PM, Modem, Bhanuprakash wrote:
-> Hi Karthik,
->
-> On Mon-14-08-2023 10:21 am, Karthik B S wrote:
->>
->> On 8/12/2023 12:16 AM, Bhanuprakash Modem wrote:
->>> Add documentation for all kms tests which is used by IGT testplan
->>> documentation.
->>>
->>> V2: - Fix functionality
->>>
->>> Cc: Karthik B S <karthik.b.s@intel.com>
->>> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
->>> ---
->>>   tests/kms_getfb.c | 90 
->>> +++++++++++++++++++++++++++++++++++++++++++++++
->>>   1 file changed, 90 insertions(+)
->>>
->>> diff --git a/tests/kms_getfb.c b/tests/kms_getfb.c
->>> index afcf07fe8..1caa46e23 100644
->>> --- a/tests/kms_getfb.c
->>> +++ b/tests/kms_getfb.c
->>> @@ -27,6 +27,11 @@
->>>    *
->>>    */
->>> +/**
->>> + * TEST: kms getfb
->>> + * Category: Display
->>> + * Description: Tests GETFB and GETFB2 ioctls.
->>> + */
->>>   #include "igt.h"
->>>   #include <unistd.h>
->>>   #include <stdlib.h>
->>> @@ -169,6 +174,22 @@ static uint32_t get_any_prop_id(int fd)
->>>       return 0;
->>>   }
->>> +/**
->>> + * SUBTEST: getfb-handle-%s
->>> + * Description: Tests error handling %arg[1]
->>> + * Driver requirement: any
->>> + * Functionality: kms_gem_interop
->>> + * Mega feature: General Display Features
->>> + * Run type: FULL
->>> + * Test category: functionality test
->>> + *
->>> + * arg[1]:
->>> + *
->>> + * @closed:       when passing a handle that has been closed.
->>> + * @not-fb:       when passing an invalid handle.
->>> + * @valid:        when passing an valid handle.
->>> + * @zero:         for a zero'd input.
->>> + */
->>>   static void test_handle_input(int fd)
->>>   {
->>>       struct drm_mode_fb_cmd2 add = {};
->>> @@ -224,6 +245,30 @@ static void test_handle_input(int fd)
->>>           gem_close(fd, add.handles[0]);
->>>   }
->>> +/**
->>> + * SUBTEST: getfb-reject-ccs
->>> + * Description: Tests error handling while requesting CCS buffers 
->>> it should
->>> + *              refuse because getfb supports returning a single 
->>> buffer handle.
->>> + * Driver requirement: any
->>> + * Functionality: ccs, kms_gem_interop, tiling
->>
->> Hi,
->>
->> Do we need 'tiling' here?
->
-> I think we need a tiling support to us the CCS modifiers. Hence added 
-> it here.
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ .../intel-ci/fast-feedback-chamelium-only.testlist  | 13 +++++++++++++
+ tests/intel-ci/fast-feedback.testlist               |  9 ---------
+ 2 files changed, 13 insertions(+), 9 deletions(-)
+ create mode 100644 tests/intel-ci/fast-feedback-chamelium-only.testlist
 
-But I can only see 'DRM_FORMAT_MOD_LINEAR' in the test. What am I 
-missing here?
-
-Thanks,
-Karthik.B.S
->
-> - Bhanu
->
->>
->> Thanks,
->> Karthik.B.S
->>> + * Mega feature: General Display Features
->>> + * Run type: FULL
->>> + * Test category: functionality test
->>> + *
->>> + * SUBTEST: getfb-%s-different-handles
->>> + * Description: Tests error handling while requesting for two 
->>> different handles
->>> + *              from %arg[1].
->>> + * Driver requirement: any
->>> + * Functionality: kms_gem_interop
->>> + * Mega feature: General Display Features
->>> + * Run type: FULL
->>> + * Test category: functionality test
->>> + *
->>> + * arg[1]:
->>> + *
->>> + * @addfb:           same fd
->>> + * @repeated:        different fd
->>> + */
->>>   static void test_duplicate_handles(int fd)
->>>   {
->>>       struct drm_mode_fb_cmd2 add = {};
->>> @@ -289,6 +334,37 @@ static void test_duplicate_handles(int fd)
->>>       }
->>>   }
->>> +/**
->>> + * SUBTEST: getfb2-accept-ccs
->>> + * Description: Tests outputs are correct when retrieving a CCS 
->>> framebuffer.
->>> + * Driver requirement: any
->>> + * Functionality: ccs, kms_gem_interop, tiling
->>> + * Mega feature: General Display Features
->>> + * Run type: FULL
->>> + * Test category: functionality test
->>> + *
->>> + * SUBTEST: getfb2-into-addfb2
->>> + * Description: Output check by passing the output of GETFB2 into 
->>> ADDFB2.
->>> + * Driver requirement: any
->>> + * Functionality: kms_gem_interop
->>> + * Mega feature: General Display Features
->>> + * Run type: FULL
->>> + * Test category: functionality test
->>> + *
->>> + * SUBTEST: getfb2-handle-%s
->>> + * Description: Tests error handling %arg[1].
->>> + * Driver requirement: any
->>> + * Functionality: kms_gem_interop
->>> + * Mega feature: General Display Features
->>> + * Run type: FULL
->>> + * Test category: functionality test
->>> + *
->>> + * arg[1]:
->>> + *
->>> + * @closed:                  when passing a handle that has been 
->>> closed
->>> + * @not-fb:                  when passing an invalid handle
->>> + * @zero:                    for a zero'd input
->>> + */
->>>   static void test_getfb2(int fd)
->>>   {
->>>       struct drm_mode_fb_cmd2 add_basic = {};
->>> @@ -397,6 +473,20 @@ static void test_getfb2(int fd)
->>>       }
->>>   }
->>> +/**
->>> + * SUBTEST: %s-handle-protection
->>> + * Description: Make sure %arg[1] return handles if caller is 
->>> non-root or non-master.
->>> + * Driver requirement: any
->>> + * Functionality: kms_gem_interop
->>> + * Mega feature: General Display Features
->>> + * Run type: FULL
->>> + * Test category: functionality test
->>> + *
->>> + * arg[1]:
->>> + *
->>> + * @getfb:      GETFB ioctl
->>> + * @getfb2:     GETFB2 ioctl
->>> + */
->>>   static void test_handle_protection(void) {
->>>       int non_master_fd;
->>>       struct drm_mode_fb_cmd2 non_master_add = {};
+diff --git a/tests/intel-ci/fast-feedback-chamelium-only.testlist b/tests/intel-ci/fast-feedback-chamelium-only.testlist
+new file mode 100644
+index 000000000..9416a12cc
+--- /dev/null
++++ b/tests/intel-ci/fast-feedback-chamelium-only.testlist
+@@ -0,0 +1,13 @@
++# Try to load the driver if it's not available yet.
++igt@i915_module_load@load
++
++# Keep alphabetically sorted by default
++igt@kms_chamelium_hpd@dp-hpd-fast
++igt@kms_chamelium_edid@dp-edid-read
++igt@kms_chamelium_frames@dp-crc-fast
++igt@kms_chamelium_hpd@hdmi-hpd-fast
++igt@kms_chamelium_edid@hdmi-edid-read
++igt@kms_chamelium_frames@hdmi-crc-fast
++igt@kms_chamelium_hpd@vga-hpd-fast
++igt@kms_chamelium_edid@vga-edid-read
++igt@kms_chamelium_hpd@common-hpd-after-suspend
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index 31639c892..c09c6c417 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -92,14 +92,6 @@ igt@kms_addfb_basic@unused-modifier
+ igt@kms_addfb_basic@unused-offsets
+ igt@kms_addfb_basic@unused-pitches
+ igt@kms_busy@basic
+-igt@kms_chamelium_hpd@dp-hpd-fast
+-igt@kms_chamelium_edid@dp-edid-read
+-igt@kms_chamelium_frames@dp-crc-fast
+-igt@kms_chamelium_hpd@hdmi-hpd-fast
+-igt@kms_chamelium_edid@hdmi-edid-read
+-igt@kms_chamelium_frames@hdmi-crc-fast
+-igt@kms_chamelium_hpd@vga-hpd-fast
+-igt@kms_chamelium_edid@vga-edid-read
+ igt@kms_prop_blob@basic
+ igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic
+ igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy
+@@ -179,5 +171,4 @@ igt@i915_suspend@basic-s2idle-without-i915
+ igt@i915_suspend@basic-s3-without-i915
+ igt@gem_exec_suspend@basic-s0
+ igt@gem_exec_suspend@basic-s3
+-igt@kms_chamelium_hpd@common-hpd-after-suspend
+ igt@kms_pipe_crc_basic@suspend-read-crc
+-- 
+2.25.1
