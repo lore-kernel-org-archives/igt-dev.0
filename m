@@ -1,24 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EB4CC10E0A4
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Aug 2023 04:37:59 +0000 (UTC)
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.252.17.210])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 058BB580D37
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Aug 2023 21:37:59 -0700 (PDT)
-Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qTxQq-00342t-3D
- for igt-dev@lists.freedesktop.org; Thu, 10 Aug 2023 06:37:57 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 10 Aug 2023 06:37:55 +0200
-Message-ID: <20230810043755.730525-1-mauro.chehab@linux.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6F04F10E0CC
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Aug 2023 04:57:27 +0000 (UTC)
+Message-ID: <ed3528a0-a8ef-c4e4-10fb-999d3b890422@intel.com>
+Date: Thu, 10 Aug 2023 10:27:22 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] xe_live_ktest: remove xe_pci and xe_rtp
- tests from IGT testlist
+Content-Language: en-US
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20230629144910.3055377-6-bhanuprakash.modem@intel.com>
+From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
+In-Reply-To: <20230629144910.3055377-6-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [V5, i-g-t,
+ 05/81] tests/chamelium/kms_chamelium_audio: Document each subtest
+ for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,32 +27,100 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Those aren't live tests and are currently executed by Intel CI
-at build time by running kunit.py, as those are part of the
-device-independent validation.
+On 6/29/2023 8:17 PM, Bhanuprakash Modem wrote:
+> Add documentation for all kms tests which is used by IGT testplan
+> documentation.
+>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>   tests/chamelium/kms_chamelium_audio.c | 44 +++++++++++++++++++++++++++
+>   1 file changed, 44 insertions(+)
+>
+> diff --git a/tests/chamelium/kms_chamelium_audio.c b/tests/chamelium/kms_chamelium_audio.c
+> index 8fbc1f80e..453f3518a 100644
+> --- a/tests/chamelium/kms_chamelium_audio.c
+> +++ b/tests/chamelium/kms_chamelium_audio.c
+> @@ -28,6 +28,12 @@
+>   #include "igt_infoframe.h"
+>   #include "kms_chamelium_helper.h"
+>   
+> +/**
+> + * TEST: kms chamelium audio
+> + * Category: Display
+> + * Description: Testing Audio with a Chamelium board
+> + */
+> +
+>   /* Playback parameters control the audio signal we synthesize and send */
+>   #define PLAYBACK_CHANNELS 2
+>   #define PLAYBACK_SAMPLES 1024
+> @@ -669,6 +675,25 @@ static bool check_audio_configuration(struct alsa *alsa,
+>   	return true;
+>   }
+>   
+> +/**
+> + * SUBTEST: dp-audio
+> + * Description: Playback various audio signals with various audio formats/rates,
+> + *              capture them and check they are correct
+> + * Functionality: dp_audio
+> + * Mega feature: DP
+> + * Run type: FULL
+> + * Test category: functionality test
+> + * Driver requirement: any
+> + *
+> + * SUBTEST: hdmi-audio
+> + * Description: Playback various audio signals with various audio formats/rates,
+> + *              capture them and check they are correct
+> + * Functionality: hdmi_audio
+> + * Mega feature: HDMI
 
-So, remove them from IGT.
+Can we keep one more mega feature here as Audio, so that we can either 
+generate testlist for all audio test cases
+or for checking overall Audio passrate across HDMI, DP ...
 
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- tests/xe/xe_live_ktest.c | 2 --
- 1 file changed, 2 deletions(-)
+> + * Run type: FULL
+> + * Test category: functionality test
+> + * Driver requirement: any
+> + */
+>   static const char test_display_audio_desc[] =
+>   	"Playback various audio signals with various audio formats/rates, "
+>   	"capture them and check they are correct";
+> @@ -763,6 +788,25 @@ static void test_display_audio(chamelium_data_t *data,
+>   	free(alsa);
+>   }
+>   
+> +/**
+> + * SUBTEST: dp-audio-edid
+> + * Description: Plug a connector with an EDID suitable for audio, check ALSA's
+> + *              EDID-Like Data reports the correct audio parameters
+> + * Functionality: dp_audio
+> + * Mega feature: DP
+> + * Run type: FULL
+> + * Test category: functionality test
+> + * Driver requirement: any
+> + *
+> + * SUBTEST: hdmi-audio-edid
+> + * Description: Plug a connector with an EDID suitable for audio, check ALSA's
+> + *              EDID-Like Data reports the correct audio parameters
+> + * Functionality: hdmi_audio
+> + * Mega feature: HDMI
+> + * Run type: FULL
+> + * Test category: functionality test
+> + * Driver requirement: any
 
-diff --git a/tests/xe/xe_live_ktest.c b/tests/xe/xe_live_ktest.c
-index 53cc8c186215..5088f676b2bf 100644
---- a/tests/xe/xe_live_ktest.c
-+++ b/tests/xe/xe_live_ktest.c
-@@ -38,8 +38,6 @@ static const struct kunit_tests live_tests[] = {
- 	{ "xe_bo_test",		"bo" },
- 	{ "xe_dma_buf_test",	"dmabuf" },
- 	{ "xe_migrate_test",	"migrate" },
--	{ "xe_pci_test",	"pci" },
--	{ "xe_rtp_test",	"rtp" },
- };
- 
- igt_main
--- 
-2.41.0
+
+Can we have something like requirement as well like driver requirement,
+For this chamelium will be required
+
+
+Also we need to have chamelium somewhere in here to populate chamelium only
+testlist/ results
+> + */
+>   static const char test_display_audio_edid_desc[] =
+>   	"Plug a connector with an EDID suitable for audio, check ALSA's "
+>   	"EDID-Like Data reports the correct audio parameters";
+
+
+Apart from this everything looks good
+
+Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
