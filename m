@@ -1,14 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============3583541649286026697=="
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D416910E5E1
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Aug 2023 19:10:50 +0000 (UTC)
+Date: Thu, 10 Aug 2023 21:10:45 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230810191045.xqozszfzaficr4qz@kamilkon-desk1>
+References: <20230810111234.960098-1-mauro.chehab@linux.intel.com>
+ <20230810111234.960098-4-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 17 Aug 2023 10:23:50 -0000
-Message-ID: <169226783029.12434.14164190593251781067@emeril.freedesktop.org>
-References: <20230817084322.69971-1-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230817084322.69971-1-mauro.chehab@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4peLIENJLnhlQkFUOiBpbmZvIGZvciBSRUFETUUubWQg?=
- =?utf-8?q?and_docs=3A_describe_how_to_document_tests?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230810111234.960098-4-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 3/3] xe_live_ktest.c: drop the now
+ removed tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,71 +20,49 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3583541649286026697==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Mauro,
 
-== Series Details ==
+On 2023-08-10 at 13:12:04 +0200, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> The device-independent tests were moved out of xe_live_ktest.
+> 
+> Drop the comments as well.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Series: README.md and docs: describe how to document tests
-URL   : https://patchwork.freedesktop.org/series/122564/
-State : info
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-== Summary ==
-
-Participating hosts:
-bat-atsm-2
-bat-dg2-oem2
-bat-adlp-7
-Missing hosts results[0]:
-Results: [IGTPW_9608](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9608/index.html)
-
-
-
---===============3583541649286026697==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>README.md and docs: describe how to document tests</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122564/">https://patchwork.freedesktop.org/series/122564/</a></td></tr>
-<tr><td><b>State:</b></td><td>info</td></tr>
-
-</table>
-
-
-    <p>Participating hosts:<br />
-bat-atsm-2<br />
-bat-dg2-oem2<br />
-bat-adlp-7<br />
-Missing hosts results[0]:<br />
-Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9608/index.html">IGTPW_9608</a></p>
-
-</body>
-</html>
-
---===============3583541649286026697==--
+> ---
+>  tests/xe/xe_live_ktest.c | 9 ---------
+>  1 file changed, 9 deletions(-)
+> 
+> diff --git a/tests/xe/xe_live_ktest.c b/tests/xe/xe_live_ktest.c
+> index 5088f676b2bf..779ff7efd402 100644
+> --- a/tests/xe/xe_live_ktest.c
+> +++ b/tests/xe/xe_live_ktest.c
+> @@ -18,15 +18,6 @@
+>   *
+>   * SUBTEST: migrate
+>   * Functionality: migrate
+> - *
+> - * SUBTEST: pci
+> - * Functionality: pci
+> - *
+> - * SUBTEST: rtp
+> - * Functionality: rtp
+> - *
+> - * SUBTEST: wa
+> - * Functionality: workarounds
+>   */
+>  
+>  struct kunit_tests {
+> -- 
+> 2.41.0
+> 
 
