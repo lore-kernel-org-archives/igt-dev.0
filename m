@@ -1,15 +1,25 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============5519000377097302412=="
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2F1F910E55A
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Aug 2023 15:13:14 +0000 (UTC)
+Received: from linux.intel.com (unknown [10.252.3.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id 2414A580D98
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Aug 2023 08:13:13 -0700 (PDT)
+Received: from maurocar by linux.intel.com with local (Exim 4.96)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qU7Lb-005cPN-0Y
+ for igt-dev@lists.freedesktop.org; Thu, 10 Aug 2023 17:13:11 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 10 Aug 2023 17:10:30 +0200
+Message-ID: <20230810151303.1338975-2-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230810151303.1338975-1-mauro.chehab@linux.intel.com>
+References: <20230810151303.1338975-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Hogander, Jouni" <jouni.hogander@intel.com>
-Date: Tue, 08 Aug 2023 18:34:49 -0000
-Message-ID: <169151968944.13860.4125364092363429693@emeril.freedesktop.org>
-References: <20230808121751.971567-1-jouni.hogander@intel.com>
-In-Reply-To: <20230808121751.971567-1-jouni.hogander@intel.com>
-Subject: [igt-dev] =?utf-8?b?4peLIENJLnhlQkFUOiBpbmZvIGZvciB0ZXN0cy9rbXNf?=
- =?utf-8?q?dirtyfb=3A_Add_missing_files_=28rev2=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2 1/2] xe_test_config.json: mark some
+ fields are mandatory at subtest level
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,75 +27,63 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============5519000377097302412==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-== Series Details ==
+Some IGT Xe tests were added without proper documentation.
+Currently, igt_doc.py doesn't know what fields are mandatory or
+not, so it can't enforce it.
 
-Series: tests/kms_dirtyfb: Add missing files (rev2)
-URL   : https://patchwork.freedesktop.org/series/122151/
-State : info
+Add a field to mark those.
 
-== Summary ==
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ tests/xe/xe_test_config.json | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Participating hosts:
-bat-pvc-2
-bat-atsm-2
-bat-dg2-oem2
-bat-adlp-7
-Missing hosts results[2]:
-bat-dg2-oem2
-bat-adlp-7
-Results: [IGTPW_9540](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9540/index.html)
-
-
-
---===============5519000377097302412==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_dirtyfb: Add missing files (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122151/">https://patchwork.freedesktop.org/series/122151/</a></td></tr>
-<tr><td><b>State:</b></td><td>info</td></tr>
-
-</table>
-
-
-    <p>Participating hosts:<br />
-bat-pvc-2<br />
-bat-atsm-2<br />
-bat-dg2-oem2<br />
-bat-adlp-7<br />
-Missing hosts results[2]:<br />
-bat-dg2-oem2<br />
-bat-adlp-7<br />
-Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9540/index.html">IGTPW_9540</a></p>
-
-</body>
-</html>
-
---===============5519000377097302412==--
+diff --git a/tests/xe/xe_test_config.json b/tests/xe/xe_test_config.json
+index 08c39de74384..8fb65d02d840 100644
+--- a/tests/xe/xe_test_config.json
++++ b/tests/xe/xe_test_config.json
+@@ -5,6 +5,7 @@
+     "fields": {
+         "Category": {
+             "_properties_": {
++                "mandatory": true,
+                 "description": "Contains the major group for the tested functionality, being hardware, software or firmware"
+             },
+             "Mega feature": {
+@@ -13,10 +14,12 @@
+                 },
+                 "Sub-category": {
+                     "_properties_": {
++                        "mandatory": true,
+                         "description": "Contains the the technical feature/functionality"
+                     },
+                     "Functionality": {
+                         "_properties_": {
++                            "mandatory": true,
+                             "description": "Groups page table tests on buckets containg more detailed functionality"
+                         },
+                         "Feature": {
+@@ -27,6 +30,7 @@
+                     },
+                     "Run type": {
+                         "_properties_": {
++                            "mandatory": true,
+                             "description": "Defines what category of testlist it belongs",
+                             "order": [
+                                 "boot",
+@@ -75,6 +79,7 @@
+         },
+         "Description" : {
+             "_properties_": {
++                "mandatory": true,
+                 "description": "Provides a description for the test/subtest."
+             }
+         }
+-- 
+2.41.0
