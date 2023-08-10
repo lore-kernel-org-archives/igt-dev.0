@@ -1,20 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com
- [205.220.168.131])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7F6F610E1E3
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Aug 2023 17:18:08 +0000 (UTC)
-Message-ID: <27fac926-8eb5-324a-a33e-fb083335de18@quicinc.com>
-Date: Thu, 10 Aug 2023 10:17:59 -0700
-MIME-Version: 1.0
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 85D0710E0F2
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Aug 2023 17:23:41 +0000 (UTC)
+Message-ID: <0912f0c5-3eb3-b903-8342-88e927cbf8ed@intel.com>
+Date: Thu, 10 Aug 2023 22:53:12 +0530
 Content-Language: en-US
-To: Jessica Zhang <quic_jesszhan@quicinc.com>, <igt-dev@lists.freedesktop.org>
-References: <20230809-kms-plane-fix-v2-1-314eb86af313@quicinc.com>
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
-In-Reply-To: <20230809-kms-plane-fix-v2-1-314eb86af313@quicinc.com>
+To: "Sharma, Swati2" <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
+ <20230629144910.3055377-17-bhanuprakash.modem@intel.com>
+ <963feb81-6a1d-1535-c76b-af1f1947633d@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <963feb81-6a1d-1535-c76b-af1f1947633d@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_plane: Skip plane position
- test if primary ID > sprite ID
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [V5 i-g-t 16/81] tests/i915/kms_dsc: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,53 +27,84 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Hi Swati,
 
+On Wed-09-08-2023 01:20 pm, Sharma, Swati2 wrote:
+> On 29-Jun-23 8:18 PM, Bhanuprakash Modem wrote:
+>> Add documentation for all kms tests which is used by IGT testplan
+>> documentation.
+>>
+>> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>> ---
+>>   tests/i915/kms_dsc.c | 27 +++++++++++++++++++++++++++
+>>   1 file changed, 27 insertions(+)
+>>
+>> diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+>> index 0a3e29924..4cce7face 100644
+>> --- a/tests/i915/kms_dsc.c
+>> +++ b/tests/i915/kms_dsc.c
+>> @@ -30,8 +30,35 @@
+>>    *
+>>    */
+>> +/**
+>> + * TEST: kms dsc
+>> + * Category: Display
+>> + * Description: Test to validate display stream compression
+>> + */
+>>   #include "kms_dsc_helper.h"
+>> +/**
+>> + * SUBTEST: dsc-%s
+>> + * Description: Tests basic display stream compression functionality 
+>> if supported
+>> + *              by a connector by forcing %arg[1]
+> 
+> forcing DSC on all connectors that support it with %arg[1]
+> (remove this from below subtests description)
 
-On 8/9/2023 3:24 PM, Jessica Zhang wrote:
-> Currently, IGT assumes that the primary plane in
-> test_plane_position_with_output() will always be committed under the
-> sprite plane. This will not always hold true if the plane_id of the
-> primary plane is greater than the plane_id of the sprite as the DRM
-> framework will calculate a higher normalized-zpos for planes with larger
-> plane_id's if the zpos property isn't set [1].
-> 
-> Since this is a non-atomic test, we won't be able to explicitly set the
-> zpos property. So instead, skip testing the plane position test output for
-> cases where the primary plane ID is greater than the sprite plane ID
-> 
-> [1] https://elixir.bootlin.com/linux/v6.5-rc5/source/drivers/gpu/drm/drm_blend.c#L431
-> 
-> Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+This description is adopted from igt_describe(), Feel free to update the 
+subtest description I can pick it from there.
 
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+> 
+>> + * Driver requirement: any
+> 
+> This is intel specific test.
 
-> ---
-> Changes in v2:
-> - Mention that plane-position-* is a non-atomic test
-> ---
->   tests/kms_plane.c | 6 ++++++
->   1 file changed, 6 insertions(+)
+Yes. As this kms testplan is designed for Intel, the allowed values are:
+
+i915: supports i915 driver only
+xe: supports xe driver only
+any: supports both i915 & xe
+
 > 
-> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-> index 67cff61d6cd1..15116b33b764 100644
-> --- a/tests/kms_plane.c
-> +++ b/tests/kms_plane.c
-> @@ -225,6 +225,12 @@ test_plane_position_with_output(data_t *data,
->   	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
->   	sprite = igt_output_get_plane(output, plane);
->   
-> +	if (primary->drm_plane->plane_id > sprite->drm_plane->plane_id) {
-> +		igt_info("primary plane ID (%d) > sprite plane ID (%d), skipping plane %d\n",
-> +				primary->drm_plane->plane_id, sprite->drm_plane->plane_id, plane);
-> +		return;
-> +	}
-> +
->   	create_fb_for_mode(data, mode, &green, &rect, 1, &primary_fb);
->   	igt_plane_set_fb(primary, &primary_fb);
->   
+>> + * Functionality: dsc
+>> + * Mega feature: VDSC
+>> + * Run type: FULL
+>> + * Test category: functionality test
+>> + *
+>> + * arg[1]:
+>> + *
+>> + * @basic:                DSC on all connectors that support it with 
+>> default parameters
+>> + * @with-bpc:             DSC on all connectors that support it with 
+>> certain input BPC
+>> + *                        for the connector
+>> + * @with-bpc-formats:     DSC on all connectors that support it with 
+>> certain input
+>> + *                        BPC for the connector with diff formats
+>> + * @with-formats:         DSC on all connectors that support it with 
+>> default parameters
+>> + *                        and creating fb with diff formats
+>> + * @with-output-formats:  DSC and output format on all connectors 
+>> that support it
+>> + */
+>> +
 > 
-> ---
-> base-commit: f12c2533941c9dfce43f455a02b7986605692b29
-> change-id: 20230808-kms-plane-fix-8b4e489e78b1
+> dsc-with-output-formats-with-bpc subtest is added too recently. please add.
+
+Will add in next rev.
+
+- Bhanu
+
 > 
-> Best regards,
+>>   IGT_TEST_DESCRIPTION("Test to validate display stream compression");
+>>   enum dsc_test_type {
