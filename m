@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0CEB110E503
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 46A6710E501
  for <igt-dev@lists.freedesktop.org>; Thu, 10 Aug 2023 11:12:39 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.17.210])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id DCA17580D98
+ by linux.intel.com (Postfix) with ESMTPS id 00066580DB2
  for <igt-dev@lists.freedesktop.org>; Thu, 10 Aug 2023 04:12:37 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qU3al-0041lt-3B
- for igt-dev@lists.freedesktop.org; Thu, 10 Aug 2023 13:12:35 +0200
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qU3am-0041lw-01
+ for igt-dev@lists.freedesktop.org; Thu, 10 Aug 2023 13:12:36 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 10 Aug 2023 13:12:03 +0200
-Message-ID: <20230810111234.960098-3-mauro.chehab@linux.intel.com>
+Date: Thu, 10 Aug 2023 13:12:04 +0200
+Message-ID: <20230810111234.960098-4-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230810111234.960098-1-mauro.chehab@linux.intel.com>
 References: <20230810111234.960098-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 2/3] xe-fast-feedback.testlist: drop
- device-independent kunit tests
+Subject: [igt-dev] [PATCH i-g-t v3 3/3] xe_live_ktest.c: drop the now
+ removed tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,26 +34,34 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Those are executed at build time, and were removed from
-xe_live_ktest. So, drop them from the testlist.
+The device-independent tests were moved out of xe_live_ktest.
 
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Drop the comments as well.
+
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/intel-ci/xe-fast-feedback.testlist | 3 ---
- 1 file changed, 3 deletions(-)
+ tests/xe/xe_live_ktest.c | 9 ---------
+ 1 file changed, 9 deletions(-)
 
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index f7c6b62f5f08..7f171868ba7b 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -250,7 +250,4 @@ igt@core_hotunplug@unbind-rebind
- # Run KUnit tests at the end
- igt@xe_live_ktest@bo
- igt@xe_live_ktest@dmabuf
--igt@xe_live_ktest@pci
--igt@xe_live_ktest@rtp
- igt@xe_live_ktest@migrate
--igt@xe_live_ktest@wa
+diff --git a/tests/xe/xe_live_ktest.c b/tests/xe/xe_live_ktest.c
+index 5088f676b2bf..779ff7efd402 100644
+--- a/tests/xe/xe_live_ktest.c
++++ b/tests/xe/xe_live_ktest.c
+@@ -18,15 +18,6 @@
+  *
+  * SUBTEST: migrate
+  * Functionality: migrate
+- *
+- * SUBTEST: pci
+- * Functionality: pci
+- *
+- * SUBTEST: rtp
+- * Functionality: rtp
+- *
+- * SUBTEST: wa
+- * Functionality: workarounds
+  */
+ 
+ struct kunit_tests {
 -- 
 2.41.0
