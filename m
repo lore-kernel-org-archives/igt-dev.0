@@ -1,22 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A187510E4F8
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Aug 2023 10:31:05 +0000 (UTC)
-From: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>
-To: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Gandi,
- Ramadevi" <ramadevi.gandi@intel.com>
-Date: Thu, 10 Aug 2023 10:30:59 +0000
-Message-ID: <SN6PR11MB34247938A65316BD0DE97905D013A@SN6PR11MB3424.namprd11.prod.outlook.com>
-References: <20230807035805.1054349-1-janga.rahul.kumar@intel.com>
- <20230807035805.1054349-2-janga.rahul.kumar@intel.com>
-In-Reply-To: <20230807035805.1054349-2-janga.rahul.kumar@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/alternative;
+ boundary="===============7228136042024257179=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/xe: Add support to reset all
- GT's
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Date: Thu, 10 Aug 2023 10:45:09 -0000
+Message-ID: <169166430901.4960.14067769819407728481@emeril.freedesktop.org>
+References: <20230810081743.1065566-1-swati2.sharma@intel.com>
+In-Reply-To: <20230810081743.1065566-1-swati2.sharma@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_dp-mst_help?=
+ =?utf-8?q?ers_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,78 +17,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Joshi, Kunal1" <kunal1.joshi@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGkgUmFodWwsDQoNClBsZWFzZSBmaW5kIG15IGNvbW1lbnRzIGJlbG93Lg0KPi0tLS0tT3JpZ2lu
-YWwgTWVzc2FnZS0tLS0tDQo+RnJvbTogS3VtYXIsIEphbmdhIFJhaHVsIDxqYW5nYS5yYWh1bC5r
-dW1hckBpbnRlbC5jb20+DQo+U2VudDogTW9uZGF5LCBBdWd1c3QgNywgMjAyMyA5OjI4IEFNDQo+
-VG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnOyBHYW5kaSwgUmFtYWRldmkNCj48cmFt
-YWRldmkuZ2FuZGlAaW50ZWwuY29tPjsgS3VtYXIsIEphbmdhIFJhaHVsDQo+PGphbmdhLnJhaHVs
-Lmt1bWFyQGludGVsLmNvbT4NCj5DYzogQ2gsIFNhaSBHb3d0aGFtIDxzYWkuZ293dGhhbS5jaEBp
-bnRlbC5jb20+OyBKb3NoaSwgS3VuYWwxDQo+PGt1bmFsMS5qb3NoaUBpbnRlbC5jb20+OyBrYW1p
-bC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tOyBLYXJhcywgQW5uYQ0KPjxhbm5hLmthcmFzQGlu
-dGVsLmNvbT4NCj5TdWJqZWN0OiBbUEFUQ0ggaS1nLXQgMS8zXSBsaWIveGU6IEFkZCBzdXBwb3J0
-IHRvIHJlc2V0IGFsbCBHVCdzDQo+DQo+RnJvbTogSmFuZ2EgUmFodWwgS3VtYXIgPGphbmdhLnJh
-aHVsLmt1bWFyQGludGVsLmNvbT4NCj4NCj5JbnRyb2R1Y2UgeGUgZ3QgbGlicmFyeS4NCj4NCj5B
-ZGQgc3VwcG9ydCB0byBjaGVjayBHVCByZXNldCBhbmQgZm9yY2UgcmVzZXQgYWxsIEdUJ3MuDQo+
-DQo+Q2M6IFNhaSBHb3d0aGFtIENoIDxzYWkuZ293dGhhbS5jaEBpbnRlbC5jb20+DQo+Q2M6IEt1
-bmFsIEpvc2hpIDxrdW5hbDEuam9zaGlAaW50ZWwuY29tPg0KPkNjOiBLYW1pbCBLb25pZWN6bnkg
-PGthbWlsLmtvbmllY3pueUBsaW51eC5pbnRlbC5jb20+DQo+Q2M6IEFubmEgS2FyYXMgPGFubmEu
-a2FyYXNAaW50ZWwuY29tPg0KPlNpZ25lZC1vZmYtYnk6IEphbmdhIFJhaHVsIEt1bWFyIDxqYW5n
-YS5yYWh1bC5rdW1hckBpbnRlbC5jb20+DQo+VGVzdGVkLWJ5OiBLdW5hbCBKb3NoaSA8a3VuYWwx
-Lmpvc2hpQGludGVsLmNvbT4NCj4tLS0NCj4gbGliL21lc29uLmJ1aWxkIHwgIDEgKw0KPiBsaWIv
-eGUveGVfZ3QuYyAgfCA2Mg0KPisrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysNCj4gbGliL3hlL3hlX2d0LmggIHwgMjcgKysrKysrKysrKysrKysrKysrKysr
-DQo+IDMgZmlsZXMgY2hhbmdlZCwgOTAgaW5zZXJ0aW9ucygrKQ0KPiBjcmVhdGUgbW9kZSAxMDA2
-NDQgbGliL3hlL3hlX2d0LmMNCj4gY3JlYXRlIG1vZGUgMTAwNjQ0IGxpYi94ZS94ZV9ndC5oDQo+
-DQo+ZGlmZiAtLWdpdCBhL2xpYi9tZXNvbi5idWlsZCBiL2xpYi9tZXNvbi5idWlsZCBpbmRleCBj
-ZTExYzA3MTUuLmI3YmZjZjRmMA0KPjEwMDY0NA0KPi0tLSBhL2xpYi9tZXNvbi5idWlsZA0KPisr
-KyBiL2xpYi9tZXNvbi5idWlsZA0KPkBAIC0xMDMsNiArMTAzLDcgQEAgbGliX3NvdXJjZXMgPSBb
-DQo+IAknaWd0X2RzYy5jJywNCj4gCSd4ZS94ZV9jb21wdXRlLmMnLA0KPiAJJ3hlL3hlX2NvbXB1
-dGVfc3F1YXJlX2tlcm5lbHMuYycsDQo+KwkneGUveGVfZ3QuYycsDQo+IAkneGUveGVfaW9jdGwu
-YycsDQo+IAkneGUveGVfcXVlcnkuYycsDQo+IAkneGUveGVfc3Bpbi5jJywNCj5kaWZmIC0tZ2l0
-IGEvbGliL3hlL3hlX2d0LmMgYi9saWIveGUveGVfZ3QuYyBuZXcgZmlsZSBtb2RlIDEwMDY0NCBp
-bmRleA0KPjAwMDAwMDAwMC4uOWNhZDczOWJlDQo+LS0tIC9kZXYvbnVsbA0KPisrKyBiL2xpYi94
-ZS94ZV9ndC5jDQo+QEAgLTAsMCArMSw2MiBAQA0KPisvKiBTUERYLUxpY2Vuc2UtSWRlbnRpZmll
-cjogTUlUICovDQo+Ky8qDQo+KyAqIENvcHlyaWdodCDCqSAyMDIzIEludGVsIENvcnBvcmF0aW9u
-DQo+KyAqDQo+KyAqIEF1dGhvcnM6DQo+KyAqICAgIEphbmdhIFJhaHVsIEt1bWFyIDxqYW5nYS5y
-YWh1bC5rdW1hckBpbnRlbC5jb20+DQo+KyAqLw0KPisNCj4rI2luY2x1ZGUgPGZjbnRsLmg+DQo+
-Kw0KTmV3IExpbmUgY2FuIGJlIHJlbW92ZWQuDQo+KyNpbmNsdWRlICJ4ZV9ndC5oIg0KPisNCj4r
-LyoqDQo+KyAqIGhhc194ZV9ndF9yZXNldDoNCj4rICogQGZkOiBvcGVuIHhlIGRybSBmaWxlIGRl
-c2NyaXB0b3INCj4rICoNCj4rICogQ2hlY2sgZ3QgZm9yY2UgcmVzZXQgc3lzZnMgZW50cnkgaXMg
-YXZhaWxhYmxlIG9yIG5vdA0KPisgKg0KPisgKiBSZXR1cm5zOiByZXNldCBzeXNmcyBlbnRyeSBh
-dmFpbGFibGUgICovIGJvb2wgaGFzX3hlX2d0X3Jlc2V0KGludA0KPitmZCkgew0KPisJY2hhciBy
-ZXNldF9zeXNmc19wYXRoWzEwMF07DQo+KwlzdHJ1Y3Qgc3RhdCBzdDsNCj4rCWludCBndDsNCj4r
-CWludCByZXNldF9zeXNmc19mZCA9IC0xOw0KPisJaW50IHN5c2ZzX2ZkID0gLTE7DQo+Kw0KPisJ
-aWd0X2Fzc2VydF9lcShmc3RhdChmZCwgJnN0KSwgMCk7DQo+KwlzeXNmc19mZCA9IGlndF9zeXNm
-c19vcGVuKGZkKTsNCj4rDQo+KwlpZ3RfYXNzZXJ0KHN5c2ZzX2ZkICE9IC0xKTsNCj4rCXhlX2Zv
-cl9lYWNoX2d0KGZkLCBndCkgew0KPisJCXNwcmludGYocmVzZXRfc3lzZnNfcGF0aCwNCj4iL3N5
-cy9rZXJuZWwvZGVidWcvZHJpLyVkL2d0JWQvZm9yY2VfcmVzZXQiLA0KPisJCQkJbWlub3Ioc3Qu
-c3RfcmRldiksIGd0KTsNCj4rCQlyZXNldF9zeXNmc19mZCA9IG9wZW5hdChzeXNmc19mZCwgcmVz
-ZXRfc3lzZnNfcGF0aCwNCj5PX1JET05MWSk7DQo+Kw0KPisJCWlmIChyZXNldF9zeXNmc19mZCA9
-PSAtMSkgew0KPisJCQljbG9zZShzeXNmc19mZCk7DQo+KwkJCXJldHVybiAwOw0KPisJCX0NCj4r
-DQo+KwkJY2xvc2UocmVzZXRfc3lzZnNfZmQpOw0KPisJfQ0KPisNCj4rCWNsb3NlKHN5c2ZzX2Zk
-KTsNCj4rCXJldHVybiAxOw0KPit9DQo+Kw0KPisvKioNCj4rICogeGVfZm9yY2VfZ3RfcmVzZXRf
-YWxsOg0KPisgKg0KPisgKiBGb3JjZXMgcmVzZXQgb2YgYWxsIHRoZSBHVCdzLg0KPisgKi8NCj4r
-dm9pZCB4ZV9mb3JjZV9ndF9yZXNldF9hbGwoaW50IHhlX2ZkKQ0KPit7DQo+KwlpbnQgZ3Q7DQo+
-Kw0KPisJeGVfZm9yX2VhY2hfZ3QoeGVfZmQsIGd0KQ0KPisJCXhlX2ZvcmNlX2d0X3Jlc2V0KHhl
-X2ZkLCBndCk7DQo+K30NCj4rDQo+ZGlmZiAtLWdpdCBhL2xpYi94ZS94ZV9ndC5oIGIvbGliL3hl
-L3hlX2d0LmggbmV3IGZpbGUgbW9kZSAxMDA2NDQgaW5kZXgNCj4wMDAwMDAwMDAuLmUwNzVlYmY2
-Mg0KPi0tLSAvZGV2L251bGwNCj4rKysgYi9saWIveGUveGVfZ3QuaA0KPkBAIC0wLDAgKzEsMjcg
-QEANCj4rLyogU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IE1JVCAqLw0KPisvKg0KPisgKiBDb3B5
-cmlnaHQgwqkgMjAyMyBJbnRlbCBDb3Jwb3JhdGlvbg0KPisgKg0KPisgKiBBdXRob3JzOg0KPisg
-KiAgICBKYW5nYSBSYWh1bCBLdW1hciA8amFuZ2EucmFodWwua3VtYXJAaW50ZWwuY29tPg0KPisg
-Ki8NCj4rDQo+KyNpbmNsdWRlIDxkaXJlbnQuaD4NCj4rI2luY2x1ZGUgPHN0ZGludC5oPg0KPisj
-aW5jbHVkZSA8c3lzL3N0YXQuaD4NCj4rDQo+KyNpbmNsdWRlICJpZ3RfY29yZS5oIg0KPisjaW5j
-bHVkZSAiaWd0X3N5c2ZzLmgiDQo+KyNpbmNsdWRlICJ4ZV9pb2N0bC5oIg0KPisjaW5jbHVkZSAi
-eGVfcXVlcnkuaCINCj4rDQoNCkhlYWRlcnMgbGlrZSB4ZV9xdWVyeSBhbmQgaWd0X2NvcmUgY2Fu
-IGJlIGNob3BwZWQuDQpSZXN0IGxvb2tzIGdvb2QgdG8gbWUuDQpSZXZpZXdlZC1ieTogU2FpIEdv
-d3RoYW0gQ2ggPHNhaS5nb3d0aGFtLmNoQGludGVsLmNvbT4NCg0KPisjaWZkZWYgX19saW51eF9f
-DQo+KyNpbmNsdWRlIDxzeXMvc3lzbWFjcm9zLmg+DQo+KyNlbHNlDQo+KyNkZWZpbmUgbWFqb3Io
-X192X18pICgoKF9fdl9fKSA+PiA4KSAmIDB4ZmYpICNkZWZpbmUgbWlub3IoX192X18pDQo+Kygo
-X192X18pICYgMHhmZikgI2VuZGlmDQo+Kw0KPitib29sIGhhc194ZV9ndF9yZXNldChpbnQgZmQp
-Ow0KPit2b2lkIHhlX2ZvcmNlX2d0X3Jlc2V0X2FsbChpbnQgZmQpOw0KPisNCj4tLQ0KPjIuMjUu
-MQ0KDQo=
+--===============7228136042024257179==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: dp-mst helpers (rev3)
+URL   : https://patchwork.freedesktop.org/series/122070/
+State : info
+
+== Summary ==
+
+Participating hosts:
+bat-pvc-2
+bat-atsm-2
+bat-dg2-oem2
+bat-adlp-7
+Missing hosts results[0]:
+Results: [IGTPW_9564](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9564/index.html)
+
+
+
+--===============7228136042024257179==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>dp-mst helpers (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122070/">https://patchwork.freedesktop.org/series/122070/</a></td></tr>
+<tr><td><b>State:</b></td><td>info</td></tr>
+
+</table>
+
+
+    <p>Participating hosts:<br />
+bat-pvc-2<br />
+bat-atsm-2<br />
+bat-dg2-oem2<br />
+bat-adlp-7<br />
+Missing hosts results[0]:<br />
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9564/index.html">IGTPW_9564</a></p>
+
+</body>
+</html>
+
+--===============7228136042024257179==--
