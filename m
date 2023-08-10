@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CFDB410E5CA
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Aug 2023 17:06:03 +0000 (UTC)
-Message-ID: <533d589a-6c6d-f3b8-427e-6f3740fc40c2@intel.com>
-Date: Thu, 10 Aug 2023 22:35:15 +0530
-Content-Language: en-US
-To: "Joshi, Kunal1" <kunal1.joshi@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20230629144910.3055377-10-bhanuprakash.modem@intel.com>
- <e8f310ad-29f6-9eb7-a997-0f3dcdc08d97@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <e8f310ad-29f6-9eb7-a997-0f3dcdc08d97@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [V5, i-g-t,
- 09/81] tests/chamelium/kms_chamelium_hpd: Document each subtest for
- testplan
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: vitaly.prosyak@amd.com
+Date: Thu, 10 Aug 2023 17:12:41 -0000
+Message-ID: <169168756157.4958.11034476872972230865@emeril.freedesktop.org>
+References: <20230810170423.48311-1-vitaly.prosyak@amd.com>
+In-Reply-To: <20230810170423.48311-1-vitaly.prosyak@amd.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/amdgpu=3A_misc_fixes_for_basic_tests_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,324 +17,133 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Kunal,
+== Series Details ==
 
-On Thu-10-08-2023 11:40 am, Joshi, Kunal1 wrote:
-> 1) Same for all chamelium tests, we should have a some identifier for 
-> getting testlist
->     for chamelium test
-> 
-> 2) Have Functionality/Mega Feature as  Hotplug to identify all tests 
-> which validates hotplug?
+Series: tests/amdgpu: misc fixes for basic tests (rev2)
+URL   : https://patchwork.freedesktop.org/series/122255/
+State : warning
 
-I think, Mega feature can be same (DP, HDMI etc..), and sure we can add 
-hotplug to the Functionality.
+== Summary ==
 
-- Bhanu
+Pipeline status: FAILED.
 
-> 
-> On 6/29/2023 8:17 PM, Bhanuprakash Modem wrote:
->> Add documentation for all kms tests which is used by IGT testplan
->> documentation.
->>
->> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
->> ---
->>   tests/chamelium/kms_chamelium_hpd.c | 186 +++++++++++++++++++++++++++-
->>   1 file changed, 185 insertions(+), 1 deletion(-)
->>
->> diff --git a/tests/chamelium/kms_chamelium_hpd.c 
->> b/tests/chamelium/kms_chamelium_hpd.c
->> index 8b3189ca0..d7b9f0707 100644
->> --- a/tests/chamelium/kms_chamelium_hpd.c
->> +++ b/tests/chamelium/kms_chamelium_hpd.c
->> @@ -25,8 +25,9 @@
->>    */
->>   /**
->> - * TEST: Tests behaviour of hpd using chamelium
->> + * TEST: kms chamelium hpd
->>    * Category: Display
->> + * Description: Testing HPD with a Chamelium board
->>    */
->>   #include "kms_chamelium_helper.h"
->> @@ -117,6 +118,7 @@ static void 
->> try_suspend_resume_hpd(chamelium_data_t *data,
->>    * Run type: BAT
->>    * Functionality: dp_hotplug
->>    * Mega feature: DP
->> + * Driver requirement: any
->>    *
->>    * SUBTEST: hdmi-hpd-fast
->>    * Description: Check that we get uevents and updated connector 
->> status on
->> @@ -125,6 +127,7 @@ static void 
->> try_suspend_resume_hpd(chamelium_data_t *data,
->>    * Run type: BAT
->>    * Functionality: hdmi_hotplug
->>    * Mega feature: HDMI
->> + * Driver requirement: any
->>    *
->>    * SUBTEST: vga-hpd-fast
->>    * Description: Check that we get uevents and updated connector 
->> status on
->> @@ -133,6 +136,66 @@ static void 
->> try_suspend_resume_hpd(chamelium_data_t *data,
->>    * Run type: BAT
->>    * Functionality: vga_hotplug
->>    * Mega feature: VGA
->> + * Driver requirement: any
->> + *
->> + * SUBTEST: dp-hpd
->> + * Description: Check that we get uevents and updated connector 
->> status on
->> + *              hotplug and unplug
->> + * Test category: functionality test
->> + * Run type: FULL
->> + * Functionality: dp_hotplug
->> + * Mega feature: DP
->> + * Driver requirement: any
->> + *
->> + * SUBTEST: hdmi-hpd
->> + * Description: Check that we get uevents and updated connector 
->> status on
->> + *              hotplug and unplug
->> + * Test category: functionality test
->> + * Run type: FULL
->> + * Functionality: hdmi_hotplug
->> + * Mega feature: HDMI
->> + * Driver requirement: any
->> + *
->> + * SUBTEST: vga-hpd
->> + * Description: Check that we get uevents and updated connector 
->> status on
->> + *              hotplug and unplug
->> + * Test category: functionality test
->> + * Run type: FULL
->> + * Functionality: vga_hotplug
->> + * Mega feature: VGA
->> + * Driver requirement: any
->> + *
->> + * SUBTEST: dp-hpd-%s
->> + * Description: Check that we get uevents and updated connector 
->> status on
->> + *              hotplug and unplug
->> + * Test category: functionality test
->> + * Run type: FULL
->> + * Functionality: dp_hotplug
->> + * Mega feature: DP
->> + * Driver requirement: any
->> + *
->> + * SUBTEST: hdmi-hpd-%s
->> + * Description: Check that we get uevents and updated connector 
->> status on
->> + *              hotplug and unplug
->> + * Test category: functionality test
->> + * Run type: FULL
->> + * Functionality: hdmi_hotplug
->> + * Mega feature: HDMI
->> + * Driver requirement: any
->> + *
->> + * SUBTEST: vga-hpd-%s
->> + * Description: Check that we get uevents and updated connector 
->> status on
->> + *              hotplug and unplug
->> + * Test category: functionality test
->> + * Run type: FULL
->> + * Functionality: vga_hotplug
->> + * Mega feature: VGA
->> + * Driver requirement: any
->> + *
->> + * arg[1]:
->> + *
->> + * @enable-disable-mode:     Toggle the mode
->> + * @with-enabled-mode:       Enabling the mode
->>    */
->>   static const char test_basic_hotplug_desc[] =
->>       "Check that we get uevents and updated connector status on "
->> @@ -200,6 +263,34 @@ static void test_hotplug(chamelium_data_t *data, 
->> struct chamelium_port *port,
->>       igt_remove_fb(data->drm_fd, &fb);
->>   }
->> +/**
->> + * SUBTEST: dp-hpd-for-each-pipe
->> + * Description: Check that we get uevents and updated connector 
->> status on
->> + *              hotplug and unplug for each pipe with valid output
->> + * Test category: functionality test
->> + * Run type: FULL
->> + * Functionality: dp_hotplug
->> + * Mega feature: DP
->> + * Driver requirement: any
->> + *
->> + * SUBTEST: hdmi-hpd-for-each-pipe
->> + * Description: Check that we get uevents and updated connector 
->> status on
->> + *              hotplug and unplug for each pipe with valid output
->> + * Test category: functionality test
->> + * Run type: FULL
->> + * Functionality: hdmi_hotplug
->> + * Mega feature: HDMI
->> + * Driver requirement: any
->> + *
->> + * SUBTEST: vga-hpd-for-each-pipe
->> + * Description: Check that we get uevents and updated connector 
->> status on
->> + *              hotplug and unplug for each pipe with valid output
->> + * Test category: functionality test
->> + * Run type: FULL
->> + * Functionality: vga_hotplug
->> + * Mega feature: VGA
->> + * Driver requirement: any
->> + */
->>   static const char test_hotplug_for_each_pipe_desc[] =
->>       "Check that we get uevents and updated connector status on "
->>       "hotplug and unplug for each pipe with valid output";
->> @@ -245,6 +336,39 @@ static void 
->> test_hotplug_for_each_pipe(chamelium_data_t *data,
->>       igt_hpd_storm_reset(data->drm_fd);
->>   }
->> +/**
->> + * SUBTEST: dp-hpd-after-%s
->> + * Description: Toggle HPD during %arg[1], check that uevents are 
->> sent and
->> + *              connector status is updated
->> + * Test category: functionality test
->> + * Run type: FULL
->> + * Functionality: dp_hotplug
->> + * Mega feature: DP
->> + * Driver requirement: any
->> + *
->> + * SUBTEST: hdmi-hpd-after-%s
->> + * Description: Toggle HPD during %arg[1], check that uevents are 
->> sent and
->> + *              connector status is updated
->> + * Test category: functionality test
->> + * Run type: FULL
->> + * Functionality: hdmi_hotplug
->> + * Mega feature: HDMI
->> + * Driver requirement: any
->> + *
->> + * SUBTEST: vga-hpd-after-%s
->> + * Description: Toggle HPD during %arg[1], check that uevents are 
->> sent and
->> + *              connector status is updated
->> + * Test category: functionality test
->> + * Run type: FULL
->> + * Functionality: vga_hotplug
->> + * Mega feature: VGA
->> + * Driver requirement: any
->> + *
->> + * arg[1]:
->> + *
->> + * @hibernate:     Hibernation
->> + * @suspend:       Suspend
->> + */
->>   static const char test_suspend_resume_hpd_desc[] =
->>       "Toggle HPD during suspend, check that uevents are sent and 
->> connector "
->>       "status is updated";
->> @@ -276,6 +400,16 @@ static void 
->> test_suspend_resume_hpd(chamelium_data_t *data,
->>    * Run type: BAT
->>    * Functionality: hotplug
->>    * Mega feature: General Display Features
->> + * Driver requirement: any
->> + *
->> + * SUBTEST: common-hpd-after-hibernate
->> + * Description: Toggle HPD during suspend on all connectors, check 
->> that uevents
->> + *              are sent and connector status is updated
->> + * Test category: functionality test
->> + * Run type: FULL
->> + * Functionality: hotplug
->> + * Mega feature: General Display Features
->> + * Driver requirement: any
->>    */
->>   static const char test_suspend_resume_hpd_common_desc[] =
->>       "Toggle HPD during suspend on all connectors, check that uevents 
->> are "
->> @@ -306,6 +440,16 @@ static void 
->> test_suspend_resume_hpd_common(chamelium_data_t *data,
->>       igt_cleanup_uevents(mon);
->>   }
->> +/**
->> + * SUBTEST: vga-hpd-without-ddc
->> + * Description: Disable DDC on a VGA connector, check we still get a 
->> uevent on
->> + *              hotplug
->> + * Test category: functionality test
->> + * Run type: FULL
->> + * Functionality: vga_hotplug
->> + * Mega feature: VGA
->> + * Driver requirement: any
->> + */
->>   static const char test_hpd_without_ddc_desc[] =
->>       "Disable DDC on a VGA connector, check we still get a uevent on 
->> hotplug";
->>   static void test_hpd_without_ddc(chamelium_data_t *data,
->> @@ -332,6 +476,27 @@ static void test_hpd_without_ddc(chamelium_data_t 
->> *data,
->>       igt_cleanup_uevents(mon);
->>   }
->> +/**
->> + * SUBTEST: dp-hpd-storm
->> + * Description: Trigger a series of hotplugs in a very small 
->> timeframe to
->> + *              simulate abad cable, check the kernel falls back to 
->> polling
->> + *              to avoid a hotplug storm
->> + * Test category: functionality test
->> + * Run type: FULL
->> + * Functionality: dp_hotplug
->> + * Mega feature: DP
->> + * Driver requirement: any
->> + *
->> + * SUBTEST: hdmi-hpd-storm
->> + * Description: Trigger a series of hotplugs in a very small 
->> timeframe to
->> + *              simulate abad cable, check the kernel falls back to 
->> polling
->> + *              to avoid a hotplug storm
->> + * Test category: functionality test
->> + * Run type: FULL
->> + * Functionality: hdmi_hotplug
->> + * Mega feature: HDMI
->> + * Driver requirement: any
->> + */
->>   static const char test_hpd_storm_detect_desc[] =
->>       "Trigger a series of hotplugs in a very small timeframe to 
->> simulate a"
->>       "bad cable, check the kernel falls back to polling to avoid a 
->> hotplug "
->> @@ -366,6 +531,25 @@ static void 
->> test_hpd_storm_detect(chamelium_data_t *data,
->>       igt_hpd_storm_reset(data->drm_fd);
->>   }
->> +/**
->> + * SUBTEST: dp-hpd-storm-disable
->> + * Description: Disable HPD storm detection, trigger a storm and 
->> check the
->> + *              kernel doesn't detect one
->> + * Test category: functionality test
->> + * Run type: FULL
->> + * Functionality: dp_hotplug
->> + * Mega feature: DP
->> + * Driver requirement: any
->> + *
->> + * SUBTEST: hdmi-hpd-storm-disable
->> + * Description: Disable HPD storm detection, trigger a storm and 
->> check the
->> + *              kernel doesn't detect one
->> + * Test category: functionality test
->> + * Run type: FULL
->> + * Functionality: hdmi_hotplug
->> + * Mega feature: HDMI
->> + * Driver requirement: any
->> + */
->>   static const char test_hpd_storm_disable_desc[] =
->>       "Disable HPD storm detection, trigger a storm and check the 
->> kernel "
->>       "doesn't detect one";
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/957823 for the overview.
+
+build-containers:build-debian has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47109287):
+  time="2023-08-10T17:10:08Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:9918064ebccea7fc961fe71dad46105b217763b4b1b3a9dfa7bee2ab29d2039b
+  Copying config sha256:1df4474660a180f2a805d8477b78f9774d302afb2d31118106bffc0cb144e910
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-08-10T17:10:13Z" level=warning msg="signal: killed"
+  time="2023-08-10T17:10:13Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1691687413:step_script
+  section_start:1691687413:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1691687414:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47109289):
+  time="2023-08-10T17:10:09Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:9918064ebccea7fc961fe71dad46105b217763b4b1b3a9dfa7bee2ab29d2039b
+  Copying config sha256:1df4474660a180f2a805d8477b78f9774d302afb2d31118106bffc0cb144e910
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-08-10T17:10:14Z" level=warning msg="signal: killed"
+  time="2023-08-10T17:10:14Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1691687414:step_script
+  section_start:1691687414:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1691687415:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47109288):
+  time="2023-08-10T17:10:08Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:9918064ebccea7fc961fe71dad46105b217763b4b1b3a9dfa7bee2ab29d2039b
+  Copying config sha256:1df4474660a180f2a805d8477b78f9774d302afb2d31118106bffc0cb144e910
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-08-10T17:10:13Z" level=warning msg="signal: killed"
+  time="2023-08-10T17:10:13Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1691687413:step_script
+  section_start:1691687413:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1691687414:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47109290):
+  time="2023-08-10T17:10:08Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:9918064ebccea7fc961fe71dad46105b217763b4b1b3a9dfa7bee2ab29d2039b
+  Copying config sha256:1df4474660a180f2a805d8477b78f9774d302afb2d31118106bffc0cb144e910
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-08-10T17:10:13Z" level=warning msg="signal: killed"
+  time="2023-08-10T17:10:13Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1691687413:step_script
+  section_start:1691687413:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1691687414:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47109291):
+  time="2023-08-10T17:10:10Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
+  Building!
+  STEP 1: FROM fedora:31
+  Getting image source signatures
+  Copying blob sha256:854946d575a439a894349addd141568875d7c1e673d3286b08250f3dde002e6a
+  Copying config sha256:7e94ed77b448a8d2ff08b92d3ca743e4e862c744892d6886c73487581eb5863a
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils
+  error running container: error creating container for [/bin/sh -c dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils]: time="2023-08-10T17:10:15Z" level=warning msg="signal: killed"
+  time="2023-08-10T17:10:15Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils": error while running runtime: exit status 1
+  section_end:1691687416:step_script
+  section_start:1691687416:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1691687417:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/957823
