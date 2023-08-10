@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D025710E4F7
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0213B10E4F4
  for <igt-dev@lists.freedesktop.org>; Thu, 10 Aug 2023 08:17:58 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 10 Aug 2023 13:47:42 +0530
-Message-Id: <20230810081743.1065566-4-swati2.sharma@intel.com>
+Date: Thu, 10 Aug 2023 13:47:43 +0530
+Message-Id: <20230810081743.1065566-5-swati2.sharma@intel.com>
 In-Reply-To: <20230810081743.1065566-1-swati2.sharma@intel.com>
 References: <20230810081743.1065566-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v2 3/4] tests/kms: use dp-mst helpers
+Subject: [igt-dev] [v2 4/4] tests/kms_color: skip deep-color test for mst
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,127 +22,47 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Remove duplicate code and use helpers instead.
+In intel driver, for MST streams pipe_bpp is restricted to 8bpc.
+So, deep-color >= 10bpc will never work for DP-MST even if panel
+supports 10bpc.
 
-v2: -fixed if() (CI)
+Test checks panel supports 10bpc and tries to find such a
+combination of mode that can really work with 10bpc. So, with
+n1 modes in MST1 and n2 modes in MST2, test will try n1xn2 times
+and eventually SKIP. However, trying with these many combinations
+it is leading to excessive logging ultimately killing the test.
 
+Once KMD FIXME, is resolved this MST constraint can be removed.
+
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8615
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_content_protection.c | 34 ++-------------------------------
- tests/kms_display_modes.c      | 35 ++--------------------------------
- 2 files changed, 4 insertions(+), 65 deletions(-)
+ tests/kms_color.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-index 6cdf81a28..b65d7cd0b 100644
---- a/tests/kms_content_protection.c
-+++ b/tests/kms_content_protection.c
-@@ -534,43 +534,15 @@ test_content_protection(enum igt_commit_style s, int content_type)
- 		igt_cleanup_uevents(data.uevent_monitor);
- }
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index b15b9572c..4a410c039 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -847,8 +847,17 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
+ 		igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 10);
+ 		igt_output_set_pipe(output, p);
  
--static int parse_path_blob(char *blob_data)
--{
--	int connector_id;
--	char *encoder;
--
--	encoder = strtok(blob_data, ":");
--	igt_assert_f(!strcmp(encoder, "mst"), "PATH connector property expected to have 'mst'\n");
--
--	connector_id = atoi(strtok(NULL, "-"));
--
--	return connector_id;
--}
--
- static bool output_is_dp_mst(igt_output_t *output, int i)
- {
--	drmModePropertyBlobPtr path_blob = NULL;
--	uint64_t path_blob_id;
--	drmModeConnector *connector = output->config.connector;
--	struct kmstest_connector_config config;
--	const char *encoder;
- 	int connector_id;
- 	static int prev_connector_id;
+-		if (is_intel_device(data->drm_fd) &&
+-		    !igt_max_bpc_constraint(&data->display, p, output, 10))
++		/*
++		 * In intel driver, for MST streams pipe_bpp is
++		 * restricted to 8bpc. So, deep-color >= 10bpc
++		 * will never work for DP-MST even if the panel
++		 * supports 10bpc. Once KMD FIXME, is resolved
++		 * this MST constraint can be removed.
++		 */
++		if (is_intel_device(data->drm_fd) && igt_check_output_is_dp_mst(data->drm_fd, output))
++			continue;
++
++		if (is_intel_device(data->drm_fd) && !igt_max_bpc_constraint(&data->display, p, output, 10))
+ 			continue;
  
--	kmstest_get_connector_config(data.drm_fd, output->config.connector->connector_id, -1, &config);
--	encoder = kmstest_encoder_type_str(config.encoder->encoder_type);
--
--	if (strcmp(encoder, "DP MST"))
-+	connector_id = igt_get_dp_mst_connector_id(data.drm_fd, output);
-+	if (connector_id < 0)
- 		return false;
- 
--	igt_assert(kmstest_get_property(data.drm_fd, connector->connector_id,
--		   DRM_MODE_OBJECT_CONNECTOR, "PATH", NULL,
--		   &path_blob_id, NULL));
--
--	igt_assert(path_blob = drmModeGetPropertyBlob(data.drm_fd, path_blob_id));
--
--	connector_id = parse_path_blob((char *) path_blob->data);
--
- 	/*
- 	 * Discarding outputs of other DP MST topology.
- 	 * Testing only on outputs on the topology we got previously
-@@ -582,8 +554,6 @@ static bool output_is_dp_mst(igt_output_t *output, int i)
- 			return false;
- 	}
- 
--	drmModeFreePropertyBlob(path_blob);
--
- 	return true;
- }
- 
-diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
-index 93d91ef5b..84fc7738b 100644
---- a/tests/kms_display_modes.c
-+++ b/tests/kms_display_modes.c
-@@ -77,46 +77,15 @@ static drmModeModeInfo *get_mode(igt_output_t *output)
- 	return required_mode;
- }
- 
--static int parse_path_blob(char *blob_data)
--{
--	int connector_id;
--	char *encoder;
--
--	encoder = strtok(blob_data, ":");
--	igt_assert_f(!strcmp(encoder, "mst"), "PATH connector property expected to have 'mst'\n");
--
--	connector_id = atoi(strtok(NULL, "-"));
--
--	return connector_id;
--}
--
- static bool output_is_dp_mst(data_t *data, igt_output_t *output, int i)
- {
--	drmModePropertyBlobPtr path_blob = NULL;
--	uint64_t path_blob_id;
--	drmModeConnector *connector = output->config.connector;
--	struct kmstest_connector_config config;
--	const char *encoder;
- 	int connector_id;
- 	static int prev_connector_id;
- 
--	kmstest_get_connector_config(data->drm_fd, output->config.connector->connector_id,
--				     -1, &config);
--	encoder = kmstest_encoder_type_str(config.encoder->encoder_type);
--
--	if (strcmp(encoder, "DP MST"))
-+	connector_id = igt_get_dp_mst_connector_id(data->drm_fd, output);
-+	if (connector_id < 0)
- 		return false;
- 
--	igt_assert(kmstest_get_property(data->drm_fd, connector->connector_id,
--		   DRM_MODE_OBJECT_CONNECTOR, "PATH", NULL,
--		   &path_blob_id, NULL));
--
--	igt_assert(path_blob = drmModeGetPropertyBlob(data->drm_fd, path_blob_id));
--
--	connector_id = parse_path_blob((char *) path_blob->data);
--
--	drmModeFreePropertyBlob(path_blob);
--
- 	/*
- 	 * Discarding outputs of other DP MST topology.
- 	 * Testing only on outputs on the topology we got previously
+ 		data->color_depth = 10;
 -- 
 2.25.1
