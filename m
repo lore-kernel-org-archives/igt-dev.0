@@ -1,22 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3D64610E4C2
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Aug 2023 10:17:09 +0000 (UTC)
-From: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>
-To: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Gandi,
- Ramadevi" <ramadevi.gandi@intel.com>
-Date: Thu, 10 Aug 2023 10:17:04 +0000
-Message-ID: <SN6PR11MB34245FD8EAB29FBFAF349388D013A@SN6PR11MB3424.namprd11.prod.outlook.com>
-References: <20230807035805.1054349-1-janga.rahul.kumar@intel.com>
- <20230807035805.1054349-2-janga.rahul.kumar@intel.com>
-In-Reply-To: <20230807035805.1054349-2-janga.rahul.kumar@intel.com>
-Content-Language: en-US
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/xe: Add support to reset all
- GT's
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Date: Thu, 10 Aug 2023 11:21:30 -0000
+Message-ID: <169166649049.4960.7445551730879334753@emeril.freedesktop.org>
+References: <20230810081743.1065566-1-swati2.sharma@intel.com>
+In-Reply-To: <20230810081743.1065566-1-swati2.sharma@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_d?=
+ =?utf-8?q?p-mst_helpers_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,74 +17,46 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Joshi, Kunal1" <kunal1.joshi@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBLdW1hciwgSmFuZ2EgUmFodWwg
-PGphbmdhLnJhaHVsLmt1bWFyQGludGVsLmNvbT4gDQpTZW50OiBNb25kYXksIEF1Z3VzdCA3LCAy
-MDIzIDk6MjggQU0NClRvOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZzsgR2FuZGksIFJh
-bWFkZXZpIDxyYW1hZGV2aS5nYW5kaUBpbnRlbC5jb20+OyBLdW1hciwgSmFuZ2EgUmFodWwgPGph
-bmdhLnJhaHVsLmt1bWFyQGludGVsLmNvbT4NCkNjOiBDaCwgU2FpIEdvd3RoYW0gPHNhaS5nb3d0
-aGFtLmNoQGludGVsLmNvbT47IEpvc2hpLCBLdW5hbDEgPGt1bmFsMS5qb3NoaUBpbnRlbC5jb20+
-OyBrYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tOyBLYXJhcywgQW5uYSA8YW5uYS5rYXJh
-c0BpbnRlbC5jb20+DQpTdWJqZWN0OiBbUEFUQ0ggaS1nLXQgMS8zXSBsaWIveGU6IEFkZCBzdXBw
-b3J0IHRvIHJlc2V0IGFsbCBHVCdzDQoNCkZyb206IEphbmdhIFJhaHVsIEt1bWFyIDxqYW5nYS5y
-YWh1bC5rdW1hckBpbnRlbC5jb20+DQoNCkludHJvZHVjZSB4ZSBndCBsaWJyYXJ5Lg0KDQpBZGQg
-c3VwcG9ydCB0byBjaGVjayBHVCByZXNldCBhbmQgZm9yY2UgcmVzZXQgYWxsIEdUJ3MuDQoNCkNj
-OiBTYWkgR293dGhhbSBDaCA8c2FpLmdvd3RoYW0uY2hAaW50ZWwuY29tPg0KQ2M6IEt1bmFsIEpv
-c2hpIDxrdW5hbDEuam9zaGlAaW50ZWwuY29tPg0KQ2M6IEthbWlsIEtvbmllY3pueSA8a2FtaWwu
-a29uaWVjem55QGxpbnV4LmludGVsLmNvbT4NCkNjOiBBbm5hIEthcmFzIDxhbm5hLmthcmFzQGlu
-dGVsLmNvbT4NClNpZ25lZC1vZmYtYnk6IEphbmdhIFJhaHVsIEt1bWFyIDxqYW5nYS5yYWh1bC5r
-dW1hckBpbnRlbC5jb20+DQpUZXN0ZWQtYnk6IEt1bmFsIEpvc2hpIDxrdW5hbDEuam9zaGlAaW50
-ZWwuY29tPg0KLS0tDQogbGliL21lc29uLmJ1aWxkIHwgIDEgKw0KIGxpYi94ZS94ZV9ndC5jICB8
-IDYyICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysNCiBs
-aWIveGUveGVfZ3QuaCAgfCAyNyArKysrKysrKysrKysrKysrKysrKysNCiAzIGZpbGVzIGNoYW5n
-ZWQsIDkwIGluc2VydGlvbnMoKykNCiBjcmVhdGUgbW9kZSAxMDA2NDQgbGliL3hlL3hlX2d0LmMN
-CiBjcmVhdGUgbW9kZSAxMDA2NDQgbGliL3hlL3hlX2d0LmgNCg0KZGlmZiAtLWdpdCBhL2xpYi9t
-ZXNvbi5idWlsZCBiL2xpYi9tZXNvbi5idWlsZCBpbmRleCBjZTExYzA3MTUuLmI3YmZjZjRmMCAx
-MDA2NDQNCi0tLSBhL2xpYi9tZXNvbi5idWlsZA0KKysrIGIvbGliL21lc29uLmJ1aWxkDQpAQCAt
-MTAzLDYgKzEwMyw3IEBAIGxpYl9zb3VyY2VzID0gWw0KIAknaWd0X2RzYy5jJywNCiAJJ3hlL3hl
-X2NvbXB1dGUuYycsDQogCSd4ZS94ZV9jb21wdXRlX3NxdWFyZV9rZXJuZWxzLmMnLA0KKwkneGUv
-eGVfZ3QuYycsDQogCSd4ZS94ZV9pb2N0bC5jJywNCiAJJ3hlL3hlX3F1ZXJ5LmMnLA0KIAkneGUv
-eGVfc3Bpbi5jJywNCmRpZmYgLS1naXQgYS9saWIveGUveGVfZ3QuYyBiL2xpYi94ZS94ZV9ndC5j
-IG5ldyBmaWxlIG1vZGUgMTAwNjQ0IGluZGV4IDAwMDAwMDAwMC4uOWNhZDczOWJlDQotLS0gL2Rl
-di9udWxsDQorKysgYi9saWIveGUveGVfZ3QuYw0KQEAgLTAsMCArMSw2MiBAQA0KKy8qIFNQRFgt
-TGljZW5zZS1JZGVudGlmaWVyOiBNSVQgKi8NCisvKg0KKyAqIENvcHlyaWdodCDCqSAyMDIzIElu
-dGVsIENvcnBvcmF0aW9uDQorICoNCisgKiBBdXRob3JzOg0KKyAqICAgIEphbmdhIFJhaHVsIEt1
-bWFyIDxqYW5nYS5yYWh1bC5rdW1hckBpbnRlbC5jb20+DQorICovDQorDQorI2luY2x1ZGUgPGZj
-bnRsLmg+DQorDQpJIGRvbuKAmXQgdGhpbmsgbmV3IGxpbmUgaXMgbmVlZGVkIGhlcmUuDQorI2lu
-Y2x1ZGUgInhlX2d0LmgiDQorDQorLyoqDQorICogaGFzX3hlX2d0X3Jlc2V0Og0KKyAqIEBmZDog
-b3BlbiB4ZSBkcm0gZmlsZSBkZXNjcmlwdG9yDQorICoNCisgKiBDaGVjayBndCBmb3JjZSByZXNl
-dCBzeXNmcyBlbnRyeSBpcyBhdmFpbGFibGUgb3Igbm90DQorICoNCisgKiBSZXR1cm5zOiByZXNl
-dCBzeXNmcyBlbnRyeSBhdmFpbGFibGUgICovIGJvb2wgaGFzX3hlX2d0X3Jlc2V0KGludCANCitm
-ZCkgew0KKwljaGFyIHJlc2V0X3N5c2ZzX3BhdGhbMTAwXTsNCisJc3RydWN0IHN0YXQgc3Q7DQor
-CWludCBndDsNCisJaW50IHJlc2V0X3N5c2ZzX2ZkID0gLTE7DQorCWludCBzeXNmc19mZCA9IC0x
-Ow0KKw0KKwlpZ3RfYXNzZXJ0X2VxKGZzdGF0KGZkLCAmc3QpLCAwKTsNCisJc3lzZnNfZmQgPSBp
-Z3Rfc3lzZnNfb3BlbihmZCk7DQorDQorCWlndF9hc3NlcnQoc3lzZnNfZmQgIT0gLTEpOw0KKwl4
-ZV9mb3JfZWFjaF9ndChmZCwgZ3QpIHsNCisJCXNwcmludGYocmVzZXRfc3lzZnNfcGF0aCwgIi9z
-eXMva2VybmVsL2RlYnVnL2RyaS8lZC9ndCVkL2ZvcmNlX3Jlc2V0IiwNCisJCQkJbWlub3Ioc3Qu
-c3RfcmRldiksIGd0KTsNCisJCXJlc2V0X3N5c2ZzX2ZkID0gb3BlbmF0KHN5c2ZzX2ZkLCByZXNl
-dF9zeXNmc19wYXRoLCBPX1JET05MWSk7DQorDQorCQlpZiAocmVzZXRfc3lzZnNfZmQgPT0gLTEp
-IHsNCisJCQljbG9zZShzeXNmc19mZCk7DQorCQkJcmV0dXJuIDA7DQorCQl9DQorDQorCQljbG9z
-ZShyZXNldF9zeXNmc19mZCk7DQorCX0NCisNCisJY2xvc2Uoc3lzZnNfZmQpOw0KKwlyZXR1cm4g
-MTsNCit9DQorDQorLyoqDQorICogeGVfZm9yY2VfZ3RfcmVzZXRfYWxsOg0KKyAqDQorICogRm9y
-Y2VzIHJlc2V0IG9mIGFsbCB0aGUgR1Qncy4NCisgKi8NCit2b2lkIHhlX2ZvcmNlX2d0X3Jlc2V0
-X2FsbChpbnQgeGVfZmQpDQorew0KKwlpbnQgZ3Q7DQorDQorCXhlX2Zvcl9lYWNoX2d0KHhlX2Zk
-LCBndCkNCisJCXhlX2ZvcmNlX2d0X3Jlc2V0KHhlX2ZkLCBndCk7DQorfQ0KKw0KZGlmZiAtLWdp
-dCBhL2xpYi94ZS94ZV9ndC5oIGIvbGliL3hlL3hlX2d0LmggbmV3IGZpbGUgbW9kZSAxMDA2NDQg
-aW5kZXggMDAwMDAwMDAwLi5lMDc1ZWJmNjINCi0tLSAvZGV2L251bGwNCisrKyBiL2xpYi94ZS94
-ZV9ndC5oDQpAQCAtMCwwICsxLDI3IEBADQorLyogU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IE1J
-VCAqLw0KKy8qDQorDQogKiBDb3B5cmlnaHQgwqkgMjAyMyBJbnRlbCBDb3Jwb3JhdGlvbg0KKyAq
-DQorICogQXV0aG9yczoNCisgKiAgICBKYW5nYSBSYWh1bCBLdW1hciA8amFuZ2EucmFodWwua3Vt
-YXJAaW50ZWwuY29tPg0KKyAqLw0KKw0KKyNpbmNsdWRlIDxkaXJlbnQuaD4NCisjaW5jbHVkZSA8
-c3RkaW50Lmg+DQorI2luY2x1ZGUgPHN5cy9zdGF0Lmg+DQorDQorI2luY2x1ZGUgImlndF9jb3Jl
-LmgiDQorI2luY2x1ZGUgImlndF9zeXNmcy5oIg0KKyNpbmNsdWRlICJ4ZV9pb2N0bC5oIg0KKyNp
-bmNsdWRlICJ4ZV9xdWVyeS5oIg0KKw0KSGVhZGVycyBsaWtlIHhlX3F1ZXJ5IGFuZCBpZ3RfY29y
-ZSBjYW4gYmUgY2hvcHBlZC4NClJlc3QgbG9va3MgZ29vZCB0byBtZS4NClJldmlld2VkLWJ5OiBT
-YWkgR293dGhhbSBDaCA8c2FpLmdvd3RoYW0uY2hAaW50ZWwuY29tPiANCisjaWZkZWYgX19saW51
-eF9fDQorI2luY2x1ZGUgPHN5cy9zeXNtYWNyb3MuaD4NCisjZWxzZQ0KKyNkZWZpbmUgbWFqb3Io
-X192X18pICgoKF9fdl9fKSA+PiA4KSAmIDB4ZmYpICNkZWZpbmUgbWlub3IoX192X18pIA0KKygo
-X192X18pICYgMHhmZikgI2VuZGlmDQorDQorYm9vbCBoYXNfeGVfZ3RfcmVzZXQoaW50IGZkKTsN
-Cit2b2lkIHhlX2ZvcmNlX2d0X3Jlc2V0X2FsbChpbnQgZmQpOw0KKw0KLS0NCjIuMjUuMQ0KDQo=
+== Series Details ==
+
+Series: dp-mst helpers (rev3)
+URL   : https://patchwork.freedesktop.org/series/122070/
+State : warning
+
+== Summary ==
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/957482 for the overview.
+
+build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47078542):
+  [786/1558] Generating gem_ctx_engines.testlist with a meson_exe.py custom command.
+  [787/1558] Compiling C object 'tests/59830eb@@gem_ctx_param@exe/i915_gem_ctx_param.c.o'.
+  [788/1558] Linking target tests/gem_ctx_isolation.
+  [789/1558] Compiling C object 'tests/59830eb@@gem_ctx_persistence@exe/i915_gem_ctx_persistence.c.o'.
+  [790/1558] Linking target tests/gem_ctx_param.
+  [791/1558] Generating gem_concurrent_blit.testlist with a meson_exe.py custom command.
+  [792/1558] Compiling C object 'tests/59830eb@@gem_ctx_sseu@exe/i915_gem_ctx_sseu.c.o'.
+  [793/1558] Compiling C object 'tests/59830eb@@gem_ctx_switch@exe/i915_gem_ctx_switch.c.o'.
+  [794/1558] Generating gem_ctx_isolation.testlist with a meson_exe.py custom command.
+  [795/1558] Linking target tests/gem_ctx_persistence.
+  [796/1558] Linking target tests/gem_ctx_sseu.
+  [797/1558] Linking target tests/gem_ctx_switch.
+  [798/1558] Generating gem_ctx_param.testlist with a meson_exe.py custom command.
+  [799/1558] Compiling C object 'tests/59830eb@@gem_evict_alignment@exe/i915_gem_evict_alignment.c.o'.
+  [800/1558] Compiling C object 'tests/59830eb@@gem_ctx_shared@exe/i915_gem_ctx_shared.c.o'.
+  [801/1558] Generating gem_ctx_persistence.testlist with a meson_exe.py custom command.
+  [802/1558] Generating gem_ctx_sseu.testlist with a meson_exe.py custom command.
+  [803/1558] Generating gem_ctx_switch.testlist with a meson_exe.py custom command.
+  [804/1558] Linking target tests/gem_evict_alignment.
+  [805/1558] Linking target tests/gem_ctx_shared.
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/957482
