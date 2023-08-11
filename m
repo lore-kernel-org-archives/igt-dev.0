@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8316510E6F3
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Aug 2023 18:54:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 78F8310E6F5
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Aug 2023 18:54:57 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Sat, 12 Aug 2023 00:15:48 +0530
-Message-Id: <20230811184655.157060-15-bhanuprakash.modem@intel.com>
+Date: Sat, 12 Aug 2023 00:15:49 +0530
+Message-Id: <20230811184655.157060-16-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
 References: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V6 14/81] tests/i915/kms_cdclk: Document each
+Subject: [igt-dev] [i-g-t V6 15/81] tests/i915/kms_draw_crc: Document each
  subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -26,68 +26,87 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add documentation for all kms tests which is used by IGT testplan
 documentation.
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/i915/kms_cdclk.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+V2: - Fix functionality
 
-diff --git a/tests/i915/kms_cdclk.c b/tests/i915/kms_cdclk.c
-index 40eca24f0..03fa65f6b 100644
---- a/tests/i915/kms_cdclk.c
-+++ b/tests/i915/kms_cdclk.c
-@@ -24,6 +24,11 @@
-  *  Swati Sharma <swati2.sharma@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Jeevan B <jeevan.b@intel.com>
+---
+ tests/i915/kms_draw_crc.c | 49 +++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 47 insertions(+), 2 deletions(-)
+
+diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
+index 01ecb7bb9..d701e3cfa 100644
+--- a/tests/i915/kms_draw_crc.c
++++ b/tests/i915/kms_draw_crc.c
+@@ -22,8 +22,11 @@
+  *
   */
  
+-/* This program tests whether the igt_draw library actually works. */
+-
 +/**
-+ * TEST: kms cdclk
++ * TEST: kms draw crc
 + * Category: Display
-+ * Description: Test cdclk features : crawling and squashing
++ * Description: Tests whether the igt_draw library actually works.
 + */
+ #include "i915/gem.h"
  #include "igt.h"
  
- IGT_TEST_DESCRIPTION("Test cdclk features : crawling and squashing");
-@@ -248,6 +253,16 @@ static void test_mode_transition(data_t *data, enum pipe pipe, igt_output_t *out
- 	igt_remove_fb(display->drm_fd, &fb);
+@@ -140,6 +143,39 @@ static void get_method_crc(enum igt_draw_method method, uint32_t drm_format,
+ 	igt_remove_fb(drm_fd, &fb);
  }
  
 +/**
-+ * SUBTEST: mode-transition-all-outputs
-+ * Description: Mode transition (low to high) test to validate cdclk frequency
-+ *              change by simultaneous modesets on all pipes with valid outputs.
++ * SUBTEST: draw-method-%s
++ * Description: Verify that igt draw library works for the %arg[1] method with
++ *              different modifiers & DRM formats.
 + * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void test_mode_transition_on_all_outputs(data_t *data)
- {
- 	igt_display_t *display = &data->display;
-@@ -344,6 +359,23 @@ static void test_mode_transition_on_all_outputs(data_t *data)
- 	igt_remove_fb(data->drm_fd, &fb);
- }
- 
-+/**
-+ * SUBTEST: mode-transition
-+ * Description: Mode transition (low to high) test to validate cdclk frequency change.
-+ * Driver requirement: any
-+ * Functionality: kms_core
++ * Functionality: kms_core, tiling
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: plane-scaling
-+ * Description: Plane scaling test to validate cdclk frequency change.
++ * arg[1]:
++ *
++ * @blt:          Blitter
++ * @mmap-wc:      MMAP-WC
++ * @render:       Render
++ */
++
++/**
++ * SUBTEST: draw-method-%s
++ * Description: Verify that igt draw library works for the %arg[1] method with
++ *              different modifiers & DRM formats.
++ * Driver requirement: i915
++ * Functionality: kms_core, tiling
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @mmap-cpu:     MMAP-CPU
++ * @mmap-gtt:     MMAP-GTT
++ * @pwrite:       PWRITE
++ */
+ static void draw_method_subtest(enum igt_draw_method method,
+ 				uint32_t format_index, uint64_t modifier)
+ {
+@@ -179,6 +215,15 @@ static void get_fill_crc(uint64_t modifier, igt_crc_t *crc)
+ 	igt_remove_fb(drm_fd, &fb);
+ }
+ 
++/**
++ * SUBTEST: fill-fb
++ * Description: This subtest verifies CRC after filling fb with x-tiling or none.
 + * Driver requirement: any
-+ * Functionality: kms_core, plane, scaling
++ * Functionality: kms_core, tiling
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
- static void run_cdclk_test(data_t *data, uint32_t flags)
+ static void fill_fb_subtest(void)
  {
- 	igt_display_t *display = &data->display;
+ 	int rc;
 -- 
 2.40.0
