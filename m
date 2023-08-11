@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============4380495479928693034=="
+ boundary="===============2781864076431571219=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: vitaly.prosyak@amd.com
-Date: Fri, 11 Aug 2023 23:03:04 -0000
-Message-ID: <169179498456.3117.17538824188196736365@emeril.freedesktop.org>
-References: <20230811212801.85404-1-vitaly.prosyak@amd.com>
-In-Reply-To: <20230811212801.85404-1-vitaly.prosyak@amd.com>
+To: "Hersen Wu" <hersenxs.wu@amd.com>
+Date: Fri, 11 Aug 2023 23:30:54 -0000
+Message-ID: <169179665485.3116.14818903677588786409@emeril.freedesktop.org>
+References: <20230811221223.57193-1-hersenxs.wu@amd.com>
+In-Reply-To: <20230811221223.57193-1-hersenxs.wu@amd.com>
 Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_series_star?=
- =?utf-8?q?ting_with_=5B1/2=5D_lib/amdgpu=3A_Formatting_the_code?=
+ =?utf-8?q?ting_with_=5B1/2=2Ci-g-t=5D_lib/igt=5Fkms=3A_Re-try_display=5Fr?=
+ =?utf-8?q?equire_if_require_output_is_not_valid?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,15 +24,15 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============4380495479928693034==
+--===============2781864076431571219==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: series starting with [1/2] lib/amdgpu: Formatting the code
-URL   : https://patchwork.freedesktop.org/series/122367/
+Series: series starting with [1/2,i-g-t] lib/igt_kms: Re-try display_require if require output is not valid
+URL   : https://patchwork.freedesktop.org/series/122368/
 State : info
 
 == Summary ==
@@ -41,11 +42,11 @@ bat-atsm-2
 bat-dg2-oem2
 bat-adlp-7
 Missing hosts results[0]:
-Results: [IGTPW_9581](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9581/index.html)
+Results: [IGTPW_9582](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9582/index.html)
 
 
 
---===============4380495479928693034==
+--===============2781864076431571219==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -65,8 +66,8 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>series starting with [1/2] lib/amdgpu: Formatting the code</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122367/">https://patchwork.freedesktop.org/series/122367/</a></td></tr>
+<tr><td><b>Series:</b></td><td>series starting with [1/2,i-g-t] lib/igt_kms: Re-try display_require if require output is not valid</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122368/">https://patchwork.freedesktop.org/series/122368/</a></td></tr>
 <tr><td><b>State:</b></td><td>info</td></tr>
 
 </table>
@@ -77,9 +78,9 @@ bat-atsm-2<br />
 bat-dg2-oem2<br />
 bat-adlp-7<br />
 Missing hosts results[0]:<br />
-Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9581/index.html">IGTPW_9581</a></p>
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9582/index.html">IGTPW_9582</a></p>
 
 </body>
 </html>
 
---===============4380495479928693034==--
+--===============2781864076431571219==--
