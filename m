@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4130610E702
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Aug 2023 18:56:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 542E410E6ED
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Aug 2023 18:55:48 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Sat, 12 Aug 2023 00:16:41 +0530
-Message-Id: <20230811184655.157060-68-bhanuprakash.modem@intel.com>
+Date: Sat, 12 Aug 2023 00:16:19 +0530
+Message-Id: <20230811184655.157060-46-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
 References: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V6 67/81] tests/kms_rmfb: Document each subtest
+Subject: [igt-dev] [i-g-t V6 45/81] tests/kms_dither: Document each subtest
  for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -27,45 +27,50 @@ Add documentation for all kms tests which is used by IGT testplan
 documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_rmfb.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ tests/kms_dither.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/tests/kms_rmfb.c b/tests/kms_rmfb.c
-index 9a41c1d14..7348251f8 100644
---- a/tests/kms_rmfb.c
-+++ b/tests/kms_rmfb.c
-@@ -28,6 +28,30 @@
- #include <stdio.h>
- #include <string.h>
- #include <time.h>
+diff --git a/tests/kms_dither.c b/tests/kms_dither.c
+index d6c16dd0b..a7a99b480 100644
+--- a/tests/kms_dither.c
++++ b/tests/kms_dither.c
+@@ -25,6 +25,11 @@
+  *
+  */
+ 
 +/**
-+ * TEST: kms rmfb
++ * TEST: kms dither
 + * Category: Display
-+ * Description: This tests rmfb and close-fd behavior. In these casesthe
-+ *              framebuffers should be removed from the crtc.
-+ *
-+ * SUBTEST: close-fd
-+ * Description: RMFB is supposed to free the framebuffers from any and all planes
-+ *              so test this and make sure it works with fd close and reopen.
++ * Description: Test Dithering block status
++ */
+ #include "igt.h"
+ #include <fcntl.h>
+ #include <termios.h>
+@@ -181,6 +186,23 @@ static bool is_supported(igt_output_t *output)
+ 		igt_output_get_prop(output, IGT_CONNECTOR_MAX_BPC);
+ }
+ 
++/**
++ * SUBTEST: FB-8BPC-Vs-Panel-6BPC
++ * Description: Framebuffer BPC:8, Panel BPC:6, Expected Dither:Enable
 + * Driver requirement: any
-+ * Functionality: kms_gem_interop
++ * Functionality: colorspace, kms_gem_interop
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: rmfb-ioctl
-+ * Description: RMFB is supposed to free the framebuffers from any and all planes
-+ *              so test this and make sure it works.
++ * SUBTEST: FB-8BPC-Vs-Panel-8BPC
++ * Description: Framebuffer BPC:8, Panel BPC:8, Expected Dither:Disable
 + * Driver requirement: any
-+ * Functionality: kms_gem_interop
++ * Functionality: colorspace, kms_gem_interop
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
- 
- #ifndef DRM_CAP_CURSOR_WIDTH
- #define DRM_CAP_CURSOR_WIDTH 0x8
+ static void
+ run_dither_test(data_t *data, int fb_bpc, int fb_format, int output_bpc)
+ {
 -- 
 2.40.0
