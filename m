@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A533110E6F1
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Aug 2023 18:55:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4130610E702
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Aug 2023 18:56:25 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Sat, 12 Aug 2023 00:16:18 +0530
-Message-Id: <20230811184655.157060-45-bhanuprakash.modem@intel.com>
+Date: Sat, 12 Aug 2023 00:16:41 +0530
+Message-Id: <20230811184655.157060-68-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
 References: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V6 44/81] tests/kms_display_modes: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t V6 67/81] tests/kms_rmfb: Document each subtest
+ for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,63 +26,46 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add documentation for all kms tests which is used by IGT testplan
 documentation.
 
-V2: - Add missing documentation
-
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Jeevan B <jeevan.b@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- tests/kms_display_modes.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ tests/kms_rmfb.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
-index 93d91ef5b..b26a3f71a 100644
---- a/tests/kms_display_modes.c
-+++ b/tests/kms_display_modes.c
-@@ -24,6 +24,11 @@
-  *  Jeevan B <jeevan.b@intel.com>
-  */
- 
+diff --git a/tests/kms_rmfb.c b/tests/kms_rmfb.c
+index 9a41c1d14..7348251f8 100644
+--- a/tests/kms_rmfb.c
++++ b/tests/kms_rmfb.c
+@@ -28,6 +28,30 @@
+ #include <stdio.h>
+ #include <string.h>
+ #include <time.h>
 +/**
-+ * TEST: kms display modes
++ * TEST: kms rmfb
 + * Category: Display
-+ * Description: Test Display Modes
-+ */
- #include "igt.h"
- 
- #define HDISPLAY_4K	3840
-@@ -231,6 +236,16 @@ static void run_extendedmode_basic(data_t *data,
- 	for_each_connected_output_local((display), (output)) \
- 		for_each_if (igt_pipe_connector_valid((pipe), (output)))
- 
-+/**
-+ * SUBTEST: extended-mode-basic
-+ * Description: Test for validating display extended mode with a pair of connected
-+ *              displays
++ * Description: This tests rmfb and close-fd behavior. In these casesthe
++ *              framebuffers should be removed from the crtc.
++ *
++ * SUBTEST: close-fd
++ * Description: RMFB is supposed to free the framebuffers from any and all planes
++ *              so test this and make sure it works with fd close and reopen.
 + * Driver requirement: any
-+ * Functionality: kms_core
++ * Functionality: kms_gem_interop
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: rmfb-ioctl
++ * Description: RMFB is supposed to free the framebuffers from any and all planes
++ *              so test this and make sure it works.
++ * Driver requirement: any
++ * Functionality: kms_gem_interop
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
- static void run_extendedmode_test(data_t *data) {
- 	enum pipe pipe1, pipe2;
- 	igt_output_t *output1, *output2;
-@@ -276,6 +291,16 @@ static void run_extendedmode_test(data_t *data) {
- 	}
- }
  
-+/**
-+ * SUBTEST: mst-extended-mode-negative
-+ * Description: Negative test for validating display extended mode with a pair
-+ *		of connected 2k-4k or 4k-4k displays.
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void run_extendedmode_negative(data_t *data, int pipe1, int pipe2)
- {
- 	struct igt_fb fbs[2];
+ #ifndef DRM_CAP_CURSOR_WIDTH
+ #define DRM_CAP_CURSOR_WIDTH 0x8
 -- 
 2.40.0
