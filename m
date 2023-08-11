@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 62BDB10E6E9
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Aug 2023 18:55:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AC4B910E6F8
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Aug 2023 18:55:58 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Sat, 12 Aug 2023 00:16:22 +0530
-Message-Id: <20230811184655.157060-49-bhanuprakash.modem@intel.com>
+Date: Sat, 12 Aug 2023 00:16:25 +0530
+Message-Id: <20230811184655.157060-52-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
 References: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V6 48/81] tests/kms_flip_event_leak: Document each
+Subject: [igt-dev] [i-g-t V6 51/81] tests/kms_hdmi_inject: Document each
  subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -26,41 +26,47 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add documentation for all kms tests which is used by IGT testplan
 documentation.
 
-V2: - Fix test description
-
-Cc: Karthik B S <karthik.b.s@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_flip_event_leak.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ tests/kms_hdmi_inject.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/tests/kms_flip_event_leak.c b/tests/kms_flip_event_leak.c
-index 423ce40df..0de2800d2 100644
---- a/tests/kms_flip_event_leak.c
-+++ b/tests/kms_flip_event_leak.c
-@@ -31,6 +31,23 @@
- #include "igt_device.h"
+diff --git a/tests/kms_hdmi_inject.c b/tests/kms_hdmi_inject.c
+index 9aa5c59fc..99717806a 100644
+--- a/tests/kms_hdmi_inject.c
++++ b/tests/kms_hdmi_inject.c
+@@ -30,6 +30,31 @@
+ #include "igt_edid.h"
+ #include "igt_eld.h"
  #include "xe/xe_query.h"
- 
 +/**
-+ * TEST: kms flip event leak
++ * TEST: kms hdmi inject
 + * Category: Display
-+ * Description: Test to validate flip event leak
++ * Description: Test that in-kernel EDID parsing is producing expected results
++ *              by forcing a HDMI connector with a known EDID and checking that
++ *              the metadata exposed to user space matches.
 + *
-+ * SUBTEST: basic
-+ * Description: This test tries to provoke the kernel into leaking a pending
-+ *              page flip event when the fd is closed before the flip has
-+ *              completed. The test itself won't fail even if the kernel leaks
-+ *              the event, but the resulting dmesg WARN will indicate a failure.
++ * SUBTEST: inject-4k
++ * Description: Make sure that 4K modes exposed by DRM match the forced EDID and
++ *              modesetting using it succeed.
 + * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
++ * Functionality: force_connector, hdmi_edid
++ * Mega feature: HDMI
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: inject-audio
++ * Description: Make sure that audio information exposed by ALSA match the forced
++ *              EDID.
++ * Driver requirement: any
++ * Functionality: audio, force_connector
++ * Mega feature: HDMI
 + * Run type: FULL
 + * Test category: functionality test
 + */
-+
- typedef struct {
- 	int drm_fd;
- 	igt_display_t display;
+ 
+ #define HDISPLAY_4K	3840
+ #define VDISPLAY_4K	2160
 -- 
 2.40.0
