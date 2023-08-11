@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3D96C10E6F4
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Aug 2023 18:56:15 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DB75310E6EB
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Aug 2023 18:55:39 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Sat, 12 Aug 2023 00:16:35 +0530
-Message-Id: <20230811184655.157060-62-bhanuprakash.modem@intel.com>
+Date: Sat, 12 Aug 2023 00:16:14 +0530
+Message-Id: <20230811184655.157060-41-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
 References: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V6 61/81] tests/kms_plane_lowres: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t V6 40/81] tests/kms_content_protection: Document
+ each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,61 +26,119 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add documentation for all kms tests which is used by IGT testplan
 documentation.
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Jeevan B <jeevan.b@intel.com>
----
- tests/kms_plane_lowres.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+V2: - Update functionality
 
-diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
-index 7aaf83c41..07b7754f5 100644
---- a/tests/kms_plane_lowres.c
-+++ b/tests/kms_plane_lowres.c
-@@ -22,6 +22,12 @@
+Cc: Karthik B S <karthik.b.s@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_content_protection.c | 81 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 81 insertions(+)
+
+diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+index 6cdf81a28..930a7bc0c 100644
+--- a/tests/kms_content_protection.c
++++ b/tests/kms_content_protection.c
+@@ -22,6 +22,11 @@
   *
   */
  
 +/**
-+ * TEST: kms plane lowres
++ * TEST: kms content protection
 + * Category: Display
-+ * Description: Test atomic mode setting with a plane by switching between high
-+ *              and low resolutions
++ * Description: Test content protection (HDCP)
 + */
- #include "igt.h"
- #include "drmtest.h"
- #include <errno.h>
-@@ -261,6 +267,32 @@ static void test_cleanup(data_t *data)
- 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ #include <poll.h>
+ #include <fcntl.h>
+ #include <sys/epoll.h>
+@@ -485,6 +490,66 @@ test_fini(igt_output_t *output, enum igt_commit_style s)
+ 	igt_display_commit2(&data.display, s);
  }
  
 +/**
-+ * SUBTEST: tiling-none
-+ * Description: Tests the visibility of the planes when switching between high
-+ *              and low resolution with Linear buffer (no tiling)
++ * SUBTEST: LIC
++ * Description: Test for the integrity of link.
 + * Driver requirement: any
-+ * Functionality: plane
-+ * Mega feature: General Display Features
++ * Functionality: hdcp1.4
++ * Mega feature: HDCP
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: tiling-%s
-+ * Description: Tests the visibility of the planes when switching between high
-+ *              and low resolution with %arg[1]
++ * SUBTEST: content_type_change
++ * Description: Test the content type change when the content protection already
++ *              enabled
 + * Driver requirement: any
-+ * Functionality: plane, tiling
-+ * Mega feature: General Display Features
++ * Functionality: hdcp1.4, hdcp2.2
++ * Mega feature: HDCP
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: mei_interface
++ * Description: Test the teardown and rebuild of the interface between Intel
++ *              and mei hdcp.
++ * Driver requirement: any
++ * Functionality: hdcp1.4, hdcp2.2
++ * Mega feature: HDCP
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: srm
++ * Description: This test writes the facsimile SRM into the /lib/firmware/ and
++ *              check the kernel parsing of it by invoking the hdcp authentication.
++ * Driver requirement: any
++ * Functionality: hdcp1.4
++ * Mega feature: HDCP
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: uevent
++ * Description: Test to detect the HDCP status change when we are reading the
++ *              uevent sent with the corresponding connector id and property id.
++ * Driver requirement: any
++ * Functionality: hdcp1.4
++ * Mega feature: HDCP
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: %s
++ * Description: Test content protection with %arg[1]
++ * Driver requirement: any
++ * Functionality: hdcp1.4
++ * Mega feature: HDCP
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @4:           4-tiling
-+ * @x:           x-tiling
-+ * @y:           y-tiling
-+ * @yf:          yf-tiling
++ * @atomic:         atomic modesetting
++ * @atomic-dpms:    DPMS ON/OFF during atomic modesetting.
++ * @legacy:         legacy style commit
++ * @type1:          content type 1 that can be handled only through HDCP2.2.
 + */
- static void run_test(data_t *data, uint64_t modifier)
+ static void
+ test_content_protection(enum igt_commit_style s, int content_type)
  {
- 	enum pipe pipe;
+@@ -602,6 +667,22 @@ static void test_cp_lic_on_mst(igt_output_t *mst_outputs[], int valid_outputs, b
+ 	}
+ }
+ 
++/**
++ * SUBTEST: dp-mst-%s
++ * Description: Test Content protection %arg[1] over DP MST.
++ * Driver requirement: any
++ * Functionality: hdcp1.4
++ * Mega feature: HDCP
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @lic-type-0:   Type 0 with LIC
++ * @lic-type-1:   Type 1 with LIC.
++ * @type-0:       Type 0
++ * @type-1:       Type 1
++ */
+ static void
+ test_content_protection_mst(int content_type)
+ {
 -- 
 2.40.0
