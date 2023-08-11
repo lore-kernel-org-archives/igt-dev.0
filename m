@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 908DD10E6EC
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Aug 2023 18:54:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1B36910E6EE
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Aug 2023 18:54:47 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Sat, 12 Aug 2023 00:15:39 +0530
-Message-Id: <20230811184655.157060-6-bhanuprakash.modem@intel.com>
+Date: Sat, 12 Aug 2023 00:15:42 +0530
+Message-Id: <20230811184655.157060-9-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
 References: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V6 05/81] tests/chamelium/kms_chamelium_audio:
+Subject: [igt-dev] [i-g-t V6 08/81] tests/chamelium/kms_chamelium_frames:
  Document each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -27,83 +27,174 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add documentation for all kms tests which is used by IGT testplan
 documentation.
 
-V2: - Include Audio in Mega feature
-    - Include Chamelium in Functionality
+V2: - Add chamelium & frame-integrity to the Functionality
 
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/chamelium/kms_chamelium_audio.c | 44 +++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
+ tests/chamelium/kms_chamelium_frames.c | 105 ++++++++++++++++++++++++-
+ 1 file changed, 101 insertions(+), 4 deletions(-)
 
-diff --git a/tests/chamelium/kms_chamelium_audio.c b/tests/chamelium/kms_chamelium_audio.c
-index 8fbc1f80e..6a1f5f65a 100644
---- a/tests/chamelium/kms_chamelium_audio.c
-+++ b/tests/chamelium/kms_chamelium_audio.c
-@@ -28,6 +28,12 @@
+diff --git a/tests/chamelium/kms_chamelium_frames.c b/tests/chamelium/kms_chamelium_frames.c
+index a56afada4..300f7ce0d 100644
+--- a/tests/chamelium/kms_chamelium_frames.c
++++ b/tests/chamelium/kms_chamelium_frames.c
+@@ -25,10 +25,10 @@
+  */
+ 
+ /**
+- * TEST: Tests to capture frames using chamelium
++ * TEST: kms chamelium frames
+  * Category: Display
++ * Description: Tests requiring a Chamelium board
+  */
+-
+ #include "igt_eld.h"
  #include "igt_infoframe.h"
  #include "kms_chamelium_helper.h"
- 
-+/**
-+ * TEST: kms chamelium audio
-+ * Category: Display
-+ * Description: Testing Audio with a Chamelium board
+@@ -545,16 +545,34 @@ static void prepare_randomized_plane(chamelium_data_t *data,
+  * 		a few frames, then check captured frames are correct
+  * Test category: functionality test
+  * Run type: BAT
+- * Functionality: dp
++ * Functionality: chamelium, frame_integrity
+  * Mega feature: DP
++ * Driver requirement: any
+  *
+  * SUBTEST: hdmi-crc-fast
+  * Description: Pick the first mode of the IGT base EDID, display and capture
+  * 		a few frames, then check captured frames are correct
+  * Test category: functionality test
+  * Run type: BAT
+- * Functionality: hdmi
++ * Functionality: chamelium, frame_integrity
++ * Mega feature: HDMI
++ * Driver requirement: any
 + */
 +
- /* Playback parameters control the audio signal we synthesize and send */
- #define PLAYBACK_CHANNELS 2
- #define PLAYBACK_SAMPLES 1024
-@@ -669,6 +675,25 @@ static bool check_audio_configuration(struct alsa *alsa,
- 	return true;
++/**
++ * SUBTEST: hdmi-%s-formats
++ * Description: Pick the first mode of the IGT base EDID, display and capture a
++ *              few frames, then check captured frames are correct
++ * Test category: functionality test
++ * Run type: FULL
++ * Functionality: chamelium, frame_integrity
+  * Mega feature: HDMI
++ * Driver requirement: any
++ *
++ * arg[1]:
++ *
++ * @crc-nonplanar:     CRC with non planar formats
++ * @cmp-planar:        Compare with planar formats
+  */
+ static const char test_display_one_mode_desc[] =
+ 	"Pick the first mode of the IGT base EDID, display and capture a few "
+@@ -592,6 +610,39 @@ static void test_display_one_mode(chamelium_data_t *data,
+ 	drmModeFreeConnector(connector);
  }
  
 +/**
-+ * SUBTEST: dp-audio
-+ * Description: Playback various audio signals with various audio formats/rates,
-+ *              capture them and check they are correct
-+ * Functionality: chamelium, dp_audio
-+ * Mega feature: Audio, DP
-+ * Run type: FULL
++ * SUBTEST: vga-frame-dump
++ * Description: For each mode of the IGT base EDID, display and capture a few
++ *              frames, then check captured frames are correct
 + * Test category: functionality test
++ * Run type: FULL
++ * Functionality: chamelium, frame_integrity
++ * Mega feature: VGA
 + * Driver requirement: any
 + *
-+ * SUBTEST: hdmi-audio
-+ * Description: Playback various audio signals with various audio formats/rates,
-+ *              capture them and check they are correct
-+ * Functionality: chamelium, hdmi_audio
-+ * Mega feature: Audio, HDMI
-+ * Run type: FULL
++ * SUBTEST: dp-crc-%s
++ * Description: For each mode of the IGT base EDID, display and capture a %arg[1]
++ *              frame(s), then check captured frame(s) are correct
 + * Test category: functionality test
++ * Run type: FULL
++ * Functionality: chamelium, frame_integrity
++ * Mega feature: DP
 + * Driver requirement: any
++ *
++ * SUBTEST: hdmi-crc-%s
++ * Description: For each mode of the IGT base EDID, display and capture a %arg[1]
++ *              frame(s), then check captured frame(s) are correct
++ * Test category: functionality test
++ * Run type: FULL
++ * Functionality: chamelium, frame_integrity
++ * Mega feature: HDMI
++ * Driver requirement: any
++ *
++ * arg[1]:
++ *
++ * @single:    single
++ * @multiple:  multiple
 + */
- static const char test_display_audio_desc[] =
- 	"Playback various audio signals with various audio formats/rates, "
- 	"capture them and check they are correct";
-@@ -763,6 +788,25 @@ static void test_display_audio(chamelium_data_t *data,
- 	free(alsa);
+ static const char test_display_all_modes_desc[] =
+ 	"For each mode of the IGT base EDID, display and capture a few "
+ 	"frames, then check captured frames are correct";
+@@ -650,6 +701,27 @@ static void test_display_all_modes(chamelium_data_t *data,
+ 	} while (++i < count_modes);
  }
  
 +/**
-+ * SUBTEST: dp-audio-edid
-+ * Description: Plug a connector with an EDID suitable for audio, check ALSA's
-+ *              EDID-Like Data reports the correct audio parameters
-+ * Functionality: chamelium, dp_audio
-+ * Mega feature: Audio, DP
-+ * Run type: FULL
++ * SUBTEST: dp-frame-dump
++ * Description: For each mode of the IGT base EDID, display and capture a few
++ *              frames, then download the captured frames and compare them
++ *              bit-by-bit to the sent ones
 + * Test category: functionality test
++ * Run type: FULL
++ * Functionality: chamelium, frame_integrity
++ * Mega feature: DP
 + * Driver requirement: any
 + *
-+ * SUBTEST: hdmi-audio-edid
-+ * Description: Plug a connector with an EDID suitable for audio, check ALSA's
-+ *              EDID-Like Data reports the correct audio parameters
-+ * Functionality: chamelium, hdmi_audio
-+ * Mega feature: Audio, HDMI
-+ * Run type: FULL
++ * SUBTEST: hdmi-frame-dump
++ * Description: For each mode of the IGT base EDID, display and capture a few
++ *              frames, then download the captured frames and compare them
++ *              bit-by-bit to the sent ones
 + * Test category: functionality test
++ * Run type: BAT
++ * Functionality: chamelium, frame_integrity
++ * Mega feature: HDMI
 + * Driver requirement: any
 + */
- static const char test_display_audio_edid_desc[] =
- 	"Plug a connector with an EDID suitable for audio, check ALSA's "
- 	"EDID-Like Data reports the correct audio parameters";
+ static const char test_display_frame_dump_desc[] =
+ 	"For each mode of the IGT base EDID, display and capture a few "
+ 	"frames, then download the captured frames and compare them "
+@@ -718,6 +790,16 @@ static void test_display_frame_dump(chamelium_data_t *data,
+ 	} while (++i < count_modes);
+ }
+ 
++/**
++ * SUBTEST: hdmi-aspect-ratio
++ * Description: Pick a mode with a picture aspect-ratio, capture AVI InfoFrames
++ *              and check they include the relevant fields
++ * Test category: functionality test
++ * Run type: BAT
++ * Functionality: chamelium, frame_integrity
++ * Mega feature: HDMI
++ * Driver requirement: any
++ */
+ static const char test_display_aspect_ratio_desc[] =
+ 	"Pick a mode with a picture aspect-ratio, capture AVI InfoFrames and "
+ 	"check they include the relevant fields";
+@@ -798,6 +880,21 @@ static void test_display_aspect_ratio(chamelium_data_t *data,
+ 	drmModeFreeConnector(connector);
+ }
+ 
++/**
++ * SUBTEST: hdmi-%s-planes-random
++ * Description: Setup a few overlay planes with random parameters, capture the
++ *              frame and check it matches the expected output
++ * Test category: functionality test
++ * Run type: FULL
++ * Functionality: chamelium, frame_integrity
++ * Mega feature: HDMI
++ * Driver requirement: any
++ *
++ * arg[1]:
++ *
++ * @crc:     CRC check
++ * @cmp:     Compare
++ */
+ static const char test_display_planes_random_desc[] =
+ 	"Setup a few overlay planes with random parameters, capture the frame "
+ 	"and check it matches the expected output";
 -- 
 2.40.0
