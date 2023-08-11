@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1303F10E6F8
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Aug 2023 18:55:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9F7C810E6F8
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Aug 2023 18:56:00 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Sat, 12 Aug 2023 00:16:24 +0530
-Message-Id: <20230811184655.157060-51-bhanuprakash.modem@intel.com>
+Date: Sat, 12 Aug 2023 00:16:26 +0530
+Message-Id: <20230811184655.157060-53-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
 References: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V6 50/81] tests/kms_getfb: Document each subtest
- for testplan
+Subject: [igt-dev] [i-g-t V6 52/81] tests/kms_hdr: Document each subtest for
+ testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,140 +28,112 @@ documentation.
 
 V2: - Fix functionality
 
-Cc: Karthik B S <karthik.b.s@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_getfb.c | 90 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 90 insertions(+)
+ tests/kms_hdr.c | 76 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 76 insertions(+)
 
-diff --git a/tests/kms_getfb.c b/tests/kms_getfb.c
-index afcf07fe8..1caa46e23 100644
---- a/tests/kms_getfb.c
-+++ b/tests/kms_getfb.c
-@@ -27,6 +27,11 @@
-  *
+diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
+index ba19761e2..e035231be 100644
+--- a/tests/kms_hdr.c
++++ b/tests/kms_hdr.c
+@@ -20,6 +20,11 @@
+  * OTHER DEALINGS IN THE SOFTWARE.
   */
  
 +/**
-+ * TEST: kms getfb
++ * TEST: kms hdr
 + * Category: Display
-+ * Description: Tests GETFB and GETFB2 ioctls.
++ * Description: Test HDR metadata interfaces and bpc switch
 + */
  #include "igt.h"
- #include <unistd.h>
- #include <stdlib.h>
-@@ -169,6 +174,22 @@ static uint32_t get_any_prop_id(int fd)
- 	return 0;
+ #include <fcntl.h>
+ #include <termios.h>
+@@ -208,6 +213,31 @@ static bool has_max_bpc(igt_output_t *output)
+ 	       igt_output_get_prop(output, IGT_CONNECTOR_MAX_BPC);
  }
  
 +/**
-+ * SUBTEST: getfb-handle-%s
-+ * Description: Tests error handling %arg[1]
++ * SUBTEST: bpc-switch
++ * Description: Tests switching between different display output bpc modes
 + * Driver requirement: any
-+ * Functionality: kms_gem_interop
++ * Functionality: colorspace, hdr
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * arg[1]:
++ * SUBTEST: bpc-switch-dpms
++ * Description: Tests switching between different display output bpc modes with dpms
++ * Driver requirement: any
++ * Functionality: colorspace, dpms, hdr
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
 + *
-+ * @closed:       when passing a handle that has been closed.
-+ * @not-fb:       when passing an invalid handle.
-+ * @valid:        when passing an valid handle.
-+ * @zero:         for a zero'd input.
++ * SUBTEST: bpc-switch-suspend
++ * Description: Tests switching between different display output bpc modes with suspend
++ * Driver requirement: any
++ * Functionality: colorspace, hdr, suspend
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
 + */
- static void test_handle_input(int fd)
+ static void test_bpc_switch(data_t *data, uint32_t flags)
  {
- 	struct drm_mode_fb_cmd2 add = {};
-@@ -224,6 +245,30 @@ static void test_handle_input(int fd)
- 		gem_close(fd, add.handles[0]);
+ 	igt_display_t *display = &data->display;
+@@ -561,6 +591,52 @@ static bool has_hdr(igt_output_t *output)
+ 	return igt_output_has_prop(output, IGT_CONNECTOR_HDR_OUTPUT_METADATA);
  }
  
 +/**
-+ * SUBTEST: getfb-reject-ccs
-+ * Description: Tests error handling while requesting CCS buffers it should
-+ *              refuse because getfb supports returning a single buffer handle.
++ * SUBTEST: invalid-hdr
++ * Description: Test to ensure HDR is not enabled on non-HDR panel
 + * Driver requirement: any
-+ * Functionality: ccs, kms_gem_interop, tiling
++ * Functionality: colorspace, hdr
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: getfb-%s-different-handles
-+ * Description: Tests error handling while requesting for two different handles
-+ *              from %arg[1].
++ * SUBTEST: invalid-metadata-sizes
++ * Description: Tests invalid HDR metadata sizes
 + * Driver requirement: any
-+ * Functionality: kms_gem_interop
++ * Functionality: colorspace, hdr
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: static-toggle-dpms
++ * Description: Tests static toggle with dpms
++ * Driver requirement: any
++ * Functionality: colorspace, dpms, hdr
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: static-toggle-suspend
++ * Description: Tests static toggle with suspend
++ * Driver requirement: any
++ * Functionality: colorspace, hdr, suspend
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: static-%s
++ * Description: Tests %arg[1].
++ * Driver requirement: any
++ * Functionality: colorspace, hdr
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @addfb:           same fd
-+ * @repeated:        different fd
++ * @swap:                    swapping static HDR metadata
++ * @toggle:                  entering and exiting HDR mode
 + */
- static void test_duplicate_handles(int fd)
+ static void test_hdr(data_t *data, uint32_t flags)
  {
- 	struct drm_mode_fb_cmd2 add = {};
-@@ -289,6 +334,37 @@ static void test_duplicate_handles(int fd)
- 	}
- }
- 
-+/**
-+ * SUBTEST: getfb2-accept-ccs
-+ * Description: Tests outputs are correct when retrieving a CCS framebuffer.
-+ * Driver requirement: any
-+ * Functionality: ccs, kms_gem_interop, tiling
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: getfb2-into-addfb2
-+ * Description: Output check by passing the output of GETFB2 into ADDFB2.
-+ * Driver requirement: any
-+ * Functionality: kms_gem_interop
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: getfb2-handle-%s
-+ * Description: Tests error handling %arg[1].
-+ * Driver requirement: any
-+ * Functionality: kms_gem_interop
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @closed:                  when passing a handle that has been closed
-+ * @not-fb:                  when passing an invalid handle
-+ * @zero:                    for a zero'd input
-+ */
- static void test_getfb2(int fd)
- {
- 	struct drm_mode_fb_cmd2 add_basic = {};
-@@ -397,6 +473,20 @@ static void test_getfb2(int fd)
- 	}
- }
- 
-+/**
-+ * SUBTEST: %s-handle-protection
-+ * Description: Make sure %arg[1] return handles if caller is non-root or non-master.
-+ * Driver requirement: any
-+ * Functionality: kms_gem_interop
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @getfb:      GETFB ioctl
-+ * @getfb2:     GETFB2 ioctl
-+ */
- static void test_handle_protection(void) {
- 	int non_master_fd;
- 	struct drm_mode_fb_cmd2 non_master_add = {};
+ 	igt_display_t *display = &data->display;
 -- 
 2.40.0
