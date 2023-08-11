@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 63C3110E6EE
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Aug 2023 18:54:47 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 832D110E6EE
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Aug 2023 18:54:50 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Sat, 12 Aug 2023 00:15:43 +0530
-Message-Id: <20230811184655.157060-10-bhanuprakash.modem@intel.com>
+Date: Sat, 12 Aug 2023 00:15:45 +0530
+Message-Id: <20230811184655.157060-12-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
 References: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V6 09/81] tests/chamelium/kms_chamelium_hpd:
- Document each subtest for testplan
+Subject: [igt-dev] [i-g-t V6 11/81] tests/i915/kms_big_joiner: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,7 +19,6 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
@@ -27,306 +26,76 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add documentation for all kms tests which is used by IGT testplan
 documentation.
 
-V2: - Add chamelium & hotplug to the Functionality
-
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- tests/chamelium/kms_chamelium_hpd.c | 216 +++++++++++++++++++++++++++-
- 1 file changed, 211 insertions(+), 5 deletions(-)
+ tests/i915/kms_big_joiner.c | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-diff --git a/tests/chamelium/kms_chamelium_hpd.c b/tests/chamelium/kms_chamelium_hpd.c
-index 8b3189ca0..8cd958c3d 100644
---- a/tests/chamelium/kms_chamelium_hpd.c
-+++ b/tests/chamelium/kms_chamelium_hpd.c
-@@ -25,8 +25,9 @@
+diff --git a/tests/i915/kms_big_joiner.c b/tests/i915/kms_big_joiner.c
+index 2ff23398a..c448853c5 100644
+--- a/tests/i915/kms_big_joiner.c
++++ b/tests/i915/kms_big_joiner.c
+@@ -24,6 +24,11 @@
+  *  Karthik B S <karthik.b.s@intel.com>
   */
  
- /**
-- * TEST: Tests behaviour of hpd using chamelium
-+ * TEST: kms chamelium hpd
-  * Category: Display
-+ * Description: Testing HPD with a Chamelium board
-  */
++/**
++ * TEST: kms big joiner
++ * Category: Display
++ * Description: Test big joiner
++ */
+ #include "igt.h"
  
- #include "kms_chamelium_helper.h"
-@@ -115,24 +116,86 @@ static void try_suspend_resume_hpd(chamelium_data_t *data,
-  * 		hotplug and unplug
-  * Test category: functionality test
-  * Run type: BAT
-- * Functionality: dp_hotplug
-+ * Functionality: chamelium, hotplug
-  * Mega feature: DP
+ #define MAX_HDISPLAY_PER_PIPE 5120
+@@ -40,6 +45,16 @@ typedef struct {
+ 	uint32_t big_joiner_output[2];
+ } data_t;
+ 
++/**
++ * SUBTEST: invalid-modeset
++ * Description: Verify if the modeset on the adjoining pipe is rejected when
++ *              the pipe is active with a big joiner modeset
 + * Driver requirement: any
-  *
-  * SUBTEST: hdmi-hpd-fast
-  * Description: Check that we get uevents and updated connector status on
-  * 		hotplug and unplug
-  * Test category: functionality test
-  * Run type: BAT
-- * Functionality: hdmi_hotplug
-+ * Functionality: chamelium, hotplug
-  * Mega feature: HDMI
-+ * Driver requirement: any
-  *
-  * SUBTEST: vga-hpd-fast
-  * Description: Check that we get uevents and updated connector status on
-  * 		hotplug and unplug
-  * Test category: functionality test
-  * Run type: BAT
-- * Functionality: vga_hotplug
-+ * Functionality: chamelium, hotplug
-  * Mega feature: VGA
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: dp-hpd
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug
-+ * Test category: functionality test
++ * Functionality: 2p1p
++ * Mega feature: Bigjoiner
 + * Run type: FULL
-+ * Functionality: chamelium, hotplug
-+ * Mega feature: DP
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: hdmi-hpd
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug
 + * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: chamelium, hotplug
-+ * Mega feature: HDMI
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: vga-hpd
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: chamelium, hotplug
-+ * Mega feature: VGA
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: dp-hpd-%s
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: chamelium, hotplug
-+ * Mega feature: DP
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: hdmi-hpd-%s
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: chamelium, hotplug
-+ * Mega feature: HDMI
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: vga-hpd-%s
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: chamelium, hotplug
-+ * Mega feature: VGA
-+ * Driver requirement: any
-+ *
-+ * arg[1]:
-+ *
-+ * @enable-disable-mode:     Toggle the mode
-+ * @with-enabled-mode:       Enabling the mode
-  */
- static const char test_basic_hotplug_desc[] =
- 	"Check that we get uevents and updated connector status on "
-@@ -200,6 +263,34 @@ static void test_hotplug(chamelium_data_t *data, struct chamelium_port *port,
- 	igt_remove_fb(data->drm_fd, &fb);
++ */
+ static void test_invalid_modeset(data_t *data)
+ {
+ 	igt_output_t *output;
+@@ -80,6 +95,15 @@ static void test_invalid_modeset(data_t *data)
+ 	igt_assert_lt(ret, 0);
  }
  
 +/**
-+ * SUBTEST: dp-hpd-for-each-pipe
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug for each pipe with valid output
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: chamelium, hotplug
-+ * Mega feature: DP
++ * SUBTEST: basic
++ * Description: Verify the basic modeset on big joiner mode on all pipes
 + * Driver requirement: any
-+ *
-+ * SUBTEST: hdmi-hpd-for-each-pipe
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug for each pipe with valid output
-+ * Test category: functionality test
++ * Functionality: 2p1p
++ * Mega feature: Bigjoiner
 + * Run type: FULL
-+ * Functionality: chamelium, hotplug
-+ * Mega feature: HDMI
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: vga-hpd-for-each-pipe
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug for each pipe with valid output
 + * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: chamelium, hotplug
-+ * Mega feature: VGA
-+ * Driver requirement: any
 + */
- static const char test_hotplug_for_each_pipe_desc[] =
- 	"Check that we get uevents and updated connector status on "
- 	"hotplug and unplug for each pipe with valid output";
-@@ -245,6 +336,61 @@ static void test_hotplug_for_each_pipe(chamelium_data_t *data,
- 	igt_hpd_storm_reset(data->drm_fd);
+ static void test_basic_modeset(data_t *data)
+ {
+ 	drmModeModeInfo *mode;
+@@ -118,6 +142,15 @@ static void test_basic_modeset(data_t *data)
+ 	igt_display_commit2(display, COMMIT_ATOMIC);
  }
  
 +/**
-+ * SUBTEST: dp-hpd-after-hibernate
-+ * Description: Toggle HPD during Hibernation, check that uevents are sent and
-+ *              connector status is updated
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: chamelium, hotplug, hibernation
-+ * Mega feature: DP
++ * SUBTEST: 2x-modeset
++ * Description: Verify simultaneous modeset on 2 big joiner outputs
 + * Driver requirement: any
-+ *
-+ * SUBTEST: hdmi-hpd-after-hibernate
-+ * Description: Toggle HPD during Hibernation, check that uevents are sent and
-+ *              connector status is updated
-+ * Test category: functionality test
++ * Functionality: 2p1p
++ * Mega feature: Bigjoiner
 + * Run type: FULL
-+ * Functionality: chamelium, hotplug, hibernation
-+ * Mega feature: HDMI
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: vga-hpd-after-hibernate
-+ * Description: Toggle HPD during Hibernation, check that uevents are sent and
-+ *              connector status is updated
 + * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: chamelium, hotplug, hibernation
-+ * Mega feature: VGA
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: dp-hpd-after-suspend
-+ * Description: Toggle HPD during Suspend, check that uevents are sent and
-+ *              connector status is updated
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: chamelium, hotplug, suspend
-+ * Mega feature: DP
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: hdmi-hpd-after-suspend
-+ * Description: Toggle HPD during Suspend, check that uevents are sent and
-+ *              connector status is updated
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: chamelium, hotplug, suspend
-+ * Mega feature: HDMI
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: vga-hpd-after-suspend
-+ * Description: Toggle HPD during Suspend, check that uevents are sent and
-+ *              connector status is updated
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: chamelium, hotplug, suspend
-+ * Mega feature: VGA
-+ * Driver requirement: any
 + */
- static const char test_suspend_resume_hpd_desc[] =
- 	"Toggle HPD during suspend, check that uevents are sent and connector "
- 	"status is updated";
-@@ -274,8 +420,18 @@ static void test_suspend_resume_hpd(chamelium_data_t *data,
-  * 		are sent and connector status is updated
-  * Test category: functionality test
-  * Run type: BAT
-- * Functionality: hotplug
-+ * Functionality: chamelium, hotplug, suspend
-+ * Mega feature: General Display Features
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: common-hpd-after-hibernate
-+ * Description: Toggle HPD during suspend on all connectors, check that uevents
-+ *              are sent and connector status is updated
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: chamelium, hotplug, hibernation
-  * Mega feature: General Display Features
-+ * Driver requirement: any
-  */
- static const char test_suspend_resume_hpd_common_desc[] =
- 	"Toggle HPD during suspend on all connectors, check that uevents are "
-@@ -306,6 +462,16 @@ static void test_suspend_resume_hpd_common(chamelium_data_t *data,
- 	igt_cleanup_uevents(mon);
- }
- 
-+/**
-+ * SUBTEST: vga-hpd-without-ddc
-+ * Description: Disable DDC on a VGA connector, check we still get a uevent on
-+ *              hotplug
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: chamelium, hotplug
-+ * Mega feature: VGA
-+ * Driver requirement: any
-+ */
- static const char test_hpd_without_ddc_desc[] =
- 	"Disable DDC on a VGA connector, check we still get a uevent on hotplug";
- static void test_hpd_without_ddc(chamelium_data_t *data,
-@@ -332,6 +498,27 @@ static void test_hpd_without_ddc(chamelium_data_t *data,
- 	igt_cleanup_uevents(mon);
- }
- 
-+/**
-+ * SUBTEST: dp-hpd-storm
-+ * Description: Trigger a series of hotplugs in a very small timeframe to
-+ *              simulate abad cable, check the kernel falls back to polling
-+ *              to avoid a hotplug storm
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: chamelium, hotplug
-+ * Mega feature: DP
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: hdmi-hpd-storm
-+ * Description: Trigger a series of hotplugs in a very small timeframe to
-+ *              simulate abad cable, check the kernel falls back to polling
-+ *              to avoid a hotplug storm
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: chamelium, hotplug
-+ * Mega feature: HDMI
-+ * Driver requirement: any
-+ */
- static const char test_hpd_storm_detect_desc[] =
- 	"Trigger a series of hotplugs in a very small timeframe to simulate a"
- 	"bad cable, check the kernel falls back to polling to avoid a hotplug "
-@@ -366,6 +553,25 @@ static void test_hpd_storm_detect(chamelium_data_t *data,
- 	igt_hpd_storm_reset(data->drm_fd);
- }
- 
-+/**
-+ * SUBTEST: dp-hpd-storm-disable
-+ * Description: Disable HPD storm detection, trigger a storm and check the
-+ *              kernel doesn't detect one
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: chamelium, hotplug
-+ * Mega feature: DP
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: hdmi-hpd-storm-disable
-+ * Description: Disable HPD storm detection, trigger a storm and check the
-+ *              kernel doesn't detect one
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: chamelium, hotplug
-+ * Mega feature: HDMI
-+ * Driver requirement: any
-+ */
- static const char test_hpd_storm_disable_desc[] =
- 	"Disable HPD storm detection, trigger a storm and check the kernel "
- 	"doesn't detect one";
+ static void test_dual_display(data_t *data)
+ {
+ 	drmModeModeInfo *mode;
 -- 
 2.40.0
