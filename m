@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 78F8310E6F5
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Aug 2023 18:54:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 51FA010E6F5
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Aug 2023 18:54:59 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Sat, 12 Aug 2023 00:15:49 +0530
-Message-Id: <20230811184655.157060-16-bhanuprakash.modem@intel.com>
+Date: Sat, 12 Aug 2023 00:15:50 +0530
+Message-Id: <20230811184655.157060-17-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
 References: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V6 15/81] tests/i915/kms_draw_crc: Document each
+Subject: [igt-dev] [i-g-t V6 16/81] tests/i915/kms_dsc: Document each
  subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -26,87 +26,55 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add documentation for all kms tests which is used by IGT testplan
 documentation.
 
-V2: - Fix functionality
+V2: - Add documentation for dsc-with-output-formats-with-bpc (Swati)
 
+Cc: Swati Sharma <swati2.sharma@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/i915/kms_draw_crc.c | 49 +++++++++++++++++++++++++++++++++++++--
- 1 file changed, 47 insertions(+), 2 deletions(-)
+ tests/i915/kms_dsc.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
-index 01ecb7bb9..d701e3cfa 100644
---- a/tests/i915/kms_draw_crc.c
-+++ b/tests/i915/kms_draw_crc.c
-@@ -22,8 +22,11 @@
+diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+index 5bdac57e2..036c351f8 100644
+--- a/tests/i915/kms_dsc.c
++++ b/tests/i915/kms_dsc.c
+@@ -30,8 +30,37 @@
   *
   */
  
--/* This program tests whether the igt_draw library actually works. */
--
 +/**
-+ * TEST: kms draw crc
++ * TEST: kms dsc
 + * Category: Display
-+ * Description: Tests whether the igt_draw library actually works.
++ * Description: Test to validate display stream compression
 + */
- #include "i915/gem.h"
- #include "igt.h"
- 
-@@ -140,6 +143,39 @@ static void get_method_crc(enum igt_draw_method method, uint32_t drm_format,
- 	igt_remove_fb(drm_fd, &fb);
- }
+ #include "kms_dsc_helper.h"
  
 +/**
-+ * SUBTEST: draw-method-%s
-+ * Description: Verify that igt draw library works for the %arg[1] method with
-+ *              different modifiers & DRM formats.
++ * SUBTEST: dsc-%s
++ * Description: Tests basic display stream compression functionality if supported
++ *              by a connector by forcing %arg[1]
 + * Driver requirement: any
-+ * Functionality: kms_core, tiling
-+ * Mega feature: General Display Features
++ * Functionality: dsc
++ * Mega feature: VDSC
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @blt:          Blitter
-+ * @mmap-wc:      MMAP-WC
-+ * @render:       Render
++ * @basic:                DSC on all connectors that support it with default parameters
++ * @with-bpc:             DSC on all connectors that support it with certain input BPC
++ *                        for the connector
++ * @with-bpc-formats:     DSC on all connectors that support it with certain input
++ *                        BPC for the connector with diff formats
++ * @with-formats:         DSC on all connectors that support it with default parameters
++ *                        and creating fb with diff formats
++ * @with-output-formats:  DSC and output format on all connectors that support it
++ * @with-output-formats-with-bpc: DSC and output format on all connectors that support
++ *                                it with certain input BPC for the connector
 + */
 +
-+/**
-+ * SUBTEST: draw-method-%s
-+ * Description: Verify that igt draw library works for the %arg[1] method with
-+ *              different modifiers & DRM formats.
-+ * Driver requirement: i915
-+ * Functionality: kms_core, tiling
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @mmap-cpu:     MMAP-CPU
-+ * @mmap-gtt:     MMAP-GTT
-+ * @pwrite:       PWRITE
-+ */
- static void draw_method_subtest(enum igt_draw_method method,
- 				uint32_t format_index, uint64_t modifier)
- {
-@@ -179,6 +215,15 @@ static void get_fill_crc(uint64_t modifier, igt_crc_t *crc)
- 	igt_remove_fb(drm_fd, &fb);
- }
+ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
  
-+/**
-+ * SUBTEST: fill-fb
-+ * Description: This subtest verifies CRC after filling fb with x-tiling or none.
-+ * Driver requirement: any
-+ * Functionality: kms_core, tiling
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void fill_fb_subtest(void)
- {
- 	int rc;
+ #define LEN		20
 -- 
 2.40.0
