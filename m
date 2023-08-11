@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1A28510E6E9
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Aug 2023 18:55:13 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Sat, 12 Aug 2023 00:15:58 +0530
-Message-Id: <20230811184655.157060-25-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
-References: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V6 24/81] tests/i915/kms_mmap_write_crc: Document
- each subtest for testplan
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Wu, Hersen" <hersenxs.wu@amd.com>
+Date: Fri, 11 Aug 2023 16:35:34 -0000
+Message-ID: <169177173482.3115.3827982296713164523@emeril.freedesktop.org>
+References: <20230810145257.88389-1-hersenxs.wu@amd.com>
+In-Reply-To: <20230810145257.88389-1-hersenxs.wu@amd.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBzZXJp?=
+ =?utf-8?q?es_starting_with_=5B1/2=2Ci-g-t=5D_lib/igt=5Fkms=3A_Re-try_disp?=
+ =?utf-8?q?lay=5Frequire_if_require_output_is_not_valid_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,43 +18,23 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add documentation for all kms tests which is used by IGT testplan
-documentation.
+== Series Details ==
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/i915/kms_mmap_write_crc.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+Series: series starting with [1/2,i-g-t] lib/igt_kms: Re-try display_require if require output is not valid (rev3)
+URL   : https://patchwork.freedesktop.org/series/122292/
+State : failure
 
-diff --git a/tests/i915/kms_mmap_write_crc.c b/tests/i915/kms_mmap_write_crc.c
-index 5a9eeec48..85fb1e000 100644
---- a/tests/i915/kms_mmap_write_crc.c
-+++ b/tests/i915/kms_mmap_write_crc.c
-@@ -37,6 +37,20 @@
- #include "intel_chipset.h"
- #include "ioctl_wrappers.h"
- #include "igt_aux.h"
-+/**
-+ * TEST: kms mmap write crc
-+ * Category: Display
-+ * Description: Use the display CRC support to validate mmap write to an already
-+ *              uncached future scanout buffer.
-+ *
-+ * SUBTEST: main
-+ * Description: Tests that caching mode has become UC/WT and flushed using mmap write
-+ * Driver requirement: any
-+ * Functionality: kms_core, kms_gem_interop
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- 
- IGT_TEST_DESCRIPTION(
-    "Use the display CRC support to validate mmap write to an already uncached future scanout buffer.");
--- 
-2.40.0
+== Summary ==
+
+Applying: lib/igt_kms: Re-try display_require if require output is not valid
+Patch failed at 0001 lib/igt_kms: Re-try display_require if require output is not valid
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
+
