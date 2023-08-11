@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EDBA810E68A
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Aug 2023 10:27:13 +0000 (UTC)
-From: Riana Tauro <riana.tauro@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C042810E691
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Aug 2023 11:10:41 +0000 (UTC)
+From: Anshuman Gupta <anshuman.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 11 Aug 2023 16:02:17 +0530
-Message-Id: <20230811103217.415744-3-riana.tauro@intel.com>
-In-Reply-To: <20230811103217.415744-1-riana.tauro@intel.com>
-References: <20230811103217.415744-1-riana.tauro@intel.com>
+Date: Fri, 11 Aug 2023 16:40:24 +0530
+Message-Id: <20230811111026.1327273-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] HAX: Add idle-residency-on-exec to
- xe-fast-feedback.testlist
+Subject: [igt-dev] [PATCH i-g-t v2 0/2] Add vram_d3cold_threshold test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,29 +16,29 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: badal.nilawar@intel.com
+Cc: badal.nilawar@intel.com, rodrigo.vivi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add idle-residency-on-exec to xe-fast-feedback.testlist
+v2 has major changes in "test/xe_pm: Add vram_d3cold_threshold subtest"
 
-Signed-off-by: Riana Tauro <riana.tauro@intel.com>
----
- tests/intel-ci/xe-fast-feedback.testlist | 1 +
- 1 file changed, 1 insertion(+)
+Tests was expecting card to enter to d3cold after freeing up the Xe Bo.
+But it wasn't entering because gem_close() doesn't wake device from d3hot.
+Therefore test requires to use forcewake debugfs handle to wake device from d3hot and
+let XeKMD to compute d3cold.allow based upon used vram and
+vram_d3cold_threshold.
+Due to above major change in test, i removed the existing RB.
 
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index f7c6b62f5..e8f9c1902 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -144,6 +144,7 @@ igt@xe_mmap@vram-system
- igt@xe_mmio@mmio-timestamp
- igt@xe_mmio@mmio-invalid
- igt@xe_pm_residency@gt-c6-on-idle
-+igt@xe_pm_residency@idle-residency-on-exec
- igt@xe_prime_self_import@basic-with_one_bo
- igt@xe_prime_self_import@basic-with_fd_dup
- #igt@xe_prime_self_import@basic-llseek-size
+Anshuamn Gupta (1):
+  lib/igt_pm: Remove pci_system_{init, cleanup}
+
+Anshuman Gupta (1):
+  test/xe_pm: Add vram_d3cold_threshold subtest
+
+ lib/igt_pm.c     |   5 --
+ tests/xe/xe_pm.c | 128 +++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 128 insertions(+), 5 deletions(-)
+
 -- 
-2.40.0
+2.25.1
