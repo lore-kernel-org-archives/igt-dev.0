@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CA54810E5CB
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Aug 2023 17:51:27 +0000 (UTC)
-Date: Thu, 10 Aug 2023 19:51:05 +0200
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6608D10E68C
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Aug 2023 10:44:31 +0000 (UTC)
+Date: Fri, 11 Aug 2023 12:44:27 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230810175105.gxxsypvouv3txdkc@kamilkon-desk1>
-References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
- <20230629144910.3055377-2-bhanuprakash.modem@intel.com>
+Message-ID: <20230811104427.nb2wciaggngombof@kamilkon-desk1>
+References: <20230810111234.960098-1-mauro.chehab@linux.intel.com>
+ <20230810111234.960098-3-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230629144910.3055377-2-bhanuprakash.modem@intel.com>
-Subject: Re: [igt-dev] [V5 i-g-t 01/81] testplan/kms: Keep category as high
- level entity
+In-Reply-To: <20230810111234.960098-3-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 2/3] xe-fast-feedback.testlist: drop
+ device-independent kunit tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,56 +25,36 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Bhanuprakash,
-On 2023-06-29 at 20:17:50 +0530, Bhanuprakash Modem wrote:
-> Update kms testplan to keep the category as high level entity.
-> 
-+cc Mauro
+Hi Mauro,
 
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->  tests/kms_test_config.json | 24 ++++++++++++------------
->  1 file changed, 12 insertions(+), 12 deletions(-)
+On 2023-08-10 at 13:12:03 +0200, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
-> diff --git a/tests/kms_test_config.json b/tests/kms_test_config.json
-> index 5fbe40bdc..447a13337 100644
-> --- a/tests/kms_test_config.json
-> +++ b/tests/kms_test_config.json
-> @@ -6,21 +6,21 @@
->          "Category": {
->              "_properties_": {
->                  "description": "Contains the major group for the tested functionality 'Display'"
-> -            }
-> -        },
-> -        "Mega feature": {
-> -            "_properties_": {
-> -                "description": "Contains the mega feature for end to end use case, e.g. the 'PSR' feature."
->              },
-> -            "Functionality": {
-> +            "Mega feature": {
->                  "_properties_": {
-> -                    "description": "Groups tests on buckets containg more detailed functionality"
-> +                    "description": "Contains the mega feature for end to end use case, e.g. the 'PSR' feature."
-> +                },
-> +                "Functionality": {
-> +                    "_properties_": {
-> +                        "description": "Groups tests on buckets containg more detailed functionality"
-> +                    }
-> +                }
-> +            },
-> +            "Run type": {
-> +                "_properties_": {
-> +                    "description": "Defines what category of testlist it belongs"
->                  }
-> -            }
-> -        },
-> -        "Run type": {
-> -            "_properties_": {
-> -                "description": "Defines what category of testlist it belongs"
->              }
->          },
->          "Test category": {
+> Those are executed at build time, and were removed from
+> xe_live_ktest. So, drop them from the testlist.
+> 
+> Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+> ---
+>  tests/intel-ci/xe-fast-feedback.testlist | 3 ---
+>  1 file changed, 3 deletions(-)
+> 
+> diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+> index f7c6b62f5f08..7f171868ba7b 100644
+> --- a/tests/intel-ci/xe-fast-feedback.testlist
+> +++ b/tests/intel-ci/xe-fast-feedback.testlist
+> @@ -250,7 +250,4 @@ igt@core_hotunplug@unbind-rebind
+>  # Run KUnit tests at the end
+>  igt@xe_live_ktest@bo
+>  igt@xe_live_ktest@dmabuf
+> -igt@xe_live_ktest@pci
+> -igt@xe_live_ktest@rtp
+>  igt@xe_live_ktest@migrate
+> -igt@xe_live_ktest@wa
 > -- 
-> 2.40.0
+> 2.41.0
 > 
 
