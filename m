@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CF54F10E6EC
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 908DD10E6EC
  for <igt-dev@lists.freedesktop.org>; Fri, 11 Aug 2023 18:54:44 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Sat, 12 Aug 2023 00:15:41 +0530
-Message-Id: <20230811184655.157060-8-bhanuprakash.modem@intel.com>
+Date: Sat, 12 Aug 2023 00:15:39 +0530
+Message-Id: <20230811184655.157060-6-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
 References: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V6 07/81] tests/chamelium/kms_chamelium_edid:
+Subject: [igt-dev] [i-g-t V6 05/81] tests/chamelium/kms_chamelium_audio:
  Document each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -27,170 +27,83 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add documentation for all kms tests which is used by IGT testplan
 documentation.
 
-V2: - Add chamelium to the Functionality
-    - Update Functionality to reflect the edid
+V2: - Include Audio in Mega feature
+    - Include Chamelium in Functionality
 
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/chamelium/kms_chamelium_edid.c | 96 ++++++++++++++++++++++++++--
- 1 file changed, 92 insertions(+), 4 deletions(-)
+ tests/chamelium/kms_chamelium_audio.c | 44 +++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
-diff --git a/tests/chamelium/kms_chamelium_edid.c b/tests/chamelium/kms_chamelium_edid.c
-index 446bbd204..ecd37e227 100644
---- a/tests/chamelium/kms_chamelium_edid.c
-+++ b/tests/chamelium/kms_chamelium_edid.c
-@@ -25,8 +25,9 @@
-  */
+diff --git a/tests/chamelium/kms_chamelium_audio.c b/tests/chamelium/kms_chamelium_audio.c
+index 8fbc1f80e..6a1f5f65a 100644
+--- a/tests/chamelium/kms_chamelium_audio.c
++++ b/tests/chamelium/kms_chamelium_audio.c
+@@ -28,6 +28,12 @@
+ #include "igt_infoframe.h"
+ #include "kms_chamelium_helper.h"
  
- /**
-- * TEST: Tests behaviour of edid & timings using chamelium
-+ * TEST: kms chamelium edid
-  * Category: Display
-+ * Description: Testing EDID with a Chamelium board
-  */
- 
- #include <fcntl.h>
-@@ -149,22 +150,25 @@ static void check_mode(struct chamelium *chamelium, struct chamelium_port *port,
-  * Description: Make sure the EDID exposed by KMS is the same as the screen's
-  * Test category: functionality test
-  * Run type: BAT
-- * Functionality: dp
-+ * Functionality: chamelium, dp_edid
-  * Mega feature: DP
-+ * Driver requirement: any
-  *
-  * SUBTEST: hdmi-edid-read
-  * Description: Make sure the EDID exposed by KMS is the same as the screen's
-  * Test category: functionality test
-  * Run type: BAT
-- * Functionality: hdmi
-+ * Functionality: chamelium, hdmi_edid
-  * Mega feature: HDMI
-+ * Driver requirement: any
-  *
-  * SUBTEST: vga-edid-read
-  * Description: Make sure the EDID exposed by KMS is the same as the screen's
-  * Test category: functionality test
-  * Run type: BAT
-- * Functionality: vga
-+ * Functionality: chamelium, vga_edid
-  * Mega feature: VGA
-+ * Driver requirement: any
-  */
- static const char igt_custom_edid_type_read_desc[] =
- 	"Make sure the EDID exposed by KMS is the same as the screen's";
-@@ -205,6 +209,32 @@ static void igt_custom_edid_type_read(chamelium_data_t *data,
- 	drmModeFreeConnector(connector);
++/**
++ * TEST: kms chamelium audio
++ * Category: Display
++ * Description: Testing Audio with a Chamelium board
++ */
++
+ /* Playback parameters control the audio signal we synthesize and send */
+ #define PLAYBACK_CHANNELS 2
+ #define PLAYBACK_SAMPLES 1024
+@@ -669,6 +675,25 @@ static bool check_audio_configuration(struct alsa *alsa,
+ 	return true;
  }
  
 +/**
-+ * SUBTEST: dp-edid-stress-resolution-%s
-+ * Description: Stress test the DUT by testing multiple EDIDs, one right after
-+ *              the other, and ensure their validity by check the real screen
-+ *              resolution vs the advertised mode (%arg[1]) resolution.
-+ * Test category: functionality test
++ * SUBTEST: dp-audio
++ * Description: Playback various audio signals with various audio formats/rates,
++ *              capture them and check they are correct
++ * Functionality: chamelium, dp_audio
++ * Mega feature: Audio, DP
 + * Run type: FULL
-+ * Functionality: chamelium, dp_edid
-+ * Mega feature: DP
++ * Test category: functionality test
 + * Driver requirement: any
 + *
-+ * SUBTEST: hdmi-edid-stress-resolution-%s
-+ * Description: Stress test the DUT by testing multiple EDIDs, one right after
-+ *              the other, and ensure their validity by check the real screen
-+ *              resolution vs the advertised mode (%arg[1]) resolution.
-+ * Test category: functionality test
++ * SUBTEST: hdmi-audio
++ * Description: Playback various audio signals with various audio formats/rates,
++ *              capture them and check they are correct
++ * Functionality: chamelium, hdmi_audio
++ * Mega feature: Audio, HDMI
 + * Run type: FULL
-+ * Functionality: chamelium, hdmi_edid
-+ * Mega feature: HDMI
++ * Test category: functionality test
 + * Driver requirement: any
-+ *
-+ * arg[1]:
-+ *
-+ * @4k:      4K
-+ * @non-4k:  Non 4K
 + */
- static const char igt_edid_stress_resolution_desc[] =
- 	"Stress test the DUT by testing multiple EDIDs, one right after the other, "
- 	"and ensure their validity by check the real screen resolution vs the "
-@@ -274,6 +304,17 @@ static void edid_stress_resolution(chamelium_data_t *data,
- 			      data->ports, data->port_count);
+ static const char test_display_audio_desc[] =
+ 	"Playback various audio signals with various audio formats/rates, "
+ 	"capture them and check they are correct";
+@@ -763,6 +788,25 @@ static void test_display_audio(chamelium_data_t *data,
+ 	free(alsa);
  }
  
 +/**
-+ * SUBTEST: dp-edid-resolution-list
-+ * Description: Get an EDID with many modes of different configurations, set
-+ *              them on the screen and check the screen resolution matches the
-+ *              mode resolution.
-+ * Test category: functionality test
++ * SUBTEST: dp-audio-edid
++ * Description: Plug a connector with an EDID suitable for audio, check ALSA's
++ *              EDID-Like Data reports the correct audio parameters
++ * Functionality: chamelium, dp_audio
++ * Mega feature: Audio, DP
 + * Run type: FULL
-+ * Functionality: chamelium, dp_edid
-+ * Mega feature: DP
++ * Test category: functionality test
++ * Driver requirement: any
++ *
++ * SUBTEST: hdmi-audio-edid
++ * Description: Plug a connector with an EDID suitable for audio, check ALSA's
++ *              EDID-Like Data reports the correct audio parameters
++ * Functionality: chamelium, hdmi_audio
++ * Mega feature: Audio, HDMI
++ * Run type: FULL
++ * Test category: functionality test
 + * Driver requirement: any
 + */
- static const char igt_edid_resolution_list_desc[] =
- 	"Get an EDID with many modes of different configurations, set them on the screen and check the"
- 	" screen resolution matches the mode resolution.";
-@@ -337,6 +378,32 @@ static void edid_resolution_list(chamelium_data_t *data,
- 	drmModeFreeConnector(connector);
- }
- 
-+/**
-+ * SUBTEST: dp-edid-change-during-%s
-+ * Description: Simulate a screen being unplugged and another screen being
-+ *              plugged during suspend, check that a uevent is sent and
-+ *              connector status is updated during %arg[1]
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: chamelium, dp_edid
-+ * Mega feature: DP
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: hdmi-edid-change-during-%s
-+ * Description: Simulate a screen being unplugged and another screen being
-+ *              plugged during suspend, check that a uevent is sent and
-+ *              connector status is updated during %arg[1]
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: chamelium, dp_edid
-+ * Mega feature: DP
-+ * Driver requirement: any
-+ *
-+ * arg[1]:
-+ *
-+ * @hibernate:    hibernation
-+ * @suspend:      suspend
-+ */
- static const char test_suspend_resume_edid_change_desc[] =
- 	"Simulate a screen being unplugged and another screen being plugged "
- 	"during suspend, check that a uevent is sent and connector status is "
-@@ -389,6 +456,27 @@ static void test_suspend_resume_edid_change(chamelium_data_t *data,
- 			    link_status_failed[1][p]);
- }
- 
-+/**
-+ * SUBTEST: dp-mode-timings
-+ * Description: For each mode of the IGT base EDID, perform a modeset and check
-+ *              the mode detected by the Chamelium receiver matches the mode we
-+ *              set
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: chamelium, dp_edid
-+ * Mega feature: DP
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: hdmi-mode-timings
-+ * Description: For each mode of the IGT base EDID, perform a modeset and check
-+ *              the mode detected by the Chamelium receiver matches the mode we
-+ *              set
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: chamelium, dp_edid
-+ * Mega feature: DP
-+ * Driver requirement: any
-+ */
- static const char test_mode_timings_desc[] =
- 	"For each mode of the IGT base EDID, perform a modeset and check the "
- 	"mode detected by the Chamelium receiver matches the mode we set";
+ static const char test_display_audio_edid_desc[] =
+ 	"Plug a connector with an EDID suitable for audio, check ALSA's "
+ 	"EDID-Like Data reports the correct audio parameters";
 -- 
 2.40.0
