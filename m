@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CE82D10E695
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Aug 2023 11:10:45 +0000 (UTC)
-From: Anshuman Gupta <anshuman.gupta@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 58B0F10E691
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Aug 2023 11:17:27 +0000 (UTC)
+From: Riana Tauro <riana.tauro@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 11 Aug 2023 16:40:26 +0530
-Message-Id: <20230811111026.1327273-3-anshuman.gupta@intel.com>
-In-Reply-To: <20230811111026.1327273-1-anshuman.gupta@intel.com>
-References: <20230811111026.1327273-1-anshuman.gupta@intel.com>
+Date: Fri, 11 Aug 2023 16:52:22 +0530
+Message-Id: <20230811112222.421331-1-riana.tauro@intel.com>
+In-Reply-To: <20230809070640.270414-5-riana.tauro@intel.com>
+References: <20230809070640.270414-5-riana.tauro@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 2/2] test/xe_pm: Add
- vram_d3cold_threshold subtest
+Subject: [igt-dev] [PATCH i-g-t v4 4/5] tests/xe: Add a test that validates
+ residency during s2idle
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,224 +19,143 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: badal.nilawar@intel.com, rodrigo.vivi@intel.com
+Cc: badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Adding a vram_d3cold_threshold subtest, which creates a Xe bo and
-set the vram_d3cold_threshold according to vram used and bo size.
-Test setups the d3cold and expect card to be limited to d3hot.
+During s2idle, the device is powered up and GT C6 enabled
+so we expect the residency to increase across suspend.
+Add a test that validates the residency over a s2idle cycle
+and checks if it is greater than the autoresume delay
+or within tolerance.
 
-v2:
-- Add subtest doc.
-v3:
-- skip the test on igfx. [Riana]
-- Test doc enhancement. [Riana]
-- Create the bo before vram query. [Riana]
-- Use xe_bo_map insead of xe_bo_mmap_offset and mmap. [Riana]
-- Close the bo handle. [Riana]
-v3:
-- Restore the vram_d3cold_threshold value. [Badal]
-- Don't fail the test if there is no vram_d3cold_threshold.
-- Test d3cold after closing the xe BO.
-v4:
-- When d3cold is not allowed, don't use out_of_d3() as device will
-  be runtime suspended.
-- Set vram_d3cold_threshold to vram_used + Xe BO size such that
-  it can enter to d3cold after freeing up the Xe BO.
-- Use forcewake handle to wake the device.
+v2: skip d3cold disable for igfx (Anshuman)
+v3: rename test flag to TEST_IDLE
+    reorder variables (Anshuman)
+v4: check if residency is greater than autoresume delay as
+    expected. Assert only if residency is lesser than autoresume
+    delay and not within tolerance.
 
-Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+Signed-off-by: Riana Tauro <riana.tauro@intel.com>
 ---
- tests/xe/xe_pm.c | 128 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 128 insertions(+)
+ tests/xe/xe_pm_residency.c | 58 ++++++++++++++++++++++++++++++++++----
+ 1 file changed, 53 insertions(+), 5 deletions(-)
 
-diff --git a/tests/xe/xe_pm.c b/tests/xe/xe_pm.c
-index 23b8246ed..480382f9e 100644
---- a/tests/xe/xe_pm.c
-+++ b/tests/xe/xe_pm.c
-@@ -19,6 +19,7 @@
+diff --git a/tests/xe/xe_pm_residency.c b/tests/xe/xe_pm_residency.c
+index 4936de166..fd4876eaf 100644
+--- a/tests/xe/xe_pm_residency.c
++++ b/tests/xe/xe_pm_residency.c
+@@ -10,8 +10,10 @@
+  * Functionality: GT C States
+  * Test category: functionality test
+  */
++#include <limits.h>
+ 
  #include "igt.h"
- #include "lib/igt_device.h"
- #include "lib/igt_pm.h"
-+#include "lib/igt_sysfs.h"
- #include "lib/igt_syncobj.h"
- #include "lib/intel_reg.h"
++#include "igt_device.h"
+ #include "igt_sysfs.h"
  
-@@ -30,12 +31,16 @@
- #define NO_SUSPEND -1
- #define NO_RPM -1
+ #include "xe/xe_query.h"
+@@ -29,6 +31,11 @@ const double tolerance = 0.1;
+ 		     (tol) * 100.0, (tol) * 100.0, \
+ 		     (double)(ref))
  
-+#define SIZE (4096 * 1024)
++enum test_type {
++	TEST_S2IDLE,
++	TEST_IDLE,
++};
 +
- typedef struct {
- 	int fd_xe;
- 	struct pci_device *pci_xe;
- 	struct pci_device *pci_root;
- } device_t;
- 
-+uint64_t orig_threshold;
-+
- /* runtime_usage is only available if kernel build CONFIG_PM_ADVANCED_DEBUG */
- static bool runtime_usage_available(struct pci_device *pci)
- {
-@@ -76,6 +81,49 @@ static void set_d3cold_allowed(struct pci_device *pci,
- 	close(fd);
- }
- 
-+static uint64_t get_vram_d3cold_threshold(int sysfs)
-+{
-+	uint64_t threshold;
-+	char path[64];
-+	int ret;
-+
-+	sprintf(path, "device/vram_d3cold_threshold");
-+	igt_require_f(!faccessat(sysfs, path, R_OK, 0), "vram_d3cold_threshold is not present\n");
-+
-+	ret = igt_sysfs_scanf(sysfs, path, "%lu", &threshold);
-+	igt_assert(ret > 0);
-+
-+	return threshold;
-+}
-+
-+static void set_vram_d3cold_threshold(int sysfs, uint64_t threshold)
-+{
-+	char path[64];
-+	int ret;
-+
-+	sprintf(path, "device/vram_d3cold_threshold");
-+
-+	if (!faccessat(sysfs, path, R_OK | W_OK, 0))
-+		ret = igt_sysfs_printf(sysfs, path, "%lu", threshold);
-+	else
-+		igt_warn("vram_d3cold_threshold is not present\n");
-+
-+	igt_assert(ret > 0);
-+}
-+
-+static void vram_d3cold_threshold_restore(int sig)
-+{
-+	int fd, sysfs_fd;
-+
-+	fd = drm_open_driver(DRIVER_XE);
-+	sysfs_fd = igt_sysfs_open(fd);
-+
-+	set_vram_d3cold_threshold(sysfs_fd, orig_threshold);
-+
-+	close(sysfs_fd);
-+	close(fd);
-+}
-+
- static bool setup_d3(device_t device, enum igt_acpi_d_state state)
- {
- 	switch (state) {
-@@ -341,11 +389,82 @@ NULL));
- 		igt_assert(in_d3(device, d_state));
- }
- 
-+/**
-+ * SUBTEST: vram-d3cold-threshold
-+ * Description:
-+ *	Validate whether card is limited to d3hot while vram used
-+ *	is greater than vram_d3cold_threshold.
+ /**
+  * SUBTEST: gt-c6-on-idle
+  * Description: Validate GT C6 state on idle
+@@ -38,6 +45,11 @@ const double tolerance = 0.1;
+  * Description: basic residency test to validate idle residency
+  *		measured over a time interval is within the tolerance
+  * Run type: FULL
++ *
++ * SUBTEST: gt-c6-freeze
++ * Description: Validate idle residency measured over suspend(s2idle)
++ *              is greater than suspend time or within tolerance
 + * Run type: FULL
-+ */
-+static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
-+{
-+	struct drm_xe_query_mem_usage *mem_usage;
-+	struct drm_xe_device_query query = {
-+		.extensions = 0,
-+		.query = DRM_XE_DEVICE_QUERY_MEM_USAGE,
-+		.size = 0,
-+		.data = 0,
-+	};
-+	uint64_t vram_used_mb = 0, vram_total_mb = 0, threshold;
-+	uint32_t bo, flags;
-+	int handle, i;
-+	bool active;
-+	void *map;
+  */
+ IGT_TEST_DESCRIPTION("Tests for gtidle properties");
+ 
+@@ -69,15 +81,35 @@ static unsigned long read_idle_residency(int fd, int gt)
+ 	return residency;
+ }
+ 
+-static void test_idle_residency(int fd, int gt)
++static void test_idle_residency(int fd, int gt, enum test_type flag)
+ {
+ 	unsigned long elapsed_ms, residency_start, residency_end;
+ 
+ 	igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 1), "GT not in C6\n");
+ 
+-	residency_start = read_idle_residency(fd, gt);
+-	elapsed_ms = measured_usleep(SLEEP_DURATION * 1000) / 1000;
+-	residency_end = read_idle_residency(fd, gt);
++	if (flag == TEST_S2IDLE) {
++		/*
++		 * elapsed time during suspend is approximately equal to autoresume delay
++		 * when a full suspend cycle(SUSPEND_TEST_NONE) is used.
++		 */
++		elapsed_ms = igt_get_autoresume_delay(SUSPEND_STATE_FREEZE);
++		residency_start = read_idle_residency(fd, gt);
++		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
++		residency_end = read_idle_residency(fd, gt);
 +
-+	igt_require(xe_has_vram(device.fd_xe));
-+
-+	flags = vram_memory(device.fd_xe, 0);
-+	igt_require_f(flags, "Device doesn't support vram memory region\n");
-+
-+	igt_assert_eq(igt_ioctl(device.fd_xe, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-+	igt_assert_neq(query.size, 0);
-+
-+	mem_usage = malloc(query.size);
-+	igt_assert(mem_usage);
-+
-+	query.data = to_user_pointer(mem_usage);
-+	igt_assert_eq(igt_ioctl(device.fd_xe, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-+
-+	for (i = 0; i < mem_usage->num_regions; i++) {
-+		if (mem_usage->regions[i].mem_class == XE_MEM_REGION_CLASS_VRAM) {
-+			vram_used_mb +=  (mem_usage->regions[i].used / (1024 * 1024));
-+			vram_total_mb += (mem_usage->regions[i].total_size / (1024 * 1024));
-+		}
++		/*
++		 * Idle residency may increase even after suspend, only assert if residency
++		 * is lesser than autoresume delay and is not within tolerance.
++		 */
++		if ((residency_end - residency_start) >= elapsed_ms)
++			return;
 +	}
 +
-+	threshold = vram_used_mb + (SIZE / 1024 /1024);
-+	igt_require(threshold < vram_total_mb);
-+
-+	bo = xe_bo_create_flags(device.fd_xe, 0, SIZE, flags);
-+	map = xe_bo_map(device.fd_xe, bo, SIZE);
-+	memset(map, 0, SIZE);
-+	munmap(map, SIZE);
-+	set_vram_d3cold_threshold(sysfs_fd, threshold);
-+
-+	/* Setup D3Cold but card should be in D3hot */
-+	igt_assert(setup_d3(device, IGT_ACPI_D3Cold));
-+	sleep(1);
-+	igt_assert(in_d3(device, IGT_ACPI_D3Hot));
-+	igt_assert(igt_pm_get_acpi_real_d_state(device.pci_root) == IGT_ACPI_D0);
-+	gem_close(device.fd_xe, bo);
-+
-+	/* open and close fw handle to wake the device */
-+	handle = igt_debugfs_open(device.fd_xe, "forcewake_all", O_RDONLY);
-+	igt_assert(handle >= 0);
-+	active = igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE;
-+	close(handle);
-+	igt_assert(active);
-+
-+	/* Test D3Cold again after freeing up the Xe BO */
-+	igt_assert(in_d3(device, IGT_ACPI_D3Cold));
-+}
-+
++	if (flag == TEST_IDLE) {
++		residency_start = read_idle_residency(fd, gt);
++		elapsed_ms = measured_usleep(SLEEP_DURATION * 1000) / 1000;
++		residency_end = read_idle_residency(fd, gt);
++	}
+ 
+ 	igt_info("Measured %lums of idle residency in %lums\n",
+ 		 residency_end - residency_start, elapsed_ms);
+@@ -87,7 +119,9 @@ static void test_idle_residency(int fd, int gt)
+ 
  igt_main
  {
- 	struct drm_xe_engine_class_instance *hwe;
- 	device_t device;
- 	char d3cold_allowed[2];
-+	int sysfs_fd;
- 	const struct s_state {
- 		const char *name;
- 		enum igt_suspend_state state;
-@@ -378,6 +497,7 @@ igt_main
++	uint32_t d3cold_allowed;
+ 	int fd, gt;
++	char pci_slot_name[NAME_MAX];
  
- 		get_d3cold_allowed(device.pci_xe, d3cold_allowed);
- 		igt_assert(igt_setup_runtime_pm(device.fd_xe));
-+		sysfs_fd = igt_sysfs_open(device.fd_xe);
- 	}
+ 	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_XE);
+@@ -99,10 +133,24 @@ igt_main
+ 		xe_for_each_gt(fd, gt)
+ 			igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 1), "GT not in C6\n");
  
- 	for (const struct s_state *s = s_states; s->name; s++) {
-@@ -437,7 +557,15 @@ igt_main
- 		}
- 	}
- 
-+	igt_describe("Validate whether card is limited to d3hot, if vram used > vram threshold");
-+	igt_subtest("vram-d3cold-threshold") {
-+		orig_threshold = get_vram_d3cold_threshold(sysfs_fd);
-+		igt_install_exit_handler(vram_d3cold_threshold_restore);
-+		test_vram_d3cold_threshold(device, sysfs_fd);
++	igt_describe("Validate idle residency measured over suspend cycle is within the tolerance");
++	igt_subtest("gt-c6-freeze") {
++		if (xe_has_vram(fd)) {
++			igt_device_get_pci_slot_name(fd, pci_slot_name);
++			igt_pm_get_d3cold_allowed(pci_slot_name, &d3cold_allowed);
++			igt_pm_set_d3cold_allowed(pci_slot_name, 0);
++		}
++		xe_for_each_gt(fd, gt)
++			test_idle_residency(fd, gt, TEST_S2IDLE);
++
++		if (xe_has_vram(fd))
++			igt_pm_set_d3cold_allowed(pci_slot_name, d3cold_allowed);
 +	}
 +
+ 	igt_describe("Validate idle residency measured over a time interval is within the tolerance");
+ 	igt_subtest("idle-residency")
+ 		xe_for_each_gt(fd, gt)
+-			test_idle_residency(fd, gt);
++			test_idle_residency(fd, gt, TEST_IDLE);
+ 
  	igt_fixture {
-+		close(sysfs_fd);
- 		set_d3cold_allowed(device.pci_xe, d3cold_allowed);
- 		igt_restore_runtime_pm();
- 		xe_device_put(device.fd_xe);
+ 		close(fd);
 -- 
-2.25.1
+2.40.0
