@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 22FB910E710
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Aug 2023 18:55:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2876F10E6F0
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Aug 2023 18:55:23 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Sat, 12 Aug 2023 00:16:07 +0530
-Message-Id: <20230811184655.157060-34-bhanuprakash.modem@intel.com>
+Date: Sat, 12 Aug 2023 00:16:04 +0530
+Message-Id: <20230811184655.157060-31-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
 References: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V6 33/81] tests/kms_async_flips: Document each
+Subject: [igt-dev] [i-g-t V6 30/81] tests/i915/kms_pwrite_crc: Document each
  subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -26,119 +26,38 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add documentation for all kms tests which is used by IGT testplan
 documentation.
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
----
- tests/kms_async_flips.c | 62 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 62 insertions(+)
+V2: - Fix test documentation
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index ebdc4c0b6..b807d12bf 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -25,6 +25,11 @@
-  *  Karthik B S <karthik.b.s@intel.com>
-  */
+Cc: Karthik B S <karthik.b.s@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/i915/kms_pwrite_crc.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/tests/i915/kms_pwrite_crc.c b/tests/i915/kms_pwrite_crc.c
+index 7bddeecba..661064cc8 100644
+--- a/tests/i915/kms_pwrite_crc.c
++++ b/tests/i915/kms_pwrite_crc.c
+@@ -29,6 +29,20 @@
+ #include <stdio.h>
+ #include <string.h>
  
 +/**
-+ * TEST: kms async flips
++ * TEST: kms pwrite crc
 + * Category: Display
-+ * Description: Test asynchronous page flips.
-+ */
- #include "igt.h"
- #include "igt_aux.h"
- #include "igt_psr.h"
-@@ -198,6 +203,25 @@ static void test_init_fbs(data_t *data)
- 	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
- }
- 
-+/**
-+ * SUBTEST: alternate-sync-async-flip
-+ * Description: Verify the async flip functionality and the fps during async flips
-+ *              Alternate between sync and async flips
-+ * Driver requirement: any
-+ * Functionality: async_flips, vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
++ * Description: Test to validate pwrite buffer using the display CRC
 + *
-+ * SUBTEST: async-flip-with-page-flip-events
-+ * Description: Verify the async flip functionality and the fps during async flips
-+ *              Wait for page flip events in between successive asynchronous flips
-+ * Driver requirement: any
-+ * Functionality: async_flips, vblank
++ * SUBTEST:
++ * Description: Use the display CRC support to validate pwrite to an already
++ *              uncached future scanout buffer.
++ * Driver requirement: i915
++ * Functionality: kms_core, kms_gem_interop
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
- static void test_async_flip(data_t *data)
- {
- 	int ret, frame;
-@@ -293,6 +317,17 @@ static void wait_for_vblank(data_t *data, unsigned long *vbl_time, unsigned int
- 	*seq = wait_vbl.reply.sequence;
- }
  
-+/**
-+ * SUBTEST: test-time-stamp
-+ * Description: Verify the async flip functionality and the fps during async flips
-+ *              Verify that the async flip timestamp does not coincide with either
-+ *              previous or next vblank
-+ * Driver requirement: any
-+ * Functionality: async_flips, vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void test_timestamp(data_t *data)
- {
- 	int flags = DRM_MODE_PAGE_FLIP_ASYNC | DRM_MODE_PAGE_FLIP_EVENT;
-@@ -337,6 +372,15 @@ static void test_timestamp(data_t *data)
- 		     "Async flip time stamp is expected to be in between 2 vblank time stamps\n");
- }
- 
-+/**
-+ * SUBTEST: test-cursor
-+ * Description: Verify that the DRM_IOCTL_MODE_CURSOR passes after async flip
-+ * Driver requirement: any
-+ * Functionality: async_flips, cursor, vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void test_cursor(data_t *data)
- {
- 	int flags = DRM_MODE_PAGE_FLIP_ASYNC | DRM_MODE_PAGE_FLIP_EVENT;
-@@ -489,6 +533,15 @@ static unsigned int clock_ms(void)
- 	return ts.tv_sec * 1000 + ts.tv_nsec / 1000000;
- }
- 
-+/**
-+ * SUBTEST: crc
-+ * Description: Use CRC to verify async flip scans out the correct framebuffer
-+ * Driver requirement: any
-+ * Functionality: async_flips, crc, vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void test_crc(data_t *data)
- {
- 	unsigned int frame = 0;
-@@ -551,6 +604,15 @@ static void test_crc(data_t *data)
- 	igt_assert_lt(data->frame_count * 2, data->flip_count);
- }
- 
-+/**
-+ * SUBTEST: invalid-async-flip
-+ * Description: Negative case to verify if changes in fb are rejected from kernel as expected
-+ * Driver requirement: any
-+ * Functionality: async_flips, vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void run_test(data_t *data, void (*test)(data_t *))
- {
- 	igt_display_t *display = &data->display;
+ IGT_TEST_DESCRIPTION(
+    "Use the display CRC support to validate pwrite to an already uncached future scanout buffer.");
 -- 
 2.40.0
