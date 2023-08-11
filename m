@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7AD4110E704
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Aug 2023 18:55:26 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 22FB910E710
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Aug 2023 18:55:28 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Sat, 12 Aug 2023 00:16:06 +0530
-Message-Id: <20230811184655.157060-33-bhanuprakash.modem@intel.com>
+Date: Sat, 12 Aug 2023 00:16:07 +0530
+Message-Id: <20230811184655.157060-34-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
 References: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V6 32/81] tests/kms_addfb_basic: Document each
+Subject: [igt-dev] [i-g-t V6 33/81] tests/kms_async_flips: Document each
  subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -29,352 +29,116 @@ documentation.
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- tests/kms_addfb_basic.c | 193 ++++++++++++++++++++++++++++++++--------
- 1 file changed, 158 insertions(+), 35 deletions(-)
+ tests/kms_async_flips.c | 62 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 62 insertions(+)
 
-diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
-index 065f21975..68e4ed3fc 100644
---- a/tests/kms_addfb_basic.c
-+++ b/tests/kms_addfb_basic.c
-@@ -26,8 +26,9 @@
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index ebdc4c0b6..b807d12bf 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -25,6 +25,11 @@
+  *  Karthik B S <karthik.b.s@intel.com>
   */
  
- /**
-- * TEST: Sanity test for ioctls DRM_IOCTL_MODE_ADDFB2 & DRM_IOCTL_MODE_RMFB.
-+ * TEST: kms addfb basic
-  * Category: Display
-+ * Description: Sanity test for ioctls DRM_IOCTL_MODE_ADDFB2 & DRM_IOCTL_MODE_RMFB.
-  */
- 
++/**
++ * TEST: kms async flips
++ * Category: Display
++ * Description: Test asynchronous page flips.
++ */
  #include "igt.h"
-@@ -66,33 +67,52 @@ static int legacy_addfb(int fd, struct drm_mode_fb_cmd *arg)
- }
- 
- /**
-- * SUBTEST: unused-handle
-- * Description: Test that addfb2 call fails correctly for unused handle
-+ * SUBTEST: unused-%s
-+ * Description: Test that addfb2 call fails correctly for unused %arg[1]
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: kms_gem_interop
-  * Mega feature: General Display Features
-  *
-- * SUBTEST: unused-pitches
-- * Description: Test that addfb2 call fails correctly for unused pitches
-+ * SUBTEST: unused-modifier
-+ * Description: Test that addfb2 call fails correctly for unused modifier
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-- * Functionality: kms_gem_interop
-+ * Functionality: kms_gem_interop, tiling
-  * Mega feature: General Display Features
-  *
-- * SUBTEST: unused-offsets
-- * Description: Test that addfb2 call fails correctly for unused offset
-+ * SUBTEST: clobberred-modifier
-+ * Description: Check if addfb2 call works for clobbered modifier
-+ * Driver requirement: i915
-+ * Functionality: kms_gem_interop, tiling
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-  * Test category: functionality test
-- * Run type: BAT
-+ *
-+ * SUBTEST: invalid-smem-bo-on-discrete
-+ * Description: Check if addfb2 with a system memory gem object fails correctly
-+ *              if device requires local memory framebuffers
-+ * Driver requirement: any
-  * Functionality: kms_gem_interop
-  * Mega feature: General Display Features
-- *
-- * SUBTEST: unused-modifier
-- * Description: Test that addfb2 call fails correctly for unused modifier
-+ * Run type: FULL
-  * Test category: functionality test
-- * Run type: BAT
-+ *
-+ * SUBTEST: legacy-format
-+ * Description: Check if addfb2 call works for legacy formats
-+ * Driver requirement: any
-  * Functionality: kms_gem_interop
-  * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @handle:       Handle
-+ * @pitches:      Pitches
-+ * @offsets:      Offsets
-  */
- static void invalid_tests(int fd)
- {
-@@ -310,6 +330,7 @@ static void invalid_tests(int fd)
- /**
-  * SUBTEST: no-handle
-  * Description: Test that addfb2 call fails correctly without handle
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: kms_gem_interop
-@@ -317,6 +338,7 @@ static void invalid_tests(int fd)
-  *
-  * SUBTEST: basic
-  * Description: Check if addfb2 call works with given handle
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: kms_gem_interop
-@@ -324,6 +346,7 @@ static void invalid_tests(int fd)
-  *
-  * SUBTEST: bad-pitch-%i
-  * Description: bad-pitch-%arg[1]: Test that addfb2 call fails correctly for bad-pitches
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: kms_gem_interop
-@@ -378,6 +401,36 @@ static void pitch_tests(int fd)
- 		gem_close(fd, gem_bo);
+ #include "igt_aux.h"
+ #include "igt_psr.h"
+@@ -198,6 +203,25 @@ static void test_init_fbs(data_t *data)
+ 	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
  }
  
 +/**
-+ * SUBTEST: basic-%s-tiled-legacy
-+ * Description: Check if addfb2 and rmfb call works for basic %arg[1] test
++ * SUBTEST: alternate-sync-async-flip
++ * Description: Verify the async flip functionality and the fps during async flips
++ *              Alternate between sync and async flips
 + * Driver requirement: any
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: kms_gem_interop, tiling
-+ * Mega feature: General Display Features
-+ *
-+ * SUBTEST: framebuffer-vs-set-tiling
-+ * Description: Check if addfb2 call works for x and y tiling
-+ * Driver requirement: i915
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: kms_gem_interop, tiling
-+ * Mega feature: General Display Features
-+ *
-+ * SUBTEST: tile-pitch-mismatch
-+ * Description: Test that addfb2 call fails correctly for pitches mismatch
-+ * Driver requirement: i915
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: kms_gem_interop, tiling
-+ * Mega feature: General Display Features
-+ *
-+ * arg[1]:
-+ *
-+ * @x:        x-tiling
-+ * @y:        y-tiling
-+ */
- static void tiling_tests(int fd)
- {
- 	struct drm_mode_fb_cmd2 f = {};
-@@ -460,6 +513,7 @@ static void tiling_tests(int fd)
- /**
-  * SUBTEST: size-max
-  * Description: Check if addfb2 call works with max size of buffer object
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: kms_gem_interop
-@@ -467,6 +521,7 @@ static void tiling_tests(int fd)
-  *
-  * SUBTEST: too-wide
-  * Description: Test that addfb2 call fails correctly with increased width of fb
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: kms_gem_interop
-@@ -474,6 +529,7 @@ static void tiling_tests(int fd)
-  *
-  * SUBTEST: too-high
-  * Description: Test that addfb2 call fails correctly with increased height of fb
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: kms_gem_interop
-@@ -481,6 +537,7 @@ static void tiling_tests(int fd)
-  *
-  * SUBTEST: bo-too-small
-  * Description: Test that addfb2 call fails correctly with small size of buffer object
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: kms_gem_interop
-@@ -488,10 +545,20 @@ static void tiling_tests(int fd)
-  *
-  * SUBTEST: small-bo
-  * Description: Check if addfb2 call works for given height
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: kms_gem_interop
-  * Mega feature: General Display Features
-+ *
-+ * SUBTEST: bo-too-small-due-to-tiling
-+ * Description: Test that addfb2 call fails correctly with small buffer object
-+ *              after changing tile
-+ * Driver requirement: any
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: kms_gem_interop, tiling
-+ * Mega feature: General Display Features
-  */
- static void size_tests(int fd)
- {
-@@ -611,16 +678,42 @@ static void size_tests(int fd)
- /**
-  * SUBTEST: addfb25-modifier-no-flag
-  * Description: Test that addfb2 call fails correctly for x-tiling with given modifier
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-- * Functionality: kms_gem_interop
-+ * Functionality: kms_gem_interop, tiling
-  * Mega feature: General Display Features
-  *
-  * SUBTEST: addfb25-bad-modifier
-  * Description: Test that addfb2 call fails correctly for irrelevant modifier
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-- * Functionality: kms_gem_interop
-+ * Functionality: kms_gem_interop, tiling
-+ * Mega feature: General Display Features
-+ *
-+ * SUBTEST: addfb25-x-tiled-mismatch-legacy
-+ * Description: Test that addfb2 call fails correctly for irrelevant x-tiling
-+ * Driver requirement: any
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: kms_gem_interop, tiling
-+ * Mega feature: General Display Features
-+ *
-+ * SUBTEST: addfb25-x-tiled-legacy
-+ * Description: Check if addfb2 call works for x-tiling
-+ * Driver requirement: any
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: kms_gem_interop, tiling
-+ * Mega feature: General Display Features
-+ *
-+ * SUBTEST: addfb25-framebuffer-vs-set-tiling
-+ * Description: Check if addfb2 call works for relevant combination of tiling and fbs
-+ * Driver requirement: any
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: kms_gem_interop, tiling
-  * Mega feature: General Display Features
-  */
- static void addfb25_tests(int fd)
-@@ -705,6 +798,28 @@ static int addfb_expected_ret(igt_display_t *disp, struct drm_mode_fb_cmd2 *f)
- 					  f->modifier[0]) ? 0 : -1;
- }
- 
-+/**
-+ * SUBTEST: addfb25-y-tiled-%s
-+ * Description: Check if addfb2 call works for y-tiling %arg[1]
-+ * Driver requirement: any
-+ * Functionality: kms_gem_interop, tiling
++ * Functionality: async_flips, vblank
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: addfb25-yf-tiled-legacy
-+ * Description: Check if addfb2 call works for yf-tiling
++ * SUBTEST: async-flip-with-page-flip-events
++ * Description: Verify the async flip functionality and the fps during async flips
++ *              Wait for page flip events in between successive asynchronous flips
 + * Driver requirement: any
-+ * Functionality: kms_gem_interop, tiling
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @legacy:               with default size
-+ * @small-legacy:         with given size & modifier
-+ */
- static void addfb25_ytile(int fd)
- {
- 	struct drm_mode_fb_cmd2 f = {};
-@@ -771,6 +886,15 @@ static void addfb25_ytile(int fd)
- 	}
- }
- 
-+/**
-+ * SUBTEST: addfb25-4-tiled
-+ * Description: Check if addfb2 call works for tiling-4
-+ * Driver requirement: any
-+ * Functionality: kms_gem_interop, tiling
++ * Functionality: async_flips, vblank
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
- static void addfb25_4tile(int fd)
+ static void test_async_flip(data_t *data)
  {
- 	struct drm_mode_fb_cmd2 f = {};
-@@ -810,33 +934,23 @@ static void addfb25_4tile(int fd)
- }
- 
- /**
-- * SUBTEST: invalid-get-prop-any
-- * Description: Test that get-properties ioctl call fails correctly for invalid object type
-+ * SUBTEST: invalid-%s-%s
-+ * Description: Test that %arg[1] ioctl call fails correctly for %arg[2] object
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: kms_gem_interop
-  * Mega feature: General Display Features
-  *
-- * SUBTEST: invalid-get-prop
-- * Description: Test that get-properties ioctl call fails correctly for fb mode object
-- * Test category: functionality test
-- * Run type: BAT
-- * Functionality: kms_gem_interop
-- * Mega feature: General Display Features
-+ * arg[1]:
-  *
-- * SUBTEST: invalid-set-prop-any
-- * Description: Test that set-properties ioctl call fails correctly for invalid object type
-- * Test category: functionality test
-- * Run type: BAT
-- * Functionality: kms_gem_interop
-- * Mega feature: General Display Features
-+ * @get:           get-properties
-+ * @set:           set-properties
-  *
-- * SUBTEST: invalid-set-prop
-- * Description: Test that get-properties ioctl call fails correctly for fb mode object
-- * Test category: functionality test
-- * Run type: BAT
-- * Functionality: kms_gem_interop
-- * Mega feature: General Display Features
-+ * arg[2]:
-+ *
-+ * @prop:          fb mode
-+ * @prop-any:      invalid
-  */
- static void prop_tests(int fd)
- {
-@@ -903,6 +1017,15 @@ static void prop_tests(int fd)
- 	}
+ 	int ret, frame;
+@@ -293,6 +317,17 @@ static void wait_for_vblank(data_t *data, unsigned long *vbl_time, unsigned int
+ 	*seq = wait_vbl.reply.sequence;
  }
  
 +/**
-+ * SUBTEST: master-rmfb
-+ * Description: Check that only master can rmfb
++ * SUBTEST: test-time-stamp
++ * Description: Verify the async flip functionality and the fps during async flips
++ *              Verify that the async flip timestamp does not coincide with either
++ *              previous or next vblank
 + * Driver requirement: any
-+ * Functionality: kms_gem_interop
++ * Functionality: async_flips, vblank
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
- static void master_tests(int fd)
+ static void test_timestamp(data_t *data)
  {
- 	struct drm_mode_fb_cmd2 f = {};
+ 	int flags = DRM_MODE_PAGE_FLIP_ASYNC | DRM_MODE_PAGE_FLIP_EVENT;
+@@ -337,6 +372,15 @@ static void test_timestamp(data_t *data)
+ 		     "Async flip time stamp is expected to be in between 2 vblank time stamps\n");
+ }
+ 
++/**
++ * SUBTEST: test-cursor
++ * Description: Verify that the DRM_IOCTL_MODE_CURSOR passes after async flip
++ * Driver requirement: any
++ * Functionality: async_flips, cursor, vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ */
+ static void test_cursor(data_t *data)
+ {
+ 	int flags = DRM_MODE_PAGE_FLIP_ASYNC | DRM_MODE_PAGE_FLIP_EVENT;
+@@ -489,6 +533,15 @@ static unsigned int clock_ms(void)
+ 	return ts.tv_sec * 1000 + ts.tv_nsec / 1000000;
+ }
+ 
++/**
++ * SUBTEST: crc
++ * Description: Use CRC to verify async flip scans out the correct framebuffer
++ * Driver requirement: any
++ * Functionality: async_flips, crc, vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ */
+ static void test_crc(data_t *data)
+ {
+ 	unsigned int frame = 0;
+@@ -551,6 +604,15 @@ static void test_crc(data_t *data)
+ 	igt_assert_lt(data->frame_count * 2, data->flip_count);
+ }
+ 
++/**
++ * SUBTEST: invalid-async-flip
++ * Description: Negative case to verify if changes in fb are rejected from kernel as expected
++ * Driver requirement: any
++ * Functionality: async_flips, vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ */
+ static void run_test(data_t *data, void (*test)(data_t *))
+ {
+ 	igt_display_t *display = &data->display;
 -- 
 2.40.0
