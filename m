@@ -1,22 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DBEAD10E14B
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Aug 2023 07:59:58 +0000 (UTC)
-Message-ID: <a0855d90-52de-2e8e-77a2-0931c481d761@intel.com>
-Date: Mon, 14 Aug 2023 13:29:19 +0530
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 657FE10E151
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Aug 2023 08:01:53 +0000 (UTC)
+From: Jeevan B <jeevan.b@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 14 Aug 2023 13:35:27 +0530
+Message-Id: <20230814080527.3017102-1-jeevan.b@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
- <20230629144910.3055377-40-bhanuprakash.modem@intel.com>
- <12e3ef42-fe49-8682-303a-8f4025b38930@intel.com>
-In-Reply-To: <12e3ef42-fe49-8682-303a-8f4025b38930@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [V5 i-g-t 39/81] tests/kms_concurrent: Document each
- subtest for testplan
+Subject: [igt-dev] [PATCH] RFC: tests/kms_setmode: rename subtest to
+ simplify test combinations
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,57 +21,40 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Both 'basic-clone-single-crtc' and 'invalid-clone-single-crtc' tests aim to
+assess a scenario where two connectors are attempted to be run with a single
+CRTC, which is not feasible.  Consequently, the  'basic-clone-single-crtc'
+test is marked as invalid and skipped due to the impractical scenario. On the
+other hand, the 'invalid-clone-single-crtc' test serves as a negative scenario,
+confirming the failure of the 'ioctl' and indicating a successful test.
 
-On 09-Aug-23 5:35 PM, Sharma, Swati2 wrote:
-> LGTM
-> Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
-> 
-> On 29-Jun-23 8:18 PM, Bhanuprakash Modem wrote:
->> Add documentation for all kms tests which is used by IGT testplan
->> documentation.
->>
->> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
->> ---
->>   tests/kms_concurrent.c | 26 ++++++++++++++++++++++++++
->>   1 file changed, 26 insertions(+)
->>
->> diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
->> index d915a98b2..f5fe321a2 100644
->> --- a/tests/kms_concurrent.c
->> +++ b/tests/kms_concurrent.c
->> @@ -24,6 +24,32 @@
->>   #include "igt.h"
->>   #include "drmtest.h"
->> +/**
->> + * TEST: kms concurrent
->> + * Category: Display
->> + * Description: Test atomic mode setting concurrently with multiple 
->> planes and
->> + *              screen resolution
->> + *
->> + * SUBTEST: pipe-%s
->> + * Description: Test atomic mode setting concurrently with multiple 
->> planes and
->> + *              screen resolution on %arg[1].
->> + * Driver requirement: any
->> + * Functionality: kms_core
+similarly, the 'invalid-clone-exclusive-crtc' test attempts to run two connectors
+with two CRTCs, which is indeed possible, rendering the test nonsensical.
+Consequently, the 'clone-exclusive-crtc' test runs and passes as expected.
 
-Sorry, missed in previous review. Add plane as functionality too.
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
+Cc: Imre Deak <imre.deak@intel.com>
+---
+ tests/kms_setmode.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
->> + * Mega feature: General Display Features
->> + * Run type: FULL
->> + * Test category: functionality test
->> + *
->> + * arg[1]:
->> + *
->> + * @A:      pipe A
->> + * @B:      pipe B
->> + * @C:      pipe C
->> + * @D:      pipe D
->> + * @E:      pipe E
->> + * @F:      pipe F
->> + * @G:      pipe G
->> + * @H:      pipe H
->> + */
->>   IGT_TEST_DESCRIPTION("Test atomic mode setting concurrently with 
->> multiple planes and screen resolution");
+diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
+index 035bbd0b0..0c65e3937 100644
+--- a/tests/kms_setmode.c
++++ b/tests/kms_setmode.c
+@@ -932,12 +932,8 @@ igt_main_args("det:", NULL, help_str, opt_handler, NULL)
+ 		const char *name;
+ 	} tests[] = {
+ 		{ TEST_TIMINGS, "basic" },
+-		{ TEST_CLONE | TEST_SINGLE_CRTC_CLONE,
+-					"basic-clone-single-crtc" },
+ 		{ TEST_INVALID | TEST_CLONE | TEST_SINGLE_CRTC_CLONE,
+-					"invalid-clone-single-crtc" },
+-		{ TEST_INVALID | TEST_CLONE | TEST_EXCLUSIVE_CRTC_CLONE,
+-					"invalid-clone-exclusive-crtc" },
++					"clone-single-crtc-negative" },
+ 		{ TEST_CLONE | TEST_EXCLUSIVE_CRTC_CLONE,
+ 					"clone-exclusive-crtc" },
+ 		{ TEST_INVALID | TEST_CLONE | TEST_SINGLE_CRTC_CLONE | TEST_STEALING,
+-- 
+2.25.1
