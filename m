@@ -1,15 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9535E10E21A
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Aug 2023 17:27:48 +0000 (UTC)
-From: janga.rahul.kumar@intel.com
-To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
- janga.rahul.kumar@intel.com
-Date: Mon, 14 Aug 2023 22:59:37 +0530
-Message-Id: <20230814172940.1818622-1-janga.rahul.kumar@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 47A9110E21A
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Aug 2023 17:30:34 +0000 (UTC)
+From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
+To: "Brost, Matthew" <matthew.brost@intel.com>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>
+Date: Mon, 14 Aug 2023 17:30:30 +0000
+Message-ID: <MW3PR11MB47483731BA43506E74B78F8BAE17A@MW3PR11MB4748.namprd11.prod.outlook.com>
+References: <20230807035805.1054349-1-janga.rahul.kumar@intel.com>
+ <20230807035805.1054349-2-janga.rahul.kumar@intel.com>
+ <SN6PR11MB34245FD8EAB29FBFAF349388D013A@SN6PR11MB3424.namprd11.prod.outlook.com>
+ <393c5f00-57c9-5121-908e-68a3097da160@linux.intel.com>
+ <ZNY/RXEkRCN1/bnE@DUT025-TGLU.fm.intel.com>
+In-Reply-To: <ZNY/RXEkRCN1/bnE@DUT025-TGLU.fm.intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/3] Add Xe lib support for hang & GT reset
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/xe: Add support to reset all
+ GT's
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,48 +26,87 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: sai.gowtham.ch@intel.com, kunal1.joshi@intel.com
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Ch,
+ Sai Gowtham" <sai.gowtham.ch@intel.com>, "Joshi,
+ Kunal1" <kunal1.joshi@intel.com>, "Gandi,
+ Ramadevi" <ramadevi.gandi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-
-Add library support for hang and resetting all the GT's.
-
-v2:
-Create xe library for GT which contains hang and reset helpers.(kamil)
-Create separate patch for igt gt lib changes.(kamil)
-Extend hang library to support all rings.
-Correct Indentation issues. (kamil/Anna)
-
-v3:
-Skip hang config for render engine request on PVC (Gowtham)
-Extend force reset (Gowtham)
-
-v4:
-Address review comments. (Kamil/Gowtham)
-
-Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Anna Karas <anna.karas@intel.com>
-Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-Tested-by: Kunal Joshi <kunal1.joshi@intel.com>
-Reviewed-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-
-Janga Rahul Kumar (3):
-  lib/xe: Add support to reset all GT's
-  lib/xe: Add hang library support
-  lib/igt_gt: Extend hang library support to XE
-
- lib/igt_gt.c    |  29 +++++++++--
- lib/meson.build |   1 +
- lib/xe/xe_gt.c  | 136 ++++++++++++++++++++++++++++++++++++++++++++++++
- lib/xe/xe_gt.h  |  22 ++++++++
- 4 files changed, 184 insertions(+), 4 deletions(-)
- create mode 100644 lib/xe/xe_gt.c
- create mode 100644 lib/xe/xe_gt.h
-
--- 
-2.25.1
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQnJvc3QsIE1hdHRoZXcg
+PG1hdHRoZXcuYnJvc3RAaW50ZWwuY29tPg0KPiBTZW50OiAxMSBBdWd1c3QgMjAyMyAxOTozMg0K
+PiBUbzogTWFhcnRlbiBMYW5raG9yc3QgPG1hYXJ0ZW4ubGFua2hvcnN0QGxpbnV4LmludGVsLmNv
+bT4NCj4gQ2M6IENoLCBTYWkgR293dGhhbSA8c2FpLmdvd3RoYW0uY2hAaW50ZWwuY29tPjsgS3Vt
+YXIsIEphbmdhIFJhaHVsDQo+IDxqYW5nYS5yYWh1bC5rdW1hckBpbnRlbC5jb20+OyBpZ3QtZGV2
+QGxpc3RzLmZyZWVkZXNrdG9wLm9yZzsgR2FuZGksDQo+IFJhbWFkZXZpIDxyYW1hZGV2aS5nYW5k
+aUBpbnRlbC5jb20+OyBKb3NoaSwgS3VuYWwxDQo+IDxrdW5hbDEuam9zaGlAaW50ZWwuY29tPg0K
+PiBTdWJqZWN0OiBSZTogW2lndC1kZXZdIFtQQVRDSCBpLWctdCAxLzNdIGxpYi94ZTogQWRkIHN1
+cHBvcnQgdG8gcmVzZXQgYWxsIEdUJ3MNCj4gDQo+IE9uIEZyaSwgQXVnIDExLCAyMDIzIGF0IDAz
+OjUyOjE2UE0gKzAyMDAsIE1hYXJ0ZW4gTGFua2hvcnN0IHdyb3RlOg0KPiA+IEhleSwNCj4gPg0K
+PiA+IERlbiAyMDIzLTA4LTEwIGtsLiAxMjoxNywgc2tyZXYgQ2gsIFNhaSBHb3d0aGFtOg0KPiA+
+ID4NCj4gPiA+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+ID4gPiBGcm9tOiBLdW1hciwg
+SmFuZ2EgUmFodWwgPGphbmdhLnJhaHVsLmt1bWFyQGludGVsLmNvbT4NCj4gPiA+IFNlbnQ6IE1v
+bmRheSwgQXVndXN0IDcsIDIwMjMgOToyOCBBTQ0KPiA+ID4gVG86IGlndC1kZXZAbGlzdHMuZnJl
+ZWRlc2t0b3Aub3JnOyBHYW5kaSwgUmFtYWRldmkNCj4gPiA+IDxyYW1hZGV2aS5nYW5kaUBpbnRl
+bC5jb20+OyBLdW1hciwgSmFuZ2EgUmFodWwNCj4gPiA+IDxqYW5nYS5yYWh1bC5rdW1hckBpbnRl
+bC5jb20+DQo+ID4gPiBDYzogQ2gsIFNhaSBHb3d0aGFtIDxzYWkuZ293dGhhbS5jaEBpbnRlbC5j
+b20+OyBKb3NoaSwgS3VuYWwxDQo+ID4gPiA8a3VuYWwxLmpvc2hpQGludGVsLmNvbT47IGthbWls
+LmtvbmllY3pueUBsaW51eC5pbnRlbC5jb207IEthcmFzLA0KPiA+ID4gQW5uYSA8YW5uYS5rYXJh
+c0BpbnRlbC5jb20+DQo+ID4gPiBTdWJqZWN0OiBbUEFUQ0ggaS1nLXQgMS8zXSBsaWIveGU6IEFk
+ZCBzdXBwb3J0IHRvIHJlc2V0IGFsbCBHVCdzDQo+ID4gPg0KPiA+ID4gRnJvbTogSmFuZ2EgUmFo
+dWwgS3VtYXIgPGphbmdhLnJhaHVsLmt1bWFyQGludGVsLmNvbT4NCj4gPiA+DQo+ID4gPiBJbnRy
+b2R1Y2UgeGUgZ3QgbGlicmFyeS4NCj4gPiA+DQo+ID4gPiBBZGQgc3VwcG9ydCB0byBjaGVjayBH
+VCByZXNldCBhbmQgZm9yY2UgcmVzZXQgYWxsIEdUJ3MuDQo+ID4gPg0KPiA+ID4gQ2M6IFNhaSBH
+b3d0aGFtIENoIDxzYWkuZ293dGhhbS5jaEBpbnRlbC5jb20+DQo+ID4gPiBDYzogS3VuYWwgSm9z
+aGkgPGt1bmFsMS5qb3NoaUBpbnRlbC5jb20+DQo+ID4gPiBDYzogS2FtaWwgS29uaWVjem55IDxr
+YW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tPg0KPiA+ID4gQ2M6IEFubmEgS2FyYXMgPGFu
+bmEua2FyYXNAaW50ZWwuY29tPg0KPiA+ID4gU2lnbmVkLW9mZi1ieTogSmFuZ2EgUmFodWwgS3Vt
+YXIgPGphbmdhLnJhaHVsLmt1bWFyQGludGVsLmNvbT4NCj4gPiA+IFRlc3RlZC1ieTogS3VuYWwg
+Sm9zaGkgPGt1bmFsMS5qb3NoaUBpbnRlbC5jb20+DQo+ID4gPiAtLS0NCj4gPiA+ICAgbGliL21l
+c29uLmJ1aWxkIHwgIDEgKw0KPiA+ID4gICBsaWIveGUveGVfZ3QuYyAgfCA2Mg0KPiArKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrDQo+ID4gPiAgIGxpYi94
+ZS94ZV9ndC5oICB8IDI3ICsrKysrKysrKysrKysrKysrKysrKw0KPiA+ID4gICAzIGZpbGVzIGNo
+YW5nZWQsIDkwIGluc2VydGlvbnMoKykNCj4gPiA+ICAgY3JlYXRlIG1vZGUgMTAwNjQ0IGxpYi94
+ZS94ZV9ndC5jDQo+ID4gPiAgIGNyZWF0ZSBtb2RlIDEwMDY0NCBsaWIveGUveGVfZ3QuaA0KPiA+
+ID4NCj4gPiA+IGRpZmYgLS1naXQgYS9saWIvbWVzb24uYnVpbGQgYi9saWIvbWVzb24uYnVpbGQg
+aW5kZXgNCj4gPiA+IGNlMTFjMDcxNS4uYjdiZmNmNGYwIDEwMDY0NA0KPiA+ID4gLS0tIGEvbGli
+L21lc29uLmJ1aWxkDQo+ID4gPiArKysgYi9saWIvbWVzb24uYnVpbGQNCj4gPiA+IEBAIC0xMDMs
+NiArMTAzLDcgQEAgbGliX3NvdXJjZXMgPSBbDQo+ID4gPiAgIAknaWd0X2RzYy5jJywNCj4gPiA+
+ICAgCSd4ZS94ZV9jb21wdXRlLmMnLA0KPiA+ID4gICAJJ3hlL3hlX2NvbXB1dGVfc3F1YXJlX2tl
+cm5lbHMuYycsDQo+ID4gPiArCSd4ZS94ZV9ndC5jJywNCj4gPiA+ICAgCSd4ZS94ZV9pb2N0bC5j
+JywNCj4gPiA+ICAgCSd4ZS94ZV9xdWVyeS5jJywNCj4gPiA+ICAgCSd4ZS94ZV9zcGluLmMnLA0K
+PiA+ID4gZGlmZiAtLWdpdCBhL2xpYi94ZS94ZV9ndC5jIGIvbGliL3hlL3hlX2d0LmMgbmV3IGZp
+bGUgbW9kZSAxMDA2NDQNCj4gPiA+IGluZGV4IDAwMDAwMDAwMC4uOWNhZDczOWJlDQo+ID4gPiAt
+LS0gL2Rldi9udWxsDQo+ID4gPiArKysgYi9saWIveGUveGVfZ3QuYw0KPiA+ID4gQEAgLTAsMCAr
+MSw2MiBAQA0KPiA+ID4gKy8qIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBNSVQgKi8NCj4gPiA+
+ICsvKg0KPiA+ID4gKyAqIENvcHlyaWdodCDCqSAyMDIzIEludGVsIENvcnBvcmF0aW9uDQo+ID4g
+PiArICoNCj4gPiA+ICsgKiBBdXRob3JzOg0KPiA+ID4gKyAqICAgIEphbmdhIFJhaHVsIEt1bWFy
+IDxqYW5nYS5yYWh1bC5rdW1hckBpbnRlbC5jb20+DQo+ID4gPiArICovDQo+ID4gPiArDQo+ID4g
+PiArI2luY2x1ZGUgPGZjbnRsLmg+DQo+ID4gPiArDQo+ID4gPiBJIGRvbuKAmXQgdGhpbmsgbmV3
+IGxpbmUgaXMgbmVlZGVkIGhlcmUuDQo+ID4gPiArI2luY2x1ZGUgInhlX2d0LmgiDQo+ID4gPiAr
+DQo+ID4gPiArLyoqDQo+ID4gPiArICogaGFzX3hlX2d0X3Jlc2V0Og0KPiA+ID4gKyAqIEBmZDog
+b3BlbiB4ZSBkcm0gZmlsZSBkZXNjcmlwdG9yDQo+ID4gPiArICoNCj4gPiA+ICsgKiBDaGVjayBn
+dCBmb3JjZSByZXNldCBzeXNmcyBlbnRyeSBpcyBhdmFpbGFibGUgb3Igbm90DQo+ID4gPiArICoN
+Cj4gPiA+ICsgKiBSZXR1cm5zOiByZXNldCBzeXNmcyBlbnRyeSBhdmFpbGFibGUgICovIGJvb2wN
+Cj4gPiA+ICtoYXNfeGVfZ3RfcmVzZXQoaW50DQo+ID4gPiArZmQpIHsNCj4gPiA+ICsJY2hhciBy
+ZXNldF9zeXNmc19wYXRoWzEwMF07DQo+ID4gPiArCXN0cnVjdCBzdGF0IHN0Ow0KPiA+ID4gKwlp
+bnQgZ3Q7DQo+ID4gPiArCWludCByZXNldF9zeXNmc19mZCA9IC0xOw0KPiA+ID4gKwlpbnQgc3lz
+ZnNfZmQgPSAtMTsNCj4gPiA+ICsNCj4gPiA+ICsJaWd0X2Fzc2VydF9lcShmc3RhdChmZCwgJnN0
+KSwgMCk7DQo+ID4gPiArCXN5c2ZzX2ZkID0gaWd0X3N5c2ZzX29wZW4oZmQpOw0KPiA+ID4gKw0K
+PiA+ID4gKwlpZ3RfYXNzZXJ0KHN5c2ZzX2ZkICE9IC0xKTsNCj4gPiA+ICsJeGVfZm9yX2VhY2hf
+Z3QoZmQsIGd0KSB7DQo+ID4gPiArCQlzcHJpbnRmKHJlc2V0X3N5c2ZzX3BhdGgsDQo+ICIvc3lz
+L2tlcm5lbC9kZWJ1Zy9kcmkvJWQvZ3QlZC9mb3JjZV9yZXNldCIsDQo+ID4gPiArCQkJCW1pbm9y
+KHN0LnN0X3JkZXYpLCBndCk7DQo+ID4gPiArCQlyZXNldF9zeXNmc19mZCA9IG9wZW5hdChzeXNm
+c19mZCwgcmVzZXRfc3lzZnNfcGF0aCwNCj4gT19SRE9OTFkpOw0KPiA+ID4gKw0KPiA+ID4gKwkJ
+aWYgKHJlc2V0X3N5c2ZzX2ZkID09IC0xKSB7DQo+ID4gPiArCQkJY2xvc2Uoc3lzZnNfZmQpOw0K
+PiA+ID4gKwkJCXJldHVybiAwOw0KPiA+ID4gKwkJfQ0KPiA+ID4gKw0KPiA+ID4gKwkJY2xvc2Uo
+cmVzZXRfc3lzZnNfZmQpOw0KPiA+ID4gKwl9DQo+ID4gPiArDQo+ID4gPiArCWNsb3NlKHN5c2Zz
+X2ZkKTsNCj4gPiA+ICsJcmV0dXJuIDE7DQo+ID4gPiArfQ0KPiA+DQo+ID4gV2UgY2FuIHJlc2V0
+IGEgZ3QgYnkgb25seSBvcGVuaW5nIGEgZmlsZSBpbiBkZWJ1Z2ZzPyBUaGF0IHNlZW1zIGxpa2Ug
+YQ0KPiA+IHRlcnJpYmxlIGFwaSwgd2Ugc2hvdWxkIHByb2JhYmx5IGZvcmNlIGl0IHRvIG9ubHkg
+cmVzZXQgYnkgd3JpdGluZyAxDQo+ID4gb3Igc29tZXRoaW5nIGluc3RlYWQuLg0KPiA+DQo+IA0K
+PiBZZWEgdGhpcyB3YXMgbXkgbGF6eW5lc3Mgd2hlbiBhZGRpbmcsIGFncmVlIHdlIHNob3VsZCBm
+aXggdGhpcyBpbiB0aGUgS01ELg0KUGxzIHVwZGF0ZSB0aGUgaWd0IGxpYiBhcyB3ZWxsIGFsb25n
+IHdpdGggS01EIGZpeC4NCg0KVGhhbmtzLA0KUmFodWwNCj4gDQo+IE1hdHQNCj4gDQo+ID4gQ2hl
+ZXJzLA0KPiA+DQo+ID4gfk1hYXJ0ZW4NCj4gPg0K
