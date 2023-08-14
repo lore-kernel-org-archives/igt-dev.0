@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5F47F10E013
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Aug 2023 09:58:04 +0000 (UTC)
-Date: Mon, 14 Aug 2023 11:57:59 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Message-ID: <20230814115759.0db25838@maurocar-mobl2>
-In-Reply-To: <20230517155114.95959-1-bhanuprakash.modem@intel.com>
-References: <20230517063323.4146387-82-bhanuprakash.modem@intel.com>
- <20230517155114.95959-1-bhanuprakash.modem@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Message-ID: <b5e574a1-7aa4-d233-3b02-f0acbac517bc@intel.com>
+Date: Mon, 14 Aug 2023 12:54:42 +0530
+To: Vinay Belgaumkar <vinay.belgaumkar@intel.com>,
+ <intel-gfx@lists.freedesktop.org>, <igt-dev@lists.freedesktop.org>
+References: <20230809005014.3451790-1-vinay.belgaumkar@intel.com>
+Content-Language: en-US
+From: Riana Tauro <riana.tauro@intel.com>
+In-Reply-To: <20230809005014.3451790-1-vinay.belgaumkar@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [i-g-t V4 81/81] testplan/kms: Make documentation is
- mandatory for all kms subtests
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] tests/i915_pm_freq_api:
+ Ignore zero register value
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,45 +19,88 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, 17 May 2023 21:21:14 +0530
-Bhanuprakash Modem <bhanuprakash.modem@intel.com> wrote:
+Hi Vinay
 
-> As testplan documentation is ready for all kms tests, update the
-> testplan config to make sure we are not missing the documentation
-> all the kms tests.
+On 8/9/2023 6:20 AM, Vinay Belgaumkar wrote:
+> Register read for requested_freq can return 0 when system is
+> in runtime_pm. Make allowance for this case.
 > 
-> V2, V3, V4: - Rebase
+> Link: https://gitlab.freedesktop.org/drm/intel/issues/8736
+> Link: https://gitlab.freedesktop.org/drm/intel/issues/8989
 > 
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
 > ---
->  docs/testplan/meson.build | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>   tests/i915/i915_pm_freq_api.c | 18 ++++++++++++++----
+>   1 file changed, 14 insertions(+), 4 deletions(-)
 > 
-> diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
-> index 6cd44be5c..cca05cf8e 100644
-> --- a/docs/testplan/meson.build
-> +++ b/docs/testplan/meson.build
-> @@ -31,13 +31,13 @@ xe_test_dict = {
->  if build_xe
->  	test_dict = {
->  		'i915_tests': { 'input': i915_test_config, 'extra_args': [] },
-> -		'kms_tests': { 'input': kms_test_config, 'extra_args': [] },
-> +		'kms_tests': { 'input': kms_test_config, 'extra_args': check_testlist },
->  		'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist }
->  	    }
->  else
->  	test_dict = {
->  	      'i915_tests': { 'input': i915_test_config, 'extra_args': [] },
-> -	      'kms_tests': { 'input': kms_test_config, 'extra_args': [] }
-> +	      'kms_tests': { 'input': kms_test_config, 'extra_args': check_testlist }
->  	    }
+> diff --git a/tests/i915/i915_pm_freq_api.c b/tests/i915/i915_pm_freq_api.c
+> index cf21cc936..9c71411ee 100644
+> --- a/tests/i915/i915_pm_freq_api.c
+> +++ b/tests/i915/i915_pm_freq_api.c
+> @@ -88,6 +88,7 @@ static void test_freq_basic_api(int dirfd, int gt)
+>   static void test_reset(int i915, int dirfd, int gt, int count)
+>   {
+>   	uint32_t rpn = get_freq(dirfd, RPS_RPn_FREQ_MHZ);
+> +	uint32_t req_freq;
+>   	int fd;
+>   
+>   	for (int i = 0; i < count; i++) {
+> @@ -95,14 +96,18 @@ static void test_reset(int i915, int dirfd, int gt, int count)
+>   		igt_assert(set_freq(dirfd, RPS_MIN_FREQ_MHZ, rpn) > 0);
+>   		igt_assert(set_freq(dirfd, RPS_MAX_FREQ_MHZ, rpn) > 0);
+>   		usleep(ACT_FREQ_LATENCY_US);
+> -		igt_assert_eq(get_freq(dirfd, RPS_CUR_FREQ_MHZ), rpn);
+> +		req_freq = get_freq(dirfd, RPS_CUR_FREQ_MHZ);
+> +		if (req_freq)
+> +			igt_assert_eq(req_freq, rpn);
 
-LGTM.
-Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
->  endif
->  
+Is there anything else that can cause req_freq to be zero?
+
+To differentiate can we assert only when runtime_status is active 
+(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE) ?
+
+
+Thanks
+Riana Tauro
+>   
+>   		/* Manually trigger a GT reset */
+>   		fd = igt_debugfs_gt_open(i915, gt, "reset", O_WRONLY);
+>   		igt_require(fd >= 0);
+>   		igt_ignore_warn(write(fd, "1\n", 2));
+>   
+> -		igt_assert_eq(get_freq(dirfd, RPS_CUR_FREQ_MHZ), rpn);
+> +		req_freq = get_freq(dirfd, RPS_CUR_FREQ_MHZ);
+> +		if (req_freq)
+> +			igt_assert_eq(req_freq, rpn);
+>   	}
+>   	close(fd);
+>   }
+> @@ -110,17 +115,22 @@ static void test_reset(int i915, int dirfd, int gt, int count)
+>   static void test_suspend(int i915, int dirfd, int gt)
+>   {
+>   	uint32_t rpn = get_freq(dirfd, RPS_RPn_FREQ_MHZ);
+> +	uint32_t req_freq;
+>   
+>   	igt_assert(set_freq(dirfd, RPS_MIN_FREQ_MHZ, rpn) > 0);
+>   	igt_assert(set_freq(dirfd, RPS_MAX_FREQ_MHZ, rpn) > 0);
+>   	usleep(ACT_FREQ_LATENCY_US);
+> -	igt_assert_eq(get_freq(dirfd, RPS_CUR_FREQ_MHZ), rpn);
+> +	req_freq = get_freq(dirfd, RPS_CUR_FREQ_MHZ);
+> +	if (req_freq)
+> +		igt_assert_eq(req_freq, rpn);
+>   
+>   	/* Manually trigger a suspend */
+>   	igt_system_suspend_autoresume(SUSPEND_STATE_S3,
+>   				      SUSPEND_TEST_NONE);
+>   
+> -	igt_assert_eq(get_freq(dirfd, RPS_CUR_FREQ_MHZ), rpn);
+> +	req_freq = get_freq(dirfd, RPS_CUR_FREQ_MHZ);
+> +	if (req_freq)
+> +		igt_assert_eq(req_freq, rpn);
+>   }
+>   
+>   int i915 = -1;
