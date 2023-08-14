@@ -1,23 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2846010E0EB
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Aug 2023 05:52:35 +0000 (UTC)
-Message-ID: <3c0230b9-adcf-30c4-4ed6-9d391c1c68ad@intel.com>
-Date: Mon, 14 Aug 2023 11:22:07 +0530
-Content-Language: en-US
-To: Hersen Wu <hersenxs.wu@amd.com>, <igt-dev@lists.freedesktop.org>,
- <rodrigo.siqueira@amd.com>, <aurabindo.pillai@amd.com>, <alex.hung@amd.com>,
- <stylon.wang@amd.com>, <hamza.mahfooz@amd.com>, <sunpeng.li@amd.com>,
- "Heikkila, Juha-pekka" <juha-pekka.heikkila@intel.com>, Kamil Konieczny
- <kamil.konieczny@linux.intel.com>
-References: <20230811221223.57193-1-hersenxs.wu@amd.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20230811221223.57193-1-hersenxs.wu@amd.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5D5BF10E110
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Aug 2023 06:22:02 +0000 (UTC)
+From: Anshuman Gupta <anshuman.gupta@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 14 Aug 2023 11:51:29 +0530
+Message-Id: <20230814062129.1500895-1-anshuman.gupta@intel.com>
+In-Reply-To: <20230811111026.1327273-3-anshuman.gupta@intel.com>
+References: <20230811111026.1327273-3-anshuman.gupta@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH 1/2] [i-g-t] lib/igt_kms: Re-try
- display_require if require output is not valid
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2 2/2] test/xe_pm: Add
+ vram_d3cold_threshold subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,103 +19,232 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: markyacoub@google.com
+Cc: badal.nilawar@intel.com, rodrigo.vivi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hello Hersen,
+Adding a vram_d3cold_threshold subtest, which creates a Xe bo and
+set the vram_d3cold_threshold according to vram used and bo size.
+Test setups the d3cold and expect card to be limited to d3hot.
 
-On Sat-12-08-2023 03:42 am, Hersen Wu wrote:
-> Add igt_display_require_retry to re-try igt_display_require.
-> 
-> At entry of each test, display setup is done by
-> igt_display_require and igt_display_require_output.
-> igt display require output may not be valid yet,
-> this will let test be skipped. By re-try
-> igt_display_require, require output could be valid.
-> This will fix test case intermittent skip issue.
+v2:
+- Add subtest doc.
+v3:
+- skip the test on igfx. [Riana]
+- Test doc enhancement. [Riana]
+- Create the bo before vram query. [Riana]
+- Use xe_bo_map insead of xe_bo_mmap_offset and mmap. [Riana]
+- Close the bo handle. [Riana]
+v3:
+- Restore the vram_d3cold_threshold value. [Badal]
+- Don't fail the test if there is no vram_d3cold_threshold.
+- Test d3cold after closing the xe BO.
+v4:
+- When d3cold is not allowed, don't use out_of_d3() as device will
+  be runtime suspended.
+- Set vram_d3cold_threshold to vram_used + Xe BO size such that
+  it can enter to d3cold after freeing up the Xe BO.
+- Use forcewake handle to wake the device.
+v5:
+- Added a XXX comment about gem_close() doesn't wake device from
+  runtime suspend.
 
-+ J-P & Kamil,
+Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+---
+ tests/xe/xe_pm.c | 132 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 132 insertions(+)
 
-Few queries:
-
-- Why is igt_display_require_output not valid & retry makes it valid?
-- Is it applicable for all kms tests? Then you must update all kms tests 
-to use this api. Otherwise if it's AMD specific, lib/igt_kms is not the 
-right place.
-- What is the impact on CI execution time? In headless configs it tries 
-for "retry_times" and eventually sends a skip.
-
-- Bhanu
-
-> 
-> Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
-> ---
->   lib/igt_kms.c | 19 +++++++++++++++++++
->   lib/igt_kms.h | 15 +++++++++++++++
->   2 files changed, 34 insertions(+)
-> 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index e0959ccff..5506e2eb2 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -2862,6 +2862,25 @@ void igt_display_require_output(igt_display_t *display)
->   	igt_skip("No valid crtc/connector combinations found.\n");
->   }
->   
-> +/**
-> + * is_igt_display_require_output_valid:
-> + * @display: A pointer to an #igt_display_t structure
-> + *
-> + * Checks whether there's a valid @pipe/@output combination for the given @display
-> + * Returns: true if a valid combination of @pipe and @output is found, or false
-> + * if not found
-> + */
-> +bool is_igt_display_require_output_valid(igt_display_t *display)
-> +{
-> +	enum pipe pipe;
-> +	igt_output_t *output;
-> +
-> +	for_each_pipe_with_valid_output(display, pipe, output)
-> +		return true;
-> +
-> +	return false;
-> +}
-> +
->   /**
->    * igt_display_require_output_on_pipe:
->    * @display: A pointer to an #igt_display_t structure
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index 91355c910..f801b87e6 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -485,6 +485,7 @@ int  igt_display_drop_events(igt_display_t *display);
->   int  igt_display_get_n_pipes(igt_display_t *display);
->   void igt_display_require_output(igt_display_t *display);
->   void igt_display_require_output_on_pipe(igt_display_t *display, enum pipe pipe);
-> +bool is_igt_display_require_output_valid(igt_display_t *display);
->   
->   const char *igt_output_name(igt_output_t *output);
->   drmModeModeInfo *igt_output_get_mode(igt_output_t *output);
-> @@ -722,6 +723,20 @@ uint64_t igt_plane_get_prop(igt_plane_t *plane, enum igt_atomic_plane_properties
->   		igt_plane_set_prop_changed(plane, prop); \
->   	} while (0)
->   
-> +#define igt_display_require_retry(display, fd, delay, retry_times) \
-> +	for (int j__ = 0; j__ < retry_times + 1; j__++) { \
-> +		igt_display_require(display, fd); \
-> +		if (is_igt_display_require_output_valid(display)) { \
-> +			if (j__ > 0) \
-> +				igt_info("retry times:%d delay:%d seconds\n", j__, delay * j__); \
-> +			break; \
-> +		} \
-> +		if (j__ == retry_times) \
-> +			igt_skip("No valid crtc/connector combinations found.\n"); \
-> +		else \
-> +			sleep(delay); \
-> +	}
-> +
->   extern bool igt_plane_try_prop_enum(igt_plane_t *plane,
->   				    enum igt_atomic_plane_properties prop,
->   				    const char *val);
+diff --git a/tests/xe/xe_pm.c b/tests/xe/xe_pm.c
+index 23b8246ed..c48cc7f33 100644
+--- a/tests/xe/xe_pm.c
++++ b/tests/xe/xe_pm.c
+@@ -19,6 +19,7 @@
+ #include "igt.h"
+ #include "lib/igt_device.h"
+ #include "lib/igt_pm.h"
++#include "lib/igt_sysfs.h"
+ #include "lib/igt_syncobj.h"
+ #include "lib/intel_reg.h"
+ 
+@@ -30,12 +31,16 @@
+ #define NO_SUSPEND -1
+ #define NO_RPM -1
+ 
++#define SIZE (4096 * 1024)
++
+ typedef struct {
+ 	int fd_xe;
+ 	struct pci_device *pci_xe;
+ 	struct pci_device *pci_root;
+ } device_t;
+ 
++uint64_t orig_threshold;
++
+ /* runtime_usage is only available if kernel build CONFIG_PM_ADVANCED_DEBUG */
+ static bool runtime_usage_available(struct pci_device *pci)
+ {
+@@ -76,6 +81,49 @@ static void set_d3cold_allowed(struct pci_device *pci,
+ 	close(fd);
+ }
+ 
++static uint64_t get_vram_d3cold_threshold(int sysfs)
++{
++	uint64_t threshold;
++	char path[64];
++	int ret;
++
++	sprintf(path, "device/vram_d3cold_threshold");
++	igt_require_f(!faccessat(sysfs, path, R_OK, 0), "vram_d3cold_threshold is not present\n");
++
++	ret = igt_sysfs_scanf(sysfs, path, "%lu", &threshold);
++	igt_assert(ret > 0);
++
++	return threshold;
++}
++
++static void set_vram_d3cold_threshold(int sysfs, uint64_t threshold)
++{
++	char path[64];
++	int ret;
++
++	sprintf(path, "device/vram_d3cold_threshold");
++
++	if (!faccessat(sysfs, path, R_OK | W_OK, 0))
++		ret = igt_sysfs_printf(sysfs, path, "%lu", threshold);
++	else
++		igt_warn("vram_d3cold_threshold is not present\n");
++
++	igt_assert(ret > 0);
++}
++
++static void vram_d3cold_threshold_restore(int sig)
++{
++	int fd, sysfs_fd;
++
++	fd = drm_open_driver(DRIVER_XE);
++	sysfs_fd = igt_sysfs_open(fd);
++
++	set_vram_d3cold_threshold(sysfs_fd, orig_threshold);
++
++	close(sysfs_fd);
++	close(fd);
++}
++
+ static bool setup_d3(device_t device, enum igt_acpi_d_state state)
+ {
+ 	switch (state) {
+@@ -341,11 +389,86 @@ NULL));
+ 		igt_assert(in_d3(device, d_state));
+ }
+ 
++/**
++ * SUBTEST: vram-d3cold-threshold
++ * Description:
++ *	Validate whether card is limited to d3hot while vram used
++ *	is greater than vram_d3cold_threshold.
++ * Run type: FULL
++ */
++static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
++{
++	struct drm_xe_query_mem_usage *mem_usage;
++	struct drm_xe_device_query query = {
++		.extensions = 0,
++		.query = DRM_XE_DEVICE_QUERY_MEM_USAGE,
++		.size = 0,
++		.data = 0,
++	};
++	uint64_t vram_used_mb = 0, vram_total_mb = 0, threshold;
++	uint32_t bo, flags;
++	int handle, i;
++	bool active;
++	void *map;
++
++	igt_require(xe_has_vram(device.fd_xe));
++
++	flags = vram_memory(device.fd_xe, 0);
++	igt_require_f(flags, "Device doesn't support vram memory region\n");
++
++	igt_assert_eq(igt_ioctl(device.fd_xe, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++	igt_assert_neq(query.size, 0);
++
++	mem_usage = malloc(query.size);
++	igt_assert(mem_usage);
++
++	query.data = to_user_pointer(mem_usage);
++	igt_assert_eq(igt_ioctl(device.fd_xe, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++
++	for (i = 0; i < mem_usage->num_regions; i++) {
++		if (mem_usage->regions[i].mem_class == XE_MEM_REGION_CLASS_VRAM) {
++			vram_used_mb +=  (mem_usage->regions[i].used / (1024 * 1024));
++			vram_total_mb += (mem_usage->regions[i].total_size / (1024 * 1024));
++		}
++	}
++
++	threshold = vram_used_mb + (SIZE / 1024 /1024);
++	igt_require(threshold < vram_total_mb);
++
++	bo = xe_bo_create_flags(device.fd_xe, 0, SIZE, flags);
++	map = xe_bo_map(device.fd_xe, bo, SIZE);
++	memset(map, 0, SIZE);
++	munmap(map, SIZE);
++	set_vram_d3cold_threshold(sysfs_fd, threshold);
++
++	/* Setup D3Cold but card should be in D3hot */
++	igt_assert(setup_d3(device, IGT_ACPI_D3Cold));
++	sleep(1);
++	igt_assert(in_d3(device, IGT_ACPI_D3Hot));
++	igt_assert(igt_pm_get_acpi_real_d_state(device.pci_root) == IGT_ACPI_D0);
++	gem_close(device.fd_xe, bo);
++
++	/*
++	 * XXX: Xe gem_close() doesn't get any mem_access ref count to wake
++	 * the device from runtime suspend.
++	 * Therefore open and close fw handle to wake the device.
++	 */
++	handle = igt_debugfs_open(device.fd_xe, "forcewake_all", O_RDONLY);
++	igt_assert(handle >= 0);
++	active = igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE;
++	close(handle);
++	igt_assert(active);
++
++	/* Test D3Cold again after freeing up the Xe BO */
++	igt_assert(in_d3(device, IGT_ACPI_D3Cold));
++}
++
+ igt_main
+ {
+ 	struct drm_xe_engine_class_instance *hwe;
+ 	device_t device;
+ 	char d3cold_allowed[2];
++	int sysfs_fd;
+ 	const struct s_state {
+ 		const char *name;
+ 		enum igt_suspend_state state;
+@@ -378,6 +501,7 @@ igt_main
+ 
+ 		get_d3cold_allowed(device.pci_xe, d3cold_allowed);
+ 		igt_assert(igt_setup_runtime_pm(device.fd_xe));
++		sysfs_fd = igt_sysfs_open(device.fd_xe);
+ 	}
+ 
+ 	for (const struct s_state *s = s_states; s->name; s++) {
+@@ -437,7 +561,15 @@ igt_main
+ 		}
+ 	}
+ 
++	igt_describe("Validate whether card is limited to d3hot, if vram used > vram threshold");
++	igt_subtest("vram-d3cold-threshold") {
++		orig_threshold = get_vram_d3cold_threshold(sysfs_fd);
++		igt_install_exit_handler(vram_d3cold_threshold_restore);
++		test_vram_d3cold_threshold(device, sysfs_fd);
++	}
++
+ 	igt_fixture {
++		close(sysfs_fd);
+ 		set_d3cold_allowed(device.pci_xe, d3cold_allowed);
+ 		igt_restore_runtime_pm();
+ 		xe_device_put(device.fd_xe);
+-- 
+2.25.1
