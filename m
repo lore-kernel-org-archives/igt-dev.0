@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ADDAC10E013
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Aug 2023 09:57:28 +0000 (UTC)
-Date: Mon, 14 Aug 2023 11:57:24 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230814115724.3835a486@maurocar-mobl2>
-In-Reply-To: <20230810175105.gxxsypvouv3txdkc@kamilkon-desk1>
-References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
- <20230629144910.3055377-2-bhanuprakash.modem@intel.com>
- <20230810175105.gxxsypvouv3txdkc@kamilkon-desk1>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AA38B10E013
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Aug 2023 10:04:45 +0000 (UTC)
+From: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 14 Aug 2023 15:26:54 +0530
+Message-Id: <20230814095654.872-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [V5 i-g-t 01/81] testplan/kms: Keep category as high
- level entity
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/i915_pm_dc: Check runtime
+ suspend for DC9 test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,64 +17,41 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: Thasleem@freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, 10 Aug 2023 19:51:05 +0200
-Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
+As for MTL DC5 counter is not expected to get reset in DC9 state.
+Add condition to check runtime_suspended_time value for both
+igfx and dgfx to track DC9 dpms entry.
 
-> Hi Bhanuprakash,
-> On 2023-06-29 at 20:17:50 +0530, Bhanuprakash Modem wrote:
-> > Update kms testplan to keep the category as high level entity.
-> >   
-> +cc Mauro
-> 
-> > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> > ---
-> >  tests/kms_test_config.json | 24 ++++++++++++------------
-> >  1 file changed, 12 insertions(+), 12 deletions(-)
-> > 
-> > diff --git a/tests/kms_test_config.json b/tests/kms_test_config.json
-> > index 5fbe40bdc..447a13337 100644
-> > --- a/tests/kms_test_config.json
-> > +++ b/tests/kms_test_config.json
-> > @@ -6,21 +6,21 @@
-> >          "Category": {
-> >              "_properties_": {
-> >                  "description": "Contains the major group for the tested functionality 'Display'"
-> > -            }
-> > -        },
-> > -        "Mega feature": {
-> > -            "_properties_": {
-> > -                "description": "Contains the mega feature for end to end use case, e.g. the 'PSR' feature."
-> >              },
-> > -            "Functionality": {
-> > +            "Mega feature": {
-> >                  "_properties_": {
-> > -                    "description": "Groups tests on buckets containg more detailed functionality"
-> > +                    "description": "Contains the mega feature for end to end use case, e.g. the 'PSR' feature."
-> > +                },
-> > +                "Functionality": {
-> > +                    "_properties_": {
-> > +                        "description": "Groups tests on buckets containg more detailed functionality"
-> > +                    }
-> > +                }
-> > +            },
-> > +            "Run type": {
-> > +                "_properties_": {
-> > +                    "description": "Defines what category of testlist it belongs"
-> >                  }
-> > -            }
-> > -        },
-> > -        "Run type": {
-> > -            "_properties_": {
-> > -                "description": "Defines what category of testlist it belongs"
-> >              }
-> >          },
-> >          "Test category": {
+Signed-off-by: Thasleem, Mohammed <mohammed.thasleem@intel.com>
+---
+ tests/i915/i915_pm_dc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-LGTM.
-
-Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
+index 90fe847fc..13ae31583 100644
+--- a/tests/i915/i915_pm_dc.c
++++ b/tests/i915/i915_pm_dc.c
+@@ -88,7 +88,7 @@
+ #define KMS_HELPER "/sys/module/drm_kms_helper/parameters/"
+ #define PACKAGE_CSTATE_PATH  "pmc_core/package_cstate_show"
+ #define KMS_POLL_DISABLE 0
+-#define DC9_RESETS_DC_COUNTERS(devid) (!(IS_DG1(devid) || IS_DG2(devid)))
++#define DC9_RESETS_DC_COUNTERS(devid) (!(IS_DG1(devid) || IS_DG2(devid) || IS_METEORLAKE(devid)))
+ 
+ IGT_TEST_DESCRIPTION("Tests to validate display power DC states.");
+ 
+@@ -514,7 +514,7 @@ static bool dc9_wait_entry(data_t *data, int dc_target, int prev_dc, int prev_rp
+ 	 * Runtime suspended residency should increment once DC9 is achieved;
+ 	 * this condition is valid for all platforms.
+ 	 * However, resetting of dc5/dc6 counter to check if display engine was in DC9;
+-	 * this condition at present can be skipped for dg1 and dg2 platforms.
++	 * this condition at present can be skipped for dg1, dg2 and MTL platforms.
+ 	 */
+ 	return igt_wait((read_runtime_suspended_time(data->drm_fd) > prev_rpm) &&
+ 			(!DC9_RESETS_DC_COUNTERS(data->devid) ||
+-- 
+2.34.1
