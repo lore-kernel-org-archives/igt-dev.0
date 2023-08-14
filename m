@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 980CA10E0DB
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Aug 2023 03:51:23 +0000 (UTC)
-From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
-To: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
-Date: Mon, 14 Aug 2023 03:51:19 +0000
-Message-ID: <CY5PR11MB6211F5B0866D9835F7DB97089517A@CY5PR11MB6211.namprd11.prod.outlook.com>
-References: <20230811111026.1327273-1-anshuman.gupta@intel.com>
- <20230811111026.1327273-3-anshuman.gupta@intel.com>
- <ZNajiVS45lA404W7@intel.com>
-In-Reply-To: <ZNajiVS45lA404W7@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 70F0D10E00A
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Aug 2023 04:11:59 +0000 (UTC)
+Message-ID: <29204b19-036c-7031-1859-ff160ebb01ba@intel.com>
+Date: Mon, 14 Aug 2023 09:41:45 +0530
 Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
+ <20230811184655.157060-31-bhanuprakash.modem@intel.com>
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <20230811184655.157060-31-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 2/2] test/xe_pm: Add
- vram_d3cold_threshold subtest
+Subject: Re: [igt-dev] [i-g-t V6 30/81] tests/i915/kms_pwrite_crc: Document
+ each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,265 +23,46 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Nilawar,
- Badal" <badal.nilawar@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
-
-> -----Original Message-----
-> From: Vivi, Rodrigo <rodrigo.vivi@intel.com>
-> Sent: Saturday, August 12, 2023 2:39 AM
-> To: Gupta, Anshuman <anshuman.gupta@intel.com>
-> Cc: igt-dev@lists.freedesktop.org; Nilawar, Badal <badal.nilawar@intel.co=
-m>
-> Subject: Re: [igt-dev] [PATCH i-g-t v2 2/2] test/xe_pm: Add
-> vram_d3cold_threshold subtest
->=20
-> On Fri, Aug 11, 2023 at 04:40:26PM +0530, Anshuman Gupta wrote:
-> > Adding a vram_d3cold_threshold subtest, which creates a Xe bo and set
-> > the vram_d3cold_threshold according to vram used and bo size.
-> > Test setups the d3cold and expect card to be limited to d3hot.
-> >
-> > v2:
-> > - Add subtest doc.
-> > v3:
-> > - skip the test on igfx. [Riana]
-> > - Test doc enhancement. [Riana]
-> > - Create the bo before vram query. [Riana]
-> > - Use xe_bo_map insead of xe_bo_mmap_offset and mmap. [Riana]
-> > - Close the bo handle. [Riana]
-> > v3:
-> > - Restore the vram_d3cold_threshold value. [Badal]
-> > - Don't fail the test if there is no vram_d3cold_threshold.
-> > - Test d3cold after closing the xe BO.
-> > v4:
-> > - When d3cold is not allowed, don't use out_of_d3() as device will
-> >   be runtime suspended.
-> > - Set vram_d3cold_threshold to vram_used + Xe BO size such that
-> >   it can enter to d3cold after freeing up the Xe BO.
-> > - Use forcewake handle to wake the device.
-> >
-> > Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> > ---
-> >  tests/xe/xe_pm.c | 128
-> > +++++++++++++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 128 insertions(+)
-> >
-> > diff --git a/tests/xe/xe_pm.c b/tests/xe/xe_pm.c index
-> > 23b8246ed..480382f9e 100644
-> > --- a/tests/xe/xe_pm.c
-> > +++ b/tests/xe/xe_pm.c
-> > @@ -19,6 +19,7 @@
-> >  #include "igt.h"
-> >  #include "lib/igt_device.h"
-> >  #include "lib/igt_pm.h"
-> > +#include "lib/igt_sysfs.h"
-> >  #include "lib/igt_syncobj.h"
-> >  #include "lib/intel_reg.h"
-> >
-> > @@ -30,12 +31,16 @@
-> >  #define NO_SUSPEND -1
-> >  #define NO_RPM -1
-> >
-> > +#define SIZE (4096 * 1024)
-> > +
-> >  typedef struct {
-> >  	int fd_xe;
-> >  	struct pci_device *pci_xe;
-> >  	struct pci_device *pci_root;
-> >  } device_t;
-> >
-> > +uint64_t orig_threshold;
-> > +
-> >  /* runtime_usage is only available if kernel build
-> > CONFIG_PM_ADVANCED_DEBUG */  static bool
-> > runtime_usage_available(struct pci_device *pci)  { @@ -76,6 +81,49 @@
-> > static void set_d3cold_allowed(struct pci_device *pci,
-> >  	close(fd);
-> >  }
-> >
-> > +static uint64_t get_vram_d3cold_threshold(int sysfs) {
-> > +	uint64_t threshold;
-> > +	char path[64];
-> > +	int ret;
-> > +
-> > +	sprintf(path, "device/vram_d3cold_threshold");
-> > +	igt_require_f(!faccessat(sysfs, path, R_OK, 0),
-> > +"vram_d3cold_threshold is not present\n");
-> > +
-> > +	ret =3D igt_sysfs_scanf(sysfs, path, "%lu", &threshold);
-> > +	igt_assert(ret > 0);
-> > +
-> > +	return threshold;
-> > +}
-> > +
-> > +static void set_vram_d3cold_threshold(int sysfs, uint64_t threshold)
-> > +{
-> > +	char path[64];
-> > +	int ret;
-> > +
-> > +	sprintf(path, "device/vram_d3cold_threshold");
-> > +
-> > +	if (!faccessat(sysfs, path, R_OK | W_OK, 0))
-> > +		ret =3D igt_sysfs_printf(sysfs, path, "%lu", threshold);
-> > +	else
-> > +		igt_warn("vram_d3cold_threshold is not present\n");
-> > +
-> > +	igt_assert(ret > 0);
-> > +}
-> > +
-> > +static void vram_d3cold_threshold_restore(int sig) {
-> > +	int fd, sysfs_fd;
-> > +
-> > +	fd =3D drm_open_driver(DRIVER_XE);
-> > +	sysfs_fd =3D igt_sysfs_open(fd);
-> > +
-> > +	set_vram_d3cold_threshold(sysfs_fd, orig_threshold);
-> > +
-> > +	close(sysfs_fd);
-> > +	close(fd);
-> > +}
-> > +
-> >  static bool setup_d3(device_t device, enum igt_acpi_d_state state)  {
-> >  	switch (state) {
-> > @@ -341,11 +389,82 @@ NULL));
-> >  		igt_assert(in_d3(device, d_state));  }
-> >
-> > +/**
-> > + * SUBTEST: vram-d3cold-threshold
-> > + * Description:
-> > + *	Validate whether card is limited to d3hot while vram used
-> > + *	is greater than vram_d3cold_threshold.
-> > + * Run type: FULL
-> > + */
-> > +static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
-> > +{
-> > +	struct drm_xe_query_mem_usage *mem_usage;
-> > +	struct drm_xe_device_query query =3D {
-> > +		.extensions =3D 0,
-> > +		.query =3D DRM_XE_DEVICE_QUERY_MEM_USAGE,
-> > +		.size =3D 0,
-> > +		.data =3D 0,
-> > +	};
-> > +	uint64_t vram_used_mb =3D 0, vram_total_mb =3D 0, threshold;
-> > +	uint32_t bo, flags;
-> > +	int handle, i;
-> > +	bool active;
-> > +	void *map;
-> > +
-> > +	igt_require(xe_has_vram(device.fd_xe));
-> > +
-> > +	flags =3D vram_memory(device.fd_xe, 0);
-> > +	igt_require_f(flags, "Device doesn't support vram memory
-> region\n");
-> > +
-> > +	igt_assert_eq(igt_ioctl(device.fd_xe,
-> DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-> > +	igt_assert_neq(query.size, 0);
-> > +
-> > +	mem_usage =3D malloc(query.size);
-> > +	igt_assert(mem_usage);
-> > +
-> > +	query.data =3D to_user_pointer(mem_usage);
-> > +	igt_assert_eq(igt_ioctl(device.fd_xe,
-> DRM_IOCTL_XE_DEVICE_QUERY,
-> > +&query), 0);
-> > +
-> > +	for (i =3D 0; i < mem_usage->num_regions; i++) {
-> > +		if (mem_usage->regions[i].mem_class =3D=3D
-> XE_MEM_REGION_CLASS_VRAM) {
-> > +			vram_used_mb +=3D  (mem_usage->regions[i].used /
-> (1024 * 1024));
-> > +			vram_total_mb +=3D (mem_usage-
-> >regions[i].total_size / (1024 * 1024));
-> > +		}
-> > +	}
-> > +
-> > +	threshold =3D vram_used_mb + (SIZE / 1024 /1024);
-> > +	igt_require(threshold < vram_total_mb);
-> > +
-> > +	bo =3D xe_bo_create_flags(device.fd_xe, 0, SIZE, flags);
-> > +	map =3D xe_bo_map(device.fd_xe, bo, SIZE);
-> > +	memset(map, 0, SIZE);
-> > +	munmap(map, SIZE);
-> > +	set_vram_d3cold_threshold(sysfs_fd, threshold);
-> > +
-> > +	/* Setup D3Cold but card should be in D3hot */
-> > +	igt_assert(setup_d3(device, IGT_ACPI_D3Cold));
-> > +	sleep(1);
-> > +	igt_assert(in_d3(device, IGT_ACPI_D3Hot));
-> > +	igt_assert(igt_pm_get_acpi_real_d_state(device.pci_root) =3D=3D
-> IGT_ACPI_D0);
-> > +	gem_close(device.fd_xe, bo);
-> > +
-> > +	/* open and close fw handle to wake the device */
->=20
-> hmmm I would expect that we should wake the device with mem_access
-> when cleaning up the stuff...
-> Maybe I'm wrong, but I'm in the process of moving the mem_access to
-> xe_pm, documenting it and taking care of other suspicious cases like xe_e=
-xec
-> without VM.
->=20
-> https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/551 assigned for
-> myself.
->=20
-> But anyway, while I don't get to that, let's move with this patch as is.
-> Maybe adding an "XXX" along with the comment line above? up to you.
->=20
-> Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Thanks for review, I will  add a XXX comment.
-Br,
-Anshuman Gupta.
->=20
-> > +	handle =3D igt_debugfs_open(device.fd_xe, "forcewake_all",
-> O_RDONLY);
-> > +	igt_assert(handle >=3D 0);
-> > +	active =3D igt_get_runtime_pm_status() =3D=3D
-> IGT_RUNTIME_PM_STATUS_ACTIVE;
-> > +	close(handle);
-> > +	igt_assert(active);
-> > +
-> > +	/* Test D3Cold again after freeing up the Xe BO */
-> > +	igt_assert(in_d3(device, IGT_ACPI_D3Cold)); }
-> > +
-> >  igt_main
-> >  {
-> >  	struct drm_xe_engine_class_instance *hwe;
-> >  	device_t device;
-> >  	char d3cold_allowed[2];
-> > +	int sysfs_fd;
-> >  	const struct s_state {
-> >  		const char *name;
-> >  		enum igt_suspend_state state;
-> > @@ -378,6 +497,7 @@ igt_main
-> >
-> >  		get_d3cold_allowed(device.pci_xe, d3cold_allowed);
-> >  		igt_assert(igt_setup_runtime_pm(device.fd_xe));
-> > +		sysfs_fd =3D igt_sysfs_open(device.fd_xe);
-> >  	}
-> >
-> >  	for (const struct s_state *s =3D s_states; s->name; s++) { @@ -437,7
-> > +557,15 @@ igt_main
-> >  		}
-> >  	}
-> >
-> > +	igt_describe("Validate whether card is limited to d3hot, if vram used
-> > vram threshold");
-> > +	igt_subtest("vram-d3cold-threshold") {
-> > +		orig_threshold =3D get_vram_d3cold_threshold(sysfs_fd);
-> > +		igt_install_exit_handler(vram_d3cold_threshold_restore);
-> > +		test_vram_d3cold_threshold(device, sysfs_fd);
-> > +	}
-> > +
-> >  	igt_fixture {
-> > +		close(sysfs_fd);
-> >  		set_d3cold_allowed(device.pci_xe, d3cold_allowed);
-> >  		igt_restore_runtime_pm();
-> >  		xe_device_put(device.fd_xe);
-> > --
-> > 2.25.1
-> >
+On 8/12/2023 12:16 AM, Bhanuprakash Modem wrote:
+> Add documentation for all kms tests which is used by IGT testplan
+> documentation.
+>
+> V2: - Fix test documentation
+>
+> Cc: Karthik B S <karthik.b.s@intel.com>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+> ---
+>   tests/i915/kms_pwrite_crc.c | 14 ++++++++++++++
+>   1 file changed, 14 insertions(+)
+>
+> diff --git a/tests/i915/kms_pwrite_crc.c b/tests/i915/kms_pwrite_crc.c
+> index 7bddeecba..661064cc8 100644
+> --- a/tests/i915/kms_pwrite_crc.c
+> +++ b/tests/i915/kms_pwrite_crc.c
+> @@ -29,6 +29,20 @@
+>   #include <stdio.h>
+>   #include <string.h>
+>   
+> +/**
+> + * TEST: kms pwrite crc
+> + * Category: Display
+> + * Description: Test to validate pwrite buffer using the display CRC
+> + *
+> + * SUBTEST:
+> + * Description: Use the display CRC support to validate pwrite to an already
+> + *              uncached future scanout buffer.
+> + * Driver requirement: i915
+> + * Functionality: kms_core, kms_gem_interop
+> + * Mega feature: General Display Features
+> + * Run type: FULL
+> + * Test category: functionality test
+> + */
+>   
+>   IGT_TEST_DESCRIPTION(
+>      "Use the display CRC support to validate pwrite to an already uncached future scanout buffer.");
