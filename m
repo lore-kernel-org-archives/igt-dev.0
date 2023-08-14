@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1F4E510E085
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Aug 2023 16:33:43 +0000 (UTC)
-Date: Mon, 14 Aug 2023 18:32:09 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
-Message-ID: <20230814163209.lxgn2t34rbvqkmjg@kamilkon-desk1>
-References: <20230814095654.872-1-mohammed.thasleem@intel.com>
+Message-ID: <46a09df0-ffb5-a8ea-e90d-dca65f5d92f0@intel.com>
+Date: Mon, 14 Aug 2023 09:48:47 -0700
+To: Riana Tauro <riana.tauro@intel.com>, <intel-gfx@lists.freedesktop.org>,
+ <igt-dev@lists.freedesktop.org>
+References: <20230809005014.3451790-1-vinay.belgaumkar@intel.com>
+ <b5e574a1-7aa4-d233-3b02-f0acbac517bc@intel.com>
+Content-Language: en-US
+From: "Belgaumkar, Vinay" <vinay.belgaumkar@intel.com>
+In-Reply-To: <b5e574a1-7aa4-d233-3b02-f0acbac517bc@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230814095654.872-1-mohammed.thasleem@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/i915_pm_dc: Check runtime
- suspend for DC9 test
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] tests/i915_pm_freq_api:
+ Ignore zero register value
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,66 +20,93 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Thasleem@freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mohammed,
 
-On 2023-08-14 at 15:26:54 +0530, Thasleem, Mohammed wrote:
-> As for MTL DC5 counter is not expected to get reset in DC9 state.
+On 8/14/2023 12:24 AM, Riana Tauro wrote:
+> Hi Vinay
+>
+> On 8/9/2023 6:20 AM, Vinay Belgaumkar wrote:
+>> Register read for requested_freq can return 0 when system is
+>> in runtime_pm. Make allowance for this case.
+>>
+>> Link: https://gitlab.freedesktop.org/drm/intel/issues/8736
+>> Link: https://gitlab.freedesktop.org/drm/intel/issues/8989
+>>
+>> Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+>> ---
+>>   tests/i915/i915_pm_freq_api.c | 18 ++++++++++++++----
+>>   1 file changed, 14 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/tests/i915/i915_pm_freq_api.c 
+>> b/tests/i915/i915_pm_freq_api.c
+>> index cf21cc936..9c71411ee 100644
+>> --- a/tests/i915/i915_pm_freq_api.c
+>> +++ b/tests/i915/i915_pm_freq_api.c
+>> @@ -88,6 +88,7 @@ static void test_freq_basic_api(int dirfd, int gt)
+>>   static void test_reset(int i915, int dirfd, int gt, int count)
+>>   {
+>>       uint32_t rpn = get_freq(dirfd, RPS_RPn_FREQ_MHZ);
+>> +    uint32_t req_freq;
+>>       int fd;
+>>         for (int i = 0; i < count; i++) {
+>> @@ -95,14 +96,18 @@ static void test_reset(int i915, int dirfd, int 
+>> gt, int count)
+>>           igt_assert(set_freq(dirfd, RPS_MIN_FREQ_MHZ, rpn) > 0);
+>>           igt_assert(set_freq(dirfd, RPS_MAX_FREQ_MHZ, rpn) > 0);
+>>           usleep(ACT_FREQ_LATENCY_US);
+>> -        igt_assert_eq(get_freq(dirfd, RPS_CUR_FREQ_MHZ), rpn);
+>> +        req_freq = get_freq(dirfd, RPS_CUR_FREQ_MHZ);
+>> +        if (req_freq)
+>> +            igt_assert_eq(req_freq, rpn);
+>
+> Is there anything else that can cause req_freq to be zero?
+>
+> To differentiate can we assert only when runtime_status is active 
+> (igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE) ?
 
-This is ok.
+Makes sense, re-sending.
 
-> Add condition to check runtime_suspended_time value for both
-- ^^^^^^^^^^^^^
-> igfx and dgfx to track DC9 dpms entry.
+Thanks,
 
-This looks misplaced?
+Vinay.
 
-> 
-> Signed-off-by: Thasleem, Mohammed <mohammed.thasleem@intel.com>
----------------- ^         ^
-Please correct this to
-
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
-
-> ---
->  tests/i915/i915_pm_dc.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
-> index 90fe847fc..13ae31583 100644
-> --- a/tests/i915/i915_pm_dc.c
-> +++ b/tests/i915/i915_pm_dc.c
-> @@ -88,7 +88,7 @@
->  #define KMS_HELPER "/sys/module/drm_kms_helper/parameters/"
->  #define PACKAGE_CSTATE_PATH  "pmc_core/package_cstate_show"
->  #define KMS_POLL_DISABLE 0
-> -#define DC9_RESETS_DC_COUNTERS(devid) (!(IS_DG1(devid) || IS_DG2(devid)))
-> +#define DC9_RESETS_DC_COUNTERS(devid) (!(IS_DG1(devid) || IS_DG2(devid) || IS_METEORLAKE(devid)))
----------- ^^^^^^^^^^
-
-Name for this define is misleading, from description it looks like
-the opposite is true:
-"As for MTL DC5 counter is not expected to get reset in DC9 state."
-
-Regards,
-Kamil
-
->  
->  IGT_TEST_DESCRIPTION("Tests to validate display power DC states.");
->  
-> @@ -514,7 +514,7 @@ static bool dc9_wait_entry(data_t *data, int dc_target, int prev_dc, int prev_rp
->  	 * Runtime suspended residency should increment once DC9 is achieved;
->  	 * this condition is valid for all platforms.
->  	 * However, resetting of dc5/dc6 counter to check if display engine was in DC9;
-> -	 * this condition at present can be skipped for dg1 and dg2 platforms.
-> +	 * this condition at present can be skipped for dg1, dg2 and MTL platforms.
->  	 */
->  	return igt_wait((read_runtime_suspended_time(data->drm_fd) > prev_rpm) &&
->  			(!DC9_RESETS_DC_COUNTERS(data->devid) ||
-> -- 
-> 2.34.1
-> 
+>
+>
+> Thanks
+> Riana Tauro
+>>             /* Manually trigger a GT reset */
+>>           fd = igt_debugfs_gt_open(i915, gt, "reset", O_WRONLY);
+>>           igt_require(fd >= 0);
+>>           igt_ignore_warn(write(fd, "1\n", 2));
+>>   -        igt_assert_eq(get_freq(dirfd, RPS_CUR_FREQ_MHZ), rpn);
+>> +        req_freq = get_freq(dirfd, RPS_CUR_FREQ_MHZ);
+>> +        if (req_freq)
+>> +            igt_assert_eq(req_freq, rpn);
+>>       }
+>>       close(fd);
+>>   }
+>> @@ -110,17 +115,22 @@ static void test_reset(int i915, int dirfd, int 
+>> gt, int count)
+>>   static void test_suspend(int i915, int dirfd, int gt)
+>>   {
+>>       uint32_t rpn = get_freq(dirfd, RPS_RPn_FREQ_MHZ);
+>> +    uint32_t req_freq;
+>>         igt_assert(set_freq(dirfd, RPS_MIN_FREQ_MHZ, rpn) > 0);
+>>       igt_assert(set_freq(dirfd, RPS_MAX_FREQ_MHZ, rpn) > 0);
+>>       usleep(ACT_FREQ_LATENCY_US);
+>> -    igt_assert_eq(get_freq(dirfd, RPS_CUR_FREQ_MHZ), rpn);
+>> +    req_freq = get_freq(dirfd, RPS_CUR_FREQ_MHZ);
+>> +    if (req_freq)
+>> +        igt_assert_eq(req_freq, rpn);
+>>         /* Manually trigger a suspend */
+>>       igt_system_suspend_autoresume(SUSPEND_STATE_S3,
+>>                         SUSPEND_TEST_NONE);
+>>   -    igt_assert_eq(get_freq(dirfd, RPS_CUR_FREQ_MHZ), rpn);
+>> +    req_freq = get_freq(dirfd, RPS_CUR_FREQ_MHZ);
+>> +    if (req_freq)
+>> +        igt_assert_eq(req_freq, rpn);
+>>   }
+>>     int i915 = -1;
