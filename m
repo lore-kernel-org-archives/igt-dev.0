@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D1D8C10E00A
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Aug 2023 04:07:54 +0000 (UTC)
+Message-ID: <8e9df293-38b5-b199-c7c6-04d00bcdb0dd@intel.com>
+Date: Mon, 14 Aug 2023 09:37:33 +0530
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
+ <20230811184655.157060-11-bhanuprakash.modem@intel.com>
+Content-Language: en-US
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <20230811184655.157060-11-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Anshuman Gupta" <anshuman.gupta@intel.com>
-Date: Fri, 11 Aug 2023 11:20:54 -0000
-Message-ID: <169175285420.3115.8506524204005518010@emeril.freedesktop.org>
-References: <20230811111026.1327273-1-anshuman.gupta@intel.com>
-In-Reply-To: <20230811111026.1327273-1-anshuman.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_A?=
- =?utf-8?q?dd_vram=5Fd3cold=5Fthreshold_test_=28rev3=29?=
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [i-g-t V6 10/81] tests/i915/kms_big_fb: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,111 +23,253 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
 
-Series: Add vram_d3cold_threshold test (rev3)
-URL   : https://patchwork.freedesktop.org/series/122154/
-State : warning
+On 8/12/2023 12:15 AM, Bhanuprakash Modem wrote:
+> Add documentation for all kms tests which is used by IGT testplan
+> documentation.
+>
+> V2: - Fix driver requirement
+> V3: - Fix functionality
+>
+> Cc: Karthik B S <karthik.b.s@intel.com>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>   tests/i915/kms_big_fb.c | 183 ++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 183 insertions(+)
+>
+> diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
+> index 44ea117a1..a0067aa9c 100644
+> --- a/tests/i915/kms_big_fb.c
+> +++ b/tests/i915/kms_big_fb.c
+> @@ -21,6 +21,12 @@
+>    * IN THE SOFTWARE.
+>    */
+>   
+> +/**
+> + * TEST: kms big fb
+> + * Category: Display
+> + * Description: Test big framebuffers
+> + */
+> +
+>   #include "igt.h"
+>   #include <errno.h>
+>   #include <stdbool.h>
+> @@ -582,6 +588,105 @@ max_hw_stride_async_flip_test(data_t *data)
+>   	return true;
+>   }
+>   
+> +/**
+> + * SUBTEST: linear-%dbpp-rotate-%d
+> + * Description: Sanity check if addfb ioctl works correctly for given combination
+> + *              of Linear modifier with %arg[1]-bpp & %arg[2]-rotation
+> + * Driver requirement: any
+> + * Functionality: big_displays, kms_gem_interop, rotation
 
-== Summary ==
+Do we have 'big_displays' being used in any other tests? If not, 
+could/should it be 'big_fbs' rather than 'big_displays'?
 
-Pipeline status: FAILED.
+If you agree, then please update this while merging.
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/958510 for the overview.
+Eithercase this is not a blocker and the patch LGTM overall.
 
-build-containers:build-debian has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47173035):
-  time="2023-08-11T11:18:05Z" level=fatal msg="Error determining repository tags: Invalid status code returned when fetching tags list 500 (Internal Server Error)" 
-  Building!
-  STEP 1: FROM debian:buster
-  Getting image source signatures
-  Copying blob sha256:9918064ebccea7fc961fe71dad46105b217763b4b1b3a9dfa7bee2ab29d2039b
-  Copying config sha256:1df4474660a180f2a805d8477b78f9774d302afb2d31118106bffc0cb144e910
-  Writing manifest to image destination
-  Storing signatures
-  STEP 2: RUN apt-get update
-  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-08-11T11:18:11Z" level=warning msg="signal: killed"
-  time="2023-08-11T11:18:11Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
-  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
-  : exit status 1
-  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
-  section_end:1691752691:step_script
-  section_start:1691752691:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1691752692:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 
-build-containers:build-debian-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47173036):
-  time="2023-08-11T11:18:05Z" level=fatal msg="Error determining repository tags: Invalid status code returned when fetching tags list 500 (Internal Server Error)" 
-  Building!
-  STEP 1: FROM debian:buster
-  Getting image source signatures
-  Copying blob sha256:9918064ebccea7fc961fe71dad46105b217763b4b1b3a9dfa7bee2ab29d2039b
-  Copying config sha256:1df4474660a180f2a805d8477b78f9774d302afb2d31118106bffc0cb144e910
-  Writing manifest to image destination
-  Storing signatures
-  STEP 2: RUN apt-get update
-  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-08-11T11:18:11Z" level=warning msg="signal: killed"
-  time="2023-08-11T11:18:11Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
-  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
-  : exit status 1
-  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
-  section_end:1691752691:step_script
-  section_start:1691752691:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1691752692:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build-containers:build-debian-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47173038):
-  time="2023-08-11T11:18:13Z" level=fatal msg="Error determining repository tags: Invalid status code returned when fetching tags list 500 (Internal Server Error)" 
-  Building!
-  STEP 1: FROM debian:buster
-  Getting image source signatures
-  Copying blob sha256:9918064ebccea7fc961fe71dad46105b217763b4b1b3a9dfa7bee2ab29d2039b
-  Copying config sha256:1df4474660a180f2a805d8477b78f9774d302afb2d31118106bffc0cb144e910
-  Writing manifest to image destination
-  Storing signatures
-  STEP 2: RUN apt-get update
-  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-08-11T11:18:19Z" level=warning msg="signal: killed"
-  time="2023-08-11T11:18:19Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
-  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
-  : exit status 1
-  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
-  section_end:1691752699:step_script
-  section_start:1691752699:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1691752700:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build-containers:build-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47173039):
-  time="2023-08-11T11:18:05Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
-  Building!
-  STEP 1: FROM fedora:31
-  Getting image source signatures
-  Copying blob sha256:854946d575a439a894349addd141568875d7c1e673d3286b08250f3dde002e6a
-  Copying config sha256:7e94ed77b448a8d2ff08b92d3ca743e4e862c744892d6886c73487581eb5863a
-  Writing manifest to image destination
-  Storing signatures
-  STEP 2: RUN dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils
-  error running container: error creating container for [/bin/sh -c dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils]: time="2023-08-11T11:18:11Z" level=warning msg="signal: killed"
-  time="2023-08-11T11:18:11Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
-  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
-  : exit status 1
-  Error: error building at STEP "RUN dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils": error while running runtime: exit status 1
-  section_end:1691752692:step_script
-  section_start:1691752692:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1691752694:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/958510
+> + * Mega feature: General Display Features
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * arg[1].values:       8, 16, 32, 64
+> + * arg[2].values:       0, 90, 180, 270
+> + */
+> +
+> +/**
+> + * SUBTEST: %s-%dbpp-rotate-%d
+> + * Description: Sanity check if addfb ioctl works correctly for given combination
+> + *              of %arg[1] with %arg[2]-bpp & %arg[3]-rotation
+> + * Driver requirement: any
+> + * Functionality: big_displays, kms_gem_interop, rotation, tiling
+> + * Mega feature: General Display Features
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * arg[1]:
+> + *
+> + * @4-tiled:            TILE-4 modifier
+> + * @x-tiled:            TILE-X modifier
+> + * @y-tiled:            TILE-Y modifier
+> + * @yf-tiled:           TILE-YF modifier
+> + *
+> + * arg[2].values:       8, 16, 32, 64
+> + * arg[3].values:       0, 90, 180, 270
+> + */
+> +
+> +/**
+> + * SUBTEST: linear-max-hw-stride-%dbpp-rotate-%d
+> + * Description: Test maximum hardware supported stride length for given combination
+> + *              of linear modifier with max hardware stride length, %arg[1]-bpp,
+> + *              and %arg[2]-rotation
+> + * Driver requirement: any
+> + * Functionality: big_displays, kms_gem_interop, rotation
+> + * Mega feature: General Display Features
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * arg[1].values:       32, 64
+> + * arg[2].values:       0, 180
+> + */
+> +
+> +/**
+> + * SUBTEST: %s-max-hw-stride-%dbpp-rotate-%d
+> + * Description: Test maximum hardware supported stride length for given combination
+> + *              of %arg[1] modifier with max hardware stride length, %arg[2]-bpp,
+> + *              and %arg[3]-rotation
+> + * Driver requirement: any
+> + * Functionality: big_displays, kms_gem_interop, rotation, tiling
+> + * Mega feature: General Display Features
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * arg[1]:
+> + *
+> + * @4-tiled:            TILE-4 modifier
+> + * @x-tiled:            TILE-X modifier
+> + * @y-tiled:            TILE-Y modifier
+> + * @yf-tiled:           TILE-YF modifier
+> + *
+> + * arg[2].values:       32, 64
+> + * arg[3].values:       0, 180
+> + */
+> +
+> +/**
+> + * SUBTEST: %s-max-hw-stride-%dbpp-rotate-%d-%s
+> + * Description: Test maximum hardware supported stride length for given combination
+> + *              of %arg[1] modifier with max hardware stride length, %arg[2]-bpp,
+> + *              and %arg[3]-rotation with %arg[4] mode
+> + * Driver requirement: any
+> + * Functionality: big_displays, kms_gem_interop, rotation, tiling
+> + * Mega feature: General Display Features
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * arg[1]:
+> + *
+> + * @4-tiled:            TILE-4 modifier
+> + * @x-tiled:            TILE-X modifier
+> + * @y-tiled:            TILE-Y modifier
+> + * @yf-tiled:           TILE-YF modifier
+> + *
+> + * arg[2].values:       32, 64
+> + * arg[3].values:       0, 180
+> + *
+> + * arg[4]:
+> + *
+> + * @async-flip:         Async flip
+> + * @hflip:              H-flip
+> + * @hflip-async-flip:   Async & H-flip
+> + */
+>   static void test_scanout(data_t *data)
+>   {
+>   	igt_output_t *output;
+> @@ -627,6 +732,32 @@ static void test_scanout(data_t *data)
+>   	igt_skip("unsupported configuration\n");
+>   }
+>   
+> +/**
+> + * SUBTEST: linear-addfb-size-overflow
+> + * Description: Sanity check if addfb ioctl fails correctly for (Linear) modifier
+> + *              with small bo.
+> + * Driver requirement: any
+> + * Functionality: big_displays, kms_gem_interop
+> + * Mega feature: General Display Features
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * SUBTEST: %s-addfb-size-overflow
+> + * Description: Sanity check if addfb ioctl fails correctly for (%arg[1]) modifier
+> + *              with small bo.
+> + * Driver requirement: any
+> + * Functionality: big_displays, kms_gem_interop, tiling
+> + * Mega feature: General Display Features
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * arg[1]:
+> + *
+> + * @4-tiled:    TILE-4
+> + * @x-tiled:    TILE-X
+> + * @y-tiled:    TILE-Y
+> + * @yf-tiled:   TILE-YF
+> + */
+>   static void
+>   test_size_overflow(data_t *data)
+>   {
+> @@ -671,6 +802,32 @@ test_size_overflow(data_t *data)
+>   	gem_close(data->drm_fd, bo);
+>   }
+>   
+> +/**
+> + * SUBTEST: linear-addfb-size-offset-overflow
+> + * Description: Sanity check if addfb ioctl fails correctly for (Linear) modifier
+> + *              and offsets with small bo
+> + * Driver requirement: any
+> + * Functionality: big_displays, kms_gem_interop
+> + * Mega feature: General Display Features
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * SUBTEST: %s-addfb-size-offset-overflow
+> + * Description: Sanity check if addfb ioctl fails correctly for (%arg[1]) modifier
+> + *              and offsets with small bo
+> + * Driver requirement: any
+> + * Functionality: big_displays, kms_gem_interop, tiling
+> + * Mega feature: General Display Features
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * arg[1]:
+> + *
+> + * @4-tiled:    TILE-4
+> + * @x-tiled:    TILE-X
+> + * @y-tiled:    TILE-Y
+> + * @yf-tiled:   TILE-YF
+> + */
+>   static void
+>   test_size_offset_overflow(data_t *data)
+>   {
+> @@ -729,6 +886,32 @@ static int rmfb(int fd, uint32_t id)
+>   	return err;
+>   }
+>   
+> +/**
+> + * SUBTEST: linear-addfb
+> + * Description: Sanity check if addfb ioctl works correctly with Linear modifier
+> + *              for given size and strides of fb
+> + * Driver requirement: any
+> + * Functionality: big_displays, kms_gem_interop
+> + * Mega feature: General Display Features
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * SUBTEST: %s-addfb
+> + * Description: Sanity check if addfb ioctl works correctly with %arg[1] modifier
+> + *              for given size and strides of fb
+> + * Driver requirement: any
+> + * Functionality: big_displays, kms_gem_interop, tiling
+> + * Mega feature: General Display Features
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * arg[1]:
+> + *
+> + * @4-tiled:    TILE-4
+> + * @x-tiled:    TILE-X
+> + * @y-tiled:    TILE-Y
+> + * @yf-tiled:   TILE-YF
+> + */
+>   static void
+>   test_addfb(data_t *data)
+>   {
