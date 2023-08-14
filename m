@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0CD4A10E14B
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Aug 2023 08:23:54 +0000 (UTC)
-Message-ID: <1d7bff81-b1f9-7995-1cb9-e6fb917bb6e8@intel.com>
-Date: Mon, 14 Aug 2023 13:53:49 +0530
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 97BCF10E14B
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Aug 2023 08:26:54 +0000 (UTC)
+Message-ID: <613a480b-a40e-167e-71a0-dfd6a87bdf72@intel.com>
+Date: Mon, 14 Aug 2023 13:56:50 +0530
 MIME-Version: 1.0
 Content-Language: en-US
 To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
  igt-dev@lists.freedesktop.org
 References: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
- <20230811184655.157060-65-bhanuprakash.modem@intel.com>
+ <20230811184655.157060-75-bhanuprakash.modem@intel.com>
 From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20230811184655.157060-65-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230811184655.157060-75-bhanuprakash.modem@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [i-g-t V6 64/81] tests/kms_prime: Document each
- subtest for testplan
+Subject: Re: [igt-dev] [i-g-t V6 74/81] tests/kms_tiled_display: Document
+ each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,61 +27,58 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Shouldn't we have some functionality as "hybrid" for these tests?
+
 
 On 12-Aug-23 12:16 AM, Bhanuprakash Modem wrote:
 > Add documentation for all kms tests which is used by IGT testplan
 > documentation.
 > 
+> V2: - Fix commit line (Karthik)
+> 
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 > ---
->   tests/kms_prime.c | 35 +++++++++++++++++++++++++++++++++++
->   1 file changed, 35 insertions(+)
+>   tests/kms_tiled_display.c | 21 +++++++++++++++++++++
+>   1 file changed, 21 insertions(+)
 > 
-> diff --git a/tests/kms_prime.c b/tests/kms_prime.c
-> index dedbf6233..421cf9a21 100644
-> --- a/tests/kms_prime.c
-> +++ b/tests/kms_prime.c
-> @@ -30,6 +30,41 @@
->   #include <sys/ioctl.h>
->   #include <sys/poll.h>
->   #include <time.h>
+> diff --git a/tests/kms_tiled_display.c b/tests/kms_tiled_display.c
+> index eba1b2764..39931c84a 100644
+> --- a/tests/kms_tiled_display.c
+> +++ b/tests/kms_tiled_display.c
+> @@ -36,12 +36,33 @@
+>    * the displays supported by the kernel at the moment.
+>    */
+>   
 > +/**
-> + * TEST: kms prime
+> + * TEST: kms tiled display
 > + * Category: Display
-> + * Description: Prime tests, focusing on KMS side
-> + *
-> + * SUBTEST: D3hot
-> + * Description: Validate pci state of dGPU when dGPU is idle and  scanout is on iGPU
+> + * Description: Test for Transcoder Port Sync for Display Port Tiled Displays
+> + */
+>   #include "igt.h"
+>   #include "poll.h"
+>   #include "drm_mode.h"
+>   #include "drm_fourcc.h"
+>   #include "igt_edid.h"
+>   
+> +/**
+> + * SUBTEST: basic-test-%s
+> + * Description: Make sure the Tiled CRTCs are synchronized and we get page flips
+> + *              for all tiled CRTCs in one vblank (%arg[1]).
 > + * Driver requirement: any
-> + * Functionality: kms_gem_interop
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: basic-modeset-hybrid
-> + * Description: Basic modeset on the one device when the other device is active
-> + * Driver requirement: any
-> + * Functionality: kms_gem_interop
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: basic-crc-%s
-> + * Description: Make a dumb color buffer, export to another device and compare
-> + *              the CRCs with a buffer native to that device
-> + * Driver requirement: any
-> + * Functionality: kms_gem_interop
+> + * Functionality: tiled_display
+
+Need to add chamelium too.
+
 > + * Mega feature: General Display Features
 > + * Run type: FULL
 > + * Test category: functionality test
 > + *
 > + * arg[1]:
 > + *
-> + * @hybrid:
-> + * @vgem:
+> + * @pattern:                  executes on real panel
+> + * @pattern-with-chamelium:   executes on chamelium.
 > + */
+> +
+>   IGT_TEST_DESCRIPTION("Test for genlocked CRTCs with tiled displays");
 >   
->   #define KMS_HELPER "/sys/module/drm_kms_helper/parameters/"
->   #define KMS_POLL_DISABLE 0
+>   typedef struct {
