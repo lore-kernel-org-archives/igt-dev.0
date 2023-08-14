@@ -1,20 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BDE9A10E136
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Aug 2023 07:40:08 +0000 (UTC)
-Message-ID: <8d97aa48-c091-110c-394c-0cad9790081b@intel.com>
-Date: Mon, 14 Aug 2023 13:10:03 +0530
-MIME-Version: 1.0
-Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8E63910E137
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Aug 2023 07:42:48 +0000 (UTC)
+Message-ID: <92b7a7d2-18f4-281a-8e14-303767ab0df4@intel.com>
+Date: Mon, 14 Aug 2023 13:12:21 +0530
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
+ <igt-dev@lists.freedesktop.org>
 References: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
- <20230811184655.157060-39-bhanuprakash.modem@intel.com>
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20230811184655.157060-39-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [i-g-t V6 38/81] tests/kms_color: Document each
+ <20230811184655.157060-51-bhanuprakash.modem@intel.com>
+ <d1616c9c-973d-4398-9b02-a2f0774d30f8@intel.com>
+ <850d7b56-3e24-2d8f-40f2-1d7d388bf8aa@intel.com>
+ <894144eb-44a2-44d3-bbea-93bf231018fb@intel.com>
+ <528f0bd4-6e93-4abd-ebfa-c56e3a2c2ba1@intel.com>
+Content-Language: en-US
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <528f0bd4-6e93-4abd-ebfa-c56e3a2c2ba1@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [i-g-t V6 50/81] tests/kms_getfb: Document each
  subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -27,167 +31,192 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LGTM
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 
-On 12-Aug-23 12:16 AM, Bhanuprakash Modem wrote:
-> Add documentation for all kms tests which is used by IGT testplan
-> documentation.
-> 
-> V2: - Include ctm-signed test
-> V3: - Drop colorspace_gamma from the functionality
-> 
-> Cc: Swati Sharma <swati2.sharma@intel.com>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->   tests/kms_color.c | 91 +++++++++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 91 insertions(+)
-> 
-> diff --git a/tests/kms_color.c b/tests/kms_color.c
-> index b15b9572c..88da3cd6d 100644
-> --- a/tests/kms_color.c
-> +++ b/tests/kms_color.c
-> @@ -22,10 +22,24 @@
->    *
->    */
->   
-> +/**
-> + * TEST: kms color
-> + * Category: Display
-> + * Description: Test Color Features at Pipe level
-> + */
->   #include "kms_color_helper.h"
->   
->   IGT_TEST_DESCRIPTION("Test Color Features at Pipe level");
->   
-> +/**
-> + * SUBTEST: degamma
-> + * Description: Verify that degamma LUT transformation works correctly
-> + * Driver requirement: any
-> + * Functionality: colorspace
-> + * Mega feature: Color mgmt
-> + * Run type: FULL
-> + * Test category: functionality test
-> + */
->   static bool test_pipe_degamma(data_t *data,
->   			      igt_plane_t *primary)
->   {
-> @@ -114,6 +128,16 @@ static bool test_pipe_degamma(data_t *data,
->   	return ret;
->   }
->   
-> +/**
-> + * SUBTEST: gamma
-> + * Description: Verify that gamma LUT transformation works correctly
-> + * Driver requirement: any
-> + * Functionality: colorspace
-> + * Mega feature: Color mgmt
-> + * Run type: FULL
-> + * Test category: functionality test
-> + */
-> +
->   /*
->    * Draw 3 gradient rectangles in red, green and blue, with a maxed out gamma
->    * LUT and verify we have the same CRC as drawing solid color rectangles.
-> @@ -202,6 +226,16 @@ static bool test_pipe_gamma(data_t *data,
->   	return ret;
->   }
->   
-> +/**
-> + * SUBTEST: legacy-gamma
-> + * Description: Verify that legacy gamma LUT transformation works correctly
-> + * Driver requirement: any
-> + * Functionality: colorspace
-> + * Mega feature: Color mgmt
-> + * Run type: FULL
-> + * Test category: functionality test
-> + */
-> +
->   /*
->    * Draw 3 gradient rectangles in red, green and blue, with a maxed out legacy
->    * gamma LUT and verify we have the same CRC as drawing solid color rectangles
-> @@ -314,6 +348,17 @@ static bool test_pipe_legacy_gamma(data_t *data,
->   	return ret;
->   }
->   
-> +/**
-> + * SUBTEST: legacy-gamma-reset
-> + * Description: Verify that setting the legacy gamma LUT resets the gamma LUT
-> + *              set through GAMMA_LUT property
-> + * Driver requirement: any
-> + * Functionality: colorspace
-> + * Mega feature: Color mgmt
-> + * Run type: FULL
-> + * Test category: functionality test
-> + */
-> +
->   /*
->    * Verify that setting the legacy gamma LUT resets the gamma LUT set
->    * through the GAMMA_LUT property.
-> @@ -448,6 +493,28 @@ end:
->   	return ret;
->   }
->   
-> +/**
-> + * SUBTEST: ctm-%s
-> + * Description: Check the color transformation %arg[1]
-> + * Driver requirement: any
-> + * Functionality: colorspace
-> + * Mega feature: Color mgmt
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * arg[1]:
-> + *
-> + * @0-25:           for 0.25 transparency
-> + * @0-50:           for 0.50 transparency
-> + * @0-75:           for 0.75 transparency
-> + * @blue-to-red:    from blue to red
-> + * @green-to-red:   from green to red
-> + * @max:            for maximum transparency
-> + * @negative:       for negative transparency
-> + * @red-to-blue:    from red to blue
-> + * @signed:         for correct signed handling
-> + */
-> +
->   /*
->    * Draw 3 rectangles using before colors with the ctm matrix apply and verify
->    * the CRC is equal to using after colors with an identify ctm matrix.
-> @@ -807,6 +874,15 @@ out:
->   	test_cleanup(data);
->   }
->   
-> +/**
-> + * SUBTEST: deep-color
-> + * Description: Verify that deep color works correctly
-> + * Driver requirement: any
-> + * Functionality: colorspace
-> + * Mega feature: Color mgmt
-> + * Run type: FULL
-> + * Test category: functionality test
-> + */
->   static void
->   run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
->   {
-> @@ -899,6 +975,21 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
->   	test_cleanup(data);
->   }
->   
-> +/**
-> + * SUBTEST: invalid-%s-sizes
-> + * Description: Negative check for %arg[1] sizes
-> + * Driver requirement: any
-> + * Functionality: colorspace
-> + * Mega feature: Color mgmt
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * arg[1]:
-> + *
-> + * @ctm-matrix:         Color transformation matrix
-> + * @degamma-lut:        Degamma LUT
-> + * @gamma-lut:          Gamma LUT
-> + */
->   static void
->   run_invalid_tests_for_pipe(data_t *data)
->   {
+On 8/14/2023 1:08 PM, Modem, Bhanuprakash wrote:
+> Hi Karthik,
+>
+> On Mon-14-08-2023 12:49 pm, Karthik B S wrote:
+>>
+>> On 8/14/2023 12:35 PM, Modem, Bhanuprakash wrote:
+>>> Hi Karthik,
+>>>
+>>> On Mon-14-08-2023 10:21 am, Karthik B S wrote:
+>>>>
+>>>> On 8/12/2023 12:16 AM, Bhanuprakash Modem wrote:
+>>>>> Add documentation for all kms tests which is used by IGT testplan
+>>>>> documentation.
+>>>>>
+>>>>> V2: - Fix functionality
+>>>>>
+>>>>> Cc: Karthik B S <karthik.b.s@intel.com>
+>>>>> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>>>>> ---
+>>>>>   tests/kms_getfb.c | 90 
+>>>>> +++++++++++++++++++++++++++++++++++++++++++++++
+>>>>>   1 file changed, 90 insertions(+)
+>>>>>
+>>>>> diff --git a/tests/kms_getfb.c b/tests/kms_getfb.c
+>>>>> index afcf07fe8..1caa46e23 100644
+>>>>> --- a/tests/kms_getfb.c
+>>>>> +++ b/tests/kms_getfb.c
+>>>>> @@ -27,6 +27,11 @@
+>>>>>    *
+>>>>>    */
+>>>>> +/**
+>>>>> + * TEST: kms getfb
+>>>>> + * Category: Display
+>>>>> + * Description: Tests GETFB and GETFB2 ioctls.
+>>>>> + */
+>>>>>   #include "igt.h"
+>>>>>   #include <unistd.h>
+>>>>>   #include <stdlib.h>
+>>>>> @@ -169,6 +174,22 @@ static uint32_t get_any_prop_id(int fd)
+>>>>>       return 0;
+>>>>>   }
+>>>>> +/**
+>>>>> + * SUBTEST: getfb-handle-%s
+>>>>> + * Description: Tests error handling %arg[1]
+>>>>> + * Driver requirement: any
+>>>>> + * Functionality: kms_gem_interop
+>>>>> + * Mega feature: General Display Features
+>>>>> + * Run type: FULL
+>>>>> + * Test category: functionality test
+>>>>> + *
+>>>>> + * arg[1]:
+>>>>> + *
+>>>>> + * @closed:       when passing a handle that has been closed.
+>>>>> + * @not-fb:       when passing an invalid handle.
+>>>>> + * @valid:        when passing an valid handle.
+>>>>> + * @zero:         for a zero'd input.
+>>>>> + */
+>>>>>   static void test_handle_input(int fd)
+>>>>>   {
+>>>>>       struct drm_mode_fb_cmd2 add = {};
+>>>>> @@ -224,6 +245,30 @@ static void test_handle_input(int fd)
+>>>>>           gem_close(fd, add.handles[0]);
+>>>>>   }
+>>>>> +/**
+>>>>> + * SUBTEST: getfb-reject-ccs
+>>>>> + * Description: Tests error handling while requesting CCS buffers 
+>>>>> it should
+>>>>> + *              refuse because getfb supports returning a single 
+>>>>> buffer handle.
+>>>>> + * Driver requirement: any
+>>>>> + * Functionality: ccs, kms_gem_interop, tiling
+>>>>
+>>>> Hi,
+>>>>
+>>>> Do we need 'tiling' here?
+>>>
+>>> I think we need a tiling support to us the CCS modifiers. Hence 
+>>> added it here.
+>>
+>> But I can only see 'DRM_FORMAT_MOD_LINEAR' in the test. What am I 
+>> missing here?
+>
+> Please check
+>
+> igt_subtest("getfb2-accept-ccs") --> get_ccs_fb()
+>
+> https://cgit.freedesktop.org/drm/igt-gpu-tools/tree/tests/kms_getfb.c#n349 
+>
+
+Ah right. Thanks for pointing this out.
+
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+
+>
+> - Bhanu
+>
+>>
+>> Thanks,
+>> Karthik.B.S
+>>>
+>>> - Bhanu
+>>>
+>>>>
+>>>> Thanks,
+>>>> Karthik.B.S
+>>>>> + * Mega feature: General Display Features
+>>>>> + * Run type: FULL
+>>>>> + * Test category: functionality test
+>>>>> + *
+>>>>> + * SUBTEST: getfb-%s-different-handles
+>>>>> + * Description: Tests error handling while requesting for two 
+>>>>> different handles
+>>>>> + *              from %arg[1].
+>>>>> + * Driver requirement: any
+>>>>> + * Functionality: kms_gem_interop
+>>>>> + * Mega feature: General Display Features
+>>>>> + * Run type: FULL
+>>>>> + * Test category: functionality test
+>>>>> + *
+>>>>> + * arg[1]:
+>>>>> + *
+>>>>> + * @addfb:           same fd
+>>>>> + * @repeated:        different fd
+>>>>> + */
+>>>>>   static void test_duplicate_handles(int fd)
+>>>>>   {
+>>>>>       struct drm_mode_fb_cmd2 add = {};
+>>>>> @@ -289,6 +334,37 @@ static void test_duplicate_handles(int fd)
+>>>>>       }
+>>>>>   }
+>>>>> +/**
+>>>>> + * SUBTEST: getfb2-accept-ccs
+>>>>> + * Description: Tests outputs are correct when retrieving a CCS 
+>>>>> framebuffer.
+>>>>> + * Driver requirement: any
+>>>>> + * Functionality: ccs, kms_gem_interop, tiling
+>>>>> + * Mega feature: General Display Features
+>>>>> + * Run type: FULL
+>>>>> + * Test category: functionality test
+>>>>> + *
+>>>>> + * SUBTEST: getfb2-into-addfb2
+>>>>> + * Description: Output check by passing the output of GETFB2 into 
+>>>>> ADDFB2.
+>>>>> + * Driver requirement: any
+>>>>> + * Functionality: kms_gem_interop
+>>>>> + * Mega feature: General Display Features
+>>>>> + * Run type: FULL
+>>>>> + * Test category: functionality test
+>>>>> + *
+>>>>> + * SUBTEST: getfb2-handle-%s
+>>>>> + * Description: Tests error handling %arg[1].
+>>>>> + * Driver requirement: any
+>>>>> + * Functionality: kms_gem_interop
+>>>>> + * Mega feature: General Display Features
+>>>>> + * Run type: FULL
+>>>>> + * Test category: functionality test
+>>>>> + *
+>>>>> + * arg[1]:
+>>>>> + *
+>>>>> + * @closed:                  when passing a handle that has been 
+>>>>> closed
+>>>>> + * @not-fb:                  when passing an invalid handle
+>>>>> + * @zero:                    for a zero'd input
+>>>>> + */
+>>>>>   static void test_getfb2(int fd)
+>>>>>   {
+>>>>>       struct drm_mode_fb_cmd2 add_basic = {};
+>>>>> @@ -397,6 +473,20 @@ static void test_getfb2(int fd)
+>>>>>       }
+>>>>>   }
+>>>>> +/**
+>>>>> + * SUBTEST: %s-handle-protection
+>>>>> + * Description: Make sure %arg[1] return handles if caller is 
+>>>>> non-root or non-master.
+>>>>> + * Driver requirement: any
+>>>>> + * Functionality: kms_gem_interop
+>>>>> + * Mega feature: General Display Features
+>>>>> + * Run type: FULL
+>>>>> + * Test category: functionality test
+>>>>> + *
+>>>>> + * arg[1]:
+>>>>> + *
+>>>>> + * @getfb:      GETFB ioctl
+>>>>> + * @getfb2:     GETFB2 ioctl
+>>>>> + */
+>>>>>   static void test_handle_protection(void) {
+>>>>>       int non_master_fd;
+>>>>>       struct drm_mode_fb_cmd2 non_master_add = {};
