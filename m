@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AA38B10E013
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Aug 2023 10:04:45 +0000 (UTC)
-From: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 14 Aug 2023 15:26:54 +0530
-Message-Id: <20230814095654.872-1-mohammed.thasleem@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BA69010E03B
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Aug 2023 10:20:16 +0000 (UTC)
+Message-ID: <3e0c48cb-e6f1-c756-a028-71bf607a8a9a@intel.com>
+Date: Mon, 14 Aug 2023 15:50:11 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/i915/i915_pm_dc: Check runtime
- suspend for DC9 test
+Content-Language: en-US
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
+ <20230811184655.157060-60-bhanuprakash.modem@intel.com>
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20230811184655.157060-60-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [i-g-t V6 59/81] tests/kms_plane_alpha_blend:
+ Document each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,41 +23,93 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Thasleem@freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As for MTL DC5 counter is not expected to get reset in DC9 state.
-Add condition to check runtime_suspended_time value for both
-igfx and dgfx to track DC9 dpms entry.
+LGTM
 
-Signed-off-by: Thasleem, Mohammed <mohammed.thasleem@intel.com>
----
- tests/i915/i915_pm_dc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 
-diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
-index 90fe847fc..13ae31583 100644
---- a/tests/i915/i915_pm_dc.c
-+++ b/tests/i915/i915_pm_dc.c
-@@ -88,7 +88,7 @@
- #define KMS_HELPER "/sys/module/drm_kms_helper/parameters/"
- #define PACKAGE_CSTATE_PATH  "pmc_core/package_cstate_show"
- #define KMS_POLL_DISABLE 0
--#define DC9_RESETS_DC_COUNTERS(devid) (!(IS_DG1(devid) || IS_DG2(devid)))
-+#define DC9_RESETS_DC_COUNTERS(devid) (!(IS_DG1(devid) || IS_DG2(devid) || IS_METEORLAKE(devid)))
- 
- IGT_TEST_DESCRIPTION("Tests to validate display power DC states.");
- 
-@@ -514,7 +514,7 @@ static bool dc9_wait_entry(data_t *data, int dc_target, int prev_dc, int prev_rp
- 	 * Runtime suspended residency should increment once DC9 is achieved;
- 	 * this condition is valid for all platforms.
- 	 * However, resetting of dc5/dc6 counter to check if display engine was in DC9;
--	 * this condition at present can be skipped for dg1 and dg2 platforms.
-+	 * this condition at present can be skipped for dg1, dg2 and MTL platforms.
- 	 */
- 	return igt_wait((read_runtime_suspended_time(data->drm_fd) > prev_rpm) &&
- 			(!DC9_RESETS_DC_COUNTERS(data->devid) ||
--- 
-2.34.1
+On 12-Aug-23 12:16 AM, Bhanuprakash Modem wrote:
+> Add documentation for all kms tests which is used by IGT testplan
+> documentation.
+> 
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>   tests/kms_plane_alpha_blend.c | 55 +++++++++++++++++++++++++++++++++++
+>   1 file changed, 55 insertions(+)
+> 
+> diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
+> index 341b85c7e..d139f2367 100644
+> --- a/tests/kms_plane_alpha_blend.c
+> +++ b/tests/kms_plane_alpha_blend.c
+> @@ -24,6 +24,11 @@
+>    *   Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+>    */
+>   
+> +/**
+> + * TEST: kms plane alpha blend
+> + * Category: Display
+> + * Description: Test plane alpha and blending mode properties
+> + */
+>   #include "igt.h"
+>   
+>   IGT_TEST_DESCRIPTION("Test plane alpha and blending mode properties");
+> @@ -477,6 +482,56 @@ static void coverage_premult_constant(data_t *data, enum pipe pipe, igt_plane_t
+>   	igt_pipe_crc_stop(data->pipe_crc);
+>   }
+>   
+> +/**
+> + * SUBTEST: alpha-%s
+> + * Description: Test to %arg[1]
+> + * Driver requirement: any
+> + * Functionality: plane
+> + * Mega feature: General Display Features
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * arg[1]:
+> + *
+> + * @7efc:                validate alpha values 0x7e and 0xfc are swappable on
+> + *                       pre-multiplied blend mode.
+> + * @basic:               basic plane alpha properties.
+> + * @opaque-fb:           alpha properties with opaque fb.
+> + * @transparent-fb:      alpha property with transparent fb.
+> + */
+> +
+> +/**
+> + * SUBTEST: coverage-vs-premult-vs-constant
+> + * Description: Tests pipe coverage blending properties.
+> + * Driver requirement: any
+> + * Functionality: plane
+> + * Mega feature: General Display Features
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * SUBTEST: coverage-7efc
+> + * Description: Uses alpha values 0x7e and 0xfc to validate fg.alpha and
+> + *              plane_alpha are swappable on coverage blend mode.
+> + * Driver requirement: any
+> + * Functionality: plane
+> + * Mega feature: General Display Features
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * SUBTEST: constant-alpha-%s
+> + * Description: Tests plane alpha and blending properties with %arg[1].
+> + * Driver requirement: any
+> + * Functionality: plane
+> + * Mega feature: General Display Features
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * arg[1]:
+> + *
+> + * @max:            maximum alpha value
+> + * @mid:            medium  alpha value
+> + * @min:            minimum alpha value
+> + */
+>   static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, igt_output_t *output,
+>   				    bool blend, bool must_multiply,
+>   				    void(*test)(data_t *, enum pipe, igt_plane_t *))
