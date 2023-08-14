@@ -1,13 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-To: intel-gfx@lists.freedesktop.org,
-	igt-dev@lists.freedesktop.org
-Date: Mon, 14 Aug 2023 11:13:16 -0700
-Message-Id: <20230814181316.408017-1-vinay.belgaumkar@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============6930331734648828299=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 i-g-t] tests/i915_pm_freq_api: Ignore zero
- register value
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
+Date: Mon, 14 Aug 2023 18:50:49 -0000
+Message-ID: <169203904948.19474.9145827730359236478@emeril.freedesktop.org>
+References: <20230707143449.16139-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20230707143449.16139-1-mohammed.thasleem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4peLIENJLnhlQkFUOiBpbmZvIGZvciB0ZXN0cy9rbXNf?=
+ =?utf-8?q?lease=3A_Terminate_lease_fd_before_subtests_execution_=28rev4?=
+ =?utf-8?q?=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,63 +18,73 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Register read for requested_freq can return 0 when system is
-in runtime_pm. Make allowance for this case.
+--===============6930331734648828299==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: Explicit check for runtime_pm status (Riana)
+== Series Details ==
 
-Link: https://gitlab.freedesktop.org/drm/intel/issues/8736
-Link: https://gitlab.freedesktop.org/drm/intel/issues/8989
+Series: tests/kms_lease: Terminate lease fd before subtests execution (rev4)
+URL   : https://patchwork.freedesktop.org/series/120353/
+State : info
 
-Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
----
- tests/i915/i915_pm_freq_api.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+== Summary ==
 
-diff --git a/tests/i915/i915_pm_freq_api.c b/tests/i915/i915_pm_freq_api.c
-index cf21cc936..6713ad213 100644
---- a/tests/i915/i915_pm_freq_api.c
-+++ b/tests/i915/i915_pm_freq_api.c
-@@ -95,14 +95,16 @@ static void test_reset(int i915, int dirfd, int gt, int count)
- 		igt_assert(set_freq(dirfd, RPS_MIN_FREQ_MHZ, rpn) > 0);
- 		igt_assert(set_freq(dirfd, RPS_MAX_FREQ_MHZ, rpn) > 0);
- 		usleep(ACT_FREQ_LATENCY_US);
--		igt_assert_eq(get_freq(dirfd, RPS_CUR_FREQ_MHZ), rpn);
-+		if (igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE)
-+			igt_assert_eq(get_freq(dirfd, RPS_CUR_FREQ_MHZ), rpn);
- 
- 		/* Manually trigger a GT reset */
- 		fd = igt_debugfs_gt_open(i915, gt, "reset", O_WRONLY);
- 		igt_require(fd >= 0);
- 		igt_ignore_warn(write(fd, "1\n", 2));
- 
--		igt_assert_eq(get_freq(dirfd, RPS_CUR_FREQ_MHZ), rpn);
-+		if (igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE)
-+			igt_assert_eq(get_freq(dirfd, RPS_CUR_FREQ_MHZ), rpn);
- 	}
- 	close(fd);
- }
-@@ -114,13 +116,15 @@ static void test_suspend(int i915, int dirfd, int gt)
- 	igt_assert(set_freq(dirfd, RPS_MIN_FREQ_MHZ, rpn) > 0);
- 	igt_assert(set_freq(dirfd, RPS_MAX_FREQ_MHZ, rpn) > 0);
- 	usleep(ACT_FREQ_LATENCY_US);
--	igt_assert_eq(get_freq(dirfd, RPS_CUR_FREQ_MHZ), rpn);
-+	if (igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE)
-+		igt_assert_eq(get_freq(dirfd, RPS_CUR_FREQ_MHZ), rpn);
- 
- 	/* Manually trigger a suspend */
- 	igt_system_suspend_autoresume(SUSPEND_STATE_S3,
- 				      SUSPEND_TEST_NONE);
- 
--	igt_assert_eq(get_freq(dirfd, RPS_CUR_FREQ_MHZ), rpn);
-+	if (igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE)
-+		igt_assert_eq(get_freq(dirfd, RPS_CUR_FREQ_MHZ), rpn);
- }
- 
- int i915 = -1;
--- 
-2.38.1
+Participating hosts:
+bat-pvc-2
+bat-atsm-2
+bat-dg2-oem2
+bat-adlp-7
+Missing hosts results[1]:
+bat-atsm-2
+Results: [IGTPW_9585](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9585/index.html)
+
+
+
+--===============6930331734648828299==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_lease: Terminate lease fd before subtests execution (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/120353/">https://patchwork.freedesktop.org/series/120353/</a></td></tr>
+<tr><td><b>State:</b></td><td>info</td></tr>
+
+</table>
+
+
+    <p>Participating hosts:<br />
+bat-pvc-2<br />
+bat-atsm-2<br />
+bat-dg2-oem2<br />
+bat-adlp-7<br />
+Missing hosts results[1]:<br />
+bat-atsm-2<br />
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9585/index.html">IGTPW_9585</a></p>
+
+</body>
+</html>
+
+--===============6930331734648828299==--
