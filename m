@@ -1,23 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5BF3410E0EB
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Aug 2023 05:09:31 +0000 (UTC)
-Message-ID: <0a596f7d-b5bd-1ba7-5875-c96cefc9e1d4@intel.com>
-Date: Mon, 14 Aug 2023 10:39:26 +0530
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A232410E0EB
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Aug 2023 05:39:37 +0000 (UTC)
+Message-ID: <3587c965-a06a-92e5-e20d-aade6f608e2b@intel.com>
+Date: Mon, 14 Aug 2023 11:09:31 +0530
 MIME-Version: 1.0
 Content-Language: en-US
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
  igt-dev@lists.freedesktop.org
-References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
- <20230629144910.3055377-24-bhanuprakash.modem@intel.com>
- <0b5da5c2-f4ec-87c4-de2d-eb15fd9fff36@intel.com>
- <07ebb24b-2e9e-44f8-b254-74b9ff655db4@intel.com>
+References: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
+ <20230811184655.157060-38-bhanuprakash.modem@intel.com>
 From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <07ebb24b-2e9e-44f8-b254-74b9ff655db4@intel.com>
+In-Reply-To: <20230811184655.157060-38-bhanuprakash.modem@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [V5 i-g-t 23/81] tests/i915/kms_legacy_colorkey:
- Document each subtest for testplan
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [i-g-t V6 37/81] tests/kms_bw: Document each subtest
+ for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,64 +27,50 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+LGTM
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 
-On 10-Aug-23 11:35 PM, Modem, Bhanuprakash wrote:
-> Hi Swati,
+On 12-Aug-23 12:16 AM, Bhanuprakash Modem wrote:
+> Add documentation for all kms tests which is used by IGT testplan
+> documentation.
 > 
-> On Wed-09-08-2023 05:22 pm, Sharma, Swati2 wrote:
->> On 29-Jun-23 8:18 PM, Bhanuprakash Modem wrote:
->>> Add documentation for all kms tests which is used by IGT testplan
->>> documentation.
->>>
->>> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
->>> ---
->>>   tests/i915/kms_legacy_colorkey.c | 21 +++++++++++++++++++++
->>>   1 file changed, 21 insertions(+)
->>>
->>> diff --git a/tests/i915/kms_legacy_colorkey.c 
->>> b/tests/i915/kms_legacy_colorkey.c
->>> index 450cb2e3f..fb1952113 100644
->>> --- a/tests/i915/kms_legacy_colorkey.c
->>> +++ b/tests/i915/kms_legacy_colorkey.c
->>> @@ -24,6 +24,27 @@
->>>   #include "igt.h"
->>>   #include <errno.h>
->>> +/**
->>> + * TEST: kms legacy colorkey
->>> + * Category: Display
->>> + * Description: Check that the legacy set colorkey ioctl only works 
->>> on sprite planes.
->>> + *
->>> + * SUBTEST: basic
->>> + * Description: Test to check the legacy set colorkey ioctl only 
->>> works for sprite planes.
->>
->> Test description and subtest description is same.
+> V2: - Fix the functionality
 > 
-> This is simply adopted from igt_describe(), please feel free to fix that.
+> Cc: Swati Sharma <swati2.sharma@intel.com>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>   tests/kms_bw.c | 21 +++++++++++++++++++++
+>   1 file changed, 21 insertions(+)
 > 
-> - Bhanu
-
-Hi Bhanu,
-I don't agree. If efforts are done to improve documentation. It should 
-be done here. In the end, once this activity is done, igt_describe() and
-IGT_DESC() will be removed.
-
-> 
->>
->>> + * Driver requirement: i915
->>> + * Functionality: xorg_xv
->>> + * Mega feature: General Display Features
->>> + * Run type: FULL
->>> + * Test category: functionality test
->>> + *
->>> + * SUBTEST: invalid-plane
->>> + * Description: Check invalid plane id's, zero and outrange
->>> + * Driver requirement: i915
->>> + * Functionality: xorg_xv
->>> + * Mega feature: General Display Features
->>> + * Run type: FULL
->>> + * Test category: functionality test
->>> + */
->>>   IGT_TEST_DESCRIPTION("Check that the legacy set colorkey ioctl only 
->>> works on sprite planes.");
+> diff --git a/tests/kms_bw.c b/tests/kms_bw.c
+> index b66473e60..cfc0e193b 100644
+> --- a/tests/kms_bw.c
+> +++ b/tests/kms_bw.c
+> @@ -25,6 +25,27 @@
+>   #include "drm.h"
+>   #include <stdio.h>
+>   #include <xf86drmMode.h>
+> +/**
+> + * TEST: kms bw
+> + * Category: Display
+> + * Description: BW test with different resolutions
+> + *
+> + * SUBTEST: linear-tiling-%d-displays-%s
+> + * Description: bw test with %arg[2]
+> + * Driver requirement: any
+> + * Functionality: kms_core
+> + * Mega feature: General Display Features
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * arg[1].values: 1, 2, 3, 4, 5, 6, 7, 8
+> + *
+> + * arg[2]:
+> + *
+> + * @1920x1080p:       1920x1080 resolution
+> + * @2560x1440p:       2560x1440 resolution
+> + * @3840x2160p:       3840x2160 resolution
+> + */
+>   
+>   /* Common test data. */
+>   typedef struct data {
