@@ -1,18 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3B68B10E21B
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Aug 2023 17:27:54 +0000 (UTC)
-From: janga.rahul.kumar@intel.com
-To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
- janga.rahul.kumar@intel.com
-Date: Mon, 14 Aug 2023 22:59:40 +0530
-Message-Id: <20230814172940.1818622-4-janga.rahul.kumar@intel.com>
-In-Reply-To: <20230814172940.1818622-1-janga.rahul.kumar@intel.com>
-References: <20230814172940.1818622-1-janga.rahul.kumar@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BD35A10E221
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Aug 2023 17:28:16 +0000 (UTC)
+From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Mon, 14 Aug 2023 17:28:12 +0000
+Message-ID: <MW3PR11MB4748B11550D88C15CDD62A02AE17A@MW3PR11MB4748.namprd11.prod.outlook.com>
+References: <20230810212521.1405970-1-janga.rahul.kumar@intel.com>
+ <20230810212521.1405970-2-janga.rahul.kumar@intel.com>
+ <20230811155513.snl5dgsdwlmlbnwg@kamilkon-desk1>
+In-Reply-To: <20230811155513.snl5dgsdwlmlbnwg@kamilkon-desk1>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/3] lib/igt_gt: Extend hang library support
- to XE
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/xe: Add support to reset all
+ GT's
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,122 +24,89 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: sai.gowtham.ch@intel.com, kunal1.joshi@intel.com
+Cc: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>, "Joshi,
+ Kunal1" <kunal1.joshi@intel.com>, "Gandi, Ramadevi" <ramadevi.gandi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-
-Extend hang library support to XE driver and update
-the documentation.
-
-Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Anna Karas <anna.karas@intel.com>
-Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-Tested-by: Kunal Joshi <kunal1.joshi@intel.com>
-Reviewed-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
----
- lib/igt_gt.c | 29 +++++++++++++++++++++++++----
- 1 file changed, 25 insertions(+), 4 deletions(-)
-
-diff --git a/lib/igt_gt.c b/lib/igt_gt.c
-index d4a825e66..7cf0e468e 100644
---- a/lib/igt_gt.c
-+++ b/lib/igt_gt.c
-@@ -44,6 +44,7 @@
- #include "intel_reg.h"
- #include "intel_chipset.h"
- #include "igt_dummyload.h"
-+#include "xe/xe_gt.h"
- 
- /**
-  * SECTION:igt_gt
-@@ -179,6 +180,12 @@ igt_hang_t igt_allow_hang(int fd, unsigned ctx, unsigned flags)
- 	 */
- 	if (!igt_check_boolean_env_var("IGT_HANG", true))
- 		igt_skip("hang injection disabled by user [IGT_HANG=0]\n");
-+
-+	if (is_xe_device(fd)) {
-+		igt_require(has_gpu_reset(fd));
-+		return (struct igt_hang){ 0, ctx, 0, flags };
-+	}
-+
- 	gem_context_require_bannable(fd);
- 
- 	if (flags & HANG_WANT_ENGINE_RESET)
-@@ -215,6 +222,9 @@ igt_hang_t igt_allow_hang(int fd, unsigned ctx, unsigned flags)
- 
- void igt_disallow_hang(int fd, igt_hang_t arg)
- {
-+	if (is_xe_device(fd))
-+		return;
-+
- 	context_set_ban(fd, arg.ctx, arg.ban);
- 
- 	if ((arg.flags & HANG_ALLOW_CAPTURE) == 0) {
-@@ -269,8 +279,8 @@ static bool has_ctx_exec(int fd, unsigned ring, uint32_t ctx)
- 
- /**
-  * igt_hang_ring_ctx:
-- * @fd: open i915 drm file descriptor
-- * @ctx: the contxt specifier
-+ * @fd: open i915/xe drm file descriptor
-+ * @ctx: the context specifier
-  * @ring: execbuf ring flag
-  * @flags: set of flags to control execution
-  * @offset: The resultant gtt offset of the exec obj
-@@ -290,6 +300,9 @@ static igt_hang_t __igt_hang_ctx(int fd, uint64_t ahnd, uint32_t ctx, int ring,
- 	igt_spin_t *spin;
- 	unsigned ban;
- 
-+	if (is_xe_device(fd))
-+		return xe_hang_ring(fd, ahnd, ctx, ring, flags);
-+
- 	igt_require_hang_ring(fd, ctx, ring);
- 
- 	/* check if non-default ctx submission is allowed */
-@@ -334,7 +347,7 @@ igt_hang_t igt_hang_ctx_with_ahnd(int fd, uint64_t ahnd, uint32_t ctx, int ring,
- 
- /**
-  * igt_hang_ring:
-- * @fd: open i915 drm file descriptor
-+ * @fd: open i915/xe drm file descriptor
-  * @ring: execbuf ring flag
-  *
-  * This helper function injects a hanging batch into @ring. It returns a
-@@ -357,7 +370,7 @@ igt_hang_t igt_hang_ring_with_ahnd(int fd, int ring, uint64_t ahnd)
- 
- /**
-  * igt_post_hang_ring:
-- * @fd: open i915 drm file descriptor
-+ * @fd: open i915/xe drm file descriptor
-  * @arg: hang state from igt_hang_ring()
-  *
-  * This function does the necessary post-processing after a gpu hang injected
-@@ -368,6 +381,11 @@ void igt_post_hang_ring(int fd, igt_hang_t arg)
- 	if (!arg.spin)
- 		return;
- 
-+	if (is_xe_device(fd)) {
-+		igt_spin_free(fd, arg.spin);
-+		xe_post_hang_ring(fd, arg);
-+	}
-+
- 	gem_sync(fd, arg.spin->handle); /* Wait until it hangs */
- 	igt_spin_free(fd, arg.spin);
- 
-@@ -399,6 +417,9 @@ void igt_force_gpu_reset(int drm_fd)
- 
- 	igt_debug("Triggering GPU reset\n");
- 
-+	if (is_xe_device(drm_fd))
-+		xe_force_gt_reset_all(drm_fd);
-+
- 	dir = igt_debugfs_dir(drm_fd);
- 
- 	wedged = 0;
--- 
-2.25.1
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS2FtaWwgS29uaWVjem55
+IDxrYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tPg0KPiBTZW50OiAxMSBBdWd1c3QgMjAy
+MyAyMToyNQ0KPiBUbzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gQ2M6IEt1bWFy
+LCBKYW5nYSBSYWh1bCA8amFuZ2EucmFodWwua3VtYXJAaW50ZWwuY29tPjsgR2FuZGksIFJhbWFk
+ZXZpDQo+IDxyYW1hZGV2aS5nYW5kaUBpbnRlbC5jb20+OyBDaCwgU2FpIEdvd3RoYW0gPHNhaS5n
+b3d0aGFtLmNoQGludGVsLmNvbT47DQo+IEpvc2hpLCBLdW5hbDEgPGt1bmFsMS5qb3NoaUBpbnRl
+bC5jb20+OyBLYXJhcywgQW5uYSA8YW5uYS5rYXJhc0BpbnRlbC5jb20+DQo+IFN1YmplY3Q6IFJl
+OiBbUEFUQ0ggaS1nLXQgMS8zXSBsaWIveGU6IEFkZCBzdXBwb3J0IHRvIHJlc2V0IGFsbCBHVCdz
+DQo+IA0KPiBIaSBKYW5nYSBSYWh1bCwNCj4gDQo+IE9uIDIwMjMtMDgtMTEgYXQgMDI6NTU6MTkg
+KzA1MzAsIGphbmdhLnJhaHVsLmt1bWFyQGludGVsLmNvbSB3cm90ZToNCj4gPiBGcm9tOiBKYW5n
+YSBSYWh1bCBLdW1hciA8amFuZ2EucmFodWwua3VtYXJAaW50ZWwuY29tPg0KPiA+DQo+ID4gSW50
+cm9kdWNlIHhlIGd0IGxpYnJhcnkuDQo+ID4NCj4gPiBBZGQgc3VwcG9ydCB0byBjaGVjayBHVCBy
+ZXNldCBhbmQgZm9yY2UgcmVzZXQgYWxsIEdUJ3MuDQo+ID4NCj4gPiBDYzogU2FpIEdvd3RoYW0g
+Q2ggPHNhaS5nb3d0aGFtLmNoQGludGVsLmNvbT4NCj4gPiBDYzogS3VuYWwgSm9zaGkgPGt1bmFs
+MS5qb3NoaUBpbnRlbC5jb20+DQo+ID4gQ2M6IEthbWlsIEtvbmllY3pueSA8a2FtaWwua29uaWVj
+em55QGxpbnV4LmludGVsLmNvbT4NCj4gPiBDYzogQW5uYSBLYXJhcyA8YW5uYS5rYXJhc0BpbnRl
+bC5jb20+DQo+ID4gU2lnbmVkLW9mZi1ieTogSmFuZ2EgUmFodWwgS3VtYXIgPGphbmdhLnJhaHVs
+Lmt1bWFyQGludGVsLmNvbT4NCj4gPiBUZXN0ZWQtYnk6IEt1bmFsIEpvc2hpIDxrdW5hbDEuam9z
+aGlAaW50ZWwuY29tPg0KPiA+IFJldmlld2VkLWJ5OiBTYWkgR293dGhhbSBDaCA8c2FpLmdvd3Ro
+YW0uY2hAaW50ZWwuY29tPg0KPiA+IC0tLQ0KPiA+ICBsaWIvbWVzb24uYnVpbGQgfCAgMSArDQo+
+ID4gIGxpYi94ZS94ZV9ndC5jICB8IDYxDQo+ID4gKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKw0KPiA+ICBsaWIveGUveGVfZ3QuaCAgfCAyNyArKysrKysr
+KysrKysrKysrKysrKysrDQo+ID4gIDMgZmlsZXMgY2hhbmdlZCwgODkgaW5zZXJ0aW9ucygrKQ0K
+PiA+ICBjcmVhdGUgbW9kZSAxMDA2NDQgbGliL3hlL3hlX2d0LmMNCj4gPiAgY3JlYXRlIG1vZGUg
+MTAwNjQ0IGxpYi94ZS94ZV9ndC5oDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvbGliL21lc29uLmJ1
+aWxkIGIvbGliL21lc29uLmJ1aWxkIGluZGV4DQo+ID4gY2UxMWMwNzE1Li5iN2JmY2Y0ZjAgMTAw
+NjQ0DQo+ID4gLS0tIGEvbGliL21lc29uLmJ1aWxkDQo+ID4gKysrIGIvbGliL21lc29uLmJ1aWxk
+DQo+ID4gQEAgLTEwMyw2ICsxMDMsNyBAQCBsaWJfc291cmNlcyA9IFsNCj4gPiAgCSdpZ3RfZHNj
+LmMnLA0KPiA+ICAJJ3hlL3hlX2NvbXB1dGUuYycsDQo+ID4gIAkneGUveGVfY29tcHV0ZV9zcXVh
+cmVfa2VybmVscy5jJywNCj4gPiArCSd4ZS94ZV9ndC5jJywNCj4gPiAgCSd4ZS94ZV9pb2N0bC5j
+JywNCj4gPiAgCSd4ZS94ZV9xdWVyeS5jJywNCj4gPiAgCSd4ZS94ZV9zcGluLmMnLA0KPiA+IGRp
+ZmYgLS1naXQgYS9saWIveGUveGVfZ3QuYyBiL2xpYi94ZS94ZV9ndC5jIG5ldyBmaWxlIG1vZGUg
+MTAwNjQ0DQo+ID4gaW5kZXggMDAwMDAwMDAwLi5hNzJmOWJjYzkNCj4gPiAtLS0gL2Rldi9udWxs
+DQo+ID4gKysrIGIvbGliL3hlL3hlX2d0LmMNCj4gPiBAQCAtMCwwICsxLDYxIEBADQo+ID4gKy8q
+IFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBNSVQgKi8NCj4gPiArLyoNCj4gPiArICogQ29weXJp
+Z2h0IMKpIDIwMjMgSW50ZWwgQ29ycG9yYXRpb24NCj4gPiArICoNCj4gPiArICogQXV0aG9yczoN
+Cj4gPiArICogICAgSmFuZ2EgUmFodWwgS3VtYXIgPGphbmdhLnJhaHVsLmt1bWFyQGludGVsLmNv
+bT4NCj4gPiArICovDQo+ID4gKw0KPiA+ICsjaW5jbHVkZSA8ZmNudGwuaD4NCj4gPiArI2luY2x1
+ZGUgInhlX2d0LmgiDQo+ID4gKw0KPiA+ICsvKioNCj4gPiArICogaGFzX3hlX2d0X3Jlc2V0Og0K
+PiA+ICsgKiBAZmQ6IG9wZW4geGUgZHJtIGZpbGUgZGVzY3JpcHRvcg0KPiA+ICsgKg0KPiA+ICsg
+KiBDaGVjayBndCBmb3JjZSByZXNldCBzeXNmcyBlbnRyeSBpcyBhdmFpbGFibGUgb3Igbm90DQo+
+ID4gKyAqDQo+ID4gKyAqIFJldHVybnM6IHJlc2V0IHN5c2ZzIGVudHJ5IGF2YWlsYWJsZSAgKi8g
+Ym9vbCBoYXNfeGVfZ3RfcmVzZXQoaW50DQo+ID4gK2ZkKSB7DQo+ID4gKwljaGFyIHJlc2V0X3N5
+c2ZzX3BhdGhbMTAwXTsNCj4gPiArCXN0cnVjdCBzdGF0IHN0Ow0KPiA+ICsJaW50IGd0Ow0KPiA+
+ICsJaW50IHJlc2V0X3N5c2ZzX2ZkID0gLTE7DQo+ID4gKwlpbnQgc3lzZnNfZmQgPSAtMTsNCj4g
+PiArDQo+ID4gKwlpZ3RfYXNzZXJ0X2VxKGZzdGF0KGZkLCAmc3QpLCAwKTsNCj4gPiArCXN5c2Zz
+X2ZkID0gaWd0X3N5c2ZzX29wZW4oZmQpOw0KPiA+ICsNCj4gPiArCWlndF9hc3NlcnQoc3lzZnNf
+ZmQgIT0gLTEpOw0KPiA+ICsJeGVfZm9yX2VhY2hfZ3QoZmQsIGd0KSB7DQo+ID4gKwkJc3ByaW50
+ZihyZXNldF9zeXNmc19wYXRoLA0KPiAiL3N5cy9rZXJuZWwvZGVidWcvZHJpLyVkL2d0JWQvZm9y
+Y2VfcmVzZXQiLA0KPiA+ICsJCQkJbWlub3Ioc3Quc3RfcmRldiksIGd0KTsNCj4gPiArCQlyZXNl
+dF9zeXNmc19mZCA9IG9wZW5hdChzeXNmc19mZCwgcmVzZXRfc3lzZnNfcGF0aCwNCj4gT19SRE9O
+TFkpOw0KPiA+ICsNCj4gPiArCQlpZiAocmVzZXRfc3lzZnNfZmQgPT0gLTEpIHsNCj4gPiArCQkJ
+Y2xvc2Uoc3lzZnNfZmQpOw0KPiA+ICsJCQlyZXR1cm4gMDsNCj4gPiArCQl9DQo+ID4gKw0KPiA+
+ICsJCWNsb3NlKHJlc2V0X3N5c2ZzX2ZkKTsNCj4gPiArCX0NCj4gPiArDQo+ID4gKwljbG9zZShz
+eXNmc19mZCk7DQo+ID4gKwlyZXR1cm4gMTsNCj4gPiArfQ0KPiA+ICsNCj4gPiArLyoqDQo+ID4g
+KyAqIHhlX2ZvcmNlX2d0X3Jlc2V0X2FsbDoNCj4gPiArICoNCj4gPiArICogRm9yY2VzIHJlc2V0
+IG9mIGFsbCB0aGUgR1Qncy4NCj4gPiArICovDQo+ID4gK3ZvaWQgeGVfZm9yY2VfZ3RfcmVzZXRf
+YWxsKGludCB4ZV9mZCkgew0KPiA+ICsJaW50IGd0Ow0KPiA+ICsNCj4gPiArCXhlX2Zvcl9lYWNo
+X2d0KHhlX2ZkLCBndCkNCj4gPiArCQl4ZV9mb3JjZV9ndF9yZXNldCh4ZV9mZCwgZ3QpOw0KPiA+
+ICt9DQo+ID4gKw0KPiA+IGRpZmYgLS1naXQgYS9saWIveGUveGVfZ3QuaCBiL2xpYi94ZS94ZV9n
+dC5oIG5ldyBmaWxlIG1vZGUgMTAwNjQ0DQo+ID4gaW5kZXggMDAwMDAwMDAwLi5lMDc1ZWJmNjIN
+Cj4gPiAtLS0gL2Rldi9udWxsDQo+ID4gKysrIGIvbGliL3hlL3hlX2d0LmgNCj4gPiBAQCAtMCww
+ICsxLDI3IEBADQo+ID4gKy8qIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBNSVQgKi8NCj4gPiAr
+LyoNCj4gPiArICogQ29weXJpZ2h0IMKpIDIwMjMgSW50ZWwgQ29ycG9yYXRpb24NCj4gPiArICoN
+Cj4gPiArICogQXV0aG9yczoNCj4gPiArICogICAgSmFuZ2EgUmFodWwgS3VtYXIgPGphbmdhLnJh
+aHVsLmt1bWFyQGludGVsLmNvbT4NCj4gPiArICovDQo+ID4gKw0KPiA+ICsjaW5jbHVkZSA8ZGly
+ZW50Lmg+DQo+ID4gKyNpbmNsdWRlIDxzdGRpbnQuaD4NCj4gPiArI2luY2x1ZGUgPHN5cy9zdGF0
+Lmg+DQo+ID4gKw0KPiA+ICsjaW5jbHVkZSAiaWd0X2NvcmUuaCINCj4gPiArI2luY2x1ZGUgImln
+dF9zeXNmcy5oIg0KPiA+ICsjaW5jbHVkZSAieGVfaW9jdGwuaCINCj4gPiArI2luY2x1ZGUgInhl
+X3F1ZXJ5LmgiDQo+ID4gKw0KPiA+ICsjaWZkZWYgX19saW51eF9fDQo+ID4gKyNpbmNsdWRlIDxz
+eXMvc3lzbWFjcm9zLmg+DQo+ID4gKyNlbHNlDQo+ID4gKyNkZWZpbmUgbWFqb3IoX192X18pICgo
+KF9fdl9fKSA+PiA4KSAmIDB4ZmYpICNkZWZpbmUgbWlub3IoX192X18pDQo+ID4gKygoX192X18p
+ICYgMHhmZikgI2VuZGlmDQo+IA0KPiBJdCBsb29rcyBsaWtlIHlvdSBpbmNsdWRlZCBtYW55IGhl
+YWRlcnMgd2hpY2ggYXJlIG5vdCBuZWVkZWQgaGVyZSwgYWxzbyB0aGF0DQo+IG1hY3JvIGlzIHVz
+ZWQgb25seSBpbiB4ZV9ndC5jIGZpbGUsIG1vdmUgdGhlbSBpbnRvIHhlX2d0LmMuIEdlbmVyYWxs
+eSBpbiBsaWINCj4gaGVhZGVyIGluY2x1ZGUgb25seSB3aGF0IGlzIG5lZWRlZCBieSB0ZXN0KHMp
+IHdoaWNoIHdpbGwgdXNlIGxpYiBoZWFkZXIuDQpEb25lDQoNClRoYW5rcywNClJhaHVsDQo+IA0K
+PiBSZWdhcmRzLA0KPiBLYW1pbA0KPiANCj4gPiArDQo+ID4gK2Jvb2wgaGFzX3hlX2d0X3Jlc2V0
+KGludCBmZCk7DQo+ID4gK3ZvaWQgeGVfZm9yY2VfZ3RfcmVzZXRfYWxsKGludCBmZCk7DQo+ID4g
+Kw0KPiA+IC0tDQo+ID4gMi4yNS4xDQo+ID4NCg==
