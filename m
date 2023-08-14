@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 767AE10E0DB
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Aug 2023 04:43:15 +0000 (UTC)
-Message-ID: <7aeadfd6-62e3-965c-faf7-4b36251a4482@intel.com>
-Date: Mon, 14 Aug 2023 10:12:58 +0530
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BB0C710E0DB
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Aug 2023 04:51:35 +0000 (UTC)
+Message-ID: <d1616c9c-973d-4398-9b02-a2f0774d30f8@intel.com>
+Date: Mon, 14 Aug 2023 10:21:16 +0530
 Content-Language: en-US
 To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
  <igt-dev@lists.freedesktop.org>
 References: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
- <20230811184655.157060-49-bhanuprakash.modem@intel.com>
+ <20230811184655.157060-51-bhanuprakash.modem@intel.com>
 From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <20230811184655.157060-49-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230811184655.157060-51-bhanuprakash.modem@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t V6 48/81] tests/kms_flip_event_leak: Document
- each subtest for testplan
+Subject: Re: [igt-dev] [i-g-t V6 50/81] tests/kms_getfb: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,40 +32,147 @@ On 8/12/2023 12:16 AM, Bhanuprakash Modem wrote:
 > Add documentation for all kms tests which is used by IGT testplan
 > documentation.
 >
-> V2: - Fix test description
+> V2: - Fix functionality
 >
 > Cc: Karthik B S <karthik.b.s@intel.com>
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 > ---
->   tests/kms_flip_event_leak.c | 17 +++++++++++++++++
->   1 file changed, 17 insertions(+)
+>   tests/kms_getfb.c | 90 +++++++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 90 insertions(+)
 >
-> diff --git a/tests/kms_flip_event_leak.c b/tests/kms_flip_event_leak.c
-> index 423ce40df..0de2800d2 100644
-> --- a/tests/kms_flip_event_leak.c
-> +++ b/tests/kms_flip_event_leak.c
-> @@ -31,6 +31,23 @@
->   #include "igt_device.h"
->   #include "xe/xe_query.h"
+> diff --git a/tests/kms_getfb.c b/tests/kms_getfb.c
+> index afcf07fe8..1caa46e23 100644
+> --- a/tests/kms_getfb.c
+> +++ b/tests/kms_getfb.c
+> @@ -27,6 +27,11 @@
+>    *
+>    */
 >   
 > +/**
-> + * TEST: kms flip event leak
+> + * TEST: kms getfb
 > + * Category: Display
-> + * Description: Test to validate flip event leak
-> + *
-> + * SUBTEST: basic
-> + * Description: This test tries to provoke the kernel into leaking a pending
-> + *              page flip event when the fd is closed before the flip has
-> + *              completed. The test itself won't fail even if the kernel leaks
-> + *              the event, but the resulting dmesg WARN will indicate a failure.
+> + * Description: Tests GETFB and GETFB2 ioctls.
+> + */
+>   #include "igt.h"
+>   #include <unistd.h>
+>   #include <stdlib.h>
+> @@ -169,6 +174,22 @@ static uint32_t get_any_prop_id(int fd)
+>   	return 0;
+>   }
+>   
+> +/**
+> + * SUBTEST: getfb-handle-%s
+> + * Description: Tests error handling %arg[1]
 > + * Driver requirement: any
-> + * Functionality: kms_core
+> + * Functionality: kms_gem_interop
 > + * Mega feature: General Display Features
 > + * Run type: FULL
 > + * Test category: functionality test
+> + *
+> + * arg[1]:
+> + *
+> + * @closed:       when passing a handle that has been closed.
+> + * @not-fb:       when passing an invalid handle.
+> + * @valid:        when passing an valid handle.
+> + * @zero:         for a zero'd input.
 > + */
-> +
->   typedef struct {
->   	int drm_fd;
->   	igt_display_t display;
+>   static void test_handle_input(int fd)
+>   {
+>   	struct drm_mode_fb_cmd2 add = {};
+> @@ -224,6 +245,30 @@ static void test_handle_input(int fd)
+>   		gem_close(fd, add.handles[0]);
+>   }
+>   
+> +/**
+> + * SUBTEST: getfb-reject-ccs
+> + * Description: Tests error handling while requesting CCS buffers it should
+> + *              refuse because getfb supports returning a single buffer handle.
+> + * Driver requirement: any
+> + * Functionality: ccs, kms_gem_interop, tiling
+
+Hi,
+
+Do we need 'tiling' here?
+
+Thanks,
+Karthik.B.S
+> + * Mega feature: General Display Features
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * SUBTEST: getfb-%s-different-handles
+> + * Description: Tests error handling while requesting for two different handles
+> + *              from %arg[1].
+> + * Driver requirement: any
+> + * Functionality: kms_gem_interop
+> + * Mega feature: General Display Features
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * arg[1]:
+> + *
+> + * @addfb:           same fd
+> + * @repeated:        different fd
+> + */
+>   static void test_duplicate_handles(int fd)
+>   {
+>   	struct drm_mode_fb_cmd2 add = {};
+> @@ -289,6 +334,37 @@ static void test_duplicate_handles(int fd)
+>   	}
+>   }
+>   
+> +/**
+> + * SUBTEST: getfb2-accept-ccs
+> + * Description: Tests outputs are correct when retrieving a CCS framebuffer.
+> + * Driver requirement: any
+> + * Functionality: ccs, kms_gem_interop, tiling
+> + * Mega feature: General Display Features
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * SUBTEST: getfb2-into-addfb2
+> + * Description: Output check by passing the output of GETFB2 into ADDFB2.
+> + * Driver requirement: any
+> + * Functionality: kms_gem_interop
+> + * Mega feature: General Display Features
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * SUBTEST: getfb2-handle-%s
+> + * Description: Tests error handling %arg[1].
+> + * Driver requirement: any
+> + * Functionality: kms_gem_interop
+> + * Mega feature: General Display Features
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * arg[1]:
+> + *
+> + * @closed:                  when passing a handle that has been closed
+> + * @not-fb:                  when passing an invalid handle
+> + * @zero:                    for a zero'd input
+> + */
+>   static void test_getfb2(int fd)
+>   {
+>   	struct drm_mode_fb_cmd2 add_basic = {};
+> @@ -397,6 +473,20 @@ static void test_getfb2(int fd)
+>   	}
+>   }
+>   
+> +/**
+> + * SUBTEST: %s-handle-protection
+> + * Description: Make sure %arg[1] return handles if caller is non-root or non-master.
+> + * Driver requirement: any
+> + * Functionality: kms_gem_interop
+> + * Mega feature: General Display Features
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * arg[1]:
+> + *
+> + * @getfb:      GETFB ioctl
+> + * @getfb2:     GETFB2 ioctl
+> + */
+>   static void test_handle_protection(void) {
+>   	int non_master_fd;
+>   	struct drm_mode_fb_cmd2 non_master_add = {};
