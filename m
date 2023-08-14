@@ -1,23 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A0A3110E0EB
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Aug 2023 05:45:48 +0000 (UTC)
-From: "B, Jeevan" <jeevan.b@intel.com>
-To: "B S, Karthik" <karthik.b.s@intel.com>, "Modem, Bhanuprakash"
- <bhanuprakash.modem@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Mon, 14 Aug 2023 05:45:44 +0000
-Message-ID: <DM4PR11MB6312AD12979C2CE56E09E6AC9017A@DM4PR11MB6312.namprd11.prod.outlook.com>
-References: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
- <20230811184655.157060-73-bhanuprakash.modem@intel.com>
- <0c48d960-0dac-d89a-903f-1c31c4c12ba7@intel.com>
-In-Reply-To: <0c48d960-0dac-d89a-903f-1c31c4c12ba7@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2846010E0EB
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Aug 2023 05:52:35 +0000 (UTC)
+Message-ID: <3c0230b9-adcf-30c4-4ed6-9d391c1c68ad@intel.com>
+Date: Mon, 14 Aug 2023 11:22:07 +0530
 Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+To: Hersen Wu <hersenxs.wu@amd.com>, <igt-dev@lists.freedesktop.org>,
+ <rodrigo.siqueira@amd.com>, <aurabindo.pillai@amd.com>, <alex.hung@amd.com>,
+ <stylon.wang@amd.com>, <hamza.mahfooz@amd.com>, <sunpeng.li@amd.com>,
+ "Heikkila, Juha-pekka" <juha-pekka.heikkila@intel.com>, Kamil Konieczny
+ <kamil.konieczny@linux.intel.com>
+References: <20230811221223.57193-1-hersenxs.wu@amd.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20230811221223.57193-1-hersenxs.wu@amd.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t V6 72/81] tests/kms_setmode: Document each
- subtest for testplan
+Subject: Re: [igt-dev] [PATCH 1/2] [i-g-t] lib/igt_kms: Re-try
+ display_require if require output is not valid
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,80 +25,103 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: markyacoub@google.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGksIA0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEIgUywgS2FydGhp
-ayA8a2FydGhpay5iLnNAaW50ZWwuY29tPg0KPiBTZW50OiBNb25kYXksIEF1Z3VzdCAxNCwgMjAy
-MyAxMDozNiBBTQ0KPiBUbzogTW9kZW0sIEJoYW51cHJha2FzaCA8YmhhbnVwcmFrYXNoLm1vZGVt
-QGludGVsLmNvbT47IGlndC0NCj4gZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZzsgQiwgSmVldmFu
-IDxqZWV2YW4uYkBpbnRlbC5jb20+DQo+IFN1YmplY3Q6IFJlOiBbaS1nLXQgVjYgNzIvODFdIHRl
-c3RzL2ttc19zZXRtb2RlOiBEb2N1bWVudCBlYWNoIHN1YnRlc3QgZm9yDQo+IHRlc3RwbGFuDQo+
-IA0KPiBIaSwNCj4gDQo+IE9uIDgvMTIvMjAyMyAxMjoxNiBBTSwgQmhhbnVwcmFrYXNoIE1vZGVt
-IHdyb3RlOg0KPiA+IEFkZCBkb2N1bWVudGF0aW9uIGZvciBhbGwga21zIHRlc3RzIHdoaWNoIGlz
-IHVzZWQgYnkgSUdUIHRlc3RwbGFuDQo+ID4gZG9jdW1lbnRhdGlvbi4NCj4gPg0KPiA+IFYyOiAt
-IEZpeCB0ZXN0IGRlc2NyaXB0aW9uDQo+ID4NCj4gPiBDYzogS2FydGhpayBCIFMgPGthcnRoaWsu
-Yi5zQGludGVsLmNvbT4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBCaGFudXByYWthc2ggTW9kZW0gPGJo
-YW51cHJha2FzaC5tb2RlbUBpbnRlbC5jb20+DQo+ID4gLS0tDQo+ID4gICB0ZXN0cy9rbXNfc2V0
-bW9kZS5jIHwgNjANCj4gKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrDQo+ID4gICAxIGZpbGUgY2hhbmdlZCwgNjAgaW5zZXJ0aW9ucygrKQ0KPiA+DQo+ID4gZGlm
-ZiAtLWdpdCBhL3Rlc3RzL2ttc19zZXRtb2RlLmMgYi90ZXN0cy9rbXNfc2V0bW9kZS5jIGluZGV4
-DQo+ID4gMDM1YmJkMGIwLi4xOWJkYTZiMjYgMTAwNjQ0DQo+ID4gLS0tIGEvdGVzdHMva21zX3Nl
-dG1vZGUuYw0KPiA+ICsrKyBiL3Rlc3RzL2ttc19zZXRtb2RlLmMNCj4gPiBAQCAtMzEsNiArMzEs
-NjYgQEANCj4gPiAgICNpbmNsdWRlIDxzeXMvdGltZS5oPg0KPiA+ICAgI2luY2x1ZGUgPG1hdGgu
-aD4NCj4gPiAgICNpbmNsdWRlICJ4ZS94ZV9xdWVyeS5oIg0KPiA+ICsvKioNCj4gPiArICogVEVT
-VDoga21zIHNldG1vZGUNCj4gPiArICogQ2F0ZWdvcnk6IERpc3BsYXkNCj4gPiArICogRGVzY3Jp
-cHRpb246IFRlc3RzIHRoZSBtb2RlIGJ5IGl0ZXJhdGluZyB0aHJvdWdoIGFsbCB2YWxpZC9pbnZh
-bGlkDQo+IGNydGMvY29ubmVjdG9yDQo+ID4gKyAqICAgICAgICAgICAgICBjb21iaW5hdGlvbnMN
-Cj4gPiArICoNCj4gPiArICogU1VCVEVTVDogYmFzaWMNCj4gPiArICogRGVzY3JpcHRpb246IFRl
-c3RzIHRoZSB2YmxhbmsgdGltaW5nIGJ5IGl0ZXJhdGluZyB0aHJvdWdoIGFsbCB2YWxpZA0KPiBj
-cnRjL2Nvbm5lY3Rvcg0KPiA+ICsgKiAgICAgICAgICAgICAgY29tYmluYXRpb25zDQo+ID4gKyAq
-IERyaXZlciByZXF1aXJlbWVudDogYW55DQo+ID4gKyAqIEZ1bmN0aW9uYWxpdHk6IGttc19jb3Jl
-LCB2YmxhbmsNCj4gPiArICogTWVnYSBmZWF0dXJlOiBHZW5lcmFsIERpc3BsYXkgRmVhdHVyZXMN
-Cj4gPiArICogUnVuIHR5cGU6IEZVTEwNCj4gPiArICogVGVzdCBjYXRlZ29yeTogZnVuY3Rpb25h
-bGl0eSB0ZXN0DQo+ID4gKyAqDQo+ID4gKyAqIFNVQlRFU1Q6IGJhc2ljLWNsb25lLXNpbmdsZS1j
-cnRjDQo+ID4gKyAqIERlc2NyaXB0aW9uOiBUZXN0cyB0aGUgbW9kZSBieSBjbG9uaW5nIHRoZSBz
-aW5nbGUgY3J0YyBieSBpdGVyYXRpbmcNCj4gdGhyb3VnaCBhbGwNCj4gPiArICogICAgICAgICAg
-ICAgIHZhbGlkIGNydGMvY29ubmVjdG9yIGNvbWJpbmF0aW9ucw0KPiANCj4gVGhlIGRlc2NyaXB0
-aW9ucyBzZWVtIGNvbmZ1c2luZyB0byBtZSBhdCBsZWFzdC4NCj4gDQo+IEBKZWV2YW46IFBsZWFz
-ZSBwcm92aWRlIHlvdXIgaW5wdXRzIG9uIHRoZXNlIGFzIHlvdSdyZSBsb29raW5nIGludG8gdGhl
-c2UNCj4gc3VidGVzdHMuDQoNCkFGSUsgYm90aCAnYmFzaWMtY2xvbmUtc2luZ2xlLWNydGMnIGFu
-ZCAnaW52YWxpZC1jbG9uZS1zaW5nbGUtY3J0YycgdGVzdHMgYWltIHRvIGFzc2VzcyBhIHNjZW5h
-cmlvIHdoZXJlIHR3byBjb25uZWN0b3JzIGFyZSBhdHRlbXB0ZWQgdG8gYmUgcnVuIHdpdGggYSBz
-aW5nbGUgQ1JUQy4gDQpTaW1pbGFybHksIHRoZSAnaW52YWxpZC1jbG9uZS1leGNsdXNpdmUtY3J0
-YycgYW5kICdjbG9uZS1leGNsdXNpdmUtY3J0YycgdGVzdCBhdHRlbXB0cyB0byBydW4gdHdvIGNv
-bm5lY3RvcnMgd2l0aCB0d28gQ1JUQ3MgIA0KDQo+IA0KPiBUaGFua3MsDQo+IEthcnRoaWsuQi5T
-DQo+ID4gKyAqIERyaXZlciByZXF1aXJlbWVudDogYW55DQo+ID4gKyAqIEZ1bmN0aW9uYWxpdHk6
-IGttc19jb3JlDQo+ID4gKyAqIE1lZ2EgZmVhdHVyZTogR2VuZXJhbCBEaXNwbGF5IEZlYXR1cmVz
-DQo+ID4gKyAqIFJ1biB0eXBlOiBGVUxMDQo+ID4gKyAqIFRlc3QgY2F0ZWdvcnk6IGZ1bmN0aW9u
-YWxpdHkgdGVzdA0KPiA+ICsgKg0KPiA+ICsgKiBTVUJURVNUOiBjbG9uZS1leGNsdXNpdmUtY3J0
-Yw0KPiA+ICsgKiBEZXNjcmlwdGlvbjogVGVzdHMgdGhlIG1vZGUgYnkgY2xvbmluZyB0aGUgc2lu
-Z2xlIGV4Y2x1c2l2ZSBjcnRjIGJ5DQo+IGl0ZXJhdGluZw0KPiA+ICsgKiAgICAgICAgICAgICAg
-dGhyb3VnaCBhbGwgdmFsaWQgY3J0Yy9jb25uZWN0b3IgY29tYmluYXRpb25zDQo+ID4gKyAqIERy
-aXZlciByZXF1aXJlbWVudDogYW55DQo+ID4gKyAqIEZ1bmN0aW9uYWxpdHk6IGttc19jb3JlDQo+
-ID4gKyAqIE1lZ2EgZmVhdHVyZTogR2VuZXJhbCBEaXNwbGF5IEZlYXR1cmVzDQo+ID4gKyAqIFJ1
-biB0eXBlOiBGVUxMDQo+ID4gKyAqIFRlc3QgY2F0ZWdvcnk6IGZ1bmN0aW9uYWxpdHkgdGVzdA0K
-PiA+ICsgKg0KPiA+ICsgKiBTVUJURVNUOiBpbnZhbGlkLWNsb25lLWV4Y2x1c2l2ZS1jcnRjDQo+
-ID4gKyAqIERlc2NyaXB0aW9uOiBUZXN0cyB0aGUgbW9kZSBieSBjbG9uaW5nIHRoZSBzaW5nbGUg
-ZXhjbHVzaXZlIGNydGMgYnkNCj4gaXRlcmF0aW5nDQo+ID4gKyAqICAgICAgICAgICAgICB0aHJv
-dWdoIGFsbCBpbnZhbGlkIGNydGMvY29ubmVjdG9yIGNvbWJpbmF0aW9ucw0KPiA+ICsgKiBEcml2
-ZXIgcmVxdWlyZW1lbnQ6IGFueQ0KPiA+ICsgKiBGdW5jdGlvbmFsaXR5OiBrbXNfY29yZQ0KPiA+
-ICsgKiBNZWdhIGZlYXR1cmU6IEdlbmVyYWwgRGlzcGxheSBGZWF0dXJlcw0KPiA+ICsgKiBSdW4g
-dHlwZTogRlVMTA0KPiA+ICsgKiBUZXN0IGNhdGVnb3J5OiBmdW5jdGlvbmFsaXR5IHRlc3QNCj4g
-PiArICoNCj4gPiArICogU1VCVEVTVDogaW52YWxpZC1jbG9uZS1zaW5nbGUtY3J0Yw0KPiA+ICsg
-KiBEZXNjcmlwdGlvbjogVGVzdHMgdGhlIG1vZGUgYnkgY2xvbmluZyB0aGUgc2luZ2xlIGNydGMg
-YnkgaXRlcmF0aW5nDQo+IHRocm91Z2ggYWxsDQo+ID4gKyAqICAgICAgICAgICAgICBpbnZhbGlk
-IGNydGMvY29ubmVjdG9yIGNvbWJpbmF0aW9ucw0KPiA+ICsgKiBEcml2ZXIgcmVxdWlyZW1lbnQ6
-IGFueQ0KPiA+ICsgKiBGdW5jdGlvbmFsaXR5OiBrbXNfY29yZQ0KPiA+ICsgKiBNZWdhIGZlYXR1
-cmU6IEdlbmVyYWwgRGlzcGxheSBGZWF0dXJlcw0KPiA+ICsgKiBSdW4gdHlwZTogRlVMTA0KPiA+
-ICsgKiBUZXN0IGNhdGVnb3J5OiBmdW5jdGlvbmFsaXR5IHRlc3QNCj4gPiArICoNCj4gPiArICog
-U1VCVEVTVDogaW52YWxpZC1jbG9uZS1zaW5nbGUtY3J0Yy1zdGVhbGluZw0KPiA+ICsgKiBEZXNj
-cmlwdGlvbjogVGVzdHMgdGhlIHN0ZWFsaW5nIG1vZGUgYnkgY2xvbmluZyB0aGUgc2luZ2xlIGNy
-dGMgYnkNCj4gaXRlcmF0aW5nDQo+ID4gKyAqICAgICAgICAgICAgICB0aHJvdWdoIGFsbCBpbnZh
-bGlkIGNydGMvY29ubmVjdG9yIGNvbWJpbmF0aW9ucw0KPiA+ICsgKiBEcml2ZXIgcmVxdWlyZW1l
-bnQ6IGFueQ0KPiA+ICsgKiBGdW5jdGlvbmFsaXR5OiBrbXNfY29yZQ0KPiA+ICsgKiBNZWdhIGZl
-YXR1cmU6IEdlbmVyYWwgRGlzcGxheSBGZWF0dXJlcw0KPiA+ICsgKiBSdW4gdHlwZTogRlVMTA0K
-PiA+ICsgKiBUZXN0IGNhdGVnb3J5OiBmdW5jdGlvbmFsaXR5IHRlc3QNCj4gPiArICovDQo+ID4N
-Cj4gPiAgICNkZWZpbmUgTUFYX0NPTk5FQ1RPUlMgIDEwDQo+ID4gICAjZGVmaW5lIE1BWF9DUlRD
-UyAgICAgICA2DQo=
+Hello Hersen,
+
+On Sat-12-08-2023 03:42 am, Hersen Wu wrote:
+> Add igt_display_require_retry to re-try igt_display_require.
+> 
+> At entry of each test, display setup is done by
+> igt_display_require and igt_display_require_output.
+> igt display require output may not be valid yet,
+> this will let test be skipped. By re-try
+> igt_display_require, require output could be valid.
+> This will fix test case intermittent skip issue.
+
++ J-P & Kamil,
+
+Few queries:
+
+- Why is igt_display_require_output not valid & retry makes it valid?
+- Is it applicable for all kms tests? Then you must update all kms tests 
+to use this api. Otherwise if it's AMD specific, lib/igt_kms is not the 
+right place.
+- What is the impact on CI execution time? In headless configs it tries 
+for "retry_times" and eventually sends a skip.
+
+- Bhanu
+
+> 
+> Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+> ---
+>   lib/igt_kms.c | 19 +++++++++++++++++++
+>   lib/igt_kms.h | 15 +++++++++++++++
+>   2 files changed, 34 insertions(+)
+> 
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index e0959ccff..5506e2eb2 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -2862,6 +2862,25 @@ void igt_display_require_output(igt_display_t *display)
+>   	igt_skip("No valid crtc/connector combinations found.\n");
+>   }
+>   
+> +/**
+> + * is_igt_display_require_output_valid:
+> + * @display: A pointer to an #igt_display_t structure
+> + *
+> + * Checks whether there's a valid @pipe/@output combination for the given @display
+> + * Returns: true if a valid combination of @pipe and @output is found, or false
+> + * if not found
+> + */
+> +bool is_igt_display_require_output_valid(igt_display_t *display)
+> +{
+> +	enum pipe pipe;
+> +	igt_output_t *output;
+> +
+> +	for_each_pipe_with_valid_output(display, pipe, output)
+> +		return true;
+> +
+> +	return false;
+> +}
+> +
+>   /**
+>    * igt_display_require_output_on_pipe:
+>    * @display: A pointer to an #igt_display_t structure
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index 91355c910..f801b87e6 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -485,6 +485,7 @@ int  igt_display_drop_events(igt_display_t *display);
+>   int  igt_display_get_n_pipes(igt_display_t *display);
+>   void igt_display_require_output(igt_display_t *display);
+>   void igt_display_require_output_on_pipe(igt_display_t *display, enum pipe pipe);
+> +bool is_igt_display_require_output_valid(igt_display_t *display);
+>   
+>   const char *igt_output_name(igt_output_t *output);
+>   drmModeModeInfo *igt_output_get_mode(igt_output_t *output);
+> @@ -722,6 +723,20 @@ uint64_t igt_plane_get_prop(igt_plane_t *plane, enum igt_atomic_plane_properties
+>   		igt_plane_set_prop_changed(plane, prop); \
+>   	} while (0)
+>   
+> +#define igt_display_require_retry(display, fd, delay, retry_times) \
+> +	for (int j__ = 0; j__ < retry_times + 1; j__++) { \
+> +		igt_display_require(display, fd); \
+> +		if (is_igt_display_require_output_valid(display)) { \
+> +			if (j__ > 0) \
+> +				igt_info("retry times:%d delay:%d seconds\n", j__, delay * j__); \
+> +			break; \
+> +		} \
+> +		if (j__ == retry_times) \
+> +			igt_skip("No valid crtc/connector combinations found.\n"); \
+> +		else \
+> +			sleep(delay); \
+> +	}
+> +
+>   extern bool igt_plane_try_prop_enum(igt_plane_t *plane,
+>   				    enum igt_atomic_plane_properties prop,
+>   				    const char *val);
