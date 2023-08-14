@@ -1,18 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <46a09df0-ffb5-a8ea-e90d-dca65f5d92f0@intel.com>
-Date: Mon, 14 Aug 2023 09:48:47 -0700
-To: Riana Tauro <riana.tauro@intel.com>, <intel-gfx@lists.freedesktop.org>,
- <igt-dev@lists.freedesktop.org>
-References: <20230809005014.3451790-1-vinay.belgaumkar@intel.com>
- <b5e574a1-7aa4-d233-3b02-f0acbac517bc@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 74D1D10E21A
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Aug 2023 17:19:03 +0000 (UTC)
+Message-ID: <a958942f-c945-bb2f-0e2c-5685a455f4f8@intel.com>
+Date: Mon, 14 Aug 2023 22:48:31 +0530
 Content-Language: en-US
-From: "Belgaumkar, Vinay" <vinay.belgaumkar@intel.com>
-In-Reply-To: <b5e574a1-7aa4-d233-3b02-f0acbac517bc@intel.com>
+To: "Sharma, Swati2" <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
+ <20230629144910.3055377-17-bhanuprakash.modem@intel.com>
+ <963feb81-6a1d-1535-c76b-af1f1947633d@intel.com>
+ <0912f0c5-3eb3-b903-8342-88e927cbf8ed@intel.com>
+ <6de815ec-bb1c-b809-e469-b89604862929@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <6de815ec-bb1c-b809-e469-b89604862929@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] tests/i915_pm_freq_api:
- Ignore zero register value
+Subject: Re: [igt-dev] [V5 i-g-t 16/81] tests/i915/kms_dsc: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,89 +29,132 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Hi Swati,
 
-On 8/14/2023 12:24 AM, Riana Tauro wrote:
-> Hi Vinay
->
-> On 8/9/2023 6:20 AM, Vinay Belgaumkar wrote:
->> Register read for requested_freq can return 0 when system is
->> in runtime_pm. Make allowance for this case.
+On Mon-14-08-2023 10:34 am, Sharma, Swati2 wrote:
+> 
+> On 10-Aug-23 10:53 PM, Modem, Bhanuprakash wrote:
+>> Hi Swati,
 >>
->> Link: https://gitlab.freedesktop.org/drm/intel/issues/8736
->> Link: https://gitlab.freedesktop.org/drm/intel/issues/8989
+>> On Wed-09-08-2023 01:20 pm, Sharma, Swati2 wrote:
+>>> On 29-Jun-23 8:18 PM, Bhanuprakash Modem wrote:
+>>>> Add documentation for all kms tests which is used by IGT testplan
+>>>> documentation.
+>>>>
+>>>> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>>>> ---
+>>>>   tests/i915/kms_dsc.c | 27 +++++++++++++++++++++++++++
+>>>>   1 file changed, 27 insertions(+)
+>>>>
+>>>> diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+>>>> index 0a3e29924..4cce7face 100644
+>>>> --- a/tests/i915/kms_dsc.c
+>>>> +++ b/tests/i915/kms_dsc.c
+>>>> @@ -30,8 +30,35 @@
+>>>>    *
+>>>>    */
+>>>> +/**
+>>>> + * TEST: kms dsc
+>>>> + * Category: Display
+>>>> + * Description: Test to validate display stream compression
+>>>> + */
+>>>>   #include "kms_dsc_helper.h"
+>>>> +/**
+>>>> + * SUBTEST: dsc-%s
+>>>> + * Description: Tests basic display stream compression 
+>>>> functionality if supported
+>>>> + *              by a connector by forcing %arg[1]
+>>>
+>>> forcing DSC on all connectors that support it with %arg[1]
+>>> (remove this from below subtests description)
 >>
->> Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
->> ---
->>   tests/i915/i915_pm_freq_api.c | 18 ++++++++++++++----
->>   1 file changed, 14 insertions(+), 4 deletions(-)
+>> This description is adopted from igt_describe(), Feel free to update 
+>> the subtest description I can pick it from there.
+> 
+> But you haven't copied it as it is..right? Its the optimized version
+> of igt_describe(). I simply meant.
+
+No, I have copied as it is.
+You can verify by comparing [1] & [2] from igt repo.
+
+[1]: ./scripts/igt_doc.py --config=tests/kms_test_config.json 
+--files=tests/i915/kms_dsc.c --per-test
+[2]: ./build/tests/kms_dsc --describe
+
+> "forcing DSC on all connectors that support it with %arg[1]" => is 
+> redundant in descriptions you have written below for each subtest.
+
+You mean to say to remove "DSC on all connectors that support it" from 
+the description?
+
+Then it'll become:
+
+* SUBTEST: dsc-%s
+* Description: Tests Display Stream Compression functionality if 
+supported with %arg[1]
+*
+* arg[1]:
+*
+* @basic:                default parameters
+* @with-bpc:             certain input BPC for that connector
+
+...
+
+- Bhanu
+
+> We don't have to change igt_describe() for this. This should be handled 
+> here.
+> 
 >>
->> diff --git a/tests/i915/i915_pm_freq_api.c 
->> b/tests/i915/i915_pm_freq_api.c
->> index cf21cc936..9c71411ee 100644
->> --- a/tests/i915/i915_pm_freq_api.c
->> +++ b/tests/i915/i915_pm_freq_api.c
->> @@ -88,6 +88,7 @@ static void test_freq_basic_api(int dirfd, int gt)
->>   static void test_reset(int i915, int dirfd, int gt, int count)
->>   {
->>       uint32_t rpn = get_freq(dirfd, RPS_RPn_FREQ_MHZ);
->> +    uint32_t req_freq;
->>       int fd;
->>         for (int i = 0; i < count; i++) {
->> @@ -95,14 +96,18 @@ static void test_reset(int i915, int dirfd, int 
->> gt, int count)
->>           igt_assert(set_freq(dirfd, RPS_MIN_FREQ_MHZ, rpn) > 0);
->>           igt_assert(set_freq(dirfd, RPS_MAX_FREQ_MHZ, rpn) > 0);
->>           usleep(ACT_FREQ_LATENCY_US);
->> -        igt_assert_eq(get_freq(dirfd, RPS_CUR_FREQ_MHZ), rpn);
->> +        req_freq = get_freq(dirfd, RPS_CUR_FREQ_MHZ);
->> +        if (req_freq)
->> +            igt_assert_eq(req_freq, rpn);
->
-> Is there anything else that can cause req_freq to be zero?
->
-> To differentiate can we assert only when runtime_status is active 
-> (igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE) ?
-
-Makes sense, re-sending.
-
-Thanks,
-
-Vinay.
-
->
->
-> Thanks
-> Riana Tauro
->>             /* Manually trigger a GT reset */
->>           fd = igt_debugfs_gt_open(i915, gt, "reset", O_WRONLY);
->>           igt_require(fd >= 0);
->>           igt_ignore_warn(write(fd, "1\n", 2));
->>   -        igt_assert_eq(get_freq(dirfd, RPS_CUR_FREQ_MHZ), rpn);
->> +        req_freq = get_freq(dirfd, RPS_CUR_FREQ_MHZ);
->> +        if (req_freq)
->> +            igt_assert_eq(req_freq, rpn);
->>       }
->>       close(fd);
->>   }
->> @@ -110,17 +115,22 @@ static void test_reset(int i915, int dirfd, int 
->> gt, int count)
->>   static void test_suspend(int i915, int dirfd, int gt)
->>   {
->>       uint32_t rpn = get_freq(dirfd, RPS_RPn_FREQ_MHZ);
->> +    uint32_t req_freq;
->>         igt_assert(set_freq(dirfd, RPS_MIN_FREQ_MHZ, rpn) > 0);
->>       igt_assert(set_freq(dirfd, RPS_MAX_FREQ_MHZ, rpn) > 0);
->>       usleep(ACT_FREQ_LATENCY_US);
->> -    igt_assert_eq(get_freq(dirfd, RPS_CUR_FREQ_MHZ), rpn);
->> +    req_freq = get_freq(dirfd, RPS_CUR_FREQ_MHZ);
->> +    if (req_freq)
->> +        igt_assert_eq(req_freq, rpn);
->>         /* Manually trigger a suspend */
->>       igt_system_suspend_autoresume(SUSPEND_STATE_S3,
->>                         SUSPEND_TEST_NONE);
->>   -    igt_assert_eq(get_freq(dirfd, RPS_CUR_FREQ_MHZ), rpn);
->> +    req_freq = get_freq(dirfd, RPS_CUR_FREQ_MHZ);
->> +    if (req_freq)
->> +        igt_assert_eq(req_freq, rpn);
->>   }
->>     int i915 = -1;
+>>>
+>>>> + * Driver requirement: any
+>>>
+>>> This is intel specific test.
+>>
+>> Yes. As this kms testplan is designed for Intel, the allowed values are:
+>>
+>> i915: supports i915 driver only
+>> xe: supports xe driver only
+>> any: supports both i915 & xe
+> 
+> This ANY seems to correspond to drm_open_driver_master(DRIVER_ANY).
+> IDK this is right. @mauro do you have any inputs here?
+> Shouldn't "any" correspond to "any" driver. Even if this documentation
+> is specific to intel but tests outside i915/ directory are used by other
+> vendors too.
+> 
+>>
+>>>
+>>>> + * Functionality: dsc
+>>>> + * Mega feature: VDSC
+>>>> + * Run type: FULL
+>>>> + * Test category: functionality test
+>>>> + *
+>>>> + * arg[1]:
+>>>> + *
+>>>> + * @basic:                DSC on all connectors that support it 
+>>>> with default parameters
+>>>> + * @with-bpc:             DSC on all connectors that support it 
+>>>> with certain input BPC
+>>>> + *                        for the connector
+>>>> + * @with-bpc-formats:     DSC on all connectors that support it 
+>>>> with certain input
+>>>> + *                        BPC for the connector with diff formats
+>>>> + * @with-formats:         DSC on all connectors that support it 
+>>>> with default parameters
+>>>> + *                        and creating fb with diff formats
+>>>> + * @with-output-formats:  DSC and output format on all connectors 
+>>>> that support it
+>>>> + */
+>>>> +
+>>>
+>>> dsc-with-output-formats-with-bpc subtest is added too recently. 
+>>> please add.
+>>
+>> Will add in next rev.
+>>
+>> - Bhanu
+>>
+>>>
+>>>>   IGT_TEST_DESCRIPTION("Test to validate display stream compression");
+>>>>   enum dsc_test_type {
