@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BB0C710E0DB
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Aug 2023 04:51:35 +0000 (UTC)
-Message-ID: <d1616c9c-973d-4398-9b02-a2f0774d30f8@intel.com>
-Date: Mon, 14 Aug 2023 10:21:16 +0530
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F3A5410E0EB
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Aug 2023 05:06:44 +0000 (UTC)
+Message-ID: <0c48d960-0dac-d89a-903f-1c31c4c12ba7@intel.com>
+Date: Mon, 14 Aug 2023 10:36:29 +0530
 Content-Language: en-US
 To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- <igt-dev@lists.freedesktop.org>
+ <igt-dev@lists.freedesktop.org>, Jeevan B <jeevan.b@intel.com>
 References: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
- <20230811184655.157060-51-bhanuprakash.modem@intel.com>
+ <20230811184655.157060-73-bhanuprakash.modem@intel.com>
 From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <20230811184655.157060-51-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230811184655.157060-73-bhanuprakash.modem@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t V6 50/81] tests/kms_getfb: Document each
+Subject: Re: [igt-dev] [i-g-t V6 72/81] tests/kms_setmode: Document each
  subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -27,152 +27,96 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Hi,
 
 On 8/12/2023 12:16 AM, Bhanuprakash Modem wrote:
 > Add documentation for all kms tests which is used by IGT testplan
 > documentation.
 >
-> V2: - Fix functionality
+> V2: - Fix test description
 >
 > Cc: Karthik B S <karthik.b.s@intel.com>
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > ---
->   tests/kms_getfb.c | 90 +++++++++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 90 insertions(+)
+>   tests/kms_setmode.c | 60 +++++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 60 insertions(+)
 >
-> diff --git a/tests/kms_getfb.c b/tests/kms_getfb.c
-> index afcf07fe8..1caa46e23 100644
-> --- a/tests/kms_getfb.c
-> +++ b/tests/kms_getfb.c
-> @@ -27,6 +27,11 @@
->    *
->    */
->   
+> diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
+> index 035bbd0b0..19bda6b26 100644
+> --- a/tests/kms_setmode.c
+> +++ b/tests/kms_setmode.c
+> @@ -31,6 +31,66 @@
+>   #include <sys/time.h>
+>   #include <math.h>
+>   #include "xe/xe_query.h"
 > +/**
-> + * TEST: kms getfb
+> + * TEST: kms setmode
 > + * Category: Display
-> + * Description: Tests GETFB and GETFB2 ioctls.
-> + */
->   #include "igt.h"
->   #include <unistd.h>
->   #include <stdlib.h>
-> @@ -169,6 +174,22 @@ static uint32_t get_any_prop_id(int fd)
->   	return 0;
->   }
->   
-> +/**
-> + * SUBTEST: getfb-handle-%s
-> + * Description: Tests error handling %arg[1]
+> + * Description: Tests the mode by iterating through all valid/invalid crtc/connector
+> + *              combinations
+> + *
+> + * SUBTEST: basic
+> + * Description: Tests the vblank timing by iterating through all valid crtc/connector
+> + *              combinations
 > + * Driver requirement: any
-> + * Functionality: kms_gem_interop
+> + * Functionality: kms_core, vblank
 > + * Mega feature: General Display Features
 > + * Run type: FULL
 > + * Test category: functionality test
 > + *
-> + * arg[1]:
-> + *
-> + * @closed:       when passing a handle that has been closed.
-> + * @not-fb:       when passing an invalid handle.
-> + * @valid:        when passing an valid handle.
-> + * @zero:         for a zero'd input.
-> + */
->   static void test_handle_input(int fd)
->   {
->   	struct drm_mode_fb_cmd2 add = {};
-> @@ -224,6 +245,30 @@ static void test_handle_input(int fd)
->   		gem_close(fd, add.handles[0]);
->   }
->   
-> +/**
-> + * SUBTEST: getfb-reject-ccs
-> + * Description: Tests error handling while requesting CCS buffers it should
-> + *              refuse because getfb supports returning a single buffer handle.
-> + * Driver requirement: any
-> + * Functionality: ccs, kms_gem_interop, tiling
+> + * SUBTEST: basic-clone-single-crtc
+> + * Description: Tests the mode by cloning the single crtc by iterating through all
+> + *              valid crtc/connector combinations
 
-Hi,
+The descriptions seem confusing to me at least.
 
-Do we need 'tiling' here?
+@Jeevan: Please provide your inputs on these as you're looking into 
+these subtests.
 
 Thanks,
 Karthik.B.S
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: getfb-%s-different-handles
-> + * Description: Tests error handling while requesting for two different handles
-> + *              from %arg[1].
 > + * Driver requirement: any
-> + * Functionality: kms_gem_interop
+> + * Functionality: kms_core
 > + * Mega feature: General Display Features
 > + * Run type: FULL
 > + * Test category: functionality test
 > + *
-> + * arg[1]:
+> + * SUBTEST: clone-exclusive-crtc
+> + * Description: Tests the mode by cloning the single exclusive crtc by iterating
+> + *              through all valid crtc/connector combinations
+> + * Driver requirement: any
+> + * Functionality: kms_core
+> + * Mega feature: General Display Features
+> + * Run type: FULL
+> + * Test category: functionality test
 > + *
-> + * @addfb:           same fd
-> + * @repeated:        different fd
+> + * SUBTEST: invalid-clone-exclusive-crtc
+> + * Description: Tests the mode by cloning the single exclusive crtc by iterating
+> + *              through all invalid crtc/connector combinations
+> + * Driver requirement: any
+> + * Functionality: kms_core
+> + * Mega feature: General Display Features
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * SUBTEST: invalid-clone-single-crtc
+> + * Description: Tests the mode by cloning the single crtc by iterating through all
+> + *              invalid crtc/connector combinations
+> + * Driver requirement: any
+> + * Functionality: kms_core
+> + * Mega feature: General Display Features
+> + * Run type: FULL
+> + * Test category: functionality test
+> + *
+> + * SUBTEST: invalid-clone-single-crtc-stealing
+> + * Description: Tests the stealing mode by cloning the single crtc by iterating
+> + *              through all invalid crtc/connector combinations
+> + * Driver requirement: any
+> + * Functionality: kms_core
+> + * Mega feature: General Display Features
+> + * Run type: FULL
+> + * Test category: functionality test
 > + */
->   static void test_duplicate_handles(int fd)
->   {
->   	struct drm_mode_fb_cmd2 add = {};
-> @@ -289,6 +334,37 @@ static void test_duplicate_handles(int fd)
->   	}
->   }
 >   
-> +/**
-> + * SUBTEST: getfb2-accept-ccs
-> + * Description: Tests outputs are correct when retrieving a CCS framebuffer.
-> + * Driver requirement: any
-> + * Functionality: ccs, kms_gem_interop, tiling
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: getfb2-into-addfb2
-> + * Description: Output check by passing the output of GETFB2 into ADDFB2.
-> + * Driver requirement: any
-> + * Functionality: kms_gem_interop
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: getfb2-handle-%s
-> + * Description: Tests error handling %arg[1].
-> + * Driver requirement: any
-> + * Functionality: kms_gem_interop
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * arg[1]:
-> + *
-> + * @closed:                  when passing a handle that has been closed
-> + * @not-fb:                  when passing an invalid handle
-> + * @zero:                    for a zero'd input
-> + */
->   static void test_getfb2(int fd)
->   {
->   	struct drm_mode_fb_cmd2 add_basic = {};
-> @@ -397,6 +473,20 @@ static void test_getfb2(int fd)
->   	}
->   }
->   
-> +/**
-> + * SUBTEST: %s-handle-protection
-> + * Description: Make sure %arg[1] return handles if caller is non-root or non-master.
-> + * Driver requirement: any
-> + * Functionality: kms_gem_interop
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * arg[1]:
-> + *
-> + * @getfb:      GETFB ioctl
-> + * @getfb2:     GETFB2 ioctl
-> + */
->   static void test_handle_protection(void) {
->   	int non_master_fd;
->   	struct drm_mode_fb_cmd2 non_master_add = {};
+>   #define MAX_CONNECTORS  10
+>   #define MAX_CRTCS       6
