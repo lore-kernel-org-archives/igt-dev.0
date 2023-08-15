@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3B99D10E266
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:57:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A8A2C10E268
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:56:22 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Aug 2023 22:17:49 +0530
-Message-Id: <20230815164815.320904-56-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Aug 2023 22:17:13 +0530
+Message-Id: <20230815164815.320904-20-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
 References: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V7 55/81] tests/kms_multipipe_modeset: Document
+Subject: [igt-dev] [i-g-t V7 19/81] tests/i915/kms_fence_pin_leak: Document
  each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -26,38 +26,36 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add documentation for all kms tests which is used by IGT testplan
 documentation.
 
-V2: - Driver requirement: s/any/i915, xe/
-
+Cc: Karthik B S <karthik.b.s@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- tests/kms_multipipe_modeset.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ tests/i915/kms_fence_pin_leak.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/tests/kms_multipipe_modeset.c b/tests/kms_multipipe_modeset.c
-index 1fdfb9a9f..801e3144b 100644
---- a/tests/kms_multipipe_modeset.c
-+++ b/tests/kms_multipipe_modeset.c
-@@ -25,6 +25,20 @@
-  */
+diff --git a/tests/i915/kms_fence_pin_leak.c b/tests/i915/kms_fence_pin_leak.c
+index 3d63acfef..3db5767af 100644
+--- a/tests/i915/kms_fence_pin_leak.c
++++ b/tests/i915/kms_fence_pin_leak.c
+@@ -30,6 +30,19 @@
  
+ #include "i915/gem.h"
  #include "igt.h"
 +/**
-+ * TEST: kms multipipe modeset
++ * TEST: kms fence pin leak
 + * Category: Display
-+ * Description: Test simultaneous modeset on all the supported pipes
++ * Description: Exercises full ppgtt fence pin_count leak in the kernel.
 + *
-+ * SUBTEST: basic-max-pipe-crc-check
-+ * Description: Verify if simultaneous modesets on all the supported pipes is
-+ *              successful. Validate using CRC verification
-+ * Driver requirement: i915, xe
-+ * Functionality: kms_core
++ * SUBTEST:
++ * Description: Along with the modeset, validate fence pin_count leakage.
++ * Driver requirement: i915
++ * Functionality: kms_core, synchronization
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
  
- IGT_TEST_DESCRIPTION("Test simultaneous modeset on all the supported pipes");
- 
+ IGT_TEST_DESCRIPTION("Exercises full ppgtt fence pin_count leak in the "
+ 		     "kernel.");
 -- 
 2.40.0
