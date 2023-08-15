@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DE6F310E258
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:57:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B982B10E253
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:57:21 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Aug 2023 22:17:47 +0530
-Message-Id: <20230815164815.320904-54-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Aug 2023 22:17:48 +0530
+Message-Id: <20230815164815.320904-55-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
 References: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V7 53/81] tests/kms_invalid_mode: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t V7 54/81] tests/kms_lease: Document each subtest
+ for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,62 +26,211 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add documentation for all kms tests which is used by IGT testplan
 documentation.
 
-V2: - Fix test description
-V3: - Driver requirement: s/any/i915, xe/
+V2: - Driver requirement: s/any/i915, xe/
 
-Cc: Swati Sharma <swati2.sharma@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/kms_invalid_mode.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ tests/kms_lease.c | 180 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 180 insertions(+)
 
-diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
-index c26f8befe..306fa972f 100644
---- a/tests/kms_invalid_mode.c
-+++ b/tests/kms_invalid_mode.c
-@@ -22,10 +22,42 @@
-  *
+diff --git a/tests/kms_lease.c b/tests/kms_lease.c
+index c8ae98206..fcdb2dbe6 100644
+--- a/tests/kms_lease.c
++++ b/tests/kms_lease.c
+@@ -26,6 +26,11 @@
+  * This is a test of DRM leases
   */
  
 +/**
-+ * TEST: kms invalid mode
++ * TEST: kms lease
 + * Category: Display
-+ * Description: Make sure all modesets are rejected when the requested mode is
-+ *              invalid
++ * Description: Test of CreateLease.
 + */
+ 
  #include "igt.h"
- #include <limits.h>
- #include <stdbool.h>
+ #include <stdlib.h>
+@@ -45,6 +50,181 @@
+ #include <drm.h>
+ #include "igt_device.h"
  
 +/**
-+ * SUBTEST: %s
-+ * Description: Make sure all modesets are rejected when the requested mode
-+ *              (%arg[1]) is invalid
++ * SUBTEST: atomic_implicit_crtc
++ * Description: Negative test by using a different crtc with atomic ioctl
 + * Driver requirement: i915, xe
-+ * Functionality: kms_core
++ * Functionality: lease
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * arg[1]:
++ * SUBTEST: cursor_implicit_plane
++ * Description: Negative test by using a non-primary plane with setcursor ioctl
++ * Driver requirement: i915, xe
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
 + *
-+ * @bad-hsync-end:    Bad hsync_end
-+ * @bad-hsync-start:  Bad hsync_start
-+ * @bad-htotal:       Bad htotal
-+ * @bad-vsync-end:    Bad vsync_end
-+ * @bad-vsync-start:  Bad vsync_start
-+ * @bad-vtotal:       Bad vtotal
-+ * @clock-too-high:   High clock
-+ * @int-max-clock:    Clock as INT_MAX
-+ * @uint-max-clock:   Clock as UINT_MAX
-+ * @zero-clock:       Clock as zero
-+ * @zero-hdisplay:    hdisplay as zero
-+ * @zero-vdisplay:    vdisplay as zero
++ * SUBTEST: empty_lease
++ * Description: Check that creating an empty lease works
++ * Driver requirement: i915, xe
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: implicit-plane-lease
++ * Description: Tests the implicitly added planes.
++ * Driver requirement: i915, xe
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: invalid-create-leases
++ * Description: Tests error handling while creating invalid corner-cases for
++ *              create-lease ioctl
++ * Driver requirement: i915, xe
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: lease-uevent
++ * Description: Tests all the uevent cases
++ * Driver requirement: i915, xe
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: lease_again
++ * Description: Tests leasing objects more than once
++ * Driver requirement: i915, xe
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: lease_get
++ * Description: Tests getting the required contents of a lease
++ * Driver requirement: i915, xe
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: lease_invalid_connector
++ * Description: Tests leasing an invalid connector
++ * Driver requirement: i915, xe
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: lease_invalid_crtc
++ * Description: Tests leasing an invalid crtc
++ * Driver requirement: i915, xe
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: lease_invalid_plane
++ * Description: Tests leasing an invalid plane
++ * Driver requirement: i915, xe
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: lease_revoke
++ * Description: Tests revocation of lease
++ * Driver requirement: i915, xe
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: lease_unleased_connector
++ * Description: Negative test by trying to use an unleased connector
++ * Driver requirement: i915, xe
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: lease_unleased_crtc
++ * Description: Negative test by trying to use an unleased crtc
++ * Driver requirement: i915, xe
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: lessee_list
++ * Description: Check if listed lease is same as created one
++ * Driver requirement: i915, xe
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: master-vs-lease
++ * Description: Tests the drop/set_master interactions.
++ * Driver requirement: i915, xe
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: multimaster-lease
++ * Description: Tests that the 2nd master can only create leases while being
++ *              active master, and that leases on the first master don't prevent
++ *              lease creation for the 2nd master.
++ * Driver requirement: i915, xe
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: page_flip_implicit_plane
++ * Description: Negative test by using a non-primary plane with the page flip ioctl
++ * Driver requirement: i915, xe
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: possible-crtcs-filtering
++ * Description: Tests that  possible_crtcs logically match between master and
++ *              lease, and that the values are correctly renumbered on the lease
++ *              side.
++ * Driver requirement: i915, xe
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: setcrtc_implicit_plane
++ * Description: Negative test by using a non-primary plane with the setcrtc ioctl
++ * Driver requirement: i915, xe
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: simple_lease
++ * Description: Check if create lease ioctl call works
++ * Driver requirement: i915, xe
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
 + */
 +
- IGT_TEST_DESCRIPTION("Make sure all modesets are rejected when the requested mode is invalid");
+ IGT_TEST_DESCRIPTION("Test of CreateLease.");
  
- typedef struct _data data_t;
+ typedef struct {
 -- 
 2.40.0
