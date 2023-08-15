@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4584610E256
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:56:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9ECAA10E253
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:56:49 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Aug 2023 22:17:27 +0530
-Message-Id: <20230815164815.320904-34-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Aug 2023 22:17:29 +0530
+Message-Id: <20230815164815.320904-36-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
 References: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V7 33/81] tests/kms_async_flips: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t V7 35/81] tests/kms_atomic_interruptible: Document
+ each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,6 +19,7 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
@@ -29,118 +30,88 @@ documentation.
 V2: - Driver requirement: s/any/i915, xe/
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+Reviewed-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 ---
- tests/kms_async_flips.c | 62 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 62 insertions(+)
+ tests/kms_atomic_interruptible.c | 60 ++++++++++++++++++++++++++++++++
+ 1 file changed, 60 insertions(+)
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index ebdc4c0b6..2a317a9ef 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -25,6 +25,11 @@
-  *  Karthik B S <karthik.b.s@intel.com>
+diff --git a/tests/kms_atomic_interruptible.c b/tests/kms_atomic_interruptible.c
+index 2acdcb29d..c8a8ba447 100644
+--- a/tests/kms_atomic_interruptible.c
++++ b/tests/kms_atomic_interruptible.c
+@@ -21,6 +21,11 @@
+  * IN THE SOFTWARE.
   */
  
 +/**
-+ * TEST: kms async flips
++ * TEST: kms atomic interruptible
 + * Category: Display
-+ * Description: Test asynchronous page flips.
++ * Description: Tests that interrupt various atomic ioctls.
 + */
+ #include <signal.h>
+ 
  #include "igt.h"
- #include "igt_aux.h"
- #include "igt_psr.h"
-@@ -198,6 +203,25 @@ static void test_init_fbs(data_t *data)
- 	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
- }
+@@ -74,6 +79,61 @@ static drmEventContext drm_events = {
+ 	.page_flip_handler = ev_page_flip
+ };
  
 +/**
-+ * SUBTEST: alternate-sync-async-flip
-+ * Description: Verify the async flip functionality and the fps during async flips
-+ *              Alternate between sync and async flips
++ * SUBTEST: %s-setmode
++ * Description: Tests the interrupt properties of %arg[1] modeset
 + * Driver requirement: i915, xe
-+ * Functionality: async_flips, vblank
++ * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: async-flip-with-page-flip-events
-+ * Description: Verify the async flip functionality and the fps during async flips
-+ *              Wait for page flip events in between successive asynchronous flips
-+ * Driver requirement: i915, xe
-+ * Functionality: async_flips, vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
++ * arg[1]:
++ *
++ * @atomic:      atomic
++ * @legacy:      legacy
 + */
- static void test_async_flip(data_t *data)
- {
- 	int ret, frame;
-@@ -293,6 +317,17 @@ static void wait_for_vblank(data_t *data, unsigned long *vbl_time, unsigned int
- 	*seq = wait_vbl.reply.sequence;
- }
- 
++
 +/**
-+ * SUBTEST: test-time-stamp
-+ * Description: Verify the async flip functionality and the fps during async flips
-+ *              Verify that the async flip timestamp does not coincide with either
-+ *              previous or next vblank
++ * SUBTEST: legacy-cursor
++ * Description: Tests the interrupt properties for Cursor
 + * Driver requirement: i915, xe
-+ * Functionality: async_flips, vblank
++ * Functionality: cursor, kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: legacy-dpms
++ * Description: Tests the interrupt properties for DPMS
++ * Driver requirement: i915, xe
++ * Functionality: dpms, kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: legacy-pageflip
++ * Description: Tests the interrupt properties for page flip
++ * Driver requirement: i915, xe
++ * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
- static void test_timestamp(data_t *data)
- {
- 	int flags = DRM_MODE_PAGE_FLIP_ASYNC | DRM_MODE_PAGE_FLIP_EVENT;
-@@ -337,6 +372,15 @@ static void test_timestamp(data_t *data)
- 		     "Async flip time stamp is expected to be in between 2 vblank time stamps\n");
- }
- 
++
 +/**
-+ * SUBTEST: test-cursor
-+ * Description: Verify that the DRM_IOCTL_MODE_CURSOR passes after async flip
++ * SUBTEST: universal-setplane-%s
++ * Description: Tests the interrupt properties for %arg[1]
 + * Driver requirement: i915, xe
-+ * Functionality: async_flips, cursor, vblank
++ * Functionality: kms_core, plane
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @cursor:         Cursor plane
++ * @primary:        Primary plane
 + */
- static void test_cursor(data_t *data)
+ static void run_plane_test(igt_display_t *display, enum pipe pipe, igt_output_t *output,
+ 			   enum plane_test_type test_type, unsigned plane_type)
  {
- 	int flags = DRM_MODE_PAGE_FLIP_ASYNC | DRM_MODE_PAGE_FLIP_EVENT;
-@@ -489,6 +533,15 @@ static unsigned int clock_ms(void)
- 	return ts.tv_sec * 1000 + ts.tv_nsec / 1000000;
- }
- 
-+/**
-+ * SUBTEST: crc
-+ * Description: Use CRC to verify async flip scans out the correct framebuffer
-+ * Driver requirement: i915, xe
-+ * Functionality: async_flips, crc, vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void test_crc(data_t *data)
- {
- 	unsigned int frame = 0;
-@@ -551,6 +604,15 @@ static void test_crc(data_t *data)
- 	igt_assert_lt(data->frame_count * 2, data->flip_count);
- }
- 
-+/**
-+ * SUBTEST: invalid-async-flip
-+ * Description: Negative case to verify if changes in fb are rejected from kernel as expected
-+ * Driver requirement: i915, xe
-+ * Functionality: async_flips, vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void run_test(data_t *data, void (*test)(data_t *))
- {
- 	igt_display_t *display = &data->display;
 -- 
 2.40.0
