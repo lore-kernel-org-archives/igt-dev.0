@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5F26510E257
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:56:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 194BF10E257
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:56:12 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Aug 2023 22:17:06 +0530
-Message-Id: <20230815164815.320904-13-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Aug 2023 22:17:07 +0530
+Message-Id: <20230815164815.320904-14-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
 References: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V7 12/81] tests/i915/kms_busy: Document each
+Subject: [igt-dev] [i-g-t V7 13/81] tests/i915/kms_ccs: Document each
  subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -19,7 +19,6 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
@@ -27,105 +26,157 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add documentation for all kms tests which is used by IGT testplan
 documentation.
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
----
- tests/i915/kms_busy.c | 62 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 62 insertions(+)
+V2: - Include mtl ccs tests
+V3: - Update Functionality
+V4: - Driver requirement: s/any/i915, xe/
 
-diff --git a/tests/i915/kms_busy.c b/tests/i915/kms_busy.c
-index ecc7f02d9..a1f517758 100644
---- a/tests/i915/kms_busy.c
-+++ b/tests/i915/kms_busy.c
-@@ -21,6 +21,11 @@
-  * IN THE SOFTWARE.
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+---
+ tests/i915/kms_ccs.c | 127 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 127 insertions(+)
+
+diff --git a/tests/i915/kms_ccs.c b/tests/i915/kms_ccs.c
+index f04552dd7..976aedb06 100644
+--- a/tests/i915/kms_ccs.c
++++ b/tests/i915/kms_ccs.c
+@@ -22,10 +22,137 @@
+  *
   */
  
 +/**
-+ * TEST: kms busy
++ * TEST: kms ccs
 + * Category: Display
-+ * Description: Basic check of KMS ABI with busy framebuffers.
++ * Description: Test render compression (RC), in which the main surface is
++ *              complemented by a color control surface (CCS) that the display
++ *              uses to interpret the compressed data.
 + */
- #include <sys/poll.h>
- #include <signal.h>
- #include <time.h>
-@@ -131,6 +136,23 @@ static void flip_to_fb(igt_display_t *dpy, int pipe,
- 	put_ahnd(ahnd);
- }
+ #include "igt.h"
+ 
+ #include "i915/gem_create.h"
  
 +/**
-+ * SUBTEST: basic
-+ * Description: Test for basic check of KMS ABI with busy framebuffers.
-+ * Driver requirement: i915
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: basic-hang
-+ * Description: Test for basic check of KMS ABI with busy framebuffers.
-+ * Driver requirement: i915
-+ * Functionality: kms_core, hang
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void test_flip(igt_display_t *dpy, int pipe,
- 		      igt_output_t *output, bool modeset)
- {
-@@ -223,6 +245,37 @@ static void test_atomic_commit_hang(igt_display_t *dpy, igt_plane_t *primary,
- 	put_ahnd(ahnd);
- }
- 
-+/**
-+ * SUBTEST: extended-modeset-hang-%s
-+ * Description: Test for basic check of KMS ABI with busy framebuffers.
-+ * Driver requirement: i915
-+ * Functionality: kms_core, hang
++ * SUBTEST: %s-%s-%s
++ * Description: Test %arg[2] with given %arg[3] modifier
++ * Driver requirement: i915, xe
++ * Functionality: ccs, tiling
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @newfb:                New framebuffer
-+ * @oldfb:                Old framebuffer
-+ * @newfb-with-reset:     New framebuffer with reset
-+ * @oldfb-with-reset:     Old framebuffer with reset
++ * @pipe-A:                    Pipe A
++ * @pipe-B:                    Pipe B
++ * @pipe-C:                    Pipe C
++ * @pipe-D:                    Pipe D
++ * @pipe-E:                    Pipe E
++ * @pipe-F:                    Pipe F
++ * @pipe-G:                    Pipe G
++ * @pipe-H:                    Pipe H
++ *
++ * arg[2]:
++ *
++ * @bad-aux-stride:            Bad AUX stride
++ * @ccs-on-another-bo:         CCS with different BO
++ * @missing-ccs-buffer:        Missing CCS buffer
++ *
++ * arg[3]:
++ *
++ * @y_tiled_ccs:               Y tiled ccs
++ * @y_tiled_gen12_mc_ccs:      Y tiled gen12 mc ccs
++ * @y_tiled_gen12_rc_ccs:      Y tiled gen12 rc ccs
++ * @y_tiled_gen12_rc_ccs_cc:   Y tiled gen12 rc ccs cc
++ * @yf_tiled_ccs:              YF tiled ccs
++ * @4_tiled_mtl_mc_ccs:        4 tiled mtl mc ccs
++ * @4_tiled_mtl_rc_ccs:        4 tiled mtl rc ccs
++ * @4_tiled_mtl_rc_ccs_cc:     4 tiled mtl rc ccs cc
 + */
 +
 +/**
-+ * SUBTEST: extended-pageflip-hang-%s
-+ * Description: Test for basic check of KMS ABI with busy framebuffers.
-+ * Driver requirement: i915
-+ * Functionality: kms_core, hang
++ * SUBTEST: %s-%s-%s
++ * Description: Test %arg[2] with %arg[3] modifier
++ * Driver requirement: i915, xe
++ * Functionality: ccs, tiling
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @newfb:     New framebuffer
-+ * @oldfb:     Old framebuffer
++ * @pipe-A:                      Pipe A
++ * @pipe-B:                      Pipe B
++ * @pipe-C:                      Pipe C
++ * @pipe-D:                      Pipe D
++ * @pipe-E:                      Pipe E
++ * @pipe-F:                      Pipe F
++ * @pipe-G:                      Pipe G
++ * @pipe-H:                      Pipe H
++ *
++ * arg[2]:
++ *
++ * @bad-pixel-format:            Bad pixel format
++ * @crc-primary-basic:           Primary plane CRC compatibility
++ * @crc-sprite-planes-basic:     Sprite plane CRC compatability
++ * @random-ccs-data:             Random CCS data
++ *
++ * arg[3]:
++ *
++ * @4_tiled_dg2_mc_ccs:        4 tiled mc ccs
++ * @4_tiled_dg2_rc_ccs:        4 tiled dg2 rc ccs
++ * @4_tiled_dg2_rc_ccs_cc:     4 tiled dg2 rc ccs cc
++ * @4_tiled_mtl_mc_ccs:        4 tiled mtl mc ccs
++ * @4_tiled_mtl_rc_ccs:        4 tiled mtl rc ccs
++ * @4_tiled_mtl_rc_ccs_cc:     4 tiled mtl rc ccs cc
++ * @y_tiled_ccs:               Y tiled ccs
++ * @y_tiled_gen12_mc_ccs:      Y tiled gen12 mc ccs
++ * @y_tiled_gen12_rc_ccs:      Y tiled gen12 rc ccs
++ * @y_tiled_gen12_rc_ccs_cc:   Y tiled gen12 rc ccs cc
++ * @yf_tiled_ccs:              YF tiled ccs
 + */
- static void test_hang(igt_display_t *dpy,
- 		      enum pipe pipe, igt_output_t *output,
- 		      bool modeset, bool hang_newfb)
-@@ -270,6 +323,15 @@ static void test_hang(igt_display_t *dpy,
- 	igt_remove_fb(dpy->drm_fd, &fb[0]);
- }
- 
++
 +/**
-+ * SUBTEST: extended-pageflip-modeset-hang-oldfb
-+ * Description: Test for basic check of KMS ABI with busy framebuffers.
-+ * Driver requirement: i915
-+ * Functionality: kms_core, hang
++ * SUBTEST: %s-%s-%s
++ * Description: Test %arg[2] with %arg[3] modifier
++ * Driver requirement: i915, xe
++ * Functionality: ccs, rotation, tiling
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @pipe-A:                      Pipe A
++ * @pipe-B:                      Pipe B
++ * @pipe-C:                      Pipe C
++ * @pipe-D:                      Pipe D
++ * @pipe-E:                      Pipe E
++ * @pipe-F:                      Pipe F
++ * @pipe-G:                      Pipe G
++ * @pipe-H:                      Pipe H
++ *
++ * arg[2]:
++ *
++ * @bad-rotation-90:             90 degree rotation
++ * @crc-primary-rotation-180:    180 degree rotation
++ *
++ * arg[3]:
++ *
++ * @4_tiled_dg2_mc_ccs:        4 tiled mc ccs
++ * @4_tiled_dg2_rc_ccs:        4 tiled dg2 rc ccs
++ * @4_tiled_dg2_rc_ccs_cc:     4 tiled dg2 rc ccs cc
++ * @4_tiled_mtl_mc_ccs:        4 tiled mtl mc ccs
++ * @4_tiled_mtl_rc_ccs:        4 tiled mtl rc ccs
++ * @4_tiled_mtl_rc_ccs_cc:     4 tiled mtl rc ccs cc
++ * @y_tiled_ccs:               Y tiled ccs
++ * @y_tiled_gen12_mc_ccs:      Y tiled gen12 mc ccs
++ * @y_tiled_gen12_rc_ccs:      Y tiled gen12 rc ccs
++ * @y_tiled_gen12_rc_ccs_cc:   Y tiled gen12 rc ccs cc
++ * @yf_tiled_ccs:              YF tiled ccs
 + */
- static void
- test_pageflip_modeset_hang(igt_display_t *dpy,
- 			   igt_output_t *output, enum pipe pipe)
++
+ #define SDR_PLANE_BASE	3
+ 
+ IGT_TEST_DESCRIPTION("Test render compression (RC), in which the main surface "
 -- 
 2.40.0
