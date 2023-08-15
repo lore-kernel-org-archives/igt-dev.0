@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C405510E257
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:57:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1541110E26B
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:57:57 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Aug 2023 22:18:10 +0530
-Message-Id: <20230815164815.320904-77-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Aug 2023 22:18:09 +0530
+Message-Id: <20230815164815.320904-76-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
 References: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V7 76/81] tests/kms_universal_plane: Document each
+Subject: [igt-dev] [i-g-t V7 75/81] tests/kms_tv_load_detect: Document each
  subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -29,90 +29,35 @@ documentation.
 V2: - Fix test description
 V3: - Driver requirement: s/any/i915, xe/
 
-Cc: Jeevan B <jeevan.b@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_universal_plane.c | 68 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 68 insertions(+)
+ tests/kms_tv_load_detect.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-index 957d600f1..09d7a7646 100644
---- a/tests/kms_universal_plane.c
-+++ b/tests/kms_universal_plane.c
-@@ -28,6 +28,74 @@
- #include <string.h>
- #include <fcntl.h>
+diff --git a/tests/kms_tv_load_detect.c b/tests/kms_tv_load_detect.c
+index c8e5338d2..dee82dc89 100644
+--- a/tests/kms_tv_load_detect.c
++++ b/tests/kms_tv_load_detect.c
+@@ -23,6 +23,19 @@
+  */
  
+ #include "igt.h"
 +/**
-+ * TEST: kms universal plane
++ * TEST: kms tv load detect
 + * Category: Display
-+ * Description: Check pageflip & modeset on universal plane
++ * Description: Test to check tv load detection.
 + *
-+ * SUBTEST: cursor-fb-leak-pipe-%s
-+ * Description: Check for cursor leaks after performing cursor operations on %arg[1]
++ * SUBTEST: load-detect
++ * Description: Check tv load detection works correctly.
 + * Driver requirement: i915, xe
-+ * Functionality: cursor, plane
++ * Functionality: obsolete
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
-+ *
-+ * SUBTEST: disable-primary-vs-flip-pipe-%s
-+ * Description: Check pageflips while primary plane is disabled before IOCTL or
-+ *              between IOCTL and pageflip execution on %arg[1]
-+ * Driver requirement: i915, xe
-+ * Functionality: plane
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: universal-plane-pageflip-windowed-pipe-%s
-+ * Description: Check if pageflip succeeds in windowed setting on %arg[1]
-+ * Driver requirement: i915, xe
-+ * Functionality: plane
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @A:    pipe A
-+ * @B:    pipe B
-+ * @C:    pipe C
-+ * @D:    pipe D
-+ * @E:    pipe E
-+ * @F:    pipe F
-+ * @G:    pipe G
-+ * @H:    pipe H
-+ */
-+
-+/**
-+ * SUBTEST: universal-plane-pipe-%s-%s
-+ * Description: Check %arg[2] on %arg[1]
-+ * Driver requirement: i915, xe
-+ * Functionality: plane
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @A:    pipe A
-+ * @B:    pipe B
-+ * @C:    pipe C
-+ * @D:    pipe D
-+ * @E:    pipe E
-+ * @F:    pipe F
-+ * @G:    pipe G
-+ * @H:    pipe H
-+ *
-+ * arg[2]:
-+ *
-+ * @functional: the switching between different primary plane fbs with CRTC off
-+ * @sanity:     for scale-up or scale-down using universal plane API without
-+ *              covering CRTC
 + */
  
- typedef struct {
- 	int drm_fd;
+ IGT_TEST_DESCRIPTION("Check tv load detection works correctly.");
+ 
 -- 
 2.40.0
