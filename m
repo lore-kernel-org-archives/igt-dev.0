@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 854D710E270
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:57:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3FFE610E270
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:57:15 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Aug 2023 22:17:45 +0530
-Message-Id: <20230815164815.320904-52-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Aug 2023 22:17:44 +0530
+Message-Id: <20230815164815.320904-51-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
 References: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V7 51/81] tests/kms_hdmi_inject: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t V7 50/81] tests/kms_getfb: Document each subtest
+ for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,50 +26,144 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add documentation for all kms tests which is used by IGT testplan
 documentation.
 
-V2: - Driver requirement: s/any/i915, xe/
+V2: - Fix functionality
+V3: - Driver requirement: s/any/i915, xe/
 
+Cc: Karthik B S <karthik.b.s@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- tests/kms_hdmi_inject.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ tests/kms_getfb.c | 90 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 90 insertions(+)
 
-diff --git a/tests/kms_hdmi_inject.c b/tests/kms_hdmi_inject.c
-index 9aa5c59fc..ba2d457cc 100644
---- a/tests/kms_hdmi_inject.c
-+++ b/tests/kms_hdmi_inject.c
-@@ -31,6 +31,32 @@
- #include "igt_eld.h"
- #include "xe/xe_query.h"
+diff --git a/tests/kms_getfb.c b/tests/kms_getfb.c
+index afcf07fe8..f90e51d64 100644
+--- a/tests/kms_getfb.c
++++ b/tests/kms_getfb.c
+@@ -27,6 +27,11 @@
+  *
+  */
  
 +/**
-+ * TEST: kms hdmi inject
++ * TEST: kms getfb
 + * Category: Display
-+ * Description: Test that in-kernel EDID parsing is producing expected results
-+ *              by forcing a HDMI connector with a known EDID and checking that
-+ *              the metadata exposed to user space matches.
-+ *
-+ * SUBTEST: inject-4k
-+ * Description: Make sure that 4K modes exposed by DRM match the forced EDID and
-+ *              modesetting using it succeed.
-+ * Driver requirement: i915, xe
-+ * Functionality: force_connector, hdmi_edid
-+ * Mega feature: HDMI
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: inject-audio
-+ * Description: Make sure that audio information exposed by ALSA match the forced
-+ *              EDID.
-+ * Driver requirement: i915, xe
-+ * Functionality: audio, force_connector
-+ * Mega feature: HDMI
-+ * Run type: FULL
-+ * Test category: functionality test
++ * Description: Tests GETFB and GETFB2 ioctls.
 + */
-+
- #define HDISPLAY_4K	3840
- #define VDISPLAY_4K	2160
+ #include "igt.h"
+ #include <unistd.h>
+ #include <stdlib.h>
+@@ -169,6 +174,22 @@ static uint32_t get_any_prop_id(int fd)
+ 	return 0;
+ }
  
++/**
++ * SUBTEST: getfb-handle-%s
++ * Description: Tests error handling %arg[1]
++ * Driver requirement: i915, xe
++ * Functionality: kms_gem_interop
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @closed:       when passing a handle that has been closed.
++ * @not-fb:       when passing an invalid handle.
++ * @valid:        when passing an valid handle.
++ * @zero:         for a zero'd input.
++ */
+ static void test_handle_input(int fd)
+ {
+ 	struct drm_mode_fb_cmd2 add = {};
+@@ -224,6 +245,30 @@ static void test_handle_input(int fd)
+ 		gem_close(fd, add.handles[0]);
+ }
+ 
++/**
++ * SUBTEST: getfb-reject-ccs
++ * Description: Tests error handling while requesting CCS buffers it should
++ *              refuse because getfb supports returning a single buffer handle.
++ * Driver requirement: i915, xe
++ * Functionality: ccs, kms_gem_interop, tiling
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: getfb-%s-different-handles
++ * Description: Tests error handling while requesting for two different handles
++ *              from %arg[1].
++ * Driver requirement: i915, xe
++ * Functionality: kms_gem_interop
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @addfb:           same fd
++ * @repeated:        different fd
++ */
+ static void test_duplicate_handles(int fd)
+ {
+ 	struct drm_mode_fb_cmd2 add = {};
+@@ -289,6 +334,37 @@ static void test_duplicate_handles(int fd)
+ 	}
+ }
+ 
++/**
++ * SUBTEST: getfb2-accept-ccs
++ * Description: Tests outputs are correct when retrieving a CCS framebuffer.
++ * Driver requirement: i915, xe
++ * Functionality: ccs, kms_gem_interop, tiling
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: getfb2-into-addfb2
++ * Description: Output check by passing the output of GETFB2 into ADDFB2.
++ * Driver requirement: i915, xe
++ * Functionality: kms_gem_interop
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: getfb2-handle-%s
++ * Description: Tests error handling %arg[1].
++ * Driver requirement: i915, xe
++ * Functionality: kms_gem_interop
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @closed:                  when passing a handle that has been closed
++ * @not-fb:                  when passing an invalid handle
++ * @zero:                    for a zero'd input
++ */
+ static void test_getfb2(int fd)
+ {
+ 	struct drm_mode_fb_cmd2 add_basic = {};
+@@ -397,6 +473,20 @@ static void test_getfb2(int fd)
+ 	}
+ }
+ 
++/**
++ * SUBTEST: %s-handle-protection
++ * Description: Make sure %arg[1] return handles if caller is non-root or non-master.
++ * Driver requirement: i915, xe
++ * Functionality: kms_gem_interop
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @getfb:      GETFB ioctl
++ * @getfb2:     GETFB2 ioctl
++ */
+ static void test_handle_protection(void) {
+ 	int non_master_fd;
+ 	struct drm_mode_fb_cmd2 non_master_add = {};
 -- 
 2.40.0
