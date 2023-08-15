@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1420C10E264
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:57:35 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1835510E274
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:57:40 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Aug 2023 22:17:56 +0530
-Message-Id: <20230815164815.320904-63-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Aug 2023 22:17:59 +0530
+Message-Id: <20230815164815.320904-66-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
 References: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V7 62/81] tests/kms_plane_multiple: Document each
+Subject: [igt-dev] [i-g-t V7 65/81] tests/kms_prop_blob: Document each
  subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -27,63 +27,95 @@ Add documentation for all kms tests which is used by IGT testplan
 documentation.
 
 V2: - Driver requirement: s/any/i915, xe/
+    - Fix run type
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Jeevan B <jeevan.b@intel.com>
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_plane_multiple.c | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ tests/kms_prop_blob.c | 48 +++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 46 insertions(+), 2 deletions(-)
 
-diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
-index 1f2bd65c3..c381d2e5a 100644
---- a/tests/kms_plane_multiple.c
-+++ b/tests/kms_plane_multiple.c
-@@ -22,6 +22,11 @@
-  *
+diff --git a/tests/kms_prop_blob.c b/tests/kms_prop_blob.c
+index fc172b5a3..0dfd38af6 100644
+--- a/tests/kms_prop_blob.c
++++ b/tests/kms_prop_blob.c
+@@ -26,8 +26,9 @@
   */
  
-+/**
-+ * TEST: kms plane multiple
-+ * Category: Display
-+ * Description: Test atomic mode setting with multiple planes.
-+ */
+ /**
+- * TEST: Tests behaviour of mass-data 'blob' properties
++ * TEST: kms prop blob
+  * Category: Display
++ * Description: Tests behaviour of mass-data 'blob' properties.
+  */
  #include "igt.h"
- #include "drmtest.h"
  #include <errno.h>
-@@ -373,6 +378,34 @@ test_plane_position(data_t *data, enum pipe pipe, igt_output_t *output, uint64_t
- 					n_planes, modifier);
+@@ -122,6 +123,29 @@ destroy_prop(int fd, uint32_t prop_id)
+ 	return 0;
  }
  
 +/**
-+ * SUBTEST: tiling-none
-+ * Description: Check that the kernel handles atomic updates of multiple planes
-+ *              correctly by changing their geometry and making sure the changes
-+ *              are reflected immediately after each commit.
++ * SUBTEST: blob-multiple
++ * Description: Test validates destroying multiple properties explicitly works as needed.
 + * Driver requirement: i915, xe
-+ * Functionality: plane
++ * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: tiling-%s
-+ * Description: Check that the kernel handles atomic updates of multiple planes
-+ *              correctly by changing their geometry and making sure the changes
-+ *              are reflected immediately after each commit.
++ * SUBTEST: blob-prop-%s
++ * Description: Tests validates the %arg[1] of the properties created.
 + * Driver requirement: i915, xe
-+ * Functionality: plane, tiling
++ * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @4:           4-tiling
-+ * @x:           x-tiling
-+ * @y:           y-tiling
-+ * @yf:          yf-tiling
++ * @core:        validity
++ * @lifetime:    lifetime
++ * @validate:    blob size
 + */
- static void run_test(data_t *data, uint64_t modifier)
+ static void
+ test_validate(int fd)
  {
- 	enum pipe pipe;
+@@ -245,8 +269,9 @@ test_core(int fd)
+ /**
+  * SUBTEST: basic
+  * Description: Test to ensure property support exists
++ * Driver requirement: i915, xe
+  * Test category: functionality test
+- * Run type: BAT
++ * Run type: BAT, FULL
+  * Functionality: kms_core
+  * Mega feature: General Display Features
+  */
+@@ -260,6 +285,25 @@ test_basic(int fd)
+ 	igt_assert_eq(destroy_prop(fd, prop_id), 0);
+ }
+ 
++/**
++ * SUBTEST: invalid-%s-%s
++ * Description: Tests error handling when invalid properties are %ar[1] with %arg[2].
++ * Driver requirement: i915, xe
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @get:            fetched
++ * @set:            set
++ *
++ * arg[2]:
++ *
++ * @prop:           blob object type
++ * @prop-any:       object of any type
++ */
+ static void prop_tests(int fd)
+ {
+ 	struct drm_mode_obj_get_properties get_props = {};
 -- 
 2.40.0
