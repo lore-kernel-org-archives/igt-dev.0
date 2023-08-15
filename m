@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5A68B10E26B
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:57:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B1F4110E26B
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:57:53 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Aug 2023 22:18:08 +0530
-Message-Id: <20230815164815.320904-75-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Aug 2023 22:18:07 +0530
+Message-Id: <20230815164815.320904-74-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
 References: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V7 74/81] tests/kms_tiled_display: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t V7 73/81] tests/kms_sysfs_edid_timing: Document
+ each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,57 +26,42 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add documentation for all kms tests which is used by IGT testplan
 documentation.
 
-V2: - Fix commit line (Karthik)
+V2: - Fix test description
 V3: - Driver requirement: s/any/i915, xe/
-    - Add "chamelium" to the functionality
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_tiled_display.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ tests/kms_sysfs_edid_timing.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/tests/kms_tiled_display.c b/tests/kms_tiled_display.c
-index eba1b2764..fbca3890d 100644
---- a/tests/kms_tiled_display.c
-+++ b/tests/kms_tiled_display.c
-@@ -36,12 +36,37 @@
-  * the displays supported by the kernel at the moment.
-  */
- 
+diff --git a/tests/kms_sysfs_edid_timing.c b/tests/kms_sysfs_edid_timing.c
+index 775211089..3a440ed98 100644
+--- a/tests/kms_sysfs_edid_timing.c
++++ b/tests/kms_sysfs_edid_timing.c
+@@ -25,6 +25,23 @@
+ #include <dirent.h>
+ #include <fcntl.h>
+ #include <sys/stat.h>
 +/**
-+ * TEST: kms tiled display
++ * TEST: kms sysfs edid timing
 + * Category: Display
-+ * Description: Test for Transcoder Port Sync for Display Port Tiled Displays
-+ */
- #include "igt.h"
- #include "poll.h"
- #include "drm_mode.h"
- #include "drm_fourcc.h"
- #include "igt_edid.h"
- 
-+/**
-+ * SUBTEST: basic-test-pattern
-+ * Description: Make sure the Tiled CRTCs are synchronized and we get page flips
-+ *              for all tiled CRTCs in one vblank (executes on real panel).
-+ * Driver requirement: i915, xe
-+ * Functionality: tiled_display
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
++ * Description: Test to check the time it takes to reprobe each connector.
 + *
-+ * SUBTEST: basic-test-pattern-with-chamelium
-+ * Description: Make sure the Tiled CRTCs are synchronized and we get page flips
-+ *              for all tiled CRTCs in one vblank (executes on chamelium).
++ * SUBTEST:
++ * Description: This test checks the time it takes to reprobe each connector and
++ *              fails if either the time it takes for one reprobe is too long or
++ *              if the mean time it takes to reprobe one connector is too long.
++ *              Additionally, make sure that the mean time for all connectors is
++ *              not too long.
 + * Driver requirement: i915, xe
-+ * Functionality: chamelium, tiled_display
++ * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
-+
- IGT_TEST_DESCRIPTION("Test for genlocked CRTCs with tiled displays");
  
- typedef struct {
+ #define THRESHOLD_PER_CONNECTOR		150
+ #define THRESHOLD_PER_CONNECTOR_MEAN	140
 -- 
 2.40.0
