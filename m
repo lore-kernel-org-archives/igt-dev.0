@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1705410E258
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 17:37:01 +0000 (UTC)
-From: Alan Previn <alan.previn.teres.alexis@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Aug 2023 10:36:59 -0700
-Message-Id: <20230815173659.1208384-1-alan.previn.teres.alexis@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============3823005856371196262=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] lib/i915: Add a helper lib to read mmio
- registers via ioctl
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
+Date: Tue, 15 Aug 2023 17:43:15 -0000
+Message-ID: <169212139581.16422.10865787499925449461@emeril.freedesktop.org>
+References: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_Document_KM?=
+ =?utf-8?q?S_tests_=28rev15=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,192 +17,69 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Kamil Konieczny <kamil.konieczny@intel.com>,
- Alan Previn <alan.previn.teres.alexis@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add a helper lib function to call DRM_IOCTL_I915_REG_READ to
-read whitelisted registers.
+--===============3823005856371196262==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
----
- lib/i915/i915_reg_read_ioctl.c | 34 ++++++++++++++++++++++++++++++++++
- lib/i915/i915_reg_read_ioctl.h |  9 +++++++++
- lib/meson.build                |  1 +
- tests/i915/gem_reg_read.c      | 26 ++++++--------------------
- tests/i915/i915_pm_rpm.c       |  9 +++++----
- 5 files changed, 55 insertions(+), 24 deletions(-)
- create mode 100644 lib/i915/i915_reg_read_ioctl.c
- create mode 100644 lib/i915/i915_reg_read_ioctl.h
+== Series Details ==
 
-diff --git a/lib/i915/i915_reg_read_ioctl.c b/lib/i915/i915_reg_read_ioctl.c
-new file mode 100644
-index 000000000..a0fa654e5
---- /dev/null
-+++ b/lib/i915/i915_reg_read_ioctl.c
-@@ -0,0 +1,34 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ */
-+
-+#include "i915/i915_reg_read_ioctl.h"
-+#include "igt_device.h"
-+
-+/**
-+ * i915_reg_read_ioctl:
-+ * @drmfd: device file descriptor
-+ * @offset: mmio register to read from
-+ * @value: ptr to fill with results from read
-+ *
-+ * This function uses DRM_IOCTL_I915_REG_READ to read the
-+ * register and so it can return NOACCES if i915 doesn't allow.
-+ *
-+ * Returns:
-+ * -errno
-+ */
-+int i915_reg_read_ioctl(int drmfd, __u64 offset, __u64 *value)
-+{
-+	struct drm_i915_reg_read reg_read = {0};
-+	int ret = 0;
-+
-+	reg_read.offset = offset;
-+	if (igt_ioctl(drmfd, DRM_IOCTL_I915_REG_READ, &reg_read))
-+		ret = -errno;
-+	else if (value)
-+		*value = reg_read.val;
-+
-+	return ret;
-+}
-+
-diff --git a/lib/i915/i915_reg_read_ioctl.h b/lib/i915/i915_reg_read_ioctl.h
-new file mode 100644
-index 000000000..cb1bb3950
---- /dev/null
-+++ b/lib/i915/i915_reg_read_ioctl.h
-@@ -0,0 +1,9 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright(c) 2023 Intel Corporation. All rights reserved.
-+ */
-+
-+#include "igt.h"
-+
-+int i915_reg_read_ioctl(int drmfd, __u64 offset, __u64 *value);
-+
-diff --git a/lib/meson.build b/lib/meson.build
-index ce11c0715..6303930d9 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -14,6 +14,7 @@ lib_sources = [
- 	'i915/intel_decode.c',
- 	'i915/intel_memory_region.c',
- 	'i915/i915_crc.c',
-+	'i915/i915_reg_read_ioctl.c',
- 	'igt_collection.c',
- 	'igt_color_encoding.c',
- 	'igt_crc.c',
-diff --git a/tests/i915/gem_reg_read.c b/tests/i915/gem_reg_read.c
-index de6788abe..1af7c517f 100644
---- a/tests/i915/gem_reg_read.c
-+++ b/tests/i915/gem_reg_read.c
-@@ -32,6 +32,8 @@
- #include <sys/utsname.h>
- #include <time.h>
- 
-+#include "i915/i915_reg_read_ioctl.h"
-+
- /**
-  * TEST: gem reg read
-  * Feature: gem_core
-@@ -52,24 +54,8 @@ struct local_drm_i915_reg_read {
- 	__u64 val; /* Return value */
- };
- 
--#define REG_READ_IOCTL DRM_IOWR(DRM_COMMAND_BASE + 0x31, struct local_drm_i915_reg_read)
--
- #define RENDER_RING_TIMESTAMP 0x2358
- 
--static int read_register(int fd, uint64_t offset, uint64_t * val)
--{
--	int ret = 0;
--	struct local_drm_i915_reg_read reg_read;
--	reg_read.offset = offset;
--
--	if (drmIoctl(fd, REG_READ_IOCTL, &reg_read))
--		ret = -errno;
--
--	*val = reg_read.val;
--
--	return ret;
--}
--
- static bool check_kernel_x86_64(void)
- {
- 	int ret;
-@@ -87,9 +73,9 @@ static bool check_kernel_x86_64(void)
- static bool check_timestamp(int fd)
- {
- 	int ret;
--	uint64_t val;
-+	__u64 val;
- 
--	ret = read_register(fd, RENDER_RING_TIMESTAMP | 1, &val);
-+	ret = i915_reg_read_ioctl(fd, RENDER_RING_TIMESTAMP | 1, &val);
- 
- 	return ret == 0;
- }
-@@ -103,7 +89,7 @@ static int timer_query(int fd, uint64_t * val)
- 	if (has_proper_timestamp)
- 		offset |= 1;
- 
--	ret = read_register(fd, offset, val);
-+	ret = i915_reg_read_ioctl(fd, offset, (__u64 *)val);
- 
- /*
-  * When reading the timestamp register with single 64b read, we are observing
-@@ -168,7 +154,7 @@ igt_main
- 	}
- 
- 	igt_subtest("bad-register")
--		igt_assert_eq(read_register(fd, 0x12345678, &val), -EINVAL);
-+		igt_assert_eq(i915_reg_read_ioctl(fd, 0x12345678, (__u64 *)&val), -EINVAL);
- 
- 	igt_subtest("timestamp-moving") {
- 		igt_skip_on(timer_query(fd, &val) != 0);
-diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-index 17413ffe5..b19accdc9 100644
---- a/tests/i915/i915_pm_rpm.c
-+++ b/tests/i915/i915_pm_rpm.c
-@@ -40,6 +40,9 @@
- #include <sys/mman.h>
- #include <sys/types.h>
- #include <sys/stat.h>
-+
-+#include "i915/i915_reg_read_ioctl.h"
-+
- /**
-  * TEST: i915 pm rpm
-  *
-@@ -1852,13 +1855,11 @@ static void gem_evict_pwrite_subtest(void)
- /* This also triggered WARNs on dmesg at some point. */
- static void reg_read_ioctl_subtest(void)
- {
--	struct drm_i915_reg_read rr = {
--		.offset = 0x2358, /* render ring timestamp */
--	};
-+	__u64 val;
- 
- 	disable_all_screens_and_wait(&ms_data);
- 
--	do_ioctl(drm_fd, DRM_IOCTL_I915_REG_READ, &rr);
-+	i915_reg_read_ioctl(drm_fd, 0x2358, &val);
- 
- 	igt_assert(wait_for_suspended());
- }
+Series: Document KMS tests (rev15)
+URL   : https://patchwork.freedesktop.org/series/117749/
+State : info
 
-base-commit: 81e08c6d648e949df161a4f39118ed3eb1e354e9
--- 
-2.39.0
+== Summary ==
+
+Participating hosts:
+bat-atsm-2
+bat-dg2-oem2
+bat-adlp-7
+Missing hosts results[0]:
+Results: [IGTPW_9591](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9591/index.html)
+
+
+
+--===============3823005856371196262==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Document KMS tests (rev15)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/117749/">https://patchwork.freedesktop.org/series/117749/</a></td></tr>
+<tr><td><b>State:</b></td><td>info</td></tr>
+
+</table>
+
+
+    <p>Participating hosts:<br />
+bat-atsm-2<br />
+bat-dg2-oem2<br />
+bat-adlp-7<br />
+Missing hosts results[0]:<br />
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9591/index.html">IGTPW_9591</a></p>
+
+</body>
+</html>
+
+--===============3823005856371196262==--
