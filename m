@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0AF8910E26E
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:58:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 854FB10E278
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:57:44 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Aug 2023 22:18:13 +0530
-Message-Id: <20230815164815.320904-80-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Aug 2023 22:18:01 +0530
+Message-Id: <20230815164815.320904-68-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
 References: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V7 79/81] tests/kms_writeback: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t V7 67/81] tests/kms_rmfb: Document each subtest
+ for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,63 +29,45 @@ documentation.
 V2: - Driver requirement: s/any/i915, xe/
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- tests/kms_writeback.c | 42 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ tests/kms_rmfb.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
-index de1267ec9..fce6554ce 100644
---- a/tests/kms_writeback.c
-+++ b/tests/kms_writeback.c
-@@ -32,6 +32,48 @@
- #include "igt_core.h"
- #include "igt_fb.h"
- #include "sw_sync.h"
+diff --git a/tests/kms_rmfb.c b/tests/kms_rmfb.c
+index 9a41c1d14..a4628129c 100644
+--- a/tests/kms_rmfb.c
++++ b/tests/kms_rmfb.c
+@@ -28,6 +28,30 @@
+ #include <stdio.h>
+ #include <string.h>
+ #include <time.h>
 +/**
-+ * TEST: kms writeback
++ * TEST: kms rmfb
 + * Category: Display
-+ * Description: This test validates the expected behavior of the writeback
-+ *              connectors feature by checking if the target device support
-+ *              writeback; it validates bad and good combination, check color
-+ *              format, and check the output result by using CRC.
++ * Description: This tests rmfb and close-fd behavior. In these casesthe
++ *              framebuffers should be removed from the crtc.
 + *
-+ * SUBTEST: writeback-check-output
-+ * Description: Check writeback output with CRC validation
++ * SUBTEST: close-fd
++ * Description: RMFB is supposed to free the framebuffers from any and all planes
++ *              so test this and make sure it works with fd close and reopen.
 + * Driver requirement: i915, xe
-+ * Functionality: kms_core
++ * Functionality: kms_gem_interop
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: writeback-fb-id
-+ * Description: Validate WRITEBACK_FB_ID with valid and invalid options
++ * SUBTEST: rmfb-ioctl
++ * Description: RMFB is supposed to free the framebuffers from any and all planes
++ *              so test this and make sure it works.
 + * Driver requirement: i915, xe
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: writeback-invalid-parameters
-+ * Description: Writeback has a couple of parameters linked together(output
-+ *              framebuffer and fence); this test goes throughthe combination
-+ *              of possible bad options
-+ * Driver requirement: i915, xe
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: writeback-pixel-formats
-+ * Description: Check the writeback format
-+ * Driver requirement: i915, xe
-+ * Functionality: kms_core
++ * Functionality: kms_gem_interop
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
  
- IGT_TEST_DESCRIPTION(
-    "This test validates the expected behavior of the writeback connectors "
+ #ifndef DRM_CAP_CURSOR_WIDTH
+ #define DRM_CAP_CURSOR_WIDTH 0x8
 -- 
 2.40.0
