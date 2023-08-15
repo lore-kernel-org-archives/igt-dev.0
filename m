@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B982B10E253
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:57:21 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5E04F10E264
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:57:28 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Aug 2023 22:17:48 +0530
-Message-Id: <20230815164815.320904-55-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Aug 2023 22:17:52 +0530
+Message-Id: <20230815164815.320904-59-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
 References: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V7 54/81] tests/kms_lease: Document each subtest
+Subject: [igt-dev] [i-g-t V7 58/81] tests/kms_plane: Document each subtest
  for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -29,208 +29,123 @@ documentation.
 V2: - Driver requirement: s/any/i915, xe/
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Reviewed-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/kms_lease.c | 180 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 180 insertions(+)
+ tests/kms_plane.c | 74 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 74 insertions(+)
 
-diff --git a/tests/kms_lease.c b/tests/kms_lease.c
-index c8ae98206..fcdb2dbe6 100644
---- a/tests/kms_lease.c
-+++ b/tests/kms_lease.c
-@@ -26,6 +26,11 @@
-  * This is a test of DRM leases
+diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+index 098eb0838..721d3b533 100644
+--- a/tests/kms_plane.c
++++ b/tests/kms_plane.c
+@@ -24,6 +24,11 @@
+  *   Damien Lespiau <damien.lespiau@intel.com>
   */
  
 +/**
-+ * TEST: kms lease
++ * TEST: kms plane
 + * Category: Display
-+ * Description: Test of CreateLease.
++ * Description: Testes for KMS Plane
 + */
- 
  #include "igt.h"
- #include <stdlib.h>
-@@ -45,6 +50,181 @@
- #include <drm.h>
- #include "igt_device.h"
+ #include "igt_vec.h"
+ #include <errno.h>
+@@ -279,6 +284,29 @@ test_plane_position_with_output(data_t *data,
+ 	igt_remove_fb(data->drm_fd, &sprite_fb);
+ }
  
 +/**
-+ * SUBTEST: atomic_implicit_crtc
-+ * Description: Negative test by using a different crtc with atomic ioctl
++ * SUBTEST: plane-position-%s
++ * Description: Verify plane position using two planes to create a %arg[1]
 + * Driver requirement: i915, xe
-+ * Functionality: lease
++ * Functionality: plane
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: cursor_implicit_plane
-+ * Description: Negative test by using a non-primary plane with setcursor ioctl
++ * SUBTEST: plane-position-hole-dpms
++ * Description: Verify plane position using two planes to create a partially
++ *              covered screen and check for DPMS
 + * Driver requirement: i915, xe
-+ * Functionality: lease
++ * Functionality: dpms, plane
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: empty_lease
-+ * Description: Check that creating an empty lease works
++ * arg[1]:
++ *
++ * @covered:           fully covered screen
++ * @hole:              partially covered screen
++ */
+ static void
+ test_plane_position(data_t *data, enum pipe pipe)
+ {
+@@ -387,6 +415,29 @@ test_plane_panning_with_output(data_t *data,
+ 	igt_remove_fb(data->drm_fd, &primary_fb);
+ }
+ 
++/**
++ * SUBTEST: plane-panning-%s
++ * Description: Verify plane panning at %arg[1] using primary plane
 + * Driver requirement: i915, xe
-+ * Functionality: lease
++ * Functionality: plane
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: implicit-plane-lease
-+ * Description: Tests the implicitly added planes.
++ * SUBTEST: plane-panning-bottom-right-suspend
++ * Description: Verify plane panning at bottom-right position with suspend using
++ *              primary plane
 + * Driver requirement: i915, xe
-+ * Functionality: lease
++ * Functionality: plane, suspend
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: invalid-create-leases
-+ * Description: Tests error handling while creating invalid corner-cases for
-+ *              create-lease ioctl
++ * arg[1]:
++ *
++ * @bottom-right:               bottom-right position
++ * @top-left:                   top-left position
++ */
+ static void
+ test_plane_panning(data_t *data, enum pipe pipe)
+ {
+@@ -1116,6 +1167,20 @@ static bool skip_plane(data_t *data, igt_plane_t *plane)
+ 	return index != 0 && index != 3 && index != 5;
+ }
+ 
++/**
++ * SUBTEST: pixel-%s
++ * Description: verify the pixel formats for given plane and pipe
 + * Driver requirement: i915, xe
-+ * Functionality: lease
++ * Functionality: pixel_format, plane
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: lease-uevent
-+ * Description: Tests all the uevent cases
-+ * Driver requirement: i915, xe
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
++ * arg[1]:
 + *
-+ * SUBTEST: lease_again
-+ * Description: Tests leasing objects more than once
++ * @format:
++ * @format-source-clamping:          with source clamping
++ */
+ static void
+ test_pixel_formats(data_t *data, enum pipe pipe)
+ {
+@@ -1172,6 +1237,15 @@ test_pixel_formats(data_t *data, enum pipe pipe)
+ 	igt_assert_f(result, "At least one CRC mismatch happened\n");
+ }
+ 
++/**
++ * SUBTEST: invalid-pixel-format-settings
++ * Description: verify invalid settings for pixel format are not accepted
 + * Driver requirement: i915, xe
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: lease_get
-+ * Description: Tests getting the required contents of a lease
-+ * Driver requirement: i915, xe
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: lease_invalid_connector
-+ * Description: Tests leasing an invalid connector
-+ * Driver requirement: i915, xe
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: lease_invalid_crtc
-+ * Description: Tests leasing an invalid crtc
-+ * Driver requirement: i915, xe
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: lease_invalid_plane
-+ * Description: Tests leasing an invalid plane
-+ * Driver requirement: i915, xe
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: lease_revoke
-+ * Description: Tests revocation of lease
-+ * Driver requirement: i915, xe
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: lease_unleased_connector
-+ * Description: Negative test by trying to use an unleased connector
-+ * Driver requirement: i915, xe
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: lease_unleased_crtc
-+ * Description: Negative test by trying to use an unleased crtc
-+ * Driver requirement: i915, xe
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: lessee_list
-+ * Description: Check if listed lease is same as created one
-+ * Driver requirement: i915, xe
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: master-vs-lease
-+ * Description: Tests the drop/set_master interactions.
-+ * Driver requirement: i915, xe
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: multimaster-lease
-+ * Description: Tests that the 2nd master can only create leases while being
-+ *              active master, and that leases on the first master don't prevent
-+ *              lease creation for the 2nd master.
-+ * Driver requirement: i915, xe
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: page_flip_implicit_plane
-+ * Description: Negative test by using a non-primary plane with the page flip ioctl
-+ * Driver requirement: i915, xe
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: possible-crtcs-filtering
-+ * Description: Tests that  possible_crtcs logically match between master and
-+ *              lease, and that the values are correctly renumbered on the lease
-+ *              side.
-+ * Driver requirement: i915, xe
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: setcrtc_implicit_plane
-+ * Description: Negative test by using a non-primary plane with the setcrtc ioctl
-+ * Driver requirement: i915, xe
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: simple_lease
-+ * Description: Check if create lease ioctl call works
-+ * Driver requirement: i915, xe
-+ * Functionality: lease
++ * Functionality: pixel_format, plane
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
-+
- IGT_TEST_DESCRIPTION("Test of CreateLease.");
- 
- typedef struct {
+ static void test_invalid_settings(data_t *data)
+ {
+ 	enum pipe pipe = PIPE_A;
 -- 
 2.40.0
