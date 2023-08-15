@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9ECAA10E253
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:56:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4D07810E264
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:56:51 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Aug 2023 22:17:29 +0530
-Message-Id: <20230815164815.320904-36-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Aug 2023 22:17:30 +0530
+Message-Id: <20230815164815.320904-37-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
 References: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V7 35/81] tests/kms_atomic_interruptible: Document
+Subject: [igt-dev] [i-g-t V7 36/81] tests/kms_atomic_transition: Document
  each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -32,86 +32,140 @@ V2: - Driver requirement: s/any/i915, xe/
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Reviewed-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 ---
- tests/kms_atomic_interruptible.c | 60 ++++++++++++++++++++++++++++++++
- 1 file changed, 60 insertions(+)
+ tests/kms_atomic_transition.c | 100 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 100 insertions(+)
 
-diff --git a/tests/kms_atomic_interruptible.c b/tests/kms_atomic_interruptible.c
-index 2acdcb29d..c8a8ba447 100644
---- a/tests/kms_atomic_interruptible.c
-+++ b/tests/kms_atomic_interruptible.c
-@@ -21,6 +21,11 @@
+diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
+index 6ab5267ca..a470eb88c 100644
+--- a/tests/kms_atomic_transition.c
++++ b/tests/kms_atomic_transition.c
+@@ -21,6 +21,10 @@
   * IN THE SOFTWARE.
   */
  
 +/**
-+ * TEST: kms atomic interruptible
++ * TEST: kms atomic transition
 + * Category: Display
-+ * Description: Tests that interrupt various atomic ioctls.
 + */
- #include <signal.h>
- 
  #include "igt.h"
-@@ -74,6 +79,61 @@ static drmEventContext drm_events = {
- 	.page_flip_handler = ev_page_flip
- };
+ #include "igt_rand.h"
+ #include "drmtest.h"
+@@ -58,6 +62,15 @@ int *timeline;
+ pthread_t *thread;
+ int *seqno;
  
 +/**
-+ * SUBTEST: %s-setmode
-+ * Description: Tests the interrupt properties of %arg[1] modeset
++ * SUBTEST: plane-primary-toggle-with-vblank-wait
++ * Description: Check toggling of primary plane with vblank
 + * Driver requirement: i915, xe
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @atomic:      atomic
-+ * @legacy:      legacy
-+ */
-+
-+/**
-+ * SUBTEST: legacy-cursor
-+ * Description: Tests the interrupt properties for Cursor
-+ * Driver requirement: i915, xe
-+ * Functionality: cursor, kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: legacy-dpms
-+ * Description: Tests the interrupt properties for DPMS
-+ * Driver requirement: i915, xe
-+ * Functionality: dpms, kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: legacy-pageflip
-+ * Description: Tests the interrupt properties for page flip
-+ * Driver requirement: i915, xe
-+ * Functionality: kms_core
++ * Functionality: plane, vblank, watermark
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
-+
-+/**
-+ * SUBTEST: universal-setplane-%s
-+ * Description: Tests the interrupt properties for %arg[1]
-+ * Driver requirement: i915, xe
-+ * Functionality: kms_core, plane
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @cursor:         Cursor plane
-+ * @primary:        Primary plane
-+ */
- static void run_plane_test(igt_display_t *display, enum pipe pipe, igt_output_t *output,
- 			   enum plane_test_type test_type, unsigned plane_type)
+ static void
+ run_primary_test(data_t *data, enum pipe pipe, igt_output_t *output)
  {
+@@ -470,6 +483,77 @@ static void wait_for_transition(data_t *data, enum pipe pipe, bool nonblocking,
+ 	}
+ }
+ 
++/**
++ * SUBTEST: plane-all-modeset-%s
++ * Description: Modeset test for all plane combinations %arg[1]
++ * Driver requirement: i915, xe
++ * Functionality: plane, watermark
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @transition:                           default
++ * @transition-fencing:                   with fencing commit
++ */
++
++/**
++ * SUBTEST: plane-all-modeset-%s
++ * Description: Modeset test for all plane combinations %arg[1]
++ * Driver requirement: i915, xe
++ * Functionality: plane, watermark
++ * Mega feature: eDP
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @transition-fencing-internal-panels:   on internal panels with fencing commit
++ * @transition-internal-panels:           on internal panels
++ */
++
++/**
++ * SUBTEST: plane-all-%s
++ * Description: Transition test for all plane combinations %arg[1]
++ * Driver requirement: i915, xe
++ * Functionality: plane, watermark
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @transition:                           default
++ * @transition-fencing:                   with fencing commit
++ * @transition-nonblocking:               with non-blocking commit
++ * @transition-nonblocking-fencing:       with non-blocking & fencing commit
++ */
++
++/**
++ * SUBTEST: plane-toggle-modeset-transition
++ * Description: Check toggling and modeset transition on plane
++ * Driver requirement: i915, xe
++ * Functionality: plane, watermark
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: plane-use-after-nonblocking-%s
++ * Description: Transition test with non %arg[1] and make sure commit of disabled
++ *              plane has to complete before atomic commit on that plane
++ * Driver requirement: i915, xe
++ * Functionality: plane, watermark
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @unbind:           blocking commit
++ * @unbind-fencing:   blocking commit with fencing
++ */
++
+ /*
+  * 1. Set primary plane to a known fb.
+  * 2. Make sure getcrtc returns the correct fb id.
+@@ -959,6 +1043,22 @@ retry:
+ 	}
+ }
+ 
++/**
++ * SUBTEST: modeset-%s
++ * Description: Modeset transition tests for combinations of %arg[1]
++ * Driver requirement: i915, xe
++ * Functionality: plane, watermark
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @transition:                     crtc enabled
++ * @transition-fencing:             crtc enabled with fencing commit
++ * @transition-nonblocking:         crtc enabled with nonblocking commit
++ * @transition-nonblocking-fencing: crtc enabled with nonblocking & fencing commit
++ */
+ static void run_modeset_transition(data_t *data, int requested_outputs, bool nonblocking, bool fencing)
+ {
+ 	igt_output_t *outputs[IGT_MAX_PIPES] = {};
 -- 
 2.40.0
