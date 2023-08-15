@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E2E7410E2C6
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Aug 2023 05:47:42 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 263D710E266
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:57:25 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 16 Aug 2023 11:17:31 +0530
-Message-Id: <20230816054731.1092450-1-swati2.sharma@intel.com>
+Date: Tue, 15 Aug 2023 22:17:50 +0530
+Message-Id: <20230815164815.320904-57-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
+References: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v2] tests/intel-ci: chamelium specific fast-feedback
+Subject: [igt-dev] [i-g-t V7 56/81] tests/kms_panel_fitting: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,116 +19,54 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In BAT, chamelium setups are not frequently deployed. So, to
-enhance overall execution efficiency, its recommended to
-remove chamelium tests from fast-feedback/xe-fast-feedback and
-create a dedicated fast-feedback-chamelium-only/xe-fast-feedback-chamelium-only
-testlists for executing chamelium tests.
+Add documentation for all kms tests which is used by IGT testplan
+documentation.
 
-v2: -update xe fast-feedback testlist (Kunal)
+V2: - Fix the functionality
+V3: - Driver requirement: s/any/i915, xe/
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
+Cc: Swati Sharma <swati2.sharma@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- .../fast-feedback-chamelium-only.testlist         | 15 +++++++++++++++
- tests/intel-ci/fast-feedback.testlist             |  9 ---------
- .../xe-fast-feedback-chamelium-only.testlist      | 15 +++++++++++++++
- tests/intel-ci/xe-fast-feedback.testlist          |  9 ---------
- 4 files changed, 30 insertions(+), 18 deletions(-)
- create mode 100644 tests/intel-ci/fast-feedback-chamelium-only.testlist
- create mode 100644 tests/intel-ci/xe-fast-feedback-chamelium-only.testlist
+ tests/kms_panel_fitting.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/tests/intel-ci/fast-feedback-chamelium-only.testlist b/tests/intel-ci/fast-feedback-chamelium-only.testlist
-new file mode 100644
-index 000000000..365bcf448
---- /dev/null
-+++ b/tests/intel-ci/fast-feedback-chamelium-only.testlist
-@@ -0,0 +1,15 @@
-+# Should be the first test
-+igt@i915_module_load@load
-+
-+# Keep alphabetically sorted by default
-+igt@kms_chamelium_hpd@dp-hpd-fast
-+igt@kms_chamelium_edid@dp-edid-read
-+igt@kms_chamelium_frames@dp-crc-fast
-+igt@kms_chamelium_hpd@hdmi-hpd-fast
-+igt@kms_chamelium_edid@hdmi-edid-read
-+igt@kms_chamelium_frames@hdmi-crc-fast
-+igt@kms_chamelium_hpd@vga-hpd-fast
-+igt@kms_chamelium_edid@vga-edid-read
-+
-+# System wide suspend tests in the end
-+igt@kms_chamelium_hpd@common-hpd-after-suspend
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index 31639c892..c09c6c417 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -92,14 +92,6 @@ igt@kms_addfb_basic@unused-modifier
- igt@kms_addfb_basic@unused-offsets
- igt@kms_addfb_basic@unused-pitches
- igt@kms_busy@basic
--igt@kms_chamelium_hpd@dp-hpd-fast
--igt@kms_chamelium_edid@dp-edid-read
--igt@kms_chamelium_frames@dp-crc-fast
--igt@kms_chamelium_hpd@hdmi-hpd-fast
--igt@kms_chamelium_edid@hdmi-edid-read
--igt@kms_chamelium_frames@hdmi-crc-fast
--igt@kms_chamelium_hpd@vga-hpd-fast
--igt@kms_chamelium_edid@vga-edid-read
- igt@kms_prop_blob@basic
- igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic
- igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy
-@@ -179,5 +171,4 @@ igt@i915_suspend@basic-s2idle-without-i915
- igt@i915_suspend@basic-s3-without-i915
- igt@gem_exec_suspend@basic-s0
- igt@gem_exec_suspend@basic-s3
--igt@kms_chamelium_hpd@common-hpd-after-suspend
- igt@kms_pipe_crc_basic@suspend-read-crc
-diff --git a/tests/intel-ci/xe-fast-feedback-chamelium-only.testlist b/tests/intel-ci/xe-fast-feedback-chamelium-only.testlist
-new file mode 100644
-index 000000000..727668f0e
---- /dev/null
-+++ b/tests/intel-ci/xe-fast-feedback-chamelium-only.testlist
-@@ -0,0 +1,15 @@
-+# Should be the first test
-+igt@xe_module_load@load
-+
-+# Keep alphabetically sorted by default
-+igt@kms_chamelium_hpd@dp-hpd-fast
-+igt@kms_chamelium_edid@dp-edid-read
-+igt@kms_chamelium_frames@dp-crc-fast
-+igt@kms_chamelium_hpd@hdmi-hpd-fast
-+igt@kms_chamelium_edid@hdmi-edid-read
-+igt@kms_chamelium_frames@hdmi-crc-fast
-+igt@kms_chamelium_hpd@vga-hpd-fast
-+igt@kms_chamelium_edid@vga-edid-read
-+
-+# System wide suspend tests in the end
-+igt@kms_chamelium_hpd@common-hpd-after-suspend
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index 5dcca4aec..311f90c79 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -207,15 +207,6 @@ igt@kms_addfb_basic@unused-handle
- igt@kms_addfb_basic@unused-modifier
- igt@kms_addfb_basic@unused-offsets
- igt@kms_addfb_basic@unused-pitches
--igt@kms_chamelium_edid@dp-edid-read
--igt@kms_chamelium_edid@hdmi-edid-read
--igt@kms_chamelium_edid@vga-edid-read
--igt@kms_chamelium_frames@dp-crc-fast
--igt@kms_chamelium_frames@hdmi-crc-fast
--igt@kms_chamelium_hpd@common-hpd-after-suspend
--igt@kms_chamelium_hpd@dp-hpd-fast
--igt@kms_chamelium_hpd@hdmi-hpd-fast
--igt@kms_chamelium_hpd@vga-hpd-fast
- igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
- igt@kms_cursor_legacy@basic-flip-after-cursor-legacy
- igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
+diff --git a/tests/kms_panel_fitting.c b/tests/kms_panel_fitting.c
+index ae1c65928..b36ed4636 100644
+--- a/tests/kms_panel_fitting.c
++++ b/tests/kms_panel_fitting.c
+@@ -26,6 +26,27 @@
+ #include <limits.h>
+ #include <math.h>
+ #include <sys/stat.h>
++/**
++ * TEST: kms panel fitting
++ * Category: Display
++ * Description: Test display panel fitting
++ *
++ * SUBTEST: atomic-fastset
++ * Description: Tests panel fitting usages with atomic fastset.
++ * Driver requirement: i915, xe
++ * Functionality: eDP, panel_fitting, scaling
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: legacy
++ * Description: Tests panel fitting usages with legacy style commit.
++ * Driver requirement: i915, xe
++ * Functionality: eDP, panel_fitting, scaling
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ */
+ 
+ IGT_TEST_DESCRIPTION("Test display panel fitting");
+ 
 -- 
-2.25.1
+2.40.0
