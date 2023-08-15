@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 94F6010E25F
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:56:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E947E10E256
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:56:47 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Aug 2023 22:17:26 +0530
-Message-Id: <20230815164815.320904-33-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Aug 2023 22:17:28 +0530
+Message-Id: <20230815164815.320904-35-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
 References: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V7 32/81] tests/kms_addfb_basic: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t V7 34/81] tests/kms_atomic: Document each subtest
+ for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,6 +19,7 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
@@ -27,372 +28,181 @@ Add documentation for all kms tests which is used by IGT testplan
 documentation.
 
 V2: - Driver requirement: s/any/i915, xe/
-    - Run type: s/BAT/BAT, FULL/
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+Reviewed-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 ---
- tests/kms_addfb_basic.c | 219 +++++++++++++++++++++++++++++++---------
- 1 file changed, 171 insertions(+), 48 deletions(-)
+ tests/kms_atomic.c | 102 ++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 100 insertions(+), 2 deletions(-)
 
-diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
-index 065f21975..f415300b6 100644
---- a/tests/kms_addfb_basic.c
-+++ b/tests/kms_addfb_basic.c
-@@ -26,8 +26,9 @@
+diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
+index b65045abc..3289219f9 100644
+--- a/tests/kms_atomic.c
++++ b/tests/kms_atomic.c
+@@ -27,8 +27,10 @@
+  *    Pekka Paalanen <pekka.paalanen@collabora.co.uk>
   */
  
- /**
-- * TEST: Sanity test for ioctls DRM_IOCTL_MODE_ADDFB2 & DRM_IOCTL_MODE_RMFB.
-+ * TEST: kms addfb basic
-  * Category: Display
-+ * Description: Sanity test for ioctls DRM_IOCTL_MODE_ADDFB2 & DRM_IOCTL_MODE_RMFB.
+-/*
+- * Testcase: testing atomic modesetting API
++/**
++ * TEST: kms atomic
++ * Category: Display
++ * Description: Test atomic modesetting API
   */
  
- #include "igt.h"
-@@ -66,33 +67,52 @@ static int legacy_addfb(int fd, struct drm_mode_fb_cmd *arg)
- }
- 
- /**
-- * SUBTEST: unused-handle
-- * Description: Test that addfb2 call fails correctly for unused handle
-+ * SUBTEST: unused-%s
-+ * Description: Test that addfb2 call fails correctly for unused %arg[1]
-+ * Driver requirement: i915, xe
-  * Test category: functionality test
-- * Run type: BAT
-+ * Run type: BAT, FULL
-  * Functionality: kms_gem_interop
-  * Mega feature: General Display Features
-  *
-- * SUBTEST: unused-pitches
-- * Description: Test that addfb2 call fails correctly for unused pitches
-+ * SUBTEST: unused-modifier
-+ * Description: Test that addfb2 call fails correctly for unused modifier
-+ * Driver requirement: i915, xe
-  * Test category: functionality test
-- * Run type: BAT
-- * Functionality: kms_gem_interop
-+ * Run type: BAT, FULL
-+ * Functionality: kms_gem_interop, tiling
-  * Mega feature: General Display Features
-  *
-- * SUBTEST: unused-offsets
-- * Description: Test that addfb2 call fails correctly for unused offset
-+ * SUBTEST: clobberred-modifier
-+ * Description: Check if addfb2 call works for clobbered modifier
-+ * Driver requirement: i915
-+ * Functionality: kms_gem_interop, tiling
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-  * Test category: functionality test
-- * Run type: BAT
-+ *
-+ * SUBTEST: invalid-smem-bo-on-discrete
-+ * Description: Check if addfb2 with a system memory gem object fails correctly
-+ *              if device requires local memory framebuffers
-+ * Driver requirement: i915, xe
-  * Functionality: kms_gem_interop
-  * Mega feature: General Display Features
-- *
-- * SUBTEST: unused-modifier
-- * Description: Test that addfb2 call fails correctly for unused modifier
-+ * Run type: FULL
-  * Test category: functionality test
-- * Run type: BAT
-+ *
-+ * SUBTEST: legacy-format
-+ * Description: Check if addfb2 call works for legacy formats
-+ * Driver requirement: i915, xe
-  * Functionality: kms_gem_interop
-  * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @handle:       Handle
-+ * @pitches:      Pitches
-+ * @offsets:      Offsets
-  */
- static void invalid_tests(int fd)
- {
-@@ -310,22 +330,25 @@ static void invalid_tests(int fd)
- /**
-  * SUBTEST: no-handle
-  * Description: Test that addfb2 call fails correctly without handle
-+ * Driver requirement: i915, xe
-  * Test category: functionality test
-- * Run type: BAT
-+ * Run type: BAT, FULL
-  * Functionality: kms_gem_interop
-  * Mega feature: General Display Features
-  *
-  * SUBTEST: basic
-  * Description: Check if addfb2 call works with given handle
-+ * Driver requirement: i915, xe
-  * Test category: functionality test
-- * Run type: BAT
-+ * Run type: BAT, FULL
-  * Functionality: kms_gem_interop
-  * Mega feature: General Display Features
-  *
-  * SUBTEST: bad-pitch-%i
-  * Description: bad-pitch-%arg[1]: Test that addfb2 call fails correctly for bad-pitches
-+ * Driver requirement: i915, xe
-  * Test category: functionality test
-- * Run type: BAT
-+ * Run type: BAT, FULL
-  * Functionality: kms_gem_interop
-  * Mega feature: General Display Features
-  *
-@@ -378,6 +401,36 @@ static void pitch_tests(int fd)
- 		gem_close(fd, gem_bo);
+ #include <unistd.h>
+@@ -287,6 +289,16 @@ static uint32_t plane_get_igt_format(igt_plane_t *plane)
+ 	return 0;
  }
  
 +/**
-+ * SUBTEST: basic-%s-tiled-legacy
-+ * Description: Check if addfb2 and rmfb call works for basic %arg[1] test
++ * SUBTEST: plane-primary-overlay-mutable-zpos
++ * Description: Verify that the overlay plane can cover the primary one (and
++ *              vice versa) by changing their zpos property.
 + * Driver requirement: i915, xe
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: kms_gem_interop, tiling
++ * Functionality: kms_core, plane
 + * Mega feature: General Display Features
-+ *
-+ * SUBTEST: framebuffer-vs-set-tiling
-+ * Description: Check if addfb2 call works for x and y tiling
-+ * Driver requirement: i915
-+ * Test category: functionality test
 + * Run type: FULL
-+ * Functionality: kms_gem_interop, tiling
-+ * Mega feature: General Display Features
-+ *
-+ * SUBTEST: tile-pitch-mismatch
-+ * Description: Test that addfb2 call fails correctly for pitches mismatch
-+ * Driver requirement: i915
 + * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: kms_gem_interop, tiling
-+ * Mega feature: General Display Features
-+ *
-+ * arg[1]:
-+ *
-+ * @x:        x-tiling
-+ * @y:        y-tiling
 + */
- static void tiling_tests(int fd)
- {
- 	struct drm_mode_fb_cmd2 f = {};
-@@ -460,38 +513,52 @@ static void tiling_tests(int fd)
- /**
-  * SUBTEST: size-max
-  * Description: Check if addfb2 call works with max size of buffer object
-+ * Driver requirement: i915, xe
-  * Test category: functionality test
-- * Run type: BAT
-+ * Run type: BAT, FULL
-  * Functionality: kms_gem_interop
-  * Mega feature: General Display Features
-  *
-  * SUBTEST: too-wide
-  * Description: Test that addfb2 call fails correctly with increased width of fb
-+ * Driver requirement: i915, xe
-  * Test category: functionality test
-- * Run type: BAT
-+ * Run type: BAT, FULL
-  * Functionality: kms_gem_interop
-  * Mega feature: General Display Features
-  *
-  * SUBTEST: too-high
-  * Description: Test that addfb2 call fails correctly with increased height of fb
-+ * Driver requirement: i915, xe
-  * Test category: functionality test
-- * Run type: BAT
-+ * Run type: BAT, FULL
-  * Functionality: kms_gem_interop
-  * Mega feature: General Display Features
-  *
-  * SUBTEST: bo-too-small
-  * Description: Test that addfb2 call fails correctly with small size of buffer object
-+ * Driver requirement: i915, xe
-  * Test category: functionality test
-- * Run type: BAT
-+ * Run type: BAT, FULL
-  * Functionality: kms_gem_interop
-  * Mega feature: General Display Features
-  *
-  * SUBTEST: small-bo
-  * Description: Check if addfb2 call works for given height
-+ * Driver requirement: i915, xe
-  * Test category: functionality test
-- * Run type: BAT
-+ * Run type: BAT, FULL
-  * Functionality: kms_gem_interop
-  * Mega feature: General Display Features
-+ *
-+ * SUBTEST: bo-too-small-due-to-tiling
-+ * Description: Test that addfb2 call fails correctly with small buffer object
-+ *              after changing tile
-+ * Driver requirement: i915, xe
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: kms_gem_interop, tiling
-+ * Mega feature: General Display Features
-  */
- static void size_tests(int fd)
- {
-@@ -611,16 +678,42 @@ static void size_tests(int fd)
- /**
-  * SUBTEST: addfb25-modifier-no-flag
-  * Description: Test that addfb2 call fails correctly for x-tiling with given modifier
-+ * Driver requirement: i915, xe
-  * Test category: functionality test
-- * Run type: BAT
-- * Functionality: kms_gem_interop
-+ * Run type: BAT, FULL
-+ * Functionality: kms_gem_interop, tiling
-  * Mega feature: General Display Features
-  *
-  * SUBTEST: addfb25-bad-modifier
-  * Description: Test that addfb2 call fails correctly for irrelevant modifier
-+ * Driver requirement: i915, xe
-  * Test category: functionality test
-- * Run type: BAT
-- * Functionality: kms_gem_interop
-+ * Run type: BAT, FULL
-+ * Functionality: kms_gem_interop, tiling
-+ * Mega feature: General Display Features
-+ *
-+ * SUBTEST: addfb25-x-tiled-mismatch-legacy
-+ * Description: Test that addfb2 call fails correctly for irrelevant x-tiling
-+ * Driver requirement: i915, xe
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: kms_gem_interop, tiling
-+ * Mega feature: General Display Features
-+ *
-+ * SUBTEST: addfb25-x-tiled-legacy
-+ * Description: Check if addfb2 call works for x-tiling
-+ * Driver requirement: i915, xe
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: kms_gem_interop, tiling
-+ * Mega feature: General Display Features
-+ *
-+ * SUBTEST: addfb25-framebuffer-vs-set-tiling
-+ * Description: Check if addfb2 call works for relevant combination of tiling and fbs
-+ * Driver requirement: i915, xe
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: kms_gem_interop, tiling
-  * Mega feature: General Display Features
-  */
- static void addfb25_tests(int fd)
-@@ -705,6 +798,28 @@ static int addfb_expected_ret(igt_display_t *disp, struct drm_mode_fb_cmd2 *f)
- 					  f->modifier[0]) ? 0 : -1;
+ static void
+ plane_primary_overlay_mutable_zpos(igt_pipe_t *pipe, igt_output_t *output,
+ 				   igt_plane_t *primary, igt_plane_t *overlay,
+@@ -369,6 +381,16 @@ plane_primary_overlay_mutable_zpos(igt_pipe_t *pipe, igt_output_t *output,
+ 	igt_assert_eq_u64(igt_plane_get_prop(overlay, IGT_PLANE_ZPOS), 1);
  }
  
 +/**
-+ * SUBTEST: addfb25-y-tiled-%s
-+ * Description: Check if addfb2 call works for y-tiling %arg[1]
++ * SUBTEST: plane-immutable-zpos
++ * Description: Verify the reported zpos property of planes by making sure only
++ *              higher zpos planes cover the lower zpos ones.
 + * Driver requirement: i915, xe
-+ * Functionality: kms_gem_interop, tiling
++ * Functionality: kms_core, plane
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
-+ *
-+ * SUBTEST: addfb25-yf-tiled-legacy
-+ * Description: Check if addfb2 call works for yf-tiling
++ */
+ static void
+ plane_immutable_zpos(igt_display_t *display, igt_pipe_t *pipe,
+ 		     igt_output_t *output)
+@@ -505,6 +527,22 @@ plane_immutable_zpos(igt_display_t *display, igt_pipe_t *pipe,
+ 	igt_remove_fb(display->drm_fd, &fb_upper);
+ }
+ 
++/**
++ * SUBTEST: plane-%s-legacy
++ * Description: Test for KMS atomic modesetting on %arg[1] and ensure coherency
++ *              between legacy and atomic interfaces.
 + * Driver requirement: i915, xe
-+ * Functionality: kms_gem_interop, tiling
++ * Functionality: kms_core, plane
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @legacy:               with default size
-+ * @small-legacy:         with given size & modifier
++ * @cursor:         Cursor plane
++ * @overlay:        Overlay plane
++ * @primary:        Primary plane
 + */
- static void addfb25_ytile(int fd)
+ static void plane_overlay(igt_pipe_t *pipe, igt_output_t *output, igt_plane_t *plane)
  {
- 	struct drm_mode_fb_cmd2 f = {};
-@@ -771,6 +886,15 @@ static void addfb25_ytile(int fd)
- 	}
+ 	drmModeModeInfo *mode = igt_output_get_mode(output);
+@@ -579,6 +617,17 @@ static void plane_primary(igt_pipe_t *pipe, igt_plane_t *plane, struct igt_fb *f
+ 	plane_commit(plane, COMMIT_UNIVERSAL, ATOMIC_RELAX_NONE);
  }
  
 +/**
-+ * SUBTEST: addfb25-4-tiled
-+ * Description: Check if addfb2 call works for tiling-4
++ * SUBTEST: test-only
++ * Description: Test to ensure that DRM_MODE_ATOMIC_TEST_ONLY really only touches
++ *              the free-standing state objects and nothing else.
 + * Driver requirement: i915, xe
-+ * Functionality: kms_gem_interop, tiling
++ * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
- static void addfb25_4tile(int fd)
- {
- 	struct drm_mode_fb_cmd2 f = {};
-@@ -810,33 +934,23 @@ static void addfb25_4tile(int fd)
- }
- 
- /**
-- * SUBTEST: invalid-get-prop-any
-- * Description: Test that get-properties ioctl call fails correctly for invalid object type
-+ * SUBTEST: invalid-%s-%s
-+ * Description: Test that %arg[1] ioctl call fails correctly for %arg[2] object
-+ * Driver requirement: i915, xe
-  * Test category: functionality test
-- * Run type: BAT
-+ * Run type: BAT, FULL
-  * Functionality: kms_gem_interop
-  * Mega feature: General Display Features
-  *
-- * SUBTEST: invalid-get-prop
-- * Description: Test that get-properties ioctl call fails correctly for fb mode object
-- * Test category: functionality test
-- * Run type: BAT
-- * Functionality: kms_gem_interop
-- * Mega feature: General Display Features
-+ * arg[1]:
-  *
-- * SUBTEST: invalid-set-prop-any
-- * Description: Test that set-properties ioctl call fails correctly for invalid object type
-- * Test category: functionality test
-- * Run type: BAT
-- * Functionality: kms_gem_interop
-- * Mega feature: General Display Features
-+ * @get:           get-properties
-+ * @set:           set-properties
-  *
-- * SUBTEST: invalid-set-prop
-- * Description: Test that get-properties ioctl call fails correctly for fb mode object
-- * Test category: functionality test
-- * Run type: BAT
-- * Functionality: kms_gem_interop
-- * Mega feature: General Display Features
-+ * arg[2]:
-+ *
-+ * @prop:          fb mode
-+ * @prop-any:      invalid
++
+ /* test to ensure that DRM_MODE_ATOMIC_TEST_ONLY really only touches the
+  * free-standing state objects and nothing else.
   */
- static void prop_tests(int fd)
- {
-@@ -903,6 +1017,15 @@ static void prop_tests(int fd)
- 	}
+@@ -687,6 +736,20 @@ static void plane_cursor(igt_pipe_t *pipe_obj,
+ 	plane_commit(cursor, COMMIT_LEGACY, ATOMIC_RELAX_NONE);
  }
  
 +/**
-+ * SUBTEST: master-rmfb
-+ * Description: Check that only master can rmfb
++ * SUBTEST: plane-invalid-%s
++ * Description: Test error handling when invalid %arg[1] are passed
 + * Driver requirement: i915, xe
-+ * Functionality: kms_gem_interop
++ * Functionality: kms_core, plane
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @params:           plane parameters
++ * @params-fence:     plane fence parameters
++ */
+ static void plane_invalid_params(igt_pipe_t *pipe,
+ 				 igt_output_t *output,
+ 				 igt_plane_t *plane,
+@@ -776,6 +839,20 @@ static void plane_invalid_params_fence(igt_pipe_t *pipe,
+ 	close(timeline);
+ }
+ 
++/**
++ * SUBTEST: crtc-invalid-%s
++ * Description: Test error handling when invalid %arg[1] are passed
++ * Driver requirement: i915, xe
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @params:           crtc parameters
++ * @params-fence:     crtc fence parameters
++ */
+ static void crtc_invalid_params(igt_pipe_t *pipe,
+ 				igt_output_t *output,
+ 				igt_plane_t *plane,
+@@ -923,6 +1000,18 @@ static void crtc_invalid_params_fence(igt_pipe_t *pipe,
+ 	igt_assert(pipe->out_fence_fd != -1);
+ }
+ 
++/**
++ * SUBTEST: atomic-invalid-params
++ * Description: Test abuse the atomic ioctl directly in order to test various
++ *              invalid conditions which the libdrm wrapper won't allow us to
++ *              create.
++ * Driver requirement: i915, xe
++ * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
- static void master_tests(int fd)
++
+ /* Abuse the atomic ioctl directly in order to test various invalid conditions,
+  * which the libdrm wrapper won't allow us to create. */
+ static void atomic_invalid_params(igt_pipe_t *pipe,
+@@ -1064,6 +1153,15 @@ static void atomic_invalid_params(igt_pipe_t *pipe,
+ 	do_ioctl_err(display->drm_fd, DRM_IOCTL_MODE_ATOMIC, &ioc, EFAULT);
+ }
+ 
++/**
++ * SUBTEST: atomic_plane_damage
++ * Description: Simple test cases to use FB_DAMAGE_CLIPS plane property
++ * Driver requirement: i915, xe
++ * Functionality: kms_core, plane
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ */
+ static void atomic_plane_damage(igt_pipe_t *pipe, igt_plane_t *plane, struct igt_fb *fb)
  {
- 	struct drm_mode_fb_cmd2 f = {};
+ 	struct drm_mode_rect damage[2];
 -- 
 2.40.0
