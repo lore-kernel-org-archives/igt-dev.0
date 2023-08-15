@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0793710E265
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:56:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 33F9010E260
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:57:03 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Aug 2023 22:17:34 +0530
-Message-Id: <20230815164815.320904-41-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Aug 2023 22:17:37 +0530
+Message-Id: <20230815164815.320904-44-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
 References: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V7 40/81] tests/kms_content_protection: Document
- each subtest for testplan
+Subject: [igt-dev] [i-g-t V7 43/81] tests/kms_cursor_legacy: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,121 +26,347 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add documentation for all kms tests which is used by IGT testplan
 documentation.
 
-V2: - Update functionality
+V2: - Document subtest 'modeset-atomic-cursor-hotspot'
 V3: - Driver requirement: s/any/i915, xe/
+    - Fix run type
 
-Cc: Karthik B S <karthik.b.s@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+Reviewed-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/kms_content_protection.c | 81 ++++++++++++++++++++++++++++++++++
- 1 file changed, 81 insertions(+)
+ tests/kms_cursor_legacy.c | 233 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 229 insertions(+), 4 deletions(-)
 
-diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-index 6cdf81a28..59c617493 100644
---- a/tests/kms_content_protection.c
-+++ b/tests/kms_content_protection.c
-@@ -22,6 +22,11 @@
-  *
+diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
+index 87cfb9e64..3fc2ece88 100644
+--- a/tests/kms_cursor_legacy.c
++++ b/tests/kms_cursor_legacy.c
+@@ -23,8 +23,9 @@
   */
  
-+/**
-+ * TEST: kms content protection
-+ * Category: Display
-+ * Description: Test content protection (HDCP)
-+ */
- #include <poll.h>
- #include <fcntl.h>
- #include <sys/epoll.h>
-@@ -485,6 +490,66 @@ test_fini(igt_output_t *output, enum igt_commit_style s)
- 	igt_display_commit2(&data.display, s);
+ /**
+- * TEST: Stress legacy cursor ioctl
++ * TEST: kms cursor legacy
+  * Category: Display
++ * Description: Stress legacy cursor ioctl
+  */
+ 
+ #include <sched.h>
+@@ -77,6 +78,28 @@ static void override_output_modes(igt_display_t *display,
+ 	igt_output_set_pipe(output2, PIPE_NONE);
  }
  
 +/**
-+ * SUBTEST: LIC
-+ * Description: Test for the integrity of link.
++ * SUBTEST: %s-%s
++ * Description: Test checks how many cursor updates we can fit between vblanks
++ *              on single/all pipes with different modes, priority and number
++ *              of processes
 + * Driver requirement: i915, xe
-+ * Functionality: hdcp1.4
-+ * Mega feature: HDCP
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: content_type_change
-+ * Description: Test the content type change when the content protection already
-+ *              enabled
-+ * Driver requirement: i915, xe
-+ * Functionality: hdcp1.4, hdcp2.2
-+ * Mega feature: HDCP
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: mei_interface
-+ * Description: Test the teardown and rebuild of the interface between Intel
-+ *              and mei hdcp.
-+ * Driver requirement: i915, xe
-+ * Functionality: hdcp1.4, hdcp2.2
-+ * Mega feature: HDCP
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: srm
-+ * Description: This test writes the facsimile SRM into the /lib/firmware/ and
-+ *              check the kernel parsing of it by invoking the hdcp authentication.
-+ * Driver requirement: i915, xe
-+ * Functionality: hdcp1.4
-+ * Mega feature: HDCP
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: uevent
-+ * Description: Test to detect the HDCP status change when we are reading the
-+ *              uevent sent with the corresponding connector id and property id.
-+ * Driver requirement: i915, xe
-+ * Functionality: hdcp1.4
-+ * Mega feature: HDCP
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: %s
-+ * Description: Test content protection with %arg[1]
-+ * Driver requirement: i915, xe
-+ * Functionality: hdcp1.4
-+ * Mega feature: HDCP
++ * Functionality: cursor
++ * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @atomic:         atomic modesetting
-+ * @atomic-dpms:    DPMS ON/OFF during atomic modesetting.
-+ * @legacy:         legacy style commit
-+ * @type1:          content type 1 that can be handled only through HDCP2.2.
++ * @single:      Single
++ * @torture:     Torture
++ * @forked:      Forked
++ *
++ * arg[2]:
++ *
++ * @bo:          BO
++ * @move:        Move
 + */
- static void
- test_content_protection(enum igt_commit_style s, int content_type)
- {
-@@ -602,6 +667,22 @@ static void test_cp_lic_on_mst(igt_output_t *mst_outputs[], int valid_outputs, b
- 	}
- }
- 
-+/**
-+ * SUBTEST: dp-mst-%s
-+ * Description: Test Content protection %arg[1] over DP MST.
+ static void stress(igt_display_t *display,
+ 		   enum pipe pipe, int num_children, unsigned mode,
+ 		   int timeout)
+@@ -550,10 +573,19 @@ enum basic_flip_cursor {
+ /**
+  * SUBTEST: basic-busy-flip-before-cursor-%s
+  * Description: Cursor test with %arg[1] mode
 + * Driver requirement: i915, xe
-+ * Functionality: hdcp1.4, mst
-+ * Mega feature: HDCP
+  * Test category: functionality test
+- * Run type: BAT
++ * Run type: BAT, FULL
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ *
++ * SUBTEST: basic-busy-flip-before-cursor-varying-size
++ * Description: Change the size of cursor b/w 64*64 to maxw x maxh.
++ * Driver requirement: i915, xe
+  * Functionality: cursor
+  * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
+  *
+  * arg[1]:
+  *
+@@ -564,15 +596,17 @@ enum basic_flip_cursor {
+ /**
+  * SUBTEST: basic-flip-after-cursor-%s
+  * Description: Cursor test with %arg[1]
++ * Driver requirement: i915, xe
+  * Test category: functionality test
+- * Run type: BAT
++ * Run type: BAT, FULL
+  * Functionality: cursor
+  * Mega feature: General Display Features
+  *
+  * SUBTEST: basic-flip-before-cursor-%s
+  * Description: Cursor test with %arg[1]
++ * Driver requirement: i915, xe
+  * Test category: functionality test
+- * Run type: BAT
++ * Run type: BAT, FULL
+  * Functionality: cursor
+  * Mega feature: General Display Features
+  *
+@@ -582,6 +616,53 @@ enum basic_flip_cursor {
+  * @legacy:        legacy mode
+  * @varying-size:  varying size
+  */
++
++/**
++ * SUBTEST: %s-flip-before-cursor-%s
++ * Description: Adds variety of tests:
++ *		- varying-size: change the size of cursor b/w 64*64 to maxw x maxh.\n
++ *		- atomic-transition: alternates between a full screen sprite plane
++ *		                     and full screen primary plane.\n"
++ *		- toggle: which toggles cursor visibility and make sure cursor moves
++ *		          between updates.
++ * Driver requirement: i915, xe
++ * Functionality: cursor
++ * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @lic-type-0:   Type 0 with LIC
-+ * @lic-type-1:   Type 1 with LIC.
-+ * @type-0:       Type 0
-+ * @type-1:       Type 1
++ * @short:
++ * @short-busy:
++ *
++ * arg[2]:
++ *
++ * @atomic-transitions:
++ * @atomic-transitions-varying-size:
++ * @toggle:
 + */
- static void
- test_content_protection_mst(int content_type)
++
++/**
++ * SUBTEST: short-flip-after-cursor-%s
++ * Description: Adds variety of tests:
++ *		- varying-size: change the size of cursor b/w 64*64 to maxw x maxh.\n
++ *		- atomic-transition: alternates between a full screen sprite plane
++ *		                     and full screen primary plane.\n"
++ *		- toggle: which toggles cursor visibility and make sure cursor moves
++ *		          between updates.
++ * Driver requirement: i915, xe
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @atomic-transitions:
++ * @atomic-transitions-varying-size:
++ * @toggle:
++ */
+ static void basic_flip_cursor(igt_display_t *display,
+ 			      enum flip_test mode,
+ 			      enum basic_flip_cursor order,
+@@ -903,6 +984,25 @@ static void flip_vs_cursor(igt_display_t *display, enum flip_test mode, int nloo
+ 		igt_remove_fb(display->drm_fd, &cursor_fb2);
+ }
+ 
++/**
++ * SUBTEST: long-nonblocking-modeset-vs-cursor-atomic
++ * Description: Test checks how many cursor updates we can fit between vblanks
++ *              on all pipes with different modes, priority and number of processes
++ * Driver requirement: i915, xe
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: nonblocking-modeset-vs-cursor-atomic
++ * Description: Test checks how many cursor updates we can fit between vblanks
++ *              on all pipes with different modes, priority and number of processes
++ * Driver requirement: i915, xe
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ */
+ static void nonblocking_modeset_vs_cursor(igt_display_t *display, int loops)
  {
+ 	struct igt_fb fb_info, cursor_fb;
+@@ -1002,6 +1102,44 @@ static void wait_for_modeset(igt_display_t *display, unsigned flags, int timeout
+ 	igt_reset_timeout();
+ }
+ 
++/**
++ * SUBTEST: 2x-%s-%s
++ * Description: This test executes flips on both CRTCs while running cursor
++ *              updates in parallel
++ * Driver requirement: i915, xe
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @flip-vs-cursor:
++ * @flip-vs-cursor:
++ * @long-flip-vs-cursor:
++ * @long-flip-vs-cursor:
++ *
++ * arg[2]:
++ *
++ * @atomic:
++ * @legacy:
++ */
++
++/**
++ * SUBTEST: 2x-%s-atomic
++ * Description: This test executes flips on both CRTCs while running cursor
++ *              updates in parallel
++ * Driver requirement: i915, xe
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @long-nonblocking-modeset-vs-cursor:
++ * @nonblocking-modeset-vs-cursor:
++ */
+ static void two_screens_flip_vs_cursor(igt_display_t *display, int nloops, bool modeset, bool atomic)
+ {
+ 	struct drm_mode_cursor arg1[2], arg2[2];
+@@ -1189,6 +1327,34 @@ done:
+ 	munmap((void *)shared, PAGE_SIZE);
+ }
+ 
++/**
++ * SUBTEST: %s-%s
++ * Description: The essence of the basic test is that neither the cursor nor the
++ *              nonblocking flip stall the application of the next
++ * Driver requirement: i915, xe
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @cursor-vs-flip:
++ * @cursorA-vs-flipA:
++ * @cursorA-vs-flipB:
++ * @cursorB-vs-flipA:
++ * @cursorB-vs-flipB:
++ * @flip-vs-cursor:
++ *
++ * arg[2]:
++ *
++ * @atomic:
++ * @atomic-transitions:
++ * @atomic-transitions-varying-size:
++ * @legacy:
++ * @toggle:
++ * @varying-size:
++ */
+ static void cursor_vs_flip(igt_display_t *display, enum flip_test mode, int nloops)
+ {
+ 	struct drm_mode_cursor arg[2];
+@@ -1301,6 +1467,27 @@ static void cursor_vs_flip(igt_display_t *display, enum flip_test mode, int nloo
+ 		igt_remove_fb(display->drm_fd, &cursor_fb2);
+ }
+ 
++/**
++ * SUBTEST: 2x-%s-%s
++ * Description: This test executes flips on both CRTCs while running cursor updates in parallel
++ * Driver requirement: i915, xe
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @cursor-vs-flip:
++ * @cursor-vs-flip:
++ * @long-cursor-vs-flip:
++ * @long-cursor-vs-flip:
++ *
++ * arg[2]:
++ *
++ * @atomic:
++ * @legacy:
++ */
+ static void two_screens_cursor_vs_flip(igt_display_t *display, int nloops, bool atomic)
+ {
+ 	struct drm_mode_cursor arg[2][2];
+@@ -1429,6 +1616,20 @@ static void two_screens_cursor_vs_flip(igt_display_t *display, int nloops, bool
+ 	munmap((void *)shared, PAGE_SIZE);
+ }
+ 
++/**
++ * SUBTEST: flip-vs-cursor-crc-%s
++ * Description: this test perform a page flip followed by a cursor update
++ * Driver requirement: i915, xe
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @atomic:
++ * @legacy:
++ */
+ static void flip_vs_cursor_crc(igt_display_t *display, bool atomic)
+ {
+ 	struct drm_mode_cursor arg[2];
+@@ -1501,6 +1702,20 @@ static void flip_vs_cursor_crc(igt_display_t *display, bool atomic)
+ 	igt_remove_fb(display->drm_fd, &cursor_fb);
+ }
+ 
++/**
++ * SUBTEST: flip-vs-cursor-busy-crc-%s
++ * Description: this test perform a busy bo update followed by a cursor update
++ * Driver requirement: i915, xe
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @atomic:
++ * @legacy:
++ */
+ static void flip_vs_cursor_busy_crc(igt_display_t *display, bool atomic)
+ {
+ 	struct drm_mode_cursor arg[2];
+@@ -1613,6 +1828,16 @@ static void flip_vs_cursor_busy_crc(igt_display_t *display, bool atomic)
+ 	put_ahnd(ahnd);
+ }
+ 
++/**
++ * SUBTEST: modeset-atomic-cursor-hotspot
++ * Description: Test changes the cursor hotspot and checks that the property is
++ *              updated accordignly
++ * Driver requirement: i915, xe
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ */
+ static void modeset_atomic_cursor_hotspot(igt_display_t *display)
+ {
+ 	struct igt_fb cursor_fb;
 -- 
 2.40.0
