@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DEA7710E255
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:56:32 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 439E510E257
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:56:36 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Aug 2023 22:17:19 +0530
-Message-Id: <20230815164815.320904-26-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Aug 2023 22:17:21 +0530
+Message-Id: <20230815164815.320904-28-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
 References: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V7 25/81] tests/i915/kms_pipe_b_c_ivb: Document
- each subtest for testplan
+Subject: [igt-dev] [i-g-t V7 27/81] tests/i915/kms_psr2_sf: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,6 +19,7 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
@@ -26,76 +27,110 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add documentation for all kms tests which is used by IGT testplan
 documentation.
 
-V2: -Fix the functionality
+V2: - Add selective-fetch to the Functionality
+V3: - Driver requirement: s/any/i915, xe/
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/i915/kms_pipe_b_c_ivb.c | 52 +++++++++++++++++++++++++++++++++++
- 1 file changed, 52 insertions(+)
+ tests/i915/kms_psr2_sf.c | 85 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 85 insertions(+)
 
-diff --git a/tests/i915/kms_pipe_b_c_ivb.c b/tests/i915/kms_pipe_b_c_ivb.c
-index 192771794..582ec70ef 100644
---- a/tests/i915/kms_pipe_b_c_ivb.c
-+++ b/tests/i915/kms_pipe_b_c_ivb.c
-@@ -25,6 +25,58 @@
-  */
- 
- #include "igt.h"
+diff --git a/tests/i915/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
+index b4734e5f1..6f71504b3 100644
+--- a/tests/i915/kms_psr2_sf.c
++++ b/tests/i915/kms_psr2_sf.c
+@@ -30,6 +30,91 @@
+ #include <stdbool.h>
+ #include <stdio.h>
+ #include <string.h>
 +/**
-+ * TEST: kms pipe b c ivb
++ * TEST: kms psr2 sf
 + * Category: Display
-+ * Description: Exercise the FDI lane bifurcation code for IVB in the kernel by
-+ *              setting different combinations of modes for pipes B and C.
++ * Description: Tests to varify PSR2 selective fetch by sending multiple damaged
++ *              areas
 + *
-+ * SUBTEST: disable-pipe-B-enable-pipe-C
-+ * Description: Tests pipe-B and pipe-C interactions in IVB by disabling pipe-B
-+ *              and then setting mode on pipe-C.
-+ * Driver requirement: i915
-+ * Functionality: kms_core, obsolete
-+ * Mega feature: General Display Features
++ * SUBTEST: %s-plane-move-continuous-%s
++ * Description: Test that selective fetch works on moving %arg[1] plane %arg[2]
++ *              visible area (no update)
++ * Driver requirement: i915, xe
++ * Functionality: plane, psr2, selective_fetch
++ * Mega feature: PSR
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: enable-pipe-C-while-B-has-3-lanes
-+ * Description: Tests pipe-B and pipe-C interactions in IVB by enabling pipe-C
-+ *              while pipe-B has 3-lanes
-+ * Driver requirement: i915
-+ * Functionality: kms_core, obsolete
-+ * Mega feature: General Display Features
++ * arg[1]:
++ *
++ * @cursor:               Cursor
++ * @overlay:              Overlay
++ *
++ * arg[2]:
++ *
++ * @exceed-fully-sf:      exceeding fully
++ * @exceed-sf:            exceeding paritally
++ * @sf:                   default
++ */
++
++/**
++ * SUBTEST: cursor-plane-update-sf
++ * Description: Test that selective fetch works on cursor plane
++ * Driver requirement: i915, xe
++ * Functionality: cursor, psr2, selective_fetch
++ * Mega feature: PSR
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: from-pipe-C-to-B-with-3-lanes
-+ * Description: Tests pipe-B and pipe-C interactions in IVB by enabling pipe-B
-+ *              with 3 lanes from pipe-C.
-+ * Driver requirement: i915
-+ * Functionality: kms_core, obsolete
-+ * Mega feature: General Display Features
++ * SUBTEST: overlay-plane-update-continuous-sf
++ * Description: Test that selective fetch works on overlay plane
++ * Driver requirement: i915, xe
++ * Functionality: plane, psr2, selective_fetch
++ * Mega feature: PSR
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: pipe-B-double-modeset-then-modeset-pipe-C
-+ * Description: Tests pipe-B and pipe-C interactions in IVB by enabling two
-+ *              different modes on pipe-B and then a single mode on pipe-C.
-+ * Driver requirement: i915
-+ * Functionality: kms_core, obsolete
-+ * Mega feature: General Display Features
++ * SUBTEST: overlay-plane-update-sf-dmg-area
++ * Description: Test that selective fetch works on overlay plane
++ * Driver requirement: i915, xe
++ * Functionality: plane, psr2, selective_fetch
++ * Mega feature: PSR
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: pipe-B-dpms-off-modeset-pipe-C
-+ * Description: Tests pipe-B and pipe-C interactions in IVB by enabling pipe-B
-+ *              with mode that requires 3 lanes and then enabling pipe-c with
-+ *              dpms off/on pipe-B.
-+ * Driver requirement: i915
-+ * Functionality: kms_core, obsolete
-+ * Mega feature: General Display Features
++ * SUBTEST: overlay-primary-update-sf-dmg-area
++ * Description: Test that selective fetch works on primary plane with blended
++ *              overlay plane
++ * Driver requirement: i915, xe
++ * Functionality: plane, psr2, selective_fetch
++ * Mega feature: PSR
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: plane-move-sf-dmg-area
++ * Description: Test that selective fetch works on moving overlay plane
++ * Driver requirement: i915, xe
++ * Functionality: plane, psr2, selective_fetch
++ * Mega feature: PSR
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: primary-plane-update-sf-dmg-area
++ * Description: Test that selective fetch works on primary plane
++ * Driver requirement: i915, xe
++ * Functionality: plane, psr2, selective_fetch
++ * Mega feature: PSR
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: primary-plane-update-sf-dmg-area-big-fb
++ * Description: Test that selective fetch works on primary plane with big fb
++ * Driver requirement: i915, xe
++ * Functionality: plane, psr2, selective_fetch
++ * Mega feature: PSR
 + * Run type: FULL
 + * Test category: functionality test
 + */
  
- IGT_TEST_DESCRIPTION(
- "Exercise the FDI lane bifurcation code for IVB in the kernel by setting"
+ IGT_TEST_DESCRIPTION("Tests to varify PSR2 selective fetch by sending multiple"
+ 		     " damaged areas");
 -- 
 2.40.0
