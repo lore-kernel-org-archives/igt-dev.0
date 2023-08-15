@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D241E10E258
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:56:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E46AD10E261
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:56:03 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Aug 2023 22:17:00 +0530
-Message-Id: <20230815164815.320904-7-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Aug 2023 22:17:01 +0530
+Message-Id: <20230815164815.320904-8-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
 References: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V7 06/81] tests/chamelium/kms_chamelium_color:
+Subject: [igt-dev] [i-g-t V7 07/81] tests/chamelium/kms_chamelium_edid:
  Document each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,87 +28,170 @@ Add documentation for all kms tests which is used by IGT testplan
 documentation.
 
 V2: - Add chamelium to the Functionality
+    - Update Functionality to reflect the edid
 V3: - Driver requirement: s/any/i915, xe/
 
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/chamelium/kms_chamelium_color.c | 45 +++++++++++++++++++++++++++
- 1 file changed, 45 insertions(+)
+ tests/chamelium/kms_chamelium_edid.c | 96 ++++++++++++++++++++++++++--
+ 1 file changed, 92 insertions(+), 4 deletions(-)
 
-diff --git a/tests/chamelium/kms_chamelium_color.c b/tests/chamelium/kms_chamelium_color.c
-index 26239a6b8..125de9915 100644
---- a/tests/chamelium/kms_chamelium_color.c
-+++ b/tests/chamelium/kms_chamelium_color.c
-@@ -22,10 +22,25 @@
-  *
+diff --git a/tests/chamelium/kms_chamelium_edid.c b/tests/chamelium/kms_chamelium_edid.c
+index 446bbd204..8e730c818 100644
+--- a/tests/chamelium/kms_chamelium_edid.c
++++ b/tests/chamelium/kms_chamelium_edid.c
+@@ -25,8 +25,9 @@
   */
  
-+/**
-+ * TEST: kms chamelium color
-+ * Category: Display
-+ * Description: Test Color Features at Pipe level using Chamelium to verify instead of CRC
-+ */
-+
- #include "kms_color_helper.h"
+ /**
+- * TEST: Tests behaviour of edid & timings using chamelium
++ * TEST: kms chamelium edid
+  * Category: Display
++ * Description: Testing EDID with a Chamelium board
+  */
  
- IGT_TEST_DESCRIPTION("Test Color Features at Pipe level using Chamelium to verify instead of CRC");
- 
-+/**
-+ * SUBTEST: degamma
-+ * Description: Verify that degamma LUT transformation works correctly
-+ * Functionality: chamelium, colorspace
-+ * Mega feature: Color mgmt
-+ * Run type: FULL
-+ * Test category: functionality test
+ #include <fcntl.h>
+@@ -149,22 +150,25 @@ static void check_mode(struct chamelium *chamelium, struct chamelium_port *port,
+  * Description: Make sure the EDID exposed by KMS is the same as the screen's
+  * Test category: functionality test
+  * Run type: BAT
+- * Functionality: dp
++ * Functionality: chamelium, dp_edid
+  * Mega feature: DP
 + * Driver requirement: i915, xe
-+ */
- /*
-  * Draw 3 gradient rectangles in red, green and blue, with a maxed out
-  * degamma LUT and verify we have the same frame dump as drawing solid color
-@@ -115,6 +130,15 @@ static bool test_pipe_degamma(data_t *data,
- 	return ret;
+  *
+  * SUBTEST: hdmi-edid-read
+  * Description: Make sure the EDID exposed by KMS is the same as the screen's
+  * Test category: functionality test
+  * Run type: BAT
+- * Functionality: hdmi
++ * Functionality: chamelium, hdmi_edid
+  * Mega feature: HDMI
++ * Driver requirement: i915, xe
+  *
+  * SUBTEST: vga-edid-read
+  * Description: Make sure the EDID exposed by KMS is the same as the screen's
+  * Test category: functionality test
+  * Run type: BAT
+- * Functionality: vga
++ * Functionality: chamelium, vga_edid
+  * Mega feature: VGA
++ * Driver requirement: i915, xe
+  */
+ static const char igt_custom_edid_type_read_desc[] =
+ 	"Make sure the EDID exposed by KMS is the same as the screen's";
+@@ -205,6 +209,32 @@ static void igt_custom_edid_type_read(chamelium_data_t *data,
+ 	drmModeFreeConnector(connector);
  }
  
 +/**
-+ * SUBTEST: gamma
-+ * Description: Verify that gamma LUT transformation works correctly
-+ * Functionality: chamelium, colorspace
-+ * Mega feature: Color mgmt
-+ * Run type: FULL
++ * SUBTEST: dp-edid-stress-resolution-%s
++ * Description: Stress test the DUT by testing multiple EDIDs, one right after
++ *              the other, and ensure their validity by check the real screen
++ *              resolution vs the advertised mode (%arg[1]) resolution.
 + * Test category: functionality test
++ * Run type: FULL
++ * Functionality: chamelium, dp_edid
++ * Mega feature: DP
 + * Driver requirement: i915, xe
-+ */
- /*
-  * Draw 3 gradient rectangles in red, green and blue, with a maxed out
-  * gamma LUT and verify we have the same frame dump as drawing solid
-@@ -465,6 +489,27 @@ run_gamma_degamma_tests_for_pipe(data_t *data, enum pipe p,
- 		igt_assert(test_t(data, data->primary, data->ports[port_idx]));
- }
- 
-+/**
-+ * SUBTEST: ctm-%s
-+ * Description: Check the color transformation %arg[1]
-+ * Functionality: chamelium, colorspace
-+ * Mega feature: Color mgmt
-+ * Run type: FULL
++ *
++ * SUBTEST: hdmi-edid-stress-resolution-%s
++ * Description: Stress test the DUT by testing multiple EDIDs, one right after
++ *              the other, and ensure their validity by check the real screen
++ *              resolution vs the advertised mode (%arg[1]) resolution.
 + * Test category: functionality test
++ * Run type: FULL
++ * Functionality: chamelium, hdmi_edid
++ * Mega feature: HDMI
 + * Driver requirement: i915, xe
 + *
 + * arg[1]:
 + *
-+ * @0-25:            for 0.25 transparancy
-+ * @0-50:            for 0.50 transparancy
-+ * @0-75:            for 0.75 transparancy
-+ * @blue-to-red:     from blue to red
-+ * @green-to-red:    from green to red
-+ * @limited-range:   with identity matrix
-+ * @max:             for max transparancy
-+ * @negative:        for negative transparancy
-+ * @red-to-blue:     from red to blue
++ * @4k:      4K
++ * @non-4k:  Non 4K
 + */
- static void
- run_ctm_tests_for_pipe(data_t *data, enum pipe p,
- 		       color_t *expected_colors,
+ static const char igt_edid_stress_resolution_desc[] =
+ 	"Stress test the DUT by testing multiple EDIDs, one right after the other, "
+ 	"and ensure their validity by check the real screen resolution vs the "
+@@ -274,6 +304,17 @@ static void edid_stress_resolution(chamelium_data_t *data,
+ 			      data->ports, data->port_count);
+ }
+ 
++/**
++ * SUBTEST: dp-edid-resolution-list
++ * Description: Get an EDID with many modes of different configurations, set
++ *              them on the screen and check the screen resolution matches the
++ *              mode resolution.
++ * Test category: functionality test
++ * Run type: FULL
++ * Functionality: chamelium, dp_edid
++ * Mega feature: DP
++ * Driver requirement: i915, xe
++ */
+ static const char igt_edid_resolution_list_desc[] =
+ 	"Get an EDID with many modes of different configurations, set them on the screen and check the"
+ 	" screen resolution matches the mode resolution.";
+@@ -337,6 +378,32 @@ static void edid_resolution_list(chamelium_data_t *data,
+ 	drmModeFreeConnector(connector);
+ }
+ 
++/**
++ * SUBTEST: dp-edid-change-during-%s
++ * Description: Simulate a screen being unplugged and another screen being
++ *              plugged during suspend, check that a uevent is sent and
++ *              connector status is updated during %arg[1]
++ * Test category: functionality test
++ * Run type: FULL
++ * Functionality: chamelium, dp_edid
++ * Mega feature: DP
++ * Driver requirement: i915, xe
++ *
++ * SUBTEST: hdmi-edid-change-during-%s
++ * Description: Simulate a screen being unplugged and another screen being
++ *              plugged during suspend, check that a uevent is sent and
++ *              connector status is updated during %arg[1]
++ * Test category: functionality test
++ * Run type: FULL
++ * Functionality: chamelium, dp_edid
++ * Mega feature: DP
++ * Driver requirement: i915, xe
++ *
++ * arg[1]:
++ *
++ * @hibernate:    hibernation
++ * @suspend:      suspend
++ */
+ static const char test_suspend_resume_edid_change_desc[] =
+ 	"Simulate a screen being unplugged and another screen being plugged "
+ 	"during suspend, check that a uevent is sent and connector status is "
+@@ -389,6 +456,27 @@ static void test_suspend_resume_edid_change(chamelium_data_t *data,
+ 			    link_status_failed[1][p]);
+ }
+ 
++/**
++ * SUBTEST: dp-mode-timings
++ * Description: For each mode of the IGT base EDID, perform a modeset and check
++ *              the mode detected by the Chamelium receiver matches the mode we
++ *              set
++ * Test category: functionality test
++ * Run type: FULL
++ * Functionality: chamelium, dp_edid
++ * Mega feature: DP
++ * Driver requirement: i915, xe
++ *
++ * SUBTEST: hdmi-mode-timings
++ * Description: For each mode of the IGT base EDID, perform a modeset and check
++ *              the mode detected by the Chamelium receiver matches the mode we
++ *              set
++ * Test category: functionality test
++ * Run type: FULL
++ * Functionality: chamelium, dp_edid
++ * Mega feature: DP
++ * Driver requirement: i915, xe
++ */
+ static const char test_mode_timings_desc[] =
+ 	"For each mode of the IGT base EDID, perform a modeset and check the "
+ 	"mode detected by the Chamelium receiver matches the mode we set";
 -- 
 2.40.0
