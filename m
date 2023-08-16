@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0E5BB10E09A
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Aug 2023 10:22:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 84A3B10E326
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Aug 2023 10:22:41 +0000 (UTC)
 From: janga.rahul.kumar@intel.com
 To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
  janga.rahul.kumar@intel.com
-Date: Wed, 16 Aug 2023 15:54:29 +0530
-Message-Id: <20230816102431.2014326-2-janga.rahul.kumar@intel.com>
+Date: Wed, 16 Aug 2023 15:54:31 +0530
+Message-Id: <20230816102431.2014326-4-janga.rahul.kumar@intel.com>
 In-Reply-To: <20230816102431.2014326-1-janga.rahul.kumar@intel.com>
 References: <20230816102431.2014326-1-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/3] lib/xe: Add support to reset all GT's
+Subject: [igt-dev] [PATCH i-g-t 3/3] lib/igt_gt: Extend hang library support
+ to XE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,9 +27,8 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 
-Introduce xe gt library.
-
-Add support to check GT reset and force reset all GT's.
+Extend hang library support to XE driver and update
+the documentation.
 
 Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 Cc: Kunal Joshi <kunal1.joshi@intel.com>
@@ -39,120 +38,104 @@ Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 Tested-by: Kunal Joshi <kunal1.joshi@intel.com>
 Reviewed-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 ---
- lib/meson.build |  1 +
- lib/xe/xe_gt.c  | 73 +++++++++++++++++++++++++++++++++++++++++++++++++
- lib/xe/xe_gt.h  | 11 ++++++++
- 3 files changed, 85 insertions(+)
- create mode 100644 lib/xe/xe_gt.c
- create mode 100644 lib/xe/xe_gt.h
+ lib/igt_gt.c | 29 +++++++++++++++++++++++++----
+ 1 file changed, 25 insertions(+), 4 deletions(-)
 
-diff --git a/lib/meson.build b/lib/meson.build
-index ce11c0715..b7bfcf4f0 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -103,6 +103,7 @@ lib_sources = [
- 	'igt_dsc.c',
- 	'xe/xe_compute.c',
- 	'xe/xe_compute_square_kernels.c',
-+	'xe/xe_gt.c',
- 	'xe/xe_ioctl.c',
- 	'xe/xe_query.c',
- 	'xe/xe_spin.c',
-diff --git a/lib/xe/xe_gt.c b/lib/xe/xe_gt.c
-new file mode 100644
-index 000000000..eb5a6c12a
---- /dev/null
-+++ b/lib/xe/xe_gt.c
-@@ -0,0 +1,73 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ *
-+ * Authors:
-+ *    Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-+ */
+diff --git a/lib/igt_gt.c b/lib/igt_gt.c
+index d4a825e66..7cf0e468e 100644
+--- a/lib/igt_gt.c
++++ b/lib/igt_gt.c
+@@ -44,6 +44,7 @@
+ #include "intel_reg.h"
+ #include "intel_chipset.h"
+ #include "igt_dummyload.h"
++#include "xe/xe_gt.h"
+ 
+ /**
+  * SECTION:igt_gt
+@@ -179,6 +180,12 @@ igt_hang_t igt_allow_hang(int fd, unsigned ctx, unsigned flags)
+ 	 */
+ 	if (!igt_check_boolean_env_var("IGT_HANG", true))
+ 		igt_skip("hang injection disabled by user [IGT_HANG=0]\n");
 +
-+#include <fcntl.h>
-+#include <sys/stat.h>
-+
-+#include "igt_core.h"
-+#include "igt_sysfs.h"
-+#include "xe_gt.h"
-+#include "xe_ioctl.h"
-+#include "xe_query.h"
-+
-+#ifdef __linux__
-+#include <sys/sysmacros.h>
-+#else
-+#define minor(__v__) ((__v__) & 0xff)
-+#endif
-+
-+/**
-+ * has_xe_gt_reset:
-+ * @fd: open xe drm file descriptor
-+ *
-+ * Check gt force reset sysfs entry is available or not
-+ *
-+ * Returns: reset sysfs entry available
-+ */
-+bool has_xe_gt_reset(int fd)
-+{
-+	char reset_sysfs_path[100];
-+	struct stat st;
-+	int gt;
-+	int reset_sysfs_fd = -1;
-+	int sysfs_fd = -1;
-+
-+	igt_assert_eq(fstat(fd, &st), 0);
-+	sysfs_fd = igt_sysfs_open(fd);
-+
-+	igt_assert(sysfs_fd != -1);
-+	xe_for_each_gt(fd, gt) {
-+		sprintf(reset_sysfs_path, "/sys/kernel/debug/dri/%d/gt%d/force_reset",
-+				minor(st.st_rdev), gt);
-+		reset_sysfs_fd = openat(sysfs_fd, reset_sysfs_path, O_RDONLY);
-+
-+		if (reset_sysfs_fd == -1) {
-+			close(sysfs_fd);
-+			return 0;
-+		}
-+
-+		close(reset_sysfs_fd);
++	if (is_xe_device(fd)) {
++		igt_require(has_gpu_reset(fd));
++		return (struct igt_hang){ 0, ctx, 0, flags };
 +	}
 +
-+	close(sysfs_fd);
-+	return 1;
-+}
+ 	gem_context_require_bannable(fd);
+ 
+ 	if (flags & HANG_WANT_ENGINE_RESET)
+@@ -215,6 +222,9 @@ igt_hang_t igt_allow_hang(int fd, unsigned ctx, unsigned flags)
+ 
+ void igt_disallow_hang(int fd, igt_hang_t arg)
+ {
++	if (is_xe_device(fd))
++		return;
 +
-+/**
-+ * xe_force_gt_reset_all:
-+ *
-+ * Forces reset of all the GT's.
-+ */
-+void xe_force_gt_reset_all(int xe_fd)
-+{
-+	int gt;
+ 	context_set_ban(fd, arg.ctx, arg.ban);
+ 
+ 	if ((arg.flags & HANG_ALLOW_CAPTURE) == 0) {
+@@ -269,8 +279,8 @@ static bool has_ctx_exec(int fd, unsigned ring, uint32_t ctx)
+ 
+ /**
+  * igt_hang_ring_ctx:
+- * @fd: open i915 drm file descriptor
+- * @ctx: the contxt specifier
++ * @fd: open i915/xe drm file descriptor
++ * @ctx: the context specifier
+  * @ring: execbuf ring flag
+  * @flags: set of flags to control execution
+  * @offset: The resultant gtt offset of the exec obj
+@@ -290,6 +300,9 @@ static igt_hang_t __igt_hang_ctx(int fd, uint64_t ahnd, uint32_t ctx, int ring,
+ 	igt_spin_t *spin;
+ 	unsigned ban;
+ 
++	if (is_xe_device(fd))
++		return xe_hang_ring(fd, ahnd, ctx, ring, flags);
 +
-+	xe_for_each_gt(xe_fd, gt)
-+		xe_force_gt_reset(xe_fd, gt);
-+}
+ 	igt_require_hang_ring(fd, ctx, ring);
+ 
+ 	/* check if non-default ctx submission is allowed */
+@@ -334,7 +347,7 @@ igt_hang_t igt_hang_ctx_with_ahnd(int fd, uint64_t ahnd, uint32_t ctx, int ring,
+ 
+ /**
+  * igt_hang_ring:
+- * @fd: open i915 drm file descriptor
++ * @fd: open i915/xe drm file descriptor
+  * @ring: execbuf ring flag
+  *
+  * This helper function injects a hanging batch into @ring. It returns a
+@@ -357,7 +370,7 @@ igt_hang_t igt_hang_ring_with_ahnd(int fd, int ring, uint64_t ahnd)
+ 
+ /**
+  * igt_post_hang_ring:
+- * @fd: open i915 drm file descriptor
++ * @fd: open i915/xe drm file descriptor
+  * @arg: hang state from igt_hang_ring()
+  *
+  * This function does the necessary post-processing after a gpu hang injected
+@@ -368,6 +381,11 @@ void igt_post_hang_ring(int fd, igt_hang_t arg)
+ 	if (!arg.spin)
+ 		return;
+ 
++	if (is_xe_device(fd)) {
++		igt_spin_free(fd, arg.spin);
++		xe_post_hang_ring(fd, arg);
++	}
 +
-diff --git a/lib/xe/xe_gt.h b/lib/xe/xe_gt.h
-new file mode 100644
-index 000000000..d05ed1ed5
---- /dev/null
-+++ b/lib/xe/xe_gt.h
-@@ -0,0 +1,11 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ *
-+ * Authors:
-+ *    Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-+ */
+ 	gem_sync(fd, arg.spin->handle); /* Wait until it hangs */
+ 	igt_spin_free(fd, arg.spin);
+ 
+@@ -399,6 +417,9 @@ void igt_force_gpu_reset(int drm_fd)
+ 
+ 	igt_debug("Triggering GPU reset\n");
+ 
++	if (is_xe_device(drm_fd))
++		xe_force_gt_reset_all(drm_fd);
 +
-+bool has_xe_gt_reset(int fd);
-+void xe_force_gt_reset_all(int fd);
-+
+ 	dir = igt_debugfs_dir(drm_fd);
+ 
+ 	wedged = 0;
 -- 
 2.25.1
