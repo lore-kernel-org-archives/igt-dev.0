@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EFE5C10E38F
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Aug 2023 16:39:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C8E7D10E391
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Aug 2023 16:40:01 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 16 Aug 2023 22:01:49 +0530
-Message-Id: <20230816163206.402705-4-bhanuprakash.modem@intel.com>
+Date: Wed, 16 Aug 2023 22:01:51 +0530
+Message-Id: <20230816163206.402705-6-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230816163206.402705-1-bhanuprakash.modem@intel.com>
 References: <20230816163206.402705-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 03/20] tests/kms_getfb: Extended ccs tests to
- support XE
+Subject: [igt-dev] [i-g-t V4 05/20] tests/kms_plane: Add tiling support for
+ XE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,71 +24,31 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add support for ccs tests work on XE driver.
+Remove the tiling restrictions in Xe specific tests
 
-V2: - Update XE blocklist
+V2: - Rebase
 
-Fixes: 5fd20e72a (tests/kms_getfb: Add XE support)
+Fixes: 2b9637086 (tests/kms_plane: Add XE support)
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/intel-ci/xe.blocklist.txt |  1 -
- tests/kms_getfb.c               | 10 +++++++---
- 2 files changed, 7 insertions(+), 4 deletions(-)
+ tests/kms_plane.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
-index 1778e91f1..805939507 100644
---- a/tests/intel-ci/xe.blocklist.txt
-+++ b/tests/intel-ci/xe.blocklist.txt
-@@ -78,7 +78,6 @@ igt@kms_cursor_legacy@flip-vs-cursor-busy-crc-(atomic|legacy)
- igt@kms_rotation_crc@primary-(4|x|y|yf)-tiled-.*
- igt@kms_rotation_crc@exhaust-fences
- igt@kms_force_connector_basic@force-load-detect
--igt@kms_getfb@.*-ccs
- igt@kms_plane_lowres@tiling-(4|x|y|yf)
- igt@kms_.*@.*hang.*
- ##################################################################
-diff --git a/tests/kms_getfb.c b/tests/kms_getfb.c
-index f90e51d64..6ee58caab 100644
---- a/tests/kms_getfb.c
-+++ b/tests/kms_getfb.c
-@@ -48,6 +48,7 @@
- #include "i915/gem_create.h"
- #include "igt_device.h"
- #include "xe/xe_query.h"
-+#include "xe/xe_ioctl.h"
+diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+index 721d3b533..d8b5dca9c 100644
+--- a/tests/kms_plane.c
++++ b/tests/kms_plane.c
+@@ -1064,10 +1064,6 @@ static bool test_format_plane(data_t *data, enum pipe pipe,
+ 			.modifier = plane->modifiers[i],
+ 		};
  
- IGT_TEST_DESCRIPTION("Tests GETFB and GETFB2 ioctls.");
- 
-@@ -145,7 +146,10 @@ static void get_ccs_fb(int fd, struct drm_mode_fb_cmd2 *ret)
- 		size += add.pitches[1] * ALIGN(ALIGN(add.height, 16) / 16, 32);
- 	}
- 
--	add.handles[0] = gem_buffer_create_fb_obj(fd, size);
-+	if (is_i915_device(fd))
-+		add.handles[0] = gem_buffer_create_fb_obj(fd, size);
-+	else
-+		add.handles[0] = xe_bo_create_flags(fd, 0, size, vram_if_possible(fd, 0));
- 	igt_require(add.handles[0] != 0);
- 
- 	if (!HAS_FLATCCS(devid))
-@@ -315,7 +319,7 @@ static void test_duplicate_handles(int fd)
- 		struct drm_mode_fb_cmd2 add_ccs = { };
- 		struct drm_mode_fb_cmd get = { };
- 
--		igt_require_i915(fd);
-+		igt_require_intel(fd);
- 		igt_require_f(!HAS_FLATCCS(intel_get_drm_devid(fd)),
- 			      "skip because flat ccs has only one buffer.\n");
- 
-@@ -421,7 +425,7 @@ static void test_getfb2(int fd)
- 		struct drm_mode_fb_cmd2 get = { };
- 		int i;
- 
--		igt_require_i915(fd);
-+		igt_require_intel(fd);
- 		get_ccs_fb(fd, &add_ccs);
- 		igt_require(add_ccs.fb_id != 0);
- 		get.fb_id = add_ccs.fb_id;
+-		if (is_xe_device(data->drm_fd) &&
+-		    f.modifier != DRM_FORMAT_MOD_LINEAR)
+-			continue;
+-
+ 		/* igt doesn't know how to sw generate UBWC: */
+ 		if (is_msm_device(data->drm_fd) &&
+ 		    f.modifier == DRM_FORMAT_MOD_QCOM_COMPRESSED)
 -- 
 2.40.0
