@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5035D10E0D3
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Aug 2023 09:50:50 +0000 (UTC)
-Message-ID: <f260e851-0953-dce1-f27c-babdfb075f16@intel.com>
-Date: Wed, 16 Aug 2023 15:20:26 +0530
-To: "B, Jeevan" <jeevan.b@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ACD7A10E321
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Aug 2023 10:01:24 +0000 (UTC)
+From: "B, Jeevan" <jeevan.b@intel.com>
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Wed, 16 Aug 2023 10:01:16 +0000
+Message-ID: <DM4PR11MB6312BC7401C6279C671DA0499015A@DM4PR11MB6312.namprd11.prod.outlook.com>
 References: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
  <20230811184655.157060-77-bhanuprakash.modem@intel.com>
  <DM4PR11MB631267921AD950F213CB12EF9015A@DM4PR11MB6312.namprd11.prod.outlook.com>
+ <f260e851-0953-dce1-f27c-babdfb075f16@intel.com>
+In-Reply-To: <f260e851-0953-dce1-f27c-babdfb075f16@intel.com>
 Content-Language: en-US
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <DM4PR11MB631267921AD950F213CB12EF9015A@DM4PR11MB6312.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 Subject: Re: [igt-dev] [i-g-t V6 76/81] tests/kms_universal_plane: Document
  each subtest for testplan
@@ -28,128 +29,80 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Jeevan,
-
-On Wed-16-08-2023 11:44 am, B, Jeevan wrote:
->> -----Original Message-----
->> From: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
->> Sent: Saturday, August 12, 2023 12:17 AM
->> To: igt-dev@lists.freedesktop.org
->> Cc: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>; B, Jeevan
->> <jeevan.b@intel.com>
->> Subject: [i-g-t V6 76/81] tests/kms_universal_plane: Document each subtest
->> for testplan
->>
->> Add documentation for all kms tests which is used by IGT testplan
->> documentation.
->>
->> V2: - Fix test description
->>
->> Cc: Jeevan B <jeevan.b@intel.com>
->> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> 
-> Not all subtest details are added as mentioned in previous version.
-
-Sorry, I didn't get you. What else is missing here?
-
-This patch is covering all the subsets in kms_universal_plane. You can 
-verify the same by comparing 1 & 2 from igt root directory.
-
-[1]: ./scripts/igt_doc.py --config=tests/kms_test_config.json 
---files=tests/kms_universal_plane.c --show-subtests
-[2]: ./build/tests/kms_universal_plane --show-testlist
-
-- Bhanu
-
-> 
->> ---
->>   tests/kms_universal_plane.c | 68
->> +++++++++++++++++++++++++++++++++++++
->>   1 file changed, 68 insertions(+)
->>
->> diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
->> index 957d600f1..a23a0d8cd 100644
->> --- a/tests/kms_universal_plane.c
->> +++ b/tests/kms_universal_plane.c
->> @@ -28,6 +28,74 @@
->>   #include <string.h>
->>   #include <fcntl.h>
->>
->> +/**
->> + * TEST: kms universal plane
->> + * Category: Display
->> + * Description: Check pageflip & modeset on universal plane
->> + *
->> + * SUBTEST: cursor-fb-leak-pipe-%s
->> + * Description: Check for cursor leaks after performing cursor
->> +operations on %arg[1]
->> + * Driver requirement: any
->> + * Functionality: cursor, plane
->> + * Mega feature: General Display Features
->> + * Run type: FULL
->> + * Test category: functionality test
->> + *
->> + * SUBTEST: disable-primary-vs-flip-pipe-%s
->> + * Description: Check pageflips while primary plane is disabled before IOCTL
->> or
->> + *              between IOCTL and pageflip execution on %arg[1]
->> + * Driver requirement: any
->> + * Functionality: plane
->> + * Mega feature: General Display Features
->> + * Run type: FULL
->> + * Test category: functionality test
->> + *
->> + * SUBTEST: universal-plane-pageflip-windowed-pipe-%s
->> + * Description: Check if pageflip succeeds in windowed setting on
->> +%arg[1]
->> + * Driver requirement: any
->> + * Functionality: plane
->> + * Mega feature: General Display Features
->> + * Run type: FULL
->> + * Test category: functionality test
->> + *
->> + * arg[1]:
->> + *
->> + * @A:    pipe A
->> + * @B:    pipe B
->> + * @C:    pipe C
->> + * @D:    pipe D
->> + * @E:    pipe E
->> + * @F:    pipe F
->> + * @G:    pipe G
->> + * @H:    pipe H
->> + */
->> +
->> +/**
->> + * SUBTEST: universal-plane-pipe-%s-%s
->> + * Description: Check %arg[2] on %arg[1]
->> + * Driver requirement: any
->> + * Functionality: plane
->> + * Mega feature: General Display Features
->> + * Run type: FULL
->> + * Test category: functionality test
->> + *
->> + * arg[1]:
->> + *
->> + * @A:    pipe A
->> + * @B:    pipe B
->> + * @C:    pipe C
->> + * @D:    pipe D
->> + * @E:    pipe E
->> + * @F:    pipe F
->> + * @G:    pipe G
->> + * @H:    pipe H
->> + *
->> + * arg[2]:
->> + *
->> + * @functional: the switching between different primary plane fbs with
->> CRTC off
->> + * @sanity:     for scale-up or scale-down using universal plane API without
->> + *              covering CRTC
->> + */
->>
->>   typedef struct {
->>   	int drm_fd;
->> --
->> 2.40.0
-> 
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBNb2RlbSwgQmhhbnVwcmFrYXNo
+IDxiaGFudXByYWthc2gubW9kZW1AaW50ZWwuY29tPg0KPiBTZW50OiBXZWRuZXNkYXksIEF1Z3Vz
+dCAxNiwgMjAyMyAzOjIwIFBNDQo+IFRvOiBCLCBKZWV2YW4gPGplZXZhbi5iQGludGVsLmNvbT47
+IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IFN1YmplY3Q6IFJlOiBbaS1nLXQgVjYg
+NzYvODFdIHRlc3RzL2ttc191bml2ZXJzYWxfcGxhbmU6IERvY3VtZW50IGVhY2gNCj4gc3VidGVz
+dCBmb3IgdGVzdHBsYW4NCj4gDQo+IEhpIEplZXZhbiwNCj4gDQo+IE9uIFdlZC0xNi0wOC0yMDIz
+IDExOjQ0IGFtLCBCLCBKZWV2YW4gd3JvdGU6DQo+ID4+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0t
+LS0tDQo+ID4+IEZyb206IE1vZGVtLCBCaGFudXByYWthc2ggPGJoYW51cHJha2FzaC5tb2RlbUBp
+bnRlbC5jb20+DQo+ID4+IFNlbnQ6IFNhdHVyZGF5LCBBdWd1c3QgMTIsIDIwMjMgMTI6MTcgQU0N
+Cj4gPj4gVG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+ID4+IENjOiBNb2RlbSwg
+QmhhbnVwcmFrYXNoIDxiaGFudXByYWthc2gubW9kZW1AaW50ZWwuY29tPjsgQiwNCj4gSmVldmFu
+DQo+ID4+IDxqZWV2YW4uYkBpbnRlbC5jb20+DQo+ID4+IFN1YmplY3Q6IFtpLWctdCBWNiA3Ni84
+MV0gdGVzdHMva21zX3VuaXZlcnNhbF9wbGFuZTogRG9jdW1lbnQgZWFjaA0KPiA+PiBzdWJ0ZXN0
+IGZvciB0ZXN0cGxhbg0KPiA+Pg0KPiA+PiBBZGQgZG9jdW1lbnRhdGlvbiBmb3IgYWxsIGttcyB0
+ZXN0cyB3aGljaCBpcyB1c2VkIGJ5IElHVCB0ZXN0cGxhbg0KPiA+PiBkb2N1bWVudGF0aW9uLg0K
+PiA+Pg0KPiA+PiBWMjogLSBGaXggdGVzdCBkZXNjcmlwdGlvbg0KPiA+Pg0KPiA+PiBDYzogSmVl
+dmFuIEIgPGplZXZhbi5iQGludGVsLmNvbT4NCj4gPj4gU2lnbmVkLW9mZi1ieTogQmhhbnVwcmFr
+YXNoIE1vZGVtDQo+IDxiaGFudXByYWthc2gubW9kZW1AaW50ZWwuY29tPg0KR290IGl0IHRoYW5r
+cy4gDQpMR1RNLiANClJldmlld2VkLWJ5OiBKZWV2YW4gQiA8amVldmFuLmJAaW50ZWwuY29tPg0K
+PiA+DQo+ID4gTm90IGFsbCBzdWJ0ZXN0IGRldGFpbHMgYXJlIGFkZGVkIGFzIG1lbnRpb25lZCBp
+biBwcmV2aW91cyB2ZXJzaW9uLg0KPiANCj4gU29ycnksIEkgZGlkbid0IGdldCB5b3UuIFdoYXQg
+ZWxzZSBpcyBtaXNzaW5nIGhlcmU/DQo+IA0KPiBUaGlzIHBhdGNoIGlzIGNvdmVyaW5nIGFsbCB0
+aGUgc3Vic2V0cyBpbiBrbXNfdW5pdmVyc2FsX3BsYW5lLiBZb3UgY2FuIHZlcmlmeQ0KPiB0aGUg
+c2FtZSBieSBjb21wYXJpbmcgMSAmIDIgZnJvbSBpZ3Qgcm9vdCBkaXJlY3RvcnkuDQo+IA0KPiBb
+MV06IC4vc2NyaXB0cy9pZ3RfZG9jLnB5IC0tY29uZmlnPXRlc3RzL2ttc190ZXN0X2NvbmZpZy5q
+c29uDQo+IC0tZmlsZXM9dGVzdHMva21zX3VuaXZlcnNhbF9wbGFuZS5jIC0tc2hvdy1zdWJ0ZXN0
+cw0KPiBbMl06IC4vYnVpbGQvdGVzdHMva21zX3VuaXZlcnNhbF9wbGFuZSAtLXNob3ctdGVzdGxp
+c3QNCj4gDQo+IC0gQmhhbnUNCj4gDQo+ID4NCj4gPj4gLS0tDQo+ID4+ICAgdGVzdHMva21zX3Vu
+aXZlcnNhbF9wbGFuZS5jIHwgNjgNCj4gPj4gKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKw0KPiA+PiAgIDEgZmlsZSBjaGFuZ2VkLCA2OCBpbnNlcnRpb25zKCspDQo+ID4+DQo+
+ID4+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfdW5pdmVyc2FsX3BsYW5lLmMNCj4gPj4gYi90ZXN0
+cy9rbXNfdW5pdmVyc2FsX3BsYW5lLmMgaW5kZXggOTU3ZDYwMGYxLi5hMjNhMGQ4Y2QgMTAwNjQ0
+DQo+ID4+IC0tLSBhL3Rlc3RzL2ttc191bml2ZXJzYWxfcGxhbmUuYw0KPiA+PiArKysgYi90ZXN0
+cy9rbXNfdW5pdmVyc2FsX3BsYW5lLmMNCj4gPj4gQEAgLTI4LDYgKzI4LDc0IEBADQo+ID4+ICAg
+I2luY2x1ZGUgPHN0cmluZy5oPg0KPiA+PiAgICNpbmNsdWRlIDxmY250bC5oPg0KPiA+Pg0KPiA+
+PiArLyoqDQo+ID4+ICsgKiBURVNUOiBrbXMgdW5pdmVyc2FsIHBsYW5lDQo+ID4+ICsgKiBDYXRl
+Z29yeTogRGlzcGxheQ0KPiA+PiArICogRGVzY3JpcHRpb246IENoZWNrIHBhZ2VmbGlwICYgbW9k
+ZXNldCBvbiB1bml2ZXJzYWwgcGxhbmUNCj4gPj4gKyAqDQo+ID4+ICsgKiBTVUJURVNUOiBjdXJz
+b3ItZmItbGVhay1waXBlLSVzDQo+ID4+ICsgKiBEZXNjcmlwdGlvbjogQ2hlY2sgZm9yIGN1cnNv
+ciBsZWFrcyBhZnRlciBwZXJmb3JtaW5nIGN1cnNvcg0KPiA+PiArb3BlcmF0aW9ucyBvbiAlYXJn
+WzFdDQo+ID4+ICsgKiBEcml2ZXIgcmVxdWlyZW1lbnQ6IGFueQ0KPiA+PiArICogRnVuY3Rpb25h
+bGl0eTogY3Vyc29yLCBwbGFuZQ0KPiA+PiArICogTWVnYSBmZWF0dXJlOiBHZW5lcmFsIERpc3Bs
+YXkgRmVhdHVyZXMNCj4gPj4gKyAqIFJ1biB0eXBlOiBGVUxMDQo+ID4+ICsgKiBUZXN0IGNhdGVn
+b3J5OiBmdW5jdGlvbmFsaXR5IHRlc3QNCj4gPj4gKyAqDQo+ID4+ICsgKiBTVUJURVNUOiBkaXNh
+YmxlLXByaW1hcnktdnMtZmxpcC1waXBlLSVzDQo+ID4+ICsgKiBEZXNjcmlwdGlvbjogQ2hlY2sg
+cGFnZWZsaXBzIHdoaWxlIHByaW1hcnkgcGxhbmUgaXMgZGlzYWJsZWQNCj4gPj4gK2JlZm9yZSBJ
+T0NUTA0KPiA+PiBvcg0KPiA+PiArICogICAgICAgICAgICAgIGJldHdlZW4gSU9DVEwgYW5kIHBh
+Z2VmbGlwIGV4ZWN1dGlvbiBvbiAlYXJnWzFdDQo+ID4+ICsgKiBEcml2ZXIgcmVxdWlyZW1lbnQ6
+IGFueQ0KPiA+PiArICogRnVuY3Rpb25hbGl0eTogcGxhbmUNCj4gPj4gKyAqIE1lZ2EgZmVhdHVy
+ZTogR2VuZXJhbCBEaXNwbGF5IEZlYXR1cmVzDQo+ID4+ICsgKiBSdW4gdHlwZTogRlVMTA0KPiA+
+PiArICogVGVzdCBjYXRlZ29yeTogZnVuY3Rpb25hbGl0eSB0ZXN0DQo+ID4+ICsgKg0KPiA+PiAr
+ICogU1VCVEVTVDogdW5pdmVyc2FsLXBsYW5lLXBhZ2VmbGlwLXdpbmRvd2VkLXBpcGUtJXMNCj4g
+Pj4gKyAqIERlc2NyaXB0aW9uOiBDaGVjayBpZiBwYWdlZmxpcCBzdWNjZWVkcyBpbiB3aW5kb3dl
+ZCBzZXR0aW5nIG9uDQo+ID4+ICslYXJnWzFdDQo+ID4+ICsgKiBEcml2ZXIgcmVxdWlyZW1lbnQ6
+IGFueQ0KPiA+PiArICogRnVuY3Rpb25hbGl0eTogcGxhbmUNCj4gPj4gKyAqIE1lZ2EgZmVhdHVy
+ZTogR2VuZXJhbCBEaXNwbGF5IEZlYXR1cmVzDQo+ID4+ICsgKiBSdW4gdHlwZTogRlVMTA0KPiA+
+PiArICogVGVzdCBjYXRlZ29yeTogZnVuY3Rpb25hbGl0eSB0ZXN0DQo+ID4+ICsgKg0KPiA+PiAr
+ICogYXJnWzFdOg0KPiA+PiArICoNCj4gPj4gKyAqIEBBOiAgICBwaXBlIEENCj4gPj4gKyAqIEBC
+OiAgICBwaXBlIEINCj4gPj4gKyAqIEBDOiAgICBwaXBlIEMNCj4gPj4gKyAqIEBEOiAgICBwaXBl
+IEQNCj4gPj4gKyAqIEBFOiAgICBwaXBlIEUNCj4gPj4gKyAqIEBGOiAgICBwaXBlIEYNCj4gPj4g
+KyAqIEBHOiAgICBwaXBlIEcNCj4gPj4gKyAqIEBIOiAgICBwaXBlIEgNCj4gPj4gKyAqLw0KPiA+
+PiArDQo+ID4+ICsvKioNCj4gPj4gKyAqIFNVQlRFU1Q6IHVuaXZlcnNhbC1wbGFuZS1waXBlLSVz
+LSVzDQo+ID4+ICsgKiBEZXNjcmlwdGlvbjogQ2hlY2sgJWFyZ1syXSBvbiAlYXJnWzFdDQo+ID4+
+ICsgKiBEcml2ZXIgcmVxdWlyZW1lbnQ6IGFueQ0KPiA+PiArICogRnVuY3Rpb25hbGl0eTogcGxh
+bmUNCj4gPj4gKyAqIE1lZ2EgZmVhdHVyZTogR2VuZXJhbCBEaXNwbGF5IEZlYXR1cmVzDQo+ID4+
+ICsgKiBSdW4gdHlwZTogRlVMTA0KPiA+PiArICogVGVzdCBjYXRlZ29yeTogZnVuY3Rpb25hbGl0
+eSB0ZXN0DQo+ID4+ICsgKg0KPiA+PiArICogYXJnWzFdOg0KPiA+PiArICoNCj4gPj4gKyAqIEBB
+OiAgICBwaXBlIEENCj4gPj4gKyAqIEBCOiAgICBwaXBlIEINCj4gPj4gKyAqIEBDOiAgICBwaXBl
+IEMNCj4gPj4gKyAqIEBEOiAgICBwaXBlIEQNCj4gPj4gKyAqIEBFOiAgICBwaXBlIEUNCj4gPj4g
+KyAqIEBGOiAgICBwaXBlIEYNCj4gPj4gKyAqIEBHOiAgICBwaXBlIEcNCj4gPj4gKyAqIEBIOiAg
+ICBwaXBlIEgNCj4gPj4gKyAqDQo+ID4+ICsgKiBhcmdbMl06DQo+ID4+ICsgKg0KPiA+PiArICog
+QGZ1bmN0aW9uYWw6IHRoZSBzd2l0Y2hpbmcgYmV0d2VlbiBkaWZmZXJlbnQgcHJpbWFyeSBwbGFu
+ZSBmYnMNCj4gPj4gK3dpdGgNCj4gPj4gQ1JUQyBvZmYNCj4gPj4gKyAqIEBzYW5pdHk6ICAgICBm
+b3Igc2NhbGUtdXAgb3Igc2NhbGUtZG93biB1c2luZyB1bml2ZXJzYWwgcGxhbmUgQVBJDQo+IHdp
+dGhvdXQNCj4gPj4gKyAqICAgICAgICAgICAgICBjb3ZlcmluZyBDUlRDDQo+ID4+ICsgKi8NCj4g
+Pj4NCj4gPj4gICB0eXBlZGVmIHN0cnVjdCB7DQo+ID4+ICAgCWludCBkcm1fZmQ7DQo+ID4+IC0t
+DQo+ID4+IDIuNDAuMA0KPiA+DQo=
