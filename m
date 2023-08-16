@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 253C410E398
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Aug 2023 16:40:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9625510E3AC
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Aug 2023 16:40:14 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 16 Aug 2023 22:01:59 +0530
-Message-Id: <20230816163206.402705-14-bhanuprakash.modem@intel.com>
+Date: Wed, 16 Aug 2023 22:02:00 +0530
+Message-Id: <20230816163206.402705-15-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230816163206.402705-1-bhanuprakash.modem@intel.com>
 References: <20230816163206.402705-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 13/20] tests/i915/kms_ccs: Add XE support
+Subject: [igt-dev] [i-g-t V4 14/20] tests/i915/kms_fb_coherancy: Add XE
+ support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,130 +26,108 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add XE driver support for kms tests. This patch will add a support
 to call the corresponding apis based on the driver (i915/xe)
 
-V2: - Update XE blocklist
-
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_ccs.c            | 42 ++++++++++++++++++++-------------
- tests/intel-ci/xe.blocklist.txt |  1 -
- 2 files changed, 26 insertions(+), 17 deletions(-)
+ tests/i915/kms_fb_coherency.c | 43 +++++++++++++++++++----------------
+ 1 file changed, 23 insertions(+), 20 deletions(-)
 
-diff --git a/tests/i915/kms_ccs.c b/tests/i915/kms_ccs.c
-index 976aedb06..4a0f024dd 100644
---- a/tests/i915/kms_ccs.c
-+++ b/tests/i915/kms_ccs.c
-@@ -32,6 +32,7 @@
- #include "igt.h"
+diff --git a/tests/i915/kms_fb_coherency.c b/tests/i915/kms_fb_coherency.c
+index c772ddcdc..745ffcdd2 100644
+--- a/tests/i915/kms_fb_coherency.c
++++ b/tests/i915/kms_fb_coherency.c
+@@ -16,6 +16,7 @@
+ #include <string.h>
  
- #include "i915/gem_create.h"
+ #include "igt.h"
 +#include "xe/xe_ioctl.h"
  
- /**
-  * SUBTEST: %s-%s-%s
-@@ -313,17 +314,19 @@ static void check_ccs_plane(int drm_fd, igt_fb_t *fb, int plane)
- 	ccs_size = fb->strides[plane] * fb->plane_height[plane];
- 	igt_assert(ccs_size);
+ typedef struct {
+ 	int drm_fd;
+@@ -91,7 +92,7 @@ static struct igt_fb *prepare_fb(data_t *data)
+ 			0, 0, fb->width, fb->height,
+ 			0, 0, fb->width << 16, fb->height << 16);
  
--	gem_set_domain(drm_fd, fb->gem_handle, I915_GEM_DOMAIN_CPU, 0);
--
--	map = gem_mmap__cpu(drm_fd, fb->gem_handle, 0, fb->size, PROT_READ);
--
-+	if (is_i915_device(drm_fd)) {
-+		gem_set_domain(drm_fd, fb->gem_handle, I915_GEM_DOMAIN_CPU, 0);
-+		map = gem_mmap__cpu(drm_fd, fb->gem_handle, 0, fb->size, PROT_READ);
-+	} else {
-+		map = xe_bo_mmap_ext(drm_fd, fb->gem_handle, fb->size, PROT_READ);
-+	}
- 	ccs_size = fb->strides[plane] * fb->plane_height[plane];
- 	ccs_p = map + fb->offsets[plane];
- 	for (i = 0; i < ccs_size; i += sizeof(uint32_t))
- 		if (*(uint32_t *)(ccs_p + i))
- 			break;
+-	if (!gem_has_lmem(data->drm_fd)) {
++	if (is_i915_device(data->drm_fd) && !gem_has_lmem(data->drm_fd)) {
+ 		uint32_t caching;
  
--	munmap(map, fb->size);
-+	igt_assert(gem_munmap(map, fb->size) == 0);
+ 		/* make sure caching mode has become UC/WT */
+@@ -160,7 +161,10 @@ static void test_mmap_offset_wc(data_t *data)
  
- 	igt_assert_f(i < ccs_size,
- 		     "CCS plane %d (for main plane %d) lacks compression meta-data\n",
-@@ -339,9 +342,12 @@ static void check_ccs_cc_plane(int drm_fd, igt_fb_t *fb, int plane, const float
- 	void *map;
- 	uint32_t native_color;
+ 	fb = prepare_fb(data);
  
--	gem_set_domain(drm_fd, fb->gem_handle, I915_GEM_DOMAIN_CPU, 0);
--
--	map = gem_mmap__cpu(drm_fd, fb->gem_handle, 0, fb->size, PROT_READ);
-+	if (is_i915_device(drm_fd)) {
-+		gem_set_domain(drm_fd, fb->gem_handle, I915_GEM_DOMAIN_CPU, 0);
-+		map = gem_mmap__cpu(drm_fd, fb->gem_handle, 0, fb->size, PROT_READ);
-+	} else {
-+		map = xe_bo_mmap_ext(drm_fd, fb->gem_handle, fb->size, PROT_READ);
-+	}
- 	cc_p = map + fb->offsets[plane];
+-	buf = gem_mmap_offset__wc(data->drm_fd, fb->gem_handle, 0, fb->size, PROT_WRITE);
++	if (is_i915_device(data->drm_fd))
++		buf = gem_mmap_offset__wc(data->drm_fd, fb->gem_handle, 0, fb->size, PROT_WRITE);
++	else
++		buf = xe_bo_mmap_ext(data->drm_fd, fb->gem_handle, fb->size, PROT_WRITE);
  
- 	igt_assert(cc_color[0] == cc_p[0].f &&
-@@ -356,7 +362,7 @@ static void check_ccs_cc_plane(int drm_fd, igt_fb_t *fb, int plane, const float
- 
- 	igt_assert(native_color == cc_p[4].d);
- 
--	munmap(map, fb->size);
-+	igt_assert(gem_munmap(map, fb->size) == 0);
- };
- 
- static void check_all_ccs_planes(int drm_fd, igt_fb_t *fb, const float *cc_color, bool check_cc_plane)
-@@ -378,14 +384,17 @@ static void fill_fb_random(int drm_fd, igt_fb_t *fb)
- 	uint8_t *p;
- 	int i;
- 
--	gem_set_domain(drm_fd, fb->gem_handle, I915_GEM_DOMAIN_CPU, I915_GEM_DOMAIN_CPU);
--
--	p = map = gem_mmap__cpu(drm_fd, fb->gem_handle, 0, fb->size, PROT_WRITE);
-+	if (is_i915_device(drm_fd)) {
-+		gem_set_domain(drm_fd, fb->gem_handle, I915_GEM_DOMAIN_CPU, I915_GEM_DOMAIN_CPU);
-+		p = map = gem_mmap__cpu(drm_fd, fb->gem_handle, 0, fb->size, PROT_WRITE);
-+	} else {
-+		p = map = xe_bo_mmap_ext(drm_fd, fb->gem_handle, fb->size, PROT_READ | PROT_WRITE);
-+	}
- 
- 	for (i = 0; i < fb->size; i++)
- 		p[i] = rand();
- 
--	munmap(map, fb->size);
-+	igt_assert(gem_munmap(map, fb->size) == 0);
+ 	check_buf_crc(data, buf, fb);
  }
- 
- static void test_bad_ccs_plane(data_t *data, int width, int height, int ccs_plane,
-@@ -493,8 +502,9 @@ static void fast_clear_fb(int drm_fd, struct igt_fb *fb, const float *cc_color)
- 	struct buf_ops *bops = buf_ops_create(drm_fd);
- 	struct intel_buf *dst = igt_fb_create_intel_buf(drm_fd, bops, fb, "fast clear dst");
- 
--	gem_set_domain(drm_fd, fb->gem_handle,
--		       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
-+	if (is_i915_device(drm_fd))
-+		gem_set_domain(drm_fd, fb->gem_handle,
-+			       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
- 
- 	fast_clear(ibb, dst, 0, 0, fb->width, fb->height, cc_color);
- 
-@@ -814,7 +824,7 @@ igt_main_args("cs:", NULL, help_str, opt_handler, &data)
- 	enum pipe pipe;
+@@ -226,7 +230,7 @@ igt_main
+ 	data_t data;
  
  	igt_fixture {
 -		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
 +		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
  
- 		igt_require(intel_display_ver(intel_get_drm_devid(data.drm_fd)) >= 9);
- 		kmstest_set_vt_graphics_mode();
-diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
-index ffba73e02..81599c778 100644
---- a/tests/intel-ci/xe.blocklist.txt
-+++ b/tests/intel-ci/xe.blocklist.txt
-@@ -56,7 +56,6 @@ igt@kms_bw@.*-(5|6|7|8)-displays-.*
- igt@kms_draw_crc@draw-method-(mmap-cpu|mmap-gtt|pwrite)
- igt@kms_pipe_b_c_ivb@.*
- igt@kms_pwrite_crc
--igt@kms_ccs@.*
- igt@kms_frontbuffer_tracking@.*
- igt@kms_fbcon_fbt@(fbc|psr)(-suspend)
- igt@kms_fence_pin_leak
+ 		data.devid = intel_get_drm_devid(data.drm_fd);
+ 
+@@ -251,39 +255,38 @@ igt_main
+ 	 * Test category: functionality test
+ 	 */
+ 	igt_subtest_with_dynamic("memset-crc") {
+-		if (gem_has_mappable_ggtt(data.drm_fd)) {
++		if (igt_draw_supports_method(data.drm_fd, IGT_DRAW_MMAP_GTT)) {
+ 			igt_dynamic("mmap-gtt")
+ 				test_mmap_gtt(&data);
+ 
+ 			cleanup_crtc(&data);
+ 		}
+ 
+-		if (gem_mmap_offset__has_wc(data.drm_fd)) {
++		if (igt_draw_supports_method(data.drm_fd, IGT_DRAW_MMAP_WC)) {
+ 			igt_dynamic("mmap-offset-wc")
+ 				test_mmap_offset_wc(&data);
+ 
+ 			cleanup_crtc(&data);
+ 		}
+ 
+-		if (gem_has_lmem(data.drm_fd)) {
+-			igt_dynamic("mmap-offset-fixed")
+-				test_mmap_offset_fixed(&data);
++		if (is_i915_device(data.drm_fd)) {
++			if (gem_has_lmem(data.drm_fd)) {
++				igt_dynamic("mmap-offset-fixed")
++					test_mmap_offset_fixed(&data);
++			} else if (gem_has_mmap_offset(data.drm_fd)) {
++				igt_dynamic("mmap-offset-uc")
++					test_mmap_offset_uc(&data);
++			}
+ 
+ 			cleanup_crtc(&data);
+ 
+-		} else if (gem_has_mmap_offset(data.drm_fd)) {
+-			igt_dynamic("mmap-offset-uc")
+-				test_mmap_offset_uc(&data);
++			if (gem_has_legacy_mmap(data.drm_fd) &&
++			    gem_mmap__has_wc(data.drm_fd)) {
++				igt_dynamic("mmap-legacy-wc")
++					test_legacy_mmap_wc(&data);
+ 
+-			cleanup_crtc(&data);
+-		}
+-
+-		if (gem_has_legacy_mmap(data.drm_fd) &&
+-		    gem_mmap__has_wc(data.drm_fd)) {
+-			igt_dynamic("mmap-legacy-wc")
+-				test_legacy_mmap_wc(&data);
+-
+-			cleanup_crtc(&data);
++				cleanup_crtc(&data);
++			}
+ 		}
+ 	}
+ 
 -- 
 2.40.0
