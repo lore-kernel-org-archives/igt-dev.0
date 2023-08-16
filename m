@@ -1,19 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com
- (mail-sn1nam02on20622.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7ea9::622])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9747B10E381
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Aug 2023 16:18:01 +0000 (UTC)
-Message-ID: <7a8c0a3f-df18-ba3f-9c92-d341f2cb5a7d@nvidia.com>
-Date: Wed, 16 Aug 2023 09:17:56 -0700
-Content-Language: en-US
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 98B4510E388
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Aug 2023 16:39:54 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-From: Erik Kurzinger <ekurzinger@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Wed, 16 Aug 2023 22:01:46 +0530
+Message-Id: <20230816163206.402705-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH] syncobj_timeline: don't expect EINVAL for
- WAIT_UNSUBMITTED | WAIT_AVAILABLE
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t V4 00/20] Add XE suppor for display tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,45 +20,57 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The syncobj_timeline test expects waiting for an unsubmitted fence with
-the WAIT_AVAILABLE flag set to fail with EINVAL. While this matches the
-behavior of current kernels, that behavior is incorrect and will be
-fixed by
-https://lists.freedesktop.org/archives/dri-devel/2023-August/418710.html
+Add IGT support to work kms tests on XE driver.
 
-With that fix, the WAIT_AVAILABLE flag will have the intended semantics
-of waiting for an unsubmitted fence to be submitted instead of failing.
+V2: - Rebase
+V3: - Update testlist
+V4: - Rebase
 
-Note that this will cause the test to fail with kernels that lack the
-fix, but such failures will reflect a genuine defect.
+Bhanuprakash Modem (20):
+  lib: Add tiling support for XE
+  tests/kms_cursor_edge_walk: Fix intel specific checks
+  tests/kms_getfb: Extended ccs tests to support XE
+  tests/kms_addfb_basic: Add tiling support for XE
+  tests/kms_plane: Add tiling support for XE
+  tests/kms_plane_lowres: Add tiling support for XE
+  tests/kms_plane_scaling: Add tiling support for XE
+  tests/kms_rotation_crc: Add tiling support for XE
+  tests/i915/kms_big_fb: Add tiling support for XE
+  tests/i915/kms_draw_crc: Add tiling support for XE
+  tests/i915/kms_flip_scaled_crc: Add tiling support for XE
+  tests/i915/kms_flip_tiling: Add tiling support for XE
+  tests/i915/kms_ccs: Add XE support
+  tests/i915/kms_fb_coherancy: Add XE support
+  tests/i915/kms_fbcon_fbt: Add XE support
+  tests/kms_async_flips: Add XE support
+  tests/kms_prime: Add XE support
+  tests/intel-ci: Update Xe ffb testlist & blocklist for
+    kms_frontbuffer_tracking
+  tests/intel-ci: Drop tiling tests from xe blocklist
+  HAX: Run tiling tests in XE fast-feedback
 
-Signed-off-by: Erik Kurzinger <ekurzinger@nvidia.com>
----
- tests/syncobj_timeline.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ lib/igt_draw.c                           |   5 +-
+ lib/igt_fb.c                             |   8 +-
+ lib/intel_bufops.c                       |  13 +-
+ tests/i915/kms_big_fb.c                  |  23 +-
+ tests/i915/kms_ccs.c                     |  42 +-
+ tests/i915/kms_draw_crc.c                |   4 -
+ tests/i915/kms_fb_coherency.c            |  43 +-
+ tests/i915/kms_fbcon_fbt.c               |   2 +-
+ tests/i915/kms_flip_scaled_crc.c         |   6 -
+ tests/i915/kms_flip_tiling.c             |   6 -
+ tests/intel-ci/xe-fast-feedback.testlist | 660 ++++++++++++++++-------
+ tests/intel-ci/xe.blocklist.txt          |  13 +-
+ tests/kms_addfb_basic.c                  |  17 +-
+ tests/kms_async_flips.c                  |  12 +-
+ tests/kms_cursor_edge_walk.c             |   2 +-
+ tests/kms_getfb.c                        |  10 +-
+ tests/kms_plane.c                        |   4 -
+ tests/kms_plane_lowres.c                 |   3 -
+ tests/kms_plane_scaling.c                |   4 -
+ tests/kms_prime.c                        | 261 +++++++--
+ tests/kms_rotation_crc.c                 |   8 +-
+ 21 files changed, 782 insertions(+), 364 deletions(-)
 
-diff --git a/tests/syncobj_timeline.c b/tests/syncobj_timeline.c
-index b4e1d093a..0422bca51 100644
---- a/tests/syncobj_timeline.c
-+++ b/tests/syncobj_timeline.c
-@@ -1782,7 +1782,7 @@ igt_main
- 						WAIT_SIGNALED)) != 1)
- 			continue;
- 
--		if ((flags & WAIT_UNSUBMITTED) && !(flags & WAIT_FOR_SUBMIT))
-+		if ((flags & WAIT_UNSUBMITTED) && !((flags & WAIT_FOR_SUBMIT) || (flags & WAIT_AVAILABLE)))
- 			err = -EINVAL;
- 		else if (!(flags & WAIT_SIGNALED) && !((flags & WAIT_SUBMITTED) && (flags & WAIT_AVAILABLE)))
- 			err = -ETIME;
-@@ -1851,7 +1851,7 @@ igt_main
- 			continue;
- 
- 		err = 0;
--		if ((flags & WAIT_UNSUBMITTED) && !(flags & WAIT_FOR_SUBMIT)) {
-+		if ((flags & WAIT_UNSUBMITTED) && !((flags & WAIT_FOR_SUBMIT) || (flags & WAIT_AVAILABLE))) {
- 			err = -EINVAL;
- 		} else if (flags & WAIT_ALL) {
- 			if (flags & (WAIT_UNSUBMITTED | WAIT_SUBMITTED))
--- 
-2.41.0
-
+--
+2.40.0
