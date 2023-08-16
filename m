@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2F0DE10E38D
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Aug 2023 16:39:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EFE5C10E38F
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Aug 2023 16:39:58 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 16 Aug 2023 22:01:48 +0530
-Message-Id: <20230816163206.402705-3-bhanuprakash.modem@intel.com>
+Date: Wed, 16 Aug 2023 22:01:49 +0530
+Message-Id: <20230816163206.402705-4-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230816163206.402705-1-bhanuprakash.modem@intel.com>
 References: <20230816163206.402705-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 02/20] tests/kms_cursor_edge_walk: Fix intel
- specific checks
+Subject: [igt-dev] [i-g-t V4 03/20] tests/kms_getfb: Extended ccs tests to
+ support XE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,27 +24,71 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Use the correct helper to check for the intel hardware.
-s/is_i915_device/is_intel_device/
+Add support for ccs tests work on XE driver.
 
+V2: - Update XE blocklist
+
+Fixes: 5fd20e72a (tests/kms_getfb: Add XE support)
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/kms_cursor_edge_walk.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/intel-ci/xe.blocklist.txt |  1 -
+ tests/kms_getfb.c               | 10 +++++++---
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
-index 8cc986fc8..2b4b43282 100644
---- a/tests/kms_cursor_edge_walk.c
-+++ b/tests/kms_cursor_edge_walk.c
-@@ -362,7 +362,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
+index 1778e91f1..805939507 100644
+--- a/tests/intel-ci/xe.blocklist.txt
++++ b/tests/intel-ci/xe.blocklist.txt
+@@ -78,7 +78,6 @@ igt@kms_cursor_legacy@flip-vs-cursor-busy-crc-(atomic|legacy)
+ igt@kms_rotation_crc@primary-(4|x|y|yf)-tiled-.*
+ igt@kms_rotation_crc@exhaust-fences
+ igt@kms_force_connector_basic@force-load-detect
+-igt@kms_getfb@.*-ccs
+ igt@kms_plane_lowres@tiling-(4|x|y|yf)
+ igt@kms_.*@.*hang.*
+ ##################################################################
+diff --git a/tests/kms_getfb.c b/tests/kms_getfb.c
+index f90e51d64..6ee58caab 100644
+--- a/tests/kms_getfb.c
++++ b/tests/kms_getfb.c
+@@ -48,6 +48,7 @@
+ #include "i915/gem_create.h"
+ #include "igt_device.h"
+ #include "xe/xe_query.h"
++#include "xe/xe_ioctl.h"
  
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+ IGT_TEST_DESCRIPTION("Tests GETFB and GETFB2 ioctls.");
  
--		if (is_i915_device(data.drm_fd))
-+		if (is_intel_device(data.drm_fd))
- 			data.devid = intel_get_drm_devid(data.drm_fd);
+@@ -145,7 +146,10 @@ static void get_ccs_fb(int fd, struct drm_mode_fb_cmd2 *ret)
+ 		size += add.pitches[1] * ALIGN(ALIGN(add.height, 16) / 16, 32);
+ 	}
  
- 		ret = drmGetCap(data.drm_fd, DRM_CAP_CURSOR_WIDTH, &max_curw);
+-	add.handles[0] = gem_buffer_create_fb_obj(fd, size);
++	if (is_i915_device(fd))
++		add.handles[0] = gem_buffer_create_fb_obj(fd, size);
++	else
++		add.handles[0] = xe_bo_create_flags(fd, 0, size, vram_if_possible(fd, 0));
+ 	igt_require(add.handles[0] != 0);
+ 
+ 	if (!HAS_FLATCCS(devid))
+@@ -315,7 +319,7 @@ static void test_duplicate_handles(int fd)
+ 		struct drm_mode_fb_cmd2 add_ccs = { };
+ 		struct drm_mode_fb_cmd get = { };
+ 
+-		igt_require_i915(fd);
++		igt_require_intel(fd);
+ 		igt_require_f(!HAS_FLATCCS(intel_get_drm_devid(fd)),
+ 			      "skip because flat ccs has only one buffer.\n");
+ 
+@@ -421,7 +425,7 @@ static void test_getfb2(int fd)
+ 		struct drm_mode_fb_cmd2 get = { };
+ 		int i;
+ 
+-		igt_require_i915(fd);
++		igt_require_intel(fd);
+ 		get_ccs_fb(fd, &add_ccs);
+ 		igt_require(add_ccs.fb_id != 0);
+ 		get.fb_id = add_ccs.fb_id;
 -- 
 2.40.0
