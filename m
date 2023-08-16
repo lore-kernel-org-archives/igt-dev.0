@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E3BD210E096
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Aug 2023 10:40:39 +0000 (UTC)
-Message-ID: <3271bbf1-c7e4-d092-b7b3-9a1b3885a7e2@intel.com>
-Date: Wed, 16 Aug 2023 16:10:33 +0530
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F038210E0D6
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Aug 2023 10:41:29 +0000 (UTC)
+Message-ID: <fcc44945-27bf-dce9-6604-bbcfeb049b1e@intel.com>
+Date: Wed, 16 Aug 2023 16:11:23 +0530
 MIME-Version: 1.0
 Content-Language: en-US
 To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
  igt-dev@lists.freedesktop.org
-References: <20230815164815.320904-8-bhanuprakash.modem@intel.com>
+References: <20230815164815.320904-9-bhanuprakash.modem@intel.com>
 From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
-In-Reply-To: <20230815164815.320904-8-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230815164815.320904-9-bhanuprakash.modem@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Subject: Re: [igt-dev] [i-g-t, V7,
- 07/81] tests/chamelium/kms_chamelium_edid: Document each subtest
+ 08/81] tests/chamelium/kms_chamelium_frames: Document each subtest
  for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -32,8 +32,7 @@ On 8/15/2023 10:17 PM, Bhanuprakash Modem wrote:
 > Add documentation for all kms tests which is used by IGT testplan
 > documentation.
 >
-> V2: - Add chamelium to the Functionality
->      - Update Functionality to reflect the edid
+> V2: - Add chamelium & frame-integrity to the Functionality
 > V3: - Driver requirement: s/any/i915, xe/
 >
 > Cc: Kunal Joshi <kunal1.joshi@intel.com>
