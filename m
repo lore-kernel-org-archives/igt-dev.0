@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5E04F10E264
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Aug 2023 16:57:28 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E2E7410E2C6
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Aug 2023 05:47:42 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Aug 2023 22:17:52 +0530
-Message-Id: <20230815164815.320904-59-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
-References: <20230815164815.320904-1-bhanuprakash.modem@intel.com>
+Date: Wed, 16 Aug 2023 11:17:31 +0530
+Message-Id: <20230816054731.1092450-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V7 58/81] tests/kms_plane: Document each subtest
- for testplan
+Subject: [igt-dev] [v2] tests/intel-ci: chamelium specific fast-feedback
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,133 +16,116 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add documentation for all kms tests which is used by IGT testplan
-documentation.
+In BAT, chamelium setups are not frequently deployed. So, to
+enhance overall execution efficiency, its recommended to
+remove chamelium tests from fast-feedback/xe-fast-feedback and
+create a dedicated fast-feedback-chamelium-only/xe-fast-feedback-chamelium-only
+testlists for executing chamelium tests.
 
-V2: - Driver requirement: s/any/i915, xe/
+v2: -update xe fast-feedback testlist (Kunal)
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Jeevan B <jeevan.b@intel.com>
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/kms_plane.c | 74 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 74 insertions(+)
+ .../fast-feedback-chamelium-only.testlist         | 15 +++++++++++++++
+ tests/intel-ci/fast-feedback.testlist             |  9 ---------
+ .../xe-fast-feedback-chamelium-only.testlist      | 15 +++++++++++++++
+ tests/intel-ci/xe-fast-feedback.testlist          |  9 ---------
+ 4 files changed, 30 insertions(+), 18 deletions(-)
+ create mode 100644 tests/intel-ci/fast-feedback-chamelium-only.testlist
+ create mode 100644 tests/intel-ci/xe-fast-feedback-chamelium-only.testlist
 
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index 098eb0838..721d3b533 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -24,6 +24,11 @@
-  *   Damien Lespiau <damien.lespiau@intel.com>
-  */
- 
-+/**
-+ * TEST: kms plane
-+ * Category: Display
-+ * Description: Testes for KMS Plane
-+ */
- #include "igt.h"
- #include "igt_vec.h"
- #include <errno.h>
-@@ -279,6 +284,29 @@ test_plane_position_with_output(data_t *data,
- 	igt_remove_fb(data->drm_fd, &sprite_fb);
- }
- 
-+/**
-+ * SUBTEST: plane-position-%s
-+ * Description: Verify plane position using two planes to create a %arg[1]
-+ * Driver requirement: i915, xe
-+ * Functionality: plane
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: plane-position-hole-dpms
-+ * Description: Verify plane position using two planes to create a partially
-+ *              covered screen and check for DPMS
-+ * Driver requirement: i915, xe
-+ * Functionality: dpms, plane
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @covered:           fully covered screen
-+ * @hole:              partially covered screen
-+ */
- static void
- test_plane_position(data_t *data, enum pipe pipe)
- {
-@@ -387,6 +415,29 @@ test_plane_panning_with_output(data_t *data,
- 	igt_remove_fb(data->drm_fd, &primary_fb);
- }
- 
-+/**
-+ * SUBTEST: plane-panning-%s
-+ * Description: Verify plane panning at %arg[1] using primary plane
-+ * Driver requirement: i915, xe
-+ * Functionality: plane
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: plane-panning-bottom-right-suspend
-+ * Description: Verify plane panning at bottom-right position with suspend using
-+ *              primary plane
-+ * Driver requirement: i915, xe
-+ * Functionality: plane, suspend
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @bottom-right:               bottom-right position
-+ * @top-left:                   top-left position
-+ */
- static void
- test_plane_panning(data_t *data, enum pipe pipe)
- {
-@@ -1116,6 +1167,20 @@ static bool skip_plane(data_t *data, igt_plane_t *plane)
- 	return index != 0 && index != 3 && index != 5;
- }
- 
-+/**
-+ * SUBTEST: pixel-%s
-+ * Description: verify the pixel formats for given plane and pipe
-+ * Driver requirement: i915, xe
-+ * Functionality: pixel_format, plane
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @format:
-+ * @format-source-clamping:          with source clamping
-+ */
- static void
- test_pixel_formats(data_t *data, enum pipe pipe)
- {
-@@ -1172,6 +1237,15 @@ test_pixel_formats(data_t *data, enum pipe pipe)
- 	igt_assert_f(result, "At least one CRC mismatch happened\n");
- }
- 
-+/**
-+ * SUBTEST: invalid-pixel-format-settings
-+ * Description: verify invalid settings for pixel format are not accepted
-+ * Driver requirement: i915, xe
-+ * Functionality: pixel_format, plane
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void test_invalid_settings(data_t *data)
- {
- 	enum pipe pipe = PIPE_A;
+diff --git a/tests/intel-ci/fast-feedback-chamelium-only.testlist b/tests/intel-ci/fast-feedback-chamelium-only.testlist
+new file mode 100644
+index 000000000..365bcf448
+--- /dev/null
++++ b/tests/intel-ci/fast-feedback-chamelium-only.testlist
+@@ -0,0 +1,15 @@
++# Should be the first test
++igt@i915_module_load@load
++
++# Keep alphabetically sorted by default
++igt@kms_chamelium_hpd@dp-hpd-fast
++igt@kms_chamelium_edid@dp-edid-read
++igt@kms_chamelium_frames@dp-crc-fast
++igt@kms_chamelium_hpd@hdmi-hpd-fast
++igt@kms_chamelium_edid@hdmi-edid-read
++igt@kms_chamelium_frames@hdmi-crc-fast
++igt@kms_chamelium_hpd@vga-hpd-fast
++igt@kms_chamelium_edid@vga-edid-read
++
++# System wide suspend tests in the end
++igt@kms_chamelium_hpd@common-hpd-after-suspend
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index 31639c892..c09c6c417 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -92,14 +92,6 @@ igt@kms_addfb_basic@unused-modifier
+ igt@kms_addfb_basic@unused-offsets
+ igt@kms_addfb_basic@unused-pitches
+ igt@kms_busy@basic
+-igt@kms_chamelium_hpd@dp-hpd-fast
+-igt@kms_chamelium_edid@dp-edid-read
+-igt@kms_chamelium_frames@dp-crc-fast
+-igt@kms_chamelium_hpd@hdmi-hpd-fast
+-igt@kms_chamelium_edid@hdmi-edid-read
+-igt@kms_chamelium_frames@hdmi-crc-fast
+-igt@kms_chamelium_hpd@vga-hpd-fast
+-igt@kms_chamelium_edid@vga-edid-read
+ igt@kms_prop_blob@basic
+ igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic
+ igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy
+@@ -179,5 +171,4 @@ igt@i915_suspend@basic-s2idle-without-i915
+ igt@i915_suspend@basic-s3-without-i915
+ igt@gem_exec_suspend@basic-s0
+ igt@gem_exec_suspend@basic-s3
+-igt@kms_chamelium_hpd@common-hpd-after-suspend
+ igt@kms_pipe_crc_basic@suspend-read-crc
+diff --git a/tests/intel-ci/xe-fast-feedback-chamelium-only.testlist b/tests/intel-ci/xe-fast-feedback-chamelium-only.testlist
+new file mode 100644
+index 000000000..727668f0e
+--- /dev/null
++++ b/tests/intel-ci/xe-fast-feedback-chamelium-only.testlist
+@@ -0,0 +1,15 @@
++# Should be the first test
++igt@xe_module_load@load
++
++# Keep alphabetically sorted by default
++igt@kms_chamelium_hpd@dp-hpd-fast
++igt@kms_chamelium_edid@dp-edid-read
++igt@kms_chamelium_frames@dp-crc-fast
++igt@kms_chamelium_hpd@hdmi-hpd-fast
++igt@kms_chamelium_edid@hdmi-edid-read
++igt@kms_chamelium_frames@hdmi-crc-fast
++igt@kms_chamelium_hpd@vga-hpd-fast
++igt@kms_chamelium_edid@vga-edid-read
++
++# System wide suspend tests in the end
++igt@kms_chamelium_hpd@common-hpd-after-suspend
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+index 5dcca4aec..311f90c79 100644
+--- a/tests/intel-ci/xe-fast-feedback.testlist
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -207,15 +207,6 @@ igt@kms_addfb_basic@unused-handle
+ igt@kms_addfb_basic@unused-modifier
+ igt@kms_addfb_basic@unused-offsets
+ igt@kms_addfb_basic@unused-pitches
+-igt@kms_chamelium_edid@dp-edid-read
+-igt@kms_chamelium_edid@hdmi-edid-read
+-igt@kms_chamelium_edid@vga-edid-read
+-igt@kms_chamelium_frames@dp-crc-fast
+-igt@kms_chamelium_frames@hdmi-crc-fast
+-igt@kms_chamelium_hpd@common-hpd-after-suspend
+-igt@kms_chamelium_hpd@dp-hpd-fast
+-igt@kms_chamelium_hpd@hdmi-hpd-fast
+-igt@kms_chamelium_hpd@vga-hpd-fast
+ igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
+ igt@kms_cursor_legacy@basic-flip-after-cursor-legacy
+ igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
 -- 
-2.40.0
+2.25.1
