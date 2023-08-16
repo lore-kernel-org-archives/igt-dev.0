@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com
+ [IPv6:2607:f8b0:4864:20::1029])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E314110E395
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Aug 2023 18:27:04 +0000 (UTC)
+Received: by mail-pj1-x1029.google.com with SMTP id
+ 98e67ed59e1d1-26b4c6a5e61so2877213a91.1
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Aug 2023 11:27:04 -0700 (PDT)
+From: Rob Clark <robdclark@gmail.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 16 Aug 2023 11:26:57 -0700
+Message-ID: <20230816182659.47460-1-robdclark@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Gupta, Nidhi1" <nidhi1.gupta@intel.com>
-Date: Wed, 16 Aug 2023 18:26:05 -0000
-Message-ID: <169221036531.10285.10767362560620336129@emeril.freedesktop.org>
-References: <20230809045740.275175-1-nidhi1.gupta@intel.com>
-In-Reply-To: <20230809045740.275175-1-nidhi1.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
- =?utf-8?q?s/kms=5Fplane=5Fcursor=3A_Handle_invalid_pipe_in_big_joiner_=28?=
- =?utf-8?q?rev4=29?=
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH] tests/msm: Add submitoverhead benchmark
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,72 +21,133 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Rob Clark <robdclark@chromium.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+From: Rob Clark <robdclark@chromium.org>
 
-Series: tests/kms_plane_cursor: Handle invalid pipe in big joiner (rev4)
-URL   : https://patchwork.freedesktop.org/series/119890/
-State : failure
+Something for profiling CPU overhead of submit ioctl.  Not really a
+functional test, but it is convenient to re-use the i-g-t infrastructure
+for this.
 
-== Summary ==
+v2: SPDX license, fix meson.build whitespace
+v3: Nits
 
-IGT patchset build failed on latest successful build
-152bb04fd1297075b5d0b1c4487dac8e9a70d070 tests/amdgpu: fix cs nop test when no GFX IP
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+---
+ tests/meson.build              |  3 +-
+ tests/msm/msm_submitoverhead.c | 87 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 89 insertions(+), 1 deletion(-)
+ create mode 100644 tests/msm/msm_submitoverhead.c
 
-Tail of build.log:
-[333/1622] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen7_c@sta/rendercopy_gen7.c.o'.
-[334/1622] Compiling C object 'lib/76b5a35@@igt-gpu_cmds_c@sta/gpu_cmds.c.o'.
-[335/1622] Compiling C object 'lib/76b5a35@@igt-intel_blt_c@sta/intel_blt.c.o'.
-[336/1622] Compiling C object 'tests/59830eb@@kms_scaling_modes@exe/kms_scaling_modes.c.o'.
-[337/1622] Compiling C object 'tests/59830eb@@kms_panel_fitting@exe/kms_panel_fitting.c.o'.
-[338/1622] Compiling C object 'lib/76b5a35@@igt-igt_pm_c@sta/igt_pm.c.o'.
-[339/1622] Compiling C object 'lib/76b5a35@@igt-intel_bufops_c@sta/intel_bufops.c.o'.
-[340/1622] Compiling C object 'tests/59830eb@@panfrost_prime@exe/panfrost_prime.c.o'.
-[341/1622] Compiling C object 'tests/59830eb@@kms_tv_load_detect@exe/kms_tv_load_detect.c.o'.
-[342/1622] Compiling C object 'tests/59830eb@@kms_sysfs_edid_timing@exe/kms_sysfs_edid_timing.c.o'.
-[343/1622] Compiling C object 'tests/59830eb@@kms_rmfb@exe/kms_rmfb.c.o'.
-[344/1622] Compiling C object 'lib/76b5a35@@igt-igt_vmwgfx_c@sta/igt_vmwgfx.c.o'.
-[345/1622] Compiling C object 'tests/59830eb@@kms_plane_lowres@exe/kms_plane_lowres.c.o'.
-[346/1622] Compiling C object 'tests/59830eb@@kms_prop_blob@exe/kms_prop_blob.c.o'.
-[347/1622] Compiling C object 'tests/59830eb@@kms_plane_multiple@exe/kms_plane_multiple.c.o'.
-[348/1622] Compiling C object 'tests/59830eb@@kms_flip@exe/kms_flip.c.o'.
-[349/1622] Compiling C object 'tests/59830eb@@meta_test@exe/meta_test.c.o'.
-[350/1622] Compiling C object 'tests/59830eb@@panfrost_gem_new@exe/panfrost_gem_new.c.o'.
-[351/1622] Compiling C object 'lib/76b5a35@@igt-igt_amd_c@sta/igt_amd.c.o'.
-[352/1622] Compiling C object 'tests/59830eb@@panfrost_get_param@exe/panfrost_get_param.c.o'.
-[353/1622] Compiling C object 'tests/59830eb@@kms_prime@exe/kms_prime.c.o'.
-[354/1622] Compiling C object 'tests/59830eb@@kms_pipe_crc_basic@exe/kms_pipe_crc_basic.c.o'.
-[355/1622] Compiling C object 'tests/59830eb@@kms_vrr@exe/kms_vrr.c.o'.
-[356/1622] Compiling C object 'tests/59830eb@@kms_plane_alpha_blend@exe/kms_plane_alpha_blend.c.o'.
-[357/1622] Compiling C object 'tests/59830eb@@prime_busy@exe/prime_busy.c.o'.
-[358/1622] Compiling C object 'tests/59830eb@@prime_udl@exe/prime_udl.c.o'.
-[359/1622] Compiling C object 'tests/59830eb@@kms_sequence@exe/kms_sequence.c.o'.
-[360/1622] Compiling C object 'tests/59830eb@@kms_tiled_display@exe/kms_tiled_display.c.o'.
-[361/1622] Compiling C object 'tests/59830eb@@panfrost_submit@exe/panfrost_submit.c.o'.
-[362/1622] Compiling C object 'tests/59830eb@@kms_plane@exe/kms_plane.c.o'.
-[363/1622] Compiling C object 'tests/59830eb@@kms_vblank@exe/kms_vblank.c.o'.
-[364/1622] Compiling C object 'tests/59830eb@@kms_writeback@exe/kms_writeback.c.o'.
-[365/1622] Generating i915-perf-registers-acmgt3 with a custom command.
-[366/1622] Compiling C object 'tests/59830eb@@kms_properties@exe/kms_properties.c.o'.
-[367/1622] Compiling C object 'tests/59830eb@@kms_setmode@exe/kms_setmode.c.o'.
-[368/1622] Compiling C object 'tests/59830eb@@kms_universal_plane@exe/kms_universal_plane.c.o'.
-[369/1622] Compiling C object 'tests/59830eb@@kms_rotation_crc@exe/kms_rotation_crc.c.o'.
-[370/1622] Compiling C object 'tests/59830eb@@kms_cursor_legacy@exe/kms_cursor_legacy.c.o'.
-[371/1622] Compiling C object 'lib/76b5a35@@igt-igt_core_c@sta/igt_core.c.o'.
-[372/1622] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen8_c@sta/rendercopy_gen8.c.o'.
-[373/1622] Generating i915-perf-metrics-acmgt3 with a custom command.
-[374/1622] Compiling C object 'lib/76b5a35@@igt-intel_batchbuffer_c@sta/intel_batchbuffer.c.o'.
-[375/1622] Compiling C object 'tests/59830eb@@kms_plane_scaling@exe/kms_plane_scaling.c.o'.
-[376/1622] Compiling C object 'lib/76b5a35@@igt-igt_chamelium_c@sta/igt_chamelium.c.o'.
-[377/1622] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen9_c@sta/rendercopy_gen9.c.o'.
-[378/1622] Compiling C object 'lib/76b5a35@@igt-i915_intel_decode_c@sta/i915_intel_decode.c.o'.
-[379/1622] Compiling C object 'lib/76b5a35@@igt-igt_fb_c@sta/igt_fb.c.o'.
-[380/1622] Compiling C object 'lib/76b5a35@@igt-igt_kms_c@sta/igt_kms.c.o'.
-[381/1622] Generating i915-perf-equations with a custom command.
-ninja: build stopped: subcommand failed.
-
+diff --git a/tests/meson.build b/tests/meson.build
+index 58061dbc260b..4d325bed1e06 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -304,7 +304,8 @@ msm_progs = [
+ 	'msm_mapping',
+ 	'msm_recovery',
+ 	'msm_shrink',
+-	'msm_submit'
++	'msm_submit',
++	'msm_submitoverhead',
+ ]
+ 
+ chamelium_progs = [
+diff --git a/tests/msm/msm_submitoverhead.c b/tests/msm/msm_submitoverhead.c
+new file mode 100644
+index 000000000000..1b893e30ebe1
+--- /dev/null
++++ b/tests/msm/msm_submitoverhead.c
+@@ -0,0 +1,87 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2023 Google, Inc.
++ */
++
++#include "igt.h"
++#include "igt_msm.h"
++
++/*
++ * Not as much a test, as a kernel submit overhead benchmark.  Generates lots
++ * of submit ioctls with various size #s of buffers attached for measuring
++ * and profiling kernel submit CPU overhead.
++ */
++
++#define MAX_BOS 1000
++
++igt_main
++{
++	struct msm_device *dev = NULL;
++	struct msm_pipe *pipe = NULL;
++	struct msm_bo *bos[MAX_BOS];
++	struct drm_msm_gem_submit_bo bos_table[MAX_BOS];
++	static const int sizes[] = {
++		10, 100, 250, 500, 1000,
++	};
++
++	igt_fixture {
++		struct drm_msm_gem_submit req;
++
++		dev = igt_msm_dev_open();
++		pipe = igt_msm_pipe_open(dev, 0);
++		for (int i = 0; i < MAX_BOS; i++) {
++			bos[i] = igt_msm_bo_new(dev, 0x1000, MSM_BO_WC);
++			bos_table[i] = (struct drm_msm_gem_submit_bo) {
++				.handle = bos[i]->handle,
++				/*
++				 * We don't bother testing BO_READ since
++				 * mesa doesn't use that anymore
++				 */
++				.flags  = MSM_SUBMIT_BO_WRITE,
++			};
++		}
++
++		/*
++		 * Prime the pump, so first submit doesn't take the overhead
++		 * of allocating backing pages:
++		 */
++		req = (struct drm_msm_gem_submit) {
++			.flags   = pipe->pipe | MSM_SUBMIT_FENCE_FD_OUT,
++			.queueid = pipe->submitqueue_id,
++			.nr_bos  = ARRAY_SIZE(bos_table),
++			.bos     = VOID2U64(bos_table),
++		};
++		do_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req);
++		igt_wait_and_close(req.fence_fd);
++	}
++
++	for (int i = 0; i < ARRAY_SIZE(sizes); i++) {
++		for (int mode = 0; mode < 2; mode++) {
++			const char *modestr = mode ? "-no-implicit-sync" : "";
++			const uint32_t modeflags = mode ? MSM_SUBMIT_NO_IMPLICIT : 0;
++
++			igt_subtest_f("submitbench-%u-bos%s", sizes[i], modestr) {
++				struct drm_msm_gem_submit req = {
++					.flags   = pipe->pipe | modeflags,
++					.queueid = pipe->submitqueue_id,
++					.nr_bos  = sizes[i],
++					.bos     = VOID2U64(bos_table),
++				};
++				unsigned int iterations = 0;
++
++				igt_for_milliseconds(2000) {
++					do_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req);
++					iterations++;
++				}
++				igt_info("%u-bos: %u iterations\n", sizes[i], iterations);
++			}
++		}
++	}
++
++	igt_fixture {
++		for (int i = 0; i < MAX_BOS; i++)
++			igt_msm_bo_free(bos[i]);
++		igt_msm_pipe_close(pipe);
++		igt_msm_dev_close(dev);
++	}
++}
+-- 
+2.41.0
