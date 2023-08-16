@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <aeeaa6f1-f194-5cd1-4327-f44959bf0de7@intel.com>
-Date: Wed, 16 Aug 2023 13:01:12 +0530
-From: Riana Tauro <riana.tauro@intel.com>
-To: Vinay Belgaumkar <vinay.belgaumkar@intel.com>,
- <intel-gfx@lists.freedesktop.org>, <igt-dev@lists.freedesktop.org>
-References: <20230809005014.3451790-1-vinay.belgaumkar@intel.com>
- <b5e574a1-7aa4-d233-3b02-f0acbac517bc@intel.com>
-Content-Language: en-US
-In-Reply-To: <b5e574a1-7aa4-d233-3b02-f0acbac517bc@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EEB5A10E045
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Aug 2023 08:03:22 +0000 (UTC)
+Date: Wed, 16 Aug 2023 10:03:18 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230816080318.knmkbubotygzcxud@kamilkon-desk1>
+References: <20230816054731.1092450-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] tests/i915_pm_freq_api:
- Ignore zero register value
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230816054731.1092450-1-swati2.sharma@intel.com>
+Subject: Re: [igt-dev] [v2] tests/intel-ci: chamelium specific fast-feedback
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,101 +19,138 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Hi Swati,
 
+On 2023-08-16 at 11:17:31 +0530, Swati Sharma wrote:
+> In BAT, chamelium setups are not frequently deployed. So, to
 
-On 8/14/2023 12:54 PM, Riana Tauro wrote:
-> Hi Vinay
+Try to avoid starting sentence from "So, ", you can drop it
+and write: "To enhance ..."
+ 
+> enhance overall execution efficiency, its recommended to
+--------------------------------------- ^^^
+"It's" or "It is"
+
+> remove chamelium tests from fast-feedback/xe-fast-feedback and
+> create a dedicated fast-feedback-chamelium-only/xe-fast-feedback-chamelium-only
+> testlists for executing chamelium tests.
 > 
-> On 8/9/2023 6:20 AM, Vinay Belgaumkar wrote:
->> Register read for requested_freq can return 0 when system is
->> in runtime_pm. Make allowance for this case.
->>
->> Link: https://gitlab.freedesktop.org/drm/intel/issues/8736
->> Link: https://gitlab.freedesktop.org/drm/intel/issues/8989
->>
->> Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
->> ---
->>   tests/i915/i915_pm_freq_api.c | 18 ++++++++++++++----
->>   1 file changed, 14 insertions(+), 4 deletions(-)
->>
->> diff --git a/tests/i915/i915_pm_freq_api.c 
->> b/tests/i915/i915_pm_freq_api.c
->> index cf21cc936..9c71411ee 100644
->> --- a/tests/i915/i915_pm_freq_api.c
->> +++ b/tests/i915/i915_pm_freq_api.c
->> @@ -88,6 +88,7 @@ static void test_freq_basic_api(int dirfd, int gt)
->>   static void test_reset(int i915, int dirfd, int gt, int count)
->>   {
->>       uint32_t rpn = get_freq(dirfd, RPS_RPn_FREQ_MHZ);
->> +    uint32_t req_freq;
->>       int fd;
->>       for (int i = 0; i < count; i++) {
->> @@ -95,14 +96,18 @@ static void test_reset(int i915, int dirfd, int 
->> gt, int count)
->>           igt_assert(set_freq(dirfd, RPS_MIN_FREQ_MHZ, rpn) > 0);
->>           igt_assert(set_freq(dirfd, RPS_MAX_FREQ_MHZ, rpn) > 0);
->>           usleep(ACT_FREQ_LATENCY_US);
->> -        igt_assert_eq(get_freq(dirfd, RPS_CUR_FREQ_MHZ), rpn);
->> +        req_freq = get_freq(dirfd, RPS_CUR_FREQ_MHZ);
->> +        if (req_freq)
->> +            igt_assert_eq(req_freq, rpn);
+> v2: -update xe fast-feedback testlist (Kunal)
 > 
-> Is there anything else that can cause req_freq to be zero?
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
+> ---
+>  .../fast-feedback-chamelium-only.testlist         | 15 +++++++++++++++
+>  tests/intel-ci/fast-feedback.testlist             |  9 ---------
+>  .../xe-fast-feedback-chamelium-only.testlist      | 15 +++++++++++++++
+>  tests/intel-ci/xe-fast-feedback.testlist          |  9 ---------
+>  4 files changed, 30 insertions(+), 18 deletions(-)
+>  create mode 100644 tests/intel-ci/fast-feedback-chamelium-only.testlist
+>  create mode 100644 tests/intel-ci/xe-fast-feedback-chamelium-only.testlist
 > 
-> To differentiate can we assert only when runtime_status is active 
-> (igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE) ?
+> diff --git a/tests/intel-ci/fast-feedback-chamelium-only.testlist b/tests/intel-ci/fast-feedback-chamelium-only.testlist
+> new file mode 100644
+> index 000000000..365bcf448
+> --- /dev/null
+> +++ b/tests/intel-ci/fast-feedback-chamelium-only.testlist
+> @@ -0,0 +1,15 @@
+> +# Should be the first test
+> +igt@i915_module_load@load
+> +
+> +# Keep alphabetically sorted by default
+> +igt@kms_chamelium_hpd@dp-hpd-fast
+-------------------- ^
+> +igt@kms_chamelium_edid@dp-edid-read
+> +igt@kms_chamelium_frames@dp-crc-fast
+> +igt@kms_chamelium_hpd@hdmi-hpd-fast
+> +igt@kms_chamelium_edid@hdmi-edid-read
+> +igt@kms_chamelium_frames@hdmi-crc-fast
+> +igt@kms_chamelium_hpd@vga-hpd-fast
+> +igt@kms_chamelium_edid@vga-edid-read
+
+It still need to be sorted.
+
+> +
+> +# System wide suspend tests in the end
+> +igt@kms_chamelium_hpd@common-hpd-after-suspend
+> diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+> index 31639c892..c09c6c417 100644
+> --- a/tests/intel-ci/fast-feedback.testlist
+> +++ b/tests/intel-ci/fast-feedback.testlist
+> @@ -92,14 +92,6 @@ igt@kms_addfb_basic@unused-modifier
+>  igt@kms_addfb_basic@unused-offsets
+>  igt@kms_addfb_basic@unused-pitches
+>  igt@kms_busy@basic
+> -igt@kms_chamelium_hpd@dp-hpd-fast
+> -igt@kms_chamelium_edid@dp-edid-read
+> -igt@kms_chamelium_frames@dp-crc-fast
+> -igt@kms_chamelium_hpd@hdmi-hpd-fast
+> -igt@kms_chamelium_edid@hdmi-edid-read
+> -igt@kms_chamelium_frames@hdmi-crc-fast
+> -igt@kms_chamelium_hpd@vga-hpd-fast
+> -igt@kms_chamelium_edid@vga-edid-read
+>  igt@kms_prop_blob@basic
+>  igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic
+>  igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy
+> @@ -179,5 +171,4 @@ igt@i915_suspend@basic-s2idle-without-i915
+>  igt@i915_suspend@basic-s3-without-i915
+>  igt@gem_exec_suspend@basic-s0
+>  igt@gem_exec_suspend@basic-s3
+> -igt@kms_chamelium_hpd@common-hpd-after-suspend
+>  igt@kms_pipe_crc_basic@suspend-read-crc
+> diff --git a/tests/intel-ci/xe-fast-feedback-chamelium-only.testlist b/tests/intel-ci/xe-fast-feedback-chamelium-only.testlist
+> new file mode 100644
+> index 000000000..727668f0e
+> --- /dev/null
+> +++ b/tests/intel-ci/xe-fast-feedback-chamelium-only.testlist
+> @@ -0,0 +1,15 @@
+> +# Should be the first test
+> +igt@xe_module_load@load
+> +
+> +# Keep alphabetically sorted by default
+> +igt@kms_chamelium_hpd@dp-hpd-fast
+> +igt@kms_chamelium_edid@dp-edid-read
+> +igt@kms_chamelium_frames@dp-crc-fast
+> +igt@kms_chamelium_hpd@hdmi-hpd-fast
+> +igt@kms_chamelium_edid@hdmi-edid-read
+> +igt@kms_chamelium_frames@hdmi-crc-fast
+> +igt@kms_chamelium_hpd@vga-hpd-fast
+> +igt@kms_chamelium_edid@vga-edid-read
+
+Same here, sort it. With this corrected
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+Regards,
+Kamil
+
+> +
+> +# System wide suspend tests in the end
+> +igt@kms_chamelium_hpd@common-hpd-after-suspend
+> diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+> index 5dcca4aec..311f90c79 100644
+> --- a/tests/intel-ci/xe-fast-feedback.testlist
+> +++ b/tests/intel-ci/xe-fast-feedback.testlist
+> @@ -207,15 +207,6 @@ igt@kms_addfb_basic@unused-handle
+>  igt@kms_addfb_basic@unused-modifier
+>  igt@kms_addfb_basic@unused-offsets
+>  igt@kms_addfb_basic@unused-pitches
+> -igt@kms_chamelium_edid@dp-edid-read
+> -igt@kms_chamelium_edid@hdmi-edid-read
+> -igt@kms_chamelium_edid@vga-edid-read
+> -igt@kms_chamelium_frames@dp-crc-fast
+> -igt@kms_chamelium_frames@hdmi-crc-fast
+> -igt@kms_chamelium_hpd@common-hpd-after-suspend
+> -igt@kms_chamelium_hpd@dp-hpd-fast
+> -igt@kms_chamelium_hpd@hdmi-hpd-fast
+> -igt@kms_chamelium_hpd@vga-hpd-fast
+>  igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
+>  igt@kms_cursor_legacy@basic-flip-after-cursor-legacy
+>  igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
+> -- 
+> 2.25.1
 > 
-
-Hi Vinay
-
-using  igt_get_runtime_pm_status doesn't work. There seems to be a delay 
-in setting the status to suspended.
-
-Freq is 0 [due to wakeref not in use] and status remains active.
-
-We can retain this patch. Sorry for the confusion.
-
-Reviewed-by: Riana Tauro <riana.tauro@intel.com>
-
-Thanks
-Riana Tauro
-> 
-> Thanks
-> Riana Tauro
->>           /* Manually trigger a GT reset */
->>           fd = igt_debugfs_gt_open(i915, gt, "reset", O_WRONLY);
->>           igt_require(fd >= 0);
->>           igt_ignore_warn(write(fd, "1\n", 2));
->> -        igt_assert_eq(get_freq(dirfd, RPS_CUR_FREQ_MHZ), rpn);
->> +        req_freq = get_freq(dirfd, RPS_CUR_FREQ_MHZ);
->> +        if (req_freq)
->> +            igt_assert_eq(req_freq, rpn);
->>       }
->>       close(fd);
->>   }
->> @@ -110,17 +115,22 @@ static void test_reset(int i915, int dirfd, int 
->> gt, int count)
->>   static void test_suspend(int i915, int dirfd, int gt)
->>   {
->>       uint32_t rpn = get_freq(dirfd, RPS_RPn_FREQ_MHZ);
->> +    uint32_t req_freq;
->>       igt_assert(set_freq(dirfd, RPS_MIN_FREQ_MHZ, rpn) > 0);
->>       igt_assert(set_freq(dirfd, RPS_MAX_FREQ_MHZ, rpn) > 0);
->>       usleep(ACT_FREQ_LATENCY_US);
->> -    igt_assert_eq(get_freq(dirfd, RPS_CUR_FREQ_MHZ), rpn);
->> +    req_freq = get_freq(dirfd, RPS_CUR_FREQ_MHZ);
->> +    if (req_freq)
->> +        igt_assert_eq(req_freq, rpn);
->>       /* Manually trigger a suspend */
->>       igt_system_suspend_autoresume(SUSPEND_STATE_S3,
->>                         SUSPEND_TEST_NONE);
->> -    igt_assert_eq(get_freq(dirfd, RPS_CUR_FREQ_MHZ), rpn);
->> +    req_freq = get_freq(dirfd, RPS_CUR_FREQ_MHZ);
->> +    if (req_freq)
->> +        igt_assert_eq(req_freq, rpn);
->>   }
->>   int i915 = -1;
