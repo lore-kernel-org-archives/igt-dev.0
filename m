@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 72B2110E0CD
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Aug 2023 10:11:34 +0000 (UTC)
-Message-ID: <6c06a428-48eb-3eab-7c23-cea581e26136@intel.com>
-Date: Wed, 16 Aug 2023 15:40:54 +0530
-Content-Language: en-US
-To: Nidhi Gupta <nidhi1.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20230809045740.275175-1-nidhi1.gupta@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20230809045740.275175-1-nidhi1.gupta@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B0E4810E09A
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Aug 2023 10:22:33 +0000 (UTC)
+From: janga.rahul.kumar@intel.com
+To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
+ janga.rahul.kumar@intel.com
+Date: Wed, 16 Aug 2023 15:54:28 +0530
+Message-Id: <20230816102431.2014326-1-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v4] tests/kms_plane_cursor: Handle
- invalid pipe in big joiner
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 0/3] Add Xe lib support for hang & GT reset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,67 +17,51 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: sai.gowtham.ch@intel.com, kunal1.joshi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 
-On Wed-09-08-2023 10:27 am, Nidhi Gupta wrote:
-> If any pipe is invalid in big joiner currently test throws
-> as skip for all the pipes as it is within the dynamic subtest
-> block.
-> Fixed in IGT by not executing the subtest if valid combo of pipe
-> and output not found for big joiner and go on to check for the
-> next pipe.
-> 
-> v2: Fix commit subject and message (Bhanu)
->      Fix nitpicks (Bhanu)
-> 
-> v3: Have pipe/output valid combo before checking
->      for big joiner for the pipe. (Bhanu)
-> 
-> v4: Move igt_display_reset (Bhanu)
-> 
-> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+Add library support for hang and resetting all the GT's.
 
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+v2:
+Create xe library for GT which contains hang and reset helpers.(kamil)
+Create separate patch for igt gt lib changes.(kamil)
+Extend hang library to support all rings.
+Correct Indentation issues. (kamil/Anna)
 
-> ---
->   tests/kms_plane_cursor.c | 11 ++++++-----
->   1 file changed, 6 insertions(+), 5 deletions(-)
-> 
-> diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
-> index a7acb18e1..f7917ae57 100644
-> --- a/tests/kms_plane_cursor.c
-> +++ b/tests/kms_plane_cursor.c
-> @@ -77,17 +77,12 @@ static void test_init(data_t *data, enum pipe pipe_id, igt_output_t *output)
->   	data->pipe = &data->display.pipes[data->pipe_id];
->   	data->output = output;
->   
-> -	igt_display_reset(display);
-> -
->   	data->mode = igt_output_get_mode(data->output);
->   
->   	data->primary = igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
->   	data->overlay = igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_OVERLAY);
->   	data->cursor = igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_CURSOR);
->   
-> -	igt_output_set_pipe(data->output, data->pipe_id);
-> -	igt_require(i915_pipe_output_combo_valid(display));
-> -
->   	igt_info("Using (pipe %s + %s) to run the subtest.\n",
->   		 kmstest_pipe_name(data->pipe_id), igt_output_name(data->output));
->   
-> @@ -310,6 +305,12 @@ igt_main
->   							     DRM_PLANE_TYPE_OVERLAY))
->   					continue;
->   
-> +				igt_display_reset(display);
-> +
-> +				igt_output_set_pipe(output, pipe);
-> +				if (!i915_pipe_output_combo_valid(&data.display))
-> +					continue;
-> +
->   				test_init(&data, pipe, output);
->   
->   				for (j = 0; j < ARRAY_SIZE(cursor_sizes); j++) {
+v3:
+Skip hang config for render engine request on PVC (Gowtham)
+Extend force reset (Gowtham)
+
+v4:
+Address review comments. (Kamil/Gowtham)
+
+v5:
+library header includes cleanUp. (kamil)
+
+Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Anna Karas <anna.karas@intel.com>
+Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+Tested-by: Kunal Joshi <kunal1.joshi@intel.com>
+Reviewed-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+
+Janga Rahul Kumar (3):
+  lib/xe: Add support to reset all GT's
+  lib/xe: Add hang library support
+  lib/igt_gt: Extend hang library support to XE
+
+ lib/igt_gt.c    |  29 ++++++++--
+ lib/meson.build |   1 +
+ lib/xe/xe_gt.c  | 143 ++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/xe/xe_gt.h  |  15 +++++
+ 4 files changed, 184 insertions(+), 4 deletions(-)
+ create mode 100644 lib/xe/xe_gt.c
+ create mode 100644 lib/xe/xe_gt.h
+
+-- 
+2.25.1
