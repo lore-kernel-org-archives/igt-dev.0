@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com
- [IPv6:2607:f8b0:4864:20::1029])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E314110E395
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Aug 2023 18:27:04 +0000 (UTC)
-Received: by mail-pj1-x1029.google.com with SMTP id
- 98e67ed59e1d1-26b4c6a5e61so2877213a91.1
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Aug 2023 11:27:04 -0700 (PDT)
-From: Rob Clark <robdclark@gmail.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 16 Aug 2023 11:26:57 -0700
-Message-ID: <20230816182659.47460-1-robdclark@gmail.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH] tests/msm: Add submitoverhead benchmark
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Erik Kurzinger" <ekurzinger@nvidia.com>
+Date: Wed, 16 Aug 2023 18:27:19 -0000
+Message-ID: <169221043934.10286.10575574076284483167@emeril.freedesktop.org>
+References: <7a8c0a3f-df18-ba3f-9c92-d341f2cb5a7d@nvidia.com>
+In-Reply-To: <7a8c0a3f-df18-ba3f-9c92-d341f2cb5a7d@nvidia.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_s?=
+ =?utf-8?q?yncobj=5Ftimeline=3A_don=27t_expect_EINVAL_for_WAIT=5FUNSUBMITT?=
+ =?utf-8?q?ED_=7C_WAIT=5FAVAILABLE?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,133 +18,155 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rob Clark <robdclark@chromium.org>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Rob Clark <robdclark@chromium.org>
+== Series Details ==
 
-Something for profiling CPU overhead of submit ioctl.  Not really a
-functional test, but it is convenient to re-use the i-g-t infrastructure
-for this.
+Series: syncobj_timeline: don't expect EINVAL for WAIT_UNSUBMITTED | WAIT_AVAILABLE
+URL   : https://patchwork.freedesktop.org/series/122525/
+State : warning
 
-v2: SPDX license, fix meson.build whitespace
-v3: Nits
+== Summary ==
 
-Signed-off-by: Rob Clark <robdclark@chromium.org>
----
- tests/meson.build              |  3 +-
- tests/msm/msm_submitoverhead.c | 87 ++++++++++++++++++++++++++++++++++
- 2 files changed, 89 insertions(+), 1 deletion(-)
- create mode 100644 tests/msm/msm_submitoverhead.c
+Pipeline status: FAILED.
 
-diff --git a/tests/meson.build b/tests/meson.build
-index 58061dbc260b..4d325bed1e06 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -304,7 +304,8 @@ msm_progs = [
- 	'msm_mapping',
- 	'msm_recovery',
- 	'msm_shrink',
--	'msm_submit'
-+	'msm_submit',
-+	'msm_submitoverhead',
- ]
- 
- chamelium_progs = [
-diff --git a/tests/msm/msm_submitoverhead.c b/tests/msm/msm_submitoverhead.c
-new file mode 100644
-index 000000000000..1b893e30ebe1
---- /dev/null
-+++ b/tests/msm/msm_submitoverhead.c
-@@ -0,0 +1,87 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2023 Google, Inc.
-+ */
-+
-+#include "igt.h"
-+#include "igt_msm.h"
-+
-+/*
-+ * Not as much a test, as a kernel submit overhead benchmark.  Generates lots
-+ * of submit ioctls with various size #s of buffers attached for measuring
-+ * and profiling kernel submit CPU overhead.
-+ */
-+
-+#define MAX_BOS 1000
-+
-+igt_main
-+{
-+	struct msm_device *dev = NULL;
-+	struct msm_pipe *pipe = NULL;
-+	struct msm_bo *bos[MAX_BOS];
-+	struct drm_msm_gem_submit_bo bos_table[MAX_BOS];
-+	static const int sizes[] = {
-+		10, 100, 250, 500, 1000,
-+	};
-+
-+	igt_fixture {
-+		struct drm_msm_gem_submit req;
-+
-+		dev = igt_msm_dev_open();
-+		pipe = igt_msm_pipe_open(dev, 0);
-+		for (int i = 0; i < MAX_BOS; i++) {
-+			bos[i] = igt_msm_bo_new(dev, 0x1000, MSM_BO_WC);
-+			bos_table[i] = (struct drm_msm_gem_submit_bo) {
-+				.handle = bos[i]->handle,
-+				/*
-+				 * We don't bother testing BO_READ since
-+				 * mesa doesn't use that anymore
-+				 */
-+				.flags  = MSM_SUBMIT_BO_WRITE,
-+			};
-+		}
-+
-+		/*
-+		 * Prime the pump, so first submit doesn't take the overhead
-+		 * of allocating backing pages:
-+		 */
-+		req = (struct drm_msm_gem_submit) {
-+			.flags   = pipe->pipe | MSM_SUBMIT_FENCE_FD_OUT,
-+			.queueid = pipe->submitqueue_id,
-+			.nr_bos  = ARRAY_SIZE(bos_table),
-+			.bos     = VOID2U64(bos_table),
-+		};
-+		do_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req);
-+		igt_wait_and_close(req.fence_fd);
-+	}
-+
-+	for (int i = 0; i < ARRAY_SIZE(sizes); i++) {
-+		for (int mode = 0; mode < 2; mode++) {
-+			const char *modestr = mode ? "-no-implicit-sync" : "";
-+			const uint32_t modeflags = mode ? MSM_SUBMIT_NO_IMPLICIT : 0;
-+
-+			igt_subtest_f("submitbench-%u-bos%s", sizes[i], modestr) {
-+				struct drm_msm_gem_submit req = {
-+					.flags   = pipe->pipe | modeflags,
-+					.queueid = pipe->submitqueue_id,
-+					.nr_bos  = sizes[i],
-+					.bos     = VOID2U64(bos_table),
-+				};
-+				unsigned int iterations = 0;
-+
-+				igt_for_milliseconds(2000) {
-+					do_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req);
-+					iterations++;
-+				}
-+				igt_info("%u-bos: %u iterations\n", sizes[i], iterations);
-+			}
-+		}
-+	}
-+
-+	igt_fixture {
-+		for (int i = 0; i < MAX_BOS; i++)
-+			igt_msm_bo_free(bos[i]);
-+		igt_msm_pipe_close(pipe);
-+		igt_msm_dev_close(dev);
-+	}
-+}
--- 
-2.41.0
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/963088 for the overview.
+
+build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47531572):
+  [4/5] Generating i915_tests.rst with a custom command.
+  FAILED: docs/testplan/i915_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/i915/i915_test_config.json --rest docs/testplan/i915_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-submitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-submitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-single-wait-all-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-single-wait-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-submitted
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-submitted-signaled
+  ninja: build stopped: subcommand failed.
+  section_end:1692210329:step_script
+  section_start:1692210329:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1692210329:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47531567):
+  [4/5] Generating i915_tests.rst with a custom command.
+  FAILED: docs/testplan/i915_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/i915/i915_test_config.json --rest docs/testplan/i915_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-submitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-submitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-single-wait-all-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-single-wait-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-submitted
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-submitted-signaled
+  ninja: build stopped: subcommand failed.
+  section_end:1692210342:step_script
+  section_start:1692210342:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1692210343:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47531571):
+  [2/4] Generating i915_tests.rst with a custom command.
+  FAILED: docs/testplan/i915_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/i915/i915_test_config.json --rest docs/testplan/i915_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-submitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-submitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-single-wait-all-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-single-wait-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-submitted
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-submitted-signaled
+  ninja: build stopped: subcommand failed.
+  section_end:1692210360:step_script
+  section_start:1692210360:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1692210362:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47531570):
+  [3/5] Generating i915_tests.rst with a custom command.
+  FAILED: docs/testplan/i915_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/i915/i915_test_config.json --rest docs/testplan/i915_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-submitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-submitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-single-wait-all-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-single-wait-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-submitted
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-submitted-signaled
+  ninja: build stopped: subcommand failed.
+  section_end:1692210335:step_script
+  section_start:1692210335:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1692210335:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47531568):
+  [3/4] Generating i915_tests.rst with a custom command.
+  FAILED: docs/testplan/i915_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/i915/i915_test_config.json --rest docs/testplan/i915_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-submitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-submitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-single-wait-all-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-single-wait-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-submitted
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-submitted-signaled
+  ninja: build stopped: subcommand failed.
+  section_end:1692210338:step_script
+  section_start:1692210338:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1692210339:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47531569):
+  [3/5] Generating i915_tests.rst with a custom command.
+  FAILED: docs/testplan/i915_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/i915/i915_test_config.json --rest docs/testplan/i915_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-submitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-submitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-single-wait-all-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-single-wait-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-submitted
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-submitted-signaled
+  ninja: build stopped: subcommand failed.
+  section_end:1692210329:step_script
+  section_start:1692210329:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1692210330:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/963088
