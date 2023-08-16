@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 304E110E2DD
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Aug 2023 06:14:15 +0000 (UTC)
-From: "B, Jeevan" <jeevan.b@intel.com>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Wed, 16 Aug 2023 06:14:08 +0000
-Message-ID: <DM4PR11MB631267921AD950F213CB12EF9015A@DM4PR11MB6312.namprd11.prod.outlook.com>
-References: <20230811184655.157060-1-bhanuprakash.modem@intel.com>
- <20230811184655.157060-77-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230811184655.157060-77-bhanuprakash.modem@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/alternative;
+ boundary="===============1351704727194111420=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t V6 76/81] tests/kms_universal_plane: Document
- each subtest for testplan
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Date: Wed, 16 Aug 2023 06:22:33 -0000
+Message-ID: <169216695339.10282.735909441023337327@emeril.freedesktop.org>
+References: <20230816054731.1092450-1-swati2.sharma@intel.com>
+In-Reply-To: <20230816054731.1092450-1-swati2.sharma@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_tests/intel?=
+ =?utf-8?q?-ci=3A_chamelium_specific_fast-feedback_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,119 +17,69 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-> -----Original Message-----
-> From: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
-> Sent: Saturday, August 12, 2023 12:17 AM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>; B, Jeevan
-> <jeevan.b@intel.com>
-> Subject: [i-g-t V6 76/81] tests/kms_universal_plane: Document each subtes=
-t
-> for testplan
->=20
-> Add documentation for all kms tests which is used by IGT testplan
-> documentation.
->=20
-> V2: - Fix test description
->=20
-> Cc: Jeevan B <jeevan.b@intel.com>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+--===============1351704727194111420==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Not all subtest details are added as mentioned in previous version.=20
+== Series Details ==
 
-> ---
->  tests/kms_universal_plane.c | 68
-> +++++++++++++++++++++++++++++++++++++
->  1 file changed, 68 insertions(+)
->=20
-> diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-> index 957d600f1..a23a0d8cd 100644
-> --- a/tests/kms_universal_plane.c
-> +++ b/tests/kms_universal_plane.c
-> @@ -28,6 +28,74 @@
->  #include <string.h>
->  #include <fcntl.h>
->=20
-> +/**
-> + * TEST: kms universal plane
-> + * Category: Display
-> + * Description: Check pageflip & modeset on universal plane
-> + *
-> + * SUBTEST: cursor-fb-leak-pipe-%s
-> + * Description: Check for cursor leaks after performing cursor
-> +operations on %arg[1]
-> + * Driver requirement: any
-> + * Functionality: cursor, plane
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: disable-primary-vs-flip-pipe-%s
-> + * Description: Check pageflips while primary plane is disabled before I=
-OCTL
-> or
-> + *              between IOCTL and pageflip execution on %arg[1]
-> + * Driver requirement: any
-> + * Functionality: plane
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: universal-plane-pageflip-windowed-pipe-%s
-> + * Description: Check if pageflip succeeds in windowed setting on
-> +%arg[1]
-> + * Driver requirement: any
-> + * Functionality: plane
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * arg[1]:
-> + *
-> + * @A:    pipe A
-> + * @B:    pipe B
-> + * @C:    pipe C
-> + * @D:    pipe D
-> + * @E:    pipe E
-> + * @F:    pipe F
-> + * @G:    pipe G
-> + * @H:    pipe H
-> + */
-> +
-> +/**
-> + * SUBTEST: universal-plane-pipe-%s-%s
-> + * Description: Check %arg[2] on %arg[1]
-> + * Driver requirement: any
-> + * Functionality: plane
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * arg[1]:
-> + *
-> + * @A:    pipe A
-> + * @B:    pipe B
-> + * @C:    pipe C
-> + * @D:    pipe D
-> + * @E:    pipe E
-> + * @F:    pipe F
-> + * @G:    pipe G
-> + * @H:    pipe H
-> + *
-> + * arg[2]:
-> + *
-> + * @functional: the switching between different primary plane fbs with
-> CRTC off
-> + * @sanity:     for scale-up or scale-down using universal plane API wit=
-hout
-> + *              covering CRTC
-> + */
->=20
->  typedef struct {
->  	int drm_fd;
-> --
-> 2.40.0
+Series: tests/intel-ci: chamelium specific fast-feedback (rev2)
+URL   : https://patchwork.freedesktop.org/series/122278/
+State : info
+
+== Summary ==
+
+Participating hosts:
+bat-atsm-2
+bat-dg2-oem2
+bat-adlp-7
+Missing hosts results[0]:
+Results: [IGTPW_9594](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9594/index.html)
+
+
+
+--===============1351704727194111420==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel-ci: chamelium specific fast-feedback (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122278/">https://patchwork.freedesktop.org/series/122278/</a></td></tr>
+<tr><td><b>State:</b></td><td>info</td></tr>
+
+</table>
+
+
+    <p>Participating hosts:<br />
+bat-atsm-2<br />
+bat-dg2-oem2<br />
+bat-adlp-7<br />
+Missing hosts results[0]:<br />
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9594/index.html">IGTPW_9594</a></p>
+
+</body>
+</html>
+
+--===============1351704727194111420==--
