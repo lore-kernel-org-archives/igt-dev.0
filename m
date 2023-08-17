@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (unknown [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B1F1A10E580
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Aug 2023 19:43:20 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Thu,  3 Aug 2023 01:03:26 +0530
-Message-Id: <20230802193330.3843896-4-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230802193330.3843896-1-bhanuprakash.modem@intel.com>
-References: <20230802193330.3843896-1-bhanuprakash.modem@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1425A10E40A
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Aug 2023 08:08:59 +0000 (UTC)
+Date: Thu, 17 Aug 2023 10:08:54 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230817080854.3xocvqtt6gfi4y6h@kamilkon-desk1>
+References: <20230817054916.525796-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 3/7] tests/i915/prime_mmap_kms: Add missing
- documentation
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230817054916.525796-1-bhanuprakash.modem@intel.com>
+Subject: Re: [igt-dev] [i-g-t] meson_options: Disable testplan by default
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,40 +23,33 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add missing documentation for i915 testplan.
+Hi Bhanuprakash,
 
-Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- tests/prime_mmap_kms.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+On 2023-08-17 at 11:19:16 +0530, Bhanuprakash Modem wrote:
+> Disable testplan until we fully enabled it.
+> 
+> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-diff --git a/tests/prime_mmap_kms.c b/tests/prime_mmap_kms.c
-index 1a63be38f..683665752 100644
---- a/tests/prime_mmap_kms.c
-+++ b/tests/prime_mmap_kms.c
-@@ -37,6 +37,19 @@
- IGT_TEST_DESCRIPTION(
-    "Efficiently sharing CPU and GPU buffers");
- 
-+/**
-+ * TEST: prime mmap kms
-+ * Category: Infrastructure
-+ * Feature: prime
-+ * Functionality: memory management
-+ * Run type: FULL
-+ * Sub-category: DRM
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: buffer-sharing
-+ * Description: Test efficiently sharing CPU and GPU buffers
-+ */
-+
- /*
-  * render_process_t:
-  *
--- 
-2.40.0
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
+> ---
+>  meson_options.txt | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/meson_options.txt b/meson_options.txt
+> index 12b5bb3c3..63f30b123 100644
+> --- a/meson_options.txt
+> +++ b/meson_options.txt
+> @@ -22,6 +22,7 @@ option('man',
+>  
+>  option('testplan',
+>         type : 'feature',
+> +       value : 'disabled',
+>         description : 'Build testplan documentation pages in ReST and html')
+>  
+>  option('sphinx',
+> -- 
+> 2.40.0
+> 
 
