@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D28F810E081
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Aug 2023 15:55:55 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1849510E4F2
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Aug 2023 16:15:04 +0000 (UTC)
 From: Mohammed Thasleem <mohammed.thasleem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 17 Aug 2023 21:17:17 +0530
-Message-Id: <20230817154717.12415-1-mohammed.thasleem@intel.com>
+Date: Thu, 17 Aug 2023 21:36:01 +0530
+Message-Id: <20230817160601.12722-1-mohammed.thasleem@intel.com>
 In-Reply-To: <20230718215950.2557-1-mohammed.thasleem@intel.com>
 References: <20230718215950.2557-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] tests/kms_atomic_transition: Lower drm
+Subject: [igt-dev] [PATCH i-g-t v3] tests/kms_atomic_transition: Lower drm
  log level to avoid exceeding disk usage limit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -29,14 +29,15 @@ exceeding disk usage limit in modeset-transition test cases.
 v2: -Rename DEBUG_LEVEL to DRM_DEBUG_LEVEL.
     -Declared log level globally.
     -Added check for checking default log level before update.
+v3: -Close sysfs_fd.
 
 Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/kms_atomic_transition.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ tests/kms_atomic_transition.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
 diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-index a470eb88c..0f50a6ed1 100644
+index a470eb88c..5398997b7 100644
 --- a/tests/kms_atomic_transition.c
 +++ b/tests/kms_atomic_transition.c
 @@ -27,9 +27,11 @@
@@ -90,13 +91,15 @@ index a470eb88c..0f50a6ed1 100644
  		for_each_connected_output(&data.display, output)
  			count++;
  	}
-@@ -1281,6 +1293,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+@@ -1281,7 +1293,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
  	}
  
  	igt_fixture {
 +		igt_sysfs_set_u32(data.sysfs_fd, "debug", data.old_drm_log_level);
  		igt_display_fini(&data.display);
  		drm_close_driver(data.drm_fd);
++		drm_close_driver(data.sysfs_fd);
  	}
+ }
 -- 
 2.25.1
