@@ -1,25 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam12on2050.outbound.protection.outlook.com [40.107.244.50])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BFCF310E4FC
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Aug 2023 16:23:05 +0000 (UTC)
-Message-ID: <b5a1c8f7-0748-d3bb-fc8c-8cbee32e5168@amd.com>
-Date: Thu, 17 Aug 2023 10:22:56 -0600
-Content-Language: en-US
-To: Harry Wentland <harry.wentland@amd.com>, Maxime Ripard <maxime@cerno.tech>
-References: <20230816205316.867195-1-alex.hung@amd.com>
- <20230816205316.867195-3-alex.hung@amd.com>
- <5zt2ctyod27qaw7sld4ejvvemgxm6chh4dtf7cnjiil2rizksm@bfiezcb3zo3q>
- <5cd3fc34-f6c7-21ff-f710-cb3f543fcb80@amd.com>
- <sa6iblbqyfnu4oropbazlakghwh3ekcnajojmj4th4bswjqlxg@sfmkfo7d7tsj>
- <28f80f34-c7a9-44c8-a33a-6ded92458e29@amd.com>
-From: Alex Hung <alex.hung@amd.com>
-In-Reply-To: <28f80f34-c7a9-44c8-a33a-6ded92458e29@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 79B4010E515
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Aug 2023 17:04:09 +0000 (UTC)
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 17 Aug 2023 22:24:32 +0530
+Message-Id: <20230817165432.12942-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20230718215950.2557-1-mohammed.thasleem@intel.com>
+References: <20230718215950.2557-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH 3/3] tests/kms_writeback: support
- DRM_FORMAT_XRGB2101010 for writeback
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v4] tests/kms_atomic_transition: Lower drm
+ log level to avoid exceeding disk usage limit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,92 +19,88 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, brian.starkey@arm.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Set drm debug log level for DP messages and DRIVER messages to fix
+exceeding disk usage limit in modeset-transition test cases.
 
+v2: -Rename DEBUG_LEVEL to DRM_DEBUG_LEVEL.
+    -Declared log level globally.
+    -Added check for checking default log level before update.
+v3: -Close sysfs_fd.
+v4: -Close sysfs_fd with close() call.
 
-On 2023-08-17 08:15, Harry Wentland wrote:
-> 
-> 
-> On 2023-08-17 03:50, Maxime Ripard wrote:
->> On Thu, Aug 17, 2023 at 01:09:44AM -0600, Alex Hung wrote:
->>>
->>>
->>> On 2023-08-17 00:32, Maxime Ripard wrote:
->>>> Hi,
->>>>
->>>> On Wed, Aug 16, 2023 at 02:53:16PM -0600, Alex Hung wrote:
->>>>> Allow kms_writeback to run with DRM_FORMAT_XRGB8888 if supported
->>>>> or to try DRM_FORMAT_XRGB2101010 if DRM_FORMAT_XRGB8888 is not
->>>>> available.
->>>>
->>>> XRGB8888 is always supposed to be available, if it's not, it's a driver
->>>> issue. Which means that XRGB2101010 will never actually be tested.
->>>
->>> It is up to a device driver to support specific format(s), not necessary an
->>> issue. At least for now amdgpu won't support XRGB8888 but XRGB2101010.
->>
->> I guess it's unrelated to that patch in particular, but it's not ok from
->> a KMS standpoint. It was poorly documented before, but see
->>
->> https://elixir.bootlin.com/linux/latest/source/drivers/gpu/drm/drm_fb_helper.c#L430
->> https://lore.kernel.org/dri-devel/20230807140317.26146-2-jfalempe@redhat.com/
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+---
+ tests/kms_atomic_transition.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-We are not supporting any userspace applications other than testing. I 
-also don't read this as "you MUST do color conversion to 8888" but as 
-"color conversion to 8888 is one of two cases you are allowed to do".
-
->>
-> 
-> Our HW writeback can't do 8888. This would be a silly reason to not be
-> able to use it for testing purposes.
-> 
-> I don't even understand what "SW Color Conversion" means here. Is it
-> expected that drivers use CPU code in kernel to walk the buffer and
-> "color convert" from XRGB8888 to whatever the HW supports (and the
-> inverse for the writeback buffer)? That seems a bit ridiculous.
-> 
-> Harry
-> 
-> 
->>>> I think we should make a proper test for that format, instead of a
->>>> (silent) fallback?
->>>
->>> Not sure what's the proper test or the fallback you are referring to. The
->>> intention here is to test XRGB2101010 when possible without breaking the
->>> original behaviours for XRGB8888.
->>
->> Right, but you're not even testing that XRGB2101010 is actually there,
->> so if amdgpu format listing was somehow broken and you were to expose
->> XRGB8888 instead of XRGB2101010, you wouldn't notice. That's not great.
-
-Only XRGB2101010 is supported.
-
->>
->>> Changing kms_writeback to tests multiple formats requires significant
->>> modifications and tests which requires a driver capable of multiple formats
->>> in the first place.
->>
->> That's fine, amdgpu will be that driver.
-
-The purpose of this patch is to improve kms_writeback coverage:
-
-- check XRGB8888, and test if supported or skip otherwise
-to
-- no XRGB8888? also check XRGB2101010, and test if supported or skip 
-otherwise
-
-For amdgpu, no writeback -> support XRGB2101010 in writeback.
-
-XRGB2101010 will be used for testing. XRGB8888 may or may not be added 
-later depending on whether there will be consumers of the feature but 
-that is out of scope of this IGT patch.
-
-Alex
-
->>
->> Maxime
-> 
+diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
+index a470eb88c..a83449e5c 100644
+--- a/tests/kms_atomic_transition.c
++++ b/tests/kms_atomic_transition.c
+@@ -27,9 +27,11 @@
+  */
+ #include "igt.h"
+ #include "igt_rand.h"
++#include "igt_sysfs.h"
+ #include "drmtest.h"
+ #include "sw_sync.h"
+ #include <errno.h>
++#include <fcntl.h>
+ #include <pthread.h>
+ #include <stdbool.h>
+ #include <stdio.h>
+@@ -44,13 +46,17 @@
+ #define DRM_CAP_CURSOR_HEIGHT 0x9
+ #endif
+ 
++#define DRM_DEBUG_LEVEL "/sys/module/drm/parameters/"
++#define LOG_LEVEL 0xa
++
+ struct plane_parms {
+ 	struct igt_fb *fb;
+ 	uint32_t width, height, mask;
+ };
+ 
+ typedef struct {
+-	int drm_fd;
++	int drm_fd, sysfs_fd;
++	uint32_t old_drm_log_level;
+ 	struct igt_fb fbs[2], argb_fb, sprite_fb;
+ 	igt_display_t display;
+ 	bool extended;
+@@ -1065,6 +1071,9 @@ static void run_modeset_transition(data_t *data, int requested_outputs, bool non
+ 	int num_outputs = 0;
+ 	enum pipe pipe;
+ 
++	if (data->old_drm_log_level > LOG_LEVEL)
++		igt_sysfs_set_u32(data->sysfs_fd, "debug", LOG_LEVEL);
++
+ 	for_each_pipe(&data->display, pipe) {
+ 		igt_output_t *output;
+ 
+@@ -1207,6 +1216,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 
+ 		igt_display_require_output(&data.display);
+ 
++		igt_require((data.sysfs_fd = open(DRM_DEBUG_LEVEL, O_RDONLY)) >= 0);
++		data.old_drm_log_level = igt_sysfs_get_u32(data.sysfs_fd, "debug");
++
+ 		for_each_connected_output(&data.display, output)
+ 			count++;
+ 	}
+@@ -1281,7 +1293,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 	}
+ 
+ 	igt_fixture {
++		igt_sysfs_set_u32(data.sysfs_fd, "debug", data.old_drm_log_level);
+ 		igt_display_fini(&data.display);
+ 		drm_close_driver(data.drm_fd);
++		close(data.sysfs_fd);
+ 	}
+ }
+-- 
+2.25.1
