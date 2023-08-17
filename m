@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com
+ [66.111.4.26])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E3A6D10E183
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Aug 2023 06:40:48 +0000 (UTC)
+Date: Thu, 17 Aug 2023 08:32:15 +0200
+From: Maxime Ripard <maxime@cerno.tech>
+To: Alex Hung <alex.hung@amd.com>
+Message-ID: <5zt2ctyod27qaw7sld4ejvvemgxm6chh4dtf7cnjiil2rizksm@bfiezcb3zo3q>
+References: <20230816205316.867195-1-alex.hung@amd.com>
+ <20230816205316.867195-3-alex.hung@amd.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Riana Tauro" <riana.tauro@intel.com>
-Date: Thu, 17 Aug 2023 06:35:03 -0000
-Message-ID: <169225410329.12431.7962223556710654275@emeril.freedesktop.org>
-References: <20230817055301.855960-1-riana.tauro@intel.com>
-In-Reply-To: <20230817055301.855960-1-riana.tauro@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_T?=
- =?utf-8?q?oggle_GT_C_States_and_validate_power?=
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="zldbs75ns6ptuqjj"
+Content-Disposition: inline
+In-Reply-To: <20230816205316.867195-3-alex.hung@amd.com>
+Subject: Re: [igt-dev] [PATCH 3/3] tests/kms_writeback: support
+ DRM_FORMAT_XRGB2101010 for writeback
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,45 +23,40 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, brian.starkey@arm.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
 
-Series: Toggle GT C States and validate power
-URL   : https://patchwork.freedesktop.org/series/122552/
-State : warning
+--zldbs75ns6ptuqjj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-== Summary ==
+Hi,
 
-Pipeline status: FAILED.
+On Wed, Aug 16, 2023 at 02:53:16PM -0600, Alex Hung wrote:
+> Allow kms_writeback to run with DRM_FORMAT_XRGB8888 if supported
+> or to try DRM_FORMAT_XRGB2101010 if DRM_FORMAT_XRGB8888 is not
+> available.
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/963552 for the overview.
+XRGB8888 is always supposed to be available, if it's not, it's a driver
+issue. Which means that XRGB2101010 will never actually be tested.
 
-containers:igt has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47577066):
-  Downloading artifacts for build:tests-fedora (47577051)...
-  Downloading artifacts from coordinator... ok        host=gitlab.freedesktop.org id=47577051 responseStatus=200 OK token=64_JmQ3z
-  section_end:1692254054:download_artifacts
-  section_start:1692254054:step_script
-  Executing "step_script" stage of the job script
-  Using docker image sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176 for registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 with digest registry.freedesktop.org/wayland/ci-templates/buildah@sha256:7dbcf22cd2c1c7d49db0dc7b4ab207c3d6a4a09bd81cc3b71a688d3727d8749f ...
-  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh
-  Checking if the user of the pipeline is allowed...
-  Checking if the job's project is part of a well-known group...
-  Thank you for contributing to freedesktop.org
-  $ podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-  Login Succeeded!
-  $ .gitlab-ci/pull-or-rebuild.sh igt Dockerfile igt
-  Error: could not get runtime: error configuring CNI network plugin: could not create new watcher too many open files
-  section_end:1692254055:step_script
-  section_start:1692254055:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1692254056:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+I think we should make a proper test for that format, instead of a
+(silent) fallback?
 
-== Logs ==
+Maxime
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/963552
+--zldbs75ns6ptuqjj
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCZN2+7wAKCRDj7w1vZxhR
+xUNFAQCwFjPDsKHn8mo/ZeOVwtGmBQzbkqZmZfuQJf8/NedIPwD7BSJhqVz1gQeE
+SdtkvPaLvMS1EK0Wcsss9j4Z4MaCvAo=
+=SNy9
+-----END PGP SIGNATURE-----
+
+--zldbs75ns6ptuqjj--
