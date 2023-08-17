@@ -1,24 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E1DF010E41D
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Aug 2023 09:35:09 +0000 (UTC)
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.252.19.14])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 7DE23580505
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Aug 2023 02:35:08 -0700 (PDT)
-Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qWZPG-000Jhz-1f
- for igt-dev@lists.freedesktop.org; Thu, 17 Aug 2023 11:35:06 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3F4E610E05B
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Aug 2023 09:47:04 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 17 Aug 2023 11:35:04 +0200
-Message-ID: <20230817093504.75749-1-mauro.chehab@linux.intel.com>
+Date: Thu, 17 Aug 2023 11:46:45 +0200
+Message-Id: <20230817094652.40243-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] docs/reference: add links to testplan-based
- documentation
+Subject: [igt-dev] [PATCH i-g-t 0/7] Extend compute square to i915 and Xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,112 +21,42 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+Even we already got gem|xe_gpgpu_fill we'd like to have a little
+bit more complex compute test. Pipeline comes from reversing aub
+dumped from hello.c square compute.
 
-Instead of relying on runtime-based docs, use the documentation
-parsed via testplan for i915, Xe and KMS tests.
+This series enables compute on TGL, DG2, ATS-M for both i915 and Xe.
+I've noticed first run on DG2 Xe causes hang whether next run is fine.
+On ATS-M there's hang for each binary run. This was main reason I've
+added i915 version for compare - I don't observe such hangs there.
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- .../igt-gpu-tools/igt_test_programs.xml       | 63 ++++++++-----------
- docs/reference/igt-gpu-tools/meson.build      |  4 --
- 2 files changed, 27 insertions(+), 40 deletions(-)
+Cc: Christoph Manszewski <christoph.manszewski@intel.com>
+Cc: Francois Dugast <francois.dugast@intel.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-diff --git a/docs/reference/igt-gpu-tools/igt_test_programs.xml b/docs/reference/igt-gpu-tools/igt_test_programs.xml
-index 92bc33ba83f6..51f8cac05f98 100644
---- a/docs/reference/igt-gpu-tools/igt_test_programs.xml
-+++ b/docs/reference/igt-gpu-tools/igt_test_programs.xml
-@@ -147,42 +147,6 @@
-     <xi:include href="igt_test_programs_gem_description.xml"/>
-   </refentry>
- 
--  <refentry id="igt-gen3-tests">
--    <refnamediv>
--      <refname>Gen 3 Tests</refname>
--      <refpurpose>Tests specific to gen 3</refpurpose>
--    </refnamediv>
--    <xi:include href="igt_test_programs_gen3_programs.xml"/>
--    <xi:include href="igt_test_programs_gen3_description.xml"/>
--  </refentry>
--
--  <refentry id="igt-gen7-tests">
--    <refnamediv>
--      <refname>Gen 7 Tests</refname>
--      <refpurpose>Tests specific to gen 7</refpurpose>
--    </refnamediv>
--    <xi:include href="igt_test_programs_gen7_programs.xml"/>
--    <xi:include href="igt_test_programs_gen7_description.xml"/>
--  </refentry>
--
--  <refentry id="igt-i915-tests">
--    <refnamediv>
--      <refname>i915 Tests</refname>
--      <refpurpose>Tests for overall i915 driver behaviour</refpurpose>
--    </refnamediv>
--    <xi:include href="igt_test_programs_i915_programs.xml"/>
--    <xi:include href="igt_test_programs_i915_description.xml"/>
--  </refentry>
--
--  <refentry id="igt-kms-tests">
--    <refnamediv>
--      <refname>KMS Tests</refname>
--      <refpurpose>Tests for kernel mode setting</refpurpose>
--    </refnamediv>
--    <xi:include href="igt_test_programs_kms_programs.xml"/>
--    <xi:include href="igt_test_programs_kms_description.xml"/>
--  </refentry>
--
-   <refentry id="igt-meta-tests">
-     <refnamediv>
-       <refname>Meta Tests</refname>
-@@ -255,6 +219,33 @@
-     <xi:include href="igt_test_programs_vgem_description.xml"/>
-   </refentry>
- 
-+  <refentry id="igt-xe-tests">
-+    <refnamediv>
-+      <refname>
-+          <ulink url="../testplan/xe_tests.html" type="http">Xe Tests</ulink>
-+      </refname>
-+      <refpurpose>Tests for the Intel Xe driver</refpurpose>
-+    </refnamediv>
-+  </refentry>
-+
-+  <refentry id="igt-i915-tests">
-+    <refnamediv>
-+      <refname>
-+        <ulink url="../testplan/i915_tests.html" type="http">i915 Tests</ulink>
-+      </refname>
-+      <refpurpose>Tests for the Intel i915 driver</refpurpose>
-+    </refnamediv>
-+  </refentry>
-+
-+  <refentry id="igt-kms-tests">
-+    <refnamediv>
-+      <refname>
-+        <ulink url="../testplan/kms_tests.html" type="http">KMS Tests</ulink>
-+      </refname>
-+      <refpurpose>Tests for kernel mode setting</refpurpose>
-+    </refnamediv>
-+  </refentry>
-+
-   <glossary>
-     <title>Glossary</title>
- 
-diff --git a/docs/reference/igt-gpu-tools/meson.build b/docs/reference/igt-gpu-tools/meson.build
-index 6b832ad279cf..9bb5ca7e0798 100644
---- a/docs/reference/igt-gpu-tools/meson.build
-+++ b/docs/reference/igt-gpu-tools/meson.build
-@@ -29,10 +29,6 @@ test_groups = [
- 	'debugfs',
- 	'drm',
- 	'gem',
--	'gen3',
--	'gen7',
--	'i915',
--	'kms',
- 	'meta',
- 	'perf',
- 	'pm',
+Zbigniew Kempczyński (7):
+  lib/intel_compute: Migrate xe_compute library to intel_compute
+  lib/intel_compute: Reorganize the code for i915 version preparation
+  lib/intel_compute: Add name field for debugging purposes
+  lib/intel_compute: Add i915 path in compute library
+  i915/gem_compute: Add test which runs compute workload on i915
+  lib/intel_compute: Add XeHP implementation of compute pipeline
+  tests/gem|xe_compute: Update documentation regarding test requirements
+
+ lib/intel_compute.c                           | 924 ++++++++++++++++++
+ lib/{xe/xe_compute.h => intel_compute.h}      |  12 +-
+ ...rnels.c => intel_compute_square_kernels.c} |  60 +-
+ lib/meson.build                               |   4 +-
+ lib/xe/xe_compute.c                           | 488 ---------
+ tests/i915/gem_compute.c                      |  45 +
+ tests/meson.build                             |   1 +
+ tests/xe/xe_compute.c                         |   7 +-
+ 8 files changed, 1039 insertions(+), 502 deletions(-)
+ create mode 100644 lib/intel_compute.c
+ rename lib/{xe/xe_compute.h => intel_compute.h} (74%)
+ rename lib/{xe/xe_compute_square_kernels.c => intel_compute_square_kernels.c} (50%)
+ delete mode 100644 lib/xe/xe_compute.c
+ create mode 100644 tests/i915/gem_compute.c
+
 -- 
-2.41.0
+2.34.1
