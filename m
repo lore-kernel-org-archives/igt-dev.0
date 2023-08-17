@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-4022.proton.ch (mail-4022.proton.ch [185.70.40.22])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 73C9B10E028
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Aug 2023 07:36:15 +0000 (UTC)
-Date: Thu, 17 Aug 2023 07:36:02 +0000
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-From: Simon Ser <contact@emersion.fr>
-Message-ID: <voxOs4aY_uRuTBKRF8qRaIApV2Dpgxl5dnOXsbtrNguur3DZ4aK4JFUM_kdH69RLpwEkpUK1RP1gsgi3-y-uRQ8On1dTB1-vE5qtzrzkM28=@emersion.fr>
-In-Reply-To: <20230807150908.yihzl6lvjgishrhe@kamilkon-desk1>
-References: <20230714134432.27346-1-contact@emersion.fr>
- <20230807150908.yihzl6lvjgishrhe@kamilkon-desk1>
+Content-Type: multipart/alternative;
+ boundary="===============1338434333887743849=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [igt-dev] [PATCH v4] tests/syncobj_eventfd: new test
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Sharma, Swati2" <swati2.sharma@intel.com>
+Date: Thu, 17 Aug 2023 07:39:54 -0000
+Message-ID: <169225799454.12434.2972591812482464837@emeril.freedesktop.org>
+References: <20230816054731.1092450-1-swati2.sharma@intel.com>
+In-Reply-To: <20230816054731.1092450-1-swati2.sharma@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/in?=
+ =?utf-8?q?tel-ci=3A_chamelium_specific_fast-feedback_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,19 +17,127 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: James Jones <jajones@nvidia.com>, igt-dev@lists.freedesktop.org,
- Austin Shafer <ashafer@nvidia.com>,
- Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>,
- =?utf-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Faith Ekstrand <faith.ekstrand@collabora.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Monday, August 7th, 2023 at 17:09, Kamil Konieczny <kamil.konieczny@linu=
-x.intel.com> wrote:
+--===============1338434333887743849==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-> Could you split drm-uapi into separate patch? You already
-> have other patch with drm-uapi sync.
+== Series Details ==
 
-I'll wait for the uapi sync patch to be merged before updating this one.
+Series: tests/intel-ci: chamelium specific fast-feedback (rev2)
+URL   : https://patchwork.freedesktop.org/series/122278/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7436_BAT -> XEIGTPW_9594_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (3 -> 3)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9594_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
+    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 similar issue
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7436/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9594/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+
+  
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7436 -> IGTPW_9594
+  * Linux: xe-321-945d16a6ea31fbaf3dde002cd182381a92a0e656 -> xe-323-9829aba16e62fcfba150f72d5d492fd778e0150e
+
+  IGTPW_9594: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9594/index.html
+  IGT_7436: 81e08c6d648e949df161a4f39118ed3eb1e354e9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-321-945d16a6ea31fbaf3dde002cd182381a92a0e656: 945d16a6ea31fbaf3dde002cd182381a92a0e656
+  xe-323-9829aba16e62fcfba150f72d5d492fd778e0150e: 9829aba16e62fcfba150f72d5d492fd778e0150e
+
+
+
+--===============1338434333887743849==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel-ci: chamelium specific fast-feedback (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122278/">https://patchwork.freedesktop.org/series/122278/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7436_BAT -&gt; XEIGTPW_9594_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (3 -&gt; 3)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9594_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7436/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9594/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7436 -&gt; IGTPW_9594</li>
+<li>Linux: xe-321-945d16a6ea31fbaf3dde002cd182381a92a0e656 -&gt; xe-323-9829aba16e62fcfba150f72d5d492fd778e0150e</li>
+</ul>
+<p>IGTPW_9594: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9594/index.html<br />
+  IGT_7436: 81e08c6d648e949df161a4f39118ed3eb1e354e9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-321-945d16a6ea31fbaf3dde002cd182381a92a0e656: 945d16a6ea31fbaf3dde002cd182381a92a0e656<br />
+  xe-323-9829aba16e62fcfba150f72d5d492fd778e0150e: 9829aba16e62fcfba150f72d5d492fd778e0150e</p>
+
+</body>
+</html>
+
+--===============1338434333887743849==--
