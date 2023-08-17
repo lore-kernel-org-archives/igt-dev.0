@@ -1,24 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam11on2045.outbound.protection.outlook.com [40.107.223.45])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 94B0810E4A5
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Aug 2023 14:15:12 +0000 (UTC)
-Message-ID: <28f80f34-c7a9-44c8-a33a-6ded92458e29@amd.com>
-Date: Thu, 17 Aug 2023 10:15:04 -0400
-Content-Language: en-US
-To: Maxime Ripard <maxime@cerno.tech>, Alex Hung <alex.hung@amd.com>
-References: <20230816205316.867195-1-alex.hung@amd.com>
- <20230816205316.867195-3-alex.hung@amd.com>
- <5zt2ctyod27qaw7sld4ejvvemgxm6chh4dtf7cnjiil2rizksm@bfiezcb3zo3q>
- <5cd3fc34-f6c7-21ff-f710-cb3f543fcb80@amd.com>
- <sa6iblbqyfnu4oropbazlakghwh3ekcnajojmj4th4bswjqlxg@sfmkfo7d7tsj>
-From: Harry Wentland <harry.wentland@amd.com>
-In-Reply-To: <sa6iblbqyfnu4oropbazlakghwh3ekcnajojmj4th4bswjqlxg@sfmkfo7d7tsj>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EF49E10E4B7
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Aug 2023 14:41:09 +0000 (UTC)
+From: Nidhi Gupta <nidhi1.gupta@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 17 Aug 2023 20:06:21 +0530
+Message-Id: <20230817143621.306246-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH 3/3] tests/kms_writeback: support
- DRM_FORMAT_XRGB2101010 for writeback
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v5] tests/kms_plane_cursor: Handle invalid
+ pipe in big joiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,64 +17,88 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, brian.starkey@arm.com
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+If any pipe is invalid in big joiner currently test throws
+as skip for all the pipes as it is within the dynamic subtest
+block.
+Fixed in IGT by not executing the subtest if valid combo of pipe
+and output not found for big joiner and go on to check for the
+next pipe.
 
+v2: Fix commit subject and message (Bhanu)
+    Fix nitpicks (Bhanu)
 
-On 2023-08-17 03:50, Maxime Ripard wrote:
-> On Thu, Aug 17, 2023 at 01:09:44AM -0600, Alex Hung wrote:
->>
->>
->> On 2023-08-17 00:32, Maxime Ripard wrote:
->>> Hi,
->>>
->>> On Wed, Aug 16, 2023 at 02:53:16PM -0600, Alex Hung wrote:
->>>> Allow kms_writeback to run with DRM_FORMAT_XRGB8888 if supported
->>>> or to try DRM_FORMAT_XRGB2101010 if DRM_FORMAT_XRGB8888 is not
->>>> available.
->>>
->>> XRGB8888 is always supposed to be available, if it's not, it's a driver
->>> issue. Which means that XRGB2101010 will never actually be tested.
->>
->> It is up to a device driver to support specific format(s), not necessary an
->> issue. At least for now amdgpu won't support XRGB8888 but XRGB2101010.
-> 
-> I guess it's unrelated to that patch in particular, but it's not ok from
-> a KMS standpoint. It was poorly documented before, but see
-> 
-> https://elixir.bootlin.com/linux/latest/source/drivers/gpu/drm/drm_fb_helper.c#L430
-> https://lore.kernel.org/dri-devel/20230807140317.26146-2-jfalempe@redhat.com/
-> 
+v3: Have pipe/output valid combo before checking
+    for big joiner for the pipe. (Bhanu)
 
-Our HW writeback can't do 8888. This would be a silly reason to not be
-able to use it for testing purposes.
+v4: Move igt_display_reset (Bhanu)
 
-I don't even understand what "SW Color Conversion" means here. Is it
-expected that drivers use CPU code in kernel to walk the buffer and
-"color convert" from XRGB8888 to whatever the HW supports (and the
-inverse for the writeback buffer)? That seems a bit ridiculous.
+Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_plane_cursor.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-Harry
-
-
->>> I think we should make a proper test for that format, instead of a
->>> (silent) fallback?
->>
->> Not sure what's the proper test or the fallback you are referring to. The
->> intention here is to test XRGB2101010 when possible without breaking the
->> original behaviours for XRGB8888.
-> 
-> Right, but you're not even testing that XRGB2101010 is actually there,
-> so if amdgpu format listing was somehow broken and you were to expose
-> XRGB8888 instead of XRGB2101010, you wouldn't notice. That's not great.
-> 
->> Changing kms_writeback to tests multiple formats requires significant
->> modifications and tests which requires a driver capable of multiple formats
->> in the first place.
-> 
-> That's fine, amdgpu will be that driver.
-> 
-> Maxime
+diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
+index 77e1f7987..319a8ecaa 100644
+--- a/tests/kms_plane_cursor.c
++++ b/tests/kms_plane_cursor.c
+@@ -102,23 +102,16 @@ typedef struct data {
+ /* Common test setup. */
+ static void test_init(data_t *data, enum pipe pipe_id, igt_output_t *output)
+ {
+-	igt_display_t *display = &data->display;
+-
+ 	data->pipe_id = pipe_id;
+ 	data->pipe = &data->display.pipes[data->pipe_id];
+ 	data->output = output;
+ 
+-	igt_display_reset(display);
+-
+ 	data->mode = igt_output_get_mode(data->output);
+ 
+ 	data->primary = igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
+ 	data->overlay = igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_OVERLAY);
+ 	data->cursor = igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_CURSOR);
+ 
+-	igt_output_set_pipe(data->output, data->pipe_id);
+-	igt_require(i915_pipe_output_combo_valid(display));
+-
+ 	igt_info("Using (pipe %s + %s) to run the subtest.\n",
+ 		 kmstest_pipe_name(data->pipe_id), igt_output_name(data->output));
+ 
+@@ -300,6 +293,7 @@ igt_main
+ 	data_t data = { .max_curw = 64, .max_curh = 64 };
+ 	enum pipe pipe;
+ 	igt_output_t *output;
++	igt_display_t *display;
+ 	int i, j;
+ 	struct {
+ 		const char *name;
+@@ -330,6 +324,7 @@ igt_main
+ 		igt_display_require(&data.display, data.drm_fd);
+ 		igt_require(data.display.is_atomic);
+ 		igt_display_require_output(&data.display);
++		display = &data.display;
+ 	}
+ 
+ 	for (i = 0; i < ARRAY_SIZE(tests); i++) {
+@@ -341,6 +336,12 @@ igt_main
+ 							     DRM_PLANE_TYPE_OVERLAY))
+ 					continue;
+ 
++				igt_display_reset(display);
++
++				igt_output_set_pipe(output, pipe);
++				if (!i915_pipe_output_combo_valid(display))
++					continue;
++
+ 				test_init(&data, pipe, output);
+ 
+ 				for (j = 0; j < ARRAY_SIZE(cursor_sizes); j++) {
+-- 
+2.25.1
