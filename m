@@ -1,14 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ECAF310E0F4
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Aug 2023 19:22:09 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C664810E53B
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Aug 2023 18:20:56 +0000 (UTC)
+Date: Thu, 17 Aug 2023 20:20:52 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Date: Fri, 18 Aug 2023 21:22:00 +0200
-Message-Id: <20230818192203.75155-1-kamil.konieczny@linux.intel.com>
+Message-ID: <20230817182052.o4vck4xcotv4kvjs@kamilkon-desk1>
+References: <20230817133307.86426-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/3] RFC: runner/resultgen: lower dmesg
- copied when size limit was exceeded
+In-Reply-To: <20230817133307.86426-1-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2] README.md and docs: describe how to
+ document tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,29 +25,259 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-When dmesg kernel log exceed its limit then copy into
-results.json only limited number of lines. Add also
-possibility for compressing dmesg.txt after is was processed.
+Hi Mauro,
 
-Bug: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/129
+On 2023-08-17 at 15:33:07 +0200, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> Add some documentation describing how to document tests,
+> with both the legacy way and via testplan.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> ---
+>  README.md                  |   6 +-
+>  docs/test_documentation.md | 179 +++++++++++++++++++++++++++++++++++++
+>  2 files changed, 184 insertions(+), 1 deletion(-)
+>  create mode 100644 docs/test_documentation.md
+> 
+> diff --git a/README.md b/README.md
+> index 66f2bc0fa1bd..efa525b041c0 100644
+> --- a/README.md
+> +++ b/README.md
+> @@ -49,6 +49,10 @@ Documentation is built using
+>  
+>      $ ninja -C build igt-gpu-tools-doc
+>  
+> +Please notice that some drivers and test sets may require that all
+> +tests to be properly documented via testplan. By default, build
+> +will fail if one forgets to document or update the documentation.
+> +This is currently enabled for the Xe, i915 drivers and for KMS tests.
+>  
+>  Running Tests
+>  -------------
+> @@ -164,7 +168,7 @@ was used to generate them.
+>  Imported i915_drm.h uapi headers from airlied's drm-next branch.
+>  
+>  In some cases updating a single uapi file is needed as our history
+> -shows. So in this case, it should be done by:
+> +shows. In this case, it should be done by:
+>  
+>      # From the kernel dir with a drm/drm-next commit checked out:
+>      $ make INSTALL_HDR_PATH=<dest-dir> headers_install
+> diff --git a/docs/test_documentation.md b/docs/test_documentation.md
+> new file mode 100644
+> index 000000000000..f21bf69def16
+> --- /dev/null
+> +++ b/docs/test_documentation.md
+> @@ -0,0 +1,179 @@
+> +IGT Test documentation
+> +======================
+> +
+> +Legacy way
+> +----------
+> +
+> +IGT has been providing a way to document tests in runtime by using tree macros:
+> +
+> +    - IGT_TEST_DESCRIPTION(test_file_description)
+> +    - igt_describe(subtest_description) and igt_describe_f(format, args...)
+> +
+> +This is limited, as:
+> +    - Each test/subtest has just one “field”: description. So, it doesn't
+----------------------------------------------------------- ^^^^
+s/. So//
 
-Previous RFC: https://patchwork.freedesktop.org/series/119630/
+> +      allow specifying what features are tested and/or special requirements;
+> +    - It is meant to produce a very concise documentation;
+> +    - Integration with external platforms to group tests per category
+> +      is not possible, as there's no way to tell what category each test
+> +      belongs;
+> +    - Format is not easily expansible;
+> +    - The build system doesn’t verify if all tests are documented. So,
+--------------------------------------------------------------------- ^^^
+s/So,/After time passes/
 
-Cc: Petri Latvala <adrinael@adrinael.net>
-Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> +      documentation tends to be outdated or forgotten, as new patches
+> +      modify the test set.
+> +
+> +Documentation via structured comments (testplan)
+> +------------------------------------------------
+> +
+> +With the addition of Xe driver, a new way to document tests was added.
+> +It is based on special comment-like annotation inside the C code.
+> +
+> +It was written to be flexible, so the valid fields to be used by is
+------------------------------------------------------------------- ^^
+use plural, s/is/are/
 
-Kamil Konieczny (3):
-  runner/resultgen: limit dmesg added into results
-  runner/settings: add compressor option
-  runner/resultgen: compress dmesg if size limit hit
+> +described on a JSON configuration file. That makes easy to add/modify
+> +the fields as needed. It is also easy to use the documentation to
+> +integrate with external reporting tools.
+> +
+> +As an additional benefit, the documentation tags will be generating a
+> +Restructured Text file. So, it is possible to add enriched test
+-------------------------- ^^^^^^
+s/So, it/It/
 
- runner/resultgen.c | 146 +++++++++++++++++++++++++++++++++++++++------
- runner/settings.c  |  34 ++++++++++-
- runner/settings.h  |   1 +
- 3 files changed, 162 insertions(+), 19 deletions(-)
+> +descriptions if needed.
+> +
+> +Also, the build system can optionally enforce a check at build time to
+   ^^^^^
+Change place:
 
--- 
-2.39.2
+The build system can also optionally enforce a check at build time to
 
+> +verify if the documentation is in place.
+> +
+> +testplan configuration file
+> +---------------------------
+> +
+> +The configuration file contains the fields to be used for documenting
+> +tests, and the test names. It may also mark a property as mandatory.
+------- ^
+no "," before "and: s/, and/and/
+
+> +
+> +A typical example is:
+> +
+> +```
+> +{
+> +    "description": "JSON example file",
+> +    "name": "Tests for XYZ Driver",
+> +    "files": [ "test.c" ],
+> +    "fields": {
+> +        "Feature": {
+> +            "_properties_": {
+> +                "description": "Feature to be tested"
+> +            }
+> +        },
+> +        "Description" : {
+> +            "_properties_": {
+> +                "mandatory": true,
+> +                "description": "Provides a description for the test/subtest."
+> +            }
+> +        }
+> +    }
+> +}
+> +```
+> +
+> +Documenting tests via testplan
+> +------------------------------
+> +
+> +A typical documentation markup at the test source code looks like:
+> +```
+> +/**
+> + * TEST: Check if new IGT test documentation logic functionality is working
+> + * Mega-feature: IGT test documentation
+> + * Category: Software build block
+> + * Sub-category: documentation
+> + * Functionality: test documentation
+> + * Issue: none
+> + * Description: Complete description of this test
+> + *
+> + * SUBTEST: foo
+> + * Description: do foo things.
+> + *      Foo description continuing on another line
+> + *
+> + * SUBTEST: bar
+> + * Description:
+> + *      Do bar things.
+> + *      Bar description continuing on another line
+> + */
+> +```
+> +
+> +It is also possible to add variables to the documentation with:
+> +
+> +```
+> +/**
+> + * SUBTEST: test-%s-binds-with-%ld-size-%s
+> + * Description: Test arg[3] arg[1] binds with arg[2] size
+> + *
+> + * SUBTEST: test-%s-%ld-size
+> + * Description: Test arg[1] with %arg[2] size
+> + *
+> + * arg[1]:
+> + *
+> + * @large:      large
+> + *              something
+> + * @small:      small
+> + *              something
+> + *
+> + * arg[2]:      buffer size
+> + *
+> + * arg[3]:
+> + *
+> + * @misaligned-binds:           misaligned
+> + * @userptr-binds:              user pointer
+> + */
+> + ```
+> +
+> +The first "%s" will be replaced by the values of arg[1] for the subtest
+> +name. At the description, arg[1] will be replaced by the string after
+> +the field description. The same applies to the subsequent wildcards.
+> +
+> +So, the above will produce the following output (using the example
+-- ^^^^^^^
+s/So, the above/The above/
+
+with that fixed
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+Regards,
+Kamil
+> +configuration file described at the past session:
+> +
+> +```
+> +``igt@test@test-large-<buffer size>-size``
+> +
+> +:Description: Test large something with <buffer size> size
+> +
+> +
+> +``igt@test@test-large-binds-with-<buffer size>-size-misaligned-binds``
+> +
+> +:Description: Test misaligned large something binds with <buffer size> size
+> +
+> +
+> +``igt@test@test-small-binds-with-<buffer size>-size-misaligned-binds``
+> +
+> +:Description: Test misaligned small something binds with <buffer size> size
+> +
+> +
+> +``igt@test@test-small-<buffer size>-size``
+> +
+> +:Description: Test small something with <buffer size> size
+> +
+> +
+> +``igt@test@test-large-binds-with-<buffer size>-size-userptr-binds``
+> +
+> +:Description: Test user pointer large something binds with <buffer size> size
+> +
+> +
+> +``igt@test@test-small-binds-with-<buffer size>-size-userptr-binds``
+> +
+> +:Description: Test user pointer small something binds with <buffer size> size
+> +```
+> +
+> +Wildcard replacement can also be used to maintain an argument with the
+> +same name at the replaced description. That makes easy to document
+> +numeric arguments with a fixed testset, like:
+> +
+> +```
+> +/**
+> + * SUBTEST: unbind-all-%d-vmas
+> + * Description: unbind all with %arg[1] VMAs
+> + *
+> + * arg[1].values: 2, 8
+> + * arg[1].values: 16, 32
+> + */
+> +
+> +/**
+> + * SUBTEST: unbind-all-%d-vmas
+> + * Description: unbind all with %arg[1] VMAs
+> + *
+> + * arg[1].values: 64, 128
+> + */
+> +```
+> -- 
+> 2.41.0
+> 
 
