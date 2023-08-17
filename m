@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C664810E53B
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Aug 2023 18:20:56 +0000 (UTC)
-Date: Thu, 17 Aug 2023 20:20:52 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230817182052.o4vck4xcotv4kvjs@kamilkon-desk1>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0EDDE10E4FC
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Aug 2023 16:24:37 +0000 (UTC)
+Message-ID: <fbf939f9-daa5-85d9-d848-99f8ffec9270@intel.com>
+Date: Thu, 17 Aug 2023 21:54:14 +0530
+Content-Language: en-US
 References: <20230817133307.86426-1-mauro.chehab@linux.intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
 In-Reply-To: <20230817133307.86426-1-mauro.chehab@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH i-g-t v2] README.md and docs: describe how to
  document tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -22,48 +22,58 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Mauro,
 
-On 2023-08-17 at 15:33:07 +0200, Mauro Carvalho Chehab wrote:
+On Thu-17-08-2023 07:03 pm, Mauro Carvalho Chehab wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
 > Add some documentation describing how to document tests,
 > with both the legacy way and via testplan.
+
+Revision history is missing.
+
 > 
 > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 > ---
->  README.md                  |   6 +-
->  docs/test_documentation.md | 179 +++++++++++++++++++++++++++++++++++++
->  2 files changed, 184 insertions(+), 1 deletion(-)
->  create mode 100644 docs/test_documentation.md
+>   README.md                  |   6 +-
+>   docs/test_documentation.md | 179 +++++++++++++++++++++++++++++++++++++
+>   2 files changed, 184 insertions(+), 1 deletion(-)
+>   create mode 100644 docs/test_documentation.md
 > 
 > diff --git a/README.md b/README.md
 > index 66f2bc0fa1bd..efa525b041c0 100644
 > --- a/README.md
 > +++ b/README.md
 > @@ -49,6 +49,10 @@ Documentation is built using
->  
->      $ ninja -C build igt-gpu-tools-doc
->  
+>   
+>       $ ninja -C build igt-gpu-tools-doc
+>   
 > +Please notice that some drivers and test sets may require that all
 > +tests to be properly documented via testplan. By default, build
 > +will fail if one forgets to document or update the documentation.
 > +This is currently enabled for the Xe, i915 drivers and for KMS tests.
->  
->  Running Tests
->  -------------
+
+I think it would be better to have a link (to test_documentation.md) to 
+know more about the documentation.
+
+Otherwise, LGTM.
+Acked-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+
+>   
+>   Running Tests
+>   -------------
 > @@ -164,7 +168,7 @@ was used to generate them.
->  Imported i915_drm.h uapi headers from airlied's drm-next branch.
->  
->  In some cases updating a single uapi file is needed as our history
+>   Imported i915_drm.h uapi headers from airlied's drm-next branch.
+>   
+>   In some cases updating a single uapi file is needed as our history
 > -shows. So in this case, it should be done by:
 > +shows. In this case, it should be done by:
->  
->      # From the kernel dir with a drm/drm-next commit checked out:
->      $ make INSTALL_HDR_PATH=<dest-dir> headers_install
+>   
+>       # From the kernel dir with a drm/drm-next commit checked out:
+>       $ make INSTALL_HDR_PATH=<dest-dir> headers_install
 > diff --git a/docs/test_documentation.md b/docs/test_documentation.md
 > new file mode 100644
 > index 000000000000..f21bf69def16
@@ -83,9 +93,6 @@ On 2023-08-17 at 15:33:07 +0200, Mauro Carvalho Chehab wrote:
 > +
 > +This is limited, as:
 > +    - Each test/subtest has just one “field”: description. So, it doesn't
------------------------------------------------------------ ^^^^
-s/. So//
-
 > +      allow specifying what features are tested and/or special requirements;
 > +    - It is meant to produce a very concise documentation;
 > +    - Integration with external platforms to group tests per category
@@ -93,9 +100,6 @@ s/. So//
 > +      belongs;
 > +    - Format is not easily expansible;
 > +    - The build system doesn’t verify if all tests are documented. So,
---------------------------------------------------------------------- ^^^
-s/So,/After time passes/
-
 > +      documentation tends to be outdated or forgotten, as new patches
 > +      modify the test set.
 > +
@@ -106,26 +110,15 @@ s/So,/After time passes/
 > +It is based on special comment-like annotation inside the C code.
 > +
 > +It was written to be flexible, so the valid fields to be used by is
-------------------------------------------------------------------- ^^
-use plural, s/is/are/
-
 > +described on a JSON configuration file. That makes easy to add/modify
 > +the fields as needed. It is also easy to use the documentation to
 > +integrate with external reporting tools.
 > +
 > +As an additional benefit, the documentation tags will be generating a
 > +Restructured Text file. So, it is possible to add enriched test
--------------------------- ^^^^^^
-s/So, it/It/
-
 > +descriptions if needed.
 > +
 > +Also, the build system can optionally enforce a check at build time to
-   ^^^^^
-Change place:
-
-The build system can also optionally enforce a check at build time to
-
 > +verify if the documentation is in place.
 > +
 > +testplan configuration file
@@ -133,9 +126,6 @@ The build system can also optionally enforce a check at build time to
 > +
 > +The configuration file contains the fields to be used for documenting
 > +tests, and the test names. It may also mark a property as mandatory.
-------- ^
-no "," before "and: s/, and/and/
-
 > +
 > +A typical example is:
 > +
@@ -216,14 +206,6 @@ no "," before "and: s/, and/and/
 > +the field description. The same applies to the subsequent wildcards.
 > +
 > +So, the above will produce the following output (using the example
--- ^^^^^^^
-s/So, the above/The above/
-
-with that fixed
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-Regards,
-Kamil
 > +configuration file described at the past session:
 > +
 > +```
@@ -277,7 +259,4 @@ Kamil
 > + * arg[1].values: 64, 128
 > + */
 > +```
-> -- 
-> 2.41.0
-> 
 
