@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0243E10E0A6
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Aug 2023 17:47:12 +0000 (UTC)
-Date: Thu, 17 Aug 2023 19:47:09 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com
+ [IPv6:2a00:1450:4864:20::236])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A643F10E544
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Aug 2023 17:54:19 +0000 (UTC)
+Received: by mail-lj1-x236.google.com with SMTP id
+ 38308e7fff4ca-2bbad32bc79so1099231fa.0
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Aug 2023 10:54:19 -0700 (PDT)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230817174709.2ml5ckzwr4cbszvz@kamilkon-desk1>
-References: <20230718215950.2557-1-mohammed.thasleem@intel.com>
- <20230817165432.12942-1-mohammed.thasleem@intel.com>
+Date: Thu, 17 Aug 2023 20:54:06 +0300
+Message-Id: <20230817175406.48757-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230817165432.12942-1-mohammed.thasleem@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v4] tests/kms_atomic_transition: Lower
- drm log level to avoid exceeding disk usage limit
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] lib/igt_fb: take x-tile out from blitter
+ path
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,91 +25,25 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mohammed,
+take x-tile out from blitter path, x-tile came to blitter path on older
+intel gens by mistake.
 
-On 2023-08-17 at 22:24:32 +0530, Mohammed Thasleem wrote:
-> Set drm debug log level for DP messages and DRIVER messages to fix
-> exceeding disk usage limit in modeset-transition test cases.
-> 
-> v2: -Rename DEBUG_LEVEL to DRM_DEBUG_LEVEL.
->     -Declared log level globally.
->     -Added check for checking default log level before update.
-> v3: -Close sysfs_fd.
-> v4: -Close sysfs_fd with close() call.
-> 
-> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+---
+ lib/igt_fb.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-> ---
->  tests/kms_atomic_transition.c | 16 +++++++++++++++-
->  1 file changed, 15 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-> index a470eb88c..a83449e5c 100644
-> --- a/tests/kms_atomic_transition.c
-> +++ b/tests/kms_atomic_transition.c
-> @@ -27,9 +27,11 @@
->   */
->  #include "igt.h"
->  #include "igt_rand.h"
-> +#include "igt_sysfs.h"
->  #include "drmtest.h"
->  #include "sw_sync.h"
->  #include <errno.h>
-> +#include <fcntl.h>
->  #include <pthread.h>
->  #include <stdbool.h>
->  #include <stdio.h>
-> @@ -44,13 +46,17 @@
->  #define DRM_CAP_CURSOR_HEIGHT 0x9
->  #endif
->  
-> +#define DRM_DEBUG_LEVEL "/sys/module/drm/parameters/"
-> +#define LOG_LEVEL 0xa
-> +
->  struct plane_parms {
->  	struct igt_fb *fb;
->  	uint32_t width, height, mask;
->  };
->  
->  typedef struct {
-> -	int drm_fd;
-> +	int drm_fd, sysfs_fd;
-> +	uint32_t old_drm_log_level;
->  	struct igt_fb fbs[2], argb_fb, sprite_fb;
->  	igt_display_t display;
->  	bool extended;
-> @@ -1065,6 +1071,9 @@ static void run_modeset_transition(data_t *data, int requested_outputs, bool non
->  	int num_outputs = 0;
->  	enum pipe pipe;
->  
-> +	if (data->old_drm_log_level > LOG_LEVEL)
-> +		igt_sysfs_set_u32(data->sysfs_fd, "debug", LOG_LEVEL);
-> +
->  	for_each_pipe(&data->display, pipe) {
->  		igt_output_t *output;
->  
-> @@ -1207,6 +1216,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
->  
->  		igt_display_require_output(&data.display);
->  
-> +		igt_require((data.sysfs_fd = open(DRM_DEBUG_LEVEL, O_RDONLY)) >= 0);
-> +		data.old_drm_log_level = igt_sysfs_get_u32(data.sysfs_fd, "debug");
-> +
->  		for_each_connected_output(&data.display, output)
->  			count++;
->  	}
-> @@ -1281,7 +1293,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
->  	}
->  
->  	igt_fixture {
-> +		igt_sysfs_set_u32(data.sysfs_fd, "debug", data.old_drm_log_level);
->  		igt_display_fini(&data.display);
->  		drm_close_driver(data.drm_fd);
-> +		close(data.sysfs_fd);
->  	}
->  }
-> -- 
-> 2.25.1
-> 
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 60b0e2669..140711075 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -2555,7 +2555,6 @@ static bool use_blitter(const struct igt_fb *fb)
+ 		return false;
+ 
+ 	return fb->modifier == I915_FORMAT_MOD_4_TILED ||
+-	       fb->modifier == I915_FORMAT_MOD_X_TILED ||
+ 	       fb->modifier == I915_FORMAT_MOD_Y_TILED ||
+ 	       fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
+ 	       (is_i915_device(fb->fd) && !gem_has_mappable_ggtt(fb->fd));
+-- 
+2.34.1
