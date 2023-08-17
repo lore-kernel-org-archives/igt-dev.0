@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1CD0A10E696
- for <igt-dev@lists.freedesktop.org>; Thu, 31 Aug 2023 15:30:02 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Thu, 31 Aug 2023 20:52:00 +0530
-Message-Id: <20230831152200.1192557-3-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230831152200.1192557-1-bhanuprakash.modem@intel.com>
-References: <20230831152200.1192557-1-bhanuprakash.modem@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B8EEC10E0A6
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Aug 2023 17:38:43 +0000 (UTC)
+Message-ID: <d8019c58-6de5-77af-967e-bb5494e9e9cb@intel.com>
+Date: Thu, 17 Aug 2023 23:08:24 +0530
+Content-Language: en-US
+References: <20230817093504.75749-1-mauro.chehab@linux.intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20230817093504.75749-1-mauro.chehab@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 2/2] testplan/kms: Make documentation is mandatory
- for all kms subtests
+Subject: Re: [igt-dev] [PATCH i-g-t] docs/reference: add links to
+ testplan-based documentation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,40 +22,129 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, mauro.chehab@linux.intel.com
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As testplan documentation is ready for all kms tests, update the
-testplan config to make sure we are not missing the documentation
-all the kms tests.
+Hi Mauro,
 
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- docs/testplan/meson.build | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On Thu-17-08-2023 03:05 pm, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> Instead of relying on runtime-based docs, use the documentation
+> parsed via testplan for i915, Xe and KMS tests.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> ---
+>   .../igt-gpu-tools/igt_test_programs.xml       | 63 ++++++++-----------
+>   docs/reference/igt-gpu-tools/meson.build      |  4 --
+>   2 files changed, 27 insertions(+), 40 deletions(-)
+> 
+> diff --git a/docs/reference/igt-gpu-tools/igt_test_programs.xml b/docs/reference/igt-gpu-tools/igt_test_programs.xml
+> index 92bc33ba83f6..51f8cac05f98 100644
+> --- a/docs/reference/igt-gpu-tools/igt_test_programs.xml
+> +++ b/docs/reference/igt-gpu-tools/igt_test_programs.xml
+> @@ -147,42 +147,6 @@
+>       <xi:include href="igt_test_programs_gem_description.xml"/>
+>     </refentry>
+>   
+> -  <refentry id="igt-gen3-tests">
+> -    <refnamediv>
+> -      <refname>Gen 3 Tests</refname>
+> -      <refpurpose>Tests specific to gen 3</refpurpose>
+> -    </refnamediv>
+> -    <xi:include href="igt_test_programs_gen3_programs.xml"/>
+> -    <xi:include href="igt_test_programs_gen3_description.xml"/>
+> -  </refentry>
+> -
+> -  <refentry id="igt-gen7-tests">
+> -    <refnamediv>
+> -      <refname>Gen 7 Tests</refname>
+> -      <refpurpose>Tests specific to gen 7</refpurpose>
+> -    </refnamediv>
+> -    <xi:include href="igt_test_programs_gen7_programs.xml"/>
+> -    <xi:include href="igt_test_programs_gen7_description.xml"/>
+> -  </refentry>
+> -
+> -  <refentry id="igt-i915-tests">
+> -    <refnamediv>
+> -      <refname>i915 Tests</refname>
+> -      <refpurpose>Tests for overall i915 driver behaviour</refpurpose>
+> -    </refnamediv>
+> -    <xi:include href="igt_test_programs_i915_programs.xml"/>
+> -    <xi:include href="igt_test_programs_i915_description.xml"/>
+> -  </refentry>
+> -
+> -  <refentry id="igt-kms-tests">
+> -    <refnamediv>
+> -      <refname>KMS Tests</refname>
+> -      <refpurpose>Tests for kernel mode setting</refpurpose>
+> -    </refnamediv>
+> -    <xi:include href="igt_test_programs_kms_programs.xml"/>
+> -    <xi:include href="igt_test_programs_kms_description.xml"/>
+> -  </refentry>
+> -
+>     <refentry id="igt-meta-tests">
+>       <refnamediv>
+>         <refname>Meta Tests</refname>
+> @@ -255,6 +219,33 @@
+>       <xi:include href="igt_test_programs_vgem_description.xml"/>
+>     </refentry>
+>   
+> +  <refentry id="igt-xe-tests">
+> +    <refnamediv>
+> +      <refname>
+> +          <ulink url="../testplan/xe_tests.html" type="http">Xe Tests</ulink>
 
-diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
-index e838f2eb1..433464dc8 100644
---- a/docs/testplan/meson.build
-+++ b/docs/testplan/meson.build
-@@ -31,13 +31,13 @@ xe_test_dict = {
- if build_xe
- 	test_dict = {
- 		'i915_tests': { 'input': i915_test_config, 'extra_args': check_testlist },
--		'kms_tests': { 'input': kms_test_config, 'extra_args': [] },
-+		'kms_tests': { 'input': kms_test_config, 'extra_args': check_testlist },
- 		'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist }
- 	    }
- else
- 	test_dict = {
- 	      'i915_tests': { 'input': i915_test_config, 'extra_args': check_testlist },
--	      'kms_tests': { 'input': kms_test_config, 'extra_args': [] }
-+	      'kms_tests': { 'input': kms_test_config, 'extra_args': check_testlist }
- 	    }
- endif
- 
--- 
-2.40.0
+As the testplan is not inside the reference dir, the URL must be: 
+"../../../testplan/xe_tests.html"
 
+Also, is there anyway to put these urls in index.html, instead of 
+opening igt-xe-tests.html and from there open the actual xe_tests.html?
+
+> +      </refname>
+> +      <refpurpose>Tests for the Intel Xe driver</refpurpose>
+> +    </refnamediv>
+> +  </refentry>
+> +
+> +  <refentry id="igt-i915-tests">
+> +    <refnamediv>
+> +      <refname>
+> +        <ulink url="../testplan/i915_tests.html" type="http">i915 Tests</ulink>
+> +      </refname>
+> +      <refpurpose>Tests for the Intel i915 driver</refpurpose>
+> +    </refnamediv>
+> +  </refentry>
+> +
+> +  <refentry id="igt-kms-tests">
+> +    <refnamediv>
+> +      <refname>
+> +        <ulink url="../testplan/kms_tests.html" type="http">KMS Tests</ulink>
+> +      </refname>
+> +      <refpurpose>Tests for kernel mode setting</refpurpose>
+> +    </refnamediv>
+> +  </refentry>
+> +
+>     <glossary>
+>       <title>Glossary</title>
+>   
+> diff --git a/docs/reference/igt-gpu-tools/meson.build b/docs/reference/igt-gpu-tools/meson.build
+> index 6b832ad279cf..9bb5ca7e0798 100644
+> --- a/docs/reference/igt-gpu-tools/meson.build
+> +++ b/docs/reference/igt-gpu-tools/meson.build
+> @@ -29,10 +29,6 @@ test_groups = [
+>   	'debugfs',
+>   	'drm',
+>   	'gem',
+> -	'gen3',
+> -	'gen7',
+> -	'i915',
+> -	'kms',
+
+Also, we must drop testdisplay, since it is already covered by kms tests.
+
+- Bhanu
+
+>   	'meta',
+>   	'perf',
+>   	'pm',
 
