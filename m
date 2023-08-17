@@ -1,14 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 51D5410E41C
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Aug 2023 09:28:30 +0000 (UTC)
+Date: Thu, 17 Aug 2023 11:28:21 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230817092821.723xxgelw5h3mpbz@kamilkon-desk1>
+References: <20230817084322.69971-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 10 Aug 2023 14:45:37 -0000
-Message-ID: <169167873785.4959.10689695207034393318@emeril.freedesktop.org>
-References: <20230810123402.969597-1-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230810123402.969597-1-mauro.chehab@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBWYWxp?=
- =?utf-8?q?date_Xe_field_descriptions_at_build_time?=
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230817084322.69971-1-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] README.md and docs: describe how to
+ document tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,75 +20,243 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Hi Mauro,
 
-Series: Validate Xe field descriptions at build time
-URL   : https://patchwork.freedesktop.org/series/122285/
-State : failure
++cc Petri
 
-== Summary ==
+On 2023-08-17 at 10:43:22 +0200, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> Add some documentation describing how to document tests,
+> with both the legacy way and via testplan.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> ---
+>  README.md                  |   4 +
+>  docs/test_documentation.md | 179 +++++++++++++++++++++++++++++++++++++
+>  2 files changed, 183 insertions(+)
+>  create mode 100644 docs/test_documentation.md
+> 
+> diff --git a/README.md b/README.md
+> index 66f2bc0fa1bd..a88783bf4e52 100644
+> --- a/README.md
+> +++ b/README.md
+> @@ -49,6 +49,10 @@ Documentation is built using
+>  
+>      $ ninja -C build igt-gpu-tools-doc
+>  
+> +Please notice that some drivers and test sets may require that all
+> +tests to be properly documented via testplan. So, by default, build
+------------------------------------------------ ^^^^^^^^^^^^^^^
+s/So, by default,/By default/
 
-IGT patchset build failed on latest successful build
-85557af77f06ffef7e909c6008788ac34a011b65 tests/intel-ci: fix xe-fast-feedback.testlist
+Please also replace /So, // at other places.
 
-Tail of build.log:
-Warning: igt@xe_ccs@ctrl-surf-copy-new-ctx Functionality documentation is missing
-Warning: igt@xe_ccs@ctrl-surf-copy-new-ctx Sub-category documentation is missing
-Warning: igt@xe_ccs@suspend-resume Category documentation is missing
-Warning: igt@xe_ccs@suspend-resume Functionality documentation is missing
-Warning: igt@xe_ccs@suspend-resume Sub-category documentation is missing
-Warning: igt@xe_exercise_blt@fast-copy Category documentation is missing
-Warning: igt@xe_exercise_blt@fast-copy Functionality documentation is missing
-Warning: igt@xe_exercise_blt@fast-copy Sub-category documentation is missing
-Warning: igt@xe_exercise_blt@fast-copy-emit Category documentation is missing
-Warning: igt@xe_exercise_blt@fast-copy-emit Functionality documentation is missing
-Warning: igt@xe_exercise_blt@fast-copy-emit Sub-category documentation is missing
-Warning: igt@xe_media_fill@media-fill Category documentation is missing
-Warning: igt@xe_media_fill@media-fill Functionality documentation is missing
-Warning: igt@xe_media_fill@media-fill Sub-category documentation is missing
-Warning: igt@xe_sysfs_scheduler@job_timeout_ms-invalid Category documentation is missing
-Warning: igt@xe_sysfs_scheduler@job_timeout_ms-min-max Category documentation is missing
-Warning: igt@xe_sysfs_scheduler@job_timeout_ms-nonprivileged-user Category documentation is missing
-Warning: igt@xe_sysfs_scheduler@preempt_timeout_us-invalid Category documentation is missing
-Warning: igt@xe_sysfs_scheduler@preempt_timeout_us-min-max Category documentation is missing
-Warning: igt@xe_sysfs_scheduler@preempt_timeout_us-nonprivileged-user Category documentation is missing
-Warning: igt@xe_sysfs_scheduler@timeslice_duration_us-invalid Category documentation is missing
-Warning: igt@xe_sysfs_scheduler@timeslice_duration_us-min-max Category documentation is missing
-Warning: igt@xe_sysfs_scheduler@timeslice_duration_us-nonprivileged-user Category documentation is missing
-Warning: igt@xe_sysfs_tile@physical_vram_size_bytes Run type documentation is missing
-Warning: igt@xe_sysfs_tile@physical_vram_size_bytes Category documentation is missing
-Warning: igt@xe_sysfs_tile@physical_vram_size_bytes Functionality documentation is missing
-Warning: igt@xe_sysfs_tile@physical_vram_size_bytes Sub-category documentation is missing
-Warning: igt@xe_uevent@fake_reset_uevent_listener Run type documentation is missing
-Warning: igt@xe_uevent@fake_reset_uevent_listener Category documentation is missing
-Warning: igt@xe_uevent@fake_reset_uevent_listener Functionality documentation is missing
-Warning: igt@xe_uevent@fake_reset_uevent_listener Sub-category documentation is missing
-Warning: igt@xe_vm@mmap-style-bind-all Functionality documentation is missing
-Warning: igt@xe_vm@mmap-style-bind-either-side-full Functionality documentation is missing
-Warning: igt@xe_vm@mmap-style-bind-either-side-partial Functionality documentation is missing
-Warning: igt@xe_vm@mmap-style-bind-either-side-partial-hammer Functionality documentation is missing
-Warning: igt@xe_vm@mmap-style-bind-either-side-partial-large-page-hammer Functionality documentation is missing
-Warning: igt@xe_vm@mmap-style-bind-either-side-partial-split-page-hammer Functionality documentation is missing
-Warning: igt@xe_vm@mmap-style-bind-end Functionality documentation is missing
-Warning: igt@xe_vm@mmap-style-bind-front Functionality documentation is missing
-Warning: igt@xe_vm@mmap-style-bind-many-all Functionality documentation is missing
-Warning: igt@xe_vm@mmap-style-bind-many-either-side-partial Functionality documentation is missing
-Warning: igt@xe_vm@mmap-style-bind-many-either-side-partial-hammer Functionality documentation is missing
-Warning: igt@xe_vm@mmap-style-bind-one-partial Functionality documentation is missing
-Warning: igt@xe_vm@mmap-style-bind-userptr-all Functionality documentation is missing
-Warning: igt@xe_vm@mmap-style-bind-userptr-either-side-full Functionality documentation is missing
-Warning: igt@xe_vm@mmap-style-bind-userptr-either-side-partial Functionality documentation is missing
-Warning: igt@xe_vm@mmap-style-bind-userptr-one-partial Functionality documentation is missing
-[1618/1622] Generating kms_tests.html with a custom command.
-[1619/1622] Generating i915_tests.rst with a custom command.
-ninja: build stopped: subcommand failed.
+> +will fail of one forgets to document or update the documentation.
+------------ ^
+s/of/if/
 
+> +This is currently enabled for the Xe, i915 drivers, and for KMS tests.
+---------------------------------------------------- ^
+s/, and/ and/
 
+Regards,
+Kamil
+
+>  
+>  Running Tests
+>  -------------
+> diff --git a/docs/test_documentation.md b/docs/test_documentation.md
+> new file mode 100644
+> index 000000000000..f21bf69def16
+> --- /dev/null
+> +++ b/docs/test_documentation.md
+> @@ -0,0 +1,179 @@
+> +IGT Test documentation
+> +======================
+> +
+> +Legacy way
+> +----------
+> +
+> +IGT has been providing a way to document tests in runtime by using tree macros:
+> +
+> +    - IGT_TEST_DESCRIPTION(test_file_description)
+> +    - igt_describe(subtest_description) and igt_describe_f(format, args...)
+> +
+> +This is limited, as:
+> +    - Each test/subtest has just one “field”: description. So, it doesn't
+> +      allow specifying what features are tested and/or special requirements;
+> +    - It is meant to produce a very concise documentation;
+> +    - Integration with external platforms to group tests per category
+> +      is not possible, as there's no way to tell what category each test
+> +      belongs;
+> +    - Format is not easily expansible;
+> +    - The build system doesn’t verify if all tests are documented. So,
+> +      documentation tends to be outdated or forgotten, as new patches
+> +      modify the test set.
+> +
+> +Documentation via structured comments (testplan)
+> +------------------------------------------------
+> +
+> +With the addition of Xe driver, a new way to document tests was added.
+> +It is based on special comment-like annotation inside the C code.
+> +
+> +It was written to be flexible, so the valid fields to be used by is
+> +described on a JSON configuration file. That makes easy to add/modify
+> +the fields as needed. It is also easy to use the documentation to
+> +integrate with external reporting tools.
+> +
+> +As an additional benefit, the documentation tags will be generating a
+> +Restructured Text file. So, it is possible to add enriched test
+> +descriptions if needed.
+> +
+> +Also, the build system can optionally enforce a check at build time to
+> +verify if the documentation is in place.
+> +
+> +testplan configuration file
+> +---------------------------
+> +
+> +The configuration file contains the fields to be used for documenting
+> +tests, and the test names. It may also mark a property as mandatory.
+> +
+> +A typical example is:
+> +
+> +```
+> +{
+> +    "description": "JSON example file",
+> +    "name": "Tests for XYZ Driver",
+> +    "files": [ "test.c" ],
+> +    "fields": {
+> +        "Feature": {
+> +            "_properties_": {
+> +                "description": "Feature to be tested"
+> +            }
+> +        },
+> +        "Description" : {
+> +            "_properties_": {
+> +                "mandatory": true,
+> +                "description": "Provides a description for the test/subtest."
+> +            }
+> +        }
+> +    }
+> +}
+> +```
+> +
+> +Documenting tests via testplan
+> +------------------------------
+> +
+> +A typical documentation markup at the test source code looks like:
+> +```
+> +/**
+> + * TEST: Check if new IGT test documentation logic functionality is working
+> + * Mega-feature: IGT test documentation
+> + * Category: Software build block
+> + * Sub-category: documentation
+> + * Functionality: test documentation
+> + * Issue: none
+> + * Description: Complete description of this test
+> + *
+> + * SUBTEST: foo
+> + * Description: do foo things.
+> + *      Foo description continuing on another line
+> + *
+> + * SUBTEST: bar
+> + * Description:
+> + *      Do bar things.
+> + *      Bar description continuing on another line
+> + */
+> +```
+> +
+> +It is also possible to add variables to the documentation with:
+> +
+> +```
+> +/**
+> + * SUBTEST: test-%s-binds-with-%ld-size-%s
+> + * Description: Test arg[3] arg[1] binds with arg[2] size
+> + *
+> + * SUBTEST: test-%s-%ld-size
+> + * Description: Test arg[1] with %arg[2] size
+> + *
+> + * arg[1]:
+> + *
+> + * @large:      large
+> + *              something
+> + * @small:      small
+> + *              something
+> + *
+> + * arg[2]:      buffer size
+> + *
+> + * arg[3]:
+> + *
+> + * @misaligned-binds:           misaligned
+> + * @userptr-binds:              user pointer
+> + */
+> + ```
+> +
+> +The first "%s" will be replaced by the values of arg[1] for the subtest
+> +name. At the description, arg[1] will be replaced by the string after
+> +the field description. The same applies to the subsequent wildcards.
+> +
+> +So, the above will produce the following output (using the example
+> +configuration file described at the past session:
+> +
+> +```
+> +``igt@test@test-large-<buffer size>-size``
+> +
+> +:Description: Test large something with <buffer size> size
+> +
+> +
+> +``igt@test@test-large-binds-with-<buffer size>-size-misaligned-binds``
+> +
+> +:Description: Test misaligned large something binds with <buffer size> size
+> +
+> +
+> +``igt@test@test-small-binds-with-<buffer size>-size-misaligned-binds``
+> +
+> +:Description: Test misaligned small something binds with <buffer size> size
+> +
+> +
+> +``igt@test@test-small-<buffer size>-size``
+> +
+> +:Description: Test small something with <buffer size> size
+> +
+> +
+> +``igt@test@test-large-binds-with-<buffer size>-size-userptr-binds``
+> +
+> +:Description: Test user pointer large something binds with <buffer size> size
+> +
+> +
+> +``igt@test@test-small-binds-with-<buffer size>-size-userptr-binds``
+> +
+> +:Description: Test user pointer small something binds with <buffer size> size
+> +```
+> +
+> +Wildcard replacement can also be used to maintain an argument with the
+> +same name at the replaced description. That makes easy to document
+> +numeric arguments with a fixed testset, like:
+> +
+> +```
+> +/**
+> + * SUBTEST: unbind-all-%d-vmas
+> + * Description: unbind all with %arg[1] VMAs
+> + *
+> + * arg[1].values: 2, 8
+> + * arg[1].values: 16, 32
+> + */
+> +
+> +/**
+> + * SUBTEST: unbind-all-%d-vmas
+> + * Description: unbind all with %arg[1] VMAs
+> + *
+> + * arg[1].values: 64, 128
+> + */
+> +```
+> -- 
+> 2.41.0
+> 
 
