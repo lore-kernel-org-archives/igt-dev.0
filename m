@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com
- [IPv6:2a00:1450:4864:20::22b])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F102710E4F8
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Aug 2023 11:39:00 +0000 (UTC)
-Received: by mail-lj1-x22b.google.com with SMTP id
- 38308e7fff4ca-2b9c0391749so12939971fa.0
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Aug 2023 04:39:00 -0700 (PDT)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 18 Aug 2023 14:38:17 +0300
-Message-Id: <20230818113817.155989-1-juhapekka.heikkila@gmail.com>
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam10on2077.outbound.protection.outlook.com [40.107.94.77])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9F40E10E548
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Aug 2023 17:56:45 +0000 (UTC)
+From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Fri, 18 Aug 2023 13:56:36 -0400
+Message-ID: <20230818175637.419349-1-aurabindo.pillai@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] Revert "testplan/kms: Make documentation is
- mandatory for all kms subtests"
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH v2 1/2] lib/amdgpu: Add check for ODM combine
+ segments debugfs endpoint
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,39 +19,57 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: marcin.bernatowicz@intel.com, kamil.konieczny@intel.com
+Cc: hersenxs.wu@amd.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This change broke igt build when building without chamelium
-
-This reverts commit 00bc4cf384382018ebe6f333e4d53849c883445b.
-
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
 ---
- docs/testplan/meson.build | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ lib/igt_amd.c | 10 ++++++++++
+ lib/igt_amd.h |  4 ++++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
-index 433464dc8..e838f2eb1 100644
---- a/docs/testplan/meson.build
-+++ b/docs/testplan/meson.build
-@@ -31,13 +31,13 @@ xe_test_dict = {
- if build_xe
- 	test_dict = {
- 		'i915_tests': { 'input': i915_test_config, 'extra_args': check_testlist },
--		'kms_tests': { 'input': kms_test_config, 'extra_args': check_testlist },
-+		'kms_tests': { 'input': kms_test_config, 'extra_args': [] },
- 		'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist }
- 	    }
- else
- 	test_dict = {
- 	      'i915_tests': { 'input': i915_test_config, 'extra_args': check_testlist },
--	      'kms_tests': { 'input': kms_test_config, 'extra_args': check_testlist }
-+	      'kms_tests': { 'input': kms_test_config, 'extra_args': [] }
- 	    }
- endif
+diff --git a/lib/igt_amd.c b/lib/igt_amd.c
+index 83011e8ca..1a720ff56 100644
+--- a/lib/igt_amd.c
++++ b/lib/igt_amd.c
+@@ -325,6 +325,16 @@ static bool igt_amd_output_has_dsc(int drm_fd, char *connector_name)
+ 	return igt_amd_output_has_debugfs(drm_fd, connector_name, DEBUGFS_DSC_CLOCK_EN);
+ }
  
++/**
++ * igt_amd_output_has_odm_combine_segments: check if connector has dsc debugfs entry
++ * @drm_fd: DRM file descriptor
++ * @connector_name: The connector's name, on which we're reading the status
++ */
++bool igt_amd_output_has_odm_combine_segments(int drm_fd, char *connector_name)
++{
++	return igt_amd_output_has_debugfs(drm_fd, connector_name, DEBUGFS_ODM_COMBINE_SEG);
++}
++
+ /**
+  * is_dp_dsc_supported: Checks if connector is DSC capable
+  * @display: A pointer to an #igt_display_t structure
+diff --git a/lib/igt_amd.h b/lib/igt_amd.h
+index 6f538a195..c05b4b730 100644
+--- a/lib/igt_amd.h
++++ b/lib/igt_amd.h
+@@ -54,6 +54,9 @@
+ #define DEBUGFS_DM_VISUAL_CONFIRM "amdgpu_dm_visual_confirm"
+ #define DEBUGFS_DM_CAPABILITIES "amdgpu_dm_capabilities"
+ 
++/* ODM Combine */
++#define DEBUGFS_ODM_COMBINE_SEG "odm_combine_segments"
++
+ enum amd_dsc_clock_force {
+ 	DSC_AUTOMATIC = 0,
+ 	DSC_FORCE_ON,
+@@ -197,4 +200,5 @@ int  igt_amd_get_visual_confirm(int drm_fd);
+ bool igt_amd_set_visual_confirm(int drm_fd, enum amdgpu_debug_visual_confirm option);
+ 
+ bool igt_amd_is_mall_capable(int drm_fd);
++bool igt_amd_output_has_odm_combine_segments(int drm_fd, char *connector_name);
+ #endif /* IGT_AMD_H */
 -- 
-2.34.1
+2.41.0
