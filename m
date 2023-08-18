@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DA86410E49F
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Aug 2023 08:00:04 +0000 (UTC)
-Date: Fri, 18 Aug 2023 10:00:00 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AA14A10E48A
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Aug 2023 08:09:33 +0000 (UTC)
+From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230818080000.7v2tkddu3t2rmjmt@kamilkon-desk1>
-References: <20230817055301.855960-1-riana.tauro@intel.com>
- <20230817055301.855960-2-riana.tauro@intel.com>
+Date: Fri, 18 Aug 2023 11:08:27 +0300
+Message-Id: <20230818080827.1889393-1-jouni.hogander@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230817055301.855960-2-riana.tauro@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/igt_power: Modify igt_power
- library for xe
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/i915: Take into account fbc_status
+ "stolen memory not initialised"
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,59 +18,49 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Riana,
+Earlier non initialized memory caused fbc_status debugfs interface not
+being created at all. This was considered as "Unsupported chipset" by
+certain igt testcases. Now fbc_status is informing "stolen memory not
+initialised". Consider this again as "Unsupported chipset"
 
-On 2023-08-17 at 11:22:59 +0530, Riana Tauro wrote:
-> modify igt_pm library for xe tests. To check if a
-  ^
-Start sentence from uppercase, s/modify/Modify/
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9131
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+---
+ tests/i915/kms_fbcon_fbt.c            | 3 ++-
+ tests/i915/kms_frontbuffer_tracking.c | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-> device is dgfx the igt_power open call needs to be modified for
-> xe.
-> 
-> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
-> ---
->  lib/igt_power.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/lib/igt_power.c b/lib/igt_power.c
-> index 3b34be406..439d49fc3 100644
-> --- a/lib/igt_power.c
-> +++ b/lib/igt_power.c
-> @@ -12,6 +12,7 @@
->  #include "igt_power.h"
->  #include "igt_sysfs.h"
->  
-> +#include "xe/xe_query.h"
-
-Add newline.
-
-With this fixed,
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
->  static const char *rapl_domains[] = { "cpu", "gpu", "pkg", "ram" };
->  
->  static int rapl_parse(struct rapl *r, const char *str)
-> @@ -99,11 +100,13 @@ static inline void rapl_close(struct rapl *r)
->  int igt_power_open(int fd, struct igt_power *p, const char *domain)
->  {
->  	int i;
-> +	bool is_dgfx;
->  
->  	p->hwmon_fd = -1;
->  	p->rapl.fd = -1;
->  
-> -	if (gem_has_lmem(fd)) {
-> +	is_dgfx = is_xe_device(fd) ? xe_has_vram(fd) : gem_has_lmem(fd);
-> +	if (is_dgfx) {
->  		if (strncmp(domain, "gpu", strlen("gpu")) == 0) {
->  			p->hwmon_fd = igt_hwmon_open(fd);
->  			if (p->hwmon_fd >= 0)
-> -- 
-> 2.40.0
-> 
+diff --git a/tests/i915/kms_fbcon_fbt.c b/tests/i915/kms_fbcon_fbt.c
+index e65cbda93..2cb0ffdb4 100644
+--- a/tests/i915/kms_fbcon_fbt.c
++++ b/tests/i915/kms_fbcon_fbt.c
+@@ -103,7 +103,8 @@ static bool fbc_supported_on_chipset(int device, int debugfs_fd)
+ 	if (ret < 0)
+ 		return false;
+ 
+-	return !strstr(buf, "FBC unsupported on this chipset\n");
++	return !strstr(buf, "FBC unsupported on this chipset\n") &&
++		!strstr(buf, "stolen memory not initialised\n");
+ }
+ 
+ static bool connector_can_fbc(drmModeConnectorPtr connector)
+diff --git a/tests/i915/kms_frontbuffer_tracking.c b/tests/i915/kms_frontbuffer_tracking.c
+index 3e8f15bb0..136426204 100644
+--- a/tests/i915/kms_frontbuffer_tracking.c
++++ b/tests/i915/kms_frontbuffer_tracking.c
+@@ -1444,7 +1444,8 @@ static bool fbc_supported_on_chipset(void)
+ 	if (*buf == '\0')
+ 		return false;
+ 
+-	return !strstr(buf, "FBC unsupported on this chipset\n");
++	return !strstr(buf, "FBC unsupported on this chipset\n") &&
++		!strstr(buf, "stolen memory not initialised\n");
+ }
+ 
+ static void setup_fbc(void)
+-- 
+2.34.1
