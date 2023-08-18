@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam04on20617.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e8c::617])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DB73710E55E
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Aug 2023 21:02:58 +0000 (UTC)
-Message-ID: <2792a229-769e-d894-6f6e-7e87e7a19e27@amd.com>
-Date: Fri, 18 Aug 2023 15:02:48 -0600
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam12on2051.outbound.protection.outlook.com [40.107.243.51])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C0E2210E2C9
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Aug 2023 21:20:37 +0000 (UTC)
+Message-ID: <ffcaecce-2afb-c3d6-e098-475060e13317@amd.com>
+Date: Fri, 18 Aug 2023 15:20:30 -0600
+Content-Language: en-US
 To: Aurabindo Pillai <aurabindo.pillai@amd.com>, igt-dev@lists.freedesktop.org
 References: <20230818175637.419349-1-aurabindo.pillai@amd.com>
-Content-Language: en-US
+ <20230818175637.419349-2-aurabindo.pillai@amd.com>
 From: Alex Hung <alex.hung@amd.com>
-In-Reply-To: <20230818175637.419349-1-aurabindo.pillai@amd.com>
+In-Reply-To: <20230818175637.419349-2-aurabindo.pillai@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v2 1/2] lib/amdgpu: Add check for ODM combine
- segments debugfs endpoint
+Subject: Re: [igt-dev] [PATCH v2 2/2] tests/amdgpu: Add test for ODM combine
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,60 +30,253 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 
 On 2023-08-18 11:56, Aurabindo Pillai wrote:
+> Add a test that checks whether ODM Combine mode is triggered when high
+> refresh rate timing is committed on hardware it supports. This test
+> requires a DSC capable monitor.
+> 
+> Changes in V2: Added check to skip test on hardware that does not have
+> ODM combine segments debugfs endpoint exposed
+> 
 > Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
 > ---
->   lib/igt_amd.c | 10 ++++++++++
->   lib/igt_amd.h |  4 ++++
->   2 files changed, 14 insertions(+)
+>   tests/amdgpu/amd_odm.c   | 209 +++++++++++++++++++++++++++++++++++++++
+>   tests/amdgpu/meson.build |   1 +
+>   2 files changed, 210 insertions(+)
+>   create mode 100644 tests/amdgpu/amd_odm.c
 > 
-> diff --git a/lib/igt_amd.c b/lib/igt_amd.c
-> index 83011e8ca..1a720ff56 100644
-> --- a/lib/igt_amd.c
-> +++ b/lib/igt_amd.c
-> @@ -325,6 +325,16 @@ static bool igt_amd_output_has_dsc(int drm_fd, char *connector_name)
->   	return igt_amd_output_has_debugfs(drm_fd, connector_name, DEBUGFS_DSC_CLOCK_EN);
->   }
->   
-> +/**
-> + * igt_amd_output_has_odm_combine_segments: check if connector has dsc debugfs entry
-> + * @drm_fd: DRM file descriptor
-> + * @connector_name: The connector's name, on which we're reading the status
+> diff --git a/tests/amdgpu/amd_odm.c b/tests/amdgpu/amd_odm.c
+> new file mode 100644
+> index 000000000..83c72cbf2
+> --- /dev/null
+> +++ b/tests/amdgpu/amd_odm.c
+> @@ -0,0 +1,209 @@
+> +/*
+> + * Copyrights 2023 Advanced Micro Devices, Inc.
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining a
+> + * copy of this software and associated documentation files (the "Software"),
+> + * to deal in the Software without restriction, including without limitation
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice shall be included in
+> + * all copies or substantial portions of the Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
+> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+> + * OTHER DEALINGS IN THE SOFTWARE.
 > + */
-> +bool igt_amd_output_has_odm_combine_segments(int drm_fd, char *connector_name)
+> +
+> +#include <fcntl.h>
+> +#include <stdio.h>
+> +#include <xf86drmMode.h>
+> +
+> +#include "igt.h"
+> +#include "igt_amd.h"
+> +#include "igt_edid.h"
+> +
+> +IGT_TEST_DESCRIPTION("Test whether ODM Combine mode is triggered when timings with high refresh"
+> +		     "rate is committed");
+> +
+> +typedef enum odm_combine_mode {
+> +	ODMC_2_TO_1,
+> +	ODMC_4_TO_1,
+> +} odmc_mode_t;
+> +
+> +/* Common test data. */
+> +typedef struct data {
+> +        igt_display_t display;
+> +        igt_plane_t *primary;
+> +        igt_output_t *output;
+> +        igt_pipe_t *pipe;
+> +        drmModeModeInfoPtr mode;
+> +        enum pipe pipe_id;
+> +        int w;
+> +        int h;
+> +        int fd;
+> +} data_t;
+> +
+> +static const drmModeModeInfo test_mode[] = {
+> +	{ 1278720,
+> +	3840, 3952, 3984, 4000, 0,
+> +	2160, 2210, 2215, 2220, 0,
+> +	30,
+> +	DRM_MODE_FLAG_NHSYNC,
+> +	0x40,
+> +	"4k144\0",
+> +	}, /* from HP Omen 27c */
+> +
+> +};
+> +
+> +#define TEST_MODE_IDX_ODMC_2_TO_1 0
+> +
+> +static void test_init(data_t *data)
 > +{
-> +	return igt_amd_output_has_debugfs(drm_fd, connector_name, DEBUGFS_ODM_COMBINE_SEG);
+> +	igt_display_t *display = &data->display;
+> +
+> +	/* It doesn't matter which pipe we choose on amdpgu. */
+> +	data->pipe_id = PIPE_A;
+> +	data->pipe = &data->display.pipes[data->pipe_id];
+> +
+> +	igt_display_reset(display);
+> +
+> +	/* find a connected non-HDMI output */
+> +	data->output = NULL;
+> +	for (int i=0; i < data->display.n_outputs; ++i) {
+> +		drmModeConnector *connector = data->display.outputs[i].config.connector;
+> +		if (connector->connection == DRM_MODE_CONNECTED) {
+> +			data->output = &data->display.outputs[i];
+> +		}
+> +	}
+> +	igt_require_f(data->output, "Requires a connected output\n");
+
+The above for-loop isn't HDMI-related. Do you want to update the comment 
+or is anything missing here? Or should the below connector_type == 
+DRM_MODE_CONNECTOR_HDMIA/B be moved up here?
+
+> +
+> +	data->mode = igt_output_get_mode(data->output);
+> +	igt_assert(data->mode);
+> +
+> +	igt_skip_on_f(!igt_amd_output_has_odm_combine_segments(data->fd, data->output->name),
+> +		      "ASIC does not support reading ODM combine segments\n");
+> +
+> +	igt_skip_on_f(!is_dp_dsc_supported(data->fd, data->output->name),
+> +		      "The monitor must be DSC capable\n");
+> +
+> +	igt_skip_on_f(data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_HDMIA ||
+> +		      data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_HDMIB,
+> +		      "ODM Combine isn't supported on HDMI 1.x\n");
+> +
+> +	data->primary = igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
+> +	igt_output_set_pipe(data->output, data->pipe_id);
+> +	data->w = data->mode->hdisplay;
+> +	data->h = data->mode->vdisplay;
+
+Where are data->w/h used? is it necessary to have these two fields? I 
+only found hdisplay and vdisplay directly in run_test_odmc().
+
+> +
+> +	igt_display_reset(display);
 > +}
-
-This helper function is the same as one line igt_amd_output_has_debugfs 
-and it is only used once in patch 2. The log in patch 2 seems to explain 
-its purpose quite well too.
-
-Is there a special reason to have a new helper function? Do you expect 
-the check for ODM combine SEG will change or expand?
-
-Alex
-
 > +
->   /**
->    * is_dp_dsc_supported: Checks if connector is DSC capable
->    * @display: A pointer to an #igt_display_t structure
-> diff --git a/lib/igt_amd.h b/lib/igt_amd.h
-> index 6f538a195..c05b4b730 100644
-> --- a/lib/igt_amd.h
-> +++ b/lib/igt_amd.h
-> @@ -54,6 +54,9 @@
->   #define DEBUGFS_DM_VISUAL_CONFIRM "amdgpu_dm_visual_confirm"
->   #define DEBUGFS_DM_CAPABILITIES "amdgpu_dm_capabilities"
->   
-> +/* ODM Combine */
-> +#define DEBUGFS_ODM_COMBINE_SEG "odm_combine_segments"
+> +static void test_fini(data_t *data)
+> +{
+> +	igt_display_reset(&data->display);
+> +	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
+> +}
 > +
->   enum amd_dsc_clock_force {
->   	DSC_AUTOMATIC = 0,
->   	DSC_FORCE_ON,
-> @@ -197,4 +200,5 @@ int  igt_amd_get_visual_confirm(int drm_fd);
->   bool igt_amd_set_visual_confirm(int drm_fd, enum amdgpu_debug_visual_confirm option);
->   
->   bool igt_amd_is_mall_capable(int drm_fd);
-> +bool igt_amd_output_has_odm_combine_segments(int drm_fd, char *connector_name);
->   #endif /* IGT_AMD_H */
+> +/* Forces a mode for a connector. */
+> +static void force_output_mode(data_t *d, igt_output_t *output,
+> +			      const drmModeModeInfo *mode)
+> +{
+> +	/* This allows us to create a virtual sink. */
+> +	if (!igt_output_is_connected(output)) {
+> +		kmstest_force_edid(d->fd, output->config.connector,
+> +				   igt_kms_get_4k_edid());
+> +
+> +		kmstest_force_connector(d->fd, output->config.connector,
+> +					FORCE_CONNECTOR_DIGITAL);
+> +	}
+> +
+> +	igt_output_override_mode(output, mode);
+> +}
+> +
+> +static void run_test_odmc(data_t *data, odmc_mode_t m, const drmModeModeInfo *mode) {
+> +	igt_display_t *display = &data->display;
+> +	struct igt_fb buffer;
+> +	char buf[256];
+> +	int ret, seg, fd;
+> +	int i = 0;
+> +
+> +	test_init(data);
+> +
+> +	force_output_mode(data, data->output, mode);
+> +
+> +	igt_create_color_fb(display->drm_fd, mode->hdisplay,
+> +			    mode->vdisplay, DRM_FORMAT_XRGB8888,
+> +			    DRM_FORMAT_MOD_LINEAR, 1.f, 0.f, 0.f,
+> +			    &buffer);
+> +
+> +	igt_output_set_pipe(data->output, i);
+> +
+> +	igt_plane_set_fb(data->primary, &buffer);
+> +
+> +	ret = igt_display_try_commit_atomic(display,
+> +					    DRM_MODE_ATOMIC_ALLOW_MODESET |
+> +					    DRM_MODE_ATOMIC_TEST_ONLY,
+> +					    NULL);
+> +	igt_skip_on_f(ret != 0, "Unsupported mode\n");
+> +
+> +	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> +
+> +	fd = igt_debugfs_connector_dir(data->fd, data->output->name, O_RDONLY);
+> +	igt_assert(fd >= 0);
+> +
+> +	ret = igt_debugfs_simple_read(fd, "odm_combine_segments", buf, sizeof(buf));
+> +	close(fd);
+> +	igt_require(ret > 0);
+> +
+> +	seg = strtol(buf, NULL, 0);
+> +
+> +	switch (m) {
+> +	case ODMC_2_TO_1:
+> +		igt_assert_f(seg == 2,
+> +			     "ODM Combine uses %d segments for connector %s, expected 2\n",
+> +			     seg, data->output->name);
+> +		break;
+> +	case ODMC_4_TO_1:
+> +		igt_assert_f(seg == 4,
+> +			     "ODM Combine uses %d segments for connector %s, expected 4\n",
+> +			     seg, data->output->name);
+> +		break;
+> +	}
+> +
+> +	igt_remove_fb(display->drm_fd, &buffer);
+> +
+> +	test_fini(data);
+> +}
+> +
+> +igt_main
+> +{
+> +	data_t data;
+> +
+> +	memset(&data, 0, sizeof(data));
+> +
+> +	igt_fixture
+> +	{
+> +		data.fd = drm_open_driver_master(DRIVER_ANY);
+> +
+> +		kmstest_set_vt_graphics_mode();
+> +
+> +		igt_display_require(&data.display, data.fd);
+> +		igt_require(&data.display.is_atomic);
+> +		igt_display_require_output(&data.display);
+> +
+> +	}
+> +
+> +	igt_subtest_f("odm-combine-2-to-1-%s", test_mode[TEST_MODE_IDX_ODMC_2_TO_1].name)
+> +		run_test_odmc(&data, ODMC_2_TO_1, &test_mode[TEST_MODE_IDX_ODMC_2_TO_1]);
+> +
+> +	igt_fixture
+> +	{
+> +		igt_display_fini(&data.display);
+> +	}
+> +}
+> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+> index 6c6166167..6032a38e8 100644
+> --- a/tests/amdgpu/meson.build
+> +++ b/tests/amdgpu/meson.build
+> @@ -35,6 +35,7 @@ if libdrm_amdgpu.found()
+>   			  'amd_vm',
+>   			  'amd_vrr_range',
+>   			  'amd_mall',
+> +			  'amd_odm',
+>   			]
+>   	amdgpu_deps += libdrm_amdgpu
+>   endif
