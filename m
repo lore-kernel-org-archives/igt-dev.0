@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Content-Type: multipart/alternative;
+ boundary="===============4827368890106812696=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: sai.gowtham.ch@intel.com
-Date: Fri, 18 Aug 2023 06:24:26 -0000
-Message-ID: <169233986614.12738.6685214641652088784@emeril.freedesktop.org>
+Date: Fri, 18 Aug 2023 06:41:19 -0000
+Message-ID: <169234087918.12740.17926882979947541851@emeril.freedesktop.org>
 References: <20230818051916.28272-1-sai.gowtham.ch@intel.com>
 In-Reply-To: <20230818051916.28272-1-sai.gowtham.ch@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_A?=
- =?utf-8?q?dd_copy_basic_test_to_exercise_blt_commands?=
+Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_Add_copy_ba?=
+ =?utf-8?q?sic_test_to_exercise_blt_commands?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,39 +23,63 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============4827368890106812696==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
 Series: Add copy basic test to exercise blt commands
 URL   : https://patchwork.freedesktop.org/series/122615/
-State : warning
+State : info
 
 == Summary ==
 
-Pipeline status: FAILED.
+Participating hosts:
+bat-atsm-2
+bat-dg2-oem2
+bat-adlp-7
+Missing hosts results[0]:
+Results: [IGTPW_9618](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9618/index.html)
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/964492 for the overview.
 
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47645333):
-  section_start:1692339331:prepare_script
-  Preparing environment
-  Running on runner-yyhtcik-project-3185-concurrent-5 via 541e14f02aa1...
-  section_end:1692339331:prepare_script
-  section_start:1692339331:get_sources
-  Getting source from Git repository
-  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh -s -- pre_get_sources_script
-  Checking if the user of the pipeline is allowed...
-  Checking if the job's project is part of a well-known group...
-  Thank you for contributing to freedesktop.org
-  Fetching changes...
-  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
-  error: RPC failed; curl 55 Failed sending data to the peer
-  fatal: expected 'acknowledgments'
-  section_end:1692339408:get_sources
-  section_start:1692339408:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1692339408:cleanup_file_variables
-  ERROR: Job failed: exit code 1
 
-== Logs ==
+--===============4827368890106812696==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/964492
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add copy basic test to exercise blt commands</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122615/">https://patchwork.freedesktop.org/series/122615/</a></td></tr>
+<tr><td><b>State:</b></td><td>info</td></tr>
+
+</table>
+
+
+    <p>Participating hosts:<br />
+bat-atsm-2<br />
+bat-dg2-oem2<br />
+bat-adlp-7<br />
+Missing hosts results[0]:<br />
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9618/index.html">IGTPW_9618</a></p>
+
+</body>
+</html>
+
+--===============4827368890106812696==--
