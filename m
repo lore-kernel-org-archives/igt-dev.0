@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 38D4C10E46E
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Aug 2023 07:16:25 +0000 (UTC)
-Date: Fri, 18 Aug 2023 09:16:21 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DA86410E49F
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Aug 2023 08:00:04 +0000 (UTC)
+Date: Fri, 18 Aug 2023 10:00:00 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230818071621.uegnfhd7amkql4da@kamilkon-desk1>
-References: <20230818051152.2439611-1-janga.rahul.kumar@intel.com>
+Message-ID: <20230818080000.7v2tkddu3t2rmjmt@kamilkon-desk1>
+References: <20230817055301.855960-1-riana.tauro@intel.com>
+ <20230817055301.855960-2-riana.tauro@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230818051152.2439611-1-janga.rahul.kumar@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/core_hotunplug: Improve test
- documentation
+In-Reply-To: <20230817055301.855960-2-riana.tauro@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/igt_power: Modify igt_power
+ library for xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,99 +21,59 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: ramadevi.gandi@intel.com
+Cc: badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Janga Rahul,
+Hi Riana,
 
-On 2023-08-18 at 10:41:52 +0530, janga.rahul.kumar@intel.com wrote:
-> From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-> 
-> Add missing category, sub-category and functionality fields.
-> 
-> Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+On 2023-08-17 at 11:22:59 +0530, Riana Tauro wrote:
+> modify igt_pm library for xe tests. To check if a
+  ^
+Start sentence from uppercase, s/modify/Modify/
 
+> device is dgfx the igt_power open call needs to be modified for
+> xe.
+> 
+> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+> ---
+>  lib/igt_power.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/lib/igt_power.c b/lib/igt_power.c
+> index 3b34be406..439d49fc3 100644
+> --- a/lib/igt_power.c
+> +++ b/lib/igt_power.c
+> @@ -12,6 +12,7 @@
+>  #include "igt_power.h"
+>  #include "igt_sysfs.h"
+>  
+> +#include "xe/xe_query.h"
+
+Add newline.
+
+With this fixed,
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-> ---
->  tests/core_hotunplug.c | 32 ++++++++++++++++++++++++--------
->  1 file changed, 24 insertions(+), 8 deletions(-)
-> 
-> diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-> index 4d6a721f0..30d9a6a57 100644
-> --- a/tests/core_hotunplug.c
-> +++ b/tests/core_hotunplug.c
-> @@ -45,44 +45,60 @@
->   * Feature: SMI, core
->   *
->   * SUBTEST: hotrebind
-> + * Category: Software building block
-> + * Sub-category: driver
-> + * Functionality: device hotplug
->   * Description:
->   *   Check if the driver can be cleanly rebound to a device with a still open hot unbound driver
->   *   instance
-> - * Functionality: device hotplug
->   * Run type: FULL
-> - * Test category: SysMan
->   *
->   * SUBTEST: hotrebind-lateclose
-> - * Description: Check if a hot unbound driver instance still open after hot rebind can be cleanly released
-> + * Category: Software building block
-> + * Sub-category: driver
->   * Functionality: device hotplug
-> + * Description: Check if a hot unbound driver instance still open after hot rebind can be cleanly released
->   * Run type: FULL
-> - * Test category: SysMan
->   *
->   * SUBTEST: hotreplug
-> + * Category: Software building block
-> + * Sub-category: driver
-> + * Functionality: device hotplug
->   * Description: Check if a hot unplugged and still open device can be cleanly restored
->   * Run type: FULL
->   *
->   * SUBTEST: hotreplug-lateclose
-> + * Category: Software building block
-> + * Sub-category: driver
-> + * Functionality: device hotplug
->   * Description: Check if an instance of a still open while hot replugged device can be cleanly released
->   * Run type: FULL
->   *
->   * SUBTEST: hotunbind-rebind
-> - * Description: Check if the driver can be cleanly unbound from an open device, then released and rebound
-> + * Category: Software building block
-> + * Sub-category: driver
->   * Functionality: device hotplug
-> + * Description: Check if the driver can be cleanly unbound from an open device, then released and rebound
->   * Run type: FULL
-> - * Test category: SysMan
->   *
->   * SUBTEST: hotunplug-rescan
-> + * Category: Software building block
-> + * Sub-category: driver
-> + * Functionality: device hotplug
->   * Description: Check if an open device can be cleanly unplugged, then released and restored
->   * Run type: FULL
->   *
->   * SUBTEST: unbind-rebind
-> - * Description: Check if the driver can be cleanly unbound from a device believed to be closed, then rebound
-> + * Category: Software building block
-> + * Sub-category: driver
->   * Functionality: device hotplug
-> + * Description: Check if the driver can be cleanly unbound from a device believed to be closed, then rebound
->   * Run type: BAT
-> - * Test category: SysMan
->   *
->   * SUBTEST: unplug-rescan
-> + * Category: Software building block
-> + * Sub-category: driver
-> + * Functionality: device hotplug
->   * Description: Check if a device believed to be closed can be cleanly unplugged, then restored
->   * Run type: FULL
->   */
+>  static const char *rapl_domains[] = { "cpu", "gpu", "pkg", "ram" };
+>  
+>  static int rapl_parse(struct rapl *r, const char *str)
+> @@ -99,11 +100,13 @@ static inline void rapl_close(struct rapl *r)
+>  int igt_power_open(int fd, struct igt_power *p, const char *domain)
+>  {
+>  	int i;
+> +	bool is_dgfx;
+>  
+>  	p->hwmon_fd = -1;
+>  	p->rapl.fd = -1;
+>  
+> -	if (gem_has_lmem(fd)) {
+> +	is_dgfx = is_xe_device(fd) ? xe_has_vram(fd) : gem_has_lmem(fd);
+> +	if (is_dgfx) {
+>  		if (strncmp(domain, "gpu", strlen("gpu")) == 0) {
+>  			p->hwmon_fd = igt_hwmon_open(fd);
+>  			if (p->hwmon_fd >= 0)
 > -- 
-> 2.25.1
+> 2.40.0
 > 
