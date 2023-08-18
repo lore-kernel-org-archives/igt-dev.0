@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============2576352656461635782=="
+Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com
+ [IPv6:2a00:1450:4864:20::22b])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F102710E4F8
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Aug 2023 11:39:00 +0000 (UTC)
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2b9c0391749so12939971fa.0
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Aug 2023 04:39:00 -0700 (PDT)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 18 Aug 2023 14:38:17 +0300
+Message-Id: <20230818113817.155989-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Marcin Bernatowicz" <marcin.bernatowicz@linux.intel.com>
-Date: Fri, 18 Aug 2023 11:29:49 -0000
-Message-ID: <169235818964.12741.13548692721742266923@emeril.freedesktop.org>
-References: <20230818102156.2335320-1-marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20230818102156.2335320-1-marcin.bernatowicz@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4peLIENJLnhlQkFUOiBpbmZvIGZvciBsaWIveGVfc3Bp?=
- =?utf-8?q?n=3A_introduced_fixed_duration_xe=5Fspin?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] Revert "testplan/kms: Make documentation is
+ mandatory for all kms subtests"
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,69 +21,39 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: marcin.bernatowicz@intel.com, kamil.konieczny@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2576352656461635782==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+This change broke igt build when building without chamelium
 
-== Series Details ==
+This reverts commit 00bc4cf384382018ebe6f333e4d53849c883445b.
 
-Series: lib/xe_spin: introduced fixed duration xe_spin
-URL   : https://patchwork.freedesktop.org/series/122624/
-State : info
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+---
+ docs/testplan/meson.build | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-== Summary ==
-
-Participating hosts:
-bat-atsm-2
-bat-dg2-oem2
-bat-adlp-7
-Missing hosts results[0]:
-Results: [IGTPW_9621](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9621/index.html)
-
-
-
---===============2576352656461635782==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/xe_spin: introduced fixed duration xe_spin</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122624/">https://patchwork.freedesktop.org/series/122624/</a></td></tr>
-<tr><td><b>State:</b></td><td>info</td></tr>
-
-</table>
-
-
-    <p>Participating hosts:<br />
-bat-atsm-2<br />
-bat-dg2-oem2<br />
-bat-adlp-7<br />
-Missing hosts results[0]:<br />
-Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9621/index.html">IGTPW_9621</a></p>
-
-</body>
-</html>
-
---===============2576352656461635782==--
+diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
+index 433464dc8..e838f2eb1 100644
+--- a/docs/testplan/meson.build
++++ b/docs/testplan/meson.build
+@@ -31,13 +31,13 @@ xe_test_dict = {
+ if build_xe
+ 	test_dict = {
+ 		'i915_tests': { 'input': i915_test_config, 'extra_args': check_testlist },
+-		'kms_tests': { 'input': kms_test_config, 'extra_args': check_testlist },
++		'kms_tests': { 'input': kms_test_config, 'extra_args': [] },
+ 		'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist }
+ 	    }
+ else
+ 	test_dict = {
+ 	      'i915_tests': { 'input': i915_test_config, 'extra_args': check_testlist },
+-	      'kms_tests': { 'input': kms_test_config, 'extra_args': check_testlist }
++	      'kms_tests': { 'input': kms_test_config, 'extra_args': [] }
+ 	    }
+ endif
+ 
+-- 
+2.34.1
