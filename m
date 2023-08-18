@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 11B7810E567
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Aug 2023 18:17:23 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 17 Aug 2023 23:47:12 +0530
-Message-Id: <20230817181713.1114620-3-swati2.sharma@intel.com>
-In-Reply-To: <20230817181713.1114620-1-swati2.sharma@intel.com>
-References: <20230817181713.1114620-1-swati2.sharma@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 62AC610E447
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Aug 2023 05:19:55 +0000 (UTC)
+From: sai.gowtham.ch@intel.com
+To: igt-dev@lists.freedesktop.org,
+	sai.gowtham.ch@intel.com
+Date: Fri, 18 Aug 2023 10:49:16 +0530
+Message-Id: <20230818051916.28272-3-sai.gowtham.ch@intel.com>
+In-Reply-To: <20230818051916.28272-1-sai.gowtham.ch@intel.com>
+References: <20230818051916.28272-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v7 2/3] tests/i915/kms_dsc: enable validation for vdsc
- fractional bpp
+Subject: [igt-dev] [PATCH i-g-t 2/2] tests/xe/xe_copy_basic: Add copy basic
+ test to exercise blt commands
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,212 +25,296 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Intel hardware supports fractional bpp from display_ver >= 14.
-To test fractional bpp, debugfs entry (force_dsc_fractional_bpp)
-is introduced. From the IGT; we are setting this debugfs entry.
-However, before setting this debugfs entry, we are checking
-capability i.e. fractional bpp is supported by platform and sink
-both. In driver, if force_dsc_fractional_bpp is set then while
-iterating over output bpp with fractional step size we will
-continue if output_bpp is computed as integer and allow DSC iff
-compressed bpp is fractional.
+From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-v2: -change in igt_describe (Ankit)
-v3: -rebase
-v4: -add wrapper for source support of fractional bpp (Ankit)
-v5: -fix if() condition (Ankit)
-v6: -rebase
+Add copy basic test to exercise copy commands like mem-copy and mem-set.
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 ---
- tests/i915/kms_dsc.c        | 29 ++++++++++++++++++-
- tests/i915/kms_dsc_helper.c | 57 +++++++++++++++++++++++++++++++++++++
- tests/i915/kms_dsc_helper.h |  4 +++
- 3 files changed, 89 insertions(+), 1 deletion(-)
+ tests/meson.build        |   1 +
+ tests/xe/xe_copy_basic.c | 262 +++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 263 insertions(+)
+ create mode 100644 tests/xe/xe_copy_basic.c
 
-diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-index 21f0c5a32..59cd4a63d 100644
---- a/tests/i915/kms_dsc.c
-+++ b/tests/i915/kms_dsc.c
-@@ -55,6 +55,7 @@
-  * @with-formats:                 DSC with default parameters and creating fb with diff formats
-  * @with-output-formats:          DSC and output format
-  * @with-output-formats-with-bpc: DSC and output format with certain input BPC for the connector
-+ * @fractional-bpp:               DSC and fractional bpp with default parameters
-  */
- 
- IGT_TEST_DESCRIPTION("Test to validate display stream compression");
-@@ -66,6 +67,7 @@ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
- #define TEST_DSC_BPC		(1<<0)
- #define TEST_DSC_FORMAT		(1<<1)
- #define TEST_DSC_OUTPUT_FORMAT	(1<<2)
-+#define TEST_DSC_FRACTIONAL_BPP (1<<3)
- 
- /*
-  * Starting from gen11, intel driver supports DSC1.1. For validating
-@@ -73,7 +75,7 @@ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
-  * If the sink does support DSC, we will validate different
-  * scenarios by forcing dsc. Outline of the tests is as follows:
-  * (i) basic modeset (ii) input bpc (iii) pixel formats
-- * (iv) output formats
-+ * (iv) output formats (v) fractional bpp
-  * In the basic subtest, we perform modeset with default parameters.
-  * Input bpc and pixel formats subtests, we perform modeset
-  * with different input bpc (12/10/8) and pixel formats (YUV/RGB),
-@@ -82,6 +84,9 @@ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
-  * However, in the output-format subtest, we verify different
-  * output formats (RGB/YCBCR444/YCBCR420). Also, test is added to
-  * validate output formats with different input bpc (12/10/8).
-+ * Lastly, fractional bpp is tested with default parameters.
-+ * In this, driver will ignore integer compressed bpp value and
-+ * will do modeset with fractional bpp only.
-  */
- 
- 
-@@ -186,6 +191,12 @@ static void update_display(data_t *data, uint32_t test_type)
- 		force_dsc_output_format(data->drm_fd, data->output, data->output_format);
- 	}
- 
-+	if (test_type & TEST_DSC_FRACTIONAL_BPP) {
-+		igt_debug("DSC fractional bpp is supported on %s\n", data->output->name);
-+		save_force_dsc_fractional_bpp_en(data->drm_fd, data->output);
-+		force_dsc_fractional_bpp_enable(data->drm_fd, data->output);
+diff --git a/tests/meson.build b/tests/meson.build
+index 58061dbc2..323c2108a 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -266,6 +266,7 @@ xe_progs = [
+ 	'xe_ccs',
+ 	'xe_create',
+ 	'xe_compute',
++	'xe_copy_basic',
+ 	'xe_dma_buf_sync',
+ 	'xe_debugfs',
+ 	'xe_evict',
+diff --git a/tests/xe/xe_copy_basic.c b/tests/xe/xe_copy_basic.c
+new file mode 100644
+index 000000000..ce1223eb1
+--- /dev/null
++++ b/tests/xe/xe_copy_basic.c
+@@ -0,0 +1,262 @@
++/* SPDX-License-Identifier: MIT */
++/*
++* Copyright © 2023 Intel Corporation
++*
++* Authors:
++*    Sai Gowtham Ch <sai.gowtham.ch@intel.com>
++*/
++
++#include "igt.h"
++#include "xe_drm.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++#include "lib/intel_mocs.h"
++#include "lib/intel_reg.h"
++#include "lib/igt_syncobj.h"
++#include "lib/xe/xe_util.h"
++
++/**
++ * TEST: Test to valiudate copy commands on xe
++ * Category: Software building block
++ * Sub-category: Copy
++ * Functionality: blitter
++ * Test category: functionality test
++ */
++
++enum command {
++	MEM_COPY,
++	MEM_SET,
++};
++
++static int objcmp(int fd, uint32_t src, uint32_t dst,
++			uint32_t src_size, uint32_t dst_size)
++{
++	void *buf_src, *buf_dst;
++	int ret = 0;
++
++	buf_src = xe_bo_map(fd, src, src_size);
++	buf_dst = xe_bo_map(fd, dst, dst_size);
++
++	ret = memcmp(buf_src, buf_dst , src_size);
++
++	munmap(buf_src, src_size);
++	munmap(buf_dst, dst_size);
++
++	return ret;
++}
++
++/**
++ * SUBTEST: mem-copy
++ * Description: Test validates MEM_COPY command, it takes various
++ * 		parameters needed for the filling batch buffer for MEM_COPY command.
++ * Run type: FULL
++ */
++
++static void
++igt_mem_copy(int fd, uint32_t src, uint32_t dst,
++                uint32_t size, uint32_t col_size, uint32_t src_pitch,
++		uint32_t dst_pitch, uint32_t vm, uint32_t engine)
++{
++	struct drm_xe_sync sync = {
++		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
++	};
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.num_syncs = 1,
++		.syncs = to_user_pointer(&sync),
++	};
++
++	uint32_t bb_handle, syncobj;
++	struct {
++		uint32_t batch[12];
++		uint32_t data;
++	} *data;
++
++	uint64_t bb_offset, src_offset, dst_offset;
++	uint64_t alignment;
++	uint8_t src_mocs = intel_get_uc_mocs(fd);
++	uint64_t bb_size = xe_get_default_alignment(fd);
++	uint8_t dst_mocs = src_mocs;
++	uint64_t ahnd;
++	int i;
++
++	alignment = xe_get_default_alignment(fd);
++
++	bb_handle = xe_bo_create_flags(fd, 0, bb_size, visible_vram_if_possible(fd, 0));
++	data = xe_bo_map(fd, bb_handle, bb_size);
++
++	ahnd = intel_allocator_open_full(fd, vm, 0, 0, INTEL_ALLOCATOR_SIMPLE,
++					ALLOC_STRATEGY_LOW_TO_HIGH, 0);
++	src_offset = get_offset(ahnd, src, size, alignment);
++	dst_offset = get_offset(ahnd, dst, size, alignment);
++	bb_offset = get_offset(ahnd, bb_handle, bb_size, alignment);
++
++	i = 0;
++	data->batch[i++] = MEM_COPY_CMD;
++	data->batch[i++] = size - 1;
++	data->batch[i++] = col_size - 1;
++	data->batch[i++] = src_pitch;
++	data->batch[i++] = dst_pitch;
++	data->batch[i++] = src_offset;
++	data->batch[i++] = src_offset << 32;
++	data->batch[i++] = dst_offset;
++	data->batch[i++] = dst_offset << 32;
++	data->batch[i++] = src_mocs << MEM_COPY_MOCS_SHIFT | dst_mocs;
++	data->batch[i++] = MI_BATCH_BUFFER_END;
++	data->batch[i++] = MI_NOOP;
++
++	syncobj = syncobj_create(fd, 0);
++	sync.handle = syncobj;
++
++	xe_vm_bind_sync(fd, vm, bb_handle, 0, bb_offset, bb_size);
++
++	exec.exec_queue_id = engine;
++	exec.address = bb_offset;
++	sync.handle = syncobj;
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC, &exec), 0);
++
++	gem_close(fd, bb_handle);
++	put_ahnd(ahnd);
++	munmap(data, bb_size);
++
++}
++
++/**
++ * SUBTEST: mem-set
++ * Description: Test validates MEM_SET command.
++ * RUN type: FULL
++ */
++
++static void igt_mem_set(int fd, uint32_t dst, size_t size, uint32_t height,
++			uint32_t fill_data, uint32_t vm, uint32_t engine)
++{
++	struct drm_xe_sync sync = {
++		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
++	};
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.num_syncs = 1,
++		.syncs = to_user_pointer(&sync),
++	};
++	struct {
++		uint32_t batch[12];
++		uint32_t data;
++	} *data;
++
++	uint32_t syncobj;
++	uint64_t dst_offset, ahnd;
++	uint8_t dst_mocs = intel_get_uc_mocs(fd);
++	int b;
++
++	data = xe_bo_map(fd, dst, size);
++	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
++	dst_offset = intel_allocator_alloc_with_strategy(ahnd, dst, size, 0,
++							ALLOC_STRATEGY_LOW_TO_HIGH);
++
++	b = 0;
++	data->batch[b++] = MEM_SET_CMD;
++	data->batch[b++] = size - 1;
++	data->batch[b++] = height;
++	data->batch[b++] = 2 * size - 1;
++	data->batch[b++] = dst_offset;
++	data->batch[b++] = dst_offset << 32;
++	data->batch[b++] = (fill_data << 24) | dst_mocs;
++	data->batch[b++] = MI_BATCH_BUFFER_END;
++	data->batch[b++] = MI_NOOP;
++	igt_assert(b <= ARRAY_SIZE(data->batch));
++
++	syncobj = syncobj_create(fd, 0);
++	sync.handle = syncobj;
++
++	xe_vm_bind_sync(fd, vm, dst, 0, dst_offset, size);
++
++	exec.exec_queue_id = engine;
++	exec.address = dst_offset;
++	sync.handle = syncobj;
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC, &exec), 0);
++
++	munmap(data, size);
++	put_ahnd(ahnd);
++}
++
++static void copy_test(int fd, enum command cmd,
++		      struct drm_xe_engine_class_instance *hwe)
++{
++	uint32_t src_size, dst_size;
++	uint32_t src, dst, vm, engine;
++	char c = 'a';
++	size_t bo_size = xe_get_default_alignment(fd);
++	uint32_t temp_buffer[bo_size];
++
++	src = xe_bo_create_flags(fd, 0, bo_size, visible_vram_memory(fd, hwe->gt_id));
++	dst = xe_bo_create_flags(fd, 0, bo_size, visible_vram_memory(fd, hwe->gt_id));
++	vm = xe_vm_create(fd, 0, 0);
++	engine = xe_exec_queue_create(fd, vm, hwe, 0);
++
++	/* Fill a pattern in the buffer */
++	for (int i = 0; i < bo_size; i++) {
++		temp_buffer[i] = c++ % 16;
++		temp_buffer[i] |= (c++ % 16) << 8;
++		temp_buffer[i] |= (c++ % 16) << 16;
++		temp_buffer[i] |= (c++ % 16) << 24;
 +	}
 +
- 	igt_output_set_pipe(output, data->pipe);
- 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
- 
-@@ -245,6 +256,7 @@ static void update_display(data_t *data, uint32_t test_type)
- 				enabled ? "ON" : "OFF");
- 
- 	restore_force_dsc_en();
-+	restore_force_dsc_fractional_bpp_en();
- 
- 	if (test_type & TEST_DSC_BPC) {
- 		current_bpc = igt_get_pipe_current_bpc(data->drm_fd, data->pipe);
-@@ -296,6 +308,11 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
- 						     data->output, data->output_format)))
- 			continue;
- 
-+		if ((test_type & TEST_DSC_FRACTIONAL_BPP) &&
-+		    (!is_dsc_fractional_bpp_supported(data->disp_ver,
-+						      data->drm_fd, data->output)))
-+			continue;
++	src_size = bo_size;
++	dst_size = bo_size;
 +
- 		if (test_type & TEST_DSC_OUTPUT_FORMAT)
- 			snprintf(&name[0][0], LEN, "-%s", kmstest_dsc_output_format_str(data->output_format));
- 		if (test_type & TEST_DSC_FORMAT)
-@@ -406,6 +423,16 @@ igt_main_args("l", NULL, help_str, opt_handler, &data)
- 		}
- 	}
- 
-+	igt_describe("Tests fractional compressed bpp functionality if supported "
-+		     "by a connector by forcing fractional_bpp on all connectors that support it "
-+		     "with default parameter. While finding the optimum compressed bpp, driver will "
-+		     "skip over the compressed bpps with integer values. It will go ahead with DSC, "
-+		     "iff compressed bpp is fractional, failing in which, it will fail the commit.");
-+	igt_subtest_with_dynamic("dsc-fractional-bpp")
-+			test_dsc(&data, TEST_DSC_FRACTIONAL_BPP,
-+				 DEFAULT_BPC, DRM_FORMAT_XRGB8888,
-+				 DSC_FORMAT_RGB);
++	switch (cmd) {
++	case MEM_COPY: /* MEM_COPY_CMD */
++		igt_mem_copy(fd,
++			     src,
++			     dst,
++			     bo_size,
++			     1,
++			     0,
++			     0,
++			     vm,
++			     engine);
++		break;
 +
- 	igt_fixture {
- 		igt_display_fini(&data.display);
- 		drm_close_driver(data.drm_fd);
-diff --git a/tests/i915/kms_dsc_helper.c b/tests/i915/kms_dsc_helper.c
-index 44edd5ca9..58057aca3 100644
---- a/tests/i915/kms_dsc_helper.c
-+++ b/tests/i915/kms_dsc_helper.c
-@@ -6,7 +6,9 @@
- #include "kms_dsc_helper.h"
- 
- static bool force_dsc_en_orig;
-+static bool force_dsc_fractional_bpp_en_orig;
- static int force_dsc_restore_fd = -1;
-+static int force_dsc_fractional_bpp_restore_fd = -1;
- 
- void force_dsc_enable(int drmfd, igt_output_t *output)
- {
-@@ -51,6 +53,7 @@ void restore_force_dsc_en(void)
- void kms_dsc_exit_handler(int sig)
- {
- 	restore_force_dsc_en();
-+	restore_force_dsc_fractional_bpp_en();
- }
- 
- bool is_dsc_supported_by_source(int drmfd)
-@@ -144,3 +147,57 @@ bool is_dsc_output_format_supported(int drmfd, int disp_ver, igt_output_t *outpu
- 
- 	return true;
- }
-+
-+void force_dsc_fractional_bpp_enable(int drmfd, igt_output_t *output)
-+{
-+	int ret;
-+
-+	igt_debug("Forcing DSC Fractional BPP on %s\n", output->name);
-+	ret = igt_force_dsc_fractional_bpp_enable(drmfd, output->name);
-+	igt_assert_f(ret == 0, "forcing dsc fractional bpp debugfs_write failed\n");
-+}
-+
-+void save_force_dsc_fractional_bpp_en(int drmfd, igt_output_t *output)
-+{
-+	force_dsc_fractional_bpp_en_orig =
-+		igt_is_force_dsc_fractional_bpp_enabled(drmfd, output->name);
-+	force_dsc_fractional_bpp_restore_fd =
-+		igt_get_dsc_fractional_bpp_debugfs_fd(drmfd, output->name);
-+	igt_assert(force_dsc_fractional_bpp_restore_fd >= 0);
-+}
-+
-+void restore_force_dsc_fractional_bpp_en(void)
-+{
-+	if (force_dsc_fractional_bpp_restore_fd < 0)
-+		return;
-+
-+	igt_debug("Restoring DSC Fractional BPP enable\n");
-+	igt_assert(write(force_dsc_fractional_bpp_restore_fd, force_dsc_fractional_bpp_en_orig ? "1" : "0", 1) == 1);
-+
-+	close(force_dsc_fractional_bpp_restore_fd);
-+	force_dsc_fractional_bpp_restore_fd = -1;
-+}
-+
-+/* DSC fractional bpp is supported on display version 14+ with DSC1.2a */
-+static bool is_dsc_fractional_bpp_supported_by_source(int disp_ver)
-+{
-+	if (disp_ver < 14) {
-+		igt_debug("DSC fractional bpp not supported on D13 and older platforms\n");
-+		return false;
++	case MEM_SET:
++		igt_mem_set(fd,
++			    dst,
++			    bo_size,
++			    1,
++			    temp_buffer[0] & 0xff,
++			    vm,
++			    engine);
++		src_size = 1;
++		break;
 +	}
 +
-+	return true;
++	igt_assert_eq(objcmp(fd, src, src_size, dst, dst_size), 0);
++	gem_close(fd, src);
++	gem_close(fd, dst);
++
++	xe_exec_queue_destroy(fd, engine);
++	xe_vm_destroy(fd, vm);
 +}
 +
-+bool is_dsc_fractional_bpp_supported(int disp_ver, int drmfd, igt_output_t *output)
++igt_main
 +{
-+	if (!is_dsc_fractional_bpp_supported_by_source(disp_ver))
-+		return false;
++	struct drm_xe_engine_class_instance *hwe;
++	int fd;
 +
-+	if (!igt_is_dsc_fractional_bpp_supported_by_sink(drmfd, output->name)) {
-+		igt_debug("DSC fractional bpp not supported on connector %s\n", output->name);
-+		return false;
++	igt_fixture {
++		fd = drm_open_driver(DRIVER_XE);
++		xe_device_get(fd);
 +	}
 +
-+	return true;
++	igt_subtest("mem-set")
++		xe_for_each_hw_engine(fd, hwe)
++			copy_test(fd, MEM_SET, hwe);
++
++	igt_subtest("mem-copy")
++		xe_for_each_hw_engine(fd, hwe)
++			copy_test(fd, MEM_COPY, hwe);
++
++	igt_fixture {
++		drm_close_driver(fd);
++	}
 +}
-diff --git a/tests/i915/kms_dsc_helper.h b/tests/i915/kms_dsc_helper.h
-index 28ed56d83..4dbd88fe7 100644
---- a/tests/i915/kms_dsc_helper.h
-+++ b/tests/i915/kms_dsc_helper.h
-@@ -34,5 +34,9 @@ void force_dsc_output_format(int drmfd, igt_output_t *output,
- 			     enum dsc_output_format output_format);
- bool is_dsc_output_format_supported(int disp_ver, int drmfd, igt_output_t *output,
- 				    enum dsc_output_format output_format);
-+void force_dsc_fractional_bpp_enable(int drmfd, igt_output_t *output);
-+void save_force_dsc_fractional_bpp_en(int drmfd, igt_output_t *output);
-+void restore_force_dsc_fractional_bpp_en(void);
-+bool is_dsc_fractional_bpp_supported(int disp_ver, int drmfd, igt_output_t *output);
- 
- #endif
++
 -- 
-2.25.1
+2.39.1
