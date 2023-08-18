@@ -1,16 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============8798794400172736587=="
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E65E510E07E
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Aug 2023 09:33:00 +0000 (UTC)
+Message-ID: <37169cd1-da7d-84bd-ee7b-903dfaebea0b@intel.com>
+Date: Fri, 18 Aug 2023 15:02:42 +0530
+To: Mohammed Thasleem <mohammed.thasleem@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20230731200110.233275-1-mohammed.thasleem@intel.com>
+ <20230814161412.19157-1-mohammed.thasleem@intel.com>
+Content-Language: en-US
+From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
+In-Reply-To: <20230814161412.19157-1-mohammed.thasleem@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Jouni_H=C3=B6gander?= <jouni.hogander@intel.com>
-Date: Fri, 18 Aug 2023 09:14:26 -0000
-Message-ID: <169235006637.12738.16919532137148332648@emeril.freedesktop.org>
-References: <20230818080827.1889393-1-jouni.hogander@intel.com>
-In-Reply-To: <20230818080827.1889393-1-jouni.hogander@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?i915=3A_Take_into_account_fbc=5Fstatus_=22stolen_memory_not_ini?=
- =?utf-8?q?tialised=22?=
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_lease: Terminate lease fd
+ before subtests execution
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,223 +23,505 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8798794400172736587==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 
-== Series Details ==
-
-Series: tests/i915: Take into account fbc_status "stolen memory not initialised"
-URL   : https://patchwork.freedesktop.org/series/122619/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_13535 -> IGTPW_9619
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9619/index.html
-
-Participating hosts (39 -> 37)
-------------------------------
-
-  Missing    (2): bat-dg2-9 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_9619 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_busy@busy@all-engines:
-    - bat-mtlp-8:         [PASS][1] -> [DMESG-FAIL][2] ([i915#9121])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13535/bat-mtlp-8/igt@gem_busy@busy@all-engines.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9619/bat-mtlp-8/igt@gem_busy@busy@all-engines.html
-
-  * igt@i915_pm_rpm@basic-pci-d3-state:
-    - bat-mtlp-8:         [PASS][3] -> [ABORT][4] ([i915#7077] / [i915#7977] / [i915#8668])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13535/bat-mtlp-8/igt@i915_pm_rpm@basic-pci-d3-state.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9619/bat-mtlp-8/igt@i915_pm_rpm@basic-pci-d3-state.html
-
-  * igt@i915_selftest@live@gt_pm:
-    - bat-rpls-2:         [PASS][5] -> [DMESG-FAIL][6] ([i915#4258] / [i915#7913])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13535/bat-rpls-2/igt@i915_selftest@live@gt_pm.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9619/bat-rpls-2/igt@i915_selftest@live@gt_pm.html
-
-  * igt@i915_selftest@live@migrate:
-    - bat-mtlp-6:         [PASS][7] -> [DMESG-FAIL][8] ([i915#7699])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13535/bat-mtlp-6/igt@i915_selftest@live@migrate.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9619/bat-mtlp-6/igt@i915_selftest@live@migrate.html
-
-  * igt@kms_psr@sprite_plane_onoff:
-    - bat-rplp-1:         NOTRUN -> [ABORT][9] ([i915#8442] / [i915#8668] / [i915#8712])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9619/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html
-
-  
-#### Warnings ####
-
-  * igt@kms_psr@cursor_plane_move:
-    - bat-rplp-1:         [ABORT][10] ([i915#8469] / [i915#8668]) -> [SKIP][11] ([i915#1072])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13535/bat-rplp-1/igt@kms_psr@cursor_plane_move.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9619/bat-rplp-1/igt@kms_psr@cursor_plane_move.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#486]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/486
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
-  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
-  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
-  [i915#4213]: https://gitlab.freedesktop.org/drm/intel/issues/4213
-  [i915#4215]: https://gitlab.freedesktop.org/drm/intel/issues/4215
-  [i915#4258]: https://gitlab.freedesktop.org/drm/intel/issues/4258
-  [i915#5190]: https://gitlab.freedesktop.org/drm/intel/issues/5190
-  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#7077]: https://gitlab.freedesktop.org/drm/intel/issues/7077
-  [i915#7359]: https://gitlab.freedesktop.org/drm/intel/issues/7359
-  [i915#7561]: https://gitlab.freedesktop.org/drm/intel/issues/7561
-  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
-  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
-  [i915#7977]: https://gitlab.freedesktop.org/drm/intel/issues/7977
-  [i915#8442]: https://gitlab.freedesktop.org/drm/intel/issues/8442
-  [i915#8469]: https://gitlab.freedesktop.org/drm/intel/issues/8469
-  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
-  [i915#8712]: https://gitlab.freedesktop.org/drm/intel/issues/8712
-  [i915#8879]: https://gitlab.freedesktop.org/drm/intel/issues/8879
-  [i915#9121]: https://gitlab.freedesktop.org/drm/intel/issues/9121
+On 8/14/2023 9:44 PM, Mohammed Thasleem wrote:
+> Failures happen at drmModeSetCursor and prepare_crtc_master or
+> prepare_crtc_lease which exit tests without termination of lease fd
+> which resulting in resource busy for sub-sequence execution, when
+> new lessor request for lease.
+>
+> Terminate the lease fd when any assert happen with out termination
+> of lease fd and on any drmModeSetCrtc or drmModeGetCrtc exit.
+> Terminate lease fd on every display dependent subtests execution.
+>
+> v2: -Separated prepare crtc for master and lease.
+>      -Removed lease_t from all sub-tests.
+> v3: Updated commit message.
+> v4: Avoid duplicating prepare_crtc.
+>
+> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+> ---
+>   tests/kms_lease.c | 130 +++++++++++++++++++++++-----------------------
+>   1 file changed, 64 insertions(+), 66 deletions(-)
+>
+> diff --git a/tests/kms_lease.c b/tests/kms_lease.c
+> index c8ae98206..9823e9265 100644
+> --- a/tests/kms_lease.c
+> +++ b/tests/kms_lease.c
+> @@ -57,6 +57,7 @@ typedef struct {
+>   } lease_t;
+>   
+>   typedef struct {
+> +	lease_t lease;
+>   	lease_t master;
+>   	enum pipe pipe;
+>   	uint32_t crtc_id;
+> @@ -72,9 +73,10 @@ static igt_output_t *connector_id_to_output(igt_display_t *display, uint32_t con
+>   	return igt_output_from_connector(display, &connector);
+>   }
+>   
+> -static int prepare_crtc(lease_t *lease, data_t *data)
+> +static int prepare_crtc(data_t *data, bool is_master)
+>   {
+>   	drmModeModeInfo *mode;
+> +	lease_t *lease = is_master ? &data->master : &data->lease;
+>   	igt_display_t *display = &lease->display;
+>   	igt_output_t *output = connector_id_to_output(display, data->connector_id);
+>   	enum pipe pipe = display->pipes[data->pipe].pipe;
+> @@ -94,7 +96,6 @@ static int prepare_crtc(lease_t *lease, data_t *data)
+>   			    DRM_FORMAT_MOD_LINEAR,
+>   			    0.0, 0.0, 0.0,
+>   			    &lease->primary_fb);
+> -
 
 
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7443 -> IGTPW_9619
-
-  CI-20190529: 20190529
-  CI_DRM_13535: d3fd5e38264df85151b6deba3df6ee80c745c9ce @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_9619: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9619/index.html
-  IGT_7443: 953448dbf2e63918a8eced9707f65fc0a19a9c85 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9619/index.html
-
---===============8798794400172736587==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Undo remove line here
 
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
+>   	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+>   	igt_plane_set_fb(primary, &lease->primary_fb);
+>   
+> @@ -160,7 +161,7 @@ static int get_lease(int fd, struct drm_mode_get_lease *mgl)
+>   	return err;
+>   }
+>   
+> -static int make_lease(data_t *data, lease_t *lease)
+> +static int make_lease(data_t *data)
+>   {
+>   	uint32_t object_ids[3];
+>   	struct drm_mode_create_lease mcl;
+> @@ -176,12 +177,12 @@ static int make_lease(data_t *data, lease_t *lease)
+>   	object_ids[mcl.object_count++] = data->plane_id;
+>   
+>   	ret = create_lease(data->master.fd, &mcl);
+> +	data->lease.fd = mcl.fd;
+>   
+>   	if (ret)
+>   		return ret;
+>   
+> -	lease->fd = mcl.fd;
+> -	lease->lessee_id = mcl.lessee_id;
+> +	data->lease.lessee_id = mcl.lessee_id;
+>   	return 0;
+>   }
+>   
+> @@ -216,24 +217,23 @@ static void simple_lease(data_t *data)
+>   {
+>   	enum pipe pipe = data->pipe;
+>   
+> -	lease_t lease;
+> -
+>   	/* Create a valid lease */
+> -	igt_assert_eq(make_lease(data, &lease), 0);
+> +	igt_assert_eq(make_lease(data), 0);
+>   
+> -	igt_display_require(&lease.display, lease.fd);
+> +	igt_display_require(&data->lease.display, data->lease.fd);
+>   
+>   	/* Set a mode on the leased output */
+> -	igt_assert_eq(0, prepare_crtc(&lease, data));
+> +	igt_assert_eq(0, prepare_crtc(data, false));
+>   
+>   	/* Paint something attractive */
+> -	paint_fb(lease.fd, &lease.primary_fb, "simple_lease",
+> -		 lease.mode->name, igt_output_name(lease.output), kmstest_pipe_name(pipe));
+> +	paint_fb(data->lease.fd, &data->lease.primary_fb, "simple_lease",
+> +		 data->lease.mode->name, igt_output_name(data->lease.output),
+> +		 kmstest_pipe_name(pipe));
+>   	igt_debug_wait_for_keypress("lease");
+> -	cleanup_crtc(&lease,
+> -		     connector_id_to_output(&lease.display, data->connector_id));
+> +	cleanup_crtc(&data->lease,
+> +		     connector_id_to_output(&data->lease.display, data->connector_id));
+>   
+> -	terminate_lease(&lease);
+> +	terminate_lease(&data->lease);
+>   }
+>   
+>   static void empty_lease(data_t *data)
+> @@ -275,10 +275,11 @@ static void page_flip_implicit_plane(data_t *data)
+>   
+>   	drmSetClientCap(data->master.fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 0);
+>   	do_or_die(create_lease(data->master.fd, &mcl));
+> +	data->lease.fd = mcl.fd;
+>   	drmSetClientCap(data->master.fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
+>   
+>   	/* Set a mode on the leased output */
+> -	igt_assert_eq(0, prepare_crtc(&data->master, data));
+> +	igt_assert_eq(0, prepare_crtc(data, true));
+>   
+>   	/* sanity check */
+>   	do_or_die(drmModePageFlip(data->master.fd, data->crtc_id,
+> @@ -344,6 +345,7 @@ static void setcrtc_implicit_plane(data_t *data)
+>   
+>   	drmSetClientCap(data->master.fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 0);
+>   	do_or_die(create_lease(data->master.fd, &mcl));
+> +	data->lease.fd = mcl.fd;
+>   	drmSetClientCap(data->master.fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
 
 
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/i915: Take into account fbc_status &quot;stolen memory not initialised&quot;</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122619/">https://patchwork.freedesktop.org/series/122619/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+There are other places too where create_lease() is called to create 
+lease and we need to store the lease.fd
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9619/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9619/index.html</a></td></tr>
-
-</table>
+I wonder if we can create a wrapper to create_lease() and store mcl.fd 
+in data->lease.fd.
 
 
-    <h1>CI Bug Log - changes from CI_DRM_13535 -&gt; IGTPW_9619</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9619/index.html</p>
-<h2>Participating hosts (39 -&gt; 37)</h2>
-<p>Missing    (2): bat-dg2-9 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_9619 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_busy@busy@all-engines:</p>
-<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13535/bat-mtlp-8/igt@gem_busy@busy@all-engines.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9619/bat-mtlp-8/igt@gem_busy@busy@all-engines.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9121">i915#9121</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
-<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13535/bat-mtlp-8/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9619/bat-mtlp-8/igt@i915_pm_rpm@basic-pci-d3-state.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7077">i915#7077</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7977">i915#7977</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_pm:</p>
-<ul>
-<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13535/bat-rpls-2/igt@i915_selftest@live@gt_pm.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9619/bat-rpls-2/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4258">i915#4258</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@migrate:</p>
-<ul>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13535/bat-mtlp-6/igt@i915_selftest@live@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9619/bat-mtlp-6/igt@i915_selftest@live@migrate.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@sprite_plane_onoff:</p>
-<ul>
-<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9619/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8442">i915#8442</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8712">i915#8712</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_psr@cursor_plane_move:<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13535/bat-rplp-1/igt@kms_psr@cursor_plane_move.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8469">i915#8469</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9619/bat-rplp-1/igt@kms_psr@cursor_plane_move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7443 -&gt; IGTPW_9619</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13535: d3fd5e38264df85151b6deba3df6ee80c745c9ce @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_9619: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9619/index.html<br />
-  IGT_7443: 953448dbf2e63918a8eced9707f65fc0a19a9c85 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+Regards,
 
-</body>
-</html>
+Ankit
 
---===============8798794400172736587==--
+>   
+>   	/*
+> @@ -355,7 +357,7 @@ static void setcrtc_implicit_plane(data_t *data)
+>   	}
+>   
+>   	/* Set a mode on the leased output */
+> -	igt_assert_eq(0, prepare_crtc(&data->master, data));
+> +	igt_assert_eq(0, prepare_crtc(data, true));
+>   
+>   	/* sanity check */
+>   	ret = drmModeSetCrtc(data->master.fd, data->crtc_id, -1,
+> @@ -368,6 +370,7 @@ static void setcrtc_implicit_plane(data_t *data)
+>   
+>   	object_ids[mcl.object_count++] = wrong_plane_id;
+>   	do_or_die(create_lease(data->master.fd, &mcl));
+> +	data->lease.fd = mcl.fd;
+>   
+>   	igt_assert_eq(drmModeSetCrtc(mcl.fd, data->crtc_id, -1,
+>   				     0, 0, object_ids, 1, mode),
+> @@ -395,10 +398,11 @@ static void cursor_implicit_plane(data_t *data)
+>   
+>   	drmSetClientCap(data->master.fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 0);
+>   	do_or_die(create_lease(data->master.fd, &mcl));
+> +	data->lease.fd = mcl.fd;
+>   	drmSetClientCap(data->master.fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
+>   
+>   	/* Set a mode on the leased output */
+> -	igt_assert_eq(0, prepare_crtc(&data->master, data));
+> +	igt_assert_eq(0, prepare_crtc(data, true));
+>   
+>   	/* sanity check */
+>   	do_or_die(drmModeSetCursor(data->master.fd, data->crtc_id, 0, 0, 0));
+> @@ -408,6 +412,7 @@ static void cursor_implicit_plane(data_t *data)
+>   	/* primary plane is never the cursor */
+>   	object_ids[mcl.object_count++] = data->plane_id;
+>   	do_or_die(create_lease(data->master.fd, &mcl));
+> +	data->lease.fd = mcl.fd;
+>   
+>   	igt_assert_eq(drmModeSetCursor(mcl.fd, data->crtc_id, 0, 0, 0),
+>   		      -EACCES);
+> @@ -415,7 +420,7 @@ static void cursor_implicit_plane(data_t *data)
+>   
+>   	cleanup_crtc(&data->master,
+>   		     connector_id_to_output(&data->master.display, data->connector_id));
+> -}
+> +	}
+>   
+>   static void atomic_implicit_crtc(data_t *data)
+>   {
+> @@ -470,6 +475,7 @@ static void atomic_implicit_crtc(data_t *data)
+>   	igt_assert(crtc_id_prop);
+>   
+>   	do_or_die(create_lease(data->master.fd, &mcl));
+> +	data->lease.fd = mcl.fd;
+>   	do_or_die(drmSetClientCap(mcl.fd, DRM_CLIENT_CAP_ATOMIC, 1));
+>   
+>   	/* check CRTC_ID property on the plane */
+> @@ -508,19 +514,18 @@ static void atomic_implicit_crtc(data_t *data)
+>   /* Test listing lessees */
+>   static void lessee_list(data_t *data)
+>   {
+> -	lease_t lease;
+>   	struct drm_mode_list_lessees mll;
+>   	uint32_t lessees[1];
+>   
+>   	mll.pad = 0;
+>   
+>   	/* Create a valid lease */
+> -	igt_assert_eq(make_lease(data, &lease), 0);
+> +	igt_assert_eq(make_lease(data), 0);
+>   
+>   	/* check for nested leases */
+>   	mll.count_lessees = 0;
+>   	mll.lessees_ptr = 0;
+> -	igt_assert_eq(list_lessees(lease.fd, &mll), 0);
+> +	igt_assert_eq(list_lessees(data->lease.fd, &mll), 0);
+>   	igt_assert_eq(mll.count_lessees, 0);
+>   
+>   	/* Get the number of lessees */
+> @@ -542,14 +547,14 @@ static void lessee_list(data_t *data)
+>   	igt_assert_eq(mll.count_lessees, 1);
+>   
+>   	/* Make sure the listed lease is the same as the one we created */
+> -	igt_assert_eq(lessees[0], lease.lessee_id);
+> +	igt_assert_eq(lessees[0], data->lease.lessee_id);
+>   
+>   	/* invalid pad */
+>   	mll.pad = -1;
+>   	igt_assert_eq(list_lessees(data->master.fd, &mll), -EINVAL);
+>   	mll.pad = 0;
+>   
+> -	terminate_lease(&lease);
+> +	terminate_lease(&data->lease);
+>   
+>   	/* Make sure the lease is gone */
+>   	igt_assert_eq(list_lessees(data->master.fd, &mll), 0);
+> @@ -559,7 +564,6 @@ static void lessee_list(data_t *data)
+>   /* Test getting the contents of a lease */
+>   static void lease_get(data_t *data)
+>   {
+> -	lease_t lease;
+>   	struct drm_mode_get_lease mgl;
+>   	int num_leased_obj = 3;
+>   	uint32_t objects[num_leased_obj];
+> @@ -568,12 +572,12 @@ static void lease_get(data_t *data)
+>   	mgl.pad = 0;
+>   
+>   	/* Create a valid lease */
+> -	igt_assert_eq(make_lease(data, &lease), 0);
+> +	igt_assert_eq(make_lease(data), 0);
+>   
+>   	/* Get the number of objects */
+>   	mgl.count_objects = 0;
+>   	mgl.objects_ptr = 0;
+> -	igt_assert_eq(get_lease(lease.fd, &mgl), 0);
+> +	igt_assert_eq(get_lease(data->lease.fd, &mgl), 0);
+>   
+>   	/* Make sure it's 2 */
+>   	igt_assert_eq(mgl.count_objects, num_leased_obj);
+> @@ -581,7 +585,7 @@ static void lease_get(data_t *data)
+>   	/* Get the objects */
+>   	mgl.objects_ptr = (uint64_t) (uintptr_t) objects;
+>   
+> -	igt_assert_eq(get_lease(lease.fd, &mgl), 0);
+> +	igt_assert_eq(get_lease(data->lease.fd, &mgl), 0);
+>   
+>   	/* Make sure it's 2 */
+>   	igt_assert_eq(mgl.count_objects, num_leased_obj);
+> @@ -607,28 +611,27 @@ static void lease_get(data_t *data)
+>   
+>   	/* invalid pad */
+>   	mgl.pad = -1;
+> -	igt_assert_eq(get_lease(lease.fd, &mgl), -EINVAL);
+> +	igt_assert_eq(get_lease(data->lease.fd, &mgl), -EINVAL);
+>   	mgl.pad = 0;
+>   
+>   	/* invalid pointer */
+>   	mgl.objects_ptr = 0;
+> -	igt_assert_eq(get_lease(lease.fd, &mgl), -EFAULT);
+> +	igt_assert_eq(get_lease(data->lease.fd, &mgl), -EFAULT);
+>   
+> -	terminate_lease(&lease);
+> +	terminate_lease(&data->lease);
+>   }
+>   
+>   static void lease_unleased_crtc(data_t *data)
+>   {
+> -	lease_t lease;
+>   	enum pipe p;
+>   	uint32_t bad_crtc_id;
+>   	drmModeCrtc *crtc;
+>   	int ret;
+>   
+>   	/* Create a valid lease */
+> -	igt_assert_eq(make_lease(data, &lease), 0);
+> +	igt_assert_eq(make_lease(data), 0);
+>   
+> -	igt_display_require(&lease.display, lease.fd);
+> +	igt_display_require(&data->lease.display, data->lease.fd);
+>   
+>   	/* Find another CRTC that we don't control */
+>   	bad_crtc_id = 0;
+> @@ -644,36 +647,35 @@ static void lease_unleased_crtc(data_t *data)
+>   	igt_skip_on(bad_crtc_id == 0);
+>   
+>   	/* sanity check */
+> -	ret = drmModeSetCrtc(lease.fd, data->crtc_id, 0, 0, 0, NULL, 0, NULL);
+> +	ret = drmModeSetCrtc(data->lease.fd, data->crtc_id, 0, 0, 0, NULL, 0, NULL);
+>   	igt_assert_eq(ret, 0);
+> -	crtc = drmModeGetCrtc(lease.fd, data->crtc_id);
+> +	crtc = drmModeGetCrtc(data->lease.fd, data->crtc_id);
+>   	igt_assert(crtc);
+>   	drmModeFreeCrtc(crtc);
+>   
+>   	/* Attempt to use the unleased crtc id. We need raw ioctl to bypass the
+>   	 * igt_kms helpers.
+>   	 */
+> -	ret = drmModeSetCrtc(lease.fd, bad_crtc_id, 0, 0, 0, NULL, 0, NULL);
+> +	ret = drmModeSetCrtc(data->lease.fd, bad_crtc_id, 0, 0, 0, NULL, 0, NULL);
+>   	igt_assert_eq(ret, -ENOENT);
+> -	crtc = drmModeGetCrtc(lease.fd, bad_crtc_id);
+> +	crtc = drmModeGetCrtc(data->lease.fd, bad_crtc_id);
+>   	igt_assert(!crtc);
+>   	igt_assert_eq(errno, ENOENT);
+>   	drmModeFreeCrtc(crtc);
+>   
+> -	terminate_lease(&lease);
+> +	terminate_lease(&data->lease);
+>   }
+>   
+>   static void lease_unleased_connector(data_t *data)
+>   {
+> -	lease_t lease;
+>   	int o;
+>   	uint32_t bad_connector_id;
+>   	drmModeConnector *c;
+>   
+>   	/* Create a valid lease */
+> -	igt_assert_eq(make_lease(data, &lease), 0);
+> +	igt_assert_eq(make_lease(data), 0);
+>   
+> -	igt_display_require(&lease.display, lease.fd);
+> +	igt_display_require(&data->lease.display, data->lease.fd);
+>   
+>   	/* Find another connector that we don't control */
+>   	bad_connector_id = 0;
+> @@ -686,72 +688,70 @@ static void lease_unleased_connector(data_t *data)
+>   	igt_skip_on(bad_connector_id == 0);
+>   
+>   	/* sanity check */
+> -	c = drmModeGetConnector(lease.fd, data->connector_id);
+> +	c = drmModeGetConnector(data->lease.fd, data->connector_id);
+>   	igt_assert(c);
+>   
+>   	/* Attempt to use the unleased connector id. Note that the
+>   	 */
+> -	c = drmModeGetConnector(lease.fd, bad_connector_id);
+> +	c = drmModeGetConnector(data->lease.fd, bad_connector_id);
+>   	igt_assert(!c);
+>   	igt_assert_eq(errno, ENOENT);
+>   
+> -	terminate_lease(&lease);
+> +	terminate_lease(&data->lease);
+>   }
+>   
+>   /* Test revocation of lease */
+>   static void lease_revoke(data_t *data)
+>   {
+> -	lease_t lease;
+>   	struct drm_mode_revoke_lease mrl;
+>   	int ret;
+>   
+>   	/* Create a valid lease */
+> -	igt_assert_eq(make_lease(data, &lease), 0);
+> +	igt_assert_eq(make_lease(data), 0);
+>   
+> -	igt_display_require(&lease.display, lease.fd);
+> +	igt_display_require(&data->lease.display, data->lease.fd);
+>   
+>   	/* try to revoke an invalid lease */
+>   	mrl.lessee_id = 0;
+>   	igt_assert_eq(revoke_lease(data->master.fd, &mrl), -ENOENT);
+>   
+>   	/* try to revoke with the wrong fd */
+> -	mrl.lessee_id = lease.lessee_id;
+> -	igt_assert_eq(revoke_lease(lease.fd, &mrl), -EACCES);
+> +	mrl.lessee_id = data->lease.lessee_id;
+> +	igt_assert_eq(revoke_lease(data->lease.fd, &mrl), -EACCES);
+>   
+>   	/* Revoke the lease using the master fd */
+> -	mrl.lessee_id = lease.lessee_id;
+> +	mrl.lessee_id = data->lease.lessee_id;
+>   	igt_assert_eq(revoke_lease(data->master.fd, &mrl), 0);
+>   
+>   	/* Try to use the leased objects */
+> -	ret = prepare_crtc(&lease, data);
+> +	ret = prepare_crtc(data, false);
+>   
+>   	/* Ensure that the expected error is returned */
+>   	igt_assert_eq(ret, -ENOENT);
+>   
+> -	terminate_lease(&lease);
+> +	terminate_lease(&data->lease);
+>   
+>   	/* make sure the lease is gone */
+> -	mrl.lessee_id = lease.lessee_id;
+> +	mrl.lessee_id = data->lease.lessee_id;
+>   	igt_assert_eq(revoke_lease(data->master.fd, &mrl), -ENOENT);
+>   }
+>   
+>   /* Test leasing objects more than once */
+>   static void lease_again(data_t *data)
+>   {
+> -	lease_t lease_a, lease_b;
+>   
+>   	/* Create a valid lease */
+> -	igt_assert_eq(make_lease(data, &lease_a), 0);
+> +	igt_assert_eq(make_lease(data), 0);
+>   
+>   	/* Attempt to re-lease the same objects */
+> -	igt_assert_eq(make_lease(data, &lease_b), -EBUSY);
+> +	igt_assert_eq(make_lease(data), -EBUSY);
+>   
+> -	terminate_lease(&lease_a);
+> +	terminate_lease(&data->lease);
+>   
+>   	/* Now attempt to lease the same objects */
+> -	igt_assert_eq(make_lease(data, &lease_b), 0);
+> +	igt_assert_eq(make_lease(data), 0);
+>   
+> -	terminate_lease(&lease_b);
+> +	terminate_lease(&data->lease);
+>   }
+>   
+>   #define assert_unleased(ret) \
+> @@ -761,14 +761,13 @@ static void lease_again(data_t *data)
+>   /* Test leasing an invalid connector */
+>   static void lease_invalid_connector(data_t *data)
+>   {
+> -	lease_t lease;
+>   	uint32_t save_connector_id;
+>   	int ret;
+>   
+>   	/* Create an invalid lease */
+>   	save_connector_id = data->connector_id;
+>   	data->connector_id = 0xbaadf00d;
+> -	ret = make_lease(data, &lease);
+> +	ret = make_lease(data);
+>   	data->connector_id = save_connector_id;
+>   	assert_unleased(ret);
+>   }
+> @@ -776,28 +775,26 @@ static void lease_invalid_connector(data_t *data)
+>   /* Test leasing an invalid crtc */
+>   static void lease_invalid_crtc(data_t *data)
+>   {
+> -	lease_t lease;
+>   	uint32_t save_crtc_id;
+>   	int ret;
+>   
+>   	/* Create an invalid lease */
+>   	save_crtc_id = data->crtc_id;
+>   	data->crtc_id = 0xbaadf00d;
+> -	ret = make_lease(data, &lease);
+> +	ret = make_lease(data);
+>   	data->crtc_id = save_crtc_id;
+>   	assert_unleased(ret);
+>   }
+>   
+>   static void lease_invalid_plane(data_t *data)
+>   {
+> -	lease_t lease;
+>   	uint32_t save_plane_id;
+>   	int ret;
+>   
+>   	/* Create an invalid lease */
+>   	save_plane_id = data->plane_id;
+>   	data->plane_id = 0xbaadf00d;
+> -	ret = make_lease(data, &lease);
+> +	ret = make_lease(data);
+>   	data->plane_id = save_plane_id;
+>   	assert_unleased(ret);
+>   }
+> @@ -1239,6 +1236,7 @@ igt_main
+>   									DRM_PLANE_TYPE_PRIMARY)->drm_plane->plane_id;
+>   						f->func(&data);
+>   					}
+> +					terminate_lease(&data.lease);
+>   				}
+>   			}
+>   		}
