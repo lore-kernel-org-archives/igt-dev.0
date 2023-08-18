@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam10on2077.outbound.protection.outlook.com [40.107.94.77])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9F40E10E548
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Aug 2023 17:56:45 +0000 (UTC)
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Fri, 18 Aug 2023 13:56:36 -0400
-Message-ID: <20230818175637.419349-1-aurabindo.pillai@amd.com>
+Content-Type: multipart/alternative;
+ boundary="===============6156720752275299586=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH v2 1/2] lib/amdgpu: Add check for ODM combine
- segments debugfs endpoint
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Marcin Bernatowicz" <marcin.bernatowicz@linux.intel.com>
+Date: Fri, 18 Aug 2023 11:43:14 -0000
+Message-ID: <169235899493.12740.14298114693971233867@emeril.freedesktop.org>
+References: <20230818102156.2335320-1-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20230818102156.2335320-1-marcin.bernatowicz@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL3hl?=
+ =?utf-8?q?=5Fspin=3A_introduced_fixed_duration_xe=5Fspin?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,57 +17,183 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: hersenxs.wu@amd.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
----
- lib/igt_amd.c | 10 ++++++++++
- lib/igt_amd.h |  4 ++++
- 2 files changed, 14 insertions(+)
+--===============6156720752275299586==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-diff --git a/lib/igt_amd.c b/lib/igt_amd.c
-index 83011e8ca..1a720ff56 100644
---- a/lib/igt_amd.c
-+++ b/lib/igt_amd.c
-@@ -325,6 +325,16 @@ static bool igt_amd_output_has_dsc(int drm_fd, char *connector_name)
- 	return igt_amd_output_has_debugfs(drm_fd, connector_name, DEBUGFS_DSC_CLOCK_EN);
- }
- 
-+/**
-+ * igt_amd_output_has_odm_combine_segments: check if connector has dsc debugfs entry
-+ * @drm_fd: DRM file descriptor
-+ * @connector_name: The connector's name, on which we're reading the status
-+ */
-+bool igt_amd_output_has_odm_combine_segments(int drm_fd, char *connector_name)
-+{
-+	return igt_amd_output_has_debugfs(drm_fd, connector_name, DEBUGFS_ODM_COMBINE_SEG);
-+}
-+
- /**
-  * is_dp_dsc_supported: Checks if connector is DSC capable
-  * @display: A pointer to an #igt_display_t structure
-diff --git a/lib/igt_amd.h b/lib/igt_amd.h
-index 6f538a195..c05b4b730 100644
---- a/lib/igt_amd.h
-+++ b/lib/igt_amd.h
-@@ -54,6 +54,9 @@
- #define DEBUGFS_DM_VISUAL_CONFIRM "amdgpu_dm_visual_confirm"
- #define DEBUGFS_DM_CAPABILITIES "amdgpu_dm_capabilities"
- 
-+/* ODM Combine */
-+#define DEBUGFS_ODM_COMBINE_SEG "odm_combine_segments"
-+
- enum amd_dsc_clock_force {
- 	DSC_AUTOMATIC = 0,
- 	DSC_FORCE_ON,
-@@ -197,4 +200,5 @@ int  igt_amd_get_visual_confirm(int drm_fd);
- bool igt_amd_set_visual_confirm(int drm_fd, enum amdgpu_debug_visual_confirm option);
- 
- bool igt_amd_is_mall_capable(int drm_fd);
-+bool igt_amd_output_has_odm_combine_segments(int drm_fd, char *connector_name);
- #endif /* IGT_AMD_H */
--- 
-2.41.0
+== Series Details ==
+
+Series: lib/xe_spin: introduced fixed duration xe_spin
+URL   : https://patchwork.freedesktop.org/series/122624/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_13536 -> IGTPW_9621
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9621/index.html
+
+Participating hosts (38 -> 37)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_9621 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-skl-guc:         [PASS][1] -> [DMESG-FAIL][2] ([i915#8723])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13536/fi-skl-guc/igt@i915_selftest@live@hangcheck.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9621/fi-skl-guc/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@migrate:
+    - bat-dg2-11:         [PASS][3] -> [DMESG-WARN][4] ([i915#7699])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13536/bat-dg2-11/igt@i915_selftest@live@migrate.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9621/bat-dg2-11/igt@i915_selftest@live@migrate.html
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:
+    - bat-rplp-1:         [PASS][5] -> [ABORT][6] ([i915#8442] / [i915#8668])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13536/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9621/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+
+  
+#### Warnings ####
+
+  * igt@i915_module_load@load:
+    - bat-adlp-11:        [DMESG-WARN][7] ([i915#4423]) -> [ABORT][8] ([i915#4423])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13536/bat-adlp-11/igt@i915_module_load@load.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9621/bat-adlp-11/igt@i915_module_load@load.html
+
+  
+  [i915#4423]: https://gitlab.freedesktop.org/drm/intel/issues/4423
+  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
+  [i915#8442]: https://gitlab.freedesktop.org/drm/intel/issues/8442
+  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
+  [i915#8723]: https://gitlab.freedesktop.org/drm/intel/issues/8723
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7444 -> IGTPW_9621
+
+  CI-20190529: 20190529
+  CI_DRM_13536: 7a825a06c6ee60a6586ddf8b4adb03ea5262bda7 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_9621: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9621/index.html
+  IGT_7444: 7444
+
+
+Testlist changes
+----------------
+
++igt@xe_spin_batch@spin-fixed-duration
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9621/index.html
+
+--===============6156720752275299586==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/xe_spin: introduced fixed duration xe_spin</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122624/">https://patchwork.freedesktop.org/series/122624/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9621/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9621/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13536 -&gt; IGTPW_9621</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9621/index.html</p>
+<h2>Participating hosts (38 -&gt; 37)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_9621 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-skl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13536/fi-skl-guc/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9621/fi-skl-guc/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8723">i915#8723</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@migrate:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13536/bat-dg2-11/igt@i915_selftest@live@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9621/bat-dg2-11/igt@i915_selftest@live@migrate.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:</p>
+<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13536/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9621/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8442">i915#8442</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_module_load@load:<ul>
+<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13536/bat-adlp-11/igt@i915_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4423">i915#4423</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9621/bat-adlp-11/igt@i915_module_load@load.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4423">i915#4423</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7444 -&gt; IGTPW_9621</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13536: 7a825a06c6ee60a6586ddf8b4adb03ea5262bda7 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_9621: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9621/index.html<br />
+  IGT_7444: 7444</p>
+<h2>Testlist changes</h2>
+<p>+igt@xe_spin_batch@spin-fixed-duration</p>
+
+</body>
+</html>
+
+--===============6156720752275299586==--
