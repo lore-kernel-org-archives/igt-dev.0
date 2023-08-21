@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com
- (mail-bn1nam02on2053.outbound.protection.outlook.com [40.107.212.53])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7958610E26F
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Aug 2023 14:07:43 +0000 (UTC)
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Mon, 21 Aug 2023 10:07:12 -0400
-Message-ID: <20230821140712.1034591-2-aurabindo.pillai@amd.com>
-In-Reply-To: <20230821140712.1034591-1-aurabindo.pillai@amd.com>
-References: <20230821140712.1034591-1-aurabindo.pillai@amd.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH v4 2/2] tests/amdgpu: Add test for ODM combine
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Aurabindo Pillai" <aurabindo.pillai@amd.com>
+Date: Mon, 21 Aug 2023 14:27:38 -0000
+Message-ID: <169262805805.22806.9671393450544701180@emeril.freedesktop.org>
+References: <20230821135354.1003289-1-aurabindo.pillai@amd.com>
+In-Reply-To: <20230821135354.1003289-1-aurabindo.pillai@amd.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_s?=
+ =?utf-8?q?eries_starting_with_=5Bv3=2C1/2=5D_lib/amdgpu=3A_Add_check_for_?=
+ =?utf-8?q?ODM_combine_segments_debugfs_endpoint?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,236 +18,199 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: hersenxs.wu@amd.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add a test that checks whether ODM Combine mode is triggered when high
-refresh rate timing is committed on hardware it supports. This test
-requires a DSC capable monitor.
+== Series Details ==
 
-Changes in V2: Added check to skip test on hardware that does not have
-ODM combine segments debugfs endpoint exposed
+Series: series starting with [v3,1/2] lib/amdgpu: Add check for ODM combine segments debugfs endpoint
+URL   : https://patchwork.freedesktop.org/series/122706/
+State : warning
 
-Changes in V3: Removed data->w,h since its not used; Removed license
-text and use SPDX identifier instead.
+== Summary ==
 
-Changes in V4: Checkpatch.pl style fixes
+Pipeline status: FAILED.
 
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
----
- tests/amdgpu/amd_odm.c   | 189 +++++++++++++++++++++++++++++++++++++++
- tests/amdgpu/meson.build |   1 +
- 2 files changed, 190 insertions(+)
- create mode 100644 tests/amdgpu/amd_odm.c
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/966765 for the overview.
 
-diff --git a/tests/amdgpu/amd_odm.c b/tests/amdgpu/amd_odm.c
-new file mode 100644
-index 000000000..2781ad1c2
---- /dev/null
-+++ b/tests/amdgpu/amd_odm.c
-@@ -0,0 +1,189 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyrights 2023 Advanced Micro Devices, Inc.
-+ */
-+
-+#include <fcntl.h>
-+#include <stdio.h>
-+#include <xf86drmMode.h>
-+
-+#include "igt.h"
-+#include "igt_amd.h"
-+#include "igt_edid.h"
-+
-+IGT_TEST_DESCRIPTION("Test whether ODM Combine mode is triggered when timings with high refresh "
-+		     "rate is committed");
-+
-+enum odmc_mode {
-+	ODMC_2_TO_1,
-+	ODMC_4_TO_1,
-+};
-+
-+/* Common test data. */
-+struct data {
-+	igt_display_t display;
-+	igt_plane_t *primary;
-+	igt_output_t *output;
-+	igt_pipe_t *pipe;
-+	drmModeModeInfoPtr mode;
-+	enum pipe pipe_id;
-+	int fd;
-+};
-+
-+static const drmModeModeInfo test_mode[] = {
-+	{ 1278720,
-+	3840, 3952, 3984, 4000, 0,
-+	2160, 2210, 2215, 2220, 0,
-+	30,
-+	DRM_MODE_FLAG_NHSYNC,
-+	0x40,
-+	"4k144\0",
-+	}, /* from HP Omen 27c */
-+
-+};
-+
-+#define TEST_MODE_IDX_ODMC_2_TO_1 0
-+
-+static void test_init(struct data *data)
-+{
-+	igt_display_t *display = &data->display;
-+
-+	/* It doesn't matter which pipe we choose on amdpgu. */
-+	data->pipe_id = PIPE_A;
-+	data->pipe = &data->display.pipes[data->pipe_id];
-+
-+	igt_display_reset(display);
-+
-+	/* find a connected non-HDMI output */
-+	data->output = NULL;
-+	for (int i = 0; i < data->display.n_outputs; ++i) {
-+		drmModeConnector *connector = data->display.outputs[i].config.connector;
-+
-+		if (connector->connection == DRM_MODE_CONNECTED)
-+			data->output = &data->display.outputs[i];
-+	}
-+	igt_require_f(data->output, "Requires a connected output\n");
-+
-+	data->mode = igt_output_get_mode(data->output);
-+	igt_assert(data->mode);
-+
-+	igt_skip_on_f(!igt_amd_output_has_odm_combine_segments(data->fd, data->output->name),
-+		      "ASIC does not support reading ODM combine segments\n");
-+
-+	igt_skip_on_f(!is_dp_dsc_supported(data->fd, data->output->name),
-+		      "The monitor must be DSC capable\n");
-+
-+	igt_skip_on_f(data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_HDMIA ||
-+		      data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_HDMIB,
-+		      "ODM Combine isn't supported on HDMI 1.x\n");
-+
-+	data->primary = igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
-+	igt_output_set_pipe(data->output, data->pipe_id);
-+
-+	igt_display_reset(display);
-+}
-+
-+static void test_fini(struct data *data)
-+{
-+	igt_display_reset(&data->display);
-+	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
-+}
-+
-+/* Forces a mode for a connector. */
-+static void force_output_mode(struct data *d, igt_output_t *output,
-+			      const drmModeModeInfo *mode)
-+{
-+	/* This allows us to create a virtual sink. */
-+	if (!igt_output_is_connected(output)) {
-+		kmstest_force_edid(d->fd, output->config.connector,
-+				   igt_kms_get_4k_edid());
-+
-+		kmstest_force_connector(d->fd, output->config.connector,
-+					FORCE_CONNECTOR_DIGITAL);
-+	}
-+
-+	igt_output_override_mode(output, mode);
-+}
-+
-+static void run_test_odmc(struct data *data, enum odmc_mode m, const drmModeModeInfo *mode)
-+{
-+	igt_display_t *display = &data->display;
-+	struct igt_fb buffer;
-+	char buf[256];
-+	int ret, seg, fd;
-+	int i = 0;
-+
-+	test_init(data);
-+
-+	force_output_mode(data, data->output, mode);
-+
-+	igt_create_color_fb(display->drm_fd, mode->hdisplay,
-+			    mode->vdisplay, DRM_FORMAT_XRGB8888,
-+			    DRM_FORMAT_MOD_LINEAR, 1.f, 0.f, 0.f,
-+			    &buffer);
-+
-+	igt_output_set_pipe(data->output, i);
-+
-+	igt_plane_set_fb(data->primary, &buffer);
-+
-+	ret = igt_display_try_commit_atomic(display,
-+					    DRM_MODE_ATOMIC_ALLOW_MODESET |
-+					    DRM_MODE_ATOMIC_TEST_ONLY,
-+					    NULL);
-+	igt_skip_on_f(ret != 0, "Unsupported mode\n");
-+
-+	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+
-+	fd = igt_debugfs_connector_dir(data->fd, data->output->name, O_RDONLY);
-+	igt_assert(fd >= 0);
-+
-+	ret = igt_debugfs_simple_read(fd, "odm_combine_segments", buf, sizeof(buf));
-+	close(fd);
-+	igt_require(ret > 0);
-+
-+	seg = strtol(buf, NULL, 0);
-+
-+	switch (m) {
-+	case ODMC_2_TO_1:
-+		igt_assert_f(seg == 2,
-+			     "ODM Combine uses %d segments for connector %s, expected 2\n",
-+			     seg, data->output->name);
-+		break;
-+	case ODMC_4_TO_1:
-+		igt_assert_f(seg == 4,
-+			     "ODM Combine uses %d segments for connector %s, expected 4\n",
-+			     seg, data->output->name);
-+		break;
-+	}
-+
-+	igt_remove_fb(display->drm_fd, &buffer);
-+
-+	test_fini(data);
-+}
-+
-+igt_main
-+{
-+	struct data data;
-+
-+	memset(&data, 0, sizeof(data));
-+
-+	igt_fixture
-+	{
-+		data.fd = drm_open_driver_master(DRIVER_ANY);
-+
-+		kmstest_set_vt_graphics_mode();
-+
-+		igt_display_require(&data.display, data.fd);
-+		igt_require(&data.display.is_atomic);
-+		igt_display_require_output(&data.display);
-+
-+	}
-+
-+	igt_subtest_f("odm-combine-2-to-1-%s", test_mode[TEST_MODE_IDX_ODMC_2_TO_1].name)
-+		run_test_odmc(&data, ODMC_2_TO_1, &test_mode[TEST_MODE_IDX_ODMC_2_TO_1]);
-+
-+	igt_fixture
-+	{
-+		igt_display_fini(&data.display);
-+	}
-+}
-diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
-index 6c6166167..6032a38e8 100644
---- a/tests/amdgpu/meson.build
-+++ b/tests/amdgpu/meson.build
-@@ -35,6 +35,7 @@ if libdrm_amdgpu.found()
- 			  'amd_vm',
- 			  'amd_vrr_range',
- 			  'amd_mall',
-+			  'amd_odm',
- 			]
- 	amdgpu_deps += libdrm_amdgpu
- endif
--- 
-2.41.0
+build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47781698):
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
+    uint32_t lessees[0];
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
+    uint32_t count;
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
+    uint32_t objects[0];
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
+   extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
+                                         ^~~~~~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1692627918:step_script
+  section_start:1692627918:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1692627919:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47781701):
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
+    uint32_t lessees[0];
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
+    uint32_t count;
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
+    uint32_t objects[0];
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
+   extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
+                                         ^~~~~~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1692627921:step_script
+  section_start:1692627921:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1692627921:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47781700):
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
+    uint32_t lessees[0];
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
+    uint32_t count;
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
+    uint32_t objects[0];
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
+   extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
+                                         ^~~~~~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1692627914:step_script
+  section_start:1692627914:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1692627915:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47781702):
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
+    uint32_t lessees[0];
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
+    uint32_t count;
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
+    uint32_t objects[0];
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
+   extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
+                                         ^~~~~~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1692627918:step_script
+  section_start:1692627918:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1692627919:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47781693):
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
+    533 |  uint32_t lessees[0];
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
+    539 |  uint32_t count;
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
+    540 |  uint32_t objects[0];
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
+    545 | extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
+        |                                       ^~~~~~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1692627911:step_script
+  section_start:1692627911:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1692627912:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47781697):
+          uint32_t bpp;
+          ^
+  /usr/include/xf86drmMode.h:221:2: error: unknown type name 'uint32_t'
+          uint32_t depth;
+          ^
+  /usr/include/xf86drmMode.h:223:2: error: unknown type name 'uint32_t'
+          uint32_t handle;
+          ^
+  /usr/include/xf86drmMode.h:229:2: error: unknown type name 'uint32_t'
+          uint32_t id;
+          ^
+  fatal error: too many errors emitted, stopping now [-ferror-limit=]
+  20 errors generated.
+  ninja: build stopped: subcommand failed.
+  section_end:1692627928:step_script
+  section_start:1692627928:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1692627928:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47781694):
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
+    533 |  uint32_t lessees[0];
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
+    539 |  uint32_t count;
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
+    540 |  uint32_t objects[0];
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
+    545 | extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
+        |                                       ^~~~~~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1692627912:step_script
+  section_start:1692627912:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1692627912:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47781695):
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
+    533 |  uint32_t lessees[0];
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
+    539 |  uint32_t count;
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
+    540 |  uint32_t objects[0];
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
+    545 | extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
+        |                                       ^~~~~~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1692627910:step_script
+  section_start:1692627910:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1692627910:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/966765
