@@ -1,22 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BADE810E22F
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Aug 2023 11:52:43 +0000 (UTC)
-From: "Hogander, Jouni" <jouni.hogander@intel.com>
-To: "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Mon, 21 Aug 2023 11:52:39 +0000
-Message-ID: <f41db7af1446fc5f1b6e59e8d427f542598eec43.camel@intel.com>
-References: <20230818080827.1889393-1-jouni.hogander@intel.com>
- <40d121ba-eca6-0438-bf04-00f6a31be591@gmail.com>
-In-Reply-To: <40d121ba-eca6-0438-bf04-00f6a31be591@gmail.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <2FF13B4872BCF645966E1E347D4A76B6@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E0A2110E249
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Aug 2023 12:47:56 +0000 (UTC)
+From: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 21 Aug 2023 18:27:59 +0530
+Message-Id: <20230821125759.3872898-1-sujaritha.sundaresan@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915: Take into account
- fbc_status "stolen memory not initialised"
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/i915_pm_rc6_residency: Add mutli-gt
+ functionality to rc6_idle and rc6_fence test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,44 +21,112 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gTW9uLCAyMDIzLTA4LTIxIGF0IDEzOjA2ICswMzAwLCBKdWhhLVBla2thIEhlaWtraWxhIHdy
-b3RlOg0KPiBSZXZpZXdlZC1ieTogSnVoYS1QZWtrYSBIZWlra2lsYSA8anVoYXBla2thLmhlaWtr
-aWxhQGdtYWlsLmNvbT4NCg0KVGhhbmsgeW91IGZvciB0aGUgcmV2aWV3LiBUaGlzIGlzIG5vdyBt
-ZXJnZWQuDQoNCkJSLA0KDQpKb3VuaSBIw7ZnYW5kZXINCj4gDQo+IE9uIDE4LjguMjAyMyAxMS4w
-OCwgSm91bmkgSMO2Z2FuZGVyIHdyb3RlOg0KPiA+IEVhcmxpZXIgbm9uIGluaXRpYWxpemVkIG1l
-bW9yeSBjYXVzZWQgZmJjX3N0YXR1cyBkZWJ1Z2ZzIGludGVyZmFjZQ0KPiA+IG5vdA0KPiA+IGJl
-aW5nIGNyZWF0ZWQgYXQgYWxsLiBUaGlzIHdhcyBjb25zaWRlcmVkIGFzICJVbnN1cHBvcnRlZCBj
-aGlwc2V0Ig0KPiA+IGJ5DQo+ID4gY2VydGFpbiBpZ3QgdGVzdGNhc2VzLiBOb3cgZmJjX3N0YXR1
-cyBpcyBpbmZvcm1pbmcgInN0b2xlbiBtZW1vcnkNCj4gPiBub3QNCj4gPiBpbml0aWFsaXNlZCIu
-IENvbnNpZGVyIHRoaXMgYWdhaW4gYXMgIlVuc3VwcG9ydGVkIGNoaXBzZXQiDQo+ID4gDQo+ID4g
-Q2xvc2VzOiBodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2ludGVsLy0vaXNzdWVz
-LzkxMzENCj4gPiBTaWduZWQtb2ZmLWJ5OiBKb3VuaSBIw7ZnYW5kZXIgPGpvdW5pLmhvZ2FuZGVy
-QGludGVsLmNvbT4NCj4gPiAtLS0NCj4gPiDCoCB0ZXN0cy9pOTE1L2ttc19mYmNvbl9mYnQuY8Kg
-wqDCoMKgwqDCoMKgwqDCoMKgwqAgfCAzICsrLQ0KPiA+IMKgIHRlc3RzL2k5MTUva21zX2Zyb250
-YnVmZmVyX3RyYWNraW5nLmMgfCAzICsrLQ0KPiA+IMKgIDIgZmlsZXMgY2hhbmdlZCwgNCBpbnNl
-cnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQ0KPiA+IA0KPiA+IGRpZmYgLS1naXQgYS90ZXN0cy9p
-OTE1L2ttc19mYmNvbl9mYnQuYw0KPiA+IGIvdGVzdHMvaTkxNS9rbXNfZmJjb25fZmJ0LmMNCj4g
-PiBpbmRleCBlNjVjYmRhOTMuLjJjYjBmZmRiNCAxMDA2NDQNCj4gPiAtLS0gYS90ZXN0cy9pOTE1
-L2ttc19mYmNvbl9mYnQuYw0KPiA+ICsrKyBiL3Rlc3RzL2k5MTUva21zX2ZiY29uX2ZidC5jDQo+
-ID4gQEAgLTEwMyw3ICsxMDMsOCBAQCBzdGF0aWMgYm9vbCBmYmNfc3VwcG9ydGVkX29uX2NoaXBz
-ZXQoaW50DQo+ID4gZGV2aWNlLCBpbnQgZGVidWdmc19mZCkNCj4gPiDCoMKgwqDCoMKgwqDCoMKg
-aWYgKHJldCA8IDApDQo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXR1cm4g
-ZmFsc2U7DQo+ID4gwqAgDQo+ID4gLcKgwqDCoMKgwqDCoMKgcmV0dXJuICFzdHJzdHIoYnVmLCAi
-RkJDIHVuc3VwcG9ydGVkIG9uIHRoaXMgY2hpcHNldFxuIik7DQo+ID4gK8KgwqDCoMKgwqDCoMKg
-cmV0dXJuICFzdHJzdHIoYnVmLCAiRkJDIHVuc3VwcG9ydGVkIG9uIHRoaXMgY2hpcHNldFxuIikg
-JiYNCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIXN0cnN0cihidWYsICJzdG9s
-ZW4gbWVtb3J5IG5vdCBpbml0aWFsaXNlZFxuIik7DQo+ID4gwqAgfQ0KPiA+IMKgIA0KPiA+IMKg
-IHN0YXRpYyBib29sIGNvbm5lY3Rvcl9jYW5fZmJjKGRybU1vZGVDb25uZWN0b3JQdHIgY29ubmVj
-dG9yKQ0KPiA+IGRpZmYgLS1naXQgYS90ZXN0cy9pOTE1L2ttc19mcm9udGJ1ZmZlcl90cmFja2lu
-Zy5jDQo+ID4gYi90ZXN0cy9pOTE1L2ttc19mcm9udGJ1ZmZlcl90cmFja2luZy5jDQo+ID4gaW5k
-ZXggM2U4ZjE1YmIwLi4xMzY0MjYyMDQgMTAwNjQ0DQo+ID4gLS0tIGEvdGVzdHMvaTkxNS9rbXNf
-ZnJvbnRidWZmZXJfdHJhY2tpbmcuYw0KPiA+ICsrKyBiL3Rlc3RzL2k5MTUva21zX2Zyb250YnVm
-ZmVyX3RyYWNraW5nLmMNCj4gPiBAQCAtMTQ0NCw3ICsxNDQ0LDggQEAgc3RhdGljIGJvb2wgZmJj
-X3N1cHBvcnRlZF9vbl9jaGlwc2V0KHZvaWQpDQo+ID4gwqDCoMKgwqDCoMKgwqDCoGlmICgqYnVm
-ID09ICdcMCcpDQo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXR1cm4gZmFs
-c2U7DQo+ID4gwqAgDQo+ID4gLcKgwqDCoMKgwqDCoMKgcmV0dXJuICFzdHJzdHIoYnVmLCAiRkJD
-IHVuc3VwcG9ydGVkIG9uIHRoaXMgY2hpcHNldFxuIik7DQo+ID4gK8KgwqDCoMKgwqDCoMKgcmV0
-dXJuICFzdHJzdHIoYnVmLCAiRkJDIHVuc3VwcG9ydGVkIG9uIHRoaXMgY2hpcHNldFxuIikgJiYN
-Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIXN0cnN0cihidWYsICJzdG9sZW4g
-bWVtb3J5IG5vdCBpbml0aWFsaXNlZFxuIik7DQo+ID4gwqAgfQ0KPiA+IMKgIA0KPiA+IMKgIHN0
-YXRpYyB2b2lkIHNldHVwX2ZiYyh2b2lkKQ0KPiANCg0K
+Adding multi-gt capabilty to rc6_idle and rc6_fence tests
+
+Signed-off-by: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
+---
+ tests/i915/i915_pm_rc6_residency.c | 28 +++++++++++++++++++---------
+ 1 file changed, 19 insertions(+), 9 deletions(-)
+
+diff --git a/tests/i915/i915_pm_rc6_residency.c b/tests/i915/i915_pm_rc6_residency.c
+index b266680ac..d727dab12 100644
+--- a/tests/i915/i915_pm_rc6_residency.c
++++ b/tests/i915/i915_pm_rc6_residency.c
+@@ -376,7 +376,7 @@ static void kill_children(int sig)
+ 	signal(sig, old);
+ }
+ 
+-static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags)
++static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags, unsigned int gt)
+ {
+ 	const int64_t duration_ns = SLEEP_DURATION * (int64_t)NSEC_PER_SEC;
+ 	const int tolerance = 20; /* Some RC6 is better than none! */
+@@ -397,7 +397,7 @@ static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags)
+ 	struct igt_power gpu;
+ 	int fd;
+ 
+-	fd = open_pmu(i915, I915_PMU_RC6_RESIDENCY);
++	fd = open_pmu(i915, __I915_PMU_RC6_RESIDENCY(gt));
+ 	igt_drop_caches_set(i915, DROP_IDLE);
+ 	igt_require(__pmu_wait_for_rc6(fd));
+ 	igt_power_open(i915, &gpu, "gpu");
+@@ -471,12 +471,13 @@ static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags)
+ 	}
+ }
+ 
+-static void rc6_fence(int i915, const intel_ctx_t *ctx)
++static void rc6_fence(int i915, unsigned int gt)
+ {
+ 	const int64_t duration_ns = SLEEP_DURATION * (int64_t)NSEC_PER_SEC;
+ 	const int tolerance = 20; /* Some RC6 is better than none! */
+ 	const unsigned int gen = intel_gen(intel_get_drm_devid(i915));
+ 	const struct intel_execution_engine2 *e;
++	const intel_ctx_t *ctx;
+ 	struct power_sample sample[2];
+ 	unsigned long slept;
+ 	uint64_t rc6, ts[2], ahnd;
+@@ -485,7 +486,7 @@ static void rc6_fence(int i915, const intel_ctx_t *ctx)
+ 
+ 	igt_require_sw_sync();
+ 
+-	fd = open_pmu(i915, I915_PMU_RC6_RESIDENCY);
++	fd = open_pmu(i915, __I915_PMU_RC6_RESIDENCY(gt));
+ 	igt_drop_caches_set(i915, DROP_IDLE);
+ 	igt_require(__pmu_wait_for_rc6(fd));
+ 	igt_power_open(i915, &gpu, "gpu");
+@@ -509,6 +510,7 @@ static void rc6_fence(int i915, const intel_ctx_t *ctx)
+ 	assert_within_epsilon(rc6, ts[1] - ts[0], 5);
+ 
+ 	/* Submit but delay execution, we should be idle and conserving power */
++	ctx = intel_ctx_create_for_gt(i915, gt);
+ 	ahnd = get_reloc_ahnd(i915, ctx->id);
+ 	for_each_ctx_engine(i915, ctx, e) {
+ 		igt_spin_t *spin;
+@@ -550,6 +552,7 @@ static void rc6_fence(int i915, const intel_ctx_t *ctx)
+ 		gem_quiescent_gpu(i915);
+ 	}
+ 	put_ahnd(ahnd);
++	intel_ctx_destroy(i915, ctx);
+ 
+ 	igt_power_close(&gpu);
+ 	close(fd);
+@@ -558,6 +561,7 @@ static void rc6_fence(int i915, const intel_ctx_t *ctx)
+ igt_main
+ {
+ 	int i915 = -1;
++	int dir, gt;
+ 	const intel_ctx_t *ctx;
+ 
+ 	/* Use drm_open_driver to verify device existence */
+@@ -572,10 +576,14 @@ igt_main
+ 		igt_require_gem(i915);
+ 		gem_quiescent_gpu(i915);
+ 
+-		for_each_ctx_engine(i915, ctx, e) {
+-			if (e->instance == 0) {
+-				igt_dynamic_f("%s", e->name)
+-					rc6_idle(i915, ctx->id, e->flags);
++		i915_for_each_gt(i915, dir, gt) {
++			ctx = intel_ctx_create_for_gt(i915, gt);
++			for_each_ctx_engine(i915, ctx, e) {
++				if (e->instance == 0) {
++					igt_dynamic_f("%s", gt, e->name)
++						rc6_idle(i915, ctx->id, e->flags, gt);
++				}
++			intel_ctx_destroy(i915, ctx);
+ 			}
+ 		}
+ 	}
+@@ -584,7 +592,9 @@ igt_main
+ 		igt_require_gem(i915);
+ 		gem_quiescent_gpu(i915);
+ 
+-		rc6_fence(i915, ctx);
++		i915_for_each_gt(i915, dir, gt)
++			igt_dynamic_f("gt%u", gt)
++				rc6_fence(i915, gt);
+ 	}
+ 
+ 	igt_subtest_group {
+-- 
+2.25.1
