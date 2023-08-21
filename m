@@ -1,15 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============6687512071437116552=="
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11on20600.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:7eae::600])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 653AA10E29E
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Aug 2023 20:18:47 +0000 (UTC)
+Message-ID: <97b7e6a3-bf81-4a17-b224-1351d8dedf53@amd.com>
+Date: Mon, 21 Aug 2023 16:18:42 -0400
+To: Alex Hung <alex.hung@amd.com>, igt-dev@lists.freedesktop.org,
+ kamil.konieczny@linux.intel.com
+References: <20230821140712.1034591-1-aurabindo.pillai@amd.com>
+ <20230821140712.1034591-2-aurabindo.pillai@amd.com>
+ <581a47bb-0e4c-7408-d107-5ad0e5da8c9e@amd.com>
+Content-Language: en-US
+From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+In-Reply-To: <581a47bb-0e4c-7408-d107-5ad0e5da8c9e@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Vinay Belgaumkar" <vinay.belgaumkar@intel.com>
-Date: Mon, 21 Aug 2023 20:14:30 -0000
-Message-ID: <169264887060.22807.11901668839642048787@emeril.freedesktop.org>
-References: <20230821194027.1345552-1-vinay.belgaumkar@intel.com>
-In-Reply-To: <20230821194027.1345552-1-vinay.belgaumkar@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_tests/i915?=
- =?utf-8?q?=5Fpm=5Ffreq=5Fapi=3A_Ignore_zero_register_value_=28rev3=29?=
+Subject: Re: [igt-dev] [PATCH v4 2/2] tests/amdgpu: Add test for ODM combine
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,69 +25,269 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: hersenxs.wu@amd.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============6687512071437116552==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Thanks for the review Alex.
 
-== Series Details ==
+Kamil,
 
-Series: tests/i915_pm_freq_api: Ignore zero register value (rev3)
-URL   : https://patchwork.freedesktop.org/series/122187/
-State : info
+There seems to be a false positive failure for this patchset: 
+https://lists.freedesktop.org/archives/igt-dev/2023-August/060105.html
 
-== Summary ==
-
-Participating hosts:
-bat-atsm-2
-bat-dg2-oem2
-bat-adlp-7
-Missing hosts results[0]:
-Results: [IGTPW_9630](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9630/index.html)
+Do you have any further review suggestions or is it okay to merge ?
 
 
+On 2023-08-21 11:39, Alex Hung wrote:
+> Reviewed-by: Alex Hung <alex.hung@amd.com>
+> 
+> On 2023-08-21 08:07, Aurabindo Pillai wrote:
+>> Add a test that checks whether ODM Combine mode is triggered when high
+>> refresh rate timing is committed on hardware it supports. This test
+>> requires a DSC capable monitor.
+>>
+>> Changes in V2: Added check to skip test on hardware that does not have
+>> ODM combine segments debugfs endpoint exposed
+>>
+>> Changes in V3: Removed data->w,h since its not used; Removed license
+>> text and use SPDX identifier instead.
+>>
+>> Changes in V4: Checkpatch.pl style fixes
+>>
+>> Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+>> ---
+>>   tests/amdgpu/amd_odm.c   | 189 +++++++++++++++++++++++++++++++++++++++
+>>   tests/amdgpu/meson.build |   1 +
+>>   2 files changed, 190 insertions(+)
+>>   create mode 100644 tests/amdgpu/amd_odm.c
+>>
+>> diff --git a/tests/amdgpu/amd_odm.c b/tests/amdgpu/amd_odm.c
+>> new file mode 100644
+>> index 000000000..2781ad1c2
+>> --- /dev/null
+>> +++ b/tests/amdgpu/amd_odm.c
+>> @@ -0,0 +1,189 @@
+>> +// SPDX-License-Identifier: MIT
+>> +/*
+>> + * Copyrights 2023 Advanced Micro Devices, Inc.
+>> + */
+>> +
+>> +#include <fcntl.h>
+>> +#include <stdio.h>
+>> +#include <xf86drmMode.h>
+>> +
+>> +#include "igt.h"
+>> +#include "igt_amd.h"
+>> +#include "igt_edid.h"
+>> +
+>> +IGT_TEST_DESCRIPTION("Test whether ODM Combine mode is triggered when 
+>> timings with high refresh "
+>> +             "rate is committed");
+>> +
+>> +enum odmc_mode {
+>> +    ODMC_2_TO_1,
+>> +    ODMC_4_TO_1,
+>> +};
+>> +
+>> +/* Common test data. */
+>> +struct data {
+>> +    igt_display_t display;
+>> +    igt_plane_t *primary;
+>> +    igt_output_t *output;
+>> +    igt_pipe_t *pipe;
+>> +    drmModeModeInfoPtr mode;
+>> +    enum pipe pipe_id;
+>> +    int fd;
+>> +};
+>> +
+>> +static const drmModeModeInfo test_mode[] = {
+>> +    { 1278720,
+>> +    3840, 3952, 3984, 4000, 0,
+>> +    2160, 2210, 2215, 2220, 0,
+>> +    30,
+>> +    DRM_MODE_FLAG_NHSYNC,
+>> +    0x40,
+>> +    "4k144\0",
+>> +    }, /* from HP Omen 27c */
+>> +
+>> +};
+>> +
+>> +#define TEST_MODE_IDX_ODMC_2_TO_1 0
+>> +
+>> +static void test_init(struct data *data)
+>> +{
+>> +    igt_display_t *display = &data->display;
+>> +
+>> +    /* It doesn't matter which pipe we choose on amdpgu. */
+>> +    data->pipe_id = PIPE_A;
+>> +    data->pipe = &data->display.pipes[data->pipe_id];
+>> +
+>> +    igt_display_reset(display);
+>> +
+>> +    /* find a connected non-HDMI output */
+>> +    data->output = NULL;
+>> +    for (int i = 0; i < data->display.n_outputs; ++i) {
+>> +        drmModeConnector *connector = 
+>> data->display.outputs[i].config.connector;
+>> +
+>> +        if (connector->connection == DRM_MODE_CONNECTED)
+>> +            data->output = &data->display.outputs[i];
+>> +    }
+>> +    igt_require_f(data->output, "Requires a connected output\n");
+>> +
+>> +    data->mode = igt_output_get_mode(data->output);
+>> +    igt_assert(data->mode);
+>> +
+>> +    igt_skip_on_f(!igt_amd_output_has_odm_combine_segments(data->fd, 
+>> data->output->name),
+>> +              "ASIC does not support reading ODM combine segments\n");
+>> +
+>> +    igt_skip_on_f(!is_dp_dsc_supported(data->fd, data->output->name),
+>> +              "The monitor must be DSC capable\n");
+>> +
+>> +    igt_skip_on_f(data->output->config.connector->connector_type == 
+>> DRM_MODE_CONNECTOR_HDMIA ||
+>> +              data->output->config.connector->connector_type == 
+>> DRM_MODE_CONNECTOR_HDMIB,
+>> +              "ODM Combine isn't supported on HDMI 1.x\n");
+>> +
+>> +    data->primary = igt_pipe_get_plane_type(data->pipe, 
+>> DRM_PLANE_TYPE_PRIMARY);
+>> +    igt_output_set_pipe(data->output, data->pipe_id);
+>> +
+>> +    igt_display_reset(display);
+>> +}
+>> +
+>> +static void test_fini(struct data *data)
+>> +{
+>> +    igt_display_reset(&data->display);
+>> +    igt_display_commit_atomic(&data->display, 
+>> DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
+>> +}
+>> +
+>> +/* Forces a mode for a connector. */
+>> +static void force_output_mode(struct data *d, igt_output_t *output,
+>> +                  const drmModeModeInfo *mode)
+>> +{
+>> +    /* This allows us to create a virtual sink. */
+>> +    if (!igt_output_is_connected(output)) {
+>> +        kmstest_force_edid(d->fd, output->config.connector,
+>> +                   igt_kms_get_4k_edid());
+>> +
+>> +        kmstest_force_connector(d->fd, output->config.connector,
+>> +                    FORCE_CONNECTOR_DIGITAL);
+>> +    }
+>> +
+>> +    igt_output_override_mode(output, mode);
+>> +}
+>> +
+>> +static void run_test_odmc(struct data *data, enum odmc_mode m, const 
+>> drmModeModeInfo *mode)
+>> +{
+>> +    igt_display_t *display = &data->display;
+>> +    struct igt_fb buffer;
+>> +    char buf[256];
+>> +    int ret, seg, fd;
+>> +    int i = 0;
+>> +
+>> +    test_init(data);
+>> +
+>> +    force_output_mode(data, data->output, mode);
+>> +
+>> +    igt_create_color_fb(display->drm_fd, mode->hdisplay,
+>> +                mode->vdisplay, DRM_FORMAT_XRGB8888,
+>> +                DRM_FORMAT_MOD_LINEAR, 1.f, 0.f, 0.f,
+>> +                &buffer);
+>> +
+>> +    igt_output_set_pipe(data->output, i);
+>> +
+>> +    igt_plane_set_fb(data->primary, &buffer);
+>> +
+>> +    ret = igt_display_try_commit_atomic(display,
+>> +                        DRM_MODE_ATOMIC_ALLOW_MODESET |
+>> +                        DRM_MODE_ATOMIC_TEST_ONLY,
+>> +                        NULL);
+>> +    igt_skip_on_f(ret != 0, "Unsupported mode\n");
+>> +
+>> +    igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 
+>> NULL);
+>> +
+>> +    fd = igt_debugfs_connector_dir(data->fd, data->output->name, 
+>> O_RDONLY);
+>> +    igt_assert(fd >= 0);
+>> +
+>> +    ret = igt_debugfs_simple_read(fd, "odm_combine_segments", buf, 
+>> sizeof(buf));
+>> +    close(fd);
+>> +    igt_require(ret > 0);
+>> +
+>> +    seg = strtol(buf, NULL, 0);
+>> +
+>> +    switch (m) {
+>> +    case ODMC_2_TO_1:
+>> +        igt_assert_f(seg == 2,
+>> +                 "ODM Combine uses %d segments for connector %s, 
+>> expected 2\n",
+>> +                 seg, data->output->name);
+>> +        break;
+>> +    case ODMC_4_TO_1:
+>> +        igt_assert_f(seg == 4,
+>> +                 "ODM Combine uses %d segments for connector %s, 
+>> expected 4\n",
+>> +                 seg, data->output->name);
+>> +        break;
+>> +    }
+>> +
+>> +    igt_remove_fb(display->drm_fd, &buffer);
+>> +
+>> +    test_fini(data);
+>> +}
+>> +
+>> +igt_main
+>> +{
+>> +    struct data data;
+>> +
+>> +    memset(&data, 0, sizeof(data));
+>> +
+>> +    igt_fixture
+>> +    {
+>> +        data.fd = drm_open_driver_master(DRIVER_ANY);
+>> +
+>> +        kmstest_set_vt_graphics_mode();
+>> +
+>> +        igt_display_require(&data.display, data.fd);
+>> +        igt_require(&data.display.is_atomic);
+>> +        igt_display_require_output(&data.display);
+>> +
+>> +    }
+>> +
+>> +    igt_subtest_f("odm-combine-2-to-1-%s", 
+>> test_mode[TEST_MODE_IDX_ODMC_2_TO_1].name)
+>> +        run_test_odmc(&data, ODMC_2_TO_1, 
+>> &test_mode[TEST_MODE_IDX_ODMC_2_TO_1]);
+>> +
+>> +    igt_fixture
+>> +    {
+>> +        igt_display_fini(&data.display);
+>> +    }
+>> +}
+>> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+>> index 6c6166167..6032a38e8 100644
+>> --- a/tests/amdgpu/meson.build
+>> +++ b/tests/amdgpu/meson.build
+>> @@ -35,6 +35,7 @@ if libdrm_amdgpu.found()
+>>                 'amd_vm',
+>>                 'amd_vrr_range',
+>>                 'amd_mall',
+>> +              'amd_odm',
+>>               ]
+>>       amdgpu_deps += libdrm_amdgpu
+>>   endif
 
---===============6687512071437116552==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+-- 
+--
 
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/i915_pm_freq_api: Ignore zero register value (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122187/">https://patchwork.freedesktop.org/series/122187/</a></td></tr>
-<tr><td><b>State:</b></td><td>info</td></tr>
-
-</table>
-
-
-    <p>Participating hosts:<br />
-bat-atsm-2<br />
-bat-dg2-oem2<br />
-bat-adlp-7<br />
-Missing hosts results[0]:<br />
-Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9630/index.html">IGTPW_9630</a></p>
-
-</body>
-</html>
-
---===============6687512071437116552==--
+Thanks & Regards,
+Jay
