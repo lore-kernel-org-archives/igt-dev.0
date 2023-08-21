@@ -1,16 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============5112820624146928741=="
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam12on2049.outbound.protection.outlook.com [40.107.243.49])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0DBE810E0EF
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Aug 2023 15:38:34 +0000 (UTC)
+Message-ID: <ee6de4c4-266d-b4bc-ba33-2c6ac058d3c8@amd.com>
+Date: Mon, 21 Aug 2023 09:38:04 -0600
+To: Aurabindo Pillai <aurabindo.pillai@amd.com>, igt-dev@lists.freedesktop.org
+References: <20230821140712.1034591-1-aurabindo.pillai@amd.com>
+Content-Language: en-US
+From: Alex Hung <alex.hung@amd.com>
+In-Reply-To: <20230821140712.1034591-1-aurabindo.pillai@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Aurabindo Pillai" <aurabindo.pillai@amd.com>
-Date: Mon, 21 Aug 2023 15:17:47 -0000
-Message-ID: <169263106745.22808.948116040541337994@emeril.freedesktop.org>
-References: <20230821135354.1003289-1-aurabindo.pillai@amd.com>
-In-Reply-To: <20230821135354.1003289-1-aurabindo.pillai@amd.com>
-Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_series_star?=
- =?utf-8?q?ting_with_=5Bv3=2C1/2=5D_lib/amdgpu=3A_Add_check_for_ODM_combin?=
- =?utf-8?q?e_segments_debugfs_endpoint?=
+Subject: Re: [igt-dev] [PATCH v4 1/2] lib/amdgpu: Add check for ODM combine
+ segments debugfs endpoint
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,73 +22,58 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: hersenxs.wu@amd.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============5112820624146928741==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Reviewed-by: Alex Hung <alex.hung@amd.com>
 
-== Series Details ==
-
-Series: series starting with [v3,1/2] lib/amdgpu: Add check for ODM combine segments debugfs endpoint
-URL   : https://patchwork.freedesktop.org/series/122706/
-State : info
-
-== Summary ==
-
-Participating hosts:
-bat-pvc-2
-bat-atsm-2
-bat-dg2-oem2
-bat-adlp-7
-Missing hosts results[1]:
-bat-pvc-2
-Results: [IGTPW_9627](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9627/index.html)
-
-
-
---===============5112820624146928741==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [v3,1/2] lib/amdgpu: Add check for ODM combine segments debugfs endpoint</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122706/">https://patchwork.freedesktop.org/series/122706/</a></td></tr>
-<tr><td><b>State:</b></td><td>info</td></tr>
-
-</table>
-
-
-    <p>Participating hosts:<br />
-bat-pvc-2<br />
-bat-atsm-2<br />
-bat-dg2-oem2<br />
-bat-adlp-7<br />
-Missing hosts results[1]:<br />
-bat-pvc-2<br />
-Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9627/index.html">IGTPW_9627</a></p>
-
-</body>
-</html>
-
---===============5112820624146928741==--
+On 2023-08-21 08:07, Aurabindo Pillai wrote:
+> Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+> ---
+>   lib/igt_amd.c | 10 ++++++++++
+>   lib/igt_amd.h |  4 ++++
+>   2 files changed, 14 insertions(+)
+> 
+> diff --git a/lib/igt_amd.c b/lib/igt_amd.c
+> index 83011e8ca..1a720ff56 100644
+> --- a/lib/igt_amd.c
+> +++ b/lib/igt_amd.c
+> @@ -325,6 +325,16 @@ static bool igt_amd_output_has_dsc(int drm_fd, char *connector_name)
+>   	return igt_amd_output_has_debugfs(drm_fd, connector_name, DEBUGFS_DSC_CLOCK_EN);
+>   }
+>   
+> +/**
+> + * igt_amd_output_has_odm_combine_segments: check if connector has dsc debugfs entry
+> + * @drm_fd: DRM file descriptor
+> + * @connector_name: The connector's name, on which we're reading the status
+> + */
+> +bool igt_amd_output_has_odm_combine_segments(int drm_fd, char *connector_name)
+> +{
+> +	return igt_amd_output_has_debugfs(drm_fd, connector_name, DEBUGFS_ODM_COMBINE_SEG);
+> +}
+> +
+>   /**
+>    * is_dp_dsc_supported: Checks if connector is DSC capable
+>    * @display: A pointer to an #igt_display_t structure
+> diff --git a/lib/igt_amd.h b/lib/igt_amd.h
+> index 6f538a195..c05b4b730 100644
+> --- a/lib/igt_amd.h
+> +++ b/lib/igt_amd.h
+> @@ -54,6 +54,9 @@
+>   #define DEBUGFS_DM_VISUAL_CONFIRM "amdgpu_dm_visual_confirm"
+>   #define DEBUGFS_DM_CAPABILITIES "amdgpu_dm_capabilities"
+>   
+> +/* ODM Combine */
+> +#define DEBUGFS_ODM_COMBINE_SEG "odm_combine_segments"
+> +
+>   enum amd_dsc_clock_force {
+>   	DSC_AUTOMATIC = 0,
+>   	DSC_FORCE_ON,
+> @@ -197,4 +200,5 @@ int  igt_amd_get_visual_confirm(int drm_fd);
+>   bool igt_amd_set_visual_confirm(int drm_fd, enum amdgpu_debug_visual_confirm option);
+>   
+>   bool igt_amd_is_mall_capable(int drm_fd);
+> +bool igt_amd_output_has_odm_combine_segments(int drm_fd, char *connector_name);
+>   #endif /* IGT_AMD_H */
