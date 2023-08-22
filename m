@@ -1,15 +1,27 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Tue, 22 Aug 2023 16:25:23 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230822142523.ke65dicvqadodafw@kamilkon-desk.igk.intel.com>
-References: <20230822075857.37363-2-janusz.krzysztofik@linux.intel.com>
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2083.outbound.protection.outlook.com [40.107.237.83])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5B84410E377
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Aug 2023 14:34:59 +0000 (UTC)
+Message-ID: <eac5d9ed-4e76-41f1-aacb-f53e14fb7845@amd.com>
+Date: Tue, 22 Aug 2023 10:34:51 -0400
+Content-Language: en-US
+To: Maxime Ripard <maxime@cerno.tech>, Alex Hung <alex.hung@amd.com>
+References: <20230816205316.867195-1-alex.hung@amd.com>
+ <20230816205316.867195-3-alex.hung@amd.com>
+ <5zt2ctyod27qaw7sld4ejvvemgxm6chh4dtf7cnjiil2rizksm@bfiezcb3zo3q>
+ <5cd3fc34-f6c7-21ff-f710-cb3f543fcb80@amd.com>
+ <sa6iblbqyfnu4oropbazlakghwh3ekcnajojmj4th4bswjqlxg@sfmkfo7d7tsj>
+ <28f80f34-c7a9-44c8-a33a-6ded92458e29@amd.com>
+ <b5a1c8f7-0748-d3bb-fc8c-8cbee32e5168@amd.com>
+ <k6cahbb4qc3pxiyexroh2egb7dhrb4ljf6hqaffdwrmsfxzkzg@xjifh5hbu5bt>
+From: Harry Wentland <harry.wentland@amd.com>
+In-Reply-To: <k6cahbb4qc3pxiyexroh2egb7dhrb4ljf6hqaffdwrmsfxzkzg@xjifh5hbu5bt>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230822075857.37363-2-janusz.krzysztofik@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/core_hotunplug: Wait for device
- nodes to re-appear
+Subject: Re: [igt-dev] [PATCH 3/3] tests/kms_writeback: support
+ DRM_FORMAT_XRGB2101010 for writeback
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,77 +29,66 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, brian.starkey@arm.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Janusz,
 
-On 2023-08-22 at 09:58:58 +0200, Janusz Krzysztofik wrote:
-> Sometimes our health check is not able to find a device node (cardX or
-> renderY) after driver rebind or device rediscover.  Since device nodes are
-> recreated in detmpvfs asynchronously, give it a bit of time to do its job
-> before we try to reopen the device for health check.
-> 
-> (core_hotunplug:3612) DEBUG: Test requirement passed: priv->fd.drm == -1
-> (core_hotunplug:3612) DEBUG: reopening DRM device for health check
-> (core_hotunplug:3612) drmtest-DEBUG: Looking for devices to open using filter 0: sys:/sys/devices/pci0000:4a/0000:4a:02.0/0000:4b:00.0/0000:4c:01.0/0000:4d:00.0
-> (core_hotunplug:3612) drmtest-DEBUG: Filter matched /dev/dri/card1 | /dev/dri/renderD128
-> (core_hotunplug:3612) drmtest-DEBUG: Opened previously opened device: /dev/dri/card1
-> (core_hotunplug:3612) DEBUG: running device sysfs healthcheck
-> (core_hotunplug:3612) DEBUG: closing health checked device instance
-> (core_hotunplug:3612) DEBUG: reopening render device for health check
-> (core_hotunplug:3612) drmtest-DEBUG: Looking for devices to open using filter 0: sys:/sys/devices/pci0000:4a/0000:4a:02.0/0000:4b:00.0/0000:4c:01.0/0000:4d:00.0
-> (core_hotunplug:3612) drmtest-DEBUG: Filter matched /dev/dri/card1 | /dev/dri/renderD128
-> (core_hotunplug:3612) drmtest-INFO: Opened device: /dev/dri/renderD128
-> (core_hotunplug:3612) DEBUG: running device sysfs healthcheck
-> (core_hotunplug:3612) DEBUG: closing health checked device instance
-> (core_hotunplug:3612) DEBUG: Test requirement passed: healthcheck(priv, false)
-> (core_hotunplug:3612) DEBUG: Test requirement passed: priv->fd.drm_hc == -1
-> (core_hotunplug:3612) igt_kmod-DEBUG: Module snd_hda_intel unloaded immediately
-> (core_hotunplug:3612) INFO: Unloaded audio driver snd_hda_intel
-> (core_hotunplug:3612) DEBUG: unbinding the driver from the device
-> (core_hotunplug:3612) DEBUG: rebinding the driver to the device
-> (core_hotunplug:3612) INFO: Realoading snd_hda_intel
-> (core_hotunplug:3612) DEBUG: reopening DRM device for health check
-> (core_hotunplug:3612) drmtest-DEBUG: Looking for devices to open using filter 0: sys:/sys/devices/pci0000:4a/0000:4a:02.0/0000:4b:00.0/0000:4c:01.0/0000:4d:00.0
-> (core_hotunplug:3612) drmtest-DEBUG: Filter matched /dev/dri/card1 |
-> (core_hotunplug:3612) drmtest-DEBUG: Opened previously opened device: /dev/dri/card1
-> (core_hotunplug:3612) DEBUG: running device sysfs healthcheck
-> (core_hotunplug:3612) DEBUG: closing health checked device instance
-> (core_hotunplug:3612) DEBUG: reopening render device for health check
-> (core_hotunplug:3612) drmtest-DEBUG: Looking for devices to open using filter 0: sys:/sys/devices/pci0000:4a/0000:4a:02.0/0000:4b:00.0/0000:4c:01.0/0000:4d:00.0
-> (core_hotunplug:3612) drmtest-DEBUG: Filter matched /dev/dri/card1 |
-> (core_hotunplug:3612) CRITICAL: Test assertion failure function local_drm_open_driver, file ../../../usr/src/igt-gpu-tools/tests/core_hotunplug.c:130:
-> (core_hotunplug:3612) CRITICAL: Failed assertion: fd_drm >= 0
-> (core_hotunplug:3612) CRITICAL: file descriptor fd_drm failed
-> 
-> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8830
-> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/500
-> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> Cc: Petri Latvala <adrinael@adrinael.net>
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+On 2023-08-22 10:14, Maxime Ripard wrote:
+> On Thu, Aug 17, 2023 at 10:22:56AM -0600, Alex Hung wrote:
+>>>>>> I think we should make a proper test for that format, instead of a
+>>>>>> (silent) fallback?
+>>>>>
+>>>>> Not sure what's the proper test or the fallback you are referring to. The
+>>>>> intention here is to test XRGB2101010 when possible without breaking the
+>>>>> original behaviours for XRGB8888.
+>>>>
+>>>> Right, but you're not even testing that XRGB2101010 is actually there,
+>>>> so if amdgpu format listing was somehow broken and you were to expose
+>>>> XRGB8888 instead of XRGB2101010, you wouldn't notice. That's not great.
+>>
+>> Only XRGB2101010 is supported.
+>>
+>>>>> Changing kms_writeback to tests multiple formats requires significant
+>>>>> modifications and tests which requires a driver capable of multiple formats
+>>>>> in the first place.
+>>>>
+>>>> That's fine, amdgpu will be that driver.
+>>
+>> The purpose of this patch is to improve kms_writeback coverage:
+>>
+>> - check XRGB8888, and test if supported or skip otherwise
+>> to
+>> - no XRGB8888? also check XRGB2101010, and test if supported or skip
+>> otherwise
+>>
+>> For amdgpu, no writeback -> support XRGB2101010 in writeback.
+>>
+>> XRGB2101010 will be used for testing. XRGB8888 may or may not be added later
+>> depending on whether there will be consumers of the feature but that is out
+>> of scope of this IGT patch.
+> 
+> My point is the fallback doesn't provide anything, and is harmful to
+> some extent. So far, we have some hardware that support XRGB8888 only,
+> and some that support XRGB2101010 only.
+> 
+> There's no point in falling back from one to the other, and if we ever
+> have hardware that would support both it prevents from checking both.
+> 
+> And sure, we could address it then, or we could address it now. It's
+> just adding an extra parameter to a couple of functions and a few new
+> subtests, it's not like we need to rewrite the whole thing.
+> 
 
-> ---
->  tests/core_hotunplug.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-> index 30d9a6a576..b254447c71 100644
-> --- a/tests/core_hotunplug.c
-> +++ b/tests/core_hotunplug.c
-> @@ -501,6 +501,9 @@ static void node_healthcheck(struct hotunplug *priv, unsigned flags)
->  
->  static bool healthcheck(struct hotunplug *priv, bool recover)
->  {
-> +	/* give udev some time to recreate device nodes before we continue */
-> +	sleep(1);
-> +
->  	/* device name may have changed, rebuild IGT device list */
->  	igt_devices_scan(true);
->  
-> -- 
-> 2.41.0
-> 
+I tend to agree. My preference would be to have a subtest for each
+supported format, i.e. a -xrgb8888 and an -xrgb2101010 test.
+
+I think there was some concern about not changing existing test
+names. In that case we can keep the original test names for the
+-xrgb8888 tests and append the format to the new tests.
+
+Harry
+
+> Maxime
