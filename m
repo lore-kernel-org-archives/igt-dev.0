@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Content-Type: multipart/alternative;
+ boundary="===============2586354046690554301=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Aurabindo Pillai" <aurabindo.pillai@amd.com>
-Date: Tue, 22 Aug 2023 18:17:20 -0000
-Message-ID: <169272824092.20553.352750439647309934@emeril.freedesktop.org>
+Date: Tue, 22 Aug 2023 18:46:47 -0000
+Message-ID: <169273000701.20551.17834635730809988344@emeril.freedesktop.org>
 References: <20230821140712.1034591-1-aurabindo.pillai@amd.com>
 In-Reply-To: <20230821140712.1034591-1-aurabindo.pillai@amd.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_s?=
- =?utf-8?q?eries_starting_with_=5Bv4=2C1/2=5D_lib/amdgpu=3A_Add_check_for_?=
- =?utf-8?q?ODM_combine_segments_debugfs_endpoint_=28rev4=29?=
+Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_series_star?=
+ =?utf-8?q?ting_with_=5Bv4=2C1/2=5D_lib/amdgpu=3A_Add_check_for_ODM_combin?=
+ =?utf-8?q?e_segments_debugfs_endpoint_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,193 +24,63 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============2586354046690554301==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
 Series: series starting with [v4,1/2] lib/amdgpu: Add check for ODM combine segments debugfs endpoint (rev4)
 URL   : https://patchwork.freedesktop.org/series/122707/
-State : warning
+State : info
 
 == Summary ==
 
-Pipeline status: FAILED.
+Participating hosts:
+bat-atsm-2
+bat-dg2-oem2
+bat-adlp-7
+Missing hosts results[0]:
+Results: [IGTPW_9634](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9634/index.html)
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/967822 for the overview.
 
-build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47853345):
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
-    uint32_t lessees[0];
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
-    uint32_t count;
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
-    uint32_t objects[0];
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
-   extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
-                                         ^~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1692728088:step_script
-  section_start:1692728088:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1692728089:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
 
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47853348):
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
-    uint32_t lessees[0];
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
-    uint32_t count;
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
-    uint32_t objects[0];
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
-   extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
-                                         ^~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1692728095:step_script
-  section_start:1692728095:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1692728096:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+--===============2586354046690554301==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47853347):
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
-    uint32_t lessees[0];
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
-    uint32_t count;
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
-    uint32_t objects[0];
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
-   extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
-                                         ^~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1692728094:step_script
-  section_start:1692728094:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1692728094:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
 
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47853349):
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
-    uint32_t lessees[0];
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
-    uint32_t count;
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
-    uint32_t objects[0];
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
-   extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
-                                         ^~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1692728136:step_script
-  section_start:1692728136:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1692728137:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
 
-build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47853338):
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
-    533 |  uint32_t lessees[0];
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
-    539 |  uint32_t count;
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
-    540 |  uint32_t objects[0];
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
-    545 | extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
-        |                                       ^~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1692728100:step_script
-  section_start:1692728100:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1692728102:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
 
-build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47853344):
-          uint32_t bpp;
-          ^
-  /usr/include/xf86drmMode.h:221:2: error: unknown type name 'uint32_t'
-          uint32_t depth;
-          ^
-  /usr/include/xf86drmMode.h:223:2: error: unknown type name 'uint32_t'
-          uint32_t handle;
-          ^
-  /usr/include/xf86drmMode.h:229:2: error: unknown type name 'uint32_t'
-          uint32_t id;
-          ^
-  fatal error: too many errors emitted, stopping now [-ferror-limit=]
-  20 errors generated.
-  ninja: build stopped: subcommand failed.
-  section_end:1692728112:step_script
-  section_start:1692728112:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1692728112:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [v4,1/2] lib/amdgpu: Add check for ODM combine segments debugfs endpoint (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122707/">https://patchwork.freedesktop.org/series/122707/</a></td></tr>
+<tr><td><b>State:</b></td><td>info</td></tr>
 
-build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47853340):
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
-    533 |  uint32_t lessees[0];
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
-    539 |  uint32_t count;
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
-    540 |  uint32_t objects[0];
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
-    545 | extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
-        |                                       ^~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1692728099:step_script
-  section_start:1692728099:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1692728102:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+</table>
 
-build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47853342):
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
-    533 |  uint32_t lessees[0];
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
-    539 |  uint32_t count;
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
-    540 |  uint32_t objects[0];
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
-    545 | extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
-        |                                       ^~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1692728102:step_script
-  section_start:1692728102:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1692728103:cleanup_file_variables
-  ERROR: Job failed: exit code 1
 
-== Logs ==
+    <p>Participating hosts:<br />
+bat-atsm-2<br />
+bat-dg2-oem2<br />
+bat-adlp-7<br />
+Missing hosts results[0]:<br />
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9634/index.html">IGTPW_9634</a></p>
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/967822
+</body>
+</html>
+
+--===============2586354046690554301==--
