@@ -1,17 +1,25 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B84F710E080
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Aug 2023 11:51:59 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 23 Aug 2023 17:13:49 +0530
-Message-Id: <20230823114354.787212-3-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230823114354.787212-1-bhanuprakash.modem@intel.com>
-References: <20230823114354.787212-1-bhanuprakash.modem@intel.com>
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam12on2060f.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:fe59::60f])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A69ED10E0B5
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Aug 2023 20:57:56 +0000 (UTC)
+Message-ID: <a5c62ee7-b17b-4d03-83ff-e8e579009679@amd.com>
+Date: Tue, 22 Aug 2023 16:57:54 -0400
+Content-Language: en-US
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, hersenxs.wu@amd.com,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Petri Latvala <adrinael@adrinael.net>
+References: <20230822201833.29474-1-aurabindo.pillai@amd.com>
+ <20230822204709.zuoxonzyn5ij42jy@kamilkon-desk.igk.intel.com>
+From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+In-Reply-To: <20230822204709.zuoxonzyn5ij42jy@kamilkon-desk.igk.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 2/7] tests/i915/kms_pm_backlight: Fix testplan
- documentation
+Subject: Re: [igt-dev] [PATCH v4] tests/amdgpu: Fix build error due to
+ external file include
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,78 +31,51 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As kms_pm_backlight is moved to display, update the test
-documentation according to the kms testplan kms_test_config.json
 
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/i915/kms_pm_backlight.c | 40 ++++++++++++++++++++++++++---------
- 1 file changed, 30 insertions(+), 10 deletions(-)
 
-diff --git a/tests/i915/kms_pm_backlight.c b/tests/i915/kms_pm_backlight.c
-index ade5539d2..2e8fb4254 100644
---- a/tests/i915/kms_pm_backlight.c
-+++ b/tests/i915/kms_pm_backlight.c
-@@ -38,29 +38,49 @@
- #include "igt_device.h"
- #include "igt_device_scan.h"
- /**
-- * TEST: i915 pm backlight
-+ * TEST: kms pm backlight
-+ * Category: Display
-  * Description: Basic backlight sysfs test
-- * Feature: backlight
-  *
-  * SUBTEST: bad-brightness
-- * Description: test the bad brightness.
-+ * Description: Test the bad brightness.
-+ * Driver requirement: i915
-+ * Functionality: backlight
-+ * Mega feature: Display Power
-  * Run type: FULL
-+ * Test category: functionality test
-  *
-  * SUBTEST: basic-brightness
-- * Description: test the basic brightness.
-+ * Description: Test the basic brightness.
-+ * Driver requirement: i915
-+ * Functionality: backlight
-+ * Mega feature: Display Power
-  * Run type: BAT
-+ * Test category: functionality test
-  *
-  * SUBTEST: fade
-- * Description: test basic fade.
-- * Run type: FULL
-+ * Description: Test basic fade.
-+ * Driver requirement: i915
-+ * Functionality: backlight
-+ * Mega feature: Display Power
-+ * Run type: BAT
-+ * Test category: functionality test
-  *
-  * SUBTEST: fade-with-dpms
-- * Description: test the fade with DPMS.
-- * Run type: FULL
-+ * Description: Test the fade with DPMS.
-+ * Driver requirement: i915
-+ * Functionality: dpms, backlight
-+ * Mega feature: Display Power
-+ * Run type: BAT
-+ * Test category: functionality test
-  *
-  * SUBTEST: fade-with-suspend
-- * Description: test the fade with suspend.
-- * Run type: FULL
-+ * Description: Test the fade with suspend.
-+ * Driver requirement: i915
-+ * Functionality: backlight, suspend
-+ * Mega feature: Display Power
-+ * Run type: BAT
-+ * Test category: functionality test
-  */
- 
- struct context {
+On 2023-08-22 16:47, Kamil Konieczny wrote:
+> Hi Aurabindo,
+> 
+> On 2023-08-22 at 16:18:33 -0400, Aurabindo Pillai wrote:
+>> Remove the external file include that causes build error
+>> on certain systems configured in the CI.
+>>
+>> Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+>> ---
+>>   tests/amdgpu/amd_odm.c | 1 -
+>>   1 file changed, 1 deletion(-)
+>>
+>> diff --git a/tests/amdgpu/amd_odm.c b/tests/amdgpu/amd_odm.c
+>> index 2781ad1c2..839f2de3f 100644
+>> --- a/tests/amdgpu/amd_odm.c
+>> +++ b/tests/amdgpu/amd_odm.c
+>> @@ -5,7 +5,6 @@
+>>   
+>>   #include <fcntl.h>
+>>   #include <stdio.h>
+>> -#include <xf86drmMode.h>
+> 
+> Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> 
+> Will this test work without xf86drmMode.h?
+> If it is kms test you may just include igt_kms.h but first
+> apply fix (or revert).
+
+Yes, looks like IGT already includes all the necessary headers.
+
+> 
+> Regards,
+> Kamil
+> 
+>>   
+>>   #include "igt.h"
+>>   #include "igt_amd.h"
+>> -- 
+>> 2.41.0
+>>
+
 -- 
-2.40.0
+--
+
+Thanks & Regards,
+Jay
