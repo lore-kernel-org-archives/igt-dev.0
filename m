@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 83D8F10E08D
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Aug 2023 18:55:28 +0000 (UTC)
-From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 22 Aug 2023 20:55:07 +0200
-Message-ID: <20230822185507.26407-1-thomas.hellstrom@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============2392544284761126446=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/xe/xe_exec_compute_mode: Test pinned
- userptr functionality
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Aurabindo Pillai" <aurabindo.pillai@amd.com>
+Date: Tue, 22 Aug 2023 18:55:50 -0000
+Message-ID: <169273055031.20553.17253247882091638954@emeril.freedesktop.org>
+References: <20230821140712.1034591-1-aurabindo.pillai@amd.com>
+In-Reply-To: <20230821140712.1034591-1-aurabindo.pillai@amd.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bv4=2C1/2=5D_lib/amdgpu=3A_Add_check_for_ODM_c?=
+ =?utf-8?q?ombine_segments_debugfs_endpoint_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,152 +18,165 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Update the xe uapi definition and test the new XE_VM_BIND_FLAG_PIN
-flag with xe_exec_compute_mode . Compute mode VMs will initially be
-the main user of this flag.
+--===============2392544284761126446==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
----
- include/drm-uapi/xe_drm.h       | 18 +++++++++++
- tests/xe/xe_exec_compute_mode.c | 54 +++++++++++++++++++++++++++------
- 2 files changed, 63 insertions(+), 9 deletions(-)
+== Series Details ==
 
-diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index d1d49cd71..db7a47bab 100644
---- a/include/drm-uapi/xe_drm.h
-+++ b/include/drm-uapi/xe_drm.h
-@@ -631,6 +631,24 @@ struct drm_xe_vm_bind_op {
- 	 * intended to implement VK sparse bindings.
- 	 */
- #define XE_VM_BIND_FLAG_NULL		(0x1 << 19)
-+	 /*
-+	  * When the PIN flag is set, the user requests the underlying
-+	  * backing store of the vma to be pinned, that is, it will be
-+	  * resident while bound and the underlying physical memory
-+	  * will not change. For userptr VMAs this means that if the
-+	  * user performs an operation that changes the underlying
-+	  * pages of the CPU virtual space, the corresponding pinned
-+	  * GPU virtual space will not pick up the new memory unless
-+	  * an OP_UNMAP followed by a OP_MAP_USERPTR is performed.
-+	  * Pinned userptr memory is accounted in the same way as
-+	  * mlock(2), and if pinning fails the following error codes
-+	  * may be returned:
-+	  * -EINVAL: The memory region does not support pinning.
-+	  * -EPERM: The process is not permitted to pin.
-+	  * -ENOMEM: The pinning limit does not allow pinning.
-+	  * For userptr memory, CAP_IPC_LOCK will bypass the limit checking.
-+	  */
-+#define XE_VM_BIND_FLAG_PIN		(0x1 << 20)
- 	/** @op: Operation to perform (lower 16 bits) and flags (upper 16 bits) */
- 	__u32 op;
- 
-diff --git a/tests/xe/xe_exec_compute_mode.c b/tests/xe/xe_exec_compute_mode.c
-index 679b84fa1..b7e20aca5 100644
---- a/tests/xe/xe_exec_compute_mode.c
-+++ b/tests/xe/xe_exec_compute_mode.c
-@@ -30,6 +30,7 @@
- #define BIND_EXECQUEUE		(0x1 << 4)
- #define VM_FOR_BO			(0x1 << 5)
- #define EXEC_QUEUE_EARLY	(0x1 << 6)
-+#define PIN                             (0x1 << 7)
- 
- /**
-  * SUBTEST: twice-%s
-@@ -178,9 +179,10 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 		xe_vm_bind_async(fd, vm, bind_exec_queues[0], bo, 0, addr,
- 				 bo_size, sync, 1);
- 	else
--		xe_vm_bind_userptr_async(fd, vm, bind_exec_queues[0],
--					 to_user_pointer(data), addr,
--					 bo_size, sync, 1);
-+		xe_vm_bind_userptr_async_flags(fd, vm, bind_exec_queues[0],
-+					       to_user_pointer(data), addr,
-+					       bo_size, sync, 1,
-+					       (flags & PIN) ? XE_VM_BIND_FLAG_PIN : 0);
- #define ONE_SEC	MS_TO_NS(1000)
- #define HUNDRED_SEC	MS_TO_NS(100000)
- 
-@@ -223,15 +225,18 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 				xe_vm_bind_async(fd, vm, bind_exec_queues[e], bo,
- 						 0, addr, bo_size, sync, 1);
- 			else
--				xe_vm_bind_userptr_async(fd, vm,
--							 bind_exec_queues[e],
--							 to_user_pointer(data),
--							 addr, bo_size, sync,
--							 1);
-+				xe_vm_bind_userptr_async_flags(fd, vm,
-+							       bind_exec_queues[e],
-+							       to_user_pointer(data),
-+							       addr, bo_size, sync, 1,
-+							       (flags & PIN) ?
-+							       XE_VM_BIND_FLAG_PIN : 0);
- 			xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
- 				       NULL, fence_timeout);
- 			data[0].vm_sync = 0;
--		}
-+		} else if (flags & PIN &&  i + 1 != n_execs)
-+			xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
-+				       NULL, fence_timeout);
- 
- 		if (flags & INVALIDATE && i + 1 != n_execs) {
- 			if (!(flags & RACE)) {
-@@ -268,6 +273,26 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 			}
- 			igt_assert(data != MAP_FAILED);
- 		}
-+
-+		if (flags & PIN && i + 1 != n_execs) {
-+			xe_vm_unbind_async(fd, vm, bind_exec_queues[e], 0,
-+					   addr, bo_size, NULL, 0);
-+
-+			sync[0].addr = to_user_pointer(&data[0].vm_sync);
-+			addr += bo_size;
-+			if (bo)
-+				xe_vm_bind_async(fd, vm, bind_exec_queues[e], bo,
-+						 0, addr, bo_size, sync, 1);
-+			else
-+				xe_vm_bind_userptr_async_flags(fd, vm,
-+							       bind_exec_queues[e],
-+							       to_user_pointer(data),
-+							       addr, bo_size, sync, 1,
-+							       XE_VM_BIND_FLAG_PIN);
-+			xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
-+				       NULL, fence_timeout);
-+			data[0].vm_sync = 0;
-+		}
- 	}
- 
- 	j = flags & INVALIDATE ? n_execs - 1 : 0;
-@@ -319,6 +344,10 @@ igt_main
- 		{ "userptr-rebind", USERPTR | REBIND },
- 		{ "userptr-invalidate", USERPTR | INVALIDATE },
- 		{ "userptr-invalidate-race", USERPTR | INVALIDATE | RACE },
-+		{ "userptr-pin", USERPTR | PIN },
-+		{ "userptr-rebind-pin", USERPTR | REBIND | PIN },
-+		{ "userptr-invalidate-pin", USERPTR | INVALIDATE | PIN },
-+		{ "userptr-invalidate-race-pin", USERPTR | INVALIDATE | RACE | PIN},
- 		{ "bindexecqueue", BIND_EXECQUEUE },
- 		{ "bindexecqueue-userptr", BIND_EXECQUEUE | USERPTR },
- 		{ "bindexecqueue-rebind",  BIND_EXECQUEUE | REBIND },
-@@ -328,6 +357,13 @@ igt_main
- 			INVALIDATE },
- 		{ "bindexecqueue-userptr-invalidate-race", BIND_EXECQUEUE | USERPTR |
- 			INVALIDATE | RACE },
-+		{ "bindexecqueue-userptr-pin", BIND_EXECQUEUE | USERPTR | PIN },
-+		{ "bindexecqueue-userptr-rebind-pin",  BIND_EXECQUEUE |
-+			USERPTR | REBIND | PIN },
-+		{ "bindexecqueue-userptr-invalidate-pin",  BIND_EXECQUEUE |
-+			USERPTR | INVALIDATE | PIN },
-+		{ "bindexecqueue-userptr-invalidate-race-pin", BIND_EXECQUEUE |
-+			USERPTR | INVALIDATE | RACE | PIN },
- 		{ NULL },
- 	};
- 	int fd;
--- 
-2.41.0
+Series: series starting with [v4,1/2] lib/amdgpu: Add check for ODM combine segments debugfs endpoint (rev4)
+URL   : https://patchwork.freedesktop.org/series/122707/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_13546 -> IGTPW_9634
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9634/index.html
+
+Participating hosts (42 -> 41)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_9634 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@core_auth@basic-auth:
+    - bat-adlp-11:        NOTRUN -> [ABORT][1] ([i915#9164])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9634/bat-adlp-11/igt@core_auth@basic-auth.html
+
+  
+#### Warnings ####
+
+  * igt@i915_module_load@load:
+    - bat-adlp-11:        [ABORT][2] ([i915#4423]) -> [DMESG-WARN][3] ([i915#4423] / [i915#9176])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13546/bat-adlp-11/igt@i915_module_load@load.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9634/bat-adlp-11/igt@i915_module_load@load.html
+
+  * igt@kms_psr@primary_mmap_gtt:
+    - bat-rplp-1:         [SKIP][4] ([i915#1072]) -> [ABORT][5] ([i915#8442] / [i915#8469] / [i915#8668])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13546/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9634/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html
+
+  
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#4423]: https://gitlab.freedesktop.org/drm/intel/issues/4423
+  [i915#8442]: https://gitlab.freedesktop.org/drm/intel/issues/8442
+  [i915#8469]: https://gitlab.freedesktop.org/drm/intel/issues/8469
+  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
+  [i915#9164]: https://gitlab.freedesktop.org/drm/intel/issues/9164
+  [i915#9176]: https://gitlab.freedesktop.org/drm/intel/issues/9176
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7449 -> IGTPW_9634
+
+  CI-20190529: 20190529
+  CI_DRM_13546: f6024d250da6ed099dacf2955832e9efdd83e938 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_9634: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9634/index.html
+  IGT_7449: 7449
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9634/index.html
+
+--===============2392544284761126446==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [v4,1/2] lib/amdgpu: Add check for ODM combine segments debugfs endpoint (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122707/">https://patchwork.freedesktop.org/series/122707/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9634/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9634/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13546 -&gt; IGTPW_9634</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9634/index.html</p>
+<h2>Participating hosts (42 -&gt; 41)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_9634 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@core_auth@basic-auth:<ul>
+<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9634/bat-adlp-11/igt@core_auth@basic-auth.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9164">i915#9164</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@i915_module_load@load:</p>
+<ul>
+<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13546/bat-adlp-11/igt@i915_module_load@load.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4423">i915#4423</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9634/bat-adlp-11/igt@i915_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4423">i915#4423</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9176">i915#9176</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_mmap_gtt:</p>
+<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13546/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9634/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8442">i915#8442</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8469">i915#8469</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7449 -&gt; IGTPW_9634</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13546: f6024d250da6ed099dacf2955832e9efdd83e938 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_9634: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9634/index.html<br />
+  IGT_7449: 7449</p>
+
+</body>
+</html>
+
+--===============2392544284761126446==--
