@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
-Date: Tue, 22 Aug 2023 23:04:54 -0000
-Message-ID: <169274549431.20550.13601108920111848758@emeril.freedesktop.org>
-References: <20230822203155.53830-1-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20230822203155.53830-1-kamil.konieczny@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBSZXZl?=
- =?utf-8?q?rt_=22tests/amdgpu=3A_Add_test_for_ODM_combine=22?=
+To: vitaly.prosyak@amd.com
+Date: Tue, 22 Aug 2023 23:13:14 -0000
+Message-ID: <169274599431.20550.18340494624310559088@emeril.freedesktop.org>
+References: <20230822211711.234230-1-vitaly.prosyak@amd.com>
+In-Reply-To: <20230822211711.234230-1-vitaly.prosyak@amd.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/amdgpu=3A_add_sync_object_tests_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,19 +25,103 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: Revert "tests/amdgpu: Add test for ODM combine"
-URL   : https://patchwork.freedesktop.org/series/122762/
-State : failure
+Series: tests/amdgpu: add sync object tests (rev3)
+URL   : https://patchwork.freedesktop.org/series/119304/
+State : warning
 
 == Summary ==
 
-Applying: Revert "tests/amdgpu: Add test for ODM combine"
-Using index info to reconstruct a base tree...
-M	tests/amdgpu/amd_odm.c
-Falling back to patching base and 3-way merge...
-CONFLICT (modify/delete): tests/amdgpu/amd_odm.c deleted in Revert "tests/amdgpu: Add test for ODM combine" and modified in HEAD. Version HEAD of tests/amdgpu/amd_odm.c left in tree.
-Patch failed at 0001 Revert "tests/amdgpu: Add test for ODM combine"
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
+Pipeline status: FAILED.
 
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/968070 for the overview.
+
+build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47872456):
+        amdgpu_cs_syncobj_export_sync_file
+  ../tests/amdgpu/amd_syncobj.c:209:6: warning: nested extern declaration of ‘amdgpu_cs_syncobj_export_sync_file2’ [-Wnested-externs]
+  ../tests/amdgpu/amd_syncobj.c:214:6: error: implicit declaration of function ‘amdgpu_cs_syncobj_import_sync_file2’; did you mean ‘amdgpu_cs_syncobj_import_sync_file’? [-Werror=implicit-function-declaration]
+    r = amdgpu_cs_syncobj_import_sync_file2(device_handle, syncobj_handle,
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        amdgpu_cs_syncobj_import_sync_file
+  ../tests/amdgpu/amd_syncobj.c:214:6: warning: nested extern declaration of ‘amdgpu_cs_syncobj_import_sync_file2’ [-Wnested-externs]
+  ../tests/amdgpu/amd_syncobj.c:224:6: error: implicit declaration of function ‘amdgpu_cs_syncobj_timeline_signal’; did you mean ‘amdgpu_cs_syncobj_signal’? [-Werror=implicit-function-declaration]
+    r = amdgpu_cs_syncobj_timeline_signal(device_handle, &syncobj_handle,
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        amdgpu_cs_syncobj_signal
+  ../tests/amdgpu/amd_syncobj.c:224:6: warning: nested extern declaration of ‘amdgpu_cs_syncobj_timeline_signal’ [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1692745661:step_script
+  section_start:1692745661:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1692745662:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47872459):
+        amdgpu_cs_syncobj_export_sync_file
+  ../tests/amdgpu/amd_syncobj.c:209:6: warning: nested extern declaration of ‘amdgpu_cs_syncobj_export_sync_file2’ [-Wnested-externs]
+  ../tests/amdgpu/amd_syncobj.c:214:6: error: implicit declaration of function ‘amdgpu_cs_syncobj_import_sync_file2’; did you mean ‘amdgpu_cs_syncobj_import_sync_file’? [-Werror=implicit-function-declaration]
+    r = amdgpu_cs_syncobj_import_sync_file2(device_handle, syncobj_handle,
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        amdgpu_cs_syncobj_import_sync_file
+  ../tests/amdgpu/amd_syncobj.c:214:6: warning: nested extern declaration of ‘amdgpu_cs_syncobj_import_sync_file2’ [-Wnested-externs]
+  ../tests/amdgpu/amd_syncobj.c:224:6: error: implicit declaration of function ‘amdgpu_cs_syncobj_timeline_signal’; did you mean ‘amdgpu_cs_syncobj_signal’? [-Werror=implicit-function-declaration]
+    r = amdgpu_cs_syncobj_timeline_signal(device_handle, &syncobj_handle,
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        amdgpu_cs_syncobj_signal
+  ../tests/amdgpu/amd_syncobj.c:224:6: warning: nested extern declaration of ‘amdgpu_cs_syncobj_timeline_signal’ [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1692745679:step_script
+  section_start:1692745679:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1692745679:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47872458):
+        amdgpu_cs_syncobj_export_sync_file
+  ../tests/amdgpu/amd_syncobj.c:209:6: warning: nested extern declaration of ‘amdgpu_cs_syncobj_export_sync_file2’ [-Wnested-externs]
+  ../tests/amdgpu/amd_syncobj.c:214:6: error: implicit declaration of function ‘amdgpu_cs_syncobj_import_sync_file2’; did you mean ‘amdgpu_cs_syncobj_import_sync_file’? [-Werror=implicit-function-declaration]
+    r = amdgpu_cs_syncobj_import_sync_file2(device_handle, syncobj_handle,
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        amdgpu_cs_syncobj_import_sync_file
+  ../tests/amdgpu/amd_syncobj.c:214:6: warning: nested extern declaration of ‘amdgpu_cs_syncobj_import_sync_file2’ [-Wnested-externs]
+  ../tests/amdgpu/amd_syncobj.c:224:6: error: implicit declaration of function ‘amdgpu_cs_syncobj_timeline_signal’; did you mean ‘amdgpu_cs_syncobj_signal’? [-Werror=implicit-function-declaration]
+    r = amdgpu_cs_syncobj_timeline_signal(device_handle, &syncobj_handle,
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        amdgpu_cs_syncobj_signal
+  ../tests/amdgpu/amd_syncobj.c:224:6: warning: nested extern declaration of ‘amdgpu_cs_syncobj_timeline_signal’ [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1692745676:step_script
+  section_start:1692745676:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1692745677:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47872460):
+        amdgpu_cs_syncobj_export_sync_file
+  ../tests/amdgpu/amd_syncobj.c:209:6: warning: nested extern declaration of ‘amdgpu_cs_syncobj_export_sync_file2’ [-Wnested-externs]
+  ../tests/amdgpu/amd_syncobj.c:214:6: error: implicit declaration of function ‘amdgpu_cs_syncobj_import_sync_file2’; did you mean ‘amdgpu_cs_syncobj_import_sync_file’? [-Werror=implicit-function-declaration]
+    r = amdgpu_cs_syncobj_import_sync_file2(device_handle, syncobj_handle,
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        amdgpu_cs_syncobj_import_sync_file
+  ../tests/amdgpu/amd_syncobj.c:214:6: warning: nested extern declaration of ‘amdgpu_cs_syncobj_import_sync_file2’ [-Wnested-externs]
+  ../tests/amdgpu/amd_syncobj.c:224:6: error: implicit declaration of function ‘amdgpu_cs_syncobj_timeline_signal’; did you mean ‘amdgpu_cs_syncobj_signal’? [-Werror=implicit-function-declaration]
+    r = amdgpu_cs_syncobj_timeline_signal(device_handle, &syncobj_handle,
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        amdgpu_cs_syncobj_signal
+  ../tests/amdgpu/amd_syncobj.c:224:6: warning: nested extern declaration of ‘amdgpu_cs_syncobj_timeline_signal’ [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1692745691:step_script
+  section_start:1692745691:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1692745691:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/968070
