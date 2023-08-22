@@ -1,16 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============2392544284761126446=="
-MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Aurabindo Pillai" <aurabindo.pillai@amd.com>
-Date: Tue, 22 Aug 2023 18:55:50 -0000
-Message-ID: <169273055031.20553.17253247882091638954@emeril.freedesktop.org>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1957F10E2C3
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Aug 2023 19:47:57 +0000 (UTC)
+Date: Tue, 22 Aug 2023 21:45:58 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230822194558.3tebkhiztteeq7rv@kamilkon-desk.igk.intel.com>
 References: <20230821140712.1034591-1-aurabindo.pillai@amd.com>
-In-Reply-To: <20230821140712.1034591-1-aurabindo.pillai@amd.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bv4=2C1/2=5D_lib/amdgpu=3A_Add_check_for_ODM_c?=
- =?utf-8?q?ombine_segments_debugfs_endpoint_=28rev4=29?=
+ <20230821140712.1034591-2-aurabindo.pillai@amd.com>
+ <581a47bb-0e4c-7408-d107-5ad0e5da8c9e@amd.com>
+ <97b7e6a3-bf81-4a17-b224-1351d8dedf53@amd.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <97b7e6a3-bf81-4a17-b224-1351d8dedf53@amd.com>
+Subject: Re: [igt-dev] [PATCH v4 2/2] tests/amdgpu: Add test for ODM combine
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,165 +23,306 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: hersenxs.wu@amd.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2392544284761126446==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Aurabindo,
 
-== Series Details ==
+On 2023-08-21 at 16:18:42 -0400, Aurabindo Pillai wrote:
+> Thanks for the review Alex.
+> 
+> Kamil,
+> 
+> There seems to be a false positive failure for this patchset:
+> https://lists.freedesktop.org/archives/igt-dev/2023-August/060105.html
+> 
+> Do you have any further review suggestions or is it okay to merge ?
+> 
 
-Series: series starting with [v4,1/2] lib/amdgpu: Add check for ODM combine segments debugfs endpoint (rev4)
-URL   : https://patchwork.freedesktop.org/series/122707/
-State : success
+This is not ok, on some images your test will not build,
+to reproduce:
 
-== Summary ==
+follow links from failed build to find out what image was used
+for example here: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47853345
 
-CI Bug Log - changes from CI_DRM_13546 -> IGTPW_9634
-====================================================
+install podman, enter to igt-tools source dir,
+then run script:
 
-Summary
--------
+POD_IGT=registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian:commit-26f3d20c6ff4274aeb71d4851cdf7a7cefb0a008
 
-  **SUCCESS**
+mkdir -p /tmp/igt-build
+cp -R * /tmp/igt-build/
+sudo podman run -i -t -v /tmp/igt-build/:/opt/builds --privileged ${POD_IGT}
 
-  No regressions found.
+## end of script
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9634/index.html
+now you will have root prompt '#' inside podman image (debian),
+enter commands:
 
-Participating hosts (42 -> 41)
-------------------------------
+# cd /opt/builds
+# meson build
+# ninja -C build
 
-  Missing    (1): fi-snb-2520m 
+imho this is problem on some old(?) systems where the system
+and/or igt headers are missing.
 
-Known issues
-------------
+Please fix this before merging.
 
-  Here are the changes found in IGTPW_9634 that come from known issues:
+Regards,
+Kamil
 
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@core_auth@basic-auth:
-    - bat-adlp-11:        NOTRUN -> [ABORT][1] ([i915#9164])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9634/bat-adlp-11/igt@core_auth@basic-auth.html
-
-  
-#### Warnings ####
-
-  * igt@i915_module_load@load:
-    - bat-adlp-11:        [ABORT][2] ([i915#4423]) -> [DMESG-WARN][3] ([i915#4423] / [i915#9176])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13546/bat-adlp-11/igt@i915_module_load@load.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9634/bat-adlp-11/igt@i915_module_load@load.html
-
-  * igt@kms_psr@primary_mmap_gtt:
-    - bat-rplp-1:         [SKIP][4] ([i915#1072]) -> [ABORT][5] ([i915#8442] / [i915#8469] / [i915#8668])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13546/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9634/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html
-
-  
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#4423]: https://gitlab.freedesktop.org/drm/intel/issues/4423
-  [i915#8442]: https://gitlab.freedesktop.org/drm/intel/issues/8442
-  [i915#8469]: https://gitlab.freedesktop.org/drm/intel/issues/8469
-  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
-  [i915#9164]: https://gitlab.freedesktop.org/drm/intel/issues/9164
-  [i915#9176]: https://gitlab.freedesktop.org/drm/intel/issues/9176
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7449 -> IGTPW_9634
-
-  CI-20190529: 20190529
-  CI_DRM_13546: f6024d250da6ed099dacf2955832e9efdd83e938 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_9634: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9634/index.html
-  IGT_7449: 7449
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9634/index.html
-
---===============2392544284761126446==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [v4,1/2] lib/amdgpu: Add check for ODM combine segments debugfs endpoint (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122707/">https://patchwork.freedesktop.org/series/122707/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9634/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9634/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_13546 -&gt; IGTPW_9634</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9634/index.html</p>
-<h2>Participating hosts (42 -&gt; 41)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_9634 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@core_auth@basic-auth:<ul>
-<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9634/bat-adlp-11/igt@core_auth@basic-auth.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9164">i915#9164</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@i915_module_load@load:</p>
-<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13546/bat-adlp-11/igt@i915_module_load@load.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4423">i915#4423</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9634/bat-adlp-11/igt@i915_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4423">i915#4423</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9176">i915#9176</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@primary_mmap_gtt:</p>
-<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13546/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9634/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8442">i915#8442</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8469">i915#8469</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7449 -&gt; IGTPW_9634</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13546: f6024d250da6ed099dacf2955832e9efdd83e938 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_9634: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9634/index.html<br />
-  IGT_7449: 7449</p>
-
-</body>
-</html>
-
---===============2392544284761126446==--
+> 
+> On 2023-08-21 11:39, Alex Hung wrote:
+> > Reviewed-by: Alex Hung <alex.hung@amd.com>
+> > 
+> > On 2023-08-21 08:07, Aurabindo Pillai wrote:
+> > > Add a test that checks whether ODM Combine mode is triggered when high
+> > > refresh rate timing is committed on hardware it supports. This test
+> > > requires a DSC capable monitor.
+> > > 
+> > > Changes in V2: Added check to skip test on hardware that does not have
+> > > ODM combine segments debugfs endpoint exposed
+> > > 
+> > > Changes in V3: Removed data->w,h since its not used; Removed license
+> > > text and use SPDX identifier instead.
+> > > 
+> > > Changes in V4: Checkpatch.pl style fixes
+> > > 
+> > > Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+> > > ---
+> > >   tests/amdgpu/amd_odm.c   | 189 +++++++++++++++++++++++++++++++++++++++
+> > >   tests/amdgpu/meson.build |   1 +
+> > >   2 files changed, 190 insertions(+)
+> > >   create mode 100644 tests/amdgpu/amd_odm.c
+> > > 
+> > > diff --git a/tests/amdgpu/amd_odm.c b/tests/amdgpu/amd_odm.c
+> > > new file mode 100644
+> > > index 000000000..2781ad1c2
+> > > --- /dev/null
+> > > +++ b/tests/amdgpu/amd_odm.c
+> > > @@ -0,0 +1,189 @@
+> > > +// SPDX-License-Identifier: MIT
+> > > +/*
+> > > + * Copyrights 2023 Advanced Micro Devices, Inc.
+> > > + */
+> > > +
+> > > +#include <fcntl.h>
+> > > +#include <stdio.h>
+> > > +#include <xf86drmMode.h>
+> > > +
+> > > +#include "igt.h"
+> > > +#include "igt_amd.h"
+> > > +#include "igt_edid.h"
+> > > +
+> > > +IGT_TEST_DESCRIPTION("Test whether ODM Combine mode is triggered
+> > > when timings with high refresh "
+> > > +             "rate is committed");
+> > > +
+> > > +enum odmc_mode {
+> > > +    ODMC_2_TO_1,
+> > > +    ODMC_4_TO_1,
+> > > +};
+> > > +
+> > > +/* Common test data. */
+> > > +struct data {
+> > > +    igt_display_t display;
+> > > +    igt_plane_t *primary;
+> > > +    igt_output_t *output;
+> > > +    igt_pipe_t *pipe;
+> > > +    drmModeModeInfoPtr mode;
+> > > +    enum pipe pipe_id;
+> > > +    int fd;
+> > > +};
+> > > +
+> > > +static const drmModeModeInfo test_mode[] = {
+> > > +    { 1278720,
+> > > +    3840, 3952, 3984, 4000, 0,
+> > > +    2160, 2210, 2215, 2220, 0,
+> > > +    30,
+> > > +    DRM_MODE_FLAG_NHSYNC,
+> > > +    0x40,
+> > > +    "4k144\0",
+> > > +    }, /* from HP Omen 27c */
+> > > +
+> > > +};
+> > > +
+> > > +#define TEST_MODE_IDX_ODMC_2_TO_1 0
+> > > +
+> > > +static void test_init(struct data *data)
+> > > +{
+> > > +    igt_display_t *display = &data->display;
+> > > +
+> > > +    /* It doesn't matter which pipe we choose on amdpgu. */
+> > > +    data->pipe_id = PIPE_A;
+> > > +    data->pipe = &data->display.pipes[data->pipe_id];
+> > > +
+> > > +    igt_display_reset(display);
+> > > +
+> > > +    /* find a connected non-HDMI output */
+> > > +    data->output = NULL;
+> > > +    for (int i = 0; i < data->display.n_outputs; ++i) {
+> > > +        drmModeConnector *connector =
+> > > data->display.outputs[i].config.connector;
+> > > +
+> > > +        if (connector->connection == DRM_MODE_CONNECTED)
+> > > +            data->output = &data->display.outputs[i];
+> > > +    }
+> > > +    igt_require_f(data->output, "Requires a connected output\n");
+> > > +
+> > > +    data->mode = igt_output_get_mode(data->output);
+> > > +    igt_assert(data->mode);
+> > > +
+> > > +   
+> > > igt_skip_on_f(!igt_amd_output_has_odm_combine_segments(data->fd,
+> > > data->output->name),
+> > > +              "ASIC does not support reading ODM combine segments\n");
+> > > +
+> > > +    igt_skip_on_f(!is_dp_dsc_supported(data->fd, data->output->name),
+> > > +              "The monitor must be DSC capable\n");
+> > > +
+> > > +    igt_skip_on_f(data->output->config.connector->connector_type ==
+> > > DRM_MODE_CONNECTOR_HDMIA ||
+> > > +              data->output->config.connector->connector_type ==
+> > > DRM_MODE_CONNECTOR_HDMIB,
+> > > +              "ODM Combine isn't supported on HDMI 1.x\n");
+> > > +
+> > > +    data->primary = igt_pipe_get_plane_type(data->pipe,
+> > > DRM_PLANE_TYPE_PRIMARY);
+> > > +    igt_output_set_pipe(data->output, data->pipe_id);
+> > > +
+> > > +    igt_display_reset(display);
+> > > +}
+> > > +
+> > > +static void test_fini(struct data *data)
+> > > +{
+> > > +    igt_display_reset(&data->display);
+> > > +    igt_display_commit_atomic(&data->display,
+> > > DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
+> > > +}
+> > > +
+> > > +/* Forces a mode for a connector. */
+> > > +static void force_output_mode(struct data *d, igt_output_t *output,
+> > > +                  const drmModeModeInfo *mode)
+> > > +{
+> > > +    /* This allows us to create a virtual sink. */
+> > > +    if (!igt_output_is_connected(output)) {
+> > > +        kmstest_force_edid(d->fd, output->config.connector,
+> > > +                   igt_kms_get_4k_edid());
+> > > +
+> > > +        kmstest_force_connector(d->fd, output->config.connector,
+> > > +                    FORCE_CONNECTOR_DIGITAL);
+> > > +    }
+> > > +
+> > > +    igt_output_override_mode(output, mode);
+> > > +}
+> > > +
+> > > +static void run_test_odmc(struct data *data, enum odmc_mode m,
+> > > const drmModeModeInfo *mode)
+> > > +{
+> > > +    igt_display_t *display = &data->display;
+> > > +    struct igt_fb buffer;
+> > > +    char buf[256];
+> > > +    int ret, seg, fd;
+> > > +    int i = 0;
+> > > +
+> > > +    test_init(data);
+> > > +
+> > > +    force_output_mode(data, data->output, mode);
+> > > +
+> > > +    igt_create_color_fb(display->drm_fd, mode->hdisplay,
+> > > +                mode->vdisplay, DRM_FORMAT_XRGB8888,
+> > > +                DRM_FORMAT_MOD_LINEAR, 1.f, 0.f, 0.f,
+> > > +                &buffer);
+> > > +
+> > > +    igt_output_set_pipe(data->output, i);
+> > > +
+> > > +    igt_plane_set_fb(data->primary, &buffer);
+> > > +
+> > > +    ret = igt_display_try_commit_atomic(display,
+> > > +                        DRM_MODE_ATOMIC_ALLOW_MODESET |
+> > > +                        DRM_MODE_ATOMIC_TEST_ONLY,
+> > > +                        NULL);
+> > > +    igt_skip_on_f(ret != 0, "Unsupported mode\n");
+> > > +
+> > > +    igt_display_commit_atomic(display,
+> > > DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> > > +
+> > > +    fd = igt_debugfs_connector_dir(data->fd, data->output->name,
+> > > O_RDONLY);
+> > > +    igt_assert(fd >= 0);
+> > > +
+> > > +    ret = igt_debugfs_simple_read(fd, "odm_combine_segments", buf,
+> > > sizeof(buf));
+> > > +    close(fd);
+> > > +    igt_require(ret > 0);
+> > > +
+> > > +    seg = strtol(buf, NULL, 0);
+> > > +
+> > > +    switch (m) {
+> > > +    case ODMC_2_TO_1:
+> > > +        igt_assert_f(seg == 2,
+> > > +                 "ODM Combine uses %d segments for connector %s,
+> > > expected 2\n",
+> > > +                 seg, data->output->name);
+> > > +        break;
+> > > +    case ODMC_4_TO_1:
+> > > +        igt_assert_f(seg == 4,
+> > > +                 "ODM Combine uses %d segments for connector %s,
+> > > expected 4\n",
+> > > +                 seg, data->output->name);
+> > > +        break;
+> > > +    }
+> > > +
+> > > +    igt_remove_fb(display->drm_fd, &buffer);
+> > > +
+> > > +    test_fini(data);
+> > > +}
+> > > +
+> > > +igt_main
+> > > +{
+> > > +    struct data data;
+> > > +
+> > > +    memset(&data, 0, sizeof(data));
+> > > +
+> > > +    igt_fixture
+> > > +    {
+> > > +        data.fd = drm_open_driver_master(DRIVER_ANY);
+> > > +
+> > > +        kmstest_set_vt_graphics_mode();
+> > > +
+> > > +        igt_display_require(&data.display, data.fd);
+> > > +        igt_require(&data.display.is_atomic);
+> > > +        igt_display_require_output(&data.display);
+> > > +
+> > > +    }
+> > > +
+> > > +    igt_subtest_f("odm-combine-2-to-1-%s",
+> > > test_mode[TEST_MODE_IDX_ODMC_2_TO_1].name)
+> > > +        run_test_odmc(&data, ODMC_2_TO_1,
+> > > &test_mode[TEST_MODE_IDX_ODMC_2_TO_1]);
+> > > +
+> > > +    igt_fixture
+> > > +    {
+> > > +        igt_display_fini(&data.display);
+> > > +    }
+> > > +}
+> > > diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+> > > index 6c6166167..6032a38e8 100644
+> > > --- a/tests/amdgpu/meson.build
+> > > +++ b/tests/amdgpu/meson.build
+> > > @@ -35,6 +35,7 @@ if libdrm_amdgpu.found()
+> > >                 'amd_vm',
+> > >                 'amd_vrr_range',
+> > >                 'amd_mall',
+> > > +              'amd_odm',
+> > >               ]
+> > >       amdgpu_deps += libdrm_amdgpu
+> > >   endif
+> 
+> -- 
+> --
+> 
+> Thanks & Regards,
+> Jay
