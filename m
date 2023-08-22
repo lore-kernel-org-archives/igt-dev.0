@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5ECA110E2C7
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Aug 2023 09:41:08 +0000 (UTC)
-From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 22 Aug 2023 12:40:31 +0300
-Message-Id: <20230822094035.3424673-1-jouni.hogander@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============0714965761473707869=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v8 0/4] Testcases for dirtyfb ioctl
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Jouni_H=C3=B6gander?= <jouni.hogander@intel.com>
+Date: Tue, 22 Aug 2023 10:11:34 -0000
+Message-ID: <169269909428.20553.4821478673898583479@emeril.freedesktop.org>
+References: <20230822094035.3424673-1-jouni.hogander@intel.com>
+In-Reply-To: <20230822094035.3424673-1-jouni.hogander@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_Testcases_f?=
+ =?utf-8?q?or_dirtyfb_ioctl?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,64 +17,69 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This patchset is adding new testcases for dirtyfb ioctl with features
-like FBC, PSR and DRRS.
+--===============0714965761473707869==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Also some helpers are split from kms_frontbuffer_tracking to be shared
-with a new testcases.
+== Series Details ==
 
-v8:
- - Add new style documentation
-v7:
- - Split kms_frontbuffer_tracking changes into separate patch
- - Xe spinner changes already merged
-v6:
- - Perform igt_display_reset in prepare
-v5:
- - Modifications to support Xe as well
-v4:
- - Document library interface functions
- - Check connector type is eDP when PSR is tested
-v3:
- - Use spinner
- - Drop allocating big frambuffers
-v2:
- - Move fbc and drrs into libigt
- - Change testcase license comment
- - Move disable_features and do not apply for FEATURE_DEFAULT
+Series: Testcases for dirtyfb ioctl
+URL   : https://patchwork.freedesktop.org/series/122731/
+State : info
 
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
+== Summary ==
 
-Jouni Högander (4):
-  lib/i915/fbc: Add fbc helpers
-  lib/i915/drrs: Add drrs helpers
-  tests/i915/kms_frontbuffer_tracking: Utilize added fbc and drrs
-    helpers
-  tests/kms_dirtyfb: Add new test for dirtyfb ioctl
+Participating hosts:
+bat-atsm-2
+bat-dg2-oem2
+bat-adlp-7
+Missing hosts results[0]:
+Results: [IGTPW_9633](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9633/index.html)
 
- lib/i915/intel_drrs.c                 | 133 +++++++++++
- lib/i915/intel_drrs.h                 |  17 ++
- lib/i915/intel_fbc.c                  |  96 ++++++++
- lib/i915/intel_fbc.h                  |  18 ++
- lib/meson.build                       |   2 +
- tests/i915/kms_dirtyfb.c              | 318 ++++++++++++++++++++++++++
- tests/i915/kms_frontbuffer_tracking.c | 141 ++----------
- tests/meson.build                     |   1 +
- 8 files changed, 602 insertions(+), 124 deletions(-)
- create mode 100644 lib/i915/intel_drrs.c
- create mode 100644 lib/i915/intel_drrs.h
- create mode 100644 lib/i915/intel_fbc.c
- create mode 100644 lib/i915/intel_fbc.h
- create mode 100644 tests/i915/kms_dirtyfb.c
 
--- 
-2.34.1
+
+--===============0714965761473707869==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Testcases for dirtyfb ioctl</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122731/">https://patchwork.freedesktop.org/series/122731/</a></td></tr>
+<tr><td><b>State:</b></td><td>info</td></tr>
+
+</table>
+
+
+    <p>Participating hosts:<br />
+bat-atsm-2<br />
+bat-dg2-oem2<br />
+bat-adlp-7<br />
+Missing hosts results[0]:<br />
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9633/index.html">IGTPW_9633</a></p>
+
+</body>
+</html>
+
+--===============0714965761473707869==--
