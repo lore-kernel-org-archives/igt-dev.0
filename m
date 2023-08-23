@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 748F710E080
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Aug 2023 11:51:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8B69A10E080
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Aug 2023 11:52:00 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 23 Aug 2023 17:13:48 +0530
-Message-Id: <20230823114354.787212-2-bhanuprakash.modem@intel.com>
+Date: Wed, 23 Aug 2023 17:13:51 +0530
+Message-Id: <20230823114354.787212-5-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230823114354.787212-1-bhanuprakash.modem@intel.com>
 References: <20230823114354.787212-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 1/7] tests/i915/pm: Rename i915_pm_backlight to
- kms_pm_backlight
+Subject: [igt-dev] [i-g-t 4/7] tests/i915/kms_pm_dc: Fix testplan
+ documentation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,70 +23,109 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As i915_pm_backlight is a display specific test, rename it with
-the "kms_" prefix, i.e kms_pm_backlight.
+As kms_pm_dc is moved to display, update the test documentation
+according to the kms testplan kms_test_config.json
 
 Cc: Swati Sharma <swati2.sharma@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/{i915_pm_backlight.c => kms_pm_backlight.c} | 3 ++-
- tests/intel-ci/fast-feedback.testlist                  | 2 +-
- tests/meson.build                                      | 2 +-
- 3 files changed, 4 insertions(+), 3 deletions(-)
- rename tests/i915/{i915_pm_backlight.c => kms_pm_backlight.c} (99%)
+ tests/i915/kms_pm_dc.c | 66 ++++++++++++++++++++++++++++--------------
+ 1 file changed, 45 insertions(+), 21 deletions(-)
 
-diff --git a/tests/i915/i915_pm_backlight.c b/tests/i915/kms_pm_backlight.c
-similarity index 99%
-rename from tests/i915/i915_pm_backlight.c
-rename to tests/i915/kms_pm_backlight.c
-index 3c73b054b..ade5539d2 100644
---- a/tests/i915/i915_pm_backlight.c
-+++ b/tests/i915/kms_pm_backlight.c
-@@ -1,5 +1,6 @@
-+/* SPDX-License-Identifier: MIT */
- /*
-- * Copyright © 2015 Intel Corporation
-+ * Copyright © 2023 Intel Corporation
+diff --git a/tests/i915/kms_pm_dc.c b/tests/i915/kms_pm_dc.c
+index 43d88f38b..47febaa53 100644
+--- a/tests/i915/kms_pm_dc.c
++++ b/tests/i915/kms_pm_dc.c
+@@ -38,45 +38,69 @@
+ #include "time.h"
+ #include "igt_pm.h"
+ /**
+- * TEST: i915 pm dc
++ * TEST: kms pm dc
++ * Category: Display
+  * Description: Tests to validate display power DC states.
+- * Run type: FULL
   *
-  * Permission is hereby granted, free of charge, to any person obtaining a
-  * copy of this software and associated documentation files (the "Software"),
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index c09c6c417..4e1ed921c 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -117,12 +117,12 @@ igt@kms_pipe_crc_basic@nonblocking-crc
- igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
- igt@kms_pipe_crc_basic@read-crc
- igt@kms_pipe_crc_basic@read-crc-frame-sequence
-+igt@kms_pm_backlight@basic-brightness
- igt@kms_psr@primary_page_flip
- igt@kms_psr@cursor_plane_move
- igt@kms_psr@sprite_plane_onoff
- igt@kms_psr@primary_mmap_gtt
- igt@kms_setmode@basic-clone-single-crtc
--igt@i915_pm_backlight@basic-brightness
- igt@i915_pm_rpm@basic-pci-d3-state
- igt@i915_pm_rpm@basic-rte
- igt@i915_pm_rps@basic-api
-diff --git a/tests/meson.build b/tests/meson.build
-index 4d325bed1..c98a98dc4 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -223,7 +223,6 @@ i915_progs = [
- 	'i915_module_load',
- 	'i915_pciid',
- 	'i915_pipe_stress',
--	'i915_pm_backlight',
- 	'i915_pm_freq_mult',
- 	'i915_pm_lpsp',
- 	'i915_pm_rpm',
-@@ -251,6 +250,7 @@ i915_progs = [
- 	'kms_legacy_colorkey',
- 	'kms_mmap_write_crc',
- 	'kms_pipe_b_c_ivb',
-+	'kms_pm_backlight',
- 	'kms_psr',
- 	'kms_psr2_sf',
- 	'kms_psr2_su',
+  * SUBTEST: dc3co-vpb-simulation
+- * Description:
+- *   In this test we make sure that system enters DC3CO when PSR2 is active and system is in SLEEP
+- *   state
+- * Feature: dc3co, pm_dc
++ * Description: Make sure that system enters DC3CO when PSR2 is active and system
++ *              is in SLEEP state
++ * Driver requirement: i915
++ * Functionality: dc3co, pm_dc, psr2
++ * Mega feature: Display Power
++ * Run type: FULL
++ * Test category: functionality test
+  *
+  * SUBTEST: dc5-dpms
+- * Description:
+- *   This test validates display engine entry to DC5 state while all connectors's DPMS property
+- *   set to OFF
+- * Feature: pm_dc
++ * Description: Validate display engine entry to DC5 state while all connectors's
++ *              DPMS property set to OFF
++ * Driver requirement: i915
++ * Functionality: dpms, pm_dc
++ * Mega feature: Display Power
++ * Run type: FULL
++ * Test category: functionality test
+  *
+  * SUBTEST: dc5-dpms-negative
+- * Description:
+- *   This test validates negative scenario of DC5 display engine entry to DC5 state while all
+- *   connectors's DPMS property set to ON
+- * Feature: pm_dc
++ * Description: Validate negative scenario of DC5 display engine entry to DC5 state
++ *              while all connectors's DPMS property set to ON
++ * Driver requirement: i915
++ * Functionality: dpms, pm_dc
++ * Mega feature: Display Power
++ * Run type: FULL
++ * Test category: functionality test
+  *
+  * SUBTEST: dc5-psr
+  * Description: This test validates display engine entry to DC5 state while PSR is active
+- * Feature: pm_dc
++ * Driver requirement: i915
++ * Functionality: pm_dc, psr
++ * Mega feature: Display Power
++ * Run type: FULL
++ * Test category: functionality test
+  *
+  * SUBTEST: dc6-dpms
+- * Description:
+- *   This test validates display engine entry to DC6 state while all connectors's DPMS property
+- *   set to OFF
+- * Feature: pm_dc
++ * Description: Validate display engine entry to DC6 state while all connectors's
++ *              DPMS property set to OFF
++ * Driver requirement: i915
++ * Functionality: dpms, pm_dc
++ * Mega feature: Display Power
++ * Run type: FULL
++ * Test category: functionality test
+  *
+  * SUBTEST: dc6-psr
+  * Description: This test validates display engine entry to DC6 state while PSR is active
+- * Feature: pm_dc
++ * Driver requirement: i915
++ * Functionality: pm_dc, psr
++ * Mega feature: Display Power
++ * Run type: FULL
++ * Test category: functionality test
+  *
+  * SUBTEST: dc9-dpms
+  * Description: This test validates display engine entry to DC9 state
+- * Feature: pm_dc
++ * Driver requirement: i915
++ * Functionality: dpms, pm_dc
++ * Mega feature: Display Power
++ * Run type: FULL
++ * Test category: functionality test
+  */
+ 
+ /* DC State Flags */
 -- 
 2.40.0
