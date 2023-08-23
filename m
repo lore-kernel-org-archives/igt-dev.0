@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Content-Type: multipart/alternative;
+ boundary="===============1851860065187792806=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
-Date: Wed, 23 Aug 2023 12:05:40 -0000
-Message-ID: <169279234094.16624.2701611298578023210@emeril.freedesktop.org>
+Date: Wed, 23 Aug 2023 12:29:53 -0000
+Message-ID: <169279379350.16629.964654277698472270@emeril.freedesktop.org>
 References: <20230823114354.787212-1-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230823114354.787212-1-bhanuprakash.modem@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_S?=
- =?utf-8?q?eparate_display_PM_tests_from_Core?=
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Separate?=
+ =?utf-8?q?_display_PM_tests_from_Core?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,147 +23,131 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============1851860065187792806==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
 Series: Separate display PM tests from Core
 URL   : https://patchwork.freedesktop.org/series/122790/
-State : warning
+State : success
 
 == Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from XEIGT_7451_BAT -> XEIGTPW_9643_BAT
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/968565 for the overview.
+Summary
+-------
 
-build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47903462):
-  Running with gitlab-runner 15.10.1 (dcfb4b66)
-    on fdo-equinix-m3l-21 y559XLTy, system ID: s_e106cb9ff99a
-  section_start:1692792149:prepare_executor
-  Preparing the "docker" executor
-  Using Docker executor with image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian:commit-076d202da336162fab8394fe7970b8ee2902dbbb ...
-  Authenticating with credentials from job payload (GitLab Registry)
-  Pulling docker image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian:commit-076d202da336162fab8394fe7970b8ee2902dbbb ...
-  WARNING: Failed to pull image with policy "if-not-present": initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian:commit-076d202da336162fab8394fe7970b8ee2902dbbb: reading manifest commit-076d202da336162fab8394fe7970b8ee2902dbbb in harbor.freedesktop.org/cache/gfx-ci/igt-ci-tags/build-debian: unknown: artifact cache/gfx-ci/igt-ci-tags/build-debian:commit-076d202da336162fab8394fe7970b8ee2902dbbb not found (manager.go:237:4s)
-  section_end:1692792155:prepare_executor
-  ERROR: Job failed: failed to pull image "registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian:commit-076d202da336162fab8394fe7970b8ee2902dbbb" with specified policies [if-not-present]: initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian:commit-076d202da336162fab8394fe7970b8ee2902dbbb: reading manifest commit-076d202da336162fab8394fe7970b8ee2902dbbb in harbor.freedesktop.org/cache/gfx-ci/igt-ci-tags/build-debian: unknown: artifact cache/gfx-ci/igt-ci-tags/build-debian:commit-076d202da336162fab8394fe7970b8ee2902dbbb not found (manager.go:237:4s)
+  **SUCCESS**
+
+  No regressions found.
+
   
 
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47903465):
-  Running with gitlab-runner 15.10.1 (dcfb4b66)
-    on fdo-equinix-m3l-21 y559XLTy, system ID: s_e106cb9ff99a
-  section_start:1692792150:prepare_executor
-  Preparing the "docker" executor
-  Using Docker executor with image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-arm64:commit-076d202da336162fab8394fe7970b8ee2902dbbb ...
-  Authenticating with credentials from job payload (GitLab Registry)
-  Pulling docker image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-arm64:commit-076d202da336162fab8394fe7970b8ee2902dbbb ...
-  WARNING: Failed to pull image with policy "if-not-present": initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-arm64:commit-076d202da336162fab8394fe7970b8ee2902dbbb: reading manifest commit-076d202da336162fab8394fe7970b8ee2902dbbb in harbor.freedesktop.org/cache/gfx-ci/igt-ci-tags/build-debian-arm64: unknown: artifact cache/gfx-ci/igt-ci-tags/build-debian-arm64:commit-076d202da336162fab8394fe7970b8ee2902dbbb not found (manager.go:237:4s)
-  section_end:1692792156:prepare_executor
-  ERROR: Job failed: failed to pull image "registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-arm64:commit-076d202da336162fab8394fe7970b8ee2902dbbb" with specified policies [if-not-present]: initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-arm64:commit-076d202da336162fab8394fe7970b8ee2902dbbb: reading manifest commit-076d202da336162fab8394fe7970b8ee2902dbbb in harbor.freedesktop.org/cache/gfx-ci/igt-ci-tags/build-debian-arm64: unknown: artifact cache/gfx-ci/igt-ci-tags/build-debian-arm64:commit-076d202da336162fab8394fe7970b8ee2902dbbb not found (manager.go:237:4s)
+Participating hosts (3 -> 3)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9643_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
+    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 similar issue
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7451/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9643/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
+    - bat-adlp-7:         [PASS][3] -> [FAIL][4] ([Intel XE#400]) +1 similar issue
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7451/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9643/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
+
   
+  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
 
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47903464):
-  Running with gitlab-runner 16.2.1 (674e0e29)
-    on fdo-equinix-m3l-23 M5DzQX4r, system ID: r_uRhul1c53zbG
-  section_start:1692792150:prepare_executor
-  Preparing the "docker" executor
-  Using Docker executor with image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-armhf:commit-076d202da336162fab8394fe7970b8ee2902dbbb ...
-  Authenticating with credentials from job payload (GitLab Registry)
-  Pulling docker image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-armhf:commit-076d202da336162fab8394fe7970b8ee2902dbbb ...
-  WARNING: Failed to pull image with policy "if-not-present": initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-armhf:commit-076d202da336162fab8394fe7970b8ee2902dbbb: reading manifest commit-076d202da336162fab8394fe7970b8ee2902dbbb in harbor.freedesktop.org/cache/gfx-ci/igt-ci-tags/build-debian-armhf: unknown: artifact cache/gfx-ci/igt-ci-tags/build-debian-armhf:commit-076d202da336162fab8394fe7970b8ee2902dbbb not found (manager.go:237:4s)
-  section_end:1692792154:prepare_executor
-  ERROR: Job failed: failed to pull image "registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-armhf:commit-076d202da336162fab8394fe7970b8ee2902dbbb" with specified policies [if-not-present]: initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-armhf:commit-076d202da336162fab8394fe7970b8ee2902dbbb: reading manifest commit-076d202da336162fab8394fe7970b8ee2902dbbb in harbor.freedesktop.org/cache/gfx-ci/igt-ci-tags/build-debian-armhf: unknown: artifact cache/gfx-ci/igt-ci-tags/build-debian-armhf:commit-076d202da336162fab8394fe7970b8ee2902dbbb not found (manager.go:237:4s)
-  
 
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47903466):
-  Running with gitlab-runner 16.2.1 (674e0e29)
-    on fdo-equinix-m3l-24 wL1RuQ-s, system ID: r_MoZu10MFma0h
-  section_start:1692792150:prepare_executor
-  Preparing the "docker" executor
-  Using Docker executor with image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips:commit-076d202da336162fab8394fe7970b8ee2902dbbb ...
-  Authenticating with credentials from job payload (GitLab Registry)
-  Pulling docker image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips:commit-076d202da336162fab8394fe7970b8ee2902dbbb ...
-  WARNING: Failed to pull image with policy "if-not-present": initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips:commit-076d202da336162fab8394fe7970b8ee2902dbbb: reading manifest commit-076d202da336162fab8394fe7970b8ee2902dbbb in harbor.freedesktop.org/cache/gfx-ci/igt-ci-tags/build-debian-mips: unknown: artifact cache/gfx-ci/igt-ci-tags/build-debian-mips:commit-076d202da336162fab8394fe7970b8ee2902dbbb not found (manager.go:237:4s)
-  section_end:1692792155:prepare_executor
-  ERROR: Job failed: failed to pull image "registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips:commit-076d202da336162fab8394fe7970b8ee2902dbbb" with specified policies [if-not-present]: initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips:commit-076d202da336162fab8394fe7970b8ee2902dbbb: reading manifest commit-076d202da336162fab8394fe7970b8ee2902dbbb in harbor.freedesktop.org/cache/gfx-ci/igt-ci-tags/build-debian-mips: unknown: artifact cache/gfx-ci/igt-ci-tags/build-debian-mips:commit-076d202da336162fab8394fe7970b8ee2902dbbb not found (manager.go:237:4s)
-  
+Build changes
+-------------
 
-build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47903463):
-  Running with gitlab-runner 16.2.1 (674e0e29)
-    on fdo-equinix-m3l-22 YyH_tCiK, system ID: r_a0v3jgyTbvyU
-  section_start:1692792150:prepare_executor
-  Preparing the "docker" executor
-  Using Docker executor with image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-minimal:commit-076d202da336162fab8394fe7970b8ee2902dbbb ...
-  Authenticating with credentials from job payload (GitLab Registry)
-  Pulling docker image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-minimal:commit-076d202da336162fab8394fe7970b8ee2902dbbb ...
-  WARNING: Failed to pull image with policy "if-not-present": initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-minimal:commit-076d202da336162fab8394fe7970b8ee2902dbbb: reading manifest commit-076d202da336162fab8394fe7970b8ee2902dbbb in harbor.freedesktop.org/cache/gfx-ci/igt-ci-tags/build-debian-minimal: unknown: artifact cache/gfx-ci/igt-ci-tags/build-debian-minimal:commit-076d202da336162fab8394fe7970b8ee2902dbbb not found (manager.go:237:4s)
-  section_end:1692792154:prepare_executor
-  ERROR: Job failed: failed to pull image "registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-minimal:commit-076d202da336162fab8394fe7970b8ee2902dbbb" with specified policies [if-not-present]: initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-minimal:commit-076d202da336162fab8394fe7970b8ee2902dbbb: reading manifest commit-076d202da336162fab8394fe7970b8ee2902dbbb in harbor.freedesktop.org/cache/gfx-ci/igt-ci-tags/build-debian-minimal: unknown: artifact cache/gfx-ci/igt-ci-tags/build-debian-minimal:commit-076d202da336162fab8394fe7970b8ee2902dbbb not found (manager.go:237:4s)
-  
+  * IGT: IGT_7451 -> IGTPW_9643
 
-build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47903457):
-  Running with gitlab-runner 16.2.1 (674e0e29)
-    on fdo-equinix-m3l-24 wL1RuQ-s, system ID: r_MoZu10MFma0h
-  section_start:1692792148:prepare_executor
-  Preparing the "docker" executor
-  Using Docker executor with image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb ...
-  Authenticating with credentials from job payload (GitLab Registry)
-  Pulling docker image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb ...
-  WARNING: Failed to pull image with policy "if-not-present": initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb: reading manifest commit-076d202da336162fab8394fe7970b8ee2902dbbb in harbor.freedesktop.org/cache/gfx-ci/igt-ci-tags/build-fedora: unknown: artifact cache/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb not found (manager.go:237:4s)
-  section_end:1692792153:prepare_executor
-  ERROR: Job failed: failed to pull image "registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb" with specified policies [if-not-present]: initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb: reading manifest commit-076d202da336162fab8394fe7970b8ee2902dbbb in harbor.freedesktop.org/cache/gfx-ci/igt-ci-tags/build-fedora: unknown: artifact cache/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb not found (manager.go:237:4s)
-  
+  IGTPW_9643: 9643
+  IGT_7451: 5d48d1fb231f449fe2f80cda14ea7a1ecfda59fa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-330-3a964d06598874329aab6f8db7fd52840135d568: 3a964d06598874329aab6f8db7fd52840135d568
 
-build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47903461):
-  Running with gitlab-runner 16.2.1 (674e0e29)
-    on fdo-equinix-m3l-24 wL1RuQ-s, system ID: r_MoZu10MFma0h
-  section_start:1692792149:prepare_executor
-  Preparing the "docker" executor
-  Using Docker executor with image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb ...
-  Authenticating with credentials from job payload (GitLab Registry)
-  Pulling docker image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb ...
-  WARNING: Failed to pull image with policy "if-not-present": initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb: reading manifest commit-076d202da336162fab8394fe7970b8ee2902dbbb in harbor.freedesktop.org/cache/gfx-ci/igt-ci-tags/build-fedora: unknown: artifact cache/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb not found (manager.go:237:4s)
-  section_end:1692792154:prepare_executor
-  ERROR: Job failed: failed to pull image "registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb" with specified policies [if-not-present]: initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb: reading manifest commit-076d202da336162fab8394fe7970b8ee2902dbbb in harbor.freedesktop.org/cache/gfx-ci/igt-ci-tags/build-fedora: unknown: artifact cache/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb not found (manager.go:237:4s)
-  
 
-build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47903460):
-  Running with gitlab-runner 16.2.1 (674e0e29)
-    on fdo-equinix-m3l-24 wL1RuQ-s, system ID: r_MoZu10MFma0h
-  section_start:1692792149:prepare_executor
-  Preparing the "docker" executor
-  Using Docker executor with image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb ...
-  Authenticating with credentials from job payload (GitLab Registry)
-  Pulling docker image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb ...
-  WARNING: Failed to pull image with policy "if-not-present": initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb: reading manifest commit-076d202da336162fab8394fe7970b8ee2902dbbb in harbor.freedesktop.org/cache/gfx-ci/igt-ci-tags/build-fedora: unknown: artifact cache/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb not found (manager.go:237:4s)
-  section_end:1692792154:prepare_executor
-  ERROR: Job failed: failed to pull image "registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb" with specified policies [if-not-present]: initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb: reading manifest commit-076d202da336162fab8394fe7970b8ee2902dbbb in harbor.freedesktop.org/cache/gfx-ci/igt-ci-tags/build-fedora: unknown: artifact cache/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb not found (manager.go:237:4s)
-  
 
-build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47903458):
-  Running with gitlab-runner 16.2.1 (674e0e29)
-    on fdo-equinix-m3l-22 YyH_tCiK, system ID: r_a0v3jgyTbvyU
-  section_start:1692792149:prepare_executor
-  Preparing the "docker" executor
-  Using Docker executor with image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb ...
-  Authenticating with credentials from job payload (GitLab Registry)
-  Pulling docker image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb ...
-  WARNING: Failed to pull image with policy "if-not-present": initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb: reading manifest commit-076d202da336162fab8394fe7970b8ee2902dbbb in harbor.freedesktop.org/cache/gfx-ci/igt-ci-tags/build-fedora: unknown: artifact cache/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb not found (manager.go:237:4s)
-  section_end:1692792154:prepare_executor
-  ERROR: Job failed: failed to pull image "registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb" with specified policies [if-not-present]: initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb: reading manifest commit-076d202da336162fab8394fe7970b8ee2902dbbb in harbor.freedesktop.org/cache/gfx-ci/igt-ci-tags/build-fedora: unknown: artifact cache/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb not found (manager.go:237:4s)
-  
+--===============1851860065187792806==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47903459):
-  Running with gitlab-runner 15.10.1 (dcfb4b66)
-    on fdo-equinix-m3l-21 y559XLTy, system ID: s_e106cb9ff99a
-  section_start:1692792149:prepare_executor
-  Preparing the "docker" executor
-  Using Docker executor with image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb ...
-  Authenticating with credentials from job payload (GitLab Registry)
-  Pulling docker image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb ...
-  WARNING: Failed to pull image with policy "if-not-present": initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb: reading manifest commit-076d202da336162fab8394fe7970b8ee2902dbbb in harbor.freedesktop.org/cache/gfx-ci/igt-ci-tags/build-fedora: unknown: artifact cache/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb not found (manager.go:237:4s)
-  section_end:1692792154:prepare_executor
-  ERROR: Job failed: failed to pull image "registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb" with specified policies [if-not-present]: initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb: reading manifest commit-076d202da336162fab8394fe7970b8ee2902dbbb in harbor.freedesktop.org/cache/gfx-ci/igt-ci-tags/build-fedora: unknown: artifact cache/gfx-ci/igt-ci-tags/build-fedora:commit-076d202da336162fab8394fe7970b8ee2902dbbb not found (manager.go:237:4s)
 
-== Logs ==
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/968565
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Separate display PM tests from Core</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122790/">https://patchwork.freedesktop.org/series/122790/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7451_BAT -&gt; XEIGTPW_9643_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (3 -&gt; 3)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9643_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7451/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9643/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7451/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9643/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a>) +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7451 -&gt; IGTPW_9643</li>
+</ul>
+<p>IGTPW_9643: 9643<br />
+  IGT_7451: 5d48d1fb231f449fe2f80cda14ea7a1ecfda59fa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-330-3a964d06598874329aab6f8db7fd52840135d568: 3a964d06598874329aab6f8db7fd52840135d568</p>
+
+</body>
+</html>
+
+--===============1851860065187792806==--
