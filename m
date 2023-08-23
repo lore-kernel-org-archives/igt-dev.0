@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Content-Type: multipart/alternative;
+ boundary="===============8991493139512005088=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Nidhi Gupta" <nidhi1.gupta@intel.com>
-Date: Wed, 23 Aug 2023 04:59:16 -0000
-Message-ID: <169276675619.16626.8208069540685731823@emeril.freedesktop.org>
+Date: Wed, 23 Aug 2023 05:18:14 -0000
+Message-ID: <169276789473.16626.13013423324298151224@emeril.freedesktop.org>
 References: <20230823041934.329942-1-nidhi1.gupta@intel.com>
 In-Reply-To: <20230823041934.329942-1-nidhi1.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
- =?utf-8?q?ests/i915/kms=5Ffbcon=5Ffbt=3A_Execute_test_on_multiple_modes_?=
- =?utf-8?b?KHJldjIp?=
+Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_tests/i915/?=
+ =?utf-8?q?kms=5Ffbcon=5Ffbt=3A_Execute_test_on_multiple_modes_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,39 +23,63 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============8991493139512005088==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
 Series: tests/i915/kms_fbcon_fbt: Execute test on multiple modes (rev2)
 URL   : https://patchwork.freedesktop.org/series/117487/
-State : warning
+State : info
 
 == Summary ==
 
-Pipeline status: FAILED.
+Participating hosts:
+bat-atsm-2
+bat-dg2-oem2
+bat-adlp-7
+Missing hosts results[0]:
+Results: [IGTPW_9640](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9640/index.html)
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/968245 for the overview.
 
-containers:igt has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47883858):
-  Downloading artifacts for build:tests-fedora (47883843)...
-  Downloading artifacts from coordinator... ok        host=gitlab.freedesktop.org id=47883843 responseStatus=200 OK token=64_yCypg
-  section_end:1692766644:download_artifacts
-  section_start:1692766644:step_script
-  Executing "step_script" stage of the job script
-  Using docker image sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176 for registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 with digest registry.freedesktop.org/wayland/ci-templates/buildah@sha256:7dbcf22cd2c1c7d49db0dc7b4ab207c3d6a4a09bd81cc3b71a688d3727d8749f ...
-  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh
-  Checking if the user of the pipeline is allowed...
-  Checking if the job's project is part of a well-known group...
-  Thank you for contributing to freedesktop.org
-  $ podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-  Login Succeeded!
-  $ .gitlab-ci/pull-or-rebuild.sh igt Dockerfile igt
-  Error: could not get runtime: error configuring CNI network plugin: could not create new watcher too many open files
-  section_end:1692766645:step_script
-  section_start:1692766645:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1692766646:cleanup_file_variables
-  ERROR: Job failed: exit code 1
 
-== Logs ==
+--===============8991493139512005088==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/968245
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915/kms_fbcon_fbt: Execute test on multiple modes (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/117487/">https://patchwork.freedesktop.org/series/117487/</a></td></tr>
+<tr><td><b>State:</b></td><td>info</td></tr>
+
+</table>
+
+
+    <p>Participating hosts:<br />
+bat-atsm-2<br />
+bat-dg2-oem2<br />
+bat-adlp-7<br />
+Missing hosts results[0]:<br />
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9640/index.html">IGTPW_9640</a></p>
+
+</body>
+</html>
+
+--===============8991493139512005088==--
