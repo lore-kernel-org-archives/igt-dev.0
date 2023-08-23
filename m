@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ABBFA10E239
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Aug 2023 06:23:07 +0000 (UTC)
-From: priyanka.dandamudi@intel.com
-To: priyanka.dandamudi@intel.com,
-	igt-dev@lists.freedesktop.org
-Date: Wed, 23 Aug 2023 11:50:48 +0530
-Message-Id: <20230823062049.1755138-1-priyanka.dandamudi@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============6732754403459964846=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] xe/xe_sysfs: Update test documentation
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
+Date: Wed, 23 Aug 2023 06:24:59 -0000
+Message-ID: <169277189999.16629.16185426794913097271@emeril.freedesktop.org>
+References: <20230707143449.16139-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20230707143449.16139-1-mohammed.thasleem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4peLIENJLnhlQkFUOiBpbmZvIGZvciB0ZXN0cy9rbXNf?=
+ =?utf-8?q?lease=3A_Terminate_lease_fd_before_subtests_execution_=28rev6?=
+ =?utf-8?q?=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,44 +18,69 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+--===============6732754403459964846==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Added missing category fields.
+== Series Details ==
 
-Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
----
- tests/xe/xe_sysfs_defaults.c  | 2 +-
- tests/xe/xe_sysfs_scheduler.c | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+Series: tests/kms_lease: Terminate lease fd before subtests execution (rev6)
+URL   : https://patchwork.freedesktop.org/series/120353/
+State : info
 
-diff --git a/tests/xe/xe_sysfs_defaults.c b/tests/xe/xe_sysfs_defaults.c
-index 0fc2918b6..a9d4d4f80 100644
---- a/tests/xe/xe_sysfs_defaults.c
-+++ b/tests/xe/xe_sysfs_defaults.c
-@@ -5,7 +5,7 @@
- 
- /**
-  * TEST: xe sysfs defaults
-- * Category: Infrastructure
-+ * Category: Software building block
-  * Functionality: sysman defaults
-  * Run type: FULL
-  * Sub-category: sysman
-diff --git a/tests/xe/xe_sysfs_scheduler.c b/tests/xe/xe_sysfs_scheduler.c
-index 0315ce915..ec2190113 100644
---- a/tests/xe/xe_sysfs_scheduler.c
-+++ b/tests/xe/xe_sysfs_scheduler.c
-@@ -5,6 +5,7 @@
- 
- /**
-  * TEST: xe sysfs scheduler
-+ * Category: Software building block
-  * Sub-category: sysman
-  * Functionality: scheduler control interface
-  * Test category: functionality test
--- 
-2.25.1
+== Summary ==
+
+Participating hosts:
+bat-atsm-2
+bat-dg2-oem2
+bat-adlp-7
+Missing hosts results[0]:
+Results: [IGTPW_9641](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9641/index.html)
+
+
+
+--===============6732754403459964846==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_lease: Terminate lease fd before subtests execution (rev6)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/120353/">https://patchwork.freedesktop.org/series/120353/</a></td></tr>
+<tr><td><b>State:</b></td><td>info</td></tr>
+
+</table>
+
+
+    <p>Participating hosts:<br />
+bat-atsm-2<br />
+bat-dg2-oem2<br />
+bat-adlp-7<br />
+Missing hosts results[0]:<br />
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9641/index.html">IGTPW_9641</a></p>
+
+</body>
+</html>
+
+--===============6732754403459964846==--
