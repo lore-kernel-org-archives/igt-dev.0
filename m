@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============7079381290664575581=="
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3952B10E0DF
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Aug 2023 19:45:16 +0000 (UTC)
+Date: Wed, 23 Aug 2023 15:45:07 -0400
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: Matthew Brost <matthew.brost@intel.com>
+Message-ID: <ZOZhwx0X4OgH9vBS@intel.com>
+References: <20230808222710.13503-1-matthew.brost@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20230808222710.13503-1-matthew.brost@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Umesh Nerlige Ramappa" <umesh.nerlige.ramappa@intel.com>
-Date: Wed, 23 Aug 2023 19:34:52 -0000
-Message-ID: <169281929281.16626.13482943694133627388@emeril.freedesktop.org>
-References: <20230823184538.6273-1-umesh.nerlige.ramappa@intel.com>
-In-Reply-To: <20230823184538.6273-1-umesh.nerlige.ramappa@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_i915/poc?=
- =?utf-8?q?=3A_Use_semaphore_wait_to_sync_gpu_and_cpu_times?=
+Subject: Re: [igt-dev] [PATCH] xe_exec_reset: Fix cm-gt-reset for LR job
+ behavior
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,127 +20,58 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7079381290664575581==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Tue, Aug 08, 2023 at 03:27:10PM -0700, Matthew Brost wrote:
+> Long running jobs in Xe are not recoverable even if the job did not
+> trigger the GT reset due to DRM scheduler not tracking LR jobs. Update
+> cm-gt-reset to understand all LR jobs are lost after a GT reset.
+> 
+> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+> ---
+>  tests/xe/xe_exec_reset.c | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
+> 
+> diff --git a/tests/xe/xe_exec_reset.c b/tests/xe/xe_exec_reset.c
+> index dfbaa6035..e8faf6209 100644
+> --- a/tests/xe/xe_exec_reset.c
+> +++ b/tests/xe/xe_exec_reset.c
+> @@ -622,8 +622,10 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
+>  		xe_exec(fd, &exec);
+>  	}
+>  
+> -	if (flags & GT_RESET)
+> +	if (flags & GT_RESET) {
+>  		xe_force_gt_reset(fd, eci->gt_id);
+> +		usleep(150000);	/* Let GT reset soak */
 
-== Series Details ==
+do we really need this here? and why?
 
-Series: i915/poc: Use semaphore wait to sync gpu and cpu times
-URL   : https://patchwork.freedesktop.org/series/122803/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7451_BAT -> XEIGTPW_9644_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (3 -> 3)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_9644_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank:
-    - bat-dg2-oem2:       [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 similar issue
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7451/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9644/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html
-
-  
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-
-
-Build changes
--------------
-
-  * IGT: IGT_7451 -> IGTPW_9644
-  * Linux: xe-330-3a964d06598874329aab6f8db7fd52840135d568 -> xe-332-24894376b6f6c1cf08ed5a7eb2760a9b0b43c3ef
-
-  IGTPW_9644: 9644
-  IGT_7451: 5d48d1fb231f449fe2f80cda14ea7a1ecfda59fa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-330-3a964d06598874329aab6f8db7fd52840135d568: 3a964d06598874329aab6f8db7fd52840135d568
-  xe-332-24894376b6f6c1cf08ed5a7eb2760a9b0b43c3ef: 24894376b6f6c1cf08ed5a7eb2760a9b0b43c3ef
-
-
-
---===============7079381290664575581==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>i915/poc: Use semaphore wait to sync gpu and cpu times</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122803/">https://patchwork.freedesktop.org/series/122803/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7451_BAT -&gt; XEIGTPW_9644_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (3 -&gt; 3)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_9644_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7451/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9644/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7451 -&gt; IGTPW_9644</li>
-<li>Linux: xe-330-3a964d06598874329aab6f8db7fd52840135d568 -&gt; xe-332-24894376b6f6c1cf08ed5a7eb2760a9b0b43c3ef</li>
-</ul>
-<p>IGTPW_9644: 9644<br />
-  IGT_7451: 5d48d1fb231f449fe2f80cda14ea7a1ecfda59fa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-330-3a964d06598874329aab6f8db7fd52840135d568: 3a964d06598874329aab6f8db7fd52840135d568<br />
-  xe-332-24894376b6f6c1cf08ed5a7eb2760a9b0b43c3ef: 24894376b6f6c1cf08ed5a7eb2760a9b0b43c3ef</p>
-
-</body>
-</html>
-
---===============7079381290664575581==--
+> +	}
+>  
+>  	if (flags & CLOSE_FD) {
+>  		if (flags & CLOSE_ENGINES) {
+> @@ -636,7 +638,7 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
+>  		return;
+>  	}
+>  
+> -	for (i = 1; i < n_execs; i++)
+> +	for (i = 1; i < n_execs && !(flags & GT_RESET); i++)
+>  		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
+>  			       NULL, THREE_SEC);
+>  
+> @@ -644,7 +646,7 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
+>  	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
+>  	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, THREE_SEC);
+>  
+> -	for (i = 1; i < n_execs; i++)
+> +	for (i = 1; i < n_execs && !(flags & GT_RESET); i++)
+>  		igt_assert_eq(data[i].data, 0xc0ffee);
+>  
+>  	for (i = 0; i < n_engines; i++)
+> -- 
+> 2.34.1
+> 
