@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============5047443226527097281=="
+ boundary="===============8457284026383397091=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: priyanka.dandamudi@intel.com
-Date: Wed, 23 Aug 2023 08:58:42 -0000
-Message-ID: <169278112214.16629.4821911710337935951@emeril.freedesktop.org>
+Date: Wed, 23 Aug 2023 09:31:53 -0000
+Message-ID: <169278311313.16629.620169682569091232@emeril.freedesktop.org>
 References: <20230823062049.1755138-1-priyanka.dandamudi@intel.com>
 In-Reply-To: <20230823062049.1755138-1-priyanka.dandamudi@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIENJLnhlQkFUOiBmYWlsdXJlIGZvciB4ZS94ZV9z?=
+Subject: [igt-dev] =?utf-8?b?4pyTIENJLnhlQkFUOiBzdWNjZXNzIGZvciB4ZS94ZV9z?=
  =?utf-8?q?ysfs=3A_Update_test_documentation?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -23,7 +23,7 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============5047443226527097281==
+--===============8457284026383397091==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -32,7 +32,7 @@ Content-Transfer-Encoding: 7bit
 
 Series: xe/xe_sysfs: Update test documentation
 URL   : https://patchwork.freedesktop.org/series/122775/
-State : failure
+State : success
 
 == Summary ==
 
@@ -71,7 +71,7 @@ Build changes
 
 
 
---===============5047443226527097281==
+--===============8457284026383397091==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -93,7 +93,7 @@ Content-Transfer-Encoding: 7bit
 <table>
 <tr><td><b>Series:</b></td><td>xe/xe_sysfs: Update test documentation</td></tr>
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122775/">https://patchwork.freedesktop.org/series/122775/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
 </table>
 
@@ -117,4 +117,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============5047443226527097281==--
+--===============8457284026383397091==--
