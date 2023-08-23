@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A0B8D10E3F1
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Aug 2023 08:41:05 +0000 (UTC)
-Message-ID: <596f4301-2088-6976-db5d-91dbe43fd86e@intel.com>
-Date: Wed, 23 Aug 2023 14:10:47 +0530
-To: Riana Tauro <riana.tauro@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20230817055301.855960-1-riana.tauro@intel.com>
- <20230817055301.855960-3-riana.tauro@intel.com>
-Content-Language: en-US
-From: "Sundaresan, Sujaritha" <sujaritha.sundaresan@intel.com>
-In-Reply-To: <20230817055301.855960-3-riana.tauro@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative;
+ boundary="===============5047443226527097281=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/3] tests/xe: Add a test to toggle GT C
- states and validate power
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: priyanka.dandamudi@intel.com
+Date: Wed, 23 Aug 2023 08:58:42 -0000
+Message-ID: <169278112214.16629.4821911710337935951@emeril.freedesktop.org>
+References: <20230823062049.1755138-1-priyanka.dandamudi@intel.com>
+In-Reply-To: <20230823062049.1755138-1-priyanka.dandamudi@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIENJLnhlQkFUOiBmYWlsdXJlIGZvciB4ZS94ZV9z?=
+ =?utf-8?q?ysfs=3A_Update_test_documentation?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,140 +17,104 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: badal.nilawar@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============5047443226527097281==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 8/17/2023 11:23 AM, Riana Tauro wrote:
-> Add a test that toggles GT C states by checking if GT is in C0 when
-> forcewake is acquired and in C6 once released.
-> This test also validates power consumed by GPU in GT C6 is lesser
-> than GT C0.
->
-> v2: change test name (Suja, Anshuman)
-> v3: add exit handler for closing forcewake handle
->      define a macro for number of repetitions (Vinay)
->      change forcewake open to readonly (Anshuman)
->      modify test to validate power
->
-> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
-> ---
->   tests/xe/xe_pm_residency.c | 67 ++++++++++++++++++++++++++++++++++++++
->   1 file changed, 67 insertions(+)
->
-> diff --git a/tests/xe/xe_pm_residency.c b/tests/xe/xe_pm_residency.c
-> index fd4876eaf..3a6611fac 100644
-> --- a/tests/xe/xe_pm_residency.c
-> +++ b/tests/xe/xe_pm_residency.c
-> @@ -14,14 +14,17 @@
->   
->   #include "igt.h"
->   #include "igt_device.h"
-> +#include "igt_power.h"
->   #include "igt_sysfs.h"
->   
->   #include "xe/xe_query.h"
->   #include "xe/xe_util.h"
->   
-> +#define NUM_REPS 16 /* No of Repetitions */
->   #define SLEEP_DURATION 3000 /* in milliseconds */
->   
->   const double tolerance = 0.1;
-> +int forcewake_handle = -1;
->   
->   #define assert_within_epsilon(x, ref, tol) \
->   	igt_assert_f((double)(x) <= (1.0 + (tol)) * (double)(ref) && \
-> @@ -50,9 +53,19 @@ enum test_type {
->    * Description: Validate idle residency measured over suspend(s2idle)
->    *              is greater than suspend time or within tolerance
->    * Run type: FULL
-> + *
-> + * SUBTEST: toggle-gt-c6
-> + * Description: toggles GT C states by acquiring/releasing forcewake,
-> + *		also validates power consumed by GPU in GT C6 is lesser than that of GT C0.
-> + * Run type: FULL
->    */
->   IGT_TEST_DESCRIPTION("Tests for gtidle properties");
->   
-> +static void restore(int sig)
-> +{
-> +	close(forcewake_handle);
-> +}
-> +
->   static unsigned int measured_usleep(unsigned int usec)
->   {
->   	struct timespec ts = { };
-> @@ -117,6 +130,54 @@ static void test_idle_residency(int fd, int gt, enum test_type flag)
->   	assert_within_epsilon(residency_end - residency_start, elapsed_ms, tolerance);
->   }
->   
-> +static void measure_power(struct igt_power *gpu, double *power)
-> +{
-> +	struct power_sample power_sample[2];
-> +
-> +	igt_power_get_energy(gpu, &power_sample[0]);
-> +	measured_usleep(SLEEP_DURATION * 1000);
-> +	igt_power_get_energy(gpu, &power_sample[1]);
-> +	*power = igt_power_get_mW(gpu, &power_sample[0], &power_sample[1]);
-> +}
-> +
-> +static void toggle_gt_c6(int fd, int n)
-> +{
-> +	double gt_c0_power, gt_c6_power;
-> +	int gt;
-> +	struct igt_power gpu;
-> +
-> +	igt_power_open(fd, &gpu, "gpu");
-> +
-> +	do {
-> +		forcewake_handle = igt_debugfs_open(fd, "forcewake_all", O_RDONLY);
-> +		igt_assert(forcewake_handle >= 0);
-> +		/* check if all gts are in C0 after forcewake is acquired */
-> +		xe_for_each_gt(fd, gt)
-> +			igt_assert_f(!xe_is_gt_in_c6(fd, gt),
-> +				     "Forcewake acquired, GT should be in C0\n");
-> +
-> +		if (n == NUM_REPS)
-> +			measure_power(&gpu, &gt_c0_power);
-> +
-> +		close(forcewake_handle);
-> +		/* check if all gts are in C6 after forcewake is released */
-> +		xe_for_each_gt(fd, gt)
-> +			igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 1),
-> +				     "Forcewake released, GT should be in C6\n");
-> +
-> +		if (n == NUM_REPS)
-> +			measure_power(&gpu, &gt_c6_power);
-> +	} while (n--);
-> +
-> +	igt_power_close(&gpu);
-> +	igt_info("GPU consumed %fmW in GT C6 and %fmW in GT C0\n", gt_c6_power, gt_c0_power);
-> +
-> +	/* FIXME: Remove dgfx check after hwmon is added */
-> +	if (!xe_has_vram(fd))
-> +		igt_assert_f(gt_c6_power < gt_c0_power,
-> +			     "Power consumed in GT C6 should be lower than GT C0\n");
-> +}
-> +
->   igt_main
->   {
->   	uint32_t d3cold_allowed;
-> @@ -152,6 +213,12 @@ igt_main
->   		xe_for_each_gt(fd, gt)
->   			test_idle_residency(fd, gt, TEST_IDLE);
->   
-> +	igt_describe("Toggle GT C states by acquiring/releasing forcewake and validate power measured");
-> +	igt_subtest("toggle-gt-c6") {
-> +		igt_install_exit_handler(restore);
-> +		toggle_gt_c6(fd, NUM_REPS);
-> +	}
-> +
->   	igt_fixture {
->   		close(fd);
->   	}
+== Series Details ==
 
-lgtm,
+Series: xe/xe_sysfs: Update test documentation
+URL   : https://patchwork.freedesktop.org/series/122775/
+State : failure
 
-Reviewed-by: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7451_BAT -> XEIGTPW_9642_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (3 -> 3)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7451 -> IGTPW_9642
+
+  IGTPW_9642: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9642/index.html
+  IGT_7451: 5d48d1fb231f449fe2f80cda14ea7a1ecfda59fa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-330-3a964d06598874329aab6f8db7fd52840135d568: 3a964d06598874329aab6f8db7fd52840135d568
+
+
+
+--===============5047443226527097281==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>xe/xe_sysfs: Update test documentation</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122775/">https://patchwork.freedesktop.org/series/122775/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7451_BAT -&gt; XEIGTPW_9642_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (3 -&gt; 3)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7451 -&gt; IGTPW_9642</li>
+</ul>
+<p>IGTPW_9642: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9642/index.html<br />
+  IGT_7451: 5d48d1fb231f449fe2f80cda14ea7a1ecfda59fa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-330-3a964d06598874329aab6f8db7fd52840135d568: 3a964d06598874329aab6f8db7fd52840135d568</p>
+
+</body>
+</html>
+
+--===============5047443226527097281==--
