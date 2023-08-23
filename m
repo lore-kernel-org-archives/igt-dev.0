@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 60FFB10E1D1
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Aug 2023 04:24:34 +0000 (UTC)
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 23 Aug 2023 09:49:34 +0530
-Message-Id: <20230823041934.329942-1-nidhi1.gupta@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] tests/i915/kms_fbcon_fbt: Execute test
- on multiple modes
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Nidhi Gupta" <nidhi1.gupta@intel.com>
+Date: Wed, 23 Aug 2023 04:59:16 -0000
+Message-ID: <169276675619.16626.8208069540685731823@emeril.freedesktop.org>
+References: <20230823041934.329942-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20230823041934.329942-1-nidhi1.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/i915/kms=5Ffbcon=5Ffbt=3A_Execute_test_on_multiple_modes_?=
+ =?utf-8?b?KHJldjIp?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,98 +18,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In present situation the test is executing only for single mode,
-execute the test for the next mode supported by the connector if
-the first one is invalid to enable fbc.
+== Series Details ==
 
-v2: loop through modes until check fbc_stride_not_supported
-    returns 0
+Series: tests/i915/kms_fbcon_fbt: Execute test on multiple modes (rev2)
+URL   : https://patchwork.freedesktop.org/series/117487/
+State : warning
 
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
----
- tests/i915/kms_fbcon_fbt.c | 36 ++++++++++++++++++++++++++++--------
- 1 file changed, 28 insertions(+), 8 deletions(-)
+== Summary ==
 
-diff --git a/tests/i915/kms_fbcon_fbt.c b/tests/i915/kms_fbcon_fbt.c
-index 2cb0ffdb4..af52d8373 100644
---- a/tests/i915/kms_fbcon_fbt.c
-+++ b/tests/i915/kms_fbcon_fbt.c
-@@ -79,6 +79,7 @@ IGT_TEST_DESCRIPTION("Test the relationship between fbcon and the frontbuffer "
- 		     "tracking infrastructure.");
- 
- #define MAX_CONNECTORS 32
-+int j;
- 
- struct drm_info {
- 	int fd, debugfs_fd, crtc_id;
-@@ -93,6 +94,15 @@ static void wait_user(const char *msg)
- 	igt_debug_wait_for_keypress("fbt");
- }
- 
-+static bool fbc_stride_not_supported(int debugfs_fd)
-+{
-+	char buf[128];
-+
-+	igt_debugfs_simple_read(debugfs_fd, "i915_fbc_status", buf,
-+				sizeof(buf));
-+	return strstr(buf, "FBC disabled: framebuffer stride not supported\n");
-+}
-+
- static bool fbc_supported_on_chipset(int device, int debugfs_fd)
- {
- 	char buf[128];
-@@ -208,21 +218,26 @@ typedef bool (*connector_possible_fn)(drmModeConnectorPtr connector);
- static void set_mode_for_one_screen(struct drm_info *drm,
- 				    connector_possible_fn connector_possible)
- {
--	int i, rc;
-+	int rc, i;
- 	drmModeModeInfoPtr mode;
- 	uint32_t buffer_id;
- 	drmModeConnectorPtr c = NULL;
- 
--	for (i = 0; i < drm->res->count_connectors; i++) {
--		c = drm->connectors[i];
- 
--		if (c->connection == DRM_MODE_CONNECTED && c->count_modes &&
--		    connector_possible(c)) {
--			mode = &c->modes[0];
-+	for (j = 0; j < drm->res->count_connectors; j++) {
-+		c = drm->connectors[j];
-+		if (!(c->connection == DRM_MODE_CONNECTED && c->count_modes &&
-+		    connector_possible(c)))
-+			continue;
-+		for (i = 0; i < c->count_modes; i++) {
-+			if (!fbc_stride_not_supported(drm->debugfs_fd))
-+				continue;
-+			mode = &c->modes[i];
- 			break;
- 		}
-+		break;
- 	}
--	igt_require_f(i < drm->res->count_connectors,
-+	igt_require_f(j < drm->res->count_connectors,
- 		      "No connector available\n");
- 
- 	drm->crtc_id = kmstest_find_crtc_for_connector(drm->fd, drm->res, c, 0);
-@@ -391,7 +406,12 @@ static void subtest(struct drm_info *drm, struct feature *feature, bool suspend)
- 
- 	set_mode_for_one_screen(drm, feature->connector_possible_fn);
- 	wait_user("Screen set.");
--	igt_assert(feature->wait_until_enabled(drm->debugfs_fd));
-+	if (!(feature->wait_until_enabled(drm->debugfs_fd))) {
-+		++j;
-+		set_mode_for_one_screen(drm, feature->connector_possible_fn);
-+		wait_user("Screen set for next mode.");
-+		igt_assert(feature->wait_until_enabled(drm->debugfs_fd));
-+	}
- 
- 	if (suspend) {
- 		igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
--- 
-2.25.1
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/968245 for the overview.
+
+containers:igt has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/47883858):
+  Downloading artifacts for build:tests-fedora (47883843)...
+  Downloading artifacts from coordinator... ok        host=gitlab.freedesktop.org id=47883843 responseStatus=200 OK token=64_yCypg
+  section_end:1692766644:download_artifacts
+  section_start:1692766644:step_script
+  Executing "step_script" stage of the job script
+  Using docker image sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176 for registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 with digest registry.freedesktop.org/wayland/ci-templates/buildah@sha256:7dbcf22cd2c1c7d49db0dc7b4ab207c3d6a4a09bd81cc3b71a688d3727d8749f ...
+  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh
+  Checking if the user of the pipeline is allowed...
+  Checking if the job's project is part of a well-known group...
+  Thank you for contributing to freedesktop.org
+  $ podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  Login Succeeded!
+  $ .gitlab-ci/pull-or-rebuild.sh igt Dockerfile igt
+  Error: could not get runtime: error configuring CNI network plugin: could not create new watcher too many open files
+  section_end:1692766645:step_script
+  section_start:1692766645:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1692766646:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/968245
