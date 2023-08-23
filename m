@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1FD2D10E423
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Aug 2023 13:52:12 +0000 (UTC)
-Message-ID: <207f5da6-776e-b12a-f90a-509af6bdf069@intel.com>
-Date: Wed, 23 Aug 2023 19:21:47 +0530
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8A5E110E05E
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Aug 2023 13:54:45 +0000 (UTC)
+Message-ID: <017b8f9f-4090-0606-bc03-69c08322ee0d@intel.com>
+Date: Wed, 23 Aug 2023 19:24:41 +0530
 MIME-Version: 1.0
 Content-Language: en-US
 To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
  igt-dev@lists.freedesktop.org
-References: <20230816163206.402705-5-bhanuprakash.modem@intel.com>
+References: <20230816163206.402705-2-bhanuprakash.modem@intel.com>
 From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
-In-Reply-To: <20230816163206.402705-5-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230816163206.402705-2-bhanuprakash.modem@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [i-g-t, V4,
- 04/20] tests/kms_addfb_basic: Add tiling support for XE
+Subject: Re: [igt-dev] [i-g-t,V4,01/20] lib: Add tiling support for XE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,10 +27,8 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 
 On 8/16/2023 10:01 PM, Bhanuprakash Modem wrote:
-> Remove the tiling restrictions in Xe specific tests
+> Remove the tiling restrictions in all libraries those used by
+> the Xe driver.
 >
-> V2: - Update Xe fast-feedback testlist & blocklist
->
-> Fixes: 8c3b02be3 (tests/kms_addfb_basic: Add XE support)
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
