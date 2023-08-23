@@ -1,25 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com
- (mail-co1nam11on2079.outbound.protection.outlook.com [40.107.220.79])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F19DF10E0B5
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Aug 2023 20:56:51 +0000 (UTC)
-Message-ID: <b984602d-bd9e-4c5f-bda7-9ccce20bd0dc@amd.com>
-Date: Tue, 22 Aug 2023 16:56:45 -0400
-Content-Language: en-US
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>,
- =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>
-References: <20230822203155.53830-1-kamil.konieczny@linux.intel.com>
- <23035904-0dca-4ac0-a95a-703b46560c91@amd.com>
- <20230822205208.7eky2uv4l5tbs2xv@kamilkon-desk.igk.intel.com>
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
-In-Reply-To: <20230822205208.7eky2uv4l5tbs2xv@kamilkon-desk.igk.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B84F710E080
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Aug 2023 11:51:59 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 23 Aug 2023 17:13:49 +0530
+Message-Id: <20230823114354.787212-3-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230823114354.787212-1-bhanuprakash.modem@intel.com>
+References: <20230823114354.787212-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] Revert "tests/amdgpu: Add test for ODM
- combine"
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t 2/7] tests/i915/kms_pm_backlight: Fix testplan
+ documentation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,27 +23,78 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+As kms_pm_backlight is moved to display, update the test
+documentation according to the kms testplan kms_test_config.json
 
+Cc: Swati Sharma <swati2.sharma@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/i915/kms_pm_backlight.c | 40 ++++++++++++++++++++++++++---------
+ 1 file changed, 30 insertions(+), 10 deletions(-)
 
-On 2023-08-22 16:52, Kamil Konieczny wrote:
-> Hi Aurabindo,
-> 
-> On 2023-08-22 at 16:46:05 -0400, Aurabindo Pillai wrote:
->> Hi Kamil,
->>
->> You could merge the one liner I sent to the list as well (tests/amdgpu: Fix
->> build error due to external file include), to fix the build failure. If
->> you'd rather have the test reverted, feel free to add my Ack and merge:
->>
->> Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
->>
-> 
-> Please merge your fix.
-> 
-
-Merged.
-
---
-
-Thanks & Regards,
-Jay
+diff --git a/tests/i915/kms_pm_backlight.c b/tests/i915/kms_pm_backlight.c
+index ade5539d2..2e8fb4254 100644
+--- a/tests/i915/kms_pm_backlight.c
++++ b/tests/i915/kms_pm_backlight.c
+@@ -38,29 +38,49 @@
+ #include "igt_device.h"
+ #include "igt_device_scan.h"
+ /**
+- * TEST: i915 pm backlight
++ * TEST: kms pm backlight
++ * Category: Display
+  * Description: Basic backlight sysfs test
+- * Feature: backlight
+  *
+  * SUBTEST: bad-brightness
+- * Description: test the bad brightness.
++ * Description: Test the bad brightness.
++ * Driver requirement: i915
++ * Functionality: backlight
++ * Mega feature: Display Power
+  * Run type: FULL
++ * Test category: functionality test
+  *
+  * SUBTEST: basic-brightness
+- * Description: test the basic brightness.
++ * Description: Test the basic brightness.
++ * Driver requirement: i915
++ * Functionality: backlight
++ * Mega feature: Display Power
+  * Run type: BAT
++ * Test category: functionality test
+  *
+  * SUBTEST: fade
+- * Description: test basic fade.
+- * Run type: FULL
++ * Description: Test basic fade.
++ * Driver requirement: i915
++ * Functionality: backlight
++ * Mega feature: Display Power
++ * Run type: BAT
++ * Test category: functionality test
+  *
+  * SUBTEST: fade-with-dpms
+- * Description: test the fade with DPMS.
+- * Run type: FULL
++ * Description: Test the fade with DPMS.
++ * Driver requirement: i915
++ * Functionality: dpms, backlight
++ * Mega feature: Display Power
++ * Run type: BAT
++ * Test category: functionality test
+  *
+  * SUBTEST: fade-with-suspend
+- * Description: test the fade with suspend.
+- * Run type: FULL
++ * Description: Test the fade with suspend.
++ * Driver requirement: i915
++ * Functionality: backlight, suspend
++ * Mega feature: Display Power
++ * Run type: BAT
++ * Test category: functionality test
+  */
+ 
+ struct context {
+-- 
+2.40.0
