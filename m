@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============1856533176168106644=="
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
-Date: Thu, 24 Aug 2023 17:45:35 -0000
-Message-ID: <169289913535.13341.17867288288186638585@emeril.freedesktop.org>
-References: <20230814095654.872-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20230814095654.872-1-mohammed.thasleem@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?i915/i915=5Fpm=5Fdc=3A_Check_runtime_suspend_for_DC9_test_=28re?=
- =?utf-8?b?djIp?=
+To: "Aurabindo Pillai" <aurabindo.pillai@amd.com>
+Date: Thu, 24 Aug 2023 17:45:44 -0000
+Message-ID: <169289914447.13342.3374050101940804639@emeril.freedesktop.org>
+References: <20230824161504.154365-1-aurabindo.pillai@amd.com>
+In-Reply-To: <20230824161504.154365-1-aurabindo.pillai@amd.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_s?=
+ =?utf-8?q?eries_starting_with_=5B1/3=5D_tests/amdgpu/amd=5Fmall=3A_Add_cr?=
+ =?utf-8?q?c_check?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,180 +24,253 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1856533176168106644==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+=3D=3D Series Details =3D=3D
 
-== Series Details ==
+Series: series starting with [1/3] tests/amdgpu/amd_mall: Add crc check
+URL   : https://patchwork.freedesktop.org/series/122852/
+State : warning
 
-Series: tests/i915/i915_pm_dc: Check runtime suspend for DC9 test (rev2)
-URL   : https://patchwork.freedesktop.org/series/122411/
-State : success
+=3D=3D Summary =3D=3D
 
-== Summary ==
+Pipeline status: FAILED.
 
-CI Bug Log - changes from CI_DRM_13562 -> IGTPW_9650
-====================================================
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/969821 fo=
+r the overview.
 
-Summary
--------
+build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci=
+-tags/-/jobs/47999493):
+  [2/1397] Linking static target lib/libigt-igt_kms_c.a.
+  [3/1397] Linking static target lib/libigt-igt_fb_c.a.
+  [4/1397] Compiling C object 'lib/76b5a35@@igt-igt_amd_c@sta/igt_amd.c.o'.
+  FAILED: lib/76b5a35@@igt-igt_amd_c@sta/igt_amd.c.o=20
+  cc -Ilib/76b5a35@@igt-igt_amd_c@sta -Ilib -I../lib -I../include -I../incl=
+ude/drm-uapi -I../include/linux-uapi -I../lib/stubs/syscalls -I. -I../ -I/u=
+sr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/u=
+sr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr=
+/include/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/valgrind -fdia=
+gnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch =
+-Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOUR=
+CE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=3D2 -Wimp=
+licit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-format-=
+attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-st=
+yle-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prototyp=
+es -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno-mi=
+ssing-field-initializers -Wno-pointer-arith -Wno-address-of-packed-member -=
+Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unused-result =
+-Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Werror=3Dinit-=
+self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-braces =
+-Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type -Werr=
+or=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-builti=
+n-malloc -fno-builtin-calloc -fPIC -pthread '-DIGT_DATADIR=3D"/opt/igt/shar=
+e/igt-gpu-tools"' '-DIGT_SRCDIR=3D"/builds/gfx-ci/igt-ci-tags/tests"' '-DIG=
+T_LOG_DOMAIN=3D"igt_amd"' -MD -MQ 'lib/76b5a35@@igt-igt_amd_c@sta/igt_amd.c=
+.o' -MF 'lib/76b5a35@@igt-igt_amd_c@sta/igt_amd.c.o.d' -o 'lib/76b5a35@@igt=
+-igt_amd_c@sta/igt_amd.c.o' -c ../lib/igt_amd.c
+  ../lib/igt_amd.c: In function =E2=80=98igt_amd_get_mall_status=E2=80=99:
+  ../lib/igt_amd.c:1198:10: error: =E2=80=98return=E2=80=99 with a value, i=
+n function returning void [-Werror=3Dreturn-type]
+   1198 |   return false;
+        |          ^~~~~
+  ../lib/igt_amd.c:1189:6: note: declared here
+   1189 | void igt_amd_get_mall_status(int drm_fd, u32 *supported, u32 *ena=
+bled)
+        |      ^~~~~~~~~~~~~~~~~~~~~~~
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1692898951:step_script
+  section_start:1692898951:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1692898951:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
 
-  **SUCCESS**
+build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/=
+igt-ci-tags/-/jobs/47999497):
+  ninja: Entering directory `build'
+  [1/1425] Generating version.h with a custom command.
+  [2/1421] Linking static target lib/libigt-igt_kms_c.a.
+  [3/1421] Linking static target lib/libigt-igt_fb_c.a.
+  [4/1421] Linking static target lib/libigt-igt_vmwgfx_c.a.
+  [5/1421] Linking static target lib/libigt-igt_edid_c.a.
+  [6/1421] Compiling C object 'lib/76b5a35@@igt-igt_amd_c@sta/igt_amd.c.o'.
+  FAILED: lib/76b5a35@@igt-igt_amd_c@sta/igt_amd.c.o=20
+  clang -Ilib/76b5a35@@igt-igt_amd_c@sta -Ilib -I../lib -I../include -I../i=
+nclude/drm-uapi -I../include/linux-uapi -I../lib/stubs/syscalls -I. -I../ -=
+I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -=
+I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/=
+usr/include/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/valgrind -X=
+clang -fcolor-diagnostics -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pc=
+h -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SO=
+URCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=3D2 -Wm=
+issing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissing=
+-prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wredun=
+dant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-missi=
+ng-field-initializers -Wno-pointer-arith -Wno-address-of-packed-member -Wno=
+-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unused-result -We=
+rror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Werror=3Dinit-sel=
+f -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-braces -We=
+rror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type -Werror=
+=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-builtin-=
+malloc -fno-builtin-calloc -fPIC -pthread '-DIGT_DATADIR=3D"/usr/local/shar=
+e/igt-gpu-tools"' '-DIGT_SRCDIR=3D"/builds/gfx-ci/igt-ci-tags/tests"' '-DIG=
+T_LOG_DOMAIN=3D"igt_amd"' -MD -MQ 'lib/76b5a35@@igt-igt_amd_c@sta/igt_amd.c=
+.o' -MF 'lib/76b5a35@@igt-igt_amd_c@sta/igt_amd.c.o.d' -o 'lib/76b5a35@@igt=
+-igt_amd_c@sta/igt_amd.c.o' -c ../lib/igt_amd.c
+  ../lib/igt_amd.c:1198:3: error: void function 'igt_amd_get_mall_status' s=
+hould not return a value [-Wreturn-type]
+                  return false;
+                  ^      ~~~~~
+  1 error generated.
+  ninja: build stopped: subcommand failed.
+  section_end:1692898960:step_script
+  section_start:1692898960:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1692898960:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
 
-  No regressions found.
+build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop=
+.org/gfx-ci/igt-ci-tags/-/jobs/47999496):
+  [2/1245] Linking static target lib/libigt-igt_kms_c.a.
+  [3/1245] Linking static target lib/libigt-igt_fb_c.a.
+  [4/1245] Compiling C object 'lib/76b5a35@@igt-igt_amd_c@sta/igt_amd.c.o'.
+  FAILED: lib/76b5a35@@igt-igt_amd_c@sta/igt_amd.c.o=20
+  cc -Ilib/76b5a35@@igt-igt_amd_c@sta -Ilib -I../lib -I../include -I../incl=
+ude/drm-uapi -I../include/linux-uapi -I../lib/stubs/syscalls -I. -I../ -I/u=
+sr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/u=
+sr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr=
+/include/libdrm -I/usr/include/valgrind -fdiagnostics-color=3Dalways -pipe =
+-D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D=
+_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wd=
+eclaration-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogica=
+l-op -Wmissing-declarations -Wmissing-format-attribute -Wmissing-noreturn -=
+Wmissing-prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith=
+ -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -W=
+no-clobbered -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-=
+pointer-arith -Wno-address-of-packed-member -Wno-sign-compare -Wno-type-lim=
+its -Wno-unused-parameter -Wno-unused-result -Werror=3Daddress -Werror=3Dar=
+ray-bounds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-to-pointer-=
+cast -Werror=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpo=
+inter-to-int-cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3D=
+trigraphs -Werror=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -=
+fPIC -pthread '-DIGT_DATADIR=3D"/usr/local/share/igt-gpu-tools"' '-DIGT_SRC=
+DIR=3D"/builds/gfx-ci/igt-ci-tags/tests"' '-DIGT_LOG_DOMAIN=3D"igt_amd"' -M=
+D -MQ 'lib/76b5a35@@igt-igt_amd_c@sta/igt_amd.c.o' -MF 'lib/76b5a35@@igt-ig=
+t_amd_c@sta/igt_amd.c.o.d' -o 'lib/76b5a35@@igt-igt_amd_c@sta/igt_amd.c.o' =
+-c ../lib/igt_amd.c
+  ../lib/igt_amd.c: In function =E2=80=98igt_amd_get_mall_status=E2=80=99:
+  ../lib/igt_amd.c:1198:10: error: =E2=80=98return=E2=80=99 with a value, i=
+n function returning void [-Werror=3Dreturn-type]
+   1198 |   return false;
+        |          ^~~~~
+  ../lib/igt_amd.c:1189:6: note: declared here
+   1189 | void igt_amd_get_mall_status(int drm_fd, u32 *supported, u32 *ena=
+bled)
+        |      ^~~~~~~~~~~~~~~~~~~~~~~
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1692898951:step_script
+  section_start:1692898951:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1692898952:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9650/index.html
+build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/=
+gfx-ci/igt-ci-tags/-/jobs/47999494):
+  [2/1395] Linking static target lib/libigt-igt_kms_c.a.
+  [3/1395] Linking static target lib/libigt-igt_fb_c.a.
+  [4/1395] Compiling C object 'lib/76b5a35@@igt-igt_amd_c@sta/igt_amd.c.o'.
+  FAILED: lib/76b5a35@@igt-igt_amd_c@sta/igt_amd.c.o=20
+  cc -Ilib/76b5a35@@igt-igt_amd_c@sta -Ilib -I../lib -I../include -I../incl=
+ude/drm-uapi -I../include/linux-uapi -I../lib/stubs/syscalls -I. -I../ -I..=
+/lib/stubs/libunwind -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/li=
+b64/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/us=
+r/include/libpng16 -I/usr/include/libdrm -I/usr/include/libdrm/nouveau -I/u=
+sr/include/valgrind -fdiagnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=
+=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -includ=
+e config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-st=
+atement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissing-decl=
+arations -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes=
+ -Wnested-externs -Wold-style-definition -Wpointer-arith -Wredundant-decls =
+-Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-clobbered -Wno-m=
+aybe-uninitialized -Wno-missing-field-initializers -Wno-pointer-arith -Wno-=
+address-of-packed-member -Wno-sign-compare -Wno-type-limits -Wno-unused-par=
+ameter -Wno-unused-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=
+=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmai=
+n -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast =
+-Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=
+=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -fPIC -pthread '-D=
+IGT_DATADIR=3D"/usr/local/share/igt-gpu-tools"' '-DIGT_SRCDIR=3D"/builds/gf=
+x-ci/igt-ci-tags/tests"' '-DIGT_LOG_DOMAIN=3D"igt_amd"' -MD -MQ 'lib/76b5a3=
+5@@igt-igt_amd_c@sta/igt_amd.c.o' -MF 'lib/76b5a35@@igt-igt_amd_c@sta/igt_a=
+md.c.o.d' -o 'lib/76b5a35@@igt-igt_amd_c@sta/igt_amd.c.o' -c ../lib/igt_amd=
+.c
+  ../lib/igt_amd.c: In function =E2=80=98igt_amd_get_mall_status=E2=80=99:
+  ../lib/igt_amd.c:1198:10: error: =E2=80=98return=E2=80=99 with a value, i=
+n function returning void [-Werror=3Dreturn-type]
+   1198 |   return false;
+        |          ^~~~~
+  ../lib/igt_amd.c:1189:6: note: declared here
+   1189 | void igt_amd_get_mall_status(int drm_fd, u32 *supported, u32 *ena=
+bled)
+        |      ^~~~~~~~~~~~~~~~~~~~~~~
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1692898951:step_script
+  section_start:1692898951:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1692898959:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
 
-Participating hosts (41 -> 38)
-------------------------------
+build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/=
+gfx-ci/igt-ci-tags/-/jobs/47999495):
+  [2/1407] Linking static target lib/libigt-igt_kms_c.a.
+  [3/1407] Linking static target lib/libigt-igt_fb_c.a.
+  [4/1407] Compiling C object 'lib/lib@@igt-igt_amd_c@sta/igt_amd.c.o'.
+  FAILED: lib/lib@@igt-igt_amd_c@sta/igt_amd.c.o=20
+  cc -Ilib/lib@@igt-igt_amd_c@sta -Ilib -I../lib -I../include -I../include/=
+drm-uapi -I../include/linux-uapi -I../lib/stubs/syscalls -I. -I../ -I/usr/i=
+nclude/cairo -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/usr/i=
+nclude/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/inc=
+lude/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/valgrind -fdiagnos=
+tics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wex=
+tra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=
+=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=3D2 -Wimpli=
+cit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-format-at=
+tribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-styl=
+e-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes=
+ -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno-miss=
+ing-field-initializers -Wno-pointer-arith -Wno-address-of-packed-member -Wn=
+o-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unused-result -W=
+error=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Werror=3Dinit-se=
+lf -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-braces -W=
+error=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type -Werror=
+=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-builtin-=
+malloc -fno-builtin-calloc -fPIC -pthread '-DIGT_DATADIR=3D"/usr/local/shar=
+e/igt-gpu-tools"' '-DIGT_SRCDIR=3D"/builds/gfx-ci/igt-ci-tags/tests"' '-DIG=
+T_LOG_DOMAIN=3D"igt_amd"'  -MD -MQ 'lib/lib@@igt-igt_amd_c@sta/igt_amd.c.o'=
+ -MF 'lib/lib@@igt-igt_amd_c@sta/igt_amd.c.o.d' -o 'lib/lib@@igt-igt_amd_c@=
+sta/igt_amd.c.o' -c ../lib/igt_amd.c
+  ../lib/igt_amd.c: In function =E2=80=98igt_amd_get_mall_status=E2=80=99:
+  ../lib/igt_amd.c:1198:10: error: =E2=80=98return=E2=80=99 with a value, i=
+n function returning void [-Werror=3Dreturn-type]
+   1198 |   return false;
+        |          ^~~~~
+  ../lib/igt_amd.c:1189:6: note: declared here
+   1189 | void igt_amd_get_mall_status(int drm_fd, u32 *supported, u32 *ena=
+bled)
+        |      ^~~~~~~~~~~~~~~~~~~~~~~
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1692898960:step_script
+  section_start:1692898960:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1692898961:cleanup_file_variables
+  ERROR: Job failed: exit code 1
 
-  Missing    (3): fi-kbl-soraka bat-dg2-9 fi-snb-2520m 
+=3D=3D Logs =3D=3D
 
-Known issues
-------------
-
-  Here are the changes found in IGTPW_9650 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_suspend@basic-s3-without-i915:
-    - bat-adlm-1:         NOTRUN -> [INCOMPLETE][1] ([i915#7443])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9650/bat-adlm-1/igt@i915_suspend@basic-s3-without-i915.html
-    - bat-mtlp-8:         NOTRUN -> [SKIP][2] ([i915#6645])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9650/bat-mtlp-8/igt@i915_suspend@basic-s3-without-i915.html
-
-  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:
-    - bat-rplp-1:         [PASS][3] -> [ABORT][4] ([i915#8442] / [i915#8668])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13562/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9650/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@requests:
-    - bat-mtlp-8:         [ABORT][5] ([i915#7982] / [i915#8865]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13562/bat-mtlp-8/igt@i915_selftest@live@requests.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9650/bat-mtlp-8/igt@i915_selftest@live@requests.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-adlm-1:         [INCOMPLETE][7] ([i915#4983] / [i915#7677]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13562/bat-adlm-1/igt@i915_selftest@live@workarounds.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9650/bat-adlm-1/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#6645]: https://gitlab.freedesktop.org/drm/intel/issues/6645
-  [i915#7443]: https://gitlab.freedesktop.org/drm/intel/issues/7443
-  [i915#7677]: https://gitlab.freedesktop.org/drm/intel/issues/7677
-  [i915#7982]: https://gitlab.freedesktop.org/drm/intel/issues/7982
-  [i915#8442]: https://gitlab.freedesktop.org/drm/intel/issues/8442
-  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
-  [i915#8865]: https://gitlab.freedesktop.org/drm/intel/issues/8865
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7451 -> IGTPW_9650
-
-  CI-20190529: 20190529
-  CI_DRM_13562: 6cd46255547ba72bb6cc6aab91c905b1dec95696 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_9650: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9650/index.html
-  IGT_7451: 5d48d1fb231f449fe2f80cda14ea7a1ecfda59fa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9650/index.html
-
---===============1856533176168106644==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/i915/i915_pm_dc: Check runtime suspend for DC9 test (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122411/">https://patchwork.freedesktop.org/series/122411/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9650/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9650/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_13562 -&gt; IGTPW_9650</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9650/index.html</p>
-<h2>Participating hosts (41 -&gt; 38)</h2>
-<p>Missing    (3): fi-kbl-soraka bat-dg2-9 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_9650 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_suspend@basic-s3-without-i915:</p>
-<ul>
-<li>
-<p>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9650/bat-adlm-1/igt@i915_suspend@basic-s3-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7443">i915#7443</a>)</p>
-</li>
-<li>
-<p>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9650/bat-mtlp-8/igt@i915_suspend@basic-s3-without-i915.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6645">i915#6645</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:</p>
-<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13562/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9650/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8442">i915#8442</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13562/bat-mtlp-8/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7982">i915#7982</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8865">i915#8865</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9650/bat-mtlp-8/igt@i915_selftest@live@requests.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-adlm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13562/bat-adlm-1/igt@i915_selftest@live@workarounds.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7677">i915#7677</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9650/bat-adlm-1/igt@i915_selftest@live@workarounds.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7451 -&gt; IGTPW_9650</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13562: 6cd46255547ba72bb6cc6aab91c905b1dec95696 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_9650: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9650/index.html<br />
-  IGT_7451: 5d48d1fb231f449fe2f80cda14ea7a1ecfda59fa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============1856533176168106644==--
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/p=
+ipelines/969821
