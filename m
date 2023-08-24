@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============8613397177033084417=="
-MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
-Date: Thu, 24 Aug 2023 17:52:08 -0000
-Message-ID: <169289952801.13343.13437660400041938315@emeril.freedesktop.org>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 53C7510E5A0
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Aug 2023 18:05:11 +0000 (UTC)
+Date: Thu, 24 Aug 2023 20:05:01 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230824180501.uwkchvwc5eorcjv5@kamilkon-desk.igk.intel.com>
 References: <20230814095654.872-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20230814095654.872-1-mohammed.thasleem@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/i9?=
- =?utf-8?q?15/i915=5Fpm=5Fdc=3A_Check_runtime_suspend_for_DC9_test_=28rev2?=
- =?utf-8?q?=29?=
+ <20230824210718.7235-1-mohammed.thasleem@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230824210718.7235-1-mohammed.thasleem@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/i915_pm_dc: Fix dc9-dpms
+ test on MTL
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,143 +21,55 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8613397177033084417==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi,
 
-== Series Details ==
+On 2023-08-25 at 02:37:18 +0530, Thasleem, Mohammed wrote:
+> From: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
+> 
+> DC5 counter on MTL is not expected to get reset in DC9 state.
 
-Series: tests/i915/i915_pm_dc: Check runtime suspend for DC9 test (rev2)
-URL   : https://patchwork.freedesktop.org/series/122411/
-State : success
+This is fine.
 
-== Summary ==
+> Add condition to check runtime_suspended_time value to validate
+> DC9 dpms test.
 
-CI Bug Log - changes from XEIGT_7451_BAT -> XEIGTPW_9650_BAT
-====================================================
+I do not see any new condition, I do see you extendeded comment
+there. With second sentence removed:
 
-Summary
--------
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (3 -> 3)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_9650_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Warnings ####
-
-  * igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:
-    - bat-atsm-2:         [SKIP][1] ([Intel XE#274]) -> [SKIP][2] ([Intel XE#274] / [Intel XE#539]) +5 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7451/bat-atsm-2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9650/bat-atsm-2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:
-    - bat-atsm-2:         [SKIP][3] ([i915#1836]) -> [SKIP][4] ([Intel XE#537] / [i915#1836]) +6 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7451/bat-atsm-2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9650/bat-atsm-2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html
-
-  
-  [Intel XE#274]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/274
-  [Intel XE#537]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/537
-  [Intel XE#539]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/539
-  [i915#1836]: https://gitlab.freedesktop.org/drm/intel/issues/1836
-
-
-Build changes
--------------
-
-  * IGT: IGT_7451 -> IGTPW_9650
-  * Linux: xe-330-3a964d06598874329aab6f8db7fd52840135d568 -> xe-340-c77796cf84361b4716839141f2e48de2bf7f4bd5
-
-  IGTPW_9650: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9650/index.html
-  IGT_7451: 5d48d1fb231f449fe2f80cda14ea7a1ecfda59fa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-330-3a964d06598874329aab6f8db7fd52840135d568: 3a964d06598874329aab6f8db7fd52840135d568
-  xe-340-c77796cf84361b4716839141f2e48de2bf7f4bd5: c77796cf84361b4716839141f2e48de2bf7f4bd5
-
-
-
---===============8613397177033084417==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/i915/i915_pm_dc: Check runtime suspend for DC9 test (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122411/">https://patchwork.freedesktop.org/series/122411/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7451_BAT -&gt; XEIGTPW_9650_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (3 -&gt; 3)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_9650_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:</p>
-<ul>
-<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7451/bat-atsm-2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/274">Intel XE#274</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9650/bat-atsm-2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/274">Intel XE#274</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/539">Intel XE#539</a>) +5 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:</p>
-<ul>
-<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7451/bat-atsm-2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1836">i915#1836</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9650/bat-atsm-2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/537">Intel XE#537</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1836">i915#1836</a>) +6 similar issues</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7451 -&gt; IGTPW_9650</li>
-<li>Linux: xe-330-3a964d06598874329aab6f8db7fd52840135d568 -&gt; xe-340-c77796cf84361b4716839141f2e48de2bf7f4bd5</li>
-</ul>
-<p>IGTPW_9650: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9650/index.html<br />
-  IGT_7451: 5d48d1fb231f449fe2f80cda14ea7a1ecfda59fa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-330-3a964d06598874329aab6f8db7fd52840135d568: 3a964d06598874329aab6f8db7fd52840135d568<br />
-  xe-340-c77796cf84361b4716839141f2e48de2bf7f4bd5: c77796cf84361b4716839141f2e48de2bf7f4bd5</p>
-
-</body>
-</html>
-
---===============8613397177033084417==--
+> 
+> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+> ---
+>  tests/i915/i915_pm_dc.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
+> index 90fe847fc..13ae31583 100644
+> --- a/tests/i915/i915_pm_dc.c
+> +++ b/tests/i915/i915_pm_dc.c
+> @@ -88,7 +88,7 @@
+>  #define KMS_HELPER "/sys/module/drm_kms_helper/parameters/"
+>  #define PACKAGE_CSTATE_PATH  "pmc_core/package_cstate_show"
+>  #define KMS_POLL_DISABLE 0
+> -#define DC9_RESETS_DC_COUNTERS(devid) (!(IS_DG1(devid) || IS_DG2(devid)))
+> +#define DC9_RESETS_DC_COUNTERS(devid) (!(IS_DG1(devid) || IS_DG2(devid) || IS_METEORLAKE(devid)))
+>  
+>  IGT_TEST_DESCRIPTION("Tests to validate display power DC states.");
+>  
+> @@ -514,7 +514,7 @@ static bool dc9_wait_entry(data_t *data, int dc_target, int prev_dc, int prev_rp
+>  	 * Runtime suspended residency should increment once DC9 is achieved;
+>  	 * this condition is valid for all platforms.
+>  	 * However, resetting of dc5/dc6 counter to check if display engine was in DC9;
+> -	 * this condition at present can be skipped for dg1 and dg2 platforms.
+> +	 * this condition at present can be skipped for dg1, dg2 and MTL platforms.
+>  	 */
+>  	return igt_wait((read_runtime_suspended_time(data->drm_fd) > prev_rpm) &&
+>  			(!DC9_RESETS_DC_COUNTERS(data->devid) ||
+> -- 
+> 2.34.1
+> 
