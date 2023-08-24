@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DE48010E486
- for <igt-dev@lists.freedesktop.org>; Thu, 24 Aug 2023 05:49:15 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 998B610E48B
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Aug 2023 05:49:17 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 24 Aug 2023 11:11:10 +0530
-Message-Id: <20230824054123.820518-4-bhanuprakash.modem@intel.com>
+Date: Thu, 24 Aug 2023 11:11:11 +0530
+Message-Id: <20230824054123.820518-5-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230824054123.820518-1-bhanuprakash.modem@intel.com>
 References: <20230824054123.820518-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 03/16] tests/kms_getfb: Extended ccs tests to
- support XE
+Subject: [igt-dev] [i-g-t 04/16] tests/kms_addfb_basic: Add tiling support
+ for XE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,59 +24,80 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add support for ccs tests work on XE driver.
+Remove the tiling restrictions in Xe specific tests
 
-V2: - Update XE blocklist
-V3: - New patch for blocklist changes
+V2: - Update Xe fast-feedback testlist & blocklist
+V3: - New patch for blocklist & BAT testlist changes
 
-Fixes: 5fd20e72a (tests/kms_getfb: Add XE support)
+Fixes: 8c3b02be3 (tests/kms_addfb_basic: Add XE support)
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/kms_getfb.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ tests/kms_addfb_basic.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/tests/kms_getfb.c b/tests/kms_getfb.c
-index f90e51d64..6ee58caab 100644
---- a/tests/kms_getfb.c
-+++ b/tests/kms_getfb.c
-@@ -48,6 +48,7 @@
- #include "i915/gem_create.h"
- #include "igt_device.h"
- #include "xe/xe_query.h"
-+#include "xe/xe_ioctl.h"
+diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
+index f415300b6..f6c27a3d3 100644
+--- a/tests/kms_addfb_basic.c
++++ b/tests/kms_addfb_basic.c
+@@ -444,7 +444,7 @@ static void tiling_tests(int fd)
  
- IGT_TEST_DESCRIPTION("Tests GETFB and GETFB2 ioctls.");
+ 	igt_subtest_group {
+ 		igt_fixture {
+-			igt_require_i915(fd);
++			igt_require_intel(fd);
+ 			tiled_x_bo = igt_create_bo_with_dimensions(fd, 1024, 1024,
+ 				DRM_FORMAT_XRGB8888, I915_FORMAT_MOD_X_TILED,
+ 				1024*4, NULL, NULL, NULL);
+@@ -463,7 +463,8 @@ static void tiling_tests(int fd)
+ 		f.pitches[0] = 1024*4;
+ 		igt_describe("Check if addfb2 and rmfb call works for basic x-tiling test");
+ 		igt_subtest("basic-x-tiled-legacy") {
+-			igt_require(gem_available_fences(fd) > 0);
++			if (is_i915_device(fd))
++				igt_require(gem_available_fences(fd) > 0);
+ 			f.handles[0] = tiled_x_bo;
  
-@@ -145,7 +146,10 @@ static void get_ccs_fb(int fd, struct drm_mode_fb_cmd2 *ret)
- 		size += add.pitches[1] * ALIGN(ALIGN(add.height, 16) / 16, 32);
- 	}
+ 			do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f);
+@@ -473,6 +474,7 @@ static void tiling_tests(int fd)
  
--	add.handles[0] = gem_buffer_create_fb_obj(fd, size);
-+	if (is_i915_device(fd))
-+		add.handles[0] = gem_buffer_create_fb_obj(fd, size);
-+	else
-+		add.handles[0] = xe_bo_create_flags(fd, 0, size, vram_if_possible(fd, 0));
- 	igt_require(add.handles[0] != 0);
+ 		igt_describe("Check if addfb2 call works for x and y tiling");
+ 		igt_subtest("framebuffer-vs-set-tiling") {
++			igt_require_i915(fd);
+ 			igt_require(gem_available_fences(fd) > 0);
+ 			f.handles[0] = gem_bo;
  
- 	if (!HAS_FLATCCS(devid))
-@@ -315,7 +319,7 @@ static void test_duplicate_handles(int fd)
- 		struct drm_mode_fb_cmd2 add_ccs = { };
- 		struct drm_mode_fb_cmd get = { };
+@@ -487,6 +489,7 @@ static void tiling_tests(int fd)
+ 		igt_describe("Test that addfb2 call fails correctly for pitches mismatch");
+ 			f.pitches[0] = 512*4;
+ 		igt_subtest("tile-pitch-mismatch") {
++			igt_require_i915(fd);
+ 			igt_require(gem_available_fences(fd) > 0);
+ 			f.handles[0] = tiled_x_bo;
  
--		igt_require_i915(fd);
-+		igt_require_intel(fd);
- 		igt_require_f(!HAS_FLATCCS(intel_get_drm_devid(fd)),
- 			      "skip because flat ccs has only one buffer.\n");
+@@ -496,8 +499,12 @@ static void tiling_tests(int fd)
+ 		igt_describe("Test that addfb2 call fails correctly for basic y-tiling test");
+ 		f.pitches[0] = 1024*4;
+ 		igt_subtest("basic-y-tiled-legacy") {
+-			igt_require(!gem_has_lmem(fd));
+-			igt_require(gem_available_fences(fd) > 0);
++			if (is_i915_device(fd)) {
++				igt_require(!gem_has_lmem(fd));
++				igt_require(gem_available_fences(fd) > 0);
++			} else {
++				igt_require(!xe_has_vram(fd));
++			}
+ 			f.handles[0] = tiled_y_bo;
  
-@@ -421,7 +425,7 @@ static void test_getfb2(int fd)
- 		struct drm_mode_fb_cmd2 get = { };
- 		int i;
+ 			do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
+@@ -1118,7 +1125,7 @@ igt_main
+ 		size_tests(fd);
  
--		igt_require_i915(fd);
-+		igt_require_intel(fd);
- 		get_ccs_fb(fd, &add_ccs);
- 		igt_require(add_ccs.fb_id != 0);
- 		get.fb_id = add_ccs.fb_id;
+ 		igt_fixture
+-			igt_require_i915(fd);
++			igt_require_intel(fd);
+ 
+ 		addfb25_ytile(fd);
+ 
 -- 
 2.40.0
