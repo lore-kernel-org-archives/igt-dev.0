@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9495910E410
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Aug 2023 11:51:59 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 13F4E10E48C
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Aug 2023 05:49:25 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 23 Aug 2023 17:13:47 +0530
-Message-Id: <20230823114354.787212-1-bhanuprakash.modem@intel.com>
+Date: Thu, 24 Aug 2023 11:11:15 +0530
+Message-Id: <20230824054123.820518-9-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230824054123.820518-1-bhanuprakash.modem@intel.com>
+References: <20230824054123.820518-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 0/7] Separate display PM tests from Core
+Subject: [igt-dev] [i-g-t 08/16] tests/kms_rotation_crc: Add tiling support
+ for XE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,36 +19,55 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Separate display specific tests from Core and maintain the
-binary names with kms_ prefix.
+Remove the tiling restrictions in Xe specific tests
 
-Bhanuprakash Modem (7):
-  tests/i915/pm: Rename i915_pm_backlight to kms_pm_backlight
-  tests/i915/kms_pm_backlight: Fix testplan documentation
-  tests/i915/pm: Rename i915_pm_dc to kms_pm_dc
-  tests/i915/kms_pm_dc: Fix testplan documentation
-  tests/i915/pm: Rename i915_pm_lpsp to kms_pm_lpsp
-  tests/i915/kms_pm_lpsp: Fix testplan documentation
-  tests/i915/pm: Separate display specific tests from i915_pm_rpm
+V2: - Update XE blocklist
+V3: - New patch for blocklist changes
 
- tests/i915/i915_pm_rpm.c                      |  869 ---------
- ...i915_pm_backlight.c => kms_pm_backlight.c} |   43 +-
- tests/i915/{i915_pm_dc.c => kms_pm_dc.c}      |   69 +-
- tests/i915/{i915_pm_lpsp.c => kms_pm_lpsp.c}  |   18 +-
- tests/i915/kms_pm_rpm.c                       | 1665 +++++++++++++++++
- tests/intel-ci/blacklist-pre-merge.txt        |    8 +-
- tests/intel-ci/blacklist.txt                  |    2 +-
- tests/intel-ci/fast-feedback.testlist         |    8 +-
- tests/meson.build                             |    7 +-
- 9 files changed, 1771 insertions(+), 918 deletions(-)
- rename tests/i915/{i915_pm_backlight.c => kms_pm_backlight.c} (90%)
- rename tests/i915/{i915_pm_dc.c => kms_pm_dc.c} (92%)
- rename tests/i915/{i915_pm_lpsp.c => kms_pm_lpsp.c} (94%)
- create mode 100644 tests/i915/kms_pm_rpm.c
+Fixes: e1d5b831e (tests/kms_rotation_crc: Add XE support)
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
+---
+ tests/kms_rotation_crc.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
---
+diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
+index b80cf695e..f08d31e37 100644
+--- a/tests/kms_rotation_crc.c
++++ b/tests/kms_rotation_crc.c
+@@ -977,10 +977,6 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
+ 		igt_pipe_crc_start(data->pipe_crc);
+ 
+ 		for (i = 0; i < ARRAY_SIZE(planeconfigs); i++) {
+-			if (is_xe_device(data->gfx_fd) &&
+-			    planeconfigs[i].modifier != DRM_FORMAT_MOD_LINEAR)
+-				continue;
+-
+ 			p[0].fbinfo = &planeconfigs[i];
+ 			pointlocation(data, p, mode, 0);
+ 
+@@ -1351,7 +1347,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 	igt_describe("Tiling and Rotation test for gen 10+ for primary plane");
+ 	for (reflect_x = reflect_x_subtests; reflect_x->modifier; reflect_x++) {
+ 		igt_fixture
+-			igt_require_i915(data.gfx_fd);
++			igt_require_intel(data.gfx_fd);
+ 
+ 		igt_subtest_f("primary-%s-reflect-x-%s",
+ 			      modifier_test_str(reflect_x->modifier),
+@@ -1412,7 +1408,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 		enum pipe pipe;
+ 		igt_output_t *output;
+ 
+-		igt_require_i915(data.gfx_fd);
++		igt_require_intel(data.gfx_fd);
+ 		igt_display_require_output(&data.display);
+ 
+ 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+-- 
 2.40.0
