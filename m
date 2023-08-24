@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C63DA10E595
- for <igt-dev@lists.freedesktop.org>; Thu, 24 Aug 2023 16:15:19 +0000 (UTC)
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Thu, 24 Aug 2023 12:15:04 -0400
-Message-ID: <20230824161504.154365-3-aurabindo.pillai@amd.com>
-In-Reply-To: <20230824161504.154365-1-aurabindo.pillai@amd.com>
-References: <20230824161504.154365-1-aurabindo.pillai@amd.com>
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B45A110E598
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Aug 2023 16:15:43 +0000 (UTC)
+From: Melissa Wen <mwen@igalia.com>
+To: igt-dev@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>,
+ Arkadiusz Hiler <arek@hiler.eu>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>
+Date: Thu, 24 Aug 2023 15:15:24 -0100
+Message-Id: <20230824161524.14083-1-mwen@igalia.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH 3/3] lib/amdgpu: checkpatch.pl fixes
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_atomic: remove zpos < N-planes
+ assert
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,49 +22,36 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: hersenxs.wu@amd.com
+Cc: Rob Clark <robdclark@chromium.org>, kernel-dev@igalia.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-fix checkpatch.pl identified issue: typo and braces
+Generalize plane-immutable-zpos test case by removing not-required
+assert. zpos < N-planes is a condition not required by DRM
+documentation. Removing this validation doesn't affect the test purpose
+on verifying that planes with higher zpos always cover those with lower
+zpos. Also, this assert doesn't fit driver's configuration where the
+range of plane zpos is just defined by the plane type but its max value
+doesn't need to be normalized to the number of planes in a CRTC, for
+example, a cursor plane with the highest possible zpos value.
 
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Melissa Wen <mwen@igalia.com>
 ---
- lib/igt_amd.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ tests/kms_atomic.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/lib/igt_amd.c b/lib/igt_amd.c
-index 49ca9e6d9..3199bf159 100644
---- a/lib/igt_amd.c
-+++ b/lib/igt_amd.c
-@@ -1154,7 +1154,8 @@ void igt_amd_allow_edp_hotplug_detect(int drm_fd, char *connector_name, bool ena
- 	close(hpd_fd);
- }
+diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
+index 22ddf5633..6986864f3 100644
+--- a/tests/kms_atomic.c
++++ b/tests/kms_atomic.c
+@@ -458,7 +458,6 @@ plane_immutable_zpos(igt_display_t *display, igt_pipe_t *pipe,
+ 			continue;
  
--static bool get_dm_capabilites(int drm_fd, char *buf, size_t size) {
-+static bool get_dm_capabilities(int drm_fd, char *buf, size_t size)
-+{
- 	int ret, fd;
- 	bool has_capablities = amd_has_debugfs(drm_fd, DEBUGFS_DM_CAPABILITIES);
+ 		zpos = igt_plane_get_prop(temp, IGT_PLANE_ZPOS);
+-		igt_assert_lt(zpos, n_planes);
  
-@@ -1183,7 +1184,7 @@ static bool get_dm_capabilites(int drm_fd, char *buf, size_t size) {
-  *
-  * @param drm_fd DRM file descriptor
-  * @return true if dm capabilities interface exists and MALL is supported
-- * @return false if capabilites could not be read.
-+ * @return false if capabilities could not be read.
-  */
- void igt_amd_get_mall_status(int drm_fd, u32 *supported, u32 *enabled)
- {
-@@ -1193,7 +1194,7 @@ void igt_amd_get_mall_status(int drm_fd, u32 *supported, u32 *enabled)
- 	*supported = false;
- 	*enabled = false;
- 
--	if (!get_dm_capabilites(drm_fd, buf, 1024))
-+	if (!get_dm_capabilities(drm_fd, buf, 1024))
- 		return false;
- 
- 	mall_loc = strstr(buf, "mall supported: yes");
+ 		plane_ptr[zpos] = temp;
+ 	}
 -- 
-2.41.0
+2.40.1
