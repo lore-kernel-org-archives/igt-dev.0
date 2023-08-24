@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6C97410E48E
- for <igt-dev@lists.freedesktop.org>; Thu, 24 Aug 2023 05:49:30 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C166210E58F
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Aug 2023 15:37:33 +0000 (UTC)
+From: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 24 Aug 2023 11:11:18 +0530
-Message-Id: <20230824054123.820518-12-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230824054123.820518-1-bhanuprakash.modem@intel.com>
-References: <20230824054123.820518-1-bhanuprakash.modem@intel.com>
+Date: Fri, 25 Aug 2023 02:37:18 +0530
+Message-Id: <20230824210718.7235-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20230814095654.872-1-mohammed.thasleem@intel.com>
+References: <20230814095654.872-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 11/16] tests/i915/kms_flip_scaled_crc: Add tiling
- support for XE
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/i915_pm_dc: Fix dc9-dpms test on
+ MTL
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,39 +19,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Remove the tiling restrictions in Xe specific tests
+From: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
 
-V2: - Update XE blocklist
-V3: - New patch for blocklist changes
+DC5 counter on MTL is not expected to get reset in DC9 state.
+Add condition to check runtime_suspended_time value to validate
+DC9 dpms test.
 
-Fixes: 113fc78d0 (tests/i915/kms_flip_scaled_crc: Add XE support)
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/i915/kms_flip_scaled_crc.c | 6 ------
- 1 file changed, 6 deletions(-)
+ tests/i915/i915_pm_dc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/i915/kms_flip_scaled_crc.c b/tests/i915/kms_flip_scaled_crc.c
-index ad68f2474..3d7991890 100644
---- a/tests/i915/kms_flip_scaled_crc.c
-+++ b/tests/i915/kms_flip_scaled_crc.c
-@@ -835,12 +835,6 @@ igt_main
- 	for (int index = 0; index < ARRAY_SIZE(flip_scenario_test); index++) {
- 		igt_describe(flip_scenario_test[index].describe);
- 		igt_subtest_with_dynamic(flip_scenario_test[index].name) {
--			/* No tiling support in XE. */
--			if (is_xe_device(data.drm_fd) &&
--			    (flip_scenario_test[index].firstmodifier != DRM_FORMAT_MOD_LINEAR ||
--			     flip_scenario_test[index].secondmodifier != DRM_FORMAT_MOD_LINEAR))
--				continue;
--
- 			free_fbs(&data);
- 			for_each_pipe(&data.display, pipe) {
- 				bool found = false;
+diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
+index 90fe847fc..13ae31583 100644
+--- a/tests/i915/i915_pm_dc.c
++++ b/tests/i915/i915_pm_dc.c
+@@ -88,7 +88,7 @@
+ #define KMS_HELPER "/sys/module/drm_kms_helper/parameters/"
+ #define PACKAGE_CSTATE_PATH  "pmc_core/package_cstate_show"
+ #define KMS_POLL_DISABLE 0
+-#define DC9_RESETS_DC_COUNTERS(devid) (!(IS_DG1(devid) || IS_DG2(devid)))
++#define DC9_RESETS_DC_COUNTERS(devid) (!(IS_DG1(devid) || IS_DG2(devid) || IS_METEORLAKE(devid)))
+ 
+ IGT_TEST_DESCRIPTION("Tests to validate display power DC states.");
+ 
+@@ -514,7 +514,7 @@ static bool dc9_wait_entry(data_t *data, int dc_target, int prev_dc, int prev_rp
+ 	 * Runtime suspended residency should increment once DC9 is achieved;
+ 	 * this condition is valid for all platforms.
+ 	 * However, resetting of dc5/dc6 counter to check if display engine was in DC9;
+-	 * this condition at present can be skipped for dg1 and dg2 platforms.
++	 * this condition at present can be skipped for dg1, dg2 and MTL platforms.
+ 	 */
+ 	return igt_wait((read_runtime_suspended_time(data->drm_fd) > prev_rpm) &&
+ 			(!DC9_RESETS_DC_COUNTERS(data->devid) ||
 -- 
-2.40.0
+2.34.1
