@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6939110E48E
- for <igt-dev@lists.freedesktop.org>; Thu, 24 Aug 2023 05:49:35 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D391910E48E
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Aug 2023 05:49:26 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 24 Aug 2023 11:11:21 +0530
-Message-Id: <20230824054123.820518-15-bhanuprakash.modem@intel.com>
+Date: Thu, 24 Aug 2023 11:11:16 +0530
+Message-Id: <20230824054123.820518-10-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230824054123.820518-1-bhanuprakash.modem@intel.com>
 References: <20230824054123.820518-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 14/16] tests/intel-ci: Update Xe BAT & blocklist
- for kms FBT
+Subject: [igt-dev] [i-g-t 09/16] tests/i915/kms_big_fb: Add tiling support
+ for XE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,43 +19,85 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add kms_frontbuffer_tracking tests back to xe fast-feedback testlist and
-drop them from xe blocklist.
+Remove the tiling restrictions in Xe specific tests
 
+V2: - Update XE blocklist
+V3: - New patch for blocklist changes
+
+Fixes: 34168d915 (tests/i915/kms_big_fb: Add XE support)
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/intel-ci/xe-fast-feedback.testlist | 1 +
- tests/intel-ci/xe.blocklist.txt          | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ tests/i915/kms_big_fb.c | 23 +----------------------
+ 1 file changed, 1 insertion(+), 22 deletions(-)
 
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index 311f90c79..026e06ab5 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -220,6 +220,7 @@ igt@kms_flip@basic-plain-flip
- igt@kms_force_connector_basic@force-connector-state
- igt@kms_force_connector_basic@force-edid
- igt@kms_force_connector_basic@prune-stale-modes
-+igt@kms_frontbuffer_tracking@basic
- igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24
- igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12
- igt@kms_pipe_crc_basic@hang-read-crc
-diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
-index ef48edf4c..2df3810af 100644
---- a/tests/intel-ci/xe.blocklist.txt
-+++ b/tests/intel-ci/xe.blocklist.txt
-@@ -57,7 +57,7 @@ igt@kms_draw_crc@draw-method-(mmap-cpu|mmap-gtt|pwrite)
- igt@kms_pipe_b_c_ivb@.*
- igt@kms_pwrite_crc
- igt@kms_ccs@.*
--igt@kms_frontbuffer_tracking@.*
-+igt@kms_frontbuffer_tracking@.*-(cpu|gtt|pwrite)
- igt@kms_fbcon_fbt@(fbc|psr)(-suspend)
- igt@kms_fence_pin_leak
- igt@kms_busy@.*
+diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
+index 33008c40a..4f39a65f4 100644
+--- a/tests/i915/kms_big_fb.c
++++ b/tests/i915/kms_big_fb.c
+@@ -1111,10 +1111,6 @@ igt_main
+ 	for (int i = 1; i < ARRAY_SIZE(modifiers); i++) {
+ 		igt_subtest_f("%s-addfb-size-overflow",
+ 			      modifiers[i].name) {
+-			/* No tiling support in XE. */
+-			igt_skip_on(is_xe_device(data.drm_fd) &&
+-				    modifiers[i].modifier != DRM_FORMAT_MOD_LINEAR);
+-
+ 			data.modifier = modifiers[i].modifier;
+ 			test_size_overflow(&data);
+ 		}
+@@ -1124,10 +1120,6 @@ igt_main
+ 	for (int i = 1; i < ARRAY_SIZE(modifiers); i++) {
+ 		igt_subtest_f("%s-addfb-size-offset-overflow",
+ 			      modifiers[i].name) {
+-			/* No tiling support in XE. */
+-			igt_skip_on(is_xe_device(data.drm_fd) &&
+-				    modifiers[i].modifier != DRM_FORMAT_MOD_LINEAR);
+-
+ 			data.modifier = modifiers[i].modifier;
+ 			test_size_offset_overflow(&data);
+ 		}
+@@ -1136,10 +1128,6 @@ igt_main
+ 	igt_describe("Sanity check if addfb ioctl works correctly for given size and strides of fb");
+ 	for (int i = 0; i < ARRAY_SIZE(modifiers); i++) {
+ 		igt_subtest_f("%s-addfb", modifiers[i].name) {
+-			/* No tiling support in XE. */
+-			igt_skip_on(is_xe_device(data.drm_fd) &&
+-				    modifiers[i].modifier != DRM_FORMAT_MOD_LINEAR);
+-
+ 			data.modifier = modifiers[i].modifier;
+ 			test_addfb(&data);
+ 		}
+@@ -1157,13 +1145,8 @@ igt_main
+ 				igt_describe("Sanity check if addfb ioctl works correctly for given "
+ 						"combination of modifier formats and rotation");
+ 				igt_subtest_f("%s-%dbpp-rotate-%d", modifiers[i].name,
+-					      formats[j].bpp, rotations[k].angle) {
+-					/* No tiling support in XE. */
+-					igt_skip_on(is_xe_device(data.drm_fd) &&
+-						    data.modifier != DRM_FORMAT_MOD_LINEAR);
+-
++					      formats[j].bpp, rotations[k].angle)
+ 					test_scanout(&data);
+-				}
+ 			}
+ 
+ 			igt_fixture
+@@ -1205,10 +1188,6 @@ igt_main
+ 						igt_require(intel_display_ver(intel_get_drm_devid(data.drm_fd)) >= 5);
+ 						data.max_hw_fb_width = min(data.hw_stride / (formats[j].bpp >> 3), data.max_fb_width);
+ 
+-						/* No tiling support in XE. */
+-						igt_skip_on(is_xe_device(data.drm_fd) &&
+-							    modifiers[i].modifier != DRM_FORMAT_MOD_LINEAR);
+-
+ 						test_scanout(&data);
+ 					}
+ 
 -- 
 2.40.0
