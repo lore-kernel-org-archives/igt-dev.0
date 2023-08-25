@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============5811257756291332571=="
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Aurabindo Pillai" <aurabindo.pillai@amd.com>
-Date: Fri, 25 Aug 2023 14:35:51 -0000
-Message-ID: <169297415107.10955.3937836876471293632@emeril.freedesktop.org>
-References: <20230825135053.196364-1-aurabindo.pillai@amd.com>
-In-Reply-To: <20230825135053.196364-1-aurabindo.pillai@amd.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_s?=
- =?utf-8?q?tarting_with_=5Bv2=2C1/3=5D_tests/amdgpu/amd=5Fmall=3A_Add_crc_?=
- =?utf-8?q?check?=
+To: "Marcin Bernatowicz" <marcin.bernatowicz@linux.intel.com>
+Date: Fri, 25 Aug 2023 14:49:35 -0000
+Message-ID: <169297497599.10955.15579149578177260990@emeril.freedesktop.org>
+References: <20230825131913.600667-1-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20230825131913.600667-1-marcin.bernatowicz@linux.intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_b?=
+ =?utf-8?q?enchmarks/gem=5Fwsim=3A_added_basic_xe_support?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,117 +23,39 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============5811257756291332571==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
 == Series Details ==
 
-Series: series starting with [v2,1/3] tests/amdgpu/amd_mall: Add crc check
-URL   : https://patchwork.freedesktop.org/series/122919/
-State : success
+Series: benchmarks/gem_wsim: added basic xe support
+URL   : https://patchwork.freedesktop.org/series/122920/
+State : warning
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_7453_BAT -> XEIGTPW_9662_BAT
-====================================================
+Pipeline status: FAILED.
 
-Summary
--------
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/970708 for the overview.
 
-  **SUCCESS**
+build-containers:build-debian-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48051972):
+  time="2023-08-25T14:46:31Z" level=fatal msg="Error determining repository tags: Get https://registry.freedesktop.org/v2/gfx-ci/igt-ci-tags/build-debian-arm64/tags/list?last=commit-3a9f3015d8f18845de584931c1cf62da39ace1a6&n=100: dial tcp 147.75.198.156:443: i/o timeout" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:d6b7393fb4f375905c31c483d81ce2a2905f88aba8cb198874da2b54035bc41d
+  Copying config sha256:de08540e8ff0e470ff7956df4bed403725a5f45c186e9bf495da5344ff8fbe84
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-08-25T14:46:36Z" level=warning msg="signal: killed"
+  time="2023-08-25T14:46:36Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1692974796:step_script
+  section_start:1692974796:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1692974797:cleanup_file_variables
+  ERROR: Job failed: exit code 1
 
-  No regressions found.
+== Logs ==
 
-  
-
-Participating hosts (3 -> 3)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_9662_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
-    - bat-adlp-7:         [FAIL][1] ([Intel XE#400]) -> [PASS][2] +1 similar issue
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7453/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9662/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
-
-  
-  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
-
-
-Build changes
--------------
-
-  * IGT: IGT_7453 -> IGTPW_9662
-
-  IGTPW_9662: 9662
-  IGT_7453: 7453
-  xe-340-c77796cf84361b4716839141f2e48de2bf7f4bd5: c77796cf84361b4716839141f2e48de2bf7f4bd5
-
-
-
---===============5811257756291332571==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [v2,1/3] tests/amdgpu/amd_mall: Add crc check</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122919/">https://patchwork.freedesktop.org/series/122919/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7453_BAT -&gt; XEIGTPW_9662_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (3 -&gt; 3)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_9662_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7453/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9662/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7453 -&gt; IGTPW_9662</li>
-</ul>
-<p>IGTPW_9662: 9662<br />
-  IGT_7453: 7453<br />
-  xe-340-c77796cf84361b4716839141f2e48de2bf7f4bd5: c77796cf84361b4716839141f2e48de2bf7f4bd5</p>
-
-</body>
-</html>
-
---===============5811257756291332571==--
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/970708
