@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8B94310E61F
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Aug 2023 07:38:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 735ED10E623
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Aug 2023 07:38:57 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 25 Aug 2023 13:00:44 +0530
-Message-Id: <20230825073059.856371-2-bhanuprakash.modem@intel.com>
+Date: Fri, 25 Aug 2023 13:00:46 +0530
+Message-Id: <20230825073059.856371-4-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230825073059.856371-1-bhanuprakash.modem@intel.com>
 References: <20230825073059.856371-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 01/16] lib: Add tiling support for XE
+Subject: [igt-dev] [i-g-t V2 03/16] tests/kms_getfb: Extended ccs tests to
+ support XE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,112 +24,59 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Remove the tiling restrictions in all libraries those used by
-the Xe driver.
+Add support for ccs tests work on XE driver.
 
+V2: - Update XE blocklist
+V3: - New patch for blocklist changes
+
+Fixes: 5fd20e72a (tests/kms_getfb: Add XE support)
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- lib/igt_draw.c     |  5 +----
- lib/igt_fb.c       |  8 ++++----
- lib/intel_bufops.c | 13 +++++++++----
- 3 files changed, 14 insertions(+), 12 deletions(-)
+ tests/kms_getfb.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/lib/igt_draw.c b/lib/igt_draw.c
-index 13b90702c..476778a13 100644
---- a/lib/igt_draw.c
-+++ b/lib/igt_draw.c
-@@ -677,14 +677,11 @@ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
- 	int ver = intel_display_ver(devid);
- 	int pitch;
+diff --git a/tests/kms_getfb.c b/tests/kms_getfb.c
+index f90e51d64..6ee58caab 100644
+--- a/tests/kms_getfb.c
++++ b/tests/kms_getfb.c
+@@ -48,6 +48,7 @@
+ #include "i915/gem_create.h"
+ #include "igt_device.h"
+ #include "xe/xe_query.h"
++#include "xe/xe_ioctl.h"
  
--	if (tiling)
--		igt_require_i915(fd);
--
- 	dst = create_buf(fd, cmd_data->bops, buf, tiling);
- 	ibb = intel_bb_create(fd, PAGE_SIZE);
- 	intel_bb_add_intel_buf(ibb, dst, true);
+ IGT_TEST_DESCRIPTION("Tests GETFB and GETFB2 ioctls.");
  
--	if (is_i915_device(fd) && HAS_4TILE(intel_get_drm_devid(fd))) {
-+	if (HAS_4TILE(intel_get_drm_devid(fd))) {
- 		int buf_height = buf->size / buf->stride;
+@@ -145,7 +146,10 @@ static void get_ccs_fb(int fd, struct drm_mode_fb_cmd2 *ret)
+ 		size += add.pitches[1] * ALIGN(ALIGN(add.height, 16) / 16, 32);
+ 	}
  
- 		switch (buf->bpp) {
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 140711075..4b592825d 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -494,7 +494,7 @@ void igt_get_fb_tile_size(int fd, uint64_t modifier, int fb_bpp,
- 		break;
- 	case I915_FORMAT_MOD_Yf_TILED:
- 	case I915_FORMAT_MOD_Yf_TILED_CCS:
+-	add.handles[0] = gem_buffer_create_fb_obj(fd, size);
++	if (is_i915_device(fd))
++		add.handles[0] = gem_buffer_create_fb_obj(fd, size);
++	else
++		add.handles[0] = xe_bo_create_flags(fd, 0, size, vram_if_possible(fd, 0));
+ 	igt_require(add.handles[0] != 0);
+ 
+ 	if (!HAS_FLATCCS(devid))
+@@ -315,7 +319,7 @@ static void test_duplicate_handles(int fd)
+ 		struct drm_mode_fb_cmd2 add_ccs = { };
+ 		struct drm_mode_fb_cmd get = { };
+ 
 -		igt_require_i915(fd);
 +		igt_require_intel(fd);
- 		switch (fb_bpp) {
- 		case 8:
- 			*width_ret = 64;
-@@ -767,7 +767,7 @@ static uint32_t calc_plane_stride(struct igt_fb *fb, int plane)
- 		(fb->plane_bpp[plane] / 8);
+ 		igt_require_f(!HAS_FLATCCS(intel_get_drm_devid(fd)),
+ 			      "skip because flat ccs has only one buffer.\n");
  
- 	if (fb->modifier != DRM_FORMAT_MOD_LINEAR &&
--	    is_i915_device(fb->fd) &&
-+	    is_intel_device(fb->fd) &&
- 	    intel_display_ver(intel_get_drm_devid(fb->fd)) <= 3) {
- 		uint32_t stride;
+@@ -421,7 +425,7 @@ static void test_getfb2(int fd)
+ 		struct drm_mode_fb_cmd2 get = { };
+ 		int i;
  
-@@ -836,7 +836,7 @@ static uint32_t calc_plane_stride(struct igt_fb *fb, int plane)
- static uint64_t calc_plane_size(struct igt_fb *fb, int plane)
- {
- 	if (fb->modifier != DRM_FORMAT_MOD_LINEAR &&
--	    is_i915_device(fb->fd) &&
-+	    is_intel_device(fb->fd) &&
- 	    intel_display_ver(intel_get_drm_devid(fb->fd)) <= 3) {
- 		uint64_t size = (uint64_t) fb->strides[plane] *
- 			fb->plane_height[plane];
-@@ -913,7 +913,7 @@ static unsigned int get_plane_alignment(struct igt_fb *fb, int color_plane)
- 	unsigned int tile_row_size;
- 	unsigned int alignment;
- 
--	if (!(is_i915_device(fb->fd) &&
-+	if (!(is_intel_device(fb->fd) &&
- 	      is_gen12_ccs_modifier(fb->modifier) &&
- 	      is_yuv_semiplanar_plane(fb, color_plane)))
- 		return 0;
-diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-index 524757933..2c91adb88 100644
---- a/lib/intel_bufops.c
-+++ b/lib/intel_bufops.c
-@@ -927,7 +927,8 @@ static void __intel_buf_init(struct buf_ops *bops,
- 	/* Store gem bo size */
- 	buf->bo_size = size;
- 
--	set_hw_tiled(bops, buf);
-+	if (bops->driver == INTEL_DRIVER_I915)
-+		set_hw_tiled(bops, buf);
- }
- 
- /**
-@@ -1502,14 +1503,18 @@ static struct buf_ops *__buf_ops_create(int fd, bool check_idempotency)
- 		  bops->intel_gen, bops->supported_tiles,
- 		  bops->driver == INTEL_DRIVER_I915 ? "i915" : "xe");
- 
--	/* No tiling support in XE. */
- 	if (bops->driver == INTEL_DRIVER_XE) {
--		bops->supported_hw_tiles = TILE_NONE;
--
- 		bops->linear_to_x = copy_linear_to_x;
- 		bops->x_to_linear = copy_x_to_linear;
- 		bops->linear_to_y = copy_linear_to_y;
- 		bops->y_to_linear = copy_y_to_linear;
-+		bops->linear_to_tile4 = copy_linear_to_tile4;
-+		bops->tile4_to_linear = copy_tile4_to_linear;
-+
-+		bops->linear_to_yf = NULL;
-+		bops->yf_to_linear = NULL;
-+		bops->linear_to_ys = NULL;
-+		bops->ys_to_linear = NULL;
- 
- 		return bops;
- 	}
+-		igt_require_i915(fd);
++		igt_require_intel(fd);
+ 		get_ccs_fb(fd, &add_ccs);
+ 		igt_require(add_ccs.fb_id != 0);
+ 		get.fb_id = add_ccs.fb_id;
 -- 
 2.40.0
