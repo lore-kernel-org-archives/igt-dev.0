@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A656510E623
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Aug 2023 07:38:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6D58010E625
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Aug 2023 07:39:01 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 25 Aug 2023 13:00:45 +0530
-Message-Id: <20230825073059.856371-3-bhanuprakash.modem@intel.com>
+Date: Fri, 25 Aug 2023 13:00:48 +0530
+Message-Id: <20230825073059.856371-6-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230825073059.856371-1-bhanuprakash.modem@intel.com>
 References: <20230825073059.856371-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 02/16] tests/kms_cursor_edge_walk: Fix intel
- specific checks
+Subject: [igt-dev] [i-g-t V2 05/16] tests/kms_plane: Add tiling support for
+ XE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,27 +24,31 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Use the correct helper to check for the intel hardware.
-s/is_i915_device/is_intel_device/
+Remove the tiling restrictions in Xe specific tests
 
+V2: - Rebase
+
+Fixes: 2b9637086 (tests/kms_plane: Add XE support)
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/kms_cursor_edge_walk.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/kms_plane.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
-index 8cc986fc8..2b4b43282 100644
---- a/tests/kms_cursor_edge_walk.c
-+++ b/tests/kms_cursor_edge_walk.c
-@@ -362,7 +362,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+index 721d3b533..d8b5dca9c 100644
+--- a/tests/kms_plane.c
++++ b/tests/kms_plane.c
+@@ -1064,10 +1064,6 @@ static bool test_format_plane(data_t *data, enum pipe pipe,
+ 			.modifier = plane->modifiers[i],
+ 		};
  
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
- 
--		if (is_i915_device(data.drm_fd))
-+		if (is_intel_device(data.drm_fd))
- 			data.devid = intel_get_drm_devid(data.drm_fd);
- 
- 		ret = drmGetCap(data.drm_fd, DRM_CAP_CURSOR_WIDTH, &max_curw);
+-		if (is_xe_device(data->drm_fd) &&
+-		    f.modifier != DRM_FORMAT_MOD_LINEAR)
+-			continue;
+-
+ 		/* igt doesn't know how to sw generate UBWC: */
+ 		if (is_msm_device(data->drm_fd) &&
+ 		    f.modifier == DRM_FORMAT_MOD_QCOM_COMPRESSED)
 -- 
 2.40.0
