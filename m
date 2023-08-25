@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6D58010E625
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Aug 2023 07:39:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5843310E625
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Aug 2023 07:38:59 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 25 Aug 2023 13:00:48 +0530
-Message-Id: <20230825073059.856371-6-bhanuprakash.modem@intel.com>
+Date: Fri, 25 Aug 2023 13:00:47 +0530
+Message-Id: <20230825073059.856371-5-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230825073059.856371-1-bhanuprakash.modem@intel.com>
 References: <20230825073059.856371-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 05/16] tests/kms_plane: Add tiling support for
- XE
+Subject: [igt-dev] [i-g-t V2 04/16] tests/kms_addfb_basic: Add tiling
+ support for XE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,29 +26,133 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Remove the tiling restrictions in Xe specific tests
 
-V2: - Rebase
+V2: - Update Xe fast-feedback testlist & blocklist
+V3: - New patch for blocklist & BAT testlist changes
+V4: - Fix testplan documentation
 
-Fixes: 2b9637086 (tests/kms_plane: Add XE support)
+Fixes: 8c3b02be3 (tests/kms_addfb_basic: Add XE support)
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/kms_plane.c | 4 ----
- 1 file changed, 4 deletions(-)
+ tests/kms_addfb_basic.c | 36 +++++++++++++++++++++++-------------
+ 1 file changed, 23 insertions(+), 13 deletions(-)
 
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index 721d3b533..d8b5dca9c 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -1064,10 +1064,6 @@ static bool test_format_plane(data_t *data, enum pipe pipe,
- 			.modifier = plane->modifiers[i],
- 		};
+diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
+index f415300b6..e9a116c3b 100644
+--- a/tests/kms_addfb_basic.c
++++ b/tests/kms_addfb_basic.c
+@@ -420,7 +420,7 @@ static void pitch_tests(int fd)
+  *
+  * SUBTEST: tile-pitch-mismatch
+  * Description: Test that addfb2 call fails correctly for pitches mismatch
+- * Driver requirement: i915
++ * Driver requirement: i915, xe
+  * Test category: functionality test
+  * Run type: FULL
+  * Functionality: kms_gem_interop, tiling
+@@ -444,7 +444,7 @@ static void tiling_tests(int fd)
  
--		if (is_xe_device(data->drm_fd) &&
--		    f.modifier != DRM_FORMAT_MOD_LINEAR)
--			continue;
--
- 		/* igt doesn't know how to sw generate UBWC: */
- 		if (is_msm_device(data->drm_fd) &&
- 		    f.modifier == DRM_FORMAT_MOD_QCOM_COMPRESSED)
+ 	igt_subtest_group {
+ 		igt_fixture {
+-			igt_require_i915(fd);
++			igt_require_intel(fd);
+ 			tiled_x_bo = igt_create_bo_with_dimensions(fd, 1024, 1024,
+ 				DRM_FORMAT_XRGB8888, I915_FORMAT_MOD_X_TILED,
+ 				1024*4, NULL, NULL, NULL);
+@@ -463,7 +463,8 @@ static void tiling_tests(int fd)
+ 		f.pitches[0] = 1024*4;
+ 		igt_describe("Check if addfb2 and rmfb call works for basic x-tiling test");
+ 		igt_subtest("basic-x-tiled-legacy") {
+-			igt_require(gem_available_fences(fd) > 0);
++			if (is_i915_device(fd))
++				igt_require(gem_available_fences(fd) > 0);
+ 			f.handles[0] = tiled_x_bo;
+ 
+ 			do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f);
+@@ -473,6 +474,7 @@ static void tiling_tests(int fd)
+ 
+ 		igt_describe("Check if addfb2 call works for x and y tiling");
+ 		igt_subtest("framebuffer-vs-set-tiling") {
++			igt_require_i915(fd);
+ 			igt_require(gem_available_fences(fd) > 0);
+ 			f.handles[0] = gem_bo;
+ 
+@@ -487,17 +489,22 @@ static void tiling_tests(int fd)
+ 		igt_describe("Test that addfb2 call fails correctly for pitches mismatch");
+ 			f.pitches[0] = 512*4;
+ 		igt_subtest("tile-pitch-mismatch") {
+-			igt_require(gem_available_fences(fd) > 0);
+-			f.handles[0] = tiled_x_bo;
++			if (is_i915_device(fd))
++				igt_require(gem_available_fences(fd) > 0);
+ 
++			f.handles[0] = tiled_x_bo;
+ 			do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
+ 		}
+ 
+ 		igt_describe("Test that addfb2 call fails correctly for basic y-tiling test");
+ 		f.pitches[0] = 1024*4;
+ 		igt_subtest("basic-y-tiled-legacy") {
+-			igt_require(!gem_has_lmem(fd));
+-			igt_require(gem_available_fences(fd) > 0);
++			if (is_i915_device(fd)) {
++				igt_require(!gem_has_lmem(fd));
++				igt_require(gem_available_fences(fd) > 0);
++			} else {
++				igt_require(!xe_has_vram(fd));
++			}
+ 			f.handles[0] = tiled_y_bo;
+ 
+ 			do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
+@@ -554,7 +561,7 @@ static void tiling_tests(int fd)
+  * SUBTEST: bo-too-small-due-to-tiling
+  * Description: Test that addfb2 call fails correctly with small buffer object
+  *              after changing tile
+- * Driver requirement: i915, xe
++ * Driver requirement: i915
+  * Test category: functionality test
+  * Run type: FULL
+  * Functionality: kms_gem_interop, tiling
+@@ -710,7 +717,7 @@ static void size_tests(int fd)
+  *
+  * SUBTEST: addfb25-framebuffer-vs-set-tiling
+  * Description: Check if addfb2 call works for relevant combination of tiling and fbs
+- * Driver requirement: i915, xe
++ * Driver requirement: i915
+  * Test category: functionality test
+  * Run type: FULL
+  * Functionality: kms_gem_interop, tiling
+@@ -757,9 +764,11 @@ static void addfb25_tests(int fd)
+ 
+ 	igt_subtest_group {
+ 		igt_fixture {
+-			igt_require_i915(fd);
+-			igt_require(gem_available_fences(fd) > 0);
+-			gem_set_tiling(fd, gem_bo, I915_TILING_X, 1024*4);
++			igt_require_intel(fd);
++			if (is_i915_device(fd)) {
++				igt_require(gem_available_fences(fd) > 0);
++				gem_set_tiling(fd, gem_bo, I915_TILING_X, 1024*4);
++			}
+ 			igt_require_fb_modifiers(fd);
+ 		}
+ 
+@@ -779,6 +788,7 @@ static void addfb25_tests(int fd)
+ 
+ 		igt_describe("Check if addfb2 call works for relevant combination of tiling and fbs");
+ 		igt_subtest("addfb25-framebuffer-vs-set-tiling") {
++			igt_require_i915(fd);
+ 			f.modifier[0] = I915_FORMAT_MOD_X_TILED;
+ 			do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f);
+ 			igt_assert_eq(__gem_set_tiling(fd, gem_bo, I915_TILING_X, 512*4), -EBUSY);
+@@ -1118,7 +1128,7 @@ igt_main
+ 		size_tests(fd);
+ 
+ 		igt_fixture
+-			igt_require_i915(fd);
++			igt_require_intel(fd);
+ 
+ 		addfb25_ytile(fd);
+ 
 -- 
 2.40.0
