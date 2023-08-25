@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EB49810E62A
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Aug 2023 07:39:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 571DD10E62D
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Aug 2023 07:39:18 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 25 Aug 2023 13:00:58 +0530
-Message-Id: <20230825073059.856371-16-bhanuprakash.modem@intel.com>
+Date: Fri, 25 Aug 2023 13:00:57 +0530
+Message-Id: <20230825073059.856371-15-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230825073059.856371-1-bhanuprakash.modem@intel.com>
 References: <20230825073059.856371-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 15/16] tests/intel-ci: Add tiling tests to XE
- BAT
+Subject: [igt-dev] [i-g-t V2 14/16] tests/intel-ci: Update Xe BAT &
+ blocklist for kms FBT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,47 +23,39 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add basic tiling tests to XE fast feedback testlist.
-
-V2: - Drop i915 specific tests
+Add kms_frontbuffer_tracking tests back to xe fast-feedback testlist and
+drop them from xe blocklist.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/intel-ci/xe-fast-feedback.testlist | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ tests/intel-ci/xe-fast-feedback.testlist | 1 +
+ tests/intel-ci/xe.blocklist.txt          | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index 026e06ab5..ef7ddff24 100644
+index 311f90c79..026e06ab5 100644
 --- a/tests/intel-ci/xe-fast-feedback.testlist
 +++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -184,6 +184,11 @@ igt@xe_waitfence@abstime
- igt@xe_waitfence@reltime
- igt@kms_addfb_basic@addfb25-bad-modifier
- igt@kms_addfb_basic@addfb25-modifier-no-flag
-+igt@kms_addfb_basic@addfb25-x-tiled-legacy
-+igt@kms_addfb_basic@addfb25-x-tiled-mismatch-legacy
-+igt@kms_addfb_basic@addfb25-yf-tiled-legacy
-+igt@kms_addfb_basic@addfb25-y-tiled-legacy
-+igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
- igt@kms_addfb_basic@bad-pitch-0
- igt@kms_addfb_basic@bad-pitch-1024
- igt@kms_addfb_basic@bad-pitch-128
-@@ -193,6 +198,8 @@ igt@kms_addfb_basic@bad-pitch-63
- igt@kms_addfb_basic@bad-pitch-65536
- igt@kms_addfb_basic@bad-pitch-999
- igt@kms_addfb_basic@basic
-+igt@kms_addfb_basic@basic-x-tiled-legacy
-+igt@kms_addfb_basic@basic-y-tiled-legacy
- igt@kms_addfb_basic@bo-too-small
- igt@kms_addfb_basic@invalid-get-prop
- igt@kms_addfb_basic@invalid-get-prop-any
-@@ -201,6 +208,7 @@ igt@kms_addfb_basic@invalid-set-prop-any
- igt@kms_addfb_basic@no-handle
- igt@kms_addfb_basic@size-max
- igt@kms_addfb_basic@small-bo
-+igt@kms_addfb_basic@tile-pitch-mismatch
- igt@kms_addfb_basic@too-high
- igt@kms_addfb_basic@too-wide
- igt@kms_addfb_basic@unused-handle
+@@ -220,6 +220,7 @@ igt@kms_flip@basic-plain-flip
+ igt@kms_force_connector_basic@force-connector-state
+ igt@kms_force_connector_basic@force-edid
+ igt@kms_force_connector_basic@prune-stale-modes
++igt@kms_frontbuffer_tracking@basic
+ igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24
+ igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12
+ igt@kms_pipe_crc_basic@hang-read-crc
+diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
+index ef48edf4c..2df3810af 100644
+--- a/tests/intel-ci/xe.blocklist.txt
++++ b/tests/intel-ci/xe.blocklist.txt
+@@ -57,7 +57,7 @@ igt@kms_draw_crc@draw-method-(mmap-cpu|mmap-gtt|pwrite)
+ igt@kms_pipe_b_c_ivb@.*
+ igt@kms_pwrite_crc
+ igt@kms_ccs@.*
+-igt@kms_frontbuffer_tracking@.*
++igt@kms_frontbuffer_tracking@.*-(cpu|gtt|pwrite)
+ igt@kms_fbcon_fbt@(fbc|psr)(-suspend)
+ igt@kms_fence_pin_leak
+ igt@kms_busy@.*
 -- 
 2.40.0
