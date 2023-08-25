@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Content-Type: multipart/alternative;
+ boundary="===============9128191683754032000=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
-Date: Fri, 25 Aug 2023 11:13:46 -0000
-Message-ID: <169296202673.10954.7505209761690132513@emeril.freedesktop.org>
+Date: Fri, 25 Aug 2023 11:17:26 -0000
+Message-ID: <169296224655.10952.355529690280738814@emeril.freedesktop.org>
 References: <20230825082541.905799-1-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230825082541.905799-1-bhanuprakash.modem@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_F?=
- =?utf-8?q?ix_Bigjoiner_checks_=28rev9=29?=
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_Fix_Bigj?=
+ =?utf-8?q?oiner_checks_=28rev9=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,39 +23,184 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============9128191683754032000==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
 Series: Fix Bigjoiner checks (rev9)
 URL   : https://patchwork.freedesktop.org/series/115712/
-State : warning
+State : failure
 
 == Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from XEIGT_7452_BAT -> XEIGTPW_9660_BAT
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/970501 for the overview.
+Summary
+-------
 
-containers:igt has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48039756):
-  STEP 4: ENV PATH="/opt/igt/bin:${PATH}"
-  d6661a8ab7e3ff36813488de72f455378947680dbb06a80bb19eca2bdc0f552d
-  STEP 5: ENV LD_LIBRARY_PATH="/opt/igt/lib:/opt/igt/lib64:${LD_LIBRARY_PATH}"
-  e5032e546371f16a4b55dd4b76e4bbdd103ae0df6b6dcb9ed43ea8d66d3e7cbd
-  STEP 6: ENV IGT_TEST_ROOT="/opt/igt/libexec/igt-gpu-tools"
-  41f27e19361c3f3d1177a2978c7ce8a635d3db71a4b7e90e23ea408486413a13
-  STEP 7: CMD docker-help.sh
-  STEP 8: COMMIT registry.freedesktop.org/gfx-ci/igt-ci-tags/igt:commit-94304a6d60f70096f700e70743d13799c6afecdb
-  e68939d6be31d52ffd5999611c7ddd032825370fbde7f438730cf738539e2613
-  Getting image source signatures
-  Copying blob sha256:6ac2c5bb2fe05f6a4dad68839a566bbbc8668fe99fe0f795efe15446f70d8709
-  Copying blob sha256:5c60ed7a9169aa38acfc03984327714911665b091779f5d6216dc9ea5b69a696
-  Copying blob sha256:3504a8337d3b7eaabfd338d6a971d02441d28ebef8bd81f730d87f936ed58079
-  Error: Error copying image to the remote destination: Error writing blob: Patch https://registry.freedesktop.org/v2/gfx-ci/igt-ci-tags/igt/blobs/uploads/9b316780-3276-4740-9a1f-64d5a647e3eb?_state=A8tgIT5sFbyavHYzAlebFM87uO2TCx_hdQ1GHO0MWw97Ik5hbWUiOiJnZngtY2kvaWd0LWNpLXRhZ3MvaWd0IiwiVVVJRCI6IjliMzE2NzgwLTMyNzYtNDc0MC05YTFmLTY0ZDVhNjQ3ZTNlYiIsIk9mZnNldCI6MCwiU3RhcnRlZEF0IjoiMjAyMy0wOC0yNVQxMDo1NTo0NC4yNTcwNDY3NTZaIn0%3D: net/http: HTTP/1.x transport connection broken: write tcp 10.88.60.142:40168->147.75.198.156:443: write: connection timed out
-  section_end:1692961910:step_script
-  section_start:1692961910:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1692961911:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+  **FAILURE**
 
-== Logs ==
+  Serious unknown changes coming with XEIGTPW_9660_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_9660_BAT, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/970501
+  
+
+Participating hosts (3 -> 3)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_9660_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-dp-3:
+    - bat-dg2-oem2:       [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7452/bat-dg2-oem2/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-dp-3.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9660/bat-dg2-oem2/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-dp-3.html
+
+  
+#### Warnings ####
+
+  * igt@kms_flip@basic-flip-vs-modeset:
+    - bat-atsm-2:         [SKIP][3] ([Intel XE#275]) -> [SKIP][4] +3 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7452/bat-atsm-2/igt@kms_flip@basic-flip-vs-modeset.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9660/bat-atsm-2/igt@kms_flip@basic-flip-vs-modeset.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9660_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc:
+    - bat-dg2-oem2:       [PASS][5] -> [INCOMPLETE][6] ([Intel XE#543])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7452/bat-dg2-oem2/igt@kms_pipe_crc_basic@suspend-read-crc.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9660/bat-dg2-oem2/igt@kms_pipe_crc_basic@suspend-read-crc.html
+
+  
+#### Warnings ####
+
+  * igt@kms_force_connector_basic@force-connector-state:
+    - bat-atsm-2:         [SKIP][7] ([Intel XE#277]) -> [SKIP][8] ([Intel XE#277] / [Intel XE#540]) +2 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7452/bat-atsm-2/igt@kms_force_connector_basic@force-connector-state.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9660/bat-atsm-2/igt@kms_force_connector_basic@force-connector-state.html
+
+  
+  [Intel XE#275]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/275
+  [Intel XE#277]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/277
+  [Intel XE#540]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/540
+  [Intel XE#543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/543
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7452 -> IGTPW_9660
+
+  IGTPW_9660: 9660
+  IGT_7452: 7452
+  xe-340-c77796cf84361b4716839141f2e48de2bf7f4bd5: c77796cf84361b4716839141f2e48de2bf7f4bd5
+
+
+
+--===============9128191683754032000==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Fix Bigjoiner checks (rev9)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/115712/">https://patchwork.freedesktop.org/series/115712/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7452_BAT -&gt; XEIGTPW_9660_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_9660_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_9660_BAT, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (3 -&gt; 3)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_9660_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-dp-3:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7452/bat-dg2-oem2/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-dp-3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9660/bat-dg2-oem2/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-dp-3.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-modeset:<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7452/bat-atsm-2/igt@kms_flip@basic-flip-vs-modeset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/275">Intel XE#275</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9660/bat-atsm-2/igt@kms_flip@basic-flip-vs-modeset.html">SKIP</a> +3 similar issues</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9660_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_pipe_crc_basic@suspend-read-crc:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7452/bat-dg2-oem2/igt@kms_pipe_crc_basic@suspend-read-crc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9660/bat-dg2-oem2/igt@kms_pipe_crc_basic@suspend-read-crc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/543">Intel XE#543</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_force_connector_basic@force-connector-state:<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7452/bat-atsm-2/igt@kms_force_connector_basic@force-connector-state.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/277">Intel XE#277</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9660/bat-atsm-2/igt@kms_force_connector_basic@force-connector-state.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/277">Intel XE#277</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/540">Intel XE#540</a>) +2 similar issues</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7452 -&gt; IGTPW_9660</li>
+</ul>
+<p>IGTPW_9660: 9660<br />
+  IGT_7452: 7452<br />
+  xe-340-c77796cf84361b4716839141f2e48de2bf7f4bd5: c77796cf84361b4716839141f2e48de2bf7f4bd5</p>
+
+</body>
+</html>
+
+--===============9128191683754032000==--
