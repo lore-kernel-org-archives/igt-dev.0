@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 13B1010E627
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Aug 2023 07:39:07 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 448DD10E627
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Aug 2023 07:39:09 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 25 Aug 2023 13:00:51 +0530
-Message-Id: <20230825073059.856371-9-bhanuprakash.modem@intel.com>
+Date: Fri, 25 Aug 2023 13:00:52 +0530
+Message-Id: <20230825073059.856371-10-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230825073059.856371-1-bhanuprakash.modem@intel.com>
 References: <20230825073059.856371-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 08/16] tests/kms_rotation_crc: Add tiling
+Subject: [igt-dev] [i-g-t V2 09/16] tests/i915/kms_big_fb: Add tiling
  support for XE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -29,45 +29,75 @@ Remove the tiling restrictions in Xe specific tests
 V2: - Update XE blocklist
 V3: - New patch for blocklist changes
 
-Fixes: e1d5b831e (tests/kms_rotation_crc: Add XE support)
+Fixes: 34168d915 (tests/i915/kms_big_fb: Add XE support)
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/kms_rotation_crc.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ tests/i915/kms_big_fb.c | 23 +----------------------
+ 1 file changed, 1 insertion(+), 22 deletions(-)
 
-diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
-index b80cf695e..f08d31e37 100644
---- a/tests/kms_rotation_crc.c
-+++ b/tests/kms_rotation_crc.c
-@@ -977,10 +977,6 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
- 		igt_pipe_crc_start(data->pipe_crc);
- 
- 		for (i = 0; i < ARRAY_SIZE(planeconfigs); i++) {
--			if (is_xe_device(data->gfx_fd) &&
--			    planeconfigs[i].modifier != DRM_FORMAT_MOD_LINEAR)
--				continue;
+diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
+index 33008c40a..4f39a65f4 100644
+--- a/tests/i915/kms_big_fb.c
++++ b/tests/i915/kms_big_fb.c
+@@ -1111,10 +1111,6 @@ igt_main
+ 	for (int i = 1; i < ARRAY_SIZE(modifiers); i++) {
+ 		igt_subtest_f("%s-addfb-size-overflow",
+ 			      modifiers[i].name) {
+-			/* No tiling support in XE. */
+-			igt_skip_on(is_xe_device(data.drm_fd) &&
+-				    modifiers[i].modifier != DRM_FORMAT_MOD_LINEAR);
 -
- 			p[0].fbinfo = &planeconfigs[i];
- 			pointlocation(data, p, mode, 0);
+ 			data.modifier = modifiers[i].modifier;
+ 			test_size_overflow(&data);
+ 		}
+@@ -1124,10 +1120,6 @@ igt_main
+ 	for (int i = 1; i < ARRAY_SIZE(modifiers); i++) {
+ 		igt_subtest_f("%s-addfb-size-offset-overflow",
+ 			      modifiers[i].name) {
+-			/* No tiling support in XE. */
+-			igt_skip_on(is_xe_device(data.drm_fd) &&
+-				    modifiers[i].modifier != DRM_FORMAT_MOD_LINEAR);
+-
+ 			data.modifier = modifiers[i].modifier;
+ 			test_size_offset_overflow(&data);
+ 		}
+@@ -1136,10 +1128,6 @@ igt_main
+ 	igt_describe("Sanity check if addfb ioctl works correctly for given size and strides of fb");
+ 	for (int i = 0; i < ARRAY_SIZE(modifiers); i++) {
+ 		igt_subtest_f("%s-addfb", modifiers[i].name) {
+-			/* No tiling support in XE. */
+-			igt_skip_on(is_xe_device(data.drm_fd) &&
+-				    modifiers[i].modifier != DRM_FORMAT_MOD_LINEAR);
+-
+ 			data.modifier = modifiers[i].modifier;
+ 			test_addfb(&data);
+ 		}
+@@ -1157,13 +1145,8 @@ igt_main
+ 				igt_describe("Sanity check if addfb ioctl works correctly for given "
+ 						"combination of modifier formats and rotation");
+ 				igt_subtest_f("%s-%dbpp-rotate-%d", modifiers[i].name,
+-					      formats[j].bpp, rotations[k].angle) {
+-					/* No tiling support in XE. */
+-					igt_skip_on(is_xe_device(data.drm_fd) &&
+-						    data.modifier != DRM_FORMAT_MOD_LINEAR);
+-
++					      formats[j].bpp, rotations[k].angle)
+ 					test_scanout(&data);
+-				}
+ 			}
  
-@@ -1351,7 +1347,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 	igt_describe("Tiling and Rotation test for gen 10+ for primary plane");
- 	for (reflect_x = reflect_x_subtests; reflect_x->modifier; reflect_x++) {
- 		igt_fixture
--			igt_require_i915(data.gfx_fd);
-+			igt_require_intel(data.gfx_fd);
+ 			igt_fixture
+@@ -1205,10 +1188,6 @@ igt_main
+ 						igt_require(intel_display_ver(intel_get_drm_devid(data.drm_fd)) >= 5);
+ 						data.max_hw_fb_width = min(data.hw_stride / (formats[j].bpp >> 3), data.max_fb_width);
  
- 		igt_subtest_f("primary-%s-reflect-x-%s",
- 			      modifier_test_str(reflect_x->modifier),
-@@ -1412,7 +1408,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 		enum pipe pipe;
- 		igt_output_t *output;
+-						/* No tiling support in XE. */
+-						igt_skip_on(is_xe_device(data.drm_fd) &&
+-							    modifiers[i].modifier != DRM_FORMAT_MOD_LINEAR);
+-
+ 						test_scanout(&data);
+ 					}
  
--		igt_require_i915(data.gfx_fd);
-+		igt_require_intel(data.gfx_fd);
- 		igt_display_require_output(&data.display);
- 
- 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
 -- 
 2.40.0
