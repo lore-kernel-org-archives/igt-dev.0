@@ -1,15 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2DAC610E6D7
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Aug 2023 17:15:32 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 25 Aug 2023 22:45:26 +0530
-Message-Id: <20230825171526.1182193-1-swati2.sharma@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4D94A10E0F7
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Aug 2023 17:19:35 +0000 (UTC)
+From: "Teres Alexis, Alan Previn" <alan.previn.teres.alexis@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "kamil.konieczny@linux.intel.com" <kamil.konieczny@linux.intel.com>
+Date: Fri, 25 Aug 2023 17:19:31 +0000
+Message-ID: <410a4b1d6108769613e4adaa427a8671e011944b.camel@intel.com>
+References: <20230815173659.1208384-1-alan.previn.teres.alexis@intel.com>
+ <20230816142739.k2ycx6vn5rrx33rt@kamilkon-desk1>
+ <87pm3lsszj.wl-ashutosh.dixit@intel.com>
+ <20230817171259.wdb2iwec53vskpxz@kamilkon-desk1>
+In-Reply-To: <20230817171259.wdb2iwec53vskpxz@kamilkon-desk1>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <AA8437278A226F448D741D7535D49BD9@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/feature_discovery: detect mst
- configuration
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/i915: Add a helper lib to read mmio
+ registers via ioctl
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,38 +26,15 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "Konieczny, Kamil" <kamil.konieczny@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add test to detect if we have mst configuration.
-
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/feature_discovery.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/tests/feature_discovery.c b/tests/feature_discovery.c
-index d1f4b1633..738719e16 100644
---- a/tests/feature_discovery.c
-+++ b/tests/feature_discovery.c
-@@ -113,5 +113,17 @@ igt_main {
- 		igt_subtest("psr2") {
- 			igt_require(psr_sink_support(fd, debugfs_fd, PSR_MODE_2));
- 		}
-+
-+		igt_describe("Make sure that we have DP-MST configuration.");
-+		igt_subtest("dp-mst") {
-+			igt_output_t *output;
-+			enum pipe pipe;
-+			int ret;
-+			for_each_valid_output_on_pipe(&display, pipe, output) {
-+				igt_output_set_pipe(output, pipe);
-+				ret = igt_check_output_is_dp_mst(output);
-+			}
-+			igt_require( ret !=0 );
-+		}
- 	}
- }
--- 
-2.25.1
+T24gVGh1LCAyMDIzLTA4LTE3IGF0IDE5OjEyICswMjAwLCBLYW1pbCBLb25pZWN6bnkgd3JvdGU6
+DQpbYWxhbjpzbmlwXQ0KPiA+ID4gDQo+ID4gPiA+ICBsaWIvaTkxNS9pOTE1X3JlZ19yZWFkX2lv
+Y3RsLmggfCAgOSArKysrKysrKysNCj4gPiANCj4gPiBDYW4ndCB0aGlzIGp1c3QgZ28gaW4gbGli
+L2lvY3RsX3dyYXBwZXJzLio/IERvIHdlIG5lZWQgYSBuZXcgZmlsZSBmb3IgdGhpcz8NCj4gPiAN
+Cj4gPiBUaGFua3MuDQo+ID4gLS0NCj4gPiBBc2h1dG9zaA0KPiANCj4gSSBhZ3JlZSB0aGF0IGlm
+IHBvc3NpYmxlIHdlIHNob3VsZCByZXVzZSBvdGhlciBpbnRlbCBsaWIuDQo+IA0KPiBSZWdhcmRz
+LA0KPiBLYW1pbA0KPiANCmFsYW46IHllcyAtIHNvdW5kcyBnb29kICAtIHdpbGwgZG8uDQo=
