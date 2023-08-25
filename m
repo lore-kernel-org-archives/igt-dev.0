@@ -1,23 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam10on20601.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e89::601])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EE9DF10E69B
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Aug 2023 13:51:18 +0000 (UTC)
-Message-ID: <3f21a952-5047-4958-901b-53627aee6970@amd.com>
-Date: Fri, 25 Aug 2023 09:51:14 -0400
-To: Alex Hung <alex.hung@amd.com>, igt-dev@lists.freedesktop.org
-References: <20230824161504.154365-1-aurabindo.pillai@amd.com>
- <20230824161504.154365-2-aurabindo.pillai@amd.com>
- <b4b5c11b-b0e7-bd3d-7ced-5be9b5882222@amd.com>
-Content-Language: en-US
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
-In-Reply-To: <b4b5c11b-b0e7-bd3d-7ced-5be9b5882222@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8B2D810E699
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Aug 2023 13:53:03 +0000 (UTC)
+From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 25 Aug 2023 13:19:10 +0000
+Message-Id: <20230825131913.600667-1-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH 2/3] tests/amdgpu/amd_mall: remove UMR
- dependency
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 0/3] [RFC] benchmarks/gem_wsim: added basic
+ xe support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,165 +17,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: hersenxs.wu@amd.com
+Cc: joonas.lahtinen@intel.com, tvrtko.ursulin@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Added basic xe support with few examples.
+Single binary handles both i915 and Xe devices,
+but workload definitions differs between i915 and xe.
+Xe does not use context abstraction, introduces new VM and Exec Queue
+steps and BATCH step references exec queue.
+For more details see wsim/README.
+Some functionality is still missing: working sets,
+load balancing (need some input if/how to do it in Xe - exec queues
+width?).
 
+The tool is handy for scheduling tests, we find it useful to verify vGPU
+profiles defining different execution quantum/preemption timeout settings.
 
-On 2023-08-24 23:49, Alex Hung wrote:
-> 
-> 
-> On 2023-08-24 10:15, Aurabindo Pillai wrote:
->> Remove the dependency on the userspace tool UMR to check MALL status
->> and fully rely on debugfs for simplicity of test setup.
->>
->> Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
->> ---
->>   lib/igt_amd.c           | 26 +++++++++++++-------------
->>   lib/igt_amd.h           |  2 +-
->>   tests/amdgpu/amd_mall.c | 31 +++++++------------------------
->>   3 files changed, 21 insertions(+), 38 deletions(-)
->>
->> diff --git a/lib/igt_amd.c b/lib/igt_amd.c
->> index 1a720ff56..49ca9e6d9 100644
->> --- a/lib/igt_amd.c
->> +++ b/lib/igt_amd.c
->> @@ -1182,27 +1182,27 @@ static bool get_dm_capabilites(int drm_fd, 
->> char *buf, size_t size) {
->>    * @brief check if AMDGPU mall_capable interface entry exist and 
->> defined
->>    *
->>    * @param drm_fd DRM file descriptor
->> - * @return true if mall_capable debugfs interface exists and defined
->> - * @return false otherwise
->> + * @return true if dm capabilities interface exists and MALL is 
->> supported
->> + * @return false if capabilites could not be read.
->>    */
->> -bool igt_amd_is_mall_capable(int drm_fd)
->> +void igt_amd_get_mall_status(int drm_fd, u32 *supported, u32 *enabled)
->>   {
->> -    char buf[1024], mall_read[10];
->> +    char buf[1024];
->>       char *mall_loc;
->> -    if (!get_dm_capabilites(drm_fd, buf, 1024))
->> -        return false;
->> +    *supported = false;
->> +    *enabled = false;
-> 
-> supported and enabled are u32 but assigned false and true. Why can't 
-> they be boolean?
+There is also some rationale for the tool in following thread:
+https://lore.kernel.org/dri-devel/a443495f-5d1b-52e1-9b2f-80167deb6d57@linux.intel.com/
 
-In driver we use u32* for reading any reg fields of sizes less than u32 
-as well, but there is no need to follow that in IGT. Just sent an 
-updated v2
+With this patch it should be possible to run following on xe device:
 
-> 
->> -    mall_loc = strstr(buf,"mall: ");
->> -    if (!mall_loc)
->> +    if (!get_dm_capabilites(drm_fd, buf, 1024))
->>           return false;
->> -    sscanf(mall_loc, "mall: %s", mall_read);
->> -
->> -    if (!strcmp(mall_read, "yes"))
->> -        return true;
->> +    mall_loc = strstr(buf, "mall supported: yes");
->> +    if (mall_loc)
->> +        *supported = true;
->> -    return false;
->> +    mall_loc = strstr(buf, "enabled: yes");
->> +    if (mall_loc && *supported)
->> +        *enabled = true;
->>   }
->>   /**
->> diff --git a/lib/igt_amd.h b/lib/igt_amd.h
->> index c05b4b730..db226e0d0 100644
->> --- a/lib/igt_amd.h
->> +++ b/lib/igt_amd.h
->> @@ -199,6 +199,6 @@ bool igt_amd_has_visual_confirm(int drm_fd);
->>   int  igt_amd_get_visual_confirm(int drm_fd);
->>   bool igt_amd_set_visual_confirm(int drm_fd, enum 
->> amdgpu_debug_visual_confirm option);
->> -bool igt_amd_is_mall_capable(int drm_fd);
->> +void igt_amd_get_mall_status(int drm_fd, u32 *supported, u32 *enabled);
->>   bool igt_amd_output_has_odm_combine_segments(int drm_fd, char 
->> *connector_name);
->>   #endif /* IGT_AMD_H */
->> diff --git a/tests/amdgpu/amd_mall.c b/tests/amdgpu/amd_mall.c
->> index 6016d5e8c..178203e8b 100644
->> --- a/tests/amdgpu/amd_mall.c
->> +++ b/tests/amdgpu/amd_mall.c
->> @@ -57,7 +57,8 @@ struct line_check {
->>   static void test_init(data_t *data)
->>   {
->>       igt_display_t *display = &data->display;
->> -    bool mall_capable = false;
->> +    u32 mall_capable = false;
->> +    u32 mall_en = false;
-> 
-> Same here. Why are boolean values assigned to u32?
-> 
->>       /* It doesn't matter which pipe we choose on amdpgu. */
->>       data->pipe_id = PIPE_A;
->> @@ -65,7 +66,7 @@ static void test_init(data_t *data)
->>       igt_display_reset(display);
->> -    mall_capable =  igt_amd_is_mall_capable(data->fd);
->> +    igt_amd_get_mall_status(data->fd, &mall_capable, &mall_en);
->>       igt_require_f(mall_capable, "Requires hardware that supports 
->> MALL cache\n");
->>       /* find a connected output */
->> @@ -101,44 +102,26 @@ static void test_fini(data_t *data)
->>       igt_display_commit_atomic(&data->display, 
->> DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
->>   }
->> -static bool check_cmd_output(const char *line, void *data)
->> -{
->> -    struct line_check *check = data;
->> -
->> -    if (strstr(line, check->substr)) {
->> -        check->found++;
->> -    }
->> -
->> -    return false;
->> -}
->>   static void test_mall_ss(data_t *data)
->>   {
->>       igt_display_t *display = &data->display;
->>       igt_fb_t rfb;
->> -    int exec_ret;
->> -    struct line_check line = {0};
->>       igt_crc_t test_crc, ref_crc;
->> +    u32 mall_supp, mall_en;
->>       test_init(data);
->>       igt_create_pattern_fb(data->fd, data->w, data->h, 
->> DRM_FORMAT_XRGB8888, 0, &rfb);
->>       igt_plane_set_fb(data->primary, &rfb);
->>       igt_display_commit_atomic(display, 
->> DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
->> -
->>       igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
->> -    sleep(MALL_SETTLE_DELAY);
->> -
->> -    igt_system_cmd(exec_ret, "umr -O bits -r 
->> *.*.HUBP0_HUBP_MALL_STATUS | grep MALL_IN_USE");
->> -
->> -    igt_skip_on_f(exec_ret != IGT_EXIT_SUCCESS, "Error running UMR\n");
->> -    line.substr = "1 (0x00000001)";
->> -    igt_log_buffer_inspect(check_cmd_output, &line);
->> +    sleep(MALL_SETTLE_DELAY);
->> -    igt_assert_eq(line.found, 1);
->> +    igt_amd_get_mall_status(data->fd, &mall_supp, &mall_en);
->> +    igt_fail_on_f(!(mall_supp && mall_en), "MALL did not get 
->> enabled\n");
->>       igt_pipe_crc_collect_crc(data->pipe_crc, &test_crc);
->> -
->>       igt_assert_crc_equal(&ref_crc, &test_crc);
->>       igt_remove_fb(data->fd, &rfb);
+gem_wsim -w benchmarks/wsim/xe_media_load_balance_fhd26u7.wsim -c 36 -r 600
+
+Best with drm debug logs disabled:
+
+echo 0 > /sys/module/drm/parameters/debug
+
+lib/xe_spin: fixed duration xe_spin capability - is already 
+  under review https://patchwork.freedesktop.org/series/122624/
+
+Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+
+Marcin Bernatowicz (3):
+  lib/xe_spin: fixed duration xe_spin capability
+  lib/igt_device_scan: Xe get integrated/discrete card functions
+  [RFC] benchmarks/gem_wsim: added basic xe support
+
+ benchmarks/gem_wsim.c                         | 842 ++++++++++++++----
+ benchmarks/wsim/README                        |  87 +-
+ benchmarks/wsim/xe_cloud-gaming-60fps.wsim    |  25 +
+ benchmarks/wsim/xe_example.wsim               |  28 +
+ benchmarks/wsim/xe_example01.wsim             |  19 +
+ benchmarks/wsim/xe_example_fence.wsim         |  23 +
+ .../wsim/xe_media_load_balance_fhd26u7.wsim   |  63 ++
+ lib/igt_device_scan.c                         |  34 +-
+ lib/igt_device_scan.h                         |   2 +
+ lib/xe/xe_spin.c                              | 121 ++-
+ lib/xe/xe_spin.h                              |  27 +-
+ tests/xe/xe_dma_buf_sync.c                    |   6 +-
+ tests/xe/xe_exec_balancer.c                   |   9 +-
+ tests/xe/xe_exec_reset.c                      |  24 +-
+ tests/xe/xe_exec_threads.c                    |   7 +-
+ tests/xe/xe_vm.c                              |   9 +-
+ 16 files changed, 1094 insertions(+), 232 deletions(-)
+ create mode 100644 benchmarks/wsim/xe_cloud-gaming-60fps.wsim
+ create mode 100644 benchmarks/wsim/xe_example.wsim
+ create mode 100644 benchmarks/wsim/xe_example01.wsim
+ create mode 100644 benchmarks/wsim/xe_example_fence.wsim
+ create mode 100644 benchmarks/wsim/xe_media_load_balance_fhd26u7.wsim
 
 -- 
---
-
-Thanks & Regards,
-Jay
+2.30.2
