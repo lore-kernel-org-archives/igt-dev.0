@@ -1,23 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2AE8B10E6D4
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Aug 2023 17:41:41 +0000 (UTC)
-From: "Teres Alexis, Alan Previn" <alan.previn.teres.alexis@intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "kamil.konieczny@linux.intel.com" <kamil.konieczny@linux.intel.com>
-Date: Fri, 25 Aug 2023 17:41:34 +0000
-Message-ID: <6cc0f9cf9f0ff5dbaa1acdd107e50b6a84f4fc26.camel@intel.com>
-References: <20230815173659.1208384-1-alan.previn.teres.alexis@intel.com>
- <20230816142739.k2ycx6vn5rrx33rt@kamilkon-desk1>
- <97e776c356d5a7b7bc7a78423e4f0502c97810e4.camel@intel.com>
-In-Reply-To: <97e776c356d5a7b7bc7a78423e4f0502c97810e4.camel@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <BF85175C15FB7A419160C25D7D3EFFF8@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Content-Type: multipart/alternative;
+ boundary="===============1996077456305629160=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/i915: Add a helper lib to read mmio
- registers via ioctl
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Date: Fri, 25 Aug 2023 18:05:07 -0000
+Message-ID: <169298670762.10955.12886896808751338996@emeril.freedesktop.org>
+References: <20230825171526.1182193-1-swati2.sharma@intel.com>
+In-Reply-To: <20230825171526.1182193-1-swati2.sharma@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/fe?=
+ =?utf-8?q?ature=5Fdiscovery=3A_detect_mst_configuration?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,30 +17,207 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Konieczny, Kamil" <kamil.konieczny@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCAyMDIzLTA4LTI1IGF0IDEwOjI1IC0wNzAwLCBUZXJlcyBBbGV4aXMsIEFsYW4gUHJl
-dmluIHdyb3RlOg0KPiA+ID4gLQlkb19pb2N0bChkcm1fZmQsIERSTV9JT0NUTF9JOTE1X1JFR19S
-RUFELCAmcnIpOw0KPiA+ID4gKwlpOTE1X3JlZ19yZWFkX2lvY3RsKGRybV9mZCwgMHgyMzU4LCAm
-dmFsKTsNCj4gPiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBeXl5eXl4NCj4g
-PiBNYXliZSBkZWZpbmUgaXQgYXQgaTkxNV9tbWlvX3JlZy5oID8NCj4gPiANCj4gPiAjZGVmaW5l
-IE1NSU9fUkVHX1JFTkRFUl9SSU5HX1RJTUVTVEFNUCAweDIzNTgNCj4gPiANCj4gYWxhbjogeWVz
-IC0gbXkgYmFkIC0gaSBzaG91bGQgaGF2ZSBkb25lIHRoYXQgdXAgZnJvbnQuDQpKdXN0IHJlYWxp
-emVkIHRoaXMgdGhpbmcgaXMgdXNlZC9kZWZpbmVkIGluIGEgZmV3IHBsYWNlcyAoYmVsb3cgaXMg
-dGhlIGdyZXApDQpidXQgaSBndWVzcyB0aGUgcmlnaHQgcGxhY2Ugd291bGQgYmUgbGliL2ludGVs
-X3JlZy5oIHdpdGggYWxsIHRoZSBvdGhlcnM/DQpJIGFsc28gZmVlbCB3ZSBkb250IG5lZWQgdGhl
-ICJNTUlPX1JFRyIgaW4gZnJvbnQgKGxpa2Ugb3RoZXJzIGluIGludGVsX3JlZy5oKS4NCkknbGwg
-cmUtcmV2IGFuZCB3ZSBjYW4gdGFrZSBhIDJuZCBsb29rLiBUaGFua3MgaW4gYWR2YW5jZS4NCg0K
-ICAgdGVzdHMvaTkxNS9pOTE1X3BtX3JwbS5jOjE4NjI6CWk5MTVfcmVnX3JlYWRfaW9jdGwoZHJt
-X2ZkLCAweDIzNTgsICZ2YWwpOw0KICAgdGVzdHMvaTkxNS9nZW1fcmVnX3JlYWQuYzo1NzojZGVm
-aW5lIFJFTkRFUl9SSU5HX1RJTUVTVEFNUCAweDIzNTgNCiAgIHRlc3RzL2k5MTUvZ2VtX2N0eF9p
-c29sYXRpb24uYzoyMzA6CXsgIlJDUyB0aW1lc3RhbXAiLCBHRU42LCB+MHUsIDB4MjM1OCB9LA0K
-ICAgDQogICB0ZXN0cy94ZS94ZV9tbWlvLmM6MjM6I2RlZmluZSBSQ1NfVElNRVNUQU1QIDB4MjM1
-OA0KICAgDQogICBsaWIvaW50ZWxfcmVnLmg6NDYyOiNkZWZpbmUgVElNRVNUQU1QX1FXICAgICAg
-ICAgICAweDIzNTgNCiAgIHRvb2xzL2ludGVsX2ZvcmNld2FrZWQuYzo2MjoJcmV0dXJuIChpbnRl
-bF9yZWdpc3Rlcl9yZWFkKG1taW9fZGF0YSwgMHgyMzU4KSAhPSAwKTsNCiAgIHRvb2xzL2k5MTUt
-cGVyZi9pOTE1X3BlcmZfcmVjb3JkZXIuYzo2MjY6I2RlZmluZSBSRU5ERVJfUklOR19USU1FU1RB
-TVAgMHgyMzU4DQogICANCg==
+--===============1996077456305629160==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: tests/feature_discovery: detect mst configuration
+URL   : https://patchwork.freedesktop.org/series/122928/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7454_BAT -> XEIGTPW_9664_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (2 -> 3)
+------------------------------
+
+  Additional (1): bat-dg2-oem2 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9664_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
+    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 similar issue
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7454/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9664/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+
+  * igt@kms_force_connector_basic@prune-stale-modes:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][3] ([i915#5274])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9664/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
+    - bat-dg2-oem2:       NOTRUN -> [FAIL][4] ([Intel XE#400]) +2 similar issues
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9664/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
+
+  * igt@kms_psr@primary_page_flip:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][5] ([i915#1072]) +2 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9664/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html
+
+  * igt@xe_compute@compute-square:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][6] ([Intel XE#252])
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9664/bat-dg2-oem2/igt@xe_compute@compute-square.html
+
+  * igt@xe_exec_fault_mode@many-basic:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][7] ([Intel XE#288]) +17 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9664/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html
+
+  * igt@xe_huc_copy@huc_copy:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][8] ([Intel XE#255])
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9664/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html
+
+  * igt@xe_live_ktest@bo:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][9] ([Intel XE#483]) +2 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9664/bat-dg2-oem2/igt@xe_live_ktest@bo.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#252]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/252
+  [Intel XE#255]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/255
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#483]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/483
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7454 -> IGTPW_9664
+
+  IGTPW_9664: 9664
+  IGT_7454: 7454
+  xe-340-c77796cf84361b4716839141f2e48de2bf7f4bd5: c77796cf84361b4716839141f2e48de2bf7f4bd5
+
+
+
+--===============1996077456305629160==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/feature_discovery: detect mst configuration</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122928/">https://patchwork.freedesktop.org/series/122928/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7454_BAT -&gt; XEIGTPW_9664_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (2 -&gt; 3)</h2>
+<p>Additional (1): bat-dg2-oem2 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9664_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7454/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9664/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@prune-stale-modes:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9664/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5274">i915#5274</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9664/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_page_flip:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9664/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_compute@compute-square:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9664/bat-dg2-oem2/igt@xe_compute@compute-square.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/252">Intel XE#252</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@many-basic:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9664/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_huc_copy@huc_copy:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9664/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@bo:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9664/bat-dg2-oem2/igt@xe_live_ktest@bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/483">Intel XE#483</a>) +2 similar issues</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7454 -&gt; IGTPW_9664</li>
+</ul>
+<p>IGTPW_9664: 9664<br />
+  IGT_7454: 7454<br />
+  xe-340-c77796cf84361b4716839141f2e48de2bf7f4bd5: c77796cf84361b4716839141f2e48de2bf7f4bd5</p>
+
+</body>
+</html>
+
+--===============1996077456305629160==--
