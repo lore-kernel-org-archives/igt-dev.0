@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B2D1E10E623
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Aug 2023 07:38:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A656510E623
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Aug 2023 07:38:56 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 25 Aug 2023 13:00:43 +0530
-Message-Id: <20230825073059.856371-1-bhanuprakash.modem@intel.com>
+Date: Fri, 25 Aug 2023 13:00:45 +0530
+Message-Id: <20230825073059.856371-3-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230825073059.856371-1-bhanuprakash.modem@intel.com>
+References: <20230825073059.856371-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 00/16] Add tiling support for display tests
+Subject: [igt-dev] [i-g-t V2 02/16] tests/kms_cursor_edge_walk: Fix intel
+ specific checks
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,47 +19,32 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add tiling support for display tests.
+Use the correct helper to check for the intel hardware.
+s/is_i915_device/is_intel_device/
 
-Bhanuprakash Modem (16):
-  lib: Add tiling support for XE
-  tests/kms_cursor_edge_walk: Fix intel specific checks
-  tests/kms_getfb: Extended ccs tests to support XE
-  tests/kms_addfb_basic: Add tiling support for XE
-  tests/kms_plane: Add tiling support for XE
-  tests/kms_plane_lowres: Add tiling support for XE
-  tests/kms_plane_scaling: Add tiling support for XE
-  tests/kms_rotation_crc: Add tiling support for XE
-  tests/i915/kms_big_fb: Add tiling support for XE
-  tests/i915/kms_draw_crc: Add tiling support for XE
-  tests/i915/kms_flip_scaled_crc: Add tiling support for XE
-  tests/i915/kms_flip_tiling: Add tiling support for XE
-  tests/intel-ci: Drop tiling tests from xe blocklist
-  tests/intel-ci: Update Xe BAT & blocklist for kms FBT
-  tests/intel-ci: Add tiling tests to XE BAT
-  HAX: Run tiling tests in XE fast-feedback
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
+---
+ tests/kms_cursor_edge_walk.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- lib/igt_draw.c                           |   5 +-
- lib/igt_fb.c                             |   8 +-
- lib/intel_bufops.c                       |  13 +-
- tests/i915/kms_big_fb.c                  |  23 +-
- tests/i915/kms_draw_crc.c                |   4 -
- tests/i915/kms_flip_scaled_crc.c         |   6 -
- tests/i915/kms_flip_tiling.c             |   6 -
- tests/intel-ci/xe-fast-feedback.testlist | 445 ++++++++++++-----------
- tests/intel-ci/xe.blocklist.txt          |  12 +-
- tests/kms_addfb_basic.c                  |  36 +-
- tests/kms_cursor_edge_walk.c             |   2 +-
- tests/kms_getfb.c                        |  10 +-
- tests/kms_plane.c                        |   4 -
- tests/kms_plane_lowres.c                 |   3 -
- tests/kms_plane_scaling.c                |   4 -
- tests/kms_rotation_crc.c                 |   8 +-
- 16 files changed, 282 insertions(+), 307 deletions(-)
-
---
+diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
+index 8cc986fc8..2b4b43282 100644
+--- a/tests/kms_cursor_edge_walk.c
++++ b/tests/kms_cursor_edge_walk.c
+@@ -362,7 +362,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+ 
+-		if (is_i915_device(data.drm_fd))
++		if (is_intel_device(data.drm_fd))
+ 			data.devid = intel_get_drm_devid(data.drm_fd);
+ 
+ 		ret = drmGetCap(data.drm_fd, DRM_CAP_CURSOR_WIDTH, &max_curw);
+-- 
 2.40.0
