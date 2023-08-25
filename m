@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2E5E810E5FF
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Aug 2023 05:42:07 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B4DFE10E600
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Aug 2023 05:42:06 +0000 (UTC)
 From: Riana Tauro <riana.tauro@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 25 Aug 2023 11:16:59 +0530
-Message-Id: <20230825054659.1320824-4-riana.tauro@intel.com>
+Date: Fri, 25 Aug 2023 11:16:57 +0530
+Message-Id: <20230825054659.1320824-2-riana.tauro@intel.com>
 In-Reply-To: <20230825054659.1320824-1-riana.tauro@intel.com>
 References: <20230825054659.1320824-1-riana.tauro@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 3/3] HAX: Add toggle-gt-c6 to
- xe-fast-feedback.testlist
+Subject: [igt-dev] [PATCH i-g-t v2 1/3] lib/igt_power: Modify igt_power
+ library for xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,24 +24,45 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add toggle-gt-c6 to xe-fast-feedback.testlist
+Modify igt_pm library for xe tests. To check if a
+device is dgfx, igt_power open call needs to be modified for
+xe.
+
+v2: add newline and fix commit message (Kamil)
 
 Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/intel-ci/xe-fast-feedback.testlist | 1 +
- 1 file changed, 1 insertion(+)
+ lib/igt_power.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index 311f90c79..9cf158f2e 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -144,6 +144,7 @@ igt@xe_mmap@vram-system
- igt@xe_mmio@mmio-timestamp
- igt@xe_mmio@mmio-invalid
- igt@xe_pm_residency@gt-c6-on-idle
-+igt@xe_pm_residency@toggle-gt-c6
- igt@xe_prime_self_import@basic-with_one_bo
- igt@xe_prime_self_import@basic-with_fd_dup
- #igt@xe_prime_self_import@basic-llseek-size
+diff --git a/lib/igt_power.c b/lib/igt_power.c
+index 3b34be406..810859b13 100644
+--- a/lib/igt_power.c
++++ b/lib/igt_power.c
+@@ -12,6 +12,8 @@
+ #include "igt_power.h"
+ #include "igt_sysfs.h"
+ 
++#include "xe/xe_query.h"
++
+ static const char *rapl_domains[] = { "cpu", "gpu", "pkg", "ram" };
+ 
+ static int rapl_parse(struct rapl *r, const char *str)
+@@ -99,11 +101,13 @@ static inline void rapl_close(struct rapl *r)
+ int igt_power_open(int fd, struct igt_power *p, const char *domain)
+ {
+ 	int i;
++	bool is_dgfx;
+ 
+ 	p->hwmon_fd = -1;
+ 	p->rapl.fd = -1;
+ 
+-	if (gem_has_lmem(fd)) {
++	is_dgfx = is_xe_device(fd) ? xe_has_vram(fd) : gem_has_lmem(fd);
++	if (is_dgfx) {
+ 		if (strncmp(domain, "gpu", strlen("gpu")) == 0) {
+ 			p->hwmon_fd = igt_hwmon_open(fd);
+ 			if (p->hwmon_fd >= 0)
 -- 
 2.40.0
