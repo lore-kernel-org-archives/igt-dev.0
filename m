@@ -1,22 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com
- (mail-bn7nam10on2062a.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e8a::62a])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 439DD10E5F8
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Aug 2023 03:49:59 +0000 (UTC)
-Message-ID: <b4b5c11b-b0e7-bd3d-7ced-5be9b5882222@amd.com>
-Date: Thu, 24 Aug 2023 21:49:49 -0600
-To: Aurabindo Pillai <aurabindo.pillai@amd.com>, igt-dev@lists.freedesktop.org
-References: <20230824161504.154365-1-aurabindo.pillai@amd.com>
- <20230824161504.154365-2-aurabindo.pillai@amd.com>
-Content-Language: en-US
-From: Alex Hung <alex.hung@amd.com>
-In-Reply-To: <20230824161504.154365-2-aurabindo.pillai@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative;
+ boundary="===============2420322479925983308=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH 2/3] tests/amdgpu/amd_mall: remove UMR
- dependency
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Karthik B S" <karthik.b.s@intel.com>
+Date: Fri, 25 Aug 2023 05:06:26 -0000
+Message-ID: <169293998688.10955.15044457410280085400@emeril.freedesktop.org>
+References: <20230825033243.1690-1-karthik.b.s@intel.com>
+In-Reply-To: <20230825033243.1690-1-karthik.b.s@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_tests/i9?=
+ =?utf-8?q?15/kms=5Fbig=5Fjoiner=3A_Test_Cleanup?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,157 +17,187 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: hersenxs.wu@amd.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============2420322479925983308==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: tests/i915/kms_big_joiner: Test Cleanup
+URL   : https://patchwork.freedesktop.org/series/122882/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7452_BAT -> XEIGTPW_9655_BAT
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with XEIGTPW_9655_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_9655_BAT, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (3 -> 3)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_9655_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc:
+    - bat-dg2-oem2:       [PASS][1] -> [TIMEOUT][2] +1 similar issue
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7452/bat-dg2-oem2/igt@kms_pipe_crc_basic@nonblocking-crc.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9655/bat-dg2-oem2/igt@kms_pipe_crc_basic@nonblocking-crc.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-a-dp-3:
+    - bat-dg2-oem2:       [PASS][3] -> [INCOMPLETE][4] +1 similar issue
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7452/bat-dg2-oem2/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-a-dp-3.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9655/bat-dg2-oem2/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-a-dp-3.html
+
+  
+#### Warnings ####
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
+    - bat-dg2-oem2:       [FAIL][5] ([Intel XE#400]) -> [DMESG-FAIL][6] +1 similar issue
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7452/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9655/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9655_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Warnings ####
+
+  * igt@kms_force_connector_basic@force-connector-state:
+    - bat-atsm-2:         [SKIP][7] ([Intel XE#277]) -> [SKIP][8] ([Intel XE#277] / [Intel XE#540]) +2 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7452/bat-atsm-2/igt@kms_force_connector_basic@force-connector-state.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9655/bat-atsm-2/igt@kms_force_connector_basic@force-connector-state.html
+
+  
+  [Intel XE#277]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/277
+  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
+  [Intel XE#540]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/540
 
 
-On 2023-08-24 10:15, Aurabindo Pillai wrote:
-> Remove the dependency on the userspace tool UMR to check MALL status
-> and fully rely on debugfs for simplicity of test setup.
-> 
-> Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-> ---
->   lib/igt_amd.c           | 26 +++++++++++++-------------
->   lib/igt_amd.h           |  2 +-
->   tests/amdgpu/amd_mall.c | 31 +++++++------------------------
->   3 files changed, 21 insertions(+), 38 deletions(-)
-> 
-> diff --git a/lib/igt_amd.c b/lib/igt_amd.c
-> index 1a720ff56..49ca9e6d9 100644
-> --- a/lib/igt_amd.c
-> +++ b/lib/igt_amd.c
-> @@ -1182,27 +1182,27 @@ static bool get_dm_capabilites(int drm_fd, char *buf, size_t size) {
->    * @brief check if AMDGPU mall_capable interface entry exist and defined
->    *
->    * @param drm_fd DRM file descriptor
-> - * @return true if mall_capable debugfs interface exists and defined
-> - * @return false otherwise
-> + * @return true if dm capabilities interface exists and MALL is supported
-> + * @return false if capabilites could not be read.
->    */
-> -bool igt_amd_is_mall_capable(int drm_fd)
-> +void igt_amd_get_mall_status(int drm_fd, u32 *supported, u32 *enabled)
->   {
-> -	char buf[1024], mall_read[10];
-> +	char buf[1024];
->   	char *mall_loc;
->   
-> -	if (!get_dm_capabilites(drm_fd, buf, 1024))
-> -		return false;
-> +	*supported = false;
-> +	*enabled = false;
+Build changes
+-------------
 
-supported and enabled are u32 but assigned false and true. Why can't 
-they be boolean?
+  * IGT: IGT_7452 -> IGTPW_9655
 
->   
-> -	mall_loc = strstr(buf,"mall: ");
-> -	if (!mall_loc)
-> +	if (!get_dm_capabilites(drm_fd, buf, 1024))
->   		return false;
->   
-> -	sscanf(mall_loc, "mall: %s", mall_read);
-> -
-> -	if (!strcmp(mall_read, "yes"))
-> -		return true;
-> +	mall_loc = strstr(buf, "mall supported: yes");
-> +	if (mall_loc)
-> +		*supported = true;
->   
-> -	return false;
-> +	mall_loc = strstr(buf, "enabled: yes");
-> +	if (mall_loc && *supported)
-> +		*enabled = true;
->   }
->   
->   /**
-> diff --git a/lib/igt_amd.h b/lib/igt_amd.h
-> index c05b4b730..db226e0d0 100644
-> --- a/lib/igt_amd.h
-> +++ b/lib/igt_amd.h
-> @@ -199,6 +199,6 @@ bool igt_amd_has_visual_confirm(int drm_fd);
->   int  igt_amd_get_visual_confirm(int drm_fd);
->   bool igt_amd_set_visual_confirm(int drm_fd, enum amdgpu_debug_visual_confirm option);
->   
-> -bool igt_amd_is_mall_capable(int drm_fd);
-> +void igt_amd_get_mall_status(int drm_fd, u32 *supported, u32 *enabled);
->   bool igt_amd_output_has_odm_combine_segments(int drm_fd, char *connector_name);
->   #endif /* IGT_AMD_H */
-> diff --git a/tests/amdgpu/amd_mall.c b/tests/amdgpu/amd_mall.c
-> index 6016d5e8c..178203e8b 100644
-> --- a/tests/amdgpu/amd_mall.c
-> +++ b/tests/amdgpu/amd_mall.c
-> @@ -57,7 +57,8 @@ struct line_check {
->   static void test_init(data_t *data)
->   {
->   	igt_display_t *display = &data->display;
-> -	bool mall_capable = false;
-> +	u32 mall_capable = false;
-> +	u32 mall_en = false;
+  IGTPW_9655: 9655
+  IGT_7452: 7452
+  xe-340-c77796cf84361b4716839141f2e48de2bf7f4bd5: c77796cf84361b4716839141f2e48de2bf7f4bd5
 
-Same here. Why are boolean values assigned to u32?
 
->   
->   	/* It doesn't matter which pipe we choose on amdpgu. */
->   	data->pipe_id = PIPE_A;
-> @@ -65,7 +66,7 @@ static void test_init(data_t *data)
->   
->   	igt_display_reset(display);
->   
-> -	mall_capable =  igt_amd_is_mall_capable(data->fd);
-> +	igt_amd_get_mall_status(data->fd, &mall_capable, &mall_en);
->   	igt_require_f(mall_capable, "Requires hardware that supports MALL cache\n");
->   
->   	/* find a connected output */
-> @@ -101,44 +102,26 @@ static void test_fini(data_t *data)
->   	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
->   }
->   
-> -static bool check_cmd_output(const char *line, void *data)
-> -{
-> -	struct line_check *check = data;
-> -
-> -	if (strstr(line, check->substr)) {
-> -		check->found++;
-> -	}
-> -
-> -	return false;
-> -}
->   static void test_mall_ss(data_t *data)
->   {
->   	igt_display_t *display = &data->display;
->   	igt_fb_t rfb;
-> -	int exec_ret;
-> -	struct line_check line = {0};
->   	igt_crc_t test_crc, ref_crc;
-> +	u32 mall_supp, mall_en;
->   
->   	test_init(data);
->   
->   	igt_create_pattern_fb(data->fd, data->w, data->h, DRM_FORMAT_XRGB8888, 0, &rfb);
->   	igt_plane_set_fb(data->primary, &rfb);
->   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> -
->   	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
-> -	sleep(MALL_SETTLE_DELAY);
-> -
-> -	igt_system_cmd(exec_ret, "umr -O bits -r *.*.HUBP0_HUBP_MALL_STATUS | grep MALL_IN_USE");
-> -
-> -	igt_skip_on_f(exec_ret != IGT_EXIT_SUCCESS, "Error running UMR\n");
->   
-> -	line.substr = "1 (0x00000001)";
-> -	igt_log_buffer_inspect(check_cmd_output, &line);
-> +	sleep(MALL_SETTLE_DELAY);
->   
-> -	igt_assert_eq(line.found, 1);
-> +	igt_amd_get_mall_status(data->fd, &mall_supp, &mall_en);
-> +	igt_fail_on_f(!(mall_supp && mall_en), "MALL did not get enabled\n");
->   
->   	igt_pipe_crc_collect_crc(data->pipe_crc, &test_crc);
-> -
->   	igt_assert_crc_equal(&ref_crc, &test_crc);
->   
->   	igt_remove_fb(data->fd, &rfb);
+
+--===============2420322479925983308==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915/kms_big_joiner: Test Cleanup</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122882/">https://patchwork.freedesktop.org/series/122882/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7452_BAT -&gt; XEIGTPW_9655_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_9655_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_9655_BAT, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (3 -&gt; 3)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_9655_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7452/bat-dg2-oem2/igt@kms_pipe_crc_basic@nonblocking-crc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9655/bat-dg2-oem2/igt@kms_pipe_crc_basic@nonblocking-crc.html">TIMEOUT</a> +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-a-dp-3:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7452/bat-dg2-oem2/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-a-dp-3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9655/bat-dg2-oem2/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-a-dp-3.html">INCOMPLETE</a> +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7452/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9655/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">DMESG-FAIL</a> +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9655_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_force_connector_basic@force-connector-state:<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7452/bat-atsm-2/igt@kms_force_connector_basic@force-connector-state.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/277">Intel XE#277</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9655/bat-atsm-2/igt@kms_force_connector_basic@force-connector-state.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/277">Intel XE#277</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/540">Intel XE#540</a>) +2 similar issues</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7452 -&gt; IGTPW_9655</li>
+</ul>
+<p>IGTPW_9655: 9655<br />
+  IGT_7452: 7452<br />
+  xe-340-c77796cf84361b4716839141f2e48de2bf7f4bd5: c77796cf84361b4716839141f2e48de2bf7f4bd5</p>
+
+</body>
+</html>
+
+--===============2420322479925983308==--
