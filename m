@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 51D3010E1FF
- for <igt-dev@lists.freedesktop.org>; Sun, 27 Aug 2023 18:02:28 +0000 (UTC)
-Date: Sun, 27 Aug 2023 21:02:35 +0300
-From: Imre Deak <imre.deak@intel.com>
-To: Jeevan B <jeevan.b@intel.com>
-Message-ID: <ZOuPuw0BJA8qhGZk@ideak-desk.fi.intel.com>
-References: <20230814080527.3017102-1-jeevan.b@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C285B10E20E
+ for <igt-dev@lists.freedesktop.org>; Sun, 27 Aug 2023 20:26:13 +0000 (UTC)
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 28 Aug 2023 01:47:57 +0530
+Message-Id: <20230827201757.49425-3-mohammed.thasleem@intel.com>
+In-Reply-To: <20230827201757.49425-1-mohammed.thasleem@intel.com>
+References: <20230827201757.49425-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230814080527.3017102-1-jeevan.b@intel.com>
-Subject: Re: [igt-dev] [PATCH] RFC: tests/kms_setmode: rename subtest to
- simplify test combinations
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH v2 2/2] HAX: Check kms lease
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,62 +18,48 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: imre.deak@intel.com
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Aug 14, 2023 at 01:35:27PM +0530, Jeevan B wrote:
-> Both 'basic-clone-single-crtc' and 'invalid-clone-single-crtc' tests aim to
-> assess a scenario where two connectors are attempted to be run with a single
-> CRTC, which is not feasible.  Consequently, the  'basic-clone-single-crtc'
-> test is marked as invalid and skipped due to the impractical scenario. On the
-> other hand, the 'invalid-clone-single-crtc' test serves as a negative scenario,
-> confirming the failure of the 'ioctl' and indicating a successful test.
-> 
-> similarly, the 'invalid-clone-exclusive-crtc' test attempts to run two connectors
-> with two CRTCs, which is indeed possible, rendering the test nonsensical.
-> Consequently, the 'clone-exclusive-crtc' test runs and passes as expected.
-> 
-> Signed-off-by: Jeevan B <jeevan.b@intel.com>
-> Cc: Imre Deak <imre.deak@intel.com>
-> ---
->  tests/kms_setmode.c | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
-> 
-> diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-> index 035bbd0b0..0c65e3937 100644
-> --- a/tests/kms_setmode.c
-> +++ b/tests/kms_setmode.c
-> @@ -932,12 +932,8 @@ igt_main_args("det:", NULL, help_str, opt_handler, NULL)
->  		const char *name;
->  	} tests[] = {
->  		{ TEST_TIMINGS, "basic" },
-> -		{ TEST_CLONE | TEST_SINGLE_CRTC_CLONE,
-> -					"basic-clone-single-crtc" },
+Check kms lease test cases
 
-It is feasible to use a single CRTC with two connectors, for instance in
-case of a VGA and an HDMI connector; so this subtest can't be removed.
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+---
+ tests/intel-ci/fast-feedback.testlist | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
->  		{ TEST_INVALID | TEST_CLONE | TEST_SINGLE_CRTC_CLONE,
-> -					"invalid-clone-single-crtc" },
-> -		{ TEST_INVALID | TEST_CLONE | TEST_EXCLUSIVE_CRTC_CLONE,
-
-There are invalid configurations when each connector uses its own CRTC,
-for instance when a connector uses a CRTC not compatible with the
-connector. So this subtest can't be removed either.
-
-I suppose you're fixing a problem where a subtest is failing if there
-are no dynamic tests defined for it, on some platforms. In that case
-the subtest should be made to pass explicitly, perhaps by ensuring that
-there is at least one dynamic test defined for each subtest.
-
-> -					"invalid-clone-exclusive-crtc" },
-> +					"clone-single-crtc-negative" },
->  		{ TEST_CLONE | TEST_EXCLUSIVE_CRTC_CLONE,
->  					"clone-exclusive-crtc" },
->  		{ TEST_INVALID | TEST_CLONE | TEST_SINGLE_CRTC_CLONE | TEST_STEALING,
-> -- 
-> 2.25.1
-> 
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index c09c6c417..4042b690b 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -1,6 +1,27 @@
+ # Try to load the driver if it's not available yet.
+ igt@i915_module_load@load
+ 
++igt@kms_lease@simple_lease
++igt@kms_lease@empty_lease
++igt@kms_lease@lessee_list
++igt@kms_lease@lease_get
++igt@kms_lease@lease_unleased_connector
++igt@kms_lease@lease_unleased_crtc
++igt@kms_lease@lease_revoke
++igt@kms_lease@lease_again
++igt@kms_lease@lease_invalid_connector
++igt@kms_lease@lease_invalid_crtc
++igt@kms_lease@lease_invalid_plane
++igt@kms_lease@page_flip_implicit_plane
++igt@kms_lease@setcrtc_implicit_plane
++igt@kms_lease@cursor_implicit_plane
++igt@kms_lease@atomic_implicit_crtc
++igt@kms_lease@invalid-create-leases
++igt@kms_lease@possible-crtcs-filtering
++igt@kms_lease@master-vs-lease
++igt@kms_lease@multimaster-lease
++igt@kms_lease@implicit-plane-lease
++igt@kms_lease@lease-uevent
+ # Keep alphabetically sorted by default
+ igt@core_auth@basic-auth
+ igt@debugfs_test@read_all_entries
+-- 
+2.25.1
