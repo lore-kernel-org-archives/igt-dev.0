@@ -1,22 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3016510E328
- for <igt-dev@lists.freedesktop.org>; Mon, 28 Aug 2023 18:19:29 +0000 (UTC)
-Message-ID: <b7ded32e-73d3-31b5-2428-33f29ed3a78d@intel.com>
-Date: Mon, 28 Aug 2023 23:48:45 +0530
-Content-Language: en-US
-To: "Belgaumkar, Vinay" <vinay.belgaumkar@intel.com>, Riana Tauro
- <riana.tauro@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20230811103217.415744-1-riana.tauro@intel.com>
- <20230811103217.415744-2-riana.tauro@intel.com>
- <af4def8e-e338-ecbc-6dad-48ddb3662d96@intel.com>
-From: "Nilawar, Badal" <badal.nilawar@intel.com>
-In-Reply-To: <af4def8e-e338-ecbc-6dad-48ddb3662d96@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/alternative;
+ boundary="===============6195469381849660097=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] RFC tests/xe: Add a test that
- validates idle residency on exec
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
+Date: Mon, 28 Aug 2023 18:24:50 -0000
+Message-ID: <169324709006.20017.52196988467587337@emeril.freedesktop.org>
+References: <20230827201757.49425-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20230827201757.49425-1-mohammed.thasleem@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_kms_leas?=
+ =?utf-8?q?e_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,215 +17,220 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============6195469381849660097==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: kms lease (rev3)
+URL   : https://patchwork.freedesktop.org/series/122944/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7454_BAT -> XEIGTPW_9671_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (2 -> 4)
+------------------------------
+
+  Additional (2): bat-pvc-2 bat-dg2-oem2 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9671_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
+    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 similar issue
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7454/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+
+  * igt@kms_force_connector_basic@prune-stale-modes:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][3] ([i915#5274])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
+    - bat-dg2-oem2:       NOTRUN -> [FAIL][4] ([Intel XE#400]) +2 similar issues
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
+
+  * igt@kms_psr@primary_page_flip:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][5] ([i915#1072]) +2 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html
+
+  * igt@xe_compute@compute-square:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][6] ([Intel XE#252])
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-dg2-oem2/igt@xe_compute@compute-square.html
+
+  * igt@xe_exec_fault_mode@many-basic:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][7] ([Intel XE#288]) +17 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html
+
+  * igt@xe_huc_copy@huc_copy:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][8] ([Intel XE#255])
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html
+
+  * igt@xe_live_ktest@bo:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][9] ([Intel XE#483]) +2 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-dg2-oem2/igt@xe_live_ktest@bo.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#252]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/252
+  [Intel XE#255]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/255
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+  [Intel XE#389]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/389
+  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#482]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/482
+  [Intel XE#483]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/483
+  [Intel XE#526]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/526
+  [Intel XE#531]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/531
+  [Intel XE#532]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/532
+  [Intel XE#533]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/533
+  [Intel XE#535]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/535
+  [Intel XE#536]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/536
+  [Intel XE#537]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/537
+  [Intel XE#538]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/538
+  [Intel XE#539]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/539
+  [Intel XE#540]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/540
+  [Intel XE#541]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/541
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
 
 
-On 28-08-2023 22:11, Belgaumkar, Vinay wrote:
-> 
-> On 8/11/2023 3:32 AM, Riana Tauro wrote:
->> Add a test what runs a background load that is
->> active approximately 1% of the time. Verify that we do enter
->> GT-C6 the rest of the time and validate idle residency is within
->> tolerance.
->>
->> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
->> ---
->>   tests/xe/xe_pm_residency.c | 135 ++++++++++++++++++++++++++++++++++++-
->>   1 file changed, 133 insertions(+), 2 deletions(-)
->>
->> diff --git a/tests/xe/xe_pm_residency.c b/tests/xe/xe_pm_residency.c
->> index 4936de166..abf07c696 100644
->> --- a/tests/xe/xe_pm_residency.c
->> +++ b/tests/xe/xe_pm_residency.c
->> @@ -11,13 +11,18 @@
->>    * Test category: functionality test
->>    */
->> +#include <time.h>
->> +
->>   #include "igt.h"
->>   #include "igt_sysfs.h"
->> +#include "lib/igt_syncobj.h"
->> +
->> +#include "xe/xe_ioctl.h"
->>   #include "xe/xe_query.h"
->>   #include "xe/xe_util.h"
->> -#define SLEEP_DURATION 3000 /* in milliseconds */
->> +#define SLEEP_DURATION 3 /* in seconds */
->>   const double tolerance = 0.1;
->> @@ -38,9 +43,98 @@ const double tolerance = 0.1;
->>    * Description: basic residency test to validate idle residency
->>    *        measured over a time interval is within the tolerance
->>    * Run type: FULL
->> + *
->> + * SUBTEST: idle-residency-on-exec
->> + * Description: Validate idle residency measured when a background
->> + *        is only active for ~1% of the time
->> + * Run type: FULL
->>    */
->>   IGT_TEST_DESCRIPTION("Tests for gtidle properties");
->> +static void exec_load(int fd, struct drm_xe_engine_class_instance 
->> *hwe, unsigned long *done)
->> +{
->> +    uint32_t bo = 0;
->> +    uint32_t exec_queue, syncobj, vm;
->> +    uint64_t addr = 0x1a0000;
->> +    uint64_t batch_addr, batch_offset, data_addr, data_offset;
->> +    size_t bo_size;
->> +    int b;
->> +    struct {
->> +        uint32_t batch[16];
->> +        uint64_t pad;
->> +        uint32_t data;
->> +    } *data;
->> +
->> +    struct drm_xe_sync sync = {
->> +        .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
->> +    };
->> +
->> +    struct drm_xe_exec exec = {
->> +        .num_batch_buffer = 1,
->> +        .num_syncs = 1,
->> +        .syncs = to_user_pointer(&sync),
->> +    };
->> +
->> +    vm = xe_vm_create(fd, 0, 0);
->> +    exec_queue = xe_exec_queue_create(fd, vm, hwe, 0);
->> +    bo_size = xe_get_default_alignment(fd);
->> +
->> +    bo = xe_bo_create_flags(fd, vm, bo_size,
->> +                visible_vram_if_possible(fd, hwe->gt_id));
->> +    data = xe_bo_map(fd, bo, bo_size);
->> +    syncobj = syncobj_create(fd, 0);
->> +
->> +    xe_vm_bind_sync(fd, vm, bo, 0, addr, bo_size);
->> +
->> +    batch_offset = (char *)&data->batch - (char *)data;
->> +    batch_addr = addr + batch_offset;
->> +    data_offset = (char *)&data->data - (char *)data;
->> +    data_addr = addr + data_offset;
->> +
->> +    do {
->> +        uint64_t submit, elapsed;
->> +        struct timespec tv = {};
->> +
->> +        b = 0;
->> +        done[1]++;
->> +        data->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
->> +        data->batch[b++] = data_addr;
->> +        data->batch[b++] = data_addr >> 32;
->> +        data->batch[b++] = done[1];
-> 
-> It'll be better to align this batch like the one here - 
-> https://patchwork.freedesktop.org/series/122462/
-This WL is not like spinner, it is a pulse after specific sleep 
-interval. Is alignment still recommended?
+Build changes
+-------------
 
-Regards,
-Badal
-> 
-> Thanks,
-> 
-> Vinay.
-> 
->> +        data->batch[b++] = MI_BATCH_BUFFER_END;
->> +        igt_assert(b <= ARRAY_SIZE(data->batch));
->> +
->> +        exec.exec_queue_id = exec_queue;
->> +        exec.address = batch_addr;
->> +        sync.handle = syncobj;
->> +
->> +        igt_nsec_elapsed(&tv);
->> +        xe_exec(fd, &exec);
->> +        submit = igt_nsec_elapsed(&tv);
->> +
->> +        igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
->> +        elapsed = igt_nsec_elapsed(&tv);
->> +        igt_assert_eq(data->data, done[1]);
->> +
->> +        igt_debug("Execution took %.3fms (submit %.1fus, wait 
->> %.1fus)\n",
->> +              1e-6 * elapsed,
->> +              1e-3 * submit,
->> +              1e-3 * (elapsed - submit));
->> +
->> +        syncobj_reset(fd, &syncobj, 1);
->> +
->> +        /* Aim for ~1% busy */
->> +        usleep(elapsed / 10);
->> +    } while (!READ_ONCE(*done));
->> +
->> +    xe_vm_unbind_sync(fd, vm, 0, addr, bo_size);
->> +    syncobj_destroy(fd, syncobj);
->> +    munmap(data, bo_size);
->> +    gem_close(fd, bo);
->> +    xe_exec_queue_destroy(fd, exec_queue);
->> +    xe_vm_destroy(fd, vm);
->> +}
->> +
->>   static unsigned int measured_usleep(unsigned int usec)
->>   {
->>       struct timespec ts = { };
->> @@ -76,7 +170,7 @@ static void test_idle_residency(int fd, int gt)
->>       igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 1), "GT not 
->> in C6\n");
->>       residency_start = read_idle_residency(fd, gt);
->> -    elapsed_ms = measured_usleep(SLEEP_DURATION * 1000) / 1000;
->> +    elapsed_ms = measured_usleep(SLEEP_DURATION * USEC_PER_SEC) / 1000;
->>       residency_end = read_idle_residency(fd, gt);
->>       igt_info("Measured %lums of idle residency in %lums\n",
->> @@ -85,9 +179,41 @@ static void test_idle_residency(int fd, int gt)
->>       assert_within_epsilon(residency_end - residency_start, 
->> elapsed_ms, tolerance);
->>   }
->> +static void idle_residency_on_exec(int fd, struct 
->> drm_xe_engine_class_instance *hwe)
->> +{
->> +    const int tol = 20;
->> +    unsigned long *done;
->> +    unsigned long cycles, elapsed_ms, residency;
->> +
->> +    done = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
->> +    igt_assert(done != MAP_FAILED);
->> +    memset(done, 0, 4096);
->> +
->> +    igt_fork(child, 1)
->> +        exec_load(fd, hwe, done);
->> +
->> +    cycles -= READ_ONCE(done[1]);
->> +    residency -= read_idle_residency(fd, hwe->gt_id);
->> +    elapsed_ms = measured_usleep(SLEEP_DURATION * USEC_PER_SEC) / 1000;
->> +    residency += read_idle_residency(fd, hwe->gt_id);
->> +    cycles += READ_ONCE(done[1]);
->> +    *done = 1;
->> +
->> +    igt_waitchildren();
->> +
->> +    /* At least one wakeup/s needed for a reasonable test */
->> +    igt_assert(cycles >= SLEEP_DURATION);
->> +
->> +    /* While very nearly busy, expect full GT C6 */
->> +    assert_within_epsilon(residency, elapsed_ms, tol);
->> +
->> +    munmap(done, 4096);
->> +}
->> +
->>   igt_main
->>   {
->>       int fd, gt;
->> +    struct drm_xe_engine_class_instance *hwe;
->>       igt_fixture {
->>           fd = drm_open_driver(DRIVER_XE);
->> @@ -104,6 +230,11 @@ igt_main
->>           xe_for_each_gt(fd, gt)
->>               test_idle_residency(fd, gt);
->> +    igt_describe("Validate idle residency on exec");
->> +    igt_subtest("idle-residency-on-exec")
->> +        xe_for_each_hw_engine(fd, hwe)
->> +            idle_residency_on_exec(fd, hwe);
->> +
->>       igt_fixture {
->>           close(fd);
->>       }
+  * IGT: IGT_7454 -> IGTPW_9671
+
+  IGTPW_9671: 9671
+  IGT_7454: 7454
+  xe-340-c77796cf84361b4716839141f2e48de2bf7f4bd5: c77796cf84361b4716839141f2e48de2bf7f4bd5
+
+
+
+--===============6195469381849660097==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>kms lease (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122944/">https://patchwork.freedesktop.org/series/122944/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7454_BAT -&gt; XEIGTPW_9671_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (2 -&gt; 4)</h2>
+<p>Additional (2): bat-pvc-2 bat-dg2-oem2 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9671_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7454/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@prune-stale-modes:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5274">i915#5274</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_page_flip:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_compute@compute-square:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-dg2-oem2/igt@xe_compute@compute-square.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/252">Intel XE#252</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@many-basic:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_huc_copy@huc_copy:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@bo:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-dg2-oem2/igt@xe_live_ktest@bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/483">Intel XE#483</a>) +2 similar issues</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7454 -&gt; IGTPW_9671</li>
+</ul>
+<p>IGTPW_9671: 9671<br />
+  IGT_7454: 7454<br />
+  xe-340-c77796cf84361b4716839141f2e48de2bf7f4bd5: c77796cf84361b4716839141f2e48de2bf7f4bd5</p>
+
+</body>
+</html>
+
+--===============6195469381849660097==--
