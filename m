@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 364BE10E316
- for <igt-dev@lists.freedesktop.org>; Mon, 28 Aug 2023 16:29:09 +0000 (UTC)
-Message-ID: <f655d57f-0fd4-6813-ebde-70fd1726ccb4@intel.com>
-Date: Mon, 28 Aug 2023 21:58:53 +0530
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 15BA710E319
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Aug 2023 16:41:48 +0000 (UTC)
+Message-ID: <af4def8e-e338-ecbc-6dad-48ddb3662d96@intel.com>
+Date: Mon, 28 Aug 2023 09:41:35 -0700
 To: Riana Tauro <riana.tauro@intel.com>, <igt-dev@lists.freedesktop.org>
 References: <20230811103217.415744-1-riana.tauro@intel.com>
  <20230811103217.415744-2-riana.tauro@intel.com>
 Content-Language: en-US
-From: "Nilawar, Badal" <badal.nilawar@intel.com>
+From: "Belgaumkar, Vinay" <vinay.belgaumkar@intel.com>
 In-Reply-To: <20230811103217.415744-2-riana.tauro@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
@@ -22,23 +22,23 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Riana,
 
-On 11-08-2023 16:02, Riana Tauro wrote:
+On 8/11/2023 3:32 AM, Riana Tauro wrote:
 > Add a test what runs a background load that is
 > active approximately 1% of the time. Verify that we do enter
 > GT-C6 the rest of the time and validate idle residency is within
 > tolerance.
-> 
+>
 > Signed-off-by: Riana Tauro <riana.tauro@intel.com>
 > ---
 >   tests/xe/xe_pm_residency.c | 135 ++++++++++++++++++++++++++++++++++++-
 >   1 file changed, 133 insertions(+), 2 deletions(-)
-> 
+>
 > diff --git a/tests/xe/xe_pm_residency.c b/tests/xe/xe_pm_residency.c
 > index 4936de166..abf07c696 100644
 > --- a/tests/xe/xe_pm_residency.c
@@ -125,9 +125,16 @@ On 11-08-2023 16:02, Riana Tauro wrote:
 > +		data->batch[b++] = data_addr;
 > +		data->batch[b++] = data_addr >> 32;
 > +		data->batch[b++] = done[1];
+
+It'll be better to align this batch like the one here - 
+https://patchwork.freedesktop.org/series/122462/
+
+Thanks,
+
+Vinay.
+
 > +		data->batch[b++] = MI_BATCH_BUFFER_END;
 > +		igt_assert(b <= ARRAY_SIZE(data->batch));
-Curious to know why MI_BATCH_BUFFER_START is not needed in batch buffer.
 > +
 > +		exec.exec_queue_id = exec_queue;
 > +		exec.address = batch_addr;
@@ -149,8 +156,6 @@ Curious to know why MI_BATCH_BUFFER_START is not needed in batch buffer.
 > +		syncobj_reset(fd, &syncobj, 1);
 > +
 > +		/* Aim for ~1% busy */
-This is sleep for 99% of execution (elapsed) time? May be you can add 
-some explanation with example here.
 > +		usleep(elapsed / 10);
 > +	} while (!READ_ONCE(*done));
 > +
@@ -196,7 +201,6 @@ some explanation with example here.
 > +	elapsed_ms = measured_usleep(SLEEP_DURATION * USEC_PER_SEC) / 1000;
 > +	residency += read_idle_residency(fd, hwe->gt_id);
 > +	cycles += READ_ONCE(done[1]);
-As discussed use separate variables for start and end here.
 > +	*done = 1;
 > +
 > +	igt_waitchildren();
@@ -206,10 +210,6 @@ As discussed use separate variables for start and end here.
 > +
 > +	/* While very nearly busy, expect full GT C6 */
 > +	assert_within_epsilon(residency, elapsed_ms, tol);
-I think residency will always be less than elapsed time.
-
-Regards,
-Badal
 > +
 > +	munmap(done, 4096);
 > +}
