@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 15BA710E319
- for <igt-dev@lists.freedesktop.org>; Mon, 28 Aug 2023 16:41:48 +0000 (UTC)
-Message-ID: <af4def8e-e338-ecbc-6dad-48ddb3662d96@intel.com>
-Date: Mon, 28 Aug 2023 09:41:35 -0700
-To: Riana Tauro <riana.tauro@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20230811103217.415744-1-riana.tauro@intel.com>
- <20230811103217.415744-2-riana.tauro@intel.com>
-Content-Language: en-US
-From: "Belgaumkar, Vinay" <vinay.belgaumkar@intel.com>
-In-Reply-To: <20230811103217.415744-2-riana.tauro@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5F43D10E02E
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Aug 2023 17:05:39 +0000 (UTC)
+Date: Mon, 28 Aug 2023 19:05:34 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230828170534.umqx2ysgnpzusseh@kamilkon-desk.igk.intel.com>
+References: <20230825131913.600667-1-marcin.bernatowicz@linux.intel.com>
+ <20230825131913.600667-3-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] RFC tests/xe: Add a test that
- validates idle residency on exec
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230825131913.600667-3-marcin.bernatowicz@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/3] lib/igt_device_scan: Xe get
+ integrated/discrete card functions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,214 +21,119 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: badal.nilawar@intel.com
+Cc: joonas.lahtinen@intel.com, tvrtko.ursulin@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Hi Marcin,
 
-On 8/11/2023 3:32 AM, Riana Tauro wrote:
-> Add a test what runs a background load that is
-> active approximately 1% of the time. Verify that we do enter
-> GT-C6 the rest of the time and validate idle residency is within
-> tolerance.
->
-> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+On 2023-08-25 at 13:19:12 +0000, Marcin Bernatowicz wrote:
+> Xe functions to get integrated/discrete card.
+> 
+> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 > ---
->   tests/xe/xe_pm_residency.c | 135 ++++++++++++++++++++++++++++++++++++-
->   1 file changed, 133 insertions(+), 2 deletions(-)
->
-> diff --git a/tests/xe/xe_pm_residency.c b/tests/xe/xe_pm_residency.c
-> index 4936de166..abf07c696 100644
-> --- a/tests/xe/xe_pm_residency.c
-> +++ b/tests/xe/xe_pm_residency.c
-> @@ -11,13 +11,18 @@
->    * Test category: functionality test
->    */
->   
-> +#include <time.h>
-> +
->   #include "igt.h"
->   #include "igt_sysfs.h"
->   
-> +#include "lib/igt_syncobj.h"
-> +
-> +#include "xe/xe_ioctl.h"
->   #include "xe/xe_query.h"
->   #include "xe/xe_util.h"
->   
-> -#define SLEEP_DURATION 3000 /* in milliseconds */
-> +#define SLEEP_DURATION 3 /* in seconds */
->   
->   const double tolerance = 0.1;
->   
-> @@ -38,9 +43,98 @@ const double tolerance = 0.1;
->    * Description: basic residency test to validate idle residency
->    *		measured over a time interval is within the tolerance
->    * Run type: FULL
-> + *
-> + * SUBTEST: idle-residency-on-exec
-> + * Description: Validate idle residency measured when a background
-> + *		is only active for ~1% of the time
-> + * Run type: FULL
->    */
->   IGT_TEST_DESCRIPTION("Tests for gtidle properties");
->   
-> +static void exec_load(int fd, struct drm_xe_engine_class_instance *hwe, unsigned long *done)
-> +{
-> +	uint32_t bo = 0;
-> +	uint32_t exec_queue, syncobj, vm;
-> +	uint64_t addr = 0x1a0000;
-> +	uint64_t batch_addr, batch_offset, data_addr, data_offset;
-> +	size_t bo_size;
-> +	int b;
-> +	struct {
-> +		uint32_t batch[16];
-> +		uint64_t pad;
-> +		uint32_t data;
-> +	} *data;
-> +
-> +	struct drm_xe_sync sync = {
-> +		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
-> +	};
-> +
-> +	struct drm_xe_exec exec = {
-> +		.num_batch_buffer = 1,
-> +		.num_syncs = 1,
-> +		.syncs = to_user_pointer(&sync),
-> +	};
-> +
-> +	vm = xe_vm_create(fd, 0, 0);
-> +	exec_queue = xe_exec_queue_create(fd, vm, hwe, 0);
-> +	bo_size = xe_get_default_alignment(fd);
-> +
-> +	bo = xe_bo_create_flags(fd, vm, bo_size,
-> +				visible_vram_if_possible(fd, hwe->gt_id));
-> +	data = xe_bo_map(fd, bo, bo_size);
-> +	syncobj = syncobj_create(fd, 0);
-> +
-> +	xe_vm_bind_sync(fd, vm, bo, 0, addr, bo_size);
-> +
-> +	batch_offset = (char *)&data->batch - (char *)data;
-> +	batch_addr = addr + batch_offset;
-> +	data_offset = (char *)&data->data - (char *)data;
-> +	data_addr = addr + data_offset;
-> +
-> +	do {
-> +		uint64_t submit, elapsed;
-> +		struct timespec tv = {};
-> +
-> +		b = 0;
-> +		done[1]++;
-> +		data->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-> +		data->batch[b++] = data_addr;
-> +		data->batch[b++] = data_addr >> 32;
-> +		data->batch[b++] = done[1];
+>  lib/igt_device_scan.c | 34 +++++++++++++++++++++++++---------
+>  lib/igt_device_scan.h |  2 ++
+>  2 files changed, 27 insertions(+), 9 deletions(-)
+> 
+> diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+> index ae69ed09f..f8b8ca281 100644
+> --- a/lib/igt_device_scan.c
+> +++ b/lib/igt_device_scan.c
+> @@ -769,25 +769,27 @@ __copy_dev_to_card(struct igt_device *dev, struct igt_device_card *card)
+>   * Iterate over all igt_devices array and find first discrete/integrated card.
+>   * card->pci_slot_name will be updated only if a card is found.
+>   */
+> -static bool __find_first_i915_card(struct igt_device_card *card, bool discrete)
+> +static bool __find_first_intel_card(struct igt_device_card *card, bool want_discrete,
+> +				    const char *drv_name)
+>  {
+>  	struct igt_device *dev;
+> -	int cmp;
+> +	int is_integrated;
+>  
+> +	igt_assert(drv_name);
+>  	memset(card, 0, sizeof(*card));
+>  
+>  	igt_list_for_each_entry(dev, &igt_devs.all, link) {
+>  
+> -		if (!is_pci_subsystem(dev) || strcmp(dev->driver, "i915"))
+> +		if (!is_pci_subsystem(dev) || strcmp(dev->driver, drv_name))
+--------------------------------------------------------- ^^^^^^^^
 
-It'll be better to align this batch like the one here - 
-https://patchwork.freedesktop.org/series/122462/
+May you extend this to cover also "intel" card here?
+I mean both cases, i915 or xe.
 
-Thanks,
-
-Vinay.
-
-> +		data->batch[b++] = MI_BATCH_BUFFER_END;
-> +		igt_assert(b <= ARRAY_SIZE(data->batch));
-> +
-> +		exec.exec_queue_id = exec_queue;
-> +		exec.address = batch_addr;
-> +		sync.handle = syncobj;
-> +
-> +		igt_nsec_elapsed(&tv);
-> +		xe_exec(fd, &exec);
-> +		submit = igt_nsec_elapsed(&tv);
-> +
-> +		igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
-> +		elapsed = igt_nsec_elapsed(&tv);
-> +		igt_assert_eq(data->data, done[1]);
-> +
-> +		igt_debug("Execution took %.3fms (submit %.1fus, wait %.1fus)\n",
-> +			  1e-6 * elapsed,
-> +			  1e-3 * submit,
-> +			  1e-3 * (elapsed - submit));
-> +
-> +		syncobj_reset(fd, &syncobj, 1);
-> +
-> +		/* Aim for ~1% busy */
-> +		usleep(elapsed / 10);
-> +	} while (!READ_ONCE(*done));
-> +
-> +	xe_vm_unbind_sync(fd, vm, 0, addr, bo_size);
-> +	syncobj_destroy(fd, syncobj);
-> +	munmap(data, bo_size);
-> +	gem_close(fd, bo);
-> +	xe_exec_queue_destroy(fd, exec_queue);
-> +	xe_vm_destroy(fd, vm);
+>  			continue;
+>  
+> -		cmp = strncmp(dev->pci_slot_name, INTEGRATED_I915_GPU_PCI_ID,
+> -			      PCI_SLOT_NAME_SIZE);
+> +		is_integrated = !strncmp(dev->pci_slot_name, INTEGRATED_I915_GPU_PCI_ID,
+> +					 PCI_SLOT_NAME_SIZE);
+>  
+> -		if (discrete && cmp) {
+> +		if (want_discrete && !is_integrated) {
+>  			__copy_dev_to_card(dev, card);
+>  			return true;
+> -		} else if (!discrete && !cmp) {
+> +		} else if (!want_discrete && is_integrated) {
+>  			__copy_dev_to_card(dev, card);
+>  			return true;
+>  		}
+> @@ -800,14 +802,28 @@ bool igt_device_find_first_i915_discrete_card(struct igt_device_card *card)
+>  {
+>  	igt_assert(card);
+>  
+> -	return __find_first_i915_card(card, true);
+> +	return __find_first_intel_card(card, true, "i915");
 > +}
 > +
->   static unsigned int measured_usleep(unsigned int usec)
->   {
->   	struct timespec ts = { };
-> @@ -76,7 +170,7 @@ static void test_idle_residency(int fd, int gt)
->   	igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 1), "GT not in C6\n");
->   
->   	residency_start = read_idle_residency(fd, gt);
-> -	elapsed_ms = measured_usleep(SLEEP_DURATION * 1000) / 1000;
-> +	elapsed_ms = measured_usleep(SLEEP_DURATION * USEC_PER_SEC) / 1000;
->   	residency_end = read_idle_residency(fd, gt);
->   
->   	igt_info("Measured %lums of idle residency in %lums\n",
-> @@ -85,9 +179,41 @@ static void test_idle_residency(int fd, int gt)
->   	assert_within_epsilon(residency_end - residency_start, elapsed_ms, tolerance);
->   }
->   
-> +static void idle_residency_on_exec(int fd, struct drm_xe_engine_class_instance *hwe)
+
+Document all new public lib functions.
+
+> +bool igt_device_find_first_xe_discrete_card(struct igt_device_card *card)
 > +{
-> +	const int tol = 20;
-> +	unsigned long *done;
-> +	unsigned long cycles, elapsed_ms, residency;
+> +	igt_assert(card);
 > +
-> +	done = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
-> +	igt_assert(done != MAP_FAILED);
-> +	memset(done, 0, 4096);
-> +
-> +	igt_fork(child, 1)
-> +		exec_load(fd, hwe, done);
-> +
-> +	cycles -= READ_ONCE(done[1]);
-> +	residency -= read_idle_residency(fd, hwe->gt_id);
-> +	elapsed_ms = measured_usleep(SLEEP_DURATION * USEC_PER_SEC) / 1000;
-> +	residency += read_idle_residency(fd, hwe->gt_id);
-> +	cycles += READ_ONCE(done[1]);
-> +	*done = 1;
-> +
-> +	igt_waitchildren();
-> +
-> +	/* At least one wakeup/s needed for a reasonable test */
-> +	igt_assert(cycles >= SLEEP_DURATION);
-> +
-> +	/* While very nearly busy, expect full GT C6 */
-> +	assert_within_epsilon(residency, elapsed_ms, tol);
-> +
-> +	munmap(done, 4096);
+> +	return __find_first_intel_card(card, true, "xe");
+>  }
+>  
+>  bool igt_device_find_integrated_card(struct igt_device_card *card)
+>  {
+>  	igt_assert(card);
+>  
+> -	return __find_first_i915_card(card, false);
+> +	return __find_first_intel_card(card, false, "i915");
 > +}
 > +
->   igt_main
->   {
->   	int fd, gt;
-> +	struct drm_xe_engine_class_instance *hwe;
->   
->   	igt_fixture {
->   		fd = drm_open_driver(DRIVER_XE);
-> @@ -104,6 +230,11 @@ igt_main
->   		xe_for_each_gt(fd, gt)
->   			test_idle_residency(fd, gt);
->   
-> +	igt_describe("Validate idle residency on exec");
-> +	igt_subtest("idle-residency-on-exec")
-> +		xe_for_each_hw_engine(fd, hwe)
-> +			idle_residency_on_exec(fd, hwe);
+
+Same here.
+
+Regards,
+Kamil
+
+> +bool igt_device_find_xe_integrated_card(struct igt_device_card *card)
+> +{
+> +	igt_assert(card);
 > +
->   	igt_fixture {
->   		close(fd);
->   	}
+> +	return __find_first_intel_card(card, false, "xe");
+>  }
+>  
+>  static struct igt_device *igt_device_from_syspath(const char *syspath)
+> diff --git a/lib/igt_device_scan.h b/lib/igt_device_scan.h
+> index e6b0f1b90..b8f6a843d 100644
+> --- a/lib/igt_device_scan.h
+> +++ b/lib/igt_device_scan.h
+> @@ -87,6 +87,8 @@ bool igt_device_card_match_pci(const char *filter,
+>  	struct igt_device_card *card);
+>  bool igt_device_find_first_i915_discrete_card(struct igt_device_card *card);
+>  bool igt_device_find_integrated_card(struct igt_device_card *card);
+> +bool igt_device_find_first_xe_discrete_card(struct igt_device_card *card);
+> +bool igt_device_find_xe_integrated_card(struct igt_device_card *card);
+>  char *igt_device_get_pretty_name(struct igt_device_card *card, bool numeric);
+>  int igt_open_card(struct igt_device_card *card);
+>  int igt_open_render(struct igt_device_card *card);
+> -- 
+> 2.30.2
+> 
