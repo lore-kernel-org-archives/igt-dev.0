@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9DC1A10E060
- for <igt-dev@lists.freedesktop.org>; Mon, 28 Aug 2023 06:55:25 +0000 (UTC)
-Message-ID: <e894bf0b-6894-5e8d-8c56-e573488f8d3d@intel.com>
-Date: Mon, 28 Aug 2023 12:24:48 +0530
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9A50310E060
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Aug 2023 06:56:27 +0000 (UTC)
+Message-ID: <7fc3e646-5747-9c99-c549-244d9877c3f7@intel.com>
+Date: Mon, 28 Aug 2023 12:26:23 +0530
 MIME-Version: 1.0
 Content-Language: en-US
 To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
  igt-dev@lists.freedesktop.org
-References: <20230825073059.856371-15-bhanuprakash.modem@intel.com>
+References: <20230825073059.856371-16-bhanuprakash.modem@intel.com>
 From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
-In-Reply-To: <20230825073059.856371-15-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230825073059.856371-16-bhanuprakash.modem@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Subject: Re: [igt-dev] [i-g-t, V2,
- 14/16] tests/intel-ci: Update Xe BAT & blocklist for kms FBT
+ 15/16] tests/intel-ci: Add tiling tests to XE BAT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,8 +28,9 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 
 On 8/25/2023 1:00 PM, Bhanuprakash Modem wrote:
-> Add kms_frontbuffer_tracking tests back to xe fast-feedback testlist and
-> drop them from xe blocklist.
+> Add basic tiling tests to XE fast feedback testlist.
+>
+> V2: - Drop i915 specific tests
 >
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
