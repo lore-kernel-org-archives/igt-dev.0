@@ -1,15 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3016510E328
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Aug 2023 18:19:29 +0000 (UTC)
+Message-ID: <b7ded32e-73d3-31b5-2428-33f29ed3a78d@intel.com>
+Date: Mon, 28 Aug 2023 23:48:45 +0530
+Content-Language: en-US
+To: "Belgaumkar, Vinay" <vinay.belgaumkar@intel.com>, Riana Tauro
+ <riana.tauro@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20230811103217.415744-1-riana.tauro@intel.com>
+ <20230811103217.415744-2-riana.tauro@intel.com>
+ <af4def8e-e338-ecbc-6dad-48ddb3662d96@intel.com>
+From: "Nilawar, Badal" <badal.nilawar@intel.com>
+In-Reply-To: <af4def8e-e338-ecbc-6dad-48ddb3662d96@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
-Date: Mon, 28 Aug 2023 18:02:20 -0000
-Message-ID: <169324574002.20017.16392729373342155557@emeril.freedesktop.org>
-References: <20230827201757.49425-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20230827201757.49425-1-mohammed.thasleem@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_k?=
- =?utf-8?q?ms_lease_=28rev3=29?=
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] RFC tests/xe: Add a test that
+ validates idle residency on exec
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,133 +24,215 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
 
-Series: kms lease (rev3)
-URL   : https://patchwork.freedesktop.org/series/122944/
-State : warning
 
-== Summary ==
+On 28-08-2023 22:11, Belgaumkar, Vinay wrote:
+> 
+> On 8/11/2023 3:32 AM, Riana Tauro wrote:
+>> Add a test what runs a background load that is
+>> active approximately 1% of the time. Verify that we do enter
+>> GT-C6 the rest of the time and validate idle residency is within
+>> tolerance.
+>>
+>> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+>> ---
+>>   tests/xe/xe_pm_residency.c | 135 ++++++++++++++++++++++++++++++++++++-
+>>   1 file changed, 133 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/tests/xe/xe_pm_residency.c b/tests/xe/xe_pm_residency.c
+>> index 4936de166..abf07c696 100644
+>> --- a/tests/xe/xe_pm_residency.c
+>> +++ b/tests/xe/xe_pm_residency.c
+>> @@ -11,13 +11,18 @@
+>>    * Test category: functionality test
+>>    */
+>> +#include <time.h>
+>> +
+>>   #include "igt.h"
+>>   #include "igt_sysfs.h"
+>> +#include "lib/igt_syncobj.h"
+>> +
+>> +#include "xe/xe_ioctl.h"
+>>   #include "xe/xe_query.h"
+>>   #include "xe/xe_util.h"
+>> -#define SLEEP_DURATION 3000 /* in milliseconds */
+>> +#define SLEEP_DURATION 3 /* in seconds */
+>>   const double tolerance = 0.1;
+>> @@ -38,9 +43,98 @@ const double tolerance = 0.1;
+>>    * Description: basic residency test to validate idle residency
+>>    *        measured over a time interval is within the tolerance
+>>    * Run type: FULL
+>> + *
+>> + * SUBTEST: idle-residency-on-exec
+>> + * Description: Validate idle residency measured when a background
+>> + *        is only active for ~1% of the time
+>> + * Run type: FULL
+>>    */
+>>   IGT_TEST_DESCRIPTION("Tests for gtidle properties");
+>> +static void exec_load(int fd, struct drm_xe_engine_class_instance 
+>> *hwe, unsigned long *done)
+>> +{
+>> +    uint32_t bo = 0;
+>> +    uint32_t exec_queue, syncobj, vm;
+>> +    uint64_t addr = 0x1a0000;
+>> +    uint64_t batch_addr, batch_offset, data_addr, data_offset;
+>> +    size_t bo_size;
+>> +    int b;
+>> +    struct {
+>> +        uint32_t batch[16];
+>> +        uint64_t pad;
+>> +        uint32_t data;
+>> +    } *data;
+>> +
+>> +    struct drm_xe_sync sync = {
+>> +        .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
+>> +    };
+>> +
+>> +    struct drm_xe_exec exec = {
+>> +        .num_batch_buffer = 1,
+>> +        .num_syncs = 1,
+>> +        .syncs = to_user_pointer(&sync),
+>> +    };
+>> +
+>> +    vm = xe_vm_create(fd, 0, 0);
+>> +    exec_queue = xe_exec_queue_create(fd, vm, hwe, 0);
+>> +    bo_size = xe_get_default_alignment(fd);
+>> +
+>> +    bo = xe_bo_create_flags(fd, vm, bo_size,
+>> +                visible_vram_if_possible(fd, hwe->gt_id));
+>> +    data = xe_bo_map(fd, bo, bo_size);
+>> +    syncobj = syncobj_create(fd, 0);
+>> +
+>> +    xe_vm_bind_sync(fd, vm, bo, 0, addr, bo_size);
+>> +
+>> +    batch_offset = (char *)&data->batch - (char *)data;
+>> +    batch_addr = addr + batch_offset;
+>> +    data_offset = (char *)&data->data - (char *)data;
+>> +    data_addr = addr + data_offset;
+>> +
+>> +    do {
+>> +        uint64_t submit, elapsed;
+>> +        struct timespec tv = {};
+>> +
+>> +        b = 0;
+>> +        done[1]++;
+>> +        data->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
+>> +        data->batch[b++] = data_addr;
+>> +        data->batch[b++] = data_addr >> 32;
+>> +        data->batch[b++] = done[1];
+> 
+> It'll be better to align this batch like the one here - 
+> https://patchwork.freedesktop.org/series/122462/
+This WL is not like spinner, it is a pulse after specific sleep 
+interval. Is alignment still recommended?
 
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/971778 for the overview.
-
-build-containers:build-debian has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48107545):
-  time="2023-08-28T17:53:16Z" level=fatal msg="Error determining repository tags: Get https://registry.freedesktop.org/v2/gfx-ci/igt-ci-tags/build-debian-minimal/tags/list?last=commit-127853e511d63a74bde116efc2b52c6ddf4eda84&n=100: net/http: TLS handshake timeout" 
-  Building!
-  STEP 1: FROM debian:buster
-  Getting image source signatures
-  Copying blob sha256:d6b7393fb4f375905c31c483d81ce2a2905f88aba8cb198874da2b54035bc41d
-  Copying config sha256:de08540e8ff0e470ff7956df4bed403725a5f45c186e9bf495da5344ff8fbe84
-  Writing manifest to image destination
-  Storing signatures
-  STEP 2: RUN apt-get update
-  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-08-28T17:53:20Z" level=warning msg="signal: killed"
-  time="2023-08-28T17:53:20Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
-  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
-  : exit status 1
-  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
-  section_end:1693245201:step_script
-  section_start:1693245201:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1693245201:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build-containers:build-debian-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48107547):
-  time="2023-08-28T17:55:13Z" level=fatal msg="Error determining repository tags: Invalid status code returned when fetching tags list 503 (Service Unavailable)" 
-  Building!
-  STEP 1: FROM debian:buster
-  Getting image source signatures
-  Copying blob sha256:d6b7393fb4f375905c31c483d81ce2a2905f88aba8cb198874da2b54035bc41d
-  Copying config sha256:de08540e8ff0e470ff7956df4bed403725a5f45c186e9bf495da5344ff8fbe84
-  Writing manifest to image destination
-  Storing signatures
-  STEP 2: RUN apt-get update
-  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-08-28T17:55:18Z" level=warning msg="signal: killed"
-  time="2023-08-28T17:55:18Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
-  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
-  : exit status 1
-  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
-  section_end:1693245318:step_script
-  section_start:1693245318:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1693245318:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build-containers:build-debian-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48107546):
-  time="2023-08-28T17:54:36Z" level=fatal msg="Error determining repository tags: Invalid status code returned when fetching tags list 503 (Service Unavailable)" 
-  Building!
-  STEP 1: FROM debian:buster
-  Getting image source signatures
-  Copying blob sha256:d6b7393fb4f375905c31c483d81ce2a2905f88aba8cb198874da2b54035bc41d
-  Copying config sha256:de08540e8ff0e470ff7956df4bed403725a5f45c186e9bf495da5344ff8fbe84
-  Writing manifest to image destination
-  Storing signatures
-  STEP 2: RUN apt-get update
-  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-08-28T17:54:41Z" level=warning msg="signal: killed"
-  time="2023-08-28T17:54:41Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
-  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
-  : exit status 1
-  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
-  section_end:1693245282:step_script
-  section_start:1693245282:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1693245282:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build-containers:build-debian-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48107548):
-  time="2023-08-28T17:54:22Z" level=fatal msg="Error determining repository tags: Get https://registry.freedesktop.org/v2/gfx-ci/igt-ci-tags/build-debian-mips/tags/list?last=commit-284663f43a6e6d935d54d71964667ef1c7326179&n=100: net/http: TLS handshake timeout" 
-  Building!
-  STEP 1: FROM debian:buster
-  Getting image source signatures
-  Copying blob sha256:d6b7393fb4f375905c31c483d81ce2a2905f88aba8cb198874da2b54035bc41d
-  Copying config sha256:de08540e8ff0e470ff7956df4bed403725a5f45c186e9bf495da5344ff8fbe84
-  Writing manifest to image destination
-  Storing signatures
-  STEP 2: RUN apt-get update
-  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-08-28T17:54:27Z" level=warning msg="signal: killed"
-  time="2023-08-28T17:54:27Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
-  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
-  : exit status 1
-  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
-  section_end:1693245267:step_script
-  section_start:1693245267:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1693245268:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build-containers:build-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48107549):
-  time="2023-08-28T17:57:08Z" level=fatal msg="Error determining repository tags: Invalid status code returned when fetching tags list 500 (Internal Server Error)" 
-  Building!
-  STEP 1: FROM fedora:31
-  Getting image source signatures
-  Copying blob sha256:854946d575a439a894349addd141568875d7c1e673d3286b08250f3dde002e6a
-  Copying config sha256:7e94ed77b448a8d2ff08b92d3ca743e4e862c744892d6886c73487581eb5863a
-  Writing manifest to image destination
-  Storing signatures
-  STEP 2: RUN dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils
-  error running container: error creating container for [/bin/sh -c dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils]: time="2023-08-28T17:57:19Z" level=warning msg="signal: killed"
-  time="2023-08-28T17:57:19Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
-  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
-  : exit status 1
-  Error: error building at STEP "RUN dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils": error while running runtime: exit status 1
-  section_end:1693245440:step_script
-  section_start:1693245440:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1693245440:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/971778
+Regards,
+Badal
+> 
+> Thanks,
+> 
+> Vinay.
+> 
+>> +        data->batch[b++] = MI_BATCH_BUFFER_END;
+>> +        igt_assert(b <= ARRAY_SIZE(data->batch));
+>> +
+>> +        exec.exec_queue_id = exec_queue;
+>> +        exec.address = batch_addr;
+>> +        sync.handle = syncobj;
+>> +
+>> +        igt_nsec_elapsed(&tv);
+>> +        xe_exec(fd, &exec);
+>> +        submit = igt_nsec_elapsed(&tv);
+>> +
+>> +        igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
+>> +        elapsed = igt_nsec_elapsed(&tv);
+>> +        igt_assert_eq(data->data, done[1]);
+>> +
+>> +        igt_debug("Execution took %.3fms (submit %.1fus, wait 
+>> %.1fus)\n",
+>> +              1e-6 * elapsed,
+>> +              1e-3 * submit,
+>> +              1e-3 * (elapsed - submit));
+>> +
+>> +        syncobj_reset(fd, &syncobj, 1);
+>> +
+>> +        /* Aim for ~1% busy */
+>> +        usleep(elapsed / 10);
+>> +    } while (!READ_ONCE(*done));
+>> +
+>> +    xe_vm_unbind_sync(fd, vm, 0, addr, bo_size);
+>> +    syncobj_destroy(fd, syncobj);
+>> +    munmap(data, bo_size);
+>> +    gem_close(fd, bo);
+>> +    xe_exec_queue_destroy(fd, exec_queue);
+>> +    xe_vm_destroy(fd, vm);
+>> +}
+>> +
+>>   static unsigned int measured_usleep(unsigned int usec)
+>>   {
+>>       struct timespec ts = { };
+>> @@ -76,7 +170,7 @@ static void test_idle_residency(int fd, int gt)
+>>       igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 1), "GT not 
+>> in C6\n");
+>>       residency_start = read_idle_residency(fd, gt);
+>> -    elapsed_ms = measured_usleep(SLEEP_DURATION * 1000) / 1000;
+>> +    elapsed_ms = measured_usleep(SLEEP_DURATION * USEC_PER_SEC) / 1000;
+>>       residency_end = read_idle_residency(fd, gt);
+>>       igt_info("Measured %lums of idle residency in %lums\n",
+>> @@ -85,9 +179,41 @@ static void test_idle_residency(int fd, int gt)
+>>       assert_within_epsilon(residency_end - residency_start, 
+>> elapsed_ms, tolerance);
+>>   }
+>> +static void idle_residency_on_exec(int fd, struct 
+>> drm_xe_engine_class_instance *hwe)
+>> +{
+>> +    const int tol = 20;
+>> +    unsigned long *done;
+>> +    unsigned long cycles, elapsed_ms, residency;
+>> +
+>> +    done = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
+>> +    igt_assert(done != MAP_FAILED);
+>> +    memset(done, 0, 4096);
+>> +
+>> +    igt_fork(child, 1)
+>> +        exec_load(fd, hwe, done);
+>> +
+>> +    cycles -= READ_ONCE(done[1]);
+>> +    residency -= read_idle_residency(fd, hwe->gt_id);
+>> +    elapsed_ms = measured_usleep(SLEEP_DURATION * USEC_PER_SEC) / 1000;
+>> +    residency += read_idle_residency(fd, hwe->gt_id);
+>> +    cycles += READ_ONCE(done[1]);
+>> +    *done = 1;
+>> +
+>> +    igt_waitchildren();
+>> +
+>> +    /* At least one wakeup/s needed for a reasonable test */
+>> +    igt_assert(cycles >= SLEEP_DURATION);
+>> +
+>> +    /* While very nearly busy, expect full GT C6 */
+>> +    assert_within_epsilon(residency, elapsed_ms, tol);
+>> +
+>> +    munmap(done, 4096);
+>> +}
+>> +
+>>   igt_main
+>>   {
+>>       int fd, gt;
+>> +    struct drm_xe_engine_class_instance *hwe;
+>>       igt_fixture {
+>>           fd = drm_open_driver(DRIVER_XE);
+>> @@ -104,6 +230,11 @@ igt_main
+>>           xe_for_each_gt(fd, gt)
+>>               test_idle_residency(fd, gt);
+>> +    igt_describe("Validate idle residency on exec");
+>> +    igt_subtest("idle-residency-on-exec")
+>> +        xe_for_each_hw_engine(fd, hwe)
+>> +            idle_residency_on_exec(fd, hwe);
+>> +
+>>       igt_fixture {
+>>           close(fd);
+>>       }
