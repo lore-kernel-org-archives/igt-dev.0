@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 387F910E304
- for <igt-dev@lists.freedesktop.org>; Mon, 28 Aug 2023 15:40:21 +0000 (UTC)
-Date: Mon, 28 Aug 2023 17:39:54 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230828153954.vnozovo4fdxara5b@kamilkon-desk.igk.intel.com>
-References: <20230824163302.15121-1-mwen@igalia.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 364BE10E316
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Aug 2023 16:29:09 +0000 (UTC)
+Message-ID: <f655d57f-0fd4-6813-ebde-70fd1726ccb4@intel.com>
+Date: Mon, 28 Aug 2023 21:58:53 +0530
+To: Riana Tauro <riana.tauro@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20230811103217.415744-1-riana.tauro@intel.com>
+ <20230811103217.415744-2-riana.tauro@intel.com>
+Content-Language: en-US
+From: "Nilawar, Badal" <badal.nilawar@intel.com>
+In-Reply-To: <20230811103217.415744-2-riana.tauro@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230824163302.15121-1-mwen@igalia.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_atomic: check zpos is mutable
- before test mutable zpos
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] RFC tests/xe: Add a test that
+ validates idle residency on exec
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,109 +22,214 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>,
- Tomeu Vizoso <tomeu.vizoso@collabora.com>, kernel-dev@igalia.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Melissa,
+Hi Riana,
 
-tests/kms_atomic: check zpos is mutable before test mutable zpos
------------------ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-imho better:
-
-tests/kms_atomic: skip zpos test on non-mutable planes
-
-On 2023-08-24 at 15:33:02 -0100, Melissa Wen wrote:
-> plane-primary-overlay-mutable-zpos only works if both plane types have
-> mutable zpos property. However, drivers usually set primary zpos as
-> immutable and the test case just fails. Create a helper to check if a
-> plane have mutable zpos and skip the test case if zpos changes are not
-> allowed.
+On 11-08-2023 16:02, Riana Tauro wrote:
+> Add a test what runs a background load that is
+> active approximately 1% of the time. Verify that we do enter
+> GT-C6 the rest of the time and validate idle residency is within
+> tolerance.
 > 
-> Signed-off-by: Melissa Wen <mwen@igalia.com>
+> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
 > ---
+>   tests/xe/xe_pm_residency.c | 135 ++++++++++++++++++++++++++++++++++++-
+>   1 file changed, 133 insertions(+), 2 deletions(-)
 > 
-> Hi,
-> 
-> I don't know what drivers currently use this test case (imx?), but
-> besides this requirement check, the test case seems to use an uncommon
-> format for overlay plane (ARGB1555). From drm_info[1], I think a more
-> generic option would be ARGB8888 for alpha blending tests, but a primary
-> plane with mutable zpos doesn't seem a common case too.
-> 
-> Let me know your thoughts
-> 
-> [1] https://drmdb.emersion.fr/formats?plane=0
-> 
->  lib/igt_kms.c      | 17 +++++++++++++++++
->  lib/igt_kms.h      |  2 ++
->  tests/kms_atomic.c |  3 +++
->  3 files changed, 22 insertions(+)
-> 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index e0959ccff..42dc66fcd 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -3827,6 +3827,23 @@ void igt_plane_set_prop_enum(igt_plane_t *plane,
->  	igt_assert(igt_plane_try_prop_enum(plane, prop, val));
->  }
->  
-
-Please document public functions.
-
-Regards,
-Kamil
-
-> +bool igt_plane_check_prop_is_mutable(igt_plane_t *plane,
-> +				     enum igt_atomic_plane_properties igt_prop)
+> diff --git a/tests/xe/xe_pm_residency.c b/tests/xe/xe_pm_residency.c
+> index 4936de166..abf07c696 100644
+> --- a/tests/xe/xe_pm_residency.c
+> +++ b/tests/xe/xe_pm_residency.c
+> @@ -11,13 +11,18 @@
+>    * Test category: functionality test
+>    */
+>   
+> +#include <time.h>
+> +
+>   #include "igt.h"
+>   #include "igt_sysfs.h"
+>   
+> +#include "lib/igt_syncobj.h"
+> +
+> +#include "xe/xe_ioctl.h"
+>   #include "xe/xe_query.h"
+>   #include "xe/xe_util.h"
+>   
+> -#define SLEEP_DURATION 3000 /* in milliseconds */
+> +#define SLEEP_DURATION 3 /* in seconds */
+>   
+>   const double tolerance = 0.1;
+>   
+> @@ -38,9 +43,98 @@ const double tolerance = 0.1;
+>    * Description: basic residency test to validate idle residency
+>    *		measured over a time interval is within the tolerance
+>    * Run type: FULL
+> + *
+> + * SUBTEST: idle-residency-on-exec
+> + * Description: Validate idle residency measured when a background
+> + *		is only active for ~1% of the time
+> + * Run type: FULL
+>    */
+>   IGT_TEST_DESCRIPTION("Tests for gtidle properties");
+>   
+> +static void exec_load(int fd, struct drm_xe_engine_class_instance *hwe, unsigned long *done)
 > +{
-> +	drmModePropertyPtr prop;
-> +	uint64_t value;
-> +	bool has_prop;
+> +	uint32_t bo = 0;
+> +	uint32_t exec_queue, syncobj, vm;
+> +	uint64_t addr = 0x1a0000;
+> +	uint64_t batch_addr, batch_offset, data_addr, data_offset;
+> +	size_t bo_size;
+> +	int b;
+> +	struct {
+> +		uint32_t batch[16];
+> +		uint64_t pad;
+> +		uint32_t data;
+> +	} *data;
 > +
-> +	has_prop = kmstest_get_property(plane->pipe->display->drm_fd,
-> +					plane->drm_plane->plane_id,
-> +					DRM_MODE_OBJECT_PLANE,
-> +				        igt_plane_prop_names[igt_prop], NULL,
-> +					&value, &prop);
-> +	igt_assert(has_prop);
+> +	struct drm_xe_sync sync = {
+> +		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
+> +	};
 > +
-> +	return !(prop->flags & DRM_MODE_PROP_IMMUTABLE);
+> +	struct drm_xe_exec exec = {
+> +		.num_batch_buffer = 1,
+> +		.num_syncs = 1,
+> +		.syncs = to_user_pointer(&sync),
+> +	};
+> +
+> +	vm = xe_vm_create(fd, 0, 0);
+> +	exec_queue = xe_exec_queue_create(fd, vm, hwe, 0);
+> +	bo_size = xe_get_default_alignment(fd);
+> +
+> +	bo = xe_bo_create_flags(fd, vm, bo_size,
+> +				visible_vram_if_possible(fd, hwe->gt_id));
+> +	data = xe_bo_map(fd, bo, bo_size);
+> +	syncobj = syncobj_create(fd, 0);
+> +
+> +	xe_vm_bind_sync(fd, vm, bo, 0, addr, bo_size);
+> +
+> +	batch_offset = (char *)&data->batch - (char *)data;
+> +	batch_addr = addr + batch_offset;
+> +	data_offset = (char *)&data->data - (char *)data;
+> +	data_addr = addr + data_offset;
+> +
+> +	do {
+> +		uint64_t submit, elapsed;
+> +		struct timespec tv = {};
+> +
+> +		b = 0;
+> +		done[1]++;
+> +		data->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
+> +		data->batch[b++] = data_addr;
+> +		data->batch[b++] = data_addr >> 32;
+> +		data->batch[b++] = done[1];
+> +		data->batch[b++] = MI_BATCH_BUFFER_END;
+> +		igt_assert(b <= ARRAY_SIZE(data->batch));
+Curious to know why MI_BATCH_BUFFER_START is not needed in batch buffer.
+> +
+> +		exec.exec_queue_id = exec_queue;
+> +		exec.address = batch_addr;
+> +		sync.handle = syncobj;
+> +
+> +		igt_nsec_elapsed(&tv);
+> +		xe_exec(fd, &exec);
+> +		submit = igt_nsec_elapsed(&tv);
+> +
+> +		igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
+> +		elapsed = igt_nsec_elapsed(&tv);
+> +		igt_assert_eq(data->data, done[1]);
+> +
+> +		igt_debug("Execution took %.3fms (submit %.1fus, wait %.1fus)\n",
+> +			  1e-6 * elapsed,
+> +			  1e-3 * submit,
+> +			  1e-3 * (elapsed - submit));
+> +
+> +		syncobj_reset(fd, &syncobj, 1);
+> +
+> +		/* Aim for ~1% busy */
+This is sleep for 99% of execution (elapsed) time? May be you can add 
+some explanation with example here.
+> +		usleep(elapsed / 10);
+> +	} while (!READ_ONCE(*done));
+> +
+> +	xe_vm_unbind_sync(fd, vm, 0, addr, bo_size);
+> +	syncobj_destroy(fd, syncobj);
+> +	munmap(data, bo_size);
+> +	gem_close(fd, bo);
+> +	xe_exec_queue_destroy(fd, exec_queue);
+> +	xe_vm_destroy(fd, vm);
 > +}
 > +
->  /**
->   * igt_plane_replace_prop_blob:
->   * @plane: plane to set property on.
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index 91355c910..4b4ec6c5a 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -734,6 +734,8 @@ extern void igt_plane_replace_prop_blob(igt_plane_t *plane,
->  					enum igt_atomic_plane_properties prop,
->  					const void *ptr, size_t length);
->  
-> +extern bool igt_plane_check_prop_is_mutable(igt_plane_t *plane,
-> +					    enum igt_atomic_plane_properties igt_prop);
->  /**
->   * igt_output_has_prop:
->   * @output: Output to check.
-> diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
-> index 3289219f9..22ddf5633 100644
-> --- a/tests/kms_atomic.c
-> +++ b/tests/kms_atomic.c
-> @@ -1463,7 +1463,10 @@ igt_main
->  		igt_require(overlay);
->  
->  		igt_require(igt_plane_has_prop(primary, IGT_PLANE_ZPOS));
-> +		igt_require(igt_plane_check_prop_is_mutable(primary, IGT_PLANE_ZPOS));
+>   static unsigned int measured_usleep(unsigned int usec)
+>   {
+>   	struct timespec ts = { };
+> @@ -76,7 +170,7 @@ static void test_idle_residency(int fd, int gt)
+>   	igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 1), "GT not in C6\n");
+>   
+>   	residency_start = read_idle_residency(fd, gt);
+> -	elapsed_ms = measured_usleep(SLEEP_DURATION * 1000) / 1000;
+> +	elapsed_ms = measured_usleep(SLEEP_DURATION * USEC_PER_SEC) / 1000;
+>   	residency_end = read_idle_residency(fd, gt);
+>   
+>   	igt_info("Measured %lums of idle residency in %lums\n",
+> @@ -85,9 +179,41 @@ static void test_idle_residency(int fd, int gt)
+>   	assert_within_epsilon(residency_end - residency_start, elapsed_ms, tolerance);
+>   }
+>   
+> +static void idle_residency_on_exec(int fd, struct drm_xe_engine_class_instance *hwe)
+> +{
+> +	const int tol = 20;
+> +	unsigned long *done;
+> +	unsigned long cycles, elapsed_ms, residency;
 > +
->  		igt_require(igt_plane_has_prop(overlay, IGT_PLANE_ZPOS));
-> +		igt_require(igt_plane_check_prop_is_mutable(overlay, IGT_PLANE_ZPOS));
->  
->  		igt_require(igt_plane_has_format_mod(primary, format_primary, 0x0));
->  		igt_require(igt_plane_has_format_mod(overlay, format_overlay, 0x0));
-> -- 
-> 2.40.1
-> 
+> +	done = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
+> +	igt_assert(done != MAP_FAILED);
+> +	memset(done, 0, 4096);
+> +
+> +	igt_fork(child, 1)
+> +		exec_load(fd, hwe, done);
+> +
+> +	cycles -= READ_ONCE(done[1]);
+> +	residency -= read_idle_residency(fd, hwe->gt_id);
+> +	elapsed_ms = measured_usleep(SLEEP_DURATION * USEC_PER_SEC) / 1000;
+> +	residency += read_idle_residency(fd, hwe->gt_id);
+> +	cycles += READ_ONCE(done[1]);
+As discussed use separate variables for start and end here.
+> +	*done = 1;
+> +
+> +	igt_waitchildren();
+> +
+> +	/* At least one wakeup/s needed for a reasonable test */
+> +	igt_assert(cycles >= SLEEP_DURATION);
+> +
+> +	/* While very nearly busy, expect full GT C6 */
+> +	assert_within_epsilon(residency, elapsed_ms, tol);
+I think residency will always be less than elapsed time.
+
+Regards,
+Badal
+> +
+> +	munmap(done, 4096);
+> +}
+> +
+>   igt_main
+>   {
+>   	int fd, gt;
+> +	struct drm_xe_engine_class_instance *hwe;
+>   
+>   	igt_fixture {
+>   		fd = drm_open_driver(DRIVER_XE);
+> @@ -104,6 +230,11 @@ igt_main
+>   		xe_for_each_gt(fd, gt)
+>   			test_idle_residency(fd, gt);
+>   
+> +	igt_describe("Validate idle residency on exec");
+> +	igt_subtest("idle-residency-on-exec")
+> +		xe_for_each_hw_engine(fd, hwe)
+> +			idle_residency_on_exec(fd, hwe);
+> +
+>   	igt_fixture {
+>   		close(fd);
+>   	}
