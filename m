@@ -1,21 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 48C3010E2A3
- for <igt-dev@lists.freedesktop.org>; Mon, 28 Aug 2023 12:14:18 +0000 (UTC)
-From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
-To: "Tauro, Riana" <riana.tauro@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Mon, 28 Aug 2023 12:14:04 +0000
-Message-ID: <CY5PR11MB6211FEE9BB9D2DC6A190A23C95E0A@CY5PR11MB6211.namprd11.prod.outlook.com>
-References: <20230825054659.1320824-1-riana.tauro@intel.com>
- <20230825054659.1320824-3-riana.tauro@intel.com>
-In-Reply-To: <20230825054659.1320824-3-riana.tauro@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 387F910E304
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Aug 2023 15:40:21 +0000 (UTC)
+Date: Mon, 28 Aug 2023 17:39:54 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230828153954.vnozovo4fdxara5b@kamilkon-desk.igk.intel.com>
+References: <20230824163302.15121-1-mwen@igalia.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 2/3] tests/xe: Add a test to toggle
- GT C states and validate power
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230824163302.15121-1-mwen@igalia.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_atomic: check zpos is mutable
+ before test mutable zpos
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,162 +20,109 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Nilawar, Badal" <badal.nilawar@intel.com>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>,
+ Tomeu Vizoso <tomeu.vizoso@collabora.com>, kernel-dev@igalia.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Hi Melissa,
 
+tests/kms_atomic: check zpos is mutable before test mutable zpos
+----------------- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+imho better:
 
-> -----Original Message-----
-> From: Tauro, Riana <riana.tauro@intel.com>
-> Sent: Friday, August 25, 2023 11:17 AM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Tauro, Riana <riana.tauro@intel.com>; Gupta, Anshuman
-> <anshuman.gupta@intel.com>; Dixit, Ashutosh <ashutosh.dixit@intel.com>;
-> Belgaumkar, Vinay <vinay.belgaumkar@intel.com>; Nilawar, Badal
-> <badal.nilawar@intel.com>; Sundaresan, Sujaritha
-> <sujaritha.sundaresan@intel.com>; kamil.konieczny@linux.intel.com
-> Subject: [PATCH i-g-t v2 2/3] tests/xe: Add a test to toggle GT C states =
-and
-> validate power
->=20
-> Add a test that toggles GT C states by checking if GT is in C0 when force=
-wake
-> is acquired and in C6 once released.
-> This test also validates power consumed by GPU in GT C6 is lesser than GT=
- C0.
->=20
-> v2: change test name (Suja, Anshuman)
-> v3: add exit handler for closing forcewake handle
->     define a macro for number of repetitions (Vinay)
->     change forcewake open to readonly (Anshuman)
->     modify test to validate power
-> v4: check if fw_handle is valid before closing it
->     change function name to close_fw_handle (Anshuman)
->=20
-> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
-> Reviewed-by: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
-Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
+tests/kms_atomic: skip zpos test on non-mutable planes
+
+On 2023-08-24 at 15:33:02 -0100, Melissa Wen wrote:
+> plane-primary-overlay-mutable-zpos only works if both plane types have
+> mutable zpos property. However, drivers usually set primary zpos as
+> immutable and the test case just fails. Create a helper to check if a
+> plane have mutable zpos and skip the test case if zpos changes are not
+> allowed.
+> 
+> Signed-off-by: Melissa Wen <mwen@igalia.com>
 > ---
->  tests/xe/xe_pm_residency.c | 68
-> ++++++++++++++++++++++++++++++++++++++
->  1 file changed, 68 insertions(+)
->=20
-> diff --git a/tests/xe/xe_pm_residency.c b/tests/xe/xe_pm_residency.c
-> index fd4876eaf..bdbacb149 100644
-> --- a/tests/xe/xe_pm_residency.c
-> +++ b/tests/xe/xe_pm_residency.c
-> @@ -14,14 +14,17 @@
->=20
->  #include "igt.h"
->  #include "igt_device.h"
-> +#include "igt_power.h"
->  #include "igt_sysfs.h"
->=20
->  #include "xe/xe_query.h"
->  #include "xe/xe_util.h"
->=20
-> +#define NUM_REPS 16 /* No of Repetitions */
->  #define SLEEP_DURATION 3000 /* in milliseconds */
->=20
->  const double tolerance =3D 0.1;
-> +int fw_handle =3D -1;
->=20
->  #define assert_within_epsilon(x, ref, tol) \
->  	igt_assert_f((double)(x) <=3D (1.0 + (tol)) * (double)(ref) && \ @@ -
-> 50,9 +53,20 @@ enum test_type {
->   * Description: Validate idle residency measured over suspend(s2idle)
->   *              is greater than suspend time or within tolerance
->   * Run type: FULL
-> + *
-> + * SUBTEST: toggle-gt-c6
-> + * Description: toggles GT C states by acquiring/releasing forcewake,
-> + *		also validates power consumed by GPU in GT C6 is lesser than
-> that of GT C0.
-> + * Run type: FULL
->   */
->  IGT_TEST_DESCRIPTION("Tests for gtidle properties");
->=20
-> +static void close_fw_handle(int sig)
+> 
+> Hi,
+> 
+> I don't know what drivers currently use this test case (imx?), but
+> besides this requirement check, the test case seems to use an uncommon
+> format for overlay plane (ARGB1555). From drm_info[1], I think a more
+> generic option would be ARGB8888 for alpha blending tests, but a primary
+> plane with mutable zpos doesn't seem a common case too.
+> 
+> Let me know your thoughts
+> 
+> [1] https://drmdb.emersion.fr/formats?plane=0
+> 
+>  lib/igt_kms.c      | 17 +++++++++++++++++
+>  lib/igt_kms.h      |  2 ++
+>  tests/kms_atomic.c |  3 +++
+>  3 files changed, 22 insertions(+)
+> 
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index e0959ccff..42dc66fcd 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -3827,6 +3827,23 @@ void igt_plane_set_prop_enum(igt_plane_t *plane,
+>  	igt_assert(igt_plane_try_prop_enum(plane, prop, val));
+>  }
+>  
+
+Please document public functions.
+
+Regards,
+Kamil
+
+> +bool igt_plane_check_prop_is_mutable(igt_plane_t *plane,
+> +				     enum igt_atomic_plane_properties igt_prop)
 > +{
-> +	if (fw_handle >=3D 0)
-> +		close(fw_handle);
+> +	drmModePropertyPtr prop;
+> +	uint64_t value;
+> +	bool has_prop;
+> +
+> +	has_prop = kmstest_get_property(plane->pipe->display->drm_fd,
+> +					plane->drm_plane->plane_id,
+> +					DRM_MODE_OBJECT_PLANE,
+> +				        igt_plane_prop_names[igt_prop], NULL,
+> +					&value, &prop);
+> +	igt_assert(has_prop);
+> +
+> +	return !(prop->flags & DRM_MODE_PROP_IMMUTABLE);
 > +}
 > +
->  static unsigned int measured_usleep(unsigned int usec)  {
->  	struct timespec ts =3D { };
-> @@ -117,6 +131,54 @@ static void test_idle_residency(int fd, int gt, enum
-> test_type flag)
->  	assert_within_epsilon(residency_end - residency_start, elapsed_ms,
-> tolerance);  }
->=20
-> +static void measure_power(struct igt_power *gpu, double *power) {
-> +	struct power_sample power_sample[2];
+>  /**
+>   * igt_plane_replace_prop_blob:
+>   * @plane: plane to set property on.
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index 91355c910..4b4ec6c5a 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -734,6 +734,8 @@ extern void igt_plane_replace_prop_blob(igt_plane_t *plane,
+>  					enum igt_atomic_plane_properties prop,
+>  					const void *ptr, size_t length);
+>  
+> +extern bool igt_plane_check_prop_is_mutable(igt_plane_t *plane,
+> +					    enum igt_atomic_plane_properties igt_prop);
+>  /**
+>   * igt_output_has_prop:
+>   * @output: Output to check.
+> diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
+> index 3289219f9..22ddf5633 100644
+> --- a/tests/kms_atomic.c
+> +++ b/tests/kms_atomic.c
+> @@ -1463,7 +1463,10 @@ igt_main
+>  		igt_require(overlay);
+>  
+>  		igt_require(igt_plane_has_prop(primary, IGT_PLANE_ZPOS));
+> +		igt_require(igt_plane_check_prop_is_mutable(primary, IGT_PLANE_ZPOS));
 > +
-> +	igt_power_get_energy(gpu, &power_sample[0]);
-> +	measured_usleep(SLEEP_DURATION * 1000);
-> +	igt_power_get_energy(gpu, &power_sample[1]);
-> +	*power =3D igt_power_get_mW(gpu, &power_sample[0],
-> &power_sample[1]); }
-> +
-> +static void toggle_gt_c6(int fd, int n) {
-> +	double gt_c0_power, gt_c6_power;
-> +	int gt;
-> +	struct igt_power gpu;
-> +
-> +	igt_power_open(fd, &gpu, "gpu");
-> +
-> +	do {
-> +		fw_handle =3D igt_debugfs_open(fd, "forcewake_all",
-> O_RDONLY);
-> +		igt_assert(fw_handle >=3D 0);
-> +		/* check if all gts are in C0 after forcewake is acquired */
-> +		xe_for_each_gt(fd, gt)
-> +			igt_assert_f(!xe_is_gt_in_c6(fd, gt),
-> +				     "Forcewake acquired, GT should be in
-> C0\n");
-> +
-> +		if (n =3D=3D NUM_REPS)
-> +			measure_power(&gpu, &gt_c0_power);
-> +
-> +		close(fw_handle);
-> +		/* check if all gts are in C6 after forcewake is released */
-> +		xe_for_each_gt(fd, gt)
-> +			igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 1),
-> +				     "Forcewake released, GT should be in
-> C6\n");
-> +
-> +		if (n =3D=3D NUM_REPS)
-> +			measure_power(&gpu, &gt_c6_power);
-> +	} while (n--);
-> +
-> +	igt_power_close(&gpu);
-> +	igt_info("GPU consumed %fmW in GT C6 and %fmW in GT C0\n",
-> +gt_c6_power, gt_c0_power);
-> +
-> +	/* FIXME: Remove dgfx check after hwmon is added */
-> +	if (!xe_has_vram(fd))
-> +		igt_assert_f(gt_c6_power < gt_c0_power,
-> +			     "Power consumed in GT C6 should be lower than
-> GT C0\n"); }
-> +
->  igt_main
->  {
->  	uint32_t d3cold_allowed;
-> @@ -152,6 +214,12 @@ igt_main
->  		xe_for_each_gt(fd, gt)
->  			test_idle_residency(fd, gt, TEST_IDLE);
->=20
-> +	igt_describe("Toggle GT C states by acquiring/releasing forcewake
-> and validate power measured");
-> +	igt_subtest("toggle-gt-c6") {
-> +		igt_install_exit_handler(close_fw_handle);
-> +		toggle_gt_c6(fd, NUM_REPS);
-> +	}
-> +
->  	igt_fixture {
->  		close(fd);
->  	}
-> --
-> 2.40.0
+>  		igt_require(igt_plane_has_prop(overlay, IGT_PLANE_ZPOS));
+> +		igt_require(igt_plane_check_prop_is_mutable(overlay, IGT_PLANE_ZPOS));
+>  
+>  		igt_require(igt_plane_has_format_mod(primary, format_primary, 0x0));
+>  		igt_require(igt_plane_has_format_mod(overlay, format_overlay, 0x0));
+> -- 
+> 2.40.1
+> 
