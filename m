@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 90A5410E044
- for <igt-dev@lists.freedesktop.org>; Mon, 28 Aug 2023 05:29:10 +0000 (UTC)
-From: "B, Jeevan" <jeevan.b@intel.com>
-To: "Deak, Imre" <imre.deak@intel.com>
-Date: Mon, 28 Aug 2023 05:29:00 +0000
-Message-ID: <DM4PR11MB6312CFCA489BB2637E79EE3190E0A@DM4PR11MB6312.namprd11.prod.outlook.com>
-References: <20230814080527.3017102-1-jeevan.b@intel.com>
- <ZOuPuw0BJA8qhGZk@ideak-desk.fi.intel.com>
-In-Reply-To: <ZOuPuw0BJA8qhGZk@ideak-desk.fi.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EBE2510E20E
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Aug 2023 06:14:09 +0000 (UTC)
+Message-ID: <373a814c-cc3d-694a-76ae-d2158597c894@intel.com>
+Date: Mon, 28 Aug 2023 11:43:58 +0530
+To: <igt-dev@lists.freedesktop.org>
+References: <20230828052521.4152105-1-sujaritha.sundaresan@intel.com>
 Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+From: "Sundaresan, Sujaritha" <sujaritha.sundaresan@intel.com>
+In-Reply-To: <20230828052521.4152105-1-sujaritha.sundaresan@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH] RFC: tests/kms_setmode: rename subtest to
- simplify test combinations
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915: Add multi-gt support for
+ rc6_idle and rc6_fence tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,86 +21,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-> -----Original Message-----
-> From: Deak, Imre <imre.deak@intel.com>
-> Sent: Sunday, August 27, 2023 11:33 PM
-> To: B, Jeevan <jeevan.b@intel.com>
-> Cc: igt-dev@lists.freedesktop.org
-> Subject: Re: [PATCH] RFC: tests/kms_setmode: rename subtest to simplify
-> test combinations
->=20
-> On Mon, Aug 14, 2023 at 01:35:27PM +0530, Jeevan B wrote:
-> > Both 'basic-clone-single-crtc' and 'invalid-clone-single-crtc' tests
-> > aim to assess a scenario where two connectors are attempted to be run
-> > with a single CRTC, which is not feasible.  Consequently, the  'basic-c=
-lone-
-> single-crtc'
-> > test is marked as invalid and skipped due to the impractical scenario.
-> > On the other hand, the 'invalid-clone-single-crtc' test serves as a
-> > negative scenario, confirming the failure of the 'ioctl' and indicating=
- a
-> successful test.
-> >
-> > similarly, the 'invalid-clone-exclusive-crtc' test attempts to run two
-> > connectors with two CRTCs, which is indeed possible, rendering the test
-> nonsensical.
-> > Consequently, the 'clone-exclusive-crtc' test runs and passes as expect=
-ed.
-> >
+Kindly ignore this patch. Some errors are present due to git issues.
 
-Thanks for the inputs. Will work on the comments given. .
+Wills end out a clean v2 once resolved
 
-> > Signed-off-by: Jeevan B <jeevan.b@intel.com>
-> > Cc: Imre Deak <imre.deak@intel.com>
-> > ---
-> >  tests/kms_setmode.c | 6 +-----
-> >  1 file changed, 1 insertion(+), 5 deletions(-)
-> >
-> > diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c index
-> > 035bbd0b0..0c65e3937 100644
-> > --- a/tests/kms_setmode.c
-> > +++ b/tests/kms_setmode.c
-> > @@ -932,12 +932,8 @@ igt_main_args("det:", NULL, help_str,
-> opt_handler, NULL)
-> >  		const char *name;
-> >  	} tests[] =3D {
-> >  		{ TEST_TIMINGS, "basic" },
-> > -		{ TEST_CLONE | TEST_SINGLE_CRTC_CLONE,
-> > -					"basic-clone-single-crtc" },
->=20
-> It is feasible to use a single CRTC with two connectors, for instance in =
-case of
-> a VGA and an HDMI connector; so this subtest can't be removed.
->=20
-> >  		{ TEST_INVALID | TEST_CLONE | TEST_SINGLE_CRTC_CLONE,
-> > -					"invalid-clone-single-crtc" },
-> > -		{ TEST_INVALID | TEST_CLONE |
-> TEST_EXCLUSIVE_CRTC_CLONE,
->=20
-> There are invalid configurations when each connector uses its own CRTC, f=
-or
-> instance when a connector uses a CRTC not compatible with the connector.
-> So this subtest can't be removed either.
->=20
-> I suppose you're fixing a problem where a subtest is failing if there are=
- no
-> dynamic tests defined for it, on some platforms. In that case the subtest
-> should be made to pass explicitly, perhaps by ensuring that there is at l=
-east
-> one dynamic test defined for each subtest.
->=20
-> > -					"invalid-clone-exclusive-crtc" },
-> > +					"clone-single-crtc-negative" },
-> >  		{ TEST_CLONE | TEST_EXCLUSIVE_CRTC_CLONE,
-> >  					"clone-exclusive-crtc" },
-> >  		{ TEST_INVALID | TEST_CLONE | TEST_SINGLE_CRTC_CLONE
-> |
-> > TEST_STEALING,
-> > --
-> > 2.25.1
-> >
+-Suja
+
+On 8/28/2023 10:55 AM, Sujaritha Sundaresan wrote:
+> Adding multi-gt support for rc6_residency subtests rc6_idle and
+> rc6_fence.
+>
+> Signed-off-by: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
+> ---
+>   tests/i915/i915_pm_rc6_residency.c | 31 +++++++++++++++++++-----------
+>   1 file changed, 20 insertions(+), 11 deletions(-)
+>
+> diff --git a/tests/i915/i915_pm_rc6_residency.c b/tests/i915/i915_pm_rc6_residency.c
+> index b266680ac..078ac4747 100644
+> --- a/tests/i915/i915_pm_rc6_residency.c
+> +++ b/tests/i915/i915_pm_rc6_residency.c
+> @@ -376,7 +376,7 @@ static void kill_children(int sig)
+>   	signal(sig, old);
+>   }
+>   
+> -static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags)
+> +static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags, unsigned int gt)
+>   {
+>   	const int64_t duration_ns = SLEEP_DURATION * (int64_t)NSEC_PER_SEC;
+>   	const int tolerance = 20; /* Some RC6 is better than none! */
+> @@ -397,7 +397,7 @@ static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags)
+>   	struct igt_power gpu;
+>   	int fd;
+>   
+> -	fd = open_pmu(i915, I915_PMU_RC6_RESIDENCY);
+> +	fd = open_pmu(i915, __I915_PMU_RC6_RESIDENCY(gt));
+>   	igt_drop_caches_set(i915, DROP_IDLE);
+>   	igt_require(__pmu_wait_for_rc6(fd));
+>   	igt_power_open(i915, &gpu, "gpu");
+> @@ -471,12 +471,13 @@ static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags)
+>   	}
+>   }
+>   
+> -static void rc6_fence(int i915, const intel_ctx_t *ctx)
+> +static void rc6_fence(int i915, unsigned int gt)
+>   {
+>   	const int64_t duration_ns = SLEEP_DURATION * (int64_t)NSEC_PER_SEC;
+>   	const int tolerance = 20; /* Some RC6 is better than none! */
+>   	const unsigned int gen = intel_gen(intel_get_drm_devid(i915));
+>   	const struct intel_execution_engine2 *e;
+> +	const intel_ctx_t *ctx;
+>   	struct power_sample sample[2];
+>   	unsigned long slept;
+>   	uint64_t rc6, ts[2], ahnd;
+> @@ -485,7 +486,7 @@ static void rc6_fence(int i915, const intel_ctx_t *ctx)
+>   
+>   	igt_require_sw_sync();
+>   
+> -	fd = open_pmu(i915, I915_PMU_RC6_RESIDENCY);
+> +	fd = open_pmu(i915, __I915_PMU_RC6_RESIDENCY(gt));
+>   	igt_drop_caches_set(i915, DROP_IDLE);
+>   	igt_require(__pmu_wait_for_rc6(fd));
+>   	igt_power_open(i915, &gpu, "gpu");
+> @@ -509,6 +510,7 @@ static void rc6_fence(int i915, const intel_ctx_t *ctx)
+>   	assert_within_epsilon(rc6, ts[1] - ts[0], 5);
+>   
+>   	/* Submit but delay execution, we should be idle and conserving power */
+> +	ctx = intel_ctx_create_for_gt(i915, gt);
+>   	ahnd = get_reloc_ahnd(i915, ctx->id);
+>   	for_each_ctx_engine(i915, ctx, e) {
+>   		igt_spin_t *spin;
+> @@ -550,6 +552,7 @@ static void rc6_fence(int i915, const intel_ctx_t *ctx)
+>   		gem_quiescent_gpu(i915);
+>   	}
+>   	put_ahnd(ahnd);
+> +	intel_ctx_destroy(i915, ctx);
+>   
+>   	igt_power_close(&gpu);
+>   	close(fd);
+> @@ -559,11 +562,11 @@ igt_main
+>   {
+>   	int i915 = -1;
+>   	const intel_ctx_t *ctx;
+> +	unsigned int dir, gt;
+>   
+>   	/* Use drm_open_driver to verify device existence */
+>   	igt_fixture {
+>   		i915 = drm_open_driver(DRIVER_INTEL);
+> -		ctx = intel_ctx_create_all_physical(i915);
+>   	}
+>   
+>   	igt_subtest_with_dynamic("rc6-idle") {
+> @@ -572,19 +575,25 @@ igt_main
+>   		igt_require_gem(i915);
+>   		gem_quiescent_gpu(i915);
+>   
+> -		for_each_ctx_engine(i915, ctx, e) {
+> -			if (e->instance == 0) {
+> -				igt_dynamic_f("%s", e->name)
+> -					rc6_idle(i915, ctx->id, e->flags);
+> +		i915_for_each_gt(i915, dir, gt) {
+> +			ctx = intel_ctx_create_for_gt(i915, gt);
+> +			for_each_ctx_engine(i915, ctx, e) {
+> +				if (e->instance == 0) {
+> +					igt_dynamic_f("gt%u-%s", gt, e->name)
+> +						rc6_idle(i915, ctx->id, e->flags, gt);
+> +				}
+> +			intel_ctx_destroy(i915, ctx);
+>   			}
+>   		}
+>   	}
+>   
+> -	igt_subtest("rc6-fence") {
+> +	igt_subtest_with_dynamic("rc6-fence") {
+>   		igt_require_gem(i915);
+>   		gem_quiescent_gpu(i915);
+>   
+> -		rc6_fence(i915, ctx);
+> +		i915_for_each_gt(i915, dir, gt)
+> +			igt_dynamic_f("gt%u", gt)
+> +				rc6_fence(i915, gt);
+>   	}
+>   
+>   	igt_subtest_group {
