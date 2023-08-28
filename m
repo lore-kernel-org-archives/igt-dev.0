@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============6195469381849660097=="
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2E75910E33D
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Aug 2023 18:54:03 +0000 (UTC)
+From: "Chang, Bruce" <yu.bruce.chang@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 28 Aug 2023 18:53:55 +0000
+Message-Id: <20230828185355.19619-1-yu.bruce.chang@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
-Date: Mon, 28 Aug 2023 18:24:50 -0000
-Message-ID: <169324709006.20017.52196988467587337@emeril.freedesktop.org>
-References: <20230827201757.49425-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20230827201757.49425-1-mohammed.thasleem@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_kms_leas?=
- =?utf-8?q?e_=28rev3=29?=
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/xe add invalid va access tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,220 +17,237 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Brian Welty <brian.welty@intel.com>, Oak Zeng <oak.zeng@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============6195469381849660097==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+add the following invalid va access test cases:
 
-== Series Details ==
+	gpu fault	scrach page
+1) 	no		no
+2) 	no		yes
+3) 	yes		no
+4) 	yes		yes
 
-Series: kms lease (rev3)
-URL   : https://patchwork.freedesktop.org/series/122944/
-State : success
+Signed-off-by: Bruce Chang <yu.bruce.chang@intel.com>
+Cc: Oak Zeng <oak.zeng@intel.com>
+Cc: Brian Welty <brian.welty@intel.com>
+Cc: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+---
+ lib/xe/xe_ioctl.c             |  15 +++-
+ lib/xe/xe_ioctl.h             |   3 +
+ tests/meson.build             |   1 +
+ tests/xe/xe_exec_invalid_va.c | 136 ++++++++++++++++++++++++++++++++++
+ 4 files changed, 152 insertions(+), 3 deletions(-)
+ create mode 100644 tests/xe/xe_exec_invalid_va.c
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7454_BAT -> XEIGTPW_9671_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (2 -> 4)
-------------------------------
-
-  Additional (2): bat-pvc-2 bat-dg2-oem2 
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_9671_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
-    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 similar issue
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7454/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
-
-  * igt@kms_force_connector_basic@prune-stale-modes:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][3] ([i915#5274])
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
-    - bat-dg2-oem2:       NOTRUN -> [FAIL][4] ([Intel XE#400]) +2 similar issues
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
-
-  * igt@kms_psr@primary_page_flip:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][5] ([i915#1072]) +2 similar issues
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html
-
-  * igt@xe_compute@compute-square:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][6] ([Intel XE#252])
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-dg2-oem2/igt@xe_compute@compute-square.html
-
-  * igt@xe_exec_fault_mode@many-basic:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][7] ([Intel XE#288]) +17 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html
-
-  * igt@xe_huc_copy@huc_copy:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][8] ([Intel XE#255])
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html
-
-  * igt@xe_live_ktest@bo:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][9] ([Intel XE#483]) +2 similar issues
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-dg2-oem2/igt@xe_live_ktest@bo.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#252]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/252
-  [Intel XE#255]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/255
-  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
-  [Intel XE#389]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/389
-  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#482]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/482
-  [Intel XE#483]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/483
-  [Intel XE#526]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/526
-  [Intel XE#531]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/531
-  [Intel XE#532]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/532
-  [Intel XE#533]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/533
-  [Intel XE#535]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/535
-  [Intel XE#536]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/536
-  [Intel XE#537]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/537
-  [Intel XE#538]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/538
-  [Intel XE#539]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/539
-  [Intel XE#540]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/540
-  [Intel XE#541]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/541
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
-
-
-Build changes
--------------
-
-  * IGT: IGT_7454 -> IGTPW_9671
-
-  IGTPW_9671: 9671
-  IGT_7454: 7454
-  xe-340-c77796cf84361b4716839141f2e48de2bf7f4bd5: c77796cf84361b4716839141f2e48de2bf7f4bd5
-
-
-
---===============6195469381849660097==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>kms lease (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122944/">https://patchwork.freedesktop.org/series/122944/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7454_BAT -&gt; XEIGTPW_9671_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (2 -&gt; 4)</h2>
-<p>Additional (2): bat-pvc-2 bat-dg2-oem2 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_9671_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7454/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@prune-stale-modes:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5274">i915#5274</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@primary_page_flip:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_compute@compute-square:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-dg2-oem2/igt@xe_compute@compute-square.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/252">Intel XE#252</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_fault_mode@many-basic:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +17 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_huc_copy@huc_copy:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@bo:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9671/bat-dg2-oem2/igt@xe_live_ktest@bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/483">Intel XE#483</a>) +2 similar issues</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7454 -&gt; IGTPW_9671</li>
-</ul>
-<p>IGTPW_9671: 9671<br />
-  IGT_7454: 7454<br />
-  xe-340-c77796cf84361b4716839141f2e48de2bf7f4bd5: c77796cf84361b4716839141f2e48de2bf7f4bd5</p>
-
-</body>
-</html>
-
---===============6195469381849660097==--
+diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+index 730dcfd16..022f0cf04 100644
+--- a/lib/xe/xe_ioctl.c
++++ b/lib/xe/xe_ioctl.c
+@@ -415,9 +415,9 @@ void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr)
+ 	syncobj_destroy(fd, sync.handle);
+ }
+ 
+-int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
++int64_t _xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+ 		       struct drm_xe_engine_class_instance *eci,
+-		       int64_t timeout)
++		       int64_t timeout, bool timeout_assert)
+ {
+ 	struct drm_xe_wait_user_fence wait = {
+ 		.addr = to_user_pointer(addr),
+@@ -430,11 +430,20 @@ int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+ 		.instances = eci ? to_user_pointer(eci) : 0,
+ 	};
+ 
+-	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait), 0);
++	if (igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait))
++		igt_assert (!timeout_assert && errno == ETIME);
+ 
+ 	return wait.timeout;
+ }
+ 
++
++int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
++		       struct drm_xe_engine_class_instance *eci,
++		       int64_t timeout)
++{
++	return _xe_wait_ufence(fd, addr, value, eci, timeout, true);
++}
++
+ /**
+  * xe_wait_ufence_abstime:
+  * @fd: xe device fd
+diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+index 6c281b3bf..4bf7410a4 100644
+--- a/lib/xe/xe_ioctl.h
++++ b/lib/xe/xe_ioctl.h
+@@ -82,6 +82,9 @@ void xe_exec(int fd, struct drm_xe_exec *exec);
+ void xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
+ 		  struct drm_xe_sync *sync, uint32_t num_syncs);
+ void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr);
++int64_t _xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
++		       struct drm_xe_engine_class_instance *eci,
++		       int64_t timeout, bool timeout_assert);
+ int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+ 		       struct drm_xe_engine_class_instance *eci,
+ 		       int64_t timeout);
+diff --git a/tests/meson.build b/tests/meson.build
+index 4d325bed1..8861b6c5b 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -276,6 +276,7 @@ xe_progs = [
+ 	'xe_exec_reset',
+ 	'xe_exec_store',
+ 	'xe_exec_threads',
++	'xe_exec_invalid_va',
+ 	'xe_exercise_blt',
+ 	'xe_gpgpu_fill',
+ 	'xe_guc_pc',
+diff --git a/tests/xe/xe_exec_invalid_va.c b/tests/xe/xe_exec_invalid_va.c
+new file mode 100644
+index 000000000..bd9338bd9
+--- /dev/null
++++ b/tests/xe/xe_exec_invalid_va.c
+@@ -0,0 +1,136 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2023 Intel Corporation
++ */
++
++/**
++ * TEST: invalid va tests
++ * Category: Hardware building block
++ * Sub-category: execbuf
++ * Functionality: fault mode
++ * Test category: functionality test
++ * GPU requirements: GPU needs support for DRM_XE_VM_CREATE_FAULT_MODE
++ */
++
++#include <fcntl.h>
++
++#include "igt.h"
++#include "lib/igt_syncobj.h"
++#include "lib/intel_reg.h"
++#include "xe_drm.h"
++
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++#include <string.h>
++
++static void insert_atomic_inc(uint32_t *bb, uint64_t va)
++{
++	*bb++ = MI_STORE_DWORD_IMM_GEN4;
++	*bb++ = MI_ATOMIC | MI_ATOMIC_INC;
++	*bb++ = lower_32_bits(va);
++	*bb++ = upper_32_bits(va);
++	*bb++ = MI_BATCH_BUFFER_END;
++}
++
++/**
++ * SUBTEST: invalid-va
++ * Description: Check driver handling of invalid va access
++ * Run type: FULL
++ *
++ * SUBTEST: invalid-va-scratch
++ * Description: Check driver handling of invalid va access with scratch page
++ * Run type: FULL
++ *
++ * SUBTEST: invalid-va-fault
++ * Description: Check driver handling of invalid va access with fault enabled
++ * Run type: FULL
++ *
++ * SUBTEST: invalid-va-fault-scratch
++ * Description: Check driver handling of invalid va access with fault + scratch page
++ * Run type: FULL
++ *
++ * arg[1]: for vm create flags
++ */
++static void test_exec(int fd, uint32_t flags)
++{
++	const uint64_t inv_addr = 0x20000000;
++	const uint64_t addr = 0x1a0000;
++#define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
++#define ONE_SEC			MS_TO_NS(1000)
++	struct _data {
++		uint32_t batch[16];
++		uint64_t sync;
++		uint64_t data;
++	} *data;
++	struct drm_xe_sync sync = {
++		.flags = DRM_XE_SYNC_USER_FENCE | DRM_XE_SYNC_SIGNAL,
++		.timeline_value = USER_FENCE_VALUE,
++		.addr = addr + offsetof(struct _data, sync),
++	};
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.address = addr,
++		.num_syncs = 1,
++		.syncs = to_user_pointer(&sync),
++	};
++	uint32_t vm;
++	uint32_t bo;
++	size_t bo_size;
++	struct drm_xe_engine_class_instance *eci;
++
++	eci = xe_hw_engine(fd, 0);
++	vm = xe_vm_create(fd, flags, 0);
++	bo_size = ALIGN(sizeof(*data), xe_get_default_alignment(fd));
++	bo = xe_bo_create_flags(fd, vm, bo_size,
++				all_memory_regions(fd) |
++				visible_vram_if_possible(fd, 0));
++	data = xe_bo_map(fd, bo, bo_size);
++
++	insert_atomic_inc(data->batch, inv_addr + offsetof(struct _data, data));
++	if(flags & DRM_XE_VM_CREATE_FAULT_MODE)
++		xe_vm_bind(fd, vm, bo, 0, addr, bo_size, 0, 0);
++	else
++		xe_vm_bind_sync(fd, vm, bo, 0, addr, bo_size);
++	exec.exec_queue_id = xe_exec_queue_create(fd, vm, eci, 0);
++	xe_exec(fd, &exec);
++        _xe_wait_ufence(fd, &data->sync, USER_FENCE_VALUE, NULL, ONE_SEC, false);
++
++	if(flags & DRM_XE_VM_CREATE_FAULT_MODE)
++		xe_vm_unbind(fd, vm, 0, addr, bo_size, 0, 0);
++	else
++		xe_vm_unbind_sync(fd, vm, 0, addr, bo_size);
++	xe_exec_queue_destroy(fd, exec.exec_queue_id);
++	munmap(data, bo_size);
++	gem_close(fd, bo);
++	xe_vm_destroy(fd, vm);
++}
++
++igt_main
++{
++	const struct section {
++		const char *name;
++		unsigned int flags;
++	} sections[] = {
++		{ "invalid-va", 0 },
++		{ "invalid-va-scratch", DRM_XE_VM_CREATE_SCRATCH_PAGE },
++		{ "invalid-va-fault", DRM_XE_VM_CREATE_FAULT_MODE },
++		{ "invalid-va-fault-scratch", DRM_XE_VM_CREATE_FAULT_MODE |
++					      DRM_XE_VM_CREATE_SCRATCH_PAGE },
++		{ NULL },
++	};
++	int fd;
++
++	igt_fixture {
++		fd = drm_open_driver(DRIVER_XE);
++		igt_require(xe_supports_faults(fd));
++	}
++
++	for (const struct section *s = sections; s->name; s++) {
++		igt_subtest_f("%s", s->name)
++			test_exec(fd, s->flags);
++	}
++
++	igt_fixture
++		drm_close_driver(fd);
++}
++
+-- 
+2.25.1
