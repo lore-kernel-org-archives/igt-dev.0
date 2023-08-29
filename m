@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5A27810E153
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Aug 2023 23:05:24 +0000 (UTC)
-From: "Chang, Bruce" <yu.bruce.chang@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 29 Aug 2023 23:05:18 +0000
-Message-Id: <20230829230518.4142-1-yu.bruce.chang@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/xe add invalid va access tests
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Chang, Bruce" <yu.bruce.chang@intel.com>
+Date: Tue, 29 Aug 2023 23:32:41 -0000
+Message-ID: <169335196191.16746.3842611641086177915@emeril.freedesktop.org>
+References: <20230829230518.4142-1-yu.bruce.chang@intel.com>
+In-Reply-To: <20230829230518.4142-1-yu.bruce.chang@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/xe_add_invalid_va_access_tests_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,263 +17,133 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Brian Welty <brian.welty@intel.com>, Oak Zeng <oak.zeng@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-add the following invalid va access test cases:
+== Series Details ==
 
-	gpu fault	scrach page
-1) 	no		no
-2) 	no		yes
-3) 	yes		no
-4) 	yes		yes
+Series: tests/xe add invalid va access tests (rev2)
+URL   : https://patchwork.freedesktop.org/series/122983/
+State : warning
 
-v2: async vm/bind, and re-bind valid addres
+== Summary ==
 
-Signed-off-by: Bruce Chang <yu.bruce.chang@intel.com>
-Cc: Oak Zeng <oak.zeng@intel.com>
-Cc: Brian Welty <brian.welty@intel.com>
-Cc: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
----
- lib/xe/xe_ioctl.c             |  15 +++-
- lib/xe/xe_ioctl.h             |   3 +
- tests/meson.build             |   1 +
- tests/xe/xe_exec_invalid_va.c | 160 ++++++++++++++++++++++++++++++++++
- 4 files changed, 176 insertions(+), 3 deletions(-)
- create mode 100644 tests/xe/xe_exec_invalid_va.c
+Pipeline status: FAILED.
 
-diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index 730dcfd16..022f0cf04 100644
---- a/lib/xe/xe_ioctl.c
-+++ b/lib/xe/xe_ioctl.c
-@@ -415,9 +415,9 @@ void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr)
- 	syncobj_destroy(fd, sync.handle);
- }
- 
--int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
-+int64_t _xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
- 		       struct drm_xe_engine_class_instance *eci,
--		       int64_t timeout)
-+		       int64_t timeout, bool timeout_assert)
- {
- 	struct drm_xe_wait_user_fence wait = {
- 		.addr = to_user_pointer(addr),
-@@ -430,11 +430,20 @@ int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
- 		.instances = eci ? to_user_pointer(eci) : 0,
- 	};
- 
--	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait), 0);
-+	if (igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait))
-+		igt_assert (!timeout_assert && errno == ETIME);
- 
- 	return wait.timeout;
- }
- 
-+
-+int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
-+		       struct drm_xe_engine_class_instance *eci,
-+		       int64_t timeout)
-+{
-+	return _xe_wait_ufence(fd, addr, value, eci, timeout, true);
-+}
-+
- /**
-  * xe_wait_ufence_abstime:
-  * @fd: xe device fd
-diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index 6c281b3bf..4bf7410a4 100644
---- a/lib/xe/xe_ioctl.h
-+++ b/lib/xe/xe_ioctl.h
-@@ -82,6 +82,9 @@ void xe_exec(int fd, struct drm_xe_exec *exec);
- void xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
- 		  struct drm_xe_sync *sync, uint32_t num_syncs);
- void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr);
-+int64_t _xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
-+		       struct drm_xe_engine_class_instance *eci,
-+		       int64_t timeout, bool timeout_assert);
- int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
- 		       struct drm_xe_engine_class_instance *eci,
- 		       int64_t timeout);
-diff --git a/tests/meson.build b/tests/meson.build
-index 4d325bed1..8861b6c5b 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -276,6 +276,7 @@ xe_progs = [
- 	'xe_exec_reset',
- 	'xe_exec_store',
- 	'xe_exec_threads',
-+	'xe_exec_invalid_va',
- 	'xe_exercise_blt',
- 	'xe_gpgpu_fill',
- 	'xe_guc_pc',
-diff --git a/tests/xe/xe_exec_invalid_va.c b/tests/xe/xe_exec_invalid_va.c
-new file mode 100644
-index 000000000..974672e75
---- /dev/null
-+++ b/tests/xe/xe_exec_invalid_va.c
-@@ -0,0 +1,160 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ */
-+
-+/**
-+ * TEST: invalid va tests
-+ * Category: Hardware building block
-+ * Sub-category: execbuf
-+ * Functionality: fault mode
-+ * Test category: functionality test
-+ * GPU requirements: GPU needs support for DRM_XE_VM_CREATE_FAULT_MODE
-+ */
-+
-+#include <fcntl.h>
-+
-+#include "igt.h"
-+#include "lib/igt_syncobj.h"
-+#include "lib/intel_reg.h"
-+#include "xe_drm.h"
-+
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
-+#include <string.h>
-+
-+static void insert_store(uint32_t *bb, uint64_t va, uint64_t data)
-+{
-+	*bb++ = MI_STORE_DWORD_IMM_GEN4;
-+	*bb++ = lower_32_bits(va);
-+	*bb++ = upper_32_bits(va);
-+	*bb++ = data;
-+	*bb++ = MI_BATCH_BUFFER_END;
-+}
-+
-+/**
-+ * SUBTEST: invalid-va
-+ * Description: Check driver handling of invalid va access
-+ * Run type: FULL
-+ *
-+ * SUBTEST: invalid-va-scratch
-+ * Description: Check driver handling of invalid va access with scratch page
-+ * Run type: FULL
-+ *
-+ * SUBTEST: invalid-va-fault
-+ * Description: Check driver handling of invalid va access with fault enabled
-+ * Run type: FULL
-+ *
-+ * SUBTEST: invalid-va-fault-scratch
-+ * Description: Check driver handling of invalid va access with fault + scratch page
-+ * Run type: FULL
-+ *
-+ * arg[1]: for vm create flags
-+ */
-+static void test_exec(int fd, uint32_t flags)
-+{
-+	const uint64_t inv_addr = 0x20000000;
-+	const uint64_t addr = 0x1a0000;
-+#define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
-+#define ONE_SEC			MS_TO_NS(1000)
-+#define	STORE_DATA		0xDEADBEAF
-+	struct _data {
-+		uint32_t batch[16];
-+		uint64_t vm_sync;
-+		uint64_t sync;
-+		uint64_t data;
-+	} *data;
-+	struct drm_xe_sync sync = {
-+		.flags = DRM_XE_SYNC_USER_FENCE | DRM_XE_SYNC_SIGNAL,
-+		.timeline_value = USER_FENCE_VALUE,
-+	};
-+	struct drm_xe_exec exec = {
-+		.num_batch_buffer = 1,
-+		.address = addr,
-+		.num_syncs = 1,
-+		.syncs = to_user_pointer(&sync),
-+	};
-+	uint32_t vm;
-+	uint32_t bo;
-+	size_t bo_size;
-+	struct drm_xe_engine_class_instance *eci;
-+
-+	eci = xe_hw_engine(fd, 0);
-+	vm = xe_vm_create(fd, flags | DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
-+	bo_size = ALIGN(sizeof(*data), xe_get_default_alignment(fd));
-+	bo = xe_bo_create_flags(fd, vm, bo_size,
-+				all_memory_regions(fd) |
-+				visible_vram_if_possible(fd, 0));
-+	data = xe_bo_map(fd, bo, bo_size);
-+	memset(data, 0, bo_size);
-+
-+	insert_store(data->batch, inv_addr + offsetof(struct _data, data), STORE_DATA);
-+	exec.exec_queue_id = xe_exec_queue_create(fd, vm, eci, 0);
-+	sync.addr = to_user_pointer(&data->vm_sync);
-+	xe_vm_bind_async_flags(fd, vm, 0, bo, 0,
-+				addr, bo_size, &sync, 1,
-+				XE_VM_BIND_FLAG_IMMEDIATE);
-+	xe_wait_ufence(fd, &data->vm_sync, USER_FENCE_VALUE, NULL, ONE_SEC);
-+	data->vm_sync = 0;
-+	sync.addr = addr + offsetof(struct _data, sync);
-+	xe_exec(fd, &exec);
-+        _xe_wait_ufence(fd, &data->sync, USER_FENCE_VALUE, NULL, ONE_SEC, false);
-+	data->sync = 0;
-+
-+	if ((flags & DRM_XE_VM_CREATE_FAULT_MODE) &&
-+	    (flags & DRM_XE_VM_CREATE_SCRATCH_PAGE)) {
-+		/* bind inv_addr after scratch page was created */
-+		sync.addr = to_user_pointer(&data->vm_sync);
-+		xe_vm_bind_async_flags(fd, vm, 0, bo, 0,
-+				inv_addr, bo_size, &sync, 1,
-+				XE_VM_BIND_FLAG_IMMEDIATE);
-+		xe_wait_ufence(fd, &data->vm_sync, USER_FENCE_VALUE, NULL, ONE_SEC);
-+		data->vm_sync = 0;
-+		data->data = 0;
-+		sync.addr = addr + offsetof(struct _data, sync);
-+		xe_exec(fd, &exec);
-+		xe_wait_ufence(fd, &data->sync, USER_FENCE_VALUE, NULL, ONE_SEC);
-+		igt_assert_eq(data->data, STORE_DATA);
-+	}
-+
-+	sync.addr = to_user_pointer(&data->vm_sync);
-+	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, &sync, 1);
-+	xe_wait_ufence(fd, &data->vm_sync, USER_FENCE_VALUE, NULL, ONE_SEC);
-+	data->vm_sync = 0;
-+	xe_vm_unbind_async(fd, vm, 0, 0, inv_addr, bo_size, &sync, 1);
-+	xe_wait_ufence(fd, &data->vm_sync, USER_FENCE_VALUE, NULL, ONE_SEC);
-+	xe_exec_queue_destroy(fd, exec.exec_queue_id);
-+	munmap(data, bo_size);
-+	gem_close(fd, bo);
-+	xe_vm_destroy(fd, vm);
-+}
-+
-+igt_main
-+{
-+	const struct section {
-+		const char *name;
-+		unsigned int flags;
-+	} sections[] = {
-+		{ "invalid-va", 0 },
-+		{ "invalid-va-scratch", DRM_XE_VM_CREATE_SCRATCH_PAGE },
-+		{ "invalid-va-fault", DRM_XE_VM_CREATE_FAULT_MODE },
-+		{ "invalid-va-fault-scratch", DRM_XE_VM_CREATE_FAULT_MODE |
-+					      DRM_XE_VM_CREATE_SCRATCH_PAGE },
-+		{ NULL },
-+	};
-+	int fd;
-+
-+	igt_fixture {
-+		fd = drm_open_driver(DRIVER_XE);
-+		igt_require(xe_supports_faults(fd));
-+	}
-+
-+	for (const struct section *s = sections; s->name; s++) {
-+		igt_subtest_f("%s", s->name)
-+			test_exec(fd, s->flags);
-+	}
-+
-+	igt_fixture
-+		drm_close_driver(fd);
-+}
-+
--- 
-2.25.1
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/972912 for the overview.
+
+build-containers:build-debian has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48196718):
+  time="2023-08-29T23:29:57Z" level=fatal msg="Invalid status code returned when fetching blob 404 (Not Found)" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:d6b7393fb4f375905c31c483d81ce2a2905f88aba8cb198874da2b54035bc41d
+  Copying config sha256:de08540e8ff0e470ff7956df4bed403725a5f45c186e9bf495da5344ff8fbe84
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-08-29T23:30:01Z" level=warning msg="signal: killed"
+  time="2023-08-29T23:30:01Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1693351802:step_script
+  section_start:1693351802:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1693351805:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48196720):
+  time="2023-08-29T23:29:57Z" level=fatal msg="Invalid status code returned when fetching blob 404 (Not Found)" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:d6b7393fb4f375905c31c483d81ce2a2905f88aba8cb198874da2b54035bc41d
+  Copying config sha256:de08540e8ff0e470ff7956df4bed403725a5f45c186e9bf495da5344ff8fbe84
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-08-29T23:30:01Z" level=warning msg="signal: killed"
+  time="2023-08-29T23:30:01Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1693351802:step_script
+  section_start:1693351802:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1693351805:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48196719):
+  time="2023-08-29T23:29:54Z" level=fatal msg="Invalid status code returned when fetching blob 404 (Not Found)" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:d6b7393fb4f375905c31c483d81ce2a2905f88aba8cb198874da2b54035bc41d
+  Copying config sha256:de08540e8ff0e470ff7956df4bed403725a5f45c186e9bf495da5344ff8fbe84
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-08-29T23:29:59Z" level=warning msg="signal: killed"
+  time="2023-08-29T23:29:59Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1693351801:step_script
+  section_start:1693351801:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1693351802:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48196721):
+  time="2023-08-29T23:29:57Z" level=fatal msg="Invalid status code returned when fetching blob 404 (Not Found)" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:d6b7393fb4f375905c31c483d81ce2a2905f88aba8cb198874da2b54035bc41d
+  Copying config sha256:de08540e8ff0e470ff7956df4bed403725a5f45c186e9bf495da5344ff8fbe84
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-08-29T23:30:01Z" level=warning msg="signal: killed"
+  time="2023-08-29T23:30:01Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1693351802:step_script
+  section_start:1693351802:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1693351805:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48196722):
+  time="2023-08-29T23:29:52Z" level=fatal msg="Invalid status code returned when fetching blob 404 (Not Found)" 
+  Building!
+  STEP 1: FROM fedora:31
+  Getting image source signatures
+  Copying blob sha256:854946d575a439a894349addd141568875d7c1e673d3286b08250f3dde002e6a
+  Copying config sha256:7e94ed77b448a8d2ff08b92d3ca743e4e862c744892d6886c73487581eb5863a
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils
+  error running container: error creating container for [/bin/sh -c dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils]: time="2023-08-29T23:29:58Z" level=warning msg="signal: killed"
+  time="2023-08-29T23:29:58Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils": error while running runtime: exit status 1
+  section_end:1693351798:step_script
+  section_start:1693351798:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1693351799:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/972912
