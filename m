@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============1175665983235852464=="
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 29 Aug 2023 07:11:04 -0700
+Message-Id: <20230829141107.1505705-2-lucas.demarchi@intel.com>
+In-Reply-To: <20230829141107.1505705-1-lucas.demarchi@intel.com>
+References: <20230829141107.1505705-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
-Date: Tue, 29 Aug 2023 12:51:25 -0000
-Message-ID: <169331348553.16747.14963219401309464605@emeril.freedesktop.org>
-References: <20230829161759.9315-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20230829161759.9315-1-mohammed.thasleem@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fatomic=5Ftransition=3A_Reduce_the_execution_time_on_modes?=
- =?utf-8?q?t-transition?=
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH igt 1/4] lib: Add xe_pciids.h
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,260 +16,270 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>, intel-xe@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1175665983235852464==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+With the introduction of Lunar Lake, igt won't be able to just re-use
+i915_pciids.h for both drivers anymore since the support for LNL is only
+coming with the xe module. Copy xe_pciids.h from the drm-xe-next branch
+(up to commit b9c9020fc816 ("drm/xe/pvc: Use fast copy engines as
+migrate engine on PVC") and start including it where needed. This brings
+all the LNL PCI IDs.
 
-== Series Details ==
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+---
+ docs/reference/igt-gpu-tools/meson.build |   1 +
+ lib/intel_device_info.c                  |   1 +
+ lib/xe_pciids.h                          | 215 +++++++++++++++++++++++
+ 3 files changed, 217 insertions(+)
+ create mode 100644 lib/xe_pciids.h
 
-Series: tests/kms_atomic_transition: Reduce the execution time on modest-transition
-URL   : https://patchwork.freedesktop.org/series/123002/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_7458 -> IGTPW_9678
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9678/index.html
-
-Participating hosts (40 -> 39)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_9678 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_busy@busy@all-engines:
-    - bat-mtlp-8:         [PASS][1] -> [DMESG-FAIL][2] ([i915#9121])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7458/bat-mtlp-8/igt@gem_busy@busy@all-engines.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9678/bat-mtlp-8/igt@gem_busy@busy@all-engines.html
-
-  * igt@i915_pm_backlight@basic-brightness@edp-1:
-    - bat-rplp-1:         NOTRUN -> [ABORT][3] ([i915#7077] / [i915#8668])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9678/bat-rplp-1/igt@i915_pm_backlight@basic-brightness@edp-1.html
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-kbl-soraka:      [PASS][4] -> [DMESG-FAIL][5] ([i915#5334] / [i915#7872])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7458/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9678/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-9:          [PASS][6] -> [DMESG-FAIL][7] ([i915#7913])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7458/bat-dg2-9/igt@i915_selftest@live@workarounds.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9678/bat-dg2-9/igt@i915_selftest@live@workarounds.html
-
-  * igt@i915_suspend@basic-s3-without-i915:
-    - bat-mtlp-6:         NOTRUN -> [SKIP][8] ([i915#6645])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9678/bat-mtlp-6/igt@i915_suspend@basic-s3-without-i915.html
-
-  * igt@kms_pipe_crc_basic@suspend-read-crc:
-    - bat-mtlp-6:         NOTRUN -> [SKIP][9] ([i915#1845] / [i915#4078])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9678/bat-mtlp-6/igt@kms_pipe_crc_basic@suspend-read-crc.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - bat-rplp-1:         NOTRUN -> [SKIP][10] ([i915#3555])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9678/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s0@smem:
-    - bat-dg2-9:          [INCOMPLETE][11] ([i915#6311]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7458/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9678/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html
-
-  * igt@i915_selftest@live@requests:
-    - bat-mtlp-6:         [ABORT][13] ([i915#7982] / [i915#8865]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7458/bat-mtlp-6/igt@i915_selftest@live@requests.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9678/bat-mtlp-6/igt@i915_selftest@live@requests.html
-
-  
-#### Warnings ####
-
-  * igt@kms_psr@primary_mmap_gtt:
-    - bat-rplp-1:         [ABORT][15] ([i915#8469]) -> [SKIP][16] ([i915#1072])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7458/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9678/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#4078]: https://gitlab.freedesktop.org/drm/intel/issues/4078
-  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
-  [i915#6311]: https://gitlab.freedesktop.org/drm/intel/issues/6311
-  [i915#6645]: https://gitlab.freedesktop.org/drm/intel/issues/6645
-  [i915#7077]: https://gitlab.freedesktop.org/drm/intel/issues/7077
-  [i915#7359]: https://gitlab.freedesktop.org/drm/intel/issues/7359
-  [i915#7872]: https://gitlab.freedesktop.org/drm/intel/issues/7872
-  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
-  [i915#7953]: https://gitlab.freedesktop.org/drm/intel/issues/7953
-  [i915#7982]: https://gitlab.freedesktop.org/drm/intel/issues/7982
-  [i915#8469]: https://gitlab.freedesktop.org/drm/intel/issues/8469
-  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
-  [i915#8865]: https://gitlab.freedesktop.org/drm/intel/issues/8865
-  [i915#9121]: https://gitlab.freedesktop.org/drm/intel/issues/9121
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7458 -> IGTPW_9678
-
-  CI-20190529: 20190529
-  CI_DRM_13573: cb94b8169f58bc821f95f5fd8f333074576f71ac @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_9678: 9678
-  IGT_7458: 7458
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9678/index.html
-
---===============1175665983235852464==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_atomic_transition: Reduce the execution time on modest-transition</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123002/">https://patchwork.freedesktop.org/series/123002/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9678/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9678/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_7458 -&gt; IGTPW_9678</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9678/index.html</p>
-<h2>Participating hosts (40 -&gt; 39)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_9678 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_busy@busy@all-engines:</p>
-<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7458/bat-mtlp-8/igt@gem_busy@busy@all-engines.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9678/bat-mtlp-8/igt@gem_busy@busy@all-engines.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9121">i915#9121</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_backlight@basic-brightness@edp-1:</p>
-<ul>
-<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9678/bat-rplp-1/igt@i915_pm_backlight@basic-brightness@edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7077">i915#7077</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7458/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9678/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7872">i915#7872</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7458/bat-dg2-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9678/bat-dg2-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s3-without-i915:</p>
-<ul>
-<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9678/bat-mtlp-6/igt@i915_suspend@basic-s3-without-i915.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6645">i915#6645</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@suspend-read-crc:</p>
-<ul>
-<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9678/bat-mtlp-6/igt@kms_pipe_crc_basic@suspend-read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4078">i915#4078</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9678/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s0@smem:</p>
-<ul>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7458/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6311">i915#6311</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9678/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7458/bat-mtlp-6/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7982">i915#7982</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8865">i915#8865</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9678/bat-mtlp-6/igt@i915_selftest@live@requests.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_psr@primary_mmap_gtt:<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7458/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8469">i915#8469</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9678/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7458 -&gt; IGTPW_9678</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13573: cb94b8169f58bc821f95f5fd8f333074576f71ac @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_9678: 9678<br />
-  IGT_7458: 7458</p>
-
-</body>
-</html>
-
---===============1175665983235852464==--
+diff --git a/docs/reference/igt-gpu-tools/meson.build b/docs/reference/igt-gpu-tools/meson.build
+index 6b832ad27..513385b4b 100644
+--- a/docs/reference/igt-gpu-tools/meson.build
++++ b/docs/reference/igt-gpu-tools/meson.build
+@@ -21,6 +21,7 @@ ignore_headers = [
+ 	'media_fill_gen9.h',
+ 	'gen9_render.h',
+ 	'version.h',
++	'xe_pciids.h',
+ ]
+ 
+ test_groups = [
+diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+index 2c9a45b68..5d53d2906 100644
+--- a/lib/intel_device_info.c
++++ b/lib/intel_device_info.c
+@@ -1,6 +1,7 @@
+ #include "intel_chipset.h"
+ #include "i915_pciids.h"
+ #include "i915_pciids_local.h"
++#include "xe_pciids.h"
+ 
+ #include <strings.h> /* ffs() */
+ 
+diff --git a/lib/xe_pciids.h b/lib/xe_pciids.h
+new file mode 100644
+index 000000000..29f07a00a
+--- /dev/null
++++ b/lib/xe_pciids.h
+@@ -0,0 +1,215 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2022 Intel Corporation
++ */
++
++#ifndef _XE_PCIIDS_H_
++#define _XE_PCIIDS_H_
++
++/*
++ * Lists below can be turned into initializers for a struct pci_device_id
++ * by defining INTEL_VGA_DEVICE:
++ *
++ * #define INTEL_VGA_DEVICE(id, info) { \
++ *	0x8086, id,			\
++ *	~0, ~0,				\
++ *	0x030000, 0xff0000,		\
++ *	(unsigned long) info }
++ *
++ * And then calling like:
++ *
++ * XE_TGL_12_GT1_IDS(INTEL_VGA_DEVICE, ## __VA_ARGS__)
++ *
++ * To turn them into something else, just provide a different macro passed as
++ * first argument.
++ */
++
++/* TGL */
++#define XE_TGL_GT1_IDS(MACRO__, ...)		\
++	MACRO__(0x9A60, ## __VA_ARGS__),	\
++	MACRO__(0x9A68, ## __VA_ARGS__),	\
++	MACRO__(0x9A70, ## __VA_ARGS__)
++
++#define XE_TGL_GT2_IDS(MACRO__, ...)		\
++	MACRO__(0x9A40, ## __VA_ARGS__),	\
++	MACRO__(0x9A49, ## __VA_ARGS__),	\
++	MACRO__(0x9A59, ## __VA_ARGS__),	\
++	MACRO__(0x9A78, ## __VA_ARGS__),	\
++	MACRO__(0x9AC0, ## __VA_ARGS__),	\
++	MACRO__(0x9AC9, ## __VA_ARGS__),	\
++	MACRO__(0x9AD9, ## __VA_ARGS__),	\
++	MACRO__(0x9AF8, ## __VA_ARGS__)
++
++#define XE_TGL_IDS(MACRO__, ...)		\
++	XE_TGL_GT1_IDS(MACRO__, ## __VA_ARGS__),\
++	XE_TGL_GT2_IDS(MACRO__, ## __VA_ARGS__)
++
++/* RKL */
++#define XE_RKL_IDS(MACRO__, ...)		\
++	MACRO__(0x4C80, ## __VA_ARGS__),	\
++	MACRO__(0x4C8A, ## __VA_ARGS__),	\
++	MACRO__(0x4C8B, ## __VA_ARGS__),	\
++	MACRO__(0x4C8C, ## __VA_ARGS__),	\
++	MACRO__(0x4C90, ## __VA_ARGS__),	\
++	MACRO__(0x4C9A, ## __VA_ARGS__)
++
++/* DG1 */
++#define XE_DG1_IDS(MACRO__, ...)		\
++	MACRO__(0x4905, ## __VA_ARGS__),	\
++	MACRO__(0x4906, ## __VA_ARGS__),	\
++	MACRO__(0x4907, ## __VA_ARGS__),	\
++	MACRO__(0x4908, ## __VA_ARGS__),	\
++	MACRO__(0x4909, ## __VA_ARGS__)
++
++/* ADL-S */
++#define XE_ADLS_IDS(MACRO__, ...)		\
++	MACRO__(0x4680, ## __VA_ARGS__),	\
++	MACRO__(0x4682, ## __VA_ARGS__),	\
++	MACRO__(0x4688, ## __VA_ARGS__),	\
++	MACRO__(0x468A, ## __VA_ARGS__),	\
++	MACRO__(0x4690, ## __VA_ARGS__),	\
++	MACRO__(0x4692, ## __VA_ARGS__),	\
++	MACRO__(0x4693, ## __VA_ARGS__)
++
++/* ADL-P */
++#define XE_ADLP_IDS(MACRO__, ...)		\
++	MACRO__(0x46A0, ## __VA_ARGS__),	\
++	MACRO__(0x46A1, ## __VA_ARGS__),	\
++	MACRO__(0x46A2, ## __VA_ARGS__),	\
++	MACRO__(0x46A3, ## __VA_ARGS__),	\
++	MACRO__(0x46A6, ## __VA_ARGS__),	\
++	MACRO__(0x46A8, ## __VA_ARGS__),	\
++	MACRO__(0x46AA, ## __VA_ARGS__),	\
++	MACRO__(0x462A, ## __VA_ARGS__),	\
++	MACRO__(0x4626, ## __VA_ARGS__),	\
++	MACRO__(0x4628, ## __VA_ARGS__),	\
++	MACRO__(0x46B0, ## __VA_ARGS__),	\
++	MACRO__(0x46B1, ## __VA_ARGS__),	\
++	MACRO__(0x46B2, ## __VA_ARGS__),	\
++	MACRO__(0x46B3, ## __VA_ARGS__),	\
++	MACRO__(0x46C0, ## __VA_ARGS__),	\
++	MACRO__(0x46C1, ## __VA_ARGS__),	\
++	MACRO__(0x46C2, ## __VA_ARGS__),	\
++	MACRO__(0x46C3, ## __VA_ARGS__)
++
++/* ADL-N */
++#define XE_ADLN_IDS(MACRO__, ...)		\
++	MACRO__(0x46D0, ## __VA_ARGS__),	\
++	MACRO__(0x46D1, ## __VA_ARGS__),	\
++	MACRO__(0x46D2, ## __VA_ARGS__)
++
++/* RPL-S */
++#define XE_RPLS_IDS(MACRO__, ...)		\
++	MACRO__(0xA780, ## __VA_ARGS__),	\
++	MACRO__(0xA781, ## __VA_ARGS__),	\
++	MACRO__(0xA782, ## __VA_ARGS__),	\
++	MACRO__(0xA783, ## __VA_ARGS__),	\
++	MACRO__(0xA788, ## __VA_ARGS__),	\
++	MACRO__(0xA789, ## __VA_ARGS__),	\
++	MACRO__(0xA78A, ## __VA_ARGS__),	\
++	MACRO__(0xA78B, ## __VA_ARGS__)
++
++/* RPL-U */
++#define XE_RPLU_IDS(MACRO__, ...)		\
++	MACRO__(0xA721, ## __VA_ARGS__),	\
++	MACRO__(0xA7A1, ## __VA_ARGS__),	\
++	MACRO__(0xA7A9, ## __VA_ARGS__)
++
++/* RPL-P */
++#define XE_RPLP_IDS(MACRO__, ...)		\
++	MACRO__(0xA720, ## __VA_ARGS__),	\
++	MACRO__(0xA7A0, ## __VA_ARGS__),	\
++	MACRO__(0xA7A8, ## __VA_ARGS__)
++
++/* DG2 */
++#define XE_DG2_G10_IDS(MACRO__, ...)		\
++	MACRO__(0x5690, ## __VA_ARGS__),	\
++	MACRO__(0x5691, ## __VA_ARGS__),	\
++	MACRO__(0x5692, ## __VA_ARGS__),	\
++	MACRO__(0x56A0, ## __VA_ARGS__),	\
++	MACRO__(0x56A1, ## __VA_ARGS__),	\
++	MACRO__(0x56A2, ## __VA_ARGS__)
++
++#define XE_DG2_G11_IDS(MACRO__, ...)		\
++	MACRO__(0x5693, ## __VA_ARGS__),	\
++	MACRO__(0x5694, ## __VA_ARGS__),	\
++	MACRO__(0x5695, ## __VA_ARGS__),	\
++	MACRO__(0x5698, ## __VA_ARGS__),	\
++	MACRO__(0x56A5, ## __VA_ARGS__),	\
++	MACRO__(0x56A6, ## __VA_ARGS__),	\
++	MACRO__(0x56B0, ## __VA_ARGS__),	\
++	MACRO__(0x56B1, ## __VA_ARGS__)
++
++#define XE_DG2_G12_IDS(MACRO__, ...)		\
++	MACRO__(0x5696, ## __VA_ARGS__),	\
++	MACRO__(0x5697, ## __VA_ARGS__),	\
++	MACRO__(0x56A3, ## __VA_ARGS__),	\
++	MACRO__(0x56A4, ## __VA_ARGS__),	\
++	MACRO__(0x56B2, ## __VA_ARGS__),	\
++	MACRO__(0x56B3, ## __VA_ARGS__)
++
++#define XE_DG2_IDS(MACRO__, ...)		\
++	XE_DG2_G10_IDS(MACRO__, ## __VA_ARGS__),\
++	XE_DG2_G11_IDS(MACRO__, ## __VA_ARGS__),\
++	XE_DG2_G12_IDS(MACRO__, ## __VA_ARGS__)
++
++#define XE_ATS_M150_IDS(MACRO__, ...)		\
++	MACRO__(0x56C0, ## __VA_ARGS__)
++
++#define XE_ATS_M75_IDS(MACRO__, ...)		\
++	MACRO__(0x56C1, ## __VA_ARGS__)
++
++#define XE_ATS_M_IDS(MACRO__, ...)		\
++	XE_ATS_M150_IDS(MACRO__, ## __VA_ARGS__),\
++	XE_ATS_M75_IDS(MACRO__, ## __VA_ARGS__)
++
++/* PVC */
++#define XE_PVC_XT_IDS(MACRO__, ...)		\
++	MACRO__(0x0BD5, ## __VA_ARGS__),	\
++	MACRO__(0x0BD6, ## __VA_ARGS__),	\
++	MACRO__(0x0BD7, ## __VA_ARGS__),	\
++	MACRO__(0x0BD8, ## __VA_ARGS__),	\
++	MACRO__(0x0BD9, ## __VA_ARGS__),	\
++	MACRO__(0x0BDA, ## __VA_ARGS__),	\
++	MACRO__(0x0BDB, ## __VA_ARGS__),	\
++	MACRO__(0x0BE0, ## __VA_ARGS__),	\
++	MACRO__(0x0BE1, ## __VA_ARGS__),	\
++	MACRO__(0x0BE5, ## __VA_ARGS__)
++
++#define XE_PVC_IDS(MACRO__, ...)		\
++	XE_PVC_XT_IDS(MACRO__, ## __VA_ARGS__)
++
++/* MTL */
++#define XE_MTL_M_IDS(MACRO__, ...)		\
++	MACRO__(0x7D40, ## __VA_ARGS__),	\
++	MACRO__(0x7D43, ## __VA_ARGS__),	\
++	MACRO__(0x7DC0, ## __VA_ARGS__)
++
++#define XE_MTL_P_IDS(MACRO__, ...)		\
++	MACRO__(0x7D45, ## __VA_ARGS__),	\
++	MACRO__(0x7D47, ## __VA_ARGS__),	\
++	MACRO__(0x7D50, ## __VA_ARGS__),	\
++	MACRO__(0x7D55, ## __VA_ARGS__),	\
++	MACRO__(0x7DC5, ## __VA_ARGS__),	\
++	MACRO__(0x7DD0, ## __VA_ARGS__),	\
++	MACRO__(0x7DD5, ## __VA_ARGS__)
++
++#define XE_MTL_S_IDS(MACRO__, ...)		\
++	MACRO__(0x7D60, ## __VA_ARGS__),	\
++	MACRO__(0x7DE0, ## __VA_ARGS__)
++
++#define XE_ARL_IDS(MACRO__, ...)		\
++	MACRO__(0x7D67, ## __VA_ARGS__)
++
++#define XE_MTL_IDS(MACRO__, ...)		\
++	XE_MTL_M_IDS(MACRO__, ## __VA_ARGS__),	\
++	XE_MTL_P_IDS(MACRO__, ## __VA_ARGS__),	\
++	XE_MTL_S_IDS(MACRO__, ## __VA_ARGS__),	\
++	XE_ARL_IDS(MACRO__, ## __VA_ARGS__)
++
++#define XE_LNL_IDS(MACRO__, ...) \
++	MACRO__(0x6420, ## __VA_ARGS__), \
++	MACRO__(0x64A0, ## __VA_ARGS__), \
++	MACRO__(0x64B0, ## __VA_ARGS__)
++
++#endif
+-- 
+2.40.1
