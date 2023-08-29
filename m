@@ -1,11 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from outbound.mail.protection.outlook.com
- (mail-dm6nam04on20612.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e8b::612])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EE1E810E347
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Aug 2023 14:27:58 +0000 (UTC)
-Message-ID: <8262ca5c-1e1a-4255-8b95-02d0afaa5af2@amd.com>
-Date: Tue, 29 Aug 2023 08:27:45 -0600
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com
+ (mail-dm3nam02on2051.outbound.protection.outlook.com [40.107.95.51])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3C9B410E347
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Aug 2023 14:28:55 +0000 (UTC)
+Message-ID: <462d1cbc-3d7e-4067-9091-6c237160e61d@amd.com>
+Date: Tue, 29 Aug 2023 08:28:50 -0600
 Content-Language: en-US
 To: Aurabindo Pillai <aurabindo.pillai@amd.com>, igt-dev@lists.freedesktop.org
 References: <20230825135053.196364-1-aurabindo.pillai@amd.com>
