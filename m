@@ -1,23 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 58E2910E0B8
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Aug 2023 07:54:38 +0000 (UTC)
-From: "Yedireswarapu, SaiX Nandan" <saix.nandan.yedireswarapu@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Tue, 29 Aug 2023 07:54:32 +0000
-Message-ID: <PH8PR11MB6952868711A5B69ADE4ACA93B3E7A@PH8PR11MB6952.namprd11.prod.outlook.com>
-References: <20230825054659.1320824-1-riana.tauro@intel.com>
- <169295109659.10952.11540105153178647195@emeril.freedesktop.org>
- <20230825134559.6iawulojedbvwq4v@kamilkon-desk.igk.intel.com>
-In-Reply-To: <20230825134559.6iawulojedbvwq4v@kamilkon-desk.igk.intel.com>
-Content-Language: en-US
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: [igt-dev]
- =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_Toggle_G?=
- =?utf-8?q?T_C_States_and_validate_power_=28rev2=29?=
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Dec, Katarzyna" <katarzyna.dec@intel.com>
+Date: Tue, 29 Aug 2023 08:19:55 -0000
+Message-ID: <169329719594.16747.7611816232664901210@emeril.freedesktop.org>
+References: <20230829055835.1750432-1-himal.prasad.ghimiray@intel.com>
+In-Reply-To: <20230829055835.1750432-1-himal.prasad.ghimiray@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_U?=
+ =?utf-8?q?pdate_missing_documentation_fields=2E_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,90 +17,133 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Veesam, RavitejaX" <ravitejax.veesam@intel.com>, "Marikkar,
- SanjuX" <sanjux.marikkar@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGksDQoNCklzc3VlIHdpdGggRmkuQ0kuSUdUICByZS1yZXBvcnRlZCwgaHR0cHM6Ly9wYXRjaHdv
-cmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy8xMjI1NTIvI3JldjINCkZvciBDSS54ZUJBVCBJIGhh
-dmUgYWRkcmVzc2VkIHRoZSBmYWlsdXJlcyBidXQgdW5hYmxlIHRvIHJlc3Bpbg0KDQoNClRoYW5r
-cywNClkgU2FpIE5hbmRhbg0KDQotLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KRnJvbTogS2Ft
-aWwgS29uaWVjem55IDxrYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tPiANClNlbnQ6IEZy
-aWRheSwgQXVndXN0IDI1LCAyMDIzIDc6MTYgUE0NClRvOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNr
-dG9wLm9yZw0KQ2M6IFRhdXJvLCBSaWFuYSA8cmlhbmEudGF1cm9AaW50ZWwuY29tPjsgWWVkaXJl
-c3dhcmFwdSwgU2FpWCBOYW5kYW4gPHNhaXgubmFuZGFuLnllZGlyZXN3YXJhcHVAaW50ZWwuY29t
-PjsgVmVlc2FtLCBSYXZpdGVqYVggPHJhdml0ZWpheC52ZWVzYW1AaW50ZWwuY29tPjsgTWFyaWtr
-YXIsIFNhbmp1WCA8c2FuanV4Lm1hcmlra2FyQGludGVsLmNvbT4NClN1YmplY3Q6IFJlOiBbaWd0
-LWRldl0g4pyXIENJLnhlQkFUOiBmYWlsdXJlIGZvciBUb2dnbGUgR1QgQyBTdGF0ZXMgYW5kIHZh
-bGlkYXRlIHBvd2VyIChyZXYyKQ0KDQpIaSBTYWksDQoNCk9uIDIwMjMtMDgtMjUgYXQgMDg6MTE6
-MzYgLTAwMDAsIFBhdGNod29yayB3cm90ZToNCj4gPT0gU2VyaWVzIERldGFpbHMgPT0NCj4gDQo+
-IFNlcmllczogVG9nZ2xlIEdUIEMgU3RhdGVzIGFuZCB2YWxpZGF0ZSBwb3dlciAocmV2MikNCj4g
-VVJMICAgOiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzEyMjU1Mi8N
-Cj4gU3RhdGUgOiBmYWlsdXJlDQo+IA0KPiA9PSBTdW1tYXJ5ID09DQo+IA0KPiBDSSBCdWcgTG9n
-IC0gY2hhbmdlcyBmcm9tIFhFSUdUXzc0NTJfQkFUIC0+IFhFSUdUUFdfOTY1Nl9CQVQgDQo+ID09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0NCj4gDQo+
-IFN1bW1hcnkNCj4gLS0tLS0tLQ0KPiANCj4gICAqKkZBSUxVUkUqKg0KPiANCj4gICBTZXJpb3Vz
-IHVua25vd24gY2hhbmdlcyBjb21pbmcgd2l0aCBYRUlHVFBXXzk2NTZfQkFUIGFic29sdXRlbHkg
-bmVlZCB0byBiZQ0KPiAgIHZlcmlmaWVkIG1hbnVhbGx5Lg0KPiAgIA0KPiAgIElmIHlvdSB0aGlu
-ayB0aGUgcmVwb3J0ZWQgY2hhbmdlcyBoYXZlIG5vdGhpbmcgdG8gZG8gd2l0aCB0aGUgY2hhbmdl
-cw0KPiAgIGludHJvZHVjZWQgaW4gWEVJR1RQV185NjU2X0JBVCwgcGxlYXNlIG5vdGlmeSB5b3Vy
-IGJ1ZyB0ZWFtIHRvIGFsbG93IHRoZW0NCj4gICB0byBkb2N1bWVudCB0aGlzIG5ldyBmYWlsdXJl
-IG1vZGUsIHdoaWNoIHdpbGwgcmVkdWNlIGZhbHNlIHBvc2l0aXZlcyBpbiBDSS4NCj4gDQo+ICAg
-DQo+IA0KPiBQYXJ0aWNpcGF0aW5nIGhvc3RzICgzIC0+IDMpDQo+IC0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLQ0KPiANCj4gICBObyBjaGFuZ2VzIGluIHBhcnRpY2lwYXRpbmcgaG9zdHMN
-Cj4gDQo+IFBvc3NpYmxlIG5ldyBpc3N1ZXMNCj4gLS0tLS0tLS0tLS0tLS0tLS0tLQ0KPiANCj4g
-ICBIZXJlIGFyZSB0aGUgdW5rbm93biBjaGFuZ2VzIHRoYXQgbWF5IGhhdmUgYmVlbiBpbnRyb2R1
-Y2VkIGluIFhFSUdUUFdfOTY1Nl9CQVQ6DQo+IA0KPiAjIyMgSUdUIGNoYW5nZXMgIyMjDQo+IA0K
-PiAjIyMjIFBvc3NpYmxlIHJlZ3Jlc3Npb25zICMjIyMNCj4gDQo+ICAgKiBpZ3RAa21zX3BpcGVf
-Y3JjX2Jhc2ljQHN1c3BlbmQtcmVhZC1jcmM6DQo+ICAgICAtIGJhdC1hZGxwLTc6ICAgICAgICAg
-W1BBU1NdWzFdIC0+IFtETUVTRy1XQVJOXVsyXSArMSBzaW1pbGFyIGlzc3VlDQo+ICAgIFsxXTog
-aHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvaW50ZWwteGUvSUdUXzc0NTIvYmF0LWFk
-bHAtNy9pZ3RAa21zX3BpcGVfY3JjX2Jhc2ljQHN1c3BlbmQtcmVhZC1jcmMuaHRtbA0KPiAgICBb
-Ml06IA0KPiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9pbnRlbC14ZS9JR1RQV185
-NjU2L2JhdC1hZGxwLTcvaWd0QGttDQo+IHNfcGlwZV9jcmNfYmFzaWNAc3VzcGVuZC1yZWFkLWNy
-Yy5odG1sDQo+IA0KDQpUaGlzIGlzIHVucmVsYXRlZCB0byBjaGVuZ2UgaW4gaWd0X3Bvd2VyIGFu
-ZCBhIHRlc3QsIHBsZWFzZSBzdXByZXNzIGFuZCByZXNwaW4uDQoNClJlZ2FyZHMsDQpLYW1pbA0K
-DQo+ICAgDQo+IEtub3duIGlzc3Vlcw0KPiAtLS0tLS0tLS0tLS0NCj4gDQo+ICAgSGVyZSBhcmUg
-dGhlIGNoYW5nZXMgZm91bmQgaW4gWEVJR1RQV185NjU2X0JBVCB0aGF0IGNvbWUgZnJvbSBrbm93
-biBpc3N1ZXM6DQo+IA0KPiAjIyMgSUdUIGNoYW5nZXMgIyMjDQo+IA0KPiAjIyMjIElzc3VlcyBo
-aXQgIyMjIw0KPiANCj4gICAqIGlndEBrbXNfcGlwZV9jcmNfYmFzaWNAY29tcGFyZS1jcmMtc2Fu
-aXR5Y2hlY2stbnYxMjoNCj4gICAgIC0gYmF0LWFkbHAtNzogICAgICAgICBbUEFTU11bM10gLT4g
-W0ZBSUxdWzRdIChbSW50ZWwgWEUjNDAwXSkgKzEgc2ltaWxhciBpc3N1ZQ0KPiAgICBbM106IGh0
-dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2ludGVsLXhlL0lHVF83NDUyL2JhdC1hZGxw
-LTcvaWd0QGttc19waXBlX2NyY19iYXNpY0Bjb21wYXJlLWNyYy1zYW5pdHljaGVjay1udjEyLmh0
-bWwNCj4gICAgWzRdOiANCj4gaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvaW50ZWwt
-eGUvSUdUUFdfOTY1Ni9iYXQtYWRscC03L2lndEBrbQ0KPiBzX3BpcGVfY3JjX2Jhc2ljQGNvbXBh
-cmUtY3JjLXNhbml0eWNoZWNrLW52MTIuaHRtbA0KPiANCj4gICAqIGlndEB4ZV9leGVjX3RocmVh
-ZHNAdGhyZWFkcy1taXhlZC1mZC1iYXNpYzoNCj4gICAgIC0gYmF0LWRnMi1vZW0yOiAgICAgICBb
-UEFTU11bNV0gLT4gW1RJTUVPVVRdWzZdIChbSW50ZWwgWEUjMjgwXSAvIFtJbnRlbCBYRSM0NzRd
-KQ0KPiAgICBbNV06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2ludGVsLXhlL0lH
-VF83NDUyL2JhdC1kZzItb2VtMi9pZ3RAeGVfZXhlY190aHJlYWRzQHRocmVhZHMtbWl4ZWQtZmQt
-YmFzaWMuaHRtbA0KPiAgICBbNl06IA0KPiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJl
-ZS9pbnRlbC14ZS9JR1RQV185NjU2L2JhdC1kZzItb2VtMi9pZ3RADQo+IHhlX2V4ZWNfdGhyZWFk
-c0B0aHJlYWRzLW1peGVkLWZkLWJhc2ljLmh0bWwNCj4gDQo+ICAgDQo+ICMjIyMgV2FybmluZ3Mg
-IyMjIw0KPiANCj4gICAqIGlndEBrbXNfZm9yY2VfY29ubmVjdG9yX2Jhc2ljQGZvcmNlLWNvbm5l
-Y3Rvci1zdGF0ZToNCj4gICAgIC0gYmF0LWF0c20tMjogICAgICAgICBbU0tJUF1bN10gKFtJbnRl
-bCBYRSMyNzddKSAtPiBbU0tJUF1bOF0gKFtJbnRlbCBYRSMyNzddIC8gW0ludGVsIFhFIzU0MF0p
-ICsyIHNpbWlsYXIgaXNzdWVzDQo+ICAgIFs3XTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3Jn
-L3RyZWUvaW50ZWwteGUvSUdUXzc0NTIvYmF0LWF0c20tMi9pZ3RAa21zX2ZvcmNlX2Nvbm5lY3Rv
-cl9iYXNpY0Bmb3JjZS1jb25uZWN0b3Itc3RhdGUuaHRtbA0KPiAgICBbOF06IA0KPiBodHRwczov
-L2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9pbnRlbC14ZS9JR1RQV185NjU2L2JhdC1hdHNtLTIv
-aWd0QGttDQo+IHNfZm9yY2VfY29ubmVjdG9yX2Jhc2ljQGZvcmNlLWNvbm5lY3Rvci1zdGF0ZS5o
-dG1sDQo+IA0KPiAgIA0KPiAgIHtuYW1lfTogVGhpcyBlbGVtZW50IGlzIHN1cHByZXNzZWQuIFRo
-aXMgbWVhbnMgaXQgaXMgaWdub3JlZCB3aGVuIGNvbXB1dGluZw0KPiAgICAgICAgICAgdGhlIHN0
-YXR1cyBvZiB0aGUgZGlmZmVyZW5jZSAoU1VDQ0VTUywgV0FSTklORywgb3IgRkFJTFVSRSkuDQo+
-IA0KPiAgIFtJbnRlbCBYRSMyNzddOiBodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJt
-L3hlL2tlcm5lbC9pc3N1ZXMvMjc3DQo+ICAgW0ludGVsIFhFIzI4MF06IGh0dHBzOi8vZ2l0bGFi
-LmZyZWVkZXNrdG9wLm9yZy9kcm0veGUva2VybmVsL2lzc3Vlcy8yODANCj4gICBbSW50ZWwgWEUj
-NDAwXTogaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS94ZS9rZXJuZWwvaXNzdWVz
-LzQwMA0KPiAgIFtJbnRlbCBYRSM0NzRdOiBodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcv
-ZHJtL3hlL2tlcm5lbC9pc3N1ZXMvNDc0DQo+ICAgW0ludGVsIFhFIzUyNF06IGh0dHBzOi8vZ2l0
-bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0veGUva2VybmVsL2lzc3Vlcy81MjQNCj4gICBbSW50ZWwg
-WEUjNTQwXTogDQo+IGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0veGUva2VybmVs
-L2lzc3Vlcy81NDANCj4gDQo+IA0KPiBCdWlsZCBjaGFuZ2VzDQo+IC0tLS0tLS0tLS0tLS0NCj4g
-DQo+ICAgKiBJR1Q6IElHVF83NDUyIC0+IElHVFBXXzk2NTYNCj4gDQo+ICAgSUdUUFdfOTY1Njog
-OTY1Ng0KPiAgIElHVF83NDUyOiA3NDUyDQo+ICAgeGUtMzQwLWM3Nzc5NmNmODQzNjFiNDcxNjgz
-OTE0MWYyZTQ4ZGUyYmY3ZjRiZDU6IA0KPiBjNzc3OTZjZjg0MzYxYjQ3MTY4MzkxNDFmMmU0OGRl
-MmJmN2Y0YmQ1DQo+IA0KPiANCg==
+== Series Details ==
+
+Series: Update missing documentation fields. (rev3)
+URL   : https://patchwork.freedesktop.org/series/122996/
+State : warning
+
+== Summary ==
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/972216 for the overview.
+
+build-containers:build-debian has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48136387):
+  time="2023-08-29T08:15:50Z" level=fatal msg="Error determining repository tags: Invalid status code returned when fetching tags list 503 (Service Unavailable)" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:d6b7393fb4f375905c31c483d81ce2a2905f88aba8cb198874da2b54035bc41d
+  Copying config sha256:de08540e8ff0e470ff7956df4bed403725a5f45c186e9bf495da5344ff8fbe84
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-08-29T08:16:05Z" level=warning msg="signal: killed"
+  time="2023-08-29T08:16:05Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1693296965:step_script
+  section_start:1693296965:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1693296966:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48136389):
+  time="2023-08-29T08:15:48Z" level=fatal msg="Error determining repository tags: Invalid status code returned when fetching tags list 503 (Service Unavailable)" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:d6b7393fb4f375905c31c483d81ce2a2905f88aba8cb198874da2b54035bc41d
+  Copying config sha256:de08540e8ff0e470ff7956df4bed403725a5f45c186e9bf495da5344ff8fbe84
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-08-29T08:15:53Z" level=warning msg="signal: killed"
+  time="2023-08-29T08:15:53Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1693296954:step_script
+  section_start:1693296954:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1693296954:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48136388):
+  time="2023-08-29T08:15:46Z" level=fatal msg="Error reading manifest dockerfile-79577005c963125d64d8382418c518d6a242678b in registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-armhf: received unexpected HTTP status: 503 Service Unavailable" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:d6b7393fb4f375905c31c483d81ce2a2905f88aba8cb198874da2b54035bc41d
+  Copying config sha256:de08540e8ff0e470ff7956df4bed403725a5f45c186e9bf495da5344ff8fbe84
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-08-29T08:15:57Z" level=warning msg="signal: killed"
+  time="2023-08-29T08:15:57Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1693296959:step_script
+  section_start:1693296959:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1693296962:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48136390):
+  time="2023-08-29T08:15:53Z" level=fatal msg="Error determining repository tags: Invalid status code returned when fetching tags list 503 (Service Unavailable)" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:d6b7393fb4f375905c31c483d81ce2a2905f88aba8cb198874da2b54035bc41d
+  Copying config sha256:de08540e8ff0e470ff7956df4bed403725a5f45c186e9bf495da5344ff8fbe84
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-08-29T08:16:02Z" level=warning msg="signal: killed"
+  time="2023-08-29T08:16:02Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1693296964:step_script
+  section_start:1693296964:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1693296966:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48136391):
+  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  Checking out af6e0065 as detached HEAD (ref is intel/IGTPW_9677)...
+  
+  Skipping Git submodules setup
+  section_end:1693296828:get_sources
+  section_start:1693296828:step_script
+  Executing "step_script" stage of the job script
+  Using docker image sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176 for registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 with digest registry.freedesktop.org/wayland/ci-templates/buildah@sha256:7dbcf22cd2c1c7d49db0dc7b4ab207c3d6a4a09bd81cc3b71a688d3727d8749f ...
+  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh
+  Checking if the user of the pipeline is allowed...
+  Checking if the job's project is part of a well-known group...
+  Thank you for contributing to freedesktop.org
+  $ podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  Error: error authenticating creds for "registry.freedesktop.org": Get https://gitlab.freedesktop.org/jwt/auth?account=gitlab-ci-token&service=container_registry: dial tcp 147.75.198.156:443: i/o timeout
+  section_end:1693296864:step_script
+  section_start:1693296864:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1693296864:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/972216
