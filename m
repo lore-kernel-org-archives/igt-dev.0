@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F074610E301
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Aug 2023 11:51:36 +0000 (UTC)
-Date: Tue, 29 Aug 2023 13:51:32 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-Message-ID: <20230829135132.6355bf8f@maurocar-mobl2>
-In-Reply-To: <d8019c58-6de5-77af-967e-bb5494e9e9cb@intel.com>
-References: <20230817093504.75749-1-mauro.chehab@linux.intel.com>
- <d8019c58-6de5-77af-967e-bb5494e9e9cb@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [igt-dev] [PATCH i-g-t] docs/reference: add links to
- testplan-based documentation
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
+Date: Tue, 29 Aug 2023 12:10:34 -0000
+Message-ID: <169331103469.16747.7326873930073002631@emeril.freedesktop.org>
+References: <20230829161759.9315-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20230829161759.9315-1-mohammed.thasleem@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/kms=5Fatomic=5Ftransition=3A_Reduce_the_execution_time_on_?=
+ =?utf-8?q?modest-transition?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,174 +18,124 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, 17 Aug 2023 23:08:24 +0530
-"Modem, Bhanuprakash" <bhanuprakash.modem@intel.com> wrote:
+== Series Details ==
 
-> Hi Mauro,
->=20
-> On Thu-17-08-2023 03:05 pm, Mauro Carvalho Chehab wrote:
-> > From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> >=20
-> > Instead of relying on runtime-based docs, use the documentation
-> > parsed via testplan for i915, Xe and KMS tests.
-> >=20
-> > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-> > ---
-> >   .../igt-gpu-tools/igt_test_programs.xml       | 63 ++++++++-----------
-> >   docs/reference/igt-gpu-tools/meson.build      |  4 --
-> >   2 files changed, 27 insertions(+), 40 deletions(-)
-> >=20
-> > diff --git a/docs/reference/igt-gpu-tools/igt_test_programs.xml b/docs/=
-reference/igt-gpu-tools/igt_test_programs.xml
-> > index 92bc33ba83f6..51f8cac05f98 100644
-> > --- a/docs/reference/igt-gpu-tools/igt_test_programs.xml
-> > +++ b/docs/reference/igt-gpu-tools/igt_test_programs.xml
-> > @@ -147,42 +147,6 @@
-> >       <xi:include href=3D"igt_test_programs_gem_description.xml"/>
-> >     </refentry>
-> >  =20
-> > -  <refentry id=3D"igt-gen3-tests">
-> > -    <refnamediv>
-> > -      <refname>Gen 3 Tests</refname>
-> > -      <refpurpose>Tests specific to gen 3</refpurpose>
-> > -    </refnamediv>
-> > -    <xi:include href=3D"igt_test_programs_gen3_programs.xml"/>
-> > -    <xi:include href=3D"igt_test_programs_gen3_description.xml"/>
-> > -  </refentry>
-> > -
-> > -  <refentry id=3D"igt-gen7-tests">
-> > -    <refnamediv>
-> > -      <refname>Gen 7 Tests</refname>
-> > -      <refpurpose>Tests specific to gen 7</refpurpose>
-> > -    </refnamediv>
-> > -    <xi:include href=3D"igt_test_programs_gen7_programs.xml"/>
-> > -    <xi:include href=3D"igt_test_programs_gen7_description.xml"/>
-> > -  </refentry>
-> > -
-> > -  <refentry id=3D"igt-i915-tests">
-> > -    <refnamediv>
-> > -      <refname>i915 Tests</refname>
-> > -      <refpurpose>Tests for overall i915 driver behaviour</refpurpose>
-> > -    </refnamediv>
-> > -    <xi:include href=3D"igt_test_programs_i915_programs.xml"/>
-> > -    <xi:include href=3D"igt_test_programs_i915_description.xml"/>
-> > -  </refentry>
-> > -
-> > -  <refentry id=3D"igt-kms-tests">
-> > -    <refnamediv>
-> > -      <refname>KMS Tests</refname>
-> > -      <refpurpose>Tests for kernel mode setting</refpurpose>
-> > -    </refnamediv>
-> > -    <xi:include href=3D"igt_test_programs_kms_programs.xml"/>
-> > -    <xi:include href=3D"igt_test_programs_kms_description.xml"/>
-> > -  </refentry>
-> > -
-> >     <refentry id=3D"igt-meta-tests">
-> >       <refnamediv>
-> >         <refname>Meta Tests</refname>
-> > @@ -255,6 +219,33 @@
-> >       <xi:include href=3D"igt_test_programs_vgem_description.xml"/>
-> >     </refentry>
-> >  =20
-> > +  <refentry id=3D"igt-xe-tests">
-> > +    <refnamediv>
-> > +      <refname>
-> > +          <ulink url=3D"../testplan/xe_tests.html" type=3D"http">Xe Te=
-sts</ulink> =20
->=20
-> As the testplan is not inside the reference dir, the URL must be:=20
-> "../../../testplan/xe_tests.html"
+Series: tests/kms_atomic_transition: Reduce the execution time on modest-transition
+URL   : https://patchwork.freedesktop.org/series/123002/
+State : warning
 
-The reference URL assumes the location where the docs will be installed.
-So, if we have them installed under a "install_dir":
+== Summary ==
 
+Pipeline status: FAILED.
 
-  $ meson --prefix `pwd`/install_dir build -Dxe_driver=3Denabled --reconfig=
-ure
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/972403 for the overview.
 
-We have:
+build-containers:build-debian has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48150998):
+  time="2023-08-29T12:09:06Z" level=fatal msg="Invalid status code returned when fetching blob 404 (Not Found)" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:d6b7393fb4f375905c31c483d81ce2a2905f88aba8cb198874da2b54035bc41d
+  Copying config sha256:de08540e8ff0e470ff7956df4bed403725a5f45c186e9bf495da5344ff8fbe84
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-08-29T12:09:11Z" level=warning msg="signal: killed"
+  time="2023-08-29T12:09:11Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1693310952:step_script
+  section_start:1693310952:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1693310953:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
 
-	$ tree -d install_dir/share/gtk-doc/
-	install_dir/share/gtk-doc/
-	=E2=94=94=E2=94=80=E2=94=80 html
-	    =E2=94=9C=E2=94=80=E2=94=80 igt-gpu-tools
-	    =E2=94=94=E2=94=80=E2=94=80 testplan
+build-containers:build-debian-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48151000):
+  time="2023-08-29T12:09:00Z" level=fatal msg="Invalid status code returned when fetching blob 404 (Not Found)" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:d6b7393fb4f375905c31c483d81ce2a2905f88aba8cb198874da2b54035bc41d
+  Copying config sha256:de08540e8ff0e470ff7956df4bed403725a5f45c186e9bf495da5344ff8fbe84
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-08-29T12:09:05Z" level=warning msg="signal: killed"
+  time="2023-08-29T12:09:05Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1693310946:step_script
+  section_start:1693310946:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1693310946:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
 
-So, "../testplan" is the path to go from "html/igt-gpu-tools" to the
-location where xe_tests.html is located.
+build-containers:build-debian-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48150999):
+  time="2023-08-29T12:09:06Z" level=fatal msg="Invalid status code returned when fetching blob 404 (Not Found)" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:d6b7393fb4f375905c31c483d81ce2a2905f88aba8cb198874da2b54035bc41d
+  Copying config sha256:de08540e8ff0e470ff7956df4bed403725a5f45c186e9bf495da5344ff8fbe84
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-08-29T12:09:11Z" level=warning msg="signal: killed"
+  time="2023-08-29T12:09:11Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1693310952:step_script
+  section_start:1693310952:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1693310953:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
 
-> Also, is there anyway to put these urls in index.html, instead of=20
-> opening igt-xe-tests.html and from there open the actual xe_tests.html?
+build-containers:build-debian-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48151001):
+  time="2023-08-29T12:09:07Z" level=fatal msg="Invalid status code returned when fetching blob 404 (Not Found)" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:d6b7393fb4f375905c31c483d81ce2a2905f88aba8cb198874da2b54035bc41d
+  Copying config sha256:de08540e8ff0e470ff7956df4bed403725a5f45c186e9bf495da5344ff8fbe84
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-08-29T12:09:11Z" level=warning msg="signal: killed"
+  time="2023-08-29T12:09:11Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1693310952:step_script
+  section_start:1693310952:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1693310953:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
 
-With the current way this is generated, I'm not sure. I found it
-hard to find a proper documentation about gtk-doc fields. Currently,
-IGT relies on it to generate the index.html file.
+build-containers:build-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48151002):
+  Running with gitlab-runner 16.3.0 (8ec04662)
+    on fdo-equinix-m3l-24 mWs1W337, system ID: r_v5KEYEFcG37a
+  section_start:1693310936:prepare_executor
+  Preparing the "docker" executor
+  Using Docker executor with image registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
+  Authenticating with credentials from job payload (GitLab Registry)
+  Pulling docker image registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
+  WARNING: Failed to pull image with policy "if-not-present": Error response from daemon: {"progressDetail":{},"errorDetail":{"message":"parsing image configuration: fetching blob: blob unknown to registry"},"error":"parsing image configuration: fetching blob: blob unknown to registry"} (manager.go:237:4s)
+  section_end:1693310941:prepare_executor
+  ERROR: Job failed: failed to pull image "registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0" with specified policies [if-not-present]: Error response from daemon: {"progressDetail":{},"errorDetail":{"message":"parsing image configuration: fetching blob: blob unknown to registry"},"error":"parsing image configuration: fetching blob: blob unknown to registry"} (manager.go:237:4s)
 
-Also meson integration (or gtk-doc) removes all files from the target
-directory when building docs (html/igt-gpu-tools).=20
+== Logs ==
 
-One possible alternative would be to have a master index.html file
-under install_dir/share/gtk-doc/html (or under some other place). I
-avoided doing that (or some other doc reorg) as this could break any
-scripts copying the documentation to some place.
-
-> > +      </refname>
-> > +      <refpurpose>Tests for the Intel Xe driver</refpurpose>
-> > +    </refnamediv>
-> > +  </refentry>
-> > +
-> > +  <refentry id=3D"igt-i915-tests">
-> > +    <refnamediv>
-> > +      <refname>
-> > +        <ulink url=3D"../testplan/i915_tests.html" type=3D"http">i915 =
-Tests</ulink>
-> > +      </refname>
-> > +      <refpurpose>Tests for the Intel i915 driver</refpurpose>
-> > +    </refnamediv>
-> > +  </refentry>
-> > +
-> > +  <refentry id=3D"igt-kms-tests">
-> > +    <refnamediv>
-> > +      <refname>
-> > +        <ulink url=3D"../testplan/kms_tests.html" type=3D"http">KMS Te=
-sts</ulink>
-> > +      </refname>
-> > +      <refpurpose>Tests for kernel mode setting</refpurpose>
-> > +    </refnamediv>
-> > +  </refentry>
-> > +
-> >     <glossary>
-> >       <title>Glossary</title>
-> >  =20
-> > diff --git a/docs/reference/igt-gpu-tools/meson.build b/docs/reference/=
-igt-gpu-tools/meson.build
-> > index 6b832ad279cf..9bb5ca7e0798 100644
-> > --- a/docs/reference/igt-gpu-tools/meson.build
-> > +++ b/docs/reference/igt-gpu-tools/meson.build
-> > @@ -29,10 +29,6 @@ test_groups =3D [
-> >   	'debugfs',
-> >   	'drm',
-> >   	'gem',
-> > -	'gen3',
-> > -	'gen7',
-> > -	'i915',
-> > -	'kms', =20
->=20
-> Also, we must drop testdisplay, since it is already covered by kms tests.
-
-OK, I'll remove it too.
-
-Btw, there are other places generating broken links, so I suspect
-that several of those "test_groups" aren't needed anymore.=20
-
->=20
-> - Bhanu
->=20
-> >   	'meta',
-> >   	'perf',
-> >   	'pm', =20
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/972403
