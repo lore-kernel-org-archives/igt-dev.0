@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam12on2089.outbound.protection.outlook.com [40.107.244.89])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7623D10E3CA
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Aug 2023 17:18:52 +0000 (UTC)
-Message-ID: <55ec5964-f2f4-4e14-b3ff-b880c3dcb6ad@amd.com>
-Date: Tue, 29 Aug 2023 13:18:46 -0400
-To: vitaly.prosyak@amd.com, igt-dev@lists.freedesktop.org
-References: <20230829044006.230513-1-vitaly.prosyak@amd.com>
-Content-Language: en-CA, en-US
-From: Luben Tuikov <luben.tuikov@amd.com>
-In-Reply-To: <20230829044006.230513-1-vitaly.prosyak@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EE84A10E21D
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Aug 2023 10:50:55 +0000 (UTC)
+Date: Tue, 29 Aug 2023 09:50:31 -0100
+From: Melissa Wen <mwen@igalia.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230829105031.bezfwml6ksyks3hy@mail.igalia.com>
+References: <20230824163302.15121-1-mwen@igalia.com>
+ <20230828153954.vnozovo4fdxara5b@kamilkon-desk.igk.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH] tests/amdgpu: add sync object tests
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="sahpvladn74qq4am"
+Content-Disposition: inline
+In-Reply-To: <20230828153954.vnozovo4fdxara5b@kamilkon-desk.igk.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_atomic: check zpos is mutable
+ before test mutable zpos
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,371 +22,153 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Alex Deucher <alexander.deucher@amd.com>,
- Christian Koenig <christian.koenig@amd.com>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>,
+ Tomeu Vizoso <tomeu.vizoso@collabora.com>, igt-dev@lists.freedesktop.org,
+ kernel-dev@igalia.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Vitaly,
 
-Good work--thanks for working on this.
+--sahpvladn74qq4am
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Inlined:
+On 08/28, Kamil Konieczny wrote:
+> Hi Melissa,
+>=20
+> tests/kms_atomic: check zpos is mutable before test mutable zpos
+> ----------------- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> imho better:
+>=20
+> tests/kms_atomic: skip zpos test on non-mutable planes
 
-On 2023-08-29 00:40, vitaly.prosyak@amd.com wrote:
-> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
-> 
-> Using worker thread to wait on point and then signal point on other thread.
-> Another test uses a worker thread to signal point and wait on the main
-> thread using amdgpu_cs_syncobj_timeline_wait.
-> 
-> The command consists of two chunks :
-> 1. AMDGPU_CHUNK_ID_IB uses GFX_COMPUTE_NOP  or SDMA_NOP.
-> 2. The second chunk is AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_WAIT
->    or AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_SIGNAL which has the
->    point number .
-> 
-> v2 : Kamil helped with podman script to fix the build
->      failure when drmlib version < 2.4.97
-> 
-> Cc: Luben Tuikov <luben.tuikov@amd.com>
-> Cc: Alex Deucher <alexander.deucher@amd.com>
-> Cc: Christian Koenig <christian.koenig@amd.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-> ---
->  tests/amdgpu/amd_syncobj.c | 262 +++++++++++++++++++++++++++++++++++++
->  tests/amdgpu/meson.build   |   5 +
->  2 files changed, 267 insertions(+)
->  create mode 100644 tests/amdgpu/amd_syncobj.c
-> 
-> diff --git a/tests/amdgpu/amd_syncobj.c b/tests/amdgpu/amd_syncobj.c
-> new file mode 100644
-> index 000000000..e83b5c5ad
-> --- /dev/null
-> +++ b/tests/amdgpu/amd_syncobj.c
-> @@ -0,0 +1,262 @@
-> +// SPDX-License-Identifier: MIT
-> +
+Looks better to me too. I'd just add that it's specific for mutable zpos:
+`tests/kms_atomic: skip mutable zpos test on non-mutable planes`
 
-Should probably include the standard AMD copyright notice.
+>=20
+> On 2023-08-24 at 15:33:02 -0100, Melissa Wen wrote:
+> > plane-primary-overlay-mutable-zpos only works if both plane types have
+> > mutable zpos property. However, drivers usually set primary zpos as
+> > immutable and the test case just fails. Create a helper to check if a
+> > plane have mutable zpos and skip the test case if zpos changes are not
+> > allowed.
+> >=20
+> > Signed-off-by: Melissa Wen <mwen@igalia.com>
+> > ---
+> >=20
+> > Hi,
+> >=20
+> > I don't know what drivers currently use this test case (imx?), but
+> > besides this requirement check, the test case seems to use an uncommon
+> > format for overlay plane (ARGB1555). From drm_info[1], I think a more
+> > generic option would be ARGB8888 for alpha blending tests, but a primary
+> > plane with mutable zpos doesn't seem a common case too.
+> >=20
+> > Let me know your thoughts
+> >=20
+> > [1] https://drmdb.emersion.fr/formats?plane=3D0
+> >=20
+> >  lib/igt_kms.c      | 17 +++++++++++++++++
+> >  lib/igt_kms.h      |  2 ++
+> >  tests/kms_atomic.c |  3 +++
+> >  3 files changed, 22 insertions(+)
+> >=20
+> > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> > index e0959ccff..42dc66fcd 100644
+> > --- a/lib/igt_kms.c
+> > +++ b/lib/igt_kms.c
+> > @@ -3827,6 +3827,23 @@ void igt_plane_set_prop_enum(igt_plane_t *plane,
+> >  	igt_assert(igt_plane_try_prop_enum(plane, prop, val));
+> >  }
+> > =20
+>=20
+> Please document public functions.
 
-/* Copyright (C) 2023 Advanced Micro Devices Inc. */ 
+ACK. I'll address it in the next version.
 
-> +#include <pthread.h>
-> +#include <amdgpu.h>
-> +#include <amdgpu_drm.h>
-> +
-> +#include "igt.h"
-> +#include "lib/amdgpu/amd_PM4.h"
-> +#include "lib/amdgpu/amd_sdma.h"
-> +#include "lib/amdgpu/amd_memory.h"
-> +
-> +struct syncobj_point {
-> +	amdgpu_device_handle device;
-> +	uint32_t syncobj_handle;
-> +	uint64_t point;
-> +};
-> +
-> +
-> +static bool
-> +syncobj_timeline_enable(int fd)
-> +{
-> +	int r;
-> +	bool ret = false;
-> +	uint64_t cap = 0;
-> +
-> +	r = drmGetCap(fd, DRM_CAP_SYNCOBJ_TIMELINE, &cap);
-> +	if (r || cap == 0)
-> +		return ret;
-> +	ret = true;
-> +
-> +	return ret;
-> +}
+Thanks for the feedback,
 
-In the function above, you don't need "ret"--the compiler optimizes it away
-as follows:
+Melissa
 
-static bool
-syncobj_timeline_enable(int fd)
-{
-	uint64_t cap = 0;
-	int r;
+>=20
+> Regards,
+> Kamil
+>=20
+> > +bool igt_plane_check_prop_is_mutable(igt_plane_t *plane,
+> > +				     enum igt_atomic_plane_properties igt_prop)
+> > +{
+> > +	drmModePropertyPtr prop;
+> > +	uint64_t value;
+> > +	bool has_prop;
+> > +
+> > +	has_prop =3D kmstest_get_property(plane->pipe->display->drm_fd,
+> > +					plane->drm_plane->plane_id,
+> > +					DRM_MODE_OBJECT_PLANE,
+> > +				        igt_plane_prop_names[igt_prop], NULL,
+> > +					&value, &prop);
+> > +	igt_assert(has_prop);
+> > +
+> > +	return !(prop->flags & DRM_MODE_PROP_IMMUTABLE);
+> > +}
+> > +
+> >  /**
+> >   * igt_plane_replace_prop_blob:
+> >   * @plane: plane to set property on.
+> > diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> > index 91355c910..4b4ec6c5a 100644
+> > --- a/lib/igt_kms.h
+> > +++ b/lib/igt_kms.h
+> > @@ -734,6 +734,8 @@ extern void igt_plane_replace_prop_blob(igt_plane_t=
+ *plane,
+> >  					enum igt_atomic_plane_properties prop,
+> >  					const void *ptr, size_t length);
+> > =20
+> > +extern bool igt_plane_check_prop_is_mutable(igt_plane_t *plane,
+> > +					    enum igt_atomic_plane_properties igt_prop);
+> >  /**
+> >   * igt_output_has_prop:
+> >   * @output: Output to check.
+> > diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
+> > index 3289219f9..22ddf5633 100644
+> > --- a/tests/kms_atomic.c
+> > +++ b/tests/kms_atomic.c
+> > @@ -1463,7 +1463,10 @@ igt_main
+> >  		igt_require(overlay);
+> > =20
+> >  		igt_require(igt_plane_has_prop(primary, IGT_PLANE_ZPOS));
+> > +		igt_require(igt_plane_check_prop_is_mutable(primary, IGT_PLANE_ZPOS)=
+);
+> > +
+> >  		igt_require(igt_plane_has_prop(overlay, IGT_PLANE_ZPOS));
+> > +		igt_require(igt_plane_check_prop_is_mutable(overlay, IGT_PLANE_ZPOS)=
+);
+> > =20
+> >  		igt_require(igt_plane_has_format_mod(primary, format_primary, 0x0));
+> >  		igt_require(igt_plane_has_format_mod(overlay, format_overlay, 0x0));
+> > --=20
+> > 2.40.1
+> >=20
 
-	r = drmGetCap(fd, DRM_CAP_SYNCOBJ_TIMELINE, &cap);
+--sahpvladn74qq4am
+Content-Type: application/pgp-signature; name="signature.asc"
 
-	return !(r || cap == 0);
-}
+-----BEGIN PGP SIGNATURE-----
 
-Or you can use "!!!(r || cap == 0);" if the/a compiler complains.
+iQIzBAABCgAdFiEEd8WOo/JViG+Tu+XIwqF3j0dLehwFAmTtzXcACgkQwqF3j0dL
+ehzyaxAAv8YOMzrljkX6flT8mBxVj7jVL2lUyamlAjdvlguDi3cUM7YFok1reB/E
+32P5L2KY095RHM4BBvW7HEYwlnEuMHqkQL9j7nb4Uz3E0+8d4rIxUdrAC/Mlzg4H
+EveC8CpAFB5GC6i9OBYHCTopMR9OIo/lge9HuvUvJZ9W/PYuhGPmaWcH39HZU9hY
+7/vTwffZlwemwlbLXlrBHJwUagprXN68jfNrxfgKF9oss75C0I3sRJF06GVci0kr
+91ghB0+wxSjRiU9CHTUcis9MVOBKRaB3OlXstjFyoTd0kXsQrAf+Sil94yYUQmz6
+wIoyjw9+OblustZwhe/IctyoOunG4qHDfeafHZ8xbgua7ohjLi7JBv7ec292cynE
+t7sZQo83e0j1IE91zeMoK5ReZBTxBGeKkjJ97m4hy4y5qK496pNG121iUc8jn6Wg
+fEbAPk77xKPA/DLBe5THuz8R9jzPg5ksy+3r9p204avumSm30tCDM9Byq0Cj16v4
+bzV/4PlQRswBznwtpULmgmobKNdVkgNhSlTfsbhpRKb2xR7V7u3lPsHLqb2I2ICO
+KrtPGV9sJyVv6jUlMAdbuwbObZQdY5OaVbtphK1nTjN5bxsiHmt0j7C90QM9UcHe
+EzE8eCr1q0tZoS8XOECsz6GnGKAQOqqpjcTkG9KkASPSi60bMdQ=
+=nLM6
+-----END PGP SIGNATURE-----
 
-> +
-> +static void
-> +syncobj_command_submission_helper(amdgpu_device_handle device_handle,
-> +		uint32_t syncobj_handle, bool wait_or_signal, uint64_t point)
-> +{
-> +	amdgpu_context_handle context_handle;
-> +	amdgpu_bo_handle ib_result_handle;
-> +	void *ib_result_cpu;
-> +	uint64_t ib_result_mc_address;
-> +	struct drm_amdgpu_cs_chunk chunks[2];
-> +	struct drm_amdgpu_cs_chunk_data chunk_data;
-> +	struct drm_amdgpu_cs_chunk_syncobj syncobj_data;
-> +	struct amdgpu_cs_fence fence_status;
-> +	amdgpu_bo_list_handle bo_list;
-> +	amdgpu_va_handle va_handle;
-> +	uint32_t expired;
-> +	int i, r;
-> +	uint64_t seq_no;
-> +	uint32_t *ptr;
-> +
-> +	r = amdgpu_cs_ctx_create(device_handle, &context_handle);
-> +	igt_assert_eq(r, 0);
-> +
-> +	r = amdgpu_bo_alloc_and_map(device_handle, 4096, 4096,
-> +				    AMDGPU_GEM_DOMAIN_GTT, 0,
-> +				    &ib_result_handle, &ib_result_cpu,
-> +				    &ib_result_mc_address, &va_handle);
-> +	igt_assert_eq(r, 0);
-> +
-> +	r = amdgpu_get_bo_list(device_handle, ib_result_handle, NULL, &bo_list);
-> +	igt_assert_eq(r, 0);
-> +
-> +	ptr = ib_result_cpu;
-> +
-> +	for (i = 0; i < 16; ++i)
-> +		ptr[i] = wait_or_signal ? GFX_COMPUTE_NOP : SDMA_NOP;
-> +
-> +	chunks[0].chunk_id = AMDGPU_CHUNK_ID_IB;
-> +	chunks[0].length_dw = sizeof(struct drm_amdgpu_cs_chunk_ib) / 4;
-> +	chunks[0].chunk_data = (uint64_t)(uintptr_t)&chunk_data;
-> +	chunk_data.ib_data._pad = 0;
-> +	chunk_data.ib_data.va_start = ib_result_mc_address;
-> +	chunk_data.ib_data.ib_bytes = 16 * 4;
-> +	chunk_data.ib_data.ip_type = wait_or_signal ? AMDGPU_HW_IP_GFX : AMDGPU_HW_IP_DMA;
-> +	chunk_data.ib_data.ip_instance = 0;
-> +	chunk_data.ib_data.ring = 0;
-> +	chunk_data.ib_data.flags = 0;
-> +
-> +	chunks[1].chunk_id = wait_or_signal ?
-> +		AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_WAIT :
-> +		AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_SIGNAL;
-> +	chunks[1].length_dw = sizeof(struct drm_amdgpu_cs_chunk_syncobj) / 4;
-> +	chunks[1].chunk_data = (uint64_t)(uintptr_t)&syncobj_data;
-> +	syncobj_data.handle = syncobj_handle;
-> +	syncobj_data.point = point;
-> +	syncobj_data.flags = DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT;
-> +
-> +	r = amdgpu_cs_submit_raw(device_handle,
-> +				 context_handle,
-> +				 bo_list,
-> +				 2,
-> +				 chunks,
-> +				 &seq_no);
-> +	igt_assert_eq(r, 0);
-> +
-> +	memset(&fence_status, 0, sizeof(struct amdgpu_cs_fence));
-> +	fence_status.context = context_handle;
-> +	fence_status.ip_type = wait_or_signal ? AMDGPU_HW_IP_GFX : AMDGPU_HW_IP_DMA;
-> +	fence_status.ip_instance = 0;
-> +	fence_status.ring = 0;
-> +	fence_status.fence = seq_no;
-> +
-> +	r = amdgpu_cs_query_fence_status(&fence_status,
-> +			AMDGPU_TIMEOUT_INFINITE, 0, &expired);
-> +	igt_assert_eq(r, 0);
-> +
-> +	r = amdgpu_bo_list_destroy(bo_list);
-> +	igt_assert_eq(r, 0);
-> +
-> +	amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
-> +				     ib_result_mc_address, 4096);
-> +
-> +	r = amdgpu_cs_ctx_free(context_handle);
-> +	igt_assert_eq(r, 0);
-> +}
-> +
-> +static void *
-> +syncobj_wait(void *data)
-> +{
-> +	struct syncobj_point *sp = (struct syncobj_point *)data;
-> +
-> +	syncobj_command_submission_helper(sp->device, sp->syncobj_handle, true,
-> +					      sp->point);
-> +
-> +	return (void *)0;
-> +}
-> +
-> +static void *
-> +syncobj_signal(void *data)
-> +{
-> +	struct syncobj_point *sp = (struct syncobj_point *)data;
-> +
-> +	syncobj_command_submission_helper(sp->device, sp->syncobj_handle, false,
-> +						sp->point);
-> +
-> +	return (void *)0;
-> +}
-> +
-> +static void
-> +amdgpu_syncobj_timeline(amdgpu_device_handle device_handle)
-> +{
-> +	static pthread_t wait_thread;
-> +	static pthread_t signal_thread;
-> +	static pthread_t c_thread;
-> +	struct syncobj_point sp1, sp2, sp3;
-> +	uint32_t syncobj_handle;
-> +	uint64_t payload;
-> +	uint64_t wait_point, signal_point;
-> +	uint64_t timeout;
-> +	struct timespec tp;
-> +	int r, sync_fd;
-> +	void *tmp, *tmp2;
-> +
-> +	r =  amdgpu_cs_create_syncobj2(device_handle, 0, &syncobj_handle);
-> +	igt_assert_eq(r, 0);
-> +
-> +	// wait on point 5
-> +	sp1.syncobj_handle = syncobj_handle;
-> +	sp1.device = device_handle;
-> +	sp1.point = 5;
-> +	r = pthread_create(&wait_thread, NULL, syncobj_wait, &sp1);
-> +	igt_assert_eq(r, 0);
-> +
-> +	// signal on point 10
-> +	sp2.syncobj_handle = syncobj_handle;
-> +	sp2.device = device_handle;
-> +	sp2.point = 10;
-> +	r = pthread_create(&signal_thread, NULL, syncobj_signal, &sp2);
-> +	igt_assert_eq(r, 0);
-> +
-> +	r = pthread_join(signal_thread, &tmp);
-> +	igt_assert_eq(r, 0);
-> +
-> +	r = pthread_join(wait_thread, &tmp2);
-> +	igt_assert_eq(r, 0);
-> +
-> +	//query timeline payload
-> +	r = amdgpu_cs_syncobj_query(device_handle, &syncobj_handle,
-> +				    &payload, 1);
-> +	igt_assert_eq(r, 0);
-> +	igt_assert_eq(payload, 10);
-> +
-> +	//signal on point 16
-> +	sp3.syncobj_handle = syncobj_handle;
-> +	sp3.device = device_handle;
-> +	sp3.point = 16;
-> +	r = pthread_create(&c_thread, NULL, syncobj_signal, &sp3);
-> +	igt_assert_eq(r, 0);
-> +
-> +	//CPU wait on point 16
-> +	wait_point = 16;
-> +	timeout = 0;
-> +	clock_gettime(CLOCK_MONOTONIC, &tp);
-> +	timeout = tp.tv_sec * 1000000000ULL + tp.tv_nsec;
-> +	timeout += 10000000000; //10s
-> +	r = amdgpu_cs_syncobj_timeline_wait(device_handle, &syncobj_handle,
-> +					    &wait_point, 1, timeout,
-> +					    DRM_SYNCOBJ_WAIT_FLAGS_WAIT_ALL |
-> +					    DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT,
-> +					    NULL);
-> +
-> +	igt_assert_eq(r, 0);
-> +	r = pthread_join(c_thread, &tmp);
-> +	igt_assert_eq(r, 0);
-> +
-> +	// export point 16 and import to point 18
-> +	r = amdgpu_cs_syncobj_export_sync_file2(device_handle, syncobj_handle,
-> +						16,
-> +						DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT,
-> +						&sync_fd);
-> +	igt_assert_eq(r, 0);
-> +	r = amdgpu_cs_syncobj_import_sync_file2(device_handle, syncobj_handle,
-> +						18, sync_fd);
-> +	igt_assert_eq(r, 0);
-> +	r = amdgpu_cs_syncobj_query(device_handle, &syncobj_handle,
-> +				    &payload, 1);
-> +	igt_assert_eq(r, 0);
-> +	igt_assert_eq(payload, 18);
-> +
-> +	// CPU signal on point 20
-> +	signal_point = 20;
-> +	r = amdgpu_cs_syncobj_timeline_signal(device_handle, &syncobj_handle,
-> +					      &signal_point, 1);
-> +	igt_assert_eq(r, 0);
-> +	r = amdgpu_cs_syncobj_query(device_handle, &syncobj_handle,
-> +				    &payload, 1);
-> +	igt_assert_eq(r, 0);
-> +	igt_assert_eq(payload, 20);
-> +
-> +	r = amdgpu_cs_destroy_syncobj(device_handle, syncobj_handle);
-> +	igt_assert_eq(r, 0);
-> +
-> +}
-
-Very nice. :-)
-
-One question: Is it possible we hang indefinitely in 
-pthread_create()-->syncobj_signal/wait()-->amdgpu_cs_query_fence_status()?
-
-If yes, is there a way to mitigate this and timeout the test, if run
-from a nightly script for instance?
-
-> +
-> +igt_main
-> +{
-> +	amdgpu_device_handle device;
-> +	int fd = -1;
-> +
-> +	igt_fixture {
-> +		uint32_t major, minor;
-> +		int err;
-> +
-> +		fd = drm_open_driver(DRIVER_AMDGPU);
-> +		err = amdgpu_device_initialize(fd, &major, &minor, &device);
-> +		igt_require(err == 0);
-> +		igt_require(syncobj_timeline_enable(fd));
-> +		igt_info("Initialized amdgpu, driver version %d.%d\n",
-> +			 major, minor);
-> +
-> +	}
-> +
-> +	igt_subtest("amdgpu_syncobj_timeline")
-> +	amdgpu_syncobj_timeline(device);
-> +
-> +	igt_fixture {
-> +		amdgpu_device_deinitialize(device);
-> +		close(fd);
-> +	}
-> +}
-> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
-> index 6032a38e8..1520c34bd 100644
-> --- a/tests/amdgpu/meson.build
-> +++ b/tests/amdgpu/meson.build
-> @@ -37,6 +37,11 @@ if libdrm_amdgpu.found()
->  			  'amd_mall',
->  			  'amd_odm',
->  			]
-> +	if libdrm_amdgpu.version().version_compare('> 2.4.97')
-> +		amdgpu_progs +=[ 'amd_syncobj', ]
-> +	else
-> +		warning('libdrm <= 2.4.97 found, no amd_syncobj test')
-
-I'd probably print:
-
-	'libdrm <= 2.4.97 found, amd_syncobj test not applicable'
-
-to clarify that for libdrm versions less than or equal to the one indicated,
-the test while available is not applicable.
-
-> +	endif
->  	amdgpu_deps += libdrm_amdgpu
->  endif
->  
-
-With these changes applied, this patch is,
-Reviewed-by: Luben Tuikov <luben.tuikov@amd.com>
--- 
-Regards,
-Luben
+--sahpvladn74qq4am--
