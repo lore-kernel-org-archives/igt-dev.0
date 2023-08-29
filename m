@@ -1,24 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com
- [IPv6:2a00:1450:4864:20::130])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 254D510E002
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Aug 2023 07:02:03 +0000 (UTC)
-Received: by mail-lf1-x130.google.com with SMTP id
- 2adb3069b0e04-500913779f5so6387059e87.2
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Aug 2023 00:02:02 -0700 (PDT)
-Message-ID: <eca45894-c8f2-1c4f-1454-3bfd0b6342d1@gmail.com>
-Date: Tue, 29 Aug 2023 10:01:54 +0300
+Content-Type: multipart/alternative;
+ boundary="===============1766295684369403918=="
 MIME-Version: 1.0
-Content-Language: en-US
-To: Drew Davenport <ddavenport@chromium.org>,
- igt-dev <igt-dev@lists.freedesktop.org>
-References: <20230828142356.1.I6b63e745635f9cad8c698001ce08f406fe0f0bcb@changeid>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20230828142356.1.I6b63e745635f9cad8c698001ce08f406fe0f0bcb@changeid>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH] tests/kms_atomic_transition: Address test
- flakiness
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Himal Prasad Ghimiray" <himal.prasad.ghimiray@intel.com>
+Date: Tue, 29 Aug 2023 07:14:47 -0000
+Message-ID: <169329328735.16747.10903277214617247871@emeril.freedesktop.org>
+References: <20230829055835.1750432-1-himal.prasad.ghimiray@intel.com>
+In-Reply-To: <20230829055835.1750432-1-himal.prasad.ghimiray@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Update_m?=
+ =?utf-8?q?issing_documentation_fields=2E?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,59 +17,143 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Drew,
+--===============1766295684369403918==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-can you show backtrace when the test failed for you? I was looking 
-through stats how i915 have behaved with this and I didn't on brief look 
-spot this ever hitting i915. Which driver you are seeing this issue with?
+== Series Details ==
 
-Current stats on ci for i915 look like this (for me it look all green 
-where run)
+Series: Update missing documentation fields.
+URL   : https://patchwork.freedesktop.org/series/122996/
+State : success
 
-https://intel-gfx-ci.01.org/tree/drm-tip/shards-all.html?testfilter=kms_atomic_transition.*nonblocking
+== Summary ==
 
-Here are some issues but they all did look like connector related issues:
-https://intel-gfx-ci.01.org/tree/drm-tip/drmtip.html?testfilter=kms_atomic_transition.*nonblocking
+CI Bug Log - changes from XEIGT_7455_BAT -> XEIGTPW_9676_BAT
+====================================================
 
-/Juha-Pekka
+Summary
+-------
 
-On 28.8.2023 23.23, Drew Davenport wrote:
-> Nonblocking commits can sometimes return -EBUSY. It's expected that
-> this error is transient and that userspace should retry the commit.
-> 
-> Since kms_atomic_transition uses nonblocking commits for some test
-> cases, the test fails flakily.
-> 
-> This change will handle -EBUSY to ensure that the test does not
-> fail in that case.
-> 
-> Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/144
-> Signed-off-by: Drew Davenport <ddavenport@chromium.org>
-> 
-> ---
-> 
->   tests/kms_atomic_transition.c | 6 +++++-
->   1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-> index 6ab5267ca..46ce9f929 100644
-> --- a/tests/kms_atomic_transition.c
-> +++ b/tests/kms_atomic_transition.c
-> @@ -683,7 +683,11 @@ static void commit_display(data_t *data, unsigned event_mask, bool nonblocking)
->   	if (nonblocking)
->   		flags |= DRM_MODE_ATOMIC_NONBLOCK;
->   
-> -	igt_display_commit_atomic(&data->display, flags, NULL);
-> +	do {
-> +		ret = igt_display_try_commit_atomic(&data->display, flags, NULL);
-> +	} while (ret == -EBUSY);
-> +
-> +	igt_assert_eq(ret, 0);
->   
->   	igt_debug("Event mask: %x, waiting for %i events\n", event_mask, num_events);
->   
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9676_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3:
+    - bat-dg2-oem2:       [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 similar issue
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7455/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9676/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
+    - bat-adlp-7:         [PASS][3] -> [FAIL][4] ([Intel XE#400]) +1 similar issue
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7455/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9676/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#526]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/526
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7455 -> IGTPW_9676
+
+  IGTPW_9676: 9676
+  IGT_7455: 6dc34d4b412597a1cee00a1ab84591aff5912d04 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-340-c77796cf84361b4716839141f2e48de2bf7f4bd5: c77796cf84361b4716839141f2e48de2bf7f4bd5
+
+
+
+--===============1766295684369403918==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Update missing documentation fields.</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122996/">https://patchwork.freedesktop.org/series/122996/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7455_BAT -&gt; XEIGTPW_9676_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9676_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7455/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9676/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7455/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9676/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a>) +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7455 -&gt; IGTPW_9676</li>
+</ul>
+<p>IGTPW_9676: 9676<br />
+  IGT_7455: 6dc34d4b412597a1cee00a1ab84591aff5912d04 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-340-c77796cf84361b4716839141f2e48de2bf7f4bd5: c77796cf84361b4716839141f2e48de2bf7f4bd5</p>
+
+</body>
+</html>
+
+--===============1766295684369403918==--
