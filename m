@@ -1,22 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam10on20600.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e88::600])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A4C1F10E347
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Aug 2023 14:36:29 +0000 (UTC)
-Message-ID: <8d2a2e7a-105c-4421-b9a3-7d82457ea220@amd.com>
-Date: Tue, 29 Aug 2023 08:36:23 -0600
-Content-Language: en-US
-To: Aurabindo Pillai <aurabindo.pillai@amd.com>, igt-dev@lists.freedesktop.org
-References: <20230825135053.196364-1-aurabindo.pillai@amd.com>
- <20230825135053.196364-2-aurabindo.pillai@amd.com>
-From: Rodrigo Siqueira Jordao <Rodrigo.Siqueira@amd.com>
-In-Reply-To: <20230825135053.196364-2-aurabindo.pillai@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4D25C10E38B
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Aug 2023 14:42:17 +0000 (UTC)
+From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 29 Aug 2023 20:08:18 +0530
+Message-Id: <20230829143821.1417623-7-chaitanya.kumar.borah@intel.com>
+In-Reply-To: <20230829143821.1417623-1-chaitanya.kumar.borah@intel.com>
+References: <20230829143821.1417623-1-chaitanya.kumar.borah@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v2 2/3] tests/amdgpu/amd_mall: remove UMR
- dependency
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 6/9] tests/kms_color: Add test to switch
+ color pipeline
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,167 +19,236 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: hersenxs.wu@amd.com
+Cc: chaitanya.kumar.borah@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+If the currently enabled pipeline does not have the hardware
+block needed for certain usecase, while its available in
+another color pipeline exposed by driver. User can switch the
+pipeline and use block from the new pipeline.
 
+In this test, color pipeline 1 is enabled with pre-csc.
+Now a 3D Lut operation is desired which is available only
+in pipleline 2. Pipeline is switched and 3d Lut is enabled.
 
-On 8/25/23 07:50, Aurabindo Pillai wrote:
-> Remove the dependency on the userspace tool UMR to check MALL status
-> and fully rely on debugfs for simplicity of test setup.
-> 
-> Changes in v2:
-> 
-> * Switch to bool instead of u32 for parameters in mall status check
-> function
-> * Fix returning value from a function returning void.
-> 
-> Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-> ---
->   lib/igt_amd.c           | 28 ++++++++++++++--------------
->   lib/igt_amd.h           |  2 +-
->   tests/amdgpu/amd_mall.c | 29 ++++++-----------------------
->   3 files changed, 21 insertions(+), 38 deletions(-)
-> 
-> diff --git a/lib/igt_amd.c b/lib/igt_amd.c
-> index 1a720ff56..b67cc9be0 100644
-> --- a/lib/igt_amd.c
-> +++ b/lib/igt_amd.c
-> @@ -1182,27 +1182,27 @@ static bool get_dm_capabilites(int drm_fd, char *buf, size_t size) {
->    * @brief check if AMDGPU mall_capable interface entry exist and defined
->    *
->    * @param drm_fd DRM file descriptor
-> - * @return true if mall_capable debugfs interface exists and defined
-> - * @return false otherwise
-> + * @return true if dm capabilities interface exists and MALL is supported
-> + * @return false if capabilites could not be read.
->    */
-> -bool igt_amd_is_mall_capable(int drm_fd)
-> +void igt_amd_get_mall_status(int drm_fd, bool *supported, bool *enabled)
->   {
-> -	char buf[1024], mall_read[10];
-> +	char buf[1024];
->   	char *mall_loc;
->   
-> -	if (!get_dm_capabilites(drm_fd, buf, 1024))
-> -		return false;
-> -
-> -	mall_loc = strstr(buf,"mall: ");
-> -	if (!mall_loc)
-> -		return false;
-> +	*supported = false;
-> +	*enabled = false;
->   
-> -	sscanf(mall_loc, "mall: %s", mall_read);
-> +	if (!get_dm_capabilites(drm_fd, buf, 1024))
-> +		return;
->   
-> -	if (!strcmp(mall_read, "yes"))
-> -		return true;
-> +	mall_loc = strstr(buf, "mall supported: yes");
-> +	if (mall_loc)
-> +		*supported = true;
->   
-> -	return false;
-> +	mall_loc = strstr(buf, "enabled: yes");
-> +	if (mall_loc && *supported)
-> +		*enabled = true;
->   }
->   
->   /**
-> diff --git a/lib/igt_amd.h b/lib/igt_amd.h
-> index c05b4b730..de992ac4f 100644
-> --- a/lib/igt_amd.h
-> +++ b/lib/igt_amd.h
-> @@ -199,6 +199,6 @@ bool igt_amd_has_visual_confirm(int drm_fd);
->   int  igt_amd_get_visual_confirm(int drm_fd);
->   bool igt_amd_set_visual_confirm(int drm_fd, enum amdgpu_debug_visual_confirm option);
->   
-> -bool igt_amd_is_mall_capable(int drm_fd);
-> +void igt_amd_get_mall_status(int drm_fd, bool *supported, bool *enabled);
->   bool igt_amd_output_has_odm_combine_segments(int drm_fd, char *connector_name);
->   #endif /* IGT_AMD_H */
-> diff --git a/tests/amdgpu/amd_mall.c b/tests/amdgpu/amd_mall.c
-> index 6016d5e8c..c21fcc27f 100644
-> --- a/tests/amdgpu/amd_mall.c
-> +++ b/tests/amdgpu/amd_mall.c
-> @@ -58,6 +58,7 @@ static void test_init(data_t *data)
->   {
->   	igt_display_t *display = &data->display;
->   	bool mall_capable = false;
-> +	bool mall_en = false;
+Co-developed-by: Uma Shankar <uma.shankar@intel.com>
+Signed-off-by: Uma Shankar <uma.shankar@intel.com>
+Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+---
+ tests/kms_color.c | 157 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 157 insertions(+)
 
-Since igt_amd_get_mall_status will fill out mall_capable and mall_en, I 
-guess you don't need this variable initialization.
-
->   
->   	/* It doesn't matter which pipe we choose on amdpgu. */
->   	data->pipe_id = PIPE_A;
-> @@ -65,7 +66,7 @@ static void test_init(data_t *data)
->   
->   	igt_display_reset(display);
->   
-> -	mall_capable =  igt_amd_is_mall_capable(data->fd);
-> +	igt_amd_get_mall_status(data->fd, &mall_capable, &mall_en);
->   	igt_require_f(mall_capable, "Requires hardware that supports MALL cache\n");
->   
->   	/* find a connected output */
-> @@ -101,44 +102,26 @@ static void test_fini(data_t *data)
->   	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
->   }
->   
-> -static bool check_cmd_output(const char *line, void *data)
-> -{
-> -	struct line_check *check = data;
-> -
-> -	if (strstr(line, check->substr)) {
-> -		check->found++;
-> -	}
-> -
-> -	return false;
-> -}
->   static void test_mall_ss(data_t *data)
->   {
->   	igt_display_t *display = &data->display;
->   	igt_fb_t rfb;
-> -	int exec_ret;
-> -	struct line_check line = {0};
->   	igt_crc_t test_crc, ref_crc;
-> +	bool mall_supp, mall_en;
->   
->   	test_init(data);
->   
->   	igt_create_pattern_fb(data->fd, data->w, data->h, DRM_FORMAT_XRGB8888, 0, &rfb);
->   	igt_plane_set_fb(data->primary, &rfb);
->   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> -
->   	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
-> -	sleep(MALL_SETTLE_DELAY);
-> -
-> -	igt_system_cmd(exec_ret, "umr -O bits -r *.*.HUBP0_HUBP_MALL_STATUS | grep MALL_IN_USE");
-> -
-> -	igt_skip_on_f(exec_ret != IGT_EXIT_SUCCESS, "Error running UMR\n");
->   
-> -	line.substr = "1 (0x00000001)";
-> -	igt_log_buffer_inspect(check_cmd_output, &line);
-> +	sleep(MALL_SETTLE_DELAY);
->   
-> -	igt_assert_eq(line.found, 1);
-> +	igt_amd_get_mall_status(data->fd, &mall_supp, &mall_en);
-> +	igt_fail_on_f(!(mall_supp && mall_en), "MALL did not get enabled\n");
-
-I'm not sure if I misunderstood something, but does it make sense to 
-fail if the device does not have MALL support? How about skipping if the 
-device does not support MALL?
-
-Thanks
-Siqueira
-
->   
->   	igt_pipe_crc_collect_crc(data->pipe_crc, &test_crc);
-> -
->   	igt_assert_crc_equal(&ref_crc, &test_crc);
->   
->   	igt_remove_fb(data->fd, &rfb);
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index a0159a0de..d00ba13a1 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -1071,6 +1071,7 @@ static void run_plane_color_test(data_t *data, enum pipe pipe,
+ #define HAS_POST_CSC BIT(2)
+ #define HAS_COLOR_CONVERSION_CAP (HAS_PRE_CSC |\
+ 			HAS_CSC | HAS_POST_CSC)
++#define HAS_3DLUT    BIT(3)
+ 
+ #define MIN(a, b) ((a) < (b) ? (a) : (b))
+ 
+@@ -1089,6 +1090,10 @@ struct color_conversion_pipeline_info {
+ 	segment_data_t *post_csc_seg_data;
+ };
+ 
++struct _3d_lut_colorpipeline_info {
++	segment_data_t *seg_data;
++};
++
+ uint32_t get_color_op_cap(enum color_op_block name);
+ drmModePropertyPtr get_plane_property(igt_plane_t *plane,
+ 				      enum igt_atomic_plane_properties prop);
+@@ -1098,6 +1103,8 @@ segment_data_t *get_segment_data(data_t *data,
+ 				 uint64_t blob_id);
+ void parse_color_conv_pipeline(data_t *data, uint64_t color_pipeline,
+ 			       struct color_conversion_pipeline_info *cp_info);
++void parse_3d_lut_pipeline(data_t *data, uint64_t color_pipeline,
++			   struct _3d_lut_colorpipeline_info *cp_info);
+ void clear_pipeline_seg_info(struct color_conversion_pipeline_info cp_info);
+ void destroy_csc_pipeline_blobs(data_t *data,
+ 				struct color_conversion_pipeline_info cp_info);
+@@ -1114,6 +1121,8 @@ uint32_t get_color_op_cap(enum color_op_block name)
+ 		return HAS_POST_CSC;
+ 	case DRM_CB_CSC:
+ 		return HAS_CSC;
++	case DRM_CB_3D_LUT:
++		return HAS_3DLUT;
+ 	case DRM_CB_PRIVATE:
+ 	case DRM_CB_INVAL:
+ 	default:
+@@ -1251,6 +1260,31 @@ void parse_color_conv_pipeline(data_t *data, uint64_t color_pipeline,
+ 	drmModeFreePropertyBlob(blob);
+ }
+ 
++/* helper to parse segment data for 3D LUT */
++void parse_3d_lut_pipeline(data_t *data, uint64_t color_pipeline,
++			   struct _3d_lut_colorpipeline_info *cp_info)
++{
++	drmModePropertyBlobPtr blob = NULL;
++	struct drm_color_op *color_op;
++
++	blob = drmModeGetPropertyBlob(data->drm_fd, color_pipeline);
++	igt_assert(blob);
++	igt_assert(blob->length);
++	color_op = blob->data;
++
++	for (int j = 0; j < blob->length / sizeof(struct drm_color_op); j++) {
++		if (color_op[j].blob_id) {
++			if (color_op[j].name == DRM_CB_3D_LUT) {
++				cp_info->seg_data =
++					get_segment_data(data, color_op[j].blob_id);
++				break;
++			}
++		}
++	}
++
++	drmModeFreePropertyBlob(blob);
++}
++
+ void clear_pipeline_seg_info(struct color_conversion_pipeline_info cp_info)
+ {
+ 	free(cp_info.pre_csc_seg_data);
+@@ -1478,6 +1512,125 @@ static bool plane_cp_test_1(data_t *data, igt_plane_t *plane)
+ 	return true;
+ }
+ 
++/*
++ * Find a color pipeline with pre-csc and then program the block.
++ * Then find a color pipeline with 3D lut and program the block
++ */
++static bool plane_cp_test_2(data_t *data, igt_plane_t *plane)
++{
++	igt_display_t *display = &data->display;
++	drmModeModeInfo *mode = data->mode;
++	igt_output_t *output = data->output;
++	struct igt_fb fb;
++	uint64_t color_pipeline = 0, _3d_cp_num = 0;
++	struct color_conversion_pipeline_info cp_info;
++	struct _3d_lut_colorpipeline_info _3d_cp_info;
++	struct drm_color_pipeline cp;
++	struct drm_color_op_data *color_op_data;
++	struct drm_color_lut_ext *pre_csc_lut, *_3d_lut;
++	uint32_t blob_id;
++	int lut_size = 0;
++
++	igt_info("Plane Color Pipeline test is running on pipe-%s plane-%d(%s)\n",
++		 kmstest_pipe_name(plane->pipe->pipe), plane->index,
++		 kmstest_plane_type_name(plane->type));
++
++	igt_require(igt_plane_has_prop(plane, IGT_PLANE_GET_COLOR_PIPELINE));
++	igt_require(igt_plane_has_prop(plane, IGT_PLANE_SET_COLOR_PIPELINE));
++
++	igt_output_set_pipe(output, plane->pipe->pipe);
++
++	igt_assert(igt_create_fb(data->drm_fd,
++				 mode->hdisplay,
++				 mode->vdisplay,
++				 data->drm_format,
++				 DRM_FORMAT_MOD_LINEAR,
++				 &fb));
++
++	igt_plane_set_fb(plane, &fb);
++
++	igt_display_commit2(display, COMMIT_ATOMIC);
++
++	/* Identify color pipeline with pre-csc hardware block */
++	color_pipeline = get_color_pipeline(data, plane, HAS_PRE_CSC);
++
++	color_op_data = calloc(1, sizeof(struct drm_color_op_data));
++	cp.num = color_pipeline;
++	cp.size = sizeof(struct drm_color_op_data);
++	cp.data = color_op_data;
++
++	/* Parse and detect the capability of the pre-csc hardware unit */
++	parse_color_conv_pipeline(data, color_pipeline, &cp_info);
++	igt_assert(cp_info.pre_csc_seg_data);
++
++	/* Set Pre-CSC */
++	color_op_data[0].name = DRM_CB_PRE_CSC;
++	lut_size = sizeof(struct drm_color_lut_ext) *
++	cp_info.pre_csc_seg_data->entries_count;
++	pre_csc_lut = create_linear_lut(cp_info.pre_csc_seg_data);
++	igt_assert(drmModeCreatePropertyBlob(display->drm_fd,
++					     pre_csc_lut, lut_size, &blob_id) == 0);
++	color_op_data[0].blob_id = blob_id;
++
++	/*
++	 * Enable pre-csc hardware unity alone in pipeline by populating
++	 * color_op_data with just 1 entry for pre-csc
++	 */
++	igt_plane_replace_prop_blob(plane, IGT_PLANE_SET_COLOR_PIPELINE, &cp,
++				    sizeof(struct drm_color_pipeline));
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
++
++	/*
++	 * Now locate hardware pipeline with support for 3D LUT
++	 * This can be different from the currently programmed pipeline number.
++	 * 3D LUT in this case is in pipeline no 2, while 1 is the currently
++	 * enabled pipeline. Hence this will require a pipeline switch.
++	 */
++	_3d_cp_num = get_color_pipeline(data, plane, HAS_3DLUT);
++
++	parse_3d_lut_pipeline(data, _3d_cp_num, &_3d_cp_info);
++	igt_assert(_3d_cp_info.seg_data);
++
++	cp.num = _3d_cp_num;
++
++	color_op_data[0].name = DRM_CB_3D_LUT;
++	lut_size = sizeof(struct drm_color_lut_ext) *
++			_3d_cp_info.seg_data->entries_count;
++	_3d_lut = create_linear_lut(_3d_cp_info.seg_data);
++	igt_assert(drmModeCreatePropertyBlob(display->drm_fd,
++					     _3d_lut, lut_size, &blob_id) == 0);
++	color_op_data[0].blob_id = blob_id;
++
++	/*
++	 * Set color pipeline with 3d lut as color_op along with pipeline
++	 * number having the respective support.
++	 * Since othe hardware blocks are not needed, no need to make any additional
++	 * entry in the data structure array. Driver is expected to disable all the
++	 * color hardware blocks and will only enable 3d LUT requested by the
++	 * SET_COLOR_PIPELINE property.
++	 */
++	igt_plane_replace_prop_blob(plane, IGT_PLANE_SET_COLOR_PIPELINE, &cp,
++				    sizeof(struct drm_color_pipeline));
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
++
++	/* Clean up Pre-CSC */
++	drmModeDestroyPropertyBlob(display->drm_fd,
++				   color_op_data[0].blob_id);
++	free(pre_csc_lut);
++
++	/* Reset Pipe Line */
++	igt_plane_replace_prop_blob(plane, IGT_PLANE_SET_COLOR_PIPELINE, NULL, 0);
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
++
++	/* Clean up 3D-LUT */
++	drmModeDestroyPropertyBlob(display->drm_fd,
++				   color_op_data[0].blob_id);
++	free(_3d_lut);
++	free(color_op_data);
++
++	return true;
++}
++
+ #undef HAS_PRE_CSC
+ #undef HAS_CSC
+ #undef HAS_POST_CSC
+@@ -1635,6 +1788,10 @@ run_tests_for_pipe(data_t *data)
+ 		  "Find a color pipeline with pre-csc,csc and post-csc pipeline."
+ 		  "Set up all blocks and then set only pre-csc"
+ 		},
++		{ "plane-cp-test-2", plane_cp_test_2,
++		  "Find a color pipeline with pre-csc and then program the block."
++		  "Then find a color pipeline with 3D lut and program the block"
++		},
+ 	};
+ 	enum pipe active_pipes[IGT_MAX_PIPES];
+ 	uint32_t last_pipe = 0;
+-- 
+2.25.1
