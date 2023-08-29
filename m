@@ -1,13 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 29 Aug 2023 07:11:05 -0700
-Message-Id: <20230829141107.1505705-3-lucas.demarchi@intel.com>
+Date: Tue, 29 Aug 2023 07:11:07 -0700
+Message-Id: <20230829141107.1505705-5-lucas.demarchi@intel.com>
 In-Reply-To: <20230829141107.1505705-1-lucas.demarchi@intel.com>
 References: <20230829141107.1505705-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH igt 2/4] lib/intel_chipset: Add Lunar Lake support
+Subject: [igt-dev] [PATCH igt 4/4] tests/xe_debugfs: skip page table level
+ check for Xe2
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,84 +21,67 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add basic definition for the Lunar Lake platform. This uses the PCI ID
-from the xe_pciids.h which has a macro in a slighlty different form.
+From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 
-Going forward we could also trim down a little bit the the info struct
-like was done in the kernel, relying on gmdid and IP version checks.
-This is left for later.
+Starting with Xe2, a 5-level page table is always used, regardless of
+the actual virtual address range supported by the platform. Do not
+depend on VA range to configure max page table level.
 
-Cc: Swati Sharma <swati2.sharma@intel.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- lib/intel_chipset.h     |  5 +++++
- lib/intel_device_info.c | 12 ++++++++++++
- 2 files changed, 17 insertions(+)
+ tests/xe/xe_debugfs.c | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
-index 84cf1799e..52b15ccea 100644
---- a/lib/intel_chipset.h
-+++ b/lib/intel_chipset.h
-@@ -46,6 +46,7 @@ struct intel_device_info {
- 	bool has_4tile : 1;
- 	bool has_flatccs : 1;
- 	bool has_oam : 1;
-+	bool has_gmdid : 1;
- 	bool is_mobile : 1;
- 	bool is_whitney : 1;
- 	bool is_almador : 1;
-@@ -90,6 +91,7 @@ struct intel_device_info {
- 	bool is_alderlake_n : 1;
- 	bool is_meteorlake : 1;
- 	bool is_pontevecchio : 1;
-+	bool is_lunarlake : 1;
- 	const struct intel_cmds_info *cmds_info;
- 	const char *codename;
- };
-@@ -203,6 +205,7 @@ void intel_check_pch(void);
- #define IS_ALDERLAKE_N(devid)	(intel_get_device_info(devid)->is_alderlake_n)
- #define IS_METEORLAKE(devid)	(intel_get_device_info(devid)->is_meteorlake)
- #define IS_PONTEVECCHIO(devid)	(intel_get_device_info(devid)->is_pontevecchio)
-+#define IS_LUNARLAKE(devid)	(intel_get_device_info(devid)->is_lunarlake)
+diff --git a/tests/xe/xe_debugfs.c b/tests/xe/xe_debugfs.c
+index e51d03661..72c069bfc 100644
+--- a/tests/xe/xe_debugfs.c
++++ b/tests/xe/xe_debugfs.c
+@@ -74,6 +74,7 @@ static int validate_entries(int fd, const char *add_path, const char * const str
+ static void
+ test_base(int fd, struct drm_xe_query_config *config)
+ {
++	uint16_t devid = intel_get_drm_devid(fd);
+ 	static const char * const expected_files[] = {
+ 		"gt0",
+ 		"gt1",
+@@ -86,7 +87,6 @@ test_base(int fd, struct drm_xe_query_config *config)
+ 		"clients",
+ 		"name"
+ 	};
+-
+ 	char reference[4096];
+ 	int val = 0;
  
- #define IS_GEN(devid, x)	(intel_get_device_info(devid)->graphics_ver == x)
- #define AT_LEAST_GEN(devid, x)	(intel_get_device_info(devid)->graphics_ver >= x)
-@@ -236,4 +239,6 @@ void intel_check_pch(void);
+@@ -104,16 +104,19 @@ test_base(int fd, struct drm_xe_query_config *config)
  
- #define HAS_OAM(devid)		(intel_get_device_info(devid)->has_oam)
+ 	igt_assert(igt_debugfs_search(fd, "info", reference));
  
-+#define HAS_GMDID(devid)	(intel_get_device_info(devid)->has_gmdid)
+-	switch (config->info[XE_QUERY_CONFIG_VA_BITS]) {
+-	case 48:
+-		val = 3;
+-		break;
+-	case 57:
+-		val = 4;
+-		break;
++	if (!AT_LEAST_GEN(devid, 20)) {
++		switch (config->info[XE_QUERY_CONFIG_VA_BITS]) {
++		case 48:
++			val = 3;
++			break;
++		case 57:
++			val = 4;
++			break;
++		}
 +
- #endif /* _INTEL_CHIPSET_H */
-diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
-index 5d53d2906..86a8b3650 100644
---- a/lib/intel_device_info.c
-+++ b/lib/intel_device_info.c
-@@ -504,6 +504,16 @@ static const struct intel_device_info intel_pontevecchio_info = {
- 	.cmds_info = &gen12_pvc_cmds_info,
- };
++		sprintf(reference, "vm_max_level %d", val);
++		igt_assert(igt_debugfs_search(fd, "info", reference));
+ 	}
+-	sprintf(reference, "vm_max_level %d", val);
+-	igt_assert(igt_debugfs_search(fd, "info", reference));
  
-+static const struct intel_device_info intel_lunarlake_info = {
-+	.graphics_ver = 20,
-+	.graphics_rel = 4,
-+	.display_ver = 20,
-+	.has_4tile = true,
-+	.has_gmdid = true,
-+	.is_lunarlake = true,
-+	.codename = "lunarlake"
-+};
-+
- static const struct pci_id_match intel_device_match[] = {
- 	INTEL_I810_IDS(&intel_i810_info),
- 	INTEL_I815_IDS(&intel_i815_info),
-@@ -607,6 +617,8 @@ static const struct pci_id_match intel_device_match[] = {
- 
- 	INTEL_PVC_IDS(&intel_pontevecchio_info),
- 
-+	XE_LNL_IDS(INTEL_VGA_DEVICE, &intel_lunarlake_info),
-+
- 	INTEL_VGA_DEVICE(PCI_MATCH_ANY, &intel_generic_info),
- };
- 
+ 	igt_assert(igt_debugfs_exists(fd, "gt0", O_RDONLY));
+ 	if (config->info[XE_QUERY_CONFIG_GT_COUNT] > 1)
 -- 
 2.40.1
