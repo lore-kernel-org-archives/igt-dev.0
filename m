@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EE84A10E21D
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Aug 2023 10:50:55 +0000 (UTC)
-Date: Tue, 29 Aug 2023 09:50:31 -0100
-From: Melissa Wen <mwen@igalia.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230829105031.bezfwml6ksyks3hy@mail.igalia.com>
-References: <20230824163302.15121-1-mwen@igalia.com>
- <20230828153954.vnozovo4fdxara5b@kamilkon-desk.igk.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F074610E301
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Aug 2023 11:51:36 +0000 (UTC)
+Date: Tue, 29 Aug 2023 13:51:32 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+Message-ID: <20230829135132.6355bf8f@maurocar-mobl2>
+In-Reply-To: <d8019c58-6de5-77af-967e-bb5494e9e9cb@intel.com>
+References: <20230817093504.75749-1-mauro.chehab@linux.intel.com>
+ <d8019c58-6de5-77af-967e-bb5494e9e9cb@intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="sahpvladn74qq4am"
-Content-Disposition: inline
-In-Reply-To: <20230828153954.vnozovo4fdxara5b@kamilkon-desk.igk.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_atomic: check zpos is mutable
- before test mutable zpos
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [igt-dev] [PATCH i-g-t] docs/reference: add links to
+ testplan-based documentation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,153 +21,174 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>,
- Tomeu Vizoso <tomeu.vizoso@collabora.com>, igt-dev@lists.freedesktop.org,
- kernel-dev@igalia.com
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+On Thu, 17 Aug 2023 23:08:24 +0530
+"Modem, Bhanuprakash" <bhanuprakash.modem@intel.com> wrote:
 
---sahpvladn74qq4am
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On 08/28, Kamil Konieczny wrote:
-> Hi Melissa,
+> Hi Mauro,
 >=20
-> tests/kms_atomic: check zpos is mutable before test mutable zpos
-> ----------------- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> imho better:
->=20
-> tests/kms_atomic: skip zpos test on non-mutable planes
-
-Looks better to me too. I'd just add that it's specific for mutable zpos:
-`tests/kms_atomic: skip mutable zpos test on non-mutable planes`
-
->=20
-> On 2023-08-24 at 15:33:02 -0100, Melissa Wen wrote:
-> > plane-primary-overlay-mutable-zpos only works if both plane types have
-> > mutable zpos property. However, drivers usually set primary zpos as
-> > immutable and the test case just fails. Create a helper to check if a
-> > plane have mutable zpos and skip the test case if zpos changes are not
-> > allowed.
+> On Thu-17-08-2023 03:05 pm, Mauro Carvalho Chehab wrote:
+> > From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > >=20
-> > Signed-off-by: Melissa Wen <mwen@igalia.com>
+> > Instead of relying on runtime-based docs, use the documentation
+> > parsed via testplan for i915, Xe and KMS tests.
+> >=20
+> > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 > > ---
+> >   .../igt-gpu-tools/igt_test_programs.xml       | 63 ++++++++-----------
+> >   docs/reference/igt-gpu-tools/meson.build      |  4 --
+> >   2 files changed, 27 insertions(+), 40 deletions(-)
 > >=20
-> > Hi,
-> >=20
-> > I don't know what drivers currently use this test case (imx?), but
-> > besides this requirement check, the test case seems to use an uncommon
-> > format for overlay plane (ARGB1555). From drm_info[1], I think a more
-> > generic option would be ARGB8888 for alpha blending tests, but a primary
-> > plane with mutable zpos doesn't seem a common case too.
-> >=20
-> > Let me know your thoughts
-> >=20
-> > [1] https://drmdb.emersion.fr/formats?plane=3D0
-> >=20
-> >  lib/igt_kms.c      | 17 +++++++++++++++++
-> >  lib/igt_kms.h      |  2 ++
-> >  tests/kms_atomic.c |  3 +++
-> >  3 files changed, 22 insertions(+)
-> >=20
-> > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> > index e0959ccff..42dc66fcd 100644
-> > --- a/lib/igt_kms.c
-> > +++ b/lib/igt_kms.c
-> > @@ -3827,6 +3827,23 @@ void igt_plane_set_prop_enum(igt_plane_t *plane,
-> >  	igt_assert(igt_plane_try_prop_enum(plane, prop, val));
-> >  }
-> > =20
+> > diff --git a/docs/reference/igt-gpu-tools/igt_test_programs.xml b/docs/=
+reference/igt-gpu-tools/igt_test_programs.xml
+> > index 92bc33ba83f6..51f8cac05f98 100644
+> > --- a/docs/reference/igt-gpu-tools/igt_test_programs.xml
+> > +++ b/docs/reference/igt-gpu-tools/igt_test_programs.xml
+> > @@ -147,42 +147,6 @@
+> >       <xi:include href=3D"igt_test_programs_gem_description.xml"/>
+> >     </refentry>
+> >  =20
+> > -  <refentry id=3D"igt-gen3-tests">
+> > -    <refnamediv>
+> > -      <refname>Gen 3 Tests</refname>
+> > -      <refpurpose>Tests specific to gen 3</refpurpose>
+> > -    </refnamediv>
+> > -    <xi:include href=3D"igt_test_programs_gen3_programs.xml"/>
+> > -    <xi:include href=3D"igt_test_programs_gen3_description.xml"/>
+> > -  </refentry>
+> > -
+> > -  <refentry id=3D"igt-gen7-tests">
+> > -    <refnamediv>
+> > -      <refname>Gen 7 Tests</refname>
+> > -      <refpurpose>Tests specific to gen 7</refpurpose>
+> > -    </refnamediv>
+> > -    <xi:include href=3D"igt_test_programs_gen7_programs.xml"/>
+> > -    <xi:include href=3D"igt_test_programs_gen7_description.xml"/>
+> > -  </refentry>
+> > -
+> > -  <refentry id=3D"igt-i915-tests">
+> > -    <refnamediv>
+> > -      <refname>i915 Tests</refname>
+> > -      <refpurpose>Tests for overall i915 driver behaviour</refpurpose>
+> > -    </refnamediv>
+> > -    <xi:include href=3D"igt_test_programs_i915_programs.xml"/>
+> > -    <xi:include href=3D"igt_test_programs_i915_description.xml"/>
+> > -  </refentry>
+> > -
+> > -  <refentry id=3D"igt-kms-tests">
+> > -    <refnamediv>
+> > -      <refname>KMS Tests</refname>
+> > -      <refpurpose>Tests for kernel mode setting</refpurpose>
+> > -    </refnamediv>
+> > -    <xi:include href=3D"igt_test_programs_kms_programs.xml"/>
+> > -    <xi:include href=3D"igt_test_programs_kms_description.xml"/>
+> > -  </refentry>
+> > -
+> >     <refentry id=3D"igt-meta-tests">
+> >       <refnamediv>
+> >         <refname>Meta Tests</refname>
+> > @@ -255,6 +219,33 @@
+> >       <xi:include href=3D"igt_test_programs_vgem_description.xml"/>
+> >     </refentry>
+> >  =20
+> > +  <refentry id=3D"igt-xe-tests">
+> > +    <refnamediv>
+> > +      <refname>
+> > +          <ulink url=3D"../testplan/xe_tests.html" type=3D"http">Xe Te=
+sts</ulink> =20
 >=20
-> Please document public functions.
+> As the testplan is not inside the reference dir, the URL must be:=20
+> "../../../testplan/xe_tests.html"
 
-ACK. I'll address it in the next version.
+The reference URL assumes the location where the docs will be installed.
+So, if we have them installed under a "install_dir":
 
-Thanks for the feedback,
 
-Melissa
+  $ meson --prefix `pwd`/install_dir build -Dxe_driver=3Denabled --reconfig=
+ure
+
+We have:
+
+	$ tree -d install_dir/share/gtk-doc/
+	install_dir/share/gtk-doc/
+	=E2=94=94=E2=94=80=E2=94=80 html
+	    =E2=94=9C=E2=94=80=E2=94=80 igt-gpu-tools
+	    =E2=94=94=E2=94=80=E2=94=80 testplan
+
+So, "../testplan" is the path to go from "html/igt-gpu-tools" to the
+location where xe_tests.html is located.
+
+> Also, is there anyway to put these urls in index.html, instead of=20
+> opening igt-xe-tests.html and from there open the actual xe_tests.html?
+
+With the current way this is generated, I'm not sure. I found it
+hard to find a proper documentation about gtk-doc fields. Currently,
+IGT relies on it to generate the index.html file.
+
+Also meson integration (or gtk-doc) removes all files from the target
+directory when building docs (html/igt-gpu-tools).=20
+
+One possible alternative would be to have a master index.html file
+under install_dir/share/gtk-doc/html (or under some other place). I
+avoided doing that (or some other doc reorg) as this could break any
+scripts copying the documentation to some place.
+
+> > +      </refname>
+> > +      <refpurpose>Tests for the Intel Xe driver</refpurpose>
+> > +    </refnamediv>
+> > +  </refentry>
+> > +
+> > +  <refentry id=3D"igt-i915-tests">
+> > +    <refnamediv>
+> > +      <refname>
+> > +        <ulink url=3D"../testplan/i915_tests.html" type=3D"http">i915 =
+Tests</ulink>
+> > +      </refname>
+> > +      <refpurpose>Tests for the Intel i915 driver</refpurpose>
+> > +    </refnamediv>
+> > +  </refentry>
+> > +
+> > +  <refentry id=3D"igt-kms-tests">
+> > +    <refnamediv>
+> > +      <refname>
+> > +        <ulink url=3D"../testplan/kms_tests.html" type=3D"http">KMS Te=
+sts</ulink>
+> > +      </refname>
+> > +      <refpurpose>Tests for kernel mode setting</refpurpose>
+> > +    </refnamediv>
+> > +  </refentry>
+> > +
+> >     <glossary>
+> >       <title>Glossary</title>
+> >  =20
+> > diff --git a/docs/reference/igt-gpu-tools/meson.build b/docs/reference/=
+igt-gpu-tools/meson.build
+> > index 6b832ad279cf..9bb5ca7e0798 100644
+> > --- a/docs/reference/igt-gpu-tools/meson.build
+> > +++ b/docs/reference/igt-gpu-tools/meson.build
+> > @@ -29,10 +29,6 @@ test_groups =3D [
+> >   	'debugfs',
+> >   	'drm',
+> >   	'gem',
+> > -	'gen3',
+> > -	'gen7',
+> > -	'i915',
+> > -	'kms', =20
+>=20
+> Also, we must drop testdisplay, since it is already covered by kms tests.
+
+OK, I'll remove it too.
+
+Btw, there are other places generating broken links, so I suspect
+that several of those "test_groups" aren't needed anymore.=20
 
 >=20
-> Regards,
-> Kamil
+> - Bhanu
 >=20
-> > +bool igt_plane_check_prop_is_mutable(igt_plane_t *plane,
-> > +				     enum igt_atomic_plane_properties igt_prop)
-> > +{
-> > +	drmModePropertyPtr prop;
-> > +	uint64_t value;
-> > +	bool has_prop;
-> > +
-> > +	has_prop =3D kmstest_get_property(plane->pipe->display->drm_fd,
-> > +					plane->drm_plane->plane_id,
-> > +					DRM_MODE_OBJECT_PLANE,
-> > +				        igt_plane_prop_names[igt_prop], NULL,
-> > +					&value, &prop);
-> > +	igt_assert(has_prop);
-> > +
-> > +	return !(prop->flags & DRM_MODE_PROP_IMMUTABLE);
-> > +}
-> > +
-> >  /**
-> >   * igt_plane_replace_prop_blob:
-> >   * @plane: plane to set property on.
-> > diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> > index 91355c910..4b4ec6c5a 100644
-> > --- a/lib/igt_kms.h
-> > +++ b/lib/igt_kms.h
-> > @@ -734,6 +734,8 @@ extern void igt_plane_replace_prop_blob(igt_plane_t=
- *plane,
-> >  					enum igt_atomic_plane_properties prop,
-> >  					const void *ptr, size_t length);
-> > =20
-> > +extern bool igt_plane_check_prop_is_mutable(igt_plane_t *plane,
-> > +					    enum igt_atomic_plane_properties igt_prop);
-> >  /**
-> >   * igt_output_has_prop:
-> >   * @output: Output to check.
-> > diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
-> > index 3289219f9..22ddf5633 100644
-> > --- a/tests/kms_atomic.c
-> > +++ b/tests/kms_atomic.c
-> > @@ -1463,7 +1463,10 @@ igt_main
-> >  		igt_require(overlay);
-> > =20
-> >  		igt_require(igt_plane_has_prop(primary, IGT_PLANE_ZPOS));
-> > +		igt_require(igt_plane_check_prop_is_mutable(primary, IGT_PLANE_ZPOS)=
-);
-> > +
-> >  		igt_require(igt_plane_has_prop(overlay, IGT_PLANE_ZPOS));
-> > +		igt_require(igt_plane_check_prop_is_mutable(overlay, IGT_PLANE_ZPOS)=
-);
-> > =20
-> >  		igt_require(igt_plane_has_format_mod(primary, format_primary, 0x0));
-> >  		igt_require(igt_plane_has_format_mod(overlay, format_overlay, 0x0));
-> > --=20
-> > 2.40.1
-> >=20
-
---sahpvladn74qq4am
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEd8WOo/JViG+Tu+XIwqF3j0dLehwFAmTtzXcACgkQwqF3j0dL
-ehzyaxAAv8YOMzrljkX6flT8mBxVj7jVL2lUyamlAjdvlguDi3cUM7YFok1reB/E
-32P5L2KY095RHM4BBvW7HEYwlnEuMHqkQL9j7nb4Uz3E0+8d4rIxUdrAC/Mlzg4H
-EveC8CpAFB5GC6i9OBYHCTopMR9OIo/lge9HuvUvJZ9W/PYuhGPmaWcH39HZU9hY
-7/vTwffZlwemwlbLXlrBHJwUagprXN68jfNrxfgKF9oss75C0I3sRJF06GVci0kr
-91ghB0+wxSjRiU9CHTUcis9MVOBKRaB3OlXstjFyoTd0kXsQrAf+Sil94yYUQmz6
-wIoyjw9+OblustZwhe/IctyoOunG4qHDfeafHZ8xbgua7ohjLi7JBv7ec292cynE
-t7sZQo83e0j1IE91zeMoK5ReZBTxBGeKkjJ97m4hy4y5qK496pNG121iUc8jn6Wg
-fEbAPk77xKPA/DLBe5THuz8R9jzPg5ksy+3r9p204avumSm30tCDM9Byq0Cj16v4
-bzV/4PlQRswBznwtpULmgmobKNdVkgNhSlTfsbhpRKb2xR7V7u3lPsHLqb2I2ICO
-KrtPGV9sJyVv6jUlMAdbuwbObZQdY5OaVbtphK1nTjN5bxsiHmt0j7C90QM9UcHe
-EzE8eCr1q0tZoS8XOECsz6GnGKAQOqqpjcTkG9KkASPSi60bMdQ=
-=nLM6
------END PGP SIGNATURE-----
-
---sahpvladn74qq4am--
+> >   	'meta',
+> >   	'perf',
+> >   	'pm', =20
