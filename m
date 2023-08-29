@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E618110E38B
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Aug 2023 14:42:18 +0000 (UTC)
-From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 29 Aug 2023 20:08:19 +0530
-Message-Id: <20230829143821.1417623-8-chaitanya.kumar.borah@intel.com>
-In-Reply-To: <20230829143821.1417623-1-chaitanya.kumar.borah@intel.com>
-References: <20230829143821.1417623-1-chaitanya.kumar.borah@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============7788251104364965939=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 7/9] tests/kms_color: Add CTM tests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Lucas De Marchi" <lucas.demarchi@intel.com>
+Date: Tue, 29 Aug 2023 14:59:50 -0000
+Message-ID: <169332119040.16746.18343501758507591565@emeril.freedesktop.org>
+References: <20230829141107.1505705-1-lucas.demarchi@intel.com>
+In-Reply-To: <20230829141107.1505705-1-lucas.demarchi@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQWRkIExO?=
+ =?utf-8?q?L_support_to_xe_tests?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,270 +17,221 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: chaitanya.kumar.borah@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add test cases to validate color conversion using CTM matrix.
-We use a frame with RGB color bars and convert one color to
-another using the plane CSC block.
+--===============7788251104364965939==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Also added tests to program CTM with varying co-effs based on
-usecases.
+== Series Details ==
 
-ToDo: This patch needs to broken down to smaller logical patches.
+Series: Add LNL support to xe tests
+URL   : https://patchwork.freedesktop.org/series/123016/
+State : success
 
-Co-developed-by: Uma Shankar <uma.shankar@intel.com>
-Signed-off-by: Uma Shankar <uma.shankar@intel.com>
-Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
----
- tests/kms_color.c | 219 +++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 215 insertions(+), 4 deletions(-)
+== Summary ==
 
-diff --git a/tests/kms_color.c b/tests/kms_color.c
-index d00ba13a1..2f874a59a 100644
---- a/tests/kms_color.c
-+++ b/tests/kms_color.c
-@@ -1631,10 +1631,6 @@ static bool plane_cp_test_2(data_t *data, igt_plane_t *plane)
- 	return true;
- }
- 
--#undef HAS_PRE_CSC
--#undef HAS_CSC
--#undef HAS_POST_CSC
--#undef HAS_COLOR_CONVERSION_CAP
- 
- static void
- run_colorpipeline_tests_for_plane(data_t *data, enum pipe p,
-@@ -1651,6 +1647,205 @@ run_colorpipeline_tests_for_plane(data_t *data, enum pipe p,
- 	test_cleanup(data);
- }
- 
-+static bool test_plane_ctm(data_t *data,
-+			   igt_plane_t *plane,
-+			   const color_t *before,
-+			   const color_t *after,
-+			   const double *ctm_matrix)
-+{
-+	const double ctm_identity[] = {
-+		1.0, 0.0, 0.0,
-+		0.0, 1.0, 0.0,
-+		0.0, 0.0, 1.0
-+	};
-+	struct drm_color_ctm *ctm1, *ctm2;
-+	igt_output_t *output = data->output;
-+	igt_display_t *display = &data->display;
-+	drmModeModeInfo *mode = data->mode;
-+	struct igt_fb fb;
-+	igt_crc_t crc_software, crc_hardware;
-+	igt_pipe_crc_t *pipe_crc = data->pipe_crc;
-+	bool ret = true;
-+	uint32_t color_pipeline, blob_id = 0;
-+	struct drm_color_pipeline cp;
-+	struct drm_color_op_data *color_op_data;
-+	uint32_t old_blob_id;
-+
-+	igt_info("Plane CTM test is running on pipe-%s plane-%d(%s)\n",
-+		 kmstest_pipe_name(plane->pipe->pipe), plane->index,
-+		 kmstest_plane_type_name(plane->type));
-+
-+	igt_require(igt_plane_has_prop(plane, IGT_PLANE_GET_COLOR_PIPELINE));
-+	igt_require(igt_plane_has_prop(plane, IGT_PLANE_SET_COLOR_PIPELINE));
-+
-+	igt_output_set_pipe(output, plane->pipe->pipe);
-+
-+	/* Create a framebuffer at the size of the output. */
-+	igt_assert(igt_create_fb(data->drm_fd,
-+				 mode->hdisplay,
-+				 mode->vdisplay,
-+				 data->drm_format,
-+				 DRM_FORMAT_MOD_LINEAR,
-+				 &fb));
-+
-+	igt_plane_set_fb(plane, &fb);
-+
-+	disable_degamma(plane->pipe);
-+	disable_gamma(plane->pipe);
-+	disable_ctm(plane->pipe);
-+
-+	/* Reset all color hardware blocks in pipeline by setting blob as NULL */
-+	igt_plane_replace_prop_blob(plane, IGT_PLANE_SET_COLOR_PIPELINE, NULL, 0);
-+	igt_display_commit2(display, COMMIT_ATOMIC);
-+
-+	color_pipeline = get_color_pipeline(data, plane, HAS_CSC);
-+	igt_info("ctm color pipeline %d\n", color_pipeline);
-+
-+	color_op_data = calloc(1, sizeof(struct drm_color_op_data));
-+	cp.num = color_pipeline;
-+	cp.size = sizeof(struct drm_color_op_data);
-+	cp.data = color_op_data;
-+
-+	/* Without CTM transformation. */
-+	paint_rectangles(data, mode, after, &fb);
-+	igt_plane_set_fb(plane, &fb);
-+
-+	color_op_data[0].name = DRM_CB_CSC;
-+	ctm1 = create_ctm(ctm_identity);
-+	igt_assert(drmModeCreatePropertyBlob(display->drm_fd,
-+					     ctm1, sizeof(struct drm_color_ctm), &blob_id) == 0);
-+	color_op_data[0].blob_id = blob_id;
-+
-+	/* Enable CTM hardware with unity matrix */
-+	igt_plane_replace_prop_blob(plane, IGT_PLANE_SET_COLOR_PIPELINE, &cp,
-+				    sizeof(struct drm_color_pipeline));
-+	igt_display_commit2(display, COMMIT_ATOMIC);
-+
-+	igt_wait_for_vblank(data->drm_fd,
-+			    display->pipes[plane->pipe->pipe].crtc_offset);
-+	igt_pipe_crc_collect_crc(pipe_crc, &crc_software);
-+
-+	/* With CTM transformation. */
-+	paint_rectangles(data, mode, before, &fb);
-+	igt_plane_set_fb(plane, &fb);
-+
-+	ctm2 = create_ctm(ctm_matrix);
-+	old_blob_id = color_op_data[0].blob_id;
-+	igt_assert(drmModeCreatePropertyBlob(display->drm_fd,
-+					     ctm2, sizeof(struct drm_color_ctm), &blob_id) == 0);
-+	color_op_data[0].blob_id = blob_id;
-+
-+	/* Now change the matrix co-effs based on desired  color conversion */
-+	igt_plane_replace_prop_blob(plane, IGT_PLANE_SET_COLOR_PIPELINE, &cp,
-+				    sizeof(struct drm_color_pipeline));
-+	igt_display_commit2(display, COMMIT_ATOMIC);
-+
-+	igt_wait_for_vblank(data->drm_fd,
-+			    display->pipes[plane->pipe->pipe].crtc_offset);
-+	igt_pipe_crc_collect_crc(pipe_crc, &crc_hardware);
-+
-+	/* Clean up old blob */
-+	drmModeDestroyPropertyBlob(display->drm_fd,
-+				   old_blob_id);
-+	free(ctm1);
-+	/* Verify that the CRC of the software computed ouutput
-+	 * is equal to the CRC of the CTM matrix transformation
-+	 * output.
-+	 */
-+	ret &= igt_skip_crc_compare || igt_check_crc_equal(&crc_software, &crc_hardware);
-+
-+	/****** Reset Pipe Line *******/
-+	igt_plane_replace_prop_blob(plane, IGT_PLANE_SET_COLOR_PIPELINE, NULL, 0);
-+	igt_display_commit2(display, COMMIT_ATOMIC);
-+
-+	drmModeDestroyPropertyBlob(display->drm_fd,
-+				   color_op_data[0].blob_id);
-+	free(ctm2);
-+
-+	igt_plane_set_fb(plane, NULL);
-+	igt_output_set_pipe(output, PIPE_NONE);
-+	igt_display_commit2(display, COMMIT_ATOMIC);
-+
-+	return ret;
-+}
-+
-+#undef HAS_PRE_CSC
-+#undef HAS_CSC
-+#undef HAS_POST_CSC
-+#undef HAS_COLOR_CONVERSION_CAP
-+
-+static void run_ctm_tests_for_plane(data_t *data,
-+				    enum pipe pipe,
-+				    const color_t *fb_colors,
-+				    const double *ctm,
-+				    int iter)
-+{
-+	igt_plane_t *plane;
-+	double delta;
-+
-+	color_t red_green_blue[] = {
-+		{ 1.0, 0.0, 0.0 },
-+		{ 0.0, 1.0, 0.0 },
-+		{ 0.0, 0.0, 1.0 }
-+	};
-+
-+	test_setup(data, pipe);
-+
-+	data->color_depth = 8;
-+	delta = 1.0 / (1 << data->color_depth);
-+	data->drm_format = DRM_FORMAT_XRGB8888;
-+	data->mode = igt_output_get_mode(data->output);
-+
-+	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), data->output->name) {
-+		bool result = false;
-+		int i, count = 0;
-+		/* Run only for two planes */
-+		int first_plane = 0;
-+		int last_plane = 1;
-+
-+		for_each_plane_on_pipe(&data->display, pipe, plane) {
-+			if (j__ != first_plane && j__ != last_plane)
-+				continue;
-+
-+			if (!iter) {
-+				color_t expected_colors[3];
-+
-+				memcpy(&expected_colors, fb_colors, sizeof(expected_colors));
-+				result |= test_plane_ctm(data, plane,
-+							 red_green_blue,
-+							 expected_colors, ctm);
-+			}
-+
-+			for (i = 0; i < iter; i++) {
-+				color_t expected_colors[3] = {
-+					fb_colors[0],
-+					fb_colors[1],
-+					fb_colors[2],
-+				};
-+
-+				transform_color(&expected_colors[0], ctm, delta * (i - (iter / 2)));
-+				transform_color(&expected_colors[1], ctm, delta * (i - (iter / 2)));
-+				transform_color(&expected_colors[2], ctm, delta * (i - (iter / 2)));
-+
-+				result |= test_plane_ctm(data, plane,
-+							 fb_colors,
-+							 expected_colors, ctm);
-+
-+				if (result)
-+					break;
-+			}
-+
-+			igt_assert(result);
-+			count++;
-+		}
-+
-+		if (!count)
-+			igt_skip("No valid planes found.\n");
-+	}
-+
-+	test_cleanup(data);
-+}
-+
- static void
- run_tests_for_pipe(data_t *data)
- {
-@@ -1837,6 +2032,22 @@ run_tests_for_pipe(data_t *data)
- 		}
- 	}
- 
-+	for (i = 0; i < ARRAY_SIZE(ctm_tests); i++) {
-+		igt_describe_f("%s", ctm_tests[i].desc);
-+		igt_subtest_with_dynamic_f("plane-%s", ctm_tests[i].name) {
-+			for_each_pipe(&data->display, pipe) {
-+				if (pipe != active_pipes[0] &&
-+				    pipe != active_pipes[last_pipe])
-+					continue;
-+
-+				run_ctm_tests_for_plane(data, pipe,
-+							ctm_tests[i].fb_colors,
-+							ctm_tests[i].ctm,
-+							ctm_tests[i].iter);
-+			}
-+		}
-+	}
-+
- 	igt_fixture
- 		igt_require(data->display.is_atomic);
- 
--- 
-2.25.1
+CI Bug Log - changes from IGT_7458 -> IGTPW_9679
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9679/index.html
+
+Participating hosts (40 -> 38)
+------------------------------
+
+  Missing    (2): fi-kbl-soraka fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_9679 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-rkl-11600:       [PASS][1] -> [DMESG-FAIL][2] ([i915#5334] / [i915#7872])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7458/fi-rkl-11600/igt@i915_selftest@live@gt_heartbeat.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9679/fi-rkl-11600/igt@i915_selftest@live@gt_heartbeat.html
+    - fi-apl-guc:         [PASS][3] -> [DMESG-FAIL][4] ([i915#5334])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7458/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9679/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-mtlp-8:         [PASS][5] -> [ABORT][6] ([i915#7982] / [i915#8865])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7458/bat-mtlp-8/igt@i915_selftest@live@requests.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9679/bat-mtlp-8/igt@i915_selftest@live@requests.html
+
+  * igt@i915_suspend@basic-s3-without-i915:
+    - bat-mtlp-6:         NOTRUN -> [SKIP][7] ([i915#6645])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9679/bat-mtlp-6/igt@i915_suspend@basic-s3-without-i915.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc:
+    - bat-mtlp-6:         NOTRUN -> [SKIP][8] ([i915#1845] / [i915#4078])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9679/bat-mtlp-6/igt@kms_pipe_crc_basic@suspend-read-crc.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@requests:
+    - bat-mtlp-6:         [ABORT][9] ([i915#7982] / [i915#8865]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7458/bat-mtlp-6/igt@i915_selftest@live@requests.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9679/bat-mtlp-6/igt@i915_selftest@live@requests.html
+
+  
+#### Warnings ####
+
+  * igt@kms_psr@cursor_plane_move:
+    - bat-rplp-1:         [SKIP][11] ([i915#1072]) -> [ABORT][12] ([i915#8469] / [i915#8668])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7458/bat-rplp-1/igt@kms_psr@cursor_plane_move.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9679/bat-rplp-1/igt@kms_psr@cursor_plane_move.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#484]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/484
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#4078]: https://gitlab.freedesktop.org/drm/intel/issues/4078
+  [i915#4550]: https://gitlab.freedesktop.org/drm/intel/issues/4550
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#6645]: https://gitlab.freedesktop.org/drm/intel/issues/6645
+  [i915#7359]: https://gitlab.freedesktop.org/drm/intel/issues/7359
+  [i915#7872]: https://gitlab.freedesktop.org/drm/intel/issues/7872
+  [i915#7953]: https://gitlab.freedesktop.org/drm/intel/issues/7953
+  [i915#7982]: https://gitlab.freedesktop.org/drm/intel/issues/7982
+  [i915#8469]: https://gitlab.freedesktop.org/drm/intel/issues/8469
+  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
+  [i915#8865]: https://gitlab.freedesktop.org/drm/intel/issues/8865
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7458 -> IGTPW_9679
+
+  CI-20190529: 20190529
+  CI_DRM_13573: cb94b8169f58bc821f95f5fd8f333074576f71ac @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_9679: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9679/index.html
+  IGT_7458: 7458
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9679/index.html
+
+--===============7788251104364965939==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add LNL support to xe tests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123016/">https://patchwork.freedesktop.org/series/123016/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9679/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9679/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7458 -&gt; IGTPW_9679</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9679/index.html</p>
+<h2>Participating hosts (40 -&gt; 38)</h2>
+<p>Missing    (2): fi-kbl-soraka fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_9679 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>
+<p>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7458/fi-rkl-11600/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9679/fi-rkl-11600/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7872">i915#7872</a>)</p>
+</li>
+<li>
+<p>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7458/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9679/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7458/bat-mtlp-8/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9679/bat-mtlp-8/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7982">i915#7982</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8865">i915#8865</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s3-without-i915:</p>
+<ul>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9679/bat-mtlp-6/igt@i915_suspend@basic-s3-without-i915.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6645">i915#6645</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc:</p>
+<ul>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9679/bat-mtlp-6/igt@kms_pipe_crc_basic@suspend-read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4078">i915#4078</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@requests:<ul>
+<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7458/bat-mtlp-6/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7982">i915#7982</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8865">i915#8865</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9679/bat-mtlp-6/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_psr@cursor_plane_move:<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7458/bat-rplp-1/igt@kms_psr@cursor_plane_move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9679/bat-rplp-1/igt@kms_psr@cursor_plane_move.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8469">i915#8469</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7458 -&gt; IGTPW_9679</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13573: cb94b8169f58bc821f95f5fd8f333074576f71ac @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_9679: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9679/index.html<br />
+  IGT_7458: 7458</p>
+
+</body>
+</html>
+
+--===============7788251104364965939==--
