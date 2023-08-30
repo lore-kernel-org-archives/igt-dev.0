@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam04on20601.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e8b::601])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3B40A10E0C0
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Aug 2023 22:32:26 +0000 (UTC)
-From: <vitaly.prosyak@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Tue, 29 Aug 2023 18:31:59 -0400
-Message-ID: <20230829223200.273589-2-vitaly.prosyak@amd.com>
-In-Reply-To: <20230829223200.273589-1-vitaly.prosyak@amd.com>
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam12on2046.outbound.protection.outlook.com [40.107.244.46])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 379A810E515
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Aug 2023 13:03:44 +0000 (UTC)
+Message-ID: <28d78879-421c-45bd-915f-4f3fbb7834e2@amd.com>
+Date: Wed, 30 Aug 2023 09:03:38 -0400
+Content-Language: en-CA, en-US
+To: vitaly.prosyak@amd.com, igt-dev@lists.freedesktop.org
 References: <20230829223200.273589-1-vitaly.prosyak@amd.com>
+From: Luben Tuikov <luben.tuikov@amd.com>
+In-Reply-To: <20230829223200.273589-1-vitaly.prosyak@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 2/3] lib/amdgpu: fix formatting warnings
+Subject: Re: [igt-dev] [PATCH 1/3] tests/amdgpu: add sync object tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,438 +21,335 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Alex Deucher <alexander.deucher@amd.com>, Jesse Zhang <Jesse.Zhang@amd.com>,
- Luben Tuikov <luben.tuikov@amd.com>, Christian
- Koenig <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>,
+ Christian Koenig <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+On 2023-08-29 18:31, vitaly.prosyak@amd.com wrote:
+> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> 
+> Using worker thread to wait on point and then signal point on other thread.
+> Another test uses a worker thread to signal point and wait on the main
+> thread using amdgpu_cs_syncobj_timeline_wait.
+> 
+> The command consists of two chunks :
+> 1. AMDGPU_CHUNK_ID_IB uses GFX_COMPUTE_NOP  or SDMA_NOP.
+> 2. The second chunk is AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_WAIT
+>    or AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_SIGNAL which has the
+>    point number .
+> 
+> v2 : Kamil helped with podman script to fix the build
+>      failure when drmlib version < 2.4.97
+> v3 : Kamil suggested sort alphabetically includes.
+>      Luben suggested code and meson script improvements.
 
-Cc: Luben Tuikov <luben.tuikov@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian Koenig <christian.koenig@amd.com>
-Cc: Jesse Zhang <Jesse.Zhang@amd.com>
+Great--thanks for attending to the review comments.
 
-Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Review-by: Jesse Zhang <Jesse.Zhang@amd.com>
----
- lib/amdgpu/amd_family.h       | 251 ++++++++++++++++------------------
- lib/amdgpu/amdgpu_asic_addr.h | 124 +++++++----------
- 2 files changed, 166 insertions(+), 209 deletions(-)
+> 
+> Cc: Luben Tuikov <luben.tuikov@amd.com>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
+> Cc: Christian Koenig <christian.koenig@amd.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> Review-by: Luben Tuikov <luben.tuikov@amd.com>
+> Review-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-diff --git a/lib/amdgpu/amd_family.h b/lib/amdgpu/amd_family.h
-index 25c2c7db9..bf3431bc1 100644
---- a/lib/amdgpu/amd_family.h
-+++ b/lib/amdgpu/amd_family.h
-@@ -2,25 +2,8 @@
-  * Copyright 2008 Corbin Simpson <MostAwesomeDude@gmail.com>
-  * Copyright 2010 Marek Olšák <maraeo@gmail.com>
-  * Copyright 2022 Advanced Micro Devices, Inc.
-- *
-- * Permission is hereby granted, free of charge, to any person obtaining a
-- * copy of this software and associated documentation files (the "Software"),
-- * to deal in the Software without restriction, including without limitation
-- * on the rights to use, copy, modify, merge, publish, distribute, sub
-- * license, and/or sell copies of the Software, and to permit persons to whom
-- * the Software is furnished to do so, subject to the following conditions:
-- *
-- * The above copyright notice and this permission notice (including the next
-- * paragraph) shall be included in all copies or substantial portions of the
-- * Software.
-- *
-- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-- * FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL
-- * THE AUTHOR(S) AND/OR THEIR SUPPLIERS BE LIABLE FOR ANY CLAIM,
-- * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-- * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-- * USE OR OTHER DEALINGS IN THE SOFTWARE. */
-+ * Copyright 2023 Advanced Micro Devices, Inc.
-+ */
- 
- #ifndef AMD_FAMILY_H
- #define AMD_FAMILY_H
-@@ -29,127 +12,123 @@
- extern "C" {
- #endif
- 
--enum radeon_family
--{
--   CHIP_UNKNOWN = 0,
--   CHIP_R300, /* R3xx-based cores. (GFX2) */
--   CHIP_R350,
--   CHIP_RV350,
--   CHIP_RV370,
--   CHIP_RV380,
--   CHIP_RS400,
--   CHIP_RC410,
--   CHIP_RS480,
--   CHIP_R420, /* R4xx-based cores. (GFX2) */
--   CHIP_R423,
--   CHIP_R430,
--   CHIP_R480,
--   CHIP_R481,
--   CHIP_RV410,
--   CHIP_RS600,
--   CHIP_RS690,
--   CHIP_RS740,
--   CHIP_RV515, /* R5xx-based cores. (GFX2) */
--   CHIP_R520,
--   CHIP_RV530,
--   CHIP_R580,
--   CHIP_RV560,
--   CHIP_RV570,
--   CHIP_R600, /* GFX3 (R6xx) */
--   CHIP_RV610,
--   CHIP_RV630,
--   CHIP_RV670,
--   CHIP_RV620,
--   CHIP_RV635,
--   CHIP_RS780,
--   CHIP_RS880,
--   CHIP_RV770, /* GFX3 (R7xx) */
--   CHIP_RV730,
--   CHIP_RV710,
--   CHIP_RV740,
--   CHIP_CEDAR, /* GFX4 (Evergreen) */
--   CHIP_REDWOOD,
--   CHIP_JUNIPER,
--   CHIP_CYPRESS,
--   CHIP_HEMLOCK,
--   CHIP_PALM,
--   CHIP_SUMO,
--   CHIP_SUMO2,
--   CHIP_BARTS,
--   CHIP_TURKS,
--   CHIP_CAICOS,
--   CHIP_CAYMAN, /* GFX5 (Northern Islands) */
--   CHIP_ARUBA,
--   CHIP_TAHITI, /* GFX6 (Southern Islands) */
--   CHIP_PITCAIRN,
--   CHIP_VERDE,
--   CHIP_OLAND,
--   CHIP_HAINAN,
--   CHIP_BONAIRE, /* GFX7 (Sea Islands) */
--   CHIP_KAVERI,
--   CHIP_KABINI,
--   CHIP_HAWAII,
--   CHIP_TONGA, /* GFX8 (Volcanic Islands & Polaris) */
--   CHIP_ICELAND,
--   CHIP_CARRIZO,
--   CHIP_FIJI,
--   CHIP_STONEY,
--   CHIP_POLARIS10,
--   CHIP_POLARIS11,
--   CHIP_POLARIS12,
--   CHIP_VEGAM,
--   CHIP_VEGA10, /* GFX9 (Vega) */
--   CHIP_VEGA12,
--   CHIP_VEGA20,
--   CHIP_RAVEN,
--   CHIP_RAVEN2,
--   CHIP_RENOIR,
--   CHIP_ARCTURUS,
--   CHIP_ALDEBARAN,
--   CHIP_NAVI10,
--   CHIP_NAVI12,
--   CHIP_NAVI14,
--   CHIP_SIENNA_CICHLID,
--   CHIP_NAVY_FLOUNDER,
--   CHIP_VANGOGH,
--   CHIP_DIMGREY_CAVEFISH,
--   CHIP_BEIGE_GOBY,
--   CHIP_YELLOW_CARP,
--   CHIP_LAST,
-+enum radeon_family {
-+	CHIP_UNKNOWN	= 0,
-+	CHIP_R300,		/* R3xx-based cores. (GFX2) */
-+	CHIP_R350,
-+	CHIP_RV350,
-+	CHIP_RV370,
-+	CHIP_RV380,
-+	CHIP_RS400,
-+	CHIP_RC410,
-+	CHIP_RS480,
-+	CHIP_R420, /* R4xx-based cores. (GFX2) */
-+	CHIP_R423,
-+	CHIP_R430,
-+	CHIP_R480,
-+	CHIP_R481,
-+	CHIP_RV410,
-+	CHIP_RS600,
-+	CHIP_RS690,
-+	CHIP_RS740,
-+	CHIP_RV515, /* R5xx-based cores. (GFX2) */
-+	CHIP_R520,
-+	CHIP_RV530,
-+	CHIP_R580,
-+	CHIP_RV560,
-+	CHIP_RV570,
-+	CHIP_R600, /* GFX3 (R6xx) */
-+	CHIP_RV610,
-+	CHIP_RV630,
-+	CHIP_RV670,
-+	CHIP_RV620,
-+	CHIP_RV635,
-+	CHIP_RS780,
-+	CHIP_RS880,
-+	CHIP_RV770, /* GFX3 (R7xx) */
-+	CHIP_RV730,
-+	CHIP_RV710,
-+	CHIP_RV740,
-+	CHIP_CEDAR, /* GFX4 (Evergreen) */
-+	CHIP_REDWOOD,
-+	CHIP_JUNIPER,
-+	CHIP_CYPRESS,
-+	CHIP_HEMLOCK,
-+	CHIP_PALM,
-+	CHIP_SUMO,
-+	CHIP_SUMO2,
-+	CHIP_BARTS,
-+	CHIP_TURKS,
-+	CHIP_CAICOS,
-+	CHIP_CAYMAN, /* GFX5 (Northern Islands) */
-+	CHIP_ARUBA,
-+	CHIP_TAHITI, /* GFX6 (Southern Islands) */
-+	CHIP_PITCAIRN,
-+	CHIP_VERDE,
-+	CHIP_OLAND,
-+	CHIP_HAINAN,
-+	CHIP_BONAIRE, /* GFX7 (Sea Islands) */
-+	CHIP_KAVERI,
-+	CHIP_KABINI,
-+	CHIP_HAWAII,
-+	CHIP_TONGA, /* GFX8 (Volcanic Islands & Polaris) */
-+	CHIP_ICELAND,
-+	CHIP_CARRIZO,
-+	CHIP_FIJI,
-+	CHIP_STONEY,
-+	CHIP_POLARIS10,
-+	CHIP_POLARIS11,
-+	CHIP_POLARIS12,
-+	CHIP_VEGAM,
-+	CHIP_VEGA10, /* GFX9 (Vega) */
-+	CHIP_VEGA12,
-+	CHIP_VEGA20,
-+	CHIP_RAVEN,
-+	CHIP_RAVEN2,
-+	CHIP_RENOIR,
-+	CHIP_ARCTURUS,
-+	CHIP_ALDEBARAN,
-+	CHIP_NAVI10,
-+	CHIP_NAVI12,
-+	CHIP_NAVI14,
-+	CHIP_SIENNA_CICHLID,
-+	CHIP_NAVY_FLOUNDER,
-+	CHIP_VANGOGH,
-+	CHIP_DIMGREY_CAVEFISH,
-+	CHIP_BEIGE_GOBY,
-+	CHIP_YELLOW_CARP,
-+	CHIP_LAST,
- };
- 
--enum chip_class
--{
--   CLASS_UNKNOWN = 0,
--   R300,
--   R400,
--   R500,
--   R600,
--   R700,
--   EVERGREEN,
--   CAYMAN,
--   GFX6,
--   GFX7,
--   GFX8,
--   GFX9,
--   GFX10,
--   GFX10_3,
--
--   NUM_GFX_VERSIONS,
-+enum chip_class {
-+	CLASS_UNKNOWN = 0,
-+	R300,
-+	R400,
-+	R500,
-+	R600,
-+	R700,
-+	EVERGREEN,
-+	CAYMAN,
-+	GFX6,
-+	GFX7,
-+	GFX8,
-+	GFX9,
-+	GFX10,
-+	GFX10_3,
-+	NUM_GFX_VERSIONS
- };
- 
--enum ring_type
--{
--   RING_GFX = 0,
--   RING_COMPUTE,
--   RING_DMA,
--   RING_UVD,
--   RING_VCE,
--   RING_UVD_ENC,
--   RING_VCN_DEC,
--   RING_VCN_ENC,
--   RING_VCN_JPEG,
--   NUM_RING_TYPES,
-+enum ring_type {
-+	RING_GFX = 0,
-+	RING_COMPUTE,
-+	RING_DMA,
-+	RING_UVD,
-+	RING_VCE,
-+	RING_UVD_ENC,
-+	RING_VCN_DEC,
-+	RING_VCN_ENC,
-+	RING_VCN_JPEG,
-+	NUM_RING_TYPES,
- };
- 
- const char *ac_get_family_name(enum radeon_family family);
-diff --git a/lib/amdgpu/amdgpu_asic_addr.h b/lib/amdgpu/amdgpu_asic_addr.h
-index dfae4935b..92c347d84 100644
---- a/lib/amdgpu/amdgpu_asic_addr.h
-+++ b/lib/amdgpu/amdgpu_asic_addr.h
-@@ -1,30 +1,8 @@
--/**
--***********************************************************************************************************************
--* SPDX-License-Identifier: MIT
--* Copyright © 2007-2021 Advanced Micro Devices, Inc.
--* Copyright 2022 Advanced Micro Devices, Inc.
--* All Rights Reserved.
--*
--* Permission is hereby granted, free of charge, to any person obtaining a
--* copy of this software and associated documentation files (the "Software"),
--* to deal in the Software without restriction, including without limitation
--* the rights to use, copy, modify, merge, publish, distribute, sublicense,
--* and/or sell copies of the Software, and to permit persons to whom the
--* Software is furnished to do so, subject to the following conditions:
--*
--* The above copyright notice and this permission notice shall be included in
--* all copies or substantial portions of the Software.
--*
--* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
--* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
--* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
--* THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
--* OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
--* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
--* OTHER DEALINGS IN THE SOFTWARE
--*
--***********************************************************************************************************************
--*/
-+/* SPDX-License-Identifier: MIT
-+ * Copyright © 2007-2021 Advanced Micro Devices, Inc.
-+ * Copyright 2022 Advanced Micro Devices, Inc.
-+ * Copyright 2023 Advanced Micro Devices, Inc.
-+ */
- 
- #ifndef _AMDGPU_ASIC_ADDR_H
- #define _AMDGPU_ASIC_ADDR_H
-@@ -65,52 +43,52 @@
- 
- #define AMDGPU_UNKNOWN          0xFF
- 
--#define AMDGPU_TAHITI_RANGE     0x05, 0x14
--#define AMDGPU_PITCAIRN_RANGE   0x15, 0x28
--#define AMDGPU_CAPEVERDE_RANGE  0x29, 0x3C
--#define AMDGPU_OLAND_RANGE      0x3C, 0x46
--#define AMDGPU_HAINAN_RANGE     0x46, 0xFF
--
--#define AMDGPU_BONAIRE_RANGE    0x14, 0x28
--#define AMDGPU_HAWAII_RANGE     0x28, 0x3C
--
--#define AMDGPU_SPECTRE_RANGE    0x01, 0x41
--#define AMDGPU_SPOOKY_RANGE     0x41, 0x81
--#define AMDGPU_KALINDI_RANGE    0x81, 0xA1
--#define AMDGPU_GODAVARI_RANGE   0xA1, 0xFF
--
--#define AMDGPU_ICELAND_RANGE    0x01, 0x14
--#define AMDGPU_TONGA_RANGE      0x14, 0x28
--#define AMDGPU_FIJI_RANGE       0x3C, 0x50
--#define AMDGPU_POLARIS10_RANGE  0x50, 0x5A
--#define AMDGPU_POLARIS11_RANGE  0x5A, 0x64
--#define AMDGPU_POLARIS12_RANGE  0x64, 0x6E
--#define AMDGPU_VEGAM_RANGE      0x6E, 0xFF
--
--#define AMDGPU_CARRIZO_RANGE    0x01, 0x21
--#define AMDGPU_STONEY_RANGE     0x61, 0xFF
--
--#define AMDGPU_VEGA10_RANGE     0x01, 0x14
--#define AMDGPU_VEGA12_RANGE     0x14, 0x28
--#define AMDGPU_VEGA20_RANGE     0x28, 0x32
--#define AMDGPU_ARCTURUS_RANGE   0x32, 0x3C
--#define AMDGPU_ALDEBARAN_RANGE  0x3C, 0xFF
--
--#define AMDGPU_RAVEN_RANGE      0x01, 0x81
--#define AMDGPU_RAVEN2_RANGE     0x81, 0x91
--#define AMDGPU_RENOIR_RANGE     0x91, 0xFF
--
--#define AMDGPU_NAVI10_RANGE     0x01, 0x0A
--#define AMDGPU_NAVI12_RANGE     0x0A, 0x14
--#define AMDGPU_NAVI14_RANGE     0x14, 0x28
--#define AMDGPU_SIENNA_CICHLID_RANGE     0x28, 0x32
--#define AMDGPU_NAVY_FLOUNDER_RANGE      0x32, 0x3C
--#define AMDGPU_DIMGREY_CAVEFISH_RANGE   0x3C, 0x46
--#define AMDGPU_BEIGE_GOBY_RANGE         0x46, 0x50
--
--#define AMDGPU_VANGOGH_RANGE    0x01, 0xFF
--
--#define AMDGPU_YELLOW_CARP_RANGE 0x01, 0xFF
-+#define AMDGPU_TAHITI_RANGE      0x05, 0x14
-+#define AMDGPU_PITCAIRN_RANGE    0x15, 0x28
-+#define AMDGPU_CAPEVERDE_RANGE   0x29, 0x3C
-+#define AMDGPU_OLAND_RANGE       0x3C, 0x46
-+#define AMDGPU_HAINAN_RANGE      0x46, 0xFF
-+
-+#define AMDGPU_BONAIRE_RANGE     0x14, 0x28
-+#define AMDGPU_HAWAII_RANGE      0x28, 0x3C
-+
-+#define AMDGPU_SPECTRE_RANGE     0x01, 0x41
-+#define AMDGPU_SPOOKY_RANGE      0x41, 0x81
-+#define AMDGPU_KALINDI_RANGE     0x81, 0xA1
-+#define AMDGPU_GODAVARI_RANGE    0xA1, 0xFF
-+
-+#define AMDGPU_ICELAND_RANGE     0x01, 0x14
-+#define AMDGPU_TONGA_RANGE       0x14, 0x28
-+#define AMDGPU_FIJI_RANGE        0x3C, 0x50
-+#define AMDGPU_POLARIS10_RANGE   0x50, 0x5A
-+#define AMDGPU_POLARIS11_RANGE   0x5A, 0x64
-+#define AMDGPU_POLARIS12_RANGE   0x64, 0x6E
-+#define AMDGPU_VEGAM_RANGE       0x6E, 0xFF
-+
-+#define AMDGPU_CARRIZO_RANGE     0x01, 0x21
-+#define AMDGPU_STONEY_RANGE      0x61, 0xFF
-+
-+#define AMDGPU_VEGA10_RANGE      0x01, 0x14
-+#define AMDGPU_VEGA12_RANGE      0x14, 0x28
-+#define AMDGPU_VEGA20_RANGE      0x28, 0x32
-+#define AMDGPU_ARCTURUS_RANGE    0x32, 0x3C
-+#define AMDGPU_ALDEBARAN_RANGE   0x3C, 0xFF
-+
-+#define AMDGPU_RAVEN_RANGE       0x01, 0x81
-+#define AMDGPU_RAVEN2_RANGE      0x81, 0x91
-+#define AMDGPU_RENOIR_RANGE      0x91, 0xFF
-+
-+#define AMDGPU_NAVI10_RANGE      0x01, 0x0A
-+#define AMDGPU_NAVI12_RANGE      0x0A, 0x14
-+#define AMDGPU_NAVI14_RANGE      0x14, 0x28
-+#define AMDGPU_SIENNA_CICHLID_RANGE      0x28, 0x32
-+#define AMDGPU_NAVY_FLOUNDER_RANGE       0x32, 0x3C
-+#define AMDGPU_DIMGREY_CAVEFISH_RANGE    0x3C, 0x46
-+#define AMDGPU_BEIGE_GOBY_RANGE          0x46, 0x50
-+
-+#define AMDGPU_VANGOGH_RANGE      0x01, 0xFF
-+
-+#define AMDGPU_YELLOW_CARP_RANGE  0x01, 0xFF
- 
- #define AMDGPU_EXPAND_FIX(x) x
- #define AMDGPU_RANGE_HELPER(val, min, max) ((val >= min) && (val < max))
+Should probably be
+Reviewed-by:
+for all three patches.
 -- 
-2.25.1
+Regards,
+Luben
+
+> ---
+>  tests/amdgpu/amd_syncobj.c | 262 +++++++++++++++++++++++++++++++++++++
+>  tests/amdgpu/meson.build   |   5 +
+>  2 files changed, 267 insertions(+)
+>  create mode 100644 tests/amdgpu/amd_syncobj.c
+> 
+> diff --git a/tests/amdgpu/amd_syncobj.c b/tests/amdgpu/amd_syncobj.c
+> new file mode 100644
+> index 000000000..e1d80758e
+> --- /dev/null
+> +++ b/tests/amdgpu/amd_syncobj.c
+> @@ -0,0 +1,262 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright 2017 Advanced Micro Devices, Inc.
+> + * Copyright 2023 Advanced Micro Devices, Inc.
+> + */
+> +
+> +#include <amdgpu.h>
+> +#include <amdgpu_drm.h>
+> +#include <pthread.h>
+> +
+> +#include "igt.h"
+> +#include "lib/amdgpu/amd_PM4.h"
+> +#include "lib/amdgpu/amd_sdma.h"
+> +#include "lib/amdgpu/amd_memory.h"
+> +
+> +struct syncobj_point {
+> +	amdgpu_device_handle device;
+> +	uint32_t syncobj_handle;
+> +	uint64_t point;
+> +};
+> +
+> +
+> +static bool
+> +syncobj_timeline_enable(int fd)
+> +{
+> +	int r;
+> +	uint64_t cap = 0;
+> +
+> +	r = drmGetCap(fd, DRM_CAP_SYNCOBJ_TIMELINE, &cap);
+> +
+> +	return !(r || cap == 0);
+> +}
+> +
+> +static void
+> +syncobj_command_submission_helper(amdgpu_device_handle device_handle,
+> +		uint32_t syncobj_handle, bool wait_or_signal, uint64_t point)
+> +{
+> +	amdgpu_context_handle context_handle;
+> +	amdgpu_bo_handle ib_result_handle;
+> +	void *ib_result_cpu;
+> +	uint64_t ib_result_mc_address;
+> +	struct drm_amdgpu_cs_chunk chunks[2];
+> +	struct drm_amdgpu_cs_chunk_data chunk_data;
+> +	struct drm_amdgpu_cs_chunk_syncobj syncobj_data;
+> +	struct amdgpu_cs_fence fence_status;
+> +	amdgpu_bo_list_handle bo_list;
+> +	amdgpu_va_handle va_handle;
+> +	uint32_t expired;
+> +	int i, r;
+> +	uint64_t seq_no;
+> +	uint32_t *ptr;
+> +
+> +	r = amdgpu_cs_ctx_create(device_handle, &context_handle);
+> +	igt_assert_eq(r, 0);
+> +
+> +	r = amdgpu_bo_alloc_and_map(device_handle, 4096, 4096,
+> +				    AMDGPU_GEM_DOMAIN_GTT, 0,
+> +				    &ib_result_handle, &ib_result_cpu,
+> +				    &ib_result_mc_address, &va_handle);
+> +	igt_assert_eq(r, 0);
+> +
+> +	r = amdgpu_get_bo_list(device_handle, ib_result_handle, NULL, &bo_list);
+> +	igt_assert_eq(r, 0);
+> +
+> +	ptr = ib_result_cpu;
+> +
+> +	for (i = 0; i < 16; ++i)
+> +		ptr[i] = wait_or_signal ? GFX_COMPUTE_NOP : SDMA_NOP;
+> +
+> +	chunks[0].chunk_id = AMDGPU_CHUNK_ID_IB;
+> +	chunks[0].length_dw = sizeof(struct drm_amdgpu_cs_chunk_ib) / 4;
+> +	chunks[0].chunk_data = (uint64_t)(uintptr_t)&chunk_data;
+> +	chunk_data.ib_data._pad = 0;
+> +	chunk_data.ib_data.va_start = ib_result_mc_address;
+> +	chunk_data.ib_data.ib_bytes = 16 * 4;
+> +	chunk_data.ib_data.ip_type = wait_or_signal ? AMDGPU_HW_IP_GFX : AMDGPU_HW_IP_DMA;
+> +	chunk_data.ib_data.ip_instance = 0;
+> +	chunk_data.ib_data.ring = 0;
+> +	chunk_data.ib_data.flags = 0;
+> +
+> +	chunks[1].chunk_id = wait_or_signal ?
+> +		AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_WAIT :
+> +		AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_SIGNAL;
+> +	chunks[1].length_dw = sizeof(struct drm_amdgpu_cs_chunk_syncobj) / 4;
+> +	chunks[1].chunk_data = (uint64_t)(uintptr_t)&syncobj_data;
+> +	syncobj_data.handle = syncobj_handle;
+> +	syncobj_data.point = point;
+> +	syncobj_data.flags = DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT;
+> +
+> +	r = amdgpu_cs_submit_raw(device_handle,
+> +				 context_handle,
+> +				 bo_list,
+> +				 2,
+> +				 chunks,
+> +				 &seq_no);
+> +	igt_assert_eq(r, 0);
+> +
+> +	memset(&fence_status, 0, sizeof(struct amdgpu_cs_fence));
+> +	fence_status.context = context_handle;
+> +	fence_status.ip_type = wait_or_signal ? AMDGPU_HW_IP_GFX : AMDGPU_HW_IP_DMA;
+> +	fence_status.ip_instance = 0;
+> +	fence_status.ring = 0;
+> +	fence_status.fence = seq_no;
+> +
+> +	r = amdgpu_cs_query_fence_status(&fence_status,
+> +			AMDGPU_TIMEOUT_INFINITE, 0, &expired);
+> +	igt_assert_eq(r, 0);
+> +
+> +	r = amdgpu_bo_list_destroy(bo_list);
+> +	igt_assert_eq(r, 0);
+> +
+> +	amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
+> +				     ib_result_mc_address, 4096);
+> +
+> +	r = amdgpu_cs_ctx_free(context_handle);
+> +	igt_assert_eq(r, 0);
+> +}
+> +
+> +static void *
+> +syncobj_wait(void *data)
+> +{
+> +	struct syncobj_point *sp = (struct syncobj_point *)data;
+> +
+> +	syncobj_command_submission_helper(sp->device, sp->syncobj_handle, true,
+> +					      sp->point);
+> +
+> +	return (void *)0;
+> +}
+> +
+> +static void *
+> +syncobj_signal(void *data)
+> +{
+> +	struct syncobj_point *sp = (struct syncobj_point *)data;
+> +
+> +	syncobj_command_submission_helper(sp->device, sp->syncobj_handle, false,
+> +						sp->point);
+> +
+> +	return (void *)0;
+> +}
+> +
+> +static void
+> +amdgpu_syncobj_timeline(amdgpu_device_handle device_handle)
+> +{
+> +	static pthread_t wait_thread;
+> +	static pthread_t signal_thread;
+> +	static pthread_t c_thread;
+> +	struct syncobj_point sp1, sp2, sp3;
+> +	uint32_t syncobj_handle;
+> +	uint64_t payload;
+> +	uint64_t wait_point, signal_point;
+> +	uint64_t timeout;
+> +	struct timespec tp;
+> +	int r, sync_fd;
+> +	void *tmp, *tmp2;
+> +
+> +	r =  amdgpu_cs_create_syncobj2(device_handle, 0, &syncobj_handle);
+> +	igt_assert_eq(r, 0);
+> +
+> +	// wait on point 5
+> +	sp1.syncobj_handle = syncobj_handle;
+> +	sp1.device = device_handle;
+> +	sp1.point = 5;
+> +	r = pthread_create(&wait_thread, NULL, syncobj_wait, &sp1);
+> +	igt_assert_eq(r, 0);
+> +
+> +	// signal on point 10
+> +	sp2.syncobj_handle = syncobj_handle;
+> +	sp2.device = device_handle;
+> +	sp2.point = 10;
+> +	r = pthread_create(&signal_thread, NULL, syncobj_signal, &sp2);
+> +	igt_assert_eq(r, 0);
+> +
+> +	r = pthread_join(signal_thread, &tmp);
+> +	igt_assert_eq(r, 0);
+> +
+> +	r = pthread_join(wait_thread, &tmp2);
+> +	igt_assert_eq(r, 0);
+> +
+> +	//query timeline payload
+> +	r = amdgpu_cs_syncobj_query(device_handle, &syncobj_handle,
+> +				    &payload, 1);
+> +	igt_assert_eq(r, 0);
+> +	igt_assert_eq(payload, 10);
+> +
+> +	//signal on point 16
+> +	sp3.syncobj_handle = syncobj_handle;
+> +	sp3.device = device_handle;
+> +	sp3.point = 16;
+> +	r = pthread_create(&c_thread, NULL, syncobj_signal, &sp3);
+> +	igt_assert_eq(r, 0);
+> +
+> +	//CPU wait on point 16
+> +	wait_point = 16;
+> +	timeout = 0;
+> +	clock_gettime(CLOCK_MONOTONIC, &tp);
+> +	timeout = tp.tv_sec * 1000000000ULL + tp.tv_nsec;
+> +	timeout += 10000000000; //10s
+> +	r = amdgpu_cs_syncobj_timeline_wait(device_handle, &syncobj_handle,
+> +					    &wait_point, 1, timeout,
+> +					    DRM_SYNCOBJ_WAIT_FLAGS_WAIT_ALL |
+> +					    DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT,
+> +					    NULL);
+> +
+> +	igt_assert_eq(r, 0);
+> +	r = pthread_join(c_thread, &tmp);
+> +	igt_assert_eq(r, 0);
+> +
+> +	// export point 16 and import to point 18
+> +	r = amdgpu_cs_syncobj_export_sync_file2(device_handle, syncobj_handle,
+> +						16,
+> +						DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT,
+> +						&sync_fd);
+> +	igt_assert_eq(r, 0);
+> +	r = amdgpu_cs_syncobj_import_sync_file2(device_handle, syncobj_handle,
+> +						18, sync_fd);
+> +	igt_assert_eq(r, 0);
+> +	r = amdgpu_cs_syncobj_query(device_handle, &syncobj_handle,
+> +				    &payload, 1);
+> +	igt_assert_eq(r, 0);
+> +	igt_assert_eq(payload, 18);
+> +
+> +	// CPU signal on point 20
+> +	signal_point = 20;
+> +	r = amdgpu_cs_syncobj_timeline_signal(device_handle, &syncobj_handle,
+> +					      &signal_point, 1);
+> +	igt_assert_eq(r, 0);
+> +	r = amdgpu_cs_syncobj_query(device_handle, &syncobj_handle,
+> +				    &payload, 1);
+> +	igt_assert_eq(r, 0);
+> +	igt_assert_eq(payload, 20);
+> +
+> +	r = amdgpu_cs_destroy_syncobj(device_handle, syncobj_handle);
+> +	igt_assert_eq(r, 0);
+> +
+> +}
+> +
+> +igt_main
+> +{
+> +	amdgpu_device_handle device;
+> +	int fd = -1;
+> +
+> +	igt_fixture {
+> +		uint32_t major, minor;
+> +		int err;
+> +
+> +		fd = drm_open_driver(DRIVER_AMDGPU);
+> +		err = amdgpu_device_initialize(fd, &major, &minor, &device);
+> +		igt_require(err == 0);
+> +		igt_require(syncobj_timeline_enable(fd));
+> +		igt_info("Initialized amdgpu, driver version %d.%d\n",
+> +			 major, minor);
+> +
+> +	}
+> +
+> +	igt_subtest("amdgpu_syncobj_timeline")
+> +	amdgpu_syncobj_timeline(device);
+> +
+> +	igt_fixture {
+> +		amdgpu_device_deinitialize(device);
+> +		close(fd);
+> +	}
+> +}
+> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+> index 6032a38e8..ebf52bf38 100644
+> --- a/tests/amdgpu/meson.build
+> +++ b/tests/amdgpu/meson.build
+> @@ -37,6 +37,11 @@ if libdrm_amdgpu.found()
+>  			  'amd_mall',
+>  			  'amd_odm',
+>  			]
+> +	if libdrm_amdgpu.version().version_compare('> 2.4.97')
+> +		amdgpu_progs +=[ 'amd_syncobj', ]
+> +	else
+> +		warning('libdrm <= 2.4.97 found, amd_syncobj test not applicable')
+> +	endif
+>  	amdgpu_deps += libdrm_amdgpu
+>  endif
+>  
