@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9F92310E632
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Aug 2023 23:48:35 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 95C3910E035
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Aug 2023 23:50:25 +0000 (UTC)
 From: "Srivatsa, Anusha" <anusha.srivatsa@intel.com>
 To: "De Marchi, Lucas" <lucas.demarchi@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Wed, 30 Aug 2023 23:48:29 +0000
-Message-ID: <SJ2PR11MB77158DFD848475DC3051005BF8E6A@SJ2PR11MB7715.namprd11.prod.outlook.com>
+Date: Wed, 30 Aug 2023 23:50:21 +0000
+Message-ID: <SJ2PR11MB7715DB82985E89D8C26E0CE3F8E6A@SJ2PR11MB7715.namprd11.prod.outlook.com>
 References: <20230829141107.1505705-1-lucas.demarchi@intel.com>
- <20230829141107.1505705-4-lucas.demarchi@intel.com>
-In-Reply-To: <20230829141107.1505705-4-lucas.demarchi@intel.com>
+ <20230829141107.1505705-5-lucas.demarchi@intel.com>
+In-Reply-To: <20230829141107.1505705-5-lucas.demarchi@intel.com>
 Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH igt 3/4] lib/intel_device_info: Add blitter
- cmd info for Lunar Lake
+Subject: Re: [igt-dev] [PATCH igt 4/4] tests/xe_debugfs: skip page table
+ level check for Xe2
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,29 +29,88 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UmV2aWV3ZWQtYnk6IEFudXNoYSBTcml2YXRzYSA8YW51c2hhLnNyaXZhdHNhQGludGVsLmNvbT4N
-Cg0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IGlndC1kZXYgPGlndC1k
-ZXYtYm91bmNlc0BsaXN0cy5mcmVlZGVza3RvcC5vcmc+IE9uIEJlaGFsZiBPZiBMdWNhcyBEZQ0K
-PiBNYXJjaGkNCj4gU2VudDogVHVlc2RheSwgQXVndXN0IDI5LCAyMDIzIDc6MTEgQU0NCj4gVG86
-IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IENjOiBEZSBNYXJjaGksIEx1Y2FzIDxs
-dWNhcy5kZW1hcmNoaUBpbnRlbC5jb20+OyBpbnRlbC0NCj4geGVAbGlzdHMuZnJlZWRlc2t0b3Au
-b3JnDQo+IFN1YmplY3Q6IFtpZ3QtZGV2XSBbUEFUQ0ggaWd0IDMvNF0gbGliL2ludGVsX2Rldmlj
-ZV9pbmZvOiBBZGQgYmxpdHRlciBjbWQgaW5mbyBmb3INCj4gTHVuYXIgTGFrZQ0KPiANCj4gRnJv
-bTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+
-DQo+IA0KPiBBZGQgc2VwYXJhdGUgY21kIGluZm8gZm9yIEx1bmFyTGFrZS4gVGhpcyByZS11c2Vz
-IHRoZSBjb21tYW5kcyBmb3IgUFZDIHNpbmNlIGFsbA0KPiB0aGUgY29tbWFuZHMgYmVpbmcgdXNl
-ZCBpbiBJR1QgbWF0Y2ggdGhlIG9uZXMgZm9yIFBWQy4NCj4gDQo+IENjOiBTd2F0aSBTaGFybWEg
-PHN3YXRpMi5zaGFybWFAaW50ZWwuY29tPg0KPiBTaWduZWQtb2ZmLWJ5OiBaYmlnbmlldyBLZW1w
-Y3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4NCj4gU2lnbmVkLW9mZi1i
-eTogTHVjYXMgRGUgTWFyY2hpIDxsdWNhcy5kZW1hcmNoaUBpbnRlbC5jb20+DQo+IC0tLQ0KPiAg
-bGliL2ludGVsX2RldmljZV9pbmZvLmMgfCAzICsrLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDIgaW5z
-ZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2xpYi9pbnRlbF9k
-ZXZpY2VfaW5mby5jIGIvbGliL2ludGVsX2RldmljZV9pbmZvLmMgaW5kZXgNCj4gODZhOGIzNjUw
-Li5kMWMyNjg0ODIgMTAwNjQ0DQo+IC0tLSBhL2xpYi9pbnRlbF9kZXZpY2VfaW5mby5jDQo+ICsr
-KyBiL2xpYi9pbnRlbF9kZXZpY2VfaW5mby5jDQo+IEBAIC01MTEsNyArNTExLDggQEAgc3RhdGlj
-IGNvbnN0IHN0cnVjdCBpbnRlbF9kZXZpY2VfaW5mbyBpbnRlbF9sdW5hcmxha2VfaW5mbw0KPiA9
-IHsNCj4gIAkuaGFzXzR0aWxlID0gdHJ1ZSwNCj4gIAkuaGFzX2dtZGlkID0gdHJ1ZSwNCj4gIAku
-aXNfbHVuYXJsYWtlID0gdHJ1ZSwNCj4gLQkuY29kZW5hbWUgPSAibHVuYXJsYWtlIg0KPiArCS5j
-b2RlbmFtZSA9ICJsdW5hcmxha2UiLA0KPiArCS5jbWRzX2luZm8gPSAmZ2VuMTJfcHZjX2NtZHNf
-aW5mbywNCj4gIH07DQo+IA0KPiAgc3RhdGljIGNvbnN0IHN0cnVjdCBwY2lfaWRfbWF0Y2ggaW50
-ZWxfZGV2aWNlX21hdGNoW10gPSB7DQo+IC0tDQo+IDIuNDAuMQ0KDQo=
+
+
+> -----Original Message-----
+> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Lucas =
+De
+> Marchi
+> Sent: Tuesday, August 29, 2023 7:11 AM
+> To: igt-dev@lists.freedesktop.org
+> Cc: De Marchi, Lucas <lucas.demarchi@intel.com>; intel-
+> xe@lists.freedesktop.org
+> Subject: [igt-dev] [PATCH igt 4/4] tests/xe_debugfs: skip page table leve=
+l check
+> for Xe2
+>=20
+> From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+>=20
+> Starting with Xe2, a 5-level page table is always used, regardless of the=
+ actual
+> virtual address range supported by the platform. Do not depend on VA rang=
+e to
+> configure max page table level.
+>=20
+> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+
+Reviewed-by: Anusha Srivatsa <anusha.srivatsa@intel.com>
+
+> ---
+>  tests/xe/xe_debugfs.c | 23 +++++++++++++----------
+>  1 file changed, 13 insertions(+), 10 deletions(-)
+>=20
+> diff --git a/tests/xe/xe_debugfs.c b/tests/xe/xe_debugfs.c index
+> e51d03661..72c069bfc 100644
+> --- a/tests/xe/xe_debugfs.c
+> +++ b/tests/xe/xe_debugfs.c
+> @@ -74,6 +74,7 @@ static int validate_entries(int fd, const char *add_pat=
+h,
+> const char * const str  static void  test_base(int fd, struct drm_xe_quer=
+y_config
+> *config)  {
+> +	uint16_t devid =3D intel_get_drm_devid(fd);
+>  	static const char * const expected_files[] =3D {
+>  		"gt0",
+>  		"gt1",
+> @@ -86,7 +87,6 @@ test_base(int fd, struct drm_xe_query_config *config)
+>  		"clients",
+>  		"name"
+>  	};
+> -
+>  	char reference[4096];
+>  	int val =3D 0;
+>=20
+> @@ -104,16 +104,19 @@ test_base(int fd, struct drm_xe_query_config *confi=
+g)
+>=20
+>  	igt_assert(igt_debugfs_search(fd, "info", reference));
+>=20
+> -	switch (config->info[XE_QUERY_CONFIG_VA_BITS]) {
+> -	case 48:
+> -		val =3D 3;
+> -		break;
+> -	case 57:
+> -		val =3D 4;
+> -		break;
+> +	if (!AT_LEAST_GEN(devid, 20)) {
+> +		switch (config->info[XE_QUERY_CONFIG_VA_BITS]) {
+> +		case 48:
+> +			val =3D 3;
+> +			break;
+> +		case 57:
+> +			val =3D 4;
+> +			break;
+> +		}
+> +
+> +		sprintf(reference, "vm_max_level %d", val);
+> +		igt_assert(igt_debugfs_search(fd, "info", reference));
+>  	}
+> -	sprintf(reference, "vm_max_level %d", val);
+> -	igt_assert(igt_debugfs_search(fd, "info", reference));
+>=20
+>  	igt_assert(igt_debugfs_exists(fd, "gt0", O_RDONLY));
+>  	if (config->info[XE_QUERY_CONFIG_GT_COUNT] > 1)
+> --
+> 2.40.1
