@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============8931969361112045661=="
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam10on20602.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:7e89::602])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A586B10E32B
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Aug 2023 00:57:00 +0000 (UTC)
+From: <vitaly.prosyak@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Tue, 29 Aug 2023 20:56:53 -0400
+Message-ID: <20230830005653.346397-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Chang, Bruce" <yu.bruce.chang@intel.com>
-Date: Wed, 30 Aug 2023 00:07:25 -0000
-Message-ID: <169335404517.15234.14136868538112381656@emeril.freedesktop.org>
-References: <20230829230518.4142-1-yu.bruce.chang@intel.com>
-In-Reply-To: <20230829230518.4142-1-yu.bruce.chang@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?xe_add_invalid_va_access_tests_=28rev2=29?=
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH 1/3] tests/amdgpu: add sync object tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,254 +19,326 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Alex Deucher <alexander.deucher@amd.com>,
+ Luben Tuikov <luben.tuikov@amd.com>, Christian
+ Koenig <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8931969361112045661==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-== Series Details ==
+Using worker thread to wait on point and then signal point on other thread.
+Another test uses a worker thread to signal point and wait on the main
+thread using amdgpu_cs_syncobj_timeline_wait.
 
-Series: tests/xe add invalid va access tests (rev2)
-URL   : https://patchwork.freedesktop.org/series/122983/
-State : success
+The command consists of two chunks :
+1. AMDGPU_CHUNK_ID_IB uses GFX_COMPUTE_NOP  or SDMA_NOP.
+2. The second chunk is AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_WAIT
+   or AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_SIGNAL which has the
+   point number .
 
-== Summary ==
+v2 : Kamil helped with podman script to fix the build
+     failure when drmlib version < 2.4.97
+v3 : Kamil suggested sort alphabetically includes.
+     Luben suggested code and meson script improvements.
 
-CI Bug Log - changes from CI_DRM_13574 -> IGTPW_9681
-====================================================
+Cc: Luben Tuikov <luben.tuikov@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Review-by: Luben Tuikov <luben.tuikov@amd.com>
+Review-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ tests/amdgpu/amd_syncobj.c | 262 +++++++++++++++++++++++++++++++++++++
+ tests/amdgpu/meson.build   |   5 +
+ 2 files changed, 267 insertions(+)
+ create mode 100644 tests/amdgpu/amd_syncobj.c
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9681/index.html
-
-Participating hosts (40 -> 38)
-------------------------------
-
-  Missing    (2): fi-kbl-soraka fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_9681 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-apl-guc:         [PASS][1] -> [DMESG-FAIL][2] ([i915#5334])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13574/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9681/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@i915_suspend@basic-s3-without-i915:
-    - bat-rpls-2:         [PASS][3] -> [ABORT][4] ([i915#7978] / [i915#8668])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13574/bat-rpls-2/igt@i915_suspend@basic-s3-without-i915.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9681/bat-rpls-2/igt@i915_suspend@basic-s3-without-i915.html
-
-  * igt@kms_psr@primary_mmap_gtt:
-    - bat-rplp-1:         NOTRUN -> [SKIP][5] ([i915#1072]) +1 similar issue
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9681/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - bat-rplp-1:         NOTRUN -> [ABORT][6] ([i915#8260] / [i915#8668])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9681/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@migrate:
-    - bat-dg2-11:         [DMESG-WARN][7] ([i915#7699]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13574/bat-dg2-11/igt@i915_selftest@live@migrate.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9681/bat-dg2-11/igt@i915_selftest@live@migrate.html
-
-  * igt@i915_selftest@live@mman:
-    - bat-rpls-2:         [TIMEOUT][9] ([i915#6794] / [i915#7392]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13574/bat-rpls-2/igt@i915_selftest@live@mman.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9681/bat-rpls-2/igt@i915_selftest@live@mman.html
-
-  * igt@i915_suspend@basic-s2idle-without-i915:
-    - bat-rpls-2:         [WARN][11] ([i915#8747]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13574/bat-rpls-2/igt@i915_suspend@basic-s2idle-without-i915.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9681/bat-rpls-2/igt@i915_suspend@basic-s2idle-without-i915.html
-
-  * igt@i915_suspend@basic-s3-without-i915:
-    - bat-dg2-9:          [INCOMPLETE][13] ([i915#4817]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13574/bat-dg2-9/igt@i915_suspend@basic-s3-without-i915.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9681/bat-dg2-9/igt@i915_suspend@basic-s3-without-i915.html
-
-  
-#### Warnings ####
-
-  * igt@kms_psr@cursor_plane_move:
-    - bat-rplp-1:         [ABORT][15] ([i915#8469] / [i915#8668]) -> [SKIP][16] ([i915#1072])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13574/bat-rplp-1/igt@kms_psr@cursor_plane_move.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9681/bat-rplp-1/igt@kms_psr@cursor_plane_move.html
-
-  
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#4817]: https://gitlab.freedesktop.org/drm/intel/issues/4817
-  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
-  [i915#6794]: https://gitlab.freedesktop.org/drm/intel/issues/6794
-  [i915#7392]: https://gitlab.freedesktop.org/drm/intel/issues/7392
-  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
-  [i915#7978]: https://gitlab.freedesktop.org/drm/intel/issues/7978
-  [i915#8260]: https://gitlab.freedesktop.org/drm/intel/issues/8260
-  [i915#8469]: https://gitlab.freedesktop.org/drm/intel/issues/8469
-  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
-  [i915#8747]: https://gitlab.freedesktop.org/drm/intel/issues/8747
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7459 -> IGTPW_9681
-
-  CI-20190529: 20190529
-  CI_DRM_13574: 2a7ec376910bf7ab4ae8a2594e73d9b5c1570046 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_9681: 9681
-  IGT_7459: 7459
-
-
-Testlist changes
-----------------
-
-+igt@xe_exec_invalid_va@invalid-va
-+igt@xe_exec_invalid_va@invalid-va-fault
-+igt@xe_exec_invalid_va@invalid-va-fault-scratch
-+igt@xe_exec_invalid_va@invalid-va-scratch
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9681/index.html
-
---===============8931969361112045661==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/xe add invalid va access tests (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122983/">https://patchwork.freedesktop.org/series/122983/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9681/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9681/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_13574 -&gt; IGTPW_9681</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9681/index.html</p>
-<h2>Participating hosts (40 -&gt; 38)</h2>
-<p>Missing    (2): fi-kbl-soraka fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_9681 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13574/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9681/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s3-without-i915:</p>
-<ul>
-<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13574/bat-rpls-2/igt@i915_suspend@basic-s3-without-i915.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9681/bat-rpls-2/igt@i915_suspend@basic-s3-without-i915.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7978">i915#7978</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@primary_mmap_gtt:</p>
-<ul>
-<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9681/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9681/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8260">i915#8260</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@migrate:</p>
-<ul>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13574/bat-dg2-11/igt@i915_selftest@live@migrate.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9681/bat-dg2-11/igt@i915_selftest@live@migrate.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@mman:</p>
-<ul>
-<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13574/bat-rpls-2/igt@i915_selftest@live@mman.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6794">i915#6794</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7392">i915#7392</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9681/bat-rpls-2/igt@i915_selftest@live@mman.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
-<ul>
-<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13574/bat-rpls-2/igt@i915_suspend@basic-s2idle-without-i915.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8747">i915#8747</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9681/bat-rpls-2/igt@i915_suspend@basic-s2idle-without-i915.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s3-without-i915:</p>
-<ul>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13574/bat-dg2-9/igt@i915_suspend@basic-s3-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4817">i915#4817</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9681/bat-dg2-9/igt@i915_suspend@basic-s3-without-i915.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_psr@cursor_plane_move:<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13574/bat-rplp-1/igt@kms_psr@cursor_plane_move.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8469">i915#8469</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9681/bat-rplp-1/igt@kms_psr@cursor_plane_move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7459 -&gt; IGTPW_9681</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13574: 2a7ec376910bf7ab4ae8a2594e73d9b5c1570046 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_9681: 9681<br />
-  IGT_7459: 7459</p>
-<h2>Testlist changes</h2>
-<p>+igt@xe_exec_invalid_va@invalid-va<br />
-+igt@xe_exec_invalid_va@invalid-va-fault<br />
-+igt@xe_exec_invalid_va@invalid-va-fault-scratch<br />
-+igt@xe_exec_invalid_va@invalid-va-scratch</p>
-
-</body>
-</html>
-
---===============8931969361112045661==--
+diff --git a/tests/amdgpu/amd_syncobj.c b/tests/amdgpu/amd_syncobj.c
+new file mode 100644
+index 000000000..e1d80758e
+--- /dev/null
++++ b/tests/amdgpu/amd_syncobj.c
+@@ -0,0 +1,262 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright 2017 Advanced Micro Devices, Inc.
++ * Copyright 2023 Advanced Micro Devices, Inc.
++ */
++
++#include <amdgpu.h>
++#include <amdgpu_drm.h>
++#include <pthread.h>
++
++#include "igt.h"
++#include "lib/amdgpu/amd_PM4.h"
++#include "lib/amdgpu/amd_sdma.h"
++#include "lib/amdgpu/amd_memory.h"
++
++struct syncobj_point {
++	amdgpu_device_handle device;
++	uint32_t syncobj_handle;
++	uint64_t point;
++};
++
++
++static bool
++syncobj_timeline_enable(int fd)
++{
++	int r;
++	uint64_t cap = 0;
++
++	r = drmGetCap(fd, DRM_CAP_SYNCOBJ_TIMELINE, &cap);
++
++	return !(r || cap == 0);
++}
++
++static void
++syncobj_command_submission_helper(amdgpu_device_handle device_handle,
++		uint32_t syncobj_handle, bool wait_or_signal, uint64_t point)
++{
++	amdgpu_context_handle context_handle;
++	amdgpu_bo_handle ib_result_handle;
++	void *ib_result_cpu;
++	uint64_t ib_result_mc_address;
++	struct drm_amdgpu_cs_chunk chunks[2];
++	struct drm_amdgpu_cs_chunk_data chunk_data;
++	struct drm_amdgpu_cs_chunk_syncobj syncobj_data;
++	struct amdgpu_cs_fence fence_status;
++	amdgpu_bo_list_handle bo_list;
++	amdgpu_va_handle va_handle;
++	uint32_t expired;
++	int i, r;
++	uint64_t seq_no;
++	uint32_t *ptr;
++
++	r = amdgpu_cs_ctx_create(device_handle, &context_handle);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_alloc_and_map(device_handle, 4096, 4096,
++				    AMDGPU_GEM_DOMAIN_GTT, 0,
++				    &ib_result_handle, &ib_result_cpu,
++				    &ib_result_mc_address, &va_handle);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_get_bo_list(device_handle, ib_result_handle, NULL, &bo_list);
++	igt_assert_eq(r, 0);
++
++	ptr = ib_result_cpu;
++
++	for (i = 0; i < 16; ++i)
++		ptr[i] = wait_or_signal ? GFX_COMPUTE_NOP : SDMA_NOP;
++
++	chunks[0].chunk_id = AMDGPU_CHUNK_ID_IB;
++	chunks[0].length_dw = sizeof(struct drm_amdgpu_cs_chunk_ib) / 4;
++	chunks[0].chunk_data = (uint64_t)(uintptr_t)&chunk_data;
++	chunk_data.ib_data._pad = 0;
++	chunk_data.ib_data.va_start = ib_result_mc_address;
++	chunk_data.ib_data.ib_bytes = 16 * 4;
++	chunk_data.ib_data.ip_type = wait_or_signal ? AMDGPU_HW_IP_GFX : AMDGPU_HW_IP_DMA;
++	chunk_data.ib_data.ip_instance = 0;
++	chunk_data.ib_data.ring = 0;
++	chunk_data.ib_data.flags = 0;
++
++	chunks[1].chunk_id = wait_or_signal ?
++		AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_WAIT :
++		AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_SIGNAL;
++	chunks[1].length_dw = sizeof(struct drm_amdgpu_cs_chunk_syncobj) / 4;
++	chunks[1].chunk_data = (uint64_t)(uintptr_t)&syncobj_data;
++	syncobj_data.handle = syncobj_handle;
++	syncobj_data.point = point;
++	syncobj_data.flags = DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT;
++
++	r = amdgpu_cs_submit_raw(device_handle,
++				 context_handle,
++				 bo_list,
++				 2,
++				 chunks,
++				 &seq_no);
++	igt_assert_eq(r, 0);
++
++	memset(&fence_status, 0, sizeof(struct amdgpu_cs_fence));
++	fence_status.context = context_handle;
++	fence_status.ip_type = wait_or_signal ? AMDGPU_HW_IP_GFX : AMDGPU_HW_IP_DMA;
++	fence_status.ip_instance = 0;
++	fence_status.ring = 0;
++	fence_status.fence = seq_no;
++
++	r = amdgpu_cs_query_fence_status(&fence_status,
++			AMDGPU_TIMEOUT_INFINITE, 0, &expired);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_list_destroy(bo_list);
++	igt_assert_eq(r, 0);
++
++	amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
++				     ib_result_mc_address, 4096);
++
++	r = amdgpu_cs_ctx_free(context_handle);
++	igt_assert_eq(r, 0);
++}
++
++static void *
++syncobj_wait(void *data)
++{
++	struct syncobj_point *sp = (struct syncobj_point *)data;
++
++	syncobj_command_submission_helper(sp->device, sp->syncobj_handle, true,
++					      sp->point);
++
++	return (void *)0;
++}
++
++static void *
++syncobj_signal(void *data)
++{
++	struct syncobj_point *sp = (struct syncobj_point *)data;
++
++	syncobj_command_submission_helper(sp->device, sp->syncobj_handle, false,
++						sp->point);
++
++	return (void *)0;
++}
++
++static void
++amdgpu_syncobj_timeline(amdgpu_device_handle device_handle)
++{
++	static pthread_t wait_thread;
++	static pthread_t signal_thread;
++	static pthread_t c_thread;
++	struct syncobj_point sp1, sp2, sp3;
++	uint32_t syncobj_handle;
++	uint64_t payload;
++	uint64_t wait_point, signal_point;
++	uint64_t timeout;
++	struct timespec tp;
++	int r, sync_fd;
++	void *tmp, *tmp2;
++
++	r =  amdgpu_cs_create_syncobj2(device_handle, 0, &syncobj_handle);
++	igt_assert_eq(r, 0);
++
++	// wait on point 5
++	sp1.syncobj_handle = syncobj_handle;
++	sp1.device = device_handle;
++	sp1.point = 5;
++	r = pthread_create(&wait_thread, NULL, syncobj_wait, &sp1);
++	igt_assert_eq(r, 0);
++
++	// signal on point 10
++	sp2.syncobj_handle = syncobj_handle;
++	sp2.device = device_handle;
++	sp2.point = 10;
++	r = pthread_create(&signal_thread, NULL, syncobj_signal, &sp2);
++	igt_assert_eq(r, 0);
++
++	r = pthread_join(signal_thread, &tmp);
++	igt_assert_eq(r, 0);
++
++	r = pthread_join(wait_thread, &tmp2);
++	igt_assert_eq(r, 0);
++
++	//query timeline payload
++	r = amdgpu_cs_syncobj_query(device_handle, &syncobj_handle,
++				    &payload, 1);
++	igt_assert_eq(r, 0);
++	igt_assert_eq(payload, 10);
++
++	//signal on point 16
++	sp3.syncobj_handle = syncobj_handle;
++	sp3.device = device_handle;
++	sp3.point = 16;
++	r = pthread_create(&c_thread, NULL, syncobj_signal, &sp3);
++	igt_assert_eq(r, 0);
++
++	//CPU wait on point 16
++	wait_point = 16;
++	timeout = 0;
++	clock_gettime(CLOCK_MONOTONIC, &tp);
++	timeout = tp.tv_sec * 1000000000ULL + tp.tv_nsec;
++	timeout += 10000000000; //10s
++	r = amdgpu_cs_syncobj_timeline_wait(device_handle, &syncobj_handle,
++					    &wait_point, 1, timeout,
++					    DRM_SYNCOBJ_WAIT_FLAGS_WAIT_ALL |
++					    DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT,
++					    NULL);
++
++	igt_assert_eq(r, 0);
++	r = pthread_join(c_thread, &tmp);
++	igt_assert_eq(r, 0);
++
++	// export point 16 and import to point 18
++	r = amdgpu_cs_syncobj_export_sync_file2(device_handle, syncobj_handle,
++						16,
++						DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT,
++						&sync_fd);
++	igt_assert_eq(r, 0);
++	r = amdgpu_cs_syncobj_import_sync_file2(device_handle, syncobj_handle,
++						18, sync_fd);
++	igt_assert_eq(r, 0);
++	r = amdgpu_cs_syncobj_query(device_handle, &syncobj_handle,
++				    &payload, 1);
++	igt_assert_eq(r, 0);
++	igt_assert_eq(payload, 18);
++
++	// CPU signal on point 20
++	signal_point = 20;
++	r = amdgpu_cs_syncobj_timeline_signal(device_handle, &syncobj_handle,
++					      &signal_point, 1);
++	igt_assert_eq(r, 0);
++	r = amdgpu_cs_syncobj_query(device_handle, &syncobj_handle,
++				    &payload, 1);
++	igt_assert_eq(r, 0);
++	igt_assert_eq(payload, 20);
++
++	r = amdgpu_cs_destroy_syncobj(device_handle, syncobj_handle);
++	igt_assert_eq(r, 0);
++
++}
++
++igt_main
++{
++	amdgpu_device_handle device;
++	int fd = -1;
++
++	igt_fixture {
++		uint32_t major, minor;
++		int err;
++
++		fd = drm_open_driver(DRIVER_AMDGPU);
++		err = amdgpu_device_initialize(fd, &major, &minor, &device);
++		igt_require(err == 0);
++		igt_require(syncobj_timeline_enable(fd));
++		igt_info("Initialized amdgpu, driver version %d.%d\n",
++			 major, minor);
++
++	}
++
++	igt_subtest("amdgpu_syncobj_timeline")
++	amdgpu_syncobj_timeline(device);
++
++	igt_fixture {
++		amdgpu_device_deinitialize(device);
++		close(fd);
++	}
++}
+diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+index 6032a38e8..ebf52bf38 100644
+--- a/tests/amdgpu/meson.build
++++ b/tests/amdgpu/meson.build
+@@ -37,6 +37,11 @@ if libdrm_amdgpu.found()
+ 			  'amd_mall',
+ 			  'amd_odm',
+ 			]
++	if libdrm_amdgpu.version().version_compare('> 2.4.97')
++		amdgpu_progs +=[ 'amd_syncobj', ]
++	else
++		warning('libdrm <= 2.4.97 found, amd_syncobj test not applicable')
++	endif
+ 	amdgpu_deps += libdrm_amdgpu
+ endif
+ 
+-- 
+2.25.1
