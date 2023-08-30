@@ -1,17 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam10on20602.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e89::602])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A586B10E32B
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Aug 2023 00:57:00 +0000 (UTC)
-From: <vitaly.prosyak@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Tue, 29 Aug 2023 20:56:53 -0400
-Message-ID: <20230830005653.346397-1-vitaly.prosyak@amd.com>
-MIME-Version: 1.0
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8F26610E4B5
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Aug 2023 05:16:32 +0000 (UTC)
+Message-ID: <ebe71bc3-c296-4fdf-d312-50f0de85c216@intel.com>
+Date: Wed, 30 Aug 2023 10:45:59 +0530
+To: "Nilawar, Badal" <badal.nilawar@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20230811103217.415744-1-riana.tauro@intel.com>
+ <20230811103217.415744-2-riana.tauro@intel.com>
+ <f655d57f-0fd4-6813-ebde-70fd1726ccb4@intel.com>
+Content-Language: en-US
+From: Riana Tauro <riana.tauro@intel.com>
+In-Reply-To: <f655d57f-0fd4-6813-ebde-70fd1726ccb4@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH 1/3] tests/amdgpu: add sync object tests
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] RFC tests/xe: Add a test that
+ validates idle residency on exec
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,326 +23,221 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Alex Deucher <alexander.deucher@amd.com>,
- Luben Tuikov <luben.tuikov@amd.com>, Christian
- Koenig <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Hi Badal
 
-Using worker thread to wait on point and then signal point on other thread.
-Another test uses a worker thread to signal point and wait on the main
-thread using amdgpu_cs_syncobj_timeline_wait.
+Thanks for the review
 
-The command consists of two chunks :
-1. AMDGPU_CHUNK_ID_IB uses GFX_COMPUTE_NOP  or SDMA_NOP.
-2. The second chunk is AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_WAIT
-   or AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_SIGNAL which has the
-   point number .
+On 8/28/2023 9:58 PM, Nilawar, Badal wrote:
+> Hi Riana,
+> 
+> On 11-08-2023 16:02, Riana Tauro wrote:
+>> Add a test what runs a background load that is
+>> active approximately 1% of the time. Verify that we do enter
+>> GT-C6 the rest of the time and validate idle residency is within
+>> tolerance.
+>>
+>> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+>> ---
+>>   tests/xe/xe_pm_residency.c | 135 ++++++++++++++++++++++++++++++++++++-
+>>   1 file changed, 133 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/tests/xe/xe_pm_residency.c b/tests/xe/xe_pm_residency.c
+>> index 4936de166..abf07c696 100644
+>> --- a/tests/xe/xe_pm_residency.c
+>> +++ b/tests/xe/xe_pm_residency.c
+>> @@ -11,13 +11,18 @@
+>>    * Test category: functionality test
+>>    */
+>> +#include <time.h>
+>> +
+>>   #include "igt.h"
+>>   #include "igt_sysfs.h"
+>> +#include "lib/igt_syncobj.h"
+>> +
+>> +#include "xe/xe_ioctl.h"
+>>   #include "xe/xe_query.h"
+>>   #include "xe/xe_util.h"
+>> -#define SLEEP_DURATION 3000 /* in milliseconds */
+>> +#define SLEEP_DURATION 3 /* in seconds */
+>>   const double tolerance = 0.1;
+>> @@ -38,9 +43,98 @@ const double tolerance = 0.1;
+>>    * Description: basic residency test to validate idle residency
+>>    *        measured over a time interval is within the tolerance
+>>    * Run type: FULL
+>> + *
+>> + * SUBTEST: idle-residency-on-exec
+>> + * Description: Validate idle residency measured when a background
+>> + *        is only active for ~1% of the time
+>> + * Run type: FULL
+>>    */
+>>   IGT_TEST_DESCRIPTION("Tests for gtidle properties");
+>> +static void exec_load(int fd, struct drm_xe_engine_class_instance 
+>> *hwe, unsigned long *done)
+>> +{
+>> +    uint32_t bo = 0;
+>> +    uint32_t exec_queue, syncobj, vm;
+>> +    uint64_t addr = 0x1a0000;
+>> +    uint64_t batch_addr, batch_offset, data_addr, data_offset;
+>> +    size_t bo_size;
+>> +    int b;
+>> +    struct {
+>> +        uint32_t batch[16];
+>> +        uint64_t pad;
+>> +        uint32_t data;
+>> +    } *data;
+>> +
+>> +    struct drm_xe_sync sync = {
+>> +        .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
+>> +    };
+>> +
+>> +    struct drm_xe_exec exec = {
+>> +        .num_batch_buffer = 1,
+>> +        .num_syncs = 1,
+>> +        .syncs = to_user_pointer(&sync),
+>> +    };
+>> +
+>> +    vm = xe_vm_create(fd, 0, 0);
+>> +    exec_queue = xe_exec_queue_create(fd, vm, hwe, 0);
+>> +    bo_size = xe_get_default_alignment(fd);
+>> +
+>> +    bo = xe_bo_create_flags(fd, vm, bo_size,
+>> +                visible_vram_if_possible(fd, hwe->gt_id));
+>> +    data = xe_bo_map(fd, bo, bo_size);
+>> +    syncobj = syncobj_create(fd, 0);
+>> +
+>> +    xe_vm_bind_sync(fd, vm, bo, 0, addr, bo_size);
+>> +
+>> +    batch_offset = (char *)&data->batch - (char *)data;
+>> +    batch_addr = addr + batch_offset;
+>> +    data_offset = (char *)&data->data - (char *)data;
+>> +    data_addr = addr + data_offset;
+>> +
+>> +    do {
+>> +        uint64_t submit, elapsed;
+>> +        struct timespec tv = {};
+>> +
+>> +        b = 0;
+>> +        done[1]++;
+>> +        data->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
+>> +        data->batch[b++] = data_addr;
+>> +        data->batch[b++] = data_addr >> 32;
+>> +        data->batch[b++] = done[1];
+>> +        data->batch[b++] = MI_BATCH_BUFFER_END;
+>> +        igt_assert(b <= ARRAY_SIZE(data->batch));
+> Curious to know why MI_BATCH_BUFFER_START is not needed in batch buffer.
+MI_BATCH_BUFFER_START is added while submitting the batch buffer in kernel.
+>> +
+>> +        exec.exec_queue_id = exec_queue;
+>> +        exec.address = batch_addr;
+>> +        sync.handle = syncobj;
+>> +
+>> +        igt_nsec_elapsed(&tv);
+>> +        xe_exec(fd, &exec);
+>> +        submit = igt_nsec_elapsed(&tv);
+>> +
+>> +        igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
+>> +        elapsed = igt_nsec_elapsed(&tv);
+>> +        igt_assert_eq(data->data, done[1]);
+>> +
+>> +        igt_debug("Execution took %.3fms (submit %.1fus, wait 
+>> %.1fus)\n",
+>> +              1e-6 * elapsed,
+>> +              1e-3 * submit,
+>> +              1e-3 * (elapsed - submit));
+>> +
+>> +        syncobj_reset(fd, &syncobj, 1);
+>> +
+>> +        /* Aim for ~1% busy */
+> This is sleep for 99% of execution (elapsed) time? May be you can add 
+> some explanation with example here.
+Will add more detailed explanation
+>> +        usleep(elapsed / 10);
+>> +    } while (!READ_ONCE(*done));
+>> +
+>> +    xe_vm_unbind_sync(fd, vm, 0, addr, bo_size);
+>> +    syncobj_destroy(fd, syncobj);
+>> +    munmap(data, bo_size);
+>> +    gem_close(fd, bo);
+>> +    xe_exec_queue_destroy(fd, exec_queue);
+>> +    xe_vm_destroy(fd, vm);
+>> +}
+>> +
+>>   static unsigned int measured_usleep(unsigned int usec)
+>>   {
+>>       struct timespec ts = { };
+>> @@ -76,7 +170,7 @@ static void test_idle_residency(int fd, int gt)
+>>       igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 1), "GT not 
+>> in C6\n");
+>>       residency_start = read_idle_residency(fd, gt);
+>> -    elapsed_ms = measured_usleep(SLEEP_DURATION * 1000) / 1000;
+>> +    elapsed_ms = measured_usleep(SLEEP_DURATION * USEC_PER_SEC) / 1000;
+>>       residency_end = read_idle_residency(fd, gt);
+>>       igt_info("Measured %lums of idle residency in %lums\n",
+>> @@ -85,9 +179,41 @@ static void test_idle_residency(int fd, int gt)
+>>       assert_within_epsilon(residency_end - residency_start, 
+>> elapsed_ms, tolerance);
+>>   }
+>> +static void idle_residency_on_exec(int fd, struct 
+>> drm_xe_engine_class_instance *hwe)
+>> +{
+>> +    const int tol = 20;
+>> +    unsigned long *done;
+>> +    unsigned long cycles, elapsed_ms, residency;
+>> +
+>> +    done = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
+>> +    igt_assert(done != MAP_FAILED);
+>> +    memset(done, 0, 4096);
+>> +
+>> +    igt_fork(child, 1)
+>> +        exec_load(fd, hwe, done);
+>> +
+>> +    cycles -= READ_ONCE(done[1]);
+>> +    residency -= read_idle_residency(fd, hwe->gt_id);
+>> +    elapsed_ms = measured_usleep(SLEEP_DURATION * USEC_PER_SEC) / 1000;
+>> +    residency += read_idle_residency(fd, hwe->gt_id);
+>> +    cycles += READ_ONCE(done[1]);
+> As discussed use separate variables for start and end here.
+Sure. Will fix this.
+>> +    *done = 1;
+>> +
+>> +    igt_waitchildren();
+>> +
+>> +    /* At least one wakeup/s needed for a reasonable test */
+>> +    igt_assert(cycles >= SLEEP_DURATION);
+>> +
+>> +    /* While very nearly busy, expect full GT C6 */
+>> +    assert_within_epsilon(residency, elapsed_ms, tol);
+> I think residency will always be less than elapsed time.
+>
+It might be. Will run multiple times and check
+But isn't it better to use a tolerance ?
 
-v2 : Kamil helped with podman script to fix the build
-     failure when drmlib version < 2.4.97
-v3 : Kamil suggested sort alphabetically includes.
-     Luben suggested code and meson script improvements.
-
-Cc: Luben Tuikov <luben.tuikov@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian Koenig <christian.koenig@amd.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Review-by: Luben Tuikov <luben.tuikov@amd.com>
-Review-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/amdgpu/amd_syncobj.c | 262 +++++++++++++++++++++++++++++++++++++
- tests/amdgpu/meson.build   |   5 +
- 2 files changed, 267 insertions(+)
- create mode 100644 tests/amdgpu/amd_syncobj.c
-
-diff --git a/tests/amdgpu/amd_syncobj.c b/tests/amdgpu/amd_syncobj.c
-new file mode 100644
-index 000000000..e1d80758e
---- /dev/null
-+++ b/tests/amdgpu/amd_syncobj.c
-@@ -0,0 +1,262 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright 2017 Advanced Micro Devices, Inc.
-+ * Copyright 2023 Advanced Micro Devices, Inc.
-+ */
-+
-+#include <amdgpu.h>
-+#include <amdgpu_drm.h>
-+#include <pthread.h>
-+
-+#include "igt.h"
-+#include "lib/amdgpu/amd_PM4.h"
-+#include "lib/amdgpu/amd_sdma.h"
-+#include "lib/amdgpu/amd_memory.h"
-+
-+struct syncobj_point {
-+	amdgpu_device_handle device;
-+	uint32_t syncobj_handle;
-+	uint64_t point;
-+};
-+
-+
-+static bool
-+syncobj_timeline_enable(int fd)
-+{
-+	int r;
-+	uint64_t cap = 0;
-+
-+	r = drmGetCap(fd, DRM_CAP_SYNCOBJ_TIMELINE, &cap);
-+
-+	return !(r || cap == 0);
-+}
-+
-+static void
-+syncobj_command_submission_helper(amdgpu_device_handle device_handle,
-+		uint32_t syncobj_handle, bool wait_or_signal, uint64_t point)
-+{
-+	amdgpu_context_handle context_handle;
-+	amdgpu_bo_handle ib_result_handle;
-+	void *ib_result_cpu;
-+	uint64_t ib_result_mc_address;
-+	struct drm_amdgpu_cs_chunk chunks[2];
-+	struct drm_amdgpu_cs_chunk_data chunk_data;
-+	struct drm_amdgpu_cs_chunk_syncobj syncobj_data;
-+	struct amdgpu_cs_fence fence_status;
-+	amdgpu_bo_list_handle bo_list;
-+	amdgpu_va_handle va_handle;
-+	uint32_t expired;
-+	int i, r;
-+	uint64_t seq_no;
-+	uint32_t *ptr;
-+
-+	r = amdgpu_cs_ctx_create(device_handle, &context_handle);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_bo_alloc_and_map(device_handle, 4096, 4096,
-+				    AMDGPU_GEM_DOMAIN_GTT, 0,
-+				    &ib_result_handle, &ib_result_cpu,
-+				    &ib_result_mc_address, &va_handle);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_get_bo_list(device_handle, ib_result_handle, NULL, &bo_list);
-+	igt_assert_eq(r, 0);
-+
-+	ptr = ib_result_cpu;
-+
-+	for (i = 0; i < 16; ++i)
-+		ptr[i] = wait_or_signal ? GFX_COMPUTE_NOP : SDMA_NOP;
-+
-+	chunks[0].chunk_id = AMDGPU_CHUNK_ID_IB;
-+	chunks[0].length_dw = sizeof(struct drm_amdgpu_cs_chunk_ib) / 4;
-+	chunks[0].chunk_data = (uint64_t)(uintptr_t)&chunk_data;
-+	chunk_data.ib_data._pad = 0;
-+	chunk_data.ib_data.va_start = ib_result_mc_address;
-+	chunk_data.ib_data.ib_bytes = 16 * 4;
-+	chunk_data.ib_data.ip_type = wait_or_signal ? AMDGPU_HW_IP_GFX : AMDGPU_HW_IP_DMA;
-+	chunk_data.ib_data.ip_instance = 0;
-+	chunk_data.ib_data.ring = 0;
-+	chunk_data.ib_data.flags = 0;
-+
-+	chunks[1].chunk_id = wait_or_signal ?
-+		AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_WAIT :
-+		AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_SIGNAL;
-+	chunks[1].length_dw = sizeof(struct drm_amdgpu_cs_chunk_syncobj) / 4;
-+	chunks[1].chunk_data = (uint64_t)(uintptr_t)&syncobj_data;
-+	syncobj_data.handle = syncobj_handle;
-+	syncobj_data.point = point;
-+	syncobj_data.flags = DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT;
-+
-+	r = amdgpu_cs_submit_raw(device_handle,
-+				 context_handle,
-+				 bo_list,
-+				 2,
-+				 chunks,
-+				 &seq_no);
-+	igt_assert_eq(r, 0);
-+
-+	memset(&fence_status, 0, sizeof(struct amdgpu_cs_fence));
-+	fence_status.context = context_handle;
-+	fence_status.ip_type = wait_or_signal ? AMDGPU_HW_IP_GFX : AMDGPU_HW_IP_DMA;
-+	fence_status.ip_instance = 0;
-+	fence_status.ring = 0;
-+	fence_status.fence = seq_no;
-+
-+	r = amdgpu_cs_query_fence_status(&fence_status,
-+			AMDGPU_TIMEOUT_INFINITE, 0, &expired);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_bo_list_destroy(bo_list);
-+	igt_assert_eq(r, 0);
-+
-+	amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
-+				     ib_result_mc_address, 4096);
-+
-+	r = amdgpu_cs_ctx_free(context_handle);
-+	igt_assert_eq(r, 0);
-+}
-+
-+static void *
-+syncobj_wait(void *data)
-+{
-+	struct syncobj_point *sp = (struct syncobj_point *)data;
-+
-+	syncobj_command_submission_helper(sp->device, sp->syncobj_handle, true,
-+					      sp->point);
-+
-+	return (void *)0;
-+}
-+
-+static void *
-+syncobj_signal(void *data)
-+{
-+	struct syncobj_point *sp = (struct syncobj_point *)data;
-+
-+	syncobj_command_submission_helper(sp->device, sp->syncobj_handle, false,
-+						sp->point);
-+
-+	return (void *)0;
-+}
-+
-+static void
-+amdgpu_syncobj_timeline(amdgpu_device_handle device_handle)
-+{
-+	static pthread_t wait_thread;
-+	static pthread_t signal_thread;
-+	static pthread_t c_thread;
-+	struct syncobj_point sp1, sp2, sp3;
-+	uint32_t syncobj_handle;
-+	uint64_t payload;
-+	uint64_t wait_point, signal_point;
-+	uint64_t timeout;
-+	struct timespec tp;
-+	int r, sync_fd;
-+	void *tmp, *tmp2;
-+
-+	r =  amdgpu_cs_create_syncobj2(device_handle, 0, &syncobj_handle);
-+	igt_assert_eq(r, 0);
-+
-+	// wait on point 5
-+	sp1.syncobj_handle = syncobj_handle;
-+	sp1.device = device_handle;
-+	sp1.point = 5;
-+	r = pthread_create(&wait_thread, NULL, syncobj_wait, &sp1);
-+	igt_assert_eq(r, 0);
-+
-+	// signal on point 10
-+	sp2.syncobj_handle = syncobj_handle;
-+	sp2.device = device_handle;
-+	sp2.point = 10;
-+	r = pthread_create(&signal_thread, NULL, syncobj_signal, &sp2);
-+	igt_assert_eq(r, 0);
-+
-+	r = pthread_join(signal_thread, &tmp);
-+	igt_assert_eq(r, 0);
-+
-+	r = pthread_join(wait_thread, &tmp2);
-+	igt_assert_eq(r, 0);
-+
-+	//query timeline payload
-+	r = amdgpu_cs_syncobj_query(device_handle, &syncobj_handle,
-+				    &payload, 1);
-+	igt_assert_eq(r, 0);
-+	igt_assert_eq(payload, 10);
-+
-+	//signal on point 16
-+	sp3.syncobj_handle = syncobj_handle;
-+	sp3.device = device_handle;
-+	sp3.point = 16;
-+	r = pthread_create(&c_thread, NULL, syncobj_signal, &sp3);
-+	igt_assert_eq(r, 0);
-+
-+	//CPU wait on point 16
-+	wait_point = 16;
-+	timeout = 0;
-+	clock_gettime(CLOCK_MONOTONIC, &tp);
-+	timeout = tp.tv_sec * 1000000000ULL + tp.tv_nsec;
-+	timeout += 10000000000; //10s
-+	r = amdgpu_cs_syncobj_timeline_wait(device_handle, &syncobj_handle,
-+					    &wait_point, 1, timeout,
-+					    DRM_SYNCOBJ_WAIT_FLAGS_WAIT_ALL |
-+					    DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT,
-+					    NULL);
-+
-+	igt_assert_eq(r, 0);
-+	r = pthread_join(c_thread, &tmp);
-+	igt_assert_eq(r, 0);
-+
-+	// export point 16 and import to point 18
-+	r = amdgpu_cs_syncobj_export_sync_file2(device_handle, syncobj_handle,
-+						16,
-+						DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT,
-+						&sync_fd);
-+	igt_assert_eq(r, 0);
-+	r = amdgpu_cs_syncobj_import_sync_file2(device_handle, syncobj_handle,
-+						18, sync_fd);
-+	igt_assert_eq(r, 0);
-+	r = amdgpu_cs_syncobj_query(device_handle, &syncobj_handle,
-+				    &payload, 1);
-+	igt_assert_eq(r, 0);
-+	igt_assert_eq(payload, 18);
-+
-+	// CPU signal on point 20
-+	signal_point = 20;
-+	r = amdgpu_cs_syncobj_timeline_signal(device_handle, &syncobj_handle,
-+					      &signal_point, 1);
-+	igt_assert_eq(r, 0);
-+	r = amdgpu_cs_syncobj_query(device_handle, &syncobj_handle,
-+				    &payload, 1);
-+	igt_assert_eq(r, 0);
-+	igt_assert_eq(payload, 20);
-+
-+	r = amdgpu_cs_destroy_syncobj(device_handle, syncobj_handle);
-+	igt_assert_eq(r, 0);
-+
-+}
-+
-+igt_main
-+{
-+	amdgpu_device_handle device;
-+	int fd = -1;
-+
-+	igt_fixture {
-+		uint32_t major, minor;
-+		int err;
-+
-+		fd = drm_open_driver(DRIVER_AMDGPU);
-+		err = amdgpu_device_initialize(fd, &major, &minor, &device);
-+		igt_require(err == 0);
-+		igt_require(syncobj_timeline_enable(fd));
-+		igt_info("Initialized amdgpu, driver version %d.%d\n",
-+			 major, minor);
-+
-+	}
-+
-+	igt_subtest("amdgpu_syncobj_timeline")
-+	amdgpu_syncobj_timeline(device);
-+
-+	igt_fixture {
-+		amdgpu_device_deinitialize(device);
-+		close(fd);
-+	}
-+}
-diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
-index 6032a38e8..ebf52bf38 100644
---- a/tests/amdgpu/meson.build
-+++ b/tests/amdgpu/meson.build
-@@ -37,6 +37,11 @@ if libdrm_amdgpu.found()
- 			  'amd_mall',
- 			  'amd_odm',
- 			]
-+	if libdrm_amdgpu.version().version_compare('> 2.4.97')
-+		amdgpu_progs +=[ 'amd_syncobj', ]
-+	else
-+		warning('libdrm <= 2.4.97 found, amd_syncobj test not applicable')
-+	endif
- 	amdgpu_deps += libdrm_amdgpu
- endif
- 
--- 
-2.25.1
+Thanks
+Riana
+> Regards,
+> Badal
+>> +
+>> +    munmap(done, 4096);
+>> +}
+>> +
+>>   igt_main
+>>   {
+>>       int fd, gt;
+>> +    struct drm_xe_engine_class_instance *hwe;
+>>       igt_fixture {
+>>           fd = drm_open_driver(DRIVER_XE);
+>> @@ -104,6 +230,11 @@ igt_main
+>>           xe_for_each_gt(fd, gt)
+>>               test_idle_residency(fd, gt);
+>> +    igt_describe("Validate idle residency on exec");
+>> +    igt_subtest("idle-residency-on-exec")
+>> +        xe_for_each_hw_engine(fd, hwe)
+>> +            idle_residency_on_exec(fd, hwe);
+>> +
+>>       igt_fixture {
+>>           close(fd);
+>>       }
