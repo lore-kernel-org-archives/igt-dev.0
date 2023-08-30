@@ -1,15 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com
+ [IPv6:2607:f8b0:4864:20::d36])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A0C9D10E075
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Aug 2023 17:21:12 +0000 (UTC)
+Received: by mail-io1-xd36.google.com with SMTP id
+ ca18e2360f4ac-79241bb5807so1062739f.0
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Aug 2023 10:21:12 -0700 (PDT)
+Date: Wed, 30 Aug 2023 11:21:09 -0600
+From: Drew Davenport <ddavenport@chromium.org>
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Message-ID: <ZO96hWxy+3qZz3nd@chromium.org>
+References: <20230828142356.1.I6b63e745635f9cad8c698001ce08f406fe0f0bcb@changeid>
+ <eca45894-c8f2-1c4f-1454-3bfd0b6342d1@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Swati Sharma" <swati2.sharma@intel.com>
-Date: Wed, 30 Aug 2023 17:10:27 -0000
-Message-ID: <169341542773.15234.3650342604812036042@emeril.freedesktop.org>
-References: <20230830153937.1215474-1-swati2.sharma@intel.com>
-In-Reply-To: <20230830153937.1215474-1-swati2.sharma@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
- =?utf-8?q?ests/intel-ci=3A_add_basic_audio_test_to_ffb?=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <eca45894-c8f2-1c4f-1454-3bfd0b6342d1@gmail.com>
+Subject: Re: [igt-dev] [PATCH] tests/kms_atomic_transition: Address test
+ flakiness
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,45 +25,73 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Hi Juha-Pekka,
 
-Series: tests/intel-ci: add basic audio test to ffb
-URL   : https://patchwork.freedesktop.org/series/123072/
-State : warning
+On Tue, Aug 29, 2023 at 10:01:54AM +0300, Juha-Pekka Heikkila wrote:
+> Hi Drew,
+> 
+> can you show backtrace when the test failed for you? I was looking through
+> stats how i915 have behaved with this and I didn't on brief look spot this
+> ever hitting i915. Which driver you are seeing this issue with?
 
-== Summary ==
+I see this test failing flakily on i915 and msm (I don't have recent
+results on amdgpu but I suspect it would flake there too).
 
-Pipeline status: FAILED.
+I don't have a backtrace, unfortunately, but the stack is:
+igt_assert_eq
+igt_display_commit_atomic
+commit_display
+run_modeset_tests
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/973677 for the overview.
+I've posted verbose logs on the issue I opened on gitlab and tagged you
+there. Happy to dig further here or on the issue tracker.
 
-build-containers:build-debian-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48247875):
-  Checking if the job's project is part of a well-known group...
-  Thank you for contributing to freedesktop.org
-  $ podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-  Login Succeeded!
-  $ .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-debian-mips build-debian-mips
-  time="2023-08-30T17:07:01Z" level=fatal msg="Error determining repository tags: Get https://registry.freedesktop.org/v2/gfx-ci/igt-ci-tags/build-debian-mips/tags/list?last=commit-786356764febf63169296f57373f80adfa1abf26&n=100: dial tcp 147.75.198.156:443: i/o timeout" 
-  Building!
-  STEP 1: FROM debian:buster
-  Error: error creating build container: The following failures happened while trying to pull image specified by "debian:buster" based on search registries in /etc/containers/registries.conf:
-  * "localhost/debian:buster": Error initializing source docker://localhost/debian:buster: pinging docker registry returned: Get https://localhost/v2/: dial tcp [::1]:443: connect: connection refused
-  * "docker.io/library/debian:buster": Error initializing source docker://debian:buster: pinging docker registry returned: Get https://registry-1.docker.io/v2/: dial tcp: lookup registry-1.docker.io on 147.75.207.208:53: read udp 10.88.53.173:50508->147.75.207.208:53: i/o timeout
-  * "registry.fedoraproject.org/debian:buster": Error initializing source docker://registry.fedoraproject.org/debian:buster: Error reading manifest buster in registry.fedoraproject.org/debian: manifest unknown: manifest unknown
-  * "quay.io/debian:buster": Error initializing source docker://quay.io/debian:buster: Error reading manifest buster in quay.io/debian: error parsing HTTP 404 response body: invalid character '<' looking for beginning of value: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 3.2 Final//EN\">\n<title>404 Not Found</title>\n<h1>Not Found</h1>\n<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>\n"
-  * "registry.centos.org/debian:buster": Error initializing source docker://registry.centos.org/debian:buster: pinging docker registry returned: Get https://registry.centos.org/v2/: dial tcp: lookup registry.centos.org on 147.75.207.207:53: no such host
-  section_end:1693415247:step_script
-  section_start:1693415247:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1693415247:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/973677
+> 
+> Current stats on ci for i915 look like this (for me it look all green where
+> run)
+> 
+> https://intel-gfx-ci.01.org/tree/drm-tip/shards-all.html?testfilter=kms_atomic_transition.*nonblocking
+> 
+> Here are some issues but they all did look like connector related issues:
+> https://intel-gfx-ci.01.org/tree/drm-tip/drmtip.html?testfilter=kms_atomic_transition.*nonblocking
+> 
+> /Juha-Pekka
+> 
+> On 28.8.2023 23.23, Drew Davenport wrote:
+> > Nonblocking commits can sometimes return -EBUSY. It's expected that
+> > this error is transient and that userspace should retry the commit.
+> > 
+> > Since kms_atomic_transition uses nonblocking commits for some test
+> > cases, the test fails flakily.
+> > 
+> > This change will handle -EBUSY to ensure that the test does not
+> > fail in that case.
+> > 
+> > Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/144
+> > Signed-off-by: Drew Davenport <ddavenport@chromium.org>
+> > 
+> > ---
+> > 
+> >   tests/kms_atomic_transition.c | 6 +++++-
+> >   1 file changed, 5 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
+> > index 6ab5267ca..46ce9f929 100644
+> > --- a/tests/kms_atomic_transition.c
+> > +++ b/tests/kms_atomic_transition.c
+> > @@ -683,7 +683,11 @@ static void commit_display(data_t *data, unsigned event_mask, bool nonblocking)
+> >   	if (nonblocking)
+> >   		flags |= DRM_MODE_ATOMIC_NONBLOCK;
+> > -	igt_display_commit_atomic(&data->display, flags, NULL);
+> > +	do {
+> > +		ret = igt_display_try_commit_atomic(&data->display, flags, NULL);
+> > +	} while (ret == -EBUSY);
+> > +
+> > +	igt_assert_eq(ret, 0);
+> >   	igt_debug("Event mask: %x, waiting for %i events\n", event_mask, num_events);
+> 
