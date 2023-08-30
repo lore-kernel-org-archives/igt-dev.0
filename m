@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2655D10E4FF
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Aug 2023 11:54:14 +0000 (UTC)
-Date: Wed, 30 Aug 2023 13:53:25 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230830115325.ttk6whzwss2llvb6@kamilkon-desk.igk.intel.com>
-References: <20230825131913.600667-1-marcin.bernatowicz@linux.intel.com>
- <20230825131913.600667-2-marcin.bernatowicz@linux.intel.com>
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com
+ (mail-co1nam11on2046.outbound.protection.outlook.com [40.107.220.46])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 80CE510E51E
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Aug 2023 13:05:33 +0000 (UTC)
+Message-ID: <b7a7c615-f72b-4d8f-a592-a8cbea67ac87@amd.com>
+Date: Wed, 30 Aug 2023 09:05:25 -0400
+Content-Language: en-CA, en-US
+To: vitaly.prosyak@amd.com, igt-dev@lists.freedesktop.org
+References: <20230830005653.346397-1-vitaly.prosyak@amd.com>
+From: Luben Tuikov <luben.tuikov@amd.com>
+In-Reply-To: <20230830005653.346397-1-vitaly.prosyak@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230825131913.600667-2-marcin.bernatowicz@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/xe_spin: fixed duration xe_spin
- capability
+Subject: Re: [igt-dev] [PATCH 1/3] tests/amdgpu: add sync object tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,497 +21,330 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: joonas.lahtinen@intel.com, tvrtko.ursulin@intel.com
+Cc: Alex Deucher <alexander.deucher@amd.com>,
+ Christian Koenig <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Marcin,
+On 2023-08-29 20:56, vitaly.prosyak@amd.com wrote:
+> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> 
+> Using worker thread to wait on point and then signal point on other thread.
+> Another test uses a worker thread to signal point and wait on the main
+> thread using amdgpu_cs_syncobj_timeline_wait.
+> 
+> The command consists of two chunks :
+> 1. AMDGPU_CHUNK_ID_IB uses GFX_COMPUTE_NOP  or SDMA_NOP.
+> 2. The second chunk is AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_WAIT
+>    or AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_SIGNAL which has the
+>    point number .
+> 
+> v2 : Kamil helped with podman script to fix the build
+>      failure when drmlib version < 2.4.97
+> v3 : Kamil suggested sort alphabetically includes.
+>      Luben suggested code and meson script improvements.
+> 
+> Cc: Luben Tuikov <luben.tuikov@amd.com>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
+> Cc: Christian Koenig <christian.koenig@amd.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> Review-by: Luben Tuikov <luben.tuikov@amd.com>
+> Review-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-On 2023-08-25 at 13:19:11 +0000, Marcin Bernatowicz wrote:
-> Introduced struct xe_spin_opts for xe_spin initialization,
-> adjusted tests to new xe_spin_init signature.
-> 
-> Extended spinner with fixed duration capability. It allows
-> to prepare fixed duration (ex. 10ms) workloads and take workloads/second
-> measurements, a handy utility for scheduling tests.
-> 
-> v2: - added asserts in div64_u64_round_up, duration_to_ctx_ticks,
->       simplified loop_addr (Zbyszek)
->     - added xe_spin_init_opts macro (Zbyszek)
->     - corrected patch title (Kamil)
-> 
-> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Great, but the tag should probably be "Reviewed-by: ..."
+-- 
+Regards,
+Luben
+
 > ---
->  lib/xe/xe_spin.c            | 121 ++++++++++++++++++++++++++++++------
->  lib/xe/xe_spin.h            |  27 +++++++-
->  tests/xe/xe_dma_buf_sync.c  |   6 +-
->  tests/xe/xe_exec_balancer.c |   9 ++-
->  tests/xe/xe_exec_reset.c    |  24 ++++---
->  tests/xe/xe_exec_threads.c  |   7 ++-
->  tests/xe/xe_vm.c            |   9 +--
->  7 files changed, 158 insertions(+), 45 deletions(-)
+>  tests/amdgpu/amd_syncobj.c | 262 +++++++++++++++++++++++++++++++++++++
+>  tests/amdgpu/meson.build   |   5 +
+>  2 files changed, 267 insertions(+)
+>  create mode 100644 tests/amdgpu/amd_syncobj.c
 > 
-> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-> index 7113972ee..dcc4aeea1 100644
-> --- a/lib/xe/xe_spin.c
-> +++ b/lib/xe/xe_spin.c
-> @@ -16,41 +16,130 @@
->  #include "xe_ioctl.h"
->  #include "xe_spin.h"
->  
-> +static uint32_t read_timestamp_frequency(int fd, int gt_id)
-> +{
-> +	struct xe_device *dev = xe_device_get(fd);
-> +
-> +	igt_assert(dev && dev->gts && dev->gts->num_gt);
-> +	igt_assert(gt_id >= 0 && gt_id <= dev->gts->num_gt);
-> +
-> +	return dev->gts->gts[gt_id].clock_freq;
-> +}
-> +
-> +static uint64_t div64_u64_round_up(const uint64_t x, const uint64_t y)
-> +{
-> +	igt_assert(y > 0);
-> +
-> +	return (x + y - 1) / y;
------------ ^^^^^^^^^
-This may overflow to value < y.
-
-> +}
-> +
-> +/**
-> + * duration_to_ctx_ticks:
-> + * @fd: opened device
-> + * @gt_id: tile id
-> + * @duration_ns: duration in nanoseconds to be converted to context timestamp ticks
-> + * @return: duration converted to context timestamp ticks.
+> diff --git a/tests/amdgpu/amd_syncobj.c b/tests/amdgpu/amd_syncobj.c
+> new file mode 100644
+> index 000000000..e1d80758e
+> --- /dev/null
+> +++ b/tests/amdgpu/amd_syncobj.c
+> @@ -0,0 +1,262 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright 2017 Advanced Micro Devices, Inc.
+> + * Copyright 2023 Advanced Micro Devices, Inc.
 > + */
-> +uint32_t duration_to_ctx_ticks(int fd, int gt_id, uint64_t duration_ns)
-> +{
-> +	uint32_t f = read_timestamp_frequency(fd, gt_id);
-> +	uint64_t ctx_ticks = div64_u64_round_up(duration_ns * f, NSEC_PER_SEC);
 > +
-> +	igt_assert_lt_u64(ctx_ticks, XE_SPIN_MAX_CTX_TICKS);
+> +#include <amdgpu.h>
+> +#include <amdgpu_drm.h>
+> +#include <pthread.h>
 > +
-> +	return ctx_ticks;
-> +}
+> +#include "igt.h"
+> +#include "lib/amdgpu/amd_PM4.h"
+> +#include "lib/amdgpu/amd_sdma.h"
+> +#include "lib/amdgpu/amd_memory.h"
 > +
-> +#define MI_SRM_CS_MMIO				(1 << 19)
-> +#define MI_LRI_CS_MMIO				(1 << 19)
-> +#define MI_LRR_DST_CS_MMIO			(1 << 19)
-> +#define MI_LRR_SRC_CS_MMIO			(1 << 18)
-> +#define CTX_TIMESTAMP 0x3a8;
-> +#define CS_GPR(x) (0x600 + 8 * (x))
-
-Put newline here.
-
-> +enum { START_TS, NOW_TS };
-> +
->  /**
->   * xe_spin_init:
->   * @spin: pointer to mapped bo in which spinner code will be written
-> - * @addr: offset of spinner within vm
-> - * @preempt: allow spinner to be preempted or not
-> + * @opts: pointer to spinner initialization options
->   */
-> -void xe_spin_init(struct xe_spin *spin, uint64_t addr, bool preempt)
-> +void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
->  {
-> -	uint64_t batch_offset = (char *)&spin->batch - (char *)spin;
-> -	uint64_t batch_addr = addr + batch_offset;
-> -	uint64_t start_offset = (char *)&spin->start - (char *)spin;
-> -	uint64_t start_addr = addr + start_offset;
-> -	uint64_t end_offset = (char *)&spin->end - (char *)spin;
-> -	uint64_t end_addr = addr + end_offset;
-> +	uint64_t loop_addr;
-> +	uint64_t start_addr = opts->addr + offsetof(struct xe_spin, start);
-> +	uint64_t end_addr = opts->addr + offsetof(struct xe_spin, end);
-> +	uint64_t ticks_delta_addr = opts->addr + offsetof(struct xe_spin, ticks_delta);
-> +	uint64_t pad_addr = opts->addr + offsetof(struct xe_spin, pad);
->  	int b = 0;
->  
->  	spin->start = 0;
->  	spin->end = 0xffffffff;
-> +	spin->ticks_delta = 0;
-> +
-> +	if (opts->ctx_ticks) {
-> +		/* store start timestamp */
-> +		spin->batch[b++] = MI_LOAD_REGISTER_IMM(1) | MI_LRI_CS_MMIO;
-> +		spin->batch[b++] = CS_GPR(START_TS) + 4;
-> +		spin->batch[b++] = 0;
-> +		spin->batch[b++] = MI_LOAD_REGISTER_REG | MI_LRR_DST_CS_MMIO | MI_LRR_SRC_CS_MMIO;
-> +		spin->batch[b++] = CTX_TIMESTAMP;
-> +		spin->batch[b++] = CS_GPR(START_TS);
-> +	}
-> +
-> +	loop_addr = opts->addr + b * sizeof(uint32_t);
->  
->  	spin->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
->  	spin->batch[b++] = start_addr;
->  	spin->batch[b++] = start_addr >> 32;
->  	spin->batch[b++] = 0xc0ffee;
->  
-> -	if (preempt)
-> +	if (opts->preempt)
->  		spin->batch[b++] = (0x5 << 23);
->  
-> +	if (opts->ctx_ticks) {
-> +		spin->batch[b++] = MI_LOAD_REGISTER_IMM(1) | MI_LRI_CS_MMIO;
-> +		spin->batch[b++] = CS_GPR(NOW_TS) + 4;
-> +		spin->batch[b++] = 0;
-> +		spin->batch[b++] = MI_LOAD_REGISTER_REG | MI_LRR_DST_CS_MMIO | MI_LRR_SRC_CS_MMIO;
-> +		spin->batch[b++] = CTX_TIMESTAMP;
-> +		spin->batch[b++] = CS_GPR(NOW_TS);
-> +
-> +		/* delta = now - start; inverted to match COND_BBE */
-> +		spin->batch[b++] = MI_MATH(4);
-> +		spin->batch[b++] = MI_MATH_LOAD(MI_MATH_REG_SRCA, MI_MATH_REG(NOW_TS));
-> +		spin->batch[b++] = MI_MATH_LOAD(MI_MATH_REG_SRCB, MI_MATH_REG(START_TS));
-> +		spin->batch[b++] = MI_MATH_SUB;
-> +		spin->batch[b++] = MI_MATH_STOREINV(MI_MATH_REG(NOW_TS), MI_MATH_REG_ACCU);
-> +
-> +		/* Save delta for reading by COND_BBE */
-> +		spin->batch[b++] = MI_STORE_REGISTER_MEM | MI_SRM_CS_MMIO | 2;
-> +		spin->batch[b++] = CS_GPR(NOW_TS);
-> +		spin->batch[b++] = ticks_delta_addr;
-> +		spin->batch[b++] = ticks_delta_addr >> 32;
-> +
-> +		/* Delay between SRM and COND_BBE to post the writes */
-> +		for (int n = 0; n < 8; n++) {
-> +			spin->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-> +			spin->batch[b++] = pad_addr;
-> +			spin->batch[b++] = pad_addr >> 32;
-> +			spin->batch[b++] = 0xc0ffee;
-> +		}
-> +
-> +		/* Break if delta [time elapsed] > ns */
-> +		spin->batch[b++] = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | 2;
-> +		spin->batch[b++] = ~(opts->ctx_ticks);
-> +		spin->batch[b++] = ticks_delta_addr;
-> +		spin->batch[b++] = ticks_delta_addr >> 32;
-> +	}
-> +
->  	spin->batch[b++] = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | 2;
->  	spin->batch[b++] = 0;
->  	spin->batch[b++] = end_addr;
->  	spin->batch[b++] = end_addr >> 32;
->  
->  	spin->batch[b++] = MI_BATCH_BUFFER_START | 1 << 8 | 1;
-> -	spin->batch[b++] = batch_addr;
-> -	spin->batch[b++] = batch_addr >> 32;
-> +	spin->batch[b++] = loop_addr;
-> +	spin->batch[b++] = loop_addr >> 32;
->  
->  	igt_assert(b <= ARRAY_SIZE(spin->batch));
->  }
-> @@ -133,11 +222,7 @@ xe_spin_create(int fd, const struct igt_spin_factory *opt)
->  	addr = intel_allocator_alloc_with_strategy(ahnd, spin->handle, bo_size, 0, ALLOC_STRATEGY_LOW_TO_HIGH);
->  	xe_vm_bind_sync(fd, spin->vm, spin->handle, 0, addr, bo_size);
->  
-> -	if (!(opt->flags & IGT_SPIN_NO_PREEMPTION))
-> -		xe_spin_init(xe_spin, addr, true);
-> -	else
-> -		xe_spin_init(xe_spin, addr, false);
-> -
-> +	xe_spin_init_opts(xe_spin, .addr = addr, .preempt = !(opt->flags & IGT_SPIN_NO_PREEMPTION));
->  	exec.exec_queue_id = spin->engine;
->  	exec.address = addr;
->  	sync.handle = spin->syncobj;
-> @@ -219,7 +304,7 @@ void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
->  	exec_queue = xe_exec_queue_create(fd, vm, hwe, 0);
->  	syncobj = syncobj_create(fd, 0);
->  
-> -	xe_spin_init(spin, addr, true);
-> +	xe_spin_init_opts(spin, .addr = addr, .preempt = true);
->  	exec.exec_queue_id = exec_queue;
->  	exec.address = addr;
->  	sync.handle = syncobj;
-> diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
-> index c84db175d..f1abc1102 100644
-> --- a/lib/xe/xe_spin.h
-> +++ b/lib/xe/xe_spin.h
-> @@ -15,15 +15,38 @@
->  #include "xe_query.h"
->  #include "lib/igt_dummyload.h"
->  
-> +#define XE_SPIN_MAX_CTX_TICKS UINT32_MAX - 1000
-> +
-> +/** struct xe_spin_opts
-> + *
-> + * @addr: offset of spinner within vm
-> + * @preempt: allow spinner to be preempted or not
-> + * @ctx_ticks: number of ticks after which spinner is stopped, applied if > 0
-> + *
-> + * Used to initialize struct xe_spin spinner behavior.
-> + */
-> +struct xe_spin_opts {
-> +	uint64_t addr;
-> +	bool preempt;
-> +	uint32_t ctx_ticks;
+> +struct syncobj_point {
+> +	amdgpu_device_handle device;
+> +	uint32_t syncobj_handle;
+> +	uint64_t point;
 > +};
 > +
->  /* Mapped GPU object */
->  struct xe_spin {
-> -	uint32_t batch[16];
-> +	uint32_t batch[128];
->  	uint64_t pad;
->  	uint32_t start;
->  	uint32_t end;
-> +	uint32_t ticks_delta;
->  };
 > +
->  igt_spin_t *xe_spin_create(int fd, const struct igt_spin_factory *opt);
-> -void xe_spin_init(struct xe_spin *spin, uint64_t addr, bool preempt);
-> +uint32_t duration_to_ctx_ticks(int fd, int gt_id, uint64_t ns);
-> +void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts);
+> +static bool
+> +syncobj_timeline_enable(int fd)
+> +{
+> +	int r;
+> +	uint64_t cap = 0;
 > +
-> +#define xe_spin_init_opts(fd, ...) \
-> +	xe_spin_init(fd, &((struct xe_spin_opts){__VA_ARGS__}))
+> +	r = drmGetCap(fd, DRM_CAP_SYNCOBJ_TIMELINE, &cap);
 > +
->  bool xe_spin_started(struct xe_spin *spin);
->  void xe_spin_sync_wait(int fd, struct igt_spin *spin);
->  void xe_spin_wait_started(struct xe_spin *spin);
-> diff --git a/tests/xe/xe_dma_buf_sync.c b/tests/xe/xe_dma_buf_sync.c
-> index 29d675154..627f4c1e5 100644
-> --- a/tests/xe/xe_dma_buf_sync.c
-> +++ b/tests/xe/xe_dma_buf_sync.c
-> @@ -144,7 +144,6 @@ test_export_dma_buf(struct drm_xe_engine_class_instance *hwe0,
->  		uint64_t sdi_offset = (char *)&data[i]->data - (char *)data[i];
->  		uint64_t sdi_addr = addr + sdi_offset;
->  		uint64_t spin_offset = (char *)&data[i]->spin - (char *)data[i];
-> -		uint64_t spin_addr = addr + spin_offset;
->  		struct drm_xe_sync sync[2] = {
->  			{ .flags = DRM_XE_SYNC_SYNCOBJ, },
->  			{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
-> @@ -153,14 +152,15 @@ test_export_dma_buf(struct drm_xe_engine_class_instance *hwe0,
->  			.num_batch_buffer = 1,
->  			.syncs = to_user_pointer(sync),
->  		};
-> +		struct xe_spin_opts spin_opts = { .addr = addr + spin_offset, .preempt = true };
->  		uint32_t syncobj;
->  		int b = 0;
->  		int sync_fd;
+> +	return !(r || cap == 0);
+> +}
+> +
+> +static void
+> +syncobj_command_submission_helper(amdgpu_device_handle device_handle,
+> +		uint32_t syncobj_handle, bool wait_or_signal, uint64_t point)
+> +{
+> +	amdgpu_context_handle context_handle;
+> +	amdgpu_bo_handle ib_result_handle;
+> +	void *ib_result_cpu;
+> +	uint64_t ib_result_mc_address;
+> +	struct drm_amdgpu_cs_chunk chunks[2];
+> +	struct drm_amdgpu_cs_chunk_data chunk_data;
+> +	struct drm_amdgpu_cs_chunk_syncobj syncobj_data;
+> +	struct amdgpu_cs_fence fence_status;
+> +	amdgpu_bo_list_handle bo_list;
+> +	amdgpu_va_handle va_handle;
+> +	uint32_t expired;
+> +	int i, r;
+> +	uint64_t seq_no;
+> +	uint32_t *ptr;
+> +
+> +	r = amdgpu_cs_ctx_create(device_handle, &context_handle);
+> +	igt_assert_eq(r, 0);
+> +
+> +	r = amdgpu_bo_alloc_and_map(device_handle, 4096, 4096,
+> +				    AMDGPU_GEM_DOMAIN_GTT, 0,
+> +				    &ib_result_handle, &ib_result_cpu,
+> +				    &ib_result_mc_address, &va_handle);
+> +	igt_assert_eq(r, 0);
+> +
+> +	r = amdgpu_get_bo_list(device_handle, ib_result_handle, NULL, &bo_list);
+> +	igt_assert_eq(r, 0);
+> +
+> +	ptr = ib_result_cpu;
+> +
+> +	for (i = 0; i < 16; ++i)
+> +		ptr[i] = wait_or_signal ? GFX_COMPUTE_NOP : SDMA_NOP;
+> +
+> +	chunks[0].chunk_id = AMDGPU_CHUNK_ID_IB;
+> +	chunks[0].length_dw = sizeof(struct drm_amdgpu_cs_chunk_ib) / 4;
+> +	chunks[0].chunk_data = (uint64_t)(uintptr_t)&chunk_data;
+> +	chunk_data.ib_data._pad = 0;
+> +	chunk_data.ib_data.va_start = ib_result_mc_address;
+> +	chunk_data.ib_data.ib_bytes = 16 * 4;
+> +	chunk_data.ib_data.ip_type = wait_or_signal ? AMDGPU_HW_IP_GFX : AMDGPU_HW_IP_DMA;
+> +	chunk_data.ib_data.ip_instance = 0;
+> +	chunk_data.ib_data.ring = 0;
+> +	chunk_data.ib_data.flags = 0;
+> +
+> +	chunks[1].chunk_id = wait_or_signal ?
+> +		AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_WAIT :
+> +		AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_SIGNAL;
+> +	chunks[1].length_dw = sizeof(struct drm_amdgpu_cs_chunk_syncobj) / 4;
+> +	chunks[1].chunk_data = (uint64_t)(uintptr_t)&syncobj_data;
+> +	syncobj_data.handle = syncobj_handle;
+> +	syncobj_data.point = point;
+> +	syncobj_data.flags = DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT;
+> +
+> +	r = amdgpu_cs_submit_raw(device_handle,
+> +				 context_handle,
+> +				 bo_list,
+> +				 2,
+> +				 chunks,
+> +				 &seq_no);
+> +	igt_assert_eq(r, 0);
+> +
+> +	memset(&fence_status, 0, sizeof(struct amdgpu_cs_fence));
+> +	fence_status.context = context_handle;
+> +	fence_status.ip_type = wait_or_signal ? AMDGPU_HW_IP_GFX : AMDGPU_HW_IP_DMA;
+> +	fence_status.ip_instance = 0;
+> +	fence_status.ring = 0;
+> +	fence_status.fence = seq_no;
+> +
+> +	r = amdgpu_cs_query_fence_status(&fence_status,
+> +			AMDGPU_TIMEOUT_INFINITE, 0, &expired);
+> +	igt_assert_eq(r, 0);
+> +
+> +	r = amdgpu_bo_list_destroy(bo_list);
+> +	igt_assert_eq(r, 0);
+> +
+> +	amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
+> +				     ib_result_mc_address, 4096);
+> +
+> +	r = amdgpu_cs_ctx_free(context_handle);
+> +	igt_assert_eq(r, 0);
+> +}
+> +
+> +static void *
+> +syncobj_wait(void *data)
+> +{
+> +	struct syncobj_point *sp = (struct syncobj_point *)data;
+> +
+> +	syncobj_command_submission_helper(sp->device, sp->syncobj_handle, true,
+> +					      sp->point);
+> +
+> +	return (void *)0;
+> +}
+> +
+> +static void *
+> +syncobj_signal(void *data)
+> +{
+> +	struct syncobj_point *sp = (struct syncobj_point *)data;
+> +
+> +	syncobj_command_submission_helper(sp->device, sp->syncobj_handle, false,
+> +						sp->point);
+> +
+> +	return (void *)0;
+> +}
+> +
+> +static void
+> +amdgpu_syncobj_timeline(amdgpu_device_handle device_handle)
+> +{
+> +	static pthread_t wait_thread;
+> +	static pthread_t signal_thread;
+> +	static pthread_t c_thread;
+> +	struct syncobj_point sp1, sp2, sp3;
+> +	uint32_t syncobj_handle;
+> +	uint64_t payload;
+> +	uint64_t wait_point, signal_point;
+> +	uint64_t timeout;
+> +	struct timespec tp;
+> +	int r, sync_fd;
+> +	void *tmp, *tmp2;
+> +
+> +	r =  amdgpu_cs_create_syncobj2(device_handle, 0, &syncobj_handle);
+> +	igt_assert_eq(r, 0);
+> +
+> +	// wait on point 5
+> +	sp1.syncobj_handle = syncobj_handle;
+> +	sp1.device = device_handle;
+> +	sp1.point = 5;
+> +	r = pthread_create(&wait_thread, NULL, syncobj_wait, &sp1);
+> +	igt_assert_eq(r, 0);
+> +
+> +	// signal on point 10
+> +	sp2.syncobj_handle = syncobj_handle;
+> +	sp2.device = device_handle;
+> +	sp2.point = 10;
+> +	r = pthread_create(&signal_thread, NULL, syncobj_signal, &sp2);
+> +	igt_assert_eq(r, 0);
+> +
+> +	r = pthread_join(signal_thread, &tmp);
+> +	igt_assert_eq(r, 0);
+> +
+> +	r = pthread_join(wait_thread, &tmp2);
+> +	igt_assert_eq(r, 0);
+> +
+> +	//query timeline payload
+> +	r = amdgpu_cs_syncobj_query(device_handle, &syncobj_handle,
+> +				    &payload, 1);
+> +	igt_assert_eq(r, 0);
+> +	igt_assert_eq(payload, 10);
+> +
+> +	//signal on point 16
+> +	sp3.syncobj_handle = syncobj_handle;
+> +	sp3.device = device_handle;
+> +	sp3.point = 16;
+> +	r = pthread_create(&c_thread, NULL, syncobj_signal, &sp3);
+> +	igt_assert_eq(r, 0);
+> +
+> +	//CPU wait on point 16
+> +	wait_point = 16;
+> +	timeout = 0;
+> +	clock_gettime(CLOCK_MONOTONIC, &tp);
+> +	timeout = tp.tv_sec * 1000000000ULL + tp.tv_nsec;
+> +	timeout += 10000000000; //10s
+> +	r = amdgpu_cs_syncobj_timeline_wait(device_handle, &syncobj_handle,
+> +					    &wait_point, 1, timeout,
+> +					    DRM_SYNCOBJ_WAIT_FLAGS_WAIT_ALL |
+> +					    DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT,
+> +					    NULL);
+> +
+> +	igt_assert_eq(r, 0);
+> +	r = pthread_join(c_thread, &tmp);
+> +	igt_assert_eq(r, 0);
+> +
+> +	// export point 16 and import to point 18
+> +	r = amdgpu_cs_syncobj_export_sync_file2(device_handle, syncobj_handle,
+> +						16,
+> +						DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT,
+> +						&sync_fd);
+> +	igt_assert_eq(r, 0);
+> +	r = amdgpu_cs_syncobj_import_sync_file2(device_handle, syncobj_handle,
+> +						18, sync_fd);
+> +	igt_assert_eq(r, 0);
+> +	r = amdgpu_cs_syncobj_query(device_handle, &syncobj_handle,
+> +				    &payload, 1);
+> +	igt_assert_eq(r, 0);
+> +	igt_assert_eq(payload, 18);
+> +
+> +	// CPU signal on point 20
+> +	signal_point = 20;
+> +	r = amdgpu_cs_syncobj_timeline_signal(device_handle, &syncobj_handle,
+> +					      &signal_point, 1);
+> +	igt_assert_eq(r, 0);
+> +	r = amdgpu_cs_syncobj_query(device_handle, &syncobj_handle,
+> +				    &payload, 1);
+> +	igt_assert_eq(r, 0);
+> +	igt_assert_eq(payload, 20);
+> +
+> +	r = amdgpu_cs_destroy_syncobj(device_handle, syncobj_handle);
+> +	igt_assert_eq(r, 0);
+> +
+> +}
+> +
+> +igt_main
+> +{
+> +	amdgpu_device_handle device;
+> +	int fd = -1;
+> +
+> +	igt_fixture {
+> +		uint32_t major, minor;
+> +		int err;
+> +
+> +		fd = drm_open_driver(DRIVER_AMDGPU);
+> +		err = amdgpu_device_initialize(fd, &major, &minor, &device);
+> +		igt_require(err == 0);
+> +		igt_require(syncobj_timeline_enable(fd));
+> +		igt_info("Initialized amdgpu, driver version %d.%d\n",
+> +			 major, minor);
+> +
+> +	}
+> +
+> +	igt_subtest("amdgpu_syncobj_timeline")
+> +	amdgpu_syncobj_timeline(device);
+> +
+> +	igt_fixture {
+> +		amdgpu_device_deinitialize(device);
+> +		close(fd);
+> +	}
+> +}
+> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+> index 6032a38e8..ebf52bf38 100644
+> --- a/tests/amdgpu/meson.build
+> +++ b/tests/amdgpu/meson.build
+> @@ -37,6 +37,11 @@ if libdrm_amdgpu.found()
+>  			  'amd_mall',
+>  			  'amd_odm',
+>  			]
+> +	if libdrm_amdgpu.version().version_compare('> 2.4.97')
+> +		amdgpu_progs +=[ 'amd_syncobj', ]
+> +	else
+> +		warning('libdrm <= 2.4.97 found, amd_syncobj test not applicable')
+> +	endif
+>  	amdgpu_deps += libdrm_amdgpu
+>  endif
 >  
->  		/* Write spinner on FD[0] */
-> -		xe_spin_init(&data[i]->spin, spin_addr, true);
-> +		xe_spin_init(&data[i]->spin, &spin_opts);
->  		exec.exec_queue_id = exec_queue[0];
-> -		exec.address = spin_addr;
-> +		exec.address = spin_opts.addr;
->  		xe_exec(fd[0], &exec);
->  
->  		/* Export prime BO as sync file and veify business */
-> diff --git a/tests/xe/xe_exec_balancer.c b/tests/xe/xe_exec_balancer.c
-> index f364a4b7a..d7d8dd8fb 100644
-> --- a/tests/xe/xe_exec_balancer.c
-> +++ b/tests/xe/xe_exec_balancer.c
-> @@ -52,6 +52,7 @@ static void test_all_active(int fd, int gt, int class)
->  	struct {
->  		struct xe_spin spin;
->  	} *data;
-> +	struct xe_spin_opts spin_opts = { .preempt = false };
->  	struct drm_xe_engine_class_instance *hwe;
->  	struct drm_xe_engine_class_instance eci[MAX_INSTANCE];
->  	int i, num_placements = 0;
-> @@ -90,16 +91,14 @@ static void test_all_active(int fd, int gt, int class)
->  	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
->  
->  	for (i = 0; i < num_placements; i++) {
-> -		uint64_t spin_offset = (char *)&data[i].spin - (char *)data;
-> -		uint64_t spin_addr = addr + spin_offset;
-> -
-> -		xe_spin_init(&data[i].spin, spin_addr, false);
-> +		spin_opts.addr = addr + (char *)&data[i].spin - (char *)data;
-> +		xe_spin_init(&data[i].spin, &spin_opts);
->  		sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
->  		sync[1].flags |= DRM_XE_SYNC_SIGNAL;
->  		sync[1].handle = syncobjs[i];
->  
->  		exec.exec_queue_id = exec_queues[i];
-> -		exec.address = spin_addr;
-> +		exec.address = spin_opts.addr;
->  		xe_exec(fd, &exec);
->  		xe_spin_wait_started(&data[i].spin);
->  	}
-> diff --git a/tests/xe/xe_exec_reset.c b/tests/xe/xe_exec_reset.c
-> index a2d33baf1..be6bbada6 100644
-> --- a/tests/xe/xe_exec_reset.c
-> +++ b/tests/xe/xe_exec_reset.c
-> @@ -44,6 +44,7 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci)
->  	size_t bo_size;
->  	uint32_t bo = 0;
->  	struct xe_spin *spin;
-> +	struct xe_spin_opts spin_opts = { .addr = addr, .preempt = false };
->  
->  	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
->  	bo_size = sizeof(*spin);
-> @@ -60,7 +61,7 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci)
->  	sync[0].handle = syncobj_create(fd, 0);
->  	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
->  
-> -	xe_spin_init(spin, addr, false);
-> +	xe_spin_init(spin, &spin_opts);
->  
->  	sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
->  	sync[1].flags |= DRM_XE_SYNC_SIGNAL;
-> @@ -165,6 +166,7 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
->  		uint64_t pad;
->  		uint32_t data;
->  	} *data;
-> +	struct xe_spin_opts spin_opts = { .preempt = false };
->  	struct drm_xe_engine_class_instance *hwe;
->  	struct drm_xe_engine_class_instance eci[MAX_INSTANCE];
->  	int i, j, b, num_placements = 0, bad_batches = 1;
-> @@ -236,7 +238,6 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
->  		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
->  		uint64_t batch_addr = base_addr + batch_offset;
->  		uint64_t spin_offset = (char *)&data[i].spin - (char *)data;
-> -		uint64_t spin_addr = base_addr + spin_offset;
->  		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
->  		uint64_t sdi_addr = base_addr + sdi_offset;
->  		uint64_t exec_addr;
-> @@ -247,8 +248,9 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
->  			batches[j] = batch_addr;
->  
->  		if (i < bad_batches) {
-> -			xe_spin_init(&data[i].spin, spin_addr, false);
-> -			exec_addr = spin_addr;
-> +			spin_opts.addr = base_addr + spin_offset;
-> +			xe_spin_init(&data[i].spin, &spin_opts);
-> +			exec_addr = spin_opts.addr;
->  		} else {
->  			b = 0;
->  			data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-> @@ -368,6 +370,7 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
->  		uint64_t pad;
->  		uint32_t data;
->  	} *data;
-> +	struct xe_spin_opts spin_opts = { .preempt = false };
->  	int i, b;
->  
->  	igt_assert(n_exec_queues <= MAX_N_EXECQUEUES);
-> @@ -417,15 +420,15 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
->  		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
->  		uint64_t batch_addr = base_addr + batch_offset;
->  		uint64_t spin_offset = (char *)&data[i].spin - (char *)data;
-> -		uint64_t spin_addr = base_addr + spin_offset;
->  		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
->  		uint64_t sdi_addr = base_addr + sdi_offset;
->  		uint64_t exec_addr;
->  		int e = i % n_exec_queues;
->  
->  		if (!i) {
-> -			xe_spin_init(&data[i].spin, spin_addr, false);
-> -			exec_addr = spin_addr;
-> +			spin_opts.addr = base_addr + spin_offset;
-> +			xe_spin_init(&data[i].spin, &spin_opts);
-> +			exec_addr = spin_opts.addr;
->  		} else {
->  			b = 0;
->  			data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-> @@ -539,6 +542,7 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
->  		uint64_t exec_sync;
->  		uint32_t data;
->  	} *data;
-> +	struct xe_spin_opts spin_opts = { .preempt = false };
->  	int i, b;
->  
->  	igt_assert(n_exec_queues <= MAX_N_EXECQUEUES);
-> @@ -593,15 +597,15 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
->  		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
->  		uint64_t batch_addr = base_addr + batch_offset;
->  		uint64_t spin_offset = (char *)&data[i].spin - (char *)data;
-> -		uint64_t spin_addr = base_addr + spin_offset;
->  		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
->  		uint64_t sdi_addr = base_addr + sdi_offset;
->  		uint64_t exec_addr;
->  		int e = i % n_exec_queues;
->  
->  		if (!i) {
-> -			xe_spin_init(&data[i].spin, spin_addr, false);
-> -			exec_addr = spin_addr;
-> +			spin_opts.addr = base_addr + spin_offset;
-> +			xe_spin_init(&data[i].spin, &spin_opts);
-> +			exec_addr = spin_opts.addr;
->  		} else {
->  			b = 0;
->  			data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-> diff --git a/tests/xe/xe_exec_threads.c b/tests/xe/xe_exec_threads.c
-> index e64c1639a..ff4ebc280 100644
-> --- a/tests/xe/xe_exec_threads.c
-> +++ b/tests/xe/xe_exec_threads.c
-> @@ -486,6 +486,7 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
->  		uint64_t pad;
->  		uint32_t data;
->  	} *data;
-> +	struct xe_spin_opts spin_opts = { .preempt = false };
->  	int i, j, b, hang_exec_queue = n_exec_queues / 2;
->  	bool owns_vm = false, owns_fd = false;
->  
-> @@ -562,15 +563,15 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
->  		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
->  		uint64_t batch_addr = addr + batch_offset;
->  		uint64_t spin_offset = (char *)&data[i].spin - (char *)data;
-> -		uint64_t spin_addr = addr + spin_offset;
->  		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
->  		uint64_t sdi_addr = addr + sdi_offset;
->  		uint64_t exec_addr;
->  		int e = i % n_exec_queues;
->  
->  		if (flags & HANG && e == hang_exec_queue && i == e) {
-> -			xe_spin_init(&data[i].spin, spin_addr, false);
-> -			exec_addr = spin_addr;
-> +			spin_opts.addr = addr + spin_offset;
-> +			xe_spin_init(&data[i].spin, &spin_opts);
-> +			exec_addr = spin_opts.addr;
->  		} else {
->  			b = 0;
->  			data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-> diff --git a/tests/xe/xe_vm.c b/tests/xe/xe_vm.c
-> index e42c04e33..87604a407 100644
-> --- a/tests/xe/xe_vm.c
-> +++ b/tests/xe/xe_vm.c
-> @@ -727,6 +727,7 @@ test_bind_execqueues_independent(int fd, struct drm_xe_engine_class_instance *ec
->  		uint64_t pad;
->  		uint32_t data;
->  	} *data;
-> +	struct xe_spin_opts spin_opts = { .preempt = true };
->  	int i, b;
->  
->  	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
-> @@ -755,14 +756,14 @@ test_bind_execqueues_independent(int fd, struct drm_xe_engine_class_instance *ec
->  		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
->  		uint64_t sdi_addr = addr + sdi_offset;
->  		uint64_t spin_offset = (char *)&data[i].spin - (char *)data;
-> -		uint64_t spin_addr = addr + spin_offset;
->  		int e = i;
->  
->  		if (i == 0) {
-> -			/* Cork 1st exec_queue with a spinner */
------------------------ ^
-
-> -			xe_spin_init(&data[i].spin, spin_addr, true);
-> +			/* Cork 1st engine with a spinner */
------------------------ ^
-Do not change this.
-
-> +			spin_opts.addr = addr + spin_offset;
------------ ^
-You introduced new spin_opts helper structure, imho it is worth
-effort to split this patch into two, first with spin_opts changes,
-then your addition to make spins with duration.
-
-Regards,
-Kamil
-
-> +			xe_spin_init(&data[i].spin, &spin_opts);
->  			exec.exec_queue_id = exec_queues[e];
-> -			exec.address = spin_addr;
-> +			exec.address = spin_opts.addr;
->  			sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
->  			sync[1].flags |= DRM_XE_SYNC_SIGNAL;
->  			sync[1].handle = syncobjs[e];
-> -- 
-> 2.30.2
-> 
