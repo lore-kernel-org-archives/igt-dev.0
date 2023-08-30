@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============2483533944077324112=="
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9807210E156
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Aug 2023 22:56:54 +0000 (UTC)
+Message-ID: <41d7f1d8-d7ba-596b-1fbe-5f604d524f1f@intel.com>
+Date: Wed, 30 Aug 2023 15:56:48 -0700
+Content-Language: en-US
+To: "Chang, Bruce" <yu.bruce.chang@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20230829230518.4142-1-yu.bruce.chang@intel.com>
+From: "Welty, Brian" <brian.welty@intel.com>
+In-Reply-To: <20230829230518.4142-1-yu.bruce.chang@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Rodrigo Vivi" <rodrigo.vivi@intel.com>
-Date: Wed, 30 Aug 2023 22:53:54 -0000
-Message-ID: <169343603481.15233.14908136499705784494@emeril.freedesktop.org>
-References: <20230830214719.113454-1-rodrigo.vivi@intel.com>
-In-Reply-To: <20230830214719.113454-1-rodrigo.vivi@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_drm-uapi?=
- =?utf-8?q?/xe=5Fdrm=3A_Remove_max=5Fpage=5Fsize_and_align_with_latest_uap?=
- =?utf-8?q?i=2E?=
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe add invalid va access tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,163 +20,287 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Oak Zeng <oak.zeng@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2483533944077324112==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: drm-uapi/xe_drm: Remove max_page_size and align with latest uapi.
-URL   : https://patchwork.freedesktop.org/series/123083/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7459_BAT -> XEIGTPW_9684_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_9684_BAT:
-
-### IGT changes ###
-
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@xe_module_load@load:
-    - {bat-pvc-2}:        [PASS][1] -> [INCOMPLETE][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7459/bat-pvc-2/igt@xe_module_load@load.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9684/bat-pvc-2/igt@xe_module_load@load.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_9684_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
-    - bat-adlp-7:         [FAIL][3] ([Intel XE#480]) -> [PASS][4] +1 similar issue
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7459/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9684/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
 
 
-Build changes
--------------
+On 8/29/2023 4:05 PM, Chang, Bruce wrote:
+> add the following invalid va access test cases:
+> 
+> 	gpu fault	scrach page
+> 1) 	no		no
+> 2) 	no		yes
+> 3) 	yes		no
+> 4) 	yes		yes
 
-  * IGT: IGT_7459 -> IGTPW_9684
-  * Linux: xe-340-c77796cf84361b4716839141f2e48de2bf7f4bd5 -> xe-347-4b8fbc13f29ca69fe2ce030456fab1b145bc71bc
-
-  IGTPW_9684: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9684/index.html
-  IGT_7459: 7459
-  xe-340-c77796cf84361b4716839141f2e48de2bf7f4bd5: c77796cf84361b4716839141f2e48de2bf7f4bd5
-  xe-347-4b8fbc13f29ca69fe2ce030456fab1b145bc71bc: 4b8fbc13f29ca69fe2ce030456fab1b145bc71bc
-
-
-
---===============2483533944077324112==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Can you elaborate... the expected outcome after xe_exec encounters the 
+bad address?
 
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
+> 
+> v2: async vm/bind, and re-bind valid addres
 
+A couple typos above.   'addres', 'scrach'.
 
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>drm-uapi/xe_drm: Remove max_page_size and align with latest uapi.</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123083/">https://patchwork.freedesktop.org/series/123083/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+> 
+> Signed-off-by: Bruce Chang <yu.bruce.chang@intel.com>
+> Cc: Oak Zeng <oak.zeng@intel.com>
+> Cc: Brian Welty <brian.welty@intel.com>
+> Cc: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> ---
+>   lib/xe/xe_ioctl.c             |  15 +++-
+>   lib/xe/xe_ioctl.h             |   3 +
+>   tests/meson.build             |   1 +
+>   tests/xe/xe_exec_invalid_va.c | 160 ++++++++++++++++++++++++++++++++++
+>   4 files changed, 176 insertions(+), 3 deletions(-)
+>   create mode 100644 tests/xe/xe_exec_invalid_va.c
+> 
+> diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+> index 730dcfd16..022f0cf04 100644
+> --- a/lib/xe/xe_ioctl.c
+> +++ b/lib/xe/xe_ioctl.c
+> @@ -415,9 +415,9 @@ void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr)
+>   	syncobj_destroy(fd, sync.handle);
+>   }
+>   
+> -int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+> +int64_t _xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+>   		       struct drm_xe_engine_class_instance *eci,
+> -		       int64_t timeout)
+> +		       int64_t timeout, bool timeout_assert)
+>   {
+>   	struct drm_xe_wait_user_fence wait = {
+>   		.addr = to_user_pointer(addr),
+> @@ -430,11 +430,20 @@ int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+>   		.instances = eci ? to_user_pointer(eci) : 0,
+>   	};
+>   
+> -	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait), 0);
+> +	if (igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait))
+> +		igt_assert (!timeout_assert && errno == ETIME);
+>   
+>   	return wait.timeout;
+>   }
+>   
+> +
+> +int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+> +		       struct drm_xe_engine_class_instance *eci,
+> +		       int64_t timeout)
+> +{
+> +	return _xe_wait_ufence(fd, addr, value, eci, timeout, true);
+> +}
+> +
+>   /**
+>    * xe_wait_ufence_abstime:
+>    * @fd: xe device fd
+> diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+> index 6c281b3bf..4bf7410a4 100644
+> --- a/lib/xe/xe_ioctl.h
+> +++ b/lib/xe/xe_ioctl.h
+> @@ -82,6 +82,9 @@ void xe_exec(int fd, struct drm_xe_exec *exec);
+>   void xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
+>   		  struct drm_xe_sync *sync, uint32_t num_syncs);
+>   void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr);
+> +int64_t _xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+> +		       struct drm_xe_engine_class_instance *eci,
+> +		       int64_t timeout, bool timeout_assert);
+>   int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+>   		       struct drm_xe_engine_class_instance *eci,
+>   		       int64_t timeout);
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 4d325bed1..8861b6c5b 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -276,6 +276,7 @@ xe_progs = [
+>   	'xe_exec_reset',
+>   	'xe_exec_store',
+>   	'xe_exec_threads',
+> +	'xe_exec_invalid_va',
+>   	'xe_exercise_blt',
+>   	'xe_gpgpu_fill',
+>   	'xe_guc_pc',
+> diff --git a/tests/xe/xe_exec_invalid_va.c b/tests/xe/xe_exec_invalid_va.c
+> new file mode 100644
+> index 000000000..974672e75
+> --- /dev/null
+> +++ b/tests/xe/xe_exec_invalid_va.c
+> @@ -0,0 +1,160 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2023 Intel Corporation
+> + */
+> +
+> +/**
+> + * TEST: invalid va tests
+> + * Category: Hardware building block
+> + * Sub-category: execbuf
+> + * Functionality: fault mode
+> + * Test category: functionality test
+> + * GPU requirements: GPU needs support for DRM_XE_VM_CREATE_FAULT_MODE
+> + */
+> +
+> +#include <fcntl.h>
+> +
+> +#include "igt.h"
+> +#include "lib/igt_syncobj.h"
+> +#include "lib/intel_reg.h"
+> +#include "xe_drm.h"
+> +
+> +#include "xe/xe_ioctl.h"
+> +#include "xe/xe_query.h"
+> +#include <string.h>
+> +
+> +static void insert_store(uint32_t *bb, uint64_t va, uint64_t data)
+> +{
+> +	*bb++ = MI_STORE_DWORD_IMM_GEN4;
+> +	*bb++ = lower_32_bits(va);
+> +	*bb++ = upper_32_bits(va);
+> +	*bb++ = data;
+> +	*bb++ = MI_BATCH_BUFFER_END;
+> +}
+> +
+> +/**
+> + * SUBTEST: invalid-va
+> + * Description: Check driver handling of invalid va access
+> + * Run type: FULL
+> + *
+> + * SUBTEST: invalid-va-scratch
+> + * Description: Check driver handling of invalid va access with scratch page
+> + * Run type: FULL
+> + *
+> + * SUBTEST: invalid-va-fault
+> + * Description: Check driver handling of invalid va access with fault enabled
+> + * Run type: FULL
+> + *
+> + * SUBTEST: invalid-va-fault-scratch
+> + * Description: Check driver handling of invalid va access with fault + scratch page
+> + * Run type: FULL
+> + *
+> + * arg[1]: for vm create flags
+> + */
+> +static void test_exec(int fd, uint32_t flags)
+> +{
+> +	const uint64_t inv_addr = 0x20000000;
+> +	const uint64_t addr = 0x1a0000;
+> +#define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
+> +#define ONE_SEC			MS_TO_NS(1000)
+> +#define	STORE_DATA		0xDEADBEAF
+> +	struct _data {
+> +		uint32_t batch[16];
+> +		uint64_t vm_sync;
+> +		uint64_t sync;
+> +		uint64_t data;
+> +	} *data;
+> +	struct drm_xe_sync sync = {
+> +		.flags = DRM_XE_SYNC_USER_FENCE | DRM_XE_SYNC_SIGNAL,
+> +		.timeline_value = USER_FENCE_VALUE,
+> +	};
+> +	struct drm_xe_exec exec = {
+> +		.num_batch_buffer = 1,
+> +		.address = addr,
+> +		.num_syncs = 1,
+> +		.syncs = to_user_pointer(&sync),
+> +	};
+> +	uint32_t vm;
+> +	uint32_t bo;
+> +	size_t bo_size;
+> +	struct drm_xe_engine_class_instance *eci;
+> +
+> +	eci = xe_hw_engine(fd, 0);
+> +	vm = xe_vm_create(fd, flags | DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
+> +	bo_size = ALIGN(sizeof(*data), xe_get_default_alignment(fd));
+> +	bo = xe_bo_create_flags(fd, vm, bo_size,
+> +				all_memory_regions(fd) |
+> +				visible_vram_if_possible(fd, 0));
+> +	data = xe_bo_map(fd, bo, bo_size);
+> +	memset(data, 0, bo_size);
+> +
+> +	insert_store(data->batch, inv_addr + offsetof(struct _data, data), STORE_DATA);
+> +	exec.exec_queue_id = xe_exec_queue_create(fd, vm, eci, 0);
+> +	sync.addr = to_user_pointer(&data->vm_sync);
+> +	xe_vm_bind_async_flags(fd, vm, 0, bo, 0,
+> +				addr, bo_size, &sync, 1,
+> +				XE_VM_BIND_FLAG_IMMEDIATE);
 
-</table>
+I guess the vm_bind isn't really needed as addr isn't used?
+But on other hand, seems this is more like what a buggy application 
+would be doing.
 
+> +	xe_wait_ufence(fd, &data->vm_sync, USER_FENCE_VALUE, NULL, ONE_SEC);
+> +	data->vm_sync = 0;
+> +	sync.addr = addr + offsetof(struct _data, sync);
+> +	xe_exec(fd, &exec);
+> +        _xe_wait_ufence(fd, &data->sync, USER_FENCE_VALUE, NULL, ONE_SEC, false);
 
-    <h1>CI Bug Log - changes from XEIGT_7459_BAT -&gt; XEIGTPW_9684_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_9684_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>igt@xe_module_load@load:<ul>
-<li>{bat-pvc-2}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7459/bat-pvc-2/igt@xe_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9684/bat-pvc-2/igt@xe_module_load@load.html">INCOMPLETE</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_9684_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7459/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9684/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7459 -&gt; IGTPW_9684</li>
-<li>Linux: xe-340-c77796cf84361b4716839141f2e48de2bf7f4bd5 -&gt; xe-347-4b8fbc13f29ca69fe2ce030456fab1b145bc71bc</li>
-</ul>
-<p>IGTPW_9684: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9684/index.html<br />
-  IGT_7459: 7459<br />
-  xe-340-c77796cf84361b4716839141f2e48de2bf7f4bd5: c77796cf84361b4716839141f2e48de2bf7f4bd5<br />
-  xe-347-4b8fbc13f29ca69fe2ce030456fab1b145bc71bc: 4b8fbc13f29ca69fe2ce030456fab1b145bc71bc</p>
+Indentation seems extra above.
 
-</body>
-</html>
+> +	data->sync = 0;
 
---===============2483533944077324112==--
+Do we need some verification here that driver did proper thing when 
+encountering invalid va.  Meaning there was some different behavior with 
+scratch page we can observe?
+Without DRM_XE_VM_CREATE_SCRATCH_PAGE, program is terminated?  Are we 
+banning the context like i915 was doing?
+
+> +
+> +	if ((flags & DRM_XE_VM_CREATE_FAULT_MODE) &&
+> +	    (flags & DRM_XE_VM_CREATE_SCRATCH_PAGE)) {
+> +		/* bind inv_addr after scratch page was created */
+> +		sync.addr = to_user_pointer(&data->vm_sync);
+> +		xe_vm_bind_async_flags(fd, vm, 0, bo, 0,
+> +				inv_addr, bo_size, &sync, 1,
+> +				XE_VM_BIND_FLAG_IMMEDIATE);
+> +		xe_wait_ufence(fd, &data->vm_sync, USER_FENCE_VALUE, NULL, ONE_SEC);
+> +		data->vm_sync = 0;
+> +		data->data = 0;
+> +		sync.addr = addr + offsetof(struct _data, sync);
+> +		xe_exec(fd, &exec);
+> +		xe_wait_ufence(fd, &data->sync, USER_FENCE_VALUE, NULL, ONE_SEC);
+> +		igt_assert_eq(data->data, STORE_DATA);
+> +	}
+> +
+> +	sync.addr = to_user_pointer(&data->vm_sync);
+> +	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, &sync, 1);
+> +	xe_wait_ufence(fd, &data->vm_sync, USER_FENCE_VALUE, NULL, ONE_SEC);
+> +	data->vm_sync = 0;
+> +	xe_vm_unbind_async(fd, vm, 0, 0, inv_addr, bo_size, &sync, 1);
+> +	xe_wait_ufence(fd, &data->vm_sync, USER_FENCE_VALUE, NULL, ONE_SEC);
+> +	xe_exec_queue_destroy(fd, exec.exec_queue_id);
+> +	munmap(data, bo_size);
+> +	gem_close(fd, bo);
+> +	xe_vm_destroy(fd, vm);
+> +}
+> +
+> +igt_main
+> +{
+> +	const struct section {
+> +		const char *name;
+> +		unsigned int flags;
+> +	} sections[] = {
+> +		{ "invalid-va", 0 },
+> +		{ "invalid-va-scratch", DRM_XE_VM_CREATE_SCRATCH_PAGE },
+> +		{ "invalid-va-fault", DRM_XE_VM_CREATE_FAULT_MODE },
+> +		{ "invalid-va-fault-scratch", DRM_XE_VM_CREATE_FAULT_MODE |
+> +					      DRM_XE_VM_CREATE_SCRATCH_PAGE },
+> +		{ NULL },
+> +	};
+> +	int fd;
+> +
+> +	igt_fixture {
+> +		fd = drm_open_driver(DRIVER_XE);
+> +		igt_require(xe_supports_faults(fd));
+> +	}
+> +
+> +	for (const struct section *s = sections; s->name; s++) {
+> +		igt_subtest_f("%s", s->name)
+> +			test_exec(fd, s->flags);
+> +	}
+> +
+> +	igt_fixture
+> +		drm_close_driver(fd);
+> +}
+> +
