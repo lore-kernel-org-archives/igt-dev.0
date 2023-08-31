@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 08C5810E6A6
- for <igt-dev@lists.freedesktop.org>; Thu, 31 Aug 2023 17:16:39 +0000 (UTC)
-Date: Thu, 31 Aug 2023 19:16:34 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230831171634.z6z54ipwvrlhbf6z@kamilkon-desk.igk.intel.com>
-References: <20230831145509.477543-1-mauro.chehab@linux.intel.com>
- <20230831145509.477543-8-mauro.chehab@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230831145509.477543-8-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v4 07/11] scripts/test_list.py: skip
- some internal fields
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 31 Aug 2023 13:34:02 -0000
+Message-ID: <169348884296.12508.2760393968288773661@emeril.freedesktop.org>
+References: <20230831125823.464595-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230831125823.464595-1-mauro.chehab@linux.intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_s?=
+ =?utf-8?q?cripts/test=5Flist=2Epy=3A_enforce_mandatory_fields_to_be_fille?=
+ =?utf-8?q?d?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,248 +17,113 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mauro,
-On 2023-08-31 at 16:52:09 +0200, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> both subtest_line and _summary_ are used internally at the script
-- ^
-Start from uppercase, with that fixed:
+== Series Details ==
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Series: scripts/test_list.py: enforce mandatory fields to be filled
+URL   : https://patchwork.freedesktop.org/series/123111/
+State : warning
 
-> logic. They shouldn't be part of the output.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-> ---
->  scripts/test_list.py | 68 +++++++++++++++++++++-----------------------
->  1 file changed, 33 insertions(+), 35 deletions(-)
->  mode change 100755 => 100644 scripts/test_list.py
-> 
-> diff --git a/scripts/test_list.py b/scripts/test_list.py
-> old mode 100755
-> new mode 100644
-> index 753ec91206cd..e5bf24f9b5ef
-> --- a/scripts/test_list.py
-> +++ b/scripts/test_list.py
-> @@ -264,6 +264,8 @@ class TestList:
->          self.subtest_separator = subtest_separator
->          self.main_name = main_name
->  
-> +        self.internal_fields =  [ '_summary_', '_arg_', '_subtest_line_' ]
-> +
->          if self.main_name:
->              self.main_name += subtest_separator
->  
-> @@ -436,7 +438,7 @@ class TestList:
->                  continue
->  
->              num_vars = summary.count('%')
-> -            file_ln = self.doc[test]["subtest_line"][subtest]
-> +            file_ln = self.doc[test]["_subtest_line_"][subtest]
->  
->              # Handle trivial case: no wildcards
->              if num_vars == 0:
-> @@ -445,7 +447,7 @@ class TestList:
->                  subtest_dict["_summary_"] = summary
->  
->                  for k in sorted(self.doc[test]["subtest"][subtest].keys()):
-> -                    if k in [ '_summary_', 'arg', 'subtest_line' ]:
-> +                    if k in self.internal_fields:
->                          continue
->  
->                      if not allow_inherit:
-> @@ -468,14 +470,14 @@ class TestList:
->  
->              # Convert subtest arguments into an array
->              arg_array = {}
-> -            arg_ref = self.doc[test]["subtest"][subtest]["arg"]
-> +            arg_ref = self.doc[test]["subtest"][subtest]["_arg_"]
->  
-> -            for arg_k in self.doc[test]["arg"][arg_ref].keys():
-> +            for arg_k in self.doc[test]["_arg_"][arg_ref].keys():
->                  arg_array[arg_k] = []
->                  if int(arg_k) > num_vars:
->                      continue
->  
-> -                for arg_el in sorted(self.doc[test]["arg"][arg_ref][arg_k].keys()):
-> +                for arg_el in sorted(self.doc[test]["_arg_"][arg_ref][arg_k].keys()):
->                      arg_array[arg_k].append(arg_el)
->  
->              size = len(arg_array)
-> @@ -500,9 +502,9 @@ class TestList:
->                      arg_val = arg_array[j][pos[j]]
->                      args[j] = arg_val
->  
-> -                    if arg_val in self.doc[test]["arg"][arg_ref][j]:
-> -                        arg_map[j] = self.doc[test]["arg"][arg_ref][j][arg_val]
-> -                        if re.match(r"\<.*\>", self.doc[test]["arg"][arg_ref][j][arg_val]):
-> +                    if arg_val in self.doc[test]["_arg_"][arg_ref][j]:
-> +                        arg_map[j] = self.doc[test]["_arg_"][arg_ref][j][arg_val]
-> +                        if re.match(r"\<.*\>", self.doc[test]["_arg_"][arg_ref][j][arg_val]):
->                              args[j] = "<" + arg_val + ">"
->                      else:
->                          arg_map[j] = arg_val
-> @@ -514,7 +516,7 @@ class TestList:
->                  subtest_dict["_summary_"] = arg_summary
->  
->                  for field in sorted(self.doc[test]["subtest"][subtest].keys()):
-> -                    if field in [ '_summary_', 'arg', 'subtest_line' ]:
-> +                    if field in self.internal_fields:
->                          continue
->  
->                      sub_field = self.doc[test]["subtest"][subtest][field]
-> @@ -567,9 +569,7 @@ class TestList:
->                  test_dict[name] = {}
->  
->                  for field in self.doc[test]:
-> -                    if field == "subtest":
-> -                        continue
-> -                    if field == "arg":
-> +                    if field in self.internal_fields:
->                          continue
->  
->                      test_dict[name][field] = self.doc[test][field]
-> @@ -586,7 +586,7 @@ class TestList:
->  
->                  dic[summary] = {}
->                  for field in sorted(subtest.keys()):
-> -                    if field in [ '_summary_', 'arg', 'subtest_line' ]:
-> +                    if field in self.internal_fields:
->                          continue
->                      dic[summary][field] = subtest[field]
->  
-> @@ -639,7 +639,7 @@ class TestList:
->              for field in sorted(self.doc[test].keys()):
->                  if field == "subtest":
->                      continue
-> -                if field == "arg":
-> +                if field in self.internal_fields:
->                      continue
->  
->                  print(f":{field}: {self.doc[test][field]}")
-> @@ -652,7 +652,7 @@ class TestList:
->                  print("")
->  
->                  for field in sorted(subtest.keys()):
-> -                    if field in [ '_summary_', 'arg', 'subtest_line' ]:
-> +                    if field in self.internal_fields:
->                          continue
->  
->                      print(f":{field}:", subtest[field])
-> @@ -1078,11 +1078,11 @@ class TestList:
->                          handle_section = 'test'
->  
->                          self.doc[current_test] = {}
-> -                        self.doc[current_test]["arg"] = {}
-> +                        self.doc[current_test]["_arg_"] = {}
->                          self.doc[current_test]["_summary_"] = match.group(1)
->                          self.doc[current_test]["File"] = fname
->                          self.doc[current_test]["subtest"] = {}
-> -                        self.doc[current_test]["subtest_line"] = {}
-> +                        self.doc[current_test]["_subtest_line_"] = {}
->  
->                          if implemented_class:
->                              self.doc[current_test]["Class"] = implemented_class
-> @@ -1103,9 +1103,7 @@ class TestList:
->                      # subtests inherit properties from the tests
->                      self.doc[current_test]["subtest"][current_subtest] = {}
->                      for field in self.doc[current_test].keys():
-> -                        if field == "arg":
-> -                            continue
-> -                        if field == "summary":
-> +                        if field in self.internal_fields:
->                              continue
->                          if field == "File":
->                              continue
-> @@ -1119,14 +1117,14 @@ class TestList:
->  
->                      self.doc[current_test]["subtest"][current_subtest]["_summary_"] = match.group(1)
->                      self.doc[current_test]["subtest"][current_subtest]["Description"] = ''
-> -                    self.doc[current_test]["subtest_line"][current_subtest] = file_ln
-> +                    self.doc[current_test]["_subtest_line_"][current_subtest] = file_ln
->  
->                      if not arg_ref:
->                          arg_ref = arg_number
->                          arg_number += 1
-> -                        self.doc[current_test]["arg"][arg_ref] = {}
-> +                        self.doc[current_test]["_arg_"][arg_ref] = {}
->  
-> -                    self.doc[current_test]["subtest"][current_subtest]["arg"] = arg_ref
-> +                    self.doc[current_test]["subtest"][current_subtest]["_arg_"] = arg_ref
->  
->                      continue
->  
-> @@ -1156,14 +1154,14 @@ class TestList:
->                          sys.exit(f"{fname}:{file_ln + 1}: arguments should be defined after one or more subtests, at the same comment")
->  
->                      cur_arg = int(match.group(1)) - 1
-> -                    if cur_arg not in self.doc[current_test]["arg"][arg_ref]:
-> -                        self.doc[current_test]["arg"][arg_ref][cur_arg] = {}
-> +                    if cur_arg not in self.doc[current_test]["_arg_"][arg_ref]:
-> +                        self.doc[current_test]["_arg_"][arg_ref][cur_arg] = {}
->  
->                      cur_arg_element = match.group(2)
->  
->                      if match.group(2):
->                          # Should be used only for numeric values
-> -                        self.doc[current_test]["arg"][arg_ref][cur_arg][cur_arg_element] = "<" + match.group(2) + ">"
-> +                        self.doc[current_test]["_arg_"][arg_ref][cur_arg][cur_arg_element] = "<" + match.group(2) + ">"
->  
->                      continue
->  
-> @@ -1175,7 +1173,7 @@ class TestList:
->                              sys.exit(f"{fname}:{file_ln + 1}: arguments should be defined after one or more subtests, at the same comment")
->  
->                          cur_arg_element = match.group(1)
-> -                        self.doc[current_test]["arg"][arg_ref][cur_arg][cur_arg_element] = match.group(2)
-> +                        self.doc[current_test]["_arg_"][arg_ref][cur_arg][cur_arg_element] = match.group(2)
->  
->                      else:
->                          print(f"{fname}:{file_ln + 1}: Warning: invalid argument: @%s: %s" %
-> @@ -1188,14 +1186,14 @@ class TestList:
->                  if match:
->                      cur_arg = int(match.group(1)) - 1
->  
-> -                    if cur_arg not in self.doc[current_test]["arg"][arg_ref]:
-> -                        self.doc[current_test]["arg"][arg_ref][cur_arg] = {}
-> +                    if cur_arg not in self.doc[current_test]["_arg_"][arg_ref]:
-> +                        self.doc[current_test]["_arg_"][arg_ref][cur_arg] = {}
->  
->                      values = match.group(2).replace(" ", "").split(",")
->                      for split_val in values:
->                          if split_val == "":
->                              continue
-> -                        self.doc[current_test]["arg"][arg_ref][cur_arg][split_val] = split_val
-> +                        self.doc[current_test]["_arg_"][arg_ref][cur_arg][split_val] = split_val
->  
->                      continue
->  
-> @@ -1219,13 +1217,13 @@ class TestList:
->                      if match:
->                          match_val = match.group(1)
->  
-> -                        match = re.match(r'^(\<.*)\>$',self.doc[current_test]["arg"][arg_ref][cur_arg][cur_arg_element])
-> +                        match = re.match(r'^(\<.*)\>$',self.doc[current_test]["_arg_"][arg_ref][cur_arg][cur_arg_element])
->                          if match:
-> -                            self.doc[current_test]["arg"][arg_ref][cur_arg][cur_arg_element] = match.group(1) + ' ' + match_val + ">"
-> +                            self.doc[current_test]["_arg_"][arg_ref][cur_arg][cur_arg_element] = match.group(1) + ' ' + match_val + ">"
->                          else:
-> -                            if self.doc[current_test]["arg"][arg_ref][cur_arg][cur_arg_element] != '':
-> -                                self.doc[current_test]["arg"][arg_ref][cur_arg][cur_arg_element] += ' '
-> -                            self.doc[current_test]["arg"][arg_ref][cur_arg][cur_arg_element] += match_val
-> +                            if self.doc[current_test]["_arg_"][arg_ref][cur_arg][cur_arg_element] != '':
-> +                                self.doc[current_test]["_arg_"][arg_ref][cur_arg][cur_arg_element] += ' '
-> +                            self.doc[current_test]["_arg_"][arg_ref][cur_arg][cur_arg_element] += match_val
->                      continue
->  
->                  file_line.rstrip(r"\n")
-> -- 
-> 2.41.0
-> 
+== Summary ==
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/974496 for the overview.
+
+build-containers:build-debian has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48303007):
+  time="2023-08-31T13:30:58Z" level=fatal msg="Get https://registry.freedesktop.org/v2/gfx-ci/igt-ci-tags/build-debian/manifests/dockerfile-4c2929c9dd27567d233d485e532d992eaf34d7d0: dial tcp 147.75.198.156:443: i/o timeout" 
+  Building!
+  STEP 1: FROM registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-minimal:commit-3d166a0af50b13bbc3693b8bcefb1ffd5bd757b8
+  Getting image source signatures
+  Copying blob sha256:2f92e8d0541551f215cc8116b6a6507a714a936f45b19286a6664467db837932
+  Copying config sha256:08904a47f4efcc161569a9b7f88c458fc6e3e85a2225132246af9cf5cc6c4e5b
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-08-31T13:31:13Z" level=warning msg="signal: killed"
+  time="2023-08-31T13:31:13Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1693488674:step_script
+  section_start:1693488674:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1693488674:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48303009):
+  time="2023-08-31T13:30:37Z" level=fatal msg="Error determining repository tags: Get https://registry.freedesktop.org/v2/gfx-ci/igt-ci-tags/build-debian-arm64/tags/list?last=commit-06833ffeaf7621c3fef097166539bbe999a33e9c&n=100: dial tcp 147.75.198.156:443: i/o timeout" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:d6b7393fb4f375905c31c483d81ce2a2905f88aba8cb198874da2b54035bc41d
+  Copying config sha256:de08540e8ff0e470ff7956df4bed403725a5f45c186e9bf495da5344ff8fbe84
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-08-31T13:30:42Z" level=warning msg="signal: killed"
+  time="2023-08-31T13:30:42Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1693488642:step_script
+  section_start:1693488642:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1693488643:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48303008):
+  time="2023-08-31T13:30:38Z" level=fatal msg="Error determining repository tags: Get https://registry.freedesktop.org/v2/gfx-ci/igt-ci-tags/build-debian-armhf/tags/list?last=commit-344887237473c73b09a3cd6893d97e5abf5a229d&n=100: dial tcp 147.75.198.156:443: i/o timeout" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:d6b7393fb4f375905c31c483d81ce2a2905f88aba8cb198874da2b54035bc41d
+  Copying config sha256:de08540e8ff0e470ff7956df4bed403725a5f45c186e9bf495da5344ff8fbe84
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-08-31T13:30:42Z" level=warning msg="signal: killed"
+  time="2023-08-31T13:30:42Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1693488643:step_script
+  section_start:1693488643:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1693488643:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48303010):
+  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  Checking out 3d166a0a as detached HEAD (ref is intel/IGTPW_9694)...
+  
+  Skipping Git submodules setup
+  section_end:1693488597:get_sources
+  section_start:1693488597:step_script
+  Executing "step_script" stage of the job script
+  Using docker image sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176 for registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 with digest registry.freedesktop.org/wayland/ci-templates/buildah@sha256:7dbcf22cd2c1c7d49db0dc7b4ab207c3d6a4a09bd81cc3b71a688d3727d8749f ...
+  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh
+  Checking if the user of the pipeline is allowed...
+  Checking if the job's project is part of a well-known group...
+  Thank you for contributing to freedesktop.org
+  $ podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  Error: error authenticating creds for "registry.freedesktop.org": Get https://registry.freedesktop.org/v2/: net/http: TLS handshake timeout
+  section_end:1693488608:step_script
+  section_start:1693488608:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1693488609:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/974496
 
