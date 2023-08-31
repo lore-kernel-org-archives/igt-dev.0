@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 425EF10E6A5
- for <igt-dev@lists.freedesktop.org>; Thu, 31 Aug 2023 17:02:53 +0000 (UTC)
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Date: Thu, 31 Aug 2023 19:02:45 +0200
-Message-Id: <20230831170245.38089-1-kamil.konieczny@linux.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 475E610E187
+ for <igt-dev@lists.freedesktop.org>; Thu, 31 Aug 2023 15:05:14 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Date: Thu, 31 Aug 2023 20:26:17 +0530
+Message-Id: <20230831145622.1158622-3-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230831145622.1158622-1-bhanuprakash.modem@intel.com>
+References: <20230831145622.1158622-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] scripts/example-debug-error: added script
- for debugging compilation errors on gitlab
+Subject: [igt-dev] [i-g-t V5 2/7] testplan/kms: Move kms testplan to intel
+ dir
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,59 +20,57 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org, mauro.chehab@linux.intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Added example script to help quick start debugging compilation
-errors seen on GitLab fdo when building new patch or patchset.
+As this testplan is specific to the Intel hardware, the correct
+place for it is inside the tests/i915/.
 
-Cc: Petri Latvala <adrinael@adrinael.net>
+V2: - Fix the included files path
+V3: - Rebase
+
 Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- scripts/example-debug-error.sh | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
- create mode 100755 scripts/example-debug-error.sh
+ docs/testplan/meson.build             | 2 +-
+ tests/{ => i915}/kms_test_config.json | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+ rename tests/{ => i915}/kms_test_config.json (86%)
 
-diff --git a/scripts/example-debug-error.sh b/scripts/example-debug-error.sh
-new file mode 100755
-index 000000000..755c90a25
---- /dev/null
-+++ b/scripts/example-debug-error.sh
-@@ -0,0 +1,32 @@
-+#!/bin/sh
-+# SPDX-License-Identifier: MIT
-+#
-+# Copyright © 2023 Intel Corporation
-+#
-+# When you see compilation error in fdo GitLab follow link with
-+# error to find out used registry, it should be at top of log,
-+# for example:
-+# Using Docker executor with image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-arm64:commit-1af4386ff3086df670e10af3a2bfd89993af3b0a
-+#
-+# Take registry and put it into POD_IGT var below (default will use debian build for amd64/x64):
-+#
-+POD_IGT=registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian:commit-1af4386ff3086df670e10af3a2bfd89993af3b0a
-+
-+mkdir -p /tmp/igt-build
-+cp -R * /tmp/igt-build/
-+sudo podman run -i -t -v /tmp/igt-build/:/opt/builds --privileged ${POD_IGT}
-+
-+# you can debug now with:
-+#
-+# cd /opt/builds
-+# meson build
-+# ninja -C build
-+#
-+# or for cross-compilation for arm64 (for other arch remember to change registry):
-+#
-+# export PKG_CONFIG_PATH=/usr/lib/aarch64-linux-gnu/pkgconfig/
-+# meson --cross-file meson-cross-arm64.txt build
-+# ninja -C build
-+#
-+# After you are done just exit shell.
-+## end of script
+diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
+index e838f2eb1..8d3ad952d 100644
+--- a/docs/testplan/meson.build
++++ b/docs/testplan/meson.build
+@@ -7,7 +7,7 @@ rst2pdf = find_program('rst2pdf', required: false)
+ stylesheet = join_paths(meson.current_source_dir(), 'testplan.css')
+ 
+ xe_test_config = join_paths(source_root, 'tests', 'xe', 'xe_test_config.json')
+-kms_test_config = join_paths(source_root, 'tests', 'kms_test_config.json')
++kms_test_config = join_paths(source_root, 'tests', 'i915', 'kms_test_config.json')
+ i915_test_config = join_paths(source_root, 'tests', 'i915', 'i915_test_config.json')
+ 
+ check_testlist = []
+diff --git a/tests/kms_test_config.json b/tests/i915/kms_test_config.json
+similarity index 86%
+rename from tests/kms_test_config.json
+rename to tests/i915/kms_test_config.json
+index 9219ae4eb..4130b7d6d 100644
+--- a/tests/kms_test_config.json
++++ b/tests/i915/kms_test_config.json
+@@ -1,9 +1,9 @@
+ {
+     "description": "JSON file to be used to parse KMS documentation",
+     "name": "Display and KMS Tests for Intel i915 and Xe Drivers",
+-    "files": [ "chamelium/kms_*.c", "i915/kms_*.c", "kms_*.c", "testdisplay.c" ],
+-    "exclude_files": [ "chamelium/kms_chamelium_helper.c", "i915/kms_dsc_helper.c",
+-                       "kms_color_helper.c"],
++    "files": [ "../chamelium/kms_*.c", "../kms_*.c", "../testdisplay.c", "kms_*.c" ],
++    "exclude_files": [ "../chamelium/kms_chamelium_helper.c", "../kms_color_helper.c",
++                       "kms_dsc_helper.c" ],
+     "fields": {
+         "Category": {
+             "_properties_": {
 -- 
-2.39.2
+2.40.0
 
 
