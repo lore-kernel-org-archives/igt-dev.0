@@ -1,25 +1,25 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9A41210E692
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7805A10E68D
  for <igt-dev@lists.freedesktop.org>; Thu, 31 Aug 2023 14:55:19 +0000 (UTC)
 Received: from linux.intel.com (unknown [10.252.5.209])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 1B36A580EA9
- for <igt-dev@lists.freedesktop.org>; Thu, 31 Aug 2023 07:55:15 -0700 (PDT)
+ by linux.intel.com (Postfix) with ESMTPS id 00A4C580EA7
+ for <igt-dev@lists.freedesktop.org>; Thu, 31 Aug 2023 07:55:14 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qbj4i-0020HU-32
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qbj4i-0020HM-2x
  for igt-dev@lists.freedesktop.org; Thu, 31 Aug 2023 16:55:12 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 31 Aug 2023 16:52:12 +0200
-Message-ID: <20230831145509.477543-11-mauro.chehab@linux.intel.com>
+Date: Thu, 31 Aug 2023 16:52:10 +0200
+Message-ID: <20230831145509.477543-9-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230831145509.477543-1-mauro.chehab@linux.intel.com>
 References: <20230831145509.477543-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 10/11] scripts/test_list.py: allow
- passing a config dict directly
+Subject: [igt-dev] [PATCH i-g-t v4 08/11] scripts/test_list.py: add support
+ to return a string instead of print
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -33,71 +33,175 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Make the logic more generic by allowing to pass a config dict
-directly.
+Sometimes, we don't want to print a testlist, but instead to return
+it for post-processing. One such example is to add a Sphinx extension
+to parse it and place the results on some existing ReST file.
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Add support for it.
+
+A side effect is that we don't need to redirect capture anymore to
+to store the output on a file.
+
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- scripts/test_list.py | 32 +++++++++++++++++++++++++-------
- 1 file changed, 25 insertions(+), 7 deletions(-)
+ scripts/test_list.py | 79 ++++++++++++++++++++------------------------
+ 1 file changed, 36 insertions(+), 43 deletions(-)
 
 diff --git a/scripts/test_list.py b/scripts/test_list.py
-index 962dbbadeeee..b99e53dccc79 100644
+index e5bf24f9b5ef..8ef3a136688f 100644
 --- a/scripts/test_list.py
 +++ b/scripts/test_list.py
-@@ -245,8 +245,10 @@ class TestList:
-     Description: test ioctls
-     """
+@@ -596,20 +596,13 @@ class TestList:
+     # Output methods
+     #
  
--    def __init__(self, config_fname, include_plan = False, file_list = False,
-+    def __init__(self, config_fname = None,
-+                 include_plan = False, file_list = None,
-                  igt_build_path = None,
-+                 config_dict = None, sources_path = None,
-                  test_tag = "TEST", subtest_tag = "SUBTESTS?",
-                  main_name = "igt", subtest_separator = "@"):
-         self.doc = {}
-@@ -265,18 +267,34 @@ class TestList:
+-    def print_rest_flat(self, filename = None):
++    def print_rest_flat(self, filename = None, return_string = False):
  
-         self.internal_fields =  [ '_summary_', '_arg_', '_subtest_line_' ]
+         """Print tests and subtests ordered by tests"""
  
-+        # Exclusive or: either one is needed
-+        if bool(config_fname) == bool(config_dict):
-+            sys.exit("Error: either config filename or config dict shall be used")
-+
-         if self.main_name:
-             self.main_name += subtest_separator
- 
--        driver_name = re.sub(r'(.*/)?([^\/]+)/.*', r'\2', config_fname).capitalize()
+-        handler = None
+-        if filename:
+-            original_stdout = sys.stdout
+-            handler = open(filename, "w", encoding='utf8') # pylint: disable=R1732
+-            sys.stdout = handler
 -
-         implemented_class = None
+-        print("=" * len(self.title))
+-        print(self.title)
+-        print("=" * len(self.title))
+-        print()
++        out = "=" * len(self.title) + "\n"
++        out += self.title + "\n"
++        out += "=" * len(self.title) + "\n\n"
  
--        with open(config_fname, 'r', encoding='utf8') as handle:
--            self.config = json.load(handle)
-+        if config_fname:
-+            with open(config_fname, 'r', encoding='utf8') as handle:
-+                self.config = json.load(handle)
+         for test in sorted(self.doc.keys()):
+             fname = self.doc[test]["File"]
+@@ -631,10 +624,9 @@ class TestList:
+             if not subtest_array:
+                 continue
  
--        config_origin = config_fname
--        cfg_path = os.path.realpath(os.path.dirname(config_fname)) + "/"
-+            config_origin = config_fname
-+            cfg_path = os.path.realpath(os.path.dirname(config_fname)) + "/"
-+            driver_name = re.sub(r'(.*/)?([^\/]+)/.*', r'\2', config_fname).capitalize()
-+
+-            print(len(name) * '=')
+-            print(name)
+-            print(len(name) * '=')
+-            print()
++            out += len(name) * '=' + "\n"
++            out += name + "\n"
++            out += len(name) * '=' + "\n\n"
+ 
+             for field in sorted(self.doc[test].keys()):
+                 if field == "subtest":
+@@ -642,29 +634,30 @@ class TestList:
+                 if field in self.internal_fields:
+                     continue
+ 
+-                print(f":{field}: {self.doc[test][field]}")
++                out += f":{field}: {self.doc[test][field]}\n"
+ 
+             for subtest in subtest_array:
+ 
+-                print()
+-                print(subtest["_summary_"])
+-                print(len(subtest["_summary_"]) * '=')
+-                print("")
++                out += "\n" + subtest["_summary_"] + "\n"
++                out += len(subtest["_summary_"]) * '=' + "\n\n"
+ 
+                 for field in sorted(subtest.keys()):
+                     if field in self.internal_fields:
+                         continue
+ 
+-                    print(f":{field}:", subtest[field])
++                    out += f":{field}:" + subtest[field] + "\n"
+ 
+-                print()
++                out += "\n"
+ 
+-            print()
+-            print()
++            out += "\n\n"
+ 
+-        if handler:
+-            handler.close()
+-            sys.stdout = original_stdout
++        if filename:
++            with open(filename, "w", encoding='utf8') as handle:
++                handle.write(out)
++        elif not return_string:
++            print(out)
 +        else:
-+            self.config = config_dict
-+            config_origin = "config dict"
-+            cfg_path = "./"
-+            driver_name = main_name
-+
-+        if sources_path:
-+            cfg_path = os.path.realpath(sources_path) + "/"
-+
-+        if not self.config:
-+            sys.exit("Error: configuration is empty!")
++            return out
  
-         self.__add_field(None, 0, 0, self.config["fields"])
+     def get_spreadsheet(self):
+ 
+@@ -708,7 +701,7 @@ class TestList:
+                     sheet[row].append('')
+         return sheet
+ 
+-    def print_nested_rest(self, filename = None):
++    def print_nested_rest(self, filename = None, return_string = False):
+ 
+         """Print tests and subtests ordered by tests"""
+ 
+@@ -718,10 +711,9 @@ class TestList:
+             handler = open(filename, "w", encoding='utf8') # pylint: disable=R1732
+             sys.stdout = handler
+ 
+-        print("=" * len(self.title))
+-        print(self.title)
+-        print("=" * len(self.title))
+-        print()
++        out = "=" * len(self.title) + "\n"
++        out += self.title + "\n"
++        out += "=" * len(self.title) + "\n\n"
+ 
+         # Identify the sort order for the fields
+         fields_order = []
+@@ -765,14 +757,11 @@ class TestList:
+ 
+                 title_str = fields_order[i] + ": " + fields[fields_order[i]]
+ 
+-                print(title_str)
+-                print(level_markers[marker] * len(title_str))
+-                print()
++                out += title_str + "\n"
++                out += level_markers[marker] * len(title_str) + "\n\n"
+                 marker += 1
+ 
+-            print()
+-            print("``" + subtest + "``")
+-            print()
++            out += "\n``" + subtest + "``" + "\n\n"
+ 
+             # print non-hierarchy fields
+             for field in fields_order:
+@@ -780,7 +769,7 @@ class TestList:
+                     continue
+ 
+                 if field in fields:
+-                    print(f":{field}: {fields[field]}")
++                    out += f":{field}: {fields[field]}" + "\n"
+ 
+             # Store current values
+             for i in range(cur_level, len(fields_order)):
+@@ -792,11 +781,15 @@ class TestList:
+                 else:
+                     old_fields[i] = ''
+ 
+-            print()
++            out += "\n"
+ 
+-        if handler:
+-            handler.close()
+-            sys.stdout = original_stdout
++        if filename:
++            with open(filename, "w", encoding='utf8') as handle:
++                handle.write(out)
++        elif not return_string:
++            print(out)
++        else:
++            return out
+ 
+     def print_json(self, out_fname):
  
 -- 
 2.41.0
