@@ -1,23 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com
- [IPv6:2a00:1450:4864:20::32b])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AD10710E5F4
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Aug 2023 21:41:44 +0000 (UTC)
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-3fe4cdb72b9so1591945e9.0
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Aug 2023 14:41:44 -0700 (PDT)
+Content-Type: multipart/alternative;
+ boundary="===============1468628302991166839=="
 MIME-Version: 1.0
-References: <20230710115354.699245-1-mauro.chehab@linux.intel.com>
- <20230710115354.699245-5-mauro.chehab@linux.intel.com>
- <20230710181709.234ki5ihaoh6cj5l@kamilkon-desk1>
-In-Reply-To: <20230710181709.234ki5ihaoh6cj5l@kamilkon-desk1>
-From: Mark Yacoub <markyacoub@chromium.org>
-Date: Wed, 30 Aug 2023 17:41:32 -0400
-Message-ID: <CAJUqKUo9rKSqQ6h17gbiEWVhQSaAsvwD51_fmpBr+MTm_R7Rug@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [igt-dev] [PATCH i-g-t v5 4/7] tests/meson.build: create
- testlists for tests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 31 Aug 2023 20:02:17 -0000
+Message-ID: <169351213787.12506.17277068393689801200@emeril.freedesktop.org>
+References: <20230831145509.477543-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230831145509.477543-1-mauro.chehab@linux.intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Make_tes?=
+ =?utf-8?q?t=5Flist=2Epy_more_generic?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,215 +16,154 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, igt-dev@lists.freedesktop.org, Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>, Ewelina Musial <ewelina.musial@intel.com>, ihf@google.com
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This is causing issues for IGT ChromeOS. Adding +ihf@google.com for
-more context.
+--===============1468628302991166839==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jul 10, 2023 at 2:17=E2=80=AFPM Kamil Konieczny
-<kamil.konieczny@linux.intel.com> wrote:
->
-> Hi Mauro,
->
-> On 2023-07-10 at 13:53:51 +0200, Mauro Carvalho Chehab wrote:
-> > From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> >
-> > Let's dynamically create testlists for during build time, as this
-> ------------------------------------ ^^^
-> s/for//
->
-> Also, in subject:
-> tests/meson.build: create testlists for tests
-> ----------------------------------- ^^^^^^^^^
-> s/for tests/dynamically/
-> or /at build time/ ?
->
-> With that fixed you can add my r-b.
->
-> > can speed up a lot the validation check for testplan.
-> >
-> > Ideally, all it would need to to that would be to use this
-> > logic at the end of tests/meson.build:
-> >
-> >     foreach testexe : test_executables
-> >         prog =3D testexe.name()
-> >
-> >         output =3D prog.split('/').get(-1) + '.testlist'
-> >         custom_target(output,
-> >                      build_by_default : true,
-> >                      command : [ testexe, '--show-testlist'],
-> >                      capture : true,
-> >                      output : output)
-> >
-> > Unfortunately, this requies Meson >=3D 0.54. So, we need to add
-> > one custom_target per executable() call.
->
-> As this is touching testlist for CI, +Cc Ewelina.
->
-> Regards,
-> Kamil
->
-> >
-> > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-> > ---
-> >  docs/testplan/meson.build |  2 +-
-> >  tests/meson.build         | 55 ++++++++++++++++++++++++++++++++++-----
-> >  2 files changed, 49 insertions(+), 8 deletions(-)
-> >
-> > diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
-> > index bf73dd32a15f..e838f2eb1540 100644
-> > --- a/docs/testplan/meson.build
-> > +++ b/docs/testplan/meson.build
-> > @@ -12,7 +12,7 @@ i915_test_config =3D join_paths(source_root, 'tests',=
- 'i915', 'i915_test_config.js
-> >
-> >  check_testlist =3D []
-> >  if build_tests
-> > -     doc_dependencies =3D test_executables
-> > +     doc_dependencies =3D testlist_files
-> >       # Check if documentation matches the actual tests and tests can r=
-un
-> >       if not meson.is_cross_build()
-> >               build_info +=3D 'Will Check if documentation is in sync w=
-ith testlist'
-> > diff --git a/tests/meson.build b/tests/meson.build
-> > index 3116c458d60b..897f17ab4561 100644
-> > --- a/tests/meson.build
-> > +++ b/tests/meson.build
-> > @@ -351,35 +351,57 @@ extra_dependencies =3D {
-> >
-> >  test_executables =3D []
-> >  test_list =3D []
-> > +testlist_files =3D []
-> >
-> >  foreach prog : test_progs
-> > -     test_executables +=3D executable(prog, [prog + '.c'] + extra_sour=
-ces.get(prog, []),
-> > +     testexe =3D executable(prog, [prog + '.c'] + extra_sources.get(pr=
-og, []),
-> >                  dependencies : test_deps + extra_dependencies.get(prog=
-, []),
-> >                  install_dir : libexecdir,
-> >                  install_rpath : libexecdir_rpathdir,
-> >                  install : true)
-> > +     test_executables +=3D testexe
-> >       test_list +=3D prog
-> > +     name =3D prog.split('/').get(-1)
-> > +     testlist_files +=3D custom_target(name + '.testlist',
-> > +                  build_by_default : true,
-> > +                  command : [testexe, '--show-testlist'],
-> > +                  capture : true,
-> > +                  output : name + '.testlist')
-> >  endforeach
-> >
-> >  foreach prog : i915_progs
-> > -     test_executables +=3D executable(prog,
-> > +     testexe =3D executable(prog,
-> >                  [join_paths('i915', prog + '.c')] + extra_sources.get(=
-prog, []),
-> >                  dependencies : test_deps + extra_dependencies.get(prog=
-, []),
-> >                  install_dir : libexecdir,
-> >                  install_rpath : libexecdir_rpathdir,
-> >                  install : true)
-> > +     test_executables +=3D testexe
-> >       test_list +=3D prog
-> > +     name =3D prog.split('/').get(-1)
-> > +     testlist_files +=3D custom_target(name + '.testlist',
-> > +                  build_by_default : true,
-> > +                  command : [testexe, '--show-testlist'],
-> > +                  capture : true,
-> > +                  output : name + '.testlist')
-> >  endforeach
-> >
-> >  if build_xe
-> >       foreach prog : xe_progs
-> > -             test_executables +=3D executable(prog,
-> > +             testexe =3D executable(prog,
-> >                          [join_paths('xe', prog + '.c')] + extra_source=
-s.get(prog, []),
-> >                          dependencies : test_deps + extra_dependencies.=
-get(prog, []),
-> >                          install_dir : libexecdir,
-> >                          install_rpath : libexecdir_rpathdir,
-> >                          install : true)
-> >               test_list +=3D prog
-> > +             test_executables +=3D testexe
-> > +             name =3D prog.split('/').get(-1)
-> > +             testlist_files +=3D custom_target(name + '.testlist',
-> > +                          build_by_default : true,
-> > +                          command : [testexe, '--show-testlist'],
-> > +                          capture : true,
-> > +                          output : name + '.testlist')
-> >       endforeach
-> >       build_info +=3D 'Xe **experimental** tests enabled.'
-> >  endif
-> > @@ -395,7 +417,7 @@ endforeach
-> >
-> >  if chamelium.found()
-> >       foreach prog : chamelium_progs
-> > -             test_executables +=3D executable(prog,
-> > +             testexe =3D executable(prog,
-> >                                [join_paths('chamelium', prog + '.c'),
-> >                                       join_paths('chamelium', 'kms_cham=
-elium_helper.c')],
-> >                                dependencies : test_deps,
-> > @@ -403,16 +425,30 @@ if chamelium.found()
-> >                                install_rpath : libexecdir_rpathdir,
-> >                                install : true)
-> >               test_list +=3D prog
-> > +             test_executables +=3D testexe
-> > +             name =3D prog.split('/').get(-1)
-> > +             testlist_files +=3D custom_target(name + '.testlist',
-> > +                          build_by_default : true,
-> > +                          command : [testexe, '--show-testlist'],
-> > +                          capture : true,
-> > +                          output : name + '.testlist')
-> >       endforeach
-> >       test_deps +=3D chamelium
-> >
-> > -     test_executables +=3D executable('kms_chamelium_color',
-> > +     name =3D 'kms_chamelium_color'
-> > +     testexe =3D executable('kms_chamelium_color',
-> >                               [ 'chamelium/kms_chamelium_color.c', 'kms=
-_color_helper.c' ],
-> >                               dependencies : test_deps + [ chamelium ],
-> >                               install_dir : libexecdir,
-> >                               install_rpath : libexecdir_rpathdir,
-> >                               install : true)
-> > -     test_list +=3D 'kms_chamelium_color'
-> > +     test_list +=3D name
-> > +     test_executables +=3D testexe
-> > +     testlist_files +=3D custom_target(name + '.testlist',
-> > +                  build_by_default : true,
-> > +                  command : [testexe, '--show-testlist'],
-> > +                  capture : true,
-> > +                  output : name + '.testlist')
-> >  endif
-> >
-> >  subdir('amdgpu')
-> > @@ -448,11 +484,16 @@ foreach prog : test_list
-> >       test('testcase check ' + prog, test_script, args : prog)
-> >  endforeach
-> >
-> > -executable('gem_stress', 'i915/gem_stress.c',
-> > +testexe =3D executable('gem_stress', 'i915/gem_stress.c',
-> >          install : true,
-> >          install_dir : libexecdir,
-> >          install_rpath : libexecdir_rpathdir,
-> >          dependencies : igt_deps)
-> > +testlist_files +=3D custom_target('gem_stress.testlist',
-> > +                build_by_default : true,
-> > +                command : [testexe, '--show-testlist'],
-> > +                capture : true,
-> > +                output : 'gem_stress.testlist')
-> >
-> >  image_files =3D [
-> >    '1080p-left.png',
-> > --
-> > 2.40.1
-> >
+== Series Details ==
+
+Series: Make test_list.py more generic
+URL   : https://patchwork.freedesktop.org/series/123112/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7460_BAT -> XEIGTPW_9695_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9695_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
+    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 similar issue
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7460/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9695/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+
+  
+#### Possible fixes ####
+
+  * {igt@xe_create@create-execqueues-noleak}:
+    - bat-atsm-2:         [FAIL][3] ([Intel XE#524]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7460/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9695/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7460 -> IGTPW_9695
+  * Linux: xe-348-72da4b45f58f2a95d45743801a10e1f1e1dcce05 -> xe-350-62acaf965d51695cdc9622608e7a2440db46997c
+
+  IGTPW_9695: 9695
+  IGT_7460: 30b4034ea562952039ba6af58106791d5c39999e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-348-72da4b45f58f2a95d45743801a10e1f1e1dcce05: 72da4b45f58f2a95d45743801a10e1f1e1dcce05
+  xe-350-62acaf965d51695cdc9622608e7a2440db46997c: 62acaf965d51695cdc9622608e7a2440db46997c
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9695/index.html
+
+--===============1468628302991166839==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Make test_list.py more generic</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123112/">https://patchwork.freedesktop.org/series/123112/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9695/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9695/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7460_BAT -&gt; XEIGTPW_9695_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9695_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7460/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9695/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>{igt@xe_create@create-execqueues-noleak}:<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7460/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9695/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7460 -&gt; IGTPW_9695</li>
+<li>Linux: xe-348-72da4b45f58f2a95d45743801a10e1f1e1dcce05 -&gt; xe-350-62acaf965d51695cdc9622608e7a2440db46997c</li>
+</ul>
+<p>IGTPW_9695: 9695<br />
+  IGT_7460: 30b4034ea562952039ba6af58106791d5c39999e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-348-72da4b45f58f2a95d45743801a10e1f1e1dcce05: 72da4b45f58f2a95d45743801a10e1f1e1dcce05<br />
+  xe-350-62acaf965d51695cdc9622608e7a2440db46997c: 62acaf965d51695cdc9622608e7a2440db46997c</p>
+
+</body>
+</html>
+
+--===============1468628302991166839==--
 
