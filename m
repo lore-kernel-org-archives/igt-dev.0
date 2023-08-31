@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2E0D210E6AF
- for <igt-dev@lists.freedesktop.org>; Thu, 31 Aug 2023 18:53:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 979BD10E0A2
+ for <igt-dev@lists.freedesktop.org>; Thu, 31 Aug 2023 15:05:20 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Fri,  1 Sep 2023 00:15:23 +0530
-Message-Id: <20230831184523.1232295-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230831145622.1158622-8-bhanuprakash.modem@intel.com>
-References: <20230831145622.1158622-8-bhanuprakash.modem@intel.com>
+Date: Thu, 31 Aug 2023 20:26:22 +0530
+Message-Id: <20230831145622.1158622-8-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230831145622.1158622-1-bhanuprakash.modem@intel.com>
+References: <20230831145622.1158622-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V6 7/7] tests: Rename all intel specific tests
+Subject: [igt-dev] [i-g-t V5 7/7] tests: Rename all intel specific tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,7 +19,7 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org, mauro.chehab@linux.intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
 As all intel specific tests got moved to a new directory
@@ -37,16 +37,10 @@ the Examples.
 Going forward, we need to follow the above rules to maintain the
 tests.
 
-V2: - Fix IGT docs
-    - Fix tests/feat_profile.json
-
 Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
  README.md                                     |   2 +-
- .../igt-gpu-tools/igt_test_programs.xml       | 102 +++---
- docs/reference/igt-gpu-tools/meson.build      |  14 +-
- tests/feat_profile.json                       |   8 +-
  tests/intel-ci/blacklist-pre-merge.txt        |  14 +-
  tests/intel-ci/blacklist.txt                  | 102 +++---
  tests/intel-ci/fast-feedback.testlist         | 104 +++---
@@ -190,7 +184,7 @@ Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
  tests/intel/i915_test_config.json             |   8 +-
  ...llocator.c => intel_api_intel_allocator.c} |   0
  tests/meson.build                             | 308 +++++++++---------
- 147 files changed, 341 insertions(+), 323 deletions(-)
+ 144 files changed, 269 insertions(+), 271 deletions(-)
  rename tests/intel/{api_intel_bb.c => i915_api_intel_bb.c} (100%)
  rename tests/intel/{debugfs_test.c => i915_debugfs_test.c} (100%)
  rename tests/intel/{drm_fdinfo.c => i915_drm_fdinfo.c} (100%)
@@ -343,211 +337,6 @@ index 9cef60d88..492650e85 100644
  
  ### `tools/`
  
-diff --git a/docs/reference/igt-gpu-tools/igt_test_programs.xml b/docs/reference/igt-gpu-tools/igt_test_programs.xml
-index 92bc33ba8..c0f11a883 100644
---- a/docs/reference/igt-gpu-tools/igt_test_programs.xml
-+++ b/docs/reference/igt-gpu-tools/igt_test_programs.xml
-@@ -120,15 +120,6 @@
-     <xi:include href="igt_test_programs_core_description.xml"/>
-   </refentry>
- 
--  <refentry id="igt-debugfs-tests">
--    <refnamediv>
--      <refname>Debugfs Tests</refname>
--      <refpurpose>Tests for debugfs behaviour</refpurpose>
--    </refnamediv>
--    <xi:include href="igt_test_programs_debugfs_programs.xml"/>
--    <xi:include href="igt_test_programs_debugfs_description.xml"/>
--  </refentry>
--
-   <refentry id="igt-drm-tests">
-     <refnamediv>
-       <refname>DRM Tests</refname>
-@@ -138,31 +129,76 @@
-     <xi:include href="igt_test_programs_drm_description.xml"/>
-   </refentry>
- 
--  <refentry id="igt-gem-tests">
-+  <refentry id="igt-i915-debugfs-tests">
-+    <refnamediv>
-+      <refname>i915 Debugfs Tests</refname>
-+      <refpurpose>Tests for i915 debugfs behaviour</refpurpose>
-+    </refnamediv>
-+    <xi:include href="igt_test_programs_i915_debugfs_programs.xml"/>
-+    <xi:include href="igt_test_programs_i915_debugfs_description.xml"/>
-+  </refentry>
-+
-+  <refentry id="igt-i915-gem-tests">
-+    <refnamediv>
-+      <refname>i915 GEM Tests</refname>
-+      <refpurpose>Tests for the i915 graphics execution manager</refpurpose>
-+    </refnamediv>
-+    <xi:include href="igt_test_programs_i915_gem_programs.xml"/>
-+    <xi:include href="igt_test_programs_i915_gem_description.xml"/>
-+  </refentry>
-+
-+  <refentry id="igt-i915-gen3-tests">
-+    <refnamediv>
-+      <refname>i915 Gen 3 Tests</refname>
-+      <refpurpose>Tests specific to Intel gen 3</refpurpose>
-+    </refnamediv>
-+    <xi:include href="igt_test_programs_i915_gen3_programs.xml"/>
-+    <xi:include href="igt_test_programs_i915_gen3_description.xml"/>
-+  </refentry>
-+
-+  <refentry id="igt-i915-gen7-tests">
-     <refnamediv>
--      <refname>GEM Tests</refname>
--      <refpurpose>Tests for the graphics execution manager</refpurpose>
-+      <refname>i915 Gen 7 Tests</refname>
-+      <refpurpose>Tests specific to Intel gen 7</refpurpose>
-     </refnamediv>
--    <xi:include href="igt_test_programs_gem_programs.xml"/>
--    <xi:include href="igt_test_programs_gem_description.xml"/>
-+    <xi:include href="igt_test_programs_i915_gen7_programs.xml"/>
-+    <xi:include href="igt_test_programs_i915_gen7_description.xml"/>
-   </refentry>
- 
--  <refentry id="igt-gen3-tests">
-+  <refentry id="igt-i915-gen9-tests">
-     <refnamediv>
--      <refname>Gen 3 Tests</refname>
--      <refpurpose>Tests specific to gen 3</refpurpose>
-+      <refname>i915 Gen 9 Tests</refname>
-+      <refpurpose>Tests specific to Intel gen 9</refpurpose>
-     </refnamediv>
--    <xi:include href="igt_test_programs_gen3_programs.xml"/>
--    <xi:include href="igt_test_programs_gen3_description.xml"/>
-+    <xi:include href="igt_test_programs_i915_gen9_programs.xml"/>
-+    <xi:include href="igt_test_programs_i915_gen9_description.xml"/>
-   </refentry>
- 
--  <refentry id="igt-gen7-tests">
-+  <refentry id="igt-i915-perf-tests">
-     <refnamediv>
--      <refname>Gen 7 Tests</refname>
--      <refpurpose>Tests specific to gen 7</refpurpose>
-+      <refname>i915 Perf Tests</refname>
-+      <refpurpose>Tests for the i915 performance metrics</refpurpose>
-     </refnamediv>
--    <xi:include href="igt_test_programs_gen7_programs.xml"/>
--    <xi:include href="igt_test_programs_gen7_description.xml"/>
-+    <xi:include href="igt_test_programs_i915_perf_programs.xml"/>
-+    <xi:include href="igt_test_programs_i915_perf_description.xml"/>
-+  </refentry>
-+
-+  <refentry id="igt-i915-pm-tests">
-+    <refnamediv>
-+      <refname>i915 PM Tests</refname>
-+      <refpurpose>Tests for i915 power management features</refpurpose>
-+    </refnamediv>
-+    <xi:include href="igt_test_programs_i915_pm_programs.xml"/>
-+    <xi:include href="igt_test_programs_i915_pm_description.xml"/>
-+  </refentry>
-+
-+  <refentry id="igt-i915-prime-tests">
-+    <refnamediv>
-+      <refname>i915 Prime Tests</refname>
-+      <refpurpose>Tests for i915 buffer sharing</refpurpose>
-+    </refnamediv>
-+    <xi:include href="igt_test_programs_i915_prime_programs.xml"/>
-+    <xi:include href="igt_test_programs_i915_prime_description.xml"/>
-   </refentry>
- 
-   <refentry id="igt-i915-tests">
-@@ -192,24 +228,6 @@
-     <xi:include href="igt_test_programs_meta_description.xml"/>
-   </refentry>
- 
--  <refentry id="igt-perf-tests">
--    <refnamediv>
--      <refname>Perf Tests</refname>
--      <refpurpose>Tests for the performance metrics</refpurpose>
--    </refnamediv>
--    <xi:include href="igt_test_programs_perf_programs.xml"/>
--    <xi:include href="igt_test_programs_perf_description.xml"/>
--  </refentry>
--
--  <refentry id="igt-pm-tests">
--    <refnamediv>
--      <refname>PM Tests</refname>
--      <refpurpose>Tests for power management features</refpurpose>
--    </refnamediv>
--    <xi:include href="igt_test_programs_pm_programs.xml"/>
--    <xi:include href="igt_test_programs_pm_description.xml"/>
--  </refentry>
--
-   <refentry id="igt-prime-tests">
-     <refnamediv>
-       <refname>Prime Tests</refname>
-diff --git a/docs/reference/igt-gpu-tools/meson.build b/docs/reference/igt-gpu-tools/meson.build
-index 6b832ad27..802342db4 100644
---- a/docs/reference/igt-gpu-tools/meson.build
-+++ b/docs/reference/igt-gpu-tools/meson.build
-@@ -26,16 +26,18 @@ ignore_headers = [
- test_groups = [
- 	'amdgpu',
- 	'core',
--	'debugfs',
- 	'drm',
--	'gem',
--	'gen3',
--	'gen7',
-+	'i915_debugfs',
-+	'i915_gem',
-+	'i915_gen3',
-+	'i915_gen7',
-+	'i915_gen9',
-+	'i915_perf',
-+	'i915_pm',
-+	'i915_prime',
- 	'i915',
- 	'kms',
- 	'meta',
--	'perf',
--	'pm',
- 	'prime',
- 	'sw_sync',
- 	'testdisplay',
-diff --git a/tests/feat_profile.json b/tests/feat_profile.json
-index f13d636e3..bd240c36c 100644
---- a/tests/feat_profile.json
-+++ b/tests/feat_profile.json
-@@ -1,6 +1,6 @@
- {
-     "Android Sync Framework" : {
--        "include_tests" : "gem_exec_fence|gem_exec_async|sw_sync|fence",
-+        "include_tests" : "i915_gem_exec_fence|i915_gem_exec_async|sw_sync|fence",
-         "exclude_tests" : "kms_busy@extended|fbc",
-         "target_rate" : 90
-     },
-@@ -15,7 +15,7 @@
-         "target_rate" : 90
-     },
-     "debugfs" : {
--        "include_tests" : "debugfs",
-+        "include_tests" : "i915_debugfs",
-         "exclude_tests" : "",
-         "target_rate" : 90
-     },
-@@ -25,7 +25,7 @@
-         "target_rate" : 90
-     },
-     "gem" : {
--        "include_tests" : "gem",
-+        "include_tests" : "i915_gem",
-         "exclude_tests" : "",
-         "target_rate" : 90
-     },
-@@ -63,7 +63,7 @@
-         "target_rate" : 90
-     },
-     "pm" : {
--        "include_tests" : "pm_|suspend|resume",
-+        "include_tests" : "i915_pm_|suspend|resume",
-         "exclude_tests" : "",
-         "target_rate" : 90
-     },
 diff --git a/tests/intel-ci/blacklist-pre-merge.txt b/tests/intel-ci/blacklist-pre-merge.txt
 index d4e5ef66e..b747bdf42 100644
 --- a/tests/intel-ci/blacklist-pre-merge.txt
