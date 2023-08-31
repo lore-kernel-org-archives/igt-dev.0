@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Thu, 31 Aug 2023 11:58:23 +0530
-From: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
-To: Lucas De Marchi <lucas.demarchi@intel.com>, <igt-dev@lists.freedesktop.org>
-Message-ID: <ZPAzB95lw3vSqgan@bvivekan-mobl>
-References: <20230829141107.1505705-1-lucas.demarchi@intel.com>
- <20230829141107.1505705-2-lucas.demarchi@intel.com>
 Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230829141107.1505705-2-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [Intel-xe] [PATCH igt 1/4] lib: Add xe_pciids.h
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Date: Thu, 31 Aug 2023 06:47:43 -0000
+Message-ID: <169346446339.12508.8911614957775157921@emeril.freedesktop.org>
+References: <20230831060243.1048579-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230831060243.1048579-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_R?=
+ =?utf-8?q?evert_=22tests/intel-ci=3A_Drop_tiling_tests_from_xe_blocklist?=
+ =?utf-8?q?=22?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,280 +18,89 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: intel-xe@lists.freedesktop.org
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 29.08.2023 07:11, Lucas De Marchi wrote:
-> With the introduction of Lunar Lake, igt won't be able to just re-use
-> i915_pciids.h for both drivers anymore since the support for LNL is only
-> coming with the xe module. Copy xe_pciids.h from the drm-xe-next branch
-> (up to commit b9c9020fc816 ("drm/xe/pvc: Use fast copy engines as
-> migrate engine on PVC") and start including it where needed. This brings
-> all the LNL PCI IDs.
+== Series Details ==
 
-I couldn't find the commit hash b9c9020fc816. Is it lost due to rebase?
-In that case, does it make sense to use the commit hash or just keep the
-commit subject?
+Series: Revert "tests/intel-ci: Drop tiling tests from xe blocklist"
+URL   : https://patchwork.freedesktop.org/series/123095/
+State : warning
 
-Regards,
-Bala
+== Summary ==
 
-> 
-> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-> ---
->  docs/reference/igt-gpu-tools/meson.build |   1 +
->  lib/intel_device_info.c                  |   1 +
->  lib/xe_pciids.h                          | 215 +++++++++++++++++++++++
->  3 files changed, 217 insertions(+)
->  create mode 100644 lib/xe_pciids.h
-> 
-> diff --git a/docs/reference/igt-gpu-tools/meson.build b/docs/reference/igt-gpu-tools/meson.build
-> index 6b832ad27..513385b4b 100644
-> --- a/docs/reference/igt-gpu-tools/meson.build
-> +++ b/docs/reference/igt-gpu-tools/meson.build
-> @@ -21,6 +21,7 @@ ignore_headers = [
->  	'media_fill_gen9.h',
->  	'gen9_render.h',
->  	'version.h',
-> +	'xe_pciids.h',
->  ]
->  
->  test_groups = [
-> diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
-> index 2c9a45b68..5d53d2906 100644
-> --- a/lib/intel_device_info.c
-> +++ b/lib/intel_device_info.c
-> @@ -1,6 +1,7 @@
->  #include "intel_chipset.h"
->  #include "i915_pciids.h"
->  #include "i915_pciids_local.h"
-> +#include "xe_pciids.h"
->  
->  #include <strings.h> /* ffs() */
->  
-> diff --git a/lib/xe_pciids.h b/lib/xe_pciids.h
-> new file mode 100644
-> index 000000000..29f07a00a
-> --- /dev/null
-> +++ b/lib/xe_pciids.h
-> @@ -0,0 +1,215 @@
-> +/* SPDX-License-Identifier: MIT */
-> +/*
-> + * Copyright © 2022 Intel Corporation
-> + */
-> +
-> +#ifndef _XE_PCIIDS_H_
-> +#define _XE_PCIIDS_H_
-> +
-> +/*
-> + * Lists below can be turned into initializers for a struct pci_device_id
-> + * by defining INTEL_VGA_DEVICE:
-> + *
-> + * #define INTEL_VGA_DEVICE(id, info) { \
-> + *	0x8086, id,			\
-> + *	~0, ~0,				\
-> + *	0x030000, 0xff0000,		\
-> + *	(unsigned long) info }
-> + *
-> + * And then calling like:
-> + *
-> + * XE_TGL_12_GT1_IDS(INTEL_VGA_DEVICE, ## __VA_ARGS__)
-> + *
-> + * To turn them into something else, just provide a different macro passed as
-> + * first argument.
-> + */
-> +
-> +/* TGL */
-> +#define XE_TGL_GT1_IDS(MACRO__, ...)		\
-> +	MACRO__(0x9A60, ## __VA_ARGS__),	\
-> +	MACRO__(0x9A68, ## __VA_ARGS__),	\
-> +	MACRO__(0x9A70, ## __VA_ARGS__)
-> +
-> +#define XE_TGL_GT2_IDS(MACRO__, ...)		\
-> +	MACRO__(0x9A40, ## __VA_ARGS__),	\
-> +	MACRO__(0x9A49, ## __VA_ARGS__),	\
-> +	MACRO__(0x9A59, ## __VA_ARGS__),	\
-> +	MACRO__(0x9A78, ## __VA_ARGS__),	\
-> +	MACRO__(0x9AC0, ## __VA_ARGS__),	\
-> +	MACRO__(0x9AC9, ## __VA_ARGS__),	\
-> +	MACRO__(0x9AD9, ## __VA_ARGS__),	\
-> +	MACRO__(0x9AF8, ## __VA_ARGS__)
-> +
-> +#define XE_TGL_IDS(MACRO__, ...)		\
-> +	XE_TGL_GT1_IDS(MACRO__, ## __VA_ARGS__),\
-> +	XE_TGL_GT2_IDS(MACRO__, ## __VA_ARGS__)
-> +
-> +/* RKL */
-> +#define XE_RKL_IDS(MACRO__, ...)		\
-> +	MACRO__(0x4C80, ## __VA_ARGS__),	\
-> +	MACRO__(0x4C8A, ## __VA_ARGS__),	\
-> +	MACRO__(0x4C8B, ## __VA_ARGS__),	\
-> +	MACRO__(0x4C8C, ## __VA_ARGS__),	\
-> +	MACRO__(0x4C90, ## __VA_ARGS__),	\
-> +	MACRO__(0x4C9A, ## __VA_ARGS__)
-> +
-> +/* DG1 */
-> +#define XE_DG1_IDS(MACRO__, ...)		\
-> +	MACRO__(0x4905, ## __VA_ARGS__),	\
-> +	MACRO__(0x4906, ## __VA_ARGS__),	\
-> +	MACRO__(0x4907, ## __VA_ARGS__),	\
-> +	MACRO__(0x4908, ## __VA_ARGS__),	\
-> +	MACRO__(0x4909, ## __VA_ARGS__)
-> +
-> +/* ADL-S */
-> +#define XE_ADLS_IDS(MACRO__, ...)		\
-> +	MACRO__(0x4680, ## __VA_ARGS__),	\
-> +	MACRO__(0x4682, ## __VA_ARGS__),	\
-> +	MACRO__(0x4688, ## __VA_ARGS__),	\
-> +	MACRO__(0x468A, ## __VA_ARGS__),	\
-> +	MACRO__(0x4690, ## __VA_ARGS__),	\
-> +	MACRO__(0x4692, ## __VA_ARGS__),	\
-> +	MACRO__(0x4693, ## __VA_ARGS__)
-> +
-> +/* ADL-P */
-> +#define XE_ADLP_IDS(MACRO__, ...)		\
-> +	MACRO__(0x46A0, ## __VA_ARGS__),	\
-> +	MACRO__(0x46A1, ## __VA_ARGS__),	\
-> +	MACRO__(0x46A2, ## __VA_ARGS__),	\
-> +	MACRO__(0x46A3, ## __VA_ARGS__),	\
-> +	MACRO__(0x46A6, ## __VA_ARGS__),	\
-> +	MACRO__(0x46A8, ## __VA_ARGS__),	\
-> +	MACRO__(0x46AA, ## __VA_ARGS__),	\
-> +	MACRO__(0x462A, ## __VA_ARGS__),	\
-> +	MACRO__(0x4626, ## __VA_ARGS__),	\
-> +	MACRO__(0x4628, ## __VA_ARGS__),	\
-> +	MACRO__(0x46B0, ## __VA_ARGS__),	\
-> +	MACRO__(0x46B1, ## __VA_ARGS__),	\
-> +	MACRO__(0x46B2, ## __VA_ARGS__),	\
-> +	MACRO__(0x46B3, ## __VA_ARGS__),	\
-> +	MACRO__(0x46C0, ## __VA_ARGS__),	\
-> +	MACRO__(0x46C1, ## __VA_ARGS__),	\
-> +	MACRO__(0x46C2, ## __VA_ARGS__),	\
-> +	MACRO__(0x46C3, ## __VA_ARGS__)
-> +
-> +/* ADL-N */
-> +#define XE_ADLN_IDS(MACRO__, ...)		\
-> +	MACRO__(0x46D0, ## __VA_ARGS__),	\
-> +	MACRO__(0x46D1, ## __VA_ARGS__),	\
-> +	MACRO__(0x46D2, ## __VA_ARGS__)
-> +
-> +/* RPL-S */
-> +#define XE_RPLS_IDS(MACRO__, ...)		\
-> +	MACRO__(0xA780, ## __VA_ARGS__),	\
-> +	MACRO__(0xA781, ## __VA_ARGS__),	\
-> +	MACRO__(0xA782, ## __VA_ARGS__),	\
-> +	MACRO__(0xA783, ## __VA_ARGS__),	\
-> +	MACRO__(0xA788, ## __VA_ARGS__),	\
-> +	MACRO__(0xA789, ## __VA_ARGS__),	\
-> +	MACRO__(0xA78A, ## __VA_ARGS__),	\
-> +	MACRO__(0xA78B, ## __VA_ARGS__)
-> +
-> +/* RPL-U */
-> +#define XE_RPLU_IDS(MACRO__, ...)		\
-> +	MACRO__(0xA721, ## __VA_ARGS__),	\
-> +	MACRO__(0xA7A1, ## __VA_ARGS__),	\
-> +	MACRO__(0xA7A9, ## __VA_ARGS__)
-> +
-> +/* RPL-P */
-> +#define XE_RPLP_IDS(MACRO__, ...)		\
-> +	MACRO__(0xA720, ## __VA_ARGS__),	\
-> +	MACRO__(0xA7A0, ## __VA_ARGS__),	\
-> +	MACRO__(0xA7A8, ## __VA_ARGS__)
-> +
-> +/* DG2 */
-> +#define XE_DG2_G10_IDS(MACRO__, ...)		\
-> +	MACRO__(0x5690, ## __VA_ARGS__),	\
-> +	MACRO__(0x5691, ## __VA_ARGS__),	\
-> +	MACRO__(0x5692, ## __VA_ARGS__),	\
-> +	MACRO__(0x56A0, ## __VA_ARGS__),	\
-> +	MACRO__(0x56A1, ## __VA_ARGS__),	\
-> +	MACRO__(0x56A2, ## __VA_ARGS__)
-> +
-> +#define XE_DG2_G11_IDS(MACRO__, ...)		\
-> +	MACRO__(0x5693, ## __VA_ARGS__),	\
-> +	MACRO__(0x5694, ## __VA_ARGS__),	\
-> +	MACRO__(0x5695, ## __VA_ARGS__),	\
-> +	MACRO__(0x5698, ## __VA_ARGS__),	\
-> +	MACRO__(0x56A5, ## __VA_ARGS__),	\
-> +	MACRO__(0x56A6, ## __VA_ARGS__),	\
-> +	MACRO__(0x56B0, ## __VA_ARGS__),	\
-> +	MACRO__(0x56B1, ## __VA_ARGS__)
-> +
-> +#define XE_DG2_G12_IDS(MACRO__, ...)		\
-> +	MACRO__(0x5696, ## __VA_ARGS__),	\
-> +	MACRO__(0x5697, ## __VA_ARGS__),	\
-> +	MACRO__(0x56A3, ## __VA_ARGS__),	\
-> +	MACRO__(0x56A4, ## __VA_ARGS__),	\
-> +	MACRO__(0x56B2, ## __VA_ARGS__),	\
-> +	MACRO__(0x56B3, ## __VA_ARGS__)
-> +
-> +#define XE_DG2_IDS(MACRO__, ...)		\
-> +	XE_DG2_G10_IDS(MACRO__, ## __VA_ARGS__),\
-> +	XE_DG2_G11_IDS(MACRO__, ## __VA_ARGS__),\
-> +	XE_DG2_G12_IDS(MACRO__, ## __VA_ARGS__)
-> +
-> +#define XE_ATS_M150_IDS(MACRO__, ...)		\
-> +	MACRO__(0x56C0, ## __VA_ARGS__)
-> +
-> +#define XE_ATS_M75_IDS(MACRO__, ...)		\
-> +	MACRO__(0x56C1, ## __VA_ARGS__)
-> +
-> +#define XE_ATS_M_IDS(MACRO__, ...)		\
-> +	XE_ATS_M150_IDS(MACRO__, ## __VA_ARGS__),\
-> +	XE_ATS_M75_IDS(MACRO__, ## __VA_ARGS__)
-> +
-> +/* PVC */
-> +#define XE_PVC_XT_IDS(MACRO__, ...)		\
-> +	MACRO__(0x0BD5, ## __VA_ARGS__),	\
-> +	MACRO__(0x0BD6, ## __VA_ARGS__),	\
-> +	MACRO__(0x0BD7, ## __VA_ARGS__),	\
-> +	MACRO__(0x0BD8, ## __VA_ARGS__),	\
-> +	MACRO__(0x0BD9, ## __VA_ARGS__),	\
-> +	MACRO__(0x0BDA, ## __VA_ARGS__),	\
-> +	MACRO__(0x0BDB, ## __VA_ARGS__),	\
-> +	MACRO__(0x0BE0, ## __VA_ARGS__),	\
-> +	MACRO__(0x0BE1, ## __VA_ARGS__),	\
-> +	MACRO__(0x0BE5, ## __VA_ARGS__)
-> +
-> +#define XE_PVC_IDS(MACRO__, ...)		\
-> +	XE_PVC_XT_IDS(MACRO__, ## __VA_ARGS__)
-> +
-> +/* MTL */
-> +#define XE_MTL_M_IDS(MACRO__, ...)		\
-> +	MACRO__(0x7D40, ## __VA_ARGS__),	\
-> +	MACRO__(0x7D43, ## __VA_ARGS__),	\
-> +	MACRO__(0x7DC0, ## __VA_ARGS__)
-> +
-> +#define XE_MTL_P_IDS(MACRO__, ...)		\
-> +	MACRO__(0x7D45, ## __VA_ARGS__),	\
-> +	MACRO__(0x7D47, ## __VA_ARGS__),	\
-> +	MACRO__(0x7D50, ## __VA_ARGS__),	\
-> +	MACRO__(0x7D55, ## __VA_ARGS__),	\
-> +	MACRO__(0x7DC5, ## __VA_ARGS__),	\
-> +	MACRO__(0x7DD0, ## __VA_ARGS__),	\
-> +	MACRO__(0x7DD5, ## __VA_ARGS__)
-> +
-> +#define XE_MTL_S_IDS(MACRO__, ...)		\
-> +	MACRO__(0x7D60, ## __VA_ARGS__),	\
-> +	MACRO__(0x7DE0, ## __VA_ARGS__)
-> +
-> +#define XE_ARL_IDS(MACRO__, ...)		\
-> +	MACRO__(0x7D67, ## __VA_ARGS__)
-> +
-> +#define XE_MTL_IDS(MACRO__, ...)		\
-> +	XE_MTL_M_IDS(MACRO__, ## __VA_ARGS__),	\
-> +	XE_MTL_P_IDS(MACRO__, ## __VA_ARGS__),	\
-> +	XE_MTL_S_IDS(MACRO__, ## __VA_ARGS__),	\
-> +	XE_ARL_IDS(MACRO__, ## __VA_ARGS__)
-> +
-> +#define XE_LNL_IDS(MACRO__, ...) \
-> +	MACRO__(0x6420, ## __VA_ARGS__), \
-> +	MACRO__(0x64A0, ## __VA_ARGS__), \
-> +	MACRO__(0x64B0, ## __VA_ARGS__)
-> +
-> +#endif
-> -- 
-> 2.40.1
-> 
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/974166 for the overview.
+
+build-containers:build-debian has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48282101):
+  time="2023-08-31T06:43:19Z" level=fatal msg="Error determining repository tags: Get https://registry.freedesktop.org/v2/gfx-ci/igt-ci-tags/build-debian/tags/list?last=commit-e0746d25f9d913e1235cda992690f7aebc83cccc&n=100: read tcp 10.88.85.66:41322->147.75.198.156:443: read: connection timed out" 
+  Building!
+  STEP 1: FROM registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-minimal:commit-d6e42ee3ffc89b900f6485120b65a42d936059a0
+  Getting image source signatures
+  Copying blob sha256:2f92e8d0541551f215cc8116b6a6507a714a936f45b19286a6664467db837932
+  Copying config sha256:08904a47f4efcc161569a9b7f88c458fc6e3e85a2225132246af9cf5cc6c4e5b
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-08-31T06:43:36Z" level=warning msg="signal: killed"
+  time="2023-08-31T06:43:36Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1693464217:step_script
+  section_start:1693464217:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1693464218:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48282103):
+  time="2023-08-31T06:24:11Z" level=fatal msg="Error determining repository tags: Get https://registry.freedesktop.org/v2/gfx-ci/igt-ci-tags/build-debian-arm64/tags/list?last=commit-25694e54a4f291767e8bac67dcd4affa0b9d0ce8&n=100: dial tcp 147.75.198.156:443: i/o timeout" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:d6b7393fb4f375905c31c483d81ce2a2905f88aba8cb198874da2b54035bc41d
+  Copying config sha256:de08540e8ff0e470ff7956df4bed403725a5f45c186e9bf495da5344ff8fbe84
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-08-31T06:24:15Z" level=warning msg="signal: killed"
+  time="2023-08-31T06:24:15Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1693463056:step_script
+  section_start:1693463056:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1693463056:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48282105):
+  time="2023-08-31T06:24:19Z" level=fatal msg="Error determining repository tags: Get https://registry.freedesktop.org/v2/gfx-ci/igt-ci-tags/build-fedora/tags/list?last=commit-99c91f65d0b57e43bb2b32053519289d8265570c&n=100: dial tcp 147.75.198.156:443: i/o timeout" 
+  Building!
+  STEP 1: FROM fedora:31
+  Getting image source signatures
+  Copying blob sha256:854946d575a439a894349addd141568875d7c1e673d3286b08250f3dde002e6a
+  Copying config sha256:7e94ed77b448a8d2ff08b92d3ca743e4e862c744892d6886c73487581eb5863a
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils
+  error running container: error creating container for [/bin/sh -c dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils]: time="2023-08-31T06:24:25Z" level=warning msg="signal: killed"
+  time="2023-08-31T06:24:25Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils": error while running runtime: exit status 1
+  section_end:1693463065:step_script
+  section_start:1693463065:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1693463066:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/974166
