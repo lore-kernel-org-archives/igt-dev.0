@@ -1,25 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B9C7210E692
- for <igt-dev@lists.freedesktop.org>; Thu, 31 Aug 2023 14:55:18 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 976A710E690
+ for <igt-dev@lists.freedesktop.org>; Thu, 31 Aug 2023 14:55:19 +0000 (UTC)
 Received: from linux.intel.com (unknown [10.252.5.209])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id E1293580E3B
+ by linux.intel.com (Postfix) with ESMTPS id F18CA580E9B
  for <igt-dev@lists.freedesktop.org>; Thu, 31 Aug 2023 07:55:14 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qbj4i-0020H4-2f
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qbj4i-0020Gy-2X
  for igt-dev@lists.freedesktop.org; Thu, 31 Aug 2023 16:55:12 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 31 Aug 2023 16:52:04 +0200
-Message-ID: <20230831145509.477543-3-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230831145509.477543-1-mauro.chehab@linux.intel.com>
-References: <20230831145509.477543-1-mauro.chehab@linux.intel.com>
+Date: Thu, 31 Aug 2023 16:52:02 +0200
+Message-ID: <20230831145509.477543-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 02/11] scripts/test_list.py: rename the
- internal summary value
+Subject: [igt-dev] [PATCH i-g-t v4 00/11] Make test_list.py more generic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -33,150 +30,48 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-The sumary is used internally. So, it is not meant to be used as
-a normal field. To avoid possible clashes in the future, rename
-the internal usage to _summary_, as we're using _foo_ for internal
-properties.
+While most of the code at test_list.py is generic, it contains a
+couple of IGT-specific stuff on it.
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+I'm planning to make it more generic, as we also need to document
+in-kernel tests (KUnit).
+
+So, let's remove what's specific to IGT to the main logic. This
+way, the same code can be sent to the Linux Kernel upstream,
+to be used to document kunit and kselftests there.
+
 ---
- scripts/test_list.py | 44 ++++++++++++++++++++++----------------------
- 1 file changed, 22 insertions(+), 22 deletions(-)
 
-diff --git a/scripts/test_list.py b/scripts/test_list.py
-index f843c7a2a4f6..415394c017b9 100755
---- a/scripts/test_list.py
-+++ b/scripts/test_list.py
-@@ -429,8 +429,8 @@ class TestList:
- 
-         for subtest in self.doc[test]["subtest"].keys():
-             summary = test_name
--            if self.doc[test]["subtest"][subtest]["Summary"] != '':
--                summary += self.subtest_separator + self.doc[test]["subtest"][subtest]["Summary"]
-+            if self.doc[test]["subtest"][subtest]["_summary_"] != '':
-+                summary += self.subtest_separator + self.doc[test]["subtest"][subtest]["_summary_"]
-             if not summary:
-                 continue
- 
-@@ -441,10 +441,10 @@ class TestList:
-             if num_vars == 0:
-                 subtest_dict = {}
- 
--                subtest_dict["Summary"] = summary
-+                subtest_dict["_summary_"] = summary
- 
-                 for k in sorted(self.doc[test]["subtest"][subtest].keys()):
--                    if k in [ 'Summary', 'arg', 'subtest_line' ]:
-+                    if k in [ '_summary_', 'arg', 'subtest_line' ]:
-                         continue
- 
-                     if not allow_inherit:
-@@ -510,10 +510,10 @@ class TestList:
- 
-                 # Store the element
-                 subtest_dict = {}
--                subtest_dict["Summary"] = arg_summary
-+                subtest_dict["_summary_"] = arg_summary
- 
-                 for field in sorted(self.doc[test]["subtest"][subtest].keys()):
--                    if field in [ 'Summary', 'arg', 'subtest_line' ]:
-+                    if field in [ '_summary_', 'arg', 'subtest_line' ]:
-                         continue
- 
-                     sub_field = self.doc[test]["subtest"][subtest][field]
-@@ -581,11 +581,11 @@ class TestList:
-                 if self.__filter_subtest(self.doc[test], subtest, True):
-                     continue
- 
--                summary = subtest["Summary"]
-+                summary = subtest["_summary_"]
- 
-                 dic[summary] = {}
-                 for field in sorted(subtest.keys()):
--                    if field in [ 'Summary', 'arg', 'subtest_line' ]:
-+                    if field in [ '_summary_', 'arg', 'subtest_line' ]:
-                         continue
-                     dic[summary][field] = subtest[field]
- 
-@@ -646,12 +646,12 @@ class TestList:
-             for subtest in subtest_array:
- 
-                 print()
--                print(subtest["Summary"])
--                print(len(subtest["Summary"]) * '=')
-+                print(subtest["_summary_"])
-+                print(len(subtest["_summary_"]) * '=')
-                 print("")
- 
-                 for field in sorted(subtest.keys()):
--                    if field in [ 'Summary', 'arg', 'subtest_line' ]:
-+                    if field in [ '_summary_', 'arg', 'subtest_line' ]:
-                         continue
- 
-                     print(f":{field}:", subtest[field])
-@@ -857,7 +857,7 @@ class TestList:
- 
-             subtest_array += self.expand_subtest(fname, test_name, test, True)
- 
--        subtest_array.sort(key = lambda x : x.get('Summary'))
-+        subtest_array.sort(key = lambda x : x.get('_summary_'))
- 
-         for subtest in subtest_array:
-             if self.__filter_subtest(self.doc[test], subtest, True):
-@@ -873,27 +873,27 @@ class TestList:
-                             if test_elem not in subtests:
-                                 subtests[test_elem] = []
-                             if order:
--                                subtests[test_elem].append((subtest["Summary"], test_list))
-+                                subtests[test_elem].append((subtest["_summary_"], test_list))
-                             else:
--                                subtests[test_elem].append(subtest["Summary"])
-+                                subtests[test_elem].append(subtest["_summary_"])
-                     else:
-                         if subtest[sort_field] not in subtests:
-                             subtests[subtest[sort_field]] = []
-                             if order:
--                                subtests[test_elem].append((subtest["Summary"], [subtest[sort_field]]))
-+                                subtests[test_elem].append((subtest["_summary_"], [subtest[sort_field]]))
-                             else:
--                                subtests[subtest[sort_field]].append(subtest["Summary"])
-+                                subtests[subtest[sort_field]].append(subtest["_summary_"])
-                 else:
-                     if order:
--                        subtests[test_elem].append((subtest["Summary"], [subtest[sort_field]]))
-+                        subtests[test_elem].append((subtest["_summary_"], [subtest[sort_field]]))
-                     else:
--                        subtests[""].append(subtest["Summary"])
-+                        subtests[""].append(subtest["_summary_"])
- 
-             else:
-                 if order:
--                    subtests[test_elem].append((subtest["Summary"], [subtest[sort_field]]))
-+                    subtests[test_elem].append((subtest["_summary_"], [subtest[sort_field]]))
-                 else:
--                    subtests[""].append(subtest["Summary"])
-+                    subtests[""].append(subtest["_summary_"])
- 
-         if order:
-             for group, tests in subtests.items():
-@@ -1078,7 +1078,7 @@ class TestList:
- 
-                         self.doc[current_test] = {}
-                         self.doc[current_test]["arg"] = {}
--                        self.doc[current_test]["Summary"] = match.group(1)
-+                        self.doc[current_test]["_summary_"] = match.group(1)
-                         self.doc[current_test]["File"] = fname
-                         self.doc[current_test]["subtest"] = {}
-                         self.doc[current_test]["subtest_line"] = {}
-@@ -1116,7 +1116,7 @@ class TestList:
-                             continue
-                         self.doc[current_test]["subtest"][current_subtest][field] = self.doc[current_test][field]
- 
--                    self.doc[current_test]["subtest"][current_subtest]["Summary"] = match.group(1)
-+                    self.doc[current_test]["subtest"][current_subtest]["_summary_"] = match.group(1)
-                     self.doc[current_test]["subtest"][current_subtest]["Description"] = ''
-                     self.doc[current_test]["subtest_line"][current_subtest] = file_ln
- 
+v4:
+ - patches reordered;
+ - removed the patches related to testplan check, as those caused
+   build problems at the last submissions. Let's merge first the
+   main changes. I'll submit the last two patches on a separate
+   PR.
+
+v3:
+  - fixed dependencies for built_script target;
+  - added an extra cleanup patch to better handle internal fields.
+
+
+Mauro Carvalho Chehab (11):
+  scripts/test_list.py: make the class more generic
+  scripts/test_list.py: rename the internal summary value
+  scripts/test_list.py: document what BAT stands for
+  scripts/test_list.py: close config file before start processing
+  scripts/test_list.py: filename arguments for print_ methods are
+    optional
+  scripts/test_list.py: add a check before deleting properties
+  scripts/test_list.py: skip some internal fields
+  scripts/test_list.py: add support to return a string instead of print
+  scripts/test_list.py: don't rely on file name to parse config
+  scripts/test_list.py: allow passing a config dict directly
+  scripts/igt_doc.py: use field names when create a TestList instance
+
+ scripts/igt_doc.py   |   6 +-
+ scripts/test_list.py | 377 +++++++++++++++++++++++--------------------
+ 2 files changed, 205 insertions(+), 178 deletions(-)
+ mode change 100755 => 100644 scripts/test_list.py
+
 -- 
 2.41.0
