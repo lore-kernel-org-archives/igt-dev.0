@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============1456993047756360529=="
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6619310E067
+ for <igt-dev@lists.freedesktop.org>; Thu, 31 Aug 2023 05:06:11 +0000 (UTC)
+From: Riana Tauro <riana.tauro@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 31 Aug 2023 10:41:22 +0530
+Message-Id: <20230831051122.1990047-1-riana.tauro@intel.com>
+In-Reply-To: <20230825054659.1320824-3-riana.tauro@intel.com>
+References: <20230825054659.1320824-3-riana.tauro@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: vitaly.prosyak@amd.com
-Date: Thu, 31 Aug 2023 04:18:57 -0000
-Message-ID: <169345553716.12506.1782662279889224566@emeril.freedesktop.org>
-References: <20230831033128.454032-1-vitaly.prosyak@amd.com>
-In-Reply-To: <20230831033128.454032-1-vitaly.prosyak@amd.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/am?=
- =?utf-8?q?dgpu=3A_add_sync_object_tests_=28rev7=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v3 2/3] tests/xe: Add a test to toggle GT C
+ states and validate power
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,163 +19,147 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1456993047756360529==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Add a test that toggles GT C states by checking if GT is in C0 when
+forcewake is acquired and in C6 once released.
+This test also validates power consumed by GPU in GT C6 is lesser
+than GT C0.
 
-== Series Details ==
+v2: change test name (Suja, Anshuman)
+v3: add exit handler for closing forcewake handle
+    define a macro for number of repetitions (Vinay)
+    change forcewake open to readonly (Anshuman)
+    modify test to validate power
+v4: check if fw_handle is valid before closing it
+    change function name to close_fw_handle (Anshuman)
+v5: fix compiler warning (Anshuman)
 
-Series: tests/amdgpu: add sync object tests (rev7)
-URL   : https://patchwork.freedesktop.org/series/119304/
-State : success
+Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+Reviewed-by: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
+Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
+---
+ tests/xe/xe_pm_residency.c | 69 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 69 insertions(+)
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7459_BAT -> XEIGTPW_9687_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_9687_BAT:
-
-### IGT changes ###
-
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@xe_module_load@load:
-    - {bat-pvc-2}:        [PASS][1] -> [INCOMPLETE][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7459/bat-pvc-2/igt@xe_module_load@load.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9687/bat-pvc-2/igt@xe_module_load@load.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_9687_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
-    - bat-adlp-7:         [FAIL][3] ([Intel XE#480]) -> [PASS][4] +1 similar issue
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7459/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9687/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
-
-
-Build changes
--------------
-
-  * IGT: IGT_7459 -> IGTPW_9687
-  * Linux: xe-340-c77796cf84361b4716839141f2e48de2bf7f4bd5 -> xe-348-72da4b45f58f2a95d45743801a10e1f1e1dcce05
-
-  IGTPW_9687: 9687
-  IGT_7459: 7459
-  xe-340-c77796cf84361b4716839141f2e48de2bf7f4bd5: c77796cf84361b4716839141f2e48de2bf7f4bd5
-  xe-348-72da4b45f58f2a95d45743801a10e1f1e1dcce05: 72da4b45f58f2a95d45743801a10e1f1e1dcce05
-
-
-
---===============1456993047756360529==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/amdgpu: add sync object tests (rev7)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/119304/">https://patchwork.freedesktop.org/series/119304/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7459_BAT -&gt; XEIGTPW_9687_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_9687_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>igt@xe_module_load@load:<ul>
-<li>{bat-pvc-2}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7459/bat-pvc-2/igt@xe_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9687/bat-pvc-2/igt@xe_module_load@load.html">INCOMPLETE</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_9687_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7459/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9687/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7459 -&gt; IGTPW_9687</li>
-<li>Linux: xe-340-c77796cf84361b4716839141f2e48de2bf7f4bd5 -&gt; xe-348-72da4b45f58f2a95d45743801a10e1f1e1dcce05</li>
-</ul>
-<p>IGTPW_9687: 9687<br />
-  IGT_7459: 7459<br />
-  xe-340-c77796cf84361b4716839141f2e48de2bf7f4bd5: c77796cf84361b4716839141f2e48de2bf7f4bd5<br />
-  xe-348-72da4b45f58f2a95d45743801a10e1f1e1dcce05: 72da4b45f58f2a95d45743801a10e1f1e1dcce05</p>
-
-</body>
-</html>
-
---===============1456993047756360529==--
+diff --git a/tests/xe/xe_pm_residency.c b/tests/xe/xe_pm_residency.c
+index fd4876eaf..bf8230114 100644
+--- a/tests/xe/xe_pm_residency.c
++++ b/tests/xe/xe_pm_residency.c
+@@ -10,18 +10,22 @@
+  * Functionality: GT C States
+  * Test category: functionality test
+  */
++#include <fcntl.h>
+ #include <limits.h>
+ 
+ #include "igt.h"
+ #include "igt_device.h"
++#include "igt_power.h"
+ #include "igt_sysfs.h"
+ 
+ #include "xe/xe_query.h"
+ #include "xe/xe_util.h"
+ 
++#define NUM_REPS 16 /* No of Repetitions */
+ #define SLEEP_DURATION 3000 /* in milliseconds */
+ 
+ const double tolerance = 0.1;
++int fw_handle = -1;
+ 
+ #define assert_within_epsilon(x, ref, tol) \
+ 	igt_assert_f((double)(x) <= (1.0 + (tol)) * (double)(ref) && \
+@@ -50,9 +54,20 @@ enum test_type {
+  * Description: Validate idle residency measured over suspend(s2idle)
+  *              is greater than suspend time or within tolerance
+  * Run type: FULL
++ *
++ * SUBTEST: toggle-gt-c6
++ * Description: toggles GT C states by acquiring/releasing forcewake,
++ *		also validates power consumed by GPU in GT C6 is lesser than that of GT C0.
++ * Run type: FULL
+  */
+ IGT_TEST_DESCRIPTION("Tests for gtidle properties");
+ 
++static void close_fw_handle(int sig)
++{
++	if (fw_handle >= 0)
++		close(fw_handle);
++}
++
+ static unsigned int measured_usleep(unsigned int usec)
+ {
+ 	struct timespec ts = { };
+@@ -117,6 +132,54 @@ static void test_idle_residency(int fd, int gt, enum test_type flag)
+ 	assert_within_epsilon(residency_end - residency_start, elapsed_ms, tolerance);
+ }
+ 
++static void measure_power(struct igt_power *gpu, double *power)
++{
++	struct power_sample power_sample[2];
++
++	igt_power_get_energy(gpu, &power_sample[0]);
++	measured_usleep(SLEEP_DURATION * 1000);
++	igt_power_get_energy(gpu, &power_sample[1]);
++	*power = igt_power_get_mW(gpu, &power_sample[0], &power_sample[1]);
++}
++
++static void toggle_gt_c6(int fd, int n)
++{
++	double gt_c0_power, gt_c6_power;
++	int gt;
++	struct igt_power gpu;
++
++	igt_power_open(fd, &gpu, "gpu");
++
++	do {
++		fw_handle = igt_debugfs_open(fd, "forcewake_all", O_RDONLY);
++		igt_assert(fw_handle >= 0);
++		/* check if all gts are in C0 after forcewake is acquired */
++		xe_for_each_gt(fd, gt)
++			igt_assert_f(!xe_is_gt_in_c6(fd, gt),
++				     "Forcewake acquired, GT should be in C0\n");
++
++		if (n == NUM_REPS)
++			measure_power(&gpu, &gt_c0_power);
++
++		close(fw_handle);
++		/* check if all gts are in C6 after forcewake is released */
++		xe_for_each_gt(fd, gt)
++			igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 1),
++				     "Forcewake released, GT should be in C6\n");
++
++		if (n == NUM_REPS)
++			measure_power(&gpu, &gt_c6_power);
++	} while (n--);
++
++	igt_power_close(&gpu);
++	igt_info("GPU consumed %fmW in GT C6 and %fmW in GT C0\n", gt_c6_power, gt_c0_power);
++
++	/* FIXME: Remove dgfx check after hwmon is added */
++	if (!xe_has_vram(fd))
++		igt_assert_f(gt_c6_power < gt_c0_power,
++			     "Power consumed in GT C6 should be lower than GT C0\n");
++}
++
+ igt_main
+ {
+ 	uint32_t d3cold_allowed;
+@@ -152,6 +215,12 @@ igt_main
+ 		xe_for_each_gt(fd, gt)
+ 			test_idle_residency(fd, gt, TEST_IDLE);
+ 
++	igt_describe("Toggle GT C states by acquiring/releasing forcewake and validate power measured");
++	igt_subtest("toggle-gt-c6") {
++		igt_install_exit_handler(close_fw_handle);
++		toggle_gt_c6(fd, NUM_REPS);
++	}
++
+ 	igt_fixture {
+ 		close(fd);
+ 	}
+-- 
+2.40.0
