@@ -1,18 +1,30 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8A96A10E6A5
- for <igt-dev@lists.freedesktop.org>; Thu, 31 Aug 2023 17:04:06 +0000 (UTC)
-Date: Thu, 31 Aug 2023 19:03:59 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Jim Shargo <jshargo@chromium.org>
-Message-ID: <20230831190359.25c8c37f@maurocar-mobl2>
-In-Reply-To: <20220728175736.1893691-1-jshargo@chromium.org>
-References: <YuJA8zCW9wFQh5M6@platvala-desk.ger.corp.intel.com>
- <20220728175736.1893691-1-jshargo@chromium.org>
+Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com
+ [IPv6:2607:f8b0:4864:20::b2c])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6B68810E0EE
+ for <igt-dev@lists.freedesktop.org>; Thu, 31 Aug 2023 17:16:33 +0000 (UTC)
+Received: by mail-yb1-xb2c.google.com with SMTP id
+ 3f1490d57ef6-d7bae413275so2563203276.0
+ for <igt-dev@lists.freedesktop.org>; Thu, 31 Aug 2023 10:16:33 -0700 (PDT)
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com.
+ [209.85.219.170]) by smtp.gmail.com with ESMTPSA id
+ g9-20020a056902134900b00d712798a09bsm407795ybu.64.2023.08.31.10.16.30
+ for <igt-dev@lists.freedesktop.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 31 Aug 2023 10:16:30 -0700 (PDT)
+Received: by mail-yb1-f170.google.com with SMTP id
+ 3f1490d57ef6-d7766072ba4so3006755276.1
+ for <igt-dev@lists.freedesktop.org>; Thu, 31 Aug 2023 10:16:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t v3] tooling: Add linux's .clang-format
+References: <20230825183934.1271156-1-sean@poorly.run>
+In-Reply-To: <20230825183934.1271156-1-sean@poorly.run>
+From: Sean Paul <seanpaul@chromium.org>
+Date: Thu, 31 Aug 2023 13:15:48 -0400
+Message-ID: <CAOw6vb+vhjda3crDnO17ev=gGt3S5tQAZAsXr7u56AARudo9GQ@mail.gmail.com>
+To: Sean Paul <sean@poorly.run>
+Content-Type: multipart/alternative; boundary="00000000000079842e06043b3468"
+Subject: Re: [igt-dev] [PATCH 0/6] tests/kms_vrr: Modify kms_vrr to allow
+ flicker
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,117 +32,79 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>,
- Petri Latvala <petri.latvala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, 28 Jul 2022 13:57:36 -0400
-Jim Shargo <jshargo@chromium.org> wrote:
+--00000000000079842e06043b3468
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> As I was authoring my first patchset for IGT, I found myself fighting
-> the tooling a bit to get everything right. I had to add a bunch of extra
-> command line args to use my linux checkout's formatting rules to get the
-> style right.
-> 
-> I grabbed this from a recent checkout of torvald's repo.
-> 
-> The commit I used was: e0dccc3b76fb35bb257b4118367a883073d7390e
-> 
-> To make this discoverable to new contributors, this change also
-> updates CONTRIBUTING.md with:
-> 
->   - A link to git-clang-format, which is a useful tool for using
->   clang-format from git just on a commit's changes
->   - A link to .editorconfig to make it more discoverable
-> 
-> Changes made to the linux kernel style:
-> 
->   - Reflowing comments, including multi-line comments (ReflowComments)
->   - Support for magic code blocks (ForEachMacros, IfMacros)
-> 
-> Signed-off-by: Jim Shargo <jshargo@chromium.org>
+Any thoughts on this series?
 
-This is not a full validation of the results, but, running this with:
+Sean
 
-	git-clang-format 8c64183a461a
+On Fri, Aug 25, 2023 at 2:39=E2=80=AFPM Sean Paul <sean@poorly.run> wrote:
 
-I found several places where the output format is worse than what
-we have. Strictly speaking, the results may be following the 
-documented Kernel coding style, but for sure they don't follow the usual
-Kernel nor IGT practices. Also, checkpatch.pl won't be complaining
-about such things as the original code already follows the Kernel
-coding style.
+> From: Sean Paul <seanpaul@chromium.org>
+>
+> Do some cleanup in the kms_vrr test and add some optional command line
+> arguments to alter the target refresh rate for the test. This allows us
+> to profile VRR flicker on panels at the low end of the refresh range.
+>
+> Sean Paul (6):
+>   tests/kms_vrr: Move fb0 and fb1 to an array
+>   tests/kms_vrr: Move vtest_ns into data_t
+>   tests/kms_vrr: Allow test rate to be altered from the command line
+>   tests/kms_vrr: Allow test duration to be specified from the command
+>     line
+>   tests/kms_vrr: Change the pattern displayed in the test
+>   test/kms_vrr: Add ability to flip static image for flicker profiling
+>
+>  tests/kms_vrr.c | 138 ++++++++++++++++++++++++++++++++----------------
+>  1 file changed, 92 insertions(+), 46 deletions(-)
+>
+> --
+> Sean Paul, Software Engineer, Google / Chromium OS
+>
+>
 
-Some examples below:
+--00000000000079842e06043b3468
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-	 #ifndef likely
-	-#  ifdef __GNUC__
-	-#    define likely(x)   __builtin_expect(!!(x), 1)
-	-#    define unlikely(x) __builtin_expect(!!(x), 0)
-	-#  else
-	-#    define likely(x)   (x)
-	-#    define unlikely(x) (x)
-	-#  endif
-	+#ifdef __GNUC__
-	+#define likely(x) __builtin_expect(!!(x), 1)
-	+#define unlikely(x) __builtin_expect(!!(x), 0)
-	+#else
-	+#define likely(x) (x)
-	+#define unlikely(x) (x)
-	+#endif
-	 #endif
+<div dir=3D"ltr">Any thoughts on this series?<div><br></div><div>Sean</div>=
+</div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">=
+On Fri, Aug 25, 2023 at 2:39=E2=80=AFPM Sean Paul &lt;sean@poorly.run&gt; w=
+rote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0p=
+x 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">From: Sean=
+ Paul &lt;<a href=3D"mailto:seanpaul@chromium.org" target=3D"_blank">seanpa=
+ul@chromium.org</a>&gt;<br>
+<br>
+Do some cleanup in the kms_vrr test and add some optional command line<br>
+arguments to alter the target refresh rate for the test. This allows us<br>
+to profile VRR flicker on panels at the low end of the refresh range.<br>
+<br>
+Sean Paul (6):<br>
+=C2=A0 tests/kms_vrr: Move fb0 and fb1 to an array<br>
+=C2=A0 tests/kms_vrr: Move vtest_ns into data_t<br>
+=C2=A0 tests/kms_vrr: Allow test rate to be altered from the command line<b=
+r>
+=C2=A0 tests/kms_vrr: Allow test duration to be specified from the command<=
+br>
+=C2=A0 =C2=A0 line<br>
+=C2=A0 tests/kms_vrr: Change the pattern displayed in the test<br>
+=C2=A0 test/kms_vrr: Add ability to flip static image for flicker profiling=
+<br>
+<br>
+=C2=A0tests/kms_vrr.c | 138 ++++++++++++++++++++++++++++++++---------------=
+-<br>
+=C2=A01 file changed, 92 insertions(+), 46 deletions(-)<br>
+<br>
+-- <br>
+Sean Paul, Software Engineer, Google / Chromium OS<br>
+<br>
+</blockquote></div>
 
-The above is a lot worse to read, making reviews harder.
-
-Other defines also are re-formatted in a way that makes harder
-to review:
-
-	-#define PIPE_CONTROL_NOWRITE          0x00
-	-#define PIPE_CONTROL_WRITEIMMEDIATE   0x01
-	-#define PIPE_CONTROL_WRITEDEPTH       0x02
-	-#define PIPE_CONTROL_WRITETIMESTAMP   0x03
-	+#define PIPE_CONTROL_NOWRITE 0x00
-	+#define PIPE_CONTROL_WRITEIMMEDIATE 0x01
-	+#define PIPE_CONTROL_WRITEDEPTH 0x02
-	+#define PIPE_CONTROL_WRITETIMESTAMP 0x03
-
-Tables are also weird-formatted:
-
-        -static const char * const end_of_thread[2] = {
-        -    [0] = "",
-        -    [1] = "EOT"
-        -};
-        -
-        +static const char *const end_of_thread[2] = { [0] = "", [1] = "EOT" };
-
-Placing multiple values per line. On a small tame like this, not
-a big issue, but on bigger tables, it makes a lot harder to check
-if there are gaps at the values.
-
-Looking at function prototypes:
-
-        -static int src_ia1 (FILE *file,
-        -                   unsigned type,
-        -                   unsigned _reg_file,
-        -                   int _addr_imm,
-        -                   unsigned _addr_subreg_nr,
-        -                   unsigned _negate,
-        -                   unsigned __abs,
-        -                   unsigned _addr_mode,
-        -                   unsigned _horiz_stride,
-        -                   unsigned _width,
-        -                   unsigned _vert_stride)
-        +static int src_ia1(FILE *file, unsigned type, unsigned _reg_file, int _addr_imm,
-        +                  unsigned _addr_subreg_nr, unsigned _negate, unsigned __abs,
-        +                  unsigned _addr_mode, unsigned _horiz_stride, unsigned _width,
-        +                  unsigned _vert_stride)
-
-At least for functions with that many arguments, having one argument
-per line makes easier for reviewers and for users.
-
-So, I'd say it is not ready yet for merging.
-
-Regards,
-Mauro
+--00000000000079842e06043b3468--
