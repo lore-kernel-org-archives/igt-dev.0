@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6619310E067
- for <igt-dev@lists.freedesktop.org>; Thu, 31 Aug 2023 05:06:11 +0000 (UTC)
-From: Riana Tauro <riana.tauro@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 31 Aug 2023 10:41:22 +0530
-Message-Id: <20230831051122.1990047-1-riana.tauro@intel.com>
-In-Reply-To: <20230825054659.1320824-3-riana.tauro@intel.com>
-References: <20230825054659.1320824-3-riana.tauro@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 2/3] tests/xe: Add a test to toggle GT C
- states and validate power
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Riana Tauro" <riana.tauro@intel.com>
+Date: Thu, 31 Aug 2023 05:32:27 -0000
+Message-ID: <169345994762.12507.12849704808809031979@emeril.freedesktop.org>
+References: <20230825054659.1320824-1-riana.tauro@intel.com>
+In-Reply-To: <20230825054659.1320824-1-riana.tauro@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_T?=
+ =?utf-8?q?oggle_GT_C_States_and_validate_power_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,147 +17,89 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: badal.nilawar@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add a test that toggles GT C states by checking if GT is in C0 when
-forcewake is acquired and in C6 once released.
-This test also validates power consumed by GPU in GT C6 is lesser
-than GT C0.
+== Series Details ==
 
-v2: change test name (Suja, Anshuman)
-v3: add exit handler for closing forcewake handle
-    define a macro for number of repetitions (Vinay)
-    change forcewake open to readonly (Anshuman)
-    modify test to validate power
-v4: check if fw_handle is valid before closing it
-    change function name to close_fw_handle (Anshuman)
-v5: fix compiler warning (Anshuman)
+Series: Toggle GT C States and validate power (rev3)
+URL   : https://patchwork.freedesktop.org/series/122552/
+State : warning
 
-Signed-off-by: Riana Tauro <riana.tauro@intel.com>
-Reviewed-by: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
-Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
----
- tests/xe/xe_pm_residency.c | 69 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 69 insertions(+)
+== Summary ==
 
-diff --git a/tests/xe/xe_pm_residency.c b/tests/xe/xe_pm_residency.c
-index fd4876eaf..bf8230114 100644
---- a/tests/xe/xe_pm_residency.c
-+++ b/tests/xe/xe_pm_residency.c
-@@ -10,18 +10,22 @@
-  * Functionality: GT C States
-  * Test category: functionality test
-  */
-+#include <fcntl.h>
- #include <limits.h>
- 
- #include "igt.h"
- #include "igt_device.h"
-+#include "igt_power.h"
- #include "igt_sysfs.h"
- 
- #include "xe/xe_query.h"
- #include "xe/xe_util.h"
- 
-+#define NUM_REPS 16 /* No of Repetitions */
- #define SLEEP_DURATION 3000 /* in milliseconds */
- 
- const double tolerance = 0.1;
-+int fw_handle = -1;
- 
- #define assert_within_epsilon(x, ref, tol) \
- 	igt_assert_f((double)(x) <= (1.0 + (tol)) * (double)(ref) && \
-@@ -50,9 +54,20 @@ enum test_type {
-  * Description: Validate idle residency measured over suspend(s2idle)
-  *              is greater than suspend time or within tolerance
-  * Run type: FULL
-+ *
-+ * SUBTEST: toggle-gt-c6
-+ * Description: toggles GT C states by acquiring/releasing forcewake,
-+ *		also validates power consumed by GPU in GT C6 is lesser than that of GT C0.
-+ * Run type: FULL
-  */
- IGT_TEST_DESCRIPTION("Tests for gtidle properties");
- 
-+static void close_fw_handle(int sig)
-+{
-+	if (fw_handle >= 0)
-+		close(fw_handle);
-+}
-+
- static unsigned int measured_usleep(unsigned int usec)
- {
- 	struct timespec ts = { };
-@@ -117,6 +132,54 @@ static void test_idle_residency(int fd, int gt, enum test_type flag)
- 	assert_within_epsilon(residency_end - residency_start, elapsed_ms, tolerance);
- }
- 
-+static void measure_power(struct igt_power *gpu, double *power)
-+{
-+	struct power_sample power_sample[2];
-+
-+	igt_power_get_energy(gpu, &power_sample[0]);
-+	measured_usleep(SLEEP_DURATION * 1000);
-+	igt_power_get_energy(gpu, &power_sample[1]);
-+	*power = igt_power_get_mW(gpu, &power_sample[0], &power_sample[1]);
-+}
-+
-+static void toggle_gt_c6(int fd, int n)
-+{
-+	double gt_c0_power, gt_c6_power;
-+	int gt;
-+	struct igt_power gpu;
-+
-+	igt_power_open(fd, &gpu, "gpu");
-+
-+	do {
-+		fw_handle = igt_debugfs_open(fd, "forcewake_all", O_RDONLY);
-+		igt_assert(fw_handle >= 0);
-+		/* check if all gts are in C0 after forcewake is acquired */
-+		xe_for_each_gt(fd, gt)
-+			igt_assert_f(!xe_is_gt_in_c6(fd, gt),
-+				     "Forcewake acquired, GT should be in C0\n");
-+
-+		if (n == NUM_REPS)
-+			measure_power(&gpu, &gt_c0_power);
-+
-+		close(fw_handle);
-+		/* check if all gts are in C6 after forcewake is released */
-+		xe_for_each_gt(fd, gt)
-+			igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 1),
-+				     "Forcewake released, GT should be in C6\n");
-+
-+		if (n == NUM_REPS)
-+			measure_power(&gpu, &gt_c6_power);
-+	} while (n--);
-+
-+	igt_power_close(&gpu);
-+	igt_info("GPU consumed %fmW in GT C6 and %fmW in GT C0\n", gt_c6_power, gt_c0_power);
-+
-+	/* FIXME: Remove dgfx check after hwmon is added */
-+	if (!xe_has_vram(fd))
-+		igt_assert_f(gt_c6_power < gt_c0_power,
-+			     "Power consumed in GT C6 should be lower than GT C0\n");
-+}
-+
- igt_main
- {
- 	uint32_t d3cold_allowed;
-@@ -152,6 +215,12 @@ igt_main
- 		xe_for_each_gt(fd, gt)
- 			test_idle_residency(fd, gt, TEST_IDLE);
- 
-+	igt_describe("Toggle GT C states by acquiring/releasing forcewake and validate power measured");
-+	igt_subtest("toggle-gt-c6") {
-+		igt_install_exit_handler(close_fw_handle);
-+		toggle_gt_c6(fd, NUM_REPS);
-+	}
-+
- 	igt_fixture {
- 		close(fd);
- 	}
--- 
-2.40.0
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/974131 for the overview.
+
+build-containers:build-debian has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48279486):
+  time="2023-08-31T05:15:18Z" level=fatal msg="Error determining repository tags: Get https://registry.freedesktop.org/v2/gfx-ci/igt-ci-tags/build-debian-minimal/tags/list?last=commit-ef5a3f051763bc1172f4e2c1dc690383a37f9bb9&n=100: dial tcp 147.75.198.156:443: i/o timeout" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:d6b7393fb4f375905c31c483d81ce2a2905f88aba8cb198874da2b54035bc41d
+  Copying config sha256:de08540e8ff0e470ff7956df4bed403725a5f45c186e9bf495da5344ff8fbe84
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-08-31T05:15:22Z" level=warning msg="signal: killed"
+  time="2023-08-31T05:15:22Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1693458923:step_script
+  section_start:1693458923:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1693458923:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48279487):
+  section_end:1693458856:prepare_executor
+  section_start:1693458856:prepare_script
+  Preparing environment
+  Running on runner-m5dzqx4r-project-3185-concurrent-1 via 15ca4cde06bd...
+  section_end:1693458857:prepare_script
+  section_start:1693458857:get_sources
+  Getting source from Git repository
+  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh -s -- pre_get_sources_script
+  Checking if the user of the pipeline is allowed...
+  Checking if the job's project is part of a well-known group...
+  Thank you for contributing to freedesktop.org
+  Fetching changes...
+  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  fatal: unable to access 'https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags.git/': Failed to connect to gitlab.freedesktop.org port 443 after 132023 ms: Couldn't connect to server
+  section_end:1693458990:get_sources
+  section_start:1693458990:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1693458990:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48279489):
+  time="2023-08-31T05:14:55Z" level=fatal msg="Error determining repository tags: Get https://registry.freedesktop.org/v2/gfx-ci/igt-ci-tags/build-debian-mips/tags/list?last=commit-90254c14f4e68bec9d4a114ddf039075f3c1a30c&n=100: dial tcp 147.75.198.156:443: i/o timeout" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:d6b7393fb4f375905c31c483d81ce2a2905f88aba8cb198874da2b54035bc41d
+  Copying config sha256:de08540e8ff0e470ff7956df4bed403725a5f45c186e9bf495da5344ff8fbe84
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-08-31T05:14:59Z" level=warning msg="signal: killed"
+  time="2023-08-31T05:14:59Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1693458900:step_script
+  section_start:1693458900:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1693458900:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/974131
