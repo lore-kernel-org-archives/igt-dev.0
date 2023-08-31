@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
-To: "Belgaumkar, Vinay" <vinay.belgaumkar@intel.com>,
- "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Thu, 31 Aug 2023 15:46:38 +0000
-Message-ID: <CY5PR11MB62114B3D39F4994E692E49D695E5A@CY5PR11MB6211.namprd11.prod.outlook.com>
-References: <20230830233836.477940-1-vinay.belgaumkar@intel.com>
-In-Reply-To: <20230830233836.477940-1-vinay.belgaumkar@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 58BAA10E0B6
+ for <igt-dev@lists.freedesktop.org>; Thu, 31 Aug 2023 15:53:35 +0000 (UTC)
+Date: Thu, 31 Aug 2023 17:53:29 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Message-ID: <20230831175329.0ca5e409@maurocar-mobl2>
+In-Reply-To: <20230831152200.1192557-2-bhanuprakash.modem@intel.com>
+References: <20230831152200.1192557-1-bhanuprakash.modem@intel.com>
+ <20230831152200.1192557-2-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915_pm_freq_api: Test s2idle
- instead of S3
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [i-g-t 1/2] scripts/test_list: Ignore uncompiled tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,44 +20,65 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+On Thu, 31 Aug 2023 20:51:59 +0530
+Bhanuprakash Modem <bhanuprakash.modem@intel.com> wrote:
 
+> As we are using wildcards in test_config json file, script
+> assumes each file in the list is compiled & <file_name>.testlist
+> is generated. But it is not always true.
+> 
+> Example:
+>  - kms_test_config.json includes all files inside chamelium dir
+>  - And if we compile without chamelium tests, will endup with
+>    build failures.
+> 
+> $ meson -Dchamelium=disabled build && ninja -C build
+> FileNotFoundError: [Errno 2] No such file or directory: 'igt/build/tests/kms_chamelium_frames.testlist'
+> [1551/1555] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
+> ninja: build stopped: subcommand failed.
+> make: *** [Makefile:10: all] Error 1
+> 
+> So, update the scripts to just ignore if <file_name>.testlist isn't find.
+> 
+> $ meson -Dchamelium=disabled build && ninja -C build
+> [5/7] Generating kms_tests.rst with a custom command
+> kms_chamelium_hpd.testlist: Testlist file not found.
+> kms_chamelium_frames.testlist: Testlist file not found.
+> kms_chamelium_audio.testlist: Testlist file not found.
+> kms_chamelium_edid.testlist: Testlist file not found.
+> kms_chamelium_color.testlist: Testlist file not found.
+> [7/7] Generating kms_tests.html with a custom command
+> 
+> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-> -----Original Message-----
-> From: Belgaumkar, Vinay <vinay.belgaumkar@intel.com>
-> Sent: Thursday, August 31, 2023 5:09 AM
-> To: intel-gfx@lists.freedesktop.org; igt-dev@lists.freedesktop.org
-> Cc: Belgaumkar, Vinay <vinay.belgaumkar@intel.com>; Gupta, Anshuman
-> <anshuman.gupta@intel.com>
-> Subject: [PATCH i-g-t] tests/i915_pm_freq_api: Test s2idle instead of S3
->=20
-> Test skips whenever S3 is not supported, use s2idle instead, which is wid=
-ely
-> enabled.
->=20
-> Cc: Anshuman Gupta <anshuman.gupta@intel.com>
-> Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
+Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+
 > ---
->  tests/i915/i915_pm_freq_api.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/tests/i915/i915_pm_freq_api.c b/tests/i915/i915_pm_freq_api.=
-c
-> index 2912287c4..03bd0d05b 100644
-> --- a/tests/i915/i915_pm_freq_api.c
-> +++ b/tests/i915/i915_pm_freq_api.c
-> @@ -125,7 +125,7 @@ static void test_suspend(int i915, int dirfd, int gt)
->  		igt_assert_eq(req_freq, rpn);
->=20
->  	/* Manually trigger a suspend */
-> -	igt_system_suspend_autoresume(SUSPEND_STATE_S3,
-> +	igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE,
->  				      SUSPEND_TEST_NONE);
->=20
->  	req_freq =3D get_freq(dirfd, RPS_CUR_FREQ_MHZ);
-> --
-> 2.38.1
+>  scripts/test_list.py | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/scripts/test_list.py b/scripts/test_list.py
+> index c23d6d735..0bcc96869 100755
+> --- a/scripts/test_list.py
+> +++ b/scripts/test_list.py
+> @@ -914,8 +914,12 @@ class TestList:
+>          """ Return a list of tests as reported by --list-subtests """
+>          tests = []
+>          for name in self.filenames:
+> -            fname = re.sub(r"\.c$", ".testlist", name.split('/')[-1])
+> -            fname = os.path.join(self.igt_build_path, "tests", fname)
+> +            testlist = re.sub(r"\.c$", ".testlist", name.split('/')[-1])
+> +            fname = os.path.join(self.igt_build_path, "tests", testlist)
+> +
+> +            if not os.path.isfile(fname):
+> +                print(f"{testlist}: Testlist file not found.")
+> +                continue
+>  
+>              with open(fname, 'r', encoding='utf8') as handle:
+>                  for line in handle:
