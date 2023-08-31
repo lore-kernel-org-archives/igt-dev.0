@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BA05510E050
- for <igt-dev@lists.freedesktop.org>; Thu, 31 Aug 2023 06:10:44 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	swati2.sharma@intel.com
-Date: Thu, 31 Aug 2023 11:32:43 +0530
-Message-Id: <20230831060243.1048579-1-bhanuprakash.modem@intel.com>
-MIME-Version: 1.0
+Date: Thu, 31 Aug 2023 11:58:23 +0530
+From: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
+To: Lucas De Marchi <lucas.demarchi@intel.com>, <igt-dev@lists.freedesktop.org>
+Message-ID: <ZPAzB95lw3vSqgan@bvivekan-mobl>
+References: <20230829141107.1505705-1-lucas.demarchi@intel.com>
+ <20230829141107.1505705-2-lucas.demarchi@intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t] Revert "tests/intel-ci: Drop tiling tests from xe
- blocklist"
+In-Reply-To: <20230829141107.1505705-2-lucas.demarchi@intel.com>
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [Intel-xe] [PATCH igt 1/4] lib: Add xe_pciids.h
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,52 +18,280 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: intel-xe@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As tiling required DPT support, we need to blocklist the tiling
-tests until the XE DPT changes landed in the Kernel.
+On 29.08.2023 07:11, Lucas De Marchi wrote:
+> With the introduction of Lunar Lake, igt won't be able to just re-use
+> i915_pciids.h for both drivers anymore since the support for LNL is only
+> coming with the xe module. Copy xe_pciids.h from the drm-xe-next branch
+> (up to commit b9c9020fc816 ("drm/xe/pvc: Use fast copy engines as
+> migrate engine on PVC") and start including it where needed. This brings
+> all the LNL PCI IDs.
 
-This reverts commit 4dfa4c97c936eb2de0e2d1ed515e596c2ccbee2c.
+I couldn't find the commit hash b9c9020fc816. Is it lost due to rebase?
+In that case, does it make sense to use the commit hash or just keep the
+commit subject?
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/intel-ci/xe.blocklist.txt | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Regards,
+Bala
 
-diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
-index 2df3810af..d90df7505 100644
---- a/tests/intel-ci/xe.blocklist.txt
-+++ b/tests/intel-ci/xe.blocklist.txt
-@@ -54,6 +54,7 @@ igt@.*@.*pipe-(e|f|g|h).*
- igt@kms_bw@.*-(5|6|7|8)-displays-.*
- ##################################################################
- igt@kms_draw_crc@draw-method-(mmap-cpu|mmap-gtt|pwrite)
-+igt@kms_draw_crc@fill-fb
- igt@kms_pipe_b_c_ivb@.*
- igt@kms_pwrite_crc
- igt@kms_ccs@.*
-@@ -64,11 +65,20 @@ igt@kms_busy@.*
- igt@kms_psr@.*_mmap_(cpu|gtt)
- igt@kms_legacy_colorkey@basic
- igt@kms_legacy_colorkey@invalid-plane
-+igt@kms_flip_scaled_crc@flip-(32|64)bpp-(4|x|y|yf|tileccs)tile-.*
-+igt@kms_big_fb@(4|x|y|yf)-tiled-.*
- igt@kms_flip@2x-flip-vs-fences
- igt@kms_flip@flip-vs-fences(-interruptible)
- igt@kms_addfb_basic@clobberred-modifier
-+igt@kms_addfb_basic@.*-tiling
-+igt@kms_addfb_basic@.*-(4|x|y|yf)-.*
-+igt@kms_async_flips@.*
-+igt@kms_plane_multiple@tiling-(4|x|y|yf)
- igt@kms_cursor_legacy@flip-vs-cursor-busy-crc-(atomic|legacy)
-+igt@kms_rotation_crc@primary-(4|x|y|yf)-tiled-.*
- igt@kms_rotation_crc@exhaust-fences
- igt@kms_force_connector_basic@force-load-detect
-+igt@kms_getfb@.*-ccs
-+igt@kms_plane_lowres@tiling-(4|x|y|yf)
- igt@kms_.*@.*hang.*
- ##################################################################
--- 
-2.40.0
+> 
+> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+> ---
+>  docs/reference/igt-gpu-tools/meson.build |   1 +
+>  lib/intel_device_info.c                  |   1 +
+>  lib/xe_pciids.h                          | 215 +++++++++++++++++++++++
+>  3 files changed, 217 insertions(+)
+>  create mode 100644 lib/xe_pciids.h
+> 
+> diff --git a/docs/reference/igt-gpu-tools/meson.build b/docs/reference/igt-gpu-tools/meson.build
+> index 6b832ad27..513385b4b 100644
+> --- a/docs/reference/igt-gpu-tools/meson.build
+> +++ b/docs/reference/igt-gpu-tools/meson.build
+> @@ -21,6 +21,7 @@ ignore_headers = [
+>  	'media_fill_gen9.h',
+>  	'gen9_render.h',
+>  	'version.h',
+> +	'xe_pciids.h',
+>  ]
+>  
+>  test_groups = [
+> diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+> index 2c9a45b68..5d53d2906 100644
+> --- a/lib/intel_device_info.c
+> +++ b/lib/intel_device_info.c
+> @@ -1,6 +1,7 @@
+>  #include "intel_chipset.h"
+>  #include "i915_pciids.h"
+>  #include "i915_pciids_local.h"
+> +#include "xe_pciids.h"
+>  
+>  #include <strings.h> /* ffs() */
+>  
+> diff --git a/lib/xe_pciids.h b/lib/xe_pciids.h
+> new file mode 100644
+> index 000000000..29f07a00a
+> --- /dev/null
+> +++ b/lib/xe_pciids.h
+> @@ -0,0 +1,215 @@
+> +/* SPDX-License-Identifier: MIT */
+> +/*
+> + * Copyright © 2022 Intel Corporation
+> + */
+> +
+> +#ifndef _XE_PCIIDS_H_
+> +#define _XE_PCIIDS_H_
+> +
+> +/*
+> + * Lists below can be turned into initializers for a struct pci_device_id
+> + * by defining INTEL_VGA_DEVICE:
+> + *
+> + * #define INTEL_VGA_DEVICE(id, info) { \
+> + *	0x8086, id,			\
+> + *	~0, ~0,				\
+> + *	0x030000, 0xff0000,		\
+> + *	(unsigned long) info }
+> + *
+> + * And then calling like:
+> + *
+> + * XE_TGL_12_GT1_IDS(INTEL_VGA_DEVICE, ## __VA_ARGS__)
+> + *
+> + * To turn them into something else, just provide a different macro passed as
+> + * first argument.
+> + */
+> +
+> +/* TGL */
+> +#define XE_TGL_GT1_IDS(MACRO__, ...)		\
+> +	MACRO__(0x9A60, ## __VA_ARGS__),	\
+> +	MACRO__(0x9A68, ## __VA_ARGS__),	\
+> +	MACRO__(0x9A70, ## __VA_ARGS__)
+> +
+> +#define XE_TGL_GT2_IDS(MACRO__, ...)		\
+> +	MACRO__(0x9A40, ## __VA_ARGS__),	\
+> +	MACRO__(0x9A49, ## __VA_ARGS__),	\
+> +	MACRO__(0x9A59, ## __VA_ARGS__),	\
+> +	MACRO__(0x9A78, ## __VA_ARGS__),	\
+> +	MACRO__(0x9AC0, ## __VA_ARGS__),	\
+> +	MACRO__(0x9AC9, ## __VA_ARGS__),	\
+> +	MACRO__(0x9AD9, ## __VA_ARGS__),	\
+> +	MACRO__(0x9AF8, ## __VA_ARGS__)
+> +
+> +#define XE_TGL_IDS(MACRO__, ...)		\
+> +	XE_TGL_GT1_IDS(MACRO__, ## __VA_ARGS__),\
+> +	XE_TGL_GT2_IDS(MACRO__, ## __VA_ARGS__)
+> +
+> +/* RKL */
+> +#define XE_RKL_IDS(MACRO__, ...)		\
+> +	MACRO__(0x4C80, ## __VA_ARGS__),	\
+> +	MACRO__(0x4C8A, ## __VA_ARGS__),	\
+> +	MACRO__(0x4C8B, ## __VA_ARGS__),	\
+> +	MACRO__(0x4C8C, ## __VA_ARGS__),	\
+> +	MACRO__(0x4C90, ## __VA_ARGS__),	\
+> +	MACRO__(0x4C9A, ## __VA_ARGS__)
+> +
+> +/* DG1 */
+> +#define XE_DG1_IDS(MACRO__, ...)		\
+> +	MACRO__(0x4905, ## __VA_ARGS__),	\
+> +	MACRO__(0x4906, ## __VA_ARGS__),	\
+> +	MACRO__(0x4907, ## __VA_ARGS__),	\
+> +	MACRO__(0x4908, ## __VA_ARGS__),	\
+> +	MACRO__(0x4909, ## __VA_ARGS__)
+> +
+> +/* ADL-S */
+> +#define XE_ADLS_IDS(MACRO__, ...)		\
+> +	MACRO__(0x4680, ## __VA_ARGS__),	\
+> +	MACRO__(0x4682, ## __VA_ARGS__),	\
+> +	MACRO__(0x4688, ## __VA_ARGS__),	\
+> +	MACRO__(0x468A, ## __VA_ARGS__),	\
+> +	MACRO__(0x4690, ## __VA_ARGS__),	\
+> +	MACRO__(0x4692, ## __VA_ARGS__),	\
+> +	MACRO__(0x4693, ## __VA_ARGS__)
+> +
+> +/* ADL-P */
+> +#define XE_ADLP_IDS(MACRO__, ...)		\
+> +	MACRO__(0x46A0, ## __VA_ARGS__),	\
+> +	MACRO__(0x46A1, ## __VA_ARGS__),	\
+> +	MACRO__(0x46A2, ## __VA_ARGS__),	\
+> +	MACRO__(0x46A3, ## __VA_ARGS__),	\
+> +	MACRO__(0x46A6, ## __VA_ARGS__),	\
+> +	MACRO__(0x46A8, ## __VA_ARGS__),	\
+> +	MACRO__(0x46AA, ## __VA_ARGS__),	\
+> +	MACRO__(0x462A, ## __VA_ARGS__),	\
+> +	MACRO__(0x4626, ## __VA_ARGS__),	\
+> +	MACRO__(0x4628, ## __VA_ARGS__),	\
+> +	MACRO__(0x46B0, ## __VA_ARGS__),	\
+> +	MACRO__(0x46B1, ## __VA_ARGS__),	\
+> +	MACRO__(0x46B2, ## __VA_ARGS__),	\
+> +	MACRO__(0x46B3, ## __VA_ARGS__),	\
+> +	MACRO__(0x46C0, ## __VA_ARGS__),	\
+> +	MACRO__(0x46C1, ## __VA_ARGS__),	\
+> +	MACRO__(0x46C2, ## __VA_ARGS__),	\
+> +	MACRO__(0x46C3, ## __VA_ARGS__)
+> +
+> +/* ADL-N */
+> +#define XE_ADLN_IDS(MACRO__, ...)		\
+> +	MACRO__(0x46D0, ## __VA_ARGS__),	\
+> +	MACRO__(0x46D1, ## __VA_ARGS__),	\
+> +	MACRO__(0x46D2, ## __VA_ARGS__)
+> +
+> +/* RPL-S */
+> +#define XE_RPLS_IDS(MACRO__, ...)		\
+> +	MACRO__(0xA780, ## __VA_ARGS__),	\
+> +	MACRO__(0xA781, ## __VA_ARGS__),	\
+> +	MACRO__(0xA782, ## __VA_ARGS__),	\
+> +	MACRO__(0xA783, ## __VA_ARGS__),	\
+> +	MACRO__(0xA788, ## __VA_ARGS__),	\
+> +	MACRO__(0xA789, ## __VA_ARGS__),	\
+> +	MACRO__(0xA78A, ## __VA_ARGS__),	\
+> +	MACRO__(0xA78B, ## __VA_ARGS__)
+> +
+> +/* RPL-U */
+> +#define XE_RPLU_IDS(MACRO__, ...)		\
+> +	MACRO__(0xA721, ## __VA_ARGS__),	\
+> +	MACRO__(0xA7A1, ## __VA_ARGS__),	\
+> +	MACRO__(0xA7A9, ## __VA_ARGS__)
+> +
+> +/* RPL-P */
+> +#define XE_RPLP_IDS(MACRO__, ...)		\
+> +	MACRO__(0xA720, ## __VA_ARGS__),	\
+> +	MACRO__(0xA7A0, ## __VA_ARGS__),	\
+> +	MACRO__(0xA7A8, ## __VA_ARGS__)
+> +
+> +/* DG2 */
+> +#define XE_DG2_G10_IDS(MACRO__, ...)		\
+> +	MACRO__(0x5690, ## __VA_ARGS__),	\
+> +	MACRO__(0x5691, ## __VA_ARGS__),	\
+> +	MACRO__(0x5692, ## __VA_ARGS__),	\
+> +	MACRO__(0x56A0, ## __VA_ARGS__),	\
+> +	MACRO__(0x56A1, ## __VA_ARGS__),	\
+> +	MACRO__(0x56A2, ## __VA_ARGS__)
+> +
+> +#define XE_DG2_G11_IDS(MACRO__, ...)		\
+> +	MACRO__(0x5693, ## __VA_ARGS__),	\
+> +	MACRO__(0x5694, ## __VA_ARGS__),	\
+> +	MACRO__(0x5695, ## __VA_ARGS__),	\
+> +	MACRO__(0x5698, ## __VA_ARGS__),	\
+> +	MACRO__(0x56A5, ## __VA_ARGS__),	\
+> +	MACRO__(0x56A6, ## __VA_ARGS__),	\
+> +	MACRO__(0x56B0, ## __VA_ARGS__),	\
+> +	MACRO__(0x56B1, ## __VA_ARGS__)
+> +
+> +#define XE_DG2_G12_IDS(MACRO__, ...)		\
+> +	MACRO__(0x5696, ## __VA_ARGS__),	\
+> +	MACRO__(0x5697, ## __VA_ARGS__),	\
+> +	MACRO__(0x56A3, ## __VA_ARGS__),	\
+> +	MACRO__(0x56A4, ## __VA_ARGS__),	\
+> +	MACRO__(0x56B2, ## __VA_ARGS__),	\
+> +	MACRO__(0x56B3, ## __VA_ARGS__)
+> +
+> +#define XE_DG2_IDS(MACRO__, ...)		\
+> +	XE_DG2_G10_IDS(MACRO__, ## __VA_ARGS__),\
+> +	XE_DG2_G11_IDS(MACRO__, ## __VA_ARGS__),\
+> +	XE_DG2_G12_IDS(MACRO__, ## __VA_ARGS__)
+> +
+> +#define XE_ATS_M150_IDS(MACRO__, ...)		\
+> +	MACRO__(0x56C0, ## __VA_ARGS__)
+> +
+> +#define XE_ATS_M75_IDS(MACRO__, ...)		\
+> +	MACRO__(0x56C1, ## __VA_ARGS__)
+> +
+> +#define XE_ATS_M_IDS(MACRO__, ...)		\
+> +	XE_ATS_M150_IDS(MACRO__, ## __VA_ARGS__),\
+> +	XE_ATS_M75_IDS(MACRO__, ## __VA_ARGS__)
+> +
+> +/* PVC */
+> +#define XE_PVC_XT_IDS(MACRO__, ...)		\
+> +	MACRO__(0x0BD5, ## __VA_ARGS__),	\
+> +	MACRO__(0x0BD6, ## __VA_ARGS__),	\
+> +	MACRO__(0x0BD7, ## __VA_ARGS__),	\
+> +	MACRO__(0x0BD8, ## __VA_ARGS__),	\
+> +	MACRO__(0x0BD9, ## __VA_ARGS__),	\
+> +	MACRO__(0x0BDA, ## __VA_ARGS__),	\
+> +	MACRO__(0x0BDB, ## __VA_ARGS__),	\
+> +	MACRO__(0x0BE0, ## __VA_ARGS__),	\
+> +	MACRO__(0x0BE1, ## __VA_ARGS__),	\
+> +	MACRO__(0x0BE5, ## __VA_ARGS__)
+> +
+> +#define XE_PVC_IDS(MACRO__, ...)		\
+> +	XE_PVC_XT_IDS(MACRO__, ## __VA_ARGS__)
+> +
+> +/* MTL */
+> +#define XE_MTL_M_IDS(MACRO__, ...)		\
+> +	MACRO__(0x7D40, ## __VA_ARGS__),	\
+> +	MACRO__(0x7D43, ## __VA_ARGS__),	\
+> +	MACRO__(0x7DC0, ## __VA_ARGS__)
+> +
+> +#define XE_MTL_P_IDS(MACRO__, ...)		\
+> +	MACRO__(0x7D45, ## __VA_ARGS__),	\
+> +	MACRO__(0x7D47, ## __VA_ARGS__),	\
+> +	MACRO__(0x7D50, ## __VA_ARGS__),	\
+> +	MACRO__(0x7D55, ## __VA_ARGS__),	\
+> +	MACRO__(0x7DC5, ## __VA_ARGS__),	\
+> +	MACRO__(0x7DD0, ## __VA_ARGS__),	\
+> +	MACRO__(0x7DD5, ## __VA_ARGS__)
+> +
+> +#define XE_MTL_S_IDS(MACRO__, ...)		\
+> +	MACRO__(0x7D60, ## __VA_ARGS__),	\
+> +	MACRO__(0x7DE0, ## __VA_ARGS__)
+> +
+> +#define XE_ARL_IDS(MACRO__, ...)		\
+> +	MACRO__(0x7D67, ## __VA_ARGS__)
+> +
+> +#define XE_MTL_IDS(MACRO__, ...)		\
+> +	XE_MTL_M_IDS(MACRO__, ## __VA_ARGS__),	\
+> +	XE_MTL_P_IDS(MACRO__, ## __VA_ARGS__),	\
+> +	XE_MTL_S_IDS(MACRO__, ## __VA_ARGS__),	\
+> +	XE_ARL_IDS(MACRO__, ## __VA_ARGS__)
+> +
+> +#define XE_LNL_IDS(MACRO__, ...) \
+> +	MACRO__(0x6420, ## __VA_ARGS__), \
+> +	MACRO__(0x64A0, ## __VA_ARGS__), \
+> +	MACRO__(0x64B0, ## __VA_ARGS__)
+> +
+> +#endif
+> -- 
+> 2.40.1
+> 
