@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 32ACE10E2A3
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Aug 2023 16:00:51 +0000 (UTC)
-Date: Thu, 17 Aug 2023 18:00:35 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230817160035.gpx44tovqs5lgqck@kamilkon-desk1>
-References: <20230817093504.75749-1-mauro.chehab@linux.intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B892210E187
+ for <igt-dev@lists.freedesktop.org>; Thu, 31 Aug 2023 15:05:15 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Date: Thu, 31 Aug 2023 20:26:19 +0530
+Message-Id: <20230831145622.1158622-5-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230831145622.1158622-1-bhanuprakash.modem@intel.com>
+References: <20230831145622.1158622-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230817093504.75749-1-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] docs/reference: add links to
- testplan-based documentation
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t V5 4/7] tests/meson.build: Simplify builds for
+ Chamelium targets
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,129 +20,81 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org, mauro.chehab@linux.intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mauro,
+Move Chamelium based extra dependencies & source files to
+corresponding generic dictionaries.
 
-On 2023-08-17 at 11:35:04 +0200, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> Instead of relying on runtime-based docs, use the documentation
-> parsed via testplan for i915, Xe and KMS tests.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+If we want to change extra source files for any Chamelium
+target, we can simply update in the dictionary, no need to
+re-wrire the rules.
 
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/meson.build | 26 ++++++++------------------
+ 1 file changed, 8 insertions(+), 18 deletions(-)
 
-Looks ok, maybe we should add some more people on cc?
-+cc Petri.
+diff --git a/tests/meson.build b/tests/meson.build
+index c683e468d..e25793b5a 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -311,6 +311,7 @@ msm_progs = [
+ 
+ chamelium_progs = [
+ 	'kms_chamelium_audio',
++	'kms_chamelium_color',
+ 	'kms_chamelium_edid',
+ 	'kms_chamelium_frames',
+ 	'kms_chamelium_hpd',
+@@ -334,6 +335,11 @@ extra_sources = {
+ 	'dumb_buffer': ['dumb_buffer.c' ],
+ 	'testdisplay': [ 'testdisplay_hotplug.c' ],
+ 	'kms_color':  [ 'kms_color_helper.c' ],
++	'kms_chamelium_audio': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
++	'kms_chamelium_color':  [ 'kms_color_helper.c' ],
++	'kms_chamelium_edid': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
++	'kms_chamelium_frames': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
++	'kms_chamelium_hpd': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
+ 	'kms_dsc': [ join_paths ('i915', 'kms_dsc_helper.c') ],
+ 	'kms_psr2_sf':  [ join_paths ('i915', 'kms_dsc_helper.c') ],
+ }
+@@ -426,9 +432,8 @@ endforeach
+ if chamelium.found()
+ 	foreach prog : chamelium_progs
+ 		testexe = executable(prog,
+-				 [join_paths('chamelium', prog + '.c'),
+-					join_paths('chamelium', 'kms_chamelium_helper.c')],
+-				 dependencies : test_deps,
++				 [join_paths('chamelium', prog + '.c')] + extra_sources.get(prog, []),
++				 dependencies : test_deps + extra_dependencies.get(prog, []),
+ 				 install_dir : libexecdir,
+ 				 install_rpath : libexecdir_rpathdir,
+ 				 install : true)
+@@ -442,21 +447,6 @@ if chamelium.found()
+ 			     output : name + '.testlist')
+ 	endforeach
+ 	test_deps += chamelium
+-
+-	name = 'kms_chamelium_color'
+-	testexe = executable('kms_chamelium_color',
+-				[ 'chamelium/kms_chamelium_color.c', 'kms_color_helper.c' ],
+-				dependencies : test_deps + [ chamelium ],
+-				install_dir : libexecdir,
+-				install_rpath : libexecdir_rpathdir,
+-				install : true)
+-	test_list += name
+-	test_executables += testexe
+-	testlist_files += custom_target(name + '.testlist',
+-		     build_by_default : true,
+-		     command : [testexe, '--show-testlist'],
+-		     capture : true,
+-		     output : name + '.testlist')
+ endif
+ 
+ subdir('amdgpu')
+-- 
+2.40.0
 
-Regards,
-Kamil
-
-> ---
->  .../igt-gpu-tools/igt_test_programs.xml       | 63 ++++++++-----------
->  docs/reference/igt-gpu-tools/meson.build      |  4 --
->  2 files changed, 27 insertions(+), 40 deletions(-)
-> 
-> diff --git a/docs/reference/igt-gpu-tools/igt_test_programs.xml b/docs/reference/igt-gpu-tools/igt_test_programs.xml
-> index 92bc33ba83f6..51f8cac05f98 100644
-> --- a/docs/reference/igt-gpu-tools/igt_test_programs.xml
-> +++ b/docs/reference/igt-gpu-tools/igt_test_programs.xml
-> @@ -147,42 +147,6 @@
->      <xi:include href="igt_test_programs_gem_description.xml"/>
->    </refentry>
->  
-> -  <refentry id="igt-gen3-tests">
-> -    <refnamediv>
-> -      <refname>Gen 3 Tests</refname>
-> -      <refpurpose>Tests specific to gen 3</refpurpose>
-> -    </refnamediv>
-> -    <xi:include href="igt_test_programs_gen3_programs.xml"/>
-> -    <xi:include href="igt_test_programs_gen3_description.xml"/>
-> -  </refentry>
-> -
-> -  <refentry id="igt-gen7-tests">
-> -    <refnamediv>
-> -      <refname>Gen 7 Tests</refname>
-> -      <refpurpose>Tests specific to gen 7</refpurpose>
-> -    </refnamediv>
-> -    <xi:include href="igt_test_programs_gen7_programs.xml"/>
-> -    <xi:include href="igt_test_programs_gen7_description.xml"/>
-> -  </refentry>
-> -
-> -  <refentry id="igt-i915-tests">
-> -    <refnamediv>
-> -      <refname>i915 Tests</refname>
-> -      <refpurpose>Tests for overall i915 driver behaviour</refpurpose>
-> -    </refnamediv>
-> -    <xi:include href="igt_test_programs_i915_programs.xml"/>
-> -    <xi:include href="igt_test_programs_i915_description.xml"/>
-> -  </refentry>
-> -
-> -  <refentry id="igt-kms-tests">
-> -    <refnamediv>
-> -      <refname>KMS Tests</refname>
-> -      <refpurpose>Tests for kernel mode setting</refpurpose>
-> -    </refnamediv>
-> -    <xi:include href="igt_test_programs_kms_programs.xml"/>
-> -    <xi:include href="igt_test_programs_kms_description.xml"/>
-> -  </refentry>
-> -
->    <refentry id="igt-meta-tests">
->      <refnamediv>
->        <refname>Meta Tests</refname>
-> @@ -255,6 +219,33 @@
->      <xi:include href="igt_test_programs_vgem_description.xml"/>
->    </refentry>
->  
-> +  <refentry id="igt-xe-tests">
-> +    <refnamediv>
-> +      <refname>
-> +          <ulink url="../testplan/xe_tests.html" type="http">Xe Tests</ulink>
-> +      </refname>
-> +      <refpurpose>Tests for the Intel Xe driver</refpurpose>
-> +    </refnamediv>
-> +  </refentry>
-> +
-> +  <refentry id="igt-i915-tests">
-> +    <refnamediv>
-> +      <refname>
-> +        <ulink url="../testplan/i915_tests.html" type="http">i915 Tests</ulink>
-> +      </refname>
-> +      <refpurpose>Tests for the Intel i915 driver</refpurpose>
-> +    </refnamediv>
-> +  </refentry>
-> +
-> +  <refentry id="igt-kms-tests">
-> +    <refnamediv>
-> +      <refname>
-> +        <ulink url="../testplan/kms_tests.html" type="http">KMS Tests</ulink>
-> +      </refname>
-> +      <refpurpose>Tests for kernel mode setting</refpurpose>
-> +    </refnamediv>
-> +  </refentry>
-> +
->    <glossary>
->      <title>Glossary</title>
->  
-> diff --git a/docs/reference/igt-gpu-tools/meson.build b/docs/reference/igt-gpu-tools/meson.build
-> index 6b832ad279cf..9bb5ca7e0798 100644
-> --- a/docs/reference/igt-gpu-tools/meson.build
-> +++ b/docs/reference/igt-gpu-tools/meson.build
-> @@ -29,10 +29,6 @@ test_groups = [
->  	'debugfs',
->  	'drm',
->  	'gem',
-> -	'gen3',
-> -	'gen7',
-> -	'i915',
-> -	'kms',
->  	'meta',
->  	'perf',
->  	'pm',
-> -- 
-> 2.41.0
-> 
 
