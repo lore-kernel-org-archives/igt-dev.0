@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 62C2610E6A7
- for <igt-dev@lists.freedesktop.org>; Thu, 31 Aug 2023 17:16:42 +0000 (UTC)
-Date: Thu, 31 Aug 2023 19:13:59 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7F9DF10E6A9
+ for <igt-dev@lists.freedesktop.org>; Thu, 31 Aug 2023 17:10:46 +0000 (UTC)
+Date: Thu, 31 Aug 2023 19:09:25 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230831171359.ld3zc5vin6lvzrss@kamilkon-desk.igk.intel.com>
-References: <20230831145509.477543-1-mauro.chehab@linux.intel.com>
- <20230831145509.477543-5-mauro.chehab@linux.intel.com>
+Message-ID: <20230831170925.hc3wzshjj76w2qy2@kamilkon-desk.igk.intel.com>
+References: <20230831145622.1158622-1-bhanuprakash.modem@intel.com>
+ <20230831145622.1158622-4-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230831145509.477543-5-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v4 04/11] scripts/test_list.py: close
- config file before start processing
+In-Reply-To: <20230831145622.1158622-4-bhanuprakash.modem@intel.com>
+Subject: Re: [igt-dev] [i-g-t V5 3/7] tests/i915/prime_mmap_kms: Add missing
+ documentation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,158 +25,50 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mauro,
-On 2023-08-31 at 16:52:06 +0200, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> Reduce the identation level of the code which parses the config
-> file, as this can be done after closing the file.
-> 
-> This is a preparation for the next patch that will offer a different
-> way to pass the configuration.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Hi Bhanuprakash,
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+On 2023-08-31 at 20:26:18 +0530, Bhanuprakash Modem wrote:
+> Add missing documentation for i915 testplan.
+> 
+> Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+
+This is not related to patchset "move into intel folder",
+please merge only this one before taking next steps.
+
+Regards,
+Kamil
 
 > ---
->  scripts/test_list.py | 114 +++++++++++++++++++++----------------------
->  1 file changed, 57 insertions(+), 57 deletions(-)
+>  tests/prime_mmap_kms.c | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
 > 
-> diff --git a/scripts/test_list.py b/scripts/test_list.py
-> index 54ccb6d1c0cd..d0d56954b010 100755
-> --- a/scripts/test_list.py
-> +++ b/scripts/test_list.py
-> @@ -274,71 +274,71 @@ class TestList:
->          with open(config_fname, 'r', encoding='utf8') as handle:
->              self.config = json.load(handle)
+> diff --git a/tests/prime_mmap_kms.c b/tests/prime_mmap_kms.c
+> index 1a63be38f..683665752 100644
+> --- a/tests/prime_mmap_kms.c
+> +++ b/tests/prime_mmap_kms.c
+> @@ -37,6 +37,19 @@
+>  IGT_TEST_DESCRIPTION(
+>     "Efficiently sharing CPU and GPU buffers");
 >  
-> -            self.__add_field(None, 0, 0, self.config["fields"])
-> +        self.__add_field(None, 0, 0, self.config["fields"])
->  
-> -            sublevel_count = [ 0 ] * self.level_count
-> +        sublevel_count = [ 0 ] * self.level_count
->  
-> -            for field, item in self.props.items():
-> -                if "sublevel" in item["_properties_"]:
-> -                    level = item["_properties_"]["level"]
-> -                    sublevel = item["_properties_"]["sublevel"]
-> -                    if sublevel > sublevel_count[level - 1]:
-> -                        sublevel_count[level - 1] = sublevel
-> +        for field, item in self.props.items():
-> +            if "sublevel" in item["_properties_"]:
-> +                level = item["_properties_"]["level"]
-> +                sublevel = item["_properties_"]["sublevel"]
-> +                if sublevel > sublevel_count[level - 1]:
-> +                    sublevel_count[level - 1] = sublevel
->  
-> -                field_lc = field.lower()
-> -                self.field_list[field_lc] = field
-> -                field_plural = _plural(field_lc)
-> -                if field_lc != field_plural:
-> -                    self.field_list[field_plural] = field
-> +            field_lc = field.lower()
-> +            self.field_list[field_lc] = field
-> +            field_plural = _plural(field_lc)
-> +            if field_lc != field_plural:
-> +                self.field_list[field_plural] = field
->  
-> -            if include_plan:
-> -                self.props["Class"] = {}
-> -                self.props["Class"]["_properties_"] = {}
-> -                self.props["Class"]["_properties_"]["level"] = 1
-> -                self.props["Class"]["_properties_"]["sublevel"] = sublevel_count[0] + 1
-> +        if include_plan:
-> +            self.props["Class"] = {}
-> +            self.props["Class"]["_properties_"] = {}
-> +            self.props["Class"]["_properties_"]["level"] = 1
-> +            self.props["Class"]["_properties_"]["sublevel"] = sublevel_count[0] + 1
->  
-> -            # Remove non-multilevel items, as we're only interested on
-> -            # hierarchical item levels here
-> -            for field, item in self.props.items():
-> -                if "sublevel" in item["_properties_"]:
-> -                    level = item["_properties_"]["level"]
-> -                    if sublevel_count[level - 1] == 1:
-> -                        del item["_properties_"]["level"]
-> -                        del item["_properties_"]["sublevel"]
-> -            del self.props["_properties_"]
-> +        # Remove non-multilevel items, as we're only interested on
-> +        # hierarchical item levels here
-> +        for field, item in self.props.items():
-> +            if "sublevel" in item["_properties_"]:
-> +                level = item["_properties_"]["level"]
-> +                if sublevel_count[level - 1] == 1:
-> +                    del item["_properties_"]["level"]
-> +                    del item["_properties_"]["sublevel"]
-> +        del self.props["_properties_"]
->  
-> -            has_implemented = False
-> -            if not self.filenames:
-> -                self.filenames = []
-> -                exclude_files = []
-> -                files = self.config["files"]
-> -                exclude_file_glob = self.config.get("exclude_files", [])
-> -                for cfg_file in exclude_file_glob:
-> -                    cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
-> -                    for fname in glob.glob(cfg_file):
-> -                        exclude_files.append(fname)
-> +        has_implemented = False
-> +        if not self.filenames:
-> +            self.filenames = []
-> +            exclude_files = []
-> +            files = self.config["files"]
-> +            exclude_file_glob = self.config.get("exclude_files", [])
-> +            for cfg_file in exclude_file_glob:
-> +                cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
-> +                for fname in glob.glob(cfg_file):
-> +                    exclude_files.append(fname)
->  
-> -                for cfg_file in files:
-> -                    cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
-> -                    for fname in glob.glob(cfg_file):
-> -                        if fname in exclude_files:
-> -                            continue
-> -                        self.filenames.append(fname)
-> -                        has_implemented = True
-> -            else:
-> -                for cfg_file in self.filenames:
-> -                    if cfg_file:
-> -                        has_implemented = True
-> +            for cfg_file in files:
-> +                cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
-> +                for fname in glob.glob(cfg_file):
-> +                    if fname in exclude_files:
-> +                        continue
-> +                    self.filenames.append(fname)
-> +                    has_implemented = True
-> +        else:
-> +            for cfg_file in self.filenames:
-> +                if cfg_file:
-> +                    has_implemented = True
->  
-> -            has_planned = False
-> -            if include_plan and "planning_files" in self.config:
-> -                implemented_class = "Implemented"
-> -                files = self.config["planning_files"]
-> -                for cfg_file in files:
-> -                    cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
-> -                    for fname in glob.glob(cfg_file):
-> -                        self.plan_filenames.append(fname)
-> -                        has_planned = True
-> +        has_planned = False
-> +        if include_plan and "planning_files" in self.config:
-> +            implemented_class = "Implemented"
-> +            files = self.config["planning_files"]
-> +            for cfg_file in files:
-> +                cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
-> +                for fname in glob.glob(cfg_file):
-> +                    self.plan_filenames.append(fname)
-> +                    has_planned = True
->  
->          planned_class = None
->          if has_implemented:
+> +/**
+> + * TEST: prime mmap kms
+> + * Category: Infrastructure
+> + * Feature: prime
+> + * Functionality: memory management
+> + * Run type: FULL
+> + * Sub-category: DRM
+> + * Test category: GEM_Legacy
+> + *
+> + * SUBTEST: buffer-sharing
+> + * Description: Test efficiently sharing CPU and GPU buffers
+> + */
+> +
+>  /*
+>   * render_process_t:
+>   *
 > -- 
-> 2.41.0
+> 2.40.0
 > 
 
