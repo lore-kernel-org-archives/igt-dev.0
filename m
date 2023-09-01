@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AC6DB10E31B
- for <igt-dev@lists.freedesktop.org>; Fri,  1 Sep 2023 00:26:05 +0000 (UTC)
-Message-ID: <beaece7c-7111-5efd-43b7-36bca87ac95a@intel.com>
-Date: Thu, 31 Aug 2023 17:25:18 -0700
-To: "Chang, Bruce" <yu.bruce.chang@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20230831234654.18207-1-yu.bruce.chang@intel.com>
-Content-Language: en-US
-From: "Welty, Brian" <brian.welty@intel.com>
-In-Reply-To: <20230831234654.18207-1-yu.bruce.chang@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/alternative;
+ boundary="===============5748819058318318100=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe add invalid va access tests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Chang, Yu bruce" <yu.bruce.chang@intel.com>
+Date: Fri, 01 Sep 2023 00:46:03 -0000
+Message-ID: <169352916337.9813.12982750004794816809@emeril.freedesktop.org>
+References: <20230831234654.18207-1-yu.bruce.chang@intel.com>
+In-Reply-To: <20230831234654.18207-1-yu.bruce.chang@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/xe?=
+ =?utf-8?q?_add_invalid_va_access_tests_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,304 +17,131 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Oak Zeng <oak.zeng@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============5748819058318318100==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: tests/xe add invalid va access tests (rev3)
+URL   : https://patchwork.freedesktop.org/series/122983/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7460_BAT -> XEIGTPW_9700_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9700_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 similar issue
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7460/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9700/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
 
 
-On 8/31/2023 4:46 PM, Chang, Bruce wrote:
-> add the following invalid va access test cases:
-> 
-> 	gpu fault	scratch page	command timeout
-> 1) 	no		no		yes
-> 2) 	no		yes		no
-> 3) 	yes		no		yes
-> 4) 	yes		yes		no
-> 
-> TODO: with futher improvement of xe_wait_ufence, the test
-> can check more specific error code from it.
-> 
+Build changes
+-------------
 
-Typo with futher above.
+  * IGT: IGT_7460 -> IGTPW_9700
+  * Linux: xe-348-72da4b45f58f2a95d45743801a10e1f1e1dcce05 -> xe-351-bca3262d221e1402c03a89bb4ba520d6aa610505
 
-Test looks good to me!
-I note 2 issues below....
-With those addressed:
-   Reviewed-by: Brian Welty <brian.welty@intel.com>
+  IGTPW_9700: 9700
+  IGT_7460: 30b4034ea562952039ba6af58106791d5c39999e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-348-72da4b45f58f2a95d45743801a10e1f1e1dcce05: 72da4b45f58f2a95d45743801a10e1f1e1dcce05
+  xe-351-bca3262d221e1402c03a89bb4ba520d6aa610505: bca3262d221e1402c03a89bb4ba520d6aa610505
 
-But I don't know IGT process for adding new tests.
-As this is brand new test, I hope there is gatekeeper making sure new
-tests are truly needed (versus adding into some existing test)?  So
-seems maintainer feedback or second reviewer who knows IGT better than 
-me is best.
+== Logs ==
 
--Brian
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9700/index.html
+
+--===============5748819058318318100==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
 
-> v2: async vm/bind, and re-bind valid address
-> v3: added xe_wait_ufence check
-> 
-> Signed-off-by: Bruce Chang <yu.bruce.chang@intel.com>
-> Cc: Oak Zeng <oak.zeng@intel.com>
-> Cc: Brian Welty <brian.welty@intel.com>
-> Cc: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> ---
->   lib/xe/xe_ioctl.c             |  15 +++-
->   lib/xe/xe_ioctl.h             |   3 +
->   tests/meson.build             |   1 +
->   tests/xe/xe_exec_invalid_va.c | 164 ++++++++++++++++++++++++++++++++++
->   4 files changed, 180 insertions(+), 3 deletions(-)
->   create mode 100644 tests/xe/xe_exec_invalid_va.c
-> 
-> diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-> index 730dcfd16..022f0cf04 100644
-> --- a/lib/xe/xe_ioctl.c
-> +++ b/lib/xe/xe_ioctl.c
-> @@ -415,9 +415,9 @@ void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr)
->   	syncobj_destroy(fd, sync.handle);
->   }
->   
-> -int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
-> +int64_t _xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
->   		       struct drm_xe_engine_class_instance *eci,
-> -		       int64_t timeout)
-> +		       int64_t timeout, bool timeout_assert)
->   {
->   	struct drm_xe_wait_user_fence wait = {
->   		.addr = to_user_pointer(addr),
-> @@ -430,11 +430,20 @@ int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
->   		.instances = eci ? to_user_pointer(eci) : 0,
->   	};
->   
-> -	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait), 0);
-> +	if (igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait))
-> +		igt_assert (!timeout_assert && errno == ETIME);
-
-This doesn't look right to me...  I might be confused.
-
-I think you want:
-     igt_assert(!timeout_assert || errno == ETIME);
-
-or:
-    if (igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait) && 
-timeout_assert)
-         igt_assert(errno == ETIME);
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
 
 
->   
->   	return wait.timeout;
->   }
->   
-> +
-> +int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
-> +		       struct drm_xe_engine_class_instance *eci,
-> +		       int64_t timeout)
-> +{
-> +	return _xe_wait_ufence(fd, addr, value, eci, timeout, true);
-> +}
-> +
->   /**
->    * xe_wait_ufence_abstime:
->    * @fd: xe device fd
-> diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-> index 6c281b3bf..4bf7410a4 100644
-> --- a/lib/xe/xe_ioctl.h
-> +++ b/lib/xe/xe_ioctl.h
-> @@ -82,6 +82,9 @@ void xe_exec(int fd, struct drm_xe_exec *exec);
->   void xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
->   		  struct drm_xe_sync *sync, uint32_t num_syncs);
->   void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr);
-> +int64_t _xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
-> +		       struct drm_xe_engine_class_instance *eci,
-> +		       int64_t timeout, bool timeout_assert);
->   int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
->   		       struct drm_xe_engine_class_instance *eci,
->   		       int64_t timeout);
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 4d325bed1..8861b6c5b 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -276,6 +276,7 @@ xe_progs = [
->   	'xe_exec_reset',
->   	'xe_exec_store',
->   	'xe_exec_threads',
-> +	'xe_exec_invalid_va',
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/xe add invalid va access tests (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122983/">https://patchwork.freedesktop.org/series/122983/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
-I believe team wants these sorted alphabetically.
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9700/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9700/index.html</a></td></tr>
 
->   	'xe_exercise_blt',
->   	'xe_gpgpu_fill',
->   	'xe_guc_pc',
-> diff --git a/tests/xe/xe_exec_invalid_va.c b/tests/xe/xe_exec_invalid_va.c
-> new file mode 100644
-> index 000000000..468b90c8a
-> --- /dev/null
-> +++ b/tests/xe/xe_exec_invalid_va.c
-> @@ -0,0 +1,164 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2023 Intel Corporation
-> + */
-> +
-> +/**
-> + * TEST: invalid va tests
-> + * Category: Hardware building block
-> + * Sub-category: execbuf
-> + * Functionality: fault mode
-> + * Test category: functionality test
-> + * GPU requirements: GPU needs support for DRM_XE_VM_CREATE_FAULT_MODE
-> + */
-> +
-> +#include <fcntl.h>
-> +
-> +#include "igt.h"
-> +#include "lib/igt_syncobj.h"
-> +#include "lib/intel_reg.h"
-> +#include "xe_drm.h"
-> +
-> +#include "xe/xe_ioctl.h"
-> +#include "xe/xe_query.h"
-> +#include <string.h>
-> +
-> +static void insert_store(uint32_t *bb, uint64_t va, uint64_t data)
-> +{
-> +	*bb++ = MI_STORE_DWORD_IMM_GEN4;
-> +	*bb++ = lower_32_bits(va);
-> +	*bb++ = upper_32_bits(va);
-> +	*bb++ = data;
-> +	*bb++ = MI_BATCH_BUFFER_END;
-> +}
-> +
-> +/**
-> + * SUBTEST: invalid-va
-> + * Description: Check driver handling of invalid va access
-> + * Run type: FULL
-> + *
-> + * SUBTEST: invalid-va-scratch
-> + * Description: Check driver handling of invalid va access with scratch page
-> + * Run type: FULL
-> + *
-> + * SUBTEST: invalid-va-fault
-> + * Description: Check driver handling of invalid va access with fault enabled
-> + * Run type: FULL
-> + *
-> + * SUBTEST: invalid-va-fault-scratch
-> + * Description: Check driver handling of invalid va access with fault + scratch page
-> + * Run type: FULL
-> + *
-> + * arg[1]: for vm create flags
-> + */
-> +static void test_exec(int fd, uint32_t flags)
-> +{
-> +	const uint64_t inv_addr = 0x20000000;
-> +	const uint64_t addr = 0x1a0000;
-> +#define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
-> +#define ONE_SEC			MS_TO_NS(1000)
-> +#define	STORE_DATA		0xDEADBEAF
-> +	struct _data {
-> +		uint32_t batch[16];
-> +		uint64_t vm_sync;
-> +		uint64_t sync;
-> +		uint64_t data;
-> +	} *data;
-> +	struct drm_xe_sync sync = {
-> +		.flags = DRM_XE_SYNC_USER_FENCE | DRM_XE_SYNC_SIGNAL,
-> +		.timeline_value = USER_FENCE_VALUE,
-> +	};
-> +	struct drm_xe_exec exec = {
-> +		.num_batch_buffer = 1,
-> +		.address = addr,
-> +		.num_syncs = 1,
-> +		.syncs = to_user_pointer(&sync),
-> +	};
-> +	uint32_t vm;
-> +	uint32_t bo;
-> +	size_t bo_size;
-> +	struct drm_xe_engine_class_instance *eci;
-> +
-> +	eci = xe_hw_engine(fd, 0);
-> +	vm = xe_vm_create(fd, flags | DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
-> +	bo_size = ALIGN(sizeof(*data), xe_get_default_alignment(fd));
-> +	bo = xe_bo_create_flags(fd, vm, bo_size,
-> +				all_memory_regions(fd) |
-> +				visible_vram_if_possible(fd, 0));
-> +	data = xe_bo_map(fd, bo, bo_size);
-> +	memset(data, 0, bo_size);
-> +
-> +	insert_store(data->batch, inv_addr + offsetof(struct _data, data), STORE_DATA);
-> +	exec.exec_queue_id = xe_exec_queue_create(fd, vm, eci, 0);
-> +	sync.addr = to_user_pointer(&data->vm_sync);
-> +	xe_vm_bind_async_flags(fd, vm, 0, bo, 0,
-> +				addr, bo_size, &sync, 1,
-> +				XE_VM_BIND_FLAG_IMMEDIATE);
-> +	xe_wait_ufence(fd, &data->vm_sync, USER_FENCE_VALUE, NULL, ONE_SEC);
-> +	data->vm_sync = 0;
-> +	sync.addr = addr + offsetof(struct _data, sync);
-> +	xe_exec(fd, &exec);
-> +	_xe_wait_ufence(fd, &data->sync, USER_FENCE_VALUE, NULL, ONE_SEC, false);
-> +	if (!(flags & DRM_XE_VM_CREATE_SCRATCH_PAGE))
-> +		assert(errno == ETIME);
-> +	else
-> +		assert(errno == 0);
-> +	data->sync = 0;
-> +
-> +	if ((flags & DRM_XE_VM_CREATE_FAULT_MODE) &&
-> +	    (flags & DRM_XE_VM_CREATE_SCRATCH_PAGE)) {
-> +		/* bind inv_addr after scratch page was created */
-> +		sync.addr = to_user_pointer(&data->vm_sync);
-> +		xe_vm_bind_async_flags(fd, vm, 0, bo, 0,
-> +				inv_addr, bo_size, &sync, 1,
-> +				XE_VM_BIND_FLAG_IMMEDIATE);
-> +		xe_wait_ufence(fd, &data->vm_sync, USER_FENCE_VALUE, NULL, ONE_SEC);
-> +		data->vm_sync = 0;
-> +		data->data = 0;
-> +		sync.addr = addr + offsetof(struct _data, sync);
-> +		xe_exec(fd, &exec);
-> +		xe_wait_ufence(fd, &data->sync, USER_FENCE_VALUE, NULL, ONE_SEC);
-> +		igt_assert_eq(data->data, STORE_DATA);
-> +	}
-> +
-> +	sync.addr = to_user_pointer(&data->vm_sync);
-> +	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, &sync, 1);
-> +	xe_wait_ufence(fd, &data->vm_sync, USER_FENCE_VALUE, NULL, ONE_SEC);
-> +	data->vm_sync = 0;
-> +	xe_vm_unbind_async(fd, vm, 0, 0, inv_addr, bo_size, &sync, 1);
-> +	xe_wait_ufence(fd, &data->vm_sync, USER_FENCE_VALUE, NULL, ONE_SEC);
-> +	xe_exec_queue_destroy(fd, exec.exec_queue_id);
-> +	munmap(data, bo_size);
-> +	gem_close(fd, bo);
-> +	xe_vm_destroy(fd, vm);
-> +}
-> +
-> +igt_main
-> +{
-> +	const struct section {
-> +		const char *name;
-> +		unsigned int flags;
-> +	} sections[] = {
-> +		{ "invalid-va", 0 },
-> +		{ "invalid-va-scratch", DRM_XE_VM_CREATE_SCRATCH_PAGE },
-> +		{ "invalid-va-fault", DRM_XE_VM_CREATE_FAULT_MODE },
-> +		{ "invalid-va-fault-scratch", DRM_XE_VM_CREATE_FAULT_MODE |
-> +					      DRM_XE_VM_CREATE_SCRATCH_PAGE },
-> +		{ NULL },
-> +	};
-> +	int fd;
-> +
-> +	igt_fixture {
-> +		fd = drm_open_driver(DRIVER_XE);
-> +		igt_require(xe_supports_faults(fd));
-> +	}
-> +
-> +	for (const struct section *s = sections; s->name; s++) {
-> +		igt_subtest_f("%s", s->name)
-> +			test_exec(fd, s->flags);
-> +	}
-> +
-> +	igt_fixture
-> +		drm_close_driver(fd);
-> +}
-> +
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7460_BAT -&gt; XEIGTPW_9700_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9700_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7460/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9700/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7460 -&gt; IGTPW_9700</li>
+<li>Linux: xe-348-72da4b45f58f2a95d45743801a10e1f1e1dcce05 -&gt; xe-351-bca3262d221e1402c03a89bb4ba520d6aa610505</li>
+</ul>
+<p>IGTPW_9700: 9700<br />
+  IGT_7460: 30b4034ea562952039ba6af58106791d5c39999e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-348-72da4b45f58f2a95d45743801a10e1f1e1dcce05: 72da4b45f58f2a95d45743801a10e1f1e1dcce05<br />
+  xe-351-bca3262d221e1402c03a89bb4ba520d6aa610505: bca3262d221e1402c03a89bb4ba520d6aa610505</p>
+
+</body>
+</html>
+
+--===============5748819058318318100==--
