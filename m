@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============0750431500591248442=="
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 473D810E781
+ for <igt-dev@lists.freedesktop.org>; Fri,  1 Sep 2023 10:09:21 +0000 (UTC)
+Date: Fri, 1 Sep 2023 12:08:56 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230901100856.fzmnt42ridi2y67b@kamilkon-desk.igk.intel.com>
+References: <20230901074224.524217-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 12 Sep 2023 14:27:14 -0000
-Message-ID: <169452883477.31792.6515942280057599878@emeril.freedesktop.org>
-References: <20230912103011.88118-1-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230912103011.88118-1-mauro.chehab@linux.intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/me?=
- =?utf-8?q?son=2Ebuild=3A_add_gem=5Fstress_to_test-list=2Etxt?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230901074224.524217-1-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/meson.build: only generate
+ testlists on native builds
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,139 +19,148 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Ilja Friedel <ihf@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0750431500591248442==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Mauro,
+On 2023-09-01 at 09:42:24 +0200, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> cross-compiling will produce binaries that don't run at the
+> build machine. On such cases, we cannot produce testlist files.
+> 
+> Detect it, to avoid IGT builds to fail on cross builds.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-== Series Details ==
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Series: tests/meson.build: add gem_stress to test-list.txt
-URL   : https://patchwork.freedesktop.org/series/123591/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7480_BAT -> XEIGTPW_9773_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_9773_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:
-    - bat-adlp-7:         [FAIL][1] ([Intel XE#480]) -> [PASS][2] +1 other test pass
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7480/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9773/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
-
-
-Build changes
--------------
-
-  * IGT: IGT_7480 -> IGTPW_9773
-  * Linux: xe-365-0533b5d42b2f8ec916646c10715ac45215e87689 -> xe-367-b4ddac861881e66a4af06531a7a72345c086bac1
-
-  IGTPW_9773: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9773/index.html
-  IGT_7480: a8d38db9ac258d7fd71b2cf7607e259a864f95be @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-365-0533b5d42b2f8ec916646c10715ac45215e87689: 0533b5d42b2f8ec916646c10715ac45215e87689
-  xe-367-b4ddac861881e66a4af06531a7a72345c086bac1: b4ddac861881e66a4af06531a7a72345c086bac1
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9773/index.html
-
---===============0750431500591248442==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/meson.build: add gem_stress to test-list.txt</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123591/">https://patchwork.freedesktop.org/series/123591/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9773/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9773/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7480_BAT -&gt; XEIGTPW_9773_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_9773_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7480/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9773/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7480 -&gt; IGTPW_9773</li>
-<li>Linux: xe-365-0533b5d42b2f8ec916646c10715ac45215e87689 -&gt; xe-367-b4ddac861881e66a4af06531a7a72345c086bac1</li>
-</ul>
-<p>IGTPW_9773: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9773/index.html<br />
-  IGT_7480: a8d38db9ac258d7fd71b2cf7607e259a864f95be @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-365-0533b5d42b2f8ec916646c10715ac45215e87689: 0533b5d42b2f8ec916646c10715ac45215e87689<br />
-  xe-367-b4ddac861881e66a4af06531a7a72345c086bac1: b4ddac861881e66a4af06531a7a72345c086bac1</p>
-
-</body>
-</html>
-
---===============0750431500591248442==--
+> ---
+>  tests/meson.build | 72 +++++++++++++++++++++++++++--------------------
+>  1 file changed, 42 insertions(+), 30 deletions(-)
+> 
+> diff --git a/tests/meson.build b/tests/meson.build
+> index aa27fd9aff7c..aa8e3434ce0e 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -382,11 +382,13 @@ foreach prog : test_progs
+>  	test_executables += testexe
+>  	test_list += prog
+>  	name = prog.split('/').get(-1)
+> -	testlist_files += custom_target(name + '.testlist',
+> -		     build_by_default : true,
+> -		     command : [testexe, '--show-testlist'],
+> -		     capture : true,
+> -		     output : name + '.testlist')
+> +	if not meson.is_cross_build()
+> +		testlist_files += custom_target(name + '.testlist',
+> +			    build_by_default : true,
+> +			    command : [testexe, '--show-testlist'],
+> +			    capture : true,
+> +			    output : name + '.testlist')
+> +	endif
+>  endforeach
+>  
+>  intel_progs = intel_i915_xe_progs
+> @@ -406,11 +408,13 @@ foreach prog : intel_progs
+>  	test_executables += testexe
+>  	test_list += prog
+>  	name = prog.split('/').get(-1)
+> -	testlist_files += custom_target(name + '.testlist',
+> -		     build_by_default : true,
+> -		     command : [testexe, '--show-testlist'],
+> -		     capture : true,
+> -		     output : name + '.testlist')
+> +	if not meson.is_cross_build()
+> +		testlist_files += custom_target(name + '.testlist',
+> +			    build_by_default : true,
+> +			    command : [testexe, '--show-testlist'],
+> +			    capture : true,
+> +			    output : name + '.testlist')
+> +	endif
+>  endforeach
+>  
+>  foreach prog : msm_progs
+> @@ -433,11 +437,13 @@ if chamelium.found()
+>  		test_list += prog
+>  		test_executables += testexe
+>  		name = prog.split('/').get(-1)
+> -		testlist_files += custom_target(name + '.testlist',
+> -			     build_by_default : true,
+> -			     command : [testexe, '--show-testlist'],
+> -			     capture : true,
+> -			     output : name + '.testlist')
+> +		if not meson.is_cross_build()
+> +			testlist_files += custom_target(name + '.testlist',
+> +				    build_by_default : true,
+> +				    command : [testexe, '--show-testlist'],
+> +				    capture : true,
+> +				    output : name + '.testlist')
+> +		endif
+>  	endforeach
+>  	test_deps += chamelium
+>  endif
+> @@ -451,11 +457,13 @@ subdir('vc4')
+>  subdir('vmwgfx')
+>  
+>  gen_testlist = find_program('generate_testlist.sh')
+> -test_list_target = custom_target('testlist',
+> -	      output : 'test-list.txt',
+> -	      command : [ gen_testlist, '@OUTPUT@', test_list ],
+> -	      install : true,
+> -	      install_dir : libexecdir)
+> +if not meson.is_cross_build()
+> +	test_list_target = custom_target('testlist',
+> +		    output : 'test-list.txt',
+> +		    command : [ gen_testlist, '@OUTPUT@', test_list ],
+> +		    install : true,
+> +		    install_dir : libexecdir)
+> +endif
+>  
+>  test_executables += executable('gem_concurrent_all', 'intel/gem_concurrent_all.c',
+>  	   dependencies : test_deps + [ libatomic ],
+> @@ -464,11 +472,13 @@ test_executables += executable('gem_concurrent_all', 'intel/gem_concurrent_all.c
+>  	   install : true)
+>  test_list += 'gem_concurrent_all'
+>  
+> -test_list_full_target = custom_target('testlist-full',
+> -	      output : 'test-list-full.txt',
+> -	      command : [ gen_testlist, '@OUTPUT@', test_list ],
+> -	      install : true,
+> -	      install_dir : libexecdir)
+> +if not meson.is_cross_build()
+> +	test_list_full_target = custom_target('testlist-full',
+> +		    output : 'test-list-full.txt',
+> +		    command : [ gen_testlist, '@OUTPUT@', test_list ],
+> +		    install : true,
+> +		    install_dir : libexecdir)
+> +endif
+>  
+>  test_script = find_program('igt_command_line.sh')
+>  foreach prog : test_list
+> @@ -480,11 +490,13 @@ testexe = executable('gem_stress', 'intel/gem_stress.c',
+>  	   install_dir : libexecdir,
+>  	   install_rpath : libexecdir_rpathdir,
+>  	   dependencies : igt_deps)
+> -testlist_files += custom_target('gem_stress.testlist',
+> -                build_by_default : true,
+> -                command : [testexe, '--show-testlist'],
+> -                capture : true,
+> -                output : 'gem_stress.testlist')
+> +if not meson.is_cross_build()
+> +	testlist_files += custom_target('gem_stress.testlist',
+> +			build_by_default : true,
+> +			command : [testexe, '--show-testlist'],
+> +			capture : true,
+> +			output : 'gem_stress.testlist')
+> +endif
+>  
+>  image_files = [
+>    '1080p-left.png',
+> -- 
+> 2.41.0
+> 
 
