@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AE2A210E405
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Sep 2023 07:59:48 +0000 (UTC)
-Message-ID: <12e5bc07-9963-27f6-1843-6455095490cf@intel.com>
-Date: Wed, 6 Sep 2023 13:29:42 +0530
+Content-Type: multipart/alternative;
+ boundary="===============7132008368366294663=="
 MIME-Version: 1.0
-Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230905125356.1659246-1-bhanuprakash.modem@intel.com>
- <20230905125356.1659246-4-bhanuprakash.modem@intel.com>
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20230905125356.1659246-4-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [i-g-t V2 3/7] tests/intel/pm: Rename i915_pm_dc to
- kms_pm_dc
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Sundaresan, Sujaritha" <sujaritha.sundaresan@intel.com>
+Date: Fri, 01 Sep 2023 06:19:16 -0000
+Message-ID: <169354915680.9813.668839553531077995@emeril.freedesktop.org>
+References: <20230901052314.280380-1-sujaritha.sundaresan@intel.com>
+In-Reply-To: <20230901052314.280380-1-sujaritha.sundaresan@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Add_mult?=
+ =?utf-8?q?i-gt_support_for_rc6=5Fresidency_testing?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,80 +17,127 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Bhanu,
+--===============7132008368366294663==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 05-Sep-23 6:23 PM, Bhanuprakash Modem wrote:
-> As i915_pm_dc is a display specific test, rename it with
-> the "kms_" prefix, i.e kms_pm_dc.
-> 
-> V2: - Rebase
-> 
-> Cc: Swati Sharma <swati2.sharma@intel.com>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->   tests/intel/{i915_pm_dc.c => kms_pm_dc.c} | 22 ++--------------------
->   tests/meson.build                         |  2 +-
->   2 files changed, 3 insertions(+), 21 deletions(-)
->   rename tests/intel/{i915_pm_dc.c => kms_pm_dc.c} (94%)
-> 
-> diff --git a/tests/intel/i915_pm_dc.c b/tests/intel/kms_pm_dc.c
-> similarity index 94%
-> rename from tests/intel/i915_pm_dc.c
-> rename to tests/intel/kms_pm_dc.c
-> index 13ae31583..b5b38c976 100644
-> --- a/tests/intel/i915_pm_dc.c
-> +++ b/tests/intel/kms_pm_dc.c
-> @@ -1,24 +1,6 @@
-> +// SPDX-License-Identifier: MIT
->   /*
-> - * Copyright © 2018 Intel Corporation
-> - *
-> - * Permission is hereby granted, free of charge, to any person obtaining a
-> - * copy of this software and associated documentation files (the "Software"),
-> - * to deal in the Software without restriction, including without limitation
-> - * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> - * and/or sell copies of the Software, and to permit persons to whom the
-> - * Software is furnished to do so, subject to the following conditions:
-> - *
-> - * The above copyright notice and this permission notice (including the next
-> - * paragraph) shall be included in all copies or substantial portions of the
-> - * Software.
-> - *
-> - * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> - * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> - * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-> - * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-> - * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-> - * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-> - * IN THE SOFTWARE.
-> + * Copyright © 2023 Intel Corporation
->    *
->    */
+== Series Details ==
 
-Same comment applies here, don't change copyright.
+Series: Add multi-gt support for rc6_residency testing
+URL   : https://patchwork.freedesktop.org/series/123143/
+State : success
 
->   
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 442df7d84..ea8b60282 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -224,7 +224,6 @@ intel_i915_progs = [
->   	'i915_pm_freq_mult',
->   	'i915_pm_lpsp',
->   	'i915_pm_rpm',
-> -	'i915_pm_dc',
->   	'i915_pm_rc6_residency',
->   	'i915_pm_rps',
->   	'i915_pm_sseu',
-> @@ -262,6 +261,7 @@ intel_kms_progs = [
->   	'kms_mmap_write_crc',
->   	'kms_pipe_b_c_ivb',
->   	'kms_pm_backlight',
-> +	'kms_pm_dc',
->   	'kms_psr',
->   	'kms_psr2_sf',
->   	'kms_psr2_su',
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7462_BAT -> XEIGTPW_9702_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9702_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
+    - bat-adlp-7:         [FAIL][1] ([Intel XE#480]) -> [PASS][2] +1 similar issue
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7462/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9702/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+
+  
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7462 -> IGTPW_9702
+
+  IGTPW_9702: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9702/index.html
+  IGT_7462: 6269a2cccba725641814f8cbc53f2661bc5b04cf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-351-bca3262d221e1402c03a89bb4ba520d6aa610505: bca3262d221e1402c03a89bb4ba520d6aa610505
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9702/index.html
+
+--===============7132008368366294663==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add multi-gt support for rc6_residency testing</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123143/">https://patchwork.freedesktop.org/series/123143/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9702/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9702/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7462_BAT -&gt; XEIGTPW_9702_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9702_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7462/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9702/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7462 -&gt; IGTPW_9702</li>
+</ul>
+<p>IGTPW_9702: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9702/index.html<br />
+  IGT_7462: 6269a2cccba725641814f8cbc53f2661bc5b04cf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-351-bca3262d221e1402c03a89bb4ba520d6aa610505: bca3262d221e1402c03a89bb4ba520d6aa610505</p>
+
+</body>
+</html>
+
+--===============7132008368366294663==--
