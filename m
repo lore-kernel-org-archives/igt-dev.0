@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9632C10E72B
- for <igt-dev@lists.freedesktop.org>; Fri,  1 Sep 2023 07:20:23 +0000 (UTC)
-Date: Fri, 1 Sep 2023 09:20:19 +0200
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 078B510E73D
+ for <igt-dev@lists.freedesktop.org>; Fri,  1 Sep 2023 07:42:37 +0000 (UTC)
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Message-ID: <20230901092019.44f35b7e@maurocar-mobl2>
-In-Reply-To: <20230901051808.1369104-1-bhanuprakash.modem@intel.com>
-References: <20230901051808.1369104-1-bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri,  1 Sep 2023 09:42:24 +0200
+Message-ID: <20230901074224.524217-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [i-g-t] scripts/test_list: Allow unrecognized
- field:values in testplan
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/meson.build: only generate testlists
+ on native builds
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,71 +17,140 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: Ilja Friedel <ihf@google.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri,  1 Sep 2023 10:48:08 +0530
-Bhanuprakash Modem <bhanuprakash.modem@intel.com> wrote:
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-> As non-Intel vendors also contributing to KMS tests, allow
-> them to re-use the existing testplan documentation along with
-> their own definitions of field:values pair in test config json.
-> 
-> Instead of aborting, just throw a warning about this unrecognized
-> field:values.
-> 
-> Example:
-> tests/kms_color.c:994: Warning: unrecognized field in tests/kms_test_config.json  ==> Foo: bla
+cross-compiling will produce binaries that don't run at the
+build machine. On such cases, we cannot produce testlist files.
 
-IMO, there's no need to to that. I mean, if someone wants to add
-a new field, he can just patch tests/kms_test_config.json, adding the
-new "Foo" field at kms_test_config.json:
+Detect it, to avoid IGT builds to fail on cross builds.
 
-diff --git a/tests/kms_test_config.json b/tests/kms_test_config.json
-index 9219ae4ebd9d..1dfca84dd73c 100644
---- a/tests/kms_test_config.json
-+++ b/tests/kms_test_config.json
-@@ -35,6 +35,7 @@
-                 "description": "Defines the test category. Usually used at subtest level."
-             }
-         },
-+        "Foo" : { },
-         "Description" : {
-             "_properties_": {
-                 "description": "Provides a description for the test/subtest."
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ tests/meson.build | 72 +++++++++++++++++++++++++++--------------------
+ 1 file changed, 42 insertions(+), 30 deletions(-)
 
-NOTE: It would probably make sense to add a description to it, to make
-clear what such "Foo" field means, in a similar way to the descriptions
-added to the other fields.
-
-As the fields are optional, this won't require any changes at the
-existing tests, and will provide an extra benefit that the meaning of
-the "Foo" field can be documented via _properties_/description field.
-
-Regards,
-Mauro
-
-> 
-> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->  scripts/test_list.py | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/scripts/test_list.py b/scripts/test_list.py
-> index 0bcc96869..517c4d067 100755
-> --- a/scripts/test_list.py
-> +++ b/scripts/test_list.py
-> @@ -1219,8 +1219,8 @@ class TestList:
->                      continue
->  
->                  file_line.rstrip(r"\n")
-> -                sys.exit(f"{fname}:{file_ln + 1}: Error: unrecognized line. Need to add field at %s?\n\t==> %s" %
-> -                         (self.config_fname, file_line))
-> +                print(f"{'/'.join(fname.split('/')[-2:])}:{file_ln + 1}: Warning: unrecognized field in %s ==> %s" %
-> +                        ('/'.join(self.config_fname.split('/')[-2:]), file_line))
->  
->      def show_subtests(self, sort_field):
->  
+diff --git a/tests/meson.build b/tests/meson.build
+index aa27fd9aff7c..aa8e3434ce0e 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -382,11 +382,13 @@ foreach prog : test_progs
+ 	test_executables += testexe
+ 	test_list += prog
+ 	name = prog.split('/').get(-1)
+-	testlist_files += custom_target(name + '.testlist',
+-		     build_by_default : true,
+-		     command : [testexe, '--show-testlist'],
+-		     capture : true,
+-		     output : name + '.testlist')
++	if not meson.is_cross_build()
++		testlist_files += custom_target(name + '.testlist',
++			    build_by_default : true,
++			    command : [testexe, '--show-testlist'],
++			    capture : true,
++			    output : name + '.testlist')
++	endif
+ endforeach
+ 
+ intel_progs = intel_i915_xe_progs
+@@ -406,11 +408,13 @@ foreach prog : intel_progs
+ 	test_executables += testexe
+ 	test_list += prog
+ 	name = prog.split('/').get(-1)
+-	testlist_files += custom_target(name + '.testlist',
+-		     build_by_default : true,
+-		     command : [testexe, '--show-testlist'],
+-		     capture : true,
+-		     output : name + '.testlist')
++	if not meson.is_cross_build()
++		testlist_files += custom_target(name + '.testlist',
++			    build_by_default : true,
++			    command : [testexe, '--show-testlist'],
++			    capture : true,
++			    output : name + '.testlist')
++	endif
+ endforeach
+ 
+ foreach prog : msm_progs
+@@ -433,11 +437,13 @@ if chamelium.found()
+ 		test_list += prog
+ 		test_executables += testexe
+ 		name = prog.split('/').get(-1)
+-		testlist_files += custom_target(name + '.testlist',
+-			     build_by_default : true,
+-			     command : [testexe, '--show-testlist'],
+-			     capture : true,
+-			     output : name + '.testlist')
++		if not meson.is_cross_build()
++			testlist_files += custom_target(name + '.testlist',
++				    build_by_default : true,
++				    command : [testexe, '--show-testlist'],
++				    capture : true,
++				    output : name + '.testlist')
++		endif
+ 	endforeach
+ 	test_deps += chamelium
+ endif
+@@ -451,11 +457,13 @@ subdir('vc4')
+ subdir('vmwgfx')
+ 
+ gen_testlist = find_program('generate_testlist.sh')
+-test_list_target = custom_target('testlist',
+-	      output : 'test-list.txt',
+-	      command : [ gen_testlist, '@OUTPUT@', test_list ],
+-	      install : true,
+-	      install_dir : libexecdir)
++if not meson.is_cross_build()
++	test_list_target = custom_target('testlist',
++		    output : 'test-list.txt',
++		    command : [ gen_testlist, '@OUTPUT@', test_list ],
++		    install : true,
++		    install_dir : libexecdir)
++endif
+ 
+ test_executables += executable('gem_concurrent_all', 'intel/gem_concurrent_all.c',
+ 	   dependencies : test_deps + [ libatomic ],
+@@ -464,11 +472,13 @@ test_executables += executable('gem_concurrent_all', 'intel/gem_concurrent_all.c
+ 	   install : true)
+ test_list += 'gem_concurrent_all'
+ 
+-test_list_full_target = custom_target('testlist-full',
+-	      output : 'test-list-full.txt',
+-	      command : [ gen_testlist, '@OUTPUT@', test_list ],
+-	      install : true,
+-	      install_dir : libexecdir)
++if not meson.is_cross_build()
++	test_list_full_target = custom_target('testlist-full',
++		    output : 'test-list-full.txt',
++		    command : [ gen_testlist, '@OUTPUT@', test_list ],
++		    install : true,
++		    install_dir : libexecdir)
++endif
+ 
+ test_script = find_program('igt_command_line.sh')
+ foreach prog : test_list
+@@ -480,11 +490,13 @@ testexe = executable('gem_stress', 'intel/gem_stress.c',
+ 	   install_dir : libexecdir,
+ 	   install_rpath : libexecdir_rpathdir,
+ 	   dependencies : igt_deps)
+-testlist_files += custom_target('gem_stress.testlist',
+-                build_by_default : true,
+-                command : [testexe, '--show-testlist'],
+-                capture : true,
+-                output : 'gem_stress.testlist')
++if not meson.is_cross_build()
++	testlist_files += custom_target('gem_stress.testlist',
++			build_by_default : true,
++			command : [testexe, '--show-testlist'],
++			capture : true,
++			output : 'gem_stress.testlist')
++endif
+ 
+ image_files = [
+   '1080p-left.png',
+-- 
+2.41.0
