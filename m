@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A39D910E50D
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Sep 2023 13:31:26 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Tue,  5 Sep 2023 18:53:16 +0530
-Message-Id: <20230905132316.1666056-3-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230905132316.1666056-1-bhanuprakash.modem@intel.com>
-References: <20230905132316.1666056-1-bhanuprakash.modem@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 260BC10E7BB
+ for <igt-dev@lists.freedesktop.org>; Fri,  1 Sep 2023 12:39:55 +0000 (UTC)
+Message-ID: <04716618-79f7-3a07-93bd-bb234bf85599@intel.com>
+Date: Fri, 1 Sep 2023 18:09:30 +0530
+Content-Language: en-US
+References: <20230901051808.1369104-1-bhanuprakash.modem@intel.com>
+ <20230901092019.44f35b7e@maurocar-mobl2>
+ <4c6de075-f0b3-fae0-cf6c-48f177f3ced3@intel.com>
+ <20230901120845.71ddfe41@maurocar-mobl2>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20230901120845.71ddfe41@maurocar-mobl2>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 2/2] docs/reference/igt: Update IGT reference docs
+Subject: Re: [igt-dev] [i-g-t] scripts/test_list: Allow unrecognized
+ field:values in testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,185 +25,147 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Update IGT reference documentation for the renamed i915 tests.
+Hi Mauro,
 
-Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- .../igt-gpu-tools/igt_test_programs.xml       | 102 ++++++++++--------
- docs/reference/igt-gpu-tools/meson.build      |  14 +--
- 2 files changed, 68 insertions(+), 48 deletions(-)
+On Fri-01-09-2023 03:38 pm, Mauro Carvalho Chehab wrote:
+> On Fri, 1 Sep 2023 14:32:09 +0530
+> "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com> wrote:
+> 
+>> Hi Mauro,
+>>
+>> On Fri-01-09-2023 12:50 pm, Mauro Carvalho Chehab wrote:
+>>> On Fri,  1 Sep 2023 10:48:08 +0530
+>>> Bhanuprakash Modem <bhanuprakash.modem@intel.com> wrote:
+>>>    
+>>>> As non-Intel vendors also contributing to KMS tests, allow
+>>>> them to re-use the existing testplan documentation along with
+>>>> their own definitions of field:values pair in test config json.
+>>>>
+>>>> Instead of aborting, just throw a warning about this unrecognized
+>>>> field:values.
+>>>>
+>>>> Example:
+>>>> tests/kms_color.c:994: Warning: unrecognized field in tests/kms_test_config.json  ==> Foo: bla
+>>>
+>>> IMO, there's no need to to that. I mean, if someone wants to add
+>>> a new field, he can just patch tests/kms_test_config.json, adding the
+>>> new "Foo" field at kms_test_config.json:
+>>
+>> Non-Intel people may not use kms_test_config.json since it is designed
+>> for Intel supported (tests/kms_*.c & tests/intel/kms_*.c) tests
+>> (Probably we may need to rename it to intel_kms_test_config.json).
+> 
+> The infra is designed to be generic, and not Intel driver specific.
+> I'm even sending patches to Kernel upstream to also use it:
+> 
+> 	https://lore.kernel.org/linux-doc/cover.1693550658.git.mchehab@kernel.org/T/#t
+> 	
+>> So, non-Intel vendors are also allowed to include few kms tests
+>> (tests/kms_*.c) in their own testplan. Also, we can't restrict them to
+>> use the same testplan as kms_test_config.json.
+> 
+> Hmm... so you're thinking about having a tests/kms_foo.c file that will
+> be included on both:
+> 
+> 	vendor_a/kms_test_config.json
+> 
+> and:
+> 
+> 	vendor_b/kms_test_config.json
+> 
+> Yes, that's possible. We actually have one or two cases at i915
+> and xe for some tests that aren't driver-specific. As the i915
+> JSON config file has an extra field ("Feature"), I added it to
+> Xe driver as well. This is used currently only for those
+> generic tests that are used on both.
+> 
+>> Example:
+>> Suppose, some non-Intel vendor (xyz) created a xyz_kms_test_config.json
+>> with the "Foo" field defined in it, and updated the documentation of
+>> tests/kms_*.c accordingly. Since Intel's kms_test_config.json is also
+>> using tests/kms_*.c and not aware of "Foo" can lead the failure.
+> 
+> Currently, the developer who created/updated vendor_a/kms_test_config.json
+> and tests/kms_foo.c will have a compilation error pointing to it. Such
+> developer will then know that the new field also needs to be at
+> vendor_b/kms_test_config.json and can submit a patch against it to
+> solve the error.
 
-diff --git a/docs/reference/igt-gpu-tools/igt_test_programs.xml b/docs/reference/igt-gpu-tools/igt_test_programs.xml
-index 92bc33ba8..c0f11a883 100644
---- a/docs/reference/igt-gpu-tools/igt_test_programs.xml
-+++ b/docs/reference/igt-gpu-tools/igt_test_programs.xml
-@@ -120,15 +120,6 @@
-     <xi:include href="igt_test_programs_core_description.xml"/>
-   </refentry>
- 
--  <refentry id="igt-debugfs-tests">
--    <refnamediv>
--      <refname>Debugfs Tests</refname>
--      <refpurpose>Tests for debugfs behaviour</refpurpose>
--    </refnamediv>
--    <xi:include href="igt_test_programs_debugfs_programs.xml"/>
--    <xi:include href="igt_test_programs_debugfs_description.xml"/>
--  </refentry>
--
-   <refentry id="igt-drm-tests">
-     <refnamediv>
-       <refname>DRM Tests</refname>
-@@ -138,31 +129,76 @@
-     <xi:include href="igt_test_programs_drm_description.xml"/>
-   </refentry>
- 
--  <refentry id="igt-gem-tests">
-+  <refentry id="igt-i915-debugfs-tests">
-+    <refnamediv>
-+      <refname>i915 Debugfs Tests</refname>
-+      <refpurpose>Tests for i915 debugfs behaviour</refpurpose>
-+    </refnamediv>
-+    <xi:include href="igt_test_programs_i915_debugfs_programs.xml"/>
-+    <xi:include href="igt_test_programs_i915_debugfs_description.xml"/>
-+  </refentry>
-+
-+  <refentry id="igt-i915-gem-tests">
-+    <refnamediv>
-+      <refname>i915 GEM Tests</refname>
-+      <refpurpose>Tests for the i915 graphics execution manager</refpurpose>
-+    </refnamediv>
-+    <xi:include href="igt_test_programs_i915_gem_programs.xml"/>
-+    <xi:include href="igt_test_programs_i915_gem_description.xml"/>
-+  </refentry>
-+
-+  <refentry id="igt-i915-gen3-tests">
-+    <refnamediv>
-+      <refname>i915 Gen 3 Tests</refname>
-+      <refpurpose>Tests specific to Intel gen 3</refpurpose>
-+    </refnamediv>
-+    <xi:include href="igt_test_programs_i915_gen3_programs.xml"/>
-+    <xi:include href="igt_test_programs_i915_gen3_description.xml"/>
-+  </refentry>
-+
-+  <refentry id="igt-i915-gen7-tests">
-     <refnamediv>
--      <refname>GEM Tests</refname>
--      <refpurpose>Tests for the graphics execution manager</refpurpose>
-+      <refname>i915 Gen 7 Tests</refname>
-+      <refpurpose>Tests specific to Intel gen 7</refpurpose>
-     </refnamediv>
--    <xi:include href="igt_test_programs_gem_programs.xml"/>
--    <xi:include href="igt_test_programs_gem_description.xml"/>
-+    <xi:include href="igt_test_programs_i915_gen7_programs.xml"/>
-+    <xi:include href="igt_test_programs_i915_gen7_description.xml"/>
-   </refentry>
- 
--  <refentry id="igt-gen3-tests">
-+  <refentry id="igt-i915-gen9-tests">
-     <refnamediv>
--      <refname>Gen 3 Tests</refname>
--      <refpurpose>Tests specific to gen 3</refpurpose>
-+      <refname>i915 Gen 9 Tests</refname>
-+      <refpurpose>Tests specific to Intel gen 9</refpurpose>
-     </refnamediv>
--    <xi:include href="igt_test_programs_gen3_programs.xml"/>
--    <xi:include href="igt_test_programs_gen3_description.xml"/>
-+    <xi:include href="igt_test_programs_i915_gen9_programs.xml"/>
-+    <xi:include href="igt_test_programs_i915_gen9_description.xml"/>
-   </refentry>
- 
--  <refentry id="igt-gen7-tests">
-+  <refentry id="igt-i915-perf-tests">
-     <refnamediv>
--      <refname>Gen 7 Tests</refname>
--      <refpurpose>Tests specific to gen 7</refpurpose>
-+      <refname>i915 Perf Tests</refname>
-+      <refpurpose>Tests for the i915 performance metrics</refpurpose>
-     </refnamediv>
--    <xi:include href="igt_test_programs_gen7_programs.xml"/>
--    <xi:include href="igt_test_programs_gen7_description.xml"/>
-+    <xi:include href="igt_test_programs_i915_perf_programs.xml"/>
-+    <xi:include href="igt_test_programs_i915_perf_description.xml"/>
-+  </refentry>
-+
-+  <refentry id="igt-i915-pm-tests">
-+    <refnamediv>
-+      <refname>i915 PM Tests</refname>
-+      <refpurpose>Tests for i915 power management features</refpurpose>
-+    </refnamediv>
-+    <xi:include href="igt_test_programs_i915_pm_programs.xml"/>
-+    <xi:include href="igt_test_programs_i915_pm_description.xml"/>
-+  </refentry>
-+
-+  <refentry id="igt-i915-prime-tests">
-+    <refnamediv>
-+      <refname>i915 Prime Tests</refname>
-+      <refpurpose>Tests for i915 buffer sharing</refpurpose>
-+    </refnamediv>
-+    <xi:include href="igt_test_programs_i915_prime_programs.xml"/>
-+    <xi:include href="igt_test_programs_i915_prime_description.xml"/>
-   </refentry>
- 
-   <refentry id="igt-i915-tests">
-@@ -192,24 +228,6 @@
-     <xi:include href="igt_test_programs_meta_description.xml"/>
-   </refentry>
- 
--  <refentry id="igt-perf-tests">
--    <refnamediv>
--      <refname>Perf Tests</refname>
--      <refpurpose>Tests for the performance metrics</refpurpose>
--    </refnamediv>
--    <xi:include href="igt_test_programs_perf_programs.xml"/>
--    <xi:include href="igt_test_programs_perf_description.xml"/>
--  </refentry>
--
--  <refentry id="igt-pm-tests">
--    <refnamediv>
--      <refname>PM Tests</refname>
--      <refpurpose>Tests for power management features</refpurpose>
--    </refnamediv>
--    <xi:include href="igt_test_programs_pm_programs.xml"/>
--    <xi:include href="igt_test_programs_pm_description.xml"/>
--  </refentry>
--
-   <refentry id="igt-prime-tests">
-     <refnamediv>
-       <refname>Prime Tests</refname>
-diff --git a/docs/reference/igt-gpu-tools/meson.build b/docs/reference/igt-gpu-tools/meson.build
-index 6b832ad27..802342db4 100644
---- a/docs/reference/igt-gpu-tools/meson.build
-+++ b/docs/reference/igt-gpu-tools/meson.build
-@@ -26,16 +26,18 @@ ignore_headers = [
- test_groups = [
- 	'amdgpu',
- 	'core',
--	'debugfs',
- 	'drm',
--	'gem',
--	'gen3',
--	'gen7',
-+	'i915_debugfs',
-+	'i915_gem',
-+	'i915_gen3',
-+	'i915_gen7',
-+	'i915_gen9',
-+	'i915_perf',
-+	'i915_pm',
-+	'i915_prime',
- 	'i915',
- 	'kms',
- 	'meta',
--	'perf',
--	'pm',
- 	'prime',
- 	'sw_sync',
- 	'testdisplay',
--- 
-2.40.0
+Agreed, but the vendor_b needs to maintain something (field:values) that 
+he don't even know/care about.
 
+> 
+> If we apply your patch, it means that it will generate a warning and
+> someone from vendor_b will need later to identify what happened and
+> copy the (possible) definition from vendor_a/kms_test_config.json to
+> suppress the warning.
+
+Yeah, There is no way to suppress the warning except maintaining the 
+definitions in both places.
+
+> 
+> It works, but it means an extra step. So, while I would prefer to not
+> merge this change, I won't oppose on converting it into a warning.
+> If you decide to go ahead and merge it, you can add my acked-by.
+
+We can hold this for sometime, till we get the better solution.
+
+- Bhanu
+
+> 
+>> The problem statement is to have different testplans with their own set
+>> of field:values and share the documentation.
+>>
+>> - Bhanu
+>>
+>>>
+>>> diff --git a/tests/kms_test_config.json b/tests/kms_test_config.json
+>>> index 9219ae4ebd9d..1dfca84dd73c 100644
+>>> --- a/tests/kms_test_config.json
+>>> +++ b/tests/kms_test_config.json
+>>> @@ -35,6 +35,7 @@
+>>>                    "description": "Defines the test category. Usually used at subtest level."
+>>>                }
+>>>            },
+>>> +        "Foo" : { },
+>>>            "Description" : {
+>>>                "_properties_": {
+>>>                    "description": "Provides a description for the test/subtest."
+>>>
+>>> NOTE: It would probably make sense to add a description to it, to make
+>>> clear what such "Foo" field means, in a similar way to the descriptions
+>>> added to the other fields.
+>>>
+>>> As the fields are optional, this won't require any changes at the
+>>> existing tests, and will provide an extra benefit that the meaning of
+>>> the "Foo" field can be documented via _properties_/description field >
+>>> Regards,
+>>> Mauro
+>>>    
+>>>>
+>>>> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+>>>> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>>>> ---
+>>>>    scripts/test_list.py | 4 ++--
+>>>>    1 file changed, 2 insertions(+), 2 deletions(-)
+>>>>
+>>>> diff --git a/scripts/test_list.py b/scripts/test_list.py
+>>>> index 0bcc96869..517c4d067 100755
+>>>> --- a/scripts/test_list.py
+>>>> +++ b/scripts/test_list.py
+>>>> @@ -1219,8 +1219,8 @@ class TestList:
+>>>>                        continue
+>>>>    
+>>>>                    file_line.rstrip(r"\n")
+>>>> -                sys.exit(f"{fname}:{file_ln + 1}: Error: unrecognized line. Need to add field at %s?\n\t==> %s" %
+>>>> -                         (self.config_fname, file_line))
+>>>> +                print(f"{'/'.join(fname.split('/')[-2:])}:{file_ln + 1}: Warning: unrecognized field in %s ==> %s" %
+>>>> +                        ('/'.join(self.config_fname.split('/')[-2:]), file_line))
+>>>>    
+>>>>        def show_subtests(self, sort_field):
+>>>>      
 
