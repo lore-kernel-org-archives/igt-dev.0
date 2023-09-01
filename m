@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E153C10E7B4
- for <igt-dev@lists.freedesktop.org>; Fri,  1 Sep 2023 12:11:42 +0000 (UTC)
-From: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 21D1510E7B6
+ for <igt-dev@lists.freedesktop.org>; Fri,  1 Sep 2023 12:16:17 +0000 (UTC)
+Date: Fri, 1 Sep 2023 14:16:12 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  1 Sep 2023 17:51:56 +0530
-Message-Id: <20230901122156.361769-2-sujaritha.sundaresan@intel.com>
-In-Reply-To: <20230901122156.361769-1-sujaritha.sundaresan@intel.com>
-References: <20230901122156.361769-1-sujaritha.sundaresan@intel.com>
+Message-ID: <20230901121612.3djxyghg67ogfk2h@kamilkon-desk.igk.intel.com>
+References: <20230831234654.18207-1-yu.bruce.chang@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v3 1/1] tests/i915: Add multi-gt support for rc6_idle
- and rc6_fence tests
+In-Reply-To: <20230831234654.18207-1-yu.bruce.chang@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe add invalid va access tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,138 +20,324 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Oak Zeng <oak.zeng@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Adding multi-gt support for rc6_residency subtests rc6_idle and
-rc6_fence.
+Hi Bruce,
 
-v2: Fix review comments (Riana)
+On 2023-08-31 at 23:46:54 +0000, Chang, Bruce wrote:
+> add the following invalid va access test cases:
+> 
+> 	gpu fault	scratch page	command timeout
+> 1) 	no		no		yes
+> 2) 	no		yes		no
+> 3) 	yes		no		yes
+> 4) 	yes		yes		no
+> 
+> TODO: with futher improvement of xe_wait_ufence, the test
+> can check more specific error code from it.
+> 
+> v2: async vm/bind, and re-bind valid address
+> v3: added xe_wait_ufence check
+> 
+> Signed-off-by: Bruce Chang <yu.bruce.chang@intel.com>
+> Cc: Oak Zeng <oak.zeng@intel.com>
+> Cc: Brian Welty <brian.welty@intel.com>
+> Cc: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> ---
+>  lib/xe/xe_ioctl.c             |  15 +++-
+>  lib/xe/xe_ioctl.h             |   3 +
+>  tests/meson.build             |   1 +
+>  tests/xe/xe_exec_invalid_va.c | 164 ++++++++++++++++++++++++++++++++++
 
-v3: Fix ctx destroy call (Riana)
+Why not placing this in xe_vm.c as a subtest? We have too much
+xe_exec tests. Or use other name like xe_vm_invalid.
 
-Signed-off-by: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
-Reviewed-by: Riana Tauro <riana.tauro@intel.com>
----
- tests/i915/i915_pm_rc6_residency.c | 32 +++++++++++++++++++-----------
- 1 file changed, 20 insertions(+), 12 deletions(-)
+>  4 files changed, 180 insertions(+), 3 deletions(-)
+>  create mode 100644 tests/xe/xe_exec_invalid_va.c
+> 
+> diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+> index 730dcfd16..022f0cf04 100644
+> --- a/lib/xe/xe_ioctl.c
+> +++ b/lib/xe/xe_ioctl.c
+> @@ -415,9 +415,9 @@ void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr)
+>  	syncobj_destroy(fd, sync.handle);
+>  }
+>  
+> -int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+> +int64_t _xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+>  		       struct drm_xe_engine_class_instance *eci,
+> -		       int64_t timeout)
+> +		       int64_t timeout, bool timeout_assert)
+------------------------------- ^
+Do not instroduce a bool parameter, rather make __function
+which will return errno in case of ioctl error, so later you may
+use it like:
+        ret = __xe_wait_ufence(..., &val);
+        igt_assert_f(!ret || ret == -ETIME, "error %d\n", ret);
 
-diff --git a/tests/i915/i915_pm_rc6_residency.c b/tests/i915/i915_pm_rc6_residency.c
-index b266680ac..36da4fa1d 100644
---- a/tests/i915/i915_pm_rc6_residency.c
-+++ b/tests/i915/i915_pm_rc6_residency.c
-@@ -376,7 +376,7 @@ static void kill_children(int sig)
- 	signal(sig, old);
- }
- 
--static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags)
-+static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags, unsigned int gt)
- {
- 	const int64_t duration_ns = SLEEP_DURATION * (int64_t)NSEC_PER_SEC;
- 	const int tolerance = 20; /* Some RC6 is better than none! */
-@@ -397,7 +397,7 @@ static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags)
- 	struct igt_power gpu;
- 	int fd;
- 
--	fd = open_pmu(i915, I915_PMU_RC6_RESIDENCY);
-+	fd = open_pmu(i915, __I915_PMU_RC6_RESIDENCY(gt));
- 	igt_drop_caches_set(i915, DROP_IDLE);
- 	igt_require(__pmu_wait_for_rc6(fd));
- 	igt_power_open(i915, &gpu, "gpu");
-@@ -471,12 +471,13 @@ static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags)
- 	}
- }
- 
--static void rc6_fence(int i915, const intel_ctx_t *ctx)
-+static void rc6_fence(int i915, unsigned int gt)
- {
- 	const int64_t duration_ns = SLEEP_DURATION * (int64_t)NSEC_PER_SEC;
- 	const int tolerance = 20; /* Some RC6 is better than none! */
- 	const unsigned int gen = intel_gen(intel_get_drm_devid(i915));
- 	const struct intel_execution_engine2 *e;
-+	const intel_ctx_t *ctx;
- 	struct power_sample sample[2];
- 	unsigned long slept;
- 	uint64_t rc6, ts[2], ahnd;
-@@ -485,7 +486,7 @@ static void rc6_fence(int i915, const intel_ctx_t *ctx)
- 
- 	igt_require_sw_sync();
- 
--	fd = open_pmu(i915, I915_PMU_RC6_RESIDENCY);
-+	fd = open_pmu(i915, __I915_PMU_RC6_RESIDENCY(gt));
- 	igt_drop_caches_set(i915, DROP_IDLE);
- 	igt_require(__pmu_wait_for_rc6(fd));
- 	igt_power_open(i915, &gpu, "gpu");
-@@ -509,6 +510,7 @@ static void rc6_fence(int i915, const intel_ctx_t *ctx)
- 	assert_within_epsilon(rc6, ts[1] - ts[0], 5);
- 
- 	/* Submit but delay execution, we should be idle and conserving power */
-+	ctx = intel_ctx_create_for_gt(i915, gt);
- 	ahnd = get_reloc_ahnd(i915, ctx->id);
- 	for_each_ctx_engine(i915, ctx, e) {
- 		igt_spin_t *spin;
-@@ -550,6 +552,7 @@ static void rc6_fence(int i915, const intel_ctx_t *ctx)
- 		gem_quiescent_gpu(i915);
- 	}
- 	put_ahnd(ahnd);
-+	intel_ctx_destroy(i915, ctx);
- 
- 	igt_power_close(&gpu);
- 	close(fd);
-@@ -558,12 +561,12 @@ static void rc6_fence(int i915, const intel_ctx_t *ctx)
- igt_main
- {
- 	int i915 = -1;
-+	unsigned int dir, gt;
- 	const intel_ctx_t *ctx;
- 
- 	/* Use drm_open_driver to verify device existence */
- 	igt_fixture {
- 		i915 = drm_open_driver(DRIVER_INTEL);
--		ctx = intel_ctx_create_all_physical(i915);
- 	}
- 
- 	igt_subtest_with_dynamic("rc6-idle") {
-@@ -572,19 +575,25 @@ igt_main
- 		igt_require_gem(i915);
- 		gem_quiescent_gpu(i915);
- 
--		for_each_ctx_engine(i915, ctx, e) {
--			if (e->instance == 0) {
--				igt_dynamic_f("%s", e->name)
--					rc6_idle(i915, ctx->id, e->flags);
-+		i915_for_each_gt(i915, dir, gt) {
-+			ctx = intel_ctx_create_for_gt(i915, gt);
-+			for_each_ctx_engine(i915, ctx, e) {
-+				if (e->instance == 0) {
-+					igt_dynamic_f("gt%u-%s", gt, e->name)
-+						rc6_idle(i915, ctx->id, e->flags, gt);
-+				}
- 			}
-+			intel_ctx_destroy(i915, ctx);
- 		}
- 	}
- 
--	igt_subtest("rc6-fence") {
-+	igt_subtest_with_dynamic("rc6-fence") {
- 		igt_require_gem(i915);
- 		gem_quiescent_gpu(i915);
- 
--		rc6_fence(i915, ctx);
-+		i915_for_each_gt(i915, dir, gt)
-+			igt_dynamic_f("gt%u", gt)
-+				rc6_fence(i915, gt);
- 	}
- 
- 	igt_subtest_group {
-@@ -626,7 +635,6 @@ igt_main
- 	}
- 
- 	igt_fixture {
--		intel_ctx_destroy(i915, ctx);
- 		drm_close_driver(i915);
- 	}
- }
--- 
-2.25.1
+
+int __xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+		       struct drm_xe_engine_class_instance *eci,
+		       int64_t timeout)
+		       int64_t timeout,
+               int64_t *retval)
+{
+        ...
+        ret = igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait);
+        if (!ret)
+                *retval = wait.timeout;
+
+        return ret;
+}
+
+uint64_t xe_wait_ufence(...)
+{
+        uint64_t val;
+
+        igt_assert_eq(__xe_wait_ufence(..., &val), 0);
+
+        return val;
+}
+
+Add description to each new/old library function you re/write.
+
+>  {
+>  	struct drm_xe_wait_user_fence wait = {
+>  		.addr = to_user_pointer(addr),
+> @@ -430,11 +430,20 @@ int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+>  		.instances = eci ? to_user_pointer(eci) : 0,
+>  	};
+>  
+> -	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait), 0);
+> +	if (igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait))
+> +		igt_assert (!timeout_assert && errno == ETIME);
+>  
+>  	return wait.timeout;
+>  }
+>  
+> +
+> +int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+> +		       struct drm_xe_engine_class_instance *eci,
+> +		       int64_t timeout)
+> +{
+> +	return _xe_wait_ufence(fd, addr, value, eci, timeout, true);
+> +}
+> +
+>  /**
+>   * xe_wait_ufence_abstime:
+>   * @fd: xe device fd
+> diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+> index 6c281b3bf..4bf7410a4 100644
+> --- a/lib/xe/xe_ioctl.h
+> +++ b/lib/xe/xe_ioctl.h
+> @@ -82,6 +82,9 @@ void xe_exec(int fd, struct drm_xe_exec *exec);
+>  void xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
+>  		  struct drm_xe_sync *sync, uint32_t num_syncs);
+>  void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr);
+> +int64_t _xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+> +		       struct drm_xe_engine_class_instance *eci,
+> +		       int64_t timeout, bool timeout_assert);
+>  int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+>  		       struct drm_xe_engine_class_instance *eci,
+>  		       int64_t timeout);
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 4d325bed1..8861b6c5b 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -276,6 +276,7 @@ xe_progs = [
+>  	'xe_exec_reset',
+>  	'xe_exec_store',
+>  	'xe_exec_threads',
+> +	'xe_exec_invalid_va',
+>  	'xe_exercise_blt',
+>  	'xe_gpgpu_fill',
+>  	'xe_guc_pc',
+> diff --git a/tests/xe/xe_exec_invalid_va.c b/tests/xe/xe_exec_invalid_va.c
+> new file mode 100644
+> index 000000000..468b90c8a
+> --- /dev/null
+> +++ b/tests/xe/xe_exec_invalid_va.c
+> @@ -0,0 +1,164 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2023 Intel Corporation
+> + */
+> +
+> +/**
+> + * TEST: invalid va tests
+> + * Category: Hardware building block
+> + * Sub-category: execbuf
+> + * Functionality: fault mode
+> + * Test category: functionality test
+> + * GPU requirements: GPU needs support for DRM_XE_VM_CREATE_FAULT_MODE
+> + */
+> +
+> +#include <fcntl.h>
+> +
+> +#include "igt.h"
+> +#include "lib/igt_syncobj.h"
+> +#include "lib/intel_reg.h"
+> +#include "xe_drm.h"
+> +
+> +#include "xe/xe_ioctl.h"
+> +#include "xe/xe_query.h"
+> +#include <string.h>
+----------- ^
+Move above after <fcntl.h>
+
+> +
+> +static void insert_store(uint32_t *bb, uint64_t va, uint64_t data)
+> +{
+> +	*bb++ = MI_STORE_DWORD_IMM_GEN4;
+> +	*bb++ = lower_32_bits(va);
+> +	*bb++ = upper_32_bits(va);
+> +	*bb++ = data;
+> +	*bb++ = MI_BATCH_BUFFER_END;
+> +}
+> +
+> +/**
+> + * SUBTEST: invalid-va
+> + * Description: Check driver handling of invalid va access
+> + * Run type: FULL
+> + *
+> + * SUBTEST: invalid-va-scratch
+> + * Description: Check driver handling of invalid va access with scratch page
+> + * Run type: FULL
+> + *
+> + * SUBTEST: invalid-va-fault
+> + * Description: Check driver handling of invalid va access with fault enabled
+> + * Run type: FULL
+> + *
+> + * SUBTEST: invalid-va-fault-scratch
+> + * Description: Check driver handling of invalid va access with fault + scratch page
+> + * Run type: FULL
+> + *
+> + * arg[1]: for vm create flags
+> + */
+> +static void test_exec(int fd, uint32_t flags)
+> +{
+> +	const uint64_t inv_addr = 0x20000000;
+> +	const uint64_t addr = 0x1a0000;
+> +#define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
+------------------------------^
+imho better in uppercase
+
+> +#define ONE_SEC			MS_TO_NS(1000)
+> +#define	STORE_DATA		0xDEADBEAF
+----------------------------- ^
+Inconsistent, use either upper or lower case.
+
+Regards,
+Kamil
+
+> +	struct _data {
+> +		uint32_t batch[16];
+> +		uint64_t vm_sync;
+> +		uint64_t sync;
+> +		uint64_t data;
+> +	} *data;
+> +	struct drm_xe_sync sync = {
+> +		.flags = DRM_XE_SYNC_USER_FENCE | DRM_XE_SYNC_SIGNAL,
+> +		.timeline_value = USER_FENCE_VALUE,
+> +	};
+> +	struct drm_xe_exec exec = {
+> +		.num_batch_buffer = 1,
+> +		.address = addr,
+> +		.num_syncs = 1,
+> +		.syncs = to_user_pointer(&sync),
+> +	};
+> +	uint32_t vm;
+> +	uint32_t bo;
+> +	size_t bo_size;
+> +	struct drm_xe_engine_class_instance *eci;
+> +
+> +	eci = xe_hw_engine(fd, 0);
+> +	vm = xe_vm_create(fd, flags | DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
+> +	bo_size = ALIGN(sizeof(*data), xe_get_default_alignment(fd));
+> +	bo = xe_bo_create_flags(fd, vm, bo_size,
+> +				all_memory_regions(fd) |
+> +				visible_vram_if_possible(fd, 0));
+> +	data = xe_bo_map(fd, bo, bo_size);
+> +	memset(data, 0, bo_size);
+> +
+> +	insert_store(data->batch, inv_addr + offsetof(struct _data, data), STORE_DATA);
+> +	exec.exec_queue_id = xe_exec_queue_create(fd, vm, eci, 0);
+> +	sync.addr = to_user_pointer(&data->vm_sync);
+> +	xe_vm_bind_async_flags(fd, vm, 0, bo, 0,
+> +				addr, bo_size, &sync, 1,
+> +				XE_VM_BIND_FLAG_IMMEDIATE);
+> +	xe_wait_ufence(fd, &data->vm_sync, USER_FENCE_VALUE, NULL, ONE_SEC);
+> +	data->vm_sync = 0;
+> +	sync.addr = addr + offsetof(struct _data, sync);
+> +	xe_exec(fd, &exec);
+> +	_xe_wait_ufence(fd, &data->sync, USER_FENCE_VALUE, NULL, ONE_SEC, false);
+> +	if (!(flags & DRM_XE_VM_CREATE_SCRATCH_PAGE))
+> +		assert(errno == ETIME);
+> +	else
+> +		assert(errno == 0);
+> +	data->sync = 0;
+> +
+> +	if ((flags & DRM_XE_VM_CREATE_FAULT_MODE) &&
+> +	    (flags & DRM_XE_VM_CREATE_SCRATCH_PAGE)) {
+> +		/* bind inv_addr after scratch page was created */
+> +		sync.addr = to_user_pointer(&data->vm_sync);
+> +		xe_vm_bind_async_flags(fd, vm, 0, bo, 0,
+> +				inv_addr, bo_size, &sync, 1,
+> +				XE_VM_BIND_FLAG_IMMEDIATE);
+> +		xe_wait_ufence(fd, &data->vm_sync, USER_FENCE_VALUE, NULL, ONE_SEC);
+> +		data->vm_sync = 0;
+> +		data->data = 0;
+> +		sync.addr = addr + offsetof(struct _data, sync);
+> +		xe_exec(fd, &exec);
+> +		xe_wait_ufence(fd, &data->sync, USER_FENCE_VALUE, NULL, ONE_SEC);
+> +		igt_assert_eq(data->data, STORE_DATA);
+> +	}
+> +
+> +	sync.addr = to_user_pointer(&data->vm_sync);
+> +	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, &sync, 1);
+> +	xe_wait_ufence(fd, &data->vm_sync, USER_FENCE_VALUE, NULL, ONE_SEC);
+> +	data->vm_sync = 0;
+> +	xe_vm_unbind_async(fd, vm, 0, 0, inv_addr, bo_size, &sync, 1);
+> +	xe_wait_ufence(fd, &data->vm_sync, USER_FENCE_VALUE, NULL, ONE_SEC);
+> +	xe_exec_queue_destroy(fd, exec.exec_queue_id);
+> +	munmap(data, bo_size);
+> +	gem_close(fd, bo);
+> +	xe_vm_destroy(fd, vm);
+> +}
+> +
+> +igt_main
+> +{
+> +	const struct section {
+> +		const char *name;
+> +		unsigned int flags;
+> +	} sections[] = {
+> +		{ "invalid-va", 0 },
+> +		{ "invalid-va-scratch", DRM_XE_VM_CREATE_SCRATCH_PAGE },
+> +		{ "invalid-va-fault", DRM_XE_VM_CREATE_FAULT_MODE },
+> +		{ "invalid-va-fault-scratch", DRM_XE_VM_CREATE_FAULT_MODE |
+> +					      DRM_XE_VM_CREATE_SCRATCH_PAGE },
+> +		{ NULL },
+> +	};
+> +	int fd;
+> +
+> +	igt_fixture {
+> +		fd = drm_open_driver(DRIVER_XE);
+> +		igt_require(xe_supports_faults(fd));
+> +	}
+> +
+> +	for (const struct section *s = sections; s->name; s++) {
+> +		igt_subtest_f("%s", s->name)
+> +			test_exec(fd, s->flags);
+> +	}
+> +
+> +	igt_fixture
+> +		drm_close_driver(fd);
+> +}
+> +
+> -- 
+> 2.25.1
+> 
