@@ -1,20 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3AE3E10E844
- for <igt-dev@lists.freedesktop.org>; Fri,  1 Sep 2023 23:56:47 +0000 (UTC)
-From: "Chang, Yu bruce" <yu.bruce.chang@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Fri, 1 Sep 2023 23:56:40 +0000
-Message-ID: <CY8PR11MB6940CE675FD1D9B54C0041BAC3E4A@CY8PR11MB6940.namprd11.prod.outlook.com>
-References: <20230831234654.18207-1-yu.bruce.chang@intel.com>
- <20230901121612.3djxyghg67ogfk2h@kamilkon-desk.igk.intel.com>
-In-Reply-To: <20230901121612.3djxyghg67ogfk2h@kamilkon-desk.igk.intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com
+ (mail-bn7nam10on2061f.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:7e8a::61f])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D9CC910E038
+ for <igt-dev@lists.freedesktop.org>; Sat,  2 Sep 2023 02:42:41 +0000 (UTC)
+From: <vitaly.prosyak@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Fri, 1 Sep 2023 22:42:30 -0400
+Message-ID: <20230902024232.135892-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe add invalid va access tests
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH 1/3] tests/amdgpu: add sync object tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,141 +19,326 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Zeng, Oak" <oak.zeng@intel.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>,
+ Luben Tuikov <luben.tuikov@amd.com>, Christian
+ Koenig <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS2FtaWwgS29uaWVjem55
-IDxrYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tPg0KPiBTZW50OiBGcmlkYXksIFNlcHRl
-bWJlciAxLCAyMDIzIDU6MTYgQU0NCj4gVG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
-DQo+IENjOiBDaGFuZywgWXUgYnJ1Y2UgPHl1LmJydWNlLmNoYW5nQGludGVsLmNvbT47IFplbmcs
-IE9haw0KPiA8b2FrLnplbmdAaW50ZWwuY29tPjsgV2VsdHksIEJyaWFuIDxicmlhbi53ZWx0eUBp
-bnRlbC5jb20+DQo+IFN1YmplY3Q6IFJlOiBbaWd0LWRldl0gW1BBVENIIGktZy10XSB0ZXN0cy94
-ZSBhZGQgaW52YWxpZCB2YSBhY2Nlc3MgdGVzdHMNCj4gDQo+IEhpIEJydWNlLA0KPiANCj4gT24g
-MjAyMy0wOC0zMSBhdCAyMzo0Njo1NCArMDAwMCwgQ2hhbmcsIEJydWNlIHdyb3RlOg0KPiA+IGFk
-ZCB0aGUgZm9sbG93aW5nIGludmFsaWQgdmEgYWNjZXNzIHRlc3QgY2FzZXM6DQo+ID4NCj4gPiAJ
-Z3B1IGZhdWx0CXNjcmF0Y2ggcGFnZQljb21tYW5kIHRpbWVvdXQNCj4gPiAxKSAJbm8JCW5vCQl5
-ZXMNCj4gPiAyKSAJbm8JCXllcwkJbm8NCj4gPiAzKSAJeWVzCQlubwkJeWVzDQo+ID4gNCkgCXll
-cwkJeWVzCQlubw0KPiA+DQo+ID4gVE9ETzogd2l0aCBmdXRoZXIgaW1wcm92ZW1lbnQgb2YgeGVf
-d2FpdF91ZmVuY2UsIHRoZSB0ZXN0IGNhbiBjaGVjaw0KPiA+IG1vcmUgc3BlY2lmaWMgZXJyb3Ig
-Y29kZSBmcm9tIGl0Lg0KPiA+DQo+ID4gdjI6IGFzeW5jIHZtL2JpbmQsIGFuZCByZS1iaW5kIHZh
-bGlkIGFkZHJlc3MNCj4gPiB2MzogYWRkZWQgeGVfd2FpdF91ZmVuY2UgY2hlY2sNCj4gPg0KPiA+
-IFNpZ25lZC1vZmYtYnk6IEJydWNlIENoYW5nIDx5dS5icnVjZS5jaGFuZ0BpbnRlbC5jb20+DQo+
-ID4gQ2M6IE9hayBaZW5nIDxvYWsuemVuZ0BpbnRlbC5jb20+DQo+ID4gQ2M6IEJyaWFuIFdlbHR5
-IDxicmlhbi53ZWx0eUBpbnRlbC5jb20+DQo+ID4gQ2M6IE5pcmFuamFuYSBWaXNod2FuYXRoYXB1
-cmEgPG5pcmFuamFuYS52aXNod2FuYXRoYXB1cmFAaW50ZWwuY29tPg0KPiA+IENjOiBNYXR0aGV3
-IEJyb3N0IDxtYXR0aGV3LmJyb3N0QGludGVsLmNvbT4NCj4gPiAtLS0NCj4gPiAgbGliL3hlL3hl
-X2lvY3RsLmMgICAgICAgICAgICAgfCAgMTUgKysrLQ0KPiA+ICBsaWIveGUveGVfaW9jdGwuaCAg
-ICAgICAgICAgICB8ICAgMyArDQo+ID4gIHRlc3RzL21lc29uLmJ1aWxkICAgICAgICAgICAgIHwg
-ICAxICsNCj4gPiAgdGVzdHMveGUveGVfZXhlY19pbnZhbGlkX3ZhLmMgfCAxNjQNCj4gPiArKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrDQo+IA0KPiBXaHkgbm90IHBsYWNpbmcgdGhp
-cyBpbiB4ZV92bS5jIGFzIGEgc3VidGVzdD8gV2UgaGF2ZSB0b28gbXVjaCB4ZV9leGVjIHRlc3Rz
-Lg0KPiBPciB1c2Ugb3RoZXIgbmFtZSBsaWtlIHhlX3ZtX2ludmFsaWQuDQo+DQoNCnhlX3ZtX2lu
-dmFsaWQgbWFrZXMgc2Vuc2UgdG8gbWUgc2luY2UgdGhpcyBpcyByZWFsbHkgdGVzdGluZyB2bSBm
-ZWF0dXJlLg0KIA0KPiA+ICA0IGZpbGVzIGNoYW5nZWQsIDE4MCBpbnNlcnRpb25zKCspLCAzIGRl
-bGV0aW9ucygtKSAgY3JlYXRlIG1vZGUNCj4gPiAxMDA2NDQgdGVzdHMveGUveGVfZXhlY19pbnZh
-bGlkX3ZhLmMNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9saWIveGUveGVfaW9jdGwuYyBiL2xpYi94
-ZS94ZV9pb2N0bC5jIGluZGV4DQo+ID4gNzMwZGNmZDE2Li4wMjJmMGNmMDQgMTAwNjQ0DQo+ID4g
-LS0tIGEvbGliL3hlL3hlX2lvY3RsLmMNCj4gPiArKysgYi9saWIveGUveGVfaW9jdGwuYw0KPiA+
-IEBAIC00MTUsOSArNDE1LDkgQEAgdm9pZCB4ZV9leGVjX3dhaXQoaW50IGZkLCB1aW50MzJfdCBl
-eGVjX3F1ZXVlLA0KPiB1aW50NjRfdCBhZGRyKQ0KPiA+ICAJc3luY29ial9kZXN0cm95KGZkLCBz
-eW5jLmhhbmRsZSk7DQo+ID4gIH0NCj4gPg0KPiA+IC1pbnQ2NF90IHhlX3dhaXRfdWZlbmNlKGlu
-dCBmZCwgdWludDY0X3QgKmFkZHIsIHVpbnQ2NF90IHZhbHVlLA0KPiA+ICtpbnQ2NF90IF94ZV93
-YWl0X3VmZW5jZShpbnQgZmQsIHVpbnQ2NF90ICphZGRyLCB1aW50NjRfdCB2YWx1ZSwNCj4gPiAg
-CQkgICAgICAgc3RydWN0IGRybV94ZV9lbmdpbmVfY2xhc3NfaW5zdGFuY2UgKmVjaSwNCj4gPiAt
-CQkgICAgICAgaW50NjRfdCB0aW1lb3V0KQ0KPiA+ICsJCSAgICAgICBpbnQ2NF90IHRpbWVvdXQs
-IGJvb2wgdGltZW91dF9hc3NlcnQpDQo+IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0g
-Xg0KPiBEbyBub3QgaW5zdHJvZHVjZSBhIGJvb2wgcGFyYW1ldGVyLCByYXRoZXIgbWFrZSBfX2Z1
-bmN0aW9uIHdoaWNoIHdpbGwgcmV0dXJuDQo+IGVycm5vIGluIGNhc2Ugb2YgaW9jdGwgZXJyb3Is
-IHNvIGxhdGVyIHlvdSBtYXkgdXNlIGl0IGxpa2U6DQo+ICAgICAgICAgcmV0ID0gX194ZV93YWl0
-X3VmZW5jZSguLi4sICZ2YWwpOw0KPiAgICAgICAgIGlndF9hc3NlcnRfZighcmV0IHx8IHJldCA9
-PSAtRVRJTUUsICJlcnJvciAlZFxuIiwgcmV0KTsNCj4gDQpBZ3JlZSwgd2FzIGp1c3QgZm9sbG93
-aW5nIHRoZSBvcmlnaW5hbCBmdW5jdGlvbiBjb252ZW50aW9uLiBJIGNhbiBtYWtlIHRoaXMgY2hh
-bmdlLg0KDQo+IA0KPiBpbnQgX194ZV93YWl0X3VmZW5jZShpbnQgZmQsIHVpbnQ2NF90ICphZGRy
-LCB1aW50NjRfdCB2YWx1ZSwNCj4gCQkgICAgICAgc3RydWN0IGRybV94ZV9lbmdpbmVfY2xhc3Nf
-aW5zdGFuY2UgKmVjaSwNCj4gCQkgICAgICAgaW50NjRfdCB0aW1lb3V0KQ0KPiAJCSAgICAgICBp
-bnQ2NF90IHRpbWVvdXQsDQo+ICAgICAgICAgICAgICAgIGludDY0X3QgKnJldHZhbCkNCj4gew0K
-PiAgICAgICAgIC4uLg0KPiAgICAgICAgIHJldCA9IGlndF9pb2N0bChmZCwgRFJNX0lPQ1RMX1hF
-X1dBSVRfVVNFUl9GRU5DRSwgJndhaXQpOw0KPiAgICAgICAgIGlmICghcmV0KQ0KPiAgICAgICAg
-ICAgICAgICAgKnJldHZhbCA9IHdhaXQudGltZW91dDsNCj4gDQo+ICAgICAgICAgcmV0dXJuIHJl
-dDsNCj4gfQ0KPiANCj4gdWludDY0X3QgeGVfd2FpdF91ZmVuY2UoLi4uKQ0KPiB7DQo+ICAgICAg
-ICAgdWludDY0X3QgdmFsOw0KPiANCj4gICAgICAgICBpZ3RfYXNzZXJ0X2VxKF9feGVfd2FpdF91
-ZmVuY2UoLi4uLCAmdmFsKSwgMCk7DQo+IA0KPiAgICAgICAgIHJldHVybiB2YWw7DQo+IH0NCj4g
-DQo+IEFkZCBkZXNjcmlwdGlvbiB0byBlYWNoIG5ldy9vbGQgbGlicmFyeSBmdW5jdGlvbiB5b3Ug
-cmUvd3JpdGUuDQo+IA0KU3VyZS4NCg0KPiA+ICB7DQo+ID4gIAlzdHJ1Y3QgZHJtX3hlX3dhaXRf
-dXNlcl9mZW5jZSB3YWl0ID0gew0KPiA+ICAJCS5hZGRyID0gdG9fdXNlcl9wb2ludGVyKGFkZHIp
-LA0KPiA+IEBAIC00MzAsMTEgKzQzMCwyMCBAQCBpbnQ2NF90IHhlX3dhaXRfdWZlbmNlKGludCBm
-ZCwgdWludDY0X3QgKmFkZHIsDQo+IHVpbnQ2NF90IHZhbHVlLA0KPiA+ICAJCS5pbnN0YW5jZXMg
-PSBlY2kgPyB0b191c2VyX3BvaW50ZXIoZWNpKSA6IDAsDQo+ID4gIAl9Ow0KPiA+DQo+ID4gLQlp
-Z3RfYXNzZXJ0X2VxKGlndF9pb2N0bChmZCwgRFJNX0lPQ1RMX1hFX1dBSVRfVVNFUl9GRU5DRSwN
-Cj4gJndhaXQpLCAwKTsNCj4gPiArCWlmIChpZ3RfaW9jdGwoZmQsIERSTV9JT0NUTF9YRV9XQUlU
-X1VTRVJfRkVOQ0UsICZ3YWl0KSkNCj4gPiArCQlpZ3RfYXNzZXJ0ICghdGltZW91dF9hc3NlcnQg
-JiYgZXJybm8gPT0gRVRJTUUpOw0KPiA+DQo+ID4gIAlyZXR1cm4gd2FpdC50aW1lb3V0Ow0KPiA+
-ICB9DQo+ID4NCj4gPiArDQo+ID4gK2ludDY0X3QgeGVfd2FpdF91ZmVuY2UoaW50IGZkLCB1aW50
-NjRfdCAqYWRkciwgdWludDY0X3QgdmFsdWUsDQo+ID4gKwkJICAgICAgIHN0cnVjdCBkcm1feGVf
-ZW5naW5lX2NsYXNzX2luc3RhbmNlICplY2ksDQo+ID4gKwkJICAgICAgIGludDY0X3QgdGltZW91
-dCkNCj4gPiArew0KPiA+ICsJcmV0dXJuIF94ZV93YWl0X3VmZW5jZShmZCwgYWRkciwgdmFsdWUs
-IGVjaSwgdGltZW91dCwgdHJ1ZSk7IH0NCj4gPiArDQo+ID4gIC8qKg0KPiA+ICAgKiB4ZV93YWl0
-X3VmZW5jZV9hYnN0aW1lOg0KPiA+ICAgKiBAZmQ6IHhlIGRldmljZSBmZA0KPiA+IGRpZmYgLS1n
-aXQgYS9saWIveGUveGVfaW9jdGwuaCBiL2xpYi94ZS94ZV9pb2N0bC5oIGluZGV4DQo+ID4gNmMy
-ODFiM2JmLi40YmY3NDEwYTQgMTAwNjQ0DQo+ID4gLS0tIGEvbGliL3hlL3hlX2lvY3RsLmgNCj4g
-PiArKysgYi9saWIveGUveGVfaW9jdGwuaA0KPiA+IEBAIC04Miw2ICs4Miw5IEBAIHZvaWQgeGVf
-ZXhlYyhpbnQgZmQsIHN0cnVjdCBkcm1feGVfZXhlYyAqZXhlYyk7DQo+ID4gdm9pZCB4ZV9leGVj
-X3N5bmMoaW50IGZkLCB1aW50MzJfdCBleGVjX3F1ZXVlLCB1aW50NjRfdCBhZGRyLA0KPiA+ICAJ
-CSAgc3RydWN0IGRybV94ZV9zeW5jICpzeW5jLCB1aW50MzJfdCBudW1fc3luY3MpOyAgdm9pZA0K
-PiA+IHhlX2V4ZWNfd2FpdChpbnQgZmQsIHVpbnQzMl90IGV4ZWNfcXVldWUsIHVpbnQ2NF90IGFk
-ZHIpOw0KPiA+ICtpbnQ2NF90IF94ZV93YWl0X3VmZW5jZShpbnQgZmQsIHVpbnQ2NF90ICphZGRy
-LCB1aW50NjRfdCB2YWx1ZSwNCj4gPiArCQkgICAgICAgc3RydWN0IGRybV94ZV9lbmdpbmVfY2xh
-c3NfaW5zdGFuY2UgKmVjaSwNCj4gPiArCQkgICAgICAgaW50NjRfdCB0aW1lb3V0LCBib29sIHRp
-bWVvdXRfYXNzZXJ0KTsNCj4gPiAgaW50NjRfdCB4ZV93YWl0X3VmZW5jZShpbnQgZmQsIHVpbnQ2
-NF90ICphZGRyLCB1aW50NjRfdCB2YWx1ZSwNCj4gPiAgCQkgICAgICAgc3RydWN0IGRybV94ZV9l
-bmdpbmVfY2xhc3NfaW5zdGFuY2UgKmVjaSwNCj4gPiAgCQkgICAgICAgaW50NjRfdCB0aW1lb3V0
-KTsNCj4gPiBkaWZmIC0tZ2l0IGEvdGVzdHMvbWVzb24uYnVpbGQgYi90ZXN0cy9tZXNvbi5idWls
-ZCBpbmRleA0KPiA+IDRkMzI1YmVkMS4uODg2MWI2YzViIDEwMDY0NA0KPiA+IC0tLSBhL3Rlc3Rz
-L21lc29uLmJ1aWxkDQo+ID4gKysrIGIvdGVzdHMvbWVzb24uYnVpbGQNCj4gPiBAQCAtMjc2LDYg
-KzI3Niw3IEBAIHhlX3Byb2dzID0gWw0KPiA+ICAJJ3hlX2V4ZWNfcmVzZXQnLA0KPiA+ICAJJ3hl
-X2V4ZWNfc3RvcmUnLA0KPiA+ICAJJ3hlX2V4ZWNfdGhyZWFkcycsDQo+ID4gKwkneGVfZXhlY19p
-bnZhbGlkX3ZhJywNCj4gPiAgCSd4ZV9leGVyY2lzZV9ibHQnLA0KPiA+ICAJJ3hlX2dwZ3B1X2Zp
-bGwnLA0KPiA+ICAJJ3hlX2d1Y19wYycsDQo+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL3hlL3hlX2V4
-ZWNfaW52YWxpZF92YS5jDQo+ID4gYi90ZXN0cy94ZS94ZV9leGVjX2ludmFsaWRfdmEuYyBuZXcg
-ZmlsZSBtb2RlIDEwMDY0NCBpbmRleA0KPiA+IDAwMDAwMDAwMC4uNDY4YjkwYzhhDQo+ID4gLS0t
-IC9kZXYvbnVsbA0KPiA+ICsrKyBiL3Rlc3RzL3hlL3hlX2V4ZWNfaW52YWxpZF92YS5jDQo+ID4g
-QEAgLTAsMCArMSwxNjQgQEANCj4gPiArLy8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IE1JVA0K
-PiA+ICsvKg0KPiA+ICsgKiBDb3B5cmlnaHQgwqkgMjAyMyBJbnRlbCBDb3Jwb3JhdGlvbiAgKi8N
-Cj4gPiArDQo+ID4gKy8qKg0KPiA+ICsgKiBURVNUOiBpbnZhbGlkIHZhIHRlc3RzDQo+ID4gKyAq
-IENhdGVnb3J5OiBIYXJkd2FyZSBidWlsZGluZyBibG9jaw0KPiA+ICsgKiBTdWItY2F0ZWdvcnk6
-IGV4ZWNidWYNCj4gPiArICogRnVuY3Rpb25hbGl0eTogZmF1bHQgbW9kZQ0KPiA+ICsgKiBUZXN0
-IGNhdGVnb3J5OiBmdW5jdGlvbmFsaXR5IHRlc3QNCj4gPiArICogR1BVIHJlcXVpcmVtZW50czog
-R1BVIG5lZWRzIHN1cHBvcnQgZm9yDQo+ID4gK0RSTV9YRV9WTV9DUkVBVEVfRkFVTFRfTU9ERSAg
-Ki8NCj4gPiArDQo+ID4gKyNpbmNsdWRlIDxmY250bC5oPg0KPiA+ICsNCj4gPiArI2luY2x1ZGUg
-ImlndC5oIg0KPiA+ICsjaW5jbHVkZSAibGliL2lndF9zeW5jb2JqLmgiDQo+ID4gKyNpbmNsdWRl
-ICJsaWIvaW50ZWxfcmVnLmgiDQo+ID4gKyNpbmNsdWRlICJ4ZV9kcm0uaCINCj4gPiArDQo+ID4g
-KyNpbmNsdWRlICJ4ZS94ZV9pb2N0bC5oIg0KPiA+ICsjaW5jbHVkZSAieGUveGVfcXVlcnkuaCIN
-Cj4gPiArI2luY2x1ZGUgPHN0cmluZy5oPg0KPiAtLS0tLS0tLS0tLSBeDQo+IE1vdmUgYWJvdmUg
-YWZ0ZXIgPGZjbnRsLmg+DQo+IA0KDQpXaWxsIGRvLg0KDQo+ID4gKw0KPiA+ICtzdGF0aWMgdm9p
-ZCBpbnNlcnRfc3RvcmUodWludDMyX3QgKmJiLCB1aW50NjRfdCB2YSwgdWludDY0X3QgZGF0YSkg
-ew0KPiA+ICsJKmJiKysgPSBNSV9TVE9SRV9EV09SRF9JTU1fR0VONDsNCj4gPiArCSpiYisrID0g
-bG93ZXJfMzJfYml0cyh2YSk7DQo+ID4gKwkqYmIrKyA9IHVwcGVyXzMyX2JpdHModmEpOw0KPiA+
-ICsJKmJiKysgPSBkYXRhOw0KPiA+ICsJKmJiKysgPSBNSV9CQVRDSF9CVUZGRVJfRU5EOw0KPiA+
-ICt9DQo+ID4gKw0KPiA+ICsvKioNCj4gPiArICogU1VCVEVTVDogaW52YWxpZC12YQ0KPiA+ICsg
-KiBEZXNjcmlwdGlvbjogQ2hlY2sgZHJpdmVyIGhhbmRsaW5nIG9mIGludmFsaWQgdmEgYWNjZXNz
-DQo+ID4gKyAqIFJ1biB0eXBlOiBGVUxMDQo+ID4gKyAqDQo+ID4gKyAqIFNVQlRFU1Q6IGludmFs
-aWQtdmEtc2NyYXRjaA0KPiA+ICsgKiBEZXNjcmlwdGlvbjogQ2hlY2sgZHJpdmVyIGhhbmRsaW5n
-IG9mIGludmFsaWQgdmEgYWNjZXNzIHdpdGgNCj4gPiArc2NyYXRjaCBwYWdlDQo+ID4gKyAqIFJ1
-biB0eXBlOiBGVUxMDQo+ID4gKyAqDQo+ID4gKyAqIFNVQlRFU1Q6IGludmFsaWQtdmEtZmF1bHQN
-Cj4gPiArICogRGVzY3JpcHRpb246IENoZWNrIGRyaXZlciBoYW5kbGluZyBvZiBpbnZhbGlkIHZh
-IGFjY2VzcyB3aXRoIGZhdWx0DQo+ID4gK2VuYWJsZWQNCj4gPiArICogUnVuIHR5cGU6IEZVTEwN
-Cj4gPiArICoNCj4gPiArICogU1VCVEVTVDogaW52YWxpZC12YS1mYXVsdC1zY3JhdGNoDQo+ID4g
-KyAqIERlc2NyaXB0aW9uOiBDaGVjayBkcml2ZXIgaGFuZGxpbmcgb2YgaW52YWxpZCB2YSBhY2Nl
-c3Mgd2l0aCBmYXVsdA0KPiA+ICsrIHNjcmF0Y2ggcGFnZQ0KPiA+ICsgKiBSdW4gdHlwZTogRlVM
-TA0KPiA+ICsgKg0KPiA+ICsgKiBhcmdbMV06IGZvciB2bSBjcmVhdGUgZmxhZ3MNCj4gPiArICov
-DQo+ID4gK3N0YXRpYyB2b2lkIHRlc3RfZXhlYyhpbnQgZmQsIHVpbnQzMl90IGZsYWdzKSB7DQo+
-ID4gKwljb25zdCB1aW50NjRfdCBpbnZfYWRkciA9IDB4MjAwMDAwMDA7DQo+ID4gKwljb25zdCB1
-aW50NjRfdCBhZGRyID0gMHgxYTAwMDA7DQo+ID4gKyNkZWZpbmUgVVNFUl9GRU5DRV9WQUxVRQkw
-eGRlYWRiZWVmZGVhZGJlZWZ1bGwNCj4gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXg0K
-PiBpbWhvIGJldHRlciBpbiB1cHBlcmNhc2UNCj4gDQo+ID4gKyNkZWZpbmUgT05FX1NFQwkJCU1T
-X1RPX05TKDEwMDApDQo+ID4gKyNkZWZpbmUJU1RPUkVfREFUQQkJMHhERUFEQkVBRg0KPiAtLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBeDQo+IEluY29uc2lzdGVudCwgdXNlIGVpdGhlciB1
-cHBlciBvciBsb3dlciBjYXNlLg0KPiANCg0KU3VyZSwgd2lsbCB1c2UgdXBwZXIgY2FzZSBmb3Ig
-Ym90aCBjYXNlLg0KVGhhbmtzLA0KQnJ1Y2UNCg0KPiBSZWdhcmRzLA0KPiBLYW1pbA0K
+From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+
+Using worker thread to wait on point and then signal point on other thread.
+Another test uses a worker thread to signal point and wait on the main
+thread using amdgpu_cs_syncobj_timeline_wait.
+
+The command consists of two chunks :
+1. AMDGPU_CHUNK_ID_IB uses GFX_COMPUTE_NOP  or SDMA_NOP.
+2. The second chunk is AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_WAIT
+   or AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_SIGNAL which has the
+   point number .
+
+v2 : Kamil helped with podman script to fix the build
+     failure when drmlib version < 2.4.97
+v3 : Kamil suggested sort alphabetically includes.
+     Luben suggested code and meson script improvements.
+
+Cc: Luben Tuikov <luben.tuikov@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Reviewed-by: Luben Tuikov <luben.tuikov@amd.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ tests/amdgpu/amd_syncobj.c | 262 +++++++++++++++++++++++++++++++++++++
+ tests/amdgpu/meson.build   |   5 +
+ 2 files changed, 267 insertions(+)
+ create mode 100644 tests/amdgpu/amd_syncobj.c
+
+diff --git a/tests/amdgpu/amd_syncobj.c b/tests/amdgpu/amd_syncobj.c
+new file mode 100644
+index 000000000..e1d80758e
+--- /dev/null
++++ b/tests/amdgpu/amd_syncobj.c
+@@ -0,0 +1,262 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright 2017 Advanced Micro Devices, Inc.
++ * Copyright 2023 Advanced Micro Devices, Inc.
++ */
++
++#include <amdgpu.h>
++#include <amdgpu_drm.h>
++#include <pthread.h>
++
++#include "igt.h"
++#include "lib/amdgpu/amd_PM4.h"
++#include "lib/amdgpu/amd_sdma.h"
++#include "lib/amdgpu/amd_memory.h"
++
++struct syncobj_point {
++	amdgpu_device_handle device;
++	uint32_t syncobj_handle;
++	uint64_t point;
++};
++
++
++static bool
++syncobj_timeline_enable(int fd)
++{
++	int r;
++	uint64_t cap = 0;
++
++	r = drmGetCap(fd, DRM_CAP_SYNCOBJ_TIMELINE, &cap);
++
++	return !(r || cap == 0);
++}
++
++static void
++syncobj_command_submission_helper(amdgpu_device_handle device_handle,
++		uint32_t syncobj_handle, bool wait_or_signal, uint64_t point)
++{
++	amdgpu_context_handle context_handle;
++	amdgpu_bo_handle ib_result_handle;
++	void *ib_result_cpu;
++	uint64_t ib_result_mc_address;
++	struct drm_amdgpu_cs_chunk chunks[2];
++	struct drm_amdgpu_cs_chunk_data chunk_data;
++	struct drm_amdgpu_cs_chunk_syncobj syncobj_data;
++	struct amdgpu_cs_fence fence_status;
++	amdgpu_bo_list_handle bo_list;
++	amdgpu_va_handle va_handle;
++	uint32_t expired;
++	int i, r;
++	uint64_t seq_no;
++	uint32_t *ptr;
++
++	r = amdgpu_cs_ctx_create(device_handle, &context_handle);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_alloc_and_map(device_handle, 4096, 4096,
++				    AMDGPU_GEM_DOMAIN_GTT, 0,
++				    &ib_result_handle, &ib_result_cpu,
++				    &ib_result_mc_address, &va_handle);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_get_bo_list(device_handle, ib_result_handle, NULL, &bo_list);
++	igt_assert_eq(r, 0);
++
++	ptr = ib_result_cpu;
++
++	for (i = 0; i < 16; ++i)
++		ptr[i] = wait_or_signal ? GFX_COMPUTE_NOP : SDMA_NOP;
++
++	chunks[0].chunk_id = AMDGPU_CHUNK_ID_IB;
++	chunks[0].length_dw = sizeof(struct drm_amdgpu_cs_chunk_ib) / 4;
++	chunks[0].chunk_data = (uint64_t)(uintptr_t)&chunk_data;
++	chunk_data.ib_data._pad = 0;
++	chunk_data.ib_data.va_start = ib_result_mc_address;
++	chunk_data.ib_data.ib_bytes = 16 * 4;
++	chunk_data.ib_data.ip_type = wait_or_signal ? AMDGPU_HW_IP_GFX : AMDGPU_HW_IP_DMA;
++	chunk_data.ib_data.ip_instance = 0;
++	chunk_data.ib_data.ring = 0;
++	chunk_data.ib_data.flags = 0;
++
++	chunks[1].chunk_id = wait_or_signal ?
++		AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_WAIT :
++		AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_SIGNAL;
++	chunks[1].length_dw = sizeof(struct drm_amdgpu_cs_chunk_syncobj) / 4;
++	chunks[1].chunk_data = (uint64_t)(uintptr_t)&syncobj_data;
++	syncobj_data.handle = syncobj_handle;
++	syncobj_data.point = point;
++	syncobj_data.flags = DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT;
++
++	r = amdgpu_cs_submit_raw(device_handle,
++				 context_handle,
++				 bo_list,
++				 2,
++				 chunks,
++				 &seq_no);
++	igt_assert_eq(r, 0);
++
++	memset(&fence_status, 0, sizeof(struct amdgpu_cs_fence));
++	fence_status.context = context_handle;
++	fence_status.ip_type = wait_or_signal ? AMDGPU_HW_IP_GFX : AMDGPU_HW_IP_DMA;
++	fence_status.ip_instance = 0;
++	fence_status.ring = 0;
++	fence_status.fence = seq_no;
++
++	r = amdgpu_cs_query_fence_status(&fence_status,
++			AMDGPU_TIMEOUT_INFINITE, 0, &expired);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_list_destroy(bo_list);
++	igt_assert_eq(r, 0);
++
++	amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
++				     ib_result_mc_address, 4096);
++
++	r = amdgpu_cs_ctx_free(context_handle);
++	igt_assert_eq(r, 0);
++}
++
++static void *
++syncobj_wait(void *data)
++{
++	struct syncobj_point *sp = (struct syncobj_point *)data;
++
++	syncobj_command_submission_helper(sp->device, sp->syncobj_handle, true,
++					      sp->point);
++
++	return (void *)0;
++}
++
++static void *
++syncobj_signal(void *data)
++{
++	struct syncobj_point *sp = (struct syncobj_point *)data;
++
++	syncobj_command_submission_helper(sp->device, sp->syncobj_handle, false,
++						sp->point);
++
++	return (void *)0;
++}
++
++static void
++amdgpu_syncobj_timeline(amdgpu_device_handle device_handle)
++{
++	static pthread_t wait_thread;
++	static pthread_t signal_thread;
++	static pthread_t c_thread;
++	struct syncobj_point sp1, sp2, sp3;
++	uint32_t syncobj_handle;
++	uint64_t payload;
++	uint64_t wait_point, signal_point;
++	uint64_t timeout;
++	struct timespec tp;
++	int r, sync_fd;
++	void *tmp, *tmp2;
++
++	r =  amdgpu_cs_create_syncobj2(device_handle, 0, &syncobj_handle);
++	igt_assert_eq(r, 0);
++
++	// wait on point 5
++	sp1.syncobj_handle = syncobj_handle;
++	sp1.device = device_handle;
++	sp1.point = 5;
++	r = pthread_create(&wait_thread, NULL, syncobj_wait, &sp1);
++	igt_assert_eq(r, 0);
++
++	// signal on point 10
++	sp2.syncobj_handle = syncobj_handle;
++	sp2.device = device_handle;
++	sp2.point = 10;
++	r = pthread_create(&signal_thread, NULL, syncobj_signal, &sp2);
++	igt_assert_eq(r, 0);
++
++	r = pthread_join(signal_thread, &tmp);
++	igt_assert_eq(r, 0);
++
++	r = pthread_join(wait_thread, &tmp2);
++	igt_assert_eq(r, 0);
++
++	//query timeline payload
++	r = amdgpu_cs_syncobj_query(device_handle, &syncobj_handle,
++				    &payload, 1);
++	igt_assert_eq(r, 0);
++	igt_assert_eq(payload, 10);
++
++	//signal on point 16
++	sp3.syncobj_handle = syncobj_handle;
++	sp3.device = device_handle;
++	sp3.point = 16;
++	r = pthread_create(&c_thread, NULL, syncobj_signal, &sp3);
++	igt_assert_eq(r, 0);
++
++	//CPU wait on point 16
++	wait_point = 16;
++	timeout = 0;
++	clock_gettime(CLOCK_MONOTONIC, &tp);
++	timeout = tp.tv_sec * 1000000000ULL + tp.tv_nsec;
++	timeout += 10000000000; //10s
++	r = amdgpu_cs_syncobj_timeline_wait(device_handle, &syncobj_handle,
++					    &wait_point, 1, timeout,
++					    DRM_SYNCOBJ_WAIT_FLAGS_WAIT_ALL |
++					    DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT,
++					    NULL);
++
++	igt_assert_eq(r, 0);
++	r = pthread_join(c_thread, &tmp);
++	igt_assert_eq(r, 0);
++
++	// export point 16 and import to point 18
++	r = amdgpu_cs_syncobj_export_sync_file2(device_handle, syncobj_handle,
++						16,
++						DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT,
++						&sync_fd);
++	igt_assert_eq(r, 0);
++	r = amdgpu_cs_syncobj_import_sync_file2(device_handle, syncobj_handle,
++						18, sync_fd);
++	igt_assert_eq(r, 0);
++	r = amdgpu_cs_syncobj_query(device_handle, &syncobj_handle,
++				    &payload, 1);
++	igt_assert_eq(r, 0);
++	igt_assert_eq(payload, 18);
++
++	// CPU signal on point 20
++	signal_point = 20;
++	r = amdgpu_cs_syncobj_timeline_signal(device_handle, &syncobj_handle,
++					      &signal_point, 1);
++	igt_assert_eq(r, 0);
++	r = amdgpu_cs_syncobj_query(device_handle, &syncobj_handle,
++				    &payload, 1);
++	igt_assert_eq(r, 0);
++	igt_assert_eq(payload, 20);
++
++	r = amdgpu_cs_destroy_syncobj(device_handle, syncobj_handle);
++	igt_assert_eq(r, 0);
++
++}
++
++igt_main
++{
++	amdgpu_device_handle device;
++	int fd = -1;
++
++	igt_fixture {
++		uint32_t major, minor;
++		int err;
++
++		fd = drm_open_driver(DRIVER_AMDGPU);
++		err = amdgpu_device_initialize(fd, &major, &minor, &device);
++		igt_require(err == 0);
++		igt_require(syncobj_timeline_enable(fd));
++		igt_info("Initialized amdgpu, driver version %d.%d\n",
++			 major, minor);
++
++	}
++
++	igt_subtest("amdgpu_syncobj_timeline")
++	amdgpu_syncobj_timeline(device);
++
++	igt_fixture {
++		amdgpu_device_deinitialize(device);
++		close(fd);
++	}
++}
+diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+index 6032a38e8..ebf52bf38 100644
+--- a/tests/amdgpu/meson.build
++++ b/tests/amdgpu/meson.build
+@@ -37,6 +37,11 @@ if libdrm_amdgpu.found()
+ 			  'amd_mall',
+ 			  'amd_odm',
+ 			]
++	if libdrm_amdgpu.version().version_compare('> 2.4.97')
++		amdgpu_progs +=[ 'amd_syncobj', ]
++	else
++		warning('libdrm <= 2.4.97 found, amd_syncobj test not applicable')
++	endif
+ 	amdgpu_deps += libdrm_amdgpu
+ endif
+ 
+-- 
+2.25.1
