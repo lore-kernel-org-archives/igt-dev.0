@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============3958803539800284589=="
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jeevan B" <jeevan.b@intel.com>
-Date: Mon, 04 Sep 2023 18:02:01 -0000
-Message-ID: <169385052167.21388.14638975217857502833@emeril.freedesktop.org>
-References: <20230904170749.14616-1-jeevan.b@intel.com>
-In-Reply-To: <20230904170749.14616-1-jeevan.b@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/km?=
- =?utf-8?q?s=5Fsetmode=3A_skip_subtest_when_valid_combination_not_found?=
+To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
+Date: Mon, 04 Sep 2023 18:13:07 -0000
+Message-ID: <169385118782.21388.8845697600445595669@emeril.freedesktop.org>
+References: <20230829161759.9315-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20230829161759.9315-1-mohammed.thasleem@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/kms=5Fatomic=5Ftransition=3A_Reduce_the_execution_time_on_?=
+ =?utf-8?q?modest-transition_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,121 +24,105 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3958803539800284589==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
 == Series Details ==
 
-Series: tests/kms_setmode: skip subtest when valid combination not found
-URL   : https://patchwork.freedesktop.org/series/123252/
-State : success
+Series: tests/kms_atomic_transition: Reduce the execution time on modest-transition (rev3)
+URL   : https://patchwork.freedesktop.org/series/123002/
+State : warning
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_7467_BAT -> XEIGTPW_9712_BAT
-====================================================
+Pipeline status: FAILED.
 
-Summary
--------
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/977595 for the overview.
 
-  **SUCCESS**
-
-  No regressions found.
-
+build-containers:build-debian has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48505761):
+  time="2023-09-04T18:08:19Z" level=fatal msg="Error determining repository tags: Get https://registry.freedesktop.org/v2/gfx-ci/igt-ci-tags/build-debian-minimal/tags/list: dial tcp 147.75.198.156:443: i/o timeout" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:d6b7393fb4f375905c31c483d81ce2a2905f88aba8cb198874da2b54035bc41d
+  Copying config sha256:de08540e8ff0e470ff7956df4bed403725a5f45c186e9bf495da5344ff8fbe84
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-09-04T18:08:28Z" level=warning msg="signal: killed"
+  time="2023-09-04T18:08:28Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1693850909:step_script
+  section_start:1693850909:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1693850909:cleanup_file_variables
+  ERROR: Job failed: exit code 1
   
 
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_9712_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
-    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#480]) +2 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7467/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9712/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
-
+build-containers:build-debian-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48505763):
+  time="2023-09-04T18:08:26Z" level=fatal msg="Error determining repository tags: Get https://registry.freedesktop.org/v2/gfx-ci/igt-ci-tags/build-debian-arm64/tags/list?last=commit-477422023de3e812d73f548002757675a78b6711&n=100: dial tcp 147.75.198.156:443: i/o timeout" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:d6b7393fb4f375905c31c483d81ce2a2905f88aba8cb198874da2b54035bc41d
+  Copying config sha256:de08540e8ff0e470ff7956df4bed403725a5f45c186e9bf495da5344ff8fbe84
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-09-04T18:08:30Z" level=warning msg="signal: killed"
+  time="2023-09-04T18:08:30Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1693850911:step_script
+  section_start:1693850911:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1693850911:cleanup_file_variables
+  ERROR: Job failed: exit code 1
   
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
 
+build-containers:build-debian-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48505762):
+  time="2023-09-04T18:08:31Z" level=fatal msg="Error determining repository tags: Get https://registry.freedesktop.org/v2/gfx-ci/igt-ci-tags/build-debian-armhf/tags/list?last=commit-56205b0e443d15b1108682c43c290d5f2aa3d0af&n=100: dial tcp 147.75.198.156:443: i/o timeout" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:d6b7393fb4f375905c31c483d81ce2a2905f88aba8cb198874da2b54035bc41d
+  Copying config sha256:de08540e8ff0e470ff7956df4bed403725a5f45c186e9bf495da5344ff8fbe84
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-09-04T18:08:36Z" level=warning msg="signal: killed"
+  time="2023-09-04T18:08:36Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1693850916:step_script
+  section_start:1693850916:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1693850916:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
 
-Build changes
--------------
-
-  * IGT: IGT_7467 -> IGTPW_9712
-
-  IGTPW_9712: 9712
-  IGT_7467: 7467
-  xe-354-7ec520d3a63b6e95174329108cd44359a70907ba: 7ec520d3a63b6e95174329108cd44359a70907ba
+build-containers:build-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48505765):
+  time="2023-09-04T18:08:47Z" level=fatal msg="Error determining repository tags: Get https://registry.freedesktop.org/v2/gfx-ci/igt-ci-tags/build-fedora/tags/list?last=commit-e61ba01d218526dc58243768dda22b3ca705385b&n=100: dial tcp 147.75.198.156:443: i/o timeout" 
+  Building!
+  STEP 1: FROM fedora:31
+  Getting image source signatures
+  Copying blob sha256:854946d575a439a894349addd141568875d7c1e673d3286b08250f3dde002e6a
+  Copying config sha256:7e94ed77b448a8d2ff08b92d3ca743e4e862c744892d6886c73487581eb5863a
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils
+  error running container: error creating container for [/bin/sh -c dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils]: time="2023-09-04T18:08:57Z" level=warning msg="signal: killed"
+  time="2023-09-04T18:08:57Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils": error while running runtime: exit status 1
+  section_end:1693850938:step_script
+  section_start:1693850938:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1693850938:cleanup_file_variables
+  ERROR: Job failed: exit code 1
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9712/index.html
-
---===============3958803539800284589==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_setmode: skip subtest when valid combination not found</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123252/">https://patchwork.freedesktop.org/series/123252/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9712/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9712/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7467_BAT -&gt; XEIGTPW_9712_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_9712_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7467/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9712/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +2 similar issues</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7467 -&gt; IGTPW_9712</li>
-</ul>
-<p>IGTPW_9712: 9712<br />
-  IGT_7467: 7467<br />
-  xe-354-7ec520d3a63b6e95174329108cd44359a70907ba: 7ec520d3a63b6e95174329108cd44359a70907ba</p>
-
-</body>
-</html>
-
---===============3958803539800284589==--
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/977595
