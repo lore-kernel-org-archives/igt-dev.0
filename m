@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D151110E1D7
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Sep 2023 12:39:52 +0000 (UTC)
-Date: Mon, 4 Sep 2023 14:39:34 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 188CB10E1D3
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Sep 2023 12:44:59 +0000 (UTC)
+Date: Mon, 4 Sep 2023 14:44:54 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: sai.gowtham.ch@intel.com
-Message-ID: <20230904123934.stxmaelmzxg3366l@zkempczy-mobl2>
-References: <20230904110458.24177-1-sai.gowtham.ch@intel.com>
- <20230904110458.24177-3-sai.gowtham.ch@intel.com>
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Message-ID: <20230904124454.kmnersvgc2vnm26b@zkempczy-mobl2>
+References: <20230904095058.1526961-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230904110458.24177-3-sai.gowtham.ch@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/4] lib/intel_blt: check if blt
- commands are supported by the platforms
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230904095058.1526961-1-bhanuprakash.modem@intel.com>
+Subject: Re: [igt-dev] [i-g-t] lib/intel_chipset: Read device id from
+ xe_device struct
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,85 +26,74 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Sep 04, 2023 at 04:34:56PM +0530, sai.gowtham.ch@intel.com wrote:
-> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+On Mon, Sep 04, 2023 at 03:20:58PM +0530, Bhanuprakash Modem wrote:
+> Upon opening the driver, we query the device id & cache it in
+> the xe_device struct. So, no need to query for it every time,
+> instead, just read it from the xe_device.
 > 
-> Check if mem-copy/mem-set commands are supported by fd device.
-> 
-> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > ---
->  lib/intel_blt.c | 32 ++++++++++++++++++++++++++++++++
->  lib/intel_blt.h |  2 ++
->  2 files changed, 34 insertions(+)
+>  lib/intel_chipset.c | 25 +------------------------
+>  1 file changed, 1 insertion(+), 24 deletions(-)
 > 
-> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-> index 429511920..b55fa9b52 100644
-> --- a/lib/intel_blt.c
-> +++ b/lib/intel_blt.c
-> @@ -289,6 +289,38 @@ bool blt_has_block_copy(int fd)
->  	return blt_supports_command(cmds_info, XY_BLOCK_COPY);
+> diff --git a/lib/intel_chipset.c b/lib/intel_chipset.c
+> index 1d7166aef..760faede2 100644
+> --- a/lib/intel_chipset.c
+> +++ b/lib/intel_chipset.c
+> @@ -127,29 +127,6 @@ static uint32_t __i915_get_drm_devid(int fd)
+>  	return devid;
 >  }
 >  
-> +/**
-> + * blt_has_mem_copy
-> + * @fd: drm fd
-> + *
-> + * Check if mem copy is supported by @fd device
-> + *
-> + * Returns:
-> + * true if it does, false otherwise.
-> + */
-> +bool blt_has_mem_copy(int fd)
-> +{
-> +	const struct intel_cmds_info *cmds_info = GET_CMDS_INFO(fd);
-> +
-> +	return blt_supports_command(cmds_info, MEM_COPY);
-> +}
-> +
-> +/**
-> + * blt_has_mem_set
-> + * @fd: drm fd
-> + *
-> + * Check if mem set is supported by @fd device
-> + *
-> + * Returns:
-> + * true if it does, false otherwise.
-> + */
-> +bool blt_has_mem_set(int fd)
-> +{
-> +	const struct intel_cmds_info *cmds_info = GET_CMDS_INFO(fd);
-> +
-> +	return blt_supports_command(cmds_info, MEM_SET);
-> +}
-> +
+> -static uint32_t __xe_get_drm_devid(int fd)
+> -{
+> -	struct drm_xe_query_config *config;
+> -	struct drm_xe_device_query query = {
+> -		.extensions = 0,
+> -		.query = DRM_XE_DEVICE_QUERY_CONFIG,
+> -		.size = 0,
+> -		.data = 0,
+> -	};
+> -
+> -	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+> -
+> -	config = malloc(query.size);
+> -	igt_assert(config);
+> -
+> -	query.data = to_user_pointer(config);
+> -	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+> -
+> -	igt_assert(config->num_params > 0);
+> -
+> -	return config->info[XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff;
+> -}
+> -
+>  /**
+>   * intel_get_drm_devid:
+>   * @fd: open i915/xe drm file descriptor
+> @@ -174,7 +151,7 @@ intel_get_drm_devid(int fd)
+>  	if (is_i915_device(fd))
+>  		return __i915_get_drm_devid(fd);
+>  	else
+> -		return __xe_get_drm_devid(fd);
+> +		return xe_dev_id(fd);
 
-It is not true if you'll use those functions in i915 igts.
-mem-set and mem-copy commands you've introduced in 1/4 patch
-should be part of intel_blt.[ch] library.
+Ok. I remember you've introduced calling xe_device_get() in some
+patch so drm_open*() and drm_reopen_driver() ensures you got fd
+xe device data cached for this fd.
 
-BTW first patch 1/4 won't compile in step-by-step mode because
-it uses code from following patches.
+So:
+
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
 --
 Zbigniew
 
-
->  /**
->   * blt_has_fast_copy
->   * @fd: drm fd
-> diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-> index b8b3d724d..d9c8883c7 100644
-> --- a/lib/intel_blt.h
-> +++ b/lib/intel_blt.h
-> @@ -175,6 +175,8 @@ bool blt_cmd_has_property(const struct intel_cmds_info *cmds_info,
->  			  uint32_t prop);
+>  }
 >  
->  bool blt_has_block_copy(int fd);
-> +bool blt_has_mem_copy(int fd);
-> +bool blt_has_mem_set(int fd);
->  bool blt_has_fast_copy(int fd);
->  bool blt_has_xy_src_copy(int fd);
->  bool blt_has_xy_color(int fd);
+>  /**
 > -- 
-> 2.39.1
+> 2.40.0
 > 
