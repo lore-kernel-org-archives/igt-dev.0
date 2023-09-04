@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Content-Type: multipart/alternative;
+ boundary="===============3958803539800284589=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Jeevan B" <jeevan.b@intel.com>
-Date: Mon, 04 Sep 2023 17:32:55 -0000
-Message-ID: <169384877506.21388.9146314174219437950@emeril.freedesktop.org>
+Date: Mon, 04 Sep 2023 18:02:01 -0000
+Message-ID: <169385052167.21388.14638975217857502833@emeril.freedesktop.org>
 References: <20230904170749.14616-1-jeevan.b@intel.com>
 In-Reply-To: <20230904170749.14616-1-jeevan.b@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
- =?utf-8?q?ests/kms=5Fsetmode=3A_skip_subtest_when_valid_combination_not_f?=
- =?utf-8?q?ound?=
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/km?=
+ =?utf-8?q?s=5Fsetmode=3A_skip_subtest_when_valid_combination_not_found?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,61 +23,121 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============3958803539800284589==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
 Series: tests/kms_setmode: skip subtest when valid combination not found
 URL   : https://patchwork.freedesktop.org/series/123252/
-State : warning
+State : success
 
 == Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from XEIGT_7467_BAT -> XEIGTPW_9712_BAT
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/977563 for the overview.
+Summary
+-------
 
-build-containers:build-debian has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48503224):
-  time="2023-09-04T17:31:51Z" level=fatal msg="Error determining repository tags: Get https://registry.freedesktop.org/v2/gfx-ci/igt-ci-tags/build-debian-minimal/tags/list?last=commit-7b7253d5af41f29156750013900f5c2287c5c49c&n=100: dial tcp 147.75.198.156:443: i/o timeout" 
-  Building!
-  STEP 1: FROM debian:buster
-  Getting image source signatures
-  Copying blob sha256:d6b7393fb4f375905c31c483d81ce2a2905f88aba8cb198874da2b54035bc41d
-  Copying config sha256:de08540e8ff0e470ff7956df4bed403725a5f45c186e9bf495da5344ff8fbe84
-  Writing manifest to image destination
-  Storing signatures
-  STEP 2: RUN apt-get update
-  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-09-04T17:31:56Z" level=warning msg="signal: killed"
-  time="2023-09-04T17:31:56Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
-  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
-  : exit status 1
-  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
-  section_end:1693848716:step_script
-  section_start:1693848716:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1693848717:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+  **SUCCESS**
+
+  No regressions found.
+
   
 
-build-containers:build-debian-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48503226):
-  time="2023-09-04T17:31:56Z" level=fatal msg="Error determining repository tags: Get https://registry.freedesktop.org/v2/gfx-ci/igt-ci-tags/build-debian-arm64/tags/list?last=commit-fa397717a892ef599ee8ef625243a000f9ab8292&n=100: dial tcp 147.75.198.156:443: i/o timeout" 
-  Building!
-  STEP 1: FROM debian:buster
-  Getting image source signatures
-  Copying blob sha256:d6b7393fb4f375905c31c483d81ce2a2905f88aba8cb198874da2b54035bc41d
-  Copying config sha256:de08540e8ff0e470ff7956df4bed403725a5f45c186e9bf495da5344ff8fbe84
-  Writing manifest to image destination
-  Storing signatures
-  STEP 2: RUN apt-get update
-  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-09-04T17:32:01Z" level=warning msg="signal: killed"
-  time="2023-09-04T17:32:01Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
-  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
-  : exit status 1
-  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
-  section_end:1693848722:step_script
-  section_start:1693848722:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1693848722:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9712_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
+    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#480]) +2 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7467/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9712/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+
+  
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7467 -> IGTPW_9712
+
+  IGTPW_9712: 9712
+  IGT_7467: 7467
+  xe-354-7ec520d3a63b6e95174329108cd44359a70907ba: 7ec520d3a63b6e95174329108cd44359a70907ba
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/977563
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9712/index.html
+
+--===============3958803539800284589==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_setmode: skip subtest when valid combination not found</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123252/">https://patchwork.freedesktop.org/series/123252/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9712/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9712/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7467_BAT -&gt; XEIGTPW_9712_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9712_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7467/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9712/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +2 similar issues</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7467 -&gt; IGTPW_9712</li>
+</ul>
+<p>IGTPW_9712: 9712<br />
+  IGT_7467: 7467<br />
+  xe-354-7ec520d3a63b6e95174329108cd44359a70907ba: 7ec520d3a63b6e95174329108cd44359a70907ba</p>
+
+</body>
+</html>
+
+--===============3958803539800284589==--
