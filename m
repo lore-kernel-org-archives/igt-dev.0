@@ -1,19 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B4AFD10E440
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Sep 2023 07:34:00 +0000 (UTC)
-Message-ID: <8ea05f0c-2c04-56d6-97d8-776628819025@intel.com>
-Date: Tue, 5 Sep 2023 13:03:52 +0530
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3714910E443
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Sep 2023 07:34:11 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue,  5 Sep 2023 12:55:57 +0530
+Message-Id: <20230905072601.1602968-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-To: Swati Sharma <swati2.sharma@intel.com>, igt-dev@lists.freedesktop.org
-References: <20230826050538.1184370-1-swati2.sharma@intel.com>
-Content-Language: en-US
-From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
-In-Reply-To: <20230826050538.1184370-1-swati2.sharma@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [i-g-t] tests/feature_discovery: detect mst
- configuration
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t 0/4] Enable hang tests for XE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,9 +20,19 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Enable KMS hang tests on XE driver.
 
-On 8/26/2023 10:35 AM, Swati Sharma wrote:
-> Add test to detect if we have mst configuration.
->
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
+Bhanuprakash Modem (4):
+  tests/kms_vblank: Allow hang tests to run on XE
+  tests/i915/kms_flip: Fix testplan documentation for hang tests
+  tests/intel-ci/xe.blocklist: Drop hang tests from xe blocklist
+  HAX: Add hang tests to xe BAT
+
+ tests/intel-ci/xe-fast-feedback.testlist | 105 ++++++++++++++++++++++-
+ tests/intel-ci/xe.blocklist.txt          |   2 -
+ tests/kms_flip.c                         |  25 +++++-
+ tests/kms_vblank.c                       |   5 +-
+ 4 files changed, 131 insertions(+), 6 deletions(-)
+
+--
+2.40.0
