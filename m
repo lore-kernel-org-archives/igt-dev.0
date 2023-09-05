@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BE65310E193
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Sep 2023 12:41:31 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue,  5 Sep 2023 18:11:27 +0530
+Message-Id: <20230905124127.1250108-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
-Date: Tue, 05 Sep 2023 12:16:02 -0000
-Message-ID: <169391616238.19168.4701326898197699595@emeril.freedesktop.org>
-References: <20230905072601.1602968-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230905072601.1602968-1-bhanuprakash.modem@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_E?=
- =?utf-8?q?nable_hang_tests_for_XE?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/intel-ci: drop suspend test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,75 +16,29 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Its safer to run suspend tests under resume runs. Drop
+only suspend test from the ffb.
 
-Series: Enable hang tests for XE
-URL   : https://patchwork.freedesktop.org/series/123266/
-State : warning
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ tests/intel-ci/xe-fast-feedback.testlist | 1 -
+ 1 file changed, 1 deletion(-)
 
-== Summary ==
-
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/978186 for the overview.
-
-build-containers:build-debian has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48540196):
-  Running with gitlab-runner 16.3.0 (8ec04662)
-    on fdo-equinix-m3l-28 _cvnfVvT, system ID: s_d7b83ec7ddf0
-  section_start:1693915866:prepare_executor
-  Preparing the "docker" executor
-  Using Docker executor with image registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
-  Using helper image:  registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-8ec04662
-  Pulling docker image registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-8ec04662 ...
-  WARNING: Failed to pull image with policy "if-not-present": open /var/lib/docker/tmp/GetImageBlob1861947907: no such file or directory (manager.go:237:0s)
-  section_end:1693915866:prepare_executor
-  ERROR: Job failed: failed to pull image "registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-8ec04662" with specified policies [if-not-present]: open /var/lib/docker/tmp/GetImageBlob1861947907: no such file or directory (manager.go:237:0s)
-  
-
-build-containers:build-debian-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48540197):
-  Running with gitlab-runner 16.3.0 (8ec04662)
-    on fdo-equinix-m3l-28 _cvnfVvT, system ID: s_d7b83ec7ddf0
-  section_start:1693915866:prepare_executor
-  Preparing the "docker" executor
-  Using Docker executor with image registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
-  Using helper image:  registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-8ec04662
-  Pulling docker image registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-8ec04662 ...
-  WARNING: Failed to pull image with policy "if-not-present": open /var/lib/docker/tmp/GetImageBlob1867710776: no such file or directory (manager.go:237:0s)
-  section_end:1693915867:prepare_executor
-  ERROR: Job failed: failed to pull image "registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-8ec04662" with specified policies [if-not-present]: open /var/lib/docker/tmp/GetImageBlob1867710776: no such file or directory (manager.go:237:0s)
-  
-
-build-containers:build-debian-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48540199):
-  Running with gitlab-runner 16.3.0 (8ec04662)
-    on fdo-equinix-m3l-28 _cvnfVvT, system ID: s_d7b83ec7ddf0
-  section_start:1693915867:prepare_executor
-  Preparing the "docker" executor
-  Using Docker executor with image registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
-  Using helper image:  registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-8ec04662
-  Pulling docker image registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-8ec04662 ...
-  WARNING: Failed to pull image with policy "if-not-present": open /var/lib/docker/tmp/GetImageBlob1772548791: no such file or directory (manager.go:237:0s)
-  section_end:1693915867:prepare_executor
-  ERROR: Job failed: failed to pull image "registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-8ec04662" with specified policies [if-not-present]: open /var/lib/docker/tmp/GetImageBlob1772548791: no such file or directory (manager.go:237:0s)
-  
-
-build-containers:build-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48540200):
-  Running with gitlab-runner 16.3.0 (8ec04662)
-    on fdo-equinix-m3l-28 _cvnfVvT, system ID: s_d7b83ec7ddf0
-  section_start:1693915867:prepare_executor
-  Preparing the "docker" executor
-  Using Docker executor with image registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
-  Using helper image:  registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-8ec04662
-  Pulling docker image registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-8ec04662 ...
-  WARNING: Failed to pull image with policy "if-not-present": open /var/lib/docker/tmp/GetImageBlob2396081253: no such file or directory (manager.go:237:0s)
-  section_end:1693915868:prepare_executor
-  ERROR: Job failed: failed to pull image "registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-8ec04662" with specified policies [if-not-present]: open /var/lib/docker/tmp/GetImageBlob2396081253: no such file or directory (manager.go:237:0s)
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/978186
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+index a395fa8c3..a2b231c17 100644
+--- a/tests/intel-ci/xe-fast-feedback.testlist
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -237,7 +237,6 @@ igt@kms_pipe_crc_basic@nonblocking-crc
+ igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
+ igt@kms_pipe_crc_basic@read-crc
+ igt@kms_pipe_crc_basic@read-crc-frame-sequence
+-igt@kms_pipe_crc_basic@suspend-read-crc
+ igt@kms_prop_blob@basic
+ igt@kms_psr@primary_page_flip
+ igt@kms_psr@cursor_plane_move
+-- 
+2.25.1
