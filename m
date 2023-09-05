@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BB8B110E500
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Sep 2023 13:02:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7F46610E500
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Sep 2023 13:02:56 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  5 Sep 2023 18:23:54 +0530
-Message-Id: <20230905125356.1659246-6-bhanuprakash.modem@intel.com>
+Date: Tue,  5 Sep 2023 18:23:53 +0530
+Message-Id: <20230905125356.1659246-5-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230905125356.1659246-1-bhanuprakash.modem@intel.com>
 References: <20230905125356.1659246-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 5/7] tests/intel/pm: Rename i915_pm_lpsp to
- kms_pm_lpsp
+Subject: [igt-dev] [i-g-t V2 4/7] tests/intel/kms_pm_dc: Fix testplan
+ documentation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,74 +23,109 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As i915_pm_lpsp is a display specific test, rename it with
-the "kms_" prefix, i.e kms_pm_lpsp.
-
-V2: - Rebase
+As kms_pm_dc is moved to display, update the test documentation
+according to the kms testplan kms_test_config.json
 
 Cc: Swati Sharma <swati2.sharma@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/intel/{i915_pm_lpsp.c => kms_pm_lpsp.c} | 24 ++-----------------
- tests/meson.build                             |  2 +-
- 2 files changed, 3 insertions(+), 23 deletions(-)
- rename tests/intel/{i915_pm_lpsp.c => kms_pm_lpsp.c} (82%)
+ tests/intel/kms_pm_dc.c | 66 ++++++++++++++++++++++++++++-------------
+ 1 file changed, 45 insertions(+), 21 deletions(-)
 
-diff --git a/tests/intel/i915_pm_lpsp.c b/tests/intel/kms_pm_lpsp.c
-similarity index 82%
-rename from tests/intel/i915_pm_lpsp.c
-rename to tests/intel/kms_pm_lpsp.c
-index 291e56674..0adcb8cc0 100644
---- a/tests/intel/i915_pm_lpsp.c
-+++ b/tests/intel/kms_pm_lpsp.c
-@@ -1,26 +1,6 @@
-+// SPDX-License-Identifier: MIT
- /*
-- * Copyright © 2013 Intel Corporation
-- *
-- * Permission is hereby granted, free of charge, to any person obtaining a
-- * copy of this software and associated documentation files (the "Software"),
-- * to deal in the Software without restriction, including without limitation
-- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-- * and/or sell copies of the Software, and to permit persons to whom the
-- * Software is furnished to do so, subject to the following conditions:
-- *
-- * The above copyright notice and this permission notice (including the next
-- * paragraph) shall be included in all copies or substantial portions of the
-- * Software.
-- *
-- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-- * IN THE SOFTWARE.
-- *
-- * Author: Paulo Zanoni <paulo.r.zanoni@intel.com>
-+ * Copyright © 2023 Intel Corporation
+diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
+index b5b38c976..dd810c0c2 100644
+--- a/tests/intel/kms_pm_dc.c
++++ b/tests/intel/kms_pm_dc.c
+@@ -19,45 +19,69 @@
+ #include "time.h"
+ #include "igt_pm.h"
+ /**
+- * TEST: i915 pm dc
++ * TEST: kms pm dc
++ * Category: Display
+  * Description: Tests to validate display power DC states.
+- * Run type: FULL
   *
+  * SUBTEST: dc3co-vpb-simulation
+- * Description:
+- *   In this test we make sure that system enters DC3CO when PSR2 is active and system is in SLEEP
+- *   state
+- * Feature: dc3co, pm_dc
++ * Description: Make sure that system enters DC3CO when PSR2 is active and system
++ *              is in SLEEP state
++ * Driver requirement: i915
++ * Functionality: dc3co, pm_dc, psr2
++ * Mega feature: Display Power
++ * Run type: FULL
++ * Test category: functionality test
+  *
+  * SUBTEST: dc5-dpms
+- * Description:
+- *   This test validates display engine entry to DC5 state while all connectors's DPMS property
+- *   set to OFF
+- * Feature: pm_dc
++ * Description: Validate display engine entry to DC5 state while all connectors's
++ *              DPMS property set to OFF
++ * Driver requirement: i915
++ * Functionality: dpms, pm_dc
++ * Mega feature: Display Power
++ * Run type: FULL
++ * Test category: functionality test
+  *
+  * SUBTEST: dc5-dpms-negative
+- * Description:
+- *   This test validates negative scenario of DC5 display engine entry to DC5 state while all
+- *   connectors's DPMS property set to ON
+- * Feature: pm_dc
++ * Description: Validate negative scenario of DC5 display engine entry to DC5 state
++ *              while all connectors's DPMS property set to ON
++ * Driver requirement: i915
++ * Functionality: dpms, pm_dc
++ * Mega feature: Display Power
++ * Run type: FULL
++ * Test category: functionality test
+  *
+  * SUBTEST: dc5-psr
+  * Description: This test validates display engine entry to DC5 state while PSR is active
+- * Feature: pm_dc
++ * Driver requirement: i915
++ * Functionality: pm_dc, psr
++ * Mega feature: Display Power
++ * Run type: FULL
++ * Test category: functionality test
+  *
+  * SUBTEST: dc6-dpms
+- * Description:
+- *   This test validates display engine entry to DC6 state while all connectors's DPMS property
+- *   set to OFF
+- * Feature: pm_dc
++ * Description: Validate display engine entry to DC6 state while all connectors's
++ *              DPMS property set to OFF
++ * Driver requirement: i915
++ * Functionality: dpms, pm_dc
++ * Mega feature: Display Power
++ * Run type: FULL
++ * Test category: functionality test
+  *
+  * SUBTEST: dc6-psr
+  * Description: This test validates display engine entry to DC6 state while PSR is active
+- * Feature: pm_dc
++ * Driver requirement: i915
++ * Functionality: pm_dc, psr
++ * Mega feature: Display Power
++ * Run type: FULL
++ * Test category: functionality test
+  *
+  * SUBTEST: dc9-dpms
+  * Description: This test validates display engine entry to DC9 state
+- * Feature: pm_dc
++ * Driver requirement: i915
++ * Functionality: dpms, pm_dc
++ * Mega feature: Display Power
++ * Run type: FULL
++ * Test category: functionality test
   */
  
-diff --git a/tests/meson.build b/tests/meson.build
-index ea8b60282..92729e0c3 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -222,7 +222,6 @@ intel_i915_progs = [
- 	'i915_pciid',
- 	'i915_pipe_stress',
- 	'i915_pm_freq_mult',
--	'i915_pm_lpsp',
- 	'i915_pm_rpm',
- 	'i915_pm_rc6_residency',
- 	'i915_pm_rps',
-@@ -262,6 +261,7 @@ intel_kms_progs = [
- 	'kms_pipe_b_c_ivb',
- 	'kms_pm_backlight',
- 	'kms_pm_dc',
-+	'kms_pm_lpsp',
- 	'kms_psr',
- 	'kms_psr2_sf',
- 	'kms_psr2_su',
+ /* DC State Flags */
 -- 
 2.40.0
