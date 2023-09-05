@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9E02110E441
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Sep 2023 07:34:16 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue,  5 Sep 2023 12:56:01 +0530
-Message-Id: <20230905072601.1602968-5-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230905072601.1602968-1-bhanuprakash.modem@intel.com>
-References: <20230905072601.1602968-1-bhanuprakash.modem@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 22AAD10E17A
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Sep 2023 07:40:37 +0000 (UTC)
+Message-ID: <63cd35a0-a6fb-2d0a-7004-786ad4910e3a@intel.com>
+Date: Tue, 5 Sep 2023 13:10:24 +0530
+Content-Language: en-US
+To: Riana Tauro <riana.tauro@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20230905052058.2216763-1-riana.tauro@intel.com>
+ <20230905052058.2216763-2-riana.tauro@intel.com>
+From: "Sundaresan, Sujaritha" <sujaritha.sundaresan@intel.com>
+In-Reply-To: <20230905052058.2216763-2-riana.tauro@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 4/4] HAX: Add hang tests to xe BAT
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/xe: Add GT id to C6 assertions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,144 +21,65 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/intel-ci/xe-fast-feedback.testlist | 105 ++++++++++++++++++++++-
- 1 file changed, 104 insertions(+), 1 deletion(-)
 
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index a395fa8c3..7c1c26fda 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -221,14 +221,17 @@ igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
- igt@kms_cursor_legacy@basic-flip-before-cursor-atomic
- igt@kms_cursor_legacy@basic-flip-before-cursor-legacy
- igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size
-+igt@kms_cursor_legacy@flip-vs-cursor-busy-crc-atomic
-+igt@kms_cursor_legacy@flip-vs-cursor-busy-crc-legacy
- igt@kms_flip@basic-flip-vs-dpms
- igt@kms_flip@basic-flip-vs-modeset
- igt@kms_flip@basic-flip-vs-wf_vblank
- igt@kms_flip@basic-plain-flip
-+igt@kms_flip@flip-vs-modeset-vs-hang
-+igt@kms_flip@flip-vs-panning-vs-hang
- igt@kms_force_connector_basic@force-connector-state
- igt@kms_force_connector_basic@force-edid
- igt@kms_force_connector_basic@prune-stale-modes
--igt@kms_frontbuffer_tracking@basic
- igt@kms_hdmi_inject@inject-audio
- igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24
- igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12
-@@ -242,6 +245,106 @@ igt@kms_prop_blob@basic
- igt@kms_psr@primary_page_flip
- igt@kms_psr@cursor_plane_move
- igt@kms_psr@sprite_plane_onoff
-+igt@kms_vblank@pipe-A-accuracy-idle
-+igt@kms_vblank@pipe-A-query-busy
-+igt@kms_vblank@pipe-A-query-busy-hang
-+igt@kms_vblank@pipe-A-query-forked
-+igt@kms_vblank@pipe-A-query-forked-busy
-+igt@kms_vblank@pipe-A-query-forked-busy-hang
-+igt@kms_vblank@pipe-A-query-forked-hang
-+igt@kms_vblank@pipe-A-query-idle
-+igt@kms_vblank@pipe-A-query-idle-hang
-+igt@kms_vblank@pipe-A-ts-continuation-dpms-rpm
-+igt@kms_vblank@pipe-A-ts-continuation-dpms-suspend
-+igt@kms_vblank@pipe-A-ts-continuation-idle
-+igt@kms_vblank@pipe-A-ts-continuation-idle-hang
-+igt@kms_vblank@pipe-A-ts-continuation-modeset
-+igt@kms_vblank@pipe-A-ts-continuation-modeset-hang
-+igt@kms_vblank@pipe-A-ts-continuation-modeset-rpm
-+igt@kms_vblank@pipe-A-ts-continuation-suspend
-+igt@kms_vblank@pipe-A-wait-busy
-+igt@kms_vblank@pipe-A-wait-busy-hang
-+igt@kms_vblank@pipe-A-wait-forked
-+igt@kms_vblank@pipe-A-wait-forked-busy
-+igt@kms_vblank@pipe-A-wait-forked-busy-hang
-+igt@kms_vblank@pipe-A-wait-forked-hang
-+igt@kms_vblank@pipe-A-wait-idle
-+igt@kms_vblank@pipe-A-wait-idle-hang
-+igt@kms_vblank@pipe-B-accuracy-idle
-+igt@kms_vblank@pipe-B-query-busy
-+igt@kms_vblank@pipe-B-query-busy-hang
-+igt@kms_vblank@pipe-B-query-forked
-+igt@kms_vblank@pipe-B-query-forked-busy
-+igt@kms_vblank@pipe-B-query-forked-busy-hang
-+igt@kms_vblank@pipe-B-query-forked-hang
-+igt@kms_vblank@pipe-B-query-idle
-+igt@kms_vblank@pipe-B-query-idle-hang
-+igt@kms_vblank@pipe-B-ts-continuation-dpms-rpm
-+igt@kms_vblank@pipe-B-ts-continuation-dpms-suspend
-+igt@kms_vblank@pipe-B-ts-continuation-idle
-+igt@kms_vblank@pipe-B-ts-continuation-idle-hang
-+igt@kms_vblank@pipe-B-ts-continuation-modeset
-+igt@kms_vblank@pipe-B-ts-continuation-modeset-hang
-+igt@kms_vblank@pipe-B-ts-continuation-modeset-rpm
-+igt@kms_vblank@pipe-B-ts-continuation-suspend
-+igt@kms_vblank@pipe-B-wait-busy
-+igt@kms_vblank@pipe-B-wait-busy-hang
-+igt@kms_vblank@pipe-B-wait-forked
-+igt@kms_vblank@pipe-B-wait-forked-busy
-+igt@kms_vblank@pipe-B-wait-forked-busy-hang
-+igt@kms_vblank@pipe-B-wait-forked-hang
-+igt@kms_vblank@pipe-B-wait-idle
-+igt@kms_vblank@pipe-B-wait-idle-hang
-+igt@kms_vblank@pipe-C-accuracy-idle
-+igt@kms_vblank@pipe-C-query-busy
-+igt@kms_vblank@pipe-C-query-busy-hang
-+igt@kms_vblank@pipe-C-query-forked
-+igt@kms_vblank@pipe-C-query-forked-busy
-+igt@kms_vblank@pipe-C-query-forked-busy-hang
-+igt@kms_vblank@pipe-C-query-forked-hang
-+igt@kms_vblank@pipe-C-query-idle
-+igt@kms_vblank@pipe-C-query-idle-hang
-+igt@kms_vblank@pipe-C-ts-continuation-dpms-rpm
-+igt@kms_vblank@pipe-C-ts-continuation-dpms-suspend
-+igt@kms_vblank@pipe-C-ts-continuation-idle
-+igt@kms_vblank@pipe-C-ts-continuation-idle-hang
-+igt@kms_vblank@pipe-C-ts-continuation-modeset
-+igt@kms_vblank@pipe-C-ts-continuation-modeset-hang
-+igt@kms_vblank@pipe-C-ts-continuation-modeset-rpm
-+igt@kms_vblank@pipe-C-ts-continuation-suspend
-+igt@kms_vblank@pipe-C-wait-busy
-+igt@kms_vblank@pipe-C-wait-busy-hang
-+igt@kms_vblank@pipe-C-wait-forked
-+igt@kms_vblank@pipe-C-wait-forked-busy
-+igt@kms_vblank@pipe-C-wait-forked-busy-hang
-+igt@kms_vblank@pipe-C-wait-forked-hang
-+igt@kms_vblank@pipe-C-wait-idle
-+igt@kms_vblank@pipe-C-wait-idle-hang
-+igt@kms_vblank@pipe-D-accuracy-idle
-+igt@kms_vblank@pipe-D-query-busy
-+igt@kms_vblank@pipe-D-query-busy-hang
-+igt@kms_vblank@pipe-D-query-forked
-+igt@kms_vblank@pipe-D-query-forked-busy
-+igt@kms_vblank@pipe-D-query-forked-busy-hang
-+igt@kms_vblank@pipe-D-query-forked-hang
-+igt@kms_vblank@pipe-D-query-idle
-+igt@kms_vblank@pipe-D-query-idle-hang
-+igt@kms_vblank@pipe-D-ts-continuation-dpms-rpm
-+igt@kms_vblank@pipe-D-ts-continuation-dpms-suspend
-+igt@kms_vblank@pipe-D-ts-continuation-idle
-+igt@kms_vblank@pipe-D-ts-continuation-idle-hang
-+igt@kms_vblank@pipe-D-ts-continuation-modeset
-+igt@kms_vblank@pipe-D-ts-continuation-modeset-hang
-+igt@kms_vblank@pipe-D-ts-continuation-modeset-rpm
-+igt@kms_vblank@pipe-D-ts-continuation-suspend
-+igt@kms_vblank@pipe-D-wait-busy
-+igt@kms_vblank@pipe-D-wait-busy-hang
-+igt@kms_vblank@pipe-D-wait-forked
-+igt@kms_vblank@pipe-D-wait-forked-busy
-+igt@kms_vblank@pipe-D-wait-forked-busy-hang
-+igt@kms_vblank@pipe-D-wait-forked-hang
-+igt@kms_vblank@pipe-D-wait-idle
-+igt@kms_vblank@pipe-D-wait-idle-hang
- 
- # All tests that do module unloading and reloading are executed last.
- # They will sometimes reveal issues of earlier tests leaving the
--- 
-2.40.0
+On 9/5/2023 10:50 AM, Riana Tauro wrote:
+> Add GT id to igt assertions in xe_pm_residency that
+> checks if a GT is in a required C State.
+> This helps to identify which GT is causing a failure.
+>
+> No functional changes.
+>
+> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+> ---
+>   tests/intel/xe_pm_residency.c | 8 ++++----
+>   1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
+> index bf8230114..a538d1917 100644
+> --- a/tests/intel/xe_pm_residency.c
+> +++ b/tests/intel/xe_pm_residency.c
+> @@ -100,7 +100,7 @@ static void test_idle_residency(int fd, int gt, enum test_type flag)
+>   {
+>   	unsigned long elapsed_ms, residency_start, residency_end;
+>   
+> -	igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 1), "GT not in C6\n");
+> +	igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 1), "GT %d not in C6\n", gt);
+>   
+>   	if (flag == TEST_S2IDLE) {
+>   		/*
+> @@ -156,7 +156,7 @@ static void toggle_gt_c6(int fd, int n)
+>   		/* check if all gts are in C0 after forcewake is acquired */
+>   		xe_for_each_gt(fd, gt)
+>   			igt_assert_f(!xe_is_gt_in_c6(fd, gt),
+> -				     "Forcewake acquired, GT should be in C0\n");
+> +				     "Forcewake acquired, GT %d should be in C0\n", gt);
+>   
+>   		if (n == NUM_REPS)
+>   			measure_power(&gpu, &gt_c0_power);
+> @@ -165,7 +165,7 @@ static void toggle_gt_c6(int fd, int n)
+>   		/* check if all gts are in C6 after forcewake is released */
+>   		xe_for_each_gt(fd, gt)
+>   			igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 1),
+> -				     "Forcewake released, GT should be in C6\n");
+> +				     "Forcewake released, GT %d should be in C6\n", gt);
+>   
+>   		if (n == NUM_REPS)
+>   			measure_power(&gpu, &gt_c6_power);
+> @@ -194,7 +194,7 @@ igt_main
+>   	igt_describe("Validate GT C6 on idle");
+>   	igt_subtest("gt-c6-on-idle")
+>   		xe_for_each_gt(fd, gt)
+> -			igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 1), "GT not in C6\n");
+> +			igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 1), "GT %d not in C6\n", gt);
+>   
+>   	igt_describe("Validate idle residency measured over suspend cycle is within the tolerance");
+>   	igt_subtest("gt-c6-freeze") {
+
+The pre merge failures don't seem to be related. lgtm,
+
+Reviewed-by: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
