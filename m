@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5D07910E50B
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Sep 2023 13:33:27 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6E3D510E518
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Sep 2023 13:33:40 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  5 Sep 2023 15:33:02 +0200
-Message-Id: <20230905133309.365109-3-zbigniew.kempczynski@intel.com>
+Date: Tue,  5 Sep 2023 15:33:05 +0200
+Message-Id: <20230905133309.365109-6-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20230905133309.365109-1-zbigniew.kempczynski@intel.com>
 References: <20230905133309.365109-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 2/9] lib/intel_compute: Add compatibility
- flags for running compute
+Subject: [igt-dev] [PATCH i-g-t v2 5/9] lib/intel_compute: Add i915 path in
+ compute library
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,70 +24,112 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Allow selectively turn on/off compute tests on both i915 and xe
-drivers.
+Add code which fills requirement to run compute workload on i915.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Christoph Manszewski <christoph.manszewski@intel.com>
 Cc: Francois Dugast <francois.dugast@intel.com>
 Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- lib/intel_compute.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ lib/intel_compute.c | 50 ++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 49 insertions(+), 1 deletion(-)
 
 diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index 647bce0e43..dd9f686d0c 100644
+index a1e87ef46f..4344844825 100644
 --- a/lib/intel_compute.c
 +++ b/lib/intel_compute.c
-@@ -446,17 +446,27 @@ static void tgl_compute_exec(int fd, const unsigned char *kernel,
+@@ -8,6 +8,7 @@
+ 
+ #include <stdint.h>
+ 
++#include "i915/gem_create.h"
+ #include "igt.h"
+ #include "xe_drm.h"
+ #include "lib/igt_syncobj.h"
+@@ -38,6 +39,7 @@ struct bo_dict_entry {
+ 	uint32_t size;
+ 	void *data;
+ 	const char *name;
++	uint32_t handle;
+ };
+ 
+ struct bo_execenv {
+@@ -47,6 +49,10 @@ struct bo_execenv {
+ 	/* Xe part */
+ 	uint32_t vm;
+ 	uint32_t exec_queue;
++
++	/* i915 part */
++	struct drm_i915_gem_execbuffer2 execbuf;
++	struct drm_i915_gem_exec_object2 *obj;
+ };
+ 
+ static void bo_execenv_create(int fd, struct bo_execenv *execenv)
+@@ -101,6 +107,33 @@ static void bo_execenv_bind(struct bo_execenv *execenv,
+ 		}
+ 
+ 		syncobj_destroy(fd, sync.handle);
++	} else {
++		struct drm_i915_gem_execbuffer2 *execbuf = &execenv->execbuf;
++		struct drm_i915_gem_exec_object2 *obj;
++
++		obj = calloc(entries, sizeof(*obj));
++		execenv->obj = obj;
++
++		for (int i = 0; i < entries; i++) {
++			bo_dict[i].handle = gem_create(fd, bo_dict[i].size);
++			bo_dict[i].data = gem_mmap__device_coherent(fd, bo_dict[i].handle,
++								    0, bo_dict[i].size,
++								    PROT_READ | PROT_WRITE);
++			igt_debug("[i: %2d name: %20s] handle: %u, data: %p, addr: %16llx, size: %llx\n",
++				  i, bo_dict[i].name,
++				  bo_dict[i].handle, bo_dict[i].data,
++				  (long long)bo_dict[i].addr,
++				  (long long)bo_dict[i].size);
++
++			obj[i].handle = bo_dict[i].handle;
++			obj[i].offset = CANONICAL(bo_dict[i].addr);
++			obj[i].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
++			if (bo_dict[i].addr == ADDR_OUTPUT)
++				obj[i].flags |= EXEC_OBJECT_WRITE;
++		}
++
++		execbuf->buffers_ptr = to_user_pointer(obj);
++		execbuf->buffer_count = entries;
+ 	}
+ }
+ 
+@@ -123,6 +156,12 @@ static void bo_execenv_unbind(struct bo_execenv *execenv,
+ 		}
+ 
+ 		syncobj_destroy(fd, sync.handle);
++	} else {
++		for (int i = 0; i < entries; i++) {
++			gem_close(fd, bo_dict[i].handle);
++			munmap(bo_dict[i].data, bo_dict[i].size);
++		}
++		free(execenv->obj);
+ 	}
+ }
+ 
+@@ -130,8 +169,17 @@ static void bo_execenv_exec(struct bo_execenv *execenv, uint64_t start_addr)
+ {
+ 	int fd = execenv->fd;
+ 
+-	if (execenv->driver == INTEL_DRIVER_XE)
++	if (execenv->driver == INTEL_DRIVER_XE) {
+ 		xe_exec_wait(fd, execenv->exec_queue, start_addr);
++	} else {
++		struct drm_i915_gem_execbuffer2 *execbuf = &execenv->execbuf;
++		struct drm_i915_gem_exec_object2 *obj = execenv->obj;
++		int num_objects = execbuf->buffer_count;
++
++		execbuf->flags = I915_EXEC_RENDER;
++		gem_execbuf(fd, execbuf);
++		gem_sync(fd, obj[num_objects - 1].handle); /* batch handle */
++	}
  }
  
  /*
-- * Generic code
-+ * Compatibility flags.
-+ *
-+ * There will be some time period in which both drivers (i915 and xe)
-+ * will support compute runtime tests. Lets define compat flags to allow
-+ * the code to be shared between two drivers allowing disabling this in
-+ * the future.
-  */
-+#define COMPAT_FLAG(f) (1 << (f))
-+#define COMPAT_I915 COMPAT_FLAG(INTEL_DRIVER_I915)
-+#define COMPAT_XE   COMPAT_FLAG(INTEL_DRIVER_XE)
- 
- static const struct {
- 	unsigned int ip_ver;
- 	void (*compute_exec)(int fd, const unsigned char *kernel,
- 			     unsigned int size);
-+	uint32_t compat;
- } compute_batches[] = {
- 	{
- 		.ip_ver = IP_VER(12, 0),
- 		.compute_exec = tgl_compute_exec,
-+		.compat = COMPAT_I915 | COMPAT_XE,
- 	},
- };
- 
-@@ -465,6 +475,7 @@ bool run_compute_kernel(int fd)
- 	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
- 	unsigned int batch;
- 	const struct compute_kernels *kernels = compute_square_kernels;
-+	enum intel_driver driver = get_intel_driver(fd);
- 
- 	for (batch = 0; batch < ARRAY_SIZE(compute_batches); batch++) {
- 		if (ip_ver == compute_batches[batch].ip_ver)
-@@ -473,6 +484,12 @@ bool run_compute_kernel(int fd)
- 	if (batch == ARRAY_SIZE(compute_batches))
- 		return false;
- 
-+	if (!(COMPAT_FLAG(driver) & compute_batches[batch].compat)) {
-+		igt_debug("driver flag: %x\n", COMPAT_FLAG(driver));
-+		igt_debug("compat flag: %x\n", compute_batches[batch].compat);
-+		return false;
-+	}
-+
- 	while (kernels->kernel) {
- 		if (ip_ver == kernels->ip_ver)
- 			break;
 -- 
 2.34.1
