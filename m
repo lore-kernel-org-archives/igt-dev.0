@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0E64810E50D
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Sep 2023 13:33:44 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A0B6910E50A
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Sep 2023 13:34:22 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  5 Sep 2023 15:33:06 +0200
-Message-Id: <20230905133309.365109-7-zbigniew.kempczynski@intel.com>
+Date: Tue,  5 Sep 2023 15:33:09 +0200
+Message-Id: <20230905133309.365109-10-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20230905133309.365109-1-zbigniew.kempczynski@intel.com>
 References: <20230905133309.365109-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 6/9] intel/gem_compute: Add test which
- runs compute workload on i915
+Subject: [igt-dev] [PATCH i-g-t v2 9/9] tests/gem|xe_compute: Update
+ documentation regarding test requirements
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,84 +24,53 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This test is verbatim copy of xe_compute with driver open exception
-(it opens i915 drm fd instead xe). Technically it is possible to
-create single test code (open would try DEVICE_INTEL | DEVICE_XE)
-but I resisted to that distinguishing i915 and xe version.
+Currently test is prepared to run on DG2, ATS-M and PVC so lets
+reflect this in the documentation tags.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Christoph Manszewski <christoph.manszewski@intel.com>
 Cc: Francois Dugast <francois.dugast@intel.com>
 Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/intel/gem_compute.c | 46 +++++++++++++++++++++++++++++++++++++++
- tests/meson.build         |  1 +
- 2 files changed, 47 insertions(+)
- create mode 100644 tests/intel/gem_compute.c
+ tests/intel/gem_compute.c | 3 +--
+ tests/intel/xe_compute.c  | 3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
 diff --git a/tests/intel/gem_compute.c b/tests/intel/gem_compute.c
-new file mode 100644
-index 0000000000..b408efee16
---- /dev/null
+index b408efee16..8f4722d2dc 100644
+--- a/tests/intel/gem_compute.c
 +++ b/tests/intel/gem_compute.c
-@@ -0,0 +1,46 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ */
-+
-+/**
-+ * TEST: Check compute-related functionality
-+ * Category: Hardware building block
-+ * Sub-category: compute
-+ * Test category: functionality test
-+ * Run type: BAT
-+ */
-+
-+#include <string.h>
-+
-+#include "igt.h"
-+#include "intel_compute.h"
-+
-+/**
-+ * SUBTEST: compute-square
-+ * GPU requirement: only works on TGL
-+ * Description:
-+ *	Run an openCL Kernel that returns output[i] = input[i] * input[i],
-+ *	for an input dataset..
-+ * Functionality: compute openCL kernel
-+ * TODO: extend test to cover other platforms
-+ */
-+static void
-+test_compute_square(int fd)
-+{
-+	igt_require_f(run_compute_kernel(fd), "GPU not supported\n");
-+}
-+
-+igt_main
-+{
-+	int i915;
-+
-+	igt_fixture
-+		i915 = drm_open_driver(DRIVER_INTEL);
-+
-+	igt_subtest("compute-square")
-+		test_compute_square(i915);
-+
-+	igt_fixture
-+		drm_close_driver(i915);
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index aa8e3434ce..03bb7785c3 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -105,6 +105,7 @@ intel_i915_progs = [
- 	'gem_ccs',
- 	'gem_close',
- 	'gem_close_race',
-+	'gem_compute',
- 	'gem_concurrent_blit',
- 	'gem_cs_tlb',
- 	'gem_ctx_bad_destroy',
+@@ -18,12 +18,11 @@
+ 
+ /**
+  * SUBTEST: compute-square
+- * GPU requirement: only works on TGL
++ * GPU requirement: TGL, DG2, ATS-M
+  * Description:
+  *	Run an openCL Kernel that returns output[i] = input[i] * input[i],
+  *	for an input dataset..
+  * Functionality: compute openCL kernel
+- * TODO: extend test to cover other platforms
+  */
+ static void
+ test_compute_square(int fd)
+diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
+index 0c54fbec42..07764decb5 100644
+--- a/tests/intel/xe_compute.c
++++ b/tests/intel/xe_compute.c
+@@ -19,12 +19,11 @@
+ 
+ /**
+  * SUBTEST: compute-square
+- * GPU requirement: only works on TGL
++ * GPU requirement: TGL, PVC
+  * Description:
+  *	Run an openCL Kernel that returns output[i] = input[i] * input[i],
+  *	for an input dataset..
+  * Functionality: compute openCL kernel
+- * TODO: extend test to cover other platforms
+  */
+ static void
+ test_compute_square(int fd)
 -- 
 2.34.1
