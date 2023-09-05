@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E679310E2E9
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Sep 2023 16:50:38 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9D9B510E0D5
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Sep 2023 16:50:39 +0000 (UTC)
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  5 Sep 2023 22:12:25 +0530
-Message-Id: <20230905164230.1679263-1-bhanuprakash.modem@intel.com>
+Date: Tue,  5 Sep 2023 18:48:28 +0200
+Message-ID: <20230905165033.187749-2-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230905165033.187749-1-mauro.chehab@linux.intel.com>
+References: <20230905165033.187749-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 0/5] Enable hang tests for XE
+Subject: [igt-dev] [RFC 1/3] xe_test_config.json: add testlists and
+ blacklists
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,27 +19,38 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: tomasz.mistat@intel.com, jari.tahvanainen@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Enable KMS hang tests on XE driver.
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-V2: - Fix igt_post_hang_ring() for XE
+Specify the testlists and blacklists to be used to store CI
+run type.
 
-Bhanuprakash Modem (5):
-  lib/igt_gt: Fix igt_post_hang_ring for XE driver
-  tests/kms_vblank: Allow hang tests to run on XE
-  tests/kms_flip: Fix testplan documentation for hang tests
-  tests/intel-ci/xe.blocklist: Drop hang tests from xe blocklist
-  HAX: Add hang tests to xe BAT
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ tests/intel/xe_test_config.json | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
- lib/igt_gt.c                             |   2 +
- tests/intel-ci/xe-fast-feedback.testlist | 105 ++++++++++++++++++++++-
- tests/intel-ci/xe.blocklist.txt          |   2 -
- tests/kms_flip.c                         |  25 +++++-
- tests/kms_vblank.c                       |   5 +-
- 5 files changed, 133 insertions(+), 6 deletions(-)
-
---
-2.40.0
+diff --git a/tests/intel/xe_test_config.json b/tests/intel/xe_test_config.json
+index 8fb65d02d840..27e3f273fb2a 100644
+--- a/tests/intel/xe_test_config.json
++++ b/tests/intel/xe_test_config.json
+@@ -32,6 +32,13 @@
+                         "_properties_": {
+                             "mandatory": true,
+                             "description": "Defines what category of testlist it belongs",
++                            "testlists": {
++                                "BAT": "../intel-ci/xe-fast-feedback.testlist",
++                                "BAT chamelium": "../intel-ci/xe-fast-feedback-chamelium-only.testlist"
++                            },
++                            "blocklists": {
++                                "__all__": "../intel-ci/xe.blocklist.txt"
++                            },
+                             "order": [
+                                 "boot",
+                                 "__all__",
+-- 
+2.41.0
