@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C790810E17A
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Sep 2023 07:44:47 +0000 (UTC)
-From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
-To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Tue, 5 Sep 2023 07:44:42 +0000
-Message-ID: <MW3PR11MB474883F06D02074954E54276AEE8A@MW3PR11MB4748.namprd11.prod.outlook.com>
-References: <20230817094652.40243-1-zbigniew.kempczynski@intel.com>
- <20230817094652.40243-2-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20230817094652.40243-2-zbigniew.kempczynski@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 031CB10E419
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Sep 2023 04:12:03 +0000 (UTC)
+From: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>
+To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>
+Date: Tue, 5 Sep 2023 04:11:54 +0000
+Message-ID: <BYAPR11MB3413605657BFBE884AA82502D0E8A@BYAPR11MB3413.namprd11.prod.outlook.com>
+References: <20230904110458.24177-1-sai.gowtham.ch@intel.com>
+ <20230904110458.24177-3-sai.gowtham.ch@intel.com>
+ <20230904123934.stxmaelmzxg3366l@zkempczy-mobl2>
+In-Reply-To: <20230904123934.stxmaelmzxg3366l@zkempczy-mobl2>
 Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/7] lib/intel_compute: Migrate
- xe_compute library to intel_compute
+Subject: Re: [igt-dev] [PATCH i-g-t 2/4] lib/intel_blt: check if blt
+ commands are supported by the platforms
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,124 +23,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogaWd0LWRldiA8aWd0LWRl
-di1ib3VuY2VzQGxpc3RzLmZyZWVkZXNrdG9wLm9yZz4gT24gQmVoYWxmIE9mIFpiaWduaWV3DQo+
-IEtlbXBjenluc2tpDQo+IFNlbnQ6IFRodXJzZGF5LCBBdWd1c3QgMTcsIDIwMjMgMzoxNyBQTQ0K
-PiBUbzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gU3ViamVjdDogW2lndC1kZXZd
-IFtQQVRDSCBpLWctdCAxLzddIGxpYi9pbnRlbF9jb21wdXRlOiBNaWdyYXRlIHhlX2NvbXB1dGUg
-bGlicmFyeQ0KPiB0byBpbnRlbF9jb21wdXRlDQo+IA0KPiBEdXJpbmcgbXkgd29yayBvbiBhZGRp
-bmcgeGUtY29tcHV0ZSBzdXBwb3J0IHRvIERHMiBJIGhpdCBzb21lIGlzc3VlcyBvbiBYZQ0KPiBk
-cml2ZXIgc28gaW5zdGVhZCBvZiBsaW1pdGluZyB3b3JrbG9hZCB0byBYZSBvbmx5IEkgZGVjaWRl
-ZCB0byBoYW5kbGUgaTkxNSBhcyB3ZWxsLg0KPiBTdWNoIGF0dGl0dWRlIG1pZ2h0IGJlIGhhbmR5
-IG9uIGRyaXZlciBmZWF0dXJlIHN0YXR1cyBjb21wYXJpc29uLg0KPiANCj4gUGF0Y2ggZG9lcyBw
-cmVwYXJhdGlvbiBzdGVwIHRvIHNoYXJlIHRoZSBjb2RlIGJldHdlZW4gaTkxNSBhbmQgWGUuDQo+
-IA0KPiBTaWduZWQtb2ZmLWJ5OiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBj
-enluc2tpQGludGVsLmNvbT4NCj4gQ2M6IENocmlzdG9waCBNYW5zemV3c2tpIDxjaHJpc3RvcGgu
-bWFuc3pld3NraUBpbnRlbC5jb20+DQo+IENjOiBGcmFuY29pcyBEdWdhc3QgPGZyYW5jb2lzLmR1
-Z2FzdEBpbnRlbC5jb20+DQo+IENjOiBNYXVybyBDYXJ2YWxobyBDaGVoYWIgPG1jaGVoYWJAa2Vy
-bmVsLm9yZz4NCj4gLS0tDQo+ICBsaWIve3hlL3hlX2NvbXB1dGUuYyA9PiBpbnRlbF9jb21wdXRl
-LmN9ICAgICAgIHwgMTggKysrKysrKysrLS0tLS0tLS0tDQo+ICBsaWIve3hlL3hlX2NvbXB1dGUu
-aCA9PiBpbnRlbF9jb21wdXRlLmh9ICAgICAgIHwgMTIgKysrKysrLS0tLS0tDQo+ICAuLi5lcm5l
-bHMuYyA9PiBpbnRlbF9jb21wdXRlX3NxdWFyZV9rZXJuZWxzLmN9IHwgIDQgKystLQ0KPiAgbGli
-L21lc29uLmJ1aWxkICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICA0ICsrLS0NCj4g
-IHRlc3RzL3hlL3hlX2NvbXB1dGUuYyAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgNCArKy0t
-DQo+ICA1IGZpbGVzIGNoYW5nZWQsIDIxIGluc2VydGlvbnMoKyksIDIxIGRlbGV0aW9ucygtKSAg
-cmVuYW1lIGxpYi97eGUveGVfY29tcHV0ZS5jID0+DQo+IGludGVsX2NvbXB1dGUuY30gKDk3JSkg
-IHJlbmFtZSBsaWIve3hlL3hlX2NvbXB1dGUuaCA9PiBpbnRlbF9jb21wdXRlLmh9ICg3NCUpDQo+
-IHJlbmFtZSBsaWIve3hlL3hlX2NvbXB1dGVfc3F1YXJlX2tlcm5lbHMuYyA9Pg0KPiBpbnRlbF9j
-b21wdXRlX3NxdWFyZV9rZXJuZWxzLmN9ICg5NyUpDQo+IA0KPiBkaWZmIC0tZ2l0IGEvbGliL3hl
-L3hlX2NvbXB1dGUuYyBiL2xpYi9pbnRlbF9jb21wdXRlLmMgc2ltaWxhcml0eSBpbmRleCA5NyUN
-Cj4gcmVuYW1lIGZyb20gbGliL3hlL3hlX2NvbXB1dGUuYyByZW5hbWUgdG8gbGliL2ludGVsX2Nv
-bXB1dGUuYyBpbmRleA0KPiAzZTgxMTJhMDQ4Li42NDdiY2UwZTQzIDEwMDY0NA0KPiAtLS0gYS9s
-aWIveGUveGVfY29tcHV0ZS5jDQo+ICsrKyBiL2xpYi9pbnRlbF9jb21wdXRlLmMNCj4gQEAgLTEz
-LDcgKzEzLDcgQEANCj4gICNpbmNsdWRlICJsaWIvaWd0X3N5bmNvYmouaCINCj4gICNpbmNsdWRl
-ICJsaWIvaW50ZWxfcmVnLmgiDQo+IA0KPiAtI2luY2x1ZGUgInhlX2NvbXB1dGUuaCINCj4gKyNp
-bmNsdWRlICJpbnRlbF9jb21wdXRlLmgiDQo+ICAjaW5jbHVkZSAieGUveGVfaW9jdGwuaCINCj4g
-ICNpbmNsdWRlICJ4ZS94ZV9xdWVyeS5oIg0KPiANCj4gQEAgLTQ1MywyNCArNDUzLDI0IEBAIHN0
-YXRpYyBjb25zdCBzdHJ1Y3Qgew0KPiAgCXVuc2lnbmVkIGludCBpcF92ZXI7DQo+ICAJdm9pZCAo
-KmNvbXB1dGVfZXhlYykoaW50IGZkLCBjb25zdCB1bnNpZ25lZCBjaGFyICprZXJuZWwsDQo+ICAJ
-CQkgICAgIHVuc2lnbmVkIGludCBzaXplKTsNCj4gLX0geGVfY29tcHV0ZV9iYXRjaGVzW10gPSB7
-DQo+ICt9IGNvbXB1dGVfYmF0Y2hlc1tdID0gew0KPiAgCXsNCj4gIAkJLmlwX3ZlciA9IElQX1ZF
-UigxMiwgMCksDQo+ICAJCS5jb21wdXRlX2V4ZWMgPSB0Z2xfY29tcHV0ZV9leGVjLA0KPiAgCX0s
-DQo+ICB9Ow0KPiANCj4gLWJvb2wgcnVuX3hlX2NvbXB1dGVfa2VybmVsKGludCBmZCkNCj4gK2Jv
-b2wgcnVuX2NvbXB1dGVfa2VybmVsKGludCBmZCkNCj4gIHsNCj4gIAl1bnNpZ25lZCBpbnQgaXBf
-dmVyID0gaW50ZWxfZ3JhcGhpY3NfdmVyKGludGVsX2dldF9kcm1fZGV2aWQoZmQpKTsNCj4gIAl1
-bnNpZ25lZCBpbnQgYmF0Y2g7DQo+IC0JY29uc3Qgc3RydWN0IHhlX2NvbXB1dGVfa2VybmVscyAq
-a2VybmVscyA9DQo+IHhlX2NvbXB1dGVfc3F1YXJlX2tlcm5lbHM7DQo+ICsJY29uc3Qgc3RydWN0
-IGNvbXB1dGVfa2VybmVscyAqa2VybmVscyA9IGNvbXB1dGVfc3F1YXJlX2tlcm5lbHM7DQo+IA0K
-PiAtCWZvciAoYmF0Y2ggPSAwOyBiYXRjaCA8IEFSUkFZX1NJWkUoeGVfY29tcHV0ZV9iYXRjaGVz
-KTsgYmF0Y2grKykgew0KPiAtCQlpZiAoaXBfdmVyID09IHhlX2NvbXB1dGVfYmF0Y2hlc1tiYXRj
-aF0uaXBfdmVyKQ0KPiArCWZvciAoYmF0Y2ggPSAwOyBiYXRjaCA8IEFSUkFZX1NJWkUoY29tcHV0
-ZV9iYXRjaGVzKTsgYmF0Y2grKykgew0KPiArCQlpZiAoaXBfdmVyID09IGNvbXB1dGVfYmF0Y2hl
-c1tiYXRjaF0uaXBfdmVyKQ0KPiAgCQkJYnJlYWs7DQo+ICAJfQ0KPiAtCWlmIChiYXRjaCA9PSBB
-UlJBWV9TSVpFKHhlX2NvbXB1dGVfYmF0Y2hlcykpDQo+ICsJaWYgKGJhdGNoID09IEFSUkFZX1NJ
-WkUoY29tcHV0ZV9iYXRjaGVzKSkNCj4gIAkJcmV0dXJuIGZhbHNlOw0KPiANCj4gIAl3aGlsZSAo
-a2VybmVscy0+a2VybmVsKSB7DQo+IEBAIC00ODEsOCArNDgxLDggQEAgYm9vbCBydW5feGVfY29t
-cHV0ZV9rZXJuZWwoaW50IGZkKQ0KPiAgCWlmICgha2VybmVscy0+a2VybmVsKQ0KPiAgCQlyZXR1
-cm4gMTsNCj4gDQo+IC0JeGVfY29tcHV0ZV9iYXRjaGVzW2JhdGNoXS5jb21wdXRlX2V4ZWMoZmQs
-IGtlcm5lbHMtPmtlcm5lbCwNCj4gLQkJCQkJICAgICAgIGtlcm5lbHMtPnNpemUpOw0KPiArCWNv
-bXB1dGVfYmF0Y2hlc1tiYXRjaF0uY29tcHV0ZV9leGVjKGZkLCBrZXJuZWxzLT5rZXJuZWwsDQo+
-ICsJCQkJCSAgICBrZXJuZWxzLT5zaXplKTsNCj4gDQo+ICAJcmV0dXJuIHRydWU7DQo+ICB9DQo+
-IGRpZmYgLS1naXQgYS9saWIveGUveGVfY29tcHV0ZS5oIGIvbGliL2ludGVsX2NvbXB1dGUuaCBz
-aW1pbGFyaXR5IGluZGV4IDc0JQ0KPiByZW5hbWUgZnJvbSBsaWIveGUveGVfY29tcHV0ZS5oIHJl
-bmFtZSB0byBsaWIvaW50ZWxfY29tcHV0ZS5oIGluZGV4DQo+IGIyZTdlOTgyNzguLmUyNzFiYjUy
-NTQgMTAwNjQ0DQo+IC0tLSBhL2xpYi94ZS94ZV9jb21wdXRlLmgNCj4gKysrIGIvbGliL2ludGVs
-X2NvbXB1dGUuaA0KPiBAQCAtNiw4ICs2LDggQEANCj4gICAqICAgIEZyYW5jb2lzIER1Z2FzdCA8
-ZnJhbmNvaXMuZHVnYXN0QGludGVsLmNvbT4NCj4gICAqLw0KPiANCj4gLSNpZm5kZWYgWEVfQ09N
-UFVURV9IDQo+IC0jZGVmaW5lIFhFX0NPTVBVVEVfSA0KPiArI2lmbmRlZiBJTlRFTF9DT01QVVRF
-X0gNCj4gKyNkZWZpbmUgSU5URUxfQ09NUFVURV9IDQo+IA0KPiAgLyoNCj4gICAqIE9wZW5DTCBL
-ZXJuZWxzIGFyZSBnZW5lcmF0ZWQgdXNpbmc6DQo+IEBAIC0xOSwxNCArMTksMTQgQEANCj4gICAq
-IEZvciBlYWNoIEdQVSBtb2RlbCBkZXNpcmVkLiBBIGxpc3Qgb2Ygc3VwcG9ydGVkIG1vZGVscyBj
-YW4gYmUgb2J0YWluZWQgd2l0aDoNCj4gb2Nsb2MgY29tcGlsZSAtLWhlbHANCj4gICAqLw0KPiAN
-Cj4gLXN0cnVjdCB4ZV9jb21wdXRlX2tlcm5lbHMgew0KPiArc3RydWN0IGNvbXB1dGVfa2VybmVs
-cyB7DQo+ICAJaW50IGlwX3ZlcjsNCj4gIAl1bnNpZ25lZCBpbnQgc2l6ZTsNCj4gIAljb25zdCB1
-bnNpZ25lZCBjaGFyICprZXJuZWw7DQo+ICB9Ow0KPiANCj4gLWV4dGVybiBjb25zdCBzdHJ1Y3Qg
-eGVfY29tcHV0ZV9rZXJuZWxzIHhlX2NvbXB1dGVfc3F1YXJlX2tlcm5lbHNbXTsNCj4gK2V4dGVy
-biBjb25zdCBzdHJ1Y3QgY29tcHV0ZV9rZXJuZWxzIGNvbXB1dGVfc3F1YXJlX2tlcm5lbHNbXTsN
-Cj4gDQo+IC1ib29sIHJ1bl94ZV9jb21wdXRlX2tlcm5lbChpbnQgZmQpOw0KPiArYm9vbCBydW5f
-Y29tcHV0ZV9rZXJuZWwoaW50IGZkKTsNCj4gDQo+IC0jZW5kaWYJLyogWEVfQ09NUFVURV9IICov
-DQo+ICsjZW5kaWYJLyogSU5URUxfQ09NUFVURV9IICovDQo+IGRpZmYgLS1naXQgYS9saWIveGUv
-eGVfY29tcHV0ZV9zcXVhcmVfa2VybmVscy5jDQo+IGIvbGliL2ludGVsX2NvbXB1dGVfc3F1YXJl
-X2tlcm5lbHMuYw0KPiBzaW1pbGFyaXR5IGluZGV4IDk3JQ0KPiByZW5hbWUgZnJvbSBsaWIveGUv
-eGVfY29tcHV0ZV9zcXVhcmVfa2VybmVscy5jDQo+IHJlbmFtZSB0byBsaWIvaW50ZWxfY29tcHV0
-ZV9zcXVhcmVfa2VybmVscy5jDQo+IGluZGV4IGY5YzA3ZGM3NzguLmIzMGQ4YTIzZGQgMTAwNjQ0
-DQo+IC0tLSBhL2xpYi94ZS94ZV9jb21wdXRlX3NxdWFyZV9rZXJuZWxzLmMNCj4gKysrIGIvbGli
-L2ludGVsX2NvbXB1dGVfc3F1YXJlX2tlcm5lbHMuYw0KPiBAQCAtOCw3ICs4LDcgQEANCj4gICAq
-Lw0KPiANCj4gICNpbmNsdWRlICJpbnRlbF9jaGlwc2V0LmgiDQo+IC0jaW5jbHVkZSAibGliL3hl
-L3hlX2NvbXB1dGUuaCINCj4gKyNpbmNsdWRlICJsaWIvaW50ZWxfY29tcHV0ZS5oIg0KPiANCj4g
-IHN0YXRpYyBjb25zdCB1bnNpZ25lZCBjaGFyIHRnbGxwX2tlcm5lbF9zcXVhcmVfYmluW10gPSB7
-DQo+ICAJMHg2MSwgMHgwMCwgMHgwMywgMHg4MCwgMHgyMCwgMHgwMiwgMHgwNSwgMHgwMywgMHgw
-NCwgMHgwMCwgMHgxMCwgMHgwMCwNCj4gQEAgLTYxLDcgKzYxLDcgQEAgc3RhdGljIGNvbnN0IHVu
-c2lnbmVkIGNoYXIgdGdsbHBfa2VybmVsX3NxdWFyZV9iaW5bXSA9IHsNCj4gIAkweDAwLCAweDAw
-LCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAw
-eDAwICB9Ow0KPiANCj4gLWNvbnN0IHN0cnVjdCB4ZV9jb21wdXRlX2tlcm5lbHMgeGVfY29tcHV0
-ZV9zcXVhcmVfa2VybmVsc1tdID0gew0KPiArY29uc3Qgc3RydWN0IGNvbXB1dGVfa2VybmVscyBj
-b21wdXRlX3NxdWFyZV9rZXJuZWxzW10gPSB7DQo+ICAJew0KPiAgCQkuaXBfdmVyID0gSVBfVkVS
-KDEyLCAwKSwNCj4gIAkJLnNpemUgPSBzaXplb2YodGdsbHBfa2VybmVsX3NxdWFyZV9iaW4pLCBk
-aWZmIC0tZ2l0DQo+IGEvbGliL21lc29uLmJ1aWxkIGIvbGliL21lc29uLmJ1aWxkIGluZGV4IGNl
-MTFjMDcxNWYuLmI4MjcxNGNkNmEgMTAwNjQ0DQo+IC0tLSBhL2xpYi9tZXNvbi5idWlsZA0KPiAr
-KysgYi9saWIvbWVzb24uYnVpbGQNCj4gQEAgLTU2LDYgKzU2LDggQEAgbGliX3NvdXJjZXMgPSBb
-DQo+ICAJJ2ludGVsX2J1Zm9wcy5jJywNCj4gIAknaW50ZWxfY2hpcHNldC5jJywNCj4gIAknaW50
-ZWxfY21kc19pbmZvLmMnLA0KPiArCSdpbnRlbF9jb21wdXRlLmMnLA0KPiArCSdpbnRlbF9jb21w
-dXRlX3NxdWFyZV9rZXJuZWxzLmMnLA0KPiAgCSdpbnRlbF9jdHguYycsDQo+ICAJJ2ludGVsX2Rl
-dmljZV9pbmZvLmMnLA0KPiAgCSdpbnRlbF9tbWlvLmMnLA0KPiBAQCAtMTAxLDggKzEwMyw2IEBA
-IGxpYl9zb3VyY2VzID0gWw0KPiAgCSd2ZWJveGNvcHlfZ2VuMTIuYycsDQo+ICAJJ2lndF9tc20u
-YycsDQo+ICAJJ2lndF9kc2MuYycsDQo+IC0JJ3hlL3hlX2NvbXB1dGUuYycsDQo+IC0JJ3hlL3hl
-X2NvbXB1dGVfc3F1YXJlX2tlcm5lbHMuYycsDQo+ICAJJ3hlL3hlX2lvY3RsLmMnLA0KPiAgCSd4
-ZS94ZV9xdWVyeS5jJywNCj4gIAkneGUveGVfc3Bpbi5jJywNCj4gZGlmZiAtLWdpdCBhL3Rlc3Rz
-L3hlL3hlX2NvbXB1dGUuYyBiL3Rlc3RzL3hlL3hlX2NvbXB1dGUuYyBpbmRleA0KPiAyY2Y1MzY3
-MDFhLi4wYzU0ZmJlYzQyIDEwMDY0NA0KPiAtLS0gYS90ZXN0cy94ZS94ZV9jb21wdXRlLmMNCj4g
-KysrIGIvdGVzdHMveGUveGVfY29tcHV0ZS5jDQo+IEBAIC0xNCw4ICsxNCw4IEBADQo+ICAjaW5j
-bHVkZSA8c3RyaW5nLmg+DQo+IA0KPiAgI2luY2x1ZGUgImlndC5oIg0KPiArI2luY2x1ZGUgImlu
-dGVsX2NvbXB1dGUuaCINCj4gICNpbmNsdWRlICJ4ZS94ZV9xdWVyeS5oIg0KPiAtI2luY2x1ZGUg
-InhlL3hlX2NvbXB1dGUuaCINCj4gDQo+ICAvKioNCj4gICAqIFNVQlRFU1Q6IGNvbXB1dGUtc3F1
-YXJlDQo+IEBAIC0yOSw3ICsyOSw3IEBADQo+ICBzdGF0aWMgdm9pZA0KPiAgdGVzdF9jb21wdXRl
-X3NxdWFyZShpbnQgZmQpDQo+ICB7DQo+IC0JaWd0X3JlcXVpcmVfZihydW5feGVfY29tcHV0ZV9r
-ZXJuZWwoZmQpLCAiR1BVIG5vdCBzdXBwb3J0ZWRcbiIpOw0KPiArCWlndF9yZXF1aXJlX2YocnVu
-X2NvbXB1dGVfa2VybmVsKGZkKSwgIkdQVSBub3Qgc3VwcG9ydGVkXG4iKTsNCj4gIH0NCj4gDQo+
-ICBpZ3RfbWFpbg0KPiAtLQ0KPiAyLjM0LjENCg0KTEdUTQ0KUmV2aWV3ZWQtYnk6IEphbmdhIFJh
-aHVsIEt1bWFyPGphbmdhLnJhaHVsLmt1bWFyQGludGVsLmNvbT4NCg==
+
+
+>-----Original Message-----
+>From: Kempczynski, Zbigniew <zbigniew.kempczynski@intel.com>
+>Sent: Monday, September 4, 2023 6:10 PM
+>To: Ch, Sai Gowtham <sai.gowtham.ch@intel.com>
+>Cc: igt-dev@lists.freedesktop.org; Stolarek, Karolina
+><karolina.stolarek@intel.com>
+>Subject: Re: [igt-dev] [PATCH i-g-t 2/4] lib/intel_blt: check if blt comma=
+nds are
+>supported by the platforms
+>
+>On Mon, Sep 04, 2023 at 04:34:56PM +0530, sai.gowtham.ch@intel.com wrote:
+>> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+>>
+>> Check if mem-copy/mem-set commands are supported by fd device.
+>>
+>> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+>> ---
+>>  lib/intel_blt.c | 32 ++++++++++++++++++++++++++++++++
+>> lib/intel_blt.h |  2 ++
+>>  2 files changed, 34 insertions(+)
+>>
+>> diff --git a/lib/intel_blt.c b/lib/intel_blt.c index
+>> 429511920..b55fa9b52 100644
+>> --- a/lib/intel_blt.c
+>> +++ b/lib/intel_blt.c
+>> @@ -289,6 +289,38 @@ bool blt_has_block_copy(int fd)
+>>  	return blt_supports_command(cmds_info, XY_BLOCK_COPY);  }
+>>
+>> +/**
+>> + * blt_has_mem_copy
+>> + * @fd: drm fd
+>> + *
+>> + * Check if mem copy is supported by @fd device
+>> + *
+>> + * Returns:
+>> + * true if it does, false otherwise.
+>> + */
+>> +bool blt_has_mem_copy(int fd)
+>> +{
+>> +	const struct intel_cmds_info *cmds_info =3D GET_CMDS_INFO(fd);
+>> +
+>> +	return blt_supports_command(cmds_info, MEM_COPY); }
+>> +
+>> +/**
+>> + * blt_has_mem_set
+>> + * @fd: drm fd
+>> + *
+>> + * Check if mem set is supported by @fd device
+>> + *
+>> + * Returns:
+>> + * true if it does, false otherwise.
+>> + */
+>> +bool blt_has_mem_set(int fd)
+>> +{
+>> +	const struct intel_cmds_info *cmds_info =3D GET_CMDS_INFO(fd);
+>> +
+>> +	return blt_supports_command(cmds_info, MEM_SET); }
+>> +
+>
+>It is not true if you'll use those functions in i915 igts.
+Do you mean path for i915 needs to be enabled ?=20
+>mem-set and mem-copy commands you've introduced in 1/4 patch should be
+>part of intel_blt.[ch] library.
+Do you mean MEM_SET and MEM_COPY  in 3/4 patch ? Can you elaborate ?=20
+>
+>BTW first patch 1/4 won't compile in step-by-step mode because it uses cod=
+e
+>from following patches.
+I'll correct that in my next patch series.
+----
+Ch Sai Gowtham=20
+>
+>--
+>Zbigniew
+>
+>
+>>  /**
+>>   * blt_has_fast_copy
+>>   * @fd: drm fd
+>> diff --git a/lib/intel_blt.h b/lib/intel_blt.h index
+>> b8b3d724d..d9c8883c7 100644
+>> --- a/lib/intel_blt.h
+>> +++ b/lib/intel_blt.h
+>> @@ -175,6 +175,8 @@ bool blt_cmd_has_property(const struct
+>intel_cmds_info *cmds_info,
+>>  			  uint32_t prop);
+>>
+>>  bool blt_has_block_copy(int fd);
+>> +bool blt_has_mem_copy(int fd);
+>> +bool blt_has_mem_set(int fd);
+>>  bool blt_has_fast_copy(int fd);
+>>  bool blt_has_xy_src_copy(int fd);
+>>  bool blt_has_xy_color(int fd);
+>> --
+>> 2.39.1
+>>
