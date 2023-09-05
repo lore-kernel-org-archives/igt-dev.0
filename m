@@ -1,21 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 031CB10E419
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Sep 2023 04:12:03 +0000 (UTC)
-From: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>
-To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>
-Date: Tue, 5 Sep 2023 04:11:54 +0000
-Message-ID: <BYAPR11MB3413605657BFBE884AA82502D0E8A@BYAPR11MB3413.namprd11.prod.outlook.com>
-References: <20230904110458.24177-1-sai.gowtham.ch@intel.com>
- <20230904110458.24177-3-sai.gowtham.ch@intel.com>
- <20230904123934.stxmaelmzxg3366l@zkempczy-mobl2>
-In-Reply-To: <20230904123934.stxmaelmzxg3366l@zkempczy-mobl2>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4134510E16E
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Sep 2023 05:15:25 +0000 (UTC)
+From: Riana Tauro <riana.tauro@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue,  5 Sep 2023 10:50:56 +0530
+Message-Id: <20230905052058.2216763-1-riana.tauro@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/4] lib/intel_blt: check if blt
- commands are supported by the platforms
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 0/2] Add GT id to identify failures
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,106 +16,21 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Add GT id to test assertions to identify which gt is causing 
+a failure
 
+Riana Tauro (2):
+  tests/intel/xe_pm_residency: Add GT id to C6 assertions
+  tests/intel/xe_guc_pc: Add GT id to C6 assertions
 
->-----Original Message-----
->From: Kempczynski, Zbigniew <zbigniew.kempczynski@intel.com>
->Sent: Monday, September 4, 2023 6:10 PM
->To: Ch, Sai Gowtham <sai.gowtham.ch@intel.com>
->Cc: igt-dev@lists.freedesktop.org; Stolarek, Karolina
-><karolina.stolarek@intel.com>
->Subject: Re: [igt-dev] [PATCH i-g-t 2/4] lib/intel_blt: check if blt comma=
-nds are
->supported by the platforms
->
->On Mon, Sep 04, 2023 at 04:34:56PM +0530, sai.gowtham.ch@intel.com wrote:
->> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
->>
->> Check if mem-copy/mem-set commands are supported by fd device.
->>
->> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
->> ---
->>  lib/intel_blt.c | 32 ++++++++++++++++++++++++++++++++
->> lib/intel_blt.h |  2 ++
->>  2 files changed, 34 insertions(+)
->>
->> diff --git a/lib/intel_blt.c b/lib/intel_blt.c index
->> 429511920..b55fa9b52 100644
->> --- a/lib/intel_blt.c
->> +++ b/lib/intel_blt.c
->> @@ -289,6 +289,38 @@ bool blt_has_block_copy(int fd)
->>  	return blt_supports_command(cmds_info, XY_BLOCK_COPY);  }
->>
->> +/**
->> + * blt_has_mem_copy
->> + * @fd: drm fd
->> + *
->> + * Check if mem copy is supported by @fd device
->> + *
->> + * Returns:
->> + * true if it does, false otherwise.
->> + */
->> +bool blt_has_mem_copy(int fd)
->> +{
->> +	const struct intel_cmds_info *cmds_info =3D GET_CMDS_INFO(fd);
->> +
->> +	return blt_supports_command(cmds_info, MEM_COPY); }
->> +
->> +/**
->> + * blt_has_mem_set
->> + * @fd: drm fd
->> + *
->> + * Check if mem set is supported by @fd device
->> + *
->> + * Returns:
->> + * true if it does, false otherwise.
->> + */
->> +bool blt_has_mem_set(int fd)
->> +{
->> +	const struct intel_cmds_info *cmds_info =3D GET_CMDS_INFO(fd);
->> +
->> +	return blt_supports_command(cmds_info, MEM_SET); }
->> +
->
->It is not true if you'll use those functions in i915 igts.
-Do you mean path for i915 needs to be enabled ?=20
->mem-set and mem-copy commands you've introduced in 1/4 patch should be
->part of intel_blt.[ch] library.
-Do you mean MEM_SET and MEM_COPY  in 3/4 patch ? Can you elaborate ?=20
->
->BTW first patch 1/4 won't compile in step-by-step mode because it uses cod=
-e
->from following patches.
-I'll correct that in my next patch series.
-----
-Ch Sai Gowtham=20
->
->--
->Zbigniew
->
->
->>  /**
->>   * blt_has_fast_copy
->>   * @fd: drm fd
->> diff --git a/lib/intel_blt.h b/lib/intel_blt.h index
->> b8b3d724d..d9c8883c7 100644
->> --- a/lib/intel_blt.h
->> +++ b/lib/intel_blt.h
->> @@ -175,6 +175,8 @@ bool blt_cmd_has_property(const struct
->intel_cmds_info *cmds_info,
->>  			  uint32_t prop);
->>
->>  bool blt_has_block_copy(int fd);
->> +bool blt_has_mem_copy(int fd);
->> +bool blt_has_mem_set(int fd);
->>  bool blt_has_fast_copy(int fd);
->>  bool blt_has_xy_src_copy(int fd);
->>  bool blt_has_xy_color(int fd);
->> --
->> 2.39.1
->>
+ tests/intel/xe_guc_pc.c       | 18 ++++++++++++------
+ tests/intel/xe_pm_residency.c |  8 ++++----
+ 2 files changed, 16 insertions(+), 10 deletions(-)
+
+-- 
+2.40.0
