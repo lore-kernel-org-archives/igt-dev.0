@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3714910E443
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6C65610E447
  for <igt-dev@lists.freedesktop.org>; Tue,  5 Sep 2023 07:34:11 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  5 Sep 2023 12:55:57 +0530
-Message-Id: <20230905072601.1602968-1-bhanuprakash.modem@intel.com>
+Date: Tue,  5 Sep 2023 12:55:58 +0530
+Message-Id: <20230905072601.1602968-2-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230905072601.1602968-1-bhanuprakash.modem@intel.com>
+References: <20230905072601.1602968-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 0/4] Enable hang tests for XE
+Subject: [igt-dev] [i-g-t 1/4] tests/kms_vblank: Allow hang tests to run on
+ XE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,23 +19,35 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Enable KMS hang tests on XE driver.
+As hang tests supports both i915 & XE, update the intel specific
+checks to allow them to run on XE.
 
-Bhanuprakash Modem (4):
-  tests/kms_vblank: Allow hang tests to run on XE
-  tests/i915/kms_flip: Fix testplan documentation for hang tests
-  tests/intel-ci/xe.blocklist: Drop hang tests from xe blocklist
-  HAX: Add hang tests to xe BAT
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_vblank.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
- tests/intel-ci/xe-fast-feedback.testlist | 105 ++++++++++++++++++++++-
- tests/intel-ci/xe.blocklist.txt          |   2 -
- tests/kms_flip.c                         |  25 +++++-
- tests/kms_vblank.c                       |   5 +-
- 4 files changed, 131 insertions(+), 6 deletions(-)
-
---
+diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
+index 0cc21bb5f..6753dc918 100644
+--- a/tests/kms_vblank.c
++++ b/tests/kms_vblank.c
+@@ -289,7 +289,10 @@ static void run_test(data_t *data, void (*testfunc)(data_t *, int, int))
+ 		 igt_output_name(output));
+ 
+ 	if (!(data->flags & NOHANG)) {
+-		ahnd = get_reloc_ahnd(fd, 0);
++		ahnd = is_i915_device(fd) ?
++			get_reloc_ahnd(fd, 0) :
++			intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
++
+ 		hang = igt_hang_ring_with_ahnd(fd, I915_EXEC_DEFAULT, ahnd);
+ 	}
+ 
+-- 
 2.40.0
