@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7939810E4F9
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 218A810E4F9
  for <igt-dev@lists.freedesktop.org>; Tue,  5 Sep 2023 13:02:31 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  5 Sep 2023 18:23:49 +0530
-Message-Id: <20230905125356.1659246-1-bhanuprakash.modem@intel.com>
+Date: Tue,  5 Sep 2023 18:23:51 +0530
+Message-Id: <20230905125356.1659246-3-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230905125356.1659246-1-bhanuprakash.modem@intel.com>
+References: <20230905125356.1659246-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 0/7] Separate display PM tests from Core
+Subject: [igt-dev] [i-g-t V2 2/7] tests/intel/kms_pm_backlight: Fix testplan
+ documentation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,34 +23,78 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Separate display specific tests from Core and maintain the
-binary names with kms_ prefix.
+As kms_pm_backlight is moved to display, update the test
+documentation according to the kms testplan kms_test_config.json
 
-V2: - Rebase
+Cc: Swati Sharma <swati2.sharma@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/intel/kms_pm_backlight.c | 40 +++++++++++++++++++++++++---------
+ 1 file changed, 30 insertions(+), 10 deletions(-)
 
-Bhanuprakash Modem (7):
-  tests/intel/pm: Rename i915_pm_backlight to kms_pm_backlight
-  tests/intel/kms_pm_backlight: Fix testplan documentation
-  tests/intel/pm: Rename i915_pm_dc to kms_pm_dc
-  tests/intel/kms_pm_dc: Fix testplan documentation
-  tests/intel/pm: Rename i915_pm_lpsp to kms_pm_lpsp
-  tests/intel/kms_pm_lpsp: Fix testplan documentation
-  tests/intel/pm: Separate display specific tests from i915_pm_rpm
-
- tests/intel-ci/blacklist-pre-merge.txt        |    8 +-
- tests/intel-ci/blacklist.txt                  |    2 +-
- tests/intel-ci/fast-feedback.testlist         |    8 +-
- tests/intel/i915_pm_rpm.c                     |  869 ---------
- ...i915_pm_backlight.c => kms_pm_backlight.c} |   65 +-
- tests/intel/{i915_pm_dc.c => kms_pm_dc.c}     |   88 +-
- tests/intel/{i915_pm_lpsp.c => kms_pm_lpsp.c} |   39 +-
- tests/intel/kms_pm_rpm.c                      | 1628 +++++++++++++++++
- tests/meson.build                             |    7 +-
- 9 files changed, 1734 insertions(+), 980 deletions(-)
- rename tests/intel/{i915_pm_backlight.c => kms_pm_backlight.c} (84%)
- rename tests/intel/{i915_pm_dc.c => kms_pm_dc.c} (91%)
- rename tests/intel/{i915_pm_lpsp.c => kms_pm_lpsp.c} (81%)
- create mode 100644 tests/intel/kms_pm_rpm.c
-
---
+diff --git a/tests/intel/kms_pm_backlight.c b/tests/intel/kms_pm_backlight.c
+index eca385518..7a2a4e06f 100644
+--- a/tests/intel/kms_pm_backlight.c
++++ b/tests/intel/kms_pm_backlight.c
+@@ -16,29 +16,49 @@
+ #include "igt_device.h"
+ #include "igt_device_scan.h"
+ /**
+- * TEST: i915 pm backlight
++ * TEST: kms pm backlight
++ * Category: Display
+  * Description: Basic backlight sysfs test
+- * Feature: backlight
+  *
+  * SUBTEST: bad-brightness
+- * Description: test the bad brightness.
++ * Description: Test the bad brightness.
++ * Driver requirement: i915
++ * Functionality: backlight
++ * Mega feature: Display Power
+  * Run type: FULL
++ * Test category: functionality test
+  *
+  * SUBTEST: basic-brightness
+- * Description: test the basic brightness.
++ * Description: Test the basic brightness.
++ * Driver requirement: i915
++ * Functionality: backlight
++ * Mega feature: Display Power
+  * Run type: BAT
++ * Test category: functionality test
+  *
+  * SUBTEST: fade
+- * Description: test basic fade.
+- * Run type: FULL
++ * Description: Test basic fade.
++ * Driver requirement: i915
++ * Functionality: backlight
++ * Mega feature: Display Power
++ * Run type: BAT
++ * Test category: functionality test
+  *
+  * SUBTEST: fade-with-dpms
+- * Description: test the fade with DPMS.
+- * Run type: FULL
++ * Description: Test the fade with DPMS.
++ * Driver requirement: i915
++ * Functionality: dpms, backlight
++ * Mega feature: Display Power
++ * Run type: BAT
++ * Test category: functionality test
+  *
+  * SUBTEST: fade-with-suspend
+- * Description: test the fade with suspend.
+- * Run type: FULL
++ * Description: Test the fade with suspend.
++ * Driver requirement: i915
++ * Functionality: backlight, suspend
++ * Mega feature: Display Power
++ * Run type: BAT
++ * Test category: functionality test
+  */
+ 
+ struct context {
+-- 
 2.40.0
