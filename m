@@ -1,14 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C83DF10E557
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Sep 2023 14:58:35 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 79BBF10E0C1
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Sep 2023 15:36:29 +0000 (UTC)
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  5 Sep 2023 14:23:29 +0000
-Message-Id: <20230905142329.2025130-4-marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20230905142329.2025130-1-marcin.bernatowicz@linux.intel.com>
-References: <20230818102156.2335320-1-marcin.bernatowicz@linux.intel.com>
- <20230905142329.2025130-1-marcin.bernatowicz@linux.intel.com>
+Date: Tue,  5 Sep 2023 15:02:25 +0000
+Message-Id: <20230905150225.2029554-4-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20230905150225.2029554-1-marcin.bernatowicz@linux.intel.com>
+References: <20230905150225.2029554-1-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Subject: [igt-dev] [PATCH i-g-t v3 3/3] tests/xe_spin_batch:
