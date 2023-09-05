@@ -1,21 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AE03D10E18B
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Sep 2023 06:54:38 +0000 (UTC)
-From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
-To: "Tauro, Riana" <riana.tauro@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Tue, 5 Sep 2023 06:54:33 +0000
-Message-ID: <CY5PR11MB62111FA26DFC3254AB37306E95E8A@CY5PR11MB6211.namprd11.prod.outlook.com>
-References: <20230905052058.2216763-1-riana.tauro@intel.com>
- <CY5PR11MB6211861228CB959139EA8EC095E8A@CY5PR11MB6211.namprd11.prod.outlook.com>
- <898e839e-50e0-1725-cf6d-f567b243b3fc@intel.com>
-In-Reply-To: <898e839e-50e0-1725-cf6d-f567b243b3fc@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B5F9B10E25C
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Sep 2023 07:29:24 +0000 (UTC)
+Message-ID: <3d002323-5ebb-dddf-696a-3ce5506f5f63@linux.intel.com>
+Date: Tue, 5 Sep 2023 09:29:19 +0200
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 0/2] Add GT id to identify failures
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, joonas.lahtinen@intel.com,
+ tvrtko.ursulin@intel.com, janusz.krzysztofik@linux.intel.com
+References: <20230825131913.600667-1-marcin.bernatowicz@linux.intel.com>
+ <20230825131913.600667-3-marcin.bernatowicz@linux.intel.com>
+ <20230828170534.umqx2ysgnpzusseh@kamilkon-desk.igk.intel.com>
+Content-Language: en-US
+From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20230828170534.umqx2ysgnpzusseh@kamilkon-desk.igk.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t 2/3] lib/igt_device_scan: Xe get
+ integrated/discrete card functions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,40 +25,127 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Nilawar, Badal" <badal.nilawar@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogVGF1cm8sIFJpYW5hIDxy
-aWFuYS50YXVyb0BpbnRlbC5jb20+DQo+IFNlbnQ6IFR1ZXNkYXksIFNlcHRlbWJlciA1LCAyMDIz
-IDEyOjIyIFBNDQo+IFRvOiBHdXB0YSwgQW5zaHVtYW4gPGFuc2h1bWFuLmd1cHRhQGludGVsLmNv
-bT47IGlndC0NCj4gZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBDYzogTmlsYXdhciwgQmFk
-YWwgPGJhZGFsLm5pbGF3YXJAaW50ZWwuY29tPjsgU3VuZGFyZXNhbiwgU3VqYXJpdGhhDQo+IDxz
-dWphcml0aGEuc3VuZGFyZXNhbkBpbnRlbC5jb20+DQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggaS1n
-LXQgMC8yXSBBZGQgR1QgaWQgdG8gaWRlbnRpZnkgZmFpbHVyZXMNCj4gDQo+IA0KPiANCj4gT24g
-OS81LzIwMjMgMTE6NDYgQU0sIEd1cHRhLCBBbnNodW1hbiB3cm90ZToNCj4gPg0KPiA+DQo+ID4+
-IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+ID4+IEZyb206IFRhdXJvLCBSaWFuYSA8cmlh
-bmEudGF1cm9AaW50ZWwuY29tPg0KPiA+PiBTZW50OiBUdWVzZGF5LCBTZXB0ZW1iZXIgNSwgMjAy
-MyAxMDo1MSBBTQ0KPiA+PiBUbzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gPj4g
-Q2M6IFRhdXJvLCBSaWFuYSA8cmlhbmEudGF1cm9AaW50ZWwuY29tPjsgR3VwdGEsIEFuc2h1bWFu
-DQo+ID4+IDxhbnNodW1hbi5ndXB0YUBpbnRlbC5jb20+OyBOaWxhd2FyLCBCYWRhbCA8YmFkYWwu
-bmlsYXdhckBpbnRlbC5jb20+Ow0KPiA+PiBTdW5kYXJlc2FuLCBTdWphcml0aGEgPHN1amFyaXRo
-YS5zdW5kYXJlc2FuQGludGVsLmNvbT4NCj4gPj4gU3ViamVjdDogW1BBVENIIGktZy10IDAvMl0g
-QWRkIEdUIGlkIHRvIGlkZW50aWZ5IGZhaWx1cmVzDQo+ID4+DQo+ID4+IEFkZCBHVCBpZCB0byB0
-ZXN0IGFzc2VydGlvbnMgdG8gaWRlbnRpZnkgd2hpY2ggZ3QgaXMgY2F1c2luZyBhDQo+ID4+IGZh
-aWx1cmUNCj4gPiBIb3cgYWJvdXQgYWRkaW5nIGEgZGVidWcgbG9nIHRvIHByaW50IGd0IG5hbWUg
-aW4geGVfaXNfZ3RfaW5fYzYoKSBhcyB3ZWxsID8NCj4gPiBUaGFua3MsDQo+ID4gQW5zaHVtYW4g
-R3VwdGEuDQo+IEhpIEFuc2h1bWFuDQo+IA0KPiBJIGRpZCB0cnkgdGhhdC4gU2luY2UgaXQncyB1
-bmRlciBpZ3Rfd2FpdCBhbmQgY2FsbGVkIG11bHRpcGxlIHRpbWVzICgxMCkgVGhlIGxvZyBpcw0K
-PiBwcmludGVkIGV2ZXJ5IHRpbWUgdGhlIGZ1bmN0aW9uIGlzIGNhbGxlZC4NCj4gDQo+IEZvciBz
-b21lIHRlc3RzIHdoaWNoIHVzZSBhIGxvb3AsIGl0IHdhcyBhIGxvdCBvZiBwcmludHMuDQpPayB0
-aGVuIGl0IG1ha2Ugc2Vuc2UgdG8gcHJpbnQgb25seSBndF9pZC4NClRoYW5rcywNCkFuc2h1bWFu
-IEd1cHRhLg0KPiANCj4gVGhhbmtzDQo+IFJpYW5hIFRhdXJvDQo+ID4+DQo+ID4+IFJpYW5hIFRh
-dXJvICgyKToNCj4gPj4gICAgdGVzdHMvaW50ZWwveGVfcG1fcmVzaWRlbmN5OiBBZGQgR1QgaWQg
-dG8gQzYgYXNzZXJ0aW9ucw0KPiA+PiAgICB0ZXN0cy9pbnRlbC94ZV9ndWNfcGM6IEFkZCBHVCBp
-ZCB0byBDNiBhc3NlcnRpb25zDQo+ID4+DQo+ID4+ICAgdGVzdHMvaW50ZWwveGVfZ3VjX3BjLmMg
-ICAgICAgfCAxOCArKysrKysrKysrKystLS0tLS0NCj4gPj4gICB0ZXN0cy9pbnRlbC94ZV9wbV9y
-ZXNpZGVuY3kuYyB8ICA4ICsrKystLS0tDQo+ID4+ICAgMiBmaWxlcyBjaGFuZ2VkLCAxNiBpbnNl
-cnRpb25zKCspLCAxMCBkZWxldGlvbnMoLSkNCj4gPj4NCj4gPj4gLS0NCj4gPj4gMi40MC4wDQo+
-ID4NCg==
+
+
+On 8/28/2023 7:05 PM, Kamil Konieczny wrote:
+> Hi Marcin,
+> 
+> On 2023-08-25 at 13:19:12 +0000, Marcin Bernatowicz wrote:
+>> Xe functions to get integrated/discrete card.
+>>
+>> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+>> ---
+>>   lib/igt_device_scan.c | 34 +++++++++++++++++++++++++---------
+>>   lib/igt_device_scan.h |  2 ++
+>>   2 files changed, 27 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+>> index ae69ed09f..f8b8ca281 100644
+>> --- a/lib/igt_device_scan.c
+>> +++ b/lib/igt_device_scan.c
+>> @@ -769,25 +769,27 @@ __copy_dev_to_card(struct igt_device *dev, struct igt_device_card *card)
+>>    * Iterate over all igt_devices array and find first discrete/integrated card.
+>>    * card->pci_slot_name will be updated only if a card is found.
+>>    */
+>> -static bool __find_first_i915_card(struct igt_device_card *card, bool discrete)
+>> +static bool __find_first_intel_card(struct igt_device_card *card, bool want_discrete,
+>> +				    const char *drv_name)
+>>   {
+>>   	struct igt_device *dev;
+>> -	int cmp;
+>> +	int is_integrated;
+>>   
+>> +	igt_assert(drv_name);
+>>   	memset(card, 0, sizeof(*card));
+>>   
+>>   	igt_list_for_each_entry(dev, &igt_devs.all, link) {
+>>   
+>> -		if (!is_pci_subsystem(dev) || strcmp(dev->driver, "i915"))
+>> +		if (!is_pci_subsystem(dev) || strcmp(dev->driver, drv_name))
+> --------------------------------------------------------- ^^^^^^^^
+> 
+> May you extend this to cover also "intel" card here?
+> I mean both cases, i915 or xe.
+> 
+
+I didn't want to complicate the code too much, but isn't it
+__find_first_intel_card(...,"i915") || __find_first_intel_card(...,"xe")
+?
+
+
+>>   			continue;
+>>   
+>> -		cmp = strncmp(dev->pci_slot_name, INTEGRATED_I915_GPU_PCI_ID,
+>> -			      PCI_SLOT_NAME_SIZE);
+>> +		is_integrated = !strncmp(dev->pci_slot_name, INTEGRATED_I915_GPU_PCI_ID,
+>> +					 PCI_SLOT_NAME_SIZE);
+>>   
+>> -		if (discrete && cmp) {
+>> +		if (want_discrete && !is_integrated) {
+>>   			__copy_dev_to_card(dev, card);
+>>   			return true;
+>> -		} else if (!discrete && !cmp) {
+>> +		} else if (!want_discrete && is_integrated) {
+>>   			__copy_dev_to_card(dev, card);
+>>   			return true;
+>>   		}
+>> @@ -800,14 +802,28 @@ bool igt_device_find_first_i915_discrete_card(struct igt_device_card *card)
+>>   {
+>>   	igt_assert(card);
+>>   
+>> -	return __find_first_i915_card(card, true);
+>> +	return __find_first_intel_card(card, true, "i915");
+>> +}
+>> +
+> 
+> Document all new public lib functions.
+> 
+>> +bool igt_device_find_first_xe_discrete_card(struct igt_device_card *card)
+>> +{
+>> +	igt_assert(card);
+>> +
+>> +	return __find_first_intel_card(card, true, "xe");
+>>   }
+>>   
+>>   bool igt_device_find_integrated_card(struct igt_device_card *card)
+>>   {
+>>   	igt_assert(card);
+>>   
+>> -	return __find_first_i915_card(card, false);
+>> +	return __find_first_intel_card(card, false, "i915");
+>> +}
+>> +
+> 
+> Same here.
+> 
+> Regards,
+> Kamil
+> 
+>> +bool igt_device_find_xe_integrated_card(struct igt_device_card *card)
+>> +{
+>> +	igt_assert(card);
+>> +
+>> +	return __find_first_intel_card(card, false, "xe");
+>>   }
+>>   
+>>   static struct igt_device *igt_device_from_syspath(const char *syspath)
+>> diff --git a/lib/igt_device_scan.h b/lib/igt_device_scan.h
+>> index e6b0f1b90..b8f6a843d 100644
+>> --- a/lib/igt_device_scan.h
+>> +++ b/lib/igt_device_scan.h
+>> @@ -87,6 +87,8 @@ bool igt_device_card_match_pci(const char *filter,
+>>   	struct igt_device_card *card);
+>>   bool igt_device_find_first_i915_discrete_card(struct igt_device_card *card);
+>>   bool igt_device_find_integrated_card(struct igt_device_card *card);
+>> +bool igt_device_find_first_xe_discrete_card(struct igt_device_card *card);
+>> +bool igt_device_find_xe_integrated_card(struct igt_device_card *card);
+>>   char *igt_device_get_pretty_name(struct igt_device_card *card, bool numeric);
+>>   int igt_open_card(struct igt_device_card *card);
+>>   int igt_open_render(struct igt_device_card *card);
+>> -- 
+>> 2.30.2
+>>
