@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7F46610E500
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Sep 2023 13:02:56 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1669010E07B
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Sep 2023 15:36:12 +0000 (UTC)
+From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  5 Sep 2023 18:23:53 +0530
-Message-Id: <20230905125356.1659246-5-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230905125356.1659246-1-bhanuprakash.modem@intel.com>
-References: <20230905125356.1659246-1-bhanuprakash.modem@intel.com>
+Date: Tue,  5 Sep 2023 15:02:22 +0000
+Message-Id: <20230905150225.2029554-1-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 4/7] tests/intel/kms_pm_dc: Fix testplan
- documentation
+Subject: [igt-dev] [PATCH i-g-t v3 0/3] lib/xe_spin: introduced fixed
+ duration xe_spin
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,109 +21,44 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As kms_pm_dc is moved to display, update the test documentation
-according to the kms testplan kms_test_config.json
+Introduced struct xe_spin_opts for xe_spin initialization,
+adjusted tests to new xe_spin_init signature.
 
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/intel/kms_pm_dc.c | 66 ++++++++++++++++++++++++++++-------------
- 1 file changed, 45 insertions(+), 21 deletions(-)
+Extended spinner with fixed duration capability. It allows
+to prepare fixed duration (ex. 10ms) workloads and take workloads/second
+measurements, a handy utility for scheduling tests.
 
-diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
-index b5b38c976..dd810c0c2 100644
---- a/tests/intel/kms_pm_dc.c
-+++ b/tests/intel/kms_pm_dc.c
-@@ -19,45 +19,69 @@
- #include "time.h"
- #include "igt_pm.h"
- /**
-- * TEST: i915 pm dc
-+ * TEST: kms pm dc
-+ * Category: Display
-  * Description: Tests to validate display power DC states.
-- * Run type: FULL
-  *
-  * SUBTEST: dc3co-vpb-simulation
-- * Description:
-- *   In this test we make sure that system enters DC3CO when PSR2 is active and system is in SLEEP
-- *   state
-- * Feature: dc3co, pm_dc
-+ * Description: Make sure that system enters DC3CO when PSR2 is active and system
-+ *              is in SLEEP state
-+ * Driver requirement: i915
-+ * Functionality: dc3co, pm_dc, psr2
-+ * Mega feature: Display Power
-+ * Run type: FULL
-+ * Test category: functionality test
-  *
-  * SUBTEST: dc5-dpms
-- * Description:
-- *   This test validates display engine entry to DC5 state while all connectors's DPMS property
-- *   set to OFF
-- * Feature: pm_dc
-+ * Description: Validate display engine entry to DC5 state while all connectors's
-+ *              DPMS property set to OFF
-+ * Driver requirement: i915
-+ * Functionality: dpms, pm_dc
-+ * Mega feature: Display Power
-+ * Run type: FULL
-+ * Test category: functionality test
-  *
-  * SUBTEST: dc5-dpms-negative
-- * Description:
-- *   This test validates negative scenario of DC5 display engine entry to DC5 state while all
-- *   connectors's DPMS property set to ON
-- * Feature: pm_dc
-+ * Description: Validate negative scenario of DC5 display engine entry to DC5 state
-+ *              while all connectors's DPMS property set to ON
-+ * Driver requirement: i915
-+ * Functionality: dpms, pm_dc
-+ * Mega feature: Display Power
-+ * Run type: FULL
-+ * Test category: functionality test
-  *
-  * SUBTEST: dc5-psr
-  * Description: This test validates display engine entry to DC5 state while PSR is active
-- * Feature: pm_dc
-+ * Driver requirement: i915
-+ * Functionality: pm_dc, psr
-+ * Mega feature: Display Power
-+ * Run type: FULL
-+ * Test category: functionality test
-  *
-  * SUBTEST: dc6-dpms
-- * Description:
-- *   This test validates display engine entry to DC6 state while all connectors's DPMS property
-- *   set to OFF
-- * Feature: pm_dc
-+ * Description: Validate display engine entry to DC6 state while all connectors's
-+ *              DPMS property set to OFF
-+ * Driver requirement: i915
-+ * Functionality: dpms, pm_dc
-+ * Mega feature: Display Power
-+ * Run type: FULL
-+ * Test category: functionality test
-  *
-  * SUBTEST: dc6-psr
-  * Description: This test validates display engine entry to DC6 state while PSR is active
-- * Feature: pm_dc
-+ * Driver requirement: i915
-+ * Functionality: pm_dc, psr
-+ * Mega feature: Display Power
-+ * Run type: FULL
-+ * Test category: functionality test
-  *
-  * SUBTEST: dc9-dpms
-  * Description: This test validates display engine entry to DC9 state
-- * Feature: pm_dc
-+ * Driver requirement: i915
-+ * Functionality: dpms, pm_dc
-+ * Mega feature: Display Power
-+ * Run type: FULL
-+ * Test category: functionality test
-  */
- 
- /* DC State Flags */
+Basic test for xe_spin with fixed duration.
+
+v2: - added asserts in div64_u64_round_up, duration_to_ctx_ticks,
+      simplified loop_addr (Zbyszek)
+    - added xe_spin_init_opts macro (Zbyszek)
+    - corrected patch title (Kamil)
+    - Added assert for expected spinner duration. (Zbyszek)
+    A median of 5x100ms spins duration is computed, which should
+    satisfy CI runs, although better accuracy is achieved with
+    disabled logging (echo 0 > /sys/module/drm/parameters/debug).
+
+v3: - extracted xe_spin_opts to separate patch (Kamil)
+    - div64_u64_round_up assert on overflow (Kamil)
+    - enum indentation cleanup in xe_spin.c (Kamil)
+
+Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+
+Marcin Bernatowicz (3):
+  lib/xe_spin: xe_spin_opts for xe_spin initialization
+  lib/xe_spin: fixed duration xe_spin capability
+  tests/xe_spin_batch: spin-fixed-duration
+
+ lib/xe/xe_spin.c               | 123 ++++++++++++++++++++++++++++-----
+ lib/xe/xe_spin.h               |  27 +++++++-
+ tests/intel/xe_dma_buf_sync.c  |   6 +-
+ tests/intel/xe_exec_balancer.c |   9 ++-
+ tests/intel/xe_exec_reset.c    |  24 ++++---
+ tests/intel/xe_exec_threads.c  |   7 +-
+ tests/intel/xe_spin_batch.c    |  72 +++++++++++++++++++
+ tests/intel/xe_vm.c            |   7 +-
+ 8 files changed, 231 insertions(+), 44 deletions(-)
+
 -- 
-2.40.0
+2.30.2
