@@ -1,14 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 50DDC10E5AC
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Sep 2023 09:23:59 +0000 (UTC)
-From: Katarzyna Dec <katarzyna.dec@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed,  6 Sep 2023 09:23:34 +0000
-Message-Id: <20230906092337.79673-1-katarzyna.dec@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6075610E5A0
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Sep 2023 08:12:24 +0000 (UTC)
+Message-ID: <5f697b36-2140-c67b-ac7d-d6740c957a4c@intel.com>
+Date: Wed, 6 Sep 2023 13:42:18 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 0/3] IGT XE documentation cleanup
+Content-Language: en-US
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20230905125356.1659246-1-bhanuprakash.modem@intel.com>
+ <20230905125356.1659246-7-bhanuprakash.modem@intel.com>
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20230905125356.1659246-7-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [i-g-t V2 6/7] tests/intel/kms_pm_lpsp: Fix testplan
+ documentation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,54 +23,54 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Gandi Ramadevi <ramadevi.gandi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Let's add missing documentation fileds that are causing warnings.
-Some tests documentation needed changes to have more accurate naming.
-Let's mark Negative and Stress tests.
-Adding missing 'Run type' and 'Test category' for remaining test.
+LGTM
 
-v2: Fix few typos and add xe_mmap to VMA subcategory
-v3: Add patch from Mauro enforcing mandatory documentation fields
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 
-Signed-off-by: Katarzyna Dec <katarzyna.dec@intel.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Gandi Ramadevi <ramadevi.gandi@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-Katarzyna Dec (3):
-  tests/intel: Add missing documentation fields for tests
-  test/xe: Clean up of test documentation
-  scripts/test_list.py: enforce mandatory fields to be filled
-
- scripts/test_list.py               |   2 +-
- tests/core_hotunplug.c             |   1 +
- tests/intel/xe_ccs.c               |   7 +-
- tests/intel/xe_create.c            |   8 +-
- tests/intel/xe_debugfs.c           |   2 +-
- tests/intel/xe_dma_buf_sync.c      |   5 +-
- tests/intel/xe_evict.c             | 154 +++++++++++++++++++++++------
- tests/intel/xe_exec_balancer.c     |  11 +++
- tests/intel/xe_exec_basic.c        |   7 +-
- tests/intel/xe_exec_compute_mode.c |   5 +-
- tests/intel/xe_exec_fault_mode.c   |   9 +-
- tests/intel/xe_exercise_blt.c      |   6 +-
- tests/intel/xe_intel_bb.c          |   2 +-
- tests/intel/xe_media_fill.c        |   1 +
- tests/intel/xe_mmap.c              |  10 +-
- tests/intel/xe_mmio.c              |   3 +-
- tests/intel/xe_noexec_ping_pong.c  |  25 +++--
- tests/intel/xe_pm.c                |   1 +
- tests/intel/xe_query.c             |  14 ++-
- tests/intel/xe_spin_batch.c        |   2 +-
- tests/intel/xe_sysfs_scheduler.c   |   5 +-
- tests/intel/xe_sysfs_tile.c        |   3 +
- tests/intel/xe_uevent.c            |   3 +
- tests/intel/xe_vm.c                |  25 ++++-
- 24 files changed, 247 insertions(+), 64 deletions(-)
-
--- 
-2.34.1
+On 05-Sep-23 6:23 PM, Bhanuprakash Modem wrote:
+> As kms_pm_lpsp is moved to display, update the test documentation
+> according to the kms testplan kms_test_config.json
+> 
+> Cc: Swati Sharma <swati2.sharma@intel.com>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>   tests/intel/kms_pm_lpsp.c | 15 ++++++++++++---
+>   1 file changed, 12 insertions(+), 3 deletions(-)
+> 
+> diff --git a/tests/intel/kms_pm_lpsp.c b/tests/intel/kms_pm_lpsp.c
+> index 0adcb8cc0..407558a4f 100644
+> --- a/tests/intel/kms_pm_lpsp.c
+> +++ b/tests/intel/kms_pm_lpsp.c
+> @@ -13,16 +13,25 @@
+>   #include <fcntl.h>
+>   #include <unistd.h>
+>   /**
+> - * TEST: i915 pm lpsp
+> + * TEST: kms pm lpsp
+>    * Description: These tests validates display Low Power Single Pipe configurations
+> - * Feature: pm_lpsp
+> - * Run type: FULL
+> + * Category: Display
+>    *
+>    * SUBTEST: kms-lpsp
+>    * Description: This test validates lpsp on all connected outputs on low power PIPE_A
+> + * Driver requirement: i915
+> + * Functionality: pm_lpsp
+> + * Mega feature: Display Power
+> + * Run type: FULL
+> + * Test category: functionality test
+>    *
+>    * SUBTEST: screens-disabled
+>    * Description: This test validates lpsp while all crtc are disabled
+> + * Driver requirement: i915
+> + * Functionality: pm_lpsp
+> + * Mega feature: Display Power
+> + * Run type: FULL
+> + * Test category: functionality test
+>    */
+>   
+>   #define MAX_SINK_LPSP_INFO_BUF_LEN	4096
