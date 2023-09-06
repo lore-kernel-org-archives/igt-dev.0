@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6075610E5A0
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Sep 2023 08:12:24 +0000 (UTC)
-Message-ID: <5f697b36-2140-c67b-ac7d-d6740c957a4c@intel.com>
-Date: Wed, 6 Sep 2023 13:42:18 +0530
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4C20810E594
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Sep 2023 08:16:50 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed,  6 Sep 2023 13:38:34 +0530
+Message-Id: <20230906080840.1714917-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230905125356.1659246-1-bhanuprakash.modem@intel.com>
- <20230905125356.1659246-7-bhanuprakash.modem@intel.com>
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20230905125356.1659246-7-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [i-g-t V2 6/7] tests/intel/kms_pm_lpsp: Fix testplan
- documentation
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t V3 0/6] Enable hang tests for XE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,50 +21,25 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LGTM
+Enable KMS hang tests on XE driver.
 
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+V2: - Fix igt_post_hang_ring() for XE
+V3: - Fix kms_flip
 
-On 05-Sep-23 6:23 PM, Bhanuprakash Modem wrote:
-> As kms_pm_lpsp is moved to display, update the test documentation
-> according to the kms testplan kms_test_config.json
-> 
-> Cc: Swati Sharma <swati2.sharma@intel.com>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->   tests/intel/kms_pm_lpsp.c | 15 ++++++++++++---
->   1 file changed, 12 insertions(+), 3 deletions(-)
-> 
-> diff --git a/tests/intel/kms_pm_lpsp.c b/tests/intel/kms_pm_lpsp.c
-> index 0adcb8cc0..407558a4f 100644
-> --- a/tests/intel/kms_pm_lpsp.c
-> +++ b/tests/intel/kms_pm_lpsp.c
-> @@ -13,16 +13,25 @@
->   #include <fcntl.h>
->   #include <unistd.h>
->   /**
-> - * TEST: i915 pm lpsp
-> + * TEST: kms pm lpsp
->    * Description: These tests validates display Low Power Single Pipe configurations
-> - * Feature: pm_lpsp
-> - * Run type: FULL
-> + * Category: Display
->    *
->    * SUBTEST: kms-lpsp
->    * Description: This test validates lpsp on all connected outputs on low power PIPE_A
-> + * Driver requirement: i915
-> + * Functionality: pm_lpsp
-> + * Mega feature: Display Power
-> + * Run type: FULL
-> + * Test category: functionality test
->    *
->    * SUBTEST: screens-disabled
->    * Description: This test validates lpsp while all crtc are disabled
-> + * Driver requirement: i915
-> + * Functionality: pm_lpsp
-> + * Mega feature: Display Power
-> + * Run type: FULL
-> + * Test category: functionality test
->    */
->   
->   #define MAX_SINK_LPSP_INFO_BUF_LEN	4096
+Bhanuprakash Modem (6):
+  lib/igt_gt: Fix igt_post_hang_ring for XE driver
+  tests/kms_vblank: Allow hang tests to run on XE
+  tests/kms_flip: Allow hang tests to run on XE
+  tests/kms_flip: Fix testplan documentation for hang tests
+  tests/intel-ci/xe.blocklist: Drop hang tests from xe blocklist
+  HAX: Add hang tests to xe BAT
+
+ lib/igt_gt.c                             |   2 +
+ tests/intel-ci/xe-fast-feedback.testlist | 221 +++--------------------
+ tests/intel-ci/xe.blocklist.txt          |   2 -
+ tests/kms_flip.c                         |  40 +++-
+ tests/kms_vblank.c                       |   5 +-
+ 5 files changed, 68 insertions(+), 202 deletions(-)
+
+--
+2.40.0
