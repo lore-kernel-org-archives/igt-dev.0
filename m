@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 81FA610E61A
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Sep 2023 10:52:49 +0000 (UTC)
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed,  6 Sep 2023 11:05:42 +0200
-Message-ID: <20230906090819.226410-4-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230906090819.226410-1-mauro.chehab@linux.intel.com>
-References: <20230906090819.226410-1-mauro.chehab@linux.intel.com>
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam04on2067.outbound.protection.outlook.com [40.107.101.67])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A308310E1E9
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Sep 2023 22:38:57 +0000 (UTC)
+From: Alex Hung <alex.hung@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Wed, 6 Sep 2023 16:37:28 -0600
+Message-ID: <20230906223730.3979103-2-alex.hung@amd.com>
+In-Reply-To: <20230906223730.3979103-1-alex.hung@amd.com>
+References: <20230906223730.3979103-1-alex.hung@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [RFC v2 3/5] kms_test_config.json: add testlists and
- blacklists
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH 1/3][i-g-t][V2] lib/igt_fb: use the entire 32 bit
+ for fnv1a_crc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,45 +21,43 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: tomasz.mistat@intel.com, jari.tahvanainen@intel.com
+Cc: brian.starkey@arm.com, maxime@cerno.tech
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+The function was implemented as a 32-bit hashing function. Commit
+85f4c1005150 ("lib/igt_fb: Ignore the X component when computing CRC")
+broke this behavior by hashing 8-bit portions. Restore the 32-bit hasing
+behavior while still ignoring the X compoment.
 
-Specify the testlists and blacklists to be used to store CI
-run type.
-
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
 ---
- tests/intel/kms_test_config.json | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ lib/igt_fb.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/tests/intel/kms_test_config.json b/tests/intel/kms_test_config.json
-index 4130b7d6dae0..7ab288685677 100644
---- a/tests/intel/kms_test_config.json
-+++ b/tests/intel/kms_test_config.json
-@@ -21,7 +21,19 @@
-             },
-             "Run type": {
-                 "_properties_": {
--                    "description": "Defines what category of testlist it belongs"
-+                    "description": "Defines what category of testlist it belongs",
-+                    "testlists": {
-+                        "i915 BAT": "../intel-ci/fast-feedback.testlist",
-+                        "i915 BAT chamelium": "../intel-ci/fast-feedback-chamelium-only.testlist",
-+                        "i915 chamelium": "../intel-ci/chamelium-only.testlist",
-+
-+                        "Xe BAT": "../intel-ci/xe-fast-feedback.testlist",
-+                        "Xe BAT chamelium": "../intel-ci/xe-fast-feedback-chamelium-only.testlist"
-+                    },
-+                    "blocklists": {
-+                        "i915 BAT, i915 BAT chamelium, i915 chamelium": "../intel-ci/blacklist.txt",
-+                        "Xe BAT, Xe BAT chamelium": "../intel-ci/xe.blocklist.txt"
-+                    }
-                 }
-             }
-         },
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 4b592825d..f60150017 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -4779,16 +4779,11 @@ int igt_fb_get_fnv1a_crc(struct igt_fb *fb, igt_crc_t *crc)
+ 		igt_memcpy_from_wc(line, ptr, fb->width * cpp);
+ 
+ 		for (x = 0; x < fb->width; x++) {
+-			unsigned int i;
+ 			uint32_t pixel = le32_to_cpu(line[x]);
+ 			pixel &= 0x00ffffff;
+ 
+-			for (i = 0; i < sizeof(pixel); i++) {
+-				uint8_t component = (pixel >> (i * 8)) & 0xff;
+-
+-				hash ^= component;
+-				hash *= FNV1a_PRIME;
+-			}
++			hash ^= pixel;
++			hash *= FNV1a_PRIME;
+ 		}
+ 	}
+ 
 -- 
-2.41.0
+2.42.0
