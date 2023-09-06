@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C3B4510E6F5
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Sep 2023 18:28:36 +0000 (UTC)
-Date: Wed, 6 Sep 2023 21:28:48 +0300
-From: Imre Deak <imre.deak@intel.com>
-To: "B, Jeevan" <jeevan.b@intel.com>
-Message-ID: <ZPjE4AL8v9xw+0z0@ideak-desk.fi.intel.com>
-References: <20230904170749.14616-1-jeevan.b@intel.com>
- <ZPYi0chDmm3G4r8L@ideak-desk.fi.intel.com>
- <DM4PR11MB63128768E4EF4978D5E1F94490E8A@DM4PR11MB6312.namprd11.prod.outlook.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6CBBC10E704
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Sep 2023 19:08:05 +0000 (UTC)
+Message-ID: <84e76a07-22d4-680e-b856-9c1186d04025@intel.com>
+Date: Thu, 7 Sep 2023 00:37:34 +0530
+Content-Language: en-US
+To: Sean Paul <sean@poorly.run>, <igt-dev@lists.freedesktop.org>
+References: <20230825183934.1271156-1-sean@poorly.run>
+ <20230825183934.1271156-2-sean@poorly.run>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20230825183934.1271156-2-sean@poorly.run>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DM4PR11MB63128768E4EF4978D5E1F94490E8A@DM4PR11MB6312.namprd11.prod.outlook.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_setmode: skip subtest when
- valid combination not found
+Subject: Re: [igt-dev] [PATCH 1/6] tests/kms_vrr: Move fb0 and fb1 to an
+ array
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,158 +22,96 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: imre.deak@intel.com
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: Sean Paul <seanpaul@chromium.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Sep 05, 2023 at 08:24:33AM +0300, B, Jeevan wrote:
-> > -----Original Message-----
-> > From: Deak, Imre <imre.deak@intel.com>
-> > Sent: Tuesday, September 5, 2023 12:03 AM
-> > To: B, Jeevan <jeevan.b@intel.com>
-> > Cc: igt-dev@lists.freedesktop.org
-> > Subject: Re: [PATCH i-g-t] tests/kms_setmode: skip subtest when valid
-> > combination not found
-> >
-> > On Mon, Sep 04, 2023 at 10:37:49PM +0530, Jeevan B wrote:
-> > > Skip subtest with a valid message instead of "No dynamic tests executed"
-> > > when valid crtc-connector combination is not available.
-> >
-> > Please describe how the change actually fixes things. If no dynamic test is
-> > defined for a subtest the subtest will skip. Is that an issue and if so why?
-> Hi Imre,
+
+On Sat-26-08-2023 12:06 am, Sean Paul wrote:
+> From: Sean Paul <seanpaul@chromium.org>
 > 
-> It does not resolve/fixes things, but rather provides clarity when the
-> bugs are generated.
-> Instead of skipping with "No Dynamic Subtest Executed"
+> A bit of cleanup, no functional changes.
 
-I still don't get it. I presume you refer to the CI results generated,
-but please provide an actual example.
+Please write about the cleanup done by this patch.
 
-After this change dynamic subtests would be defined which can never run
-on a given platform and so would always skip on this platform. Is this
-somehow better than the current way of skipping the whole subtest
-(always)?
+With that change, this patch is
+Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-For a given platform type there is also a variation of dynamic tests
-depending on what connected connectors the test sees. But this is the
-behavior both before and after this change.
-
+- Bhanu
 > 
-> Thanks
-> Jeevan B
-> >
-> > >
-> > > Signed-off-by: Jeevan B <jeevan.b@intel.com>
-> > > ---
-> > >  tests/kms_setmode.c | 64
-> > > ++++++++++++++++++++++-----------------------
-> > >  1 file changed, 32 insertions(+), 32 deletions(-)
-> > >
-> > > diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c index
-> > > a611d938..74292abf 100644
-> > > --- a/tests/kms_setmode.c
-> > > +++ b/tests/kms_setmode.c
-> > > @@ -645,47 +645,47 @@ static void test_one_combination(const struct
-> > test_config *tconf,
-> > >                              int connector_count)
-> > >  {
-> > >     struct crtc_config crtcs[MAX_CRTCS];
-> > > -   int crtc_count;
-> > > +   int crtc_count, i, pos = 0;
-> > > +   char test_name[256];
-> > >     bool config_valid;
-> > >
-> > >     setup_crtcs(tconf, cconfs, connector_count, crtcs,
-> > >                 &crtc_count, &config_valid);
-> > >
-> > > -   if (config_valid == !(tconf->flags & TEST_INVALID)) {
-> > > -           int i, pos = 0;
-> > > -           char test_name[256];
-> > > -
-> > > -           for (i = 0; i < crtc_count; i++) {
-> > > -                   if (i > 0)
-> > > -                           pos += snprintf(&test_name[pos],
-> > ARRAY_SIZE(test_name) - pos, "-");
-> > > -                   pos += get_test_name_str(&crtcs[i],
-> > &test_name[pos], ARRAY_SIZE(test_name) - pos);
-> > > -           }
-> > > +   for (i = 0; i < crtc_count; i++) {
-> > > +           if (i > 0)
-> > > +                   pos += snprintf(&test_name[pos],
-> > ARRAY_SIZE(test_name) - pos, "-");
-> > > +           pos += get_test_name_str(&crtcs[i], &test_name[pos],
-> > ARRAY_SIZE(test_name) - pos);
-> > > +   }
-> > >
-> > > -           for (i = 0; i < crtc_count; i++) {
-> > > -                   struct crtc_config *crtc = &crtcs[i];
-> > > -
-> > > -                   /*
-> > > -                    * if mode.hdisplay > 5120, then ignore
-> > > -                    *   - last crtc in single/multi-connector config
-> > > -                    *   - consecutive crtcs in multi-connector config
-> > > -                    *
-> > > -                    * in multi-connector config ignore if
-> > > -                    *   - previous crtc mode.hdisplay > 5120 and
-> > > -                    *   - current & previous crtcs are consecutive
-> > > -                    */
-> > > -                   if (((crtc->mode.hdisplay >
-> > MAX_HDISPLAY_PER_CRTC) &&
-> > > -                        ((crtc->crtc_idx >= (tconf->resources->count_crtcs
-> > - 1)) ||
-> > > -                         ((i < (crtc_count - 1)) && (abs(crtcs[i + 1].crtc_idx -
-> > crtc->crtc_idx) <= 1)))) ||
-> > > -                       ((i > 0) && (crtc[i - 1].mode.hdisplay >
-> > MAX_HDISPLAY_PER_CRTC) &&
-> > > -                        (abs(crtc->crtc_idx - crtcs[i - 1].crtc_idx) <= 1))) {
-> > > -                           igt_info("Combo: %s is not possible with
-> > selected mode(s).\n", test_name);
-> > > -                           goto out;
-> > > +   igt_dynamic_f("%s", test_name)
-> > > +           if (config_valid == !(tconf->flags & TEST_INVALID)) {
-> > > +
-> > > +                   for (i = 0; i < crtc_count; i++) {
-> > > +                           struct crtc_config *crtc = &crtcs[i];
-> > > +
-> > > +                           /*
-> > > +                            * if mode.hdisplay > 5120, then ignore
-> > > +                            *   - last crtc in single/multi-connector config
-> > > +                            *   - consecutive crtcs in multi-connector
-> > config
-> > > +                            *
-> > > +                            * in multi-connector config ignore if
-> > > +                            *   - previous crtc mode.hdisplay > 5120 and
-> > > +                            *   - current & previous crtcs are consecutive
-> > > +                            */
-> > > +                           if (((crtc->mode.hdisplay >
-> > MAX_HDISPLAY_PER_CRTC) &&
-> > > +                                ((crtc->crtc_idx >= (tconf->resources-
-> > >count_crtcs - 1)) ||
-> > > +                                 ((i < (crtc_count - 1)) && (abs(crtcs[i +
-> > 1].crtc_idx - crtc->crtc_idx) <= 1)))) ||
-> > > +                               ((i > 0) && (crtc[i - 1].mode.hdisplay >
-> > MAX_HDISPLAY_PER_CRTC) &&
-> > > +                                (abs(crtc->crtc_idx - crtcs[i - 1].crtc_idx) <=
-> > 1))) {
-> > > +                                   igt_info("Combo: %s is not possible
-> > with selected mode(s).\n", test_name);
-> > > +                                   goto out;
-> > > +                           }
-> > >                     }
-> > > -           }
-> > >
-> > > -           igt_dynamic_f("%s", test_name)
-> > >                     test_crtc_config(tconf, crtcs, crtc_count);
-> > > -   }
-> > > +           } else
-> > > +                   igt_skip("Valid connector-crtc combination not
-> > found\n");
-> > >
-> > >  out:
-> > >     cleanup_crtcs(crtcs, crtc_count);
-> > > --
-> > > 2.34.1
-> > >
+> Cc: Mark Yacoub <markyacoub@chromium.org>
+> Signed-off-by: Sean Paul <seanpaul@chromium.org>
+> ---
+>   tests/kms_vrr.c | 19 +++++++++----------
+>   1 file changed, 9 insertions(+), 10 deletions(-)
+> 
+> diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+> index d7ede6513..83a91b543 100644
+> --- a/tests/kms_vrr.c
+> +++ b/tests/kms_vrr.c
+> @@ -105,8 +105,7 @@ typedef struct data {
+>   	igt_display_t display;
+>   	int drm_fd;
+>   	igt_plane_t *primary;
+> -	igt_fb_t fb0;
+> -	igt_fb_t fb1;
+> +	igt_fb_t fb[2];
+>   	range_t range;
+>   } data_t;
+>   
+> @@ -273,13 +272,13 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
+>   	/* Prepare resources */
+>   	igt_create_color_fb(data->drm_fd, mode.hdisplay, mode.vdisplay,
+>   			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+> -			    0.50, 0.50, 0.50, &data->fb0);
+> +			    0.50, 0.50, 0.50, &data->fb[0]);
+>   
+>   	igt_create_color_fb(data->drm_fd, mode.hdisplay, mode.vdisplay,
+>   			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+> -			    0.50, 0.50, 0.50, &data->fb1);
+> +			    0.50, 0.50, 0.50, &data->fb[1]);
+>   
+> -	cr = igt_get_cairo_ctx(data->drm_fd, &data->fb0);
+> +	cr = igt_get_cairo_ctx(data->drm_fd, &data->fb[0]);
+>   
+>   	igt_paint_color(cr, 0, 0, mode.hdisplay / 10, mode.vdisplay / 10,
+>   			1.00, 0.00, 0.00);
+> @@ -288,7 +287,7 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
+>   
+>   	/* Take care of any required modesetting before the test begins. */
+>   	data->primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+> -	igt_plane_set_fb(data->primary, &data->fb0);
+> +	igt_plane_set_fb(data->primary, &data->fb[0]);
+>   
+>   	/* Clear vrr_enabled state before enabling it, because
+>   	 * it might be left enabled if the previous test fails.
+> @@ -338,7 +337,7 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+>   	vtest_ns_t vtest_ns = get_test_rate_ns(data->range);
+>   
+>   	/* Align with the flip completion event to speed up convergence. */
+> -	do_flip(data, &data->fb0);
+> +	do_flip(data, &data->fb[0]);
+>   	start_ns = last_event_ns = target_ns = get_kernel_event_ns(data,
+>   							DRM_EVENT_FLIP_COMPLETE);
+>   
+> @@ -347,7 +346,7 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+>   		int64_t diff_ns;
+>   
+>   		front = !front;
+> -		do_flip(data, front ? &data->fb1 : &data->fb0);
+> +		do_flip(data, front ? &data->fb[1] : &data->fb[0]);
+>   
+>   		/* We need to cpture flip event instead of vblank event,
+>   		 * because vblank is triggered after each frame, but depending
+> @@ -497,8 +496,8 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+>   	igt_output_override_mode(output, NULL);
+>   	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+>   
+> -	igt_remove_fb(data->drm_fd, &data->fb1);
+> -	igt_remove_fb(data->drm_fd, &data->fb0);
+> +	igt_remove_fb(data->drm_fd, &data->fb[1]);
+> +	igt_remove_fb(data->drm_fd, &data->fb[0]);
+>   }
+>   
+>   /* Runs tests on outputs that are VRR capable. */
