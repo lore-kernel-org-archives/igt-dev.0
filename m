@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AC3E010E5A6
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Sep 2023 08:17:01 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 43A9610E1A5
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Sep 2023 08:56:40 +0000 (UTC)
+From: Katarzyna Dec <katarzyna.dec@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  6 Sep 2023 13:38:40 +0530
-Message-Id: <20230906080840.1714917-7-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230906080840.1714917-1-bhanuprakash.modem@intel.com>
-References: <20230906080840.1714917-1-bhanuprakash.modem@intel.com>
+Date: Wed,  6 Sep 2023 08:56:26 +0000
+Message-Id: <20230906085628.59915-1-katarzyna.dec@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 6/6] HAX: Add hang tests to xe BAT
+Subject: [igt-dev] [PATCH i-g-t v2 0/2] IGT XE documentation cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,257 +16,51 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Gandi Ramadevi <ramadevi.gandi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/intel-ci/xe-fast-feedback.testlist | 221 +++--------------------
- 1 file changed, 29 insertions(+), 192 deletions(-)
+Let's add missing documentation fileds that are causing warnings.
+Some tests documentation needed changes to have more accurate naming.
+Let's mark Negative and Stress tests.
+Adding missing 'Run type' and 'Test category' for remaining test.
 
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index a395fa8c3..3902f9229 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -1,187 +1,6 @@
- # Should be the first test
- igt@xe_module_load@load
- 
--igt@xe_compute@compute-square
--igt@xe_create@create-execqueues-noleak
--igt@xe_create@create-execqueues-leak
--igt@xe_create@create-massive-size
--igt@xe_debugfs@base
--igt@xe_debugfs@gt
--igt@xe_debugfs@forcewake
--igt@xe_dma_buf_sync@export-dma-buf-once
--igt@xe_dma_buf_sync@export-dma-buf-once-read-sync
--igt@xe_evict@evict-beng-mixed-threads-small-multi-vm
--igt@xe_evict@evict-beng-small
--igt@xe_evict@evict-beng-small-cm
--igt@xe_evict@evict-beng-small-external
--igt@xe_evict@evict-beng-small-external-cm
--igt@xe_evict@evict-beng-small-multi-vm
--igt@xe_evict@evict-cm-threads-small
--igt@xe_evict@evict-mixed-threads-small
--igt@xe_evict@evict-mixed-threads-small-multi-vm
--igt@xe_evict@evict-small
--igt@xe_evict@evict-small-cm
--igt@xe_evict@evict-small-external
--igt@xe_evict@evict-small-external-cm
--igt@xe_evict@evict-small-multi-vm
--igt@xe_evict@evict-small-multi-vm-cm
--igt@xe_evict@evict-threads-small
--igt@xe_exec_balancer@twice-virtual-basic
--igt@xe_exec_balancer@no-exec-virtual-basic
--igt@xe_exec_balancer@twice-cm-virtual-basic
--igt@xe_exec_balancer@no-exec-cm-virtual-basic
--igt@xe_exec_balancer@twice-virtual-userptr
--igt@xe_exec_balancer@twice-cm-virtual-userptr
--igt@xe_exec_balancer@twice-virtual-rebind
--igt@xe_exec_balancer@twice-cm-virtual-rebind
--igt@xe_exec_balancer@twice-virtual-userptr-rebind
--igt@xe_exec_balancer@twice-cm-virtual-userptr-rebind
--igt@xe_exec_balancer@twice-virtual-userptr-invalidate
--igt@xe_exec_balancer@twice-cm-virtual-userptr-invalidate
--igt@xe_exec_balancer@twice-parallel-basic
--igt@xe_exec_balancer@no-exec-parallel-basic
--igt@xe_exec_balancer@twice-parallel-userptr
--igt@xe_exec_balancer@twice-parallel-rebind
--igt@xe_exec_balancer@twice-parallel-userptr-rebind
--igt@xe_exec_balancer@twice-parallel-userptr-invalidate
--igt@xe_exec_basic@twice-basic
--igt@xe_exec_basic@no-exec-basic
--igt@xe_exec_basic@twice-basic-defer-mmap
--igt@xe_exec_basic@twice-basic-defer-bind
--igt@xe_exec_basic@twice-userptr
--igt@xe_exec_basic@twice-rebind
--igt@xe_exec_basic@twice-userptr-rebind
--igt@xe_exec_basic@twice-userptr-invalidate
--igt@xe_exec_basic@no-exec-userptr-invalidate
--igt@xe_exec_basic@twice-bindexecqueue
--igt@xe_exec_basic@no-exec-bindexecqueue
--igt@xe_exec_basic@twice-bindexecqueue-userptr
--igt@xe_exec_basic@twice-bindexecqueue-rebind
--igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind
--igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate
--igt@xe_exec_compute_mode@twice-basic
--igt@xe_exec_compute_mode@twice-preempt-fence-early
--igt@xe_exec_compute_mode@twice-userptr
--igt@xe_exec_compute_mode@twice-rebind
--igt@xe_exec_compute_mode@twice-userptr-rebind
--igt@xe_exec_compute_mode@twice-userptr-invalidate
--igt@xe_exec_compute_mode@twice-bindexecqueue
--igt@xe_exec_compute_mode@twice-bindexecqueue-userptr
--igt@xe_exec_compute_mode@twice-bindexecqueue-rebind
--igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-rebind
--igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate
--igt@xe_exec_fault_mode@twice-basic
--igt@xe_exec_fault_mode@many-basic
--igt@xe_exec_fault_mode@twice-userptr
--igt@xe_exec_fault_mode@twice-rebind
--igt@xe_exec_fault_mode@twice-userptr-rebind
--igt@xe_exec_fault_mode@twice-userptr-invalidate
--igt@xe_exec_fault_mode@twice-bindexecqueue
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr
--igt@xe_exec_fault_mode@twice-bindexecqueue-rebind
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate
--igt@xe_exec_fault_mode@twice-basic-imm
--igt@xe_exec_fault_mode@twice-userptr-imm
--igt@xe_exec_fault_mode@twice-rebind-imm
--igt@xe_exec_fault_mode@twice-userptr-rebind-imm
--igt@xe_exec_fault_mode@twice-userptr-invalidate-imm
--igt@xe_exec_fault_mode@twice-bindexecqueue-imm
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-imm
--igt@xe_exec_fault_mode@twice-bindexecqueue-rebind-imm
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind-imm
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate-imm
--igt@xe_exec_fault_mode@twice-basic-prefetch
--igt@xe_exec_fault_mode@twice-userptr-prefetch
--igt@xe_exec_fault_mode@twice-rebind-prefetch
--igt@xe_exec_fault_mode@twice-userptr-rebind-prefetch
--igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch
--igt@xe_exec_fault_mode@twice-bindexecqueue-prefetch
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-prefetch
--igt@xe_exec_fault_mode@twice-bindexecqueue-rebind-prefetch
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind-prefetch
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate-prefetch
--igt@xe_exec_fault_mode@twice-invalid-fault
--igt@xe_exec_fault_mode@twice-invalid-userptr-fault
--igt@xe_exec_reset@close-fd-no-exec
--igt@xe_exec_reset@cm-close-fd-no-exec
--igt@xe_exec_reset@virtual-close-fd-no-exec
--igt@xe_exec_store@basic-store
--igt@xe_exec_threads@threads-basic
--igt@xe_exec_threads@threads-mixed-basic
--igt@xe_exec_threads@threads-mixed-shared-vm-basic
--igt@xe_exec_threads@threads-mixed-fd-basic
--igt@xe_exec_threads@threads-mixed-userptr-invalidate
--igt@xe_exec_threads@threads-mixed-shared-vm-userptr-invalidate-race
--igt@xe_gpgpu_fill@basic
--igt@xe_guc_pc@freq_basic_api
--igt@xe_guc_pc@freq_fixed_idle
--igt@xe_guc_pc@freq_range_idle
--igt@xe_huc_copy@huc_copy
--igt@xe_intel_bb@add-remove-objects
--igt@xe_intel_bb@bb-with-allocator
--igt@xe_intel_bb@blit-reloc
--igt@xe_intel_bb@blit-simple
--igt@xe_intel_bb@create-in-region
--igt@xe_intel_bb@delta-check
--igt@xe_intel_bb@destroy-bb
--igt@xe_intel_bb@intel-bb-blit-none
--igt@xe_intel_bb@intel-bb-blit-x
--igt@xe_intel_bb@intel-bb-blit-y
--igt@xe_intel_bb@lot-of-buffers
--igt@xe_intel_bb@offset-control
--igt@xe_intel_bb@purge-bb
--igt@xe_intel_bb@render
--igt@xe_intel_bb@reset-bb
--igt@xe_intel_bb@simple-bb
--igt@xe_intel_bb@simple-bb-ctx
--igt@xe_mmap@bad-extensions
--igt@xe_mmap@bad-flags
--igt@xe_mmap@bad-object
--igt@xe_mmap@system
--igt@xe_mmap@vram
--igt@xe_mmap@vram-system
--igt@xe_mmio@mmio-timestamp
--igt@xe_mmio@mmio-invalid
--igt@xe_pm_residency@gt-c6-on-idle
--igt@xe_prime_self_import@basic-with_one_bo
--igt@xe_prime_self_import@basic-with_fd_dup
--#igt@xe_prime_self_import@basic-llseek-size
--igt@xe_query@query-engines
--igt@xe_query@query-mem-usage
--igt@xe_query@query-gts
--igt@xe_query@query-config
--igt@xe_query@query-hwconfig
--igt@xe_query@query-topology
--igt@xe_query@query-invalid-extension
--igt@xe_query@query-invalid-query
--igt@xe_query@query-invalid-size
--igt@xe_spin_batch@spin-basic
--igt@xe_spin_batch@spin-batch
--igt@xe_sysfs_defaults@engine-defaults
--igt@xe_sysfs_scheduler@preempt_timeout_us-invalid
--igt@xe_sysfs_scheduler@preempt_timeout_us-min-max
--igt@xe_sysfs_scheduler@timeslice_duration_us-invalid
--igt@xe_sysfs_scheduler@timeslice_duration_us-min-max
--igt@xe_sysfs_scheduler@job_timeout_ms-invalid
--igt@xe_sysfs_scheduler@job_timeout_ms-min-max
--#igt@xe_vm@bind-once
--#igt@xe_vm@scratch
--igt@xe_vm@shared-pte-page
--igt@xe_vm@shared-pde-page
--igt@xe_vm@shared-pde2-page
--igt@xe_vm@shared-pde3-page
--igt@xe_vm@bind-execqueues-independent
--igt@xe_vm@munmap-style-unbind-one-partial
--igt@xe_vm@munmap-style-unbind-end
--igt@xe_vm@munmap-style-unbind-front
--igt@xe_vm@munmap-style-unbind-userptr-one-partial
--igt@xe_vm@munmap-style-unbind-userptr-end
--igt@xe_vm@munmap-style-unbind-userptr-front
--igt@xe_vm@munmap-style-unbind-userptr-inval-end
--igt@xe_vm@munmap-style-unbind-userptr-inval-front
--igt@xe_waitfence@abstime
--igt@xe_waitfence@reltime
- igt@kms_addfb_basic@addfb25-bad-modifier
- igt@kms_addfb_basic@addfb25-modifier-no-flag
- igt@kms_addfb_basic@addfb25-x-tiled-legacy
-@@ -228,7 +47,6 @@ igt@kms_flip@basic-plain-flip
- igt@kms_force_connector_basic@force-connector-state
- igt@kms_force_connector_basic@force-edid
- igt@kms_force_connector_basic@prune-stale-modes
--igt@kms_frontbuffer_tracking@basic
- igt@kms_hdmi_inject@inject-audio
- igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24
- igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12
-@@ -242,13 +60,32 @@ igt@kms_prop_blob@basic
- igt@kms_psr@primary_page_flip
- igt@kms_psr@cursor_plane_move
- igt@kms_psr@sprite_plane_onoff
--
--# All tests that do module unloading and reloading are executed last.
--# They will sometimes reveal issues of earlier tests leaving the
--# driver in a broken state that is not otherwise noticed in that test.
--igt@core_hotunplug@unbind-rebind
--
--# Run KUnit tests at the end
--igt@xe_live_ktest@bo
--igt@xe_live_ktest@dmabuf
--igt@xe_live_ktest@migrate
-+igt@kms_vblank@pipe-A-accuracy-idle
-+igt@kms_vblank@pipe-A-query-busy
-+igt@kms_vblank@pipe-A-query-busy-hang
-+igt@kms_vblank@pipe-A-query-forked
-+igt@kms_vblank@pipe-A-query-forked-busy
-+igt@kms_vblank@pipe-A-query-forked-busy-hang
-+igt@kms_vblank@pipe-A-query-forked-hang
-+igt@kms_vblank@pipe-A-query-idle
-+igt@kms_vblank@pipe-A-query-idle-hang
-+igt@kms_vblank@pipe-A-ts-continuation-dpms-rpm
-+igt@kms_vblank@pipe-A-ts-continuation-dpms-suspend
-+igt@kms_vblank@pipe-A-ts-continuation-idle
-+igt@kms_vblank@pipe-A-ts-continuation-idle-hang
-+igt@kms_vblank@pipe-A-ts-continuation-modeset
-+igt@kms_vblank@pipe-A-ts-continuation-modeset-hang
-+igt@kms_vblank@pipe-A-ts-continuation-modeset-rpm
-+igt@kms_vblank@pipe-A-ts-continuation-suspend
-+igt@kms_vblank@pipe-A-wait-busy
-+igt@kms_vblank@pipe-A-wait-busy-hang
-+igt@kms_vblank@pipe-A-wait-forked
-+igt@kms_vblank@pipe-A-wait-forked-busy
-+igt@kms_vblank@pipe-A-wait-forked-busy-hang
-+igt@kms_vblank@pipe-A-wait-forked-hang
-+igt@kms_vblank@pipe-A-wait-idle
-+igt@kms_vblank@pipe-A-wait-idle-hang
-+igt@kms_flip@flip-vs-modeset-vs-hang
-+igt@kms_flip@flip-vs-panning-vs-hang
-+igt@kms_cursor_legacy@flip-vs-cursor-busy-crc-atomic
-+igt@kms_cursor_legacy@flip-vs-cursor-busy-crc-legacy
+v2: Fix few typos and add xe_mmap to VMA subcategory
+
+Signed-off-by: Katarzyna Dec <katarzyna.dec@intel.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Gandi Ramadevi <ramadevi.gandi@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+Katarzyna Dec (2):
+  tests/intel: Add missing documentation fields for tests
+  test/xe: Clean up of test documentation
+
+ tests/core_hotunplug.c             |   1 +
+ tests/intel/xe_ccs.c               |   7 +-
+ tests/intel/xe_create.c            |   8 +-
+ tests/intel/xe_debugfs.c           |   2 +-
+ tests/intel/xe_dma_buf_sync.c      |   5 +-
+ tests/intel/xe_evict.c             | 154 +++++++++++++++++++++++------
+ tests/intel/xe_exec_balancer.c     |  11 +++
+ tests/intel/xe_exec_basic.c        |   7 +-
+ tests/intel/xe_exec_compute_mode.c |   5 +-
+ tests/intel/xe_exec_fault_mode.c   |   9 +-
+ tests/intel/xe_exercise_blt.c      |   6 +-
+ tests/intel/xe_intel_bb.c          |   2 +-
+ tests/intel/xe_media_fill.c        |   1 +
+ tests/intel/xe_mmap.c              |  10 +-
+ tests/intel/xe_mmio.c              |   3 +-
+ tests/intel/xe_noexec_ping_pong.c  |  25 +++--
+ tests/intel/xe_pm.c                |   1 +
+ tests/intel/xe_query.c             |  14 ++-
+ tests/intel/xe_spin_batch.c        |   2 +-
+ tests/intel/xe_sysfs_scheduler.c   |   5 +-
+ tests/intel/xe_sysfs_tile.c        |   3 +
+ tests/intel/xe_uevent.c            |   3 +
+ tests/intel/xe_vm.c                |  25 ++++-
+ 23 files changed, 246 insertions(+), 63 deletions(-)
+
 -- 
-2.40.0
+2.34.1
