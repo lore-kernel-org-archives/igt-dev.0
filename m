@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ED20910E227
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Sep 2023 10:18:59 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 51F0D10E02C
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Sep 2023 22:06:51 +0000 (UTC)
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  7 Sep 2023 12:17:31 +0200
-Message-ID: <20230907101852.522819-1-mauro.chehab@linux.intel.com>
+Date: Thu,  7 Sep 2023 00:05:53 +0200
+Message-ID: <20230906220642.507532-2-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230906220642.507532-1-mauro.chehab@linux.intel.com>
+References: <20230906220642.507532-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 0/7] Xe: set Run type from testlist
- instead of defining it
+Subject: [igt-dev] [PATCH i-g-t v2 1/6] test_list.py: add support for
+ reading testlist regular expressions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,151 +26,134 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Right now, we're keeping testlists both at documentation and on
-separate testlist files. That makes harder to maintain. It also
-requires splitting wildcards on multiple fields just due to that.
+If defined, use testlist and blocklist files to update the
+fields that use it.
 
-In the end, only the testlist files are updated.
-
-So, simplify the maintainance by reading the testlists and parsing
-them directly.
-
-This will also handle tests that are blacklisted for all platforms.
-
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
+ scripts/test_list.py | 75 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 75 insertions(+)
 
-v3:
-  - Added a patch to handle testlist/blacklist regular expressions
-    the same way as done by IGT runner
-
-v2:
-  - no changes. Just rebased on the top of current TIP
-
-Mauro Carvalho Chehab (7):
-  test_list.py: add support for reading testlist regular expressions
-  xe_test_config.json: add testlists and blocklists
-  kms_test_config.json: add testlists and blocklists
-  tests: Intel Xe: drop Run type field
-  tests: Intel KMS: drop Run type field
-  scripts/test_list.py: move "FULL" testlist to config file
-  scripts/test_list.py: don't be greedy while matching data from
-    testlists
-
- scripts/test_list.py                   |  79 ++++++++++
- tests/chamelium/kms_chamelium_audio.c  |   4 -
- tests/chamelium/kms_chamelium_color.c  |   3 -
- tests/chamelium/kms_chamelium_edid.c   |  10 --
- tests/chamelium/kms_chamelium_frames.c |  10 --
- tests/chamelium/kms_chamelium_hpd.c    |  25 ---
- tests/intel/kms_big_fb.c               |  12 --
- tests/intel/kms_big_joiner.c           |   3 -
- tests/intel/kms_busy.c                 |   5 -
- tests/intel/kms_ccs.c                  |   3 -
- tests/intel/kms_cdclk.c                |   3 -
- tests/intel/kms_draw_crc.c             |   3 -
- tests/intel/kms_dsc.c                  |   1 -
- tests/intel/kms_fb_coherency.c         |   1 -
- tests/intel/kms_fbcon_fbt.c            |   4 -
- tests/intel/kms_fence_pin_leak.c       |   1 -
- tests/intel/kms_flip_scaled_crc.c      |  19 ---
- tests/intel/kms_flip_tiling.c          |   1 -
- tests/intel/kms_frontbuffer_tracking.c | 206 -------------------------
- tests/intel/kms_legacy_colorkey.c      |   2 -
- tests/intel/kms_mmap_write_crc.c       |   1 -
- tests/intel/kms_pipe_b_c_ivb.c         |   5 -
- tests/intel/kms_psr.c                  |  19 ---
- tests/intel/kms_psr2_sf.c              |   8 -
- tests/intel/kms_psr2_su.c              |   2 -
- tests/intel/kms_psr_stress_test.c      |   2 -
- tests/intel/kms_pwrite_crc.c           |   1 -
- tests/intel/kms_test_config.json       |  15 +-
- tests/intel/xe_ccs.c                   |   1 -
- tests/intel/xe_compute.c               |   1 -
- tests/intel/xe_create.c                |   2 -
- tests/intel/xe_debugfs.c               |   1 -
- tests/intel/xe_dma_buf_sync.c          |   4 -
- tests/intel/xe_evict.c                 |  10 --
- tests/intel/xe_exec_balancer.c         |  11 --
- tests/intel/xe_exec_basic.c            |   6 -
- tests/intel/xe_exec_compute_mode.c     |   4 -
- tests/intel/xe_exec_fault_mode.c       |   8 -
- tests/intel/xe_exec_reset.c            |  23 ---
- tests/intel/xe_exec_store.c            |   2 -
- tests/intel/xe_exec_threads.c          |   2 -
- tests/intel/xe_exercise_blt.c          |   1 -
- tests/intel/xe_gpgpu_fill.c            |   1 -
- tests/intel/xe_guc_pc.c                |   9 --
- tests/intel/xe_huc_copy.c              |   1 -
- tests/intel/xe_intel_bb.c              |  13 --
- tests/intel/xe_live_ktest.c            |   1 -
- tests/intel/xe_media_fill.c            |   1 -
- tests/intel/xe_mmap.c                  |   1 -
- tests/intel/xe_mmio.c                  |   1 -
- tests/intel/xe_module_load.c           |   6 -
- tests/intel/xe_noexec_ping_pong.c      |   1 -
- tests/intel/xe_pm.c                    |   2 -
- tests/intel/xe_pm_residency.c          |   4 -
- tests/intel/xe_prime_self_import.c     |   8 -
- tests/intel/xe_query.c                 |   1 -
- tests/intel/xe_spin_batch.c            |   4 -
- tests/intel/xe_sysfs_defaults.c        |   1 -
- tests/intel/xe_sysfs_scheduler.c       |   1 -
- tests/intel/xe_sysfs_tile.c            |   1 -
- tests/intel/xe_test_config.json        |   7 +
- tests/intel/xe_uevent.c                |   1 -
- tests/intel/xe_vm.c                    |  22 ---
- tests/intel/xe_waitfence.c             |   1 -
- tests/kms_3d.c                         |   1 -
- tests/kms_addfb_basic.c                |  27 ----
- tests/kms_async_flips.c                |   6 -
- tests/kms_atomic.c                     |   8 -
- tests/kms_atomic_interruptible.c       |   5 -
- tests/kms_atomic_transition.c          |   7 -
- tests/kms_bw.c                         |   1 -
- tests/kms_color.c                      |   7 -
- tests/kms_concurrent.c                 |   1 -
- tests/kms_content_protection.c         |   7 -
- tests/kms_cursor_crc.c                 |   4 -
- tests/kms_cursor_edge_walk.c           |   1 -
- tests/kms_cursor_legacy.c              |  16 --
- tests/kms_display_modes.c              |   2 -
- tests/kms_dither.c                     |   2 -
- tests/kms_dp_aux_dev.c                 |   1 -
- tests/kms_flip.c                       |  26 ----
- tests/kms_flip_event_leak.c            |   1 -
- tests/kms_force_connector_basic.c      |   4 -
- tests/kms_getfb.c                      |   7 -
- tests/kms_hdmi_inject.c                |   2 -
- tests/kms_hdr.c                        |   8 -
- tests/kms_invalid_mode.c               |   1 -
- tests/kms_lease.c                      |  21 ---
- tests/kms_multipipe_modeset.c          |   1 -
- tests/kms_panel_fitting.c              |   2 -
- tests/kms_pipe_crc_basic.c             |   9 --
- tests/kms_plane.c                      |   6 -
- tests/kms_plane_alpha_blend.c          |   4 -
- tests/kms_plane_cursor.c               |   3 -
- tests/kms_plane_lowres.c               |   2 -
- tests/kms_plane_multiple.c             |   2 -
- tests/kms_plane_scaling.c              |  21 ---
- tests/kms_prime.c                      |   3 -
- tests/kms_prop_blob.c                  |   4 -
- tests/kms_properties.c                 |   2 -
- tests/kms_rmfb.c                       |   2 -
- tests/kms_rotation_crc.c               |  10 --
- tests/kms_scaling_modes.c              |   1 -
- tests/kms_selftest.c                   |   1 -
- tests/kms_sequence.c                   |   2 -
- tests/kms_setmode.c                    |   6 -
- tests/kms_sysfs_edid_timing.c          |   1 -
- tests/kms_tiled_display.c              |   2 -
- tests/kms_tv_load_detect.c             |   1 -
- tests/kms_universal_plane.c            |   4 -
- tests/kms_vblank.c                     |   9 --
- tests/kms_vrr.c                        |   5 -
- tests/kms_writeback.c                  |   4 -
- tests/testdisplay.c                    |   1 -
- 114 files changed, 100 insertions(+), 786 deletions(-)
-
+diff --git a/scripts/test_list.py b/scripts/test_list.py
+index 2171f8b50617..c1518a904baf 100644
+--- a/scripts/test_list.py
++++ b/scripts/test_list.py
+@@ -260,6 +260,8 @@ class TestList:
+         self.igt_build_path = igt_build_path
+         self.level_count = 0
+         self.field_list = {}
++        self.testlist = {}
++        self.blocklist = {}
+         self.title = None
+         self.filters = {}
+         self.subtest_separator = subtest_separator
+@@ -327,6 +329,23 @@ class TestList:
+                 if sublevel_count[level - 1] == 1:
+                     del item["_properties_"]["level"]
+                     del item["_properties_"]["sublevel"]
++
++            # Read testlist files if any
++            if "testlists" in item["_properties_"]:
++                testlist = {}
++                for name in item["_properties_"]["testlists"].keys():
++                    self.read_testlist(testlist, name, cfg_path + item["_properties_"]["testlists"][name])
++
++                item["_properties_"]["testlist"] = testlist
++
++            # Read blocklist files if any
++            if "blocklists" in item["_properties_"]:
++                blocklist = {}
++                for name in item["_properties_"]["blocklists"].keys():
++                    self.read_testlist(blocklist, name, cfg_path + item["_properties_"]["blocklists"][name])
++
++                item["_properties_"]["blocklist"] = blocklist
++
+         if "_properties_" in self.props:
+             del self.props["_properties_"]
+ 
+@@ -427,6 +446,19 @@ class TestList:
+ 
+             self.__add_field(key, sublevel, hierarchy_level, field[key])
+ 
++    def read_testlist(self, testlist, name, filename):
++        base = r"^\s*({}[^\s\{}]+)(\S*)\s*(\#.*)?$"
++        regex = re.compile(base.format(self.main_name, self.subtest_separator))
++
++        testlist[name] = []
++        with open(filename, 'r', newline = '', encoding = 'utf8') as fp:
++            for line in fp:
++                match = regex.match(line)
++                if match:
++                    test = match.group(1)
++                    subtest = match.group(2)
++                    testlist[name].append(re.compile(f"{test}{subtest}"))
++
+     def __filter_subtest(self, test, subtest, field_not_found_value):
+ 
+         """ Apply filter criteria to subtests """
+@@ -444,6 +476,45 @@ class TestList:
+         # None of the filtering rules were applied
+         return False
+ 
++    def update_testlist_field(self, subtest_dict):
++        for field in self.props.keys():
++            if "_properties_" not in self.props[field]:
++                continue
++
++            if "testlist" not in self.props[field]["_properties_"]:
++                continue
++
++            testname = subtest_dict["_summary_"]
++
++            value = subtest_dict.get(field)
++            if value:
++                values = set(re.split(",\s*", value))
++            else:
++                values = set()
++
++            for names, regex_array in self.props[field]["_properties_"]["testlist"].items():
++                name = set(re.split(",\s*", names))
++                for regex in regex_array:
++                    if regex.match(testname):
++                        values.update(name)
++                        break
++
++            # If test is at a global blocklist, ignore it
++            set_full_if_empty = True
++            if "blocklist" in self.props[field]["_properties_"]:
++                for names, regex_array in self.props[field]["_properties_"]["testlist"].items():
++                    deleted_names = set(re.split(",\s*", names))
++                    for regex in regex_array:
++                        if regex.match(testname):
++                            if sorted(deleted_names) == sorted(values):
++                                set_full_if_empty = False
++                            values.discard(deleted_names)
++
++            if set_full_if_empty and not values:
++                values = set(["FULL"])
++
++            subtest_dict[field] = ", ".join(sorted(values))
++
+     def expand_subtest(self, fname, test_name, test, allow_inherit, with_lines = False, with_subtest_nr = False):
+ 
+         """Expand subtest wildcards providing an array with subtests"""
+@@ -476,6 +547,8 @@ class TestList:
+ 
+                     subtest_dict[k] = self.doc[test]["subtest"][subtest][k]
+ 
++                self.update_testlist_field(subtest_dict)
++
+                 if with_lines:
+                     subtest_dict["line"] = file_ln
+ 
+@@ -549,6 +622,8 @@ class TestList:
+ 
+                     subtest_dict[field] = sub_field
+ 
++                self.update_testlist_field(subtest_dict)
++
+                 if with_lines:
+                     subtest_dict["line"] = file_ln
+ 
 -- 
 2.41.0
