@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 51DD010E1B9
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Sep 2023 16:25:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5407510E6A8
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Sep 2023 16:25:07 +0000 (UTC)
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  6 Sep 2023 15:51:02 +0000
-Message-Id: <20230906155108.2175876-3-marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20230906155108.2175876-1-marcin.bernatowicz@linux.intel.com>
-References: <20230906155108.2175876-1-marcin.bernatowicz@linux.intel.com>
+Date: Wed,  6 Sep 2023 15:51:00 +0000
+Message-Id: <20230906155108.2175876-1-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/8] lib/xe_spin: fixed duration xe_spin
- capability
+Subject: [igt-dev] [PATCH i-g-t 0/8] [RFC] benchmarks/gem_wsim: added basic
+ xe support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,189 +22,75 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Extended spinner with fixed duration capability. It allows
-to prepare fixed duration (ex. 10ms) workloads and take workloads/second
-measurements, a handy utility for scheduling tests.
+Added basic xe support with few examples.
+Single binary handles both i915 and Xe devices,
+but workload definitions differs between i915 and xe.
+Xe does not use context abstraction, introduces new VM and Exec Queue
+steps and BATCH step references exec queue.
+For more details see wsim/README.
+Some functionality is still missing: working sets,
+load balancing (need some input if/how to do it in Xe - exec queues
+width?).
 
-v2: - added asserts in div64_u64_round_up, duration_to_ctx_ticks,
-      simplified loop_addr (Zbyszek)
-    - corrected patch title (Kamil)
+The tool is handy for scheduling tests, we find it useful to verify vGPU
+profiles defining different execution quantum/preemption timeout settings.
 
-v3: - div64_u64_round_up assert on overflow (Kamil)
-    - enum indentation cleanup in xe_spin.c (Kamil)
+There is also some rationale for the tool in following thread:
+https://lore.kernel.org/dri-devel/a443495f-5d1b-52e1-9b2f-80167deb6d57@linux.intel.com/
+
+With this patch it should be possible to run following on xe device:
+
+gem_wsim -w benchmarks/wsim/xe_media_load_balance_fhd26u7.wsim -c 36 -r 600
+
+Best with drm debug logs disabled:
+
+echo 0 > /sys/module/drm/parameters/debug
+
+lib/xe_spin: fixed duration xe_spin capability - is already 
+  under review https://patchwork.freedesktop.org/series/122624/
+
+v2:
+- splitted patches to easy review (Kamil), 
+  all benchmarks/gem_wsim patches before [RFC] one
+  contain fixes (for scale duration option), cleanups (checkpatch.pl),
+  refactors (some code moved to functions),
+  not related to xe and ready to be applied
+- lib/xe_spin is under review in other thread https://patchwork.freedesktop.org/series/122624/
 
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
----
- lib/xe/xe_spin.c | 97 +++++++++++++++++++++++++++++++++++++++++++++++-
- lib/xe/xe_spin.h |  8 +++-
- 2 files changed, 103 insertions(+), 2 deletions(-)
 
-diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-index 27f837ef9..54ae2d3ac 100644
---- a/lib/xe/xe_spin.c
-+++ b/lib/xe/xe_spin.c
-@@ -16,6 +16,50 @@
- #include "xe_ioctl.h"
- #include "xe_spin.h"
- 
-+static uint32_t read_timestamp_frequency(int fd, int gt_id)
-+{
-+	struct xe_device *dev = xe_device_get(fd);
-+
-+	igt_assert(dev && dev->gts && dev->gts->num_gt);
-+	igt_assert(gt_id >= 0 && gt_id <= dev->gts->num_gt);
-+
-+	return dev->gts->gts[gt_id].clock_freq;
-+}
-+
-+static uint64_t div64_u64_round_up(const uint64_t x, const uint64_t y)
-+{
-+	igt_assert(y > 0);
-+	igt_assert_lte_u64(x, UINT64_MAX - (y - 1));
-+
-+	return (x + y - 1) / y;
-+}
-+
-+/**
-+ * duration_to_ctx_ticks:
-+ * @fd: opened device
-+ * @gt_id: tile id
-+ * @duration_ns: duration in nanoseconds to be converted to context timestamp ticks
-+ * @return: duration converted to context timestamp ticks.
-+ */
-+uint32_t duration_to_ctx_ticks(int fd, int gt_id, uint64_t duration_ns)
-+{
-+	uint32_t f = read_timestamp_frequency(fd, gt_id);
-+	uint64_t ctx_ticks = div64_u64_round_up(duration_ns * f, NSEC_PER_SEC);
-+
-+	igt_assert_lt_u64(ctx_ticks, XE_SPIN_MAX_CTX_TICKS);
-+
-+	return ctx_ticks;
-+}
-+
-+#define MI_SRM_CS_MMIO				(1 << 19)
-+#define MI_LRI_CS_MMIO				(1 << 19)
-+#define MI_LRR_DST_CS_MMIO			(1 << 19)
-+#define MI_LRR_SRC_CS_MMIO			(1 << 18)
-+#define CTX_TIMESTAMP 0x3a8;
-+#define CS_GPR(x) (0x600 + 8 * (x))
-+
-+enum { START_TS, NOW_TS };
-+
- /**
-  * xe_spin_init:
-  * @spin: pointer to mapped bo in which spinner code will be written
-@@ -23,13 +67,28 @@
-  */
- void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
- {
--	uint64_t loop_addr = opts->addr + offsetof(struct xe_spin, batch);
-+	uint64_t loop_addr;
- 	uint64_t start_addr = opts->addr + offsetof(struct xe_spin, start);
- 	uint64_t end_addr = opts->addr + offsetof(struct xe_spin, end);
-+	uint64_t ticks_delta_addr = opts->addr + offsetof(struct xe_spin, ticks_delta);
-+	uint64_t pad_addr = opts->addr + offsetof(struct xe_spin, pad);
- 	int b = 0;
- 
- 	spin->start = 0;
- 	spin->end = 0xffffffff;
-+	spin->ticks_delta = 0;
-+
-+	if (opts->ctx_ticks) {
-+		/* store start timestamp */
-+		spin->batch[b++] = MI_LOAD_REGISTER_IMM(1) | MI_LRI_CS_MMIO;
-+		spin->batch[b++] = CS_GPR(START_TS) + 4;
-+		spin->batch[b++] = 0;
-+		spin->batch[b++] = MI_LOAD_REGISTER_REG | MI_LRR_DST_CS_MMIO | MI_LRR_SRC_CS_MMIO;
-+		spin->batch[b++] = CTX_TIMESTAMP;
-+		spin->batch[b++] = CS_GPR(START_TS);
-+	}
-+
-+	loop_addr = opts->addr + b * sizeof(uint32_t);
- 
- 	spin->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
- 	spin->batch[b++] = start_addr;
-@@ -39,6 +98,42 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
- 	if (opts->preempt)
- 		spin->batch[b++] = (0x5 << 23);
- 
-+	if (opts->ctx_ticks) {
-+		spin->batch[b++] = MI_LOAD_REGISTER_IMM(1) | MI_LRI_CS_MMIO;
-+		spin->batch[b++] = CS_GPR(NOW_TS) + 4;
-+		spin->batch[b++] = 0;
-+		spin->batch[b++] = MI_LOAD_REGISTER_REG | MI_LRR_DST_CS_MMIO | MI_LRR_SRC_CS_MMIO;
-+		spin->batch[b++] = CTX_TIMESTAMP;
-+		spin->batch[b++] = CS_GPR(NOW_TS);
-+
-+		/* delta = now - start; inverted to match COND_BBE */
-+		spin->batch[b++] = MI_MATH(4);
-+		spin->batch[b++] = MI_MATH_LOAD(MI_MATH_REG_SRCA, MI_MATH_REG(NOW_TS));
-+		spin->batch[b++] = MI_MATH_LOAD(MI_MATH_REG_SRCB, MI_MATH_REG(START_TS));
-+		spin->batch[b++] = MI_MATH_SUB;
-+		spin->batch[b++] = MI_MATH_STOREINV(MI_MATH_REG(NOW_TS), MI_MATH_REG_ACCU);
-+
-+		/* Save delta for reading by COND_BBE */
-+		spin->batch[b++] = MI_STORE_REGISTER_MEM | MI_SRM_CS_MMIO | 2;
-+		spin->batch[b++] = CS_GPR(NOW_TS);
-+		spin->batch[b++] = ticks_delta_addr;
-+		spin->batch[b++] = ticks_delta_addr >> 32;
-+
-+		/* Delay between SRM and COND_BBE to post the writes */
-+		for (int n = 0; n < 8; n++) {
-+			spin->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-+			spin->batch[b++] = pad_addr;
-+			spin->batch[b++] = pad_addr >> 32;
-+			spin->batch[b++] = 0xc0ffee;
-+		}
-+
-+		/* Break if delta [time elapsed] > ns */
-+		spin->batch[b++] = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | 2;
-+		spin->batch[b++] = ~(opts->ctx_ticks);
-+		spin->batch[b++] = ticks_delta_addr;
-+		spin->batch[b++] = ticks_delta_addr >> 32;
-+	}
-+
- 	spin->batch[b++] = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | 2;
- 	spin->batch[b++] = 0;
- 	spin->batch[b++] = end_addr;
-diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
-index 9f1d33294..f1abc1102 100644
---- a/lib/xe/xe_spin.h
-+++ b/lib/xe/xe_spin.h
-@@ -15,27 +15,33 @@
- #include "xe_query.h"
- #include "lib/igt_dummyload.h"
- 
-+#define XE_SPIN_MAX_CTX_TICKS UINT32_MAX - 1000
-+
- /** struct xe_spin_opts
-  *
-  * @addr: offset of spinner within vm
-  * @preempt: allow spinner to be preempted or not
-+ * @ctx_ticks: number of ticks after which spinner is stopped, applied if > 0
-  *
-  * Used to initialize struct xe_spin spinner behavior.
-  */
- struct xe_spin_opts {
- 	uint64_t addr;
- 	bool preempt;
-+	uint32_t ctx_ticks;
- };
- 
- /* Mapped GPU object */
- struct xe_spin {
--	uint32_t batch[16];
-+	uint32_t batch[128];
- 	uint64_t pad;
- 	uint32_t start;
- 	uint32_t end;
-+	uint32_t ticks_delta;
- };
- 
- igt_spin_t *xe_spin_create(int fd, const struct igt_spin_factory *opt);
-+uint32_t duration_to_ctx_ticks(int fd, int gt_id, uint64_t ns);
- void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts);
- 
- #define xe_spin_init_opts(fd, ...) \
+Marcin Bernatowicz (8):
+  lib/xe_spin: xe_spin_opts for xe_spin initialization
+  lib/xe_spin: fixed duration xe_spin capability
+  lib/igt_device_scan: Xe get integrated/discrete card functions
+  benchmarks/gem_wsim: scale duration option fixes
+  benchmarks/gem_wsim: cleanups
+  benchmarks/gem_wsim: allow comments in workload description files
+  benchmarks/gem_wsim: extract prepare_ctxs function, add w_sync
+  [RFC] benchmarks/gem_wsim: added basic xe support
+
+ benchmarks/gem_wsim.c                         | 875 ++++++++++++++----
+ benchmarks/wsim/README                        |  87 +-
+ benchmarks/wsim/xe_cloud-gaming-60fps.wsim    |  25 +
+ benchmarks/wsim/xe_example.wsim               |  28 +
+ benchmarks/wsim/xe_example01.wsim             |  19 +
+ benchmarks/wsim/xe_example_fence.wsim         |  23 +
+ .../wsim/xe_media_load_balance_fhd26u7.wsim   |  63 ++
+ lib/igt_device_scan.c                         |  34 +-
+ lib/igt_device_scan.h                         |   2 +
+ lib/xe/xe_spin.c                              | 123 ++-
+ lib/xe/xe_spin.h                              |  27 +-
+ tests/intel/xe_dma_buf_sync.c                 |   6 +-
+ tests/intel/xe_exec_balancer.c                |   9 +-
+ tests/intel/xe_exec_reset.c                   |  24 +-
+ tests/intel/xe_exec_threads.c                 |   7 +-
+ tests/intel/xe_vm.c                           |   7 +-
+ 16 files changed, 1114 insertions(+), 245 deletions(-)
+ create mode 100644 benchmarks/wsim/xe_cloud-gaming-60fps.wsim
+ create mode 100644 benchmarks/wsim/xe_example.wsim
+ create mode 100644 benchmarks/wsim/xe_example01.wsim
+ create mode 100644 benchmarks/wsim/xe_example_fence.wsim
+ create mode 100644 benchmarks/wsim/xe_media_load_balance_fhd26u7.wsim
+
 -- 
 2.30.2
