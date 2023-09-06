@@ -1,21 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AA08910E591
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Sep 2023 08:08:58 +0000 (UTC)
-Message-ID: <f2e80958-eb41-ac24-af75-0c9c03abe1bd@intel.com>
-Date: Wed, 6 Sep 2023 13:38:53 +0530
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 50DDC10E5AC
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Sep 2023 09:23:59 +0000 (UTC)
+From: Katarzyna Dec <katarzyna.dec@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed,  6 Sep 2023 09:23:34 +0000
+Message-Id: <20230906092337.79673-1-katarzyna.dec@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230905125356.1659246-1-bhanuprakash.modem@intel.com>
- <20230905125356.1659246-6-bhanuprakash.modem@intel.com>
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20230905125356.1659246-6-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [i-g-t V2 5/7] tests/intel/pm: Rename i915_pm_lpsp to
- kms_pm_lpsp
+Subject: [igt-dev] [PATCH i-g-t v3 0/3] IGT XE documentation cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,82 +16,54 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Gandi Ramadevi <ramadevi.gandi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Bhanu,
+Let's add missing documentation fileds that are causing warnings.
+Some tests documentation needed changes to have more accurate naming.
+Let's mark Negative and Stress tests.
+Adding missing 'Run type' and 'Test category' for remaining test.
 
-On 05-Sep-23 6:23 PM, Bhanuprakash Modem wrote:
-> As i915_pm_lpsp is a display specific test, rename it with
-> the "kms_" prefix, i.e kms_pm_lpsp.
-> 
-> V2: - Rebase
-> 
-> Cc: Swati Sharma <swati2.sharma@intel.com>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->   tests/intel/{i915_pm_lpsp.c => kms_pm_lpsp.c} | 24 ++-----------------
->   tests/meson.build                             |  2 +-
->   2 files changed, 3 insertions(+), 23 deletions(-)
->   rename tests/intel/{i915_pm_lpsp.c => kms_pm_lpsp.c} (82%)
-> 
-> diff --git a/tests/intel/i915_pm_lpsp.c b/tests/intel/kms_pm_lpsp.c
-> similarity index 82%
-> rename from tests/intel/i915_pm_lpsp.c
-> rename to tests/intel/kms_pm_lpsp.c
-> index 291e56674..0adcb8cc0 100644
-> --- a/tests/intel/i915_pm_lpsp.c
-> +++ b/tests/intel/kms_pm_lpsp.c
-> @@ -1,26 +1,6 @@
-> +// SPDX-License-Identifier: MIT
->   /*
-> - * Copyright © 2013 Intel Corporation
-> - *
-> - * Permission is hereby granted, free of charge, to any person obtaining a
-> - * copy of this software and associated documentation files (the "Software"),
-> - * to deal in the Software without restriction, including without limitation
-> - * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> - * and/or sell copies of the Software, and to permit persons to whom the
-> - * Software is furnished to do so, subject to the following conditions:
-> - *
-> - * The above copyright notice and this permission notice (including the next
-> - * paragraph) shall be included in all copies or substantial portions of the
-> - * Software.
-> - *
-> - * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> - * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> - * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-> - * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-> - * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-> - * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-> - * IN THE SOFTWARE.
-> - *
-> - * Author: Paulo Zanoni <paulo.r.zanoni@intel.com>
-> + * Copyright © 2023 Intel Corporation
->    *
->    */
+v2: Fix few typos and add xe_mmap to VMA subcategory
+v3: Add patch from Mauro enforcing mandatory documentation fields
 
-Same comment holds here too, don't remove copyright.
+Signed-off-by: Katarzyna Dec <katarzyna.dec@intel.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Gandi Ramadevi <ramadevi.gandi@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
->   
-> diff --git a/tests/meson.build b/tests/meson.build
-> index ea8b60282..92729e0c3 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -222,7 +222,6 @@ intel_i915_progs = [
->   	'i915_pciid',
->   	'i915_pipe_stress',
->   	'i915_pm_freq_mult',
-> -	'i915_pm_lpsp',
->   	'i915_pm_rpm',
->   	'i915_pm_rc6_residency',
->   	'i915_pm_rps',
-> @@ -262,6 +261,7 @@ intel_kms_progs = [
->   	'kms_pipe_b_c_ivb',
->   	'kms_pm_backlight',
->   	'kms_pm_dc',
-> +	'kms_pm_lpsp',
->   	'kms_psr',
->   	'kms_psr2_sf',
->   	'kms_psr2_su',
+Katarzyna Dec (3):
+  tests/intel: Add missing documentation fields for tests
+  test/xe: Clean up of test documentation
+  scripts/test_list.py: enforce mandatory fields to be filled
+
+ scripts/test_list.py               |   2 +-
+ tests/core_hotunplug.c             |   1 +
+ tests/intel/xe_ccs.c               |   7 +-
+ tests/intel/xe_create.c            |   8 +-
+ tests/intel/xe_debugfs.c           |   2 +-
+ tests/intel/xe_dma_buf_sync.c      |   5 +-
+ tests/intel/xe_evict.c             | 154 +++++++++++++++++++++++------
+ tests/intel/xe_exec_balancer.c     |  11 +++
+ tests/intel/xe_exec_basic.c        |   7 +-
+ tests/intel/xe_exec_compute_mode.c |   5 +-
+ tests/intel/xe_exec_fault_mode.c   |   9 +-
+ tests/intel/xe_exercise_blt.c      |   6 +-
+ tests/intel/xe_intel_bb.c          |   2 +-
+ tests/intel/xe_media_fill.c        |   1 +
+ tests/intel/xe_mmap.c              |  10 +-
+ tests/intel/xe_mmio.c              |   3 +-
+ tests/intel/xe_noexec_ping_pong.c  |  25 +++--
+ tests/intel/xe_pm.c                |   1 +
+ tests/intel/xe_query.c             |  14 ++-
+ tests/intel/xe_spin_batch.c        |   2 +-
+ tests/intel/xe_sysfs_scheduler.c   |   5 +-
+ tests/intel/xe_sysfs_tile.c        |   3 +
+ tests/intel/xe_uevent.c            |   3 +
+ tests/intel/xe_vm.c                |  25 ++++-
+ 24 files changed, 247 insertions(+), 64 deletions(-)
+
+-- 
+2.34.1
