@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F2E7810E5A1
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Sep 2023 08:16:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B887910E594
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Sep 2023 08:16:51 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  6 Sep 2023 13:38:36 +0530
-Message-Id: <20230906080840.1714917-3-bhanuprakash.modem@intel.com>
+Date: Wed,  6 Sep 2023 13:38:35 +0530
+Message-Id: <20230906080840.1714917-2-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230906080840.1714917-1-bhanuprakash.modem@intel.com>
 References: <20230906080840.1714917-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 2/6] tests/kms_vblank: Allow hang tests to run
- on XE
+Subject: [igt-dev] [i-g-t V3 1/6] lib/igt_gt: Fix igt_post_hang_ring for XE
+ driver
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,31 +25,28 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As hang tests supports both i915 & XE, update the intel specific
-checks to allow them to run on XE.
+Fix igt_post_hang_ring() to not execute gem specific logic
+for XE driver.
 
 Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/kms_vblank.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ lib/igt_gt.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
-index 0cc21bb5f..6753dc918 100644
---- a/tests/kms_vblank.c
-+++ b/tests/kms_vblank.c
-@@ -289,7 +289,10 @@ static void run_test(data_t *data, void (*testfunc)(data_t *, int, int))
- 		 igt_output_name(output));
- 
- 	if (!(data->flags & NOHANG)) {
--		ahnd = get_reloc_ahnd(fd, 0);
-+		ahnd = is_i915_device(fd) ?
-+			get_reloc_ahnd(fd, 0) :
-+			intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
+diff --git a/lib/igt_gt.c b/lib/igt_gt.c
+index 7cf0e468e..a24a566c7 100644
+--- a/lib/igt_gt.c
++++ b/lib/igt_gt.c
+@@ -384,6 +384,8 @@ void igt_post_hang_ring(int fd, igt_hang_t arg)
+ 	if (is_xe_device(fd)) {
+ 		igt_spin_free(fd, arg.spin);
+ 		xe_post_hang_ring(fd, arg);
 +
- 		hang = igt_hang_ring_with_ahnd(fd, I915_EXEC_DEFAULT, ahnd);
++		return;
  	}
  
+ 	gem_sync(fd, arg.spin->handle); /* Wait until it hangs */
 -- 
 2.40.0
