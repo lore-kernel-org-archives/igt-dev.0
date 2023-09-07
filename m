@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3157710E227
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Sep 2023 10:19:00 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1955110E7B2
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Sep 2023 10:19:04 +0000 (UTC)
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  7 Sep 2023 12:17:38 +0200
-Message-ID: <20230907101852.522819-8-mauro.chehab@linux.intel.com>
+Date: Thu,  7 Sep 2023 12:17:37 +0200
+Message-ID: <20230907101852.522819-7-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230907101852.522819-1-mauro.chehab@linux.intel.com>
 References: <20230907101852.522819-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 7/7] scripts/test_list.py: don't be
- greedy while matching data from testlists
+Subject: [igt-dev] [PATCH i-g-t v3 6/7] scripts/test_list.py: move "FULL"
+ testlist to config file
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,41 +26,63 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Testlist regexes are not greedy: despite not containing a $ at the
-end, they stop parsing at the end of string - well, sort of.
-
-The way IGT runner handles it is that, if the strings matches
-something like:
-
-	igt@test
-
-It will apply the testlist/blacklist to all subtests that belong
-to test, e. g. igt@test@subtest will also match. However,
-igt@test2 won't match.
-
- So, the actual regular expression for it should be:
-
-	igt@test(\@.*)?$
-
-Honour that, doing the same logic as IGT runner does.
+Don't assume that the default testlist is "FULL". Instead, read
+it from the configuration file.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- scripts/test_list.py | 2 ++
- 1 file changed, 2 insertions(+)
+ scripts/test_list.py             | 6 ++++--
+ tests/intel/kms_test_config.json | 1 +
+ tests/intel/xe_test_config.json  | 1 +
+ 3 files changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/scripts/test_list.py b/scripts/test_list.py
-index bd03fcfc7efd..e339334cfbf6 100644
+index c1518a904baf..bd03fcfc7efd 100644
 --- a/scripts/test_list.py
 +++ b/scripts/test_list.py
-@@ -457,6 +457,8 @@ class TestList:
-                 if match:
-                     test = match.group(1)
-                     subtest = match.group(2)
-+                    if not subtest.endswith("$"):
-+                        subtest += r"(\@.*)?$"
-                     testlist[name].append(re.compile(f"{test}{subtest}"))
+@@ -484,6 +484,8 @@ class TestList:
+             if "testlist" not in self.props[field]["_properties_"]:
+                 continue
  
-     def __filter_subtest(self, test, subtest, field_not_found_value):
++            default_value = self.props[field]["_properties_"].get("default-testlist")
++
+             testname = subtest_dict["_summary_"]
+ 
+             value = subtest_dict.get(field)
+@@ -510,8 +512,8 @@ class TestList:
+                                 set_full_if_empty = False
+                             values.discard(deleted_names)
+ 
+-            if set_full_if_empty and not values:
+-                values = set(["FULL"])
++            if default_value and set_full_if_empty and not values:
++                values = set([default_value])
+ 
+             subtest_dict[field] = ", ".join(sorted(values))
+ 
+diff --git a/tests/intel/kms_test_config.json b/tests/intel/kms_test_config.json
+index 7ab288685677..5be264a79c6e 100644
+--- a/tests/intel/kms_test_config.json
++++ b/tests/intel/kms_test_config.json
+@@ -22,6 +22,7 @@
+             "Run type": {
+                 "_properties_": {
+                     "description": "Defines what category of testlist it belongs",
++                    "default-testlist": "FULL",
+                     "testlists": {
+                         "i915 BAT": "../intel-ci/fast-feedback.testlist",
+                         "i915 BAT chamelium": "../intel-ci/fast-feedback-chamelium-only.testlist",
+diff --git a/tests/intel/xe_test_config.json b/tests/intel/xe_test_config.json
+index 408afcbb03bc..9e582a43df56 100644
+--- a/tests/intel/xe_test_config.json
++++ b/tests/intel/xe_test_config.json
+@@ -32,6 +32,7 @@
+                         "_properties_": {
+                             "mandatory": true,
+                             "description": "Defines what category of testlist it belongs",
++                            "default-testlist": "FULL",
+                             "testlists": {
+                                 "Xe BAT": "../intel-ci/xe-fast-feedback.testlist"
+                             },
 -- 
 2.41.0
