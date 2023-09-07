@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AACF310E23E
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Sep 2023 16:22:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6031210E23E
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Sep 2023 16:22:51 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  7 Sep 2023 21:41:48 +0530
-Message-Id: <20230907161155.1828658-1-bhanuprakash.modem@intel.com>
+Date: Thu,  7 Sep 2023 21:41:53 +0530
+Message-Id: <20230907161155.1828658-6-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230907161155.1828658-1-bhanuprakash.modem@intel.com>
+References: <20230907161155.1828658-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 0/7] Separate display PM tests from Core
+Subject: [igt-dev] [i-g-t V3 5/7] tests/intel/pm: Rename i915_pm_lpsp to
+ kms_pm_lpsp
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,36 +23,43 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Separate display specific tests from Core and maintain the
-binary names with kms_ prefix.
+As i915_pm_lpsp is a display specific test, rename it with
+the "kms_" prefix, i.e kms_pm_lpsp.
 
 V2: - Rebase
 V3: - Restore old Copyright
-    - Separate more tests from i915_pm_rpm
 
-Bhanuprakash Modem (7):
-  tests/intel/pm: Rename i915_pm_backlight to kms_pm_backlight
-  tests/intel/kms_pm_backlight: Fix testplan documentation
-  tests/intel/pm: Rename i915_pm_dc to kms_pm_dc
-  tests/intel/kms_pm_dc: Fix testplan documentation
-  tests/intel/pm: Rename i915_pm_lpsp to kms_pm_lpsp
-  tests/intel/kms_pm_lpsp: Fix testplan documentation
-  tests/intel/pm: Separate display specific tests from i915_pm_rpm
+Cc: Swati Sharma <swati2.sharma@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/intel/{i915_pm_lpsp.c => kms_pm_lpsp.c} | 0
+ tests/meson.build                             | 2 +-
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+ rename tests/intel/{i915_pm_lpsp.c => kms_pm_lpsp.c} (100%)
 
- tests/intel-ci/blacklist-pre-merge.txt        |    8 +-
- tests/intel-ci/blacklist.txt                  |    2 +-
- tests/intel-ci/fast-feedback.testlist         |    8 +-
- tests/intel/i915_pm_rpm.c                     | 1125 ----------
- ...i915_pm_backlight.c => kms_pm_backlight.c} |   36 +-
- tests/intel/{i915_pm_dc.c => kms_pm_dc.c}     |   66 +-
- tests/intel/{i915_pm_lpsp.c => kms_pm_lpsp.c} |   15 +-
- tests/intel/kms_pm_rpm.c                      | 1840 +++++++++++++++++
- tests/meson.build                             |    7 +-
- 9 files changed, 1938 insertions(+), 1169 deletions(-)
- rename tests/intel/{i915_pm_backlight.c => kms_pm_backlight.c} (91%)
- rename tests/intel/{i915_pm_dc.c => kms_pm_dc.c} (92%)
- rename tests/intel/{i915_pm_lpsp.c => kms_pm_lpsp.c} (95%)
- create mode 100644 tests/intel/kms_pm_rpm.c
-
---
+diff --git a/tests/intel/i915_pm_lpsp.c b/tests/intel/kms_pm_lpsp.c
+similarity index 100%
+rename from tests/intel/i915_pm_lpsp.c
+rename to tests/intel/kms_pm_lpsp.c
+diff --git a/tests/meson.build b/tests/meson.build
+index ea8b60282..92729e0c3 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -222,7 +222,6 @@ intel_i915_progs = [
+ 	'i915_pciid',
+ 	'i915_pipe_stress',
+ 	'i915_pm_freq_mult',
+-	'i915_pm_lpsp',
+ 	'i915_pm_rpm',
+ 	'i915_pm_rc6_residency',
+ 	'i915_pm_rps',
+@@ -262,6 +261,7 @@ intel_kms_progs = [
+ 	'kms_pipe_b_c_ivb',
+ 	'kms_pm_backlight',
+ 	'kms_pm_dc',
++	'kms_pm_lpsp',
+ 	'kms_psr',
+ 	'kms_psr2_sf',
+ 	'kms_psr2_su',
+-- 
 2.40.0
