@@ -1,23 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4D44610E231
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Sep 2023 13:36:48 +0000 (UTC)
-From: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>
-To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>
-Date: Thu, 7 Sep 2023 13:36:41 +0000
-Message-ID: <BYAPR11MB3413A74B3E8C02EE4C8A0330D0EEA@BYAPR11MB3413.namprd11.prod.outlook.com>
-References: <20230904110458.24177-1-sai.gowtham.ch@intel.com>
- <20230904110458.24177-3-sai.gowtham.ch@intel.com>
- <20230904123934.stxmaelmzxg3366l@zkempczy-mobl2>
- <BYAPR11MB3413605657BFBE884AA82502D0E8A@BYAPR11MB3413.namprd11.prod.outlook.com>
- <20230907093628.hlpa7kh47nddjz7z@zkempczy-mobl2>
-In-Reply-To: <20230907093628.hlpa7kh47nddjz7z@zkempczy-mobl2>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/alternative;
+ boundary="===============0043842400544675476=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/4] lib/intel_blt: check if blt
- commands are supported by the platforms
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Riana Tauro" <riana.tauro@intel.com>
+Date: Thu, 07 Sep 2023 08:20:32 -0000
+Message-ID: <169407483292.17901.7362381648886683663@emeril.freedesktop.org>
+References: <20230907060638.2317485-1-riana.tauro@intel.com>
+In-Reply-To: <20230907060638.2317485-1-riana.tauro@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQWRkIGZy?=
+ =?utf-8?q?eq=5Fpower_test?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,147 +17,228 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============0043842400544675476==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: Add freq_power test
+URL   : https://patchwork.freedesktop.org/series/123376/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_7474 -> IGTPW_9738
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9738/index.html
+
+Participating hosts (40 -> 38)
+------------------------------
+
+  Additional (1): fi-bsw-n3050 
+  Missing    (3): fi-kbl-soraka fi-hsw-4770 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_9738 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_lmem_swapping@random-engines:
+    - fi-bsw-n3050:       NOTRUN -> [SKIP][1] ([fdo#109271]) +18 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9738/fi-bsw-n3050/igt@gem_lmem_swapping@random-engines.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-apl-guc:         [PASS][2] -> [DMESG-FAIL][3] ([i915#5334])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7474/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9738/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-bsw-nick:        [PASS][4] -> [FAIL][5] ([i915#9276])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7474/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9738/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - fi-kbl-guc:         [PASS][6] -> [FAIL][7] ([IGT#3] / [i915#6121])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7474/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9738/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
+    - fi-bsw-n3050:       NOTRUN -> [FAIL][8] ([IGT#3])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9738/fi-bsw-n3050/igt@kms_hdmi_inject@inject-audio.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
+    - bat-dg2-11:         NOTRUN -> [SKIP][9] ([i915#1845]) +3 other tests skip
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9738/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+
+  * igt@kms_psr@primary_mmap_gtt:
+    - bat-rplp-1:         NOTRUN -> [ABORT][10] ([i915#8442] / [i915#8469] / [i915#8668])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9738/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html
+
+  
+#### Warnings ####
+
+  * igt@kms_psr@sprite_plane_onoff:
+    - bat-rplp-1:         [ABORT][11] ([i915#8442] / [i915#8668] / [i915#8712]) -> [SKIP][12] ([i915#1072])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7474/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9738/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html
+
+  
+  [IGT#3]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#6121]: https://gitlab.freedesktop.org/drm/intel/issues/6121
+  [i915#8442]: https://gitlab.freedesktop.org/drm/intel/issues/8442
+  [i915#8469]: https://gitlab.freedesktop.org/drm/intel/issues/8469
+  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
+  [i915#8712]: https://gitlab.freedesktop.org/drm/intel/issues/8712
+  [i915#9276]: https://gitlab.freedesktop.org/drm/intel/issues/9276
 
 
->-----Original Message-----
->From: Kempczynski, Zbigniew <zbigniew.kempczynski@intel.com>
->Sent: Thursday, September 7, 2023 3:06 PM
->To: Ch, Sai Gowtham <sai.gowtham.ch@intel.com>
->Cc: igt-dev@lists.freedesktop.org; Stolarek, Karolina
-><karolina.stolarek@intel.com>
->Subject: Re: [igt-dev] [PATCH i-g-t 2/4] lib/intel_blt: check if blt comma=
-nds are
->supported by the platforms
->
->On Tue, Sep 05, 2023 at 06:11:54AM +0200, Ch, Sai Gowtham wrote:
->>
->>
->> >-----Original Message-----
->> >From: Kempczynski, Zbigniew <zbigniew.kempczynski@intel.com>
->> >Sent: Monday, September 4, 2023 6:10 PM
->> >To: Ch, Sai Gowtham <sai.gowtham.ch@intel.com>
->> >Cc: igt-dev@lists.freedesktop.org; Stolarek, Karolina
->> ><karolina.stolarek@intel.com>
->> >Subject: Re: [igt-dev] [PATCH i-g-t 2/4] lib/intel_blt: check if blt
->> >commands are supported by the platforms
->> >
->> >On Mon, Sep 04, 2023 at 04:34:56PM +0530, sai.gowtham.ch@intel.com
->wrote:
->> >> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
->> >>
->> >> Check if mem-copy/mem-set commands are supported by fd device.
->> >>
->> >> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
->> >> ---
->> >>  lib/intel_blt.c | 32 ++++++++++++++++++++++++++++++++
->> >> lib/intel_blt.h |  2 ++
->> >>  2 files changed, 34 insertions(+)
->> >>
->> >> diff --git a/lib/intel_blt.c b/lib/intel_blt.c index
->> >> 429511920..b55fa9b52 100644
->> >> --- a/lib/intel_blt.c
->> >> +++ b/lib/intel_blt.c
->> >> @@ -289,6 +289,38 @@ bool blt_has_block_copy(int fd)
->> >>  	return blt_supports_command(cmds_info, XY_BLOCK_COPY);  }
->> >>
->> >> +/**
->> >> + * blt_has_mem_copy
->> >> + * @fd: drm fd
->> >> + *
->> >> + * Check if mem copy is supported by @fd device
->> >> + *
->> >> + * Returns:
->> >> + * true if it does, false otherwise.
->> >> + */
->> >> +bool blt_has_mem_copy(int fd)
->> >> +{
->> >> +	const struct intel_cmds_info *cmds_info =3D GET_CMDS_INFO(fd);
->> >> +
->> >> +	return blt_supports_command(cmds_info, MEM_COPY); }
->> >> +
->> >> +/**
->> >> + * blt_has_mem_set
->> >> + * @fd: drm fd
->> >> + *
->> >> + * Check if mem set is supported by @fd device
->> >> + *
->> >> + * Returns:
->> >> + * true if it does, false otherwise.
->> >> + */
->> >> +bool blt_has_mem_set(int fd)
->> >> +{
->> >> +	const struct intel_cmds_info *cmds_info =3D GET_CMDS_INFO(fd);
->> >> +
->> >> +	return blt_supports_command(cmds_info, MEM_SET); }
->> >> +
->> >
->> >It is not true if you'll use those functions in i915 igts.
->> Do you mean path for i915 needs to be enabled ?
->
->Yes, if I'm not wrong PVC will be supported on i915 as either.
->So if blt_has_mem_set() will return true for it it should have the impleme=
-ntation
->in the blitter library. Generally you got almost everything you need
->(mem_set/copy code is already written so what you need is to extract this =
-and
->support two ways of entering it (for i915 and for xe).
+Build changes
+-------------
 
-Sure will make this work for both i915 and xe.=20
->
->> >mem-set and mem-copy commands you've introduced in 1/4 patch should
->> >be part of intel_blt.[ch] library.
->> Do you mean MEM_SET and MEM_COPY  in 3/4 patch ? Can you elaborate ?
->
->Related to above comment. You need to have batch commands + prepare
->execution. Batch commands + execution for Xe you already have in the test.=
- I
->would migrate this to intel_blt.c and add i915 execution path.
->
-do you mean something similar to "emit_blt_fast_copy" for fast_copy, mem_co=
-py/set has to be migrated to=20
-Intel_blt.c ? =20
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7474 -> IGTPW_9738
 
-----
-Ch Sai Gowtham
->Then in the test just call the mem_set or mem_copy depending what you want
->to test to.
->
->--
->Zbigniew
->
->> >
->> >BTW first patch 1/4 won't compile in step-by-step mode because it
->> >uses code from following patches.
->> I'll correct that in my next patch series.
->> ----
->> Ch Sai Gowtham
->> >
->> >--
->> >Zbigniew
->> >
->> >
->> >>  /**
->> >>   * blt_has_fast_copy
->> >>   * @fd: drm fd
->> >> diff --git a/lib/intel_blt.h b/lib/intel_blt.h index
->> >> b8b3d724d..d9c8883c7 100644
->> >> --- a/lib/intel_blt.h
->> >> +++ b/lib/intel_blt.h
->> >> @@ -175,6 +175,8 @@ bool blt_cmd_has_property(const struct
->> >intel_cmds_info *cmds_info,
->> >>  			  uint32_t prop);
->> >>
->> >>  bool blt_has_block_copy(int fd);
->> >> +bool blt_has_mem_copy(int fd);
->> >> +bool blt_has_mem_set(int fd);
->> >>  bool blt_has_fast_copy(int fd);
->> >>  bool blt_has_xy_src_copy(int fd);
->> >>  bool blt_has_xy_color(int fd);
->> >> --
->> >> 2.39.1
->> >>
+  CI-20190529: 20190529
+  CI_DRM_13605: 5008076127a9599704e98fb4de3761743d943dd0 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_9738: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9738/index.html
+  IGT_7474: 9d91cf2c6e7bb64d60c2030d1535e40ca0ad53ee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@xe_guc_pc@freq_power
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9738/index.html
+
+--===============0043842400544675476==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add freq_power test</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123376/">https://patchwork.freedesktop.org/series/123376/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9738/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9738/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7474 -&gt; IGTPW_9738</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9738/index.html</p>
+<h2>Participating hosts (40 -&gt; 38)</h2>
+<p>Additional (1): fi-bsw-n3050 <br />
+  Missing    (3): fi-kbl-soraka fi-hsw-4770 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_9738 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_lmem_swapping@random-engines:</p>
+<ul>
+<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9738/fi-bsw-n3050/igt@gem_lmem_swapping@random-engines.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +18 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7474/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9738/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7474/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9738/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9276">i915#9276</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>
+<p>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7474/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9738/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3">IGT#3</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6121">i915#6121</a>)</p>
+</li>
+<li>
+<p>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9738/fi-bsw-n3050/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3">IGT#3</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9738/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_mmap_gtt:</p>
+<ul>
+<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9738/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8442">i915#8442</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8469">i915#8469</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_psr@sprite_plane_onoff:<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7474/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8442">i915#8442</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8712">i915#8712</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9738/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7474 -&gt; IGTPW_9738</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13605: 5008076127a9599704e98fb4de3761743d943dd0 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_9738: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9738/index.html<br />
+  IGT_7474: 9d91cf2c6e7bb64d60c2030d1535e40ca0ad53ee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@xe_guc_pc@freq_power</p>
+
+</body>
+</html>
+
+--===============0043842400544675476==--
