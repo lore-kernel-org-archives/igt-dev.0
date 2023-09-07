@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6879910E084
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Sep 2023 17:33:30 +0000 (UTC)
-Date: Thu, 7 Sep 2023 19:33:10 +0200
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8C96810E084
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Sep 2023 17:33:56 +0000 (UTC)
+Date: Thu, 7 Sep 2023 19:33:51 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230907173310.nb5ttfmfqsnqdwat@kamilkon-desk.igk.intel.com>
+Message-ID: <20230907173351.r5e4l34okenrn4ut@kamilkon-desk.igk.intel.com>
 References: <20230907143214.1280453-1-swati2.sharma@intel.com>
- <20230907143214.1280453-2-swati2.sharma@intel.com>
+ <20230907143214.1280453-3-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230907143214.1280453-2-swati2.sharma@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/3] tests: rename feature_discovery to
- kms_feature_discovery
+In-Reply-To: <20230907143214.1280453-3-swati2.sharma@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/3] tests/intel-ci: remove
+ feature_discovery from blocklist
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,128 +26,29 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Swati,
-
-On 2023-09-07 at 20:02:12 +0530, Swati Sharma wrote:
-> Since feature discovery test is only having kms tests,
-> rename to kms_feature_discovery. Also, add documentation
-> for the subtests.
+On 2023-09-07 at 20:02:13 +0530, Swati Sharma wrote:
+> Remove feature_discovery from blocklist.
 > 
 > Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> ---
->  ...re_discovery.c => kms_feature_discovery.c} | 53 ++++++++++++++++++-
->  tests/meson.build                             |  2 +-
->  2 files changed, 53 insertions(+), 2 deletions(-)
->  rename tests/{feature_discovery.c => kms_feature_discovery.c} (68%)
-> 
-> diff --git a/tests/feature_discovery.c b/tests/kms_feature_discovery.c
-> similarity index 68%
-> rename from tests/feature_discovery.c
-> rename to tests/kms_feature_discovery.c
-> index d1f4b1633..49958fd88 100644
-> --- a/tests/feature_discovery.c
-> +++ b/tests/kms_feature_discovery.c
-> @@ -22,6 +22,58 @@
->   *
->   */
->  
-> +/**
-> + * TEST: kms feature discovery
-> + * Category: Display
-> + * Description: A metatest that checks for \"features\" presence.
-> + *		The subtests here should only skip or pass,
-> + *		anything else means we have a serious problem.
-> + *
-> + * SUBTEST: display
-> + * Description: Make sure that we have display support with
-> + * 		some outputs connected.
-> + * Driver requirement: i915, xe
-> + * Functionality: feature_discovery
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: display-%dx
-> + * Description: Make sure that we have display support with %arg[1]
-> + * 		outputs connected.
-> + * Driver requirement: i915, xe
-> + * Functionality: feature_discovery
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: chamelium
-> + * Description: Make sure that Chamelium is configured and reachable.
-> + * Driver requirement: i915, xe
-> + * Functionality: feature_discovery, chamelium
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: psr1
-> + * Description: Make sure that we have eDP panel with PSR1 support.
-> + * Driver requirement: i915, xe
-> + * Functionality: feature_discovery, psr1, eDP
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: psr2
-> + * Description: Make sure that we have eDP panel with PSR2 support.
-> + * Driver requirement: i915, xe
------ ^
-
-> + * Functionality: feature_discovery, psr2, eDP
-> + * Mega feature: General Display Features
------ ^
-
-> + * Run type: FULL
------ ^
-
-> + * Test category: functionality test
------ ^
-All these fields are the same for all SUBTEST:, imho we should
-move them into TEST: and save some space. With that:
 
 Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Regards,
-Kamil
-
-> + *
-> + * arg[1].values: 2, 3, 4
-> + */
-> +
->  #include "igt.h"
->  #ifdef HAVE_CHAMELIUM
->  #include "igt_chamelium.h"
-> @@ -46,7 +98,6 @@ igt_main {
->  	}
->  
->  	igt_subtest_group {
-> -
->  		igt_fixture {
->  			igt_display_require(&display, fd);
->  		}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index aa8e3434c..eb643d4dd 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -14,7 +14,6 @@ test_progs = [
->  	'drm_mm',
->  	'drm_read',
->  	'fbdev',
-> -	'feature_discovery',
->  	'kms_3d',
->  	'kms_addfb_basic',
->  	'kms_async_flips',
-> @@ -31,6 +30,7 @@ test_progs = [
->  	'kms_dither',
->  	'kms_display_modes',
->  	'kms_dp_aux_dev',
-> +	'kms_feature_discovery',
->  	'kms_flip',
->  	'kms_flip_event_leak',
->  	'kms_force_connector_basic',
+> ---
+>  tests/intel-ci/xe.blocklist.txt | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
+> index d496a3f6d..e73018ec6 100644
+> --- a/tests/intel-ci/xe.blocklist.txt
+> +++ b/tests/intel-ci/xe.blocklist.txt
+> @@ -38,7 +38,6 @@ igt@drm_fdinfo
+>  igt@drm_read
+>  igt@dumb.*
+>  igt@fbdev
+> -igt@feature_discovery
+>  igt@prime_.*
+>  igt@sw_sync
+>  igt@syncobj_.*
 > -- 
 > 2.25.1
 > 
