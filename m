@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Thu, 7 Sep 2023 17:43:58 -0400
-Message-ID: <20230907214358.399918-1-rodrigo.vivi@intel.com>
-In-Reply-To: <20230901112158.nnctj5rt2yiimibx@kamilkon-desk.igk.intel.com>
-References: <20230901112158.nnctj5rt2yiimibx@kamilkon-desk.igk.intel.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: multipart/alternative;
+ boundary="===============0410668309264597810=="
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] drm-uapi/xe_drm: Remove max_page_size and
- align with latest uapi.
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Rodrigo Vivi" <rodrigo.vivi@intel.com>
+Date: Thu, 07 Sep 2023 23:38:14 -0000
+Message-ID: <169412989421.17903.7473379636366870913@emeril.freedesktop.org>
+References: <20230830214719.113454-1-rodrigo.vivi@intel.com>
+In-Reply-To: <20230830214719.113454-1-rodrigo.vivi@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_drm-uapi?=
+ =?utf-8?q?/xe=5Fdrm=3A_Remove_max=5Fpage=5Fsize_and_align_with_latest_uap?=
+ =?utf-8?b?aS4gKHJldjIp?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,132 +18,121 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: intel-xe@lists.freedesktop.org, Rodrigo Vivi <rodrigo.vivi@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Align with commit ("drm/xe/uapi: Remove useless max_page_size")
+--===============0410668309264597810==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: Rebase.
+== Series Details ==
 
-Cc: Francois Dugast <francois.dugast@intel.com>
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
----
- include/drm-uapi/xe_drm.h | 23 ++++++++++-------------
- tests/intel/xe_query.c    |  9 ++++-----
- 2 files changed, 14 insertions(+), 18 deletions(-)
+Series: drm-uapi/xe_drm: Remove max_page_size and align with latest uapi. (rev2)
+URL   : https://patchwork.freedesktop.org/series/123083/
+State : success
 
-diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index d1d49cd71..804c02270 100644
---- a/include/drm-uapi/xe_drm.h
-+++ b/include/drm-uapi/xe_drm.h
-@@ -174,10 +174,6 @@ struct drm_xe_query_mem_region {
- 	 * kernel.
- 	 */
- 	__u32 min_page_size;
--	/**
--	 * @max_page_size: Max page-size in bytes for this region.
--	 */
--	__u32 max_page_size;
- 	/**
- 	 * @total_size: The usable size in bytes for this region.
- 	 */
-@@ -256,7 +252,7 @@ struct drm_xe_query_config {
- #define XE_QUERY_CONFIG_REV_AND_DEVICE_ID	0
- #define XE_QUERY_CONFIG_FLAGS			1
- 	#define XE_QUERY_CONFIG_FLAGS_HAS_VRAM		(0x1 << 0)
--#define XE_QUERY_CONFIG_MIN_ALIGNEMENT		2
-+#define XE_QUERY_CONFIG_MIN_ALIGNMENT		2
- #define XE_QUERY_CONFIG_VA_BITS			3
- #define XE_QUERY_CONFIG_GT_COUNT		4
- #define XE_QUERY_CONFIG_MEM_REGION_COUNT	5
-@@ -449,7 +445,6 @@ struct drm_xe_gem_create {
- 	 * If a VM is specified, this BO must:
- 	 *
- 	 *  1. Only ever be bound to that VM.
--	 *
- 	 *  2. Cannot be exported as a PRIME fd.
- 	 */
- 	__u32 vm_id;
-@@ -489,7 +484,7 @@ struct drm_xe_gem_mmap_offset {
-  * struct drm_xe_vm_bind_op_error_capture - format of VM bind op error capture
-  */
- struct drm_xe_vm_bind_op_error_capture {
--	/** @error: errno that occured */
-+	/** @error: errno that occurred */
- 	__s32 error;
- 
- 	/** @op: operation that encounter an error */
-@@ -609,7 +604,7 @@ struct drm_xe_vm_bind_op {
- 	 * caused the error will be captured in drm_xe_vm_bind_op_error_capture.
- 	 * Once the user sees the error (via a ufence +
- 	 * XE_VM_PROPERTY_BIND_OP_ERROR_CAPTURE_ADDRESS), it should free memory
--	 * via non-async unbinds, and then restart all queue'd async binds op via
-+	 * via non-async unbinds, and then restart all queued async binds op via
- 	 * XE_VM_BIND_OP_RESTART. Or alternatively the user should destroy the
- 	 * VM.
- 	 *
-@@ -620,7 +615,7 @@ struct drm_xe_vm_bind_op {
- #define XE_VM_BIND_FLAG_ASYNC		(0x1 << 17)
- 	/*
- 	 * Valid on a faulting VM only, do the MAP operation immediately rather
--	 * than differing the MAP to the page fault handler.
-+	 * than deferring the MAP to the page fault handler.
- 	 */
- #define XE_VM_BIND_FLAG_IMMEDIATE	(0x1 << 18)
- 	/*
-@@ -907,7 +902,7 @@ struct drm_xe_mmio {
- /**
-  * struct drm_xe_wait_user_fence - wait user fence
-  *
-- * Wait on user fence, XE will wakeup on every HW engine interrupt in the
-+ * Wait on user fence, XE will wake-up on every HW engine interrupt in the
-  * instances list and check if user fence is complete::
-  *
-  *	(*addr & MASK) OP (VALUE & MASK)
-@@ -1039,9 +1034,11 @@ struct drm_xe_vm_madvise {
- 	 */
- #define DRM_XE_VM_MADVISE_PRIORITY		5
- #define		DRM_XE_VMA_PRIORITY_LOW		0
--#define		DRM_XE_VMA_PRIORITY_NORMAL	1	/* Default */
--#define		DRM_XE_VMA_PRIORITY_HIGH	2	/* Must be elevated user */
--	/* Pin the VMA in memory, must be elevated user */
-+		/* Default */
-+#define		DRM_XE_VMA_PRIORITY_NORMAL	1
-+		/* Must be user with elevated privileges */
-+#define		DRM_XE_VMA_PRIORITY_HIGH	2
-+	/* Pin the VMA in memory, must be user with elevated privileges */
- #define DRM_XE_VM_MADVISE_PIN			6
- 	/** @property: property to set */
- 	__u32 property;
-diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
-index 8ec849130..c540e3351 100644
---- a/tests/intel/xe_query.c
-+++ b/tests/intel/xe_query.c
-@@ -228,9 +228,8 @@ test_query_mem_usage(int fd)
- 			mem_usage->regions[i].used,
- 			mem_usage->regions[i].total_size
- 		);
--		igt_info("min_page_size=0x%x, max_page_size=0x%x\n",
--		       mem_usage->regions[i].min_page_size,
--		       mem_usage->regions[i].max_page_size);
-+		igt_info("min_page_size=0x%x\n",
-+		       mem_usage->regions[i].min_page_size);
- 
- 		igt_info("visible size=%lluMiB\n",
- 			 mem_usage->regions[i].cpu_visible_size >> 20);
-@@ -375,8 +374,8 @@ test_query_config(int fd)
- 	igt_info("  XE_QUERY_CONFIG_FLAGS_HAS_VRAM\t%s\n",
- 		config->info[XE_QUERY_CONFIG_FLAGS] &
- 		XE_QUERY_CONFIG_FLAGS_HAS_VRAM ? "ON":"OFF");
--	igt_info("XE_QUERY_CONFIG_MIN_ALIGNEMENT\t\t%#llx\n",
--		config->info[XE_QUERY_CONFIG_MIN_ALIGNEMENT]);
-+	igt_info("XE_QUERY_CONFIG_MIN_ALIGNMENT\t\t%#llx\n",
-+		config->info[XE_QUERY_CONFIG_MIN_ALIGNMENT]);
- 	igt_info("XE_QUERY_CONFIG_VA_BITS\t\t\t%llu\n",
- 		config->info[XE_QUERY_CONFIG_VA_BITS]);
- 	igt_info("XE_QUERY_CONFIG_GT_COUNT\t\t%llu\n",
--- 
-2.41.0
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7474_BAT -> XEIGTPW_9747_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9747_BAT that come from known issues:
+
+### IGT changes ###
+
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7474 -> IGTPW_9747
+  * Linux: xe-357-bae46e59a7f667734376ddb0d2451967dfb264f1 -> xe-362-758f01ec2a6774fda1e8f8075d31f42b81783caf
+
+  IGTPW_9747: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9747/index.html
+  IGT_7474: 9d91cf2c6e7bb64d60c2030d1535e40ca0ad53ee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-357-bae46e59a7f667734376ddb0d2451967dfb264f1: bae46e59a7f667734376ddb0d2451967dfb264f1
+  xe-362-758f01ec2a6774fda1e8f8075d31f42b81783caf: 758f01ec2a6774fda1e8f8075d31f42b81783caf
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9747/index.html
+
+--===============0410668309264597810==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>drm-uapi/xe_drm: Remove max_page_size and align with latest uapi. (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123083/">https://patchwork.freedesktop.org/series/123083/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9747/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9747/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7474_BAT -&gt; XEIGTPW_9747_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9747_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7474 -&gt; IGTPW_9747</li>
+<li>Linux: xe-357-bae46e59a7f667734376ddb0d2451967dfb264f1 -&gt; xe-362-758f01ec2a6774fda1e8f8075d31f42b81783caf</li>
+</ul>
+<p>IGTPW_9747: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9747/index.html<br />
+  IGT_7474: 9d91cf2c6e7bb64d60c2030d1535e40ca0ad53ee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-357-bae46e59a7f667734376ddb0d2451967dfb264f1: bae46e59a7f667734376ddb0d2451967dfb264f1<br />
+  xe-362-758f01ec2a6774fda1e8f8075d31f42b81783caf: 758f01ec2a6774fda1e8f8075d31f42b81783caf</p>
+
+</body>
+</html>
+
+--===============0410668309264597810==--
