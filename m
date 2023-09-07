@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 868CC10E760
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Sep 2023 05:52:05 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 27C9410E761
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Sep 2023 06:02:32 +0000 (UTC)
+From: Riana Tauro <riana.tauro@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  7 Sep 2023 11:22:03 +0530
-Message-Id: <20230907055203.1274040-1-swati2.sharma@intel.com>
+Date: Thu,  7 Sep 2023 11:36:36 +0530
+Message-Id: <20230907060638.2317485-1-riana.tauro@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/intel-ci: add 4-tile test
+Subject: [igt-dev] [PATCH i-g-t 0/2] Add freq_power test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,41 +16,22 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add 4-tile basic tiling tests to ffb.
+This test runs a spinner and sets the min and max frequencies
+to rp0 and rpn respectively. It then checks if power measured
+at lower frequencies is lesser.
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/intel-ci/fast-feedback.testlist    | 1 +
- tests/intel-ci/xe-fast-feedback.testlist | 1 +
- 2 files changed, 2 insertions(+)
+Riana Tauro (2):
+  test/intel/xe_guc_pc: Add freq_power test
+  HAX: Add freq_power to xe-fast-feedback.testlist
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index 841051058..b3a97561d 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -54,6 +54,7 @@ igt@i915_getparams_basic@basic-eu-total
- igt@i915_getparams_basic@basic-subslice-total
- igt@i915_hangman@error-state-basic
- igt@i915_pciid
-+igt@kms_addfb_basic@addfb25-4-tiled
- igt@kms_addfb_basic@addfb25-bad-modifier
- igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
- igt@kms_addfb_basic@addfb25-modifier-no-flag
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index a2b231c17..e11594123 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -182,6 +182,7 @@ igt@xe_vm@munmap-style-unbind-userptr-inval-end
- igt@xe_vm@munmap-style-unbind-userptr-inval-front
- igt@xe_waitfence@abstime
- igt@xe_waitfence@reltime
-+igt@kms_addfb_basic@addfb25-4-tiled
- igt@kms_addfb_basic@addfb25-bad-modifier
- igt@kms_addfb_basic@addfb25-modifier-no-flag
- igt@kms_addfb_basic@addfb25-x-tiled-legacy
+ tests/intel-ci/xe-fast-feedback.testlist |  1 +
+ tests/intel/xe_guc_pc.c                  | 88 ++++++++++++++++++++++++
+ 2 files changed, 89 insertions(+)
+
 -- 
-2.25.1
+2.40.0
