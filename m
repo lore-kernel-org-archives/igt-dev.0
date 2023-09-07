@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com
- (mail-sn1nam02on2078.outbound.protection.outlook.com [40.107.96.78])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 199D410E699
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Sep 2023 22:39:10 +0000 (UTC)
-From: Alex Hung <alex.hung@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Wed, 6 Sep 2023 16:37:29 -0600
-Message-ID: <20230906223730.3979103-3-alex.hung@amd.com>
-In-Reply-To: <20230906223730.3979103-1-alex.hung@amd.com>
-References: <20230906223730.3979103-1-alex.hung@amd.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3ABCD10E418
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Sep 2023 04:06:44 +0000 (UTC)
+Message-ID: <273dc23f-4fed-cf18-7d78-3187a5df836c@intel.com>
+Date: Thu, 7 Sep 2023 09:36:20 +0530
+To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20230905124127.1250108-1-swati2.sharma@intel.com>
+Content-Language: en-US
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <20230905124127.1250108-1-swati2.sharma@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH 2/3][i-g-t][V2] lib/igt_fb: add 10 bits
- (XRGB2101010) supports in fnv1a_crc
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/intel-ci: drop suspend test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,44 +20,30 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: brian.starkey@arm.com, maxime@cerno.tech
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Allow 10 bits (DRM_FORMAT_XRGB2101010) components to be hashed
-as well.
 
-Signed-off-by: Alex Hung <alex.hung@amd.com>
----
- lib/igt_fb.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index f60150017..281e99771 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -4754,7 +4754,7 @@ int igt_fb_get_fnv1a_crc(struct igt_fb *fb, igt_crc_t *crc)
- 	if (fb->num_planes != 1)
- 		return -EINVAL;
- 
--	if (fb->drm_format != DRM_FORMAT_XRGB8888)
-+	if (fb->drm_format != DRM_FORMAT_XRGB8888 && fb->drm_format != DRM_FORMAT_XRGB2101010)
- 		return -EINVAL;
- 
- 	ptr = igt_fb_map_buffer(fb->fd, fb);
-@@ -4780,7 +4780,11 @@ int igt_fb_get_fnv1a_crc(struct igt_fb *fb, igt_crc_t *crc)
- 
- 		for (x = 0; x < fb->width; x++) {
- 			uint32_t pixel = le32_to_cpu(line[x]);
--			pixel &= 0x00ffffff;
-+
-+			if (fb->drm_format == DRM_FORMAT_XRGB8888)
-+				pixel &= 0x00ffffff;
-+			else if (fb->drm_format == DRM_FORMAT_XRGB2101010)
-+				pixel &= 0x3fffffff;
- 
- 			hash ^= pixel;
- 			hash *= FNV1a_PRIME;
--- 
-2.42.0
+On 9/5/2023 6:11 PM, Swati Sharma wrote:
+> Its safer to run suspend tests under resume runs. Drop
+> only suspend test from the ffb.
+>
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+> ---
+>   tests/intel-ci/xe-fast-feedback.testlist | 1 -
+>   1 file changed, 1 deletion(-)
+>
+> diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+> index a395fa8c3..a2b231c17 100644
+> --- a/tests/intel-ci/xe-fast-feedback.testlist
+> +++ b/tests/intel-ci/xe-fast-feedback.testlist
+> @@ -237,7 +237,6 @@ igt@kms_pipe_crc_basic@nonblocking-crc
+>   igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
+>   igt@kms_pipe_crc_basic@read-crc
+>   igt@kms_pipe_crc_basic@read-crc-frame-sequence
+> -igt@kms_pipe_crc_basic@suspend-read-crc
+>   igt@kms_prop_blob@basic
+>   igt@kms_psr@primary_page_flip
+>   igt@kms_psr@cursor_plane_move
