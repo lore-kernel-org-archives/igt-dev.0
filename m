@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A9B2510E23E
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Sep 2023 16:22:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AACF310E23E
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Sep 2023 16:22:49 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  7 Sep 2023 21:41:52 +0530
-Message-Id: <20230907161155.1828658-5-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230907161155.1828658-1-bhanuprakash.modem@intel.com>
-References: <20230907161155.1828658-1-bhanuprakash.modem@intel.com>
+Date: Thu,  7 Sep 2023 21:41:48 +0530
+Message-Id: <20230907161155.1828658-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 4/7] tests/intel/kms_pm_dc: Fix testplan
- documentation
+Subject: [igt-dev] [i-g-t V3 0/7] Separate display PM tests from Core
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,110 +20,36 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As kms_pm_dc is moved to display, update the test documentation
-according to the kms testplan kms_test_config.json
+Separate display specific tests from Core and maintain the
+binary names with kms_ prefix.
 
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/intel/kms_pm_dc.c | 66 ++++++++++++++++++++++++++++-------------
- 1 file changed, 45 insertions(+), 21 deletions(-)
+V2: - Rebase
+V3: - Restore old Copyright
+    - Separate more tests from i915_pm_rpm
 
-diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
-index 13ae31583..895fe4b4c 100644
---- a/tests/intel/kms_pm_dc.c
-+++ b/tests/intel/kms_pm_dc.c
-@@ -37,45 +37,69 @@
- #include "time.h"
- #include "igt_pm.h"
- /**
-- * TEST: i915 pm dc
-+ * TEST: kms pm dc
-+ * Category: Display
-  * Description: Tests to validate display power DC states.
-- * Run type: FULL
-  *
-  * SUBTEST: dc3co-vpb-simulation
-- * Description:
-- *   In this test we make sure that system enters DC3CO when PSR2 is active and system is in SLEEP
-- *   state
-- * Feature: dc3co, pm_dc
-+ * Description: Make sure that system enters DC3CO when PSR2 is active and system
-+ *              is in SLEEP state
-+ * Driver requirement: i915
-+ * Functionality: dc3co, pm_dc, psr2
-+ * Mega feature: Display Power
-+ * Run type: FULL
-+ * Test category: functionality test
-  *
-  * SUBTEST: dc5-dpms
-- * Description:
-- *   This test validates display engine entry to DC5 state while all connectors's DPMS property
-- *   set to OFF
-- * Feature: pm_dc
-+ * Description: Validate display engine entry to DC5 state while all connectors's
-+ *              DPMS property set to OFF
-+ * Driver requirement: i915
-+ * Functionality: dpms, pm_dc
-+ * Mega feature: Display Power
-+ * Run type: FULL
-+ * Test category: functionality test
-  *
-  * SUBTEST: dc5-dpms-negative
-- * Description:
-- *   This test validates negative scenario of DC5 display engine entry to DC5 state while all
-- *   connectors's DPMS property set to ON
-- * Feature: pm_dc
-+ * Description: Validate negative scenario of DC5 display engine entry to DC5 state
-+ *              while all connectors's DPMS property set to ON
-+ * Driver requirement: i915
-+ * Functionality: dpms, pm_dc
-+ * Mega feature: Display Power
-+ * Run type: FULL
-+ * Test category: functionality test
-  *
-  * SUBTEST: dc5-psr
-  * Description: This test validates display engine entry to DC5 state while PSR is active
-- * Feature: pm_dc
-+ * Driver requirement: i915
-+ * Functionality: pm_dc, psr
-+ * Mega feature: Display Power
-+ * Run type: FULL
-+ * Test category: functionality test
-  *
-  * SUBTEST: dc6-dpms
-- * Description:
-- *   This test validates display engine entry to DC6 state while all connectors's DPMS property
-- *   set to OFF
-- * Feature: pm_dc
-+ * Description: Validate display engine entry to DC6 state while all connectors's
-+ *              DPMS property set to OFF
-+ * Driver requirement: i915
-+ * Functionality: dpms, pm_dc
-+ * Mega feature: Display Power
-+ * Run type: FULL
-+ * Test category: functionality test
-  *
-  * SUBTEST: dc6-psr
-  * Description: This test validates display engine entry to DC6 state while PSR is active
-- * Feature: pm_dc
-+ * Driver requirement: i915
-+ * Functionality: pm_dc, psr
-+ * Mega feature: Display Power
-+ * Run type: FULL
-+ * Test category: functionality test
-  *
-  * SUBTEST: dc9-dpms
-  * Description: This test validates display engine entry to DC9 state
-- * Feature: pm_dc
-+ * Driver requirement: i915
-+ * Functionality: dpms, pm_dc
-+ * Mega feature: Display Power
-+ * Run type: FULL
-+ * Test category: functionality test
-  */
- 
- /* DC State Flags */
--- 
+Bhanuprakash Modem (7):
+  tests/intel/pm: Rename i915_pm_backlight to kms_pm_backlight
+  tests/intel/kms_pm_backlight: Fix testplan documentation
+  tests/intel/pm: Rename i915_pm_dc to kms_pm_dc
+  tests/intel/kms_pm_dc: Fix testplan documentation
+  tests/intel/pm: Rename i915_pm_lpsp to kms_pm_lpsp
+  tests/intel/kms_pm_lpsp: Fix testplan documentation
+  tests/intel/pm: Separate display specific tests from i915_pm_rpm
+
+ tests/intel-ci/blacklist-pre-merge.txt        |    8 +-
+ tests/intel-ci/blacklist.txt                  |    2 +-
+ tests/intel-ci/fast-feedback.testlist         |    8 +-
+ tests/intel/i915_pm_rpm.c                     | 1125 ----------
+ ...i915_pm_backlight.c => kms_pm_backlight.c} |   36 +-
+ tests/intel/{i915_pm_dc.c => kms_pm_dc.c}     |   66 +-
+ tests/intel/{i915_pm_lpsp.c => kms_pm_lpsp.c} |   15 +-
+ tests/intel/kms_pm_rpm.c                      | 1840 +++++++++++++++++
+ tests/meson.build                             |    7 +-
+ 9 files changed, 1938 insertions(+), 1169 deletions(-)
+ rename tests/intel/{i915_pm_backlight.c => kms_pm_backlight.c} (91%)
+ rename tests/intel/{i915_pm_dc.c => kms_pm_dc.c} (92%)
+ rename tests/intel/{i915_pm_lpsp.c => kms_pm_lpsp.c} (95%)
+ create mode 100644 tests/intel/kms_pm_rpm.c
+
+--
 2.40.0
