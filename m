@@ -1,19 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2F55910E784
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Sep 2023 07:58:54 +0000 (UTC)
-Date: Thu, 7 Sep 2023 09:58:22 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230907075822.55wzotgaymqn6qme@kamilkon-desk.igk.intel.com>
-References: <20230829161759.9315-1-mohammed.thasleem@intel.com>
- <20220421141935.1460-1-mohammed.thasleem@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4D44610E231
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Sep 2023 13:36:48 +0000 (UTC)
+From: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>
+To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>
+Date: Thu, 7 Sep 2023 13:36:41 +0000
+Message-ID: <BYAPR11MB3413A74B3E8C02EE4C8A0330D0EEA@BYAPR11MB3413.namprd11.prod.outlook.com>
+References: <20230904110458.24177-1-sai.gowtham.ch@intel.com>
+ <20230904110458.24177-3-sai.gowtham.ch@intel.com>
+ <20230904123934.stxmaelmzxg3366l@zkempczy-mobl2>
+ <BYAPR11MB3413605657BFBE884AA82502D0E8A@BYAPR11MB3413.namprd11.prod.outlook.com>
+ <20230907093628.hlpa7kh47nddjz7z@zkempczy-mobl2>
+In-Reply-To: <20230907093628.hlpa7kh47nddjz7z@zkempczy-mobl2>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220421141935.1460-1-mohammed.thasleem@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_atomic_transition: Reduce the
- number of iterations on modeset-transition
+Subject: Re: [igt-dev] [PATCH i-g-t 2/4] lib/intel_blt: check if blt
+ commands are supported by the platforms
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,55 +25,147 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mohammed,
 
-On 2022-04-21 at 19:49:35 +0530, Mohammed Thasleem wrote:
-> Due to the higher number of iterations, "modeset-transition" tests are
-> getting timed out on CI. Reducing the number of iterations can save a
-> lot of execution time.
-> 
-> Instead of having (2 ^ j) iterations, reduce it to (2 * j) where j is
-> the number of active pipes.
-> 
-> v2: Update commit message.
-> v3: Update commit message and minor changes.
-> 
-> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
-> ---
->  tests/kms_atomic_transition.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
-> 
-> diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-> index a470eb88c..6c914ec21 100644
-> --- a/tests/kms_atomic_transition.c
-> +++ b/tests/kms_atomic_transition.c
-> @@ -966,10 +966,7 @@ retry:
->  		}
->  	}
->  
-> -	iter_max = 1 << j;
-> -
-> -	if (igt_run_in_simulation() && iter_max > 1)
-> -		iter_max = iter_max >> 1;
 
-Why did you deleted above two in_simulation lines?
-Now for j=1 and in_simulation() true, number of iterations
-will be 2 instead of 1, so it will increase.
+>-----Original Message-----
+>From: Kempczynski, Zbigniew <zbigniew.kempczynski@intel.com>
+>Sent: Thursday, September 7, 2023 3:06 PM
+>To: Ch, Sai Gowtham <sai.gowtham.ch@intel.com>
+>Cc: igt-dev@lists.freedesktop.org; Stolarek, Karolina
+><karolina.stolarek@intel.com>
+>Subject: Re: [igt-dev] [PATCH i-g-t 2/4] lib/intel_blt: check if blt comma=
+nds are
+>supported by the platforms
+>
+>On Tue, Sep 05, 2023 at 06:11:54AM +0200, Ch, Sai Gowtham wrote:
+>>
+>>
+>> >-----Original Message-----
+>> >From: Kempczynski, Zbigniew <zbigniew.kempczynski@intel.com>
+>> >Sent: Monday, September 4, 2023 6:10 PM
+>> >To: Ch, Sai Gowtham <sai.gowtham.ch@intel.com>
+>> >Cc: igt-dev@lists.freedesktop.org; Stolarek, Karolina
+>> ><karolina.stolarek@intel.com>
+>> >Subject: Re: [igt-dev] [PATCH i-g-t 2/4] lib/intel_blt: check if blt
+>> >commands are supported by the platforms
+>> >
+>> >On Mon, Sep 04, 2023 at 04:34:56PM +0530, sai.gowtham.ch@intel.com
+>wrote:
+>> >> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+>> >>
+>> >> Check if mem-copy/mem-set commands are supported by fd device.
+>> >>
+>> >> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+>> >> ---
+>> >>  lib/intel_blt.c | 32 ++++++++++++++++++++++++++++++++
+>> >> lib/intel_blt.h |  2 ++
+>> >>  2 files changed, 34 insertions(+)
+>> >>
+>> >> diff --git a/lib/intel_blt.c b/lib/intel_blt.c index
+>> >> 429511920..b55fa9b52 100644
+>> >> --- a/lib/intel_blt.c
+>> >> +++ b/lib/intel_blt.c
+>> >> @@ -289,6 +289,38 @@ bool blt_has_block_copy(int fd)
+>> >>  	return blt_supports_command(cmds_info, XY_BLOCK_COPY);  }
+>> >>
+>> >> +/**
+>> >> + * blt_has_mem_copy
+>> >> + * @fd: drm fd
+>> >> + *
+>> >> + * Check if mem copy is supported by @fd device
+>> >> + *
+>> >> + * Returns:
+>> >> + * true if it does, false otherwise.
+>> >> + */
+>> >> +bool blt_has_mem_copy(int fd)
+>> >> +{
+>> >> +	const struct intel_cmds_info *cmds_info =3D GET_CMDS_INFO(fd);
+>> >> +
+>> >> +	return blt_supports_command(cmds_info, MEM_COPY); }
+>> >> +
+>> >> +/**
+>> >> + * blt_has_mem_set
+>> >> + * @fd: drm fd
+>> >> + *
+>> >> + * Check if mem set is supported by @fd device
+>> >> + *
+>> >> + * Returns:
+>> >> + * true if it does, false otherwise.
+>> >> + */
+>> >> +bool blt_has_mem_set(int fd)
+>> >> +{
+>> >> +	const struct intel_cmds_info *cmds_info =3D GET_CMDS_INFO(fd);
+>> >> +
+>> >> +	return blt_supports_command(cmds_info, MEM_SET); }
+>> >> +
+>> >
+>> >It is not true if you'll use those functions in i915 igts.
+>> Do you mean path for i915 needs to be enabled ?
+>
+>Yes, if I'm not wrong PVC will be supported on i915 as either.
+>So if blt_has_mem_set() will return true for it it should have the impleme=
+ntation
+>in the blitter library. Generally you got almost everything you need
+>(mem_set/copy code is already written so what you need is to extract this =
+and
+>support two ways of entering it (for i915 and for xe).
 
-> +	iter_max = (j > 0) ? (j << 1) : 1;
+Sure will make this work for both i915 and xe.=20
+>
+>> >mem-set and mem-copy commands you've introduced in 1/4 patch should
+>> >be part of intel_blt.[ch] library.
+>> Do you mean MEM_SET and MEM_COPY  in 3/4 patch ? Can you elaborate ?
+>
+>Related to above comment. You need to have batch commands + prepare
+>execution. Batch commands + execution for Xe you already have in the test.=
+ I
+>would migrate this to intel_blt.c and add i915 execution path.
+>
+do you mean something similar to "emit_blt_fast_copy" for fast_copy, mem_co=
+py/set has to be migrated to=20
+Intel_blt.c ? =20
 
-Move this above before in_simulation check.
-
-Regards,
-Kamil
-
->  
->  	if (igt_display_try_commit_atomic(&data->display,
->  				DRM_MODE_ATOMIC_TEST_ONLY |
-> -- 
-> 2.25.1
-> 
+----
+Ch Sai Gowtham
+>Then in the test just call the mem_set or mem_copy depending what you want
+>to test to.
+>
+>--
+>Zbigniew
+>
+>> >
+>> >BTW first patch 1/4 won't compile in step-by-step mode because it
+>> >uses code from following patches.
+>> I'll correct that in my next patch series.
+>> ----
+>> Ch Sai Gowtham
+>> >
+>> >--
+>> >Zbigniew
+>> >
+>> >
+>> >>  /**
+>> >>   * blt_has_fast_copy
+>> >>   * @fd: drm fd
+>> >> diff --git a/lib/intel_blt.h b/lib/intel_blt.h index
+>> >> b8b3d724d..d9c8883c7 100644
+>> >> --- a/lib/intel_blt.h
+>> >> +++ b/lib/intel_blt.h
+>> >> @@ -175,6 +175,8 @@ bool blt_cmd_has_property(const struct
+>> >intel_cmds_info *cmds_info,
+>> >>  			  uint32_t prop);
+>> >>
+>> >>  bool blt_has_block_copy(int fd);
+>> >> +bool blt_has_mem_copy(int fd);
+>> >> +bool blt_has_mem_set(int fd);
+>> >>  bool blt_has_fast_copy(int fd);
+>> >>  bool blt_has_xy_src_copy(int fd);
+>> >>  bool blt_has_xy_color(int fd);
+>> >> --
+>> >> 2.39.1
+>> >>
