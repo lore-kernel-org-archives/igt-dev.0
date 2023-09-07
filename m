@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 71DE210E0D8
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 17:51:49 +0000 (UTC)
-Date: Fri, 8 Sep 2023 19:51:45 +0200
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6B1C110E7D5
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Sep 2023 13:10:32 +0000 (UTC)
+Date: Thu, 7 Sep 2023 15:09:16 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230908175145.xsd2d4li7zo3rgyx@kamilkon-desk.igk.intel.com>
-References: <20230908083734.1084351-1-mauro.chehab@linux.intel.com>
- <20230908083734.1084351-9-mauro.chehab@linux.intel.com>
+Message-ID: <20230907130916.cwrl3pqduaa46gys@kamilkon-desk.igk.intel.com>
+References: <20230907101852.522819-1-mauro.chehab@linux.intel.com>
+ <20230907101852.522819-7-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230908083734.1084351-9-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v4 08/11] scripts/test_list.py: fix
- gen_testlist logic
+In-Reply-To: <20230907101852.522819-7-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 6/7] scripts/test_list.py: move
+ "FULL" testlist to config file
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,45 +23,83 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
+Cc: tomasz.mistat@intel.com, jari.tahvanainen@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Mauro,
-On 2023-09-08 at 10:27:44 +0200, Mauro Carvalho Chehab wrote:
+On 2023-09-07 at 12:17:37 +0200, Mauro Carvalho Chehab wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
-> Don't try to find a common prefix for tests, as this cause
-> troubles when filtering out tests.
+> Don't assume that the default testlist is "FULL". Instead, read
+> it from the configuration file.
 > 
 > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
 > ---
->  scripts/test_list.py | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
+>  scripts/test_list.py             | 6 ++++--
+>  tests/intel/kms_test_config.json | 1 +
+>  tests/intel/xe_test_config.json  | 1 +
+>  3 files changed, 6 insertions(+), 2 deletions(-)
 > 
 > diff --git a/scripts/test_list.py b/scripts/test_list.py
-> index c9073cc0305f..01f6528ac84c 100644
+> index c1518a904baf..bd03fcfc7efd 100644
 > --- a/scripts/test_list.py
 > +++ b/scripts/test_list.py
-> @@ -1352,8 +1352,6 @@ class TestList:
+> @@ -484,6 +484,8 @@ class TestList:
+>              if "testlist" not in self.props[field]["_properties_"]:
+>                  continue
 >  
->          """Generate testlists from the test documentation"""
+> +            default_value = self.props[field]["_properties_"].get("default-testlist")
+> +
+>              testname = subtest_dict["_summary_"]
 >  
-> -        test_prefix = os.path.commonprefix(self.get_subtests()[""])
-> -        test_prefix = re.sub(r'^' + self.main_name, '', test_prefix)
+>              value = subtest_dict.get(field)
+> @@ -510,8 +512,8 @@ class TestList:
+>                                  set_full_if_empty = False
+>                              values.discard(deleted_names)
 >  
->          # NOTE: currently, it uses a comma for multi-value delimitter
->          test_subtests = self.get_subtests(sort_field, ",", with_order = True)
-> @@ -1374,7 +1372,7 @@ class TestList:
->                  fname = testlist
+> -            if set_full_if_empty and not values:
+> -                values = set(["FULL"])
+> +            if default_value and set_full_if_empty and not values:
+> +                values = set([default_value])
+
+What if someone forget to add default? imho here this should be:
+
+               if set_full_if_empty and not values:
+                   if default_value:
+                       values = set([default_value])
+                   else
+                       values = set(["FULL"])
+
+Regards,
+Kamil
+
 >  
->              fname = re.sub(r"[^\w\d]+", "-", fname)
-> -            fname = directory + "/" + test_prefix + fname + ".testlist"
-> +            fname = directory + "/" + fname + ".testlist"
+>              subtest_dict[field] = ", ".join(sorted(values))
 >  
->              with open(fname, 'w', encoding='utf8') as handler:
->                  for sub in test_subtests[test]:
+> diff --git a/tests/intel/kms_test_config.json b/tests/intel/kms_test_config.json
+> index 7ab288685677..5be264a79c6e 100644
+> --- a/tests/intel/kms_test_config.json
+> +++ b/tests/intel/kms_test_config.json
+> @@ -22,6 +22,7 @@
+>              "Run type": {
+>                  "_properties_": {
+>                      "description": "Defines what category of testlist it belongs",
+> +                    "default-testlist": "FULL",
+>                      "testlists": {
+>                          "i915 BAT": "../intel-ci/fast-feedback.testlist",
+>                          "i915 BAT chamelium": "../intel-ci/fast-feedback-chamelium-only.testlist",
+> diff --git a/tests/intel/xe_test_config.json b/tests/intel/xe_test_config.json
+> index 408afcbb03bc..9e582a43df56 100644
+> --- a/tests/intel/xe_test_config.json
+> +++ b/tests/intel/xe_test_config.json
+> @@ -32,6 +32,7 @@
+>                          "_properties_": {
+>                              "mandatory": true,
+>                              "description": "Defines what category of testlist it belongs",
+> +                            "default-testlist": "FULL",
+>                              "testlists": {
+>                                  "Xe BAT": "../intel-ci/xe-fast-feedback.testlist"
+>                              },
 > -- 
 > 2.41.0
 > 
