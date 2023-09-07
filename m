@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 245DF10E13D
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Sep 2023 16:41:56 +0000 (UTC)
-Date: Thu, 14 Sep 2023 18:41:15 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 19A5810E24E
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Sep 2023 12:19:27 +0000 (UTC)
+Date: Thu, 7 Sep 2023 14:19:21 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230914164115.kqaxoc2ximipv4x2@kamilkon-desk.igk.intel.com>
-References: <20230914155544.399186-1-mauro.chehab@linux.intel.com>
+Message-ID: <20230907121921.766n7zyuxmpmpztp@kamilkon-desk.igk.intel.com>
+References: <20230907101852.522819-1-mauro.chehab@linux.intel.com>
+ <20230907101852.522819-2-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230914155544.399186-1-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] docs/cross-building.txt: add
- documentation about cross-builds
+In-Reply-To: <20230907101852.522819-2-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 1/7] test_list.py: add support for
+ reading testlist regular expressions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,128 +23,154 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
+Cc: tomasz.mistat@intel.com, jari.tahvanainen@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Mauro,
 
-On 2023-09-14 at 17:55:44 +0200, Mauro Carvalho Chehab wrote:
+On 2023-09-07 at 12:17:32 +0200, Mauro Carvalho Chehab wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
-> Cross-building IGT is not too trivial, as one needs to prepare
-> a sysroot directory containing not only glibc, but also other
----------------------------------------------- ^^^^^
-s/, but/ but/
-
-> libraries. Yet, such kind of builds are sometimes desired.
------------------------------------------------------------^
-> So, document how to do that.
-s/. So, document/ so I documented/
+> If defined, use testlist and blocklist files to update the
+> fields that use it.
 > 
 > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 > ---
->  docs/cross-building.txt | 73 +++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 73 insertions(+)
->  create mode 100644 docs/cross-building.txt
+>  scripts/test_list.py | 75 ++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 75 insertions(+)
 > 
-> diff --git a/docs/cross-building.txt b/docs/cross-building.txt
-> new file mode 100644
-> index 000000000000..52aa5c361de3
-> --- /dev/null
-> +++ b/docs/cross-building.txt
-> @@ -0,0 +1,73 @@
-> +Producing an IGT library for another architecture
-------------------- ^^^^^^^
-s/library for/for/
+> diff --git a/scripts/test_list.py b/scripts/test_list.py
+> index 2171f8b50617..c1518a904baf 100644
+> --- a/scripts/test_list.py
+> +++ b/scripts/test_list.py
+> @@ -260,6 +260,8 @@ class TestList:
+>          self.igt_build_path = igt_build_path
+>          self.level_count = 0
+>          self.field_list = {}
+> +        self.testlist = {}
+> +        self.blocklist = {}
+>          self.title = None
+>          self.filters = {}
+>          self.subtest_separator = subtest_separator
+> @@ -327,6 +329,23 @@ class TestList:
+>                  if sublevel_count[level - 1] == 1:
+>                      del item["_properties_"]["level"]
+>                      del item["_properties_"]["sublevel"]
+> +
+> +            # Read testlist files if any
+> +            if "testlists" in item["_properties_"]:
+> +                testlist = {}
+> +                for name in item["_properties_"]["testlists"].keys():
+> +                    self.read_testlist(testlist, name, cfg_path + item["_properties_"]["testlists"][name])
+> +
+> +                item["_properties_"]["testlist"] = testlist
+> +
+> +            # Read blocklist files if any
+> +            if "blocklists" in item["_properties_"]:
+> +                blocklist = {}
+> +                for name in item["_properties_"]["blocklists"].keys():
+> +                    self.read_testlist(blocklist, name, cfg_path + item["_properties_"]["blocklists"][name])
 
-> +=================================================
-> +
+May you read this in separate function? It is often regex,
+not igt@testname@subtest-name, for example:
 
-Could you also add here what packets you installed on Fedora?
-Any other arm64 headers/libs needed?
+igt@gem_concurrent_blit(@.*)?
 
-> +Meson requires an extra file to do non-native builds. This is passed
-> +via --cross-file parameter to it.
-> +
-> +Such file contains the configuration used to do a cross-compilation build.
-> +As such, it contains:
-> +
-> +- the host machine data, which defines the system and architecture from
-> +  the native OS.
-> +  At the example below, the native OS is Linux, x86_64 architecture.
-> +- the target machine data, containing the target architecture.
-> +  At the example below, the target is aarch64 (arm 64 bits architecture).
-> +- the sysroot path, where IGT dependent libraries were compiled for a given
-> +  architecture.
-> +  This can be obtained by either cross-building a distribution using
-> +  Yocto, buildroot or similar, or by copying the system root from
-> +  an install for the desired architecture, after installing the IGT
-> +  needed library dependencies.
-> +
-> +  At the example below, the libraries are stored under /aarch64-sysroot.
-> +
-> +  Please notice that the binaries may require some extra libraries used
-> +  for cross-compiling. One needs to copy them from the native cross-compiler
-> +  toolchain. In the case of Fedora, such files are located  under
-> +  /usr/aarch64-linux-gnu/sys-root/ (for aarch64 architecture).
-> +
-> +Preparing for cross compilation is done by calling meson with the
-> +cross-compilation config file name:
-> +
-> +	meson --cross-file arm64_cross.txt arm64
--------------------------------------- ^^^^^
-This should be 'build'
-
-> +
-> +The actual compilation can then be done using ninja:
-> +
-> +	ninja -C arm64
------------- ^^^^^
-Same here, use build:
-
-ninja -C build
-
-Option -C changes path before running next actions.
+igt@.*@.*-hibernate
 
 Regards,
 Kamil
 
 > +
-> +Please notice that some parts of the IGT build are disabled during
-> +cross-compilation, like testlist file creation and documentation,
-> +as such steps depend on running the generated code at the native
-> +machine.
+> +                item["_properties_"]["blocklist"] = blocklist
 > +
-> +arm64_cross.txt example
-> +-----------------------
+>          if "_properties_" in self.props:
+>              del self.props["_properties_"]
+>  
+> @@ -427,6 +446,19 @@ class TestList:
+>  
+>              self.__add_field(key, sublevel, hierarchy_level, field[key])
+>  
+> +    def read_testlist(self, testlist, name, filename):
+> +        base = r"^\s*({}[^\s\{}]+)(\S*)\s*(\#.*)?$"
+> +        regex = re.compile(base.format(self.main_name, self.subtest_separator))
 > +
-> +[constants]
-> +sysroot = '/aarch64-sysroot'
-> +common_args = ['--sysroot=' + sysroot]
+> +        testlist[name] = []
+> +        with open(filename, 'r', newline = '', encoding = 'utf8') as fp:
+> +            for line in fp:
+> +                match = regex.match(line)
+> +                if match:
+> +                    test = match.group(1)
+> +                    subtest = match.group(2)
+> +                    testlist[name].append(re.compile(f"{test}{subtest}"))
 > +
-> +[properties]
-> +sys_root = sysroot
-> +c_args = common_args
-> +c_link_args = common_args
-> +pkg_config_libdir = [sysroot + '/usr/lib64/pkgconfig', sysroot +'/usr/share/pkgconfig', sysroot +'/usr/local/lib/pkgconfig']
+>      def __filter_subtest(self, test, subtest, field_not_found_value):
+>  
+>          """ Apply filter criteria to subtests """
+> @@ -444,6 +476,45 @@ class TestList:
+>          # None of the filtering rules were applied
+>          return False
+>  
+> +    def update_testlist_field(self, subtest_dict):
+> +        for field in self.props.keys():
+> +            if "_properties_" not in self.props[field]:
+> +                continue
 > +
-> +[binaries]
-> +c = '/usr/bin/aarch64-linux-gnu-gcc'
-> +ar = '/usr/bin/aarch64-linux-gnu-gcc-ar'
-> +ld = '/usr/bin/aarch64-linux-gnu-ld'
-> +strip = '/usr/bin/aarch64-linux-gnu-strip'
-> +pkgconfig = 'pkg-config'
+> +            if "testlist" not in self.props[field]["_properties_"]:
+> +                continue
 > +
-> +[host_machine]
-> +system = 'linux'
-> +cpu_family = 'x86_64'
-> +cpu = 'x86_64'
-> +endian = 'little'
+> +            testname = subtest_dict["_summary_"]
 > +
-> +[target_machine]
-> +system = 'linux'
-> +cpu_family = 'aarch64'
-> +cpu = 'aarch64'
-> +endian = 'little'
+> +            value = subtest_dict.get(field)
+> +            if value:
+> +                values = set(re.split(",\s*", value))
+> +            else:
+> +                values = set()
+> +
+> +            for names, regex_array in self.props[field]["_properties_"]["testlist"].items():
+> +                name = set(re.split(",\s*", names))
+> +                for regex in regex_array:
+> +                    if regex.match(testname):
+> +                        values.update(name)
+> +                        break
+> +
+> +            # If test is at a global blocklist, ignore it
+> +            set_full_if_empty = True
+> +            if "blocklist" in self.props[field]["_properties_"]:
+> +                for names, regex_array in self.props[field]["_properties_"]["testlist"].items():
+> +                    deleted_names = set(re.split(",\s*", names))
+> +                    for regex in regex_array:
+> +                        if regex.match(testname):
+> +                            if sorted(deleted_names) == sorted(values):
+> +                                set_full_if_empty = False
+> +                            values.discard(deleted_names)
+> +
+> +            if set_full_if_empty and not values:
+> +                values = set(["FULL"])
+> +
+> +            subtest_dict[field] = ", ".join(sorted(values))
+> +
+>      def expand_subtest(self, fname, test_name, test, allow_inherit, with_lines = False, with_subtest_nr = False):
+>  
+>          """Expand subtest wildcards providing an array with subtests"""
+> @@ -476,6 +547,8 @@ class TestList:
+>  
+>                      subtest_dict[k] = self.doc[test]["subtest"][subtest][k]
+>  
+> +                self.update_testlist_field(subtest_dict)
+> +
+>                  if with_lines:
+>                      subtest_dict["line"] = file_ln
+>  
+> @@ -549,6 +622,8 @@ class TestList:
+>  
+>                      subtest_dict[field] = sub_field
+>  
+> +                self.update_testlist_field(subtest_dict)
+> +
+>                  if with_lines:
+>                      subtest_dict["line"] = file_ln
+>  
 > -- 
 > 2.41.0
 > 
