@@ -4,13 +4,13 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Erik Kurzinger" <ekurzinger@nvidia.com>
-Date: Thu, 07 Sep 2023 11:50:48 -0000
-Message-ID: <169408744888.17902.11672397848194490070@emeril.freedesktop.org>
+Date: Thu, 07 Sep 2023 11:54:04 -0000
+Message-ID: <169408764418.17900.15156323676827996235@emeril.freedesktop.org>
 References: <498c41b0-d041-67ad-e7ea-1ebc809974c5@nvidia.com>
 In-Reply-To: <498c41b0-d041-67ad-e7ea-1ebc809974c5@nvidia.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBzeW5j?=
- =?utf-8?q?obj=5Ftimeline=3A_don=27t_expect_EINVAL_for_WAIT=5FUNSUBMITTED?=
- =?utf-8?q?=2C_=7C_WAIT=5FAVAILABLE_=28rev2=29?=
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_s?=
+ =?utf-8?q?yncobj=5Ftimeline=3A_don=27t_expect_EINVAL_for_WAIT=5FUNSUBMITT?=
+ =?utf-8?b?RUQsIHwgV0FJVF9BVkFJTEFCTEUgKHJldjIp?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,62 +28,145 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Series: syncobj_timeline: don't expect EINVAL for WAIT_UNSUBMITTED, | WAIT_AVAILABLE (rev2)
 URL   : https://patchwork.freedesktop.org/series/122766/
-State : failure
+State : warning
 
 == Summary ==
 
-IGT patchset build failed on latest successful build
-9d91cf2c6e7bb64d60c2030d1535e40ca0ad53ee tests/intel-ci/xe.blocklist: Drop hang tests from xe blocklist
+Pipeline status: FAILED.
 
-Tail of build.log:
-[1595/1633] Linking target tools/intel_dp_compliance.
-[1596/1633] Linking target tools/intel_reg.
-[1597/1633] Linking target tools/amd_hdmi_compliance.
-[1598/1633] Linking target runner/igt_comms_decoder.
-[1599/1633] Linking target tools/intel_l3_parity.
-[1600/1633] Linking target tools/intel_gem_info.
-[1601/1633] Linking target runner/igt_runner.
-[1602/1633] Linking target tools/msm_dp_compliance.
-[1603/1633] Linking target runner/testdata/abort-fixture.
-[1604/1633] Linking target tools/xe_reg.
-[1605/1633] Linking target runner/testdata/no-subtests.
-[1606/1633] Linking target runner/igt_resume.
-[1607/1633] Linking target runner/runner_json_test.
-[1608/1633] Linking target runner/igt_results.
-[1609/1633] Linking target runner/testdata/abort-simple.
-[1610/1633] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_mtlgt3.c.o'.
-[1611/1633] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
-[1612/1633] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt1.c.o'.
-[1613/1633] Linking target runner/runner_test.
-[1614/1633] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt2.c.o'.
-[1615/1633] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt3.c.o'.
-[1616/1633] Linking target lib/libi915_perf.so.1.5.
-[1617/1633] Generating symbol file 'lib/76b5a35@@i915_perf@sha/libi915_perf.so.1.5.symbols'.
-[1618/1633] Linking target tools/i915-perf/i915-perf-configs.
-[1619/1633] Linking target tools/i915-perf/i915-perf-reader.
-[1620/1633] Linking target tools/i915-perf/i915-perf-recorder.
-[1621/1633] Linking target tests/core_hotunplug.
-[1622/1633] Linking target tests/gem_barrier_race.
-[1623/1633] Linking target tests/perf.
-[1624/1633] Generating core_hotunplug.testlist with a meson_exe.py custom command.
-[1625/1633] Generating perf.testlist with a meson_exe.py custom command.
-[1626/1633] Generating gem_barrier_race.testlist with a meson_exe.py custom command.
-[1627/1633] Generating xe_tests.rst with a custom command.
-[1628/1633] Generating i915_tests.rst with a custom command.
-FAILED: docs/testplan/i915_tests.rst 
-/usr/src/igt-gpu-tools/scripts/igt_doc.py --config /usr/src/igt-gpu-tools/tests/intel/i915_test_config.json --rest docs/testplan/i915_tests.rst --check-testlist --igt-build-path /opt/igt/build
-Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted
-Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-signaled
-Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-submitted
-Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-submitted-signaled
-Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-available-unsubmitted
-Warning: Missing documentation for igt@syncobj_timeline@etime-single-wait-all-available-unsubmitted
-Warning: Missing documentation for igt@syncobj_timeline@etime-single-wait-available-unsubmitted
-Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-signaled
-Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-submitted
-Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-submitted-signaled
-Please refer: docs/test_documentation.md for more details
-[1629/1633] Generating kms_tests.rst with a custom command.
-[1630/1633] Generating xe_tests.html with a custom command.
-ninja: build stopped: subcommand failed.
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/980122 for the overview.
 
+build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48681595):
+  FAILED: docs/testplan/i915_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json --rest docs/testplan/i915_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-submitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-submitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-single-wait-all-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-single-wait-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-submitted
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-submitted-signaled
+  Please refer: docs/test_documentation.md for more details
+  ninja: build stopped: subcommand failed.
+  section_end:1694087502:step_script
+  section_start:1694087502:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1694087502:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48681589):
+  FAILED: docs/testplan/i915_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json --rest docs/testplan/i915_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-submitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-submitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-single-wait-all-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-single-wait-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-submitted
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-submitted-signaled
+  Please refer: docs/test_documentation.md for more details
+  ninja: build stopped: subcommand failed.
+  section_end:1694087521:step_script
+  section_start:1694087521:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1694087522:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48681593):
+  FAILED: docs/testplan/i915_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json --rest docs/testplan/i915_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-submitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-submitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-single-wait-all-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-single-wait-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-submitted
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-submitted-signaled
+  Please refer: docs/test_documentation.md for more details
+  ninja: build stopped: subcommand failed.
+  section_end:1694087532:step_script
+  section_start:1694087532:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1694087532:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48681592):
+  FAILED: docs/testplan/i915_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json --rest docs/testplan/i915_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-submitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-submitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-single-wait-all-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-single-wait-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-submitted
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-submitted-signaled
+  Please refer: docs/test_documentation.md for more details
+  ninja: build stopped: subcommand failed.
+  section_end:1694087507:step_script
+  section_start:1694087507:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1694087510:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48681590):
+  FAILED: docs/testplan/i915_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json --rest docs/testplan/i915_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-submitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-submitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-single-wait-all-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-single-wait-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-submitted
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-submitted-signaled
+  Please refer: docs/test_documentation.md for more details
+  ninja: build stopped: subcommand failed.
+  section_end:1694087520:step_script
+  section_start:1694087520:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1694087521:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48681591):
+  FAILED: docs/testplan/i915_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json --rest docs/testplan/i915_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-submitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-submitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-single-wait-all-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@etime-single-wait-available-unsubmitted
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-signaled
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-submitted
+  Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-submitted-signaled
+  Please refer: docs/test_documentation.md for more details
+  ninja: build stopped: subcommand failed.
+  section_end:1694087512:step_script
+  section_start:1694087512:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1694087514:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/980122
