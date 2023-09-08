@@ -1,21 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F0D2410E07A
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 08:32:21 +0000 (UTC)
-Message-ID: <e57744fe-bd55-2a64-e334-98c42f0f85f0@intel.com>
-Date: Fri, 8 Sep 2023 14:02:16 +0530
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C0BC010E882
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 08:37:39 +0000 (UTC)
+Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
+ [10.252.24.176])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id 90895580EA2
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 01:37:38 -0700 (PDT)
+Received: from maurocar by linux.intel.com with local (Exim 4.96)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qeWzg-004YD1-1g
+ for igt-dev@lists.freedesktop.org; Fri, 08 Sep 2023 10:37:36 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri,  8 Sep 2023 10:27:38 +0200
+Message-ID: <20230908083734.1084351-3-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230908083734.1084351-1-mauro.chehab@linux.intel.com>
+References: <20230908083734.1084351-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230907161155.1828658-1-bhanuprakash.modem@intel.com>
- <20230907161155.1828658-6-bhanuprakash.modem@intel.com>
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20230907161155.1828658-6-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [i-g-t V3 5/7] tests/intel/pm: Rename i915_pm_lpsp to
- kms_pm_lpsp
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v4 02/11] xe_test_config.json: add testlists
+ and blacklists
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,46 +32,33 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LGTM
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+Specify the testlists and blacklists to be used to store CI
+run type.
 
-On 07-Sep-23 9:41 PM, Bhanuprakash Modem wrote:
-> As i915_pm_lpsp is a display specific test, rename it with
-> the "kms_" prefix, i.e kms_pm_lpsp.
-> 
-> V2: - Rebase
-> V3: - Restore old Copyright
-> 
-> Cc: Swati Sharma <swati2.sharma@intel.com>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->   tests/intel/{i915_pm_lpsp.c => kms_pm_lpsp.c} | 0
->   tests/meson.build                             | 2 +-
->   2 files changed, 1 insertion(+), 1 deletion(-)
->   rename tests/intel/{i915_pm_lpsp.c => kms_pm_lpsp.c} (100%)
-> 
-> diff --git a/tests/intel/i915_pm_lpsp.c b/tests/intel/kms_pm_lpsp.c
-> similarity index 100%
-> rename from tests/intel/i915_pm_lpsp.c
-> rename to tests/intel/kms_pm_lpsp.c
-> diff --git a/tests/meson.build b/tests/meson.build
-> index ea8b60282..92729e0c3 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -222,7 +222,6 @@ intel_i915_progs = [
->   	'i915_pciid',
->   	'i915_pipe_stress',
->   	'i915_pm_freq_mult',
-> -	'i915_pm_lpsp',
->   	'i915_pm_rpm',
->   	'i915_pm_rc6_residency',
->   	'i915_pm_rps',
-> @@ -262,6 +261,7 @@ intel_kms_progs = [
->   	'kms_pipe_b_c_ivb',
->   	'kms_pm_backlight',
->   	'kms_pm_dc',
-> +	'kms_pm_lpsp',
->   	'kms_psr',
->   	'kms_psr2_sf',
->   	'kms_psr2_su',
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ tests/intel/xe_test_config.json | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/tests/intel/xe_test_config.json b/tests/intel/xe_test_config.json
+index 8fb65d02d840..408afcbb03bc 100644
+--- a/tests/intel/xe_test_config.json
++++ b/tests/intel/xe_test_config.json
+@@ -32,6 +32,12 @@
+                         "_properties_": {
+                             "mandatory": true,
+                             "description": "Defines what category of testlist it belongs",
++                            "testlists": {
++                                "Xe BAT": "../intel-ci/xe-fast-feedback.testlist"
++                            },
++                            "blocklists": {
++                                "Xe BAT": "../intel-ci/xe.blocklist.txt"
++                            },
+                             "order": [
+                                 "boot",
+                                 "__all__",
+-- 
+2.41.0
