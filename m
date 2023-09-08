@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6B1C110E7D5
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Sep 2023 13:10:32 +0000 (UTC)
-Date: Thu, 7 Sep 2023 15:09:16 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 767DB10E0D8
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 17:49:06 +0000 (UTC)
+Date: Fri, 8 Sep 2023 19:48:52 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230907130916.cwrl3pqduaa46gys@kamilkon-desk.igk.intel.com>
-References: <20230907101852.522819-1-mauro.chehab@linux.intel.com>
- <20230907101852.522819-7-mauro.chehab@linux.intel.com>
+Message-ID: <20230908174852.md7gjfpr7o4s4ec4@kamilkon-desk.igk.intel.com>
+References: <20230908083734.1084351-1-mauro.chehab@linux.intel.com>
+ <20230908083734.1084351-7-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230907101852.522819-7-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 6/7] scripts/test_list.py: move
+In-Reply-To: <20230908083734.1084351-7-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v4 06/11] scripts/test_list.py: move
  "FULL" testlist to config file
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -23,25 +23,27 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: tomasz.mistat@intel.com, jari.tahvanainen@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Mauro,
-On 2023-09-07 at 12:17:37 +0200, Mauro Carvalho Chehab wrote:
+On 2023-09-08 at 10:27:42 +0200, Mauro Carvalho Chehab wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
 > Don't assume that the default testlist is "FULL". Instead, read
 > it from the configuration file.
 > 
 > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
 > ---
->  scripts/test_list.py             | 6 ++++--
+>  scripts/test_list.py             | 9 ++++++---
 >  tests/intel/kms_test_config.json | 1 +
 >  tests/intel/xe_test_config.json  | 1 +
->  3 files changed, 6 insertions(+), 2 deletions(-)
+>  3 files changed, 8 insertions(+), 3 deletions(-)
 > 
 > diff --git a/scripts/test_list.py b/scripts/test_list.py
-> index c1518a904baf..bd03fcfc7efd 100644
+> index c1518a904baf..ff4b2d8d76ae 100644
 > --- a/scripts/test_list.py
 > +++ b/scripts/test_list.py
 > @@ -484,6 +484,8 @@ class TestList:
@@ -53,7 +55,7 @@ On 2023-09-07 at 12:17:37 +0200, Mauro Carvalho Chehab wrote:
 >              testname = subtest_dict["_summary_"]
 >  
 >              value = subtest_dict.get(field)
-> @@ -510,8 +512,8 @@ class TestList:
+> @@ -510,10 +512,11 @@ class TestList:
 >                                  set_full_if_empty = False
 >                              values.discard(deleted_names)
 >  
@@ -61,20 +63,12 @@ On 2023-09-07 at 12:17:37 +0200, Mauro Carvalho Chehab wrote:
 > -                values = set(["FULL"])
 > +            if default_value and set_full_if_empty and not values:
 > +                values = set([default_value])
-
-What if someone forget to add default? imho here this should be:
-
-               if set_full_if_empty and not values:
-                   if default_value:
-                       values = set([default_value])
-                   else
-                       values = set(["FULL"])
-
-Regards,
-Kamil
-
 >  
->              subtest_dict[field] = ", ".join(sorted(values))
+> -            subtest_dict[field] = ", ".join(sorted(values))
+> +            if values:
+> +                subtest_dict[field] = ", ".join(sorted(values))
+>  
+>      def expand_subtest(self, fname, test_name, test, allow_inherit, with_lines = False, with_subtest_nr = False):
 >  
 > diff --git a/tests/intel/kms_test_config.json b/tests/intel/kms_test_config.json
 > index 7ab288685677..5be264a79c6e 100644
