@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E44C310E8B9
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 13:29:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CF81B10E8B9
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 13:29:39 +0000 (UTC)
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  8 Sep 2023 12:54:52 +0000
-Message-Id: <20230908125454.2670405-3-marcin.bernatowicz@linux.intel.com>
+Date: Fri,  8 Sep 2023 12:54:53 +0000
+Message-Id: <20230908125454.2670405-4-marcin.bernatowicz@linux.intel.com>
 In-Reply-To: <20230908125454.2670405-1-marcin.bernatowicz@linux.intel.com>
 References: <20230908125454.2670405-1-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 2/4] lib/xe_spin: fixed duration xe_spin
- capability
+Subject: [igt-dev] [PATCH i-g-t v4 3/4] tests/xe_spin_batch:
+ spin-fixed-duration
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,192 +24,120 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Extended spinner with fixed duration capability. It allows
-to prepare fixed duration (ex. 10ms) workloads and take workloads/second
-measurements, a handy utility for scheduling tests.
+Basic test for xe_spin with fixed duration.
 
-v2: - added asserts in div64_u64_round_up, duration_to_ctx_ticks,
-      simplified loop_addr (Zbyszek)
-    - corrected patch title (Kamil)
+v2: Added assert for expected spinner duration. (Zbyszek)
+A median of 5x100ms spins duration is computed, which should
+satisfy CI runs, although better accuracy is achieved with
+disabled logging (echo 0 > /sys/module/drm/parameters/debug).
 
-v3: - div64_u64_round_up assert on overflow (Kamil)
-    - enum indentation cleanup in xe_spin.c (Kamil)
-
-v4: - fixed checkpatch issues (Kamil)
+v3: Sorted variable declaration/definitions by length
+    for better readability (Zbyszek)
 
 Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 ---
- lib/xe/xe_spin.c | 97 +++++++++++++++++++++++++++++++++++++++++++++++-
- lib/xe/xe_spin.h |  8 +++-
- 2 files changed, 103 insertions(+), 2 deletions(-)
+ tests/intel/xe_spin_batch.c | 72 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 72 insertions(+)
 
-diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-index 27f837ef9..d8e2c07aa 100644
---- a/lib/xe/xe_spin.c
-+++ b/lib/xe/xe_spin.c
-@@ -16,6 +16,50 @@
- #include "xe_ioctl.h"
- #include "xe_spin.h"
+diff --git a/tests/intel/xe_spin_batch.c b/tests/intel/xe_spin_batch.c
+index 9bd3dc349..47fcff641 100644
+--- a/tests/intel/xe_spin_batch.c
++++ b/tests/intel/xe_spin_batch.c
+@@ -1,8 +1,10 @@
+ #include "igt.h"
++#include "igt_syncobj.h"
+ #include "lib/intel_reg.h"
+ #include "xe_drm.h"
+ #include "xe/xe_ioctl.h"
+ #include "xe/xe_query.h"
++#include "xe/xe_spin.h"
  
-+static uint32_t read_timestamp_frequency(int fd, int gt_id)
-+{
-+	struct xe_device *dev = xe_device_get(fd);
-+
-+	igt_assert(dev && dev->gts && dev->gts->num_gt);
-+	igt_assert(gt_id >= 0 && gt_id <= dev->gts->num_gt);
-+
-+	return dev->gts->gts[gt_id].clock_freq;
-+}
-+
-+static uint64_t div64_u64_round_up(const uint64_t x, const uint64_t y)
-+{
-+	igt_assert(y > 0);
-+	igt_assert_lte_u64(x, UINT64_MAX - (y - 1));
-+
-+	return (x + y - 1) / y;
-+}
-+
-+/**
-+ * duration_to_ctx_ticks:
-+ * @fd: opened device
-+ * @gt_id: tile id
-+ * @duration_ns: duration in nanoseconds to be converted to context timestamp ticks
-+ * @return: duration converted to context timestamp ticks.
-+ */
-+uint32_t duration_to_ctx_ticks(int fd, int gt_id, uint64_t duration_ns)
-+{
-+	uint32_t f = read_timestamp_frequency(fd, gt_id);
-+	uint64_t ctx_ticks = div64_u64_round_up(duration_ns * f, NSEC_PER_SEC);
-+
-+	igt_assert_lt_u64(ctx_ticks, XE_SPIN_MAX_CTX_TICKS);
-+
-+	return ctx_ticks;
-+}
-+
-+#define MI_SRM_CS_MMIO				(1 << 19)
-+#define MI_LRI_CS_MMIO				(1 << 19)
-+#define MI_LRR_DST_CS_MMIO			(1 << 19)
-+#define MI_LRR_SRC_CS_MMIO			(1 << 18)
-+#define CTX_TIMESTAMP 0x3a8
-+#define CS_GPR(x) (0x600 + 8 * (x))
-+
-+enum { START_TS, NOW_TS };
-+
  /**
-  * xe_spin_init:
-  * @spin: pointer to mapped bo in which spinner code will be written
-@@ -23,13 +67,28 @@
-  */
- void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
+  * TEST: Tests for spin batch submissons.
+@@ -138,6 +140,73 @@ static void spin_all(int fd, int gt, int class)
+ 	xe_vm_destroy(fd, vm);
+ }
+ 
++/**
++ * SUBTEST: spin-fixed-duration
++ * Description: Basic test which validates the functionality of xe_spin with fixed duration.
++ * Run type: FULL
++ */
++static void xe_spin_fixed_duration(int fd)
++{
++	struct drm_xe_sync sync = {
++		.handle = syncobj_create(fd, 0),
++		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
++	};
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.num_syncs = 1,
++		.syncs = to_user_pointer(&sync),
++	};
++	const uint64_t duration_ns = NSEC_PER_SEC / 10; /* 100ms */
++	uint64_t spin_addr;
++	uint64_t ahnd;
++	uint32_t exec_queue;
++	uint32_t vm;
++	uint32_t bo;
++	size_t bo_size;
++	struct xe_spin *spin;
++	struct timespec tv;
++	double elapsed_ms;
++	igt_stats_t stats;
++	int i;
++
++	vm = xe_vm_create(fd, 0, 0);
++	exec_queue = xe_exec_queue_create_class(fd, vm, DRM_XE_ENGINE_CLASS_COPY);
++	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
++	bo_size = ALIGN(sizeof(*spin) + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
++	bo = xe_bo_create(fd, 0, vm, bo_size);
++	spin = xe_bo_map(fd, bo, bo_size);
++	spin_addr = intel_allocator_alloc_with_strategy(ahnd, bo, bo_size, 0, ALLOC_STRATEGY_LOW_TO_HIGH);
++	xe_vm_bind_sync(fd, vm, bo, 0, spin_addr, bo_size);
++	xe_spin_init_opts(spin, .addr = spin_addr,
++				.preempt = true,
++				.ctx_ticks = duration_to_ctx_ticks(fd, 0, duration_ns));
++	exec.address = spin_addr;
++	exec.exec_queue_id = exec_queue;
++
++#define NSAMPLES 5
++	igt_stats_init_with_size(&stats, NSAMPLES);
++	for (i = 0; i < NSAMPLES; ++i) {
++		igt_gettime(&tv);
++		xe_exec(fd, &exec);
++		xe_spin_wait_started(spin);
++		igt_assert(syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL));
++		igt_stats_push_float(&stats, igt_nsec_elapsed(&tv) * 1e-6);
++		syncobj_reset(fd, &sync.handle, 1);
++		igt_debug("i=%d %.2fms\n", i, stats.values_f[i]);
++	}
++	elapsed_ms = igt_stats_get_median(&stats);
++	igt_info("%.0fms spin took %.2fms (median)\n", duration_ns * 1e-6, elapsed_ms);
++	igt_assert(elapsed_ms < duration_ns * 1.5e-6 && elapsed_ms > duration_ns * 0.5e-6);
++
++	xe_vm_unbind_sync(fd, vm, 0, spin_addr, bo_size);
++	syncobj_destroy(fd, sync.handle);
++	gem_munmap(spin, bo_size);
++	gem_close(fd, bo);
++	xe_exec_queue_destroy(fd, exec_queue);
++	xe_vm_destroy(fd, vm);
++	put_ahnd(ahnd);
++}
++
+ igt_main
  {
--	uint64_t loop_addr = opts->addr + offsetof(struct xe_spin, batch);
-+	uint64_t loop_addr;
- 	uint64_t start_addr = opts->addr + offsetof(struct xe_spin, start);
- 	uint64_t end_addr = opts->addr + offsetof(struct xe_spin, end);
-+	uint64_t ticks_delta_addr = opts->addr + offsetof(struct xe_spin, ticks_delta);
-+	uint64_t pad_addr = opts->addr + offsetof(struct xe_spin, pad);
- 	int b = 0;
+ 	struct drm_xe_engine_class_instance *hwe;
+@@ -163,6 +232,9 @@ igt_main
+ 				spin_all(fd, gt, class);
+ 	}
  
- 	spin->start = 0;
- 	spin->end = 0xffffffff;
-+	spin->ticks_delta = 0;
++	igt_subtest("spin-fixed-duration")
++		xe_spin_fixed_duration(fd);
 +
-+	if (opts->ctx_ticks) {
-+		/* store start timestamp */
-+		spin->batch[b++] = MI_LOAD_REGISTER_IMM(1) | MI_LRI_CS_MMIO;
-+		spin->batch[b++] = CS_GPR(START_TS) + 4;
-+		spin->batch[b++] = 0;
-+		spin->batch[b++] = MI_LOAD_REGISTER_REG | MI_LRR_DST_CS_MMIO | MI_LRR_SRC_CS_MMIO;
-+		spin->batch[b++] = CTX_TIMESTAMP;
-+		spin->batch[b++] = CS_GPR(START_TS);
-+	}
-+
-+	loop_addr = opts->addr + b * sizeof(uint32_t);
- 
- 	spin->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
- 	spin->batch[b++] = start_addr;
-@@ -39,6 +98,42 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
- 	if (opts->preempt)
- 		spin->batch[b++] = (0x5 << 23);
- 
-+	if (opts->ctx_ticks) {
-+		spin->batch[b++] = MI_LOAD_REGISTER_IMM(1) | MI_LRI_CS_MMIO;
-+		spin->batch[b++] = CS_GPR(NOW_TS) + 4;
-+		spin->batch[b++] = 0;
-+		spin->batch[b++] = MI_LOAD_REGISTER_REG | MI_LRR_DST_CS_MMIO | MI_LRR_SRC_CS_MMIO;
-+		spin->batch[b++] = CTX_TIMESTAMP;
-+		spin->batch[b++] = CS_GPR(NOW_TS);
-+
-+		/* delta = now - start; inverted to match COND_BBE */
-+		spin->batch[b++] = MI_MATH(4);
-+		spin->batch[b++] = MI_MATH_LOAD(MI_MATH_REG_SRCA, MI_MATH_REG(NOW_TS));
-+		spin->batch[b++] = MI_MATH_LOAD(MI_MATH_REG_SRCB, MI_MATH_REG(START_TS));
-+		spin->batch[b++] = MI_MATH_SUB;
-+		spin->batch[b++] = MI_MATH_STOREINV(MI_MATH_REG(NOW_TS), MI_MATH_REG_ACCU);
-+
-+		/* Save delta for reading by COND_BBE */
-+		spin->batch[b++] = MI_STORE_REGISTER_MEM | MI_SRM_CS_MMIO | 2;
-+		spin->batch[b++] = CS_GPR(NOW_TS);
-+		spin->batch[b++] = ticks_delta_addr;
-+		spin->batch[b++] = ticks_delta_addr >> 32;
-+
-+		/* Delay between SRM and COND_BBE to post the writes */
-+		for (int n = 0; n < 8; n++) {
-+			spin->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-+			spin->batch[b++] = pad_addr;
-+			spin->batch[b++] = pad_addr >> 32;
-+			spin->batch[b++] = 0xc0ffee;
-+		}
-+
-+		/* Break if delta [time elapsed] > ns */
-+		spin->batch[b++] = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | 2;
-+		spin->batch[b++] = ~(opts->ctx_ticks);
-+		spin->batch[b++] = ticks_delta_addr;
-+		spin->batch[b++] = ticks_delta_addr >> 32;
-+	}
-+
- 	spin->batch[b++] = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | 2;
- 	spin->batch[b++] = 0;
- 	spin->batch[b++] = end_addr;
-diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
-index 9f1d33294..5c8c45143 100644
---- a/lib/xe/xe_spin.h
-+++ b/lib/xe/xe_spin.h
-@@ -15,27 +15,33 @@
- #include "xe_query.h"
- #include "lib/igt_dummyload.h"
- 
-+#define XE_SPIN_MAX_CTX_TICKS (UINT32_MAX - 1000)
-+
- /** struct xe_spin_opts
-  *
-  * @addr: offset of spinner within vm
-  * @preempt: allow spinner to be preempted or not
-+ * @ctx_ticks: number of ticks after which spinner is stopped, applied if > 0
-  *
-  * Used to initialize struct xe_spin spinner behavior.
-  */
- struct xe_spin_opts {
- 	uint64_t addr;
- 	bool preempt;
-+	uint32_t ctx_ticks;
- };
- 
- /* Mapped GPU object */
- struct xe_spin {
--	uint32_t batch[16];
-+	uint32_t batch[128];
- 	uint64_t pad;
- 	uint32_t start;
- 	uint32_t end;
-+	uint32_t ticks_delta;
- };
- 
- igt_spin_t *xe_spin_create(int fd, const struct igt_spin_factory *opt);
-+uint32_t duration_to_ctx_ticks(int fd, int gt_id, uint64_t ns);
- void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts);
- 
- #define xe_spin_init_opts(fd, ...) \
+ 	igt_fixture
+ 		drm_close_driver(fd);
+ }
 -- 
 2.30.2
