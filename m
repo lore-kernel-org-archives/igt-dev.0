@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4B53410E19E
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Sep 2023 09:04:55 +0000 (UTC)
-Date: Mon, 11 Sep 2023 11:04:36 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6CDBA10E0D8
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 17:56:18 +0000 (UTC)
+Date: Fri, 8 Sep 2023 19:56:14 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230911090436.duilulmwqjnrmstu@kamilkon-desk.igk.intel.com>
+Message-ID: <20230908175614.bq75wyivv66sfyo6@kamilkon-desk.igk.intel.com>
 References: <20230908083734.1084351-1-mauro.chehab@linux.intel.com>
  <20230908083734.1084351-11-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
@@ -26,17 +26,10 @@ To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Mauro,
-
-thank for your replay, one final note before giving r-b,
-see below.
-
 On 2023-09-08 at 10:27:46 +0200, Mauro Carvalho Chehab wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
 > As this item reflect blacklists, better to expand it at the
--------------------------^
-s/blacklists/blocklists/
-
 > spreadsheet, as it makes easier to filter for it.
 > 
 > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
@@ -54,10 +47,8 @@ s/blacklists/blocklists/
 >  
 > +expand_fields = {
 > +    "GPU excluded platform": "blacklist "
------------------------------------^
-s/blacklist/blocklist/
-
-With that fixed you can add my r-b.
+------------------------------------------^
+Is it ok to have space there?
 
 Regards,
 Kamil
