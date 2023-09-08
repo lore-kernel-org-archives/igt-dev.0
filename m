@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============3507460547281926277=="
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BF03D10E103
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 19:19:19 +0000 (UTC)
+Date: Fri, 8 Sep 2023 21:19:15 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230908211915.50b09a0f@maurocar-mobl2>
+In-Reply-To: <20230908174739.5p5x34ubwecpfyee@kamilkon-desk.igk.intel.com>
+References: <20230908083734.1084351-1-mauro.chehab@linux.intel.com>
+ <20230908083734.1084351-2-mauro.chehab@linux.intel.com>
+ <20230908174739.5p5x34ubwecpfyee@kamilkon-desk.igk.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Marcin Bernatowicz" <marcin.bernatowicz@linux.intel.com>
-Date: Fri, 08 Sep 2023 19:18:22 -0000
-Message-ID: <169420070241.14896.15682482918777177241@emeril.freedesktop.org>
-References: <20230908171300.2749840-1-marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20230908171300.2749840-1-marcin.bernatowicz@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgbGliL3hl?=
- =?utf-8?q?=5Fspin=3A_introduced_fixed_duration_xe=5Fspin_=28rev4=29?=
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t v4 01/11] test_list.py: add support for
+ reading testlist regular expressions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,189 +22,152 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3507460547281926277==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Fri, 8 Sep 2023 19:47:39 +0200
+Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
 
-== Series Details ==
+> Hi Mauro,
+> On 2023-09-08 at 10:27:37 +0200, Mauro Carvalho Chehab wrote:
+> > From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> > 
+> > If defined, use testlist and blocklist files to update the
+> > fields that use it.
+> > 
+> > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Series: lib/xe_spin: introduced fixed duration xe_spin (rev4)
-URL   : https://patchwork.freedesktop.org/series/122624/
-State : failure
+Are you meant to add your A-B/R-B here or do a comment?
 
-== Summary ==
+Can't see anything on this reply :-)
 
-CI Bug Log - changes from IGT_7477 -> IGTPW_9758
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_9758 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_9758, please notify your bug team (lgci.bug.filing@intel.com) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9758/index.html
-
-Participating hosts (42 -> 39)
-------------------------------
-
-  Missing    (3): fi-kbl-soraka fi-hsw-4770 fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_9758:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-dp-1:
-    - bat-dg2-8:          [PASS][1] -> [INCOMPLETE][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7477/bat-dg2-8/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-dp-1.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9758/bat-dg2-8/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-dp-1.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_9758 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-glk-j4005:       [PASS][3] -> [DMESG-FAIL][4] ([i915#5334])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7477/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9758/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@i915_selftest@live@gt_lrc:
-    - bat-dg2-11:         [PASS][5] -> [INCOMPLETE][6] ([i915#7609] / [i915#7913])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7477/bat-dg2-11/igt@i915_selftest@live@gt_lrc.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9758/bat-dg2-11/igt@i915_selftest@live@gt_lrc.html
-
-  
-  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
-  [i915#7609]: https://gitlab.freedesktop.org/drm/intel/issues/7609
-  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7477 -> IGTPW_9758
-
-  CI-20190529: 20190529
-  CI_DRM_13613: 25ec37710fd81562fd25eccebaac156d9334ff0c @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_9758: 9758
-  IGT_7477: 7477
-
-
-Testlist changes
-----------------
-
-+igt@xe_spin_batch@spin-fixed-duration
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9758/index.html
-
---===============3507460547281926277==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/xe_spin: introduced fixed duration xe_spin (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122624/">https://patchwork.freedesktop.org/series/122624/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9758/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9758/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_7477 -&gt; IGTPW_9758</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_9758 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_9758, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9758/index.html</p>
-<h2>Participating hosts (42 -&gt; 39)</h2>
-<p>Missing    (3): fi-kbl-soraka fi-hsw-4770 fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_9758:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-dp-1:<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7477/bat-dg2-8/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-dp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9758/bat-dg2-8/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-dp-1.html">INCOMPLETE</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_9758 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-glk-j4005:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7477/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9758/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_lrc:</p>
-<ul>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7477/bat-dg2-11/igt@i915_selftest@live@gt_lrc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9758/bat-dg2-11/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7609">i915#7609</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7477 -&gt; IGTPW_9758</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13613: 25ec37710fd81562fd25eccebaac156d9334ff0c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_9758: 9758<br />
-  IGT_7477: 7477</p>
-<h2>Testlist changes</h2>
-<p>+igt@xe_spin_batch@spin-fixed-duration</p>
-
-</body>
-</html>
-
---===============3507460547281926277==--
+> > ---
+> >  scripts/test_list.py | 75 ++++++++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 75 insertions(+)
+> > 
+> > diff --git a/scripts/test_list.py b/scripts/test_list.py
+> > index 2171f8b50617..c1518a904baf 100644
+> > --- a/scripts/test_list.py
+> > +++ b/scripts/test_list.py
+> > @@ -260,6 +260,8 @@ class TestList:
+> >          self.igt_build_path = igt_build_path
+> >          self.level_count = 0
+> >          self.field_list = {}
+> > +        self.testlist = {}
+> > +        self.blocklist = {}
+> >          self.title = None
+> >          self.filters = {}
+> >          self.subtest_separator = subtest_separator
+> > @@ -327,6 +329,23 @@ class TestList:
+> >                  if sublevel_count[level - 1] == 1:
+> >                      del item["_properties_"]["level"]
+> >                      del item["_properties_"]["sublevel"]
+> > +
+> > +            # Read testlist files if any
+> > +            if "testlists" in item["_properties_"]:
+> > +                testlist = {}
+> > +                for name in item["_properties_"]["testlists"].keys():
+> > +                    self.read_testlist(testlist, name, cfg_path + item["_properties_"]["testlists"][name])
+> > +
+> > +                item["_properties_"]["testlist"] = testlist
+> > +
+> > +            # Read blocklist files if any
+> > +            if "blocklists" in item["_properties_"]:
+> > +                blocklist = {}
+> > +                for name in item["_properties_"]["blocklists"].keys():
+> > +                    self.read_testlist(blocklist, name, cfg_path + item["_properties_"]["blocklists"][name])
+> > +
+> > +                item["_properties_"]["blocklist"] = blocklist
+> > +
+> >          if "_properties_" in self.props:
+> >              del self.props["_properties_"]
+> >  
+> > @@ -427,6 +446,19 @@ class TestList:
+> >  
+> >              self.__add_field(key, sublevel, hierarchy_level, field[key])
+> >  
+> > +    def read_testlist(self, testlist, name, filename):
+> > +        base = r"^\s*({}[^\s\{}]+)(\S*)\s*(\#.*)?$"
+> > +        regex = re.compile(base.format(self.main_name, self.subtest_separator))
+> > +
+> > +        testlist[name] = []
+> > +        with open(filename, 'r', newline = '', encoding = 'utf8') as fp:
+> > +            for line in fp:
+> > +                match = regex.match(line)
+> > +                if match:
+> > +                    test = match.group(1)
+> > +                    subtest = match.group(2)
+> > +                    testlist[name].append(re.compile(f"{test}{subtest}"))
+> > +
+> >      def __filter_subtest(self, test, subtest, field_not_found_value):
+> >  
+> >          """ Apply filter criteria to subtests """
+> > @@ -444,6 +476,45 @@ class TestList:
+> >          # None of the filtering rules were applied
+> >          return False
+> >  
+> > +    def update_testlist_field(self, subtest_dict):
+> > +        for field in self.props.keys():
+> > +            if "_properties_" not in self.props[field]:
+> > +                continue
+> > +
+> > +            if "testlist" not in self.props[field]["_properties_"]:
+> > +                continue
+> > +
+> > +            testname = subtest_dict["_summary_"]
+> > +
+> > +            value = subtest_dict.get(field)
+> > +            if value:
+> > +                values = set(re.split(",\s*", value))
+> > +            else:
+> > +                values = set()
+> > +
+> > +            for names, regex_array in self.props[field]["_properties_"]["testlist"].items():
+> > +                name = set(re.split(",\s*", names))
+> > +                for regex in regex_array:
+> > +                    if regex.match(testname):
+> > +                        values.update(name)
+> > +                        break
+> > +
+> > +            # If test is at a global blocklist, ignore it
+> > +            set_full_if_empty = True
+> > +            if "blocklist" in self.props[field]["_properties_"]:
+> > +                for names, regex_array in self.props[field]["_properties_"]["testlist"].items():
+> > +                    deleted_names = set(re.split(",\s*", names))
+> > +                    for regex in regex_array:
+> > +                        if regex.match(testname):
+> > +                            if sorted(deleted_names) == sorted(values):
+> > +                                set_full_if_empty = False
+> > +                            values.discard(deleted_names)
+> > +
+> > +            if set_full_if_empty and not values:
+> > +                values = set(["FULL"])
+> > +
+> > +            subtest_dict[field] = ", ".join(sorted(values))
+> > +
+> >      def expand_subtest(self, fname, test_name, test, allow_inherit, with_lines = False, with_subtest_nr = False):
+> >  
+> >          """Expand subtest wildcards providing an array with subtests"""
+> > @@ -476,6 +547,8 @@ class TestList:
+> >  
+> >                      subtest_dict[k] = self.doc[test]["subtest"][subtest][k]
+> >  
+> > +                self.update_testlist_field(subtest_dict)
+> > +
+> >                  if with_lines:
+> >                      subtest_dict["line"] = file_ln
+> >  
+> > @@ -549,6 +622,8 @@ class TestList:
+> >  
+> >                      subtest_dict[field] = sub_field
+> >  
+> > +                self.update_testlist_field(subtest_dict)
+> > +
+> >                  if with_lines:
+> >                      subtest_dict["line"] = file_ln
+> >  
+> > -- 
+> > 2.41.0
+> >   
