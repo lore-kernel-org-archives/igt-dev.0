@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 648FD10E882
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AC7AE10E882
  for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 08:37:40 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.24.176])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 969DA580EA4
+ by linux.intel.com (Postfix) with ESMTPS id ABE50580EB0
  for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 01:37:38 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qeWzg-004YD4-1j
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qeWzg-004YDO-23
  for igt-dev@lists.freedesktop.org; Fri, 08 Sep 2023 10:37:36 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  8 Sep 2023 10:27:39 +0200
-Message-ID: <20230908083734.1084351-4-mauro.chehab@linux.intel.com>
+Date: Fri,  8 Sep 2023 10:27:45 +0200
+Message-ID: <20230908083734.1084351-10-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230908083734.1084351-1-mauro.chehab@linux.intel.com>
 References: <20230908083734.1084351-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 03/11] kms_test_config.json: add
- testlists and blacklists
+Subject: [igt-dev] [PATCH i-g-t v4 09/11] scripts/test_list.py: add support
+ for expanding fields on spreadsheet
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,39 +34,80 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Specify the testlists and blacklists to be used to store CI
-run type.
+Sometimes, it is desired to expand a field into multiple columns
+when generating a spreadsheet. Add support for it.
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/intel/kms_test_config.json | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ scripts/test_list.py | 35 ++++++++++++++++++++++++++++++++++-
+ 1 file changed, 34 insertions(+), 1 deletion(-)
 
-diff --git a/tests/intel/kms_test_config.json b/tests/intel/kms_test_config.json
-index 4130b7d6dae0..7ab288685677 100644
---- a/tests/intel/kms_test_config.json
-+++ b/tests/intel/kms_test_config.json
-@@ -21,7 +21,19 @@
-             },
-             "Run type": {
-                 "_properties_": {
--                    "description": "Defines what category of testlist it belongs"
-+                    "description": "Defines what category of testlist it belongs",
-+                    "testlists": {
-+                        "i915 BAT": "../intel-ci/fast-feedback.testlist",
-+                        "i915 BAT chamelium": "../intel-ci/fast-feedback-chamelium-only.testlist",
-+                        "i915 chamelium": "../intel-ci/chamelium-only.testlist",
+diff --git a/scripts/test_list.py b/scripts/test_list.py
+index 01f6528ac84c..74abdc5ebe65 100644
+--- a/scripts/test_list.py
++++ b/scripts/test_list.py
+@@ -759,7 +759,7 @@ class TestList:
+         else:
+             return out
+ 
+-    def get_spreadsheet(self):
++    def get_spreadsheet(self, expand_fields = {}):
+ 
+         """
+         Return a bidimentional array with the test contents.
+@@ -768,6 +768,7 @@ class TestList:
+         separate python file that would create a workbook's sheet.
+         """
+ 
++        expand_field_name = {}
+         sheet = []
+         row = 0
+         sheet.append([])
+@@ -779,6 +780,9 @@ class TestList:
+         fields_order = []
+         fields = sorted(self.props.items(), key = _sort_per_level)
+         for item in fields:
++            if item[0] in expand_fields.keys():
++                expand_field_name[item[0]] = set()
++                continue
+             fields_order.append(item[0])
+             sheet[row].append(item[0])
+ 
+@@ -799,6 +803,35 @@ class TestList:
+                     sheet[row].append(fields[field])
+                 else:
+                     sheet[row].append('')
 +
-+                        "Xe BAT": "../intel-ci/xe-fast-feedback.testlist",
-+                        "Xe BAT chamelium": "../intel-ci/xe-fast-feedback-chamelium-only.testlist"
-+                    },
-+                    "blocklists": {
-+                        "i915 BAT, i915 BAT chamelium, i915 chamelium": "../intel-ci/blacklist.txt",
-+                        "Xe BAT, Xe BAT chamelium": "../intel-ci/xe.blocklist.txt"
-+                    }
-                 }
-             }
-         },
++            for field in expand_fields.keys():
++                names = fields.get(field)
++                if not names:
++                    continue
++
++                names = set(re.split(r",\s*", names))
++                expand_field_name[field].update(names)
++
++        # Add expanded fields, if any
++        for item in sorted(expand_fields.keys(), key=str.lower):
++            prefix = expand_fields[item]
++
++            for field in sorted(list(expand_field_name[item]), key=str.lower):
++                row = 0
++                sheet[row].append(prefix + field)
++
++                for subtest, fields in subtests:
++                    row += 1
++                    value = ""
++                    names = fields.get(item)
++                    if names:
++                        names = set(re.split(r",\s*", names))
++
++                        if field in names:
++                            value = "Yes"
++
++                    sheet[row].append(value)
++
+         return sheet
+ 
+     def print_nested_rest(self, filename = None, return_string = False):
 -- 
 2.41.0
