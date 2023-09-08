@@ -1,14 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============2144894689404967085=="
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BF4FC10E0D8
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 17:53:34 +0000 (UTC)
+Date: Fri, 8 Sep 2023 19:53:29 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230908175329.b5bjw5s4fcj5x3zs@kamilkon-desk.igk.intel.com>
+References: <20230908083734.1084351-1-mauro.chehab@linux.intel.com>
+ <20230908083734.1084351-10-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 08 Sep 2023 11:16:47 -0000
-Message-ID: <169417180728.14895.11928797510109895020@emeril.freedesktop.org>
-References: <20230908103218.1089792-1-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230908103218.1089792-1-mauro.chehab@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIENJLnhlQkFUOiBzdWNjZXNzIGZvciBYZTogc2V0?=
- =?utf-8?q?_Run_type_from_testlist_instead_of_defining_it?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230908083734.1084351-10-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v4 09/11] scripts/test_list.py: add
+ support for expanding fields on spreadsheet
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,133 +20,94 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2144894689404967085==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Mauro,
+On 2023-09-08 at 10:27:45 +0200, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> Sometimes, it is desired to expand a field into multiple columns
+> when generating a spreadsheet. Add support for it.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-== Series Details ==
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Series: Xe: set Run type from testlist instead of defining it
-URL   : https://patchwork.freedesktop.org/series/123432/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7474_BAT -> XEIGTPW_9752_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_9752_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_exec_reset@virtual-close-fd-no-exec:
-    - bat-pvc-2:          [PASS][1] -> [INCOMPLETE][2] ([Intel XE#631])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7474/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9752/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html
-
-  
-  [Intel XE#631]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/631
-
-
-Build changes
--------------
-
-  * IGT: IGT_7474 -> IGTPW_9752
-  * Linux: xe-357-bae46e59a7f667734376ddb0d2451967dfb264f1 -> xe-362-758f01ec2a6774fda1e8f8075d31f42b81783caf
-
-  IGTPW_9752: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9752/index.html
-  IGT_7474: 9d91cf2c6e7bb64d60c2030d1535e40ca0ad53ee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-357-bae46e59a7f667734376ddb0d2451967dfb264f1: bae46e59a7f667734376ddb0d2451967dfb264f1
-  xe-362-758f01ec2a6774fda1e8f8075d31f42b81783caf: 758f01ec2a6774fda1e8f8075d31f42b81783caf
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9752/index.html
-
---===============2144894689404967085==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Xe: set Run type from testlist instead of defining it</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123432/">https://patchwork.freedesktop.org/series/123432/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9752/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9752/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7474_BAT -&gt; XEIGTPW_9752_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_9752_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@xe_exec_reset@virtual-close-fd-no-exec:<ul>
-<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7474/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9752/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/631">Intel XE#631</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7474 -&gt; IGTPW_9752</li>
-<li>Linux: xe-357-bae46e59a7f667734376ddb0d2451967dfb264f1 -&gt; xe-362-758f01ec2a6774fda1e8f8075d31f42b81783caf</li>
-</ul>
-<p>IGTPW_9752: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9752/index.html<br />
-  IGT_7474: 9d91cf2c6e7bb64d60c2030d1535e40ca0ad53ee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-357-bae46e59a7f667734376ddb0d2451967dfb264f1: bae46e59a7f667734376ddb0d2451967dfb264f1<br />
-  xe-362-758f01ec2a6774fda1e8f8075d31f42b81783caf: 758f01ec2a6774fda1e8f8075d31f42b81783caf</p>
-
-</body>
-</html>
-
---===============2144894689404967085==--
+> ---
+>  scripts/test_list.py | 35 ++++++++++++++++++++++++++++++++++-
+>  1 file changed, 34 insertions(+), 1 deletion(-)
+> 
+> diff --git a/scripts/test_list.py b/scripts/test_list.py
+> index 01f6528ac84c..74abdc5ebe65 100644
+> --- a/scripts/test_list.py
+> +++ b/scripts/test_list.py
+> @@ -759,7 +759,7 @@ class TestList:
+>          else:
+>              return out
+>  
+> -    def get_spreadsheet(self):
+> +    def get_spreadsheet(self, expand_fields = {}):
+>  
+>          """
+>          Return a bidimentional array with the test contents.
+> @@ -768,6 +768,7 @@ class TestList:
+>          separate python file that would create a workbook's sheet.
+>          """
+>  
+> +        expand_field_name = {}
+>          sheet = []
+>          row = 0
+>          sheet.append([])
+> @@ -779,6 +780,9 @@ class TestList:
+>          fields_order = []
+>          fields = sorted(self.props.items(), key = _sort_per_level)
+>          for item in fields:
+> +            if item[0] in expand_fields.keys():
+> +                expand_field_name[item[0]] = set()
+> +                continue
+>              fields_order.append(item[0])
+>              sheet[row].append(item[0])
+>  
+> @@ -799,6 +803,35 @@ class TestList:
+>                      sheet[row].append(fields[field])
+>                  else:
+>                      sheet[row].append('')
+> +
+> +            for field in expand_fields.keys():
+> +                names = fields.get(field)
+> +                if not names:
+> +                    continue
+> +
+> +                names = set(re.split(r",\s*", names))
+> +                expand_field_name[field].update(names)
+> +
+> +        # Add expanded fields, if any
+> +        for item in sorted(expand_fields.keys(), key=str.lower):
+> +            prefix = expand_fields[item]
+> +
+> +            for field in sorted(list(expand_field_name[item]), key=str.lower):
+> +                row = 0
+> +                sheet[row].append(prefix + field)
+> +
+> +                for subtest, fields in subtests:
+> +                    row += 1
+> +                    value = ""
+> +                    names = fields.get(item)
+> +                    if names:
+> +                        names = set(re.split(r",\s*", names))
+> +
+> +                        if field in names:
+> +                            value = "Yes"
+> +
+> +                    sheet[row].append(value)
+> +
+>          return sheet
+>  
+>      def print_nested_rest(self, filename = None, return_string = False):
+> -- 
+> 2.41.0
+> 
 
