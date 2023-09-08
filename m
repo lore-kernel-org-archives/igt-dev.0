@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 374D910E919
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 17:10:26 +0000 (UTC)
-Date: Fri, 8 Sep 2023 19:10:21 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C56FB10E91A
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 17:18:13 +0000 (UTC)
+Date: Fri, 8 Sep 2023 19:18:09 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230908171021.4pchfq4fbwqa6jib@kamilkon-desk.igk.intel.com>
-References: <20230908125454.2670405-1-marcin.bernatowicz@linux.intel.com>
- <20230908125454.2670405-5-marcin.bernatowicz@linux.intel.com>
+Message-ID: <20230908171809.vrylau75am6iqxn5@kamilkon-desk.igk.intel.com>
+References: <20230908025038.217934-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230908125454.2670405-5-marcin.bernatowicz@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v4 4/4] lib/xe_spin.c: fixed checkpatch
- issue
+In-Reply-To: <20230908025038.217934-1-vitaly.prosyak@amd.com>
+Subject: Re: [igt-dev] [PATCH] lib/amdgpu: fix typo in function
+ compare_pattern
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,47 +20,69 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Alex Deucher <alexander.deucher@amd.com>, Jesse Zhang <Jesse.Zhang@amd.com>,
+ Luben Tuikov <luben.tuikov@amd.com>,
+ Christian Koenig <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Marcin,
+Hi Vitaly,
 
-now checkpatch complains about subject of your change:
-WARNING: A patch subject line should describe the change not the tool that found it
-#4: 
-Subject: [PATCH i-g-t 4/4] lib/xe_spin.c: fixed checkpatch issue
+some nit about description: 
+[PATCH] lib/amdgpu: fix typo in function
+----------------------- ^
+looks rather like fixing a bug
 
-so I suggest other, like: fixed code style
-
-with that:
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+On 2023-09-07 at 22:50:38 -0400, vitaly.prosyak@amd.com wrote:
+> From: Jesse Zhang <jesse.zhang@amd.com>
+> 
+>  In function compare_pattern check the destination buffer (bo2_cpu),
+>  instead of source buffer(bo_cpu).
+>  Add validation of the return value in the eviction test.
+-- ^^^^^^^^^^^^^^
+And this is unrelated to your desription and unexpected change
+in other test, imho should be separate patch.
 
 Regards,
 Kamil
 
-On 2023-09-08 at 12:54:54 +0000, Marcin Bernatowicz wrote:
-> fixed checkpatch reported error
 > 
-> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> Cc: Luben Tuikov <luben.tuikov@amd.com>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
+> Cc: Christian Koenig <christian.koenig@amd.com>
+> Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+> Reviewed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 > ---
->  lib/xe/xe_spin.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  lib/amdgpu/amd_ip_blocks.c | 2 +-
+>  tests/amdgpu/amd_basic.c   | 1 +
+>  2 files changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-> index d8e2c07aa..f0d77aed3 100644
-> --- a/lib/xe/xe_spin.c
-> +++ b/lib/xe/xe_spin.c
-> @@ -165,7 +165,8 @@ bool xe_spin_started(struct xe_spin *spin)
->   */
->  void xe_spin_wait_started(struct xe_spin *spin)
->  {
-> -	while(!xe_spin_started(spin));
-> +	while (!xe_spin_started(spin))
-> +		;
->  }
+> diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
+> index be9ff38c6..7f8d4a4cd 100644
+> --- a/lib/amdgpu/amd_ip_blocks.c
+> +++ b/lib/amdgpu/amd_ip_blocks.c
+> @@ -296,7 +296,7 @@ x_compare_pattern(const struct amdgpu_ip_funcs *func,
+>  	int num_compare = ring_context->write_length/div;
 >  
->  void xe_spin_end(struct xe_spin *spin)
+>  	while (i < num_compare) {
+> -		if (ring_context->bo_cpu[i++] != func->pattern) {
+> +		if (ring_context->bo2_cpu[i++] != func->pattern) {
+>  			ret = -1;
+>  			break;
+>  		}
+> diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
+> index dfe11995f..e7a42a335 100644
+> --- a/tests/amdgpu/amd_basic.c
+> +++ b/tests/amdgpu/amd_basic.c
+> @@ -411,6 +411,7 @@ amdgpu_bo_eviction_test(amdgpu_device_handle device_handle)
+>  			amdgpu_test_exec_cs_helper(device_handle, ip_block->type, ring_context);
+>  			/* fulfill PM4: test DMA copy linear */
+>  			r = ip_block->funcs->compare_pattern(ip_block->funcs, ring_context, sdma_write_length);
+> +			igt_assert_eq(r, 0);
+>  			amdgpu_bo_unmap_and_free(ring_context->bo, ring_context->va_handle, ring_context->bo_mc,
+>  						 ring_context->write_length);
+>  			amdgpu_bo_unmap_and_free(ring_context->bo2, ring_context->va_handle2, ring_context->bo_mc2,
 > -- 
-> 2.30.2
+> 2.25.1
 > 
