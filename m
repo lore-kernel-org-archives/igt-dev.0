@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  8 Sep 2023 14:32:37 +0200
-Message-ID: <20230908123233.137134-22-janusz.krzysztofik@linux.intel.com>
+Date: Fri,  8 Sep 2023 14:32:38 +0200
+Message-ID: <20230908123233.137134-23-janusz.krzysztofik@linux.intel.com>
 In-Reply-To: <20230908123233.137134-19-janusz.krzysztofik@linux.intel.com>
 References: <20230908123233.137134-19-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 03/17] lib/kunit: Fix struct kmod_module
- kunit_kmod not freed
+Subject: [igt-dev] [PATCH i-g-t v2 04/17] lib/kunit: Optimize calls to
+ igt_success/skip/fail()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,25 +22,56 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We obtain a kmod_module structure for kunit module in order to check if
-it is modular or built-in, then we never release that structure.  Fix it.
+Calling igt_success() explicitly at the end of subtest body is not needed.
+Other calls to igt_success() can be usually avoided by inverting test
+result checks.  Optimize the code that now calls igt_success().
+
+Moreover, using more advanced variants of igt_skip() and igt_fail() where
+applicable makes the code more compact.  Go for it.
 
 Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 ---
- lib/igt_kmod.c | 1 +
- 1 file changed, 1 insertion(+)
+ lib/igt_kmod.c | 14 +++-----------
+ 1 file changed, 3 insertions(+), 11 deletions(-)
 
 diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index faf31afabc..34ddec3fad 100644
+index 34ddec3fad..1d1cd51170 100644
 --- a/lib/igt_kmod.c
 +++ b/lib/igt_kmod.c
-@@ -797,6 +797,7 @@ static void __igt_kunit(const char *module_name, const char *opts)
- 	}
+@@ -814,12 +814,8 @@ static void __igt_kunit(const char *module_name, const char *opts)
+ 		if (READ_ONCE(results->head) != NULL) {
+ 			pthread_mutex_lock(&results->mutex);
  
- 	is_builtin = kmod_module_get_initstate(kunit_kmod) == KMOD_MODULE_BUILTIN;
-+	kmod_module_unref(kunit_kmod);
+-			igt_dynamic(results->head->test_name) {
+-				if (READ_ONCE(results->head->passed))
+-					igt_success();
+-				else
+-					igt_fail(IGT_EXIT_FAILURE);
+-			}
++			igt_dynamic(results->head->test_name)
++				igt_assert(READ_ONCE(results->head->passed));
  
- 	results = ktap_parser_start(tst.kmsg, is_builtin);
+ 			temp = results->head;
+ 			results->head = results->head->next;
+@@ -834,8 +830,7 @@ unload:
  
+ 	igt_ktest_fini(&tst);
+ 
+-	if (skip)
+-		igt_skip("Skipping test, as probing KUnit module returned %d", skip);
++	igt_skip_on_f(skip, "Skipping test, as probing KUnit module failed\n");
+ 
+ 	if (fail)
+ 		igt_fail(IGT_EXIT_ABORT);
+@@ -844,9 +839,6 @@ unload:
+ 
+ 	if (ret != 0)
+ 		igt_fail(IGT_EXIT_ABORT);
+-
+-	if (ret == 0)
+-		igt_success();
+ }
+ 
+ void igt_kunit(const char *module_name, const char *name, const char *opts)
 -- 
 2.41.0
