@@ -1,20 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D2F3A10E07F
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 10:19:26 +0000 (UTC)
-Date: Fri, 8 Sep 2023 12:19:22 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Message-ID: <20230908101922.2yary73ft4extybl@zkempczy-mobl2>
-References: <20230905150225.2029554-1-marcin.bernatowicz@linux.intel.com>
- <20230905150225.2029554-3-marcin.bernatowicz@linux.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3C97E10E883
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 08:37:40 +0000 (UTC)
+Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
+ [10.252.24.176])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id 63BB2580E8C
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 01:37:38 -0700 (PDT)
+Received: from maurocar by linux.intel.com with local (Exim 4.96)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qeWzg-004YCv-1Z
+ for igt-dev@lists.freedesktop.org; Fri, 08 Sep 2023 10:37:36 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri,  8 Sep 2023 10:27:36 +0200
+Message-ID: <20230908083734.1084351-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230905150225.2029554-3-marcin.bernatowicz@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 2/3] lib/xe_spin: fixed duration
- xe_spin capability
+Subject: [igt-dev] [PATCH i-g-t v4 00/11] Xe: set Run type from testlist
+ instead of defining it
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,203 +26,173 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Sep 05, 2023 at 03:02:24PM +0000, Marcin Bernatowicz wrote:
-> Extended spinner with fixed duration capability. It allows
-> to prepare fixed duration (ex. 10ms) workloads and take workloads/second
-> measurements, a handy utility for scheduling tests.
-> 
-> v2: - added asserts in div64_u64_round_up, duration_to_ctx_ticks,
->       simplified loop_addr (Zbyszek)
->     - corrected patch title (Kamil)
-> 
-> v3: - div64_u64_round_up assert on overflow (Kamil)
->     - enum indentation cleanup in xe_spin.c (Kamil)
-> 
-> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> ---
->  lib/xe/xe_spin.c | 97 +++++++++++++++++++++++++++++++++++++++++++++++-
->  lib/xe/xe_spin.h |  8 +++-
->  2 files changed, 103 insertions(+), 2 deletions(-)
-> 
-> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-> index 27f837ef9..54ae2d3ac 100644
-> --- a/lib/xe/xe_spin.c
-> +++ b/lib/xe/xe_spin.c
-> @@ -16,6 +16,50 @@
->  #include "xe_ioctl.h"
->  #include "xe_spin.h"
->  
-> +static uint32_t read_timestamp_frequency(int fd, int gt_id)
-> +{
-> +	struct xe_device *dev = xe_device_get(fd);
-> +
-> +	igt_assert(dev && dev->gts && dev->gts->num_gt);
-> +	igt_assert(gt_id >= 0 && gt_id <= dev->gts->num_gt);
-> +
-> +	return dev->gts->gts[gt_id].clock_freq;
-> +}
-> +
-> +static uint64_t div64_u64_round_up(const uint64_t x, const uint64_t y)
-> +{
-> +	igt_assert(y > 0);
-> +	igt_assert_lte_u64(x, UINT64_MAX - (y - 1));
-> +
-> +	return (x + y - 1) / y;
-> +}
-> +
-> +/**
-> + * duration_to_ctx_ticks:
-> + * @fd: opened device
-> + * @gt_id: tile id
-> + * @duration_ns: duration in nanoseconds to be converted to context timestamp ticks
-> + * @return: duration converted to context timestamp ticks.
-> + */
-> +uint32_t duration_to_ctx_ticks(int fd, int gt_id, uint64_t duration_ns)
-> +{
-> +	uint32_t f = read_timestamp_frequency(fd, gt_id);
-> +	uint64_t ctx_ticks = div64_u64_round_up(duration_ns * f, NSEC_PER_SEC);
-> +
-> +	igt_assert_lt_u64(ctx_ticks, XE_SPIN_MAX_CTX_TICKS);
-> +
-> +	return ctx_ticks;
-> +}
-> +
-> +#define MI_SRM_CS_MMIO				(1 << 19)
-> +#define MI_LRI_CS_MMIO				(1 << 19)
-> +#define MI_LRR_DST_CS_MMIO			(1 << 19)
-> +#define MI_LRR_SRC_CS_MMIO			(1 << 18)
-> +#define CTX_TIMESTAMP 0x3a8;
-> +#define CS_GPR(x) (0x600 + 8 * (x))
-> +
-> +enum { START_TS, NOW_TS };
-> +
->  /**
->   * xe_spin_init:
->   * @spin: pointer to mapped bo in which spinner code will be written
-> @@ -23,13 +67,28 @@
->   */
->  void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
->  {
-> -	uint64_t loop_addr = opts->addr + offsetof(struct xe_spin, batch);
-> +	uint64_t loop_addr;
->  	uint64_t start_addr = opts->addr + offsetof(struct xe_spin, start);
->  	uint64_t end_addr = opts->addr + offsetof(struct xe_spin, end);
-> +	uint64_t ticks_delta_addr = opts->addr + offsetof(struct xe_spin, ticks_delta);
-> +	uint64_t pad_addr = opts->addr + offsetof(struct xe_spin, pad);
->  	int b = 0;
->  
->  	spin->start = 0;
->  	spin->end = 0xffffffff;
-> +	spin->ticks_delta = 0;
-> +
-> +	if (opts->ctx_ticks) {
-> +		/* store start timestamp */
-> +		spin->batch[b++] = MI_LOAD_REGISTER_IMM(1) | MI_LRI_CS_MMIO;
-> +		spin->batch[b++] = CS_GPR(START_TS) + 4;
-> +		spin->batch[b++] = 0;
-> +		spin->batch[b++] = MI_LOAD_REGISTER_REG | MI_LRR_DST_CS_MMIO | MI_LRR_SRC_CS_MMIO;
-> +		spin->batch[b++] = CTX_TIMESTAMP;
-> +		spin->batch[b++] = CS_GPR(START_TS);
-> +	}
-> +
-> +	loop_addr = opts->addr + b * sizeof(uint32_t);
->  
->  	spin->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
->  	spin->batch[b++] = start_addr;
-> @@ -39,6 +98,42 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
->  	if (opts->preempt)
->  		spin->batch[b++] = (0x5 << 23);
->  
-> +	if (opts->ctx_ticks) {
-> +		spin->batch[b++] = MI_LOAD_REGISTER_IMM(1) | MI_LRI_CS_MMIO;
-> +		spin->batch[b++] = CS_GPR(NOW_TS) + 4;
-> +		spin->batch[b++] = 0;
-> +		spin->batch[b++] = MI_LOAD_REGISTER_REG | MI_LRR_DST_CS_MMIO | MI_LRR_SRC_CS_MMIO;
-> +		spin->batch[b++] = CTX_TIMESTAMP;
-> +		spin->batch[b++] = CS_GPR(NOW_TS);
-> +
-> +		/* delta = now - start; inverted to match COND_BBE */
-> +		spin->batch[b++] = MI_MATH(4);
-> +		spin->batch[b++] = MI_MATH_LOAD(MI_MATH_REG_SRCA, MI_MATH_REG(NOW_TS));
-> +		spin->batch[b++] = MI_MATH_LOAD(MI_MATH_REG_SRCB, MI_MATH_REG(START_TS));
-> +		spin->batch[b++] = MI_MATH_SUB;
-> +		spin->batch[b++] = MI_MATH_STOREINV(MI_MATH_REG(NOW_TS), MI_MATH_REG_ACCU);
-> +
-> +		/* Save delta for reading by COND_BBE */
-> +		spin->batch[b++] = MI_STORE_REGISTER_MEM | MI_SRM_CS_MMIO | 2;
-> +		spin->batch[b++] = CS_GPR(NOW_TS);
-> +		spin->batch[b++] = ticks_delta_addr;
-> +		spin->batch[b++] = ticks_delta_addr >> 32;
-> +
-> +		/* Delay between SRM and COND_BBE to post the writes */
-> +		for (int n = 0; n < 8; n++) {
-> +			spin->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-> +			spin->batch[b++] = pad_addr;
-> +			spin->batch[b++] = pad_addr >> 32;
-> +			spin->batch[b++] = 0xc0ffee;
-> +		}
-> +
-> +		/* Break if delta [time elapsed] > ns */
-> +		spin->batch[b++] = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | 2;
-> +		spin->batch[b++] = ~(opts->ctx_ticks);
-> +		spin->batch[b++] = ticks_delta_addr;
-> +		spin->batch[b++] = ticks_delta_addr >> 32;
-> +	}
-> +
->  	spin->batch[b++] = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | 2;
->  	spin->batch[b++] = 0;
->  	spin->batch[b++] = end_addr;
-> diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
-> index 9f1d33294..f1abc1102 100644
-> --- a/lib/xe/xe_spin.h
-> +++ b/lib/xe/xe_spin.h
-> @@ -15,27 +15,33 @@
->  #include "xe_query.h"
->  #include "lib/igt_dummyload.h"
->  
-> +#define XE_SPIN_MAX_CTX_TICKS UINT32_MAX - 1000
-> +
->  /** struct xe_spin_opts
->   *
->   * @addr: offset of spinner within vm
->   * @preempt: allow spinner to be preempted or not
-> + * @ctx_ticks: number of ticks after which spinner is stopped, applied if > 0
->   *
->   * Used to initialize struct xe_spin spinner behavior.
->   */
->  struct xe_spin_opts {
->  	uint64_t addr;
->  	bool preempt;
-> +	uint32_t ctx_ticks;
->  };
->  
->  /* Mapped GPU object */
->  struct xe_spin {
-> -	uint32_t batch[16];
-> +	uint32_t batch[128];
->  	uint64_t pad;
->  	uint32_t start;
->  	uint32_t end;
-> +	uint32_t ticks_delta;
->  };
->  
->  igt_spin_t *xe_spin_create(int fd, const struct igt_spin_factory *opt);
-> +uint32_t duration_to_ctx_ticks(int fd, int gt_id, uint64_t ns);
->  void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts);
->  
->  #define xe_spin_init_opts(fd, ...) \
-> -- 
-> 2.30.2
->
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-LGTM:
+Right now, we're keeping testlists both at documentation and on
+separate testlist files. That makes harder to maintain. It also
+requires splitting wildcards on multiple fields just due to that.
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+In the end, only the testlist files are updated.
 
---
-Zbigniew
+So, simplify the maintainance by reading the testlists and parsing
+them directly.
+
+This will also handle tests that are blacklisted for all platforms.
+
+---
+
+v4:
+  - XLS spreadsheet output format improved;
+  - XLS logic can now split fields per their values. This is used for
+    GPU excluded platform field, as this is meant to indicate that a
+    test is blacklisted due to the lack of hardware support on a given
+    platform;
+  - When updating fields from testlists/blocklists, only store
+    value when it is not empty and don't have a default value;
+  - remove a broken logic of trying to automate adding a prefix to
+    testlists.
+
+v3:
+  - Added a patch to handle testlist/blacklist regular expressions
+    the same way as done by IGT runner
+
+v2:
+  - no changes. Just rebased on the top of current TIP
+
+Mauro Carvalho Chehab (11):
+  test_list.py: add support for reading testlist regular expressions
+  xe_test_config.json: add testlists and blacklists
+  kms_test_config.json: add testlists and blacklists
+  tests: Intel Xe: drop Run type field
+  tests: Intel KMS: drop Run type field
+  scripts/test_list.py: move "FULL" testlist to config file
+  scripts/test_list.py: don't be greedy while matching data from
+    testlists
+  scripts/test_list.py: fix gen_testlist logic
+  scripts/test_list.py: add support for expanding fields on spreadsheet
+  scripts/doc_to_xls.py: expand GPU excluded platform
+  scripts/doc_to_xls.py: improve XLS output format
+
+ scripts/doc_to_xls.py                  |  22 ++-
+ scripts/test_list.py                   | 119 +++++++++++++-
+ tests/chamelium/kms_chamelium_audio.c  |   4 -
+ tests/chamelium/kms_chamelium_color.c  |   3 -
+ tests/chamelium/kms_chamelium_edid.c   |  10 --
+ tests/chamelium/kms_chamelium_frames.c |  10 --
+ tests/chamelium/kms_chamelium_hpd.c    |  25 ---
+ tests/intel/kms_big_fb.c               |  12 --
+ tests/intel/kms_big_joiner.c           |   3 -
+ tests/intel/kms_busy.c                 |   5 -
+ tests/intel/kms_ccs.c                  |   3 -
+ tests/intel/kms_cdclk.c                |   3 -
+ tests/intel/kms_draw_crc.c             |   3 -
+ tests/intel/kms_dsc.c                  |   1 -
+ tests/intel/kms_fb_coherency.c         |   1 -
+ tests/intel/kms_fbcon_fbt.c            |   4 -
+ tests/intel/kms_fence_pin_leak.c       |   1 -
+ tests/intel/kms_flip_scaled_crc.c      |  19 ---
+ tests/intel/kms_flip_tiling.c          |   1 -
+ tests/intel/kms_frontbuffer_tracking.c | 206 -------------------------
+ tests/intel/kms_legacy_colorkey.c      |   2 -
+ tests/intel/kms_mmap_write_crc.c       |   1 -
+ tests/intel/kms_pipe_b_c_ivb.c         |   5 -
+ tests/intel/kms_psr.c                  |  19 ---
+ tests/intel/kms_psr2_sf.c              |   8 -
+ tests/intel/kms_psr2_su.c              |   2 -
+ tests/intel/kms_psr_stress_test.c      |   2 -
+ tests/intel/kms_pwrite_crc.c           |   1 -
+ tests/intel/kms_test_config.json       |  15 +-
+ tests/intel/xe_ccs.c                   |   1 -
+ tests/intel/xe_compute.c               |   1 -
+ tests/intel/xe_create.c                |   2 -
+ tests/intel/xe_debugfs.c               |   1 -
+ tests/intel/xe_dma_buf_sync.c          |   4 -
+ tests/intel/xe_evict.c                 |  10 --
+ tests/intel/xe_exec_balancer.c         |  11 --
+ tests/intel/xe_exec_basic.c            |   6 -
+ tests/intel/xe_exec_compute_mode.c     |   4 -
+ tests/intel/xe_exec_fault_mode.c       |   8 -
+ tests/intel/xe_exec_reset.c            |  23 ---
+ tests/intel/xe_exec_store.c            |   2 -
+ tests/intel/xe_exec_threads.c          |   2 -
+ tests/intel/xe_exercise_blt.c          |   1 -
+ tests/intel/xe_gpgpu_fill.c            |   1 -
+ tests/intel/xe_guc_pc.c                |   9 --
+ tests/intel/xe_huc_copy.c              |   1 -
+ tests/intel/xe_intel_bb.c              |  13 --
+ tests/intel/xe_live_ktest.c            |   1 -
+ tests/intel/xe_media_fill.c            |   1 -
+ tests/intel/xe_mmap.c                  |   1 -
+ tests/intel/xe_mmio.c                  |   1 -
+ tests/intel/xe_module_load.c           |   6 -
+ tests/intel/xe_noexec_ping_pong.c      |   1 -
+ tests/intel/xe_pm.c                    |   2 -
+ tests/intel/xe_pm_residency.c          |   4 -
+ tests/intel/xe_prime_self_import.c     |   8 -
+ tests/intel/xe_query.c                 |   1 -
+ tests/intel/xe_spin_batch.c            |   4 -
+ tests/intel/xe_sysfs_defaults.c        |   1 -
+ tests/intel/xe_sysfs_scheduler.c       |   1 -
+ tests/intel/xe_sysfs_tile.c            |   1 -
+ tests/intel/xe_test_config.json        |   7 +
+ tests/intel/xe_uevent.c                |   1 -
+ tests/intel/xe_vm.c                    |  22 ---
+ tests/intel/xe_waitfence.c             |   1 -
+ tests/kms_3d.c                         |   1 -
+ tests/kms_addfb_basic.c                |  27 ----
+ tests/kms_async_flips.c                |   6 -
+ tests/kms_atomic.c                     |   8 -
+ tests/kms_atomic_interruptible.c       |   5 -
+ tests/kms_atomic_transition.c          |   7 -
+ tests/kms_bw.c                         |   1 -
+ tests/kms_color.c                      |   7 -
+ tests/kms_concurrent.c                 |   1 -
+ tests/kms_content_protection.c         |   7 -
+ tests/kms_cursor_crc.c                 |   4 -
+ tests/kms_cursor_edge_walk.c           |   1 -
+ tests/kms_cursor_legacy.c              |  16 --
+ tests/kms_display_modes.c              |   2 -
+ tests/kms_dither.c                     |   2 -
+ tests/kms_dp_aux_dev.c                 |   1 -
+ tests/kms_flip.c                       |  26 ----
+ tests/kms_flip_event_leak.c            |   1 -
+ tests/kms_force_connector_basic.c      |   4 -
+ tests/kms_getfb.c                      |   7 -
+ tests/kms_hdmi_inject.c                |   2 -
+ tests/kms_hdr.c                        |   8 -
+ tests/kms_invalid_mode.c               |   1 -
+ tests/kms_lease.c                      |  21 ---
+ tests/kms_multipipe_modeset.c          |   1 -
+ tests/kms_panel_fitting.c              |   2 -
+ tests/kms_pipe_crc_basic.c             |   9 --
+ tests/kms_plane.c                      |   6 -
+ tests/kms_plane_alpha_blend.c          |   4 -
+ tests/kms_plane_cursor.c               |   3 -
+ tests/kms_plane_lowres.c               |   2 -
+ tests/kms_plane_multiple.c             |   2 -
+ tests/kms_plane_scaling.c              |  21 ---
+ tests/kms_prime.c                      |   3 -
+ tests/kms_prop_blob.c                  |   4 -
+ tests/kms_properties.c                 |   2 -
+ tests/kms_rmfb.c                       |   2 -
+ tests/kms_rotation_crc.c               |  10 --
+ tests/kms_scaling_modes.c              |   1 -
+ tests/kms_selftest.c                   |   1 -
+ tests/kms_sequence.c                   |   2 -
+ tests/kms_setmode.c                    |   6 -
+ tests/kms_sysfs_edid_timing.c          |   1 -
+ tests/kms_tiled_display.c              |   2 -
+ tests/kms_tv_load_detect.c             |   1 -
+ tests/kms_universal_plane.c            |   4 -
+ tests/kms_vblank.c                     |   9 --
+ tests/kms_vrr.c                        |   5 -
+ tests/kms_writeback.c                  |   4 -
+ tests/testdisplay.c                    |   1 -
+ 115 files changed, 152 insertions(+), 796 deletions(-)
+
+-- 
+2.41.0
