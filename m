@@ -1,26 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6142510E882
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 08:37:42 +0000 (UTC)
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.252.24.176])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 82EAA580E8E
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 01:37:38 -0700 (PDT)
-Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qeWzg-004YDD-1v
- for igt-dev@lists.freedesktop.org; Fri, 08 Sep 2023 10:37:36 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri,  8 Sep 2023 10:27:42 +0200
-Message-ID: <20230908083734.1084351-7-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230908083734.1084351-1-mauro.chehab@linux.intel.com>
-References: <20230908083734.1084351-1-mauro.chehab@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============6001364689077687247=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 06/11] scripts/test_list.py: move "FULL"
- testlist to config file
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Tejas Upadhyay" <tejas.upadhyay@intel.com>
+Date: Fri, 08 Sep 2023 08:44:14 -0000
+Message-ID: <169416265438.14898.3973081002528847949@emeril.freedesktop.org>
+References: <20230908081521.3305380-1-tejas.upadhyay@intel.com>
+In-Reply-To: <20230908081521.3305380-1-tejas.upadhyay@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/xe?=
+ =?utf-8?q?=5Fdrm=5Ffdinfo=3A_Add_tests_to_read_and_verify_fdinfo_=28rev2?=
+ =?utf-8?q?=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,73 +18,121 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+--===============6001364689077687247==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Don't assume that the default testlist is "FULL". Instead, read
-it from the configuration file.
+== Series Details ==
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- scripts/test_list.py             | 9 ++++++---
- tests/intel/kms_test_config.json | 1 +
- tests/intel/xe_test_config.json  | 1 +
- 3 files changed, 8 insertions(+), 3 deletions(-)
+Series: tests/xe_drm_fdinfo: Add tests to read and verify fdinfo (rev2)
+URL   : https://patchwork.freedesktop.org/series/123264/
+State : success
 
-diff --git a/scripts/test_list.py b/scripts/test_list.py
-index c1518a904baf..ff4b2d8d76ae 100644
---- a/scripts/test_list.py
-+++ b/scripts/test_list.py
-@@ -484,6 +484,8 @@ class TestList:
-             if "testlist" not in self.props[field]["_properties_"]:
-                 continue
- 
-+            default_value = self.props[field]["_properties_"].get("default-testlist")
-+
-             testname = subtest_dict["_summary_"]
- 
-             value = subtest_dict.get(field)
-@@ -510,10 +512,11 @@ class TestList:
-                                 set_full_if_empty = False
-                             values.discard(deleted_names)
- 
--            if set_full_if_empty and not values:
--                values = set(["FULL"])
-+            if default_value and set_full_if_empty and not values:
-+                values = set([default_value])
- 
--            subtest_dict[field] = ", ".join(sorted(values))
-+            if values:
-+                subtest_dict[field] = ", ".join(sorted(values))
- 
-     def expand_subtest(self, fname, test_name, test, allow_inherit, with_lines = False, with_subtest_nr = False):
- 
-diff --git a/tests/intel/kms_test_config.json b/tests/intel/kms_test_config.json
-index 7ab288685677..5be264a79c6e 100644
---- a/tests/intel/kms_test_config.json
-+++ b/tests/intel/kms_test_config.json
-@@ -22,6 +22,7 @@
-             "Run type": {
-                 "_properties_": {
-                     "description": "Defines what category of testlist it belongs",
-+                    "default-testlist": "FULL",
-                     "testlists": {
-                         "i915 BAT": "../intel-ci/fast-feedback.testlist",
-                         "i915 BAT chamelium": "../intel-ci/fast-feedback-chamelium-only.testlist",
-diff --git a/tests/intel/xe_test_config.json b/tests/intel/xe_test_config.json
-index 408afcbb03bc..9e582a43df56 100644
---- a/tests/intel/xe_test_config.json
-+++ b/tests/intel/xe_test_config.json
-@@ -32,6 +32,7 @@
-                         "_properties_": {
-                             "mandatory": true,
-                             "description": "Defines what category of testlist it belongs",
-+                            "default-testlist": "FULL",
-                             "testlists": {
-                                 "Xe BAT": "../intel-ci/xe-fast-feedback.testlist"
-                             },
--- 
-2.41.0
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7474_BAT -> XEIGTPW_9750_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9750_BAT that come from known issues:
+
+### IGT changes ###
+
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7474 -> IGTPW_9750
+  * Linux: xe-357-bae46e59a7f667734376ddb0d2451967dfb264f1 -> xe-362-758f01ec2a6774fda1e8f8075d31f42b81783caf
+
+  IGTPW_9750: 9750
+  IGT_7474: 9d91cf2c6e7bb64d60c2030d1535e40ca0ad53ee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-357-bae46e59a7f667734376ddb0d2451967dfb264f1: bae46e59a7f667734376ddb0d2451967dfb264f1
+  xe-362-758f01ec2a6774fda1e8f8075d31f42b81783caf: 758f01ec2a6774fda1e8f8075d31f42b81783caf
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9750/index.html
+
+--===============6001364689077687247==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/xe_drm_fdinfo: Add tests to read and verify fdinfo (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123264/">https://patchwork.freedesktop.org/series/123264/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9750/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9750/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7474_BAT -&gt; XEIGTPW_9750_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9750_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7474 -&gt; IGTPW_9750</li>
+<li>Linux: xe-357-bae46e59a7f667734376ddb0d2451967dfb264f1 -&gt; xe-362-758f01ec2a6774fda1e8f8075d31f42b81783caf</li>
+</ul>
+<p>IGTPW_9750: 9750<br />
+  IGT_7474: 9d91cf2c6e7bb64d60c2030d1535e40ca0ad53ee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-357-bae46e59a7f667734376ddb0d2451967dfb264f1: bae46e59a7f667734376ddb0d2451967dfb264f1<br />
+  xe-362-758f01ec2a6774fda1e8f8075d31f42b81783caf: 758f01ec2a6774fda1e8f8075d31f42b81783caf</p>
+
+</body>
+</html>
+
+--===============6001364689077687247==--
