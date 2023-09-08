@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AC7AE10E882
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 08:37:40 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6142510E882
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 08:37:42 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.24.176])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id ABE50580EB0
+ by linux.intel.com (Postfix) with ESMTPS id 82EAA580E8E
  for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 01:37:38 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qeWzg-004YDO-23
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qeWzg-004YDD-1v
  for igt-dev@lists.freedesktop.org; Fri, 08 Sep 2023 10:37:36 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  8 Sep 2023 10:27:45 +0200
-Message-ID: <20230908083734.1084351-10-mauro.chehab@linux.intel.com>
+Date: Fri,  8 Sep 2023 10:27:42 +0200
+Message-ID: <20230908083734.1084351-7-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230908083734.1084351-1-mauro.chehab@linux.intel.com>
 References: <20230908083734.1084351-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 09/11] scripts/test_list.py: add support
- for expanding fields on spreadsheet
+Subject: [igt-dev] [PATCH i-g-t v4 06/11] scripts/test_list.py: move "FULL"
+ testlist to config file
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,80 +34,67 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Sometimes, it is desired to expand a field into multiple columns
-when generating a spreadsheet. Add support for it.
+Don't assume that the default testlist is "FULL". Instead, read
+it from the configuration file.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- scripts/test_list.py | 35 ++++++++++++++++++++++++++++++++++-
- 1 file changed, 34 insertions(+), 1 deletion(-)
+ scripts/test_list.py             | 9 ++++++---
+ tests/intel/kms_test_config.json | 1 +
+ tests/intel/xe_test_config.json  | 1 +
+ 3 files changed, 8 insertions(+), 3 deletions(-)
 
 diff --git a/scripts/test_list.py b/scripts/test_list.py
-index 01f6528ac84c..74abdc5ebe65 100644
+index c1518a904baf..ff4b2d8d76ae 100644
 --- a/scripts/test_list.py
 +++ b/scripts/test_list.py
-@@ -759,7 +759,7 @@ class TestList:
-         else:
-             return out
+@@ -484,6 +484,8 @@ class TestList:
+             if "testlist" not in self.props[field]["_properties_"]:
+                 continue
  
--    def get_spreadsheet(self):
-+    def get_spreadsheet(self, expand_fields = {}):
++            default_value = self.props[field]["_properties_"].get("default-testlist")
++
+             testname = subtest_dict["_summary_"]
  
-         """
-         Return a bidimentional array with the test contents.
-@@ -768,6 +768,7 @@ class TestList:
-         separate python file that would create a workbook's sheet.
-         """
+             value = subtest_dict.get(field)
+@@ -510,10 +512,11 @@ class TestList:
+                                 set_full_if_empty = False
+                             values.discard(deleted_names)
  
-+        expand_field_name = {}
-         sheet = []
-         row = 0
-         sheet.append([])
-@@ -779,6 +780,9 @@ class TestList:
-         fields_order = []
-         fields = sorted(self.props.items(), key = _sort_per_level)
-         for item in fields:
-+            if item[0] in expand_fields.keys():
-+                expand_field_name[item[0]] = set()
-+                continue
-             fields_order.append(item[0])
-             sheet[row].append(item[0])
+-            if set_full_if_empty and not values:
+-                values = set(["FULL"])
++            if default_value and set_full_if_empty and not values:
++                values = set([default_value])
  
-@@ -799,6 +803,35 @@ class TestList:
-                     sheet[row].append(fields[field])
-                 else:
-                     sheet[row].append('')
-+
-+            for field in expand_fields.keys():
-+                names = fields.get(field)
-+                if not names:
-+                    continue
-+
-+                names = set(re.split(r",\s*", names))
-+                expand_field_name[field].update(names)
-+
-+        # Add expanded fields, if any
-+        for item in sorted(expand_fields.keys(), key=str.lower):
-+            prefix = expand_fields[item]
-+
-+            for field in sorted(list(expand_field_name[item]), key=str.lower):
-+                row = 0
-+                sheet[row].append(prefix + field)
-+
-+                for subtest, fields in subtests:
-+                    row += 1
-+                    value = ""
-+                    names = fields.get(item)
-+                    if names:
-+                        names = set(re.split(r",\s*", names))
-+
-+                        if field in names:
-+                            value = "Yes"
-+
-+                    sheet[row].append(value)
-+
-         return sheet
+-            subtest_dict[field] = ", ".join(sorted(values))
++            if values:
++                subtest_dict[field] = ", ".join(sorted(values))
  
-     def print_nested_rest(self, filename = None, return_string = False):
+     def expand_subtest(self, fname, test_name, test, allow_inherit, with_lines = False, with_subtest_nr = False):
+ 
+diff --git a/tests/intel/kms_test_config.json b/tests/intel/kms_test_config.json
+index 7ab288685677..5be264a79c6e 100644
+--- a/tests/intel/kms_test_config.json
++++ b/tests/intel/kms_test_config.json
+@@ -22,6 +22,7 @@
+             "Run type": {
+                 "_properties_": {
+                     "description": "Defines what category of testlist it belongs",
++                    "default-testlist": "FULL",
+                     "testlists": {
+                         "i915 BAT": "../intel-ci/fast-feedback.testlist",
+                         "i915 BAT chamelium": "../intel-ci/fast-feedback-chamelium-only.testlist",
+diff --git a/tests/intel/xe_test_config.json b/tests/intel/xe_test_config.json
+index 408afcbb03bc..9e582a43df56 100644
+--- a/tests/intel/xe_test_config.json
++++ b/tests/intel/xe_test_config.json
+@@ -32,6 +32,7 @@
+                         "_properties_": {
+                             "mandatory": true,
+                             "description": "Defines what category of testlist it belongs",
++                            "default-testlist": "FULL",
+                             "testlists": {
+                                 "Xe BAT": "../intel-ci/xe-fast-feedback.testlist"
+                             },
 -- 
 2.41.0
