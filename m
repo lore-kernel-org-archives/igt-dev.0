@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D190810E8A7
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 13:19:39 +0000 (UTC)
+Message-ID: <d7bac95c-afca-8044-c009-52530b1865a0@linux.intel.com>
+Date: Fri, 8 Sep 2023 15:19:34 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Janusz Krzysztofik" <janusz.krzysztofik@linux.intel.com>
-Date: Fri, 08 Sep 2023 11:20:25 -0000
-Message-ID: <169417202598.14897.4766504845653164888@emeril.freedesktop.org>
-References: <20230908104438.125454-19-janusz.krzysztofik@linux.intel.com>
-In-Reply-To: <20230908104438.125454-19-janusz.krzysztofik@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBGaXgg?=
- =?utf-8?q?IGT_Kunit_implementation_issues?=
+Content-Language: en-US
+To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
+References: <20230905150225.2029554-1-marcin.bernatowicz@linux.intel.com>
+ <20230905150225.2029554-4-marcin.bernatowicz@linux.intel.com>
+ <20230908102423.ffpoavt77qxmwo5e@zkempczy-mobl2>
+From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20230908102423.ffpoavt77qxmwo5e@zkempczy-mobl2>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH i-g-t v3 3/3] tests/xe_spin_batch:
+ spin-fixed-duration
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,72 +23,143 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
 
-Series: Fix IGT Kunit implementation issues
-URL   : https://patchwork.freedesktop.org/series/123434/
-State : failure
+On 9/8/2023 12:24 PM, Zbigniew Kempczyński wrote:
+> On Tue, Sep 05, 2023 at 03:02:25PM +0000, Marcin Bernatowicz wrote:
+>> Basic test for xe_spin with fixed duration.
+>>
+>> v2: Added assert for expected spinner duration. (Zbyszek)
+>> A median of 5x100ms spins duration is computed, which should
+>> satisfy CI runs, although better accuracy is achieved with
+>> disabled logging (echo 0 > /sys/module/drm/parameters/debug).
+>>
+>> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+>> ---
+>>   tests/intel/xe_spin_batch.c | 72 +++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 72 insertions(+)
+>>
+>> diff --git a/tests/intel/xe_spin_batch.c b/tests/intel/xe_spin_batch.c
+>> index 26f9daf36..6dcd89558 100644
+>> --- a/tests/intel/xe_spin_batch.c
+>> +++ b/tests/intel/xe_spin_batch.c
+>> @@ -1,8 +1,10 @@
+>>   #include "igt.h"
+>> +#include "igt_syncobj.h"
+>>   #include "lib/intel_reg.h"
+>>   #include "xe_drm.h"
+>>   #include "xe/xe_ioctl.h"
+>>   #include "xe/xe_query.h"
+>> +#include "xe/xe_spin.h"
+>>   
+>>   /**
+>>    * TEST: Tests for spin batch submissons.
+>> @@ -138,6 +140,73 @@ static void spin_all(int fd, int gt, int class)
+>>   	xe_vm_destroy(fd, vm);
+>>   }
+>>   
+>> +/**
+>> + * SUBTEST: spin-fixed-duration
+>> + * Description: Basic test which validates the functionality of xe_spin with fixed duration.
+>> + * Run type: FULL
+>> + */
+>> +static void xe_spin_fixed_duration(int fd)
+>> +{
+>> +	uint64_t ahnd;
+>> +	uint32_t vm;
+>> +	unsigned int exec_queue;
+>> +	uint32_t bo;
+>> +	size_t bo_size;
+>> +	struct xe_spin *spin;
+>> +	uint64_t spin_addr;
+>> +	struct drm_xe_sync sync = {
+>> +		.handle = syncobj_create(fd, 0),
+>> +		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
+>> +	};
+>> +	struct drm_xe_exec exec = {
+>> +		.num_batch_buffer = 1,
+>> +		.num_syncs = 1,
+>> +		.syncs = to_user_pointer(&sync),
+>> +	};
+>> +	struct timespec tv;
+>> +	const uint64_t duration_ns = NSEC_PER_SEC / 10; /* 100ms */
+>> +	double elapsed_ms;
+>> +	int i;
+>> +	igt_stats_t stats;
+> 
+> To be a little bit more neat you should keep longer lines first
+> with decreasing line length on variable declaration/definition
+> part. I would also suggest to group by type if possible.
+> 
+> Regardless this nit:
+> 
+> Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> 
+> --
+> Zbigniew
 
-== Summary ==
-
-IGT patchset build failed on latest successful build
-9d91cf2c6e7bb64d60c2030d1535e40ca0ad53ee tests/intel-ci/xe.blocklist: Drop hang tests from xe blocklist
-
-Tail of build.log:
-[100/1635] Compiling C object 'tests/59830eb@@kms_3d@exe/kms_3d.c.o'.
-[101/1635] Compiling C object 'tests/59830eb@@core_auth@exe/core_auth.c.o'.
-[102/1635] Generating i915-perf-metrics-mtlgt3 with a custom command.
-[103/1635] Compiling C object 'tests/59830eb@@kms_bw@exe/kms_bw.c.o'.
-[104/1635] Compiling C object 'tests/59830eb@@drm_read@exe/drm_read.c.o'.
-[105/1635] Compiling C object 'tests/59830eb@@kms_flip_event_leak@exe/kms_flip_event_leak.c.o'.
-[106/1635] Compiling C object 'tests/59830eb@@kms_invalid_mode@exe/kms_invalid_mode.c.o'.
-[107/1635] Compiling C object 'tests/59830eb@@kms_color@exe/kms_color_helper.c.o'.
-[108/1635] Generating i915-perf-metrics-acmgt1 with a custom command.
-[109/1635] Compiling C object 'tests/59830eb@@device_reset@exe/device_reset.c.o'.
-[110/1635] Generating i915-perf-registers-acmgt1 with a custom command.
-[111/1635] Compiling C object 'tests/59830eb@@kms_dither@exe/kms_dither.c.o'.
-[112/1635] Compiling C object 'tests/59830eb@@kms_hdmi_inject@exe/kms_hdmi_inject.c.o'.
-[113/1635] Compiling C object 'tests/59830eb@@kms_display_modes@exe/kms_display_modes.c.o'.
-[114/1635] Compiling C object 'tests/59830eb@@kms_plane_cursor@exe/kms_plane_cursor.c.o'.
-[115/1635] Compiling C object 'tests/59830eb@@kms_concurrent@exe/kms_concurrent.c.o'.
-[116/1635] Compiling C object 'tests/59830eb@@kms_multipipe_modeset@exe/kms_multipipe_modeset.c.o'.
-[117/1635] Compiling C object 'tests/59830eb@@kms_atomic_interruptible@exe/kms_atomic_interruptible.c.o'.
-[118/1635] Compiling C object 'tests/59830eb@@dmabuf_sync_file@exe/dmabuf_sync_file.c.o'.
-[119/1635] Compiling C object 'tests/59830eb@@kms_force_connector_basic@exe/kms_force_connector_basic.c.o'.
-[120/1635] Compiling C object 'tests/59830eb@@gem_workarounds@exe/intel_gem_workarounds.c.o'.
-[121/1635] Compiling C object 'tests/59830eb@@fbdev@exe/fbdev.c.o'.
-[122/1635] Compiling C object 'tests/59830eb@@kms_panel_fitting@exe/kms_panel_fitting.c.o'.
-[123/1635] Compiling C object 'tests/59830eb@@kms_cursor_edge_walk@exe/kms_cursor_edge_walk.c.o'.
-[124/1635] Compiling C object 'tests/59830eb@@kms_pipe_crc_basic@exe/kms_pipe_crc_basic.c.o'.
-[125/1635] Compiling C object 'tests/59830eb@@kms_content_protection@exe/kms_content_protection.c.o'.
-[126/1635] Compiling C object 'tests/59830eb@@kms_prime@exe/kms_prime.c.o'.
-[127/1635] Compiling C object 'tests/59830eb@@core_hotunplug@exe/core_hotunplug.c.o'.
-[128/1635] Compiling C object 'tests/59830eb@@kms_async_flips@exe/kms_async_flips.c.o'.
-[129/1635] Compiling C object 'tests/59830eb@@kms_getfb@exe/kms_getfb.c.o'.
-[130/1635] Compiling C object 'tests/59830eb@@gem_ctx_isolation@exe/intel_gem_ctx_isolation.c.o'.
-[131/1635] Compiling C object 'lib/76b5a35@@igt_device_scan@sta/igt_device_scan.c.o'.
-[132/1635] Compiling C object 'tests/59830eb@@kms_hdr@exe/kms_hdr.c.o'.
-[133/1635] Generating i915-perf-registers-acmgt2 with a custom command.
-[134/1635] Compiling C object 'tests/59830eb@@kms_cursor_crc@exe/kms_cursor_crc.c.o'.
-[135/1635] Compiling C object 'tests/59830eb@@kms_plane_alpha_blend@exe/kms_plane_alpha_blend.c.o'.
-[136/1635] Compiling C object 'tests/59830eb@@kms_color@exe/kms_color.c.o'.
-[137/1635] Generating i915-perf-metrics-acmgt2 with a custom command.
-[138/1635] Compiling C object 'tests/59830eb@@kms_addfb_basic@exe/kms_addfb_basic.c.o'.
-[139/1635] Compiling C object 'tests/59830eb@@kms_plane@exe/kms_plane.c.o'.
-[140/1635] Compiling C object 'tests/59830eb@@kms_atomic_transition@exe/kms_atomic_transition.c.o'.
-[141/1635] Compiling C object 'tests/59830eb@@kms_atomic@exe/kms_atomic.c.o'.
-[142/1635] Compiling C object 'tests/59830eb@@kms_lease@exe/kms_lease.c.o'.
-[143/1635] Compiling C object 'tests/59830eb@@gem_concurrent_blit@exe/intel_gem_concurrent_blit.c.o'.
-[144/1635] Compiling C object 'tests/59830eb@@kms_flip@exe/kms_flip.c.o'.
-[145/1635] Generating i915-perf-registers-acmgt3 with a custom command.
-[146/1635] Generating i915-perf-metrics-acmgt3 with a custom command.
-[147/1635] Compiling C object 'tests/59830eb@@kms_cursor_legacy@exe/kms_cursor_legacy.c.o'.
-[148/1635] Generating i915-perf-equations with a custom command.
-ninja: build stopped: subcommand failed.
-
+Thanks,
+I'll send a v4 for series with sorted variable decl by length
+keeping the reviewed by.
+--
+Marcin
+> 
+>> +
+>> +	vm = xe_vm_create(fd, 0, 0);
+>> +	exec_queue = xe_exec_queue_create_class(fd, vm, DRM_XE_ENGINE_CLASS_COPY);
+>> +	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
+>> +	bo_size = ALIGN(sizeof(*spin) + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
+>> +	bo = xe_bo_create(fd, 0, vm, bo_size);
+>> +	spin = xe_bo_map(fd, bo, bo_size);
+>> +	spin_addr = intel_allocator_alloc_with_strategy(ahnd, bo, bo_size, 0, ALLOC_STRATEGY_LOW_TO_HIGH);
+>> +	xe_vm_bind_sync(fd, vm, bo, 0, spin_addr, bo_size);
+>> +	xe_spin_init_opts(spin, .addr = spin_addr,
+>> +				.preempt = true,
+>> +				.ctx_ticks = duration_to_ctx_ticks(fd, 0, duration_ns));
+>> +	exec.address = spin_addr;
+>> +	exec.exec_queue_id = exec_queue;
+>> +
+>> +#define NSAMPLES 5
+>> +	igt_stats_init_with_size(&stats, NSAMPLES);
+>> +	for (i = 0; i < NSAMPLES; ++i) {
+>> +		igt_gettime(&tv);
+>> +		xe_exec(fd, &exec);
+>> +		xe_spin_wait_started(spin);
+>> +		igt_assert(syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL));
+>> +		igt_stats_push_float(&stats, igt_nsec_elapsed(&tv) * 1e-6);
+>> +		syncobj_reset(fd, &sync.handle, 1);
+>> +		igt_debug("i=%d %.2fms\n", i, stats.values_f[i]);
+>> +	}
+>> +	elapsed_ms = igt_stats_get_median(&stats);
+>> +	igt_info("%.0fms spin took %.2fms (median)\n", duration_ns * 1e-6, elapsed_ms);
+>> +	igt_assert(elapsed_ms < duration_ns * 1.5e-6 && elapsed_ms > duration_ns * 0.5e-6);
+>> +
+>> +	xe_vm_unbind_sync(fd, vm, 0, spin_addr, bo_size);
+>> +	syncobj_destroy(fd, sync.handle);
+>> +	gem_munmap(spin, bo_size);
+>> +	gem_close(fd, bo);
+>> +	xe_exec_queue_destroy(fd, exec_queue);
+>> +	xe_vm_destroy(fd, vm);
+>> +	put_ahnd(ahnd);
+>> +}
+>> +
+>>   igt_main
+>>   {
+>>   	struct drm_xe_engine_class_instance *hwe;
+>> @@ -163,6 +232,9 @@ igt_main
+>>   				spin_all(fd, gt, class);
+>>   	}
+>>   
+>> +	igt_subtest("spin-fixed-duration")
+>> +		xe_spin_fixed_duration(fd);
+>> +
+>>   	igt_fixture
+>>   		drm_close_driver(fd);
+>>   }
+>> -- 
+>> 2.30.2
+>>
