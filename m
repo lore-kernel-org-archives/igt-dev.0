@@ -1,19 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E046410E89C
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 12:15:22 +0000 (UTC)
-Date: Fri, 8 Sep 2023 14:14:51 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230908121451.a5ugqirxiu7zou2i@kamilkon-desk.igk.intel.com>
-References: <20230905150225.2029554-1-marcin.bernatowicz@linux.intel.com>
- <20230905150225.2029554-3-marcin.bernatowicz@linux.intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8DAF910E8A3
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 12:29:05 +0000 (UTC)
+Message-ID: <fcb8bdb1-4ade-f25b-976d-7eb1025edcb1@intel.com>
+Date: Fri, 8 Sep 2023 17:59:00 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230905150225.2029554-3-marcin.bernatowicz@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 2/3] lib/xe_spin: fixed duration
- xe_spin capability
+Content-Language: en-US
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20230907161155.1828658-3-bhanuprakash.modem@intel.com>
+ <20230908121756.1850032-1-bhanuprakash.modem@intel.com>
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20230908121756.1850032-1-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [i-g-t V4 2/7] tests/intel/kms_pm_backlight: Fix
+ testplan documentation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,206 +27,80 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Marcin,
+LGTM
 
-few nits from checkpatch.pl, see below.
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 
-On 2023-09-05 at 15:02:24 +0000, Marcin Bernatowicz wrote:
-> Extended spinner with fixed duration capability. It allows
-> to prepare fixed duration (ex. 10ms) workloads and take workloads/second
-> measurements, a handy utility for scheduling tests.
+On 08-Sep-23 5:47 PM, Bhanuprakash Modem wrote:
+> As kms_pm_backlight is moved to display, update the test
+> documentation according to the kms testplan kms_test_config.json
 > 
-> v2: - added asserts in div64_u64_round_up, duration_to_ctx_ticks,
->       simplified loop_addr (Zbyszek)
->     - corrected patch title (Kamil)
+> V2, V3: - Fix "Run type"
 > 
-> v3: - div64_u64_round_up assert on overflow (Kamil)
->     - enum indentation cleanup in xe_spin.c (Kamil)
-> 
-> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> Cc: Swati Sharma <swati2.sharma@intel.com>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > ---
->  lib/xe/xe_spin.c | 97 +++++++++++++++++++++++++++++++++++++++++++++++-
->  lib/xe/xe_spin.h |  8 +++-
->  2 files changed, 103 insertions(+), 2 deletions(-)
+>   tests/intel/kms_pm_backlight.c | 34 +++++++++++++++++++++++++++-------
+>   1 file changed, 27 insertions(+), 7 deletions(-)
 > 
-> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-> index 27f837ef9..54ae2d3ac 100644
-> --- a/lib/xe/xe_spin.c
-> +++ b/lib/xe/xe_spin.c
-> @@ -16,6 +16,50 @@
->  #include "xe_ioctl.h"
->  #include "xe_spin.h"
->  
-> +static uint32_t read_timestamp_frequency(int fd, int gt_id)
-> +{
-> +	struct xe_device *dev = xe_device_get(fd);
-> +
-> +	igt_assert(dev && dev->gts && dev->gts->num_gt);
-> +	igt_assert(gt_id >= 0 && gt_id <= dev->gts->num_gt);
-> +
-> +	return dev->gts->gts[gt_id].clock_freq;
-> +}
-> +
-> +static uint64_t div64_u64_round_up(const uint64_t x, const uint64_t y)
-> +{
-> +	igt_assert(y > 0);
-> +	igt_assert_lte_u64(x, UINT64_MAX - (y - 1));
-> +
-> +	return (x + y - 1) / y;
-> +}
-> +
-> +/**
-> + * duration_to_ctx_ticks:
-> + * @fd: opened device
-> + * @gt_id: tile id
-> + * @duration_ns: duration in nanoseconds to be converted to context timestamp ticks
-> + * @return: duration converted to context timestamp ticks.
-> + */
-> +uint32_t duration_to_ctx_ticks(int fd, int gt_id, uint64_t duration_ns)
-> +{
-> +	uint32_t f = read_timestamp_frequency(fd, gt_id);
-> +	uint64_t ctx_ticks = div64_u64_round_up(duration_ns * f, NSEC_PER_SEC);
-> +
-> +	igt_assert_lt_u64(ctx_ticks, XE_SPIN_MAX_CTX_TICKS);
-> +
-> +	return ctx_ticks;
-> +}
-> +
-> +#define MI_SRM_CS_MMIO				(1 << 19)
-> +#define MI_LRI_CS_MMIO				(1 << 19)
-> +#define MI_LRR_DST_CS_MMIO			(1 << 19)
-> +#define MI_LRR_SRC_CS_MMIO			(1 << 18)
-> +#define CTX_TIMESTAMP 0x3a8;
------------------------------ ^
-Remove it, s/;//
-
-> +#define CS_GPR(x) (0x600 + 8 * (x))
-> +
-> +enum { START_TS, NOW_TS };
-> +
->  /**
->   * xe_spin_init:
->   * @spin: pointer to mapped bo in which spinner code will be written
-> @@ -23,13 +67,28 @@
->   */
->  void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
->  {
-> -	uint64_t loop_addr = opts->addr + offsetof(struct xe_spin, batch);
-> +	uint64_t loop_addr;
->  	uint64_t start_addr = opts->addr + offsetof(struct xe_spin, start);
->  	uint64_t end_addr = opts->addr + offsetof(struct xe_spin, end);
-> +	uint64_t ticks_delta_addr = opts->addr + offsetof(struct xe_spin, ticks_delta);
-> +	uint64_t pad_addr = opts->addr + offsetof(struct xe_spin, pad);
->  	int b = 0;
->  
->  	spin->start = 0;
->  	spin->end = 0xffffffff;
-> +	spin->ticks_delta = 0;
-> +
-> +	if (opts->ctx_ticks) {
-> +		/* store start timestamp */
-> +		spin->batch[b++] = MI_LOAD_REGISTER_IMM(1) | MI_LRI_CS_MMIO;
-> +		spin->batch[b++] = CS_GPR(START_TS) + 4;
-> +		spin->batch[b++] = 0;
-> +		spin->batch[b++] = MI_LOAD_REGISTER_REG | MI_LRR_DST_CS_MMIO | MI_LRR_SRC_CS_MMIO;
-> +		spin->batch[b++] = CTX_TIMESTAMP;
-> +		spin->batch[b++] = CS_GPR(START_TS);
-> +	}
-> +
-> +	loop_addr = opts->addr + b * sizeof(uint32_t);
->  
->  	spin->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
->  	spin->batch[b++] = start_addr;
-> @@ -39,6 +98,42 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
->  	if (opts->preempt)
->  		spin->batch[b++] = (0x5 << 23);
->  
-> +	if (opts->ctx_ticks) {
-> +		spin->batch[b++] = MI_LOAD_REGISTER_IMM(1) | MI_LRI_CS_MMIO;
-> +		spin->batch[b++] = CS_GPR(NOW_TS) + 4;
-> +		spin->batch[b++] = 0;
-> +		spin->batch[b++] = MI_LOAD_REGISTER_REG | MI_LRR_DST_CS_MMIO | MI_LRR_SRC_CS_MMIO;
-> +		spin->batch[b++] = CTX_TIMESTAMP;
-> +		spin->batch[b++] = CS_GPR(NOW_TS);
-> +
-> +		/* delta = now - start; inverted to match COND_BBE */
-> +		spin->batch[b++] = MI_MATH(4);
-> +		spin->batch[b++] = MI_MATH_LOAD(MI_MATH_REG_SRCA, MI_MATH_REG(NOW_TS));
-> +		spin->batch[b++] = MI_MATH_LOAD(MI_MATH_REG_SRCB, MI_MATH_REG(START_TS));
-> +		spin->batch[b++] = MI_MATH_SUB;
-> +		spin->batch[b++] = MI_MATH_STOREINV(MI_MATH_REG(NOW_TS), MI_MATH_REG_ACCU);
-> +
-> +		/* Save delta for reading by COND_BBE */
-> +		spin->batch[b++] = MI_STORE_REGISTER_MEM | MI_SRM_CS_MMIO | 2;
-> +		spin->batch[b++] = CS_GPR(NOW_TS);
-> +		spin->batch[b++] = ticks_delta_addr;
-> +		spin->batch[b++] = ticks_delta_addr >> 32;
-> +
-> +		/* Delay between SRM and COND_BBE to post the writes */
-> +		for (int n = 0; n < 8; n++) {
-> +			spin->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-> +			spin->batch[b++] = pad_addr;
-> +			spin->batch[b++] = pad_addr >> 32;
-> +			spin->batch[b++] = 0xc0ffee;
-> +		}
-> +
-> +		/* Break if delta [time elapsed] > ns */
-> +		spin->batch[b++] = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | 2;
-> +		spin->batch[b++] = ~(opts->ctx_ticks);
-> +		spin->batch[b++] = ticks_delta_addr;
-> +		spin->batch[b++] = ticks_delta_addr >> 32;
-> +	}
-> +
->  	spin->batch[b++] = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | 2;
->  	spin->batch[b++] = 0;
->  	spin->batch[b++] = end_addr;
-> diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
-> index 9f1d33294..f1abc1102 100644
-> --- a/lib/xe/xe_spin.h
-> +++ b/lib/xe/xe_spin.h
-> @@ -15,27 +15,33 @@
->  #include "xe_query.h"
->  #include "lib/igt_dummyload.h"
->  
-> +#define XE_SPIN_MAX_CTX_TICKS UINT32_MAX - 1000
--------------------------------- ^^^^^^^^^^^^^^^^^
-Put in braces:
-
-#define XE_SPIN_MAX_CTX_TICKS (UINT32_MAX - 1000)
-
-Regards,
-Kamil
-
-> +
->  /** struct xe_spin_opts
->   *
->   * @addr: offset of spinner within vm
->   * @preempt: allow spinner to be preempted or not
-> + * @ctx_ticks: number of ticks after which spinner is stopped, applied if > 0
->   *
->   * Used to initialize struct xe_spin spinner behavior.
->   */
->  struct xe_spin_opts {
->  	uint64_t addr;
->  	bool preempt;
-> +	uint32_t ctx_ticks;
->  };
->  
->  /* Mapped GPU object */
->  struct xe_spin {
-> -	uint32_t batch[16];
-> +	uint32_t batch[128];
->  	uint64_t pad;
->  	uint32_t start;
->  	uint32_t end;
-> +	uint32_t ticks_delta;
->  };
->  
->  igt_spin_t *xe_spin_create(int fd, const struct igt_spin_factory *opt);
-> +uint32_t duration_to_ctx_ticks(int fd, int gt_id, uint64_t ns);
->  void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts);
->  
->  #define xe_spin_init_opts(fd, ...) \
-> -- 
-> 2.30.2
-> 
+> diff --git a/tests/intel/kms_pm_backlight.c b/tests/intel/kms_pm_backlight.c
+> index 3c73b054b..42aa7cb5d 100644
+> --- a/tests/intel/kms_pm_backlight.c
+> +++ b/tests/intel/kms_pm_backlight.c
+> @@ -37,29 +37,49 @@
+>   #include "igt_device.h"
+>   #include "igt_device_scan.h"
+>   /**
+> - * TEST: i915 pm backlight
+> + * TEST: kms pm backlight
+> + * Category: Display
+>    * Description: Basic backlight sysfs test
+> - * Feature: backlight
+>    *
+>    * SUBTEST: bad-brightness
+> - * Description: test the bad brightness.
+> + * Description: Test the bad brightness.
+> + * Driver requirement: i915
+> + * Functionality: backlight
+> + * Mega feature: Display Power
+>    * Run type: FULL
+> + * Test category: functionality test
+>    *
+>    * SUBTEST: basic-brightness
+> - * Description: test the basic brightness.
+> + * Description: Test the basic brightness.
+> + * Driver requirement: i915
+> + * Functionality: backlight
+> + * Mega feature: Display Power
+>    * Run type: BAT
+> + * Test category: functionality test
+>    *
+>    * SUBTEST: fade
+> - * Description: test basic fade.
+> + * Description: Test basic fade.
+> + * Driver requirement: i915
+> + * Functionality: backlight
+> + * Mega feature: Display Power
+>    * Run type: FULL
+> + * Test category: functionality test
+>    *
+>    * SUBTEST: fade-with-dpms
+> - * Description: test the fade with DPMS.
+> + * Description: Test the fade with DPMS.
+> + * Driver requirement: i915
+> + * Functionality: dpms, backlight
+> + * Mega feature: Display Power
+>    * Run type: FULL
+> + * Test category: functionality test
+>    *
+>    * SUBTEST: fade-with-suspend
+> - * Description: test the fade with suspend.
+> + * Description: Test the fade with suspend.
+> + * Driver requirement: i915
+> + * Functionality: backlight, suspend
+> + * Mega feature: Display Power
+>    * Run type: FULL
+> + * Test category: functionality test
+>    */
+>   
+>   struct context {
