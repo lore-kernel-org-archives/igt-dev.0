@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B0ED810E0C7
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 13:58:49 +0000 (UTC)
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri,  8 Sep 2023 19:20:18 +0530
-Message-Id: <20230908135018.2306021-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20230829161759.9315-1-mohammed.thasleem@intel.com>
-References: <20230829161759.9315-1-mohammed.thasleem@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_atomic_transition: Reduce the
- number of iterations on modeset-transition
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Janusz Krzysztofik" <janusz.krzysztofik@linux.intel.com>
+Date: Fri, 08 Sep 2023 14:08:24 -0000
+Message-ID: <169418210484.14897.17567504712767987492@emeril.freedesktop.org>
+References: <20230908123233.137134-19-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20230908123233.137134-19-janusz.krzysztofik@linux.intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_F?=
+ =?utf-8?q?ix_IGT_Kunit_implementation_issues_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,40 +17,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Due to the higher number of iterations, "modeset-transition" tests are
-getting timed out on CI. Reducing the number of iterations can save a
-lot of execution time.
+== Series Details ==
 
-Instead of having (2 ^ j) iterations, reduce it to (2 * j) where j is
-the number of active pipes.
+Series: Fix IGT Kunit implementation issues (rev2)
+URL   : https://patchwork.freedesktop.org/series/123434/
+State : warning
 
-v2: Update commit message. (Swati)
-v3: Update commit message and minor changes. (Bhanu)
-v4: Add simulation check. (Kamil)
-v5: Restore simulation check. (Kamil)
+== Summary ==
 
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/kms_atomic_transition.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Pipeline status: FAILED.
 
-diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-index a470eb88c..1eba6c5b5 100644
---- a/tests/kms_atomic_transition.c
-+++ b/tests/kms_atomic_transition.c
-@@ -966,7 +966,7 @@ retry:
- 		}
- 	}
- 
--	iter_max = 1 << j;
-+	iter_max = (j > 0) ? (j << 1) : 1;
- 
- 	if (igt_run_in_simulation() && iter_max > 1)
- 		iter_max = iter_max >> 1;
--- 
-2.25.1
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/981204 for the overview.
+
+test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48745319):
+  371/375 assembler test/rnde-intsrc              OK       0.02 s 
+  372/375 assembler test/rndz                     OK       0.01 s 
+  373/375 assembler test/lzd                      OK       0.01 s 
+  374/375 assembler test/not                      OK       0.02 s 
+  375/375 assembler test/immediate                OK       0.01 s 
+  
+  Ok:                  370
+  Expected Fail:         4
+  Fail:                  1
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1694182081:step_script
+  section_start:1694182081:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1694182082:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/981204
