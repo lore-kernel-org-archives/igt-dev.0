@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam11on2059.outbound.protection.outlook.com [40.107.223.59])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C2CBD10E8F1
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 15:03:21 +0000 (UTC)
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10on2062c.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:7e88::62c])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 07A3310E8EF
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 15:04:05 +0000 (UTC)
 From: Harry Wentland <harry.wentland@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Fri, 8 Sep 2023 11:03:08 -0400
-Message-ID: <20230908150315.75977-1-harry.wentland@amd.com>
+Date: Fri, 8 Sep 2023 11:03:09 -0400
+Message-ID: <20230908150315.75977-2-harry.wentland@amd.com>
+In-Reply-To: <20230908150315.75977-1-harry.wentland@amd.com>
+References: <20230908150315.75977-1-harry.wentland@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [RFC PATCH 0/7] IGT tests for the KMS Color Pipeline API
+Subject: [igt-dev] [RFC PATCH 1/7] include/drm-uapi: Add COLOROP object
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -33,26 +36,7 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This series introduces support for
-* drm_colorop DRM objects
-* COLOR_PIPELINE plane property
-
-Kernel changes:
-https://gitlab.freedesktop.org/hwentland/linux/-/merge_requests/5
-
-libdrm changes:
-https://gitlab.freedesktop.org/hwentland/drm/-/merge_requests/1
-
-It also adds a new kms_colorop test case that tests the color pipeline
-API. The tests are designed to be easily extensible with a "transform"
-and "compare" function pointer for each test. The "transform" function
-performs the transformations under test via SW routines. The "compare"
-function compares the DRM/KMS result (via a writeback connector) with
-the result derived via the SW "transform".
-
-Currently there is only one test for a single sRGB EOTF. I would like
-to expand this to a more complex color pipeline, using VKMS.
-
+Signed-off-by: Harry Wentland <harry.wentland@amd.com>
 Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
 Cc: Pekka Paalanen <pekka.paalanen@collabora.com>
 Cc: Simon Ser <contact@emersion.fr>
@@ -71,34 +55,21 @@ Cc: Daniel Vetter <daniel@ffwll.ch>
 Cc: Uma Shankar <uma.shankar@intel.com>
 Cc: Naseer Ahmed <quic_naseer@quicinc.com>
 Cc: Christopher Braga <quic_cbraga@quicinc.com>
+---
+ include/drm-uapi/drm_mode.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-
-Harry Wentland (7):
-  include/drm-uapi: Add COLOROP object
-  lib/igt_kms: Introduce drm_colorop object
-  lib/igt_kms: Add new COLOR PIPELINE plane property
-  tests/kms_properties: Add colorop properties test
-  igt/color: Add SW color transform functionality
-  lib/igt_fb: Add copy_fb function
-  tests/kms_colorop: Add kms_colorop tests
-
- include/drm-uapi/drm_mode.h |   1 +
- lib/igt_color.c             | 330 ++++++++++++++++++++++++++++
- lib/igt_color.h             | 105 +++++++++
- lib/igt_fb.c                |  40 +++-
- lib/igt_fb.h                |   3 +
- lib/igt_kms.c               | 237 +++++++++++++++++++-
- lib/igt_kms.h               | 101 +++++++++
- lib/meson.build             |   1 +
- tests/kms_colorop.c         | 424 ++++++++++++++++++++++++++++++++++++
- tests/kms_colorop.h         |  79 +++++++
- tests/kms_properties.c      |  66 ++++++
- tests/meson.build           |   1 +
- 12 files changed, 1383 insertions(+), 5 deletions(-)
- create mode 100644 lib/igt_color.c
- create mode 100644 lib/igt_color.h
- create mode 100644 tests/kms_colorop.c
- create mode 100644 tests/kms_colorop.h
-
---
+diff --git a/include/drm-uapi/drm_mode.h b/include/drm-uapi/drm_mode.h
+index e4a2570a6058..e7e56150616b 100644
+--- a/include/drm-uapi/drm_mode.h
++++ b/include/drm-uapi/drm_mode.h
+@@ -626,6 +626,7 @@ struct drm_mode_connector_set_property {
+ #define DRM_MODE_OBJECT_FB 0xfbfbfbfb
+ #define DRM_MODE_OBJECT_BLOB 0xbbbbbbbb
+ #define DRM_MODE_OBJECT_PLANE 0xeeeeeeee
++#define DRM_MODE_OBJECT_COLOROP 0xfafafafa
+ #define DRM_MODE_OBJECT_ANY 0
+ 
+ struct drm_mode_obj_get_properties {
+-- 
 2.42.0
