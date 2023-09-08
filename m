@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5B74E10E04E
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 09:06:03 +0000 (UTC)
-Date: Fri, 8 Sep 2023 11:05:50 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DB15E10E046
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 09:16:02 +0000 (UTC)
+Date: Fri, 8 Sep 2023 11:15:46 +0200
 From: Francois Dugast <francois.dugast@intel.com>
 To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <ZPrj7sWRRgHbqnbn@fdugast-desk.home>
+Message-ID: <ZPrmQvmQGuRjn3DN@fdugast-desk.home>
 References: <20230905133309.365109-1-zbigniew.kempczynski@intel.com>
- <20230905133309.365109-5-zbigniew.kempczynski@intel.com>
+ <20230905133309.365109-7-zbigniew.kempczynski@intel.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230905133309.365109-5-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20230905133309.365109-7-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 4/9] lib/intel_compute: Add name
- field for debugging purposes
+Subject: Re: [igt-dev] [PATCH i-g-t v2 6/9] intel/gem_compute: Add test
+ which runs compute workload on i915
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,13 +27,11 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Sep 05, 2023 at 03:33:04PM +0200, Zbigniew Kempczyński wrote:
-> Debugging without knowledge about object characteristics is hard and
-> time consuming. Simple name field added for printing binded addresses
-> and their sizes might speed up development. I experienced this on
-> extending to DG2 so I decided to permanently add it. But to avoid
-> annoying output this is limited to igt_debug() which will print
-> only on user request or on the test failure.
+On Tue, Sep 05, 2023 at 03:33:06PM +0200, Zbigniew Kempczyński wrote:
+> This test is verbatim copy of xe_compute with driver open exception
+> (it opens i915 drm fd instead xe). Technically it is possible to
+> create single test code (open would try DEVICE_INTEL | DEVICE_XE)
+> but I resisted to that distinguishing i915 and xe version.
 > 
 > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > Cc: Christoph Manszewski <christoph.manszewski@intel.com>
@@ -43,67 +41,75 @@ On Tue, Sep 05, 2023 at 03:33:04PM +0200, Zbigniew Kempczyński wrote:
 Reviewed-by: Francois Dugast <francois.dugast@intel.com>
 
 > ---
->  lib/intel_compute.c | 33 ++++++++++++++++++++++++++-------
->  1 file changed, 26 insertions(+), 7 deletions(-)
+>  tests/intel/gem_compute.c | 46 +++++++++++++++++++++++++++++++++++++++
+>  tests/meson.build         |  1 +
+>  2 files changed, 47 insertions(+)
+>  create mode 100644 tests/intel/gem_compute.c
 > 
-> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-> index b42f3eca0e..a1e87ef46f 100644
-> --- a/lib/intel_compute.c
-> +++ b/lib/intel_compute.c
-> @@ -37,6 +37,7 @@ struct bo_dict_entry {
->  	uint64_t addr;
->  	uint32_t size;
->  	void *data;
-> +	const char *name;
->  };
->  
->  struct bo_execenv {
-> @@ -92,6 +93,11 @@ static void bo_execenv_bind(struct bo_execenv *execenv,
->  						 bo_dict[i].addr, bo_dict[i].size, &sync, 1);
->  			syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL);
->  			memset(bo_dict[i].data, 0, bo_dict[i].size);
+> diff --git a/tests/intel/gem_compute.c b/tests/intel/gem_compute.c
+> new file mode 100644
+> index 0000000000..b408efee16
+> --- /dev/null
+> +++ b/tests/intel/gem_compute.c
+> @@ -0,0 +1,46 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2023 Intel Corporation
+> + */
 > +
-> +			igt_debug("[i: %2d name: %20s] data: %p, addr: %16llx, size: %llx\n",
-> +				  i, bo_dict[i].name, bo_dict[i].data,
-> +				  (long long)bo_dict[i].addr,
-> +				  (long long)bo_dict[i].size);
->  		}
->  
->  		syncobj_destroy(fd, sync.handle);
-> @@ -480,13 +486,26 @@ static void tgl_compute_exec(int fd, const unsigned char *kernel,
->  {
->  #define TGL_BO_DICT_ENTRIES 7
->  	struct bo_dict_entry bo_dict[TGL_BO_DICT_ENTRIES] = {
-> -		{ .addr = ADDR_INDIRECT_OBJECT_BASE + OFFSET_KERNEL}, // kernel
-> -		{ .addr = ADDR_DYNAMIC_STATE_BASE, .size =  0x1000}, // dynamic state
-> -		{ .addr = ADDR_SURFACE_STATE_BASE, .size =  0x1000}, // surface state
-> -		{ .addr = ADDR_INDIRECT_OBJECT_BASE + OFFSET_INDIRECT_DATA_START, .size =  0x10000}, // indirect data
-> -		{ .addr = ADDR_INPUT, .size = SIZE_BUFFER_INPUT }, // input
-> -		{ .addr = ADDR_OUTPUT, .size = SIZE_BUFFER_OUTPUT }, // output
-> -		{ .addr = ADDR_BATCH, .size = SIZE_BATCH }, // batch
-> +		{ .addr = ADDR_INDIRECT_OBJECT_BASE + OFFSET_KERNEL,
-> +		  .name = "kernel" },
-> +		{ .addr = ADDR_DYNAMIC_STATE_BASE,
-> +		  .size =  0x1000,
-> +		  .name = "dynamic state base" },
-> +		{ .addr = ADDR_SURFACE_STATE_BASE,
-> +		  .size =  0x1000,
-> +		  .name = "surface state base" },
-> +		{ .addr = ADDR_INDIRECT_OBJECT_BASE + OFFSET_INDIRECT_DATA_START,
-> +		  .size =  0x10000,
-> +		  .name = "indirect data start" },
-> +		{ .addr = ADDR_INPUT,
-> +		  .size = SIZE_BUFFER_INPUT,
-> +		  .name = "input" },
-> +		{ .addr = ADDR_OUTPUT,
-> +		  .size = SIZE_BUFFER_OUTPUT,
-> +		  .name = "output" },
-> +		{ .addr = ADDR_BATCH,
-> +		  .size = SIZE_BATCH,
-> +		  .name = "batch" },
->  	};
->  	struct bo_execenv execenv;
->  	float *dinput;
+> +/**
+> + * TEST: Check compute-related functionality
+> + * Category: Hardware building block
+> + * Sub-category: compute
+> + * Test category: functionality test
+> + * Run type: BAT
+> + */
+> +
+> +#include <string.h>
+> +
+> +#include "igt.h"
+> +#include "intel_compute.h"
+> +
+> +/**
+> + * SUBTEST: compute-square
+> + * GPU requirement: only works on TGL
+> + * Description:
+> + *	Run an openCL Kernel that returns output[i] = input[i] * input[i],
+> + *	for an input dataset..
+> + * Functionality: compute openCL kernel
+> + * TODO: extend test to cover other platforms
+> + */
+> +static void
+> +test_compute_square(int fd)
+> +{
+> +	igt_require_f(run_compute_kernel(fd), "GPU not supported\n");
+> +}
+> +
+> +igt_main
+> +{
+> +	int i915;
+> +
+> +	igt_fixture
+> +		i915 = drm_open_driver(DRIVER_INTEL);
+> +
+> +	igt_subtest("compute-square")
+> +		test_compute_square(i915);
+> +
+> +	igt_fixture
+> +		drm_close_driver(i915);
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index aa8e3434ce..03bb7785c3 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -105,6 +105,7 @@ intel_i915_progs = [
+>  	'gem_ccs',
+>  	'gem_close',
+>  	'gem_close_race',
+> +	'gem_compute',
+>  	'gem_concurrent_blit',
+>  	'gem_cs_tlb',
+>  	'gem_ctx_bad_destroy',
 > -- 
 > 2.34.1
 > 
