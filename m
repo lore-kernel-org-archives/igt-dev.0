@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D190810E8A7
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 13:19:39 +0000 (UTC)
-Message-ID: <d7bac95c-afca-8044-c009-52530b1865a0@linux.intel.com>
-Date: Fri, 8 Sep 2023 15:19:34 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CD5DF10E89E
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 11:29:17 +0000 (UTC)
+Date: Fri, 8 Sep 2023 13:29:12 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Francois Dugast <francois.dugast@intel.com>
+Message-ID: <20230908132912.7a9fc403@maurocar-mobl2>
+In-Reply-To: <ZPrjUs7lyYxA1loA@fdugast-desk.home>
+References: <20230905133309.365109-1-zbigniew.kempczynski@intel.com>
+ <20230905133309.365109-3-zbigniew.kempczynski@intel.com>
+ <ZPrjUs7lyYxA1loA@fdugast-desk.home>
 MIME-Version: 1.0
-Content-Language: en-US
-To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20230905150225.2029554-1-marcin.bernatowicz@linux.intel.com>
- <20230905150225.2029554-4-marcin.bernatowicz@linux.intel.com>
- <20230908102423.ffpoavt77qxmwo5e@zkempczy-mobl2>
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20230908102423.ffpoavt77qxmwo5e@zkempczy-mobl2>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t v3 3/3] tests/xe_spin_batch:
- spin-fixed-duration
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [igt-dev] [PATCH i-g-t v2 2/9] lib/intel_compute: Add
+ compatibility flags for running compute
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,138 +27,58 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+On Fri, 8 Sep 2023 11:03:14 +0200
+Francois Dugast <francois.dugast@intel.com> wrote:
 
-On 9/8/2023 12:24 PM, Zbigniew Kempczyński wrote:
-> On Tue, Sep 05, 2023 at 03:02:25PM +0000, Marcin Bernatowicz wrote:
->> Basic test for xe_spin with fixed duration.
->>
->> v2: Added assert for expected spinner duration. (Zbyszek)
->> A median of 5x100ms spins duration is computed, which should
->> satisfy CI runs, although better accuracy is achieved with
->> disabled logging (echo 0 > /sys/module/drm/parameters/debug).
->>
->> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
->> ---
->>   tests/intel/xe_spin_batch.c | 72 +++++++++++++++++++++++++++++++++++++
->>   1 file changed, 72 insertions(+)
->>
->> diff --git a/tests/intel/xe_spin_batch.c b/tests/intel/xe_spin_batch.c
->> index 26f9daf36..6dcd89558 100644
->> --- a/tests/intel/xe_spin_batch.c
->> +++ b/tests/intel/xe_spin_batch.c
->> @@ -1,8 +1,10 @@
->>   #include "igt.h"
->> +#include "igt_syncobj.h"
->>   #include "lib/intel_reg.h"
->>   #include "xe_drm.h"
->>   #include "xe/xe_ioctl.h"
->>   #include "xe/xe_query.h"
->> +#include "xe/xe_spin.h"
->>   
->>   /**
->>    * TEST: Tests for spin batch submissons.
->> @@ -138,6 +140,73 @@ static void spin_all(int fd, int gt, int class)
->>   	xe_vm_destroy(fd, vm);
->>   }
->>   
->> +/**
->> + * SUBTEST: spin-fixed-duration
->> + * Description: Basic test which validates the functionality of xe_spin with fixed duration.
->> + * Run type: FULL
->> + */
->> +static void xe_spin_fixed_duration(int fd)
->> +{
->> +	uint64_t ahnd;
->> +	uint32_t vm;
->> +	unsigned int exec_queue;
->> +	uint32_t bo;
->> +	size_t bo_size;
->> +	struct xe_spin *spin;
->> +	uint64_t spin_addr;
->> +	struct drm_xe_sync sync = {
->> +		.handle = syncobj_create(fd, 0),
->> +		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
->> +	};
->> +	struct drm_xe_exec exec = {
->> +		.num_batch_buffer = 1,
->> +		.num_syncs = 1,
->> +		.syncs = to_user_pointer(&sync),
->> +	};
->> +	struct timespec tv;
->> +	const uint64_t duration_ns = NSEC_PER_SEC / 10; /* 100ms */
->> +	double elapsed_ms;
->> +	int i;
->> +	igt_stats_t stats;
-> 
-> To be a little bit more neat you should keep longer lines first
-> with decreasing line length on variable declaration/definition
-> part. I would also suggest to group by type if possible.
-> 
-> Regardless this nit:
-> 
-> Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> 
-> --
-> Zbigniew
+> On Tue, Sep 05, 2023 at 03:33:02PM +0200, Zbigniew Kempczy=C5=84ski wrote:
+> > Allow selectively turn on/off compute tests on both i915 and xe
+> > drivers.
+> >=20
+> > Signed-off-by: Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.co=
+m>
+> > Cc: Christoph Manszewski <christoph.manszewski@intel.com>
+> > Cc: Francois Dugast <francois.dugast@intel.com>
+> > Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+> > ---
+> >  lib/intel_compute.c | 19 ++++++++++++++++++-
+> >  1 file changed, 18 insertions(+), 1 deletion(-)
+> >=20
+> > diff --git a/lib/intel_compute.c b/lib/intel_compute.c
+> > index 647bce0e43..dd9f686d0c 100644
+> > --- a/lib/intel_compute.c
+> > +++ b/lib/intel_compute.c
+> > @@ -446,17 +446,27 @@ static void tgl_compute_exec(int fd, const unsign=
+ed char *kernel,
+> >  }
+> > =20
+> >  /*
+> > - * Generic code
+> > + * Compatibility flags.
+> > + *
+> > + * There will be some time period in which both drivers (i915 and xe)
+> > + * will support compute runtime tests. Lets define compat flags to all=
+ow
+> > + * the code to be shared between two drivers allowing disabling this in
+> > + * the future.
+> >   */
+> > +#define COMPAT_FLAG(f) (1 << (f))
+> > +#define COMPAT_I915 COMPAT_FLAG(INTEL_DRIVER_I915)
+> > +#define COMPAT_XE   COMPAT_FLAG(INTEL_DRIVER_XE) =20
+>=20
+> This approach allows solving the issue of unsupported combinations of
+> platforms and drivers. I cannot think of something better but my concern
+> is there could be some confusion if the test is skipped on a platform
+> that appears to be supported because it is listed in the compute_batches.
+>=20
+> s/COMPAT_I915/COMPAT_DRIVER_I915/ and s/COMPAT_XE/COMPAT_DRIVER_XE/ can
+> help make it not ambiguous.
+>=20
+> It would be good to get ack from someone else on the compat flag
+> approach, Mauro maybe?
 
-Thanks,
-I'll send a v4 for series with sorted variable decl by length
-keeping the reviewed by.
---
-Marcin
-> 
->> +
->> +	vm = xe_vm_create(fd, 0, 0);
->> +	exec_queue = xe_exec_queue_create_class(fd, vm, DRM_XE_ENGINE_CLASS_COPY);
->> +	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
->> +	bo_size = ALIGN(sizeof(*spin) + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
->> +	bo = xe_bo_create(fd, 0, vm, bo_size);
->> +	spin = xe_bo_map(fd, bo, bo_size);
->> +	spin_addr = intel_allocator_alloc_with_strategy(ahnd, bo, bo_size, 0, ALLOC_STRATEGY_LOW_TO_HIGH);
->> +	xe_vm_bind_sync(fd, vm, bo, 0, spin_addr, bo_size);
->> +	xe_spin_init_opts(spin, .addr = spin_addr,
->> +				.preempt = true,
->> +				.ctx_ticks = duration_to_ctx_ticks(fd, 0, duration_ns));
->> +	exec.address = spin_addr;
->> +	exec.exec_queue_id = exec_queue;
->> +
->> +#define NSAMPLES 5
->> +	igt_stats_init_with_size(&stats, NSAMPLES);
->> +	for (i = 0; i < NSAMPLES; ++i) {
->> +		igt_gettime(&tv);
->> +		xe_exec(fd, &exec);
->> +		xe_spin_wait_started(spin);
->> +		igt_assert(syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL));
->> +		igt_stats_push_float(&stats, igt_nsec_elapsed(&tv) * 1e-6);
->> +		syncobj_reset(fd, &sync.handle, 1);
->> +		igt_debug("i=%d %.2fms\n", i, stats.values_f[i]);
->> +	}
->> +	elapsed_ms = igt_stats_get_median(&stats);
->> +	igt_info("%.0fms spin took %.2fms (median)\n", duration_ns * 1e-6, elapsed_ms);
->> +	igt_assert(elapsed_ms < duration_ns * 1.5e-6 && elapsed_ms > duration_ns * 0.5e-6);
->> +
->> +	xe_vm_unbind_sync(fd, vm, 0, spin_addr, bo_size);
->> +	syncobj_destroy(fd, sync.handle);
->> +	gem_munmap(spin, bo_size);
->> +	gem_close(fd, bo);
->> +	xe_exec_queue_destroy(fd, exec_queue);
->> +	xe_vm_destroy(fd, vm);
->> +	put_ahnd(ahnd);
->> +}
->> +
->>   igt_main
->>   {
->>   	struct drm_xe_engine_class_instance *hwe;
->> @@ -163,6 +232,9 @@ igt_main
->>   				spin_all(fd, gt, class);
->>   	}
->>   
->> +	igt_subtest("spin-fixed-duration")
->> +		xe_spin_fixed_duration(fd);
->> +
->>   	igt_fixture
->>   		drm_close_driver(fd);
->>   }
->> -- 
->> 2.30.2
->>
+This approach looks sane to me, as, if we add support for < 12,
+this will only be supported by i915 driver. The same will be true
+in the future when we add support for newer generations, as it
+is unlikely that those will be added for both drivers.
+
+Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org>
