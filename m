@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  8 Sep 2023 14:32:36 +0200
-Message-ID: <20230908123233.137134-21-janusz.krzysztofik@linux.intel.com>
+Date: Fri,  8 Sep 2023 14:32:37 +0200
+Message-ID: <20230908123233.137134-22-janusz.krzysztofik@linux.intel.com>
 In-Reply-To: <20230908123233.137134-19-janusz.krzysztofik@linux.intel.com>
 References: <20230908123233.137134-19-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 02/17] lib/kunit: Stop loading kunit
- module explicitly
+Subject: [igt-dev] [PATCH i-g-t v2 03/17] lib/kunit: Fix struct kmod_module
+ kunit_kmod not freed
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,33 +22,25 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Since kmod functions we use for module loading can process module
-dependencies, there is no need to load the "kunit" module explicitly
-before loading a kunit test module.  For the same reason we already don't
-unload the "kunit" module explicitly on cleanup.  Drop the unnecessary
-operation.
+We obtain a kmod_module structure for kunit module in order to check if
+it is modular or built-in, then we never release that structure.  Fix it.
 
 Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 ---
- lib/igt_kmod.c | 6 ------
- 1 file changed, 6 deletions(-)
+ lib/igt_kmod.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index 97667a896f..faf31afabc 100644
+index faf31afabc..34ddec3fad 100644
 --- a/lib/igt_kmod.c
 +++ b/lib/igt_kmod.c
-@@ -789,12 +789,6 @@ static void __igt_kunit(const char *module_name, const char *opts)
- 		goto unload;
+@@ -797,6 +797,7 @@ static void __igt_kunit(const char *module_name, const char *opts)
  	}
  
--	/* The KUnit module is required for running any KUnit tests */
--	ret = igt_kmod_load("kunit", NULL);
--	if (ret) {
--		skip = ret;
--		goto unload;
--	}
- 	ret = kmod_module_new_from_name(kmod_ctx(), "kunit", &kunit_kmod);
- 	if (ret) {
- 		igt_warn("Unable to load KUnit\n");
+ 	is_builtin = kmod_module_get_initstate(kunit_kmod) == KMOD_MODULE_BUILTIN;
++	kmod_module_unref(kunit_kmod);
+ 
+ 	results = ktap_parser_start(tst.kmsg, is_builtin);
+ 
 -- 
 2.41.0
