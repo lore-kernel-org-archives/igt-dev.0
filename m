@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BF03D10E103
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 19:19:19 +0000 (UTC)
-Date: Fri, 8 Sep 2023 21:19:15 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230908211915.50b09a0f@maurocar-mobl2>
-In-Reply-To: <20230908174739.5p5x34ubwecpfyee@kamilkon-desk.igk.intel.com>
-References: <20230908083734.1084351-1-mauro.chehab@linux.intel.com>
- <20230908083734.1084351-2-mauro.chehab@linux.intel.com>
- <20230908174739.5p5x34ubwecpfyee@kamilkon-desk.igk.intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t v4 01/11] test_list.py: add support for
- reading testlist regular expressions
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Date: Fri, 08 Sep 2023 19:19:23 -0000
+Message-ID: <169420076308.14898.5846939172463644824@emeril.freedesktop.org>
+References: <20230908175039.1291593-1-swati2.sharma@intel.com>
+In-Reply-To: <20230908175039.1291593-1-swati2.sharma@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_A?=
+ =?utf-8?q?dd_XE_support_for_display_PM_tests?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,152 +17,46 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, 8 Sep 2023 19:47:39 +0200
-Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
+== Series Details ==
 
-> Hi Mauro,
-> On 2023-09-08 at 10:27:37 +0200, Mauro Carvalho Chehab wrote:
-> > From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> > 
-> > If defined, use testlist and blocklist files to update the
-> > fields that use it.
-> > 
-> > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Series: Add XE support for display PM tests
+URL   : https://patchwork.freedesktop.org/series/123454/
+State : warning
 
-Are you meant to add your A-B/R-B here or do a comment?
+== Summary ==
 
-Can't see anything on this reply :-)
+Pipeline status: FAILED.
 
-> > ---
-> >  scripts/test_list.py | 75 ++++++++++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 75 insertions(+)
-> > 
-> > diff --git a/scripts/test_list.py b/scripts/test_list.py
-> > index 2171f8b50617..c1518a904baf 100644
-> > --- a/scripts/test_list.py
-> > +++ b/scripts/test_list.py
-> > @@ -260,6 +260,8 @@ class TestList:
-> >          self.igt_build_path = igt_build_path
-> >          self.level_count = 0
-> >          self.field_list = {}
-> > +        self.testlist = {}
-> > +        self.blocklist = {}
-> >          self.title = None
-> >          self.filters = {}
-> >          self.subtest_separator = subtest_separator
-> > @@ -327,6 +329,23 @@ class TestList:
-> >                  if sublevel_count[level - 1] == 1:
-> >                      del item["_properties_"]["level"]
-> >                      del item["_properties_"]["sublevel"]
-> > +
-> > +            # Read testlist files if any
-> > +            if "testlists" in item["_properties_"]:
-> > +                testlist = {}
-> > +                for name in item["_properties_"]["testlists"].keys():
-> > +                    self.read_testlist(testlist, name, cfg_path + item["_properties_"]["testlists"][name])
-> > +
-> > +                item["_properties_"]["testlist"] = testlist
-> > +
-> > +            # Read blocklist files if any
-> > +            if "blocklists" in item["_properties_"]:
-> > +                blocklist = {}
-> > +                for name in item["_properties_"]["blocklists"].keys():
-> > +                    self.read_testlist(blocklist, name, cfg_path + item["_properties_"]["blocklists"][name])
-> > +
-> > +                item["_properties_"]["blocklist"] = blocklist
-> > +
-> >          if "_properties_" in self.props:
-> >              del self.props["_properties_"]
-> >  
-> > @@ -427,6 +446,19 @@ class TestList:
-> >  
-> >              self.__add_field(key, sublevel, hierarchy_level, field[key])
-> >  
-> > +    def read_testlist(self, testlist, name, filename):
-> > +        base = r"^\s*({}[^\s\{}]+)(\S*)\s*(\#.*)?$"
-> > +        regex = re.compile(base.format(self.main_name, self.subtest_separator))
-> > +
-> > +        testlist[name] = []
-> > +        with open(filename, 'r', newline = '', encoding = 'utf8') as fp:
-> > +            for line in fp:
-> > +                match = regex.match(line)
-> > +                if match:
-> > +                    test = match.group(1)
-> > +                    subtest = match.group(2)
-> > +                    testlist[name].append(re.compile(f"{test}{subtest}"))
-> > +
-> >      def __filter_subtest(self, test, subtest, field_not_found_value):
-> >  
-> >          """ Apply filter criteria to subtests """
-> > @@ -444,6 +476,45 @@ class TestList:
-> >          # None of the filtering rules were applied
-> >          return False
-> >  
-> > +    def update_testlist_field(self, subtest_dict):
-> > +        for field in self.props.keys():
-> > +            if "_properties_" not in self.props[field]:
-> > +                continue
-> > +
-> > +            if "testlist" not in self.props[field]["_properties_"]:
-> > +                continue
-> > +
-> > +            testname = subtest_dict["_summary_"]
-> > +
-> > +            value = subtest_dict.get(field)
-> > +            if value:
-> > +                values = set(re.split(",\s*", value))
-> > +            else:
-> > +                values = set()
-> > +
-> > +            for names, regex_array in self.props[field]["_properties_"]["testlist"].items():
-> > +                name = set(re.split(",\s*", names))
-> > +                for regex in regex_array:
-> > +                    if regex.match(testname):
-> > +                        values.update(name)
-> > +                        break
-> > +
-> > +            # If test is at a global blocklist, ignore it
-> > +            set_full_if_empty = True
-> > +            if "blocklist" in self.props[field]["_properties_"]:
-> > +                for names, regex_array in self.props[field]["_properties_"]["testlist"].items():
-> > +                    deleted_names = set(re.split(",\s*", names))
-> > +                    for regex in regex_array:
-> > +                        if regex.match(testname):
-> > +                            if sorted(deleted_names) == sorted(values):
-> > +                                set_full_if_empty = False
-> > +                            values.discard(deleted_names)
-> > +
-> > +            if set_full_if_empty and not values:
-> > +                values = set(["FULL"])
-> > +
-> > +            subtest_dict[field] = ", ".join(sorted(values))
-> > +
-> >      def expand_subtest(self, fname, test_name, test, allow_inherit, with_lines = False, with_subtest_nr = False):
-> >  
-> >          """Expand subtest wildcards providing an array with subtests"""
-> > @@ -476,6 +547,8 @@ class TestList:
-> >  
-> >                      subtest_dict[k] = self.doc[test]["subtest"][subtest][k]
-> >  
-> > +                self.update_testlist_field(subtest_dict)
-> > +
-> >                  if with_lines:
-> >                      subtest_dict["line"] = file_ln
-> >  
-> > @@ -549,6 +622,8 @@ class TestList:
-> >  
-> >                      subtest_dict[field] = sub_field
-> >  
-> > +                self.update_testlist_field(subtest_dict)
-> > +
-> >                  if with_lines:
-> >                      subtest_dict["line"] = file_ln
-> >  
-> > -- 
-> > 2.41.0
-> >   
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/981460 for the overview.
+
+build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/48761288):
+  Checking if the user of the pipeline is allowed...
+  Checking if the job's project is part of a well-known group...
+  Thank you for contributing to freedesktop.org
+  Fetching changes...
+  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  Checking out 73762210 as detached HEAD (ref is intel/IGTPW_9759)...
+  Removing build/
+  Removing lib/i915/perf-configs/__pycache__/
+  Removing scripts/__pycache__/
+  
+  Skipping Git submodules setup
+  section_end:1694200386:get_sources
+  section_start:1694200386:step_script
+  Executing "step_script" stage of the job script
+  Using docker image sha256:cc55efdc667be826910d414a562c76ce1130a9c15255a0dd115431bc42f83448 for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips:commit-7376221092dbe25918252e12f18c23af68dd6736 with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips@sha256:c829c44880da4782b7a72626c259ac6904b4bd5f08601e66b3be889ca1c0cf79 ...
+  section_end:1694200388:step_script
+  section_start:1694200388:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1694200388:cleanup_file_variables
+  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:cc55efdc667be826910d414a562c76ce1130a9c15255a0dd115431bc42f83448: image not known (docker.go:570:0s)
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/981460
