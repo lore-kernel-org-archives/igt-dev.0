@@ -1,16 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============6001364689077687247=="
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8E57C10E886
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 08:37:42 +0000 (UTC)
+Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
+ [10.252.24.176])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id 86933580E9D
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 01:37:38 -0700 (PDT)
+Received: from maurocar by linux.intel.com with local (Exim 4.96)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qeWzg-004YCy-1d
+ for igt-dev@lists.freedesktop.org; Fri, 08 Sep 2023 10:37:36 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri,  8 Sep 2023 10:27:37 +0200
+Message-ID: <20230908083734.1084351-2-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230908083734.1084351-1-mauro.chehab@linux.intel.com>
+References: <20230908083734.1084351-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Tejas Upadhyay" <tejas.upadhyay@intel.com>
-Date: Fri, 08 Sep 2023 08:44:14 -0000
-Message-ID: <169416265438.14898.3973081002528847949@emeril.freedesktop.org>
-References: <20230908081521.3305380-1-tejas.upadhyay@intel.com>
-In-Reply-To: <20230908081521.3305380-1-tejas.upadhyay@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/xe?=
- =?utf-8?q?=5Fdrm=5Ffdinfo=3A_Add_tests_to_read_and_verify_fdinfo_=28rev2?=
- =?utf-8?q?=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v4 01/11] test_list.py: add support for
+ reading testlist regular expressions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,121 +28,140 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============6001364689077687247==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-== Series Details ==
+If defined, use testlist and blocklist files to update the
+fields that use it.
 
-Series: tests/xe_drm_fdinfo: Add tests to read and verify fdinfo (rev2)
-URL   : https://patchwork.freedesktop.org/series/123264/
-State : success
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ scripts/test_list.py | 75 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 75 insertions(+)
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7474_BAT -> XEIGTPW_9750_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_9750_BAT that come from known issues:
-
-### IGT changes ###
-
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
-
-
-Build changes
--------------
-
-  * IGT: IGT_7474 -> IGTPW_9750
-  * Linux: xe-357-bae46e59a7f667734376ddb0d2451967dfb264f1 -> xe-362-758f01ec2a6774fda1e8f8075d31f42b81783caf
-
-  IGTPW_9750: 9750
-  IGT_7474: 9d91cf2c6e7bb64d60c2030d1535e40ca0ad53ee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-357-bae46e59a7f667734376ddb0d2451967dfb264f1: bae46e59a7f667734376ddb0d2451967dfb264f1
-  xe-362-758f01ec2a6774fda1e8f8075d31f42b81783caf: 758f01ec2a6774fda1e8f8075d31f42b81783caf
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9750/index.html
-
---===============6001364689077687247==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/xe_drm_fdinfo: Add tests to read and verify fdinfo (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123264/">https://patchwork.freedesktop.org/series/123264/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9750/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9750/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7474_BAT -&gt; XEIGTPW_9750_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_9750_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7474 -&gt; IGTPW_9750</li>
-<li>Linux: xe-357-bae46e59a7f667734376ddb0d2451967dfb264f1 -&gt; xe-362-758f01ec2a6774fda1e8f8075d31f42b81783caf</li>
-</ul>
-<p>IGTPW_9750: 9750<br />
-  IGT_7474: 9d91cf2c6e7bb64d60c2030d1535e40ca0ad53ee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-357-bae46e59a7f667734376ddb0d2451967dfb264f1: bae46e59a7f667734376ddb0d2451967dfb264f1<br />
-  xe-362-758f01ec2a6774fda1e8f8075d31f42b81783caf: 758f01ec2a6774fda1e8f8075d31f42b81783caf</p>
-
-</body>
-</html>
-
---===============6001364689077687247==--
+diff --git a/scripts/test_list.py b/scripts/test_list.py
+index 2171f8b50617..c1518a904baf 100644
+--- a/scripts/test_list.py
++++ b/scripts/test_list.py
+@@ -260,6 +260,8 @@ class TestList:
+         self.igt_build_path = igt_build_path
+         self.level_count = 0
+         self.field_list = {}
++        self.testlist = {}
++        self.blocklist = {}
+         self.title = None
+         self.filters = {}
+         self.subtest_separator = subtest_separator
+@@ -327,6 +329,23 @@ class TestList:
+                 if sublevel_count[level - 1] == 1:
+                     del item["_properties_"]["level"]
+                     del item["_properties_"]["sublevel"]
++
++            # Read testlist files if any
++            if "testlists" in item["_properties_"]:
++                testlist = {}
++                for name in item["_properties_"]["testlists"].keys():
++                    self.read_testlist(testlist, name, cfg_path + item["_properties_"]["testlists"][name])
++
++                item["_properties_"]["testlist"] = testlist
++
++            # Read blocklist files if any
++            if "blocklists" in item["_properties_"]:
++                blocklist = {}
++                for name in item["_properties_"]["blocklists"].keys():
++                    self.read_testlist(blocklist, name, cfg_path + item["_properties_"]["blocklists"][name])
++
++                item["_properties_"]["blocklist"] = blocklist
++
+         if "_properties_" in self.props:
+             del self.props["_properties_"]
+ 
+@@ -427,6 +446,19 @@ class TestList:
+ 
+             self.__add_field(key, sublevel, hierarchy_level, field[key])
+ 
++    def read_testlist(self, testlist, name, filename):
++        base = r"^\s*({}[^\s\{}]+)(\S*)\s*(\#.*)?$"
++        regex = re.compile(base.format(self.main_name, self.subtest_separator))
++
++        testlist[name] = []
++        with open(filename, 'r', newline = '', encoding = 'utf8') as fp:
++            for line in fp:
++                match = regex.match(line)
++                if match:
++                    test = match.group(1)
++                    subtest = match.group(2)
++                    testlist[name].append(re.compile(f"{test}{subtest}"))
++
+     def __filter_subtest(self, test, subtest, field_not_found_value):
+ 
+         """ Apply filter criteria to subtests """
+@@ -444,6 +476,45 @@ class TestList:
+         # None of the filtering rules were applied
+         return False
+ 
++    def update_testlist_field(self, subtest_dict):
++        for field in self.props.keys():
++            if "_properties_" not in self.props[field]:
++                continue
++
++            if "testlist" not in self.props[field]["_properties_"]:
++                continue
++
++            testname = subtest_dict["_summary_"]
++
++            value = subtest_dict.get(field)
++            if value:
++                values = set(re.split(",\s*", value))
++            else:
++                values = set()
++
++            for names, regex_array in self.props[field]["_properties_"]["testlist"].items():
++                name = set(re.split(",\s*", names))
++                for regex in regex_array:
++                    if regex.match(testname):
++                        values.update(name)
++                        break
++
++            # If test is at a global blocklist, ignore it
++            set_full_if_empty = True
++            if "blocklist" in self.props[field]["_properties_"]:
++                for names, regex_array in self.props[field]["_properties_"]["testlist"].items():
++                    deleted_names = set(re.split(",\s*", names))
++                    for regex in regex_array:
++                        if regex.match(testname):
++                            if sorted(deleted_names) == sorted(values):
++                                set_full_if_empty = False
++                            values.discard(deleted_names)
++
++            if set_full_if_empty and not values:
++                values = set(["FULL"])
++
++            subtest_dict[field] = ", ".join(sorted(values))
++
+     def expand_subtest(self, fname, test_name, test, allow_inherit, with_lines = False, with_subtest_nr = False):
+ 
+         """Expand subtest wildcards providing an array with subtests"""
+@@ -476,6 +547,8 @@ class TestList:
+ 
+                     subtest_dict[k] = self.doc[test]["subtest"][subtest][k]
+ 
++                self.update_testlist_field(subtest_dict)
++
+                 if with_lines:
+                     subtest_dict["line"] = file_ln
+ 
+@@ -549,6 +622,8 @@ class TestList:
+ 
+                     subtest_dict[field] = sub_field
+ 
++                self.update_testlist_field(subtest_dict)
++
+                 if with_lines:
+                     subtest_dict["line"] = file_ln
+ 
+-- 
+2.41.0
