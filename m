@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============8301210431201128608=="
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 42D2A10E056
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 08:15:04 +0000 (UTC)
+Date: Fri, 8 Sep 2023 10:14:59 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230908101459.2cc2b026@maurocar-mobl2>
+In-Reply-To: <20230907121921.766n7zyuxmpmpztp@kamilkon-desk.igk.intel.com>
+References: <20230907101852.522819-1-mauro.chehab@linux.intel.com>
+ <20230907101852.522819-2-mauro.chehab@linux.intel.com>
+ <20230907121921.766n7zyuxmpmpztp@kamilkon-desk.igk.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Swati Sharma" <swati2.sharma@intel.com>
-Date: Fri, 08 Sep 2023 08:11:48 -0000
-Message-ID: <169416070874.14895.10906814842134014621@emeril.freedesktop.org>
-References: <20230908070053.1283474-1-swati2.sharma@intel.com>
-In-Reply-To: <20230908070053.1283474-1-swati2.sharma@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgZW5hYmxl?=
- =?utf-8?q?_feature-discovery_tests_=28rev2=29?=
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t v3 1/7] test_list.py: add support for
+ reading testlist regular expressions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,313 +22,171 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, tomasz.mistat@intel.com,
+ jari.tahvanainen@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8301210431201128608==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Thu, 7 Sep 2023 14:19:21 +0200
+Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
 
-== Series Details ==
+> Hi Mauro,
+> 
+> On 2023-09-07 at 12:17:32 +0200, Mauro Carvalho Chehab wrote:
+> > From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> > 
+> > If defined, use testlist and blocklist files to update the
+> > fields that use it.
+> > 
+> > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> > ---
+> >  scripts/test_list.py | 75 ++++++++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 75 insertions(+)
+> > 
+> > diff --git a/scripts/test_list.py b/scripts/test_list.py
+> > index 2171f8b50617..c1518a904baf 100644
+> > --- a/scripts/test_list.py
+> > +++ b/scripts/test_list.py
+> > @@ -260,6 +260,8 @@ class TestList:
+> >          self.igt_build_path = igt_build_path
+> >          self.level_count = 0
+> >          self.field_list = {}
+> > +        self.testlist = {}
+> > +        self.blocklist = {}
+> >          self.title = None
+> >          self.filters = {}
+> >          self.subtest_separator = subtest_separator
+> > @@ -327,6 +329,23 @@ class TestList:
+> >                  if sublevel_count[level - 1] == 1:
+> >                      del item["_properties_"]["level"]
+> >                      del item["_properties_"]["sublevel"]
+> > +
+> > +            # Read testlist files if any
+> > +            if "testlists" in item["_properties_"]:
+> > +                testlist = {}
+> > +                for name in item["_properties_"]["testlists"].keys():
+> > +                    self.read_testlist(testlist, name, cfg_path + item["_properties_"]["testlists"][name])
+> > +
+> > +                item["_properties_"]["testlist"] = testlist
+> > +
+> > +            # Read blocklist files if any
+> > +            if "blocklists" in item["_properties_"]:
+> > +                blocklist = {}
+> > +                for name in item["_properties_"]["blocklists"].keys():
+> > +                    self.read_testlist(blocklist, name, cfg_path + item["_properties_"]["blocklists"][name])  
+> 
+> May you read this in separate function? It is often regex,
+> not igt@testname@subtest-name, for example:
+> 
+> igt@gem_concurrent_blit(@.*)?
+> 
+> igt@.*@.*-hibernate
 
-Series: enable feature-discovery tests (rev2)
-URL   : https://patchwork.freedesktop.org/series/123396/
-State : success
+The content of item["_properties_"]["blocklists"] is file names. Those
+are defined inside the JSON config file.
 
-== Summary ==
+The contenf of the file is indeed regular expressions. The
+read_testlist() function handles that...
 
-CI Bug Log - changes from CI_DRM_13613 -> IGTPW_9749
-====================================================
+> 
+> Regards,
+> Kamil
+> 
+> > +
+> > +                item["_properties_"]["blocklist"] = blocklist
+> > +
+> >          if "_properties_" in self.props:
+> >              del self.props["_properties_"]
+> >  
+> > @@ -427,6 +446,19 @@ class TestList:
+> >  
+> >              self.__add_field(key, sublevel, hierarchy_level, field[key])
+> >  
+> > +    def read_testlist(self, testlist, name, filename):
+> > +        base = r"^\s*({}[^\s\{}]+)(\S*)\s*(\#.*)?$"
+> > +        regex = re.compile(base.format(self.main_name, self.subtest_separator))
 
-Summary
--------
+... here, compiling them to speed up the per-test check later on, when
+processing the field(s) that define testlist/blocklist filenames.
 
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9749/index.html
-
-Participating hosts (38 -> 38)
-------------------------------
-
-  Additional (2): fi-kbl-soraka fi-hsw-4770 
-  Missing    (2): fi-snb-2520m fi-pnv-d510 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_9749 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@debugfs_test@basic-hwmon:
-    - fi-hsw-4770:        NOTRUN -> [SKIP][1] ([fdo#109271])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9749/fi-hsw-4770/igt@debugfs_test@basic-hwmon.html
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#2190])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9749/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][3] ([fdo#109271] / [i915#4613]) +3 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9749/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][4] ([i915#5334] / [i915#7872])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9749/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@i915_selftest@live@gt_pm:
-    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][5] ([i915#1886] / [i915#7913])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9749/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][6] ([fdo#109271]) +8 other tests skip
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9749/fi-kbl-soraka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - fi-bsw-nick:        [PASS][7] -> [FAIL][8] ([i915#9276])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13613/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9749/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-dp-6:
-    - bat-adlp-11:        [PASS][9] -> [ABORT][10] ([i915#8668])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13613/bat-adlp-11/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-dp-6.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9749/bat-adlp-11/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-dp-6.html
-
-  * igt@kms_psr@primary_page_flip:
-    - bat-rplp-1:         NOTRUN -> [SKIP][11] ([i915#1072]) +3 other tests skip
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9749/bat-rplp-1/igt@kms_psr@primary_page_flip.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - bat-rplp-1:         NOTRUN -> [ABORT][12] ([i915#8260] / [i915#8668])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9749/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-apl-guc:         [DMESG-FAIL][13] ([i915#5334]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13613/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9749/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-dp-5:
-    - bat-adlp-11:        [ABORT][15] ([i915#8668]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13613/bat-adlp-11/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-dp-5.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9749/bat-adlp-11/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-dp-5.html
-
-  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:
-    - bat-rplp-1:         [ABORT][17] ([i915#8442] / [i915#8668]) -> [PASS][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13613/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9749/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
-
-  
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
-  [i915#7872]: https://gitlab.freedesktop.org/drm/intel/issues/7872
-  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
-  [i915#8260]: https://gitlab.freedesktop.org/drm/intel/issues/8260
-  [i915#8442]: https://gitlab.freedesktop.org/drm/intel/issues/8442
-  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
-  [i915#9276]: https://gitlab.freedesktop.org/drm/intel/issues/9276
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7474 -> IGTPW_9749
-
-  CI-20190529: 20190529
-  CI_DRM_13613: 25ec37710fd81562fd25eccebaac156d9334ff0c @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_9749: 9749
-  IGT_7474: 9d91cf2c6e7bb64d60c2030d1535e40ca0ad53ee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+igt@kms_feature_discovery@chamelium
-+igt@kms_feature_discovery@display
-+igt@kms_feature_discovery@display-2x
-+igt@kms_feature_discovery@display-3x
-+igt@kms_feature_discovery@display-4x
-+igt@kms_feature_discovery@dp-mst
-+igt@kms_feature_discovery@psr1
-+igt@kms_feature_discovery@psr2
--igt@feature_discovery@chamelium
--igt@feature_discovery@display
--igt@feature_discovery@display-2x
--igt@feature_discovery@display-3x
--igt@feature_discovery@display-4x
--igt@feature_discovery@psr1
--igt@feature_discovery@psr2
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9749/index.html
-
---===============8301210431201128608==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>enable feature-discovery tests (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123396/">https://patchwork.freedesktop.org/series/123396/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9749/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9749/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_13613 -&gt; IGTPW_9749</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9749/index.html</p>
-<h2>Participating hosts (38 -&gt; 38)</h2>
-<p>Additional (2): fi-kbl-soraka fi-hsw-4770 <br />
-  Missing    (2): fi-snb-2520m fi-pnv-d510 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_9749 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@debugfs_test@basic-hwmon:</p>
-<ul>
-<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9749/fi-hsw-4770/igt@debugfs_test@basic-hwmon.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9749/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9749/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9749/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7872">i915#7872</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_pm:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9749/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9749/fi-kbl-soraka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +8 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13613/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9749/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9276">i915#9276</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-dp-6:</p>
-<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13613/bat-adlp-11/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-dp-6.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9749/bat-adlp-11/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-dp-6.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@primary_page_flip:</p>
-<ul>
-<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9749/bat-rplp-1/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9749/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8260">i915#8260</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13613/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9749/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-dp-5:</p>
-<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13613/bat-adlp-11/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-dp-5.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9749/bat-adlp-11/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-dp-5.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:</p>
-<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13613/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8442">i915#8442</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9749/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7474 -&gt; IGTPW_9749</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13613: 25ec37710fd81562fd25eccebaac156d9334ff0c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_9749: 9749<br />
-  IGT_7474: 9d91cf2c6e7bb64d60c2030d1535e40ca0ad53ee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@kms_feature_discovery@chamelium<br />
-+igt@kms_feature_discovery@display<br />
-+igt@kms_feature_discovery@display-2x<br />
-+igt@kms_feature_discovery@display-3x<br />
-+igt@kms_feature_discovery@display-4x<br />
-+igt@kms_feature_discovery@dp-mst<br />
-+igt@kms_feature_discovery@psr1<br />
-+igt@kms_feature_discovery@psr2<br />
--igt@feature_discovery@chamelium<br />
--igt@feature_discovery@display<br />
--igt@feature_discovery@display-2x<br />
--igt@feature_discovery@display-3x<br />
--igt@feature_discovery@display-4x<br />
--igt@feature_discovery@psr1<br />
--igt@feature_discovery@psr2</p>
-
-</body>
-</html>
-
---===============8301210431201128608==--
+> > +
+> > +        testlist[name] = []
+> > +        with open(filename, 'r', newline = '', encoding = 'utf8') as fp:
+> > +            for line in fp:
+> > +                match = regex.match(line)
+> > +                if match:
+> > +                    test = match.group(1)
+> > +                    subtest = match.group(2)
+> > +                    testlist[name].append(re.compile(f"{test}{subtest}"))
+> > +
+> >      def __filter_subtest(self, test, subtest, field_not_found_value):
+> >  
+> >          """ Apply filter criteria to subtests """
+> > @@ -444,6 +476,45 @@ class TestList:
+> >          # None of the filtering rules were applied
+> >          return False
+> >  
+> > +    def update_testlist_field(self, subtest_dict):
+> > +        for field in self.props.keys():
+> > +            if "_properties_" not in self.props[field]:
+> > +                continue
+> > +
+> > +            if "testlist" not in self.props[field]["_properties_"]:
+> > +                continue
+> > +
+> > +            testname = subtest_dict["_summary_"]
+> > +
+> > +            value = subtest_dict.get(field)
+> > +            if value:
+> > +                values = set(re.split(",\s*", value))
+> > +            else:
+> > +                values = set()
+> > +
+> > +            for names, regex_array in self.props[field]["_properties_"]["testlist"].items():
+> > +                name = set(re.split(",\s*", names))
+> > +                for regex in regex_array:
+> > +                    if regex.match(testname):
+> > +                        values.update(name)
+> > +                        break
+> > +
+> > +            # If test is at a global blocklist, ignore it
+> > +            set_full_if_empty = True
+> > +            if "blocklist" in self.props[field]["_properties_"]:
+> > +                for names, regex_array in self.props[field]["_properties_"]["testlist"].items():
+> > +                    deleted_names = set(re.split(",\s*", names))
+> > +                    for regex in regex_array:
+> > +                        if regex.match(testname):
+> > +                            if sorted(deleted_names) == sorted(values):
+> > +                                set_full_if_empty = False
+> > +                            values.discard(deleted_names)
+> > +
+> > +            if set_full_if_empty and not values:
+> > +                values = set(["FULL"])
+> > +
+> > +            subtest_dict[field] = ", ".join(sorted(values))
+> > +
+> >      def expand_subtest(self, fname, test_name, test, allow_inherit, with_lines = False, with_subtest_nr = False):
+> >  
+> >          """Expand subtest wildcards providing an array with subtests"""
+> > @@ -476,6 +547,8 @@ class TestList:
+> >  
+> >                      subtest_dict[k] = self.doc[test]["subtest"][subtest][k]
+> >  
+> > +                self.update_testlist_field(subtest_dict)
+> > +
+> >                  if with_lines:
+> >                      subtest_dict["line"] = file_ln
+> >  
+> > @@ -549,6 +622,8 @@ class TestList:
+> >  
+> >                      subtest_dict[field] = sub_field
+> >  
+> > +                self.update_testlist_field(subtest_dict)
+> > +
+> >                  if with_lines:
+> >                      subtest_dict["line"] = file_ln
+> >  
+> > -- 
+> > 2.41.0
+> >   
