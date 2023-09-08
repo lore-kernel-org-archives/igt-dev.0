@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3565A10E878
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 07:01:03 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri,  8 Sep 2023 12:30:53 +0530
-Message-Id: <20230908070053.1283474-5-swati2.sharma@intel.com>
-In-Reply-To: <20230908070053.1283474-1-swati2.sharma@intel.com>
-References: <20230908070053.1283474-1-swati2.sharma@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============3174420955757820278=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 4/4] tests/kms_feature_discovery: detect mst
- configuration
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Date: Fri, 08 Sep 2023 08:06:34 -0000
+Message-ID: <169416039495.14895.10725918366985690166@emeril.freedesktop.org>
+References: <20230908070053.1283474-1-swati2.sharma@intel.com>
+In-Reply-To: <20230908070053.1283474-1-swati2.sharma@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_enable_f?=
+ =?utf-8?q?eature-discovery_tests_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,67 +17,121 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add test to detect if we have mst configuration.
+--===============3174420955757820278==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: -use for_each_connected_output() (Bhanu)
-    -don't use helper (Bhanu)
-    -add documentation
-v3: -add message on skip (Bhanu)
-    -initialize ret (Bhanu)
+== Series Details ==
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
----
- tests/kms_feature_discovery.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+Series: enable feature-discovery tests (rev2)
+URL   : https://patchwork.freedesktop.org/series/123396/
+State : success
 
-diff --git a/tests/kms_feature_discovery.c b/tests/kms_feature_discovery.c
-index 49958fd88..d0451cf9e 100644
---- a/tests/kms_feature_discovery.c
-+++ b/tests/kms_feature_discovery.c
-@@ -71,6 +71,14 @@
-  * Run type: FULL
-  * Test category: functionality test
-  *
-+ * SUBTEST: dp-mst
-+ * Description: Make sure that we have DP-MST configuration.
-+ * Driver requirement: i915, xe
-+ * Functionality: feature_discovery, mst
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-  * arg[1].values: 2, 3, 4
-  */
- 
-@@ -164,5 +172,23 @@ igt_main {
- 		igt_subtest("psr2") {
- 			igt_require(psr_sink_support(fd, debugfs_fd, PSR_MODE_2));
- 		}
-+
-+		igt_describe("Make sure that we have DP-MST configuration.");
-+		igt_subtest("dp-mst") {
-+			struct kmstest_connector_config config;
-+			igt_output_t *output;
-+			const char *encoder;
-+			int ret = -1;
-+
-+			for_each_connected_output(&display, output) {
-+				kmstest_get_connector_config(fd, output->config.connector->connector_id, -1, &config);
-+				encoder = kmstest_encoder_type_str(config.encoder->encoder_type);
-+
-+				ret = strcmp(encoder, "DP MST");
-+				if (ret == 0)
-+					break;
-+			}
-+			igt_require_f(ret == 0, "No DP-MST configuration found.\n");
-+		}
- 	}
- }
--- 
-2.25.1
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7474_BAT -> XEIGTPW_9749_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9749_BAT that come from known issues:
+
+### IGT changes ###
+
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#526]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/526
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7474 -> IGTPW_9749
+  * Linux: xe-357-bae46e59a7f667734376ddb0d2451967dfb264f1 -> xe-362-758f01ec2a6774fda1e8f8075d31f42b81783caf
+
+  IGTPW_9749: 9749
+  IGT_7474: 9d91cf2c6e7bb64d60c2030d1535e40ca0ad53ee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-357-bae46e59a7f667734376ddb0d2451967dfb264f1: bae46e59a7f667734376ddb0d2451967dfb264f1
+  xe-362-758f01ec2a6774fda1e8f8075d31f42b81783caf: 758f01ec2a6774fda1e8f8075d31f42b81783caf
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9749/index.html
+
+--===============3174420955757820278==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>enable feature-discovery tests (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123396/">https://patchwork.freedesktop.org/series/123396/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9749/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9749/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7474_BAT -&gt; XEIGTPW_9749_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9749_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7474 -&gt; IGTPW_9749</li>
+<li>Linux: xe-357-bae46e59a7f667734376ddb0d2451967dfb264f1 -&gt; xe-362-758f01ec2a6774fda1e8f8075d31f42b81783caf</li>
+</ul>
+<p>IGTPW_9749: 9749<br />
+  IGT_7474: 9d91cf2c6e7bb64d60c2030d1535e40ca0ad53ee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-357-bae46e59a7f667734376ddb0d2451967dfb264f1: bae46e59a7f667734376ddb0d2451967dfb264f1<br />
+  xe-362-758f01ec2a6774fda1e8f8075d31f42b81783caf: 758f01ec2a6774fda1e8f8075d31f42b81783caf</p>
+
+</body>
+</html>
+
+--===============3174420955757820278==--
