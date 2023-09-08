@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 257F110E0D8
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 17:50:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5500410E0DB
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Sep 2023 17:50:45 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  8 Sep 2023 23:20:34 +0530
-Message-Id: <20230908175039.1291593-1-swati2.sharma@intel.com>
+Date: Fri,  8 Sep 2023 23:20:36 +0530
+Message-Id: <20230908175039.1291593-3-swati2.sharma@intel.com>
+In-Reply-To: <20230908175039.1291593-1-swati2.sharma@intel.com>
+References: <20230908175039.1291593-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/5] Add XE support for display PM tests
+Subject: [igt-dev] [PATCH i-g-t 2/5] tests/intel/kms_pm_lpsp: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,19 +22,43 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add XE driver support for kms PM tests.
+Add XE driver support for kms pm tests.
 
-Swati Sharma (5):
-  tests/intel/kms_pm_backlight: Add XE support
-  tests/intel/kms_pm_lpsp: Add XE support
-  tests/intel/kms_pm_dc: Use linear modifier to set primary plane
-  tests/intel/kms_pm_dc: Use gem_has_lmem()
-  tests/intel/kms_pm_dc: Add XE support
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ tests/intel/kms_pm_lpsp.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
- tests/intel/kms_pm_backlight.c | 12 ++++++------
- tests/intel/kms_pm_dc.c        | 32 ++++++++++++++------------------
- tests/intel/kms_pm_lpsp.c      |  6 +++---
- 3 files changed, 23 insertions(+), 27 deletions(-)
-
+diff --git a/tests/intel/kms_pm_lpsp.c b/tests/intel/kms_pm_lpsp.c
+index 9b5547cda..7d697b1e2 100644
+--- a/tests/intel/kms_pm_lpsp.c
++++ b/tests/intel/kms_pm_lpsp.c
+@@ -39,7 +39,7 @@
+  *
+  * SUBTEST: kms-lpsp
+  * Description: This test validates lpsp on all connected outputs on low power PIPE_A
+- * Driver requirement: i915
++ * Driver requirement: i915, xe
+  * Functionality: pm_lpsp
+  * Mega feature: Display Power
+  * Run type: FULL
+@@ -194,8 +194,7 @@ igt_main
+ 	data_t data = {};
+ 
+ 	igt_fixture {
+-
+-		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
++		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
+ 		igt_require(data.drm_fd >= 0);
+ 		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
+ 		igt_require(data.debugfs_fd >= 0);
+@@ -208,6 +207,7 @@ igt_main
+ 
+ 	igt_describe("This test validates lpsp while all crtc are disabled");
+ 	igt_subtest("screens-disabled") {
++		igt_require_i915(data.drm_fd);
+ 		igt_require_f(!dmc_supported(data.debugfs_fd),
+ 			      "DC states supported platform don't have ROI for this subtest\n");
+ 		screens_disabled_subtest(&data);
 -- 
 2.25.1
