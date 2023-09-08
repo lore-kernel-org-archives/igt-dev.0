@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  8 Sep 2023 12:44:53 +0200
-Message-ID: <20230908104438.125454-33-janusz.krzysztofik@linux.intel.com>
+Date: Fri,  8 Sep 2023 12:44:55 +0200
+Message-ID: <20230908104438.125454-35-janusz.krzysztofik@linux.intel.com>
 In-Reply-To: <20230908104438.125454-19-janusz.krzysztofik@linux.intel.com>
 References: <20230908104438.125454-19-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 14/17] lib/kunit: Load test modules in
- background
+Subject: [igt-dev] [PATCH i-g-t 16/17] lib/kunit: Strip "_test" or "_kunit"
+ suffix from subtest names
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,122 +22,211 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For igt_runner to be able to correlate a stream of IGT results from
-dynamic sub-subtests that correspond to individual kunit test cases, read
-by the igt_runner from stdout / stderr of the test process, with a stream
-of kernel messages read from /dev/kmsg, we need both result streams being
-fed with data in parallel.  While our KTAP parser is currently started in
-the background and reads KTAP results from /dev/kmsg in parallel with
-execution of kunit tests performed by the kernel while we are loading a
-kunit test module, results from the parser are then only stored as
-intermediate data and not processed any further until the module loading
-completes.  As a consequence, there is no synchronization between the two
-streams.
-
-Call the function that loads the kunit test module from a separate thread
-and process the intermediate results immediately, as soon as available
-from the background parser, without waiting for completion of module
-loading.
+If a user (an IGT test) doesn't provide a subtest name when calling
+igt_kunit() then we now use the requested kernel module name as IGT
+subtest name.  Since names of kunit test modules usually end with a
+"_test" or "_kunit" suffix, those parts of the names don't carry any
+useful information.  Strip those suffixes from IGT subtest names.
 
 Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 ---
- lib/igt_kmod.c | 35 +++++++++++++++++++++++++++++++++--
- 1 file changed, 33 insertions(+), 2 deletions(-)
+ lib/igt_kmod.c | 26 ++++++++++++++++++++++----
+ tests/drm_mm.c | 42 +++++++++++++++++++++---------------------
+ 2 files changed, 43 insertions(+), 25 deletions(-)
 
 diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index c692954911..bbde3929f2 100644
+index 46a6f81e73..ddd5499f5e 100644
 --- a/lib/igt_kmod.c
 +++ b/lib/igt_kmod.c
-@@ -25,6 +25,7 @@
- #include <signal.h>
- #include <errno.h>
- #include <fcntl.h>
-+#include <pthread.h>
- #include <sys/utsname.h>
+@@ -944,8 +944,29 @@ void igt_kunit(const char *module_name, const char *name, const char *opts)
+ 	if (igt_ktest_init(&tst, module_name) != 0)
+ 		return;
  
- #include "igt_aux.h"
-@@ -746,6 +747,21 @@ void igt_kselftest_get_tests(struct kmod_module *kmod,
- 	kmod_module_info_free_list(pre);
- }
- 
-+struct modprobe_data {
-+	struct kmod_module *kmod;
-+	const char *opts;
-+	int err;
-+};
+-	igt_fixture
++	/*
++	 * If the caller (an IGT test) provides no subtest name then we
++	 * take the module name, drop the trailing "_test" or "_kunit"
++	 * suffix, if any, and use the result as our IGT subtest name.
++	 */
++	if (!name) {
++		name = strdup(module_name);
++		if (name) {
++			char *suffix = strstr(name, "_test");
 +
-+static void *modprobe_task(void *arg)
-+{
-+	struct modprobe_data *data = arg;
++			if (!suffix)
++				suffix = strstr(name, "_kunit");
 +
-+	data->err = modprobe(data->kmod, data->opts);
-+
-+	return NULL;
-+}
-+
- /**
-  * igt_kunit:
-  * @module_name: the name of the module
-@@ -757,9 +773,11 @@ void igt_kselftest_get_tests(struct kmod_module *kmod,
-  */
- static void __igt_kunit(struct igt_ktest *tst, const char *opts)
- {
-+	struct modprobe_data modprobe = { tst->kmod, opts, 0, };
- 	struct kmod_module *kunit_kmod;
- 	bool is_builtin;
- 	struct ktap_test_results *results;
-+	pthread_t modprobe_thread;
- 	unsigned long taints;
- 	int flags, ret;
- 
-@@ -777,18 +795,25 @@ static void __igt_kunit(struct igt_ktest *tst, const char *opts)
- 
- 	results = ktap_parser_start(tst->kmsg, is_builtin);
- 
--	if (igt_debug_on(igt_kmod_load(tst->module_name, opts) < 0)) {
-+	if (igt_debug_on(pthread_create(&modprobe_thread, NULL,
-+					modprobe_task, &modprobe))) {
- 		ktap_parser_cancel();
- 		igt_ignore_warn(ktap_parser_stop());
--		igt_skip("Unable to load %s module\n", tst->module_name);
-+		igt_skip("Failed to create a modprobe thread\n");
- 	}
- 
- 	while (READ_ONCE(results->still_running) || !igt_list_empty(&results->list))
- 	{
- 		struct ktap_test_results_element *result;
- 
-+		if (!pthread_tryjoin_np(modprobe_thread, NULL) && modprobe.err) {
-+			ktap_parser_cancel();
-+			break;
++			if (suffix)
++				*suffix = '\0';
 +		}
++	}
 +
- 		if (igt_kernel_tainted(&taints)) {
- 			ktap_parser_cancel();
-+			pthread_cancel(modprobe_thread);
- 			break;
- 		}
- 
-@@ -806,14 +831,20 @@ static void __igt_kunit(struct igt_ktest *tst, const char *opts)
- 		igt_dynamic(result->test_name) {
- 			igt_assert(READ_ONCE(result->passed));
- 
-+			if (!pthread_tryjoin_np(modprobe_thread, NULL))
-+				igt_assert_eq(modprobe.err, 0);
++	igt_fixture {
++		igt_require(name);
 +
- 			igt_fail_on(igt_kernel_tainted(&taints));
- 		}
+ 		igt_require(igt_ktest_begin(&tst) == 0);
++	}
  
- 		free(result);
- 	}
+ 	/*
+ 	 * We need to use igt_subtest here, as otherwise it may crash with:
+@@ -954,9 +975,6 @@ void igt_kunit(const char *module_name, const char *name, const char *opts)
+ 	 * proper namespace for dynamic subtests, with is required for CI
+ 	 * and for documentation.
+ 	 */
+-	if (name == NULL)
+-		name = module_name;
+-
+ 	igt_subtest_with_dynamic(name)
+ 		__igt_kunit(&tst, opts);
  
-+	pthread_join(modprobe_thread, NULL);
-+
- 	ret = ktap_parser_stop();
- 
-+	igt_skip_on(modprobe.err);
- 	igt_skip_on(igt_kernel_tainted(&taints));
- 	igt_skip_on_f(ret, "KTAP parser failed\n");
- }
+diff --git a/tests/drm_mm.c b/tests/drm_mm.c
+index 9a8b3f3fcb..e6ba224745 100644
+--- a/tests/drm_mm.c
++++ b/tests/drm_mm.c
+@@ -29,123 +29,123 @@
+  * Feature: mapping
+  * Run type: FULL
+  *
+- * SUBTEST: drm_mm_test
++ * SUBTEST: drm_mm
+  *
+- * SUBTEST: drm_mm_test@align
++ * SUBTEST: drm_mm@align
+  * Category: Infrastructure
+  * Description: drm_mm range manager SW validation
+  * Functionality: DRM memory mangemnt
+  * Test category: GEM_Legacy
+  *
+- * SUBTEST: drm_mm_test@align32
++ * SUBTEST: drm_mm@align32
+  * Category: Infrastructure
+  * Description: drm_mm range manager SW validation
+  * Functionality: DRM memory mangemnt
+  * Test category: GEM_Legacy
+  *
+- * SUBTEST: drm_mm_test@align64
++ * SUBTEST: drm_mm@align64
+  * Category: Infrastructure
+  * Description: drm_mm range manager SW validation
+  * Functionality: DRM memory mangemnt
+  * Test category: GEM_Legacy
+  *
+- * SUBTEST: drm_mm_test@bottomup
++ * SUBTEST: drm_mm@bottomup
+  * Category: Infrastructure
+  * Description: drm_mm range manager SW validation
+  * Functionality: DRM memory mangemnt
+  * Test category: GEM_Legacy
+  *
+- * SUBTEST: drm_mm_test@color
++ * SUBTEST: drm_mm@color
+  * Category: Infrastructure
+  * Description: drm_mm range manager SW validation
+  * Functionality: DRM memory mangemnt
+  * Test category: GEM_Legacy
+  *
+- * SUBTEST: drm_mm_test@color_evict
++ * SUBTEST: drm_mm@color_evict
+  * Category: Infrastructure
+  * Description: drm_mm range manager SW validation
+  * Functionality: DRM memory mangemnt
+  * Test category: GEM_Legacy
+  *
+- * SUBTEST: drm_mm_test@color_evict_range
++ * SUBTEST: drm_mm@color_evict_range
+  * Category: Infrastructure
+  * Description: drm_mm range manager SW validation
+  * Functionality: DRM memory mangemnt
+  * Test category: GEM_Legacy
+  *
+- * SUBTEST: drm_mm_test@debug
++ * SUBTEST: drm_mm@debug
+  * Category: Infrastructure
+  * Description: drm_mm range manager SW validation
+  * Functionality: DRM memory mangemnt
+  * Test category: GEM_Legacy
+  *
+- * SUBTEST: drm_mm_test@evict
++ * SUBTEST: drm_mm@evict
+  * Category: Infrastructure
+  * Description: drm_mm range manager SW validation
+  * Functionality: DRM memory mangemnt
+  * Test category: GEM_Legacy
+  *
+- * SUBTEST: drm_mm_test@evict_range
++ * SUBTEST: drm_mm@evict_range
+  * Category: Infrastructure
+  * Description: drm_mm range manager SW validation
+  * Functionality: DRM memory mangemnt
+  * Test category: GEM_Legacy
+  *
+- * SUBTEST: drm_mm_test@frag
++ * SUBTEST: drm_mm@frag
+  * Category: Infrastructure
+  * Description: drm_mm range manager SW validation
+  * Functionality: DRM memory mangemnt
+  * Test category: GEM_Legacy
+  *
+- * SUBTEST: drm_mm_test@highest
++ * SUBTEST: drm_mm@highest
+  * Category: Infrastructure
+  * Description: drm_mm range manager SW validation
+  * Functionality: DRM memory mangemnt
+  * Test category: GEM_Legacy
+  *
+- * SUBTEST: drm_mm_test@init
++ * SUBTEST: drm_mm@init
+  * Category: Infrastructure
+  * Description: drm_mm range manager SW validation
+  * Functionality: DRM memory mangemnt
+  * Test category: GEM_Legacy
+  *
+- * SUBTEST: drm_mm_test@insert
++ * SUBTEST: drm_mm@insert
+  * Category: Infrastructure
+  * Description: drm_mm range manager SW validation
+  * Functionality: DRM memory mangemnt
+  * Test category: GEM_Legacy
+  *
+- * SUBTEST: drm_mm_test@insert_range
++ * SUBTEST: drm_mm@insert_range
+  * Category: Infrastructure
+  * Description: drm_mm range manager SW validation
+  * Functionality: DRM memory mangemnt
+  * Test category: GEM_Legacy
+  *
+- * SUBTEST: drm_mm_test@lowest
++ * SUBTEST: drm_mm@lowest
+  * Category: Infrastructure
+  * Description: drm_mm range manager SW validation
+  * Functionality: DRM memory mangemnt
+  * Test category: GEM_Legacy
+  *
+- * SUBTEST: drm_mm_test@replace
++ * SUBTEST: drm_mm@replace
+  * Category: Infrastructure
+  * Description: drm_mm range manager SW validation
+  * Functionality: DRM memory mangemnt
+  * Test category: GEM_Legacy
+  *
+- * SUBTEST: drm_mm_test@reserve
++ * SUBTEST: drm_mm@reserve
+  * Category: Infrastructure
+  * Description: drm_mm range manager SW validation
+  * Functionality: DRM memory mangemnt
+  * Test category: GEM_Legacy
+  *
+- * SUBTEST: drm_mm_test@sanitycheck
++ * SUBTEST: drm_mm@sanitycheck
+  * Category: Infrastructure
+  * Description: drm_mm range manager SW validation
+  * Functionality: DRM memory mangemnt
+  * Test category: GEM_Legacy
+  *
+- * SUBTEST: drm_mm_test@topdown
++ * SUBTEST: drm_mm@topdown
+  * Category: Infrastructure
+  * Description: drm_mm range manager SW validation
+  * Functionality: DRM memory mangemnt
 -- 
 2.41.0
