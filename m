@@ -1,16 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D889410E068
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 Sep 2023 11:09:44 +0000 (UTC)
+Message-ID: <60144754-af81-692d-a20e-84d4fbd2fcc0@intel.com>
+Date: Mon, 11 Sep 2023 13:09:31 +0200
+Content-Language: en-US
+To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>,
+ <sai.gowtham.ch@intel.com>
+References: <20230904110458.24177-1-sai.gowtham.ch@intel.com>
+ <20230904110458.24177-3-sai.gowtham.ch@intel.com>
+ <20230904123934.stxmaelmzxg3366l@zkempczy-mobl2>
+From: Karolina Stolarek <karolina.stolarek@intel.com>
+In-Reply-To: <20230904123934.stxmaelmzxg3366l@zkempczy-mobl2>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Janusz Krzysztofik" <janusz.krzysztofik@linux.intel.com>
-Date: Mon, 11 Sep 2023 13:08:40 -0000
-Message-ID: <169443772035.31367.11594097585987985089@emeril.freedesktop.org>
-References: <20230911130323.7037-2-janusz.krzysztofik@linux.intel.com>
-In-Reply-To: <20230911130323.7037-2-janusz.krzysztofik@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBkcm0v?=
- =?utf-8?q?tests=3A_Fix_incorrect_argument_in_drm=5Ftest=5Fmm=5Finsert=5Fr?=
- =?utf-8?q?ange?=
+Subject: Re: [igt-dev] [PATCH i-g-t 2/4] lib/intel_blt: check if blt
+ commands are supported by the platforms
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,23 +24,109 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On 4.09.2023 14:39, Zbigniew Kempczyński wrote:
+> On Mon, Sep 04, 2023 at 04:34:56PM +0530, sai.gowtham.ch@intel.com wrote:
+>> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+>>
+>> Check if mem-copy/mem-set commands are supported by fd device.
+>>
+>> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+>> ---
+>>   lib/intel_blt.c | 32 ++++++++++++++++++++++++++++++++
+>>   lib/intel_blt.h |  2 ++
+>>   2 files changed, 34 insertions(+)
+>>
+>> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+>> index 429511920..b55fa9b52 100644
+>> --- a/lib/intel_blt.c
+>> +++ b/lib/intel_blt.c
+>> @@ -289,6 +289,38 @@ bool blt_has_block_copy(int fd)
+>>   	return blt_supports_command(cmds_info, XY_BLOCK_COPY);
+>>   }
+>>   
+>> +/**
+>> + * blt_has_mem_copy
+>> + * @fd: drm fd
+>> + *
+>> + * Check if mem copy is supported by @fd device
+>> + *
+>> + * Returns:
+>> + * true if it does, false otherwise.
+>> + */
+>> +bool blt_has_mem_copy(int fd)
+>> +{
+>> +	const struct intel_cmds_info *cmds_info = GET_CMDS_INFO(fd);
+>> +
+>> +	return blt_supports_command(cmds_info, MEM_COPY);
+>> +}
+>> +
+>> +/**
+>> + * blt_has_mem_set
+>> + * @fd: drm fd
+>> + *
+>> + * Check if mem set is supported by @fd device
+>> + *
+>> + * Returns:
+>> + * true if it does, false otherwise.
+>> + */
+>> +bool blt_has_mem_set(int fd)
+>> +{
+>> +	const struct intel_cmds_info *cmds_info = GET_CMDS_INFO(fd);
+>> +
+>> +	return blt_supports_command(cmds_info, MEM_SET);
+>> +}
+>> +
+> 
+> It is not true if you'll use those functions in i915 igts.
+> mem-set and mem-copy commands you've introduced in 1/4 patch
+> should be part of intel_blt.[ch] library.
 
-Series: drm/tests: Fix incorrect argument in drm_test_mm_insert_range
-URL   : https://patchwork.freedesktop.org/series/123544/
-State : failure
+Following this logic, we'd need to provide XY_SRC_COPY_BLT in intel_blt 
+library as well. We don't -- mostly because intel_blt lacks support for 
+relocations.
 
-== Summary ==
+blt_has_<command> are lightweight checks that only say if you can issue 
+a specific command to a platform, and they don't depend on a driver. 
+They don't guarantee that a specific blitter function is implemented in 
+intel_blt.
 
-Applying: drm/tests: Fix incorrect argument in drm_test_mm_insert_range
-Patch failed at 0001 drm/tests: Fix incorrect argument in drm_test_mm_insert_range
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
+This confusion shows that we should've keep intel_cmds_info and 
+intel_blt libraries separated from the beginning. Yes, they are closely 
+related, but it's intel_blt quering intel_cmds_info about hardware 
+capabilities, not implemented features.
 
+Many thanks,
+Karolina
+
+> 
+> BTW first patch 1/4 won't compile in step-by-step mode because
+> it uses code from following patches.
+> 
+> --
+> Zbigniew
+> 
+> 
+>>   /**
+>>    * blt_has_fast_copy
+>>    * @fd: drm fd
+>> diff --git a/lib/intel_blt.h b/lib/intel_blt.h
+>> index b8b3d724d..d9c8883c7 100644
+>> --- a/lib/intel_blt.h
+>> +++ b/lib/intel_blt.h
+>> @@ -175,6 +175,8 @@ bool blt_cmd_has_property(const struct intel_cmds_info *cmds_info,
+>>   			  uint32_t prop);
+>>   
+>>   bool blt_has_block_copy(int fd);
+>> +bool blt_has_mem_copy(int fd);
+>> +bool blt_has_mem_set(int fd);
+>>   bool blt_has_fast_copy(int fd);
+>>   bool blt_has_xy_src_copy(int fd);
+>>   bool blt_has_xy_color(int fd);
+>> -- 
+>> 2.39.1
+>>
