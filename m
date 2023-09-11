@@ -1,23 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E07C610E272
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Sep 2023 10:10:39 +0000 (UTC)
-From: "Yedireswarapu, SaiX Nandan" <saix.nandan.yedireswarapu@intel.com>
-To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Mon, 11 Sep 2023 10:10:35 +0000
-Message-ID: <PH8PR11MB69520F3D09ACA4ED9FB6AD65B3F2A@PH8PR11MB6952.namprd11.prod.outlook.com>
-References: <20230911060345.324372-1-zbigniew.kempczynski@intel.com>
- <169441588284.31367.3262959690591391987@emeril.freedesktop.org>
- <20230911081632.vf3k7jtuzfxczko2@zkempczy-mobl2>
-In-Reply-To: <20230911081632.vf3k7jtuzfxczko2@zkempczy-mobl2>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Date: Mon, 11 Sep 2023 10:49:36 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Message-ID: <20230911104936.435fa279@maurocar-mobl2>
+In-Reply-To: <20230908123233.137134-23-janusz.krzysztofik@linux.intel.com>
+References: <20230908123233.137134-19-janusz.krzysztofik@linux.intel.com>
+ <20230908123233.137134-23-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgRXh0ZW5k?=
- =?utf-8?q?_compute_square_to_i915_and_Xe_=28rev3=29?=
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t v2 04/17] lib/kunit:
+ Optimize calls to igt_success/skip/fail()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,101 +18,66 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org,
+ Isabella Basso <isabbasso@riseup.net>, intel-xe@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGksDQoNCklzc3VlIHJlLXJlcG9ydGVkLCBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5v
-cmcvc2VyaWVzLzEyMjU2OC8NCg0KVGhhbmtzLA0KWSBTYWkgTmFuZGFuDQoNCi0tLS0tT3JpZ2lu
-YWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBLZW1wY3p5bnNraSwgWmJpZ25pZXcgPHpiaWduaWV3Lmtl
-bXBjenluc2tpQGludGVsLmNvbT4gDQpTZW50OiBNb25kYXksIFNlcHRlbWJlciAxMSwgMjAyMyAx
-OjQ3IFBNDQpUbzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCkNjOiBZZWRpcmVzd2Fy
-YXB1LCBTYWlYIE5hbmRhbiA8c2FpeC5uYW5kYW4ueWVkaXJlc3dhcmFwdUBpbnRlbC5jb20+DQpT
-dWJqZWN0OiBSZTog4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgRXh0ZW5kIGNvbXB1dGUgc3F1
-YXJlIHRvIGk5MTUgYW5kIFhlIChyZXYzKQ0KDQpPbiBNb24sIFNlcCAxMSwgMjAyMyBhdCAwNzow
-NDo0MkFNICswMDAwLCBQYXRjaHdvcmsgd3JvdGU6DQo+ICAgIFBhdGNoIERldGFpbHMNCj4gDQo+
-ICAgIFNlcmllczogIEV4dGVuZCBjb21wdXRlIHNxdWFyZSB0byBpOTE1IGFuZCBYZSAocmV2Mykg
-ICAgICAgICAgICAgICAgICAgIA0KPiAgICBVUkw6ICAgICBodHRwczovL3BhdGNod29yay5mcmVl
-ZGVza3RvcC5vcmcvc2VyaWVzLzEyMjU2OC8gICAgICAgICAgICAgICANCj4gICAgU3RhdGU6ICAg
-ZmFpbHVyZSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgDQo+ICAgIERldGFpbHM6IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2Ry
-bS10aXAvSUdUUFdfOTc2MC9pbmRleC5odG1sIA0KPiANCj4gICAgICAgICAgICAgICBDSSBCdWcg
-TG9nIC0gY2hhbmdlcyBmcm9tIENJX0RSTV8xMzYxNyAtPiBJR1RQV185NzYwDQo+IA0KPiBTdW1t
-YXJ5DQo+IA0KPiAgICBGQUlMVVJFDQo+IA0KPiAgICBTZXJpb3VzIHVua25vd24gY2hhbmdlcyBj
-b21pbmcgd2l0aCBJR1RQV185NzYwIGFic29sdXRlbHkgbmVlZCB0byBiZQ0KPiAgICB2ZXJpZmll
-ZCBtYW51YWxseS4NCj4gDQo+ICAgIElmIHlvdSB0aGluayB0aGUgcmVwb3J0ZWQgY2hhbmdlcyBo
-YXZlIG5vdGhpbmcgdG8gZG8gd2l0aCB0aGUgY2hhbmdlcw0KPiAgICBpbnRyb2R1Y2VkIGluIElH
-VFBXXzk3NjAsIHBsZWFzZSBub3RpZnkgeW91ciBidWcgdGVhbQ0KPiAgICAobGdjaS5idWcuZmls
-aW5nQGludGVsLmNvbSkgdG8gYWxsb3cgdGhlbQ0KPiAgICB0byBkb2N1bWVudCB0aGlzIG5ldyBm
-YWlsdXJlIG1vZGUsIHdoaWNoIHdpbGwgcmVkdWNlIGZhbHNlIHBvc2l0aXZlcyBpbg0KPiAgICBD
-SS4NCj4gDQo+ICAgIEV4dGVybmFsIFVSTDoNCj4gICAgaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEu
-b3JnL3RyZWUvZHJtLXRpcC9JR1RQV185NzYwL2luZGV4Lmh0bWwNCj4gDQo+IFBhcnRpY2lwYXRp
-bmcgaG9zdHMgKDM4IC0+IDM5KQ0KPiANCj4gICAgQWRkaXRpb25hbCAoMik6IGZpLWtibC1zb3Jh
-a2EgYmF0LWRnMi04DQo+ICAgIE1pc3NpbmcgKDEpOiBmaS1zbmItMjUyMG0NCj4gDQo+IFBvc3Np
-YmxlIG5ldyBpc3N1ZXMNCj4gDQo+ICAgIEhlcmUgYXJlIHRoZSB1bmtub3duIGNoYW5nZXMgdGhh
-dCBtYXkgaGF2ZSBiZWVuIGludHJvZHVjZWQgaW4gSUdUUFdfOTc2MDoNCj4gDQo+ICAgSUdUIGNo
-YW5nZXMNCj4gDQo+ICAgICBQb3NzaWJsZSByZWdyZXNzaW9ucw0KPiANCj4gICAgICAqIGlndEBn
-ZW1fZXhlY19zdXNwZW5kQGJhc2ljLXMwQHNtZW06DQo+ICAgICAgICAgICAqIGJhdC1kZzItODog
-Tk9UUlVOIC0+IElOQ09NUExFVEUNCg0KVW5yZWxhdGVkIHRvIHRoZSBjaGFuZ2UuIE1heSBJIGFz
-ayBmb3IgcmVzdW1lIGZ1bGwgcnVuPw0KDQotLQ0KWmJpZ25pZXcNCg0KPiANCj4gS25vd24gaXNz
-dWVzDQo+IA0KPiAgICBIZXJlIGFyZSB0aGUgY2hhbmdlcyBmb3VuZCBpbiBJR1RQV185NzYwIHRo
-YXQgY29tZSBmcm9tIGtub3duIGlzc3VlczoNCj4gDQo+ICAgSUdUIGNoYW5nZXMNCj4gDQo+ICAg
-ICBJc3N1ZXMgaGl0DQo+IA0KPiAgICAgICogaWd0QGdlbV9odWNfY29weUBodWMtY29weToNCj4g
-DQo+ICAgICAgICAgICAqIGZpLWtibC1zb3Jha2E6IE5PVFJVTiAtPiBTS0lQIChmZG8jMTA5Mjcx
-IC8gaTkxNSMyMTkwKQ0KPiAgICAgICogaWd0QGdlbV9sbWVtX3N3YXBwaW5nQGJhc2ljOg0KPiAN
-Cj4gICAgICAgICAgICogZmkta2JsLXNvcmFrYTogTk9UUlVOIC0+IFNLSVAgKGZkbyMxMDkyNzEg
-LyBpOTE1IzQ2MTMpICszIG90aGVyDQo+ICAgICAgICAgICAgIHRlc3RzIHNraXANCj4gICAgICAq
-IGlndEBnZW1fbW1hcEBiYXNpYzoNCj4gDQo+ICAgICAgICAgICAqIGJhdC1kZzItODogTk9UUlVO
-IC0+IFNLSVAgKGk5MTUjNDA4MykNCj4gICAgICAqIGlndEBnZW1fbW1hcF9ndHRAYmFzaWM6DQo+
-IA0KPiAgICAgICAgICAgKiBiYXQtZGcyLTg6IE5PVFJVTiAtPiBTS0lQIChpOTE1IzQwNzcpICsy
-IG90aGVyIHRlc3RzIHNraXANCj4gICAgICAqIGlndEBnZW1fdGlsZWRfcHJlYWRfYmFzaWM6DQo+
-IA0KPiAgICAgICAgICAgKiBiYXQtZGcyLTg6IE5PVFJVTiAtPiBTS0lQIChpOTE1IzQwNzkpICsx
-IG90aGVyIHRlc3Qgc2tpcA0KPiAgICAgICogaWd0QGk5MTVfcG1fcnBzQGJhc2ljLWFwaToNCj4g
-DQo+ICAgICAgICAgICAqIGJhdC1kZzItODogTk9UUlVOIC0+IFNLSVAgKGk5MTUjNjYyMSkNCj4g
-ICAgICAqIGlndEBpOTE1X3NlbGZ0ZXN0QGxpdmVAZ3RfcG06DQo+IA0KPiAgICAgICAgICAgKiBm
-aS1rYmwtc29yYWthOiBOT1RSVU4gLT4gRE1FU0ctRkFJTCAoaTkxNSMxODg2IC8gaTkxNSM3OTEz
-KQ0KPiAgICAgICogaWd0QGk5MTVfc3VzcGVuZEBiYXNpYy1zMy13aXRob3V0LWk5MTU6DQo+IA0K
-PiAgICAgICAgICAgKiBiYXQtZGcyLTg6IE5PVFJVTiAtPiBTS0lQIChpOTE1IzY2NDUpDQo+ICAg
-ICAgKiBpZ3RAa21zX2FkZGZiX2Jhc2ljQGFkZGZiMjUteS10aWxlZC1zbWFsbC1sZWdhY3k6DQo+
-IA0KPiAgICAgICAgICAgKiBiYXQtZGcyLTg6IE5PVFJVTiAtPiBTS0lQIChpOTE1IzUxOTApDQo+
-ICAgICAgKiBpZ3RAa21zX2FkZGZiX2Jhc2ljQGJhc2ljLXktdGlsZWQtbGVnYWN5Og0KPiANCj4g
-ICAgICAgICAgICogYmF0LWRnMi04OiBOT1RSVU4gLT4gU0tJUCAoaTkxNSM0MjE1IC8gaTkxNSM1
-MTkwKQ0KPiAgICAgICogaWd0QGttc19hZGRmYl9iYXNpY0BmcmFtZWJ1ZmZlci12cy1zZXQtdGls
-aW5nOg0KPiANCj4gICAgICAgICAgICogYmF0LWRnMi04OiBOT1RSVU4gLT4gU0tJUCAoaTkxNSM0
-MjEyKSArNyBvdGhlciB0ZXN0cyBza2lwDQo+ICAgICAgKiBpZ3RAa21zX2N1cnNvcl9sZWdhY3lA
-YmFzaWMtYnVzeS1mbGlwLWJlZm9yZS1jdXJzb3ItYXRvbWljOg0KPiANCj4gICAgICAgICAgICog
-Zmkta2JsLXNvcmFrYTogTk9UUlVOIC0+IFNLSVAgKGZkbyMxMDkyNzEpICs4IG90aGVyIHRlc3Rz
-IHNraXANCj4gICAgICAqIGlndEBrbXNfY3Vyc29yX2xlZ2FjeUBiYXNpYy1idXN5LWZsaXAtYmVm
-b3JlLWN1cnNvci1sZWdhY3k6DQo+IA0KPiAgICAgICAgICAgKiBiYXQtZGcyLTg6IE5PVFJVTiAt
-PiBTS0lQIChpOTE1IzQxMDMgLyBpOTE1IzQyMTMpICsxIG90aGVyIHRlc3QNCj4gICAgICAgICAg
-ICAgc2tpcA0KPiAgICAgICogaWd0QGttc19mb3JjZV9jb25uZWN0b3JfYmFzaWNAZm9yY2UtbG9h
-ZC1kZXRlY3Q6DQo+IA0KPiAgICAgICAgICAgKiBiYXQtZGcyLTg6IE5PVFJVTiAtPiBTS0lQIChm
-ZG8jMTA5Mjg1KQ0KPiAgICAgICogaWd0QGttc19mb3JjZV9jb25uZWN0b3JfYmFzaWNAcHJ1bmUt
-c3RhbGUtbW9kZXM6DQo+IA0KPiAgICAgICAgICAgKiBiYXQtZGcyLTg6IE5PVFJVTiAtPiBTS0lQ
-IChpOTE1IzUyNzQpDQo+ICAgICAgKiBpZ3RAa21zX2Zyb250YnVmZmVyX3RyYWNraW5nQGJhc2lj
-Og0KPiANCj4gICAgICAgICAgICogZmktYnN3LW5pY2s6IFBBU1MgLT4gRkFJTCAoaTkxNSM5Mjc2
-KQ0KPiAgICAgICogaWd0QGttc19wc3JAY3Vyc29yX3BsYW5lX21vdmU6DQo+IA0KPiAgICAgICAg
-ICAgKiBiYXQtZGcyLTg6IE5PVFJVTiAtPiBTS0lQIChpOTE1IzEwNzIpICszIG90aGVyIHRlc3Rz
-IHNraXANCj4gICAgICAqIGlndEBrbXNfc2V0bW9kZUBiYXNpYy1jbG9uZS1zaW5nbGUtY3J0YzoN
-Cj4gDQo+ICAgICAgICAgICAqIGJhdC1kZzItODogTk9UUlVOIC0+IFNLSVAgKGk5MTUjMzU1NSkN
-Cj4gICAgICAqIGlndEBwcmltZV92Z2VtQGJhc2ljLWZlbmNlLWZsaXA6DQo+IA0KPiAgICAgICAg
-ICAgKiBiYXQtZGcyLTg6IE5PVFJVTiAtPiBTS0lQIChpOTE1IzM3MDgpDQo+ICAgICAgKiBpZ3RA
-cHJpbWVfdmdlbUBiYXNpYy1mZW5jZS1tbWFwOg0KPiANCj4gICAgICAgICAgICogYmF0LWRnMi04
-OiBOT1RSVU4gLT4gU0tJUCAoaTkxNSMzNzA4IC8gaTkxNSM0MDc3KSArMSBvdGhlciB0ZXN0DQo+
-ICAgICAgICAgICAgIHNraXANCj4gICAgICAqIGlndEBwcmltZV92Z2VtQGJhc2ljLXdyaXRlOg0K
-PiANCj4gICAgICAgICAgICogYmF0LWRnMi04OiBOT1RSVU4gLT4gU0tJUCAoaTkxNSMzMjkxIC8g
-aTkxNSMzNzA4KSArMiBvdGhlciB0ZXN0cw0KPiAgICAgICAgICAgICBza2lwDQo+IA0KPiAgICAg
-UG9zc2libGUgZml4ZXMNCj4gDQo+ICAgICAgKiBpZ3RAa21zX3BpcGVfY3JjX2Jhc2ljQHJlYWQt
-Y3JjLWZyYW1lLXNlcXVlbmNlQHBpcGUtZC1lZHAtMToNCj4gICAgICAgICAgICogYmF0LXJwbHAt
-MTogQUJPUlQgKGk5MTUjODY2OCkgLT4gUEFTUw0KPiANCj4gICAge25hbWV9OiBUaGlzIGVsZW1l
-bnQgaXMgc3VwcHJlc3NlZC4gVGhpcyBtZWFucyBpdCBpcyBpZ25vcmVkIHdoZW4NCj4gICAgY29t
-cHV0aW5nDQo+ICAgIHRoZSBzdGF0dXMgb2YgdGhlIGRpZmZlcmVuY2UgKFNVQ0NFU1MsIFdBUk5J
-TkcsIG9yIEZBSUxVUkUpLg0KPiANCj4gQnVpbGQgY2hhbmdlcw0KPiANCj4gICAgICAqIENJOiBD
-SS0yMDE5MDUyOSAtPiBOb25lDQo+ICAgICAgKiBJR1Q6IElHVF83NDc4IC0+IElHVFBXXzk3NjAN
-Cj4gDQo+ICAgIENJLTIwMTkwNTI5OiAyMDE5MDUyOQ0KPiAgICBDSV9EUk1fMTM2MTc6IDIzMmMw
-NTJiYmFkOTI0NzYyMGViMTY0ZDU1OWMxZTBhOWVhZTAzNTMgQA0KPiAgICBnaXQ6Ly9hbm9uZ2l0
-LmZyZWVkZXNrdG9wLm9yZy9nZngtY2kvbGludXgNCj4gICAgSUdUUFdfOTc2MDogOTc2MA0KPiAg
-ICBJR1RfNzQ3ODogNjA1ZDEyODgwODY2MDJiMjNkMGQ3M2ZlZTUwMjJkY2QzMjlkOWQzZSBADQo+
-ICAgIGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaWd0LWdwdS10b29scy5naXQN
-Cj4gDQo+IFRlc3RsaXN0IGNoYW5nZXMNCj4gDQo+ICAgICtpZ3RAZ2VtX2NvbXB1dGVAY29tcHV0
-ZS1zcXVhcmUNCg==
+On Fri,  8 Sep 2023 14:32:38 +0200
+Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com> wrote:
+
+> Calling igt_success() explicitly at the end of subtest body is not needed.
+> Other calls to igt_success() can be usually avoided by inverting test
+> result checks.  Optimize the code that now calls igt_success().
+> 
+> Moreover, using more advanced variants of igt_skip() and igt_fail() where
+> applicable makes the code more compact.  Go for it.
+
+Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+
+> 
+> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> ---
+>  lib/igt_kmod.c | 14 +++-----------
+>  1 file changed, 3 insertions(+), 11 deletions(-)
+> 
+> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+> index 34ddec3fad..1d1cd51170 100644
+> --- a/lib/igt_kmod.c
+> +++ b/lib/igt_kmod.c
+> @@ -814,12 +814,8 @@ static void __igt_kunit(const char *module_name, const char *opts)
+>  		if (READ_ONCE(results->head) != NULL) {
+>  			pthread_mutex_lock(&results->mutex);
+>  
+> -			igt_dynamic(results->head->test_name) {
+> -				if (READ_ONCE(results->head->passed))
+> -					igt_success();
+> -				else
+> -					igt_fail(IGT_EXIT_FAILURE);
+> -			}
+> +			igt_dynamic(results->head->test_name)
+> +				igt_assert(READ_ONCE(results->head->passed));
+>  
+>  			temp = results->head;
+>  			results->head = results->head->next;
+> @@ -834,8 +830,7 @@ unload:
+>  
+>  	igt_ktest_fini(&tst);
+>  
+> -	if (skip)
+> -		igt_skip("Skipping test, as probing KUnit module returned %d", skip);
+> +	igt_skip_on_f(skip, "Skipping test, as probing KUnit module failed\n");
+>  
+>  	if (fail)
+>  		igt_fail(IGT_EXIT_ABORT);
+> @@ -844,9 +839,6 @@ unload:
+>  
+>  	if (ret != 0)
+>  		igt_fail(IGT_EXIT_ABORT);
+> -
+> -	if (ret == 0)
+> -		igt_success();
+>  }
+>  
+>  void igt_kunit(const char *module_name, const char *name, const char *opts)
