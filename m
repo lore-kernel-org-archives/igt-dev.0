@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B0EC410E308
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Sep 2023 14:28:14 +0000 (UTC)
-Message-ID: <d842a5c9-a95c-77d9-ce08-6f39197beae7@intel.com>
-Date: Mon, 11 Sep 2023 19:57:46 +0530
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2A7A010E30A
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 Sep 2023 14:28:47 +0000 (UTC)
+Message-ID: <eb60d437-0b6a-58ca-d26d-17227ace227f@intel.com>
+Date: Mon, 11 Sep 2023 19:58:28 +0530
 Content-Language: en-US
 To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
 References: <20230908070053.1283474-1-swati2.sharma@intel.com>
- <20230908070053.1283474-3-swati2.sharma@intel.com>
+ <20230908070053.1283474-4-swati2.sharma@intel.com>
 From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20230908070053.1283474-3-swati2.sharma@intel.com>
+In-Reply-To: <20230908070053.1283474-4-swati2.sharma@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/4] tests/kms_feature_discovery: add
- testplan documentation
+Subject: Re: [igt-dev] [PATCH i-g-t 3/4] tests/intel-ci: remove
+ feature_discovery from blocklist
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,103 +26,28 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Swati,
 
 On Fri-08-09-2023 12:30 pm, Swati Sharma wrote:
-> Add testplan documentation for the subtests.
+> Remove feature_discovery from blocklist.
 > 
 > Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 > Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+
 > ---
->   tests/kms_feature_discovery.c | 53 ++++++++++++++++++++++++++++++++++-
->   1 file changed, 52 insertions(+), 1 deletion(-)
+>   tests/intel-ci/xe.blocklist.txt | 1 -
+>   1 file changed, 1 deletion(-)
 > 
-> diff --git a/tests/kms_feature_discovery.c b/tests/kms_feature_discovery.c
-> index d1f4b1633..49958fd88 100644
-> --- a/tests/kms_feature_discovery.c
-> +++ b/tests/kms_feature_discovery.c
-> @@ -22,6 +22,58 @@
->    *
->    */
->   
-> +/**
-> + * TEST: kms feature discovery
-> + * Category: Display
-> + * Description: A metatest that checks for \"features\" presence.
-> + *		The subtests here should only skip or pass,
-> + *		anything else means we have a serious problem.
-> + *
-> + * SUBTEST: display
-> + * Description: Make sure that we have display support with
-> + * 		some outputs connected.
-> + * Driver requirement: i915, xe
-> + * Functionality: feature_discovery
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-
-Please drop Run type for every test.
-
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: display-%dx
-
-Just for readability purpose, please move this test group to end of the 
-list.
-
-> + * Description: Make sure that we have display support with %arg[1]
-> + * 		outputs connected.
-> + * Driver requirement: i915, xe
-> + * Functionality: feature_discovery
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: chamelium
-> + * Description: Make sure that Chamelium is configured and reachable.
-> + * Driver requirement: i915, xe
-> + * Functionality: feature_discovery, chamelium
-> + * Mega feature: General Display Features
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: psr1
-> + * Description: Make sure that we have eDP panel with PSR1 support.
-> + * Driver requirement: i915, xe
-> + * Functionality: feature_discovery, psr1, eDP
-> + * Mega feature: General Display Features
-
-Mega feature should be PSR.
-
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: psr2
-> + * Description: Make sure that we have eDP panel with PSR2 support.
-> + * Driver requirement: i915, xe
-> + * Functionality: feature_discovery, psr2, eDP
-> + * Mega feature: General Display Features
-
-Mega feature should be PSR.
-
-> + * Run type: FULL
-> + * Test category: functionality test
-> + *
-> + * arg[1].values: 2, 3, 4
-> + */
-> +
->   #include "igt.h"
->   #ifdef HAVE_CHAMELIUM
->   #include "igt_chamelium.h"
-> @@ -46,7 +98,6 @@ igt_main {
->   	}
->   
->   	igt_subtest_group {
-> -
-
-Nit: Unrelated change.
-
-- Bhanu
-
->   		igt_fixture {
->   			igt_display_require(&display, fd);
->   		}
+> diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
+> index d496a3f6d..e73018ec6 100644
+> --- a/tests/intel-ci/xe.blocklist.txt
+> +++ b/tests/intel-ci/xe.blocklist.txt
+> @@ -38,7 +38,6 @@ igt@drm_fdinfo
+>   igt@drm_read
+>   igt@dumb.*
+>   igt@fbdev
+> -igt@feature_discovery
+>   igt@prime_.*
+>   igt@sw_sync
+>   igt@syncobj_.*
