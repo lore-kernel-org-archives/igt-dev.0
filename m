@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2A7A010E30A
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Sep 2023 14:28:47 +0000 (UTC)
-Message-ID: <eb60d437-0b6a-58ca-d26d-17227ace227f@intel.com>
-Date: Mon, 11 Sep 2023 19:58:28 +0530
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5A69710E1AF
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 Sep 2023 14:27:03 +0000 (UTC)
+Message-ID: <bd668d98-be42-c750-95fc-eb7927532863@intel.com>
+Date: Mon, 11 Sep 2023 19:54:06 +0530
 Content-Language: en-US
 To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
 References: <20230908070053.1283474-1-swati2.sharma@intel.com>
- <20230908070053.1283474-4-swati2.sharma@intel.com>
+ <20230908070053.1283474-2-swati2.sharma@intel.com>
 From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20230908070053.1283474-4-swati2.sharma@intel.com>
+In-Reply-To: <20230908070053.1283474-2-swati2.sharma@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 3/4] tests/intel-ci: remove
- feature_discovery from blocklist
+Subject: Re: [igt-dev] [PATCH i-g-t 1/4] tests: rename feature_discovery to
+ kms_feature_discovery
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,26 +28,40 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 
 On Fri-08-09-2023 12:30 pm, Swati Sharma wrote:
-> Remove feature_discovery from blocklist.
+> Since feature discovery test is only having kms tests,
+> rename to kms_feature_discovery.
 > 
 > Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
 > ---
->   tests/intel-ci/xe.blocklist.txt | 1 -
->   1 file changed, 1 deletion(-)
+>   tests/{feature_discovery.c => kms_feature_discovery.c} | 0
+>   tests/meson.build                                      | 2 +-
+>   2 files changed, 1 insertion(+), 1 deletion(-)
+>   rename tests/{feature_discovery.c => kms_feature_discovery.c} (100%)
 > 
-> diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
-> index d496a3f6d..e73018ec6 100644
-> --- a/tests/intel-ci/xe.blocklist.txt
-> +++ b/tests/intel-ci/xe.blocklist.txt
-> @@ -38,7 +38,6 @@ igt@drm_fdinfo
->   igt@drm_read
->   igt@dumb.*
->   igt@fbdev
-> -igt@feature_discovery
->   igt@prime_.*
->   igt@sw_sync
->   igt@syncobj_.*
+> diff --git a/tests/feature_discovery.c b/tests/kms_feature_discovery.c
+> similarity index 100%
+> rename from tests/feature_discovery.c
+> rename to tests/kms_feature_discovery.c
+> diff --git a/tests/meson.build b/tests/meson.build
+> index aa8e3434c..eb643d4dd 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -14,7 +14,6 @@ test_progs = [
+>   	'drm_mm',
+>   	'drm_read',
+>   	'fbdev',
+> -	'feature_discovery',
+>   	'kms_3d',
+>   	'kms_addfb_basic',
+>   	'kms_async_flips',
+> @@ -31,6 +30,7 @@ test_progs = [
+>   	'kms_dither',
+>   	'kms_display_modes',
+>   	'kms_dp_aux_dev',
+> +	'kms_feature_discovery',
+>   	'kms_flip',
+>   	'kms_flip_event_leak',
+>   	'kms_force_connector_basic',
