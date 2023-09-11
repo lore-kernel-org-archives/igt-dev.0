@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 03F6210E30F
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Sep 2023 14:31:39 +0000 (UTC)
-Message-ID: <9a219b35-c187-7c10-e65e-e9a425c5f4f1@intel.com>
-Date: Mon, 11 Sep 2023 20:00:46 +0530
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 188FC10E307
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 Sep 2023 14:43:34 +0000 (UTC)
+Message-ID: <65a7b181-ae01-c247-798a-57c10c14d399@intel.com>
+Date: Mon, 11 Sep 2023 20:12:50 +0530
 Content-Language: en-US
 To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20230908070053.1283474-1-swati2.sharma@intel.com>
- <20230908070053.1283474-5-swati2.sharma@intel.com>
+References: <20230908175039.1291593-1-swati2.sharma@intel.com>
+ <20230908175039.1291593-2-swati2.sharma@intel.com>
 From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20230908070053.1283474-5-swati2.sharma@intel.com>
+In-Reply-To: <20230908175039.1291593-2-swati2.sharma@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 4/4] tests/kms_feature_discovery: detect
- mst configuration
+Subject: Re: [igt-dev] [PATCH i-g-t 1/5] tests/intel/kms_pm_backlight: Add
+ XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,76 +22,77 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Swati,
 
-On Fri-08-09-2023 12:30 pm, Swati Sharma wrote:
-> Add test to detect if we have mst configuration.
-> 
-> v2: -use for_each_connected_output() (Bhanu)
->      -don't use helper (Bhanu)
->      -add documentation
-> v3: -add message on skip (Bhanu)
->      -initialize ret (Bhanu)
+On Fri-08-09-2023 11:20 pm, Swati Sharma wrote:
+> Add XE driver support for kms pm tests.
 > 
 > Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
-> ---
->   tests/kms_feature_discovery.c | 26 ++++++++++++++++++++++++++
->   1 file changed, 26 insertions(+)
-> 
-> diff --git a/tests/kms_feature_discovery.c b/tests/kms_feature_discovery.c
-> index 49958fd88..d0451cf9e 100644
-> --- a/tests/kms_feature_discovery.c
-> +++ b/tests/kms_feature_discovery.c
-> @@ -71,6 +71,14 @@
->    * Run type: FULL
->    * Test category: functionality test
->    *
-> + * SUBTEST: dp-mst
-> + * Description: Make sure that we have DP-MST configuration.
-> + * Driver requirement: i915, xe
-> + * Functionality: feature_discovery, mst
-> + * Mega feature: General Display Features
-> + * Run type: FULL
 
-Please drop "Run type", as it is handled by the testplan scripts.
-
-With this change, this patch is
 Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-- Bhanu
-
-> + * Test category: functionality test
-> + *
->    * arg[1].values: 2, 3, 4
->    */
+> ---
+>   tests/intel/kms_pm_backlight.c | 12 ++++++------
+>   1 file changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/tests/intel/kms_pm_backlight.c b/tests/intel/kms_pm_backlight.c
+> index 42aa7cb5d..03bafb773 100644
+> --- a/tests/intel/kms_pm_backlight.c
+> +++ b/tests/intel/kms_pm_backlight.c
+> @@ -43,7 +43,7 @@
+>    *
+>    * SUBTEST: bad-brightness
+>    * Description: Test the bad brightness.
+> - * Driver requirement: i915
+> + * Driver requirement: i915, xe
+>    * Functionality: backlight
+>    * Mega feature: Display Power
+>    * Run type: FULL
+> @@ -51,7 +51,7 @@
+>    *
+>    * SUBTEST: basic-brightness
+>    * Description: Test the basic brightness.
+> - * Driver requirement: i915
+> + * Driver requirement: i915, xe
+>    * Functionality: backlight
+>    * Mega feature: Display Power
+>    * Run type: BAT
+> @@ -59,7 +59,7 @@
+>    *
+>    * SUBTEST: fade
+>    * Description: Test basic fade.
+> - * Driver requirement: i915
+> + * Driver requirement: i915, xe
+>    * Functionality: backlight
+>    * Mega feature: Display Power
+>    * Run type: FULL
+> @@ -67,7 +67,7 @@
+>    *
+>    * SUBTEST: fade-with-dpms
+>    * Description: Test the fade with DPMS.
+> - * Driver requirement: i915
+> + * Driver requirement: i915, xe
+>    * Functionality: dpms, backlight
+>    * Mega feature: Display Power
+>    * Run type: FULL
+> @@ -75,7 +75,7 @@
+>    *
+>    * SUBTEST: fade-with-suspend
+>    * Description: Test the fade with suspend.
+> - * Driver requirement: i915
+> + * Driver requirement: i915, xe
+>    * Functionality: backlight, suspend
+>    * Mega feature: Display Power
+>    * Run type: FULL
+> @@ -302,7 +302,7 @@ igt_main
+>   		 * try to enable all.
+>   		 */
+>   		kmstest_set_vt_graphics_mode();
+> -		igt_display_require(&display, drm_open_driver(DRIVER_INTEL));
+> +		igt_display_require(&display, drm_open_driver(DRIVER_INTEL | DRIVER_XE));
 >   
-> @@ -164,5 +172,23 @@ igt_main {
->   		igt_subtest("psr2") {
->   			igt_require(psr_sink_support(fd, debugfs_fd, PSR_MODE_2));
->   		}
-> +
-> +		igt_describe("Make sure that we have DP-MST configuration.");
-> +		igt_subtest("dp-mst") {
-> +			struct kmstest_connector_config config;
-> +			igt_output_t *output;
-> +			const char *encoder;
-> +			int ret = -1;
-> +
-> +			for_each_connected_output(&display, output) {
-> +				kmstest_get_connector_config(fd, output->config.connector->connector_id, -1, &config);
-> +				encoder = kmstest_encoder_type_str(config.encoder->encoder_type);
-> +
-> +				ret = strcmp(encoder, "DP MST");
-> +				if (ret == 0)
-> +					break;
-> +			}
-> +			igt_require_f(ret == 0, "No DP-MST configuration found.\n");
-> +		}
->   	}
->   }
+>   		for_each_connected_output(&display, output) {
+>   			if (output->config.connector->connector_type != DRM_MODE_CONNECTOR_eDP)
