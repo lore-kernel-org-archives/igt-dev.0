@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 247F910E10C
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Sep 2023 06:04:08 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4CD0B10E128
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 Sep 2023 06:04:12 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 11 Sep 2023 08:03:40 +0200
-Message-Id: <20230911060345.324372-5-zbigniew.kempczynski@intel.com>
+Date: Mon, 11 Sep 2023 08:03:41 +0200
+Message-Id: <20230911060345.324372-6-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20230911060345.324372-1-zbigniew.kempczynski@intel.com>
 References: <20230911060345.324372-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 4/9] lib/intel_compute: Add name field
- for debugging purposes
+Subject: [igt-dev] [PATCH i-g-t v3 5/9] lib/intel_compute: Add i915 path in
+ compute library
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,12 +24,7 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Debugging without knowledge about object characteristics is hard and
-time consuming. Simple name field added for printing binded addresses
-and their sizes might speed up development. I experienced this on
-extending to DG2 so I decided to permanently add it. But to avoid
-annoying output this is limited to igt_debug() which will print
-only on user request or on the test failure.
+Add code which fills requirement to run compute workload on i915.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Christoph Manszewski <christoph.manszewski@intel.com>
@@ -37,66 +32,105 @@ Cc: Francois Dugast <francois.dugast@intel.com>
 Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
 Reviewed-by: Francois Dugast <francois.dugast@intel.com>
 ---
- lib/intel_compute.c | 33 ++++++++++++++++++++++++++-------
- 1 file changed, 26 insertions(+), 7 deletions(-)
+ lib/intel_compute.c | 50 ++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 49 insertions(+), 1 deletion(-)
 
 diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index dbef7176d8..9c4cc451f7 100644
+index 9c4cc451f7..bbe08dff4b 100644
 --- a/lib/intel_compute.c
 +++ b/lib/intel_compute.c
-@@ -36,6 +36,7 @@ struct bo_dict_entry {
- 	uint64_t addr;
+@@ -8,6 +8,7 @@
+ 
+ #include <stdint.h>
+ 
++#include "i915/gem_create.h"
+ #include "igt.h"
+ #include "intel_compute.h"
+ #include "lib/igt_syncobj.h"
+@@ -37,6 +38,7 @@ struct bo_dict_entry {
  	uint32_t size;
  	void *data;
-+	const char *name;
+ 	const char *name;
++	uint32_t handle;
  };
  
  struct bo_execenv {
-@@ -91,6 +92,11 @@ static void bo_execenv_bind(struct bo_execenv *execenv,
- 						 bo_dict[i].addr, bo_dict[i].size, &sync, 1);
- 			syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL);
- 			memset(bo_dict[i].data, 0, bo_dict[i].size);
+@@ -46,6 +48,10 @@ struct bo_execenv {
+ 	/* Xe part */
+ 	uint32_t vm;
+ 	uint32_t exec_queue;
 +
-+			igt_debug("[i: %2d name: %20s] data: %p, addr: %16llx, size: %llx\n",
-+				  i, bo_dict[i].name, bo_dict[i].data,
-+				  (long long)bo_dict[i].addr,
-+				  (long long)bo_dict[i].size);
++	/* i915 part */
++	struct drm_i915_gem_execbuffer2 execbuf;
++	struct drm_i915_gem_exec_object2 *obj;
+ };
+ 
+ static void bo_execenv_create(int fd, struct bo_execenv *execenv)
+@@ -100,6 +106,33 @@ static void bo_execenv_bind(struct bo_execenv *execenv,
  		}
  
  		syncobj_destroy(fd, sync.handle);
-@@ -479,13 +485,26 @@ static void tgl_compute_exec(int fd, const unsigned char *kernel,
++	} else {
++		struct drm_i915_gem_execbuffer2 *execbuf = &execenv->execbuf;
++		struct drm_i915_gem_exec_object2 *obj;
++
++		obj = calloc(entries, sizeof(*obj));
++		execenv->obj = obj;
++
++		for (int i = 0; i < entries; i++) {
++			bo_dict[i].handle = gem_create(fd, bo_dict[i].size);
++			bo_dict[i].data = gem_mmap__device_coherent(fd, bo_dict[i].handle,
++								    0, bo_dict[i].size,
++								    PROT_READ | PROT_WRITE);
++			igt_debug("[i: %2d name: %20s] handle: %u, data: %p, addr: %16llx, size: %llx\n",
++				  i, bo_dict[i].name,
++				  bo_dict[i].handle, bo_dict[i].data,
++				  (long long)bo_dict[i].addr,
++				  (long long)bo_dict[i].size);
++
++			obj[i].handle = bo_dict[i].handle;
++			obj[i].offset = CANONICAL(bo_dict[i].addr);
++			obj[i].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
++			if (bo_dict[i].addr == ADDR_OUTPUT)
++				obj[i].flags |= EXEC_OBJECT_WRITE;
++		}
++
++		execbuf->buffers_ptr = to_user_pointer(obj);
++		execbuf->buffer_count = entries;
+ 	}
+ }
+ 
+@@ -122,6 +155,12 @@ static void bo_execenv_unbind(struct bo_execenv *execenv,
+ 		}
+ 
+ 		syncobj_destroy(fd, sync.handle);
++	} else {
++		for (int i = 0; i < entries; i++) {
++			gem_close(fd, bo_dict[i].handle);
++			munmap(bo_dict[i].data, bo_dict[i].size);
++		}
++		free(execenv->obj);
+ 	}
+ }
+ 
+@@ -129,8 +168,17 @@ static void bo_execenv_exec(struct bo_execenv *execenv, uint64_t start_addr)
  {
- #define TGL_BO_DICT_ENTRIES 7
- 	struct bo_dict_entry bo_dict[TGL_BO_DICT_ENTRIES] = {
--		{ .addr = ADDR_INDIRECT_OBJECT_BASE + OFFSET_KERNEL}, // kernel
--		{ .addr = ADDR_DYNAMIC_STATE_BASE, .size =  0x1000}, // dynamic state
--		{ .addr = ADDR_SURFACE_STATE_BASE, .size =  0x1000}, // surface state
--		{ .addr = ADDR_INDIRECT_OBJECT_BASE + OFFSET_INDIRECT_DATA_START, .size =  0x10000}, // indirect data
--		{ .addr = ADDR_INPUT, .size = SIZE_BUFFER_INPUT }, // input
--		{ .addr = ADDR_OUTPUT, .size = SIZE_BUFFER_OUTPUT }, // output
--		{ .addr = ADDR_BATCH, .size = SIZE_BATCH }, // batch
-+		{ .addr = ADDR_INDIRECT_OBJECT_BASE + OFFSET_KERNEL,
-+		  .name = "kernel" },
-+		{ .addr = ADDR_DYNAMIC_STATE_BASE,
-+		  .size =  0x1000,
-+		  .name = "dynamic state base" },
-+		{ .addr = ADDR_SURFACE_STATE_BASE,
-+		  .size =  0x1000,
-+		  .name = "surface state base" },
-+		{ .addr = ADDR_INDIRECT_OBJECT_BASE + OFFSET_INDIRECT_DATA_START,
-+		  .size =  0x10000,
-+		  .name = "indirect data start" },
-+		{ .addr = ADDR_INPUT,
-+		  .size = SIZE_BUFFER_INPUT,
-+		  .name = "input" },
-+		{ .addr = ADDR_OUTPUT,
-+		  .size = SIZE_BUFFER_OUTPUT,
-+		  .name = "output" },
-+		{ .addr = ADDR_BATCH,
-+		  .size = SIZE_BATCH,
-+		  .name = "batch" },
- 	};
- 	struct bo_execenv execenv;
- 	float *dinput;
+ 	int fd = execenv->fd;
+ 
+-	if (execenv->driver == INTEL_DRIVER_XE)
++	if (execenv->driver == INTEL_DRIVER_XE) {
+ 		xe_exec_wait(fd, execenv->exec_queue, start_addr);
++	} else {
++		struct drm_i915_gem_execbuffer2 *execbuf = &execenv->execbuf;
++		struct drm_i915_gem_exec_object2 *obj = execenv->obj;
++		int num_objects = execbuf->buffer_count;
++
++		execbuf->flags = I915_EXEC_RENDER;
++		gem_execbuf(fd, execbuf);
++		gem_sync(fd, obj[num_objects - 1].handle); /* batch handle */
++	}
+ }
+ 
+ /*
 -- 
 2.34.1
