@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6463110E2DB
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Sep 2023 12:23:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CEEB210E2DB
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 Sep 2023 12:23:01 +0000 (UTC)
 From: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 11 Sep 2023 15:22:54 +0300
-Message-Id: <20230911122256.30665-1-stanislav.lisovskiy@intel.com>
+Date: Mon, 11 Sep 2023 15:22:55 +0300
+Message-Id: <20230911122256.30665-2-stanislav.lisovskiy@intel.com>
+In-Reply-To: <20230911122256.30665-1-stanislav.lisovskiy@intel.com>
+References: <20230911122256.30665-1-stanislav.lisovskiy@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 0/2] i915_pipe_stress fixes
+Subject: [igt-dev] [PATCH 1/2] tests/intel/i915_pipe_stress: Fix create_buf
+ function
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,15 +24,30 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-- Fix for intel_buf initialization in create_buf
-- Fix for the Bigjoiner-related issues
+create_buf currently does wrong assumption what it gets
+width in bytes, however reality is that it gets width
+in pixels, so "width/4" must be "width * 4" for bpp 32.
 
-Stanislav Lisovskiy (2):
-  tests/intel/i915_pipe_stress: Fix create_buf function
-  tests/intel/i915_pipe_stress: Use only first pipe if Bigjoiner is used
+Signed-off-by: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
+---
+ tests/intel/i915_pipe_stress.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- tests/intel/i915_pipe_stress.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
-
+diff --git a/tests/intel/i915_pipe_stress.c b/tests/intel/i915_pipe_stress.c
+index 9ceb056a09..007d3a1159 100644
+--- a/tests/intel/i915_pipe_stress.c
++++ b/tests/intel/i915_pipe_stress.c
+@@ -201,9 +201,9 @@ create_buf(struct data *data, int width, int height, uint32_t region)
+ 	 * Legacy code uses 32 bpp after buffer creation.
+ 	 * Let's do the same due to keep shader intact.
+ 	 */
+-	handle = gem_create_in_memory_regions(data->drm_fd, width * height, region);
++	handle = gem_create_in_memory_regions(data->drm_fd, width * 4 * height, region);
+ 	intel_buf_init_using_handle(data->bops, handle, buf,
+-				    width/4, height, 32, 0,
++				    width * 4, height, 32, 0,
+ 				    I915_TILING_NONE, 0);
+ 
+ 	return buf;
 -- 
 2.37.3
