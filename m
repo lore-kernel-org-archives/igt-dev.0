@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Mon, 11 Sep 2023 10:49:36 +0200
+Date: Mon, 11 Sep 2023 10:52:51 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Message-ID: <20230911104936.435fa279@maurocar-mobl2>
-In-Reply-To: <20230908123233.137134-23-janusz.krzysztofik@linux.intel.com>
+Message-ID: <20230911105251.220d90ed@maurocar-mobl2>
+In-Reply-To: <20230908123233.137134-24-janusz.krzysztofik@linux.intel.com>
 References: <20230908123233.137134-19-janusz.krzysztofik@linux.intel.com>
- <20230908123233.137134-23-janusz.krzysztofik@linux.intel.com>
+ <20230908123233.137134-24-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t v2 04/17] lib/kunit:
- Optimize calls to igt_success/skip/fail()
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t v2 05/17] lib/kunit: Fix
+ illegal igt_fail() calls inside subtest body
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,66 +18,157 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org,
- Isabella Basso <isabbasso@riseup.net>, intel-xe@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ Isabella Basso <isabbasso@riseup.net>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri,  8 Sep 2023 14:32:38 +0200
+On Fri,  8 Sep 2023 14:32:39 +0200
 Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com> wrote:
 
-> Calling igt_success() explicitly at the end of subtest body is not needed.
-> Other calls to igt_success() can be usually avoided by inverting test
-> result checks.  Optimize the code that now calls igt_success().
+> In a body of a subtest with dynamic sub-subtests, it is illegal to call
+> igt_fail() and its variants from outside of a dynamic sub-subtest body.
+> On the other hand, it is perfectly legal to call either igt_skip() and
+> friends or __igt_abort() or its variant from there.
 > 
-> Moreover, using more advanced variants of igt_skip() and igt_fail() where
-> applicable makes the code more compact.  Go for it.
-
-Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-
+> In the current implementation of igt_kunit(), there are several places
+> where igt_fail() is called despite being illegal.  Moreover, it is called
+> with IGT_EXIT_ABORT as an argument with no good reason for using such
+> aggressive method that forces CI to trigger system reboot (in most cases
+> igt_runner can decide if abort is required).
+> 
+> Follow igt_kselftests() pattern more closely, where similar setup and
+> cleanup operations are performed but their potential errors are processed
+> in a more friendly way.  Move common cleanup and their corresponding setup
+> steps out of the subtest body.  Place the latter as requirements in a
+> preceding igt_fixture section.  Replace remaining illegal igt_fail() calls
+> with more friendly skips.  Let igt_runner decide if abort is needed.
 > 
 > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 > ---
->  lib/igt_kmod.c | 14 +++-----------
->  1 file changed, 3 insertions(+), 11 deletions(-)
+>  lib/igt_kmod.c | 75 +++++++++++++++-----------------------------------
+>  1 file changed, 22 insertions(+), 53 deletions(-)
 > 
 > diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-> index 34ddec3fad..1d1cd51170 100644
+> index 1d1cd51170..78b8eb8f53 100644
 > --- a/lib/igt_kmod.c
 > +++ b/lib/igt_kmod.c
-> @@ -814,12 +814,8 @@ static void __igt_kunit(const char *module_name, const char *opts)
->  		if (READ_ONCE(results->head) != NULL) {
->  			pthread_mutex_lock(&results->mutex);
->  
-> -			igt_dynamic(results->head->test_name) {
-> -				if (READ_ONCE(results->head->passed))
-> -					igt_success();
-> -				else
-> -					igt_fail(IGT_EXIT_FAILURE);
-> -			}
-> +			igt_dynamic(results->head->test_name)
-> +				igt_assert(READ_ONCE(results->head->passed));
->  
->  			temp = results->head;
->  			results->head = results->head->next;
-> @@ -834,8 +830,7 @@ unload:
->  
->  	igt_ktest_fini(&tst);
->  
-> -	if (skip)
-> -		igt_skip("Skipping test, as probing KUnit module returned %d", skip);
-> +	igt_skip_on_f(skip, "Skipping test, as probing KUnit module failed\n");
->  
->  	if (fail)
->  		igt_fail(IGT_EXIT_ABORT);
-> @@ -844,9 +839,6 @@ unload:
->  
->  	if (ret != 0)
->  		igt_fail(IGT_EXIT_ABORT);
+> @@ -754,59 +754,27 @@ void igt_kselftest_get_tests(struct kmod_module *kmod,
+>   *
+>   * Returns: IGT default codes
+>   */
+> -static void __igt_kunit(const char *module_name, const char *opts)
+> +static void __igt_kunit(struct igt_ktest *tst, const char *opts)
+>  {
+> -	struct igt_ktest tst;
+>  	struct kmod_module *kunit_kmod;
+>  	bool is_builtin;
+>  	int ret;
+>  	struct ktap_test_results *results;
+>  	struct ktap_test_results_element *temp;
+> -	int skip = 0;
+> -	bool fail = false;
 > -
-> -	if (ret == 0)
-> -		igt_success();
+> -	/* get normalized module name */
+> -	if (igt_ktest_init(&tst, module_name) != 0) {
+> -		igt_warn("Unable to initialize ktest for %s\n", module_name);
+> -		igt_fail(IGT_EXIT_ABORT);
+> -	}
+> -
+> -	if (igt_ktest_begin(&tst) != 0) {
+> -		igt_warn("Unable to begin ktest for %s\n", module_name);
+> -		igt_ktest_fini(&tst);
+> -		igt_fail(IGT_EXIT_ABORT);
+> -	}
+>  
+> -	if (tst.kmsg < 0) {
+> -		igt_warn("Could not open /dev/kmsg\n");
+> -		fail = true;
+> -		goto unload;
+> -	}
+> +	igt_skip_on_f(tst->kmsg < 0, "Could not open /dev/kmsg\n");
+>  
+> -	if (lseek(tst.kmsg, 0, SEEK_END)) {
+> -		igt_warn("Could not seek the end of /dev/kmsg\n");
+> -		fail = true;
+> -		goto unload;
+> -	}
+> -
+> -	ret = kmod_module_new_from_name(kmod_ctx(), "kunit", &kunit_kmod);
+> -	if (ret) {
+> -		igt_warn("Unable to load KUnit\n");
+> -		skip = ret;
+> -		goto unload;
+> -	}
+> +	igt_skip_on(lseek(tst->kmsg, 0, SEEK_END) < 0);
+>  
+> +	igt_skip_on(kmod_module_new_from_name(kmod_ctx(), "kunit", &kunit_kmod));
+>  	is_builtin = kmod_module_get_initstate(kunit_kmod) == KMOD_MODULE_BUILTIN;
+>  	kmod_module_unref(kunit_kmod);
+>  
+> -	results = ktap_parser_start(tst.kmsg, is_builtin);
+> +	results = ktap_parser_start(tst->kmsg, is_builtin);
+>  
+> -	ret = igt_kmod_load(module_name, opts);
+> -	if (ret) {
+> -		skip = ret;
+> -		igt_warn("Unable to load %s module\n", module_name);
+> -		ret = ktap_parser_stop();
+> -		goto unload;
+> +	if (igt_debug_on(igt_kmod_load(tst->module_name, opts) < 0)) {
+> +		igt_ignore_warn(ktap_parser_stop());
+> +		igt_skip("Unable to load %s module\n", tst->module_name);
+>  	}
+>  
+>  	while (READ_ONCE(results->still_running) || READ_ONCE(results->head) != NULL)
+> @@ -825,24 +793,21 @@ static void __igt_kunit(const char *module_name, const char *opts)
+>  		}
+>  	}
+>  
+> -unload:
+> -	igt_ktest_end(&tst);
+> -
+> -	igt_ktest_fini(&tst);
+> -
+> -	igt_skip_on_f(skip, "Skipping test, as probing KUnit module failed\n");
+> -
+> -	if (fail)
+> -		igt_fail(IGT_EXIT_ABORT);
+> -
+>  	ret = ktap_parser_stop();
+>  
+> -	if (ret != 0)
+> -		igt_fail(IGT_EXIT_ABORT);
+> +	igt_skip_on_f(ret, "KTAP parser failed\n");
 >  }
 >  
 >  void igt_kunit(const char *module_name, const char *name, const char *opts)
+>  {
+> +	struct igt_ktest tst;
+> +
+> +	if (igt_ktest_init(&tst, module_name) != 0)
+> +		return;
+
+Shouldn't it be calling igt_skip() here too?
+
+> +
+> +	igt_fixture
+> +		igt_require(igt_ktest_begin(&tst) == 0);
+> +
+>  	/*
+>  	 * We need to use igt_subtest here, as otherwise it may crash with:
+>  	 *  skipping is allowed only in fixtures, subtests or igt_simple_main
+> @@ -854,7 +819,11 @@ void igt_kunit(const char *module_name, const char *name, const char *opts)
+>  		name = module_name;
+>  
+>  	igt_subtest_with_dynamic(name)
+> -		__igt_kunit(module_name, opts);
+> +		__igt_kunit(&tst, opts);
+> +
+> +	igt_ktest_end(&tst);
+> +
+> +	igt_ktest_fini(&tst);
+>  }
+>  
+>  static int open_parameters(const char *module_name)
