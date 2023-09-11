@@ -1,25 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 528B410E2C5
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Sep 2023 11:25:11 +0000 (UTC)
-Message-ID: <3233d106-a8b9-2225-138e-e19473f95a8e@intel.com>
-Date: Mon, 11 Sep 2023 13:24:54 +0200
-Content-Language: en-US
-To: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>, "Kempczynski, Zbigniew"
- <zbigniew.kempczynski@intel.com>
-References: <20230904110458.24177-1-sai.gowtham.ch@intel.com>
- <20230904110458.24177-3-sai.gowtham.ch@intel.com>
- <20230904123934.stxmaelmzxg3366l@zkempczy-mobl2>
- <BYAPR11MB3413605657BFBE884AA82502D0E8A@BYAPR11MB3413.namprd11.prod.outlook.com>
- <20230907093628.hlpa7kh47nddjz7z@zkempczy-mobl2>
- <BYAPR11MB3413A74B3E8C02EE4C8A0330D0EEA@BYAPR11MB3413.namprd11.prod.outlook.com>
-From: Karolina Stolarek <karolina.stolarek@intel.com>
-In-Reply-To: <BYAPR11MB3413A74B3E8C02EE4C8A0330D0EEA@BYAPR11MB3413.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D1FED10E2D1
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 Sep 2023 11:51:03 +0000 (UTC)
+Date: Mon, 11 Sep 2023 13:50:59 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Message-ID: <20230911115059.qitsb4uzae5wgptw@zkempczy-mobl2>
+References: <20230908125454.2670405-1-marcin.bernatowicz@linux.intel.com>
+ <20230908125454.2670405-2-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/4] lib/intel_blt: check if blt
- commands are supported by the platforms
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230908125454.2670405-2-marcin.bernatowicz@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v4 1/4] lib/xe_spin: xe_spin_opts for
+ xe_spin initialization
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,163 +22,366 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 7.09.2023 15:36, Ch, Sai Gowtham wrote:
+On Fri, Sep 08, 2023 at 12:54:51PM +0000, Marcin Bernatowicz wrote:
+> Introduced struct xe_spin_opts for xe_spin initialization,
+> adjusted tests to new xe_spin_init signature.
+> Added xe_spin_init_opts macro (Zbyszek).
 > 
+> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> ---
+>  lib/xe/xe_spin.c               | 28 ++++++++++------------------
+>  lib/xe/xe_spin.h               | 19 ++++++++++++++++++-
+>  tests/intel/xe_dma_buf_sync.c  |  6 +++---
+>  tests/intel/xe_exec_balancer.c |  9 ++++-----
+>  tests/intel/xe_exec_reset.c    | 24 ++++++++++++++----------
+>  tests/intel/xe_exec_threads.c  |  7 ++++---
+>  tests/intel/xe_vm.c            |  7 ++++---
+>  7 files changed, 57 insertions(+), 43 deletions(-)
 > 
->> -----Original Message-----
->> From: Kempczynski, Zbigniew <zbigniew.kempczynski@intel.com>
->> Sent: Thursday, September 7, 2023 3:06 PM
->> To: Ch, Sai Gowtham <sai.gowtham.ch@intel.com>
->> Cc: igt-dev@lists.freedesktop.org; Stolarek, Karolina
->> <karolina.stolarek@intel.com>
->> Subject: Re: [igt-dev] [PATCH i-g-t 2/4] lib/intel_blt: check if blt commands are
->> supported by the platforms
->>
->> On Tue, Sep 05, 2023 at 06:11:54AM +0200, Ch, Sai Gowtham wrote:
->>>
->>>
->>>> -----Original Message-----
->>>> From: Kempczynski, Zbigniew <zbigniew.kempczynski@intel.com>
->>>> Sent: Monday, September 4, 2023 6:10 PM
->>>> To: Ch, Sai Gowtham <sai.gowtham.ch@intel.com>
->>>> Cc: igt-dev@lists.freedesktop.org; Stolarek, Karolina
->>>> <karolina.stolarek@intel.com>
->>>> Subject: Re: [igt-dev] [PATCH i-g-t 2/4] lib/intel_blt: check if blt
->>>> commands are supported by the platforms
->>>>
->>>> On Mon, Sep 04, 2023 at 04:34:56PM +0530, sai.gowtham.ch@intel.com
->> wrote:
->>>>> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
->>>>>
->>>>> Check if mem-copy/mem-set commands are supported by fd device.
->>>>>
->>>>> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
->>>>> ---
->>>>>   lib/intel_blt.c | 32 ++++++++++++++++++++++++++++++++
->>>>> lib/intel_blt.h |  2 ++
->>>>>   2 files changed, 34 insertions(+)
->>>>>
->>>>> diff --git a/lib/intel_blt.c b/lib/intel_blt.c index
->>>>> 429511920..b55fa9b52 100644
->>>>> --- a/lib/intel_blt.c
->>>>> +++ b/lib/intel_blt.c
->>>>> @@ -289,6 +289,38 @@ bool blt_has_block_copy(int fd)
->>>>>   	return blt_supports_command(cmds_info, XY_BLOCK_COPY);  }
->>>>>
->>>>> +/**
->>>>> + * blt_has_mem_copy
->>>>> + * @fd: drm fd
->>>>> + *
->>>>> + * Check if mem copy is supported by @fd device
->>>>> + *
->>>>> + * Returns:
->>>>> + * true if it does, false otherwise.
->>>>> + */
->>>>> +bool blt_has_mem_copy(int fd)
->>>>> +{
->>>>> +	const struct intel_cmds_info *cmds_info = GET_CMDS_INFO(fd);
->>>>> +
->>>>> +	return blt_supports_command(cmds_info, MEM_COPY); }
->>>>> +
->>>>> +/**
->>>>> + * blt_has_mem_set
->>>>> + * @fd: drm fd
->>>>> + *
->>>>> + * Check if mem set is supported by @fd device
->>>>> + *
->>>>> + * Returns:
->>>>> + * true if it does, false otherwise.
->>>>> + */
->>>>> +bool blt_has_mem_set(int fd)
->>>>> +{
->>>>> +	const struct intel_cmds_info *cmds_info = GET_CMDS_INFO(fd);
->>>>> +
->>>>> +	return blt_supports_command(cmds_info, MEM_SET); }
->>>>> +
->>>>
->>>> It is not true if you'll use those functions in i915 igts.
->>> Do you mean path for i915 needs to be enabled ?
->>
->> Yes, if I'm not wrong PVC will be supported on i915 as either.
->> So if blt_has_mem_set() will return true for it it should have the implementation
->> in the blitter library. Generally you got almost everything you need
->> (mem_set/copy code is already written so what you need is to extract this and
->> support two ways of entering it (for i915 and for xe).
+> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
+> index 7113972ee..27f837ef9 100644
+> --- a/lib/xe/xe_spin.c
+> +++ b/lib/xe/xe_spin.c
+> @@ -19,17 +19,13 @@
+>  /**
+>   * xe_spin_init:
+>   * @spin: pointer to mapped bo in which spinner code will be written
+> - * @addr: offset of spinner within vm
+> - * @preempt: allow spinner to be preempted or not
+> + * @opts: pointer to spinner initialization options
+>   */
+> -void xe_spin_init(struct xe_spin *spin, uint64_t addr, bool preempt)
+> +void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
+>  {
+> -	uint64_t batch_offset = (char *)&spin->batch - (char *)spin;
+> -	uint64_t batch_addr = addr + batch_offset;
+> -	uint64_t start_offset = (char *)&spin->start - (char *)spin;
+> -	uint64_t start_addr = addr + start_offset;
+> -	uint64_t end_offset = (char *)&spin->end - (char *)spin;
+> -	uint64_t end_addr = addr + end_offset;
+> +	uint64_t loop_addr = opts->addr + offsetof(struct xe_spin, batch);
+> +	uint64_t start_addr = opts->addr + offsetof(struct xe_spin, start);
+> +	uint64_t end_addr = opts->addr + offsetof(struct xe_spin, end);
+>  	int b = 0;
+>  
+>  	spin->start = 0;
+> @@ -40,7 +36,7 @@ void xe_spin_init(struct xe_spin *spin, uint64_t addr, bool preempt)
+>  	spin->batch[b++] = start_addr >> 32;
+>  	spin->batch[b++] = 0xc0ffee;
+>  
+> -	if (preempt)
+> +	if (opts->preempt)
+>  		spin->batch[b++] = (0x5 << 23);
+>  
+>  	spin->batch[b++] = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | 2;
+> @@ -49,8 +45,8 @@ void xe_spin_init(struct xe_spin *spin, uint64_t addr, bool preempt)
+>  	spin->batch[b++] = end_addr >> 32;
+>  
+>  	spin->batch[b++] = MI_BATCH_BUFFER_START | 1 << 8 | 1;
+> -	spin->batch[b++] = batch_addr;
+> -	spin->batch[b++] = batch_addr >> 32;
+> +	spin->batch[b++] = loop_addr;
+> +	spin->batch[b++] = loop_addr >> 32;
+>  
+>  	igt_assert(b <= ARRAY_SIZE(spin->batch));
+>  }
+> @@ -133,11 +129,7 @@ xe_spin_create(int fd, const struct igt_spin_factory *opt)
+>  	addr = intel_allocator_alloc_with_strategy(ahnd, spin->handle, bo_size, 0, ALLOC_STRATEGY_LOW_TO_HIGH);
+>  	xe_vm_bind_sync(fd, spin->vm, spin->handle, 0, addr, bo_size);
+>  
+> -	if (!(opt->flags & IGT_SPIN_NO_PREEMPTION))
+> -		xe_spin_init(xe_spin, addr, true);
+> -	else
+> -		xe_spin_init(xe_spin, addr, false);
+> -
+> +	xe_spin_init_opts(xe_spin, .addr = addr, .preempt = !(opt->flags & IGT_SPIN_NO_PREEMPTION));
+>  	exec.exec_queue_id = spin->engine;
+>  	exec.address = addr;
+>  	sync.handle = spin->syncobj;
+> @@ -219,7 +211,7 @@ void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
+>  	exec_queue = xe_exec_queue_create(fd, vm, hwe, 0);
+>  	syncobj = syncobj_create(fd, 0);
+>  
+> -	xe_spin_init(spin, addr, true);
+> +	xe_spin_init_opts(spin, .addr = addr, .preempt = true);
+>  	exec.exec_queue_id = exec_queue;
+>  	exec.address = addr;
+>  	sync.handle = syncobj;
+> diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
+> index c84db175d..9f1d33294 100644
+> --- a/lib/xe/xe_spin.h
+> +++ b/lib/xe/xe_spin.h
+> @@ -15,6 +15,18 @@
+>  #include "xe_query.h"
+>  #include "lib/igt_dummyload.h"
+>  
+> +/** struct xe_spin_opts
+> + *
+> + * @addr: offset of spinner within vm
+> + * @preempt: allow spinner to be preempted or not
+> + *
+> + * Used to initialize struct xe_spin spinner behavior.
+> + */
+> +struct xe_spin_opts {
+> +	uint64_t addr;
+> +	bool preempt;
+> +};
+> +
+>  /* Mapped GPU object */
+>  struct xe_spin {
+>  	uint32_t batch[16];
+> @@ -22,8 +34,13 @@ struct xe_spin {
+>  	uint32_t start;
+>  	uint32_t end;
+>  };
+> +
+>  igt_spin_t *xe_spin_create(int fd, const struct igt_spin_factory *opt);
+> -void xe_spin_init(struct xe_spin *spin, uint64_t addr, bool preempt);
+> +void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts);
+> +
+> +#define xe_spin_init_opts(fd, ...) \
+> +	xe_spin_init(fd, &((struct xe_spin_opts){__VA_ARGS__}))
+> +
+>  bool xe_spin_started(struct xe_spin *spin);
+>  void xe_spin_sync_wait(int fd, struct igt_spin *spin);
+>  void xe_spin_wait_started(struct xe_spin *spin);
+> diff --git a/tests/intel/xe_dma_buf_sync.c b/tests/intel/xe_dma_buf_sync.c
+> index 8c400c8fd..dd76f0b96 100644
+> --- a/tests/intel/xe_dma_buf_sync.c
+> +++ b/tests/intel/xe_dma_buf_sync.c
+> @@ -147,7 +147,6 @@ test_export_dma_buf(struct drm_xe_engine_class_instance *hwe0,
+>  		uint64_t sdi_offset = (char *)&data[i]->data - (char *)data[i];
+>  		uint64_t sdi_addr = addr + sdi_offset;
+>  		uint64_t spin_offset = (char *)&data[i]->spin - (char *)data[i];
+> -		uint64_t spin_addr = addr + spin_offset;
+>  		struct drm_xe_sync sync[2] = {
+>  			{ .flags = DRM_XE_SYNC_SYNCOBJ, },
+>  			{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
+> @@ -156,14 +155,15 @@ test_export_dma_buf(struct drm_xe_engine_class_instance *hwe0,
+>  			.num_batch_buffer = 1,
+>  			.syncs = to_user_pointer(sync),
+>  		};
+> +		struct xe_spin_opts spin_opts = { .addr = addr + spin_offset, .preempt = true };
+>  		uint32_t syncobj;
+>  		int b = 0;
+>  		int sync_fd;
+>  
+>  		/* Write spinner on FD[0] */
+> -		xe_spin_init(&data[i]->spin, spin_addr, true);
+> +		xe_spin_init(&data[i]->spin, &spin_opts);
+>  		exec.exec_queue_id = exec_queue[0];
+> -		exec.address = spin_addr;
+> +		exec.address = spin_opts.addr;
+>  		xe_exec(fd[0], &exec);
+>  
+>  		/* Export prime BO as sync file and veify business */
+> diff --git a/tests/intel/xe_exec_balancer.c b/tests/intel/xe_exec_balancer.c
+> index f571f13d9..3fb59d75f 100644
+> --- a/tests/intel/xe_exec_balancer.c
+> +++ b/tests/intel/xe_exec_balancer.c
+> @@ -53,6 +53,7 @@ static void test_all_active(int fd, int gt, int class)
+>  	struct {
+>  		struct xe_spin spin;
+>  	} *data;
+> +	struct xe_spin_opts spin_opts = { .preempt = false };
+>  	struct drm_xe_engine_class_instance *hwe;
+>  	struct drm_xe_engine_class_instance eci[MAX_INSTANCE];
+>  	int i, num_placements = 0;
+> @@ -91,16 +92,14 @@ static void test_all_active(int fd, int gt, int class)
+>  	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
+>  
+>  	for (i = 0; i < num_placements; i++) {
+> -		uint64_t spin_offset = (char *)&data[i].spin - (char *)data;
+> -		uint64_t spin_addr = addr + spin_offset;
+> -
+> -		xe_spin_init(&data[i].spin, spin_addr, false);
+> +		spin_opts.addr = addr + (char *)&data[i].spin - (char *)data;
+> +		xe_spin_init(&data[i].spin, &spin_opts);
+>  		sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
+>  		sync[1].flags |= DRM_XE_SYNC_SIGNAL;
+>  		sync[1].handle = syncobjs[i];
+>  
+>  		exec.exec_queue_id = exec_queues[i];
+> -		exec.address = spin_addr;
+> +		exec.address = spin_opts.addr;
+>  		xe_exec(fd, &exec);
+>  		xe_spin_wait_started(&data[i].spin);
+>  	}
+> diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
+> index a2d33baf1..be6bbada6 100644
+> --- a/tests/intel/xe_exec_reset.c
+> +++ b/tests/intel/xe_exec_reset.c
+> @@ -44,6 +44,7 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci)
+>  	size_t bo_size;
+>  	uint32_t bo = 0;
+>  	struct xe_spin *spin;
+> +	struct xe_spin_opts spin_opts = { .addr = addr, .preempt = false };
+>  
+>  	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
+>  	bo_size = sizeof(*spin);
+> @@ -60,7 +61,7 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci)
+>  	sync[0].handle = syncobj_create(fd, 0);
+>  	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
+>  
+> -	xe_spin_init(spin, addr, false);
+> +	xe_spin_init(spin, &spin_opts);
+>  
+>  	sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
+>  	sync[1].flags |= DRM_XE_SYNC_SIGNAL;
+> @@ -165,6 +166,7 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
+>  		uint64_t pad;
+>  		uint32_t data;
+>  	} *data;
+> +	struct xe_spin_opts spin_opts = { .preempt = false };
+>  	struct drm_xe_engine_class_instance *hwe;
+>  	struct drm_xe_engine_class_instance eci[MAX_INSTANCE];
+>  	int i, j, b, num_placements = 0, bad_batches = 1;
+> @@ -236,7 +238,6 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
+>  		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
+>  		uint64_t batch_addr = base_addr + batch_offset;
+>  		uint64_t spin_offset = (char *)&data[i].spin - (char *)data;
+> -		uint64_t spin_addr = base_addr + spin_offset;
+>  		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
+>  		uint64_t sdi_addr = base_addr + sdi_offset;
+>  		uint64_t exec_addr;
+> @@ -247,8 +248,9 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
+>  			batches[j] = batch_addr;
+>  
+>  		if (i < bad_batches) {
+> -			xe_spin_init(&data[i].spin, spin_addr, false);
+> -			exec_addr = spin_addr;
+> +			spin_opts.addr = base_addr + spin_offset;
+> +			xe_spin_init(&data[i].spin, &spin_opts);
+> +			exec_addr = spin_opts.addr;
+>  		} else {
+>  			b = 0;
+>  			data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
+> @@ -368,6 +370,7 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
+>  		uint64_t pad;
+>  		uint32_t data;
+>  	} *data;
+> +	struct xe_spin_opts spin_opts = { .preempt = false };
+>  	int i, b;
+>  
+>  	igt_assert(n_exec_queues <= MAX_N_EXECQUEUES);
+> @@ -417,15 +420,15 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
+>  		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
+>  		uint64_t batch_addr = base_addr + batch_offset;
+>  		uint64_t spin_offset = (char *)&data[i].spin - (char *)data;
+> -		uint64_t spin_addr = base_addr + spin_offset;
+>  		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
+>  		uint64_t sdi_addr = base_addr + sdi_offset;
+>  		uint64_t exec_addr;
+>  		int e = i % n_exec_queues;
+>  
+>  		if (!i) {
+> -			xe_spin_init(&data[i].spin, spin_addr, false);
+> -			exec_addr = spin_addr;
+> +			spin_opts.addr = base_addr + spin_offset;
+> +			xe_spin_init(&data[i].spin, &spin_opts);
+> +			exec_addr = spin_opts.addr;
+>  		} else {
+>  			b = 0;
+>  			data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
+> @@ -539,6 +542,7 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
+>  		uint64_t exec_sync;
+>  		uint32_t data;
+>  	} *data;
+> +	struct xe_spin_opts spin_opts = { .preempt = false };
+>  	int i, b;
+>  
+>  	igt_assert(n_exec_queues <= MAX_N_EXECQUEUES);
+> @@ -593,15 +597,15 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
+>  		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
+>  		uint64_t batch_addr = base_addr + batch_offset;
+>  		uint64_t spin_offset = (char *)&data[i].spin - (char *)data;
+> -		uint64_t spin_addr = base_addr + spin_offset;
+>  		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
+>  		uint64_t sdi_addr = base_addr + sdi_offset;
+>  		uint64_t exec_addr;
+>  		int e = i % n_exec_queues;
+>  
+>  		if (!i) {
+> -			xe_spin_init(&data[i].spin, spin_addr, false);
+> -			exec_addr = spin_addr;
+> +			spin_opts.addr = base_addr + spin_offset;
+> +			xe_spin_init(&data[i].spin, &spin_opts);
+> +			exec_addr = spin_opts.addr;
+>  		} else {
+>  			b = 0;
+>  			data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
+> diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
+> index e64c1639a..ff4ebc280 100644
+> --- a/tests/intel/xe_exec_threads.c
+> +++ b/tests/intel/xe_exec_threads.c
+> @@ -486,6 +486,7 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+>  		uint64_t pad;
+>  		uint32_t data;
+>  	} *data;
+> +	struct xe_spin_opts spin_opts = { .preempt = false };
+>  	int i, j, b, hang_exec_queue = n_exec_queues / 2;
+>  	bool owns_vm = false, owns_fd = false;
+>  
+> @@ -562,15 +563,15 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+>  		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
+>  		uint64_t batch_addr = addr + batch_offset;
+>  		uint64_t spin_offset = (char *)&data[i].spin - (char *)data;
+> -		uint64_t spin_addr = addr + spin_offset;
+>  		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
+>  		uint64_t sdi_addr = addr + sdi_offset;
+>  		uint64_t exec_addr;
+>  		int e = i % n_exec_queues;
+>  
+>  		if (flags & HANG && e == hang_exec_queue && i == e) {
+> -			xe_spin_init(&data[i].spin, spin_addr, false);
+> -			exec_addr = spin_addr;
+> +			spin_opts.addr = addr + spin_offset;
+> +			xe_spin_init(&data[i].spin, &spin_opts);
+> +			exec_addr = spin_opts.addr;
+>  		} else {
+>  			b = 0;
+>  			data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
+> diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+> index 5453f10c4..43d6dd1fa 100644
+> --- a/tests/intel/xe_vm.c
+> +++ b/tests/intel/xe_vm.c
+> @@ -737,6 +737,7 @@ test_bind_execqueues_independent(int fd, struct drm_xe_engine_class_instance *ec
+>  		uint64_t pad;
+>  		uint32_t data;
+>  	} *data;
+> +	struct xe_spin_opts spin_opts = { .preempt = true };
+>  	int i, b;
+>  
+>  	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
+> @@ -765,14 +766,14 @@ test_bind_execqueues_independent(int fd, struct drm_xe_engine_class_instance *ec
+>  		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
+>  		uint64_t sdi_addr = addr + sdi_offset;
+>  		uint64_t spin_offset = (char *)&data[i].spin - (char *)data;
+> -		uint64_t spin_addr = addr + spin_offset;
+>  		int e = i;
+>  
+>  		if (i == 0) {
+>  			/* Cork 1st exec_queue with a spinner */
+> -			xe_spin_init(&data[i].spin, spin_addr, true);
+> +			spin_opts.addr = addr + spin_offset;
+> +			xe_spin_init(&data[i].spin, &spin_opts);
+>  			exec.exec_queue_id = exec_queues[e];
+> -			exec.address = spin_addr;
+> +			exec.address = spin_opts.addr;
+>  			sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
+>  			sync[1].flags |= DRM_XE_SYNC_SIGNAL;
+>  			sync[1].handle = syncobjs[e];
+> -- 
+> 2.30.2
 > 
-> Sure will make this work for both i915 and xe.
->>
->>>> mem-set and mem-copy commands you've introduced in 1/4 patch should
->>>> be part of intel_blt.[ch] library.
->>> Do you mean MEM_SET and MEM_COPY  in 3/4 patch ? Can you elaborate ?
->>
->> Related to above comment. You need to have batch commands + prepare
->> execution. Batch commands + execution for Xe you already have in the test. I
->> would migrate this to intel_blt.c and add i915 execution path.
->>
-> do you mean something similar to "emit_blt_fast_copy" for fast_copy, mem_copy/set has to be migrated to
-> Intel_blt.c ?
 
-I'll jump on this.
+LGTM:
 
-That would be something similar, yes, but the interface would be 
-different. You can't reuse blt_copy_data struct, and you'll need to 
-define extra structs to describe source, destination and the command 
-itself. Also, I'm not sure if we'd get much value from pipelined 
-mem_copy/set (i.e. many copies issued in one BB), we could have just a 
-single copy/set instead of emitting it.
-
-That could stir a debate, but, in my opinion, it should be fine to first 
-finish writing the test as it is, and then extract the implemented 
-functions to intel_blt. Writing an additional path for i915 will take 
-time. Sai, could you check if this is also a priority? If yes, then I'm 
-all for implementing it as a part of the series. If not, well, I would 
-reconsider doing it.
-
-All the best,
-Karolina
-
-> 
-> ----
-> Ch Sai Gowtham
->> Then in the test just call the mem_set or mem_copy depending what you want
->> to test to.
->>
->> --
->> Zbigniew
->>
->>>>
->>>> BTW first patch 1/4 won't compile in step-by-step mode because it
->>>> uses code from following patches.
->>> I'll correct that in my next patch series.
->>> ----
->>> Ch Sai Gowtham
->>>>
->>>> --
->>>> Zbigniew
->>>>
->>>>
->>>>>   /**
->>>>>    * blt_has_fast_copy
->>>>>    * @fd: drm fd
->>>>> diff --git a/lib/intel_blt.h b/lib/intel_blt.h index
->>>>> b8b3d724d..d9c8883c7 100644
->>>>> --- a/lib/intel_blt.h
->>>>> +++ b/lib/intel_blt.h
->>>>> @@ -175,6 +175,8 @@ bool blt_cmd_has_property(const struct
->>>> intel_cmds_info *cmds_info,
->>>>>   			  uint32_t prop);
->>>>>
->>>>>   bool blt_has_block_copy(int fd);
->>>>> +bool blt_has_mem_copy(int fd);
->>>>> +bool blt_has_mem_set(int fd);
->>>>>   bool blt_has_fast_copy(int fd);
->>>>>   bool blt_has_xy_src_copy(int fd);
->>>>>   bool blt_has_xy_color(int fd);
->>>>> --
->>>>> 2.39.1
->>>>>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+--
+Zbigniew
