@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AB67610E3C8
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Sep 2023 09:31:34 +0000 (UTC)
-Date: Tue, 12 Sep 2023 11:31:30 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B14B010E3D2
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Sep 2023 09:45:12 +0000 (UTC)
+From: Riana Tauro <riana.tauro@intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230912093130.e4nalc5t6gwzjjff@kamilkon-desk.igk.intel.com>
-References: <20230911171509.526426-1-alan.previn.teres.alexis@intel.com>
+Date: Tue, 12 Sep 2023 15:20:50 +0530
+Message-Id: <20230912095050.2550595-1-riana.tauro@intel.com>
+In-Reply-To: <20230905105409.2227832-1-riana.tauro@intel.com>
+References: <20230905105409.2227832-1-riana.tauro@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230911171509.526426-1-alan.previn.teres.alexis@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3] lib/i915: Add a helper to read mmio
- registers via ioctl
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v3 1/2] tests/xe: Add a test that validates
+ idle residency on exec
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,276 +19,240 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Kamil Konieczny <kamil.konieczny@intel.com>,
- Alan Previn <alan.previn.teres.alexis@intel.com>
+Cc: badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Alan,
+Add a test what runs a background load that is
+active approximately 1% of the time. Verify that we do enter
+GT-C6 the rest of the time and validate idle residency is within
+tolerance.
 
-one more small nit, see below.
+v2: use start and end variables for residency
+    add detailed comment (Badal)
 
-On 2023-09-11 at 10:15:09 -0700, Alan Previn wrote:
-> Add a helper into existing ioctl_wrappers.c  to call
-> DRM_IOCTL_I915_REG_READ to read whitelisted registers.
-> 
-> v3: - fix documentation for the new helpers and optimize
->       the returning of value for i915_reg_read_ioctl (Kamil).
-> v2: - move the new helper into ioctl_wrapper.c/h (Ashutosh)
->     - follow the ioctl_wrapper convention where __foo
->       is allowed to fail and foo will assert if fails (Kamil).
->     - use a #define for the RENDER_RING_TIMESTAMP reg (Kamil).
-> 
-> Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
-> ---
->  lib/intel_reg.h                      |  3 ++
->  lib/ioctl_wrappers.c                 | 49 ++++++++++++++++++++++++++++
->  lib/ioctl_wrappers.h                 |  2 ++
->  tests/intel/gem_reg_read.c           | 26 +++------------
->  tests/intel/i915_pm_rpm.c            | 10 +++---
->  tools/i915-perf/i915_perf_recorder.c |  4 +--
->  tools/intel_forcewaked.c             |  4 ++-
->  7 files changed, 69 insertions(+), 29 deletions(-)
-> 
-> diff --git a/lib/intel_reg.h b/lib/intel_reg.h
-> index 3bf3676dc..04ea93eb6 100644
-> --- a/lib/intel_reg.h
-> +++ b/lib/intel_reg.h
-> @@ -689,6 +689,9 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
->  #define GEN12_GFX_AUX_TABLE_BASE_ADDR	0x4200
->  #define GEN12_VEBOX_AUX_TABLE_BASE_ADDR	0x4230
->  
-> +/* Command Streamer registers
-> + */
-> +#define RENDER_RING_TIMESTAMP 0x2358
->  
->  /* BitBlt Instructions
->   *
-> diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
-> index 146973f0d..8ce95e915 100644
-> --- a/lib/ioctl_wrappers.c
-> +++ b/lib/ioctl_wrappers.c
-> @@ -887,6 +887,55 @@ bool gem_engine_reset_enabled(int fd)
->  	return gem_gpu_reset_type(fd) > 1;
->  }
->  
-> +/**
-> + * __i915_reg_read_ioctl:
-> + * @drmfd: device file descriptor
-> + * @offset: mmio register to read from
-> + * @value: ptr to fill with results from read
-> + *
-> + * This function uses DRM_IOCTL_I915_REG_READ to read the
-> + * register.
-> + *
-> + * Return:
-> + * 0 if successful, with *value filled
-> + * otherwise -errno
-> + */
-> +int __i915_reg_read_ioctl(int drmfd, __u64 offset, __u64 *value)
-> +{
-> +	struct drm_i915_reg_read reg_read = {0};
-> +	int ret = 0;
-> +
->  +	reg_read.offset = offset;
-> +	if (igt_ioctl(drmfd, DRM_IOCTL_I915_REG_READ, &reg_read))
-> +		ret = -errno;
-> +	else if (value)
-> +		*value = reg_read.val;
-> +
-> +	return ret;
-> +}
-> +
-> +/**
-> + * i915_reg_read_ioctl:
-> + * @drmfd: device file descriptor
-> + * @offset: mmio register to read from
-> + * @value: ptr to fill with results from read
-> + *
-> + * This function uses DRM_IOCTL_I915_REG_READ to read the
-> + * register.
-> + *
-> + * Return:
-> + * Register value.
-> + *
-> + */
-> +__u64 i915_reg_read_ioctl(int drmfd, __u64 offset)
-> +{
-> +	__u64 value;
-> +
-> +	igt_assert_eq(__i915_reg_read_ioctl(drmfd, offset, &value), 0);
-> +	errno = 0;
-> +	return value;
-> +}
-> +
->  bool gem_has_llc(int fd)
->  {
->  	int has_llc;
-> diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
-> index b7d7c2ad9..409fea370 100644
-> --- a/lib/ioctl_wrappers.h
-> +++ b/lib/ioctl_wrappers.h
-> @@ -79,6 +79,8 @@ void gem_execbuf_wr(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
->  int __gem_execbuf_wr(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
->  void gem_execbuf(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
->  int __gem_execbuf(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
-> +int __i915_reg_read_ioctl(int drmfd, __u64 offset, __u64 *value);
-> +__u64 i915_reg_read_ioctl(int drmfd, __u64 offset);
->  
->  #ifndef I915_GEM_DOMAIN_WC
->  #define I915_GEM_DOMAIN_WC 0x80
-> diff --git a/tests/intel/gem_reg_read.c b/tests/intel/gem_reg_read.c
-> index de6788abe..836d854b6 100644
-> --- a/tests/intel/gem_reg_read.c
-> +++ b/tests/intel/gem_reg_read.c
-> @@ -32,6 +32,8 @@
->  #include <sys/utsname.h>
->  #include <time.h>
->  
-> +#include "lib/ioctl_wrappers.h"
-> +
->  /**
->   * TEST: gem reg read
->   * Feature: gem_core
-> @@ -52,24 +54,6 @@ struct local_drm_i915_reg_read {
->  	__u64 val; /* Return value */
->  };
->  
-> -#define REG_READ_IOCTL DRM_IOWR(DRM_COMMAND_BASE + 0x31, struct local_drm_i915_reg_read)
-> -
-> -#define RENDER_RING_TIMESTAMP 0x2358
-> -
-> -static int read_register(int fd, uint64_t offset, uint64_t * val)
-> -{
-> -	int ret = 0;
-> -	struct local_drm_i915_reg_read reg_read;
-> -	reg_read.offset = offset;
-> -
-> -	if (drmIoctl(fd, REG_READ_IOCTL, &reg_read))
-> -		ret = -errno;
-> -
-> -	*val = reg_read.val;
-> -
-> -	return ret;
-> -}
-> -
->  static bool check_kernel_x86_64(void)
->  {
->  	int ret;
-> @@ -89,7 +73,7 @@ static bool check_timestamp(int fd)
->  	int ret;
->  	uint64_t val;
->  
-> -	ret = read_register(fd, RENDER_RING_TIMESTAMP | 1, &val);
-> +	ret = __i915_reg_read_ioctl(fd, RENDER_RING_TIMESTAMP | 1, &val);
->  
->  	return ret == 0;
->  }
-> @@ -103,7 +87,7 @@ static int timer_query(int fd, uint64_t * val)
->  	if (has_proper_timestamp)
->  		offset |= 1;
->  
-> -	ret = read_register(fd, offset, val);
-> +	ret = __i915_reg_read_ioctl(fd, offset, (__u64 *)val);
->  
->  /*
->   * When reading the timestamp register with single 64b read, we are observing
-> @@ -168,7 +152,7 @@ igt_main
->  	}
->  
->  	igt_subtest("bad-register")
-> -		igt_assert_eq(read_register(fd, 0x12345678, &val), -EINVAL);
-> +		igt_assert_eq(__i915_reg_read_ioctl(fd, 0x12345678, (__u64 *)&val), -EINVAL);
->  
->  	igt_subtest("timestamp-moving") {
->  		igt_skip_on(timer_query(fd, &val) != 0);
-> diff --git a/tests/intel/i915_pm_rpm.c b/tests/intel/i915_pm_rpm.c
-> index 17413ffe5..f60accd39 100644
-> --- a/tests/intel/i915_pm_rpm.c
-> +++ b/tests/intel/i915_pm_rpm.c
-> @@ -40,6 +40,10 @@
->  #include <sys/mman.h>
->  #include <sys/types.h>
->  #include <sys/stat.h>
-> +
-> +#include "lib/ioctl_wrappers.h"
-> +#include "lib/intel_reg.h"
-> +
->  /**
->   * TEST: i915 pm rpm
->   *
-> @@ -1852,13 +1856,9 @@ static void gem_evict_pwrite_subtest(void)
->  /* This also triggered WARNs on dmesg at some point. */
->  static void reg_read_ioctl_subtest(void)
->  {
-> -	struct drm_i915_reg_read rr = {
-> -		.offset = 0x2358, /* render ring timestamp */
-> -	};
-> -
->  	disable_all_screens_and_wait(&ms_data);
->  
-> -	do_ioctl(drm_fd, DRM_IOCTL_I915_REG_READ, &rr);
-> +	i915_reg_read_ioctl(drm_fd, RENDER_RING_TIMESTAMP);
->  
->  	igt_assert(wait_for_suspended());
->  }
-> diff --git a/tools/i915-perf/i915_perf_recorder.c b/tools/i915-perf/i915_perf_recorder.c
-> index ca4354832..16c160158 100644
-> --- a/tools/i915-perf/i915_perf_recorder.c
-> +++ b/tools/i915-perf/i915_perf_recorder.c
-> @@ -48,10 +48,12 @@
->  
->  #include "igt_core.h"
->  #include "intel_chipset.h"
-> +
---^
-Remove this additional newline.
+v3: run on a single instance of an engine belonging to gt (Anshuman)
 
-Regards,
-Kamil
+Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+---
+ tests/intel/xe_pm_residency.c | 147 +++++++++++++++++++++++++++++++++-
+ 1 file changed, 144 insertions(+), 3 deletions(-)
 
->  #include "i915/perf.h"
->  #include "i915/perf_data.h"
->  
->  #include "i915_perf_recorder_commands.h"
-> +#include "lib/intel_reg.h"
->  
->  #define ALIGN(v, a) (((v) + (a)-1) & ~((a)-1))
->  #define ARRAY_SIZE(arr) (sizeof(arr)/sizeof((arr)[0]))
-> @@ -623,8 +625,6 @@ get_correlation_timestamps(struct intel_perf_record_timestamp_correlation *corr,
->  	} attempts[3];
->  	uint32_t best = 0;
->  
-> -#define RENDER_RING_TIMESTAMP 0x2358
-> -
->          reg_read.offset = RENDER_RING_TIMESTAMP | I915_REG_READ_8B_WA;
->  
->  	/* Gather 3 correlations. */
-> diff --git a/tools/intel_forcewaked.c b/tools/intel_forcewaked.c
-> index 87b26d43a..584358446 100644
-> --- a/tools/intel_forcewaked.c
-> +++ b/tools/intel_forcewaked.c
-> @@ -38,6 +38,8 @@
->  #include "intel_chipset.h"
->  #include "drmtest.h"
->  
-> +#include "lib/intel_reg.h"
-> +
->  bool daemonized;
->  
->  #define INFO_PRINT(...) \
-> @@ -59,7 +61,7 @@ help(char *prog) {
->  static int
->  is_alive(struct intel_mmio_data *mmio_data) {
->  	/* Read the timestamp, which should *almost* always be !0 */
-> -	return (intel_register_read(mmio_data, 0x2358) != 0);
-> +	return (intel_register_read(mmio_data, RENDER_RING_TIMESTAMP) != 0);
->  }
->  
->  int main(int argc, char *argv[])
-> 
-> base-commit: a8d38db9ac258d7fd71b2cf7607e259a864f95be
-> -- 
-> 2.39.0
-> 
+diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
+index 6dc88ad0a..b85656040 100644
+--- a/tests/intel/xe_pm_residency.c
++++ b/tests/intel/xe_pm_residency.c
+@@ -12,17 +12,20 @@
+  */
+ #include <fcntl.h>
+ #include <limits.h>
++#include <time.h>
+ 
+ #include "igt.h"
+ #include "igt_device.h"
+ #include "igt_power.h"
+ #include "igt_sysfs.h"
+ 
++#include "lib/igt_syncobj.h"
++#include "xe/xe_ioctl.h"
+ #include "xe/xe_query.h"
+ #include "xe/xe_util.h"
+ 
+ #define NUM_REPS 16 /* No of Repetitions */
+-#define SLEEP_DURATION 3000 /* in milliseconds */
++#define SLEEP_DURATION 3 /* in seconds */
+ 
+ const double tolerance = 0.1;
+ int fw_handle = -1;
+@@ -48,6 +51,11 @@ enum test_type {
+  * Description: basic residency test to validate idle residency
+  *		measured over a time interval is within the tolerance
+  *
++ * SUBTEST: idle-residency-on-exec
++ * Description: Validate idle residency measured when a background
++ *		load is only active for ~1% of the time
++ * Run type: FULL
++ *
+  * SUBTEST: gt-c6-freeze
+  * Description: Validate idle residency measured over suspend(s2idle)
+  *              is greater than suspend time or within tolerance
+@@ -64,6 +72,94 @@ static void close_fw_handle(int sig)
+ 		close(fw_handle);
+ }
+ 
++static void exec_load(int fd, struct drm_xe_engine_class_instance *hwe, unsigned long *done)
++{
++	uint32_t bo = 0;
++	uint32_t exec_queue, syncobj, vm;
++	uint64_t addr = 0x1a0000;
++	uint64_t batch_addr, batch_offset, data_addr, data_offset;
++	size_t bo_size;
++	int b;
++	struct {
++		uint32_t batch[16];
++		uint64_t pad;
++		uint32_t data;
++	} *data;
++
++	struct drm_xe_sync sync = {
++		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
++	};
++
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.num_syncs = 1,
++		.syncs = to_user_pointer(&sync),
++	};
++
++	vm = xe_vm_create(fd, 0, 0);
++	exec_queue = xe_exec_queue_create(fd, vm, hwe, 0);
++	bo_size = xe_get_default_alignment(fd);
++
++	bo = xe_bo_create_flags(fd, vm, bo_size,
++				visible_vram_if_possible(fd, hwe->gt_id));
++	data = xe_bo_map(fd, bo, bo_size);
++	syncobj = syncobj_create(fd, 0);
++
++	xe_vm_bind_sync(fd, vm, bo, 0, addr, bo_size);
++
++	batch_offset = (char *)&data->batch - (char *)data;
++	batch_addr = addr + batch_offset;
++	data_offset = (char *)&data->data - (char *)data;
++	data_addr = addr + data_offset;
++
++	/* Aim for ~1% busy */
++	do {
++		uint64_t submit, elapsed;
++		struct timespec tv = {};
++
++		b = 0;
++		done[1]++;
++		data->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
++		data->batch[b++] = data_addr;
++		data->batch[b++] = data_addr >> 32;
++		data->batch[b++] = done[1];
++		data->batch[b++] = MI_BATCH_BUFFER_END;
++		igt_assert(b <= ARRAY_SIZE(data->batch));
++
++		exec.exec_queue_id = exec_queue;
++		exec.address = batch_addr;
++		sync.handle = syncobj;
++
++		igt_nsec_elapsed(&tv);
++		xe_exec(fd, &exec);
++		submit = igt_nsec_elapsed(&tv);
++
++		igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
++		elapsed = igt_nsec_elapsed(&tv);
++		igt_assert_eq(data->data, done[1]);
++
++		igt_debug("Execution took %.3fms (submit %.1fus, wait %.1fus)\n",
++			  1e-6 * elapsed,
++			  1e-3 * submit,
++			  1e-3 * (elapsed - submit));
++
++		syncobj_reset(fd, &syncobj, 1);
++
++		/*
++		 * Execute the above workload for ~1% of the elapsed time and sleep for
++		 * the rest of the time (~99%)
++		 */
++		usleep(elapsed / 10);
++	} while (!READ_ONCE(*done));
++
++	xe_vm_unbind_sync(fd, vm, 0, addr, bo_size);
++	syncobj_destroy(fd, syncobj);
++	munmap(data, bo_size);
++	gem_close(fd, bo);
++	xe_exec_queue_destroy(fd, exec_queue);
++	xe_vm_destroy(fd, vm);
++}
++
+ static unsigned int measured_usleep(unsigned int usec)
+ {
+ 	struct timespec ts = { };
+@@ -118,7 +214,7 @@ static void test_idle_residency(int fd, int gt, enum test_type flag)
+ 
+ 	if (flag == TEST_IDLE) {
+ 		residency_start = read_idle_residency(fd, gt);
+-		elapsed_ms = measured_usleep(SLEEP_DURATION * 1000) / 1000;
++		elapsed_ms = measured_usleep(SLEEP_DURATION * USEC_PER_SEC) / 1000;
+ 		residency_end = read_idle_residency(fd, gt);
+ 	}
+ 
+@@ -128,12 +224,46 @@ static void test_idle_residency(int fd, int gt, enum test_type flag)
+ 	assert_within_epsilon(residency_end - residency_start, elapsed_ms, tolerance);
+ }
+ 
++static void idle_residency_on_exec(int fd, struct drm_xe_engine_class_instance *hwe)
++{
++	const int tol = 20;
++	unsigned long *done;
++	unsigned long end, start;
++	unsigned long elapsed_ms, residency_end, residency_start;
++
++	igt_debug("Running on %s:%d\n",
++		  xe_engine_class_string(hwe->engine_class), hwe->engine_instance);
++	done = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
++	igt_assert(done != MAP_FAILED);
++	memset(done, 0, 4096);
++
++	igt_fork(child, 1)
++		exec_load(fd, hwe, done);
++
++	start = READ_ONCE(done[1]);
++	residency_start = read_idle_residency(fd, hwe->gt_id);
++	elapsed_ms = measured_usleep(SLEEP_DURATION * USEC_PER_SEC) / 1000;
++	residency_end = read_idle_residency(fd, hwe->gt_id);
++	end = READ_ONCE(done[1]);
++	*done = 1;
++
++	igt_waitchildren();
++
++	/* At least one wakeup/s needed for a reasonable test */
++	igt_assert(end - start);
++
++	/* While very nearly busy, expect full GT C6 */
++	assert_within_epsilon((residency_end - residency_start), elapsed_ms, tol);
++
++	munmap(done, 4096);
++}
++
+ static void measure_power(struct igt_power *gpu, double *power)
+ {
+ 	struct power_sample power_sample[2];
+ 
+ 	igt_power_get_energy(gpu, &power_sample[0]);
+-	measured_usleep(SLEEP_DURATION * 1000);
++	measured_usleep(SLEEP_DURATION * USEC_PER_SEC);
+ 	igt_power_get_energy(gpu, &power_sample[1]);
+ 	*power = igt_power_get_mW(gpu, &power_sample[0], &power_sample[1]);
+ }
+@@ -181,6 +311,7 @@ igt_main
+ 	uint32_t d3cold_allowed;
+ 	int fd, gt;
+ 	char pci_slot_name[NAME_MAX];
++	struct drm_xe_engine_class_instance *hwe;
+ 
+ 	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_XE);
+@@ -211,6 +342,16 @@ igt_main
+ 		xe_for_each_gt(fd, gt)
+ 			test_idle_residency(fd, gt, TEST_IDLE);
+ 
++	igt_describe("Validate idle residency on exec");
++	igt_subtest("idle-residency-on-exec") {
++		xe_for_each_gt(fd, gt) {
++			xe_for_each_hw_engine(fd, hwe) {
++				if (gt == hwe->gt_id && !hwe->engine_instance)
++					idle_residency_on_exec(fd, hwe);
++			}
++		}
++	}
++
+ 	igt_describe("Toggle GT C states by acquiring/releasing forcewake and validate power measured");
+ 	igt_subtest("toggle-gt-c6") {
+ 		igt_install_exit_handler(close_fw_handle);
+-- 
+2.40.0
