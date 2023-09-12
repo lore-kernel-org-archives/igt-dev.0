@@ -1,11 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9928D10E3CE
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Sep 2023 09:29:28 +0000 (UTC)
-Date: Tue, 12 Sep 2023 11:29:24 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AB67610E3C8
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Sep 2023 09:31:34 +0000 (UTC)
+Date: Tue, 12 Sep 2023 11:31:30 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230912092924.vayxx57mlle62awn@kamilkon-desk.igk.intel.com>
+Message-ID: <20230912093130.e4nalc5t6gwzjjff@kamilkon-desk.igk.intel.com>
 References: <20230911171509.526426-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -28,7 +28,7 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Alan,
 
-your patch didn't apply cleanly on gitlab CI, see below.
+one more small nit, see below.
 
 On 2023-09-11 at 10:15:09 -0700, Alan Previn wrote:
 > Add a helper into existing ioctl_wrappers.c  to call
@@ -93,12 +93,6 @@ On 2023-09-11 at 10:15:09 -0700, Alan Previn wrote:
 > +	int ret = 0;
 > +
 >  +	reg_read.offset = offset;
---^
-This space breaks git am, please remove and resend.
-
-Regards,
-Kamil
-
 > +	if (igt_ioctl(drmfd, DRM_IOCTL_I915_REG_READ, &reg_read))
 > +		ret = -errno;
 > +	else if (value)
@@ -249,6 +243,12 @@ Kamil
 >  #include "igt_core.h"
 >  #include "intel_chipset.h"
 > +
+--^
+Remove this additional newline.
+
+Regards,
+Kamil
+
 >  #include "i915/perf.h"
 >  #include "i915/perf_data.h"
 >  
