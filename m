@@ -1,17 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B14B010E3D2
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Sep 2023 09:45:12 +0000 (UTC)
-From: Riana Tauro <riana.tauro@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A050810E22C
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Sep 2023 09:50:36 +0000 (UTC)
+Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
+ [10.252.24.125])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id A3331580BF0
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Sep 2023 02:50:34 -0700 (PDT)
+Received: from maurocar by linux.intel.com with local (Exim 4.96)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qg02S-000M6f-1w
+ for igt-dev@lists.freedesktop.org; Tue, 12 Sep 2023 11:50:32 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 12 Sep 2023 15:20:50 +0530
-Message-Id: <20230912095050.2550595-1-riana.tauro@intel.com>
-In-Reply-To: <20230905105409.2227832-1-riana.tauro@intel.com>
-References: <20230905105409.2227832-1-riana.tauro@intel.com>
+Date: Tue, 12 Sep 2023 11:50:29 +0200
+Message-ID: <20230912095029.84964-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 1/2] tests/xe: Add a test that validates
- idle residency on exec
+Subject: [igt-dev] [PATCH i-g-t] scripts/test_list.py: check key before
+ expanding fields
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,240 +26,40 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add a test what runs a background load that is
-active approximately 1% of the time. Verify that we do enter
-GT-C6 the rest of the time and validate idle residency is within
-tolerance.
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-v2: use start and end variables for residency
-    add detailed comment (Badal)
+The logic used by doc_to_xls.py expands a field that may or may
+not exist, depending on the test set.
 
-v3: run on a single instance of an engine belonging to gt (Anshuman)
+Check it to avoig errors like:
 
-Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+  File "/home/mchehab/devel/upstream/igt-gpu-tools/scripts/test_list.py", line 819, in get_spreadsheet
+    for field in sorted(list(expand_field_name[item]), key=str.lower):
+                             ~~~~~~~~~~~~~~~~~^^^^^^
+  KeyError: 'GPU excluded platform'
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/intel/xe_pm_residency.c | 147 +++++++++++++++++++++++++++++++++-
- 1 file changed, 144 insertions(+), 3 deletions(-)
+ scripts/test_list.py | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
-index 6dc88ad0a..b85656040 100644
---- a/tests/intel/xe_pm_residency.c
-+++ b/tests/intel/xe_pm_residency.c
-@@ -12,17 +12,20 @@
-  */
- #include <fcntl.h>
- #include <limits.h>
-+#include <time.h>
+diff --git a/scripts/test_list.py b/scripts/test_list.py
+index 74abdc5ebe65..fdc3c1998d23 100644
+--- a/scripts/test_list.py
++++ b/scripts/test_list.py
+@@ -816,6 +816,9 @@ class TestList:
+         for item in sorted(expand_fields.keys(), key=str.lower):
+             prefix = expand_fields[item]
  
- #include "igt.h"
- #include "igt_device.h"
- #include "igt_power.h"
- #include "igt_sysfs.h"
- 
-+#include "lib/igt_syncobj.h"
-+#include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
- #include "xe/xe_util.h"
- 
- #define NUM_REPS 16 /* No of Repetitions */
--#define SLEEP_DURATION 3000 /* in milliseconds */
-+#define SLEEP_DURATION 3 /* in seconds */
- 
- const double tolerance = 0.1;
- int fw_handle = -1;
-@@ -48,6 +51,11 @@ enum test_type {
-  * Description: basic residency test to validate idle residency
-  *		measured over a time interval is within the tolerance
-  *
-+ * SUBTEST: idle-residency-on-exec
-+ * Description: Validate idle residency measured when a background
-+ *		load is only active for ~1% of the time
-+ * Run type: FULL
-+ *
-  * SUBTEST: gt-c6-freeze
-  * Description: Validate idle residency measured over suspend(s2idle)
-  *              is greater than suspend time or within tolerance
-@@ -64,6 +72,94 @@ static void close_fw_handle(int sig)
- 		close(fw_handle);
- }
- 
-+static void exec_load(int fd, struct drm_xe_engine_class_instance *hwe, unsigned long *done)
-+{
-+	uint32_t bo = 0;
-+	uint32_t exec_queue, syncobj, vm;
-+	uint64_t addr = 0x1a0000;
-+	uint64_t batch_addr, batch_offset, data_addr, data_offset;
-+	size_t bo_size;
-+	int b;
-+	struct {
-+		uint32_t batch[16];
-+		uint64_t pad;
-+		uint32_t data;
-+	} *data;
++            if item not in expand_field_name:
++                continue
 +
-+	struct drm_xe_sync sync = {
-+		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
-+	};
-+
-+	struct drm_xe_exec exec = {
-+		.num_batch_buffer = 1,
-+		.num_syncs = 1,
-+		.syncs = to_user_pointer(&sync),
-+	};
-+
-+	vm = xe_vm_create(fd, 0, 0);
-+	exec_queue = xe_exec_queue_create(fd, vm, hwe, 0);
-+	bo_size = xe_get_default_alignment(fd);
-+
-+	bo = xe_bo_create_flags(fd, vm, bo_size,
-+				visible_vram_if_possible(fd, hwe->gt_id));
-+	data = xe_bo_map(fd, bo, bo_size);
-+	syncobj = syncobj_create(fd, 0);
-+
-+	xe_vm_bind_sync(fd, vm, bo, 0, addr, bo_size);
-+
-+	batch_offset = (char *)&data->batch - (char *)data;
-+	batch_addr = addr + batch_offset;
-+	data_offset = (char *)&data->data - (char *)data;
-+	data_addr = addr + data_offset;
-+
-+	/* Aim for ~1% busy */
-+	do {
-+		uint64_t submit, elapsed;
-+		struct timespec tv = {};
-+
-+		b = 0;
-+		done[1]++;
-+		data->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-+		data->batch[b++] = data_addr;
-+		data->batch[b++] = data_addr >> 32;
-+		data->batch[b++] = done[1];
-+		data->batch[b++] = MI_BATCH_BUFFER_END;
-+		igt_assert(b <= ARRAY_SIZE(data->batch));
-+
-+		exec.exec_queue_id = exec_queue;
-+		exec.address = batch_addr;
-+		sync.handle = syncobj;
-+
-+		igt_nsec_elapsed(&tv);
-+		xe_exec(fd, &exec);
-+		submit = igt_nsec_elapsed(&tv);
-+
-+		igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
-+		elapsed = igt_nsec_elapsed(&tv);
-+		igt_assert_eq(data->data, done[1]);
-+
-+		igt_debug("Execution took %.3fms (submit %.1fus, wait %.1fus)\n",
-+			  1e-6 * elapsed,
-+			  1e-3 * submit,
-+			  1e-3 * (elapsed - submit));
-+
-+		syncobj_reset(fd, &syncobj, 1);
-+
-+		/*
-+		 * Execute the above workload for ~1% of the elapsed time and sleep for
-+		 * the rest of the time (~99%)
-+		 */
-+		usleep(elapsed / 10);
-+	} while (!READ_ONCE(*done));
-+
-+	xe_vm_unbind_sync(fd, vm, 0, addr, bo_size);
-+	syncobj_destroy(fd, syncobj);
-+	munmap(data, bo_size);
-+	gem_close(fd, bo);
-+	xe_exec_queue_destroy(fd, exec_queue);
-+	xe_vm_destroy(fd, vm);
-+}
-+
- static unsigned int measured_usleep(unsigned int usec)
- {
- 	struct timespec ts = { };
-@@ -118,7 +214,7 @@ static void test_idle_residency(int fd, int gt, enum test_type flag)
- 
- 	if (flag == TEST_IDLE) {
- 		residency_start = read_idle_residency(fd, gt);
--		elapsed_ms = measured_usleep(SLEEP_DURATION * 1000) / 1000;
-+		elapsed_ms = measured_usleep(SLEEP_DURATION * USEC_PER_SEC) / 1000;
- 		residency_end = read_idle_residency(fd, gt);
- 	}
- 
-@@ -128,12 +224,46 @@ static void test_idle_residency(int fd, int gt, enum test_type flag)
- 	assert_within_epsilon(residency_end - residency_start, elapsed_ms, tolerance);
- }
- 
-+static void idle_residency_on_exec(int fd, struct drm_xe_engine_class_instance *hwe)
-+{
-+	const int tol = 20;
-+	unsigned long *done;
-+	unsigned long end, start;
-+	unsigned long elapsed_ms, residency_end, residency_start;
-+
-+	igt_debug("Running on %s:%d\n",
-+		  xe_engine_class_string(hwe->engine_class), hwe->engine_instance);
-+	done = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
-+	igt_assert(done != MAP_FAILED);
-+	memset(done, 0, 4096);
-+
-+	igt_fork(child, 1)
-+		exec_load(fd, hwe, done);
-+
-+	start = READ_ONCE(done[1]);
-+	residency_start = read_idle_residency(fd, hwe->gt_id);
-+	elapsed_ms = measured_usleep(SLEEP_DURATION * USEC_PER_SEC) / 1000;
-+	residency_end = read_idle_residency(fd, hwe->gt_id);
-+	end = READ_ONCE(done[1]);
-+	*done = 1;
-+
-+	igt_waitchildren();
-+
-+	/* At least one wakeup/s needed for a reasonable test */
-+	igt_assert(end - start);
-+
-+	/* While very nearly busy, expect full GT C6 */
-+	assert_within_epsilon((residency_end - residency_start), elapsed_ms, tol);
-+
-+	munmap(done, 4096);
-+}
-+
- static void measure_power(struct igt_power *gpu, double *power)
- {
- 	struct power_sample power_sample[2];
- 
- 	igt_power_get_energy(gpu, &power_sample[0]);
--	measured_usleep(SLEEP_DURATION * 1000);
-+	measured_usleep(SLEEP_DURATION * USEC_PER_SEC);
- 	igt_power_get_energy(gpu, &power_sample[1]);
- 	*power = igt_power_get_mW(gpu, &power_sample[0], &power_sample[1]);
- }
-@@ -181,6 +311,7 @@ igt_main
- 	uint32_t d3cold_allowed;
- 	int fd, gt;
- 	char pci_slot_name[NAME_MAX];
-+	struct drm_xe_engine_class_instance *hwe;
- 
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_XE);
-@@ -211,6 +342,16 @@ igt_main
- 		xe_for_each_gt(fd, gt)
- 			test_idle_residency(fd, gt, TEST_IDLE);
- 
-+	igt_describe("Validate idle residency on exec");
-+	igt_subtest("idle-residency-on-exec") {
-+		xe_for_each_gt(fd, gt) {
-+			xe_for_each_hw_engine(fd, hwe) {
-+				if (gt == hwe->gt_id && !hwe->engine_instance)
-+					idle_residency_on_exec(fd, hwe);
-+			}
-+		}
-+	}
-+
- 	igt_describe("Toggle GT C states by acquiring/releasing forcewake and validate power measured");
- 	igt_subtest("toggle-gt-c6") {
- 		igt_install_exit_handler(close_fw_handle);
+             for field in sorted(list(expand_field_name[item]), key=str.lower):
+                 row = 0
+                 sheet[row].append(prefix + field)
 -- 
-2.40.0
+2.41.0
