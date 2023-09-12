@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============2062965713678393422=="
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8E40D10E40B
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Sep 2023 12:11:13 +0000 (UTC)
+Message-ID: <c513c7a1-d8d8-d0f5-fee0-8a797b247235@intel.com>
+Date: Tue, 12 Sep 2023 17:41:01 +0530
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
-Date: Tue, 12 Sep 2023 12:05:18 -0000
-Message-ID: <169452031801.31797.7539689225406938850@emeril.freedesktop.org>
-References: <20230829161759.9315-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20230829161759.9315-1-mohammed.thasleem@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/km?=
- =?utf-8?q?s=5Fatomic=5Ftransition=3A_Reduce_the_execution_time_on_modest-?=
- =?utf-8?q?transition_=28rev6=29?=
+Content-Language: en-US
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20230911154320.2006325-1-bhanuprakash.modem@intel.com>
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20230911154320.2006325-1-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [i-g-t] tests/intel/kms: Drop Run type field
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,148 +21,148 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2062965713678393422==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+LGTM
 
-== Series Details ==
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 
-Series: tests/kms_atomic_transition: Reduce the execution time on modest-transition (rev6)
-URL   : https://patchwork.freedesktop.org/series/123002/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7480_BAT -> XEIGTPW_9770_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_9770_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:
-    - bat-adlp-7:         [FAIL][1] ([Intel XE#480]) -> [PASS][2] +1 other test pass
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7480/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9770/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
-
-  
-#### Warnings ####
-
-  * igt@xe_exec_reset@virtual-close-fd-no-exec:
-    - bat-pvc-2:          [INCOMPLETE][3] ([Intel XE#631]) -> [INCOMPLETE][4] ([Intel XE#526])
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7480/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9770/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html
-
-  
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#526]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/526
-  [Intel XE#631]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/631
-
-
-Build changes
--------------
-
-  * IGT: IGT_7480 -> IGTPW_9770
-  * Linux: xe-365-0533b5d42b2f8ec916646c10715ac45215e87689 -> xe-367-b4ddac861881e66a4af06531a7a72345c086bac1
-
-  IGTPW_9770: 9770
-  IGT_7480: a8d38db9ac258d7fd71b2cf7607e259a864f95be @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-365-0533b5d42b2f8ec916646c10715ac45215e87689: 0533b5d42b2f8ec916646c10715ac45215e87689
-  xe-367-b4ddac861881e66a4af06531a7a72345c086bac1: b4ddac861881e66a4af06531a7a72345c086bac1
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9770/index.html
-
---===============2062965713678393422==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_atomic_transition: Reduce the execution time on modest-transition (rev6)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123002/">https://patchwork.freedesktop.org/series/123002/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9770/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9770/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7480_BAT -&gt; XEIGTPW_9770_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_9770_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7480/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9770/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@xe_exec_reset@virtual-close-fd-no-exec:<ul>
-<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7480/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/631">Intel XE#631</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9770/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/526">Intel XE#526</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7480 -&gt; IGTPW_9770</li>
-<li>Linux: xe-365-0533b5d42b2f8ec916646c10715ac45215e87689 -&gt; xe-367-b4ddac861881e66a4af06531a7a72345c086bac1</li>
-</ul>
-<p>IGTPW_9770: 9770<br />
-  IGT_7480: a8d38db9ac258d7fd71b2cf7607e259a864f95be @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-365-0533b5d42b2f8ec916646c10715ac45215e87689: 0533b5d42b2f8ec916646c10715ac45215e87689<br />
-  xe-367-b4ddac861881e66a4af06531a7a72345c086bac1: b4ddac861881e66a4af06531a7a72345c086bac1</p>
-
-</body>
-</html>
-
---===============2062965713678393422==--
+On 11-Sep-23 9:13 PM, Bhanuprakash Modem wrote:
+> Follow "ada49eb7d: tests: Intel Xe: drop Run type field" commit
+> and do the same for pending KMS tests.
+> 
+> Fixes: 9da2960b1
+> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>   tests/intel/kms_pm_backlight.c | 5 -----
+>   tests/intel/kms_pm_dc.c        | 7 -------
+>   tests/intel/kms_pm_lpsp.c      | 2 --
+>   3 files changed, 14 deletions(-)
+> 
+> diff --git a/tests/intel/kms_pm_backlight.c b/tests/intel/kms_pm_backlight.c
+> index 42aa7cb5d..20af15a6b 100644
+> --- a/tests/intel/kms_pm_backlight.c
+> +++ b/tests/intel/kms_pm_backlight.c
+> @@ -46,7 +46,6 @@
+>    * Driver requirement: i915
+>    * Functionality: backlight
+>    * Mega feature: Display Power
+> - * Run type: FULL
+>    * Test category: functionality test
+>    *
+>    * SUBTEST: basic-brightness
+> @@ -54,7 +53,6 @@
+>    * Driver requirement: i915
+>    * Functionality: backlight
+>    * Mega feature: Display Power
+> - * Run type: BAT
+>    * Test category: functionality test
+>    *
+>    * SUBTEST: fade
+> @@ -62,7 +60,6 @@
+>    * Driver requirement: i915
+>    * Functionality: backlight
+>    * Mega feature: Display Power
+> - * Run type: FULL
+>    * Test category: functionality test
+>    *
+>    * SUBTEST: fade-with-dpms
+> @@ -70,7 +67,6 @@
+>    * Driver requirement: i915
+>    * Functionality: dpms, backlight
+>    * Mega feature: Display Power
+> - * Run type: FULL
+>    * Test category: functionality test
+>    *
+>    * SUBTEST: fade-with-suspend
+> @@ -78,7 +74,6 @@
+>    * Driver requirement: i915
+>    * Functionality: backlight, suspend
+>    * Mega feature: Display Power
+> - * Run type: FULL
+>    * Test category: functionality test
+>    */
+>   
+> diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
+> index 895fe4b4c..76c662f1f 100644
+> --- a/tests/intel/kms_pm_dc.c
+> +++ b/tests/intel/kms_pm_dc.c
+> @@ -47,7 +47,6 @@
+>    * Driver requirement: i915
+>    * Functionality: dc3co, pm_dc, psr2
+>    * Mega feature: Display Power
+> - * Run type: FULL
+>    * Test category: functionality test
+>    *
+>    * SUBTEST: dc5-dpms
+> @@ -56,7 +55,6 @@
+>    * Driver requirement: i915
+>    * Functionality: dpms, pm_dc
+>    * Mega feature: Display Power
+> - * Run type: FULL
+>    * Test category: functionality test
+>    *
+>    * SUBTEST: dc5-dpms-negative
+> @@ -65,7 +63,6 @@
+>    * Driver requirement: i915
+>    * Functionality: dpms, pm_dc
+>    * Mega feature: Display Power
+> - * Run type: FULL
+>    * Test category: functionality test
+>    *
+>    * SUBTEST: dc5-psr
+> @@ -73,7 +70,6 @@
+>    * Driver requirement: i915
+>    * Functionality: pm_dc, psr
+>    * Mega feature: Display Power
+> - * Run type: FULL
+>    * Test category: functionality test
+>    *
+>    * SUBTEST: dc6-dpms
+> @@ -82,7 +78,6 @@
+>    * Driver requirement: i915
+>    * Functionality: dpms, pm_dc
+>    * Mega feature: Display Power
+> - * Run type: FULL
+>    * Test category: functionality test
+>    *
+>    * SUBTEST: dc6-psr
+> @@ -90,7 +85,6 @@
+>    * Driver requirement: i915
+>    * Functionality: pm_dc, psr
+>    * Mega feature: Display Power
+> - * Run type: FULL
+>    * Test category: functionality test
+>    *
+>    * SUBTEST: dc9-dpms
+> @@ -98,7 +92,6 @@
+>    * Driver requirement: i915
+>    * Functionality: dpms, pm_dc
+>    * Mega feature: Display Power
+> - * Run type: FULL
+>    * Test category: functionality test
+>    */
+>   
+> diff --git a/tests/intel/kms_pm_lpsp.c b/tests/intel/kms_pm_lpsp.c
+> index 9b5547cda..9093f728c 100644
+> --- a/tests/intel/kms_pm_lpsp.c
+> +++ b/tests/intel/kms_pm_lpsp.c
+> @@ -42,7 +42,6 @@
+>    * Driver requirement: i915
+>    * Functionality: pm_lpsp
+>    * Mega feature: Display Power
+> - * Run type: FULL
+>    * Test category: functionality test
+>    *
+>    * SUBTEST: screens-disabled
+> @@ -50,7 +49,6 @@
+>    * Driver requirement: i915
+>    * Functionality: pm_lpsp
+>    * Mega feature: Display Power
+> - * Run type: FULL
+>    * Test category: functionality test
+>    */
+>   
