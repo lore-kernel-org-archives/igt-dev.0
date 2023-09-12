@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============7224556939475506061=="
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BA7C010E3B7
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Sep 2023 08:20:07 +0000 (UTC)
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 12 Sep 2023 13:41:29 +0530
+Message-Id: <20230912081129.6809-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20230907192236.76147-1-mohammed.thasleem@intel.com>
+References: <20230907192236.76147-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Swati Sharma" <swati2.sharma@intel.com>
-Date: Tue, 12 Sep 2023 08:07:12 -0000
-Message-ID: <169450603254.31796.4066728739602783672@emeril.freedesktop.org>
-References: <20230912070149.1305060-1-swati2.sharma@intel.com>
-In-Reply-To: <20230912070149.1305060-1-swati2.sharma@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_enable_f?=
- =?utf-8?q?eature-discovery_tests_=28rev3=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] lib/igt_kms: Add helper to turn on and off
+ the displays
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,163 +19,101 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7224556939475506061==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-== Series Details ==
+This helper will turn on and off the displays with the help of
+IGT_CRTC_ACTIVE properties set to ON and OFF.
 
-Series: enable feature-discovery tests (rev3)
-URL   : https://patchwork.freedesktop.org/series/123396/
-State : success
+v2: Use IGT_CRTC_ACTIVE for displays On/Off.
+v3: -Update commit message and helper names.
+    -Update display on and off helpers.
+v4: Remove redundant code. (Bhanu)
 
-== Summary ==
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+---
+ lib/igt_kms.c | 54 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_kms.h |  3 +++
+ 2 files changed, 57 insertions(+)
 
-CI Bug Log - changes from XEIGT_7480_BAT -> XEIGTPW_9768_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_9768_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
-    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 other test fail
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7480/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9768/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:
-    - bat-adlp-7:         [FAIL][3] ([Intel XE#480]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7480/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9768/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
-
-  
-#### Warnings ####
-
-  * igt@xe_exec_reset@virtual-close-fd-no-exec:
-    - bat-pvc-2:          [INCOMPLETE][5] ([Intel XE#631]) -> [INCOMPLETE][6] ([Intel XE#526])
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7480/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9768/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html
-
-  
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#526]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/526
-  [Intel XE#631]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/631
-
-
-Build changes
--------------
-
-  * IGT: IGT_7480 -> IGTPW_9768
-  * Linux: xe-365-0533b5d42b2f8ec916646c10715ac45215e87689 -> xe-367-b4ddac861881e66a4af06531a7a72345c086bac1
-
-  IGTPW_9768: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9768/index.html
-  IGT_7480: a8d38db9ac258d7fd71b2cf7607e259a864f95be @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-365-0533b5d42b2f8ec916646c10715ac45215e87689: 0533b5d42b2f8ec916646c10715ac45215e87689
-  xe-367-b4ddac861881e66a4af06531a7a72345c086bac1: b4ddac861881e66a4af06531a7a72345c086bac1
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9768/index.html
-
---===============7224556939475506061==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>enable feature-discovery tests (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123396/">https://patchwork.freedesktop.org/series/123396/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9768/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9768/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7480_BAT -&gt; XEIGTPW_9768_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_9768_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7480/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9768/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7480/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9768/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@xe_exec_reset@virtual-close-fd-no-exec:<ul>
-<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7480/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/631">Intel XE#631</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9768/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/526">Intel XE#526</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7480 -&gt; IGTPW_9768</li>
-<li>Linux: xe-365-0533b5d42b2f8ec916646c10715ac45215e87689 -&gt; xe-367-b4ddac861881e66a4af06531a7a72345c086bac1</li>
-</ul>
-<p>IGTPW_9768: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9768/index.html<br />
-  IGT_7480: a8d38db9ac258d7fd71b2cf7607e259a864f95be @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-365-0533b5d42b2f8ec916646c10715ac45215e87689: 0533b5d42b2f8ec916646c10715ac45215e87689<br />
-  xe-367-b4ddac861881e66a4af06531a7a72345c086bac1: b4ddac861881e66a4af06531a7a72345c086bac1</p>
-
-</body>
-</html>
-
---===============7224556939475506061==--
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index c2f3728a6..b9cb6aa85 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -6083,3 +6083,57 @@ int igt_get_dp_mst_connector_id(igt_output_t *output)
+ 
+ 	return connector_id;
+ }
++
++/*
++ * igt_turn_on_display:
++ * @fd: A drm file descriptor
++ *
++ * It will Enable the all connected display.
++ */
++void igt_turn_on_display(int drm_fd)
++{
++	igt_display_t display;
++	igt_output_t *output;
++	enum pipe pipe;
++
++	if (!drmModeGetResources(drm_fd))
++		return;
++
++	igt_display_require(&display, drm_fd);
++	igt_display_reset(&display);
++
++	for_each_pipe(&display, pipe) {
++		for_each_valid_output_on_pipe(&display, pipe, output) {
++			if (output->pending_pipe != PIPE_NONE)
++				continue;
++
++			igt_output_set_pipe(output, pipe);
++			break;
++		}
++	}
++
++	igt_display_commit2(&display, COMMIT_ATOMIC);
++
++	igt_display_fini(&display);
++}
++
++/*
++ * igt_turn_off_display:
++ * @fd: A drm file descriptor
++ *
++ * It will disable  the all connected display.
++ */
++void igt_turn_off_display(int drm_fd)
++{
++	igt_display_t display;
++
++	if (!drmModeGetResources(drm_fd))
++		return;
++
++	igt_display_require(&display, drm_fd);
++	igt_display_reset(&display);
++
++	igt_display_commit2(&display, COMMIT_ATOMIC);
++
++	igt_display_fini(&display);
++}
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index f2c3741fc..526477e4d 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1016,4 +1016,7 @@ bool i915_pipe_output_combo_valid(igt_display_t *display);
+ bool igt_check_output_is_dp_mst(igt_output_t *output);
+ int igt_get_dp_mst_connector_id(igt_output_t *output);
+ 
++void igt_turn_on_display(int drm_fd);
++void igt_turn_off_display(int drm_fd);
++
+ #endif /* __IGT_KMS_H__ */
+-- 
+2.25.1
