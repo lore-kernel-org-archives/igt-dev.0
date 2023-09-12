@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CC38F10E431
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Sep 2023 15:37:41 +0000 (UTC)
-Message-ID: <8efcbd31-e14a-094d-c2e0-7611341db747@intel.com>
-Date: Tue, 12 Sep 2023 21:07:16 +0530
-Content-Language: en-US
-To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20230912070149.1305060-1-swati2.sharma@intel.com>
- <20230912070149.1305060-3-swati2.sharma@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20230912070149.1305060-3-swati2.sharma@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative;
+ boundary="===============5405706559132652444=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [v4 2/4] tests/kms_feature_discovery: add testplan
- documentation
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Stanislav Lisovskiy" <stanislav.lisovskiy@intel.com>
+Date: Tue, 12 Sep 2023 16:02:48 -0000
+Message-ID: <169453456815.31796.13667146507091713640@emeril.freedesktop.org>
+References: <20230911122256.30665-1-stanislav.lisovskiy@intel.com>
+In-Reply-To: <20230911122256.30665-1-stanislav.lisovskiy@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNV9w?=
+ =?utf-8?q?ipe=5Fstress_fixes_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,88 +17,164 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============5405706559132652444==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On Tue-12-09-2023 12:31 pm, Swati Sharma wrote:
-> Add testplan documentation for the subtests.
-> 
-> v2: -remove run type and change mega feature to PSR
-> 
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+== Series Details ==
 
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Series: i915_pipe_stress fixes (rev2)
+URL   : https://patchwork.freedesktop.org/series/123537/
+State : success
 
-> ---
->   tests/kms_feature_discovery.c | 48 ++++++++++++++++++++++++++++++++++-
->   1 file changed, 47 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/kms_feature_discovery.c b/tests/kms_feature_discovery.c
-> index d1f4b1633..5ee481c4b 100644
-> --- a/tests/kms_feature_discovery.c
-> +++ b/tests/kms_feature_discovery.c
-> @@ -22,6 +22,53 @@
->    *
->    */
->   
-> +/**
-> + * TEST: kms feature discovery
-> + * Category: Display
-> + * Description: A metatest that checks for \"features\" presence.
-> + *		The subtests here should only skip or pass,
-> + *		anything else means we have a serious problem.
-> + *
-> + * SUBTEST: display
-> + * Description: Make sure that we have display support with
-> + * 		some outputs connected.
-> + * Driver requirement: i915, xe
-> + * Functionality: feature_discovery
-> + * Mega feature: General Display Features
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: display-%dx
-> + * Description: Make sure that we have display support with %arg[1]
-> + * 		outputs connected.
-> + * Driver requirement: i915, xe
-> + * Functionality: feature_discovery
-> + * Mega feature: General Display Features
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: chamelium
-> + * Description: Make sure that Chamelium is configured and reachable.
-> + * Driver requirement: i915, xe
-> + * Functionality: feature_discovery, chamelium
-> + * Mega feature: General Display Features
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: psr1
-> + * Description: Make sure that we have eDP panel with PSR1 support.
-> + * Driver requirement: i915, xe
-> + * Functionality: feature_discovery, psr1, eDP
-> + * Mega feature: PSR
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: psr2
-> + * Description: Make sure that we have eDP panel with PSR2 support.
-> + * Driver requirement: i915, xe
-> + * Functionality: feature_discovery, psr2, eDP
-> + * Mega feature: PSR
-> + * Test category: functionality test
-> + *
-> + * arg[1].values: 2, 3, 4
-> + */
-> +
->   #include "igt.h"
->   #ifdef HAVE_CHAMELIUM
->   #include "igt_chamelium.h"
-> @@ -46,7 +93,6 @@ igt_main {
->   	}
->   
->   	igt_subtest_group {
-> -
->   		igt_fixture {
->   			igt_display_require(&display, fd);
->   		}
+== Summary ==
+
+CI Bug Log - changes from IGT_7481 -> IGTPW_9775
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9775/index.html
+
+Participating hosts (41 -> 38)
+------------------------------
+
+  Missing    (3): bat-dg2-8 fi-snb-2520m fi-hsw-4770 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_9775 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_chamelium_edid@hdmi-edid-read:
+    - {bat-dg2-13}:       [DMESG-WARN][1] ([i915#7952]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7481/bat-dg2-13/igt@kms_chamelium_edid@hdmi-edid-read.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9775/bat-dg2-13/igt@kms_chamelium_edid@hdmi-edid-read.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - fi-kbl-guc:         [FAIL][3] ([IGT#3] / [i915#6121]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7481/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9775/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:
+    - bat-rplp-1:         [ABORT][5] ([i915#8668]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7481/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9775/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [IGT#3]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3
+  [i915#6121]: https://gitlab.freedesktop.org/drm/intel/issues/6121
+  [i915#7952]: https://gitlab.freedesktop.org/drm/intel/issues/7952
+  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7481 -> IGTPW_9775
+
+  CI-20190529: 20190529
+  CI_DRM_13623: eb35627e1c4a3781c161cd04944e403ce6df3e1c @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_9775: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9775/index.html
+  IGT_7481: 10897911fefd697969ec5030fdeb8d47d6d6ba43 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9775/index.html
+
+--===============5405706559132652444==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>i915_pipe_stress fixes (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123537/">https://patchwork.freedesktop.org/series/123537/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9775/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9775/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7481 -&gt; IGTPW_9775</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9775/index.html</p>
+<h2>Participating hosts (41 -&gt; 38)</h2>
+<p>Missing    (3): bat-dg2-8 fi-snb-2520m fi-hsw-4770 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_9775 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_chamelium_edid@hdmi-edid-read:</p>
+<ul>
+<li>{bat-dg2-13}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7481/bat-dg2-13/igt@kms_chamelium_edid@hdmi-edid-read.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7952">i915#7952</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9775/bat-dg2-13/igt@kms_chamelium_edid@hdmi-edid-read.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7481/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3">IGT#3</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6121">i915#6121</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9775/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:</p>
+<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7481/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9775/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7481 -&gt; IGTPW_9775</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13623: eb35627e1c4a3781c161cd04944e403ce6df3e1c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_9775: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9775/index.html<br />
+  IGT_7481: 10897911fefd697969ec5030fdeb8d47d6d6ba43 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============5405706559132652444==--
