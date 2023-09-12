@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Mon, 11 Sep 2023 11:28:32 +0200
-Message-ID: <2157156.irdbgypaU6@jkrzyszt-mobl2.ger.corp.intel.com>
-In-Reply-To: <20230911105251.220d90ed@maurocar-mobl2>
-References: <20230908123233.137134-19-janusz.krzysztofik@linux.intel.com>
- <20230908123233.137134-24-janusz.krzysztofik@linux.intel.com>
- <20230911105251.220d90ed@maurocar-mobl2>
+Content-Type: multipart/alternative;
+ boundary="===============3515579725949570402=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t v2 05/17] lib/kunit: Fix
- illegal igt_fail() calls inside subtest body
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 12 Sep 2023 13:54:29 -0000
+Message-ID: <169452686977.31793.4676042281279482675@emeril.freedesktop.org>
+References: <20230912095029.84964-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230912095029.84964-1-mauro.chehab@linux.intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_scripts/?=
+ =?utf-8?q?test=5Flist=2Epy=3A_check_key_before_expanding_fields?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,119 +16,133 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org, Isabella Basso <isabbasso@riseup.net>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mauro,
+--===============3515579725949570402==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Thanks for review.
+== Series Details ==
 
-On Monday, 11 September 2023 10:52:51 CEST Mauro Carvalho Chehab wrote:
-> On Fri,  8 Sep 2023 14:32:39 +0200
-> Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com> wrote:
-> 
-> > In a body of a subtest with dynamic sub-subtests, it is illegal to call
-> > igt_fail() and its variants from outside of a dynamic sub-subtest body.
-> > On the other hand, it is perfectly legal to call either igt_skip() and
-> > friends or __igt_abort() or its variant from there.
-> > 
-> > In the current implementation of igt_kunit(), there are several places
-> > where igt_fail() is called despite being illegal.  Moreover, it is called
-> > with IGT_EXIT_ABORT as an argument with no good reason for using such
-> > aggressive method that forces CI to trigger system reboot (in most cases
-> > igt_runner can decide if abort is required).
-> > 
-> > Follow igt_kselftests() pattern more closely, where similar setup and
-> > cleanup operations are performed but their potential errors are processed
-> > in a more friendly way.  Move common cleanup and their corresponding setup
-> > steps out of the subtest body.  Place the latter as requirements in a
-> > preceding igt_fixture section.  Replace remaining illegal igt_fail() calls
-> > with more friendly skips.  Let igt_runner decide if abort is needed.
-> > 
-> > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> > ---
-> >  lib/igt_kmod.c | 75 +++++++++++++++-----------------------------------
-> >  1 file changed, 22 insertions(+), 53 deletions(-)
-> > 
-> > diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-> > index 1d1cd51170..78b8eb8f53 100644
-> > --- a/lib/igt_kmod.c
-> > +++ b/lib/igt_kmod.c
-...
-> > @@ -825,24 +793,21 @@ static void __igt_kunit(const char *module_name, const char *opts)
-> >  		}
-> >  	}
-> >  
-> > -unload:
-> > -	igt_ktest_end(&tst);
-> > -
-> > -	igt_ktest_fini(&tst);
-> > -
-> > -	igt_skip_on_f(skip, "Skipping test, as probing KUnit module failed\n");
-> > -
-> > -	if (fail)
-> > -		igt_fail(IGT_EXIT_ABORT);
-> > -
-> >  	ret = ktap_parser_stop();
-> >  
-> > -	if (ret != 0)
-> > -		igt_fail(IGT_EXIT_ABORT);
-> > +	igt_skip_on_f(ret, "KTAP parser failed\n");
-> >  }
-> >  
-> >  void igt_kunit(const char *module_name, const char *name, const char *opts)
-> >  {
-> > +	struct igt_ktest tst;
-> > +
-> > +	if (igt_ktest_init(&tst, module_name) != 0)
-> > +		return;
-> 
-> Shouldn't it be calling igt_skip() here too?
+Series: scripts/test_list.py: check key before expanding fields
+URL   : https://patchwork.freedesktop.org/series/123587/
+State : success
 
-Maybe yes.  I've chosen to follow the algorithm used in igt_kselftest.  There 
-was an igt_skip() variant there initially but in 2017 that was converted to 
-the current return only by Peter with IGT commit 9f92893b11e8 ("lib/igt_kmod: 
-Don't call igt_assert or igt_require without a fixture").  However, 
-justification for dropping igt_require() instead of calling it from an 
-igt_fixture section may not apply to kunit modules:
+== Summary ==
 
-"If kmod_module_new_from_name fails, ... return normally from igt_kselftest, 
-matching behaviour when the module loading is successful but it doesn't 
-contain selftests."
+CI Bug Log - changes from XEIGT_7480_BAT -> XEIGTPW_9772_BAT
+====================================================
 
-While i915 could be built with no selftests included, a kunit module without 
-any tests doesn't make sense, then silent return may be not what we need.
+Summary
+-------
 
-Thanks,
-Janusz
+  **SUCCESS**
 
-> 
-> > +
-> > +	igt_fixture
-> > +		igt_require(igt_ktest_begin(&tst) == 0);
-> > +
-> >  	/*
-> >  	 * We need to use igt_subtest here, as otherwise it may crash with:
-> >  	 *  skipping is allowed only in fixtures, subtests or igt_simple_main
-> > @@ -854,7 +819,11 @@ void igt_kunit(const char *module_name, const char *name, const char *opts)
-> >  		name = module_name;
-> >  
-> >  	igt_subtest_with_dynamic(name)
-> > -		__igt_kunit(module_name, opts);
-> > +		__igt_kunit(&tst, opts);
-> > +
-> > +	igt_ktest_end(&tst);
-> > +
-> > +	igt_ktest_fini(&tst);
-> >  }
-> >  
-> >  static int open_parameters(const char *module_name)
-> 
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9772_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:
+    - bat-adlp-7:         [FAIL][1] ([Intel XE#480]) -> [PASS][2] +1 other test pass
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7480/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9772/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
+
+  
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
 
 
+Build changes
+-------------
+
+  * IGT: IGT_7480 -> IGTPW_9772
+  * Linux: xe-365-0533b5d42b2f8ec916646c10715ac45215e87689 -> xe-367-b4ddac861881e66a4af06531a7a72345c086bac1
+
+  IGTPW_9772: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9772/index.html
+  IGT_7480: a8d38db9ac258d7fd71b2cf7607e259a864f95be @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-365-0533b5d42b2f8ec916646c10715ac45215e87689: 0533b5d42b2f8ec916646c10715ac45215e87689
+  xe-367-b4ddac861881e66a4af06531a7a72345c086bac1: b4ddac861881e66a4af06531a7a72345c086bac1
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9772/index.html
+
+--===============3515579725949570402==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
 
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>scripts/test_list.py: check key before expanding fields</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123587/">https://patchwork.freedesktop.org/series/123587/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9772/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9772/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7480_BAT -&gt; XEIGTPW_9772_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9772_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7480/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9772/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7480 -&gt; IGTPW_9772</li>
+<li>Linux: xe-365-0533b5d42b2f8ec916646c10715ac45215e87689 -&gt; xe-367-b4ddac861881e66a4af06531a7a72345c086bac1</li>
+</ul>
+<p>IGTPW_9772: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9772/index.html<br />
+  IGT_7480: a8d38db9ac258d7fd71b2cf7607e259a864f95be @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-365-0533b5d42b2f8ec916646c10715ac45215e87689: 0533b5d42b2f8ec916646c10715ac45215e87689<br />
+  xe-367-b4ddac861881e66a4af06531a7a72345c086bac1: b4ddac861881e66a4af06531a7a72345c086bac1</p>
+
+</body>
+</html>
+
+--===============3515579725949570402==--
 
