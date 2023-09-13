@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============3772887845272730133=="
+ boundary="===============3794800348937307645=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Wed, 13 Sep 2023 18:01:42 -0000
-Message-ID: <169462810272.31251.13961565123875395443@emeril.freedesktop.org>
-References: <20230913142417.584184-1-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20230913142417.584184-1-zbigniew.kempczynski@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQWRkIG1p?=
- =?utf-8?q?ssing_Meteorlake_gpgpu_fill_condition?=
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Date: Wed, 13 Sep 2023 18:33:29 -0000
+Message-ID: <169463000971.31249.16159466988961493153@emeril.freedesktop.org>
+References: <20230913170719.2078729-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230913170719.2078729-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Update_X?=
+ =?utf-8?q?E_blocklist?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,20 +23,20 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3772887845272730133==
+--===============3794800348937307645==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Add missing Meteorlake gpgpu fill condition
-URL   : https://patchwork.freedesktop.org/series/123640/
+Series: Update XE blocklist
+URL   : https://patchwork.freedesktop.org/series/123650/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_13625 -> IGTPW_9781
+CI Bug Log - changes from XEIGT_7486_BAT -> XEIGTPW_9782_BAT
 ====================================================
 
 Summary
@@ -46,53 +46,45 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9781/index.html
+  
 
-Participating hosts (41 -> 39)
+Participating hosts (4 -> 4)
 ------------------------------
 
-  Missing    (2): fi-hsw-4770 fi-snb-2520m 
+  No changes in participating hosts
 
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_9781 that come from known issues:
+  Here are the changes found in XEIGTPW_9782_BAT that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-glk-j4005:       [PASS][1] -> [DMESG-FAIL][2] ([i915#5334])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13625/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9781/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html
+  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
+    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#480]) +2 other tests fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7486/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9782/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
 
   
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
-  [i915#7952]: https://gitlab.freedesktop.org/drm/intel/issues/7952
-  [i915#9273]: https://gitlab.freedesktop.org/drm/intel/issues/9273
-  [i915#9279]: https://gitlab.freedesktop.org/drm/intel/issues/9279
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7486 -> IGTPW_9781
+  * IGT: IGT_7486 -> IGTPW_9782
 
-  CI-20190529: 20190529
-  CI_DRM_13625: df710849c4a552f8516480ccaf5b215b4b086530 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_9781: 9781
+  IGTPW_9782: 9782
   IGT_7486: afd9a940c8247291baadd1977fe881d4f2edf0c7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-371-89b671db4d8e2c46f27044d39c69095f597290e5: 89b671db4d8e2c46f27044d39c69095f597290e5
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9781/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9782/index.html
 
---===============3772887845272730133==
+--===============3794800348937307645==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -112,45 +104,40 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Add missing Meteorlake gpgpu fill condition</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123640/">https://patchwork.freedesktop.org/series/123640/</a></td></tr>
+<tr><td><b>Series:</b></td><td>Update XE blocklist</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123650/">https://patchwork.freedesktop.org/series/123650/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9781/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9781/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9782/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9782/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from CI_DRM_13625 -&gt; IGTPW_9781</h1>
+    <h1>CI Bug Log - changes from XEIGT_7486_BAT -&gt; XEIGTPW_9782_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9781/index.html</p>
-<h2>Participating hosts (41 -&gt; 39)</h2>
-<p>Missing    (2): fi-hsw-4770 fi-snb-2520m </p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_9781 that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_9782_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
-<li>igt@i915_selftest@live@gt_heartbeat:<ul>
-<li>fi-glk-j4005:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13625/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9781/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7486/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9782/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +2 other tests fail</li>
 </ul>
 </li>
 </ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7486 -&gt; IGTPW_9781</li>
+<li>IGT: IGT_7486 -&gt; IGTPW_9782</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13625: df710849c4a552f8516480ccaf5b215b4b086530 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_9781: 9781<br />
-  IGT_7486: afd9a940c8247291baadd1977fe881d4f2edf0c7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>IGTPW_9782: 9782<br />
+  IGT_7486: afd9a940c8247291baadd1977fe881d4f2edf0c7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-371-89b671db4d8e2c46f27044d39c69095f597290e5: 89b671db4d8e2c46f27044d39c69095f597290e5</p>
 
 </body>
 </html>
 
---===============3772887845272730133==--
+--===============3794800348937307645==--
