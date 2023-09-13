@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8D5F310E0A1
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Sep 2023 09:43:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1DF5610E48D
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Sep 2023 09:43:06 +0000 (UTC)
 From: Nirmoy Das <nirmoy.das@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 13 Sep 2023 11:42:50 +0200
-Message-ID: <20230913094252.6246-2-nirmoy.das@intel.com>
+Date: Wed, 13 Sep 2023 11:42:51 +0200
+Message-ID: <20230913094252.6246-3-nirmoy.das@intel.com>
 In-Reply-To: <20230913094252.6246-1-nirmoy.das@intel.com>
 References: <20230913094252.6246-1-nirmoy.das@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/3] lib/igt_gt: Add a method to detect ggtt
- bind
+Subject: [igt-dev] [PATCH i-g-t 2/3] tests/intel/gem_ctx_shared: Skip some
+ test on MTL
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,38 +24,48 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On MTL GGTT updates happens through MI_UPDATE_GGTT command.
-Add a method to detect that.
+We do GGTT update on MTL using bcs engine, blocking that would
+will fail the test so skip such subtests on bcs engine for MTL.
 
 Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
 ---
- lib/igt_gt.c | 5 +++++
- lib/igt_gt.h | 1 +
- 2 files changed, 6 insertions(+)
+ tests/intel/gem_ctx_shared.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/lib/igt_gt.c b/lib/igt_gt.c
-index a24a566c7..6895964a9 100644
---- a/lib/igt_gt.c
-+++ b/lib/igt_gt.c
-@@ -659,3 +659,8 @@ int gem_execbuf_flags_to_engine_class(unsigned int flags)
- 		igt_assert(0);
- 	}
- }
-+
-+bool gem_has_ggtt_bind(int fd)
-+{
-+	return IS_METEORLAKE(intel_get_drm_devid(fd));
-+}
-diff --git a/lib/igt_gt.h b/lib/igt_gt.h
-index 3d10349e4..7d35a209d 100644
---- a/lib/igt_gt.h
-+++ b/lib/igt_gt.h
-@@ -83,5 +83,6 @@ extern const struct intel_execution_engine2 {
- } intel_execution_engines2[];
+diff --git a/tests/intel/gem_ctx_shared.c b/tests/intel/gem_ctx_shared.c
+index d24ae5483..bad032417 100644
+--- a/tests/intel/gem_ctx_shared.c
++++ b/tests/intel/gem_ctx_shared.c
+@@ -1105,22 +1105,26 @@ igt_main
  
- int gem_execbuf_flags_to_engine_class(unsigned int flags);
-+bool gem_has_ggtt_bind(int fd);
+ 			igt_subtest_with_dynamic("Q-independent") {
+ 				for_each_queue(e, i915, &cfg)
+-					independent(i915, &cfg, e, 0);
++					if (!(gem_has_ggtt_bind(i915) && e->class == I915_ENGINE_CLASS_COPY))
++						independent(i915, &cfg, e, 0);
+ 			}
  
- #endif /* IGT_GT_H */
+ 			igt_subtest_with_dynamic("Q-in-order") {
+ 				for_each_queue(e, i915, &cfg)
+-					reorder(i915, &cfg, e->flags, EQUAL);
++					if (!(gem_has_ggtt_bind(i915) && e->class == I915_ENGINE_CLASS_COPY))
++						reorder(i915, &cfg, e->flags, EQUAL);
+ 			}
+ 
+ 			igt_subtest_with_dynamic("Q-out-order") {
+ 				for_each_queue(e, i915, &cfg)
+-					reorder(i915, &cfg, e->flags, 0);
++					if (!(gem_has_ggtt_bind(i915) && e->class == I915_ENGINE_CLASS_COPY))
++						reorder(i915, &cfg, e->flags, 0);
+ 			}
+ 
+ 			igt_subtest_with_dynamic("Q-promotion") {
+ 				for_each_queue(e, i915, &cfg)
+-					promotion(i915, &cfg, e->flags);
++					if (!(gem_has_ggtt_bind(i915) && e->class == I915_ENGINE_CLASS_COPY))
++						promotion(i915, &cfg, e->flags);
+ 			}
+ 		}
+ 
 -- 
 2.41.0
