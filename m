@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============0185270086776515578=="
+From: Tejas Upadhyay <tejas.upadhyay@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 14 Sep 2023 15:08:40 +0530
+Message-Id: <20230914093840.3845244-1-tejas.upadhyay@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Stanislav Lisovskiy" <stanislav.lisovskiy@intel.com>
-Date: Thu, 14 Sep 2023 09:24:08 -0000
-Message-ID: <169468344829.29167.16661337706265523474@emeril.freedesktop.org>
-References: <20230914080329.16648-1-stanislav.lisovskiy@intel.com>
-In-Reply-To: <20230914080329.16648-1-stanislav.lisovskiy@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/in?=
- =?utf-8?q?tel/i915=5Fpipe=5Fstress=3A_Use_only_first_pipe_if_Bigjoiner_is?=
- =?utf-8?q?_used?=
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH V3 i-g-t] tests/xe_drm_fdinfo: Add tests to read
+ and verify fdinfo
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,362 +15,373 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>, intel-xe@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0185270086776515578==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Add tests to verify fdinfo published by xe KMD with
+following subtests :
+@basic
+@drm-total-residents
+@drm-shared
+@drm-active
 
-== Series Details ==
+Example fdinfo format:
 
-Series: tests/intel/i915_pipe_stress: Use only first pipe if Bigjoiner is used
-URL   : https://patchwork.freedesktop.org/series/123671/
-State : success
+pos:    0
+flags:  0100002
+mnt_id: 23
+ino:    1140
+drm-driver:     xe
+drm-client-id:  19
+drm-pdev:       0000:4d:00.0
+drm-total-system:       0
+drm-shared-system:      0
+drm-active-system:      0
+drm-resident-system:    0
+drm-purgeable-system:   0
+drm-total-gtt:  4 KiB
+drm-shared-gtt: 0
+drm-active-gtt: 0
+drm-resident-gtt:       4 KiB
+drm-total-vram0:        20 KiB
+drm-shared-vram0:       0
+drm-active-vram0:       0
+drm-resident-vram0:     20 KiB
+drm-total-vram1:        20 KiB
+drm-shared-vram1:       0
+drm-active-vram1:       0
+drm-resident-vram1:     20 KiB
 
-== Summary ==
+TODO: drm-purgeable test is not possbile as we consider objects in
+system memory to be purgeable but current xe KMD does not allow
+BOs to be created in system memory (instead KMD creates it in
+XE_PL_TT which is VRAM backed system memory).
 
-CI Bug Log - changes from XEIGT_7487_BAT -> XEIGTPW_9784_BAT
-====================================================
+V3:
+  - Expand basic test - Rahul
+  - Use defined var at all places - Rahul
+  - Update commit message - Rahul
+  - Adapt spin_init API change
+V2:
+  - Replace printf with igt_info - Kamil
+  - run checkpatch - Kamil
+  - use igt_assert_f - Kamil
 
-Summary
--------
+Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+---
+ tests/intel/xe_drm_fdinfo.c | 289 ++++++++++++++++++++++++++++++++++++
+ tests/meson.build           |   1 +
+ 2 files changed, 290 insertions(+)
+ create mode 100644 tests/intel/xe_drm_fdinfo.c
 
-  **WARNING**
-
-  Minor unknown changes coming with XEIGTPW_9784_BAT need to be verified
-  manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_9784_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_9784_BAT:
-
-### IGT changes ###
-
-#### Warnings ####
-
-  * igt@kms_dsc@dsc-basic:
-    - bat-dg2-oem2:       [SKIP][1] ([Intel XE#423]) -> [SKIP][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_9784_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - bat-dg2-oem2:       [PASS][3] -> [SKIP][4] ([Intel XE#679])
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html
-
-  * igt@kms_addfb_basic@addfb25-modifier-no-flag:
-    - bat-dg2-oem2:       [PASS][5] -> [SKIP][6] ([i915#2575]) +49 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-modifier-no-flag.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-modifier-no-flag.html
-
-  * igt@xe_intel_bb@create-in-region:
-    - bat-dg2-oem2:       [PASS][7] -> [SKIP][8] ([Intel XE#678]) +128 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@xe_intel_bb@create-in-region.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@xe_intel_bb@create-in-region.html
-
-  * igt@xe_module_load@load:
-    - bat-dg2-oem2:       [PASS][9] -> [FAIL][10] ([Intel XE#681])
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@xe_module_load@load.html
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@xe_module_load@load.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
-    - bat-adlp-7:         [FAIL][11] ([Intel XE#480]) -> [PASS][12] +2 other tests pass
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
-
-  * igt@xe_live_ktest@bo:
-    - bat-dg2-oem2:       [SKIP][13] ([Intel XE#483]) -> [PASS][14] +2 other tests pass
-   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@xe_live_ktest@bo.html
-   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@xe_live_ktest@bo.html
-
-  
-#### Warnings ####
-
-  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
-    - bat-dg2-oem2:       [SKIP][15] ([Intel XE#623]) -> [SKIP][16] ([i915#2575])
-   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-
-  * igt@kms_addfb_basic@basic-y-tiled-legacy:
-    - bat-dg2-oem2:       [SKIP][17] ([Intel XE#624]) -> [SKIP][18] ([i915#2575])
-   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@kms_addfb_basic@basic-y-tiled-legacy.html
-   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@kms_addfb_basic@basic-y-tiled-legacy.html
-
-  * igt@kms_addfb_basic@tile-pitch-mismatch:
-    - bat-dg2-oem2:       [FAIL][19] ([Intel XE#609]) -> [SKIP][20] ([i915#2575]) +1 other test skip
-   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@kms_addfb_basic@tile-pitch-mismatch.html
-   [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@kms_addfb_basic@tile-pitch-mismatch.html
-
-  * igt@kms_force_connector_basic@prune-stale-modes:
-    - bat-dg2-oem2:       [SKIP][21] ([i915#5274]) -> [SKIP][22] ([i915#2575])
-   [21]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html
-   [22]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-dg2-oem2:       [FAIL][23] ([Intel XE#608]) -> [SKIP][24] ([Intel XE#678])
-   [23]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html
-   [24]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
-    - bat-dg2-oem2:       [FAIL][25] ([Intel XE#400]) -> [SKIP][26] ([i915#2575])
-   [25]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
-   [26]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
-
-  * igt@kms_psr@primary_page_flip:
-    - bat-dg2-oem2:       [SKIP][27] ([i915#1072]) -> [SKIP][28] ([Intel XE#678]) +2 other tests skip
-   [27]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html
-   [28]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html
-
-  * igt@xe_compute@compute-square:
-    - bat-dg2-oem2:       [SKIP][29] ([Intel XE#672]) -> [SKIP][30] ([Intel XE#678])
-   [29]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@xe_compute@compute-square.html
-   [30]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@xe_compute@compute-square.html
-
-  * igt@xe_exec_fault_mode@many-basic:
-    - bat-dg2-oem2:       [SKIP][31] ([Intel XE#288]) -> [SKIP][32] ([Intel XE#678]) +17 other tests skip
-   [31]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html
-   [32]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html
-
-  * igt@xe_huc_copy@huc_copy:
-    - bat-dg2-oem2:       [SKIP][33] ([Intel XE#255]) -> [SKIP][34] ([Intel XE#678])
-   [33]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html
-   [34]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#255]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/255
-  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
-  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
-  [Intel XE#423]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/423
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#483]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/483
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
-  [Intel XE#608]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/608
-  [Intel XE#609]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/609
-  [Intel XE#623]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/623
-  [Intel XE#624]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/624
-  [Intel XE#672]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/672
-  [Intel XE#678]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/678
-  [Intel XE#679]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/679
-  [Intel XE#681]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/681
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
-  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
-
-
-Build changes
--------------
-
-  * IGT: IGT_7487 -> IGTPW_9784
-
-  IGTPW_9784: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9784/index.html
-  IGT_7487: 77e606dea60110c869ad9f9cc88994a0048845c4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-372-baea10eb27d49a2b8a526d87a70532ab201d140b: baea10eb27d49a2b8a526d87a70532ab201d140b
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/index.html
-
---===============0185270086776515578==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/i915_pipe_stress: Use only first pipe if Bigjoiner is used</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123671/">https://patchwork.freedesktop.org/series/123671/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7487_BAT -&gt; XEIGTPW_9784_BAT</h1>
-<h2>Summary</h2>
-<p><strong>WARNING</strong></p>
-<p>Minor unknown changes coming with XEIGTPW_9784_BAT need to be verified<br />
-  manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_9784_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_9784_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_dsc@dsc-basic:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/423">Intel XE#423</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_9784_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/679">Intel XE#679</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@addfb25-modifier-no-flag:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-modifier-no-flag.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-modifier-no-flag.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>) +49 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_intel_bb@create-in-region:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@xe_intel_bb@create-in-region.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@xe_intel_bb@create-in-region.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/678">Intel XE#678</a>) +128 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_module_load@load:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@xe_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@xe_module_load@load.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/681">Intel XE#681</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">PASS</a> +2 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@bo:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@xe_live_ktest@bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/483">Intel XE#483</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@xe_live_ktest@bo.html">PASS</a> +2 other tests pass</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/623">Intel XE#623</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@basic-y-tiled-legacy:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@kms_addfb_basic@basic-y-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/624">Intel XE#624</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@kms_addfb_basic@basic-y-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@tile-pitch-mismatch:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@kms_addfb_basic@tile-pitch-mismatch.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/609">Intel XE#609</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@kms_addfb_basic@tile-pitch-mismatch.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@prune-stale-modes:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5274">i915#5274</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/608">Intel XE#608</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/678">Intel XE#678</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@primary_page_flip:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/678">Intel XE#678</a>) +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_compute@compute-square:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@xe_compute@compute-square.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/672">Intel XE#672</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@xe_compute@compute-square.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/678">Intel XE#678</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_fault_mode@many-basic:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/678">Intel XE#678</a>) +17 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_huc_copy@huc_copy:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7487/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9784/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/678">Intel XE#678</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7487 -&gt; IGTPW_9784</li>
-</ul>
-<p>IGTPW_9784: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9784/index.html<br />
-  IGT_7487: 77e606dea60110c869ad9f9cc88994a0048845c4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-372-baea10eb27d49a2b8a526d87a70532ab201d140b: baea10eb27d49a2b8a526d87a70532ab201d140b</p>
-
-</body>
-</html>
-
---===============0185270086776515578==--
+diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
+new file mode 100644
+index 000000000..53107438e
+--- /dev/null
++++ b/tests/intel/xe_drm_fdinfo.c
+@@ -0,0 +1,289 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2023 Intel Corporation
++ */
++
++#include "igt.h"
++#include "igt_core.h"
++#include "igt_device.h"
++#include "igt_drm_fdinfo.h"
++#include "lib/igt_syncobj.h"
++#include "xe_drm.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++#include "xe/xe_spin.h"
++/**
++ * TEST: xe drm fdinfo
++ * Description: Read and verify drm client memory consumption using fdinfo
++ * Feature: SMI, core
++ * Category: Software building block
++ * Sub-category: driver
++ * Functionality: Per client memory statistics
++ * Run type: FULL
++ * Test category: SysMan
++ *
++ * SUBTEST: basic
++ * Description: Check if basic fdinfo content is present
++ *
++ * SUBTEST: drm-total-resident
++ * Description: Create and compare total and resident memory consumption by client
++ *
++ * SUBTEST: drm-shared
++ * Description: Create and compare shared memory consumption by client
++ *
++ * SUBTEST: drm-active
++ * Description: Create and compare active memory consumption by client
++ */
++
++IGT_TEST_DESCRIPTION("Read and verify drm client memory consumption using fdinfo");
++
++#define BO_SIZE (65536)
++
++/* Subtests */
++static void test_active(int fd, struct drm_xe_engine_class_instance *eci)
++{
++	struct drm_client_fdinfo info = { };
++	uint32_t vm;
++	uint64_t addr = 0x1a0000;
++	struct drm_xe_sync sync[2] = {
++		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
++		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
++	};
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.num_syncs = 2,
++		.syncs = to_user_pointer(sync),
++	};
++#define N_EXEC_QUEUES   2
++	uint32_t exec_queues[N_EXEC_QUEUES];
++	uint32_t bind_exec_queues[N_EXEC_QUEUES];
++	uint32_t syncobjs[N_EXEC_QUEUES + 1];
++	size_t bo_size;
++	uint32_t bo = 0;
++	int region = 0x2; /* VRAM 0 */
++	struct {
++		struct xe_spin spin;
++		uint32_t batch[16];
++		uint64_t pad;
++		uint32_t data;
++	} *data;
++	struct xe_spin_opts spin_opts = { .preempt = true };
++	int i, b;
++
++	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
++	bo_size = sizeof(*data) * N_EXEC_QUEUES;
++	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
++			xe_get_default_alignment(fd));
++	bo = xe_bo_create_flags(fd, vm, bo_size,
++			region);
++	data = xe_bo_map(fd, bo, bo_size);
++
++	for (i = 0; i < N_EXEC_QUEUES; i++) {
++		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
++		bind_exec_queues[i] = xe_bind_exec_queue_create(fd, vm, 0);
++		syncobjs[i] = syncobj_create(fd, 0);
++	}
++	syncobjs[N_EXEC_QUEUES] = syncobj_create(fd, 0);
++
++	sync[0].handle = syncobj_create(fd, 0);
++	xe_vm_bind_async(fd, vm, bind_exec_queues[0], bo, 0, addr, bo_size,
++			sync, 1);
++
++	for (i = 0; i < N_EXEC_QUEUES; i++) {
++		uint64_t spin_offset = (char *)&data[i].spin - (char *)data;
++		uint64_t spin_addr = addr + spin_offset;
++		int e = i;
++
++		if (i == 0) {
++			 /* Cork 1st exec_queue with a spinner */
++			spin_opts.addr = spin_addr;
++			xe_spin_init(&data[i].spin, &spin_opts);
++			exec.exec_queue_id = exec_queues[e];
++			exec.address = spin_opts.addr;
++			sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
++			sync[1].flags |= DRM_XE_SYNC_SIGNAL;
++			sync[1].handle = syncobjs[e];
++			xe_exec(fd, &exec);
++			xe_spin_wait_started(&data[i].spin);
++
++			addr += bo_size;
++			sync[1].flags &= ~DRM_XE_SYNC_SIGNAL;
++			sync[1].handle = syncobjs[e];
++			xe_vm_bind_async(fd, vm, bind_exec_queues[e], bo, 0, addr,
++					bo_size, sync + 1, 1);
++			addr += bo_size;
++		} else {
++			sync[0].flags |= DRM_XE_SYNC_SIGNAL;
++			xe_vm_bind_async(fd, vm, bind_exec_queues[e], bo, 0, addr,
++					bo_size, sync, 1);
++		}
++
++		b = igt_parse_drm_fdinfo(fd, &info, NULL, 0, NULL, 0);
++		igt_assert_f(b != 0, "failed with err:%d\n", errno);
++
++		/* Client memory consumption includes public objects
++		 * as well as internal objects hence if bo is active on
++		 * N_EXEC_QUEUES consumption should be
++		 * >= bo_size + bo_size * N_EXEC_QUEUES
++		 */
++		igt_info("info.total:%ld active:%ld bo_size:%ld\n",
++				info.region_mem[region].total,
++				info.region_mem[region].active, bo_size);
++		igt_assert(info.region_mem[region].active >=
++				bo_size + bo_size * N_EXEC_QUEUES);
++	}
++	xe_spin_end(&data[0].spin);
++
++	syncobj_destroy(fd, sync[0].handle);
++	sync[0].handle = syncobj_create(fd, 0);
++	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
++	xe_vm_unbind_all_async(fd, vm, 0, bo, sync, 1);
++	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
++
++	syncobj_destroy(fd, sync[0].handle);
++	for (i = 0; i < N_EXEC_QUEUES; i++) {
++		syncobj_destroy(fd, syncobjs[i]);
++		xe_exec_queue_destroy(fd, exec_queues[i]);
++		xe_exec_queue_destroy(fd, bind_exec_queues[i]);
++	}
++
++	munmap(data, bo_size);
++	gem_close(fd, bo);
++	xe_vm_destroy(fd, vm);
++}
++
++static void test_shared(int xe)
++{
++	struct drm_client_fdinfo info = { };
++	struct drm_gem_flink flink;
++	struct drm_gem_open open_struct;
++	uint32_t bo;
++	int region = 0x1;
++	int ret, expected_size = 2 * BO_SIZE;
++
++	bo = xe_bo_create_flags(xe, 0, BO_SIZE, region);
++
++	flink.handle = bo;
++	ret = igt_ioctl(xe, DRM_IOCTL_GEM_FLINK, &flink);
++	igt_assert_eq(ret, 0);
++
++	open_struct.name = flink.name;
++	ret = igt_ioctl(xe, DRM_IOCTL_GEM_OPEN, &open_struct);
++	igt_assert_eq(ret, 0);
++	igt_assert(open_struct.handle != 0);
++
++	ret = igt_parse_drm_fdinfo(xe, &info, NULL, 0, NULL, 0);
++	igt_assert_f(ret != 0, "failed with err:%d\n", errno);
++
++	igt_info("info.total:%ld shared:%ld\n",
++			info.region_mem[region].total,
++			info.region_mem[region].shared);
++	igt_assert_eq(info.region_mem[region].shared,
++		      expected_size);
++
++	gem_close(xe, open_struct.handle);
++	gem_close(xe, bo);
++}
++
++static void test_total_resident(int xe)
++{
++	struct drm_xe_query_mem_region *memregion;
++	uint64_t memreg = all_memory_regions(xe), region;
++	struct drm_client_fdinfo info = { };
++	uint32_t vm;
++	uint32_t handle;
++	uint64_t addr = 0x1a0000;
++	int ret;
++
++	vm = xe_vm_create(xe, DRM_XE_VM_CREATE_SCRATCH_PAGE, 0);
++
++	xe_for_each_mem_region(xe, memreg, region) {
++		memregion = xe_mem_region(xe, region);
++
++		handle = xe_bo_create_flags(xe, vm, BO_SIZE, region);
++		xe_vm_bind_sync(xe, vm, handle, 0, addr, BO_SIZE);
++
++		ret = igt_parse_drm_fdinfo(xe, &info, NULL, 0, NULL, 0);
++		igt_assert_f(ret != 0, "failed with err:%d\n", errno);
++		/* currently xe KMD maps memory class system region to
++		 * XE_PL_TT thus we need memregion->instance + 1
++		 */
++		igt_info("info.total:%ld resident:%ld for region: %d bo_size:%d\n",
++				info.region_mem[memregion->instance + 1].total,
++				info.region_mem[memregion->instance + 1].resident,
++				memregion->instance, BO_SIZE);
++		/* Client memory consumption includes public objects
++		 * as well as internal objects hence it should be
++		 * >= BO_SIZE
++		 */
++		igt_assert(info.region_mem[memregion->instance + 1].total >=
++			   BO_SIZE);
++		igt_assert(info.region_mem[memregion->instance + 1].resident >=
++			   BO_SIZE);
++		xe_vm_unbind_sync(xe, vm, 0, addr, BO_SIZE);
++		gem_close(xe, handle);
++	}
++
++	xe_vm_destroy(xe, vm);
++}
++
++static void basic(int xe)
++{
++	struct drm_xe_query_mem_region *memregion;
++	uint64_t memreg = all_memory_regions(xe), region;
++	struct drm_client_fdinfo info = { };
++	unsigned int ret;
++
++	ret = igt_parse_drm_fdinfo(xe, &info, NULL, 0, NULL, 0);
++	igt_assert_f(ret != 0, "failed with err:%d\n", errno);
++
++	igt_assert(!strcmp(info.driver, "xe"));
++
++	xe_for_each_mem_region(xe, memreg, region) {
++		memregion = xe_mem_region(xe, region);
++		igt_assert(info.region_mem[memregion->instance + 1].total >=
++			   0);
++		igt_assert(info.region_mem[memregion->instance + 1].shared >=
++			   0);
++		igt_assert(info.region_mem[memregion->instance + 1].resident >=
++			   0);
++		igt_assert(info.region_mem[memregion->instance + 1].active >=
++			   0);
++		if (memregion->instance == 0)
++			igt_assert(info.region_mem[memregion->instance].purgeable >=
++				   0);
++	}
++}
++
++igt_main
++{
++	int xe;
++
++	igt_fixture {
++		struct drm_client_fdinfo info = { };
++
++		xe = drm_open_driver(DRIVER_XE);
++		igt_require_xe(xe);
++		igt_require(igt_parse_drm_fdinfo(xe, &info, NULL, 0, NULL, 0));
++	}
++
++	igt_describe("Check if basic fdinfo content is present");
++	igt_subtest("basic")
++		basic(xe);
++
++	igt_describe("Create and compare total and resident memory consumption by client");
++	igt_subtest("drm-total-resident")
++		test_total_resident(xe);
++
++	igt_describe("Create and compare shared memory consumption by client");
++	igt_subtest("drm-shared")
++		test_shared(xe);
++
++	igt_describe("Create and compare active memory consumption by client");
++	igt_subtest("drm-active")
++		test_active(xe, xe_hw_engine(xe, 0));
++
++	igt_fixture {
++		drm_close_driver(xe);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 7201958b7..5d5bee6e3 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -276,6 +276,7 @@ intel_xe_progs = [
+ 	'xe_compute',
+ 	'xe_dma_buf_sync',
+ 	'xe_debugfs',
++	'xe_drm_fdinfo',
+ 	'xe_evict',
+ 	'xe_exec_balancer',
+ 	'xe_exec_basic',
+-- 
+2.25.1
