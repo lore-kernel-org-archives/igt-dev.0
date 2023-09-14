@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DA8A710E28F
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Sep 2023 13:55:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B616310E292
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Sep 2023 13:56:00 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	swati2.sharma@intel.com
-Date: Thu, 14 Sep 2023 18:49:40 +0530
-Message-Id: <20230914131942.2178847-1-bhanuprakash.modem@intel.com>
+Date: Thu, 14 Sep 2023 18:49:41 +0530
+Message-Id: <20230914131942.2178847-2-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230914131942.2178847-1-bhanuprakash.modem@intel.com>
+References: <20230914131942.2178847-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 0/2] Optimize kms tesplan documentation
+Subject: [igt-dev] [i-g-t 1/2] tests/kms: Fix Mega Feature in testplan
+ documentation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,92 +24,313 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Optimizations:
-- Move common stuff to TEST level
-- Move documentation to beginning of the file
-- Align Mega features to internal tools
+Adjust KMS testplan Mega Feature to allign with internal tools.
 
-Bhanuprakash Modem (2):
-  tests/kms: Fix Mega Feature in testplan documentation
-  tests/kms: Optimize KMS testplan documentation
+- s/Bigjoiner/Pipe Joiner/
+- s/Color mgmt/Color Management/
+- s/General Display Features/E2E Compression/ (CCS tests)
+- s/Display Power/Display Power Management/
 
- tests/chamelium/kms_chamelium_color.c  |    6 +-
- tests/intel/kms_big_fb.c               |  301 +-
- tests/intel/kms_big_joiner.c           |   41 +-
- tests/intel/kms_busy.c                 |   88 +-
- tests/intel/kms_ccs.c                  |   15 +-
- tests/intel/kms_cdclk.c                |   41 +-
- tests/intel/kms_dirtyfb.c              |   23 +-
- tests/intel/kms_draw_crc.c             |   71 +-
- tests/intel/kms_dsc.c                  |    8 +-
- tests/intel/kms_fb_coherency.c         |   21 +-
- tests/intel/kms_fbcon_fbt.c            |   21 +-
- tests/intel/kms_fence_pin_leak.c       |   18 +-
- tests/intel/kms_flip_scaled_crc.c      |   60 +-
- tests/intel/kms_flip_tiling.c          |   18 +-
- tests/intel/kms_frontbuffer_tracking.c | 3892 ++++++++++--------------
- tests/intel/kms_legacy_colorkey.c      |   17 +-
- tests/intel/kms_mmap_write_crc.c       |   20 +-
- tests/intel/kms_pipe_b_c_ivb.c         |   28 +-
- tests/intel/kms_pm_backlight.c         |   32 +-
- tests/intel/kms_pm_dc.c                |   39 +-
- tests/intel/kms_pm_lpsp.c              |   22 +-
- tests/intel/kms_psr.c                  |   94 +-
- tests/intel/kms_psr2_sf.c              |   74 +-
- tests/intel/kms_psr2_su.c              |   19 +-
- tests/intel/kms_psr_stress_test.c      |   21 +-
- tests/intel/kms_pwrite_crc.c           |   17 +-
- tests/kms_3d.c                         |   12 +-
- tests/kms_addfb_basic.c                |  353 +--
- tests/kms_async_flips.c                |   81 +-
- tests/kms_atomic.c                     |  145 +-
- tests/kms_atomic_interruptible.c       |   88 +-
- tests/kms_atomic_transition.c          |  148 +-
- tests/kms_bw.c                         |   18 +-
- tests/kms_color.c                      |  125 +-
- tests/kms_concurrent.c                 |   14 +-
- tests/kms_content_protection.c         |  120 +-
- tests/kms_cursor_crc.c                 |  129 +-
- tests/kms_cursor_edge_walk.c           |   19 +-
- tests/kms_cursor_legacy.c              |  431 ++-
- tests/kms_display_modes.c              |   34 +-
- tests/kms_dither.c                     |   27 +-
- tests/kms_dp_aux_dev.c                 |   18 +-
- tests/kms_feature_discovery.c          |   41 +-
- tests/kms_flip.c                       |  155 +-
- tests/kms_flip_event_leak.c            |   17 +-
- tests/kms_force_connector_basic.c      |   53 +-
- tests/kms_getfb.c                      |  142 +-
- tests/kms_hdmi_inject.c                |   22 +-
- tests/kms_hdr.c                        |  105 +-
- tests/kms_invalid_mode.c               |    8 +-
- tests/kms_lease.c                      |   89 +-
- tests/kms_multipipe_modeset.c          |   12 +-
- tests/kms_panel_fitting.c              |   20 +-
- tests/kms_pipe_crc_basic.c             |  117 +-
- tests/kms_plane.c                      |  115 +-
- tests/kms_plane_alpha_blend.c          |   81 +-
- tests/kms_plane_cursor.c               |   19 +-
- tests/kms_plane_lowres.c               |   46 +-
- tests/kms_plane_multiple.c             |   50 +-
- tests/kms_plane_scaling.c              |  354 +--
- tests/kms_prime.c                      |   22 +-
- tests/kms_prop_blob.c                  |   82 +-
- tests/kms_properties.c                 |   42 +-
- tests/kms_rmfb.c                       |   24 +-
- tests/kms_rotation_crc.c               |  204 +-
- tests/kms_scaling_modes.c              |   10 +-
- tests/kms_selftest.c                   |   12 +-
- tests/kms_sequence.c                   |   55 +-
- tests/kms_setmode.c                    |   41 +-
- tests/kms_sysfs_edid_timing.c          |   19 +-
- tests/kms_tiled_display.c              |    9 +-
- tests/kms_tv_load_detect.c             |   10 +-
- tests/kms_universal_plane.c            |   28 +-
- tests/kms_vblank.c                     |   96 +-
- tests/kms_vrr.c                        |   32 +-
- tests/kms_writeback.c                  |   36 +-
- 76 files changed, 3615 insertions(+), 5322 deletions(-)
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/chamelium/kms_chamelium_color.c |  6 +++---
+ tests/intel/kms_big_joiner.c          |  6 +++---
+ tests/intel/kms_ccs.c                 |  6 +++---
+ tests/intel/kms_pm_backlight.c        | 10 +++++-----
+ tests/intel/kms_pm_dc.c               | 14 +++++++-------
+ tests/intel/kms_pm_lpsp.c             |  4 ++--
+ tests/kms_color.c                     | 14 +++++++-------
+ 7 files changed, 30 insertions(+), 30 deletions(-)
 
---
+diff --git a/tests/chamelium/kms_chamelium_color.c b/tests/chamelium/kms_chamelium_color.c
+index 0a9788214..f9adca6c6 100644
+--- a/tests/chamelium/kms_chamelium_color.c
++++ b/tests/chamelium/kms_chamelium_color.c
+@@ -36,7 +36,7 @@ IGT_TEST_DESCRIPTION("Test Color Features at Pipe level using Chamelium to verif
+  * SUBTEST: degamma
+  * Description: Verify that degamma LUT transformation works correctly
+  * Functionality: chamelium, colorspace
+- * Mega feature: Color mgmt
++ * Mega feature: Color Management
+  * Test category: functionality test
+  * Driver requirement: i915, xe
+  */
+@@ -133,7 +133,7 @@ static bool test_pipe_degamma(data_t *data,
+  * SUBTEST: gamma
+  * Description: Verify that gamma LUT transformation works correctly
+  * Functionality: chamelium, colorspace
+- * Mega feature: Color mgmt
++ * Mega feature: Color Management
+  * Test category: functionality test
+  * Driver requirement: i915, xe
+  */
+@@ -491,7 +491,7 @@ run_gamma_degamma_tests_for_pipe(data_t *data, enum pipe p,
+  * SUBTEST: ctm-%s
+  * Description: Check the color transformation %arg[1]
+  * Functionality: chamelium, colorspace
+- * Mega feature: Color mgmt
++ * Mega feature: Color Management
+  * Test category: functionality test
+  * Driver requirement: i915, xe
+  *
+diff --git a/tests/intel/kms_big_joiner.c b/tests/intel/kms_big_joiner.c
+index a555ca799..5c9646133 100644
+--- a/tests/intel/kms_big_joiner.c
++++ b/tests/intel/kms_big_joiner.c
+@@ -51,7 +51,7 @@ typedef struct {
+  *              the pipe is active with a big joiner modeset
+  * Driver requirement: i915, xe
+  * Functionality: 2p1p
+- * Mega feature: Bigjoiner
++ * Mega feature: Pipe Joiner
+  * Test category: functionality test
+  */
+ static void test_invalid_modeset(data_t *data)
+@@ -99,7 +99,7 @@ static void test_invalid_modeset(data_t *data)
+  * Description: Verify the basic modeset on big joiner mode on all pipes
+  * Driver requirement: i915, xe
+  * Functionality: 2p1p
+- * Mega feature: Bigjoiner
++ * Mega feature: Pipe Joiner
+  * Test category: functionality test
+  */
+ static void test_basic_modeset(data_t *data)
+@@ -145,7 +145,7 @@ static void test_basic_modeset(data_t *data)
+  * Description: Verify simultaneous modeset on 2 big joiner outputs
+  * Driver requirement: i915, xe
+  * Functionality: 2p1p
+- * Mega feature: Bigjoiner
++ * Mega feature: Pipe Joiner
+  * Test category: functionality test
+  */
+ static void test_dual_display(data_t *data)
+diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
+index e2bb5a067..102b193da 100644
+--- a/tests/intel/kms_ccs.c
++++ b/tests/intel/kms_ccs.c
+@@ -38,7 +38,7 @@
+  * Description: Test %arg[2] with given %arg[3] modifier
+  * Driver requirement: i915, xe
+  * Functionality: ccs, tiling
+- * Mega feature: General Display Features
++ * Mega feature: E2E Compression
+  * Test category: functionality test
+  *
+  * arg[1]:
+@@ -75,7 +75,7 @@
+  * Description: Test %arg[2] with %arg[3] modifier
+  * Driver requirement: i915, xe
+  * Functionality: ccs, tiling
+- * Mega feature: General Display Features
++ * Mega feature: E2E Compression
+  * Test category: functionality test
+  *
+  * arg[1]:
+@@ -116,7 +116,7 @@
+  * Description: Test %arg[2] with %arg[3] modifier
+  * Driver requirement: i915, xe
+  * Functionality: ccs, rotation, tiling
+- * Mega feature: General Display Features
++ * Mega feature: E2E Compression
+  * Test category: functionality test
+  *
+  * arg[1]:
+diff --git a/tests/intel/kms_pm_backlight.c b/tests/intel/kms_pm_backlight.c
+index 20af15a6b..f3f22da51 100644
+--- a/tests/intel/kms_pm_backlight.c
++++ b/tests/intel/kms_pm_backlight.c
+@@ -45,35 +45,35 @@
+  * Description: Test the bad brightness.
+  * Driver requirement: i915
+  * Functionality: backlight
+- * Mega feature: Display Power
++ * Mega feature: Display Power Management
+  * Test category: functionality test
+  *
+  * SUBTEST: basic-brightness
+  * Description: Test the basic brightness.
+  * Driver requirement: i915
+  * Functionality: backlight
+- * Mega feature: Display Power
++ * Mega feature: Display Power Management
+  * Test category: functionality test
+  *
+  * SUBTEST: fade
+  * Description: Test basic fade.
+  * Driver requirement: i915
+  * Functionality: backlight
+- * Mega feature: Display Power
++ * Mega feature: Display Power Management
+  * Test category: functionality test
+  *
+  * SUBTEST: fade-with-dpms
+  * Description: Test the fade with DPMS.
+  * Driver requirement: i915
+  * Functionality: dpms, backlight
+- * Mega feature: Display Power
++ * Mega feature: Display Power Management
+  * Test category: functionality test
+  *
+  * SUBTEST: fade-with-suspend
+  * Description: Test the fade with suspend.
+  * Driver requirement: i915
+  * Functionality: backlight, suspend
+- * Mega feature: Display Power
++ * Mega feature: Display Power Management
+  * Test category: functionality test
+  */
+ 
+diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
+index 76c662f1f..9c5d990f7 100644
+--- a/tests/intel/kms_pm_dc.c
++++ b/tests/intel/kms_pm_dc.c
+@@ -46,7 +46,7 @@
+  *              is in SLEEP state
+  * Driver requirement: i915
+  * Functionality: dc3co, pm_dc, psr2
+- * Mega feature: Display Power
++ * Mega feature: Display Power Management
+  * Test category: functionality test
+  *
+  * SUBTEST: dc5-dpms
+@@ -54,7 +54,7 @@
+  *              DPMS property set to OFF
+  * Driver requirement: i915
+  * Functionality: dpms, pm_dc
+- * Mega feature: Display Power
++ * Mega feature: Display Power Management
+  * Test category: functionality test
+  *
+  * SUBTEST: dc5-dpms-negative
+@@ -62,14 +62,14 @@
+  *              while all connectors's DPMS property set to ON
+  * Driver requirement: i915
+  * Functionality: dpms, pm_dc
+- * Mega feature: Display Power
++ * Mega feature: Display Power Management
+  * Test category: functionality test
+  *
+  * SUBTEST: dc5-psr
+  * Description: This test validates display engine entry to DC5 state while PSR is active
+  * Driver requirement: i915
+  * Functionality: pm_dc, psr
+- * Mega feature: Display Power
++ * Mega feature: Display Power Management
+  * Test category: functionality test
+  *
+  * SUBTEST: dc6-dpms
+@@ -77,21 +77,21 @@
+  *              DPMS property set to OFF
+  * Driver requirement: i915
+  * Functionality: dpms, pm_dc
+- * Mega feature: Display Power
++ * Mega feature: Display Power Management
+  * Test category: functionality test
+  *
+  * SUBTEST: dc6-psr
+  * Description: This test validates display engine entry to DC6 state while PSR is active
+  * Driver requirement: i915
+  * Functionality: pm_dc, psr
+- * Mega feature: Display Power
++ * Mega feature: Display Power Management
+  * Test category: functionality test
+  *
+  * SUBTEST: dc9-dpms
+  * Description: This test validates display engine entry to DC9 state
+  * Driver requirement: i915
+  * Functionality: dpms, pm_dc
+- * Mega feature: Display Power
++ * Mega feature: Display Power Management
+  * Test category: functionality test
+  */
+ 
+diff --git a/tests/intel/kms_pm_lpsp.c b/tests/intel/kms_pm_lpsp.c
+index 9093f728c..b2db4f653 100644
+--- a/tests/intel/kms_pm_lpsp.c
++++ b/tests/intel/kms_pm_lpsp.c
+@@ -41,14 +41,14 @@
+  * Description: This test validates lpsp on all connected outputs on low power PIPE_A
+  * Driver requirement: i915
+  * Functionality: pm_lpsp
+- * Mega feature: Display Power
++ * Mega feature: Display Power Management
+  * Test category: functionality test
+  *
+  * SUBTEST: screens-disabled
+  * Description: This test validates lpsp while all crtc are disabled
+  * Driver requirement: i915
+  * Functionality: pm_lpsp
+- * Mega feature: Display Power
++ * Mega feature: Display Power Management
+  * Test category: functionality test
+  */
+ 
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index f59feabd4..4809481bc 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -36,7 +36,7 @@ IGT_TEST_DESCRIPTION("Test Color Features at Pipe level");
+  * Description: Verify that degamma LUT transformation works correctly
+  * Driver requirement: i915, xe
+  * Functionality: colorspace
+- * Mega feature: Color mgmt
++ * Mega feature: Color Management
+  * Test category: functionality test
+  */
+ static bool test_pipe_degamma(data_t *data,
+@@ -132,7 +132,7 @@ static bool test_pipe_degamma(data_t *data,
+  * Description: Verify that gamma LUT transformation works correctly
+  * Driver requirement: i915, xe
+  * Functionality: colorspace
+- * Mega feature: Color mgmt
++ * Mega feature: Color Management
+  * Test category: functionality test
+  */
+ 
+@@ -229,7 +229,7 @@ static bool test_pipe_gamma(data_t *data,
+  * Description: Verify that legacy gamma LUT transformation works correctly
+  * Driver requirement: i915, xe
+  * Functionality: colorspace
+- * Mega feature: Color mgmt
++ * Mega feature: Color Management
+  * Test category: functionality test
+  */
+ 
+@@ -351,7 +351,7 @@ static bool test_pipe_legacy_gamma(data_t *data,
+  *              set through GAMMA_LUT property
+  * Driver requirement: i915, xe
+  * Functionality: colorspace
+- * Mega feature: Color mgmt
++ * Mega feature: Color Management
+  * Test category: functionality test
+  */
+ 
+@@ -494,7 +494,7 @@ end:
+  * Description: Check the color transformation %arg[1]
+  * Driver requirement: i915, xe
+  * Functionality: colorspace
+- * Mega feature: Color mgmt
++ * Mega feature: Color Management
+  * Test category: functionality test
+  *
+  * arg[1]:
+@@ -874,7 +874,7 @@ out:
+  * Description: Verify that deep color works correctly
+  * Driver requirement: i915, xe
+  * Functionality: colorspace
+- * Mega feature: Color mgmt
++ * Mega feature: Color Management
+  * Test category: functionality test
+  */
+ static void
+@@ -983,7 +983,7 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
+  * Description: Negative check for %arg[1] sizes
+  * Driver requirement: i915, xe
+  * Functionality: colorspace
+- * Mega feature: Color mgmt
++ * Mega feature: Color Management
+  * Test category: functionality test
+  *
+  * arg[1]:
+-- 
 2.40.0
