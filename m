@@ -1,20 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam04on2063.outbound.protection.outlook.com [40.107.102.63])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EDD8010E142
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Sep 2023 01:56:53 +0000 (UTC)
-Message-ID: <947c343e-b9e6-4d8d-aa96-e07fe73e6e12@amd.com>
-Date: Wed, 13 Sep 2023 21:56:49 -0400
-Content-Language: en-CA, en-US
-To: vitaly.prosyak@amd.com, igt-dev@lists.freedesktop.org
-References: <20230914011732.343775-1-vitaly.prosyak@amd.com>
- <20230914011732.343775-2-vitaly.prosyak@amd.com>
-From: Luben Tuikov <luben.tuikov@amd.com>
-In-Reply-To: <20230914011732.343775-2-vitaly.prosyak@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative;
+ boundary="===============5974800905253034272=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH 2/3] tests/amdgpu: skip CE subtest for gfx11
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: vitaly.prosyak@amd.com
+Date: Thu, 14 Sep 2023 02:02:51 -0000
+Message-ID: <169465697121.29164.15240625563069981377@emeril.freedesktop.org>
+References: <20230914011732.343775-1-vitaly.prosyak@amd.com>
+In-Reply-To: <20230914011732.343775-1-vitaly.prosyak@amd.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_s?=
+ =?utf-8?q?tarting_with_=5B1/3=5D_lib/amdgpu=3A_Fix_family_id_failed_durin?=
+ =?utf-8?q?g_initialization?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,114 +18,133 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Alex Deucher <alexander.deucher@amd.com>,
- Christian Koenig <christian.koenig@amd.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2023-09-13 21:17, vitaly.prosyak@amd.com wrote:
-> From: Jesse Zhang <jesse.zhang@amd.com>
-> 
-> Due to CE is not available on gfx11,
-> so skip CE subtest for gfx11.
-> 
-> v2 : - code logic improvements(Vitaly)
-> 
-> Cc: Luben Tuikov <luben.tuikov@amd.com>
-> Cc: Alex Deucher <alexander.deucher@amd.com>
-> Cc: Christian Koenig <christian.koenig@amd.com>
-> 
-> Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-> Reviewed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-> ---
->  tests/amdgpu/amd_basic.c | 29 ++++++++++++++++++++---------
->  1 file changed, 20 insertions(+), 9 deletions(-)
-> 
-> diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
-> index e7a42a335..11e2af98e 100644
-> --- a/tests/amdgpu/amd_basic.c
-> +++ b/tests/amdgpu/amd_basic.c
-> @@ -67,7 +67,7 @@ static void amdgpu_memory_alloc(amdgpu_device_handle device)
->   * AMDGPU_HW_IP_GFX
->   * @param device
->   */
-> -static void amdgpu_command_submission_gfx(amdgpu_device_handle device)
-> +static void amdgpu_command_submission_gfx(amdgpu_device_handle device, bool ce_avails)
->  {
->  	/* write data using the CP */
->  	amdgpu_command_submission_write_linear_helper(device, get_ip_block(device, AMDGPU_HW_IP_GFX), false);
-> @@ -75,10 +75,15 @@ static void amdgpu_command_submission_gfx(amdgpu_device_handle device)
->  	amdgpu_command_submission_const_fill_helper(device, get_ip_block(device, AMDGPU_HW_IP_GFX));
->  	/* copy data using the CP */
->  	amdgpu_command_submission_copy_linear_helper(device, get_ip_block(device, AMDGPU_HW_IP_GFX));
-> -	/* separate IB buffers for multi-IB submission */
-> -	amdgpu_command_submission_gfx_separate_ibs(device);
-> -	/* shared IB buffer for multi-IB submission */
-> -	amdgpu_command_submission_gfx_shared_ib(device);
-> +
-> +	if (ce_avails) {
-> +		/* separate IB buffers for multi-IB submission */
-> +		amdgpu_command_submission_gfx_separate_ibs(device);
-> +		/* shared IB buffer for multi-IB submission */
-> +		amdgpu_command_submission_gfx_shared_ib(device);
-> +	} else {
-> +		igt_info("separate and shared IB buffers for multi IB submisison testes are skipped due to GFX11\n");
-> +	}
->  }
->  
->  /**
-> @@ -624,6 +629,7 @@ igt_main
->  {
->  	amdgpu_device_handle device;
->  	struct amdgpu_gpu_info gpu_info = {0};
-> +	struct drm_amdgpu_info_hw_ip info;
->  	int fd = -1;
->  	int r;
->  	bool arr_cap[AMD_IP_MAX] = {0};
-> @@ -642,6 +648,8 @@ igt_main
->  
->  		r = amdgpu_query_gpu_info(device, &gpu_info);
->  		igt_assert_eq(r, 0);
-> +		r = amdgpu_query_hw_ip_info(device, AMDGPU_HW_IP_GFX, 0, &info);
-> +		igt_assert_eq(r, 0);
->  		r = setup_amdgpu_ip_blocks(major, minor,  &gpu_info, device);
->  		igt_assert_eq(r, 0);
->  		asic_rings_readness(device, 1, arr_cap);
-> @@ -662,7 +670,7 @@ igt_main
->  	igt_subtest_with_dynamic("cs-gfx-with-IP-GFX") {
->  		if (arr_cap[AMD_IP_GFX]) {
->  			igt_dynamic_f("cs-gfx")
-> -			amdgpu_command_submission_gfx(device);
-> +			amdgpu_command_submission_gfx(device, info.hw_ip_version_major < 11);
->  		}
->  	}
->  
-> @@ -675,13 +683,16 @@ igt_main
->  	}
->  
->  	igt_describe("Check-GFX-CS-for-multi-fence");
-> -	igt_subtest_with_dynamic("cs-multi-fence-with-IP-GFX") {
-> -		if (arr_cap[AMD_IP_GFX]) {
-> +	igt_subtest_with_dynamic("") {
-> +		if (arr_cap[AMD_IP_GFX] && info.hw_ip_version_major < 11) {
->  			igt_dynamic_f("cs-multi-fence")
-> -		amdgpu_command_submission_multi_fence(device);
-> +			amdgpu_command_submission_multi_fence(device);
-> +		} else {
-> +			igt_info("cs-multi-fence-with-IP-GFX testes are skipped due to GFX11 or no GFX_IP\n");
->  		}
->  	}
->  
-> +
->  	igt_describe("Check-DMA-CS-for-every-available-ring-works-for-write-const-fill-copy-operation");
+--===============5974800905253034272==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Unnecessary empty line added above. Perhaps remove. With that, this patch is,
+== Series Details ==
 
-Reviewed-by: Luben Tuikov <luben.tuikov@amd.com>
+Series: series starting with [1/3] lib/amdgpu: Fix family id failed during initialization
+URL   : https://patchwork.freedesktop.org/series/123660/
+State : success
 
-Regards,
-Luben
+== Summary ==
 
->  	igt_subtest_with_dynamic("cs-sdma-with-IP-DMA") {
->  		if (arr_cap[AMD_IP_DMA]) {
+CI Bug Log - changes from XEIGT_7486_BAT -> XEIGTPW_9783_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9783_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
+    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 other test fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7486/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9783/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7486 -> IGTPW_9783
+
+  IGTPW_9783: 9783
+  IGT_7486: afd9a940c8247291baadd1977fe881d4f2edf0c7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-371-89b671db4d8e2c46f27044d39c69095f597290e5: 89b671db4d8e2c46f27044d39c69095f597290e5
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9783/index.html
+
+--===============5974800905253034272==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [1/3] lib/amdgpu: Fix family id failed during initialization</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123660/">https://patchwork.freedesktop.org/series/123660/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9783/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9783/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7486_BAT -&gt; XEIGTPW_9783_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9783_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7486/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9783/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7486 -&gt; IGTPW_9783</li>
+</ul>
+<p>IGTPW_9783: 9783<br />
+  IGT_7486: afd9a940c8247291baadd1977fe881d4f2edf0c7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-371-89b671db4d8e2c46f27044d39c69095f597290e5: 89b671db4d8e2c46f27044d39c69095f597290e5</p>
+
+</body>
+</html>
+
+--===============5974800905253034272==--
