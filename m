@@ -1,22 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D52D010E5C0
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Sep 2023 01:40:29 +0000 (UTC)
-From: "Teres Alexis, Alan Previn" <alan.previn.teres.alexis@intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "kamil.konieczny@linux.intel.com" <kamil.konieczny@linux.intel.com>
-Date: Fri, 15 Sep 2023 01:40:26 +0000
-Message-ID: <b2975e327ddcda28558291b1902d6163a53596b9.camel@intel.com>
-References: <20230911171509.526426-1-alan.previn.teres.alexis@intel.com>
- <20230912093130.e4nalc5t6gwzjjff@kamilkon-desk.igk.intel.com>
-In-Reply-To: <20230912093130.e4nalc5t6gwzjjff@kamilkon-desk.igk.intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <49A8DA8281076C4C94F6FFD132ACC108@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 486D710E581
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Sep 2023 19:15:14 +0000 (UTC)
+Message-ID: <d475d800-603e-1df8-f3cb-ff5c53fcd972@linux.intel.com>
+Date: Thu, 14 Sep 2023 21:13:47 +0200
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v3] lib/i915: Add a helper to read mmio
- registers via ioctl
+Content-Language: en-US
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Nirmoy Das <nirmoy.das@intel.com>,
+ andi.shyti@intel.com
+References: <20230913094252.6246-1-nirmoy.das@intel.com>
+ <20230913094252.6246-2-nirmoy.das@intel.com>
+ <20230914133151.6rpyuaeamby4bkf4@kamilkon-desk.igk.intel.com>
+From: Nirmoy Das <nirmoy.das@linux.intel.com>
+In-Reply-To: <20230914133151.6rpyuaeamby4bkf4@kamilkon-desk.igk.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/igt_gt: Add a method to detect
+ ggtt bind
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,19 +25,60 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Konieczny, Kamil" <kamil.konieczny@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCAyMDIzLTA5LTEyIGF0IDExOjMxICswMjAwLCBLYW1pbCBLb25pZWN6bnkgd3JvdGU6
-DQo+IEhpIEFsYW4sDQo+IA0KPiBvbmUgbW9yZSBzbWFsbCBuaXQsIHNlZSBiZWxvdy4NCj4gDQo+
-IE9uIDIwMjMtMDktMTEgYXQgMTA6MTU6MDkgLTA3MDAsIEFsYW4gUHJldmluIHdyb3RlOg0KPiA+
-IEFkZCBhIGhlbHBlciBpbnRvIGV4aXN0aW5nIGlvY3RsX3dyYXBwZXJzLmMgIHRvIGNhbGwNCj4g
-PiBEUk1fSU9DVExfSTkxNV9SRUdfUkVBRCB0byByZWFkIHdoaXRlbGlzdGVkIHJlZ2lzdGVycy4N
-Cj4gPiANCmFsYW46c25pcA0KDQo+ID4gLS0tIGEvdG9vbHMvaTkxNS1wZXJmL2k5MTVfcGVyZl9y
-ZWNvcmRlci5jDQo+ID4gKysrIGIvdG9vbHMvaTkxNS1wZXJmL2k5MTVfcGVyZl9yZWNvcmRlci5j
-DQo+ID4gQEAgLTQ4LDEwICs0OCwxMiBAQA0KPiA+ICANCj4gPiAgI2luY2x1ZGUgImlndF9jb3Jl
-LmgiDQo+ID4gICNpbmNsdWRlICJpbnRlbF9jaGlwc2V0LmgiDQo+ID4gKw0KPiAtLV4NCj4gUmVt
-b3ZlIHRoaXMgYWRkaXRpb25hbCBuZXdsaW5lLg0KPiANCmFsYW46IHdpbGwgZG8gLSBhcG9sb2dp
-ZXMgLSBoYWJpdCBmcm9tIGtlcm5lbCAoZ3JvdXBpbmcgZG9pbWFpbnMgb2YgaW5jbHVkZSkNCg==
+Hi Kamil,
+
+On 9/14/2023 3:31 PM, Kamil Konieczny wrote:
+> Hi Nirmoy,
+>
+> On 2023-09-13 at 11:42:50 +0200, Nirmoy Das wrote:
+>> On MTL GGTT updates happens through MI_UPDATE_GGTT command.
+>> Add a method to detect that.
+>>
+>> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+>> ---
+>>   lib/igt_gt.c | 5 +++++
+>>   lib/igt_gt.h | 1 +
+>>   2 files changed, 6 insertions(+)
+>>
+>> diff --git a/lib/igt_gt.c b/lib/igt_gt.c
+>> index a24a566c7..6895964a9 100644
+>> --- a/lib/igt_gt.c
+>> +++ b/lib/igt_gt.c
+>> @@ -659,3 +659,8 @@ int gem_execbuf_flags_to_engine_class(unsigned int flags)
+>>   		igt_assert(0);
+>>   	}
+>>   }
+>> +
+> Add description to public function.
+
+Makes sense, will resend with doc.
+
+
+Nirmoy
+
+>
+> Regards,
+> Kamil
+>
+>> +bool gem_has_ggtt_bind(int fd)
+>> +{
+>> +	return IS_METEORLAKE(intel_get_drm_devid(fd));
+>> +}
+>> diff --git a/lib/igt_gt.h b/lib/igt_gt.h
+>> index 3d10349e4..7d35a209d 100644
+>> --- a/lib/igt_gt.h
+>> +++ b/lib/igt_gt.h
+>> @@ -83,5 +83,6 @@ extern const struct intel_execution_engine2 {
+>>   } intel_execution_engines2[];
+>>   
+>>   int gem_execbuf_flags_to_engine_class(unsigned int flags);
+>> +bool gem_has_ggtt_bind(int fd);
+>>   
+>>   #endif /* IGT_GT_H */
+>> -- 
+>> 2.41.0
+>>
