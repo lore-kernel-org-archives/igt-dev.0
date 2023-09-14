@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============9046190944632587738=="
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 245DF10E13D
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Sep 2023 16:41:56 +0000 (UTC)
+Date: Thu, 14 Sep 2023 18:41:15 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230914164115.kqaxoc2ximipv4x2@kamilkon-desk.igk.intel.com>
+References: <20230914155544.399186-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 15 Sep 2023 15:05:11 -0000
-Message-ID: <169479031160.32042.10794536392288559035@emeril.freedesktop.org>
-References: <20230915123634.453651-1-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230915123634.453651-1-mauro.chehab@linux.intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_docs/tes?=
- =?utf-8?q?tplan/conf=2Epy=3A_add_sphinx_path?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230914155544.399186-1-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] docs/cross-building.txt: add
+ documentation about cross-builds
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,135 +19,132 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============9046190944632587738==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Mauro,
 
-== Series Details ==
+On 2023-09-14 at 17:55:44 +0200, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> Cross-building IGT is not too trivial, as one needs to prepare
+> a sysroot directory containing not only glibc, but also other
+---------------------------------------------- ^^^^^
+s/, but/ but/
 
-Series: docs/testplan/conf.py: add sphinx path
-URL   : https://patchwork.freedesktop.org/series/123765/
-State : success
+> libraries. Yet, such kind of builds are sometimes desired.
+-----------------------------------------------------------^
+> So, document how to do that.
+s/. So, document/ so I documented/
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> ---
+>  docs/cross-building.txt | 73 +++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 73 insertions(+)
+>  create mode 100644 docs/cross-building.txt
+> 
+> diff --git a/docs/cross-building.txt b/docs/cross-building.txt
+> new file mode 100644
+> index 000000000000..52aa5c361de3
+> --- /dev/null
+> +++ b/docs/cross-building.txt
+> @@ -0,0 +1,73 @@
+> +Producing an IGT library for another architecture
+------------------- ^^^^^^^
+s/library for/for/
 
-== Summary ==
+> +=================================================
+> +
 
-CI Bug Log - changes from XEIGT_7490_BAT -> XEIGTPW_9800_BAT
-====================================================
+Could you also add here what packets you installed on Fedora?
+Any other arm64 headers/libs needed?
 
-Summary
--------
+> +Meson requires an extra file to do non-native builds. This is passed
+> +via --cross-file parameter to it.
+> +
+> +Such file contains the configuration used to do a cross-compilation build.
+> +As such, it contains:
+> +
+> +- the host machine data, which defines the system and architecture from
+> +  the native OS.
+> +  At the example below, the native OS is Linux, x86_64 architecture.
+> +- the target machine data, containing the target architecture.
+> +  At the example below, the target is aarch64 (arm 64 bits architecture).
+> +- the sysroot path, where IGT dependent libraries were compiled for a given
+> +  architecture.
+> +  This can be obtained by either cross-building a distribution using
+> +  Yocto, buildroot or similar, or by copying the system root from
+> +  an install for the desired architecture, after installing the IGT
+> +  needed library dependencies.
+> +
+> +  At the example below, the libraries are stored under /aarch64-sysroot.
+> +
+> +  Please notice that the binaries may require some extra libraries used
+> +  for cross-compiling. One needs to copy them from the native cross-compiler
+> +  toolchain. In the case of Fedora, such files are located  under
+> +  /usr/aarch64-linux-gnu/sys-root/ (for aarch64 architecture).
+> +
+> +Preparing for cross compilation is done by calling meson with the
+> +cross-compilation config file name:
+> +
+> +	meson --cross-file arm64_cross.txt arm64
+-------------------------------------- ^^^^^
+This should be 'build'
 
-  **SUCCESS**
+> +
+> +The actual compilation can then be done using ninja:
+> +
+> +	ninja -C arm64
+------------ ^^^^^
+Same here, use build:
 
-  No regressions found.
+ninja -C build
 
-  
+Option -C changes path before running next actions.
 
-Participating hosts (4 -> 4)
-------------------------------
+Regards,
+Kamil
 
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_9800_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:
-    - bat-adlp-7:         [FAIL][1] ([Intel XE#480]) -> [PASS][2] +1 other test pass
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7490/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9800/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
-
-
-Build changes
--------------
-
-  * IGT: IGT_7490 -> IGTPW_9800
-
-  IGTPW_9800: 9800
-  IGT_7490: 7490
-  xe-375-4a9681392cecd56a372d06b648f7b3a37fdd5c63: 4a9681392cecd56a372d06b648f7b3a37fdd5c63
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9800/index.html
-
---===============9046190944632587738==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>docs/testplan/conf.py: add sphinx path</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123765/">https://patchwork.freedesktop.org/series/123765/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9800/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9800/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7490_BAT -&gt; XEIGTPW_9800_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_9800_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7490/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9800/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7490 -&gt; IGTPW_9800</li>
-</ul>
-<p>IGTPW_9800: 9800<br />
-  IGT_7490: 7490<br />
-  xe-375-4a9681392cecd56a372d06b648f7b3a37fdd5c63: 4a9681392cecd56a372d06b648f7b3a37fdd5c63</p>
-
-</body>
-</html>
-
---===============9046190944632587738==--
+> +
+> +Please notice that some parts of the IGT build are disabled during
+> +cross-compilation, like testlist file creation and documentation,
+> +as such steps depend on running the generated code at the native
+> +machine.
+> +
+> +arm64_cross.txt example
+> +-----------------------
+> +
+> +[constants]
+> +sysroot = '/aarch64-sysroot'
+> +common_args = ['--sysroot=' + sysroot]
+> +
+> +[properties]
+> +sys_root = sysroot
+> +c_args = common_args
+> +c_link_args = common_args
+> +pkg_config_libdir = [sysroot + '/usr/lib64/pkgconfig', sysroot +'/usr/share/pkgconfig', sysroot +'/usr/local/lib/pkgconfig']
+> +
+> +[binaries]
+> +c = '/usr/bin/aarch64-linux-gnu-gcc'
+> +ar = '/usr/bin/aarch64-linux-gnu-gcc-ar'
+> +ld = '/usr/bin/aarch64-linux-gnu-ld'
+> +strip = '/usr/bin/aarch64-linux-gnu-strip'
+> +pkgconfig = 'pkg-config'
+> +
+> +[host_machine]
+> +system = 'linux'
+> +cpu_family = 'x86_64'
+> +cpu = 'x86_64'
+> +endian = 'little'
+> +
+> +[target_machine]
+> +system = 'linux'
+> +cpu_family = 'aarch64'
+> +cpu = 'aarch64'
+> +endian = 'little'
+> -- 
+> 2.41.0
+> 
 
