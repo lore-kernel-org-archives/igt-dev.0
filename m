@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 65BA810E1BD
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A5CF110E0D7
  for <igt-dev@lists.freedesktop.org>; Thu, 14 Sep 2023 20:18:27 +0000 (UTC)
 From: Nirmoy Das <nirmoy.das@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 14 Sep 2023 22:18:08 +0200
-Message-ID: <20230914201809.1804-3-nirmoy.das@intel.com>
+Date: Thu, 14 Sep 2023 22:18:09 +0200
+Message-ID: <20230914201809.1804-4-nirmoy.das@intel.com>
 In-Reply-To: <20230914201809.1804-1-nirmoy.das@intel.com>
 References: <20230914201809.1804-1-nirmoy.das@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/3] tests/intel/gem_ctx_shared: Skip some
+Subject: [igt-dev] [PATCH i-g-t 3/3] tests/intel/gem_ctx_schedule: Skip some
  test on MTL
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -29,52 +29,109 @@ will fail the test so skip such subtests on bcs engine for MTL.
 
 Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
 ---
- tests/intel/gem_ctx_shared.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ tests/intel/gem_exec_schedule.c | 37 ++++++++++++++++++++-------------
+ 1 file changed, 22 insertions(+), 15 deletions(-)
 
-diff --git a/tests/intel/gem_ctx_shared.c b/tests/intel/gem_ctx_shared.c
-index d24ae5483..fd429306e 100644
---- a/tests/intel/gem_ctx_shared.c
-+++ b/tests/intel/gem_ctx_shared.c
-@@ -1047,6 +1047,12 @@ static void smoketest(int i915, const intel_ctx_cfg_t *cfg,
- 		for_each_if(gem_class_can_store_dword(i915, (e)->class)) \
- 			igt_dynamic_f("%s", e->name)
+diff --git a/tests/intel/gem_exec_schedule.c b/tests/intel/gem_exec_schedule.c
+index c94988d36..607a5b21f 100644
+--- a/tests/intel/gem_exec_schedule.c
++++ b/tests/intel/gem_exec_schedule.c
+@@ -3479,6 +3479,12 @@ static void fairslice(int i915, const intel_ctx_cfg_t *cfg,
+ 		for_each_if(gem_class_can_store_dword(fd, e->class)) \
+ 		igt_dynamic_f("%s", e->name)
  
-+#define for_each_nonblocking_ggtt_binder_queue(e, i915, cfg) \
-+	for_each_ctx_cfg_engine(i915, cfg, e) \
-+		for_each_if(gem_class_can_store_dword(i915, (e)->class) && \
++#define test_each_ggtt_binder_nonblocking_engine(T, i915, ctx, e) \
++	igt_subtest_with_dynamic(T) for_each_ctx_engine(i915, ctx, e) \
++		for_each_if(gem_class_can_store_dword(fd, e->class) && \
 +			    !gem_engine_can_block_ggtt_binder(i915, e)) \
-+			igt_dynamic_f("%s", e->name)
++		igt_dynamic_f("%s", e->name)
 +
  igt_main
  {
- 	const struct intel_execution_engine2 *e;
-@@ -1104,22 +1110,22 @@ igt_main
- 			}
+ 	int fd = -1;
+@@ -3502,21 +3508,22 @@ igt_main
+ 	igt_subtest_group {
+ 		const struct intel_execution_engine2 *e;
  
- 			igt_subtest_with_dynamic("Q-independent") {
--				for_each_queue(e, i915, &cfg)
-+				for_each_nonblocking_ggtt_binder_queue(e, i915, &cfg)
- 					independent(i915, &cfg, e, 0);
- 			}
+-		test_each_engine_store("fifo", fd, ctx, e)
++		test_each_ggtt_binder_nonblocking_engine("fifo", fd, ctx, e)
+ 			fifo(fd, ctx, e->flags);
  
- 			igt_subtest_with_dynamic("Q-in-order") {
--				for_each_queue(e, i915, &cfg)
-+				for_each_nonblocking_ggtt_binder_queue(e, i915, &cfg)
- 					reorder(i915, &cfg, e->flags, EQUAL);
- 			}
+-		test_each_engine_store("implicit-read-write", fd, ctx, e)
++		test_each_ggtt_binder_nonblocking_engine("implicit-read-write", fd, ctx, e)
+ 			implicit_rw(fd, ctx, e->flags, READ_WRITE);
  
- 			igt_subtest_with_dynamic("Q-out-order") {
--				for_each_queue(e, i915, &cfg)
-+				for_each_nonblocking_ggtt_binder_queue(e, i915, &cfg)
- 					reorder(i915, &cfg, e->flags, 0);
- 			}
+-		test_each_engine_store("implicit-write-read", fd, ctx, e)
++		test_each_ggtt_binder_nonblocking_engine("implicit-write-read", fd, ctx, e)
+ 			implicit_rw(fd, ctx, e->flags, WRITE_READ);
  
- 			igt_subtest_with_dynamic("Q-promotion") {
--				for_each_queue(e, i915, &cfg)
-+				for_each_nonblocking_ggtt_binder_queue(e, i915, &cfg)
- 					promotion(i915, &cfg, e->flags);
+-		test_each_engine_store("implicit-boths", fd, ctx, e)
++		test_each_ggtt_binder_nonblocking_engine("implicit-boths", fd, ctx, e)
+ 			implicit_rw(fd, ctx, e->flags, READ_WRITE | WRITE_READ);
+ 
+-		test_each_engine_store("independent", fd, ctx, e)
++		test_each_ggtt_binder_nonblocking_engine("independent", fd, ctx, e)
+ 			independent(fd, ctx, e->flags, 0);
+-		test_each_engine_store("u-independent", fd, ctx, e)
++
++		test_each_ggtt_binder_nonblocking_engine("u-independent", fd, ctx, e)
+ 			independent(fd, ctx, e->flags, IGT_SPIN_USERPTR);
+ 	}
+ 
+@@ -3615,10 +3622,10 @@ igt_main
+ 		test_each_engine_store("in-order", fd, ctx, e)
+ 			reorder(fd, &ctx->cfg, e->flags, EQUAL);
+ 
+-		test_each_engine_store("out-order", fd, ctx, e)
++		test_each_ggtt_binder_nonblocking_engine("out-order", fd, ctx, e)
+ 			reorder(fd, &ctx->cfg, e->flags, 0);
+ 
+-		test_each_engine_store("promotion", fd, ctx, e)
++		test_each_ggtt_binder_nonblocking_engine("promotion", fd, ctx, e)
+ 			promotion(fd, &ctx->cfg, e->flags);
+ 
+ 		igt_subtest_group {
+@@ -3685,23 +3692,23 @@ igt_main
  			}
  		}
+ 
+-		test_each_engine_store("noreorder", fd, ctx, e)
++		test_each_ggtt_binder_nonblocking_engine("noreorder", fd, ctx, e)
+ 			noreorder(fd, &ctx->cfg, e->flags, 0, 0);
+ 
+-		test_each_engine_store("noreorder-priority", fd, ctx, e) {
++		test_each_ggtt_binder_nonblocking_engine("noreorder-priority", fd, ctx, e) {
+ 			igt_require(gem_scheduler_enabled(fd));
+ 			noreorder(fd, &ctx->cfg, e->flags, MAX_PRIO, 0);
+ 		}
+ 
+-		test_each_engine_store("noreorder-corked", fd, ctx, e) {
++		test_each_ggtt_binder_nonblocking_engine("noreorder-corked", fd, ctx, e) {
+ 			igt_require(gem_scheduler_enabled(fd));
+ 			noreorder(fd, &ctx->cfg, e->flags, MAX_PRIO, CORKED);
+ 		}
+ 
+-		test_each_engine_store("deep", fd, ctx, e)
++		test_each_ggtt_binder_nonblocking_engine("deep", fd, ctx, e)
+ 			deep(fd, &ctx->cfg, e->flags);
+ 
+-		test_each_engine_store("wide", fd, ctx, e)
++		test_each_ggtt_binder_nonblocking_engine("wide", fd, ctx, e)
+ 			wide(fd, &ctx->cfg, e->flags);
+ 
+ 		test_each_engine_store("smoketest", fd, ctx, e)
+@@ -3735,10 +3742,10 @@ igt_main
+ 		test_each_engine("pi-userfault", fd, ctx, e)
+ 			test_pi_userfault(fd, &ctx->cfg, e->flags);
+ 
+-		test_each_engine("pi-distinct-iova", fd, ctx, e)
++		test_each_ggtt_binder_nonblocking_engine("pi-distinct-iova", fd, ctx, e)
+ 			test_pi_iova(fd, &ctx->cfg, e->flags, 0);
+ 
+-		test_each_engine("pi-shared-iova", fd, ctx, e)
++		test_each_ggtt_binder_nonblocking_engine("pi-shared-iova", fd, ctx, e)
+ 			test_pi_iova(fd, &ctx->cfg, e->flags, SHARED);
+ 	}
+ 
 -- 
 2.41.0
