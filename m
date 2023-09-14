@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from NAM04-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam04on20614.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e8b::614])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6390910E142
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Sep 2023 01:55:04 +0000 (UTC)
-Message-ID: <882aafad-f029-4025-8bf6-8f2185bdabe2@amd.com>
-Date: Wed, 13 Sep 2023 21:54:57 -0400
+ (mail-dm6nam04on2063.outbound.protection.outlook.com [40.107.102.63])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EDD8010E142
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Sep 2023 01:56:53 +0000 (UTC)
+Message-ID: <947c343e-b9e6-4d8d-aa96-e07fe73e6e12@amd.com>
+Date: Wed, 13 Sep 2023 21:56:49 -0400
 Content-Language: en-CA, en-US
 To: vitaly.prosyak@amd.com, igt-dev@lists.freedesktop.org
 References: <20230914011732.343775-1-vitaly.prosyak@amd.com>
+ <20230914011732.343775-2-vitaly.prosyak@amd.com>
 From: Luben Tuikov <luben.tuikov@amd.com>
-In-Reply-To: <20230914011732.343775-1-vitaly.prosyak@amd.com>
+In-Reply-To: <20230914011732.343775-2-vitaly.prosyak@amd.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH 1/3] lib/amdgpu: Fix family id failed during
- initialization
+Subject: Re: [igt-dev] [PATCH 2/3] tests/amdgpu: skip CE subtest for gfx11
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,158 +28,108 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Looks good.
+On 2023-09-13 21:17, vitaly.prosyak@amd.com wrote:
+> From: Jesse Zhang <jesse.zhang@amd.com>
+> 
+> Due to CE is not available on gfx11,
+> so skip CE subtest for gfx11.
+> 
+> v2 : - code logic improvements(Vitaly)
+> 
+> Cc: Luben Tuikov <luben.tuikov@amd.com>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
+> Cc: Christian Koenig <christian.koenig@amd.com>
+> 
+> Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+> Reviewed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> ---
+>  tests/amdgpu/amd_basic.c | 29 ++++++++++++++++++++---------
+>  1 file changed, 20 insertions(+), 9 deletions(-)
+> 
+> diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
+> index e7a42a335..11e2af98e 100644
+> --- a/tests/amdgpu/amd_basic.c
+> +++ b/tests/amdgpu/amd_basic.c
+> @@ -67,7 +67,7 @@ static void amdgpu_memory_alloc(amdgpu_device_handle device)
+>   * AMDGPU_HW_IP_GFX
+>   * @param device
+>   */
+> -static void amdgpu_command_submission_gfx(amdgpu_device_handle device)
+> +static void amdgpu_command_submission_gfx(amdgpu_device_handle device, bool ce_avails)
+>  {
+>  	/* write data using the CP */
+>  	amdgpu_command_submission_write_linear_helper(device, get_ip_block(device, AMDGPU_HW_IP_GFX), false);
+> @@ -75,10 +75,15 @@ static void amdgpu_command_submission_gfx(amdgpu_device_handle device)
+>  	amdgpu_command_submission_const_fill_helper(device, get_ip_block(device, AMDGPU_HW_IP_GFX));
+>  	/* copy data using the CP */
+>  	amdgpu_command_submission_copy_linear_helper(device, get_ip_block(device, AMDGPU_HW_IP_GFX));
+> -	/* separate IB buffers for multi-IB submission */
+> -	amdgpu_command_submission_gfx_separate_ibs(device);
+> -	/* shared IB buffer for multi-IB submission */
+> -	amdgpu_command_submission_gfx_shared_ib(device);
+> +
+> +	if (ce_avails) {
+> +		/* separate IB buffers for multi-IB submission */
+> +		amdgpu_command_submission_gfx_separate_ibs(device);
+> +		/* shared IB buffer for multi-IB submission */
+> +		amdgpu_command_submission_gfx_shared_ib(device);
+> +	} else {
+> +		igt_info("separate and shared IB buffers for multi IB submisison testes are skipped due to GFX11\n");
+> +	}
+>  }
+>  
+>  /**
+> @@ -624,6 +629,7 @@ igt_main
+>  {
+>  	amdgpu_device_handle device;
+>  	struct amdgpu_gpu_info gpu_info = {0};
+> +	struct drm_amdgpu_info_hw_ip info;
+>  	int fd = -1;
+>  	int r;
+>  	bool arr_cap[AMD_IP_MAX] = {0};
+> @@ -642,6 +648,8 @@ igt_main
+>  
+>  		r = amdgpu_query_gpu_info(device, &gpu_info);
+>  		igt_assert_eq(r, 0);
+> +		r = amdgpu_query_hw_ip_info(device, AMDGPU_HW_IP_GFX, 0, &info);
+> +		igt_assert_eq(r, 0);
+>  		r = setup_amdgpu_ip_blocks(major, minor,  &gpu_info, device);
+>  		igt_assert_eq(r, 0);
+>  		asic_rings_readness(device, 1, arr_cap);
+> @@ -662,7 +670,7 @@ igt_main
+>  	igt_subtest_with_dynamic("cs-gfx-with-IP-GFX") {
+>  		if (arr_cap[AMD_IP_GFX]) {
+>  			igt_dynamic_f("cs-gfx")
+> -			amdgpu_command_submission_gfx(device);
+> +			amdgpu_command_submission_gfx(device, info.hw_ip_version_major < 11);
+>  		}
+>  	}
+>  
+> @@ -675,13 +683,16 @@ igt_main
+>  	}
+>  
+>  	igt_describe("Check-GFX-CS-for-multi-fence");
+> -	igt_subtest_with_dynamic("cs-multi-fence-with-IP-GFX") {
+> -		if (arr_cap[AMD_IP_GFX]) {
+> +	igt_subtest_with_dynamic("") {
+> +		if (arr_cap[AMD_IP_GFX] && info.hw_ip_version_major < 11) {
+>  			igt_dynamic_f("cs-multi-fence")
+> -		amdgpu_command_submission_multi_fence(device);
+> +			amdgpu_command_submission_multi_fence(device);
+> +		} else {
+> +			igt_info("cs-multi-fence-with-IP-GFX testes are skipped due to GFX11 or no GFX_IP\n");
+>  		}
+>  	}
+>  
+> +
+>  	igt_describe("Check-DMA-CS-for-every-available-ring-works-for-write-const-fill-copy-operation");
+
+Unnecessary empty line added above. Perhaps remove. With that, this patch is,
 
 Reviewed-by: Luben Tuikov <luben.tuikov@amd.com>
 
 Regards,
 Luben
 
-On 2023-09-13 21:17, vitaly.prosyak@amd.com wrote:
-> From: Jesse Zhang <jesse.zhang@amd.com>
-> 
-> Starting subtest: userptr-with-IP-DMA
-> Starting dynamic subtest: userptr
-> (amd_basic:1766) amdgpu/amd_command_submission-CRITICAL: Test assertion failure function amdgpu_test_exec_cs_helper, file ../lib/amdgpu/amd_command_submission.c:84:
-> (amd_basic:1766) amdgpu/amd_command_submission-CRITICAL: Failed assertion: r == 0
-> (amd_basic:1766) amdgpu/amd_command_submission-CRITICAL: Last errno: 62, Timer expired
-> (amd_basic:1766) amdgpu/amd_command_submission-CRITICAL: error: -62 != 0
-> Stack trace:
->   #0 ../lib/igt_core.c:1988 __igt_fail_assert()
->   #1 ../lib/amdgpu/amd_command_submission.c:85 amdgpu_test_exec_cs_helper()
->   #2 ../tests/amdgpu/amd_basic.c:308 __igt_unique____real_main623()
->   #3 ../tests/amdgpu/amd_basic.c:623 main()
->   #4 ../sysdeps/nptl/libc_start_call_main.h:58 __libc_start_call_main()
->   #5 ../csu/libc-start.c:128 __libc_start_main@@GLIBC_2.34()
->   #6 [_start+0x25]
-> Due to the incorrect family_id, it result in the
-> userptr test fail. So correct the initial value of
-> the family id when setting up amdgpu blocks.
-> 
-> v2 : - keep initialization of family_id to FAMILY_VI( Vitaly)
->      - added comments (Vitaly)
-> 
-> Cc: Luben Tuikov <luben.tuikov@amd.com>
-> Cc: Alex Deucher <alexander.deucher@amd.com>
-> Cc: Christian Koenig <christian.koenig@amd.com>
-> Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-> Reviewed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-> ---
->  lib/amdgpu/amd_ip_blocks.c | 29 +++++++++++++++++++++--------
->  lib/amdgpu/amd_ip_blocks.h |  4 ++--
->  2 files changed, 23 insertions(+), 10 deletions(-)
-> 
-> diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
-> index 7f8d4a4cd..96130ccd5 100644
-> --- a/lib/amdgpu/amd_ip_blocks.c
-> +++ b/lib/amdgpu/amd_ip_blocks.c
-> @@ -304,7 +304,7 @@ x_compare_pattern(const struct amdgpu_ip_funcs *func,
->  	return ret;
->  }
->  
-> -static const struct amdgpu_ip_funcs gfx_v8_x_ip_funcs = {
-> +static struct amdgpu_ip_funcs gfx_v8_x_ip_funcs = {
->  	.family_id = FAMILY_VI,
->  	.align_mask = 0xff,
->  	.nop = 0x80000000,
-> @@ -318,7 +318,7 @@ static const struct amdgpu_ip_funcs gfx_v8_x_ip_funcs = {
->  	.get_reg_offset = gfx_v8_0_get_reg_offset,
->  };
->  
-> -static const struct amdgpu_ip_funcs sdma_v3_x_ip_funcs = {
-> +static struct amdgpu_ip_funcs sdma_v3_x_ip_funcs = {
->  	.family_id = FAMILY_VI,
->  	.align_mask = 0xff,
->  	.nop = 0x80000000,
-> @@ -332,7 +332,7 @@ static const struct amdgpu_ip_funcs sdma_v3_x_ip_funcs = {
->  	.get_reg_offset = gfx_v8_0_get_reg_offset,
->  };
->  
-> -const struct amdgpu_ip_block_version gfx_v8_x_ip_block = {
-> +struct amdgpu_ip_block_version gfx_v8_x_ip_block = {
->  	.type = AMD_IP_GFX,
->  	.major = 8,
->  	.minor = 0,
-> @@ -340,7 +340,7 @@ const struct amdgpu_ip_block_version gfx_v8_x_ip_block = {
->  	.funcs = &gfx_v8_x_ip_funcs
->  };
->  
-> -const struct amdgpu_ip_block_version compute_v8_x_ip_block = {
-> +struct amdgpu_ip_block_version compute_v8_x_ip_block = {
->  	.type = AMD_IP_COMPUTE,
->  	.major = 8,
->  	.minor = 0,
-> @@ -348,7 +348,7 @@ const struct amdgpu_ip_block_version compute_v8_x_ip_block = {
->  	.funcs = &gfx_v8_x_ip_funcs
->  };
->  
-> -const struct amdgpu_ip_block_version sdma_v3_x_ip_block = {
-> +struct amdgpu_ip_block_version sdma_v3_x_ip_block = {
->  	.type = AMD_IP_DMA,
->  	.major = 3,
->  	.minor = 0,
-> @@ -368,7 +368,7 @@ struct amdgpu_ip_blocks_device amdgpu_ips;
->  struct chip_info g_chip;
->  
->  static int
-> -amdgpu_device_ip_block_add(const struct amdgpu_ip_block_version *ip_block_version)
-> +amdgpu_device_ip_block_add(struct amdgpu_ip_block_version *ip_block_version)
->  {
->  	if (amdgpu_ips.num_ip_blocks >= AMD_IP_MAX)
->  		return -1;
-> @@ -674,16 +674,29 @@ int setup_amdgpu_ip_blocks(uint32_t major, uint32_t minor, struct amdgpu_gpu_inf
->  	case GFX9: /* tested */
->  	case GFX10:/* tested */
->  	case GFX10_3: /* tested */
-> +	case GFX11: /* tested */
->  		amdgpu_device_ip_block_add(&gfx_v8_x_ip_block);
->  		amdgpu_device_ip_block_add(&compute_v8_x_ip_block);
->  		amdgpu_device_ip_block_add(&sdma_v3_x_ip_block);
-> +		/*
-> +		 * The handling of a particular family _id is done into
-> +		 * each function and as a result the field family_id would be overwritten
-> +		 * during initialization which matches to actual family_id.
-> +		 * The initial design assumed that for different GPU families, we may
-> +		 * have different implementations, but it is not necessary.
-> +		 * TO DO: move family id as a parameter into IP functions and
-> +		 * remove it as a field
-> +		 */
-> +		for (int i = 0; i <  amdgpu_ips.num_ip_blocks; i++)
-> +			amdgpu_ips.ip_blocks[i]->funcs->family_id = amdinfo->family_id;
-> +
->  		/* extra precaution if re-factor again */
->  		igt_assert_eq(gfx_v8_x_ip_block.major, 8);
->  		igt_assert_eq(compute_v8_x_ip_block.major, 8);
->  		igt_assert_eq(sdma_v3_x_ip_block.major, 3);
->  
-> -		igt_assert_eq(gfx_v8_x_ip_block.funcs->family_id, FAMILY_VI);
-> -		igt_assert_eq(sdma_v3_x_ip_block.funcs->family_id, FAMILY_VI);
-> +		igt_assert_eq(gfx_v8_x_ip_block.funcs->family_id, amdinfo->family_id);
-> +		igt_assert_eq(sdma_v3_x_ip_block.funcs->family_id, amdinfo->family_id);
->  		break;
->  	default:
->  		igt_info("amdgpu: GFX11 or old.\n");
-> diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
-> index 673a177ea..7f6fb3fb4 100644
-> --- a/lib/amdgpu/amd_ip_blocks.h
-> +++ b/lib/amdgpu/amd_ip_blocks.h
-> @@ -85,13 +85,13 @@ struct amdgpu_ip_block_version {
->  	const int major;
->  	const int minor;
->  	const int rev;
-> -	const struct amdgpu_ip_funcs *funcs;
-> +	struct amdgpu_ip_funcs *funcs;
->  };
->  
->  /* global holder for the array of in use ip blocks */
->  
->  struct amdgpu_ip_blocks_device {
-> -	const struct amdgpu_ip_block_version *ip_blocks[AMD_IP_MAX];
-> +	struct amdgpu_ip_block_version *ip_blocks[AMD_IP_MAX];
->  	int			num_ip_blocks;
->  };
->  
-
--- 
-Regards,
-Luben
+>  	igt_subtest_with_dynamic("cs-sdma-with-IP-DMA") {
+>  		if (arr_cap[AMD_IP_DMA]) {
