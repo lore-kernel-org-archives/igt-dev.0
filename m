@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9855C10E294
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Sep 2023 14:00:01 +0000 (UTC)
-Date: Thu, 14 Sep 2023 15:29:53 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6487810E51E
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Sep 2023 09:43:21 +0000 (UTC)
+Date: Thu, 14 Sep 2023 11:43:15 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230914132953.kpfolcf5ffykpbyi@kamilkon-desk.igk.intel.com>
+Message-ID: <20230914094315.kejpqtsvwxyj3iyi@kamilkon-desk.igk.intel.com>
 References: <20230913132407.191913-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -31,25 +31,19 @@ On 2023-09-13 at 15:24:07 +0200, Mauro Carvalho Chehab wrote:
 > 
 > When using a cross-compilation build, test_list_target
 > won't be updated. So, it needs to be initialized as a blank
-------------------- ^^^^^^
-s/So, it/It/
-
 > list, otherwise meson will abort with this error message:
 > 
 > 	docs/reference/igt-gpu-tools/meson.build:58:1: ERROR: Unknown variable "test_list_target".
- ^^^
-Remove spaces from begin.
-
 > 
+
+We have cross-compilation on GitLab ci for arm64 and other arch
+using docker image with ubuntu cross-compilation toolchain and
+there is no error?
+
+Regards,
+Kamil
+
 > Tested using a cross-file named meson-core2.txt with:
-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-I was unable to reproduce this error so imho please remove this
-upto "meson -Dxe..." line.
-
-With this
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
 > 
 > 	[properties]
 > 	c_args = '-march=core2'
