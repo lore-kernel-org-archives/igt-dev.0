@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C353710E14F
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Sep 2023 16:50:32 +0000 (UTC)
-From: janga.rahul.kumar@intel.com
-To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
- janga.rahul.kumar@intel.com
-Date: Thu, 14 Sep 2023 22:23:08 +0530
-Message-Id: <20230914165308.434969-1-janga.rahul.kumar@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 70FE610E2A1
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Sep 2023 17:34:14 +0000 (UTC)
+From: Jonathan Cavitt <jonathan.cavitt@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 14 Sep 2023 10:23:32 -0700
+Message-Id: <20230914172332.2322524-2-jonathan.cavitt@intel.com>
+In-Reply-To: <20230914172332.2322524-1-jonathan.cavitt@intel.com>
+References: <20230914172332.2322524-1-jonathan.cavitt@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/intel/xe_debugfs : Check tile_count
- info
+Subject: [igt-dev] [PATCH i-g-t 1/1] lib/intel_allocator: Query exact gtt
+ size
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,41 +19,93 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: chris.p.wilson@linux.intel.com, jonathan.cavitt@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+Use the gem_context_get_param functionality to query the exact gtt size
+for each vm in the intel_allocator.  This replaces the fixed declaration
+using the GEN8_GTT_ADDRESS_WIDTH.
 
-Check correctness of tile_count info.
-
-Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Suggested-by: Chris Wilson <chris.p.wilson@linux.intel.com>
 ---
- tests/intel/xe_debugfs.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ lib/intel_allocator.h        | 11 +++++++++++
+ lib/intel_allocator_simple.c | 10 +++++-----
+ 2 files changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/tests/intel/xe_debugfs.c b/tests/intel/xe_debugfs.c
-index 88b51dbd4..2e752267c 100644
---- a/tests/intel/xe_debugfs.c
-+++ b/tests/intel/xe_debugfs.c
-@@ -13,7 +13,7 @@
-  */
+diff --git a/lib/intel_allocator.h b/lib/intel_allocator.h
+index f9ff7f1cc9..cfe20bf8aa 100644
+--- a/lib/intel_allocator.h
++++ b/lib/intel_allocator.h
+@@ -12,6 +12,7 @@
+ #include <stdint.h>
+ #include <stdatomic.h>
+ #include "i915/gem_submission.h"
++#include "i915/gem_context.h"
+ #include "intel_reg.h"
  
- #include "igt.h"
--
-+#include "igt_sysfs.h"
- #include "xe_drm.h"
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
-@@ -117,6 +117,9 @@ test_base(int fd, struct drm_xe_query_config *config)
- 		igt_assert(igt_debugfs_search(fd, "info", reference));
- 	}
+ /**
+@@ -275,6 +276,16 @@ static inline uint64_t get_offset(uint64_t ahnd, uint32_t handle,
+ 	return intel_allocator_alloc(ahnd, handle, size, alignment);
+ }
  
-+	sprintf(reference, "tile_count %d", xe_sysfs_get_num_tiles(fd));
-+	igt_assert(igt_debugfs_search(fd, "info", reference));
++static inline uint64_t get_gtt_size(int fd)
++{
++	struct drm_i915_gem_context_param p = {
++		.param = I915_CONTEXT_PARAM_GTT_SIZE
++	};
 +
- 	igt_assert(igt_debugfs_exists(fd, "gt0", O_RDONLY));
- 	if (config->info[XE_QUERY_CONFIG_GT_COUNT] > 1)
- 		igt_assert(igt_debugfs_exists(fd, "gt1", O_RDONLY));
++	gem_context_get_param(fd, &p);
++	return p.value;
++}
++
+ static inline bool put_offset(uint64_t ahnd, uint32_t handle)
+ {
+ 	if (!ahnd)
+diff --git a/lib/intel_allocator_simple.c b/lib/intel_allocator_simple.c
+index 3d5e45870e..137885a88b 100644
+--- a/lib/intel_allocator_simple.c
++++ b/lib/intel_allocator_simple.c
+@@ -459,9 +459,9 @@ static bool intel_allocator_simple_is_allocated(struct intel_allocator *ial,
+ 	return same;
+ }
+ 
+-static uint64_t get_size(uint64_t start, uint64_t end)
++static uint64_t get_size(int fd, uint64_t start, uint64_t end)
+ {
+-	end = end ? end : 1ull << GEN8_GTT_ADDRESS_WIDTH;
++	end = end ? end : get_gtt_size(fd);
+ 
+ 	return end - start;
+ }
+@@ -485,7 +485,7 @@ static bool intel_allocator_simple_reserve(struct intel_allocator *ial,
+ 	start = DECANONICAL(start);
+ 	end = DECANONICAL(end);
+ 	igt_assert(end > start || end == 0);
+-	size = get_size(start, end);
++	size = get_size(ial->fd, start, end);
+ 	igt_assert(start + size <= ials->end);
+ 	igt_assert(start >= ials->start);
+ 
+@@ -526,7 +526,7 @@ static bool intel_allocator_simple_unreserve(struct intel_allocator *ial,
+ 	start = DECANONICAL(start);
+ 	end = DECANONICAL(end);
+ 	igt_assert(end > start || end == 0);
+-	size = get_size(start, end);
++	size = get_size(ial->fd, start, end);
+ 
+ 	entry = igt_map_search_entry(ials->reserved, &start);
+ 
+@@ -574,7 +574,7 @@ static bool intel_allocator_simple_is_reserved(struct intel_allocator *ial,
+ 	start = DECANONICAL(start);
+ 	end = DECANONICAL(end);
+ 	igt_assert(end > start || end == 0);
+-	size = get_size(start, end);
++	size = get_size(ial->fd, start, end);
+ 
+ 	rec = igt_map_search(ials->reserved, &start);
+ 
 -- 
 2.25.1
