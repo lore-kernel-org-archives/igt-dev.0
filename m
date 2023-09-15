@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6A9FB10E636
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Sep 2023 14:38:33 +0000 (UTC)
-From: Badal Nilawar <badal.nilawar@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3BE9310E63B
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 Sep 2023 14:47:51 +0000 (UTC)
+From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 15 Sep 2023 20:15:29 +0530
-Message-Id: <20230915144529.2983667-1-badal.nilawar@intel.com>
+Date: Fri, 15 Sep 2023 14:46:49 +0000
+Message-Id: <20230915144649.7-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/intel/hwmon: Scale hwmon tests to
- support xe kmd
+Subject: [igt-dev] [PATCH i-g-t] tests/intel/xe_query: Print
+ XE_QUERY_CONFIG_MAX_ENGINE_PRIORITY value
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,92 +21,28 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Scale hwmon tests to support xe kmd
+The key XE_QUERY_CONFIG_MAX_ENGINE_PRIORITY has been added to the
+info array provided in struct drm_xe_query_config. It represents
+the value of the highest available exec queue priority. The existing
+test is extended to also print the value returned for this key.
 
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Signed-off-by: Badal Nilawar <badal.nilawar@intel.com>
+Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 ---
- lib/igt_hwmon.c                             |  5 ++++-
- tests/intel/{i915_hwmon.c => intel_hwmon.c} | 10 +++++-----
- tests/meson.build                           |  2 +-
- 3 files changed, 10 insertions(+), 7 deletions(-)
- rename tests/intel/{i915_hwmon.c => intel_hwmon.c} (89%)
+ tests/intel/xe_query.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/lib/igt_hwmon.c b/lib/igt_hwmon.c
-index 309019d69..ad5a388dd 100644
---- a/lib/igt_hwmon.c
-+++ b/lib/igt_hwmon.c
-@@ -66,7 +66,10 @@ int igt_hwmon_open(int device)
- {
- 	char path[PATH_MAX];
+diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
+index 9835b895d..5966968d3 100644
+--- a/tests/intel/xe_query.c
++++ b/tests/intel/xe_query.c
+@@ -381,6 +381,8 @@ test_query_config(int fd)
+ 		config->info[XE_QUERY_CONFIG_GT_COUNT]);
+ 	igt_info("XE_QUERY_CONFIG_MEM_REGION_COUNT\t%llu\n",
+ 		config->info[XE_QUERY_CONFIG_MEM_REGION_COUNT]);
++	igt_info("XE_QUERY_CONFIG_MAX_ENGINE_PRIORITY\t%llu\n",
++		config->info[XE_QUERY_CONFIG_MAX_ENGINE_PRIORITY]);
+ 	dump_hex_debug(config, query.size);
  
--	if (!is_i915_device(device) || !igt_hwmon_path(device, path, "i915"))
-+	if (!is_intel_device(device))
-+		return -1;
-+
-+	if (!igt_hwmon_path(device, path, "i915") || !igt_hwmon_path(device, path, "xe"))
- 		return -1;
- 
- 	return open(path, O_RDONLY);
-diff --git a/tests/intel/i915_hwmon.c b/tests/intel/intel_hwmon.c
-similarity index 89%
-rename from tests/intel/i915_hwmon.c
-rename to tests/intel/intel_hwmon.c
-index 48ed9f3b7..1cc9cd399 100644
---- a/tests/intel/i915_hwmon.c
-+++ b/tests/intel/intel_hwmon.c
-@@ -9,11 +9,11 @@
- #include "igt_hwmon.h"
- #include "igt_sysfs.h"
- /**
-- * TEST: i915 hwmon
-- * Description: Tests for i915 hwmon
-+ * TEST: intel hwmon
-+ * Description: Tests for intel hwmon
-  * Feature: hwmon
-  * Run type: FULL
-- * Test category: GEM_Legacy
-+ * Test category: functionality
-  *
-  * SUBTEST: hwmon-read
-  * Description: Verify we can read all hwmon attributes
-@@ -22,7 +22,7 @@
-  * Description: Verify writable hwmon attributes
-  */
- 
--IGT_TEST_DESCRIPTION("Tests for i915 hwmon");
-+IGT_TEST_DESCRIPTION("Tests for intel hwmon");
- 
- static void hwmon_read(int hwm)
- {
-@@ -79,7 +79,7 @@ igt_main
- 	int fd, hwm;
- 
- 	igt_fixture {
--		fd = drm_open_driver_master(DRIVER_INTEL);
-+		fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
- 		hwm = igt_hwmon_open(fd);
- 		igt_require(hwm >= 0);
- 	}
-diff --git a/tests/meson.build b/tests/meson.build
-index 31492bf7b..cf5c8a2fa 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -84,6 +84,7 @@ test_progs = [
- 
- intel_i915_xe_progs = [
- 	'api_intel_allocator',
-+	'intel_hwmon',
- ]
- 
- intel_i915_progs = [
-@@ -218,7 +219,6 @@ intel_i915_progs = [
- 	'i915_getparams_basic',
- 	'i915_pm_freq_api',
- 	'i915_hangman',
--	'i915_hwmon',
- 	'i915_module_load',
- 	'i915_pciid',
- 	'i915_pipe_stress',
+ 	free(config);
 -- 
-2.25.1
+2.34.1
