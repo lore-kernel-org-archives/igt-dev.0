@@ -1,15 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7ACE710E5BE
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Sep 2023 03:29:18 +0000 (UTC)
-From: Alan Previn <alan.previn.teres.alexis@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E496910E164
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 Sep 2023 07:12:00 +0000 (UTC)
+Received: from linux.intel.com (martinro-mobl2.ger.corp.intel.com
+ [10.252.9.77])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id 6F1C8580AF7
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 Sep 2023 00:11:59 -0700 (PDT)
+Received: from maurocar by linux.intel.com with local (Exim 4.96)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qh2zd-001oWO-1P
+ for igt-dev@lists.freedesktop.org; Fri, 15 Sep 2023 09:11:57 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 14 Sep 2023 20:29:14 -0700
-Message-Id: <20230915032914.1164763-1-alan.previn.teres.alexis@intel.com>
+Date: Fri, 15 Sep 2023 09:11:55 +0200
+Message-ID: <20230915071155.432521-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4] lib/i915: Add a helper to read mmio
- registers via ioctl
+Subject: [igt-dev] [PATCH i-g-t v2] docs/cross-building.txt: add
+ documentation about cross-builds
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,263 +26,149 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Kamil Konieczny <kamil.konieczny@intel.com>,
- Alan Previn <alan.previn.teres.alexis@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add a helper into existing ioctl_wrappers.c  to call
-DRM_IOCTL_I915_REG_READ to read whitelisted registers.
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-v4: - minor nits (Kamil).
-v3: - fix documentation for the new helpers and optimize
-      the returning of value for i915_reg_read_ioctl (Kamil).
-v2: - move the new helper into ioctl_wrapper.c/h (Ashutosh)
-    - follow the ioctl_wrapper convention where __foo
-      is allowed to fail and foo will assert if fails (Kamil).
-    - use a #define for the RENDER_RING_TIMESTAMP reg (Kamil).
+Cross-building IGT is not too trivial, as one needs to prepare
+a sysroot directory containing not only glibc but also other
+libraries. Document how to do it for IGT.
 
-Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- lib/intel_reg.h                      |  3 ++
- lib/ioctl_wrappers.c                 | 49 ++++++++++++++++++++++++++++
- lib/ioctl_wrappers.h                 |  2 ++
- tests/intel/gem_reg_read.c           | 28 ++++------------
- tests/intel/i915_pm_rpm.c            | 10 +++---
- tools/i915-perf/i915_perf_recorder.c |  3 +-
- tools/intel_forcewaked.c             |  4 ++-
- 7 files changed, 69 insertions(+), 30 deletions(-)
+ docs/cross-building.txt | 122 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 122 insertions(+)
+ create mode 100644 docs/cross-building.txt
 
-diff --git a/lib/intel_reg.h b/lib/intel_reg.h
-index 3bf3676dc..04ea93eb6 100644
---- a/lib/intel_reg.h
-+++ b/lib/intel_reg.h
-@@ -689,6 +689,9 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- #define GEN12_GFX_AUX_TABLE_BASE_ADDR	0x4200
- #define GEN12_VEBOX_AUX_TABLE_BASE_ADDR	0x4230
- 
-+/* Command Streamer registers
-+ */
-+#define RENDER_RING_TIMESTAMP 0x2358
- 
- /* BitBlt Instructions
-  *
-diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
-index 146973f0d..8ce95e915 100644
---- a/lib/ioctl_wrappers.c
-+++ b/lib/ioctl_wrappers.c
-@@ -887,6 +887,55 @@ bool gem_engine_reset_enabled(int fd)
- 	return gem_gpu_reset_type(fd) > 1;
- }
- 
-+/**
-+ * __i915_reg_read_ioctl:
-+ * @drmfd: device file descriptor
-+ * @offset: mmio register to read from
-+ * @value: ptr to fill with results from read
-+ *
-+ * This function uses DRM_IOCTL_I915_REG_READ to read the
-+ * register.
-+ *
-+ * Return:
-+ * 0 if successful, with *value filled
-+ * otherwise -errno
-+ */
-+int __i915_reg_read_ioctl(int drmfd, __u64 offset, __u64 *value)
-+{
-+	struct drm_i915_reg_read reg_read = {0};
-+	int ret = 0;
+diff --git a/docs/cross-building.txt b/docs/cross-building.txt
+new file mode 100644
+index 000000000000..2c0e3caf30e9
+--- /dev/null
++++ b/docs/cross-building.txt
+@@ -0,0 +1,122 @@
++Producing an IGT for another architecture
++=========================================
 +
-+	reg_read.offset = offset;
-+	if (igt_ioctl(drmfd, DRM_IOCTL_I915_REG_READ, &reg_read))
-+		ret = -errno;
-+	else if (value)
-+		*value = reg_read.val;
++Cross-build toolchain
++---------------------
 +
-+	return ret;
-+}
++Producing cross-builds require installing a toolchain with support
++to the target architecture, or a toolchain built for the target,
++plus an emulator (like qemu). In the case of IGT, the minimal toolchain
++is GCC and binutils. For instance, on Fedora, to cross-build with arm64
++as the target architecture, those packages are needed:
 +
-+/**
-+ * i915_reg_read_ioctl:
-+ * @drmfd: device file descriptor
-+ * @offset: mmio register to read from
-+ * @value: ptr to fill with results from read
-+ *
-+ * This function uses DRM_IOCTL_I915_REG_READ to read the
-+ * register.
-+ *
-+ * Return:
-+ * Register value.
-+ *
-+ */
-+__u64 i915_reg_read_ioctl(int drmfd, __u64 offset)
-+{
-+	__u64 value;
++	binutils-aarch64-linux-gnu
++	gcc-aarch64-linux-gnu
 +
-+	igt_assert_eq(__i915_reg_read_ioctl(drmfd, offset, &value), 0);
-+	errno = 0;
-+	return value;
-+}
++There are also tarballs with cross-compiler chains that can be used
++instead, like:
 +
- bool gem_has_llc(int fd)
- {
- 	int has_llc;
-diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
-index b7d7c2ad9..409fea370 100644
---- a/lib/ioctl_wrappers.h
-+++ b/lib/ioctl_wrappers.h
-@@ -79,6 +79,8 @@ void gem_execbuf_wr(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
- int __gem_execbuf_wr(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
- void gem_execbuf(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
- int __gem_execbuf(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
-+int __i915_reg_read_ioctl(int drmfd, __u64 offset, __u64 *value);
-+__u64 i915_reg_read_ioctl(int drmfd, __u64 offset);
- 
- #ifndef I915_GEM_DOMAIN_WC
- #define I915_GEM_DOMAIN_WC 0x80
-diff --git a/tests/intel/gem_reg_read.c b/tests/intel/gem_reg_read.c
-index de6788abe..4bf330df6 100644
---- a/tests/intel/gem_reg_read.c
-+++ b/tests/intel/gem_reg_read.c
-@@ -32,6 +32,8 @@
- #include <sys/utsname.h>
- #include <time.h>
- 
-+#include "lib/ioctl_wrappers.h"
++	https://toolchains.bootlin.com/
 +
- /**
-  * TEST: gem reg read
-  * Feature: gem_core
-@@ -52,24 +54,6 @@ struct local_drm_i915_reg_read {
- 	__u64 val; /* Return value */
- };
- 
--#define REG_READ_IOCTL DRM_IOWR(DRM_COMMAND_BASE + 0x31, struct local_drm_i915_reg_read)
--
--#define RENDER_RING_TIMESTAMP 0x2358
--
--static int read_register(int fd, uint64_t offset, uint64_t * val)
--{
--	int ret = 0;
--	struct local_drm_i915_reg_read reg_read;
--	reg_read.offset = offset;
--
--	if (drmIoctl(fd, REG_READ_IOCTL, &reg_read))
--		ret = -errno;
--
--	*val = reg_read.val;
--
--	return ret;
--}
--
- static bool check_kernel_x86_64(void)
- {
- 	int ret;
-@@ -87,9 +71,9 @@ static bool check_kernel_x86_64(void)
- static bool check_timestamp(int fd)
- {
- 	int ret;
--	uint64_t val;
-+	__u64 val;
- 
--	ret = read_register(fd, RENDER_RING_TIMESTAMP | 1, &val);
-+	ret = __i915_reg_read_ioctl(fd, RENDER_RING_TIMESTAMP | 1, &val);
- 
- 	return ret == 0;
- }
-@@ -103,7 +87,7 @@ static int timer_query(int fd, uint64_t * val)
- 	if (has_proper_timestamp)
- 		offset |= 1;
- 
--	ret = read_register(fd, offset, val);
-+	ret = __i915_reg_read_ioctl(fd, offset, (__u64 *)val);
- 
- /*
-  * When reading the timestamp register with single 64b read, we are observing
-@@ -168,7 +152,7 @@ igt_main
- 	}
- 
- 	igt_subtest("bad-register")
--		igt_assert_eq(read_register(fd, 0x12345678, &val), -EINVAL);
-+		igt_assert_eq(__i915_reg_read_ioctl(fd, 0x12345678, (__u64 *)&val), -EINVAL);
- 
- 	igt_subtest("timestamp-moving") {
- 		igt_skip_on(timer_query(fd, &val) != 0);
-diff --git a/tests/intel/i915_pm_rpm.c b/tests/intel/i915_pm_rpm.c
-index 17413ffe5..f60accd39 100644
---- a/tests/intel/i915_pm_rpm.c
-+++ b/tests/intel/i915_pm_rpm.c
-@@ -40,6 +40,10 @@
- #include <sys/mman.h>
- #include <sys/types.h>
- #include <sys/stat.h>
++System root directory (sysroot)
++-------------------------------
 +
-+#include "lib/ioctl_wrappers.h"
-+#include "lib/intel_reg.h"
++Besides a toolchain, a system root directory containing the libraries
++used by IGT pre-compiled to the target architecture is required.
 +
- /**
-  * TEST: i915 pm rpm
-  *
-@@ -1852,13 +1856,9 @@ static void gem_evict_pwrite_subtest(void)
- /* This also triggered WARNs on dmesg at some point. */
- static void reg_read_ioctl_subtest(void)
- {
--	struct drm_i915_reg_read rr = {
--		.offset = 0x2358, /* render ring timestamp */
--	};
--
- 	disable_all_screens_and_wait(&ms_data);
- 
--	do_ioctl(drm_fd, DRM_IOCTL_I915_REG_READ, &rr);
-+	i915_reg_read_ioctl(drm_fd, RENDER_RING_TIMESTAMP);
- 
- 	igt_assert(wait_for_suspended());
- }
-diff --git a/tools/i915-perf/i915_perf_recorder.c b/tools/i915-perf/i915_perf_recorder.c
-index ca4354832..1bf1553f4 100644
---- a/tools/i915-perf/i915_perf_recorder.c
-+++ b/tools/i915-perf/i915_perf_recorder.c
-@@ -52,6 +52,7 @@
- #include "i915/perf_data.h"
- 
- #include "i915_perf_recorder_commands.h"
-+#include "lib/intel_reg.h"
- 
- #define ALIGN(v, a) (((v) + (a)-1) & ~((a)-1))
- #define ARRAY_SIZE(arr) (sizeof(arr)/sizeof((arr)[0]))
-@@ -623,8 +624,6 @@ get_correlation_timestamps(struct intel_perf_record_timestamp_correlation *corr,
- 	} attempts[3];
- 	uint32_t best = 0;
- 
--#define RENDER_RING_TIMESTAMP 0x2358
--
-         reg_read.offset = RENDER_RING_TIMESTAMP | I915_REG_READ_8B_WA;
- 
- 	/* Gather 3 correlations. */
-diff --git a/tools/intel_forcewaked.c b/tools/intel_forcewaked.c
-index 87b26d43a..584358446 100644
---- a/tools/intel_forcewaked.c
-+++ b/tools/intel_forcewaked.c
-@@ -38,6 +38,8 @@
- #include "intel_chipset.h"
- #include "drmtest.h"
- 
-+#include "lib/intel_reg.h"
++This can be obtained by either cross-building a distribution using
++Yocto, buildroot or similar, or by copying the system root from
++an existing installation for the desired architecture, containing
++the IGT needed build time and runtime library dependencies.
 +
- bool daemonized;
- 
- #define INFO_PRINT(...) \
-@@ -59,7 +61,7 @@ help(char *prog) {
- static int
- is_alive(struct intel_mmio_data *mmio_data) {
- 	/* Read the timestamp, which should *almost* always be !0 */
--	return (intel_register_read(mmio_data, 0x2358) != 0);
-+	return (intel_register_read(mmio_data, RENDER_RING_TIMESTAMP) != 0);
- }
- 
- int main(int argc, char *argv[])
-
-base-commit: 099e058c5dfb7a49942edf03cae88a52a77077a3
++Please notice that cross-build toolchains may require some
++dependent object files and libraries used by it to also be copied
++to the system root directory. For instance, in the case of Fedora,
++the files are located  under /usr/aarch64-linux-gnu/sys-root/
++(for aarch64 architecture) shall also be stored at the sysroot
++directory used by Meson, as otherwise the preparation step will fail.
++
++Meson preparation
++-----------------
++
++Meson requires an extra configuration file to be used for
++non-native builds. This is passed via --cross-file parameter to it.
++
++Such file contains details about the target OS/architecture, about
++the host (native) OS/architecture and declares the location of
++sysroot:
++
++- the [host_machine] section defines the system and architecture from
++  the native OS;
++  At the example below, the native OS is Linux x86_64 architecture.
++- the [target_machine] section contains details about the target
++  OS/architecture.
++  At the example below, the target is aarch64 (arm 64 bits architecture).
++- the [constants] section is optional, but it helps to use the sysroot
++  path directory on multiple keys at the [properties] section;
++- the [properties] section contains arguments to be used by the
++  the binaries;
++- the [binaries] section contains the binaries to be used during the
++  build. It can either be a native or a target toolchain.
++  If a target toolchan is used, an exe_wrapper key pointing to an arch
++  emulalor like qemu-arm is needed.
++
++The sysroot directory is where IGT dependent libraries and header
++files, compiled for a given architecture, are stored. At the example
++below, the sysroot is /aarch64-sysroot.
++
++Preparing for cross compilation is done by calling meson with the
++cross-compilation config file name, plus a build directory:
++
++	meson --cross-file arm64_cross.txt build
++
++The actual compilation can then be done using ninja:
++
++	ninja -C build
++
++Please notice that some parts of the IGT build are disabled during
++cross-compilation, like testlist file creation and documentation,
++as such steps depend on running the generated code at the native
++machine.
++
++The IGT root directory has already 3 examples that uses qemu to
++run a target-OS machine toolchain:
++
++	meson-cross-arm64.txt
++	meson-cross-armhf.txt
++	meson-cross-mips.txt
++
++The example below contains cross-build instructions when using
++a native cross-build toolchain.
++
++Example: arm64_cross.txt with a native cross-builder toolchain
++--------------------------------------------------------------
++
++[constants]
++sysroot = '/aarch64-sysroot'
++common_args = ['--sysroot=' + sysroot]
++
++[properties]
++sys_root = sysroot
++c_args = common_args
++c_link_args = common_args
++pkg_config_libdir = [sysroot + '/usr/lib64/pkgconfig', sysroot +'/usr/share/pkgconfig', sysroot +'/usr/local/lib/pkgconfig']
++
++[binaries]
++c = '/usr/bin/aarch64-linux-gnu-gcc'
++ar = '/usr/bin/aarch64-linux-gnu-gcc-ar'
++ld = '/usr/bin/aarch64-linux-gnu-ld'
++strip = '/usr/bin/aarch64-linux-gnu-strip'
++pkgconfig = 'pkg-config'
++
++[host_machine]
++system = 'linux'
++cpu_family = 'x86_64'
++cpu = 'x86_64'
++endian = 'little'
++
++[target_machine]
++system = 'linux'
++cpu_family = 'aarch64'
++cpu = 'aarch64'
++endian = 'little'
 -- 
-2.39.0
+2.41.0
