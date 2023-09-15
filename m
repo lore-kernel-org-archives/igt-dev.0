@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Fri, 15 Sep 2023 10:51:29 -0700
-From: Matt Roper <matthew.d.roper@intel.com>
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-Message-ID: <20230915175129.GE2706891@mdroper-desk1.amr.corp.intel.com>
-References: <20230915132346.1845909-1-lucas.demarchi@intel.com>
- <20230915132346.1845909-4-lucas.demarchi@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20230915132346.1845909-4-lucas.demarchi@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 54F6E10E668
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 Sep 2023 17:56:22 +0000 (UTC)
+Date: Fri, 15 Sep 2023 19:55:58 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230915175558.l5gt3yk7ddjkneey@kamilkon-desk.igk.intel.com>
+References: <20230915032914.1164763-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [Intel-xe] [PATCH i-g-t 03/14] lib/gpu_cmds: Reorder
- if/else ladder according to IP version
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230915032914.1164763-1-alan.previn.teres.alexis@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v4] lib/i915: Add a helper to read mmio
+ registers via ioctl
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,56 +20,274 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, intel-xe@lists.freedesktop.org
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Sep 15, 2023 at 06:23:35AM -0700, Lucas De Marchi wrote:
-> Make it easier to follow the flow by following the convention of "latest
-> platform earlier".
+Hi Alan,
+On 2023-09-14 at 20:29:14 -0700, Alan Previn wrote:
+> Add a helper into existing ioctl_wrappers.c  to call
+> DRM_IOCTL_I915_REG_READ to read whitelisted registers.
 > 
-> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-
+> v4: - minor nits (Kamil).
+> v3: - fix documentation for the new helpers and optimize
+>       the returning of value for i915_reg_read_ioctl (Kamil).
+> v2: - move the new helper into ioctl_wrapper.c/h (Ashutosh)
+>     - follow the ioctl_wrapper convention where __foo
+>       is allowed to fail and foo will assert if fails (Kamil).
+>     - use a #define for the RENDER_RING_TIMESTAMP reg (Kamil).
+> 
+> Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 > ---
->  lib/gpu_cmds.c | 12 +++++-------
->  1 file changed, 5 insertions(+), 7 deletions(-)
+>  lib/intel_reg.h                      |  3 ++
+>  lib/ioctl_wrappers.c                 | 49 ++++++++++++++++++++++++++++
+>  lib/ioctl_wrappers.h                 |  2 ++
+>  tests/intel/gem_reg_read.c           | 28 ++++------------
+>  tests/intel/i915_pm_rpm.c            | 10 +++---
+>  tools/i915-perf/i915_perf_recorder.c |  3 +-
+>  tools/intel_forcewaked.c             |  4 ++-
+>  7 files changed, 69 insertions(+), 30 deletions(-)
 > 
-> diff --git a/lib/gpu_cmds.c b/lib/gpu_cmds.c
-> index 648451f74..0fd8f8213 100644
-> --- a/lib/gpu_cmds.c
-> +++ b/lib/gpu_cmds.c
-> @@ -270,17 +270,15 @@ fill_binding_table(struct intel_bb *ibb, struct intel_buf *buf)
->  	binding_table = intel_bb_ptr(ibb);
->  	intel_bb_ptr_add(ibb, 64);
+> diff --git a/lib/intel_reg.h b/lib/intel_reg.h
+> index 3bf3676dc..04ea93eb6 100644
+> --- a/lib/intel_reg.h
+> +++ b/lib/intel_reg.h
+> @@ -689,6 +689,9 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+>  #define GEN12_GFX_AUX_TABLE_BASE_ADDR	0x4200
+>  #define GEN12_VEBOX_AUX_TABLE_BASE_ADDR	0x4230
 >  
-> -	if (IS_GEN7(devid))
-> -		binding_table[0] = gen7_fill_surface_state(ibb, buf,
-> -							   SURFACEFORMAT_R8_UNORM, 1);
-> -
-> -	else if (intel_graphics_ver(devid) >= IP_VER(12, 50))
-> +	if (intel_graphics_ver(devid) >= IP_VER(12, 50))
->  		binding_table[0] = xehp_fill_surface_state(ibb, buf,
->  							   SURFACEFORMAT_R8_UNORM, 1);
-> -
-> -	else
-> +	else if (intel_graphics_ver(devid) >= IP_VER(8, 0))
->  		binding_table[0] = gen8_fill_surface_state(ibb, buf,
->  							   SURFACEFORMAT_R8_UNORM, 1);
-> +	else
-> +		binding_table[0] = gen7_fill_surface_state(ibb, buf,
-> +							   SURFACEFORMAT_R8_UNORM, 1);
+> +/* Command Streamer registers
+> + */
+> +#define RENDER_RING_TIMESTAMP 0x2358
 >  
->  	return binding_table_offset;
+>  /* BitBlt Instructions
+>   *
+> diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
+> index 146973f0d..8ce95e915 100644
+> --- a/lib/ioctl_wrappers.c
+> +++ b/lib/ioctl_wrappers.c
+> @@ -887,6 +887,55 @@ bool gem_engine_reset_enabled(int fd)
+>  	return gem_gpu_reset_type(fd) > 1;
 >  }
-> -- 
-> 2.40.1
-> 
+>  
+> +/**
+> + * __i915_reg_read_ioctl:
+> + * @drmfd: device file descriptor
+> + * @offset: mmio register to read from
+> + * @value: ptr to fill with results from read
+> + *
+> + * This function uses DRM_IOCTL_I915_REG_READ to read the
+> + * register.
+> + *
+> + * Return:
+> + * 0 if successful, with *value filled
+> + * otherwise -errno
+> + */
+> +int __i915_reg_read_ioctl(int drmfd, __u64 offset, __u64 *value)
+> +{
+> +	struct drm_i915_reg_read reg_read = {0};
+> +	int ret = 0;
+> +
+> +	reg_read.offset = offset;
+> +	if (igt_ioctl(drmfd, DRM_IOCTL_I915_REG_READ, &reg_read))
+> +		ret = -errno;
+> +	else if (value)
+> +		*value = reg_read.val;
+> +
+> +	return ret;
+> +}
+> +
+> +/**
+> + * i915_reg_read_ioctl:
+> + * @drmfd: device file descriptor
+> + * @offset: mmio register to read from
+> + * @value: ptr to fill with results from read
+> + *
+> + * This function uses DRM_IOCTL_I915_REG_READ to read the
+> + * register.
+> + *
+> + * Return:
+> + * Register value.
+> + *
+> + */
+> +__u64 i915_reg_read_ioctl(int drmfd, __u64 offset)
+> +{
+> +	__u64 value;
+> +
+> +	igt_assert_eq(__i915_reg_read_ioctl(drmfd, offset, &value), 0);
+> +	errno = 0;
+--- ^
+Delete this, you already checked errno in assert.
+Put one empty line before return from function.
 
--- 
-Matt Roper
-Graphics Software Engineer
-Linux GPU Platform Enablement
-Intel Corporation
+Rest looks good.
+
+Regards,
+Kamil
+
+> +	return value;
+> +}
+> +
+>  bool gem_has_llc(int fd)
+>  {
+>  	int has_llc;
+> diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
+> index b7d7c2ad9..409fea370 100644
+> --- a/lib/ioctl_wrappers.h
+> +++ b/lib/ioctl_wrappers.h
+> @@ -79,6 +79,8 @@ void gem_execbuf_wr(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
+>  int __gem_execbuf_wr(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
+>  void gem_execbuf(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
+>  int __gem_execbuf(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
+> +int __i915_reg_read_ioctl(int drmfd, __u64 offset, __u64 *value);
+> +__u64 i915_reg_read_ioctl(int drmfd, __u64 offset);
+>  
+>  #ifndef I915_GEM_DOMAIN_WC
+>  #define I915_GEM_DOMAIN_WC 0x80
+> diff --git a/tests/intel/gem_reg_read.c b/tests/intel/gem_reg_read.c
+> index de6788abe..4bf330df6 100644
+> --- a/tests/intel/gem_reg_read.c
+> +++ b/tests/intel/gem_reg_read.c
+> @@ -32,6 +32,8 @@
+>  #include <sys/utsname.h>
+>  #include <time.h>
+>  
+> +#include "lib/ioctl_wrappers.h"
+> +
+>  /**
+>   * TEST: gem reg read
+>   * Feature: gem_core
+> @@ -52,24 +54,6 @@ struct local_drm_i915_reg_read {
+>  	__u64 val; /* Return value */
+>  };
+>  
+> -#define REG_READ_IOCTL DRM_IOWR(DRM_COMMAND_BASE + 0x31, struct local_drm_i915_reg_read)
+> -
+> -#define RENDER_RING_TIMESTAMP 0x2358
+> -
+> -static int read_register(int fd, uint64_t offset, uint64_t * val)
+> -{
+> -	int ret = 0;
+> -	struct local_drm_i915_reg_read reg_read;
+> -	reg_read.offset = offset;
+> -
+> -	if (drmIoctl(fd, REG_READ_IOCTL, &reg_read))
+> -		ret = -errno;
+> -
+> -	*val = reg_read.val;
+> -
+> -	return ret;
+> -}
+> -
+>  static bool check_kernel_x86_64(void)
+>  {
+>  	int ret;
+> @@ -87,9 +71,9 @@ static bool check_kernel_x86_64(void)
+>  static bool check_timestamp(int fd)
+>  {
+>  	int ret;
+> -	uint64_t val;
+> +	__u64 val;
+>  
+> -	ret = read_register(fd, RENDER_RING_TIMESTAMP | 1, &val);
+> +	ret = __i915_reg_read_ioctl(fd, RENDER_RING_TIMESTAMP | 1, &val);
+>  
+>  	return ret == 0;
+>  }
+> @@ -103,7 +87,7 @@ static int timer_query(int fd, uint64_t * val)
+>  	if (has_proper_timestamp)
+>  		offset |= 1;
+>  
+> -	ret = read_register(fd, offset, val);
+> +	ret = __i915_reg_read_ioctl(fd, offset, (__u64 *)val);
+>  
+>  /*
+>   * When reading the timestamp register with single 64b read, we are observing
+> @@ -168,7 +152,7 @@ igt_main
+>  	}
+>  
+>  	igt_subtest("bad-register")
+> -		igt_assert_eq(read_register(fd, 0x12345678, &val), -EINVAL);
+> +		igt_assert_eq(__i915_reg_read_ioctl(fd, 0x12345678, (__u64 *)&val), -EINVAL);
+>  
+>  	igt_subtest("timestamp-moving") {
+>  		igt_skip_on(timer_query(fd, &val) != 0);
+> diff --git a/tests/intel/i915_pm_rpm.c b/tests/intel/i915_pm_rpm.c
+> index 17413ffe5..f60accd39 100644
+> --- a/tests/intel/i915_pm_rpm.c
+> +++ b/tests/intel/i915_pm_rpm.c
+> @@ -40,6 +40,10 @@
+>  #include <sys/mman.h>
+>  #include <sys/types.h>
+>  #include <sys/stat.h>
+> +
+> +#include "lib/ioctl_wrappers.h"
+> +#include "lib/intel_reg.h"
+> +
+>  /**
+>   * TEST: i915 pm rpm
+>   *
+> @@ -1852,13 +1856,9 @@ static void gem_evict_pwrite_subtest(void)
+>  /* This also triggered WARNs on dmesg at some point. */
+>  static void reg_read_ioctl_subtest(void)
+>  {
+> -	struct drm_i915_reg_read rr = {
+> -		.offset = 0x2358, /* render ring timestamp */
+> -	};
+> -
+>  	disable_all_screens_and_wait(&ms_data);
+>  
+> -	do_ioctl(drm_fd, DRM_IOCTL_I915_REG_READ, &rr);
+> +	i915_reg_read_ioctl(drm_fd, RENDER_RING_TIMESTAMP);
+>  
+>  	igt_assert(wait_for_suspended());
+>  }
+> diff --git a/tools/i915-perf/i915_perf_recorder.c b/tools/i915-perf/i915_perf_recorder.c
+> index ca4354832..1bf1553f4 100644
+> --- a/tools/i915-perf/i915_perf_recorder.c
+> +++ b/tools/i915-perf/i915_perf_recorder.c
+> @@ -52,6 +52,7 @@
+>  #include "i915/perf_data.h"
+>  
+>  #include "i915_perf_recorder_commands.h"
+> +#include "lib/intel_reg.h"
+>  
+>  #define ALIGN(v, a) (((v) + (a)-1) & ~((a)-1))
+>  #define ARRAY_SIZE(arr) (sizeof(arr)/sizeof((arr)[0]))
+> @@ -623,8 +624,6 @@ get_correlation_timestamps(struct intel_perf_record_timestamp_correlation *corr,
+>  	} attempts[3];
+>  	uint32_t best = 0;
+>  
+> -#define RENDER_RING_TIMESTAMP 0x2358
+> -
+>          reg_read.offset = RENDER_RING_TIMESTAMP | I915_REG_READ_8B_WA;
+>  
+>  	/* Gather 3 correlations. */
+> diff --git a/tools/intel_forcewaked.c b/tools/intel_forcewaked.c
+> index 87b26d43a..584358446 100644
+> --- a/tools/intel_forcewaked.c
+> +++ b/tools/intel_forcewaked.c
+> @@ -38,6 +38,8 @@
+>  #include "intel_chipset.h"
+>  #include "drmtest.h"
+>  
+> +#include "lib/intel_reg.h"
+> +
+>  bool daemonized;
+>  
+>  #define INFO_PRINT(...) \
+> @@ -59,7 +61,7 @@ help(char *prog) {
+>  static int
+>  is_alive(struct intel_mmio_data *mmio_data) {
+>  	/* Read the timestamp, which should *almost* always be !0 */
+> -	return (intel_register_read(mmio_data, 0x2358) != 0);
+> +	return (intel_register_read(mmio_data, RENDER_RING_TIMESTAMP) != 0);
+>  }
+>  
+>  int main(int argc, char *argv[])
+> 
+> base-commit: 099e058c5dfb7a49942edf03cae88a52a77077a3
+> -- 
+> 2.39.0
+> 
