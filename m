@@ -1,14 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 751E010E186
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Sep 2023 12:36:39 +0000 (UTC)
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 15 Sep 2023 14:36:34 +0200
-Message-ID: <20230915123634.453651-1-mauro.chehab@linux.intel.com>
+Date: Fri, 15 Sep 2023 06:23:32 -0700
+Message-Id: <20230915132346.1845909-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] docs/testplan/conf.py: add sphinx path
+Subject: [igt-dev] [PATCH i-g-t 00/14] Adapt copy commands for Xe2
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,36 +13,69 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Jari Tahvanainen <jari.tahvanainen@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>, intel-xe@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+A few copy commands changed for Xe2, mainly adding or moving the bits
+used for MOCS. This adapts the places we are manually adding the
+commands in the batch buffer, the gpu_cmds and the intel_blt libraries.
 
-Without that, extensions from other directories might be probed,
-which is not what we want to do.
+Missing here is the conversion of lib/intel_batchbuffer.c. I had
+understood that intel_batchbuffer would end up using the new intel_blt.
+So, it may just be that we have some patches being cooked for that. Or
+I understood it wrong. Anyway, it doesn't seem good that we have
+basically 3 ways to do the same thing.
 
-Such solution was imported from the Linux Kernel conf.py
-setting.
+Also it seems that this is the first time we are updating intel_blt for
+a platform with a breaking change. I used 2 different approaches in how
+to adapt the struct: one for xy-block-copy/xy-fast-copy and another for
+ctrl-surf-copy. The reason is that for the former there was just a minor
+change and the latter basically rewrites all the dwords. Going forward I
+think we should keep applying small deltas to at most 1 or 2 breaking
+changes, otherwise it makes it harder to read.
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- docs/testplan/conf.py | 2 ++
- 1 file changed, 2 insertions(+)
+This is not tested in real HW yet, hopefully I didn't break some older
+platforms.
 
-diff --git a/docs/testplan/conf.py b/docs/testplan/conf.py
-index a7db5c3a230d..bf23881494b6 100644
---- a/docs/testplan/conf.py
-+++ b/docs/testplan/conf.py
-@@ -8,6 +8,8 @@ import sys
- # Get Sphinx version
- major, minor, patch = sphinx.version_info[:3]
- 
-+sys.path.insert(0, os.path.abspath('sphinx'))
-+
- extensions = []
- 
- def which(program):
+Lucas De Marchi (14):
+  lib/rendercopy: Use common mocs function
+  lib/gpu_cmds: Remove prefix from gen7_fill_binding_table()
+  lib/gpu_cmds: Reorder if/else ladder according to IP version
+  lib/gpu_cmds: Fork a gen9_fill_surface_state()
+  lib/gpu_cmds: Reduce scope of xehp_fill_surface_state()
+  lib: Fork gen9_media.h
+  lib/intel_mocs: Stop encoding mocs
+  lib/intel_mocs: Add Xe2 mocs indexes
+  lib/igt_draw: Add Xe2 mocs to XY_FAST_COLOR_BLT
+  lib/intel_mocs: Remove unused lefotver defines
+  lib/igt_fb: Add Xe2 mocs to XY_FAST_COLOR_BLT
+  lib/intel_blt: Support Xe2 in xy-block-copy command
+  lib/intel_blt: Support xe2 in xy-fast-copy command
+  lib/intel_blt: Support xe2 in ctrl-surf-copy command
+
+ docs/reference/igt-gpu-tools/meson.build |   1 +
+ lib/gen8_media.h                         |  14 -
+ lib/gen9_media.h                         | 144 ++++++++++
+ lib/gen9_render.h                        |   3 +-
+ lib/gpu_cmds.c                           | 100 +++++--
+ lib/gpu_cmds.h                           |   7 +-
+ lib/igt_draw.c                           |   8 +-
+ lib/igt_fb.c                             |  10 +-
+ lib/intel_blt.c                          | 325 +++++++++++++++++------
+ lib/intel_compute.c                      |   1 +
+ lib/intel_mocs.c                         |  23 +-
+ lib/intel_mocs.h                         |   4 +-
+ lib/intel_reg.h                          |   4 +-
+ lib/media_fill.c                         |   1 +
+ lib/rendercopy_gen9.c                    |  41 +--
+ lib/xehp_media.h                         |   3 +-
+ tests/intel/gem_ccs.c                    |   6 +-
+ tests/intel/gem_lmem_swapping.c          |   4 +-
+ tests/intel/xe_ccs.c                     |   6 +-
+ 19 files changed, 518 insertions(+), 187 deletions(-)
+ create mode 100644 lib/gen9_media.h
+
 -- 
-2.41.0
+2.40.1
