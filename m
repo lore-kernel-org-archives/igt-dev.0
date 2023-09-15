@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C20E410E64A
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Sep 2023 15:56:10 +0000 (UTC)
-From: janga.rahul.kumar@intel.com
-To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
- janga.rahul.kumar@intel.com
-Date: Fri, 15 Sep 2023 21:28:46 +0530
-Message-Id: <20230915155846.481999-1-janga.rahul.kumar@intel.com>
+Date: Fri, 15 Sep 2023 10:26:10 -0700
+From: Matt Roper <matthew.d.roper@intel.com>
+To: Lucas De Marchi <lucas.demarchi@intel.com>
+Message-ID: <20230915172610.GB2706891@mdroper-desk1.amr.corp.intel.com>
+References: <20230915132346.1845909-1-lucas.demarchi@intel.com>
+ <20230915132346.1845909-2-lucas.demarchi@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20230915132346.1845909-2-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/intel/xe_vm : Update tile mask
+Subject: Re: [igt-dev] [Intel-xe] [PATCH i-g-t 01/14] lib/rendercopy: Use
+ common mocs function
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,34 +18,75 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, intel-xe@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+On Fri, Sep 15, 2023 at 06:23:33AM -0700, Lucas De Marchi wrote:
+> Do not duplicate what is done by lib/intel_mocs.[ch], just reuse it.
+> 
+> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 
-Tile mask shouldn't be derived based on GT id. Setting tile mask to 0
-to create bind to all tiles.
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
 
-Cc: Stuart Summers <stuart.summers@intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
----
- tests/intel/xe_vm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> ---
+>  lib/rendercopy_gen9.c | 29 +----------------------------
+>  1 file changed, 1 insertion(+), 28 deletions(-)
+> 
+> diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
+> index db67b5ee3..b8959d073 100644
+> --- a/lib/rendercopy_gen9.c
+> +++ b/lib/rendercopy_gen9.c
+> @@ -19,6 +19,7 @@
+>  #include "intel_bufops.h"
+>  #include "intel_batchbuffer.h"
+>  #include "intel_io.h"
+> +#include "intel_mocs.h"
+>  #include "rendercopy.h"
+>  #include "gen9_render.h"
+>  #include "intel_reg.h"
+> @@ -135,34 +136,6 @@ static const uint32_t gen12p71_render_copy[][4] = {
+>  	{ 0x80041131, 0x00000004, 0x50007144, 0x00c40000 },
+>  };
+>  
+> -/*
+> - * Gen >= 12 onwards don't have a setting for PTE,
+> - * so using I915_MOCS_PTE as mocs index may lead to
+> - * some undefined MOCS behavior.
+> - * Correct MOCS index should be referred from BSpec
+> - * and programmed accordingly.
+> - * This helper function is providing appropriate UC index.
+> - */
+> -static uint8_t
+> -intel_get_uc_mocs(int fd) {
+> -
+> -	uint16_t devid = intel_get_drm_devid(fd);
+> -	uint8_t  uc_index;
+> -
+> -	if (IS_DG1(devid))
+> -		uc_index = 1;
+> -	else if (IS_GEN12(devid))
+> -		uc_index = 3;
+> -	else
+> -		uc_index = I915_MOCS_PTE;
+> -
+> -	/*
+> -	 * BitField [6:1] represents index to MOCS Tables
+> -	 * BitField [0] represents Encryption/Decryption
+> -	 */
+> -	return uc_index << 1;
+> -}
+> -
+>  /* Mostly copy+paste from gen6, except height, width, pitch moved */
+>  static uint32_t
+>  gen8_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
+> -- 
+> 2.40.1
+> 
 
-diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-index 4952ea786..a92a5cc66 100644
---- a/tests/intel/xe_vm.c
-+++ b/tests/intel/xe_vm.c
-@@ -927,7 +927,7 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
- 		bind_ops[i].obj_offset = 0;
- 		bind_ops[i].range = bo_size;
- 		bind_ops[i].addr = addr;
--		bind_ops[i].tile_mask = 0x1 << eci->gt_id;
-+		bind_ops[i].tile_mask = 0;
- 		bind_ops[i].op = XE_VM_BIND_OP_MAP | XE_VM_BIND_FLAG_ASYNC;
- 		bind_ops[i].region = 0;
- 		bind_ops[i].reserved[0] = 0;
 -- 
-2.25.1
+Matt Roper
+Graphics Software Engineer
+Linux GPU Platform Enablement
+Intel Corporation
