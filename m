@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D454C10E65E
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Sep 2023 17:34:52 +0000 (UTC)
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 15 Sep 2023 19:34:39 +0200
-Message-ID: <20230915173439.49405-1-kamil.konieczny@linux.intel.com>
+Date: Fri, 15 Sep 2023 10:43:46 -0700
+From: Matt Roper <matthew.d.roper@intel.com>
+To: Lucas De Marchi <lucas.demarchi@intel.com>
+Message-ID: <20230915174346.GC2706891@mdroper-desk1.amr.corp.intel.com>
+References: <20230915132346.1845909-1-lucas.demarchi@intel.com>
+ <20230915132346.1845909-3-lucas.demarchi@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20230915132346.1845909-3-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] lib/drmtest: allow out of order device
- opening
+Subject: Re: [igt-dev] [Intel-xe] [PATCH i-g-t 02/14] lib/gpu_cmds: Remove
+ prefix from gen7_fill_binding_table()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,101 +18,80 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, intel-xe@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Allow to open cards with filters out of order, not in
-the sequence 0...N. This will fix problem found out with test
-gem_exec_gttfill@multigpu-basic with three discrete GPUs:
+On Fri, Sep 15, 2023 at 06:23:34AM -0700, Lucas De Marchi wrote:
+> This function is used by pretty much all versions. It's odd to have a
+> gen7 function end up calling next-gen functions and it's error prone:
+> when adding something to e.g. a gen8 function to realize that behavior
+> breaks previous platforms.
 
-Opened device: /dev/dri/card1
-Starting subtest: multigpu-basic
-<g:1> Opened device: /dev/dri/card2
-gem_exec_gttfill: ../lib/drmtest.c:313: _is_already_opened: Assertion `as_idx <= _opened_fds_count' failed.
+Even more confusing is that we have a gen11_filling_binding_table
+function as well, but Xe_HP still uses the older "gen7" variant.  Maybe
+we should incorporate the gen11-specific logic into the single
+fill_binding_table function as well?  It looks like it only gets used in
+one path (which winds up being ICL-specific, not even used for EHL/JSL
+due to lack of media samplers).
 
-Added also some debug prints for diagnosing problems with
-multi-GPU tests.
 
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- lib/drmtest.c | 24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+Matt
 
-diff --git a/lib/drmtest.c b/lib/drmtest.c
-index e1da66c87..e9dfc070d 100644
---- a/lib/drmtest.c
-+++ b/lib/drmtest.c
-@@ -296,7 +296,11 @@ static int _opened_fds_count;
- static void _set_opened_fd(int idx, int fd)
- {
- 	assert(idx < ARRAY_SIZE(_opened_fds));
--	assert(idx <= _opened_fds_count);
-+
-+	if (idx >= _opened_fds_count) {
-+		for (int i = _opened_fds_count; i < idx; ++i)
-+			_opened_fds[i].fd = -1;
-+	}
- 
- 	_opened_fds[idx].fd = fd;
- 
-@@ -310,16 +314,23 @@ static bool _is_already_opened(const char *path, int as_idx)
- 	struct stat new;
- 
- 	assert(as_idx < ARRAY_SIZE(_opened_fds));
--	assert(as_idx <= _opened_fds_count);
- 
- 	/*
- 	 * we cannot even stat the device, so it's of no use - let's claim it's
- 	 * already opened
- 	 */
--	if (igt_debug_on(stat(path, &new) != 0))
-+	if (igt_debug_on(stat(path, &new) != 0)) {
-+		igt_debug("cannot stat device: %s\n", path);
- 		return true;
-+	}
-+
-+	if (as_idx >= _opened_fds_count)
-+		return false;
- 
- 	for (int i = 0; i < as_idx; ++i) {
-+		if (_opened_fds[i].fd == -1)
-+			continue;
-+
- 		/* did we cross filesystem boundary? */
- 		assert(_opened_fds[i].stat.st_dev == new.st_dev);
- 
-@@ -484,6 +495,7 @@ int __drm_open_driver_another(int idx, int chipset)
- {
- 	int fd = -1;
- 
-+	igt_debug("card idx: %d chipset: %d\n", idx, chipset);
- 	if (chipset != DRIVER_VGEM && igt_device_filter_count() > idx) {
- 		struct igt_device_card card;
- 		bool found;
-@@ -491,6 +503,7 @@ int __drm_open_driver_another(int idx, int chipset)
- 		found = __get_card_for_nth_filter(idx, &card);
- 
- 		if (!found) {
-+			igt_debug("cannot find card idx: %d, loading module\n", idx);
- 			drm_load_module(chipset);
- 			found = __get_card_for_nth_filter(idx, &card);
- 		}
-@@ -500,11 +513,14 @@ int __drm_open_driver_another(int idx, int chipset)
- 				 igt_device_filter_get(idx));
- 		else if (_is_already_opened(card.card, idx))
- 			igt_warn("card maching filter %d is already opened\n", idx);
--		else
-+		else {
-+			igt_debug("card idx: %d found: %s\n", idx, card.card);
- 			fd = __open_driver_exact(card.card, chipset);
-+		}
- 
- 	} else {
- 		/* no filter for device idx, let's open whatever is available */
-+		igt_debug("No filter for device idx: %d\n", idx);
- 		fd = __open_driver("/dev/dri/card", 0, chipset, idx);
- 	}
- 
+> 
+> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+> ---
+>  lib/gpu_cmds.c | 9 ++++-----
+>  1 file changed, 4 insertions(+), 5 deletions(-)
+> 
+> diff --git a/lib/gpu_cmds.c b/lib/gpu_cmds.c
+> index bb35204fb..648451f74 100644
+> --- a/lib/gpu_cmds.c
+> +++ b/lib/gpu_cmds.c
+> @@ -259,8 +259,7 @@ gen11_fill_surface_state(struct intel_bb *ibb,
+>  }
+>  
+>  static uint32_t
+> -gen7_fill_binding_table(struct intel_bb *ibb,
+> -			struct intel_buf *buf)
+> +fill_binding_table(struct intel_bb *ibb, struct intel_buf *buf)
+>  {
+>  	uint32_t binding_table_offset;
+>  	uint32_t *binding_table;
+> @@ -321,7 +320,7 @@ gen7_fill_interface_descriptor(struct intel_bb *ibb,
+>  	uint32_t offset;
+>  	uint32_t binding_table_offset, kernel_offset;
+>  
+> -	binding_table_offset = gen7_fill_binding_table(ibb, buf);
+> +	binding_table_offset = fill_binding_table(ibb, buf);
+>  	kernel_offset = gen7_fill_kernel(ibb, kernel, size);
+>  
+>  	intel_bb_ptr_align(ibb, 64);
+> @@ -357,7 +356,7 @@ gen8_fill_interface_descriptor(struct intel_bb *ibb,
+>  	uint32_t offset;
+>  	uint32_t binding_table_offset, kernel_offset;
+>  
+> -	binding_table_offset = gen7_fill_binding_table(ibb, buf);
+> +	binding_table_offset = fill_binding_table(ibb, buf);
+>  	kernel_offset = gen7_fill_kernel(ibb, kernel, size);
+>  
+>  	intel_bb_ptr_align(ibb, 64);
+> @@ -803,7 +802,7 @@ xehp_fill_interface_descriptor(struct intel_bb *ibb,
+>  {
+>  	uint32_t binding_table_offset, kernel_offset;
+>  
+> -	binding_table_offset = gen7_fill_binding_table(ibb, dst);
+> +	binding_table_offset = fill_binding_table(ibb, dst);
+>  	kernel_offset = gen7_fill_kernel(ibb, kernel, size);
+>  
+>  	memset(idd, 0, sizeof(*idd));
+> -- 
+> 2.40.1
+> 
+
 -- 
-2.42.0
+Matt Roper
+Graphics Software Engineer
+Linux GPU Platform Enablement
+Intel Corporation
