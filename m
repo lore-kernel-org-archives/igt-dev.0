@@ -1,13 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 15 Sep 2023 06:23:38 -0700
-Message-Id: <20230915132346.1845909-7-lucas.demarchi@intel.com>
+Date: Fri, 15 Sep 2023 06:23:44 -0700
+Message-Id: <20230915132346.1845909-13-lucas.demarchi@intel.com>
 In-Reply-To: <20230915132346.1845909-1-lucas.demarchi@intel.com>
 References: <20230915132346.1845909-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 06/14] lib: Fork gen9_media.h
+Subject: [igt-dev] [PATCH i-g-t 12/14] lib/intel_blt: Support Xe2 in
+ xy-block-copy command
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,265 +21,176 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Fork gen9_media.h from gen8_media.h with the gen9 definitions that were
-in that header and with a new struct gen9_surface_state. Although the
-surface state is the same as for gen8, the meaning of at least mocs is
-different. As a follow up the mocs definition will change for gen9 and
-above.
+Xe2 block-copy command is slightly different, with dw01 and dw02
+having a few differences: 1) different bitrange for mocs; 2) no
+ctrl_surface_type, aux_mode or compression.
 
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- docs/reference/igt-gpu-tools/meson.build |   1 +
- lib/gen8_media.h                         |  14 ---
- lib/gen9_media.h                         | 143 +++++++++++++++++++++++
- lib/gpu_cmds.c                           |   4 +-
- lib/gpu_cmds.h                           |   1 +
- lib/intel_compute.c                      |   1 +
- lib/media_fill.c                         |   1 +
- 7 files changed, 149 insertions(+), 16 deletions(-)
- create mode 100644 lib/gen9_media.h
+ lib/intel_blt.c | 107 +++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 69 insertions(+), 38 deletions(-)
 
-diff --git a/docs/reference/igt-gpu-tools/meson.build b/docs/reference/igt-gpu-tools/meson.build
-index 513385b4b..d5db95e40 100644
---- a/docs/reference/igt-gpu-tools/meson.build
-+++ b/docs/reference/igt-gpu-tools/meson.build
-@@ -6,6 +6,7 @@ ignore_headers = [
- 	'gen7_render.h',
- 	'gen8_media.h',
- 	'gen8_render.h',
-+	'gen9_media.h',
- 	'gpgpu_fill.h',
- 	'i830_reg.h',
- 	'i915_3d.h',
-diff --git a/lib/gen8_media.h b/lib/gen8_media.h
-index 07ea2ac03..c1807629e 100644
---- a/lib/gen8_media.h
-+++ b/lib/gen8_media.h
-@@ -207,18 +207,4 @@ struct gen8_surface_state
- 	} ss15;
- };
+diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+index 9f8e3dea3..0658d67f4 100644
+--- a/lib/intel_blt.c
++++ b/lib/intel_blt.c
+@@ -55,15 +55,24 @@ struct gen12_block_copy_data {
+ 		uint32_t client:			BITRANGE(29, 31);
+ 	} dw00;
  
--
--#define GEN9_PIPELINE_SELECTION_MASK		(3 << 8)
--
--/*  If enabled, it will force awake media enginee and the following instructions
-- *  will require that the media enginee is awake.
-- */
--#define GEN9_FORCE_MEDIA_AWAKE_DISABLE		(0 << 5)
--#define GEN9_FORCE_MEDIA_AWAKE_ENABLE		(1 << 5)
--#define GEN9_FORCE_MEDIA_AWAKE_MASK		(1 << 13)
--
--#define GEN9_SAMPLER_DOP_GATE_DISABLE		(0 << 4)
--#define GEN9_SAMPLER_DOP_GATE_ENABLE		(1 << 4)
--#define GEN9_SAMPLER_DOP_GATE_MASK		(1 << 12)
--
- #endif /* GEN8_MEDIA_H */
-diff --git a/lib/gen9_media.h b/lib/gen9_media.h
-new file mode 100644
-index 000000000..414001dfd
---- /dev/null
-+++ b/lib/gen9_media.h
-@@ -0,0 +1,143 @@
-+#ifndef GEN9_MEDIA_H
-+#define GEN9_MEDIA_H
-+
-+#include <stdint.h>
-+#include "surfaceformat.h"
-+#include "gen4_render.h"
-+
-+#define GEN9_PIPELINE_SELECTION_MASK		(3 << 8)
-+
-+/*  If enabled, it will force awake media enginee and the following instructions
-+ *  will require that the media enginee is awake.
-+ */
-+#define GEN9_FORCE_MEDIA_AWAKE_DISABLE		(0 << 5)
-+#define GEN9_FORCE_MEDIA_AWAKE_ENABLE		(1 << 5)
-+#define GEN9_FORCE_MEDIA_AWAKE_MASK		(1 << 13)
-+
-+#define GEN9_SAMPLER_DOP_GATE_DISABLE		(0 << 4)
-+#define GEN9_SAMPLER_DOP_GATE_ENABLE		(1 << 4)
-+#define GEN9_SAMPLER_DOP_GATE_MASK		(1 << 12)
-+
-+struct gen9_surface_state
-+{
-+	struct {
-+		uint32_t cube_pos_z:1;
-+		uint32_t cube_neg_z:1;
-+		uint32_t cube_pos_y:1;
-+		uint32_t cube_neg_y:1;
-+		uint32_t cube_pos_x:1;
-+		uint32_t cube_neg_x:1;
-+		uint32_t media_boundary_pixel_mode:2;
-+		uint32_t render_cache_read_write:1;
-+		uint32_t sampler_l2_bypass_disable:1;
-+		uint32_t vert_line_stride_ofs:1;
-+		uint32_t vert_line_stride:1;
-+		uint32_t tiled_mode:2;
-+		uint32_t horizontal_alignment:2;
-+		uint32_t vertical_alignment:2;
-+		uint32_t surface_format:9;     /**< BRW_SURFACEFORMAT_x */
-+		uint32_t pad0:1;
-+		uint32_t is_array:1;
-+		uint32_t surface_type:3;       /**< BRW_SURFACE_1D/2D/3D/CUBE */
-+	} ss0;
-+
-+	struct {
-+		uint32_t qpitch:15;
-+		uint32_t pad1:4;
-+		uint32_t base_mip_level:5;
-+		uint32_t memory_object_control:7;
-+		uint32_t pad0:1;
-+	} ss1;
-+
-+	struct {
-+		uint32_t width:14;
-+		uint32_t pad1:2;
-+		uint32_t height:14;
-+		uint32_t pad0:2;
-+	} ss2;
-+
-+	struct {
-+		uint32_t pitch:18;
-+		uint32_t pad:3;
-+		uint32_t depth:11;
-+	} ss3;
-+
-+	struct {
-+		uint32_t multisample_position_palette_index:3;
-+		uint32_t num_multisamples:3;
-+		uint32_t multisampled_surface_storage_format:1;
-+		uint32_t render_target_view_extent:11;
-+		uint32_t min_array_elt:11;
-+		uint32_t rotation:2;
-+		uint32_t force_ncmp_reduce_type:1;
-+	} ss4;
-+
-+	struct {
-+		uint32_t mip_count:4;
-+		uint32_t min_lod:4;
-+		uint32_t pad3:6;
-+		uint32_t coherency_type:1;
-+		uint32_t pad2:5;
-+		uint32_t ewa_disable_for_cube:1;
-+		uint32_t y_offset:3;
-+		uint32_t pad0:1;
-+		uint32_t x_offset:7;
-+	} ss5;
-+
-+	struct {
-+		uint32_t pad; /* Multisample Control Surface stuff */
-+	} ss6;
-+
-+	struct {
-+		uint32_t resource_min_lod:12;
-+
-+		/* Only on Haswell */
-+		uint32_t pad0:4;
-+		uint32_t shader_chanel_select_a:3;
-+		uint32_t shader_chanel_select_b:3;
-+		uint32_t shader_chanel_select_g:3;
-+		uint32_t shader_chanel_select_r:3;
-+
-+		uint32_t alpha_clear_color:1;
-+		uint32_t blue_clear_color:1;
-+		uint32_t green_clear_color:1;
-+		uint32_t red_clear_color:1;
-+	} ss7;
-+
-+	struct {
-+		uint32_t base_addr;
-+	} ss8;
-+
-+	struct {
-+		uint32_t base_addr_hi:16;
-+		uint32_t pad0:16;
-+	} ss9;
-+
-+	struct {
-+		uint32_t pad0:12;
-+		uint32_t aux_base_addr:20;
-+	} ss10;
-+
-+	struct {
-+		uint32_t aux_base_addr_hi:16;
-+		uint32_t pad:16;
-+	} ss11;
-+
-+	struct {
-+		uint32_t hiz_depth_clear_value;
-+	} ss12;
-+
-+	struct {
-+		uint32_t reserved;
-+	} ss13;
-+
-+	struct {
-+		uint32_t reserved;
-+	} ss14;
-+
-+	struct {
-+		uint32_t reserved;
-+	} ss15;
-+};
-+
-+#endif /* GEN9_MEDIA_H */
-diff --git a/lib/gpu_cmds.c b/lib/gpu_cmds.c
-index e53580e65..61b18d20d 100644
---- a/lib/gpu_cmds.c
-+++ b/lib/gpu_cmds.c
-@@ -191,7 +191,7 @@ gen9_fill_surface_state(struct intel_bb *ibb,
- 			uint32_t format,
- 			int is_dst)
+-	struct {
+-		uint32_t dst_pitch:			BITRANGE(0, 17);
+-		uint32_t dst_aux_mode:			BITRANGE(18, 20);
+-		uint32_t pad:				BITRANGE(21, 21);
+-		uint32_t dst_mocs:			BITRANGE(22, 27);
+-		uint32_t dst_ctrl_surface_type:		BITRANGE(28, 28);
+-		uint32_t dst_compression:		BITRANGE(29, 29);
+-		uint32_t dst_tiling:			BITRANGE(30, 31);
+-	} dw01;
++	union {
++		struct {
++			uint32_t dst_pitch:			BITRANGE(0, 17);
++			uint32_t dst_aux_mode:			BITRANGE(18, 20);
++			uint32_t pad:				BITRANGE(21, 21);
++			uint32_t dst_mocs:			BITRANGE(22, 27);
++			uint32_t dst_ctrl_surface_type:		BITRANGE(28, 28);
++			uint32_t dst_compression:		BITRANGE(29, 29);
++			uint32_t dst_tiling:			BITRANGE(30, 31);
++		} dw01;
++		struct {
++			uint32_t dst_pitch:			BITRANGE(0, 17);
++			uint32_t pad0:				BITRANGE(18, 23);
++			uint32_t dst_mocs:			BITRANGE(24, 27);
++			uint32_t pad1:				BITRANGE(28, 29);
++			uint32_t dst_tiling:			BITRANGE(30, 31);
++		} dw01_xe2;
++	};
+ 
+ 	struct {
+ 		int32_t dst_x1:				BITRANGE(0, 15);
+@@ -96,15 +105,24 @@ struct gen12_block_copy_data {
+ 		int32_t src_y1:				BITRANGE(16, 31);
+ 	} dw07;
+ 
+-	struct {
+-		uint32_t src_pitch:			BITRANGE(0, 17);
+-		uint32_t src_aux_mode:			BITRANGE(18, 20);
+-		uint32_t pad:				BITRANGE(21, 21);
+-		uint32_t src_mocs:			BITRANGE(22, 27);
+-		uint32_t src_ctrl_surface_type:		BITRANGE(28, 28);
+-		uint32_t src_compression:		BITRANGE(29, 29);
+-		uint32_t src_tiling:			BITRANGE(30, 31);
+-	} dw08;
++	union {
++		struct {
++			uint32_t src_pitch:			BITRANGE(0, 17);
++			uint32_t src_aux_mode:			BITRANGE(18, 20);
++			uint32_t pad:				BITRANGE(21, 21);
++			uint32_t src_mocs:			BITRANGE(22, 27);
++			uint32_t src_ctrl_surface_type:		BITRANGE(28, 28);
++			uint32_t src_compression:		BITRANGE(29, 29);
++			uint32_t src_tiling:			BITRANGE(30, 31);
++		} dw08;
++		struct {
++			uint32_t src_pitch:			BITRANGE(0, 17);
++			uint32_t pad0:				BITRANGE(18, 23);
++			uint32_t src_mocs:			BITRANGE(24, 27);
++			uint32_t pad1:				BITRANGE(28, 29);
++			uint32_t src_tiling:			BITRANGE(30, 31);
++		} dw08_xe2;
++	};
+ 
+ 	struct {
+ 		uint32_t src_address_lo;
+@@ -521,7 +539,7 @@ static bool __new_tile_y_type(enum blt_tiling_type tiling)
+ static void fill_data(struct gen12_block_copy_data *data,
+ 		      const struct blt_copy_data *blt,
+ 		      uint64_t src_offset, uint64_t dst_offset,
+-		      bool extended_command)
++		      bool extended_command, unsigned int ip_ver)
  {
--	struct gen8_surface_state *ss;
-+	struct gen9_surface_state *ss;
- 	uint32_t write_domain, read_domain, offset;
- 	uint64_t address;
- 	enum intel_buf_mocs mocs = intel_buf_get_mocs(buf);
-@@ -252,7 +252,7 @@ gen11_fill_surface_state(struct intel_bb *ibb,
- 			 uint32_t horizontal_alignment,
- 			 int is_dst)
+ 	data->dw00.client = 0x2;
+ 	data->dw00.opcode = 0x41;
+@@ -529,18 +547,24 @@ static void fill_data(struct gen12_block_copy_data *data,
+ 	data->dw00.special_mode = __special_mode(blt);
+ 	data->dw00.length = extended_command ? 20 : 10;
+ 
+-	if (__special_mode(blt) == SM_FULL_RESOLVE)
+-		data->dw01.dst_aux_mode = __aux_mode(blt->fd, blt->driver, &blt->src);
+-	else
+-		data->dw01.dst_aux_mode = __aux_mode(blt->fd, blt->driver, &blt->dst);
+-	data->dw01.dst_pitch = blt->dst.pitch - 1;
++	if (ip_ver >= IP_VER(20, 0)) {
++		data->dw01_xe2.dst_pitch = blt->dst.pitch - 1;
++		data->dw01_xe2.dst_mocs = blt->dst.mocs;
++		data->dw01_xe2.dst_tiling = __block_tiling(blt->dst.tiling);
++	} else {
++		if (__special_mode(blt) == SM_FULL_RESOLVE)
++			data->dw01.dst_aux_mode = __aux_mode(blt->fd, blt->driver, &blt->src);
++		else
++			data->dw01.dst_aux_mode = __aux_mode(blt->fd, blt->driver, &blt->dst);
++		data->dw01.dst_pitch = blt->dst.pitch - 1;
+ 
+-	data->dw01.dst_mocs = blt->dst.mocs;
+-	data->dw01.dst_compression = blt->dst.compression;
+-	data->dw01.dst_tiling = __block_tiling(blt->dst.tiling);
++		data->dw01.dst_mocs = blt->dst.mocs;
++		data->dw01.dst_compression = blt->dst.compression;
++		data->dw01.dst_tiling = __block_tiling(blt->dst.tiling);
+ 
+-	if (blt->dst.compression)
+-		data->dw01.dst_ctrl_surface_type = blt->dst.compression_type;
++		if (blt->dst.compression)
++			data->dw01.dst_ctrl_surface_type = blt->dst.compression_type;
++	}
+ 
+ 	data->dw02.dst_x1 = blt->dst.x1;
+ 	data->dw02.dst_y1 = blt->dst.y1;
+@@ -558,14 +582,20 @@ static void fill_data(struct gen12_block_copy_data *data,
+ 	data->dw07.src_x1 = blt->src.x1;
+ 	data->dw07.src_y1 = blt->src.y1;
+ 
+-	data->dw08.src_pitch = blt->src.pitch - 1;
+-	data->dw08.src_aux_mode = __aux_mode(blt->fd, blt->driver, &blt->src);
+-	data->dw08.src_mocs = blt->src.mocs;
+-	data->dw08.src_compression = blt->src.compression;
+-	data->dw08.src_tiling = __block_tiling(blt->src.tiling);
+-
+-	if (blt->src.compression)
+-		data->dw08.src_ctrl_surface_type = blt->src.compression_type;
++	if (ip_ver >= IP_VER(20, 0)) {
++		data->dw08_xe2.src_pitch = blt->src.pitch - 1;
++		data->dw08_xe2.src_mocs = blt->src.mocs;
++		data->dw08_xe2.src_tiling = __block_tiling(blt->src.tiling);
++	} else {
++		data->dw08.src_pitch = blt->src.pitch - 1;
++		data->dw08.src_aux_mode = __aux_mode(blt->fd, blt->driver, &blt->src);
++		data->dw08.src_mocs = blt->src.mocs;
++		data->dw08.src_compression = blt->src.compression;
++		data->dw08.src_tiling = __block_tiling(blt->src.tiling);
++
++		if (blt->src.compression)
++			data->dw08.src_ctrl_surface_type = blt->src.compression_type;
++	}
+ 
+ 	data->dw09.src_address_lo = src_offset;
+ 	data->dw10.src_address_hi = src_offset >> 32;
+@@ -770,6 +800,7 @@ uint64_t emit_blt_block_copy(int fd,
+ 			     uint64_t bb_pos,
+ 			     bool emit_bbe)
  {
--	struct gen8_surface_state *ss;
-+	struct gen9_surface_state *ss;
- 	uint32_t write_domain, read_domain, offset;
- 	uint64_t address;
- 	enum intel_buf_mocs mocs = intel_buf_get_mocs(buf);
-diff --git a/lib/gpu_cmds.h b/lib/gpu_cmds.h
-index 5ac007cc4..348c6c945 100644
---- a/lib/gpu_cmds.h
-+++ b/lib/gpu_cmds.h
-@@ -30,6 +30,7 @@
- #include "media_fill.h"
- #include "gen7_media.h"
- #include "gen8_media.h"
-+#include "gen9_media.h"
- #include "xehp_media.h"
- #include "intel_reg.h"
- #include "drmtest.h"
-diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index 4f6716d23..b79b73cc0 100644
---- a/lib/intel_compute.c
-+++ b/lib/intel_compute.c
-@@ -12,6 +12,7 @@
- #include "igt.h"
- #include "gen7_media.h"
- #include "gen8_media.h"
-+#include "gen9_media.h"
- #include "intel_compute.h"
- #include "lib/igt_syncobj.h"
- #include "lib/intel_reg.h"
-diff --git a/lib/media_fill.c b/lib/media_fill.c
-index 2520995d9..88d83061a 100644
---- a/lib/media_fill.c
-+++ b/lib/media_fill.c
-@@ -27,6 +27,7 @@
- #include "media_fill.h"
- #include "gen7_media.h"
- #include "gen8_media.h"
-+#include "gen9_media.h"
- #include "intel_reg.h"
- #include "drmtest.h"
- #include "gpu_cmds.h"
++	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
+ 	struct gen12_block_copy_data data = {};
+ 	struct gen12_block_copy_data_ext dext = {};
+ 	uint64_t dst_offset, src_offset, bb_offset, alignment;
+@@ -786,7 +817,7 @@ uint64_t emit_blt_block_copy(int fd,
+ 		     + blt->dst.plane_offset;
+ 	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
+ 
+-	fill_data(&data, blt, src_offset, dst_offset, ext);
++	fill_data(&data, blt, src_offset, dst_offset, ext, ip_ver);
+ 
+ 	bb = bo_map(fd, blt->bb.handle, blt->bb.size, blt->driver);
+ 
 -- 
 2.40.1
