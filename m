@@ -1,14 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 15 Sep 2023 06:23:35 -0700
-Message-Id: <20230915132346.1845909-4-lucas.demarchi@intel.com>
+Date: Fri, 15 Sep 2023 06:23:40 -0700
+Message-Id: <20230915132346.1845909-9-lucas.demarchi@intel.com>
 In-Reply-To: <20230915132346.1845909-1-lucas.demarchi@intel.com>
 References: <20230915132346.1845909-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 03/14] lib/gpu_cmds: Reorder if/else ladder
- according to IP version
+Subject: [igt-dev] [PATCH i-g-t 08/14] lib/intel_mocs: Add Xe2 mocs indexes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,40 +20,37 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Make it easier to follow the flow by following the convention of "latest
-platform earlier".
+Add WB and UC mocs indexes for Xe2 architecture and later.
 
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- lib/gpu_cmds.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ lib/intel_mocs.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/lib/gpu_cmds.c b/lib/gpu_cmds.c
-index 648451f74..0fd8f8213 100644
---- a/lib/gpu_cmds.c
-+++ b/lib/gpu_cmds.c
-@@ -270,17 +270,15 @@ fill_binding_table(struct intel_bb *ibb, struct intel_buf *buf)
- 	binding_table = intel_bb_ptr(ibb);
- 	intel_bb_ptr_add(ibb, 64);
+diff --git a/lib/intel_mocs.c b/lib/intel_mocs.c
+index 6a4ec25e4..d9de16932 100644
+--- a/lib/intel_mocs.c
++++ b/lib/intel_mocs.c
+@@ -14,6 +14,8 @@
+ #define MTL_MOCS_WB_IDX				10
+ #define GEN12_MOCS_UC_IDX			3
+ #define GEN12_MOCS_WB_IDX			2
++#define XE2_MOCS_UC_IDX				3
++#define XE2_MOCS_WB_IDX				1
+ #define XY_BLOCK_COPY_BLT_MOCS_SHIFT		21
+ #define XY_CTRL_SURF_COPY_BLT_MOCS_SHIFT	25
  
--	if (IS_GEN7(devid))
--		binding_table[0] = gen7_fill_surface_state(ibb, buf,
--							   SURFACEFORMAT_R8_UNORM, 1);
--
--	else if (intel_graphics_ver(devid) >= IP_VER(12, 50))
-+	if (intel_graphics_ver(devid) >= IP_VER(12, 50))
- 		binding_table[0] = xehp_fill_surface_state(ibb, buf,
- 							   SURFACEFORMAT_R8_UNORM, 1);
--
--	else
-+	else if (intel_graphics_ver(devid) >= IP_VER(8, 0))
- 		binding_table[0] = gen8_fill_surface_state(ibb, buf,
- 							   SURFACEFORMAT_R8_UNORM, 1);
-+	else
-+		binding_table[0] = gen7_fill_surface_state(ibb, buf,
-+							   SURFACEFORMAT_R8_UNORM, 1);
- 
- 	return binding_table_offset;
- }
+@@ -33,7 +35,10 @@ static void get_mocs_index(int fd, struct drm_intel_mocs_index *mocs)
+ 	 * This helper function is providing current UC as well
+ 	 * as WB MOCS index based on platform.
+ 	 */
+-	if (IS_METEORLAKE(devid)) {
++	if (intel_graphics_ver(devid) >= IP_VER(20, 0)) {
++		mocs->uc_index = XE2_MOCS_UC_IDX;
++		mocs->wb_index = XE2_MOCS_WB_IDX;
++	} else if (IS_METEORLAKE(devid)) {
+ 		mocs->uc_index = MTL_MOCS_UC_IDX;
+ 		mocs->wb_index = MTL_MOCS_WB_IDX;
+ 	} else if (IS_DG2(devid)) {
 -- 
 2.40.1
