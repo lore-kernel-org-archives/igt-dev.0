@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ACF9010E668
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Sep 2023 18:04:58 +0000 (UTC)
-Date: Fri, 15 Sep 2023 20:04:53 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230915180453.wkhktpuqs6gojkxu@kamilkon-desk.igk.intel.com>
-References: <20230914201809.1804-1-nirmoy.das@intel.com>
- <20230914201809.1804-4-nirmoy.das@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============6988301630252301835=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230914201809.1804-4-nirmoy.das@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 3/3] tests/intel/gem_ctx_schedule: Skip
- some test on MTL
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: janga.rahul.kumar@intel.com
+Date: Fri, 15 Sep 2023 20:56:34 -0000
+Message-ID: <169481139459.32042.14602035128873769689@emeril.freedesktop.org>
+References: <20230915132647.476532-1-janga.rahul.kumar@intel.com>
+In-Reply-To: <20230915132647.476532-1-janga.rahul.kumar@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?intel/xe=5Fdebugfs_=3A_Check_tile=5Fcount_info_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,128 +17,269 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: andi.shyti@intel.com, oak.zeng@intel.com, Nirmoy Das <nirmoy.das@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Nirmoy,
-On 2023-09-14 at 22:18:09 +0200, Nirmoy Das wrote:
-> We do GGTT update on MTL using bcs engine, blocking that would
-> will fail the test so skip such subtests on bcs engine for MTL.
-- ^^^^
-s/will//
+--===============6988301630252301835==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-With that fixed:
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+== Series Details ==
 
-> 
-> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-> ---
->  tests/intel/gem_exec_schedule.c | 37 ++++++++++++++++++++-------------
->  1 file changed, 22 insertions(+), 15 deletions(-)
-> 
-> diff --git a/tests/intel/gem_exec_schedule.c b/tests/intel/gem_exec_schedule.c
-> index c94988d36..607a5b21f 100644
-> --- a/tests/intel/gem_exec_schedule.c
-> +++ b/tests/intel/gem_exec_schedule.c
-> @@ -3479,6 +3479,12 @@ static void fairslice(int i915, const intel_ctx_cfg_t *cfg,
->  		for_each_if(gem_class_can_store_dword(fd, e->class)) \
->  		igt_dynamic_f("%s", e->name)
->  
-> +#define test_each_ggtt_binder_nonblocking_engine(T, i915, ctx, e) \
-> +	igt_subtest_with_dynamic(T) for_each_ctx_engine(i915, ctx, e) \
-> +		for_each_if(gem_class_can_store_dword(fd, e->class) && \
-> +			    !gem_engine_can_block_ggtt_binder(i915, e)) \
-> +		igt_dynamic_f("%s", e->name)
-> +
->  igt_main
->  {
->  	int fd = -1;
-> @@ -3502,21 +3508,22 @@ igt_main
->  	igt_subtest_group {
->  		const struct intel_execution_engine2 *e;
->  
-> -		test_each_engine_store("fifo", fd, ctx, e)
-> +		test_each_ggtt_binder_nonblocking_engine("fifo", fd, ctx, e)
->  			fifo(fd, ctx, e->flags);
->  
-> -		test_each_engine_store("implicit-read-write", fd, ctx, e)
-> +		test_each_ggtt_binder_nonblocking_engine("implicit-read-write", fd, ctx, e)
->  			implicit_rw(fd, ctx, e->flags, READ_WRITE);
->  
-> -		test_each_engine_store("implicit-write-read", fd, ctx, e)
-> +		test_each_ggtt_binder_nonblocking_engine("implicit-write-read", fd, ctx, e)
->  			implicit_rw(fd, ctx, e->flags, WRITE_READ);
->  
-> -		test_each_engine_store("implicit-boths", fd, ctx, e)
-> +		test_each_ggtt_binder_nonblocking_engine("implicit-boths", fd, ctx, e)
->  			implicit_rw(fd, ctx, e->flags, READ_WRITE | WRITE_READ);
->  
-> -		test_each_engine_store("independent", fd, ctx, e)
-> +		test_each_ggtt_binder_nonblocking_engine("independent", fd, ctx, e)
->  			independent(fd, ctx, e->flags, 0);
-> -		test_each_engine_store("u-independent", fd, ctx, e)
-> +
-> +		test_each_ggtt_binder_nonblocking_engine("u-independent", fd, ctx, e)
->  			independent(fd, ctx, e->flags, IGT_SPIN_USERPTR);
->  	}
->  
-> @@ -3615,10 +3622,10 @@ igt_main
->  		test_each_engine_store("in-order", fd, ctx, e)
->  			reorder(fd, &ctx->cfg, e->flags, EQUAL);
->  
-> -		test_each_engine_store("out-order", fd, ctx, e)
-> +		test_each_ggtt_binder_nonblocking_engine("out-order", fd, ctx, e)
->  			reorder(fd, &ctx->cfg, e->flags, 0);
->  
-> -		test_each_engine_store("promotion", fd, ctx, e)
-> +		test_each_ggtt_binder_nonblocking_engine("promotion", fd, ctx, e)
->  			promotion(fd, &ctx->cfg, e->flags);
->  
->  		igt_subtest_group {
-> @@ -3685,23 +3692,23 @@ igt_main
->  			}
->  		}
->  
-> -		test_each_engine_store("noreorder", fd, ctx, e)
-> +		test_each_ggtt_binder_nonblocking_engine("noreorder", fd, ctx, e)
->  			noreorder(fd, &ctx->cfg, e->flags, 0, 0);
->  
-> -		test_each_engine_store("noreorder-priority", fd, ctx, e) {
-> +		test_each_ggtt_binder_nonblocking_engine("noreorder-priority", fd, ctx, e) {
->  			igt_require(gem_scheduler_enabled(fd));
->  			noreorder(fd, &ctx->cfg, e->flags, MAX_PRIO, 0);
->  		}
->  
-> -		test_each_engine_store("noreorder-corked", fd, ctx, e) {
-> +		test_each_ggtt_binder_nonblocking_engine("noreorder-corked", fd, ctx, e) {
->  			igt_require(gem_scheduler_enabled(fd));
->  			noreorder(fd, &ctx->cfg, e->flags, MAX_PRIO, CORKED);
->  		}
->  
-> -		test_each_engine_store("deep", fd, ctx, e)
-> +		test_each_ggtt_binder_nonblocking_engine("deep", fd, ctx, e)
->  			deep(fd, &ctx->cfg, e->flags);
->  
-> -		test_each_engine_store("wide", fd, ctx, e)
-> +		test_each_ggtt_binder_nonblocking_engine("wide", fd, ctx, e)
->  			wide(fd, &ctx->cfg, e->flags);
->  
->  		test_each_engine_store("smoketest", fd, ctx, e)
-> @@ -3735,10 +3742,10 @@ igt_main
->  		test_each_engine("pi-userfault", fd, ctx, e)
->  			test_pi_userfault(fd, &ctx->cfg, e->flags);
->  
-> -		test_each_engine("pi-distinct-iova", fd, ctx, e)
-> +		test_each_ggtt_binder_nonblocking_engine("pi-distinct-iova", fd, ctx, e)
->  			test_pi_iova(fd, &ctx->cfg, e->flags, 0);
->  
-> -		test_each_engine("pi-shared-iova", fd, ctx, e)
-> +		test_each_ggtt_binder_nonblocking_engine("pi-shared-iova", fd, ctx, e)
->  			test_pi_iova(fd, &ctx->cfg, e->flags, SHARED);
->  	}
->  
-> -- 
-> 2.41.0
-> 
+Series: tests/intel/xe_debugfs : Check tile_count info (rev2)
+URL   : https://patchwork.freedesktop.org/series/123708/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_13643 -> IGTPW_9802
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_9802 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_9802, please notify your bug team (lgci.bug.filing@intel.com) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9802/index.html
+
+Participating hosts (40 -> 38)
+------------------------------
+
+  Missing    (2): fi-hsw-4770 fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_9802:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_addfb_basic@addfb25-4-tiled:
+    - fi-apl-guc:         [PASS][1] -> [DMESG-WARN][2] +41 other tests dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13643/fi-apl-guc/igt@kms_addfb_basic@addfb25-4-tiled.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9802/fi-apl-guc/igt@kms_addfb_basic@addfb25-4-tiled.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_9802 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - fi-apl-guc:         [PASS][3] -> [DMESG-WARN][4] ([i915#180] / [i915#7634])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13643/fi-apl-guc/igt@core_hotunplug@unbind-rebind.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9802/fi-apl-guc/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@i915_module_load@reload:
+    - fi-apl-guc:         [PASS][5] -> [DMESG-WARN][6] ([i915#180] / [i915#1982] / [i915#7634]) +1 other test dmesg-warn
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13643/fi-apl-guc/igt@i915_module_load@reload.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9802/fi-apl-guc/igt@i915_module_load@reload.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-apl-guc:         [PASS][7] -> [DMESG-WARN][8] ([i915#180] / [i915#7634] / [i915#8585])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13643/fi-apl-guc/igt@i915_pm_rpm@module-reload.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9802/fi-apl-guc/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live@reset:
+    - fi-apl-guc:         [PASS][9] -> [DMESG-WARN][10] ([i915#7634]) +36 other tests dmesg-warn
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13643/fi-apl-guc/igt@i915_selftest@live@reset.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9802/fi-apl-guc/igt@i915_selftest@live@reset.html
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:
+    - fi-apl-guc:         [PASS][11] -> [DMESG-WARN][12] ([i915#8703])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13643/fi-apl-guc/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9802/fi-apl-guc/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
+
+  * igt@kms_flip@basic-flip-vs-dpms@c-dp1:
+    - fi-apl-guc:         [PASS][13] -> [DMESG-WARN][14] ([i915#180] / [i915#8703]) +36 other tests dmesg-warn
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13643/fi-apl-guc/igt@kms_flip@basic-flip-vs-dpms@c-dp1.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9802/fi-apl-guc/igt@kms_flip@basic-flip-vs-dpms@c-dp1.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@a-dp1:
+    - fi-apl-guc:         [PASS][15] -> [DMESG-WARN][16] ([i915#180] / [i915#1982] / [i915#8703])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13643/fi-apl-guc/igt@kms_flip@basic-flip-vs-wf_vblank@a-dp1.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9802/fi-apl-guc/igt@kms_flip@basic-flip-vs-wf_vblank@a-dp1.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-9:          [DMESG-FAIL][17] ([i915#7913]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13643/bat-dg2-9/igt@i915_selftest@live@workarounds.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9802/bat-dg2-9/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - fi-kbl-guc:         [FAIL][19] ([IGT#3] / [i915#6121]) -> [PASS][20]
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13643/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9802/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
+
+  
+  [IGT#3]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3
+  [i915#180]: https://gitlab.freedesktop.org/drm/intel/issues/180
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#6121]: https://gitlab.freedesktop.org/drm/intel/issues/6121
+  [i915#7634]: https://gitlab.freedesktop.org/drm/intel/issues/7634
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#8585]: https://gitlab.freedesktop.org/drm/intel/issues/8585
+  [i915#8703]: https://gitlab.freedesktop.org/drm/intel/issues/8703
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7490 -> IGTPW_9802
+
+  CI-20190529: 20190529
+  CI_DRM_13643: dc4cd6e4e53d46211952fe7c0e408fce3e212993 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_9802: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9802/index.html
+  IGT_7490: 7490
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9802/index.html
+
+--===============6988301630252301835==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_debugfs : Check tile_count info (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123708/">https://patchwork.freedesktop.org/series/123708/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9802/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9802/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13643 -&gt; IGTPW_9802</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_9802 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_9802, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9802/index.html</p>
+<h2>Participating hosts (40 -&gt; 38)</h2>
+<p>Missing    (2): fi-hsw-4770 fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_9802:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@kms_addfb_basic@addfb25-4-tiled:<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13643/fi-apl-guc/igt@kms_addfb_basic@addfb25-4-tiled.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9802/fi-apl-guc/igt@kms_addfb_basic@addfb25-4-tiled.html">DMESG-WARN</a> +41 other tests dmesg-warn</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_9802 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13643/fi-apl-guc/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9802/fi-apl-guc/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/180">i915#180</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7634">i915#7634</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_module_load@reload:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13643/fi-apl-guc/igt@i915_module_load@reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9802/fi-apl-guc/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/180">i915#180</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7634">i915#7634</a>) +1 other test dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13643/fi-apl-guc/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9802/fi-apl-guc/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/180">i915#180</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7634">i915#7634</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8585">i915#8585</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13643/fi-apl-guc/igt@i915_selftest@live@reset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9802/fi-apl-guc/igt@i915_selftest@live@reset.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7634">i915#7634</a>) +36 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13643/fi-apl-guc/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9802/fi-apl-guc/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8703">i915#8703</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-dpms@c-dp1:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13643/fi-apl-guc/igt@kms_flip@basic-flip-vs-dpms@c-dp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9802/fi-apl-guc/igt@kms_flip@basic-flip-vs-dpms@c-dp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/180">i915#180</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8703">i915#8703</a>) +36 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@a-dp1:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13643/fi-apl-guc/igt@kms_flip@basic-flip-vs-wf_vblank@a-dp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9802/fi-apl-guc/igt@kms_flip@basic-flip-vs-wf_vblank@a-dp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/180">i915#180</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8703">i915#8703</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13643/bat-dg2-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9802/bat-dg2-9/igt@i915_selftest@live@workarounds.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13643/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3">IGT#3</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6121">i915#6121</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9802/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7490 -&gt; IGTPW_9802</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13643: dc4cd6e4e53d46211952fe7c0e408fce3e212993 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_9802: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9802/index.html<br />
+  IGT_7490: 7490</p>
+
+</body>
+</html>
+
+--===============6988301630252301835==--
