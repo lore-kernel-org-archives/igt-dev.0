@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Fri, 15 Sep 2023 14:11:07 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Message-ID: <20230915141107.1fc14800@maurocar-mobl2>
-In-Reply-To: <20230908123233.137134-33-janusz.krzysztofik@linux.intel.com>
-References: <20230908123233.137134-19-janusz.krzysztofik@linux.intel.com>
- <20230908123233.137134-33-janusz.krzysztofik@linux.intel.com>
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 15 Sep 2023 06:23:43 -0700
+Message-Id: <20230915132346.1845909-12-lucas.demarchi@intel.com>
+In-Reply-To: <20230915132346.1845909-1-lucas.demarchi@intel.com>
+References: <20230915132346.1845909-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t v2 14/17] lib/kunit: Load test modules
- in background
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 11/14] lib/igt_fb: Add Xe2 mocs to
+ XY_FAST_COLOR_BLT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,134 +16,40 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- Isabella Basso <isabbasso@riseup.net>, intel-xe@lists.freedesktop.org
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>, intel-xe@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri,  8 Sep 2023 14:32:48 +0200
-Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com> wrote:
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+---
+ lib/igt_fb.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-> For igt_runner to be able to correlate a stream of IGT results from
-> dynamic sub-subtests that correspond to individual kunit test cases, read
-> by the igt_runner from stdout / stderr of the test process, with a stream
-> of kernel messages read from /dev/kmsg, we need both result streams being
-> fed with data in parallel.  While our KTAP parser is currently started in
-> the background and reads KTAP results from /dev/kmsg in parallel with
-> execution of kunit tests performed by the kernel while we are loading a
-> kunit test module, results from the parser are then only stored as
-> intermediate data and not processed any further until the module loading
-> completes.  As a consequence, there is no synchronization between the two
-> streams.
-> 
-> Call the function that loads the kunit test module from a separate thread
-> and process the intermediate results immediately, as soon as available
-> from the background parser, without waiting for completion of module
-> loading.
-
-LGTM.
-
-Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-
-> 
-> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> ---
->  lib/igt_kmod.c | 35 +++++++++++++++++++++++++++++++++--
->  1 file changed, 33 insertions(+), 2 deletions(-)
-> 
-> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-> index c692954911..bbde3929f2 100644
-> --- a/lib/igt_kmod.c
-> +++ b/lib/igt_kmod.c
-> @@ -25,6 +25,7 @@
->  #include <signal.h>
->  #include <errno.h>
->  #include <fcntl.h>
-> +#include <pthread.h>
->  #include <sys/utsname.h>
->  
->  #include "igt_aux.h"
-> @@ -746,6 +747,21 @@ void igt_kselftest_get_tests(struct kmod_module *kmod,
->  	kmod_module_info_free_list(pre);
->  }
->  
-> +struct modprobe_data {
-> +	struct kmod_module *kmod;
-> +	const char *opts;
-> +	int err;
-> +};
-> +
-> +static void *modprobe_task(void *arg)
-> +{
-> +	struct modprobe_data *data = arg;
-> +
-> +	data->err = modprobe(data->kmod, data->opts);
-> +
-> +	return NULL;
-> +}
-> +
->  /**
->   * igt_kunit:
->   * @module_name: the name of the module
-> @@ -757,9 +773,11 @@ void igt_kselftest_get_tests(struct kmod_module *kmod,
->   */
->  static void __igt_kunit(struct igt_ktest *tst, const char *opts)
->  {
-> +	struct modprobe_data modprobe = { tst->kmod, opts, 0, };
->  	struct kmod_module *kunit_kmod;
->  	bool is_builtin;
->  	struct ktap_test_results *results;
-> +	pthread_t modprobe_thread;
->  	unsigned long taints;
->  	int flags, ret;
->  
-> @@ -777,18 +795,25 @@ static void __igt_kunit(struct igt_ktest *tst, const char *opts)
->  
->  	results = ktap_parser_start(tst->kmsg, is_builtin);
->  
-> -	if (igt_debug_on(igt_kmod_load(tst->module_name, opts) < 0)) {
-> +	if (igt_debug_on(pthread_create(&modprobe_thread, NULL,
-> +					modprobe_task, &modprobe))) {
->  		ktap_parser_cancel();
->  		igt_ignore_warn(ktap_parser_stop());
-> -		igt_skip("Unable to load %s module\n", tst->module_name);
-> +		igt_skip("Failed to create a modprobe thread\n");
->  	}
->  
->  	while (READ_ONCE(results->still_running) || !igt_list_empty(&results->list))
->  	{
->  		struct ktap_test_results_element *result;
->  
-> +		if (!pthread_tryjoin_np(modprobe_thread, NULL) && modprobe.err) {
-> +			ktap_parser_cancel();
-> +			break;
-> +		}
-> +
->  		if (igt_kernel_tainted(&taints)) {
->  			ktap_parser_cancel();
-> +			pthread_cancel(modprobe_thread);
->  			break;
->  		}
->  
-> @@ -806,14 +831,20 @@ static void __igt_kunit(struct igt_ktest *tst, const char *opts)
->  		igt_dynamic(result->test_name) {
->  			igt_assert(READ_ONCE(result->passed));
->  
-> +			if (!pthread_tryjoin_np(modprobe_thread, NULL))
-> +				igt_assert_eq(modprobe.err, 0);
-> +
->  			igt_fail_on(igt_kernel_tainted(&taints));
->  		}
->  
->  		free(result);
->  	}
->  
-> +	pthread_join(modprobe_thread, NULL);
-> +
->  	ret = ktap_parser_stop();
->  
-> +	igt_skip_on(modprobe.err);
->  	igt_skip_on(igt_kernel_tainted(&taints));
->  	igt_skip_on_f(ret, "KTAP parser failed\n");
->  }
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 722996779..d353b439f 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -2754,6 +2754,7 @@ static struct blt_copy_object *blt_fb_init(const struct igt_fb *fb,
+ 	struct blt_copy_object *blt;
+ 	enum blt_tiling_type blt_tile;
+ 	uint64_t stride;
++	uint32_t devid = intel_get_drm_devid(fb->fd);
+ 
+ 	blt = malloc(sizeof(*blt));
+ 	igt_assert(blt);
+@@ -2763,7 +2764,11 @@ static struct blt_copy_object *blt_fb_init(const struct igt_fb *fb,
+ 
+ 	blt_tile = fb_tile_to_blt_tile(fb->modifier);
+ 	stride = blt_tile == T_LINEAR ? fb->strides[plane] : fb->strides[plane] / 4;
+-	mocs = intel_get_uc_mocs_index(fb->fd) << XY_FAST_COLOR_BLT_MOCS_INDEX_SHIFT;
++
++	if (intel_graphics_ver(devid) >= IP_VER(20, 0))
++		mocs = intel_get_uc_mocs_index(fb->fd) << XE2_XY_FAST_COLOR_BLT_MOCS_INDEX_SHIFT;
++	else
++		mocs = intel_get_uc_mocs_index(fb->fd) << XY_FAST_COLOR_BLT_MOCS_INDEX_SHIFT;
+ 
+ 	blt_set_object(blt, handle, fb->size, memregion,
+ 		       mocs,
+-- 
+2.40.1
