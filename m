@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1BCE110E62F
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Sep 2023 13:24:11 +0000 (UTC)
-From: janga.rahul.kumar@intel.com
-To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
- janga.rahul.kumar@intel.com
-Date: Fri, 15 Sep 2023 18:56:47 +0530
-Message-Id: <20230915132647.476532-1-janga.rahul.kumar@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============1536449442475115143=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/intel/xe_debugfs : Check tile_count
- info
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: janga.rahul.kumar@intel.com
+Date: Fri, 15 Sep 2023 21:26:49 -0000
+Message-ID: <169481320941.32041.16002962381793036654@emeril.freedesktop.org>
+References: <20230915132647.476532-1-janga.rahul.kumar@intel.com>
+In-Reply-To: <20230915132647.476532-1-janga.rahul.kumar@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/in?=
+ =?utf-8?q?tel/xe=5Fdebugfs_=3A_Check_tile=5Fcount_info_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,43 +17,131 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: sai.gowtham.ch@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+--===============1536449442475115143==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Check correctness of tile_count info.
+== Series Details ==
 
-Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
----
- tests/intel/xe_debugfs.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Series: tests/intel/xe_debugfs : Check tile_count info (rev2)
+URL   : https://patchwork.freedesktop.org/series/123708/
+State : success
 
-diff --git a/tests/intel/xe_debugfs.c b/tests/intel/xe_debugfs.c
-index 88b51dbd4..2e752267c 100644
---- a/tests/intel/xe_debugfs.c
-+++ b/tests/intel/xe_debugfs.c
-@@ -13,7 +13,7 @@
-  */
- 
- #include "igt.h"
--
-+#include "igt_sysfs.h"
- #include "xe_drm.h"
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
-@@ -117,6 +117,9 @@ test_base(int fd, struct drm_xe_query_config *config)
- 		igt_assert(igt_debugfs_search(fd, "info", reference));
- 	}
- 
-+	sprintf(reference, "tile_count %d", xe_sysfs_get_num_tiles(fd));
-+	igt_assert(igt_debugfs_search(fd, "info", reference));
-+
- 	igt_assert(igt_debugfs_exists(fd, "gt0", O_RDONLY));
- 	if (config->info[XE_QUERY_CONFIG_GT_COUNT] > 1)
- 		igt_assert(igt_debugfs_exists(fd, "gt1", O_RDONLY));
--- 
-2.25.1
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7490_BAT -> XEIGTPW_9802_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9802_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:
+    - bat-adlp-7:         [FAIL][1] ([Intel XE#480]) -> [PASS][2] +1 other test pass
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7490/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9802/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
+
+  
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7490 -> IGTPW_9802
+  * Linux: xe-375-4a9681392cecd56a372d06b648f7b3a37fdd5c63 -> xe-376-9da40abcc0ccdf8fdfed4e21d76060bfcd35fe7d
+
+  IGTPW_9802: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9802/index.html
+  IGT_7490: 7490
+  xe-375-4a9681392cecd56a372d06b648f7b3a37fdd5c63: 4a9681392cecd56a372d06b648f7b3a37fdd5c63
+  xe-376-9da40abcc0ccdf8fdfed4e21d76060bfcd35fe7d: 9da40abcc0ccdf8fdfed4e21d76060bfcd35fe7d
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9802/index.html
+
+--===============1536449442475115143==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_debugfs : Check tile_count info (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123708/">https://patchwork.freedesktop.org/series/123708/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9802/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9802/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7490_BAT -&gt; XEIGTPW_9802_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9802_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7490/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9802/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7490 -&gt; IGTPW_9802</li>
+<li>Linux: xe-375-4a9681392cecd56a372d06b648f7b3a37fdd5c63 -&gt; xe-376-9da40abcc0ccdf8fdfed4e21d76060bfcd35fe7d</li>
+</ul>
+<p>IGTPW_9802: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9802/index.html<br />
+  IGT_7490: 7490<br />
+  xe-375-4a9681392cecd56a372d06b648f7b3a37fdd5c63: 4a9681392cecd56a372d06b648f7b3a37fdd5c63<br />
+  xe-376-9da40abcc0ccdf8fdfed4e21d76060bfcd35fe7d: 9da40abcc0ccdf8fdfed4e21d76060bfcd35fe7d</p>
+
+</body>
+</html>
+
+--===============1536449442475115143==--
