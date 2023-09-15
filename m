@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9758C10E0FC
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Sep 2023 05:17:30 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 040BC10E0A0
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 Sep 2023 05:19:41 +0000 (UTC)
 From: sai.gowtham.ch@intel.com
 To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
- karolina.stolarek@intel.com, sai.gowtham.ch@intel.com
-Date: Fri, 15 Sep 2023 10:46:15 +0530
-Message-Id: <20230915051617.9361-3-sai.gowtham.ch@intel.com>
-In-Reply-To: <20230915051617.9361-1-sai.gowtham.ch@intel.com>
-References: <20230915051617.9361-1-sai.gowtham.ch@intel.com>
+ sai.gowtham.ch@intel.com
+Date: Fri, 15 Sep 2023 10:48:32 +0530
+Message-Id: <20230915051832.9400-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/4] lib/intel_reg: Add copy commands in the
- lib
+Subject: [igt-dev] [PATCH i-g-t] tests/intel/xe_exec_store: Add cachelines
+ and page-sized subtests.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,27 +24,137 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-Add memory copy and set commands to the lib.
+Intension of these subtests is to verify that each capable engine can store a
+dword to different cachelines/pages of a buffer object.
 
 Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 ---
- lib/intel_reg.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ tests/intel/xe_exec_store.c | 106 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 106 insertions(+)
 
-diff --git a/lib/intel_reg.h b/lib/intel_reg.h
-index 3bf3676dc..322aec9fd 100644
---- a/lib/intel_reg.h
-+++ b/lib/intel_reg.h
-@@ -2564,6 +2564,10 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
+index 14f7c9bec..0929a7717 100644
+--- a/tests/intel/xe_exec_store.c
++++ b/tests/intel/xe_exec_store.c
+@@ -105,6 +105,100 @@ static void store(int fd)
+ 	xe_vm_destroy(fd, vm);
+ }
  
- #define XY_FAST_COLOR_BLT		((0x2<<29)|(0x44<<22)|0xe)
- 
-+/* RAW memory commands */
-+#define MEM_COPY_CMD                    ((0x2 << 29)|(0x5a << 22)|0x8)
-+#define MEM_SET_CMD                     ((0x2 << 29)|(0x5b << 22)|0x5)
++#define PAGES 1
++#define NCACHELINES (4096/64)
++/**
++ * SUBTEST: %s
++ * Description: Verify that each capable engine can store a dword to different
++ * 		%arg[1] of a buffer object.
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @cachelines: cachelines
++ * @page-sized: page-sized
++ */
++static void store_cachelines(int fd, int gt, int class, unsigned int flags)
++{
++	uint32_t vm;
++	uint64_t ahnd;
++	struct drm_xe_sync sync[2] = {
++		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
++		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
++	};
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = flags & PAGES ? NCACHELINES + 1 : 2,
++		.num_syncs = 2,
++		.syncs = to_user_pointer(&sync),
++	};
++	uint32_t value[NCACHELINES], delta;
++	uint32_t bo[exec.num_batch_buffer];
++	uint64_t dst_offset[exec.num_batch_buffer];
++	struct drm_xe_engine_class_instance eci[exec.num_batch_buffer];
++	struct drm_xe_engine_class_instance *hwe;
++	uint32_t syncobjs[exec.num_batch_buffer], exec_queues[exec.num_batch_buffer];
++	struct data *data;
++	int i, num_placements = 0;
 +
- #define XY_FAST_COPY_BLT				((2<<29)|(0x42<<22)|0x8)
- /* dword 0 */
- #define   XY_FAST_COPY_SRC_TILING_LINEAR		(0 << 20)
++	sync[0].handle = syncobj_create(fd, 0);
++	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
++	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_SIMPLE);
++
++	xe_for_each_hw_engine(fd, hwe) {
++		if (hwe->engine_class != class || hwe->gt_id != gt)
++			continue;
++		eci[num_placements++] = *hwe;
++	}
++
++	for (i = 0; i < exec.num_batch_buffer ; i++) {
++		struct drm_xe_exec_queue_create create = {
++			.vm_id = vm,
++			.width = 1,
++			.num_placements = num_placements,
++			.instances = to_user_pointer(eci),
++		};
++
++		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC_QUEUE_CREATE,
++					&create), 0);
++		exec_queues[i] = create.exec_queue_id;
++		syncobjs[i] = syncobj_create(fd, 0);
++		bo[i] = xe_bo_create_flags(fd, vm, 4096,
++					   visible_vram_if_possible(fd, hwe->gt_id));
++		dst_offset[i] = intel_allocator_alloc_with_strategy(ahnd, bo[i],
++								    4096, 0,
++								    ALLOC_STRATEGY_LOW_TO_HIGH);
++	}
++	data = xe_bo_map(fd, bo[i-1], 4096);
++
++	for (unsigned n = 0; n < NCACHELINES; n++) {
++		delta = 4 * (n * 16 + n % 16);
++		value[n] = n | ~n << 16;
++		store_dword_batch(data, dst_offset[n] + delta, value[n]);
++		xe_vm_bind_async(fd, vm, hwe->gt_id, bo[n], 0, dst_offset[n] + delta, 4096, sync, 1);
++		exec.address = dst_offset[n] + delta;
++		exec.exec_queue_id = exec_queues[n];
++		sync[0].flags &= DRM_XE_SYNC_SIGNAL;
++		sync[1].flags |= DRM_XE_SYNC_SIGNAL;
++		sync[1].handle = syncobjs[i];
++		xe_exec(fd, &exec);
++
++		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0, NULL));
++	}
++
++	for (unsigned n = 0; n < NCACHELINES; n++) {
++		igt_assert_eq(data[n].data, value[n]);
++	}
++
++	for (unsigned n = 0; n < exec.num_batch_buffer; n++) {
++		syncobj_destroy(fd, syncobjs[n]);
++		xe_exec_queue_destroy(fd, exec_queues[n]);
++		gem_close(fd, bo[n]);
++	}
++	munmap(data, 4096);
++	put_ahnd(ahnd);
++	xe_vm_destroy(fd, vm);
++}
++
+ /**
+  * SUBTEST: basic-all
+  * Description: Test to verify store dword on all available engines.
+@@ -211,6 +305,18 @@ igt_main
+ 				store_all(fd, gt, class);
+ 	}
+ 
++	igt_subtest("cachelines") {
++		xe_for_each_gt(fd, gt)
++			xe_for_each_hw_engine_class(class)
++				store_cachelines(fd, gt, class, 0);
++	}
++
++	igt_subtest("page-sized") {
++		xe_for_each_gt(fd, gt)
++			xe_for_each_hw_engine_class(class)
++				store_cachelines(fd, gt, class, PAGES);
++	}
++
+ 	igt_fixture {
+ 		xe_device_put(fd);
+ 		close(fd);
 -- 
 2.39.1
