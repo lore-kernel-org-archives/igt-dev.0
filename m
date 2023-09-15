@@ -1,24 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E496910E164
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Sep 2023 07:12:00 +0000 (UTC)
-Received: from linux.intel.com (martinro-mobl2.ger.corp.intel.com
- [10.252.9.77])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 6F1C8580AF7
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Sep 2023 00:11:59 -0700 (PDT)
-Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qh2zd-001oWO-1P
- for igt-dev@lists.freedesktop.org; Fri, 15 Sep 2023 09:11:57 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 15 Sep 2023 09:11:55 +0200
-Message-ID: <20230915071155.432521-1-mauro.chehab@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============3649218785509070545=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] docs/cross-building.txt: add
- documentation about cross-builds
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Matthew Brost" <matthew.brost@intel.com>
+Date: Fri, 15 Sep 2023 03:40:03 -0000
+Message-ID: <169474920385.32042.18074484539238875358@emeril.freedesktop.org>
+References: <20230915012101.2221203-1-matthew.brost@intel.com>
+In-Reply-To: <20230915012101.2221203-1-matthew.brost@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_IGT_upda?=
+ =?utf-8?q?te_for_removing_async_bind_worker?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,149 +17,183 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+--===============3649218785509070545==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Cross-building IGT is not too trivial, as one needs to prepare
-a sysroot directory containing not only glibc but also other
-libraries. Document how to do it for IGT.
+== Series Details ==
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- docs/cross-building.txt | 122 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 122 insertions(+)
- create mode 100644 docs/cross-building.txt
+Series: IGT update for removing async bind worker
+URL   : https://patchwork.freedesktop.org/series/123743/
+State : success
 
-diff --git a/docs/cross-building.txt b/docs/cross-building.txt
-new file mode 100644
-index 000000000000..2c0e3caf30e9
---- /dev/null
-+++ b/docs/cross-building.txt
-@@ -0,0 +1,122 @@
-+Producing an IGT for another architecture
-+=========================================
-+
-+Cross-build toolchain
-+---------------------
-+
-+Producing cross-builds require installing a toolchain with support
-+to the target architecture, or a toolchain built for the target,
-+plus an emulator (like qemu). In the case of IGT, the minimal toolchain
-+is GCC and binutils. For instance, on Fedora, to cross-build with arm64
-+as the target architecture, those packages are needed:
-+
-+	binutils-aarch64-linux-gnu
-+	gcc-aarch64-linux-gnu
-+
-+There are also tarballs with cross-compiler chains that can be used
-+instead, like:
-+
-+	https://toolchains.bootlin.com/
-+
-+System root directory (sysroot)
-+-------------------------------
-+
-+Besides a toolchain, a system root directory containing the libraries
-+used by IGT pre-compiled to the target architecture is required.
-+
-+This can be obtained by either cross-building a distribution using
-+Yocto, buildroot or similar, or by copying the system root from
-+an existing installation for the desired architecture, containing
-+the IGT needed build time and runtime library dependencies.
-+
-+Please notice that cross-build toolchains may require some
-+dependent object files and libraries used by it to also be copied
-+to the system root directory. For instance, in the case of Fedora,
-+the files are located  under /usr/aarch64-linux-gnu/sys-root/
-+(for aarch64 architecture) shall also be stored at the sysroot
-+directory used by Meson, as otherwise the preparation step will fail.
-+
-+Meson preparation
-+-----------------
-+
-+Meson requires an extra configuration file to be used for
-+non-native builds. This is passed via --cross-file parameter to it.
-+
-+Such file contains details about the target OS/architecture, about
-+the host (native) OS/architecture and declares the location of
-+sysroot:
-+
-+- the [host_machine] section defines the system and architecture from
-+  the native OS;
-+  At the example below, the native OS is Linux x86_64 architecture.
-+- the [target_machine] section contains details about the target
-+  OS/architecture.
-+  At the example below, the target is aarch64 (arm 64 bits architecture).
-+- the [constants] section is optional, but it helps to use the sysroot
-+  path directory on multiple keys at the [properties] section;
-+- the [properties] section contains arguments to be used by the
-+  the binaries;
-+- the [binaries] section contains the binaries to be used during the
-+  build. It can either be a native or a target toolchain.
-+  If a target toolchan is used, an exe_wrapper key pointing to an arch
-+  emulalor like qemu-arm is needed.
-+
-+The sysroot directory is where IGT dependent libraries and header
-+files, compiled for a given architecture, are stored. At the example
-+below, the sysroot is /aarch64-sysroot.
-+
-+Preparing for cross compilation is done by calling meson with the
-+cross-compilation config file name, plus a build directory:
-+
-+	meson --cross-file arm64_cross.txt build
-+
-+The actual compilation can then be done using ninja:
-+
-+	ninja -C build
-+
-+Please notice that some parts of the IGT build are disabled during
-+cross-compilation, like testlist file creation and documentation,
-+as such steps depend on running the generated code at the native
-+machine.
-+
-+The IGT root directory has already 3 examples that uses qemu to
-+run a target-OS machine toolchain:
-+
-+	meson-cross-arm64.txt
-+	meson-cross-armhf.txt
-+	meson-cross-mips.txt
-+
-+The example below contains cross-build instructions when using
-+a native cross-build toolchain.
-+
-+Example: arm64_cross.txt with a native cross-builder toolchain
-+--------------------------------------------------------------
-+
-+[constants]
-+sysroot = '/aarch64-sysroot'
-+common_args = ['--sysroot=' + sysroot]
-+
-+[properties]
-+sys_root = sysroot
-+c_args = common_args
-+c_link_args = common_args
-+pkg_config_libdir = [sysroot + '/usr/lib64/pkgconfig', sysroot +'/usr/share/pkgconfig', sysroot +'/usr/local/lib/pkgconfig']
-+
-+[binaries]
-+c = '/usr/bin/aarch64-linux-gnu-gcc'
-+ar = '/usr/bin/aarch64-linux-gnu-gcc-ar'
-+ld = '/usr/bin/aarch64-linux-gnu-ld'
-+strip = '/usr/bin/aarch64-linux-gnu-strip'
-+pkgconfig = 'pkg-config'
-+
-+[host_machine]
-+system = 'linux'
-+cpu_family = 'x86_64'
-+cpu = 'x86_64'
-+endian = 'little'
-+
-+[target_machine]
-+system = 'linux'
-+cpu_family = 'aarch64'
-+cpu = 'aarch64'
-+endian = 'little'
--- 
-2.41.0
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7488_BAT -> XEIGTPW_9793_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_9793_BAT:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * {igt@xe_vm@bind-execqueues-independent}:
+    - bat-adlp-7:         [PASS][1] -> [FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7488/bat-adlp-7/igt@xe_vm@bind-execqueues-independent.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9793/bat-adlp-7/igt@xe_vm@bind-execqueues-independent.html
+    - bat-dg2-oem2:       [PASS][3] -> [FAIL][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7488/bat-dg2-oem2/igt@xe_vm@bind-execqueues-independent.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9793/bat-dg2-oem2/igt@xe_vm@bind-execqueues-independent.html
+    - bat-atsm-2:         [PASS][5] -> [FAIL][6]
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7488/bat-atsm-2/igt@xe_vm@bind-execqueues-independent.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9793/bat-atsm-2/igt@xe_vm@bind-execqueues-independent.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9793_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
+    - bat-adlp-7:         [PASS][7] -> [FAIL][8] ([Intel XE#480]) +1 other test fail
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7488/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9793/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7488 -> IGTPW_9793
+  * Linux: xe-373-aeac46cfaebff413254ac07837b97370c7ed3957 -> xe-374-cc72615f6d26226dc7a7c24af9722a5399b8f89c
+
+  IGTPW_9793: 9793
+  IGT_7488: 099e058c5dfb7a49942edf03cae88a52a77077a3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-373-aeac46cfaebff413254ac07837b97370c7ed3957: aeac46cfaebff413254ac07837b97370c7ed3957
+  xe-374-cc72615f6d26226dc7a7c24af9722a5399b8f89c: cc72615f6d26226dc7a7c24af9722a5399b8f89c
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9793/index.html
+
+--===============3649218785509070545==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>IGT update for removing async bind worker</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123743/">https://patchwork.freedesktop.org/series/123743/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9793/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9793/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7488_BAT -&gt; XEIGTPW_9793_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_9793_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>
+<p>{igt@xe_vm@bind-execqueues-independent}:</p>
+<ul>
+<li>
+<p>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7488/bat-adlp-7/igt@xe_vm@bind-execqueues-independent.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9793/bat-adlp-7/igt@xe_vm@bind-execqueues-independent.html">FAIL</a></p>
+</li>
+<li>
+<p>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7488/bat-dg2-oem2/igt@xe_vm@bind-execqueues-independent.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9793/bat-dg2-oem2/igt@xe_vm@bind-execqueues-independent.html">FAIL</a></p>
+</li>
+<li>
+<p>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7488/bat-atsm-2/igt@xe_vm@bind-execqueues-independent.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9793/bat-atsm-2/igt@xe_vm@bind-execqueues-independent.html">FAIL</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9793_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7488/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9793/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7488 -&gt; IGTPW_9793</li>
+<li>Linux: xe-373-aeac46cfaebff413254ac07837b97370c7ed3957 -&gt; xe-374-cc72615f6d26226dc7a7c24af9722a5399b8f89c</li>
+</ul>
+<p>IGTPW_9793: 9793<br />
+  IGT_7488: 099e058c5dfb7a49942edf03cae88a52a77077a3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-373-aeac46cfaebff413254ac07837b97370c7ed3957: aeac46cfaebff413254ac07837b97370c7ed3957<br />
+  xe-374-cc72615f6d26226dc7a7c24af9722a5399b8f89c: cc72615f6d26226dc7a7c24af9722a5399b8f89c</p>
+
+</body>
+</html>
+
+--===============3649218785509070545==--
