@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 15 Sep 2023 06:23:45 -0700
-Message-Id: <20230915132346.1845909-14-lucas.demarchi@intel.com>
-In-Reply-To: <20230915132346.1845909-1-lucas.demarchi@intel.com>
-References: <20230915132346.1845909-1-lucas.demarchi@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1BCE110E62F
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 Sep 2023 13:24:11 +0000 (UTC)
+From: janga.rahul.kumar@intel.com
+To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
+ janga.rahul.kumar@intel.com
+Date: Fri, 15 Sep 2023 18:56:47 +0530
+Message-Id: <20230915132647.476532-1-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 13/14] lib/intel_blt: Support xe2 in
- xy-fast-copy command
+Subject: [igt-dev] [PATCH i-g-t] tests/intel/xe_debugfs : Check tile_count
+ info
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,140 +18,43 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>, intel-xe@lists.freedesktop.org
+Cc: sai.gowtham.ch@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Xe2 xy-fast-copy command is slightly different, with dw01 and dw07
-having a few differences: 1) different bitrange for mocs (it was
-previously absent in dw07); 2) no dst_memory, src_memory;
-3) hardcoded dst_type_y and src_type_y to 1.
+From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Check correctness of tile_count info.
+
+Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 ---
- lib/intel_blt.c | 76 +++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 55 insertions(+), 21 deletions(-)
+ tests/intel/xe_debugfs.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index 0658d67f4..508c2de46 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -1149,16 +1149,27 @@ struct gen12_fast_copy_data {
- 		uint32_t client:			BITRANGE(29, 31);
- 	} dw00;
+diff --git a/tests/intel/xe_debugfs.c b/tests/intel/xe_debugfs.c
+index 88b51dbd4..2e752267c 100644
+--- a/tests/intel/xe_debugfs.c
++++ b/tests/intel/xe_debugfs.c
+@@ -13,7 +13,7 @@
+  */
  
--	struct {
--		uint32_t dst_pitch:			BITRANGE(0, 15);
--		uint32_t rsvd1:				BITRANGE(16, 23);
--		uint32_t color_depth:			BITRANGE(24, 26);
--		uint32_t rsvd0:				BITRANGE(27, 27);
--		uint32_t dst_memory:			BITRANGE(28, 28);
--		uint32_t src_memory:			BITRANGE(29, 29);
--		uint32_t dst_type_y:			BITRANGE(30, 30);
--		uint32_t src_type_y:			BITRANGE(31, 31);
--	} dw01;
-+	union {
-+		struct {
-+			uint32_t dst_pitch:			BITRANGE(0, 15);
-+			uint32_t rsvd1:				BITRANGE(16, 23);
-+			uint32_t color_depth:			BITRANGE(24, 26);
-+			uint32_t rsvd0:				BITRANGE(27, 27);
-+			uint32_t dst_memory:			BITRANGE(28, 28);
-+			uint32_t src_memory:			BITRANGE(29, 29);
-+			uint32_t dst_type_y:			BITRANGE(30, 30);
-+			uint32_t src_type_y:			BITRANGE(31, 31);
-+		} dw01;
-+		struct {
-+			uint32_t dst_pitch:			BITRANGE(0, 15);
-+			uint32_t rsvd1:				BITRANGE(16, 19);
-+			uint32_t dst_mocs:			BITRANGE(20, 23);
-+			uint32_t color_depth:			BITRANGE(24, 26);
-+			uint32_t rsvd0:				BITRANGE(27, 29);
-+			uint32_t dst_type_y_mb1:		BITRANGE(30, 30);
-+			uint32_t src_type_y_mb1:		BITRANGE(31, 31);
-+		} dw01_xe2;
-+	};
+ #include "igt.h"
+-
++#include "igt_sysfs.h"
+ #include "xe_drm.h"
+ #include "xe/xe_ioctl.h"
+ #include "xe/xe_query.h"
+@@ -117,6 +117,9 @@ test_base(int fd, struct drm_xe_query_config *config)
+ 		igt_assert(igt_debugfs_search(fd, "info", reference));
+ 	}
  
- 	struct {
- 		int32_t dst_x1:				BITRANGE(0, 15);
-@@ -1183,10 +1194,18 @@ struct gen12_fast_copy_data {
- 		int32_t src_y1:				BITRANGE(16, 31);
- 	} dw06;
- 
--	struct {
--		uint32_t src_pitch:			BITRANGE(0, 15);
--		uint32_t rsvd0:				BITRANGE(16, 31);
--	} dw07;
-+	union {
-+		struct {
-+			uint32_t src_pitch:			BITRANGE(0, 15);
-+			uint32_t rsvd0:				BITRANGE(16, 31);
-+		} dw07;
-+		struct {
-+			uint32_t src_pitch:			BITRANGE(0, 15);
-+			uint32_t rsvd0:				BITRANGE(16, 19);
-+			uint32_t src_mocs:			BITRANGE(20, 23);
-+			uint32_t rsvd1:				BITRANGE(24, 31);
-+		} dw07_xe2;
-+	};
- 
- 	struct {
- 		uint32_t src_address_lo;
-@@ -1285,11 +1304,13 @@ uint64_t emit_blt_fast_copy(int fd,
- 			    uint64_t bb_pos,
- 			    bool emit_bbe)
- {
-+	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
- 	struct gen12_fast_copy_data data = {};
- 	uint64_t dst_offset, src_offset, bb_offset, alignment;
- 	uint32_t bbe = MI_BATCH_BUFFER_END;
- 	uint32_t *bb;
- 
++	sprintf(reference, "tile_count %d", xe_sysfs_get_num_tiles(fd));
++	igt_assert(igt_debugfs_search(fd, "info", reference));
 +
- 	alignment = get_default_alignment(fd, blt->driver);
- 
- 	data.dw00.client = 0x2;
-@@ -1298,12 +1319,20 @@ uint64_t emit_blt_fast_copy(int fd,
- 	data.dw00.src_tiling = __fast_tiling(blt->src.tiling);
- 	data.dw00.length = 8;
- 
--	data.dw01.dst_pitch = blt->dst.pitch;
--	data.dw01.color_depth = __fast_color_depth(blt->color_depth);
--	data.dw01.dst_memory = __memory_type(blt->fd, blt->driver, blt->dst.region);
--	data.dw01.src_memory = __memory_type(blt->fd, blt->driver, blt->src.region);
--	data.dw01.dst_type_y = __new_tile_y_type(blt->dst.tiling) ? 1 : 0;
--	data.dw01.src_type_y = __new_tile_y_type(blt->src.tiling) ? 1 : 0;
-+	if (ip_ver >= IP_VER(20, 0)) {
-+		data.dw01_xe2.dst_pitch = blt->dst.pitch;
-+		data.dw01_xe2.dst_mocs = blt->dst.mocs;
-+		data.dw01_xe2.color_depth = __fast_color_depth(blt->color_depth);
-+		data.dw01_xe2.dst_type_y_mb1 = 1;
-+		data.dw01_xe2.src_type_y_mb1 = 1;
-+	} else {
-+		data.dw01.dst_pitch = blt->dst.pitch;
-+		data.dw01.color_depth = __fast_color_depth(blt->color_depth);
-+		data.dw01.dst_memory = __memory_type(blt->fd, blt->driver, blt->dst.region);
-+		data.dw01.src_memory = __memory_type(blt->fd, blt->driver, blt->src.region);
-+		data.dw01.dst_type_y = __new_tile_y_type(blt->dst.tiling) ? 1 : 0;
-+		data.dw01.src_type_y = __new_tile_y_type(blt->src.tiling) ? 1 : 0;
-+	}
- 
- 	data.dw02.dst_x1 = blt->dst.x1;
- 	data.dw02.dst_y1 = blt->dst.y1;
-@@ -1323,7 +1352,12 @@ uint64_t emit_blt_fast_copy(int fd,
- 	data.dw06.src_x1 = blt->src.x1;
- 	data.dw06.src_y1 = blt->src.y1;
- 
--	data.dw07.src_pitch = blt->src.pitch;
-+	if (ip_ver >= IP_VER(20, 0)) {
-+		data.dw07_xe2.src_pitch = blt->src.pitch;
-+		data.dw07_xe2.src_mocs = blt->src.mocs;
-+	} else {
-+		data.dw07.src_pitch = blt->src.pitch;
-+	}
- 
- 	data.dw08.src_address_lo = src_offset;
- 	data.dw09.src_address_hi = src_offset >> 32;
+ 	igt_assert(igt_debugfs_exists(fd, "gt0", O_RDONLY));
+ 	if (config->info[XE_QUERY_CONFIG_GT_COUNT] > 1)
+ 		igt_assert(igt_debugfs_exists(fd, "gt1", O_RDONLY));
 -- 
-2.40.1
+2.25.1
