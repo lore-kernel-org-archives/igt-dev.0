@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4650110E5A9
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Sep 2023 09:08:29 +0000 (UTC)
-Date: Wed, 6 Sep 2023 11:08:19 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230906090819.boig554cyoiadcus@kamilkon-desk.igk.intel.com>
-References: <20230905165033.187749-1-mauro.chehab@linux.intel.com>
- <20230905165033.187749-2-mauro.chehab@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============6734388457093239998=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230905165033.187749-2-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [RFC 1/3] xe_test_config.json: add testlists and
- blacklists
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 15 Sep 2023 07:54:53 -0000
+Message-ID: <169476449309.32041.3059150865285948510@emeril.freedesktop.org>
+References: <20230915071155.432521-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230915071155.432521-1-mauro.chehab@linux.intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_docs/cro?=
+ =?utf-8?q?ss-building=2Etxt=3A_add_documentation_about_cross-builds_=28re?=
+ =?utf-8?b?djIp?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,51 +17,134 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: tomasz.mistat@intel.com, jari.tahvanainen@intel.com
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mauro,
+--===============6734388457093239998==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-in Subject: xe_test_config.json: add testlists and blacklists
----------------------------------------------------- ^
-s/blacklists/blocklists/
+== Series Details ==
 
-Regards,
-Kamil
+Series: docs/cross-building.txt: add documentation about cross-builds (rev2)
+URL   : https://patchwork.freedesktop.org/series/123705/
+State : success
 
-On 2023-09-05 at 18:48:28 +0200, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> Specify the testlists and blacklists to be used to store CI
-> run type.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-> ---
->  tests/intel/xe_test_config.json | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/tests/intel/xe_test_config.json b/tests/intel/xe_test_config.json
-> index 8fb65d02d840..27e3f273fb2a 100644
-> --- a/tests/intel/xe_test_config.json
-> +++ b/tests/intel/xe_test_config.json
-> @@ -32,6 +32,13 @@
->                          "_properties_": {
->                              "mandatory": true,
->                              "description": "Defines what category of testlist it belongs",
-> +                            "testlists": {
-> +                                "BAT": "../intel-ci/xe-fast-feedback.testlist",
-> +                                "BAT chamelium": "../intel-ci/xe-fast-feedback-chamelium-only.testlist"
-> +                            },
-> +                            "blocklists": {
-> +                                "__all__": "../intel-ci/xe.blocklist.txt"
-> +                            },
->                              "order": [
->                                  "boot",
->                                  "__all__",
-> -- 
-> 2.41.0
-> 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7489_BAT -> XEIGTPW_9797_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9797_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * {igt@xe_create@create-execqueues-noleak}:
+    - bat-atsm-2:         [FAIL][1] ([Intel XE#524]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7489/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9797/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7489 -> IGTPW_9797
+
+  IGTPW_9797: 9797
+  IGT_7489: c31111635650e76263faee031292290b1a393f2a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-375-4a9681392cecd56a372d06b648f7b3a37fdd5c63: 4a9681392cecd56a372d06b648f7b3a37fdd5c63
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9797/index.html
+
+--===============6734388457093239998==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>docs/cross-building.txt: add documentation about cross-builds (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123705/">https://patchwork.freedesktop.org/series/123705/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9797/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9797/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7489_BAT -&gt; XEIGTPW_9797_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9797_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>{igt@xe_create@create-execqueues-noleak}:<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7489/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9797/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7489 -&gt; IGTPW_9797</li>
+</ul>
+<p>IGTPW_9797: 9797<br />
+  IGT_7489: c31111635650e76263faee031292290b1a393f2a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-375-4a9681392cecd56a372d06b648f7b3a37fdd5c63: 4a9681392cecd56a372d06b648f7b3a37fdd5c63</p>
+
+</body>
+</html>
+
+--===============6734388457093239998==--
 
