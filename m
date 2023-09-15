@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 15 Sep 2023 06:23:44 -0700
-Message-Id: <20230915132346.1845909-13-lucas.demarchi@intel.com>
+Date: Fri, 15 Sep 2023 06:23:36 -0700
+Message-Id: <20230915132346.1845909-5-lucas.demarchi@intel.com>
 In-Reply-To: <20230915132346.1845909-1-lucas.demarchi@intel.com>
 References: <20230915132346.1845909-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 12/14] lib/intel_blt: Support Xe2 in
- xy-block-copy command
+Subject: [igt-dev] [PATCH i-g-t 04/14] lib/gpu_cmds: Fork a
+ gen9_fill_surface_state()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,176 +21,95 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Xe2 block-copy command is slightly different, with dw01 and dw02
-having a few differences: 1) different bitrange for mocs; 2) no
-ctrl_surface_type, aux_mode or compression.
+Commit 02c2cf17628b ("lib/[gpu_cmds|intel_bufops]: Enable surface state
+mocs setting.") added support for setting the mocs field in the surface
+state. However it's not until gen9 that MOCS uses a table, programmed by
+the kernel, and only has an index set in the surface state. Previously
+it was the specific caching behavior.
 
+As such, it makes no sense to set this field to `I915_MOCS_PTE << 1`: it
+will only add garbage to the batch buffer. Solve this by forking a
+separate function for gen9 and above, keeping the old behavior for
+previous platforms.
+
+Bspec: 12483, 12239, 12236
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- lib/intel_blt.c | 107 +++++++++++++++++++++++++++++++-----------------
- 1 file changed, 69 insertions(+), 38 deletions(-)
+ lib/gpu_cmds.c | 55 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 55 insertions(+)
 
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index 9f8e3dea3..0658d67f4 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -55,15 +55,24 @@ struct gen12_block_copy_data {
- 		uint32_t client:			BITRANGE(29, 31);
- 	} dw00;
- 
--	struct {
--		uint32_t dst_pitch:			BITRANGE(0, 17);
--		uint32_t dst_aux_mode:			BITRANGE(18, 20);
--		uint32_t pad:				BITRANGE(21, 21);
--		uint32_t dst_mocs:			BITRANGE(22, 27);
--		uint32_t dst_ctrl_surface_type:		BITRANGE(28, 28);
--		uint32_t dst_compression:		BITRANGE(29, 29);
--		uint32_t dst_tiling:			BITRANGE(30, 31);
--	} dw01;
-+	union {
-+		struct {
-+			uint32_t dst_pitch:			BITRANGE(0, 17);
-+			uint32_t dst_aux_mode:			BITRANGE(18, 20);
-+			uint32_t pad:				BITRANGE(21, 21);
-+			uint32_t dst_mocs:			BITRANGE(22, 27);
-+			uint32_t dst_ctrl_surface_type:		BITRANGE(28, 28);
-+			uint32_t dst_compression:		BITRANGE(29, 29);
-+			uint32_t dst_tiling:			BITRANGE(30, 31);
-+		} dw01;
-+		struct {
-+			uint32_t dst_pitch:			BITRANGE(0, 17);
-+			uint32_t pad0:				BITRANGE(18, 23);
-+			uint32_t dst_mocs:			BITRANGE(24, 27);
-+			uint32_t pad1:				BITRANGE(28, 29);
-+			uint32_t dst_tiling:			BITRANGE(30, 31);
-+		} dw01_xe2;
-+	};
- 
- 	struct {
- 		int32_t dst_x1:				BITRANGE(0, 15);
-@@ -96,15 +105,24 @@ struct gen12_block_copy_data {
- 		int32_t src_y1:				BITRANGE(16, 31);
- 	} dw07;
- 
--	struct {
--		uint32_t src_pitch:			BITRANGE(0, 17);
--		uint32_t src_aux_mode:			BITRANGE(18, 20);
--		uint32_t pad:				BITRANGE(21, 21);
--		uint32_t src_mocs:			BITRANGE(22, 27);
--		uint32_t src_ctrl_surface_type:		BITRANGE(28, 28);
--		uint32_t src_compression:		BITRANGE(29, 29);
--		uint32_t src_tiling:			BITRANGE(30, 31);
--	} dw08;
-+	union {
-+		struct {
-+			uint32_t src_pitch:			BITRANGE(0, 17);
-+			uint32_t src_aux_mode:			BITRANGE(18, 20);
-+			uint32_t pad:				BITRANGE(21, 21);
-+			uint32_t src_mocs:			BITRANGE(22, 27);
-+			uint32_t src_ctrl_surface_type:		BITRANGE(28, 28);
-+			uint32_t src_compression:		BITRANGE(29, 29);
-+			uint32_t src_tiling:			BITRANGE(30, 31);
-+		} dw08;
-+		struct {
-+			uint32_t src_pitch:			BITRANGE(0, 17);
-+			uint32_t pad0:				BITRANGE(18, 23);
-+			uint32_t src_mocs:			BITRANGE(24, 27);
-+			uint32_t pad1:				BITRANGE(28, 29);
-+			uint32_t src_tiling:			BITRANGE(30, 31);
-+		} dw08_xe2;
-+	};
- 
- 	struct {
- 		uint32_t src_address_lo;
-@@ -521,7 +539,7 @@ static bool __new_tile_y_type(enum blt_tiling_type tiling)
- static void fill_data(struct gen12_block_copy_data *data,
- 		      const struct blt_copy_data *blt,
- 		      uint64_t src_offset, uint64_t dst_offset,
--		      bool extended_command)
-+		      bool extended_command, unsigned int ip_ver)
- {
- 	data->dw00.client = 0x2;
- 	data->dw00.opcode = 0x41;
-@@ -529,18 +547,24 @@ static void fill_data(struct gen12_block_copy_data *data,
- 	data->dw00.special_mode = __special_mode(blt);
- 	data->dw00.length = extended_command ? 20 : 10;
- 
--	if (__special_mode(blt) == SM_FULL_RESOLVE)
--		data->dw01.dst_aux_mode = __aux_mode(blt->fd, blt->driver, &blt->src);
--	else
--		data->dw01.dst_aux_mode = __aux_mode(blt->fd, blt->driver, &blt->dst);
--	data->dw01.dst_pitch = blt->dst.pitch - 1;
-+	if (ip_ver >= IP_VER(20, 0)) {
-+		data->dw01_xe2.dst_pitch = blt->dst.pitch - 1;
-+		data->dw01_xe2.dst_mocs = blt->dst.mocs;
-+		data->dw01_xe2.dst_tiling = __block_tiling(blt->dst.tiling);
-+	} else {
-+		if (__special_mode(blt) == SM_FULL_RESOLVE)
-+			data->dw01.dst_aux_mode = __aux_mode(blt->fd, blt->driver, &blt->src);
-+		else
-+			data->dw01.dst_aux_mode = __aux_mode(blt->fd, blt->driver, &blt->dst);
-+		data->dw01.dst_pitch = blt->dst.pitch - 1;
- 
--	data->dw01.dst_mocs = blt->dst.mocs;
--	data->dw01.dst_compression = blt->dst.compression;
--	data->dw01.dst_tiling = __block_tiling(blt->dst.tiling);
-+		data->dw01.dst_mocs = blt->dst.mocs;
-+		data->dw01.dst_compression = blt->dst.compression;
-+		data->dw01.dst_tiling = __block_tiling(blt->dst.tiling);
- 
--	if (blt->dst.compression)
--		data->dw01.dst_ctrl_surface_type = blt->dst.compression_type;
-+		if (blt->dst.compression)
-+			data->dw01.dst_ctrl_surface_type = blt->dst.compression_type;
-+	}
- 
- 	data->dw02.dst_x1 = blt->dst.x1;
- 	data->dw02.dst_y1 = blt->dst.y1;
-@@ -558,14 +582,20 @@ static void fill_data(struct gen12_block_copy_data *data,
- 	data->dw07.src_x1 = blt->src.x1;
- 	data->dw07.src_y1 = blt->src.y1;
- 
--	data->dw08.src_pitch = blt->src.pitch - 1;
--	data->dw08.src_aux_mode = __aux_mode(blt->fd, blt->driver, &blt->src);
--	data->dw08.src_mocs = blt->src.mocs;
--	data->dw08.src_compression = blt->src.compression;
--	data->dw08.src_tiling = __block_tiling(blt->src.tiling);
--
--	if (blt->src.compression)
--		data->dw08.src_ctrl_surface_type = blt->src.compression_type;
-+	if (ip_ver >= IP_VER(20, 0)) {
-+		data->dw08_xe2.src_pitch = blt->src.pitch - 1;
-+		data->dw08_xe2.src_mocs = blt->src.mocs;
-+		data->dw08_xe2.src_tiling = __block_tiling(blt->src.tiling);
-+	} else {
-+		data->dw08.src_pitch = blt->src.pitch - 1;
-+		data->dw08.src_aux_mode = __aux_mode(blt->fd, blt->driver, &blt->src);
-+		data->dw08.src_mocs = blt->src.mocs;
-+		data->dw08.src_compression = blt->src.compression;
-+		data->dw08.src_tiling = __block_tiling(blt->src.tiling);
+diff --git a/lib/gpu_cmds.c b/lib/gpu_cmds.c
+index 0fd8f8213..83d2302f9 100644
+--- a/lib/gpu_cmds.c
++++ b/lib/gpu_cmds.c
+@@ -136,6 +136,58 @@ gen8_fill_surface_state(struct intel_bb *ibb,
+ 	struct gen8_surface_state *ss;
+ 	uint32_t write_domain, read_domain, offset;
+ 	uint64_t address;
 +
-+		if (blt->src.compression)
-+			data->dw08.src_ctrl_surface_type = blt->src.compression_type;
++	if (is_dst) {
++		write_domain = read_domain = I915_GEM_DOMAIN_RENDER;
++	} else {
++		write_domain = 0;
++		read_domain = I915_GEM_DOMAIN_SAMPLER;
 +	}
++
++	intel_bb_ptr_align(ibb, 64);
++	offset = intel_bb_offset(ibb);
++	ss = intel_bb_ptr(ibb);
++	intel_bb_ptr_add(ibb, 64);
++
++	ss->ss0.surface_type = SURFACE_2D;
++	ss->ss0.surface_format = format;
++	ss->ss0.render_cache_read_write = 1;
++	ss->ss0.vertical_alignment = 1; /* align 4 */
++	ss->ss0.horizontal_alignment = 1; /* align 4 */
++
++	if (buf->tiling == I915_TILING_X)
++		ss->ss0.tiled_mode = 2;
++	else if (buf->tiling == I915_TILING_Y || buf->tiling == I915_TILING_4)
++		ss->ss0.tiled_mode = 3;
++
++	address = intel_bb_offset_reloc(ibb, buf->handle,
++					read_domain, write_domain,
++					offset + 4 * 8, buf->addr.offset);
++
++	ss->ss8.base_addr = (uint32_t) address;
++	ss->ss9.base_addr_hi = address >> 32;
++
++	ss->ss2.height = intel_buf_height(buf) - 1;
++	ss->ss2.width  = intel_buf_width(buf) - 1;
++	ss->ss3.pitch  = buf->surface[0].stride - 1;
++
++	ss->ss7.shader_chanel_select_r = 4;
++	ss->ss7.shader_chanel_select_g = 5;
++	ss->ss7.shader_chanel_select_b = 6;
++	ss->ss7.shader_chanel_select_a = 7;
++
++	return offset;
++}
++
++static uint32_t
++gen9_fill_surface_state(struct intel_bb *ibb,
++			struct intel_buf *buf,
++			uint32_t format,
++			int is_dst)
++{
++	struct gen8_surface_state *ss;
++	uint32_t write_domain, read_domain, offset;
++	uint64_t address;
+ 	enum intel_buf_mocs mocs = intel_buf_get_mocs(buf);
  
- 	data->dw09.src_address_lo = src_offset;
- 	data->dw10.src_address_hi = src_offset >> 32;
-@@ -770,6 +800,7 @@ uint64_t emit_blt_block_copy(int fd,
- 			     uint64_t bb_pos,
- 			     bool emit_bbe)
- {
-+	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
- 	struct gen12_block_copy_data data = {};
- 	struct gen12_block_copy_data_ext dext = {};
- 	uint64_t dst_offset, src_offset, bb_offset, alignment;
-@@ -786,7 +817,7 @@ uint64_t emit_blt_block_copy(int fd,
- 		     + blt->dst.plane_offset;
- 	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
- 
--	fill_data(&data, blt, src_offset, dst_offset, ext);
-+	fill_data(&data, blt, src_offset, dst_offset, ext, ip_ver);
- 
- 	bb = bo_map(fd, blt->bb.handle, blt->bb.size, blt->driver);
- 
+ 	if (is_dst) {
+@@ -273,6 +325,9 @@ fill_binding_table(struct intel_bb *ibb, struct intel_buf *buf)
+ 	if (intel_graphics_ver(devid) >= IP_VER(12, 50))
+ 		binding_table[0] = xehp_fill_surface_state(ibb, buf,
+ 							   SURFACEFORMAT_R8_UNORM, 1);
++	else if (intel_graphics_ver(devid) >= IP_VER(9, 0))
++		binding_table[0] = gen9_fill_surface_state(ibb, buf,
++							   SURFACEFORMAT_R8_UNORM, 1);
+ 	else if (intel_graphics_ver(devid) >= IP_VER(8, 0))
+ 		binding_table[0] = gen8_fill_surface_state(ibb, buf,
+ 							   SURFACEFORMAT_R8_UNORM, 1);
 -- 
 2.40.1
