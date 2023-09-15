@@ -1,23 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0D51610E0D7
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Sep 2023 19:14:19 +0000 (UTC)
-Message-ID: <d316ffbd-a4dd-66f6-5455-254d9404e51f@linux.intel.com>
-Date: Thu, 14 Sep 2023 21:13:03 +0200
-MIME-Version: 1.0
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D52D010E5C0
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 Sep 2023 01:40:29 +0000 (UTC)
+From: "Teres Alexis, Alan Previn" <alan.previn.teres.alexis@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "kamil.konieczny@linux.intel.com" <kamil.konieczny@linux.intel.com>
+Date: Fri, 15 Sep 2023 01:40:26 +0000
+Message-ID: <b2975e327ddcda28558291b1902d6163a53596b9.camel@intel.com>
+References: <20230911171509.526426-1-alan.previn.teres.alexis@intel.com>
+ <20230912093130.e4nalc5t6gwzjjff@kamilkon-desk.igk.intel.com>
+In-Reply-To: <20230912093130.e4nalc5t6gwzjjff@kamilkon-desk.igk.intel.com>
 Content-Language: en-US
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Nirmoy Das <nirmoy.das@intel.com>,
- andi.shyti@intel.com
-References: <20230913094252.6246-1-nirmoy.das@intel.com>
- <20230913094252.6246-3-nirmoy.das@intel.com>
- <20230914135017.el7yfodk4di4zqer@kamilkon-desk.igk.intel.com>
-From: Nirmoy Das <nirmoy.das@linux.intel.com>
-In-Reply-To: <20230914135017.el7yfodk4di4zqer@kamilkon-desk.igk.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 2/3] tests/intel/gem_ctx_shared: Skip
- some test on MTL
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <49A8DA8281076C4C94F6FFD132ACC108@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t v3] lib/i915: Add a helper to read mmio
+ registers via ioctl
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,83 +24,19 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "Konieczny, Kamil" <kamil.konieczny@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Kamil,
-
-On 9/14/2023 3:50 PM, Kamil Konieczny wrote:
-> Hi Nirmoy,
->
-> On 2023-09-13 at 11:42:51 +0200, Nirmoy Das wrote:
->> We do GGTT update on MTL using bcs engine, blocking that would
->> will fail the test so skip such subtests on bcs engine for MTL.
->>
->> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
->> ---
->>   tests/intel/gem_ctx_shared.c | 12 ++++++++----
->>   1 file changed, 8 insertions(+), 4 deletions(-)
->>
->> diff --git a/tests/intel/gem_ctx_shared.c b/tests/intel/gem_ctx_shared.c
->> index d24ae5483..bad032417 100644
->> --- a/tests/intel/gem_ctx_shared.c
->> +++ b/tests/intel/gem_ctx_shared.c
->> @@ -1105,22 +1105,26 @@ igt_main
->>   
->>   			igt_subtest_with_dynamic("Q-independent") {
->>   				for_each_queue(e, i915, &cfg)
->> -					independent(i915, &cfg, e, 0);
->> +					if (!(gem_has_ggtt_bind(i915) && e->class == I915_ENGINE_CLASS_COPY))
-> ------------------------- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> imho it is better to make it a bool function (preferable) or macro
-> and use it like:
-> 					if (can_use_engine(i915, e))
->
-> bool can_use_engine(int fd, engine *e)
-> {
->      return !(e->class == I915_ENGINE_CLASS_COPY && gem_has_ggtt_bind(i915));
-> }
->
-> Same goes for your last patch, name of this function could be
-> better.
-
-
-Will do that in next rev.
-
-
-Thanks,
-
-Nirmoy
-
-> Regards,
-> Kamil
->
->> +						independent(i915, &cfg, e, 0);
->>   			}
->>   
->>   			igt_subtest_with_dynamic("Q-in-order") {
->>   				for_each_queue(e, i915, &cfg)
->> -					reorder(i915, &cfg, e->flags, EQUAL);
->> +					if (!(gem_has_ggtt_bind(i915) && e->class == I915_ENGINE_CLASS_COPY))
->> +						reorder(i915, &cfg, e->flags, EQUAL);
->>   			}
->>   
->>   			igt_subtest_with_dynamic("Q-out-order") {
->>   				for_each_queue(e, i915, &cfg)
->> -					reorder(i915, &cfg, e->flags, 0);
->> +					if (!(gem_has_ggtt_bind(i915) && e->class == I915_ENGINE_CLASS_COPY))
->> +						reorder(i915, &cfg, e->flags, 0);
->>   			}
->>   
->>   			igt_subtest_with_dynamic("Q-promotion") {
->>   				for_each_queue(e, i915, &cfg)
->> -					promotion(i915, &cfg, e->flags);
->> +					if (!(gem_has_ggtt_bind(i915) && e->class == I915_ENGINE_CLASS_COPY))
->> +						promotion(i915, &cfg, e->flags);
->>   			}
->>   		}
->>   
->> -- 
->> 2.41.0
->>
+T24gVHVlLCAyMDIzLTA5LTEyIGF0IDExOjMxICswMjAwLCBLYW1pbCBLb25pZWN6bnkgd3JvdGU6
+DQo+IEhpIEFsYW4sDQo+IA0KPiBvbmUgbW9yZSBzbWFsbCBuaXQsIHNlZSBiZWxvdy4NCj4gDQo+
+IE9uIDIwMjMtMDktMTEgYXQgMTA6MTU6MDkgLTA3MDAsIEFsYW4gUHJldmluIHdyb3RlOg0KPiA+
+IEFkZCBhIGhlbHBlciBpbnRvIGV4aXN0aW5nIGlvY3RsX3dyYXBwZXJzLmMgIHRvIGNhbGwNCj4g
+PiBEUk1fSU9DVExfSTkxNV9SRUdfUkVBRCB0byByZWFkIHdoaXRlbGlzdGVkIHJlZ2lzdGVycy4N
+Cj4gPiANCmFsYW46c25pcA0KDQo+ID4gLS0tIGEvdG9vbHMvaTkxNS1wZXJmL2k5MTVfcGVyZl9y
+ZWNvcmRlci5jDQo+ID4gKysrIGIvdG9vbHMvaTkxNS1wZXJmL2k5MTVfcGVyZl9yZWNvcmRlci5j
+DQo+ID4gQEAgLTQ4LDEwICs0OCwxMiBAQA0KPiA+ICANCj4gPiAgI2luY2x1ZGUgImlndF9jb3Jl
+LmgiDQo+ID4gICNpbmNsdWRlICJpbnRlbF9jaGlwc2V0LmgiDQo+ID4gKw0KPiAtLV4NCj4gUmVt
+b3ZlIHRoaXMgYWRkaXRpb25hbCBuZXdsaW5lLg0KPiANCmFsYW46IHdpbGwgZG8gLSBhcG9sb2dp
+ZXMgLSBoYWJpdCBmcm9tIGtlcm5lbCAoZ3JvdXBpbmcgZG9pbWFpbnMgb2YgaW5jbHVkZSkNCg==
