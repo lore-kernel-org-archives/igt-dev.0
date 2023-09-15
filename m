@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Fri, 15 Sep 2023 10:26:10 -0700
-From: Matt Roper <matthew.d.roper@intel.com>
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-Message-ID: <20230915172610.GB2706891@mdroper-desk1.amr.corp.intel.com>
-References: <20230915132346.1845909-1-lucas.demarchi@intel.com>
- <20230915132346.1845909-2-lucas.demarchi@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20230915132346.1845909-2-lucas.demarchi@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D454C10E65E
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 Sep 2023 17:34:52 +0000 (UTC)
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 15 Sep 2023 19:34:39 +0200
+Message-ID: <20230915173439.49405-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [Intel-xe] [PATCH i-g-t 01/14] lib/rendercopy: Use
- common mocs function
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] lib/drmtest: allow out of order device
+ opening
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,75 +17,101 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, intel-xe@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Sep 15, 2023 at 06:23:33AM -0700, Lucas De Marchi wrote:
-> Do not duplicate what is done by lib/intel_mocs.[ch], just reuse it.
-> 
-> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Allow to open cards with filters out of order, not in
+the sequence 0...N. This will fix problem found out with test
+gem_exec_gttfill@multigpu-basic with three discrete GPUs:
 
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Opened device: /dev/dri/card1
+Starting subtest: multigpu-basic
+<g:1> Opened device: /dev/dri/card2
+gem_exec_gttfill: ../lib/drmtest.c:313: _is_already_opened: Assertion `as_idx <= _opened_fds_count' failed.
 
-> ---
->  lib/rendercopy_gen9.c | 29 +----------------------------
->  1 file changed, 1 insertion(+), 28 deletions(-)
-> 
-> diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
-> index db67b5ee3..b8959d073 100644
-> --- a/lib/rendercopy_gen9.c
-> +++ b/lib/rendercopy_gen9.c
-> @@ -19,6 +19,7 @@
->  #include "intel_bufops.h"
->  #include "intel_batchbuffer.h"
->  #include "intel_io.h"
-> +#include "intel_mocs.h"
->  #include "rendercopy.h"
->  #include "gen9_render.h"
->  #include "intel_reg.h"
-> @@ -135,34 +136,6 @@ static const uint32_t gen12p71_render_copy[][4] = {
->  	{ 0x80041131, 0x00000004, 0x50007144, 0x00c40000 },
->  };
->  
-> -/*
-> - * Gen >= 12 onwards don't have a setting for PTE,
-> - * so using I915_MOCS_PTE as mocs index may lead to
-> - * some undefined MOCS behavior.
-> - * Correct MOCS index should be referred from BSpec
-> - * and programmed accordingly.
-> - * This helper function is providing appropriate UC index.
-> - */
-> -static uint8_t
-> -intel_get_uc_mocs(int fd) {
-> -
-> -	uint16_t devid = intel_get_drm_devid(fd);
-> -	uint8_t  uc_index;
-> -
-> -	if (IS_DG1(devid))
-> -		uc_index = 1;
-> -	else if (IS_GEN12(devid))
-> -		uc_index = 3;
-> -	else
-> -		uc_index = I915_MOCS_PTE;
-> -
-> -	/*
-> -	 * BitField [6:1] represents index to MOCS Tables
-> -	 * BitField [0] represents Encryption/Decryption
-> -	 */
-> -	return uc_index << 1;
-> -}
-> -
->  /* Mostly copy+paste from gen6, except height, width, pitch moved */
->  static uint32_t
->  gen8_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
-> -- 
-> 2.40.1
-> 
+Added also some debug prints for diagnosing problems with
+multi-GPU tests.
 
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ lib/drmtest.c | 24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
+
+diff --git a/lib/drmtest.c b/lib/drmtest.c
+index e1da66c87..e9dfc070d 100644
+--- a/lib/drmtest.c
++++ b/lib/drmtest.c
+@@ -296,7 +296,11 @@ static int _opened_fds_count;
+ static void _set_opened_fd(int idx, int fd)
+ {
+ 	assert(idx < ARRAY_SIZE(_opened_fds));
+-	assert(idx <= _opened_fds_count);
++
++	if (idx >= _opened_fds_count) {
++		for (int i = _opened_fds_count; i < idx; ++i)
++			_opened_fds[i].fd = -1;
++	}
+ 
+ 	_opened_fds[idx].fd = fd;
+ 
+@@ -310,16 +314,23 @@ static bool _is_already_opened(const char *path, int as_idx)
+ 	struct stat new;
+ 
+ 	assert(as_idx < ARRAY_SIZE(_opened_fds));
+-	assert(as_idx <= _opened_fds_count);
+ 
+ 	/*
+ 	 * we cannot even stat the device, so it's of no use - let's claim it's
+ 	 * already opened
+ 	 */
+-	if (igt_debug_on(stat(path, &new) != 0))
++	if (igt_debug_on(stat(path, &new) != 0)) {
++		igt_debug("cannot stat device: %s\n", path);
+ 		return true;
++	}
++
++	if (as_idx >= _opened_fds_count)
++		return false;
+ 
+ 	for (int i = 0; i < as_idx; ++i) {
++		if (_opened_fds[i].fd == -1)
++			continue;
++
+ 		/* did we cross filesystem boundary? */
+ 		assert(_opened_fds[i].stat.st_dev == new.st_dev);
+ 
+@@ -484,6 +495,7 @@ int __drm_open_driver_another(int idx, int chipset)
+ {
+ 	int fd = -1;
+ 
++	igt_debug("card idx: %d chipset: %d\n", idx, chipset);
+ 	if (chipset != DRIVER_VGEM && igt_device_filter_count() > idx) {
+ 		struct igt_device_card card;
+ 		bool found;
+@@ -491,6 +503,7 @@ int __drm_open_driver_another(int idx, int chipset)
+ 		found = __get_card_for_nth_filter(idx, &card);
+ 
+ 		if (!found) {
++			igt_debug("cannot find card idx: %d, loading module\n", idx);
+ 			drm_load_module(chipset);
+ 			found = __get_card_for_nth_filter(idx, &card);
+ 		}
+@@ -500,11 +513,14 @@ int __drm_open_driver_another(int idx, int chipset)
+ 				 igt_device_filter_get(idx));
+ 		else if (_is_already_opened(card.card, idx))
+ 			igt_warn("card maching filter %d is already opened\n", idx);
+-		else
++		else {
++			igt_debug("card idx: %d found: %s\n", idx, card.card);
+ 			fd = __open_driver_exact(card.card, chipset);
++		}
+ 
+ 	} else {
+ 		/* no filter for device idx, let's open whatever is available */
++		igt_debug("No filter for device idx: %d\n", idx);
+ 		fd = __open_driver("/dev/dri/card", 0, chipset, idx);
+ 	}
+ 
 -- 
-Matt Roper
-Graphics Software Engineer
-Linux GPU Platform Enablement
-Intel Corporation
+2.42.0
