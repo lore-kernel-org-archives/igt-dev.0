@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com
- (mail-dm3nam02on2066.outbound.protection.outlook.com [40.107.95.66])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D8D6D10E6B2
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Sep 2023 22:53:00 +0000 (UTC)
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam04on2089.outbound.protection.outlook.com [40.107.100.89])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D802010E6AD
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 Sep 2023 22:53:13 +0000 (UTC)
 From: Alex Hung <alex.hung@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Fri, 15 Sep 2023 16:52:34 -0600
-Message-ID: <20230915225237.116176-1-alex.hung@amd.com>
+Date: Fri, 15 Sep 2023 16:52:35 -0600
+Message-ID: <20230915225237.116176-2-alex.hung@amd.com>
+In-Reply-To: <20230915225237.116176-1-alex.hung@amd.com>
+References: <20230915225237.116176-1-alex.hung@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH 0/3][i-g-t][V3] kms_writeback: support
- DRM_FORMAT_XRGB2101010 in kms_writeback
+Subject: [igt-dev] [PATCH 1/3][i-g-t][V3] lib/igt_fb: use the entire 32 bit
+ for fnv1a_crc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,23 +26,38 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-kms_writeback only checked and supported DRM_FORMAT_XRGB8888. This
-patchset enables 10 bit supports in lib and add new subtests for
-DRM_FORMAT_XRGB2101010 in kms_writeback.
+The function was implemented as a 32-bit hashing function. Commit
+85f4c1005150 ("lib/igt_fb: Ignore the X component when computing CRC")
+broke this behavior by hashing 8-bit portions. Restore the 32-bit hasing
+behavior while still ignoring the X compoment.
 
-V2 - allow kms_writeback to run subtests for multiple DRM_FORMAT_XRGB*
-V3 - 1. move uint32_t fourcc[] to check_writeback_config() and
-        use DRM_FORMAT_XRGB* directly in igt_main_args()
-     2. remove incorrect comments
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+---
+ lib/igt_fb.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-Alex Hung (3):
-  lib/igt_fb: use the entire 32 bit for fnv1a_crc
-  lib/igt_fb: add 10 bits (XRGB2101010) supports in fnv1a_crc
-  tests/kms_writeback: support DRM_FORMAT_XRGB2101010 for writeback
-
- lib/igt_fb.c          |  15 +++--
- tests/kms_writeback.c | 136 +++++++++++++++++++++++++++++++++---------
- 2 files changed, 116 insertions(+), 35 deletions(-)
-
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 4b592825d..f60150017 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -4779,16 +4779,11 @@ int igt_fb_get_fnv1a_crc(struct igt_fb *fb, igt_crc_t *crc)
+ 		igt_memcpy_from_wc(line, ptr, fb->width * cpp);
+ 
+ 		for (x = 0; x < fb->width; x++) {
+-			unsigned int i;
+ 			uint32_t pixel = le32_to_cpu(line[x]);
+ 			pixel &= 0x00ffffff;
+ 
+-			for (i = 0; i < sizeof(pixel); i++) {
+-				uint8_t component = (pixel >> (i * 8)) & 0xff;
+-
+-				hash ^= component;
+-				hash *= FNV1a_PRIME;
+-			}
++			hash ^= pixel;
++			hash *= FNV1a_PRIME;
+ 		}
+ 	}
+ 
 -- 
 2.42.0
