@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1F21310E660
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Sep 2023 18:00:18 +0000 (UTC)
-Date: Fri, 15 Sep 2023 20:00:13 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1654A10E667
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 Sep 2023 18:02:20 +0000 (UTC)
+Date: Fri, 15 Sep 2023 20:02:15 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230915180013.enr3dmzas57sgsci@kamilkon-desk.igk.intel.com>
+Message-ID: <20230915180215.u5xvuddptix5fgev@kamilkon-desk.igk.intel.com>
 References: <20230914201809.1804-1-nirmoy.das@intel.com>
- <20230914201809.1804-2-nirmoy.das@intel.com>
+ <20230914201809.1804-3-nirmoy.das@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230914201809.1804-2-nirmoy.das@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/igt_gt: Add
- gem_engine_can_block_ggtt_binder
+In-Reply-To: <20230914201809.1804-3-nirmoy.das@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/3] tests/intel/gem_ctx_shared: Skip
+ some test on MTL
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,54 +28,66 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Nirmoy,
 
-On 2023-09-14 at 22:18:07 +0200, Nirmoy Das wrote:
-> On MTL GGTT updates happens through MI_UPDATE_GGTT command.
-> Add a method to detect if a engine can block ggtt binder.
-> 
-> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+On 2023-09-14 at 22:18:08 +0200, Nirmoy Das wrote:
+> We do GGTT update on MTL using bcs engine, blocking that would
+---------------------------------------------------------- ^^^^^
+> will fail the test so skip such subtests on bcs engine for MTL.
+- ^^^^
+s/will//
 
+With that fixed:
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-> ---
->  lib/igt_gt.c | 15 +++++++++++++++
->  lib/igt_gt.h |  2 ++
->  2 files changed, 17 insertions(+)
 > 
-> diff --git a/lib/igt_gt.c b/lib/igt_gt.c
-> index a24a566c7..aa5e75b07 100644
-> --- a/lib/igt_gt.c
-> +++ b/lib/igt_gt.c
-> @@ -659,3 +659,18 @@ int gem_execbuf_flags_to_engine_class(unsigned int flags)
->  		igt_assert(0);
->  	}
->  }
+> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+> ---
+>  tests/intel/gem_ctx_shared.c | 14 ++++++++++----
+>  1 file changed, 10 insertions(+), 4 deletions(-)
+> 
+> diff --git a/tests/intel/gem_ctx_shared.c b/tests/intel/gem_ctx_shared.c
+> index d24ae5483..fd429306e 100644
+> --- a/tests/intel/gem_ctx_shared.c
+> +++ b/tests/intel/gem_ctx_shared.c
+> @@ -1047,6 +1047,12 @@ static void smoketest(int i915, const intel_ctx_cfg_t *cfg,
+>  		for_each_if(gem_class_can_store_dword(i915, (e)->class)) \
+>  			igt_dynamic_f("%s", e->name)
+>  
+> +#define for_each_nonblocking_ggtt_binder_queue(e, i915, cfg) \
+> +	for_each_ctx_cfg_engine(i915, cfg, e) \
+> +		for_each_if(gem_class_can_store_dword(i915, (e)->class) && \
+> +			    !gem_engine_can_block_ggtt_binder(i915, e)) \
+> +			igt_dynamic_f("%s", e->name)
 > +
-> +/**
-> + * gem_engine_can_block_ggtt_binder:
-> + * @fd: open i915 drm file descriptor
-> + * @engine: engine to be assessed
-> + *
-> + * Detect if the platform needs blitter based GGTT
-> + * updates.
-> + */
-> +bool gem_engine_can_block_ggtt_binder(int fd,
-> +		const struct intel_execution_engine2 *engine)
-> +{
-> +	return IS_METEORLAKE(intel_get_drm_devid(fd)) &&
-> +		engine->class == I915_ENGINE_CLASS_COPY;
-> +}
-> diff --git a/lib/igt_gt.h b/lib/igt_gt.h
-> index 3d10349e4..d0c5510b1 100644
-> --- a/lib/igt_gt.h
-> +++ b/lib/igt_gt.h
-> @@ -83,5 +83,7 @@ extern const struct intel_execution_engine2 {
->  } intel_execution_engines2[];
+>  igt_main
+>  {
+>  	const struct intel_execution_engine2 *e;
+> @@ -1104,22 +1110,22 @@ igt_main
+>  			}
 >  
->  int gem_execbuf_flags_to_engine_class(unsigned int flags);
-> +bool gem_engine_can_block_ggtt_binder(int fd,
-> +		const struct intel_execution_engine2 *engine);
+>  			igt_subtest_with_dynamic("Q-independent") {
+> -				for_each_queue(e, i915, &cfg)
+> +				for_each_nonblocking_ggtt_binder_queue(e, i915, &cfg)
+>  					independent(i915, &cfg, e, 0);
+>  			}
 >  
->  #endif /* IGT_GT_H */
+>  			igt_subtest_with_dynamic("Q-in-order") {
+> -				for_each_queue(e, i915, &cfg)
+> +				for_each_nonblocking_ggtt_binder_queue(e, i915, &cfg)
+>  					reorder(i915, &cfg, e->flags, EQUAL);
+>  			}
+>  
+>  			igt_subtest_with_dynamic("Q-out-order") {
+> -				for_each_queue(e, i915, &cfg)
+> +				for_each_nonblocking_ggtt_binder_queue(e, i915, &cfg)
+>  					reorder(i915, &cfg, e->flags, 0);
+>  			}
+>  
+>  			igt_subtest_with_dynamic("Q-promotion") {
+> -				for_each_queue(e, i915, &cfg)
+> +				for_each_nonblocking_ggtt_binder_queue(e, i915, &cfg)
+>  					promotion(i915, &cfg, e->flags);
+>  			}
+>  		}
 > -- 
 > 2.41.0
 > 
