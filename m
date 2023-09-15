@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AE3D710E643
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Sep 2023 15:39:06 +0000 (UTC)
-From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
-To: "Dugast, Francois" <francois.dugast@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Fri, 15 Sep 2023 15:39:03 +0000
-Message-ID: <MW3PR11MB4748EE6A4799E4052FC45719AEF6A@MW3PR11MB4748.namprd11.prod.outlook.com>
-References: <20230915144649.7-1-francois.dugast@intel.com>
-In-Reply-To: <20230915144649.7-1-francois.dugast@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C20E410E64A
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 Sep 2023 15:56:10 +0000 (UTC)
+From: janga.rahul.kumar@intel.com
+To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
+ janga.rahul.kumar@intel.com
+Date: Fri, 15 Sep 2023 21:28:46 +0530
+Message-Id: <20230915155846.481999-1-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/intel/xe_query: Print
- XE_QUERY_CONFIG_MAX_ENGINE_PRIORITY value
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/intel/xe_vm : Update tile mask
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,44 +21,30 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LGTM,
-Reviewed-by: Janga Rahul Kumar<janga.rahul.kumar@intel.com>
+From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 
-Thanks,
-Rahul
+Tile mask shouldn't be derived based on GT id. Setting tile mask to 0
+to create bind to all tiles.
 
-> -----Original Message-----
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
-> Francois Dugast
-> Sent: Friday, September 15, 2023 8:17 PM
-> To: igt-dev@lists.freedesktop.org
-> Subject: [igt-dev] [PATCH i-g-t] tests/intel/xe_query: Print
-> XE_QUERY_CONFIG_MAX_ENGINE_PRIORITY value
->=20
-> The key XE_QUERY_CONFIG_MAX_ENGINE_PRIORITY has been added to the
-> info array provided in struct drm_xe_query_config. It represents the valu=
-e of
-> the highest available exec queue priority. The existing test is extended =
-to
-> also print the value returned for this key.
->=20
-> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
-> ---
->  tests/intel/xe_query.c | 2 ++
->  1 file changed, 2 insertions(+)
->=20
-> diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c index
-> 9835b895d..5966968d3 100644
-> --- a/tests/intel/xe_query.c
-> +++ b/tests/intel/xe_query.c
-> @@ -381,6 +381,8 @@ test_query_config(int fd)
->  		config->info[XE_QUERY_CONFIG_GT_COUNT]);
->  	igt_info("XE_QUERY_CONFIG_MEM_REGION_COUNT\t%llu\n",
->  		config->info[XE_QUERY_CONFIG_MEM_REGION_COUNT]);
-> +	igt_info("XE_QUERY_CONFIG_MAX_ENGINE_PRIORITY\t%llu\n",
-> +		config->info[XE_QUERY_CONFIG_MAX_ENGINE_PRIORITY]);
->  	dump_hex_debug(config, query.size);
->=20
->  	free(config);
-> --
-> 2.34.1
+Cc: Stuart Summers <stuart.summers@intel.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+---
+ tests/intel/xe_vm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+index 4952ea786..a92a5cc66 100644
+--- a/tests/intel/xe_vm.c
++++ b/tests/intel/xe_vm.c
+@@ -927,7 +927,7 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
+ 		bind_ops[i].obj_offset = 0;
+ 		bind_ops[i].range = bo_size;
+ 		bind_ops[i].addr = addr;
+-		bind_ops[i].tile_mask = 0x1 << eci->gt_id;
++		bind_ops[i].tile_mask = 0;
+ 		bind_ops[i].op = XE_VM_BIND_OP_MAP | XE_VM_BIND_FLAG_ASYNC;
+ 		bind_ops[i].region = 0;
+ 		bind_ops[i].reserved[0] = 0;
+-- 
+2.25.1
