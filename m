@@ -1,20 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3497110E083
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Sep 2023 08:40:46 +0000 (UTC)
-Date: Mon, 18 Sep 2023 10:40:41 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: sai.gowtham.ch@intel.com
-Message-ID: <20230918084041.kv2cqujjl6ymogjm@zkempczy-mobl2>
-References: <20230915051617.9361-1-sai.gowtham.ch@intel.com>
- <20230915051617.9361-5-sai.gowtham.ch@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CDC5310E249
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Sep 2023 09:50:02 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 18 Sep 2023 15:20:32 +0530
+Message-Id: <20230918095033.257372-2-swati2.sharma@intel.com>
+In-Reply-To: <20230918095033.257372-1-swati2.sharma@intel.com>
+References: <20230918095033.257372-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230915051617.9361-5-sai.gowtham.ch@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 4/4] intel/xe_copy_basic: Add copy basic
- test to exercise blt commands
+Subject: [igt-dev] [PATCH i-g-t 1/2] tests/kms_universal_plane: convert
+ subtests to dynamic subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,269 +19,242 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Sep 15, 2023 at 10:46:17AM +0530, sai.gowtham.ch@intel.com wrote:
-> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-> 
-> Add copy basic test to exercise copy commands like mem-copy and mem-set.
-> 
-> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-> ---
->  tests/intel/xe_copy_basic.c | 199 ++++++++++++++++++++++++++++++++++++
->  tests/meson.build           |   1 +
->  2 files changed, 200 insertions(+)
->  create mode 100644 tests/intel/xe_copy_basic.c
-> 
-> diff --git a/tests/intel/xe_copy_basic.c b/tests/intel/xe_copy_basic.c
-> new file mode 100644
-> index 000000000..0014b022e
-> --- /dev/null
-> +++ b/tests/intel/xe_copy_basic.c
-> @@ -0,0 +1,199 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2023 Intel Corporation
-> + *
-> + * Authors:
-> + *	Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-> + */
-> +
-> +#include "igt.h"
-> +#include "lib/igt_syncobj.h"
-> +#include "intel_blt.h"
-> +#include "lib/intel_cmds_info.h"
-> +#include "lib/intel_mocs.h"
-> +#include "lib/intel_reg.h"
-> +#include "xe/xe_ioctl.h"
-> +#include "xe/xe_query.h"
-> +#include "xe/xe_util.h"
-> +
-> +/**
-> + * TEST: Test to validate copy commands on xe
-> + * Category: Software building block
-> + * Sub-category: Copy
-> + * Functionality: blitter
-> + */
-> +
-> +/**
-> + * SUBTEST: mem-copy
-> + * Description: Test validates MEM_COPY command, it takes various
-> + *		parameters needed for the filling batch buffer for MEM_COPY command.
-> + * Test category: functionality test
-> + */
-> +static void
-> +igt_mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle,
-> +	     const intel_ctx_t *ctx, uint32_t row_size,
-> +	     uint32_t col_size, uint32_t region)
-> +{
-> +	struct blt_copy_data blt = {};
-> +	uint64_t bb_size = xe_get_default_alignment(fd);
-> +	uint64_t ahnd = intel_allocator_open_full(fd, ctx->vm, 0, 0,
-> +						  INTEL_ALLOCATOR_SIMPLE,
-> +						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-> +	uint32_t bb;
-> +	int result;
-> +	uint8_t src_mocs = intel_get_uc_mocs(fd);
-> +	uint8_t dst_mocs = src_mocs;
-> +
-> +	bb = xe_bo_create_flags(fd, 0, bb_size, region);
-> +
-> +	blt_copy_init(fd, &blt);
-> +	blt_set_object(&blt.src, src_handle, row_size, region, src_mocs, 0,
-> +		       T_LINEAR, COMPRESSION_DISABLED);
-> +	blt_set_object(&blt.dst, dst_handle, row_size, region, dst_mocs, 0,
-> +		       T_LINEAR, COMPRESSION_DISABLED);
+Convert subtests to dynamic subtests.
 
-Args are not properly passed:
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ tests/kms_universal_plane.c | 122 +++++++++---------------------------
+ 1 file changed, 31 insertions(+), 91 deletions(-)
 
-./tests/intel/xe_copy_basic.c: In function ‘igt_mem_copy’:
-../tests/intel/xe_copy_basic.c:51:24: warning: implicit conversion from ‘enum blt_tiling_type’ to ‘enum blt_compression’ [-Wenum-conversion]
-   51 |                        T_LINEAR, COMPRESSION_DISABLED);
-      |                        ^~~~~~~~
-../tests/intel/xe_copy_basic.c:51:34: warning: implicit conversion from ‘enum blt_compression’ to ‘enum blt_compression_type’ [-Wenum-conversion]
-   51 |                        T_LINEAR, COMPRESSION_DISABLED);
-      |                                  ^~~~~~~~~~~~~~~~~~~~
-../tests/intel/xe_copy_basic.c:53:24: warning: implicit conversion from ‘enum blt_tiling_type’ to ‘enum blt_compression’ [-Wenum-conversion]
-   53 |                        T_LINEAR, COMPRESSION_DISABLED);
-      |                        ^~~~~~~~
-../tests/intel/xe_copy_basic.c:53:34: warning: implicit conversion from ‘enum blt_compression’ to ‘enum blt_compression_type’ [-Wenum-conversion]
-   53 |                        T_LINEAR, COMPRESSION_DISABLED);
-      |                                  ^~~~~~~~~~~~~~~~~~~~
-../tests/intel/xe_copy_basic.c: In function ‘igt_mem_set’:
-../tests/intel/xe_copy_basic.c:87:24: warning: implicit conversion from ‘enum blt_tiling_type’ to ‘enum blt_compression’ [-Wenum-conversion]
-   87 |                        T_LINEAR, COMPRESSION_DISABLED);
-      |                        ^~~~~~~~
-../tests/intel/xe_copy_basic.c:87:34: warning: implicit conversion from ‘enum blt_compression’ to ‘enum blt_compression_type’ [-Wenum-conversion]
-   87 |                        T_LINEAR, COMPRESSION_DISABLED);
-      |                                  ^~~~~~~~~~~~~~~~~~~~
-
-Please fix and resubmit.
-
---
-Zbigniew
-
-> +	blt_set_batch(&blt.bb, bb, bb_size, region);
-> +	igt_assert(blt.src.size == blt.dst.size);
-> +
-> +	blt_mem_copy(fd, ctx, NULL, ahnd, &blt, col_size);
-> +	result = memcmp(blt.src.ptr, blt.dst.ptr, blt.src.size);
-> +	igt_assert_f(!result, "source and destination differ\n");
-> +
-> +	intel_allocator_bind(ahnd, 0, 0);
-> +	gem_close(fd, bb);
-> +	put_ahnd(ahnd);
-> +}
-> +
-> +/**
-> + * SUBTEST: mem-set
-> + * Description: Test validates MEM_SET command.
-> + * Test category: functionality test
-> + */
-> +static void igt_mem_set(int fd, uint32_t dst_handle, const intel_ctx_t *ctx,
-> +			size_t size, uint32_t height,
-> +			uint32_t fill_data, uint32_t region)
-> +{
-> +	struct blt_copy_data blt = {};
-> +	uint64_t bb_size = xe_get_default_alignment(fd);
-> +	uint64_t ahnd = intel_allocator_open_full(fd, ctx->vm, 0, 0,
-> +						  INTEL_ALLOCATOR_SIMPLE,
-> +						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-> +	uint32_t bb;
-> +	int result;
-> +	uint8_t dst_mocs = intel_get_uc_mocs(fd);
-> +
-> +	bb = xe_bo_create_flags(fd, 0, bb_size, region);
-> +	blt_copy_init(fd, &blt);
-> +	blt_set_object(&blt.dst, dst_handle, size, region, dst_mocs, 0,
-> +		       T_LINEAR, COMPRESSION_DISABLED);
-> +	blt_set_batch(&blt.bb, bb, bb_size, region);
-> +	blt_set_mem(fd, ctx, NULL, ahnd, &blt, height, fill_data);
-> +	result = memcmp(blt.src.ptr, blt.dst.ptr, blt.src.size);
-> +	igt_assert_f(!result, "source and destination differ\n");
-> +
-> +	intel_allocator_bind(ahnd, 0, 0);
-> +	gem_close(fd, bb);
-> +	put_ahnd(ahnd);
-> +}
-> +
-> +static void copy_test(int fd, uint32_t size, enum blt_cmd_type cmd,
-> +		      struct drm_xe_engine_class_instance *hwe, uint32_t region)
-> +{
-> +	uint32_t src_handle, dst_handle, vm, exec_queue, src_size, dst_size;
-> +	char c = 'a';
-> +	uint32_t bo_size = ALIGN(size + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
-> +	uint32_t temp_buffer[bo_size];
-> +	const intel_ctx_t *ctx;
-> +
-> +	src_handle = xe_bo_create_flags(fd, 0, bo_size, region);
-> +	dst_handle = xe_bo_create_flags(fd, 0, bo_size, region);
-> +	vm = xe_vm_create(fd, 0, 0);
-> +	exec_queue = xe_exec_queue_create(fd, vm, hwe, 0);
-> +	ctx = intel_ctx_xe(fd, vm, exec_queue, 0, 0, 0);
-> +
-> +	src_size = bo_size;
-> +	dst_size = bo_size;
-> +
-> +	/* Fill a pattern in the buffer */
-> +	for (int i = 0; i < bo_size; i++) {
-> +		temp_buffer[i] = c++ % 16;
-> +		temp_buffer[i] |= (c++ % 16) << 8;
-> +		temp_buffer[i] |= (c++ % 16) << 16;
-> +		temp_buffer[i] |= (c++ % 16) << 24;
-> +	}
-> +
-> +	if (cmd == MEM_COPY) {
-> +		igt_mem_copy(fd,
-> +			     src_handle,/*src_handle*/
-> +			     dst_handle,/*dst_handle*/
-> +			     ctx,
-> +			     src_size,/*row_size*/
-> +			     1,/*col_size*/
-> +			     region);
-> +	} else if (cmd == MEM_SET) {
-> +		igt_mem_set(fd,
-> +			    dst_handle, /*dst_handle*/
-> +			    ctx,
-> +			    dst_size,/*width*/
-> +			    1,/*height*/
-> +			    temp_buffer[0] & 0xff,/*fill_data*/
-> +			    region);
-> +		src_size = 1;
-> +	}
-> +
-> +	gem_close(fd, src_handle);
-> +	gem_close(fd, dst_handle);
-> +	xe_exec_queue_destroy(fd, exec_queue);
-> +	xe_vm_destroy(fd, vm);
-> +}
-> +
-> +igt_main
-> +{
-> +	struct drm_xe_engine_class_instance *hwe;
-> +	int fd;
-> +	struct igt_collection *set, *regions;
-> +	uint32_t region;
-> +	uint64_t size[] = {0xFD, 0x369, 0x369, 0x3FFF, 0xFFFF, 0x1FFFF, 0x3FFFF};
-> +
-> +	igt_fixture {
-> +		fd = drm_open_driver(DRIVER_XE);
-> +		xe_device_get(fd);
-> +		set = xe_get_memory_region_set(fd,
-> +					       XE_MEM_REGION_CLASS_SYSMEM,
-> +					       XE_MEM_REGION_CLASS_VRAM);
-> +	}
-> +
-> +	igt_subtest_with_dynamic_f("mem-copy") {
-> +		igt_require(blt_has_mem_copy(fd));
-> +		for_each_variation_r(regions, 1, set) {
-> +			region = igt_collection_get_value(regions, 0);
-> +			xe_for_each_hw_engine(fd, hwe) {
-> +				for (int i = 0; i < ARRAY_SIZE(size); i++) {
-> +					igt_dynamic_f("size-0x%lx", size[i]) {
-> +						copy_test(fd, size[i],
-> +							  MEM_COPY, hwe,
-> +							  region);
-> +					}
-> +				}
-> +			}
-> +		}
-> +	}
-> +
-> +	igt_subtest_with_dynamic_f("mem-set") {
-> +		igt_require(blt_has_mem_set(fd));
-> +		for_each_variation_r(regions, 1, set) {
-> +			region = igt_collection_get_value(regions, 0);
-> +			xe_for_each_hw_engine(fd, hwe) {
-> +				for (int i = 0; i < ARRAY_SIZE(size); i++) {
-> +					igt_dynamic_f("size-0x%lx", size[i]) {
-> +						copy_test(fd, size[i],
-> +							  MEM_SET, hwe, region);
-> +					}
-> +				}
-> +			}
-> +		}
-> +	}
-> +
-> +	igt_fixture {
-> +		drm_close_driver(fd);
-> +	}
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 7201958b7..753cde31e 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -274,6 +274,7 @@ intel_xe_progs = [
->  	'xe_ccs',
->  	'xe_create',
->  	'xe_compute',
-> +	'xe_copy_basic',
->  	'xe_dma_buf_sync',
->  	'xe_debugfs',
->  	'xe_evict',
-> -- 
-> 2.39.1
-> 
+diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
+index 8aa43a929..45278916d 100644
+--- a/tests/kms_universal_plane.c
++++ b/tests/kms_universal_plane.c
+@@ -97,6 +97,8 @@ typedef struct {
+ 	int drm_fd;
+ 	igt_display_t display;
+ 	int display_ver;
++	enum pipe pipe;
++	igt_output_t *output;
+ } data_t;
+ 
+ typedef struct {
+@@ -200,11 +202,6 @@ functional_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	int num_primary = 0, num_cursor = 0;
+ 	int i;
+ 
+-	igt_require_pipe(display, pipe);
+-
+-	igt_info("Testing connector %s using pipe %s\n", igt_output_name(output),
+-		 kmstest_pipe_name(pipe));
+-
+ 	functional_test_init(&test, output, pipe);
+ 
+ 	/*
+@@ -443,11 +440,6 @@ sanity_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	int i;
+ 	int expect = 0;
+ 
+-	igt_require_pipe(&data->display, pipe);
+-
+-	igt_info("Using (pipe %s + %s) to run the subtest.\n",
+-		 kmstest_pipe_name(pipe), igt_output_name(output));
+-
+ 	igt_output_set_pipe(output, pipe);
+ 	mode = igt_output_get_mode(output);
+ 
+@@ -560,11 +552,6 @@ pageflip_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	fd_set fds;
+ 	int ret = 0;
+ 
+-	igt_require_pipe(&data->display, pipe);
+-
+-	igt_info("Using (pipe %s + %s) to run the subtest.\n",
+-		 kmstest_pipe_name(pipe), igt_output_name(output));
+-
+ 	igt_output_set_pipe(output, pipe);
+ 
+ 	pageflip_test_init(&test, output, pipe);
+@@ -676,13 +663,9 @@ cursor_leak_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	int r, g, b;
+ 	int count1, count2;
+ 
+-	igt_require_pipe(display, pipe);
+ 	igt_require(display->has_cursor_plane);
+ 	igt_require_intel(data->drm_fd);
+ 
+-	igt_info("Using (pipe %s + %s) to run the subtest.\n",
+-		 kmstest_pipe_name(pipe), igt_output_name(output));
+-
+ 	igt_output_set_pipe(output, pipe);
+ 	mode = igt_output_get_mode(output);
+ 
+@@ -717,7 +700,6 @@ cursor_leak_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+ 		igt_skip("Primary and/or cursor are unavailable\n");
+ 	}
+ 
+-
+ 	igt_plane_set_fb(primary, &background_fb);
+ 	igt_display_commit2(display, COMMIT_LEGACY);
+ 
+@@ -808,10 +790,6 @@ pageflip_win_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	int ret = 0;
+ 
+ 	igt_skip_on(is_intel_device(data->drm_fd) && data->display_ver < 9);
+-	igt_require_pipe(&data->display, pipe);
+-
+-	igt_info("Using (pipe %s + %s) to run the subtest.\n",
+-		 kmstest_pipe_name(pipe), igt_output_name(output));
+ 
+ 	igt_output_set_pipe(output, pipe);
+ 
+@@ -865,103 +843,68 @@ pipe_output_combo_valid(igt_display_t *display,
+ }
+ 
+ static void
+-run_tests_for_pipe(data_t *data, enum pipe pipe)
++run_tests(data_t *data)
+ {
+-	igt_output_t *output;
+-
+-	igt_fixture {
+-		int valid_tests = 0;
+-
+-		igt_require_pipe(&data->display, pipe);
+-
+-		for_each_valid_output_on_pipe(&data->display, pipe, output)
+-			valid_tests++;
+-
+-		igt_require_f(valid_tests, "no valid crtc/connector combinations found\n");
+-	}
+-
+ 	igt_describe("Check the switching between different primary plane fbs with CRTC off");
+-	igt_subtest_f("universal-plane-pipe-%s-functional",
+-		      kmstest_pipe_name(pipe)) {
+-		bool found = false;
+-
+-		for_each_valid_output_on_pipe(&data->display, pipe, output) {
+-			if (!pipe_output_combo_valid(&data->display, pipe, output))
++	igt_subtest_with_dynamic_f("universal-plane-functional") {
++		for_each_pipe_with_single_output(&data->display, data->pipe, data->output) {
++			if (!pipe_output_combo_valid(&data->display, data->pipe, data->output))
+ 				continue;
+ 
+-			found = true;
+-			functional_test_pipe(data, pipe, output);
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data->pipe), data->output->name)
++				functional_test_pipe(data, data->pipe, data->output);
+ 		}
+-		igt_require_f(found, "No valid pipe/output combo found.\n");
+ 	}
+ 
+ 	igt_describe("Test for scale-up or scale-down using universal plane API without covering CRTC");
+-	igt_subtest_f("universal-plane-pipe-%s-sanity",
+-		      kmstest_pipe_name(pipe)) {
+-		bool found = false;
+-
+-		for_each_valid_output_on_pipe(&data->display, pipe, output) {
+-			if (!pipe_output_combo_valid(&data->display, pipe, output))
++	igt_subtest_with_dynamic_f("universal-plane-sanity") {
++		for_each_pipe_with_single_output(&data->display, data->pipe, data->output) {
++			if (!pipe_output_combo_valid(&data->display, data->pipe, data->output))
+ 				continue;
+ 
+-			found = true;
+-			sanity_test_pipe(data, pipe, output);
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data->pipe), data->output->name)
++				sanity_test_pipe(data, data->pipe, data->output);
+ 		}
+-		igt_require_f(found, "No valid pipe/output combo found.\n");
+ 	}
+ 
+ 	igt_describe("Check pageflips while primary plane is disabled before IOCTL or between IOCTL"
+-			" and pageflip execution");
+-	igt_subtest_f("disable-primary-vs-flip-pipe-%s",
+-		      kmstest_pipe_name(pipe)) {
+-		bool found = false;
+-
+-		for_each_valid_output_on_pipe(&data->display, pipe, output) {
+-			if (!pipe_output_combo_valid(&data->display, pipe, output))
++		     " and pageflip execution");
++	igt_subtest_with_dynamic_f("disable-primary-vs-flip") {
++		for_each_pipe_with_single_output(&data->display, data->pipe, data->output) {
++			if (!pipe_output_combo_valid(&data->display, data->pipe, data->output))
+ 				continue;
+ 
+-			found = true;
+-			pageflip_test_pipe(data, pipe, output);
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data->pipe), data->output->name)
++				pageflip_test_pipe(data, data->pipe, data->output);
+ 		}
+-		igt_require_f(found, "No valid pipe/output combo found.\n");
+ 	}
+ 
+ 	igt_describe("Check for cursor leaks after performing cursor operations");
+-	igt_subtest_f("cursor-fb-leak-pipe-%s",
+-		      kmstest_pipe_name(pipe)) {
+-		bool found = false;
+-
+-		for_each_valid_output_on_pipe(&data->display, pipe, output) {
+-			if (!pipe_output_combo_valid(&data->display, pipe, output))
++	igt_subtest_with_dynamic_f("cursor-fb-leak") {
++		for_each_pipe_with_single_output(&data->display, data->pipe, data->output) {
++			if (!pipe_output_combo_valid(&data->display, data->pipe, data->output))
+ 				continue;
+ 
+-			found = true;
+-			cursor_leak_test_pipe(data, pipe, output);
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data->pipe), data->output->name)
++				cursor_leak_test_pipe(data, data->pipe, data->output);
+ 		}
+-		igt_require_f(found, "No valid pipe/output combo found.\n");
+ 	}
+ 
+ 	igt_describe("Check if pageflip succeeds in windowed setting");
+-	igt_subtest_f("universal-plane-pageflip-windowed-pipe-%s",
+-		      kmstest_pipe_name(pipe)) {
+-		bool found = false;
+-
+-		for_each_valid_output_on_pipe(&data->display, pipe, output) {
+-			if (!pipe_output_combo_valid(&data->display, pipe, output))
++	igt_subtest_with_dynamic_f("universal-plane-pageflip-windowed") {
++		for_each_pipe_with_single_output(&data->display, data->pipe, data->output) {
++			if (!pipe_output_combo_valid(&data->display, data->pipe, data->output))
+ 				continue;
+ 
+-			found = true;
+-			pageflip_win_test_pipe(data, pipe, output);
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data->pipe), data->output->name)
++				pageflip_win_test_pipe(data, data->pipe, data->output);
+ 		}
+-		igt_require_f(found, "No valid pipe/output combo found.\n");
+ 	}
+ }
+ 
+-static data_t data;
+-
+ igt_main
+ {
+-	enum pipe pipe;
++	data_t data;
+ 
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+@@ -975,10 +918,7 @@ igt_main
+ 		igt_display_require_output(&data.display);
+ 	}
+ 
+-	for_each_pipe_static(pipe) {
+-		igt_subtest_group
+-			run_tests_for_pipe(&data, pipe);
+-	}
++	run_tests(&data);
+ 
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
+-- 
+2.25.1
