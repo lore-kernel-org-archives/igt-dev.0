@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6D6A310E0DF
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Sep 2023 05:49:03 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 18 Sep 2023 11:19:24 +0530
-Message-Id: <20230918054926.238027-4-swati2.sharma@intel.com>
-In-Reply-To: <20230918054926.238027-1-swati2.sharma@intel.com>
-References: <20230918054926.238027-1-swati2.sharma@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============6465720759186926091=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v10 3/5] tests/intel/kms_dsc: enable validation for vdsc
- fractional bpp
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Date: Mon, 18 Sep 2023 06:10:58 -0000
+Message-ID: <169501745898.32418.196071520120018203@emeril.freedesktop.org>
+References: <20230918051332.231485-1-swati2.sharma@intel.com>
+In-Reply-To: <20230918051332.231485-1-swati2.sharma@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Test_cle?=
+ =?utf-8?q?anup_and_dynamic_conversion_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,238 +17,127 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Intel hardware supports fractional bpp from display_ver >= 14.
-To test fractional bpp, debugfs entry (force_dsc_fractional_bpp)
-is introduced. From the IGT; we are setting this debugfs entry.
-However, before setting this debugfs entry, we are checking
-capability i.e. fractional bpp is supported by platform and sink
-both. In driver, if force_dsc_fractional_bpp is set then while
-iterating over output bpp with fractional step size we will
-continue if output_bpp is computed as integer and allow DSC iff
-compressed bpp is fractional.
+--===============6465720759186926091==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: -change in igt_describe (Ankit)
-v3: -rebase
-v4: -add wrapper for source support of fractional bpp (Ankit)
-v5: -fix if() condition (Ankit)
-v6: -rebase
-v7: -rebase
+== Series Details ==
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
----
- tests/intel/kms_dsc.c        | 36 +++++++++++++++++++----
- tests/intel/kms_dsc_helper.c | 57 ++++++++++++++++++++++++++++++++++++
- tests/intel/kms_dsc_helper.h |  4 +++
- 3 files changed, 92 insertions(+), 5 deletions(-)
+Series: Test cleanup and dynamic conversion (rev2)
+URL   : https://patchwork.freedesktop.org/series/112358/
+State : success
 
-diff --git a/tests/intel/kms_dsc.c b/tests/intel/kms_dsc.c
-index c7dfb509a..29bb21514 100644
---- a/tests/intel/kms_dsc.c
-+++ b/tests/intel/kms_dsc.c
-@@ -1,5 +1,5 @@
- /*
-- * Copyright © 2018 Intel Corporation
-+ * Copyright © 2018-2023 Intel Corporation
-  *
-  * Permission is hereby granted, free of charge, to any person obtaining a
-  * copy of this software and associated documentation files (the "Software"),
-@@ -26,8 +26,8 @@
-  * subtest.
-  *
-  * Authors:
-- * Manasi Navare <manasi.d.navare@intel.com>
-- *
-+ * 	Manasi Navare <manasi.d.navare@intel.com>
-+ * 	Swati Sharma <swati2.sharma@intel.com>
-  */
- 
- /**
-@@ -54,6 +54,7 @@
-  * @with-formats:                 DSC with default parameters and creating fb with diff formats
-  * @with-output-formats:          DSC and output format
-  * @with-output-formats-with-bpc: DSC and output format with certain input BPC for the connector
-+ * @fractional-bpp:               DSC and fractional bpp with default parameters
-  */
- 
- IGT_TEST_DESCRIPTION("Test to validate display stream compression");
-@@ -65,6 +66,7 @@ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
- #define TEST_DSC_BPC		(1<<0)
- #define TEST_DSC_FORMAT		(1<<1)
- #define TEST_DSC_OUTPUT_FORMAT	(1<<2)
-+#define TEST_DSC_FRACTIONAL_BPP (1<<3)
- 
- /*
-  * Starting from gen11, intel driver supports DSC1.1. For validating
-@@ -72,7 +74,7 @@ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
-  * If the sink does support DSC, we will validate different
-  * scenarios by forcing dsc. Outline of the tests is as follows:
-  * (i) basic modeset (ii) input bpc (iii) pixel formats
-- * (iv) output formats
-+ * (iv) output formats (v) fractional bpp
-  * In the basic subtest, we perform modeset with default parameters.
-  * Input bpc and pixel formats subtests, we perform modeset
-  * with different input bpc (12/10/8) and pixel formats (YUV/RGB),
-@@ -81,9 +83,11 @@ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
-  * However, in the output-format subtest, we verify different
-  * output formats (RGB/YCBCR444/YCBCR420). Also, test is added to
-  * validate output formats with different input bpc (12/10/8).
-+ * Lastly, fractional bpp is tested with default parameters.
-+ * In this, driver will ignore integer compressed bpp value and
-+ * will do modeset with fractional bpp only.
-  */
- 
--
- typedef struct {
- 	int drm_fd;
- 	uint32_t devid;
-@@ -185,6 +189,12 @@ static void update_display(data_t *data, uint32_t test_type)
- 		force_dsc_output_format(data->drm_fd, data->output, data->output_format);
- 	}
- 
-+	if (test_type & TEST_DSC_FRACTIONAL_BPP) {
-+		igt_debug("DSC fractional bpp is supported on %s\n", data->output->name);
-+		save_force_dsc_fractional_bpp_en(data->drm_fd, data->output);
-+		force_dsc_fractional_bpp_enable(data->drm_fd, data->output);
-+	}
-+
- 	igt_output_set_pipe(output, data->pipe);
- 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
- 
-@@ -244,6 +254,7 @@ static void update_display(data_t *data, uint32_t test_type)
- 				enabled ? "ON" : "OFF");
- 
- 	restore_force_dsc_en();
-+	restore_force_dsc_fractional_bpp_en();
- 
- 	if (test_type & TEST_DSC_BPC) {
- 		current_bpc = igt_get_pipe_current_bpc(data->drm_fd, data->pipe);
-@@ -295,6 +306,11 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
- 						     data->output, data->output_format)))
- 			continue;
- 
-+		if ((test_type & TEST_DSC_FRACTIONAL_BPP) &&
-+		    (!is_dsc_fractional_bpp_supported(data->disp_ver,
-+						      data->drm_fd, data->output)))
-+			continue;
-+
- 		if (test_type & TEST_DSC_OUTPUT_FORMAT)
- 			snprintf(&name[0][0], LEN, "-%s", kmstest_dsc_output_format_str(data->output_format));
- 		if (test_type & TEST_DSC_FORMAT)
-@@ -405,6 +421,16 @@ igt_main_args("l", NULL, help_str, opt_handler, &data)
- 		}
- 	}
- 
-+	igt_describe("Tests fractional compressed bpp functionality if supported "
-+		     "by a connector by forcing fractional_bpp on all connectors that support it "
-+		     "with default parameter. While finding the optimum compressed bpp, driver will "
-+		     "skip over the compressed bpps with integer values. It will go ahead with DSC, "
-+		     "iff compressed bpp is fractional, failing in which, it will fail the commit.");
-+	igt_subtest_with_dynamic("dsc-fractional-bpp")
-+			test_dsc(&data, TEST_DSC_FRACTIONAL_BPP,
-+				 DEFAULT_BPC, DRM_FORMAT_XRGB8888,
-+				 DSC_FORMAT_RGB);
-+
- 	igt_fixture {
- 		igt_display_fini(&data.display);
- 		drm_close_driver(data.drm_fd);
-diff --git a/tests/intel/kms_dsc_helper.c b/tests/intel/kms_dsc_helper.c
-index 44edd5ca9..58057aca3 100644
---- a/tests/intel/kms_dsc_helper.c
-+++ b/tests/intel/kms_dsc_helper.c
-@@ -6,7 +6,9 @@
- #include "kms_dsc_helper.h"
- 
- static bool force_dsc_en_orig;
-+static bool force_dsc_fractional_bpp_en_orig;
- static int force_dsc_restore_fd = -1;
-+static int force_dsc_fractional_bpp_restore_fd = -1;
- 
- void force_dsc_enable(int drmfd, igt_output_t *output)
- {
-@@ -51,6 +53,7 @@ void restore_force_dsc_en(void)
- void kms_dsc_exit_handler(int sig)
- {
- 	restore_force_dsc_en();
-+	restore_force_dsc_fractional_bpp_en();
- }
- 
- bool is_dsc_supported_by_source(int drmfd)
-@@ -144,3 +147,57 @@ bool is_dsc_output_format_supported(int drmfd, int disp_ver, igt_output_t *outpu
- 
- 	return true;
- }
-+
-+void force_dsc_fractional_bpp_enable(int drmfd, igt_output_t *output)
-+{
-+	int ret;
-+
-+	igt_debug("Forcing DSC Fractional BPP on %s\n", output->name);
-+	ret = igt_force_dsc_fractional_bpp_enable(drmfd, output->name);
-+	igt_assert_f(ret == 0, "forcing dsc fractional bpp debugfs_write failed\n");
-+}
-+
-+void save_force_dsc_fractional_bpp_en(int drmfd, igt_output_t *output)
-+{
-+	force_dsc_fractional_bpp_en_orig =
-+		igt_is_force_dsc_fractional_bpp_enabled(drmfd, output->name);
-+	force_dsc_fractional_bpp_restore_fd =
-+		igt_get_dsc_fractional_bpp_debugfs_fd(drmfd, output->name);
-+	igt_assert(force_dsc_fractional_bpp_restore_fd >= 0);
-+}
-+
-+void restore_force_dsc_fractional_bpp_en(void)
-+{
-+	if (force_dsc_fractional_bpp_restore_fd < 0)
-+		return;
-+
-+	igt_debug("Restoring DSC Fractional BPP enable\n");
-+	igt_assert(write(force_dsc_fractional_bpp_restore_fd, force_dsc_fractional_bpp_en_orig ? "1" : "0", 1) == 1);
-+
-+	close(force_dsc_fractional_bpp_restore_fd);
-+	force_dsc_fractional_bpp_restore_fd = -1;
-+}
-+
-+/* DSC fractional bpp is supported on display version 14+ with DSC1.2a */
-+static bool is_dsc_fractional_bpp_supported_by_source(int disp_ver)
-+{
-+	if (disp_ver < 14) {
-+		igt_debug("DSC fractional bpp not supported on D13 and older platforms\n");
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
-+bool is_dsc_fractional_bpp_supported(int disp_ver, int drmfd, igt_output_t *output)
-+{
-+	if (!is_dsc_fractional_bpp_supported_by_source(disp_ver))
-+		return false;
-+
-+	if (!igt_is_dsc_fractional_bpp_supported_by_sink(drmfd, output->name)) {
-+		igt_debug("DSC fractional bpp not supported on connector %s\n", output->name);
-+		return false;
-+	}
-+
-+	return true;
-+}
-diff --git a/tests/intel/kms_dsc_helper.h b/tests/intel/kms_dsc_helper.h
-index 28ed56d83..4dbd88fe7 100644
---- a/tests/intel/kms_dsc_helper.h
-+++ b/tests/intel/kms_dsc_helper.h
-@@ -34,5 +34,9 @@ void force_dsc_output_format(int drmfd, igt_output_t *output,
- 			     enum dsc_output_format output_format);
- bool is_dsc_output_format_supported(int disp_ver, int drmfd, igt_output_t *output,
- 				    enum dsc_output_format output_format);
-+void force_dsc_fractional_bpp_enable(int drmfd, igt_output_t *output);
-+void save_force_dsc_fractional_bpp_en(int drmfd, igt_output_t *output);
-+void restore_force_dsc_fractional_bpp_en(void);
-+bool is_dsc_fractional_bpp_supported(int disp_ver, int drmfd, igt_output_t *output);
- 
- #endif
--- 
-2.25.1
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7491_BAT -> XEIGTPW_9810_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9810_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:
+    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#480]) +2 other tests fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7491/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9810/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
+
+  
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7491 -> IGTPW_9810
+
+  IGTPW_9810: 9810
+  IGT_7491: 7491
+  xe-376-9da40abcc0ccdf8fdfed4e21d76060bfcd35fe7d: 9da40abcc0ccdf8fdfed4e21d76060bfcd35fe7d
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9810/index.html
+
+--===============6465720759186926091==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Test cleanup and dynamic conversion (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/112358/">https://patchwork.freedesktop.org/series/112358/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9810/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9810/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7491_BAT -&gt; XEIGTPW_9810_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9810_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7491/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9810/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +2 other tests fail</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7491 -&gt; IGTPW_9810</li>
+</ul>
+<p>IGTPW_9810: 9810<br />
+  IGT_7491: 7491<br />
+  xe-376-9da40abcc0ccdf8fdfed4e21d76060bfcd35fe7d: 9da40abcc0ccdf8fdfed4e21d76060bfcd35fe7d</p>
+
+</body>
+</html>
+
+--===============6465720759186926091==--
