@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam12on2081.outbound.protection.outlook.com [40.107.237.81])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D24DD10E0C4
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Sep 2023 01:24:58 +0000 (UTC)
-From: "Zhang, Jesse(Jie)" <Jesse.Zhang@amd.com>
-To: "Prosyak, Vitaly" <Vitaly.Prosyak@amd.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Fri, 22 Sep 2023 01:24:54 +0000
-Message-ID: <DM4PR12MB51522E91FD16557D9221C3ADE3FFA@DM4PR12MB5152.namprd12.prod.outlook.com>
-References: <20230920223905.268940-1-vitaly.prosyak@amd.com>
-In-Reply-To: <20230920223905.268940-1-vitaly.prosyak@amd.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 67FB410E046
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Sep 2023 09:56:58 +0000 (UTC)
+Message-ID: <155a5b71-74b5-9c01-db9e-fee8e73de7c7@intel.com>
+Date: Mon, 18 Sep 2023 11:56:44 +0200
 Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+To: <sai.gowtham.ch@intel.com>
+References: <20230915051617.9361-1-sai.gowtham.ch@intel.com>
+ <20230915051617.9361-4-sai.gowtham.ch@intel.com>
+From: Karolina Stolarek <karolina.stolarek@intel.com>
+In-Reply-To: <20230915051617.9361-4-sai.gowtham.ch@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH] tests/amdgpu: add GFX11 to tests
+Subject: Re: [igt-dev] [PATCH i-g-t 3/4] lib/intel_blt: Add wrappers to
+ prepare batch buffers and submit exec
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,129 +22,354 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Deucher, Alexander" <Alexander.Deucher@amd.com>, "Tuikov,
- Luben" <Luben.Tuikov@amd.com>, "Koenig, Christian" <Christian.Koenig@amd.com>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-[AMD Official Use Only - General]
+On 15.09.2023 07:16, sai.gowtham.ch@intel.com wrote:
+> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> 
+> This commit has couple of changes in it:
+> 1. Adding wrapper for mem-set and mem-copy instructions to
+>     prepare batch buffers and submit exec, (blt_mem_copy, blt_set_mem,
+>     emit_blt_mem_copy, emit,blt_set_mem).
+> 
+> 2. Add check to see if blt commands are supported by the platforms.
 
-Reviewed-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Like I said in 1/4, it's fine to merge (2) with that other patch, so 
+here we only have mem_set and mem_copy defined. Also, you could reword 
+the patch to something like "Introduce mem_set and mem_copy commands". 
+Yes, technically they are wrappers, but I think of them more as library 
+features.
 
-Regards,
-Jesse
+> 
+> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> ---
+>   lib/intel_blt.c | 210 ++++++++++++++++++++++++++++++++++++++++++++++++
+>   lib/intel_blt.h |  20 +++++
+>   2 files changed, 230 insertions(+)
+> 
+> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+> index 429511920..88ad7cae8 100644
+> --- a/lib/intel_blt.c
+> +++ b/lib/intel_blt.c
+> @@ -13,12 +13,14 @@
+>   #include "igt.h"
+>   #include "igt_syncobj.h"
+>   #include "intel_blt.h"
+> +#include "intel_mocs.h"
+>   #include "xe/xe_ioctl.h"
+>   #include "xe/xe_query.h"
+>   #include "xe/xe_util.h"
+>   
+>   #define BITRANGE(start, end) (end - start + 1)
+>   #define GET_CMDS_INFO(__fd) intel_get_cmds_info(intel_get_drm_devid(__fd))
+> +#define MEM_COPY_MOCS_SHIFT                     25
+>   
+>   /* Blitter tiling definitions sanity checks */
+>   static_assert(T_LINEAR == I915_TILING_NONE, "Linear definitions have to match");
+> @@ -289,6 +291,38 @@ bool blt_has_block_copy(int fd)
+>   	return blt_supports_command(cmds_info, XY_BLOCK_COPY);
+>   }
+>   
+> +/**
+> + * blt_has_mem_copy
+> + * @fd: drm fd
+> + *
+> + * Check if mem copy is supported by @fd device
+> + *
+> + * Returns:
+> + * true if it does, false otherwise.
+> + */
+> +bool blt_has_mem_copy(int fd)
+> +{
+> +	const struct intel_cmds_info *cmds_info = GET_CMDS_INFO(fd);
+> +
+> +	return blt_supports_command(cmds_info, MEM_COPY);
+> +}
+> +
+> +/**
+> + * blt_has_mem_set
+> + * @fd: drm fd
+> + *
+> + * Check if mem set is supported by @fd device
+> + *
+> + * Returns:
+> + * true if it does, false otherwise.
+> + */
+> +bool blt_has_mem_set(int fd)
+> +{
+> +	const struct intel_cmds_info *cmds_info = GET_CMDS_INFO(fd);
+> +
+> +	return blt_supports_command(cmds_info, MEM_SET);
+> +}
+> +
+>   /**
+>    * blt_has_fast_copy
+>    * @fd: drm fd
+> @@ -1380,6 +1414,182 @@ int blt_fast_copy(int fd,
+>   	return ret;
+>   }
+>   
+> +void emit_blt_mem_copy(int fd, uint64_t ahnd, const struct blt_copy_data *blt, uint32_t col_size)
+> +{
+> +	uint64_t dst_offset, src_offset, alignment;
+> +	int i;
+> +	uint8_t src_mocs = intel_get_uc_mocs(fd);
+> +	uint8_t dst_mocs = src_mocs;
+> +	uint32_t size;
+> +	struct {
+> +		uint32_t batch[12];
+> +		uint32_t data;
+> +	} *data;
 
------Original Message-----
-From: vitaly.prosyak@amd.com <vitaly.prosyak@amd.com>
-Sent: Thursday, September 21, 2023 6:39 AM
-To: igt-dev@lists.freedesktop.org
-Cc: Prosyak, Vitaly <Vitaly.Prosyak@amd.com>; Zhang, Jesse(Jie) <Jesse.Zhan=
-g@amd.com>; Tuikov, Luben <Luben.Tuikov@amd.com>; Deucher, Alexander <Alexa=
-nder.Deucher@amd.com>; Koenig, Christian <Christian.Koenig@amd.com>
-Subject: [PATCH] tests/amdgpu: add GFX11 to tests
+It's a nit on my part, but I thought it would be nice to have a struct 
+here, similar to gen12_fast_copy_data.
 
-From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> +
+> +	alignment = xe_get_default_alignment(fd);
 
-Add GFX11 to basic and GPU reset tests.
-Improve GPU reset tests by validating flags, if no reset or reset is still =
-in progress then avoid asserting the status.
+If we want to provide support for both i915 and Xe, we should use 
+get_default_alignment() function here instead.
 
-Cc: Jesse Zhang <Jesse.Zhang@amd.com>
-Cc: Luben Tuikov <luben.tuikov@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian Koenig <christian.koenig@amd.com>
+> +	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment);
+> +	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment);
+> +	size = blt->src.size;
+> +
+> +	data = xe_bo_map(fd, blt->bb.handle, blt->bb.size);
 
-Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
----
- include/drm-uapi/amdgpu_drm.h |  2 ++
- lib/amdgpu/amd_dispatch.c     | 21 +++++++++++++++++----
- 2 files changed, 19 insertions(+), 4 deletions(-)
+There's a helper to handle bo mapping for both i915 and Xe: bo_map(). 
+It'll check the type of the driver for your.
 
-diff --git a/include/drm-uapi/amdgpu_drm.h b/include/drm-uapi/amdgpu_drm.h =
-index 0cbd1540a..323137f42 100644
---- a/include/drm-uapi/amdgpu_drm.h
-+++ b/include/drm-uapi/amdgpu_drm.h
-@@ -225,6 +225,8 @@ union drm_amdgpu_bo_list {
- /* indicate some errors are detected by RAS */
- #define AMDGPU_CTX_QUERY2_FLAGS_RAS_CE   (1<<3)
- #define AMDGPU_CTX_QUERY2_FLAGS_RAS_UE   (1<<4)
-+/* indicate that the reset hasn't completed yet */ #define
-+AMDGPU_CTX_QUERY2_FLAGS_RESET_IN_PROGRESS (1<<5)
+> +
+> +	i = 0;
+> +	data->batch[i++] = MEM_COPY_CMD;
+> +	data->batch[i++] = size - 1;
+> +	data->batch[i++] = col_size - 1;
+> +	data->batch[i++] = 0;
+> +	data->batch[i++] = 0;
+> +	data->batch[i++] = src_offset;
+> +	data->batch[i++] = src_offset << 32;
+> +	data->batch[i++] = dst_offset;
+> +	data->batch[i++] = dst_offset << 32;
+> +	data->batch[i++] = src_mocs << MEM_COPY_MOCS_SHIFT | dst_mocs;
+> +	data->batch[i++] = MI_BATCH_BUFFER_END;
 
- /* Context priority level */
- #define AMDGPU_CTX_PRIORITY_UNSET       -2048
-diff --git a/lib/amdgpu/amd_dispatch.c b/lib/amdgpu/amd_dispatch.c index f1=
-7240f5c..b337646d3 100644
---- a/lib/amdgpu/amd_dispatch.c
-+++ b/lib/amdgpu/amd_dispatch.c
-@@ -103,6 +103,8 @@ amdgpu_memset_dispatch_test(amdgpu_device_handle device=
-_handle,
-                base_cmd->emit(base_cmd, 0x74fac);
-        else if (version =3D=3D 10)
-                base_cmd->emit(base_cmd, 0x1104bfac);
-+       else if (version =3D=3D 11)
-+               base_cmd->emit(base_cmd, 0x1003dfac);
+This means we can't pipeline mem_copies in one bb. You could add a flag 
+similar to "bool emit_bbe" in emit_blt_fast_copy
 
-        /* Sets a range of pixel shader constants */
-        base_cmd->emit(base_cmd, PACKET3_COMPUTE(PKT3_SET_SH_REG, 4)); @@ -=
-351,9 +353,9 @@ amdgpu_memcpy_dispatch_hang_slow_test(amdgpu_device_handle =
-device_handle,
-        void *ptr_shader;
-        unsigned char *ptr_src;
-        uint32_t *ptr_cmd;
--       uint64_t mc_address_src, mc_address_dst, mc_address_shader, mc_addr=
-ess_cmd;
-+       uint64_t mc_address_src, mc_address_dst, mc_address_shader,
-+mc_address_cmd, reset_flags;
-        amdgpu_va_handle va_src, va_dst, va_shader, va_cmd;
--       int r;
-+       int r, r2;
+> +	data->batch[i++] = MI_NOOP;
+> +
+> +	igt_assert(i <= ARRAY_SIZE(data->batch));
 
-        int bo_dst_size =3D 0x4000000;
-        int bo_shader_size =3D 0x400000;
-@@ -425,6 +427,8 @@ amdgpu_memcpy_dispatch_hang_slow_test(amdgpu_device_han=
-dle device_handle,
-                base_cmd->emit(base_cmd, 0x74fac);
-        else if (version =3D=3D 10)
-                base_cmd->emit(base_cmd, 0x1104bfac);
-+       else if (version =3D=3D 11)
-+               base_cmd->emit(base_cmd, 0x1003dfac);
+Hm, I wonder, don't we need to unmap the mapped bb here?
 
+> +}
+> +
+> +/**
+> + * blt_mem_copy:
+> + * @fd: drm fd
+> + * @ctx: intel_ctx_t context
+> + * @e: blitter engine for @ctx
+> + * @ahnd: allocator handle
+> + * @blt: blitter data for mem-copy.
+> + *
+> + * Function does mem blit between @src and @dst described in @blt object.
+> + *
+> + * Returns:
+> + * execbuffer status.
+> + */
+> +int blt_mem_copy(int fd, const intel_ctx_t *ctx,
+> +		 const struct intel_execution_engine2 *e,
+> +		 uint64_t ahnd,
+> +		 const struct blt_copy_data *blt,
+> +		 uint32_t col_size)
+> +{
+> +	struct drm_i915_gem_execbuffer2 execbuf = {};
+> +	struct drm_i915_gem_exec_object2 obj[3] = {};
+> +	uint64_t dst_offset, src_offset, bb_offset, alignment;
+> +	int ret;
+> +
+> +	alignment = get_default_alignment(fd, blt->driver);
+> +	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment);
+> +	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment);
+> +	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
+> +
+> +	emit_blt_mem_copy(fd, ahnd, blt, col_size);
+> +
+> +	if (blt->driver == INTEL_DRIVER_XE) {
+> +		intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
+> +	} else {
+> +		obj[0].offset = CANONICAL(dst_offset);
+> +		obj[1].offset = CANONICAL(src_offset);
+> +		obj[2].offset = CANONICAL(bb_offset);
+> +		obj[0].handle = blt->dst.handle;
+> +		obj[1].handle = blt->src.handle;
+> +		obj[2].handle = blt->bb.handle;
+> +		obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
+> +			       EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> +		obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> +		obj[2].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> +		execbuf.buffer_count = 3;
+> +		execbuf.buffers_ptr = to_user_pointer(obj);
+> +		execbuf.rsvd1 = ctx ? ctx->id : 0;
+> +		execbuf.flags = e ? e->flags : I915_EXEC_BLT;
+> +		ret = __gem_execbuf(fd, &execbuf);
+> +		put_offset(ahnd, blt->dst.handle);
+> +		put_offset(ahnd, blt->src.handle);
+> +		put_offset(ahnd, blt->bb.handle);
+> +	}
 
-        /* Writes the UAV constant data to the SGPRs. */ @@ -485,7 +489,16 =
-@@ amdgpu_memcpy_dispatch_hang_slow_test(amdgpu_device_handle device_handle=
-,
+Nit: add an empty line here
 
-        r =3D amdgpu_cs_query_reset_state(context_handle, &hang_state, &han=
-gs);
-        igt_assert_eq(r, 0);
--       igt_assert_eq(hang_state, gpu_reset_status_equel);
-+       r2 =3D amdgpu_cs_query_reset_state2(context_handle, &reset_flags);
-+       igt_assert_eq(r2, 0);
-+
-+       if (!(reset_flags =3D=3D 0 ||
-+                 reset_flags & AMDGPU_CTX_QUERY2_FLAGS_RESET_IN_PROGRESS))=
- {
-+               /*
-+                *  Check reset_state only when reset is occured and not in=
- progress
-+                */
-+               igt_assert_eq(hang_state, gpu_reset_status_equel);
-+       }
+> +	return ret;
+> +}
+> +
+> +void emit_blt_set_mem(int fd, uint64_t ahnd, const struct blt_copy_data *blt,
+> +		      uint32_t fill_data, uint32_t height)
 
-        r =3D amdgpu_bo_list_destroy(bo_list);
-        igt_assert_eq(r, 0);
-@@ -513,7 +526,7 @@ amdgpu_dispatch_hang_slow_helper(amdgpu_device_handle d=
-evice_handle,
-                igt_info("SKIP ... as there's no ring for ip %d\n", ip_type=
-);
+It should be emit_blt_mem_set
 
-        version =3D info.hw_ip_version_major;
--       if (version !=3D 9 && version !=3D 10 /*&& version !=3D 11*/) {
-+       if (version !=3D 9 && version !=3D 10 && version !=3D 11) {
-                igt_info("SKIP ... unsupported gfx version %d\n", version);
-                return;
-        }
---
-2.25.1
+> +{
+> +	uint64_t dst_offset, alignment;
+> +	int b;
+> +	uint8_t dst_mocs = intel_get_uc_mocs(fd);
+> +	uint32_t size;
+> +	struct {
+> +		uint32_t batch[12];
+> +		uint32_t data;
+> +	} *data;
+> +
+> +	alignment = xe_get_default_alignment(fd);
+
+Similar comments to what I have for mem_copy, commenting here to make 
+sure this doesn't fall through the cracks
+
+> +	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment);
+> +	size = blt->dst.size;
+> +
+> +	data = xe_bo_map(fd, blt->dst.handle, blt->dst.size);
+
+Also here, use a driver-independent wrapper bo_map()
+
+> +
+> +	b = 0;
+> +	data->batch[b++] = MEM_SET_CMD;
+> +	data->batch[b++] = size - 1;
+> +	data->batch[b++] = height;
+> +	data->batch[b++] = 0;
+> +	data->batch[b++] = dst_offset;
+> +	data->batch[b++] = dst_offset << 32;
+> +	data->batch[b++] = (fill_data << 24) | dst_mocs;
+> +	data->batch[b++] = MI_BATCH_BUFFER_END;
+
+Again, the question about adding an buffer end in the middle of the bb.
+
+> +	data->batch[b++] = MI_NOOP;
+> +
+> +	igt_assert(b <= ARRAY_SIZE(data->batch));
+> +}
+> +
+> +/**
+> + * blt_set_mem:
+> + * @fd: drm fd
+> + * @ctx: intel_ctx_t context
+> + * @e: blitter engine for @ctx
+> + * @ahnd: allocator handle
+> + * @blt: blitter data for mem-set.
+> + *
+> + * Function does mem set blit in described @blt object.
+> + *
+> + * Returns:
+> + * execbuffer status.
+> + */
+> +int blt_set_mem(int fd, const intel_ctx_t *ctx,
+
+blt_mem_set, not set_mem
+
+> +		const struct intel_execution_engine2 *e,
+> +		uint64_t ahnd,
+> +		const struct blt_copy_data *blt,
+> +		uint32_t height,
+> +		uint32_t fill_data)
+> +{
+> +	struct drm_i915_gem_execbuffer2 execbuf = {};
+> +	struct drm_i915_gem_exec_object2 obj[2] = {};
+> +	uint64_t dst_offset, bb_offset, alignment;
+> +	int ret;
+> +
+> +	alignment = get_default_alignment(fd, blt->driver);
+> +	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment);
+> +	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
+> +
+> +	emit_blt_set_mem(fd, ahnd, blt, fill_data, height);
+> +
+> +	if (blt->driver == INTEL_DRIVER_XE) {
+> +		intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
+> +	} else {
+> +		obj[0].offset = CANONICAL(dst_offset);
+> +		obj[1].offset = CANONICAL(bb_offset);
+> +		obj[0].handle = blt->dst.handle;
+> +		obj[1].handle = blt->bb.handle;
+> +		obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
+> +			       EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> +		obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> +		execbuf.buffer_count = 2;
+> +		execbuf.buffers_ptr = to_user_pointer(obj);
+> +		execbuf.rsvd1 = ctx ? ctx->id : 0;
+> +		execbuf.flags = e ? e->flags : I915_EXEC_BLT;
+> +		ret = __gem_execbuf(fd, &execbuf);
+> +		put_offset(ahnd, blt->dst.handle);
+> +		put_offset(ahnd, blt->bb.handle);
+> +	}
+
+Nit: empty line
+
+Many thanks,
+Karolina
+
+> +	return ret;
+> +}
+> +
+>   void blt_set_geom(struct blt_copy_object *obj, uint32_t pitch,
+>   		  int16_t x1, int16_t y1, int16_t x2, int16_t y2,
+>   		  uint16_t x_offset, uint16_t y_offset)
+> diff --git a/lib/intel_blt.h b/lib/intel_blt.h
+> index b8b3d724d..79edee0d5 100644
+> --- a/lib/intel_blt.h
+> +++ b/lib/intel_blt.h
+> @@ -175,6 +175,8 @@ bool blt_cmd_has_property(const struct intel_cmds_info *cmds_info,
+>   			  uint32_t prop);
+>   
+>   bool blt_has_block_copy(int fd);
+> +bool blt_has_mem_copy(int fd);
+> +bool blt_has_mem_set(int fd);
+>   bool blt_has_fast_copy(int fd);
+>   bool blt_has_xy_src_copy(int fd);
+>   bool blt_has_xy_color(int fd);
+> @@ -229,6 +231,24 @@ int blt_fast_copy(int fd,
+>   		  uint64_t ahnd,
+>   		  const struct blt_copy_data *blt);
+>   
+> +void emit_blt_mem_copy(int fd, uint64_t ahnd,
+> +		       const struct blt_copy_data *blt,
+> +		       uint32_t col_size);
+> +
+> +int blt_mem_copy(int fd, const intel_ctx_t *ctx,
+> +		const struct intel_execution_engine2 *e,
+> +		 uint64_t ahnd,
+> +		 const struct blt_copy_data *blt,
+> +		 uint32_t col_size);
+> +
+> +void emit_blt_set_mem(int fd, uint64_t ahnd, const struct blt_copy_data *blt,
+> +		      uint32_t fill_data, uint32_t height);
+> +
+> +int blt_set_mem(int fd, const intel_ctx_t *ctx,
+> +		const struct intel_execution_engine2 *e, uint64_t ahnd,
+> +		const struct blt_copy_data *blt, uint32_t height,
+> +		uint32_t fill_data);
+> +
+>   void blt_set_geom(struct blt_copy_object *obj, uint32_t pitch,
+>   		  int16_t x1, int16_t y1, int16_t x2, int16_t y2,
+>   		  uint16_t x_offset, uint16_t y_offset);
