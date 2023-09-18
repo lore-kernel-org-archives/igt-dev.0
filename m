@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Mon, 18 Sep 2023 10:09:03 -0500
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: Matt Roper <matthew.d.roper@intel.com>
-Message-ID: <s4pd63isa3zc5p6roa23gg74puas7m5irxlvolg54f67zcrua6@v7ah2t3b5sqp>
-References: <20230915132346.1845909-1-lucas.demarchi@intel.com>
- <20230915132346.1845909-3-lucas.demarchi@intel.com>
- <20230915174346.GC2706891@mdroper-desk1.amr.corp.intel.com>
- <20230915174712.GD2706891@mdroper-desk1.amr.corp.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============3637007714642002267=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20230915174712.GD2706891@mdroper-desk1.amr.corp.intel.com>
-Subject: Re: [igt-dev] [Intel-xe] [PATCH i-g-t 02/14] lib/gpu_cmds: Remove
- prefix from gen7_fill_binding_table()
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Date: Mon, 18 Sep 2023 16:03:53 -0000
+Message-ID: <169505303369.32418.6731157086029241175@emeril.freedesktop.org>
+References: <20230918104130.259103-1-swati2.sharma@intel.com>
+In-Reply-To: <20230918104130.259103-1-swati2.sharma@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/km?=
+ =?utf-8?q?s=5Fsequence=3A_remove_redundant_test_doc?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,101 +17,131 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, intel-xe@lists.freedesktop.org
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Sep 15, 2023 at 10:47:12AM -0700, Matt Roper wrote:
->On Fri, Sep 15, 2023 at 10:43:50AM -0700, Matt Roper wrote:
->> On Fri, Sep 15, 2023 at 06:23:34AM -0700, Lucas De Marchi wrote:
->> > This function is used by pretty much all versions. It's odd to have a
->> > gen7 function end up calling next-gen functions and it's error prone:
->> > when adding something to e.g. a gen8 function to realize that behavior
->> > breaks previous platforms.
->>
->> Even more confusing is that we have a gen11_filling_binding_table
->> function as well, but Xe_HP still uses the older "gen7" variant.  Maybe
->> we should incorporate the gen11-specific logic into the single
->> fill_binding_table function as well?  It looks like it only gets used in
->> one path (which winds up being ICL-specific, not even used for EHL/JSL
->> due to lack of media samplers).
->
->Hmm, I guess the signature of the gen11 function doesn't match since it
->takes separate src/dst buffers.
+--===============3637007714642002267==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-yep, I hit this issue when trying that abstraction. I think we can leave
-it to be done on top.
+== Series Details ==
 
-Lucas De Marchi
+Series: tests/kms_sequence: remove redundant test doc
+URL   : https://patchwork.freedesktop.org/series/123854/
+State : success
 
->
->
->Matt
->
->>
->>
->> Matt
->>
->> >
->> > Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
->> > ---
->> >  lib/gpu_cmds.c | 9 ++++-----
->> >  1 file changed, 4 insertions(+), 5 deletions(-)
->> >
->> > diff --git a/lib/gpu_cmds.c b/lib/gpu_cmds.c
->> > index bb35204fb..648451f74 100644
->> > --- a/lib/gpu_cmds.c
->> > +++ b/lib/gpu_cmds.c
->> > @@ -259,8 +259,7 @@ gen11_fill_surface_state(struct intel_bb *ibb,
->> >  }
->> >
->> >  static uint32_t
->> > -gen7_fill_binding_table(struct intel_bb *ibb,
->> > -			struct intel_buf *buf)
->> > +fill_binding_table(struct intel_bb *ibb, struct intel_buf *buf)
->> >  {
->> >  	uint32_t binding_table_offset;
->> >  	uint32_t *binding_table;
->> > @@ -321,7 +320,7 @@ gen7_fill_interface_descriptor(struct intel_bb *ibb,
->> >  	uint32_t offset;
->> >  	uint32_t binding_table_offset, kernel_offset;
->> >
->> > -	binding_table_offset = gen7_fill_binding_table(ibb, buf);
->> > +	binding_table_offset = fill_binding_table(ibb, buf);
->> >  	kernel_offset = gen7_fill_kernel(ibb, kernel, size);
->> >
->> >  	intel_bb_ptr_align(ibb, 64);
->> > @@ -357,7 +356,7 @@ gen8_fill_interface_descriptor(struct intel_bb *ibb,
->> >  	uint32_t offset;
->> >  	uint32_t binding_table_offset, kernel_offset;
->> >
->> > -	binding_table_offset = gen7_fill_binding_table(ibb, buf);
->> > +	binding_table_offset = fill_binding_table(ibb, buf);
->> >  	kernel_offset = gen7_fill_kernel(ibb, kernel, size);
->> >
->> >  	intel_bb_ptr_align(ibb, 64);
->> > @@ -803,7 +802,7 @@ xehp_fill_interface_descriptor(struct intel_bb *ibb,
->> >  {
->> >  	uint32_t binding_table_offset, kernel_offset;
->> >
->> > -	binding_table_offset = gen7_fill_binding_table(ibb, dst);
->> > +	binding_table_offset = fill_binding_table(ibb, dst);
->> >  	kernel_offset = gen7_fill_kernel(ibb, kernel, size);
->> >
->> >  	memset(idd, 0, sizeof(*idd));
->> > --
->> > 2.40.1
->> >
->>
->> --
->> Matt Roper
->> Graphics Software Engineer
->> Linux GPU Platform Enablement
->> Intel Corporation
->
->-- 
->Matt Roper
->Graphics Software Engineer
->Linux GPU Platform Enablement
->Intel Corporation
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7493_BAT -> XEIGTPW_9818_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9818_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 other test fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7493/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9818/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7493 -> IGTPW_9818
+  * Linux: xe-376-9da40abcc0ccdf8fdfed4e21d76060bfcd35fe7d -> xe-377-717f01815b20bde3f081a18f42f31673ce1f107f
+
+  IGTPW_9818: 9818
+  IGT_7493: 2517e42d612e0c1ca096acf8b5f6177f7ef4bce7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-376-9da40abcc0ccdf8fdfed4e21d76060bfcd35fe7d: 9da40abcc0ccdf8fdfed4e21d76060bfcd35fe7d
+  xe-377-717f01815b20bde3f081a18f42f31673ce1f107f: 717f01815b20bde3f081a18f42f31673ce1f107f
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9818/index.html
+
+--===============3637007714642002267==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_sequence: remove redundant test doc</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123854/">https://patchwork.freedesktop.org/series/123854/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9818/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9818/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7493_BAT -&gt; XEIGTPW_9818_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9818_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7493/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9818/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7493 -&gt; IGTPW_9818</li>
+<li>Linux: xe-376-9da40abcc0ccdf8fdfed4e21d76060bfcd35fe7d -&gt; xe-377-717f01815b20bde3f081a18f42f31673ce1f107f</li>
+</ul>
+<p>IGTPW_9818: 9818<br />
+  IGT_7493: 2517e42d612e0c1ca096acf8b5f6177f7ef4bce7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-376-9da40abcc0ccdf8fdfed4e21d76060bfcd35fe7d: 9da40abcc0ccdf8fdfed4e21d76060bfcd35fe7d<br />
+  xe-377-717f01815b20bde3f081a18f42f31673ce1f107f: 717f01815b20bde3f081a18f42f31673ce1f107f</p>
+
+</body>
+</html>
+
+--===============3637007714642002267==--
