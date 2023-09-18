@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E94E810E1F9
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Sep 2023 07:54:21 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 18 Sep 2023 13:24:47 +0530
-Message-Id: <20230918075448.247197-3-swati2.sharma@intel.com>
-In-Reply-To: <20230918075448.247197-1-swati2.sharma@intel.com>
-References: <20230918075448.247197-1-swati2.sharma@intel.com>
+Date: Mon, 18 Sep 2023 09:57:40 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Lucas De Marchi <lucas.demarchi@intel.com>
+Message-ID: <20230918075740.gswvt6joydhzbyfc@zkempczy-mobl2>
+References: <20230915132346.1845909-1-lucas.demarchi@intel.com>
+ <20230915132346.1845909-14-lucas.demarchi@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/3] tests/kms_vblank: convert test to
- dynamic
+In-Reply-To: <20230915132346.1845909-14-lucas.demarchi@intel.com>
+Subject: Re: [igt-dev] [Intel-xe] [PATCH i-g-t 13/14] lib/intel_blt: Support
+ xe2 in xy-fast-copy command
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,287 +19,160 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, intel-xe@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Convert existing subtests to dynamic subtests at pipe/output level.
+On Fri, Sep 15, 2023 at 06:23:45AM -0700, Lucas De Marchi wrote:
+> Xe2 xy-fast-copy command is slightly different, with dw01 and dw07
+> having a few differences: 1) different bitrange for mocs (it was
+> previously absent in dw07); 2) no dst_memory, src_memory;
+> 3) hardcoded dst_type_y and src_type_y to 1.
+> 
+> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+> ---
+>  lib/intel_blt.c | 76 +++++++++++++++++++++++++++++++++++--------------
+>  1 file changed, 55 insertions(+), 21 deletions(-)
+> 
+> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+> index 0658d67f4..508c2de46 100644
+> --- a/lib/intel_blt.c
+> +++ b/lib/intel_blt.c
+> @@ -1149,16 +1149,27 @@ struct gen12_fast_copy_data {
+>  		uint32_t client:			BITRANGE(29, 31);
+>  	} dw00;
+>  
+> -	struct {
+> -		uint32_t dst_pitch:			BITRANGE(0, 15);
+> -		uint32_t rsvd1:				BITRANGE(16, 23);
+> -		uint32_t color_depth:			BITRANGE(24, 26);
+> -		uint32_t rsvd0:				BITRANGE(27, 27);
+> -		uint32_t dst_memory:			BITRANGE(28, 28);
+> -		uint32_t src_memory:			BITRANGE(29, 29);
+> -		uint32_t dst_type_y:			BITRANGE(30, 30);
+> -		uint32_t src_type_y:			BITRANGE(31, 31);
+> -	} dw01;
+> +	union {
+> +		struct {
+> +			uint32_t dst_pitch:			BITRANGE(0, 15);
+> +			uint32_t rsvd1:				BITRANGE(16, 23);
+> +			uint32_t color_depth:			BITRANGE(24, 26);
+> +			uint32_t rsvd0:				BITRANGE(27, 27);
+> +			uint32_t dst_memory:			BITRANGE(28, 28);
+> +			uint32_t src_memory:			BITRANGE(29, 29);
+> +			uint32_t dst_type_y:			BITRANGE(30, 30);
+> +			uint32_t src_type_y:			BITRANGE(31, 31);
+> +		} dw01;
+> +		struct {
+> +			uint32_t dst_pitch:			BITRANGE(0, 15);
+> +			uint32_t rsvd1:				BITRANGE(16, 19);
 
-v2: -Remove redundant debug prints
-    -Convert all subtests into dynamic
-v3: -Use pipe & output from struct data_t
-v4: -Directly use data->pipe instead of using p
-    -Use for_each_pipe_with_single_output()
+Similar to block-copy bit 17 is not described here for Xe2.
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/kms_vblank.c | 172 ++++++++++++++++++---------------------------
- 1 file changed, 69 insertions(+), 103 deletions(-)
+> +			uint32_t dst_mocs:			BITRANGE(20, 23);
+> +			uint32_t color_depth:			BITRANGE(24, 26);
+> +			uint32_t rsvd0:				BITRANGE(27, 29);
+> +			uint32_t dst_type_y_mb1:		BITRANGE(30, 30);
+> +			uint32_t src_type_y_mb1:		BITRANGE(31, 31);
+> +		} dw01_xe2;
+> +	};
+>  
+>  	struct {
+>  		int32_t dst_x1:				BITRANGE(0, 15);
+> @@ -1183,10 +1194,18 @@ struct gen12_fast_copy_data {
+>  		int32_t src_y1:				BITRANGE(16, 31);
+>  	} dw06;
+>  
+> -	struct {
+> -		uint32_t src_pitch:			BITRANGE(0, 15);
+> -		uint32_t rsvd0:				BITRANGE(16, 31);
+> -	} dw07;
+> +	union {
+> +		struct {
+> +			uint32_t src_pitch:			BITRANGE(0, 15);
+> +			uint32_t rsvd0:				BITRANGE(16, 31);
+> +		} dw07;
+> +		struct {
+> +			uint32_t src_pitch:			BITRANGE(0, 15);
+> +			uint32_t rsvd0:				BITRANGE(16, 19);
+> +			uint32_t src_mocs:			BITRANGE(20, 23);
+> +			uint32_t rsvd1:				BITRANGE(24, 31);
+> +		} dw07_xe2;
+> +	};
+>  
+>  	struct {
+>  		uint32_t src_address_lo;
+> @@ -1285,11 +1304,13 @@ uint64_t emit_blt_fast_copy(int fd,
+>  			    uint64_t bb_pos,
+>  			    bool emit_bbe)
+>  {
+> +	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
+>  	struct gen12_fast_copy_data data = {};
+>  	uint64_t dst_offset, src_offset, bb_offset, alignment;
+>  	uint32_t bbe = MI_BATCH_BUFFER_END;
+>  	uint32_t *bb;
+>  
+> +
+>  	alignment = get_default_alignment(fd, blt->driver);
+>  
+>  	data.dw00.client = 0x2;
+> @@ -1298,12 +1319,20 @@ uint64_t emit_blt_fast_copy(int fd,
+>  	data.dw00.src_tiling = __fast_tiling(blt->src.tiling);
+>  	data.dw00.length = 8;
+>  
+> -	data.dw01.dst_pitch = blt->dst.pitch;
+> -	data.dw01.color_depth = __fast_color_depth(blt->color_depth);
+> -	data.dw01.dst_memory = __memory_type(blt->fd, blt->driver, blt->dst.region);
+> -	data.dw01.src_memory = __memory_type(blt->fd, blt->driver, blt->src.region);
+> -	data.dw01.dst_type_y = __new_tile_y_type(blt->dst.tiling) ? 1 : 0;
+> -	data.dw01.src_type_y = __new_tile_y_type(blt->src.tiling) ? 1 : 0;
+> +	if (ip_ver >= IP_VER(20, 0)) {
+> +		data.dw01_xe2.dst_pitch = blt->dst.pitch;
+> +		data.dw01_xe2.dst_mocs = blt->dst.mocs;
+> +		data.dw01_xe2.color_depth = __fast_color_depth(blt->color_depth);
+> +		data.dw01_xe2.dst_type_y_mb1 = 1;
+> +		data.dw01_xe2.src_type_y_mb1 = 1;
 
-diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
-index bcfd8d012..507421382 100644
---- a/tests/kms_vblank.c
-+++ b/tests/kms_vblank.c
-@@ -270,10 +270,6 @@ static void run_test(data_t *data, void (*testfunc)(data_t *, int, int))
- 	if (data->flags & RPM)
- 		igt_require(igt_setup_runtime_pm(fd));
- 
--	igt_info("Beginning %s on pipe %s, connector %s\n",
--		 igt_subtest_name(), kmstest_pipe_name(data->pipe),
--		 igt_output_name(output));
--
- 	if (!(data->flags & NOHANG)) {
- 		ahnd = is_i915_device(fd) ?
- 			get_reloc_ahnd(fd, 0) :
-@@ -314,9 +310,6 @@ static void run_test(data_t *data, void (*testfunc)(data_t *, int, int))
- 	if (!(data->flags & NOHANG))
- 		igt_post_hang_ring(fd, hang);
- 
--	igt_info("\n%s on pipe %s, connector %s: PASSED\n\n",
--		 igt_subtest_name(), kmstest_pipe_name(data->pipe), igt_output_name(output));
--
- 	put_ahnd(ahnd);
- 
- 	/* cleanup what prepare_crtc() has done */
-@@ -342,63 +335,50 @@ pipe_output_combo_valid(igt_display_t *display,
- static void crtc_id_subtest(data_t *data, int fd)
- {
- 	igt_display_t *display = &data->display;
--	igt_output_t *output;
--	enum pipe p;
--
--	for_each_pipe_with_valid_output(display, p, output) {
--		struct drm_event_vblank buf;
--		const uint32_t pipe_id_flag = kmstest_get_vbl_flag(p);
--		unsigned crtc_id, expected_crtc_id;
--		uint64_t val;
--		union drm_wait_vblank vbl;
-+	enum pipe p = data->pipe;
-+	igt_output_t *output = data->output;
-+	struct drm_event_vblank buf;
-+	const uint32_t pipe_id_flag = kmstest_get_vbl_flag(p);
-+	unsigned crtc_id, expected_crtc_id;
-+	uint64_t val;
-+	union drm_wait_vblank vbl;
- 
--		igt_display_reset(display);
-+	crtc_id = display->pipes[p].crtc_id;
-+	if (drmGetCap(display->drm_fd, DRM_CAP_CRTC_IN_VBLANK_EVENT, &val) == 0)
-+		expected_crtc_id = crtc_id;
-+	else
-+		expected_crtc_id = 0;
- 
--		igt_output_set_pipe(output, p);
--		if (!i915_pipe_output_combo_valid(display))
--			continue;
-+	prepare_crtc(data, fd, output);
- 
--		igt_info("Using (pipe %s + %s) to run the subtest.\n",
--			 kmstest_pipe_name(p), igt_output_name(output));
-+	memset(&vbl, 0, sizeof(vbl));
-+	vbl.request.type = DRM_VBLANK_RELATIVE | DRM_VBLANK_EVENT;
-+	vbl.request.type |= pipe_id_flag;
-+	vbl.request.sequence = 1;
-+	igt_assert_eq(wait_vblank(fd, &vbl), 0);
- 
--		crtc_id = display->pipes[p].crtc_id;
--		if (drmGetCap(display->drm_fd, DRM_CAP_CRTC_IN_VBLANK_EVENT, &val) == 0)
--			expected_crtc_id = crtc_id;
--		else
--			expected_crtc_id = 0;
-+	igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
-+	igt_assert_eq(buf.crtc_id, expected_crtc_id);
- 
--		data->pipe = p;
--		prepare_crtc(data, fd, output);
-+	do_or_die(drmModePageFlip(fd, crtc_id,
-+				  data->primary_fb.fb_id,
-+				  DRM_MODE_PAGE_FLIP_EVENT, NULL));
- 
--		memset(&vbl, 0, sizeof(vbl));
--		vbl.request.type = DRM_VBLANK_RELATIVE | DRM_VBLANK_EVENT;
--		vbl.request.type |= pipe_id_flag;
--		vbl.request.sequence = 1;
--		igt_assert_eq(wait_vblank(fd, &vbl), 0);
-+	igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
-+	igt_assert_eq(buf.crtc_id, expected_crtc_id);
- 
--		igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
--		igt_assert_eq(buf.crtc_id, expected_crtc_id);
-+	if (display->is_atomic) {
-+		igt_plane_t *primary = igt_output_get_plane(output, 0);
- 
--		do_or_die(drmModePageFlip(fd, crtc_id,
--					  data->primary_fb.fb_id,
--					  DRM_MODE_PAGE_FLIP_EVENT, NULL));
-+		igt_plane_set_fb(primary, &data->primary_fb);
-+		igt_display_commit_atomic(display, DRM_MODE_PAGE_FLIP_EVENT, NULL);
- 
- 		igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
- 		igt_assert_eq(buf.crtc_id, expected_crtc_id);
--
--		if (display->is_atomic) {
--			igt_plane_t *primary = igt_output_get_plane(output, 0);
--
--			igt_plane_set_fb(primary, &data->primary_fb);
--			igt_display_commit_atomic(display, DRM_MODE_PAGE_FLIP_EVENT, NULL);
--
--			igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
--			igt_assert_eq(buf.crtc_id, expected_crtc_id);
--		}
--
--		cleanup_crtc(data, fd, output);
--		return;
- 	}
-+
-+	cleanup_crtc(data, fd, output);
-+	return;
- }
- 
- static void accuracy(data_t *data, int fd, int nchildren)
-@@ -576,7 +556,7 @@ static void vblank_ts_cont(data_t *data, int fd, int nchildren)
- 			estimated_vblanks, seq2, seq1 + estimated_vblanks);
- }
- 
--static void run_subtests_for_pipe(data_t *data)
-+static void run_subtests(data_t *data)
- {
- 	const struct {
- 		const char *name;
-@@ -610,30 +590,22 @@ static void run_subtests_for_pipe(data_t *data)
- 		{ }
- 	}, *m;
- 
--	igt_fixture
--		igt_display_require_output_on_pipe(&data->display, data->pipe);
--
- 	for (f = funcs; f->name; f++) {
- 		for (m = modes; m->name; m++) {
- 			if (m->flags & ~(f->valid | NOHANG))
- 				continue;
- 
- 			igt_describe("Check if test run while hanging by introducing NOHANG flag.");
--			igt_subtest_f("pipe-%s-%s-%s",
--				      kmstest_pipe_name(data->pipe),
--				      f->name, m->name) {
--				int found = 0;
--
--				for_each_valid_output_on_pipe(&data->display, data->pipe, data->output) {
--					if (!pipe_output_combo_valid(&data->display, data->pipe, data->output))
-+			igt_subtest_with_dynamic_f("%s-%s", f->name, m->name) {
-+				for_each_pipe_with_single_output(&data->display, data->pipe, data->output) {
-+					if (!pipe_output_combo_valid(&data->display, data->output, data->pipe))
- 						continue;
- 
--					data->flags = m->flags | NOHANG;
--					run_test(data, f->func);
--
--					found++;
-+					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data->pipe), data->output->name) {
-+						data->flags = m->flags | NOHANG;
-+						run_test(data, f->func);
-+					}
- 				}
--				igt_require_f(found, "No valid pipe/output combo found.\n");
- 			}
- 
- 			/* Skip the -hang version if NOHANG flag is set */
-@@ -641,24 +613,20 @@ static void run_subtests_for_pipe(data_t *data)
- 				continue;
- 
- 			igt_describe("Check if injected hang is working properly.");
--			igt_subtest_f("pipe-%s-%s-%s-hang",
--				      kmstest_pipe_name(data->pipe),
--				      f->name, m->name) {
-+			igt_subtest_with_dynamic_f("%s-%s-hang", f->name, m->name) {
- 				igt_hang_t hang;
--				int found = 0;
- 
- 				hang = igt_allow_hang(data->display.drm_fd, 0, 0);
--				for_each_valid_output_on_pipe(&data->display, data->pipe, data->output) {
--					if (!pipe_output_combo_valid(&data->display, data->pipe, data->output))
-+				for_each_pipe_with_single_output(&data->display, data->pipe, data->output) {
-+					if (!pipe_output_combo_valid(&data->display, data->output, data->pipe))
- 						continue;
- 
--					data->flags = m->flags;
--					run_test(data, f->func);
--
--					found++;
-+					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data->pipe), data->output->name) {
-+						data->flags = m->flags;
-+						run_test(data, f->func);
-+					}
- 				}
- 				igt_disallow_hang(data->display.drm_fd, hang);
--				igt_require_f(found, "No valid pipe/output combo found.\n");
- 			}
- 		}
- 	}
-@@ -668,23 +636,7 @@ static void invalid_subtest(data_t *data, int fd)
- {
- 	union drm_wait_vblank vbl;
- 	unsigned long valid_flags;
--	igt_display_t* display = &data->display;
--	enum pipe pipe = 0;
--	igt_output_t *output;
--
--	igt_display_reset(display);
--
--	output = igt_get_single_output_for_pipe(display, pipe);
--	igt_require(output);
--
--	data->pipe = pipe;
--	data->output = output;
--
--	igt_output_set_pipe(output, pipe);
--	igt_require(i915_pipe_output_combo_valid(display));
--
--	igt_info("Using (pipe %s + %s) to run the subtest.\n",
--		 kmstest_pipe_name(pipe), igt_output_name(output));
-+	igt_output_t *output = data->output;
- 
- 	prepare_crtc(data, fd, output);
- 
-@@ -738,18 +690,32 @@ igt_main
- 	}
- 
- 	igt_describe("Negative test for vblank request.");
--	igt_subtest("invalid")
--		invalid_subtest(&data, fd);
-+	igt_subtest_with_dynamic("invalid") {
-+		for_each_pipe_with_single_output(&data.display, data.pipe, data.output) {
-+			if (!pipe_output_combo_valid(&data.display, data.output, data.pipe))
-+				continue;
-+
-+			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data.pipe), data.output->name)
-+				invalid_subtest(&data, fd);
-+			break;
-+		}
-+	}
- 
- 	igt_describe("Check the vblank and flip events works with given crtc id.");
--	igt_subtest("crtc-id")
--		crtc_id_subtest(&data, fd);
-+	igt_subtest_with_dynamic("crtc-id") {
-+		for_each_pipe_with_single_output(&data.display, data.pipe, data.output) {
-+			if (!pipe_output_combo_valid(&data.display, data.output, data.pipe))
-+				continue;
-+
-+			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data.pipe), data.output->name)
-+				crtc_id_subtest(&data, fd);
-+		}
-+	}
- 
--	for_each_pipe_static(data.pipe)
--		igt_subtest_group
--			run_subtests_for_pipe(&data);
-+	run_subtests(&data);
- 
- 	igt_fixture {
-+		igt_display_fini(&data.display);
- 		drm_close_driver(fd);
- 	}
- }
--- 
-2.25.1
+I would rather use:
+
+src_type_y = 1; /* Must be programmed to on Xe2 */
+...
+
+mb1 - ambiguous for me, megabytes first, lesser 'must be'.
+
+> +	} else {
+> +		data.dw01.dst_pitch = blt->dst.pitch;
+> +		data.dw01.color_depth = __fast_color_depth(blt->color_depth);
+> +		data.dw01.dst_memory = __memory_type(blt->fd, blt->driver, blt->dst.region);
+> +		data.dw01.src_memory = __memory_type(blt->fd, blt->driver, blt->src.region);
+> +		data.dw01.dst_type_y = __new_tile_y_type(blt->dst.tiling) ? 1 : 0;
+> +		data.dw01.src_type_y = __new_tile_y_type(blt->src.tiling) ? 1 : 0;
+> +	}
+>  
+>  	data.dw02.dst_x1 = blt->dst.x1;
+>  	data.dw02.dst_y1 = blt->dst.y1;
+> @@ -1323,7 +1352,12 @@ uint64_t emit_blt_fast_copy(int fd,
+>  	data.dw06.src_x1 = blt->src.x1;
+>  	data.dw06.src_y1 = blt->src.y1;
+>  
+> -	data.dw07.src_pitch = blt->src.pitch;
+> +	if (ip_ver >= IP_VER(20, 0)) {
+> +		data.dw07_xe2.src_pitch = blt->src.pitch;
+> +		data.dw07_xe2.src_mocs = blt->src.mocs;
+> +	} else {
+> +		data.dw07.src_pitch = blt->src.pitch;
+> +	}
+>  
+>  	data.dw08.src_address_lo = src_offset;
+>  	data.dw09.src_address_hi = src_offset >> 32;
+> -- 
+> 2.40.1
+> 
+
+With my minor comment addressed:
+
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+
+--
+Zbigniew
