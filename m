@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 106DB10E63A
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Sep 2023 14:53:05 +0000 (UTC)
-Date: Fri, 15 Sep 2023 17:52:58 +0300
-From: Pekka Paalanen <pekka.paalanen@collabora.com>
-To: Harry Wentland <harry.wentland@amd.com>
-Message-ID: <20230915175258.0181c016.pekka.paalanen@collabora.com>
-In-Reply-To: <20230908150315.75977-6-harry.wentland@amd.com>
-References: <20230908150315.75977-1-harry.wentland@amd.com>
- <20230908150315.75977-6-harry.wentland@amd.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C662F10E083
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Sep 2023 08:54:25 +0000 (UTC)
+Message-ID: <645b5246-2b22-e09f-06c8-ea90129d8249@intel.com>
+Date: Mon, 18 Sep 2023 10:54:14 +0200
+Content-Language: en-US
+To: <sai.gowtham.ch@intel.com>
+References: <20230915051617.9361-1-sai.gowtham.ch@intel.com>
+ <20230915051617.9361-2-sai.gowtham.ch@intel.com>
+From: Karolina Stolarek <karolina.stolarek@intel.com>
+In-Reply-To: <20230915051617.9361-2-sai.gowtham.ch@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/qCHoHkB/Zn+cDK4GjUtK=SE";
- protocol="application/pgp-signature"; micalg=pgp-sha256
-Subject: Re: [igt-dev] [RFC PATCH 5/7] igt/color: Add SW color transform
- functionality
+Subject: Re: [igt-dev] [PATCH i-g-t 1/4] lib/intel_cmds_info: Add copy
+ commands to blt_cmd_type
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,446 +22,41 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Sebastian Wick <sebastian.wick@redhat.com>,
- Shashank Sharma <shashank.sharma@amd.com>, Simon Ser <contact@emersion.fr>,
- Alexander Goins <agoins@nvidia.com>,
- Michel =?UTF-8?B?RMOkbnplcg==?= <mdaenzer@redhat.com>,
- Xaver Hugl <xaver.hugl@gmail.com>, igt-dev@lists.freedesktop.org,
- Jonas =?UTF-8?B?w4VkYWhs?= <jadahl@redhat.com>,
- Victoria Brekenfeld <victoria@system76.com>, Joshua Ashton <joshua@froggi.es>,
- Daniel Vetter <daniel@ffwll.ch>, Aleix Pol <aleixpol@kde.org>,
- Naseer Ahmed <quic_naseer@quicinc.com>,
- Christopher Braga <quic_cbraga@quicinc.com>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---Sig_/qCHoHkB/Zn+cDK4GjUtK=SE
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+On 15.09.2023 07:16, sai.gowtham.ch@intel.com wrote:
+> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> 
+> Add copy commands to blt_cmd_type which is used latter,
+> to check it they are supported by fd.
 
-On Fri, 8 Sep 2023 11:03:13 -0400
-Harry Wentland <harry.wentland@amd.com> wrote:
+Hm, I'm slightly confused. I thought you'll merge this one with the "Add 
+check to see if blt commands are supported by the platforms." patch.
 
-> In order to test color we want to compare a HW (KMS) transform
-> with a SW transform. This introduces color transform for an
-> sRGB EOTF but this can be extended to other transforms. Code is
-> borrowed from Skia.
->=20
-> Signed-off-by: Harry Wentland <harry.wentland@amd.com>
-> Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
-> Cc: Pekka Paalanen <pekka.paalanen@collabora.com>
-> Cc: Simon Ser <contact@emersion.fr>
-> Cc: Harry Wentland <harry.wentland@amd.com>
-> Cc: Melissa Wen <mwen@igalia.com>
-> Cc: Jonas =C3=85dahl <jadahl@redhat.com>
-> Cc: Sebastian Wick <sebastian.wick@redhat.com>
-> Cc: Shashank Sharma <shashank.sharma@amd.com>
-> Cc: Alexander Goins <agoins@nvidia.com>
-> Cc: Joshua Ashton <joshua@froggi.es>
-> Cc: Michel D=C3=A4nzer <mdaenzer@redhat.com>
-> Cc: Aleix Pol <aleixpol@kde.org>
-> Cc: Xaver Hugl <xaver.hugl@gmail.com>
-> Cc: Victoria Brekenfeld <victoria@system76.com>
-> Cc: Daniel Vetter <daniel@ffwll.ch>
-> Cc: Uma Shankar <uma.shankar@intel.com>
-> Cc: Naseer Ahmed <quic_naseer@quicinc.com>
-> Cc: Christopher Braga <quic_cbraga@quicinc.com>
+This would count as one logical change, now it's mixed up a bit.
+
+All the best,
+Karolina
+
+> 
+> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 > ---
->  lib/igt_color.c | 330 ++++++++++++++++++++++++++++++++++++++++++++++++
->  lib/igt_color.h | 105 +++++++++++++++
->  lib/igt_fb.c    |   6 +-
->  lib/igt_fb.h    |   2 +
->  lib/meson.build |   1 +
->  5 files changed, 441 insertions(+), 3 deletions(-)
->  create mode 100644 lib/igt_color.c
->  create mode 100644 lib/igt_color.h
->=20
-> diff --git a/lib/igt_color.c b/lib/igt_color.c
-> new file mode 100644
-> index 000000000000..12ff9ad1f324
-> --- /dev/null
-> +++ b/lib/igt_color.c
-> @@ -0,0 +1,330 @@
-> +/*
-> + * Copyright 2023 Advanced Micro Devices, Inc.
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining=
- a
-> + * copy of this software and associated documentation files (the "Softwa=
-re"),
-> + * to deal in the Software without restriction, including without limita=
-tion
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicen=
-se,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice shall be includ=
-ed in
-> + * all copies or substantial portions of the Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRE=
-SS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILI=
-TY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SH=
-ALL
-> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES=
- OR
-> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-> + * OTHER DEALINGS IN THE SOFTWARE.
-> + */
-> +
-> +#include <errno.h>
-> +#include <math.h>
-> +
-> +#include "igt_color.h"
-> +#include "igt_core.h"
-> +#include "igt_x86.h"
-> +
-> +
-> +static float clamp(float val, float min, float max)
-> +{
-> +	return ((val < min) ? min : ((val > max) ? max : val));
-> +}
-> +
-> +/*
-> + * Below code is taken from Skia and adapted for style and needs of
-> + * IGT.
-> + *
-> + * https://chromium.googlesource.com/chromium/src/+/3e1a26c44c024d97dc9a=
-4c09bbc6a2365398ca2c/ui/gfx/skia_color_space_util.cc#15
-> + *
-> + * To comply with the original code's license we'll include it, as well
-> + * as the original copyright here:
-> + *
-> + * // Copyright 2015 The Chromium Authors
-> + * //
-> + * // Redistribution and use in source and binary forms, with or without
-> + * // modification, are permitted provided that the following conditions=
- are
-> + * // met:
-> + * //
-> + * //    * Redistributions of source code must retain the above copyright
-> + * // notice, this list of conditions and the following disclaimer.
-> + * //    * Redistributions in binary form must reproduce the above
-> + * // copyright notice, this list of conditions and the following discla=
-imer
-> + * // in the documentation and/or other materials provided with the
-> + * // distribution.
-> + * //    * Neither the name of Google LLC nor the names of its
-> + * // contributors may be used to endorse or promote products derived fr=
-om
-> + * // this software without specific prior written permission.
-> + * //
-> + * // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-> + * // "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-> + * // LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS =
-FOR
-> + * // A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIG=
-HT
-> + * // OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENT=
-AL,
-> + * // SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-> + * // LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF U=
-SE,
-> + * // DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON =
-ANY
-> + * // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-> + * // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE =
-USE
-> + * // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAG=
-E.
-> + */
-> +
-> +static float igt_color_tf_eval_unclamped(const struct igt_color_tf *fn, =
-float x)
-> +{
-> +	if (x < fn->d)
-> +		return fn->c * x + fn->f;
-> +	return pow(fn->a * x + fn->b, fn->g) + fn->e;
-> +}
-> +
-> +static float igt_color_tf_eval(const struct igt_color_tf *fn, float x)
-> +{
-> +	float fn_at_x_unclamped =3D igt_color_tf_eval_unclamped(fn, x);
-> +	return clamp(fn_at_x_unclamped, 0.0f, 1.0f);
-> +}
-
-...
-
-> +#if 0
-> +#define PRINT_PIXEL_CMP
-> +#endif
-> +
-> +bool igt_cmp_fb_component(uint16_t comp1, uint16_t comp2, uint8_t up, ui=
-nt8_t down)
-> +{
-> +	int16_t diff =3D comp2 - comp1;
-> +
-> +	if ((diff < -down) || (diff > up)) {
-> +		printf("comp1 %x comp2 %x diff %d down %d, up %d\n", comp1, comp2, dif=
-f, -down, up);
-> +		return false;
-> +	}
-> +
-> +	return true;
-> +}
-> +
-> +bool igt_cmp_fb_pixels(igt_fb_t *fb1, igt_fb_t *fb2, uint8_t up, uint8_t=
- down)
-> +{
-> +	uint32_t *ptr1, *ptr2;
-> +	uint32_t pixel1, pixel2, i, j;
-> +	bool matched =3D true;
-> +
-> +#ifdef PRINT_PIXEL_CMP
-> +	printf("hwhw: %s %d\n", __func__, __LINE__);
-> +#endif
-> +
-> +	ptr1 =3D igt_fb_map_buffer(fb1->fd, fb1);
-> +	ptr2 =3D igt_fb_map_buffer(fb2->fd, fb2);
-> +
-> +	igt_assert(fb1->drm_format =3D=3D fb2->drm_format);
-> +	igt_assert(fb1->size =3D=3D fb2->size);
-> +
-> +	for (i =3D 0; i < fb1->size / sizeof(uint32_t); i++) {
-> +		uint16_t mask =3D 0xff;
-> +		uint16_t shift =3D 8;
-> +
-> +		if (fb1->drm_format =3D=3D DRM_FORMAT_XRGB2101010) {
-> +			/* ignore alpha */
-> +			pixel1 =3D ptr1[i] & ~0xc0000000;
-> +			pixel2 =3D ptr2[i] & ~0xc0000000;
-> +
-> +			mask =3D 0x3ff;
-> +			shift =3D 10;
-> +
-> +
-> +		} else if (fb1->drm_format =3D=3D DRM_FORMAT_XRGB8888) {
-> +			/* ignore alpha */
-> +			pixel1 =3D ptr1[i] & ~0xff000000;
-> +			pixel2 =3D ptr2[i] & ~0xff000000;
-> +
-> +			mask =3D 0xff;
-> +			shift =3D 8;
-> +
-> +		} else {
-> +			pixel1 =3D ptr1[i];
-> +			pixel2 =3D ptr2[i];
-> +		}
-> +
-> +#ifdef PRINT_PIXEL_CMP
-> +		/* print first 5 pixels */
-> +		if (i < 5) {
-> +			printf("hwhw: %s %u\n", __func__, i);
-> +			printf("\t\traw_in\t%u\n", ptr1[i]);
-> +			printf("\t\traw_out\t%u\n", ptr2[i]);
-> +			printf("\t\tin\t%u\n", pixel1);
-> +			printf("\t\tout\t%u\n", pixel2);
-> +		}
-> +#endif
-> +
-> +		for (j =3D 0; j < 3; j++) {
-> +			uint16_t comp1 =3D (pixel1 >> (shift*j)) & mask;
-> +			uint16_t comp2 =3D (pixel2 >> (shift*j)) & mask;
-> +
-> +			if (!igt_cmp_fb_component(comp1, comp2, up, down)) {
-> +				/* TODO use proper log*/
-> +				printf("i %d j %d shift %d mask %x comp1 %x comp2 %x, pixel1 %x pixe=
-l2 %x\n",
-> +				       i, j, shift, mask, comp1, comp2, pixel1, pixel2);
-> +				return false;
-> +			}
-> +		}
-> +	}
-> +
-> +	igt_fb_unmap_buffer(fb1, ptr1);
-> +	igt_fb_unmap_buffer(fb2, ptr2);
-> +
-> +	return matched;
-> +}
-
-Maybe you'd like to borrow some facilities from Weston for comparing
-images?
-
-Statistics collecting:
-https://gitlab.freedesktop.org/wayland/weston/-/blob/71616edc4dfce1cf9deafe=
-e36009dd9c37a9ba8d/tests/color_util.c#L504-530
-https://gitlab.freedesktop.org/wayland/weston/-/blob/71616edc4dfce1cf9deafe=
-e36009dd9c37a9ba8d/tests/color_util.h#L159-178
-
-Example usage of the above:
-https://gitlab.freedesktop.org/wayland/weston/-/blob/71616edc4dfce1cf9deafe=
-e36009dd9c37a9ba8d/tests/color-icc-output-test.c#L726-764
-
-
-
-> +
-> +
-> +void igt_dump_fb(igt_display_t *display, igt_fb_t *fb,
-> +		 const char *path_name, const char *file_name)
-> +{
-> +	char filepath_out[PATH_MAX];
-> +	cairo_surface_t *fb_surface_out;
-> +	cairo_status_t status;
-> +
-> +	snprintf(filepath_out, PATH_MAX, "%s/%s.png", path_name, file_name);
-> +	fb_surface_out =3D igt_get_cairo_surface(display->drm_fd, fb);
-> +	status =3D cairo_surface_write_to_png(fb_surface_out, filepath_out);
-> +	igt_assert_eq(status, CAIRO_STATUS_SUCCESS);
-> +	cairo_surface_destroy(fb_surface_out);
-> +}
-> \ No newline at end of file
-> diff --git a/lib/igt_color.h b/lib/igt_color.h
-> new file mode 100644
-> index 000000000000..fc136eecfd17
-> --- /dev/null
-> +++ b/lib/igt_color.h
-> @@ -0,0 +1,105 @@
-> +/*
-> + * Copyright 2023 Advanced Micro Devices, Inc.
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining=
- a
-> + * copy of this software and associated documentation files (the "Softwa=
-re"),
-> + * to deal in the Software without restriction, including without limita=
-tion
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicen=
-se,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice shall be includ=
-ed in
-> + * all copies or substantial portions of the Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRE=
-SS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILI=
-TY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SH=
-ALL
-> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES=
- OR
-> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-> + * OTHER DEALINGS IN THE SOFTWARE.
-> + */
-> +
-> +
-> +#ifndef __IGT_COLOR_H__
-> +#define __IGT_COLOR_H__
-> +
-> +#include <limits.h>
-> +
-> +#include "igt_fb.h"
-> +#include "igt_kms.h"
-> +
-> +/*
-> + * Below code is taken from Skia and adapted for style and needs of
-> + * IGT.
-> + *
-> + * https://chromium.googlesource.com/chromium/src/+/3e1a26c44c024d97dc9a=
-4c09bbc6a2365398ca2c/ui/gfx/skia_color_space_util.cc#15
-> + *
-> + * To comply with the original code's license we'll include it, as well
-> + * as the original copyright here:
-> + *
-> + * // Copyright 2015 The Chromium Authors
-> + * //
-> + * // Redistribution and use in source and binary forms, with or without
-> + * // modification, are permitted provided that the following conditions=
- are
-> + * // met:
-> + * //
-> + * //    * Redistributions of source code must retain the above copyright
-> + * // notice, this list of conditions and the following disclaimer.
-> + * //    * Redistributions in binary form must reproduce the above
-> + * // copyright notice, this list of conditions and the following discla=
-imer
-> + * // in the documentation and/or other materials provided with the
-> + * // distribution.
-> + * //    * Neither the name of Google LLC nor the names of its
-> + * // contributors may be used to endorse or promote products derived fr=
-om
-> + * // this software without specific prior written permission.
-> + * //
-> + * // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-> + * // "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-> + * // LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS =
-FOR
-> + * // A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIG=
-HT
-> + * // OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENT=
-AL,
-> + * // SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-> + * // LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF U=
-SE,
-> + * // DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON =
-ANY
-> + * // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-> + * // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE =
-USE
-> + * // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAG=
-E.
-> + */
-> +/*
-> + * A transfer function mapping encoded values to linear values,
-> + * represented by this 7-parameter piecewise function:
-> + *
-> + *   linear =3D sign(encoded) *  (c*|encoded| + f)       , 0 <=3D |encod=
-ed| < d
-> + *          =3D sign(encoded) * ((a*|encoded| + b)^g + e), d <=3D |encod=
-ed|
-
-The code you have does not actually do the extended form (use of sign
-and absolute value), but clamps the result to [0.0, 1.0].
-
-
-> + *
-> + * (A simple gamma transfer function sets g to gamma and a to 1.)
-> + */
-> +struct igt_color_tf {
-> +    float g, a,b,c,d,e,f;
-> +};
-> +
-> +const struct igt_color_tf srgb_tf =3D {2.4f, (float)(1/1.055), (float)(0=
-.055/1.055), (float)(1/12.92), 0.04045f, 0, 0};
-> +
-> +/* end of Skia-based code */
-> +
-> +typedef struct igt_pixel {
-> +	float r;
-> +	float g;
-> +	float b;
-> +} igt_pixel_t;
-
-Thanks,
-pq
-
---Sig_/qCHoHkB/Zn+cDK4GjUtK=SE
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEJQjwWQChkWOYOIONI1/ltBGqqqcFAmUEb8oACgkQI1/ltBGq
-qqc0jw/8DvVd+x98g7T9VfM+J7Nnt0C2MeMSnIUhvU+QkMQk7uFYvRn1ZwHJ1/eL
-aYVhAZsq/WevFpUhOa9+KkkCDMo+QlLfM7rgGNXSgxGp0N0NmdSLO66nTfFwq/Q7
-wTTmRmMHtJmZPGWwNoXDw3IwSezCE6rOOsgsVZWVuwlnFViFVTezQReqxA17A3+C
-zukCVVbjJbtjTAbt7GbwVCblbrDPW/+puLIS2QgsuAtm+Z4OI6TOm20tytAVvb+K
-KHXG/ytr0TwzSCurBhveoB+cr1+PQDQfniWPScxsVF2Xc3MzM8NoVslMShFPE02w
-fokFn9hzwKopqldA5oaiaCYzIsMc5Q2Pt9ELxWBb9ArFbgD1Y1uDU+CsmMkjv6mc
-UjLoj9eyj7YmPOsEX4PtKRuMDSJDvVooS/aHGysoBY4E1geF6cOc/Imk4BH02TlU
-yLN3Cl3B+bJDEAx1NehJtC5FUO2Dpjc8AiauMBczG5avTAt7WHLpncul4wNThD/g
-rtf1k8x08j3qDpEhk2l3NH4pE5kgrTYvm1+mWbthmmKnoSTJl80JpMxphq2xDN/t
-N3Xdo7kIhqFhNZ/k26WUKmMLxIcGOaeWTS25oEAya68VLHvD2s1Wm5THTfnq7boD
-xTn5cqPSwN4GvBYjmk6k5gywgPqa4vtYG/FjrHpuYgEINsM+ZkA=
-=0v0f
------END PGP SIGNATURE-----
-
---Sig_/qCHoHkB/Zn+cDK4GjUtK=SE--
+>   lib/intel_cmds_info.h | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/lib/intel_cmds_info.h b/lib/intel_cmds_info.h
+> index 91d0f15ec..ec8312d56 100644
+> --- a/lib/intel_cmds_info.h
+> +++ b/lib/intel_cmds_info.h
+> @@ -20,6 +20,8 @@ enum blt_tiling_type {
+>   
+>   enum blt_cmd_type {
+>   	SRC_COPY,
+> +	MEM_SET,
+> +	MEM_COPY,
+>   	XY_SRC_COPY,
+>   	XY_FAST_COPY,
+>   	XY_BLOCK_COPY,
