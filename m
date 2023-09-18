@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8110210E200
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Sep 2023 07:53:51 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EAE4610E1F2
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Sep 2023 07:54:18 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 18 Sep 2023 13:24:11 +0530
-Message-Id: <20230918075411.247122-7-swati2.sharma@intel.com>
-In-Reply-To: <20230918075411.247122-1-swati2.sharma@intel.com>
-References: <20230918075411.247122-1-swati2.sharma@intel.com>
+Date: Mon, 18 Sep 2023 13:24:45 +0530
+Message-Id: <20230918075448.247197-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 6/6] tests/kms_atomic: add flexibility to
- run tests on all pipes
+Subject: [igt-dev] [PATCH i-g-t 0/3] tests/kms_vblank: Test cleanup and
+ dynamic conversion
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,173 +21,18 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Extra flag in command line is passed to run subtests on all
-pipe/output combinations. However, by default execution is
-restricted to 1pipe/1output combination.
+Subtests are converted to dynamic subtests. Also, testplan
+documentation is updated.
+Review comments addressed from
+https://patchwork.freedesktop.org/series/109170/
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_atomic.c | 56 +++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 43 insertions(+), 13 deletions(-)
+Swati Sharma (3):
+  tests/kms_vblank: cosmetic changes
+  tests/kms_vblank: convert test to dynamic
+  tests/kms_vblank: update testplan doc
 
-diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
-index bed468e4b..c7190c6bd 100644
---- a/tests/kms_atomic.c
-+++ b/tests/kms_atomic.c
-@@ -58,6 +58,8 @@
- 
- IGT_TEST_DESCRIPTION("Test atomic modesetting API");
- 
-+static bool all_pipes = false;
-+
- /* Common test data. */
- typedef struct {
- 	igt_display_t display;
-@@ -1409,7 +1411,23 @@ pipe_output_combo_valid(igt_display_t *display,
- 	return ret;
- }
- 
--igt_main
-+static int opt_handler(int opt, int opt_index, void *_data)
-+{
-+	switch (opt) {
-+		case 'e':
-+			all_pipes = true;
-+			break;
-+		default:
-+			return IGT_OPT_HANDLER_ERROR;
-+	}
-+
-+	return IGT_OPT_HANDLER_SUCCESS;
-+}
-+
-+static const char *help_str =
-+	"  -e \tRun on all pipes. (By default subtests will run only on one pipe)\n";
-+
-+igt_main_args("e", NULL, help_str, opt_handler, NULL)
- {
- 	enum pipe pipe = PIPE_NONE;
- 	igt_output_t *output = NULL;
-@@ -1440,7 +1458,8 @@ igt_main
- 				plane_overlay(&data, output, overlay, format);
- 				atomic_clear(&data, pipe, output);
- 			}
--			break;
-+			if (!all_pipes)
-+				break;
- 		}
- 	}
- 
-@@ -1455,7 +1474,8 @@ igt_main
- 				plane_primary(&data);
- 				atomic_clear(&data, pipe, output);
- 			}
--			break;
-+			if (!all_pipes)
-+				break;
- 		}
- 	}
- 
-@@ -1482,7 +1502,8 @@ igt_main
- 								   DRM_FORMAT_ARGB8888, DRM_FORMAT_ARGB1555);
- 				atomic_clear(&data, pipe, output);
- 			}
--			break;
-+			if (!all_pipes)
-+				break;
- 		}
- 	}
- 
-@@ -1501,7 +1522,8 @@ igt_main
- 				plane_immutable_zpos(&data, output, pipe, n_planes);
- 				atomic_clear(&data, pipe, output);
- 			}
--			break;
-+			if (!all_pipes)
-+				break;
- 		}
- 	}
- 
-@@ -1523,7 +1545,8 @@ igt_main
- 				atomic_clear(&data, pipe, output);
- 				test_only(&data, output, pipe, format);
- 			}
--			break;
-+			if (!all_pipes)
-+				break;
- 		}
- 	}
- 
-@@ -1543,7 +1566,8 @@ igt_main
- 				plane_cursor(&data, output, cursor);
- 				atomic_clear(&data, pipe, output);
- 			}
--			break;
-+			if (!all_pipes)
-+				break;
- 		}
- 	}
- 
-@@ -1557,7 +1581,8 @@ igt_main
- 				plane_invalid_params(&data, output);
- 				atomic_clear(&data, pipe, output);
- 			}
--			break;
-+			if (!all_pipes)
-+				break;
- 		}
- 	}
- 
-@@ -1571,7 +1596,8 @@ igt_main
- 				plane_invalid_params_fence(&data, output);
- 				atomic_clear(&data, pipe, output);
- 			}
--			break;
-+			if (!all_pipes)
-+				break;
- 		}
- 	}
- 
-@@ -1585,7 +1611,8 @@ igt_main
- 				crtc_invalid_params(&data, output);
- 				atomic_clear(&data, pipe, output);
- 			}
--			break;
-+			if (!all_pipes)
-+				break;
- 		}
- 	}
- 
-@@ -1599,7 +1626,8 @@ igt_main
- 				crtc_invalid_params_fence(&data, output);
- 				atomic_clear(&data, pipe, output);
- 			}
--			break;
-+			if (!all_pipes)
-+				break;
- 		}
- 	}
- 
-@@ -1615,7 +1643,8 @@ igt_main
- 				atomic_invalid_params(&data, output);
- 				atomic_clear(&data, pipe, output);
- 			}
--			break;
-+			if (!all_pipes)
-+				break;
- 		}
- 	}
- 
-@@ -1633,7 +1662,8 @@ igt_main
- 				atomic_plane_damage(&data);
- 				atomic_clear(&data, pipe, output);
- 			}
--			break;
-+			if (!all_pipes)
-+				break;
- 		}
- 	}
- 
+ tests/kms_vblank.c | 268 +++++++++++++++------------------------------
+ 1 file changed, 87 insertions(+), 181 deletions(-)
+
 -- 
 2.25.1
