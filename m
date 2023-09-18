@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 67FB410E046
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Sep 2023 09:56:58 +0000 (UTC)
-Message-ID: <155a5b71-74b5-9c01-db9e-fee8e73de7c7@intel.com>
-Date: Mon, 18 Sep 2023 11:56:44 +0200
-Content-Language: en-US
-To: <sai.gowtham.ch@intel.com>
-References: <20230915051617.9361-1-sai.gowtham.ch@intel.com>
- <20230915051617.9361-4-sai.gowtham.ch@intel.com>
-From: Karolina Stolarek <karolina.stolarek@intel.com>
-In-Reply-To: <20230915051617.9361-4-sai.gowtham.ch@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative;
+ boundary="===============8667051418602631999=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 3/4] lib/intel_blt: Add wrappers to
- prepare batch buffers and submit exec
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Date: Mon, 18 Sep 2023 11:57:06 -0000
+Message-ID: <169503822647.32418.12951091054792252434@emeril.freedesktop.org>
+References: <20230918075411.247122-1-swati2.sharma@intel.com>
+In-Reply-To: <20230918075411.247122-1-swati2.sharma@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_tests/km?=
+ =?utf-8?q?s=5Fatomic=3A_Test_cleanup_and_dynamic_conversion?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,354 +17,155 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 15.09.2023 07:16, sai.gowtham.ch@intel.com wrote:
-> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-> 
-> This commit has couple of changes in it:
-> 1. Adding wrapper for mem-set and mem-copy instructions to
->     prepare batch buffers and submit exec, (blt_mem_copy, blt_set_mem,
->     emit_blt_mem_copy, emit,blt_set_mem).
-> 
-> 2. Add check to see if blt commands are supported by the platforms.
+--===============8667051418602631999==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Like I said in 1/4, it's fine to merge (2) with that other patch, so 
-here we only have mem_set and mem_copy defined. Also, you could reword 
-the patch to something like "Introduce mem_set and mem_copy commands". 
-Yes, technically they are wrappers, but I think of them more as library 
-features.
+== Series Details ==
 
-> 
-> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-> ---
->   lib/intel_blt.c | 210 ++++++++++++++++++++++++++++++++++++++++++++++++
->   lib/intel_blt.h |  20 +++++
->   2 files changed, 230 insertions(+)
-> 
-> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-> index 429511920..88ad7cae8 100644
-> --- a/lib/intel_blt.c
-> +++ b/lib/intel_blt.c
-> @@ -13,12 +13,14 @@
->   #include "igt.h"
->   #include "igt_syncobj.h"
->   #include "intel_blt.h"
-> +#include "intel_mocs.h"
->   #include "xe/xe_ioctl.h"
->   #include "xe/xe_query.h"
->   #include "xe/xe_util.h"
->   
->   #define BITRANGE(start, end) (end - start + 1)
->   #define GET_CMDS_INFO(__fd) intel_get_cmds_info(intel_get_drm_devid(__fd))
-> +#define MEM_COPY_MOCS_SHIFT                     25
->   
->   /* Blitter tiling definitions sanity checks */
->   static_assert(T_LINEAR == I915_TILING_NONE, "Linear definitions have to match");
-> @@ -289,6 +291,38 @@ bool blt_has_block_copy(int fd)
->   	return blt_supports_command(cmds_info, XY_BLOCK_COPY);
->   }
->   
-> +/**
-> + * blt_has_mem_copy
-> + * @fd: drm fd
-> + *
-> + * Check if mem copy is supported by @fd device
-> + *
-> + * Returns:
-> + * true if it does, false otherwise.
-> + */
-> +bool blt_has_mem_copy(int fd)
-> +{
-> +	const struct intel_cmds_info *cmds_info = GET_CMDS_INFO(fd);
-> +
-> +	return blt_supports_command(cmds_info, MEM_COPY);
-> +}
-> +
-> +/**
-> + * blt_has_mem_set
-> + * @fd: drm fd
-> + *
-> + * Check if mem set is supported by @fd device
-> + *
-> + * Returns:
-> + * true if it does, false otherwise.
-> + */
-> +bool blt_has_mem_set(int fd)
-> +{
-> +	const struct intel_cmds_info *cmds_info = GET_CMDS_INFO(fd);
-> +
-> +	return blt_supports_command(cmds_info, MEM_SET);
-> +}
-> +
->   /**
->    * blt_has_fast_copy
->    * @fd: drm fd
-> @@ -1380,6 +1414,182 @@ int blt_fast_copy(int fd,
->   	return ret;
->   }
->   
-> +void emit_blt_mem_copy(int fd, uint64_t ahnd, const struct blt_copy_data *blt, uint32_t col_size)
-> +{
-> +	uint64_t dst_offset, src_offset, alignment;
-> +	int i;
-> +	uint8_t src_mocs = intel_get_uc_mocs(fd);
-> +	uint8_t dst_mocs = src_mocs;
-> +	uint32_t size;
-> +	struct {
-> +		uint32_t batch[12];
-> +		uint32_t data;
-> +	} *data;
+Series: tests/kms_atomic: Test cleanup and dynamic conversion
+URL   : https://patchwork.freedesktop.org/series/123846/
+State : failure
 
-It's a nit on my part, but I thought it would be nice to have a struct 
-here, similar to gen12_fast_copy_data.
+== Summary ==
 
-> +
-> +	alignment = xe_get_default_alignment(fd);
+CI Bug Log - changes from XEIGT_7493_BAT -> XEIGTPW_9813_BAT
+====================================================
 
-If we want to provide support for both i915 and Xe, we should use 
-get_default_alignment() function here instead.
+Summary
+-------
 
-> +	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment);
-> +	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment);
-> +	size = blt->src.size;
-> +
-> +	data = xe_bo_map(fd, blt->bb.handle, blt->bb.size);
+  **FAILURE**
 
-There's a helper to handle bo mapping for both i915 and Xe: bo_map(). 
-It'll check the type of the driver for your.
+  Serious unknown changes coming with XEIGTPW_9813_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_9813_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-> +
-> +	i = 0;
-> +	data->batch[i++] = MEM_COPY_CMD;
-> +	data->batch[i++] = size - 1;
-> +	data->batch[i++] = col_size - 1;
-> +	data->batch[i++] = 0;
-> +	data->batch[i++] = 0;
-> +	data->batch[i++] = src_offset;
-> +	data->batch[i++] = src_offset << 32;
-> +	data->batch[i++] = dst_offset;
-> +	data->batch[i++] = dst_offset << 32;
-> +	data->batch[i++] = src_mocs << MEM_COPY_MOCS_SHIFT | dst_mocs;
-> +	data->batch[i++] = MI_BATCH_BUFFER_END;
+  
 
-This means we can't pipeline mem_copies in one bb. You could add a flag 
-similar to "bool emit_bbe" in emit_blt_fast_copy
+Participating hosts (4 -> 4)
+------------------------------
 
-> +	data->batch[i++] = MI_NOOP;
-> +
-> +	igt_assert(i <= ARRAY_SIZE(data->batch));
+  No changes in participating hosts
 
-Hm, I wonder, don't we need to unmap the mapped bb here?
+Possible new issues
+-------------------
 
-> +}
-> +
-> +/**
-> + * blt_mem_copy:
-> + * @fd: drm fd
-> + * @ctx: intel_ctx_t context
-> + * @e: blitter engine for @ctx
-> + * @ahnd: allocator handle
-> + * @blt: blitter data for mem-copy.
-> + *
-> + * Function does mem blit between @src and @dst described in @blt object.
-> + *
-> + * Returns:
-> + * execbuffer status.
-> + */
-> +int blt_mem_copy(int fd, const intel_ctx_t *ctx,
-> +		 const struct intel_execution_engine2 *e,
-> +		 uint64_t ahnd,
-> +		 const struct blt_copy_data *blt,
-> +		 uint32_t col_size)
-> +{
-> +	struct drm_i915_gem_execbuffer2 execbuf = {};
-> +	struct drm_i915_gem_exec_object2 obj[3] = {};
-> +	uint64_t dst_offset, src_offset, bb_offset, alignment;
-> +	int ret;
-> +
-> +	alignment = get_default_alignment(fd, blt->driver);
-> +	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment);
-> +	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment);
-> +	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
-> +
-> +	emit_blt_mem_copy(fd, ahnd, blt, col_size);
-> +
-> +	if (blt->driver == INTEL_DRIVER_XE) {
-> +		intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
-> +	} else {
-> +		obj[0].offset = CANONICAL(dst_offset);
-> +		obj[1].offset = CANONICAL(src_offset);
-> +		obj[2].offset = CANONICAL(bb_offset);
-> +		obj[0].handle = blt->dst.handle;
-> +		obj[1].handle = blt->src.handle;
-> +		obj[2].handle = blt->bb.handle;
-> +		obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
-> +			       EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-> +		obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-> +		obj[2].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-> +		execbuf.buffer_count = 3;
-> +		execbuf.buffers_ptr = to_user_pointer(obj);
-> +		execbuf.rsvd1 = ctx ? ctx->id : 0;
-> +		execbuf.flags = e ? e->flags : I915_EXEC_BLT;
-> +		ret = __gem_execbuf(fd, &execbuf);
-> +		put_offset(ahnd, blt->dst.handle);
-> +		put_offset(ahnd, blt->src.handle);
-> +		put_offset(ahnd, blt->bb.handle);
-> +	}
+  Here are the unknown changes that may have been introduced in XEIGTPW_9813_BAT:
 
-Nit: add an empty line here
+### IGT changes ###
 
-> +	return ret;
-> +}
-> +
-> +void emit_blt_set_mem(int fd, uint64_t ahnd, const struct blt_copy_data *blt,
-> +		      uint32_t fill_data, uint32_t height)
+#### Possible regressions ####
 
-It should be emit_blt_mem_set
+  * igt@xe_module_load@load:
+    - bat-dg2-oem2:       [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7493/bat-dg2-oem2/igt@xe_module_load@load.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9813/bat-dg2-oem2/igt@xe_module_load@load.html
 
-> +{
-> +	uint64_t dst_offset, alignment;
-> +	int b;
-> +	uint8_t dst_mocs = intel_get_uc_mocs(fd);
-> +	uint32_t size;
-> +	struct {
-> +		uint32_t batch[12];
-> +		uint32_t data;
-> +	} *data;
-> +
-> +	alignment = xe_get_default_alignment(fd);
+  
+Known issues
+------------
 
-Similar comments to what I have for mem_copy, commenting here to make 
-sure this doesn't fall through the cracks
+  Here are the changes found in XEIGTPW_9813_BAT that come from known issues:
 
-> +	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment);
-> +	size = blt->dst.size;
-> +
-> +	data = xe_bo_map(fd, blt->dst.handle, blt->dst.size);
+### IGT changes ###
 
-Also here, use a driver-independent wrapper bo_map()
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
 
-> +
-> +	b = 0;
-> +	data->batch[b++] = MEM_SET_CMD;
-> +	data->batch[b++] = size - 1;
-> +	data->batch[b++] = height;
-> +	data->batch[b++] = 0;
-> +	data->batch[b++] = dst_offset;
-> +	data->batch[b++] = dst_offset << 32;
-> +	data->batch[b++] = (fill_data << 24) | dst_mocs;
-> +	data->batch[b++] = MI_BATCH_BUFFER_END;
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
 
-Again, the question about adding an buffer end in the middle of the bb.
 
-> +	data->batch[b++] = MI_NOOP;
-> +
-> +	igt_assert(b <= ARRAY_SIZE(data->batch));
-> +}
-> +
-> +/**
-> + * blt_set_mem:
-> + * @fd: drm fd
-> + * @ctx: intel_ctx_t context
-> + * @e: blitter engine for @ctx
-> + * @ahnd: allocator handle
-> + * @blt: blitter data for mem-set.
-> + *
-> + * Function does mem set blit in described @blt object.
-> + *
-> + * Returns:
-> + * execbuffer status.
-> + */
-> +int blt_set_mem(int fd, const intel_ctx_t *ctx,
+Build changes
+-------------
 
-blt_mem_set, not set_mem
+  * IGT: IGT_7493 -> IGTPW_9813
+  * Linux: xe-376-9da40abcc0ccdf8fdfed4e21d76060bfcd35fe7d -> xe-377-717f01815b20bde3f081a18f42f31673ce1f107f
 
-> +		const struct intel_execution_engine2 *e,
-> +		uint64_t ahnd,
-> +		const struct blt_copy_data *blt,
-> +		uint32_t height,
-> +		uint32_t fill_data)
-> +{
-> +	struct drm_i915_gem_execbuffer2 execbuf = {};
-> +	struct drm_i915_gem_exec_object2 obj[2] = {};
-> +	uint64_t dst_offset, bb_offset, alignment;
-> +	int ret;
-> +
-> +	alignment = get_default_alignment(fd, blt->driver);
-> +	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment);
-> +	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
-> +
-> +	emit_blt_set_mem(fd, ahnd, blt, fill_data, height);
-> +
-> +	if (blt->driver == INTEL_DRIVER_XE) {
-> +		intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
-> +	} else {
-> +		obj[0].offset = CANONICAL(dst_offset);
-> +		obj[1].offset = CANONICAL(bb_offset);
-> +		obj[0].handle = blt->dst.handle;
-> +		obj[1].handle = blt->bb.handle;
-> +		obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
-> +			       EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-> +		obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-> +		execbuf.buffer_count = 2;
-> +		execbuf.buffers_ptr = to_user_pointer(obj);
-> +		execbuf.rsvd1 = ctx ? ctx->id : 0;
-> +		execbuf.flags = e ? e->flags : I915_EXEC_BLT;
-> +		ret = __gem_execbuf(fd, &execbuf);
-> +		put_offset(ahnd, blt->dst.handle);
-> +		put_offset(ahnd, blt->bb.handle);
-> +	}
+  IGTPW_9813: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9813/index.html
+  IGT_7493: 2517e42d612e0c1ca096acf8b5f6177f7ef4bce7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-376-9da40abcc0ccdf8fdfed4e21d76060bfcd35fe7d: 9da40abcc0ccdf8fdfed4e21d76060bfcd35fe7d
+  xe-377-717f01815b20bde3f081a18f42f31673ce1f107f: 717f01815b20bde3f081a18f42f31673ce1f107f
 
-Nit: empty line
+== Logs ==
 
-Many thanks,
-Karolina
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9813/index.html
 
-> +	return ret;
-> +}
-> +
->   void blt_set_geom(struct blt_copy_object *obj, uint32_t pitch,
->   		  int16_t x1, int16_t y1, int16_t x2, int16_t y2,
->   		  uint16_t x_offset, uint16_t y_offset)
-> diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-> index b8b3d724d..79edee0d5 100644
-> --- a/lib/intel_blt.h
-> +++ b/lib/intel_blt.h
-> @@ -175,6 +175,8 @@ bool blt_cmd_has_property(const struct intel_cmds_info *cmds_info,
->   			  uint32_t prop);
->   
->   bool blt_has_block_copy(int fd);
-> +bool blt_has_mem_copy(int fd);
-> +bool blt_has_mem_set(int fd);
->   bool blt_has_fast_copy(int fd);
->   bool blt_has_xy_src_copy(int fd);
->   bool blt_has_xy_color(int fd);
-> @@ -229,6 +231,24 @@ int blt_fast_copy(int fd,
->   		  uint64_t ahnd,
->   		  const struct blt_copy_data *blt);
->   
-> +void emit_blt_mem_copy(int fd, uint64_t ahnd,
-> +		       const struct blt_copy_data *blt,
-> +		       uint32_t col_size);
-> +
-> +int blt_mem_copy(int fd, const intel_ctx_t *ctx,
-> +		const struct intel_execution_engine2 *e,
-> +		 uint64_t ahnd,
-> +		 const struct blt_copy_data *blt,
-> +		 uint32_t col_size);
-> +
-> +void emit_blt_set_mem(int fd, uint64_t ahnd, const struct blt_copy_data *blt,
-> +		      uint32_t fill_data, uint32_t height);
-> +
-> +int blt_set_mem(int fd, const intel_ctx_t *ctx,
-> +		const struct intel_execution_engine2 *e, uint64_t ahnd,
-> +		const struct blt_copy_data *blt, uint32_t height,
-> +		uint32_t fill_data);
-> +
->   void blt_set_geom(struct blt_copy_object *obj, uint32_t pitch,
->   		  int16_t x1, int16_t y1, int16_t x2, int16_t y2,
->   		  uint16_t x_offset, uint16_t y_offset);
+--===============8667051418602631999==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_atomic: Test cleanup and dynamic conversion</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123846/">https://patchwork.freedesktop.org/series/123846/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9813/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9813/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7493_BAT -&gt; XEIGTPW_9813_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_9813_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_9813_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_9813_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@xe_module_load@load:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7493/bat-dg2-oem2/igt@xe_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9813/bat-dg2-oem2/igt@xe_module_load@load.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9813_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7493 -&gt; IGTPW_9813</li>
+<li>Linux: xe-376-9da40abcc0ccdf8fdfed4e21d76060bfcd35fe7d -&gt; xe-377-717f01815b20bde3f081a18f42f31673ce1f107f</li>
+</ul>
+<p>IGTPW_9813: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9813/index.html<br />
+  IGT_7493: 2517e42d612e0c1ca096acf8b5f6177f7ef4bce7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-376-9da40abcc0ccdf8fdfed4e21d76060bfcd35fe7d: 9da40abcc0ccdf8fdfed4e21d76060bfcd35fe7d<br />
+  xe-377-717f01815b20bde3f081a18f42f31673ce1f107f: 717f01815b20bde3f081a18f42f31673ce1f107f</p>
+
+</body>
+</html>
+
+--===============8667051418602631999==--
