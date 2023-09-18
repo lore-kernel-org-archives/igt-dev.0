@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2381310E276
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Sep 2023 11:21:46 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 18 Sep 2023 16:52:16 +0530
-Message-Id: <20230918112216.260019-3-swati2.sharma@intel.com>
-In-Reply-To: <20230918112216.260019-1-swati2.sharma@intel.com>
-References: <20230918112216.260019-1-swati2.sharma@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] tests/kms_lease: rename subtests
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Date: Mon, 18 Sep 2023 11:50:48 -0000
+Message-ID: <169503784835.32417.8415246945971628867@emeril.freedesktop.org>
+References: <20230918075448.247197-1-swati2.sharma@intel.com>
+In-Reply-To: <20230918075448.247197-1-swati2.sharma@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
+ =?utf-8?q?s/kms=5Fvblank=3A_Test_cleanup_and_dynamic_conversion?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,194 +17,72 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Use '-' instead of '_' while naming subtests.
+== Series Details ==
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/kms_lease.c | 62 +++++++++++++++++++++++------------------------
- 1 file changed, 31 insertions(+), 31 deletions(-)
+Series: tests/kms_vblank: Test cleanup and dynamic conversion
+URL   : https://patchwork.freedesktop.org/series/123847/
+State : failure
 
-diff --git a/tests/kms_lease.c b/tests/kms_lease.c
-index 1a91b3eb4..343cdb812 100644
---- a/tests/kms_lease.c
-+++ b/tests/kms_lease.c
-@@ -46,21 +46,21 @@
- #include "igt_device.h"
- 
- /**
-- * SUBTEST: atomic_implicit_crtc
-+ * SUBTEST: atomic-implicit-crtc
-  * Description: Negative test by using a different crtc with atomic ioctl
-  * Driver requirement: i915, xe
-  * Functionality: lease
-  * Mega feature: General Display Features
-  * Test category: functionality test
-  *
-- * SUBTEST: cursor_implicit_plane
-+ * SUBTEST: cursor-implicit-plane
-  * Description: Negative test by using a non-primary plane with setcursor ioctl
-  * Driver requirement: i915, xe
-  * Functionality: lease
-  * Mega feature: General Display Features
-  * Test category: functionality test
-  *
-- * SUBTEST: empty_lease
-+ * SUBTEST: empty-lease
-  * Description: Check that creating an empty lease works
-  * Driver requirement: i915, xe
-  * Functionality: lease
-@@ -89,63 +89,63 @@
-  * Mega feature: General Display Features
-  * Test category: functionality test
-  *
-- * SUBTEST: lease_again
-+ * SUBTEST: lease-again
-  * Description: Tests leasing objects more than once
-  * Driver requirement: i915, xe
-  * Functionality: lease
-  * Mega feature: General Display Features
-  * Test category: functionality test
-  *
-- * SUBTEST: lease_get
-+ * SUBTEST: lease-get
-  * Description: Tests getting the required contents of a lease
-  * Driver requirement: i915, xe
-  * Functionality: lease
-  * Mega feature: General Display Features
-  * Test category: functionality test
-  *
-- * SUBTEST: lease_invalid_connector
-+ * SUBTEST: lease-invalid-connector
-  * Description: Tests leasing an invalid connector
-  * Driver requirement: i915, xe
-  * Functionality: lease
-  * Mega feature: General Display Features
-  * Test category: functionality test
-  *
-- * SUBTEST: lease_invalid_crtc
-+ * SUBTEST: lease-invalid-crtc
-  * Description: Tests leasing an invalid crtc
-  * Driver requirement: i915, xe
-  * Functionality: lease
-  * Mega feature: General Display Features
-  * Test category: functionality test
-  *
-- * SUBTEST: lease_invalid_plane
-+ * SUBTEST: lease-invalid-plane
-  * Description: Tests leasing an invalid plane
-  * Driver requirement: i915, xe
-  * Functionality: lease
-  * Mega feature: General Display Features
-  * Test category: functionality test
-  *
-- * SUBTEST: lease_revoke
-+ * SUBTEST: lease-revoke
-  * Description: Tests revocation of lease
-  * Driver requirement: i915, xe
-  * Functionality: lease
-  * Mega feature: General Display Features
-  * Test category: functionality test
-  *
-- * SUBTEST: lease_unleased_connector
-+ * SUBTEST: lease-unleased-connector
-  * Description: Negative test by trying to use an unleased connector
-  * Driver requirement: i915, xe
-  * Functionality: lease
-  * Mega feature: General Display Features
-  * Test category: functionality test
-  *
-- * SUBTEST: lease_unleased_crtc
-+ * SUBTEST: lease-unleased-crtc
-  * Description: Negative test by trying to use an unleased crtc
-  * Driver requirement: i915, xe
-  * Functionality: lease
-  * Mega feature: General Display Features
-  * Test category: functionality test
-  *
-- * SUBTEST: lessee_list
-+ * SUBTEST: lessee-list
-  * Description: Check if listed lease is same as created one
-  * Driver requirement: i915, xe
-  * Functionality: lease
-@@ -168,7 +168,7 @@
-  * Mega feature: General Display Features
-  * Test category: functionality test
-  *
-- * SUBTEST: page_flip_implicit_plane
-+ * SUBTEST: page-flip-implicit-plane
-  * Description: Negative test by using a non-primary plane with the page flip ioctl
-  * Driver requirement: i915, xe
-  * Functionality: lease
-@@ -184,14 +184,14 @@
-  * Mega feature: General Display Features
-  * Test category: functionality test
-  *
-- * SUBTEST: setcrtc_implicit_plane
-+ * SUBTEST: setcrtc-implicit-plane
-  * Description: Negative test by using a non-primary plane with the setcrtc ioctl
-  * Driver requirement: i915, xe
-  * Functionality: lease
-  * Mega feature: General Display Features
-  * Test category: functionality test
-  *
-- * SUBTEST: simple_lease
-+ * SUBTEST: simple-lease
-  * Description: Check if create lease ioctl call works
-  * Driver requirement: i915, xe
-  * Functionality: lease
-@@ -381,7 +381,7 @@ static void simple_lease(data_t *data)
- 	igt_assert_eq(0, prepare_crtc(&lease, data));
- 
- 	/* Paint something attractive */
--	paint_fb(lease.fd, &lease.primary_fb, "simple_lease",
-+	paint_fb(lease.fd, &lease.primary_fb, "simple-lease",
- 		 lease.mode->name, igt_output_name(lease.output), kmstest_pipe_name(pipe));
- 	igt_debug_wait_for_keypress("lease");
- 	cleanup_crtc(&lease,
-@@ -1347,25 +1347,25 @@ igt_main
- 			void (*func)(data_t *);
- 			const char *desc;
- 		} funcs[] = {
--			{ "simple_lease", simple_lease, "Check if create lease ioctl call works" },
--			{ "empty_lease", empty_lease, "Check that creating an empty lease works" },
--			{ "lessee_list", lessee_list, "Check if listed lease is same as created one" },
--			{ "lease_get", lease_get, "Tests getting the required contents of a lease" },
--			{ "lease_unleased_connector", lease_unleased_connector, "Negative test by trying to"
-+			{ "simple-lease", simple_lease, "Check if create lease ioctl call works" },
-+			{ "empty-lease", empty_lease, "Check that creating an empty lease works" },
-+			{ "lessee-list", lessee_list, "Check if listed lease is same as created one" },
-+			{ "lease-get", lease_get, "Tests getting the required contents of a lease" },
-+			{ "lease-unleased-connector", lease_unleased_connector, "Negative test by trying to"
- 				" use an unleased connector " },
--			{ "lease_unleased_crtc", lease_unleased_crtc, "Negative test by trying to use an unleased crtc" },
--			{ "lease_revoke", lease_revoke, "Tests revocation of lease" },
--			{ "lease_again", lease_again, "Tests leasing objects more than once" },
--			{ "lease_invalid_connector", lease_invalid_connector, "Tests leasing an invalid connector" },
--			{ "lease_invalid_crtc", lease_invalid_crtc, "Tests leasing an invalid crtc" },
--			{ "lease_invalid_plane", lease_invalid_plane, "Tests leasing an invalid plane" },
--			{ "page_flip_implicit_plane", page_flip_implicit_plane, "Negative test by using a "
-+			{ "lease-unleased-crtc", lease_unleased_crtc, "Negative test by trying to use an unleased crtc" },
-+			{ "lease-revoke", lease_revoke, "Tests revocation of lease" },
-+			{ "lease-again", lease_again, "Tests leasing objects more than once" },
-+			{ "lease-invalid-connector", lease_invalid_connector, "Tests leasing an invalid connector" },
-+			{ "lease-invalid-crtc", lease_invalid_crtc, "Tests leasing an invalid crtc" },
-+			{ "lease-invalid-plane", lease_invalid_plane, "Tests leasing an invalid plane" },
-+			{ "page-flip-implicit-plane", page_flip_implicit_plane, "Negative test by using a "
- 				"non-primary plane with the page flip ioctl" },
--			{ "setcrtc_implicit_plane", setcrtc_implicit_plane, "Negative test by using a "
-+			{ "setcrtc-implicit-plane", setcrtc_implicit_plane, "Negative test by using a "
- 				"non-primary plane with the setcrtc ioctl" },
--			{ "cursor_implicit_plane", cursor_implicit_plane, "Negative test by using a non-primary"
-+			{ "cursor-implicit-plane", cursor_implicit_plane, "Negative test by using a non-primary"
- 				" plane with setcursor ioctl" },
--			{ "atomic_implicit_crtc", atomic_implicit_crtc, "Negative test by using a different"
-+			{ "atomic-implicit-crtc", atomic_implicit_crtc, "Negative test by using a different"
- 				" crtc with atomic ioctl" },
- 			{ }
- 		}, *f;
--- 
-2.25.1
+== Summary ==
+
+IGT patchset build failed on latest successful build
+2517e42d612e0c1ca096acf8b5f6177f7ef4bce7 tests/intel/xe_query: Print XE_QUERY_CONFIG_MAX_ENGINE_PRIORITY value
+
+Tail of build.log:
+[382/1636] Compiling C object 'tests/59830eb@@kms_vrr@exe/kms_vrr.c.o'.
+[383/1636] Compiling C object 'tests/59830eb@@testdisplay@exe/testdisplay_hotplug.c.o'.
+[384/1636] Compiling C object 'tests/59830eb@@gen3_render_linear_blits@exe/intel_gen3_render_linear_blits.c.o'.
+[385/1636] Compiling C object 'tests/59830eb@@kms_tiled_display@exe/kms_tiled_display.c.o'.
+[386/1636] Compiling C object 'tests/59830eb@@gem_basic@exe/intel_gem_basic.c.o'.
+[387/1636] Compiling C object 'tests/59830eb@@gem_compute@exe/intel_gem_compute.c.o'.
+[388/1636] Compiling C object 'tests/59830eb@@gen3_render_tiledy_blits@exe/intel_gen3_render_tiledy_blits.c.o'.
+[389/1636] Compiling C object 'tests/59830eb@@gen3_render_tiledx_blits@exe/intel_gen3_render_tiledx_blits.c.o'.
+[390/1636] Compiling C object 'tests/59830eb@@gen3_render_mixed_blits@exe/intel_gen3_render_mixed_blits.c.o'.
+[391/1636] Compiling C object 'tests/59830eb@@debugfs_test@exe/intel_debugfs_test.c.o'.
+[392/1636] Compiling C object 'tests/59830eb@@gem_close@exe/intel_gem_close.c.o'.
+[393/1636] Generating i915-perf-registers-acmgt3 with a custom command.
+[394/1636] Compiling C object 'tests/59830eb@@gem_ctx_bad_destroy@exe/intel_gem_ctx_bad_destroy.c.o'.
+[395/1636] Compiling C object 'tests/59830eb@@gem_bad_reloc@exe/intel_gem_bad_reloc.c.o'.
+[396/1636] Compiling C object 'tests/59830eb@@gem_close_race@exe/intel_gem_close_race.c.o'.
+[397/1636] Compiling C object 'tests/59830eb@@gen3_mixed_blits@exe/intel_gen3_mixed_blits.c.o'.
+[398/1636] Compiling C object 'tests/59830eb@@gem_cs_tlb@exe/intel_gem_cs_tlb.c.o'.
+[399/1636] Compiling C object 'tests/59830eb@@sw_sync@exe/sw_sync.c.o'.
+[400/1636] Compiling C object 'tests/59830eb@@testdisplay@exe/testdisplay.c.o'.
+[401/1636] Compiling C object 'tests/59830eb@@prime_mmap_kms@exe/intel_prime_mmap_kms.c.o'.
+[402/1636] Compiling C object 'tests/59830eb@@kms_properties@exe/kms_properties.c.o'.
+[403/1636] Compiling C object 'tests/59830eb@@kms_universal_plane@exe/kms_universal_plane.c.o'.
+[404/1636] Compiling C object 'tests/59830eb@@gem_caching@exe/intel_gem_caching.c.o'.
+[405/1636] Compiling C object 'tests/59830eb@@kms_setmode@exe/kms_setmode.c.o'.
+[406/1636] Compiling C object 'tests/59830eb@@sysfs_heartbeat_interval@exe/intel_sysfs_heartbeat_interval.c.o'.
+[407/1636] Generating i915-perf-metrics-acmgt3 with a custom command.
+[408/1636] Compiling C object 'tests/59830eb@@vgem_basic@exe/vgem_basic.c.o'.
+[409/1636] Compiling C object 'tests/59830eb@@kms_rotation_crc@exe/kms_rotation_crc.c.o'.
+[410/1636] Compiling C object 'tests/59830eb@@gem_create@exe/intel_gem_create.c.o'.
+[411/1636] Compiling C object 'lib/76b5a35@@igt-intel_batchbuffer_c@sta/intel_batchbuffer.c.o'.
+[412/1636] Compiling C object 'tests/59830eb@@syncobj_wait@exe/syncobj_wait.c.o'.
+[413/1636] Compiling C object 'tests/59830eb@@kms_cursor_legacy@exe/kms_cursor_legacy.c.o'.
+[414/1636] Compiling C object 'tests/59830eb@@gem_busy@exe/intel_gem_busy.c.o'.
+[415/1636] Compiling C object 'tests/59830eb@@gem_ccs@exe/intel_gem_ccs.c.o'.
+[416/1636] Compiling C object 'lib/76b5a35@@igt-igt_core_c@sta/igt_core.c.o'.
+[417/1636] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen8_c@sta/rendercopy_gen8.c.o'.
+[418/1636] Compiling C object 'lib/76b5a35@@igt-igt_chamelium_c@sta/igt_chamelium.c.o'.
+[419/1636] Compiling C object 'tests/59830eb@@api_intel_allocator@exe/intel_api_intel_allocator.c.o'.
+[420/1636] Compiling C object 'tests/59830eb@@gem_blits@exe/intel_gem_blits.c.o'.
+[421/1636] Compiling C object 'tests/59830eb@@syncobj_timeline@exe/syncobj_timeline.c.o'.
+[422/1636] Compiling C object 'tests/59830eb@@prime_vgem@exe/prime_vgem.c.o'.
+[423/1636] Compiling C object 'tests/59830eb@@drm_fdinfo@exe/intel_drm_fdinfo.c.o'.
+[424/1636] Compiling C object 'tests/59830eb@@api_intel_bb@exe/intel_api_intel_bb.c.o'.
+[425/1636] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen9_c@sta/rendercopy_gen9.c.o'.
+[426/1636] Compiling C object 'lib/76b5a35@@igt-i915_intel_decode_c@sta/i915_intel_decode.c.o'.
+[427/1636] Compiling C object 'tests/59830eb@@gem_concurrent_blit@exe/intel_gem_concurrent_blit.c.o'.
+[428/1636] Compiling C object 'lib/76b5a35@@igt-igt_kms_c@sta/igt_kms.c.o'.
+[429/1636] Compiling C object 'lib/76b5a35@@igt-igt_fb_c@sta/igt_fb.c.o'.
+[430/1636] Generating i915-perf-equations with a custom command.
+ninja: build stopped: subcommand failed.
+
