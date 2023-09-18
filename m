@@ -1,20 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3C6A310E0A1
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Sep 2023 16:31:11 +0000 (UTC)
-Message-ID: <7360a545-fe62-ea4e-b2fd-2eda5ab703e4@intel.com>
-Date: Mon, 18 Sep 2023 09:31:02 -0700
-To: Riana Tauro <riana.tauro@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20230907060638.2317485-1-riana.tauro@intel.com>
- <20230907060638.2317485-2-riana.tauro@intel.com>
-Content-Language: en-US
-From: "Belgaumkar, Vinay" <vinay.belgaumkar@intel.com>
-In-Reply-To: <20230907060638.2317485-2-riana.tauro@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B6FF310E0E9
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Sep 2023 16:48:22 +0000 (UTC)
+From: Nirmoy Das <nirmoy.das@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 18 Sep 2023 18:47:44 +0200
+Message-ID: <20230918164747.30171-2-nirmoy.das@intel.com>
+In-Reply-To: <20230918164747.30171-1-nirmoy.das@intel.com>
+References: <20230918164747.30171-1-nirmoy.das@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/intel/xe_guc_pc: Add
- freq_power test
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/4] lib/igt_gt: Add
+ gem_engine_can_block_ggtt_binder
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,145 +19,55 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: badal.nilawar@intel.com
+Cc: andi.shyti@intel.com, oak.zeng@intel.com, Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+On MTL GGTT updates happens through MI_UPDATE_GGTT command.
+Add a method to detect if a engine can block ggtt binder.
 
-On 9/6/2023 11:06 PM, Riana Tauro wrote:
-> An assumption is that at lower frequencies,
-> not only do we run slower, but we save power compared to
-> higher frequencies.
->
-> This test runs a spinner and sets the min and max frequencies
-> to rp0 and rpn respectively. It then checks if power measured
-> at lower frequencies is lesser.
->
-> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
-> ---
->   tests/intel/xe_guc_pc.c | 88 +++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 88 insertions(+)
->
-> diff --git a/tests/intel/xe_guc_pc.c b/tests/intel/xe_guc_pc.c
-> index 032816921..cea7b56fd 100644
-> --- a/tests/intel/xe_guc_pc.c
-> +++ b/tests/intel/xe_guc_pc.c
-> @@ -13,6 +13,7 @@
->   
->   #include "igt.h"
->   #include "lib/igt_syncobj.h"
-> +#include "igt_power.h"
->   #include "igt_sysfs.h"
->   
->   #include "xe_drm.h"
-> @@ -387,6 +388,82 @@ static void test_reset(int fd, int gt_id, int cycles)
->   	}
->   }
->   
-> +static int cmp_u64(const void *a, const void *b)
-> +{
-> +	return (*(u64 *)a - *(u64 *)b);
-> +}
-> +
-> +static uint64_t measure_power(int fd, struct igt_power *gpu)
-> +{
-> +	struct power_sample sample[2];
-> +	uint64_t power[5];
-> +
-> +	for (int i = 0; i < 5; i++) {
-> +		igt_power_get_energy(gpu, &sample[0]);
-> +		usleep(10000); /* 10 ms */
-> +		igt_power_get_energy(gpu, &sample[1]);
-> +
-> +		power[i] = igt_power_get_mW(gpu, &sample[0], &sample[1]);
-> +	}
-> +	/* Sort in ascending order and use a triangular filter */
-> +	qsort(power, 5, sizeof(*power), cmp_u64);
-> +	return DIV_ROUND_UP(power[1] + 2 * power[2] + power[3], 4);
-> +}
-> +
-> +/**
-> + * SUBTEST: freq_power
-> + * Description: Validates if running at lower frequencies saves power
-> + * Run type: FULL
-> + */
-> +static void test_freq_power(int fd, int gt_id, struct drm_xe_engine_class_instance *hwe)
-> +{
-> +	uint32_t rp0, rpn, vm;
-> +	uint64_t ahnd;
-> +	struct igt_power gpu;
-> +	struct {
-> +		uint64_t power;
-> +		uint32_t freq;
-> +	} min, max;
-> +	igt_spin_t *spin;
-> +
-> +	/* Run for engines belonging to the gt */
-> +	if (gt_id != hwe->gt_id)
-> +		return;
-> +
-> +	igt_power_open(fd, &gpu, "gpu");
-> +
-> +	rpn = get_freq(fd, gt_id, "rpn");
-> +	rp0 = get_freq(fd, gt_id, "rp0");
-> +
-> +	vm = xe_vm_create(fd, 0, 0);
-> +	ahnd = intel_allocator_open(fd, vm, INTEL_ALLOCATOR_RELOC);
-> +	spin = igt_spin_new(fd, .ahnd = ahnd, .vm = vm, .hwe = hwe);
-> +
-> +	igt_assert(set_freq(fd, gt_id, "min", rpn) > 0);
-> +	igt_assert(set_freq(fd, gt_id, "max", rpn) > 0);
-> +	min.freq = get_freq(fd, gt_id, "act");
-> +	min.power = measure_power(fd, &gpu);
-> +
-> +	igt_assert(set_freq(fd, gt_id, "min", rp0) > 0);
-> +	igt_assert(set_freq(fd, gt_id, "max", rp0) > 0);
-> +	max.freq = get_freq(fd, gt_id, "act");
-> +	max.power = measure_power(fd, &gpu);
-> +
-> +	igt_info("Engine %s:%d  min:%lumW @ %uMHz, max:%lumW @ %uMHz\n",
-> +		 xe_engine_class_string(hwe->engine_class), hwe->engine_instance,
-> +		 min.power, min.freq, max.power, max.freq);
-> +
-> +	igt_spin_free(fd, spin);
-> +	put_ahnd(ahnd);
-> +	xe_vm_destroy(fd, vm);
-> +	igt_power_close(&gpu);
-> +
-> +	/* Max power should be greater than min power + 10% of min power */
-nit: reword: power@max_freq should be at least 10% greater than 
-power@min_freq?
-> +	igt_assert_f((11 * min.power < 10 * max.power),
-> +		     "%s:%d did not conserve power when setting lower frequency!\n",
-> +		     xe_engine_class_string(hwe->engine_class), hwe->engine_instance);
-> +}
-> +
->   igt_main
->   {
->   	struct drm_xe_engine_class_instance *hwe;
-> @@ -475,6 +552,17 @@ igt_main
->   		}
->   	}
->   
-> +	igt_describe("Validates power measured at lower frequencies");
-nit: reword? Validate more power is consumed at higher frequencies?
-> +	igt_subtest("freq_power") {
-> +		/* FIXME: Remove skip once hwmon is added */
-> +		igt_skip_on(xe_has_vram(fd));
-> +		xe_for_each_gt(fd, gt) {
-> +			xe_for_each_hw_engine(fd, hwe) {
-> +				test_freq_power(fd, gt, hwe);
-> +			}
-> +		}
-> +	}
-> +
+Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ lib/igt_gt.c | 15 +++++++++++++++
+ lib/igt_gt.h |  2 ++
+ 2 files changed, 17 insertions(+)
 
-LGTM,
-
-Reviewed-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-
-
->   	igt_fixture {
->   		xe_for_each_gt(fd, gt) {
->   			set_freq(fd, gt, "min", stash_min);
+diff --git a/lib/igt_gt.c b/lib/igt_gt.c
+index a24a566c7..aa5e75b07 100644
+--- a/lib/igt_gt.c
++++ b/lib/igt_gt.c
+@@ -659,3 +659,18 @@ int gem_execbuf_flags_to_engine_class(unsigned int flags)
+ 		igt_assert(0);
+ 	}
+ }
++
++/**
++ * gem_engine_can_block_ggtt_binder:
++ * @fd: open i915 drm file descriptor
++ * @engine: engine to be assessed
++ *
++ * Detect if the platform needs blitter based GGTT
++ * updates.
++ */
++bool gem_engine_can_block_ggtt_binder(int fd,
++		const struct intel_execution_engine2 *engine)
++{
++	return IS_METEORLAKE(intel_get_drm_devid(fd)) &&
++		engine->class == I915_ENGINE_CLASS_COPY;
++}
+diff --git a/lib/igt_gt.h b/lib/igt_gt.h
+index 3d10349e4..d0c5510b1 100644
+--- a/lib/igt_gt.h
++++ b/lib/igt_gt.h
+@@ -83,5 +83,7 @@ extern const struct intel_execution_engine2 {
+ } intel_execution_engines2[];
+ 
+ int gem_execbuf_flags_to_engine_class(unsigned int flags);
++bool gem_engine_can_block_ggtt_binder(int fd,
++		const struct intel_execution_engine2 *engine);
+ 
+ #endif /* IGT_GT_H */
+-- 
+2.41.0
