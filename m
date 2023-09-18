@@ -1,23 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5485410E209
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Sep 2023 08:12:55 +0000 (UTC)
-Message-ID: <e9aa16da-8d32-38f9-d0e3-e3c3b1d5a909@intel.com>
-Date: Mon, 18 Sep 2023 10:12:44 +0200
-To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20230904110458.24177-1-sai.gowtham.ch@intel.com>
- <20230904110458.24177-3-sai.gowtham.ch@intel.com>
- <20230904123934.stxmaelmzxg3366l@zkempczy-mobl2>
- <60144754-af81-692d-a20e-84d4fbd2fcc0@intel.com>
- <20230913073922.4j6lleyaajxbaks6@zkempczy-mobl2>
-Content-Language: en-US
-From: Karolina Stolarek <karolina.stolarek@intel.com>
-In-Reply-To: <20230913073922.4j6lleyaajxbaks6@zkempczy-mobl2>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3497110E083
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Sep 2023 08:40:46 +0000 (UTC)
+Date: Mon, 18 Sep 2023 10:40:41 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: sai.gowtham.ch@intel.com
+Message-ID: <20230918084041.kv2cqujjl6ymogjm@zkempczy-mobl2>
+References: <20230915051617.9361-1-sai.gowtham.ch@intel.com>
+ <20230915051617.9361-5-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/4] lib/intel_blt: check if blt
- commands are supported by the platforms
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230915051617.9361-5-sai.gowtham.ch@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 4/4] intel/xe_copy_basic: Add copy basic
+ test to exercise blt commands
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,145 +22,269 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, sai.gowtham.ch@intel.com
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 13.09.2023 09:39, Zbigniew Kempczyński wrote:
-> On Mon, Sep 11, 2023 at 01:09:31PM +0200, Karolina Stolarek wrote:
->> On 4.09.2023 14:39, Zbigniew Kempczyński wrote:
->>> On Mon, Sep 04, 2023 at 04:34:56PM +0530, sai.gowtham.ch@intel.com wrote:
->>>> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
->>>>
->>>> Check if mem-copy/mem-set commands are supported by fd device.
->>>>
->>>> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
->>>> ---
->>>>    lib/intel_blt.c | 32 ++++++++++++++++++++++++++++++++
->>>>    lib/intel_blt.h |  2 ++
->>>>    2 files changed, 34 insertions(+)
->>>>
->>>> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
->>>> index 429511920..b55fa9b52 100644
->>>> --- a/lib/intel_blt.c
->>>> +++ b/lib/intel_blt.c
->>>> @@ -289,6 +289,38 @@ bool blt_has_block_copy(int fd)
->>>>    	return blt_supports_command(cmds_info, XY_BLOCK_COPY);
->>>>    }
->>>> +/**
->>>> + * blt_has_mem_copy
->>>> + * @fd: drm fd
->>>> + *
->>>> + * Check if mem copy is supported by @fd device
->>>> + *
->>>> + * Returns:
->>>> + * true if it does, false otherwise.
->>>> + */
->>>> +bool blt_has_mem_copy(int fd)
->>>> +{
->>>> +	const struct intel_cmds_info *cmds_info = GET_CMDS_INFO(fd);
->>>> +
->>>> +	return blt_supports_command(cmds_info, MEM_COPY);
->>>> +}
->>>> +
->>>> +/**
->>>> + * blt_has_mem_set
->>>> + * @fd: drm fd
->>>> + *
->>>> + * Check if mem set is supported by @fd device
->>>> + *
->>>> + * Returns:
->>>> + * true if it does, false otherwise.
->>>> + */
->>>> +bool blt_has_mem_set(int fd)
->>>> +{
->>>> +	const struct intel_cmds_info *cmds_info = GET_CMDS_INFO(fd);
->>>> +
->>>> +	return blt_supports_command(cmds_info, MEM_SET);
->>>> +}
->>>> +
->>>
->>> It is not true if you'll use those functions in i915 igts.
->>> mem-set and mem-copy commands you've introduced in 1/4 patch
->>> should be part of intel_blt.[ch] library.
->>
->> Following this logic, we'd need to provide XY_SRC_COPY_BLT in intel_blt
->> library as well. We don't -- mostly because intel_blt lacks support for
->> relocations.
+On Fri, Sep 15, 2023 at 10:46:17AM +0530, sai.gowtham.ch@intel.com wrote:
+> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 > 
-> Yes, I hoped we will add this implementation. Adding relocations isn't
-> problem here but I would stick to softpinning/vm_bind at the moment.
-
-I was asked about adding support for relocations to intel_blt at least 
-once, and I experienced it as a problem myself when working on 
-gem_blits. So, it would be good to see them introduced there.
-
-The tests that use blit commands are expected to work across 
-generations. The blit library won't be widely adopted unless we provide 
-support for relocations.
-
-> Perfect would be if we claim that some command is supported we provide
-> an implementation of such blit command for i915/xe.
-
-OK, that's new to me, especially given the fact that we allow folks to 
-query about supported commands even if they build them on their own. 
-This library can exist on its own and doesn't have to be tied to 
-intel_blt. I mean, it is now due to the review comments I got during the 
-review.
-
-But I agree, the ultimate goal would be to get everyone to use 
-intel_blt, but it's not ready for it, yet.
-
-All the best,
-Karolina
-
+> Add copy basic test to exercise copy commands like mem-copy and mem-set.
 > 
->>
->> blt_has_<command> are lightweight checks that only say if you can issue a
->> specific command to a platform, and they don't depend on a driver. They
->> don't guarantee that a specific blitter function is implemented in
->> intel_blt.
->>
->> This confusion shows that we should've keep intel_cmds_info and intel_blt
->> libraries separated from the beginning. Yes, they are closely related, but
->> it's intel_blt quering intel_cmds_info about hardware capabilities, not
->> implemented features.
+> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> ---
+>  tests/intel/xe_copy_basic.c | 199 ++++++++++++++++++++++++++++++++++++
+>  tests/meson.build           |   1 +
+>  2 files changed, 200 insertions(+)
+>  create mode 100644 tests/intel/xe_copy_basic.c
 > 
-> Converging intel_blt to have implementation of supported hw blits should
-> be our target - that's why I'm asking for mem_set/copy. Adding
-> xy-src-copy and test it inside gem|xe_exercise_blt will close this gap.
+> diff --git a/tests/intel/xe_copy_basic.c b/tests/intel/xe_copy_basic.c
+> new file mode 100644
+> index 000000000..0014b022e
+> --- /dev/null
+> +++ b/tests/intel/xe_copy_basic.c
+> @@ -0,0 +1,199 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2023 Intel Corporation
+> + *
+> + * Authors:
+> + *	Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> + */
+> +
+> +#include "igt.h"
+> +#include "lib/igt_syncobj.h"
+> +#include "intel_blt.h"
+> +#include "lib/intel_cmds_info.h"
+> +#include "lib/intel_mocs.h"
+> +#include "lib/intel_reg.h"
+> +#include "xe/xe_ioctl.h"
+> +#include "xe/xe_query.h"
+> +#include "xe/xe_util.h"
+> +
+> +/**
+> + * TEST: Test to validate copy commands on xe
+> + * Category: Software building block
+> + * Sub-category: Copy
+> + * Functionality: blitter
+> + */
+> +
+> +/**
+> + * SUBTEST: mem-copy
+> + * Description: Test validates MEM_COPY command, it takes various
+> + *		parameters needed for the filling batch buffer for MEM_COPY command.
+> + * Test category: functionality test
+> + */
+> +static void
+> +igt_mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle,
+> +	     const intel_ctx_t *ctx, uint32_t row_size,
+> +	     uint32_t col_size, uint32_t region)
+> +{
+> +	struct blt_copy_data blt = {};
+> +	uint64_t bb_size = xe_get_default_alignment(fd);
+> +	uint64_t ahnd = intel_allocator_open_full(fd, ctx->vm, 0, 0,
+> +						  INTEL_ALLOCATOR_SIMPLE,
+> +						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
+> +	uint32_t bb;
+> +	int result;
+> +	uint8_t src_mocs = intel_get_uc_mocs(fd);
+> +	uint8_t dst_mocs = src_mocs;
+> +
+> +	bb = xe_bo_create_flags(fd, 0, bb_size, region);
+> +
+> +	blt_copy_init(fd, &blt);
+> +	blt_set_object(&blt.src, src_handle, row_size, region, src_mocs, 0,
+> +		       T_LINEAR, COMPRESSION_DISABLED);
+> +	blt_set_object(&blt.dst, dst_handle, row_size, region, dst_mocs, 0,
+> +		       T_LINEAR, COMPRESSION_DISABLED);
+
+Args are not properly passed:
+
+./tests/intel/xe_copy_basic.c: In function ‘igt_mem_copy’:
+../tests/intel/xe_copy_basic.c:51:24: warning: implicit conversion from ‘enum blt_tiling_type’ to ‘enum blt_compression’ [-Wenum-conversion]
+   51 |                        T_LINEAR, COMPRESSION_DISABLED);
+      |                        ^~~~~~~~
+../tests/intel/xe_copy_basic.c:51:34: warning: implicit conversion from ‘enum blt_compression’ to ‘enum blt_compression_type’ [-Wenum-conversion]
+   51 |                        T_LINEAR, COMPRESSION_DISABLED);
+      |                                  ^~~~~~~~~~~~~~~~~~~~
+../tests/intel/xe_copy_basic.c:53:24: warning: implicit conversion from ‘enum blt_tiling_type’ to ‘enum blt_compression’ [-Wenum-conversion]
+   53 |                        T_LINEAR, COMPRESSION_DISABLED);
+      |                        ^~~~~~~~
+../tests/intel/xe_copy_basic.c:53:34: warning: implicit conversion from ‘enum blt_compression’ to ‘enum blt_compression_type’ [-Wenum-conversion]
+   53 |                        T_LINEAR, COMPRESSION_DISABLED);
+      |                                  ^~~~~~~~~~~~~~~~~~~~
+../tests/intel/xe_copy_basic.c: In function ‘igt_mem_set’:
+../tests/intel/xe_copy_basic.c:87:24: warning: implicit conversion from ‘enum blt_tiling_type’ to ‘enum blt_compression’ [-Wenum-conversion]
+   87 |                        T_LINEAR, COMPRESSION_DISABLED);
+      |                        ^~~~~~~~
+../tests/intel/xe_copy_basic.c:87:34: warning: implicit conversion from ‘enum blt_compression’ to ‘enum blt_compression_type’ [-Wenum-conversion]
+   87 |                        T_LINEAR, COMPRESSION_DISABLED);
+      |                                  ^~~~~~~~~~~~~~~~~~~~
+
+Please fix and resubmit.
+
+--
+Zbigniew
+
+> +	blt_set_batch(&blt.bb, bb, bb_size, region);
+> +	igt_assert(blt.src.size == blt.dst.size);
+> +
+> +	blt_mem_copy(fd, ctx, NULL, ahnd, &blt, col_size);
+> +	result = memcmp(blt.src.ptr, blt.dst.ptr, blt.src.size);
+> +	igt_assert_f(!result, "source and destination differ\n");
+> +
+> +	intel_allocator_bind(ahnd, 0, 0);
+> +	gem_close(fd, bb);
+> +	put_ahnd(ahnd);
+> +}
+> +
+> +/**
+> + * SUBTEST: mem-set
+> + * Description: Test validates MEM_SET command.
+> + * Test category: functionality test
+> + */
+> +static void igt_mem_set(int fd, uint32_t dst_handle, const intel_ctx_t *ctx,
+> +			size_t size, uint32_t height,
+> +			uint32_t fill_data, uint32_t region)
+> +{
+> +	struct blt_copy_data blt = {};
+> +	uint64_t bb_size = xe_get_default_alignment(fd);
+> +	uint64_t ahnd = intel_allocator_open_full(fd, ctx->vm, 0, 0,
+> +						  INTEL_ALLOCATOR_SIMPLE,
+> +						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
+> +	uint32_t bb;
+> +	int result;
+> +	uint8_t dst_mocs = intel_get_uc_mocs(fd);
+> +
+> +	bb = xe_bo_create_flags(fd, 0, bb_size, region);
+> +	blt_copy_init(fd, &blt);
+> +	blt_set_object(&blt.dst, dst_handle, size, region, dst_mocs, 0,
+> +		       T_LINEAR, COMPRESSION_DISABLED);
+> +	blt_set_batch(&blt.bb, bb, bb_size, region);
+> +	blt_set_mem(fd, ctx, NULL, ahnd, &blt, height, fill_data);
+> +	result = memcmp(blt.src.ptr, blt.dst.ptr, blt.src.size);
+> +	igt_assert_f(!result, "source and destination differ\n");
+> +
+> +	intel_allocator_bind(ahnd, 0, 0);
+> +	gem_close(fd, bb);
+> +	put_ahnd(ahnd);
+> +}
+> +
+> +static void copy_test(int fd, uint32_t size, enum blt_cmd_type cmd,
+> +		      struct drm_xe_engine_class_instance *hwe, uint32_t region)
+> +{
+> +	uint32_t src_handle, dst_handle, vm, exec_queue, src_size, dst_size;
+> +	char c = 'a';
+> +	uint32_t bo_size = ALIGN(size + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
+> +	uint32_t temp_buffer[bo_size];
+> +	const intel_ctx_t *ctx;
+> +
+> +	src_handle = xe_bo_create_flags(fd, 0, bo_size, region);
+> +	dst_handle = xe_bo_create_flags(fd, 0, bo_size, region);
+> +	vm = xe_vm_create(fd, 0, 0);
+> +	exec_queue = xe_exec_queue_create(fd, vm, hwe, 0);
+> +	ctx = intel_ctx_xe(fd, vm, exec_queue, 0, 0, 0);
+> +
+> +	src_size = bo_size;
+> +	dst_size = bo_size;
+> +
+> +	/* Fill a pattern in the buffer */
+> +	for (int i = 0; i < bo_size; i++) {
+> +		temp_buffer[i] = c++ % 16;
+> +		temp_buffer[i] |= (c++ % 16) << 8;
+> +		temp_buffer[i] |= (c++ % 16) << 16;
+> +		temp_buffer[i] |= (c++ % 16) << 24;
+> +	}
+> +
+> +	if (cmd == MEM_COPY) {
+> +		igt_mem_copy(fd,
+> +			     src_handle,/*src_handle*/
+> +			     dst_handle,/*dst_handle*/
+> +			     ctx,
+> +			     src_size,/*row_size*/
+> +			     1,/*col_size*/
+> +			     region);
+> +	} else if (cmd == MEM_SET) {
+> +		igt_mem_set(fd,
+> +			    dst_handle, /*dst_handle*/
+> +			    ctx,
+> +			    dst_size,/*width*/
+> +			    1,/*height*/
+> +			    temp_buffer[0] & 0xff,/*fill_data*/
+> +			    region);
+> +		src_size = 1;
+> +	}
+> +
+> +	gem_close(fd, src_handle);
+> +	gem_close(fd, dst_handle);
+> +	xe_exec_queue_destroy(fd, exec_queue);
+> +	xe_vm_destroy(fd, vm);
+> +}
+> +
+> +igt_main
+> +{
+> +	struct drm_xe_engine_class_instance *hwe;
+> +	int fd;
+> +	struct igt_collection *set, *regions;
+> +	uint32_t region;
+> +	uint64_t size[] = {0xFD, 0x369, 0x369, 0x3FFF, 0xFFFF, 0x1FFFF, 0x3FFFF};
+> +
+> +	igt_fixture {
+> +		fd = drm_open_driver(DRIVER_XE);
+> +		xe_device_get(fd);
+> +		set = xe_get_memory_region_set(fd,
+> +					       XE_MEM_REGION_CLASS_SYSMEM,
+> +					       XE_MEM_REGION_CLASS_VRAM);
+> +	}
+> +
+> +	igt_subtest_with_dynamic_f("mem-copy") {
+> +		igt_require(blt_has_mem_copy(fd));
+> +		for_each_variation_r(regions, 1, set) {
+> +			region = igt_collection_get_value(regions, 0);
+> +			xe_for_each_hw_engine(fd, hwe) {
+> +				for (int i = 0; i < ARRAY_SIZE(size); i++) {
+> +					igt_dynamic_f("size-0x%lx", size[i]) {
+> +						copy_test(fd, size[i],
+> +							  MEM_COPY, hwe,
+> +							  region);
+> +					}
+> +				}
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_subtest_with_dynamic_f("mem-set") {
+> +		igt_require(blt_has_mem_set(fd));
+> +		for_each_variation_r(regions, 1, set) {
+> +			region = igt_collection_get_value(regions, 0);
+> +			xe_for_each_hw_engine(fd, hwe) {
+> +				for (int i = 0; i < ARRAY_SIZE(size); i++) {
+> +					igt_dynamic_f("size-0x%lx", size[i]) {
+> +						copy_test(fd, size[i],
+> +							  MEM_SET, hwe, region);
+> +					}
+> +				}
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_fixture {
+> +		drm_close_driver(fd);
+> +	}
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 7201958b7..753cde31e 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -274,6 +274,7 @@ intel_xe_progs = [
+>  	'xe_ccs',
+>  	'xe_create',
+>  	'xe_compute',
+> +	'xe_copy_basic',
+>  	'xe_dma_buf_sync',
+>  	'xe_debugfs',
+>  	'xe_evict',
+> -- 
+> 2.39.1
 > 
-> --
-> Zbigniew
-> 
->>
->> Many thanks,
->> Karolina
->>
->>>
->>> BTW first patch 1/4 won't compile in step-by-step mode because
->>> it uses code from following patches.
->>>
->>> --
->>> Zbigniew
->>>
->>>
->>>>    /**
->>>>     * blt_has_fast_copy
->>>>     * @fd: drm fd
->>>> diff --git a/lib/intel_blt.h b/lib/intel_blt.h
->>>> index b8b3d724d..d9c8883c7 100644
->>>> --- a/lib/intel_blt.h
->>>> +++ b/lib/intel_blt.h
->>>> @@ -175,6 +175,8 @@ bool blt_cmd_has_property(const struct intel_cmds_info *cmds_info,
->>>>    			  uint32_t prop);
->>>>    bool blt_has_block_copy(int fd);
->>>> +bool blt_has_mem_copy(int fd);
->>>> +bool blt_has_mem_set(int fd);
->>>>    bool blt_has_fast_copy(int fd);
->>>>    bool blt_has_xy_src_copy(int fd);
->>>>    bool blt_has_xy_color(int fd);
->>>> -- 
->>>> 2.39.1
->>>>
