@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8AC5310E09E
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Sep 2023 12:49:17 +0000 (UTC)
-Date: Mon, 18 Sep 2023 14:48:50 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230918124850.hvuvvrldd5zbmnjd@kamilkon-desk.igk.intel.com>
-References: <20230908150315.75977-1-harry.wentland@amd.com>
- <20230908150315.75977-3-harry.wentland@amd.com>
+Content-Type: multipart/alternative;
+ boundary="===============2787162749456066628=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230908150315.75977-3-harry.wentland@amd.com>
-Subject: Re: [igt-dev] [RFC PATCH 2/7] lib/igt_kms: Introduce drm_colorop
- object
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Date: Mon, 18 Sep 2023 13:06:50 -0000
+Message-ID: <169504241087.32418.3905995425234204126@emeril.freedesktop.org>
+References: <20230918101150.258055-1-swati2.sharma@intel.com>
+In-Reply-To: <20230918101150.258055-1-swati2.sharma@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fcontent=5Fprotection=3A_rename_subtests?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,491 +17,398 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Alexander Goins <agoins@nvidia.com>,
- Pekka Paalanen <pekka.paalanen@collabora.com>,
- Shashank Sharma <shashank.sharma@amd.com>, Simon Ser <contact@emersion.fr>,
- Sebastian Wick <sebastian.wick@redhat.com>, Xaver Hugl <xaver.hugl@gmail.com>,
- Victoria Brekenfeld <victoria@system76.com>,
- Michel =?utf-8?Q?D=C3=A4nzer?= <mdaenzer@redhat.com>,
- Jonas =?utf-8?B?w4VkYWhs?= <jadahl@redhat.com>,
- Daniel Vetter <daniel@ffwll.ch>, Aleix Pol <aleixpol@kde.org>,
- Naseer Ahmed <quic_naseer@quicinc.com>,
- Christopher Braga <quic_cbraga@quicinc.com>, Joshua Ashton <joshua@froggi.es>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Harry,
+--===============2787162749456066628==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 2023-09-08 at 11:03:10 -0400, Harry Wentland wrote:
-> Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+== Series Details ==
 
-Please describe here what you added to lib.
+Series: tests/kms_content_protection: rename subtests
+URL   : https://patchwork.freedesktop.org/series/123852/
+State : success
 
-> Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
-> Cc: Pekka Paalanen <pekka.paalanen@collabora.com>
-> Cc: Simon Ser <contact@emersion.fr>
-> Cc: Harry Wentland <harry.wentland@amd.com>
-> Cc: Melissa Wen <mwen@igalia.com>
-> Cc: Jonas Ådahl <jadahl@redhat.com>
-> Cc: Sebastian Wick <sebastian.wick@redhat.com>
-> Cc: Shashank Sharma <shashank.sharma@amd.com>
-> Cc: Alexander Goins <agoins@nvidia.com>
-> Cc: Joshua Ashton <joshua@froggi.es>
-> Cc: Michel Dänzer <mdaenzer@redhat.com>
-> Cc: Aleix Pol <aleixpol@kde.org>
-> Cc: Xaver Hugl <xaver.hugl@gmail.com>
-> Cc: Victoria Brekenfeld <victoria@system76.com>
-> Cc: Daniel Vetter <daniel@ffwll.ch>
-> Cc: Uma Shankar <uma.shankar@intel.com>
-> Cc: Naseer Ahmed <quic_naseer@quicinc.com>
-> Cc: Christopher Braga <quic_cbraga@quicinc.com>
+== Summary ==
 
-Do you need to repeat this exetensive list of Cc?
-imho it should be enough to add this to cover letter
-and to drm-uapi patch 1/7.
+CI Bug Log - changes from CI_DRM_13647 -> IGTPW_9816
+====================================================
 
-> ---
->  lib/igt_kms.c | 184 +++++++++++++++++++++++++++++++++++++++++++++++++-
->  lib/igt_kms.h |  91 +++++++++++++++++++++++++
->  2 files changed, 273 insertions(+), 2 deletions(-)
-> 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index c548414867c2..bb6f2b47e243 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -617,6 +617,13 @@ const char * const igt_plane_prop_names[IGT_NUM_PLANE_PROPS] = {
->  	[IGT_PLANE_SCALING_FILTER] = "SCALING_FILTER",
->  };
->  
-> +const char * const igt_colorop_prop_names[IGT_NUM_COLOROP_PROPS] = {
-> +	[IGT_COLOROP_TYPE] = "TYPE",
-> +	[IGT_COLOROP_BYPASS] = "BYPASS",
-> +	[IGT_COLOROP_CURVE_1D_TYPE] = "CURVE_1D_TYPE",
-> +	[IGT_COLOROP_NEXT] = "NEXT",
-> +};
-> +
->  const char * const igt_crtc_prop_names[IGT_NUM_CRTC_PROPS] = {
->  	[IGT_CRTC_CTM] = "CTM",
->  	[IGT_CRTC_GAMMA_LUT] = "GAMMA_LUT",
-> @@ -682,6 +689,21 @@ igt_plane_rotations(igt_display_t *display, igt_plane_t *plane,
->  	return rotations;
->  }
->  
+Summary
+-------
 
-Describe each public function added to lib.
+  **SUCCESS**
 
-> +igt_colorop_t *igt_find_colorop(igt_display_t *display, uint32_t id)
-> +{
-> +	int i;
-> +
-> +	/* find corresponding igt_colorop */
-> +	for (i = 0; i < display->n_colorops; ++i) {
-> +		igt_colorop_t *colorop = &display->colorops[i];
-> +
-> +		if (colorop->drm_colorop->colorop_id == id)
-> +			return colorop;
-> +	}
-> +
-> +	return NULL;
-> +}
-> +
->  /*
->   * Retrieve all the properies specified in props_name and store them into
->   * plane->props.
-> @@ -722,6 +744,40 @@ igt_fill_plane_props(igt_display_t *display, igt_plane_t *plane,
->  	drmModeFreeObjectProperties(props);
->  }
->  
-> +/*
-> + * Retrieve all the properies specified in props_name and store them into
-> + * colorop->props.
-> + */
-> +static void
-> +igt_fill_colorop_props(igt_display_t *display, igt_colorop_t *colorop,
-> +		       int num_props, const char * const prop_names[])
-> +{
-> +	drmModeObjectPropertiesPtr props;
-> +	int i, j, fd;
-> +
-> +	fd = display->drm_fd;
-> +
-> +	props = drmModeObjectGetProperties(fd, colorop->drm_colorop->colorop_id, DRM_MODE_OBJECT_COLOROP);
-> +	igt_assert(props);
-> +
-> +	for (i = 0; i < props->count_props; i++) {
-> +		drmModePropertyPtr prop =
-> +			drmModeGetProperty(fd, props->props[i]);
-> +
-> +		for (j = 0; j < num_props; j++) {
-> +			if (strcmp(prop->name, prop_names[j]) != 0)
-> +				continue;
-> +
-> +			colorop->props[j] = props->props[i];
-> +			break;
-> +		}
-> +
-> +		drmModeFreeProperty(prop);
-> +	}
-> +
-> +	drmModeFreeObjectProperties(props);
-> +}
-> +
->  /*
->   * Retrieve all the properies specified in props_name and store them into
->   * config->atomic_props_crtc and config->atomic_props_connector.
-> @@ -2624,7 +2680,8 @@ void igt_display_require(igt_display_t *display, int drm_fd)
->  {
->  	drmModeRes *resources;
->  	drmModePlaneRes *plane_resources;
-> -	int i;
-> +	drmModeColoropRes *colorop_resources;
-> +	int i, j;
->  	bool is_intel_dev;
->  
->  	memset(display, 0, sizeof(igt_display_t));
-> @@ -2709,17 +2766,47 @@ void igt_display_require(igt_display_t *display, int drm_fd)
->  
->  	drmModeFreePlaneResources(plane_resources);
->  
-> +	/* get all colorop resources */
-> +	colorop_resources = drmModeGetColoropResources(display->drm_fd);
-> +
-> +	if (colorop_resources) {
-> +		display->n_colorops = colorop_resources->count_colorops;
-> +		display->colorops = calloc(sizeof(igt_colorop_t), display->n_colorops);
-> +		igt_assert_f(display->colorops, "Failed to allocate memory for %d colorops\n", display->n_colorops);
-> +
-> +		for (i = 0; i < colorop_resources->count_colorops; ++i) {
-> +			igt_colorop_t *colorop = &display->colorops[i];
-> +			uint32_t id = colorop_resources->colorops[i];
-> +
-> +			colorop->drm_colorop = drmModeGetColorop(display->drm_fd, id);
-> +			igt_assert(colorop->drm_colorop);
-> +
-> +			igt_fill_colorop_props(display, colorop, IGT_NUM_COLOROP_PROPS, igt_colorop_prop_names);
-> +
-> +			for (j = 0; j < display->n_planes; ++j)
-> +				if (display->planes[j].drm_plane->plane_id == colorop->drm_colorop->plane_id)
-> +					colorop->plane = &display->planes[j];
-> +
-> +		}
-> +
-> +
-> +
-> +		drmModeFreeColoropResources(colorop_resources);
-> +	}
-> +
-> +
+  No regressions found.
 
-Remove one newline.
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/index.html
 
->  	for_each_pipe(display, i) {
->  		igt_pipe_t *pipe = &display->pipes[i];
->  		igt_plane_t *plane;
->  		int p = 1, crtc_mask = 0;
-> -		int j, type;
------------ ^
-Why dropped 'j'?
+Participating hosts (38 -> 39)
+------------------------------
 
-> +		int type;
->  		uint8_t last_plane = 0, n_planes = 0;
->  
->  		pipe->display = display;
->  		pipe->plane_cursor = -1;
->  		pipe->plane_primary = -1;
->  		pipe->planes = NULL;
-> +		pipe->colorops = NULL;
->  		pipe->num_primary_planes = 0;
->  
->  		igt_fill_pipe_props(display, pipe, IGT_NUM_CRTC_PROPS, igt_crtc_prop_names);
-> @@ -3001,6 +3088,15 @@ void igt_display_fini(igt_display_t *display)
->  	if (is_xe_device(drm_fd))
->  		xe_device_put(drm_fd);
->  
-> +	for (i = 0; i < display->n_colorops; ++i) {
-> +		igt_colorop_t *colorop = &display->colorops[i];
-> +
-> +		if (colorop->drm_colorop) {
-> +			drmModeFreeColorop(colorop->drm_colorop);
-> +			colorop->drm_colorop = NULL;
-> +		}
-> +	}
-> +
->  	for (i = 0; i < display->n_planes; ++i) {
->  		igt_plane_t *plane = &display->planes[i];
->  
-> @@ -3336,6 +3432,43 @@ igt_atomic_prepare_plane_commit(igt_plane_t *plane, igt_pipe_t *pipe,
->  	}
->  }
->  
-> +
+  Additional (2): fi-kbl-soraka fi-pnv-d510 
+  Missing    (1): fi-snb-2520m 
 
-Remove newline.
+Known issues
+------------
 
-> +/*
-> + * Add colorop properties
-> + */
-> +static void
-> +igt_atomic_prepare_colorop_commit(igt_colorop_t *colorop, igt_pipe_t *pipe,
-> +	drmModeAtomicReq *req)
-> +{
-> +	igt_display_t *display = pipe->display;
-> +	int i;
-> +
-> +	igt_assert(colorop->drm_colorop);
-> +
-> +	LOG(display,
-> +	    "populating colorop data: %s.%d\n",
-> +	    kmstest_pipe_name(pipe->pipe),
-> +	    colorop->drm_colorop->colorop_id);
-> +
-> +	/* TODO handle future colorop->next pointer */
-> +
-> +	for (i = 0; i < IGT_NUM_COLOROP_PROPS; i++) {
-> +		if (!igt_colorop_is_prop_changed(colorop, i))
-> +			continue;
-> +
-> +		/* it's an error to try an unsupported feature */
-> +		igt_assert(colorop->props[i]);
-> +
-> +		igt_debug("colorop %s.%d: Setting property \"%s\" to 0x%"PRIx64"/%"PRIi64"\n",
-> +			kmstest_pipe_name(pipe->pipe), colorop->drm_colorop->colorop_id, igt_colorop_prop_names[i],
-> +			colorop->values[i], colorop->values[i]);
-> +
-> +		igt_assert_lt(0, drmModeAtomicAddProperty(req, colorop->drm_colorop->colorop_id,
-> +						  colorop->props[i],
-> +						  colorop->values[i]));
-> +	}
-> +}
-> +
->  /*
->   * Properties that can be changed through legacy SetProperty:
->   * - Obviously not the XYWH SRC/CRTC coordinates.
-> @@ -3783,6 +3916,25 @@ uint64_t igt_plane_get_prop(igt_plane_t *plane, enum igt_atomic_plane_properties
->  					plane->drm_plane->plane_id, plane->props[prop]);
->  }
->  
-> +/**
-> + * igt_colorop_get_prop:
-> + * @colorop: Target colorop.
-> + * @prop: Property to check.
-> + *
-> + * Return current value on a colorop for a given property.
-> + *
-> + * Returns: The value the property is set to, if this
-> + * is a blob, the blob id is returned. This can be passed
-> + * to drmModeGetPropertyBlob() to get the contents of the blob.
-> + */
-> +uint64_t igt_colorop_get_prop(igt_display_t *display, igt_colorop_t *colorop, enum igt_atomic_colorop_properties prop)
-> +{
-> +	igt_assert(igt_colorop_has_prop(colorop, prop));
-> +
-> +	return igt_mode_object_get_prop(display, DRM_MODE_OBJECT_COLOROP,
-> +					colorop->drm_colorop->colorop_id, colorop->props[prop]);
-> +}
-> +
->  static bool igt_mode_object_get_prop_enum_value(int drm_fd, uint32_t id, const char *str, uint64_t *val)
->  {
->  	drmModePropertyPtr prop = drmModeGetProperty(drm_fd, id);
-> @@ -3825,6 +3977,34 @@ void igt_plane_set_prop_enum(igt_plane_t *plane,
->  	igt_assert(igt_plane_try_prop_enum(plane, prop, val));
->  }
->  
+  Here are the changes found in IGTPW_9816 that come from known issues:
 
-Add description to public function.
+### IGT changes ###
 
-> +bool igt_colorop_try_prop_enum(igt_display_t *display,
-> +			       igt_colorop_t *colorop,
-> +			       enum igt_atomic_colorop_properties prop,
-> +			       const char *val)
-> +{
-> +	uint64_t uval;
-> +
-> +	igt_assert(colorop->props[prop]);
-> +
-> +	if (!igt_mode_object_get_prop_enum_value(display->drm_fd,
-> +						 colorop->props[prop], val, &uval))
-> +		return false;
-> +
-> +	igt_colorop_set_prop_value(colorop, prop, uval);
-> +	return true;
-> +}
-> +
+#### Issues hit ####
 
-Same here.
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271] / [i915#2190])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
 
-> +void igt_colorop_set_prop_enum(igt_display_t *display,
-> +			       igt_colorop_t *colorop,
-> +			       enum igt_atomic_colorop_properties prop,
-> +			       const char *val)
-> +{
-> +	bool result = false;
-> +	result = igt_colorop_try_prop_enum(display, colorop, prop, val);
-> +	igt_assert(result);
-> +}
-> +
-> +
+  * igt@gem_lmem_swapping@basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#4613]) +3 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
 
-Remove newline.
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-apl-guc:         [PASS][3] -> [DMESG-FAIL][4] ([i915#5334])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13647/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
 
->  /**
->   * igt_plane_replace_prop_blob:
->   * @plane: plane to set property on.
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index 1b6988c17aeb..6cf50b3c8280 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -321,6 +321,19 @@ enum igt_atomic_plane_properties {
->         IGT_NUM_PLANE_PROPS
->  };
->  
-> +enum igt_atomic_colorop_properties {
-> +	IGT_COLOROP_TYPE,
-> +	IGT_COLOROP_BYPASS,
-> +	IGT_COLOROP_CURVE_1D_TYPE,
-> +	IGT_COLOROP_NEXT,
-> +	IGT_NUM_COLOROP_PROPS
-> +};
-> +
-> +/* TODO move to libdrm header?? */
-> +enum drm_colorop_type {
-> +	DRM_COLOROP_1D_CURVE
-> +};
-> +
->  /**
->   * igt_plane_prop_names
->   *
-> @@ -329,6 +342,14 @@ enum igt_atomic_plane_properties {
->   */
->  extern const char * const igt_plane_prop_names[];
->  
-> +/**
-> + * igt_colorop_prop_names
-> + *
-> + * igt_colorop_prop_names contains a list of colorop property names,
-> + * as indexed by the igt_atomic_colorop_properties enum.
-> + */
-> +extern const char * const igt_colorop_prop_names[];
-> +
->  typedef struct igt_display igt_display_t;
->  typedef struct igt_pipe igt_pipe_t;
->  typedef uint32_t igt_fixed_t;			/* 16.16 fixed point */
-> @@ -351,6 +372,24 @@ static inline bool igt_rotation_90_or_270(igt_rotation_t rotation)
->  	return rotation & (IGT_ROTATION_90 | IGT_ROTATION_270);
->  }
->  
-> +typedef struct igt_plane igt_plane_t;
-----------------------------^
-It should not be needed, it is already in header igt_kms.h
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][5] ([i915#1886] / [i915#7913])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
 
-> +
-> +typedef struct igt_colorop {
-> +	/*< private >*/
-> +	igt_pipe_t *pipe;
-> +
-> +	drmModeColorop *drm_colorop;
-> +
-> +	igt_plane_t *plane;
-> +
-> +	char name[DRM_PROP_NAME_LEN];
-> +
-> +	uint64_t changed;
-> +	uint32_t props[IGT_NUM_COLOROP_PROPS];
-> +	uint64_t values[IGT_NUM_COLOROP_PROPS];
-> +
-> +} igt_colorop_t;
-> +
->  typedef struct igt_plane {
->  	/*< private >*/
->  	igt_pipe_t *pipe;
-> @@ -404,6 +443,7 @@ struct igt_pipe {
->  	int plane_cursor;
->  	int plane_primary;
->  	igt_plane_t *planes;
-> +	igt_colorop_t *colorops;
->  
->  	uint64_t changed;
->  	uint32_t props[IGT_NUM_CRTC_PROPS];
-> @@ -442,9 +482,11 @@ struct igt_display {
->  	int log_shift;
->  	int n_pipes;
->  	int n_planes;
-> +	int n_colorops;
->  	int n_outputs;
->  	igt_output_t *outputs;
->  	igt_plane_t *planes;
-> +	igt_colorop_t *colorops;
->  	igt_pipe_t *pipes;
->  	bool has_cursor_plane;
->  	bool is_atomic;
-> @@ -721,6 +763,53 @@ extern void igt_plane_set_prop_enum(igt_plane_t *plane,
->  				    enum igt_atomic_plane_properties prop,
->  				    const char *val);
->  
-> +
-> +
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][6] ([fdo#109271]) +13 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/fi-hsw-4770/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
 
-Remove newlines.
+  * igt@kms_dsc@dsc-basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][7] ([fdo#109271]) +9 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/fi-kbl-soraka/igt@kms_dsc@dsc-basic.html
 
-Regards,
-Kamil
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-bsw-nick:        [PASS][8] -> [FAIL][9] ([i915#9276])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13647/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html
 
-> +extern bool igt_plane_is_valid_colorop(igt_plane_t *plane, igt_colorop_t *colorop);
-> +
-> +/**
-> + * igt_colorop_has_prop:
-> + * @colorop: colorop to check.
-> + * @prop: Property to check.
-> + *
-> + * Check whether colorop supports a given property.
-> + *
-> + * Returns: True if the property is supported, otherwise false.
-> + */
-> +static inline bool
-> +igt_colorop_has_prop(igt_colorop_t *colorop, enum igt_atomic_colorop_properties prop)
-> +{
-> +	return colorop->props[prop];
-> +}
-> +
-> +uint64_t igt_colorop_get_prop(igt_display_t *display, igt_colorop_t *colorop, enum igt_atomic_colorop_properties prop);
-> +
-> +#define igt_colorop_is_prop_changed(colorop, prop) \
-> +	(!!((colorop)->changed & (1 << (prop))))
-> +
-> +#define igt_colorop_set_prop_changed(colorop, prop) \
-> +	(colorop)->changed |= 1 << (prop)
-> +
-> +#define igt_colorop_clear_prop_changed(colorop, prop) \
-> +	(colorop)->changed &= ~(1 << (prop))
-> +
-> +#define igt_colorop_set_prop_value(colorop, prop, value) \
-> +	do { \
-> +		colorop->values[prop] = value; \
-> +		igt_colorop_set_prop_changed(colorop, prop); \
-> +	} while (0)
-> +
-> +
-> +extern bool igt_colorop_try_prop_enum(igt_display_t *display,
-> +				      igt_colorop_t *colorop,
-> +				      enum igt_atomic_colorop_properties prop,
-> +				      const char *val);
-> +
-> +extern void igt_colorop_set_prop_enum(igt_display_t *display,
-> +				      igt_colorop_t *colorop,
-> +				      enum igt_atomic_colorop_properties prop,
-> +				      const char *val);
-> +
->  extern void igt_plane_replace_prop_blob(igt_plane_t *plane,
->  					enum igt_atomic_plane_properties prop,
->  					const void *ptr, size_t length);
-> @@ -1005,4 +1094,6 @@ bool igt_check_bigjoiner_support(igt_display_t *display);
->  bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode);
->  bool i915_pipe_output_combo_valid(igt_display_t *display);
->  
-> +igt_colorop_t *igt_find_colorop(igt_display_t *display, uint32_t id);
-> +
->  #endif /* __IGT_KMS_H__ */
-> -- 
-> 2.42.0
-> 
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
+    - bat-dg2-11:         NOTRUN -> [SKIP][10] ([i915#1845]) +3 other tests skip
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1:
+    - fi-hsw-4770:        NOTRUN -> [DMESG-WARN][11] ([i915#8841]) +6 other tests dmesg-warn
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/fi-hsw-4770/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1.html
+
+  * igt@kms_psr@primary_page_flip:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][12] ([fdo#109271]) +31 other tests skip
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/fi-pnv-d510/igt@kms_psr@primary_page_flip.html
+
+  * igt@kms_psr@sprite_plane_onoff:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][13] ([fdo#109271] / [i915#1072]) +3 other tests skip
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/fi-hsw-4770/igt@kms_psr@sprite_plane_onoff.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s0@smem:
+    - bat-dg2-9:          [INCOMPLETE][14] ([i915#8797] / [i915#9275]) -> [PASS][15]
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13647/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-skl-guc:         [DMESG-FAIL][16] -> [PASS][17]
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13647/fi-skl-guc/igt@i915_selftest@live@hangcheck.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/fi-skl-guc/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - fi-kbl-guc:         [FAIL][18] ([IGT#3] / [i915#6121]) -> [PASS][19]
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13647/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [IGT#3]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#6121]: https://gitlab.freedesktop.org/drm/intel/issues/6121
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#8797]: https://gitlab.freedesktop.org/drm/intel/issues/8797
+  [i915#8841]: https://gitlab.freedesktop.org/drm/intel/issues/8841
+  [i915#9275]: https://gitlab.freedesktop.org/drm/intel/issues/9275
+  [i915#9276]: https://gitlab.freedesktop.org/drm/intel/issues/9276
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7493 -> IGTPW_9816
+
+  CI-20190529: 20190529
+  CI_DRM_13647: 926e8f4826a93750b5a9355a0e8934702edf55b8 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_9816: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/index.html
+  IGT_7493: 2517e42d612e0c1ca096acf8b5f6177f7ef4bce7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@kms_content_protection@content-type-change
++igt@kms_content_protection@mei-interface
++igt@kms_universal_plane@cursor-fb-leak-pipe-a
++igt@kms_universal_plane@cursor-fb-leak-pipe-b
++igt@kms_universal_plane@cursor-fb-leak-pipe-c
++igt@kms_universal_plane@cursor-fb-leak-pipe-d
++igt@kms_universal_plane@cursor-fb-leak-pipe-e
++igt@kms_universal_plane@cursor-fb-leak-pipe-f
++igt@kms_universal_plane@cursor-fb-leak-pipe-g
++igt@kms_universal_plane@cursor-fb-leak-pipe-h
++igt@kms_universal_plane@disable-primary-vs-flip-pipe-a
++igt@kms_universal_plane@disable-primary-vs-flip-pipe-b
++igt@kms_universal_plane@disable-primary-vs-flip-pipe-c
++igt@kms_universal_plane@disable-primary-vs-flip-pipe-d
++igt@kms_universal_plane@disable-primary-vs-flip-pipe-e
++igt@kms_universal_plane@disable-primary-vs-flip-pipe-f
++igt@kms_universal_plane@disable-primary-vs-flip-pipe-g
++igt@kms_universal_plane@disable-primary-vs-flip-pipe-h
++igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-a
++igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-b
++igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-c
++igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-d
++igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-e
++igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-f
++igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-g
++igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-h
++igt@kms_universal_plane@universal-plane-pipe-a-functional
++igt@kms_universal_plane@universal-plane-pipe-a-sanity
++igt@kms_universal_plane@universal-plane-pipe-b-functional
++igt@kms_universal_plane@universal-plane-pipe-b-sanity
++igt@kms_universal_plane@universal-plane-pipe-c-functional
++igt@kms_universal_plane@universal-plane-pipe-c-sanity
++igt@kms_universal_plane@universal-plane-pipe-d-functional
++igt@kms_universal_plane@universal-plane-pipe-d-sanity
++igt@kms_universal_plane@universal-plane-pipe-e-functional
++igt@kms_universal_plane@universal-plane-pipe-e-sanity
++igt@kms_universal_plane@universal-plane-pipe-f-functional
++igt@kms_universal_plane@universal-plane-pipe-f-sanity
++igt@kms_universal_plane@universal-plane-pipe-g-functional
++igt@kms_universal_plane@universal-plane-pipe-g-sanity
++igt@kms_universal_plane@universal-plane-pipe-h-functional
++igt@kms_universal_plane@universal-plane-pipe-h-sanity
+-igt@kms_content_protection@content_type_change
+-igt@kms_content_protection@mei_interface
+-igt@kms_universal_plane@cursor-fb-leak
+-igt@kms_universal_plane@disable-primary-vs-flip
+-igt@kms_universal_plane@universal-plane-functional
+-igt@kms_universal_plane@universal-plane-pageflip-windowed
+-igt@kms_universal_plane@universal-plane-sanity
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/index.html
+
+--===============2787162749456066628==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_content_protection: rename subtests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123852/">https://patchwork.freedesktop.org/series/123852/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13647 -&gt; IGTPW_9816</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/index.html</p>
+<h2>Participating hosts (38 -&gt; 39)</h2>
+<p>Additional (2): fi-kbl-soraka fi-pnv-d510 <br />
+  Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_9816 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13647/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/fi-hsw-4770/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +13 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/fi-kbl-soraka/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +9 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13647/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9276">i915#9276</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/fi-hsw-4770/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8841">i915#8841</a>) +6 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_page_flip:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/fi-pnv-d510/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +31 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@sprite_plane_onoff:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/fi-hsw-4770/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s0@smem:</p>
+<ul>
+<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13647/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8797">i915#8797</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9275">i915#9275</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-skl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13647/fi-skl-guc/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/fi-skl-guc/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13647/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3">IGT#3</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6121">i915#6121</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7493 -&gt; IGTPW_9816</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13647: 926e8f4826a93750b5a9355a0e8934702edf55b8 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_9816: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9816/index.html<br />
+  IGT_7493: 2517e42d612e0c1ca096acf8b5f6177f7ef4bce7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@kms_content_protection@content-type-change<br />
++igt@kms_content_protection@mei-interface<br />
++igt@kms_universal_plane@cursor-fb-leak-pipe-a<br />
++igt@kms_universal_plane@cursor-fb-leak-pipe-b<br />
++igt@kms_universal_plane@cursor-fb-leak-pipe-c<br />
++igt@kms_universal_plane@cursor-fb-leak-pipe-d<br />
++igt@kms_universal_plane@cursor-fb-leak-pipe-e<br />
++igt@kms_universal_plane@cursor-fb-leak-pipe-f<br />
++igt@kms_universal_plane@cursor-fb-leak-pipe-g<br />
++igt@kms_universal_plane@cursor-fb-leak-pipe-h<br />
++igt@kms_universal_plane@disable-primary-vs-flip-pipe-a<br />
++igt@kms_universal_plane@disable-primary-vs-flip-pipe-b<br />
++igt@kms_universal_plane@disable-primary-vs-flip-pipe-c<br />
++igt@kms_universal_plane@disable-primary-vs-flip-pipe-d<br />
++igt@kms_universal_plane@disable-primary-vs-flip-pipe-e<br />
++igt@kms_universal_plane@disable-primary-vs-flip-pipe-f<br />
++igt@kms_universal_plane@disable-primary-vs-flip-pipe-g<br />
++igt@kms_universal_plane@disable-primary-vs-flip-pipe-h<br />
++igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-a<br />
++igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-b<br />
++igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-c<br />
++igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-d<br />
++igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-e<br />
++igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-f<br />
++igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-g<br />
++igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-h<br />
++igt@kms_universal_plane@universal-plane-pipe-a-functional<br />
++igt@kms_universal_plane@universal-plane-pipe-a-sanity<br />
++igt@kms_universal_plane@universal-plane-pipe-b-functional<br />
++igt@kms_universal_plane@universal-plane-pipe-b-sanity<br />
++igt@kms_universal_plane@universal-plane-pipe-c-functional<br />
++igt@kms_universal_plane@universal-plane-pipe-c-sanity<br />
++igt@kms_universal_plane@universal-plane-pipe-d-functional<br />
++igt@kms_universal_plane@universal-plane-pipe-d-sanity<br />
++igt@kms_universal_plane@universal-plane-pipe-e-functional<br />
++igt@kms_universal_plane@universal-plane-pipe-e-sanity<br />
++igt@kms_universal_plane@universal-plane-pipe-f-functional<br />
++igt@kms_universal_plane@universal-plane-pipe-f-sanity<br />
++igt@kms_universal_plane@universal-plane-pipe-g-functional<br />
++igt@kms_universal_plane@universal-plane-pipe-g-sanity<br />
++igt@kms_universal_plane@universal-plane-pipe-h-functional<br />
++igt@kms_universal_plane@universal-plane-pipe-h-sanity<br />
+-igt@kms_content_protection@content_type_change<br />
+-igt@kms_content_protection@mei_interface<br />
+-igt@kms_universal_plane@cursor-fb-leak<br />
+-igt@kms_universal_plane@disable-primary-vs-flip<br />
+-igt@kms_universal_plane@universal-plane-functional<br />
+-igt@kms_universal_plane@universal-plane-pageflip-windowed<br />
+-igt@kms_universal_plane@universal-plane-sanity</p>
+
+</body>
+</html>
+
+--===============2787162749456066628==--
