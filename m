@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Swati Sharma" <swati2.sharma@intel.com>
-Date: Mon, 18 Sep 2023 11:50:48 -0000
-Message-ID: <169503784835.32417.8415246945971628867@emeril.freedesktop.org>
+Date: Mon, 18 Sep 2023 11:51:58 -0000
+Message-ID: <169503791817.32416.14506597975835637091@emeril.freedesktop.org>
 References: <20230918075448.247197-1-swati2.sharma@intel.com>
 In-Reply-To: <20230918075448.247197-1-swati2.sharma@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
- =?utf-8?q?s/kms=5Fvblank=3A_Test_cleanup_and_dynamic_conversion?=
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/kms=5Fvblank=3A_Test_cleanup_and_dynamic_conversion?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,62 +27,233 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Series: tests/kms_vblank: Test cleanup and dynamic conversion
 URL   : https://patchwork.freedesktop.org/series/123847/
-State : failure
+State : warning
 
 == Summary ==
 
-IGT patchset build failed on latest successful build
-2517e42d612e0c1ca096acf8b5f6177f7ef4bce7 tests/intel/xe_query: Print XE_QUERY_CONFIG_MAX_ENGINE_PRIORITY value
+Pipeline status: FAILED.
 
-Tail of build.log:
-[382/1636] Compiling C object 'tests/59830eb@@kms_vrr@exe/kms_vrr.c.o'.
-[383/1636] Compiling C object 'tests/59830eb@@testdisplay@exe/testdisplay_hotplug.c.o'.
-[384/1636] Compiling C object 'tests/59830eb@@gen3_render_linear_blits@exe/intel_gen3_render_linear_blits.c.o'.
-[385/1636] Compiling C object 'tests/59830eb@@kms_tiled_display@exe/kms_tiled_display.c.o'.
-[386/1636] Compiling C object 'tests/59830eb@@gem_basic@exe/intel_gem_basic.c.o'.
-[387/1636] Compiling C object 'tests/59830eb@@gem_compute@exe/intel_gem_compute.c.o'.
-[388/1636] Compiling C object 'tests/59830eb@@gen3_render_tiledy_blits@exe/intel_gen3_render_tiledy_blits.c.o'.
-[389/1636] Compiling C object 'tests/59830eb@@gen3_render_tiledx_blits@exe/intel_gen3_render_tiledx_blits.c.o'.
-[390/1636] Compiling C object 'tests/59830eb@@gen3_render_mixed_blits@exe/intel_gen3_render_mixed_blits.c.o'.
-[391/1636] Compiling C object 'tests/59830eb@@debugfs_test@exe/intel_debugfs_test.c.o'.
-[392/1636] Compiling C object 'tests/59830eb@@gem_close@exe/intel_gem_close.c.o'.
-[393/1636] Generating i915-perf-registers-acmgt3 with a custom command.
-[394/1636] Compiling C object 'tests/59830eb@@gem_ctx_bad_destroy@exe/intel_gem_ctx_bad_destroy.c.o'.
-[395/1636] Compiling C object 'tests/59830eb@@gem_bad_reloc@exe/intel_gem_bad_reloc.c.o'.
-[396/1636] Compiling C object 'tests/59830eb@@gem_close_race@exe/intel_gem_close_race.c.o'.
-[397/1636] Compiling C object 'tests/59830eb@@gen3_mixed_blits@exe/intel_gen3_mixed_blits.c.o'.
-[398/1636] Compiling C object 'tests/59830eb@@gem_cs_tlb@exe/intel_gem_cs_tlb.c.o'.
-[399/1636] Compiling C object 'tests/59830eb@@sw_sync@exe/sw_sync.c.o'.
-[400/1636] Compiling C object 'tests/59830eb@@testdisplay@exe/testdisplay.c.o'.
-[401/1636] Compiling C object 'tests/59830eb@@prime_mmap_kms@exe/intel_prime_mmap_kms.c.o'.
-[402/1636] Compiling C object 'tests/59830eb@@kms_properties@exe/kms_properties.c.o'.
-[403/1636] Compiling C object 'tests/59830eb@@kms_universal_plane@exe/kms_universal_plane.c.o'.
-[404/1636] Compiling C object 'tests/59830eb@@gem_caching@exe/intel_gem_caching.c.o'.
-[405/1636] Compiling C object 'tests/59830eb@@kms_setmode@exe/kms_setmode.c.o'.
-[406/1636] Compiling C object 'tests/59830eb@@sysfs_heartbeat_interval@exe/intel_sysfs_heartbeat_interval.c.o'.
-[407/1636] Generating i915-perf-metrics-acmgt3 with a custom command.
-[408/1636] Compiling C object 'tests/59830eb@@vgem_basic@exe/vgem_basic.c.o'.
-[409/1636] Compiling C object 'tests/59830eb@@kms_rotation_crc@exe/kms_rotation_crc.c.o'.
-[410/1636] Compiling C object 'tests/59830eb@@gem_create@exe/intel_gem_create.c.o'.
-[411/1636] Compiling C object 'lib/76b5a35@@igt-intel_batchbuffer_c@sta/intel_batchbuffer.c.o'.
-[412/1636] Compiling C object 'tests/59830eb@@syncobj_wait@exe/syncobj_wait.c.o'.
-[413/1636] Compiling C object 'tests/59830eb@@kms_cursor_legacy@exe/kms_cursor_legacy.c.o'.
-[414/1636] Compiling C object 'tests/59830eb@@gem_busy@exe/intel_gem_busy.c.o'.
-[415/1636] Compiling C object 'tests/59830eb@@gem_ccs@exe/intel_gem_ccs.c.o'.
-[416/1636] Compiling C object 'lib/76b5a35@@igt-igt_core_c@sta/igt_core.c.o'.
-[417/1636] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen8_c@sta/rendercopy_gen8.c.o'.
-[418/1636] Compiling C object 'lib/76b5a35@@igt-igt_chamelium_c@sta/igt_chamelium.c.o'.
-[419/1636] Compiling C object 'tests/59830eb@@api_intel_allocator@exe/intel_api_intel_allocator.c.o'.
-[420/1636] Compiling C object 'tests/59830eb@@gem_blits@exe/intel_gem_blits.c.o'.
-[421/1636] Compiling C object 'tests/59830eb@@syncobj_timeline@exe/syncobj_timeline.c.o'.
-[422/1636] Compiling C object 'tests/59830eb@@prime_vgem@exe/prime_vgem.c.o'.
-[423/1636] Compiling C object 'tests/59830eb@@drm_fdinfo@exe/intel_drm_fdinfo.c.o'.
-[424/1636] Compiling C object 'tests/59830eb@@api_intel_bb@exe/intel_api_intel_bb.c.o'.
-[425/1636] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen9_c@sta/rendercopy_gen9.c.o'.
-[426/1636] Compiling C object 'lib/76b5a35@@igt-i915_intel_decode_c@sta/i915_intel_decode.c.o'.
-[427/1636] Compiling C object 'tests/59830eb@@gem_concurrent_blit@exe/intel_gem_concurrent_blit.c.o'.
-[428/1636] Compiling C object 'lib/76b5a35@@igt-igt_kms_c@sta/igt_kms.c.o'.
-[429/1636] Compiling C object 'lib/76b5a35@@igt-igt_fb_c@sta/igt_fb.c.o'.
-[430/1636] Generating i915-perf-equations with a custom command.
-ninja: build stopped: subcommand failed.
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/988509 for the overview.
 
+build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/49131355):
+                      ~~~~~~~~~~~~~~^~~~~~
+  ../tests/kms_vblank.c:652:52: error: incompatible type for argument 2 of ‘pipe_output_combo_valid’
+      if (!pipe_output_combo_valid(&data.display, data.output, data.pipe))
+                                                  ~~~~^~~~~~~
+  ../tests/kms_vblank.c:266:14: note: expected ‘enum pipe’ but argument is of type ‘igt_output_t *’ {aka ‘struct <anonymous> *’}
+      enum pipe pipe, igt_output_t *output)
+      ~~~~~~~~~~^~~~
+  ../tests/kms_vblank.c:652:65: error: incompatible type for argument 3 of ‘pipe_output_combo_valid’
+      if (!pipe_output_combo_valid(&data.display, data.output, data.pipe))
+                                                               ~~~~^~~~~
+  ../tests/kms_vblank.c:266:34: note: expected ‘igt_output_t *’ {aka ‘struct <anonymous> *’} but argument is of type ‘enum pipe’
+      enum pipe pipe, igt_output_t *output)
+                      ~~~~~~~~~~~~~~^~~~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1695037838:step_script
+  section_start:1695037838:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1695037839:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/49131358):
+                      ~~~~~~~~~~~~~~^~~~~~
+  ../tests/kms_vblank.c:652:52: error: incompatible type for argument 2 of ‘pipe_output_combo_valid’
+      if (!pipe_output_combo_valid(&data.display, data.output, data.pipe))
+                                                  ~~~~^~~~~~~
+  ../tests/kms_vblank.c:266:14: note: expected ‘enum pipe’ but argument is of type ‘igt_output_t *’ {aka ‘struct <anonymous> *’}
+      enum pipe pipe, igt_output_t *output)
+      ~~~~~~~~~~^~~~
+  ../tests/kms_vblank.c:652:65: error: incompatible type for argument 3 of ‘pipe_output_combo_valid’
+      if (!pipe_output_combo_valid(&data.display, data.output, data.pipe))
+                                                               ~~~~^~~~~
+  ../tests/kms_vblank.c:266:34: note: expected ‘igt_output_t *’ {aka ‘struct <anonymous> *’} but argument is of type ‘enum pipe’
+      enum pipe pipe, igt_output_t *output)
+                      ~~~~~~~~~~~~~~^~~~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1695037867:step_script
+  section_start:1695037867:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1695037868:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/49131357):
+                      ~~~~~~~~~~~~~~^~~~~~
+  ../tests/kms_vblank.c:652:52: error: incompatible type for argument 2 of ‘pipe_output_combo_valid’
+      if (!pipe_output_combo_valid(&data.display, data.output, data.pipe))
+                                                  ~~~~^~~~~~~
+  ../tests/kms_vblank.c:266:14: note: expected ‘enum pipe’ but argument is of type ‘igt_output_t *’ {aka ‘struct <anonymous> *’}
+      enum pipe pipe, igt_output_t *output)
+      ~~~~~~~~~~^~~~
+  ../tests/kms_vblank.c:652:65: error: incompatible type for argument 3 of ‘pipe_output_combo_valid’
+      if (!pipe_output_combo_valid(&data.display, data.output, data.pipe))
+                                                               ~~~~^~~~~
+  ../tests/kms_vblank.c:266:34: note: expected ‘igt_output_t *’ {aka ‘struct <anonymous> *’} but argument is of type ‘enum pipe’
+      enum pipe pipe, igt_output_t *output)
+                      ~~~~~~~~~~~~~~^~~~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1695037849:step_script
+  section_start:1695037849:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1695037849:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/49131359):
+                      ~~~~~~~~~~~~~~^~~~~~
+  ../tests/kms_vblank.c:652:52: error: incompatible type for argument 2 of ‘pipe_output_combo_valid’
+      if (!pipe_output_combo_valid(&data.display, data.output, data.pipe))
+                                                  ~~~~^~~~~~~
+  ../tests/kms_vblank.c:266:14: note: expected ‘enum pipe’ but argument is of type ‘igt_output_t *’ {aka ‘struct <anonymous> *’}
+      enum pipe pipe, igt_output_t *output)
+      ~~~~~~~~~~^~~~
+  ../tests/kms_vblank.c:652:65: error: incompatible type for argument 3 of ‘pipe_output_combo_valid’
+      if (!pipe_output_combo_valid(&data.display, data.output, data.pipe))
+                                                               ~~~~^~~~~
+  ../tests/kms_vblank.c:266:34: note: expected ‘igt_output_t *’ {aka ‘struct <anonymous> *’} but argument is of type ‘enum pipe’
+      enum pipe pipe, igt_output_t *output)
+                      ~~~~~~~~~~~~~~^~~~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1695037855:step_script
+  section_start:1695037855:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1695037856:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/49131356):
+  [549/554] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt3.c.o'.
+  ninja: build stopped: subcommand failed.
+  ninja: Entering directory `build'
+  [1/102] Generating version.h with a custom command.
+  [2/7] Linking target lib/libi915_perf.so.1.5.
+  [3/7] Generating symbol file 'lib/76b5a35@@i915_perf@sha/libi915_perf.so.1.5.symbols'.
+  [4/7] Linking target tools/i915-perf/i915-perf-configs.
+  [5/7] Linking target tools/i915-perf/i915-perf-recorder.
+  [6/7] Linking target tools/i915-perf/i915-perf-reader.
+  [7/7] Generating kms_tests.rst with a custom command.
+  FAILED: docs/testplan/kms_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst
+  /builds/gfx-ci/igt-ci-tags/tests/intel/../kms_vblank.c:subtest igt@kms_vblank@pipe-%s-ts-continuation-modeset-rpm needs 1 arguments but only 0 are defined.
+  ninja: build stopped: subcommand failed.
+  section_end:1695037830:step_script
+  section_start:1695037830:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1695037831:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/49131350):
+        |                                                    |
+        |                                                    igt_output_t * {aka struct <anonymous> *}
+  ../tests/kms_vblank.c:266:14: note: expected ‘enum pipe’ but argument is of type ‘igt_output_t *’ {aka ‘struct <anonymous> *’}
+    266 |    enum pipe pipe, igt_output_t *output)
+        |    ~~~~~~~~~~^~~~
+  ../tests/kms_vblank.c:652:65: error: incompatible type for argument 3 of ‘pipe_output_combo_valid’
+    652 |    if (!pipe_output_combo_valid(&data.display, data.output, data.pipe))
+        |                                                             ~~~~^~~~~
+        |                                                                 |
+        |                                                                 enum pipe
+  ../tests/kms_vblank.c:266:34: note: expected ‘igt_output_t *’ {aka ‘struct <anonymous> *’} but argument is of type ‘enum pipe’
+    266 |    enum pipe pipe, igt_output_t *output)
+        |                    ~~~~~~~~~~~~~~^~~~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1695037838:step_script
+  section_start:1695037838:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1695037839:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/49131354):
+  [1640/1643] Generating kms_tests.rst with a custom command.
+  FAILED: docs/testplan/kms_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+  /builds/gfx-ci/igt-ci-tags/tests/intel/../kms_vblank.c:subtest igt@kms_vblank@pipe-%s-ts-continuation-modeset-rpm needs 1 arguments but only 0 are defined.
+  [1641/1643] Generating i915_tests.rst with a custom command.
+  ninja: build stopped: subcommand failed.
+  ninja: Entering directory `build'
+  [1/726] Generating version.h with a custom command.
+  [2/4] Generating i915_tests.html with a custom command.
+  [3/4] Generating kms_tests.rst with a custom command.
+  FAILED: docs/testplan/kms_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+  /builds/gfx-ci/igt-ci-tags/tests/intel/../kms_vblank.c:subtest igt@kms_vblank@pipe-%s-ts-continuation-modeset-rpm needs 1 arguments but only 0 are defined.
+  ninja: build stopped: subcommand failed.
+  section_end:1695037875:step_script
+  section_start:1695037875:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1695037875:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/49131353):
+        |                                                    |
+        |                                                    igt_output_t * {aka struct <anonymous> *}
+  ../tests/kms_vblank.c:266:14: note: expected ‘enum pipe’ but argument is of type ‘igt_output_t *’ {aka ‘struct <anonymous> *’}
+    266 |    enum pipe pipe, igt_output_t *output)
+        |    ~~~~~~~~~~^~~~
+  ../tests/kms_vblank.c:652:65: error: incompatible type for argument 3 of ‘pipe_output_combo_valid’
+    652 |    if (!pipe_output_combo_valid(&data.display, data.output, data.pipe))
+        |                                                             ~~~~^~~~~
+        |                                                                 |
+        |                                                                 enum pipe
+  ../tests/kms_vblank.c:266:34: note: expected ‘igt_output_t *’ {aka ‘struct <anonymous> *’} but argument is of type ‘enum pipe’
+    266 |    enum pipe pipe, igt_output_t *output)
+        |                    ~~~~~~~~~~~~~~^~~~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1695037840:step_script
+  section_start:1695037840:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1695037840:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/49131351):
+        |                                                    |
+        |                                                    igt_output_t * {aka struct <anonymous> *}
+  ../tests/kms_vblank.c:266:14: note: expected ‘enum pipe’ but argument is of type ‘igt_output_t *’ {aka ‘struct <anonymous> *’}
+    266 |    enum pipe pipe, igt_output_t *output)
+        |    ~~~~~~~~~~^~~~
+  ../tests/kms_vblank.c:652:65: error: incompatible type for argument 3 of ‘pipe_output_combo_valid’
+    652 |    if (!pipe_output_combo_valid(&data.display, data.output, data.pipe))
+        |                                                             ~~~~^~~~~
+        |                                                                 |
+        |                                                                 enum pipe
+  ../tests/kms_vblank.c:266:34: note: expected ‘igt_output_t *’ {aka ‘struct <anonymous> *’} but argument is of type ‘enum pipe’
+    266 |    enum pipe pipe, igt_output_t *output)
+        |                    ~~~~~~~~~~~~~~^~~~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1695037841:step_script
+  section_start:1695037841:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1695037842:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/49131352):
+        |                                                    |
+        |                                                    igt_output_t * {aka struct <anonymous> *}
+  ../tests/kms_vblank.c:266:14: note: expected ‘enum pipe’ but argument is of type ‘igt_output_t *’ {aka ‘struct <anonymous> *’}
+    266 |    enum pipe pipe, igt_output_t *output)
+        |    ~~~~~~~~~~^~~~
+  ../tests/kms_vblank.c:652:65: error: incompatible type for argument 3 of ‘pipe_output_combo_valid’
+    652 |    if (!pipe_output_combo_valid(&data.display, data.output, data.pipe))
+        |                                                             ~~~~^~~~~
+        |                                                                 |
+        |                                                                 enum pipe
+  ../tests/kms_vblank.c:266:34: note: expected ‘igt_output_t *’ {aka ‘struct <anonymous> *’} but argument is of type ‘enum pipe’
+    266 |    enum pipe pipe, igt_output_t *output)
+        |                    ~~~~~~~~~~~~~~^~~~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1695037840:step_script
+  section_start:1695037840:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1695037841:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/988509
