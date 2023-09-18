@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 18 Sep 2023 15:43:06 +0200
-Message-ID: <20230918134249.31645-35-janusz.krzysztofik@linux.intel.com>
+Date: Mon, 18 Sep 2023 15:43:07 +0200
+Message-ID: <20230918134249.31645-36-janusz.krzysztofik@linux.intel.com>
 In-Reply-To: <20230918134249.31645-19-janusz.krzysztofik@linux.intel.com>
 References: <20230918134249.31645-19-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 16/17] lib/kunit: Strip "_test" or
- "_kunit" suffix from subtest names
+Subject: [igt-dev] [PATCH i-g-t v3 17/17] lib/kunit: Omit suite name prefix
+ if the same as subtest name
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,209 +22,53 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-If a user (an IGT test) doesn't provide a subtest name when calling
-igt_kunit() then we now use the requested kernel module name as IGT
-subtest name.  Since names of kunit test modules usually end with a
-"_test" or "_kunit" suffix, those parts of the names don't carry any
-useful information.  Strip those suffixes from IGT subtest names.
+Kunit test modules usually contain one test suite, named after the module
+name with the trailing "_test" or "_kunit" suffix omitted.  Since we
+follow the same convention when we derive subtest names from module names,
+there is a great chance that those two names match.  Take this into
+account when composing names for IGT dynamic sub-subtest names and drop
+the leading test suite name component when it is the same as subtest name.
 
 Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- lib/igt_kmod.c | 23 ++++++++++++++++++++---
- tests/drm_mm.c | 42 +++++++++++++++++++++---------------------
- 2 files changed, 41 insertions(+), 24 deletions(-)
+ lib/igt_kmod.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
 diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index 7fa5b4aa80..f6e0ab07ce 100644
+index f6e0ab07ce..05c837031c 100644
 --- a/lib/igt_kmod.c
 +++ b/lib/igt_kmod.c
-@@ -978,7 +978,27 @@ void igt_kunit(const char *module_name, const char *name, const char *opts)
- 	struct igt_ktest tst = { .kmsg = -1, };
+@@ -863,7 +863,8 @@ static void kunit_result_free(struct igt_ktap_result *r,
+  *
+  * Returns: IGT default codes
+  */
+-static void __igt_kunit(struct igt_ktest *tst, const char *opts)
++static void
++__igt_kunit(struct igt_ktest *tst, const char *name, const char *opts)
+ {
+ 	struct modprobe_data modprobe = { pthread_self(), tst->kmod, opts, 0,
+ 					  PTHREAD_MUTEX_INITIALIZER, };
+@@ -902,7 +903,11 @@ static void __igt_kunit(struct igt_ktest *tst, const char *opts)
  
+ 		r = igt_list_first_entry(&results, r, link);
  
-+	/*
-+	 * If the caller (an IGT test) provides no subtest name then we
-+	 * take the module name, drop the trailing "_test" or "_kunit"
-+	 * suffix, if any, and use the result as our IGT subtest name.
-+	 */
-+	if (!name) {
-+		name = strdup(module_name);
-+		if (name) {
-+			char *suffix = strstr(name, "_test");
+-		igt_dynamic_f("%s-%s", r->suite_name, r->case_name) {
++		igt_dynamic_f("%s%s%s",
++			      strcmp(r->suite_name, name) ?  r->suite_name : "",
++			      strcmp(r->suite_name, name) ? "-" : "",
++			      r->case_name) {
 +
-+			if (!suffix)
-+				suffix = strstr(name, "_kunit");
-+
-+			if (suffix)
-+				*suffix = '\0';
-+		}
-+	}
-+
- 	igt_fixture {
-+		igt_require(name);
-+
- 		igt_skip_on(igt_ktest_init(&tst, module_name));
- 		igt_skip_on(igt_ktest_begin(&tst));
- 	}
-@@ -990,9 +1010,6 @@ void igt_kunit(const char *module_name, const char *name, const char *opts)
- 	 * proper namespace for dynamic subtests, with is required for CI
+ 			if (r->code == IGT_EXIT_INVALID) {
+ 				/* parametrized test case, get actual result */
+ 				kunit_result_free(r, &suite_name, &case_name);
+@@ -1011,7 +1016,7 @@ void igt_kunit(const char *module_name, const char *name, const char *opts)
  	 * and for documentation.
  	 */
--	if (name == NULL)
--		name = module_name;
--
  	igt_subtest_with_dynamic(name)
- 		__igt_kunit(&tst, opts);
+-		__igt_kunit(&tst, opts);
++		__igt_kunit(&tst, name, opts);
  
-diff --git a/tests/drm_mm.c b/tests/drm_mm.c
-index 9a8b3f3fcb..e6ba224745 100644
---- a/tests/drm_mm.c
-+++ b/tests/drm_mm.c
-@@ -29,123 +29,123 @@
-  * Feature: mapping
-  * Run type: FULL
-  *
-- * SUBTEST: drm_mm_test
-+ * SUBTEST: drm_mm
-  *
-- * SUBTEST: drm_mm_test@align
-+ * SUBTEST: drm_mm@align
-  * Category: Infrastructure
-  * Description: drm_mm range manager SW validation
-  * Functionality: DRM memory mangemnt
-  * Test category: GEM_Legacy
-  *
-- * SUBTEST: drm_mm_test@align32
-+ * SUBTEST: drm_mm@align32
-  * Category: Infrastructure
-  * Description: drm_mm range manager SW validation
-  * Functionality: DRM memory mangemnt
-  * Test category: GEM_Legacy
-  *
-- * SUBTEST: drm_mm_test@align64
-+ * SUBTEST: drm_mm@align64
-  * Category: Infrastructure
-  * Description: drm_mm range manager SW validation
-  * Functionality: DRM memory mangemnt
-  * Test category: GEM_Legacy
-  *
-- * SUBTEST: drm_mm_test@bottomup
-+ * SUBTEST: drm_mm@bottomup
-  * Category: Infrastructure
-  * Description: drm_mm range manager SW validation
-  * Functionality: DRM memory mangemnt
-  * Test category: GEM_Legacy
-  *
-- * SUBTEST: drm_mm_test@color
-+ * SUBTEST: drm_mm@color
-  * Category: Infrastructure
-  * Description: drm_mm range manager SW validation
-  * Functionality: DRM memory mangemnt
-  * Test category: GEM_Legacy
-  *
-- * SUBTEST: drm_mm_test@color_evict
-+ * SUBTEST: drm_mm@color_evict
-  * Category: Infrastructure
-  * Description: drm_mm range manager SW validation
-  * Functionality: DRM memory mangemnt
-  * Test category: GEM_Legacy
-  *
-- * SUBTEST: drm_mm_test@color_evict_range
-+ * SUBTEST: drm_mm@color_evict_range
-  * Category: Infrastructure
-  * Description: drm_mm range manager SW validation
-  * Functionality: DRM memory mangemnt
-  * Test category: GEM_Legacy
-  *
-- * SUBTEST: drm_mm_test@debug
-+ * SUBTEST: drm_mm@debug
-  * Category: Infrastructure
-  * Description: drm_mm range manager SW validation
-  * Functionality: DRM memory mangemnt
-  * Test category: GEM_Legacy
-  *
-- * SUBTEST: drm_mm_test@evict
-+ * SUBTEST: drm_mm@evict
-  * Category: Infrastructure
-  * Description: drm_mm range manager SW validation
-  * Functionality: DRM memory mangemnt
-  * Test category: GEM_Legacy
-  *
-- * SUBTEST: drm_mm_test@evict_range
-+ * SUBTEST: drm_mm@evict_range
-  * Category: Infrastructure
-  * Description: drm_mm range manager SW validation
-  * Functionality: DRM memory mangemnt
-  * Test category: GEM_Legacy
-  *
-- * SUBTEST: drm_mm_test@frag
-+ * SUBTEST: drm_mm@frag
-  * Category: Infrastructure
-  * Description: drm_mm range manager SW validation
-  * Functionality: DRM memory mangemnt
-  * Test category: GEM_Legacy
-  *
-- * SUBTEST: drm_mm_test@highest
-+ * SUBTEST: drm_mm@highest
-  * Category: Infrastructure
-  * Description: drm_mm range manager SW validation
-  * Functionality: DRM memory mangemnt
-  * Test category: GEM_Legacy
-  *
-- * SUBTEST: drm_mm_test@init
-+ * SUBTEST: drm_mm@init
-  * Category: Infrastructure
-  * Description: drm_mm range manager SW validation
-  * Functionality: DRM memory mangemnt
-  * Test category: GEM_Legacy
-  *
-- * SUBTEST: drm_mm_test@insert
-+ * SUBTEST: drm_mm@insert
-  * Category: Infrastructure
-  * Description: drm_mm range manager SW validation
-  * Functionality: DRM memory mangemnt
-  * Test category: GEM_Legacy
-  *
-- * SUBTEST: drm_mm_test@insert_range
-+ * SUBTEST: drm_mm@insert_range
-  * Category: Infrastructure
-  * Description: drm_mm range manager SW validation
-  * Functionality: DRM memory mangemnt
-  * Test category: GEM_Legacy
-  *
-- * SUBTEST: drm_mm_test@lowest
-+ * SUBTEST: drm_mm@lowest
-  * Category: Infrastructure
-  * Description: drm_mm range manager SW validation
-  * Functionality: DRM memory mangemnt
-  * Test category: GEM_Legacy
-  *
-- * SUBTEST: drm_mm_test@replace
-+ * SUBTEST: drm_mm@replace
-  * Category: Infrastructure
-  * Description: drm_mm range manager SW validation
-  * Functionality: DRM memory mangemnt
-  * Test category: GEM_Legacy
-  *
-- * SUBTEST: drm_mm_test@reserve
-+ * SUBTEST: drm_mm@reserve
-  * Category: Infrastructure
-  * Description: drm_mm range manager SW validation
-  * Functionality: DRM memory mangemnt
-  * Test category: GEM_Legacy
-  *
-- * SUBTEST: drm_mm_test@sanitycheck
-+ * SUBTEST: drm_mm@sanitycheck
-  * Category: Infrastructure
-  * Description: drm_mm range manager SW validation
-  * Functionality: DRM memory mangemnt
-  * Test category: GEM_Legacy
-  *
-- * SUBTEST: drm_mm_test@topdown
-+ * SUBTEST: drm_mm@topdown
-  * Category: Infrastructure
-  * Description: drm_mm range manager SW validation
-  * Functionality: DRM memory mangemnt
+ 	igt_fixture
+ 		igt_ktest_end(&tst);
 -- 
 2.41.0
