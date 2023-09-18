@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 18 Sep 2023 14:13:28 -0700
-Message-Id: <20230918211328.1961061-1-lucas.demarchi@intel.com>
-In-Reply-To: <20230915132346.1845909-15-lucas.demarchi@intel.com>
-References: <20230915132346.1845909-15-lucas.demarchi@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============8726405025768993389=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v1.1] lib/intel_blt: Support xe2 in
- ctrl-surf-copy command
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Nirmoy Das" <nirmoy.das@intel.com>
+Date: Mon, 18 Sep 2023 21:40:44 -0000
+Message-ID: <169507324413.32418.15808298848968099714@emeril.freedesktop.org>
+References: <20230918164747.30171-1-nirmoy.das@intel.com>
+In-Reply-To: <20230918164747.30171-1-nirmoy.das@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgSWdub3Jl?=
+ =?utf-8?q?_some_tests_on_MTL_which_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,188 +17,221 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>, intel-xe@lists.freedesktop.org
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Xe2 ctrl-surf-copy command varies significantly from gen12. Create a new
-struct and function to fill the data, sharing the rest of the logic in
-emit_blt_ctrl_surf_copy().
+--===============8726405025768993389==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- lib/intel_blt.c | 128 ++++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 107 insertions(+), 21 deletions(-)
+== Series Details ==
 
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index 508c2de46..38664a6fd 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -962,6 +962,65 @@ struct gen12_ctrl_surf_copy_data {
- 	} dw04;
- };
- 
-+struct xe2_ctrl_surf_copy_data {
-+	struct {
-+		uint32_t length:			BITRANGE(0, 7);
-+		uint32_t rsvd0:				BITRANGE(8, 8);
-+		uint32_t size_of_ctrl_copy:		BITRANGE(9, 18);
-+		uint32_t rsvd1:				BITRANGE(19, 19);
-+		uint32_t dst_access_type:		BITRANGE(20, 20);
-+		uint32_t src_access_type:		BITRANGE(21, 21);
-+		uint32_t opcode:			BITRANGE(22, 28);
-+		uint32_t client:			BITRANGE(29, 31);
-+	} dw00;
-+
-+	struct {
-+		uint32_t src_address_lo;
-+	} dw01;
-+
-+	struct {
-+		uint32_t src_address_hi:		BITRANGE(0, 24);
-+		uint32_t pad:				BITRANGE(25, 27);
-+		uint32_t src_mocs:			BITRANGE(28, 31);
-+	} dw02;
-+
-+	struct {
-+		uint32_t dst_address_lo;
-+	} dw03;
-+
-+	struct {
-+		uint32_t dst_address_hi:		BITRANGE(0, 24);
-+		uint32_t pad:				BITRANGE(25, 27);
-+		uint32_t dst_mocs:			BITRANGE(28, 31);
-+	} dw04;
-+};
-+
-+union ctrl_surf_copy_data {
-+	struct gen12_ctrl_surf_copy_data gen12;
-+	struct xe2_ctrl_surf_copy_data xe2;
-+};
-+
-+static void xe2_dump_bb_surf_ctrl_cmd(const struct xe2_ctrl_surf_copy_data *data)
-+{
-+	uint32_t *cmd = (uint32_t *) data;
-+
-+	igt_info("details:\n");
-+	igt_info(" dw00: [%08x] <client: 0x%x, opcode: 0x%x, "
-+		 "src/dst access type: <%d, %d>, size of ctrl copy: %u, length: %d>\n",
-+		 cmd[0],
-+		 data->dw00.client, data->dw00.opcode,
-+		 data->dw00.src_access_type, data->dw00.dst_access_type,
-+		 data->dw00.size_of_ctrl_copy, data->dw00.length);
-+	igt_info(" dw01: [%08x] src offset lo (0x%x)\n",
-+		 cmd[1], data->dw01.src_address_lo);
-+	igt_info(" dw02: [%08x] src offset hi (0x%x), src mocs idx: %u\n",
-+		 cmd[2], data->dw02.src_address_hi, data->dw02.src_mocs);
-+	igt_info(" dw03: [%08x] dst offset lo (0x%x)\n",
-+		 cmd[3], data->dw03.dst_address_lo);
-+	igt_info(" dw04: [%08x] dst offset hi (0x%x), src mocs idx: %u\n",
-+		 cmd[4], data->dw04.dst_address_hi, data->dw04.dst_mocs);
-+}
-+
- static void dump_bb_surf_ctrl_cmd(const struct gen12_ctrl_surf_copy_data *data)
- {
- 	uint32_t *cmd = (uint32_t *) data;
-@@ -1020,7 +1079,9 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
- 				 uint64_t bb_pos,
- 				 bool emit_bbe)
- {
--	struct gen12_ctrl_surf_copy_data data = {};
-+	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
-+	union ctrl_surf_copy_data data = { };
-+	size_t data_sz;
- 	uint64_t dst_offset, src_offset, bb_offset, alignment;
- 	uint32_t bbe = MI_BATCH_BUFFER_END;
- 	uint32_t *bb;
-@@ -1029,33 +1090,55 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
- 	igt_assert_f(surf, "ctrl-surf-copy requires data to do ctrl-surf-copy blit\n");
- 
- 	alignment = max_t(uint64_t, get_default_alignment(fd, surf->driver), 1ull << 16);
--
--	data.dw00.client = 0x2;
--	data.dw00.opcode = 0x48;
--	data.dw00.src_access_type = surf->src.access_type;
--	data.dw00.dst_access_type = surf->dst.access_type;
--
--	/* Ensure dst has size capable to keep src ccs aux */
--	data.dw00.size_of_ctrl_copy = __ccs_size(surf) / CCS_RATIO - 1;
--	data.dw00.length = 0x3;
--
- 	src_offset = get_offset(ahnd, surf->src.handle, surf->src.size, alignment);
- 	dst_offset = get_offset(ahnd, surf->dst.handle, surf->dst.size, alignment);
- 	bb_offset = get_offset(ahnd, surf->bb.handle, surf->bb.size, alignment);
- 
--	data.dw01.src_address_lo = src_offset;
--	data.dw02.src_address_hi = src_offset >> 32;
--	data.dw02.src_mocs = surf->src.mocs;
-+	if (ip_ver >= IP_VER(20, 0)) {
-+		data.xe2.dw00.client = 0x2;
-+		data.xe2.dw00.opcode = 0x48;
-+		data.xe2.dw00.src_access_type = surf->src.access_type;
-+		data.xe2.dw00.dst_access_type = surf->dst.access_type;
-+
-+		/* Ensure dst has size capable to keep src ccs aux */
-+		data.xe2.dw00.size_of_ctrl_copy = __ccs_size(surf) / CCS_RATIO - 1;
-+		data.xe2.dw00.length = 0x3;
-+
-+		data.xe2.dw01.src_address_lo = src_offset;
-+		data.xe2.dw02.src_address_hi = src_offset >> 32;
-+		data.xe2.dw02.src_mocs = surf->src.mocs;
-+
-+		data.xe2.dw03.dst_address_lo = dst_offset;
-+		data.xe2.dw04.dst_address_hi = dst_offset >> 32;
-+		data.xe2.dw04.dst_mocs = surf->dst.mocs;
-+
-+		data_sz = sizeof(data.xe2);
-+	} else {
-+		data.gen12.dw00.client = 0x2;
-+		data.gen12.dw00.opcode = 0x48;
-+		data.gen12.dw00.src_access_type = surf->src.access_type;
-+		data.gen12.dw00.dst_access_type = surf->dst.access_type;
-+
-+		/* Ensure dst has size capable to keep src ccs aux */
-+		data.gen12.dw00.size_of_ctrl_copy = __ccs_size(surf) / CCS_RATIO - 1;
-+		data.gen12.dw00.length = 0x3;
-+
-+		data.gen12.dw01.src_address_lo = src_offset;
-+		data.gen12.dw02.src_address_hi = src_offset >> 32;
-+		data.gen12.dw02.src_mocs = surf->src.mocs;
-+
-+		data.gen12.dw03.dst_address_lo = dst_offset;
-+		data.gen12.dw04.dst_address_hi = dst_offset >> 32;
-+		data.gen12.dw04.dst_mocs = surf->dst.mocs;
- 
--	data.dw03.dst_address_lo = dst_offset;
--	data.dw04.dst_address_hi = dst_offset >> 32;
--	data.dw04.dst_mocs = surf->dst.mocs;
-+		data_sz = sizeof(data.gen12);
-+	}
- 
- 	bb = bo_map(fd, surf->bb.handle, surf->bb.size, surf->driver);
- 
--	igt_assert(bb_pos + sizeof(data) < surf->bb.size);
--	memcpy(bb + bb_pos, &data, sizeof(data));
--	bb_pos += sizeof(data);
-+	igt_assert(bb_pos + data_sz < surf->bb.size);
-+	memcpy(bb + bb_pos, &data, data_sz);
-+	bb_pos += data_sz;
- 
- 	if (emit_bbe) {
- 		igt_assert(bb_pos + sizeof(uint32_t) < surf->bb.size);
-@@ -1069,7 +1152,10 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
- 			 ", bb offset: %" PRIx64 "\n",
- 			 src_offset, dst_offset, bb_offset);
- 
--		dump_bb_surf_ctrl_cmd(&data);
-+		if (ip_ver >= IP_VER(20, 0))
-+			xe2_dump_bb_surf_ctrl_cmd(&data.xe2);
-+		else
-+			dump_bb_surf_ctrl_cmd(&data.gen12);
- 	}
- 
- 	munmap(bb, surf->bb.size);
--- 
-2.40.1
+Series: Ignore some tests on MTL which (rev4)
+URL   : https://patchwork.freedesktop.org/series/123602/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_13651 -> IGTPW_9823
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9823/index.html
+
+Participating hosts (38 -> 30)
+------------------------------
+
+  Additional (1): fi-kbl-soraka 
+  Missing    (9): fi-skl-guc bat-adlm-1 fi-ilk-650 bat-adlp-6 fi-snb-2520m fi-hsw-4770 bat-adln-1 fi-kbl-8809g bat-dg2-13 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_9823 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_suspend@basic-s0@smem:
+    - bat-dg2-9:          [PASS][1] -> [INCOMPLETE][2] ([i915#8797] / [i915#9275])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13651/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9823/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][3] ([fdo#109271] / [i915#2190])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9823/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][4] ([fdo#109271] / [i915#4613]) +3 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9823/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][5] ([i915#1886] / [i915#7913])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9823/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+
+  * igt@kms_dsc@dsc-basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][6] ([fdo#109271]) +9 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9823/fi-kbl-soraka/igt@kms_dsc@dsc-basic.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-n3050:       [ABORT][7] ([i915#7913]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13651/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9823/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#8797]: https://gitlab.freedesktop.org/drm/intel/issues/8797
+  [i915#9275]: https://gitlab.freedesktop.org/drm/intel/issues/9275
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7493 -> IGTPW_9823
+
+  CI-20190529: 20190529
+  CI_DRM_13651: 61b71c3f061a44a6ab1dcf756918886aa03a5480 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_9823: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9823/index.html
+  IGT_7493: 2517e42d612e0c1ca096acf8b5f6177f7ef4bce7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@kms_concurrent@pipe-a
++igt@kms_concurrent@pipe-b
++igt@kms_concurrent@pipe-c
++igt@kms_concurrent@pipe-d
++igt@kms_concurrent@pipe-e
++igt@kms_concurrent@pipe-f
++igt@kms_concurrent@pipe-g
++igt@kms_concurrent@pipe-h
+-igt@kms_concurrent@multi-plane-atomic-resolution
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9823/index.html
+
+--===============8726405025768993389==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Ignore some tests on MTL which (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123602/">https://patchwork.freedesktop.org/series/123602/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9823/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9823/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13651 -&gt; IGTPW_9823</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9823/index.html</p>
+<h2>Participating hosts (38 -&gt; 30)</h2>
+<p>Additional (1): fi-kbl-soraka <br />
+  Missing    (9): fi-skl-guc bat-adlm-1 fi-ilk-650 bat-adlp-6 fi-snb-2520m fi-hsw-4770 bat-adln-1 fi-kbl-8809g bat-dg2-13 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_9823 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s0@smem:</p>
+<ul>
+<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13651/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9823/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8797">i915#8797</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9275">i915#9275</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9823/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9823/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9823/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9823/fi-kbl-soraka/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +9 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@execlists:<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13651/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9823/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7493 -&gt; IGTPW_9823</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13651: 61b71c3f061a44a6ab1dcf756918886aa03a5480 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_9823: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9823/index.html<br />
+  IGT_7493: 2517e42d612e0c1ca096acf8b5f6177f7ef4bce7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@kms_concurrent@pipe-a<br />
++igt@kms_concurrent@pipe-b<br />
++igt@kms_concurrent@pipe-c<br />
++igt@kms_concurrent@pipe-d<br />
++igt@kms_concurrent@pipe-e<br />
++igt@kms_concurrent@pipe-f<br />
++igt@kms_concurrent@pipe-g<br />
++igt@kms_concurrent@pipe-h<br />
+-igt@kms_concurrent@multi-plane-atomic-resolution</p>
+
+</body>
+</html>
+
+--===============8726405025768993389==--
