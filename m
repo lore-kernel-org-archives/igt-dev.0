@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 18 Sep 2023 15:43:01 +0200
-Message-ID: <20230918134249.31645-30-janusz.krzysztofik@linux.intel.com>
-In-Reply-To: <20230918134249.31645-19-janusz.krzysztofik@linux.intel.com>
-References: <20230918134249.31645-19-janusz.krzysztofik@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 11/17] lib/kunit: Fail / skip on kernel
- taint
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Date: Mon, 18 Sep 2023 15:42:44 -0000
+Message-ID: <169505176499.32416.11849872686028884449@emeril.freedesktop.org>
+References: <20230918104130.259103-1-swati2.sharma@intel.com>
+In-Reply-To: <20230918104130.259103-1-swati2.sharma@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/kms=5Fsequence=3A_remove_redundant_test_doc?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,63 +17,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: intel-gfx@lists.freedesktop.org, Isabella Basso <isabbasso@riseup.net>,
- intel-xe@lists.freedesktop.org
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Similar to how igt_kselftest() handles kernel taints, fail current dynamic
-sub-subtest and skip remaining ones when a kernel taint is detected during
-execution of kunit test cases.
+== Series Details ==
 
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- lib/igt_kmod.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+Series: tests/kms_sequence: remove redundant test doc
+URL   : https://patchwork.freedesktop.org/series/123854/
+State : warning
 
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index 96240543a7..77fc971f8f 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -761,6 +761,7 @@ static void __igt_kunit(struct igt_ktest *tst, const char *opts)
- 	bool is_builtin;
- 	struct ktap_test_results *results;
- 	struct ktap_test_results_element *temp;
-+	unsigned long taints;
- 	int flags, ret;
- 
- 	igt_skip_on_f(tst->kmsg < 0, "Could not open /dev/kmsg\n");
-@@ -785,12 +786,20 @@ static void __igt_kunit(struct igt_ktest *tst, const char *opts)
- 
- 	while (READ_ONCE(results->still_running) || READ_ONCE(results->head) != NULL)
- 	{
-+		if (igt_kernel_tainted(&taints)) {
-+			ktap_parser_cancel();
-+			break;
-+		}
-+
- 		if (READ_ONCE(results->head) != NULL) {
- 			pthread_mutex_lock(&results->mutex);
- 
--			igt_dynamic(results->head->test_name)
-+			igt_dynamic(results->head->test_name) {
- 				igt_assert(READ_ONCE(results->head->passed));
- 
-+				igt_fail_on(igt_kernel_tainted(&taints));
-+			}
-+
- 			temp = results->head;
- 			results->head = results->head->next;
- 			free(temp);
-@@ -801,6 +810,7 @@ static void __igt_kunit(struct igt_ktest *tst, const char *opts)
- 
- 	ret = ktap_parser_stop();
- 
-+	igt_skip_on(igt_kernel_tainted(&taints));
- 	igt_skip_on_f(ret, "KTAP parser failed\n");
- }
- 
--- 
-2.41.0
+== Summary ==
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/988676 for the overview.
+
+test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/49143659):
+  371/375 assembler test/rnde-intsrc              OK       0.01 s 
+  372/375 assembler test/rndz                     OK       0.01 s 
+  373/375 assembler test/lzd                      OK       0.01 s 
+  374/375 assembler test/not                      OK       0.01 s 
+  375/375 assembler test/immediate                OK       0.02 s 
+  
+  Ok:                  370
+  Expected Fail:         4
+  Fail:                  1
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1695051471:step_script
+  section_start:1695051471:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1695051472:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/49143660):
+  371/375 assembler test/rnde-intsrc              OK       0.01 s 
+  372/375 assembler test/rndz                     OK       0.01 s 
+  373/375 assembler test/lzd                      OK       0.01 s 
+  374/375 assembler test/not                      OK       0.02 s 
+  375/375 assembler test/immediate                OK       0.02 s 
+  
+  Ok:                  370
+  Expected Fail:         4
+  Fail:                  1
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1695051471:step_script
+  section_start:1695051471:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1695051471:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/988676
