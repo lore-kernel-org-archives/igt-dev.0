@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2B1F710E25F
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Sep 2023 10:11:25 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 25F7810E25F
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Sep 2023 10:26:08 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 18 Sep 2023 15:41:50 +0530
-Message-Id: <20230918101150.258055-1-swati2.sharma@intel.com>
+Date: Mon, 18 Sep 2023 15:56:22 +0530
+Message-Id: <20230918102622.258614-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_content_protection: rename
- subtests
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_dither: rename subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,67 +20,42 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Use '-' instead of '_' while naming subtests and subtest name
-should use small case.
+Use small case for subtest naming.
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_content_protection.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ tests/kms_dither.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-index 9378a76c1..ea0c4a0ab 100644
---- a/tests/kms_content_protection.c
-+++ b/tests/kms_content_protection.c
-@@ -491,14 +491,14 @@ test_fini(igt_output_t *output, enum igt_commit_style s)
+diff --git a/tests/kms_dither.c b/tests/kms_dither.c
+index c41961937..3387a3b10 100644
+--- a/tests/kms_dither.c
++++ b/tests/kms_dither.c
+@@ -187,14 +187,14 @@ static bool is_supported(igt_output_t *output)
  }
  
  /**
-- * SUBTEST: LIC
-+ * SUBTEST: lic
-  * Description: Test for the integrity of link.
+- * SUBTEST: FB-8BPC-Vs-Panel-6BPC
++ * SUBTEST: fb-8bpc-vs-panel-6bpc
+  * Description: Framebuffer BPC:8, Panel BPC:6, Expected Dither:Enable
   * Driver requirement: i915, xe
-  * Functionality: hdcp1.4
-  * Mega feature: HDCP
+  * Functionality: colorspace, kms_gem_interop
+  * Mega feature: General Display Features
   * Test category: functionality test
   *
-- * SUBTEST: content_type_change
-+ * SUBTEST: content-type-change
-  * Description: Test the content type change when the content protection already
-  *              enabled
+- * SUBTEST: FB-8BPC-Vs-Panel-8BPC
++ * SUBTEST: fb-8bpc-vs-panel-8bpc
+  * Description: Framebuffer BPC:8, Panel BPC:8, Expected Dither:Disable
   * Driver requirement: i915, xe
-@@ -506,7 +506,7 @@ test_fini(igt_output_t *output, enum igt_commit_style s)
-  * Mega feature: HDCP
-  * Test category: functionality test
-  *
-- * SUBTEST: mei_interface
-+ * SUBTEST: mei-interface
-  * Description: Test the teardown and rebuild of the interface between Intel
-  *              and mei hdcp.
-  * Driver requirement: i915, xe
-@@ -802,7 +802,7 @@ static const struct {
- 	  .content_type = HDCP_CONTENT_TYPE_0
- 	},
- 	{ .desc = "Test for the integrity of link.",
--	  .name = "LIC",
-+	  .name = "lic",
- 	  .cp_tests = CP_LIC,
- 	  .content_type = HDCP_CONTENT_TYPE_0,
- 	},
-@@ -814,12 +814,12 @@ static const struct {
- 	},
- 	{ .desc = "Test the teardown and rebuild of the interface between "
- 		  "Intel and mei hdcp.",
--	  .name = "mei_interface",
-+	  .name = "mei-interface",
- 	  .cp_tests = CP_MEI_RELOAD,
- 	  .content_type = HDCP_CONTENT_TYPE_1,
- 	},
- 	{ .desc = "Test the content type change when the content protection already enabled",
--	  .name = "content_type_change",
-+	  .name = "content-type-change",
- 	  .cp_tests = CP_TYPE_CHANGE,
- 	  .content_type = HDCP_CONTENT_TYPE_1,
- 	},
+  * Functionality: colorspace, kms_gem_interop
+@@ -257,7 +257,7 @@ igt_main
+ 			       (tests[i].fb_bpc > tests[i].output_bpc) ?
+ 							"Enable": "Disable");
+ 
+-		igt_subtest_with_dynamic_f("FB-%dBPC-Vs-Panel-%dBPC",
++		igt_subtest_with_dynamic_f("fb-%dbpc-vs-panel-%dbpc",
+ 				tests[i].fb_bpc, tests[i].output_bpc)
+ 			run_dither_test(&data,
+ 					tests[i].fb_bpc,
 -- 
 2.25.1
