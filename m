@@ -1,24 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 00F7D10E24F
- for <igt-dev@lists.freedesktop.org>; Tue, 19 Sep 2023 14:17:31 +0000 (UTC)
-Message-ID: <cab52118-e73a-cc3e-5af1-4862a8ec9027@intel.com>
-Date: Tue, 19 Sep 2023 16:17:14 +0200
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- <igt-dev@lists.freedesktop.org>, Nirmoy Das <nirmoy.das@linux.intel.com>,
- <andi.shyti@intel.com>, <oak.zeng@intel.com>
-References: <20230918164747.30171-1-nirmoy.das@intel.com>
- <20230918164747.30171-4-nirmoy.das@intel.com>
- <fb87fe3f-521e-781f-889a-a1a9539bd56a@linux.intel.com>
- <20230919102007.yil5de6atngkrxn4@kamilkon-desk.igk.intel.com>
-Content-Language: en-US
-From: Nirmoy Das <nirmoy.das@intel.com>
-In-Reply-To: <20230919102007.yil5de6atngkrxn4@kamilkon-desk.igk.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: <intel-xe@lists.freedesktop.org>, <igt-dev@lists.freedesktop.org>
+Date: Tue, 19 Sep 2023 10:19:43 -0400
+Message-ID: <20230919142000.91363-1-rodrigo.vivi@intel.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 3/4] tests/intel/gem_ctx_schedule: Skip
- some test on MTL
+Subject: [igt-dev] [PATCH i-g-t 00/16] uAPI Alignment - take 1
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,135 +14,73 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+As a result of the uAPI review efforts started by Thomas[1],
+we have identified many updates on our uAPI that would lead to
+breakage in the compatibility. What it is not acceptable after
+we are merged upstream. So, let's break it before it is too late,
+and start upstreaming a good, reliable and clean uapi.
 
-On 9/19/2023 12:20 PM, Kamil Konieczny wrote:
-> Hi Nirmoy,
->
-> On 2023-09-18 at 19:00:52 +0200, Nirmoy Das wrote:
->> Hi Kamil,
->>
->>
->> Updated the patch by adding "in-order" test and kept your rb. Hope you are
->> ok with that.
->>
-> No problem but as you make corrections maybe one more about style?
-> See below.
->
->> Regards,
->>
->> Nirmoy
->>
->> On 9/18/2023 6:47 PM, Nirmoy Das wrote:
->>> We do GGTT update on MTL using bcs engine, blocking that would
->>> fail the test so skip such subtests on bcs engine for MTL.
->>>
->>> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
->>> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
->>> ---
->>>    tests/intel/gem_exec_schedule.c | 39 +++++++++++++++++++--------------
->>>    1 file changed, 23 insertions(+), 16 deletions(-)
->>>
->>> diff --git a/tests/intel/gem_exec_schedule.c b/tests/intel/gem_exec_schedule.c
->>> index c94988d36..183ee1a21 100644
->>> --- a/tests/intel/gem_exec_schedule.c
->>> +++ b/tests/intel/gem_exec_schedule.c
->>> @@ -3479,6 +3479,12 @@ static void fairslice(int i915, const intel_ctx_cfg_t *cfg,
->>>    		for_each_if(gem_class_can_store_dword(fd, e->class)) \
->>>    		igt_dynamic_f("%s", e->name)
->>> +#define test_each_ggtt_binder_nonblocking_engine(T, i915, ctx, e) \
->>> +	igt_subtest_with_dynamic(T) for_each_ctx_engine(i915, ctx, e) \
->>> +		for_each_if(gem_class_can_store_dword(fd, e->class) && \
->>> +			    !gem_engine_can_block_ggtt_binder(i915, e)) \
->>> +		igt_dynamic_f("%s", e->name)
->>> +
->>>    igt_main
->>>    {
->>>    	int fd = -1;
->>> @@ -3502,21 +3508,22 @@ igt_main
->>>    	igt_subtest_group {
->>>    		const struct intel_execution_engine2 *e;
-> Here should be newline, if you add it mension this in description.
->
->>> -		test_each_engine_store("fifo", fd, ctx, e)
->>> +		test_each_ggtt_binder_nonblocking_engine("fifo", fd, ctx, e)
->>>    			fifo(fd, ctx, e->flags);
->>> -		test_each_engine_store("implicit-read-write", fd, ctx, e)
->>> +		test_each_ggtt_binder_nonblocking_engine("implicit-read-write", fd, ctx, e)
->>>    			implicit_rw(fd, ctx, e->flags, READ_WRITE);
->>> -		test_each_engine_store("implicit-write-read", fd, ctx, e)
->>> +		test_each_ggtt_binder_nonblocking_engine("implicit-write-read", fd, ctx, e)
->>>    			implicit_rw(fd, ctx, e->flags, WRITE_READ);
->>> -		test_each_engine_store("implicit-boths", fd, ctx, e)
->>> +		test_each_ggtt_binder_nonblocking_engine("implicit-boths", fd, ctx, e)
->>>    			implicit_rw(fd, ctx, e->flags, READ_WRITE | WRITE_READ);
->>> -		test_each_engine_store("independent", fd, ctx, e)
->>> +		test_each_ggtt_binder_nonblocking_engine("independent", fd, ctx, e)
->>>    			independent(fd, ctx, e->flags, 0);
->>> -		test_each_engine_store("u-independent", fd, ctx, e)
->>> +
-> This newline break style, either add newline after every subtest
-> or do not add new ones. In conclusion: I would prefer this newline
-> to be deleted. You may go with this in separate patch if you want.
+Most of this work on putting these patches together for a single
+shot was led by Francois.
 
-I can modify this to properly group tests with spaces.
+[1] - https://lore.kernel.org/all/863bebd0c624d6fc2b38c0a06b63e468b4185128.camel@linux.intel.com/
 
-Thanks,
+Francois Dugast (2):
+  drm-uapi/xe_drm: Separate VM_BIND's operation and flag, align with
+    latest uapi
+  drm-uapi/xe_drm: Remove MMIO ioctl and align with latest uapi
 
-Nirmoy
+Matthew Brost (3):
+  xe_exec_balancer: Enable parallel submission and compute mode
+  xe_exec_threads: Use DRM_XE_VM_CREATE_COMPUTE_MODE when creating a
+    compute VM
+  xe: Update uAPI and remove XE_EXEC_QUEUE_SET_PROPERTY_COMPUTE_MODE
 
-> Regards,
-> Kamil
->
->>> +		test_each_ggtt_binder_nonblocking_engine("u-independent", fd, ctx, e)
->>>    			independent(fd, ctx, e->flags, IGT_SPIN_USERPTR);
->>>    	}
->>> @@ -3612,13 +3619,13 @@ igt_main
->>>    		igt_subtest("smoketest-all")
->>>    			smoketest(fd, &ctx->cfg, ALL_ENGINES, 30);
->>> -		test_each_engine_store("in-order", fd, ctx, e)
->>> +		test_each_ggtt_binder_nonblocking_engine("in-order", fd, ctx, e)
->>>    			reorder(fd, &ctx->cfg, e->flags, EQUAL);
->>> -		test_each_engine_store("out-order", fd, ctx, e)
->>> +		test_each_ggtt_binder_nonblocking_engine("out-order", fd, ctx, e)
->>>    			reorder(fd, &ctx->cfg, e->flags, 0);
->>> -		test_each_engine_store("promotion", fd, ctx, e)
->>> +		test_each_ggtt_binder_nonblocking_engine("promotion", fd, ctx, e)
->>>    			promotion(fd, &ctx->cfg, e->flags);
->>>    		igt_subtest_group {
->>> @@ -3685,23 +3692,23 @@ igt_main
->>>    			}
->>>    		}
->>> -		test_each_engine_store("noreorder", fd, ctx, e)
->>> +		test_each_ggtt_binder_nonblocking_engine("noreorder", fd, ctx, e)
->>>    			noreorder(fd, &ctx->cfg, e->flags, 0, 0);
->>> -		test_each_engine_store("noreorder-priority", fd, ctx, e) {
->>> +		test_each_ggtt_binder_nonblocking_engine("noreorder-priority", fd, ctx, e) {
->>>    			igt_require(gem_scheduler_enabled(fd));
->>>    			noreorder(fd, &ctx->cfg, e->flags, MAX_PRIO, 0);
->>>    		}
->>> -		test_each_engine_store("noreorder-corked", fd, ctx, e) {
->>> +		test_each_ggtt_binder_nonblocking_engine("noreorder-corked", fd, ctx, e) {
->>>    			igt_require(gem_scheduler_enabled(fd));
->>>    			noreorder(fd, &ctx->cfg, e->flags, MAX_PRIO, CORKED);
->>>    		}
->>> -		test_each_engine_store("deep", fd, ctx, e)
->>> +		test_each_ggtt_binder_nonblocking_engine("deep", fd, ctx, e)
->>>    			deep(fd, &ctx->cfg, e->flags);
->>> -		test_each_engine_store("wide", fd, ctx, e)
->>> +		test_each_ggtt_binder_nonblocking_engine("wide", fd, ctx, e)
->>>    			wide(fd, &ctx->cfg, e->flags);
->>>    		test_each_engine_store("smoketest", fd, ctx, e)
->>> @@ -3735,10 +3742,10 @@ igt_main
->>>    		test_each_engine("pi-userfault", fd, ctx, e)
->>>    			test_pi_userfault(fd, &ctx->cfg, e->flags);
->>> -		test_each_engine("pi-distinct-iova", fd, ctx, e)
->>> +		test_each_ggtt_binder_nonblocking_engine("pi-distinct-iova", fd, ctx, e)
->>>    			test_pi_iova(fd, &ctx->cfg, e->flags, 0);
->>> -		test_each_engine("pi-shared-iova", fd, ctx, e)
->>> +		test_each_ggtt_binder_nonblocking_engine("pi-shared-iova", fd, ctx, e)
->>>    			test_pi_iova(fd, &ctx->cfg, e->flags, SHARED);
->>>    	}
+Rodrigo Vivi (10):
+  drm-uapi/xe_drm: Align with new PMU interface
+  drm-uapi/xe: Use common drm_xe_ext_set_property extension
+  drm-uapi: Kill XE_VM_PROPERTY_BIND_OP_ERROR_CAPTURE_ADDRESS extension
+  drm-uapi/xe: Replace useless 'instance' per unique gt_id
+  drm-uapi/xe: Remove unused field of drm_xe_query_gt
+  drm-uapi/xe: Rename gts to gt_list
+  drm-uapi/xe: Fix naming of XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY
+  drm-uapi/xe: Align with documentation updates
+  drm-uapi/xe: Align with Crystal Reference Clock updates
+  drm-uapi/xe: Align with extension of drm_xe_vm_bind_op
+
+Umesh Nerlige Ramappa (1):
+  tests/intel/xe_query: Add a test for querying cs cycles
+
+ include/drm-uapi/xe_drm.h                | 360 +++++++++++++---------
+ lib/intel_batchbuffer.c                  |  11 +-
+ lib/xe/xe_ioctl.c                        |  31 +-
+ lib/xe/xe_ioctl.h                        |   6 +-
+ lib/xe/xe_query.c                        |  73 +++--
+ lib/xe/xe_query.h                        |  11 +-
+ lib/xe/xe_spin.c                         |  11 +-
+ lib/xe/xe_util.c                         |   9 +-
+ tests/intel-ci/xe-fast-feedback.testlist |   4 +-
+ tests/intel/xe_evict.c                   |  14 +-
+ tests/intel/xe_exec_balancer.c           |  29 +-
+ tests/intel/xe_exec_basic.c              |   2 +-
+ tests/intel/xe_exec_compute_mode.c       |  20 +-
+ tests/intel/xe_exec_reset.c              |  18 +-
+ tests/intel/xe_exec_threads.c            |  35 +--
+ tests/intel/xe_mmio.c                    |  91 ------
+ tests/intel/xe_noexec_ping_pong.c        |  10 +-
+ tests/intel/xe_query.c                   | 226 ++++++++++++--
+ tests/intel/xe_vm.c                      |  29 +-
+ tests/meson.build                        |   1 -
+ tools/meson.build                        |   1 -
+ tools/xe_reg.c                           | 366 -----------------------
+ 22 files changed, 566 insertions(+), 792 deletions(-)
+ delete mode 100644 tests/intel/xe_mmio.c
+ delete mode 100644 tools/xe_reg.c
+
+-- 
+2.41.0
