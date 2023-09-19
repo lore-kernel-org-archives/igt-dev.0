@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D911010E239
- for <igt-dev@lists.freedesktop.org>; Tue, 19 Sep 2023 07:20:34 +0000 (UTC)
-Date: Tue, 19 Sep 2023 09:20:30 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 431A910E245
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 Sep 2023 07:29:49 +0000 (UTC)
+Date: Tue, 19 Sep 2023 09:29:44 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230919092030.3b2bcec1@maurocar-mobl2>
-In-Reply-To: <20230714153946.36448-2-kamil.konieczny@linux.intel.com>
+Message-ID: <20230919092944.6fe8f6a3@maurocar-mobl2>
+In-Reply-To: <20230714153946.36448-3-kamil.konieczny@linux.intel.com>
 References: <20230714153946.36448-1-kamil.konieczny@linux.intel.com>
- <20230714153946.36448-2-kamil.konieczny@linux.intel.com>
+ <20230714153946.36448-3-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] runner/settings: add
- dump-gpu-on-timeout option
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] runner/executor: write GPU error on
+ timeout
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,94 +26,161 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, 14 Jul 2023 17:39:45 +0200
+On Fri, 14 Jul 2023 17:39:46 +0200
 Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
 
-> Add new option --dump-gpu-on-timeout for dumping error state
-> of GPU in case of inactivity or per-test timeout occurs. This
-> will help in faster problem diagnose from CI runs.
+> When test is interrupted due to per-test timeout or inactivity
+> kernel GPU state dump may be empty. In that case create dump of
+> GPU state from driver, either drm error or dri debug info.
 > 
 > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-The change itself LGTM. I'm wondering if it makes sense in this case
-to have an unit test to check it.
-
-For the patch:
-
-Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-
 > ---
->  runner/settings.c | 12 +++++++++++-
->  runner/settings.h |  1 +
->  2 files changed, 12 insertions(+), 1 deletion(-)
+>  runner/executor.c | 68 +++++++++++++++++++++++++++++++++++++++++++++--
+>  runner/executor.h |  2 ++
+>  2 files changed, 68 insertions(+), 2 deletions(-)
 > 
-> diff --git a/runner/settings.c b/runner/settings.c
-> index 23aa82963..880aefbd6 100644
-> --- a/runner/settings.c
-> +++ b/runner/settings.c
-> @@ -28,6 +28,7 @@ enum {
->  	OPT_CODE_COV_SCRIPT,
->  	OPT_ENABLE_CODE_COVERAGE,
->  	OPT_COV_RESULTS_PER_TEST,
-> +	OPT_DUMP_GPU_ON_TIMEOUT,
->  	OPT_VERSION,
->  	OPT_PRUNE_MODE,
->  	OPT_HELP = 'h',
-> @@ -297,6 +298,10 @@ static const char *usage_str =
->  	"                        Requires --collect-script FILENAME\n"
->  	"  --collect-script FILENAME\n"
->  	"                        Use FILENAME as script to collect code coverage data.\n"
-> +	"  --dump-gpu-on-timeout FILENAME\n"
-> +	"                        Use /sys/class/drm/card*/error (default) or (if default is empty)\n"
-> +	"                        /sys/kernel/debug/dri/*/FILENAME for reading GPU error state\n"
-> +	"                        in case of inactivity/per-test timeout occurs.\n"
->  	"\n"
->  	"  [test_root]           Directory that contains the IGT tests. The environment\n"
->  	"                        variable IGT_TEST_ROOT will be used if set, overriding\n"
-> @@ -654,6 +659,7 @@ bool parse_options(int argc, char **argv,
->  		{"collect-code-cov", no_argument, NULL, OPT_ENABLE_CODE_COVERAGE},
->  		{"coverage-per-test", no_argument, NULL, OPT_COV_RESULTS_PER_TEST},
->  		{"collect-script", required_argument, NULL, OPT_CODE_COV_SCRIPT},
-> +		{"dump-gpu-on-timeout", required_argument, NULL, OPT_DUMP_GPU_ON_TIMEOUT},
->  		{"multiple-mode", no_argument, NULL, OPT_MULTIPLE},
->  		{"inactivity-timeout", required_argument, NULL, OPT_TIMEOUT},
->  		{"per-test-timeout", required_argument, NULL, OPT_PER_TEST_TIMEOUT},
-> @@ -740,7 +746,9 @@ bool parse_options(int argc, char **argv,
->  		case OPT_CODE_COV_SCRIPT:
->  			settings->code_coverage_script = bin_path(optarg);
->  			break;
-> -
-> +		case OPT_DUMP_GPU_ON_TIMEOUT:
-> +			settings->dump_gpu_on_timeout = bin_path(optarg);
-> +			break;
->  		case OPT_MULTIPLE:
->  			settings->multiple_mode = true;
->  			break;
-> @@ -1039,6 +1047,7 @@ bool serialize_settings(struct settings *settings)
->  	SERIALIZE_LINE(f, settings, enable_code_coverage, "%d");
->  	SERIALIZE_LINE(f, settings, cov_results_per_test, "%d");
->  	SERIALIZE_LINE(f, settings, code_coverage_script, "%s");
-> +	SERIALIZE_LINE(f, settings, dump_gpu_on_timeout, "%s");
+> diff --git a/runner/executor.c b/runner/executor.c
+> index d3e6296dd..738d6c0bf 100644
+> --- a/runner/executor.c
+> +++ b/runner/executor.c
+> @@ -39,6 +39,9 @@
+>  #define KMSG_WARN 4
+>  #define GRACEFUL_EXITCODE -SIGHUP
 >  
->  	if (settings->sync) {
->  		fflush(f);
-> @@ -1102,6 +1111,7 @@ bool read_settings_from_file(struct settings *settings, FILE *f)
->  		PARSE_LINE(settings, name, val, enable_code_coverage, numval);
->  		PARSE_LINE(settings, name, val, cov_results_per_test, numval);
->  		PARSE_LINE(settings, name, val, code_coverage_script, val ? strdup(val) : NULL);
-> +		PARSE_LINE(settings, name, val, dump_gpu_on_timeout, val ? strdup(val) : NULL);
->  
->  		printf("Warning: Unknown field in settings file: %s = %s\n",
->  		       name, val);
-> diff --git a/runner/settings.h b/runner/settings.h
-> index 819c34602..ab9e4c630 100644
-> --- a/runner/settings.h
-> +++ b/runner/settings.h
-> @@ -72,6 +72,7 @@ struct settings {
->  	char *code_coverage_script;
->  	bool enable_code_coverage;
->  	bool cov_results_per_test;
-> +	char *dump_gpu_on_timeout;
+> +#define MSG_TIMEOUT_PER_TEST "Per-test timeout exceeded. Killing the current test with SIGQUIT.\n"
+> +#define MSG_TIMEOUT_INACTIVITY "Inactivity timeout exceeded. Killing the current test with SIGQUIT.\n"
+> +
+>  static struct {
+>  	int *fds;
+>  	size_t num_dogs;
+> @@ -531,6 +534,8 @@ static const char *filenames[_F_LAST] = {
+>  	[_F_ERR] = "err.txt",
+>  	[_F_DMESG] = "dmesg.txt",
+>  	[_F_SOCKET] = "comms",
+> +	[_F_GPUERROR] = "gpu_error.dmp",
+> +	[_F_GPUINFO] = "gpu_info.dmp",
 >  };
 >  
->  /**
+>  static int open_at_end(int dirfd, const char *name)
+> @@ -745,6 +750,59 @@ static void kmsg_log(int severity, const char *msg)
+>  	free(str);
+>  }
+>  
+> +static size_t write_gpu_dump(int dump_fd, const char *gpu_error_path, char *buf, size_t bufsize)
+> +{
+> +	size_t s, written;
+> +	int fd;
+> +
+> +	fd = open(gpu_error_path, O_RDONLY);
+> +	if (fd < 0)
+> +		return 0;
+> +
+> +	written = 0;
+> +	do {
+> +		s = read(fd, buf, bufsize);
+> +		if (s > 0) {
+> +			write(dump_fd, buf, s);
+> +			written += s;
+> +		}
+> +	} while (s > 0);
+
+Hmm... as you're foreseeing multiple chunks of 16MB here, maybe you could
+use zlib here to reduce the dump size, storing it with a ".gz" suffix.
+
+> +
+> +	close(fd);
+> +
+> +	return written;
+> +}
+> +
+> +static void dump_gpu_error(int drm_err_fd, int dri_dbg_fd, const char *dri_debug)
+> +{
+> +	char gpu_err_path[PATH_MAX];
+> +	char dri_dbg_path[PATH_MAX];
+> +	char *buf;
+> +	size_t bufsize;
+> +
+> +	bufsize = 16 * 1024 * 1024; /* 16MB */
+> +	buf = malloc(bufsize);
+> +	if (!buf)
+> +		return;
+> +
+> +	/* dump state of gpu with error */
+> +	for (int i = 0; i < 256; ++i) {
+> +		snprintf(gpu_err_path, sizeof(gpu_err_path),
+> +			 "/sys/class/drm/card%d/error", i);
+
+> +		if (access(gpu_err_path, R_OK))
+> +			break; /* no more drm cards */
+
+I don't think this shortcut actually works. On my TGL laptop, I can
+see:
+
+	# ls /sys/class/drm/
+	card1  card1-DP-1  card1-DP-2  card1-eDP-1  card1-HDMI-A-1  card1-HDMI-A-2  renderD128  version
+	# ls /sys/kernel/debug/dri/
+	1  128
+
+So, I guess you need to change it to:
+
+		if (access(gpu_err_path, R_OK))
+			continue;
+
+> +		snprintf(dri_dbg_path, sizeof(dri_dbg_path),
+> +			 "/sys/kernel/debug/dri/%d/%s", i, dri_debug);
+> +		if (access(gpu_err_path, R_OK))
+> +			continue; /* not our card */
+> +
+> +		if (write_gpu_dump(drm_err_fd, gpu_err_path, buf, bufsize))
+> +			break;
+> +		if (write_gpu_dump(dri_dbg_fd, dri_dbg_path, buf, bufsize))
+> +			break;
+> +	}
+> +}
+> +
+>  static const char *show_kernel_task_state(const char *msg)
+>  {
+>  	kmsg_log(KMSG_WARN, msg);
+> @@ -816,14 +874,14 @@ static const char *need_to_timeout(struct settings *settings,
+>  	    time_since_subtest > settings->per_test_timeout / decrease) {
+>  		if (decrease > 1)
+>  			return "Killing the test because the kernel is tainted.\n";
+> -		return show_kernel_task_state("Per-test timeout exceeded. Killing the current test with SIGQUIT.\n");
+> +		return show_kernel_task_state(MSG_TIMEOUT_PER_TEST);
+>  	}
+>  
+>  	if (settings->inactivity_timeout != 0 &&
+>  	    time_since_activity > settings->inactivity_timeout / decrease ) {
+>  		if (decrease > 1)
+>  			return "Killing the test because the kernel is tainted.\n";
+> -		return show_kernel_task_state("Inactivity timeout exceeded. Killing the current test with SIGQUIT.\n");
+> +		return show_kernel_task_state(MSG_TIMEOUT_INACTIVITY);
+>  	}
+>  
+>  	if (disk_usage_limit_exceeded(settings, disk_usage))
+> @@ -1446,6 +1504,12 @@ static int monitor_output(pid_t child,
+>  						 disk_usage);
+>  
+>  		if (timeout_reason) {
+> +			if (settings->dump_gpu_on_timeout &&
+> +			    (!strcmp(timeout_reason, MSG_TIMEOUT_PER_TEST) ||
+> +			     !strcmp(timeout_reason, MSG_TIMEOUT_INACTIVITY))) {
+> +				dump_gpu_error(outputs[_F_GPUERROR], outputs[_F_GPUINFO],
+> +					       settings->dump_gpu_on_timeout);
+> +			}
+>  			if (killed == SIGKILL) {
+>  				/* Nothing that can be done, really. Let's tell the caller we want to abort. */
+>  
+> diff --git a/runner/executor.h b/runner/executor.h
+> index ab6a0c176..23a53c8ba 100644
+> --- a/runner/executor.h
+> +++ b/runner/executor.h
+> @@ -22,6 +22,8 @@ enum {
+>  	_F_ERR,
+>  	_F_DMESG,
+>  	_F_SOCKET,
+> +	_F_GPUERROR,
+> +	_F_GPUINFO,
+>  	_F_LAST,
+>  };
+>  
