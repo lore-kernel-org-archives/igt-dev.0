@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 431A910E245
- for <igt-dev@lists.freedesktop.org>; Tue, 19 Sep 2023 07:29:49 +0000 (UTC)
-Date: Tue, 19 Sep 2023 09:29:44 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230919092944.6fe8f6a3@maurocar-mobl2>
-In-Reply-To: <20230714153946.36448-3-kamil.konieczny@linux.intel.com>
-References: <20230714153946.36448-1-kamil.konieczny@linux.intel.com>
- <20230714153946.36448-3-kamil.konieczny@linux.intel.com>
+Date: Tue, 19 Sep 2023 09:49:08 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230919074908.u7iti2llid5dshx2@kamilkon-desk.igk.intel.com>
+References: <20230915132346.1845909-15-lucas.demarchi@intel.com>
+ <20230918211328.1961061-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] runner/executor: write GPU error on
- timeout
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230918211328.1961061-1-lucas.demarchi@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v1.1] lib/intel_blt: Support xe2 in
+ ctrl-surf-copy command
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,166 +19,194 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>, intel-xe@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, 14 Jul 2023 17:39:46 +0200
-Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
-
-> When test is interrupted due to per-test timeout or inactivity
-> kernel GPU state dump may be empty. In that case create dump of
-> GPU state from driver, either drm error or dri debug info.
+Hi Lucas,
+On 2023-09-18 at 14:13:28 -0700, Lucas De Marchi wrote:
+> Xe2 ctrl-surf-copy command varies significantly from gen12. Create a new
+> struct and function to fill the data, sharing the rest of the logic in
+> emit_blt_ctrl_surf_copy().
 > 
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+> Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
 > ---
->  runner/executor.c | 68 +++++++++++++++++++++++++++++++++++++++++++++--
->  runner/executor.h |  2 ++
->  2 files changed, 68 insertions(+), 2 deletions(-)
+>  lib/intel_blt.c | 128 ++++++++++++++++++++++++++++++++++++++++--------
+>  1 file changed, 107 insertions(+), 21 deletions(-)
 > 
-> diff --git a/runner/executor.c b/runner/executor.c
-> index d3e6296dd..738d6c0bf 100644
-> --- a/runner/executor.c
-> +++ b/runner/executor.c
-> @@ -39,6 +39,9 @@
->  #define KMSG_WARN 4
->  #define GRACEFUL_EXITCODE -SIGHUP
->  
-> +#define MSG_TIMEOUT_PER_TEST "Per-test timeout exceeded. Killing the current test with SIGQUIT.\n"
-> +#define MSG_TIMEOUT_INACTIVITY "Inactivity timeout exceeded. Killing the current test with SIGQUIT.\n"
-> +
->  static struct {
->  	int *fds;
->  	size_t num_dogs;
-> @@ -531,6 +534,8 @@ static const char *filenames[_F_LAST] = {
->  	[_F_ERR] = "err.txt",
->  	[_F_DMESG] = "dmesg.txt",
->  	[_F_SOCKET] = "comms",
-> +	[_F_GPUERROR] = "gpu_error.dmp",
-> +	[_F_GPUINFO] = "gpu_info.dmp",
+> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+> index 508c2de46..38664a6fd 100644
+> --- a/lib/intel_blt.c
+> +++ b/lib/intel_blt.c
+> @@ -962,6 +962,65 @@ struct gen12_ctrl_surf_copy_data {
+>  	} dw04;
 >  };
 >  
->  static int open_at_end(int dirfd, const char *name)
-> @@ -745,6 +750,59 @@ static void kmsg_log(int severity, const char *msg)
->  	free(str);
->  }
->  
-> +static size_t write_gpu_dump(int dump_fd, const char *gpu_error_path, char *buf, size_t bufsize)
+> +struct xe2_ctrl_surf_copy_data {
+> +	struct {
+> +		uint32_t length:			BITRANGE(0, 7);
+> +		uint32_t rsvd0:				BITRANGE(8, 8);
+> +		uint32_t size_of_ctrl_copy:		BITRANGE(9, 18);
+> +		uint32_t rsvd1:				BITRANGE(19, 19);
+> +		uint32_t dst_access_type:		BITRANGE(20, 20);
+> +		uint32_t src_access_type:		BITRANGE(21, 21);
+> +		uint32_t opcode:			BITRANGE(22, 28);
+> +		uint32_t client:			BITRANGE(29, 31);
+> +	} dw00;
+> +
+> +	struct {
+> +		uint32_t src_address_lo;
+> +	} dw01;
+> +
+> +	struct {
+> +		uint32_t src_address_hi:		BITRANGE(0, 24);
+> +		uint32_t pad:				BITRANGE(25, 27);
+> +		uint32_t src_mocs:			BITRANGE(28, 31);
+> +	} dw02;
+> +
+> +	struct {
+> +		uint32_t dst_address_lo;
+> +	} dw03;
+> +
+> +	struct {
+> +		uint32_t dst_address_hi:		BITRANGE(0, 24);
+> +		uint32_t pad:				BITRANGE(25, 27);
+> +		uint32_t dst_mocs:			BITRANGE(28, 31);
+> +	} dw04;
+> +};
+> +
+> +union ctrl_surf_copy_data {
+> +	struct gen12_ctrl_surf_copy_data gen12;
+> +	struct xe2_ctrl_surf_copy_data xe2;
+> +};
+> +
+> +static void xe2_dump_bb_surf_ctrl_cmd(const struct xe2_ctrl_surf_copy_data *data)
 > +{
-> +	size_t s, written;
-> +	int fd;
+> +	uint32_t *cmd = (uint32_t *) data;
 > +
-> +	fd = open(gpu_error_path, O_RDONLY);
-> +	if (fd < 0)
-> +		return 0;
-> +
-> +	written = 0;
-> +	do {
-> +		s = read(fd, buf, bufsize);
-> +		if (s > 0) {
-> +			write(dump_fd, buf, s);
-> +			written += s;
-> +		}
-> +	} while (s > 0);
-
-Hmm... as you're foreseeing multiple chunks of 16MB here, maybe you could
-use zlib here to reduce the dump size, storing it with a ".gz" suffix.
-
-> +
-> +	close(fd);
-> +
-> +	return written;
+> +	igt_info("details:\n");
+> +	igt_info(" dw00: [%08x] <client: 0x%x, opcode: 0x%x, "
+> +		 "src/dst access type: <%d, %d>, size of ctrl copy: %u, length: %d>\n",
+> +		 cmd[0],
+> +		 data->dw00.client, data->dw00.opcode,
+> +		 data->dw00.src_access_type, data->dw00.dst_access_type,
+> +		 data->dw00.size_of_ctrl_copy, data->dw00.length);
+> +	igt_info(" dw01: [%08x] src offset lo (0x%x)\n",
+> +		 cmd[1], data->dw01.src_address_lo);
+> +	igt_info(" dw02: [%08x] src offset hi (0x%x), src mocs idx: %u\n",
+> +		 cmd[2], data->dw02.src_address_hi, data->dw02.src_mocs);
+> +	igt_info(" dw03: [%08x] dst offset lo (0x%x)\n",
+> +		 cmd[3], data->dw03.dst_address_lo);
+> +	igt_info(" dw04: [%08x] dst offset hi (0x%x), src mocs idx: %u\n",
+> +		 cmd[4], data->dw04.dst_address_hi, data->dw04.dst_mocs);
 > +}
 > +
-> +static void dump_gpu_error(int drm_err_fd, int dri_dbg_fd, const char *dri_debug)
-> +{
-> +	char gpu_err_path[PATH_MAX];
-> +	char dri_dbg_path[PATH_MAX];
-> +	char *buf;
-> +	size_t bufsize;
-> +
-> +	bufsize = 16 * 1024 * 1024; /* 16MB */
-> +	buf = malloc(bufsize);
-> +	if (!buf)
-> +		return;
-> +
-> +	/* dump state of gpu with error */
-> +	for (int i = 0; i < 256; ++i) {
-> +		snprintf(gpu_err_path, sizeof(gpu_err_path),
-> +			 "/sys/class/drm/card%d/error", i);
-
-> +		if (access(gpu_err_path, R_OK))
-> +			break; /* no more drm cards */
-
-I don't think this shortcut actually works. On my TGL laptop, I can
-see:
-
-	# ls /sys/class/drm/
-	card1  card1-DP-1  card1-DP-2  card1-eDP-1  card1-HDMI-A-1  card1-HDMI-A-2  renderD128  version
-	# ls /sys/kernel/debug/dri/
-	1  128
-
-So, I guess you need to change it to:
-
-		if (access(gpu_err_path, R_OK))
-			continue;
-
-> +		snprintf(dri_dbg_path, sizeof(dri_dbg_path),
-> +			 "/sys/kernel/debug/dri/%d/%s", i, dri_debug);
-> +		if (access(gpu_err_path, R_OK))
-> +			continue; /* not our card */
-> +
-> +		if (write_gpu_dump(drm_err_fd, gpu_err_path, buf, bufsize))
-> +			break;
-> +		if (write_gpu_dump(dri_dbg_fd, dri_dbg_path, buf, bufsize))
-> +			break;
-> +	}
-> +}
-> +
->  static const char *show_kernel_task_state(const char *msg)
+>  static void dump_bb_surf_ctrl_cmd(const struct gen12_ctrl_surf_copy_data *data)
 >  {
->  	kmsg_log(KMSG_WARN, msg);
-> @@ -816,14 +874,14 @@ static const char *need_to_timeout(struct settings *settings,
->  	    time_since_subtest > settings->per_test_timeout / decrease) {
->  		if (decrease > 1)
->  			return "Killing the test because the kernel is tainted.\n";
-> -		return show_kernel_task_state("Per-test timeout exceeded. Killing the current test with SIGQUIT.\n");
-> +		return show_kernel_task_state(MSG_TIMEOUT_PER_TEST);
+>  	uint32_t *cmd = (uint32_t *) data;
+> @@ -1020,7 +1079,9 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
+>  				 uint64_t bb_pos,
+>  				 bool emit_bbe)
+>  {
+> -	struct gen12_ctrl_surf_copy_data data = {};
+> +	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
+> +	union ctrl_surf_copy_data data = { };
+> +	size_t data_sz;
+>  	uint64_t dst_offset, src_offset, bb_offset, alignment;
+>  	uint32_t bbe = MI_BATCH_BUFFER_END;
+>  	uint32_t *bb;
+> @@ -1029,33 +1090,55 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
+>  	igt_assert_f(surf, "ctrl-surf-copy requires data to do ctrl-surf-copy blit\n");
+>  
+>  	alignment = max_t(uint64_t, get_default_alignment(fd, surf->driver), 1ull << 16);
+> -
+> -	data.dw00.client = 0x2;
+> -	data.dw00.opcode = 0x48;
+> -	data.dw00.src_access_type = surf->src.access_type;
+> -	data.dw00.dst_access_type = surf->dst.access_type;
+> -
+> -	/* Ensure dst has size capable to keep src ccs aux */
+> -	data.dw00.size_of_ctrl_copy = __ccs_size(surf) / CCS_RATIO - 1;
+> -	data.dw00.length = 0x3;
+> -
+>  	src_offset = get_offset(ahnd, surf->src.handle, surf->src.size, alignment);
+>  	dst_offset = get_offset(ahnd, surf->dst.handle, surf->dst.size, alignment);
+>  	bb_offset = get_offset(ahnd, surf->bb.handle, surf->bb.size, alignment);
+>  
+> -	data.dw01.src_address_lo = src_offset;
+> -	data.dw02.src_address_hi = src_offset >> 32;
+> -	data.dw02.src_mocs = surf->src.mocs;
+> +	if (ip_ver >= IP_VER(20, 0)) {
+> +		data.xe2.dw00.client = 0x2;
+> +		data.xe2.dw00.opcode = 0x48;
+> +		data.xe2.dw00.src_access_type = surf->src.access_type;
+> +		data.xe2.dw00.dst_access_type = surf->dst.access_type;
+> +
+> +		/* Ensure dst has size capable to keep src ccs aux */
+> +		data.xe2.dw00.size_of_ctrl_copy = __ccs_size(surf) / CCS_RATIO - 1;
+> +		data.xe2.dw00.length = 0x3;
+> +
+> +		data.xe2.dw01.src_address_lo = src_offset;
+> +		data.xe2.dw02.src_address_hi = src_offset >> 32;
+> +		data.xe2.dw02.src_mocs = surf->src.mocs;
+> +
+> +		data.xe2.dw03.dst_address_lo = dst_offset;
+> +		data.xe2.dw04.dst_address_hi = dst_offset >> 32;
+> +		data.xe2.dw04.dst_mocs = surf->dst.mocs;
+> +
+> +		data_sz = sizeof(data.xe2);
+> +	} else {
+> +		data.gen12.dw00.client = 0x2;
+> +		data.gen12.dw00.opcode = 0x48;
+> +		data.gen12.dw00.src_access_type = surf->src.access_type;
+> +		data.gen12.dw00.dst_access_type = surf->dst.access_type;
+> +
+> +		/* Ensure dst has size capable to keep src ccs aux */
+> +		data.gen12.dw00.size_of_ctrl_copy = __ccs_size(surf) / CCS_RATIO - 1;
+> +		data.gen12.dw00.length = 0x3;
+> +
+> +		data.gen12.dw01.src_address_lo = src_offset;
+> +		data.gen12.dw02.src_address_hi = src_offset >> 32;
+> +		data.gen12.dw02.src_mocs = surf->src.mocs;
+> +
+> +		data.gen12.dw03.dst_address_lo = dst_offset;
+> +		data.gen12.dw04.dst_address_hi = dst_offset >> 32;
+> +		data.gen12.dw04.dst_mocs = surf->dst.mocs;
+>  
+> -	data.dw03.dst_address_lo = dst_offset;
+> -	data.dw04.dst_address_hi = dst_offset >> 32;
+> -	data.dw04.dst_mocs = surf->dst.mocs;
+> +		data_sz = sizeof(data.gen12);
+> +	}
+>  
+>  	bb = bo_map(fd, surf->bb.handle, surf->bb.size, surf->driver);
+>  
+> -	igt_assert(bb_pos + sizeof(data) < surf->bb.size);
+> -	memcpy(bb + bb_pos, &data, sizeof(data));
+> -	bb_pos += sizeof(data);
+> +	igt_assert(bb_pos + data_sz < surf->bb.size);
+> +	memcpy(bb + bb_pos, &data, data_sz);
+> +	bb_pos += data_sz;
+>  
+>  	if (emit_bbe) {
+>  		igt_assert(bb_pos + sizeof(uint32_t) < surf->bb.size);
+> @@ -1069,7 +1152,10 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
+>  			 ", bb offset: %" PRIx64 "\n",
+>  			 src_offset, dst_offset, bb_offset);
+>  
+> -		dump_bb_surf_ctrl_cmd(&data);
+> +		if (ip_ver >= IP_VER(20, 0))
+> +			xe2_dump_bb_surf_ctrl_cmd(&data.xe2);
+> +		else
+> +			dump_bb_surf_ctrl_cmd(&data.gen12);
 >  	}
 >  
->  	if (settings->inactivity_timeout != 0 &&
->  	    time_since_activity > settings->inactivity_timeout / decrease ) {
->  		if (decrease > 1)
->  			return "Killing the test because the kernel is tainted.\n";
-> -		return show_kernel_task_state("Inactivity timeout exceeded. Killing the current test with SIGQUIT.\n");
-> +		return show_kernel_task_state(MSG_TIMEOUT_INACTIVITY);
->  	}
->  
->  	if (disk_usage_limit_exceeded(settings, disk_usage))
-> @@ -1446,6 +1504,12 @@ static int monitor_output(pid_t child,
->  						 disk_usage);
->  
->  		if (timeout_reason) {
-> +			if (settings->dump_gpu_on_timeout &&
-> +			    (!strcmp(timeout_reason, MSG_TIMEOUT_PER_TEST) ||
-> +			     !strcmp(timeout_reason, MSG_TIMEOUT_INACTIVITY))) {
-> +				dump_gpu_error(outputs[_F_GPUERROR], outputs[_F_GPUINFO],
-> +					       settings->dump_gpu_on_timeout);
-> +			}
->  			if (killed == SIGKILL) {
->  				/* Nothing that can be done, really. Let's tell the caller we want to abort. */
->  
-> diff --git a/runner/executor.h b/runner/executor.h
-> index ab6a0c176..23a53c8ba 100644
-> --- a/runner/executor.h
-> +++ b/runner/executor.h
-> @@ -22,6 +22,8 @@ enum {
->  	_F_ERR,
->  	_F_DMESG,
->  	_F_SOCKET,
-> +	_F_GPUERROR,
-> +	_F_GPUINFO,
->  	_F_LAST,
->  };
->  
+>  	munmap(bb, surf->bb.size);
+> -- 
+> 2.40.1
+> 
