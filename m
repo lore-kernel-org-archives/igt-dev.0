@@ -1,15 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-To: <intel-xe@lists.freedesktop.org>, <igt-dev@lists.freedesktop.org>
-Date: Tue, 19 Sep 2023 10:19:58 -0400
-Message-ID: <20230919142000.91363-16-rodrigo.vivi@intel.com>
-In-Reply-To: <20230919142000.91363-1-rodrigo.vivi@intel.com>
-References: <20230919142000.91363-1-rodrigo.vivi@intel.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 00F7D10E24F
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 Sep 2023 14:17:31 +0000 (UTC)
+Message-ID: <cab52118-e73a-cc3e-5af1-4862a8ec9027@intel.com>
+Date: Tue, 19 Sep 2023 16:17:14 +0200
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ <igt-dev@lists.freedesktop.org>, Nirmoy Das <nirmoy.das@linux.intel.com>,
+ <andi.shyti@intel.com>, <oak.zeng@intel.com>
+References: <20230918164747.30171-1-nirmoy.das@intel.com>
+ <20230918164747.30171-4-nirmoy.das@intel.com>
+ <fb87fe3f-521e-781f-889a-a1a9539bd56a@linux.intel.com>
+ <20230919102007.yil5de6atngkrxn4@kamilkon-desk.igk.intel.com>
+Content-Language: en-US
+From: Nirmoy Das <nirmoy.das@intel.com>
+In-Reply-To: <20230919102007.yil5de6atngkrxn4@kamilkon-desk.igk.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 15/16] drm-uapi/xe: Align with Crystal
- Reference Clock updates
+Subject: Re: [igt-dev] [PATCH i-g-t 3/4] tests/intel/gem_ctx_schedule: Skip
+ some test on MTL
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,227 +26,135 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This patch only aims the simplest update as possible to get rid
-of the ref_clock in favor of the cs_reference_clock, aligning
-with the uapi changes on commit
-b53c288afe30 ("drm/xe/uapi: Crystal Reference Clock updates")
 
-This is a non-functional change since the values are exactly
-the same. Any issues with current tests would still be present.
-Any further update to xe_spin should be done in follow-up updates.
+On 9/19/2023 12:20 PM, Kamil Konieczny wrote:
+> Hi Nirmoy,
+>
+> On 2023-09-18 at 19:00:52 +0200, Nirmoy Das wrote:
+>> Hi Kamil,
+>>
+>>
+>> Updated the patch by adding "in-order" test and kept your rb. Hope you are
+>> ok with that.
+>>
+> No problem but as you make corrections maybe one more about style?
+> See below.
+>
+>> Regards,
+>>
+>> Nirmoy
+>>
+>> On 9/18/2023 6:47 PM, Nirmoy Das wrote:
+>>> We do GGTT update on MTL using bcs engine, blocking that would
+>>> fail the test so skip such subtests on bcs engine for MTL.
+>>>
+>>> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+>>> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>>> ---
+>>>    tests/intel/gem_exec_schedule.c | 39 +++++++++++++++++++--------------
+>>>    1 file changed, 23 insertions(+), 16 deletions(-)
+>>>
+>>> diff --git a/tests/intel/gem_exec_schedule.c b/tests/intel/gem_exec_schedule.c
+>>> index c94988d36..183ee1a21 100644
+>>> --- a/tests/intel/gem_exec_schedule.c
+>>> +++ b/tests/intel/gem_exec_schedule.c
+>>> @@ -3479,6 +3479,12 @@ static void fairslice(int i915, const intel_ctx_cfg_t *cfg,
+>>>    		for_each_if(gem_class_can_store_dword(fd, e->class)) \
+>>>    		igt_dynamic_f("%s", e->name)
+>>> +#define test_each_ggtt_binder_nonblocking_engine(T, i915, ctx, e) \
+>>> +	igt_subtest_with_dynamic(T) for_each_ctx_engine(i915, ctx, e) \
+>>> +		for_each_if(gem_class_can_store_dword(fd, e->class) && \
+>>> +			    !gem_engine_can_block_ggtt_binder(i915, e)) \
+>>> +		igt_dynamic_f("%s", e->name)
+>>> +
+>>>    igt_main
+>>>    {
+>>>    	int fd = -1;
+>>> @@ -3502,21 +3508,22 @@ igt_main
+>>>    	igt_subtest_group {
+>>>    		const struct intel_execution_engine2 *e;
+> Here should be newline, if you add it mension this in description.
+>
+>>> -		test_each_engine_store("fifo", fd, ctx, e)
+>>> +		test_each_ggtt_binder_nonblocking_engine("fifo", fd, ctx, e)
+>>>    			fifo(fd, ctx, e->flags);
+>>> -		test_each_engine_store("implicit-read-write", fd, ctx, e)
+>>> +		test_each_ggtt_binder_nonblocking_engine("implicit-read-write", fd, ctx, e)
+>>>    			implicit_rw(fd, ctx, e->flags, READ_WRITE);
+>>> -		test_each_engine_store("implicit-write-read", fd, ctx, e)
+>>> +		test_each_ggtt_binder_nonblocking_engine("implicit-write-read", fd, ctx, e)
+>>>    			implicit_rw(fd, ctx, e->flags, WRITE_READ);
+>>> -		test_each_engine_store("implicit-boths", fd, ctx, e)
+>>> +		test_each_ggtt_binder_nonblocking_engine("implicit-boths", fd, ctx, e)
+>>>    			implicit_rw(fd, ctx, e->flags, READ_WRITE | WRITE_READ);
+>>> -		test_each_engine_store("independent", fd, ctx, e)
+>>> +		test_each_ggtt_binder_nonblocking_engine("independent", fd, ctx, e)
+>>>    			independent(fd, ctx, e->flags, 0);
+>>> -		test_each_engine_store("u-independent", fd, ctx, e)
+>>> +
+> This newline break style, either add newline after every subtest
+> or do not add new ones. In conclusion: I would prefer this newline
+> to be deleted. You may go with this in separate patch if you want.
 
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Francois Dugast <francois.dugast@intel.com>
----
- include/drm-uapi/xe_drm.h | 10 ++++------
- lib/xe/xe_query.c         | 21 +++++++++++++++++++++
- lib/xe/xe_query.h         |  1 +
- lib/xe/xe_spin.c          | 11 +++++------
- tests/intel/xe_query.c    | 31 ++++++++-----------------------
- 5 files changed, 39 insertions(+), 35 deletions(-)
+I can modify this to properly group tests with spaces.
 
-diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index 7fb6c1f72..090144c92 100644
---- a/include/drm-uapi/xe_drm.h
-+++ b/include/drm-uapi/xe_drm.h
-@@ -248,8 +248,8 @@ struct drm_xe_query_mem_region {
-  * relevant GPU timestamp. clockid is used to return the specific CPU
-  * timestamp.
-  *
-- * The query returns the command streamer cycles and the frequency that can
-- * be used to calculate the command streamer timestamp. In addition the
-+ * The query returns the command streamer cycles and the reference clock that
-+ * can be used to calculate the command streamer timestamp. In addition the
-  * query returns a set of cpu timestamps that indicate when the command
-  * streamer cycle count was captured.
-  */
-@@ -266,8 +266,8 @@ struct drm_xe_query_cs_cycles {
- 	 */
- 	__u64 cs_cycles;
- 
--	/** Frequency of the cs cycles in Hz. */
--	__u64 cs_frequency;
-+	/** Reference Clock of the cs cycles in Hz. */
-+	__u64 cs_reference_clock;
- 
- 	/**
- 	 * CPU timestamp in ns. The timestamp is captured before reading the
-@@ -381,8 +381,6 @@ struct drm_xe_query_gt {
- 	__u16 type;
- 	/** @gt_id: Unique ID of this GT within the PCI Device */
- 	__u16 gt_id;
--	/** @clock_freq: A clock frequency for timestamp */
--	__u32 clock_freq;
- 	/**
- 	 * @native_mem_regions: Bit mask of instances from
- 	 * drm_xe_query_mem_usage that lives on the same GPU/Tile and have
-diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index b018c7535..81d661607 100644
---- a/lib/xe/xe_query.c
-+++ b/lib/xe/xe_query.c
-@@ -328,6 +328,27 @@ bool xe_supports_faults(int fd)
- 	return supports_faults;
- }
- 
-+/**
-+ * xe_query_cs_cycles:
-+ * @fd: xe device fd
-+ * @resp: A pointer to a drm_xe_query_cs_cycles to get the output of the query
-+ *
-+ * Full DRM_XE_QUERY_CS_CYCLES returning the response on the
-+ * struct drm_xe_query_cs_cycles pointer argument.
-+ */
-+void xe_query_cs_cycles(int fd, struct drm_xe_query_cs_cycles *resp)
-+{
-+	struct drm_xe_device_query query = {
-+		.extensions = 0,
-+		.query = DRM_XE_QUERY_CS_CYCLES,
-+		.size = sizeof(*resp),
-+		.data = to_user_pointer(resp),
-+	};
-+
-+	do_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query);
-+	igt_assert(query.size);
-+}
-+
- static void xe_device_destroy_cache(void)
- {
- 	pthread_mutex_lock(&cache.cache_mutex);
-diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-index da7deaf4c..da4461306 100644
---- a/lib/xe/xe_query.h
-+++ b/lib/xe/xe_query.h
-@@ -102,6 +102,7 @@ uint32_t xe_get_default_alignment(int fd);
- uint32_t xe_va_bits(int fd);
- uint16_t xe_dev_id(int fd);
- bool xe_supports_faults(int fd);
-+void xe_query_cs_cycles(int fd, struct drm_xe_query_cs_cycles *resp);
- const char *xe_engine_class_string(uint32_t engine_class);
- bool xe_has_engine_class(int fd, uint16_t engine_class);
- 
-diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-index b05b38829..986d63cb4 100644
---- a/lib/xe/xe_spin.c
-+++ b/lib/xe/xe_spin.c
-@@ -16,14 +16,13 @@
- #include "xe_ioctl.h"
- #include "xe_spin.h"
- 
--static uint32_t read_timestamp_frequency(int fd, int gt_id)
-+static uint32_t read_timestamp_frequency(int fd)
- {
--	struct xe_device *dev = xe_device_get(fd);
-+	struct drm_xe_query_cs_cycles ts = {};
- 
--	igt_assert(dev && dev->gt_list && dev->gt_list->num_gt);
--	igt_assert(gt_id >= 0 && gt_id <= dev->gt_list->num_gt);
-+	xe_query_cs_cycles(fd, &ts);
- 
--	return dev->gt_list->gt_list[gt_id].clock_freq;
-+	return ts.cs_reference_clock;
- }
- 
- static uint64_t div64_u64_round_up(const uint64_t x, const uint64_t y)
-@@ -43,7 +42,7 @@ static uint64_t div64_u64_round_up(const uint64_t x, const uint64_t y)
-  */
- uint32_t duration_to_ctx_ticks(int fd, int gt_id, uint64_t duration_ns)
- {
--	uint32_t f = read_timestamp_frequency(fd, gt_id);
-+	uint32_t f = read_timestamp_frequency(fd);
- 	uint64_t ctx_ticks = div64_u64_round_up(duration_ns * f, NSEC_PER_SEC);
- 
- 	igt_assert_lt_u64(ctx_ticks, XE_SPIN_MAX_CTX_TICKS);
-diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
-index 17215fd72..872b889f9 100644
---- a/tests/intel/xe_query.c
-+++ b/tests/intel/xe_query.c
-@@ -280,7 +280,6 @@ test_query_gt_list(int fd)
- 	for (i = 0; i < gt_list->num_gt; i++) {
- 		igt_info("type: %d\n", gt_list->gt_list[i].type);
- 		igt_info("gt_id: %d\n", gt_list->gt_list[i].gt_id);
--		igt_info("clock_freq: %u\n", gt_list->gt_list[i].clock_freq);
- 		igt_info("native_mem_regions: 0x%016llx\n",
- 		       gt_list->gt_list[i].native_mem_regions);
- 		igt_info("slow_mem_regions: 0x%016llx\n",
-@@ -488,20 +487,6 @@ query_cs_cycles_supported(int fd)
- 	return igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query) == 0;
- }
- 
--static void
--query_cs_cycles(int fd, struct drm_xe_query_cs_cycles *resp)
--{
--	struct drm_xe_device_query query = {
--		.extensions = 0,
--		.query = DRM_XE_QUERY_CS_CYCLES,
--		.size = sizeof(*resp),
--		.data = to_user_pointer(resp),
--	};
--
--	do_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query);
--	igt_assert(query.size);
--}
--
- static void
- __cs_cycles(int fd, struct drm_xe_engine_class_instance *hwe)
- {
-@@ -544,29 +529,29 @@ __cs_cycles(int fd, struct drm_xe_engine_class_instance *hwe)
- 		ts2.eci = *hwe;
- 		ts2.clockid = clock[index].id;
- 
--		query_cs_cycles(fd, &ts1);
--		query_cs_cycles(fd, &ts2);
-+		xe_query_cs_cycles(fd, &ts1);
-+		xe_query_cs_cycles(fd, &ts2);
- 
- 		igt_debug("[1] cpu_ts before %llu, reg read time %llu\n",
- 			  ts1.cpu_timestamp,
- 			  ts1.cpu_delta);
- 		igt_debug("[1] cs_ts %llu, freq %llu Hz, width %u\n",
--			  ts1.cs_cycles, ts1.cs_frequency, ts1.width);
-+			  ts1.cs_cycles, ts1.cs_reference_clock, ts1.width);
- 
- 		igt_debug("[2] cpu_ts before %llu, reg read time %llu\n",
- 			  ts2.cpu_timestamp,
- 			  ts2.cpu_delta);
- 		igt_debug("[2] cs_ts %llu, freq %llu Hz, width %u\n",
--			  ts2.cs_cycles, ts2.cs_frequency, ts2.width);
-+			  ts2.cs_cycles, ts2.cs_reference_clock, ts2.width);
- 
- 		delta_cpu = ts2.cpu_timestamp - ts1.cpu_timestamp;
- 
- 		if (ts2.cs_cycles >= ts1.cs_cycles)
- 			delta_cs = (ts2.cs_cycles - ts1.cs_cycles) *
--				   NSEC_PER_SEC / ts1.cs_frequency;
-+				   NSEC_PER_SEC / ts1.cs_reference_clock;
- 		else
- 			delta_cs = (((1 << ts2.width) - ts2.cs_cycles) + ts1.cs_cycles) *
--				   NSEC_PER_SEC / ts1.cs_frequency;
-+				   NSEC_PER_SEC / ts1.cs_reference_clock;
- 
- 		igt_debug("delta_cpu[%lu], delta_cs[%lu]\n",
- 			  delta_cpu, delta_cs);
-@@ -637,7 +622,7 @@ static void test_cs_cycles_invalid(int fd)
- 
- 	/* sanity check engine selection is valid */
- 	ts.eci = *hwe;
--	query_cs_cycles(fd, &ts);
-+	xe_query_cs_cycles(fd, &ts);
- 
- 	/* bad instance */
- 	ts.eci = *hwe;
-@@ -666,7 +651,7 @@ static void test_cs_cycles_invalid(int fd)
- 	ts.clockid = 0;
- 
- 	/* sanity check */
--	query_cs_cycles(fd, &ts);
-+	xe_query_cs_cycles(fd, &ts);
- }
- 
- igt_main
--- 
-2.41.0
+Thanks,
+
+Nirmoy
+
+> Regards,
+> Kamil
+>
+>>> +		test_each_ggtt_binder_nonblocking_engine("u-independent", fd, ctx, e)
+>>>    			independent(fd, ctx, e->flags, IGT_SPIN_USERPTR);
+>>>    	}
+>>> @@ -3612,13 +3619,13 @@ igt_main
+>>>    		igt_subtest("smoketest-all")
+>>>    			smoketest(fd, &ctx->cfg, ALL_ENGINES, 30);
+>>> -		test_each_engine_store("in-order", fd, ctx, e)
+>>> +		test_each_ggtt_binder_nonblocking_engine("in-order", fd, ctx, e)
+>>>    			reorder(fd, &ctx->cfg, e->flags, EQUAL);
+>>> -		test_each_engine_store("out-order", fd, ctx, e)
+>>> +		test_each_ggtt_binder_nonblocking_engine("out-order", fd, ctx, e)
+>>>    			reorder(fd, &ctx->cfg, e->flags, 0);
+>>> -		test_each_engine_store("promotion", fd, ctx, e)
+>>> +		test_each_ggtt_binder_nonblocking_engine("promotion", fd, ctx, e)
+>>>    			promotion(fd, &ctx->cfg, e->flags);
+>>>    		igt_subtest_group {
+>>> @@ -3685,23 +3692,23 @@ igt_main
+>>>    			}
+>>>    		}
+>>> -		test_each_engine_store("noreorder", fd, ctx, e)
+>>> +		test_each_ggtt_binder_nonblocking_engine("noreorder", fd, ctx, e)
+>>>    			noreorder(fd, &ctx->cfg, e->flags, 0, 0);
+>>> -		test_each_engine_store("noreorder-priority", fd, ctx, e) {
+>>> +		test_each_ggtt_binder_nonblocking_engine("noreorder-priority", fd, ctx, e) {
+>>>    			igt_require(gem_scheduler_enabled(fd));
+>>>    			noreorder(fd, &ctx->cfg, e->flags, MAX_PRIO, 0);
+>>>    		}
+>>> -		test_each_engine_store("noreorder-corked", fd, ctx, e) {
+>>> +		test_each_ggtt_binder_nonblocking_engine("noreorder-corked", fd, ctx, e) {
+>>>    			igt_require(gem_scheduler_enabled(fd));
+>>>    			noreorder(fd, &ctx->cfg, e->flags, MAX_PRIO, CORKED);
+>>>    		}
+>>> -		test_each_engine_store("deep", fd, ctx, e)
+>>> +		test_each_ggtt_binder_nonblocking_engine("deep", fd, ctx, e)
+>>>    			deep(fd, &ctx->cfg, e->flags);
+>>> -		test_each_engine_store("wide", fd, ctx, e)
+>>> +		test_each_ggtt_binder_nonblocking_engine("wide", fd, ctx, e)
+>>>    			wide(fd, &ctx->cfg, e->flags);
+>>>    		test_each_engine_store("smoketest", fd, ctx, e)
+>>> @@ -3735,10 +3742,10 @@ igt_main
+>>>    		test_each_engine("pi-userfault", fd, ctx, e)
+>>>    			test_pi_userfault(fd, &ctx->cfg, e->flags);
+>>> -		test_each_engine("pi-distinct-iova", fd, ctx, e)
+>>> +		test_each_ggtt_binder_nonblocking_engine("pi-distinct-iova", fd, ctx, e)
+>>>    			test_pi_iova(fd, &ctx->cfg, e->flags, 0);
+>>> -		test_each_engine("pi-shared-iova", fd, ctx, e)
+>>> +		test_each_ggtt_binder_nonblocking_engine("pi-shared-iova", fd, ctx, e)
+>>>    			test_pi_iova(fd, &ctx->cfg, e->flags, SHARED);
+>>>    	}
