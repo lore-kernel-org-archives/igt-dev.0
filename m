@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Tue, 19 Sep 2023 08:30:12 +0200
+Date: Tue, 19 Sep 2023 08:36:06 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Message-ID: <20230919083012.6d83fd34@maurocar-mobl2>
-In-Reply-To: <20230918134249.31645-26-janusz.krzysztofik@linux.intel.com>
+Message-ID: <20230919083606.2903010a@maurocar-mobl2>
+In-Reply-To: <20230918134249.31645-36-janusz.krzysztofik@linux.intel.com>
 References: <20230918134249.31645-19-janusz.krzysztofik@linux.intel.com>
- <20230918134249.31645-26-janusz.krzysztofik@linux.intel.com>
+ <20230918134249.31645-36-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t v3 07/17] lib/ktap: Drop
- checks for EINTR on read() failures
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t v3 17/17] lib/kunit: Omit
+ suite name prefix if the same as subtest name
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,84 +24,57 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, 18 Sep 2023 15:42:57 +0200
+On Mon, 18 Sep 2023 15:43:07 +0200
 Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com> wrote:
 
-> While reading KTAP data from /dev/kmsg we now ignore EINTR failures that
-> may occur during read() and we continue reading the data.  No explanation
-> has been provided on what that could be needed for.
-> 
-> Since we use default SIGINT signal handler, read() should never fail with
-> errno set to EINTR on user interrupt, only the whole process should be
-> terminated.  Drop checks for errno == EINTR as not applicable.
-
-This explanation makes sense to me.
-
-Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-
-
-> 
-> v2: Drop handling of EINTR completely, update commit message and
->     descripion.
+> Kunit test modules usually contain one test suite, named after the module
+> name with the trailing "_test" or "_kunit" suffix omitted.  Since we
+> follow the same convention when we derive subtest names from module names,
+> there is a great chance that those two names match.  Take this into
+> account when composing names for IGT dynamic sub-subtest names and drop
+> the leading test suite name component when it is the same as subtest name.
 > 
 > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+
+Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
 > ---
->  lib/igt_ktap.c | 15 ---------------
->  1 file changed, 15 deletions(-)
+>  lib/igt_kmod.c | 11 ++++++++---
+>  1 file changed, 8 insertions(+), 3 deletions(-)
 > 
-> diff --git a/lib/igt_ktap.c b/lib/igt_ktap.c
-> index 84fb13218f..ce07f9aed7 100644
-> --- a/lib/igt_ktap.c
-> +++ b/lib/igt_ktap.c
-> @@ -66,9 +66,6 @@ static int log_to_end(enum igt_log_level level, int fd,
->  				return -2;
->  			}
+> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+> index f6e0ab07ce..05c837031c 100644
+> --- a/lib/igt_kmod.c
+> +++ b/lib/igt_kmod.c
+> @@ -863,7 +863,8 @@ static void kunit_result_free(struct igt_ktap_result *r,
+>   *
+>   * Returns: IGT default codes
+>   */
+> -static void __igt_kunit(struct igt_ktest *tst, const char *opts)
+> +static void
+> +__igt_kunit(struct igt_ktest *tst, const char *name, const char *opts)
+>  {
+>  	struct modprobe_data modprobe = { pthread_self(), tst->kmod, opts, 0,
+>  					  PTHREAD_MUTEX_INITIALIZER, };
+> @@ -902,7 +903,11 @@ static void __igt_kunit(struct igt_ktest *tst, const char *opts)
 >  
-> -			if (errno == EINTR)
-> -				continue;
-> -
->  			if (errno == EPIPE) {
->  				igt_warn("kmsg truncated: too many messages. You may want to increase log_buf_len in kmcdline\n");
->  				return -2;
-> @@ -188,9 +185,6 @@ static int find_next_tap_subtest(int fd, char *record, char *test_name, bool is_
->  				return -2;
->  			}
+>  		r = igt_list_first_entry(&results, r, link);
 >  
-> -			if (errno == EINTR)
-> -				continue;
-> -
->  			if (errno == EPIPE) {
->  				igt_warn("kmsg truncated: too many messages. You may want to increase log_buf_len in kmcdline\n");
->  				return -2;
-> @@ -232,9 +226,6 @@ static int find_next_tap_subtest(int fd, char *record, char *test_name, bool is_
->  				return -2;
->  			}
+> -		igt_dynamic_f("%s-%s", r->suite_name, r->case_name) {
+> +		igt_dynamic_f("%s%s%s",
+> +			      strcmp(r->suite_name, name) ?  r->suite_name : "",
+> +			      strcmp(r->suite_name, name) ? "-" : "",
+> +			      r->case_name) {
+> +
+>  			if (r->code == IGT_EXIT_INVALID) {
+>  				/* parametrized test case, get actual result */
+>  				kunit_result_free(r, &suite_name, &case_name);
+> @@ -1011,7 +1016,7 @@ void igt_kunit(const char *module_name, const char *name, const char *opts)
+>  	 * and for documentation.
+>  	 */
+>  	igt_subtest_with_dynamic(name)
+> -		__igt_kunit(&tst, opts);
+> +		__igt_kunit(&tst, name, opts);
 >  
-> -			if (errno == EINTR)
-> -				continue;
-> -
->  			if (errno == EPIPE) {
->  				igt_warn("kmsg truncated: too many messages. You may want to increase log_buf_len in kmcdline\n");
->  				return -2;
-> @@ -387,9 +378,6 @@ static int parse_tap_level(int fd, char *base_test_name, int test_count, bool *f
->  				return -1;
->  			}
->  
-> -			if (errno == EINTR)
-> -				continue;
-> -
->  			if (errno == EAGAIN)
->  				/* No records available */
->  				continue;
-> @@ -540,9 +528,6 @@ igt_ktap_parser_start:
->  			/* No records available */
->  			continue;
->  
-> -		if (errno == EINTR)
-> -			continue;
-> -
->  		if (errno == EPIPE) {
->  			igt_warn("kmsg truncated: too many messages. You may want to increase log_buf_len in kmcdline\n");
->  			goto igt_ktap_parser_end;
+>  	igt_fixture
+>  		igt_ktest_end(&tst);
