@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-To: <intel-xe@lists.freedesktop.org>, <igt-dev@lists.freedesktop.org>
-Date: Tue, 19 Sep 2023 10:19:48 -0400
-Message-ID: <20230919142000.91363-6-rodrigo.vivi@intel.com>
-In-Reply-To: <20230919142000.91363-1-rodrigo.vivi@intel.com>
-References: <20230919142000.91363-1-rodrigo.vivi@intel.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Message-ID: <50978871-5bf8-aa65-d6a9-c4dcd20e3a03@linux.intel.com>
+Date: Wed, 20 Sep 2023 13:58:57 +0530
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 05/16] xe_exec_balancer: Enable parallel
- submission and compute mode
+Content-Language: en-US
+To: Rodrigo Vivi <rodrigo.vivi@intel.com>, intel-xe@lists.freedesktop.org,
+ igt-dev@lists.freedesktop.org
+References: <20230919142000.91363-1-rodrigo.vivi@intel.com>
+ <20230919142000.91363-2-rodrigo.vivi@intel.com>
+From: Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>
+In-Reply-To: <20230919142000.91363-2-rodrigo.vivi@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH i-g-t 01/16] drm-uapi/xe_drm: Align with new
+ PMU interface
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,89 +20,75 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Matthew Brost <matthew.brost@intel.com>
 
-This is now supported. Test it.
+On 19/09/23 19:49, Rodrigo Vivi wrote:
 
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
----
- tests/intel/xe_exec_balancer.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+Hi Rodrigo,
 
-diff --git a/tests/intel/xe_exec_balancer.c b/tests/intel/xe_exec_balancer.c
-index 0314b4cd2..a4a438db7 100644
---- a/tests/intel/xe_exec_balancer.c
-+++ b/tests/intel/xe_exec_balancer.c
-@@ -383,6 +383,12 @@ test_exec(int fd, int gt, int class, int n_exec_queues, int n_execs,
-  * @virtual-userptr-rebind:		virtual userptr rebind
-  * @virtual-userptr-invalidate:		virtual userptr invalidate
-  * @virtual-userptr-invalidate-race:	virtual userptr invalidate racy
-+ * @parallel-basic:			parallel basic
-+ * @parallel-userptr:			parallel userptr
-+ * @parallel-rebind:			parallel rebind
-+ * @parallel-userptr-rebind:		parallel userptr rebind
-+ * @parallel-userptr-invalidate:	parallel userptr invalidate
-+ * @parallel-userptr-invalidate-race:	parallel userptr invalidate racy
-  */
- 
- static void
-@@ -460,8 +466,8 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 		};
- 		struct drm_xe_exec_queue_create create = {
- 			.vm_id = vm,
--			.width = 1,
--			.num_placements = num_placements,
-+			.width = flags & PARALLEL ? num_placements : 1,
-+			.num_placements = flags & PARALLEL ? 1 : num_placements,
- 			.instances = to_user_pointer(eci),
- 			.extensions = to_user_pointer(&ext),
- 		};
-@@ -470,6 +476,7 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 					&create), 0);
- 		exec_queues[i] = create.exec_queue_id;
- 	}
-+	exec.num_batch_buffer = flags & PARALLEL ? num_placements : 1;
- 
- 	sync[0].addr = to_user_pointer(&data[0].vm_sync);
- 	if (bo)
-@@ -487,8 +494,12 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 		uint64_t batch_addr = addr + batch_offset;
- 		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
- 		uint64_t sdi_addr = addr + sdi_offset;
-+		uint64_t batches[MAX_INSTANCE];
- 		int e = i % n_exec_queues;
- 
-+		for (j = 0; j < num_placements && flags & PARALLEL; ++j)
-+			batches[j] = batch_addr;
-+
- 		b = 0;
- 		data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
- 		data[i].batch[b++] = sdi_addr;
-@@ -500,7 +511,8 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 		sync[0].addr = addr + (char *)&data[i].exec_sync - (char *)data;
- 
- 		exec.exec_queue_id = exec_queues[e];
--		exec.address = batch_addr;
-+		exec.address = flags & PARALLEL ?
-+			to_user_pointer(batches) : batch_addr;
- 		xe_exec(fd, &exec);
- 
- 		if (flags & REBIND && i + 1 != n_execs) {
-@@ -661,9 +673,6 @@ igt_main
- 					test_exec(fd, gt, class, 1, 0,
- 						  s->flags);
- 
--		if (s->flags & PARALLEL)
--			continue;
--
- 		igt_subtest_f("once-cm-%s", s->name)
- 			xe_for_each_gt(fd, gt)
- 				xe_for_each_hw_engine_class(class)
--- 
-2.41.0
+can  you please pick the latest header xe_drm.h I did a small fix for comment.
+
+Thanks,
+Aravind.
+> Align with commit ("drm/xe/pmu: Enable PMU interface")
+>
+> Cc: Francois Dugast <francois.dugast@intel.com>
+> Cc: Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>
+> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+> Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> ---
+>  include/drm-uapi/xe_drm.h | 38 ++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 38 insertions(+)
+>
+> diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+> index 804c02270..6aaa8517c 100644
+> --- a/include/drm-uapi/xe_drm.h
+> +++ b/include/drm-uapi/xe_drm.h
+> @@ -1053,6 +1053,44 @@ struct drm_xe_vm_madvise {
+>  	__u64 reserved[2];
+>  };
+>  
+> +/**
+> + * XE PMU event config IDs
+> + *
+> + * Check 'man perf_event_open' to use these ID's in 'struct perf_event_attr'
+> + * as part of perf_event_open syscall to read a particular event.
+> + *
+> + * For example to open the XE_PMU_INTERRUPTS(0):
+> + *
+> + * .. code-block:: C
+> + *	struct perf_event_attr attr;
+> + *	long long count;
+> + *	int cpu = 0;
+> + *	int fd;
+> + *
+> + *	memset(&attr, 0, sizeof(struct perf_event_attr));
+> + *	attr.type = type; // eg: /sys/bus/event_source/devices/xe_0000_56_00.0/type
+> + *	attr.read_format = PERF_FORMAT_TOTAL_TIME_ENABLED;
+> + *	attr.use_clockid = 1;
+> + *	attr.clockid = CLOCK_MONOTONIC;
+> + *	attr.config = XE_PMU_INTERRUPTS(0);
+> + *
+> + *	fd = syscall(__NR_perf_event_open, &attr, -1, cpu, -1, 0);
+> + */
+> +
+> +/*
+> + * Top bits of every counter are GT id.
+> + */
+> +#define __XE_PMU_GT_SHIFT (56)
+> +
+> +#define ___XE_PMU_OTHER(gt, x) \
+> +	(((__u64)(x)) | ((__u64)(gt) << __XE_PMU_GT_SHIFT))
+> +
+> +#define XE_PMU_INTERRUPTS(gt)			___XE_PMU_OTHER(gt, 0)
+> +#define XE_PMU_RENDER_GROUP_BUSY(gt)		___XE_PMU_OTHER(gt, 1)
+> +#define XE_PMU_COPY_GROUP_BUSY(gt)		___XE_PMU_OTHER(gt, 2)
+> +#define XE_PMU_MEDIA_GROUP_BUSY(gt)		___XE_PMU_OTHER(gt, 3)
+> +#define XE_PMU_ANY_ENGINE_GROUP_BUSY(gt)	___XE_PMU_OTHER(gt, 4)
+> +
+>  #if defined(__cplusplus)
+>  }
+>  #endif
