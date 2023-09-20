@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============3430626673183322651=="
+Date: Wed, 20 Sep 2023 10:07:18 -0400
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+Message-ID: <ZQr8lowFNiMGnrbn@intel.com>
+References: <20230918190259.2817143-1-vinay.belgaumkar@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20230918190259.2817143-1-vinay.belgaumkar@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jeevan B" <jeevan.b@intel.com>
-Date: Wed, 20 Sep 2023 11:47:20 -0000
-Message-ID: <169521044012.6467.10469222090300972968@emeril.freedesktop.org>
-References: <20230920103128.1016220-1-jeevan.b@intel.com>
-In-Reply-To: <20230920103128.1016220-1-jeevan.b@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/km?=
- =?utf-8?q?s=5Fsetmode=3A_Add_info_as_comment_for_valid_scenario_=28rev2?=
- =?utf-8?q?=29?=
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] tests/i915_pm_freq_api: Set
+ min/max to expected values
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,131 +17,61 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3430626673183322651==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Mon, Sep 18, 2023 at 12:02:59PM -0700, Vinay Belgaumkar wrote:
+> A prior(rps) test leaves the system in a bad state causing failures
+> in the basic test.
 
-== Series Details ==
+Why?
 
-Series: tests/kms_setmode: Add info as comment for valid scenario (rev2)
-URL   : https://patchwork.freedesktop.org/series/123952/
-State : success
+What was the freq immediately before the failure that made the
+machine to be busted and not accept the new freq request?
 
-== Summary ==
+Maybe we should use this information to limit the freq requests
+that we accept instead of workaround the test case. Otherwise
+we are at risk of users selecting the bad freq that let " the
+system in a bad state"...
 
-CI Bug Log - changes from XEIGT_7493_BAT -> XEIGTPW_9830_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_9830_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank:
-    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 other test fail
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7493/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9830/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html
-
-  
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-
-
-Build changes
--------------
-
-  * IGT: IGT_7493 -> IGTPW_9830
-  * Linux: xe-376-9da40abcc0ccdf8fdfed4e21d76060bfcd35fe7d -> xe-384-b3b5f51b66e9f1bf5aecef46446c4e7c49146834
-
-  IGTPW_9830: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9830/index.html
-  IGT_7493: 2517e42d612e0c1ca096acf8b5f6177f7ef4bce7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-376-9da40abcc0ccdf8fdfed4e21d76060bfcd35fe7d: 9da40abcc0ccdf8fdfed4e21d76060bfcd35fe7d
-  xe-384-b3b5f51b66e9f1bf5aecef46446c4e7c49146834: b3b5f51b66e9f1bf5aecef46446c4e7c49146834
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9830/index.html
-
---===============3430626673183322651==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_setmode: Add info as comment for valid scenario (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123952/">https://patchwork.freedesktop.org/series/123952/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9830/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9830/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7493_BAT -&gt; XEIGTPW_9830_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_9830_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7493/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9830/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7493 -&gt; IGTPW_9830</li>
-<li>Linux: xe-376-9da40abcc0ccdf8fdfed4e21d76060bfcd35fe7d -&gt; xe-384-b3b5f51b66e9f1bf5aecef46446c4e7c49146834</li>
-</ul>
-<p>IGTPW_9830: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9830/index.html<br />
-  IGT_7493: 2517e42d612e0c1ca096acf8b5f6177f7ef4bce7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-376-9da40abcc0ccdf8fdfed4e21d76060bfcd35fe7d: 9da40abcc0ccdf8fdfed4e21d76060bfcd35fe7d<br />
-  xe-384-b3b5f51b66e9f1bf5aecef46446c4e7c49146834: b3b5f51b66e9f1bf5aecef46446c4e7c49146834</p>
-
-</body>
-</html>
-
---===============3430626673183322651==--
+> Set min/max to expected values before running it.
+> Test will restore values at the end.
+> 
+> Link: https://gitlab.freedesktop.org/drm/intel/-/issues/8670
+> 
+> Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+> ---
+>  tests/intel/i915_pm_freq_api.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tests/intel/i915_pm_freq_api.c b/tests/intel/i915_pm_freq_api.c
+> index 03bd0d05b..6018692a2 100644
+> --- a/tests/intel/i915_pm_freq_api.c
+> +++ b/tests/intel/i915_pm_freq_api.c
+> @@ -55,7 +55,11 @@ static void test_freq_basic_api(int dirfd, int gt)
+>  	rpn = get_freq(dirfd, RPS_RPn_FREQ_MHZ);
+>  	rp0 = get_freq(dirfd, RPS_RP0_FREQ_MHZ);
+>  	rpe = get_freq(dirfd, RPS_RP1_FREQ_MHZ);
+> -	igt_debug("GT: %d, RPn: %d, RPe: %d, RP0: %d", gt, rpn, rpe, rp0);
+> +	igt_debug("GT: %d, RPn: %d, RPe: %d, RP0: %d\n", gt, rpn, rpe, rp0);
+> +
+> +	/* Set min/max to RPn, RP0 for baseline behavior */
+> +	igt_assert(set_freq(dirfd, RPS_MIN_FREQ_MHZ, rpn) > 0);
+> +	igt_assert(set_freq(dirfd, RPS_MAX_FREQ_MHZ, rp0) > 0);
+>  
+>  	/*
+>  	 * Negative bound tests
+> @@ -170,7 +174,7 @@ igt_main
+>  		for_each_sysfs_gt_dirfd(i915, dirfd, gt) {
+>  			stash_min[gt] = get_freq(dirfd, RPS_MIN_FREQ_MHZ);
+>  			stash_max[gt] = get_freq(dirfd, RPS_MAX_FREQ_MHZ);
+> -			igt_debug("GT: %d, min: %d, max: %d", gt, stash_min[gt], stash_max[gt]);
+> +			igt_debug("GT: %d, min: %d, max: %d\n", gt, stash_min[gt], stash_max[gt]);
+>  			igt_pm_ignore_slpc_efficient_freq(i915, dirfd, true);
+>  		}
+>  		igt_install_exit_handler(restore_sysfs_freq);
+> -- 
+> 2.38.1
+> 
