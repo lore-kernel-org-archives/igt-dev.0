@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <4028e035-4b39-0c6d-a0dd-a9ec583ab07e@intel.com>
-Date: Wed, 20 Sep 2023 09:18:07 -0700
-To: Rodrigo Vivi <rodrigo.vivi@intel.com>
-References: <20230918190259.2817143-1-vinay.belgaumkar@intel.com>
- <ZQr8lowFNiMGnrbn@intel.com>
-Content-Language: en-US
-From: "Belgaumkar, Vinay" <vinay.belgaumkar@intel.com>
-In-Reply-To: <ZQr8lowFNiMGnrbn@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A9CF110E4CD
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Sep 2023 16:22:54 +0000 (UTC)
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 20 Sep 2023 18:19:13 +0200
+Message-ID: <20230920161913.54521-4-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20230920161913.54521-1-kamil.konieczny@linux.intel.com>
+References: <20230920161913.54521-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] tests/i915_pm_freq_api: Set
- min/max to expected values
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 3/3] RFC: tests/intel/xe_create: extend
+ massive subtest to multi-gpu
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,78 +19,58 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Sample code extends existing create-massive-size subtest to run
+on multi-GPUs boards. This needs changes in lib/drmtest.
 
-On 9/20/2023 7:07 AM, Rodrigo Vivi wrote:
-> On Mon, Sep 18, 2023 at 12:02:59PM -0700, Vinay Belgaumkar wrote:
->> A prior(rps) test leaves the system in a bad state causing failures
->> in the basic test.
-> Why?
->
-> What was the freq immediately before the failure that made the
-> machine to be busted and not accept the new freq request?
->
-> Maybe we should use this information to limit the freq requests
-> that we accept instead of workaround the test case. Otherwise
-> we are at risk of users selecting the bad freq that let " the
-> system in a bad state"...
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ tests/intel/xe_create.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-i915_pm_rps (waitboost) test sets soft max_freq to some value less than 
-RP0 and then fails. The restore on failure does not work properly as the 
-test is not multitile capable(it sets the root sysfs entry instead of 
-using the per tile entry). Then, the current test (i915_pm_freq_api --r 
-basic-api) tries to set min_freq to RP0 as part of normal testing. This 
-fails as soft_max is < RP0.
-
-There is some non-trivial effort needed to convert i915_pm_rps to 
-multitile, and this is a BAT failure, hence adding the quick fix to 
-ensure the test runs with a good pre-environment.
-
-Thanks,
-
-Vinay.
-
->
->> Set min/max to expected values before running it.
->> Test will restore values at the end.
->>
->> Link: https://gitlab.freedesktop.org/drm/intel/-/issues/8670
->>
->> Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
->> ---
->>   tests/intel/i915_pm_freq_api.c | 8 ++++++--
->>   1 file changed, 6 insertions(+), 2 deletions(-)
->>
->> diff --git a/tests/intel/i915_pm_freq_api.c b/tests/intel/i915_pm_freq_api.c
->> index 03bd0d05b..6018692a2 100644
->> --- a/tests/intel/i915_pm_freq_api.c
->> +++ b/tests/intel/i915_pm_freq_api.c
->> @@ -55,7 +55,11 @@ static void test_freq_basic_api(int dirfd, int gt)
->>   	rpn = get_freq(dirfd, RPS_RPn_FREQ_MHZ);
->>   	rp0 = get_freq(dirfd, RPS_RP0_FREQ_MHZ);
->>   	rpe = get_freq(dirfd, RPS_RP1_FREQ_MHZ);
->> -	igt_debug("GT: %d, RPn: %d, RPe: %d, RP0: %d", gt, rpn, rpe, rp0);
->> +	igt_debug("GT: %d, RPn: %d, RPe: %d, RP0: %d\n", gt, rpn, rpe, rp0);
->> +
->> +	/* Set min/max to RPn, RP0 for baseline behavior */
->> +	igt_assert(set_freq(dirfd, RPS_MIN_FREQ_MHZ, rpn) > 0);
->> +	igt_assert(set_freq(dirfd, RPS_MAX_FREQ_MHZ, rp0) > 0);
->>   
->>   	/*
->>   	 * Negative bound tests
->> @@ -170,7 +174,7 @@ igt_main
->>   		for_each_sysfs_gt_dirfd(i915, dirfd, gt) {
->>   			stash_min[gt] = get_freq(dirfd, RPS_MIN_FREQ_MHZ);
->>   			stash_max[gt] = get_freq(dirfd, RPS_MAX_FREQ_MHZ);
->> -			igt_debug("GT: %d, min: %d, max: %d", gt, stash_min[gt], stash_max[gt]);
->> +			igt_debug("GT: %d, min: %d, max: %d\n", gt, stash_min[gt], stash_max[gt]);
->>   			igt_pm_ignore_slpc_efficient_freq(i915, dirfd, true);
->>   		}
->>   		igt_install_exit_handler(restore_sysfs_freq);
->> -- 
->> 2.38.1
->>
+diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+index 8d845e5c8..27f02ad2a 100644
+--- a/tests/intel/xe_create.c
++++ b/tests/intel/xe_create.c
+@@ -192,6 +192,13 @@ static void create_execqueues(int fd, enum exec_queue_destroy ed)
+  * Description: Verifies xe bo create returns expected error code on massive
+  *              buffer sizes.
+  */
++/**
++ * SUBTEST: multigpu-create-massive-size
++ * Functionality: ioctl
++ * Test category: multigpu
++ * Description: Verifies xe bo create with massive buffer sizes runs correctly
++ *		on all GPUs.
++ */
+ static void create_massive_size(int fd)
+ {
+ 	uint64_t memreg = all_memory_regions(fd), region;
+@@ -228,6 +235,22 @@ igt_main
+ 		create_massive_size(xe);
+ 	}
+ 
++	igt_subtest("multigpu-create-massive-size") {
++		igt_require(drm_multigpu_prepare_cards(DRIVER_XE) > 1);
++		igt_multi_fork(child, drm_get_multigpu_count()) {
++			int gpu_fd;
++
++			gpu_fd = child ? __drm_open_driver_another(child, DRIVER_XE) : drm_reopen_driver(xe);
++			igt_assert_f(gpu_fd > 0, "cannot open gpu-%d, errno=%d\n", child, errno);
++			//test
++			create_massive_size(xe);
++			//
++			drm_close_driver(gpu_fd);
++		}
++
++		igt_waitchildren();
++	}
++
+ 	igt_fixture
+ 		drm_close_driver(xe);
+ }
+-- 
+2.42.0
