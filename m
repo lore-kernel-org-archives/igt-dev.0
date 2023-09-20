@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============5412422095459235919=="
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: janga.rahul.kumar@intel.com
-Date: Wed, 20 Sep 2023 23:28:05 -0000
-Message-ID: <169525248501.6467.12042418228626779451@emeril.freedesktop.org>
-References: <20230920204632.730526-1-janga.rahul.kumar@intel.com>
-In-Reply-To: <20230920204632.730526-1-janga.rahul.kumar@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2lu?=
- =?utf-8?q?tel=5Fcompute=3A_Fix_Incorrect_array_size_for_XEHPC_platforms?=
+To: vitaly.prosyak@amd.com
+Date: Wed, 20 Sep 2023 23:31:51 -0000
+Message-ID: <169525271179.6465.3541434136056448967@emeril.freedesktop.org>
+References: <20230920223905.268940-1-vitaly.prosyak@amd.com>
+In-Reply-To: <20230920223905.268940-1-vitaly.prosyak@amd.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/amdgpu=3A_add_GFX11_to_tests?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,243 +23,239 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============5412422095459235919==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+=3D=3D Series Details =3D=3D
 
-== Series Details ==
+Series: tests/amdgpu: add GFX11 to tests
+URL   : https://patchwork.freedesktop.org/series/124018/
+State : warning
 
-Series: lib/intel_compute: Fix Incorrect array size for XEHPC platforms
-URL   : https://patchwork.freedesktop.org/series/124010/
-State : success
+=3D=3D Summary =3D=3D
 
-== Summary ==
+Pipeline status: FAILED.
 
-CI Bug Log - changes from CI_DRM_13659 -> IGTPW_9832
-====================================================
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/990765 fo=
+r the overview.
 
-Summary
--------
+build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/=
+igt-ci-tags/-/jobs/49254783):
+  ninja: Entering directory `build'
+  [1/1369] Generating version.h with a custom command.
+  [2/1365] Linking static target lib/libigt-amdgpu_amd_ip_blocks_c.a.
+  [3/1365] Compiling C object 'lib/76b5a35@@igt-amdgpu_amd_dispatch_c@sta/a=
+mdgpu_amd_dispatch.c.o'.
+  FAILED: lib/76b5a35@@igt-amdgpu_amd_dispatch_c@sta/amdgpu_amd_dispatch.c.=
+o=20
+  cc -Ilib/76b5a35@@igt-amdgpu_amd_dispatch_c@sta -Ilib -I../lib -I../inclu=
+de -I../include/drm-uapi -I../include/linux-uapi -I../lib/stubs/syscalls -I=
+. -I../ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linu=
+x-gnu/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/uuid -I/usr/i=
+nclude/freetype2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/inclu=
+de/libdrm/nouveau -I/usr/include/x86_64-linux-gnu -I/usr/include/valgrind -=
+I/usr/include/alsa -I/usr/include -fdiagnostics-color=3Dalways -pipe -D_FIL=
+E_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_S=
+OURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclara=
+tion-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -=
+Wmissing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissi=
+ng-prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wred=
+undant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-clo=
+bbered -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-pointe=
+r-arith -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unuse=
+d-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Werro=
+r=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissin=
+g-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-t=
+ype -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -f=
+no-builtin-malloc -fno-builtin-calloc -fPIC -pthread '-DIGT_DATADIR=3D"/usr=
+/local/share/igt-gpu-tools"' '-DIGT_SRCDIR=3D"/builds/gfx-ci/igt-ci-tags/te=
+sts"' '-DIGT_LOG_DOMAIN=3D"amdgpu/amd_dispatch"'  -MD -MQ 'lib/76b5a35@@igt=
+-amdgpu_amd_dispatch_c@sta/amdgpu_amd_dispatch.c.o' -MF 'lib/76b5a35@@igt-a=
+mdgpu_amd_dispatch_c@sta/amdgpu_amd_dispatch.c.o.d' -o 'lib/76b5a35@@igt-am=
+dgpu_amd_dispatch_c@sta/amdgpu_amd_dispatch.c.o' -c ../lib/amdgpu/amd_dispa=
+tch.c
+  ../lib/amdgpu/amd_dispatch.c: In function =E2=80=98amdgpu_memcpy_dispatch=
+_hang_slow_test=E2=80=99:
+  ../lib/amdgpu/amd_dispatch.c:492:7: error: implicit declaration of functi=
+on =E2=80=98amdgpu_cs_query_reset_state2=E2=80=99; did you mean =E2=80=98am=
+dgpu_cs_query_reset_state=E2=80=99? [-Werror=3Dimplicit-function-declaratio=
+n]
+    r2 =3D amdgpu_cs_query_reset_state2(context_handle, &reset_flags);
+         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         amdgpu_cs_query_reset_state
+  ../lib/amdgpu/amd_dispatch.c:492:7: warning: nested extern declaration of=
+ =E2=80=98amdgpu_cs_query_reset_state2=E2=80=99 [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1695252477:step_script
+  section_start:1695252477:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1695252478:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
 
-  **SUCCESS**
+build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/g=
+fx-ci/igt-ci-tags/-/jobs/49254786):
+  [1/1031] Generating version.h with a custom command.
+  [2/1027] Linking static target lib/libigt-igt_audio_c.a.
+  [3/1027] Linking static target lib/libigt-amdgpu_amd_ip_blocks_c.a.
+  [4/1027] Compiling C object 'lib/76b5a35@@igt-amdgpu_amd_dispatch_c@sta/a=
+mdgpu_amd_dispatch.c.o'.
+  FAILED: lib/76b5a35@@igt-amdgpu_amd_dispatch_c@sta/amdgpu_amd_dispatch.c.=
+o=20
+  /usr/bin/aarch64-linux-gnu-gcc -Ilib/76b5a35@@igt-amdgpu_amd_dispatch_c@s=
+ta -Ilib -I../lib -I../include -I../include/drm-uapi -I../include/linux-uap=
+i -I../lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/gli=
+b-2.0 -I/usr/lib/aarch64-linux-gnu/glib-2.0/include -I/usr/include/pixman-1=
+ -I/usr/include/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -I/us=
+r/include/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/aarch64-linux=
+-gnu -I/usr/include/valgrind -I/usr/include/alsa -fdiagnostics-color=3Dalwa=
+ys -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 =
+-O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function=
+-cast -Wdeclaration-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0=
+ -Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -Wmissing-n=
+oreturn -Wmissing-prototypes -Wnested-externs -Wold-style-definition -Wpoin=
+ter-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -W=
+unused -Wno-clobbered -Wno-maybe-uninitialized -Wno-missing-field-initializ=
+ers -Wno-pointer-arith -Wno-sign-compare -Wno-type-limits -Wno-unused-param=
+eter -Wno-unused-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3D=
+implicit -Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -=
+Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -We=
+rror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dw=
+rite-strings -fno-builtin-malloc -fno-builtin-calloc -fPIC -pthread '-DIGT_=
+DATADIR=3D"/usr/local/share/igt-gpu-tools"' '-DIGT_SRCDIR=3D"/builds/gfx-ci=
+/igt-ci-tags/tests"' '-DIGT_LOG_DOMAIN=3D"amdgpu/amd_dispatch"'  -MD -MQ 'l=
+ib/76b5a35@@igt-amdgpu_amd_dispatch_c@sta/amdgpu_amd_dispatch.c.o' -MF 'lib=
+/76b5a35@@igt-amdgpu_amd_dispatch_c@sta/amdgpu_amd_dispatch.c.o.d' -o 'lib/=
+76b5a35@@igt-amdgpu_amd_dispatch_c@sta/amdgpu_amd_dispatch.c.o' -c ../lib/a=
+mdgpu/amd_dispatch.c
+  ../lib/amdgpu/amd_dispatch.c: In function =E2=80=98amdgpu_memcpy_dispatch=
+_hang_slow_test=E2=80=99:
+  ../lib/amdgpu/amd_dispatch.c:492:7: error: implicit declaration of functi=
+on =E2=80=98amdgpu_cs_query_reset_state2=E2=80=99; did you mean =E2=80=98am=
+dgpu_cs_query_reset_state=E2=80=99? [-Werror=3Dimplicit-function-declaratio=
+n]
+    r2 =3D amdgpu_cs_query_reset_state2(context_handle, &reset_flags);
+         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         amdgpu_cs_query_reset_state
+  ../lib/amdgpu/amd_dispatch.c:492:7: warning: nested extern declaration of=
+ =E2=80=98amdgpu_cs_query_reset_state2=E2=80=99 [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1695252484:step_script
+  section_start:1695252484:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1695252484:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
 
-  No regressions found.
+build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/g=
+fx-ci/igt-ci-tags/-/jobs/49254785):
+  ninja: build stopped: subcommand failed.
+  ninja: Entering directory `build'
+  [1/1029] Generating version.h with a custom command.
+  [2/1025] Compiling C object 'lib/76b5a35@@igt-amdgpu_amd_dispatch_c@sta/a=
+mdgpu_amd_dispatch.c.o'.
+  FAILED: lib/76b5a35@@igt-amdgpu_amd_dispatch_c@sta/amdgpu_amd_dispatch.c.=
+o=20
+  /usr/bin/arm-linux-gnueabihf-gcc -Ilib/76b5a35@@igt-amdgpu_amd_dispatch_c=
+@sta -Ilib -I../lib -I../include -I../include/drm-uapi -I../include/linux-u=
+api -I../lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/g=
+lib-2.0 -I/usr/lib/arm-linux-gnueabihf/glib-2.0/include -I/usr/include/pixm=
+an-1 -I/usr/include/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -=
+I/usr/include/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/arm-linux=
+-gnueabihf -I/usr/include/valgrind -I/usr/include/alsa -fdiagnostics-color=
+=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=
+=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad=
+-function-cast -Wdeclaration-after-statement -Wformat=3D2 -Wimplicit-fallth=
+rough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -W=
+missing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-style-definiti=
+on -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuniniti=
+alized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno-missing-field-=
+initializers -Wno-pointer-arith -Wno-sign-compare -Wno-type-limits -Wno-unu=
+sed-parameter -Wno-unused-result -Werror=3Daddress -Werror=3Darray-bounds -=
+Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=
+=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int=
+-cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -W=
+error=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -fPIC -pthrea=
+d '-DIGT_DATADIR=3D"/usr/local/share/igt-gpu-tools"' '-DIGT_SRCDIR=3D"/buil=
+ds/gfx-ci/igt-ci-tags/tests"' '-DIGT_LOG_DOMAIN=3D"amdgpu/amd_dispatch"'  -=
+MD -MQ 'lib/76b5a35@@igt-amdgpu_amd_dispatch_c@sta/amdgpu_amd_dispatch.c.o'=
+ -MF 'lib/76b5a35@@igt-amdgpu_amd_dispatch_c@sta/amdgpu_amd_dispatch.c.o.d'=
+ -o 'lib/76b5a35@@igt-amdgpu_amd_dispatch_c@sta/amdgpu_amd_dispatch.c.o' -c=
+ ../lib/amdgpu/amd_dispatch.c
+  ../lib/amdgpu/amd_dispatch.c: In function =E2=80=98amdgpu_memcpy_dispatch=
+_hang_slow_test=E2=80=99:
+  ../lib/amdgpu/amd_dispatch.c:492:7: error: implicit declaration of functi=
+on =E2=80=98amdgpu_cs_query_reset_state2=E2=80=99; did you mean =E2=80=98am=
+dgpu_cs_query_reset_state=E2=80=99? [-Werror=3Dimplicit-function-declaratio=
+n]
+    r2 =3D amdgpu_cs_query_reset_state2(context_handle, &reset_flags);
+         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         amdgpu_cs_query_reset_state
+  ../lib/amdgpu/amd_dispatch.c:492:7: warning: nested extern declaration of=
+ =E2=80=98amdgpu_cs_query_reset_state2=E2=80=99 [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1695252485:step_script
+  section_start:1695252485:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1695252485:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9832/index.html
+build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gf=
+x-ci/igt-ci-tags/-/jobs/49254787):
+  [1/1040] Generating version.h with a custom command.
+  [2/1036] Linking static target lib/libigt-igt_frame_c.a.
+  [3/1036] Linking static target lib/libigt-amdgpu_amd_ip_blocks_c.a.
+  [4/1036] Compiling C object 'lib/76b5a35@@igt-amdgpu_amd_dispatch_c@sta/a=
+mdgpu_amd_dispatch.c.o'.
+  FAILED: lib/76b5a35@@igt-amdgpu_amd_dispatch_c@sta/amdgpu_amd_dispatch.c.=
+o=20
+  /usr/bin/mips-linux-gnu-gcc -Ilib/76b5a35@@igt-amdgpu_amd_dispatch_c@sta =
+-Ilib -I../lib -I../include -I../include/drm-uapi -I../include/linux-uapi -=
+I../lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/glib-2=
+.0 -I/usr/lib/mips-linux-gnu/glib-2.0/include -I/usr/include/pixman-1 -I/us=
+r/include/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/incl=
+ude/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/mips-linux-gnu -I/u=
+sr/include/valgrind -I/usr/include/alsa -fdiagnostics-color=3Dalways -pipe =
+-D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D=
+_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wd=
+eclaration-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogica=
+l-op -Wmissing-declarations -Wmissing-format-attribute -Wmissing-noreturn -=
+Wmissing-prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith=
+ -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -W=
+no-clobbered -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-=
+pointer-arith -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno=
+-unused-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit =
+-Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3D=
+missing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dre=
+turn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-stri=
+ngs -fno-builtin-malloc -fno-builtin-calloc -fPIC -pthread '-DIGT_DATADIR=
+=3D"/usr/local/share/igt-gpu-tools"' '-DIGT_SRCDIR=3D"/builds/gfx-ci/igt-ci=
+-tags/tests"' '-DIGT_LOG_DOMAIN=3D"amdgpu/amd_dispatch"'  -MD -MQ 'lib/76b5=
+a35@@igt-amdgpu_amd_dispatch_c@sta/amdgpu_amd_dispatch.c.o' -MF 'lib/76b5a3=
+5@@igt-amdgpu_amd_dispatch_c@sta/amdgpu_amd_dispatch.c.o.d' -o 'lib/76b5a35=
+@@igt-amdgpu_amd_dispatch_c@sta/amdgpu_amd_dispatch.c.o' -c ../lib/amdgpu/a=
+md_dispatch.c
+  ../lib/amdgpu/amd_dispatch.c: In function =E2=80=98amdgpu_memcpy_dispatch=
+_hang_slow_test=E2=80=99:
+  ../lib/amdgpu/amd_dispatch.c:492:7: error: implicit declaration of functi=
+on =E2=80=98amdgpu_cs_query_reset_state2=E2=80=99; did you mean =E2=80=98am=
+dgpu_cs_query_reset_state=E2=80=99? [-Werror=3Dimplicit-function-declaratio=
+n]
+    r2 =3D amdgpu_cs_query_reset_state2(context_handle, &reset_flags);
+         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         amdgpu_cs_query_reset_state
+  ../lib/amdgpu/amd_dispatch.c:492:7: warning: nested extern declaration of=
+ =E2=80=98amdgpu_cs_query_reset_state2=E2=80=99 [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1695252491:step_script
+  section_start:1695252491:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1695252492:cleanup_file_variables
+  ERROR: Job failed: exit code 1
 
-Participating hosts (40 -> 38)
-------------------------------
+=3D=3D Logs =3D=3D
 
-  Missing    (2): fi-hsw-4770 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_9832 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_exec_suspend@basic-s0@smem:
-    - bat-mtlp-8:         NOTRUN -> [ABORT][1] ([i915#9262])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9832/bat-mtlp-8/igt@gem_exec_suspend@basic-s0@smem.html
-
-  * igt@i915_suspend@basic-s3-without-i915:
-    - bat-mtlp-8:         NOTRUN -> [SKIP][2] ([i915#6645])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9832/bat-mtlp-8/igt@i915_suspend@basic-s3-without-i915.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
-    - bat-adlp-9:         NOTRUN -> [SKIP][3] ([i915#3546]) +2 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9832/bat-adlp-9/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s0@smem:
-    - bat-dg2-9:          [INCOMPLETE][4] ([i915#8797] / [i915#9275]) -> [PASS][5]
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13659/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9832/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-glk-j4005:       [DMESG-FAIL][6] ([i915#5334]) -> [PASS][7]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13659/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9832/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@i915_selftest@live@gt_lrc:
-    - bat-dg2-11:         [INCOMPLETE][8] ([i915#7609] / [i915#7913]) -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13659/bat-dg2-11/igt@i915_selftest@live@gt_lrc.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9832/bat-dg2-11/igt@i915_selftest@live@gt_lrc.html
-
-  * igt@i915_selftest@live@requests:
-    - bat-mtlp-8:         [ABORT][10] ([i915#9262]) -> [PASS][11]
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13659/bat-mtlp-8/igt@i915_selftest@live@requests.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9832/bat-mtlp-8/igt@i915_selftest@live@requests.html
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - fi-kbl-guc:         [FAIL][12] ([IGT#3] / [i915#6121]) -> [PASS][13]
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13659/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9832/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
-
-  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:
-    - bat-rplp-1:         [ABORT][14] ([i915#8668]) -> [PASS][15]
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13659/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9832/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [IGT#3]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3
-  [Intel XE#485]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/485
-  [i915#3546]: https://gitlab.freedesktop.org/drm/intel/issues/3546
-  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
-  [i915#6121]: https://gitlab.freedesktop.org/drm/intel/issues/6121
-  [i915#6645]: https://gitlab.freedesktop.org/drm/intel/issues/6645
-  [i915#7609]: https://gitlab.freedesktop.org/drm/intel/issues/7609
-  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
-  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
-  [i915#8797]: https://gitlab.freedesktop.org/drm/intel/issues/8797
-  [i915#9262]: https://gitlab.freedesktop.org/drm/intel/issues/9262
-  [i915#9275]: https://gitlab.freedesktop.org/drm/intel/issues/9275
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7494 -> IGTPW_9832
-
-  CI-20190529: 20190529
-  CI_DRM_13659: b64f074fa9711dea043833b2d0990d1a4f7a36ac @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_9832: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9832/index.html
-  IGT_7494: 8b5be5770319f47d71782bc89e4738aa63d6906d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
--igt@xe_create@multigpu-create-massive-size
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9832/index.html
-
---===============5412422095459235919==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/intel_compute: Fix Incorrect array size for XEHPC platforms</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124010/">https://patchwork.freedesktop.org/series/124010/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9832/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9832/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_13659 -&gt; IGTPW_9832</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9832/index.html</p>
-<h2>Participating hosts (40 -&gt; 38)</h2>
-<p>Missing    (2): fi-hsw-4770 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_9832 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s0@smem:</p>
-<ul>
-<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9832/bat-mtlp-8/igt@gem_exec_suspend@basic-s0@smem.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9262">i915#9262</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s3-without-i915:</p>
-<ul>
-<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9832/bat-mtlp-8/igt@i915_suspend@basic-s3-without-i915.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6645">i915#6645</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:</p>
-<ul>
-<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9832/bat-adlp-9/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3546">i915#3546</a>) +2 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s0@smem:</p>
-<ul>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13659/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8797">i915#8797</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9275">i915#9275</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9832/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-glk-j4005:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13659/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9832/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_lrc:</p>
-<ul>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13659/bat-dg2-11/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7609">i915#7609</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9832/bat-dg2-11/igt@i915_selftest@live@gt_lrc.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13659/bat-mtlp-8/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9262">i915#9262</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9832/bat-mtlp-8/igt@i915_selftest@live@requests.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_hdmi_inject@inject-audio:</p>
-<ul>
-<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13659/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3">IGT#3</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6121">i915#6121</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9832/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:</p>
-<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13659/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9832/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7494 -&gt; IGTPW_9832</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13659: b64f074fa9711dea043833b2d0990d1a4f7a36ac @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_9832: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9832/index.html<br />
-  IGT_7494: 8b5be5770319f47d71782bc89e4738aa63d6906d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>-igt@xe_create@multigpu-create-massive-size</p>
-
-</body>
-</html>
-
---===============5412422095459235919==--
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/p=
+ipelines/990765
