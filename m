@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1F26110E5A8
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Sep 2023 10:04:19 +0000 (UTC)
-From: Jani Nikula <jani.nikula@linux.intel.com>
-In-Reply-To: <20230921095248.74514-1-mauro.chehab@linux.intel.com>
-References: <20230921095248.74514-1-mauro.chehab@linux.intel.com>
-Date: Thu, 21 Sep 2023 13:03:46 +0300
-Message-ID: <87ttrnq1vh.fsf@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B998D10E16A
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Sep 2023 08:22:48 +0000 (UTC)
+Message-ID: <a6a8c173-98ac-f423-cefd-1ec61f4068b2@intel.com>
+Date: Wed, 20 Sep 2023 13:52:42 +0530
 MIME-Version: 1.0
-Content-Type: text/plain
-Subject: Re: [igt-dev] [PATCH i-g-t] scripts/test_list.py: allow adding
- multiple testlist lines with same name
+References: <20230918101150.258055-1-swati2.sharma@intel.com>
+ <20230920080003.irracppwfyjvx4p4@kamilkon-desk.igk.intel.com>
+Content-Language: en-US
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20230920080003.irracppwfyjvx4p4@kamilkon-desk.igk.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_content_protection: rename
+ subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,135 +23,94 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>, igt-dev@lists.freedesktop.org
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, igt-dev@lists.freedesktop.org, Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, 21 Sep 2023, Mauro Carvalho Chehab <mauro.chehab@linux.intel.com> wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
->
-> Sometimes, multiple files may contain testlists and blocklists for
-> the same name.
->
-> Add support for it by placing such lists on an array, and storing one
-> testlist dictionary per line.
->
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-> ---
->  scripts/test_list.py             | 13 ++++++++-----
->  tests/intel/kms_test_config.json | 22 +++++++++++-----------
->  tests/intel/xe_test_config.json  | 12 ++++++------
->  3 files changed, 25 insertions(+), 22 deletions(-)
->
-> diff --git a/scripts/test_list.py b/scripts/test_list.py
-> index fdc3c1998d23..daca290a02bd 100644
-> --- a/scripts/test_list.py
-> +++ b/scripts/test_list.py
-> @@ -333,16 +333,18 @@ class TestList:
->              # Read testlist files if any
->              if "testlists" in item["_properties_"]:
->                  testlist = {}
-> -                for name in item["_properties_"]["testlists"].keys():
-> -                    self.read_testlist(testlist, name, cfg_path + item["_properties_"]["testlists"][name])
-> +                for value in item["_properties_"]["testlists"]:
-> +                    for name in value.keys():
-> +                        self.read_testlist(testlist, name, cfg_path + value[name])
->  
->                  item["_properties_"]["testlist"] = testlist
->  
->              # Read blocklist files if any
->              if "blocklists" in item["_properties_"]:
->                  blocklist = {}
-> -                for name in item["_properties_"]["blocklists"].keys():
-> -                    self.read_testlist(blocklist, name, cfg_path + item["_properties_"]["blocklists"][name])
-> +                for value in item["_properties_"]["blocklists"]:
-> +                    for name in value.keys():
-> +                        self.read_testlist(testlist, name, cfg_path + value[name])
->  
->                  item["_properties_"]["blocklist"] = blocklist
->  
-> @@ -450,7 +452,8 @@ class TestList:
->          base = r"^\s*({}[^\s\{}]+)(\S*)\s*(\#.*)?$"
+On 20-Sep-23 1:30 PM, Kamil Konieczny wrote:
+> Hi Swati,
+> 
+> On 2023-09-18 at 15:41:50 +0530, Swati Sharma wrote:
+>> Use '-' instead of '_' while naming subtests and subtest name
+>> should use small case.
+>>
+>> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+>> ---
+>>   tests/kms_content_protection.c | 12 ++++++------
+>>   1 file changed, 6 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+>> index 9378a76c1..ea0c4a0ab 100644
+>> --- a/tests/kms_content_protection.c
+>> +++ b/tests/kms_content_protection.c
+>> @@ -491,14 +491,14 @@ test_fini(igt_output_t *output, enum igt_commit_style s)
+>>   }
+>>   
+>>   /**
+>> - * SUBTEST: LIC
+>> + * SUBTEST: lic
+>>    * Description: Test for the integrity of link.
+>>    * Driver requirement: i915, xe
+>>    * Functionality: hdcp1.4
+>>    * Mega feature: HDCP
+>>    * Test category: functionality test
+>>    *
+>> - * SUBTEST: content_type_change
+>> + * SUBTEST: content-type-change
+> 
+> imho this may be also just spaces (the same goes for TEST name).
+> If in doubt please ask Mauro, +cc Mauro, this may be:
+> 
+>    * SUBTEST: content type change
+> 
+> testplan.py should fill proper delimiter here. Other changes are ok,
 
-Just an unrelated thing that caught my eye. You can add names to groups
-with:
+Hi Kamil,
 
-	(?P<groupname>...)
+Thanks for the review. Even if we have above case, i will still go with 
+'-' delimiter since all kms tests have this delimiter. I don't want to 
+change only for this case.
 
-and reference them by names instead of indices in the match object:
-
-	mo.group('groupname')
-
-making the code ever so slightly easier to read.
-
-BR,
-Jani.
-
->          regex = re.compile(base.format(self.main_name, self.subtest_separator))
->  
-> -        testlist[name] = []
-> +        if name not in testlist:
-> +            testlist[name] = []
->          with open(filename, 'r', newline = '', encoding = 'utf8') as fp:
->              for line in fp:
->                  match = regex.match(line)
-> diff --git a/tests/intel/kms_test_config.json b/tests/intel/kms_test_config.json
-> index 5be264a79c6e..ad3a3aa7abb5 100644
-> --- a/tests/intel/kms_test_config.json
-> +++ b/tests/intel/kms_test_config.json
-> @@ -23,18 +23,18 @@
->                  "_properties_": {
->                      "description": "Defines what category of testlist it belongs",
->                      "default-testlist": "FULL",
-> -                    "testlists": {
-> -                        "i915 BAT": "../intel-ci/fast-feedback.testlist",
-> -                        "i915 BAT chamelium": "../intel-ci/fast-feedback-chamelium-only.testlist",
-> -                        "i915 chamelium": "../intel-ci/chamelium-only.testlist",
-> +                    "testlists": [
-> +                        { "i915 BAT": "../intel-ci/fast-feedback.testlist" },
-> +                        { "i915 BAT chamelium": "../intel-ci/fast-feedback-chamelium-only.testlist" },
-> +                        { "i915 chamelium": "../intel-ci/chamelium-only.testlist" },
->  
-> -                        "Xe BAT": "../intel-ci/xe-fast-feedback.testlist",
-> -                        "Xe BAT chamelium": "../intel-ci/xe-fast-feedback-chamelium-only.testlist"
-> -                    },
-> -                    "blocklists": {
-> -                        "i915 BAT, i915 BAT chamelium, i915 chamelium": "../intel-ci/blacklist.txt",
-> -                        "Xe BAT, Xe BAT chamelium": "../intel-ci/xe.blocklist.txt"
-> -                    }
-> +                        { "Xe BAT": "../intel-ci/xe-fast-feedback.testlist" },
-> +                        { "Xe BAT chamelium": "../intel-ci/xe-fast-feedback-chamelium-only.testlist" }
-> +                    ],
-> +                    "blocklists": [
-> +                        { "i915 BAT, i915 BAT chamelium, i915 chamelium": "../intel-ci/blacklist.txt" },
-> +                        { "Xe BAT, Xe BAT chamelium": "../intel-ci/xe.blocklist.txt" }
-> +                    ]
->                  }
->              }
->          },
-> diff --git a/tests/intel/xe_test_config.json b/tests/intel/xe_test_config.json
-> index 9e582a43df56..89df8a1a3ad2 100644
-> --- a/tests/intel/xe_test_config.json
-> +++ b/tests/intel/xe_test_config.json
-> @@ -33,12 +33,12 @@
->                              "mandatory": true,
->                              "description": "Defines what category of testlist it belongs",
->                              "default-testlist": "FULL",
-> -                            "testlists": {
-> -                                "Xe BAT": "../intel-ci/xe-fast-feedback.testlist"
-> -                            },
-> -                            "blocklists": {
-> -                                "Xe BAT": "../intel-ci/xe.blocklist.txt"
-> -                            },
-> +                            "testlists": [
-> +                                { "Xe BAT": "../intel-ci/xe-fast-feedback.testlist" }
-> +                            ],
-> +                            "blocklists": [
-> +                                { "Xe BAT": "../intel-ci/xe.blocklist.txt" }
-> +                            ],
->                              "order": [
->                                  "boot",
->                                  "__all__",
-
--- 
-Jani Nikula, Intel
+> 
+> Regards,
+> Kamil
+> 
+>>    * Description: Test the content type change when the content protection already
+>>    *              enabled
+>>    * Driver requirement: i915, xe
+>> @@ -506,7 +506,7 @@ test_fini(igt_output_t *output, enum igt_commit_style s)
+>>    * Mega feature: HDCP
+>>    * Test category: functionality test
+>>    *
+>> - * SUBTEST: mei_interface
+>> + * SUBTEST: mei-interface
+>>    * Description: Test the teardown and rebuild of the interface between Intel
+>>    *              and mei hdcp.
+>>    * Driver requirement: i915, xe
+>> @@ -802,7 +802,7 @@ static const struct {
+>>   	  .content_type = HDCP_CONTENT_TYPE_0
+>>   	},
+>>   	{ .desc = "Test for the integrity of link.",
+>> -	  .name = "LIC",
+>> +	  .name = "lic",
+>>   	  .cp_tests = CP_LIC,
+>>   	  .content_type = HDCP_CONTENT_TYPE_0,
+>>   	},
+>> @@ -814,12 +814,12 @@ static const struct {
+>>   	},
+>>   	{ .desc = "Test the teardown and rebuild of the interface between "
+>>   		  "Intel and mei hdcp.",
+>> -	  .name = "mei_interface",
+>> +	  .name = "mei-interface",
+>>   	  .cp_tests = CP_MEI_RELOAD,
+>>   	  .content_type = HDCP_CONTENT_TYPE_1,
+>>   	},
+>>   	{ .desc = "Test the content type change when the content protection already enabled",
+>> -	  .name = "content_type_change",
+>> +	  .name = "content-type-change",
+>>   	  .cp_tests = CP_TYPE_CHANGE,
+>>   	  .content_type = HDCP_CONTENT_TYPE_1,
+>>   	},
+>> -- 
+>> 2.25.1
+>>
 
