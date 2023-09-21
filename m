@@ -1,25 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3571210E609
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Sep 2023 19:56:53 +0000 (UTC)
-Message-ID: <01e6063e-c61b-1a01-c7a0-6feb6006aeaa@amd.com>
-Date: Thu, 21 Sep 2023 15:56:45 -0400
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, vitaly.prosyak@amd.com,
- Alex Deucher <alexander.deucher@amd.com>, Jesse Zhang <Jesse.Zhang@amd.com>,
- Luben Tuikov <luben.tuikov@amd.com>,
- Christian Koenig <christian.koenig@amd.com>
-References: <20230908025038.217934-1-vitaly.prosyak@amd.com>
- <20230908171809.vrylau75am6iqxn5@kamilkon-desk.igk.intel.com>
-Content-Language: en-US
-From: vitaly prosyak <vprosyak@amd.com>
-In-Reply-To: <20230908171809.vrylau75am6iqxn5@kamilkon-desk.igk.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 24CE710E06F
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Sep 2023 22:10:44 +0000 (UTC)
+From: Jonathan Cavitt <jonathan.cavitt@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 21 Sep 2023 15:00:01 -0700
+Message-Id: <20230921220001.3793008-1-jonathan.cavitt@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH] lib/amdgpu: fix typo in function
- compare_pattern
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/i915_query.c : Add
+ query-l3-bank-count subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,74 +17,224 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: jonathan.cavitt@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Kamil,
+From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 
-Sorry, I did not see your email because I reconfigured into new directories of my Thunderbird.
-This patch was merged as is. I would be more careful next time to validate responses.
+Add a subtest to query L3 Bank count for each engine.
 
-Thanks, Vitaly
+Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+---
+ include/drm-uapi/i915_drm.h |  13 ++++
+ tests/intel/i915_query.c    | 135 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 148 insertions(+)
 
-
-On 2023-09-08 13:18, Kamil Konieczny wrote:
-> Hi Vitaly,
->
-> some nit about description: 
-> [PATCH] lib/amdgpu: fix typo in function
-> ----------------------- ^
-> looks rather like fixing a bug
->
-> On 2023-09-07 at 22:50:38 -0400, vitaly.prosyak@amd.com wrote:
->> From: Jesse Zhang <jesse.zhang@amd.com>
->>
->>  In function compare_pattern check the destination buffer (bo2_cpu),
->>  instead of source buffer(bo_cpu).
->>  Add validation of the return value in the eviction test.
-> -- ^^^^^^^^^^^^^^
-> And this is unrelated to your desription and unexpected change
-> in other test, imho should be separate patch.
->
-> Regards,
-> Kamil
->
->> Cc: Luben Tuikov <luben.tuikov@amd.com>
->> Cc: Alex Deucher <alexander.deucher@amd.com>
->> Cc: Christian Koenig <christian.koenig@amd.com>
->> Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
->> Reviewed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
->> ---
->>  lib/amdgpu/amd_ip_blocks.c | 2 +-
->>  tests/amdgpu/amd_basic.c   | 1 +
->>  2 files changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
->> index be9ff38c6..7f8d4a4cd 100644
->> --- a/lib/amdgpu/amd_ip_blocks.c
->> +++ b/lib/amdgpu/amd_ip_blocks.c
->> @@ -296,7 +296,7 @@ x_compare_pattern(const struct amdgpu_ip_funcs *func,
->>  	int num_compare = ring_context->write_length/div;
->>  
->>  	while (i < num_compare) {
->> -		if (ring_context->bo_cpu[i++] != func->pattern) {
->> +		if (ring_context->bo2_cpu[i++] != func->pattern) {
->>  			ret = -1;
->>  			break;
->>  		}
->> diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
->> index dfe11995f..e7a42a335 100644
->> --- a/tests/amdgpu/amd_basic.c
->> +++ b/tests/amdgpu/amd_basic.c
->> @@ -411,6 +411,7 @@ amdgpu_bo_eviction_test(amdgpu_device_handle device_handle)
->>  			amdgpu_test_exec_cs_helper(device_handle, ip_block->type, ring_context);
->>  			/* fulfill PM4: test DMA copy linear */
->>  			r = ip_block->funcs->compare_pattern(ip_block->funcs, ring_context, sdma_write_length);
->> +			igt_assert_eq(r, 0);
->>  			amdgpu_bo_unmap_and_free(ring_context->bo, ring_context->va_handle, ring_context->bo_mc,
->>  						 ring_context->write_length);
->>  			amdgpu_bo_unmap_and_free(ring_context->bo2, ring_context->va_handle2, ring_context->bo_mc2,
->> -- 
->> 2.25.1
->>
+diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+index a0876ee413..edf3b1e445 100644
+--- a/include/drm-uapi/i915_drm.h
++++ b/include/drm-uapi/i915_drm.h
+@@ -2813,6 +2813,7 @@ struct drm_i915_query_item {
+ 	 *  - %DRM_I915_QUERY_MEMORY_REGIONS (see struct drm_i915_query_memory_regions)
+ 	 *  - %DRM_I915_QUERY_HWCONFIG_BLOB (see `GuC HWCONFIG blob uAPI`)
+ 	 *  - %DRM_I915_QUERY_GEOMETRY_SUBSLICES (see struct drm_i915_query_topology_info)
++	 *  - %DRM_I915_QUERY_L3BANK_COUNT (see `L3 Bank Count Query uAPI`)
+ 	 */
+ 	__u64 query_id;
+ #define DRM_I915_QUERY_TOPOLOGY_INFO		1
+@@ -2821,6 +2822,7 @@ struct drm_i915_query_item {
+ #define DRM_I915_QUERY_MEMORY_REGIONS		4
+ #define DRM_I915_QUERY_HWCONFIG_BLOB		5
+ #define DRM_I915_QUERY_GEOMETRY_SUBSLICES	6
++#define DRM_I915_QUERY_L3BANK_COUNT		7
+ /* Must be kept compact -- no holes and well documented */
+ 
+ 	/**
+@@ -3502,6 +3504,17 @@ struct drm_i915_gem_create_ext {
+ 	__u64 extensions;
+ };
+ 
++/**
++ * DOC: L3 Bank Count Query uAPI
++ *
++ * The L3 bank count query called through the query id
++ * DRM_I915_QUERY_L3BANK_COUNT and returns the count of
++ * the available L3 Banks on a given engine.
++ *
++ * The count itself is an integer, and since no additional
++ * data is returned, the count is returned as such.
++ */
++
+ /**
+  * struct drm_i915_gem_create_ext_memory_regions - The
+  * I915_GEM_CREATE_EXT_MEMORY_REGIONS extension.
+diff --git a/tests/intel/i915_query.c b/tests/intel/i915_query.c
+index f97379b83b..8b9dc5f796 100644
+--- a/tests/intel/i915_query.c
++++ b/tests/intel/i915_query.c
+@@ -25,6 +25,7 @@
+ #include "intel_hwconfig_types.h"
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
++#include "igt_sysfs.h"
+ 
+ #include <limits.h>
+ /**
+@@ -121,6 +122,18 @@
+  * SUBTEST: test-query-geometry-subslices
+  * Description: Test DRM_I915_QUERY_GEOMETRY_SUBSLICES query
+  * Feature: gem_core
++ *
++ * SUBTEST: query-l3-bank-count
++ * Description: Test DRM_I915_QUERY_L3BANK_COUNT query
++ * Feature: gem_core
++ *
++ * SUBTEST: query-l3-bank-count-invalid
++ * Description: Test DRM_I915_QUERY_L3BANK_COUNT query fails when an invaild engine is passed
++ * Feature: gem_core
++ *
++ * SUBTEST: query-l3-bank-count-support
++ * Description: Test DRM_I915_QUERY_L3BANK_COUNT query fails when it is not supported
++ * Feature: gem_core
+  */
+ 
+ IGT_TEST_DESCRIPTION("Testing the i915 query uAPI.");
+@@ -1474,6 +1487,107 @@ static void query_parse_and_validate_hwconfig_table(int i915)
+ 	free(data);
+ }
+ 
++static int __get_l3_count(int i915, const struct i915_engine_class_instance engine, uint64_t *out)
++{
++	struct drm_i915_query_item item;
++
++	memset(&item, 0, sizeof(item));
++	item.query_id = DRM_I915_QUERY_L3BANK_COUNT;
++	item.flags = ((engine.engine_instance << 8) | engine.engine_class);
++	item.data_ptr = to_user_pointer(out);
++
++	i915_query_items(i915, &item, 1);
++	return item.length < 0 ? item.length : 0;
++}
++
++static bool query_l3_count_supported(int i915)
++{
++	struct i915_engine_class_instance *engines;
++	unsigned int engines_count;
++	uint32_t class;
++	uint64_t val;
++	int ret;
++
++	class = 0xFF;
++	engines = gem_list_engines(i915, 1u << 0, class, &engines_count);
++	if (!engines) {
++		igt_warn("Failed to get the engines list per tile\n");
++		return false;
++	}
++
++	ret = __get_l3_count(i915, engines[0], &val);
++	free(engines);
++
++	return ret == 0;
++}
++
++static void test_l3_count_support(int i915)
++{
++	int devid = intel_get_drm_devid(i915);
++	bool supported = intel_graphics_ver(devid) >= IP_VER(12, 0);
++
++	igt_assert(supported == query_l3_count_supported(i915));
++}
++
++static void test_l3_count_invalid(int i915)
++{
++	struct i915_engine_class_instance engine = {
++		.engine_class = 0xDEAD,
++		.engine_instance = 0xBEEF
++	};
++	uint64_t val;
++
++	igt_assert_eq(__get_l3_count(i915, engine, &val), -EINVAL);
++}
++
++static void test_l3_count(int i915)
++{
++	struct i915_engine_class_instance *engines;
++	uint32_t class;
++	unsigned int engines_count;
++	uint64_t expected_bank_count;
++	int num_gts;
++
++	class = 0xFF; // checking for all 8 classes
++	expected_bank_count = 0;
++
++	num_gts = igt_sysfs_get_num_gt(i915);
++
++	for (int gt = 0; gt < num_gts; gt++) {
++		engines = gem_list_engines(i915, 1u << gt, class, &engines_count);
++
++		igt_fail_on_f(!engines, "Failed to get the engines list per tile");
++
++		for (int i = 0 ; i < engines_count ; i++) {
++			uint64_t l3_count;
++
++			igt_assert_eq(__get_l3_count(i915, engines[i], &l3_count), 0);
++
++			if (IS_METEORLAKE(i915)) // ARROWLAKE (ARL) to be added
++				igt_assert((l3_count%2) == 0);
++			else if (IS_PONTEVECCHIO(i915))
++				igt_assert((l3_count%4) == 0);
++			else if (IS_DG2(i915))
++				igt_assert((l3_count%8) == 0);
++
++			igt_debug("class=%u instance=%u l3 bank count=%lu\n",
++					engines[i].engine_class,
++					engines[i].engine_instance,
++					l3_count);
++
++			if (i == 0) {
++				expected_bank_count = l3_count;
++				continue;
++			}
++
++			igt_assert_eq(l3_count, expected_bank_count);
++
++		}
++
++		free(engines);
++	}
++}
++
+ igt_main
+ {
+ 	int fd = -1;
+@@ -1574,4 +1688,25 @@ igt_main
+ 	igt_fixture {
+ 		drm_close_driver(fd);
+ 	}
++
++	igt_describe("Test to check DRM_I915_QUERY_L3BANK_COUNT support.");
++	igt_subtest("query-l3-bank-count-support") {
++		test_l3_count_support(fd);
++	}
++
++	igt_subtest_group {
++		igt_fixture {
++			igt_require(query_l3_count_supported(fd));
++		}
++
++		igt_describe("Basic test to query l3 bank count");
++		igt_subtest("query-l3-bank-count") {
++			test_l3_count(fd);
++		}
++
++		igt_describe("Negative test for DRM_I915_QUERY_L3BANK_COUNT");
++		igt_subtest("query-l3-bank-count-invalid") {
++			test_l3_count_invalid(fd);
++		}
++	}
+ }
+-- 
+2.25.1
