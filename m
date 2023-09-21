@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-To: igt-dev@lists.freedesktop.org,
-	Intel-gfx@lists.freedesktop.org
-Date: Thu, 21 Sep 2023 12:45:57 +0100
-Message-Id: <20230921114557.192629-3-tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20230921114557.192629-1-tvrtko.ursulin@linux.intel.com>
-References: <20230921114557.192629-1-tvrtko.ursulin@linux.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9B19C10E440
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Sep 2023 12:08:10 +0000 (UTC)
+Date: Thu, 21 Sep 2023 14:08:05 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230921120805.dztk4zjil43xynak@kamilkon-desk.igk.intel.com>
+References: <20230921085508.2926812-1-riana.tauro@intel.com>
+ <20230921085508.2926812-2-riana.tauro@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] tests/i915/drm_fdinfo: Add some memory
- info tests
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230921085508.2926812-2-riana.tauro@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] tests/intel/xe_guc_pc: Add
+ freq-power test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,259 +21,159 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Hi Riana,
 
-A few basic smoke tests to check per client memory info looks legit.
+On 2023-09-21 at 14:25:07 +0530, Riana Tauro wrote:
+> An assumption is that at lower frequencies,
+> not only do we run slower, but we save power compared to
+> higher frequencies.
+> 
+> This test runs a spinner and sets the min and max frequencies
+> to rp0 and rpn respectively. It then checks if power consumed
+> at lower frequencies is lesser than higher frequencies.
+> 
+> v2: Remove Run Type
+>     change test name (Kamil)
+>     change test documentation and comments (Vinay)
+> 
+> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+> Reviewed-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+> ---
+>  tests/intel/xe_guc_pc.c | 88 +++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 88 insertions(+)
+> 
+> diff --git a/tests/intel/xe_guc_pc.c b/tests/intel/xe_guc_pc.c
+> index 0327d8e0e..2b3d08fcb 100644
+> --- a/tests/intel/xe_guc_pc.c
+> +++ b/tests/intel/xe_guc_pc.c
+> @@ -13,6 +13,7 @@
+>  
+>  #include "igt.h"
+>  #include "lib/igt_syncobj.h"
+> +#include "igt_power.h"
+>  #include "igt_sysfs.h"
+>  
+>  #include "xe_drm.h"
+> @@ -382,6 +383,82 @@ static void test_reset(int fd, int gt_id, int cycles)
+>  	}
+>  }
+>  
+> +static int cmp_u64(const void *a, const void *b)
+> +{
+> +	return (*(u64 *)a - *(u64 *)b);
+> +}
+> +
+> +static uint64_t measure_power(int fd, struct igt_power *gpu)
+> +{
+> +	struct power_sample sample[2];
+> +	uint64_t power[5];
+> +
+> +	for (int i = 0; i < 5; i++) {
+> +		igt_power_get_energy(gpu, &sample[0]);
+> +		usleep(10000); /* 10 ms */
+> +		igt_power_get_energy(gpu, &sample[1]);
+> +
+> +		power[i] = igt_power_get_mW(gpu, &sample[0], &sample[1]);
+> +	}
+> +	/* Sort in ascending order and use a triangular filter */
+> +	qsort(power, 5, sizeof(*power), cmp_u64);
+> +	return DIV_ROUND_UP(power[1] + 2 * power[2] + power[3], 4);
+> +}
+> +
+> +/**
+> + * SUBTEST: freq-power
+> + * Description: Validates power consumed at higher frequencies is more than
+> + *              power consumed at lower frequencies.
+> + */
+> +static void test_freq_power(int fd, int gt_id, struct drm_xe_engine_class_instance *hwe)
+> +{
+> +	uint32_t rp0, rpn, vm;
+> +	uint64_t ahnd;
+> +	struct igt_power gpu;
+> +	struct {
+> +		uint64_t power;
+> +		uint32_t freq;
+> +	} min, max;
+> +	igt_spin_t *spin;
+> +
+> +	/* Run for engines belonging to the gt */
+> +	if (gt_id != hwe->gt_id)
+> +		return;
+> +
+> +	igt_power_open(fd, &gpu, "gpu");
+> +
+> +	rpn = get_freq(fd, gt_id, "rpn");
+> +	rp0 = get_freq(fd, gt_id, "rp0");
+> +
+> +	vm = xe_vm_create(fd, 0, 0);
+> +	ahnd = intel_allocator_open(fd, vm, INTEL_ALLOCATOR_RELOC);
+> +	spin = igt_spin_new(fd, .ahnd = ahnd, .vm = vm, .hwe = hwe);
+> +
+> +	igt_assert(set_freq(fd, gt_id, "min", rpn) > 0);
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
----
- tests/intel/drm_fdinfo.c | 201 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 201 insertions(+)
+May we not assert here? Use if-else? Or maybe assert if we can
+write min into min before xe_vm_create?
 
-diff --git a/tests/intel/drm_fdinfo.c b/tests/intel/drm_fdinfo.c
-index a9910900358d..b5f1010d2fd4 100644
---- a/tests/intel/drm_fdinfo.c
-+++ b/tests/intel/drm_fdinfo.c
-@@ -23,6 +23,7 @@
-  */
- 
- #include <fcntl.h>
-+#include <sys/ioctl.h>
- 
- #include "igt.h"
- #include "igt_core.h"
-@@ -76,6 +77,16 @@
-  *
-  * SUBTEST: virtual-idle
-  *
-+ * SUBTEST: memory-info-idle
-+ *
-+ * SUBTEST: memory-info-active
-+ *
-+ * SUBTEST: memory-info-resident
-+ *
-+ * SUBTEST: memory-info-purgeable
-+ *
-+ * SUBTEST: memory-info-shared
-+ *
-  * SUBTEST: context-close-stress
-  */
- 
-@@ -143,6 +154,11 @@ static unsigned int measured_usleep(unsigned int usec)
- #define FLAG_HANG (8)
- #define TEST_ISOLATION (16)
- 
-+#define TEST_ACTIVE TEST_BUSY
-+#define TEST_RESIDENT (32)
-+#define TEST_PURGEABLE (64)
-+#define TEST_SHARED (128)
-+
- static void end_spin(int fd, igt_spin_t *spin, unsigned int flags)
- {
- 	if (!spin)
-@@ -772,6 +788,156 @@ static void stress_context_close(int i915)
- 	igt_stop_helper(&reader);
- }
- 
-+static size_t read_fdinfo(char *buf, const size_t sz, int at, const char *name)
-+{
-+	size_t count;
-+	int fd;
-+
-+	fd = openat(at, name, O_RDONLY);
-+	if (fd < 0)
-+		return 0;
-+
-+	count = read(fd, buf, sz - 1);
-+	if (count > 0)
-+		buf[count - 1] = 0;
-+	close(fd);
-+
-+	return count > 0 ? count : 0;
-+}
-+
-+#define fdinfo_assert(cond, d, sz, total) \
-+	igt_assert_f(cond, "\ndelta=%"PRIu64" sz=%"PRIu64" total=%"PRIu64"\n%s\n", d, sz, total, fdinfo_buf)
-+
-+static void
-+test_memory(int i915, struct gem_memory_region *r, unsigned int flags)
-+{
-+	struct drm_client_fdinfo prev_info = { };
-+	struct drm_client_fdinfo info = { };
-+	const uint64_t max_mem = 512ull * 1024 * 1024;
-+	const uint64_t max_bo = 16ull * 1024 * 1024;
-+	uint64_t total = 0, sz, d;
-+	char buf[64], fdinfo_buf[4096];
-+	igt_spin_t *spin = NULL;
-+	int ret, dir;
-+
-+	i915 = drm_reopen_driver(i915);
-+
-+	ret = snprintf(buf, sizeof(buf), "%u", i915);
-+	igt_assert(ret > 0 && ret < sizeof(buf));
-+
-+	dir = open("/proc/self/fdinfo", O_DIRECTORY | O_RDONLY);
-+	igt_assert_fd(dir);
-+
-+	gem_quiescent_gpu(i915);
-+	ret =  __igt_parse_drm_fdinfo(dir, buf, &info, NULL, 0, NULL, 0);
-+	igt_assert(ret > 0);
-+	igt_require(info.num_regions);
-+	memcpy(&prev_info, &info, sizeof(info));
-+
-+	while (total < max_mem) {
-+		static const char *region_map[] = {
-+			"system",
-+			"lmem0",
-+		};
-+		uint32_t bo;
-+		int j;
-+
-+		/* Align to 1MiB to work around drm_print_memory_stats */
-+		sz = 1ull * 1024 * 1024 + random() % (max_bo - 1ull * 1024 * 1024);
-+		sz &= ~((1ull * 1024 * 1024) - 1);
-+		ret = __gem_create_in_memory_region_list(i915, &bo, &sz, 0, &r->ci, 1);
-+		igt_assert_eq(ret, 0);
-+		total += sz;
-+
-+		if (flags & (TEST_RESIDENT | TEST_PURGEABLE)) {
-+			struct drm_i915_gem_exec_object2 obj[2];
-+			struct drm_i915_gem_execbuffer2 eb = {
-+				.buffers_ptr = to_user_pointer(obj),
-+				.buffer_count = 2,
-+			};
-+			const uint32_t bbe = MI_BATCH_BUFFER_END;
-+
-+			obj[0].handle = bo;
-+			obj[1].handle = gem_create(i915, 4096);
-+			gem_write(i915, obj[1].handle, 0, &bbe, sizeof(bbe));
-+			gem_execbuf(i915, &eb);
-+			gem_sync(i915, obj[1].handle);
-+			gem_close(i915, obj[1].handle);
-+		}
-+
-+		if (flags & TEST_PURGEABLE)
-+			gem_madvise(i915, bo, I915_MADV_DONTNEED);
-+
-+		if (flags & TEST_SHARED) {
-+			struct drm_gem_open open_struct;
-+			struct drm_gem_flink flink;
-+
-+			flink.handle = bo;
-+			ret = ioctl(i915, DRM_IOCTL_GEM_FLINK, &flink);
-+			igt_assert_eq(ret, 0);
-+
-+			open_struct.name = flink.name;
-+			ret = ioctl(i915, DRM_IOCTL_GEM_OPEN, &open_struct);
-+			igt_assert_eq(ret, 0);
-+			igt_assert(open_struct.handle != 0);
-+		}
-+
-+		if (flags & TEST_ACTIVE)
-+			spin = igt_spin_new(i915, .dependency = bo);
-+
-+		memset(&info, 0, sizeof(info));
-+		ret =  __igt_parse_drm_fdinfo(dir, buf, &info,
-+					      NULL, 0,
-+					      region_map, ARRAY_SIZE(region_map));
-+		igt_assert(ret > 0);
-+		igt_assert(info.num_regions);
-+
-+		read_fdinfo(fdinfo_buf, sizeof(fdinfo_buf), dir, buf);
-+
-+		/* See region map */
-+		j = r->ci.memory_class == I915_MEMORY_CLASS_SYSTEM ? 0 : 1;
-+
-+		fdinfo_assert(info.region_mem[j].total > prev_info.region_mem[j].total, d, sz, total);
-+
-+		d = info.region_mem[j].total - prev_info.region_mem[j].total;
-+		/* >= to account for objects out of our control */
-+		fdinfo_assert(d >= sz, d, sz, total);
-+
-+		d = info.region_mem[j].resident - prev_info.region_mem[j].resident;
-+		if (flags & (TEST_RESIDENT | TEST_PURGEABLE | TEST_ACTIVE))
-+			fdinfo_assert(d >= sz, d, sz, total);
-+		else
-+			fdinfo_assert(d < sz, d, sz, total);
-+
-+		d = info.region_mem[j].shared - prev_info.region_mem[j].shared;
-+		if (flags & TEST_SHARED)
-+			fdinfo_assert(d >= sz, d, sz, total);
-+		else
-+			fdinfo_assert(d == 0, d, sz, total);
-+
-+		d = info.region_mem[j].purgeable - prev_info.region_mem[j].purgeable;
-+		if (flags & TEST_PURGEABLE)
-+			fdinfo_assert(d >= sz, d, sz, total);
-+		else
-+			fdinfo_assert(d < sz, d, sz, total);
-+
-+		/* Active is one at a time so can't use delta */
-+		if (flags & TEST_ACTIVE)
-+			fdinfo_assert(info.region_mem[j].active >= sz, d, sz, total);
-+		else
-+			fdinfo_assert(info.region_mem[j].active < sz, d, sz, total);
-+
-+		memcpy(&prev_info, &info, sizeof(info));
-+
-+		if (flags & TEST_ACTIVE) {
-+			igt_spin_free(i915, spin);
-+			gem_quiescent_gpu(i915);
-+		}
-+	}
-+
-+	close(i915);
-+}
-+
- #define test_each_engine(T, i915, ctx, e) \
- 	igt_subtest_with_dynamic(T) for_each_ctx_engine(i915, ctx, e) \
- 		igt_dynamic_f("%s", e->name)
-@@ -902,6 +1068,41 @@ igt_main
- 	test_each_engine("isolation", i915, ctx, e)
- 		single(i915, ctx, e, TEST_BUSY | TEST_ISOLATION);
- 
-+	igt_subtest_with_dynamic("memory-info-idle") {
-+		for_each_memory_region(r, i915) {
-+			igt_dynamic_f("%s", r->name)
-+				test_memory(i915, r, 0);
-+		}
-+	}
-+
-+	igt_subtest_with_dynamic("memory-info-resident") {
-+		for_each_memory_region(r, i915) {
-+			igt_dynamic_f("%s", r->name)
-+				test_memory(i915, r, TEST_RESIDENT);
-+		}
-+	}
-+
-+	igt_subtest_with_dynamic("memory-info-purgeable") {
-+		for_each_memory_region(r, i915) {
-+			igt_dynamic_f("%s", r->name)
-+				test_memory(i915, r, TEST_PURGEABLE);
-+		}
-+	}
-+
-+	igt_subtest_with_dynamic("memory-info-active") {
-+		for_each_memory_region(r, i915) {
-+			igt_dynamic_f("%s", r->name)
-+				test_memory(i915, r, TEST_ACTIVE);
-+		}
-+	}
-+
-+	igt_subtest_with_dynamic("memory-info-shared") {
-+		for_each_memory_region(r, i915) {
-+			igt_dynamic_f("%s", r->name)
-+				test_memory(i915, r, TEST_SHARED);
-+		}
-+	}
-+
- 	igt_subtest_group {
- 		int newfd;
- 
--- 
-2.39.2
+> +	igt_assert(set_freq(fd, gt_id, "max", rpn) > 0);
+> +	min.freq = get_freq(fd, gt_id, "act");
+> +	min.power = measure_power(fd, &gpu);
+> +
+> +	igt_assert(set_freq(fd, gt_id, "min", rp0) > 0);
+> +	igt_assert(set_freq(fd, gt_id, "max", rp0) > 0);
+
+Should we write max before min?
+
+> +	max.freq = get_freq(fd, gt_id, "act");
+> +	max.power = measure_power(fd, &gpu);
+> +
+> +	igt_info("Engine %s:%d  min:%lumW @ %uMHz, max:%lumW @ %uMHz\n",
+> +		 xe_engine_class_string(hwe->engine_class), hwe->engine_instance,
+> +		 min.power, min.freq, max.power, max.freq);
+> +
+> +	igt_spin_free(fd, spin);
+> +	put_ahnd(ahnd);
+> +	xe_vm_destroy(fd, vm);
+> +	igt_power_close(&gpu);
+
+You should restore min and max value before assert.
+Btw before any assert we should restore old values.
+
+Regards,
+Kamil
+
+> +
+> +	/* power@max_freq should be at least 10% greater than power@min_freq */
+> +	igt_assert_f((11 * min.power < 10 * max.power),
+> +		     "%s:%d did not conserve power when setting lower frequency!\n",
+> +		     xe_engine_class_string(hwe->engine_class), hwe->engine_instance);
+> +}
+> +
+>  igt_main
+>  {
+>  	struct drm_xe_engine_class_instance *hwe;
+> @@ -472,6 +549,17 @@ igt_main
+>  		}
+>  	}
+>  
+> +	igt_describe("Validate more power is consumed at higher frequencies");
+> +	igt_subtest("freq-power") {
+> +		/* FIXME: Remove skip once hwmon is added */
+> +		igt_skip_on(xe_has_vram(fd));
+> +		xe_for_each_gt(fd, gt) {
+> +			xe_for_each_hw_engine(fd, hwe) {
+> +				test_freq_power(fd, gt, hwe);
+> +			}
+> +		}
+> +	}
+> +
+>  	igt_fixture {
+>  		xe_for_each_gt(fd, gt) {
+>  			set_freq(fd, gt, "min", stash_min);
+> -- 
+> 2.40.0
+> 
