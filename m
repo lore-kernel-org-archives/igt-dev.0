@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9B19C10E440
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Sep 2023 12:08:10 +0000 (UTC)
-Date: Thu, 21 Sep 2023 14:08:05 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2A0EE10E00D
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Sep 2023 12:46:36 +0000 (UTC)
+Date: Thu, 21 Sep 2023 14:46:31 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230921120805.dztk4zjil43xynak@kamilkon-desk.igk.intel.com>
-References: <20230921085508.2926812-1-riana.tauro@intel.com>
- <20230921085508.2926812-2-riana.tauro@intel.com>
+Message-ID: <20230921124631.yfxjfmfkou7gwn6n@kamilkon-desk.igk.intel.com>
+References: <20230920223905.268940-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230921085508.2926812-2-riana.tauro@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] tests/intel/xe_guc_pc: Add
- freq-power test
+In-Reply-To: <20230920223905.268940-1-vitaly.prosyak@amd.com>
+Subject: Re: [igt-dev] [PATCH] tests/amdgpu: add GFX11 to tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,159 +19,119 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: badal.nilawar@intel.com
+Cc: Alex Deucher <alexander.deucher@amd.com>,
+ Luben Tuikov <luben.tuikov@amd.com>,
+ Christian Koenig <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Riana,
+Hi Vitaly,
 
-On 2023-09-21 at 14:25:07 +0530, Riana Tauro wrote:
-> An assumption is that at lower frequencies,
-> not only do we run slower, but we save power compared to
-> higher frequencies.
+On 2023-09-20 at 18:39:05 -0400, vitaly.prosyak@amd.com wrote:
+> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 > 
-> This test runs a spinner and sets the min and max frequencies
-> to rp0 and rpn respectively. It then checks if power consumed
-> at lower frequencies is lesser than higher frequencies.
+> Add GFX11 to basic and GPU reset tests.
+> Improve GPU reset tests by validating flags, if no reset or
+> reset is still in progress then avoid asserting the status.
 > 
-> v2: Remove Run Type
->     change test name (Kamil)
->     change test documentation and comments (Vinay)
+> Cc: Jesse Zhang <Jesse.Zhang@amd.com>
+> Cc: Luben Tuikov <luben.tuikov@amd.com>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
+> Cc: Christian Koenig <christian.koenig@amd.com>
 > 
-> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
-> Reviewed-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 > ---
->  tests/intel/xe_guc_pc.c | 88 +++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 88 insertions(+)
+>  include/drm-uapi/amdgpu_drm.h |  2 ++
+>  lib/amdgpu/amd_dispatch.c     | 21 +++++++++++++++++----
+>  2 files changed, 19 insertions(+), 4 deletions(-)
 > 
-> diff --git a/tests/intel/xe_guc_pc.c b/tests/intel/xe_guc_pc.c
-> index 0327d8e0e..2b3d08fcb 100644
-> --- a/tests/intel/xe_guc_pc.c
-> +++ b/tests/intel/xe_guc_pc.c
-> @@ -13,6 +13,7 @@
+> diff --git a/include/drm-uapi/amdgpu_drm.h b/include/drm-uapi/amdgpu_drm.h
+> index 0cbd1540a..323137f42 100644
+> --- a/include/drm-uapi/amdgpu_drm.h
+> +++ b/include/drm-uapi/amdgpu_drm.h
+> @@ -225,6 +225,8 @@ union drm_amdgpu_bo_list {
+>  /* indicate some errors are detected by RAS */
+>  #define AMDGPU_CTX_QUERY2_FLAGS_RAS_CE   (1<<3)
+>  #define AMDGPU_CTX_QUERY2_FLAGS_RAS_UE   (1<<4)
+> +/* indicate that the reset hasn't completed yet */
+> +#define AMDGPU_CTX_QUERY2_FLAGS_RESET_IN_PROGRESS (1<<5)
 >  
->  #include "igt.h"
->  #include "lib/igt_syncobj.h"
-> +#include "igt_power.h"
->  #include "igt_sysfs.h"
+>  /* Context priority level */
+>  #define AMDGPU_CTX_PRIORITY_UNSET       -2048
+> diff --git a/lib/amdgpu/amd_dispatch.c b/lib/amdgpu/amd_dispatch.c
+> index f17240f5c..b337646d3 100644
+> --- a/lib/amdgpu/amd_dispatch.c
+> +++ b/lib/amdgpu/amd_dispatch.c
+> @@ -103,6 +103,8 @@ amdgpu_memset_dispatch_test(amdgpu_device_handle device_handle,
+>  		base_cmd->emit(base_cmd, 0x74fac);
+>  	else if (version == 10)
+>  		base_cmd->emit(base_cmd, 0x1104bfac);
+> +	else if (version == 11)
+> +		base_cmd->emit(base_cmd, 0x1003dfac);
 >  
->  #include "xe_drm.h"
-> @@ -382,6 +383,82 @@ static void test_reset(int fd, int gt_id, int cycles)
->  	}
->  }
+>  	/* Sets a range of pixel shader constants */
+>  	base_cmd->emit(base_cmd, PACKET3_COMPUTE(PKT3_SET_SH_REG, 4));
+> @@ -351,9 +353,9 @@ amdgpu_memcpy_dispatch_hang_slow_test(amdgpu_device_handle device_handle,
+>  	void *ptr_shader;
+>  	unsigned char *ptr_src;
+>  	uint32_t *ptr_cmd;
+> -	uint64_t mc_address_src, mc_address_dst, mc_address_shader, mc_address_cmd;
+> +	uint64_t mc_address_src, mc_address_dst, mc_address_shader, mc_address_cmd, reset_flags;
+>  	amdgpu_va_handle va_src, va_dst, va_shader, va_cmd;
+> -	int r;
+> +	int r, r2;
 >  
-> +static int cmp_u64(const void *a, const void *b)
-> +{
-> +	return (*(u64 *)a - *(u64 *)b);
-> +}
+>  	int bo_dst_size = 0x4000000;
+>  	int bo_shader_size = 0x400000;
+> @@ -425,6 +427,8 @@ amdgpu_memcpy_dispatch_hang_slow_test(amdgpu_device_handle device_handle,
+>  		base_cmd->emit(base_cmd, 0x74fac);
+>  	else if (version == 10)
+>  		base_cmd->emit(base_cmd, 0x1104bfac);
+> +	else if (version == 11)
+> +		base_cmd->emit(base_cmd, 0x1003dfac);
+>  
+>  
+>  	/* Writes the UAV constant data to the SGPRs. */
+> @@ -485,7 +489,16 @@ amdgpu_memcpy_dispatch_hang_slow_test(amdgpu_device_handle device_handle,
+>  
+>  	r = amdgpu_cs_query_reset_state(context_handle, &hang_state, &hangs);
+>  	igt_assert_eq(r, 0);
+> -	igt_assert_eq(hang_state, gpu_reset_status_equel);
+> +	r2 = amdgpu_cs_query_reset_state2(context_handle, &reset_flags);
+> +	igt_assert_eq(r2, 0);
 > +
-> +static uint64_t measure_power(int fd, struct igt_power *gpu)
-> +{
-> +	struct power_sample sample[2];
-> +	uint64_t power[5];
-> +
-> +	for (int i = 0; i < 5; i++) {
-> +		igt_power_get_energy(gpu, &sample[0]);
-> +		usleep(10000); /* 10 ms */
-> +		igt_power_get_energy(gpu, &sample[1]);
-> +
-> +		power[i] = igt_power_get_mW(gpu, &sample[0], &sample[1]);
-> +	}
-> +	/* Sort in ascending order and use a triangular filter */
-> +	qsort(power, 5, sizeof(*power), cmp_u64);
-> +	return DIV_ROUND_UP(power[1] + 2 * power[2] + power[3], 4);
-> +}
-> +
-> +/**
-> + * SUBTEST: freq-power
-> + * Description: Validates power consumed at higher frequencies is more than
-> + *              power consumed at lower frequencies.
-> + */
-> +static void test_freq_power(int fd, int gt_id, struct drm_xe_engine_class_instance *hwe)
-> +{
-> +	uint32_t rp0, rpn, vm;
-> +	uint64_t ahnd;
-> +	struct igt_power gpu;
-> +	struct {
-> +		uint64_t power;
-> +		uint32_t freq;
-> +	} min, max;
-> +	igt_spin_t *spin;
-> +
-> +	/* Run for engines belonging to the gt */
-> +	if (gt_id != hwe->gt_id)
-> +		return;
-> +
-> +	igt_power_open(fd, &gpu, "gpu");
-> +
-> +	rpn = get_freq(fd, gt_id, "rpn");
-> +	rp0 = get_freq(fd, gt_id, "rp0");
-> +
-> +	vm = xe_vm_create(fd, 0, 0);
-> +	ahnd = intel_allocator_open(fd, vm, INTEL_ALLOCATOR_RELOC);
-> +	spin = igt_spin_new(fd, .ahnd = ahnd, .vm = vm, .hwe = hwe);
-> +
-> +	igt_assert(set_freq(fd, gt_id, "min", rpn) > 0);
+> +	if (!(reset_flags == 0 ||
+> +		  reset_flags & AMDGPU_CTX_QUERY2_FLAGS_RESET_IN_PROGRESS)) {
+> +		/*
+> +		 *  Check reset_state only when reset is occured and not in progress
 
-May we not assert here? Use if-else? Or maybe assert if we can
-write min into min before xe_vm_create?
+Spotted by checkpatch.pl:
 
-> +	igt_assert(set_freq(fd, gt_id, "max", rpn) > 0);
-> +	min.freq = get_freq(fd, gt_id, "act");
-> +	min.power = measure_power(fd, &gpu);
-> +
-> +	igt_assert(set_freq(fd, gt_id, "min", rp0) > 0);
-> +	igt_assert(set_freq(fd, gt_id, "max", rp0) > 0);
-
-Should we write max before min?
-
-> +	max.freq = get_freq(fd, gt_id, "act");
-> +	max.power = measure_power(fd, &gpu);
-> +
-> +	igt_info("Engine %s:%d  min:%lumW @ %uMHz, max:%lumW @ %uMHz\n",
-> +		 xe_engine_class_string(hwe->engine_class), hwe->engine_instance,
-> +		 min.power, min.freq, max.power, max.freq);
-> +
-> +	igt_spin_free(fd, spin);
-> +	put_ahnd(ahnd);
-> +	xe_vm_destroy(fd, vm);
-> +	igt_power_close(&gpu);
-
-You should restore min and max value before assert.
-Btw before any assert we should restore old values.
+WARNING: 'occured' may be misspelled - perhaps 'occurred'?
+#79: FILE: lib/amdgpu/amd_dispatch.c:498:
++                *  Check reset_state only when reset is occured and not in progress
+                                                         ^^^^^^^
+Btw your patch didn't build on debian image, see gitlab warning.
 
 Regards,
 Kamil
 
-> +
-> +	/* power@max_freq should be at least 10% greater than power@min_freq */
-> +	igt_assert_f((11 * min.power < 10 * max.power),
-> +		     "%s:%d did not conserve power when setting lower frequency!\n",
-> +		     xe_engine_class_string(hwe->engine_class), hwe->engine_instance);
-> +}
-> +
->  igt_main
->  {
->  	struct drm_xe_engine_class_instance *hwe;
-> @@ -472,6 +549,17 @@ igt_main
->  		}
->  	}
->  
-> +	igt_describe("Validate more power is consumed at higher frequencies");
-> +	igt_subtest("freq-power") {
-> +		/* FIXME: Remove skip once hwmon is added */
-> +		igt_skip_on(xe_has_vram(fd));
-> +		xe_for_each_gt(fd, gt) {
-> +			xe_for_each_hw_engine(fd, hwe) {
-> +				test_freq_power(fd, gt, hwe);
-> +			}
-> +		}
+> +		 */
+> +		igt_assert_eq(hang_state, gpu_reset_status_equel);
 > +	}
-> +
->  	igt_fixture {
->  		xe_for_each_gt(fd, gt) {
->  			set_freq(fd, gt, "min", stash_min);
+>  
+>  	r = amdgpu_bo_list_destroy(bo_list);
+>  	igt_assert_eq(r, 0);
+> @@ -513,7 +526,7 @@ amdgpu_dispatch_hang_slow_helper(amdgpu_device_handle device_handle,
+>  		igt_info("SKIP ... as there's no ring for ip %d\n", ip_type);
+>  
+>  	version = info.hw_ip_version_major;
+> -	if (version != 9 && version != 10 /*&& version != 11*/) {
+> +	if (version != 9 && version != 10 && version != 11) {
+>  		igt_info("SKIP ... unsupported gfx version %d\n", version);
+>  		return;
+>  	}
 > -- 
-> 2.40.0
+> 2.25.1
 > 
