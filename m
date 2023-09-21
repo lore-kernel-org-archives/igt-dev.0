@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7393510E5BF
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Sep 2023 11:53:28 +0000 (UTC)
-Date: Thu, 21 Sep 2023 13:52:32 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230921115232.flznhnnruhrnxnrq@kamilkon-desk.igk.intel.com>
-References: <20230921095248.74514-1-mauro.chehab@linux.intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1F26110E5A8
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Sep 2023 10:04:19 +0000 (UTC)
+From: Jani Nikula <jani.nikula@linux.intel.com>
 In-Reply-To: <20230921095248.74514-1-mauro.chehab@linux.intel.com>
+References: <20230921095248.74514-1-mauro.chehab@linux.intel.com>
+Date: Thu, 21 Sep 2023 13:03:46 +0300
+Message-ID: <87ttrnq1vh.fsf@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain
 Subject: Re: [igt-dev] [PATCH i-g-t] scripts/test_list.py: allow adding
  multiple testlist lines with same name
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -21,29 +20,25 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mauro,
-On 2023-09-21 at 11:52:48 +0200, Mauro Carvalho Chehab wrote:
+On Thu, 21 Sep 2023, Mauro Carvalho Chehab <mauro.chehab@linux.intel.com> wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
+>
 > Sometimes, multiple files may contain testlists and blocklists for
 > the same name.
-> 
+>
 > Add support for it by placing such lists on an array, and storing one
 > testlist dictionary per line.
-> 
+>
 > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
 > ---
 >  scripts/test_list.py             | 13 ++++++++-----
 >  tests/intel/kms_test_config.json | 22 +++++++++++-----------
 >  tests/intel/xe_test_config.json  | 12 ++++++------
 >  3 files changed, 25 insertions(+), 22 deletions(-)
-> 
+>
 > diff --git a/scripts/test_list.py b/scripts/test_list.py
 > index fdc3c1998d23..daca290a02bd 100644
 > --- a/scripts/test_list.py
@@ -73,6 +68,21 @@ Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 >  
 > @@ -450,7 +452,8 @@ class TestList:
 >          base = r"^\s*({}[^\s\{}]+)(\S*)\s*(\#.*)?$"
+
+Just an unrelated thing that caught my eye. You can add names to groups
+with:
+
+	(?P<groupname>...)
+
+and reference them by names instead of indices in the match object:
+
+	mo.group('groupname')
+
+making the code ever so slightly easier to read.
+
+BR,
+Jani.
+
 >          regex = re.compile(base.format(self.main_name, self.subtest_separator))
 >  
 > -        testlist[name] = []
@@ -138,7 +148,7 @@ Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 >                              "order": [
 >                                  "boot",
 >                                  "__all__",
-> -- 
-> 2.41.0
-> 
+
+-- 
+Jani Nikula, Intel
 
