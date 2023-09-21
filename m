@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============9146121743150837790=="
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com
+ [IPv6:2607:f8b0:4864:20::62f])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 66DE610E058
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Sep 2023 22:44:27 +0000 (UTC)
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1c09673b006so12760935ad.1
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Sep 2023 15:44:27 -0700 (PDT)
+From: Rob Clark <robdclark@gmail.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 21 Sep 2023 15:44:22 -0700
+Message-ID: <20230921224422.55121-1-robdclark@gmail.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jonathan Cavitt" <jonathan.cavitt@intel.com>
-Date: Mon, 25 Sep 2023 19:39:14 -0000
-Message-ID: <169567075426.21533.6639821848627154806@emeril.freedesktop.org>
-References: <20230925143154.4055120-1-jonathan.cavitt@intel.com>
-In-Reply-To: <20230925143154.4055120-1-jonathan.cavitt@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_intel/i9?=
- =?utf-8?q?15=5Fquery=3A_Add_query-l3-bank-count_subtest_=28rev2=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH] core_getversion: Test for desired device
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,117 +20,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Rob Clark <robdclark@chromium.org>, Helen Koike <helen.koike@collabora.com>,
+ Emma Anholt <emma@anholt.net>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============9146121743150837790==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Rob Clark <robdclark@chromium.org>
 
-== Series Details ==
+We discovered in drm/ci that if the drm device fails to probe, all the
+tests come back as "Skip", and the job is considered successful.  So fix
+the getversion test to fail if there is no drm device, or if the drm
+device does not match the expected device.
 
-Series: intel/i915_query: Add query-l3-bank-count subtest (rev2)
-URL   : https://patchwork.freedesktop.org/series/124121/
-State : success
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+---
+ tests/core_getversion.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7502_BAT -> XEIGTPW_9865_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_9865_BAT that come from known issues:
-
-### IGT changes ###
-
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
-
-
-Build changes
--------------
-
-  * IGT: IGT_7502 -> IGTPW_9865
-
-  IGTPW_9865: 9865
-  IGT_7502: ac56ba97248b33668fbe771882360bd7b274cc9a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-395-c5d56214282a4cefba322d69334e00f16c0613a7: c5d56214282a4cefba322d69334e00f16c0613a7
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9865/index.html
-
---===============9146121743150837790==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>intel/i915_query: Add query-l3-bank-count subtest (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124121/">https://patchwork.freedesktop.org/series/124121/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9865/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9865/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7502_BAT -&gt; XEIGTPW_9865_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_9865_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7502 -&gt; IGTPW_9865</li>
-</ul>
-<p>IGTPW_9865: 9865<br />
-  IGT_7502: ac56ba97248b33668fbe771882360bd7b274cc9a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-395-c5d56214282a4cefba322d69334e00f16c0613a7: c5d56214282a4cefba322d69334e00f16c0613a7</p>
-
-</body>
-</html>
-
---===============9146121743150837790==--
+diff --git a/tests/core_getversion.c b/tests/core_getversion.c
+index 32cb976e4923..e5416993d7a3 100644
+--- a/tests/core_getversion.c
++++ b/tests/core_getversion.c
+@@ -48,14 +48,18 @@ igt_simple_main
+ {
+ 	int fd;
+ 	drmVersionPtr v;
++	const char *name = getenv("IGT_REQUIRED_DRIVERS");
+ 
+-	fd = drm_open_driver(DRIVER_ANY);
++	fd = __drm_open_driver(DRIVER_ANY);
++	igt_assert_fd(fd);
+ 	v = drmGetVersion(fd);
+ 	igt_assert_neq(strlen(v->name), 0);
+ 	igt_assert_neq(strlen(v->date), 0);
+ 	igt_assert_neq(strlen(v->desc), 0);
+ 	if (is_i915_device(fd))
+ 		igt_assert_lte(1, v->version_major);
++	if (name)
++		igt_assert_eq(strcmp(name, v->name), 0);
+ 
+ 	drmFree(v);
+ 	drm_close_driver(fd);
+-- 
+2.41.0
