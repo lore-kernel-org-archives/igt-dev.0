@@ -2,14 +2,14 @@ Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Intel-gfx@lists.freedesktop.org
-Date: Fri, 22 Sep 2023 14:44:35 +0100
-Message-Id: <20230922134437.234888-11-tvrtko.ursulin@linux.intel.com>
+Date: Fri, 22 Sep 2023 14:44:33 +0100
+Message-Id: <20230922134437.234888-9-tvrtko.ursulin@linux.intel.com>
 In-Reply-To: <20230922134437.234888-1-tvrtko.ursulin@linux.intel.com>
 References: <20230922134437.234888-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 10/12] tools/intel_gpu_top: Fully wrap
- clients operations
+Subject: [igt-dev] [PATCH i-g-t 08/12] lib/igt_drm_clients: Fix client id
+ type confusion
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,121 +24,54 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-Wrap all operations on clients via the Intel specific wrappers in order to
-simplify upcoming work.
+Igt_drm_fdinfo defines it as an unsigned long so it is best that it
+matches here as well.
 
 Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 ---
- tools/intel_gpu_top.c | 42 ++++++++++++++++++++++--------------------
- 1 file changed, 22 insertions(+), 20 deletions(-)
+ lib/igt_drm_clients.c | 2 +-
+ lib/igt_drm_clients.h | 2 +-
+ tools/intel_gpu_top.c | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
+diff --git a/lib/igt_drm_clients.c b/lib/igt_drm_clients.c
+index 47ad137d5f1f..da51d7335b2b 100644
+--- a/lib/igt_drm_clients.c
++++ b/lib/igt_drm_clients.c
+@@ -49,7 +49,7 @@ struct igt_drm_clients *igt_drm_clients_init(void *private_data)
+ static struct igt_drm_client *
+ igt_drm_clients_find(struct igt_drm_clients *clients,
+ 		     enum igt_drm_client_status status,
+-		     unsigned int drm_minor, unsigned int id)
++		     unsigned int drm_minor, unsigned long id)
+ {
+ 	unsigned int start, num;
+ 	struct igt_drm_client *c;
+diff --git a/lib/igt_drm_clients.h b/lib/igt_drm_clients.h
+index 07bd236d43bf..cd37f8508b20 100644
+--- a/lib/igt_drm_clients.h
++++ b/lib/igt_drm_clients.h
+@@ -56,7 +56,7 @@ struct igt_drm_client {
+ 	enum igt_drm_client_status status;
+ 	struct igt_drm_client_regions *regions; /* Memory regions present in this client, to map with memory usage. */
+ 	struct igt_drm_client_engines *engines; /* Engines used by this client, to map with busynees data. */
+-	unsigned int id; /* DRM client id from fdinfo. */
++	unsigned long id; /* DRM client id from fdinfo. */
+ 	unsigned int drm_minor; /* DRM minor of this client. */
+ 	unsigned int pid; /* PID which has this DRM fd open. */
+ 	char pid_str[10]; /* Cached PID representation. */
 diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index eb0ef00abeaf..27503ac03ebd 100644
+index a7a24e527f01..e18ec25e8036 100644
 --- a/tools/intel_gpu_top.c
 +++ b/tools/intel_gpu_top.c
-@@ -132,6 +132,7 @@ struct engines {
- struct intel_clients {
- 	const char *pci_slot;
- 	struct igt_drm_client_engines classes;
-+	struct igt_drm_clients *clients;
- };
+@@ -2106,7 +2106,7 @@ print_client(struct igt_drm_client *c, struct engines *engines, double t, int li
+ 	} else if (output_mode == JSON) {
+ 		char buf[64];
  
- static struct termios termios_orig;
-@@ -2436,19 +2437,22 @@ intel_init_clients(struct intel_clients *iclients,
- 		iclients->classes.capacity[i] = engines->class[i].num_engines;
- 		iclients->classes.names[i] = strdup(engines->class[i].name);
- 	}
-+
-+	iclients->clients = igt_drm_clients_init(iclients);
- }
+-		snprintf(buf, sizeof(buf), "%u", c->id);
++		snprintf(buf, sizeof(buf), "%lu", c->id);
+ 		pops->open_struct(buf);
  
- static void intel_free_clients(struct intel_clients *iclients)
- {
-+	if (iclients->clients)
-+		igt_drm_clients_free(iclients->clients);
-+
- 	free((void *)iclients->pci_slot);
- 	free(iclients->classes.capacity);
- 	free(iclients->classes.names);
- }
- 
--int main(int argc, char **argv)
-+static void intel_scan_clients(struct intel_clients *iclients)
- {
--	unsigned int period_us = DEFAULT_PERIOD_MS * 1000;
--	struct igt_drm_clients *clients = NULL;
- 	static const char *engine_map[] = {
- 		"render",
- 		"copy",
-@@ -2456,6 +2460,15 @@ int main(int argc, char **argv)
- 		"video-enhance",
- 		"compute",
- 	};
-+
-+	igt_drm_clients_scan(iclients->clients, client_match,
-+			     engine_map, ARRAY_SIZE(engine_map),
-+			     NULL, 0);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	unsigned int period_us = DEFAULT_PERIOD_MS * 1000;
- 	bool physical_engines = false;
- 	struct intel_clients iclients;
- 	int con_w = -1, con_h = -1;
-@@ -2613,15 +2626,11 @@ int main(int argc, char **argv)
- 
- 	init_engine_classes(engines);
- 
--	if (has_drm_fdinfo(&card)) {
-+	if (has_drm_fdinfo(&card))
- 		intel_init_clients(&iclients, &card, engines);
--		clients = igt_drm_clients_init(&iclients);
--	}
- 
- 	pmu_sample(engines);
--	igt_drm_clients_scan(clients, client_match,
--			     engine_map, ARRAY_SIZE(engine_map),
--			     NULL, 0);
-+	intel_scan_clients(&iclients);
- 	gettime(&ts);
- 
- 	if (output_mode == JSON)
-@@ -2652,12 +2661,8 @@ int main(int argc, char **argv)
- 		pmu_sample(engines);
- 		t = (double)(engines->ts.cur - engines->ts.prev) / 1e9;
- 
--		disp_clients =
--			display_clients(igt_drm_clients_scan(clients,
--							     client_match,
--							     engine_map,
--							     ARRAY_SIZE(engine_map),
--							     NULL, 0));
-+		intel_scan_clients(&iclients);
-+		disp_clients = display_clients(iclients.clients);
- 		scan_us = elapsed_us(&ts, period_us);
- 
- 		if (stop_top)
-@@ -2708,7 +2713,7 @@ int main(int argc, char **argv)
- 			pops->close_struct();
- 		}
- 
--		if (disp_clients != clients)
-+		if (disp_clients != iclients.clients)
- 			free_display_clients(disp_clients);
- 
- 		if (stop_top)
-@@ -2723,10 +2728,7 @@ int main(int argc, char **argv)
- 	if (output_mode == JSON)
- 		printf("]\n");
- 
--	if (clients) {
--		igt_drm_clients_free(clients);
--		intel_free_clients(&iclients);
--	}
-+	intel_free_clients(&iclients);
- 
- 	free(codename);
- err_pmu:
+ 		__json_add_member("name", c->print_name);
 -- 
 2.39.2
