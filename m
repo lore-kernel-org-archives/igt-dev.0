@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C1D4C10E667
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Sep 2023 13:24:28 +0000 (UTC)
-From: Anshuman Gupta <anshuman.gupta@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 22 Sep 2023 18:53:59 +0530
-Message-Id: <20230922132401.177284-2-anshuman.gupta@intel.com>
-In-Reply-To: <20230922132401.177284-1-anshuman.gupta@intel.com>
-References: <20230922132401.177284-1-anshuman.gupta@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============2507083657725472439=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 1/3] tests/xe_pm: Add d3-mmap IGT test
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
+Date: Fri, 22 Sep 2023 07:10:13 -0000
+Message-ID: <169536661310.5199.13218727948042234182@emeril.freedesktop.org>
+References: <20230922051701.25179-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20230922051701.25179-1-mohammed.thasleem@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Terminat?=
+ =?utf-8?q?e_lease_fd_before_subtests_execution?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,146 +17,146 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: badal.nilawar@intel.com, rodrigo.vivi@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Adding a test to validate mmap memory mappings along with runtime
-suspend and resume for both xe device and it's pci parent bridge
-in device hierarchy.
+--===============2507083657725472439==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
----
- tests/intel/xe_pm.c | 94 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 94 insertions(+)
+== Series Details ==
 
-diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-index fd28d5630..5495da154 100644
---- a/tests/intel/xe_pm.c
-+++ b/tests/intel/xe_pm.c
-@@ -39,6 +39,7 @@ typedef struct {
- } device_t;
- 
- uint64_t orig_threshold;
-+int fw_handle = -1;
- 
- /* runtime_usage is only available if kernel build CONFIG_PM_ADVANCED_DEBUG */
- static bool runtime_usage_available(struct pci_device *pci)
-@@ -166,6 +167,14 @@ static bool out_of_d3(device_t device, enum igt_acpi_d_state state)
- 	return true;
- }
- 
-+static void close_fw_handle(int sig)
-+{
-+	if (fw_handle < 0)
-+		return;
-+
-+	close(fw_handle);
-+}
-+
- /**
-  * SUBTEST: %s-basic
-  * Description: set GPU state to %arg[1] and test suspend/autoresume
-@@ -437,6 +446,68 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
- 	igt_assert(in_d3(device, IGT_ACPI_D3Cold));
- }
- 
-+/**
-+ * SUBTEST: d3-mmap-%s
-+ * Description:
-+ *	Validate mmap memory mapping with d3 state, for %arg[1] region,
-+ *	if supported by device.
-+ * arg[1]:
-+ *
-+ * @vram:	vram region
-+ * @system:	system region
-+ *
-+ * Functionality: pm-d3
-+ * Run type: FULL
-+ */
-+static void test_mmap(device_t device, uint32_t flags)
-+{
-+	size_t bo_size = 8192;
-+	uint8_t *map = NULL;
-+	uint32_t bo;
-+	int i;
-+
-+	igt_require_f(flags, "Device doesn't support such memory region\n");
-+
-+	bo = xe_bo_create_flags(device.fd_xe, 0, bo_size, flags);
-+	map = xe_bo_map(device.fd_xe, bo, bo_size);
-+	igt_assert(map);
-+
-+	fw_handle = igt_debugfs_open(device.fd_xe, "forcewake_all", O_RDONLY);
-+	igt_assert(fw_handle >= 0);
-+	igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
-+
-+	for (i = 0; i < bo_size; i++)
-+		map[i] = i & 0xFF;
-+
-+	for (i = 0; i < bo_size; i++)
-+		igt_assert(map[i] == (i & 0xFF));
-+
-+	/* Runtime suspend and validate the pattern and clear the pattern */
-+	close(fw_handle);
-+	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
-+
-+	for (i = 0; i < bo_size; i++)
-+		igt_assert(map[i] == (i & 0xFF));
-+
-+	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
-+
-+	for (i = 0; i < bo_size; i++)
-+		map[i] = (~i & 0xFF);
-+
-+	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
-+
-+	/* Runtime resume and check the pattern */
-+	fw_handle = igt_debugfs_open(device.fd_xe, "forcewake_all", O_RDONLY);
-+	igt_assert(fw_handle >= 0);
-+	igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
-+	for (i = 0; i < bo_size; i++)
-+		igt_assert(map[i] == (~i & 0xFF));
-+
-+	igt_assert(munmap(map, bo_size) == 0);
-+	gem_close(device.fd_xe, bo);
-+	close(fw_handle);
-+}
-+
- igt_main
- {
- 	struct drm_xe_engine_class_instance *hwe;
-@@ -542,6 +613,29 @@ igt_main
- 		test_vram_d3cold_threshold(device, sysfs_fd);
- 	}
- 
-+	igt_subtest_group {
-+		igt_fixture {
-+			igt_install_exit_handler(close_fw_handle);
-+		}
-+
-+		igt_describe("Validate mmap memory mappings with system region,"
-+			     "when device along with parent bridge in d3");
-+		igt_subtest("d3-mmap-system") {
-+			test_mmap(device, system_memory(device.fd_xe));
-+		}
-+
-+		igt_describe("Validate mmap memory mappings with vram region,"
-+			     "when device along with parent bridge in d3");
-+		igt_subtest("d3-mmap-vram") {
-+			if (device.pci_root != device.pci_xe) {
-+				igt_pm_enable_pci_card_runtime_pm(device.pci_root, NULL);
-+				igt_pm_set_d3cold_allowed(device.pci_slot_name, 1);
-+			}
-+
-+			test_mmap(device, visible_vram_memory(device.fd_xe, 0));
-+		}
-+	}
-+
- 	igt_fixture {
- 		close(sysfs_fd);
- 		igt_pm_set_d3cold_allowed(device.pci_slot_name, d3cold_allowed);
--- 
-2.25.1
+Series: Terminate lease fd before subtests execution
+URL   : https://patchwork.freedesktop.org/series/124089/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7496_BAT -> XEIGTPW_9845_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9845_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:
+    - bat-adlp-7:         [FAIL][1] ([Intel XE#480]) -> [PASS][2] +3 other tests pass
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7496/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9845/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
+
+  * {igt@xe_create@create-execqueues-leak}:
+    - bat-atsm-2:         [FAIL][3] ([Intel XE#524]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7496/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9845/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7496 -> IGTPW_9845
+
+  IGTPW_9845: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9845/index.html
+  IGT_7496: 6a96d3ad178e468b74a58cc10dead2f57bc1558d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-389-7e0d40e7aa56f19a9b3e9bc492003085f9be01c3: 7e0d40e7aa56f19a9b3e9bc492003085f9be01c3
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9845/index.html
+
+--===============2507083657725472439==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Terminate lease fd before subtests execution</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124089/">https://patchwork.freedesktop.org/series/124089/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9845/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9845/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7496_BAT -&gt; XEIGTPW_9845_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9845_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7496/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9845/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">PASS</a> +3 other tests pass</li>
+</ul>
+</li>
+<li>
+<p>{igt@xe_create@create-execqueues-leak}:</p>
+<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7496/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9845/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7496 -&gt; IGTPW_9845</li>
+</ul>
+<p>IGTPW_9845: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9845/index.html<br />
+  IGT_7496: 6a96d3ad178e468b74a58cc10dead2f57bc1558d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-389-7e0d40e7aa56f19a9b3e9bc492003085f9be01c3: 7e0d40e7aa56f19a9b3e9bc492003085f9be01c3</p>
+
+</body>
+</html>
+
+--===============2507083657725472439==--
