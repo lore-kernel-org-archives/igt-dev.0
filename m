@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CC9D210E11C
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Sep 2023 08:53:41 +0000 (UTC)
-From: janga.rahul.kumar@intel.com
-To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
- janga.rahul.kumar@intel.com
-Date: Fri, 22 Sep 2023 14:25:15 +0530
-Message-Id: <20230922085515.814182-1-janga.rahul.kumar@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 21EE610E11C
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Sep 2023 08:55:23 +0000 (UTC)
+Date: Fri, 22 Sep 2023 10:55:19 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: janga.rahul.kumar@intel.com
+Message-ID: <20230922085519.abindt54hlvczlv5@zkempczy-mobl2>
+References: <20230920204632.730526-1-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/intel/xe_debugfs: Check tile_count
- info
+In-Reply-To: <20230920204632.730526-1-janga.rahul.kumar@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/intel_compute: Fix Incorrect array
+ size for XEHPC platforms
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,46 +21,46 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: sai.gowtham.ch@intel.com
+Cc: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+On Thu, Sep 21, 2023 at 02:16:32AM +0530, janga.rahul.kumar@intel.com wrote:
+> From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> 
+> Correct the STATE_BASE_ADDRESS Instruction data size.
+> 
+> Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> ---
+>  lib/intel_compute.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
+> index 4f6716d23..0c30f39c1 100644
+> --- a/lib/intel_compute.c
+> +++ b/lib/intel_compute.c
+> @@ -1030,7 +1030,7 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
+>  			       unsigned int size)
+>  {
+>  #define XEHPC_BO_DICT_ENTRIES 6
+> -	struct bo_dict_entry bo_dict[XEHP_BO_DICT_ENTRIES] = {
+> +	struct bo_dict_entry bo_dict[XEHPC_BO_DICT_ENTRIES] = {
 
-Check correctness of tile_count info.
+Eh, copy paste issue. Thanks for spotting this. Luckily for me
+XEHP_BO_DICT_ENTRIES >= XEHP_BO_DICT_ENTRIES so nothing wrong happened.
 
-v2: Use snprintf.(kamil)
+Go ahead and merge:
 
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
----
- tests/intel/xe_debugfs.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-diff --git a/tests/intel/xe_debugfs.c b/tests/intel/xe_debugfs.c
-index 88b51dbd4..71b93b031 100644
---- a/tests/intel/xe_debugfs.c
-+++ b/tests/intel/xe_debugfs.c
-@@ -13,7 +13,7 @@
-  */
- 
- #include "igt.h"
--
-+#include "igt_sysfs.h"
- #include "xe_drm.h"
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
-@@ -117,6 +117,9 @@ test_base(int fd, struct drm_xe_query_config *config)
- 		igt_assert(igt_debugfs_search(fd, "info", reference));
- 	}
- 
-+	snprintf(reference, "tile_count %d", xe_sysfs_get_num_tiles(fd));
-+	igt_assert(igt_debugfs_search(fd, "info", reference));
-+
- 	igt_assert(igt_debugfs_exists(fd, "gt0", O_RDONLY));
- 	if (config->info[XE_QUERY_CONFIG_GT_COUNT] > 1)
- 		igt_assert(igt_debugfs_exists(fd, "gt1", O_RDONLY));
--- 
-2.25.1
+--
+Zbigniew
+
+>  		{ .addr = XEHP_ADDR_INSTRUCTION_STATE_BASE + OFFSET_KERNEL,
+>  		  .name = "instr state base"},
+>  		{ .addr = XEHP_ADDR_GENERAL_STATE_BASE + OFFSET_INDIRECT_DATA_START,
+> -- 
+> 2.25.1
+> 
