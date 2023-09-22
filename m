@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============2507083657725472439=="
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com
+ (mail-sn1nam02on2080.outbound.protection.outlook.com [40.107.96.80])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9C04C10E62B
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Sep 2023 07:43:30 +0000 (UTC)
+From: Jesse Zhang <jesse.zhang@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Fri, 22 Sep 2023 15:43:11 +0800
+Message-ID: <20230922074311.3426555-1-jesse.zhang@amd.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
-Date: Fri, 22 Sep 2023 07:10:13 -0000
-Message-ID: <169536661310.5199.13218727948042234182@emeril.freedesktop.org>
-References: <20230922051701.25179-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20230922051701.25179-1-mohammed.thasleem@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Terminat?=
- =?utf-8?q?e_lease_fd_before_subtests_execution?=
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH] tests/amdgpu: add amdgpu reset test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,146 +18,83 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Tim Huang <tim.huang@amd.com>, Luben Tuikov <luben.tuikov@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>, Christian
+ Koenig <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2507083657725472439==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Signed-off-by: Tim Huang <tim.huang@amd.com>
+---
+ tests/amdgpu/amd_deadlock.c | 40 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
-== Series Details ==
-
-Series: Terminate lease fd before subtests execution
-URL   : https://patchwork.freedesktop.org/series/124089/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7496_BAT -> XEIGTPW_9845_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_9845_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:
-    - bat-adlp-7:         [FAIL][1] ([Intel XE#480]) -> [PASS][2] +3 other tests pass
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7496/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9845/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
-
-  * {igt@xe_create@create-execqueues-leak}:
-    - bat-atsm-2:         [FAIL][3] ([Intel XE#524]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7496/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9845/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
-
-
-Build changes
--------------
-
-  * IGT: IGT_7496 -> IGTPW_9845
-
-  IGTPW_9845: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9845/index.html
-  IGT_7496: 6a96d3ad178e468b74a58cc10dead2f57bc1558d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-389-7e0d40e7aa56f19a9b3e9bc492003085f9be01c3: 7e0d40e7aa56f19a9b3e9bc492003085f9be01c3
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9845/index.html
-
---===============2507083657725472439==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Terminate lease fd before subtests execution</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124089/">https://patchwork.freedesktop.org/series/124089/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9845/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9845/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7496_BAT -&gt; XEIGTPW_9845_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_9845_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7496/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9845/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">PASS</a> +3 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>{igt@xe_create@create-execqueues-leak}:</p>
-<ul>
-<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7496/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9845/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7496 -&gt; IGTPW_9845</li>
-</ul>
-<p>IGTPW_9845: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9845/index.html<br />
-  IGT_7496: 6a96d3ad178e468b74a58cc10dead2f57bc1558d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-389-7e0d40e7aa56f19a9b3e9bc492003085f9be01c3: 7e0d40e7aa56f19a9b3e9bc492003085f9be01c3</p>
-
-</body>
-</html>
-
---===============2507083657725472439==--
+diff --git a/tests/amdgpu/amd_deadlock.c b/tests/amdgpu/amd_deadlock.c
+index d805b8d18..1b9254d06 100644
+--- a/tests/amdgpu/amd_deadlock.c
++++ b/tests/amdgpu/amd_deadlock.c
+@@ -27,6 +27,9 @@
+ #include "lib/amdgpu/amd_command_submission.h"
+ #include "lib/amdgpu/amd_dispatch.h"
+ #include "lib/amdgpu/amd_deadlock_helpers.h"
++#include <sys/stat.h>
++#include <fcntl.h>
++#include <sys/sysmacros.h>
+ 
+ static void
+ amdgpu_dispatch_hang_slow_gfx(amdgpu_device_handle device_handle)
+@@ -70,6 +73,41 @@ amdgpu_gfx_illegal_mem_access(amdgpu_device_handle device_handle)
+ 	bad_access_helper(device_handle, 0, AMDGPU_HW_IP_GFX);
+ }
+ 
++static void
++amdgpu_gpu_reset_test(amdgpu_device_handle device_handle, int drm_amdgpu)
++{
++	int r;
++	char debugfs_path[256], tmp[10];
++	int fd;
++	struct stat sbuf;
++	amdgpu_context_handle context_handle;
++	uint32_t hang_state, hangs;
++
++	r = amdgpu_cs_ctx_create(device_handle, &context_handle);
++	igt_assert_eq(r, 0);
++
++	r = fstat(drm_amdgpu, &sbuf);
++	igt_assert_eq(r, 0);
++
++	sprintf(debugfs_path, "/sys/kernel/debug/dri/%d/amdgpu_gpu_recover", minor(sbuf.st_rdev));
++	fd = open(debugfs_path, O_RDONLY);
++	igt_assert_fd(fd);
++
++	r = read(fd, tmp, sizeof(tmp)/sizeof(char));
++	igt_assert_lt(0,r);
++
++	r = amdgpu_cs_query_reset_state(context_handle, &hang_state, &hangs);
++	igt_assert_eq(r, 0);
++	igt_assert_eq(hang_state, AMDGPU_CTX_UNKNOWN_RESET);
++
++	close(fd);
++	r = amdgpu_cs_ctx_free(context_handle);
++	igt_assert_eq(r, 0);
++
++	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_GFX);
++	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_COMPUTE);
++}
++
+ igt_main
+ {
+ 	amdgpu_device_handle device;
+@@ -116,6 +154,8 @@ igt_main
+ 	igt_subtest("dispatch_hang_slow_gfx")
+ 	amdgpu_dispatch_hang_slow_gfx(device);
+ 
++	igt_subtest("amdgpu-reset-test")
++	amdgpu_gpu_reset_test(device,fd);
+ 	igt_fixture {
+ 		amdgpu_device_deinitialize(device);
+ 		drm_close_driver(fd);
+-- 
+2.25.1
