@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============5292399883622869984=="
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+To: igt-dev@lists.freedesktop.org,
+	Intel-gfx@lists.freedesktop.org
+Date: Fri, 22 Sep 2023 14:44:25 +0100
+Message-Id: <20230922134437.234888-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: janga.rahul.kumar@intel.com
-Date: Fri, 22 Sep 2023 13:38:00 -0000
-Message-ID: <169538988090.5198.5296737666755110706@emeril.freedesktop.org>
-References: <20230922114130.820963-1-janga.rahul.kumar@intel.com>
-In-Reply-To: <20230922114130.820963-1-janga.rahul.kumar@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/in?=
- =?utf-8?q?tel/xe=5Fdebugfs=3A_Check_tile=5Fcount_info_=28rev2=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 00/12] fdinfo tests,
+ intel_gpu_top memory support, etc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,108 +15,40 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============5292399883622869984==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-== Series Details ==
+Some basic testst for fdinfo memory stats, intel_gpu_top memory stats support
+(first draft) and a couple fixlets.
 
-Series: tests/intel/xe_debugfs: Check tile_count info (rev2)
-URL   : https://patchwork.freedesktop.org/series/124103/
-State : success
+Primarily sending to use as "Test-with" but review is also welcome.
 
-== Summary ==
+Tvrtko Ursulin (12):
+  tests/i915/drm_fdinfo: Stress test context close versus fdinfo reads
+  tests/i915/drm_fdinfo: Add some memory info tests
+  tools/intel_gpu_top: Restore user friendly error message
+  tools/intel_gpu_top: Fix clients header width when no clients
+  tools/intel_gpu_top: Fix client layout on first sample period
+  tools/intel_gpu_top: Optimise interactive display a bit
+  lib/igt_drm_fdinfo: Copy over region map name on match
+  lib/igt_drm_clients: Fix client id type confusion
+  lib/igt_drm_clients: Allow passing in the memory region map
+  tools/intel_gpu_top: Fully wrap clients operations
+  tools/intel_gpu_top: Add per client memory info
+  tools/intel_gpu_top: Add ability to show memory region breakdown
 
-CI Bug Log - changes from XEIGT_7497_BAT -> XEIGTPW_9850_BAT
-====================================================
+ lib/igt_drm_clients.c    |   7 +-
+ lib/igt_drm_clients.h    |   5 +-
+ lib/igt_drm_fdinfo.c     |   4 +
+ man/intel_gpu_top.rst    |   4 +
+ tests/intel/drm_fdinfo.c | 269 +++++++++++++++++++++++++++++++++++++++
+ tools/gputop.c           |   4 +-
+ tools/intel_gpu_top.c    | 260 +++++++++++++++++++++++++++++++------
+ 7 files changed, 508 insertions(+), 45 deletions(-)
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_7497 -> IGTPW_9850
-
-  IGTPW_9850: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9850/index.html
-  IGT_7497: 70d59545b989e3f4d3e66a97ce5e608729609a18 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-390-6149acb947f2f8b65ee1a058982a5d6fce3124ec: 6149acb947f2f8b65ee1a058982a5d6fce3124ec
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9850/index.html
-
---===============5292399883622869984==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_debugfs: Check tile_count info (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124103/">https://patchwork.freedesktop.org/series/124103/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9850/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9850/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7497_BAT -&gt; XEIGTPW_9850_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7497 -&gt; IGTPW_9850</li>
-</ul>
-<p>IGTPW_9850: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9850/index.html<br />
-  IGT_7497: 70d59545b989e3f4d3e66a97ce5e608729609a18 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-390-6149acb947f2f8b65ee1a058982a5d6fce3124ec: 6149acb947f2f8b65ee1a058982a5d6fce3124ec</p>
-
-</body>
-</html>
-
---===============5292399883622869984==--
+-- 
+2.39.2
