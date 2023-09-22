@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 13C2A10E102
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Sep 2023 21:47:47 +0000 (UTC)
-Date: Fri, 22 Sep 2023 17:47:39 -0400
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>, Francois Dugast
- <francois.dugast@intel.com>
-Message-ID: <ZQ4Le0BbHvdoAZZJ@intel.com>
-References: <20230921163530.285456-1-juhapekka.heikkila@gmail.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20230921163530.285456-1-juhapekka.heikkila@gmail.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6082910E705
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Sep 2023 21:52:40 +0000 (UTC)
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 22 Sep 2023 14:52:30 -0700
+Message-Id: <20230922215233.2438200-3-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <20230922215233.2438200-1-umesh.nerlige.ramappa@intel.com>
+References: <20230922215233.2438200-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/xe: on xe driver use blitter for
- x-tile
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 2/5] i915/pmu: Pass config directly to the
+ init test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,151 +19,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Sep 21, 2023 at 07:35:30PM +0300, Juha-Pekka Heikkila wrote:
-> on xe driver need to use blitter for x-tile
+The busy config may need to be modified across the tests for a new
+busyness interface. In preparation for that, pass the config directly to
+the init test.
 
-While testing the xe-uapi alignment series I noticed the pass rate had sunk.
-And then noticed it was all related to display and blit.
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+---
+ tests/intel/perf_pmu.c | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
-A bisect in kernel and in igt brought me to this patch as the culprit for
-the craches I was seeing on DG2.
-
-And it looks CI is also not very happy:
-https://intel-gfx-ci.01.org/tree/intel-xe/index.html?
-
-and my bet is on this patch here.
-
-kms_cursor_legacy
-6/6	6/6	6/6	6/6	6/6	6/6	6/6	0/6
-basic-flip-after-cursor-atomic
-pass	pass	pass	pass	pass	pass	pass	crash
-basic-flip-after-cursor-legacy
-pass	pass	pass	pass	pass	pass	pass	crash
-basic-flip-after-cursor-varying-size
-pass	pass	pass	pass	pass	pass	pass	crash
-basic-flip-before-cursor-atomic
-pass	pass	pass	pass	pass	pass	pass	crash
-basic-flip-before-cursor-legacy
-pass	pass	pass	pass	pass	pass	pass	crash
-basic-flip-before-cursor-varying-size
-pass	pass	pass	pass	pass	pass	pass	crash
-kms_dsc
-0/0	0/0	0/0	0/0	0/0	0/0	0/0	0/0
-dsc-basic
-skip	skip	skip	skip	notrun	skip	skip	skip
-kms_flip
-16/16	16/16	16/16	16/16	16/16	16/16	16/16	0/16
-basic-flip-vs-dpms
-0/0	0/0	0/0	0/0	0/0	0/0	0/0	0/0
-a-dp2
-pass	pass	pass	pass	pass	pass	pass	crash
-b-dp2
-pass	pass	pass	pass	pass	pass	pass	crash
-c-dp2
-pass	pass	pass	pass	pass	pass	pass	crash
-d-dp2
-pass	pass	pass	pass	pass	pass	pass	crash
-basic-flip-vs-modeset
-0/0	0/0	0/0	0/0	0/0	0/0	0/0	0/0
-a-dp2
-pass	pass	pass	pass	pass	pass	pass	crash
-b-dp2
-pass	pass	pass	pass	pass	pass	pass	crash
-c-dp2
-pass	pass	pass	pass	pass	pass	pass	crash
-d-dp2
-pass	pass	pass	pass	pass	pass	pass	crash
-basic-flip-vs-wf_vblank
-0/0	0/0	0/0	0/0	0/0	0/0	0/0	0/0
-a-dp2
-pass	pass	pass	pass	pass	pass	pass	crash
-b-dp2
-pass	pass	pass	pass	pass	pass	pass	crash
-c-dp2
-pass	pass	pass	pass	pass	pass	pass	crash
-d-dp2
-pass	pass	pass	pass	pass	pass	pass	crash
-basic-plain-flip
-0/0	0/0	0/0	0/0	0/0	0/0	0/0	0/0
-a-dp2
-pass	pass	pass	pass	pass	pass	pass	crash
-b-dp2
-pass	pass	pass	pass	pass	pass	pass	crash
-c-dp2
-pass	pass	pass	pass	pass	pass	pass	crash
-d-dp2
-pass	pass	pass	pass	pass	pass	pass	crash
-
-Results for igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size
-Overview
-Result: crash
-
-Back to summary
-
-Details
-Detail	Value
-Returncode	None
-Time	0:00:00
-Stdout	
-Opened device: /dev/dri/card0
-Starting subtest: basic-flip-before-cursor-varying-size
-Using pipe A & DP-2
-Subtest basic-flip-before-cursor-varying-size: CRASH (0.705s)
-Stderr	
-Starting subtest: basic-flip-before-cursor-varying-size
-Received signal SIGBUS.
-Stack trace: 
- #0 [fatal_sig_handler+0x17b]
- #1 [__sigaction+0x50]
- #2 [emit_blt_block_copy+0x47e]
- #3 [blt_block_copy+0xeb]
- #4 [blitcopy+0x263]
- #5 [setup_linear_mapping+0x163]
- #6 [create_cairo_surface__gpu+0x32]
- #7 [igt_get_cairo_surface+0x88]
- #8 [igt_get_cairo_ctx+0xb]
- #9 [igt_create_pattern_fb+0x29]
- #10 [set_fb_on_crtc+0x39]
- #11 [basic_flip_cursor+0xcf]
- #12 [__igt_unique____real_main1887+0xa41]
- #13 [main+0x23]
- #14 [__libc_start_call_main+0x80]
- #15 [__libc_start_main+0x89]
- #16 [_start+0x25]
-Subtest basic-flip-before-cursor-varying-size: CRASH (0.705s)
-Command	
-dmesg	
-<6> [29102.951496] [IGT] kms_cursor_legacy: executing
-<6> [29103.289314] [IGT] kms_cursor_legacy: starting subtest basic-flip-before-cursor-varying-size
-<6> [29104.003123] [IGT] kms_cursor_legacy: finished subtest basic-flip-before-cursor-varying-size, CRASH
-<6> [29104.012383] [IGT] kms_cursor_legacy: exiting, ret=135
-
-
-> 
-> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> ---
->  lib/igt_fb.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> index 4b592825d..c8a7b31a8 100644
-> --- a/lib/igt_fb.c
-> +++ b/lib/igt_fb.c
-> @@ -2557,7 +2557,8 @@ static bool use_blitter(const struct igt_fb *fb)
->  	return fb->modifier == I915_FORMAT_MOD_4_TILED ||
->  	       fb->modifier == I915_FORMAT_MOD_Y_TILED ||
->  	       fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
-> -	       (is_i915_device(fb->fd) && !gem_has_mappable_ggtt(fb->fd));
-> +	       (is_i915_device(fb->fd) && !gem_has_mappable_ggtt(fb->fd)) ||
-> +	       is_xe_device(fb->fd);
->  }
->  
->  static void init_buf_ccs(struct intel_buf *buf, int ccs_idx,
-> -- 
-> 2.25.1
-> 
+diff --git a/tests/intel/perf_pmu.c b/tests/intel/perf_pmu.c
+index 87078ad38..eafa3d988 100644
+--- a/tests/intel/perf_pmu.c
++++ b/tests/intel/perf_pmu.c
+@@ -356,22 +356,21 @@ static int open_group(int i915, uint64_t config, int group)
+ 	return fd;
+ }
+ 
+-static void
+-init(int gem_fd, const intel_ctx_t *ctx,
+-     const struct intel_execution_engine2 *e, uint8_t sample)
++static void init(int gem_fd, const intel_ctx_t *ctx,
++		 const struct intel_execution_engine2 *e, uint64_t config)
+ {
+ 	int fd, err = 0;
+ 	bool exists;
+ 
+ 	errno = 0;
+-	fd = perf_i915_open(gem_fd,
+-			    __I915_PMU_ENGINE(e->class, e->instance, sample));
++	fd = perf_i915_open(gem_fd, config);
++
+ 	if (fd < 0)
+ 		err = errno;
+ 
+ 	exists = gem_context_has_engine(gem_fd, ctx->id, e->flags);
+ 	if (intel_gen(intel_get_drm_devid(gem_fd)) < 6 &&
+-	    sample == I915_SAMPLE_SEMA)
++	    config == I915_PMU_ENGINE_SEMA(e->class, e->instance))
+ 		exists = false;
+ 
+ 	if (exists) {
+@@ -2581,13 +2580,13 @@ igt_main
+ 	 * is correctly rejected.
+ 	 */
+ 	test_each_engine("init-busy", fd, ctx, e)
+-		init(fd, ctx, e, I915_SAMPLE_BUSY);
++		init(fd, ctx, e, I915_PMU_ENGINE_BUSY(e->class, e->instance));
+ 
+ 	test_each_engine("init-wait", fd, ctx, e)
+-		init(fd, ctx, e, I915_SAMPLE_WAIT);
++		init(fd, ctx, e, I915_PMU_ENGINE_WAIT(e->class, e->instance));
+ 
+ 	test_each_engine("init-sema", fd, ctx, e)
+-		init(fd, ctx, e, I915_SAMPLE_SEMA);
++		init(fd, ctx, e, I915_PMU_ENGINE_SEMA(e->class, e->instance));
+ 
+ 	/**
+ 	 * Test that engines show no load when idle.
+-- 
+2.38.1
