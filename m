@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AE21810E66B
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Sep 2023 14:22:52 +0000 (UTC)
-Date: Fri, 22 Sep 2023 10:22:43 -0400
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-To: Anshuman Gupta <anshuman.gupta@intel.com>
-Message-ID: <ZQ2jM/JDmkaizMeS@intel.com>
-References: <20230922132401.177284-1-anshuman.gupta@intel.com>
- <20230922132401.177284-2-anshuman.gupta@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20230922132401.177284-2-anshuman.gupta@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============1895373022063216232=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/3] tests/xe_pm: Add d3-mmap IGT test
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Anshuman Gupta" <anshuman.gupta@intel.com>
+Date: Fri, 22 Sep 2023 14:35:22 -0000
+Message-ID: <169539332233.5198.10271965771550860460@emeril.freedesktop.org>
+References: <20230922132401.177284-1-anshuman.gupta@intel.com>
+In-Reply-To: <20230922132401.177284-1-anshuman.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgQWRkIGQz?=
+ =?utf-8?q?_mmap_test?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,169 +17,246 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, badal.nilawar@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Sep 22, 2023 at 06:53:59PM +0530, Anshuman Gupta wrote:
-> Adding a test to validate mmap memory mappings along with runtime
-> suspend and resume for both xe device and it's pci parent bridge
-> in device hierarchy.
-> 
-> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> ---
->  tests/intel/xe_pm.c | 94 +++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 94 insertions(+)
-> 
-> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-> index fd28d5630..5495da154 100644
-> --- a/tests/intel/xe_pm.c
-> +++ b/tests/intel/xe_pm.c
-> @@ -39,6 +39,7 @@ typedef struct {
->  } device_t;
->  
->  uint64_t orig_threshold;
-> +int fw_handle = -1;
->  
->  /* runtime_usage is only available if kernel build CONFIG_PM_ADVANCED_DEBUG */
->  static bool runtime_usage_available(struct pci_device *pci)
-> @@ -166,6 +167,14 @@ static bool out_of_d3(device_t device, enum igt_acpi_d_state state)
->  	return true;
->  }
->  
-> +static void close_fw_handle(int sig)
-> +{
-> +	if (fw_handle < 0)
-> +		return;
-> +
-> +	close(fw_handle);
-> +}
+--===============1895373022063216232==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-it took me a while to understand why global fw_handle here
-and the exit handler install at the end and then the conversion
-of the second patch. It makes total sense to ensure that we don't
-leave the fw awake after a test issue.
-But could you please do this in a separated patch before the
-addition of this new test?
+== Series Details ==
 
-> +
->  /**
->   * SUBTEST: %s-basic
->   * Description: set GPU state to %arg[1] and test suspend/autoresume
-> @@ -437,6 +446,68 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
->  	igt_assert(in_d3(device, IGT_ACPI_D3Cold));
->  }
->  
-> +/**
-> + * SUBTEST: d3-mmap-%s
-> + * Description:
-> + *	Validate mmap memory mapping with d3 state, for %arg[1] region,
-> + *	if supported by device.
-> + * arg[1]:
-> + *
-> + * @vram:	vram region
-> + * @system:	system region
-> + *
-> + * Functionality: pm-d3
-> + * Run type: FULL
-> + */
-> +static void test_mmap(device_t device, uint32_t flags)
-> +{
-> +	size_t bo_size = 8192;
-> +	uint8_t *map = NULL;
-> +	uint32_t bo;
-> +	int i;
-> +
-> +	igt_require_f(flags, "Device doesn't support such memory region\n");
-> +
-> +	bo = xe_bo_create_flags(device.fd_xe, 0, bo_size, flags);
-> +	map = xe_bo_map(device.fd_xe, bo, bo_size);
-> +	igt_assert(map);
-> +
-> +	fw_handle = igt_debugfs_open(device.fd_xe, "forcewake_all", O_RDONLY);
-> +	igt_assert(fw_handle >= 0);
-> +	igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
-> +
-> +	for (i = 0; i < bo_size; i++)
-> +		map[i] = i & 0xFF;
-> +
-> +	for (i = 0; i < bo_size; i++)
-> +		igt_assert(map[i] == (i & 0xFF));
-> +
-> +	/* Runtime suspend and validate the pattern and clear the pattern */
-> +	close(fw_handle);
-> +	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
-> +
-> +	for (i = 0; i < bo_size; i++)
-> +		igt_assert(map[i] == (i & 0xFF));
-> +
-> +	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
-> +
-> +	for (i = 0; i < bo_size; i++)
-> +		map[i] = (~i & 0xFF);
-> +
-> +	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
-> +
-> +	/* Runtime resume and check the pattern */
-> +	fw_handle = igt_debugfs_open(device.fd_xe, "forcewake_all", O_RDONLY);
-> +	igt_assert(fw_handle >= 0);
-> +	igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
+Series: Add d3 mmap test
+URL   : https://patchwork.freedesktop.org/series/124115/
+State : failure
 
-You are using the forcewake to wake the gpu up, but  I wonder if what we want
-here is to also give a time to get to the suspend, then assert SUSPENDED,
-and then do the read to the mapped area and ensure that we are ACTIVE because
-of the read?
-I mean, with this we would be really testing the Badal's case of exit
-on page fault, right?
+== Summary ==
 
-> +	for (i = 0; i < bo_size; i++)
-> +		igt_assert(map[i] == (~i & 0xFF));
+CI Bug Log - changes from IGT_7498 -> IGTPW_9851
+====================================================
 
-should we have some kind of 0xc0ffee check instead?
-I'm afraid of some cases that we might read garbage 1s
-and be okay with it.
+Summary
+-------
 
-> +
-> +	igt_assert(munmap(map, bo_size) == 0);
-> +	gem_close(device.fd_xe, bo);
-> +	close(fw_handle);
-> +}
-> +
->  igt_main
->  {
->  	struct drm_xe_engine_class_instance *hwe;
-> @@ -542,6 +613,29 @@ igt_main
->  		test_vram_d3cold_threshold(device, sysfs_fd);
->  	}
->  
-> +	igt_subtest_group {
-> +		igt_fixture {
-> +			igt_install_exit_handler(close_fw_handle);
-> +		}
-> +
-> +		igt_describe("Validate mmap memory mappings with system region,"
-> +			     "when device along with parent bridge in d3");
-> +		igt_subtest("d3-mmap-system") {
-> +			test_mmap(device, system_memory(device.fd_xe));
-> +		}
-> +
-> +		igt_describe("Validate mmap memory mappings with vram region,"
-> +			     "when device along with parent bridge in d3");
-> +		igt_subtest("d3-mmap-vram") {
-> +			if (device.pci_root != device.pci_xe) {
-> +				igt_pm_enable_pci_card_runtime_pm(device.pci_root, NULL);
-> +				igt_pm_set_d3cold_allowed(device.pci_slot_name, 1);
-> +			}
-> +
-> +			test_mmap(device, visible_vram_memory(device.fd_xe, 0));
-> +		}
-> +	}
-> +
->  	igt_fixture {
->  		close(sysfs_fd);
->  		igt_pm_set_d3cold_allowed(device.pci_slot_name, d3cold_allowed);
-> -- 
-> 2.25.1
-> 
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_9851 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_9851, please notify your bug team (lgci.bug.filing@intel.com) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9851/index.html
+
+Participating hosts (39 -> 37)
+------------------------------
+
+  Additional (1): fi-kbl-soraka 
+  Missing    (3): fi-hsw-4770 bat-dg2-9 fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_9851:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@perf:
+    - fi-kbl-soraka:      NOTRUN -> [ABORT][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9851/fi-kbl-soraka/igt@i915_selftest@live@perf.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_9851 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#2190])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9851/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][3] ([fdo#109271] / [i915#4613]) +3 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9851/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][4] ([i915#5334] / [i915#7872])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9851/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][5] ([i915#1886] / [i915#7913])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9851/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+
+  * igt@kms_dsc@dsc-basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][6] ([fdo#109271]) +9 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9851/fi-kbl-soraka/igt@kms_dsc@dsc-basic.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@gt_lrc:
+    - bat-adlp-9:         [INCOMPLETE][7] ([i915#4983] / [i915#7913]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7498/bat-adlp-9/igt@i915_selftest@live@gt_lrc.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9851/bat-adlp-9/igt@i915_selftest@live@gt_lrc.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#7872]: https://gitlab.freedesktop.org/drm/intel/issues/7872
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7952]: https://gitlab.freedesktop.org/drm/intel/issues/7952
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7498 -> IGTPW_9851
+
+  CI-20190529: 20190529
+  CI_DRM_13669: d89ee1549402313f7362e8f214dba7b8a5261d81 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_9851: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9851/index.html
+  IGT_7498: 05d14fd260a3cf9dc00ed24733d5589eee32ec08 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@xe_pm@d3-mmap-system
++igt@xe_pm@d3-mmap-vram
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9851/index.html
+
+--===============1895373022063216232==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add d3 mmap test</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124115/">https://patchwork.freedesktop.org/series/124115/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9851/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9851/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7498 -&gt; IGTPW_9851</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_9851 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_9851, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9851/index.html</p>
+<h2>Participating hosts (39 -&gt; 37)</h2>
+<p>Additional (1): fi-kbl-soraka <br />
+  Missing    (3): fi-hsw-4770 bat-dg2-9 fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_9851:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@perf:<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9851/fi-kbl-soraka/igt@i915_selftest@live@perf.html">ABORT</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_9851 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9851/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9851/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9851/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7872">i915#7872</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9851/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9851/fi-kbl-soraka/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +9 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@gt_lrc:<ul>
+<li>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7498/bat-adlp-9/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9851/bat-adlp-9/igt@i915_selftest@live@gt_lrc.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7498 -&gt; IGTPW_9851</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13669: d89ee1549402313f7362e8f214dba7b8a5261d81 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_9851: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9851/index.html<br />
+  IGT_7498: 05d14fd260a3cf9dc00ed24733d5589eee32ec08 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@xe_pm@d3-mmap-system<br />
++igt@xe_pm@d3-mmap-vram</p>
+
+</body>
+</html>
+
+--===============1895373022063216232==--
