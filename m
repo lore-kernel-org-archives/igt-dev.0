@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============6403061531606369997=="
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam04on2075.outbound.protection.outlook.com [40.107.101.75])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6B50B10E725
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Sep 2023 23:42:13 +0000 (UTC)
+From: <vitaly.prosyak@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Fri, 22 Sep 2023 19:42:03 -0400
+Message-ID: <20230922234204.9782-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Umesh Nerlige Ramappa" <umesh.nerlige.ramappa@intel.com>
-Date: Fri, 22 Sep 2023 22:58:26 -0000
-Message-ID: <169542350633.5199.12799696832201316577@emeril.freedesktop.org>
-References: <20230922215233.2438200-1-umesh.nerlige.ramappa@intel.com>
-In-Reply-To: <20230922215233.2438200-1-umesh.nerlige.ramappa@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgVXBkYXRl?=
- =?utf-8?q?_IGT_tests_to_support_new_engine_busyness_interface?=
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH 1/2] tests/amdgpu: split deadlock tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,277 +18,213 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Luben Tuikov <luben.tuikov@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>, Christian
+ Koenig <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============6403061531606369997==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-== Series Details ==
+Split GPU reset (known as deadlock) tests into
+command-based (deadlock) and the other using binary shaders
+(dispatch).The one of primary reasons for splitting is to use
+new functions like 'amdgpu_cs_query_reset_state2' in next commits.
+No functional change.
+Some code formatting  improvements to meet IGT guidelines.
+Added igt_describe for GPU reset tests known now as deadlock and
+dispatch based tests.
 
-Series: Update IGT tests to support new engine busyness interface
-URL   : https://patchwork.freedesktop.org/series/124147/
-State : failure
+Cc: Luben Tuikov <luben.tuikov@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: Jesse Zhang <Jesse.Zhang@amd.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-== Summary ==
+Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Reviewed-by: Jesse Zhang <Jesse.Zhang@amd.com>
+---
+ tests/amdgpu/amd_deadlock.c | 60 +++++++++---------------------------
+ tests/amdgpu/amd_dispatch.c | 61 +++++++++++++++++++++++++++++++++++++
+ tests/amdgpu/meson.build    |  1 +
+ 3 files changed, 76 insertions(+), 46 deletions(-)
+ create mode 100644 tests/amdgpu/amd_dispatch.c
 
-CI Bug Log - changes from IGT_7499 -> IGTPW_9858
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_9858 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_9858, please notify your bug team (lgci.bug.filing@intel.com) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9858/index.html
-
-Participating hosts (39 -> 39)
-------------------------------
-
-  Additional (1): fi-kbl-soraka 
-  Missing    (1): fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_9858:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-hdmi-a-3:
-    - bat-dg2-11:         [PASS][1] -> [INCOMPLETE][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7499/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-hdmi-a-3.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9858/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-hdmi-a-3.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_9858 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_exec_suspend@basic-s0@smem:
-    - bat-dg2-9:          [PASS][3] -> [INCOMPLETE][4] ([i915#9275])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7499/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9858/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][5] ([fdo#109271] / [i915#2190])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9858/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][6] ([fdo#109271] / [i915#4613]) +3 other tests skip
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9858/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
-
-  * igt@i915_selftest@live@gt_pm:
-    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][7] ([i915#1886] / [i915#7913])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9858/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
-
-  * igt@i915_selftest@live@requests:
-    - bat-mtlp-6:         [PASS][8] -> [ABORT][9] ([i915#9262])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7499/bat-mtlp-6/igt@i915_selftest@live@requests.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9858/bat-mtlp-6/igt@i915_selftest@live@requests.html
-
-  * igt@i915_suspend@basic-s2idle-without-i915:
-    - fi-apl-guc:         [PASS][10] -> [INCOMPLETE][11] ([i915#1982] / [i915#4528])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7499/fi-apl-guc/igt@i915_suspend@basic-s2idle-without-i915.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9858/fi-apl-guc/igt@i915_suspend@basic-s2idle-without-i915.html
-
-  * igt@kms_dsc@dsc-basic:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][12] ([fdo#109271]) +9 other tests skip
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9858/fi-kbl-soraka/igt@kms_dsc@dsc-basic.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
-    - bat-dg2-11:         NOTRUN -> [SKIP][13] ([i915#1845]) +3 other tests skip
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9858/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - fi-kbl-guc:         [FAIL][14] ([IGT#3]) -> [PASS][15]
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7499/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9858/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
-
-  
-  [IGT#3]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
-  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
-  [i915#9262]: https://gitlab.freedesktop.org/drm/intel/issues/9262
-  [i915#9275]: https://gitlab.freedesktop.org/drm/intel/issues/9275
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7499 -> IGTPW_9858
-
-  CI-20190529: 20190529
-  CI_DRM_13671: e1973de2c4516e9130157e538014e79c8aa57b41 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_9858: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9858/index.html
-  IGT_7499: d991240f6c6751e9480456c20de785cfc6e6ff15 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+igt@perf_pmu@busy-idle-ticks
-+igt@perf_pmu@busy-ticks
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9858/index.html
-
---===============6403061531606369997==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Update IGT tests to support new engine busyness interface</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124147/">https://patchwork.freedesktop.org/series/124147/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9858/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9858/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_7499 -&gt; IGTPW_9858</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_9858 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_9858, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9858/index.html</p>
-<h2>Participating hosts (39 -&gt; 39)</h2>
-<p>Additional (1): fi-kbl-soraka <br />
-  Missing    (1): fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_9858:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-hdmi-a-3:<ul>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7499/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-hdmi-a-3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9858/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-hdmi-a-3.html">INCOMPLETE</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_9858 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s0@smem:</p>
-<ul>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7499/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9858/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9275">i915#9275</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9858/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9858/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_pm:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9858/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7499/bat-mtlp-6/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9858/bat-mtlp-6/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9262">i915#9262</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
-<ul>
-<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7499/fi-apl-guc/igt@i915_suspend@basic-s2idle-without-i915.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9858/fi-apl-guc/igt@i915_suspend@basic-s2idle-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_dsc@dsc-basic:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9858/fi-kbl-soraka/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +9 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:</p>
-<ul>
-<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9858/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>) +3 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_hdmi_inject@inject-audio:<ul>
-<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7499/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3">IGT#3</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9858/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7499 -&gt; IGTPW_9858</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13671: e1973de2c4516e9130157e538014e79c8aa57b41 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_9858: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9858/index.html<br />
-  IGT_7499: d991240f6c6751e9480456c20de785cfc6e6ff15 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@perf_pmu@busy-idle-ticks<br />
-+igt@perf_pmu@busy-ticks</p>
-
-</body>
-</html>
-
---===============6403061531606369997==--
+diff --git a/tests/amdgpu/amd_deadlock.c b/tests/amdgpu/amd_deadlock.c
+index d805b8d18..0a81f3717 100644
+--- a/tests/amdgpu/amd_deadlock.c
++++ b/tests/amdgpu/amd_deadlock.c
+@@ -1,45 +1,14 @@
+-/* SPDX-License-Identifier: MIT
++// SPDX-License-Identifier: MIT
++/*
+  * Copyright 2014 Advanced Micro Devices, Inc.
+  * Copyright 2022 Advanced Micro Devices, Inc.
+- *
+- * Permission is hereby granted, free of charge, to any person obtaining a
+- * copy of this software and associated documentation files (the "Software"),
+- * to deal in the Software without restriction, including without limitation
+- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+- * and/or sell copies of the Software, and to permit persons to whom the
+- * Software is furnished to do so, subject to the following conditions:
+- *
+- * The above copyright notice and this permission notice shall be included in
+- * all copies or substantial portions of the Software.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+- * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
+- * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+- * OTHER DEALINGS IN THE SOFTWARE.
+- *
+- * Based on libdrm/tests/amdgpu/deadlock_tests.c
++ * Copyright 2023 Advanced Micro Devices, Inc.
+  */
+ 
+ #include "lib/amdgpu/amd_memory.h"
+ #include "lib/amdgpu/amd_command_submission.h"
+-#include "lib/amdgpu/amd_dispatch.h"
+ #include "lib/amdgpu/amd_deadlock_helpers.h"
+ 
+-static void
+-amdgpu_dispatch_hang_slow_gfx(amdgpu_device_handle device_handle)
+-{
+-	amdgpu_dispatch_hang_slow_helper(device_handle, AMDGPU_HW_IP_GFX);
+-}
+-
+-static void
+-amdgpu_dispatch_hang_slow_compute(amdgpu_device_handle device_handle)
+-{
+-	amdgpu_dispatch_hang_slow_helper(device_handle, AMDGPU_HW_IP_COMPUTE);
+-}
+-
+ static void
+ amdgpu_deadlock_gfx(amdgpu_device_handle device_handle)
+ {
+@@ -91,31 +60,30 @@ igt_main
+ 
+ 		r = amdgpu_query_gpu_info(device, &gpu_info);
+ 		igt_assert_eq(r, 0);
+-		r = setup_amdgpu_ip_blocks( major, minor,  &gpu_info, device);
++		r = setup_amdgpu_ip_blocks(major, minor, &gpu_info, device);
+ 		igt_assert_eq(r, 0);
+ 
+ 	}
+-	igt_subtest("amdgpu_deadlock_sdma")
++	igt_describe("Test-GPU-reset-by-flooding-sdma-ring-with-jobs");
++	igt_subtest("amdgpu-deadlock-sdma")
+ 	amdgpu_deadlock_sdma(device);
+ 
+-	igt_subtest("amdgpu_gfx_illegal_reg_access")
++	igt_describe("Test-GPU-reset-by-access-gfx-illegal-reg");
++	igt_subtest("amdgpu-gfx-illegal-reg-access")
+ 	amdgpu_gfx_illegal_reg_access(device);
+ 
+-	igt_subtest("amdgpu_gfx_illegal_mem_access")
++	igt_describe("Test-GPU-reset-by-access-gfx-illegal-mem-addr");
++	igt_subtest("amdgpu-gfx-illegal-mem-access")
+ 	amdgpu_gfx_illegal_mem_access(device);
+ 
+-	igt_subtest("amdgpu_deadlock_gfx")
++	igt_describe("Test-GPU-reset-by-flooding-gfx-ring-with-jobs");
++	igt_subtest("amdgpu-deadlock-gfx")
+ 	amdgpu_deadlock_gfx(device);
+ 
+-	igt_subtest("amdgpu_deadlock_compute")
++	igt_describe("Test-GPU-reset-by-flooding-compute-ring-with-jobs");
++	igt_subtest("amdgpu-deadlock-compute")
+ 	amdgpu_deadlock_compute(device);
+ 
+-	igt_subtest("dispatch_hang_slow_compute")
+-	amdgpu_dispatch_hang_slow_compute(device);
+-
+-	igt_subtest("dispatch_hang_slow_gfx")
+-	amdgpu_dispatch_hang_slow_gfx(device);
+-
+ 	igt_fixture {
+ 		amdgpu_device_deinitialize(device);
+ 		drm_close_driver(fd);
+diff --git a/tests/amdgpu/amd_dispatch.c b/tests/amdgpu/amd_dispatch.c
+new file mode 100644
+index 000000000..f87acbcae
+--- /dev/null
++++ b/tests/amdgpu/amd_dispatch.c
+@@ -0,0 +1,61 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright 2014 Advanced Micro Devices, Inc.
++ * Copyright 2022 Advanced Micro Devices, Inc.
++ * Copyright 2023 Advanced Micro Devices, Inc.
++ */
++
++#include "lib/amdgpu/amd_memory.h"
++#include "lib/amdgpu/amd_command_submission.h"
++#include "lib/amdgpu/amd_dispatch.h"
++
++static void
++amdgpu_dispatch_hang_slow_gfx(amdgpu_device_handle device_handle)
++{
++	amdgpu_dispatch_hang_slow_helper(device_handle, AMDGPU_HW_IP_GFX);
++}
++
++static void
++amdgpu_dispatch_hang_slow_compute(amdgpu_device_handle device_handle)
++{
++	amdgpu_dispatch_hang_slow_helper(device_handle, AMDGPU_HW_IP_COMPUTE);
++}
++
++igt_main
++{
++	amdgpu_device_handle device;
++	struct amdgpu_gpu_info gpu_info = {0};
++	int fd = -1;
++	int r;
++
++	igt_fixture {
++		uint32_t major, minor;
++		int err;
++
++		fd = drm_open_driver(DRIVER_AMDGPU);
++
++		err = amdgpu_device_initialize(fd, &major, &minor, &device);
++		igt_require(err == 0);
++
++		igt_info("Initialized amdgpu, driver version %d.%d\n",
++			 major, minor);
++
++		r = amdgpu_query_gpu_info(device, &gpu_info);
++		igt_assert_eq(r, 0);
++		r = setup_amdgpu_ip_blocks(major, minor, &gpu_info, device);
++		igt_assert_eq(r, 0);
++
++	}
++	igt_describe("Test-GPU-reset-using-a-binary-shader-to-hang-the-job-on-compute-ring");
++	igt_subtest("dispatch-hang-slow-compute")
++	amdgpu_dispatch_hang_slow_compute(device);
++
++	igt_describe("Test-GPU-reset-using-a-binary-shader-to-hang-the-job-on-gfx-ring");
++	igt_subtest("dispatch-hang-slow-gfx")
++	amdgpu_dispatch_hang_slow_gfx(device);
++
++	igt_fixture {
++		amdgpu_device_deinitialize(device);
++		drm_close_driver(fd);
++	}
++}
+diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+index ebf52bf38..37e09b5fb 100644
+--- a/tests/amdgpu/meson.build
++++ b/tests/amdgpu/meson.build
+@@ -11,6 +11,7 @@ if libdrm_amdgpu.found()
+ 			  'amd_cp_dma_misc',
+ 			  'amd_cs_nop',
+ 			  'amd_deadlock',
++			  'amd_dispatch',
+ 			  'amd_dp_dsc',
+ 			  'amd_freesync_video_mode',
+ 			  'amd_hotplug',
+-- 
+2.25.1
