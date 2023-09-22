@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com
- (mail-bn7nam10on2078.outbound.protection.outlook.com [40.107.92.78])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D95A310E416
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Sep 2023 05:53:21 +0000 (UTC)
-From: Jesse Zhang <jesse.zhang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Fri, 22 Sep 2023 13:52:42 +0800
-Message-ID: <20230922055242.3422999-1-jesse.zhang@amd.com>
+Content-Type: multipart/alternative;
+ boundary="===============5471982811692496555=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH] tests/amdgpu: add stable pstate test
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
+Date: Fri, 22 Sep 2023 06:37:06 -0000
+Message-ID: <169536462696.5199.14390573278867898904@emeril.freedesktop.org>
+References: <20230922051701.25179-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20230922051701.25179-1-mohammed.thasleem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgVGVybWlu?=
+ =?utf-8?q?ate_lease_fd_before_subtests_execution?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,79 +17,132 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Tim Huang <tim.huang@amd.com>, Luben Tuikov <luben.tuikov@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>, Christian
- Koenig <christian.koenig@amd.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Signed-off-by: Tim Huang <tim.huang@amd.com>
----
- tests/amdgpu/amd_basic.c | 43 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
+--===============5471982811692496555==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
-index 24c70a9f7..f23a13343 100644
---- a/tests/amdgpu/amd_basic.c
-+++ b/tests/amdgpu/amd_basic.c
-@@ -612,6 +612,39 @@ amdgpu_sync_dependency_test(amdgpu_device_handle device_handle)
- 	free_cmd_base(base);
- }
- 
-+#ifdef AMDGPU_CTX_OP_GET_STABLE_PSTATE
-+static void
-+amdgpu_stable_pstate_test(amdgpu_device_handle device_handle)
-+{
-+	int r;
-+	amdgpu_context_handle context_handle;
-+	uint32_t current_pstate = 0, new_pstate = 0;
-+
-+	r = amdgpu_cs_ctx_create(device_handle, &context_handle);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_cs_ctx_stable_pstate(context_handle,
-+					AMDGPU_CTX_OP_GET_STABLE_PSTATE,
-+					0, &current_pstate);
-+	igt_assert_eq(r, 0);
-+	igt_assert_eq(new_pstate, AMDGPU_CTX_STABLE_PSTATE_NONE);
-+	r = amdgpu_cs_ctx_stable_pstate(context_handle,
-+					AMDGPU_CTX_OP_SET_STABLE_PSTATE,
-+					AMDGPU_CTX_STABLE_PSTATE_PEAK, NULL);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_cs_ctx_stable_pstate(context_handle,
-+					AMDGPU_CTX_OP_GET_STABLE_PSTATE,
-+					0, &new_pstate);
-+	igt_assert_eq(r, 0);
-+	igt_assert_eq(new_pstate, AMDGPU_CTX_STABLE_PSTATE_PEAK);
-+
-+	r = amdgpu_cs_ctx_free(context_handle);
-+	igt_assert_eq(r, 0);
-+
-+}
-+#endif
-+
- static void
- amdgpu_gfx_dispatch_test_gfx(amdgpu_device_handle device_handle)
- {
-@@ -739,6 +772,16 @@ igt_main
- 		}
- 	}
- 
-+#ifdef AMDGPU_CTX_OP_GET_STABLE_PSTATE
-+	igt_describe("Check-pstate-for-gfx-power-and-clock");
-+	igt_subtest_with_dynamic("stable-pstate-test-with-IP-SMU") {
-+		if (arr_cap[AMD_IP_GFX]) {
-+			igt_dynamic_f("stable-pstate-test")
-+			amdgpu_stable_pstate_test(device);
-+		}
-+	}
-+#endif
-+
- 	igt_fixture {
- 		amdgpu_device_deinitialize(device);
- 		drm_close_driver(fd);
--- 
-2.25.1
+== Series Details ==
+
+Series: Terminate lease fd before subtests execution
+URL   : https://patchwork.freedesktop.org/series/124089/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_13667 -> IGTPW_9845
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9845/index.html
+
+Participating hosts (37 -> 36)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_9845 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-apl-guc:         [DMESG-FAIL][1] ([i915#5334]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13667/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9845/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+
+  
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7496 -> IGTPW_9845
+
+  CI-20190529: 20190529
+  CI_DRM_13667: 5e02013de5896d3099b06de0d2d93c6788111409 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_9845: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9845/index.html
+  IGT_7496: 6a96d3ad178e468b74a58cc10dead2f57bc1558d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9845/index.html
+
+--===============5471982811692496555==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Terminate lease fd before subtests execution</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124089/">https://patchwork.freedesktop.org/series/124089/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9845/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9845/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13667 -&gt; IGTPW_9845</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9845/index.html</p>
+<h2>Participating hosts (37 -&gt; 36)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_9845 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@gt_heartbeat:<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13667/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9845/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7496 -&gt; IGTPW_9845</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13667: 5e02013de5896d3099b06de0d2d93c6788111409 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_9845: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9845/index.html<br />
+  IGT_7496: 6a96d3ad178e468b74a58cc10dead2f57bc1558d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============5471982811692496555==--
