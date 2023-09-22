@@ -2,14 +2,14 @@ Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Intel-gfx@lists.freedesktop.org
-Date: Fri, 22 Sep 2023 14:44:26 +0100
-Message-Id: <20230922134437.234888-2-tvrtko.ursulin@linux.intel.com>
+Date: Fri, 22 Sep 2023 14:44:28 +0100
+Message-Id: <20230922134437.234888-4-tvrtko.ursulin@linux.intel.com>
 In-Reply-To: <20230922134437.234888-1-tvrtko.ursulin@linux.intel.com>
 References: <20230922134437.234888-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 01/12] tests/i915/drm_fdinfo: Stress test
- context close versus fdinfo reads
+Subject: [igt-dev] [PATCH i-g-t 03/12] tools/intel_gpu_top: Restore user
+ friendly error message
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,118 +24,43 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-A short smoke tests to exercise fdinfo reads in parallel to contexts
-getting created and destroyed.
+We have a nice error message displayed when an user with insufficient
+permissions tries to run the tool, but that got lost while Meteorlake
+support was added. Bring it back in.
 
 Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/intel/drm_fdinfo.c | 68 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 68 insertions(+)
+ tools/intel_gpu_top.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/tests/intel/drm_fdinfo.c b/tests/intel/drm_fdinfo.c
-index aca19db50680..a9910900358d 100644
---- a/tests/intel/drm_fdinfo.c
-+++ b/tests/intel/drm_fdinfo.c
-@@ -22,11 +22,14 @@
-  *
-  */
+diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+index 87e9681e53b4..e01355f90458 100644
+--- a/tools/intel_gpu_top.c
++++ b/tools/intel_gpu_top.c
+@@ -554,9 +554,11 @@ static int get_num_gts(uint64_t type)
  
-+#include <fcntl.h>
-+
- #include "igt.h"
- #include "igt_core.h"
- #include "igt_device.h"
- #include "igt_drm_fdinfo.h"
- #include "i915/gem.h"
-+#include "i915/gem_create.h"
- #include "i915/gem_vm.h"
- #include "intel_ctx.h"
- /**
-@@ -72,6 +75,8 @@
-  * SUBTEST: virtual-busy-idle-all
-  *
-  * SUBTEST: virtual-idle
-+ *
-+ * SUBTEST: context-close-stress
-  */
- 
- IGT_TEST_DESCRIPTION("Test the i915 drm fdinfo data");
-@@ -717,6 +722,56 @@ virtual_all(int i915, const intel_ctx_cfg_t *base_cfg, unsigned int flags)
+ 		close(fd);
  	}
+-	assert(!errno || errno == ENOENT);
+-	assert(cnt > 0);
+-	errno = 0;
++
++	if (!cnt)
++		cnt = errno;
++	else
++		errno = 0;
+ 
+ 	return cnt;
  }
+@@ -590,6 +592,8 @@ static int pmu_init(struct engines *engines)
+ 	engines->fd = -1;
+ 	engines->num_counters = 0;
+ 	engines->num_gts = get_num_gts(type);
++	if (engines->num_gts <= 0)
++		return -1;
  
-+static void stress_context_close(int i915)
-+{
-+	const uint32_t bbe = MI_BATCH_BUFFER_END;
-+	struct igt_helper_process reader = { };
-+	struct drm_client_fdinfo info;
-+	uint32_t batch;
-+	int dir, ret;
-+	char buf[64];
-+
-+	ret = snprintf(buf, sizeof(buf), "%u", i915);
-+	igt_assert(ret > 0 && ret < sizeof(buf));
-+
-+	dir = open("/proc/self/fdinfo", O_DIRECTORY | O_RDONLY);
-+	igt_assert_fd(dir);
-+
-+	memset(&info, 0, sizeof(info));
-+	ret = __igt_parse_drm_fdinfo(dir, buf, &info, NULL, 0, NULL, 0);
-+	igt_assert(ret > 0);
-+	igt_require(info.num_regions);
-+
-+	batch = gem_create(i915, 4096);
-+	gem_write(i915, batch, 0, &bbe, sizeof(bbe));
-+
-+	igt_fork_helper(&reader) {
-+		for (;;) {
-+			memset(&info, 0, sizeof(info));
-+			ret = __igt_parse_drm_fdinfo(dir, buf, &info,
-+						     NULL, 0, NULL, 0);
-+			igt_assert(ret > 0);
-+		}
-+	}
-+
-+	igt_until_timeout(10) {
-+		struct drm_i915_gem_exec_object2 obj = {
-+			.handle = batch,
-+		};
-+		struct drm_i915_gem_execbuffer2 eb = {
-+			.buffers_ptr = to_user_pointer(&obj),
-+			.buffer_count = 1,
-+		};
-+
-+		eb.rsvd1 = gem_context_create(i915);
-+		igt_assert(eb.rsvd1);
-+		gem_execbuf(i915, &eb);
-+		gem_context_destroy(i915, eb.rsvd1);
-+	}
-+
-+	igt_stop_helper(&reader);
-+}
-+
- #define test_each_engine(T, i915, ctx, e) \
- 	igt_subtest_with_dynamic(T) for_each_ctx_engine(i915, ctx, e) \
- 		igt_dynamic_f("%s", e->name)
-@@ -847,6 +902,19 @@ igt_main
- 	test_each_engine("isolation", i915, ctx, e)
- 		single(i915, ctx, e, TEST_BUSY | TEST_ISOLATION);
- 
-+	igt_subtest_group {
-+		int newfd;
-+
-+		igt_fixture
-+			newfd = drm_reopen_driver(i915);
-+
-+		igt_subtest("context-close-stress")
-+			stress_context_close(newfd);
-+
-+		igt_fixture
-+			drm_close_driver(newfd);
-+	}
-+
- 	igt_fixture {
- 		intel_ctx_destroy(i915, ctx);
- 		drm_close_driver(i915);
+ 	engines->irq.config = I915_PMU_INTERRUPTS;
+ 	fd = _open_pmu(type, engines->num_counters, &engines->irq, engines->fd);
 -- 
 2.39.2
