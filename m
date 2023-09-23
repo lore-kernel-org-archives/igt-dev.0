@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam10on2074.outbound.protection.outlook.com [40.107.94.74])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F0D3E10E021
- for <igt-dev@lists.freedesktop.org>; Sat, 23 Sep 2023 00:24:13 +0000 (UTC)
-Message-ID: <2410f4ea-da8c-21c8-2a29-dd281ae1e149@amd.com>
-Date: Fri, 22 Sep 2023 20:24:06 -0400
-To: Jesse Zhang <jesse.zhang@amd.com>, igt-dev@lists.freedesktop.org
-References: <20230922055242.3422999-1-jesse.zhang@amd.com>
-Content-Language: en-US
-From: vitaly prosyak <vprosyak@amd.com>
-In-Reply-To: <20230922055242.3422999-1-jesse.zhang@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/alternative;
+ boundary="===============9196141972300604004=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH] tests/amdgpu: add stable pstate test
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: vitaly.prosyak@amd.com
+Date: Sat, 23 Sep 2023 01:20:18 -0000
+Message-ID: <169543201864.3504.407561564211043617@emeril.freedesktop.org>
+References: <20230922234204.9782-1-vitaly.prosyak@amd.com>
+In-Reply-To: <20230922234204.9782-1-vitaly.prosyak@amd.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_s?=
+ =?utf-8?q?tarting_with_=5B1/2=5D_tests/amdgpu=3A_split_deadlock_tests?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,94 +17,136 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Alex Deucher <alexander.deucher@amd.com>, Tim Huang <tim.huang@amd.com>,
- Luben Tuikov <luben.tuikov@amd.com>,
- Christian Koenig <christian.koenig@amd.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Jesse,
+--===============9196141972300604004==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Please, do not add pstate test to the basic tests.
+== Series Details ==
 
-Please, create a separate file amd_pstate.c, and use conditional compilation which  depends on when such' ioctl' was added to drmlib ,
+Series: series starting with [1/2] tests/amdgpu: split deadlock tests
+URL   : https://patchwork.freedesktop.org/series/124150/
+State : success
 
-for example, into meson.build  we have this approach already.
+== Summary ==
 
-    if libdrm_amdgpu.version().version_compare('> 2.4.99')
-        amdgpu_progs +=[ 'amd_dispatch',]
-    else
-        warning('libdrm <= 2.4.99 found, amdgpu_cs_query_reset_state2 not applicable')
-    endif
+CI Bug Log - changes from XEIGT_7499_BAT -> XEIGTPW_9859_BAT
+====================================================
 
-Thanks, Vitaly
+Summary
+-------
 
-On 2023-09-22 01:52, Jesse Zhang wrote:
-> Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-> Signed-off-by: Tim Huang <tim.huang@amd.com>
-> ---
->  tests/amdgpu/amd_basic.c | 43 ++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 43 insertions(+)
->
-> diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
-> index 24c70a9f7..f23a13343 100644
-> --- a/tests/amdgpu/amd_basic.c
-> +++ b/tests/amdgpu/amd_basic.c
-> @@ -612,6 +612,39 @@ amdgpu_sync_dependency_test(amdgpu_device_handle device_handle)
->  	free_cmd_base(base);
->  }
->  
-> +#ifdef AMDGPU_CTX_OP_GET_STABLE_PSTATE
-> +static void
-> +amdgpu_stable_pstate_test(amdgpu_device_handle device_handle)
-> +{
-> +	int r;
-> +	amdgpu_context_handle context_handle;
-> +	uint32_t current_pstate = 0, new_pstate = 0;
-> +
-> +	r = amdgpu_cs_ctx_create(device_handle, &context_handle);
-> +	igt_assert_eq(r, 0);
-> +
-> +	r = amdgpu_cs_ctx_stable_pstate(context_handle,
-> +					AMDGPU_CTX_OP_GET_STABLE_PSTATE,
-> +					0, &current_pstate);
-> +	igt_assert_eq(r, 0);
-> +	igt_assert_eq(new_pstate, AMDGPU_CTX_STABLE_PSTATE_NONE);
-> +	r = amdgpu_cs_ctx_stable_pstate(context_handle,
-> +					AMDGPU_CTX_OP_SET_STABLE_PSTATE,
-> +					AMDGPU_CTX_STABLE_PSTATE_PEAK, NULL);
-> +	igt_assert_eq(r, 0);
-> +
-> +	r = amdgpu_cs_ctx_stable_pstate(context_handle,
-> +					AMDGPU_CTX_OP_GET_STABLE_PSTATE,
-> +					0, &new_pstate);
-> +	igt_assert_eq(r, 0);
-> +	igt_assert_eq(new_pstate, AMDGPU_CTX_STABLE_PSTATE_PEAK);
-> +
-> +	r = amdgpu_cs_ctx_free(context_handle);
-> +	igt_assert_eq(r, 0);
-> +
-> +}
-> +#endif
-> +
->  static void
->  amdgpu_gfx_dispatch_test_gfx(amdgpu_device_handle device_handle)
->  {
-> @@ -739,6 +772,16 @@ igt_main
->  		}
->  	}
->  
-> +#ifdef AMDGPU_CTX_OP_GET_STABLE_PSTATE
-> +	igt_describe("Check-pstate-for-gfx-power-and-clock");
-> +	igt_subtest_with_dynamic("stable-pstate-test-with-IP-SMU") {
-> +		if (arr_cap[AMD_IP_GFX]) {
-> +			igt_dynamic_f("stable-pstate-test")
-> +			amdgpu_stable_pstate_test(device);
-> +		}
-> +	}
-> +#endif
-> +
->  	igt_fixture {
->  		amdgpu_device_deinitialize(device);
->  		drm_close_driver(fd);
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9859_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * {igt@xe_create@create-execqueues-noleak}:
+    - bat-atsm-2:         [FAIL][1] ([Intel XE#524]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7499/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9859/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7499 -> IGTPW_9859
+  * Linux: xe-390-6149acb947f2f8b65ee1a058982a5d6fce3124ec -> xe-392-16e2c940ef53f81b2c68e16ec39cf5772894a625
+
+  IGTPW_9859: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9859/index.html
+  IGT_7499: d991240f6c6751e9480456c20de785cfc6e6ff15 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-390-6149acb947f2f8b65ee1a058982a5d6fce3124ec: 6149acb947f2f8b65ee1a058982a5d6fce3124ec
+  xe-392-16e2c940ef53f81b2c68e16ec39cf5772894a625: 16e2c940ef53f81b2c68e16ec39cf5772894a625
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9859/index.html
+
+--===============9196141972300604004==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [1/2] tests/amdgpu: split deadlock tests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124150/">https://patchwork.freedesktop.org/series/124150/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9859/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9859/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7499_BAT -&gt; XEIGTPW_9859_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9859_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>{igt@xe_create@create-execqueues-noleak}:<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7499/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9859/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7499 -&gt; IGTPW_9859</li>
+<li>Linux: xe-390-6149acb947f2f8b65ee1a058982a5d6fce3124ec -&gt; xe-392-16e2c940ef53f81b2c68e16ec39cf5772894a625</li>
+</ul>
+<p>IGTPW_9859: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9859/index.html<br />
+  IGT_7499: d991240f6c6751e9480456c20de785cfc6e6ff15 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-390-6149acb947f2f8b65ee1a058982a5d6fce3124ec: 6149acb947f2f8b65ee1a058982a5d6fce3124ec<br />
+  xe-392-16e2c940ef53f81b2c68e16ec39cf5772894a625: 16e2c940ef53f81b2c68e16ec39cf5772894a625</p>
+
+</body>
+</html>
+
+--===============9196141972300604004==--
