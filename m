@@ -1,20 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B6F1A10E11E
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 16:47:25 +0000 (UTC)
-Message-ID: <baa87da8-03f7-0813-99c0-61f6b3d2af35@linux.intel.com>
-Date: Tue, 26 Sep 2023 17:47:22 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A6DF210E02B
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 Sep 2023 14:43:03 +0000 (UTC)
+From: Jonathan Cavitt <jonathan.cavitt@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 25 Sep 2023 07:31:54 -0700
+Message-Id: <20230925143154.4055120-3-jonathan.cavitt@intel.com>
+In-Reply-To: <20230925143154.4055120-1-jonathan.cavitt@intel.com>
+References: <20230925143154.4055120-1-jonathan.cavitt@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Francois Dugast <francois.dugast@intel.com>, igt-dev@lists.freedesktop.org
-References: <20230926130054.6-1-francois.dugast@intel.com>
- <20230926130054.6-12-francois.dugast@intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20230926130054.6-12-francois.dugast@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH v3 11/24] drm-uapi/xe: Replace useless
- 'instance' per unique gt_id
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v3 2/2] tests/i915_query.c: Add
+ query-l3-bank-count subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,136 +19,185 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: jonathan.cavitt@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 
-On 26/09/2023 14:00, Francois Dugast wrote:
-> From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> 
-> Align with commit ("drm/xe/uapi: Replace useless 'instance' per unique gt_id")
-> 
-> Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
-> ---
->   include/drm-uapi/xe_drm.h | 65 ++++++++++++++++++++++++++-------------
->   tests/intel/xe_query.c    |  2 +-
->   2 files changed, 44 insertions(+), 23 deletions(-)
-> 
-> diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-> index 13c693393..68cc5e051 100644
-> --- a/include/drm-uapi/xe_drm.h
-> +++ b/include/drm-uapi/xe_drm.h
-> @@ -337,6 +337,47 @@ struct drm_xe_query_config {
->   	__u64 info[];
->   };
->   
-> +/**
-> + * struct drm_xe_query_gt - describe an individual GT.
-> + *
-> + * To be used with drm_xe_query_gts, which will return a list with all the
-> + * existing GT individual descriptions.
-> + * Graphics Technology (GT) is a subset of a GPU/tile that is responsible for
-> + * implementing graphics and/or media operations.
-> + */
-> +struct drm_xe_query_gt {
-> +#define XE_QUERY_GT_TYPE_MAIN		0
-> +#define XE_QUERY_GT_TYPE_REMOTE		1
-> +#define XE_QUERY_GT_TYPE_MEDIA		2
-> +	/** @type: GT type: Main, Remote, or Media */
-> +	__u16 type;
-> +	/** @gt_id: Unique ID of this GT within the PCI Device */
-> +	__u16 gt_id;
-> +	/** @clock_freq: A clock frequency for timestamp */
-> +	__u32 clock_freq;
-> +	/** @features: Reserved for future information about GT features */
-> +	__u64 features;
-> +	/**
-> +	 * @native_mem_regions: Bit mask of instances from
-> +	 * drm_xe_query_mem_usage that lives on the same GPU/Tile and have
-> +	 * direct access.
-> +	 */
-> +	__u64 native_mem_regions;
+Add a subtest to query L3 Bank count for each engine.
 
-s/native/local/ ?
+Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+---
+ tests/intel/i915_query.c | 135 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 135 insertions(+)
 
-Although what was wrong with distance query? It was more future proof 
-(can't ever end up with fast, slow, slower, .. ) and avoids a bit of a 
-vague non-technical names like "slow".
-
-> +	/**
-> +	 * @slow_mem_regions: Bit mask of instances from
-> +	 * drm_xe_query_mem_usage that this GT can indirectly access, although
-> +	 * they live on a different GPU/Tile.
-> +	 */
-> +	__u64 slow_mem_regions;
-> +	/**
-> +	 * @inaccessible_mem_regions: Bit mask of instances from
-> +	 * drm_xe_query_mem_usage that is not accessible by this GT at all.
-> +	 */
-> +	__u64 inaccessible_mem_regions;
-
-Equal to ~(native | slow) so redundant?
-
-Btw drm_xe_query_mem_usage is just a list of regions, nothing about 
-usage like memory usage?
-
-Regards,
-
-Tvrtko
-
-> +	/** @reserved: Reserved */
-> +	__u64 reserved[8];
-> +};
-> +
->   /**
->    * struct drm_xe_query_gts - describe GTs
->    *
-> @@ -347,30 +388,10 @@ struct drm_xe_query_config {
->   struct drm_xe_query_gts {
->   	/** @num_gt: number of GTs returned in gts */
->   	__u32 num_gt;
-> -
->   	/** @pad: MBZ */
->   	__u32 pad;
-> -
-> -	/**
-> -	 * @gts: The GTs returned for this device
-> -	 *
-> -	 * TODO: convert drm_xe_query_gt to proper kernel-doc.
-> -	 * TODO: Perhaps info about every mem region relative to this GT? e.g.
-> -	 * bandwidth between this GT and remote region?
-> -	 */
-> -	struct drm_xe_query_gt {
-> -#define XE_QUERY_GT_TYPE_MAIN		0
-> -#define XE_QUERY_GT_TYPE_REMOTE		1
-> -#define XE_QUERY_GT_TYPE_MEDIA		2
-> -		__u16 type;
-> -		__u16 instance;
-> -		__u32 clock_freq;
-> -		__u64 features;
-> -		__u64 native_mem_regions;	/* bit mask of instances from drm_xe_query_mem_usage */
-> -		__u64 slow_mem_regions;		/* bit mask of instances from drm_xe_query_mem_usage */
-> -		__u64 inaccessible_mem_regions;	/* bit mask of instances from drm_xe_query_mem_usage */
-> -		__u64 reserved[8];
-> -	} gts[];
-> +	/** @gts: The GT list returned for this device */
-> +	struct drm_xe_query_gt gts[];
->   };
->   
->   /**
-> diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
-> index acf069f46..eb8d52897 100644
-> --- a/tests/intel/xe_query.c
-> +++ b/tests/intel/xe_query.c
-> @@ -279,7 +279,7 @@ test_query_gts(int fd)
->   
->   	for (i = 0; i < gts->num_gt; i++) {
->   		igt_info("type: %d\n", gts->gts[i].type);
-> -		igt_info("instance: %d\n", gts->gts[i].instance);
-> +		igt_info("gt_id: %d\n", gts->gts[i].gt_id);
->   		igt_info("clock_freq: %u\n", gts->gts[i].clock_freq);
->   		igt_info("features: 0x%016llx\n", gts->gts[i].features);
->   		igt_info("native_mem_regions: 0x%016llx\n",
+diff --git a/tests/intel/i915_query.c b/tests/intel/i915_query.c
+index f97379b83b..4b9a217979 100644
+--- a/tests/intel/i915_query.c
++++ b/tests/intel/i915_query.c
+@@ -25,6 +25,7 @@
+ #include "intel_hwconfig_types.h"
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
++#include "igt_sysfs.h"
+ 
+ #include <limits.h>
+ /**
+@@ -121,6 +122,18 @@
+  * SUBTEST: test-query-geometry-subslices
+  * Description: Test DRM_I915_QUERY_GEOMETRY_SUBSLICES query
+  * Feature: gem_core
++ *
++ * SUBTEST: query-l3-bank-count
++ * Description: Test DRM_I915_QUERY_L3BANK_COUNT query
++ * Feature: gem_core
++ *
++ * SUBTEST: query-l3-bank-count-invalid
++ * Description: Test DRM_I915_QUERY_L3BANK_COUNT query fails when an invalid engine is passed
++ * Feature: gem_core
++ *
++ * SUBTEST: query-l3-bank-count-support
++ * Description: Test DRM_I915_QUERY_L3BANK_COUNT query fails when it is not supported
++ * Feature: gem_core
+  */
+ 
+ IGT_TEST_DESCRIPTION("Testing the i915 query uAPI.");
+@@ -1474,6 +1487,107 @@ static void query_parse_and_validate_hwconfig_table(int i915)
+ 	free(data);
+ }
+ 
++static int __get_l3_count(int i915, const struct i915_engine_class_instance engine, uint64_t *out)
++{
++	struct drm_i915_query_item item;
++
++	memset(&item, 0, sizeof(item));
++	item.query_id = DRM_I915_QUERY_L3BANK_COUNT;
++	item.flags = ((engine.engine_instance << 8) | engine.engine_class);
++	item.data_ptr = to_user_pointer(out);
++
++	i915_query_items(i915, &item, 1);
++	return item.length < 0 ? item.length : 0;
++}
++
++static bool query_l3_count_supported(int i915)
++{
++	struct i915_engine_class_instance *engines;
++	unsigned int engines_count;
++	uint32_t class;
++	uint64_t val;
++	int ret;
++
++	class = 0xFF;
++	engines = gem_list_engines(i915, 1u << 0, class, &engines_count);
++	if (!engines) {
++		igt_warn("Failed to get the engines list per tile\n");
++		return false;
++	}
++
++	ret = __get_l3_count(i915, engines[0], &val);
++	free(engines);
++
++	return ret == 0;
++}
++
++static void test_l3_count_support(int i915)
++{
++	int devid = intel_get_drm_devid(i915);
++	bool supported = intel_graphics_ver(devid) >= IP_VER(12, 0);
++
++	igt_assert(supported == query_l3_count_supported(i915));
++}
++
++static void test_l3_count_invalid(int i915)
++{
++	struct i915_engine_class_instance engine = {
++		.engine_class = 0xDEAD,
++		.engine_instance = 0xBEEF
++	};
++	uint64_t val;
++
++	igt_assert_eq(__get_l3_count(i915, engine, &val), -EINVAL);
++}
++
++static void test_l3_count(int i915)
++{
++	struct i915_engine_class_instance *engines;
++	uint32_t class;
++	unsigned int engines_count;
++	uint64_t expected_bank_count;
++	int num_gts;
++
++	class = 0xFF; // checking for all 8 classes
++	expected_bank_count = 0;
++
++	num_gts = igt_sysfs_get_num_gt(i915);
++
++	for (int gt = 0; gt < num_gts; gt++) {
++		engines = gem_list_engines(i915, 1u << gt, class, &engines_count);
++
++		igt_fail_on_f(!engines, "Failed to get the engines list per tile");
++
++		for (int i = 0 ; i < engines_count ; i++) {
++			uint64_t l3_count;
++
++			igt_assert_eq(__get_l3_count(i915, engines[i], &l3_count), 0);
++
++			if (IS_METEORLAKE(i915)) // ARROWLAKE (ARL) to be added
++				igt_assert((l3_count%2) == 0);
++			else if (IS_PONTEVECCHIO(i915))
++				igt_assert((l3_count%4) == 0);
++			else if (IS_DG2(i915))
++				igt_assert((l3_count%8) == 0);
++
++			igt_debug("class=%u instance=%u l3 bank count=%lu\n",
++					engines[i].engine_class,
++					engines[i].engine_instance,
++					l3_count);
++
++			if (i == 0) {
++				expected_bank_count = l3_count;
++				continue;
++			}
++
++			igt_assert_eq(l3_count, expected_bank_count);
++
++		}
++
++		free(engines);
++	}
++}
++
+ igt_main
+ {
+ 	int fd = -1;
+@@ -1574,4 +1688,25 @@ igt_main
+ 	igt_fixture {
+ 		drm_close_driver(fd);
+ 	}
++
++	igt_describe("Test to check DRM_I915_QUERY_L3BANK_COUNT support.");
++	igt_subtest("query-l3-bank-count-support") {
++		test_l3_count_support(fd);
++	}
++
++	igt_subtest_group {
++		igt_fixture {
++			igt_require(query_l3_count_supported(fd));
++		}
++
++		igt_describe("Basic test to query l3 bank count");
++		igt_subtest("query-l3-bank-count") {
++			test_l3_count(fd);
++		}
++
++		igt_describe("Negative test for DRM_I915_QUERY_L3BANK_COUNT");
++		igt_subtest("query-l3-bank-count-invalid") {
++			test_l3_count_invalid(fd);
++		}
++	}
+ }
+-- 
+2.25.1
