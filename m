@@ -1,12 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-To: igt-dev@lists.freedesktop.org,
-	Intel-gfx@lists.freedesktop.org
-Date: Mon, 25 Sep 2023 14:15:39 +0100
-Message-Id: <20230925131539.32743-1-tvrtko.ursulin@linux.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2FA3310E24D
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 Sep 2023 13:33:26 +0000 (UTC)
+Date: Mon, 25 Sep 2023 09:33:17 -0400
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: Riana Tauro <riana.tauro@intel.com>
+Message-ID: <ZRGMHU2l4rUJnEaD@intel.com>
+References: <20230921085508.2926812-1-riana.tauro@intel.com>
+ <20230921085508.2926812-2-riana.tauro@intel.com>
+ <ZQxoC9wD5luCg0wI@intel.com>
+ <34ad4776-675f-8e81-f9ed-1b890785c52a@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <34ad4776-675f-8e81-f9ed-1b890785c52a@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [RFC/CI] prime_vgem: Add mmap forwarding tests
+Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] tests/intel/xe_guc_pc: Add
+ freq-power test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,104 +23,181 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+On Mon, Sep 25, 2023 at 03:24:14PM +0530, Riana Tauro wrote:
+> Hi Rodrigo
+> 
+> On 9/21/2023 9:28 PM, Rodrigo Vivi wrote:
+> > On Thu, Sep 21, 2023 at 02:25:07PM +0530, Riana Tauro wrote:
+> > > An assumption is that at lower frequencies,
+> > > not only do we run slower, but we save power compared to
+> > > higher frequencies.
+> > > 
+> > > This test runs a spinner and sets the min and max frequencies
+> > > to rp0 and rpn respectively. It then checks if power consumed
+> > > at lower frequencies is lesser than higher frequencies.
+> > > 
+> > > v2: Remove Run Type
+> > >      change test name (Kamil)
+> > >      change test documentation and comments (Vinay)
+> > > 
+> > > Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+> > > Reviewed-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+> > > ---
+> > >   tests/intel/xe_guc_pc.c | 88 +++++++++++++++++++++++++++++++++++++++++
+> > >   1 file changed, 88 insertions(+)
+> > > 
+> > > diff --git a/tests/intel/xe_guc_pc.c b/tests/intel/xe_guc_pc.c
+> > > index 0327d8e0e..2b3d08fcb 100644
+> > > --- a/tests/intel/xe_guc_pc.c
+> > > +++ b/tests/intel/xe_guc_pc.c
+> > > @@ -13,6 +13,7 @@
+> > >   #include "igt.h"
+> > >   #include "lib/igt_syncobj.h"
+> > > +#include "igt_power.h"
+> > >   #include "igt_sysfs.h"
+> > >   #include "xe_drm.h"
+> > > @@ -382,6 +383,82 @@ static void test_reset(int fd, int gt_id, int cycles)
+> > >   	}
+> > >   }
+> > > +static int cmp_u64(const void *a, const void *b)
+> > > +{
+> > > +	return (*(u64 *)a - *(u64 *)b);
+> > > +}
+> > > +
+> > > +static uint64_t measure_power(int fd, struct igt_power *gpu)
+> > > +{
+> > > +	struct power_sample sample[2];
+> > > +	uint64_t power[5];
+> > > +
+> > > +	for (int i = 0; i < 5; i++) {
+> > > +		igt_power_get_energy(gpu, &sample[0]);
+> > > +		usleep(10000); /* 10 ms */
+> > > +		igt_power_get_energy(gpu, &sample[1]);
+> > > +
+> > > +		power[i] = igt_power_get_mW(gpu, &sample[0], &sample[1]);
+> > > +	}
+> > > +	/* Sort in ascending order and use a triangular filter */
+> > > +	qsort(power, 5, sizeof(*power), cmp_u64);
+> > > +	return DIV_ROUND_UP(power[1] + 2 * power[2] + power[3], 4);
+> > > +}
+> > > +
+> > > +/**
+> > > + * SUBTEST: freq-power
+> > > + * Description: Validates power consumed at higher frequencies is more than
+> > > + *              power consumed at lower frequencies.
+> > > + */
+> > > +static void test_freq_power(int fd, int gt_id, struct drm_xe_engine_class_instance *hwe)
+> > > +{
+> > > +	uint32_t rp0, rpn, vm;
+> > > +	uint64_t ahnd;
+> > > +	struct igt_power gpu;
+> > > +	struct {
+> > > +		uint64_t power;
+> > > +		uint32_t freq;
+> > > +	} min, max;
+> > > +	igt_spin_t *spin;
+> > > +
+> > > +	/* Run for engines belonging to the gt */
+> > > +	if (gt_id != hwe->gt_id)
+> > > +		return;
+> > > +
+> > > +	igt_power_open(fd, &gpu, "gpu");
+> > > +
+> > > +	rpn = get_freq(fd, gt_id, "rpn");
+> > > +	rp0 = get_freq(fd, gt_id, "rp0");
+> > > +
+> > > +	vm = xe_vm_create(fd, 0, 0);
+> > > +	ahnd = intel_allocator_open(fd, vm, INTEL_ALLOCATOR_RELOC);
+> > > +	spin = igt_spin_new(fd, .ahnd = ahnd, .vm = vm, .hwe = hwe);
+> > > +
+> > > +	igt_assert(set_freq(fd, gt_id, "min", rpn) > 0);
+> > > +	igt_assert(set_freq(fd, gt_id, "max", rpn) > 0);
+> > > +	min.freq = get_freq(fd, gt_id, "act");
+> > > +	min.power = measure_power(fd, &gpu);
+> > > +
+> > > +	igt_assert(set_freq(fd, gt_id, "min", rp0) > 0);
+> > > +	igt_assert(set_freq(fd, gt_id, "max", rp0) > 0);
+> > > +	max.freq = get_freq(fd, gt_id, "act");
+> > > +	max.power = measure_power(fd, &gpu);
+> > > +
+> > > +	igt_info("Engine %s:%d  min:%lumW @ %uMHz, max:%lumW @ %uMHz\n",
+> > > +		 xe_engine_class_string(hwe->engine_class), hwe->engine_instance,
+> > > +		 min.power, min.freq, max.power, max.freq);
+> > > +
+> > > +	igt_spin_free(fd, spin);
+> > > +	put_ahnd(ahnd);
+> > > +	xe_vm_destroy(fd, vm);
+> > > +	igt_power_close(&gpu);
+> > > +
+> > > +	/* power@max_freq should be at least 10% greater than power@min_freq */
+> > > +	igt_assert_f((11 * min.power < 10 * max.power),
+> > > +		     "%s:%d did not conserve power when setting lower frequency!\n",
+> > > +		     xe_engine_class_string(hwe->engine_class), hwe->engine_instance);
+> > 
+> > What exactly are we trying to test here with this case?
+> > This creates an artificial KPI that might not be true for the broader range
+> > of SKUs and generations out there. And then when it fails what should we do?
+> > come here and update the test case?
+> This test was a port from i915 [rps-power & slpc-power]
+> 
+> The commit message for the i915 tests is based on an assumption
+> 
+> "at lower frequencies, not only do we run
+>  slower, but we save power compared to higher frequencies."
+> 
+> I went through the failures there hasn't been a fix anywhere.
+> 
+> But shouldn't the power consumed at lower frequencies be lesser than higher
+> (removing the 10% in the above condition)?
 
-...
+well, our hw is very complex. We have many power gating mechanisms that
+might be saving power even when we select higher frequencies, but are
+not exercising the entire GPU.
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
----
- tests/prime_vgem.c | 45 +++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 41 insertions(+), 4 deletions(-)
+But even if we create a test that are capable of exercising all the EUs,
+CSes, fixed functions and everything, maybe finishing the workload quickly
+on higher frequencies, might trigger more deep lower power states that could
+save power over the slow workload taking longer to execute.
 
-diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
-index 876e04ed02a1..29eb7eccad61 100644
---- a/tests/prime_vgem.c
-+++ b/tests/prime_vgem.c
-@@ -72,6 +72,21 @@
-  * Feature: gtt, prime
-  * Run type: BAT
-  *
-+ * SUBTEST: forwarded-wc
-+ * Description: Examine access path through imported buffer mmap forwarding
-+ * Feature: mmap, prime
-+ * Run type: FULL
-+ *
-+ * SUBTEST: forwarded-uc
-+ * Description: Examine access path through imported buffer mmap forwarding
-+ * Feature: mmap, prime
-+ * Run type: FULL
-+ *
-+ * SUBTEST: forwarded-wb
-+ * Description: Examine access path through imported buffer mmap forwarding
-+ * Feature: mmap, prime
-+ * Run type: FULL
-+ *
-  * SUBTEST: basic-read
-  * Description: Examine read access path.
-  * Feature: gtt, prime
-@@ -420,7 +435,7 @@ static void test_write(int vgem, int i915)
- 	munmap(ptr, scratch.size);
- }
- 
--static void test_gtt(int vgem, int i915)
-+static void test_mmap_offset(int vgem, int i915, unsigned int flags)
- {
- 	struct vgem_bo scratch;
- 	uint32_t handle;
-@@ -436,7 +451,16 @@ static void test_gtt(int vgem, int i915)
- 	handle = prime_fd_to_handle(i915, dmabuf);
- 	close(dmabuf);
- 
--	ptr = gem_mmap__gtt(i915, handle, scratch.size, PROT_WRITE);
-+	ptr = __gem_mmap_offset(i915, handle, 0, scratch.size, PROT_WRITE,
-+				flags);
-+	if (flags == I915_MMAP_OFFSET_GTT) {
-+		/* Only allowed to fail if no aperture. */
-+		igt_require(ptr || !gem_mappable_aperture_size(i915));
-+
-+	} else {
-+		/* Skip on old kernels. */
-+		igt_require(ptr);
-+	}
- 	for (i = 0; i < 1024; i++)
- 		ptr[1024*i] = i;
- 	munmap(ptr, scratch.size);
-@@ -448,7 +472,8 @@ static void test_gtt(int vgem, int i915)
- 	}
- 	munmap(ptr, scratch.size);
- 
--	ptr = gem_mmap__gtt(i915, handle, scratch.size, PROT_READ);
-+	ptr = __gem_mmap_offset(i915, handle, 0, scratch.size, PROT_READ,
-+				flags);
- 	for (i = 0; i < 1024; i++)
- 		igt_assert_eq(ptr[1024*i], ~i);
- 	munmap(ptr, scratch.size);
-@@ -1225,9 +1250,21 @@ igt_main
- 	igt_describe("Examine access path through GTT.");
- 	igt_subtest("basic-gtt") {
- 		gem_require_mappable_ggtt(i915);
--		test_gtt(vgem, i915);
-+		test_mmap_offset(vgem, i915, I915_MMAP_OFFSET_GTT);
- 	}
- 
-+	igt_describe("Examine access path through mmap forwarding.");
-+	igt_subtest("forwarded-wc")
-+		test_mmap_offset(vgem, i915, I915_MMAP_OFFSET_WC);
-+
-+	igt_describe("Examine access path through mmap forwarding.");
-+	igt_subtest("forwarded-uc")
-+		test_mmap_offset(vgem, i915, I915_MMAP_OFFSET_UC);
-+
-+	igt_describe("Examine access path through mmap forwarding.");
-+	igt_subtest("forwarded-wb")
-+		test_mmap_offset(vgem, i915, I915_MMAP_OFFSET_WB);
-+
- 	igt_describe("Examine blitter access path.");
- 	igt_subtest("basic-blt")
- 		test_blt(vgem, i915);
--- 
-2.39.2
+> 
+> I will drop this test if not necessary
+
+yes, please let's drop it. I'm in favor of killing the i915 as well.
+
+Thanks,
+Rodrigo.
+
+> 
+> Thanks
+> Riana Tauro
+> > 
+> > > +}
+> > > +
+> > >   igt_main
+> > >   {
+> > >   	struct drm_xe_engine_class_instance *hwe;
+> > > @@ -472,6 +549,17 @@ igt_main
+> > >   		}
+> > >   	}
+> > > +	igt_describe("Validate more power is consumed at higher frequencies");
+> > > +	igt_subtest("freq-power") {
+> > > +		/* FIXME: Remove skip once hwmon is added */
+> > > +		igt_skip_on(xe_has_vram(fd));
+> > > +		xe_for_each_gt(fd, gt) {
+> > > +			xe_for_each_hw_engine(fd, hwe) {
+> > > +				test_freq_power(fd, gt, hwe);
+> > > +			}
+> > > +		}
+> > > +	}
+> > > +
+> > >   	igt_fixture {
+> > >   		xe_for_each_gt(fd, gt) {
+> > >   			set_freq(fd, gt, "min", stash_min);
+> > > -- 
+> > > 2.40.0
+> > > 
