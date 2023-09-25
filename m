@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============6997749416384651121=="
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4110A10E1C8
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 Sep 2023 02:05:54 +0000 (UTC)
+From: Jesse Zhang <jesse.zhang@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Mon, 25 Sep 2023 10:05:22 +0800
+Message-ID: <20230925020522.3523365-1-jesse.zhang@amd.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jeevan B" <jeevan.b@intel.com>
-Date: Fri, 22 Sep 2023 18:42:05 -0000
-Message-ID: <169540812501.5196.8606505678150238591@emeril.freedesktop.org>
-References: <20230922151937.1188567-1-jeevan.b@intel.com>
-In-Reply-To: <20230922151937.1188567-1-jeevan.b@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/km?=
- =?utf-8?q?s=5Fsetmode=3A_Add_info_as_comment_for_valid_scenario_=28rev3?=
- =?utf-8?q?=29?=
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH] tests/amd_deadlock: add reset subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,240 +18,89 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Tim Huang <tim.huang@amd.com>, Luben Tuikov <luben.tuikov@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>, Christian
+ Koenig <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============6997749416384651121==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Add an amdgpu reset test to the suite
 
-== Series Details ==
+V2:
+  - improve subject and description  (Kamil,Luben)
+  - sort the include alphabetically (Kamil)
+  - Optimize some code (Luben)
 
-Series: tests/kms_setmode: Add info as comment for valid scenario (rev3)
-URL   : https://patchwork.freedesktop.org/series/123952/
-State : success
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Signed-off-by: Tim Huang <tim.huang@amd.com>
+---
+ tests/amdgpu/amd_deadlock.c | 39 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7498_BAT -> XEIGTPW_9854_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_9854_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
-    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#480]) +2 other tests fail
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7498/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9854/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
-
-  
-#### Possible fixes ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - bat-dg2-oem2:       [INCOMPLETE][3] ([Intel XE#729]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7498/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9854/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html
-
-  * igt@kms_flip@basic-flip-vs-modeset@b-dp3:
-    - bat-dg2-oem2:       [FAIL][5] ([Intel XE#708]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7498/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-modeset@b-dp3.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9854/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-modeset@b-dp3.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3:
-    - bat-dg2-oem2:       [FAIL][7] ([Intel XE#554]) -> [PASS][8] +10 other tests pass
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7498/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9854/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-a-dp-3:
-    - bat-dg2-oem2:       [DMESG-WARN][9] ([Intel XE#547]) -> [PASS][10] +25 other tests pass
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7498/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-a-dp-3.html
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9854/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-a-dp-3.html
-
-  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-dp-3:
-    - bat-dg2-oem2:       [DMESG-WARN][11] ([Intel XE#712]) -> [PASS][12] +2 other tests pass
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7498/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-dp-3.html
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9854/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-dp-3.html
-
-  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-d-dp-3:
-    - bat-dg2-oem2:       [DMESG-FAIL][13] ([Intel XE#712]) -> [PASS][14] +2 other tests pass
-   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7498/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-d-dp-3.html
-   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9854/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-d-dp-3.html
-
-  
-#### Warnings ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-dg2-oem2:       [DMESG-WARN][15] ([Intel XE#712]) -> [FAIL][16] ([Intel XE#608])
-   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7498/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html
-   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9854/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
-    - bat-dg2-oem2:       [DMESG-WARN][17] ([Intel XE#547]) -> [FAIL][18] ([Intel XE#400]) +2 other tests fail
-   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7498/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
-   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9854/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
-  [Intel XE#547]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/547
-  [Intel XE#554]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/554
-  [Intel XE#608]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/608
-  [Intel XE#708]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/708
-  [Intel XE#712]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/712
-  [Intel XE#729]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/729
-
-
-Build changes
--------------
-
-  * IGT: IGT_7498 -> IGTPW_9854
-
-  IGTPW_9854: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9854/index.html
-  IGT_7498: 05d14fd260a3cf9dc00ed24733d5589eee32ec08 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-390-6149acb947f2f8b65ee1a058982a5d6fce3124ec: 6149acb947f2f8b65ee1a058982a5d6fce3124ec
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9854/index.html
-
---===============6997749416384651121==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_setmode: Add info as comment for valid scenario (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123952/">https://patchwork.freedesktop.org/series/123952/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9854/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9854/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7498_BAT -&gt; XEIGTPW_9854_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_9854_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7498/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9854/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +2 other tests fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7498/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/729">Intel XE#729</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9854/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-modeset@b-dp3:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7498/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-modeset@b-dp3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/708">Intel XE#708</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9854/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-modeset@b-dp3.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7498/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/554">Intel XE#554</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9854/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3.html">PASS</a> +10 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-a-dp-3:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7498/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-a-dp-3.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/547">Intel XE#547</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9854/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-a-dp-3.html">PASS</a> +25 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-dp-3:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7498/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-dp-3.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/712">Intel XE#712</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9854/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-dp-3.html">PASS</a> +2 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-d-dp-3:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7498/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-d-dp-3.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/712">Intel XE#712</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9854/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-d-dp-3.html">PASS</a> +2 other tests pass</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7498/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/712">Intel XE#712</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9854/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/608">Intel XE#608</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7498/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/547">Intel XE#547</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9854/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a>) +2 other tests fail</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7498 -&gt; IGTPW_9854</li>
-</ul>
-<p>IGTPW_9854: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9854/index.html<br />
-  IGT_7498: 05d14fd260a3cf9dc00ed24733d5589eee32ec08 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-390-6149acb947f2f8b65ee1a058982a5d6fce3124ec: 6149acb947f2f8b65ee1a058982a5d6fce3124ec</p>
-
-</body>
-</html>
-
---===============6997749416384651121==--
+diff --git a/tests/amdgpu/amd_deadlock.c b/tests/amdgpu/amd_deadlock.c
+index d805b8d18..4063ac61b 100644
+--- a/tests/amdgpu/amd_deadlock.c
++++ b/tests/amdgpu/amd_deadlock.c
+@@ -23,6 +23,9 @@
+  * Based on libdrm/tests/amdgpu/deadlock_tests.c
+  */
+ 
++#include <fcntl.h>
++#include <sys/stat.h>
++#include <sys/sysmacros.h>
+ #include "lib/amdgpu/amd_memory.h"
+ #include "lib/amdgpu/amd_command_submission.h"
+ #include "lib/amdgpu/amd_dispatch.h"
+@@ -70,6 +73,40 @@ amdgpu_gfx_illegal_mem_access(amdgpu_device_handle device_handle)
+ 	bad_access_helper(device_handle, 0, AMDGPU_HW_IP_GFX);
+ }
+ 
++static void
++amdgpu_gpu_reset_test(amdgpu_device_handle device_handle, int drm_amdgpu)
++{
++	amdgpu_context_handle context_handle;
++	char debugfs_path[256], tmp[10];
++	uint32_t hang_state, hangs;
++	struct stat sbuf;
++	int r, fd;
++
++	r = amdgpu_cs_ctx_create(device_handle, &context_handle);
++	igt_assert_eq(r, 0);
++
++	r = fstat(drm_amdgpu, &sbuf);
++	igt_assert_eq(r, 0);
++
++	sprintf(debugfs_path, "/sys/kernel/debug/dri/%d/amdgpu_gpu_recover", minor(sbuf.st_rdev));
++	fd = open(debugfs_path, O_RDONLY);
++	igt_assert_fd(fd);
++
++	r = read(fd, tmp, ARRAY_SIZE(tmp));
++	igt_assert_lt(0,r);
++
++	r = amdgpu_cs_query_reset_state(context_handle, &hang_state, &hangs);
++	igt_assert_eq(r, 0);
++	igt_assert_eq(hang_state, AMDGPU_CTX_UNKNOWN_RESET);
++
++	close(fd);
++	r = amdgpu_cs_ctx_free(context_handle);
++	igt_assert_eq(r, 0);
++
++	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_GFX);
++	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_COMPUTE);
++}
++
+ igt_main
+ {
+ 	amdgpu_device_handle device;
+@@ -116,6 +153,8 @@ igt_main
+ 	igt_subtest("dispatch_hang_slow_gfx")
+ 	amdgpu_dispatch_hang_slow_gfx(device);
+ 
++	igt_subtest("amdgpu-reset-test")
++	amdgpu_gpu_reset_test(device,fd);
+ 	igt_fixture {
+ 		amdgpu_device_deinitialize(device);
+ 		drm_close_driver(fd);
+-- 
+2.25.1
