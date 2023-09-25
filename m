@@ -1,25 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com
- [IPv6:2a00:1450:4864:20::12c])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2650710E1D4
- for <igt-dev@lists.freedesktop.org>; Mon, 25 Sep 2023 08:02:52 +0000 (UTC)
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-50308217223so9084333e87.3
- for <igt-dev@lists.freedesktop.org>; Mon, 25 Sep 2023 01:02:52 -0700 (PDT)
-Message-ID: <9cda7f65-e8c4-607a-0c2c-fed69bd85cf5@gmail.com>
-Date: Mon, 25 Sep 2023 11:02:43 +0300
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 284D510E1CE
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 Sep 2023 08:08:57 +0000 (UTC)
+Date: Mon, 25 Sep 2023 10:08:52 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Jani Nikula <jani.nikula@linux.intel.com>
+Message-ID: <20230925100852.06d4c8f1@maurocar-mobl2>
+In-Reply-To: <87ttrnq1vh.fsf@intel.com>
+References: <20230921095248.74514-1-mauro.chehab@linux.intel.com>
+ <87ttrnq1vh.fsf@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Francois Dugast <francois.dugast@intel.com>
-References: <20230921163530.285456-1-juhapekka.heikkila@gmail.com>
- <ZQ4Le0BbHvdoAZZJ@intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <ZQ4Le0BbHvdoAZZJ@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/xe: on xe driver use blitter for
- x-tile
+Subject: Re: [igt-dev] [PATCH i-g-t] scripts/test_list.py: allow adding
+ multiple testlist lines with same name
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,169 +21,117 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Rodrigo,
+On Thu, 21 Sep 2023 13:03:46 +0300
+Jani Nikula <jani.nikula@linux.intel.com> wrote:
 
-On 23.9.2023 0.47, Rodrigo Vivi wrote:
-> On Thu, Sep 21, 2023 at 07:35:30PM +0300, Juha-Pekka Heikkila wrote:
->> on xe driver need to use blitter for x-tile
+> On Thu, 21 Sep 2023, Mauro Carvalho Chehab <mauro.chehab@linux.intel.com> wrote:
+> > From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> >
+> > Sometimes, multiple files may contain testlists and blocklists for
+> > the same name.
+> >
+> > Add support for it by placing such lists on an array, and storing one
+> > testlist dictionary per line.
+> >
+> > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> > ---
+> >  scripts/test_list.py             | 13 ++++++++-----
+> >  tests/intel/kms_test_config.json | 22 +++++++++++-----------
+> >  tests/intel/xe_test_config.json  | 12 ++++++------
+> >  3 files changed, 25 insertions(+), 22 deletions(-)
+> >
+> > diff --git a/scripts/test_list.py b/scripts/test_list.py
+> > index fdc3c1998d23..daca290a02bd 100644
+> > --- a/scripts/test_list.py
+> > +++ b/scripts/test_list.py
+> > @@ -333,16 +333,18 @@ class TestList:
+> >              # Read testlist files if any
+> >              if "testlists" in item["_properties_"]:
+> >                  testlist = {}
+> > -                for name in item["_properties_"]["testlists"].keys():
+> > -                    self.read_testlist(testlist, name, cfg_path + item["_properties_"]["testlists"][name])
+> > +                for value in item["_properties_"]["testlists"]:
+> > +                    for name in value.keys():
+> > +                        self.read_testlist(testlist, name, cfg_path + value[name])
+> >  
+> >                  item["_properties_"]["testlist"] = testlist
+> >  
+> >              # Read blocklist files if any
+> >              if "blocklists" in item["_properties_"]:
+> >                  blocklist = {}
+> > -                for name in item["_properties_"]["blocklists"].keys():
+> > -                    self.read_testlist(blocklist, name, cfg_path + item["_properties_"]["blocklists"][name])
+> > +                for value in item["_properties_"]["blocklists"]:
+> > +                    for name in value.keys():
+> > +                        self.read_testlist(testlist, name, cfg_path + value[name])
+> >  
+> >                  item["_properties_"]["blocklist"] = blocklist
+> >  
+> > @@ -450,7 +452,8 @@ class TestList:
+> >          base = r"^\s*({}[^\s\{}]+)(\S*)\s*(\#.*)?$"  
 > 
-> While testing the xe-uapi alignment series I noticed the pass rate had sunk.
-> And then noticed it was all related to display and blit.
+> Just an unrelated thing that caught my eye. You can add names to groups
+> with:
 > 
-> A bisect in kernel and in igt brought me to this patch as the culprit for
-> the craches I was seeing on DG2.
+> 	(?P<groupname>...)
 > 
-> And it looks CI is also not very happy:
-> https://intel-gfx-ci.01.org/tree/intel-xe/index.html?
+> and reference them by names instead of indices in the match object:
 > 
-> and my bet is on this patch here.
+> 	mo.group('groupname')
 > 
-> kms_cursor_legacy
+> making the code ever so slightly easier to read.
 
-I don't see these crashes, currently this show all green for me:
-https://intel-gfx-ci.01.org/tree/intel-xe/bat-all.html?testfilter=kms_cursor_legacy%7Ckms_flip&hosts=dg2
+Thanks for the tip.
 
- From above link looking at any of those test histories there's no 
-crashes in history, this patch went in on IGT_7497 which is still 
-visible on the history while writing this.
+I have mixed feelings about naming the groups at regex. I mean, it makes
+easier to identify the match group based on its name, at the expense
+of making the regular expression bigger (and, IMO harder) to read.
 
-I tried to run these tests also on our local dg2 against xe driver but I 
-was not able to reproduce any crash here either running tests as per 
-subtest or as a blob.
+I mean, looking at the regex and counting parenthesis blocks is enough
+to see what each block is seeking.
 
-/Juha-Pekka
+On this specific case, the code is:
 
-> 6/6	6/6	6/6	6/6	6/6	6/6	6/6	0/6
-> basic-flip-after-cursor-atomic
-> pass	pass	pass	pass	pass	pass	pass	crash
-> basic-flip-after-cursor-legacy
-> pass	pass	pass	pass	pass	pass	pass	crash
-> basic-flip-after-cursor-varying-size
-> pass	pass	pass	pass	pass	pass	pass	crash
-> basic-flip-before-cursor-atomic
-> pass	pass	pass	pass	pass	pass	pass	crash
-> basic-flip-before-cursor-legacy
-> pass	pass	pass	pass	pass	pass	pass	crash
-> basic-flip-before-cursor-varying-size
-> pass	pass	pass	pass	pass	pass	pass	crash
-> kms_dsc
-> 0/0	0/0	0/0	0/0	0/0	0/0	0/0	0/0
-> dsc-basic
-> skip	skip	skip	skip	notrun	skip	skip	skip
-> kms_flip
-> 16/16	16/16	16/16	16/16	16/16	16/16	16/16	0/16
-> basic-flip-vs-dpms
-> 0/0	0/0	0/0	0/0	0/0	0/0	0/0	0/0
-> a-dp2
-> pass	pass	pass	pass	pass	pass	pass	crash
-> b-dp2
-> pass	pass	pass	pass	pass	pass	pass	crash
-> c-dp2
-> pass	pass	pass	pass	pass	pass	pass	crash
-> d-dp2
-> pass	pass	pass	pass	pass	pass	pass	crash
-> basic-flip-vs-modeset
-> 0/0	0/0	0/0	0/0	0/0	0/0	0/0	0/0
-> a-dp2
-> pass	pass	pass	pass	pass	pass	pass	crash
-> b-dp2
-> pass	pass	pass	pass	pass	pass	pass	crash
-> c-dp2
-> pass	pass	pass	pass	pass	pass	pass	crash
-> d-dp2
-> pass	pass	pass	pass	pass	pass	pass	crash
-> basic-flip-vs-wf_vblank
-> 0/0	0/0	0/0	0/0	0/0	0/0	0/0	0/0
-> a-dp2
-> pass	pass	pass	pass	pass	pass	pass	crash
-> b-dp2
-> pass	pass	pass	pass	pass	pass	pass	crash
-> c-dp2
-> pass	pass	pass	pass	pass	pass	pass	crash
-> d-dp2
-> pass	pass	pass	pass	pass	pass	pass	crash
-> basic-plain-flip
-> 0/0	0/0	0/0	0/0	0/0	0/0	0/0	0/0
-> a-dp2
-> pass	pass	pass	pass	pass	pass	pass	crash
-> b-dp2
-> pass	pass	pass	pass	pass	pass	pass	crash
-> c-dp2
-> pass	pass	pass	pass	pass	pass	pass	crash
-> d-dp2
-> pass	pass	pass	pass	pass	pass	pass	crash
-> 
-> Results for igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size
-> Overview
-> Result: crash
-> 
-> Back to summary
-> 
-> Details
-> Detail	Value
-> Returncode	None
-> Time	0:00:00
-> Stdout	
-> Opened device: /dev/dri/card0
-> Starting subtest: basic-flip-before-cursor-varying-size
-> Using pipe A & DP-2
-> Subtest basic-flip-before-cursor-varying-size: CRASH (0.705s)
-> Stderr	
-> Starting subtest: basic-flip-before-cursor-varying-size
-> Received signal SIGBUS.
-> Stack trace:
->   #0 [fatal_sig_handler+0x17b]
->   #1 [__sigaction+0x50]
->   #2 [emit_blt_block_copy+0x47e]
->   #3 [blt_block_copy+0xeb]
->   #4 [blitcopy+0x263]
->   #5 [setup_linear_mapping+0x163]
->   #6 [create_cairo_surface__gpu+0x32]
->   #7 [igt_get_cairo_surface+0x88]
->   #8 [igt_get_cairo_ctx+0xb]
->   #9 [igt_create_pattern_fb+0x29]
->   #10 [set_fb_on_crtc+0x39]
->   #11 [basic_flip_cursor+0xcf]
->   #12 [__igt_unique____real_main1887+0xa41]
->   #13 [main+0x23]
->   #14 [__libc_start_call_main+0x80]
->   #15 [__libc_start_main+0x89]
->   #16 [_start+0x25]
-> Subtest basic-flip-before-cursor-varying-size: CRASH (0.705s)
-> Command	
-> dmesg	
-> <6> [29102.951496] [IGT] kms_cursor_legacy: executing
-> <6> [29103.289314] [IGT] kms_cursor_legacy: starting subtest basic-flip-before-cursor-varying-size
-> <6> [29104.003123] [IGT] kms_cursor_legacy: finished subtest basic-flip-before-cursor-varying-size, CRASH
-> <6> [29104.012383] [IGT] kms_cursor_legacy: exiting, ret=135
-> 
-> 
->>
->> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
->> ---
->>   lib/igt_fb.c | 3 ++-
->>   1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
->> index 4b592825d..c8a7b31a8 100644
->> --- a/lib/igt_fb.c
->> +++ b/lib/igt_fb.c
->> @@ -2557,7 +2557,8 @@ static bool use_blitter(const struct igt_fb *fb)
->>   	return fb->modifier == I915_FORMAT_MOD_4_TILED ||
->>   	       fb->modifier == I915_FORMAT_MOD_Y_TILED ||
->>   	       fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
->> -	       (is_i915_device(fb->fd) && !gem_has_mappable_ggtt(fb->fd));
->> +	       (is_i915_device(fb->fd) && !gem_has_mappable_ggtt(fb->fd)) ||
->> +	       is_xe_device(fb->fd);
->>   }
->>   
->>   static void init_buf_ccs(struct intel_buf *buf, int ccs_idx,
->> -- 
->> 2.25.1
->>
+	base = r"^\s*({}[^\s\{}]+)(\S*)\s*(\#.*)?$"
+        regex = re.compile(base.format(self.main_name, self.subtest_separator))
+	...
+                match = regex.match(line)
+                if match:
+                    test = match.group(1)
+                    subtest = match.group(2)
+                    if not subtest.endswith("$"):
+                        subtest += r"(\@.*)?$"
+                    testlist[name].append(re.compile(f"{test}{subtest}"))
+
+
+Looking at the parenthesis, we have:
+
+	group 1: ({}[^\s\{}]+)
+	group 2: (\S*)
+	group 3: (\#.*)?  (not used by the match logic)
+
+But the actual regex appear only after base.format(name, separator).
+After that, group 1 actually becomes:
+
+	group 1: (igt[^\s\@]+)
+
+IMO, adding "P<group>" to each of the above will make harder to read
+an already complex regex.
+
+Also, just two groups are actually used at the match, and, for both,
+a variable with the match name is used. IMO, in this specific example,
+adding P<group> won't improve code readability.
+
+-
+
+Other than that, debugging and fixing complex regular expressions is 
+hard. What I do when they're very complex is to test them via
+regex101 (https://regex101.com/).
+
+Regards,
+Mauro
