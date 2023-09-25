@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 284D510E1CE
- for <igt-dev@lists.freedesktop.org>; Mon, 25 Sep 2023 08:08:57 +0000 (UTC)
-Date: Mon, 25 Sep 2023 10:08:52 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Jani Nikula <jani.nikula@linux.intel.com>
-Message-ID: <20230925100852.06d4c8f1@maurocar-mobl2>
-In-Reply-To: <87ttrnq1vh.fsf@intel.com>
-References: <20230921095248.74514-1-mauro.chehab@linux.intel.com>
- <87ttrnq1vh.fsf@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 152C510E1CF
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 Sep 2023 08:35:26 +0000 (UTC)
+Date: Mon, 25 Sep 2023 10:34:52 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230925083452.75xzcvlmltl3cc37@kamilkon-desk.igk.intel.com>
+References: <20230922141118.3821111-1-jonathan.cavitt@intel.com>
+ <20230922141118.3821111-2-jonathan.cavitt@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] scripts/test_list.py: allow adding
- multiple testlist lines with same name
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230922141118.3821111-2-jonathan.cavitt@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] drm-uapi: Add
+ DRM_I915_QUERY_L3BANK_COUNT query
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,117 +21,70 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, 21 Sep 2023 13:03:46 +0300
-Jani Nikula <jani.nikula@linux.intel.com> wrote:
+Hi Jonathan,
 
-> On Thu, 21 Sep 2023, Mauro Carvalho Chehab <mauro.chehab@linux.intel.com> wrote:
-> > From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> >
-> > Sometimes, multiple files may contain testlists and blocklists for
-> > the same name.
-> >
-> > Add support for it by placing such lists on an array, and storing one
-> > testlist dictionary per line.
-> >
-> > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-> > ---
-> >  scripts/test_list.py             | 13 ++++++++-----
-> >  tests/intel/kms_test_config.json | 22 +++++++++++-----------
-> >  tests/intel/xe_test_config.json  | 12 ++++++------
-> >  3 files changed, 25 insertions(+), 22 deletions(-)
-> >
-> > diff --git a/scripts/test_list.py b/scripts/test_list.py
-> > index fdc3c1998d23..daca290a02bd 100644
-> > --- a/scripts/test_list.py
-> > +++ b/scripts/test_list.py
-> > @@ -333,16 +333,18 @@ class TestList:
-> >              # Read testlist files if any
-> >              if "testlists" in item["_properties_"]:
-> >                  testlist = {}
-> > -                for name in item["_properties_"]["testlists"].keys():
-> > -                    self.read_testlist(testlist, name, cfg_path + item["_properties_"]["testlists"][name])
-> > +                for value in item["_properties_"]["testlists"]:
-> > +                    for name in value.keys():
-> > +                        self.read_testlist(testlist, name, cfg_path + value[name])
-> >  
-> >                  item["_properties_"]["testlist"] = testlist
-> >  
-> >              # Read blocklist files if any
-> >              if "blocklists" in item["_properties_"]:
-> >                  blocklist = {}
-> > -                for name in item["_properties_"]["blocklists"].keys():
-> > -                    self.read_testlist(blocklist, name, cfg_path + item["_properties_"]["blocklists"][name])
-> > +                for value in item["_properties_"]["blocklists"]:
-> > +                    for name in value.keys():
-> > +                        self.read_testlist(testlist, name, cfg_path + value[name])
-> >  
-> >                  item["_properties_"]["blocklist"] = blocklist
-> >  
-> > @@ -450,7 +452,8 @@ class TestList:
-> >          base = r"^\s*({}[^\s\{}]+)(\S*)\s*(\#.*)?$"  
+On 2023-09-22 at 07:11:17 -0700, Jonathan Cavitt wrote:
+> Add drm-uapi specifications for DRM_I915_QUERY_L3BANK_COUNT query.
 > 
-> Just an unrelated thing that caught my eye. You can add names to groups
-> with:
-> 
-> 	(?P<groupname>...)
-> 
-> and reference them by names instead of indices in the match object:
-> 
-> 	mo.group('groupname')
-> 
-> making the code ever so slightly easier to read.
+> Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+> ---
+>  include/drm-uapi/i915_drm.h | 13 +++++++++++++
 
-Thanks for the tip.
+Please put this change into lib/i915/i915_drm_local.h
+as this is not in drm-next yet, see patch from Ashutosh:
+include/drm-uapi: Update to latest i915_drm.h from drm-next
+https://patchwork.freedesktop.org/series/124144/
 
-I have mixed feelings about naming the groups at regex. I mean, it makes
-easier to identify the match group based on its name, at the expense
-of making the regular expression bigger (and, IMO harder) to read.
-
-I mean, looking at the regex and counting parenthesis blocks is enough
-to see what each block is seeking.
-
-On this specific case, the code is:
-
-	base = r"^\s*({}[^\s\{}]+)(\S*)\s*(\#.*)?$"
-        regex = re.compile(base.format(self.main_name, self.subtest_separator))
-	...
-                match = regex.match(line)
-                if match:
-                    test = match.group(1)
-                    subtest = match.group(2)
-                    if not subtest.endswith("$"):
-                        subtest += r"(\@.*)?$"
-                    testlist[name].append(re.compile(f"{test}{subtest}"))
-
-
-Looking at the parenthesis, we have:
-
-	group 1: ({}[^\s\{}]+)
-	group 2: (\S*)
-	group 3: (\#.*)?  (not used by the match logic)
-
-But the actual regex appear only after base.format(name, separator).
-After that, group 1 actually becomes:
-
-	group 1: (igt[^\s\@]+)
-
-IMO, adding "P<group>" to each of the above will make harder to read
-an already complex regex.
-
-Also, just two groups are actually used at the match, and, for both,
-a variable with the match name is used. IMO, in this specific example,
-adding P<group> won't improve code readability.
-
--
-
-Other than that, debugging and fixing complex regular expressions is 
-hard. What I do when they're very complex is to test them via
-regex101 (https://regex101.com/).
++cc Ashutosh
 
 Regards,
-Mauro
+Kamil
+
+>  1 file changed, 13 insertions(+)
+> 
+> diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+> index a0876ee413..edf3b1e445 100644
+> --- a/include/drm-uapi/i915_drm.h
+> +++ b/include/drm-uapi/i915_drm.h
+> @@ -2813,6 +2813,7 @@ struct drm_i915_query_item {
+>  	 *  - %DRM_I915_QUERY_MEMORY_REGIONS (see struct drm_i915_query_memory_regions)
+>  	 *  - %DRM_I915_QUERY_HWCONFIG_BLOB (see `GuC HWCONFIG blob uAPI`)
+>  	 *  - %DRM_I915_QUERY_GEOMETRY_SUBSLICES (see struct drm_i915_query_topology_info)
+> +	 *  - %DRM_I915_QUERY_L3BANK_COUNT (see `L3 Bank Count Query uAPI`)
+>  	 */
+>  	__u64 query_id;
+>  #define DRM_I915_QUERY_TOPOLOGY_INFO		1
+> @@ -2821,6 +2822,7 @@ struct drm_i915_query_item {
+>  #define DRM_I915_QUERY_MEMORY_REGIONS		4
+>  #define DRM_I915_QUERY_HWCONFIG_BLOB		5
+>  #define DRM_I915_QUERY_GEOMETRY_SUBSLICES	6
+> +#define DRM_I915_QUERY_L3BANK_COUNT		7
+>  /* Must be kept compact -- no holes and well documented */
+>  
+>  	/**
+> @@ -3502,6 +3504,17 @@ struct drm_i915_gem_create_ext {
+>  	__u64 extensions;
+>  };
+>  
+> +/**
+> + * DOC: L3 Bank Count Query uAPI
+> + *
+> + * The L3 bank count query called through the query id
+> + * DRM_I915_QUERY_L3BANK_COUNT and returns the count of
+> + * the available L3 Banks on a given engine.
+> + *
+> + * The count itself is an integer, and since no additional
+> + * data is returned, the count is returned as such.
+> + */
+> +
+>  /**
+>   * struct drm_i915_gem_create_ext_memory_regions - The
+>   * I915_GEM_CREATE_EXT_MEMORY_REGIONS extension.
+> -- 
+> 2.25.1
+> 
