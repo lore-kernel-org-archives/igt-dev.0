@@ -1,21 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9F7AF10E3B9
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 12:03:11 +0000 (UTC)
-From: "Garg, Nemesa" <nemesa.garg@intel.com>
-To: "Sharma, Swati2" <swati2.sharma@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Tue, 26 Sep 2023 12:02:58 +0000
-Message-ID: <IA1PR11MB6467FC1549F10C9F6CAE7547E3C3A@IA1PR11MB6467.namprd11.prod.outlook.com>
-References: <20230922161302.440145-1-nemesa.garg@intel.com>
- <32a7249f-a61d-c3bf-d397-5eb38d0e1c65@intel.com>
- <d124a4fc-19ac-8722-1b2a-df724776467c@intel.com>
-In-Reply-To: <d124a4fc-19ac-8722-1b2a-df724776467c@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5D8D610E3B9
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 12:10:19 +0000 (UTC)
+Message-ID: <0849b387-34de-8c76-a75c-efab160cf714@linux.intel.com>
+Date: Tue, 26 Sep 2023 13:10:14 +0100
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH] tests/kms_rmfb: Add check for xe driver
+Content-Language: en-US
+To: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20230926084451.1732748-1-marcin.bernatowicz@linux.intel.com>
+ <20230926084451.1732748-11-marcin.bernatowicz@linux.intel.com>
+ <348811fd-2725-0620-d5da-d808edf507a0@linux.intel.com>
+ <48980d78-ef4a-65a6-f9f0-39f377ddf625@linux.intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <48980d78-ef4a-65a6-f9f0-39f377ddf625@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH i-g-t 10/14] benchmarks/gem_wsim: allow
+ comments in workload description files
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,37 +25,119 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: chris.p.wilson@linux.intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogU2hhcm1hLCBTd2F0aTIg
-PHN3YXRpMi5zaGFybWFAaW50ZWwuY29tPg0KPiBTZW50OiBUdWVzZGF5LCBTZXB0ZW1iZXIgMjYs
-IDIwMjMgMzo1OCBQTQ0KPiBUbzogR2FyZywgTmVtZXNhIDxuZW1lc2EuZ2FyZ0BpbnRlbC5jb20+
-OyBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBTdWJqZWN0OiBSZTogW2lndC1kZXZd
-IFtQQVRDSF0gdGVzdHMva21zX3JtZmI6IEFkZCBjaGVjayBmb3IgeGUgZHJpdmVyDQo+IA0KPiBB
-bHNvLCBhZGQgY2xvc2VzIHRhZyBpbiB0aGUgY29tbWl0Lg0KPiANCj4gT24gMjYtU2VwLTIzIDM6
-NTYgUE0sIFNoYXJtYSwgU3dhdGkyIHdyb3RlOg0KPiA+IEhpIE5lbWVzYSwNCj4gPg0KPiA+IENh
-biB5b3UgcGxlYXNlIGFkZCB0aGlzIHRlc3QgaW4gZmFzdC1mZWVkYmFjayBhbmQgYWRkIGFzIEhB
-WCBwYXRjaCwgdG8NCj4gPiBjaGVjayBDSSByZXN1bHRzLg0KDQpIaSBTd2F0aSwNCg0KVGhhbmtz
-IGZvciByZXZpZXcuIEknbGwgZG8gdGhlc2UgY2hhbmdlcy4NCj4gPg0KPiA+IE9uIDIyLVNlcC0y
-MyA5OjQzIFBNLCBOZW1lc2EgR2FyZyB3cm90ZToNCj4gPj4gQXMgdGhlIHhlIGNoZWNrIGlzIG1p
-c3NpbmcgdGhlIHZhbHVlIG9mIG9wZW5fY291bnQgdmFyaWFibGUgaXMgbm90DQo+ID4+IGluY3Jl
-bWVudGluZyBhbmQgYmVjYXVzZSBvZiB0aGlzIGR1cmluZyBkcm1fY2xvc2VfZHJpdmVyIG9wZXJh
-dGlvbg0KPiA+PiBiYXNlZCBvbiBvcGVuX2NvdW50IHZhbHVlIG11dGV4IGlzIGFjcXVpcmVkIGFu
-ZCB0aGVyZSBpcyBhIGNhbGxiYWNrDQo+ID4+IHRvIGxhc3RjbG9zZSBmdW5jdGlvbi4NCj4gPj4N
-Cj4gPj4gU2lnbmVkLW9mZi1ieTogTmVtZXNhIEdhcmcgPG5lbWVzYS5nYXJnQGludGVsLmNvbT4N
-Cj4gPj4gLS0tDQo+ID4+IMKgIGxpYi9kcm10ZXN0LmMgfCAyICstDQo+ID4+IMKgIDEgZmlsZSBj
-aGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQ0KPiA+Pg0KPiA+PiBkaWZmIC0t
-Z2l0IGEvbGliL2RybXRlc3QuYyBiL2xpYi9kcm10ZXN0LmMgaW5kZXggZTFkYTY2Yzg3Li45OWI2
-NTU2ODANCj4gPj4gMTAwNjQ0DQo+ID4+IC0tLSBhL2xpYi9kcm10ZXN0LmMNCj4gPj4gKysrIGIv
-bGliL2RybXRlc3QuYw0KPiA+PiBAQCAtNjQ5LDcgKzY0OSw3IEBAIGludCBkcm1fb3Blbl9kcml2
-ZXIoaW50IGNoaXBzZXQpDQo+ID4+IMKgwqDCoMKgwqDCoCAqIHN0YXJ0aW5nIGEgdGVzdCBhbmQg
-d2UgaW5zdGFsbCBhbiBleGl0IGhhbmRsZXIgdG8gd2FpdCB1bnRpbA0KPiA+PiDCoMKgwqDCoMKg
-wqAgKiBpZGxlIGJlZm9yZSBxdWl0dGluZy4NCj4gPj4gwqDCoMKgwqDCoMKgICovDQo+ID4+IC3C
-oMKgwqAgaWYgKGlzX2k5MTVfZGV2aWNlKGZkKSkgew0KPiA+PiArwqDCoMKgIGlmIChpc19pOTE1
-X2RldmljZShmZCkgfHwgaXNfeGVfZGV2aWNlKGZkKSkgew0KPiA+PiDCoMKgwqDCoMKgwqDCoMKg
-wqAgaWYgKF9fc3luY19mZXRjaF9hbmRfYWRkKCZvcGVuX2NvdW50LCAxKSA9PSAwKSB7DQo+ID4+
-IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIF9fY2FuY2VsX3dvcmtfYXRfZXhpdChmZCk7DQo+
-ID4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGF0X2V4aXRfZHJtX2ZkID0gZHJtX3Jlb3Bl
-bl9kcml2ZXIoZmQpOw0K
+
+On 26/09/2023 12:48, Bernatowicz, Marcin wrote:
+> Hi
+> 
+> On 9/26/2023 1:33 PM, Tvrtko Ursulin wrote:
+>>
+>> On 26/09/2023 09:44, Marcin Bernatowicz wrote:
+>>> Lines starting with '#' are skipped.
+>>> If command line step separator (',') is encountered after '#'
+>>> it is replaced with ';' to not break parsing.
+>>>
+>>> v2: SKIP step type is not needed (Tvrtko)
+>>>
+>>> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+>>> ---
+>>>   benchmarks/gem_wsim.c  | 19 ++++++++++++++++++-
+>>>   benchmarks/wsim/README |  2 ++
+>>>   2 files changed, 20 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
+>>> index a3339e1b2..0222c6c71 100644
+>>> --- a/benchmarks/gem_wsim.c
+>>> +++ b/benchmarks/gem_wsim.c
+>>> @@ -43,6 +43,7 @@
+>>>   #include <limits.h>
+>>>   #include <pthread.h>
+>>>   #include <math.h>
+>>> +#include <ctype.h>
+>>>   #include "drm.h"
+>>>   #include "drmtest.h"
+>>> @@ -809,6 +810,14 @@ parse_workload(struct w_arg *arg, unsigned int 
+>>> flags, double scale_dur,
+>>>           if (field) {
+>>>               fstart = NULL;
+>>> +            /* line starting with # is a comment */
+>>> +            if (field[0] == '#') {
+>>> +                if (verbose > 3)
+>>> +                    printf("skipped line: %s\n", _token);
+>>> +                free(token);
+>>> +                continue;
+>>> +            }
+>>> +
+>>>               if (!strcmp(field, "d")) {
+>>>                   int_field(DELAY, delay, tmp <= 0,
+>>>                         "Invalid delay at step %u!\n");
+>>> @@ -1073,7 +1082,8 @@ parse_workload(struct w_arg *arg, unsigned int 
+>>> flags, double scale_dur,
+>>>           if (field) {
+>>>               fstart = NULL;
+>>> -            check_arg(strlen(field) != 1 ||
+>>> +            check_arg(!strlen(field) ||
+>>> +                  (strlen(field) > 1 && !isspace(field[1]) && 
+>>> field[1] != '#') ||
+>>
+>> Help me out here please - why is this needed for this specific field?
+> 
+> I loosened the condition a bit to allow a comment on the same line as 
+> BATCH step, maybe looks a bit weird but allows to have:
+> 
+> 1.RCS.100.0.1 # a comment
+> 1.RCS.100.0.1# a comment
+> 1.RCS.100.0.1 this is also acceppted but didn't want to add more loops:/
+
+Right, but only on batch steps? It's probably then worth supporting 
+trailing comments with any command/line. Either that or drop this hunk 
+I'd say.
+
+Regards,
+
+Tvrtko
+
+> 
+> 
+>>
+>>>                     (field[0] != '0' && field[0] != '1'),
+>>>                     "Invalid wait boolean at step %u!\n",
+>>>                     nr_steps);
+>>> @@ -2422,6 +2432,13 @@ static char *load_workload_descriptor(char 
+>>> *filename)
+>>>       close(infd);
+>>>       for (i = 0; i < len; i++) {
+>>> +        /* '#' starts comment till end of line */
+>>> +        if (buf[i] == '#')
+>>> +            /* replace ',' in comments to not break parsing */
+>>> +            while (++i < len && buf[i] != '\n')
+>>> +                if (buf[i] == ',')
+>>> +                    buf[i] = ';';
+>>> +
+>>>           if (buf[i] == '\n')
+>>>               buf[i] = ',';
+>>>       }
+>>> diff --git a/benchmarks/wsim/README b/benchmarks/wsim/README
+>>> index 8c71f2fe6..e4fd61645 100644
+>>> --- a/benchmarks/wsim/README
+>>> +++ b/benchmarks/wsim/README
+>>> @@ -1,6 +1,8 @@
+>>>   Workload descriptor format
+>>>   ==========================
+>>> +Lines starting with '#' are treated as comments (do not create work 
+>>> step).
+>>
+>> Maybe reads better as "..as comments and will not create a work step."
+>>
+>> Regards,
+>>
+>> Tvrtko
+>>
+>>> +
+>>>   ctx.engine.duration_us.dependency.wait,...
+>>>   <uint>.<str>.<uint>[-<uint>]|*.<int <= 0>[/<int <= 0>][...].<0|1>,...
+>>>   B.<uint>
