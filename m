@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4B9E410E386
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 09:18:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8B70010E385
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 09:19:18 +0000 (UTC)
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 26 Sep 2023 08:44:20 +0000
-Message-ID: <20230926084451.1732748-6-marcin.bernatowicz@linux.intel.com>
+Date: Tue, 26 Sep 2023 08:44:23 +0000
+Message-ID: <20230926084451.1732748-9-marcin.bernatowicz@linux.intel.com>
 In-Reply-To: <20230926084451.1732748-1-marcin.bernatowicz@linux.intel.com>
 References: <20230926084451.1732748-1-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 05/14] benchmarks/gem_wsim: extract duration
- parsing code to new function
+Subject: [igt-dev] [PATCH i-g-t 08/14] benchmarks/gem_wsim: reposition
+ repeat_start variable
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,99 +24,53 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Moved code from parse_workload to separate function.
+No need for repeat_start in struct workload.
+It's now a variable in run_workload function scope.
 
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 ---
- benchmarks/gem_wsim.c | 67 ++++++++++++++++++++++++-------------------
- 1 file changed, 37 insertions(+), 30 deletions(-)
+ benchmarks/gem_wsim.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
 diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-index 4f0deb095..aeb959364 100644
+index daa20fb8a..2e6eb6388 100644
 --- a/benchmarks/gem_wsim.c
 +++ b/benchmarks/gem_wsim.c
-@@ -860,6 +860,40 @@ static long __duration(long dur, double scale)
- 	return round(scale * dur);
- }
+@@ -209,8 +209,6 @@ struct workload {
+ 	uint32_t bb_prng;
+ 	uint32_t bo_prng;
  
-+static int
-+parse_duration(unsigned int nr_steps, struct duration *dur, double scale_dur, char *_desc)
-+{
-+	char *sep = NULL;
-+	long tmpl;
-+
-+	if (_desc[0] == '*') {
-+		if (intel_gen(intel_get_drm_devid(fd)) < 8) {
-+			wsim_err("Infinite batch at step %u needs Gen8+!\n", nr_steps);
-+			return -1;
-+		}
-+		dur->unbound_duration = true;
-+	} else {
-+		tmpl = strtol(_desc, &sep, 10);
-+		if (tmpl <= 0 || tmpl == LONG_MIN || tmpl == LONG_MAX)
-+			return -1;
-+
-+		dur->min = __duration(tmpl, scale_dur);
-+
-+		if (sep && *sep == '-') {
-+			tmpl = strtol(sep + 1, NULL, 10);
-+			if (tmpl <= 0 || __duration(tmpl, scale_dur) <= dur->min ||
-+			    tmpl == LONG_MIN || tmpl == LONG_MAX)
-+				return -1;
-+
-+			dur->max = __duration(tmpl, scale_dur);
-+		} else {
-+			dur->max = dur->min;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- #define int_field(_STEP_, _FIELD_, _COND_, _ERR_) \
- 	if ((field = strtok_r(fstart, ".", &fctx))) { \
- 		tmp = atoi(field); \
-@@ -1127,38 +1161,11 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
- 		}
- 
- 		if ((field = strtok_r(fstart, ".", &fctx))) {
--			char *sep = NULL;
--			long int tmpl;
+-	struct timespec repeat_start;
 -
- 			fstart = NULL;
+ 	unsigned int nr_ctxs;
+ 	struct ctx *ctx_list;
  
--			if (field[0] == '*') {
--				check_arg(intel_gen(intel_get_drm_devid(fd)) < 8,
--					  "Infinite batch at step %u needs Gen8+!\n",
--					  nr_steps);
--				step.duration.unbound_duration = true;
--			} else {
--				tmpl = strtol(field, &sep, 10);
--				check_arg(tmpl <= 0 || tmpl == LONG_MIN ||
--					  tmpl == LONG_MAX,
--					  "Invalid duration at step %u!\n",
--					  nr_steps);
--				step.duration.min = __duration(tmpl, scale_dur);
--
--				if (sep && *sep == '-') {
--					tmpl = strtol(sep + 1, NULL, 10);
--					check_arg(tmpl <= 0 ||
--						__duration(tmpl, scale_dur) <= step.duration.min ||
--						tmpl == LONG_MIN ||
--						tmpl == LONG_MAX,
--						"Invalid duration range at step %u!\n",
--						nr_steps);
--					step.duration.max = __duration(tmpl,
--								       scale_dur);
--				} else {
--					step.duration.max = step.duration.min;
--				}
--			}
-+			tmp = parse_duration(nr_steps, &step.duration, scale_dur, field);
-+			check_arg(tmp < 0,
-+				  "Invalid duration at step %u!\n", nr_steps);
+@@ -2283,7 +2281,7 @@ static void sync_deps(struct workload *wrk, struct w_step *w)
+ static void *run_workload(void *data)
+ {
+ 	struct workload *wrk = (struct workload *)data;
+-	struct timespec t_start, t_end;
++	struct timespec t_start, t_end, repeat_start;
+ 	struct w_step *w;
+ 	int throttle = -1;
+ 	int qd_throttle = -1;
+@@ -2297,7 +2295,7 @@ static void *run_workload(void *data)
+ 	     count++) {
+ 		unsigned int cur_seqno = wrk->sync_seqno;
  
- 			valid++;
- 		}
+-		clock_gettime(CLOCK_MONOTONIC, &wrk->repeat_start);
++		clock_gettime(CLOCK_MONOTONIC, &repeat_start);
+ 
+ 		for (i = 0, w = wrk->steps; wrk->run && (i < wrk->nr_steps);
+ 		     i++, w++) {
+@@ -2311,7 +2309,7 @@ static void *run_workload(void *data)
+ 				int elapsed;
+ 
+ 				clock_gettime(CLOCK_MONOTONIC, &now);
+-				elapsed = elapsed_us(&wrk->repeat_start, &now);
++				elapsed = elapsed_us(&repeat_start, &now);
+ 				do_sleep = w->period - elapsed;
+ 				time_tot += elapsed;
+ 				if (elapsed < time_min)
 -- 
 2.42.0
