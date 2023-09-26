@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DCC8910E3DA
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 13:01:12 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A7F2D10E3E2
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 13:01:21 +0000 (UTC)
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 26 Sep 2023 13:00:36 +0000
-Message-Id: <20230926130054.6-7-francois.dugast@intel.com>
+Date: Tue, 26 Sep 2023 13:00:42 +0000
+Message-Id: <20230926130054.6-13-francois.dugast@intel.com>
 In-Reply-To: <20230926130054.6-1-francois.dugast@intel.com>
 References: <20230926130054.6-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 06/24] xe_exec_threads: Use
- DRM_XE_VM_CREATE_COMPUTE_MODE when creating a compute VM
+Subject: [igt-dev] [PATCH v3 12/24] drm-uapi/xe: Remove unused field of
+ drm_xe_query_gt
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,42 +24,41 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-XE_EXEC_QUEUE_SET_PROPERTY_COMPUTE_MODE was used creating a compute VM.
-This just happened to work as it is same value as
-DRM_XE_VM_CREATE_COMPUTE_MODE. Fix this and use correct flag,
-DRM_XE_VM_CREATE_COMPUTE_MODE.
+Align with commit ("drm/xe/uapi: Remove unused field of drm_xe_query_gt")
 
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 ---
- tests/intel/xe_exec_threads.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/drm-uapi/xe_drm.h | 2 --
+ tests/intel/xe_query.c    | 1 -
+ 2 files changed, 3 deletions(-)
 
-diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
-index 1f9af894f..d19708f80 100644
---- a/tests/intel/xe_exec_threads.c
-+++ b/tests/intel/xe_exec_threads.c
-@@ -286,7 +286,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 
- 	if (!vm) {
- 		vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS |
--				  XE_EXEC_QUEUE_SET_PROPERTY_COMPUTE_MODE, 0);
-+				  DRM_XE_VM_CREATE_COMPUTE_MODE, 0);
- 		owns_vm = true;
- 	}
- 
-@@ -1076,7 +1076,7 @@ static void threads(int fd, int flags)
- 					      to_user_pointer(&ext));
- 		vm_compute_mode = xe_vm_create(fd,
- 					       DRM_XE_VM_CREATE_ASYNC_BIND_OPS |
--					       XE_EXEC_QUEUE_SET_PROPERTY_COMPUTE_MODE,
-+					       DRM_XE_VM_CREATE_COMPUTE_MODE,
- 					       0);
- 
- 		vm_err_thread.capture = &capture;
+diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+index 68cc5e051..a6773c244 100644
+--- a/include/drm-uapi/xe_drm.h
++++ b/include/drm-uapi/xe_drm.h
+@@ -355,8 +355,6 @@ struct drm_xe_query_gt {
+ 	__u16 gt_id;
+ 	/** @clock_freq: A clock frequency for timestamp */
+ 	__u32 clock_freq;
+-	/** @features: Reserved for future information about GT features */
+-	__u64 features;
+ 	/**
+ 	 * @native_mem_regions: Bit mask of instances from
+ 	 * drm_xe_query_mem_usage that lives on the same GPU/Tile and have
+diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
+index eb8d52897..3aa2918f0 100644
+--- a/tests/intel/xe_query.c
++++ b/tests/intel/xe_query.c
+@@ -281,7 +281,6 @@ test_query_gts(int fd)
+ 		igt_info("type: %d\n", gts->gts[i].type);
+ 		igt_info("gt_id: %d\n", gts->gts[i].gt_id);
+ 		igt_info("clock_freq: %u\n", gts->gts[i].clock_freq);
+-		igt_info("features: 0x%016llx\n", gts->gts[i].features);
+ 		igt_info("native_mem_regions: 0x%016llx\n",
+ 		       gts->gts[i].native_mem_regions);
+ 		igt_info("slow_mem_regions: 0x%016llx\n",
 -- 
 2.34.1
