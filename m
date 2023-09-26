@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DAE8A10E3E8
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 13:01:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9AE6310E3D7
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 13:01:29 +0000 (UTC)
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 26 Sep 2023 13:00:45 +0000
-Message-Id: <20230926130054.6-16-francois.dugast@intel.com>
+Date: Tue, 26 Sep 2023 13:00:48 +0000
+Message-Id: <20230926130054.6-19-francois.dugast@intel.com>
 In-Reply-To: <20230926130054.6-1-francois.dugast@intel.com>
 References: <20230926130054.6-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 15/24] drm-uapi/xe: Align with documentation
- updates
+Subject: [igt-dev] [PATCH v3 18/24] drm-uapi/xe: Align with uAPI to query
+ micro-controler firmware version
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,87 +19,79 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Align with commit ("drm/xe: Add uAPI to query micro-controler firmware version")
 
-Align with commit ("drm/xe/uapi: Add documentation for query")
-
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 ---
- include/drm-uapi/xe_drm.h | 41 ++++++++++++++++++++++++++++++++++++---
- 1 file changed, 38 insertions(+), 3 deletions(-)
+ include/drm-uapi/xe_drm.h | 45 +++++++++++++++++++++++++++++++++------
+ 1 file changed, 38 insertions(+), 7 deletions(-)
 
 diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index 02279b791..df0455450 100644
+index f07694111..e0e202e4a 100644
 --- a/include/drm-uapi/xe_drm.h
 +++ b/include/drm-uapi/xe_drm.h
-@@ -324,14 +324,43 @@ struct drm_xe_query_config {
- 	/** @pad: MBZ */
- 	__u32 pad;
+@@ -467,6 +467,36 @@ struct drm_xe_query_topology_mask {
+ 	__u8 mask[];
+ };
  
-+	/*
-+	 * Device ID (lower 16 bits) and the device revision (next
-+	 * 8 bits)
-+	 */
- #define XE_QUERY_CONFIG_REV_AND_DEVICE_ID	0
-+	/*
-+	 * Flags describing the device configuration, see list below
-+	 */
- #define XE_QUERY_CONFIG_FLAGS			1
-+	/*
-+	 * Flag is set if the device has usable VRAM
-+	 */
- 	#define XE_QUERY_CONFIG_FLAGS_HAS_VRAM		(0x1 << 0)
-+	/*
-+	 * Minimal memory alignment required by this device,
-+	 * typically SZ_4K or SZ_64K
-+	 */
- #define XE_QUERY_CONFIG_MIN_ALIGNMENT		2
-+	/*
-+	 * Maximum bits of a virtual address
-+	 */
- #define XE_QUERY_CONFIG_VA_BITS			3
-+	/*
-+	 * Total number of GTs for the entire device
-+	 */
- #define XE_QUERY_CONFIG_GT_COUNT		4
-+	/*
-+	 * Total number of accessible memory regions
-+	 */
- #define XE_QUERY_CONFIG_MEM_REGION_COUNT	5
-+	/*
-+	 * Value of the highest available exec queue priority
-+	 */
- #define XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY	6
-+	/*
-+	 * Number of elements in the info array
-+	 */
- #define XE_QUERY_CONFIG_NUM_PARAM		(XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY + 1)
- 	/** @info: array of elements containing the config info */
- 	__u64 info[];
-@@ -443,9 +472,15 @@ struct drm_xe_query_topology_mask {
++/**
++ * struct drm_xe_query_uc_fw_version - query a micro-controller firmware version
++ *
++ * Given a uc_type this will return the major, minor, patch and branch version
++ * of the micro-controller firmware.
++ */
++struct drm_xe_query_uc_fw_version {
++	/** @uc: The micro-controller type to query firmware version */
++#define XE_QUERY_UC_TYPE_GUC 0
++	__u16 uc_type;
++
++	/** @pad: MBZ */
++	__u16 pad;
++
++	/* @major_ver: major uc fw version */
++	__u32 major_ver;
++	/* @minor_ver: minor uc fw version */
++	__u32 minor_ver;
++	/* @patch_ver: patch uc fw version */
++	__u32 patch_ver;
++	/* @branch_ver: branch uc fw version */
++	__u32 branch_ver;
++
++	/** @pad2: MBZ */
++	__u32 pad2;
++
++	/** @reserved: Reserved */
++	__u64 reserved;
++};
++
  /**
   * struct drm_xe_device_query - main structure to query device information
   *
-- * If size is set to 0, the driver fills it with the required size for the
-- * requested type of data to query. If size is equal to the required size,
-- * the queried information is copied into data.
-+ * The user selects the type of data to query among DRM_XE_DEVICE_QUERY_*
-+ * and sets the value in the query member. This determines the type of
-+ * the structure provided by the driver in data, among struct drm_xe_query_*.
-+ *
-+ * If size is set to 0, the driver fills it with the required size for
-+ * the requested type of data to query. If size is equal to the required
-+ * size, the queried information is copied into data. If size is set to
-+ * a value different from 0 and different from the required size, the
-+ * IOCTL call returns -EINVAL.
-  *
-  * For example the following code snippet allows retrieving and printing
-  * information about the device engines with DRM_XE_DEVICE_QUERY_ENGINES:
+@@ -512,13 +542,14 @@ struct drm_xe_device_query {
+ 	/** @extensions: Pointer to the first extension struct, if any */
+ 	__u64 extensions;
+ 
+-#define DRM_XE_DEVICE_QUERY_ENGINES	0
+-#define DRM_XE_DEVICE_QUERY_MEM_USAGE	1
+-#define DRM_XE_DEVICE_QUERY_CONFIG	2
+-#define DRM_XE_DEVICE_QUERY_GT_LIST	3
+-#define DRM_XE_DEVICE_QUERY_HWCONFIG	4
+-#define DRM_XE_DEVICE_QUERY_GT_TOPOLOGY	5
+-#define DRM_XE_QUERY_CS_CYCLES		6
++#define DRM_XE_DEVICE_QUERY_ENGINES		0
++#define DRM_XE_DEVICE_QUERY_MEM_USAGE		1
++#define DRM_XE_DEVICE_QUERY_CONFIG		2
++#define DRM_XE_DEVICE_QUERY_GT_LIST		3
++#define DRM_XE_DEVICE_QUERY_HWCONFIG		4
++#define DRM_XE_DEVICE_QUERY_GT_TOPOLOGY		5
++#define DRM_XE_QUERY_CS_CYCLES			6
++#define DRM_XE_DEVICE_QUERY_UC_FW_VERSION	7
+ 	/** @query: The type of data to query */
+ 	__u32 query;
+ 
 -- 
 2.34.1
