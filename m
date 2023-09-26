@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 964F510E3C3
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 12:29:13 +0000 (UTC)
-From: sai.gowtham.ch@intel.com
-To: igt-dev@lists.freedesktop.org, karolina.stolarek@intel.com,
- Zbigniew.Kempczynski@intel.com, sai.gowtham.ch@intel.com
-Date: Tue, 26 Sep 2023 17:57:47 +0530
-Message-Id: <20230926122749.32460-2-sai.gowtham.ch@intel.com>
-In-Reply-To: <20230926122749.32460-1-sai.gowtham.ch@intel.com>
-References: <20230926122749.32460-1-sai.gowtham.ch@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4313D10E3D8
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 13:01:16 +0000 (UTC)
+From: Francois Dugast <francois.dugast@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 26 Sep 2023 13:00:38 +0000
+Message-Id: <20230926130054.6-9-francois.dugast@intel.com>
+In-Reply-To: <20230926130054.6-1-francois.dugast@intel.com>
+References: <20230926130054.6-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/3] lib/intel_blt: Add check to see if blt
- commands are supported by the platforms
+Subject: [igt-dev] [PATCH v3 08/24] drm-uapi/xe: Use common
+ drm_xe_ext_set_property extension
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,132 +19,152 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-This commit has following changes:
+Align with commit ("drm/xe/uapi: Use common drm_xe_ext_set_property extension")
 
-1. Add check to see if blt commands are supported by the platforms.
-2. Add MEM_COPY and MEM_SET instructions
-3. Update cmd info for MEM_COPY and MEM_SET
-4. Add copy type used for MEM_COPY and MEM_SET.
-
-Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 ---
- lib/intel_blt.c       | 32 ++++++++++++++++++++++++++++++++
- lib/intel_blt.h       |  2 ++
- lib/intel_cmds_info.c | 12 ++++++++++++
- lib/intel_cmds_info.h |  7 +++++++
- 4 files changed, 53 insertions(+)
+ include/drm-uapi/xe_drm.h     | 21 +++------------------
+ tests/intel/xe_exec_reset.c   | 10 +++++-----
+ tests/intel/xe_exec_threads.c |  4 ++--
+ tests/intel/xe_vm.c           |  2 +-
+ 4 files changed, 11 insertions(+), 26 deletions(-)
 
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index 429511920..b55fa9b52 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -289,6 +289,38 @@ bool blt_has_block_copy(int fd)
- 	return blt_supports_command(cmds_info, XY_BLOCK_COPY);
- }
+diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+index a9060bcf8..66acf49c4 100644
+--- a/include/drm-uapi/xe_drm.h
++++ b/include/drm-uapi/xe_drm.h
+@@ -572,12 +572,11 @@ struct drm_xe_vm_bind_op_error_capture {
+ 	__u64 size;
+ };
  
-+/**
-+ * blt_has_mem_copy
-+ * @fd: drm fd
-+ *
-+ * Check if mem copy is supported by @fd device
-+ *
-+ * Returns:
-+ * true if it does, false otherwise.
-+ */
-+bool blt_has_mem_copy(int fd)
-+{
-+	const struct intel_cmds_info *cmds_info = GET_CMDS_INFO(fd);
-+
-+	return blt_supports_command(cmds_info, MEM_COPY);
-+}
-+
-+/**
-+ * blt_has_mem_set
-+ * @fd: drm fd
-+ *
-+ * Check if mem set is supported by @fd device
-+ *
-+ * Returns:
-+ * true if it does, false otherwise.
-+ */
-+bool blt_has_mem_set(int fd)
-+{
-+	const struct intel_cmds_info *cmds_info = GET_CMDS_INFO(fd);
-+
-+	return blt_supports_command(cmds_info, MEM_SET);
-+}
-+
+-/** struct drm_xe_ext_vm_set_property - VM set property extension */
+-struct drm_xe_ext_vm_set_property {
++/** struct drm_xe_ext_set_property - XE set property extension */
++struct drm_xe_ext_set_property {
+ 	/** @base: base user extension */
+ 	struct xe_user_extension base;
+ 
+-#define XE_VM_PROPERTY_BIND_OP_ERROR_CAPTURE_ADDRESS		0
+ 	/** @property: property to set */
+ 	__u32 property;
+ 
+@@ -593,6 +592,7 @@ struct drm_xe_ext_vm_set_property {
+ 
+ struct drm_xe_vm_create {
+ #define XE_VM_EXTENSION_SET_PROPERTY	0
++#define XE_VM_PROPERTY_BIND_OP_ERROR_CAPTURE_ADDRESS		0
+ 	/** @extensions: Pointer to the first extension struct, if any */
+ 	__u64 extensions;
+ 
+@@ -757,21 +757,6 @@ struct drm_xe_vm_bind {
+ 	__u64 reserved[2];
+ };
+ 
+-/** struct drm_xe_ext_exec_queue_set_property - exec queue set property extension */
+-struct drm_xe_ext_exec_queue_set_property {
+-	/** @base: base user extension */
+-	struct xe_user_extension base;
+-
+-	/** @property: property to set */
+-	__u32 property;
+-
+-	/** @pad: MBZ */
+-	__u32 pad;
+-
+-	/** @value: property value */
+-	__u64 value;
+-};
+-
  /**
-  * blt_has_fast_copy
-  * @fd: drm fd
-diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-index b8b3d724d..d9c8883c7 100644
---- a/lib/intel_blt.h
-+++ b/lib/intel_blt.h
-@@ -175,6 +175,8 @@ bool blt_cmd_has_property(const struct intel_cmds_info *cmds_info,
- 			  uint32_t prop);
+  * struct drm_xe_exec_queue_set_property - exec queue set property
+  *
+diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
+index 68e17cc98..ca8d7cc13 100644
+--- a/tests/intel/xe_exec_reset.c
++++ b/tests/intel/xe_exec_reset.c
+@@ -185,13 +185,13 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
+ 	data = xe_bo_map(fd, bo, bo_size);
  
- bool blt_has_block_copy(int fd);
-+bool blt_has_mem_copy(int fd);
-+bool blt_has_mem_set(int fd);
- bool blt_has_fast_copy(int fd);
- bool blt_has_xy_src_copy(int fd);
- bool blt_has_xy_color(int fd);
-diff --git a/lib/intel_cmds_info.c b/lib/intel_cmds_info.c
-index 366b37f2c..2e51ec081 100644
---- a/lib/intel_cmds_info.c
-+++ b/lib/intel_cmds_info.c
-@@ -82,6 +82,16 @@ static const struct blt_cmd_info
- 						 BIT(T_TILE64),
- 						 BLT_CMD_EXTENDED);
+ 	for (i = 0; i < n_exec_queues; i++) {
+-		struct drm_xe_ext_exec_queue_set_property job_timeout = {
++		struct drm_xe_ext_set_property job_timeout = {
+ 			.base.next_extension = 0,
+ 			.base.name = XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
+ 			.property = XE_EXEC_QUEUE_SET_PROPERTY_JOB_TIMEOUT,
+ 			.value = 50,
+ 		};
+-		struct drm_xe_ext_exec_queue_set_property preempt_timeout = {
++		struct drm_xe_ext_set_property preempt_timeout = {
+ 			.base.next_extension = 0,
+ 			.base.name = XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
+ 			.property = XE_EXEC_QUEUE_SET_PROPERTY_PREEMPTION_TIMEOUT,
+@@ -372,13 +372,13 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 	data = xe_bo_map(fd, bo, bo_size);
  
-+static const struct blt_cmd_info
-+		pvc_mem_copy = BLT_INFO(MEM_COPY,
-+					BIT(M_LINEAR) |
-+					BIT(M_MATRIX));
-+
-+static const struct blt_cmd_info
-+		pvc_mem_set = BLT_INFO(MEM_SET,
-+				       BIT(M_LINEAR) |
-+				       BIT(M_MATRIX));
-+
- static const struct blt_cmd_info
- 		pre_gen6_xy_color_blt = BLT_INFO(XY_COLOR_BLT,
- 						 BIT(T_LINEAR) |
-@@ -154,6 +164,8 @@ const struct intel_cmds_info gen12_pvc_cmds_info = {
- 	.blt_cmds = {
- 		[XY_FAST_COPY] = &pvc_xy_fast_copy,
- 		[XY_BLOCK_COPY] = &pvc_xy_block_copy,
-+		[MEM_COPY] = &pvc_mem_copy,
-+		[MEM_SET] = &pvc_mem_set,
- 	}
- };
+ 	for (i = 0; i < n_exec_queues; i++) {
+-		struct drm_xe_ext_exec_queue_set_property job_timeout = {
++		struct drm_xe_ext_set_property job_timeout = {
+ 			.base.next_extension = 0,
+ 			.base.name = XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
+ 			.property = XE_EXEC_QUEUE_SET_PROPERTY_JOB_TIMEOUT,
+ 			.value = 50,
+ 		};
+-		struct drm_xe_ext_exec_queue_set_property preempt_timeout = {
++		struct drm_xe_ext_set_property preempt_timeout = {
+ 			.base.next_extension = 0,
+ 			.base.name = XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
+ 			.property = XE_EXEC_QUEUE_SET_PROPERTY_PREEMPTION_TIMEOUT,
+@@ -540,7 +540,7 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 	memset(data, 0, bo_size);
  
-diff --git a/lib/intel_cmds_info.h b/lib/intel_cmds_info.h
-index 91d0f15ec..7396215e3 100644
---- a/lib/intel_cmds_info.h
-+++ b/lib/intel_cmds_info.h
-@@ -18,8 +18,15 @@ enum blt_tiling_type {
- 	__BLT_MAX_TILING
- };
+ 	for (i = 0; i < n_exec_queues; i++) {
+-		struct drm_xe_ext_exec_queue_set_property preempt_timeout = {
++		struct drm_xe_ext_set_property preempt_timeout = {
+ 			.base.next_extension = 0,
+ 			.base.name = XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
+ 			.property = XE_EXEC_QUEUE_SET_PROPERTY_PREEMPTION_TIMEOUT,
+diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
+index 306d8113d..b22c9c052 100644
+--- a/tests/intel/xe_exec_threads.c
++++ b/tests/intel/xe_exec_threads.c
+@@ -518,7 +518,7 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
  
-+enum blt_copy_type {
-+	M_LINEAR,
-+	M_MATRIX,
-+};
-+
- enum blt_cmd_type {
- 	SRC_COPY,
-+	MEM_SET,
-+	MEM_COPY,
- 	XY_SRC_COPY,
- 	XY_FAST_COPY,
- 	XY_BLOCK_COPY,
+ 	memset(sync_all, 0, sizeof(sync_all));
+ 	for (i = 0; i < n_exec_queues; i++) {
+-		struct drm_xe_ext_exec_queue_set_property preempt_timeout = {
++		struct drm_xe_ext_set_property preempt_timeout = {
+ 			.base.next_extension = 0,
+ 			.base.name = XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
+ 			.property = XE_EXEC_QUEUE_SET_PROPERTY_PREEMPTION_TIMEOUT,
+@@ -1054,7 +1054,7 @@ static void threads(int fd, int flags)
+ 	pthread_cond_init(&cond, 0);
+ 
+ 	if (flags & SHARED_VM) {
+-		struct drm_xe_ext_vm_set_property ext = {
++		struct drm_xe_ext_set_property ext = {
+ 			.base.next_extension = 0,
+ 			.base.name = XE_VM_EXTENSION_SET_PROPERTY,
+ 			.property =
+diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+index f96305851..75e7a384b 100644
+--- a/tests/intel/xe_vm.c
++++ b/tests/intel/xe_vm.c
+@@ -404,7 +404,7 @@ static void vm_async_ops_err(int fd, bool destroy)
+ 	};
+ #define N_BINDS		32
+ 	struct drm_xe_vm_bind_op_error_capture capture = {};
+-	struct drm_xe_ext_vm_set_property ext = {
++	struct drm_xe_ext_set_property ext = {
+ 		.base.next_extension = 0,
+ 		.base.name = XE_VM_EXTENSION_SET_PROPERTY,
+ 		.property = XE_VM_PROPERTY_BIND_OP_ERROR_CAPTURE_ADDRESS,
 -- 
-2.39.1
+2.34.1
