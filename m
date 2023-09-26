@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 668C110E3D8
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 13:01:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4743A10E3E0
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 13:01:20 +0000 (UTC)
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 26 Sep 2023 13:00:39 +0000
-Message-Id: <20230926130054.6-10-francois.dugast@intel.com>
+Date: Tue, 26 Sep 2023 13:00:41 +0000
+Message-Id: <20230926130054.6-12-francois.dugast@intel.com>
 In-Reply-To: <20230926130054.6-1-francois.dugast@intel.com>
 References: <20230926130054.6-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 09/24] drm-uapi: Kill
- XE_VM_PROPERTY_BIND_OP_ERROR_CAPTURE_ADDRESS extension
+Subject: [igt-dev] [PATCH v3 11/24] drm-uapi/xe: Replace useless 'instance'
+ per unique gt_id
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,162 +26,112 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-Align with commit ("drm/xe: Kill XE_VM_PROPERTY_BIND_OP_ERROR_CAPTURE_ADDRESS extension")
+Align with commit ("drm/xe/uapi: Replace useless 'instance' per unique gt_id")
 
 Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 ---
- include/drm-uapi/xe_drm.h     | 23 +----------------------
- tests/intel/xe_exec_threads.c | 14 +-------------
- tests/intel/xe_vm.c           | 13 +------------
- 3 files changed, 3 insertions(+), 47 deletions(-)
+ include/drm-uapi/xe_drm.h | 65 ++++++++++++++++++++++++++-------------
+ tests/intel/xe_query.c    |  2 +-
+ 2 files changed, 44 insertions(+), 23 deletions(-)
 
 diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index 66acf49c4..336b77074 100644
+index 13c693393..68cc5e051 100644
 --- a/include/drm-uapi/xe_drm.h
 +++ b/include/drm-uapi/xe_drm.h
-@@ -555,23 +555,6 @@ struct drm_xe_gem_mmap_offset {
- 	__u64 reserved[2];
+@@ -337,6 +337,47 @@ struct drm_xe_query_config {
+ 	__u64 info[];
  };
  
--/**
-- * struct drm_xe_vm_bind_op_error_capture - format of VM bind op error capture
-- */
--struct drm_xe_vm_bind_op_error_capture {
--	/** @error: errno that occurred */
--	__s32 error;
++/**
++ * struct drm_xe_query_gt - describe an individual GT.
++ *
++ * To be used with drm_xe_query_gts, which will return a list with all the
++ * existing GT individual descriptions.
++ * Graphics Technology (GT) is a subset of a GPU/tile that is responsible for
++ * implementing graphics and/or media operations.
++ */
++struct drm_xe_query_gt {
++#define XE_QUERY_GT_TYPE_MAIN		0
++#define XE_QUERY_GT_TYPE_REMOTE		1
++#define XE_QUERY_GT_TYPE_MEDIA		2
++	/** @type: GT type: Main, Remote, or Media */
++	__u16 type;
++	/** @gt_id: Unique ID of this GT within the PCI Device */
++	__u16 gt_id;
++	/** @clock_freq: A clock frequency for timestamp */
++	__u32 clock_freq;
++	/** @features: Reserved for future information about GT features */
++	__u64 features;
++	/**
++	 * @native_mem_regions: Bit mask of instances from
++	 * drm_xe_query_mem_usage that lives on the same GPU/Tile and have
++	 * direct access.
++	 */
++	__u64 native_mem_regions;
++	/**
++	 * @slow_mem_regions: Bit mask of instances from
++	 * drm_xe_query_mem_usage that this GT can indirectly access, although
++	 * they live on a different GPU/Tile.
++	 */
++	__u64 slow_mem_regions;
++	/**
++	 * @inaccessible_mem_regions: Bit mask of instances from
++	 * drm_xe_query_mem_usage that is not accessible by this GT at all.
++	 */
++	__u64 inaccessible_mem_regions;
++	/** @reserved: Reserved */
++	__u64 reserved[8];
++};
++
+ /**
+  * struct drm_xe_query_gts - describe GTs
+  *
+@@ -347,30 +388,10 @@ struct drm_xe_query_config {
+ struct drm_xe_query_gts {
+ 	/** @num_gt: number of GTs returned in gts */
+ 	__u32 num_gt;
 -
--	/** @op: operation that encounter an error */
--	__u32 op;
+ 	/** @pad: MBZ */
+ 	__u32 pad;
 -
--	/** @addr: address of bind op */
--	__u64 addr;
--
--	/** @size: size of bind */
--	__u64 size;
--};
--
- /** struct drm_xe_ext_set_property - XE set property extension */
- struct drm_xe_ext_set_property {
- 	/** @base: base user extension */
-@@ -592,7 +575,6 @@ struct drm_xe_ext_set_property {
- 
- struct drm_xe_vm_create {
- #define XE_VM_EXTENSION_SET_PROPERTY	0
--#define XE_VM_PROPERTY_BIND_OP_ERROR_CAPTURE_ADDRESS		0
- 	/** @extensions: Pointer to the first extension struct, if any */
- 	__u64 extensions;
- 
-@@ -677,10 +659,7 @@ struct drm_xe_vm_bind_op {
- 	 * practice the bind op is good and will complete.
- 	 *
- 	 * If this flag is set and doesn't return an error, the bind op can
--	 * still fail and recovery is needed. If configured, the bind op that
--	 * caused the error will be captured in drm_xe_vm_bind_op_error_capture.
--	 * Once the user sees the error (via a ufence +
--	 * XE_VM_PROPERTY_BIND_OP_ERROR_CAPTURE_ADDRESS), it should free memory
-+	 * still fail and recovery is needed. It should free memory
- 	 * via non-async unbinds, and then restart all queued async binds op via
- 	 * XE_VM_BIND_OP_RESTART. Or alternatively the user should destroy the
- 	 * VM.
-diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
-index b22c9c052..c9a51fc00 100644
---- a/tests/intel/xe_exec_threads.c
-+++ b/tests/intel/xe_exec_threads.c
-@@ -740,7 +740,6 @@ static void *thread(void *data)
- 
- struct vm_thread_data {
- 	pthread_t thread;
--	struct drm_xe_vm_bind_op_error_capture *capture;
- 	int fd;
- 	int vm;
+-	/**
+-	 * @gts: The GTs returned for this device
+-	 *
+-	 * TODO: convert drm_xe_query_gt to proper kernel-doc.
+-	 * TODO: Perhaps info about every mem region relative to this GT? e.g.
+-	 * bandwidth between this GT and remote region?
+-	 */
+-	struct drm_xe_query_gt {
+-#define XE_QUERY_GT_TYPE_MAIN		0
+-#define XE_QUERY_GT_TYPE_REMOTE		1
+-#define XE_QUERY_GT_TYPE_MEDIA		2
+-		__u16 type;
+-		__u16 instance;
+-		__u32 clock_freq;
+-		__u64 features;
+-		__u64 native_mem_regions;	/* bit mask of instances from drm_xe_query_mem_usage */
+-		__u64 slow_mem_regions;		/* bit mask of instances from drm_xe_query_mem_usage */
+-		__u64 inaccessible_mem_regions;	/* bit mask of instances from drm_xe_query_mem_usage */
+-		__u64 reserved[8];
+-	} gts[];
++	/** @gts: The GT list returned for this device */
++	struct drm_xe_query_gt gts[];
  };
-@@ -772,7 +771,6 @@ static void *vm_async_ops_err_thread(void *data)
- 		/* Restart and wait for next error */
- 		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND,
- 					&bind), 0);
--		args->capture->error = 0;
- 		ret = igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait);
- 	}
  
-@@ -1021,7 +1019,6 @@ static void threads(int fd, int flags)
- 	int n_hw_engines = 0, class;
- 	uint64_t i = 0;
- 	uint32_t vm_legacy_mode = 0, vm_compute_mode = 0;
--	struct drm_xe_vm_bind_op_error_capture capture = {};
- 	struct vm_thread_data vm_err_thread = {};
- 	bool go = false;
- 	int n_threads = 0;
-@@ -1054,23 +1051,14 @@ static void threads(int fd, int flags)
- 	pthread_cond_init(&cond, 0);
+ /**
+diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
+index acf069f46..eb8d52897 100644
+--- a/tests/intel/xe_query.c
++++ b/tests/intel/xe_query.c
+@@ -279,7 +279,7 @@ test_query_gts(int fd)
  
- 	if (flags & SHARED_VM) {
--		struct drm_xe_ext_set_property ext = {
--			.base.next_extension = 0,
--			.base.name = XE_VM_EXTENSION_SET_PROPERTY,
--			.property =
--				XE_VM_PROPERTY_BIND_OP_ERROR_CAPTURE_ADDRESS,
--			.value = to_user_pointer(&capture),
--		};
--
- 		vm_legacy_mode = xe_vm_create(fd,
- 					      DRM_XE_VM_CREATE_ASYNC_BIND_OPS,
--					      to_user_pointer(&ext));
-+					      0);
- 		vm_compute_mode = xe_vm_create(fd,
- 					       DRM_XE_VM_CREATE_ASYNC_BIND_OPS |
- 					       DRM_XE_VM_CREATE_COMPUTE_MODE,
- 					       0);
- 
--		vm_err_thread.capture = &capture;
- 		vm_err_thread.fd = fd;
- 		vm_err_thread.vm = vm_legacy_mode;
- 		pthread_create(&vm_err_thread.thread, 0,
-diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-index 75e7a384b..89df6149a 100644
---- a/tests/intel/xe_vm.c
-+++ b/tests/intel/xe_vm.c
-@@ -324,7 +324,6 @@ static void userptr_invalid(int fd)
- 
- struct vm_thread_data {
- 	pthread_t thread;
--	struct drm_xe_vm_bind_op_error_capture *capture;
- 	int fd;
- 	int vm;
- 	uint32_t bo;
-@@ -388,7 +387,6 @@ static void *vm_async_ops_err_thread(void *data)
- 		/* Restart and wait for next error */
- 		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND,
- 					&bind), 0);
--		args->capture->error = 0;
- 		ret = igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait);
- 	}
- 
-@@ -403,24 +401,15 @@ static void vm_async_ops_err(int fd, bool destroy)
- 		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
- 	};
- #define N_BINDS		32
--	struct drm_xe_vm_bind_op_error_capture capture = {};
--	struct drm_xe_ext_set_property ext = {
--		.base.next_extension = 0,
--		.base.name = XE_VM_EXTENSION_SET_PROPERTY,
--		.property = XE_VM_PROPERTY_BIND_OP_ERROR_CAPTURE_ADDRESS,
--		.value = to_user_pointer(&capture),
--	};
- 	struct vm_thread_data thread = {};
- 	uint32_t syncobjs[N_BINDS];
- 	size_t bo_size = 0x1000 * 32;
- 	uint32_t bo;
- 	int i, j;
- 
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS,
--			  to_user_pointer(&ext));
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
- 	bo = xe_bo_create(fd, 0, vm, bo_size);
- 
--	thread.capture = &capture;
- 	thread.fd = fd;
- 	thread.vm = vm;
- 	thread.bo = bo;
+ 	for (i = 0; i < gts->num_gt; i++) {
+ 		igt_info("type: %d\n", gts->gts[i].type);
+-		igt_info("instance: %d\n", gts->gts[i].instance);
++		igt_info("gt_id: %d\n", gts->gts[i].gt_id);
+ 		igt_info("clock_freq: %u\n", gts->gts[i].clock_freq);
+ 		igt_info("features: 0x%016llx\n", gts->gts[i].features);
+ 		igt_info("native_mem_regions: 0x%016llx\n",
 -- 
 2.34.1
