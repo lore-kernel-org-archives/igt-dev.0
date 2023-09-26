@@ -1,11 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D63FA10E361
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 08:16:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4E50210E361
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 08:19:31 +0000 (UTC)
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 26 Sep 2023 13:54:37 +0530
-Message-Id: <20230926082439.281514-1-kunal1.joshi@intel.com>
+Date: Tue, 26 Sep 2023 13:57:10 +0530
+Message-Id: <20230926082712.281687-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Subject: [igt-dev] [PATCH i-g-t 0/2] Move dpcd_(read/write) to igt_dpcd
