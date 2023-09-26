@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam04on2066.outbound.protection.outlook.com [40.107.102.66])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A7DAA10E350
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 05:59:07 +0000 (UTC)
-From: Jesse Zhang <jesse.zhang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Tue, 26 Sep 2023 13:58:57 +0800
-Message-ID: <20230926055857.3954111-1-jesse.zhang@amd.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6734B10E34D
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 05:58:35 +0000 (UTC)
+Message-ID: <36072188-701d-42de-2c73-76b0af077b65@intel.com>
+Date: Tue, 26 Sep 2023 11:28:30 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH] tests/amd_dispatch: add reset subtest
+To: Jeevan B <jeevan.b@intel.com>, igt-dev@lists.freedesktop.org
+References: <20230922151937.1188567-1-jeevan.b@intel.com>
+Content-Language: en-US
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20230922151937.1188567-1-jeevan.b@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH] tests/kms_setmode: Add info as comment for
+ valid scenario
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,95 +21,44 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Alex Deucher <alexander.deucher@amd.com>,
- Luben Tuikov <luben.tuikov@amd.com>, Christian
- Koenig <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add an amdgpu reset test to the suite
-V2:
-   - improve subject and description  (Kamil,Luben)
-   - sort the include alphabetically (Kamil)
-   - Optimize some code (Luben)
+Please change subject to "Add comment for valid scenario"
 
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Signed-off-by: Tim Huang <tim.huang@amd.com
-Reviewed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
----
- tests/amdgpu/amd_dispatch.c | 45 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 45 insertions(+)
+Remaining LGTM
 
-diff --git a/tests/amdgpu/amd_dispatch.c b/tests/amdgpu/amd_dispatch.c
-index 77d63f7ad..b79b80578 100644
---- a/tests/amdgpu/amd_dispatch.c
-+++ b/tests/amdgpu/amd_dispatch.c
-@@ -5,6 +5,9 @@
-  * Copyright 2023 Advanced Micro Devices, Inc.
-  */
- 
-+#include <fcntl.h>
-+#include <sys/stat.h>
-+#include <sys/sysmacros.h>
- #include "lib/amdgpu/amd_memory.h"
- #include "lib/amdgpu/amd_command_submission.h"
- #include "lib/amdgpu/amd_dispatch.h"
-@@ -21,6 +24,40 @@ amdgpu_dispatch_hang_slow_compute(amdgpu_device_handle device_handle)
- 	amdgpu_dispatch_hang_slow_helper(device_handle, AMDGPU_HW_IP_COMPUTE);
- }
- 
-+static void
-+amdgpu_gpu_reset_test(amdgpu_device_handle device_handle, int drm_amdgpu)
-+{
-+	amdgpu_context_handle context_handle;
-+	char debugfs_path[256], tmp[10];
-+	uint32_t hang_state, hangs;
-+	struct stat sbuf;
-+	int r, fd;
-+
-+	r = amdgpu_cs_ctx_create(device_handle, &context_handle);
-+	igt_assert_eq(r, 0);
-+
-+	r = fstat(drm_amdgpu, &sbuf);
-+	igt_assert_eq(r, 0);
-+
-+	sprintf(debugfs_path, "/sys/kernel/debug/dri/%d/amdgpu_gpu_recover", minor(sbuf.st_rdev));
-+	fd = open(debugfs_path, O_RDONLY);
-+	igt_assert_fd(fd);
-+
-+	r = read(fd, tmp, ARRAY_SIZE(tmp));
-+	igt_assert_lt(0,r);
-+
-+	r = amdgpu_cs_query_reset_state(context_handle, &hang_state, &hangs);
-+	igt_assert_eq(r, 0);
-+	igt_assert_eq(hang_state, AMDGPU_CTX_UNKNOWN_RESET);
-+
-+	close(fd);
-+	r = amdgpu_cs_ctx_free(context_handle);
-+	igt_assert_eq(r, 0);
-+
-+	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_GFX);
-+	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_COMPUTE);
-+}
-+
- igt_main
- {
- 	amdgpu_device_handle device;
-@@ -64,6 +101,14 @@ igt_main
- 		}
- 	}
- 
-+	igt_describe("Test-GPU-reset-using-amdgpu-debugfs-to-hang-the-job-on-gfx-ring");
-+	igt_subtest_with_dynamic("amdgpu-reset-test-gfx-with-IP-GFX") {
-+		if (arr_cap[AMD_IP_GFX]) {
-+			igt_dynamic_f("amdgpu-reset-gfx")
-+			amdgpu_gpu_reset_test(device,fd);
-+		}
-+	}
-+
- 	igt_fixture {
- 		amdgpu_device_deinitialize(device);
- 		drm_close_driver(fd);
--- 
-2.25.1
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+
+On 22-Sep-23 8:49 PM, Jeevan B wrote:
+> Describe the valid scenario for 'basic-clone-single-crtc' and
+> 'basic-clone-single-crtc' tests, as these tests are skipped if
+> a valid scenario is not found, which can cause confusion during
+> bug analysis.
+> 
+> Signed-off-by: Jeevan B <jeevan.b@intel.com>
+> cc: Swati Sharma <swati2.sharma@intel.com>
+> ---
+>   tests/kms_setmode.c | 8 ++++++++
+>   1 file changed, 8 insertions(+)
+> 
+> diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
+> index 32a6fb690..a669cc1df 100644
+> --- a/tests/kms_setmode.c
+> +++ b/tests/kms_setmode.c
+> @@ -979,6 +979,14 @@ const char *help_str =
+>   	"  -t <test id>\tRun only the test with this id\n"
+>   	"  -e \t\tExtend to run on all pipes. (By default tests will run on two pipes only)\n";
+>   
+> +/*
+> + * basic-clone-single-crtc allows the use of a single CRTC for two connectors, such as VGA/HDMI,
+> + * VGA/DP, and HDMI/HDMI, which are the possible combinations. Similarly, for invalid-clone-exclusive-crtc,
+> + * when a connector uses a CRTC that is not compatible with the connector, for instance, DP/HDMI
+> + * can be used on certain pipes on old platforms.
+> + */
+> +
+> +
+>   igt_main_args("det:", NULL, help_str, opt_handler, NULL)
+>   {
+>   	const struct {
