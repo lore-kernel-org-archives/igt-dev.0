@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B445F10E385
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 09:18:39 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 07C1510E389
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 09:18:44 +0000 (UTC)
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 26 Sep 2023 08:44:17 +0000
-Message-ID: <20230926084451.1732748-3-marcin.bernatowicz@linux.intel.com>
+Date: Tue, 26 Sep 2023 08:44:18 +0000
+Message-ID: <20230926084451.1732748-4-marcin.bernatowicz@linux.intel.com>
 In-Reply-To: <20230926084451.1732748-1-marcin.bernatowicz@linux.intel.com>
 References: <20230926084451.1732748-1-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 02/14] benchmarks/gem_wsim: reposition the
- unbound duration boolean
+Subject: [igt-dev] [PATCH i-g-t 03/14] benchmarks/gem_wsim: fix scaling of
+ period steps
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,61 +24,51 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-All duration info is now in struct duration of w_step.
+Period steps take scale time (-F) command line option into account.
+This allows to scale workload without need to modify .wsim file
+
+ex. having following example.wsim
+
+1.VCS1.3000.0.1
+1.RCS.500-1000.-1.0
+1.RCS.3700.0.0
+1.RCS.1000.-2.0
+1.VCS2.2300.-2.0
+1.RCS.4700.-1.0
+1.VCS2.600.-1.1
+p.16000
+
+we can scale the whole workload x10 with:
+
+gem_wsim -w example.wsim -f 10 -F 10
+
+-f is for batch duration steps, -F for period and delay steps
 
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 ---
- benchmarks/gem_wsim.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ benchmarks/gem_wsim.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-index 7b5e62a3b..90a36f7de 100644
+index 90a36f7de..65061461d 100644
 --- a/benchmarks/gem_wsim.c
 +++ b/benchmarks/gem_wsim.c
-@@ -73,6 +73,7 @@ enum intel_engine_id {
- 
- struct duration {
- 	unsigned int min, max;
-+	bool unbound_duration;
- };
- 
- enum w_type
-@@ -145,7 +146,6 @@ struct w_step
- 	unsigned int context;
- 	unsigned int engine;
- 	struct duration duration;
--	bool unbound_duration;
- 	struct deps data_deps;
- 	struct deps fence_deps;
- 	int emit_fence;
-@@ -1130,7 +1130,7 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
- 				check_arg(intel_gen(intel_get_drm_devid(fd)) < 8,
- 					  "Infinite batch at step %u needs Gen8+!\n",
- 					  nr_steps);
--				step.unbound_duration = true;
-+				step.duration.unbound_duration = true;
- 			} else {
- 				tmpl = strtol(field, &sep, 10);
- 				check_arg(tmpl <= 0 || tmpl == LONG_MIN ||
-@@ -2172,8 +2172,8 @@ update_bb_start(struct workload *wrk, struct w_step *w)
- 
- 	/* ticks is inverted for MI_DO_COMPARE (less-than comparison) */
- 	ticks = 0;
--	if (!w->unbound_duration)
--		ticks = ~ns_to_ctx_ticks(1000 * get_duration(wrk, w));
-+	if (!w->duration.unbound_duration)
-+		ticks = ~ns_to_ctx_ticks(1000LL * get_duration(wrk, w));
- 
- 	*w->bb_duration = ticks;
- }
-@@ -2349,7 +2349,7 @@ static void *run_workload(void *data)
- 
- 				igt_assert(t_idx >= 0 && t_idx < i);
- 				igt_assert(wrk->steps[t_idx].type == BATCH);
--				igt_assert(wrk->steps[t_idx].unbound_duration);
-+				igt_assert(wrk->steps[t_idx].duration.unbound_duration);
- 
- 				*wrk->steps[t_idx].bb_duration = 0xffffffff;
- 				__sync_synchronize();
+@@ -899,8 +899,14 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+ 				int_field(DELAY, delay, tmp <= 0,
+ 					  "Invalid delay at step %u!\n");
+ 			} else if (!strcmp(field, "p")) {
+-				int_field(PERIOD, period, tmp <= 0,
+-					  "Invalid period at step %u!\n");
++				field = strtok_r(fstart, ".", &fctx);
++				if (field) {
++					tmp = atoi(field);
++					check_arg(tmp <= 0, "Invalid period at step %u!\n", nr_steps);
++					step.type = PERIOD;
++					step.period = __duration(tmp, scale_time);
++					goto add_step;
++				}
+ 			} else if (!strcmp(field, "P")) {
+ 				unsigned int nr = 0;
+ 				while ((field = strtok_r(fstart, ".", &fctx))) {
 -- 
 2.42.0
