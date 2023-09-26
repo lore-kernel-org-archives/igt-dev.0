@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============0778207326363194203=="
+Date: Tue, 26 Sep 2023 15:16:54 -0700
+From: Matt Roper <matthew.d.roper@intel.com>
+To: Lucas De Marchi <lucas.demarchi@intel.com>
+Message-ID: <20230926221654.GM2706891@mdroper-desk1.amr.corp.intel.com>
+References: <20230915132346.1845909-1-lucas.demarchi@intel.com>
+ <20230915132346.1845909-7-lucas.demarchi@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20230915132346.1845909-7-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
-Date: Tue, 26 Sep 2023 20:58:04 -0000
-Message-ID: <169576188402.20978.15279372200029742235@emeril.freedesktop.org>
-References: <20230926194952.64561-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20230926194952.64561-1-mohammed.thasleem@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Iga21zIGxl?=
- =?utf-8?q?ase_=28rev4=29?=
+Subject: Re: [igt-dev] [Intel-xe] [PATCH i-g-t 06/14] lib: Fork gen9_media.h
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,148 +17,281 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, intel-xe@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0778207326363194203==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Fri, Sep 15, 2023 at 06:23:38AM -0700, Lucas De Marchi wrote:
+> Fork gen9_media.h from gen8_media.h with the gen9 definitions that were
+> in that header and with a new struct gen9_surface_state. Although the
+> surface state is the same as for gen8, the meaning of at least mocs is
+> different. As a follow up the mocs definition will change for gen9 and
+> above.
+> 
+> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 
-== Series Details ==
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
 
-Series: kms lease (rev4)
-URL   : https://patchwork.freedesktop.org/series/122944/
-State : success
+> ---
+>  docs/reference/igt-gpu-tools/meson.build |   1 +
+>  lib/gen8_media.h                         |  14 ---
+>  lib/gen9_media.h                         | 143 +++++++++++++++++++++++
+>  lib/gpu_cmds.c                           |   4 +-
+>  lib/gpu_cmds.h                           |   1 +
+>  lib/intel_compute.c                      |   1 +
+>  lib/media_fill.c                         |   1 +
+>  7 files changed, 149 insertions(+), 16 deletions(-)
+>  create mode 100644 lib/gen9_media.h
+> 
+> diff --git a/docs/reference/igt-gpu-tools/meson.build b/docs/reference/igt-gpu-tools/meson.build
+> index 513385b4b..d5db95e40 100644
+> --- a/docs/reference/igt-gpu-tools/meson.build
+> +++ b/docs/reference/igt-gpu-tools/meson.build
+> @@ -6,6 +6,7 @@ ignore_headers = [
+>  	'gen7_render.h',
+>  	'gen8_media.h',
+>  	'gen8_render.h',
+> +	'gen9_media.h',
+>  	'gpgpu_fill.h',
+>  	'i830_reg.h',
+>  	'i915_3d.h',
+> diff --git a/lib/gen8_media.h b/lib/gen8_media.h
+> index 07ea2ac03..c1807629e 100644
+> --- a/lib/gen8_media.h
+> +++ b/lib/gen8_media.h
+> @@ -207,18 +207,4 @@ struct gen8_surface_state
+>  	} ss15;
+>  };
+>  
+> -
+> -#define GEN9_PIPELINE_SELECTION_MASK		(3 << 8)
+> -
+> -/*  If enabled, it will force awake media enginee and the following instructions
+> - *  will require that the media enginee is awake.
+> - */
+> -#define GEN9_FORCE_MEDIA_AWAKE_DISABLE		(0 << 5)
+> -#define GEN9_FORCE_MEDIA_AWAKE_ENABLE		(1 << 5)
+> -#define GEN9_FORCE_MEDIA_AWAKE_MASK		(1 << 13)
+> -
+> -#define GEN9_SAMPLER_DOP_GATE_DISABLE		(0 << 4)
+> -#define GEN9_SAMPLER_DOP_GATE_ENABLE		(1 << 4)
+> -#define GEN9_SAMPLER_DOP_GATE_MASK		(1 << 12)
+> -
+>  #endif /* GEN8_MEDIA_H */
+> diff --git a/lib/gen9_media.h b/lib/gen9_media.h
+> new file mode 100644
+> index 000000000..414001dfd
+> --- /dev/null
+> +++ b/lib/gen9_media.h
+> @@ -0,0 +1,143 @@
+> +#ifndef GEN9_MEDIA_H
+> +#define GEN9_MEDIA_H
+> +
+> +#include <stdint.h>
+> +#include "surfaceformat.h"
+> +#include "gen4_render.h"
+> +
+> +#define GEN9_PIPELINE_SELECTION_MASK		(3 << 8)
+> +
+> +/*  If enabled, it will force awake media enginee and the following instructions
+> + *  will require that the media enginee is awake.
+> + */
+> +#define GEN9_FORCE_MEDIA_AWAKE_DISABLE		(0 << 5)
+> +#define GEN9_FORCE_MEDIA_AWAKE_ENABLE		(1 << 5)
+> +#define GEN9_FORCE_MEDIA_AWAKE_MASK		(1 << 13)
+> +
+> +#define GEN9_SAMPLER_DOP_GATE_DISABLE		(0 << 4)
+> +#define GEN9_SAMPLER_DOP_GATE_ENABLE		(1 << 4)
+> +#define GEN9_SAMPLER_DOP_GATE_MASK		(1 << 12)
+> +
+> +struct gen9_surface_state
+> +{
+> +	struct {
+> +		uint32_t cube_pos_z:1;
+> +		uint32_t cube_neg_z:1;
+> +		uint32_t cube_pos_y:1;
+> +		uint32_t cube_neg_y:1;
+> +		uint32_t cube_pos_x:1;
+> +		uint32_t cube_neg_x:1;
+> +		uint32_t media_boundary_pixel_mode:2;
+> +		uint32_t render_cache_read_write:1;
+> +		uint32_t sampler_l2_bypass_disable:1;
+> +		uint32_t vert_line_stride_ofs:1;
+> +		uint32_t vert_line_stride:1;
+> +		uint32_t tiled_mode:2;
+> +		uint32_t horizontal_alignment:2;
+> +		uint32_t vertical_alignment:2;
+> +		uint32_t surface_format:9;     /**< BRW_SURFACEFORMAT_x */
+> +		uint32_t pad0:1;
+> +		uint32_t is_array:1;
+> +		uint32_t surface_type:3;       /**< BRW_SURFACE_1D/2D/3D/CUBE */
+> +	} ss0;
+> +
+> +	struct {
+> +		uint32_t qpitch:15;
+> +		uint32_t pad1:4;
+> +		uint32_t base_mip_level:5;
+> +		uint32_t memory_object_control:7;
+> +		uint32_t pad0:1;
+> +	} ss1;
+> +
+> +	struct {
+> +		uint32_t width:14;
+> +		uint32_t pad1:2;
+> +		uint32_t height:14;
+> +		uint32_t pad0:2;
+> +	} ss2;
+> +
+> +	struct {
+> +		uint32_t pitch:18;
+> +		uint32_t pad:3;
+> +		uint32_t depth:11;
+> +	} ss3;
+> +
+> +	struct {
+> +		uint32_t multisample_position_palette_index:3;
+> +		uint32_t num_multisamples:3;
+> +		uint32_t multisampled_surface_storage_format:1;
+> +		uint32_t render_target_view_extent:11;
+> +		uint32_t min_array_elt:11;
+> +		uint32_t rotation:2;
+> +		uint32_t force_ncmp_reduce_type:1;
+> +	} ss4;
+> +
+> +	struct {
+> +		uint32_t mip_count:4;
+> +		uint32_t min_lod:4;
+> +		uint32_t pad3:6;
+> +		uint32_t coherency_type:1;
+> +		uint32_t pad2:5;
+> +		uint32_t ewa_disable_for_cube:1;
+> +		uint32_t y_offset:3;
+> +		uint32_t pad0:1;
+> +		uint32_t x_offset:7;
+> +	} ss5;
+> +
+> +	struct {
+> +		uint32_t pad; /* Multisample Control Surface stuff */
+> +	} ss6;
+> +
+> +	struct {
+> +		uint32_t resource_min_lod:12;
+> +
+> +		/* Only on Haswell */
+> +		uint32_t pad0:4;
+> +		uint32_t shader_chanel_select_a:3;
+> +		uint32_t shader_chanel_select_b:3;
+> +		uint32_t shader_chanel_select_g:3;
+> +		uint32_t shader_chanel_select_r:3;
+> +
+> +		uint32_t alpha_clear_color:1;
+> +		uint32_t blue_clear_color:1;
+> +		uint32_t green_clear_color:1;
+> +		uint32_t red_clear_color:1;
+> +	} ss7;
+> +
+> +	struct {
+> +		uint32_t base_addr;
+> +	} ss8;
+> +
+> +	struct {
+> +		uint32_t base_addr_hi:16;
+> +		uint32_t pad0:16;
+> +	} ss9;
+> +
+> +	struct {
+> +		uint32_t pad0:12;
+> +		uint32_t aux_base_addr:20;
+> +	} ss10;
+> +
+> +	struct {
+> +		uint32_t aux_base_addr_hi:16;
+> +		uint32_t pad:16;
+> +	} ss11;
+> +
+> +	struct {
+> +		uint32_t hiz_depth_clear_value;
+> +	} ss12;
+> +
+> +	struct {
+> +		uint32_t reserved;
+> +	} ss13;
+> +
+> +	struct {
+> +		uint32_t reserved;
+> +	} ss14;
+> +
+> +	struct {
+> +		uint32_t reserved;
+> +	} ss15;
+> +};
+> +
+> +#endif /* GEN9_MEDIA_H */
+> diff --git a/lib/gpu_cmds.c b/lib/gpu_cmds.c
+> index e53580e65..61b18d20d 100644
+> --- a/lib/gpu_cmds.c
+> +++ b/lib/gpu_cmds.c
+> @@ -191,7 +191,7 @@ gen9_fill_surface_state(struct intel_bb *ibb,
+>  			uint32_t format,
+>  			int is_dst)
+>  {
+> -	struct gen8_surface_state *ss;
+> +	struct gen9_surface_state *ss;
+>  	uint32_t write_domain, read_domain, offset;
+>  	uint64_t address;
+>  	enum intel_buf_mocs mocs = intel_buf_get_mocs(buf);
+> @@ -252,7 +252,7 @@ gen11_fill_surface_state(struct intel_bb *ibb,
+>  			 uint32_t horizontal_alignment,
+>  			 int is_dst)
+>  {
+> -	struct gen8_surface_state *ss;
+> +	struct gen9_surface_state *ss;
+>  	uint32_t write_domain, read_domain, offset;
+>  	uint64_t address;
+>  	enum intel_buf_mocs mocs = intel_buf_get_mocs(buf);
+> diff --git a/lib/gpu_cmds.h b/lib/gpu_cmds.h
+> index 5ac007cc4..348c6c945 100644
+> --- a/lib/gpu_cmds.h
+> +++ b/lib/gpu_cmds.h
+> @@ -30,6 +30,7 @@
+>  #include "media_fill.h"
+>  #include "gen7_media.h"
+>  #include "gen8_media.h"
+> +#include "gen9_media.h"
+>  #include "xehp_media.h"
+>  #include "intel_reg.h"
+>  #include "drmtest.h"
+> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
+> index 4f6716d23..b79b73cc0 100644
+> --- a/lib/intel_compute.c
+> +++ b/lib/intel_compute.c
+> @@ -12,6 +12,7 @@
+>  #include "igt.h"
+>  #include "gen7_media.h"
+>  #include "gen8_media.h"
+> +#include "gen9_media.h"
+>  #include "intel_compute.h"
+>  #include "lib/igt_syncobj.h"
+>  #include "lib/intel_reg.h"
+> diff --git a/lib/media_fill.c b/lib/media_fill.c
+> index 2520995d9..88d83061a 100644
+> --- a/lib/media_fill.c
+> +++ b/lib/media_fill.c
+> @@ -27,6 +27,7 @@
+>  #include "media_fill.h"
+>  #include "gen7_media.h"
+>  #include "gen8_media.h"
+> +#include "gen9_media.h"
+>  #include "intel_reg.h"
+>  #include "drmtest.h"
+>  #include "gpu_cmds.h"
+> -- 
+> 2.40.1
+> 
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_13682 -> IGTPW_9883
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9883/index.html
-
-Participating hosts (41 -> 26)
-------------------------------
-
-  Missing    (15): bat-dg2-14 bat-adlp-11 bat-adlp-9 bat-dg2-9 fi-snb-2520m fi-hsw-4770 bat-adln-1 fi-kbl-x1275 fi-cfl-8109u bat-rplp-1 bat-dg2-13 fi-blb-e6850 fi-bsw-nick bat-mtlp-8 bat-mtlp-6 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_9883 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-glk-j4005:       [PASS][1] -> [DMESG-FAIL][2] ([i915#5334])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13682/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9883/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - fi-kbl-guc:         [FAIL][3] ([IGT#3]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13682/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9883/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
-
-  
-  [IGT#3]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3
-  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7503 -> IGTPW_9883
-
-  CI-20190529: 20190529
-  CI_DRM_13682: a42554bf0755b80fdfb8e91ca35ae6835bb3534d @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_9883: 9883
-  IGT_7503: 7503
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9883/index.html
-
---===============0778207326363194203==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>kms lease (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122944/">https://patchwork.freedesktop.org/series/122944/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9883/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9883/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_13682 -&gt; IGTPW_9883</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9883/index.html</p>
-<h2>Participating hosts (41 -&gt; 26)</h2>
-<p>Missing    (15): bat-dg2-14 bat-adlp-11 bat-adlp-9 bat-dg2-9 fi-snb-2520m fi-hsw-4770 bat-adln-1 fi-kbl-x1275 fi-cfl-8109u bat-rplp-1 bat-dg2-13 fi-blb-e6850 fi-bsw-nick bat-mtlp-8 bat-mtlp-6 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_9883 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@i915_selftest@live@gt_heartbeat:<ul>
-<li>fi-glk-j4005:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13682/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9883/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_hdmi_inject@inject-audio:<ul>
-<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13682/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3">IGT#3</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9883/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7503 -&gt; IGTPW_9883</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13682: a42554bf0755b80fdfb8e91ca35ae6835bb3534d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_9883: 9883<br />
-  IGT_7503: 7503</p>
-
-</body>
-</html>
-
---===============0778207326363194203==--
+-- 
+Matt Roper
+Graphics Software Engineer
+Linux GPU Platform Enablement
+Intel Corporation
