@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 61A0F10E5A4
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Sep 2023 20:10:35 +0000 (UTC)
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D525010E385
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 09:20:08 +0000 (UTC)
+From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 27 Sep 2023 22:10:23 +0200
-Message-ID: <20230927201025.132679-1-kamil.konieczny@linux.intel.com>
+Date: Tue, 26 Sep 2023 08:44:28 +0000
+Message-ID: <20230926084451.1732748-14-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20230926084451.1732748-1-marcin.bernatowicz@linux.intel.com>
+References: <20230926084451.1732748-1-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 0/2] drmtest changes for running tests on
- multi-gpu
+Subject: [igt-dev] [PATCH i-g-t 13/14] benchmarks/gem_wsim: extract prepare
+ working sets code to new function
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,40 +19,145 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: chris.p.wilson@linux.intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Allow to open other cards out of order with __drm_open_driver_another()
-and also introduce helper for multi-gpu scenarios. There is still a problem
-left when opening first device because it is useally already opened at
-first fixture but I will leave that for later. With that it works
-on four GPUs board, when first card is non-Intel one with no render
-device:
+No functional changes.
+Extracted prepare_working_sets function from prepare_workload.
 
-sudo IGT_DEVICE=pci:vendor=Intel,device=discrete,card=all build/tests/xe_create --r multigpu-create-massive-size
+Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+---
+ benchmarks/gem_wsim.c | 106 +++++++++++++++++++++++-------------------
+ 1 file changed, 58 insertions(+), 48 deletions(-)
 
-Opened device: /dev/dri/card1
-Starting subtest: multigpu-create-massive-size
-<g:1> Opened device: /dev/dri/card2
-<g:2> Opened device: /dev/dri/card3
-<g:3> Opened device: /dev/dri/card4
-Subtest multigpu-create-massive-size: SUCCESS (0.209s)
-
-v3: fixes in test (Zbigniew)
-  fixes in drmlib functions (Zbigniew, Kamil)
-v4: corrected test description (Kamil)
-v5: restore boundary index for already opened device (Kamil)
-
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-
-Kamil Konieczny (2):
-  lib/drmtest: allow out of order device opening
-  tests/intel/xe_create: extend massive subtest to multi-gpu
-
- lib/drmtest.c           | 24 +++++++++++++++++++-----
- tests/intel/xe_create.c | 25 +++++++++++++++++++++++++
- 2 files changed, 44 insertions(+), 5 deletions(-)
-
+diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
+index 55f8d9b1b..7703ca822 100644
+--- a/benchmarks/gem_wsim.c
++++ b/benchmarks/gem_wsim.c
+@@ -1964,10 +1964,66 @@ static int prepare_contexts(unsigned int id, struct workload *wrk)
+ 	return 0;
+ }
+ 
+-static int prepare_workload(unsigned int id, struct workload *wrk)
++static int prepare_working_sets(unsigned int id, struct workload *wrk)
+ {
+ 	struct working_set **sets;
+ 	unsigned long total = 0;
++	struct w_step *w;
++	int i;
++
++	/*
++	 * Allocate working sets.
++	 */
++	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
++		if (w->type == WORKINGSET && !w->working_set.shared)
++			total += allocate_working_set(wrk, &w->working_set);
++	}
++
++	if (verbose > 2)
++		printf("%u: %lu bytes in working sets.\n", wrk->id, total);
++
++	/*
++	 * Map of working set ids.
++	 */
++	wrk->max_working_set_id = -1;
++	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
++		if (w->type == WORKINGSET &&
++		    w->working_set.id > wrk->max_working_set_id)
++			wrk->max_working_set_id = w->working_set.id;
++	}
++
++	sets = wrk->working_sets;
++	wrk->working_sets = calloc(wrk->max_working_set_id + 1,
++				   sizeof(*wrk->working_sets));
++	igt_assert(wrk->working_sets);
++
++	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
++		struct working_set *set;
++
++		if (w->type != WORKINGSET)
++			continue;
++
++		if (!w->working_set.shared) {
++			set = &w->working_set;
++		} else {
++			igt_assert(sets);
++
++			set = sets[w->working_set.id];
++			igt_assert(set->shared);
++			igt_assert(set->sizes);
++		}
++
++		wrk->working_sets[w->working_set.id] = set;
++	}
++
++	if (sets)
++		free(sets);
++
++	return 0;
++}
++
++static int prepare_workload(unsigned int id, struct workload *wrk)
++{
+ 	struct w_step *w;
+ 	int i, j;
+ 
+@@ -2019,53 +2075,7 @@ static int prepare_workload(unsigned int id, struct workload *wrk)
+ 		}
+ 	}
+ 
+-	/*
+-	 * Allocate working sets.
+-	 */
+-	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
+-		if (w->type == WORKINGSET && !w->working_set.shared)
+-			total += allocate_working_set(wrk, &w->working_set);
+-	}
+-
+-	if (verbose > 2)
+-		printf("%u: %lu bytes in working sets.\n", wrk->id, total);
+-
+-	/*
+-	 * Map of working set ids.
+-	 */
+-	wrk->max_working_set_id = -1;
+-	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
+-		if (w->type == WORKINGSET &&
+-		    w->working_set.id > wrk->max_working_set_id)
+-			wrk->max_working_set_id = w->working_set.id;
+-	}
+-
+-	sets = wrk->working_sets;
+-	wrk->working_sets = calloc(wrk->max_working_set_id + 1,
+-				   sizeof(*wrk->working_sets));
+-	igt_assert(wrk->working_sets);
+-
+-	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
+-		struct working_set *set;
+-
+-		if (w->type != WORKINGSET)
+-			continue;
+-
+-		if (!w->working_set.shared) {
+-			set = &w->working_set;
+-		} else {
+-			igt_assert(sets);
+-
+-			set = sets[w->working_set.id];
+-			igt_assert(set->shared);
+-			igt_assert(set->sizes);
+-		}
+-
+-		wrk->working_sets[w->working_set.id] = set;
+-	}
+-
+-	if (sets)
+-		free(sets);
++	prepare_working_sets(id, wrk);
+ 
+ 	/*
+ 	 * Allocate batch buffers.
 -- 
 2.42.0
