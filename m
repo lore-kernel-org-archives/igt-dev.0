@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============0674184248719011180=="
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1238610E3D7
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 13:01:04 +0000 (UTC)
+From: Francois Dugast <francois.dugast@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 26 Sep 2023 13:00:30 +0000
+Message-Id: <20230926130054.6-1-francois.dugast@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
-Date: Tue, 26 Sep 2023 12:42:41 -0000
-Message-ID: <169573216176.20978.5146158024583817254@emeril.freedesktop.org>
-References: <20230926110453.2722489-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230926110453.2722489-1-bhanuprakash.modem@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?intel/pm=3A_Separate_display_specific_tests_from_i915=5Fpm=5Frp?=
- =?utf-8?q?m_=28rev2=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH v3 00/24] uAPI Alignment - take 1 v3
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,547 +16,104 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0674184248719011180==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+As a result of the uAPI review efforts started by Thomas[1],
+we have identified many updates on our uAPI that would lead to
+breakage in the compatibility. What it is not acceptable after
+we are merged upstream. So, let's break it before it is too late,
+and start upstreaming a good, reliable and clean uapi.
 
-== Series Details ==
+Most of this work on putting these patches together for a single
+shot was led by Francois.
 
-Series: tests/intel/pm: Separate display specific tests from i915_pm_rpm (rev2)
-URL   : https://patchwork.freedesktop.org/series/123750/
-State : success
+[1] - https://lore.kernel.org/all/863bebd0c624d6fc2b38c0a06b63e468b4185128.camel@linux.intel.com/
 
-== Summary ==
+Francois Dugast (9):
+  drm-uapi/xe_drm: Separate VM_BIND's operation and flag, align with
+    latest uapi
+  drm-uapi/xe_drm: Remove MMIO ioctl and align with latest uapi
+  drm-uapi/xe: Align with uAPI to query micro-controler firmware version
+  drm-uapi/xe: Align with DRM_XE_DEVICE_QUERY_HWCONFIG documentation
+  drm-uapi/xe: Align with uAPI to pad to drm_xe_engine_class_instance
+  drm-uapi/xe: Align with uAPI update query HuC micro-controler firmware
+    version
+  drm-uapi/xe: Align with uAPI update for query config num_params
+  drm-uapi/xe: Align with uAPI update to add DRM_ prefix in uAPI
+    constants
+  drm-uapi/xe: Align with uAPI update to add _FLAG to constants usable
+    for flags
 
-CI Bug Log - changes from CI_DRM_13681 -> IGTPW_9877
-====================================================
+Matthew Brost (4):
+  xe_exec_balancer: Enable parallel submission and compute mode
+  xe_exec_threads: Use DRM_XE_VM_CREATE_COMPUTE_MODE when creating a
+    compute VM
+  xe: Update uAPI and remove XE_EXEC_QUEUE_SET_PROPERTY_COMPUTE_MODE
+  xe: Update to new VM bind uAPI
 
-Summary
--------
+Rodrigo Vivi (10):
+  drm-uapi/xe_drm: Align with new PMU interface
+  drm-uapi/xe: Use common drm_xe_ext_set_property extension
+  drm-uapi: Kill XE_VM_PROPERTY_BIND_OP_ERROR_CAPTURE_ADDRESS extension
+  drm-uapi/xe: Replace useless 'instance' per unique gt_id
+  drm-uapi/xe: Remove unused field of drm_xe_query_gt
+  drm-uapi/xe: Rename gts to gt_list
+  drm-uapi/xe: Fix naming of XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY
+  drm-uapi/xe: Align with documentation updates
+  drm-uapi/xe: Align with Crystal Reference Clock updates
+  drm-uapi/xe: Align with extension of drm_xe_vm_bind_op
 
-  **SUCCESS**
+Umesh Nerlige Ramappa (1):
+  tests/intel/xe_query: Add a test for querying cs cycles
 
-  No regressions found.
+ include/drm-uapi/xe_drm.h                | 542 +++++++++++++----------
+ lib/igt_fb.c                             |   2 +-
+ lib/intel_batchbuffer.c                  |  25 +-
+ lib/intel_compute.c                      |   6 +-
+ lib/intel_ctx.c                          |   4 +-
+ lib/xe/xe_ioctl.c                        |  54 +--
+ lib/xe/xe_ioctl.h                        |   9 +-
+ lib/xe/xe_query.c                        |  93 ++--
+ lib/xe/xe_query.h                        |  15 +-
+ lib/xe/xe_spin.c                         |  15 +-
+ lib/xe/xe_util.c                         |  15 +-
+ lib/xe/xe_util.h                         |   4 +-
+ tests/intel-ci/xe-fast-feedback.testlist |   4 +-
+ tests/intel/xe_ccs.c                     |   8 +-
+ tests/intel/xe_create.c                  |   6 +-
+ tests/intel/xe_debugfs.c                 |  14 +-
+ tests/intel/xe_dma_buf_sync.c            |   4 +-
+ tests/intel/xe_drm_fdinfo.c              |  20 +-
+ tests/intel/xe_evict.c                   |  51 +--
+ tests/intel/xe_exec_balancer.c           |  63 +--
+ tests/intel/xe_exec_basic.c              |  28 +-
+ tests/intel/xe_exec_compute_mode.c       |  30 +-
+ tests/intel/xe_exec_fault_mode.c         |  20 +-
+ tests/intel/xe_exec_reset.c              |  80 ++--
+ tests/intel/xe_exec_store.c              |  16 +-
+ tests/intel/xe_exec_threads.c            | 179 +++-----
+ tests/intel/xe_exercise_blt.c            |   6 +-
+ tests/intel/xe_guc_pc.c                  |  12 +-
+ tests/intel/xe_huc_copy.c                |   4 +-
+ tests/intel/xe_intel_bb.c                |   2 +-
+ tests/intel/xe_mmio.c                    |  91 ----
+ tests/intel/xe_noexec_ping_pong.c        |  12 +-
+ tests/intel/xe_pm.c                      |  14 +-
+ tests/intel/xe_pm_residency.c            |   2 +-
+ tests/intel/xe_query.c                   | 272 ++++++++++--
+ tests/intel/xe_spin_batch.c              |   2 +-
+ tests/intel/xe_vm.c                      | 316 +++----------
+ tests/intel/xe_waitfence.c               |  21 +-
+ tests/kms_flip.c                         |   0
+ tests/meson.build                        |   1 -
+ tools/meson.build                        |   1 -
+ tools/xe_reg.c                           | 366 ---------------
+ 42 files changed, 979 insertions(+), 1450 deletions(-)
+ delete mode 100644 tests/intel/xe_mmio.c
+ mode change 100755 => 100644 tests/kms_flip.c
+ delete mode 100644 tools/xe_reg.c
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/index.html
-
-Participating hosts (41 -> 38)
-------------------------------
-
-  Additional (1): bat-dg2-14 
-  Missing    (4): fi-kbl-soraka fi-hsw-4770 bat-dg2-9 fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_9877:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * {igt@kms_pm_rpm@basic-pci-d3-state} (NEW):
-    - {bat-dg2-14}:       NOTRUN -> [INCOMPLETE][1]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/bat-dg2-14/igt@kms_pm_rpm@basic-pci-d3-state.html
-
-  * {igt@kms_pm_rpm@module-reload} (NEW):
-    - bat-adls-5:         NOTRUN -> [WARN][2]
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/bat-adls-5/igt@kms_pm_rpm@module-reload.html
-    - fi-apl-guc:         NOTRUN -> [WARN][3]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-apl-guc/igt@kms_pm_rpm@module-reload.html
-    - bat-dg1-5:          NOTRUN -> [WARN][4]
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/bat-dg1-5/igt@kms_pm_rpm@module-reload.html
-    - bat-atsm-1:         NOTRUN -> [WARN][5]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/bat-atsm-1/igt@kms_pm_rpm@module-reload.html
-    - bat-jsl-3:          NOTRUN -> [WARN][6]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/bat-jsl-3/igt@kms_pm_rpm@module-reload.html
-    - fi-glk-j4005:       NOTRUN -> [WARN][7]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-glk-j4005/igt@kms_pm_rpm@module-reload.html
-    - bat-adlp-9:         NOTRUN -> [WARN][8]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/bat-adlp-9/igt@kms_pm_rpm@module-reload.html
-    - fi-skl-guc:         NOTRUN -> [WARN][9]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-skl-guc/igt@kms_pm_rpm@module-reload.html
-    - bat-dg2-11:         NOTRUN -> [WARN][10]
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/bat-dg2-11/igt@kms_pm_rpm@module-reload.html
-    - fi-cfl-8109u:       NOTRUN -> [WARN][11]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-cfl-8109u/igt@kms_pm_rpm@module-reload.html
-    - fi-kbl-8809g:       NOTRUN -> [WARN][12]
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-kbl-8809g/igt@kms_pm_rpm@module-reload.html
-    - fi-bsw-nick:        NOTRUN -> [WARN][13]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-bsw-nick/igt@kms_pm_rpm@module-reload.html
-    - fi-kbl-guc:         NOTRUN -> [WARN][14]
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-kbl-guc/igt@kms_pm_rpm@module-reload.html
-    - bat-adlm-1:         NOTRUN -> [WARN][15]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/bat-adlm-1/igt@kms_pm_rpm@module-reload.html
-    - fi-tgl-1115g4:      NOTRUN -> [WARN][16]
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-tgl-1115g4/igt@kms_pm_rpm@module-reload.html
-    - fi-bsw-n3050:       NOTRUN -> [WARN][17]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-bsw-n3050/igt@kms_pm_rpm@module-reload.html
-    - fi-cfl-guc:         NOTRUN -> [WARN][18]
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-cfl-guc/igt@kms_pm_rpm@module-reload.html
-    - bat-mtlp-6:         NOTRUN -> [WARN][19]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/bat-mtlp-6/igt@kms_pm_rpm@module-reload.html
-    - fi-kbl-x1275:       NOTRUN -> [WARN][20]
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-kbl-x1275/igt@kms_pm_rpm@module-reload.html
-    - bat-mtlp-8:         NOTRUN -> [WARN][21]
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/bat-mtlp-8/igt@kms_pm_rpm@module-reload.html
-    - bat-jsl-1:          NOTRUN -> [WARN][22]
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/bat-jsl-1/igt@kms_pm_rpm@module-reload.html
-    - fi-cfl-8700k:       NOTRUN -> [WARN][23]
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-cfl-8700k/igt@kms_pm_rpm@module-reload.html
-    - bat-rpls-1:         NOTRUN -> [WARN][24]
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/bat-rpls-1/igt@kms_pm_rpm@module-reload.html
-    - bat-kbl-2:          NOTRUN -> [WARN][25]
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/bat-kbl-2/igt@kms_pm_rpm@module-reload.html
-    - fi-rkl-11600:       NOTRUN -> [WARN][26]
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-rkl-11600/igt@kms_pm_rpm@module-reload.html
-    - fi-skl-6600u:       NOTRUN -> [WARN][27]
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-skl-6600u/igt@kms_pm_rpm@module-reload.html
-
-  
-New tests
----------
-
-  New tests have been introduced between CI_DRM_13681 and IGTPW_9877:
-
-### New IGT tests (3) ###
-
-  * igt@kms_pm_rpm@basic-pci-d3-state:
-    - Statuses : 1 abort(s) 1 incomplete(s) 26 pass(s) 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_pm_rpm@basic-rte:
-    - Statuses : 26 pass(s) 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_pm_rpm@module-reload:
-    - Statuses : 5 skip(s) 26 warn(s)
-    - Exec time: [0.0] s
-
-  
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_9877 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - fi-bsw-nick:        [PASS][28] -> [FAIL][29] ([i915#9276])
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13681/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html
-
-  * {igt@kms_pm_rpm@basic-pci-d3-state} (NEW):
-    - bat-adln-1:         NOTRUN -> [ABORT][30] ([i915#8668])
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/bat-adln-1/igt@kms_pm_rpm@basic-pci-d3-state.html
-    - fi-ivb-3770:        NOTRUN -> [SKIP][31] ([fdo#109271]) +2 other tests skip
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-ivb-3770/igt@kms_pm_rpm@basic-pci-d3-state.html
-    - fi-elk-e7500:       NOTRUN -> [SKIP][32] ([fdo#109271]) +2 other tests skip
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-elk-e7500/igt@kms_pm_rpm@basic-pci-d3-state.html
-    - fi-ilk-650:         NOTRUN -> [SKIP][33] ([fdo#109271]) +2 other tests skip
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-ilk-650/igt@kms_pm_rpm@basic-pci-d3-state.html
-    - fi-blb-e6850:       NOTRUN -> [SKIP][34] ([fdo#109271]) +2 other tests skip
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-blb-e6850/igt@kms_pm_rpm@basic-pci-d3-state.html
-
-  * {igt@kms_pm_rpm@module-reload} (NEW):
-    - fi-pnv-d510:        NOTRUN -> [SKIP][35] ([fdo#109271]) +2 other tests skip
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-pnv-d510/igt@kms_pm_rpm@module-reload.html
-
-  
-#### Warnings ####
-
-  * igt@i915_selftest@live@requests:
-    - bat-mtlp-8:         [ABORT][36] ([i915#9262]) -> [ABORT][37] ([i915#9414])
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13681/bat-mtlp-8/igt@i915_selftest@live@requests.html
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/bat-mtlp-8/igt@i915_selftest@live@requests.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3840]: https://gitlab.freedesktop.org/drm/intel/issues/3840
-  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
-  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
-  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
-  [i915#4213]: https://gitlab.freedesktop.org/drm/intel/issues/4213
-  [i915#4215]: https://gitlab.freedesktop.org/drm/intel/issues/4215
-  [i915#5190]: https://gitlab.freedesktop.org/drm/intel/issues/5190
-  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#5608]: https://gitlab.freedesktop.org/drm/intel/issues/5608
-  [i915#7952]: https://gitlab.freedesktop.org/drm/intel/issues/7952
-  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
-  [i915#9262]: https://gitlab.freedesktop.org/drm/intel/issues/9262
-  [i915#9276]: https://gitlab.freedesktop.org/drm/intel/issues/9276
-  [i915#9414]: https://gitlab.freedesktop.org/drm/intel/issues/9414
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7503 -> IGTPW_9877
-
-  CI-20190529: 20190529
-  CI_DRM_13681: b57407d0de043fc22b000a941a404ab103849e06 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_9877: 9877
-  IGT_7503: 7503
-
-
-Testlist changes
-----------------
-
-+igt@kms_pm_rpm@basic-pci-d3-state
-+igt@kms_pm_rpm@basic-rte
-+igt@kms_pm_rpm@cursor
-+igt@kms_pm_rpm@cursor-dpms
-+igt@kms_pm_rpm@dpms-lpsp
-+igt@kms_pm_rpm@dpms-mode-unset-lpsp
-+igt@kms_pm_rpm@dpms-mode-unset-non-lpsp
-+igt@kms_pm_rpm@dpms-non-lpsp
-+igt@kms_pm_rpm@drm-resources-equal
-+igt@kms_pm_rpm@fences
-+igt@kms_pm_rpm@fences-dpms
-+igt@kms_pm_rpm@i2c
-+igt@kms_pm_rpm@legacy-planes
-+igt@kms_pm_rpm@legacy-planes-dpms
-+igt@kms_pm_rpm@modeset-lpsp
-+igt@kms_pm_rpm@modeset-lpsp-stress
-+igt@kms_pm_rpm@modeset-lpsp-stress-no-wait
-+igt@kms_pm_rpm@modeset-non-lpsp
-+igt@kms_pm_rpm@modeset-non-lpsp-stress
-+igt@kms_pm_rpm@modeset-non-lpsp-stress-no-wait
-+igt@kms_pm_rpm@modeset-pc8-residency-stress
-+igt@kms_pm_rpm@modeset-stress-extra-wait
-+igt@kms_pm_rpm@module-reload
-+igt@kms_pm_rpm@pc8-residency
-+igt@kms_pm_rpm@pm-caching
-+igt@kms_pm_rpm@pm-tiling
-+igt@kms_pm_rpm@system-suspend-modeset
-+igt@kms_pm_rpm@universal-planes
-+igt@kms_pm_rpm@universal-planes-dpms
--igt@i915_pm_rpm@basic-pci-d3-state
--igt@i915_pm_rpm@basic-rte
--igt@i915_pm_rpm@cursor
--igt@i915_pm_rpm@cursor-dpms
--igt@i915_pm_rpm@dpms-lpsp
--igt@i915_pm_rpm@dpms-mode-unset-lpsp
--igt@i915_pm_rpm@dpms-mode-unset-non-lpsp
--igt@i915_pm_rpm@dpms-non-lpsp
--igt@i915_pm_rpm@drm-resources-equal
--igt@i915_pm_rpm@fences
--igt@i915_pm_rpm@fences-dpms
--igt@i915_pm_rpm@i2c
--igt@i915_pm_rpm@legacy-planes
--igt@i915_pm_rpm@legacy-planes-dpms
--igt@i915_pm_rpm@modeset-lpsp
--igt@i915_pm_rpm@modeset-lpsp-stress
--igt@i915_pm_rpm@modeset-lpsp-stress-no-wait
--igt@i915_pm_rpm@modeset-non-lpsp
--igt@i915_pm_rpm@modeset-non-lpsp-stress
--igt@i915_pm_rpm@modeset-non-lpsp-stress-no-wait
--igt@i915_pm_rpm@modeset-pc8-residency-stress
--igt@i915_pm_rpm@modeset-stress-extra-wait
--igt@i915_pm_rpm@pc8-residency
--igt@i915_pm_rpm@pm-caching
--igt@i915_pm_rpm@pm-tiling
--igt@i915_pm_rpm@system-suspend-modeset
--igt@i915_pm_rpm@universal-planes
--igt@i915_pm_rpm@universal-planes-dpms
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/index.html
-
---===============0674184248719011180==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/pm: Separate display specific tests from i915_pm_rpm (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123750/">https://patchwork.freedesktop.org/series/123750/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_13681 -&gt; IGTPW_9877</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/index.html</p>
-<h2>Participating hosts (41 -&gt; 38)</h2>
-<p>Additional (1): bat-dg2-14 <br />
-  Missing    (4): fi-kbl-soraka fi-hsw-4770 bat-dg2-9 fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_9877:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>{igt@kms_pm_rpm@basic-pci-d3-state} (NEW):</p>
-<ul>
-<li>{bat-dg2-14}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/bat-dg2-14/igt@kms_pm_rpm@basic-pci-d3-state.html">INCOMPLETE</a></li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_pm_rpm@module-reload} (NEW):</p>
-<ul>
-<li>
-<p>bat-adls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/bat-adls-5/igt@kms_pm_rpm@module-reload.html">WARN</a></p>
-</li>
-<li>
-<p>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-apl-guc/igt@kms_pm_rpm@module-reload.html">WARN</a></p>
-</li>
-<li>
-<p>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/bat-dg1-5/igt@kms_pm_rpm@module-reload.html">WARN</a></p>
-</li>
-<li>
-<p>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/bat-atsm-1/igt@kms_pm_rpm@module-reload.html">WARN</a></p>
-</li>
-<li>
-<p>bat-jsl-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/bat-jsl-3/igt@kms_pm_rpm@module-reload.html">WARN</a></p>
-</li>
-<li>
-<p>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-glk-j4005/igt@kms_pm_rpm@module-reload.html">WARN</a></p>
-</li>
-<li>
-<p>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/bat-adlp-9/igt@kms_pm_rpm@module-reload.html">WARN</a></p>
-</li>
-<li>
-<p>fi-skl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-skl-guc/igt@kms_pm_rpm@module-reload.html">WARN</a></p>
-</li>
-<li>
-<p>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/bat-dg2-11/igt@kms_pm_rpm@module-reload.html">WARN</a></p>
-</li>
-<li>
-<p>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-cfl-8109u/igt@kms_pm_rpm@module-reload.html">WARN</a></p>
-</li>
-<li>
-<p>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-kbl-8809g/igt@kms_pm_rpm@module-reload.html">WARN</a></p>
-</li>
-<li>
-<p>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-bsw-nick/igt@kms_pm_rpm@module-reload.html">WARN</a></p>
-</li>
-<li>
-<p>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-kbl-guc/igt@kms_pm_rpm@module-reload.html">WARN</a></p>
-</li>
-<li>
-<p>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/bat-adlm-1/igt@kms_pm_rpm@module-reload.html">WARN</a></p>
-</li>
-<li>
-<p>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-tgl-1115g4/igt@kms_pm_rpm@module-reload.html">WARN</a></p>
-</li>
-<li>
-<p>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-bsw-n3050/igt@kms_pm_rpm@module-reload.html">WARN</a></p>
-</li>
-<li>
-<p>fi-cfl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-cfl-guc/igt@kms_pm_rpm@module-reload.html">WARN</a></p>
-</li>
-<li>
-<p>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/bat-mtlp-6/igt@kms_pm_rpm@module-reload.html">WARN</a></p>
-</li>
-<li>
-<p>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-kbl-x1275/igt@kms_pm_rpm@module-reload.html">WARN</a></p>
-</li>
-<li>
-<p>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/bat-mtlp-8/igt@kms_pm_rpm@module-reload.html">WARN</a></p>
-</li>
-<li>
-<p>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/bat-jsl-1/igt@kms_pm_rpm@module-reload.html">WARN</a></p>
-</li>
-<li>
-<p>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-cfl-8700k/igt@kms_pm_rpm@module-reload.html">WARN</a></p>
-</li>
-<li>
-<p>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/bat-rpls-1/igt@kms_pm_rpm@module-reload.html">WARN</a></p>
-</li>
-<li>
-<p>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/bat-kbl-2/igt@kms_pm_rpm@module-reload.html">WARN</a></p>
-</li>
-<li>
-<p>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-rkl-11600/igt@kms_pm_rpm@module-reload.html">WARN</a></p>
-</li>
-<li>
-<p>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-skl-6600u/igt@kms_pm_rpm@module-reload.html">WARN</a></p>
-</li>
-</ul>
-</li>
-</ul>
-<h2>New tests</h2>
-<p>New tests have been introduced between CI_DRM_13681 and IGTPW_9877:</p>
-<h3>New IGT tests (3)</h3>
-<ul>
-<li>
-<p>igt@kms_pm_rpm@basic-pci-d3-state:</p>
-<ul>
-<li>Statuses : 1 abort(s) 1 incomplete(s) 26 pass(s) 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_rpm@basic-rte:</p>
-<ul>
-<li>Statuses : 26 pass(s) 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_rpm@module-reload:</p>
-<ul>
-<li>Statuses : 5 skip(s) 26 warn(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_9877 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13681/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9276">i915#9276</a>)</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_pm_rpm@basic-pci-d3-state} (NEW):</p>
-<ul>
-<li>
-<p>bat-adln-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/bat-adln-1/igt@kms_pm_rpm@basic-pci-d3-state.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</p>
-</li>
-<li>
-<p>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-ivb-3770/igt@kms_pm_rpm@basic-pci-d3-state.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 other tests skip</p>
-</li>
-<li>
-<p>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-elk-e7500/igt@kms_pm_rpm@basic-pci-d3-state.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 other tests skip</p>
-</li>
-<li>
-<p>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-ilk-650/igt@kms_pm_rpm@basic-pci-d3-state.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 other tests skip</p>
-</li>
-<li>
-<p>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-blb-e6850/igt@kms_pm_rpm@basic-pci-d3-state.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 other tests skip</p>
-</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_pm_rpm@module-reload} (NEW):</p>
-<ul>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/fi-pnv-d510/igt@kms_pm_rpm@module-reload.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@i915_selftest@live@requests:<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13681/bat-mtlp-8/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9262">i915#9262</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9877/bat-mtlp-8/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9414">i915#9414</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7503 -&gt; IGTPW_9877</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13681: b57407d0de043fc22b000a941a404ab103849e06 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_9877: 9877<br />
-  IGT_7503: 7503</p>
-<h2>Testlist changes</h2>
-<p>+igt@kms_pm_rpm@basic-pci-d3-state<br />
-+igt@kms_pm_rpm@basic-rte<br />
-+igt@kms_pm_rpm@cursor<br />
-+igt@kms_pm_rpm@cursor-dpms<br />
-+igt@kms_pm_rpm@dpms-lpsp<br />
-+igt@kms_pm_rpm@dpms-mode-unset-lpsp<br />
-+igt@kms_pm_rpm@dpms-mode-unset-non-lpsp<br />
-+igt@kms_pm_rpm@dpms-non-lpsp<br />
-+igt@kms_pm_rpm@drm-resources-equal<br />
-+igt@kms_pm_rpm@fences<br />
-+igt@kms_pm_rpm@fences-dpms<br />
-+igt@kms_pm_rpm@i2c<br />
-+igt@kms_pm_rpm@legacy-planes<br />
-+igt@kms_pm_rpm@legacy-planes-dpms<br />
-+igt@kms_pm_rpm@modeset-lpsp<br />
-+igt@kms_pm_rpm@modeset-lpsp-stress<br />
-+igt@kms_pm_rpm@modeset-lpsp-stress-no-wait<br />
-+igt@kms_pm_rpm@modeset-non-lpsp<br />
-+igt@kms_pm_rpm@modeset-non-lpsp-stress<br />
-+igt@kms_pm_rpm@modeset-non-lpsp-stress-no-wait<br />
-+igt@kms_pm_rpm@modeset-pc8-residency-stress<br />
-+igt@kms_pm_rpm@modeset-stress-extra-wait<br />
-+igt@kms_pm_rpm@module-reload<br />
-+igt@kms_pm_rpm@pc8-residency<br />
-+igt@kms_pm_rpm@pm-caching<br />
-+igt@kms_pm_rpm@pm-tiling<br />
-+igt@kms_pm_rpm@system-suspend-modeset<br />
-+igt@kms_pm_rpm@universal-planes<br />
-+igt@kms_pm_rpm@universal-planes-dpms<br />
--igt@i915_pm_rpm@basic-pci-d3-state<br />
--igt@i915_pm_rpm@basic-rte<br />
--igt@i915_pm_rpm@cursor<br />
--igt@i915_pm_rpm@cursor-dpms<br />
--igt@i915_pm_rpm@dpms-lpsp<br />
--igt@i915_pm_rpm@dpms-mode-unset-lpsp<br />
--igt@i915_pm_rpm@dpms-mode-unset-non-lpsp<br />
--igt@i915_pm_rpm@dpms-non-lpsp<br />
--igt@i915_pm_rpm@drm-resources-equal<br />
--igt@i915_pm_rpm@fences<br />
--igt@i915_pm_rpm@fences-dpms<br />
--igt@i915_pm_rpm@i2c<br />
--igt@i915_pm_rpm@legacy-planes<br />
--igt@i915_pm_rpm@legacy-planes-dpms<br />
--igt@i915_pm_rpm@modeset-lpsp<br />
--igt@i915_pm_rpm@modeset-lpsp-stress<br />
--igt@i915_pm_rpm@modeset-lpsp-stress-no-wait<br />
--igt@i915_pm_rpm@modeset-non-lpsp<br />
--igt@i915_pm_rpm@modeset-non-lpsp-stress<br />
--igt@i915_pm_rpm@modeset-non-lpsp-stress-no-wait<br />
--igt@i915_pm_rpm@modeset-pc8-residency-stress<br />
--igt@i915_pm_rpm@modeset-stress-extra-wait<br />
--igt@i915_pm_rpm@pc8-residency<br />
--igt@i915_pm_rpm@pm-caching<br />
--igt@i915_pm_rpm@pm-tiling<br />
--igt@i915_pm_rpm@system-suspend-modeset<br />
--igt@i915_pm_rpm@universal-planes<br />
--igt@i915_pm_rpm@universal-planes-dpms</p>
-
-</body>
-</html>
-
---===============0674184248719011180==--
+-- 
+2.34.1
