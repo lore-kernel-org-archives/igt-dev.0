@@ -1,19 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2FB7910E39C
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 10:27:54 +0000 (UTC)
-Message-ID: <d124a4fc-19ac-8722-1b2a-df724776467c@intel.com>
-Date: Tue, 26 Sep 2023 15:57:47 +0530
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ADA0910E39E
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 10:28:34 +0000 (UTC)
+Message-ID: <71490d86-049a-9426-1b81-e71f00729a7f@linux.intel.com>
+Date: Tue, 26 Sep 2023 11:28:30 +0100
 MIME-Version: 1.0
 Content-Language: en-US
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-To: Nemesa Garg <nemesa.garg@intel.com>, igt-dev@lists.freedesktop.org
-References: <20230922161302.440145-1-nemesa.garg@intel.com>
- <32a7249f-a61d-c3bf-d397-5eb38d0e1c65@intel.com>
-In-Reply-To: <32a7249f-a61d-c3bf-d397-5eb38d0e1c65@intel.com>
+To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20230926084451.1732748-1-marcin.bernatowicz@linux.intel.com>
+ <20230926084451.1732748-4-marcin.bernatowicz@linux.intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20230926084451.1732748-4-marcin.bernatowicz@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH] tests/kms_rmfb: Add check for xe driver
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t 03/14] benchmarks/gem_wsim: fix scaling
+ of period steps
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,40 +23,77 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: chris.p.wilson@linux.intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Also, add closes tag in the commit.
 
-On 26-Sep-23 3:56 PM, Sharma, Swati2 wrote:
-> Hi Nemesa,
+On 26/09/2023 09:44, Marcin Bernatowicz wrote:
+> Period steps take scale time (-F) command line option into account.
+> This allows to scale workload without need to modify .wsim file
 > 
-> Can you please add this test in fast-feedback and add as HAX patch,
-> to check CI results.
+> ex. having following example.wsim
 > 
-> On 22-Sep-23 9:43 PM, Nemesa Garg wrote:
->> As the xe check is missing the value of open_count
->> variable is not incrementing and because of this
->> during drm_close_driver operation based on open_count
->> value mutex is acquired and there is a callback to
->> lastclose function.
->>
->> Signed-off-by: Nemesa Garg <nemesa.garg@intel.com>
->> ---
->>   lib/drmtest.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/lib/drmtest.c b/lib/drmtest.c
->> index e1da66c87..99b655680 100644
->> --- a/lib/drmtest.c
->> +++ b/lib/drmtest.c
->> @@ -649,7 +649,7 @@ int drm_open_driver(int chipset)
->>        * starting a test and we install an exit handler to wait until
->>        * idle before quitting.
->>        */
->> -    if (is_i915_device(fd)) {
->> +    if (is_i915_device(fd) || is_xe_device(fd)) {
->>           if (__sync_fetch_and_add(&open_count, 1) == 0) {
->>               __cancel_work_at_exit(fd);
->>               at_exit_drm_fd = drm_reopen_driver(fd);
+> 1.VCS1.3000.0.1
+> 1.RCS.500-1000.-1.0
+> 1.RCS.3700.0.0
+> 1.RCS.1000.-2.0
+> 1.VCS2.2300.-2.0
+> 1.RCS.4700.-1.0
+> 1.VCS2.600.-1.1
+> p.16000
+> 
+> we can scale the whole workload x10 with:
+> 
+> gem_wsim -w example.wsim -f 10 -F 10
+> 
+> -f is for batch duration steps, -F for period and delay steps
+> 
+> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> ---
+>   benchmarks/gem_wsim.c | 10 ++++++++--
+>   1 file changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
+> index 90a36f7de..65061461d 100644
+> --- a/benchmarks/gem_wsim.c
+> +++ b/benchmarks/gem_wsim.c
+> @@ -899,8 +899,14 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+>   				int_field(DELAY, delay, tmp <= 0,
+>   					  "Invalid delay at step %u!\n");
+>   			} else if (!strcmp(field, "p")) {
+> -				int_field(PERIOD, period, tmp <= 0,
+> -					  "Invalid period at step %u!\n");
+> +				field = strtok_r(fstart, ".", &fctx);
+> +				if (field) {
+> +					tmp = atoi(field);
+> +					check_arg(tmp <= 0, "Invalid period at step %u!\n", nr_steps);
+> +					step.type = PERIOD;
+> +					step.period = __duration(tmp, scale_time);
+> +					goto add_step;
+> +				}
+
+Why not do it with fewer added lines of code where the delay steps are currently scaled?
+
+diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
+index 7b5e62a3be53..486ab0124063 100644
+--- a/benchmarks/gem_wsim.c
++++ b/benchmarks/gem_wsim.c
+@@ -1186,6 +1186,8 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+  add_step:
+                 if (step.type == DELAY)
+                         step.delay = __duration(step.delay, scale_time);
++               else if (step.type == PERIOD)
++                       step.period = __duration(step.period, scale_time);
+  
+                 step.idx = nr_steps++;
+                 step.request = -1;
+
+Regards,
+
+Tvrtko
+
+>   			} else if (!strcmp(field, "P")) {
+>   				unsigned int nr = 0;
+>   				while ((field = strtok_r(fstart, ".", &fctx))) {
