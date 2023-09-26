@@ -1,14 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D992C10E34D
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 06:01:16 +0000 (UTC)
-From: Jeevan B <jeevan.b@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 26 Sep 2023 11:36:37 +0530
-Message-Id: <20230926060637.1462497-1-jeevan.b@intel.com>
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com
+ [IPv6:2a00:1450:4864:20::629])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6800E10E35D
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 07:37:03 +0000 (UTC)
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-9adb9fa7200so1819993966b.0
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 00:37:03 -0700 (PDT)
+Message-ID: <e99d89d5-e9ae-2dc8-1803-0c6c577e1975@gmail.com>
+Date: Tue, 26 Sep 2023 10:36:54 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH] tests/kms_setmode: Add comment for valid scenario
+Content-Language: en-US
+To: Rob Clark <robdclark@gmail.com>, igt-dev@lists.freedesktop.org
+References: <20230925162212.125997-1-robdclark@gmail.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+In-Reply-To: <20230925162212.125997-1-robdclark@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH v2] core_getversion: Test for desired device
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,39 +24,57 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: juhapekka.heikkila@gmail.com
+Cc: Rob Clark <robdclark@chromium.org>, Helen Koike <helen.koike@collabora.com>,
+ Emma Anholt <emma@anholt.net>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Describe the valid scenario for 'basic-clone-single-crtc' and
-'basic-clone-single-crtc' tests, as these tests are skipped if
-a valid scenario is not found, which can cause confusion during
-bug analysis.
++CC Kamil
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/kms_setmode.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+I think this interest Kamil
 
-diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-index 32a6fb690..a669cc1df 100644
---- a/tests/kms_setmode.c
-+++ b/tests/kms_setmode.c
-@@ -979,6 +979,14 @@ const char *help_str =
- 	"  -t <test id>\tRun only the test with this id\n"
- 	"  -e \t\tExtend to run on all pipes. (By default tests will run on two pipes only)\n";
- 
-+/*
-+ * basic-clone-single-crtc allows the use of a single CRTC for two connectors, such as VGA/HDMI,
-+ * VGA/DP, and HDMI/HDMI, which are the possible combinations. Similarly, for invalid-clone-exclusive-crtc,
-+ * when a connector uses a CRTC that is not compatible with the connector, for instance, DP/HDMI
-+ * can be used on certain pipes on old platforms.
-+ */
-+
-+
- igt_main_args("det:", NULL, help_str, opt_handler, NULL)
- {
- 	const struct {
--- 
-2.25.1
+/Juha-Pekka
+
+On 25.9.2023 19.22, Rob Clark wrote:
+> From: Rob Clark <robdclark@chromium.org>
+> 
+> We discovered in drm/ci that if the drm device fails to probe, all the
+> tests come back as "Skip" and the job is considered successful. Fix
+> the getversion test to fail if there is no drm device or if the drm
+> device does not match the expected device as specified by the optional
+> IGT_REQUIRED_DRIVER environment variable.
+> 
+> Signed-off-by: Rob Clark <robdclark@chromium.org>
+> ---
+>   tests/core_getversion.c | 9 ++++++++-
+>   1 file changed, 8 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/core_getversion.c b/tests/core_getversion.c
+> index 32cb976e4923..a13cc9c5c288 100644
+> --- a/tests/core_getversion.c
+> +++ b/tests/core_getversion.c
+> @@ -48,14 +48,21 @@ igt_simple_main
+>   {
+>   	int fd;
+>   	drmVersionPtr v;
+> +	const char *name = getenv("IGT_REQUIRED_DRIVER");
+>   
+> -	fd = drm_open_driver(DRIVER_ANY);
+> +	fd = __drm_open_driver(DRIVER_ANY);
+> +	igt_assert_fd(fd);
+>   	v = drmGetVersion(fd);
+>   	igt_assert_neq(strlen(v->name), 0);
+>   	igt_assert_neq(strlen(v->date), 0);
+>   	igt_assert_neq(strlen(v->desc), 0);
+>   	if (is_i915_device(fd))
+>   		igt_assert_lte(1, v->version_major);
+> +	if (name) {
+> +		igt_assert_f(!strcmp(name, v->name),
+> +			     "Expected driver \"%s\" but got \"%s\"\n",
+> +			     name, v->name);
+> +	}
+>   
+>   	drmFree(v);
+>   	drm_close_driver(fd);
