@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E4A5D10E0C8
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 10:40:40 +0000 (UTC)
-Message-ID: <ef59ed08-799c-5ab2-a02c-a5754326eceb@linux.intel.com>
-Date: Tue, 26 Sep 2023 11:40:36 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 41D8C10E3A0
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 10:51:46 +0000 (UTC)
+Message-ID: <1dda1af1-e38e-3c3a-d9d1-946009e14caa@linux.intel.com>
+Date: Tue, 26 Sep 2023 11:51:41 +0100
 MIME-Version: 1.0
 Content-Language: en-US
 To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
  igt-dev@lists.freedesktop.org
 References: <20230926084451.1732748-1-marcin.bernatowicz@linux.intel.com>
- <20230926084451.1732748-5-marcin.bernatowicz@linux.intel.com>
+ <20230926084451.1732748-7-marcin.bernatowicz@linux.intel.com>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20230926084451.1732748-5-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20230926084451.1732748-7-marcin.bernatowicz@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 04/14] benchmarks/gem_wsim: fix duration
- range check
+Subject: Re: [igt-dev] [PATCH i-g-t 06/14] benchmarks/gem_wsim: fix
+ conflicting SSEU #define and enum
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,38 +29,55 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
-
 On 26/09/2023 09:44, Marcin Bernatowicz wrote:
-> When scale duration (-f) command line option is provided,
-> the max duration check does not take it into account, fix it.
+> One SSEU is in enum w_step and then as #define SSEU (1 << 3).
+> Fix this.
 > 
 > Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 > ---
->   benchmarks/gem_wsim.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   benchmarks/gem_wsim.c | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
 > 
 > diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-> index 65061461d..4f0deb095 100644
+> index aeb959364..3b01340bf 100644
 > --- a/benchmarks/gem_wsim.c
 > +++ b/benchmarks/gem_wsim.c
-> @@ -1148,7 +1148,7 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
->   				if (sep && *sep == '-') {
->   					tmpl = strtol(sep + 1, NULL, 10);
->   					check_arg(tmpl <= 0 ||
-> -						tmpl <= step.duration.min ||
-> +						__duration(tmpl, scale_dur) <= step.duration.min ||
+> @@ -238,7 +238,7 @@ static struct drm_i915_gem_context_param_sseu device_sseu = {
+>   
+>   #define SYNCEDCLIENTS	(1<<1)
+>   #define DEPSYNC		(1<<2)
+> -#define SSEU		(1<<3)
+> +#define FLAG_SSEU	(1<<3)
 
-Right!
+Right, it worked with no side effects because enum SSEU is above the 
+highest flag bit.
 
 Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
->   						tmpl == LONG_MIN ||
->   						tmpl == LONG_MAX,
->   						"Invalid duration range at step %u!\n",
-
-Could improve the error message with 's/duration range/maximum 
-duration/' while at it if you want.
+Prefix all flags with FLAG_ while at it?
 
 Regards,
 
 Tvrtko
+
+>   
+>   static const char *ring_str_map[NUM_ENGINES] = {
+>   	[DEFAULT] = "DEFAULT",
+> @@ -2597,7 +2597,7 @@ int main(int argc, char **argv)
+>   			/* Fall through */
+>   		case 'w':
+>   			w_args = add_workload_arg(w_args, ++nr_w_args, optarg,
+> -						  prio, flags & SSEU);
+> +						  prio, flags & FLAG_SSEU);
+>   			break;
+>   		case 'p':
+>   			prio = atoi(optarg);
+> @@ -2626,7 +2626,7 @@ int main(int argc, char **argv)
+>   			flags |= SYNCEDCLIENTS;
+>   			break;
+>   		case 's':
+> -			flags ^= SSEU;
+> +			flags ^= FLAG_SSEU;
+>   			break;
+>   		case 'd':
+>   			flags |= DEPSYNC;
