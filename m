@@ -1,22 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com
- [IPv6:2a00:1450:4864:20::629])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6800E10E35D
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 07:37:03 +0000 (UTC)
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-9adb9fa7200so1819993966b.0
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 00:37:03 -0700 (PDT)
-Message-ID: <e99d89d5-e9ae-2dc8-1803-0c6c577e1975@gmail.com>
-Date: Tue, 26 Sep 2023 10:36:54 +0300
+Content-Type: multipart/alternative;
+ boundary="===============2752469842491277421=="
 MIME-Version: 1.0
-Content-Language: en-US
-To: Rob Clark <robdclark@gmail.com>, igt-dev@lists.freedesktop.org
-References: <20230925162212.125997-1-robdclark@gmail.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20230925162212.125997-1-robdclark@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH v2] core_getversion: Test for desired device
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jesse Zhang" <jesse.zhang@amd.com>
+Date: Tue, 26 Sep 2023 08:16:24 -0000
+Message-ID: <169571618416.20981.16728472223979497112@emeril.freedesktop.org>
+References: <20230926055857.3954111-1-jesse.zhang@amd.com>
+In-Reply-To: <20230926055857.3954111-1-jesse.zhang@amd.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/am?=
+ =?utf-8?q?d=5Fdispatch=3A_add_reset_subtest_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,57 +17,132 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
-Cc: Rob Clark <robdclark@chromium.org>, Helen Koike <helen.koike@collabora.com>,
- Emma Anholt <emma@anholt.net>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-+CC Kamil
+--===============2752469842491277421==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-I think this interest Kamil
+== Series Details ==
 
-/Juha-Pekka
+Series: tests/amd_dispatch: add reset subtest (rev3)
+URL   : https://patchwork.freedesktop.org/series/124238/
+State : success
 
-On 25.9.2023 19.22, Rob Clark wrote:
-> From: Rob Clark <robdclark@chromium.org>
-> 
-> We discovered in drm/ci that if the drm device fails to probe, all the
-> tests come back as "Skip" and the job is considered successful. Fix
-> the getversion test to fail if there is no drm device or if the drm
-> device does not match the expected device as specified by the optional
-> IGT_REQUIRED_DRIVER environment variable.
-> 
-> Signed-off-by: Rob Clark <robdclark@chromium.org>
-> ---
->   tests/core_getversion.c | 9 ++++++++-
->   1 file changed, 8 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/core_getversion.c b/tests/core_getversion.c
-> index 32cb976e4923..a13cc9c5c288 100644
-> --- a/tests/core_getversion.c
-> +++ b/tests/core_getversion.c
-> @@ -48,14 +48,21 @@ igt_simple_main
->   {
->   	int fd;
->   	drmVersionPtr v;
-> +	const char *name = getenv("IGT_REQUIRED_DRIVER");
->   
-> -	fd = drm_open_driver(DRIVER_ANY);
-> +	fd = __drm_open_driver(DRIVER_ANY);
-> +	igt_assert_fd(fd);
->   	v = drmGetVersion(fd);
->   	igt_assert_neq(strlen(v->name), 0);
->   	igt_assert_neq(strlen(v->date), 0);
->   	igt_assert_neq(strlen(v->desc), 0);
->   	if (is_i915_device(fd))
->   		igt_assert_lte(1, v->version_major);
-> +	if (name) {
-> +		igt_assert_f(!strcmp(name, v->name),
-> +			     "Expected driver \"%s\" but got \"%s\"\n",
-> +			     name, v->name);
-> +	}
->   
->   	drmFree(v);
->   	drm_close_driver(fd);
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7503_BAT -> XEIGTPW_9871_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9871_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * {igt@xe_create@create-execqueues-noleak}:
+    - bat-atsm-2:         [FAIL][1] ([Intel XE#524]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7503/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9871/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7503 -> IGTPW_9871
+
+  IGTPW_9871: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9871/index.html
+  IGT_7503: 7503
+  xe-396-fc8ec3c56efa5c15b630ddc17c89100440fe03ef: fc8ec3c56efa5c15b630ddc17c89100440fe03ef
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9871/index.html
+
+--===============2752469842491277421==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/amd_dispatch: add reset subtest (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124238/">https://patchwork.freedesktop.org/series/124238/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9871/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9871/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7503_BAT -&gt; XEIGTPW_9871_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9871_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>{igt@xe_create@create-execqueues-noleak}:<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7503/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9871/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7503 -&gt; IGTPW_9871</li>
+</ul>
+<p>IGTPW_9871: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9871/index.html<br />
+  IGT_7503: 7503<br />
+  xe-396-fc8ec3c56efa5c15b630ddc17c89100440fe03ef: fc8ec3c56efa5c15b630ddc17c89100440fe03ef</p>
+
+</body>
+</html>
+
+--===============2752469842491277421==--
