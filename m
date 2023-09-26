@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0491510E3DC
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 13:01:09 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 609BB10E3E2
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 13:01:08 +0000 (UTC)
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 26 Sep 2023 13:00:34 +0000
-Message-Id: <20230926130054.6-5-francois.dugast@intel.com>
+Date: Tue, 26 Sep 2023 13:00:33 +0000
+Message-Id: <20230926130054.6-4-francois.dugast@intel.com>
 In-Reply-To: <20230926130054.6-1-francois.dugast@intel.com>
 References: <20230926130054.6-1-francois.dugast@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 04/24] drm-uapi/xe_drm: Remove MMIO ioctl and
- align with latest uapi
+Subject: [igt-dev] [PATCH v3 03/24] drm-uapi/xe_drm: Separate VM_BIND's
+ operation and flag, align with latest uapi
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,582 +24,384 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Align with commit ("drm/xe/uapi: Remove MMIO ioctl")
+Align with commit ("drm/xe/uapi: Separate VM_BIND's operation and flag")
 
 Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
 ---
- include/drm-uapi/xe_drm.h                |  31 +-
- tests/intel-ci/xe-fast-feedback.testlist |   2 -
- tests/intel/xe_mmio.c                    |  91 ------
- tests/meson.build                        |   1 -
- tools/meson.build                        |   1 -
- tools/xe_reg.c                           | 366 -----------------------
- 6 files changed, 4 insertions(+), 488 deletions(-)
- delete mode 100644 tests/intel/xe_mmio.c
- delete mode 100644 tools/xe_reg.c
+ include/drm-uapi/xe_drm.h     | 14 ++++++++------
+ lib/intel_batchbuffer.c       | 11 +++++++----
+ lib/xe/xe_ioctl.c             | 31 ++++++++++++++++---------------
+ lib/xe/xe_ioctl.h             |  6 +++---
+ lib/xe/xe_util.c              |  9 ++++++---
+ tests/intel/xe_exec_basic.c   |  2 +-
+ tests/intel/xe_exec_threads.c |  2 +-
+ tests/intel/xe_vm.c           | 16 +++++++++-------
+ 8 files changed, 51 insertions(+), 40 deletions(-)
 
 diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index fce42f62f..ed33be898 100644
+index 437f57972..fce42f62f 100644
 --- a/include/drm-uapi/xe_drm.h
 +++ b/include/drm-uapi/xe_drm.h
-@@ -106,11 +106,10 @@ struct xe_user_extension {
- #define DRM_XE_EXEC_QUEUE_CREATE		0x06
- #define DRM_XE_EXEC_QUEUE_DESTROY		0x07
- #define DRM_XE_EXEC			0x08
--#define DRM_XE_MMIO			0x09
--#define DRM_XE_EXEC_QUEUE_SET_PROPERTY	0x0a
--#define DRM_XE_WAIT_USER_FENCE		0x0b
--#define DRM_XE_VM_MADVISE		0x0c
--#define DRM_XE_EXEC_QUEUE_GET_PROPERTY	0x0d
-+#define DRM_XE_EXEC_QUEUE_SET_PROPERTY	0x09
-+#define DRM_XE_WAIT_USER_FENCE		0x0a
-+#define DRM_XE_VM_MADVISE		0x0b
-+#define DRM_XE_EXEC_QUEUE_GET_PROPERTY	0x0c
+@@ -663,8 +663,10 @@ struct drm_xe_vm_bind_op {
+ #define XE_VM_BIND_OP_RESTART		0x3
+ #define XE_VM_BIND_OP_UNMAP_ALL		0x4
+ #define XE_VM_BIND_OP_PREFETCH		0x5
++	/** @op: Bind operation to perform */
++	__u32 op;
  
- /* Must be kept compact -- no holes */
- #define DRM_IOCTL_XE_DEVICE_QUERY		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_DEVICE_QUERY, struct drm_xe_device_query)
-@@ -123,7 +122,6 @@ struct xe_user_extension {
- #define DRM_IOCTL_XE_EXEC_QUEUE_GET_PROPERTY	DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_EXEC_QUEUE_GET_PROPERTY, struct drm_xe_exec_queue_get_property)
- #define DRM_IOCTL_XE_EXEC_QUEUE_DESTROY		 DRM_IOW(DRM_COMMAND_BASE + DRM_XE_EXEC_QUEUE_DESTROY, struct drm_xe_exec_queue_destroy)
- #define DRM_IOCTL_XE_EXEC			 DRM_IOW(DRM_COMMAND_BASE + DRM_XE_EXEC, struct drm_xe_exec)
--#define DRM_IOCTL_XE_MMIO			DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_MMIO, struct drm_xe_mmio)
- #define DRM_IOCTL_XE_EXEC_QUEUE_SET_PROPERTY	 DRM_IOW(DRM_COMMAND_BASE + DRM_XE_EXEC_QUEUE_SET_PROPERTY, struct drm_xe_exec_queue_set_property)
- #define DRM_IOCTL_XE_WAIT_USER_FENCE		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_WAIT_USER_FENCE, struct drm_xe_wait_user_fence)
- #define DRM_IOCTL_XE_VM_MADVISE			 DRM_IOW(DRM_COMMAND_BASE + DRM_XE_VM_MADVISE, struct drm_xe_vm_madvise)
-@@ -939,27 +937,6 @@ struct drm_xe_exec {
- 	__u64 reserved[2];
- };
+-#define XE_VM_BIND_FLAG_READONLY	(0x1 << 16)
++#define XE_VM_BIND_FLAG_READONLY	(0x1 << 0)
+ 	/*
+ 	 * A bind ops completions are always async, hence the support for out
+ 	 * sync. This flag indicates the allocation of the memory for new page
+@@ -689,12 +691,12 @@ struct drm_xe_vm_bind_op {
+ 	 * configured in the VM and must be set if the VM is configured with
+ 	 * DRM_XE_VM_CREATE_ASYNC_BIND_OPS and not in an error state.
+ 	 */
+-#define XE_VM_BIND_FLAG_ASYNC		(0x1 << 17)
++#define XE_VM_BIND_FLAG_ASYNC		(0x1 << 1)
+ 	/*
+ 	 * Valid on a faulting VM only, do the MAP operation immediately rather
+ 	 * than deferring the MAP to the page fault handler.
+ 	 */
+-#define XE_VM_BIND_FLAG_IMMEDIATE	(0x1 << 18)
++#define XE_VM_BIND_FLAG_IMMEDIATE	(0x1 << 2)
+ 	/*
+ 	 * When the NULL flag is set, the page tables are setup with a special
+ 	 * bit which indicates writes are dropped and all reads return zero.  In
+@@ -702,9 +704,9 @@ struct drm_xe_vm_bind_op {
+ 	 * operations, the BO handle MBZ, and the BO offset MBZ. This flag is
+ 	 * intended to implement VK sparse bindings.
+ 	 */
+-#define XE_VM_BIND_FLAG_NULL		(0x1 << 19)
+-	/** @op: Operation to perform (lower 16 bits) and flags (upper 16 bits) */
+-	__u32 op;
++#define XE_VM_BIND_FLAG_NULL		(0x1 << 3)
++	/** @flags: Bind flags */
++	__u32 flags;
  
--struct drm_xe_mmio {
--	/** @extensions: Pointer to the first extension struct, if any */
--	__u64 extensions;
--
--	__u32 addr;
--
--#define DRM_XE_MMIO_8BIT	0x0
--#define DRM_XE_MMIO_16BIT	0x1
--#define DRM_XE_MMIO_32BIT	0x2
--#define DRM_XE_MMIO_64BIT	0x3
--#define DRM_XE_MMIO_BITS_MASK	0x3
--#define DRM_XE_MMIO_READ	0x4
--#define DRM_XE_MMIO_WRITE	0x8
--	__u32 flags;
--
--	__u64 value;
--
--	/** @reserved: Reserved */
--	__u64 reserved[2];
--};
--
- /**
-  * struct drm_xe_wait_user_fence - wait user fence
-  *
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index 610cc958c..a9fe43b08 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -141,8 +141,6 @@ igt@xe_mmap@bad-object
- igt@xe_mmap@system
- igt@xe_mmap@vram
- igt@xe_mmap@vram-system
--igt@xe_mmio@mmio-timestamp
--igt@xe_mmio@mmio-invalid
- igt@xe_pm_residency@gt-c6-on-idle
- igt@xe_prime_self_import@basic-with_one_bo
- igt@xe_prime_self_import@basic-with_fd_dup
-diff --git a/tests/intel/xe_mmio.c b/tests/intel/xe_mmio.c
-deleted file mode 100644
-index 9ac544770..000000000
---- a/tests/intel/xe_mmio.c
-+++ /dev/null
-@@ -1,91 +0,0 @@
--// SPDX-License-Identifier: MIT
--/*
-- * Copyright © 2023 Intel Corporation
-- */
--
--/**
-- * TEST: Test if mmio feature
-- * Category: Software building block
-- * Sub-category: mmio
-- * Functionality: mmap
-- */
--
--#include "igt.h"
--
--#include "xe_drm.h"
--#include "xe/xe_ioctl.h"
--#include "xe/xe_query.h"
--
--#include <string.h>
--
--#define RCS_TIMESTAMP 0x2358
--
--/**
-- * SUBTEST: mmio-timestamp
-- * Test category: functionality test
-- * Description:
-- *	Try to run mmio ioctl with 32 and 64 bits and check it a timestamp
-- *	matches
-- */
--
--static void test_xe_mmio_timestamp(int fd)
--{
--	int ret;
--	struct drm_xe_mmio mmio = {
--		.addr = RCS_TIMESTAMP,
--		.flags = DRM_XE_MMIO_READ | DRM_XE_MMIO_64BIT,
--	};
--	ret = igt_ioctl(fd, DRM_IOCTL_XE_MMIO, &mmio);
--	if (!ret)
--		igt_debug("RCS_TIMESTAMP 64b = 0x%llx\n", mmio.value);
--	igt_assert(!ret);
--	mmio.flags = DRM_XE_MMIO_READ | DRM_XE_MMIO_32BIT;
--	mmio.value = 0;
--	ret = igt_ioctl(fd, DRM_IOCTL_XE_MMIO, &mmio);
--	if (!ret)
--		igt_debug("RCS_TIMESTAMP 32b = 0x%llx\n", mmio.value);
--	igt_assert(!ret);
--}
--
--
--/**
-- * SUBTEST: mmio-invalid
-- * Test category: negative test
-- * Description: Try to run mmio ioctl with 8, 16 and 32 and 64 bits mmio
-- */
--
--static void test_xe_mmio_invalid(int fd)
--{
--	int ret;
--	struct drm_xe_mmio mmio = {
--		.addr = RCS_TIMESTAMP,
--		.flags = DRM_XE_MMIO_READ | DRM_XE_MMIO_8BIT,
--	};
--	ret = igt_ioctl(fd, DRM_IOCTL_XE_MMIO, &mmio);
--	igt_assert(ret);
--	mmio.flags = DRM_XE_MMIO_READ | DRM_XE_MMIO_16BIT;
--	mmio.value = 0;
--	ret = igt_ioctl(fd, DRM_IOCTL_XE_MMIO, &mmio);
--	igt_assert(ret);
--	mmio.addr = RCS_TIMESTAMP;
--	mmio.flags = DRM_XE_MMIO_READ | DRM_XE_MMIO_64BIT;
--	mmio.value = 0x1;
--	ret = igt_ioctl(fd, DRM_IOCTL_XE_MMIO, &mmio);
--	igt_assert(ret);
--}
--
--igt_main
--{
--	int fd;
--
--	igt_fixture
--		fd = drm_open_driver(DRIVER_XE);
--
--	igt_subtest("mmio-timestamp")
--		test_xe_mmio_timestamp(fd);
--	igt_subtest("mmio-invalid")
--		test_xe_mmio_invalid(fd);
--
--	igt_fixture
--		drm_close_driver(fd);
--}
-diff --git a/tests/meson.build b/tests/meson.build
-index 974cb433b..c3de337c8 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -293,7 +293,6 @@ intel_xe_progs = [
- 	'xe_live_ktest',
- 	'xe_media_fill',
- 	'xe_mmap',
--	'xe_mmio',
- 	'xe_module_load',
- 	'xe_noexec_ping_pong',
- 	'xe_pm',
-diff --git a/tools/meson.build b/tools/meson.build
-index 21e244c24..ac79d8b58 100644
---- a/tools/meson.build
-+++ b/tools/meson.build
-@@ -42,7 +42,6 @@ tools_progs = [
- 	'intel_gvtg_test',
- 	'dpcd_reg',
- 	'lsgpu',
--	'xe_reg',
- ]
- tool_deps = igt_deps
- tool_deps += zlib
-diff --git a/tools/xe_reg.c b/tools/xe_reg.c
-deleted file mode 100644
-index 1f7b384d3..000000000
---- a/tools/xe_reg.c
-+++ /dev/null
-@@ -1,366 +0,0 @@
--// SPDX-License-Identifier: MIT
--/*
-- * Copyright © 2021 Intel Corporation
-- */
--
--#include "igt.h"
--#include "igt_device_scan.h"
--
--#include "xe_drm.h"
--
--#include <stdlib.h>
--#include <stdio.h>
--#include <string.h>
--
--#define DECL_XE_MMIO_READ_FN(bits) \
--static inline uint##bits##_t \
--xe_mmio_read##bits(int fd, uint32_t reg) \
--{ \
--	struct drm_xe_mmio mmio = { \
--		.addr = reg, \
--		.flags = DRM_XE_MMIO_READ | DRM_XE_MMIO_##bits##BIT, \
--	}; \
--\
--	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_MMIO, &mmio), 0); \
--\
--	return mmio.value;\
--}\
--static inline void \
--xe_mmio_write##bits(int fd, uint32_t reg, uint##bits##_t value) \
--{ \
--	struct drm_xe_mmio mmio = { \
--		.addr = reg, \
--		.flags = DRM_XE_MMIO_WRITE | DRM_XE_MMIO_##bits##BIT, \
--		.value = value, \
--	}; \
--\
--	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_MMIO, &mmio), 0); \
--}
--
--DECL_XE_MMIO_READ_FN(8)
--DECL_XE_MMIO_READ_FN(16)
--DECL_XE_MMIO_READ_FN(32)
--DECL_XE_MMIO_READ_FN(64)
--
--static void print_help(FILE *fp)
--{
--	fprintf(fp, "usage: xe_reg read REG1 [REG2]...\n");
--	fprintf(fp, "       xe_reg write REG VALUE\n");
--}
--
--enum ring {
--	RING_UNKNOWN = -1,
--	RING_RCS0,
--	RING_BCS0,
--};
--
--static const struct ring_info {
--	enum ring ring;
--	const char *name;
--	uint32_t mmio_base;
--} ring_info[] = {
--	{RING_RCS0, "rcs0", 0x02000, },
--	{RING_BCS0, "bcs0", 0x22000, },
--};
--
--static const struct ring_info *ring_info_for_name(const char *name)
--{
--	int i;
--
--	for (i = 0; i < ARRAY_SIZE(ring_info); i++)
--		if (strcmp(name, ring_info[i].name) == 0)
--			return &ring_info[i];
--
--	return NULL;
--}
--
--struct reg_info {
--	const char *name;
--	bool is_ring;
--	uint32_t addr_low;
--	uint32_t addr_high;
--} reg_info[] = {
--#define REG32(name, addr) { #name, false, addr }
--#define REG64(name, low, high) { #name, false, low, high }
--#define RING_REG32(name, addr) { #name, true, addr }
--#define RING_REG64(name, low, high) { #name, true, low, high }
--
--	RING_REG64(ACTHD, 0x74, 0x5c),
--	RING_REG32(BB_ADDR_DIFF, 0x154),
--	RING_REG64(BB_ADDR, 0x140, 0x168),
--	RING_REG32(BB_PER_CTX_PTR, 0x2c0),
--	RING_REG64(EXECLIST_STATUS, 0x234, 0x238),
--	RING_REG64(EXECLIST_SQ0, 0x510, 0x514),
--	RING_REG64(EXECLIST_SQ1, 0x518, 0x51c),
--	RING_REG32(HWS_PGA, 0x80),
--	RING_REG32(INDIRECT_CTX, 0x1C4),
--	RING_REG32(INDIRECT_CTX_OFFSET, 0x1C8),
--	RING_REG32(NOPID, 0x94),
--	RING_REG64(PML4E, 0x270, 0x274),
--	RING_REG32(RING_BUFFER_CTL, 0x3c),
--	RING_REG32(RING_BUFFER_HEAD, 0x34),
--	RING_REG32(RING_BUFFER_START, 0x38),
--	RING_REG32(RING_BUFFER_TAIL, 0x30),
--	RING_REG64(SBB_ADDR, 0x114, 0x11c),
--	RING_REG32(SBB_STATE, 0x118),
--
--#undef REG32
--#undef REG64
--#undef RING_REG32
--#undef RING_REG64
--};
--
--static const struct reg_info *reg_info_for_name(const char *name)
--{
--	int i;
--
--	for (i = 0; i < ARRAY_SIZE(reg_info); i++)
--		if (strcmp(name, reg_info[i].name) == 0)
--			return &reg_info[i];
--
--	return NULL;
--}
--
--static int print_reg_for_info(int xe, FILE *fp, const struct reg_info *reg,
--			      const struct ring_info *ring)
--{
--	if (reg->is_ring) {
--		if (!ring) {
--			fprintf(stderr, "%s is a ring register but --ring "
--					"not set\n", reg->name);
--			return EXIT_FAILURE;
--		}
--
--		if (reg->addr_high) {
--			uint32_t low = xe_mmio_read32(xe, reg->addr_low +
--							  ring->mmio_base);
--			uint32_t high = xe_mmio_read32(xe, reg->addr_high +
--							   ring->mmio_base);
--
--			fprintf(fp, "%s[%s] = 0x%08x %08x\n", reg->name,
--				ring->name, high, low);
--		} else {
--			uint32_t value = xe_mmio_read32(xe, reg->addr_low +
--							    ring->mmio_base);
--
--			fprintf(fp, "%s[%s] = 0x%08x\n", reg->name,
--				ring->name, value);
--		}
--	} else {
--		if (reg->addr_high) {
--			uint32_t low = xe_mmio_read32(xe, reg->addr_low);
--			uint32_t high = xe_mmio_read32(xe, reg->addr_high);
--
--			fprintf(fp, "%s = 0x%08x %08x\n", reg->name, high, low);
--		} else {
--			uint32_t value = xe_mmio_read32(xe, reg->addr_low);
--
--			fprintf(fp, "%s = 0x%08x\n", reg->name, value);
--		}
--	}
--
--	return 0;
--}
--
--static void print_reg_for_addr(int xe, FILE *fp, uint32_t addr)
--{
--	uint32_t value = xe_mmio_read32(xe, addr);
--
--	fprintf(fp, "MMIO[0x%05x] = 0x%08x\n", addr, value);
--}
--
--enum opt {
--	OPT_UNKNOWN = '?',
--	OPT_END = -1,
--	OPT_DEVICE,
--	OPT_RING,
--	OPT_ALL,
--};
--
--static int read_reg(int argc, char *argv[])
--{
--	int xe, i, err, index;
--	unsigned long reg_addr;
--	char *endp = NULL;
--	const struct ring_info *ring = NULL;
--	enum opt opt;
--	bool dump_all = false;
--
--	static struct option options[] = {
--		{ "device",	required_argument,	NULL,	OPT_DEVICE },
--		{ "ring",	required_argument,	NULL,	OPT_RING },
--		{ "all",	no_argument,		NULL,	OPT_ALL },
--	};
--
--	for (opt = 0; opt != OPT_END; ) {
--		opt = getopt_long(argc, argv, "", options, &index);
--
--		switch (opt) {
--		case OPT_DEVICE:
--			igt_device_filter_add(optarg);
--			break;
--		case OPT_RING:
--			ring = ring_info_for_name(optarg);
--			if (!ring) {
--				fprintf(stderr, "invalid ring: %s\n", optarg);
--				return EXIT_FAILURE;
--			}
--			break;
--		case OPT_ALL:
--			dump_all = true;
--			break;
--		case OPT_END:
--			break;
--		case OPT_UNKNOWN:
--			return EXIT_FAILURE;
--		}
--	}
--
--	argc -= optind;
--	argv += optind;
--
--	xe = drm_open_driver(DRIVER_XE);
--	if (dump_all) {
--		for (i = 0; i < ARRAY_SIZE(reg_info); i++) {
--			if (reg_info[i].is_ring != !!ring)
--				continue;
--
--			print_reg_for_info(xe, stdout, &reg_info[i], ring);
--		}
--	} else {
--		for (i = 0; i < argc; i++) {
--			const struct reg_info *reg = reg_info_for_name(argv[i]);
--			if (reg) {
--				err = print_reg_for_info(xe, stdout, reg, ring);
--				if (err)
--					return err;
--				continue;
--			}
--			reg_addr = strtoul(argv[i], &endp, 16);
--			if (!reg_addr || reg_addr >= (4 << 20) || *endp) {
--				fprintf(stderr, "invalid reg address '%s'\n",
--					argv[i]);
--				return EXIT_FAILURE;
--			}
--			print_reg_for_addr(xe, stdout, reg_addr);
--		}
--	}
--
--	return 0;
--}
--
--static int write_reg_for_info(int xe, const struct reg_info *reg,
--			      const struct ring_info *ring,
--			      uint64_t value)
--{
--	if (reg->is_ring) {
--		if (!ring) {
--			fprintf(stderr, "%s is a ring register but --ring "
--					"not set\n", reg->name);
--			return EXIT_FAILURE;
--		}
--
--		xe_mmio_write32(xe, reg->addr_low + ring->mmio_base, value);
--		if (reg->addr_high) {
--			xe_mmio_write32(xe, reg->addr_high + ring->mmio_base,
--					value >> 32);
--		}
--	} else {
--		xe_mmio_write32(xe, reg->addr_low, value);
--		if (reg->addr_high)
--			xe_mmio_write32(xe, reg->addr_high, value >> 32);
--	}
--
--	return 0;
--}
--
--static void write_reg_for_addr(int xe, uint32_t addr, uint32_t value)
--{
--	xe_mmio_write32(xe, addr, value);
--}
--
--static int write_reg(int argc, char *argv[])
--{
--	int xe, index;
--	unsigned long reg_addr;
--	char *endp = NULL;
--	const struct ring_info *ring = NULL;
--	enum opt opt;
--	const char *reg_name;
--	const struct reg_info *reg;
--	uint64_t value;
--
--	static struct option options[] = {
--		{ "device",	required_argument,	NULL,	OPT_DEVICE },
--		{ "ring",	required_argument,	NULL,	OPT_RING },
--	};
--
--	for (opt = 0; opt != OPT_END; ) {
--		opt = getopt_long(argc, argv, "", options, &index);
--
--		switch (opt) {
--		case OPT_DEVICE:
--			igt_device_filter_add(optarg);
--			break;
--		case OPT_RING:
--			ring = ring_info_for_name(optarg);
--			if (!ring) {
--				fprintf(stderr, "invalid ring: %s\n", optarg);
--				return EXIT_FAILURE;
--			}
--			break;
--		case OPT_END:
--			break;
--		case OPT_UNKNOWN:
--			return EXIT_FAILURE;
--		default:
--			break;
--		}
--	}
--
--	argc -= optind;
--	argv += optind;
--
--	if (argc != 2) {
--		print_help(stderr);
--		return EXIT_FAILURE;
--	}
--
--	reg_name = argv[0];
--	value = strtoull(argv[1], &endp, 0);
--	if (*endp) {
--		fprintf(stderr, "Invalid register value: %s\n", argv[1]);
--		return EXIT_FAILURE;
--	}
--
--	xe = drm_open_driver(DRIVER_XE);
--
--	reg = reg_info_for_name(reg_name);
--	if (reg)
--		return write_reg_for_info(xe, reg, ring, value);
--
--	reg_addr = strtoul(reg_name, &endp, 16);
--	if (!reg_addr || reg_addr >= (4 << 20) || *endp) {
--		fprintf(stderr, "invalid reg address '%s'\n", reg_name);
--		return EXIT_FAILURE;
--	}
--	write_reg_for_addr(xe, reg_addr, value);
--
--	return 0;
--}
--
--int main(int argc, char *argv[])
--{
--	if (argc < 2) {
--		print_help(stderr);
--		return EXIT_FAILURE;
--	}
--
--	if (strcmp(argv[1], "read") == 0)
--		return read_reg(argc - 1, argv + 1);
--	else if (strcmp(argv[1], "write") == 0)
--		return write_reg(argc - 1, argv + 1);
--
--	fprintf(stderr, "invalid sub-command: %s", argv[1]);
--	return EXIT_FAILURE;
--}
+ 	/** @mem_region: Memory region to prefetch VMA to, instance not a mask */
+ 	__u32 region;
+diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+index e7b1b755f..6e668d28c 100644
+--- a/lib/intel_batchbuffer.c
++++ b/lib/intel_batchbuffer.c
+@@ -1281,7 +1281,8 @@ void intel_bb_destroy(struct intel_bb *ibb)
+ }
+ 
+ static struct drm_xe_vm_bind_op *xe_alloc_bind_ops(struct intel_bb *ibb,
+-						   uint32_t op, uint32_t region)
++						   uint32_t op, uint32_t flags,
++						   uint32_t region)
+ {
+ 	struct drm_i915_gem_exec_object2 **objects = ibb->objects;
+ 	struct drm_xe_vm_bind_op *bind_ops, *ops;
+@@ -1298,6 +1299,7 @@ static struct drm_xe_vm_bind_op *xe_alloc_bind_ops(struct intel_bb *ibb,
+ 			ops->obj = objects[i]->handle;
+ 
+ 		ops->op = op;
++		ops->flags = flags;
+ 		ops->obj_offset = 0;
+ 		ops->addr = objects[i]->offset;
+ 		ops->range = objects[i]->rsvd1;
+@@ -1323,9 +1325,10 @@ static void __unbind_xe_objects(struct intel_bb *ibb)
+ 
+ 	if (ibb->num_objects > 1) {
+ 		struct drm_xe_vm_bind_op *bind_ops;
+-		uint32_t op = XE_VM_BIND_OP_UNMAP | XE_VM_BIND_FLAG_ASYNC;
++		uint32_t op = XE_VM_BIND_OP_UNMAP;
++		uint32_t flags = XE_VM_BIND_FLAG_ASYNC;
+ 
+-		bind_ops = xe_alloc_bind_ops(ibb, op, 0);
++		bind_ops = xe_alloc_bind_ops(ibb, op, flags, 0);
+ 		xe_vm_bind_array(ibb->fd, ibb->vm_id, 0, bind_ops,
+ 				 ibb->num_objects, syncs, 2);
+ 		free(bind_ops);
+@@ -2354,7 +2357,7 @@ __xe_bb_exec(struct intel_bb *ibb, uint64_t flags, bool sync)
+ 
+ 	syncs[0].handle = syncobj_create(ibb->fd, 0);
+ 	if (ibb->num_objects > 1) {
+-		bind_ops = xe_alloc_bind_ops(ibb, XE_VM_BIND_OP_MAP | XE_VM_BIND_FLAG_ASYNC, 0);
++		bind_ops = xe_alloc_bind_ops(ibb, XE_VM_BIND_OP_MAP, XE_VM_BIND_FLAG_ASYNC, 0);
+ 		xe_vm_bind_array(ibb->fd, ibb->vm_id, 0, bind_ops,
+ 				 ibb->num_objects, syncs, 1);
+ 		free(bind_ops);
+diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+index 730dcfd16..48cd185de 100644
+--- a/lib/xe/xe_ioctl.c
++++ b/lib/xe/xe_ioctl.c
+@@ -67,7 +67,7 @@ void xe_vm_unbind_all_async(int fd, uint32_t vm, uint32_t exec_queue,
+ 			    uint32_t num_syncs)
+ {
+ 	__xe_vm_bind_assert(fd, vm, exec_queue, bo, 0, 0, 0,
+-			    XE_VM_BIND_OP_UNMAP_ALL | XE_VM_BIND_FLAG_ASYNC,
++			    XE_VM_BIND_OP_UNMAP_ALL, XE_VM_BIND_FLAG_ASYNC,
+ 			    sync, num_syncs, 0, 0);
+ }
+ 
+@@ -91,8 +91,8 @@ void xe_vm_bind_array(int fd, uint32_t vm, uint32_t exec_queue,
+ 
+ int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
+ 		  uint64_t offset, uint64_t addr, uint64_t size, uint32_t op,
+-		  struct drm_xe_sync *sync, uint32_t num_syncs, uint32_t region,
+-		  uint64_t ext)
++		  uint32_t flags, struct drm_xe_sync *sync, uint32_t num_syncs,
++		  uint32_t region, uint64_t ext)
+ {
+ 	struct drm_xe_vm_bind bind = {
+ 		.extensions = ext,
+@@ -103,6 +103,7 @@ int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
+ 		.bind.range = size,
+ 		.bind.addr = addr,
+ 		.bind.op = op,
++		.bind.flags = flags,
+ 		.bind.region = region,
+ 		.num_syncs = num_syncs,
+ 		.syncs = (uintptr_t)sync,
+@@ -117,11 +118,11 @@ int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
+ 
+ void  __xe_vm_bind_assert(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
+ 			  uint64_t offset, uint64_t addr, uint64_t size,
+-			  uint32_t op, struct drm_xe_sync *sync,
++			  uint32_t op, uint32_t flags, struct drm_xe_sync *sync,
+ 			  uint32_t num_syncs, uint32_t region, uint64_t ext)
+ {
+ 	igt_assert_eq(__xe_vm_bind(fd, vm, exec_queue, bo, offset, addr, size,
+-				   op, sync, num_syncs, region, ext), 0);
++				   op, flags, sync, num_syncs, region, ext), 0);
+ }
+ 
+ void xe_vm_bind(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
+@@ -129,7 +130,7 @@ void xe_vm_bind(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
+ 		struct drm_xe_sync *sync, uint32_t num_syncs)
+ {
+ 	__xe_vm_bind_assert(fd, vm, 0, bo, offset, addr, size,
+-			    XE_VM_BIND_OP_MAP, sync, num_syncs, 0, 0);
++			    XE_VM_BIND_OP_MAP, 0, sync, num_syncs, 0, 0);
+ }
+ 
+ void xe_vm_unbind(int fd, uint32_t vm, uint64_t offset,
+@@ -137,7 +138,7 @@ void xe_vm_unbind(int fd, uint32_t vm, uint64_t offset,
+ 		  struct drm_xe_sync *sync, uint32_t num_syncs)
+ {
+ 	__xe_vm_bind_assert(fd, vm, 0, 0, offset, addr, size,
+-			    XE_VM_BIND_OP_UNMAP, sync, num_syncs, 0, 0);
++			    XE_VM_BIND_OP_UNMAP, 0, sync, num_syncs, 0, 0);
+ }
+ 
+ void xe_vm_prefetch_async(int fd, uint32_t vm, uint32_t exec_queue, uint64_t offset,
+@@ -146,7 +147,7 @@ void xe_vm_prefetch_async(int fd, uint32_t vm, uint32_t exec_queue, uint64_t off
+ 			  uint32_t region)
+ {
+ 	__xe_vm_bind_assert(fd, vm, exec_queue, 0, offset, addr, size,
+-			    XE_VM_BIND_OP_PREFETCH | XE_VM_BIND_FLAG_ASYNC,
++			    XE_VM_BIND_OP_PREFETCH, XE_VM_BIND_FLAG_ASYNC,
+ 			    sync, num_syncs, region, 0);
+ }
+ 
+@@ -155,7 +156,7 @@ void xe_vm_bind_async(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
+ 		      struct drm_xe_sync *sync, uint32_t num_syncs)
+ {
+ 	__xe_vm_bind_assert(fd, vm, exec_queue, bo, offset, addr, size,
+-			    XE_VM_BIND_OP_MAP | XE_VM_BIND_FLAG_ASYNC, sync,
++			    XE_VM_BIND_OP_MAP, XE_VM_BIND_FLAG_ASYNC, sync,
+ 			    num_syncs, 0, 0);
+ }
+ 
+@@ -165,7 +166,7 @@ void xe_vm_bind_async_flags(int fd, uint32_t vm, uint32_t exec_queue, uint32_t b
+ 			    uint32_t flags)
+ {
+ 	__xe_vm_bind_assert(fd, vm, exec_queue, bo, offset, addr, size,
+-			    XE_VM_BIND_OP_MAP | XE_VM_BIND_FLAG_ASYNC | flags,
++			    XE_VM_BIND_OP_MAP, XE_VM_BIND_FLAG_ASYNC | flags,
+ 			    sync, num_syncs, 0, 0);
+ }
+ 
+@@ -174,7 +175,7 @@ void xe_vm_bind_userptr_async(int fd, uint32_t vm, uint32_t exec_queue,
+ 			      struct drm_xe_sync *sync, uint32_t num_syncs)
+ {
+ 	__xe_vm_bind_assert(fd, vm, exec_queue, 0, userptr, addr, size,
+-			    XE_VM_BIND_OP_MAP_USERPTR | XE_VM_BIND_FLAG_ASYNC,
++			    XE_VM_BIND_OP_MAP_USERPTR, XE_VM_BIND_FLAG_ASYNC,
+ 			    sync, num_syncs, 0, 0);
+ }
+ 
+@@ -184,7 +185,7 @@ void xe_vm_bind_userptr_async_flags(int fd, uint32_t vm, uint32_t exec_queue,
+ 				    uint32_t num_syncs, uint32_t flags)
+ {
+ 	__xe_vm_bind_assert(fd, vm, exec_queue, 0, userptr, addr, size,
+-			    XE_VM_BIND_OP_MAP_USERPTR | XE_VM_BIND_FLAG_ASYNC |
++			    XE_VM_BIND_OP_MAP_USERPTR, XE_VM_BIND_FLAG_ASYNC |
+ 			    flags, sync, num_syncs, 0, 0);
+ }
+ 
+@@ -193,7 +194,7 @@ void xe_vm_unbind_async(int fd, uint32_t vm, uint32_t exec_queue,
+ 			struct drm_xe_sync *sync, uint32_t num_syncs)
+ {
+ 	__xe_vm_bind_assert(fd, vm, exec_queue, 0, offset, addr, size,
+-			    XE_VM_BIND_OP_UNMAP | XE_VM_BIND_FLAG_ASYNC, sync,
++			    XE_VM_BIND_OP_UNMAP, XE_VM_BIND_FLAG_ASYNC, sync,
+ 			    num_syncs, 0, 0);
+ }
+ 
+@@ -205,8 +206,8 @@ static void __xe_vm_bind_sync(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
+ 		.handle = syncobj_create(fd, 0),
+ 	};
+ 
+-	__xe_vm_bind_assert(fd, vm, 0, bo, offset, addr, size, op, &sync, 1, 0,
+-			    0);
++	__xe_vm_bind_assert(fd, vm, 0, bo, offset, addr, size, op, 0, &sync, 1,
++			    0, 0);
+ 
+ 	igt_assert(syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL));
+ 	syncobj_destroy(fd, sync.handle);
+diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+index 6c281b3bf..f0e4109dc 100644
+--- a/lib/xe/xe_ioctl.h
++++ b/lib/xe/xe_ioctl.h
+@@ -19,11 +19,11 @@ uint32_t xe_cs_prefetch_size(int fd);
+ uint32_t xe_vm_create(int fd, uint32_t flags, uint64_t ext);
+ int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
+ 		  uint64_t offset, uint64_t addr, uint64_t size, uint32_t op,
+-		  struct drm_xe_sync *sync, uint32_t num_syncs, uint32_t region,
+-		  uint64_t ext);
++		  uint32_t flags, struct drm_xe_sync *sync, uint32_t num_syncs,
++		  uint32_t region, uint64_t ext);
+ void  __xe_vm_bind_assert(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
+ 			  uint64_t offset, uint64_t addr, uint64_t size,
+-			  uint32_t op, struct drm_xe_sync *sync,
++			  uint32_t op, uint32_t flags, struct drm_xe_sync *sync,
+ 			  uint32_t num_syncs, uint32_t region, uint64_t ext);
+ void xe_vm_bind(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
+ 		uint64_t addr, uint64_t size,
+diff --git a/lib/xe/xe_util.c b/lib/xe/xe_util.c
+index 2f9ffe2f1..5fa4d4610 100644
+--- a/lib/xe/xe_util.c
++++ b/lib/xe/xe_util.c
+@@ -116,7 +116,7 @@ static struct drm_xe_vm_bind_op *xe_alloc_bind_ops(struct igt_list_head *obj_lis
+ {
+ 	struct drm_xe_vm_bind_op *bind_ops, *ops;
+ 	struct xe_object *obj;
+-	uint32_t num_objects = 0, i = 0, op;
++	uint32_t num_objects = 0, i = 0, op, flags;
+ 
+ 	igt_list_for_each_entry(obj, obj_list, link)
+ 		num_objects++;
+@@ -134,13 +134,16 @@ static struct drm_xe_vm_bind_op *xe_alloc_bind_ops(struct igt_list_head *obj_lis
+ 		ops = &bind_ops[i];
+ 
+ 		if (obj->bind_op == XE_OBJECT_BIND) {
+-			op = XE_VM_BIND_OP_MAP | XE_VM_BIND_FLAG_ASYNC;
++			op = XE_VM_BIND_OP_MAP;
++			flags = XE_VM_BIND_FLAG_ASYNC;
+ 			ops->obj = obj->handle;
+ 		} else {
+-			op = XE_VM_BIND_OP_UNMAP | XE_VM_BIND_FLAG_ASYNC;
++			op = XE_VM_BIND_OP_UNMAP;
++			flags = XE_VM_BIND_FLAG_ASYNC;
+ 		}
+ 
+ 		ops->op = op;
++		ops->flags = flags;
+ 		ops->obj_offset = 0;
+ 		ops->addr = obj->offset;
+ 		ops->range = obj->size;
+diff --git a/tests/intel/xe_exec_basic.c b/tests/intel/xe_exec_basic.c
+index a4414e052..e29398aaa 100644
+--- a/tests/intel/xe_exec_basic.c
++++ b/tests/intel/xe_exec_basic.c
+@@ -170,7 +170,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 		if (flags & SPARSE)
+ 			__xe_vm_bind_assert(fd, vm[i], bind_exec_queues[i],
+ 					    0, 0, sparse_addr[i], bo_size,
+-					    XE_VM_BIND_OP_MAP |
++					    XE_VM_BIND_OP_MAP,
+ 					    XE_VM_BIND_FLAG_ASYNC |
+ 					    XE_VM_BIND_FLAG_NULL, sync,
+ 					    1, 0, 0);
+diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
+index 12e76874e..1f9af894f 100644
+--- a/tests/intel/xe_exec_threads.c
++++ b/tests/intel/xe_exec_threads.c
+@@ -609,7 +609,7 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+ 			if (rebind_error_inject == i)
+ 				__xe_vm_bind_assert(fd, vm, bind_exec_queues[e],
+ 						    0, 0, addr, bo_size,
+-						    XE_VM_BIND_OP_UNMAP |
++						    XE_VM_BIND_OP_UNMAP,
+ 						    XE_VM_BIND_FLAG_ASYNC |
+ 						    INJECT_ERROR, sync_all,
+ 						    n_exec_queues, 0, 0);
+diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+index 4952ea786..f96305851 100644
+--- a/tests/intel/xe_vm.c
++++ b/tests/intel/xe_vm.c
+@@ -316,7 +316,7 @@ static void userptr_invalid(int fd)
+ 	vm = xe_vm_create(fd, 0, 0);
+ 	munmap(data, size);
+ 	ret = __xe_vm_bind(fd, vm, 0, 0, to_user_pointer(data), 0x40000,
+-			   size, XE_VM_BIND_OP_MAP_USERPTR, NULL, 0, 0, 0);
++			   size, XE_VM_BIND_OP_MAP_USERPTR, 0, NULL, 0, 0, 0);
+ 	igt_assert(ret == -EFAULT);
+ 
+ 	xe_vm_destroy(fd, vm);
+@@ -437,7 +437,7 @@ static void vm_async_ops_err(int fd, bool destroy)
+ 		if (i == N_BINDS / 8)	/* Inject error on this bind */
+ 			__xe_vm_bind_assert(fd, vm, 0, bo, 0,
+ 					    addr + i * bo_size * 2,
+-					    bo_size, XE_VM_BIND_OP_MAP |
++					    bo_size, XE_VM_BIND_OP_MAP,
+ 					    XE_VM_BIND_FLAG_ASYNC |
+ 					    INJECT_ERROR, &sync, 1, 0, 0);
+ 		else
+@@ -451,7 +451,7 @@ static void vm_async_ops_err(int fd, bool destroy)
+ 		if (i == N_BINDS / 8)
+ 			__xe_vm_bind_assert(fd, vm, 0, 0, 0,
+ 					    addr + i * bo_size * 2,
+-					    bo_size, XE_VM_BIND_OP_UNMAP |
++					    bo_size, XE_VM_BIND_OP_UNMAP,
+ 					    XE_VM_BIND_FLAG_ASYNC |
+ 					    INJECT_ERROR, &sync, 1, 0, 0);
+ 		else
+@@ -465,7 +465,7 @@ static void vm_async_ops_err(int fd, bool destroy)
+ 		if (i == N_BINDS / 8)
+ 			__xe_vm_bind_assert(fd, vm, 0, bo, 0,
+ 					    addr + i * bo_size * 2,
+-					    bo_size, XE_VM_BIND_OP_MAP |
++					    bo_size, XE_VM_BIND_OP_MAP,
+ 					    XE_VM_BIND_FLAG_ASYNC |
+ 					    INJECT_ERROR, &sync, 1, 0, 0);
+ 		else
+@@ -479,7 +479,7 @@ static void vm_async_ops_err(int fd, bool destroy)
+ 		if (i == N_BINDS / 8)
+ 			__xe_vm_bind_assert(fd, vm, 0, 0, 0,
+ 					    addr + i * bo_size * 2,
+-					    bo_size, XE_VM_BIND_OP_UNMAP |
++					    bo_size, XE_VM_BIND_OP_UNMAP,
+ 					    XE_VM_BIND_FLAG_ASYNC |
+ 					    INJECT_ERROR, &sync, 1, 0, 0);
+ 		else
+@@ -928,7 +928,8 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
+ 		bind_ops[i].range = bo_size;
+ 		bind_ops[i].addr = addr;
+ 		bind_ops[i].tile_mask = 0x1 << eci->gt_id;
+-		bind_ops[i].op = XE_VM_BIND_OP_MAP | XE_VM_BIND_FLAG_ASYNC;
++		bind_ops[i].op = XE_VM_BIND_OP_MAP;
++		bind_ops[i].flags = XE_VM_BIND_FLAG_ASYNC;
+ 		bind_ops[i].region = 0;
+ 		bind_ops[i].reserved[0] = 0;
+ 		bind_ops[i].reserved[1] = 0;
+@@ -972,7 +973,8 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
+ 
+ 	for (i = 0; i < n_execs; ++i) {
+ 		bind_ops[i].obj = 0;
+-		bind_ops[i].op = XE_VM_BIND_OP_UNMAP | XE_VM_BIND_FLAG_ASYNC;
++		bind_ops[i].op = XE_VM_BIND_OP_UNMAP;
++		bind_ops[i].flags = XE_VM_BIND_FLAG_ASYNC;
+ 	}
+ 
+ 	syncobj_reset(fd, &sync[0].handle, 1);
 -- 
 2.34.1
