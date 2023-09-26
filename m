@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F3E4A10E3A3
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 11:11:00 +0000 (UTC)
-Message-ID: <238ee381-c443-e43b-5b04-90c5f062d8fd@linux.intel.com>
-Date: Tue, 26 Sep 2023 12:10:56 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C8FD510E3AB
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 11:23:06 +0000 (UTC)
+Message-ID: <b4b9c8f4-40c4-7e2b-460f-fc97c5df3a22@linux.intel.com>
+Date: Tue, 26 Sep 2023 12:23:01 +0100
 MIME-Version: 1.0
 Content-Language: en-US
 To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
  igt-dev@lists.freedesktop.org
 References: <20230926084451.1732748-1-marcin.bernatowicz@linux.intel.com>
- <20230926084451.1732748-9-marcin.bernatowicz@linux.intel.com>
+ <20230926084451.1732748-10-marcin.bernatowicz@linux.intel.com>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20230926084451.1732748-9-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20230926084451.1732748-10-marcin.bernatowicz@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 08/14] benchmarks/gem_wsim: reposition
- repeat_start variable
+Subject: Re: [igt-dev] [PATCH i-g-t 09/14] benchmarks/gem_wsim: use lib code
+ to query engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,59 +30,229 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 
 On 26/09/2023 09:44, Marcin Bernatowicz wrote:
-> No need for repeat_start in struct workload.
-> It's now a variable in run_workload function scope.
+> Use code in lib/i915/gem_engine_topology to query engines.
 > 
 > Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 > ---
->   benchmarks/gem_wsim.c | 8 +++-----
->   1 file changed, 3 insertions(+), 5 deletions(-)
+>   benchmarks/gem_wsim.c | 157 +++++-------------------------------------
+>   1 file changed, 19 insertions(+), 138 deletions(-)
 > 
 > diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-> index daa20fb8a..2e6eb6388 100644
+> index 2e6eb6388..a3339e1b2 100644
 > --- a/benchmarks/gem_wsim.c
 > +++ b/benchmarks/gem_wsim.c
-> @@ -209,8 +209,6 @@ struct workload {
->   	uint32_t bb_prng;
->   	uint32_t bo_prng;
+> @@ -456,150 +456,31 @@ static int str_to_engine(const char *str)
+>   	return -1;
+>   }
 >   
-> -	struct timespec repeat_start;
+> -static bool __engines_queried;
+> -static unsigned int __num_engines;
+> -static struct i915_engine_class_instance *__engines;
 > -
->   	unsigned int nr_ctxs;
->   	struct ctx *ctx_list;
->   
-> @@ -2283,7 +2281,7 @@ static void sync_deps(struct workload *wrk, struct w_step *w)
->   static void *run_workload(void *data)
+> -static int
+> -__i915_query(int i915, struct drm_i915_query *q)
+> +static struct intel_engine_data *query_engines(void)
 >   {
->   	struct workload *wrk = (struct workload *)data;
-> -	struct timespec t_start, t_end;
-> +	struct timespec t_start, t_end, repeat_start;
->   	struct w_step *w;
->   	int throttle = -1;
->   	int qd_throttle = -1;
-> @@ -2297,7 +2295,7 @@ static void *run_workload(void *data)
->   	     count++) {
->   		unsigned int cur_seqno = wrk->sync_seqno;
+> -	if (igt_ioctl(i915, DRM_IOCTL_I915_QUERY, q))
+> -		return -errno;
+> -	return 0;
+> -}
+> +	static struct intel_engine_data engines = {};
 >   
-> -		clock_gettime(CLOCK_MONOTONIC, &wrk->repeat_start);
-> +		clock_gettime(CLOCK_MONOTONIC, &repeat_start);
+> -static int
+> -__i915_query_items(int i915, struct drm_i915_query_item *items, uint32_t n_items)
+> -{
+> -	struct drm_i915_query q = {
+> -		.num_items = n_items,
+> -		.items_ptr = to_user_pointer(items),
+> -	};
+> -	return __i915_query(i915, &q);
+> -}
+> +	if (engines.nengines)
+> +		return &engines;
 >   
->   		for (i = 0, w = wrk->steps; wrk->run && (i < wrk->nr_steps);
->   		     i++, w++) {
-> @@ -2311,7 +2309,7 @@ static void *run_workload(void *data)
->   				int elapsed;
+> -static void
+> -i915_query_items(int i915, struct drm_i915_query_item *items, uint32_t n_items)
+> -{
+> -	igt_assert_eq(__i915_query_items(i915, items, n_items), 0);
+> -}
+> -
+> -static bool has_engine_query(int i915)
+> -{
+> -	struct drm_i915_query_item item = {
+> -		.query_id = DRM_I915_QUERY_ENGINE_INFO,
+> -	};
+> -
+> -	return __i915_query_items(i915, &item, 1) == 0 && item.length > 0;
+> -}
+> -
+> -static void query_engines(void)
+> -{
+> -	struct i915_engine_class_instance *engines;
+> -	unsigned int num;
+> -
+> -	if (__engines_queried)
+> -		return;
+> -
+> -	__engines_queried = true;
+> -
+> -	if (!has_engine_query(fd)) {
+> -		unsigned int num_bsd = gem_has_bsd(fd) + gem_has_bsd2(fd);
+> -		unsigned int i = 0;
+> -
+> -		igt_assert(num_bsd);
+> -
+> -		num = 1 + num_bsd;
+> -
+> -		if (gem_has_blt(fd))
+> -			num++;
+> -
+> -		if (gem_has_vebox(fd))
+> -			num++;
+> -
+> -		engines = calloc(num,
+> -				 sizeof(struct i915_engine_class_instance));
+> -		igt_assert(engines);
+> -
+> -		engines[i].engine_class = I915_ENGINE_CLASS_RENDER;
+> -		engines[i].engine_instance = 0;
+> -		i++;
+> -
+> -		if (gem_has_blt(fd)) {
+> -			engines[i].engine_class = I915_ENGINE_CLASS_COPY;
+> -			engines[i].engine_instance = 0;
+> -			i++;
+> -		}
+> -
+> -		if (gem_has_bsd(fd)) {
+> -			engines[i].engine_class = I915_ENGINE_CLASS_VIDEO;
+> -			engines[i].engine_instance = 0;
+> -			i++;
+> -		}
+> -
+> -		if (gem_has_bsd2(fd)) {
+> -			engines[i].engine_class = I915_ENGINE_CLASS_VIDEO;
+> -			engines[i].engine_instance = 1;
+> -			i++;
+> -		}
+> -
+> -		if (gem_has_vebox(fd)) {
+> -			engines[i].engine_class =
+> -				I915_ENGINE_CLASS_VIDEO_ENHANCE;
+> -			engines[i].engine_instance = 0;
+> -			i++;
+> -		}
+> -	} else {
+> -		struct drm_i915_query_engine_info *engine_info;
+> -		struct drm_i915_query_item item = {
+> -			.query_id = DRM_I915_QUERY_ENGINE_INFO,
+> -		};
+> -		const unsigned int sz = 4096;
+> -		unsigned int i;
+> -
+> -		engine_info = malloc(sz);
+> -		igt_assert(engine_info);
+> -		memset(engine_info, 0, sz);
+> -
+> -		item.data_ptr = to_user_pointer(engine_info);
+> -		item.length = sz;
+> -
+> -		i915_query_items(fd, &item, 1);
+> -		igt_assert(item.length > 0);
+> -		igt_assert(item.length <= sz);
+> -
+> -		num = engine_info->num_engines;
+> -
+> -		engines = calloc(num,
+> -				 sizeof(struct i915_engine_class_instance));
+> -		igt_assert(engines);
+> -
+> -		for (i = 0; i < num; i++) {
+> -			struct drm_i915_engine_info *engine =
+> -				(struct drm_i915_engine_info *)&engine_info->engines[i];
+> -
+> -			engines[i] = engine->engine;
+> -		}
+> -	}
+> -
+> -	__engines = engines;
+> -	__num_engines = num;
+> +	engines = intel_engine_list_of_physical(fd);
+> +	igt_assert(engines.nengines);
+> +	return &engines;
+>   }
 >   
->   				clock_gettime(CLOCK_MONOTONIC, &now);
-> -				elapsed = elapsed_us(&wrk->repeat_start, &now);
-> +				elapsed = elapsed_us(&repeat_start, &now);
->   				do_sleep = w->period - elapsed;
->   				time_tot += elapsed;
->   				if (elapsed < time_min)
+>   static unsigned int num_engines_in_class(enum intel_engine_id class)
+>   {
+> -	unsigned int i, count = 0;
+> +	const struct intel_engine_data *engines = query_engines();
+> +	unsigned int count = 0;
+> +	int i;
+>   
+>   	igt_assert(class == VCS);
+>   
+> -	query_engines();
+> -
+> -	for (i = 0; i < __num_engines; i++) {
+> -		if (__engines[i].engine_class == I915_ENGINE_CLASS_VIDEO)
+> +	for (i = 0; i < engines->nengines; i++) {
 
-Looks like an innocent cleanup indeed.
+nengines is uint32_t so probably best to keep i unsigned.
 
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> +		if (engines->engines[i].class == I915_ENGINE_CLASS_VIDEO)
+>   			count++;
+>   	}
+>   
+> -	igt_assert(count);
+
+Why dropping this?
 
 Regards,
 
 Tvrtko
+
+>   	return count;
+>   }
+>   
+> @@ -607,16 +488,15 @@ static void
+>   fill_engines_id_class(enum intel_engine_id *list,
+>   		      enum intel_engine_id class)
+>   {
+> +	const struct intel_engine_data *engines = query_engines();
+>   	enum intel_engine_id engine = VCS1;
+>   	unsigned int i, j = 0;
+>   
+>   	igt_assert(class == VCS);
+>   	igt_assert(num_engines_in_class(VCS) <= 2);
+>   
+> -	query_engines();
+> -
+> -	for (i = 0; i < __num_engines; i++) {
+> -		if (__engines[i].engine_class != I915_ENGINE_CLASS_VIDEO)
+> +	for (i = 0; i < engines->nengines; i++) {
+> +		if (engines->engines[i].class != I915_ENGINE_CLASS_VIDEO)
+>   			continue;
+>   
+>   		list[j++] = engine++;
+> @@ -626,17 +506,18 @@ fill_engines_id_class(enum intel_engine_id *list,
+>   static unsigned int
+>   find_physical_instance(enum intel_engine_id class, unsigned int logical)
+>   {
+> +	const struct intel_engine_data *engines = query_engines();
+>   	unsigned int i, j = 0;
+>   
+>   	igt_assert(class == VCS);
+>   
+> -	for (i = 0; i < __num_engines; i++) {
+> -		if (__engines[i].engine_class != I915_ENGINE_CLASS_VIDEO)
+> +	for (i = 0; i < engines->nengines; i++) {
+> +		if (engines->engines[i].class != I915_ENGINE_CLASS_VIDEO)
+>   			continue;
+>   
+>   		/* Map logical to physical instances. */
+>   		if (logical == j++)
+> -			return __engines[i].engine_instance;
+> +			return engines->engines[i].instance;
+>   	}
+>   
+>   	igt_assert(0);
