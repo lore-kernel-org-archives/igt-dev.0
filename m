@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 315E110E3DA
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 13:01:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DCC8910E3DA
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 13:01:12 +0000 (UTC)
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 26 Sep 2023 13:00:35 +0000
-Message-Id: <20230926130054.6-6-francois.dugast@intel.com>
+Date: Tue, 26 Sep 2023 13:00:36 +0000
+Message-Id: <20230926130054.6-7-francois.dugast@intel.com>
 In-Reply-To: <20230926130054.6-1-francois.dugast@intel.com>
 References: <20230926130054.6-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 05/24] xe_exec_balancer: Enable parallel
- submission and compute mode
+Subject: [igt-dev] [PATCH v3 06/24] xe_exec_threads: Use
+ DRM_XE_VM_CREATE_COMPUTE_MODE when creating a compute VM
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,82 +26,40 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Matthew Brost <matthew.brost@intel.com>
 
-This is now supported. Test it.
+XE_EXEC_QUEUE_SET_PROPERTY_COMPUTE_MODE was used creating a compute VM.
+This just happened to work as it is same value as
+DRM_XE_VM_CREATE_COMPUTE_MODE. Fix this and use correct flag,
+DRM_XE_VM_CREATE_COMPUTE_MODE.
 
 Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- tests/intel/xe_exec_balancer.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ tests/intel/xe_exec_threads.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/intel/xe_exec_balancer.c b/tests/intel/xe_exec_balancer.c
-index 0314b4cd2..a4a438db7 100644
---- a/tests/intel/xe_exec_balancer.c
-+++ b/tests/intel/xe_exec_balancer.c
-@@ -383,6 +383,12 @@ test_exec(int fd, int gt, int class, int n_exec_queues, int n_execs,
-  * @virtual-userptr-rebind:		virtual userptr rebind
-  * @virtual-userptr-invalidate:		virtual userptr invalidate
-  * @virtual-userptr-invalidate-race:	virtual userptr invalidate racy
-+ * @parallel-basic:			parallel basic
-+ * @parallel-userptr:			parallel userptr
-+ * @parallel-rebind:			parallel rebind
-+ * @parallel-userptr-rebind:		parallel userptr rebind
-+ * @parallel-userptr-invalidate:	parallel userptr invalidate
-+ * @parallel-userptr-invalidate-race:	parallel userptr invalidate racy
-  */
+diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
+index 1f9af894f..d19708f80 100644
+--- a/tests/intel/xe_exec_threads.c
++++ b/tests/intel/xe_exec_threads.c
+@@ -286,7 +286,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
  
- static void
-@@ -460,8 +466,8 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 		};
- 		struct drm_xe_exec_queue_create create = {
- 			.vm_id = vm,
--			.width = 1,
--			.num_placements = num_placements,
-+			.width = flags & PARALLEL ? num_placements : 1,
-+			.num_placements = flags & PARALLEL ? 1 : num_placements,
- 			.instances = to_user_pointer(eci),
- 			.extensions = to_user_pointer(&ext),
- 		};
-@@ -470,6 +476,7 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 					&create), 0);
- 		exec_queues[i] = create.exec_queue_id;
+ 	if (!vm) {
+ 		vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS |
+-				  XE_EXEC_QUEUE_SET_PROPERTY_COMPUTE_MODE, 0);
++				  DRM_XE_VM_CREATE_COMPUTE_MODE, 0);
+ 		owns_vm = true;
  	}
-+	exec.num_batch_buffer = flags & PARALLEL ? num_placements : 1;
  
- 	sync[0].addr = to_user_pointer(&data[0].vm_sync);
- 	if (bo)
-@@ -487,8 +494,12 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 		uint64_t batch_addr = addr + batch_offset;
- 		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
- 		uint64_t sdi_addr = addr + sdi_offset;
-+		uint64_t batches[MAX_INSTANCE];
- 		int e = i % n_exec_queues;
+@@ -1076,7 +1076,7 @@ static void threads(int fd, int flags)
+ 					      to_user_pointer(&ext));
+ 		vm_compute_mode = xe_vm_create(fd,
+ 					       DRM_XE_VM_CREATE_ASYNC_BIND_OPS |
+-					       XE_EXEC_QUEUE_SET_PROPERTY_COMPUTE_MODE,
++					       DRM_XE_VM_CREATE_COMPUTE_MODE,
+ 					       0);
  
-+		for (j = 0; j < num_placements && flags & PARALLEL; ++j)
-+			batches[j] = batch_addr;
-+
- 		b = 0;
- 		data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
- 		data[i].batch[b++] = sdi_addr;
-@@ -500,7 +511,8 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 		sync[0].addr = addr + (char *)&data[i].exec_sync - (char *)data;
- 
- 		exec.exec_queue_id = exec_queues[e];
--		exec.address = batch_addr;
-+		exec.address = flags & PARALLEL ?
-+			to_user_pointer(batches) : batch_addr;
- 		xe_exec(fd, &exec);
- 
- 		if (flags & REBIND && i + 1 != n_execs) {
-@@ -661,9 +673,6 @@ igt_main
- 					test_exec(fd, gt, class, 1, 0,
- 						  s->flags);
- 
--		if (s->flags & PARALLEL)
--			continue;
--
- 		igt_subtest_f("once-cm-%s", s->name)
- 			xe_for_each_gt(fd, gt)
- 				xe_for_each_hw_engine_class(class)
+ 		vm_err_thread.capture = &capture;
 -- 
 2.34.1
