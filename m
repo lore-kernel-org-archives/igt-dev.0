@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============2603925013566936025=="
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C66A310E42E
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 19:59:12 +0000 (UTC)
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 27 Sep 2023 01:19:51 +0530
+Message-Id: <20230926194952.64561-3-mohammed.thasleem@intel.com>
+In-Reply-To: <20230926194952.64561-1-mohammed.thasleem@intel.com>
+References: <20230926194952.64561-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Rob Clark" <robdclark@gmail.com>
-Date: Tue, 26 Sep 2023 19:46:37 -0000
-Message-ID: <169575759788.20979.6540543868618813148@emeril.freedesktop.org>
-References: <20230926184748.199187-1-robdclark@gmail.com>
-In-Reply-To: <20230926184748.199187-1-robdclark@gmail.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5B1/3=5D_lib/drmtest=3A_Use_module_table_for_ch?=
- =?utf-8?b?aXBzZXRfdG9fc3RyKCk=?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH v2 2/3] tests/kms_lease: Remove lease_t from all
+ sub-tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,366 +19,449 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2603925013566936025==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Remove lease_t from all sub-tests and move it to data_t and
+send data struct instead lease struct and avoid dupicating
+of prepare_crtc.
 
-== Series Details ==
+v2: -Separated prepare crtc for master and lease.
+    -Replace close with terminate_lease.
+    -Removed lease_t from all sub-tests. (Ankit)
+v3: Updated commit message. (Ankit)
+v4: Avoid duplicating prepare_crtc. (Ankit)
 
-Series: series starting with [1/3] lib/drmtest: Use module table for chipset_to_str()
-URL   : https://patchwork.freedesktop.org/series/124290/
-State : success
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+---
+ tests/kms_lease.c | 126 +++++++++++++++++++++-------------------------
+ 1 file changed, 58 insertions(+), 68 deletions(-)
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_13682 -> IGTPW_9882
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9882/index.html
-
-Participating hosts (41 -> 39)
-------------------------------
-
-  Missing    (2): fi-snb-2520m fi-pnv-d510 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_9882 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-adlp-9:         [PASS][1] -> [INCOMPLETE][2] ([i915#7913])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13682/bat-adlp-9/igt@i915_selftest@live@hangcheck.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9882/bat-adlp-9/igt@i915_selftest@live@hangcheck.html
-
-  * igt@i915_selftest@live@requests:
-    - bat-mtlp-8:         [PASS][3] -> [ABORT][4] ([i915#9414])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13682/bat-mtlp-8/igt@i915_selftest@live@requests.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9882/bat-mtlp-8/igt@i915_selftest@live@requests.html
-
-  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c-dp-5:
-    - bat-adlp-11:        [PASS][5] -> [ABORT][6] ([i915#8668])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13682/bat-adlp-11/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c-dp-5.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9882/bat-adlp-11/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c-dp-5.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_chamelium_frames@dp-crc-fast:
-    - {bat-dg2-13}:       [DMESG-WARN][7] ([Intel XE#485]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13682/bat-dg2-13/igt@kms_chamelium_frames@dp-crc-fast.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9882/bat-dg2-13/igt@kms_chamelium_frames@dp-crc-fast.html
-
-  * igt@kms_flip@basic-plain-flip@b-dp6:
-    - bat-adlp-11:        [DMESG-WARN][9] ([i915#6868]) -> [PASS][10] +1 other test pass
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13682/bat-adlp-11/igt@kms_flip@basic-plain-flip@b-dp6.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9882/bat-adlp-11/igt@kms_flip@basic-plain-flip@b-dp6.html
-
-  * igt@kms_flip@basic-plain-flip@c-dp6:
-    - bat-adlp-11:        [FAIL][11] ([i915#6121]) -> [PASS][12] +8 other tests pass
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13682/bat-adlp-11/igt@kms_flip@basic-plain-flip@c-dp6.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9882/bat-adlp-11/igt@kms_flip@basic-plain-flip@c-dp6.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - fi-bsw-nick:        [FAIL][13] ([i915#9276]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13682/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9882/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-c-dp-5:
-    - bat-adlp-11:        [DMESG-FAIL][15] ([i915#6868]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13682/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-c-dp-5.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9882/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-c-dp-5.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-5:
-    - bat-adlp-11:        [FAIL][17] ([i915#9047]) -> [PASS][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13682/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-5.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9882/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-5.html
-
-  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-dp-6:
-    - bat-adlp-11:        [ABORT][19] ([i915#8668]) -> [PASS][20]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13682/bat-adlp-11/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-dp-6.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9882/bat-adlp-11/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-dp-6.html
-
-  
-#### Warnings ####
-
-  * igt@kms_force_connector_basic@force-edid:
-    - bat-adlp-11:        [FAIL][21] ([i915#8803]) -> [SKIP][22] ([i915#4093])
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13682/bat-adlp-11/igt@kms_force_connector_basic@force-edid.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9882/bat-adlp-11/igt@kms_force_connector_basic@force-edid.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#485]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/485
-  [i915#4093]: https://gitlab.freedesktop.org/drm/intel/issues/4093
-  [i915#6121]: https://gitlab.freedesktop.org/drm/intel/issues/6121
-  [i915#6868]: https://gitlab.freedesktop.org/drm/intel/issues/6868
-  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
-  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
-  [i915#8803]: https://gitlab.freedesktop.org/drm/intel/issues/8803
-  [i915#9047]: https://gitlab.freedesktop.org/drm/intel/issues/9047
-  [i915#9276]: https://gitlab.freedesktop.org/drm/intel/issues/9276
-  [i915#9414]: https://gitlab.freedesktop.org/drm/intel/issues/9414
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7503 -> IGTPW_9882
-
-  CI-20190529: 20190529
-  CI_DRM_13682: a42554bf0755b80fdfb8e91ca35ae6835bb3534d @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_9882: 9882
-  IGT_7503: 7503
-
-
-Testlist changes
-----------------
-
-+igt@xe_exec_threads@threads-hang-shared-vm-rebind-err
-+igt@xe_exec_threads@threads-hang-shared-vm-userptr-rebind-err
-+igt@xe_exec_threads@threads-shared-vm-rebind-err
-+igt@xe_exec_threads@threads-shared-vm-userptr-rebind-err
-+igt@xe_mmio@mmio-invalid
-+igt@xe_mmio@mmio-timestamp
-+igt@xe_query@query-gts
-+igt@xe_vm@vm-async-ops-err
-+igt@xe_vm@vm-async-ops-err-destroy
--igt@xe_exec_balancer@many-cm-parallel-basic
--igt@xe_exec_balancer@many-cm-parallel-rebind
--igt@xe_exec_balancer@many-cm-parallel-userptr
--igt@xe_exec_balancer@many-cm-parallel-userptr-invalidate
--igt@xe_exec_balancer@many-cm-parallel-userptr-invalidate-race
--igt@xe_exec_balancer@many-cm-parallel-userptr-rebind
--igt@xe_exec_balancer@many-execqueues-cm-parallel-basic
--igt@xe_exec_balancer@many-execqueues-cm-parallel-rebind
--igt@xe_exec_balancer@many-execqueues-cm-parallel-userptr
--igt@xe_exec_balancer@many-execqueues-cm-parallel-userptr-invalidate
--igt@xe_exec_balancer@many-execqueues-cm-parallel-userptr-invalidate-race
--igt@xe_exec_balancer@many-execqueues-cm-parallel-userptr-rebind
--igt@xe_exec_balancer@no-exec-cm-parallel-basic
--igt@xe_exec_balancer@no-exec-cm-parallel-rebind
--igt@xe_exec_balancer@no-exec-cm-parallel-userptr
--igt@xe_exec_balancer@no-exec-cm-parallel-userptr-invalidate
--igt@xe_exec_balancer@no-exec-cm-parallel-userptr-invalidate-race
--igt@xe_exec_balancer@no-exec-cm-parallel-userptr-rebind
--igt@xe_exec_balancer@once-cm-parallel-basic
--igt@xe_exec_balancer@once-cm-parallel-rebind
--igt@xe_exec_balancer@once-cm-parallel-userptr
--igt@xe_exec_balancer@once-cm-parallel-userptr-invalidate
--igt@xe_exec_balancer@once-cm-parallel-userptr-invalidate-race
--igt@xe_exec_balancer@once-cm-parallel-userptr-rebind
--igt@xe_exec_balancer@twice-cm-parallel-basic
--igt@xe_exec_balancer@twice-cm-parallel-rebind
--igt@xe_exec_balancer@twice-cm-parallel-userptr
--igt@xe_exec_balancer@twice-cm-parallel-userptr-invalidate
--igt@xe_exec_balancer@twice-cm-parallel-userptr-invalidate-race
--igt@xe_exec_balancer@twice-cm-parallel-userptr-rebind
--igt@xe_exec_threads@threads-hang-rebind-err
--igt@xe_exec_threads@threads-hang-userptr-rebind-err
--igt@xe_exec_threads@threads-rebind-err
--igt@xe_exec_threads@threads-userptr-rebind-err
--igt@xe_query@query-cs-cycles
--igt@xe_query@query-gt-list
--igt@xe_query@query-invalid-cs-cycles
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9882/index.html
-
---===============2603925013566936025==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [1/3] lib/drmtest: Use module table for chipset_to_str()</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124290/">https://patchwork.freedesktop.org/series/124290/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9882/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9882/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_13682 -&gt; IGTPW_9882</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9882/index.html</p>
-<h2>Participating hosts (41 -&gt; 39)</h2>
-<p>Missing    (2): fi-snb-2520m fi-pnv-d510 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_9882 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13682/bat-adlp-9/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9882/bat-adlp-9/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13682/bat-mtlp-8/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9882/bat-mtlp-8/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9414">i915#9414</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c-dp-5:</p>
-<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13682/bat-adlp-11/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c-dp-5.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9882/bat-adlp-11/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c-dp-5.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_chamelium_frames@dp-crc-fast:</p>
-<ul>
-<li>{bat-dg2-13}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13682/bat-dg2-13/igt@kms_chamelium_frames@dp-crc-fast.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/485">Intel XE#485</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9882/bat-dg2-13/igt@kms_chamelium_frames@dp-crc-fast.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-plain-flip@b-dp6:</p>
-<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13682/bat-adlp-11/igt@kms_flip@basic-plain-flip@b-dp6.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6868">i915#6868</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9882/bat-adlp-11/igt@kms_flip@basic-plain-flip@b-dp6.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-plain-flip@c-dp6:</p>
-<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13682/bat-adlp-11/igt@kms_flip@basic-plain-flip@c-dp6.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6121">i915#6121</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9882/bat-adlp-11/igt@kms_flip@basic-plain-flip@c-dp6.html">PASS</a> +8 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13682/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9276">i915#9276</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9882/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-c-dp-5:</p>
-<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13682/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-c-dp-5.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6868">i915#6868</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9882/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-c-dp-5.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-5:</p>
-<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13682/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-5.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9047">i915#9047</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9882/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-5.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-dp-6:</p>
-<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13682/bat-adlp-11/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-dp-6.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9882/bat-adlp-11/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-dp-6.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_force_connector_basic@force-edid:<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13682/bat-adlp-11/igt@kms_force_connector_basic@force-edid.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8803">i915#8803</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9882/bat-adlp-11/igt@kms_force_connector_basic@force-edid.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4093">i915#4093</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7503 -&gt; IGTPW_9882</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13682: a42554bf0755b80fdfb8e91ca35ae6835bb3534d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_9882: 9882<br />
-  IGT_7503: 7503</p>
-<h2>Testlist changes</h2>
-<p>+igt@xe_exec_threads@threads-hang-shared-vm-rebind-err<br />
-+igt@xe_exec_threads@threads-hang-shared-vm-userptr-rebind-err<br />
-+igt@xe_exec_threads@threads-shared-vm-rebind-err<br />
-+igt@xe_exec_threads@threads-shared-vm-userptr-rebind-err<br />
-+igt@xe_mmio@mmio-invalid<br />
-+igt@xe_mmio@mmio-timestamp<br />
-+igt@xe_query@query-gts<br />
-+igt@xe_vm@vm-async-ops-err<br />
-+igt@xe_vm@vm-async-ops-err-destroy<br />
--igt@xe_exec_balancer@many-cm-parallel-basic<br />
--igt@xe_exec_balancer@many-cm-parallel-rebind<br />
--igt@xe_exec_balancer@many-cm-parallel-userptr<br />
--igt@xe_exec_balancer@many-cm-parallel-userptr-invalidate<br />
--igt@xe_exec_balancer@many-cm-parallel-userptr-invalidate-race<br />
--igt@xe_exec_balancer@many-cm-parallel-userptr-rebind<br />
--igt@xe_exec_balancer@many-execqueues-cm-parallel-basic<br />
--igt@xe_exec_balancer@many-execqueues-cm-parallel-rebind<br />
--igt@xe_exec_balancer@many-execqueues-cm-parallel-userptr<br />
--igt@xe_exec_balancer@many-execqueues-cm-parallel-userptr-invalidate<br />
--igt@xe_exec_balancer@many-execqueues-cm-parallel-userptr-invalidate-race<br />
--igt@xe_exec_balancer@many-execqueues-cm-parallel-userptr-rebind<br />
--igt@xe_exec_balancer@no-exec-cm-parallel-basic<br />
--igt@xe_exec_balancer@no-exec-cm-parallel-rebind<br />
--igt@xe_exec_balancer@no-exec-cm-parallel-userptr<br />
--igt@xe_exec_balancer@no-exec-cm-parallel-userptr-invalidate<br />
--igt@xe_exec_balancer@no-exec-cm-parallel-userptr-invalidate-race<br />
--igt@xe_exec_balancer@no-exec-cm-parallel-userptr-rebind<br />
--igt@xe_exec_balancer@once-cm-parallel-basic<br />
--igt@xe_exec_balancer@once-cm-parallel-rebind<br />
--igt@xe_exec_balancer@once-cm-parallel-userptr<br />
--igt@xe_exec_balancer@once-cm-parallel-userptr-invalidate<br />
--igt@xe_exec_balancer@once-cm-parallel-userptr-invalidate-race<br />
--igt@xe_exec_balancer@once-cm-parallel-userptr-rebind<br />
--igt@xe_exec_balancer@twice-cm-parallel-basic<br />
--igt@xe_exec_balancer@twice-cm-parallel-rebind<br />
--igt@xe_exec_balancer@twice-cm-parallel-userptr<br />
--igt@xe_exec_balancer@twice-cm-parallel-userptr-invalidate<br />
--igt@xe_exec_balancer@twice-cm-parallel-userptr-invalidate-race<br />
--igt@xe_exec_balancer@twice-cm-parallel-userptr-rebind<br />
--igt@xe_exec_threads@threads-hang-rebind-err<br />
--igt@xe_exec_threads@threads-hang-userptr-rebind-err<br />
--igt@xe_exec_threads@threads-rebind-err<br />
--igt@xe_exec_threads@threads-userptr-rebind-err<br />
--igt@xe_query@query-cs-cycles<br />
--igt@xe_query@query-gt-list<br />
--igt@xe_query@query-invalid-cs-cycles</p>
-
-</body>
-</html>
-
---===============2603925013566936025==--
+diff --git a/tests/kms_lease.c b/tests/kms_lease.c
+index dc6124ede..cbf225ff2 100644
+--- a/tests/kms_lease.c
++++ b/tests/kms_lease.c
+@@ -217,6 +217,7 @@ typedef struct {
+ 
+ typedef struct {
+ 	int lease_fd;
++	lease_t lease;
+ 	lease_t master;
+ 	enum pipe pipe;
+ 	uint32_t crtc_id;
+@@ -232,9 +233,10 @@ static igt_output_t *connector_id_to_output(igt_display_t *display, uint32_t con
+ 	return igt_output_from_connector(display, &connector);
+ }
+ 
+-static int prepare_crtc(lease_t *lease, data_t *data)
++static int prepare_crtc(data_t *data, bool is_master)
+ {
+ 	drmModeModeInfo *mode;
++	lease_t *lease = is_master ? &data->master : &data->lease;
+ 	igt_display_t *display = &lease->display;
+ 	igt_output_t *output = connector_id_to_output(display, data->connector_id);
+ 	enum pipe pipe = display->pipes[data->pipe].pipe;
+@@ -254,7 +256,6 @@ static int prepare_crtc(lease_t *lease, data_t *data)
+ 			    DRM_FORMAT_MOD_LINEAR,
+ 			    0.0, 0.0, 0.0,
+ 			    &lease->primary_fb);
+-
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 	igt_plane_set_fb(primary, &lease->primary_fb);
+ 
+@@ -320,7 +321,7 @@ static int get_lease(int fd, struct drm_mode_get_lease *mgl)
+ 	return err;
+ }
+ 
+-static int make_lease(data_t *data, lease_t *lease)
++static int make_lease(data_t *data)
+ {
+ 	uint32_t object_ids[3];
+ 	struct drm_mode_create_lease mcl;
+@@ -341,8 +342,7 @@ static int make_lease(data_t *data, lease_t *lease)
+ 	if (ret)
+ 		return ret;
+ 
+-	lease->fd = mcl.fd;
+-	lease->lessee_id = mcl.lessee_id;
++	data->lease.lessee_id = mcl.lessee_id;
+ 	return 0;
+ }
+ 
+@@ -377,24 +377,23 @@ static void simple_lease(data_t *data)
+ {
+ 	enum pipe pipe = data->pipe;
+ 
+-	lease_t lease;
+-
+ 	/* Create a valid lease */
+-	igt_assert_eq(make_lease(data, &lease), 0);
++	igt_assert_eq(make_lease(data), 0);
+ 
+-	igt_display_require(&lease.display, lease.fd);
++	igt_display_require(&data->lease.display, data->lease.fd);
+ 
+ 	/* Set a mode on the leased output */
+-	igt_assert_eq(0, prepare_crtc(&lease, data));
++	igt_assert_eq(0, prepare_crtc(data, false));
+ 
+ 	/* Paint something attractive */
+-	paint_fb(lease.fd, &lease.primary_fb, "simple_lease",
+-		 lease.mode->name, igt_output_name(lease.output), kmstest_pipe_name(pipe));
++	paint_fb(data->lease.fd, &data->lease.primary_fb, "simple_lease",
++		 data->lease.mode->name, igt_output_name(data->lease.output),
++		 kmstest_pipe_name(pipe));
+ 	igt_debug_wait_for_keypress("lease");
+-	cleanup_crtc(&lease,
+-		     connector_id_to_output(&lease.display, data->connector_id));
++	cleanup_crtc(&data->lease,
++		     connector_id_to_output(&data->lease.display, data->connector_id));
+ 
+-	terminate_lease(&lease);
++	terminate_lease(&data->lease);
+ }
+ 
+ static void empty_lease(data_t *data)
+@@ -440,7 +439,7 @@ static void page_flip_implicit_plane(data_t *data)
+ 	drmSetClientCap(data->master.fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
+ 
+ 	/* Set a mode on the leased output */
+-	igt_assert_eq(0, prepare_crtc(&data->master, data));
++	igt_assert_eq(0, prepare_crtc(data, true));
+ 
+ 	/* sanity check */
+ 	do_or_die(drmModePageFlip(data->master.fd, data->crtc_id,
+@@ -518,7 +517,7 @@ static void setcrtc_implicit_plane(data_t *data)
+ 	}
+ 
+ 	/* Set a mode on the leased output */
+-	igt_assert_eq(0, prepare_crtc(&data->master, data));
++	igt_assert_eq(0, prepare_crtc(data, true));
+ 
+ 	/* sanity check */
+ 	ret = drmModeSetCrtc(data->master.fd, data->crtc_id, -1,
+@@ -531,6 +530,7 @@ static void setcrtc_implicit_plane(data_t *data)
+ 
+ 	object_ids[mcl.object_count++] = wrong_plane_id;
+ 	do_or_die(create_lease(data->master.fd, &mcl));
++	data->lease.fd = mcl.fd;
+ 
+ 	igt_assert_eq(drmModeSetCrtc(mcl.fd, data->crtc_id, -1,
+ 				     0, 0, object_ids, 1, mode),
+@@ -562,7 +562,7 @@ static void cursor_implicit_plane(data_t *data)
+ 	drmSetClientCap(data->master.fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
+ 
+ 	/* Set a mode on the leased output */
+-	igt_assert_eq(0, prepare_crtc(&data->master, data));
++	igt_assert_eq(0, prepare_crtc(data, true));
+ 
+ 	/* sanity check */
+ 	do_or_die(drmModeSetCursor(data->master.fd, data->crtc_id, 0, 0, 0));
+@@ -580,7 +580,7 @@ static void cursor_implicit_plane(data_t *data)
+ 
+ 	cleanup_crtc(&data->master,
+ 		     connector_id_to_output(&data->master.display, data->connector_id));
+-}
++	}
+ 
+ static void atomic_implicit_crtc(data_t *data)
+ {
+@@ -674,19 +674,18 @@ static void atomic_implicit_crtc(data_t *data)
+ /* Test listing lessees */
+ static void lessee_list(data_t *data)
+ {
+-	lease_t lease;
+ 	struct drm_mode_list_lessees mll;
+ 	uint32_t lessees[1];
+ 
+ 	mll.pad = 0;
+ 
+ 	/* Create a valid lease */
+-	igt_assert_eq(make_lease(data, &lease), 0);
++	igt_assert_eq(make_lease(data), 0);
+ 
+ 	/* check for nested leases */
+ 	mll.count_lessees = 0;
+ 	mll.lessees_ptr = 0;
+-	igt_assert_eq(list_lessees(lease.fd, &mll), 0);
++	igt_assert_eq(list_lessees(data->lease.fd, &mll), 0);
+ 	igt_assert_eq(mll.count_lessees, 0);
+ 
+ 	/* Get the number of lessees */
+@@ -708,14 +707,14 @@ static void lessee_list(data_t *data)
+ 	igt_assert_eq(mll.count_lessees, 1);
+ 
+ 	/* Make sure the listed lease is the same as the one we created */
+-	igt_assert_eq(lessees[0], lease.lessee_id);
++	igt_assert_eq(lessees[0], data->lease.lessee_id);
+ 
+ 	/* invalid pad */
+ 	mll.pad = -1;
+ 	igt_assert_eq(list_lessees(data->master.fd, &mll), -EINVAL);
+ 	mll.pad = 0;
+ 
+-	terminate_lease(&lease);
++	terminate_lease(&data->lease);
+ 
+ 	/* Make sure the lease is gone */
+ 	igt_assert_eq(list_lessees(data->master.fd, &mll), 0);
+@@ -725,7 +724,6 @@ static void lessee_list(data_t *data)
+ /* Test getting the contents of a lease */
+ static void lease_get(data_t *data)
+ {
+-	lease_t lease;
+ 	struct drm_mode_get_lease mgl;
+ 	int num_leased_obj = 3;
+ 	uint32_t objects[num_leased_obj];
+@@ -734,12 +732,12 @@ static void lease_get(data_t *data)
+ 	mgl.pad = 0;
+ 
+ 	/* Create a valid lease */
+-	igt_assert_eq(make_lease(data, &lease), 0);
++	igt_assert_eq(make_lease(data), 0);
+ 
+ 	/* Get the number of objects */
+ 	mgl.count_objects = 0;
+ 	mgl.objects_ptr = 0;
+-	igt_assert_eq(get_lease(lease.fd, &mgl), 0);
++	igt_assert_eq(get_lease(data->lease.fd, &mgl), 0);
+ 
+ 	/* Make sure it's 2 */
+ 	igt_assert_eq(mgl.count_objects, num_leased_obj);
+@@ -747,7 +745,7 @@ static void lease_get(data_t *data)
+ 	/* Get the objects */
+ 	mgl.objects_ptr = (uint64_t) (uintptr_t) objects;
+ 
+-	igt_assert_eq(get_lease(lease.fd, &mgl), 0);
++	igt_assert_eq(get_lease(data->lease.fd, &mgl), 0);
+ 
+ 	/* Make sure it's 2 */
+ 	igt_assert_eq(mgl.count_objects, num_leased_obj);
+@@ -773,28 +771,27 @@ static void lease_get(data_t *data)
+ 
+ 	/* invalid pad */
+ 	mgl.pad = -1;
+-	igt_assert_eq(get_lease(lease.fd, &mgl), -EINVAL);
++	igt_assert_eq(get_lease(data->lease.fd, &mgl), -EINVAL);
+ 	mgl.pad = 0;
+ 
+ 	/* invalid pointer */
+ 	mgl.objects_ptr = 0;
+-	igt_assert_eq(get_lease(lease.fd, &mgl), -EFAULT);
++	igt_assert_eq(get_lease(data->lease.fd, &mgl), -EFAULT);
+ 
+-	terminate_lease(&lease);
++	terminate_lease(&data->lease);
+ }
+ 
+ static void lease_unleased_crtc(data_t *data)
+ {
+-	lease_t lease;
+ 	enum pipe p;
+ 	uint32_t bad_crtc_id;
+ 	drmModeCrtc *crtc;
+ 	int ret;
+ 
+ 	/* Create a valid lease */
+-	igt_assert_eq(make_lease(data, &lease), 0);
++	igt_assert_eq(make_lease(data), 0);
+ 
+-	igt_display_require(&lease.display, lease.fd);
++	igt_display_require(&data->lease.display, data->lease.fd);
+ 
+ 	/* Find another CRTC that we don't control */
+ 	bad_crtc_id = 0;
+@@ -810,36 +807,35 @@ static void lease_unleased_crtc(data_t *data)
+ 	igt_skip_on(bad_crtc_id == 0);
+ 
+ 	/* sanity check */
+-	ret = drmModeSetCrtc(lease.fd, data->crtc_id, 0, 0, 0, NULL, 0, NULL);
++	ret = drmModeSetCrtc(data->lease.fd, data->crtc_id, 0, 0, 0, NULL, 0, NULL);
+ 	igt_assert_eq(ret, 0);
+-	crtc = drmModeGetCrtc(lease.fd, data->crtc_id);
++	crtc = drmModeGetCrtc(data->lease.fd, data->crtc_id);
+ 	igt_assert(crtc);
+ 	drmModeFreeCrtc(crtc);
+ 
+ 	/* Attempt to use the unleased crtc id. We need raw ioctl to bypass the
+ 	 * igt_kms helpers.
+ 	 */
+-	ret = drmModeSetCrtc(lease.fd, bad_crtc_id, 0, 0, 0, NULL, 0, NULL);
++	ret = drmModeSetCrtc(data->lease.fd, bad_crtc_id, 0, 0, 0, NULL, 0, NULL);
+ 	igt_assert_eq(ret, -ENOENT);
+-	crtc = drmModeGetCrtc(lease.fd, bad_crtc_id);
++	crtc = drmModeGetCrtc(data->lease.fd, bad_crtc_id);
+ 	igt_assert(!crtc);
+ 	igt_assert_eq(errno, ENOENT);
+ 	drmModeFreeCrtc(crtc);
+ 
+-	terminate_lease(&lease);
++	terminate_lease(&data->lease);
+ }
+ 
+ static void lease_unleased_connector(data_t *data)
+ {
+-	lease_t lease;
+ 	int o;
+ 	uint32_t bad_connector_id;
+ 	drmModeConnector *c;
+ 
+ 	/* Create a valid lease */
+-	igt_assert_eq(make_lease(data, &lease), 0);
++	igt_assert_eq(make_lease(data), 0);
+ 
+-	igt_display_require(&lease.display, lease.fd);
++	igt_display_require(&data->lease.display, data->lease.fd);
+ 
+ 	/* Find another connector that we don't control */
+ 	bad_connector_id = 0;
+@@ -852,72 +848,70 @@ static void lease_unleased_connector(data_t *data)
+ 	igt_skip_on(bad_connector_id == 0);
+ 
+ 	/* sanity check */
+-	c = drmModeGetConnector(lease.fd, data->connector_id);
++	c = drmModeGetConnector(data->lease.fd, data->connector_id);
+ 	igt_assert(c);
+ 
+ 	/* Attempt to use the unleased connector id. Note that the
+ 	 */
+-	c = drmModeGetConnector(lease.fd, bad_connector_id);
++	c = drmModeGetConnector(data->lease.fd, bad_connector_id);
+ 	igt_assert(!c);
+ 	igt_assert_eq(errno, ENOENT);
+ 
+-	terminate_lease(&lease);
++	terminate_lease(&data->lease);
+ }
+ 
+ /* Test revocation of lease */
+ static void lease_revoke(data_t *data)
+ {
+-	lease_t lease;
+ 	struct drm_mode_revoke_lease mrl;
+ 	int ret;
+ 
+ 	/* Create a valid lease */
+-	igt_assert_eq(make_lease(data, &lease), 0);
++	igt_assert_eq(make_lease(data), 0);
+ 
+-	igt_display_require(&lease.display, lease.fd);
++	igt_display_require(&data->lease.display, data->lease.fd);
+ 
+ 	/* try to revoke an invalid lease */
+ 	mrl.lessee_id = 0;
+ 	igt_assert_eq(revoke_lease(data->master.fd, &mrl), -ENOENT);
+ 
+ 	/* try to revoke with the wrong fd */
+-	mrl.lessee_id = lease.lessee_id;
+-	igt_assert_eq(revoke_lease(lease.fd, &mrl), -EACCES);
++	mrl.lessee_id = data->lease.lessee_id;
++	igt_assert_eq(revoke_lease(data->lease.fd, &mrl), -EACCES);
+ 
+ 	/* Revoke the lease using the master fd */
+-	mrl.lessee_id = lease.lessee_id;
++	mrl.lessee_id = data->lease.lessee_id;
+ 	igt_assert_eq(revoke_lease(data->master.fd, &mrl), 0);
+ 
+ 	/* Try to use the leased objects */
+-	ret = prepare_crtc(&lease, data);
++	ret = prepare_crtc(data, false);
+ 
+ 	/* Ensure that the expected error is returned */
+ 	igt_assert_eq(ret, -ENOENT);
+ 
+-	terminate_lease(&lease);
++	terminate_lease(&data->lease);
+ 
+ 	/* make sure the lease is gone */
+-	mrl.lessee_id = lease.lessee_id;
++	mrl.lessee_id = data->lease.lessee_id;
+ 	igt_assert_eq(revoke_lease(data->master.fd, &mrl), -ENOENT);
+ }
+ 
+ /* Test leasing objects more than once */
+ static void lease_again(data_t *data)
+ {
+-	lease_t lease_a, lease_b;
+ 
+ 	/* Create a valid lease */
+-	igt_assert_eq(make_lease(data, &lease_a), 0);
++	igt_assert_eq(make_lease(data), 0);
+ 
+ 	/* Attempt to re-lease the same objects */
+-	igt_assert_eq(make_lease(data, &lease_b), -EBUSY);
++	igt_assert_eq(make_lease(data), -EBUSY);
+ 
+-	terminate_lease(&lease_a);
++	terminate_lease(&data->lease);
+ 
+ 	/* Now attempt to lease the same objects */
+-	igt_assert_eq(make_lease(data, &lease_b), 0);
++	igt_assert_eq(make_lease(data), 0);
+ 
+-	terminate_lease(&lease_b);
++	terminate_lease(&data->lease);
+ }
+ 
+ #define assert_unleased(ret) \
+@@ -927,14 +921,13 @@ static void lease_again(data_t *data)
+ /* Test leasing an invalid connector */
+ static void lease_invalid_connector(data_t *data)
+ {
+-	lease_t lease;
+ 	uint32_t save_connector_id;
+ 	int ret;
+ 
+ 	/* Create an invalid lease */
+ 	save_connector_id = data->connector_id;
+ 	data->connector_id = 0xbaadf00d;
+-	ret = make_lease(data, &lease);
++	ret = make_lease(data);
+ 	data->connector_id = save_connector_id;
+ 	assert_unleased(ret);
+ }
+@@ -942,28 +935,26 @@ static void lease_invalid_connector(data_t *data)
+ /* Test leasing an invalid crtc */
+ static void lease_invalid_crtc(data_t *data)
+ {
+-	lease_t lease;
+ 	uint32_t save_crtc_id;
+ 	int ret;
+ 
+ 	/* Create an invalid lease */
+ 	save_crtc_id = data->crtc_id;
+ 	data->crtc_id = 0xbaadf00d;
+-	ret = make_lease(data, &lease);
++	ret = make_lease(data);
+ 	data->crtc_id = save_crtc_id;
+ 	assert_unleased(ret);
+ }
+ 
+ static void lease_invalid_plane(data_t *data)
+ {
+-	lease_t lease;
+ 	uint32_t save_plane_id;
+ 	int ret;
+ 
+ 	/* Create an invalid lease */
+ 	save_plane_id = data->plane_id;
+ 	data->plane_id = 0xbaadf00d;
+-	ret = make_lease(data, &lease);
++	ret = make_lease(data);
+ 	data->plane_id = save_plane_id;
+ 	assert_unleased(ret);
+ }
+@@ -1404,9 +1395,8 @@ igt_main
+ 							igt_pipe_get_plane_type(&data.master.display.pipes[data.pipe],
+ 									DRM_PLANE_TYPE_PRIMARY)->drm_plane->plane_id;
+ 						f->func(&data);
+-						if (data.lease_fd != 0)
+-							close(data.lease_fd);
+ 					}
++					terminate_lease(&data.lease);
+ 				}
+ 			}
+ 		}
+-- 
+2.25.1
