@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E7D8C10E3B9
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 11:56:32 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 34E3310E3B8
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 11:56:31 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	swati2.sharma@intel.com
-Date: Tue, 26 Sep 2023 17:17:51 +0530
-Message-Id: <20230926114751.2757259-3-bhanuprakash.modem@intel.com>
+Date: Tue, 26 Sep 2023 17:17:50 +0530
+Message-Id: <20230926114751.2757259-2-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230926114751.2757259-1-bhanuprakash.modem@intel.com>
 References: <20230926114751.2757259-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 2/2] tests/intel/kms_pm_lpsp: Fix Bigjoiner checks
+Subject: [igt-dev] [i-g-t 1/2] tests/intel/kms_pm_lpsp: Test optimization
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,75 +23,123 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Instead of writing a new logic to check the Bigjoiner validity,
-use the existing helpers from IGT lib.
+- Don't skip dynamic subtest, instead don't run it
+- Remove hard coded pipe & make it generic
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/intel/kms_pm_lpsp.c | 25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+ tests/intel/kms_pm_lpsp.c | 49 +++++++++++++++++++++++++--------------
+ 1 file changed, 32 insertions(+), 17 deletions(-)
 
 diff --git a/tests/intel/kms_pm_lpsp.c b/tests/intel/kms_pm_lpsp.c
-index d3e543048..cb3c3e379 100644
+index 14f4b77f5..d3e543048 100644
 --- a/tests/intel/kms_pm_lpsp.c
 +++ b/tests/intel/kms_pm_lpsp.c
-@@ -68,6 +68,8 @@ typedef struct {
- 	enum pipe pipe;
+@@ -38,7 +38,7 @@
+  * Category: Display
+  *
+  * SUBTEST: kms-lpsp
+- * Description: This test validates lpsp on all connected outputs on low power PIPE_A
++ * Description: This test validates lpsp on all connected outputs on low power pipes
+  * Driver requirement: i915, xe
+  * Functionality: pm_lpsp
+  * Mega feature: Display Power
+@@ -65,6 +65,7 @@ typedef struct {
+ 	struct igt_fb fb;
+ 	drmModeModeInfo *mode;
+ 	igt_output_t *output;
++	enum pipe pipe;
  } data_t;
  
-+static int max_dotclock;
-+
  static bool lpsp_is_enabled(data_t *data)
- {
- 	char buf[MAX_SINK_LPSP_INFO_BUF_LEN];
-@@ -123,7 +125,6 @@ static void setup_lpsp_output(data_t *data)
+@@ -122,8 +123,7 @@ static void setup_lpsp_output(data_t *data)
  {
  	igt_plane_t *primary;
  
--	igt_output_set_pipe(data->output, data->pipe);
+-	/* set output pipe = PIPE_A for LPSP */
+-	igt_output_set_pipe(data->output, PIPE_A);
++	igt_output_set_pipe(data->output, data->pipe);
  	primary = igt_output_get_plane_type(data->output,
  					    DRM_PLANE_TYPE_PRIMARY);
  	igt_plane_set_fb(primary, NULL);
-@@ -158,20 +159,22 @@ static bool test_constraint(data_t *data)
+@@ -152,15 +152,12 @@ static void test_cleanup(data_t *data)
+ 	data->output = NULL;
+ }
+ 
+-static void test_lpsp(data_t *data)
++static bool test_constraint(data_t *data)
+ {
+ 	drmModeConnectorPtr c = data->output->config.connector;
  	int i;
  
- 	igt_display_reset(&data->display);
-+	igt_output_set_pipe(data->output, data->pipe);
+-	/* LPSP is low power single pipe usages i.e. PIPE_A */
+-	igt_require(igt_pipe_connector_valid(PIPE_A, data->output));
+-	igt_require_f(i915_output_is_lpsp_capable(data->drm_fd, data->output),
+-		      "output is not lpsp capable\n");
++	igt_display_reset(&data->display);
  
  	data->mode = igt_output_get_mode(data->output);
  
--	/* For LPSP avoid pipe big joiner by atleast 4k mode */
--	if (data->mode->hdisplay > 3840 && data->mode->vdisplay > 2160)
-+	/* For LPSP avoid Bigjoiner. */
-+	if (igt_bigjoiner_possible(data->mode, max_dotclock)) {
- 		for (i = 0; i < c->count_modes; i++) {
--			if (c->modes[i].hdisplay <= 3840 &&
--			    c->modes[i].vdisplay <= 2160) {
--				data->mode = &c->modes[i];
--				igt_output_override_mode(data->output,
--							 data->mode);
--				return true;
--			}
-+			data->mode = &c->modes[i];
-+			if (igt_bigjoiner_possible(data->mode, max_dotclock))
-+				continue;
-+
-+			igt_output_override_mode(data->output, data->mode);
-+
-+			return true;
+@@ -172,13 +169,15 @@ static void test_lpsp(data_t *data)
+ 				data->mode = &c->modes[i];
+ 				igt_output_override_mode(data->output,
+ 							 data->mode);
+-				break;
++				return true;
+ 			}
  		}
-+	}
  
- 	return false;
- }
-@@ -200,6 +203,8 @@ igt_main
- 		data.devid = intel_get_drm_devid(data.drm_fd);
- 		igt_display_require(&data.display, data.drm_fd);
- 		igt_require(igt_pm_dmc_loaded(data.debugfs_fd));
-+
-+		max_dotclock = igt_get_max_dotclock(data.drm_fd);
+-	igt_require(data->mode->hdisplay <= 3840 &&
+-		    data->mode->vdisplay <= 2160);
++	return false;
++}
+ 
++static void test_lpsp(data_t *data)
++{
+ 	setup_lpsp_output(data);
+ 	igt_assert_f(igt_wait(lpsp_is_enabled(data), 1000, 100),
+ 		     "%s: lpsp is not enabled\n%s:\n%s\n",
+@@ -211,19 +210,35 @@ igt_main
+ 		screens_disabled_subtest(&data);
  	}
  
- 	igt_describe("This test validates lpsp while all crtc are disabled");
+-	igt_describe("This test validates lpsp on all connected outputs on low power PIPE_A");
++	igt_describe("This test validates lpsp on all connected outputs on low power pipes");
+ 	igt_subtest_with_dynamic_f("kms-lpsp") {
+ 		igt_display_t *display = &data.display;
+ 		igt_output_t *output;
++		enum pipe pipe;
+ 
+ 		for_each_connected_output(display, output) {
+-			igt_dynamic_f("kms-lpsp-%s",
+-				      kmstest_connector_type_str(output->config.connector->connector_type)) {
++			if (!i915_output_is_lpsp_capable(data.drm_fd, output))
++				continue;
++
++			for_each_pipe(display, pipe) {
++				if (!igt_pipe_connector_valid(pipe, output))
++					continue;
++
++				/* LPSP is low power single pipe usages i.e. PIPE_A */
++				if (pipe != PIPE_A)
++					continue;
++
+ 				data.output = output;
+-				test_lpsp(&data);
+-			}
++				data.pipe = pipe;
++
++				if (!test_constraint(&data))
++					continue;
+ 
+-			test_cleanup(&data);
++				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
++					test_lpsp(&data);
++
++				test_cleanup(&data);
++			}
+ 		}
+ 	}
+ 
 -- 
 2.40.0
