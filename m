@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B421C10E229
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 16:46:23 +0000 (UTC)
-Message-ID: <ebe34945-129d-0730-bf50-7924a3b63690@intel.com>
-Date: Tue, 26 Sep 2023 22:15:58 +0530
-Content-Language: en-US
-To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20230918112216.260019-1-swati2.sharma@intel.com>
- <20230918112216.260019-3-swati2.sharma@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20230918112216.260019-3-swati2.sharma@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EB89410E410
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 16:50:57 +0000 (UTC)
+Message-ID: <0660e811-3b98-7f02-aaab-ce3c5fe2bbdb@linux.intel.com>
+Date: Tue, 26 Sep 2023 17:50:53 +0100
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/kms_lease: rename subtests
+Content-Language: en-US
+To: Francois Dugast <francois.dugast@intel.com>, igt-dev@lists.freedesktop.org
+References: <20230926130054.6-1-francois.dugast@intel.com>
+ <20230926130054.6-2-francois.dugast@intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20230926130054.6-2-francois.dugast@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH v3 01/24] drm-uapi/xe_drm: Align with new PMU
+ interface
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,197 +22,82 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
-On Mon-18-09-2023 04:52 pm, Swati Sharma wrote:
-> Use '-' instead of '_' while naming subtests.
+On 26/09/2023 14:00, Francois Dugast wrote:
+> From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 > 
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-
+> Align with commit ("drm/xe/pmu: Enable PMU interface")
+> 
+> Cc: Francois Dugast <francois.dugast@intel.com>
+> Cc: Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>
+> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+> Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 > ---
->   tests/kms_lease.c | 62 +++++++++++++++++++++++------------------------
->   1 file changed, 31 insertions(+), 31 deletions(-)
+>   include/drm-uapi/xe_drm.h | 38 ++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 38 insertions(+)
 > 
-> diff --git a/tests/kms_lease.c b/tests/kms_lease.c
-> index 1a91b3eb4..343cdb812 100644
-> --- a/tests/kms_lease.c
-> +++ b/tests/kms_lease.c
-> @@ -46,21 +46,21 @@
->   #include "igt_device.h"
+> diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+> index 804c02270..643eb6e82 100644
+> --- a/include/drm-uapi/xe_drm.h
+> +++ b/include/drm-uapi/xe_drm.h
+> @@ -1053,6 +1053,44 @@ struct drm_xe_vm_madvise {
+>   	__u64 reserved[2];
+>   };
 >   
->   /**
-> - * SUBTEST: atomic_implicit_crtc
-> + * SUBTEST: atomic-implicit-crtc
->    * Description: Negative test by using a different crtc with atomic ioctl
->    * Driver requirement: i915, xe
->    * Functionality: lease
->    * Mega feature: General Display Features
->    * Test category: functionality test
->    *
-> - * SUBTEST: cursor_implicit_plane
-> + * SUBTEST: cursor-implicit-plane
->    * Description: Negative test by using a non-primary plane with setcursor ioctl
->    * Driver requirement: i915, xe
->    * Functionality: lease
->    * Mega feature: General Display Features
->    * Test category: functionality test
->    *
-> - * SUBTEST: empty_lease
-> + * SUBTEST: empty-lease
->    * Description: Check that creating an empty lease works
->    * Driver requirement: i915, xe
->    * Functionality: lease
-> @@ -89,63 +89,63 @@
->    * Mega feature: General Display Features
->    * Test category: functionality test
->    *
-> - * SUBTEST: lease_again
-> + * SUBTEST: lease-again
->    * Description: Tests leasing objects more than once
->    * Driver requirement: i915, xe
->    * Functionality: lease
->    * Mega feature: General Display Features
->    * Test category: functionality test
->    *
-> - * SUBTEST: lease_get
-> + * SUBTEST: lease-get
->    * Description: Tests getting the required contents of a lease
->    * Driver requirement: i915, xe
->    * Functionality: lease
->    * Mega feature: General Display Features
->    * Test category: functionality test
->    *
-> - * SUBTEST: lease_invalid_connector
-> + * SUBTEST: lease-invalid-connector
->    * Description: Tests leasing an invalid connector
->    * Driver requirement: i915, xe
->    * Functionality: lease
->    * Mega feature: General Display Features
->    * Test category: functionality test
->    *
-> - * SUBTEST: lease_invalid_crtc
-> + * SUBTEST: lease-invalid-crtc
->    * Description: Tests leasing an invalid crtc
->    * Driver requirement: i915, xe
->    * Functionality: lease
->    * Mega feature: General Display Features
->    * Test category: functionality test
->    *
-> - * SUBTEST: lease_invalid_plane
-> + * SUBTEST: lease-invalid-plane
->    * Description: Tests leasing an invalid plane
->    * Driver requirement: i915, xe
->    * Functionality: lease
->    * Mega feature: General Display Features
->    * Test category: functionality test
->    *
-> - * SUBTEST: lease_revoke
-> + * SUBTEST: lease-revoke
->    * Description: Tests revocation of lease
->    * Driver requirement: i915, xe
->    * Functionality: lease
->    * Mega feature: General Display Features
->    * Test category: functionality test
->    *
-> - * SUBTEST: lease_unleased_connector
-> + * SUBTEST: lease-unleased-connector
->    * Description: Negative test by trying to use an unleased connector
->    * Driver requirement: i915, xe
->    * Functionality: lease
->    * Mega feature: General Display Features
->    * Test category: functionality test
->    *
-> - * SUBTEST: lease_unleased_crtc
-> + * SUBTEST: lease-unleased-crtc
->    * Description: Negative test by trying to use an unleased crtc
->    * Driver requirement: i915, xe
->    * Functionality: lease
->    * Mega feature: General Display Features
->    * Test category: functionality test
->    *
-> - * SUBTEST: lessee_list
-> + * SUBTEST: lessee-list
->    * Description: Check if listed lease is same as created one
->    * Driver requirement: i915, xe
->    * Functionality: lease
-> @@ -168,7 +168,7 @@
->    * Mega feature: General Display Features
->    * Test category: functionality test
->    *
-> - * SUBTEST: page_flip_implicit_plane
-> + * SUBTEST: page-flip-implicit-plane
->    * Description: Negative test by using a non-primary plane with the page flip ioctl
->    * Driver requirement: i915, xe
->    * Functionality: lease
-> @@ -184,14 +184,14 @@
->    * Mega feature: General Display Features
->    * Test category: functionality test
->    *
-> - * SUBTEST: setcrtc_implicit_plane
-> + * SUBTEST: setcrtc-implicit-plane
->    * Description: Negative test by using a non-primary plane with the setcrtc ioctl
->    * Driver requirement: i915, xe
->    * Functionality: lease
->    * Mega feature: General Display Features
->    * Test category: functionality test
->    *
-> - * SUBTEST: simple_lease
-> + * SUBTEST: simple-lease
->    * Description: Check if create lease ioctl call works
->    * Driver requirement: i915, xe
->    * Functionality: lease
-> @@ -381,7 +381,7 @@ static void simple_lease(data_t *data)
->   	igt_assert_eq(0, prepare_crtc(&lease, data));
->   
->   	/* Paint something attractive */
-> -	paint_fb(lease.fd, &lease.primary_fb, "simple_lease",
-> +	paint_fb(lease.fd, &lease.primary_fb, "simple-lease",
->   		 lease.mode->name, igt_output_name(lease.output), kmstest_pipe_name(pipe));
->   	igt_debug_wait_for_keypress("lease");
->   	cleanup_crtc(&lease,
-> @@ -1347,25 +1347,25 @@ igt_main
->   			void (*func)(data_t *);
->   			const char *desc;
->   		} funcs[] = {
-> -			{ "simple_lease", simple_lease, "Check if create lease ioctl call works" },
-> -			{ "empty_lease", empty_lease, "Check that creating an empty lease works" },
-> -			{ "lessee_list", lessee_list, "Check if listed lease is same as created one" },
-> -			{ "lease_get", lease_get, "Tests getting the required contents of a lease" },
-> -			{ "lease_unleased_connector", lease_unleased_connector, "Negative test by trying to"
-> +			{ "simple-lease", simple_lease, "Check if create lease ioctl call works" },
-> +			{ "empty-lease", empty_lease, "Check that creating an empty lease works" },
-> +			{ "lessee-list", lessee_list, "Check if listed lease is same as created one" },
-> +			{ "lease-get", lease_get, "Tests getting the required contents of a lease" },
-> +			{ "lease-unleased-connector", lease_unleased_connector, "Negative test by trying to"
->   				" use an unleased connector " },
-> -			{ "lease_unleased_crtc", lease_unleased_crtc, "Negative test by trying to use an unleased crtc" },
-> -			{ "lease_revoke", lease_revoke, "Tests revocation of lease" },
-> -			{ "lease_again", lease_again, "Tests leasing objects more than once" },
-> -			{ "lease_invalid_connector", lease_invalid_connector, "Tests leasing an invalid connector" },
-> -			{ "lease_invalid_crtc", lease_invalid_crtc, "Tests leasing an invalid crtc" },
-> -			{ "lease_invalid_plane", lease_invalid_plane, "Tests leasing an invalid plane" },
-> -			{ "page_flip_implicit_plane", page_flip_implicit_plane, "Negative test by using a "
-> +			{ "lease-unleased-crtc", lease_unleased_crtc, "Negative test by trying to use an unleased crtc" },
-> +			{ "lease-revoke", lease_revoke, "Tests revocation of lease" },
-> +			{ "lease-again", lease_again, "Tests leasing objects more than once" },
-> +			{ "lease-invalid-connector", lease_invalid_connector, "Tests leasing an invalid connector" },
-> +			{ "lease-invalid-crtc", lease_invalid_crtc, "Tests leasing an invalid crtc" },
-> +			{ "lease-invalid-plane", lease_invalid_plane, "Tests leasing an invalid plane" },
-> +			{ "page-flip-implicit-plane", page_flip_implicit_plane, "Negative test by using a "
->   				"non-primary plane with the page flip ioctl" },
-> -			{ "setcrtc_implicit_plane", setcrtc_implicit_plane, "Negative test by using a "
-> +			{ "setcrtc-implicit-plane", setcrtc_implicit_plane, "Negative test by using a "
->   				"non-primary plane with the setcrtc ioctl" },
-> -			{ "cursor_implicit_plane", cursor_implicit_plane, "Negative test by using a non-primary"
-> +			{ "cursor-implicit-plane", cursor_implicit_plane, "Negative test by using a non-primary"
->   				" plane with setcursor ioctl" },
-> -			{ "atomic_implicit_crtc", atomic_implicit_crtc, "Negative test by using a different"
-> +			{ "atomic-implicit-crtc", atomic_implicit_crtc, "Negative test by using a different"
->   				" crtc with atomic ioctl" },
->   			{ }
->   		}, *f;
+> +/**
+> + * DOC: XE PMU event config IDs
+> + *
+> + * Check 'man perf_event_open' to use these ID's in 'struct perf_event_attr'
+> + * as part of perf_event_open syscall to read a particular event.
+> + *
+> + * For example to open the XE_PMU_INTERRUPTS(0):
+> + *
+> + * .. code-block:: C
+> + *	struct perf_event_attr attr;
+> + *	long long count;
+> + *	int cpu = 0;
+> + *	int fd;
+> + *
+> + *	memset(&attr, 0, sizeof(struct perf_event_attr));
+> + *	attr.type = type; // eg: /sys/bus/event_source/devices/xe_0000_56_00.0/type
+> + *	attr.read_format = PERF_FORMAT_TOTAL_TIME_ENABLED;
+> + *	attr.use_clockid = 1;
+> + *	attr.clockid = CLOCK_MONOTONIC;
+> + *	attr.config = XE_PMU_INTERRUPTS(0);
+> + *
+> + *	fd = syscall(__NR_perf_event_open, &attr, -1, cpu, -1, 0);
+> + */
+> +
+> +/*
+> + * Top bits of every counter are GT id.
+> + */
+> +#define __XE_PMU_GT_SHIFT (56)
+> +
+> +#define ___XE_PMU_OTHER(gt, x) \
+> +	(((__u64)(x)) | ((__u64)(gt) << __XE_PMU_GT_SHIFT))
+> +
+> +#define XE_PMU_INTERRUPTS(gt)			___XE_PMU_OTHER(gt, 0)
+
+AFAIR interrupts is probably the least useful counter and I don't 
+remember that anyone asked much about it. Therefore I'd say it could be 
+worth seeing if you could just drop it. Changes to intel_gpu_top to work 
+with the below set (no per engine, no frequencies) will have to be 
+extensive already anyway.
+
+Regards,
+
+Tvrtko
+
+> +#define XE_PMU_RENDER_GROUP_BUSY(gt)		___XE_PMU_OTHER(gt, 1)
+> +#define XE_PMU_COPY_GROUP_BUSY(gt)		___XE_PMU_OTHER(gt, 2)
+> +#define XE_PMU_MEDIA_GROUP_BUSY(gt)		___XE_PMU_OTHER(gt, 3)
+> +#define XE_PMU_ANY_ENGINE_GROUP_BUSY(gt)	___XE_PMU_OTHER(gt, 4)
+> +
+>   #if defined(__cplusplus)
+>   }
+>   #endif
