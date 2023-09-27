@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============7172440004029043868=="
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C69F910E4E4
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Sep 2023 11:36:47 +0000 (UTC)
+Date: Wed, 27 Sep 2023 13:36:43 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: sai.gowtham.ch@intel.com
+Message-ID: <20230927113643.xjmvcp6xoja2x2ql@zkempczy-mobl2>
+References: <20230926122749.32460-1-sai.gowtham.ch@intel.com>
+ <20230926122749.32460-3-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jeevan B" <jeevan.b@intel.com>
-Date: Wed, 27 Sep 2023 10:06:33 -0000
-Message-ID: <169580919335.20758.13114137026258571938@emeril.freedesktop.org>
-References: <20230927085144.1548543-1-jeevan.b@intel.com>
-In-Reply-To: <20230927085144.1548543-1-jeevan.b@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/km?=
- =?utf-8?q?s=5Fsetmode=3A_Update_test_description?=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230926122749.32460-3-sai.gowtham.ch@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/3] lib/intel_blt: Add wrappers to
+ prepare batch buffers and submit exec
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,117 +21,388 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7172440004029043868==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Tue, Sep 26, 2023 at 05:57:48PM +0530, sai.gowtham.ch@intel.com wrote:
+> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> 
+> Adding wrapper for mem-set and mem-copy instructions to prepare
+> batch buffers and submit exec, (blt_mem_copy, blt_set_mem,
+> emit_blt_mem_copy, emit,blt_set_mem)
+> 
+> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> ---
+>  lib/intel_blt.c | 205 ++++++++++++++++++++++++++++++++++++++++++++++++
+>  lib/intel_blt.h |  43 ++++++++++
+>  lib/intel_reg.h |   4 +
+>  3 files changed, 252 insertions(+)
+> 
+> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+> index b55fa9b52..99c01265b 100644
+> --- a/lib/intel_blt.c
+> +++ b/lib/intel_blt.c
+> @@ -13,12 +13,14 @@
+>  #include "igt.h"
+>  #include "igt_syncobj.h"
+>  #include "intel_blt.h"
+> +#include "intel_mocs.h"
+>  #include "xe/xe_ioctl.h"
+>  #include "xe/xe_query.h"
+>  #include "xe/xe_util.h"
+>  
+>  #define BITRANGE(start, end) (end - start + 1)
+>  #define GET_CMDS_INFO(__fd) intel_get_cmds_info(intel_get_drm_devid(__fd))
+> +#define MEM_COPY_MOCS_SHIFT                     25
+>  
+>  /* Blitter tiling definitions sanity checks */
+>  static_assert(T_LINEAR == I915_TILING_NONE, "Linear definitions have to match");
+> @@ -778,6 +780,14 @@ void blt_copy_init(int fd, struct blt_copy_data *blt)
+>  	blt->driver = get_intel_driver(fd);
+>  }
+>  
+> +void blt_mem_init(int fd, struct blt_mem_data *mem)
+> +{
+> +	memset(mem, 0, sizeof(*mem));
+> +
+> +	mem->fd = fd;
+> +	mem->driver = get_intel_driver(fd);
+> +}
+> +
+>  /**
+>   * emit_blt_block_copy:
+>   * @fd: drm fd
+> @@ -1412,6 +1422,188 @@ int blt_fast_copy(int fd,
+>  	return ret;
+>  }
+>  
+> +void emit_blt_mem_copy(int fd, uint64_t ahnd, const struct blt_mem_data *mem, uint32_t col_size)
+> +{
+> +	uint64_t dst_offset, src_offset, alignment;
+> +	int i;
+> +	uint8_t src_mocs = intel_get_uc_mocs(fd);
+> +	uint8_t dst_mocs = src_mocs;
+> +	uint32_t size;
+> +	struct {
+> +		uint32_t batch[12];
+> +		uint32_t data;
+> +	} *data;
 
-== Series Details ==
+What for you need this one? Just use:
+	uint32_t *batch;
 
-Series: tests/kms_setmode: Update test description
-URL   : https://patchwork.freedesktop.org/series/124318/
-State : success
+> +
+> +	alignment = get_default_alignment(fd, mem->driver);
+> +	src_offset = get_offset(ahnd, mem->src.handle, mem->src.size, alignment);
+> +	dst_offset = get_offset(ahnd, mem->dst.handle, mem->dst.size, alignment);
+> +	size = mem->src.size;
+> +
+> +	data = bo_map(fd, mem->bb.handle, mem->bb.size, mem->driver);
 
-== Summary ==
+and map it here.
 
-CI Bug Log - changes from XEIGT_7504_BAT -> XEIGTPW_9885_BAT
-====================================================
+> +
+> +	i = 0;
+> +	data->batch[i++] = MEM_COPY_CMD;
+> +	data->batch[i++] = size - 1;
+> +	data->batch[i++] = col_size - 1;
+> +	data->batch[i++] = 0;
+> +	data->batch[i++] = 0;
+> +	data->batch[i++] = src_offset;
+> +	data->batch[i++] = src_offset << 32;
+> +	data->batch[i++] = dst_offset;
+> +	data->batch[i++] = dst_offset << 32;
+> +	data->batch[i++] = src_mocs << MEM_COPY_MOCS_SHIFT | dst_mocs;
+> +	data->batch[i++] = MI_BATCH_BUFFER_END;
+> +	data->batch[i++] = MI_NOOP;
 
-Summary
--------
+MI_NOOP is not necessary at the end. BTW I got hang with above.
+Leaving BBE it is executing so something wrong is with MEM_COPY_CMD
+itself.
 
-  **SUCCESS**
+> +
+> +	igt_assert(i <= ARRAY_SIZE(data->batch));
+> +
+> +	munmap(data, mem->bb.size);
+> +}
+> +
+> +/**
+> + * blt_mem_copy:
+> + * @fd: drm fd
+> + * @ctx: intel_ctx_t context
+> + * @e: blitter engine for @ctx
+> + * @ahnd: allocator handle
+> + * @blt: blitter data for mem-copy.
+> + *
+> + * Function does mem blit between @src and @dst described in @blt object.
+> + *
+> + * Returns:
+> + * execbuffer status.
+> + */
+> +int blt_mem_copy(int fd, const intel_ctx_t *ctx,
+> +		 const struct intel_execution_engine2 *e,
+> +		 uint64_t ahnd,
+> +		 const struct blt_mem_data *mem,
+> +		 uint32_t col_size)
+> +{
+> +	struct drm_i915_gem_execbuffer2 execbuf = {};
+> +	struct drm_i915_gem_exec_object2 obj[3] = {};
+> +	uint64_t dst_offset, src_offset, bb_offset, alignment;
+> +	int ret;
+> +
+> +	alignment = get_default_alignment(fd, mem->driver);
+> +	src_offset = get_offset(ahnd, mem->src.handle, mem->src.size, alignment);
+> +	dst_offset = get_offset(ahnd, mem->dst.handle, mem->dst.size, alignment);
+> +	bb_offset = get_offset(ahnd, mem->bb.handle, mem->bb.size, alignment);
+> +
+> +	emit_blt_mem_copy(fd, ahnd, mem, col_size);
+> +
+> +	if (mem->driver == INTEL_DRIVER_XE) {
+> +		intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
+> +	} else {
+> +		obj[0].offset = CANONICAL(dst_offset);
+> +		obj[1].offset = CANONICAL(src_offset);
+> +		obj[2].offset = CANONICAL(bb_offset);
+> +		obj[0].handle = mem->dst.handle;
+> +		obj[1].handle = mem->src.handle;
+> +		obj[2].handle = mem->bb.handle;
+> +		obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
+> +			EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> +		obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> +		obj[2].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> +		execbuf.buffer_count = 3;
+> +		execbuf.buffers_ptr = to_user_pointer(obj);
+> +		execbuf.rsvd1 = ctx ? ctx->id : 0;
+> +		execbuf.flags = e ? e->flags : I915_EXEC_BLT;
+> +		ret = __gem_execbuf(fd, &execbuf);
+> +		put_offset(ahnd, mem->dst.handle);
+> +		put_offset(ahnd, mem->src.handle);
+> +		put_offset(ahnd, mem->bb.handle);
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +void emit_blt_mem_set(int fd, uint64_t ahnd, const struct blt_mem_data *mem,
+> +		      uint32_t fill_data, uint32_t height)
+> +{
+> +	uint64_t dst_offset, alignment;
+> +	int b;
+> +	uint8_t dst_mocs = intel_get_uc_mocs(fd);
+> +	uint32_t size;
+> +	struct {
+> +		uint32_t batch[12];
+> +		uint32_t data;
+> +	} *data;
 
-  No regressions found.
+Same here (uint32_t *batch).
+> +
+> +	alignment = get_default_alignment(fd, mem->driver);
+> +	dst_offset = get_offset(ahnd, mem->dst.handle, mem->dst.size, alignment);
+> +	size = mem->dst.size;
+> +
+> +	data = bo_map(fd, mem->dst.handle, mem->dst.size, mem->driver);
 
-  
+Definitely you're not mapping correct object.
 
-Participating hosts (4 -> 4)
-------------------------------
+I'll back to the review with your new series when mem-copy/set
+will start to work.
 
-  No changes in participating hosts
+--
+Zbigniew
 
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_9885_BAT that come from known issues:
-
-### IGT changes ###
-
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
-
-
-Build changes
--------------
-
-  * IGT: IGT_7504 -> IGTPW_9885
-
-  IGTPW_9885: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9885/index.html
-  IGT_7504: 8d12be0387d5b80076b7d67db7831292bb34f6df @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-396-fc8ec3c56efa5c15b630ddc17c89100440fe03ef: fc8ec3c56efa5c15b630ddc17c89100440fe03ef
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9885/index.html
-
---===============7172440004029043868==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_setmode: Update test description</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124318/">https://patchwork.freedesktop.org/series/124318/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9885/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9885/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7504_BAT -&gt; XEIGTPW_9885_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_9885_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7504 -&gt; IGTPW_9885</li>
-</ul>
-<p>IGTPW_9885: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9885/index.html<br />
-  IGT_7504: 8d12be0387d5b80076b7d67db7831292bb34f6df @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-396-fc8ec3c56efa5c15b630ddc17c89100440fe03ef: fc8ec3c56efa5c15b630ddc17c89100440fe03ef</p>
-
-</body>
-</html>
-
---===============7172440004029043868==--
+> +
+> +	b = 0;
+> +	data->batch[b++] = MEM_SET_CMD;
+> +	data->batch[b++] = size - 1;
+> +	data->batch[b++] = height;
+> +	data->batch[b++] = 0;
+> +	data->batch[b++] = dst_offset;
+> +	data->batch[b++] = dst_offset << 32;
+> +	data->batch[b++] = (fill_data << 24) | dst_mocs;
+> +	data->batch[b++] = MI_BATCH_BUFFER_END;
+> +	data->batch[b++] = MI_NOOP;
+> +
+> +	igt_assert(b <= ARRAY_SIZE(data->batch));
+> +
+> +	munmap(data, mem->bb.size);
+> +}
+> +
+> +/**
+> + * blt_mem_set:
+> + * @fd: drm fd
+> + * @ctx: intel_ctx_t context
+> + * @e: blitter engine for @ctx
+> + * @ahnd: allocator handle
+> + * @blt: blitter data for mem-set.
+> + *
+> + * Function does mem set blit in described @blt object.
+> + *
+> + * Returns:
+> + * execbuffer status.
+> + */
+> +int blt_mem_set(int fd, const intel_ctx_t *ctx,
+> +		const struct intel_execution_engine2 *e,
+> +		uint64_t ahnd,
+> +		const struct blt_mem_data *mem,
+> +		uint32_t height,
+> +		uint32_t fill_data)
+> +{
+> +	struct drm_i915_gem_execbuffer2 execbuf = {};
+> +	struct drm_i915_gem_exec_object2 obj[2] = {};
+> +	uint64_t dst_offset, bb_offset, alignment;
+> +	int ret;
+> +
+> +	alignment = get_default_alignment(fd, mem->driver);
+> +	dst_offset = get_offset(ahnd, mem->dst.handle, mem->dst.size, alignment);
+> +	bb_offset = get_offset(ahnd, mem->bb.handle, mem->bb.size, alignment);
+> +
+> +	emit_blt_mem_set(fd, ahnd, mem, fill_data, height);
+> +
+> +	if (mem->driver == INTEL_DRIVER_XE) {
+> +		intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
+> +	} else {
+> +		obj[0].offset = CANONICAL(dst_offset);
+> +		obj[1].offset = CANONICAL(bb_offset);
+> +		obj[0].handle = mem->dst.handle;
+> +		obj[1].handle = mem->bb.handle;
+> +		obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
+> +			       EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> +		obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> +		execbuf.buffer_count = 2;
+> +		execbuf.buffers_ptr = to_user_pointer(obj);
+> +		execbuf.rsvd1 = ctx ? ctx->id : 0;
+> +		execbuf.flags = e ? e->flags : I915_EXEC_BLT;
+> +		ret = __gem_execbuf(fd, &execbuf);
+> +		put_offset(ahnd, mem->dst.handle);
+> +		put_offset(ahnd, mem->bb.handle);
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+>  void blt_set_geom(struct blt_copy_object *obj, uint32_t pitch,
+>  		  int16_t x1, int16_t y1, int16_t x2, int16_t y2,
+>  		  uint16_t x_offset, uint16_t y_offset)
+> @@ -1494,6 +1686,19 @@ void blt_set_object(struct blt_copy_object *obj,
+>  	obj->compression_type = compression_type;
+>  }
+>  
+> +void blt_set_mem_object(struct blt_mem_object *obj,
+> +			uint32_t handle, uint64_t size, uint32_t region,
+> +			uint8_t mocs, enum blt_copy_type type,
+> +			enum blt_compression compression)
+> +{
+> +	obj->handle = handle;
+> +	obj->region = region;
+> +	obj->size = size;
+> +	obj->mocs = mocs;
+> +	obj->type = type;
+> +	obj->compression = compression;
+> +}
+> +
+>  void blt_set_object_ext(struct blt_block_copy_object_ext *obj,
+>  			uint8_t compression_format,
+>  			uint16_t surface_width, uint16_t surface_height,
+> diff --git a/lib/intel_blt.h b/lib/intel_blt.h
+> index d9c8883c7..d10ec954a 100644
+> --- a/lib/intel_blt.h
+> +++ b/lib/intel_blt.h
+> @@ -93,6 +93,17 @@ struct blt_copy_object {
+>  	uint32_t plane_offset;
+>  };
+>  
+> +struct blt_mem_object {
+> +	uint32_t handle;
+> +	uint32_t region;
+> +	uint64_t size;
+> +	uint8_t mocs;
+> +	enum blt_copy_type type;
+> +	enum blt_compression compression;
+> +	uint32_t pitch;
+> +	uint32_t *ptr;
+> +};
+> +
+>  struct blt_copy_batch {
+>  	uint32_t handle;
+>  	uint32_t region;
+> @@ -112,6 +123,14 @@ struct blt_copy_data {
+>  	bool print_bb;
+>  };
+>  
+> +struct blt_mem_data {
+> +	int fd;
+> +	enum intel_driver driver;
+> +	struct blt_mem_object src;
+> +	struct blt_mem_object dst;
+> +	struct blt_copy_batch bb;
+> +};
+> +
+>  enum blt_surface_type {
+>  	SURFACE_TYPE_1D,
+>  	SURFACE_TYPE_2D,
+> @@ -190,6 +209,7 @@ bool blt_uses_extended_block_copy(int fd);
+>  const char *blt_tiling_name(enum blt_tiling_type tiling);
+>  
+>  void blt_copy_init(int fd, struct blt_copy_data *blt);
+> +void blt_mem_init(int fd, struct blt_mem_data *mem);
+>  
+>  uint64_t emit_blt_block_copy(int fd,
+>  			     uint64_t ahnd,
+> @@ -231,6 +251,23 @@ int blt_fast_copy(int fd,
+>  		  uint64_t ahnd,
+>  		  const struct blt_copy_data *blt);
+>  
+> +void emit_blt_mem_copy(int fd, uint64_t ahnd, const struct blt_mem_data *mem,
+> +					      uint32_t col_size);
+> +
+> +int blt_mem_copy(int fd, const intel_ctx_t *ctx,
+> +			 const struct intel_execution_engine2 *e,
+> +			 uint64_t ahnd,
+> +			 const struct blt_mem_data *mem,
+> +			 uint32_t col_size);
+> +
+> +void emit_blt_mem_set(int fd, uint64_t ahnd, const struct blt_mem_data *mem,
+> +					     uint32_t fill_data, uint32_t height);
+> +
+> +int blt_mem_set(int fd, const intel_ctx_t *ctx,
+> +			const struct intel_execution_engine2 *e, uint64_t ahnd,
+> +			const struct blt_mem_data *mem, uint32_t height,
+> +			uint32_t fill_data);
+> +
+>  void blt_set_geom(struct blt_copy_object *obj, uint32_t pitch,
+>  		  int16_t x1, int16_t y1, int16_t x2, int16_t y2,
+>  		  uint16_t x_offset, uint16_t y_offset);
+> @@ -250,6 +287,12 @@ void blt_set_object(struct blt_copy_object *obj,
+>  		    uint8_t mocs, enum blt_tiling_type tiling,
+>  		    enum blt_compression compression,
+>  		    enum blt_compression_type compression_type);
+> +
+> +void blt_set_mem_object(struct blt_mem_object *obj,
+> +			uint32_t handle, uint64_t size, uint32_t region,
+> +			uint8_t mocs, enum blt_copy_type type,
+> +			enum blt_compression compression);
+> +
+>  void blt_set_object_ext(struct blt_block_copy_object_ext *obj,
+>  			uint8_t compression_format,
+>  			uint16_t surface_width, uint16_t surface_height,
+> diff --git a/lib/intel_reg.h b/lib/intel_reg.h
+> index 3bf3676dc..eb65da911 100644
+> --- a/lib/intel_reg.h
+> +++ b/lib/intel_reg.h
+> @@ -2586,6 +2586,10 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+>  #define   XY_FAST_COPY_COLOR_DEPTH_64			(4  << 24)
+>  #define   XY_FAST_COPY_COLOR_DEPTH_128			(5  << 24)
+>  
+> +/* RAW memory commands */
+> +#define MEM_COPY_CMD                    ((0x2 << 29)|(0x5a << 22)|0x8)
+> +#define MEM_SET_CMD                     ((0x2 << 29)|(0x5b << 22)|0x5)
+> +
+>  #define CTXT_NO_RESTORE			(1)
+>  #define CTXT_PALETTE_SAVE_DISABLE	(1<<3)
+>  #define CTXT_PALETTE_RESTORE_DISABLE	(1<<2)
+> -- 
+> 2.39.1
+> 
