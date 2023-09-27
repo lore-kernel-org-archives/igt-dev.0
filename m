@@ -1,24 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com
- [IPv6:2a00:1450:4864:20::52d])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 36BD810E566
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Sep 2023 17:46:44 +0000 (UTC)
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-530fa34ab80so28031901a12.0
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Sep 2023 10:46:44 -0700 (PDT)
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com
+ [IPv6:2a00:1450:4864:20::536])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C53A310E566
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Sep 2023 17:43:07 +0000 (UTC)
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-530c9980556so14058150a12.2
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Sep 2023 10:43:07 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230926184748.199187-1-robdclark@gmail.com>
  <20230926184748.199187-3-robdclark@gmail.com>
- <20230927164248.d4qmmph4m33d4mkp@kamilkon-desk.igk.intel.com>
-In-Reply-To: <20230927164248.d4qmmph4m33d4mkp@kamilkon-desk.igk.intel.com>
+ <20230927142611.jm5pbvfzrmeajdes@zkempczy-mobl2>
+In-Reply-To: <20230927142611.jm5pbvfzrmeajdes@zkempczy-mobl2>
 From: Rob Clark <robdclark@gmail.com>
-Date: Wed, 27 Sep 2023 10:46:30 -0700
-Message-ID: <CAF6AEGuSWT+w97yOr32FsUOZKJ3vg7LfqSmx6Xq8-w=LPkM0Zw@mail.gmail.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Rob Clark <robdclark@gmail.com>, Emma Anholt <emma@anholt.net>,
- Helen Koike <helen.koike@collabora.com>, Daniel Stone <daniel@fooishbar.org>,
- Rob Clark <robdclark@chromium.org>
+Date: Wed, 27 Sep 2023 10:42:54 -0700
+Message-ID: <CAF6AEGum20r0hkPZYu7bviERvDB5dQjU+i1W8VokR59tZk=eDw@mail.gmail.com>
+To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Subject: Re: [igt-dev] [PATCH v3 3/3] core_getversion: Test for desired
@@ -30,16 +26,16 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, Rob Clark <robdclark@chromium.org>,
+ Helen Koike <helen.koike@collabora.com>, Emma Anholt <emma@anholt.net>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Sep 27, 2023 at 9:42=E2=80=AFAM Kamil Konieczny
-<kamil.konieczny@linux.intel.com> wrote:
+On Wed, Sep 27, 2023 at 7:26=E2=80=AFAM Zbigniew Kempczy=C5=84ski
+<zbigniew.kempczynski@intel.com> wrote:
 >
-> Hi Rob,
->
-> On 2023-09-26 at 11:47:47 -0700, Rob Clark wrote:
+> On Tue, Sep 26, 2023 at 11:47:47AM -0700, Rob Clark wrote:
 > > From: Rob Clark <robdclark@chromium.org>
 > >
 > > We discovered in drm/ci that if the drm device fails to probe, all the
@@ -69,45 +65,26 @@ On Wed, Sep 27, 2023 at 9:42=E2=80=AFAM Kamil Konieczny
 > > +     if (name)
 > > +             chipset =3D drm_find_chipset(name);
 >
-> This will not work as you want, it will load your driver
-> instead of DRIVER_ANY, imho leave this line as is:
-
-That is fine for the intended use-case.
-
+> With invalid name chipset returned =3D=3D 0, so we'll get unexpected
+> results. I would assert like:
 >
->         fd =3D drm_open_driver(DRIVER_ANY);
+> if (name) {
+>         chipset =3D drm_find_chipset(name);
+>         igt_assert(chipset > 0);
+> }
 >
-> and drop taking chipset.
+> Rest lgtm so with minor nit above addressed:
+>
+
+done, thx
+
+> Reviewed-by: Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.com>
+> --
+> Zbigniew
 >
 > > +
 > > +     fd =3D __drm_open_driver(chipset);
 > > +     igt_assert_fd(fd);
->
-> I tested this on machine with i915 driver and when running:
->
-> build/tests# IGT_REQUIRED_DRIVER=3Dv3d ./core_getversion
->
-> it failed on following assert:
->
-> (core_getversion:577767) igt_kmod-DEBUG: Unknown symbol in module v3d or =
-unknown parameter
-> (core_getversion:577767) CRITICAL: Failed assertion: fd >=3D 0
->
-> After my changes:
-> (core_getversion:577941) CRITICAL: Expected driver "v3d" but got "i915"
-
-That makes the error msg a bit more clear, but as Daniel Stone pointed
-out earlier, DRIVER_ANY won't do the right thing if you have multiple
-GPUs from different vendors.  (OTOH I guess most of igt will also not
-dtrt in that scenario.)
-
-BR,
--R
-
->
-> Regards,
-> Kamil
->
 > >       v =3D drmGetVersion(fd);
 > >       igt_assert_neq(strlen(v->name), 0);
 > >       igt_assert_neq(strlen(v->date), 0);
