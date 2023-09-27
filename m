@@ -1,21 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 980BC10E59F
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Sep 2023 19:03:57 +0000 (UTC)
-Message-ID: <5a0bbd8d-5637-3fde-7d16-b5120e052794@linux.intel.com>
-Date: Wed, 27 Sep 2023 21:03:51 +0200
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5E53310E5A2
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Sep 2023 19:10:03 +0000 (UTC)
+Message-ID: <c8bc1b38-e7c0-be79-a311-89c2219bdb3e@linux.intel.com>
+Date: Wed, 27 Sep 2023 21:09:56 +0200
 MIME-Version: 1.0
 Content-Language: en-US
 To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
  igt-dev@lists.freedesktop.org
 References: <20230926084451.1732748-1-marcin.bernatowicz@linux.intel.com>
- <20230926084451.1732748-8-marcin.bernatowicz@linux.intel.com>
- <c65e1e57-3000-bf42-09b3-5939acd6ad38@linux.intel.com>
+ <20230926084451.1732748-10-marcin.bernatowicz@linux.intel.com>
+ <b4b9c8f4-40c4-7e2b-460f-fc97c5df3a22@linux.intel.com>
 From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <c65e1e57-3000-bf42-09b3-5939acd6ad38@linux.intel.com>
+In-Reply-To: <b4b9c8f4-40c4-7e2b-460f-fc97c5df3a22@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t 07/14] benchmarks/gem_wsim: cleanups
+Subject: Re: [igt-dev] [PATCH i-g-t 09/14] benchmarks/gem_wsim: use lib code
+ to query engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,226 +31,221 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 
 
-On 9/26/2023 1:08 PM, Tvrtko Ursulin wrote:
+On 9/26/2023 1:23 PM, Tvrtko Ursulin wrote:
 > 
 > On 26/09/2023 09:44, Marcin Bernatowicz wrote:
->> Cleaning checkpatch.pl reported warnings/errors.
->> Removed unused fence_signal field from struct w_step.
->> calloc vs malloc in parse_workload for struct workload.
+>> Use code in lib/i915/gem_engine_topology to query engines.
 >>
 >> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 >> ---
->>   benchmarks/gem_wsim.c | 56 ++++++++++++++++++++++++++-----------------
->>   1 file changed, 34 insertions(+), 22 deletions(-)
+>>   benchmarks/gem_wsim.c | 157 +++++-------------------------------------
+>>   1 file changed, 19 insertions(+), 138 deletions(-)
 >>
 >> diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
->> index 3b01340bf..daa20fb8a 100644
+>> index 2e6eb6388..a3339e1b2 100644
 >> --- a/benchmarks/gem_wsim.c
 >> +++ b/benchmarks/gem_wsim.c
->> @@ -1,3 +1,4 @@
->> +// SPDX-License-Identifier: MIT
->>   /*
->>    * Copyright © 2017 Intel Corporation
->>    *
->> @@ -76,8 +77,7 @@ struct duration {
->>       bool unbound_duration;
->>   };
->> -enum w_type
->> -{
->> +enum w_type {
->>       BATCH,
->>       SYNC,
->>       DELAY,
->> @@ -102,8 +102,7 @@ struct dep_entry {
->>       int working_set; /* -1 = step dependecy, >= 0 working set id */
->>   };
->> -struct deps
->> -{
->> +struct deps {
->>       int nr;
->>       bool submit_fence;
->>       struct dep_entry *list;
->> @@ -137,8 +136,7 @@ struct working_set {
->>   struct workload;
->> -struct w_step
->> -{
->> +struct w_step {
->>       struct workload *wrk;
->>       /* Workload step metadata */
->> @@ -155,7 +153,6 @@ struct w_step
->>           int period;
->>           int target;
->>           int throttle;
->> -        int fence_signal;
->>           int priority;
->>           struct {
->>               unsigned int engine_map_count;
->> @@ -194,8 +191,7 @@ struct ctx {
->>       uint64_t sseu;
->>   };
->> -struct workload
->> -{
->> +struct workload {
->>       unsigned int id;
->>       unsigned int nr_steps;
->> @@ -807,6 +803,7 @@ static int add_buffers(struct working_set *set, 
->> char *str)
->>       for (i = 0; i < add; i++) {
->>           struct work_buffer_size *sz = &sizes[set->nr + i];
->> +
->>           sz->min = min_sz;
->>           sz->max = max_sz;
->>           sz->size = 0;
->> @@ -895,13 +892,16 @@ parse_duration(unsigned int nr_steps, struct 
->> duration *dur, double scale_dur, ch
+>> @@ -456,150 +456,31 @@ static int str_to_engine(const char *str)
+>>       return -1;
 >>   }
->>   #define int_field(_STEP_, _FIELD_, _COND_, _ERR_) \
->> -    if ((field = strtok_r(fstart, ".", &fctx))) { \
->> -        tmp = atoi(field); \
->> -        check_arg(_COND_, _ERR_, nr_steps); \
->> -        step.type = _STEP_; \
->> -        step._FIELD_ = tmp; \
->> -        goto add_step; \
->> -    } \
->> +    do { \
->> +        field = strtok_r(fstart, ".", &fctx); \
->> +        if (field) { \
->> +            tmp = atoi(field); \
->> +            check_arg(_COND_, _ERR_, nr_steps); \
->> +            step.type = _STEP_; \
->> +            step._FIELD_ = tmp; \
->> +            goto add_step; \
->> +        } \
->> +    } while (0)
->>   static struct workload *
->>   parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
->> @@ -926,7 +926,8 @@ parse_workload(struct w_arg *arg, unsigned int 
->> flags, double scale_dur,
->>           valid = 0;
->>           memset(&step, 0, sizeof(step));
->> -        if ((field = strtok_r(fstart, ".", &fctx))) {
->> +        field = strtok_r(fstart, ".", &fctx);
->> +        if (field) {
->>               fstart = NULL;
->>               if (!strcmp(field, "d")) {
->> @@ -943,6 +944,7 @@ parse_workload(struct w_arg *arg, unsigned int 
->> flags, double scale_dur,
->>                   }
->>               } else if (!strcmp(field, "P")) {
->>                   unsigned int nr = 0;
->> +
->>                   while ((field = strtok_r(fstart, ".", &fctx))) {
->>                       tmp = atoi(field);
->>                       check_arg(nr == 0 && tmp <= 0,
->> @@ -968,6 +970,7 @@ parse_workload(struct w_arg *arg, unsigned int 
->> flags, double scale_dur,
->>                         "Invalid sync target at step %u!\n");
->>               } else if (!strcmp(field, "S")) {
->>                   unsigned int nr = 0;
->> +
->>                   while ((field = strtok_r(fstart, ".", &fctx))) {
->>                       tmp = atoi(field);
->>                       check_arg(tmp <= 0 && nr == 0,
->> @@ -1004,6 +1007,7 @@ parse_workload(struct w_arg *arg, unsigned int 
->> flags, double scale_dur,
->>                   goto add_step;
->>               } else if (!strcmp(field, "M")) {
->>                   unsigned int nr = 0;
->> +
->>                   while ((field = strtok_r(fstart, ".", &fctx))) {
->>                       tmp = atoi(field);
->>                       check_arg(nr == 0 && tmp <= 0,
->> @@ -1034,6 +1038,7 @@ parse_workload(struct w_arg *arg, unsigned int 
->> flags, double scale_dur,
->>                         "Invalid terminate target at step %u!\n");
->>               } else if (!strcmp(field, "X")) {
->>                   unsigned int nr = 0;
->> +
->>                   while ((field = strtok_r(fstart, ".", &fctx))) {
->>                       tmp = atoi(field);
->>                       check_arg(nr == 0 && tmp <= 0,
->> @@ -1058,6 +1063,7 @@ parse_workload(struct w_arg *arg, unsigned int 
->> flags, double scale_dur,
->>                   goto add_step;
->>               } else if (!strcmp(field, "B")) {
->>                   unsigned int nr = 0;
->> +
->>                   while ((field = strtok_r(fstart, ".", &fctx))) {
->>                       tmp = atoi(field);
->>                       check_arg(nr == 0 && tmp <= 0,
->> @@ -1077,6 +1083,7 @@ parse_workload(struct w_arg *arg, unsigned int 
->> flags, double scale_dur,
->>                   goto add_step;
->>               } else if (!strcmp(field, "b")) {
->>                   unsigned int nr = 0;
->> +
->>                   while ((field = strtok_r(fstart, ".", &fctx))) {
->>                       check_arg(nr > 2,
->>                             "Invalid bond format at step %u!\n",
->> @@ -1148,7 +1155,8 @@ parse_workload(struct w_arg *arg, unsigned int 
->> flags, double scale_dur,
->>               valid++;
->>           }
->> -        if ((field = strtok_r(fstart, ".", &fctx))) {
->> +        field = strtok_r(fstart, ".", &fctx);
->> +        if (field) {
->>               fstart = NULL;
->>               i = str_to_engine(field);
->> @@ -1160,7 +1168,8 @@ parse_workload(struct w_arg *arg, unsigned int 
->> flags, double scale_dur,
->>               step.engine = i;
->>           }
->> -        if ((field = strtok_r(fstart, ".", &fctx))) {
->> +        field = strtok_r(fstart, ".", &fctx);
->> +        if (field) {
->>               fstart = NULL;
->>               tmp = parse_duration(nr_steps, &step.duration, 
->> scale_dur, field);
->> @@ -1170,7 +1179,8 @@ parse_workload(struct w_arg *arg, unsigned int 
->> flags, double scale_dur,
->>               valid++;
->>           }
->> -        if ((field = strtok_r(fstart, ".", &fctx))) {
->> +        field = strtok_r(fstart, ".", &fctx);
->> +        if (field) {
->>               fstart = NULL;
->>               tmp = parse_dependencies(nr_steps, &step, field);
->> @@ -1180,7 +1190,8 @@ parse_workload(struct w_arg *arg, unsigned int 
->> flags, double scale_dur,
->>               valid++;
->>           }
->> -        if ((field = strtok_r(fstart, ".", &fctx))) {
->> +        field = strtok_r(fstart, ".", &fctx);
->> +        if (field) {
->>               fstart = NULL;
->>               check_arg(strlen(field) != 1 ||
->> @@ -1224,7 +1235,7 @@ add_step:
->>           nr_steps += app_w->nr_steps;
->>       }
->> -    wrk = malloc(sizeof(*wrk));
->> +    wrk = calloc(1, sizeof(*wrk));
+>> -static bool __engines_queried;
+>> -static unsigned int __num_engines;
+>> -static struct i915_engine_class_instance *__engines;
+>> -
+>> -static int
+>> -__i915_query(int i915, struct drm_i915_query *q)
+>> +static struct intel_engine_data *query_engines(void)
+>>   {
+>> -    if (igt_ioctl(i915, DRM_IOCTL_I915_QUERY, q))
+>> -        return -errno;
+>> -    return 0;
+>> -}
+>> +    static struct intel_engine_data engines = {};
+>> -static int
+>> -__i915_query_items(int i915, struct drm_i915_query_item *items, 
+>> uint32_t n_items)
+>> -{
+>> -    struct drm_i915_query q = {
+>> -        .num_items = n_items,
+>> -        .items_ptr = to_user_pointer(items),
+>> -    };
+>> -    return __i915_query(i915, &q);
+>> -}
+>> +    if (engines.nengines)
+>> +        return &engines;
+>> -static void
+>> -i915_query_items(int i915, struct drm_i915_query_item *items, 
+>> uint32_t n_items)
+>> -{
+>> -    igt_assert_eq(__i915_query_items(i915, items, n_items), 0);
+>> -}
+>> -
+>> -static bool has_engine_query(int i915)
+>> -{
+>> -    struct drm_i915_query_item item = {
+>> -        .query_id = DRM_I915_QUERY_ENGINE_INFO,
+>> -    };
+>> -
+>> -    return __i915_query_items(i915, &item, 1) == 0 && item.length > 0;
+>> -}
+>> -
+>> -static void query_engines(void)
+>> -{
+>> -    struct i915_engine_class_instance *engines;
+>> -    unsigned int num;
+>> -
+>> -    if (__engines_queried)
+>> -        return;
+>> -
+>> -    __engines_queried = true;
+>> -
+>> -    if (!has_engine_query(fd)) {
+>> -        unsigned int num_bsd = gem_has_bsd(fd) + gem_has_bsd2(fd);
+>> -        unsigned int i = 0;
+>> -
+>> -        igt_assert(num_bsd);
+>> -
+>> -        num = 1 + num_bsd;
+>> -
+>> -        if (gem_has_blt(fd))
+>> -            num++;
+>> -
+>> -        if (gem_has_vebox(fd))
+>> -            num++;
+>> -
+>> -        engines = calloc(num,
+>> -                 sizeof(struct i915_engine_class_instance));
+>> -        igt_assert(engines);
+>> -
+>> -        engines[i].engine_class = I915_ENGINE_CLASS_RENDER;
+>> -        engines[i].engine_instance = 0;
+>> -        i++;
+>> -
+>> -        if (gem_has_blt(fd)) {
+>> -            engines[i].engine_class = I915_ENGINE_CLASS_COPY;
+>> -            engines[i].engine_instance = 0;
+>> -            i++;
+>> -        }
+>> -
+>> -        if (gem_has_bsd(fd)) {
+>> -            engines[i].engine_class = I915_ENGINE_CLASS_VIDEO;
+>> -            engines[i].engine_instance = 0;
+>> -            i++;
+>> -        }
+>> -
+>> -        if (gem_has_bsd2(fd)) {
+>> -            engines[i].engine_class = I915_ENGINE_CLASS_VIDEO;
+>> -            engines[i].engine_instance = 1;
+>> -            i++;
+>> -        }
+>> -
+>> -        if (gem_has_vebox(fd)) {
+>> -            engines[i].engine_class =
+>> -                I915_ENGINE_CLASS_VIDEO_ENHANCE;
+>> -            engines[i].engine_instance = 0;
+>> -            i++;
+>> -        }
+>> -    } else {
+>> -        struct drm_i915_query_engine_info *engine_info;
+>> -        struct drm_i915_query_item item = {
+>> -            .query_id = DRM_I915_QUERY_ENGINE_INFO,
+>> -        };
+>> -        const unsigned int sz = 4096;
+>> -        unsigned int i;
+>> -
+>> -        engine_info = malloc(sz);
+>> -        igt_assert(engine_info);
+>> -        memset(engine_info, 0, sz);
+>> -
+>> -        item.data_ptr = to_user_pointer(engine_info);
+>> -        item.length = sz;
+>> -
+>> -        i915_query_items(fd, &item, 1);
+>> -        igt_assert(item.length > 0);
+>> -        igt_assert(item.length <= sz);
+>> -
+>> -        num = engine_info->num_engines;
+>> -
+>> -        engines = calloc(num,
+>> -                 sizeof(struct i915_engine_class_instance));
+>> -        igt_assert(engines);
+>> -
+>> -        for (i = 0; i < num; i++) {
+>> -            struct drm_i915_engine_info *engine =
+>> -                (struct drm_i915_engine_info *)&engine_info->engines[i];
+>> -
+>> -            engines[i] = engine->engine;
+>> -        }
+>> -    }
+>> -
+>> -    __engines = engines;
+>> -    __num_engines = num;
+>> +    engines = intel_engine_list_of_physical(fd);
+>> +    igt_assert(engines.nengines);
+>> +    return &engines;
+>>   }
+>>   static unsigned int num_engines_in_class(enum intel_engine_id class)
+>>   {
+>> -    unsigned int i, count = 0;
+>> +    const struct intel_engine_data *engines = query_engines();
+>> +    unsigned int count = 0;
+>> +    int i;
+>>       igt_assert(class == VCS);
+>> -    query_engines();
+>> -
+>> -    for (i = 0; i < __num_engines; i++) {
+>> -        if (__engines[i].engine_class == I915_ENGINE_CLASS_VIDEO)
+>> +    for (i = 0; i < engines->nengines; i++) {
 > 
-> Rest looks fine but this change I don't know what checkpatch has against 
-> it and why calloc(1,..) is better. That's the kernels checkpatch.pl? I 
-> don't get it when I run it.
-
-I'll restore it in next version.
-My previous patch changes contained fields which were zeroed here, now 
-it's not required and creates confusion, I agree it's not a 
-cleanup/issue and not reported by the any tool.
---
-marcin
+> nengines is uint32_t so probably best to keep i unsigned.
+> 
+>> +        if (engines->engines[i].class == I915_ENGINE_CLASS_VIDEO)
+>>               count++;
+>>       }
+>> -    igt_assert(count);
+> 
+> Why dropping this?
+I messed up, will restore unsigned int and assert in next version.
 > 
 > Regards,
 > 
 > Tvrtko
 > 
->>       igt_assert(wrk);
->>       wrk->nr_steps = nr_steps;
->> @@ -2717,6 +2728,7 @@ int main(int argc, char **argv)
->>       if (append_workload_arg) {
->>           struct w_arg arg = { NULL, append_workload_arg, 0 };
->> +
->>           app_w = parse_workload(&arg, flags, scale_dur, scale_time,
->>                          NULL);
->>           if (!app_w) {
+>>       return count;
+>>   }
+>> @@ -607,16 +488,15 @@ static void
+>>   fill_engines_id_class(enum intel_engine_id *list,
+>>                 enum intel_engine_id class)
+>>   {
+>> +    const struct intel_engine_data *engines = query_engines();
+>>       enum intel_engine_id engine = VCS1;
+>>       unsigned int i, j = 0;
+>>       igt_assert(class == VCS);
+>>       igt_assert(num_engines_in_class(VCS) <= 2);
+>> -    query_engines();
+>> -
+>> -    for (i = 0; i < __num_engines; i++) {
+>> -        if (__engines[i].engine_class != I915_ENGINE_CLASS_VIDEO)
+>> +    for (i = 0; i < engines->nengines; i++) {
+>> +        if (engines->engines[i].class != I915_ENGINE_CLASS_VIDEO)
+>>               continue;
+>>           list[j++] = engine++;
+>> @@ -626,17 +506,18 @@ fill_engines_id_class(enum intel_engine_id *list,
+>>   static unsigned int
+>>   find_physical_instance(enum intel_engine_id class, unsigned int 
+>> logical)
+>>   {
+>> +    const struct intel_engine_data *engines = query_engines();
+>>       unsigned int i, j = 0;
+>>       igt_assert(class == VCS);
+>> -    for (i = 0; i < __num_engines; i++) {
+>> -        if (__engines[i].engine_class != I915_ENGINE_CLASS_VIDEO)
+>> +    for (i = 0; i < engines->nengines; i++) {
+>> +        if (engines->engines[i].class != I915_ENGINE_CLASS_VIDEO)
+>>               continue;
+>>           /* Map logical to physical instances. */
+>>           if (logical == j++)
+>> -            return __engines[i].engine_instance;
+>> +            return engines->engines[i].instance;
+>>       }
+>>       igt_assert(0);
