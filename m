@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0CDE710E384
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Sep 2023 09:19:51 +0000 (UTC)
-From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 61A0F10E5A4
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Sep 2023 20:10:35 +0000 (UTC)
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 26 Sep 2023 08:44:27 +0000
-Message-ID: <20230926084451.1732748-13-marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20230926084451.1732748-1-marcin.bernatowicz@linux.intel.com>
-References: <20230926084451.1732748-1-marcin.bernatowicz@linux.intel.com>
+Date: Wed, 27 Sep 2023 22:10:23 +0200
+Message-ID: <20230927201025.132679-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 12/14] benchmarks/gem_wsim: extract prepare
- contexts code to new function
+Subject: [igt-dev] [PATCH i-g-t v5 0/2] drmtest changes for running tests on
+ multi-gpu
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,81 +18,40 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: chris.p.wilson@linux.intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-No functional changes.
-Extracted prepare_contexts function from prepare_workload.
-Small code cleanup for "No need for 'else' after continue/break". (Kamil)
+Allow to open other cards out of order with __drm_open_driver_another()
+and also introduce helper for multi-gpu scenarios. There is still a problem
+left when opening first device because it is useally already opened at
+first fixture but I will leave that for later. With that it works
+on four GPUs board, when first card is non-Intel one with no render
+device:
 
-Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
----
- benchmarks/gem_wsim.c | 30 ++++++++++++++++++++----------
- 1 file changed, 20 insertions(+), 10 deletions(-)
+sudo IGT_DEVICE=pci:vendor=Intel,device=discrete,card=all build/tests/xe_create --r multigpu-create-massive-size
 
-diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-index 2c6ccd3a9..55f8d9b1b 100644
---- a/benchmarks/gem_wsim.c
-+++ b/benchmarks/gem_wsim.c
-@@ -1766,20 +1766,13 @@ static void measure_active_set(struct workload *wrk)
- 
- #define alloca0(sz) ({ size_t sz__ = (sz); memset(alloca(sz__), 0, sz__); })
- 
--static int prepare_workload(unsigned int id, struct workload *wrk)
-+static int prepare_contexts(unsigned int id, struct workload *wrk)
- {
--	struct working_set **sets;
--	unsigned long total = 0;
- 	uint32_t share_vm = 0;
- 	int max_ctx = -1;
- 	struct w_step *w;
- 	int i, j;
- 
--	wrk->id = id;
--	wrk->bb_prng = (wrk->flags & SYNCEDCLIENTS) ? master_prng : rand();
--	wrk->bo_prng = (wrk->flags & SYNCEDCLIENTS) ? master_prng : rand();
--	wrk->run = true;
--
- 	/*
- 	 * Pre-scan workload steps to allocate context list storage.
- 	 */
-@@ -1968,6 +1961,23 @@ static int prepare_workload(unsigned int id, struct workload *wrk)
- 	if (share_vm)
- 		vm_destroy(fd, share_vm);
- 
-+	return 0;
-+}
-+
-+static int prepare_workload(unsigned int id, struct workload *wrk)
-+{
-+	struct working_set **sets;
-+	unsigned long total = 0;
-+	struct w_step *w;
-+	int i, j;
-+
-+	wrk->id = id;
-+	wrk->bb_prng = (wrk->flags & SYNCEDCLIENTS) ? master_prng : rand();
-+	wrk->bo_prng = (wrk->flags & SYNCEDCLIENTS) ? master_prng : rand();
-+	wrk->run = true;
-+
-+	prepare_contexts(id, wrk);
-+
- 	/* Record default preemption. */
- 	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
- 		if (w->type == BATCH)
-@@ -1990,9 +2000,9 @@ static int prepare_workload(unsigned int id, struct workload *wrk)
- 
- 			if (w2->context != w->context)
- 				continue;
--			else if (w2->type == PREEMPTION)
-+			if (w2->type == PREEMPTION)
- 				break;
--			else if (w2->type != BATCH)
-+			if (w2->type != BATCH)
- 				continue;
- 
- 			w2->preempt_us = w->period;
+Opened device: /dev/dri/card1
+Starting subtest: multigpu-create-massive-size
+<g:1> Opened device: /dev/dri/card2
+<g:2> Opened device: /dev/dri/card3
+<g:3> Opened device: /dev/dri/card4
+Subtest multigpu-create-massive-size: SUCCESS (0.209s)
+
+v3: fixes in test (Zbigniew)
+  fixes in drmlib functions (Zbigniew, Kamil)
+v4: corrected test description (Kamil)
+v5: restore boundary index for already opened device (Kamil)
+
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+
+Kamil Konieczny (2):
+  lib/drmtest: allow out of order device opening
+  tests/intel/xe_create: extend massive subtest to multi-gpu
+
+ lib/drmtest.c           | 24 +++++++++++++++++++-----
+ tests/intel/xe_create.c | 25 +++++++++++++++++++++++++
+ 2 files changed, 44 insertions(+), 5 deletions(-)
+
 -- 
 2.42.0
