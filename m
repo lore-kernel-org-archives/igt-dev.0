@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C69F910E4E4
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Sep 2023 11:36:47 +0000 (UTC)
-Date: Wed, 27 Sep 2023 13:36:43 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: sai.gowtham.ch@intel.com
-Message-ID: <20230927113643.xjmvcp6xoja2x2ql@zkempczy-mobl2>
-References: <20230926122749.32460-1-sai.gowtham.ch@intel.com>
- <20230926122749.32460-3-sai.gowtham.ch@intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+To: igt-dev@lists.freedesktop.org,
+	Intel-gfx@lists.freedesktop.org
+Date: Wed, 27 Sep 2023 14:20:12 +0100
+Message-Id: <20230927132012.246640-1-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20230922134437.234888-3-tvrtko.ursulin@linux.intel.com>
+References: <20230922134437.234888-3-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230926122749.32460-3-sai.gowtham.ch@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/3] lib/intel_blt: Add wrappers to
- prepare batch buffers and submit exec
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2 02/12] tests/i915/drm_fdinfo: Add some
+ memory info tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,388 +17,275 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Sep 26, 2023 at 05:57:48PM +0530, sai.gowtham.ch@intel.com wrote:
-> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-> 
-> Adding wrapper for mem-set and mem-copy instructions to prepare
-> batch buffers and submit exec, (blt_mem_copy, blt_set_mem,
-> emit_blt_mem_copy, emit,blt_set_mem)
-> 
-> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-> ---
->  lib/intel_blt.c | 205 ++++++++++++++++++++++++++++++++++++++++++++++++
->  lib/intel_blt.h |  43 ++++++++++
->  lib/intel_reg.h |   4 +
->  3 files changed, 252 insertions(+)
-> 
-> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-> index b55fa9b52..99c01265b 100644
-> --- a/lib/intel_blt.c
-> +++ b/lib/intel_blt.c
-> @@ -13,12 +13,14 @@
->  #include "igt.h"
->  #include "igt_syncobj.h"
->  #include "intel_blt.h"
-> +#include "intel_mocs.h"
->  #include "xe/xe_ioctl.h"
->  #include "xe/xe_query.h"
->  #include "xe/xe_util.h"
->  
->  #define BITRANGE(start, end) (end - start + 1)
->  #define GET_CMDS_INFO(__fd) intel_get_cmds_info(intel_get_drm_devid(__fd))
-> +#define MEM_COPY_MOCS_SHIFT                     25
->  
->  /* Blitter tiling definitions sanity checks */
->  static_assert(T_LINEAR == I915_TILING_NONE, "Linear definitions have to match");
-> @@ -778,6 +780,14 @@ void blt_copy_init(int fd, struct blt_copy_data *blt)
->  	blt->driver = get_intel_driver(fd);
->  }
->  
-> +void blt_mem_init(int fd, struct blt_mem_data *mem)
-> +{
-> +	memset(mem, 0, sizeof(*mem));
-> +
-> +	mem->fd = fd;
-> +	mem->driver = get_intel_driver(fd);
-> +}
-> +
->  /**
->   * emit_blt_block_copy:
->   * @fd: drm fd
-> @@ -1412,6 +1422,188 @@ int blt_fast_copy(int fd,
->  	return ret;
->  }
->  
-> +void emit_blt_mem_copy(int fd, uint64_t ahnd, const struct blt_mem_data *mem, uint32_t col_size)
-> +{
-> +	uint64_t dst_offset, src_offset, alignment;
-> +	int i;
-> +	uint8_t src_mocs = intel_get_uc_mocs(fd);
-> +	uint8_t dst_mocs = src_mocs;
-> +	uint32_t size;
-> +	struct {
-> +		uint32_t batch[12];
-> +		uint32_t data;
-> +	} *data;
+From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-What for you need this one? Just use:
-	uint32_t *batch;
+A few basic smoke tests to check per client memory info looks legit.
 
-> +
-> +	alignment = get_default_alignment(fd, mem->driver);
-> +	src_offset = get_offset(ahnd, mem->src.handle, mem->src.size, alignment);
-> +	dst_offset = get_offset(ahnd, mem->dst.handle, mem->dst.size, alignment);
-> +	size = mem->src.size;
-> +
-> +	data = bo_map(fd, mem->bb.handle, mem->bb.size, mem->driver);
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+---
+ tests/intel/drm_fdinfo.c | 217 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 217 insertions(+)
 
-and map it here.
-
-> +
-> +	i = 0;
-> +	data->batch[i++] = MEM_COPY_CMD;
-> +	data->batch[i++] = size - 1;
-> +	data->batch[i++] = col_size - 1;
-> +	data->batch[i++] = 0;
-> +	data->batch[i++] = 0;
-> +	data->batch[i++] = src_offset;
-> +	data->batch[i++] = src_offset << 32;
-> +	data->batch[i++] = dst_offset;
-> +	data->batch[i++] = dst_offset << 32;
-> +	data->batch[i++] = src_mocs << MEM_COPY_MOCS_SHIFT | dst_mocs;
-> +	data->batch[i++] = MI_BATCH_BUFFER_END;
-> +	data->batch[i++] = MI_NOOP;
-
-MI_NOOP is not necessary at the end. BTW I got hang with above.
-Leaving BBE it is executing so something wrong is with MEM_COPY_CMD
-itself.
-
-> +
-> +	igt_assert(i <= ARRAY_SIZE(data->batch));
-> +
-> +	munmap(data, mem->bb.size);
-> +}
-> +
-> +/**
-> + * blt_mem_copy:
-> + * @fd: drm fd
-> + * @ctx: intel_ctx_t context
-> + * @e: blitter engine for @ctx
-> + * @ahnd: allocator handle
-> + * @blt: blitter data for mem-copy.
-> + *
-> + * Function does mem blit between @src and @dst described in @blt object.
-> + *
-> + * Returns:
-> + * execbuffer status.
-> + */
-> +int blt_mem_copy(int fd, const intel_ctx_t *ctx,
-> +		 const struct intel_execution_engine2 *e,
-> +		 uint64_t ahnd,
-> +		 const struct blt_mem_data *mem,
-> +		 uint32_t col_size)
-> +{
-> +	struct drm_i915_gem_execbuffer2 execbuf = {};
-> +	struct drm_i915_gem_exec_object2 obj[3] = {};
-> +	uint64_t dst_offset, src_offset, bb_offset, alignment;
-> +	int ret;
-> +
-> +	alignment = get_default_alignment(fd, mem->driver);
-> +	src_offset = get_offset(ahnd, mem->src.handle, mem->src.size, alignment);
-> +	dst_offset = get_offset(ahnd, mem->dst.handle, mem->dst.size, alignment);
-> +	bb_offset = get_offset(ahnd, mem->bb.handle, mem->bb.size, alignment);
-> +
-> +	emit_blt_mem_copy(fd, ahnd, mem, col_size);
-> +
-> +	if (mem->driver == INTEL_DRIVER_XE) {
-> +		intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
-> +	} else {
-> +		obj[0].offset = CANONICAL(dst_offset);
-> +		obj[1].offset = CANONICAL(src_offset);
-> +		obj[2].offset = CANONICAL(bb_offset);
-> +		obj[0].handle = mem->dst.handle;
-> +		obj[1].handle = mem->src.handle;
-> +		obj[2].handle = mem->bb.handle;
-> +		obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
-> +			EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-> +		obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-> +		obj[2].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-> +		execbuf.buffer_count = 3;
-> +		execbuf.buffers_ptr = to_user_pointer(obj);
-> +		execbuf.rsvd1 = ctx ? ctx->id : 0;
-> +		execbuf.flags = e ? e->flags : I915_EXEC_BLT;
-> +		ret = __gem_execbuf(fd, &execbuf);
-> +		put_offset(ahnd, mem->dst.handle);
-> +		put_offset(ahnd, mem->src.handle);
-> +		put_offset(ahnd, mem->bb.handle);
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +void emit_blt_mem_set(int fd, uint64_t ahnd, const struct blt_mem_data *mem,
-> +		      uint32_t fill_data, uint32_t height)
-> +{
-> +	uint64_t dst_offset, alignment;
-> +	int b;
-> +	uint8_t dst_mocs = intel_get_uc_mocs(fd);
-> +	uint32_t size;
-> +	struct {
-> +		uint32_t batch[12];
-> +		uint32_t data;
-> +	} *data;
-
-Same here (uint32_t *batch).
-> +
-> +	alignment = get_default_alignment(fd, mem->driver);
-> +	dst_offset = get_offset(ahnd, mem->dst.handle, mem->dst.size, alignment);
-> +	size = mem->dst.size;
-> +
-> +	data = bo_map(fd, mem->dst.handle, mem->dst.size, mem->driver);
-
-Definitely you're not mapping correct object.
-
-I'll back to the review with your new series when mem-copy/set
-will start to work.
-
---
-Zbigniew
-
-> +
-> +	b = 0;
-> +	data->batch[b++] = MEM_SET_CMD;
-> +	data->batch[b++] = size - 1;
-> +	data->batch[b++] = height;
-> +	data->batch[b++] = 0;
-> +	data->batch[b++] = dst_offset;
-> +	data->batch[b++] = dst_offset << 32;
-> +	data->batch[b++] = (fill_data << 24) | dst_mocs;
-> +	data->batch[b++] = MI_BATCH_BUFFER_END;
-> +	data->batch[b++] = MI_NOOP;
-> +
-> +	igt_assert(b <= ARRAY_SIZE(data->batch));
-> +
-> +	munmap(data, mem->bb.size);
-> +}
-> +
-> +/**
-> + * blt_mem_set:
-> + * @fd: drm fd
-> + * @ctx: intel_ctx_t context
-> + * @e: blitter engine for @ctx
-> + * @ahnd: allocator handle
-> + * @blt: blitter data for mem-set.
-> + *
-> + * Function does mem set blit in described @blt object.
-> + *
-> + * Returns:
-> + * execbuffer status.
-> + */
-> +int blt_mem_set(int fd, const intel_ctx_t *ctx,
-> +		const struct intel_execution_engine2 *e,
-> +		uint64_t ahnd,
-> +		const struct blt_mem_data *mem,
-> +		uint32_t height,
-> +		uint32_t fill_data)
-> +{
-> +	struct drm_i915_gem_execbuffer2 execbuf = {};
-> +	struct drm_i915_gem_exec_object2 obj[2] = {};
-> +	uint64_t dst_offset, bb_offset, alignment;
-> +	int ret;
-> +
-> +	alignment = get_default_alignment(fd, mem->driver);
-> +	dst_offset = get_offset(ahnd, mem->dst.handle, mem->dst.size, alignment);
-> +	bb_offset = get_offset(ahnd, mem->bb.handle, mem->bb.size, alignment);
-> +
-> +	emit_blt_mem_set(fd, ahnd, mem, fill_data, height);
-> +
-> +	if (mem->driver == INTEL_DRIVER_XE) {
-> +		intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
-> +	} else {
-> +		obj[0].offset = CANONICAL(dst_offset);
-> +		obj[1].offset = CANONICAL(bb_offset);
-> +		obj[0].handle = mem->dst.handle;
-> +		obj[1].handle = mem->bb.handle;
-> +		obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
-> +			       EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-> +		obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-> +		execbuf.buffer_count = 2;
-> +		execbuf.buffers_ptr = to_user_pointer(obj);
-> +		execbuf.rsvd1 = ctx ? ctx->id : 0;
-> +		execbuf.flags = e ? e->flags : I915_EXEC_BLT;
-> +		ret = __gem_execbuf(fd, &execbuf);
-> +		put_offset(ahnd, mem->dst.handle);
-> +		put_offset(ahnd, mem->bb.handle);
-> +	}
-> +
-> +	return ret;
-> +}
-> +
->  void blt_set_geom(struct blt_copy_object *obj, uint32_t pitch,
->  		  int16_t x1, int16_t y1, int16_t x2, int16_t y2,
->  		  uint16_t x_offset, uint16_t y_offset)
-> @@ -1494,6 +1686,19 @@ void blt_set_object(struct blt_copy_object *obj,
->  	obj->compression_type = compression_type;
->  }
->  
-> +void blt_set_mem_object(struct blt_mem_object *obj,
-> +			uint32_t handle, uint64_t size, uint32_t region,
-> +			uint8_t mocs, enum blt_copy_type type,
-> +			enum blt_compression compression)
-> +{
-> +	obj->handle = handle;
-> +	obj->region = region;
-> +	obj->size = size;
-> +	obj->mocs = mocs;
-> +	obj->type = type;
-> +	obj->compression = compression;
-> +}
-> +
->  void blt_set_object_ext(struct blt_block_copy_object_ext *obj,
->  			uint8_t compression_format,
->  			uint16_t surface_width, uint16_t surface_height,
-> diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-> index d9c8883c7..d10ec954a 100644
-> --- a/lib/intel_blt.h
-> +++ b/lib/intel_blt.h
-> @@ -93,6 +93,17 @@ struct blt_copy_object {
->  	uint32_t plane_offset;
->  };
->  
-> +struct blt_mem_object {
-> +	uint32_t handle;
-> +	uint32_t region;
-> +	uint64_t size;
-> +	uint8_t mocs;
-> +	enum blt_copy_type type;
-> +	enum blt_compression compression;
-> +	uint32_t pitch;
-> +	uint32_t *ptr;
-> +};
-> +
->  struct blt_copy_batch {
->  	uint32_t handle;
->  	uint32_t region;
-> @@ -112,6 +123,14 @@ struct blt_copy_data {
->  	bool print_bb;
->  };
->  
-> +struct blt_mem_data {
-> +	int fd;
-> +	enum intel_driver driver;
-> +	struct blt_mem_object src;
-> +	struct blt_mem_object dst;
-> +	struct blt_copy_batch bb;
-> +};
-> +
->  enum blt_surface_type {
->  	SURFACE_TYPE_1D,
->  	SURFACE_TYPE_2D,
-> @@ -190,6 +209,7 @@ bool blt_uses_extended_block_copy(int fd);
->  const char *blt_tiling_name(enum blt_tiling_type tiling);
->  
->  void blt_copy_init(int fd, struct blt_copy_data *blt);
-> +void blt_mem_init(int fd, struct blt_mem_data *mem);
->  
->  uint64_t emit_blt_block_copy(int fd,
->  			     uint64_t ahnd,
-> @@ -231,6 +251,23 @@ int blt_fast_copy(int fd,
->  		  uint64_t ahnd,
->  		  const struct blt_copy_data *blt);
->  
-> +void emit_blt_mem_copy(int fd, uint64_t ahnd, const struct blt_mem_data *mem,
-> +					      uint32_t col_size);
-> +
-> +int blt_mem_copy(int fd, const intel_ctx_t *ctx,
-> +			 const struct intel_execution_engine2 *e,
-> +			 uint64_t ahnd,
-> +			 const struct blt_mem_data *mem,
-> +			 uint32_t col_size);
-> +
-> +void emit_blt_mem_set(int fd, uint64_t ahnd, const struct blt_mem_data *mem,
-> +					     uint32_t fill_data, uint32_t height);
-> +
-> +int blt_mem_set(int fd, const intel_ctx_t *ctx,
-> +			const struct intel_execution_engine2 *e, uint64_t ahnd,
-> +			const struct blt_mem_data *mem, uint32_t height,
-> +			uint32_t fill_data);
-> +
->  void blt_set_geom(struct blt_copy_object *obj, uint32_t pitch,
->  		  int16_t x1, int16_t y1, int16_t x2, int16_t y2,
->  		  uint16_t x_offset, uint16_t y_offset);
-> @@ -250,6 +287,12 @@ void blt_set_object(struct blt_copy_object *obj,
->  		    uint8_t mocs, enum blt_tiling_type tiling,
->  		    enum blt_compression compression,
->  		    enum blt_compression_type compression_type);
-> +
-> +void blt_set_mem_object(struct blt_mem_object *obj,
-> +			uint32_t handle, uint64_t size, uint32_t region,
-> +			uint8_t mocs, enum blt_copy_type type,
-> +			enum blt_compression compression);
-> +
->  void blt_set_object_ext(struct blt_block_copy_object_ext *obj,
->  			uint8_t compression_format,
->  			uint16_t surface_width, uint16_t surface_height,
-> diff --git a/lib/intel_reg.h b/lib/intel_reg.h
-> index 3bf3676dc..eb65da911 100644
-> --- a/lib/intel_reg.h
-> +++ b/lib/intel_reg.h
-> @@ -2586,6 +2586,10 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
->  #define   XY_FAST_COPY_COLOR_DEPTH_64			(4  << 24)
->  #define   XY_FAST_COPY_COLOR_DEPTH_128			(5  << 24)
->  
-> +/* RAW memory commands */
-> +#define MEM_COPY_CMD                    ((0x2 << 29)|(0x5a << 22)|0x8)
-> +#define MEM_SET_CMD                     ((0x2 << 29)|(0x5b << 22)|0x5)
-> +
->  #define CTXT_NO_RESTORE			(1)
->  #define CTXT_PALETTE_SAVE_DISABLE	(1<<3)
->  #define CTXT_PALETTE_RESTORE_DISABLE	(1<<2)
-> -- 
-> 2.39.1
-> 
+diff --git a/tests/intel/drm_fdinfo.c b/tests/intel/drm_fdinfo.c
+index a9910900358d..392ad510c34d 100644
+--- a/tests/intel/drm_fdinfo.c
++++ b/tests/intel/drm_fdinfo.c
+@@ -23,6 +23,7 @@
+  */
+ 
+ #include <fcntl.h>
++#include <sys/ioctl.h>
+ 
+ #include "igt.h"
+ #include "igt_core.h"
+@@ -76,6 +77,16 @@
+  *
+  * SUBTEST: virtual-idle
+  *
++ * SUBTEST: memory-info-idle
++ *
++ * SUBTEST: memory-info-active
++ *
++ * SUBTEST: memory-info-resident
++ *
++ * SUBTEST: memory-info-purgeable
++ *
++ * SUBTEST: memory-info-shared
++ *
+  * SUBTEST: context-close-stress
+  */
+ 
+@@ -143,6 +154,11 @@ static unsigned int measured_usleep(unsigned int usec)
+ #define FLAG_HANG (8)
+ #define TEST_ISOLATION (16)
+ 
++#define TEST_ACTIVE TEST_BUSY
++#define TEST_RESIDENT (32)
++#define TEST_PURGEABLE (64)
++#define TEST_SHARED (128)
++
+ static void end_spin(int fd, igt_spin_t *spin, unsigned int flags)
+ {
+ 	if (!spin)
+@@ -772,6 +788,172 @@ static void stress_context_close(int i915)
+ 	igt_stop_helper(&reader);
+ }
+ 
++static size_t read_fdinfo(char *buf, const size_t sz, int at, const char *name)
++{
++	size_t count;
++	int fd;
++
++	fd = openat(at, name, O_RDONLY);
++	if (fd < 0)
++		return 0;
++
++	count = read(fd, buf, sz - 1);
++	if (count > 0)
++		buf[count - 1] = 0;
++	close(fd);
++
++	return count > 0 ? count : 0;
++}
++
++/*
++ * At least this much, but maybe less if we started with a driver internal
++ * baseline which can go away behind our back.
++ */
++#define fdinfo_assert_gte(cur, prev, sz, base) \
++({ \
++	int64_t __sz = (sz) - (base); \
++	int64_t __d = (cur) - (prev); \
++	igt_assert_f(__d >= __sz, \
++		     "prev=%"PRIu64" cur=%"PRIu64" delta=%"PRId64" sz=%"PRIu64" baseline=%"PRIu64"\n%s\n", \
++		     (prev), (cur), __d, (sz), (base), fdinfo_buf); \
++})
++
++#define fdinfo_assert_eq(cur, prev, sz, base) \
++({ \
++	int64_t __d = (cur) - (prev); \
++	igt_assert_f(__d == 0, \
++		     "prev=%"PRIu64" cur=%"PRIu64" delta=%"PRId64" sz=%"PRIu64" baseline=%"PRIu64"\n%s\n", \
++		     (prev), (cur), __d, (sz), (base), fdinfo_buf); \
++})
++
++static void
++test_memory(int i915, struct gem_memory_region *mr, unsigned int flags)
++{
++	const unsigned int r = mr->ci.memory_class == I915_MEMORY_CLASS_SYSTEM ? 0 : 1; /* See region map */
++	const uint64_t max_mem = 512ull * 1024 * 1024;
++	const uint64_t max_bo = 16ull * 1024 * 1024;
++	struct drm_client_fdinfo base_info, prev_info = { };
++	struct drm_client_fdinfo info = { };
++	char buf[64], fdinfo_buf[4096];
++	igt_spin_t *spin = NULL;
++	uint64_t total = 0, sz;
++	uint64_t ahnd;
++	int ret, dir;
++
++	i915 = drm_reopen_driver(i915);
++
++	ahnd = get_reloc_ahnd(i915, 0);
++
++	ret = snprintf(buf, sizeof(buf), "%u", i915);
++	igt_assert(ret > 0 && ret < sizeof(buf));
++
++	dir = open("/proc/self/fdinfo", O_DIRECTORY | O_RDONLY);
++	igt_assert_fd(dir);
++
++	gem_quiescent_gpu(i915);
++	ret =  __igt_parse_drm_fdinfo(dir, buf, &info, NULL, 0, NULL, 0);
++	igt_assert(ret > 0);
++	igt_require(info.num_regions);
++	memcpy(&prev_info, &info, sizeof(info));
++	memcpy(&base_info, &info, sizeof(info));
++
++	while (total < max_mem) {
++		static const char *region_map[] = {
++			"system0",
++			"local0",
++		};
++		uint32_t bo;
++
++		sz = random() % max_bo;
++		ret = __gem_create_in_memory_region_list(i915, &bo, &sz, 0,
++							 &mr->ci, 1);
++		igt_assert_eq(ret, 0);
++		total += sz;
++
++		if (flags & (TEST_RESIDENT | TEST_PURGEABLE | TEST_ACTIVE))
++			spin = igt_spin_new(i915,
++					    .dependency = bo,
++					    .ahnd = ahnd);
++		else
++			spin = NULL;
++
++		if (flags & TEST_PURGEABLE) {
++			gem_madvise(i915, bo, I915_MADV_DONTNEED);
++			igt_spin_free(i915, spin);
++			gem_quiescent_gpu(i915);
++			spin = NULL;
++		}
++
++		if (flags & TEST_SHARED) {
++			struct drm_gem_open open_struct;
++			struct drm_gem_flink flink;
++
++			flink.handle = bo;
++			ret = ioctl(i915, DRM_IOCTL_GEM_FLINK, &flink);
++			igt_assert_eq(ret, 0);
++
++			open_struct.name = flink.name;
++			ret = ioctl(i915, DRM_IOCTL_GEM_OPEN, &open_struct);
++			igt_assert_eq(ret, 0);
++			igt_assert(open_struct.handle != 0);
++		}
++
++		memset(&info, 0, sizeof(info));
++		ret =  __igt_parse_drm_fdinfo(dir, buf, &info,
++					      NULL, 0,
++					      region_map, ARRAY_SIZE(region_map));
++		igt_assert(ret > 0);
++		igt_assert(info.num_regions);
++
++		read_fdinfo(fdinfo_buf, sizeof(fdinfo_buf), dir, buf);
++
++		/* >= to account for objects out of our control */
++		fdinfo_assert_gte(info.region_mem[r].total,
++				  prev_info.region_mem[r].total,
++				  sz,
++				  base_info.region_mem[r].total);
++
++		if (flags & TEST_SHARED)
++			fdinfo_assert_gte(info.region_mem[r].shared,
++					  prev_info.region_mem[r].shared,
++					  sz,
++					  base_info.region_mem[r].shared);
++		else
++			fdinfo_assert_eq(info.region_mem[r].shared,
++					 prev_info.region_mem[r].shared,
++					 sz,
++					 base_info.region_mem[r].shared);
++
++		if (flags & TEST_PURGEABLE)
++			fdinfo_assert_gte(info.region_mem[r].purgeable,
++					  prev_info.region_mem[r].purgeable,
++					  sz,
++					  base_info.region_mem[r].purgeable);
++
++		if (flags & (TEST_RESIDENT | TEST_PURGEABLE | TEST_ACTIVE))
++			fdinfo_assert_gte(info.region_mem[r].resident,
++					  (uint64_t)0, /* We can only be sure the current buffer is resident. */
++					  sz,
++					  (uint64_t)0);
++
++		if (flags & TEST_ACTIVE)
++			fdinfo_assert_gte(info.region_mem[r].active,
++					  (uint64_t)0, /* We can only be sure the current buffer is active. */
++					  sz,
++					  (uint64_t)0);
++
++		memcpy(&prev_info, &info, sizeof(info));
++
++		if (spin) {
++			igt_spin_free(i915, spin);
++			gem_quiescent_gpu(i915);
++		}
++	}
++
++	put_ahnd(ahnd);
++	close(i915);
++}
++
+ #define test_each_engine(T, i915, ctx, e) \
+ 	igt_subtest_with_dynamic(T) for_each_ctx_engine(i915, ctx, e) \
+ 		igt_dynamic_f("%s", e->name)
+@@ -902,6 +1084,41 @@ igt_main
+ 	test_each_engine("isolation", i915, ctx, e)
+ 		single(i915, ctx, e, TEST_BUSY | TEST_ISOLATION);
+ 
++	igt_subtest_with_dynamic("memory-info-idle") {
++		for_each_memory_region(r, i915) {
++			igt_dynamic_f("%s", r->name)
++				test_memory(i915, r, 0);
++		}
++	}
++
++	igt_subtest_with_dynamic("memory-info-resident") {
++		for_each_memory_region(r, i915) {
++			igt_dynamic_f("%s", r->name)
++				test_memory(i915, r, TEST_RESIDENT);
++		}
++	}
++
++	igt_subtest_with_dynamic("memory-info-purgeable") {
++		for_each_memory_region(r, i915) {
++			igt_dynamic_f("%s", r->name)
++				test_memory(i915, r, TEST_PURGEABLE);
++		}
++	}
++
++	igt_subtest_with_dynamic("memory-info-active") {
++		for_each_memory_region(r, i915) {
++			igt_dynamic_f("%s", r->name)
++				test_memory(i915, r, TEST_ACTIVE);
++		}
++	}
++
++	igt_subtest_with_dynamic("memory-info-shared") {
++		for_each_memory_region(r, i915) {
++			igt_dynamic_f("%s", r->name)
++				test_memory(i915, r, TEST_SHARED);
++		}
++	}
++
+ 	igt_subtest_group {
+ 		int newfd;
+ 
+-- 
+2.39.2
