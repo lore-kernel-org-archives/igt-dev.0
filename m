@@ -1,20 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3D2C310E53B
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Sep 2023 14:26:16 +0000 (UTC)
-Date: Wed, 27 Sep 2023 16:26:11 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Rob Clark <robdclark@gmail.com>
-Message-ID: <20230927142611.jm5pbvfzrmeajdes@zkempczy-mobl2>
-References: <20230926184748.199187-1-robdclark@gmail.com>
- <20230926184748.199187-3-robdclark@gmail.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C04C310E194
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Sep 2023 14:34:53 +0000 (UTC)
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 27 Sep 2023 16:34:42 +0200
+Message-ID: <20230927143444.76363-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230926184748.199187-3-robdclark@gmail.com>
-Subject: Re: [igt-dev] [PATCH v3 3/3] core_getversion: Test for desired
- device
+Subject: [igt-dev] [PATCH i-g-t 0/2] drmtest changes for running tests on
+ multi-gpu
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,73 +18,39 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Rob Clark <robdclark@chromium.org>,
- Helen Koike <helen.koike@collabora.com>, Emma Anholt <emma@anholt.net>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Sep 26, 2023 at 11:47:47AM -0700, Rob Clark wrote:
-> From: Rob Clark <robdclark@chromium.org>
-> 
-> We discovered in drm/ci that if the drm device fails to probe, all the
-> tests come back as "Skip" and the job is considered successful. Fix
-> the getversion test to fail if there is no drm device or if the drm
-> device does not match the expected device as specified by the optional
-> IGT_REQUIRED_DRIVER environment variable.
-> 
-> Signed-off-by: Rob Clark <robdclark@chromium.org>
-> Acked-by: Helen Koike <helen.koike@collabora.com>
-> ---
->  tests/core_getversion.c | 13 ++++++++++++-
->  1 file changed, 12 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/core_getversion.c b/tests/core_getversion.c
-> index 32cb976e4923..b298a6890ef9 100644
-> --- a/tests/core_getversion.c
-> +++ b/tests/core_getversion.c
-> @@ -48,14 +48,25 @@ igt_simple_main
->  {
->  	int fd;
->  	drmVersionPtr v;
-> +	const char *name = getenv("IGT_REQUIRED_DRIVER");
-> +	int chipset = DRIVER_ANY;
->  
-> -	fd = drm_open_driver(DRIVER_ANY);
-> +	if (name)
-> +		chipset = drm_find_chipset(name);
+Allow to open other cards out of order with __drm_open_driver_another()
+and also introduce helper for multi-gpu scenarios. There is still a problem
+left when opening first device because it is useally already opened at
+first fixture but I will leave that for later. With that it works
+on four GPUs board, when first card is non-Intel one with no render
+device:
 
-With invalid name chipset returned == 0, so we'll get unexpected
-results. I would assert like:
+sudo IGT_DEVICE=pci:vendor=Intel,device=discrete,card=all build/tests/xe_create --r multigpu-create-massive-size
 
-if (name) {
-	chipset = drm_find_chipset(name);
-	igt_assert(chipset > 0);
-}
+Opened device: /dev/dri/card1
+Starting subtest: multigpu-create-massive-size
+<g:1> Opened device: /dev/dri/card2
+<g:2> Opened device: /dev/dri/card3
+<g:3> Opened device: /dev/dri/card4
+Subtest multigpu-create-massive-size: SUCCESS (0.209s)
 
-Rest lgtm so with minor nit above addressed:
+v3: fixes in test (Zbigniew)
+  fixes in drmlib functions (Zbigniew, Kamil)
+v4: corrected test description (Kamil)
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
---
-Zbigniew
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-> +
-> +	fd = __drm_open_driver(chipset);
-> +	igt_assert_fd(fd);
->  	v = drmGetVersion(fd);
->  	igt_assert_neq(strlen(v->name), 0);
->  	igt_assert_neq(strlen(v->date), 0);
->  	igt_assert_neq(strlen(v->desc), 0);
->  	if (is_i915_device(fd))
->  		igt_assert_lte(1, v->version_major);
-> +	if (name) {
-> +		igt_assert_f(!strcmp(name, v->name),
-> +			     "Expected driver \"%s\" but got \"%s\"\n",
-> +			     name, v->name);
-> +	}
->  
->  	drmFree(v);
->  	drm_close_driver(fd);
-> -- 
-> 2.41.0
-> 
+Kamil Konieczny (2):
+  lib/drmtest: allow out of order device opening
+  tests/intel/xe_create: extend massive subtest to multi-gpu
+
+ lib/drmtest.c           | 26 ++++++++++++++++++++------
+ tests/intel/xe_create.c | 25 +++++++++++++++++++++++++
+ 2 files changed, 45 insertions(+), 6 deletions(-)
+
+-- 
+2.42.0
