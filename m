@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C255910E4AE
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Sep 2023 08:46:20 +0000 (UTC)
-From: Jeevan B <jeevan.b@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 27 Sep 2023 14:21:44 +0530
-Message-Id: <20230927085144.1548543-1-jeevan.b@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============5322770189061552624=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH] tests/kms_setmode: Update test description
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Sharma, Swati2" <swati2.sharma@intel.com>
+Date: Wed, 27 Sep 2023 08:49:31 -0000
+Message-ID: <169580457192.20757.7872954352409813016@emeril.freedesktop.org>
+References: <20230927080013.514326-1-swati2.sharma@intel.com>
+In-Reply-To: <20230927080013.514326-1-swati2.sharma@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_tests/in?=
+ =?utf-8?q?tel/kms=5Fpsr2=5Fsu=3A_fix_igt=5Frequire=5Ff=28=29_print_messag?=
+ =?utf-8?q?e?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,54 +18,161 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Update test description for 'basic-clone-single-crtc' and
-'basic-clone-single-crtc' tests, as these tests are skipped if
-a valid scenario is not found, which can cause confusion during
-bug analysis.
+--===============5322770189061552624==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/kms_setmode.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+== Series Details ==
 
-diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-index 32a6fb690..3caf90447 100644
---- a/tests/kms_setmode.c
-+++ b/tests/kms_setmode.c
-@@ -46,8 +46,8 @@
-  * Test category: functionality test
-  *
-  * SUBTEST: basic-clone-single-crtc
-- * Description: Tests the mode by cloning the single crtc by iterating through all
-- *              valid crtc/connector combinations
-+ * Description: This test allows the use of a single CRTC for two connectors, such as VGA/HDMI,
-+ *		VGA/DP, and HDMI/HDMI, which are the possible combinations.
-  * Driver requirement: i915, xe
-  * Functionality: kms_core
-  * Mega feature: General Display Features
-@@ -62,8 +62,8 @@
-  * Test category: functionality test
-  *
-  * SUBTEST: invalid-clone-exclusive-crtc
-- * Description: Tests the mode by cloning the exclusive crtc by iterating through
-- *              all invalid crtc/connector combinations
-+ * Description: This test is allowed when a connector uses a CRTC that is not compatible with the
-+ *		connector, for instance, DP/HDMI can be used on certain pipes on old platforms.
-  * Driver requirement: i915, xe
-  * Functionality: kms_core
-  * Mega feature: General Display Features
-@@ -979,6 +979,7 @@ const char *help_str =
- 	"  -t <test id>\tRun only the test with this id\n"
- 	"  -e \t\tExtend to run on all pipes. (By default tests will run on two pipes only)\n";
- 
-+
- igt_main_args("det:", NULL, help_str, opt_handler, NULL)
- {
- 	const struct {
--- 
-2.25.1
+Series: tests/intel/kms_psr2_su: fix igt_require_f() print message
+URL   : https://patchwork.freedesktop.org/series/124315/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7504_BAT -> XEIGTPW_9884_BAT
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with XEIGTPW_9884_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_9884_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_9884_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@xe_waitfence@abstime:
+    - bat-atsm-2:         [PASS][1] -> [FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7504/bat-atsm-2/igt@xe_waitfence@abstime.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9884/bat-atsm-2/igt@xe_waitfence@abstime.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9884_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_exec_reset@virtual-close-fd-no-exec:
+    - bat-pvc-2:          [PASS][3] -> [DMESG-WARN][4] ([Intel XE#696])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7504/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9884/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html
+
+  
+  [Intel XE#696]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/696
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7504 -> IGTPW_9884
+
+  IGTPW_9884: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9884/index.html
+  IGT_7504: 8d12be0387d5b80076b7d67db7831292bb34f6df @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-396-fc8ec3c56efa5c15b630ddc17c89100440fe03ef: fc8ec3c56efa5c15b630ddc17c89100440fe03ef
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9884/index.html
+
+--===============5322770189061552624==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/kms_psr2_su: fix igt_require_f() print message</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124315/">https://patchwork.freedesktop.org/series/124315/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9884/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9884/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7504_BAT -&gt; XEIGTPW_9884_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_9884_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_9884_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_9884_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@xe_waitfence@abstime:<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7504/bat-atsm-2/igt@xe_waitfence@abstime.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9884/bat-atsm-2/igt@xe_waitfence@abstime.html">FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9884_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@xe_exec_reset@virtual-close-fd-no-exec:<ul>
+<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7504/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9884/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/696">Intel XE#696</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7504 -&gt; IGTPW_9884</li>
+</ul>
+<p>IGTPW_9884: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9884/index.html<br />
+  IGT_7504: 8d12be0387d5b80076b7d67db7831292bb34f6df @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-396-fc8ec3c56efa5c15b630ddc17c89100440fe03ef: fc8ec3c56efa5c15b630ddc17c89100440fe03ef</p>
+
+</body>
+</html>
+
+--===============5322770189061552624==--
