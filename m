@@ -1,22 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5E53310E5A2
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Sep 2023 19:10:03 +0000 (UTC)
-Message-ID: <c8bc1b38-e7c0-be79-a311-89c2219bdb3e@linux.intel.com>
-Date: Wed, 27 Sep 2023 21:09:56 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 659BC10E5A5
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Sep 2023 20:10:39 +0000 (UTC)
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 27 Sep 2023 22:10:24 +0200
+Message-ID: <20230927201025.132679-2-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20230927201025.132679-1-kamil.konieczny@linux.intel.com>
+References: <20230927201025.132679-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230926084451.1732748-1-marcin.bernatowicz@linux.intel.com>
- <20230926084451.1732748-10-marcin.bernatowicz@linux.intel.com>
- <b4b9c8f4-40c4-7e2b-460f-fc97c5df3a22@linux.intel.com>
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <b4b9c8f4-40c4-7e2b-460f-fc97c5df3a22@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t 09/14] benchmarks/gem_wsim: use lib code
- to query engines
+Subject: [igt-dev] [PATCH i-g-t v5 1/2] lib/drmtest: allow out of order
+ device opening
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,228 +20,112 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: chris.p.wilson@linux.intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Allow to open cards with filters out of order, not in
+the sequence 0...N. This will fix problem found out with test
+gem_exec_gttfill@multigpu-basic with three discrete GPUs:
 
+Opened device: /dev/dri/card1
+Starting subtest: multigpu-basic
+<g:1> Opened device: /dev/dri/card2
+gem_exec_gttfill: ../lib/drmtest.c:313: _is_already_opened: Assertion `as_idx <= _opened_fds_count' failed.
 
-On 9/26/2023 1:23 PM, Tvrtko Ursulin wrote:
-> 
-> On 26/09/2023 09:44, Marcin Bernatowicz wrote:
->> Use code in lib/i915/gem_engine_topology to query engines.
->>
->> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
->> ---
->>   benchmarks/gem_wsim.c | 157 +++++-------------------------------------
->>   1 file changed, 19 insertions(+), 138 deletions(-)
->>
->> diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
->> index 2e6eb6388..a3339e1b2 100644
->> --- a/benchmarks/gem_wsim.c
->> +++ b/benchmarks/gem_wsim.c
->> @@ -456,150 +456,31 @@ static int str_to_engine(const char *str)
->>       return -1;
->>   }
->> -static bool __engines_queried;
->> -static unsigned int __num_engines;
->> -static struct i915_engine_class_instance *__engines;
->> -
->> -static int
->> -__i915_query(int i915, struct drm_i915_query *q)
->> +static struct intel_engine_data *query_engines(void)
->>   {
->> -    if (igt_ioctl(i915, DRM_IOCTL_I915_QUERY, q))
->> -        return -errno;
->> -    return 0;
->> -}
->> +    static struct intel_engine_data engines = {};
->> -static int
->> -__i915_query_items(int i915, struct drm_i915_query_item *items, 
->> uint32_t n_items)
->> -{
->> -    struct drm_i915_query q = {
->> -        .num_items = n_items,
->> -        .items_ptr = to_user_pointer(items),
->> -    };
->> -    return __i915_query(i915, &q);
->> -}
->> +    if (engines.nengines)
->> +        return &engines;
->> -static void
->> -i915_query_items(int i915, struct drm_i915_query_item *items, 
->> uint32_t n_items)
->> -{
->> -    igt_assert_eq(__i915_query_items(i915, items, n_items), 0);
->> -}
->> -
->> -static bool has_engine_query(int i915)
->> -{
->> -    struct drm_i915_query_item item = {
->> -        .query_id = DRM_I915_QUERY_ENGINE_INFO,
->> -    };
->> -
->> -    return __i915_query_items(i915, &item, 1) == 0 && item.length > 0;
->> -}
->> -
->> -static void query_engines(void)
->> -{
->> -    struct i915_engine_class_instance *engines;
->> -    unsigned int num;
->> -
->> -    if (__engines_queried)
->> -        return;
->> -
->> -    __engines_queried = true;
->> -
->> -    if (!has_engine_query(fd)) {
->> -        unsigned int num_bsd = gem_has_bsd(fd) + gem_has_bsd2(fd);
->> -        unsigned int i = 0;
->> -
->> -        igt_assert(num_bsd);
->> -
->> -        num = 1 + num_bsd;
->> -
->> -        if (gem_has_blt(fd))
->> -            num++;
->> -
->> -        if (gem_has_vebox(fd))
->> -            num++;
->> -
->> -        engines = calloc(num,
->> -                 sizeof(struct i915_engine_class_instance));
->> -        igt_assert(engines);
->> -
->> -        engines[i].engine_class = I915_ENGINE_CLASS_RENDER;
->> -        engines[i].engine_instance = 0;
->> -        i++;
->> -
->> -        if (gem_has_blt(fd)) {
->> -            engines[i].engine_class = I915_ENGINE_CLASS_COPY;
->> -            engines[i].engine_instance = 0;
->> -            i++;
->> -        }
->> -
->> -        if (gem_has_bsd(fd)) {
->> -            engines[i].engine_class = I915_ENGINE_CLASS_VIDEO;
->> -            engines[i].engine_instance = 0;
->> -            i++;
->> -        }
->> -
->> -        if (gem_has_bsd2(fd)) {
->> -            engines[i].engine_class = I915_ENGINE_CLASS_VIDEO;
->> -            engines[i].engine_instance = 1;
->> -            i++;
->> -        }
->> -
->> -        if (gem_has_vebox(fd)) {
->> -            engines[i].engine_class =
->> -                I915_ENGINE_CLASS_VIDEO_ENHANCE;
->> -            engines[i].engine_instance = 0;
->> -            i++;
->> -        }
->> -    } else {
->> -        struct drm_i915_query_engine_info *engine_info;
->> -        struct drm_i915_query_item item = {
->> -            .query_id = DRM_I915_QUERY_ENGINE_INFO,
->> -        };
->> -        const unsigned int sz = 4096;
->> -        unsigned int i;
->> -
->> -        engine_info = malloc(sz);
->> -        igt_assert(engine_info);
->> -        memset(engine_info, 0, sz);
->> -
->> -        item.data_ptr = to_user_pointer(engine_info);
->> -        item.length = sz;
->> -
->> -        i915_query_items(fd, &item, 1);
->> -        igt_assert(item.length > 0);
->> -        igt_assert(item.length <= sz);
->> -
->> -        num = engine_info->num_engines;
->> -
->> -        engines = calloc(num,
->> -                 sizeof(struct i915_engine_class_instance));
->> -        igt_assert(engines);
->> -
->> -        for (i = 0; i < num; i++) {
->> -            struct drm_i915_engine_info *engine =
->> -                (struct drm_i915_engine_info *)&engine_info->engines[i];
->> -
->> -            engines[i] = engine->engine;
->> -        }
->> -    }
->> -
->> -    __engines = engines;
->> -    __num_engines = num;
->> +    engines = intel_engine_list_of_physical(fd);
->> +    igt_assert(engines.nengines);
->> +    return &engines;
->>   }
->>   static unsigned int num_engines_in_class(enum intel_engine_id class)
->>   {
->> -    unsigned int i, count = 0;
->> +    const struct intel_engine_data *engines = query_engines();
->> +    unsigned int count = 0;
->> +    int i;
->>       igt_assert(class == VCS);
->> -    query_engines();
->> -
->> -    for (i = 0; i < __num_engines; i++) {
->> -        if (__engines[i].engine_class == I915_ENGINE_CLASS_VIDEO)
->> +    for (i = 0; i < engines->nengines; i++) {
-> 
-> nengines is uint32_t so probably best to keep i unsigned.
-> 
->> +        if (engines->engines[i].class == I915_ENGINE_CLASS_VIDEO)
->>               count++;
->>       }
->> -    igt_assert(count);
-> 
-> Why dropping this?
-I messed up, will restore unsigned int and assert in next version.
-> 
-> Regards,
-> 
-> Tvrtko
-> 
->>       return count;
->>   }
->> @@ -607,16 +488,15 @@ static void
->>   fill_engines_id_class(enum intel_engine_id *list,
->>                 enum intel_engine_id class)
->>   {
->> +    const struct intel_engine_data *engines = query_engines();
->>       enum intel_engine_id engine = VCS1;
->>       unsigned int i, j = 0;
->>       igt_assert(class == VCS);
->>       igt_assert(num_engines_in_class(VCS) <= 2);
->> -    query_engines();
->> -
->> -    for (i = 0; i < __num_engines; i++) {
->> -        if (__engines[i].engine_class != I915_ENGINE_CLASS_VIDEO)
->> +    for (i = 0; i < engines->nengines; i++) {
->> +        if (engines->engines[i].class != I915_ENGINE_CLASS_VIDEO)
->>               continue;
->>           list[j++] = engine++;
->> @@ -626,17 +506,18 @@ fill_engines_id_class(enum intel_engine_id *list,
->>   static unsigned int
->>   find_physical_instance(enum intel_engine_id class, unsigned int 
->> logical)
->>   {
->> +    const struct intel_engine_data *engines = query_engines();
->>       unsigned int i, j = 0;
->>       igt_assert(class == VCS);
->> -    for (i = 0; i < __num_engines; i++) {
->> -        if (__engines[i].engine_class != I915_ENGINE_CLASS_VIDEO)
->> +    for (i = 0; i < engines->nengines; i++) {
->> +        if (engines->engines[i].class != I915_ENGINE_CLASS_VIDEO)
->>               continue;
->>           /* Map logical to physical instances. */
->>           if (logical == j++)
->> -            return __engines[i].engine_instance;
->> +            return engines->engines[i].instance;
->>       }
->>       igt_assert(0);
+Added also some debug prints for diagnosing problems with
+multi-GPU tests.
+
+v2: fix setting opened count in _set_opened_fd()
+v3: search all already opened fds in _is_already_opened()
+v4: revert change in v3, this will cause treating zero as
+    special index (no checks) as some test depend on it
+
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ lib/drmtest.c | 24 +++++++++++++++++++-----
+ 1 file changed, 19 insertions(+), 5 deletions(-)
+
+diff --git a/lib/drmtest.c b/lib/drmtest.c
+index e1da66c87..f30ec6372 100644
+--- a/lib/drmtest.c
++++ b/lib/drmtest.c
+@@ -296,13 +296,18 @@ static int _opened_fds_count;
+ static void _set_opened_fd(int idx, int fd)
+ {
+ 	assert(idx < ARRAY_SIZE(_opened_fds));
+-	assert(idx <= _opened_fds_count);
++
++	if (idx >= _opened_fds_count) {
++		for (int i = _opened_fds_count; i < idx; ++i)
++			_opened_fds[i].fd = -1;
++	}
+ 
+ 	_opened_fds[idx].fd = fd;
+ 
+ 	assert(fstat(fd, &_opened_fds[idx].stat) == 0);
+ 
+-	_opened_fds_count = idx+1;
++	if (idx >= _opened_fds_count)
++		_opened_fds_count = idx + 1;
+ }
+ 
+ static bool _is_already_opened(const char *path, int as_idx)
+@@ -310,16 +315,20 @@ static bool _is_already_opened(const char *path, int as_idx)
+ 	struct stat new;
+ 
+ 	assert(as_idx < ARRAY_SIZE(_opened_fds));
+-	assert(as_idx <= _opened_fds_count);
+ 
+ 	/*
+ 	 * we cannot even stat the device, so it's of no use - let's claim it's
+ 	 * already opened
+ 	 */
+-	if (igt_debug_on(stat(path, &new) != 0))
++	if (igt_debug_on(stat(path, &new) != 0)) {
++		igt_debug("cannot stat device: %s\n", path);
+ 		return true;
++	}
+ 
+ 	for (int i = 0; i < as_idx; ++i) {
++		if (_opened_fds[i].fd == -1)
++			continue;
++
+ 		/* did we cross filesystem boundary? */
+ 		assert(_opened_fds[i].stat.st_dev == new.st_dev);
+ 
+@@ -484,6 +493,7 @@ int __drm_open_driver_another(int idx, int chipset)
+ {
+ 	int fd = -1;
+ 
++	igt_debug("card idx: %d chipset: %d\n", idx, chipset);
+ 	if (chipset != DRIVER_VGEM && igt_device_filter_count() > idx) {
+ 		struct igt_device_card card;
+ 		bool found;
+@@ -491,6 +501,7 @@ int __drm_open_driver_another(int idx, int chipset)
+ 		found = __get_card_for_nth_filter(idx, &card);
+ 
+ 		if (!found) {
++			igt_debug("cannot find card idx: %d, loading module\n", idx);
+ 			drm_load_module(chipset);
+ 			found = __get_card_for_nth_filter(idx, &card);
+ 		}
+@@ -500,11 +511,14 @@ int __drm_open_driver_another(int idx, int chipset)
+ 				 igt_device_filter_get(idx));
+ 		else if (_is_already_opened(card.card, idx))
+ 			igt_warn("card maching filter %d is already opened\n", idx);
+-		else
++		else {
++			igt_debug("card idx: %d found: %s\n", idx, card.card);
+ 			fd = __open_driver_exact(card.card, chipset);
++		}
+ 
+ 	} else {
+ 		/* no filter for device idx, let's open whatever is available */
++		igt_debug("No filter for device idx: %d\n", idx);
+ 		fd = __open_driver("/dev/dri/card", 0, chipset, idx);
+ 	}
+ 
+-- 
+2.42.0
