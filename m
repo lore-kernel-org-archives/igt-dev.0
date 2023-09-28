@@ -1,20 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BD4E510E5D8
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Sep 2023 07:42:19 +0000 (UTC)
-Date: Thu, 28 Sep 2023 09:41:49 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230928074149.42435c6p3324anah@kamilkon-desk.igk.intel.com>
-References: <20230926184748.199187-1-robdclark@gmail.com>
- <20230926184748.199187-3-robdclark@gmail.com>
- <b4fcc0fd-9129-c13b-3801-253ecb3677b4@collabora.com>
+Message-ID: <6a9b5529-6b41-a29b-3608-81be00934fbf@linux.intel.com>
+Date: Thu, 28 Sep 2023 09:16:23 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <b4fcc0fd-9129-c13b-3801-253ecb3677b4@collabora.com>
-Subject: Re: [igt-dev] [PATCH v3 3/3] core_getversion: Test for desired
- device
+Content-Language: en-US
+To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+References: <20230922134437.234888-1-tvrtko.ursulin@linux.intel.com>
+ <20230922134437.234888-4-tvrtko.ursulin@linux.intel.com>
+ <ZRSM9hSf71QJn8Pw@unerlige-ril>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <ZRSM9hSf71QJn8Pw@unerlige-ril>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH i-g-t 03/12] tools/intel_gpu_top: Restore user
+ friendly error message
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,90 +20,92 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rob Clark <robdclark@chromium.org>, Helen Koike <helen.koike@collabora.com>,
- Emma Anholt <emma@anholt.net>
+Cc: igt-dev@lists.freedesktop.org, Intel-gfx@lists.freedesktop.org,
+ Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Helen,
-On 2023-09-27 at 19:24:35 -0300, Helen Koike wrote:
+
+On 27/09/2023 21:13, Umesh Nerlige Ramappa wrote:
+> On Fri, Sep 22, 2023 at 02:44:28PM +0100, Tvrtko Ursulin wrote:
+>> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+>>
+>> We have a nice error message displayed when an user with insufficient
+>> permissions tries to run the tool, but that got lost while Meteorlake
+>> support was added. Bring it back in.
+>>
+>> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+>> Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+>> ---
+>> tools/intel_gpu_top.c | 10 +++++++---
+>> 1 file changed, 7 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+>> index 87e9681e53b4..e01355f90458 100644
+>> --- a/tools/intel_gpu_top.c
+>> +++ b/tools/intel_gpu_top.c
+>> @@ -554,9 +554,11 @@ static int get_num_gts(uint64_t type)
+>>
+>>         close(fd);
+>>     }
+>> -    assert(!errno || errno == ENOENT);
+>> -    assert(cnt > 0);
+>> -    errno = 0;
+>> +
+>> +    if (!cnt)
+>> +        cnt = errno;
+>> +    else
+>> +        errno = 0;
 > 
+> ENOENT is the only way this logic is checking for num_gts.
 > 
-> On 26/09/2023 15:47, Rob Clark wrote:
-> > From: Rob Clark <robdclark@chromium.org>
-> > 
-> > We discovered in drm/ci that if the drm device fails to probe, all the
-> > tests come back as "Skip" and the job is considered successful. Fix
-> > the getversion test to fail if there is no drm device or if the drm
-> > device does not match the expected device as specified by the optional
-> > IGT_REQUIRED_DRIVER environment variable.
-> > 
-> > Signed-off-by: Rob Clark <robdclark@chromium.org>
-> > Acked-by: Helen Koike <helen.koike@collabora.com>
-> > ---
-> >   tests/core_getversion.c | 13 ++++++++++++-
-> >   1 file changed, 12 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/tests/core_getversion.c b/tests/core_getversion.c
-> > index 32cb976e4923..b298a6890ef9 100644
-> > --- a/tests/core_getversion.c
-> > +++ b/tests/core_getversion.c
-> > @@ -48,14 +48,25 @@ igt_simple_main
-> >   {
-> >   	int fd;
-> >   	drmVersionPtr v;
-> > +	const char *name = getenv("IGT_REQUIRED_DRIVER");
----------------------------------------^^^^^^^^
+> In this case error is propagated only if cnt == 0. What if cnt=1 and we 
+> get an error (other than ENOENT)? Should we ignore that?
 
-Maybe better name would be IGT_EXPECTED_DRIVER? Or if this is
-enviroment var for only this one test, maybe
+If cnt >= 1 then at least one tile was found so the errno happened while 
+probing for further tiles. So on single tile parts it can be ignored. On 
+multi-tile parts it cannot really happen, or even if it happens 
+situation would simply be "why is only one tile showing". If we want to 
+cover this impossible/unlikely case then maybe like this:
 
-IGT_CORE_GETVERSION_EXPECTED
+	if (!cnt || (errno && errno != ENOENT))
+		cnt = -errno;
 
+> I had something like this in mind for the regression (and sorry this 
+> fell through the cracks)
 > 
-> Btw, In drm/ci we are using IGT_FORCE_DRIVER
-> 
-> https://cgit.freedesktop.org/drm/drm/tree/drivers/gpu/drm/ci/igt_runner.sh#n6
-> 
-> You could use the same name here so we don't need to patch drm/ci (but
-> patching there is not a issue as well, so feel free to ignore this comment
-> and just chose the best name).
-> 
-> Regards,
-> Helen
+> https://patchwork.freedesktop.org/patch/541406/?series=118973&rev=1
 
-If used IGT_FORCE_DRIVER in CI or tests we may as well drop
-line:
-		chipset = drm_find_chipset(name);
+Oh back in June!
 
-and just use DRIVER_ANY:
-
-    fd = drm_open_driver(DRIVER_ANY);
-
-as in all kms tests.
+I think yours work too, in which case it's a matter of a style choice 
+with which one to go. I don't have a strong preference - above would be 
+a bit more compact, while I think it still succinctly expresses the 
+failure condition ("nothing found or unexpected error while probing for 
+remote tiles").
 
 Regards,
-Kamil
+
+Tvrtko
 
 > 
-> > +	int chipset = DRIVER_ANY;
-> > -	fd = drm_open_driver(DRIVER_ANY);
-> > +	if (name)
-> > +		chipset = drm_find_chipset(name);
-> > +
-> > +	fd = __drm_open_driver(chipset);
-> > +	igt_assert_fd(fd);
-> >   	v = drmGetVersion(fd);
-> >   	igt_assert_neq(strlen(v->name), 0);
-> >   	igt_assert_neq(strlen(v->date), 0);
-> >   	igt_assert_neq(strlen(v->desc), 0);
-> >   	if (is_i915_device(fd))
-> >   		igt_assert_lte(1, v->version_major);
-> > +	if (name) {
-> > +		igt_assert_f(!strcmp(name, v->name),
-> > +			     "Expected driver \"%s\" but got \"%s\"\n",
-> > +			     name, v->name);
-> > +	}
-> >   	drmFree(v);
-> >   	drm_close_driver(fd);
+> Regards,
+> Umesh
+> 
+>>
+>>     return cnt;
+>> }
+>> @@ -590,6 +592,8 @@ static int pmu_init(struct engines *engines)
+>>     engines->fd = -1;
+>>     engines->num_counters = 0;
+>>     engines->num_gts = get_num_gts(type);
+>> +    if (engines->num_gts <= 0)
+>> +        return -1;
+>>
+>>     engines->irq.config = I915_PMU_INTERRUPTS;
+>>     fd = _open_pmu(type, engines->num_counters, &engines->irq, 
+>> engines->fd);
+>> -- 
+>> 2.39.2
+>>
