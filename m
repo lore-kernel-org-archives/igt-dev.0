@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com
- [IPv6:2607:f8b0:4864:20::102a])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9A3DD10E6AE
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Sep 2023 21:05:33 +0000 (UTC)
-Received: by mail-pj1-x102a.google.com with SMTP id
- 98e67ed59e1d1-278eaffd81dso4283165a91.0
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Sep 2023 14:05:33 -0700 (PDT)
-From: Rob Clark <robdclark@gmail.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6047410E68E
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Sep 2023 15:55:37 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 28 Sep 2023 14:05:27 -0700
-Message-ID: <20230928210527.268270-1-robdclark@gmail.com>
+Date: Thu, 28 Sep 2023 21:26:04 +0530
+Message-Id: <20230928155604.546419-3-swati2.sharma@intel.com>
+In-Reply-To: <20230928155604.546419-1-swati2.sharma@intel.com>
+References: <20230928155604.546419-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v4] core_getversion: Test for desired device
+Subject: [igt-dev] [v2 2/2] tests/kms_universal_plane: update testplan doc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,58 +18,92 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rob Clark <robdclark@chromium.org>, Emma Anholt <emma@anholt.net>,
- Helen Koike <helen.koike@collabora.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Rob Clark <robdclark@chromium.org>
+After converting tests to dynamic subtests, hardcoded pipe
+names are removed. Update testplan documentation accordingly.
 
-We discovered in drm/ci that if the drm device fails to probe, all the
-tests come back as "Skip" and the job is considered successful. Fix
-the getversion test to fail if there is no drm device or if the drm
-device does not match the expected device as specified by the optional
-IGT_REQUIRED_DRIVER environment variable.
-
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Acked-by: Helen Koike <helen.koike@collabora.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
-I dropped the previous two lib/drmtest patches, as they are no longer
-strictly required.  I think they are still nice-to-have, but they are
-unchanged since the previous version so it didn't seem useful to re-
-send them.
+ tests/kms_universal_plane.c | 38 ++++++++-----------------------------
+ 1 file changed, 8 insertions(+), 30 deletions(-)
 
- tests/core_getversion.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/tests/core_getversion.c b/tests/core_getversion.c
-index 32cb976e4923..8c8e0c9a3e5e 100644
---- a/tests/core_getversion.c
-+++ b/tests/core_getversion.c
-@@ -48,14 +48,21 @@ igt_simple_main
- {
- 	int fd;
- 	drmVersionPtr v;
-+	const char *name = getenv("IGT_FORCE_DRIVER");
+diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
+index 7dbbaba00..2e8c0cc17 100644
+--- a/tests/kms_universal_plane.c
++++ b/tests/kms_universal_plane.c
+@@ -33,43 +33,32 @@
+  * Category: Display
+  * Description: Check pageflip & modeset on universal plane
+  *
+- * SUBTEST: cursor-fb-leak-pipe-%s
+- * Description: Check for cursor leaks after performing cursor operations on %arg[1]
++ * SUBTEST: cursor-fb-leak
++ * Description: Check for cursor leaks after performing cursor operations
+  * Driver requirement: i915, xe
+  * Functionality: cursor, plane
+  * Mega feature: General Display Features
+  * Test category: functionality test
+  *
+- * SUBTEST: disable-primary-vs-flip-pipe-%s
++ * SUBTEST: disable-primary-vs-flip
+  * Description: Check pageflips while primary plane is disabled before IOCTL or
+- *              between IOCTL and pageflip execution on %arg[1]
++ *              between IOCTL and pageflip execution
+  * Driver requirement: i915, xe
+  * Functionality: plane
+  * Mega feature: General Display Features
+  * Test category: functionality test
+  *
+- * SUBTEST: universal-plane-pageflip-windowed-pipe-%s
+- * Description: Check if pageflip succeeds in windowed setting on %arg[1]
++ * SUBTEST: universal-plane-pageflip-windowed
++ * Description: Check if pageflip succeeds in windowed setting
+  * Driver requirement: i915, xe
+  * Functionality: plane
+  * Mega feature: General Display Features
+  * Test category: functionality test
+- *
+- * arg[1]:
+- *
+- * @A:    pipe A
+- * @B:    pipe B
+- * @C:    pipe C
+- * @D:    pipe D
+- * @E:    pipe E
+- * @F:    pipe F
+- * @G:    pipe G
+- * @H:    pipe H
+  */
  
--	fd = drm_open_driver(DRIVER_ANY);
-+	fd = __drm_open_driver(DRIVER_ANY);
-+	igt_assert_fd(fd);
- 	v = drmGetVersion(fd);
- 	igt_assert_neq(strlen(v->name), 0);
- 	igt_assert_neq(strlen(v->date), 0);
- 	igt_assert_neq(strlen(v->desc), 0);
- 	if (is_i915_device(fd))
- 		igt_assert_lte(1, v->version_major);
-+	if (name) {
-+		igt_assert_f(!strcmp(name, v->name),
-+			     "Expected driver \"%s\" but got \"%s\"\n",
-+			     name, v->name);
-+	}
- 
- 	drmFree(v);
- 	drm_close_driver(fd);
+ /**
+- * SUBTEST: universal-plane-pipe-%s-%s
+- * Description: Check %arg[2] on %arg[1]
++ * SUBTEST: universal-plane-%s
++ * Description: Check %arg[1]
+  * Driver requirement: i915, xe
+  * Functionality: plane
+  * Mega feature: General Display Features
+@@ -77,17 +66,6 @@
+  *
+  * arg[1]:
+  *
+- * @A:    pipe A
+- * @B:    pipe B
+- * @C:    pipe C
+- * @D:    pipe D
+- * @E:    pipe E
+- * @F:    pipe F
+- * @G:    pipe G
+- * @H:    pipe H
+- *
+- * arg[2]:
+- *
+  * @functional: the switching between different primary plane fbs with CRTC off
+  * @sanity:     for scale-up or scale-down using universal plane API without
+  *              covering CRTC
 -- 
-2.41.0
+2.25.1
