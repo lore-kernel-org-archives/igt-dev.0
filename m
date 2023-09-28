@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6047410E68E
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Sep 2023 15:55:37 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CE0D510E42B
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Sep 2023 18:19:27 +0000 (UTC)
+From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 28 Sep 2023 21:26:04 +0530
-Message-Id: <20230928155604.546419-3-swati2.sharma@intel.com>
-In-Reply-To: <20230928155604.546419-1-swati2.sharma@intel.com>
-References: <20230928155604.546419-1-swati2.sharma@intel.com>
+Date: Thu, 28 Sep 2023 17:45:16 +0000
+Message-ID: <20230928174535.2074462-2-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20230928174535.2074462-1-marcin.bernatowicz@linux.intel.com>
+References: <20230928174535.2074462-1-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v2 2/2] tests/kms_universal_plane: update testplan doc
+Subject: [igt-dev] [PATCH i-g-t 01/17] lib/igt_device_scan: Xe get
+ integrated/discrete card functions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,92 +19,124 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: chris.p.wilson@linux.intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-After converting tests to dynamic subtests, hardcoded pipe
-names are removed. Update testplan documentation accordingly.
+Xe functions to get integrated/discrete card.
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+v2:
+- renamed __find_first_i915_card to __find_first_intel_card_by_driver_name (Zbyszek)
+v3:
+- added documentation to public functions (Kamil)
+
+Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 ---
- tests/kms_universal_plane.c | 38 ++++++++-----------------------------
- 1 file changed, 8 insertions(+), 30 deletions(-)
+ lib/igt_device_scan.c | 52 +++++++++++++++++++++++++++++++++++--------
+ lib/igt_device_scan.h |  2 ++
+ 2 files changed, 45 insertions(+), 9 deletions(-)
 
-diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-index 7dbbaba00..2e8c0cc17 100644
---- a/tests/kms_universal_plane.c
-+++ b/tests/kms_universal_plane.c
-@@ -33,43 +33,32 @@
-  * Category: Display
-  * Description: Check pageflip & modeset on universal plane
-  *
-- * SUBTEST: cursor-fb-leak-pipe-%s
-- * Description: Check for cursor leaks after performing cursor operations on %arg[1]
-+ * SUBTEST: cursor-fb-leak
-+ * Description: Check for cursor leaks after performing cursor operations
-  * Driver requirement: i915, xe
-  * Functionality: cursor, plane
-  * Mega feature: General Display Features
-  * Test category: functionality test
-  *
-- * SUBTEST: disable-primary-vs-flip-pipe-%s
-+ * SUBTEST: disable-primary-vs-flip
-  * Description: Check pageflips while primary plane is disabled before IOCTL or
-- *              between IOCTL and pageflip execution on %arg[1]
-+ *              between IOCTL and pageflip execution
-  * Driver requirement: i915, xe
-  * Functionality: plane
-  * Mega feature: General Display Features
-  * Test category: functionality test
-  *
-- * SUBTEST: universal-plane-pageflip-windowed-pipe-%s
-- * Description: Check if pageflip succeeds in windowed setting on %arg[1]
-+ * SUBTEST: universal-plane-pageflip-windowed
-+ * Description: Check if pageflip succeeds in windowed setting
-  * Driver requirement: i915, xe
-  * Functionality: plane
-  * Mega feature: General Display Features
-  * Test category: functionality test
-- *
-- * arg[1]:
-- *
-- * @A:    pipe A
-- * @B:    pipe B
-- * @C:    pipe C
-- * @D:    pipe D
-- * @E:    pipe E
-- * @F:    pipe F
-- * @G:    pipe G
-- * @H:    pipe H
+diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+index ae69ed09f..f4f95fef3 100644
+--- a/lib/igt_device_scan.c
++++ b/lib/igt_device_scan.c
+@@ -769,25 +769,27 @@ __copy_dev_to_card(struct igt_device *dev, struct igt_device_card *card)
+  * Iterate over all igt_devices array and find first discrete/integrated card.
+  * card->pci_slot_name will be updated only if a card is found.
   */
+-static bool __find_first_i915_card(struct igt_device_card *card, bool discrete)
++static bool __find_first_intel_card_by_driver_name(struct igt_device_card *card,
++				bool want_discrete, const char *drv_name)
+ {
+ 	struct igt_device *dev;
+-	int cmp;
++	int is_integrated;
  
- /**
-- * SUBTEST: universal-plane-pipe-%s-%s
-- * Description: Check %arg[2] on %arg[1]
-+ * SUBTEST: universal-plane-%s
-+ * Description: Check %arg[1]
-  * Driver requirement: i915, xe
-  * Functionality: plane
-  * Mega feature: General Display Features
-@@ -77,17 +66,6 @@
-  *
-  * arg[1]:
-  *
-- * @A:    pipe A
-- * @B:    pipe B
-- * @C:    pipe C
-- * @D:    pipe D
-- * @E:    pipe E
-- * @F:    pipe F
-- * @G:    pipe G
-- * @H:    pipe H
-- *
-- * arg[2]:
-- *
-  * @functional: the switching between different primary plane fbs with CRTC off
-  * @sanity:     for scale-up or scale-down using universal plane API without
-  *              covering CRTC
++	igt_assert(drv_name);
+ 	memset(card, 0, sizeof(*card));
+ 
+ 	igt_list_for_each_entry(dev, &igt_devs.all, link) {
+ 
+-		if (!is_pci_subsystem(dev) || strcmp(dev->driver, "i915"))
++		if (!is_pci_subsystem(dev) || strcmp(dev->driver, drv_name))
+ 			continue;
+ 
+-		cmp = strncmp(dev->pci_slot_name, INTEGRATED_I915_GPU_PCI_ID,
+-			      PCI_SLOT_NAME_SIZE);
++		is_integrated = !strncmp(dev->pci_slot_name, INTEGRATED_I915_GPU_PCI_ID,
++					 PCI_SLOT_NAME_SIZE);
+ 
+-		if (discrete && cmp) {
++		if (want_discrete && !is_integrated) {
+ 			__copy_dev_to_card(dev, card);
+ 			return true;
+-		} else if (!discrete && !cmp) {
++		} else if (!want_discrete && is_integrated) {
+ 			__copy_dev_to_card(dev, card);
+ 			return true;
+ 		}
+@@ -800,14 +802,46 @@ bool igt_device_find_first_i915_discrete_card(struct igt_device_card *card)
+ {
+ 	igt_assert(card);
+ 
+-	return __find_first_i915_card(card, true);
++	return __find_first_intel_card_by_driver_name(card, true, "i915");
++}
++
++/**
++ * igt_device_find_first_xe_discrete_card
++ * @card: pointer to igt_device_card structure
++ *
++ * Iterate over all igt_devices array and find first xe discrete card.
++ * card will be updated only if a device is found.
++ *
++ * Returns: true if device is found, false otherwise.
++ */
++bool igt_device_find_first_xe_discrete_card(struct igt_device_card *card)
++{
++	igt_assert(card);
++
++	return __find_first_intel_card_by_driver_name(card, true, "xe");
+ }
+ 
+ bool igt_device_find_integrated_card(struct igt_device_card *card)
+ {
+ 	igt_assert(card);
+ 
+-	return __find_first_i915_card(card, false);
++	return __find_first_intel_card_by_driver_name(card, false, "i915");
++}
++
++/**
++ * igt_device_find_xe_integrated_card
++ * @card: pointer to igt_device_card structure
++ *
++ * Iterate over all igt_devices array and find first xe integrated card.
++ * card will be updated only if a device is found.
++ *
++ * Returns: true if device is found, false otherwise.
++ */
++bool igt_device_find_xe_integrated_card(struct igt_device_card *card)
++{
++	igt_assert(card);
++
++	return __find_first_intel_card_by_driver_name(card, false, "xe");
+ }
+ 
+ static struct igt_device *igt_device_from_syspath(const char *syspath)
+diff --git a/lib/igt_device_scan.h b/lib/igt_device_scan.h
+index e6b0f1b90..b8f6a843d 100644
+--- a/lib/igt_device_scan.h
++++ b/lib/igt_device_scan.h
+@@ -87,6 +87,8 @@ bool igt_device_card_match_pci(const char *filter,
+ 	struct igt_device_card *card);
+ bool igt_device_find_first_i915_discrete_card(struct igt_device_card *card);
+ bool igt_device_find_integrated_card(struct igt_device_card *card);
++bool igt_device_find_first_xe_discrete_card(struct igt_device_card *card);
++bool igt_device_find_xe_integrated_card(struct igt_device_card *card);
+ char *igt_device_get_pretty_name(struct igt_device_card *card, bool numeric);
+ int igt_open_card(struct igt_device_card *card);
+ int igt_open_render(struct igt_device_card *card);
 -- 
-2.25.1
+2.42.0
