@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 24B9A10E42B
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Sep 2023 18:19:47 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 01F8010E42B
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Sep 2023 18:20:06 +0000 (UTC)
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 28 Sep 2023 17:45:20 +0000
-Message-ID: <20230928174535.2074462-6-marcin.bernatowicz@linux.intel.com>
+Date: Thu, 28 Sep 2023 17:45:21 +0000
+Message-ID: <20230928174535.2074462-7-marcin.bernatowicz@linux.intel.com>
 In-Reply-To: <20230928174535.2074462-1-marcin.bernatowicz@linux.intel.com>
 References: <20230928174535.2074462-1-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 05/17] benchmarks/gem_wsim: extract duration
- parsing code to new function
+Subject: [igt-dev] [PATCH i-g-t 06/17] benchmarks/gem_wsim: fix conflicting
+ SSEU #define and enum
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,107 +24,89 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Moved code from parse_workload to separate function.
+One SSEU is in enum w_step and then as #define SSEU (1 << 3).
+Fix this.
 
 v2:
-- keep "field" parameter name (instead of "_desc") (Tvrtko)
-- emit error messages from parse_duration, caller returns NULL
-  on parse_duration failure  (Tvrtko)
+- add FLAG_ prefix to all flags (Tvrtko)
 
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 ---
- benchmarks/gem_wsim.c | 70 ++++++++++++++++++++++++-------------------
- 1 file changed, 40 insertions(+), 30 deletions(-)
+ benchmarks/gem_wsim.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
 diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-index 3c3779b72..71d1c55ae 100644
+index 71d1c55ae..3c25d801c 100644
 --- a/benchmarks/gem_wsim.c
 +++ b/benchmarks/gem_wsim.c
-@@ -860,6 +860,44 @@ static long __duration(long dur, double scale)
- 	return round(scale * dur);
- }
+@@ -236,9 +236,9 @@ static struct drm_i915_gem_context_param_sseu device_sseu = {
+ 	.slice_mask = -1 /* Force read on first use. */
+ };
  
-+static int
-+parse_duration(unsigned int nr_steps, struct duration *dur, double scale_dur, char *field)
-+{
-+	char *sep = NULL;
-+	long tmpl;
-+
-+	if (field[0] == '*') {
-+		if (intel_gen(intel_get_drm_devid(fd)) < 8) {
-+			wsim_err("Infinite batch at step %u needs Gen8+!\n", nr_steps);
-+			return -1;
-+		}
-+		dur->unbound = true;
-+	} else {
-+		tmpl = strtol(field, &sep, 10);
-+		if (tmpl <= 0 || tmpl == LONG_MIN || tmpl == LONG_MAX) {
-+			wsim_err("Invalid duration at step %u!\n", nr_steps);
-+			return -1;
-+		}
-+
-+		dur->min = __duration(tmpl, scale_dur);
-+
-+		if (sep && *sep == '-') {
-+			tmpl = strtol(sep + 1, NULL, 10);
-+			if (tmpl <= 0 || __duration(tmpl, scale_dur) <= dur->min ||
-+			    tmpl == LONG_MIN || tmpl == LONG_MAX) {
-+				wsim_err("Invalid maximum duration at step %u!\n", nr_steps);
-+				return -1;
-+			}
-+
-+			dur->max = __duration(tmpl, scale_dur);
-+		} else {
-+			dur->max = dur->min;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- #define int_field(_STEP_, _FIELD_, _COND_, _ERR_) \
- 	if ((field = strtok_r(fstart, ".", &fctx))) { \
- 		tmp = atoi(field); \
-@@ -1121,38 +1159,10 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
- 		}
+-#define SYNCEDCLIENTS	(1<<1)
+-#define DEPSYNC		(1<<2)
+-#define SSEU		(1<<3)
++#define FLAG_SYNCEDCLIENTS	(1<<1)
++#define FLAG_DEPSYNC		(1<<2)
++#define FLAG_SSEU		(1<<3)
  
- 		if ((field = strtok_r(fstart, ".", &fctx))) {
--			char *sep = NULL;
--			long int tmpl;
--
- 			fstart = NULL;
+ static const char *ring_str_map[NUM_ENGINES] = {
+ 	[DEFAULT] = "DEFAULT",
+@@ -1232,7 +1232,7 @@ add_step:
+ 	wrk->sseu = arg->sseu;
+ 	wrk->max_working_set_id = -1;
+ 	wrk->working_sets = NULL;
+-	wrk->bo_prng = (flags & SYNCEDCLIENTS) ? master_prng : rand();
++	wrk->bo_prng = (flags & FLAG_SYNCEDCLIENTS) ? master_prng : rand();
  
--			if (field[0] == '*') {
--				check_arg(intel_gen(intel_get_drm_devid(fd)) < 8,
--					  "Infinite batch at step %u needs Gen8+!\n",
--					  nr_steps);
--				step.duration.unbound = true;
--			} else {
--				tmpl = strtol(field, &sep, 10);
--				check_arg(tmpl <= 0 || tmpl == LONG_MIN ||
--					  tmpl == LONG_MAX,
--					  "Invalid duration at step %u!\n",
--					  nr_steps);
--				step.duration.min = __duration(tmpl, scale_dur);
--
--				if (sep && *sep == '-') {
--					tmpl = strtol(sep + 1, NULL, 10);
--					check_arg(tmpl <= 0 ||
--						__duration(tmpl, scale_dur) <= step.duration.min ||
--						tmpl == LONG_MIN ||
--						tmpl == LONG_MAX,
--						"Invalid maximum duration at step %u!\n",
--						nr_steps);
--					step.duration.max = __duration(tmpl,
--								       scale_dur);
--				} else {
--					step.duration.max = step.duration.min;
--				}
--			}
-+			if (parse_duration(nr_steps, &step.duration, scale_dur, field))
-+				return NULL;
+ 	free(desc);
  
- 			valid++;
- 		}
+@@ -1870,8 +1870,8 @@ static int prepare_workload(unsigned int id, struct workload *wrk)
+ 	int i, j;
+ 
+ 	wrk->id = id;
+-	wrk->bb_prng = (wrk->flags & SYNCEDCLIENTS) ? master_prng : rand();
+-	wrk->bo_prng = (wrk->flags & SYNCEDCLIENTS) ? master_prng : rand();
++	wrk->bb_prng = (wrk->flags & FLAG_SYNCEDCLIENTS) ? master_prng : rand();
++	wrk->bo_prng = (wrk->flags & FLAG_SYNCEDCLIENTS) ? master_prng : rand();
+ 	wrk->run = true;
+ 
+ 	/*
+@@ -2389,7 +2389,7 @@ static void *run_workload(void *data)
+ 
+ 			igt_assert(w->type == BATCH);
+ 
+-			if (wrk->flags & DEPSYNC)
++			if (wrk->flags & FLAG_DEPSYNC)
+ 				sync_deps(wrk, w);
+ 
+ 			if (throttle > 0)
+@@ -2596,7 +2596,7 @@ int main(int argc, char **argv)
+ 			/* Fall through */
+ 		case 'w':
+ 			w_args = add_workload_arg(w_args, ++nr_w_args, optarg,
+-						  prio, flags & SSEU);
++						  prio, flags & FLAG_SSEU);
+ 			break;
+ 		case 'p':
+ 			prio = atoi(optarg);
+@@ -2622,13 +2622,13 @@ int main(int argc, char **argv)
+ 			verbose++;
+ 			break;
+ 		case 'S':
+-			flags |= SYNCEDCLIENTS;
++			flags |= FLAG_SYNCEDCLIENTS;
+ 			break;
+ 		case 's':
+-			flags ^= SSEU;
++			flags ^= FLAG_SSEU;
+ 			break;
+ 		case 'd':
+-			flags |= DEPSYNC;
++			flags |= FLAG_DEPSYNC;
+ 			break;
+ 		case 'I':
+ 			master_prng = strtol(optarg, NULL, 0);
 -- 
 2.42.0
