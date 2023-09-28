@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0EC7710E6A3
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Sep 2023 18:20:43 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5AFE110E6A6
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Sep 2023 18:20:46 +0000 (UTC)
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 28 Sep 2023 17:45:28 +0000
-Message-ID: <20230928174535.2074462-14-marcin.bernatowicz@linux.intel.com>
+Date: Thu, 28 Sep 2023 17:45:22 +0000
+Message-ID: <20230928174535.2074462-8-marcin.bernatowicz@linux.intel.com>
 In-Reply-To: <20230928174535.2074462-1-marcin.bernatowicz@linux.intel.com>
 References: <20230928174535.2074462-1-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=y
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 13/17] benchmarks/gem_wsim: extract prepare
- working sets code to new function
+Subject: [igt-dev] [PATCH i-g-t 07/17] benchmarks/gem_wsim: cleanups
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,142 +24,211 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-No functional changes.
-Extracted prepare_working_sets function from prepare_workload.
+Cleaning checkpatch.pl reported warnings/errors.
+Removed unused fence_signal field from struct w_step.
 
 v2:
-- return void (Tvrtko)
+- restored unnecessarily changed malloc (Tvrtko)
 
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 ---
- benchmarks/gem_wsim.c | 104 +++++++++++++++++++++++-------------------
- 1 file changed, 56 insertions(+), 48 deletions(-)
+ benchmarks/gem_wsim.c | 54 ++++++++++++++++++++++++++-----------------
+ 1 file changed, 33 insertions(+), 21 deletions(-)
 
 diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-index a344fea9e..e875ddaa7 100644
+index 3c25d801c..f91e126f1 100644
 --- a/benchmarks/gem_wsim.c
 +++ b/benchmarks/gem_wsim.c
-@@ -1968,10 +1968,64 @@ static int prepare_contexts(unsigned int id, struct workload *wrk)
- 	return 0;
+@@ -1,3 +1,4 @@
++// SPDX-License-Identifier: MIT
+ /*
+  * Copyright © 2017 Intel Corporation
+  *
+@@ -76,8 +77,7 @@ struct duration {
+ 	bool unbound;
+ };
+ 
+-enum w_type
+-{
++enum w_type {
+ 	BATCH,
+ 	SYNC,
+ 	DELAY,
+@@ -102,8 +102,7 @@ struct dep_entry {
+ 	int working_set; /* -1 = step dependecy, >= 0 working set id */
+ };
+ 
+-struct deps
+-{
++struct deps {
+ 	int nr;
+ 	bool submit_fence;
+ 	struct dep_entry *list;
+@@ -137,8 +136,7 @@ struct working_set {
+ 
+ struct workload;
+ 
+-struct w_step
+-{
++struct w_step {
+ 	struct workload *wrk;
+ 
+ 	/* Workload step metadata */
+@@ -155,7 +153,6 @@ struct w_step
+ 		int period;
+ 		int target;
+ 		int throttle;
+-		int fence_signal;
+ 		int priority;
+ 		struct {
+ 			unsigned int engine_map_count;
+@@ -194,8 +191,7 @@ struct ctx {
+ 	uint64_t sseu;
+ };
+ 
+-struct workload
+-{
++struct workload {
+ 	unsigned int id;
+ 
+ 	unsigned int nr_steps;
+@@ -807,6 +803,7 @@ static int add_buffers(struct working_set *set, char *str)
+ 
+ 	for (i = 0; i < add; i++) {
+ 		struct work_buffer_size *sz = &sizes[set->nr + i];
++
+ 		sz->min = min_sz;
+ 		sz->max = max_sz;
+ 		sz->size = 0;
+@@ -899,13 +896,16 @@ parse_duration(unsigned int nr_steps, struct duration *dur, double scale_dur, ch
  }
  
--static int prepare_workload(unsigned int id, struct workload *wrk)
-+static void prepare_working_sets(unsigned int id, struct workload *wrk)
- {
- 	struct working_set **sets;
- 	unsigned long total = 0;
-+	struct w_step *w;
-+	int i;
+ #define int_field(_STEP_, _FIELD_, _COND_, _ERR_) \
+-	if ((field = strtok_r(fstart, ".", &fctx))) { \
+-		tmp = atoi(field); \
+-		check_arg(_COND_, _ERR_, nr_steps); \
+-		step.type = _STEP_; \
+-		step._FIELD_ = tmp; \
+-		goto add_step; \
+-	} \
++	do { \
++		field = strtok_r(fstart, ".", &fctx); \
++		if (field) { \
++			tmp = atoi(field); \
++			check_arg(_COND_, _ERR_, nr_steps); \
++			step.type = _STEP_; \
++			step._FIELD_ = tmp; \
++			goto add_step; \
++		} \
++	} while (0)
+ 
+ static struct workload *
+ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+@@ -930,7 +930,8 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+ 		valid = 0;
+ 		memset(&step, 0, sizeof(step));
+ 
+-		if ((field = strtok_r(fstart, ".", &fctx))) {
++		field = strtok_r(fstart, ".", &fctx);
++		if (field) {
+ 			fstart = NULL;
+ 
+ 			if (!strcmp(field, "d")) {
+@@ -941,6 +942,7 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+ 					  "Invalid period at step %u!\n");
+ 			} else if (!strcmp(field, "P")) {
+ 				unsigned int nr = 0;
 +
-+	/*
-+	 * Allocate working sets.
-+	 */
-+	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
-+		if (w->type == WORKINGSET && !w->working_set.shared)
-+			total += allocate_working_set(wrk, &w->working_set);
-+	}
+ 				while ((field = strtok_r(fstart, ".", &fctx))) {
+ 					tmp = atoi(field);
+ 					check_arg(nr == 0 && tmp <= 0,
+@@ -966,6 +968,7 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+ 					  "Invalid sync target at step %u!\n");
+ 			} else if (!strcmp(field, "S")) {
+ 				unsigned int nr = 0;
 +
-+	if (verbose > 2)
-+		printf("%u: %lu bytes in working sets.\n", wrk->id, total);
+ 				while ((field = strtok_r(fstart, ".", &fctx))) {
+ 					tmp = atoi(field);
+ 					check_arg(tmp <= 0 && nr == 0,
+@@ -1002,6 +1005,7 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+ 				goto add_step;
+ 			} else if (!strcmp(field, "M")) {
+ 				unsigned int nr = 0;
 +
-+	/*
-+	 * Map of working set ids.
-+	 */
-+	wrk->max_working_set_id = -1;
-+	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
-+		if (w->type == WORKINGSET &&
-+		    w->working_set.id > wrk->max_working_set_id)
-+			wrk->max_working_set_id = w->working_set.id;
-+	}
+ 				while ((field = strtok_r(fstart, ".", &fctx))) {
+ 					tmp = atoi(field);
+ 					check_arg(nr == 0 && tmp <= 0,
+@@ -1032,6 +1036,7 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+ 					  "Invalid terminate target at step %u!\n");
+ 			} else if (!strcmp(field, "X")) {
+ 				unsigned int nr = 0;
 +
-+	sets = wrk->working_sets;
-+	wrk->working_sets = calloc(wrk->max_working_set_id + 1,
-+				   sizeof(*wrk->working_sets));
-+	igt_assert(wrk->working_sets);
+ 				while ((field = strtok_r(fstart, ".", &fctx))) {
+ 					tmp = atoi(field);
+ 					check_arg(nr == 0 && tmp <= 0,
+@@ -1056,6 +1061,7 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+ 				goto add_step;
+ 			} else if (!strcmp(field, "B")) {
+ 				unsigned int nr = 0;
 +
-+	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
-+		struct working_set *set;
+ 				while ((field = strtok_r(fstart, ".", &fctx))) {
+ 					tmp = atoi(field);
+ 					check_arg(nr == 0 && tmp <= 0,
+@@ -1075,6 +1081,7 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+ 				goto add_step;
+ 			} else if (!strcmp(field, "b")) {
+ 				unsigned int nr = 0;
 +
-+		if (w->type != WORKINGSET)
-+			continue;
-+
-+		if (!w->working_set.shared) {
-+			set = &w->working_set;
-+		} else {
-+			igt_assert(sets);
-+
-+			set = sets[w->working_set.id];
-+			igt_assert(set->shared);
-+			igt_assert(set->sizes);
-+		}
-+
-+		wrk->working_sets[w->working_set.id] = set;
-+	}
-+
-+	if (sets)
-+		free(sets);
-+}
-+
-+static int prepare_workload(unsigned int id, struct workload *wrk)
-+{
- 	struct w_step *w;
- 	int i, j;
- 	int ret = 0;
-@@ -2028,53 +2082,7 @@ static int prepare_workload(unsigned int id, struct workload *wrk)
+ 				while ((field = strtok_r(fstart, ".", &fctx))) {
+ 					check_arg(nr > 2,
+ 						  "Invalid bond format at step %u!\n",
+@@ -1146,7 +1153,8 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+ 			valid++;
  		}
- 	}
  
--	/*
--	 * Allocate working sets.
--	 */
--	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
--		if (w->type == WORKINGSET && !w->working_set.shared)
--			total += allocate_working_set(wrk, &w->working_set);
--	}
--
--	if (verbose > 2)
--		printf("%u: %lu bytes in working sets.\n", wrk->id, total);
--
--	/*
--	 * Map of working set ids.
--	 */
--	wrk->max_working_set_id = -1;
--	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
--		if (w->type == WORKINGSET &&
--		    w->working_set.id > wrk->max_working_set_id)
--			wrk->max_working_set_id = w->working_set.id;
--	}
--
--	sets = wrk->working_sets;
--	wrk->working_sets = calloc(wrk->max_working_set_id + 1,
--				   sizeof(*wrk->working_sets));
--	igt_assert(wrk->working_sets);
--
--	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
--		struct working_set *set;
--
--		if (w->type != WORKINGSET)
--			continue;
--
--		if (!w->working_set.shared) {
--			set = &w->working_set;
--		} else {
--			igt_assert(sets);
--
--			set = sets[w->working_set.id];
--			igt_assert(set->shared);
--			igt_assert(set->sizes);
--		}
--
--		wrk->working_sets[w->working_set.id] = set;
--	}
--
--	if (sets)
--		free(sets);
-+	prepare_working_sets(id, wrk);
+-		if ((field = strtok_r(fstart, ".", &fctx))) {
++		field = strtok_r(fstart, ".", &fctx);
++		if (field) {
+ 			fstart = NULL;
  
- 	/*
- 	 * Allocate batch buffers.
+ 			i = str_to_engine(field);
+@@ -1158,7 +1166,8 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+ 			step.engine = i;
+ 		}
+ 
+-		if ((field = strtok_r(fstart, ".", &fctx))) {
++		field = strtok_r(fstart, ".", &fctx);
++		if (field) {
+ 			fstart = NULL;
+ 
+ 			if (parse_duration(nr_steps, &step.duration, scale_dur, field))
+@@ -1167,7 +1176,8 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+ 			valid++;
+ 		}
+ 
+-		if ((field = strtok_r(fstart, ".", &fctx))) {
++		field = strtok_r(fstart, ".", &fctx);
++		if (field) {
+ 			fstart = NULL;
+ 
+ 			tmp = parse_dependencies(nr_steps, &step, field);
+@@ -1177,7 +1187,8 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+ 			valid++;
+ 		}
+ 
+-		if ((field = strtok_r(fstart, ".", &fctx))) {
++		field = strtok_r(fstart, ".", &fctx);
++		if (field) {
+ 			fstart = NULL;
+ 
+ 			check_arg(strlen(field) != 1 ||
+@@ -2716,6 +2727,7 @@ int main(int argc, char **argv)
+ 
+ 	if (append_workload_arg) {
+ 		struct w_arg arg = { NULL, append_workload_arg, 0 };
++
+ 		app_w = parse_workload(&arg, flags, scale_dur, scale_time,
+ 				       NULL);
+ 		if (!app_w) {
 -- 
 2.42.0
