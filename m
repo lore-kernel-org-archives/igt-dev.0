@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 64C7110E631
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Sep 2023 12:14:37 +0000 (UTC)
-Date: Thu, 28 Sep 2023 14:07:23 +0200
-From: Francois Dugast <francois.dugast@intel.com>
-To: <igt-dev@lists.freedesktop.org>
-Message-ID: <ZRVse_Hl7E8stTuN@fdugast-desk.home>
-References: <20230928110516.7-1-francois.dugast@intel.com>
- <20230928110516.7-14-francois.dugast@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20230928110516.7-14-francois.dugast@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============7091996658709274909=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v4 13/14] drm-uapi/xe: Rename gts to gt_list
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Rodrigo Vivi" <rodrigo.vivi@intel.com>
+Date: Thu, 28 Sep 2023 12:15:46 -0000
+Message-ID: <169590334695.21265.11409675465216240770@emeril.freedesktop.org>
+References: <20230928110516.7-1-francois.dugast@intel.com>
+In-Reply-To: <20230928110516.7-1-francois.dugast@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdUFQSSBB?=
+ =?utf-8?q?lignment_-_take_1_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,372 +17,458 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Sep 28, 2023 at 11:05:15AM +0000, Francois Dugast wrote:
-> From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> 
-> Align with commit ("drm/xe/uapi: Rename gts to gt_list")
-> 
-> Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+--===============7091996658709274909==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Reviewed-by: Francois Dugast <francois.dugast@intel.com>
+== Series Details ==
 
-> ---
->  include/drm-uapi/xe_drm.h                | 18 ++++----
->  lib/xe/xe_query.c                        | 52 ++++++++++++------------
->  lib/xe/xe_query.h                        | 10 ++---
->  lib/xe/xe_spin.c                         |  6 +--
->  tests/intel-ci/xe-fast-feedback.testlist |  2 +-
->  tests/intel/xe_query.c                   | 36 ++++++++--------
->  6 files changed, 62 insertions(+), 62 deletions(-)
-> 
-> diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-> index 2103dae40..652879eb2 100644
-> --- a/include/drm-uapi/xe_drm.h
-> +++ b/include/drm-uapi/xe_drm.h
-> @@ -337,7 +337,7 @@ struct drm_xe_query_config {
->  /**
->   * struct drm_xe_query_gt - describe an individual GT.
->   *
-> - * To be used with drm_xe_query_gts, which will return a list with all the
-> + * To be used with drm_xe_query_gt_list, which will return a list with all the
->   * existing GT individual descriptions.
->   * Graphics Technology (GT) is a subset of a GPU/tile that is responsible for
->   * implementing graphics and/or media operations.
-> @@ -374,19 +374,19 @@ struct drm_xe_query_gt {
->  };
->  
->  /**
-> - * struct drm_xe_query_gts - describe GTs
-> + * struct drm_xe_query_gt_list - A list with GT description items.
->   *
->   * If a query is made with a struct drm_xe_device_query where .query
-> - * is equal to DRM_XE_DEVICE_QUERY_GTS, then the reply uses struct
-> - * drm_xe_query_gts in .data.
-> + * is equal to DRM_XE_DEVICE_QUERY_GT_LIST, then the reply uses struct
-> + * drm_xe_query_gt_list in .data.
->   */
-> -struct drm_xe_query_gts {
-> -	/** @num_gt: number of GTs returned in gts */
-> +struct drm_xe_query_gt_list {
-> +	/** @num_gt: number of GT items returned in gt_list */
->  	__u32 num_gt;
->  	/** @pad: MBZ */
->  	__u32 pad;
-> -	/** @gts: The GT list returned for this device */
-> -	struct drm_xe_query_gt gts[];
-> +	/** @gt_list: The GT list returned for this device */
-> +	struct drm_xe_query_gt gt_list[];
->  };
->  
->  /**
-> @@ -479,7 +479,7 @@ struct drm_xe_device_query {
->  #define DRM_XE_DEVICE_QUERY_ENGINES		0
->  #define DRM_XE_DEVICE_QUERY_MEM_USAGE		1
->  #define DRM_XE_DEVICE_QUERY_CONFIG		2
-> -#define DRM_XE_DEVICE_QUERY_GTS			3
-> +#define DRM_XE_DEVICE_QUERY_GT_LIST		3
->  #define DRM_XE_DEVICE_QUERY_HWCONFIG		4
->  #define DRM_XE_DEVICE_QUERY_GT_TOPOLOGY		5
->  #define DRM_XE_DEVICE_QUERY_ENGINE_CYCLES	6
-> diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-> index ab7b31188..986a3a0c1 100644
-> --- a/lib/xe/xe_query.c
-> +++ b/lib/xe/xe_query.c
-> @@ -39,35 +39,35 @@ static struct drm_xe_query_config *xe_query_config_new(int fd)
->  	return config;
->  }
->  
-> -static struct drm_xe_query_gts *xe_query_gts_new(int fd)
-> +static struct drm_xe_query_gt_list *xe_query_gt_list_new(int fd)
->  {
-> -	struct drm_xe_query_gts *gts;
-> +	struct drm_xe_query_gt_list *gt_list;
->  	struct drm_xe_device_query query = {
->  		.extensions = 0,
-> -		.query = DRM_XE_DEVICE_QUERY_GTS,
-> +		.query = DRM_XE_DEVICE_QUERY_GT_LIST,
->  		.size = 0,
->  		.data = 0,
->  	};
->  
->  	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
->  
-> -	gts = malloc(query.size);
-> -	igt_assert(gts);
-> +	gt_list = malloc(query.size);
-> +	igt_assert(gt_list);
->  
-> -	query.data = to_user_pointer(gts);
-> +	query.data = to_user_pointer(gt_list);
->  	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
->  
-> -	return gts;
-> +	return gt_list;
->  }
->  
-> -static uint64_t __memory_regions(const struct drm_xe_query_gts *gts)
-> +static uint64_t __memory_regions(const struct drm_xe_query_gt_list *gt_list)
->  {
->  	uint64_t regions = 0;
->  	int i;
->  
-> -	for (i = 0; i < gts->num_gt; i++)
-> -		regions |= gts->gts[i].native_mem_regions |
-> -			   gts->gts[i].slow_mem_regions;
-> +	for (i = 0; i < gt_list->num_gt; i++)
-> +		regions |= gt_list->gt_list[i].native_mem_regions |
-> +			   gt_list->gt_list[i].slow_mem_regions;
->  
->  	return regions;
->  }
-> @@ -118,21 +118,21 @@ static struct drm_xe_query_mem_usage *xe_query_mem_usage_new(int fd)
->  	return mem_usage;
->  }
->  
-> -static uint64_t native_region_for_gt(const struct drm_xe_query_gts *gts, int gt)
-> +static uint64_t native_region_for_gt(const struct drm_xe_query_gt_list *gt_list, int gt)
->  {
->  	uint64_t region;
->  
-> -	igt_assert(gts->num_gt > gt);
-> -	region = gts->gts[gt].native_mem_regions;
-> +	igt_assert(gt_list->num_gt > gt);
-> +	region = gt_list->gt_list[gt].native_mem_regions;
->  	igt_assert(region);
->  
->  	return region;
->  }
->  
->  static uint64_t gt_vram_size(const struct drm_xe_query_mem_usage *mem_usage,
-> -			     const struct drm_xe_query_gts *gts, int gt)
-> +			     const struct drm_xe_query_gt_list *gt_list, int gt)
->  {
-> -	int region_idx = ffs(native_region_for_gt(gts, gt)) - 1;
-> +	int region_idx = ffs(native_region_for_gt(gt_list, gt)) - 1;
->  
->  	if (XE_IS_CLASS_VRAM(&mem_usage->regions[region_idx]))
->  		return mem_usage->regions[region_idx].total_size;
-> @@ -141,9 +141,9 @@ static uint64_t gt_vram_size(const struct drm_xe_query_mem_usage *mem_usage,
->  }
->  
->  static uint64_t gt_visible_vram_size(const struct drm_xe_query_mem_usage *mem_usage,
-> -				     const struct drm_xe_query_gts *gts, int gt)
-> +				     const struct drm_xe_query_gt_list *gt_list, int gt)
->  {
-> -	int region_idx = ffs(native_region_for_gt(gts, gt)) - 1;
-> +	int region_idx = ffs(native_region_for_gt(gt_list, gt)) - 1;
->  
->  	if (XE_IS_CLASS_VRAM(&mem_usage->regions[region_idx]))
->  		return mem_usage->regions[region_idx].cpu_visible_size;
-> @@ -220,7 +220,7 @@ static struct xe_device *find_in_cache(int fd)
->  static void xe_device_free(struct xe_device *xe_dev)
->  {
->  	free(xe_dev->config);
-> -	free(xe_dev->gts);
-> +	free(xe_dev->gt_list);
->  	free(xe_dev->hw_engines);
->  	free(xe_dev->mem_usage);
->  	free(xe_dev->vram_size);
-> @@ -252,18 +252,18 @@ struct xe_device *xe_device_get(int fd)
->  	xe_dev->number_gt = xe_dev->config->info[XE_QUERY_CONFIG_GT_COUNT];
->  	xe_dev->va_bits = xe_dev->config->info[XE_QUERY_CONFIG_VA_BITS];
->  	xe_dev->dev_id = xe_dev->config->info[XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff;
-> -	xe_dev->gts = xe_query_gts_new(fd);
-> -	xe_dev->memory_regions = __memory_regions(xe_dev->gts);
-> +	xe_dev->gt_list = xe_query_gt_list_new(fd);
-> +	xe_dev->memory_regions = __memory_regions(xe_dev->gt_list);
->  	xe_dev->hw_engines = xe_query_engines_new(fd, &xe_dev->number_hw_engines);
->  	xe_dev->mem_usage = xe_query_mem_usage_new(fd);
->  	xe_dev->vram_size = calloc(xe_dev->number_gt, sizeof(*xe_dev->vram_size));
->  	xe_dev->visible_vram_size = calloc(xe_dev->number_gt, sizeof(*xe_dev->visible_vram_size));
->  	for (int gt = 0; gt < xe_dev->number_gt; gt++) {
->  		xe_dev->vram_size[gt] = gt_vram_size(xe_dev->mem_usage,
-> -						     xe_dev->gts, gt);
-> +						     xe_dev->gt_list, gt);
->  		xe_dev->visible_vram_size[gt] =
->  			gt_visible_vram_size(xe_dev->mem_usage,
-> -					     xe_dev->gts, gt);
-> +					     xe_dev->gt_list, gt);
->  	}
->  	xe_dev->default_alignment = __mem_default_alignment(xe_dev->mem_usage);
->  	xe_dev->has_vram = __mem_has_vram(xe_dev->mem_usage);
-> @@ -356,7 +356,7 @@ _TYPE _NAME(int fd)			\
->   * xe_number_gt:
->   * @fd: xe device fd
->   *
-> - * Return number of gts for xe device fd.
-> + * Return number of gt_list for xe device fd.
->   */
->  xe_dev_FN(xe_number_gt, number_gt, unsigned int);
->  
-> @@ -396,7 +396,7 @@ uint64_t vram_memory(int fd, int gt)
->  	igt_assert(xe_dev);
->  	igt_assert(gt >= 0 && gt < xe_dev->number_gt);
->  
-> -	return xe_has_vram(fd) ? native_region_for_gt(xe_dev->gts, gt) : 0;
-> +	return xe_has_vram(fd) ? native_region_for_gt(xe_dev->gt_list, gt) : 0;
->  }
->  
->  static uint64_t __xe_visible_vram_size(int fd, int gt)
-> @@ -647,7 +647,7 @@ uint64_t xe_vram_available(int fd, int gt)
->  	xe_dev = find_in_cache(fd);
->  	igt_assert(xe_dev);
->  
-> -	region_idx = ffs(native_region_for_gt(xe_dev->gts, gt)) - 1;
-> +	region_idx = ffs(native_region_for_gt(xe_dev->gt_list, gt)) - 1;
->  	mem_region = &xe_dev->mem_usage->regions[region_idx];
->  
->  	if (XE_IS_CLASS_VRAM(mem_region)) {
-> diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-> index 20dbfa12c..da7deaf4c 100644
-> --- a/lib/xe/xe_query.h
-> +++ b/lib/xe/xe_query.h
-> @@ -26,13 +26,13 @@ struct xe_device {
->  	/** @config: xe configuration */
->  	struct drm_xe_query_config *config;
->  
-> -	/** @gts: gt info */
-> -	struct drm_xe_query_gts *gts;
-> +	/** @gt_list: gt info */
-> +	struct drm_xe_query_gt_list *gt_list;
->  
->  	/** @number_gt: number of gt */
->  	unsigned int number_gt;
->  
-> -	/** @gts: bitmask of all memory regions */
-> +	/** @gt_list: bitmask of all memory regions */
->  	uint64_t memory_regions;
->  
->  	/** @hw_engines: array of hardware engines */
-> @@ -44,10 +44,10 @@ struct xe_device {
->  	/** @mem_usage: regions memory information and usage */
->  	struct drm_xe_query_mem_usage *mem_usage;
->  
-> -	/** @vram_size: array of vram sizes for all gts */
-> +	/** @vram_size: array of vram sizes for all gt_list */
->  	uint64_t *vram_size;
->  
-> -	/** @visible_vram_size: array of visible vram sizes for all gts */
-> +	/** @visible_vram_size: array of visible vram sizes for all gt_list */
->  	uint64_t *visible_vram_size;
->  
->  	/** @default_alignment: safe alignment regardless region location */
-> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-> index f0d77aed3..b05b38829 100644
-> --- a/lib/xe/xe_spin.c
-> +++ b/lib/xe/xe_spin.c
-> @@ -20,10 +20,10 @@ static uint32_t read_timestamp_frequency(int fd, int gt_id)
->  {
->  	struct xe_device *dev = xe_device_get(fd);
->  
-> -	igt_assert(dev && dev->gts && dev->gts->num_gt);
-> -	igt_assert(gt_id >= 0 && gt_id <= dev->gts->num_gt);
-> +	igt_assert(dev && dev->gt_list && dev->gt_list->num_gt);
-> +	igt_assert(gt_id >= 0 && gt_id <= dev->gt_list->num_gt);
->  
-> -	return dev->gts->gts[gt_id].clock_freq;
-> +	return dev->gt_list->gt_list[gt_id].clock_freq;
->  }
->  
->  static uint64_t div64_u64_round_up(const uint64_t x, const uint64_t y)
-> diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-> index a9fe43b08..0cf28baf9 100644
-> --- a/tests/intel-ci/xe-fast-feedback.testlist
-> +++ b/tests/intel-ci/xe-fast-feedback.testlist
-> @@ -147,7 +147,7 @@ igt@xe_prime_self_import@basic-with_fd_dup
->  #igt@xe_prime_self_import@basic-llseek-size
->  igt@xe_query@query-engines
->  igt@xe_query@query-mem-usage
-> -igt@xe_query@query-gts
-> +igt@xe_query@query-gt-list
->  igt@xe_query@query-config
->  igt@xe_query@query-hwconfig
->  igt@xe_query@query-topology
-> diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
-> index 2b8edf5ec..30fc367c8 100644
-> --- a/tests/intel/xe_query.c
-> +++ b/tests/intel/xe_query.c
-> @@ -252,17 +252,17 @@ test_query_mem_usage(int fd)
->  }
->  
->  /**
-> - * SUBTEST: query-gts
-> + * SUBTEST: query-gt-list
->   * Test category: functionality test
-> - * Description: Display information about available GTs for xe device.
-> + * Description: Display information about available GT components for xe device.
->   */
->  static void
-> -test_query_gts(int fd)
-> +test_query_gt_list(int fd)
->  {
-> -	struct drm_xe_query_gts *gts;
-> +	struct drm_xe_query_gt_list *gt_list;
->  	struct drm_xe_device_query query = {
->  		.extensions = 0,
-> -		.query = DRM_XE_DEVICE_QUERY_GTS,
-> +		.query = DRM_XE_DEVICE_QUERY_GT_LIST,
->  		.size = 0,
->  		.data = 0,
->  	};
-> @@ -271,29 +271,29 @@ test_query_gts(int fd)
->  	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
->  	igt_assert_neq(query.size, 0);
->  
-> -	gts = malloc(query.size);
-> -	igt_assert(gts);
-> +	gt_list = malloc(query.size);
-> +	igt_assert(gt_list);
->  
-> -	query.data = to_user_pointer(gts);
-> +	query.data = to_user_pointer(gt_list);
->  	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
->  
-> -	for (i = 0; i < gts->num_gt; i++) {
-> -		igt_info("type: %d\n", gts->gts[i].type);
-> -		igt_info("gt_id: %d\n", gts->gts[i].gt_id);
-> -		igt_info("clock_freq: %u\n", gts->gts[i].clock_freq);
-> +	for (i = 0; i < gt_list->num_gt; i++) {
-> +		igt_info("type: %d\n", gt_list->gt_list[i].type);
-> +		igt_info("gt_id: %d\n", gt_list->gt_list[i].gt_id);
-> +		igt_info("clock_freq: %u\n", gt_list->gt_list[i].clock_freq);
->  		igt_info("native_mem_regions: 0x%016llx\n",
-> -		       gts->gts[i].native_mem_regions);
-> +		       gt_list->gt_list[i].native_mem_regions);
->  		igt_info("slow_mem_regions: 0x%016llx\n",
-> -		       gts->gts[i].slow_mem_regions);
-> +		       gt_list->gt_list[i].slow_mem_regions);
->  		igt_info("inaccessible_mem_regions: 0x%016llx\n",
-> -		       gts->gts[i].inaccessible_mem_regions);
-> +		       gt_list->gt_list[i].inaccessible_mem_regions);
->  	}
->  }
->  
->  /**
->   * SUBTEST: query-topology
->   * Test category: functionality test
-> - * Description: Display topology information of GTs.
-> + * Description: Display topology information of GT.
->   */
->  static void
->  test_query_gt_topology(int fd)
-> @@ -677,8 +677,8 @@ igt_main
->  	igt_subtest("query-mem-usage")
->  		test_query_mem_usage(xe);
->  
-> -	igt_subtest("query-gts")
-> -		test_query_gts(xe);
-> +	igt_subtest("query-gt-list")
-> +		test_query_gt_list(xe);
->  
->  	igt_subtest("query-config")
->  		test_query_config(xe);
-> -- 
-> 2.34.1
-> 
+Series: uAPI Alignment - take 1 (rev3)
+URL   : https://patchwork.freedesktop.org/series/123916/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_13689 -> IGTPW_9890
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/index.html
+
+Participating hosts (34 -> 39)
+------------------------------
+
+  Additional (7): fi-kbl-soraka bat-kbl-2 fi-cfl-8700k fi-apl-guc fi-kbl-guc fi-ivb-3770 fi-skl-6600u 
+  Missing    (2): fi-hsw-4770 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_9890 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@fbdev@info:
+    - bat-kbl-2:          NOTRUN -> [SKIP][1] ([fdo#109271] / [i915#1849])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/bat-kbl-2/igt@fbdev@info.html
+    - fi-kbl-guc:         NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#1849])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-kbl-guc/igt@fbdev@info.html
+
+  * igt@gem_exec_suspend@basic-s0@smem:
+    - bat-dg2-9:          [PASS][3] -> [INCOMPLETE][4] ([i915#9275])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13689/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-cfl-8700k:       NOTRUN -> [SKIP][5] ([fdo#109271] / [i915#2190])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-cfl-8700k/igt@gem_huc_copy@huc-copy.html
+    - fi-skl-6600u:       NOTRUN -> [SKIP][6] ([fdo#109271] / [i915#2190])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-skl-6600u/igt@gem_huc_copy@huc-copy.html
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][7] ([fdo#109271] / [i915#2190])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-apl-guc:         NOTRUN -> [SKIP][8] ([fdo#109271] / [i915#4613]) +3 other tests skip
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-apl-guc/igt@gem_lmem_swapping@basic.html
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][9] ([fdo#109271] / [i915#4613]) +3 other tests skip
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
+    - fi-cfl-8700k:       NOTRUN -> [SKIP][10] ([fdo#109271] / [i915#4613]) +3 other tests skip
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-cfl-8700k/igt@gem_lmem_swapping@basic.html
+    - fi-kbl-guc:         NOTRUN -> [SKIP][11] ([fdo#109271] / [i915#4613]) +3 other tests skip
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-kbl-guc/igt@gem_lmem_swapping@basic.html
+
+  * igt@gem_lmem_swapping@parallel-random-engines:
+    - bat-kbl-2:          NOTRUN -> [SKIP][12] ([fdo#109271]) +39 other tests skip
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/bat-kbl-2/igt@gem_lmem_swapping@parallel-random-engines.html
+
+  * igt@gem_lmem_swapping@random-engines:
+    - fi-skl-6600u:       NOTRUN -> [SKIP][13] ([fdo#109271] / [i915#4613]) +3 other tests skip
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-skl-6600u/igt@gem_lmem_swapping@random-engines.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][14] ([i915#1886] / [i915#7913])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-mtlp-8:         [PASS][15] -> [ABORT][16] ([i915#9414])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13689/bat-mtlp-8/igt@i915_selftest@live@requests.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/bat-mtlp-8/igt@i915_selftest@live@requests.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][17] ([fdo#109271]) +9 other tests skip
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-kbl-soraka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  * igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:
+    - fi-kbl-guc:         NOTRUN -> [SKIP][18] ([fdo#109271] / [i915#1845]) +8 other tests skip
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-kbl-guc/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
+
+  * igt@kms_dsc@dsc-basic:
+    - fi-skl-6600u:       NOTRUN -> [SKIP][19] ([fdo#109271]) +8 other tests skip
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-skl-6600u/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - fi-cfl-8700k:       NOTRUN -> [SKIP][20] ([fdo#109271]) +10 other tests skip
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-cfl-8700k/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - fi-apl-guc:         NOTRUN -> [SKIP][21] ([fdo#109271]) +16 other tests skip
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-apl-guc/igt@kms_hdmi_inject@inject-audio.html
+    - fi-kbl-guc:         NOTRUN -> [FAIL][22] ([IGT#3])
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1:
+    - fi-ivb-3770:        NOTRUN -> [DMESG-WARN][23] ([i915#8841]) +6 other tests dmesg-warn
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-ivb-3770/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1.html
+
+  * igt@kms_psr@cursor_plane_move:
+    - fi-ivb-3770:        NOTRUN -> [SKIP][24] ([fdo#109271]) +21 other tests skip
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-ivb-3770/igt@kms_psr@cursor_plane_move.html
+    - fi-kbl-guc:         NOTRUN -> [SKIP][25] ([fdo#109271]) +25 other tests skip
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-kbl-guc/igt@kms_psr@cursor_plane_move.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_chamelium_edid@hdmi-edid-read:
+    - {bat-dg2-13}:       [DMESG-WARN][26] ([i915#7952]) -> [PASS][27]
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13689/bat-dg2-13/igt@kms_chamelium_edid@hdmi-edid-read.html
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/bat-dg2-13/igt@kms_chamelium_edid@hdmi-edid-read.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [IGT#3]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7952]: https://gitlab.freedesktop.org/drm/intel/issues/7952
+  [i915#8841]: https://gitlab.freedesktop.org/drm/intel/issues/8841
+  [i915#9275]: https://gitlab.freedesktop.org/drm/intel/issues/9275
+  [i915#9414]: https://gitlab.freedesktop.org/drm/intel/issues/9414
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7506 -> IGTPW_9890
+
+  CI-20190529: 20190529
+  CI_DRM_13689: 5933eb0a0717a28e668d33e01a707311d31cebbb @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_9890: 9890
+  IGT_7506: 4fdf544bd0a38c5a100ef43c30171827e1c8c442 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@xe_exec_balancer@many-cm-parallel-basic
++igt@xe_exec_balancer@many-cm-parallel-rebind
++igt@xe_exec_balancer@many-cm-parallel-userptr
++igt@xe_exec_balancer@many-cm-parallel-userptr-invalidate
++igt@xe_exec_balancer@many-cm-parallel-userptr-invalidate-race
++igt@xe_exec_balancer@many-cm-parallel-userptr-rebind
++igt@xe_exec_balancer@many-execqueues-cm-parallel-basic
++igt@xe_exec_balancer@many-execqueues-cm-parallel-rebind
++igt@xe_exec_balancer@many-execqueues-cm-parallel-userptr
++igt@xe_exec_balancer@many-execqueues-cm-parallel-userptr-invalidate
++igt@xe_exec_balancer@many-execqueues-cm-parallel-userptr-invalidate-race
++igt@xe_exec_balancer@many-execqueues-cm-parallel-userptr-rebind
++igt@xe_exec_balancer@no-exec-cm-parallel-basic
++igt@xe_exec_balancer@no-exec-cm-parallel-rebind
++igt@xe_exec_balancer@no-exec-cm-parallel-userptr
++igt@xe_exec_balancer@no-exec-cm-parallel-userptr-invalidate
++igt@xe_exec_balancer@no-exec-cm-parallel-userptr-invalidate-race
++igt@xe_exec_balancer@no-exec-cm-parallel-userptr-rebind
++igt@xe_exec_balancer@once-cm-parallel-basic
++igt@xe_exec_balancer@once-cm-parallel-rebind
++igt@xe_exec_balancer@once-cm-parallel-userptr
++igt@xe_exec_balancer@once-cm-parallel-userptr-invalidate
++igt@xe_exec_balancer@once-cm-parallel-userptr-invalidate-race
++igt@xe_exec_balancer@once-cm-parallel-userptr-rebind
++igt@xe_exec_balancer@twice-cm-parallel-basic
++igt@xe_exec_balancer@twice-cm-parallel-rebind
++igt@xe_exec_balancer@twice-cm-parallel-userptr
++igt@xe_exec_balancer@twice-cm-parallel-userptr-invalidate
++igt@xe_exec_balancer@twice-cm-parallel-userptr-invalidate-race
++igt@xe_exec_balancer@twice-cm-parallel-userptr-rebind
++igt@xe_exec_threads@threads-hang-rebind-err
++igt@xe_exec_threads@threads-hang-userptr-rebind-err
++igt@xe_exec_threads@threads-rebind-err
++igt@xe_exec_threads@threads-userptr-rebind-err
++igt@xe_query@query-cs-cycles
++igt@xe_query@query-gt-list
++igt@xe_query@query-invalid-cs-cycles
+-igt@xe_create@multigpu-create-massive-size
+-igt@xe_exec_threads@threads-hang-shared-vm-rebind-err
+-igt@xe_exec_threads@threads-hang-shared-vm-userptr-rebind-err
+-igt@xe_exec_threads@threads-shared-vm-rebind-err
+-igt@xe_exec_threads@threads-shared-vm-userptr-rebind-err
+-igt@xe_mmio@mmio-invalid
+-igt@xe_mmio@mmio-timestamp
+-igt@xe_query@query-gts
+-igt@xe_vm@vm-async-ops-err
+-igt@xe_vm@vm-async-ops-err-destroy
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/index.html
+
+--===============7091996658709274909==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>uAPI Alignment - take 1 (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123916/">https://patchwork.freedesktop.org/series/123916/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13689 -&gt; IGTPW_9890</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/index.html</p>
+<h2>Participating hosts (34 -&gt; 39)</h2>
+<p>Additional (7): fi-kbl-soraka bat-kbl-2 fi-cfl-8700k fi-apl-guc fi-kbl-guc fi-ivb-3770 fi-skl-6600u <br />
+  Missing    (2): fi-hsw-4770 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_9890 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@fbdev@info:</p>
+<ul>
+<li>
+<p>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/bat-kbl-2/igt@fbdev@info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a>)</p>
+</li>
+<li>
+<p>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-kbl-guc/igt@fbdev@info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s0@smem:</p>
+<ul>
+<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13689/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9275">i915#9275</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>
+<p>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-cfl-8700k/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
+</li>
+<li>
+<p>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-skl-6600u/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
+</li>
+<li>
+<p>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>
+<p>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-apl-guc/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</p>
+</li>
+<li>
+<p>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</p>
+</li>
+<li>
+<p>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-cfl-8700k/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</p>
+</li>
+<li>
+<p>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-kbl-guc/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
+<ul>
+<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/bat-kbl-2/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +39 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@random-engines:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-skl-6600u/igt@gem_lmem_swapping@random-engines.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13689/bat-mtlp-8/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/bat-mtlp-8/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9414">i915#9414</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-kbl-soraka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +9 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:</p>
+<ul>
+<li>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-kbl-guc/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>) +8 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-skl-6600u/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +8 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-cfl-8700k/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +10 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>
+<p>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-apl-guc/igt@kms_hdmi_inject@inject-audio.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +16 other tests skip</p>
+</li>
+<li>
+<p>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3">IGT#3</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1:</p>
+<ul>
+<li>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-ivb-3770/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8841">i915#8841</a>) +6 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@cursor_plane_move:</p>
+<ul>
+<li>
+<p>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-ivb-3770/igt@kms_psr@cursor_plane_move.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +21 other tests skip</p>
+</li>
+<li>
+<p>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/fi-kbl-guc/igt@kms_psr@cursor_plane_move.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +25 other tests skip</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_chamelium_edid@hdmi-edid-read:<ul>
+<li>{bat-dg2-13}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13689/bat-dg2-13/igt@kms_chamelium_edid@hdmi-edid-read.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7952">i915#7952</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9890/bat-dg2-13/igt@kms_chamelium_edid@hdmi-edid-read.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7506 -&gt; IGTPW_9890</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13689: 5933eb0a0717a28e668d33e01a707311d31cebbb @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_9890: 9890<br />
+  IGT_7506: 4fdf544bd0a38c5a100ef43c30171827e1c8c442 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@xe_exec_balancer@many-cm-parallel-basic<br />
++igt@xe_exec_balancer@many-cm-parallel-rebind<br />
++igt@xe_exec_balancer@many-cm-parallel-userptr<br />
++igt@xe_exec_balancer@many-cm-parallel-userptr-invalidate<br />
++igt@xe_exec_balancer@many-cm-parallel-userptr-invalidate-race<br />
++igt@xe_exec_balancer@many-cm-parallel-userptr-rebind<br />
++igt@xe_exec_balancer@many-execqueues-cm-parallel-basic<br />
++igt@xe_exec_balancer@many-execqueues-cm-parallel-rebind<br />
++igt@xe_exec_balancer@many-execqueues-cm-parallel-userptr<br />
++igt@xe_exec_balancer@many-execqueues-cm-parallel-userptr-invalidate<br />
++igt@xe_exec_balancer@many-execqueues-cm-parallel-userptr-invalidate-race<br />
++igt@xe_exec_balancer@many-execqueues-cm-parallel-userptr-rebind<br />
++igt@xe_exec_balancer@no-exec-cm-parallel-basic<br />
++igt@xe_exec_balancer@no-exec-cm-parallel-rebind<br />
++igt@xe_exec_balancer@no-exec-cm-parallel-userptr<br />
++igt@xe_exec_balancer@no-exec-cm-parallel-userptr-invalidate<br />
++igt@xe_exec_balancer@no-exec-cm-parallel-userptr-invalidate-race<br />
++igt@xe_exec_balancer@no-exec-cm-parallel-userptr-rebind<br />
++igt@xe_exec_balancer@once-cm-parallel-basic<br />
++igt@xe_exec_balancer@once-cm-parallel-rebind<br />
++igt@xe_exec_balancer@once-cm-parallel-userptr<br />
++igt@xe_exec_balancer@once-cm-parallel-userptr-invalidate<br />
++igt@xe_exec_balancer@once-cm-parallel-userptr-invalidate-race<br />
++igt@xe_exec_balancer@once-cm-parallel-userptr-rebind<br />
++igt@xe_exec_balancer@twice-cm-parallel-basic<br />
++igt@xe_exec_balancer@twice-cm-parallel-rebind<br />
++igt@xe_exec_balancer@twice-cm-parallel-userptr<br />
++igt@xe_exec_balancer@twice-cm-parallel-userptr-invalidate<br />
++igt@xe_exec_balancer@twice-cm-parallel-userptr-invalidate-race<br />
++igt@xe_exec_balancer@twice-cm-parallel-userptr-rebind<br />
++igt@xe_exec_threads@threads-hang-rebind-err<br />
++igt@xe_exec_threads@threads-hang-userptr-rebind-err<br />
++igt@xe_exec_threads@threads-rebind-err<br />
++igt@xe_exec_threads@threads-userptr-rebind-err<br />
++igt@xe_query@query-cs-cycles<br />
++igt@xe_query@query-gt-list<br />
++igt@xe_query@query-invalid-cs-cycles<br />
+-igt@xe_create@multigpu-create-massive-size<br />
+-igt@xe_exec_threads@threads-hang-shared-vm-rebind-err<br />
+-igt@xe_exec_threads@threads-hang-shared-vm-userptr-rebind-err<br />
+-igt@xe_exec_threads@threads-shared-vm-rebind-err<br />
+-igt@xe_exec_threads@threads-shared-vm-userptr-rebind-err<br />
+-igt@xe_mmio@mmio-invalid<br />
+-igt@xe_mmio@mmio-timestamp<br />
+-igt@xe_query@query-gts<br />
+-igt@xe_vm@vm-async-ops-err<br />
+-igt@xe_vm@vm-async-ops-err-destroy</p>
+
+</body>
+</html>
+
+--===============7091996658709274909==--
