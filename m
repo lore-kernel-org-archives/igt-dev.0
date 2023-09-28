@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5143010E607
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Sep 2023 11:05:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 43ECD10E61E
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Sep 2023 11:05:50 +0000 (UTC)
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 28 Sep 2023 11:05:07 +0000
-Message-Id: <20230928110516.7-6-francois.dugast@intel.com>
+Date: Thu, 28 Sep 2023 11:05:16 +0000
+Message-Id: <20230928110516.7-15-francois.dugast@intel.com>
 In-Reply-To: <20230928110516.7-1-francois.dugast@intel.com>
 References: <20230928110516.7-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v4 05/14] xe_exec_balancer: Enable parallel
- submission and compute mode
+Subject: [igt-dev] [PATCH v4 14/14] drm-uapi/xe: Fix naming of
+ XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,84 +24,47 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-This is now supported. Test it.
+Align with kernel commit
+("drm/xe/uapi: Fix naming of XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY")
 
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 ---
- tests/intel/xe_exec_balancer.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ include/drm-uapi/xe_drm.h | 4 ++--
+ tests/intel/xe_query.c    | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tests/intel/xe_exec_balancer.c b/tests/intel/xe_exec_balancer.c
-index 0314b4cd2..a4a438db7 100644
---- a/tests/intel/xe_exec_balancer.c
-+++ b/tests/intel/xe_exec_balancer.c
-@@ -383,6 +383,12 @@ test_exec(int fd, int gt, int class, int n_exec_queues, int n_execs,
-  * @virtual-userptr-rebind:		virtual userptr rebind
-  * @virtual-userptr-invalidate:		virtual userptr invalidate
-  * @virtual-userptr-invalidate-race:	virtual userptr invalidate racy
-+ * @parallel-basic:			parallel basic
-+ * @parallel-userptr:			parallel userptr
-+ * @parallel-rebind:			parallel rebind
-+ * @parallel-userptr-rebind:		parallel userptr rebind
-+ * @parallel-userptr-invalidate:	parallel userptr invalidate
-+ * @parallel-userptr-invalidate-race:	parallel userptr invalidate racy
-  */
+diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+index 652879eb2..6ff1106e4 100644
+--- a/include/drm-uapi/xe_drm.h
++++ b/include/drm-uapi/xe_drm.h
+@@ -328,8 +328,8 @@ struct drm_xe_query_config {
+ #define XE_QUERY_CONFIG_VA_BITS			3
+ #define XE_QUERY_CONFIG_GT_COUNT		4
+ #define XE_QUERY_CONFIG_MEM_REGION_COUNT	5
+-#define XE_QUERY_CONFIG_MAX_ENGINE_PRIORITY	6
+-#define XE_QUERY_CONFIG_NUM_PARAM		(XE_QUERY_CONFIG_MAX_ENGINE_PRIORITY + 1)
++#define XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY	6
++#define XE_QUERY_CONFIG_NUM_PARAM		(XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY + 1)
+ 	/** @info: array of elements containing the config info */
+ 	__u64 info[];
+ };
+diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
+index 30fc367c8..2cff75414 100644
+--- a/tests/intel/xe_query.c
++++ b/tests/intel/xe_query.c
+@@ -380,8 +380,8 @@ test_query_config(int fd)
+ 		config->info[XE_QUERY_CONFIG_GT_COUNT]);
+ 	igt_info("XE_QUERY_CONFIG_MEM_REGION_COUNT\t%llu\n",
+ 		config->info[XE_QUERY_CONFIG_MEM_REGION_COUNT]);
+-	igt_info("XE_QUERY_CONFIG_MAX_ENGINE_PRIORITY\t%llu\n",
+-		config->info[XE_QUERY_CONFIG_MAX_ENGINE_PRIORITY]);
++	igt_info("XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY\t%llu\n",
++		config->info[XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY]);
+ 	dump_hex_debug(config, query.size);
  
- static void
-@@ -460,8 +466,8 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 		};
- 		struct drm_xe_exec_queue_create create = {
- 			.vm_id = vm,
--			.width = 1,
--			.num_placements = num_placements,
-+			.width = flags & PARALLEL ? num_placements : 1,
-+			.num_placements = flags & PARALLEL ? 1 : num_placements,
- 			.instances = to_user_pointer(eci),
- 			.extensions = to_user_pointer(&ext),
- 		};
-@@ -470,6 +476,7 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 					&create), 0);
- 		exec_queues[i] = create.exec_queue_id;
- 	}
-+	exec.num_batch_buffer = flags & PARALLEL ? num_placements : 1;
- 
- 	sync[0].addr = to_user_pointer(&data[0].vm_sync);
- 	if (bo)
-@@ -487,8 +494,12 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 		uint64_t batch_addr = addr + batch_offset;
- 		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
- 		uint64_t sdi_addr = addr + sdi_offset;
-+		uint64_t batches[MAX_INSTANCE];
- 		int e = i % n_exec_queues;
- 
-+		for (j = 0; j < num_placements && flags & PARALLEL; ++j)
-+			batches[j] = batch_addr;
-+
- 		b = 0;
- 		data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
- 		data[i].batch[b++] = sdi_addr;
-@@ -500,7 +511,8 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 		sync[0].addr = addr + (char *)&data[i].exec_sync - (char *)data;
- 
- 		exec.exec_queue_id = exec_queues[e];
--		exec.address = batch_addr;
-+		exec.address = flags & PARALLEL ?
-+			to_user_pointer(batches) : batch_addr;
- 		xe_exec(fd, &exec);
- 
- 		if (flags & REBIND && i + 1 != n_execs) {
-@@ -661,9 +673,6 @@ igt_main
- 					test_exec(fd, gt, class, 1, 0,
- 						  s->flags);
- 
--		if (s->flags & PARALLEL)
--			continue;
--
- 		igt_subtest_f("once-cm-%s", s->name)
- 			xe_for_each_gt(fd, gt)
- 				xe_for_each_hw_engine_class(class)
+ 	free(config);
 -- 
 2.34.1
