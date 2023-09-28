@@ -1,18 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <6a9b5529-6b41-a29b-3608-81be00934fbf@linux.intel.com>
-Date: Thu, 28 Sep 2023 09:16:23 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1877010E5E8
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Sep 2023 08:19:57 +0000 (UTC)
+Message-ID: <7c6c7da3-f19e-f718-053e-0f2ba8951f50@linux.intel.com>
+Date: Thu, 28 Sep 2023 09:19:52 +0100
 MIME-Version: 1.0
 Content-Language: en-US
-To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-References: <20230922134437.234888-1-tvrtko.ursulin@linux.intel.com>
- <20230922134437.234888-4-tvrtko.ursulin@linux.intel.com>
- <ZRSM9hSf71QJn8Pw@unerlige-ril>
+To: Rodrigo Vivi <rodrigo.vivi@intel.com>
+References: <20230926130054.6-1-francois.dugast@intel.com>
+ <20230926130054.6-12-francois.dugast@intel.com>
+ <baa87da8-03f7-0813-99c0-61f6b3d2af35@linux.intel.com>
+ <ZRReH+SDlZGWClS+@intel.com>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <ZRSM9hSf71QJn8Pw@unerlige-ril>
+In-Reply-To: <ZRReH+SDlZGWClS+@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t 03/12] tools/intel_gpu_top: Restore user
- friendly error message
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH v3 11/24] drm-uapi/xe: Replace useless
+ 'instance' per unique gt_id
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,92 +24,158 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Intel-gfx@lists.freedesktop.org,
- Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
-On 27/09/2023 21:13, Umesh Nerlige Ramappa wrote:
-> On Fri, Sep 22, 2023 at 02:44:28PM +0100, Tvrtko Ursulin wrote:
->> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+On 27/09/2023 17:53, Rodrigo Vivi wrote:
+> On Tue, Sep 26, 2023 at 05:47:22PM +0100, Tvrtko Ursulin wrote:
 >>
->> We have a nice error message displayed when an user with insufficient
->> permissions tries to run the tool, but that got lost while Meteorlake
->> support was added. Bring it back in.
+>> On 26/09/2023 14:00, Francois Dugast wrote:
+>>> From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+>>>
+>>> Align with commit ("drm/xe/uapi: Replace useless 'instance' per unique gt_id")
+>>>
+>>> Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+>>> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+>>> ---
+>>>    include/drm-uapi/xe_drm.h | 65 ++++++++++++++++++++++++++-------------
+>>>    tests/intel/xe_query.c    |  2 +-
+>>>    2 files changed, 44 insertions(+), 23 deletions(-)
+>>>
+>>> diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+>>> index 13c693393..68cc5e051 100644
+>>> --- a/include/drm-uapi/xe_drm.h
+>>> +++ b/include/drm-uapi/xe_drm.h
+>>> @@ -337,6 +337,47 @@ struct drm_xe_query_config {
+>>>    	__u64 info[];
+>>>    };
+>>> +/**
+>>> + * struct drm_xe_query_gt - describe an individual GT.
+>>> + *
+>>> + * To be used with drm_xe_query_gts, which will return a list with all the
+>>> + * existing GT individual descriptions.
+>>> + * Graphics Technology (GT) is a subset of a GPU/tile that is responsible for
+>>> + * implementing graphics and/or media operations.
+>>> + */
+>>> +struct drm_xe_query_gt {
+>>> +#define XE_QUERY_GT_TYPE_MAIN		0
+>>> +#define XE_QUERY_GT_TYPE_REMOTE		1
+>>> +#define XE_QUERY_GT_TYPE_MEDIA		2
+>>> +	/** @type: GT type: Main, Remote, or Media */
+>>> +	__u16 type;
+>>> +	/** @gt_id: Unique ID of this GT within the PCI Device */
+>>> +	__u16 gt_id;
+>>> +	/** @clock_freq: A clock frequency for timestamp */
+>>> +	__u32 clock_freq;
+>>> +	/** @features: Reserved for future information about GT features */
+>>> +	__u64 features;
+>>> +	/**
+>>> +	 * @native_mem_regions: Bit mask of instances from
+>>> +	 * drm_xe_query_mem_usage that lives on the same GPU/Tile and have
+>>> +	 * direct access.
+>>> +	 */
+>>> +	__u64 native_mem_regions;
 >>
->> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->> Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
->> ---
->> tools/intel_gpu_top.c | 10 +++++++---
->> 1 file changed, 7 insertions(+), 3 deletions(-)
+>> s/native/local/ ?
 >>
->> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
->> index 87e9681e53b4..e01355f90458 100644
->> --- a/tools/intel_gpu_top.c
->> +++ b/tools/intel_gpu_top.c
->> @@ -554,9 +554,11 @@ static int get_num_gts(uint64_t type)
+>> Although what was wrong with distance query? It was more future proof (can't
+>> ever end up with fast, slow, slower, .. ) and avoids a bit of a vague
+>> non-technical names like "slow".
 >>
->>         close(fd);
->>     }
->> -    assert(!errno || errno == ENOENT);
->> -    assert(cnt > 0);
->> -    errno = 0;
->> +
->> +    if (!cnt)
->> +        cnt = errno;
->> +    else
->> +        errno = 0;
+>>> +	/**
+>>> +	 * @slow_mem_regions: Bit mask of instances from
+>>> +	 * drm_xe_query_mem_usage that this GT can indirectly access, although
+>>> +	 * they live on a different GPU/Tile.
+>>> +	 */
+>>> +	__u64 slow_mem_regions;
+>>> +	/**
+>>> +	 * @inaccessible_mem_regions: Bit mask of instances from
+>>> +	 * drm_xe_query_mem_usage that is not accessible by this GT at all.
+>>> +	 */
+>>> +	__u64 inaccessible_mem_regions;
+>>
+>> Equal to ~(native | slow) so redundant?
+>>
+>> Btw drm_xe_query_mem_usage is just a list of regions, nothing about usage
+>> like memory usage?
 > 
-> ENOENT is the only way this logic is checking for num_gts.
+> I agree with all your comments here. The way xe is currently handling
+> memory regions and mixing gt in the middle is strange and I'm going to
+> scrutinize and change that on a follow up.
 > 
-> In this case error is propagated only if cnt == 0. What if cnt=1 and we 
-> get an error (other than ENOENT)? Should we ignore that?
-
-If cnt >= 1 then at least one tile was found so the errno happened while 
-probing for further tiles. So on single tile parts it can be ignored. On 
-multi-tile parts it cannot really happen, or even if it happens 
-situation would simply be "why is only one tile showing". If we want to 
-cover this impossible/unlikely case then maybe like this:
-
-	if (!cnt || (errno && errno != ENOENT))
-		cnt = -errno;
-
-> I had something like this in mind for the regression (and sorry this 
-> fell through the cracks)
+> This patch here now is just to change the name to the gt_id and this
+> IGT change ended up picking together the movement of the gt struct
+> out of the list struct definition.
 > 
-> https://patchwork.freedesktop.org/patch/541406/?series=118973&rev=1
+> So, basically the only relevant portion of this patch is s/instance/gt_id.
+> Everything else should be a follow-up work.
 
-Oh back in June!
-
-I think yours work too, in which case it's a matter of a style choice 
-with which one to go. I don't have a strong preference - above would be 
-a bit more compact, while I think it still succinctly expresses the 
-failure condition ("nothing found or unexpected error while probing for 
-remote tiles").
+Ah okay. I was asked to review the gem_wsim adaptation for xe so went 
+looking for xe uapi. My bad looking at the wrong place. And from what 
+you say I guess I can freely hold of looking into details until the uapi 
+settles down.
 
 Regards,
 
 Tvrtko
 
 > 
-> Regards,
-> Umesh
-> 
 >>
->>     return cnt;
->> }
->> @@ -590,6 +592,8 @@ static int pmu_init(struct engines *engines)
->>     engines->fd = -1;
->>     engines->num_counters = 0;
->>     engines->num_gts = get_num_gts(type);
->> +    if (engines->num_gts <= 0)
->> +        return -1;
+>> Regards,
 >>
->>     engines->irq.config = I915_PMU_INTERRUPTS;
->>     fd = _open_pmu(type, engines->num_counters, &engines->irq, 
->> engines->fd);
->> -- 
->> 2.39.2
+>> Tvrtko
 >>
+>>> +	/** @reserved: Reserved */
+>>> +	__u64 reserved[8];
+>>> +};
+>>> +
+>>>    /**
+>>>     * struct drm_xe_query_gts - describe GTs
+>>>     *
+>>> @@ -347,30 +388,10 @@ struct drm_xe_query_config {
+>>>    struct drm_xe_query_gts {
+>>>    	/** @num_gt: number of GTs returned in gts */
+>>>    	__u32 num_gt;
+>>> -
+>>>    	/** @pad: MBZ */
+>>>    	__u32 pad;
+>>> -
+>>> -	/**
+>>> -	 * @gts: The GTs returned for this device
+>>> -	 *
+>>> -	 * TODO: convert drm_xe_query_gt to proper kernel-doc.
+>>> -	 * TODO: Perhaps info about every mem region relative to this GT? e.g.
+>>> -	 * bandwidth between this GT and remote region?
+>>> -	 */
+>>> -	struct drm_xe_query_gt {
+>>> -#define XE_QUERY_GT_TYPE_MAIN		0
+>>> -#define XE_QUERY_GT_TYPE_REMOTE		1
+>>> -#define XE_QUERY_GT_TYPE_MEDIA		2
+>>> -		__u16 type;
+>>> -		__u16 instance;
+>>> -		__u32 clock_freq;
+>>> -		__u64 features;
+>>> -		__u64 native_mem_regions;	/* bit mask of instances from drm_xe_query_mem_usage */
+>>> -		__u64 slow_mem_regions;		/* bit mask of instances from drm_xe_query_mem_usage */
+>>> -		__u64 inaccessible_mem_regions;	/* bit mask of instances from drm_xe_query_mem_usage */
+>>> -		__u64 reserved[8];
+>>> -	} gts[];
+>>> +	/** @gts: The GT list returned for this device */
+>>> +	struct drm_xe_query_gt gts[];
+>>>    };
+>>>    /**
+>>> diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
+>>> index acf069f46..eb8d52897 100644
+>>> --- a/tests/intel/xe_query.c
+>>> +++ b/tests/intel/xe_query.c
+>>> @@ -279,7 +279,7 @@ test_query_gts(int fd)
+>>>    	for (i = 0; i < gts->num_gt; i++) {
+>>>    		igt_info("type: %d\n", gts->gts[i].type);
+>>> -		igt_info("instance: %d\n", gts->gts[i].instance);
+>>> +		igt_info("gt_id: %d\n", gts->gts[i].gt_id);
+>>>    		igt_info("clock_freq: %u\n", gts->gts[i].clock_freq);
+>>>    		igt_info("features: 0x%016llx\n", gts->gts[i].features);
+>>>    		igt_info("native_mem_regions: 0x%016llx\n",
