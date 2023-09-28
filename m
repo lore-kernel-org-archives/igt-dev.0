@@ -1,22 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0F4AD10E0ED
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Sep 2023 08:37:34 +0000 (UTC)
-Message-ID: <db3ad35c-54e5-8ee0-59e4-2d33924f24c0@linux.intel.com>
-Date: Thu, 28 Sep 2023 10:37:29 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 88C9210E604
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Sep 2023 11:05:33 +0000 (UTC)
+From: Francois Dugast <francois.dugast@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 28 Sep 2023 11:05:02 +0000
+Message-Id: <20230928110516.7-1-francois.dugast@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230926084451.1732748-1-marcin.bernatowicz@linux.intel.com>
- <20230926084451.1732748-8-marcin.bernatowicz@linux.intel.com>
- <c65e1e57-3000-bf42-09b3-5939acd6ad38@linux.intel.com>
- <5a0bbd8d-5637-3fde-7d16-b5120e052794@linux.intel.com>
-In-Reply-To: <5a0bbd8d-5637-3fde-7d16-b5120e052794@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t 07/14] benchmarks/gem_wsim: cleanups
+Subject: [igt-dev] [PATCH v4 00/14] uAPI Alignment - take 1 v4
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,254 +16,87 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: chris.p.wilson@linux.intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+v4:
+Rebase and remove some patches to align with:
+https://patchwork.freedesktop.org/series/124387/
 
+As a result of the uAPI review efforts started by Thomas[1],
+we have identified many updates on our uAPI that would lead to
+breakage in the compatibility. What it is not acceptable after
+we are merged upstream. So, let's break it before it is too late,
+and start upstreaming a good, reliable and clean uapi.
 
-On 9/27/2023 9:03 PM, Bernatowicz, Marcin wrote:
-> 
-> 
-> On 9/26/2023 1:08 PM, Tvrtko Ursulin wrote:
->>
->> On 26/09/2023 09:44, Marcin Bernatowicz wrote:
->>> Cleaning checkpatch.pl reported warnings/errors.
->>> Removed unused fence_signal field from struct w_step.
->>> calloc vs malloc in parse_workload for struct workload.
->>>
->>> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
->>> ---
->>>   benchmarks/gem_wsim.c | 56 ++++++++++++++++++++++++++-----------------
->>>   1 file changed, 34 insertions(+), 22 deletions(-)
->>>
->>> diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
->>> index 3b01340bf..daa20fb8a 100644
->>> --- a/benchmarks/gem_wsim.c
->>> +++ b/benchmarks/gem_wsim.c
->>> @@ -1,3 +1,4 @@
->>> +// SPDX-License-Identifier: MIT
->>>   /*
->>>    * Copyright © 2017 Intel Corporation
->>>    *
->>> @@ -76,8 +77,7 @@ struct duration {
->>>       bool unbound_duration;
->>>   };
->>> -enum w_type
->>> -{
->>> +enum w_type {
->>>       BATCH,
->>>       SYNC,
->>>       DELAY,
->>> @@ -102,8 +102,7 @@ struct dep_entry {
->>>       int working_set; /* -1 = step dependecy, >= 0 working set id */
->>>   };
->>> -struct deps
->>> -{
->>> +struct deps {
->>>       int nr;
->>>       bool submit_fence;
->>>       struct dep_entry *list;
->>> @@ -137,8 +136,7 @@ struct working_set {
->>>   struct workload;
->>> -struct w_step
->>> -{
->>> +struct w_step {
->>>       struct workload *wrk;
->>>       /* Workload step metadata */
->>> @@ -155,7 +153,6 @@ struct w_step
->>>           int period;
->>>           int target;
->>>           int throttle;
->>> -        int fence_signal;
->>>           int priority;
->>>           struct {
->>>               unsigned int engine_map_count;
->>> @@ -194,8 +191,7 @@ struct ctx {
->>>       uint64_t sseu;
->>>   };
->>> -struct workload
->>> -{
->>> +struct workload {
->>>       unsigned int id;
->>>       unsigned int nr_steps;
->>> @@ -807,6 +803,7 @@ static int add_buffers(struct working_set *set, 
->>> char *str)
->>>       for (i = 0; i < add; i++) {
->>>           struct work_buffer_size *sz = &sizes[set->nr + i];
->>> +
->>>           sz->min = min_sz;
->>>           sz->max = max_sz;
->>>           sz->size = 0;
->>> @@ -895,13 +892,16 @@ parse_duration(unsigned int nr_steps, struct 
->>> duration *dur, double scale_dur, ch
->>>   }
->>>   #define int_field(_STEP_, _FIELD_, _COND_, _ERR_) \
->>> -    if ((field = strtok_r(fstart, ".", &fctx))) { \
->>> -        tmp = atoi(field); \
->>> -        check_arg(_COND_, _ERR_, nr_steps); \
->>> -        step.type = _STEP_; \
->>> -        step._FIELD_ = tmp; \
->>> -        goto add_step; \
->>> -    } \
->>> +    do { \
->>> +        field = strtok_r(fstart, ".", &fctx); \
->>> +        if (field) { \
->>> +            tmp = atoi(field); \
->>> +            check_arg(_COND_, _ERR_, nr_steps); \
->>> +            step.type = _STEP_; \
->>> +            step._FIELD_ = tmp; \
->>> +            goto add_step; \
->>> +        } \
->>> +    } while (0)
->>>   static struct workload *
->>>   parse_workload(struct w_arg *arg, unsigned int flags, double 
->>> scale_dur,
->>> @@ -926,7 +926,8 @@ parse_workload(struct w_arg *arg, unsigned int 
->>> flags, double scale_dur,
->>>           valid = 0;
->>>           memset(&step, 0, sizeof(step));
->>> -        if ((field = strtok_r(fstart, ".", &fctx))) {
->>> +        field = strtok_r(fstart, ".", &fctx);
->>> +        if (field) {
->>>               fstart = NULL;
->>>               if (!strcmp(field, "d")) {
->>> @@ -943,6 +944,7 @@ parse_workload(struct w_arg *arg, unsigned int 
->>> flags, double scale_dur,
->>>                   }
->>>               } else if (!strcmp(field, "P")) {
->>>                   unsigned int nr = 0;
->>> +
->>>                   while ((field = strtok_r(fstart, ".", &fctx))) {
->>>                       tmp = atoi(field);
->>>                       check_arg(nr == 0 && tmp <= 0,
->>> @@ -968,6 +970,7 @@ parse_workload(struct w_arg *arg, unsigned int 
->>> flags, double scale_dur,
->>>                         "Invalid sync target at step %u!\n");
->>>               } else if (!strcmp(field, "S")) {
->>>                   unsigned int nr = 0;
->>> +
->>>                   while ((field = strtok_r(fstart, ".", &fctx))) {
->>>                       tmp = atoi(field);
->>>                       check_arg(tmp <= 0 && nr == 0,
->>> @@ -1004,6 +1007,7 @@ parse_workload(struct w_arg *arg, unsigned int 
->>> flags, double scale_dur,
->>>                   goto add_step;
->>>               } else if (!strcmp(field, "M")) {
->>>                   unsigned int nr = 0;
->>> +
->>>                   while ((field = strtok_r(fstart, ".", &fctx))) {
->>>                       tmp = atoi(field);
->>>                       check_arg(nr == 0 && tmp <= 0,
->>> @@ -1034,6 +1038,7 @@ parse_workload(struct w_arg *arg, unsigned int 
->>> flags, double scale_dur,
->>>                         "Invalid terminate target at step %u!\n");
->>>               } else if (!strcmp(field, "X")) {
->>>                   unsigned int nr = 0;
->>> +
->>>                   while ((field = strtok_r(fstart, ".", &fctx))) {
->>>                       tmp = atoi(field);
->>>                       check_arg(nr == 0 && tmp <= 0,
->>> @@ -1058,6 +1063,7 @@ parse_workload(struct w_arg *arg, unsigned int 
->>> flags, double scale_dur,
->>>                   goto add_step;
->>>               } else if (!strcmp(field, "B")) {
->>>                   unsigned int nr = 0;
->>> +
->>>                   while ((field = strtok_r(fstart, ".", &fctx))) {
->>>                       tmp = atoi(field);
->>>                       check_arg(nr == 0 && tmp <= 0,
->>> @@ -1077,6 +1083,7 @@ parse_workload(struct w_arg *arg, unsigned int 
->>> flags, double scale_dur,
->>>                   goto add_step;
->>>               } else if (!strcmp(field, "b")) {
->>>                   unsigned int nr = 0;
->>> +
->>>                   while ((field = strtok_r(fstart, ".", &fctx))) {
->>>                       check_arg(nr > 2,
->>>                             "Invalid bond format at step %u!\n",
->>> @@ -1148,7 +1155,8 @@ parse_workload(struct w_arg *arg, unsigned int 
->>> flags, double scale_dur,
->>>               valid++;
->>>           }
->>> -        if ((field = strtok_r(fstart, ".", &fctx))) {
->>> +        field = strtok_r(fstart, ".", &fctx);
->>> +        if (field) {
->>>               fstart = NULL;
->>>               i = str_to_engine(field);
->>> @@ -1160,7 +1168,8 @@ parse_workload(struct w_arg *arg, unsigned int 
->>> flags, double scale_dur,
->>>               step.engine = i;
->>>           }
->>> -        if ((field = strtok_r(fstart, ".", &fctx))) {
->>> +        field = strtok_r(fstart, ".", &fctx);
->>> +        if (field) {
->>>               fstart = NULL;
->>>               tmp = parse_duration(nr_steps, &step.duration, 
->>> scale_dur, field);
->>> @@ -1170,7 +1179,8 @@ parse_workload(struct w_arg *arg, unsigned int 
->>> flags, double scale_dur,
->>>               valid++;
->>>           }
->>> -        if ((field = strtok_r(fstart, ".", &fctx))) {
->>> +        field = strtok_r(fstart, ".", &fctx);
->>> +        if (field) {
->>>               fstart = NULL;
->>>               tmp = parse_dependencies(nr_steps, &step, field);
->>> @@ -1180,7 +1190,8 @@ parse_workload(struct w_arg *arg, unsigned int 
->>> flags, double scale_dur,
->>>               valid++;
->>>           }
->>> -        if ((field = strtok_r(fstart, ".", &fctx))) {
->>> +        field = strtok_r(fstart, ".", &fctx);
->>> +        if (field) {
->>>               fstart = NULL;
->>>               check_arg(strlen(field) != 1 ||
->>> @@ -1224,7 +1235,7 @@ add_step:
->>>           nr_steps += app_w->nr_steps;
->>>       }
->>> -    wrk = malloc(sizeof(*wrk));
->>> +    wrk = calloc(1, sizeof(*wrk));
->>
->> Rest looks fine but this change I don't know what checkpatch has 
->> against it and why calloc(1,..) is better. That's the kernels 
->> checkpatch.pl? I don't get it when I run it.
-> 
-> I'll restore it in next version.
-> My previous patch changes contained fields which were zeroed here, now 
-> it's not required and creates confusion, I agree it's not a 
-> cleanup/issue and not reported by the any tool.
-> -- 
-> marcin
+Most of this work on putting these patches together for a single
+shot was led by Francois.
 
-I rememeber why I added it, to zero the nr_ctxs value and be able to do 
-cleanup in fini_workload. It's not a problem of present code, as we do 
-not touch (ex. destroy) contexts in fini_workload, but with coming
-changes we will need this nr_ctxs zero initialization (either explicit 
-or with calloc), because of:
+[1] - https://lore.kernel.org/all/863bebd0c624d6fc2b38c0a06b63e468b4185128.camel@linux.intel.com/
 
-	for (i = 0; i < clients; i++)
-		fini_workload(w[i]); <- those are clones, nr_ctxs is correct as clones 
-are calloc'ed and we called prepare_workload on them
-	free(w);
-	for (i = 0; i < nr_w_args; i++)
-		fini_workload(wrk[i]);  <- this ones may have garbage in nr_ctxs 
-causing issues
+Francois Dugast (2):
+  drm-uapi/xe_drm: Separate VM_BIND's operation and flag, align with
+    latest uapi
+  drm-uapi/xe_drm: Remove MMIO ioctl and align with latest uapi
 
-But that is for other patch with changes.
+Matthew Brost (4):
+  xe_exec_balancer: Enable parallel submission and compute mode
+  xe_exec_threads: Use DRM_XE_VM_CREATE_COMPUTE_MODE when creating a
+    compute VM
+  xe: Update uAPI and remove XE_EXEC_QUEUE_SET_PROPERTY_COMPUTE_MODE
+  xe: Update to new VM bind uAPI
 
->>
->> Regards,
->>
->> Tvrtko
->>
->>>       igt_assert(wrk);
->>>       wrk->nr_steps = nr_steps;
->>> @@ -2717,6 +2728,7 @@ int main(int argc, char **argv)
->>>       if (append_workload_arg) {
->>>           struct w_arg arg = { NULL, append_workload_arg, 0 };
->>> +
->>>           app_w = parse_workload(&arg, flags, scale_dur, scale_time,
->>>                          NULL);
->>>           if (!app_w) {
+Rodrigo Vivi (7):
+  drm-uapi/xe_drm: Align with new PMU interface
+  drm-uapi/xe: Use common drm_xe_ext_set_property extension
+  drm-uapi: Kill XE_VM_PROPERTY_BIND_OP_ERROR_CAPTURE_ADDRESS extension
+  drm-uapi/xe: Replace useless 'instance' per unique gt_id
+  drm-uapi/xe: Remove unused field of drm_xe_query_gt
+  drm-uapi/xe: Rename gts to gt_list
+  drm-uapi/xe: Fix naming of XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY
+
+Umesh Nerlige Ramappa (1):
+  tests/intel/xe_query: Add a test for querying engine cycles
+
+ include/drm-uapi/xe_drm.h                | 371 ++++++++++++-----------
+ lib/igt_fb.c                             |   2 +-
+ lib/intel_batchbuffer.c                  |  13 +-
+ lib/intel_compute.c                      |   2 +-
+ lib/xe/xe_ioctl.c                        |  44 ++-
+ lib/xe/xe_ioctl.h                        |   9 +-
+ lib/xe/xe_query.c                        |  54 ++--
+ lib/xe/xe_query.h                        |  10 +-
+ lib/xe/xe_spin.c                         |   6 +-
+ lib/xe/xe_util.c                         |   9 +-
+ tests/intel-ci/xe-fast-feedback.testlist |   4 +-
+ tests/intel/xe_ccs.c                     |   4 +-
+ tests/intel/xe_create.c                  |   6 +-
+ tests/intel/xe_drm_fdinfo.c              |   4 +-
+ tests/intel/xe_evict.c                   |  37 +--
+ tests/intel/xe_exec_balancer.c           |  35 ++-
+ tests/intel/xe_exec_basic.c              |   8 +-
+ tests/intel/xe_exec_compute_mode.c       |  26 +-
+ tests/intel/xe_exec_fault_mode.c         |   6 +-
+ tests/intel/xe_exec_reset.c              |  26 +-
+ tests/intel/xe_exec_store.c              |   4 +-
+ tests/intel/xe_exec_threads.c            | 145 ++-------
+ tests/intel/xe_exercise_blt.c            |   2 +-
+ tests/intel/xe_guc_pc.c                  |   2 +-
+ tests/intel/xe_huc_copy.c                |   2 +-
+ tests/intel/xe_intel_bb.c                |   2 +-
+ tests/intel/xe_mmio.c                    |  91 ------
+ tests/intel/xe_noexec_ping_pong.c        |  10 +-
+ tests/intel/xe_pm.c                      |   2 +-
+ tests/intel/xe_query.c                   | 236 ++++++++++++--
+ tests/intel/xe_vm.c                      | 208 +------------
+ tests/intel/xe_waitfence.c               |  19 +-
+ tests/meson.build                        |   1 -
+ tools/meson.build                        |   1 -
+ tools/xe_reg.c                           | 366 ----------------------
+ 35 files changed, 609 insertions(+), 1158 deletions(-)
+ delete mode 100644 tests/intel/xe_mmio.c
+ delete mode 100644 tools/xe_reg.c
+
+-- 
+2.34.1
