@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 179DB10E671
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Sep 2023 18:21:28 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 596B210E6A3
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Sep 2023 18:20:39 +0000 (UTC)
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 28 Sep 2023 17:45:26 +0000
-Message-ID: <20230928174535.2074462-12-marcin.bernatowicz@linux.intel.com>
+Date: Thu, 28 Sep 2023 17:45:27 +0000
+Message-ID: <20230928174535.2074462-13-marcin.bernatowicz@linux.intel.com>
 In-Reply-To: <20230928174535.2074462-1-marcin.bernatowicz@linux.intel.com>
 References: <20230928174535.2074462-1-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 11/17] benchmarks/gem_wsim: introduce
- w_step_sync function
+Subject: [igt-dev] [PATCH i-g-t 12/17] benchmarks/gem_wsim: extract allocate
+ and prepare contexts code to new functions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,87 +24,96 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Added w_step_sync function for workload step synchronization.
-Change will allow cleaner xe integration.
+No functional changes.
+Extracted allocate_contexts and prepare_contexts functions
+from prepare_workload.
 
 v2:
-- correct indentation (Tvrtko)
+- propagate error code from prepare_contexts (Tvrtko)
+- don't mix unrelated changes (Tvrtko)
 
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 ---
- benchmarks/gem_wsim.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ benchmarks/gem_wsim.c | 43 ++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 32 insertions(+), 11 deletions(-)
 
 diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-index 87c68316d..7495ab297 100644
+index 7495ab297..a344fea9e 100644
 --- a/benchmarks/gem_wsim.c
 +++ b/benchmarks/gem_wsim.c
-@@ -245,6 +245,11 @@ static const char *ring_str_map[NUM_ENGINES] = {
- 	[VECS] = "VECS",
- };
+@@ -1764,19 +1764,11 @@ static void measure_active_set(struct workload *wrk)
  
-+static void w_step_sync(struct w_step *w)
-+{
-+	gem_sync(fd, w->obj[0].handle);
+ #define alloca0(sz) ({ size_t sz__ = (sz); memset(alloca(sz__), 0, sz__); })
+ 
+-static int prepare_workload(unsigned int id, struct workload *wrk)
++static void allocate_contexts(unsigned int id, struct workload *wrk)
+ {
+-	struct working_set **sets;
+-	unsigned long total = 0;
+-	uint32_t share_vm = 0;
+ 	int max_ctx = -1;
+ 	struct w_step *w;
+-	int i, j;
+-
+-	wrk->id = id;
+-	wrk->bb_prng = (wrk->flags & FLAG_SYNCEDCLIENTS) ? master_prng : rand();
+-	wrk->bo_prng = (wrk->flags & FLAG_SYNCEDCLIENTS) ? master_prng : rand();
+-	wrk->run = true;
++	int i;
+ 
+ 	/*
+ 	 * Pre-scan workload steps to allocate context list storage.
+@@ -1800,6 +1792,13 @@ static int prepare_workload(unsigned int id, struct workload *wrk)
+ 
+ 		max_ctx = ctx;
+ 	}
 +}
 +
- static int read_timestamp_frequency(int i915)
- {
- 	int value = 0;
-@@ -2104,7 +2109,7 @@ static void w_sync_to(struct workload *wrk, struct w_step *w, int target)
- 	igt_assert(target < wrk->nr_steps);
- 	igt_assert(wrk->steps[target].type == BATCH);
++static int prepare_contexts(unsigned int id, struct workload *wrk)
++{
++	uint32_t share_vm = 0;
++	struct w_step *w;
++	int i, j;
  
--	gem_sync(fd, wrk->steps[target].obj[0].handle);
-+	w_step_sync(&wrk->steps[target]);
+ 	/*
+ 	 * Transfer over engine map configuration from the workload step.
+@@ -1966,6 +1965,28 @@ static int prepare_workload(unsigned int id, struct workload *wrk)
+ 	if (share_vm)
+ 		vm_destroy(fd, share_vm);
+ 
++	return 0;
++}
++
++static int prepare_workload(unsigned int id, struct workload *wrk)
++{
++	struct working_set **sets;
++	unsigned long total = 0;
++	struct w_step *w;
++	int i, j;
++	int ret = 0;
++
++	wrk->id = id;
++	wrk->bb_prng = (wrk->flags & FLAG_SYNCEDCLIENTS) ? master_prng : rand();
++	wrk->bo_prng = (wrk->flags & FLAG_SYNCEDCLIENTS) ? master_prng : rand();
++	wrk->run = true;
++
++	allocate_contexts(id, wrk);
++
++	ret = prepare_contexts(id, wrk);
++	if (ret)
++		return ret;
++
+ 	/* Record default preemption. */
+ 	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
+ 		if (w->type == BATCH)
+@@ -2067,7 +2088,7 @@ static int prepare_workload(unsigned int id, struct workload *wrk)
+ 
+ 	measure_active_set(wrk);
+ 
+-	return 0;
++	return ret;
  }
  
- static void
-@@ -2163,7 +2168,7 @@ static void sync_deps(struct workload *wrk, struct w_step *w)
- 		igt_assert(dep_idx >= 0 && dep_idx < w->idx);
- 		igt_assert(wrk->steps[dep_idx].type == BATCH);
- 
--		gem_sync(fd, wrk->steps[dep_idx].obj[0].handle);
-+		w_step_sync(&wrk->steps[dep_idx]);
- 	}
- }
- 
-@@ -2217,7 +2222,7 @@ static void *run_workload(void *data)
- 
- 				igt_assert(s_idx >= 0 && s_idx < i);
- 				igt_assert(wrk->steps[s_idx].type == BATCH);
--				gem_sync(fd, wrk->steps[s_idx].obj[0].handle);
-+				w_step_sync(&wrk->steps[s_idx]);
- 				continue;
- 			} else if (w->type == THROTTLE) {
- 				throttle = w->throttle;
-@@ -2308,7 +2313,7 @@ static void *run_workload(void *data)
- 				break;
- 
- 			if (w->sync)
--				gem_sync(fd, w->obj[0].handle);
-+				w_step_sync(w);
- 
- 			if (qd_throttle > 0) {
- 				while (wrk->nrequest[engine] > qd_throttle) {
-@@ -2317,7 +2322,7 @@ static void *run_workload(void *data)
- 					s = igt_list_first_entry(&wrk->requests[engine],
- 								 s, rq_link);
- 
--					gem_sync(fd, s->obj[0].handle);
-+					w_step_sync(s);
- 
- 					s->request = -1;
- 					igt_list_del(&s->rq_link);
-@@ -2349,7 +2354,7 @@ static void *run_workload(void *data)
- 			continue;
- 
- 		w = igt_list_last_entry(&wrk->requests[i], w, rq_link);
--		gem_sync(fd, w->obj[0].handle);
-+		w_step_sync(w);
- 	}
- 
- 	clock_gettime(CLOCK_MONOTONIC, &t_end);
+ static double elapsed(const struct timespec *start, const struct timespec *end)
 -- 
 2.42.0
