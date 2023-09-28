@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5DE7010E05D
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Sep 2023 11:33:16 +0000 (UTC)
-Date: Thu, 28 Sep 2023 13:33:09 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A3E5010E634
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Sep 2023 12:00:16 +0000 (UTC)
+Date: Thu, 28 Sep 2023 14:00:03 +0200
 From: Francois Dugast <francois.dugast@intel.com>
 To: <igt-dev@lists.freedesktop.org>
-Message-ID: <ZRVkddqJ3ePHkdC2@fdugast-desk.home>
+Message-ID: <ZRVqw3ngveiDRotC@fdugast-desk.home>
 References: <20230928110516.7-1-francois.dugast@intel.com>
- <20230928110516.7-2-francois.dugast@intel.com>
+ <20230928110516.7-12-francois.dugast@intel.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20230928110516.7-2-francois.dugast@intel.com>
+In-Reply-To: <20230928110516.7-12-francois.dugast@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v4 01/14] drm-uapi/xe_drm: Align with new PMU
- interface
+Subject: Re: [igt-dev] [PATCH v4 11/14] drm-uapi/xe: Replace useless
+ 'instance' per unique gt_id
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,76 +26,119 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Sep 28, 2023 at 11:05:03AM +0000, Francois Dugast wrote:
+On Thu, Sep 28, 2023 at 11:05:13AM +0000, Francois Dugast wrote:
 > From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 > 
-> Align with commit ("drm/xe/pmu: Enable PMU interface")
+> Align with commit ("drm/xe/uapi: Replace useless 'instance' per unique gt_id")
 > 
-> Cc: Francois Dugast <francois.dugast@intel.com>
-> Cc: Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>
-> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 > Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-
-It seems this one does not really belong to this series as the uAPI commit
-has already been merged, but anyway it is missing so:
+> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 
 Reviewed-by: Francois Dugast <francois.dugast@intel.com>
 
 > ---
->  include/drm-uapi/xe_drm.h | 40 +++++++++++++++++++++++++++++++++++++++
->  1 file changed, 40 insertions(+)
+>  include/drm-uapi/xe_drm.h | 65 ++++++++++++++++++++++++++-------------
+>  tests/intel/xe_query.c    |  2 +-
+>  2 files changed, 44 insertions(+), 23 deletions(-)
 > 
 > diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-> index 804c02270..13cd6a73d 100644
+> index 80b4c76f3..e6879a6be 100644
 > --- a/include/drm-uapi/xe_drm.h
 > +++ b/include/drm-uapi/xe_drm.h
-> @@ -1053,6 +1053,46 @@ struct drm_xe_vm_madvise {
->  	__u64 reserved[2];
+> @@ -334,6 +334,47 @@ struct drm_xe_query_config {
+>  	__u64 info[];
 >  };
 >  
 > +/**
-> + * DOC: XE PMU event config IDs
+> + * struct drm_xe_query_gt - describe an individual GT.
 > + *
-> + * Check 'man perf_event_open' to use the ID's XE_PMU_XXXX listed in xe_drm.h
-> + * in 'struct perf_event_attr' as part of perf_event_open syscall to read a
-> + * particular event.
-> + *
-> + * For example to open the XE_PMU_INTERRUPTS(0):
-> + *
-> + * .. code-block:: C
-> + *
-> + *	struct perf_event_attr attr;
-> + *	long long count;
-> + *	int cpu = 0;
-> + *	int fd;
-> + *
-> + *	memset(&attr, 0, sizeof(struct perf_event_attr));
-> + *	attr.type = type; // eg: /sys/bus/event_source/devices/xe_0000_56_00.0/type
-> + *	attr.read_format = PERF_FORMAT_TOTAL_TIME_ENABLED;
-> + *	attr.use_clockid = 1;
-> + *	attr.clockid = CLOCK_MONOTONIC;
-> + *	attr.config = XE_PMU_INTERRUPTS(0);
-> + *
-> + *	fd = syscall(__NR_perf_event_open, &attr, -1, cpu, -1, 0);
+> + * To be used with drm_xe_query_gts, which will return a list with all the
+> + * existing GT individual descriptions.
+> + * Graphics Technology (GT) is a subset of a GPU/tile that is responsible for
+> + * implementing graphics and/or media operations.
 > + */
+> +struct drm_xe_query_gt {
+> +#define XE_QUERY_GT_TYPE_MAIN		0
+> +#define XE_QUERY_GT_TYPE_REMOTE		1
+> +#define XE_QUERY_GT_TYPE_MEDIA		2
+> +	/** @type: GT type: Main, Remote, or Media */
+> +	__u16 type;
+> +	/** @gt_id: Unique ID of this GT within the PCI Device */
+> +	__u16 gt_id;
+> +	/** @clock_freq: A clock frequency for timestamp */
+> +	__u32 clock_freq;
+> +	/** @features: Reserved for future information about GT features */
+> +	__u64 features;
+> +	/**
+> +	 * @native_mem_regions: Bit mask of instances from
+> +	 * drm_xe_query_mem_usage that lives on the same GPU/Tile and have
+> +	 * direct access.
+> +	 */
+> +	__u64 native_mem_regions;
+> +	/**
+> +	 * @slow_mem_regions: Bit mask of instances from
+> +	 * drm_xe_query_mem_usage that this GT can indirectly access, although
+> +	 * they live on a different GPU/Tile.
+> +	 */
+> +	__u64 slow_mem_regions;
+> +	/**
+> +	 * @inaccessible_mem_regions: Bit mask of instances from
+> +	 * drm_xe_query_mem_usage that is not accessible by this GT at all.
+> +	 */
+> +	__u64 inaccessible_mem_regions;
+> +	/** @reserved: Reserved */
+> +	__u64 reserved[8];
+> +};
 > +
-> +/*
-> + * Top bits of every counter are GT id.
-> + */
-> +#define __XE_PMU_GT_SHIFT (56)
-> +
-> +#define ___XE_PMU_OTHER(gt, x) \
-> +	(((__u64)(x)) | ((__u64)(gt) << __XE_PMU_GT_SHIFT))
-> +
-> +#define XE_PMU_INTERRUPTS(gt)			___XE_PMU_OTHER(gt, 0)
-> +#define XE_PMU_RENDER_GROUP_BUSY(gt)		___XE_PMU_OTHER(gt, 1)
-> +#define XE_PMU_COPY_GROUP_BUSY(gt)		___XE_PMU_OTHER(gt, 2)
-> +#define XE_PMU_MEDIA_GROUP_BUSY(gt)		___XE_PMU_OTHER(gt, 3)
-> +#define XE_PMU_ANY_ENGINE_GROUP_BUSY(gt)	___XE_PMU_OTHER(gt, 4)
-> +
->  #if defined(__cplusplus)
->  }
->  #endif
+>  /**
+>   * struct drm_xe_query_gts - describe GTs
+>   *
+> @@ -344,30 +385,10 @@ struct drm_xe_query_config {
+>  struct drm_xe_query_gts {
+>  	/** @num_gt: number of GTs returned in gts */
+>  	__u32 num_gt;
+> -
+>  	/** @pad: MBZ */
+>  	__u32 pad;
+> -
+> -	/**
+> -	 * @gts: The GTs returned for this device
+> -	 *
+> -	 * TODO: convert drm_xe_query_gt to proper kernel-doc.
+> -	 * TODO: Perhaps info about every mem region relative to this GT? e.g.
+> -	 * bandwidth between this GT and remote region?
+> -	 */
+> -	struct drm_xe_query_gt {
+> -#define XE_QUERY_GT_TYPE_MAIN		0
+> -#define XE_QUERY_GT_TYPE_REMOTE		1
+> -#define XE_QUERY_GT_TYPE_MEDIA		2
+> -		__u16 type;
+> -		__u16 instance;
+> -		__u32 clock_freq;
+> -		__u64 features;
+> -		__u64 native_mem_regions;	/* bit mask of instances from drm_xe_query_mem_usage */
+> -		__u64 slow_mem_regions;		/* bit mask of instances from drm_xe_query_mem_usage */
+> -		__u64 inaccessible_mem_regions;	/* bit mask of instances from drm_xe_query_mem_usage */
+> -		__u64 reserved[8];
+> -	} gts[];
+> +	/** @gts: The GT list returned for this device */
+> +	struct drm_xe_query_gt gts[];
+>  };
+>  
+>  /**
+> diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
+> index 3e7460ff4..f1ae1bf40 100644
+> --- a/tests/intel/xe_query.c
+> +++ b/tests/intel/xe_query.c
+> @@ -279,7 +279,7 @@ test_query_gts(int fd)
+>  
+>  	for (i = 0; i < gts->num_gt; i++) {
+>  		igt_info("type: %d\n", gts->gts[i].type);
+> -		igt_info("instance: %d\n", gts->gts[i].instance);
+> +		igt_info("gt_id: %d\n", gts->gts[i].gt_id);
+>  		igt_info("clock_freq: %u\n", gts->gts[i].clock_freq);
+>  		igt_info("features: 0x%016llx\n", gts->gts[i].features);
+>  		igt_info("native_mem_regions: 0x%016llx\n",
 > -- 
 > 2.34.1
 > 
