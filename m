@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E883C10E6A5
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Sep 2023 18:20:58 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4E10910E6A3
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Sep 2023 18:21:03 +0000 (UTC)
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 28 Sep 2023 17:45:23 +0000
-Message-ID: <20230928174535.2074462-9-marcin.bernatowicz@linux.intel.com>
+Date: Thu, 28 Sep 2023 17:45:31 +0000
+Message-ID: <20230928174535.2074462-17-marcin.bernatowicz@linux.intel.com>
 In-Reply-To: <20230928174535.2074462-1-marcin.bernatowicz@linux.intel.com>
 References: <20230928174535.2074462-1-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 08/17] benchmarks/gem_wsim: reposition
- repeat_start variable
+Subject: [igt-dev] [PATCH i-g-t 16/17] benchmarks/gem_wsim: for_each_dep
+ macro
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,54 +24,134 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-No need for repeat_start in struct workload.
-It's now a variable in run_workload function scope.
+Utility macro to easy traverse dependencies.
 
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 ---
- benchmarks/gem_wsim.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ benchmarks/gem_wsim.c | 45 ++++++++++++++++++++++++-------------------
+ 1 file changed, 25 insertions(+), 20 deletions(-)
 
 diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-index f91e126f1..10ad6cf75 100644
+index d22d66aeb..d447dced4 100644
 --- a/benchmarks/gem_wsim.c
 +++ b/benchmarks/gem_wsim.c
-@@ -209,8 +209,6 @@ struct workload {
- 	uint32_t bb_prng;
- 	uint32_t bo_prng;
+@@ -109,6 +109,10 @@ struct deps {
+ 	struct dep_entry *list;
+ };
  
--	struct timespec repeat_start;
--
- 	unsigned int nr_ctxs;
- 	struct ctx *ctx_list;
- 
-@@ -2282,7 +2280,7 @@ static void sync_deps(struct workload *wrk, struct w_step *w)
- static void *run_workload(void *data)
++#define for_each_dep(__dep, __deps) \
++	for (int __i = 0; __i < __deps.nr && \
++	     (__dep = &__deps.list[__i]); ++__i)
++
+ struct w_arg {
+ 	char *filename;
+ 	char *desc;
+@@ -1150,8 +1154,10 @@ add_step:
+ 	 * referencing them as a sync fence dependency.
+ 	 */
+ 	for (i = 0; i < nr_steps; i++) {
+-		for (j = 0; j < steps[i].fence_deps.nr; j++) {
+-			tmp = steps[i].idx + steps[i].fence_deps.list[j].target;
++		struct dep_entry *dep;
++
++		for_each_dep(dep, steps[i].fence_deps) {
++			tmp = steps[i].idx + dep->target;
+ 			check_arg(tmp < 0 || tmp >= i ||
+ 				  (steps[tmp].type != BATCH &&
+ 				   steps[tmp].type != SW_FENCE),
+@@ -1478,9 +1484,9 @@ static void
+ alloc_step_batch(struct workload *wrk, struct w_step *w)
  {
- 	struct workload *wrk = (struct workload *)data;
--	struct timespec t_start, t_end;
-+	struct timespec t_start, t_end, repeat_start;
+ 	enum intel_engine_id engine = w->engine;
++	struct dep_entry *dep;
+ 	unsigned int j = 0;
+ 	unsigned int nr_obj = 2 + w->data_deps.nr;
+-	unsigned int i;
+ 
+ 	w->bb_size = 4096;
+ 	w->i915.obj = calloc(nr_obj, sizeof(*w->i915.obj));
+@@ -1491,14 +1497,13 @@ alloc_step_batch(struct workload *wrk, struct w_step *w)
+ 	j++;
+ 	igt_assert(j < nr_obj);
+ 
+-	for (i = 0; i < w->data_deps.nr; i++) {
+-		struct dep_entry *entry = &w->data_deps.list[i];
++	for_each_dep(dep, w->data_deps) {
+ 		uint32_t dep_handle;
+ 
+-		if (entry->working_set == -1) {
+-			int dep_idx = w->idx + entry->target;
++		if (dep->working_set == -1) {
++			int dep_idx = w->idx + dep->target;
+ 
+-			igt_assert(entry->target <= 0);
++			igt_assert(dep->target <= 0);
+ 			igt_assert(dep_idx >= 0 && dep_idx < w->idx);
+ 			igt_assert(wrk->steps[dep_idx].type == BATCH);
+ 
+@@ -1506,19 +1511,19 @@ alloc_step_batch(struct workload *wrk, struct w_step *w)
+ 		} else {
+ 			struct working_set *set;
+ 
+-			igt_assert(entry->working_set <=
++			igt_assert(dep->working_set <=
+ 				   wrk->max_working_set_id);
+ 
+-			set = wrk->working_sets[entry->working_set];
++			set = wrk->working_sets[dep->working_set];
+ 
+ 			igt_assert(set->nr);
+-			igt_assert(entry->target < set->nr);
+-			igt_assert(set->sizes[entry->target].size);
++			igt_assert(dep->target < set->nr);
++			igt_assert(set->sizes[dep->target].size);
+ 
+-			dep_handle = set->handles[entry->target];
++			dep_handle = set->handles[dep->target];
+ 		}
+ 
+-		w->i915.obj[j].flags = entry->write ? EXEC_OBJECT_WRITE : 0;
++		w->i915.obj[j].flags = dep->write ? EXEC_OBJECT_WRITE : 0;
+ 		w->i915.obj[j].handle = dep_handle;
+ 		j++;
+ 		igt_assert(j < nr_obj);
+@@ -1713,8 +1718,8 @@ find_dep(struct dep_entry *deps, unsigned int nr, struct dep_entry dep)
+ static void measure_active_set(struct workload *wrk)
+ {
+ 	unsigned long total = 0, batch_sizes = 0;
+-	struct dep_entry *deps = NULL;
+-	unsigned int nr = 0, i, j;
++	struct dep_entry *dep, *deps = NULL;
++	unsigned int nr = 0, i;
  	struct w_step *w;
- 	int throttle = -1;
- 	int qd_throttle = -1;
-@@ -2296,7 +2294,7 @@ static void *run_workload(void *data)
- 	     count++) {
- 		unsigned int cur_seqno = wrk->sync_seqno;
  
--		clock_gettime(CLOCK_MONOTONIC, &wrk->repeat_start);
-+		clock_gettime(CLOCK_MONOTONIC, &repeat_start);
+ 	if (verbose < 3)
+@@ -1726,8 +1731,7 @@ static void measure_active_set(struct workload *wrk)
  
- 		for (i = 0, w = wrk->steps; wrk->run && (i < wrk->nr_steps);
- 		     i++, w++) {
-@@ -2310,7 +2308,7 @@ static void *run_workload(void *data)
- 				int elapsed;
+ 		batch_sizes += w->bb_size;
  
- 				clock_gettime(CLOCK_MONOTONIC, &now);
--				elapsed = elapsed_us(&wrk->repeat_start, &now);
-+				elapsed = elapsed_us(&repeat_start, &now);
- 				do_sleep = w->period - elapsed;
- 				time_tot += elapsed;
- 				if (elapsed < time_min)
+-		for (j = 0; j < w->data_deps.nr; j++) {
+-			struct dep_entry *dep = &w->data_deps.list[j];
++		for_each_dep(dep, w->data_deps) {
+ 			struct dep_entry _dep = *dep;
+ 
+ 			if (dep->working_set == -1 && dep->target < 0) {
+@@ -2150,13 +2154,14 @@ static void w_sync_to(struct workload *wrk, struct w_step *w, int target)
+ static void
+ do_eb(struct workload *wrk, struct w_step *w, enum intel_engine_id engine)
+ {
++	struct dep_entry *dep;
+ 	unsigned int i;
+ 
+ 	eb_update_flags(wrk, w, engine);
+ 	update_bb_start(wrk, w);
+ 
+-	for (i = 0; i < w->fence_deps.nr; i++) {
+-		int tgt = w->idx + w->fence_deps.list[i].target;
++	for_each_dep(dep, w->fence_deps) {
++		int tgt = w->idx + dep->target;
+ 
+ 		/* TODO: fence merging needed to support multiple inputs */
+ 		igt_assert(i == 0);
 -- 
 2.42.0
