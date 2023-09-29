@@ -1,23 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9176410E113
- for <igt-dev@lists.freedesktop.org>; Fri, 29 Sep 2023 10:49:36 +0000 (UTC)
-Message-ID: <8cc14715-dac3-8336-e70e-f7fd95fb9be7@linux.intel.com>
-Date: Fri, 29 Sep 2023 11:49:32 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 806B210E110
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 Sep 2023 10:52:18 +0000 (UTC)
+Message-ID: <2234b7b4-b2ab-1d46-06f1-7bbe53dfdb11@linux.intel.com>
+Date: Fri, 29 Sep 2023 11:52:14 +0100
 MIME-Version: 1.0
 Content-Language: en-US
 To: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>,
  igt-dev@lists.freedesktop.org
 References: <20230928174535.2074462-1-marcin.bernatowicz@linux.intel.com>
- <20230928174535.2074462-16-marcin.bernatowicz@linux.intel.com>
- <3d25cb8c-83b6-5bd4-181a-58d8066d4615@linux.intel.com>
- <06324cce-f5bd-4485-7bc2-25f3339d8575@linux.intel.com>
+ <20230928174535.2074462-4-marcin.bernatowicz@linux.intel.com>
+ <856aad30-db03-4fe7-e70b-8b7926ebb7c7@linux.intel.com>
+ <9c9dec58-f453-6251-eef9-618433d46467@linux.intel.com>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <06324cce-f5bd-4485-7bc2-25f3339d8575@linux.intel.com>
+In-Reply-To: <9c9dec58-f453-6251-eef9-618433d46467@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t 15/17] benchmarks/gem_wsim: introduce
- bb_size in w_step
+Subject: Re: [igt-dev] [PATCH i-g-t 03/17] benchmarks/gem_wsim: fix scaling
+ of period steps
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,32 +31,64 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
-On 29/09/2023 11:08, Bernatowicz, Marcin wrote:
+On 29/09/2023 10:31, Bernatowicz, Marcin wrote:
+> Hi,
 > 
-> 
-> On 9/29/2023 11:35 AM, Tvrtko Ursulin wrote:
+> On 9/29/2023 10:01 AM, Tvrtko Ursulin wrote:
 >>
 >> On 28/09/2023 18:45, Marcin Bernatowicz wrote:
->>> Put it next to bb_handle.
->>> Use it in alloc_step_batch and measure_active_set.
+>>> Period steps take scale time (-F) command line option into account.
 >>
->> Could say why.
+>> "Make period steps.."?
 >>
->> Like xe might need more than 4k? Might not be able to allocate only 
->> 4k? (Guessing only.)
+>> "Periods steps should take.."?
+>>
+>>> This allows to scale workload without need to modify .wsim file
+>>>
+>>> ex. having following example.wsim
+>>>
+>>> 1.VCS1.3000.0.1
+>>> 1.RCS.500-1000.-1.0
+>>> 1.RCS.3700.0.0
+>>> 1.RCS.1000.-2.0
+>>> 1.VCS2.2300.-2.0
+>>> 1.RCS.4700.-1.0
+>>> 1.VCS2.600.-1.1
+>>> p.16000
+>>>
+>>> we can scale the whole workload x10 with:
+>>>
+>>> gem_wsim -w example.wsim -f 10 -F 10
+>>>
+>>> -f is for batch duration steps, -F for period and delay steps
+>>
+>> Actually I am having a little bit of a second thought here. Thinking 
+>> that perhaps it was deliberate to not scale periods.
+>>
+>> Think of it like this. -f 0.5 simulates a twice as fast GPU. -F 2 
+>> simulates a twice as slow CPU.
+>>
+>> In both cases if something wants to hit 60 fps, it still wants to hit 
+>> 60 fps. What use case for scaling the period do you have in mind?
+>>
 > 
-> Xe uses following formula:
+> That gives another view on the matter.
 > 
-> w->bb_size = ALIGN(sizeof(*w->xe.data) + xe_cs_prefetch_size(fd),
->                 xe_get_default_alignment(fd));
-> 
-> which equaled 4096 on platform I tested.
-> I didn't want to put bb_size inside xe specifics as it is connected with 
-> bb_handle.
+> I thought about it more like having a common unit, so giving -F 1000 -> 
+> makes all CPU values (Period/Duration) are given in ms.
 
-Hmmm could you dig a bit to figure out if sometimes this can be larger 
-than 4k and if so why only xe and not i915. Because things like prefetch 
-and alignment sound like should be more hardware than driver dependent.
+I lost you here. -F is also a scaling factor and not a time value.
+
+> -f option may be used to calibrate for difference between GPU and CPU 
+> ex. if wrongly reported freq makes a real GPU duration 10x faster than 
+> CPU measured (ex. 10ms specified batch duration takes 1ms in reality) we 
+> can provide -f 10 and still have GPU durations correspond to CPU time.
+
+Hm but in either case nothing of this relates to framerate.
+
+My current thinking is to drop this patch unless you can think of a good 
+use case for scaling period. Or we need a new command option for scaling 
+only periods.
 
 Regards,
 
@@ -66,49 +98,29 @@ Tvrtko
 > Regards,
 > marcin
 > 
->>
+> 
 >> Regards,
 >>
 >> Tvrtko
 >>
+>>> v2:
+>>> - apply same approach as with DELAY step (Tvrtko)
+>>>
 >>> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 >>> ---
->>>   benchmarks/gem_wsim.c | 6 ++++--
->>>   1 file changed, 4 insertions(+), 2 deletions(-)
+>>>   benchmarks/gem_wsim.c | 2 ++
+>>>   1 file changed, 2 insertions(+)
 >>>
 >>> diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
->>> index 4618509ab..d22d66aeb 100644
+>>> index 42690d3d0..41557517c 100644
 >>> --- a/benchmarks/gem_wsim.c
 >>> +++ b/benchmarks/gem_wsim.c
->>> @@ -183,6 +183,7 @@ struct w_step {
->>>           } i915;
->>>       };
->>>       uint32_t bb_handle;
->>> +    size_t bb_size;
->>>   };
->>>   struct ctx {
->>> @@ -1481,6 +1482,7 @@ alloc_step_batch(struct workload *wrk, struct 
->>> w_step *w)
->>>       unsigned int nr_obj = 2 + w->data_deps.nr;
->>>       unsigned int i;
->>> +    w->bb_size = 4096;
->>>       w->i915.obj = calloc(nr_obj, sizeof(*w->i915.obj));
->>>       igt_assert(w->i915.obj);
->>> @@ -1522,7 +1524,7 @@ alloc_step_batch(struct workload *wrk, struct 
->>> w_step *w)
->>>           igt_assert(j < nr_obj);
->>>       }
->>> -    w->bb_handle = w->i915.obj[j].handle = gem_create(fd, 4096);
->>> +    w->bb_handle = w->i915.obj[j].handle = gem_create(fd, w->bb_size);
->>>       w->i915.obj[j].relocation_count = create_bb(w, j);
->>>       igt_assert(w->i915.obj[j].relocation_count <= 
->>> ARRAY_SIZE(w->i915.reloc));
->>>       w->i915.obj[j].relocs_ptr = to_user_pointer(&w->i915.reloc);
->>> @@ -1722,7 +1724,7 @@ static void measure_active_set(struct workload 
->>> *wrk)
->>>           if (w->type != BATCH)
->>>               continue;
->>> -        batch_sizes += 4096;
->>> +        batch_sizes += w->bb_size;
->>>           for (j = 0; j < w->data_deps.nr; j++) {
->>>               struct dep_entry *dep = &w->data_deps.list[j];
+>>> @@ -1186,6 +1186,8 @@ parse_workload(struct w_arg *arg, unsigned int 
+>>> flags, double scale_dur,
+>>>   add_step:
+>>>           if (step.type == DELAY)
+>>>               step.delay = __duration(step.delay, scale_time);
+>>> +        else if (step.type == PERIOD)
+>>> +            step.period = __duration(step.period, scale_time);
+>>>           step.idx = nr_steps++;
+>>>           step.request = -1;
