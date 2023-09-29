@@ -1,18 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 19A5810E24E
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Sep 2023 12:19:27 +0000 (UTC)
-Date: Thu, 7 Sep 2023 14:19:21 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230907121921.766n7zyuxmpmpztp@kamilkon-desk.igk.intel.com>
-References: <20230907101852.522819-1-mauro.chehab@linux.intel.com>
- <20230907101852.522819-2-mauro.chehab@linux.intel.com>
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7419F10E065
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 Sep 2023 14:45:55 +0000 (UTC)
+Message-ID: <4c354881-d263-69a5-78ba-ca32a687e302@collabora.com>
+Date: Fri, 29 Sep 2023 11:45:45 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230907101852.522819-2-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 1/7] test_list.py: add support for
- reading testlist regular expressions
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Rob Clark <robdclark@gmail.com>,
+ Emma Anholt <emma@anholt.net>, Daniel Stone <daniel@fooishbar.org>,
+ Rob Clark <robdclark@chromium.org>,
+ =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
+References: <20230928210527.268270-1-robdclark@gmail.com>
+ <20230929093459.4dhd3tk35q6u2yd2@kamilkon-desk.igk.intel.com>
+Content-Language: en-US
+From: Helen Koike <helen.koike@collabora.com>
+In-Reply-To: <20230929093459.4dhd3tk35q6u2yd2@kamilkon-desk.igk.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH v4] core_getversion: Test for desired device
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,156 +27,87 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: tomasz.mistat@intel.com, jari.tahvanainen@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mauro,
 
-On 2023-09-07 at 12:17:32 +0200, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+
+On 29/09/2023 06:34, Kamil Konieczny wrote:
+> Hi Rob,
 > 
-> If defined, use testlist and blocklist files to update the
-> fields that use it.
+> On 2023-09-28 at 14:05:27 -0700, Rob Clark wrote:
+>> From: Rob Clark <robdclark@chromium.org>
+>>
+>> We discovered in drm/ci that if the drm device fails to probe, all the
+>> tests come back as "Skip" and the job is considered successful. Fix
+>> the getversion test to fail if there is no drm device or if the drm
+>> device does not match the expected device as specified by the optional
+>> IGT_REQUIRED_DRIVER environment variable.
+> ----- ^^^^^^^^
+> FORCE
 > 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-> ---
->  scripts/test_list.py | 75 ++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 75 insertions(+)
+>>
+>> Signed-off-by: Rob Clark <robdclark@chromium.org>
+>> Acked-by: Helen Koike <helen.koike@collabora.com>
+>> Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+>> ---
+>> I dropped the previous two lib/drmtest patches, as they are no longer
+>> strictly required.  I think they are still nice-to-have, but they are
+>> unchanged since the previous version so it didn't seem useful to re-
+>> send them.
+>>
+>>   tests/core_getversion.c | 9 ++++++++-
+>>   1 file changed, 8 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/tests/core_getversion.c b/tests/core_getversion.c
+>> index 32cb976e4923..8c8e0c9a3e5e 100644
+>> --- a/tests/core_getversion.c
+>> +++ b/tests/core_getversion.c
+>> @@ -48,14 +48,21 @@ igt_simple_main
+>>   {
+>>   	int fd;
+>>   	drmVersionPtr v;
+>> +	const char *name = getenv("IGT_FORCE_DRIVER");
+>>   
+>> -	fd = drm_open_driver(DRIVER_ANY);
+>> +	fd = __drm_open_driver(DRIVER_ANY);
 > 
-> diff --git a/scripts/test_list.py b/scripts/test_list.py
-> index 2171f8b50617..c1518a904baf 100644
-> --- a/scripts/test_list.py
-> +++ b/scripts/test_list.py
-> @@ -260,6 +260,8 @@ class TestList:
->          self.igt_build_path = igt_build_path
->          self.level_count = 0
->          self.field_list = {}
-> +        self.testlist = {}
-> +        self.blocklist = {}
->          self.title = None
->          self.filters = {}
->          self.subtest_separator = subtest_separator
-> @@ -327,6 +329,23 @@ class TestList:
->                  if sublevel_count[level - 1] == 1:
->                      del item["_properties_"]["level"]
->                      del item["_properties_"]["sublevel"]
-> +
-> +            # Read testlist files if any
-> +            if "testlists" in item["_properties_"]:
-> +                testlist = {}
-> +                for name in item["_properties_"]["testlists"].keys():
-> +                    self.read_testlist(testlist, name, cfg_path + item["_properties_"]["testlists"][name])
-> +
-> +                item["_properties_"]["testlist"] = testlist
-> +
-> +            # Read blocklist files if any
-> +            if "blocklists" in item["_properties_"]:
-> +                blocklist = {}
-> +                for name in item["_properties_"]["blocklists"].keys():
-> +                    self.read_testlist(blocklist, name, cfg_path + item["_properties_"]["blocklists"][name])
+> Did you tested it?
 
-May you read this in separate function? It is often regex,
-not igt@testname@subtest-name, for example:
+I did! :)
 
-igt@gem_concurrent_blit(@.*)?
+With drm-ci:
 
-igt@.*@.*-hibernate
+https://gitlab.freedesktop.org/helen.fo
+rnazier/linux/-/pipelines/997824
 
-Regards,
-Kamil
+I could see that msm jobs failed here, but the others didn't.
+(the jobs from the others are red because of other failures from my 
+tests, but core_getversion passed).
 
-> +
-> +                item["_properties_"]["blocklist"] = blocklist
-> +
->          if "_properties_" in self.props:
->              del self.props["_properties_"]
->  
-> @@ -427,6 +446,19 @@ class TestList:
->  
->              self.__add_field(key, sublevel, hierarchy_level, field[key])
->  
-> +    def read_testlist(self, testlist, name, filename):
-> +        base = r"^\s*({}[^\s\{}]+)(\S*)\s*(\#.*)?$"
-> +        regex = re.compile(base.format(self.main_name, self.subtest_separator))
-> +
-> +        testlist[name] = []
-> +        with open(filename, 'r', newline = '', encoding = 'utf8') as fp:
-> +            for line in fp:
-> +                match = regex.match(line)
-> +                if match:
-> +                    test = match.group(1)
-> +                    subtest = match.group(2)
-> +                    testlist[name].append(re.compile(f"{test}{subtest}"))
-> +
->      def __filter_subtest(self, test, subtest, field_not_found_value):
->  
->          """ Apply filter criteria to subtests """
-> @@ -444,6 +476,45 @@ class TestList:
->          # None of the filtering rules were applied
->          return False
->  
-> +    def update_testlist_field(self, subtest_dict):
-> +        for field in self.props.keys():
-> +            if "_properties_" not in self.props[field]:
-> +                continue
-> +
-> +            if "testlist" not in self.props[field]["_properties_"]:
-> +                continue
-> +
-> +            testname = subtest_dict["_summary_"]
-> +
-> +            value = subtest_dict.get(field)
-> +            if value:
-> +                values = set(re.split(",\s*", value))
-> +            else:
-> +                values = set()
-> +
-> +            for names, regex_array in self.props[field]["_properties_"]["testlist"].items():
-> +                name = set(re.split(",\s*", names))
-> +                for regex in regex_array:
-> +                    if regex.match(testname):
-> +                        values.update(name)
-> +                        break
-> +
-> +            # If test is at a global blocklist, ignore it
-> +            set_full_if_empty = True
-> +            if "blocklist" in self.props[field]["_properties_"]:
-> +                for names, regex_array in self.props[field]["_properties_"]["testlist"].items():
-> +                    deleted_names = set(re.split(",\s*", names))
-> +                    for regex in regex_array:
-> +                        if regex.match(testname):
-> +                            if sorted(deleted_names) == sorted(values):
-> +                                set_full_if_empty = False
-> +                            values.discard(deleted_names)
-> +
-> +            if set_full_if_empty and not values:
-> +                values = set(["FULL"])
-> +
-> +            subtest_dict[field] = ", ".join(sorted(values))
-> +
->      def expand_subtest(self, fname, test_name, test, allow_inherit, with_lines = False, with_subtest_nr = False):
->  
->          """Expand subtest wildcards providing an array with subtests"""
-> @@ -476,6 +547,8 @@ class TestList:
->  
->                      subtest_dict[k] = self.doc[test]["subtest"][subtest][k]
->  
-> +                self.update_testlist_field(subtest_dict)
-> +
->                  if with_lines:
->                      subtest_dict["line"] = file_ln
->  
-> @@ -549,6 +622,8 @@ class TestList:
->  
->                      subtest_dict[field] = sub_field
->  
-> +                self.update_testlist_field(subtest_dict)
-> +
->                  if with_lines:
->                      subtest_dict["line"] = file_ln
->  
-> -- 
-> 2.41.0
+Tested-by: Helen Koike <helen.koike@collabora.com>
+
 > 
-
+>> +	igt_assert_fd(fd);
+> 
+> imho better igt_assert_f(fd > 0, "Error opening driver, forced: %s\n", name ? name : "(not-used)");
+> 
+> Regards,
+> Kamil
+> 
+>>   	v = drmGetVersion(fd);
+>>   	igt_assert_neq(strlen(v->name), 0);
+>>   	igt_assert_neq(strlen(v->date), 0);
+>>   	igt_assert_neq(strlen(v->desc), 0);
+>>   	if (is_i915_device(fd))
+>>   		igt_assert_lte(1, v->version_major);
+>> +	if (name) {
+>> +		igt_assert_f(!strcmp(name, v->name),
+>> +			     "Expected driver \"%s\" but got \"%s\"\n",
+>> +			     name, v->name);
+>> +	}
+>>   
+>>   	drmFree(v);
+>>   	drm_close_driver(fd);
+>> -- 
+>> 2.41.0
+>>
