@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ECF4A10E6CC
- for <igt-dev@lists.freedesktop.org>; Fri, 29 Sep 2023 08:29:23 +0000 (UTC)
-Message-ID: <856aad30-db03-4fe7-e70b-8b7926ebb7c7@linux.intel.com>
-Date: Fri, 29 Sep 2023 09:01:00 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E118310E6CC
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 Sep 2023 08:31:31 +0000 (UTC)
+Message-ID: <cb0a620c-bc76-b7a8-0381-71311f99da01@linux.intel.com>
+Date: Fri, 29 Sep 2023 09:28:09 +0100
 MIME-Version: 1.0
 Content-Language: en-US
 To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
  igt-dev@lists.freedesktop.org
 References: <20230928174535.2074462-1-marcin.bernatowicz@linux.intel.com>
- <20230928174535.2074462-4-marcin.bernatowicz@linux.intel.com>
+ <20230928174535.2074462-11-marcin.bernatowicz@linux.intel.com>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20230928174535.2074462-4-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20230928174535.2074462-11-marcin.bernatowicz@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 03/17] benchmarks/gem_wsim: fix scaling
- of period steps
+Subject: Re: [igt-dev] [PATCH i-g-t 10/17] benchmarks/gem_wsim: allow
+ comments in workload description files
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,62 +30,95 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 
 On 28/09/2023 18:45, Marcin Bernatowicz wrote:
-> Period steps take scale time (-F) command line option into account.
-
-"Make period steps.."?
-
-"Periods steps should take.."?
-
-> This allows to scale workload without need to modify .wsim file
+> Lines starting with '#' are skipped.
+> If command line step separator (',') is encountered after '#'
+> it is replaced with ';' to not break parsing.
 > 
-> ex. having following example.wsim
+> v2:
+> - SKIP step type is not needed (Tvrtko)
+> v3:
+> - correct README comment (Tvrtko)
+> - removed hunk for trailing comments after BATCH step,
+>    as some other steps do not support it either (Tvrtko)
 > 
-> 1.VCS1.3000.0.1
-> 1.RCS.500-1000.-1.0
-> 1.RCS.3700.0.0
-> 1.RCS.1000.-2.0
-> 1.VCS2.2300.-2.0
-> 1.RCS.4700.-1.0
-> 1.VCS2.600.-1.1
-> p.16000
+> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> ---
+>   benchmarks/gem_wsim.c  | 16 ++++++++++++++++
+>   benchmarks/wsim/README |  2 ++
+>   2 files changed, 18 insertions(+)
 > 
-> we can scale the whole workload x10 with:
-> 
-> gem_wsim -w example.wsim -f 10 -F 10
-> 
-> -f is for batch duration steps, -F for period and delay steps
+> diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
+> index 8cd68058d..87c68316d 100644
+> --- a/benchmarks/gem_wsim.c
+> +++ b/benchmarks/gem_wsim.c
+> @@ -43,6 +43,7 @@
+>   #include <limits.h>
+>   #include <pthread.h>
+>   #include <math.h>
+> +#include <ctype.h>
+>   
+>   #include "drm.h"
+>   #include "drmtest.h"
+> @@ -813,6 +814,14 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+>   		if (field) {
+>   			fstart = NULL;
+>   
+> +			/* line starting with # is a comment */
+> +			if (field[0] == '#') {
+> +				if (verbose > 3)
+> +					printf("skipped line: %s\n", _token);
+> +				free(token);
+> +				continue;
+> +			}
+> +
+>   			if (!strcmp(field, "d")) {
+>   				int_field(DELAY, delay, tmp <= 0,
+>   					  "Invalid delay at step %u!\n");
+> @@ -2421,6 +2430,13 @@ static char *load_workload_descriptor(char *filename)
+>   	close(infd);
+>   
+>   	for (i = 0; i < len; i++) {
+> +		/* '#' starts comment till end of line */
+> +		if (buf[i] == '#')
+> +			/* replace ',' in comments to not break parsing */
+> +			while (++i < len && buf[i] != '\n')
+> +				if (buf[i] == ',')
+> +					buf[i] = ';';
+> +
+>   		if (buf[i] == '\n')
+>   			buf[i] = ',';
 
-Actually I am having a little bit of a second thought here. Thinking 
-that perhaps it was deliberate to not scale periods.
+Is it a out of bounds access here if ++i < len was hit above? Would 
+happen if file ends with a hash, I think.
 
-Think of it like this. -f 0.5 simulates a twice as fast GPU. -F 2 
-simulates a twice as slow CPU.
+Maybe:
 
-In both cases if something wants to hit 60 fps, it still wants to hit 60 
-fps. What use case for scaling the period do you have in mind?
+if (buf[i] == '#') {
+	in_comment = true;
+} else if (buf[i] == '\n')
+	buf[i] = ',';
+	in_comment = false;
+} else if (in_comment && buf[i] == ',')
+	buf[i] = ';';
+}
+
+But please triple check. :)
 
 Regards,
 
 Tvrtko
 
-> v2:
-> - apply same approach as with DELAY step (Tvrtko)
-> 
-> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> ---
->   benchmarks/gem_wsim.c | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-> index 42690d3d0..41557517c 100644
-> --- a/benchmarks/gem_wsim.c
-> +++ b/benchmarks/gem_wsim.c
-> @@ -1186,6 +1186,8 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
->   add_step:
->   		if (step.type == DELAY)
->   			step.delay = __duration(step.delay, scale_time);
-> +		else if (step.type == PERIOD)
-> +			step.period = __duration(step.period, scale_time);
+>   	}
+> diff --git a/benchmarks/wsim/README b/benchmarks/wsim/README
+> index 8c71f2fe6..d4f3dd8ae 100644
+> --- a/benchmarks/wsim/README
+> +++ b/benchmarks/wsim/README
+> @@ -1,6 +1,8 @@
+>   Workload descriptor format
+>   ==========================
 >   
->   		step.idx = nr_steps++;
->   		step.request = -1;
+> +Lines starting with '#' are treated as comments and will not create a work step.
+> +
+>   ctx.engine.duration_us.dependency.wait,...
+>   <uint>.<str>.<uint>[-<uint>]|*.<int <= 0>[/<int <= 0>][...].<0|1>,...
+>   B.<uint>
