@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7BB5810E6CC
- for <igt-dev@lists.freedesktop.org>; Fri, 29 Sep 2023 08:28:27 +0000 (UTC)
-Message-ID: <3dc055e0-340b-4685-e767-0e72800e9d63@linux.intel.com>
-Date: Fri, 29 Sep 2023 09:11:23 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ECF4A10E6CC
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 Sep 2023 08:29:23 +0000 (UTC)
+Message-ID: <856aad30-db03-4fe7-e70b-8b7926ebb7c7@linux.intel.com>
+Date: Fri, 29 Sep 2023 09:01:00 +0100
 MIME-Version: 1.0
 Content-Language: en-US
 To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
  igt-dev@lists.freedesktop.org
 References: <20230928174535.2074462-1-marcin.bernatowicz@linux.intel.com>
- <20230928174535.2074462-10-marcin.bernatowicz@linux.intel.com>
+ <20230928174535.2074462-4-marcin.bernatowicz@linux.intel.com>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20230928174535.2074462-10-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20230928174535.2074462-4-marcin.bernatowicz@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 09/17] benchmarks/gem_wsim: use lib code
- to query engines
+Subject: Re: [igt-dev] [PATCH i-g-t 03/17] benchmarks/gem_wsim: fix scaling
+ of period steps
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,227 +30,62 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 
 On 28/09/2023 18:45, Marcin Bernatowicz wrote:
-> Use code in lib/i915/gem_engine_topology to query engines.
-> 
-> v2:
-> - keep i unsigned, restore igt_assert(count)
->    in num_engines_in_class (Tvrtko)
-> 
-> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> ---
->   benchmarks/gem_wsim.c | 153 +++++-------------------------------------
->   1 file changed, 17 insertions(+), 136 deletions(-)
-> 
-> diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-> index 10ad6cf75..8cd68058d 100644
-> --- a/benchmarks/gem_wsim.c
-> +++ b/benchmarks/gem_wsim.c
-> @@ -456,146 +456,27 @@ static int str_to_engine(const char *str)
->   	return -1;
->   }
->   
-> -static bool __engines_queried;
-> -static unsigned int __num_engines;
-> -static struct i915_engine_class_instance *__engines;
-> -
-> -static int
-> -__i915_query(int i915, struct drm_i915_query *q)
-> -{
-> -	if (igt_ioctl(i915, DRM_IOCTL_I915_QUERY, q))
-> -		return -errno;
-> -	return 0;
-> -}
-> -
-> -static int
-> -__i915_query_items(int i915, struct drm_i915_query_item *items, uint32_t n_items)
-> -{
-> -	struct drm_i915_query q = {
-> -		.num_items = n_items,
-> -		.items_ptr = to_user_pointer(items),
-> -	};
-> -	return __i915_query(i915, &q);
-> -}
-> -
-> -static void
-> -i915_query_items(int i915, struct drm_i915_query_item *items, uint32_t n_items)
-> -{
-> -	igt_assert_eq(__i915_query_items(i915, items, n_items), 0);
-> -}
-> -
-> -static bool has_engine_query(int i915)
-> -{
-> -	struct drm_i915_query_item item = {
-> -		.query_id = DRM_I915_QUERY_ENGINE_INFO,
-> -	};
-> -
-> -	return __i915_query_items(i915, &item, 1) == 0 && item.length > 0;
-> -}
-> -
-> -static void query_engines(void)
-> +static struct intel_engine_data *query_engines(void)
->   {
-> -	struct i915_engine_class_instance *engines;
-> -	unsigned int num;
-> -
-> -	if (__engines_queried)
-> -		return;
-> -
-> -	__engines_queried = true;
-> -
-> -	if (!has_engine_query(fd)) {
-> -		unsigned int num_bsd = gem_has_bsd(fd) + gem_has_bsd2(fd);
-> -		unsigned int i = 0;
-> -
-> -		igt_assert(num_bsd);
-> -
-> -		num = 1 + num_bsd;
-> +	static struct intel_engine_data engines = {};
->   
-> -		if (gem_has_blt(fd))
-> -			num++;
-> +	if (engines.nengines)
-> +		return &engines;
->   
-> -		if (gem_has_vebox(fd))
-> -			num++;
-> -
-> -		engines = calloc(num,
-> -				 sizeof(struct i915_engine_class_instance));
-> -		igt_assert(engines);
-> -
-> -		engines[i].engine_class = I915_ENGINE_CLASS_RENDER;
-> -		engines[i].engine_instance = 0;
-> -		i++;
-> -
-> -		if (gem_has_blt(fd)) {
-> -			engines[i].engine_class = I915_ENGINE_CLASS_COPY;
-> -			engines[i].engine_instance = 0;
-> -			i++;
-> -		}
-> -
-> -		if (gem_has_bsd(fd)) {
-> -			engines[i].engine_class = I915_ENGINE_CLASS_VIDEO;
-> -			engines[i].engine_instance = 0;
-> -			i++;
-> -		}
-> -
-> -		if (gem_has_bsd2(fd)) {
-> -			engines[i].engine_class = I915_ENGINE_CLASS_VIDEO;
-> -			engines[i].engine_instance = 1;
-> -			i++;
-> -		}
-> -
-> -		if (gem_has_vebox(fd)) {
-> -			engines[i].engine_class =
-> -				I915_ENGINE_CLASS_VIDEO_ENHANCE;
-> -			engines[i].engine_instance = 0;
-> -			i++;
-> -		}
-> -	} else {
-> -		struct drm_i915_query_engine_info *engine_info;
-> -		struct drm_i915_query_item item = {
-> -			.query_id = DRM_I915_QUERY_ENGINE_INFO,
-> -		};
-> -		const unsigned int sz = 4096;
-> -		unsigned int i;
-> -
-> -		engine_info = malloc(sz);
-> -		igt_assert(engine_info);
-> -		memset(engine_info, 0, sz);
-> -
-> -		item.data_ptr = to_user_pointer(engine_info);
-> -		item.length = sz;
-> -
-> -		i915_query_items(fd, &item, 1);
-> -		igt_assert(item.length > 0);
-> -		igt_assert(item.length <= sz);
-> -
-> -		num = engine_info->num_engines;
-> -
-> -		engines = calloc(num,
-> -				 sizeof(struct i915_engine_class_instance));
-> -		igt_assert(engines);
-> -
-> -		for (i = 0; i < num; i++) {
-> -			struct drm_i915_engine_info *engine =
-> -				(struct drm_i915_engine_info *)&engine_info->engines[i];
-> -
-> -			engines[i] = engine->engine;
-> -		}
-> -	}
-> -
-> -	__engines = engines;
-> -	__num_engines = num;
-> +	engines = intel_engine_list_of_physical(fd);
-> +	igt_assert(engines.nengines);
-> +	return &engines;
->   }
->   
->   static unsigned int num_engines_in_class(enum intel_engine_id class)
->   {
-> +	const struct intel_engine_data *engines = query_engines();
->   	unsigned int i, count = 0;
->   
->   	igt_assert(class == VCS);
->   
-> -	query_engines();
-> -
-> -	for (i = 0; i < __num_engines; i++) {
-> -		if (__engines[i].engine_class == I915_ENGINE_CLASS_VIDEO)
-> +	for (i = 0; i < engines->nengines; i++) {
-> +		if (engines->engines[i].class == I915_ENGINE_CLASS_VIDEO)
->   			count++;
->   	}
->   
-> @@ -607,16 +488,15 @@ static void
->   fill_engines_id_class(enum intel_engine_id *list,
->   		      enum intel_engine_id class)
->   {
-> +	const struct intel_engine_data *engines = query_engines();
->   	enum intel_engine_id engine = VCS1;
->   	unsigned int i, j = 0;
->   
->   	igt_assert(class == VCS);
->   	igt_assert(num_engines_in_class(VCS) <= 2);
->   
-> -	query_engines();
-> -
-> -	for (i = 0; i < __num_engines; i++) {
-> -		if (__engines[i].engine_class != I915_ENGINE_CLASS_VIDEO)
-> +	for (i = 0; i < engines->nengines; i++) {
-> +		if (engines->engines[i].class != I915_ENGINE_CLASS_VIDEO)
->   			continue;
->   
->   		list[j++] = engine++;
-> @@ -626,17 +506,18 @@ fill_engines_id_class(enum intel_engine_id *list,
->   static unsigned int
->   find_physical_instance(enum intel_engine_id class, unsigned int logical)
->   {
-> +	const struct intel_engine_data *engines = query_engines();
->   	unsigned int i, j = 0;
->   
->   	igt_assert(class == VCS);
->   
-> -	for (i = 0; i < __num_engines; i++) {
-> -		if (__engines[i].engine_class != I915_ENGINE_CLASS_VIDEO)
-> +	for (i = 0; i < engines->nengines; i++) {
-> +		if (engines->engines[i].class != I915_ENGINE_CLASS_VIDEO)
->   			continue;
->   
->   		/* Map logical to physical instances. */
->   		if (logical == j++)
-> -			return __engines[i].engine_instance;
-> +			return engines->engines[i].instance;
->   	}
->   
->   	igt_assert(0);
+> Period steps take scale time (-F) command line option into account.
 
-Looks fine - I couldn't spot a problem when I looked at the details a 
-little bit more during the last round of review. I trust you are smoke 
-testing against both drivers at least a little bit.
+"Make period steps.."?
 
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+"Periods steps should take.."?
+
+> This allows to scale workload without need to modify .wsim file
+> 
+> ex. having following example.wsim
+> 
+> 1.VCS1.3000.0.1
+> 1.RCS.500-1000.-1.0
+> 1.RCS.3700.0.0
+> 1.RCS.1000.-2.0
+> 1.VCS2.2300.-2.0
+> 1.RCS.4700.-1.0
+> 1.VCS2.600.-1.1
+> p.16000
+> 
+> we can scale the whole workload x10 with:
+> 
+> gem_wsim -w example.wsim -f 10 -F 10
+> 
+> -f is for batch duration steps, -F for period and delay steps
+
+Actually I am having a little bit of a second thought here. Thinking 
+that perhaps it was deliberate to not scale periods.
+
+Think of it like this. -f 0.5 simulates a twice as fast GPU. -F 2 
+simulates a twice as slow CPU.
+
+In both cases if something wants to hit 60 fps, it still wants to hit 60 
+fps. What use case for scaling the period do you have in mind?
 
 Regards,
 
 Tvrtko
+
+> v2:
+> - apply same approach as with DELAY step (Tvrtko)
+> 
+> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> ---
+>   benchmarks/gem_wsim.c | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
+> index 42690d3d0..41557517c 100644
+> --- a/benchmarks/gem_wsim.c
+> +++ b/benchmarks/gem_wsim.c
+> @@ -1186,6 +1186,8 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+>   add_step:
+>   		if (step.type == DELAY)
+>   			step.delay = __duration(step.delay, scale_time);
+> +		else if (step.type == PERIOD)
+> +			step.period = __duration(step.period, scale_time);
+>   
+>   		step.idx = nr_steps++;
+>   		step.request = -1;
