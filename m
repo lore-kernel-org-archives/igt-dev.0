@@ -1,17 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 163B510E0FA
- for <igt-dev@lists.freedesktop.org>; Fri, 29 Sep 2023 10:12:13 +0000 (UTC)
-From: Anshuman Gupta <anshuman.gupta@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 29 Sep 2023 15:41:54 +0530
-Message-Id: <20230929101155.614980-2-anshuman.gupta@intel.com>
-In-Reply-To: <20230929101155.614980-1-anshuman.gupta@intel.com>
-References: <20230929101155.614980-1-anshuman.gupta@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1C2E410E112
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 Sep 2023 10:36:19 +0000 (UTC)
+Message-ID: <72bb6e86-45e3-0c9b-36b3-5b5c791d7047@linux.intel.com>
+Date: Fri, 29 Sep 2023 12:35:58 +0200
 MIME-Version: 1.0
+Content-Language: en-US
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20230928174535.2074462-1-marcin.bernatowicz@linux.intel.com>
+ <20230928174535.2074462-10-marcin.bernatowicz@linux.intel.com>
+ <3dc055e0-340b-4685-e767-0e72800e9d63@linux.intel.com>
+From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <3dc055e0-340b-4685-e767-0e72800e9d63@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 1/2] test/xe_pm: Add exit handler to
- close fw handle
+Subject: Re: [igt-dev] [PATCH i-g-t 09/17] benchmarks/gem_wsim: use lib code
+ to query engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,96 +24,232 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: rodrigo.vivi@intel.com
+Cc: chris.p.wilson@linux.intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Adding an exit handler to close the fw handle to make sure we don't
-leak the fw in CI environment. Adding a IGT subtest group for the
-test using the fw handle to runtime wake the device.
-Scaling forcewake close exit handler for vram-d3cold-threshold
-subtest, while doing so add the missing subtest Functionality
-as well.
 
-Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
----
- tests/intel/xe_pm.c | 34 +++++++++++++++++++++++++---------
- 1 file changed, 25 insertions(+), 9 deletions(-)
 
-diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-index fd28d5630..48518a5e5 100644
---- a/tests/intel/xe_pm.c
-+++ b/tests/intel/xe_pm.c
-@@ -39,6 +39,7 @@ typedef struct {
- } device_t;
- 
- uint64_t orig_threshold;
-+int fw_handle = -1;
- 
- /* runtime_usage is only available if kernel build CONFIG_PM_ADVANCED_DEBUG */
- static bool runtime_usage_available(struct pci_device *pci)
-@@ -166,6 +167,14 @@ static bool out_of_d3(device_t device, enum igt_acpi_d_state state)
- 	return true;
- }
- 
-+static void close_fw_handle(int sig)
-+{
-+	if (fw_handle < 0)
-+		return;
-+
-+	close(fw_handle);
-+}
-+
- /**
-  * SUBTEST: %s-basic
-  * Description: set GPU state to %arg[1] and test suspend/autoresume
-@@ -381,7 +390,7 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
- 	};
- 	uint64_t vram_used_mb = 0, vram_total_mb = 0, threshold;
- 	uint32_t bo, flags;
--	int handle, i;
-+	int i;
- 	bool active;
- 	void *map;
- 
-@@ -427,10 +436,10 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
- 	 * the device from runtime suspend.
- 	 * Therefore open and close fw handle to wake the device.
- 	 */
--	handle = igt_debugfs_open(device.fd_xe, "forcewake_all", O_RDONLY);
--	igt_assert(handle >= 0);
-+	fw_handle = igt_debugfs_open(device.fd_xe, "forcewake_all", O_RDONLY);
-+	igt_assert(fw_handle >= 0);
- 	active = igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE;
--	close(handle);
-+	close(fw_handle);
- 	igt_assert(active);
- 
- 	/* Test D3Cold again after freeing up the Xe BO */
-@@ -535,11 +544,18 @@ igt_main
- 		}
- 	}
- 
--	igt_describe("Validate whether card is limited to d3hot, if vram used > vram threshold");
--	igt_subtest("vram-d3cold-threshold") {
--		orig_threshold = get_vram_d3cold_threshold(sysfs_fd);
--		igt_install_exit_handler(vram_d3cold_threshold_restore);
--		test_vram_d3cold_threshold(device, sysfs_fd);
-+	igt_subtest_group {
-+		igt_fixture {
-+			igt_install_exit_handler(close_fw_handle);
-+		}
-+
-+		igt_describe("Validate whether card is limited to d3hot,"
-+			     "if vram used > vram threshold");
-+		igt_subtest("vram-d3cold-threshold") {
-+			orig_threshold = get_vram_d3cold_threshold(sysfs_fd);
-+			igt_install_exit_handler(vram_d3cold_threshold_restore);
-+			test_vram_d3cold_threshold(device, sysfs_fd);
-+		}
- 	}
- 
- 	igt_fixture {
--- 
-2.25.1
+On 9/29/2023 10:11 AM, Tvrtko Ursulin wrote:
+> 
+> On 28/09/2023 18:45, Marcin Bernatowicz wrote:
+>> Use code in lib/i915/gem_engine_topology to query engines.
+>>
+>> v2:
+>> - keep i unsigned, restore igt_assert(count)
+>>    in num_engines_in_class (Tvrtko)
+>>
+>> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+>> ---
+>>   benchmarks/gem_wsim.c | 153 +++++-------------------------------------
+>>   1 file changed, 17 insertions(+), 136 deletions(-)
+>>
+>> diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
+>> index 10ad6cf75..8cd68058d 100644
+>> --- a/benchmarks/gem_wsim.c
+>> +++ b/benchmarks/gem_wsim.c
+>> @@ -456,146 +456,27 @@ static int str_to_engine(const char *str)
+>>       return -1;
+>>   }
+>> -static bool __engines_queried;
+>> -static unsigned int __num_engines;
+>> -static struct i915_engine_class_instance *__engines;
+>> -
+>> -static int
+>> -__i915_query(int i915, struct drm_i915_query *q)
+>> -{
+>> -    if (igt_ioctl(i915, DRM_IOCTL_I915_QUERY, q))
+>> -        return -errno;
+>> -    return 0;
+>> -}
+>> -
+>> -static int
+>> -__i915_query_items(int i915, struct drm_i915_query_item *items, 
+>> uint32_t n_items)
+>> -{
+>> -    struct drm_i915_query q = {
+>> -        .num_items = n_items,
+>> -        .items_ptr = to_user_pointer(items),
+>> -    };
+>> -    return __i915_query(i915, &q);
+>> -}
+>> -
+>> -static void
+>> -i915_query_items(int i915, struct drm_i915_query_item *items, 
+>> uint32_t n_items)
+>> -{
+>> -    igt_assert_eq(__i915_query_items(i915, items, n_items), 0);
+>> -}
+>> -
+>> -static bool has_engine_query(int i915)
+>> -{
+>> -    struct drm_i915_query_item item = {
+>> -        .query_id = DRM_I915_QUERY_ENGINE_INFO,
+>> -    };
+>> -
+>> -    return __i915_query_items(i915, &item, 1) == 0 && item.length > 0;
+>> -}
+>> -
+>> -static void query_engines(void)
+>> +static struct intel_engine_data *query_engines(void)
+>>   {
+>> -    struct i915_engine_class_instance *engines;
+>> -    unsigned int num;
+>> -
+>> -    if (__engines_queried)
+>> -        return;
+>> -
+>> -    __engines_queried = true;
+>> -
+>> -    if (!has_engine_query(fd)) {
+>> -        unsigned int num_bsd = gem_has_bsd(fd) + gem_has_bsd2(fd);
+>> -        unsigned int i = 0;
+>> -
+>> -        igt_assert(num_bsd);
+>> -
+>> -        num = 1 + num_bsd;
+>> +    static struct intel_engine_data engines = {};
+>> -        if (gem_has_blt(fd))
+>> -            num++;
+>> +    if (engines.nengines)
+>> +        return &engines;
+>> -        if (gem_has_vebox(fd))
+>> -            num++;
+>> -
+>> -        engines = calloc(num,
+>> -                 sizeof(struct i915_engine_class_instance));
+>> -        igt_assert(engines);
+>> -
+>> -        engines[i].engine_class = I915_ENGINE_CLASS_RENDER;
+>> -        engines[i].engine_instance = 0;
+>> -        i++;
+>> -
+>> -        if (gem_has_blt(fd)) {
+>> -            engines[i].engine_class = I915_ENGINE_CLASS_COPY;
+>> -            engines[i].engine_instance = 0;
+>> -            i++;
+>> -        }
+>> -
+>> -        if (gem_has_bsd(fd)) {
+>> -            engines[i].engine_class = I915_ENGINE_CLASS_VIDEO;
+>> -            engines[i].engine_instance = 0;
+>> -            i++;
+>> -        }
+>> -
+>> -        if (gem_has_bsd2(fd)) {
+>> -            engines[i].engine_class = I915_ENGINE_CLASS_VIDEO;
+>> -            engines[i].engine_instance = 1;
+>> -            i++;
+>> -        }
+>> -
+>> -        if (gem_has_vebox(fd)) {
+>> -            engines[i].engine_class =
+>> -                I915_ENGINE_CLASS_VIDEO_ENHANCE;
+>> -            engines[i].engine_instance = 0;
+>> -            i++;
+>> -        }
+>> -    } else {
+>> -        struct drm_i915_query_engine_info *engine_info;
+>> -        struct drm_i915_query_item item = {
+>> -            .query_id = DRM_I915_QUERY_ENGINE_INFO,
+>> -        };
+>> -        const unsigned int sz = 4096;
+>> -        unsigned int i;
+>> -
+>> -        engine_info = malloc(sz);
+>> -        igt_assert(engine_info);
+>> -        memset(engine_info, 0, sz);
+>> -
+>> -        item.data_ptr = to_user_pointer(engine_info);
+>> -        item.length = sz;
+>> -
+>> -        i915_query_items(fd, &item, 1);
+>> -        igt_assert(item.length > 0);
+>> -        igt_assert(item.length <= sz);
+>> -
+>> -        num = engine_info->num_engines;
+>> -
+>> -        engines = calloc(num,
+>> -                 sizeof(struct i915_engine_class_instance));
+>> -        igt_assert(engines);
+>> -
+>> -        for (i = 0; i < num; i++) {
+>> -            struct drm_i915_engine_info *engine =
+>> -                (struct drm_i915_engine_info *)&engine_info->engines[i];
+>> -
+>> -            engines[i] = engine->engine;
+>> -        }
+>> -    }
+>> -
+>> -    __engines = engines;
+>> -    __num_engines = num;
+>> +    engines = intel_engine_list_of_physical(fd);
+>> +    igt_assert(engines.nengines);
+>> +    return &engines;
+>>   }
+>>   static unsigned int num_engines_in_class(enum intel_engine_id class)
+>>   {
+>> +    const struct intel_engine_data *engines = query_engines();
+>>       unsigned int i, count = 0;
+>>       igt_assert(class == VCS);
+>> -    query_engines();
+>> -
+>> -    for (i = 0; i < __num_engines; i++) {
+>> -        if (__engines[i].engine_class == I915_ENGINE_CLASS_VIDEO)
+>> +    for (i = 0; i < engines->nengines; i++) {
+>> +        if (engines->engines[i].class == I915_ENGINE_CLASS_VIDEO)
+>>               count++;
+>>       }
+>> @@ -607,16 +488,15 @@ static void
+>>   fill_engines_id_class(enum intel_engine_id *list,
+>>                 enum intel_engine_id class)
+>>   {
+>> +    const struct intel_engine_data *engines = query_engines();
+>>       enum intel_engine_id engine = VCS1;
+>>       unsigned int i, j = 0;
+>>       igt_assert(class == VCS);
+>>       igt_assert(num_engines_in_class(VCS) <= 2);
+>> -    query_engines();
+>> -
+>> -    for (i = 0; i < __num_engines; i++) {
+>> -        if (__engines[i].engine_class != I915_ENGINE_CLASS_VIDEO)
+>> +    for (i = 0; i < engines->nengines; i++) {
+>> +        if (engines->engines[i].class != I915_ENGINE_CLASS_VIDEO)
+>>               continue;
+>>           list[j++] = engine++;
+>> @@ -626,17 +506,18 @@ fill_engines_id_class(enum intel_engine_id *list,
+>>   static unsigned int
+>>   find_physical_instance(enum intel_engine_id class, unsigned int 
+>> logical)
+>>   {
+>> +    const struct intel_engine_data *engines = query_engines();
+>>       unsigned int i, j = 0;
+>>       igt_assert(class == VCS);
+>> -    for (i = 0; i < __num_engines; i++) {
+>> -        if (__engines[i].engine_class != I915_ENGINE_CLASS_VIDEO)
+>> +    for (i = 0; i < engines->nengines; i++) {
+>> +        if (engines->engines[i].class != I915_ENGINE_CLASS_VIDEO)
+>>               continue;
+>>           /* Map logical to physical instances. */
+>>           if (logical == j++)
+>> -            return __engines[i].engine_instance;
+>> +            return engines->engines[i].instance;
+>>       }
+>>       igt_assert(0);
+> 
+> Looks fine - I couldn't spot a problem when I looked at the details a 
+> little bit more during the last round of review. I trust you are smoke 
+> testing against both drivers at least a little bit.
+
+Yes, I'm checking few workloads: media_nn_1080p_s2.wsim, 
+media_load_balance_fhd26u7.wsim and some artificial test_syntax.wsim
+on both drivers.
+--
+marcin
+> 
+> Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> 
+> Regards,
+> 
+> Tvrtko
