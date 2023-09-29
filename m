@@ -2,14 +2,14 @@ Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Intel-gfx@lists.freedesktop.org
-Date: Fri, 29 Sep 2023 13:25:12 +0100
-Message-Id: <20230929122517.349348-8-tvrtko.ursulin@linux.intel.com>
+Date: Fri, 29 Sep 2023 13:25:06 +0100
+Message-Id: <20230929122517.349348-2-tvrtko.ursulin@linux.intel.com>
 In-Reply-To: <20230929122517.349348-1-tvrtko.ursulin@linux.intel.com>
 References: <20230929122517.349348-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 07/12] lib/igt_drm_fdinfo: Copy over region
- map name on match
+Subject: [igt-dev] [PATCH i-g-t 01/12] tests/i915/drm_fdinfo: Check engine
+ info is supported
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,28 +24,27 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-I will need some record of which regions were found for intel_gpu_top so
-lets just copy over the region name from the map on the first match.
+On top of checking that parsing works, check that there are some engines
+present. This will be needed once the memory stats are added and so return
+value from __igt_parse_drm_fdinfo() will then be possible to be greater
+than zero even when engine stats are not supported.
 
 Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 ---
- lib/igt_drm_fdinfo.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tests/intel/drm_fdinfo.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/lib/igt_drm_fdinfo.c b/lib/igt_drm_fdinfo.c
-index b72822894782..222ccbfb1fd6 100644
---- a/lib/igt_drm_fdinfo.c
-+++ b/lib/igt_drm_fdinfo.c
-@@ -148,6 +148,10 @@ static int parse_region(char *line, struct drm_client_fdinfo *info,
- 		for (i = 0; i < region_entries; i++) {
- 			if (!strncmp(name, region_map[i], name_len)) {
- 				found = i;
-+				if (!info->region_names[info->num_regions][0]) {
-+					assert(name_len < sizeof(info->region_names[i]));
-+					strncpy(info->region_names[i], name, name_len);
-+				}
- 				break;
- 			}
- 		}
+diff --git a/tests/intel/drm_fdinfo.c b/tests/intel/drm_fdinfo.c
+index aca19db50680..344c44dce78b 100644
+--- a/tests/intel/drm_fdinfo.c
++++ b/tests/intel/drm_fdinfo.c
+@@ -737,6 +737,7 @@ igt_main
+ 
+ 		igt_require_gem(i915);
+ 		igt_require(igt_parse_drm_fdinfo(i915, &info, NULL, 0, NULL, 0));
++		igt_require(info.num_engines);
+ 
+ 		ctx = intel_ctx_create_all_physical(i915);
+ 
 -- 
 2.39.2
