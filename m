@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-To: igt-dev@lists.freedesktop.org,
-	Intel-gfx@lists.freedesktop.org
-Date: Fri, 29 Sep 2023 13:25:17 +0100
-Message-Id: <20230929122517.349348-13-tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20230929122517.349348-1-tvrtko.ursulin@linux.intel.com>
-References: <20230929122517.349348-1-tvrtko.ursulin@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============8672906984108698833=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 12/12] tools/intel_gpu_top: Add ability to
- show memory region breakdown
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Tvrtko Ursulin" <tvrtko.ursulin@linux.intel.com>
+Date: Fri, 29 Sep 2023 12:49:05 -0000
+Message-ID: <169599174508.19499.18204345989417969806@emeril.freedesktop.org>
+References: <20230929110949.342325-1-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20230929110949.342325-1-tvrtko.ursulin@linux.intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tools/in?=
+ =?utf-8?q?tel=5Fgpu=5Ftop=3A_Restore_user_friendly_error_message?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,190 +17,309 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+--===============8672906984108698833==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Similar as we can toggle between aggregated engines and clients, add the
-capability to toggle between aggregated and per memory region stats.
+== Series Details ==
 
-It starts in aggregated mode by default and interactive command 'm' and
-command line switch '-m' can be used to toggle that.
+Series: tools/intel_gpu_top: Restore user friendly error message
+URL   : https://patchwork.freedesktop.org/series/124448/
+State : success
 
-Both only affect the interactive view, while JSON output always contains
-separate memory regions.
+== Summary ==
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
----
- man/intel_gpu_top.rst |  4 ++++
- tools/intel_gpu_top.c | 56 +++++++++++++++++++++++++++++++++----------
- 2 files changed, 48 insertions(+), 12 deletions(-)
+CI Bug Log - changes from XEIGT_7506_BAT -> XEIGTPW_9895_BAT
+====================================================
 
-diff --git a/man/intel_gpu_top.rst b/man/intel_gpu_top.rst
-index 9499f87f1b4d..44a54a5f219d 100644
---- a/man/intel_gpu_top.rst
-+++ b/man/intel_gpu_top.rst
-@@ -55,6 +55,9 @@ OPTIONS
- -p
-    Default to showing physical engines instead of aggregated classes.
- 
-+-m
-+   Default to showing all memory regions separately.
-+
- RUNTIME CONTROL
- ===============
- 
-@@ -68,6 +71,7 @@ Supported keys:
- |    's'    Toggle between sort modes (runtime, total runtime, pid, client id).
- |    'i'    Toggle display of clients which used no GPU time.
- |    'H'    Toggle between per PID aggregation and individual clients.
-+|    'm'    Toggle between aggregated memory regions and full breakdown.
- 
- DEVICE SELECTION
- ================
-diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index 958df42e8c20..3f376e233fe2 100644
---- a/tools/intel_gpu_top.c
-+++ b/tools/intel_gpu_top.c
-@@ -138,6 +138,7 @@ struct intel_clients {
- 
- static struct termios termios_orig;
- static bool class_view;
-+static bool aggregate_regions;
- 
- /* Maps i915 fdinfo names to indices */
- static const char *memory_region_map[] = {
-@@ -1045,6 +1046,7 @@ usage(const char *appname)
- 		"\t[-L]            List all cards.\n"
- 		"\t[-d <device>]   Device filter, please check manual page for more details.\n"
- 		"\t[-p]            Default to showing physical engines instead of classes.\n"
-+		"\t[-m]            Default to showing all memory regions.\n"
- 		"\n",
- 		appname, DEFAULT_PERIOD_MS);
- 	igt_device_print_filter_types();
-@@ -2026,7 +2028,7 @@ print_clients_header(struct igt_drm_clients *clients, int lines,
- 				 4 : clients->max_name_len; /* At least "NAME" */
- 
- 	if (output_mode == INTERACTIVE) {
--		unsigned int num_active = 0;
-+		unsigned int num_active = 0, i;
- 		int len;
- 
- 		if (lines++ >= con_h)
-@@ -2038,11 +2040,17 @@ print_clients_header(struct igt_drm_clients *clients, int lines,
- 		if (lines++ >= con_h || len >= con_w)
- 			return lines;
- 
--		if (iclients->regions)
--			len += printf("     MEM      RSS ");
-+		if (iclients->regions) {
-+			if (aggregate_regions) {
-+				len += printf("     MEM      RSS ");
-+			} else {
-+				len += printf("     RAM      RSS ");
-+				if (iclients->regions->num_regions > 1)
-+					len += printf("    VRAM     VRSS ");
-+			}
-+		}
- 
- 		if (iclients->classes.num_engines) {
--			unsigned int i;
- 			int width;
- 
- 			for (i = 0; i <= iclients->classes.max_engine_id; i++) {
-@@ -2116,15 +2124,26 @@ print_client(struct igt_drm_client *c, struct engines *engines, double t, int li
- 		len = printf("%*s ", clients->max_pid_len, c->pid_str);
- 
- 		if (iclients->regions) {
--			uint64_t sz;
-+			if (aggregate_regions) {
-+				uint64_t sz;
- 
--			for (sz = 0, i = 0; i <= c->regions->max_region_id; i++)
--				sz += c->memory[i].total;
--			len += print_size(sz);
-+				for (sz = 0, i = 0;
-+				     i <= c->regions->max_region_id; i++)
-+					sz += c->memory[i].total;
-+				len += print_size(sz);
- 
--			for (sz = 0, i = 0; i <= c->regions->max_region_id; i++)
--				sz += c->memory[i].resident;
--			len += print_size(sz);
-+				for (sz = 0, i = 0;
-+				     i <= c->regions->max_region_id; i++)
-+					sz += c->memory[i].resident;
-+				len += print_size(sz);
-+			} else {
-+				len += print_size(c->memory[0].total);
-+				len += print_size(c->memory[0].resident);
-+				if (c->regions->num_regions > 1) {
-+					len += print_size(c->memory[1].total);
-+					len += print_size(c->memory[1].resident);
-+				}
-+			}
- 		}
- 
- 		for (i = 0; i <= iclients->classes.max_engine_id; i++) {
-@@ -2401,6 +2420,13 @@ static void process_normal_stdin(void)
- 			else
- 				header_msg = "Showing individual clients.";
- 			break;
-+		case 'm':
-+			aggregate_regions ^= true;
-+			if (aggregate_regions)
-+				header_msg = "Aggregating memory regions.";
-+			else
-+				header_msg = "Showing memory regions.";
-+			break;
- 		};
- 	}
- }
-@@ -2449,6 +2475,7 @@ static void show_help_screen(void)
- "    's'    Toggle between sort modes (runtime, total runtime, pid, client id).\n"
- "    'i'    Toggle display of clients which used no GPU time.\n"
- "    'H'    Toggle between per PID aggregation and individual clients.\n"
-+"    'm'    Toggle between aggregated memory regions and full breakdown.\n"
- "\n"
- "    'h' or 'q'    Exit interactive help.\n"
- "\n");
-@@ -2576,6 +2603,7 @@ int main(int argc, char **argv)
- {
- 	unsigned int period_us = DEFAULT_PERIOD_MS * 1000;
- 	bool physical_engines = false;
-+	bool separate_regions = false;
- 	struct intel_clients iclients;
- 	int con_w = -1, con_h = -1;
- 	char *output_path = NULL;
-@@ -2588,7 +2616,7 @@ int main(int argc, char **argv)
- 	struct timespec ts;
- 
- 	/* Parse options */
--	while ((ch = getopt(argc, argv, "o:s:d:pcJLlh")) != -1) {
-+	while ((ch = getopt(argc, argv, "o:s:d:mpcJLlh")) != -1) {
- 		switch (ch) {
- 		case 'o':
- 			output_path = optarg;
-@@ -2602,6 +2630,9 @@ int main(int argc, char **argv)
- 		case 'p':
- 			physical_engines = true;
- 			break;
-+		case 'm':
-+			separate_regions = true;
-+			break;
- 		case 'c':
- 			output_mode = CSV;
- 			break;
-@@ -2645,6 +2676,7 @@ int main(int argc, char **argv)
- 		fprintf(stderr, "Failed to install signal handler!\n");
- 
- 	class_view = !physical_engines;
-+	aggregate_regions = !separate_regions;
- 
- 	switch (output_mode) {
- 	case INTERACTIVE:
--- 
-2.39.2
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (3 -> 4)
+------------------------------
+
+  Additional (1): bat-pvc-2 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9895_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_addfb_basic@addfb25-x-tiled-legacy:
+    - bat-pvc-2:          NOTRUN -> [SKIP][1] ([Intel XE#538]) +33 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-pvc-2/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:
+    - bat-pvc-2:          NOTRUN -> [SKIP][2] ([Intel XE#539]) +7 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-pvc-2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - bat-pvc-2:          NOTRUN -> [SKIP][3] ([Intel XE#275] / [Intel XE#541]) +3 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-pvc-2/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  * igt@kms_force_connector_basic@force-connector-state:
+    - bat-pvc-2:          NOTRUN -> [SKIP][4] ([Intel XE#540]) +3 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-pvc-2/igt@kms_force_connector_basic@force-connector-state.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc:
+    - bat-pvc-2:          NOTRUN -> [SKIP][5] ([Intel XE#537]) +6 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-pvc-2/igt@kms_pipe_crc_basic@nonblocking-crc.html
+
+  * igt@kms_prop_blob@basic:
+    - bat-pvc-2:          NOTRUN -> [SKIP][6] ([Intel XE#536])
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-pvc-2/igt@kms_prop_blob@basic.html
+
+  * igt@kms_psr@primary_page_flip:
+    - bat-pvc-2:          NOTRUN -> [SKIP][7] ([Intel XE#535]) +2 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-pvc-2/igt@kms_psr@primary_page_flip.html
+
+  * igt@xe_evict@evict-beng-small-external:
+    - bat-pvc-2:          NOTRUN -> [FAIL][8] ([Intel XE#389]) +3 other tests fail
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-pvc-2/igt@xe_evict@evict-beng-small-external.html
+
+  * igt@xe_evict@evict-small-external-cm:
+    - bat-pvc-2:          NOTRUN -> [DMESG-FAIL][9] ([Intel XE#482]) +3 other tests dmesg-fail
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-pvc-2/igt@xe_evict@evict-small-external-cm.html
+
+  * igt@xe_exec_reset@virtual-close-fd-no-exec:
+    - bat-pvc-2:          NOTRUN -> [DMESG-WARN][10] ([Intel XE#696])
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html
+
+  * igt@xe_guc_pc@freq_fixed_idle:
+    - bat-pvc-2:          NOTRUN -> [SKIP][11] ([Intel XE#533]) +1 other test skip
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-pvc-2/igt@xe_guc_pc@freq_fixed_idle.html
+
+  * igt@xe_huc_copy@huc_copy:
+    - bat-pvc-2:          NOTRUN -> [SKIP][12] ([Intel XE#255])
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-pvc-2/igt@xe_huc_copy@huc_copy.html
+
+  * igt@xe_intel_bb@render:
+    - bat-pvc-2:          NOTRUN -> [SKIP][13] ([Intel XE#532])
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-pvc-2/igt@xe_intel_bb@render.html
+
+  * igt@xe_module_load@load:
+    - bat-pvc-2:          NOTRUN -> [SKIP][14] ([Intel XE#378])
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-pvc-2/igt@xe_module_load@load.html
+
+  * igt@xe_pm_residency@gt-c6-on-idle:
+    - bat-pvc-2:          NOTRUN -> [SKIP][15] ([Intel XE#531])
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-pvc-2/igt@xe_pm_residency@gt-c6-on-idle.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1:
+    - bat-adlp-7:         [FAIL][16] ([Intel XE#480]) -> [PASS][17] +1 other test pass
+   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7506/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html
+   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#255]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/255
+  [Intel XE#275]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/275
+  [Intel XE#378]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/378
+  [Intel XE#389]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/389
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#482]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/482
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+  [Intel XE#531]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/531
+  [Intel XE#532]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/532
+  [Intel XE#533]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/533
+  [Intel XE#535]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/535
+  [Intel XE#536]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/536
+  [Intel XE#537]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/537
+  [Intel XE#538]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/538
+  [Intel XE#539]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/539
+  [Intel XE#540]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/540
+  [Intel XE#541]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/541
+  [Intel XE#696]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/696
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7506 -> IGTPW_9895
+  * Linux: xe-397-bce60b0ff2937cb2ea51841a479bc1a2da65052b -> xe-402-9a795b4f0ebe6bf70b1c873e323c3e0e7e113c64
+
+  IGTPW_9895: 9895
+  IGT_7506: 4fdf544bd0a38c5a100ef43c30171827e1c8c442 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-397-bce60b0ff2937cb2ea51841a479bc1a2da65052b: bce60b0ff2937cb2ea51841a479bc1a2da65052b
+  xe-402-9a795b4f0ebe6bf70b1c873e323c3e0e7e113c64: 9a795b4f0ebe6bf70b1c873e323c3e0e7e113c64
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/index.html
+
+--===============8672906984108698833==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tools/intel_gpu_top: Restore user friendly error message</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124448/">https://patchwork.freedesktop.org/series/124448/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7506_BAT -&gt; XEIGTPW_9895_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (3 -&gt; 4)</h2>
+<p>Additional (1): bat-pvc-2 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9895_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_addfb_basic@addfb25-x-tiled-legacy:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-pvc-2/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/538">Intel XE#538</a>) +33 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-pvc-2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/539">Intel XE#539</a>) +7 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-pvc-2/igt@kms_flip@basic-flip-vs-wf_vblank.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/275">Intel XE#275</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/541">Intel XE#541</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-connector-state:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-pvc-2/igt@kms_force_connector_basic@force-connector-state.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/540">Intel XE#540</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-pvc-2/igt@kms_pipe_crc_basic@nonblocking-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/537">Intel XE#537</a>) +6 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_prop_blob@basic:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-pvc-2/igt@kms_prop_blob@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/536">Intel XE#536</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_page_flip:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-pvc-2/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/535">Intel XE#535</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-beng-small-external:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-pvc-2/igt@xe_evict@evict-beng-small-external.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/389">Intel XE#389</a>) +3 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-small-external-cm:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-pvc-2/igt@xe_evict@evict-small-external-cm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/482">Intel XE#482</a>) +3 other tests dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_reset@virtual-close-fd-no-exec:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/696">Intel XE#696</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_guc_pc@freq_fixed_idle:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-pvc-2/igt@xe_guc_pc@freq_fixed_idle.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/533">Intel XE#533</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_huc_copy@huc_copy:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-pvc-2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_intel_bb@render:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-pvc-2/igt@xe_intel_bb@render.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/532">Intel XE#532</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_module_load@load:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-pvc-2/igt@xe_module_load@load.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/378">Intel XE#378</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pm_residency@gt-c6-on-idle:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-pvc-2/igt@xe_pm_residency@gt-c6-on-idle.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/531">Intel XE#531</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7506/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9895/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7506 -&gt; IGTPW_9895</li>
+<li>Linux: xe-397-bce60b0ff2937cb2ea51841a479bc1a2da65052b -&gt; xe-402-9a795b4f0ebe6bf70b1c873e323c3e0e7e113c64</li>
+</ul>
+<p>IGTPW_9895: 9895<br />
+  IGT_7506: 4fdf544bd0a38c5a100ef43c30171827e1c8c442 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-397-bce60b0ff2937cb2ea51841a479bc1a2da65052b: bce60b0ff2937cb2ea51841a479bc1a2da65052b<br />
+  xe-402-9a795b4f0ebe6bf70b1c873e323c3e0e7e113c64: 9a795b4f0ebe6bf70b1c873e323c3e0e7e113c64</p>
+
+</body>
+</html>
+
+--===============8672906984108698833==--
