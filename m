@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 996A610E6CC
- for <igt-dev@lists.freedesktop.org>; Fri, 29 Sep 2023 08:25:23 +0000 (UTC)
-Message-ID: <419417d1-f7e1-698c-360a-7153d5a0a93b@linux.intel.com>
-Date: Fri, 29 Sep 2023 09:08:18 +0100
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7C51210E58B
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 Sep 2023 08:25:32 +0000 (UTC)
+Message-ID: <b3605f40-9761-0e0d-d838-410b9d8c2344@linux.intel.com>
+Date: Fri, 29 Sep 2023 09:09:10 +0100
 MIME-Version: 1.0
 Content-Language: en-US
 To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
  igt-dev@lists.freedesktop.org
 References: <20230928174535.2074462-1-marcin.bernatowicz@linux.intel.com>
- <20230928174535.2074462-6-marcin.bernatowicz@linux.intel.com>
+ <20230928174535.2074462-8-marcin.bernatowicz@linux.intel.com>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20230928174535.2074462-6-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20230928174535.2074462-8-marcin.bernatowicz@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 05/17] benchmarks/gem_wsim: extract
- duration parsing code to new function
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH i-g-t 07/17] benchmarks/gem_wsim: cleanups
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,108 +29,212 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 
 On 28/09/2023 18:45, Marcin Bernatowicz wrote:
-> Moved code from parse_workload to separate function.
+> Cleaning checkpatch.pl reported warnings/errors.
+> Removed unused fence_signal field from struct w_step.
 > 
 > v2:
-> - keep "field" parameter name (instead of "_desc") (Tvrtko)
-> - emit error messages from parse_duration, caller returns NULL
->    on parse_duration failure  (Tvrtko)
+> - restored unnecessarily changed malloc (Tvrtko)
 > 
 > Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 > ---
->   benchmarks/gem_wsim.c | 70 ++++++++++++++++++++++++-------------------
->   1 file changed, 40 insertions(+), 30 deletions(-)
+>   benchmarks/gem_wsim.c | 54 ++++++++++++++++++++++++++-----------------
+>   1 file changed, 33 insertions(+), 21 deletions(-)
 > 
 > diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-> index 3c3779b72..71d1c55ae 100644
+> index 3c25d801c..f91e126f1 100644
 > --- a/benchmarks/gem_wsim.c
 > +++ b/benchmarks/gem_wsim.c
-> @@ -860,6 +860,44 @@ static long __duration(long dur, double scale)
->   	return round(scale * dur);
+> @@ -1,3 +1,4 @@
+> +// SPDX-License-Identifier: MIT
+>   /*
+>    * Copyright © 2017 Intel Corporation
+>    *
+> @@ -76,8 +77,7 @@ struct duration {
+>   	bool unbound;
+>   };
+>   
+> -enum w_type
+> -{
+> +enum w_type {
+>   	BATCH,
+>   	SYNC,
+>   	DELAY,
+> @@ -102,8 +102,7 @@ struct dep_entry {
+>   	int working_set; /* -1 = step dependecy, >= 0 working set id */
+>   };
+>   
+> -struct deps
+> -{
+> +struct deps {
+>   	int nr;
+>   	bool submit_fence;
+>   	struct dep_entry *list;
+> @@ -137,8 +136,7 @@ struct working_set {
+>   
+>   struct workload;
+>   
+> -struct w_step
+> -{
+> +struct w_step {
+>   	struct workload *wrk;
+>   
+>   	/* Workload step metadata */
+> @@ -155,7 +153,6 @@ struct w_step
+>   		int period;
+>   		int target;
+>   		int throttle;
+> -		int fence_signal;
+>   		int priority;
+>   		struct {
+>   			unsigned int engine_map_count;
+> @@ -194,8 +191,7 @@ struct ctx {
+>   	uint64_t sseu;
+>   };
+>   
+> -struct workload
+> -{
+> +struct workload {
+>   	unsigned int id;
+>   
+>   	unsigned int nr_steps;
+> @@ -807,6 +803,7 @@ static int add_buffers(struct working_set *set, char *str)
+>   
+>   	for (i = 0; i < add; i++) {
+>   		struct work_buffer_size *sz = &sizes[set->nr + i];
+> +
+>   		sz->min = min_sz;
+>   		sz->max = max_sz;
+>   		sz->size = 0;
+> @@ -899,13 +896,16 @@ parse_duration(unsigned int nr_steps, struct duration *dur, double scale_dur, ch
 >   }
 >   
-> +static int
-> +parse_duration(unsigned int nr_steps, struct duration *dur, double scale_dur, char *field)
-> +{
-> +	char *sep = NULL;
-> +	long tmpl;
-> +
-> +	if (field[0] == '*') {
-> +		if (intel_gen(intel_get_drm_devid(fd)) < 8) {
-> +			wsim_err("Infinite batch at step %u needs Gen8+!\n", nr_steps);
-> +			return -1;
-> +		}
-> +		dur->unbound = true;
-> +	} else {
-> +		tmpl = strtol(field, &sep, 10);
-> +		if (tmpl <= 0 || tmpl == LONG_MIN || tmpl == LONG_MAX) {
-> +			wsim_err("Invalid duration at step %u!\n", nr_steps);
-> +			return -1;
-> +		}
-> +
-> +		dur->min = __duration(tmpl, scale_dur);
-> +
-> +		if (sep && *sep == '-') {
-> +			tmpl = strtol(sep + 1, NULL, 10);
-> +			if (tmpl <= 0 || __duration(tmpl, scale_dur) <= dur->min ||
-> +			    tmpl == LONG_MIN || tmpl == LONG_MAX) {
-> +				wsim_err("Invalid maximum duration at step %u!\n", nr_steps);
-> +				return -1;
-> +			}
-> +
-> +			dur->max = __duration(tmpl, scale_dur);
-> +		} else {
-> +			dur->max = dur->min;
-> +		}
-> +	}
-> +
-> +	return 0;
-> +}
-> +
 >   #define int_field(_STEP_, _FIELD_, _COND_, _ERR_) \
->   	if ((field = strtok_r(fstart, ".", &fctx))) { \
->   		tmp = atoi(field); \
-> @@ -1121,38 +1159,10 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
->   		}
+> -	if ((field = strtok_r(fstart, ".", &fctx))) { \
+> -		tmp = atoi(field); \
+> -		check_arg(_COND_, _ERR_, nr_steps); \
+> -		step.type = _STEP_; \
+> -		step._FIELD_ = tmp; \
+> -		goto add_step; \
+> -	} \
+> +	do { \
+> +		field = strtok_r(fstart, ".", &fctx); \
+> +		if (field) { \
+> +			tmp = atoi(field); \
+> +			check_arg(_COND_, _ERR_, nr_steps); \
+> +			step.type = _STEP_; \
+> +			step._FIELD_ = tmp; \
+> +			goto add_step; \
+> +		} \
+> +	} while (0)
 >   
->   		if ((field = strtok_r(fstart, ".", &fctx))) {
-> -			char *sep = NULL;
-> -			long int tmpl;
-> -
+>   static struct workload *
+>   parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+> @@ -930,7 +930,8 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+>   		valid = 0;
+>   		memset(&step, 0, sizeof(step));
+>   
+> -		if ((field = strtok_r(fstart, ".", &fctx))) {
+> +		field = strtok_r(fstart, ".", &fctx);
+> +		if (field) {
 >   			fstart = NULL;
 >   
-> -			if (field[0] == '*') {
-> -				check_arg(intel_gen(intel_get_drm_devid(fd)) < 8,
-> -					  "Infinite batch at step %u needs Gen8+!\n",
-> -					  nr_steps);
-> -				step.duration.unbound = true;
-> -			} else {
-> -				tmpl = strtol(field, &sep, 10);
-> -				check_arg(tmpl <= 0 || tmpl == LONG_MIN ||
-> -					  tmpl == LONG_MAX,
-> -					  "Invalid duration at step %u!\n",
-> -					  nr_steps);
-> -				step.duration.min = __duration(tmpl, scale_dur);
-> -
-> -				if (sep && *sep == '-') {
-> -					tmpl = strtol(sep + 1, NULL, 10);
-> -					check_arg(tmpl <= 0 ||
-> -						__duration(tmpl, scale_dur) <= step.duration.min ||
-> -						tmpl == LONG_MIN ||
-> -						tmpl == LONG_MAX,
-> -						"Invalid maximum duration at step %u!\n",
-> -						nr_steps);
-> -					step.duration.max = __duration(tmpl,
-> -								       scale_dur);
-> -				} else {
-> -					step.duration.max = step.duration.min;
-> -				}
-> -			}
-> +			if (parse_duration(nr_steps, &step.duration, scale_dur, field))
-> +				return NULL;
->   
+>   			if (!strcmp(field, "d")) {
+> @@ -941,6 +942,7 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+>   					  "Invalid period at step %u!\n");
+>   			} else if (!strcmp(field, "P")) {
+>   				unsigned int nr = 0;
+> +
+>   				while ((field = strtok_r(fstart, ".", &fctx))) {
+>   					tmp = atoi(field);
+>   					check_arg(nr == 0 && tmp <= 0,
+> @@ -966,6 +968,7 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+>   					  "Invalid sync target at step %u!\n");
+>   			} else if (!strcmp(field, "S")) {
+>   				unsigned int nr = 0;
+> +
+>   				while ((field = strtok_r(fstart, ".", &fctx))) {
+>   					tmp = atoi(field);
+>   					check_arg(tmp <= 0 && nr == 0,
+> @@ -1002,6 +1005,7 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+>   				goto add_step;
+>   			} else if (!strcmp(field, "M")) {
+>   				unsigned int nr = 0;
+> +
+>   				while ((field = strtok_r(fstart, ".", &fctx))) {
+>   					tmp = atoi(field);
+>   					check_arg(nr == 0 && tmp <= 0,
+> @@ -1032,6 +1036,7 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+>   					  "Invalid terminate target at step %u!\n");
+>   			} else if (!strcmp(field, "X")) {
+>   				unsigned int nr = 0;
+> +
+>   				while ((field = strtok_r(fstart, ".", &fctx))) {
+>   					tmp = atoi(field);
+>   					check_arg(nr == 0 && tmp <= 0,
+> @@ -1056,6 +1061,7 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+>   				goto add_step;
+>   			} else if (!strcmp(field, "B")) {
+>   				unsigned int nr = 0;
+> +
+>   				while ((field = strtok_r(fstart, ".", &fctx))) {
+>   					tmp = atoi(field);
+>   					check_arg(nr == 0 && tmp <= 0,
+> @@ -1075,6 +1081,7 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+>   				goto add_step;
+>   			} else if (!strcmp(field, "b")) {
+>   				unsigned int nr = 0;
+> +
+>   				while ((field = strtok_r(fstart, ".", &fctx))) {
+>   					check_arg(nr > 2,
+>   						  "Invalid bond format at step %u!\n",
+> @@ -1146,7 +1153,8 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
 >   			valid++;
 >   		}
+>   
+> -		if ((field = strtok_r(fstart, ".", &fctx))) {
+> +		field = strtok_r(fstart, ".", &fctx);
+> +		if (field) {
+>   			fstart = NULL;
+>   
+>   			i = str_to_engine(field);
+> @@ -1158,7 +1166,8 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+>   			step.engine = i;
+>   		}
+>   
+> -		if ((field = strtok_r(fstart, ".", &fctx))) {
+> +		field = strtok_r(fstart, ".", &fctx);
+> +		if (field) {
+>   			fstart = NULL;
+>   
+>   			if (parse_duration(nr_steps, &step.duration, scale_dur, field))
+> @@ -1167,7 +1176,8 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+>   			valid++;
+>   		}
+>   
+> -		if ((field = strtok_r(fstart, ".", &fctx))) {
+> +		field = strtok_r(fstart, ".", &fctx);
+> +		if (field) {
+>   			fstart = NULL;
+>   
+>   			tmp = parse_dependencies(nr_steps, &step, field);
+> @@ -1177,7 +1187,8 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+>   			valid++;
+>   		}
+>   
+> -		if ((field = strtok_r(fstart, ".", &fctx))) {
+> +		field = strtok_r(fstart, ".", &fctx);
+> +		if (field) {
+>   			fstart = NULL;
+>   
+>   			check_arg(strlen(field) != 1 ||
+> @@ -2716,6 +2727,7 @@ int main(int argc, char **argv)
+>   
+>   	if (append_workload_arg) {
+>   		struct w_arg arg = { NULL, append_workload_arg, 0 };
+> +
+>   		app_w = parse_workload(&arg, flags, scale_dur, scale_time,
+>   				       NULL);
+>   		if (!app_w) {
 
 Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
