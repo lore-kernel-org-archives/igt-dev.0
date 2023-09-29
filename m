@@ -2,14 +2,15 @@ Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Intel-gfx@lists.freedesktop.org
-Date: Fri, 29 Sep 2023 13:25:06 +0100
-Message-Id: <20230929122517.349348-2-tvrtko.ursulin@linux.intel.com>
+Date: Fri, 29 Sep 2023 13:25:11 +0100
+Message-Id: <20230929122517.349348-7-tvrtko.ursulin@linux.intel.com>
 In-Reply-To: <20230929122517.349348-1-tvrtko.ursulin@linux.intel.com>
 References: <20230929122517.349348-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 01/12] tests/i915/drm_fdinfo: Check engine
- info is supported
+Subject: [igt-dev] [PATCH i-g-t 06/12] tools/intel_gpu_top: Optimise
+ interactive display a bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,27 +25,75 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-On top of checking that parsing works, check that there are some engines
-present. This will be needed once the memory stats are added and so return
-value from __igt_parse_drm_fdinfo() will then be possible to be greater
-than zero even when engine stats are not supported.
+Padding the percentage bars and table columns with spaces happens quite a
+lot so lets do better than putchar at a time. Have a table of visually
+empty strings and build the required length out of those chunks.
+
+While at it, also move the percentage bar table into its function scope.
 
 Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 ---
- tests/intel/drm_fdinfo.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/intel_gpu_top.c | 38 +++++++++++++++++++++++++++++++++-----
+ 1 file changed, 33 insertions(+), 5 deletions(-)
 
-diff --git a/tests/intel/drm_fdinfo.c b/tests/intel/drm_fdinfo.c
-index aca19db50680..344c44dce78b 100644
---- a/tests/intel/drm_fdinfo.c
-+++ b/tests/intel/drm_fdinfo.c
-@@ -737,6 +737,7 @@ igt_main
+diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+index de37ff603b6f..739ed9839961 100644
+--- a/tools/intel_gpu_top.c
++++ b/tools/intel_gpu_top.c
+@@ -924,14 +924,40 @@ static void free_display_clients(struct igt_drm_clients *clients)
+ 	free(clients);
+ }
  
- 		igt_require_gem(i915);
- 		igt_require(igt_parse_drm_fdinfo(i915, &info, NULL, 0, NULL, 0));
-+		igt_require(info.num_engines);
+-static const char *bars[] = { " ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█" };
+-
+ static unsigned int n_spaces(const unsigned int n)
+ {
+-	unsigned int i;
++	static const char *spaces[] = {
++		" ",
++		"  ",
++		"   ",
++		"    ",
++		"     ",
++		"      ",
++		"       ",
++		"        ",
++		"         ",
++		"          ",
++		"           ",
++		"            ",
++		"             ",
++		"              ",
++		"               ",
++		"                ",
++		"                 ",
++		"                  ",
++		"                   ",
++#define MAX_SPACES 19
++	};
++	unsigned int i, r = n;
  
- 		ctx = intel_ctx_create_all_physical(i915);
+-	for (i = 0; i < n; i++)
+-		putchar(' ');
++	while (r) {
++		if (r > MAX_SPACES)
++			i = MAX_SPACES - 1;
++		else
++			i = r - 1;
++		fputs(spaces[i], stdout);
++		r -= i + 1;
++	}
+ 
+ 	return n;
+ }
+@@ -939,6 +965,8 @@ static unsigned int n_spaces(const unsigned int n)
+ static void
+ print_percentage_bar(double percent, double max, int max_len, bool numeric)
+ {
++	static const char *bars[] =
++		{ " ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█" };
+ 	int bar_len, i, len = max_len - 2;
+ 	const int w = 8;
  
 -- 
 2.39.2
