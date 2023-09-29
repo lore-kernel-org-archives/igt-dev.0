@@ -1,21 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6DA7010E0F9
- for <igt-dev@lists.freedesktop.org>; Fri, 29 Sep 2023 09:26:43 +0000 (UTC)
-Message-ID: <fa6c2ece-5649-1ce8-8d98-f2bdf2f50b04@linux.intel.com>
-Date: Fri, 29 Sep 2023 10:26:30 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1E89810E0F5
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 Sep 2023 09:31:45 +0000 (UTC)
+Message-ID: <9c9dec58-f453-6251-eef9-618433d46467@linux.intel.com>
+Date: Fri, 29 Sep 2023 11:31:39 +0200
 MIME-Version: 1.0
 Content-Language: en-US
-To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
  igt-dev@lists.freedesktop.org
 References: <20230928174535.2074462-1-marcin.bernatowicz@linux.intel.com>
- <20230928174535.2074462-13-marcin.bernatowicz@linux.intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20230928174535.2074462-13-marcin.bernatowicz@linux.intel.com>
+ <20230928174535.2074462-4-marcin.bernatowicz@linux.intel.com>
+ <856aad30-db03-4fe7-e70b-8b7926ebb7c7@linux.intel.com>
+From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <856aad30-db03-4fe7-e70b-8b7926ebb7c7@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 12/17] benchmarks/gem_wsim: extract
- allocate and prepare contexts code to new functions
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH i-g-t 03/17] benchmarks/gem_wsim: fix scaling
+ of period steps
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,104 +29,81 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Hi,
 
-On 28/09/2023 18:45, Marcin Bernatowicz wrote:
-> No functional changes.
-> Extracted allocate_contexts and prepare_contexts functions
-> from prepare_workload.
+On 9/29/2023 10:01 AM, Tvrtko Ursulin wrote:
 > 
-> v2:
-> - propagate error code from prepare_contexts (Tvrtko)
-> - don't mix unrelated changes (Tvrtko)
+> On 28/09/2023 18:45, Marcin Bernatowicz wrote:
+>> Period steps take scale time (-F) command line option into account.
 > 
-> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> ---
->   benchmarks/gem_wsim.c | 43 ++++++++++++++++++++++++++++++++-----------
->   1 file changed, 32 insertions(+), 11 deletions(-)
+> "Make period steps.."?
 > 
-> diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-> index 7495ab297..a344fea9e 100644
-> --- a/benchmarks/gem_wsim.c
-> +++ b/benchmarks/gem_wsim.c
-> @@ -1764,19 +1764,11 @@ static void measure_active_set(struct workload *wrk)
->   
->   #define alloca0(sz) ({ size_t sz__ = (sz); memset(alloca(sz__), 0, sz__); })
->   
-> -static int prepare_workload(unsigned int id, struct workload *wrk)
-> +static void allocate_contexts(unsigned int id, struct workload *wrk)
->   {
-> -	struct working_set **sets;
-> -	unsigned long total = 0;
-> -	uint32_t share_vm = 0;
->   	int max_ctx = -1;
->   	struct w_step *w;
-> -	int i, j;
-> -
-> -	wrk->id = id;
-> -	wrk->bb_prng = (wrk->flags & FLAG_SYNCEDCLIENTS) ? master_prng : rand();
-> -	wrk->bo_prng = (wrk->flags & FLAG_SYNCEDCLIENTS) ? master_prng : rand();
-> -	wrk->run = true;
-> +	int i;
->   
->   	/*
->   	 * Pre-scan workload steps to allocate context list storage.
-> @@ -1800,6 +1792,13 @@ static int prepare_workload(unsigned int id, struct workload *wrk)
->   
->   		max_ctx = ctx;
->   	}
-> +}
-> +
-> +static int prepare_contexts(unsigned int id, struct workload *wrk)
-> +{
-> +	uint32_t share_vm = 0;
-> +	struct w_step *w;
-> +	int i, j;
->   
->   	/*
->   	 * Transfer over engine map configuration from the workload step.
-> @@ -1966,6 +1965,28 @@ static int prepare_workload(unsigned int id, struct workload *wrk)
->   	if (share_vm)
->   		vm_destroy(fd, share_vm);
->   
-> +	return 0;
-> +}
-> +
-> +static int prepare_workload(unsigned int id, struct workload *wrk)
-> +{
-> +	struct working_set **sets;
-> +	unsigned long total = 0;
-> +	struct w_step *w;
-> +	int i, j;
-> +	int ret = 0;
-> +
-> +	wrk->id = id;
-> +	wrk->bb_prng = (wrk->flags & FLAG_SYNCEDCLIENTS) ? master_prng : rand();
-> +	wrk->bo_prng = (wrk->flags & FLAG_SYNCEDCLIENTS) ? master_prng : rand();
-> +	wrk->run = true;
-> +
-> +	allocate_contexts(id, wrk);
-> +
-> +	ret = prepare_contexts(id, wrk);
-> +	if (ret)
-> +		return ret;
-> +
->   	/* Record default preemption. */
->   	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
->   		if (w->type == BATCH)
-> @@ -2067,7 +2088,7 @@ static int prepare_workload(unsigned int id, struct workload *wrk)
->   
->   	measure_active_set(wrk);
->   
-> -	return 0;
-> +	return ret;
->   }
->   
->   static double elapsed(const struct timespec *start, const struct timespec *end)
+> "Periods steps should take.."?
+> 
+>> This allows to scale workload without need to modify .wsim file
+>>
+>> ex. having following example.wsim
+>>
+>> 1.VCS1.3000.0.1
+>> 1.RCS.500-1000.-1.0
+>> 1.RCS.3700.0.0
+>> 1.RCS.1000.-2.0
+>> 1.VCS2.2300.-2.0
+>> 1.RCS.4700.-1.0
+>> 1.VCS2.600.-1.1
+>> p.16000
+>>
+>> we can scale the whole workload x10 with:
+>>
+>> gem_wsim -w example.wsim -f 10 -F 10
+>>
+>> -f is for batch duration steps, -F for period and delay steps
+> 
+> Actually I am having a little bit of a second thought here. Thinking 
+> that perhaps it was deliberate to not scale periods.
+> 
+> Think of it like this. -f 0.5 simulates a twice as fast GPU. -F 2 
+> simulates a twice as slow CPU.
+> 
+> In both cases if something wants to hit 60 fps, it still wants to hit 60 
+> fps. What use case for scaling the period do you have in mind?
+> 
 
-Looks fine.
+That gives another view on the matter.
 
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+I thought about it more like having a common unit, so giving -F 1000 -> 
+makes all CPU values (Period/Duration) are given in ms.
+-f option may be used to calibrate for difference between GPU and CPU 
+ex. if wrongly reported freq makes a real GPU duration 10x faster than 
+CPU measured (ex. 10ms specified batch duration takes 1ms in reality) we 
+can provide -f 10 and still have GPU durations correspond to CPU time.
 
 Regards,
+marcin
 
-Tvrtko
+
+> Regards,
+> 
+> Tvrtko
+> 
+>> v2:
+>> - apply same approach as with DELAY step (Tvrtko)
+>>
+>> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+>> ---
+>>   benchmarks/gem_wsim.c | 2 ++
+>>   1 file changed, 2 insertions(+)
+>>
+>> diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
+>> index 42690d3d0..41557517c 100644
+>> --- a/benchmarks/gem_wsim.c
+>> +++ b/benchmarks/gem_wsim.c
+>> @@ -1186,6 +1186,8 @@ parse_workload(struct w_arg *arg, unsigned int 
+>> flags, double scale_dur,
+>>   add_step:
+>>           if (step.type == DELAY)
+>>               step.delay = __duration(step.delay, scale_time);
+>> +        else if (step.type == PERIOD)
+>> +            step.period = __duration(step.period, scale_time);
+>>           step.idx = nr_steps++;
+>>           step.request = -1;
