@@ -2,12 +2,14 @@ Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Intel-gfx@lists.freedesktop.org
-Date: Fri, 29 Sep 2023 13:25:05 +0100
-Message-Id: <20230929122517.349348-1-tvrtko.ursulin@linux.intel.com>
+Date: Fri, 29 Sep 2023 13:25:12 +0100
+Message-Id: <20230929122517.349348-8-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20230929122517.349348-1-tvrtko.ursulin@linux.intel.com>
+References: <20230929122517.349348-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 00/12] fdinfo tests,
- intel_gpu_top memory support, etc
+Subject: [igt-dev] [PATCH i-g-t 07/12] lib/igt_drm_fdinfo: Copy over region
+ map name on match
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,31 +24,28 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-Some basic testst for fdinfo memory stats, intel_gpu_top memory stats support
-(first draft) and a couple fixlets.
+I will need some record of which regions were found for intel_gpu_top so
+lets just copy over the region name from the map on the first match.
 
-Tvrtko Ursulin (12):
-  tests/i915/drm_fdinfo: Check engine info is supported
-  tests/i915/drm_fdinfo: Stress test context close versus fdinfo reads
-  tests/i915/drm_fdinfo: Add some memory info tests
-  tools/intel_gpu_top: Fix clients header width when no clients
-  tools/intel_gpu_top: Fix client layout on first sample period
-  tools/intel_gpu_top: Optimise interactive display a bit
-  lib/igt_drm_fdinfo: Copy over region map name on match
-  lib/igt_drm_clients: Fix client id type confusion
-  lib/igt_drm_clients: Allow passing in the memory region map
-  tools/intel_gpu_top: Fully wrap clients operations
-  tools/intel_gpu_top: Add per client memory info
-  tools/intel_gpu_top: Add ability to show memory region breakdown
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+---
+ lib/igt_drm_fdinfo.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
- lib/igt_drm_clients.c    |   7 +-
- lib/igt_drm_clients.h    |   5 +-
- lib/igt_drm_fdinfo.c     |   4 +
- man/intel_gpu_top.rst    |   4 +
- tests/intel/drm_fdinfo.c | 286 +++++++++++++++++++++++++++++++++++++++
- tools/gputop.c           |   4 +-
- tools/intel_gpu_top.c    | 250 +++++++++++++++++++++++++++++-----
- 7 files changed, 518 insertions(+), 42 deletions(-)
-
+diff --git a/lib/igt_drm_fdinfo.c b/lib/igt_drm_fdinfo.c
+index b72822894782..222ccbfb1fd6 100644
+--- a/lib/igt_drm_fdinfo.c
++++ b/lib/igt_drm_fdinfo.c
+@@ -148,6 +148,10 @@ static int parse_region(char *line, struct drm_client_fdinfo *info,
+ 		for (i = 0; i < region_entries; i++) {
+ 			if (!strncmp(name, region_map[i], name_len)) {
+ 				found = i;
++				if (!info->region_names[info->num_regions][0]) {
++					assert(name_len < sizeof(info->region_names[i]));
++					strncpy(info->region_names[i], name, name_len);
++				}
+ 				break;
+ 			}
+ 		}
 -- 
 2.39.2
