@@ -1,20 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <8644156f-219a-22c4-913e-84c3092d42db@linux.intel.com>
-Date: Fri, 29 Sep 2023 12:11:01 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 01FE510E11B
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 Sep 2023 11:31:01 +0000 (UTC)
+Message-ID: <ccbb23cc-e3e3-bb55-8309-cd320b121038@linux.intel.com>
+Date: Fri, 29 Sep 2023 13:30:56 +0200
 MIME-Version: 1.0
 Content-Language: en-US
-To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-References: <20230922134437.234888-1-tvrtko.ursulin@linux.intel.com>
- <20230922134437.234888-4-tvrtko.ursulin@linux.intel.com>
- <ZRSM9hSf71QJn8Pw@unerlige-ril>
- <6a9b5529-6b41-a29b-3608-81be00934fbf@linux.intel.com>
- <ZRXwyu8fXevwFvSz@unerlige-ril>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <ZRXwyu8fXevwFvSz@unerlige-ril>
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20230928174535.2074462-1-marcin.bernatowicz@linux.intel.com>
+ <20230928174535.2074462-4-marcin.bernatowicz@linux.intel.com>
+ <856aad30-db03-4fe7-e70b-8b7926ebb7c7@linux.intel.com>
+ <9c9dec58-f453-6251-eef9-618433d46467@linux.intel.com>
+ <2234b7b4-b2ab-1d46-06f1-7bbe53dfdb11@linux.intel.com>
+From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <2234b7b4-b2ab-1d46-06f1-7bbe53dfdb11@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t 03/12] tools/intel_gpu_top: Restore user
- friendly error message
+Subject: Re: [igt-dev] [PATCH i-g-t 03/17] benchmarks/gem_wsim: fix scaling
+ of period steps
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,115 +26,113 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Intel-gfx@lists.freedesktop.org,
- Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: chris.p.wilson@linux.intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
-On 28/09/2023 22:31, Umesh Nerlige Ramappa wrote:
-> On Thu, Sep 28, 2023 at 09:16:23AM +0100, Tvrtko Ursulin wrote:
+
+On 9/29/2023 12:52 PM, Tvrtko Ursulin wrote:
+> 
+> On 29/09/2023 10:31, Bernatowicz, Marcin wrote:
+>> Hi,
 >>
->> On 27/09/2023 21:13, Umesh Nerlige Ramappa wrote:
->>> On Fri, Sep 22, 2023 at 02:44:28PM +0100, Tvrtko Ursulin wrote:
->>>> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->>>>
->>>> We have a nice error message displayed when an user with insufficient
->>>> permissions tries to run the tool, but that got lost while Meteorlake
->>>> support was added. Bring it back in.
->>>>
->>>> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->>>> Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
->>>> ---
->>>> tools/intel_gpu_top.c | 10 +++++++---
->>>> 1 file changed, 7 insertions(+), 3 deletions(-)
->>>>
->>>> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
->>>> index 87e9681e53b4..e01355f90458 100644
->>>> --- a/tools/intel_gpu_top.c
->>>> +++ b/tools/intel_gpu_top.c
->>>> @@ -554,9 +554,11 @@ static int get_num_gts(uint64_t type)
->>>>
->>>>         close(fd);
->>>>     }
->>>> -    assert(!errno || errno == ENOENT);
->>>> -    assert(cnt > 0);
->>>> -    errno = 0;
->>>> +
->>>> +    if (!cnt)
->>>> +        cnt = errno;
->>>> +    else
->>>> +        errno = 0;
+>> On 9/29/2023 10:01 AM, Tvrtko Ursulin wrote:
 >>>
->>> ENOENT is the only way this logic is checking for num_gts.
+>>> On 28/09/2023 18:45, Marcin Bernatowicz wrote:
+>>>> Period steps take scale time (-F) command line option into account.
 >>>
->>> In this case error is propagated only if cnt == 0. What if cnt=1 and 
->>> we get an error (other than ENOENT)? Should we ignore that?
+>>> "Make period steps.."?
+>>>
+>>> "Periods steps should take.."?
+>>>
+>>>> This allows to scale workload without need to modify .wsim file
+>>>>
+>>>> ex. having following example.wsim
+>>>>
+>>>> 1.VCS1.3000.0.1
+>>>> 1.RCS.500-1000.-1.0
+>>>> 1.RCS.3700.0.0
+>>>> 1.RCS.1000.-2.0
+>>>> 1.VCS2.2300.-2.0
+>>>> 1.RCS.4700.-1.0
+>>>> 1.VCS2.600.-1.1
+>>>> p.16000
+>>>>
+>>>> we can scale the whole workload x10 with:
+>>>>
+>>>> gem_wsim -w example.wsim -f 10 -F 10
+>>>>
+>>>> -f is for batch duration steps, -F for period and delay steps
+>>>
+>>> Actually I am having a little bit of a second thought here. Thinking 
+>>> that perhaps it was deliberate to not scale periods.
+>>>
+>>> Think of it like this. -f 0.5 simulates a twice as fast GPU. -F 2 
+>>> simulates a twice as slow CPU.
+>>>
+>>> In both cases if something wants to hit 60 fps, it still wants to hit 
+>>> 60 fps. What use case for scaling the period do you have in mind?
+>>>
 >>
->> If cnt >= 1 then at least one tile was found so the errno happened 
->> while probing for further tiles. So on single tile parts it can be 
->> ignored.
-> 
-> I am actually only referring to single tile parts. The for loop iterates 
-> over MAX_GTs (4), so I am expecting an ENOENT from a single tile part 
-> when cnt >= 1. Anything else is an error/failure that we should flag.
-
-Yes I think that worked fine in v1. Only thing I did not do is bother to 
-pass on the unexpected errno on multi-tile. Anyway, I have sent v2 with 
-the below condition.
-
-Regards,
-
-Tvrtko
-
-> 
->> On multi-tile parts it cannot really happen, or even if it happens 
->> situation would simply be "why is only one tile showing". If we want 
->> to cover this impossible/unlikely case then maybe like this:
+>> That gives another view on the matter.
 >>
->>     if (!cnt || (errno && errno != ENOENT))
->>         cnt = -errno;
+>> I thought about it more like having a common unit, so giving -F 1000 
+>> -> makes all CPU values (Period/Duration) are given in ms.
 > 
-> If you agree to the above logic, then this condition should do the trick.
+> I lost you here. -F is also a scaling factor and not a time value.
+> 
+>> -f option may be used to calibrate for difference between GPU and CPU 
+>> ex. if wrongly reported freq makes a real GPU duration 10x faster than 
+>> CPU measured (ex. 10ms specified batch duration takes 1ms in reality) 
+>> we can provide -f 10 and still have GPU durations correspond to CPU time.
+> 
+> Hm but in either case nothing of this relates to framerate.
+
+true
+
+> 
+> My current thinking is to drop this patch unless you can think of a good 
+> use case for scaling period. Or we need a new command option for scaling 
+> only periods.
+
+I don't see a use case for it, I will drop the patch.
+--
+marcin
+
 > 
 > Regards,
-> Umesh
->>
->>> I had something like this in mind for the regression (and sorry this 
->>> fell through the cracks)
->>>
->>> https://patchwork.freedesktop.org/patch/541406/?series=118973&rev=1
->>
->> Oh back in June!
->>
->> I think yours work too, in which case it's a matter of a style choice 
->> with which one to go. I don't have a strong preference - above would 
->> be a bit more compact, while I think it still succinctly expresses the 
->> failure condition ("nothing found or unexpected error while probing 
->> for remote tiles").
+> 
+> Tvrtko
+> 
 >>
 >> Regards,
+>> marcin
 >>
->> Tvrtko
 >>
->>>
 >>> Regards,
->>> Umesh
 >>>
+>>> Tvrtko
+>>>
+>>>> v2:
+>>>> - apply same approach as with DELAY step (Tvrtko)
 >>>>
->>>>     return cnt;
->>>> }
->>>> @@ -590,6 +592,8 @@ static int pmu_init(struct engines *engines)
->>>>     engines->fd = -1;
->>>>     engines->num_counters = 0;
->>>>     engines->num_gts = get_num_gts(type);
->>>> +    if (engines->num_gts <= 0)
->>>> +        return -1;
+>>>> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+>>>> ---
+>>>>   benchmarks/gem_wsim.c | 2 ++
+>>>>   1 file changed, 2 insertions(+)
 >>>>
->>>>     engines->irq.config = I915_PMU_INTERRUPTS;
->>>>     fd = _open_pmu(type, engines->num_counters, &engines->irq, 
->>>> engines->fd);
->>>> -- 
->>>> 2.39.2
->>>>
+>>>> diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
+>>>> index 42690d3d0..41557517c 100644
+>>>> --- a/benchmarks/gem_wsim.c
+>>>> +++ b/benchmarks/gem_wsim.c
+>>>> @@ -1186,6 +1186,8 @@ parse_workload(struct w_arg *arg, unsigned int 
+>>>> flags, double scale_dur,
+>>>>   add_step:
+>>>>           if (step.type == DELAY)
+>>>>               step.delay = __duration(step.delay, scale_time);
+>>>> +        else if (step.type == PERIOD)
+>>>> +            step.period = __duration(step.period, scale_time);
+>>>>           step.idx = nr_steps++;
+>>>>           step.request = -1;
