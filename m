@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============6200299836879942057=="
+Date: Fri, 29 Sep 2023 08:40:10 -0700
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <ZRbv2jgIi1xN298e@unerlige-ril>
+References: <20230929110949.342325-1-tvrtko.ursulin@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20230929110949.342325-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
-Date: Wed, 04 Oct 2023 18:06:55 -0000
-Message-ID: <169644281561.7834.9209883439960848506@emeril.freedesktop.org>
-References: <20231004134722.319334-1-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20231004134722.319334-1-juhapekka.heikkila@gmail.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/igt?=
- =?utf-8?q?=5Ffb=3A_on_Xe_driver_take_into_account_adlp_with_no_extended_b?=
- =?utf-8?q?lock_copy?=
+Subject: Re: [igt-dev] [PATCH i-g-t] tools/intel_gpu_top: Restore user
+ friendly error message
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,140 +17,59 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Intel-gfx@lists.freedesktop.org,
+ Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============6200299836879942057==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Fri, Sep 29, 2023 at 12:09:49PM +0100, Tvrtko Ursulin wrote:
+>From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+>
+>We have a nice error message displayed when an user with insufficient
+>permissions tries to run the tool, but that got lost while Meteorlake
+>support was added. Bring it back in.
+>
+>v2:
+> * Propagate unexpected errno on multi-tile systems too. (Umesh)
+>
+>Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+>Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+>---
+> tools/intel_gpu_top.c | 8 +++++---
+> 1 file changed, 5 insertions(+), 3 deletions(-)
+>
+>diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+>index 87e9681e53b4..10601e66b18e 100644
+>--- a/tools/intel_gpu_top.c
+>+++ b/tools/intel_gpu_top.c
+>@@ -554,9 +554,9 @@ static int get_num_gts(uint64_t type)
+>
+> 		close(fd);
+> 	}
+>-	assert(!errno || errno == ENOENT);
+>-	assert(cnt > 0);
+>-	errno = 0;
+>+
+>+	if (!cnt || (errno && errno != ENOENT))
+>+		cnt = -errno;
 
-== Series Details ==
+Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 
-Series: lib/igt_fb: on Xe driver take into account adlp with no extended block copy
-URL   : https://patchwork.freedesktop.org/series/124611/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7512_BAT -> XEIGTPW_9917_BAT
-====================================================
-
-Summary
--------
-
-  **WARNING**
-
-  Minor unknown changes coming with XEIGTPW_9917_BAT need to be verified
-  manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_9917_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_9917_BAT:
-
-### IGT changes ###
-
-#### Warnings ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - bat-dg2-oem2:       [INCOMPLETE][1] ([Intel XE#764]) -> [INCOMPLETE][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7512/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9917/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html
-
-  
-  [Intel XE#764]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/764
-
-
-Build changes
--------------
-
-  * IGT: IGT_7512 -> IGTPW_9917
-  * Linux: xe-411-090c3e92db31fbbe59a47d44f8dd7e8a1ccbcb36 -> xe-412-ad02b0f1ea8fe562083663026a9f69a3d2ae6875
-
-  IGTPW_9917: 9917
-  IGT_7512: 2eb58faf82d3cd5e2e74154a7319cff56eb40762 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-411-090c3e92db31fbbe59a47d44f8dd7e8a1ccbcb36: 090c3e92db31fbbe59a47d44f8dd7e8a1ccbcb36
-  xe-412-ad02b0f1ea8fe562083663026a9f69a3d2ae6875: ad02b0f1ea8fe562083663026a9f69a3d2ae6875
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9917/index.html
-
---===============6200299836879942057==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/igt_fb: on Xe driver take into account adlp with no extended block copy</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124611/">https://patchwork.freedesktop.org/series/124611/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9917/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9917/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7512_BAT -&gt; XEIGTPW_9917_BAT</h1>
-<h2>Summary</h2>
-<p><strong>WARNING</strong></p>
-<p>Minor unknown changes coming with XEIGTPW_9917_BAT need to be verified<br />
-  manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_9917_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_9917_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Warnings</h4>
-<ul>
-<li>igt@core_hotunplug@unbind-rebind:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7512/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/764">Intel XE#764</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9917/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7512 -&gt; IGTPW_9917</li>
-<li>Linux: xe-411-090c3e92db31fbbe59a47d44f8dd7e8a1ccbcb36 -&gt; xe-412-ad02b0f1ea8fe562083663026a9f69a3d2ae6875</li>
-</ul>
-<p>IGTPW_9917: 9917<br />
-  IGT_7512: 2eb58faf82d3cd5e2e74154a7319cff56eb40762 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-411-090c3e92db31fbbe59a47d44f8dd7e8a1ccbcb36: 090c3e92db31fbbe59a47d44f8dd7e8a1ccbcb36<br />
-  xe-412-ad02b0f1ea8fe562083663026a9f69a3d2ae6875: ad02b0f1ea8fe562083663026a9f69a3d2ae6875</p>
-
-</body>
-</html>
-
---===============6200299836879942057==--
+Thanks,
+Umesh
+>
+> 	return cnt;
+> }
+>@@ -590,6 +590,8 @@ static int pmu_init(struct engines *engines)
+> 	engines->fd = -1;
+> 	engines->num_counters = 0;
+> 	engines->num_gts = get_num_gts(type);
+>+	if (engines->num_gts <= 0)
+>+		return -1;
+>
+> 	engines->irq.config = I915_PMU_INTERRUPTS;
+> 	fd = _open_pmu(type, engines->num_counters, &engines->irq, engines->fd);
+>-- 
+>2.39.2
+>
