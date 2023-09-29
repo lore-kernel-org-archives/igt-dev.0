@@ -2,15 +2,14 @@ Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Intel-gfx@lists.freedesktop.org
-Date: Fri, 29 Sep 2023 13:25:10 +0100
-Message-Id: <20230929122517.349348-6-tvrtko.ursulin@linux.intel.com>
+Date: Fri, 29 Sep 2023 13:25:15 +0100
+Message-Id: <20230929122517.349348-11-tvrtko.ursulin@linux.intel.com>
 In-Reply-To: <20230929122517.349348-1-tvrtko.ursulin@linux.intel.com>
 References: <20230929122517.349348-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 05/12] tools/intel_gpu_top: Fix client
- layout on first sample period
+Subject: [igt-dev] [PATCH i-g-t 10/12] tools/intel_gpu_top: Fully wrap
+ clients operations
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,59 +24,121 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-When I moved the client name to be last, I did not account for the fact
-current code skips showing engine utilisation until at least two sampling
-periods have passed. Consequence of this is that client name gets printed
-as the second field and not under the "NAME" column header.
-
-Fix it by emitting spaces instead of engine utilisation until two samples
-have been collected.
+Wrap all operations on clients via the Intel specific wrappers in order to
+simplify upcoming work.
 
 Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 ---
- tools/intel_gpu_top.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ tools/intel_gpu_top.c | 42 ++++++++++++++++++++++--------------------
+ 1 file changed, 22 insertions(+), 20 deletions(-)
 
 diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index 66b76c4afed0..de37ff603b6f 100644
+index 5d44ba45335e..4b9ef306ca8e 100644
 --- a/tools/intel_gpu_top.c
 +++ b/tools/intel_gpu_top.c
-@@ -926,12 +926,14 @@ static void free_display_clients(struct igt_drm_clients *clients)
+@@ -132,6 +132,7 @@ struct engines {
+ struct intel_clients {
+ 	const char *pci_slot;
+ 	struct igt_drm_client_engines classes;
++	struct igt_drm_clients *clients;
+ };
  
- static const char *bars[] = { " ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█" };
- 
--static void n_spaces(const unsigned int n)
-+static unsigned int n_spaces(const unsigned int n)
- {
- 	unsigned int i;
- 
- 	for (i = 0; i < n; i++)
- 		putchar(' ');
+ static struct termios termios_orig;
+@@ -2432,19 +2433,22 @@ intel_init_clients(struct intel_clients *iclients,
+ 		iclients->classes.capacity[i] = engines->class[i].num_engines;
+ 		iclients->classes.names[i] = strdup(engines->class[i].name);
+ 	}
 +
-+	return n;
++	iclients->clients = igt_drm_clients_init(iclients);
  }
  
- static void
-@@ -2041,14 +2043,17 @@ print_client(struct igt_drm_client *c, struct engines *engines, double t, int li
- 
- 		len = printf("%*s ", clients->max_pid_len, c->pid_str);
- 
--		for (i = 0;
--		     c->samples > 1 && i <= iclients->classes.max_engine_id;
--		     i++) {
-+		for (i = 0; i <= iclients->classes.max_engine_id; i++) {
- 			double pct, max;
- 
- 			if (!iclients->classes.capacity[i])
- 				continue;
- 
-+			if (c->samples < 2) {
-+				len += n_spaces(*class_w);
-+				continue;
-+			}
+ static void intel_free_clients(struct intel_clients *iclients)
+ {
++	if (iclients->clients)
++		igt_drm_clients_free(iclients->clients);
 +
- 			pct = (double)c->val[i] / period_us / 1e3 * 100;
+ 	free((void *)iclients->pci_slot);
+ 	free(iclients->classes.capacity);
+ 	free(iclients->classes.names);
+ }
  
- 			/*
+-int main(int argc, char **argv)
++static void intel_scan_clients(struct intel_clients *iclients)
+ {
+-	unsigned int period_us = DEFAULT_PERIOD_MS * 1000;
+-	struct igt_drm_clients *clients = NULL;
+ 	static const char *engine_map[] = {
+ 		"render",
+ 		"copy",
+@@ -2452,6 +2456,15 @@ int main(int argc, char **argv)
+ 		"video-enhance",
+ 		"compute",
+ 	};
++
++	igt_drm_clients_scan(iclients->clients, client_match,
++			     engine_map, ARRAY_SIZE(engine_map),
++			     NULL, 0);
++}
++
++int main(int argc, char **argv)
++{
++	unsigned int period_us = DEFAULT_PERIOD_MS * 1000;
+ 	bool physical_engines = false;
+ 	struct intel_clients iclients;
+ 	int con_w = -1, con_h = -1;
+@@ -2609,15 +2622,11 @@ int main(int argc, char **argv)
+ 
+ 	init_engine_classes(engines);
+ 
+-	if (has_drm_fdinfo(&card)) {
++	if (has_drm_fdinfo(&card))
+ 		intel_init_clients(&iclients, &card, engines);
+-		clients = igt_drm_clients_init(&iclients);
+-	}
+ 
+ 	pmu_sample(engines);
+-	igt_drm_clients_scan(clients, client_match,
+-			     engine_map, ARRAY_SIZE(engine_map),
+-			     NULL, 0);
++	intel_scan_clients(&iclients);
+ 	gettime(&ts);
+ 
+ 	if (output_mode == JSON)
+@@ -2648,12 +2657,8 @@ int main(int argc, char **argv)
+ 		pmu_sample(engines);
+ 		t = (double)(engines->ts.cur - engines->ts.prev) / 1e9;
+ 
+-		disp_clients =
+-			display_clients(igt_drm_clients_scan(clients,
+-							     client_match,
+-							     engine_map,
+-							     ARRAY_SIZE(engine_map),
+-							     NULL, 0));
++		intel_scan_clients(&iclients);
++		disp_clients = display_clients(iclients.clients);
+ 		scan_us = elapsed_us(&ts, period_us);
+ 
+ 		if (stop_top)
+@@ -2704,7 +2709,7 @@ int main(int argc, char **argv)
+ 			pops->close_struct();
+ 		}
+ 
+-		if (disp_clients != clients)
++		if (disp_clients != iclients.clients)
+ 			free_display_clients(disp_clients);
+ 
+ 		if (stop_top)
+@@ -2719,10 +2724,7 @@ int main(int argc, char **argv)
+ 	if (output_mode == JSON)
+ 		printf("]\n");
+ 
+-	if (clients) {
+-		igt_drm_clients_free(clients);
+-		intel_free_clients(&iclients);
+-	}
++	intel_free_clients(&iclients);
+ 
+ 	free(codename);
+ err_pmu:
 -- 
 2.39.2
