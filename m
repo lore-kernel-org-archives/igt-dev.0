@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DE76B10E0F5
- for <igt-dev@lists.freedesktop.org>; Fri, 29 Sep 2023 09:37:19 +0000 (UTC)
-Message-ID: <fada7889-a763-4896-c54f-023e5ae02ffd@linux.intel.com>
-Date: Fri, 29 Sep 2023 10:37:15 +0100
-MIME-Version: 1.0
-Content-Language: en-US
-To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230928174535.2074462-1-marcin.bernatowicz@linux.intel.com>
- <20230928174535.2074462-17-marcin.bernatowicz@linux.intel.com>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20230928174535.2074462-17-marcin.bernatowicz@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 16/17] benchmarks/gem_wsim: for_each_dep
- macro
+To: igt-dev@lists.freedesktop.org,
+	Intel-gfx@lists.freedesktop.org
+Date: Fri, 29 Sep 2023 13:25:08 +0100
+Message-Id: <20230929122517.349348-4-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20230929122517.349348-1-tvrtko.ursulin@linux.intel.com>
+References: <20230929122517.349348-1-tvrtko.ursulin@linux.intel.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 03/12] tests/i915/drm_fdinfo: Add some
+ memory info tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,147 +17,275 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: chris.p.wilson@linux.intel.com
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-On 28/09/2023 18:45, Marcin Bernatowicz wrote:
-> Utility macro to easy traverse dependencies.
-> 
-> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> ---
->   benchmarks/gem_wsim.c | 45 ++++++++++++++++++++++++-------------------
->   1 file changed, 25 insertions(+), 20 deletions(-)
-> 
-> diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-> index d22d66aeb..d447dced4 100644
-> --- a/benchmarks/gem_wsim.c
-> +++ b/benchmarks/gem_wsim.c
-> @@ -109,6 +109,10 @@ struct deps {
->   	struct dep_entry *list;
->   };
->   
-> +#define for_each_dep(__dep, __deps) \
-> +	for (int __i = 0; __i < __deps.nr && \
-> +	     (__dep = &__deps.list[__i]); ++__i)
-> +
->   struct w_arg {
->   	char *filename;
->   	char *desc;
-> @@ -1150,8 +1154,10 @@ add_step:
->   	 * referencing them as a sync fence dependency.
->   	 */
->   	for (i = 0; i < nr_steps; i++) {
-> -		for (j = 0; j < steps[i].fence_deps.nr; j++) {
-> -			tmp = steps[i].idx + steps[i].fence_deps.list[j].target;
-> +		struct dep_entry *dep;
-> +
-> +		for_each_dep(dep, steps[i].fence_deps) {
-> +			tmp = steps[i].idx + dep->target;
->   			check_arg(tmp < 0 || tmp >= i ||
->   				  (steps[tmp].type != BATCH &&
->   				   steps[tmp].type != SW_FENCE),
-> @@ -1478,9 +1484,9 @@ static void
->   alloc_step_batch(struct workload *wrk, struct w_step *w)
->   {
->   	enum intel_engine_id engine = w->engine;
-> +	struct dep_entry *dep;
->   	unsigned int j = 0;
->   	unsigned int nr_obj = 2 + w->data_deps.nr;
-> -	unsigned int i;
->   
->   	w->bb_size = 4096;
->   	w->i915.obj = calloc(nr_obj, sizeof(*w->i915.obj));
-> @@ -1491,14 +1497,13 @@ alloc_step_batch(struct workload *wrk, struct w_step *w)
->   	j++;
->   	igt_assert(j < nr_obj);
->   
-> -	for (i = 0; i < w->data_deps.nr; i++) {
-> -		struct dep_entry *entry = &w->data_deps.list[i];
-> +	for_each_dep(dep, w->data_deps) {
->   		uint32_t dep_handle;
->   
-> -		if (entry->working_set == -1) {
-> -			int dep_idx = w->idx + entry->target;
-> +		if (dep->working_set == -1) {
-> +			int dep_idx = w->idx + dep->target;
->   
-> -			igt_assert(entry->target <= 0);
-> +			igt_assert(dep->target <= 0);
->   			igt_assert(dep_idx >= 0 && dep_idx < w->idx);
->   			igt_assert(wrk->steps[dep_idx].type == BATCH);
->   
-> @@ -1506,19 +1511,19 @@ alloc_step_batch(struct workload *wrk, struct w_step *w)
->   		} else {
->   			struct working_set *set;
->   
-> -			igt_assert(entry->working_set <=
-> +			igt_assert(dep->working_set <=
->   				   wrk->max_working_set_id);
->   
-> -			set = wrk->working_sets[entry->working_set];
-> +			set = wrk->working_sets[dep->working_set];
->   
->   			igt_assert(set->nr);
-> -			igt_assert(entry->target < set->nr);
-> -			igt_assert(set->sizes[entry->target].size);
-> +			igt_assert(dep->target < set->nr);
-> +			igt_assert(set->sizes[dep->target].size);
->   
-> -			dep_handle = set->handles[entry->target];
-> +			dep_handle = set->handles[dep->target];
->   		}
->   
-> -		w->i915.obj[j].flags = entry->write ? EXEC_OBJECT_WRITE : 0;
-> +		w->i915.obj[j].flags = dep->write ? EXEC_OBJECT_WRITE : 0;
->   		w->i915.obj[j].handle = dep_handle;
->   		j++;
->   		igt_assert(j < nr_obj);
-> @@ -1713,8 +1718,8 @@ find_dep(struct dep_entry *deps, unsigned int nr, struct dep_entry dep)
->   static void measure_active_set(struct workload *wrk)
->   {
->   	unsigned long total = 0, batch_sizes = 0;
-> -	struct dep_entry *deps = NULL;
-> -	unsigned int nr = 0, i, j;
-> +	struct dep_entry *dep, *deps = NULL;
-> +	unsigned int nr = 0, i;
->   	struct w_step *w;
->   
->   	if (verbose < 3)
-> @@ -1726,8 +1731,7 @@ static void measure_active_set(struct workload *wrk)
->   
->   		batch_sizes += w->bb_size;
->   
-> -		for (j = 0; j < w->data_deps.nr; j++) {
-> -			struct dep_entry *dep = &w->data_deps.list[j];
-> +		for_each_dep(dep, w->data_deps) {
->   			struct dep_entry _dep = *dep;
->   
->   			if (dep->working_set == -1 && dep->target < 0) {
-> @@ -2150,13 +2154,14 @@ static void w_sync_to(struct workload *wrk, struct w_step *w, int target)
->   static void
->   do_eb(struct workload *wrk, struct w_step *w, enum intel_engine_id engine)
->   {
-> +	struct dep_entry *dep;
->   	unsigned int i;
->   
->   	eb_update_flags(wrk, w, engine);
->   	update_bb_start(wrk, w);
->   
-> -	for (i = 0; i < w->fence_deps.nr; i++) {
-> -		int tgt = w->idx + w->fence_deps.list[i].target;
-> +	for_each_dep(dep, w->fence_deps) {
-> +		int tgt = w->idx + dep->target;
->   
->   		/* TODO: fence merging needed to support multiple inputs */
->   		igt_assert(i == 0);
+A few basic smoke tests to check per client memory info looks legit.
 
-Smooth sailing.
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+---
+ tests/intel/drm_fdinfo.c | 217 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 217 insertions(+)
 
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin.com>
-
-Regards,
-
-Tvrtko
+diff --git a/tests/intel/drm_fdinfo.c b/tests/intel/drm_fdinfo.c
+index c4218b0d16e6..3ced658f2faa 100644
+--- a/tests/intel/drm_fdinfo.c
++++ b/tests/intel/drm_fdinfo.c
+@@ -23,6 +23,7 @@
+  */
+ 
+ #include <fcntl.h>
++#include <sys/ioctl.h>
+ 
+ #include "igt.h"
+ #include "igt_core.h"
+@@ -76,6 +77,16 @@
+  *
+  * SUBTEST: virtual-idle
+  *
++ * SUBTEST: memory-info-idle
++ *
++ * SUBTEST: memory-info-active
++ *
++ * SUBTEST: memory-info-resident
++ *
++ * SUBTEST: memory-info-purgeable
++ *
++ * SUBTEST: memory-info-shared
++ *
+  * SUBTEST: context-close-stress
+  */
+ 
+@@ -143,6 +154,11 @@ static unsigned int measured_usleep(unsigned int usec)
+ #define FLAG_HANG (8)
+ #define TEST_ISOLATION (16)
+ 
++#define TEST_ACTIVE TEST_BUSY
++#define TEST_RESIDENT (32)
++#define TEST_PURGEABLE (64)
++#define TEST_SHARED (128)
++
+ static void end_spin(int fd, igt_spin_t *spin, unsigned int flags)
+ {
+ 	if (!spin)
+@@ -772,6 +788,172 @@ static void stress_context_close(int i915)
+ 	igt_stop_helper(&reader);
+ }
+ 
++static size_t read_fdinfo(char *buf, const size_t sz, int at, const char *name)
++{
++	size_t count;
++	int fd;
++
++	fd = openat(at, name, O_RDONLY);
++	if (fd < 0)
++		return 0;
++
++	count = read(fd, buf, sz - 1);
++	if (count > 0)
++		buf[count - 1] = 0;
++	close(fd);
++
++	return count > 0 ? count : 0;
++}
++
++/*
++ * At least this much, but maybe less if we started with a driver internal
++ * baseline which can go away behind our back.
++ */
++#define fdinfo_assert_gte(cur, prev, sz, base) \
++({ \
++	int64_t __sz = (sz) - (base); \
++	int64_t __d = (cur) - (prev); \
++	igt_assert_f(__d >= __sz, \
++		     "prev=%"PRIu64" cur=%"PRIu64" delta=%"PRId64" sz=%"PRIu64" baseline=%"PRIu64"\n%s\n", \
++		     (prev), (cur), __d, (sz), (base), fdinfo_buf); \
++})
++
++#define fdinfo_assert_eq(cur, prev, sz, base) \
++({ \
++	int64_t __d = (cur) - (prev); \
++	igt_assert_f(__d == 0, \
++		     "prev=%"PRIu64" cur=%"PRIu64" delta=%"PRId64" sz=%"PRIu64" baseline=%"PRIu64"\n%s\n", \
++		     (prev), (cur), __d, (sz), (base), fdinfo_buf); \
++})
++
++static void
++test_memory(int i915, struct gem_memory_region *mr, unsigned int flags)
++{
++	const unsigned int r = mr->ci.memory_class == I915_MEMORY_CLASS_SYSTEM ? 0 : 1; /* See region map */
++	const uint64_t max_mem = 512ull * 1024 * 1024;
++	const uint64_t max_bo = 16ull * 1024 * 1024;
++	struct drm_client_fdinfo base_info, prev_info = { };
++	struct drm_client_fdinfo info = { };
++	char buf[64], fdinfo_buf[4096];
++	igt_spin_t *spin = NULL;
++	uint64_t total = 0, sz;
++	uint64_t ahnd;
++	int ret, dir;
++
++	i915 = drm_reopen_driver(i915);
++
++	ahnd = get_reloc_ahnd(i915, 0);
++
++	ret = snprintf(buf, sizeof(buf), "%u", i915);
++	igt_assert(ret > 0 && ret < sizeof(buf));
++
++	dir = open("/proc/self/fdinfo", O_DIRECTORY | O_RDONLY);
++	igt_assert_fd(dir);
++
++	gem_quiescent_gpu(i915);
++	ret =  __igt_parse_drm_fdinfo(dir, buf, &info, NULL, 0, NULL, 0);
++	igt_assert(ret > 0);
++	igt_require(info.num_regions);
++	memcpy(&prev_info, &info, sizeof(info));
++	memcpy(&base_info, &info, sizeof(info));
++
++	while (total < max_mem) {
++		static const char *region_map[] = {
++			"system0",
++			"local0",
++		};
++		uint32_t bo;
++
++		sz = random() % max_bo;
++		ret = __gem_create_in_memory_region_list(i915, &bo, &sz, 0,
++							 &mr->ci, 1);
++		igt_assert_eq(ret, 0);
++		total += sz;
++
++		if (flags & (TEST_RESIDENT | TEST_PURGEABLE | TEST_ACTIVE))
++			spin = igt_spin_new(i915,
++					    .dependency = bo,
++					    .ahnd = ahnd);
++		else
++			spin = NULL;
++
++		if (flags & TEST_PURGEABLE) {
++			gem_madvise(i915, bo, I915_MADV_DONTNEED);
++			igt_spin_free(i915, spin);
++			gem_quiescent_gpu(i915);
++			spin = NULL;
++		}
++
++		if (flags & TEST_SHARED) {
++			struct drm_gem_open open_struct;
++			struct drm_gem_flink flink;
++
++			flink.handle = bo;
++			ret = ioctl(i915, DRM_IOCTL_GEM_FLINK, &flink);
++			igt_assert_eq(ret, 0);
++
++			open_struct.name = flink.name;
++			ret = ioctl(i915, DRM_IOCTL_GEM_OPEN, &open_struct);
++			igt_assert_eq(ret, 0);
++			igt_assert(open_struct.handle != 0);
++		}
++
++		memset(&info, 0, sizeof(info));
++		ret =  __igt_parse_drm_fdinfo(dir, buf, &info,
++					      NULL, 0,
++					      region_map, ARRAY_SIZE(region_map));
++		igt_assert(ret > 0);
++		igt_assert(info.num_regions);
++
++		read_fdinfo(fdinfo_buf, sizeof(fdinfo_buf), dir, buf);
++
++		/* >= to account for objects out of our control */
++		fdinfo_assert_gte(info.region_mem[r].total,
++				  prev_info.region_mem[r].total,
++				  sz,
++				  base_info.region_mem[r].total);
++
++		if (flags & TEST_SHARED)
++			fdinfo_assert_gte(info.region_mem[r].shared,
++					  prev_info.region_mem[r].shared,
++					  sz,
++					  base_info.region_mem[r].shared);
++		else
++			fdinfo_assert_eq(info.region_mem[r].shared,
++					 prev_info.region_mem[r].shared,
++					 sz,
++					 base_info.region_mem[r].shared);
++
++		if (flags & (TEST_RESIDENT | TEST_PURGEABLE | TEST_ACTIVE))
++			fdinfo_assert_gte(info.region_mem[r].resident,
++					  (uint64_t)0, /* We can only be sure the current buffer is resident. */
++					  sz,
++					  (uint64_t)0);
++
++		if (flags & TEST_PURGEABLE)
++			fdinfo_assert_gte(info.region_mem[r].purgeable,
++					  (uint64_t)0, /* We can only be sure the current buffer is purgeable (subset of resident). */
++					  sz,
++					  (uint64_t)0);
++
++		if (flags & TEST_ACTIVE)
++			fdinfo_assert_gte(info.region_mem[r].active,
++					  (uint64_t)0, /* We can only be sure the current buffer is active. */
++					  sz,
++					  (uint64_t)0);
++
++		memcpy(&prev_info, &info, sizeof(info));
++
++		if (spin) {
++			igt_spin_free(i915, spin);
++			gem_quiescent_gpu(i915);
++		}
++	}
++
++	put_ahnd(ahnd);
++	close(i915);
++}
++
+ #define test_each_engine(T, i915, ctx, e) \
+ 	igt_subtest_with_dynamic(T) for_each_ctx_engine(i915, ctx, e) \
+ 		igt_dynamic_f("%s", e->name)
+@@ -903,6 +1085,41 @@ igt_main
+ 	test_each_engine("isolation", i915, ctx, e)
+ 		single(i915, ctx, e, TEST_BUSY | TEST_ISOLATION);
+ 
++	igt_subtest_with_dynamic("memory-info-idle") {
++		for_each_memory_region(r, i915) {
++			igt_dynamic_f("%s", r->name)
++				test_memory(i915, r, 0);
++		}
++	}
++
++	igt_subtest_with_dynamic("memory-info-resident") {
++		for_each_memory_region(r, i915) {
++			igt_dynamic_f("%s", r->name)
++				test_memory(i915, r, TEST_RESIDENT);
++		}
++	}
++
++	igt_subtest_with_dynamic("memory-info-purgeable") {
++		for_each_memory_region(r, i915) {
++			igt_dynamic_f("%s", r->name)
++				test_memory(i915, r, TEST_PURGEABLE);
++		}
++	}
++
++	igt_subtest_with_dynamic("memory-info-active") {
++		for_each_memory_region(r, i915) {
++			igt_dynamic_f("%s", r->name)
++				test_memory(i915, r, TEST_ACTIVE);
++		}
++	}
++
++	igt_subtest_with_dynamic("memory-info-shared") {
++		for_each_memory_region(r, i915) {
++			igt_dynamic_f("%s", r->name)
++				test_memory(i915, r, TEST_SHARED);
++		}
++	}
++
+ 	igt_subtest_group {
+ 		int newfd;
+ 
+-- 
+2.39.2
