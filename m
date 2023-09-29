@@ -2,14 +2,14 @@ Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Intel-gfx@lists.freedesktop.org
-Date: Fri, 29 Sep 2023 13:25:13 +0100
-Message-Id: <20230929122517.349348-9-tvrtko.ursulin@linux.intel.com>
+Date: Fri, 29 Sep 2023 13:25:09 +0100
+Message-Id: <20230929122517.349348-5-tvrtko.ursulin@linux.intel.com>
 In-Reply-To: <20230929122517.349348-1-tvrtko.ursulin@linux.intel.com>
 References: <20230929122517.349348-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 08/12] lib/igt_drm_clients: Fix client id
- type confusion
+Subject: [igt-dev] [PATCH i-g-t 04/12] tools/intel_gpu_top: Fix clients
+ header width when no clients
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,54 +24,39 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-Igt_drm_fdinfo defines it as an unsigned long so it is best that it
-matches here as well.
+Recent refactoring broke the clients header in cases when there are no
+clients displayed. To fix it we need to account the width of the "NAME"
+label.
 
 Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 ---
- lib/igt_drm_clients.c | 2 +-
- lib/igt_drm_clients.h | 2 +-
- tools/intel_gpu_top.c | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ tools/intel_gpu_top.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/lib/igt_drm_clients.c b/lib/igt_drm_clients.c
-index 47ad137d5f1f..da51d7335b2b 100644
---- a/lib/igt_drm_clients.c
-+++ b/lib/igt_drm_clients.c
-@@ -49,7 +49,7 @@ struct igt_drm_clients *igt_drm_clients_init(void *private_data)
- static struct igt_drm_client *
- igt_drm_clients_find(struct igt_drm_clients *clients,
- 		     enum igt_drm_client_status status,
--		     unsigned int drm_minor, unsigned int id)
-+		     unsigned int drm_minor, unsigned long id)
- {
- 	unsigned int start, num;
- 	struct igt_drm_client *c;
-diff --git a/lib/igt_drm_clients.h b/lib/igt_drm_clients.h
-index 07bd236d43bf..cd37f8508b20 100644
---- a/lib/igt_drm_clients.h
-+++ b/lib/igt_drm_clients.h
-@@ -56,7 +56,7 @@ struct igt_drm_client {
- 	enum igt_drm_client_status status;
- 	struct igt_drm_client_regions *regions; /* Memory regions present in this client, to map with memory usage. */
- 	struct igt_drm_client_engines *engines; /* Engines used by this client, to map with busynees data. */
--	unsigned int id; /* DRM client id from fdinfo. */
-+	unsigned long id; /* DRM client id from fdinfo. */
- 	unsigned int drm_minor; /* DRM minor of this client. */
- 	unsigned int pid; /* PID which has this DRM fd open. */
- 	char pid_str[10]; /* Cached PID representation. */
 diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index 739ed9839961..35c125f22c48 100644
+index 87e9681e53b4..66b76c4afed0 100644
 --- a/tools/intel_gpu_top.c
 +++ b/tools/intel_gpu_top.c
-@@ -2102,7 +2102,7 @@ print_client(struct igt_drm_client *c, struct engines *engines, double t, int li
- 	} else if (output_mode == JSON) {
- 		char buf[64];
+@@ -1965,6 +1965,8 @@ print_clients_header(struct igt_drm_clients *clients, int lines,
+ 		     int con_w, int con_h, int *class_w)
+ {
+ 	struct intel_clients *iclients = clients->private_data;
++	const int max_name_len = clients->max_name_len < 4 ?
++				 4 : clients->max_name_len; /* At least "NAME" */
  
--		snprintf(buf, sizeof(buf), "%u", c->id);
-+		snprintf(buf, sizeof(buf), "%lu", c->id);
- 		pops->open_struct(buf);
+ 	if (output_mode == INTERACTIVE) {
+ 		unsigned int num_active = 0;
+@@ -1988,9 +1990,8 @@ print_clients_header(struct igt_drm_clients *clients, int lines,
+ 					num_active++;
+ 			}
  
- 		__json_add_member("name", c->print_name);
+-			*class_w = width =
+-				(con_w - len - clients->max_name_len - 1) /
+-				num_active;
++			*class_w = width = (con_w - len - max_name_len - 1) /
++					   num_active;
+ 
+ 			for (i = 0; i <= iclients->classes.max_engine_id; i++) {
+ 				const char *name = iclients->classes.names[i];
 -- 
 2.39.2
