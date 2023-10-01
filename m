@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10on2060.outbound.protection.outlook.com [40.107.93.60])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8D39E10E031
+ for <igt-dev@lists.freedesktop.org>; Sun,  1 Oct 2023 16:28:36 +0000 (UTC)
+From: Hersen Wu <hersenxs.wu@amd.com>
+To: <igt-dev@lists.freedesktop.org>, <rodrigo.siqueira@amd.com>,
+ <aurabindo.pillai@amd.com>, <alex.hung@amd.com>, <hamza.mahfooz@amd.com>,
+ <sunpeng.li@amd.com>
+Date: Sun, 1 Oct 2023 12:28:28 -0400
+Message-ID: <20231001162828.74566-2-hersenxs.wu@amd.com>
+In-Reply-To: <20231001162828.74566-1-hersenxs.wu@amd.com>
+References: <20231001162828.74566-1-hersenxs.wu@amd.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kunal Joshi" <kunal1.joshi@intel.com>
-Date: Sun, 01 Oct 2023 10:54:36 -0000
-Message-ID: <169615767662.10311.1349469029110237856@emeril.freedesktop.org>
-References: <20231001103006.431894-1-kunal1.joshi@intel.com>
-In-Reply-To: <20231001103006.431894-1-kunal1.joshi@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_A?=
- =?utf-8?q?dd_test_for_hotplug_validation_in_simulation?=
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH 2/2] [i-g-t] tests/kms_cursor_crc: Fix test
+ intermittent failures on AMD gpu
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,155 +23,70 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Hersen Wu <hersenxs.wu@amd.com>, markyacoub@google.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Wait for two more vblanks before reading crc on AMD gpu.
 
-Series: Add test for hotplug validation in simulation
-URL   : https://patchwork.freedesktop.org/series/124491/
-State : warning
+Without waiting for two vblanks, AMD cursor updates may not
+synchronized to the same frame of pipe, crc generated may
+not be reliable.
 
-== Summary ==
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+---
+ tests/kms_cursor_crc.c | 24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/999056 for the overview.
-
-build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/49725139):
-  Warning: Missing documentation for igt@kms_simulation_hpd@sim-hpd
-  Please refer: docs/test_documentation.md for more details
-  [1641/1644] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
-  [1642/1644] Generating i915_tests.html with a custom command.
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/728] Generating version.h with a custom command.
-  [2/4] Linking target runner/runner_test.
-  [3/4] Generating kms_tests.rst with a custom command.
-  FAILED: docs/testplan/kms_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: Missing documentation for igt@kms_simulation_hpd@sim-hpd
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1696157499:step_script
-  section_start:1696157499:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1696157500:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/49725134):
-  Warning: Missing documentation for igt@kms_simulation_hpd@sim-hpd
-  Please refer: docs/test_documentation.md for more details
-  [1647/1650] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
-  [1648/1650] Generating i915_tests.html with a custom command.
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/730] Generating version.h with a custom command.
-  [2/4] Linking target runner/runner_test.
-  [3/4] Generating kms_tests.rst with a custom command.
-  FAILED: docs/testplan/kms_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: Missing documentation for igt@kms_simulation_hpd@sim-hpd
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1696157511:step_script
-  section_start:1696157511:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1696157512:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/49725138):
-  FAILED: docs/testplan/kms_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: Missing documentation for igt@kms_simulation_hpd@sim-hpd
-  Please refer: docs/test_documentation.md for more details
-  [1649/1650] Generating i915_tests.html with a custom command.
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/730] Generating version.h with a custom command.
-  [2/3] Generating kms_tests.rst with a custom command.
-  FAILED: docs/testplan/kms_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: Missing documentation for igt@kms_simulation_hpd@sim-hpd
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1696157529:step_script
-  section_start:1696157529:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1696157529:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/49725137):
-  Warning: Missing documentation for igt@kms_simulation_hpd@sim-hpd
-  Please refer: docs/test_documentation.md for more details
-  [1491/1494] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
-  [1492/1494] Generating i915_tests.html with a custom command.
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/684] Generating version.h with a custom command.
-  [2/4] Linking target runner/runner_test.
-  [3/4] Generating kms_tests.rst with a custom command.
-  FAILED: docs/testplan/kms_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: Missing documentation for igt@kms_simulation_hpd@sim-hpd
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1696157499:step_script
-  section_start:1696157499:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1696157500:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/49725135):
-  Warning: Missing documentation for igt@kms_simulation_hpd@sim-hpd
-  Please refer: docs/test_documentation.md for more details
-  [1647/1650] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
-  [1648/1650] Generating i915_tests.html with a custom command.
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/730] Generating version.h with a custom command.
-  [2/4] Linking target runner/runner_test.
-  [3/4] Generating kms_tests.rst with a custom command.
-  FAILED: docs/testplan/kms_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: Missing documentation for igt@kms_simulation_hpd@sim-hpd
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1696157511:step_script
-  section_start:1696157511:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1696157512:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/49725136):
-  Warning: Missing documentation for igt@kms_simulation_hpd@sim-hpd
-  Please refer: docs/test_documentation.md for more details
-  [1647/1650] Compiling C object 'runner/runner@@runner_test@exe/runner_tests.c.o'.
-  [1648/1650] Generating i915_tests.html with a custom command.
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/730] Generating version.h with a custom command.
-  [2/4] Linking target runner/runner_test.
-  [3/4] Generating kms_tests.rst with a custom command.
-  FAILED: docs/testplan/kms_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: Missing documentation for igt@kms_simulation_hpd@sim-hpd
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1696157509:step_script
-  section_start:1696157509:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1696157510:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/999056
+diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+index ba29ff65d..7450ded9d 100644
+--- a/tests/kms_cursor_crc.c
++++ b/tests/kms_cursor_crc.c
+@@ -260,6 +260,15 @@ static void do_single_test(data_t *data, int x, int y, bool hw_test,
+ 							      SUSPEND_TEST_NONE);
+ 
+ 			igt_pipe_crc_start(pipe_crc);
++
++			/* Wait for two more vblanks since cursor updates may not
++			 * synchronized to the same frame on AMD HW
++			 */
++			if (is_amdgpu_device(data->drm_fd))
++				igt_wait_for_vblank_count(data->drm_fd,
++					display->pipes[data->pipe].crtc_offset,
++					data->vblank_wait_count);
++
+ 			igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc_after);
+ 			igt_assert_crc_equal(hwcrc, &crc_after);
+ 		}
+@@ -276,6 +285,15 @@ static void do_single_test(data_t *data, int x, int y, bool hw_test,
+ 		restore_image(data, swbufidx, &((cursorarea){x, y, data->curw, data->curh}));
+ 		igt_plane_set_fb(data->primary, &data->primary_fb[swbufidx]);
+ 		igt_display_commit(display);
++
++		/* Wait for two more vblanks since cursor updates may not
++		 * synchronized to the same frame on AMD HW
++		 */
++		if (is_amdgpu_device(data->drm_fd))
++			igt_wait_for_vblank_count(data->drm_fd,
++				display->pipes[data->pipe].crtc_offset,
++				data->vblank_wait_count);
++
+ 		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
+ 		igt_assert_crc_equal(&crc, hwcrc);
+ 	}
+@@ -1079,7 +1097,11 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ 
+ 		igt_require_pipe_crc(data.drm_fd);
+ 
+-		data.vblank_wait_count = is_msm_device(data.drm_fd) ? 2 : 1;
++		/* Wait for two more vblanks since cursor updates may not
++		 * synchronized to the same frame on AMD HW
++		 */
++		data.vblank_wait_count =
++			(is_msm_device(data.drm_fd) || is_amdgpu_device(data.drm_fd)) ? 2 : 1;
+ 	}
+ 
+ 	data.cursor_max_w = cursor_width;
+-- 
+2.25.1
