@@ -1,16 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 13E0A10E1A3
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Oct 2023 07:11:07 +0000 (UTC)
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon,  2 Oct 2023 10:11:03 +0300
-Message-ID: <20231002071103.11569-1-ville.syrjala@linux.intel.com>
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com
+ [IPv6:2a00:1450:4864:20::32e])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BA45210E21F
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Oct 2023 08:01:17 +0000 (UTC)
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-4064876e8b8so61403345e9.0
+ for <igt-dev@lists.freedesktop.org>; Mon, 02 Oct 2023 01:01:17 -0700 (PDT)
+Message-ID: <cd6896b0-287f-461f-5e93-cdbc69bf2ecd@gmail.com>
+Date: Mon, 2 Oct 2023 11:01:07 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_frontbuffer_tracking: Remove
- badstride subtests
+Content-Language: en-US
+To: Hersen Wu <hersenxs.wu@amd.com>, igt-dev@lists.freedesktop.org,
+ rodrigo.siqueira@amd.com, aurabindo.pillai@amd.com, alex.hung@amd.com,
+ hamza.mahfooz@amd.com, sunpeng.li@amd.com
+References: <20231001162828.74566-1-hersenxs.wu@amd.com>
+ <20231001162828.74566-2-hersenxs.wu@amd.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+In-Reply-To: <20231001162828.74566-2-hersenxs.wu@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH 2/2] [i-g-t] tests/kms_cursor_crc: Fix test
+ intermittent failures on AMD gpu
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,167 +28,86 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: juhapekka.heikkila@gmail.com
+Cc: markyacoub@google.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Hi Hersen,
 
-The FBC hardware doesn't have any weird stride limitations
-since gen4. We had some leftover code in the kernel that thought
-otherwise. That code is now gone so any stride the plane
-accepts FBC will also now accept. Remove the badstride subtests
-as they can no longer do anything sensible.
+On 1.10.2023 19.28, Hersen Wu wrote:
+> Wait for two more vblanks before reading crc on AMD gpu.
+> 
+> Without waiting for two vblanks, AMD cursor updates may not
+> synchronized to the same frame of pipe, crc generated may
+> not be reliable.
+> 
+> Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+> ---
+>   tests/kms_cursor_crc.c | 24 +++++++++++++++++++++++-
+>   1 file changed, 23 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+> index ba29ff65d..7450ded9d 100644
+> --- a/tests/kms_cursor_crc.c
+> +++ b/tests/kms_cursor_crc.c
+> @@ -260,6 +260,15 @@ static void do_single_test(data_t *data, int x, int y, bool hw_test,
+>   							      SUSPEND_TEST_NONE);
+>   
+>   			igt_pipe_crc_start(pipe_crc);
+> +
+> +			/* Wait for two more vblanks since cursor updates may not
+> +			 * synchronized to the same frame on AMD HW
+> +			 */
+> +			if (is_amdgpu_device(data->drm_fd))
+> +				igt_wait_for_vblank_count(data->drm_fd,
+> +					display->pipes[data->pipe].crtc_offset,
+> +					data->vblank_wait_count);
+> +
 
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
----
- tests/intel/kms_frontbuffer_tracking.c | 127 -------------------------
- 1 file changed, 127 deletions(-)
+Here was not done cursor modifications, test is just coming back from 
+suspend or done dpms off/on. If this failed here it would mean there 
+probably really was something to look into on driver side. From what 
+your commit message says maybe you'll need to look few lines above where 
+the crc is taken before suspend/dpms.
 
-diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-index 215ecdeef58d..6526e1c3cffa 100644
---- a/tests/intel/kms_frontbuffer_tracking.c
-+++ b/tests/intel/kms_frontbuffer_tracking.c
-@@ -4410,127 +4410,6 @@ static void farfromfence_subtest(const struct test_mode *t)
- 	igt_remove_fb(drm.fd, &tall_fb);
- }
- 
--static void try_invalid_strides(void)
--{
--	uint32_t gem_handle;
--	int rc;
--
--	/* Sizes that the Kernel shouldn't even allow for tiled */
--	gem_handle = gem_create(drm.fd, 2048);
--
--	/* Smaller than 512, yet still 64-byte aligned. */
--	rc = __gem_set_tiling(drm.fd, gem_handle, I915_TILING_X, 448);
--	igt_assert_eq(rc, -EINVAL);
--
--	/* Bigger than 512, but not 64-byte aligned. */
--	rc = __gem_set_tiling(drm.fd, gem_handle, I915_TILING_X, 1022);
--	igt_assert_eq(rc, -EINVAL);
--
--	/* Just make sure something actually works. */
--	rc = __gem_set_tiling(drm.fd, gem_handle, I915_TILING_X, 1024);
--	igt_assert_eq(rc, 0);
--
--	gem_close(drm.fd, gem_handle);
--}
--
--/**
-- * SUBTEST: fbc-badstride
-- * Description: Try to use buffers with strides that are not supported
-- * Driver requirement: i915, xe
-- * Functionality: fbc, fbt
-- * Mega feature: General Display Features
-- * Test category: functionality test
-- *
-- * SUBTEST: fbcdrrs-badstride
-- * Description: Try to use buffers with strides that are not supported
-- * Driver requirement: i915, xe
-- * Functionality: drrs, fbc, fbt
-- * Mega feature: General Display Features
-- * Test category: functionality test
-- *
-- * SUBTEST: fbcpsr-badstride
-- * Description: Try to use buffers with strides that are not supported
-- * Driver requirement: i915, xe
-- * Functionality: fbc, fbt, psr
-- * Mega feature: General Display Features
-- * Test category: functionality test
-- *
-- * SUBTEST: fbcpsrdrrs-badstride
-- * Description: Try to use buffers with strides that are not supported
-- * Driver requirement: i915, xe
-- * Functionality: drrs, fbc, fbt, psr
-- * Mega feature: General Display Features
-- * Test category: functionality test
-- */
--
--/**
-- * badstride - try to use buffers with strides that are not supported
-- *
-- * METHOD
-- *   First we try to create buffers with strides that are not allowed for tiled
-- *   surfaces and assert the Kernel rejects them. Then we create buffers with
-- *   strides that are allowed by the Kernel, but that are incompatible with FBC
-- *   and we assert that FBC stays disabled after we set a mode on those buffers.
-- *
-- * EXPECTED RESULTS
-- *   The invalid strides are rejected, and the valid strides that are
-- *   incompatible with FBC result in FBC disabled.
-- *
-- * FAILURES
-- *   There are two possible places where the Kernel can be broken: either the
-- *   code that checks valid strides for tiled buffers or the code that checks
-- *   the valid strides for FBC.
-- */
--static void badstride_subtest(const struct test_mode *t)
--{
--	struct igt_fb wide_fb, *old_fb;
--	struct modeset_params *params = pick_params(t);
--	int rc;
--
--	if (gem_available_fences(drm.fd))
--		try_invalid_strides();
--
--	prepare_subtest(t, NULL);
--
--	old_fb = params->primary.fb;
--
--	create_fb(t->format, params->primary.fb->width + 4096, params->primary.fb->height,
--		  t->tiling, t->plane, &wide_fb);
--	igt_assert(wide_fb.strides[0] > 16384);
--
--	fill_fb(&wide_fb, COLOR_PRIM_BG);
--
--	/* Try a simple modeset with the new fb. */
--	params->primary.fb = &wide_fb;
--	set_mode_for_params(params);
--	do_assertions(ASSERT_FBC_DISABLED);
--
--	/* Go back to the old fb so FBC works again. */
--	params->primary.fb = old_fb;
--	set_mode_for_params(params);
--	do_assertions(0);
--
--	/* We're doing the equivalent of a modeset, but with the planes API. */
--	params->primary.fb = &wide_fb;
--	set_prim_plane_for_params(params);
--	do_assertions(ASSERT_FBC_DISABLED);
--
--	params->primary.fb = old_fb;
--	set_mode_for_params(params);
--	do_assertions(0);
--
--	/*
--	 * We previously couldn't use the page flip IOCTL to flip to a buffer
--	 * with a different stride. With the atomic page flip helper we can,
--	 * so allow page flip to fail and succeed.
--	 */
--	rc = drmModePageFlip(drm.fd, drm.display.pipes[params->pipe].crtc_id, wide_fb.fb_id, 0, NULL);
--	igt_assert(rc == -EINVAL || rc == 0);
--	do_assertions(rc == 0 ? ASSERT_FBC_DISABLED : 0);
--
--	igt_remove_fb(drm.fd, &wide_fb);
--}
--
- /**
-  * SUBTEST: fbc-stridechange
-  * Description: Change the frontbuffer stride by doing a modeset
-@@ -5255,12 +5134,6 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		}
- 
- 		if (t.feature & FEATURE_FBC) {
--			igt_subtest_f("%s-badstride", feature_str(t.feature))
--			{
--				igt_require(igt_draw_supports_method(drm.fd, t.method));
--				badstride_subtest(&t);
--			}
--
- 			igt_subtest_f("%s-stridechange", feature_str(t.feature))
- 			{
- 				igt_require(igt_draw_supports_method(drm.fd, t.method));
--- 
-2.41.0
+>   			igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc_after);
+>   			igt_assert_crc_equal(hwcrc, &crc_after);
+>   		}
+> @@ -276,6 +285,15 @@ static void do_single_test(data_t *data, int x, int y, bool hw_test,
+>   		restore_image(data, swbufidx, &((cursorarea){x, y, data->curw, data->curh}));
+>   		igt_plane_set_fb(data->primary, &data->primary_fb[swbufidx]);
+>   		igt_display_commit(display);
+> +
+> +		/* Wait for two more vblanks since cursor updates may not
+> +		 * synchronized to the same frame on AMD HW
+> +		 */
+> +		if (is_amdgpu_device(data->drm_fd))
+> +			igt_wait_for_vblank_count(data->drm_fd,
+> +				display->pipes[data->pipe].crtc_offset,
+> +				data->vblank_wait_count);
+> +
+
+Here is normal flip for getting sw generated reference crc, nothing 
+about cursor here.
+
+>   		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
+>   		igt_assert_crc_equal(&crc, hwcrc);
+>   	}
+> @@ -1079,7 +1097,11 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+>   
+>   		igt_require_pipe_crc(data.drm_fd);
+>   
+> -		data.vblank_wait_count = is_msm_device(data.drm_fd) ? 2 : 1;
+> +		/* Wait for two more vblanks since cursor updates may not
+> +		 * synchronized to the same frame on AMD HW
+> +		 */
+> +		data.vblank_wait_count =
+> +			(is_msm_device(data.drm_fd) || is_amdgpu_device(data.drm_fd)) ? 2 : 1;
+
+Reflecting your commit message this change should be all that is needed.
+
+>   	}
+>   
+>   	data.cursor_max_w = cursor_width;
