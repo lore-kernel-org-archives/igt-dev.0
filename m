@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AAA0410E23C
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Oct 2023 07:35:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A778B10E25C
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Oct 2023 07:35:19 +0000 (UTC)
 From: sai.gowtham.ch@intel.com
 To: igt-dev@lists.freedesktop.org, karolina.stolarek@intel.com,
  zbigniew.kempczynski@intel.com, sai.gowtham.ch@intel.com
-Date: Tue,  3 Oct 2023 13:03:43 +0530
-Message-Id: <20231003073344.20470-2-sai.gowtham.ch@intel.com>
+Date: Tue,  3 Oct 2023 13:03:44 +0530
+Message-Id: <20231003073344.20470-3-sai.gowtham.ch@intel.com>
 In-Reply-To: <20231003073344.20470-1-sai.gowtham.ch@intel.com>
 References: <20231003073344.20470-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] lib/intel_blt: Add wrappers to prepare
- batch buffers and submit exec
+Subject: [igt-dev] [PATCH i-g-t 2/2] intel/xe_copy_basic: Add copy basic
+ test to exercise blt commands
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,344 +27,242 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-Adding wrapper for mem-set and mem-copy instructions to prepare
-batch buffers and submit exec, (blt_mem_copy, blt_mem_set,
-emit_blt_mem_copy, emit,blt_set_mem)
+Add copy basic test to exercise copy commands like mem-copy and mem-set.
 
 Cc: Karolina Stolarek <karolina.stolarek@intel.com>
 Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 ---
- lib/intel_blt.c | 195 ++++++++++++++++++++++++++++++++++++++++++++++++
- lib/intel_blt.h |  39 ++++++++++
- lib/intel_reg.h |   4 +
- 3 files changed, 238 insertions(+)
+ tests/intel/xe_copy_basic.c | 208 ++++++++++++++++++++++++++++++++++++
+ tests/meson.build           |   1 +
+ 2 files changed, 209 insertions(+)
+ create mode 100644 tests/intel/xe_copy_basic.c
 
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index b55fa9b52..cea97c9f3 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -13,12 +13,14 @@
- #include "igt.h"
- #include "igt_syncobj.h"
- #include "intel_blt.h"
-+#include "intel_mocs.h"
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
- #include "xe/xe_util.h"
- 
- #define BITRANGE(start, end) (end - start + 1)
- #define GET_CMDS_INFO(__fd) intel_get_cmds_info(intel_get_drm_devid(__fd))
-+#define MEM_COPY_MOCS_SHIFT                     25
- 
- /* Blitter tiling definitions sanity checks */
- static_assert(T_LINEAR == I915_TILING_NONE, "Linear definitions have to match");
-@@ -778,6 +780,14 @@ void blt_copy_init(int fd, struct blt_copy_data *blt)
- 	blt->driver = get_intel_driver(fd);
- }
- 
-+void blt_mem_init(int fd, struct blt_mem_data *mem)
-+{
-+	memset(mem, 0, sizeof(*mem));
+diff --git a/tests/intel/xe_copy_basic.c b/tests/intel/xe_copy_basic.c
+new file mode 100644
+index 000000000..9aed6e43c
+--- /dev/null
++++ b/tests/intel/xe_copy_basic.c
+@@ -0,0 +1,208 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2023 Intel Corporation
++ *
++ * Authors:
++ *      Sai Gowtham Ch <sai.gowtham.ch@intel.com>
++ */
 +
-+	mem->fd = fd;
-+	mem->driver = get_intel_driver(fd);
-+}
++#include "igt.h"
++#include "lib/igt_syncobj.h"
++#include "intel_blt.h"
++#include "lib/intel_cmds_info.h"
++#include "lib/intel_mocs.h"
++#include "lib/intel_reg.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++#include "xe/xe_util.h"
 +
- /**
-  * emit_blt_block_copy:
-  * @fd: drm fd
-@@ -1412,6 +1422,174 @@ int blt_fast_copy(int fd,
- 	return ret;
- }
- 
-+static void emit_blt_mem_copy(int fd, uint64_t ahnd, const struct blt_mem_data *mem, uint32_t col_size)
++#define MEM_FILL 0x8b
++
++/**
++ * TEST: Test to validate copy commands on xe
++ * Category: Software building block
++ * Sub-category: Copy
++ * Functionality: blitter
++ */
++
++/**
++ * SUBTEST: mem-copy-%s
++ * Description: Test validates MEM_COPY command, it takes various
++ *              parameters needed for the filling batch buffer for MEM_COPY command
++ *              with size %arg[1].
++ * Test category: functionality test
++ *
++ * arg[1]:
++ * @0x369: 0x369
++ * @0x3fff: 0x3fff
++ * @0xfd: 0xfd
++ * @0xffff: 0xffff
++ */
++static void
++igt_mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle,
++	     const intel_ctx_t *ctx, uint32_t row_size, uint32_t size,
++	     uint32_t col_size, uint32_t region)
 +{
-+	uint64_t dst_offset, src_offset, alignment;
-+	int i;
++	struct blt_mem_data mem = {};
++	uint64_t bb_size = xe_get_default_alignment(fd);
++	uint64_t ahnd = intel_allocator_open_full(fd, ctx->vm, 0, 0,
++						  INTEL_ALLOCATOR_SIMPLE,
++						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
++	uint32_t bb;
++	int result;
 +	uint8_t src_mocs = intel_get_uc_mocs(fd);
 +	uint8_t dst_mocs = src_mocs;
-+	uint32_t *batch;
 +
-+	alignment = get_default_alignment(fd, mem->driver);
-+	src_offset = get_offset(ahnd, mem->src.handle, mem->src.size, alignment);
-+	dst_offset = get_offset(ahnd, mem->dst.handle, mem->dst.size, alignment);
++	bb = xe_bo_create_flags(fd, 0, bb_size, region);
 +
-+	batch = bo_map(fd, mem->bb.handle, mem->bb.size, mem->driver);
++	blt_mem_init(fd, &mem);
++	blt_set_mem_object(&mem.src, src_handle, row_size, 0, size, col_size,
++			   region, src_mocs, M_LINEAR, COMPRESSION_DISABLED);
++	blt_set_mem_object(&mem.dst, dst_handle, row_size, 0, size, col_size,
++			   region, dst_mocs, M_LINEAR, COMPRESSION_DISABLED);
++	mem.src.ptr = xe_bo_map(fd, src_handle, row_size);
++	mem.dst.ptr = xe_bo_map(fd, dst_handle, row_size);
 +
-+	i = 0;
-+	batch[i++] = MEM_COPY_CMD | (1 << 19);
-+	batch[i++] = mem->src.width - 1;
-+	batch[i++] = mem->src.height - 1;
-+	batch[i++] = mem->src.pitch - 1;
-+	batch[i++] = mem->dst.pitch - 1;
-+	batch[i++] = src_offset;
-+	batch[i++] = src_offset << 32;
-+	batch[i++] = dst_offset;
-+	batch[i++] = dst_offset << 32;
-+	batch[i++] = src_mocs << MEM_COPY_MOCS_SHIFT | dst_mocs;
-+	batch[i++] = MI_BATCH_BUFFER_END;
-+	batch[i++] = MI_NOOP;
++	blt_set_batch(&mem.bb, bb, bb_size, region);
++	igt_assert(mem.src.size == mem.dst.size);
 +
-+	munmap(batch, mem->bb.size);
++	blt_mem_copy(fd, ctx, NULL, ahnd, &mem, col_size);
++	result = memcmp(mem.src.ptr, mem.dst.ptr, mem.src.size);
++	igt_assert_f(!result, "source and destination differ\n");
++
++	intel_allocator_bind(ahnd, 0, 0);
++	munmap(mem.src.ptr, row_size);
++	munmap(mem.dst.ptr, row_size);
++	gem_close(fd, bb);
++	put_ahnd(ahnd);
 +}
 +
 +/**
-+ * blt_mem_copy:
-+ * @fd: drm fd
-+ * @ctx: intel_ctx_t context
-+ * @e: blitter engine for @ctx
-+ * @ahnd: allocator handle
-+ * @blt: blitter data for mem-copy.
++ * SUBTEST: mem-set-%s
++ * Description: Test validates MEM_SET command with size %arg[1].
++ * Test category: functionality test
 + *
-+ * Function does mem blit between @src and @dst described in @blt object.
++ * arg[1]:
 + *
-+ * Returns:
-+ * execbuffer status.
++ * @0x369: 0x369
++ * @0x3fff: 0x3fff
++ * @0xfd: 0xfd
++ * @0xffff: 0xffff
 + */
-+int blt_mem_copy(int fd, const intel_ctx_t *ctx,
-+		 const struct intel_execution_engine2 *e,
-+		 uint64_t ahnd,
-+		 const struct blt_mem_data *mem,
-+		 uint32_t col_size)
++static void igt_mem_set(int fd, uint32_t dst_handle, const intel_ctx_t *ctx,
++			uint32_t row_size, uint32_t size, uint32_t height,
++			uint8_t fill_data, uint32_t region)
 +{
-+	struct drm_i915_gem_execbuffer2 execbuf = {};
-+	struct drm_i915_gem_exec_object2 obj[3] = {};
-+	uint64_t dst_offset, src_offset, bb_offset, alignment;
-+	int ret;
++	struct blt_mem_data mem = {};
++	uint64_t bb_size = xe_get_default_alignment(fd);
++	uint64_t ahnd = intel_allocator_open_full(fd, ctx->vm, 0, 0,
++						  INTEL_ALLOCATOR_SIMPLE,
++						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
++	uint32_t bb;
++	uint32_t result[row_size + 1];
++	uint8_t dst_mocs = intel_get_uc_mocs(fd);
 +
-+	alignment = get_default_alignment(fd, mem->driver);
-+	src_offset = get_offset(ahnd, mem->src.handle, mem->src.size, alignment);
-+	dst_offset = get_offset(ahnd, mem->dst.handle, mem->dst.size, alignment);
-+	bb_offset = get_offset(ahnd, mem->bb.handle, mem->bb.size, alignment);
++	bb = xe_bo_create_flags(fd, 0, bb_size, region);
++	blt_mem_init(fd, &mem);
++	blt_set_mem_object(&mem.dst, dst_handle, row_size, 0, size, height, region,
++			   dst_mocs, M_LINEAR, COMPRESSION_DISABLED);
++	mem.dst.ptr = xe_bo_map(fd, dst_handle, row_size);
++	blt_set_batch(&mem.bb, bb, bb_size, region);
++	blt_mem_set(fd, ctx, NULL, ahnd, &mem, fill_data);
 +
-+	emit_blt_mem_copy(fd, ahnd, mem, col_size);
++	for(int i = 0; i<= row_size + 1; i ++) {
++		result[i] = mem.dst.ptr[i];
++	};
 +
-+	if (mem->driver == INTEL_DRIVER_XE) {
-+		intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
-+	} else {
-+		obj[0].offset = CANONICAL(dst_offset);
-+		obj[1].offset = CANONICAL(src_offset);
-+		obj[2].offset = CANONICAL(bb_offset);
-+		obj[0].handle = mem->dst.handle;
-+		obj[1].handle = mem->src.handle;
-+		obj[2].handle = mem->bb.handle;
-+		obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
-+			EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+		obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+		obj[2].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+		execbuf.buffer_count = 3;
-+		execbuf.buffers_ptr = to_user_pointer(obj);
-+		execbuf.rsvd1 = ctx ? ctx->id : 0;
-+		execbuf.flags = e ? e->flags : I915_EXEC_BLT;
-+		ret = __gem_execbuf(fd, &execbuf);
-+		put_offset(ahnd, mem->dst.handle);
-+		put_offset(ahnd, mem->src.handle);
-+		put_offset(ahnd, mem->bb.handle);
++	igt_assert(result[0] = fill_data);
++	igt_assert(result[row_size + 1] != fill_data);
++
++	intel_allocator_bind(ahnd, 0, 0);
++	munmap(mem.dst.ptr, row_size);
++	gem_close(fd, bb);
++	put_ahnd(ahnd);
++}
++
++static void copy_test(int fd, uint32_t size, enum blt_cmd_type cmd, uint32_t region)
++{
++	struct drm_xe_engine_class_instance inst = {
++		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
++	};
++	uint32_t src_handle, dst_handle, vm, exec_queue, src_size, dst_size;
++	uint32_t bo_size = ALIGN(size + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
++	const intel_ctx_t *ctx;
++
++	src_handle = xe_bo_create_flags(fd, 0, bo_size, region);
++	dst_handle = xe_bo_create_flags(fd, 0, bo_size, region);
++	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
++	exec_queue = xe_exec_queue_create(fd, vm, &inst, 0);
++	ctx = intel_ctx_xe(fd, vm, exec_queue, 0, 0, 0);
++
++	src_size = bo_size;
++	dst_size = bo_size;
++
++	if (cmd == MEM_COPY) {
++		igt_mem_copy(fd,
++			     src_handle,
++			     dst_handle,
++			     ctx,
++			     src_size,
++			     size,
++			     1,
++			     region);
++	} else if (cmd == MEM_SET) {
++		igt_mem_set(fd,
++			    dst_handle,
++			    ctx,
++			    dst_size,
++			    size,
++			    1,
++			    MEM_FILL,
++			    region);
 +	}
 +
-+	return ret;
++	gem_close(fd, src_handle);
++	gem_close(fd, dst_handle);
++	xe_exec_queue_destroy(fd, exec_queue);
++	xe_vm_destroy(fd, vm);
 +}
 +
-+static void emit_blt_mem_set(int fd, uint64_t ahnd, const struct blt_mem_data *mem,
-+			     uint8_t fill_data)
++igt_main
 +{
-+	uint64_t dst_offset, alignment;
-+	int b;
-+	uint32_t *batch;
-+	uint32_t value;
-+
-+	alignment = get_default_alignment(fd, mem->driver);
-+	dst_offset = get_offset(ahnd, mem->dst.handle, mem->dst.size, alignment);
-+
-+	batch = bo_map(fd, mem->bb.handle, mem->bb.size, mem->driver);
-+	value = (uint32_t)fill_data << 24;
-+
-+	b = 0;
-+	batch[b++] = MEM_SET_CMD;
-+	batch[b++] = mem->dst.width - 1;
-+	batch[b++] = mem->dst.height;
-+	batch[b++] = mem->dst.pitch;
-+	batch[b++] = dst_offset;
-+	batch[b++] = dst_offset << 32;
-+	batch[b++] = value | mem->dst.mocs;
-+	batch[b++] = MI_BATCH_BUFFER_END;
-+	batch[b++] = MI_NOOP;
-+
-+	munmap(batch, mem->bb.size);
-+}
-+
-+/**
-+ * blt_mem_set:
-+ * @fd: drm fd
-+ * @ctx: intel_ctx_t context
-+ * @e: blitter engine for @ctx
-+ * @ahnd: allocator handle
-+ * @blt: blitter data for mem-set.
-+ *
-+ * Function does mem set blit in described @blt object.
-+ *
-+ * Returns:
-+ * execbuffer status.
-+ */
-+int blt_mem_set(int fd, const intel_ctx_t *ctx,
-+		const struct intel_execution_engine2 *e,
-+		uint64_t ahnd,
-+		const struct blt_mem_data *mem,
-+		uint8_t fill_data)
-+{
-+	struct drm_i915_gem_execbuffer2 execbuf = {};
-+	struct drm_i915_gem_exec_object2 obj[2] = {};
-+	uint64_t dst_offset, bb_offset, alignment;
-+	int ret;
-+
-+	alignment = get_default_alignment(fd, mem->driver);
-+	dst_offset = get_offset(ahnd, mem->dst.handle, mem->dst.size, alignment);
-+	bb_offset = get_offset(ahnd, mem->bb.handle, mem->bb.size, alignment);
-+
-+	emit_blt_mem_set(fd, ahnd, mem, fill_data);
-+
-+	if (mem->driver == INTEL_DRIVER_XE) {
-+		intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
-+	} else {
-+		obj[0].offset = CANONICAL(dst_offset);
-+		obj[1].offset = CANONICAL(bb_offset);
-+		obj[0].handle = mem->dst.handle;
-+		obj[1].handle = mem->bb.handle;
-+		obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
-+			       EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+		obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+		execbuf.buffer_count = 2;
-+		execbuf.buffers_ptr = to_user_pointer(obj);
-+		execbuf.rsvd1 = ctx ? ctx->id : 0;
-+		execbuf.flags = e ? e->flags : I915_EXEC_BLT;
-+		ret = __gem_execbuf(fd, &execbuf);
-+		put_offset(ahnd, mem->dst.handle);
-+		put_offset(ahnd, mem->bb.handle);
-+	}
-+
-+	return ret;
-+}
-+
- void blt_set_geom(struct blt_copy_object *obj, uint32_t pitch,
- 		  int16_t x1, int16_t y1, int16_t x2, int16_t y2,
- 		  uint16_t x_offset, uint16_t y_offset)
-@@ -1494,6 +1672,23 @@ void blt_set_object(struct blt_copy_object *obj,
- 	obj->compression_type = compression_type;
- }
- 
-+void blt_set_mem_object(struct blt_mem_object *obj,
-+			uint32_t handle, uint64_t size, uint32_t pitch,
-+			uint32_t width, uint32_t height, uint32_t region,
-+			uint8_t mocs, enum blt_memop_type type,
-+			enum blt_compression compression)
-+{
-+	obj->handle = handle;
-+	obj->region = region;
-+	obj->size = size;
-+	obj->mocs = mocs;
-+	obj->type = type;
-+	obj->compression = compression;
-+	obj->width = width;
-+	obj->height = height;
-+	obj->pitch = pitch;
-+}
-+
- void blt_set_object_ext(struct blt_block_copy_object_ext *obj,
- 			uint8_t compression_format,
- 			uint16_t surface_width, uint16_t surface_height,
-diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-index d9c8883c7..d4038e9ef 100644
---- a/lib/intel_blt.h
-+++ b/lib/intel_blt.h
-@@ -93,6 +93,19 @@ struct blt_copy_object {
- 	uint32_t plane_offset;
- };
- 
-+struct blt_mem_object {
-+	uint32_t handle;
-+	uint32_t region;
-+	uint64_t size;
-+	uint8_t mocs;
-+	enum blt_memop_type type;
-+	enum blt_compression compression;
-+	uint32_t width;
-+	uint32_t height;
-+	uint32_t pitch;
-+	uint32_t *ptr;
-+};
-+
- struct blt_copy_batch {
- 	uint32_t handle;
- 	uint32_t region;
-@@ -112,6 +125,14 @@ struct blt_copy_data {
- 	bool print_bb;
- };
- 
-+struct blt_mem_data {
 +	int fd;
-+	enum intel_driver driver;
-+	struct blt_mem_object src;
-+	struct blt_mem_object dst;
-+	struct blt_copy_batch bb;
-+};
++	struct igt_collection *set, *regions;
++	uint32_t region;
++	uint64_t size[] = {0xFD, 0x369, 0x3FFF, 0xFFFF};
 +
- enum blt_surface_type {
- 	SURFACE_TYPE_1D,
- 	SURFACE_TYPE_2D,
-@@ -190,6 +211,7 @@ bool blt_uses_extended_block_copy(int fd);
- const char *blt_tiling_name(enum blt_tiling_type tiling);
- 
- void blt_copy_init(int fd, struct blt_copy_data *blt);
-+void blt_mem_init(int fd, struct blt_mem_data *mem);
- 
- uint64_t emit_blt_block_copy(int fd,
- 			     uint64_t ahnd,
-@@ -231,6 +253,16 @@ int blt_fast_copy(int fd,
- 		  uint64_t ahnd,
- 		  const struct blt_copy_data *blt);
- 
-+int blt_mem_copy(int fd, const intel_ctx_t *ctx,
-+			 const struct intel_execution_engine2 *e,
-+			 uint64_t ahnd,
-+			 const struct blt_mem_data *mem,
-+			 uint32_t col_size);
++	igt_fixture {
++		fd = drm_open_driver(DRIVER_XE);
++		xe_device_get(fd);
++		set = xe_get_memory_region_set(fd,
++					       XE_MEM_REGION_CLASS_SYSMEM,
++					       XE_MEM_REGION_CLASS_VRAM);
++	}
 +
-+int blt_mem_set(int fd, const intel_ctx_t *ctx,
-+			const struct intel_execution_engine2 *e, uint64_t ahnd,
-+			const struct blt_mem_data *mem, uint8_t fill_data);
++	for (int i = 0; i < ARRAY_SIZE(size); i++) {
++		igt_subtest_f("mem-copy-0x%lx", size[i]) {
++			igt_require(blt_has_mem_copy(fd));
++			for_each_variation_r(regions, 1, set) {
++				region = igt_collection_get_value(regions, 0);
++				copy_test(fd, size[i], MEM_COPY, region);
++			}
++		}
++	}
 +
- void blt_set_geom(struct blt_copy_object *obj, uint32_t pitch,
- 		  int16_t x1, int16_t y1, int16_t x2, int16_t y2,
- 		  uint16_t x_offset, uint16_t y_offset);
-@@ -250,6 +282,13 @@ void blt_set_object(struct blt_copy_object *obj,
- 		    uint8_t mocs, enum blt_tiling_type tiling,
- 		    enum blt_compression compression,
- 		    enum blt_compression_type compression_type);
++	for (int i = 0; i < ARRAY_SIZE(size); i++) {
++		igt_subtest_f("mem-set-0x%lx", size[i]) {
++			igt_require(blt_has_mem_set(fd));
++			for_each_variation_r(regions, 1, set) {
++				region = igt_collection_get_value(regions, 0);
++				copy_test(fd, size[i], MEM_SET, region);
++			}
++		}
++	}
 +
-+void blt_set_mem_object(struct blt_mem_object *obj,
-+			uint32_t handle, uint64_t size, uint32_t pitch,
-+			uint32_t width, uint32_t height, uint32_t region,
-+			uint8_t mocs, enum blt_memop_type type,
-+			enum blt_compression compression);
-+
- void blt_set_object_ext(struct blt_block_copy_object_ext *obj,
- 			uint8_t compression_format,
- 			uint16_t surface_width, uint16_t surface_height,
-diff --git a/lib/intel_reg.h b/lib/intel_reg.h
-index 3bf3676dc..eb65da911 100644
---- a/lib/intel_reg.h
-+++ b/lib/intel_reg.h
-@@ -2586,6 +2586,10 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- #define   XY_FAST_COPY_COLOR_DEPTH_64			(4  << 24)
- #define   XY_FAST_COPY_COLOR_DEPTH_128			(5  << 24)
- 
-+/* RAW memory commands */
-+#define MEM_COPY_CMD                    ((0x2 << 29)|(0x5a << 22)|0x8)
-+#define MEM_SET_CMD                     ((0x2 << 29)|(0x5b << 22)|0x5)
-+
- #define CTXT_NO_RESTORE			(1)
- #define CTXT_PALETTE_SAVE_DISABLE	(1<<3)
- #define CTXT_PALETTE_RESTORE_DISABLE	(1<<2)
++	igt_fixture {
++		drm_close_driver(fd);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 974cb433b..3381fd919 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -274,6 +274,7 @@ intel_xe_progs = [
+ 	'xe_ccs',
+ 	'xe_create',
+ 	'xe_compute',
++	'xe_copy_basic',
+ 	'xe_dma_buf_sync',
+ 	'xe_debugfs',
+ 	'xe_drm_fdinfo',
 -- 
 2.39.1
