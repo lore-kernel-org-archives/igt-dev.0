@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============6613583091767100316=="
+ boundary="===============3956996298922241931=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: sai.gowtham.ch@intel.com
-Date: Tue, 03 Oct 2023 09:59:54 -0000
-Message-ID: <169632719483.4382.10867982329048846342@emeril.freedesktop.org>
+Date: Tue, 03 Oct 2023 10:01:12 -0000
+Message-ID: <169632727278.4383.13026724206875290753@emeril.freedesktop.org>
 References: <20231003073344.20470-1-sai.gowtham.ch@intel.com>
 In-Reply-To: <20231003073344.20470-1-sai.gowtham.ch@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Add_copy?=
- =?utf-8?q?_basic_test_to_exercise_blt_commands_=28rev5=29?=
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQWRkIGNv?=
+ =?utf-8?q?py_basic_test_to_exercise_blt_commands_=28rev5=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,7 +23,7 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============6613583091767100316==
+--===============3956996298922241931==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -36,7 +36,7 @@ State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_7508_BAT -> XEIGTPW_9909_BAT
+CI Bug Log - changes from CI_DRM_13703 -> IGTPW_9909
 ====================================================
 
 Summary
@@ -46,47 +46,75 @@ Summary
 
   No regressions found.
 
-  
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9909/index.html
 
-Participating hosts (4 -> 4)
+Participating hosts (40 -> 37)
 ------------------------------
 
-  No changes in participating hosts
+  Missing    (3): fi-hsw-4770 fi-snb-2520m fi-bsw-n3050 
 
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_9909_BAT that come from known issues:
+  Here are the changes found in IGTPW_9909 that come from known issues:
 
 ### IGT changes ###
 
-#### Possible fixes ####
+#### Issues hit ####
 
-  * igt@kms_flip@basic-flip-vs-wf_vblank:
-    - bat-dg2-oem2:       [FAIL][1] ([Intel XE#480]) -> [PASS][2] +1 other test pass
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7508/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9909/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html
+  * igt@gem_exec_suspend@basic-s0@smem:
+    - bat-dg2-9:          [PASS][1] -> [INCOMPLETE][2] ([i915#9275])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13703/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9909/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-mtlp-8:         [PASS][3] -> [ABORT][4] ([i915#9414])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13703/bat-mtlp-8/igt@i915_selftest@live@requests.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9909/bat-mtlp-8/igt@i915_selftest@live@requests.html
 
   
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+#### Possible fixes ####
+
+  * igt@gem_busy@busy@all-engines:
+    - bat-mtlp-8:         [DMESG-FAIL][5] ([i915#8962]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13703/bat-mtlp-8/igt@gem_busy@busy@all-engines.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9909/bat-mtlp-8/igt@gem_busy@busy@all-engines.html
+
+  
+  [i915#8962]: https://gitlab.freedesktop.org/drm/intel/issues/8962
+  [i915#9275]: https://gitlab.freedesktop.org/drm/intel/issues/9275
+  [i915#9414]: https://gitlab.freedesktop.org/drm/intel/issues/9414
 
 
 Build changes
 -------------
 
+  * CI: CI-20190529 -> None
   * IGT: IGT_7508 -> IGTPW_9909
-  * Linux: xe-404-22fcf2404f56a8e7aea6734298e0b2b265136313 -> xe-410-02ab43e36623665d8644d46162bd4ec5eeb68489
 
+  CI-20190529: 20190529
+  CI_DRM_13703: db3606b4b70e8205895c2c57892bb7b1f2d436a4 @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_9909: 9909
   IGT_7508: f366406b05ca6b3d16eaa734a91e0833bd159f54 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-404-22fcf2404f56a8e7aea6734298e0b2b265136313: 22fcf2404f56a8e7aea6734298e0b2b265136313
-  xe-410-02ab43e36623665d8644d46162bd4ec5eeb68489: 02ab43e36623665d8644d46162bd4ec5eeb68489
+
+
+Testlist changes
+----------------
+
++igt@xe_copy_basic@mem-copy-0x3fff
++igt@xe_copy_basic@mem-copy-0x369
++igt@xe_copy_basic@mem-copy-0xfd
++igt@xe_copy_basic@mem-copy-0xffff
++igt@xe_copy_basic@mem-set-0x3fff
++igt@xe_copy_basic@mem-set-0x369
++igt@xe_copy_basic@mem-set-0xfd
++igt@xe_copy_basic@mem-set-0xffff
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9909/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9909/index.html
 
---===============6613583091767100316==
+--===============3956996298922241931==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -110,38 +138,63 @@ Content-Transfer-Encoding: 7bit
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122615/">https://patchwork.freedesktop.org/series/122615/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9909/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9909/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9909/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9909/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_7508_BAT -&gt; XEIGTPW_9909_BAT</h1>
+    <h1>CI Bug Log - changes from CI_DRM_13703 -&gt; IGTPW_9909</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9909/index.html</p>
+<h2>Participating hosts (40 -&gt; 37)</h2>
+<p>Missing    (3): fi-hsw-4770 fi-snb-2520m fi-bsw-n3050 </p>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_9909_BAT that come from known issues:</p>
+<p>Here are the changes found in IGTPW_9909 that come from known issues:</p>
 <h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s0@smem:</p>
+<ul>
+<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13703/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9909/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9275">i915#9275</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13703/bat-mtlp-8/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9909/bat-mtlp-8/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9414">i915#9414</a>)</li>
+</ul>
+</li>
+</ul>
 <h4>Possible fixes</h4>
 <ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7508/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9909/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> +1 other test pass</li>
+<li>igt@gem_busy@busy@all-engines:<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13703/bat-mtlp-8/igt@gem_busy@busy@all-engines.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8962">i915#8962</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9909/bat-mtlp-8/igt@gem_busy@busy@all-engines.html">PASS</a></li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
+<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_7508 -&gt; IGTPW_9909</li>
-<li>Linux: xe-404-22fcf2404f56a8e7aea6734298e0b2b265136313 -&gt; xe-410-02ab43e36623665d8644d46162bd4ec5eeb68489</li>
 </ul>
-<p>IGTPW_9909: 9909<br />
-  IGT_7508: f366406b05ca6b3d16eaa734a91e0833bd159f54 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-404-22fcf2404f56a8e7aea6734298e0b2b265136313: 22fcf2404f56a8e7aea6734298e0b2b265136313<br />
-  xe-410-02ab43e36623665d8644d46162bd4ec5eeb68489: 02ab43e36623665d8644d46162bd4ec5eeb68489</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13703: db3606b4b70e8205895c2c57892bb7b1f2d436a4 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_9909: 9909<br />
+  IGT_7508: f366406b05ca6b3d16eaa734a91e0833bd159f54 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@xe_copy_basic@mem-copy-0x3fff<br />
++igt@xe_copy_basic@mem-copy-0x369<br />
++igt@xe_copy_basic@mem-copy-0xfd<br />
++igt@xe_copy_basic@mem-copy-0xffff<br />
++igt@xe_copy_basic@mem-set-0x3fff<br />
++igt@xe_copy_basic@mem-set-0x369<br />
++igt@xe_copy_basic@mem-set-0xfd<br />
++igt@xe_copy_basic@mem-set-0xffff</p>
 
 </body>
 </html>
 
---===============6613583091767100316==--
+--===============3956996298922241931==--
