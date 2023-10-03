@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============7478333813301211806=="
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 63DC810E23C
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Oct 2023 07:35:15 +0000 (UTC)
+From: sai.gowtham.ch@intel.com
+To: igt-dev@lists.freedesktop.org, karolina.stolarek@intel.com,
+ zbigniew.kempczynski@intel.com, sai.gowtham.ch@intel.com
+Date: Tue,  3 Oct 2023 13:03:42 +0530
+Message-Id: <20231003073344.20470-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kunal Joshi" <kunal1.joshi@intel.com>
-Date: Tue, 03 Oct 2023 07:33:54 -0000
-Message-ID: <169631843490.4382.7388393433163341834@emeril.freedesktop.org>
-References: <20231003062004.462907-1-kunal1.joshi@intel.com>
-In-Reply-To: <20231003062004.462907-1-kunal1.joshi@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/in?=
- =?utf-8?q?tel-ci/chamelium-only=3A_update_test_name?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 0/2] Add copy basic test to exercise blt
+ commands
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,147 +18,31 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7478333813301211806==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-== Series Details ==
+Add copy basic test which exercies mem-se and mem-copy commands, this
+patch series involves in following changes:
 
-Series: tests/intel-ci/chamelium-only: update test name
-URL   : https://patchwork.freedesktop.org/series/124548/
-State : success
+1. Add copy basic test to exercise blt commands.
+2. Add wrappers for batch preparation and submit exec.
+3. Add copy commands MEM_SET_CMD and MEM_COPY_CMD in the lib.
 
-== Summary ==
+Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Sai Gowtham Ch (2):
+  lib/intel_blt: Add wrappers to prepare batch buffers and submit exec
+  intel/xe_copy_basic: Add copy basic test to exercise blt commands
 
-CI Bug Log - changes from XEIGT_7508_BAT -> XEIGTPW_9908_BAT
-====================================================
+ lib/intel_blt.c             | 195 +++++++++++++++++++++++++++++++++
+ lib/intel_blt.h             |  39 +++++++
+ lib/intel_reg.h             |   4 +
+ tests/intel/xe_copy_basic.c | 208 ++++++++++++++++++++++++++++++++++++
+ tests/meson.build           |   1 +
+ 5 files changed, 447 insertions(+)
+ create mode 100644 tests/intel/xe_copy_basic.c
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_9908_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:
-    - bat-dg2-oem2:       [PASS][1] -> [FAIL][2] ([i915#2346])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7508/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9908/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank:
-    - bat-dg2-oem2:       [FAIL][3] ([Intel XE#480]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7508/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9908/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html
-
-  
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
-
-
-Build changes
--------------
-
-  * IGT: IGT_7508 -> IGTPW_9908
-  * Linux: xe-404-22fcf2404f56a8e7aea6734298e0b2b265136313 -> xe-410-02ab43e36623665d8644d46162bd4ec5eeb68489
-
-  IGTPW_9908: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9908/index.html
-  IGT_7508: f366406b05ca6b3d16eaa734a91e0833bd159f54 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-404-22fcf2404f56a8e7aea6734298e0b2b265136313: 22fcf2404f56a8e7aea6734298e0b2b265136313
-  xe-410-02ab43e36623665d8644d46162bd4ec5eeb68489: 02ab43e36623665d8644d46162bd4ec5eeb68489
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9908/index.html
-
---===============7478333813301211806==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel-ci/chamelium-only: update test name</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124548/">https://patchwork.freedesktop.org/series/124548/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9908/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9908/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7508_BAT -&gt; XEIGTPW_9908_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_9908_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7508/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9908/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7508/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9908/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7508 -&gt; IGTPW_9908</li>
-<li>Linux: xe-404-22fcf2404f56a8e7aea6734298e0b2b265136313 -&gt; xe-410-02ab43e36623665d8644d46162bd4ec5eeb68489</li>
-</ul>
-<p>IGTPW_9908: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9908/index.html<br />
-  IGT_7508: f366406b05ca6b3d16eaa734a91e0833bd159f54 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-404-22fcf2404f56a8e7aea6734298e0b2b265136313: 22fcf2404f56a8e7aea6734298e0b2b265136313<br />
-  xe-410-02ab43e36623665d8644d46162bd4ec5eeb68489: 02ab43e36623665d8644d46162bd4ec5eeb68489</p>
-
-</body>
-</html>
-
---===============7478333813301211806==--
+-- 
+2.39.1
