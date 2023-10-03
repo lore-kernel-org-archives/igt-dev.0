@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EF77410E169
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Oct 2023 20:09:59 +0000 (UTC)
-Date: Thu, 5 Oct 2023 22:09:45 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 592C3899D4
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Oct 2023 14:59:35 +0000 (UTC)
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20231005200945.subqjgr2cqrfhyqd@kamilkon-desk.igk.intel.com>
-References: <20231005103244.3262419-1-daniele.ceraolospurio@intel.com>
+Date: Tue,  3 Oct 2023 16:59:19 +0200
+Message-ID: <20231003145920.51148-3-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20231003145920.51148-1-kamil.konieczny@linux.intel.com>
+References: <20231003145920.51148-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231005103244.3262419-1-daniele.ceraolospurio@intel.com>
-Subject: Re: [igt-dev] [PATCH] tests/xe_huc_copy: Handle multiple GTs
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v7 2/3] tests/intel/xe_create: extend
+ massive subtest to multi-gpu
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,82 +24,71 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Daniele,
+Sample code extends existing create-massive-size subtest to run
+on multi-GPUs boards. This will currently work only with
+--drivers or IGT_DRIVERS options selecting at least two dGPU
+cards.
 
-On 2023-10-05 at 03:32:44 -0700, Daniele Ceraolo Spurio wrote:
-> The test currently only looks for video engines on GT0, which is a
-> problem because newer platforms (like MTL) have their video engines on
-> the media GT. ALso, it is technically possible to have 1 HuC per-GT,
-> though we don't currently have any platform that supports this.
-> To handle the media GT use-case and to future proof against multiple
-> HuCs, we can just loop and repeat the test on any GT that has video
-> engines.
-> 
-> Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-> ---
->  tests/intel/xe_huc_copy.c | 26 ++++++++++++++++++++++----
->  1 file changed, 22 insertions(+), 4 deletions(-)
-> 
-> diff --git a/tests/intel/xe_huc_copy.c b/tests/intel/xe_huc_copy.c
-> index c9891a729..1c1b9d72c 100644
-> --- a/tests/intel/xe_huc_copy.c
-> +++ b/tests/intel/xe_huc_copy.c
-> @@ -104,9 +104,9 @@ gen12_create_batch_huc_copy(uint32_t *batch,
->   */
->  
->  static void
-> -test_huc_copy(int fd)
-> +__test_huc_copy(int fd, uint32_t vm, struct drm_xe_engine_class_instance *hwe)
->  {
-> -	uint32_t vm, exec_queue;
-> +	uint32_t exec_queue;
->  	char *dinput;
->  	struct drm_xe_sync sync = { 0 };
->  
-> @@ -117,8 +117,7 @@ test_huc_copy(int fd)
->  		{ .addr = ADDR_BATCH, .size = SIZE_BATCH }, // batch
->  	};
->  
-> -	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
-> -	exec_queue = xe_exec_queue_create_class(fd, vm, DRM_XE_ENGINE_CLASS_VIDEO_DECODE);
-> +	exec_queue = xe_exec_queue_create(fd, vm, hwe, 0);
->  	sync.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL;
->  	sync.handle = syncobj_create(fd, 0);
->  
-> @@ -148,6 +147,25 @@ test_huc_copy(int fd)
->  
->  	syncobj_destroy(fd, sync.handle);
->  	xe_exec_queue_destroy(fd, exec_queue);
-> +}
-> +
-> +static void
-> +test_huc_copy(int fd)
-> +{
-> +	struct drm_xe_engine_class_instance *hwe;
-> +	uint32_t vm;
-> +	uint32_t tested_gts = 0;
-> +
-> +	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
-> +
-> +	xe_for_each_hw_engine(fd, hwe) {
-> +		if (hwe->engine_class == DRM_XE_ENGINE_CLASS_VIDEO_DECODE &&
-> +		    !(tested_gts & BIT(hwe->gt_id))) {
-> +			tested_gts |= BIT(hwe->gt_id);
-> +			__test_huc_copy(fd, vm, hwe);
-> +		}
-> +	}
-> +
+v2: Fixed bug in opening wrong multi-gpu device (Zbigniew)
+v3: revert to use filter count, add require for xe, change
+    subtest description
+v4: correct description
 
-Please add here check if any huc was tested, maybe something like:
-    igt_require_f(tested_gts, "No video class engines found\n");
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ tests/intel/xe_create.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-With that:
-
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
->  	xe_vm_destroy(fd, vm);
->  }
->  
-> -- 
-> 2.41.0
-> 
+diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+index 8d845e5c8..ee970450f 100644
+--- a/tests/intel/xe_create.c
++++ b/tests/intel/xe_create.c
+@@ -12,6 +12,7 @@
+ #include <string.h>
+ 
+ #include "igt.h"
++#include "igt_device_scan.h"
+ #include "xe_drm.h"
+ #include "xe/xe_ioctl.h"
+ #include "xe/xe_query.h"
+@@ -191,6 +192,13 @@ static void create_execqueues(int fd, enum exec_queue_destroy ed)
+  * Test category: functionality test
+  * Description: Verifies xe bo create returns expected error code on massive
+  *              buffer sizes.
++ *
++ * SUBTEST: multigpu-create-massive-size
++ * Functionality: ioctl
++ * Test category: functionality test
++ * Feature: multigpu
++ * Description: Verifies xe bo create with massive buffer sizes runs correctly
++ *		on two or more GPUs.
+  */
+ static void create_massive_size(int fd)
+ {
+@@ -228,6 +236,23 @@ igt_main
+ 		create_massive_size(xe);
+ 	}
+ 
++	igt_subtest("multigpu-create-massive-size") {
++		int gpu_filter_count = igt_device_filter_count();
++
++		igt_require(xe > 0);
++		igt_require(gpu_filter_count >= 2);
++		igt_multi_fork(child, gpu_filter_count) {
++			int gpu_fd;
++
++			gpu_fd = child ? __drm_open_driver_another(child, DRIVER_XE) : drm_reopen_driver(xe);
++			igt_assert_f(gpu_fd > 0, "cannot open gpu-%d, errno=%d\n", child, errno);
++
++			create_massive_size(gpu_fd);
++			drm_close_driver(gpu_fd);
++		}
++		igt_waitchildren();
++	}
++
+ 	igt_fixture
+ 		drm_close_driver(xe);
+ }
+-- 
+2.42.0
