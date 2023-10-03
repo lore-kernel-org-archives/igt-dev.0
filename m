@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  3 Oct 2023 11:10:51 +0200
-Message-ID: <20231003091044.407965-17-janusz.krzysztofik@linux.intel.com>
+Date: Tue,  3 Oct 2023 11:10:52 +0200
+Message-ID: <20231003091044.407965-18-janusz.krzysztofik@linux.intel.com>
 In-Reply-To: <20231003091044.407965-11-janusz.krzysztofik@linux.intel.com>
 References: <20231003091044.407965-11-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 6/9] tests/kms_selftest: Let subtest names
- match suite names
+Subject: [igt-dev] [PATCH i-g-t 7/9] lib/ktap: Drop workaround for missing
+ top level KTAP headers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,86 +21,54 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-There is a rule specified in Kunit Test Style and Nomenclature guidelines
-[1] that states modules should be named after the test suite, followed by
-_test.  Of course, that rule applies only to modules that provide one test
-suite per module.
-
-As long as that rule is obeyed by authors of Kunit test modules, there is
-no need to hardcode related IGT subtest names in IGT source code.  We are
-already able to derive subtest names from module names, with their _test
-or _kunit suffixes stripped.  We may expect those names will match Kunit
-suite names provided by the modules.
-
-Drop custom subtest names from IGT Kunit tests that still use them.
-However, keep the mechanism that allows us to provide a name that differs
-from that derived from module name.  That will be required if we ever need
-to support a kunit test module that provides multiple test suites (think
-of i915 selftests code converted to kunit and the i915 module potentially
-providing three test suites: mock, live and perf).
-
-[1] https://docs.kernel.org/dev-tools/kunit/style.html
+A workaround was implemented in IGT KTAP parser so it could accepted KTAP
+reports with missing top level KTAP version and test suite plan headers.
+Since kernel side commit c95e7c05c139 ("kunit: Report the count of test
+suites in a module"), included in the mainline kernel since v6.6-rc1, has
+fixed that issue, that workaround is no longer needed.  Drop it.
 
 Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 ---
- tests/kms_selftest.c | 37 ++++++++++++++++---------------------
- 1 file changed, 16 insertions(+), 21 deletions(-)
+ lib/igt_ktap.c              | 12 ------------
+ lib/tests/igt_ktap_parser.c |  3 +--
+ 2 files changed, 1 insertion(+), 14 deletions(-)
 
-diff --git a/tests/kms_selftest.c b/tests/kms_selftest.c
-index 080ffdf2c0..6618dbe50b 100644
---- a/tests/kms_selftest.c
-+++ b/tests/kms_selftest.c
-@@ -37,35 +37,30 @@
-  *
-  * arg[1]:
-  *
-- * @drm_cmdline:            drm cmdline
-- * @drm_damage:             drm damage
-- * @drm_dp_mst:             drm dp mst
-+ * @drm_cmdline_parser:     drm cmdline parser
-+ * @drm_damage_helper:      drm damage helper
-+ * @drm_dp_mst_helper:      drm dp mst helper
-  * @drm_format_helper:      drm format helper
-  * @drm_format:             drm format
-- * @drm_plane:              drm plane
-- * @framebuffer:            framebuffer
-+ * @drm_plane_helper:       drm plane helper
-+ * @drm_framebuffer:        drm framebuffer
-  */
- 
- IGT_TEST_DESCRIPTION("Basic sanity check of KMS selftests.");
- 
--struct kms_kunittests {
--	const char *kunit;
--	const char *name;
--};
+diff --git a/lib/igt_ktap.c b/lib/igt_ktap.c
+index 53a6c63288..7c52ba11ed 100644
+--- a/lib/igt_ktap.c
++++ b/lib/igt_ktap.c
+@@ -84,18 +84,6 @@ int igt_ktap_parse(const char *buf, struct igt_ktap_results *ktap)
+ 		   igt_debug_on(sscanf(buf,
+ 				       "%*1[ ]%*1[ ]%*1[ ]%*1[ ]KTAP%*[ ]version%*[ ]%u %n",
+ 				       &n, &len) == 1 && len == strlen(buf))) {
+-		/*
+-		 * TODO: drop the following workaround as soon as
+-		 * kernel side issue of missing lines with top level
+-		 * KTAP version and test suite plan is fixed.
+-		 */
+-		if (ktap->expect == KTAP_START) {
+-			ktap->suite_count = 1;
+-			ktap->suite_last = 0;
+-			ktap->suite_name = NULL;
+-			ktap->expect = SUITE_START;
+-		}
 -
- igt_main
- {
--	static const struct kms_kunittests kunit_subtests[] = {
--		{ "drm_cmdline_parser_test",	"drm_cmdline" },
--		{ "drm_damage_helper_test",	"drm_damage" },
--		{ "drm_dp_mst_helper_test",	"drm_dp_mst" },
--		{ "drm_format_helper_test",	"drm_format_helper" },
--		{ "drm_format_test",		"drm_format" },
--		{ "drm_framebuffer_test",	"framebuffer" },
--		{ "drm_plane_helper_test",	"drm_plane" },
--		{ NULL, NULL}
-+	static const char *kunit_subtests[] = {
-+		"drm_cmdline_parser_test",
-+		"drm_damage_helper_test",
-+		"drm_dp_mst_helper_test",
-+		"drm_format_helper_test",
-+		"drm_format_test",
-+		"drm_framebuffer_test",
-+		"drm_plane_helper_test",
-+		NULL,
- 	};
+ 		if (igt_debug_on(ktap->expect != SUITE_START))
+ 			return -EPROTO;
  
--	for (int i = 0; kunit_subtests[i].kunit != NULL; i++)
--		igt_kunit(kunit_subtests[i].kunit, kunit_subtests[i].name, NULL);
-+	for (int i = 0; kunit_subtests[i] != NULL; i++)
-+		igt_kunit(kunit_subtests[i], NULL, NULL);
- }
+diff --git a/lib/tests/igt_ktap_parser.c b/lib/tests/igt_ktap_parser.c
+index 6357bdf6a5..476e14092f 100644
+--- a/lib/tests/igt_ktap_parser.c
++++ b/lib/tests/igt_ktap_parser.c
+@@ -190,8 +190,7 @@ static void ktap_top_version(void)
+ 
+ 	ktap = igt_ktap_alloc(&results);
+ 	igt_require(ktap);
+-	/* TODO: change to -EPROTO as soon as related workaround is dropped */
+-	igt_assert_eq(igt_ktap_parse("    KTAP version 1\n", ktap), -EINPROGRESS);
++	igt_assert_eq(igt_ktap_parse("    KTAP version 1\n", ktap), -EPROTO);
+ 	igt_ktap_free(ktap);
+ 
+ 	ktap = igt_ktap_alloc(&results);
 -- 
 2.42.0
