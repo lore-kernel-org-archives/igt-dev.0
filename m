@@ -1,19 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 088DB10E039
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Oct 2023 09:13:03 +0000 (UTC)
-Message-ID: <17bd5bee-d5ff-9351-ed9b-e917b780d491@intel.com>
-Date: Tue, 3 Oct 2023 14:42:43 +0530
-Content-Language: en-US
-To: Kunal Joshi <kunal1.joshi@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20231001103006.431894-1-kunal1.joshi@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20231001103006.431894-1-kunal1.joshi@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue,  3 Oct 2023 11:10:47 +0200
+Message-ID: <20231003091044.407965-13-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20231003091044.407965-11-janusz.krzysztofik@linux.intel.com>
+References: <20231003091044.407965-11-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 0/2] Add test for hotplug validation in
- simulation
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 2/9] lib/kunit: Be more verbose on errors
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,40 +15,41 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Kunal,
+Use a more verbose variant of igt_fail() when failing a dynamic sub-
+subtest on kernel taint.  Also, print a debug message on string
+duplication failure.
 
-On Sun-01-10-2023 04:00 pm, Kunal Joshi wrote:
-> Test to validate hotplug in simulation environment we
-> have scratch pad register 0x4f080 from which we can
-> trigger uevents such as HPD, VBLANK..etc, Idea is to
-> have port mapping placed in igtrcthrough which test
-> can write to 0x4f080 and check if we get hotplug
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+---
+ lib/igt_kmod.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-In first glance, do we really need to upstream this test? I am pretty 
-sure, no one (including Intel) is going to use this test from upstream 
-repo (We don't have any simulation environment in public CI).
-
-So, we can't merge this.
-
-+ Kamil, thoughts?
-
-- Bhanu
-
-> 
-> Cc: Karthik B S <karthik.b.s@intel.com>
-> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-> 
-> Kunal Joshi (2):
->    tests/kms_simulation_hpd: New test for hotplug validation
->    tests/meson: added test to meson.build
-> 
->   tests/intel/kms_simulation_hpd.c | 534 +++++++++++++++++++++++++++++++
->   tests/meson.build                |   1 +
->   2 files changed, 535 insertions(+)
->   create mode 100644 tests/intel/kms_simulation_hpd.c
-> 
+diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+index 05ff178b27..df0e650d49 100644
+--- a/lib/igt_kmod.c
++++ b/lib/igt_kmod.c
+@@ -834,7 +834,7 @@ static void __igt_kunit(struct igt_ktest *tst, const char *opts)
+ 			if (!pthread_tryjoin_np(modprobe_thread, NULL))
+ 				igt_assert_eq(modprobe.err, 0);
+ 
+-			igt_fail_on(igt_kernel_tainted(&taints));
++			igt_assert_eq(igt_kernel_tainted(&taints), 0);
+ 		}
+ 
+ 		free(result);
+@@ -861,7 +861,7 @@ void igt_kunit(const char *module_name, const char *name, const char *opts)
+ 	 */
+ 	if (!name) {
+ 		name = strdup(module_name);
+-		if (name) {
++		if (!igt_debug_on(!name)) {
+ 			char *suffix = strstr(name, "_test");
+ 
+ 			if (!suffix)
+-- 
+2.42.0
