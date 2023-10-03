@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 89B33899B3
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Oct 2023 14:59:38 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EE424899B3
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Oct 2023 14:59:41 +0000 (UTC)
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  3 Oct 2023 16:59:20 +0200
-Message-ID: <20231003145920.51148-4-kamil.konieczny@linux.intel.com>
+Date: Tue,  3 Oct 2023 16:59:18 +0200
+Message-ID: <20231003145920.51148-2-kamil.konieczny@linux.intel.com>
 In-Reply-To: <20231003145920.51148-1-kamil.konieczny@linux.intel.com>
 References: <20231003145920.51148-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v7 3/3] lib/drmtest: drop checks for opened
- device for filters
+Subject: [igt-dev] [PATCH i-g-t v7 1/3] lib/drmtest: allow out of order
+ device opening
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,74 +24,122 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-When using filters honor user choice and don't restrict opens
-to non-opened devices. This will allow a user to test some
-multiGPU tests with repeated filter for card zero:
+Allow to open cards with filters out of order, not in
+the sequence 0...N. This will fix problem found out with test
+gem_exec_gttfill@multigpu-basic with three discrete GPUs:
 
---device=pci:vendor=Intel,device=discrete,card=0\;pci:vendor=Intel,device=discrete,card=0
+Opened device: /dev/dri/card1
+Starting subtest: multigpu-basic
+<g:1> Opened device: /dev/dri/card2
+gem_exec_gttfill: ../lib/drmtest.c:313: _is_already_opened: Assertion `as_idx <= _opened_fds_count' failed.
 
-If the user want it just allow this. Also while at this, move
-debug print into filter loop as there is already one for
-non-filter.
+Added also some debug prints for diagnosing problems with
+multi-GPU tests.
+
+v2: fix setting opened count in _set_opened_fd()
+v3: search all already opened fds in _is_already_opened()
+v4: revert change in v3, this will cause treating zero as
+    special index (no checks) as some test depend on it
+v5: start searching for driver from requested index,
+    limit checks for already opened drivers to currently
+    opened count (Kamil)
 
 Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Petri Latvala <adrinael@adrinael.net>
-Cc: Arkadiusz Hiler <arek@hiler.eu>
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/drmtest.c | 20 +++++++++-----------
- 1 file changed, 9 insertions(+), 11 deletions(-)
+ lib/drmtest.c | 28 +++++++++++++++++++++++-----
+ 1 file changed, 23 insertions(+), 5 deletions(-)
 
 diff --git a/lib/drmtest.c b/lib/drmtest.c
-index 43524c5ad..dbfa0282d 100644
+index e1da66c87..43524c5ad 100644
 --- a/lib/drmtest.c
 +++ b/lib/drmtest.c
-@@ -454,8 +454,8 @@ static bool __get_card_for_nth_filter(int idx, struct igt_device_card *card)
-  *   * device scanning is executed,
-  *   * idx-th filter (starting with 0, filters are semicolon separated) is used
-  *   * if there is no idx-th filter, goto 2
-- *   * first device maching the filter is selected
-- *   * if it's already opened (for indexes = 0..idx-1) we fail with -1
-+ *   * device maching the requested filter is selected
-+ *   * if it's not matched we fail with -1
-  *   * otherwise open the device and return the fd
-  *
-  * 2. compatibility mode - open the first DRM device we can find that is not
-@@ -497,11 +497,11 @@ int __drm_open_driver_another(int idx, int chipset)
+@@ -296,13 +296,18 @@ static int _opened_fds_count;
+ static void _set_opened_fd(int idx, int fd)
+ {
+ 	assert(idx < ARRAY_SIZE(_opened_fds));
+-	assert(idx <= _opened_fds_count);
++
++	if (idx >= _opened_fds_count) {
++		for (int i = _opened_fds_count; i < idx; ++i)
++			_opened_fds[i].fd = -1;
++	}
+ 
+ 	_opened_fds[idx].fd = fd;
+ 
+ 	assert(fstat(fd, &_opened_fds[idx].stat) == 0);
+ 
+-	_opened_fds_count = idx+1;
++	if (idx >= _opened_fds_count)
++		_opened_fds_count = idx + 1;
+ }
+ 
+ static bool _is_already_opened(const char *path, int as_idx)
+@@ -310,16 +315,23 @@ static bool _is_already_opened(const char *path, int as_idx)
+ 	struct stat new;
+ 
+ 	assert(as_idx < ARRAY_SIZE(_opened_fds));
+-	assert(as_idx <= _opened_fds_count);
+ 
+ 	/*
+ 	 * we cannot even stat the device, so it's of no use - let's claim it's
+ 	 * already opened
+ 	 */
+-	if (igt_debug_on(stat(path, &new) != 0))
++	if (igt_debug_on(stat(path, &new) != 0)) {
++		igt_debug("cannot stat device: %s\n", path);
+ 		return true;
++	}
++
++	if (as_idx > _opened_fds_count)
++		as_idx = _opened_fds_count;
+ 
+ 	for (int i = 0; i < as_idx; ++i) {
++		if (_opened_fds[i].fd == -1)
++			continue;
++
+ 		/* did we cross filesystem boundary? */
+ 		assert(_opened_fds[i].stat.st_dev == new.st_dev);
+ 
+@@ -338,6 +350,7 @@ static int __search_and_open(const char *base, int offset, unsigned int chipset,
+ 	if (forced)
+ 		igt_debug("Force option used: Using driver %s\n", forced);
+ 
++	offset += as_idx;
+ 	for (int i = 0; i < 16; i++) {
+ 		char name[80];
+ 		int fd;
+@@ -484,6 +497,7 @@ int __drm_open_driver_another(int idx, int chipset)
  {
  	int fd = -1;
  
--	igt_debug("card idx: %d chipset: %d\n", idx, chipset);
++	igt_debug("card idx: %d chipset: %d\n", idx, chipset);
  	if (chipset != DRIVER_VGEM && igt_device_filter_count() > idx) {
  		struct igt_device_card card;
  		bool found;
- 
-+		igt_debug("card idx: %d chipset: %d\n", idx, chipset);
+@@ -491,6 +505,7 @@ int __drm_open_driver_another(int idx, int chipset)
  		found = __get_card_for_nth_filter(idx, &card);
  
  		if (!found) {
-@@ -510,16 +510,14 @@ int __drm_open_driver_another(int idx, int chipset)
++			igt_debug("cannot find card idx: %d, loading module\n", idx);
+ 			drm_load_module(chipset);
  			found = __get_card_for_nth_filter(idx, &card);
  		}
- 
--		if (!found || !strlen(card.card))
--			igt_warn("No card matches the filter! [%s]\n",
--				 igt_device_filter_get(idx));
--		else if (_is_already_opened(card.card, idx))
--			igt_warn("card maching filter %d is already opened\n", idx);
--		else {
--			igt_debug("card idx: %d found: %s\n", idx, card.card);
-+		if (!found || !strlen(card.card)) {
-+			igt_warn("No card matches the filter! [%s]%s\n",
-+				 igt_device_filter_get(idx),
-+				 found && !strlen(card.card) ? " (card empty)" : "");
-+		} else {
-+			igt_debug("card %d found: [%s]\n", idx, card.card);
+@@ -500,11 +515,14 @@ int __drm_open_driver_another(int idx, int chipset)
+ 				 igt_device_filter_get(idx));
+ 		else if (_is_already_opened(card.card, idx))
+ 			igt_warn("card maching filter %d is already opened\n", idx);
+-		else
++		else {
++			igt_debug("card idx: %d found: %s\n", idx, card.card);
  			fd = __open_driver_exact(card.card, chipset);
- 		}
--
++		}
+ 
  	} else {
  		/* no filter for device idx, let's open whatever is available */
- 		igt_debug("No filter for device idx: %d\n", idx);
++		igt_debug("No filter for device idx: %d\n", idx);
+ 		fd = __open_driver("/dev/dri/card", 0, chipset, idx);
+ 	}
+ 
 -- 
 2.42.0
