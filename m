@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EE424899B3
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Oct 2023 14:59:41 +0000 (UTC)
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue,  3 Oct 2023 16:59:18 +0200
-Message-ID: <20231003145920.51148-2-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20231003145920.51148-1-kamil.konieczny@linux.intel.com>
-References: <20231003145920.51148-1-kamil.konieczny@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============4127549640149079426=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v7 1/3] lib/drmtest: allow out of order
- device opening
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
+Date: Tue, 03 Oct 2023 16:02:45 -0000
+Message-ID: <169634896520.4383.10928990697062244869@emeril.freedesktop.org>
+References: <20231003145920.51148-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20231003145920.51148-1-kamil.konieczny@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgZHJtdGVz?=
+ =?utf-8?q?t_changes_for_running_tests_on_multi-gpu_=28rev6=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,126 +17,265 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Allow to open cards with filters out of order, not in
-the sequence 0...N. This will fix problem found out with test
-gem_exec_gttfill@multigpu-basic with three discrete GPUs:
+--===============4127549640149079426==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Opened device: /dev/dri/card1
-Starting subtest: multigpu-basic
-<g:1> Opened device: /dev/dri/card2
-gem_exec_gttfill: ../lib/drmtest.c:313: _is_already_opened: Assertion `as_idx <= _opened_fds_count' failed.
+== Series Details ==
 
-Added also some debug prints for diagnosing problems with
-multi-GPU tests.
+Series: drmtest changes for running tests on multi-gpu (rev6)
+URL   : https://patchwork.freedesktop.org/series/123991/
+State : failure
 
-v2: fix setting opened count in _set_opened_fd()
-v3: search all already opened fds in _is_already_opened()
-v4: revert change in v3, this will cause treating zero as
-    special index (no checks) as some test depend on it
-v5: start searching for driver from requested index,
-    limit checks for already opened drivers to currently
-    opened count (Kamil)
+== Summary ==
 
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- lib/drmtest.c | 28 +++++++++++++++++++++++-----
- 1 file changed, 23 insertions(+), 5 deletions(-)
+CI Bug Log - changes from CI_DRM_13705 -> IGTPW_9911
+====================================================
 
-diff --git a/lib/drmtest.c b/lib/drmtest.c
-index e1da66c87..43524c5ad 100644
---- a/lib/drmtest.c
-+++ b/lib/drmtest.c
-@@ -296,13 +296,18 @@ static int _opened_fds_count;
- static void _set_opened_fd(int idx, int fd)
- {
- 	assert(idx < ARRAY_SIZE(_opened_fds));
--	assert(idx <= _opened_fds_count);
-+
-+	if (idx >= _opened_fds_count) {
-+		for (int i = _opened_fds_count; i < idx; ++i)
-+			_opened_fds[i].fd = -1;
-+	}
- 
- 	_opened_fds[idx].fd = fd;
- 
- 	assert(fstat(fd, &_opened_fds[idx].stat) == 0);
- 
--	_opened_fds_count = idx+1;
-+	if (idx >= _opened_fds_count)
-+		_opened_fds_count = idx + 1;
- }
- 
- static bool _is_already_opened(const char *path, int as_idx)
-@@ -310,16 +315,23 @@ static bool _is_already_opened(const char *path, int as_idx)
- 	struct stat new;
- 
- 	assert(as_idx < ARRAY_SIZE(_opened_fds));
--	assert(as_idx <= _opened_fds_count);
- 
- 	/*
- 	 * we cannot even stat the device, so it's of no use - let's claim it's
- 	 * already opened
- 	 */
--	if (igt_debug_on(stat(path, &new) != 0))
-+	if (igt_debug_on(stat(path, &new) != 0)) {
-+		igt_debug("cannot stat device: %s\n", path);
- 		return true;
-+	}
-+
-+	if (as_idx > _opened_fds_count)
-+		as_idx = _opened_fds_count;
- 
- 	for (int i = 0; i < as_idx; ++i) {
-+		if (_opened_fds[i].fd == -1)
-+			continue;
-+
- 		/* did we cross filesystem boundary? */
- 		assert(_opened_fds[i].stat.st_dev == new.st_dev);
- 
-@@ -338,6 +350,7 @@ static int __search_and_open(const char *base, int offset, unsigned int chipset,
- 	if (forced)
- 		igt_debug("Force option used: Using driver %s\n", forced);
- 
-+	offset += as_idx;
- 	for (int i = 0; i < 16; i++) {
- 		char name[80];
- 		int fd;
-@@ -484,6 +497,7 @@ int __drm_open_driver_another(int idx, int chipset)
- {
- 	int fd = -1;
- 
-+	igt_debug("card idx: %d chipset: %d\n", idx, chipset);
- 	if (chipset != DRIVER_VGEM && igt_device_filter_count() > idx) {
- 		struct igt_device_card card;
- 		bool found;
-@@ -491,6 +505,7 @@ int __drm_open_driver_another(int idx, int chipset)
- 		found = __get_card_for_nth_filter(idx, &card);
- 
- 		if (!found) {
-+			igt_debug("cannot find card idx: %d, loading module\n", idx);
- 			drm_load_module(chipset);
- 			found = __get_card_for_nth_filter(idx, &card);
- 		}
-@@ -500,11 +515,14 @@ int __drm_open_driver_another(int idx, int chipset)
- 				 igt_device_filter_get(idx));
- 		else if (_is_already_opened(card.card, idx))
- 			igt_warn("card maching filter %d is already opened\n", idx);
--		else
-+		else {
-+			igt_debug("card idx: %d found: %s\n", idx, card.card);
- 			fd = __open_driver_exact(card.card, chipset);
-+		}
- 
- 	} else {
- 		/* no filter for device idx, let's open whatever is available */
-+		igt_debug("No filter for device idx: %d\n", idx);
- 		fd = __open_driver("/dev/dri/card", 0, chipset, idx);
- 	}
- 
--- 
-2.42.0
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_9911 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_9911, please notify your bug team (lgci.bug.filing@intel.com) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9911/index.html
+
+Participating hosts (39 -> 40)
+------------------------------
+
+  Additional (2): fi-kbl-soraka fi-pnv-d510 
+  Missing    (1): fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_9911:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-skl-guc:         [PASS][1] -> [DMESG-FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13705/fi-skl-guc/igt@i915_selftest@live@hangcheck.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9911/fi-skl-guc/igt@i915_selftest@live@hangcheck.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_9911 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_suspend@basic-s0@smem:
+    - bat-dg2-9:          [PASS][3] -> [INCOMPLETE][4] ([i915#9275])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13705/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9911/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][5] ([fdo#109271] / [i915#2190])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9911/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][6] ([fdo#109271] / [i915#4613]) +3 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9911/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][7] ([i915#1886] / [i915#7913])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9911/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+
+  * igt@kms_dsc@dsc-basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][8] ([fdo#109271]) +9 other tests skip
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9911/fi-kbl-soraka/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
+    - bat-dg2-11:         NOTRUN -> [SKIP][9] ([i915#1845]) +3 other tests skip
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9911/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+
+  * igt@kms_psr@primary_page_flip:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][10] ([fdo#109271]) +31 other tests skip
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9911/fi-pnv-d510/igt@kms_psr@primary_page_flip.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:
+    - bat-rplp-1:         [ABORT][11] ([i915#8668]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13705/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9911/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
+  [i915#9275]: https://gitlab.freedesktop.org/drm/intel/issues/9275
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7510 -> IGTPW_9911
+
+  CI-20190529: 20190529
+  CI_DRM_13705: c7379e9ad81bca56e268003928cd81a04c3b10d0 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_9911: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9911/index.html
+  IGT_7510: a4b4a33d8312e4e30ca23d26bbd1758e56540e1d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@xe_create@multigpu-create-massive-size
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9911/index.html
+
+--===============4127549640149079426==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>drmtest changes for running tests on multi-gpu (rev6)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123991/">https://patchwork.freedesktop.org/series/123991/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9911/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9911/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13705 -&gt; IGTPW_9911</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_9911 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_9911, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9911/index.html</p>
+<h2>Participating hosts (39 -&gt; 40)</h2>
+<p>Additional (2): fi-kbl-soraka fi-pnv-d510 <br />
+  Missing    (1): fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_9911:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@hangcheck:<ul>
+<li>fi-skl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13705/fi-skl-guc/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9911/fi-skl-guc/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_9911 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s0@smem:</p>
+<ul>
+<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13705/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9911/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9275">i915#9275</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9911/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9911/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9911/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9911/fi-kbl-soraka/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +9 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9911/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_page_flip:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9911/fi-pnv-d510/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +31 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13705/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9911/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7510 -&gt; IGTPW_9911</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13705: c7379e9ad81bca56e268003928cd81a04c3b10d0 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_9911: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9911/index.html<br />
+  IGT_7510: a4b4a33d8312e4e30ca23d26bbd1758e56540e1d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@xe_create@multigpu-create-massive-size</p>
+
+</body>
+</html>
+
+--===============4127549640149079426==--
