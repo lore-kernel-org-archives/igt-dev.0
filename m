@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Wed, 4 Oct 2023 09:26:52 -0500
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: Matt Roper <matthew.d.roper@intel.com>
-Message-ID: <7oqovb356dx2hm5muop3xjqr4kv7m5fzjisch3vmsmxm33ygtv@eib4jielia35>
-References: <20231004031023.3444455-1-lucas.demarchi@intel.com>
- <20231004031023.3444455-9-lucas.demarchi@intel.com>
- <20231004043130.GA53570@mdroper-desk1.amr.corp.intel.com>
-Content-Type: text/plain; charset="us-ascii"; format=flowed
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 405A010E10B
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Oct 2023 15:42:20 +0000 (UTC)
+Date: Wed, 4 Oct 2023 11:42:11 -0400
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: Anshuman Gupta <anshuman.gupta@intel.com>
+Message-ID: <ZR2H06FbCliiInNP@intel.com>
+References: <20230929101155.614980-1-anshuman.gupta@intel.com>
+ <20230929101155.614980-2-anshuman.gupta@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20231004043130.GA53570@mdroper-desk1.amr.corp.intel.com>
+In-Reply-To: <20230929101155.614980-2-anshuman.gupta@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [Intel-xe] [PATCH i-g-t v2 08/13] lib/intel_mocs: Add
- Xe2 mocs indexes
+Subject: Re: [igt-dev] [PATCH i-g-t v3 1/2] test/xe_pm: Add exit handler to
+ close fw handle
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,49 +21,101 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, intel-xe@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Oct 03, 2023 at 09:31:30PM -0700, Matt Roper wrote:
->On Tue, Oct 03, 2023 at 08:10:18PM -0700, Lucas De Marchi wrote:
->> Add WB and UC mocs indexes for Xe2 architecture and later.
->>
->> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
->> ---
->>  lib/intel_mocs.c | 7 ++++++-
->>  1 file changed, 6 insertions(+), 1 deletion(-)
->>
->> diff --git a/lib/intel_mocs.c b/lib/intel_mocs.c
->> index 6a4ec25e4..d9de16932 100644
->> --- a/lib/intel_mocs.c
->> +++ b/lib/intel_mocs.c
->> @@ -14,6 +14,8 @@
->>  #define MTL_MOCS_WB_IDX				10
->>  #define GEN12_MOCS_UC_IDX			3
->>  #define GEN12_MOCS_WB_IDX			2
->> +#define XE2_MOCS_UC_IDX				3
->> +#define XE2_MOCS_WB_IDX				1
->
->Wouldn't we want index 4 here (WB in both L3 and L4) rather than just
->L3?
+On Fri, Sep 29, 2023 at 03:41:54PM +0530, Anshuman Gupta wrote:
+> Adding an exit handler to close the fw handle to make sure we don't
+> leak the fw in CI environment. Adding a IGT subtest group for the
+> test using the fw handle to runtime wake the device.
+> Scaling forcewake close exit handler for vram-d3cold-threshold
+> subtest, while doing so add the missing subtest Functionality
+> as well.
+> 
+> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
 
-I think we were always using the same index as used on the kernel side.
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-If we are going to use index 4 here, then we also need to update the
-kernel side to actually program it. Right now we are doing:
-
-	static const struct xe_mocs_entry xe2_mocs_table[] = {
-		/* Defer to PAT */
-		MOCS_ENTRY(0, XE2_L3_0_WB | L4_0_WB, 0),
-		/* Cached L3 + L4 */
-		MOCS_ENTRY(1, IG_PAT | XE2_L3_0_WB | L4_0_WB, 0),
-		/* Uncached L3, Cached L4 */
-		MOCS_ENTRY(2, IG_PAT | XE2_L3_3_UC | L4_0_WB, 0),
-		/* Uncached L3 + L4 */
-		MOCS_ENTRY(3, IG_PAT | XE2_L3_3_UC | L4_3_UC, 0),
-	};
-
-
-Lucas De Marchi
+> ---
+>  tests/intel/xe_pm.c | 34 +++++++++++++++++++++++++---------
+>  1 file changed, 25 insertions(+), 9 deletions(-)
+> 
+> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+> index fd28d5630..48518a5e5 100644
+> --- a/tests/intel/xe_pm.c
+> +++ b/tests/intel/xe_pm.c
+> @@ -39,6 +39,7 @@ typedef struct {
+>  } device_t;
+>  
+>  uint64_t orig_threshold;
+> +int fw_handle = -1;
+>  
+>  /* runtime_usage is only available if kernel build CONFIG_PM_ADVANCED_DEBUG */
+>  static bool runtime_usage_available(struct pci_device *pci)
+> @@ -166,6 +167,14 @@ static bool out_of_d3(device_t device, enum igt_acpi_d_state state)
+>  	return true;
+>  }
+>  
+> +static void close_fw_handle(int sig)
+> +{
+> +	if (fw_handle < 0)
+> +		return;
+> +
+> +	close(fw_handle);
+> +}
+> +
+>  /**
+>   * SUBTEST: %s-basic
+>   * Description: set GPU state to %arg[1] and test suspend/autoresume
+> @@ -381,7 +390,7 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
+>  	};
+>  	uint64_t vram_used_mb = 0, vram_total_mb = 0, threshold;
+>  	uint32_t bo, flags;
+> -	int handle, i;
+> +	int i;
+>  	bool active;
+>  	void *map;
+>  
+> @@ -427,10 +436,10 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
+>  	 * the device from runtime suspend.
+>  	 * Therefore open and close fw handle to wake the device.
+>  	 */
+> -	handle = igt_debugfs_open(device.fd_xe, "forcewake_all", O_RDONLY);
+> -	igt_assert(handle >= 0);
+> +	fw_handle = igt_debugfs_open(device.fd_xe, "forcewake_all", O_RDONLY);
+> +	igt_assert(fw_handle >= 0);
+>  	active = igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE;
+> -	close(handle);
+> +	close(fw_handle);
+>  	igt_assert(active);
+>  
+>  	/* Test D3Cold again after freeing up the Xe BO */
+> @@ -535,11 +544,18 @@ igt_main
+>  		}
+>  	}
+>  
+> -	igt_describe("Validate whether card is limited to d3hot, if vram used > vram threshold");
+> -	igt_subtest("vram-d3cold-threshold") {
+> -		orig_threshold = get_vram_d3cold_threshold(sysfs_fd);
+> -		igt_install_exit_handler(vram_d3cold_threshold_restore);
+> -		test_vram_d3cold_threshold(device, sysfs_fd);
+> +	igt_subtest_group {
+> +		igt_fixture {
+> +			igt_install_exit_handler(close_fw_handle);
+> +		}
+> +
+> +		igt_describe("Validate whether card is limited to d3hot,"
+> +			     "if vram used > vram threshold");
+> +		igt_subtest("vram-d3cold-threshold") {
+> +			orig_threshold = get_vram_d3cold_threshold(sysfs_fd);
+> +			igt_install_exit_handler(vram_d3cold_threshold_restore);
+> +			test_vram_d3cold_threshold(device, sysfs_fd);
+> +		}
+>  	}
+>  
+>  	igt_fixture {
+> -- 
+> 2.25.1
+> 
