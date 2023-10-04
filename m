@@ -1,20 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 65B7510E0F4
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Oct 2023 10:37:11 +0000 (UTC)
-Date: Wed, 4 Oct 2023 12:36:41 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20231004103641.wj5dukxexd73r62e@kamilkon-desk.igk.intel.com>
-References: <20231001103006.431894-1-kunal1.joshi@intel.com>
- <17bd5bee-d5ff-9351-ed9b-e917b780d491@intel.com>
- <1f8f7bfc-21cb-e986-401a-591892adefeb@intel.com>
- <8bba0a41-769f-4921-89b5-0f5d2d315459@gmail.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E994510E11F
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Oct 2023 15:49:15 +0000 (UTC)
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed,  4 Oct 2023 08:49:12 -0700
+Message-Id: <20231004154922.3478014-4-lucas.demarchi@intel.com>
+In-Reply-To: <20231004154922.3478014-1-lucas.demarchi@intel.com>
+References: <20231004154922.3478014-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <8bba0a41-769f-4921-89b5-0f5d2d315459@gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 0/2] Add test for hotplug validation in
- simulation
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v3 03/13] lib/gpu_cmds: Reorder if/else
+ ladder according to IP version
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,51 +19,46 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Kunal Joshi <kunal1.joshi@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Juha-Pekka,
+Make it easier to follow the flow by following the convention of "latest
+platform earlier".
 
-On 2023-10-04 at 11:15:25 +0300, Juha-Pekka Heikkila wrote:
-> On 4.10.2023 8.48, Modem, Bhanuprakash wrote:
-> > Forgot to add Kamil to the TO/CC list.
-> > 
-> > On Tue-03-10-2023 02:42 pm, Modem, Bhanuprakash wrote:
-> > > Hi Kunal,
-> > > 
-> > > On Sun-01-10-2023 04:00 pm, Kunal Joshi wrote:
-> > > > Test to validate hotplug in simulation environment we
-> > > > have scratch pad register 0x4f080 from which we can
-> > > > trigger uevents such as HPD, VBLANK..etc, Idea is to
-> > > > have port mapping placed in igtrcthrough which test
-> > > > can write to 0x4f080 and check if we get hotplug
-> > > 
-> > > In first glance, do we really need to upstream this test? I am
-> > > pretty sure, no one (including Intel) is going to use this test from
-> > > upstream repo (We don't have any simulation environment in public
-> > > CI).
-> > > 
-> > > So, we can't merge this.
-> > > 
-> > > + Kamil, thoughts?
-> > > 
-> 
-> Not sure why this wouldn't fit in upstream? It is valid igt test, will be of
-> interest only for Intel guys hence in in intel directory and when in
-> upstream it will not be causing issues during backports. We anyway already
-> have more generic tests taking into account if they're being run in
-> simulated environments.
-> 
-> /Juha-Pekka
-> 
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+---
+ lib/gpu_cmds.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-imho this should not be upstreamed as any user outside Intel
-will not be able to run it. Why it cannot be a subtest with
-some generic test like kms_hotplug.c with only timeout increased
-for simulation? Such test may be in upstream if it will work
-with existing hardware in CI.
-
-Regards,
-Kamil
+diff --git a/lib/gpu_cmds.c b/lib/gpu_cmds.c
+index 648451f74..0fd8f8213 100644
+--- a/lib/gpu_cmds.c
++++ b/lib/gpu_cmds.c
+@@ -270,17 +270,15 @@ fill_binding_table(struct intel_bb *ibb, struct intel_buf *buf)
+ 	binding_table = intel_bb_ptr(ibb);
+ 	intel_bb_ptr_add(ibb, 64);
+ 
+-	if (IS_GEN7(devid))
+-		binding_table[0] = gen7_fill_surface_state(ibb, buf,
+-							   SURFACEFORMAT_R8_UNORM, 1);
+-
+-	else if (intel_graphics_ver(devid) >= IP_VER(12, 50))
++	if (intel_graphics_ver(devid) >= IP_VER(12, 50))
+ 		binding_table[0] = xehp_fill_surface_state(ibb, buf,
+ 							   SURFACEFORMAT_R8_UNORM, 1);
+-
+-	else
++	else if (intel_graphics_ver(devid) >= IP_VER(8, 0))
+ 		binding_table[0] = gen8_fill_surface_state(ibb, buf,
+ 							   SURFACEFORMAT_R8_UNORM, 1);
++	else
++		binding_table[0] = gen7_fill_surface_state(ibb, buf,
++							   SURFACEFORMAT_R8_UNORM, 1);
+ 
+ 	return binding_table_offset;
+ }
+-- 
+2.40.1
