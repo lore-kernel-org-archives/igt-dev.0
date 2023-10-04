@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F109210E39A
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Oct 2023 16:50:11 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D8A1710E395
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Oct 2023 16:50:30 +0000 (UTC)
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  4 Oct 2023 18:49:41 +0200
-Message-ID: <20231004164946.138398-6-kamil.konieczny@linux.intel.com>
+Date: Wed,  4 Oct 2023 18:49:42 +0200
+Message-ID: <20231004164946.138398-7-kamil.konieczny@linux.intel.com>
 In-Reply-To: <20231004164946.138398-1-kamil.konieczny@linux.intel.com>
 References: <20231004164946.138398-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v8 5/6] lib/drmtest: add helper for countig
- number of GPUs
+Subject: [igt-dev] [PATCH i-g-t v8 6/6] tests/intel/xe_create: use drm
+ helper for GPUs count
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,111 +23,34 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add a function for counting number of GPUs present on system.
-When no filters used this will count discrete GPUs, otherwise
-will count them using given filters.
+Instead of counting filter use more general method supported
+by new function from drmtest, drm_get_gpu_count().
 
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/drmtest.c | 72 +++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/drmtest.h |  2 ++
- 2 files changed, 74 insertions(+)
+ tests/intel/xe_create.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/lib/drmtest.c b/lib/drmtest.c
-index 5e559737e..88be0e67e 100644
---- a/lib/drmtest.c
-+++ b/lib/drmtest.c
-@@ -806,6 +806,78 @@ int drm_reopen_driver(int fd)
- 	return fd;
- }
+diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+index ee970450f..4feabb70c 100644
+--- a/tests/intel/xe_create.c
++++ b/tests/intel/xe_create.c
+@@ -237,14 +237,14 @@ igt_main
+ 	}
  
-+/**
-+ * drm_open_driver_render:
-+ * @chipset: flag for one chipset to search, eg. #DRIVER_INTEL
-+ *
-+ * Get number of GPUs for given chipset. If used --device option or IGT_DEVICE
-+ * environment variable, perform countig based on supplied filters.
-+ *
-+ * Returns:
-+ * Number of GPUs for given chipset or filters.
-+ */
-+int drm_get_gpu_count(int chipset)
-+{
-+	struct igt_device_card card;
-+	int gpu_count;
-+	bool found;
-+	char v[16];
-+
-+	if (chipset == DRIVER_VGEM || chipset == DRIVER_ANY) {
-+		igt_debug("No multi-gpu for chipset %d\n", chipset);
-+		return 0;
-+	}
-+
-+	gpu_count = igt_device_filter_count();
-+	if (!gpu_count) {
-+		char gpu_filter[256];
-+
-+		if (chipset == DRIVER_INTEL || chipset == DRIVER_XE)
-+			strncpy(v, "Intel", sizeof(v) - 1);
-+		else
-+			strncpy(v, chipset_to_str(chipset), sizeof(v) - 1);
-+		igt_debug("Counting GPUs for chipset: %d vendor: %s\n", chipset, v);
-+		for (int i = 0; i < 64; i++) {
-+			igt_assert(snprintf(gpu_filter, sizeof(gpu_filter),
-+					    "pci:vendor=%s,device=discrete,card=%d",
-+					    v, i) < sizeof(gpu_filter));
-+
-+			memset(&card, 0, sizeof(card));
-+			found = igt_device_card_match(gpu_filter, &card);
-+			if (found && strlen(card.card)) {
-+				igt_debug("Found gpu %d with %s\n", i, card.card);
-+				++gpu_count;
-+			} else {
-+				igt_debug("Counted GPUs number: %d\n", gpu_count);
-+				break;
-+			}
-+		}
-+	} else {
-+		int count = 0;
-+
-+		for (int i = 0; i < gpu_count; i++) {
-+			const char *filter;
-+
-+			filter = igt_device_filter_get(i);
-+			memset(&card, 0, sizeof(card));
-+			found = igt_device_card_match(filter, &card);
-+			if (found && strlen(card.card)) {
-+				igt_debug("Found gpu %d with %s\n", i, card.card);
-+				++count;
-+			} else {
-+				break;
-+			}
-+		}
-+
-+		if (count < gpu_count)
-+			igt_debug("Counted GPUs %d lower than number of filters %d\n", count, gpu_count);
-+
-+		gpu_count = count;
-+	}
-+
-+	return gpu_count;
-+}
-+
- void igt_require_amdgpu(int fd)
- {
- 	igt_require(is_amdgpu_device(fd));
-diff --git a/lib/drmtest.h b/lib/drmtest.h
-index 97ab6e759..7db2292cb 100644
---- a/lib/drmtest.h
-+++ b/lib/drmtest.h
-@@ -109,6 +109,8 @@ int drm_close_driver(int fd);
+ 	igt_subtest("multigpu-create-massive-size") {
+-		int gpu_filter_count = igt_device_filter_count();
++		int gpu_filter_count = drm_get_gpu_count(DRIVER_XE);
  
- int drm_reopen_driver(int fd);
+ 		igt_require(xe > 0);
+ 		igt_require(gpu_filter_count >= 2);
+ 		igt_multi_fork(child, gpu_filter_count) {
+ 			int gpu_fd;
  
-+int drm_get_gpu_count(int chipset);
-+
- void igt_require_amdgpu(int fd);
- void igt_require_intel(int fd);
- void igt_require_i915(int fd);
+-			gpu_fd = child ? __drm_open_driver_another(child, DRIVER_XE) : drm_reopen_driver(xe);
++			gpu_fd = __drm_open_driver_another(child, DRIVER_XE);
+ 			igt_assert_f(gpu_fd > 0, "cannot open gpu-%d, errno=%d\n", child, errno);
+ 
+ 			create_massive_size(gpu_fd);
 -- 
 2.42.0
