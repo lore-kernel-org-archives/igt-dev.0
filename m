@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam10on2089.outbound.protection.outlook.com [40.107.93.89])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E262610E13D
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Oct 2023 23:11:41 +0000 (UTC)
-From: <vitaly.prosyak@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Wed, 4 Oct 2023 19:11:30 -0400
-Message-ID: <20231004231130.310640-1-vitaly.prosyak@amd.com>
+Content-Type: multipart/alternative;
+ boundary="===============1219306935102418457=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH] tests/amdgpu: add IP availability condition to
- deadlock test
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Lucas De Marchi" <lucas.demarchi@intel.com>
+Date: Wed, 04 Oct 2023 23:52:49 -0000
+Message-ID: <169646356911.7834.7476096399813005141@emeril.freedesktop.org>
+References: <20231004154922.3478014-1-lucas.demarchi@intel.com>
+In-Reply-To: <20231004154922.3478014-1-lucas.demarchi@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Adapt_co?=
+ =?utf-8?q?py_commands_for_Xe2_=28rev5=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,136 +17,171 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Alex Deucher <alexander.deucher@amd.com>,
- Luben Tuikov <luben.tuikov@amd.com>, Christian
- Koenig <christian.koenig@amd.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+--===============1219306935102418457==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Some ASICs may not have a GFX ring and we use IGT built-in dynamic
-feature for conditional execution. If GFX IP is not present the test
-is skipped and the appropriate message is printed.
+== Series Details ==
 
-Cc: Luben Tuikov <luben.tuikov@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian Koenig <christian.koenig@amd.com>
-Cc: Jesse Zhang <jesse.zhang@amd.com>
+Series: Adapt copy commands for Xe2 (rev5)
+URL   : https://patchwork.freedesktop.org/series/123773/
+State : success
 
-Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
----
- tests/amdgpu/amd_deadlock.c | 73 +++++++++++++++++--------------------
- 1 file changed, 33 insertions(+), 40 deletions(-)
+== Summary ==
 
-diff --git a/tests/amdgpu/amd_deadlock.c b/tests/amdgpu/amd_deadlock.c
-index 0a81f3717..6147b7636 100644
---- a/tests/amdgpu/amd_deadlock.c
-+++ b/tests/amdgpu/amd_deadlock.c
-@@ -9,42 +9,13 @@
- #include "lib/amdgpu/amd_command_submission.h"
- #include "lib/amdgpu/amd_deadlock_helpers.h"
- 
--static void
--amdgpu_deadlock_gfx(amdgpu_device_handle device_handle)
--{
--	amdgpu_wait_memory_helper(device_handle, AMDGPU_HW_IP_GFX);
--}
--
--static void
--amdgpu_deadlock_compute(amdgpu_device_handle device_handle)
--{
--	amdgpu_wait_memory_helper(device_handle, AMDGPU_HW_IP_COMPUTE);
--}
--
--static void
--amdgpu_deadlock_sdma(amdgpu_device_handle device_handle)
--{
--	amdgpu_wait_memory_helper(device_handle, AMDGPU_HW_IP_DMA);
--}
--
--static void
--amdgpu_gfx_illegal_reg_access(amdgpu_device_handle device_handle)
--{
--	bad_access_helper(device_handle, 1, AMDGPU_HW_IP_GFX);
--}
--
--static void
--amdgpu_gfx_illegal_mem_access(amdgpu_device_handle device_handle)
--{
--	bad_access_helper(device_handle, 0, AMDGPU_HW_IP_GFX);
--}
--
- igt_main
- {
- 	amdgpu_device_handle device;
- 	struct amdgpu_gpu_info gpu_info = {0};
- 	int fd = -1;
- 	int r;
-+	bool arr_cap[AMD_IP_MAX] = {0};
- 
- 	igt_fixture {
- 		uint32_t major, minor;
-@@ -62,27 +33,49 @@ igt_main
- 		igt_assert_eq(r, 0);
- 		r = setup_amdgpu_ip_blocks(major, minor, &gpu_info, device);
- 		igt_assert_eq(r, 0);
-+		asic_rings_readness(device, 1, arr_cap);
- 
- 	}
- 	igt_describe("Test-GPU-reset-by-flooding-sdma-ring-with-jobs");
--	igt_subtest("amdgpu-deadlock-sdma")
--	amdgpu_deadlock_sdma(device);
-+	igt_subtest_with_dynamic("amdgpu-deadlock-sdma") {
-+		if (arr_cap[AMD_IP_DMA]) {
-+			igt_dynamic_f("amdgpu-deadlock-sdma")
-+			amdgpu_wait_memory_helper(device, AMDGPU_HW_IP_DMA);
-+		}
-+	}
- 
- 	igt_describe("Test-GPU-reset-by-access-gfx-illegal-reg");
--	igt_subtest("amdgpu-gfx-illegal-reg-access")
--	amdgpu_gfx_illegal_reg_access(device);
-+	igt_subtest_with_dynamic("amdgpu-gfx-illegal-reg-access") {
-+		if (arr_cap[AMD_IP_GFX]) {
-+			igt_dynamic_f("amdgpu-illegal-reg-access")
-+			bad_access_helper(device, 1, AMDGPU_HW_IP_GFX);
-+		}
-+	}
- 
- 	igt_describe("Test-GPU-reset-by-access-gfx-illegal-mem-addr");
--	igt_subtest("amdgpu-gfx-illegal-mem-access")
--	amdgpu_gfx_illegal_mem_access(device);
-+	igt_subtest_with_dynamic("amdgpu-gfx-illegal-mem-access") {
-+		if (arr_cap[AMD_IP_GFX]) {
-+			igt_dynamic_f("amdgpu-illegal-mem-access")
-+			bad_access_helper(device, 0, AMDGPU_HW_IP_GFX);
-+		}
-+	}
-+
- 
- 	igt_describe("Test-GPU-reset-by-flooding-gfx-ring-with-jobs");
--	igt_subtest("amdgpu-deadlock-gfx")
--	amdgpu_deadlock_gfx(device);
-+	igt_subtest_with_dynamic("amdgpu-deadlock-gfx") {
-+		if (arr_cap[AMD_IP_GFX]) {
-+			igt_dynamic_f("amdgpu-deadlock-gfx")
-+			amdgpu_wait_memory_helper(device, AMDGPU_HW_IP_GFX);
-+		}
-+	}
- 
- 	igt_describe("Test-GPU-reset-by-flooding-compute-ring-with-jobs");
--	igt_subtest("amdgpu-deadlock-compute")
--	amdgpu_deadlock_compute(device);
-+	igt_subtest_with_dynamic("amdgpu-deadlock-compute") {
-+		if (arr_cap[AMD_IP_COMPUTE]) {
-+			igt_dynamic_f("amdgpu-deadlock-compute")
-+			amdgpu_wait_memory_helper(device, AMDGPU_HW_IP_COMPUTE);
-+		}
-+	}
- 
- 	igt_fixture {
- 		amdgpu_device_deinitialize(device);
--- 
-2.25.1
+CI Bug Log - changes from XEIGT_7512_BAT -> XEIGTPW_9922_BAT
+====================================================
+
+Summary
+-------
+
+  **WARNING**
+
+  Minor unknown changes coming with XEIGTPW_9922_BAT need to be verified
+  manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_9922_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_9922_BAT:
+
+### IGT changes ###
+
+#### Warnings ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-dg2-oem2:       [INCOMPLETE][1] ([Intel XE#764]) -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7512/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9922/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9922_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * {igt@xe_create@create-execqueues-noleak}:
+    - bat-adlp-7:         [FAIL][3] ([Intel XE#524]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7512/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9922/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+  [Intel XE#764]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/764
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7512 -> IGTPW_9922
+  * Linux: xe-411-090c3e92db31fbbe59a47d44f8dd7e8a1ccbcb36 -> xe-414-925411c583c351c1a54c7a27fc96e0c64f1554af
+
+  IGTPW_9922: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9922/index.html
+  IGT_7512: 2eb58faf82d3cd5e2e74154a7319cff56eb40762 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-411-090c3e92db31fbbe59a47d44f8dd7e8a1ccbcb36: 090c3e92db31fbbe59a47d44f8dd7e8a1ccbcb36
+  xe-414-925411c583c351c1a54c7a27fc96e0c64f1554af: 925411c583c351c1a54c7a27fc96e0c64f1554af
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9922/index.html
+
+--===============1219306935102418457==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Adapt copy commands for Xe2 (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123773/">https://patchwork.freedesktop.org/series/123773/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9922/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9922/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7512_BAT -&gt; XEIGTPW_9922_BAT</h1>
+<h2>Summary</h2>
+<p><strong>WARNING</strong></p>
+<p>Minor unknown changes coming with XEIGTPW_9922_BAT need to be verified<br />
+  manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_9922_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_9922_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Warnings</h4>
+<ul>
+<li>igt@core_hotunplug@unbind-rebind:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7512/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/764">Intel XE#764</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9922/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9922_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>{igt@xe_create@create-execqueues-noleak}:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7512/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9922/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7512 -&gt; IGTPW_9922</li>
+<li>Linux: xe-411-090c3e92db31fbbe59a47d44f8dd7e8a1ccbcb36 -&gt; xe-414-925411c583c351c1a54c7a27fc96e0c64f1554af</li>
+</ul>
+<p>IGTPW_9922: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9922/index.html<br />
+  IGT_7512: 2eb58faf82d3cd5e2e74154a7319cff56eb40762 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-411-090c3e92db31fbbe59a47d44f8dd7e8a1ccbcb36: 090c3e92db31fbbe59a47d44f8dd7e8a1ccbcb36<br />
+  xe-414-925411c583c351c1a54c7a27fc96e0c64f1554af: 925411c583c351c1a54c7a27fc96e0c64f1554af</p>
+
+</body>
+</html>
+
+--===============1219306935102418457==--
