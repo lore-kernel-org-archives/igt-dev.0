@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============1361097946484779528=="
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue,  3 Oct 2023 20:10:23 -0700
+Message-Id: <20231004031023.3444455-14-lucas.demarchi@intel.com>
+In-Reply-To: <20231004031023.3444455-1-lucas.demarchi@intel.com>
+References: <20231004031023.3444455-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-Date: Wed, 04 Oct 2023 08:30:07 -0000
-Message-ID: <169640820773.7834.15362554510448317782@emeril.freedesktop.org>
-References: <20230911074026.1944119-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230911074026.1944119-1-bhanuprakash.modem@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/in?=
- =?utf-8?q?tel/kms=5Ffbt=3A_Use_Linear_modifier_as_default_=28rev3=29?=
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2 13/13] lib/intel_blt: Support xe2 in
+ ctrl-surf-copy command
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,238 +17,189 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>, intel-xe@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1361097946484779528==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Xe2 ctrl-surf-copy command varies significantly from gen12. Create a new
+struct and function to fill the data, sharing the rest of the logic in
+emit_blt_ctrl_surf_copy().
 
-== Series Details ==
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ lib/intel_blt.c | 128 ++++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 107 insertions(+), 21 deletions(-)
 
-Series: tests/intel/kms_fbt: Use Linear modifier as default (rev3)
-URL   : https://patchwork.freedesktop.org/series/123520/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7512_BAT -> XEIGTPW_9916_BAT
-====================================================
-
-Summary
--------
-
-  **WARNING**
-
-  Minor unknown changes coming with XEIGTPW_9916_BAT need to be verified
-  manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_9916_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_9916_BAT:
-
-### IGT changes ###
-
-#### Warnings ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - bat-dg2-oem2:       [INCOMPLETE][1] ([Intel XE#764]) -> [INCOMPLETE][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7512/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9916/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_9916_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank:
-    - bat-dg2-oem2:       [PASS][3] -> [FAIL][4] ([Intel XE#480]) +1 other test fail
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7512/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9916/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-c-edp-1:
-    - bat-adlp-7:         NOTRUN -> [FAIL][5] ([Intel XE#400]) +25 other tests fail
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9916/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-c-edp-1.html
-
-  * igt@xe_live_ktest@migrate:
-    - bat-adlp-7:         NOTRUN -> [INCOMPLETE][6] ([Intel XE#753])
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9916/bat-adlp-7/igt@xe_live_ktest@migrate.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-dg2-oem2:       [FAIL][7] ([Intel XE#608]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7512/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9916/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html
-
-  * {igt@xe_create@create-execqueues-noleak}:
-    - bat-adlp-7:         [FAIL][9] ([Intel XE#524]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7512/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9916/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
-
-  
-#### Warnings ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [INCOMPLETE][11] ([Intel XE#632]) -> [FAIL][12] ([Intel XE#750])
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7512/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9916/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
-  [Intel XE#608]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/608
-  [Intel XE#632]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/632
-  [Intel XE#750]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/750
-  [Intel XE#753]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/753
-  [Intel XE#764]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/764
-
-
-Build changes
--------------
-
-  * IGT: IGT_7512 -> IGTPW_9916
-
-  IGTPW_9916: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9916/index.html
-  IGT_7512: 2eb58faf82d3cd5e2e74154a7319cff56eb40762 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-411-090c3e92db31fbbe59a47d44f8dd7e8a1ccbcb36: 090c3e92db31fbbe59a47d44f8dd7e8a1ccbcb36
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9916/index.html
-
---===============1361097946484779528==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/kms_fbt: Use Linear modifier as default (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123520/">https://patchwork.freedesktop.org/series/123520/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9916/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9916/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7512_BAT -&gt; XEIGTPW_9916_BAT</h1>
-<h2>Summary</h2>
-<p><strong>WARNING</strong></p>
-<p>Minor unknown changes coming with XEIGTPW_9916_BAT need to be verified<br />
-  manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_9916_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_9916_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Warnings</h4>
-<ul>
-<li>igt@core_hotunplug@unbind-rebind:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7512/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/764">Intel XE#764</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9916/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_9916_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7512/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9916/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-c-edp-1:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9916/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-c-edp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a>) +25 other tests fail</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@migrate:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9916/bat-adlp-7/igt@xe_live_ktest@migrate.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/753">Intel XE#753</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7512/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/608">Intel XE#608</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9916/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>{igt@xe_create@create-execqueues-noleak}:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7512/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9916/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_frontbuffer_tracking@basic:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7512/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/632">Intel XE#632</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9916/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/750">Intel XE#750</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7512 -&gt; IGTPW_9916</li>
-</ul>
-<p>IGTPW_9916: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9916/index.html<br />
-  IGT_7512: 2eb58faf82d3cd5e2e74154a7319cff56eb40762 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-411-090c3e92db31fbbe59a47d44f8dd7e8a1ccbcb36: 090c3e92db31fbbe59a47d44f8dd7e8a1ccbcb36</p>
-
-</body>
-</html>
-
---===============1361097946484779528==--
+diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+index 0d00f0fbc..81b765548 100644
+--- a/lib/intel_blt.c
++++ b/lib/intel_blt.c
+@@ -998,6 +998,65 @@ struct gen12_ctrl_surf_copy_data {
+ 	} dw04;
+ };
+ 
++struct xe2_ctrl_surf_copy_data {
++	struct {
++		uint32_t length:			BITRANGE(0, 7);
++		uint32_t rsvd0:				BITRANGE(8, 8);
++		uint32_t size_of_ctrl_copy:		BITRANGE(9, 18);
++		uint32_t rsvd1:				BITRANGE(19, 19);
++		uint32_t dst_access_type:		BITRANGE(20, 20);
++		uint32_t src_access_type:		BITRANGE(21, 21);
++		uint32_t opcode:			BITRANGE(22, 28);
++		uint32_t client:			BITRANGE(29, 31);
++	} dw00;
++
++	struct {
++		uint32_t src_address_lo;
++	} dw01;
++
++	struct {
++		uint32_t src_address_hi:		BITRANGE(0, 24);
++		uint32_t pxp:				BITRANGE(25, 27);
++		uint32_t src_mocs_index:		BITRANGE(28, 31);
++	} dw02;
++
++	struct {
++		uint32_t dst_address_lo;
++	} dw03;
++
++	struct {
++		uint32_t dst_address_hi:		BITRANGE(0, 24);
++		uint32_t pxp:				BITRANGE(25, 27);
++		uint32_t dst_mocs_index:		BITRANGE(28, 31);
++	} dw04;
++};
++
++union ctrl_surf_copy_data {
++	struct gen12_ctrl_surf_copy_data gen12;
++	struct xe2_ctrl_surf_copy_data xe2;
++};
++
++static void xe2_dump_bb_surf_ctrl_cmd(const struct xe2_ctrl_surf_copy_data *data)
++{
++	uint32_t *cmd = (uint32_t *) data;
++
++	igt_info("details:\n");
++	igt_info(" dw00: [%08x] <client: 0x%x, opcode: 0x%x, "
++		 "src/dst access type: <%d, %d>, size of ctrl copy: %u, length: %d>\n",
++		 cmd[0],
++		 data->dw00.client, data->dw00.opcode,
++		 data->dw00.src_access_type, data->dw00.dst_access_type,
++		 data->dw00.size_of_ctrl_copy, data->dw00.length);
++	igt_info(" dw01: [%08x] src offset lo (0x%x)\n",
++		 cmd[1], data->dw01.src_address_lo);
++	igt_info(" dw02: [%08x] src offset hi (0x%x), src mocs idx: %u\n",
++		 cmd[2], data->dw02.src_address_hi, data->dw02.src_mocs_index);
++	igt_info(" dw03: [%08x] dst offset lo (0x%x)\n",
++		 cmd[3], data->dw03.dst_address_lo);
++	igt_info(" dw04: [%08x] dst offset hi (0x%x), src mocs idx: %u\n",
++		 cmd[4], data->dw04.dst_address_hi, data->dw04.dst_mocs_index);
++}
++
+ static void dump_bb_surf_ctrl_cmd(const struct gen12_ctrl_surf_copy_data *data)
+ {
+ 	uint32_t *cmd = (uint32_t *) data;
+@@ -1056,7 +1115,9 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
+ 				 uint64_t bb_pos,
+ 				 bool emit_bbe)
+ {
+-	struct gen12_ctrl_surf_copy_data data = {};
++	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
++	union ctrl_surf_copy_data data = { };
++	size_t data_sz;
+ 	uint64_t dst_offset, src_offset, bb_offset, alignment;
+ 	uint32_t bbe = MI_BATCH_BUFFER_END;
+ 	uint32_t *bb;
+@@ -1065,33 +1126,55 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
+ 	igt_assert_f(surf, "ctrl-surf-copy requires data to do ctrl-surf-copy blit\n");
+ 
+ 	alignment = max_t(uint64_t, get_default_alignment(fd, surf->driver), 1ull << 16);
+-
+-	data.dw00.client = 0x2;
+-	data.dw00.opcode = 0x48;
+-	data.dw00.src_access_type = surf->src.access_type;
+-	data.dw00.dst_access_type = surf->dst.access_type;
+-
+-	/* Ensure dst has size capable to keep src ccs aux */
+-	data.dw00.size_of_ctrl_copy = __ccs_size(surf) / CCS_RATIO - 1;
+-	data.dw00.length = 0x3;
+-
+ 	src_offset = get_offset(ahnd, surf->src.handle, surf->src.size, alignment);
+ 	dst_offset = get_offset(ahnd, surf->dst.handle, surf->dst.size, alignment);
+ 	bb_offset = get_offset(ahnd, surf->bb.handle, surf->bb.size, alignment);
+ 
+-	data.dw01.src_address_lo = src_offset;
+-	data.dw02.src_address_hi = src_offset >> 32;
+-	data.dw02.src_mocs_index = surf->src.mocs_index;
++	if (ip_ver >= IP_VER(20, 0)) {
++		data.xe2.dw00.client = 0x2;
++		data.xe2.dw00.opcode = 0x48;
++		data.xe2.dw00.src_access_type = surf->src.access_type;
++		data.xe2.dw00.dst_access_type = surf->dst.access_type;
++
++		/* Ensure dst has size capable to keep src ccs aux */
++		data.xe2.dw00.size_of_ctrl_copy = __ccs_size(surf) / CCS_RATIO - 1;
++		data.xe2.dw00.length = 0x3;
++
++		data.xe2.dw01.src_address_lo = src_offset;
++		data.xe2.dw02.src_address_hi = src_offset >> 32;
++		data.xe2.dw02.src_mocs_index = surf->src.mocs_index;
++
++		data.xe2.dw03.dst_address_lo = dst_offset;
++		data.xe2.dw04.dst_address_hi = dst_offset >> 32;
++		data.xe2.dw04.dst_mocs_index = surf->dst.mocs_index;
++
++		data_sz = sizeof(data.xe2);
++	} else {
++		data.gen12.dw00.client = 0x2;
++		data.gen12.dw00.opcode = 0x48;
++		data.gen12.dw00.src_access_type = surf->src.access_type;
++		data.gen12.dw00.dst_access_type = surf->dst.access_type;
++
++		/* Ensure dst has size capable to keep src ccs aux */
++		data.gen12.dw00.size_of_ctrl_copy = __ccs_size(surf) / CCS_RATIO - 1;
++		data.gen12.dw00.length = 0x3;
++
++		data.gen12.dw01.src_address_lo = src_offset;
++		data.gen12.dw02.src_address_hi = src_offset >> 32;
++		data.gen12.dw02.src_mocs_index = surf->src.mocs_index;
++
++		data.gen12.dw03.dst_address_lo = dst_offset;
++		data.gen12.dw04.dst_address_hi = dst_offset >> 32;
++		data.gen12.dw04.dst_mocs_index = surf->dst.mocs_index;
+ 
+-	data.dw03.dst_address_lo = dst_offset;
+-	data.dw04.dst_address_hi = dst_offset >> 32;
+-	data.dw04.dst_mocs_index = surf->dst.mocs_index;
++		data_sz = sizeof(data.gen12);
++	}
+ 
+ 	bb = bo_map(fd, surf->bb.handle, surf->bb.size, surf->driver);
+ 
+-	igt_assert(bb_pos + sizeof(data) < surf->bb.size);
+-	memcpy(bb + bb_pos, &data, sizeof(data));
+-	bb_pos += sizeof(data);
++	igt_assert(bb_pos + data_sz < surf->bb.size);
++	memcpy(bb + bb_pos, &data, data_sz);
++	bb_pos += data_sz;
+ 
+ 	if (emit_bbe) {
+ 		igt_assert(bb_pos + sizeof(uint32_t) < surf->bb.size);
+@@ -1105,7 +1188,10 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
+ 			 ", bb offset: %" PRIx64 "\n",
+ 			 src_offset, dst_offset, bb_offset);
+ 
+-		dump_bb_surf_ctrl_cmd(&data);
++		if (ip_ver >= IP_VER(20, 0))
++			xe2_dump_bb_surf_ctrl_cmd(&data.xe2);
++		else
++			dump_bb_surf_ctrl_cmd(&data.gen12);
+ 	}
+ 
+ 	munmap(bb, surf->bb.size);
+-- 
+2.40.1
