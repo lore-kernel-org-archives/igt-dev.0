@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0EB2310E0A4
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Oct 2023 17:12:32 +0000 (UTC)
-Date: Wed, 4 Oct 2023 19:12:23 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Nemesa Garg <nemesa.garg@intel.com>
-Message-ID: <20231004171223.enzsle6zfdjfakzx@zkempczy-mobl2>
-References: <20230926123224.514543-1-nemesa.garg@intel.com>
- <20230926123224.514543-2-nemesa.garg@intel.com>
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com
+ [IPv6:2607:f8b0:4864:20::530])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8811D10E3B1
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Oct 2023 17:21:27 +0000 (UTC)
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-578b4981526so15737a12.0
+ for <igt-dev@lists.freedesktop.org>; Wed, 04 Oct 2023 10:21:27 -0700 (PDT)
+From: Rob Clark <robdclark@gmail.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed,  4 Oct 2023 10:21:19 -0700
+Message-ID: <20231004172119.289318-1-robdclark@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230926123224.514543-2-nemesa.garg@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/kms_rmfb: Add check for xe
- driver
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH v5] core_getversion: Test for desired device
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,46 +21,54 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: Rob Clark <robdclark@chromium.org>, Emma Anholt <emma@anholt.net>,
+ Helen Koike <helen.koike@collabora.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Sep 26, 2023 at 06:02:23PM +0530, Nemesa Garg wrote:
-> As the xe check is missing the value of open_count
-> variable is not incrementing and because of this
-> during drm_close_driver operation based on open_count
-> value mutex is acquired and there is a callback to
-> lastclose function.
-> 
-> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/294
-> Signed-off-by: Nemesa Garg <nemesa.garg@intel.com>
-> ---
->  lib/drmtest.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/lib/drmtest.c b/lib/drmtest.c
-> index e1da66c87..99b655680 100644
-> --- a/lib/drmtest.c
-> +++ b/lib/drmtest.c
-> @@ -649,7 +649,7 @@ int drm_open_driver(int chipset)
->  	 * starting a test and we install an exit handler to wait until
->  	 * idle before quitting.
->  	 */
-> -	if (is_i915_device(fd)) {
-> +	if (is_i915_device(fd) || is_xe_device(fd)) {
+From: Rob Clark <robdclark@chromium.org>
 
-I think this might be changed to is_intel_device(fd) but
-below cancel work doesn't work for xe if I'm not wrong
-so it should be called for i915 only.
+We discovered in drm/ci that if the drm device fails to probe, all the
+tests come back as "Skip" and the job is considered successful. Fix
+the getversion test to fail if there is no drm device or if the drm
+device does not match the expected device as specified by the optional
+IGT_FORCE_DRIVER environment variable.
 
---
-Zbigniew
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Acked-by: Helen Koike <helen.koike@collabora.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Tested-by: Helen Koike <helen.koike@collabora.com>
+---
+ tests/core_getversion.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-
->  		if (__sync_fetch_and_add(&open_count, 1) == 0) {
->  			__cancel_work_at_exit(fd);
->  			at_exit_drm_fd = drm_reopen_driver(fd);
-> -- 
-> 2.25.1
-> 
+diff --git a/tests/core_getversion.c b/tests/core_getversion.c
+index 32cb976e4923..8c8e0c9a3e5e 100644
+--- a/tests/core_getversion.c
++++ b/tests/core_getversion.c
+@@ -48,14 +48,21 @@ igt_simple_main
+ {
+ 	int fd;
+ 	drmVersionPtr v;
++	const char *name = getenv("IGT_FORCE_DRIVER");
+ 
+-	fd = drm_open_driver(DRIVER_ANY);
++	fd = __drm_open_driver(DRIVER_ANY);
++	igt_assert_fd(fd);
+ 	v = drmGetVersion(fd);
+ 	igt_assert_neq(strlen(v->name), 0);
+ 	igt_assert_neq(strlen(v->date), 0);
+ 	igt_assert_neq(strlen(v->desc), 0);
+ 	if (is_i915_device(fd))
+ 		igt_assert_lte(1, v->version_major);
++	if (name) {
++		igt_assert_f(!strcmp(name, v->name),
++			     "Expected driver \"%s\" but got \"%s\"\n",
++			     name, v->name);
++	}
+ 
+ 	drmFree(v);
+ 	drm_close_driver(fd);
+-- 
+2.41.0
