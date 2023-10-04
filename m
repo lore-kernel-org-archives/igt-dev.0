@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue,  3 Oct 2023 20:10:22 -0700
-Message-Id: <20231004031023.3444455-13-lucas.demarchi@intel.com>
-In-Reply-To: <20231004031023.3444455-1-lucas.demarchi@intel.com>
-References: <20231004031023.3444455-1-lucas.demarchi@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 12/13] lib/intel_blt: Support xe2 in
- xy-fast-copy command
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Lucas De Marchi" <lucas.demarchi@intel.com>
+Date: Wed, 04 Oct 2023 03:31:29 -0000
+Message-ID: <169639028938.7834.9508275497923908431@emeril.freedesktop.org>
+References: <20231004031023.3444455-1-lucas.demarchi@intel.com>
+In-Reply-To: <20231004031023.3444455-1-lucas.demarchi@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBBZGFw?=
+ =?utf-8?q?t_copy_commands_for_Xe2_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,147 +17,72 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>, intel-xe@lists.freedesktop.org
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Xe2 xy-fast-copy command is slightly different, with dw01 and dw07
-having a few differences: 1) different bitrange for mocs (it was
-previously absent in dw07); 2) no dst_memory, src_memory;
-3) hardcoded dst_type_y and src_type_y to 1.
+== Series Details ==
 
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- lib/intel_blt.c | 82 ++++++++++++++++++++++++++++++++++++-------------
- 1 file changed, 61 insertions(+), 21 deletions(-)
+Series: Adapt copy commands for Xe2 (rev3)
+URL   : https://patchwork.freedesktop.org/series/123773/
+State : failure
 
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index 4e0fe6320..0d00f0fbc 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -1185,16 +1185,29 @@ struct gen12_fast_copy_data {
- 		uint32_t client:			BITRANGE(29, 31);
- 	} dw00;
- 
--	struct {
--		uint32_t dst_pitch:			BITRANGE(0, 15);
--		uint32_t rsvd1:				BITRANGE(16, 23);
--		uint32_t color_depth:			BITRANGE(24, 26);
--		uint32_t rsvd0:				BITRANGE(27, 27);
--		uint32_t dst_memory:			BITRANGE(28, 28);
--		uint32_t src_memory:			BITRANGE(29, 29);
--		uint32_t dst_type_y:			BITRANGE(30, 30);
--		uint32_t src_type_y:			BITRANGE(31, 31);
--	} dw01;
-+	union {
-+		struct {
-+			uint32_t dst_pitch:			BITRANGE(0, 15);
-+			uint32_t rsvd1:				BITRANGE(16, 23);
-+			uint32_t color_depth:			BITRANGE(24, 26);
-+			uint32_t rsvd0:				BITRANGE(27, 27);
-+			uint32_t dst_memory:			BITRANGE(28, 28);
-+			uint32_t src_memory:			BITRANGE(29, 29);
-+			uint32_t dst_type_y:			BITRANGE(30, 30);
-+			uint32_t src_type_y:			BITRANGE(31, 31);
-+		} dw01;
-+		struct {
-+			uint32_t dst_pitch:			BITRANGE(0, 15);
-+			uint32_t rsvd2:				BITRANGE(16, 16);
-+			uint32_t pxp:				BITRANGE(16, 17);
-+			uint32_t rsvd1:				BITRANGE(18, 19);
-+			uint32_t dst_mocs_index:		BITRANGE(20, 23);
-+			uint32_t color_depth:			BITRANGE(24, 26);
-+			uint32_t rsvd0:				BITRANGE(27, 29);
-+			uint32_t dst_type_y:			BITRANGE(30, 30);
-+			uint32_t src_type_y:			BITRANGE(31, 31);
-+		} dw01_xe2;
-+	};
- 
- 	struct {
- 		int32_t dst_x1:				BITRANGE(0, 15);
-@@ -1219,10 +1232,20 @@ struct gen12_fast_copy_data {
- 		int32_t src_y1:				BITRANGE(16, 31);
- 	} dw06;
- 
--	struct {
--		uint32_t src_pitch:			BITRANGE(0, 15);
--		uint32_t rsvd0:				BITRANGE(16, 31);
--	} dw07;
-+	union {
-+		struct {
-+			uint32_t src_pitch:			BITRANGE(0, 15);
-+			uint32_t rsvd0:				BITRANGE(16, 31);
-+		} dw07;
-+		struct {
-+			uint32_t src_pitch:			BITRANGE(0, 15);
-+			uint32_t rsvd0:				BITRANGE(16, 16);
-+			uint32_t pxp:				BITRANGE(17, 17);
-+			uint32_t rsvd1:				BITRANGE(18, 19);
-+			uint32_t src_mocs_index:		BITRANGE(20, 23);
-+			uint32_t rsvd2:				BITRANGE(24, 31);
-+		} dw07_xe2;
-+	};
- 
- 	struct {
- 		uint32_t src_address_lo;
-@@ -1321,11 +1344,13 @@ uint64_t emit_blt_fast_copy(int fd,
- 			    uint64_t bb_pos,
- 			    bool emit_bbe)
- {
-+	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
- 	struct gen12_fast_copy_data data = {};
- 	uint64_t dst_offset, src_offset, bb_offset, alignment;
- 	uint32_t bbe = MI_BATCH_BUFFER_END;
- 	uint32_t *bb;
- 
-+
- 	alignment = get_default_alignment(fd, blt->driver);
- 
- 	data.dw00.client = 0x2;
-@@ -1334,12 +1359,22 @@ uint64_t emit_blt_fast_copy(int fd,
- 	data.dw00.src_tiling = __fast_tiling(blt->src.tiling);
- 	data.dw00.length = 8;
- 
--	data.dw01.dst_pitch = blt->dst.pitch;
--	data.dw01.color_depth = __fast_color_depth(blt->color_depth);
--	data.dw01.dst_memory = __memory_type(blt->fd, blt->driver, blt->dst.region);
--	data.dw01.src_memory = __memory_type(blt->fd, blt->driver, blt->src.region);
--	data.dw01.dst_type_y = __new_tile_y_type(blt->dst.tiling) ? 1 : 0;
--	data.dw01.src_type_y = __new_tile_y_type(blt->src.tiling) ? 1 : 0;
-+	if (ip_ver >= IP_VER(20, 0)) {
-+		data.dw01_xe2.dst_pitch = blt->dst.pitch;
-+		data.dw01_xe2.dst_mocs_index = blt->dst.mocs_index;
-+		data.dw01_xe2.color_depth = __fast_color_depth(blt->color_depth);
-+
-+		/* Undefined behavior to leave as 0, must be set to 1 */
-+		data.dw01_xe2.dst_type_y = 1;
-+		data.dw01_xe2.src_type_y = 1;
-+	} else {
-+		data.dw01.dst_pitch = blt->dst.pitch;
-+		data.dw01.color_depth = __fast_color_depth(blt->color_depth);
-+		data.dw01.dst_memory = __memory_type(blt->fd, blt->driver, blt->dst.region);
-+		data.dw01.src_memory = __memory_type(blt->fd, blt->driver, blt->src.region);
-+		data.dw01.dst_type_y = __new_tile_y_type(blt->dst.tiling) ? 1 : 0;
-+		data.dw01.src_type_y = __new_tile_y_type(blt->src.tiling) ? 1 : 0;
-+	}
- 
- 	data.dw02.dst_x1 = blt->dst.x1;
- 	data.dw02.dst_y1 = blt->dst.y1;
-@@ -1359,7 +1394,12 @@ uint64_t emit_blt_fast_copy(int fd,
- 	data.dw06.src_x1 = blt->src.x1;
- 	data.dw06.src_y1 = blt->src.y1;
- 
--	data.dw07.src_pitch = blt->src.pitch;
-+	if (ip_ver >= IP_VER(20, 0)) {
-+		data.dw07_xe2.src_pitch = blt->src.pitch;
-+		data.dw07_xe2.src_mocs_index = blt->src.mocs_index;
-+	} else {
-+		data.dw07.src_pitch = blt->src.pitch;
-+	}
- 
- 	data.dw08.src_address_lo = src_offset;
- 	data.dw09.src_address_hi = src_offset >> 32;
--- 
-2.40.1
+== Summary ==
+
+IGT patchset build failed on latest successful build
+a4b4a33d8312e4e30ca23d26bbd1758e56540e1d tests/kms_frontbuffer_tracking: Remove badstride subtests
+
+Tail of build.log:
+[616/1641] Compiling C object 'tests/59830eb@@xe_sysfs_defaults@exe/intel_xe_sysfs_defaults.c.o'.
+[617/1641] Compiling C object 'tests/59830eb@@xe_exec_basic@exe/intel_xe_exec_basic.c.o'.
+[618/1641] Compiling C object 'tests/59830eb@@gem_sync@exe/intel_gem_sync.c.o'.
+[619/1641] Compiling C object 'tests/59830eb@@kms_big_fb@exe/intel_kms_big_fb.c.o'.
+[620/1641] Compiling C object 'tests/59830eb@@xe_pm_residency@exe/intel_xe_pm_residency.c.o'.
+[621/1641] Compiling C object 'tests/59830eb@@msm_submitoverhead@exe/msm_msm_submitoverhead.c.o'.
+[622/1641] Compiling C object 'tests/59830eb@@msm_mapping@exe/msm_msm_mapping.c.o'.
+[623/1641] Compiling C object 'tests/59830eb@@msm_recovery@exe/msm_msm_recovery.c.o'.
+[624/1641] Compiling C object 'tests/59830eb@@xe_sysfs_scheduler@exe/intel_xe_sysfs_scheduler.c.o'.
+[625/1641] Compiling C object 'tests/59830eb@@xe_prime_self_import@exe/intel_xe_prime_self_import.c.o'.
+[626/1641] Compiling C object 'tests/59830eb@@xe_spin_batch@exe/intel_xe_spin_batch.c.o'.
+[627/1641] Compiling C object 'tests/59830eb@@kms_chamelium_audio@exe/chamelium_kms_chamelium_helper.c.o'.
+[628/1641] Compiling C object 'tests/59830eb@@xe_exec_fault_mode@exe/intel_xe_exec_fault_mode.c.o'.
+[629/1641] Compiling C object 'tests/59830eb@@xe_query@exe/intel_xe_query.c.o'.
+[630/1641] Compiling C object 'tests/v3d/cad21b8@@v3d_get_bo_offset@exe/v3d_get_bo_offset.c.o'.
+[631/1641] Compiling C object 'tests/v3d/cad21b8@@v3d_create_bo@exe/v3d_create_bo.c.o'.
+[632/1641] Compiling C object 'tests/59830eb@@kms_chamelium_color@exe/kms_color_helper.c.o'.
+[633/1641] Compiling C object 'tests/59830eb@@gem_softpin@exe/intel_gem_softpin.c.o'.
+[634/1641] Compiling C object 'tests/59830eb@@msm_submit@exe/msm_msm_submit.c.o'.
+[635/1641] Compiling C object 'tests/59830eb@@msm_shrink@exe/msm_msm_shrink.c.o'.
+[636/1641] Compiling C object 'tests/59830eb@@xe_guc_pc@exe/intel_xe_guc_pc.c.o'.
+[637/1641] Compiling C object 'tests/v3d/cad21b8@@v3d_mmap@exe/v3d_mmap.c.o'.
+[638/1641] Compiling C object 'tests/59830eb@@kms_chamelium_hpd@exe/chamelium_kms_chamelium_helper.c.o'.
+[639/1641] Compiling C object 'tests/59830eb@@xe_pm@exe/intel_xe_pm.c.o'.
+[640/1641] Compiling C object 'tests/59830eb@@kms_chamelium_edid@exe/chamelium_kms_chamelium_helper.c.o'.
+[641/1641] Compiling C object 'tests/59830eb@@kms_chamelium_frames@exe/chamelium_kms_chamelium_helper.c.o'.
+[642/1641] Compiling C object 'tests/59830eb@@xe_exec_balancer@exe/intel_xe_exec_balancer.c.o'.
+[643/1641] Compiling C object 'tests/v3d/cad21b8@@v3d_job_submission@exe/v3d_job_submission.c.o'.
+[644/1641] Compiling C object 'tests/59830eb@@xe_evict@exe/intel_xe_evict.c.o'.
+[645/1641] Compiling C object 'tests/59830eb@@kms_chamelium_audio@exe/chamelium_kms_chamelium_audio.c.o'.
+[646/1641] Compiling C object 'tests/59830eb@@xe_exec_reset@exe/intel_xe_exec_reset.c.o'.
+[647/1641] Compiling C object 'tests/59830eb@@kms_psr2_sf@exe/intel_kms_psr2_sf.c.o'.
+[648/1641] Compiling C object 'tests/59830eb@@kms_chamelium_hpd@exe/chamelium_kms_chamelium_hpd.c.o'.
+[649/1641] Compiling C object 'tests/59830eb@@kms_chamelium_edid@exe/chamelium_kms_chamelium_edid.c.o'.
+[650/1641] Compiling C object 'tests/59830eb@@xe_intel_bb@exe/intel_xe_intel_bb.c.o'.
+[651/1641] Compiling C object 'tests/59830eb@@kms_chamelium_color@exe/chamelium_kms_chamelium_color.c.o'.
+[652/1641] Compiling C object 'tests/59830eb@@xe_exec_threads@exe/intel_xe_exec_threads.c.o'.
+[653/1641] Compiling C object 'tests/59830eb@@i915_query@exe/intel_i915_query.c.o'.
+[654/1641] Compiling C object 'tests/59830eb@@gem_exec_balancer@exe/intel_gem_exec_balancer.c.o'.
+[655/1641] Compiling C object 'tests/59830eb@@kms_chamelium_frames@exe/chamelium_kms_chamelium_frames.c.o'.
+[656/1641] Compiling C object 'tests/59830eb@@i915_pm_rpm@exe/intel_i915_pm_rpm.c.o'.
+[657/1641] Compiling C object 'tests/59830eb@@gem_exec_fence@exe/intel_gem_exec_fence.c.o'.
+[658/1641] Compiling C object 'tests/59830eb@@gem_userptr_blits@exe/intel_gem_userptr_blits.c.o'.
+[659/1641] Compiling C object 'tests/59830eb@@xe_vm@exe/intel_xe_vm.c.o'.
+[660/1641] Compiling C object 'tests/59830eb@@kms_frontbuffer_tracking@exe/intel_kms_frontbuffer_tracking.c.o'.
+[661/1641] Compiling C object 'tests/59830eb@@perf_pmu@exe/intel_perf_pmu.c.o'.
+[662/1641] Generating i915-perf-equations with a custom command.
+[663/1641] Compiling C object 'tests/59830eb@@gem_exec_schedule@exe/intel_gem_exec_schedule.c.o'.
+[664/1641] Compiling C object 'tests/59830eb@@perf@exe/intel_perf.c.o'.
+ninja: build stopped: subcommand failed.
+
