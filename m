@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3C8C910E395
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Oct 2023 16:49:56 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F109210E39A
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Oct 2023 16:50:11 +0000 (UTC)
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  4 Oct 2023 18:49:37 +0200
-Message-ID: <20231004164946.138398-2-kamil.konieczny@linux.intel.com>
+Date: Wed,  4 Oct 2023 18:49:41 +0200
+Message-ID: <20231004164946.138398-6-kamil.konieczny@linux.intel.com>
 In-Reply-To: <20231004164946.138398-1-kamil.konieczny@linux.intel.com>
 References: <20231004164946.138398-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v8 1/6] lib/drmtest: allow out of order
- device opening
+Subject: [igt-dev] [PATCH i-g-t v8 5/6] lib/drmtest: add helper for countig
+ number of GPUs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,122 +23,111 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Allow to open cards with filters out of order, not in
-the sequence 0...N. This will fix problem found out with test
-gem_exec_gttfill@multigpu-basic with three discrete GPUs:
+Add a function for counting number of GPUs present on system.
+When no filters used this will count discrete GPUs, otherwise
+will count them using given filters.
 
-Opened device: /dev/dri/card1
-Starting subtest: multigpu-basic
-<g:1> Opened device: /dev/dri/card2
-gem_exec_gttfill: ../lib/drmtest.c:313: _is_already_opened: Assertion `as_idx <= _opened_fds_count' failed.
-
-Added also some debug prints for diagnosing problems with
-multi-GPU tests.
-
-v2: fix setting opened count in _set_opened_fd()
-v3: search all already opened fds in _is_already_opened()
-v4: revert change in v3, this will cause treating zero as
-    special index (no checks) as some test depend on it
-v5: start searching for driver from requested index,
-    limit checks for already opened drivers to currently
-    opened count (Kamil)
-
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/drmtest.c | 28 +++++++++++++++++++++++-----
- 1 file changed, 23 insertions(+), 5 deletions(-)
+ lib/drmtest.c | 72 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/drmtest.h |  2 ++
+ 2 files changed, 74 insertions(+)
 
 diff --git a/lib/drmtest.c b/lib/drmtest.c
-index e1da66c87..43524c5ad 100644
+index 5e559737e..88be0e67e 100644
 --- a/lib/drmtest.c
 +++ b/lib/drmtest.c
-@@ -296,13 +296,18 @@ static int _opened_fds_count;
- static void _set_opened_fd(int idx, int fd)
- {
- 	assert(idx < ARRAY_SIZE(_opened_fds));
--	assert(idx <= _opened_fds_count);
-+
-+	if (idx >= _opened_fds_count) {
-+		for (int i = _opened_fds_count; i < idx; ++i)
-+			_opened_fds[i].fd = -1;
-+	}
- 
- 	_opened_fds[idx].fd = fd;
- 
- 	assert(fstat(fd, &_opened_fds[idx].stat) == 0);
- 
--	_opened_fds_count = idx+1;
-+	if (idx >= _opened_fds_count)
-+		_opened_fds_count = idx + 1;
+@@ -806,6 +806,78 @@ int drm_reopen_driver(int fd)
+ 	return fd;
  }
  
- static bool _is_already_opened(const char *path, int as_idx)
-@@ -310,16 +315,23 @@ static bool _is_already_opened(const char *path, int as_idx)
- 	struct stat new;
- 
- 	assert(as_idx < ARRAY_SIZE(_opened_fds));
--	assert(as_idx <= _opened_fds_count);
- 
- 	/*
- 	 * we cannot even stat the device, so it's of no use - let's claim it's
- 	 * already opened
- 	 */
--	if (igt_debug_on(stat(path, &new) != 0))
-+	if (igt_debug_on(stat(path, &new) != 0)) {
-+		igt_debug("cannot stat device: %s\n", path);
- 		return true;
++/**
++ * drm_open_driver_render:
++ * @chipset: flag for one chipset to search, eg. #DRIVER_INTEL
++ *
++ * Get number of GPUs for given chipset. If used --device option or IGT_DEVICE
++ * environment variable, perform countig based on supplied filters.
++ *
++ * Returns:
++ * Number of GPUs for given chipset or filters.
++ */
++int drm_get_gpu_count(int chipset)
++{
++	struct igt_device_card card;
++	int gpu_count;
++	bool found;
++	char v[16];
++
++	if (chipset == DRIVER_VGEM || chipset == DRIVER_ANY) {
++		igt_debug("No multi-gpu for chipset %d\n", chipset);
++		return 0;
 +	}
 +
-+	if (as_idx > _opened_fds_count)
-+		as_idx = _opened_fds_count;
- 
- 	for (int i = 0; i < as_idx; ++i) {
-+		if (_opened_fds[i].fd == -1)
-+			continue;
++	gpu_count = igt_device_filter_count();
++	if (!gpu_count) {
++		char gpu_filter[256];
 +
- 		/* did we cross filesystem boundary? */
- 		assert(_opened_fds[i].stat.st_dev == new.st_dev);
- 
-@@ -338,6 +350,7 @@ static int __search_and_open(const char *base, int offset, unsigned int chipset,
- 	if (forced)
- 		igt_debug("Force option used: Using driver %s\n", forced);
- 
-+	offset += as_idx;
- 	for (int i = 0; i < 16; i++) {
- 		char name[80];
- 		int fd;
-@@ -484,6 +497,7 @@ int __drm_open_driver_another(int idx, int chipset)
- {
- 	int fd = -1;
- 
-+	igt_debug("card idx: %d chipset: %d\n", idx, chipset);
- 	if (chipset != DRIVER_VGEM && igt_device_filter_count() > idx) {
- 		struct igt_device_card card;
- 		bool found;
-@@ -491,6 +505,7 @@ int __drm_open_driver_another(int idx, int chipset)
- 		found = __get_card_for_nth_filter(idx, &card);
- 
- 		if (!found) {
-+			igt_debug("cannot find card idx: %d, loading module\n", idx);
- 			drm_load_module(chipset);
- 			found = __get_card_for_nth_filter(idx, &card);
- 		}
-@@ -500,11 +515,14 @@ int __drm_open_driver_another(int idx, int chipset)
- 				 igt_device_filter_get(idx));
- 		else if (_is_already_opened(card.card, idx))
- 			igt_warn("card maching filter %d is already opened\n", idx);
--		else
-+		else {
-+			igt_debug("card idx: %d found: %s\n", idx, card.card);
- 			fd = __open_driver_exact(card.card, chipset);
++		if (chipset == DRIVER_INTEL || chipset == DRIVER_XE)
++			strncpy(v, "Intel", sizeof(v) - 1);
++		else
++			strncpy(v, chipset_to_str(chipset), sizeof(v) - 1);
++		igt_debug("Counting GPUs for chipset: %d vendor: %s\n", chipset, v);
++		for (int i = 0; i < 64; i++) {
++			igt_assert(snprintf(gpu_filter, sizeof(gpu_filter),
++					    "pci:vendor=%s,device=discrete,card=%d",
++					    v, i) < sizeof(gpu_filter));
++
++			memset(&card, 0, sizeof(card));
++			found = igt_device_card_match(gpu_filter, &card);
++			if (found && strlen(card.card)) {
++				igt_debug("Found gpu %d with %s\n", i, card.card);
++				++gpu_count;
++			} else {
++				igt_debug("Counted GPUs number: %d\n", gpu_count);
++				break;
++			}
 +		}
++	} else {
++		int count = 0;
++
++		for (int i = 0; i < gpu_count; i++) {
++			const char *filter;
++
++			filter = igt_device_filter_get(i);
++			memset(&card, 0, sizeof(card));
++			found = igt_device_card_match(filter, &card);
++			if (found && strlen(card.card)) {
++				igt_debug("Found gpu %d with %s\n", i, card.card);
++				++count;
++			} else {
++				break;
++			}
++		}
++
++		if (count < gpu_count)
++			igt_debug("Counted GPUs %d lower than number of filters %d\n", count, gpu_count);
++
++		gpu_count = count;
++	}
++
++	return gpu_count;
++}
++
+ void igt_require_amdgpu(int fd)
+ {
+ 	igt_require(is_amdgpu_device(fd));
+diff --git a/lib/drmtest.h b/lib/drmtest.h
+index 97ab6e759..7db2292cb 100644
+--- a/lib/drmtest.h
++++ b/lib/drmtest.h
+@@ -109,6 +109,8 @@ int drm_close_driver(int fd);
  
- 	} else {
- 		/* no filter for device idx, let's open whatever is available */
-+		igt_debug("No filter for device idx: %d\n", idx);
- 		fd = __open_driver("/dev/dri/card", 0, chipset, idx);
- 	}
+ int drm_reopen_driver(int fd);
  
++int drm_get_gpu_count(int chipset);
++
+ void igt_require_amdgpu(int fd);
+ void igt_require_intel(int fd);
+ void igt_require_i915(int fd);
 -- 
 2.42.0
