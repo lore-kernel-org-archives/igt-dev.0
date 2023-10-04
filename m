@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4968D10E19F
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Oct 2023 05:12:19 +0000 (UTC)
-From: Kunal Joshi <kunal1.joshi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue,  3 Oct 2023 10:49:58 +0530
-Message-Id: <20231003051959.461527-2-kunal1.joshi@intel.com>
-In-Reply-To: <20231003051959.461527-1-kunal1.joshi@intel.com>
-References: <20231003051959.461527-1-kunal1.joshi@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============6200299836879942057=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] lib/igt_psr: added enum for PR mode
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
+Date: Wed, 04 Oct 2023 18:06:55 -0000
+Message-ID: <169644281561.7834.9209883439960848506@emeril.freedesktop.org>
+References: <20231004134722.319334-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20231004134722.319334-1-juhapekka.heikkila@gmail.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/igt?=
+ =?utf-8?q?=5Ffb=3A_on_Xe_driver_take_into_account_adlp_with_no_extended_b?=
+ =?utf-8?q?lock_copy?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,34 +18,140 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Added enum PR_MODE_1 and PR_MODE_1_SEL_FETCH,
-PR_MODE_1 is expected to behave like PSR and 
-PR_MODE_1_SEL_FETCH like PSR2 with selective fetch
+--===============6200299836879942057==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Cc: Jouni Högander <jouni.hogander@intel.com>
-Cc: Animesh Manna <animesh.manna@intel.com>
-Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
----
- lib/igt_psr.h | 2 ++
- 1 file changed, 2 insertions(+)
+== Series Details ==
 
-diff --git a/lib/igt_psr.h b/lib/igt_psr.h
-index 12ffc9d6c..fff673f6b 100644
---- a/lib/igt_psr.h
-+++ b/lib/igt_psr.h
-@@ -34,6 +34,8 @@ enum psr_mode {
- 	PSR_MODE_1,
- 	PSR_MODE_2,
- 	PSR_MODE_2_SEL_FETCH,
-+	PR_MODE_1,
-+	PR_MODE_1_SEL_FETCH,
- 	PSR_DISABLED,
- };
- 
--- 
-2.25.1
+Series: lib/igt_fb: on Xe driver take into account adlp with no extended block copy
+URL   : https://patchwork.freedesktop.org/series/124611/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7512_BAT -> XEIGTPW_9917_BAT
+====================================================
+
+Summary
+-------
+
+  **WARNING**
+
+  Minor unknown changes coming with XEIGTPW_9917_BAT need to be verified
+  manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_9917_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_9917_BAT:
+
+### IGT changes ###
+
+#### Warnings ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-dg2-oem2:       [INCOMPLETE][1] ([Intel XE#764]) -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7512/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9917/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html
+
+  
+  [Intel XE#764]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/764
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7512 -> IGTPW_9917
+  * Linux: xe-411-090c3e92db31fbbe59a47d44f8dd7e8a1ccbcb36 -> xe-412-ad02b0f1ea8fe562083663026a9f69a3d2ae6875
+
+  IGTPW_9917: 9917
+  IGT_7512: 2eb58faf82d3cd5e2e74154a7319cff56eb40762 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-411-090c3e92db31fbbe59a47d44f8dd7e8a1ccbcb36: 090c3e92db31fbbe59a47d44f8dd7e8a1ccbcb36
+  xe-412-ad02b0f1ea8fe562083663026a9f69a3d2ae6875: ad02b0f1ea8fe562083663026a9f69a3d2ae6875
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9917/index.html
+
+--===============6200299836879942057==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/igt_fb: on Xe driver take into account adlp with no extended block copy</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124611/">https://patchwork.freedesktop.org/series/124611/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9917/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9917/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7512_BAT -&gt; XEIGTPW_9917_BAT</h1>
+<h2>Summary</h2>
+<p><strong>WARNING</strong></p>
+<p>Minor unknown changes coming with XEIGTPW_9917_BAT need to be verified<br />
+  manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_9917_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_9917_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Warnings</h4>
+<ul>
+<li>igt@core_hotunplug@unbind-rebind:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7512/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/764">Intel XE#764</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9917/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7512 -&gt; IGTPW_9917</li>
+<li>Linux: xe-411-090c3e92db31fbbe59a47d44f8dd7e8a1ccbcb36 -&gt; xe-412-ad02b0f1ea8fe562083663026a9f69a3d2ae6875</li>
+</ul>
+<p>IGTPW_9917: 9917<br />
+  IGT_7512: 2eb58faf82d3cd5e2e74154a7319cff56eb40762 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-411-090c3e92db31fbbe59a47d44f8dd7e8a1ccbcb36: 090c3e92db31fbbe59a47d44f8dd7e8a1ccbcb36<br />
+  xe-412-ad02b0f1ea8fe562083663026a9f69a3d2ae6875: ad02b0f1ea8fe562083663026a9f69a3d2ae6875</p>
+
+</body>
+</html>
+
+--===============6200299836879942057==--
