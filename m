@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B0DCF10E399
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Oct 2023 16:50:21 +0000 (UTC)
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 108C410E10B
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Oct 2023 15:49:16 +0000 (UTC)
+From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  4 Oct 2023 18:49:38 +0200
-Message-ID: <20231004164946.138398-3-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20231004164946.138398-1-kamil.konieczny@linux.intel.com>
-References: <20231004164946.138398-1-kamil.konieczny@linux.intel.com>
+Date: Wed,  4 Oct 2023 08:49:13 -0700
+Message-Id: <20231004154922.3478014-5-lucas.demarchi@intel.com>
+In-Reply-To: <20231004154922.3478014-1-lucas.demarchi@intel.com>
+References: <20231004154922.3478014-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v8 2/6] tests/intel/xe_create: extend
- massive subtest to multi-gpu
+Subject: [igt-dev] [PATCH i-g-t v3 04/13] lib/gpu_cmds: Fork a
+ gen9_fill_surface_state()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,75 +19,101 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Sample code extends existing create-massive-size subtest to run
-on multi-GPUs boards. This will currently work only with
---drivers or IGT_DRIVERS options selecting at least two dGPU
-cards.
+Commit 02c2cf17628b ("lib/[gpu_cmds|intel_bufops]: Enable surface state
+mocs setting.") added support for setting the mocs field in the surface
+state. However it's not until gen9 that MOCS uses a table, programmed by
+the kernel, and only has an index set in the surface state. Previously
+it was the specific caching behavior.
 
-v2: Fixed bug in opening wrong multi-gpu device (Zbigniew)
-v3: revert to use filter count, add require for xe, change
-    subtest description
-v4: correct description
+As such, it makes no sense to set this field to `I915_MOCS_PTE << 1`: it
+will only add garbage to the batch buffer. Solve this by forking a
+separate function for gen9 and above, keeping the old behavior for
+previous platforms.
 
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Bspec: 12483, 12239, 12236
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
 ---
- tests/intel/xe_create.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ lib/gpu_cmds.c | 55 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 55 insertions(+)
 
-diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
-index 8d845e5c8..ee970450f 100644
---- a/tests/intel/xe_create.c
-+++ b/tests/intel/xe_create.c
-@@ -12,6 +12,7 @@
- #include <string.h>
- 
- #include "igt.h"
-+#include "igt_device_scan.h"
- #include "xe_drm.h"
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
-@@ -191,6 +192,13 @@ static void create_execqueues(int fd, enum exec_queue_destroy ed)
-  * Test category: functionality test
-  * Description: Verifies xe bo create returns expected error code on massive
-  *              buffer sizes.
-+ *
-+ * SUBTEST: multigpu-create-massive-size
-+ * Functionality: ioctl
-+ * Test category: functionality test
-+ * Feature: multigpu
-+ * Description: Verifies xe bo create with massive buffer sizes runs correctly
-+ *		on two or more GPUs.
-  */
- static void create_massive_size(int fd)
- {
-@@ -228,6 +236,23 @@ igt_main
- 		create_massive_size(xe);
- 	}
- 
-+	igt_subtest("multigpu-create-massive-size") {
-+		int gpu_filter_count = igt_device_filter_count();
+diff --git a/lib/gpu_cmds.c b/lib/gpu_cmds.c
+index 0fd8f8213..83d2302f9 100644
+--- a/lib/gpu_cmds.c
++++ b/lib/gpu_cmds.c
+@@ -136,6 +136,58 @@ gen8_fill_surface_state(struct intel_bb *ibb,
+ 	struct gen8_surface_state *ss;
+ 	uint32_t write_domain, read_domain, offset;
+ 	uint64_t address;
 +
-+		igt_require(xe > 0);
-+		igt_require(gpu_filter_count >= 2);
-+		igt_multi_fork(child, gpu_filter_count) {
-+			int gpu_fd;
-+
-+			gpu_fd = child ? __drm_open_driver_another(child, DRIVER_XE) : drm_reopen_driver(xe);
-+			igt_assert_f(gpu_fd > 0, "cannot open gpu-%d, errno=%d\n", child, errno);
-+
-+			create_massive_size(gpu_fd);
-+			drm_close_driver(gpu_fd);
-+		}
-+		igt_waitchildren();
++	if (is_dst) {
++		write_domain = read_domain = I915_GEM_DOMAIN_RENDER;
++	} else {
++		write_domain = 0;
++		read_domain = I915_GEM_DOMAIN_SAMPLER;
 +	}
 +
- 	igt_fixture
- 		drm_close_driver(xe);
- }
++	intel_bb_ptr_align(ibb, 64);
++	offset = intel_bb_offset(ibb);
++	ss = intel_bb_ptr(ibb);
++	intel_bb_ptr_add(ibb, 64);
++
++	ss->ss0.surface_type = SURFACE_2D;
++	ss->ss0.surface_format = format;
++	ss->ss0.render_cache_read_write = 1;
++	ss->ss0.vertical_alignment = 1; /* align 4 */
++	ss->ss0.horizontal_alignment = 1; /* align 4 */
++
++	if (buf->tiling == I915_TILING_X)
++		ss->ss0.tiled_mode = 2;
++	else if (buf->tiling == I915_TILING_Y || buf->tiling == I915_TILING_4)
++		ss->ss0.tiled_mode = 3;
++
++	address = intel_bb_offset_reloc(ibb, buf->handle,
++					read_domain, write_domain,
++					offset + 4 * 8, buf->addr.offset);
++
++	ss->ss8.base_addr = (uint32_t) address;
++	ss->ss9.base_addr_hi = address >> 32;
++
++	ss->ss2.height = intel_buf_height(buf) - 1;
++	ss->ss2.width  = intel_buf_width(buf) - 1;
++	ss->ss3.pitch  = buf->surface[0].stride - 1;
++
++	ss->ss7.shader_chanel_select_r = 4;
++	ss->ss7.shader_chanel_select_g = 5;
++	ss->ss7.shader_chanel_select_b = 6;
++	ss->ss7.shader_chanel_select_a = 7;
++
++	return offset;
++}
++
++static uint32_t
++gen9_fill_surface_state(struct intel_bb *ibb,
++			struct intel_buf *buf,
++			uint32_t format,
++			int is_dst)
++{
++	struct gen8_surface_state *ss;
++	uint32_t write_domain, read_domain, offset;
++	uint64_t address;
+ 	enum intel_buf_mocs mocs = intel_buf_get_mocs(buf);
+ 
+ 	if (is_dst) {
+@@ -273,6 +325,9 @@ fill_binding_table(struct intel_bb *ibb, struct intel_buf *buf)
+ 	if (intel_graphics_ver(devid) >= IP_VER(12, 50))
+ 		binding_table[0] = xehp_fill_surface_state(ibb, buf,
+ 							   SURFACEFORMAT_R8_UNORM, 1);
++	else if (intel_graphics_ver(devid) >= IP_VER(9, 0))
++		binding_table[0] = gen9_fill_surface_state(ibb, buf,
++							   SURFACEFORMAT_R8_UNORM, 1);
+ 	else if (intel_graphics_ver(devid) >= IP_VER(8, 0))
+ 		binding_table[0] = gen8_fill_surface_state(ibb, buf,
+ 							   SURFACEFORMAT_R8_UNORM, 1);
 -- 
-2.42.0
+2.40.1
