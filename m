@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D8A1710E395
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Oct 2023 16:50:30 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2F9EF10E399
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Oct 2023 16:50:22 +0000 (UTC)
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  4 Oct 2023 18:49:42 +0200
-Message-ID: <20231004164946.138398-7-kamil.konieczny@linux.intel.com>
+Date: Wed,  4 Oct 2023 18:49:39 +0200
+Message-ID: <20231004164946.138398-4-kamil.konieczny@linux.intel.com>
 In-Reply-To: <20231004164946.138398-1-kamil.konieczny@linux.intel.com>
 References: <20231004164946.138398-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v8 6/6] tests/intel/xe_create: use drm
- helper for GPUs count
+Subject: [igt-dev] [PATCH i-g-t v8 3/6] lib/drmtest: drop checks for opened
+ device for filters
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,34 +24,74 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Instead of counting filter use more general method supported
-by new function from drmtest, drm_get_gpu_count().
+When using filters honor user choice and don't restrict opens
+to non-opened devices. This will allow a user to test some
+multiGPU tests with repeated filter for card zero:
 
+--device=pci:vendor=Intel,device=discrete,card=0\;pci:vendor=Intel,device=discrete,card=0
+
+If the user want it just allow this. Also while at this, move
+debug print into filter loop as there is already one for
+non-filter.
+
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Petri Latvala <adrinael@adrinael.net>
+Cc: Arkadiusz Hiler <arek@hiler.eu>
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/intel/xe_create.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ lib/drmtest.c | 20 +++++++++-----------
+ 1 file changed, 9 insertions(+), 11 deletions(-)
 
-diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
-index ee970450f..4feabb70c 100644
---- a/tests/intel/xe_create.c
-+++ b/tests/intel/xe_create.c
-@@ -237,14 +237,14 @@ igt_main
- 	}
+diff --git a/lib/drmtest.c b/lib/drmtest.c
+index 43524c5ad..dbfa0282d 100644
+--- a/lib/drmtest.c
++++ b/lib/drmtest.c
+@@ -454,8 +454,8 @@ static bool __get_card_for_nth_filter(int idx, struct igt_device_card *card)
+  *   * device scanning is executed,
+  *   * idx-th filter (starting with 0, filters are semicolon separated) is used
+  *   * if there is no idx-th filter, goto 2
+- *   * first device maching the filter is selected
+- *   * if it's already opened (for indexes = 0..idx-1) we fail with -1
++ *   * device maching the requested filter is selected
++ *   * if it's not matched we fail with -1
+  *   * otherwise open the device and return the fd
+  *
+  * 2. compatibility mode - open the first DRM device we can find that is not
+@@ -497,11 +497,11 @@ int __drm_open_driver_another(int idx, int chipset)
+ {
+ 	int fd = -1;
  
- 	igt_subtest("multigpu-create-massive-size") {
--		int gpu_filter_count = igt_device_filter_count();
-+		int gpu_filter_count = drm_get_gpu_count(DRIVER_XE);
+-	igt_debug("card idx: %d chipset: %d\n", idx, chipset);
+ 	if (chipset != DRIVER_VGEM && igt_device_filter_count() > idx) {
+ 		struct igt_device_card card;
+ 		bool found;
  
- 		igt_require(xe > 0);
- 		igt_require(gpu_filter_count >= 2);
- 		igt_multi_fork(child, gpu_filter_count) {
- 			int gpu_fd;
++		igt_debug("card idx: %d chipset: %d\n", idx, chipset);
+ 		found = __get_card_for_nth_filter(idx, &card);
  
--			gpu_fd = child ? __drm_open_driver_another(child, DRIVER_XE) : drm_reopen_driver(xe);
-+			gpu_fd = __drm_open_driver_another(child, DRIVER_XE);
- 			igt_assert_f(gpu_fd > 0, "cannot open gpu-%d, errno=%d\n", child, errno);
+ 		if (!found) {
+@@ -510,16 +510,14 @@ int __drm_open_driver_another(int idx, int chipset)
+ 			found = __get_card_for_nth_filter(idx, &card);
+ 		}
  
- 			create_massive_size(gpu_fd);
+-		if (!found || !strlen(card.card))
+-			igt_warn("No card matches the filter! [%s]\n",
+-				 igt_device_filter_get(idx));
+-		else if (_is_already_opened(card.card, idx))
+-			igt_warn("card maching filter %d is already opened\n", idx);
+-		else {
+-			igt_debug("card idx: %d found: %s\n", idx, card.card);
++		if (!found || !strlen(card.card)) {
++			igt_warn("No card matches the filter! [%s]%s\n",
++				 igt_device_filter_get(idx),
++				 found && !strlen(card.card) ? " (card empty)" : "");
++		} else {
++			igt_debug("card %d found: [%s]\n", idx, card.card);
+ 			fd = __open_driver_exact(card.card, chipset);
+ 		}
+-
+ 	} else {
+ 		/* no filter for device idx, let's open whatever is available */
+ 		igt_debug("No filter for device idx: %d\n", idx);
 -- 
 2.42.0
