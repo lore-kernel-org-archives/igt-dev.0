@@ -1,16 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Tue, 3 Oct 2023 21:32:10 -0700
-From: Matt Roper <matthew.d.roper@intel.com>
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-Message-ID: <20231004043210.GB53570@mdroper-desk1.amr.corp.intel.com>
-References: <20231004031023.3444455-1-lucas.demarchi@intel.com>
- <20231004031023.3444455-3-lucas.demarchi@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20231004031023.3444455-3-lucas.demarchi@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 759AD10E093
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Oct 2023 05:48:55 +0000 (UTC)
+Message-ID: <1f8f7bfc-21cb-e986-401a-591892adefeb@intel.com>
+Date: Wed, 4 Oct 2023 11:18:31 +0530
+Content-Language: en-US
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+To: Kunal Joshi <kunal1.joshi@intel.com>, <igt-dev@lists.freedesktop.org>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+References: <20231001103006.431894-1-kunal1.joshi@intel.com>
+ <17bd5bee-d5ff-9351-ed9b-e917b780d491@intel.com>
+In-Reply-To: <17bd5bee-d5ff-9351-ed9b-e917b780d491@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [Intel-xe] [PATCH i-g-t v2 02/13] lib/gpu_cmds:
- Remove prefix from gen7_fill_binding_table()
+Subject: Re: [igt-dev] [PATCH i-g-t 0/2] Add test for hotplug validation in
+ simulation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,73 +23,43 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, intel-xe@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Oct 03, 2023 at 08:10:12PM -0700, Lucas De Marchi wrote:
-> This function is used by pretty much all versions. It's odd to have a
-> gen7 function end up calling next-gen functions and it's error prone:
-> when adding something to e.g. a gen8 function to realize that behavior
-> breaks previous platforms.
-> 
-> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Forgot to add Kamil to the TO/CC list.
 
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-
-> ---
->  lib/gpu_cmds.c | 9 ++++-----
->  1 file changed, 4 insertions(+), 5 deletions(-)
+On Tue-03-10-2023 02:42 pm, Modem, Bhanuprakash wrote:
+> Hi Kunal,
 > 
-> diff --git a/lib/gpu_cmds.c b/lib/gpu_cmds.c
-> index bb35204fb..648451f74 100644
-> --- a/lib/gpu_cmds.c
-> +++ b/lib/gpu_cmds.c
-> @@ -259,8 +259,7 @@ gen11_fill_surface_state(struct intel_bb *ibb,
->  }
->  
->  static uint32_t
-> -gen7_fill_binding_table(struct intel_bb *ibb,
-> -			struct intel_buf *buf)
-> +fill_binding_table(struct intel_bb *ibb, struct intel_buf *buf)
->  {
->  	uint32_t binding_table_offset;
->  	uint32_t *binding_table;
-> @@ -321,7 +320,7 @@ gen7_fill_interface_descriptor(struct intel_bb *ibb,
->  	uint32_t offset;
->  	uint32_t binding_table_offset, kernel_offset;
->  
-> -	binding_table_offset = gen7_fill_binding_table(ibb, buf);
-> +	binding_table_offset = fill_binding_table(ibb, buf);
->  	kernel_offset = gen7_fill_kernel(ibb, kernel, size);
->  
->  	intel_bb_ptr_align(ibb, 64);
-> @@ -357,7 +356,7 @@ gen8_fill_interface_descriptor(struct intel_bb *ibb,
->  	uint32_t offset;
->  	uint32_t binding_table_offset, kernel_offset;
->  
-> -	binding_table_offset = gen7_fill_binding_table(ibb, buf);
-> +	binding_table_offset = fill_binding_table(ibb, buf);
->  	kernel_offset = gen7_fill_kernel(ibb, kernel, size);
->  
->  	intel_bb_ptr_align(ibb, 64);
-> @@ -803,7 +802,7 @@ xehp_fill_interface_descriptor(struct intel_bb *ibb,
->  {
->  	uint32_t binding_table_offset, kernel_offset;
->  
-> -	binding_table_offset = gen7_fill_binding_table(ibb, dst);
-> +	binding_table_offset = fill_binding_table(ibb, dst);
->  	kernel_offset = gen7_fill_kernel(ibb, kernel, size);
->  
->  	memset(idd, 0, sizeof(*idd));
-> -- 
-> 2.40.1
+> On Sun-01-10-2023 04:00 pm, Kunal Joshi wrote:
+>> Test to validate hotplug in simulation environment we
+>> have scratch pad register 0x4f080 from which we can
+>> trigger uevents such as HPD, VBLANK..etc, Idea is to
+>> have port mapping placed in igtrcthrough which test
+>> can write to 0x4f080 and check if we get hotplug
 > 
+> In first glance, do we really need to upstream this test? I am pretty 
+> sure, no one (including Intel) is going to use this test from upstream 
+> repo (We don't have any simulation environment in public CI).
 > 
-
--- 
-Matt Roper
-Graphics Software Engineer
-Linux GPU Platform Enablement
-Intel Corporation
+> So, we can't merge this.
+> 
+> + Kamil, thoughts?
+> 
+> - Bhanu
+> 
+>>
+>> Cc: Karthik B S <karthik.b.s@intel.com>
+>> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+>>
+>> Kunal Joshi (2):
+>>    tests/kms_simulation_hpd: New test for hotplug validation
+>>    tests/meson: added test to meson.build
+>>
+>>   tests/intel/kms_simulation_hpd.c | 534 +++++++++++++++++++++++++++++++
+>>   tests/meson.build                |   1 +
+>>   2 files changed, 535 insertions(+)
+>>   create mode 100644 tests/intel/kms_simulation_hpd.c
+>>
