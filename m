@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E980510E399
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Oct 2023 16:49:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3C8C910E395
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Oct 2023 16:49:56 +0000 (UTC)
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  4 Oct 2023 18:49:36 +0200
-Message-ID: <20231004164946.138398-1-kamil.konieczny@linux.intel.com>
+Date: Wed,  4 Oct 2023 18:49:37 +0200
+Message-ID: <20231004164946.138398-2-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20231004164946.138398-1-kamil.konieczny@linux.intel.com>
+References: <20231004164946.138398-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v8 0/6] drmtest changes for running tests on
- multi-gpu
+Subject: [igt-dev] [PATCH i-g-t v8 1/6] lib/drmtest: allow out of order
+ device opening
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,60 +24,122 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Allow to open other cards out of order with __drm_open_driver_another()
-There is still a problem left when there is non-matched first device and
-no filters are used, it will not work with legacy opening but I will
-leave that for later. With filters it now works on four GPUs board, when
-first card is non-Intel one with no render device:
-
-sudo IGT_DEVICE=pci:vendor=Intel,device=discrete,card=all build/tests/xe_create --r multigpu-create-massive-size
+Allow to open cards with filters out of order, not in
+the sequence 0...N. This will fix problem found out with test
+gem_exec_gttfill@multigpu-basic with three discrete GPUs:
 
 Opened device: /dev/dri/card1
-Starting subtest: multigpu-create-massive-size
+Starting subtest: multigpu-basic
 <g:1> Opened device: /dev/dri/card2
-<g:2> Opened device: /dev/dri/card3
-Subtest multigpu-create-massive-size: SUCCESS (0.341s)
+gem_exec_gttfill: ../lib/drmtest.c:313: _is_already_opened: Assertion `as_idx <= _opened_fds_count' failed.
 
-With new helper and without filters:
+Added also some debug prints for diagnosing problems with
+multi-GPU tests.
 
-sudo build/tests/xe_create --r multigpu-create-massive-size
-
-Opened device: /dev/dri/card1
-Starting subtest: multigpu-create-massive-size
-<g:1> Opened device: /dev/dri/card2
-<g:2> Opened device: /dev/dri/card3
-Subtest multigpu-create-massive-size: SUCCESS (1.686s)
-
-v2: dropped additional patch 2/3 ("lib/drmtest: add multigpu helpers")
-  changed 3/3 RFC patch as additional subtest
-v3: fixes in test (Zbigniew)
-  fixes in drmlib functions (Zbigniew, Kamil)
-v4: corrected test description (Kamil)
-v5: restore boundary index for already opened device (Kamil)
-v6: fixes in libdrm: start searching for driver from requested index,
+v2: fix setting opened count in _set_opened_fd()
+v3: search all already opened fds in _is_already_opened()
+v4: revert change in v3, this will cause treating zero as
+    special index (no checks) as some test depend on it
+v5: start searching for driver from requested index,
     limit checks for already opened drivers to currently
     opened count (Kamil)
-v7: drop checks for already opened device with filters,
-  change a place for igt_debug message, improve debugs (Kamil)
-v8: add drm helper for the case when no filters are used,
-  use this helper in xe_create multi-gpu subtest (Kamil)
 
 Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Petri Latvala <adrinael@adrinael.net>
-Cc: Arkadiusz Hiler <arek@hiler.eu>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ lib/drmtest.c | 28 +++++++++++++++++++++++-----
+ 1 file changed, 23 insertions(+), 5 deletions(-)
 
-Kamil Konieczny (6):
-  lib/drmtest: allow out of order device opening
-  tests/intel/xe_create: extend massive subtest to multi-gpu
-  lib/drmtest: drop checks for opened device for filters
-  lib/drmtest: save skip offset for first opened device
-  lib/drmtest: add helper for countig number of GPUs
-  tests/intel/xe_create: use drm helper for GPUs count
-
- lib/drmtest.c           | 129 +++++++++++++++++++++++++++++++++++-----
- lib/drmtest.h           |   2 +
- tests/intel/xe_create.c |  25 ++++++++
- 3 files changed, 142 insertions(+), 14 deletions(-)
-
+diff --git a/lib/drmtest.c b/lib/drmtest.c
+index e1da66c87..43524c5ad 100644
+--- a/lib/drmtest.c
++++ b/lib/drmtest.c
+@@ -296,13 +296,18 @@ static int _opened_fds_count;
+ static void _set_opened_fd(int idx, int fd)
+ {
+ 	assert(idx < ARRAY_SIZE(_opened_fds));
+-	assert(idx <= _opened_fds_count);
++
++	if (idx >= _opened_fds_count) {
++		for (int i = _opened_fds_count; i < idx; ++i)
++			_opened_fds[i].fd = -1;
++	}
+ 
+ 	_opened_fds[idx].fd = fd;
+ 
+ 	assert(fstat(fd, &_opened_fds[idx].stat) == 0);
+ 
+-	_opened_fds_count = idx+1;
++	if (idx >= _opened_fds_count)
++		_opened_fds_count = idx + 1;
+ }
+ 
+ static bool _is_already_opened(const char *path, int as_idx)
+@@ -310,16 +315,23 @@ static bool _is_already_opened(const char *path, int as_idx)
+ 	struct stat new;
+ 
+ 	assert(as_idx < ARRAY_SIZE(_opened_fds));
+-	assert(as_idx <= _opened_fds_count);
+ 
+ 	/*
+ 	 * we cannot even stat the device, so it's of no use - let's claim it's
+ 	 * already opened
+ 	 */
+-	if (igt_debug_on(stat(path, &new) != 0))
++	if (igt_debug_on(stat(path, &new) != 0)) {
++		igt_debug("cannot stat device: %s\n", path);
+ 		return true;
++	}
++
++	if (as_idx > _opened_fds_count)
++		as_idx = _opened_fds_count;
+ 
+ 	for (int i = 0; i < as_idx; ++i) {
++		if (_opened_fds[i].fd == -1)
++			continue;
++
+ 		/* did we cross filesystem boundary? */
+ 		assert(_opened_fds[i].stat.st_dev == new.st_dev);
+ 
+@@ -338,6 +350,7 @@ static int __search_and_open(const char *base, int offset, unsigned int chipset,
+ 	if (forced)
+ 		igt_debug("Force option used: Using driver %s\n", forced);
+ 
++	offset += as_idx;
+ 	for (int i = 0; i < 16; i++) {
+ 		char name[80];
+ 		int fd;
+@@ -484,6 +497,7 @@ int __drm_open_driver_another(int idx, int chipset)
+ {
+ 	int fd = -1;
+ 
++	igt_debug("card idx: %d chipset: %d\n", idx, chipset);
+ 	if (chipset != DRIVER_VGEM && igt_device_filter_count() > idx) {
+ 		struct igt_device_card card;
+ 		bool found;
+@@ -491,6 +505,7 @@ int __drm_open_driver_another(int idx, int chipset)
+ 		found = __get_card_for_nth_filter(idx, &card);
+ 
+ 		if (!found) {
++			igt_debug("cannot find card idx: %d, loading module\n", idx);
+ 			drm_load_module(chipset);
+ 			found = __get_card_for_nth_filter(idx, &card);
+ 		}
+@@ -500,11 +515,14 @@ int __drm_open_driver_another(int idx, int chipset)
+ 				 igt_device_filter_get(idx));
+ 		else if (_is_already_opened(card.card, idx))
+ 			igt_warn("card maching filter %d is already opened\n", idx);
+-		else
++		else {
++			igt_debug("card idx: %d found: %s\n", idx, card.card);
+ 			fd = __open_driver_exact(card.card, chipset);
++		}
+ 
+ 	} else {
+ 		/* no filter for device idx, let's open whatever is available */
++		igt_debug("No filter for device idx: %d\n", idx);
+ 		fd = __open_driver("/dev/dri/card", 0, chipset, idx);
+ 	}
+ 
 -- 
 2.42.0
