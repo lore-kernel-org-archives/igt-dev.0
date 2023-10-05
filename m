@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============1714183504867676499=="
+Date: Thu, 5 Oct 2023 23:28:44 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20231005212844.weokomm5mn4mutux@kamilkon-desk.igk.intel.com>
+References: <20231003091044.407965-11-janusz.krzysztofik@linux.intel.com>
+ <20231003091044.407965-19-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Matthew Auld" <matthew.auld@intel.com>
-Date: Thu, 05 Oct 2023 21:29:30 -0000
-Message-ID: <169654137077.7513.5329436913278145232@emeril.freedesktop.org>
-References: <20231005153116.452319-1-matthew.auld@intel.com>
-In-Reply-To: <20231005153116.452319-1-matthew.auld@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_PAT_and_?=
- =?utf-8?q?cache_coherency_support?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231003091044.407965-19-janusz.krzysztofik@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 8/9] lib/kunit: Fetch a list of test
+ cases in advance
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,522 +18,388 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1714183504867676499==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: PAT and cache coherency support
-URL   : https://patchwork.freedesktop.org/series/124667/
-State : failure
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7517_BAT -> XEIGTPW_9930_BAT
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with XEIGTPW_9930_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_9930_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  
-
-Participating hosts (4 -> 3)
-------------------------------
-
-  Missing    (1): bat-dg2-oem2 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_9930_BAT:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_addfb_basic@addfb25-yf-tiled-legacy:
-    - bat-adlp-7:         [PASS][1] -> [WARN][2] +8 other tests warn
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7517/bat-adlp-7/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9930/bat-adlp-7/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-c-edp-1:
-    - bat-adlp-7:         NOTRUN -> [FAIL][3] +60 other tests fail
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9930/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-c-edp-1.html
-
-  * igt@xe_intel_bb@create-in-region:
-    - bat-adlp-7:         [PASS][4] -> [FAIL][5] +86 other tests fail
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7517/bat-adlp-7/igt@xe_intel_bb@create-in-region.html
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9930/bat-adlp-7/igt@xe_intel_bb@create-in-region.html
-
-  
-#### Warnings ####
-
-  * igt@kms_addfb_basic@basic-y-tiled-legacy:
-    - bat-adlp-7:         [FAIL][6] ([Intel XE#609]) -> [FAIL][7] +1 other test fail
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7517/bat-adlp-7/igt@kms_addfb_basic@basic-y-tiled-legacy.html
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9930/bat-adlp-7/igt@kms_addfb_basic@basic-y-tiled-legacy.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [INCOMPLETE][8] ([Intel XE#632]) -> [FAIL][9]
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7517/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9930/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@xe_exec_store@basic-store:
-    - bat-adlp-7:         [FAIL][10] ([Intel XE#761]) -> [FAIL][11]
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7517/bat-adlp-7/igt@xe_exec_store@basic-store.html
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9930/bat-adlp-7/igt@xe_exec_store@basic-store.html
-
-  
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * {igt@xe_vm@bind-execqueues-independent}:
-    - bat-adlp-7:         [PASS][12] -> [FAIL][13] +5 other tests fail
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7517/bat-adlp-7/igt@xe_vm@bind-execqueues-independent.html
-   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9930/bat-adlp-7/igt@xe_vm@bind-execqueues-independent.html
-
-  
-New tests
----------
-
-  New tests have been introduced between XEIGT_7517_BAT and XEIGTPW_9930_BAT:
-
-### New IGT tests (23) ###
-
-  * igt@xe_mmap@cpu-caching-coh:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_pat@pat-index-all:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_pat@pat-index-common-blt:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_pat@pat-index-common-blt@system-system-uc-uc:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_pat@pat-index-common-blt@system-system-uc-wb:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_pat@pat-index-common-blt@system-system-uc-wt:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_pat@pat-index-common-blt@system-system-wb-uc:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_pat@pat-index-common-blt@system-system-wb-wb:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_pat@pat-index-common-blt@system-system-wb-wt:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_pat@pat-index-common-blt@system-system-wt-uc:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_pat@pat-index-common-blt@system-system-wt-wb:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_pat@pat-index-common-blt@system-system-wt-wt:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_pat@pat-index-common-render:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_pat@pat-index-common-render@system-system-uc-uc:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_pat@pat-index-common-render@system-system-uc-wb:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_pat@pat-index-common-render@system-system-uc-wt:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_pat@pat-index-common-render@system-system-wb-uc:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_pat@pat-index-common-render@system-system-wb-wb:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_pat@pat-index-common-render@system-system-wb-wt:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_pat@pat-index-common-render@system-system-wt-uc:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_pat@pat-index-common-render@system-system-wt-wb:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_pat@pat-index-common-render@system-system-wt-wt:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@xe_pat@userptr-coh-none:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.0] s
-
-  
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_9930_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_live_ktest@migrate:
-    - bat-adlp-7:         NOTRUN -> [INCOMPLETE][14] ([Intel XE#753])
-   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9930/bat-adlp-7/igt@xe_live_ktest@migrate.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
-  [Intel XE#609]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/609
-  [Intel XE#632]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/632
-  [Intel XE#753]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/753
-  [Intel XE#761]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/761
-
-
-Build changes
--------------
-
-  * IGT: IGT_7517 -> IGTPW_9930
-  * Linux: xe-415-3d2b298aaf52e74d4e90470cd65de047362e4875 -> xe-416-be79dc2504eef9a437df54ca9aac316755e475cf
-
-  IGTPW_9930: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9930/index.html
-  IGT_7517: 8368e3ad3f9459a8f5cdd24f813ae802c1211029 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-415-3d2b298aaf52e74d4e90470cd65de047362e4875: 3d2b298aaf52e74d4e90470cd65de047362e4875
-  xe-416-be79dc2504eef9a437df54ca9aac316755e475cf: be79dc2504eef9a437df54ca9aac316755e475cf
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9930/index.html
-
---===============1714183504867676499==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>PAT and cache coherency support</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124667/">https://patchwork.freedesktop.org/series/124667/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9930/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9930/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7517_BAT -&gt; XEIGTPW_9930_BAT</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_9930_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_9930_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (4 -&gt; 3)</h2>
-<p>Missing    (1): bat-dg2-oem2 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_9930_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>igt@kms_addfb_basic@addfb25-yf-tiled-legacy:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7517/bat-adlp-7/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9930/bat-adlp-7/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html">WARN</a> +8 other tests warn</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-c-edp-1:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9930/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-c-edp-1.html">FAIL</a> +60 other tests fail</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_intel_bb@create-in-region:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7517/bat-adlp-7/igt@xe_intel_bb@create-in-region.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9930/bat-adlp-7/igt@xe_intel_bb@create-in-region.html">FAIL</a> +86 other tests fail</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@kms_addfb_basic@basic-y-tiled-legacy:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7517/bat-adlp-7/igt@kms_addfb_basic@basic-y-tiled-legacy.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/609">Intel XE#609</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9930/bat-adlp-7/igt@kms_addfb_basic@basic-y-tiled-legacy.html">FAIL</a> +1 other test fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7517/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/632">Intel XE#632</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9930/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a></li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_store@basic-store:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7517/bat-adlp-7/igt@xe_exec_store@basic-store.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/761">Intel XE#761</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9930/bat-adlp-7/igt@xe_exec_store@basic-store.html">FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>{igt@xe_vm@bind-execqueues-independent}:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7517/bat-adlp-7/igt@xe_vm@bind-execqueues-independent.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9930/bat-adlp-7/igt@xe_vm@bind-execqueues-independent.html">FAIL</a> +5 other tests fail</li>
-</ul>
-</li>
-</ul>
-<h2>New tests</h2>
-<p>New tests have been introduced between XEIGT_7517_BAT and XEIGTPW_9930_BAT:</p>
-<h3>New IGT tests (23)</h3>
-<ul>
-<li>
-<p>igt@xe_mmap@cpu-caching-coh:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-all:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-common-blt:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-common-blt@system-system-uc-uc:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-common-blt@system-system-uc-wb:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-common-blt@system-system-uc-wt:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-common-blt@system-system-wb-uc:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-common-blt@system-system-wb-wb:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-common-blt@system-system-wb-wt:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-common-blt@system-system-wt-uc:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-common-blt@system-system-wt-wb:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-common-blt@system-system-wt-wt:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-common-render:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-common-render@system-system-uc-uc:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-common-render@system-system-uc-wb:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-common-render@system-system-uc-wt:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-common-render@system-system-wb-uc:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-common-render@system-system-wb-wb:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-common-render@system-system-wb-wt:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-common-render@system-system-wt-uc:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-common-render@system-system-wt-wb:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-common-render@system-system-wt-wt:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@userptr-coh-none:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_9930_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@xe_live_ktest@migrate:<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9930/bat-adlp-7/igt@xe_live_ktest@migrate.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/753">Intel XE#753</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7517 -&gt; IGTPW_9930</li>
-<li>Linux: xe-415-3d2b298aaf52e74d4e90470cd65de047362e4875 -&gt; xe-416-be79dc2504eef9a437df54ca9aac316755e475cf</li>
-</ul>
-<p>IGTPW_9930: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9930/index.html<br />
-  IGT_7517: 8368e3ad3f9459a8f5cdd24f813ae802c1211029 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-415-3d2b298aaf52e74d4e90470cd65de047362e4875: 3d2b298aaf52e74d4e90470cd65de047362e4875<br />
-  xe-416-be79dc2504eef9a437df54ca9aac316755e475cf: be79dc2504eef9a437df54ca9aac316755e475cf</p>
-
-</body>
-</html>
-
---===============1714183504867676499==--
+Hi Janusz,
+
+On 2023-10-03 at 11:10:53 +0200, Janusz Krzysztofik wrote:
+> Recent improvements to the kernel kunit framework allow us to obtain a
+> list of test cases provided by a kunit test module without actually
+> running them.  Use that feature to get a list of expected test cases
+> before we enter a loop around igt_dynamic().  Once done, enter the
+> igt_dynamic() section for each consecutive test case immediately, even
+> before first line of a related KTAP report appears, then look for a result
+> from that test case.  That should make our IGT results output still better
+> synchronized with related kernel messages.
+> 
+> The list of test cases provided by a kunit test module can be obtained by
+> loading the kunit base module with specific options, then loading the test
+> module.  For that to be possible, take care of unloading the kunit base
+> module before each kunit subtest (I was wrong when in one of my previous
+> commit messages I suggested that on final unload of a kunit test module
+> the kunit base module is unloaded automatically as its dependency,
+> however, that didn't matter before, then no separate fix was required).
+> Since that module can then be left loaded with non-default options if an
+> error occurs, unload it explicitly before returning from igt_kunit().
+> 
+> There are two possible ways of getting a list of test cases: by loading
+> the base kunit module with action=list module option, or by filtering
+> out all test cases from being executed while asking for SKIP results from
+> those filtered out.  Since the latter provides regular KTAP report that we
+> can alredy parse perfectly, use it instead of trying to identify an
+----- ^^^^^^
+s/alredy/already/
+
+> unstructured list of test cases of unknown length submitted by the former.
+> 
+> If an IGT test that calls igt_kunit() provides a subtest name then use
+> that name to filter out potential test cases that don't belong to the
+> named test suite from the list.
+> 
+> To avoid loading any modules if no subtest is going to be executed (e.g.,
+> if a nonexistent subtest has been requested), load the kunit modules in
+> list mode from inside the igt_subtest_with_dynamic() section.  In order to
+> be free to skip the whole subtest on unmet requirements that need to be
+> verified after that list has been already populated, clean it up from a
+> follow up igt_fixture section.
+> 
+> Since we start reading the list of test cases from /dev/kmsg only after
+> the kunit test module is loaded successfully in list only mode, don't
+> synchronize reads with potential modprobe breakage in that case, unlike we
+> still do later when parsing KTAP results in parallel to loading the test
+> module in normal (execute) mode.
+> 
+> Since we neither fetch KTAP results before entering igt_dynamic section
+> nor even return an error from KTAP result fetch attempts immediately on
+> modprobe error or kernel taint, break the loop of dynamic sub-subtests
+> explicitly as soon as one of those conditions is detected.
+
+Could you split this patch into two, one with reading names and rest
+with modprobe error or kernel taint detection?
+
+> Also, don't
+> force IGT SKIP result from the subtest if KTAP parsing hasn't completed.
+> That's perfectly legitimate since we no longer iterate over KTAP results,
+> only over a list of test cases obtained in advance, then we stop parsing
+> KTAP report as soon as we get a result from the last test case from the
+> list.
+> 
+> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> ---
+>  lib/igt_kmod.c | 217 +++++++++++++++++++++++++++++++++++--------------
+>  1 file changed, 157 insertions(+), 60 deletions(-)
+> 
+> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+> index 387efbb59f..4fba77ead4 100644
+> --- a/lib/igt_kmod.c
+> +++ b/lib/igt_kmod.c
+> @@ -802,34 +802,36 @@ static int kunit_kmsg_result_get(struct igt_list_head *results,
+>  		if (igt_debug_on(igt_kernel_tainted(&taints)))
+>  			return -ENOTRECOVERABLE;
+>  
+> -		err = igt_debug_on(sigaction(SIGCHLD, &sigchld, saved));
+> -		if (err == -1)
+> -			return -errno;
+> -		else if (unlikely(err))
+> -			return err;
+> -
+> -		err = pthread_mutex_lock(&modprobe->lock);
+> -		switch (err) {
+> -		case EOWNERDEAD:
+> -			/* leave the mutex unrecoverable */
+> -			igt_debug_on(pthread_mutex_unlock(&modprobe->lock));
+> -			__attribute__ ((fallthrough));
+> -		case ENOTRECOVERABLE:
+> -			igt_debug_on(sigaction(SIGCHLD, saved, NULL));
+> -			if (igt_debug_on(modprobe->err))
+> -				return modprobe->err;
+> -			break;
+> -		case 0:
+> -			break;
+> -		default:
+> -			igt_debug("pthread_mutex_lock() error: %d\n", err);
+> -			igt_debug_on(sigaction(SIGCHLD, saved, NULL));
+> -			return -err;
+> +		if (modprobe) {
+> +			err = igt_debug_on(sigaction(SIGCHLD, &sigchld, saved));
+> +			if (err == -1)
+> +				return -errno;
+> +			else if (unlikely(err))
+> +				return err;
+> +
+> +			err = pthread_mutex_lock(&modprobe->lock);
+> +			switch (err) {
+> +			case EOWNERDEAD:
+> +				/* leave the mutex unrecoverable */
+> +				igt_debug_on(pthread_mutex_unlock(&modprobe->lock));
+> +				__attribute__ ((fallthrough));
+> +			case ENOTRECOVERABLE:
+> +				igt_debug_on(sigaction(SIGCHLD, saved, NULL));
+> +				if (igt_debug_on(modprobe->err))
+> +					return modprobe->err;
+> +				break;
+> +			case 0:
+> +				break;
+> +			default:
+> +				igt_debug("pthread_mutex_lock() error: %d\n", err);
+> +				igt_debug_on(sigaction(SIGCHLD, saved, NULL));
+> +				return -err;
+> +			}
+>  		}
+>  
+>  		ret = read(fd, record, BUF_LEN);
+>  
+> -		if (!err) {
+> +		if (modprobe && !err) {
+>  			igt_debug_on(pthread_mutex_unlock(&modprobe->lock));
+>  			igt_debug_on(sigaction(SIGCHLD, saved, NULL));
+>  		}
+> @@ -885,17 +887,15 @@ static void kunit_result_free(struct igt_ktap_result **r,
+>  	*r = NULL;
+>  }
+>  
+> -static void
+> -__igt_kunit(struct igt_ktest *tst, const char *name, const char *opts)
+> +static void kunit_get_tests(struct igt_list_head *tests,
+> +			    struct igt_ktest *tst,
+> +			    const char *filter,
+> +			    const char *opts)
+>  {
+> -	struct modprobe_data modprobe = { pthread_self(), tst->kmod, opts, 0, };
+>  	char *suite_name = NULL, *case_name = NULL;
+>  	struct igt_ktap_result *r, *rn;
+>  	struct igt_ktap_results *ktap;
+> -	pthread_mutexattr_t attr;
+> -	IGT_LIST_HEAD(results);
+> -	unsigned long taints;
+> -	int flags, ret;
+> +	int flags, err;
+>  
+>  	igt_skip_on_f(tst->kmsg < 0, "Could not open /dev/kmsg\n");
+>  
+> @@ -905,6 +905,63 @@ __igt_kunit(struct igt_ktest *tst, const char *name, const char *opts)
+>  
+>  	igt_skip_on(lseek(tst->kmsg, 0, SEEK_END) < 0);
+>  
+> +	/*
+> +	 * To get a list of test cases provided by a kunit test module, ask the
+> +	 * generic kunit module to respond with SKIP result for each test found.
+> +	 * We could also use action=list kunit parameter to get the listing,
+> +	 * however, parsing a KTAP report -- something that we alredy can do
+--------------------------------------------------------------^
+Same here.
+
+Regards,
+Kamil
+
+> +	 * perfectly -- seems to be more safe than extracting a test case list
+> +	 * of unknown length from /dev/kmsg.
+> +	 */
+> +	igt_skip_on(igt_kmod_load("kunit", "filter=module=none filter_action=skip"));
+> +	igt_skip_on(modprobe(tst->kmod, opts));
+> +
+> +	ktap = igt_ktap_alloc(tests);
+> +	igt_require(ktap);
+> +
+> +	do {
+> +		err = kunit_kmsg_result_get(tests, NULL, tst->kmsg, ktap);
+> +		if (err && !igt_debug_on(err != -EINPROGRESS)) {
+> +			r = igt_list_last_entry(tests, r, link);
+> +
+> +			if (igt_debug_on(r->code != IGT_EXIT_SKIP))
+> +				err = r->code ?: -EPROTO;
+> +		}
+> +
+> +	} while (err == -EINPROGRESS);
+> +
+> +	igt_ktap_free(ktap);
+> +
+> +	if (err || filter) {
+> +		igt_list_for_each_entry_safe(r, rn, tests, link) {
+> +			if (err || strcmp(r->suite_name, filter))
+> +				kunit_result_free(&r, &case_name, &suite_name);
+> +		}
+> +	}
+> +
+> +	igt_skip_on(kmod_module_remove_module(tst->kmod, KMOD_REMOVE_FORCE));
+> +	igt_skip_on(igt_kmod_unload("kunit", KMOD_REMOVE_FORCE));
+> +
+> +	igt_skip_on_f(err,
+> +		      "KTAP parser failed while getting a list of test cases\n");
+> +}
+> +
+> +static void __igt_kunit(struct igt_ktest *tst,
+> +			const char *name,
+> +			const char *opts,
+> +			struct igt_list_head *tests)
+> +{
+> +	struct modprobe_data modprobe = { pthread_self(), tst->kmod, opts, 0, };
+> +	char *suite_name = NULL, *case_name = NULL;
+> +	struct igt_ktap_result *t, *r = NULL, *rn;
+> +	struct igt_ktap_results *ktap;
+> +	pthread_mutexattr_t attr;
+> +	IGT_LIST_HEAD(results);
+> +	int ret = -EINPROGRESS;
+> +	unsigned long taints;
+> +
+> +	igt_skip_on(lseek(tst->kmsg, 0, SEEK_END) < 0);
+> +
+>  	igt_skip_on(pthread_mutexattr_init(&attr));
+>  	igt_skip_on(pthread_mutexattr_setrobust(&attr, PTHREAD_MUTEX_ROBUST));
+>  	igt_skip_on(pthread_mutex_init(&modprobe.lock, &attr));
+> @@ -918,37 +975,50 @@ __igt_kunit(struct igt_ktest *tst, const char *name, const char *opts)
+>  		igt_skip("Failed to create a modprobe thread\n");
+>  	}
+>  
+> -	do {
+> -		ret = kunit_kmsg_result_get(&results, &modprobe,
+> -					    tst->kmsg, ktap);
+> -		if (igt_debug_on(ret && ret != -EINPROGRESS))
+> -			break;
+> -
+> -		if (igt_debug_on(igt_list_empty(&results)))
+> -			break;
+> -
+> -		r = igt_list_first_entry(&results, r, link);
+> -
+> +	igt_list_for_each_entry(t, tests, link) {
+>  		igt_dynamic_f("%s%s%s",
+> -			      strcmp(r->suite_name, name) ?  r->suite_name : "",
+> -			      strcmp(r->suite_name, name) ? "-" : "",
+> -			      r->case_name) {
+> +			      strcmp(t->suite_name, name) ?  t->suite_name : "",
+> +			      strcmp(t->suite_name, name) ? "-" : "",
+> +			      t->case_name) {
+> +			if (!r) {
+> +				if (igt_list_empty(&results)) {
+> +					igt_assert_eq(ret, -EINPROGRESS);
+> +					ret = kunit_kmsg_result_get(&results,
+> +								    &modprobe,
+> +								    tst->kmsg,
+> +								    ktap);
+> +					igt_fail_on(igt_list_empty(&results));
+> +				}
+>  
+> -			if (r->code == IGT_EXIT_INVALID) {
+> -				/* parametrized test case, get actual result */
+> -				kunit_result_free(&r, &suite_name, &case_name);
+> +				r = igt_list_first_entry(&results, r, link);
+> +			}
+>  
+> -				igt_assert(igt_list_empty(&results));
+> +			while (igt_debug_on_f(strcmp(r->suite_name, t->suite_name),
+> +					      "suite_name expected: %s, got: %s\n",
+> +					      t->suite_name, r->suite_name) ||
+> +			       igt_debug_on_f(strcmp(r->case_name, t->case_name),
+> +					      "case_name expected: %s, got: %s\n",
+> +					      t->case_name, r->case_name) ||
+> +			       r->code == IGT_EXIT_INVALID) {
+>  
+> -				ret = kunit_kmsg_result_get(&results, &modprobe,
+> -							    tst->kmsg, ktap);
+> -				if (ret != -EINPROGRESS)
+> -					igt_fail_on(ret);
+> +				int code = r->code;
+>  
+> -				igt_fail_on(igt_list_empty(&results));
+> +				kunit_result_free(&r, &suite_name, &case_name);
+> +				if (igt_list_empty(&results)) {
+> +					igt_assert_eq(ret, -EINPROGRESS);
+> +					ret = kunit_kmsg_result_get(&results,
+> +								    &modprobe,
+> +								    tst->kmsg,
+> +								    ktap);
+> +					igt_fail_on(igt_list_empty(&results));
+> +				}
+>  
+>  				r = igt_list_first_entry(&results, r, link);
+>  
+> +				if (code != IGT_EXIT_INVALID)
+> +					continue;
+> +
+> +				/* result from parametrized test case */
+>  				igt_fail_on_f(strcmp(r->suite_name, suite_name),
+>  					      "suite_name expected: %s, got: %s\n",
+>  					      suite_name, r->suite_name);
+> @@ -995,7 +1065,9 @@ __igt_kunit(struct igt_ktest *tst, const char *name, const char *opts)
+>  
+>  		kunit_result_free(&r, &suite_name, &case_name);
+>  
+> -	} while (ret == -EINPROGRESS);
+> +		if (modprobe.err || igt_kernel_tainted(&taints))
+> +			break;
+> +	}
+>  
+>  	igt_list_for_each_entry_safe(r, rn, &results, link)
+>  		kunit_result_free(&r, &suite_name, &case_name);
+> @@ -1025,7 +1097,8 @@ __igt_kunit(struct igt_ktest *tst, const char *name, const char *opts)
+>  
+>  	igt_skip_on(modprobe.err);
+>  	igt_skip_on(igt_kernel_tainted(&taints));
+> -	igt_skip_on_f(ret, "KTAP parser failed\n");
+> +	if (ret != -EINPROGRESS)
+> +		igt_skip_on_f(ret, "KTAP parser failed\n");
+>  }
+>  
+>  /**
+> @@ -1039,7 +1112,8 @@ __igt_kunit(struct igt_ktest *tst, const char *name, const char *opts)
+>  void igt_kunit(const char *module_name, const char *name, const char *opts)
+>  {
+>  	struct igt_ktest tst = { .kmsg = -1, };
+> -
+> +	const char *filter = name;
+> +	IGT_LIST_HEAD(tests);
+>  
+>  	/*
+>  	 * If the caller (an IGT test) provides no subtest name then we
+> @@ -1064,6 +1138,15 @@ void igt_kunit(const char *module_name, const char *name, const char *opts)
+>  
+>  		igt_skip_on(igt_ktest_init(&tst, module_name));
+>  		igt_skip_on(igt_ktest_begin(&tst));
+> +
+> +		/*
+> +		 * Since we need to load kunit base module with specific
+> +		 * options in order to get a list of test cases, make
+> +		 * sure that the module is not loaded.  However, since
+> +		 * unload may fail if kunit base module is not loaded,
+> +		 * ignore any failures, we'll fail later if still loaded.
+> +		 */
+> +		igt_ignore_warn(igt_kmod_unload("kunit", KMOD_REMOVE_FORCE));
+>  	}
+>  
+>  	/*
+> @@ -1073,11 +1156,25 @@ void igt_kunit(const char *module_name, const char *name, const char *opts)
+>  	 * proper namespace for dynamic subtests, with is required for CI
+>  	 * and for documentation.
+>  	 */
+> -	igt_subtest_with_dynamic(name)
+> -		__igt_kunit(&tst, name, opts);
+> +	igt_subtest_with_dynamic(name) {
+> +		kunit_get_tests(&tests, &tst, filter, opts);
+> +		igt_skip_on(igt_list_empty(&tests));
+> +
+> +		__igt_kunit(&tst, name, opts, &tests);
+> +	}
+> +
+> +	igt_fixture {
+> +		char *suite_name = NULL, *case_name = NULL;
+> +		struct igt_ktap_result *t, *tn;
+> +
+> +		igt_list_for_each_entry_safe(t, tn, &tests, link)
+> +			kunit_result_free(&t, &suite_name, &case_name);
+> +		free(case_name);
+> +		free(suite_name);
+>  
+> -	igt_fixture
+>  		igt_ktest_end(&tst);
+> +		igt_debug_on(igt_kmod_unload("kunit", KMOD_REMOVE_FORCE));
+> +	}
+>  
+>  	igt_ktest_fini(&tst);
+>  }
+> -- 
+> 2.42.0
+> 
