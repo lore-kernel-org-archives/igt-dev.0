@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D48E68989C
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Oct 2023 14:59:27 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EF77410E169
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Oct 2023 20:09:59 +0000 (UTC)
+Date: Thu, 5 Oct 2023 22:09:45 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  3 Oct 2023 16:59:17 +0200
-Message-ID: <20231003145920.51148-1-kamil.konieczny@linux.intel.com>
+Message-ID: <20231005200945.subqjgr2cqrfhyqd@kamilkon-desk.igk.intel.com>
+References: <20231005103244.3262419-1-daniele.ceraolospurio@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v7 0/3] drmtest changes for running tests on
- multi-gpu
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231005103244.3262419-1-daniele.ceraolospurio@intel.com>
+Subject: Re: [igt-dev] [PATCH] tests/xe_huc_copy: Handle multiple GTs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,45 +23,82 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Allow to open other cards out of order with __drm_open_driver_another()
-There is still a problem left when there is non-matched first device and
-no filters are used, it will not work with legacy opening but I will
-leave that for later. With filters it now works on four GPUs board, when
-first card is non-Intel one with no render device:
+Hi Daniele,
 
-sudo IGT_DEVICE=pci:vendor=Intel,device=discrete,card=all build/tests/xe_create --r multigpu-create-massive-size
+On 2023-10-05 at 03:32:44 -0700, Daniele Ceraolo Spurio wrote:
+> The test currently only looks for video engines on GT0, which is a
+> problem because newer platforms (like MTL) have their video engines on
+> the media GT. ALso, it is technically possible to have 1 HuC per-GT,
+> though we don't currently have any platform that supports this.
+> To handle the media GT use-case and to future proof against multiple
+> HuCs, we can just loop and repeat the test on any GT that has video
+> engines.
+> 
+> Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+> ---
+>  tests/intel/xe_huc_copy.c | 26 ++++++++++++++++++++++----
+>  1 file changed, 22 insertions(+), 4 deletions(-)
+> 
+> diff --git a/tests/intel/xe_huc_copy.c b/tests/intel/xe_huc_copy.c
+> index c9891a729..1c1b9d72c 100644
+> --- a/tests/intel/xe_huc_copy.c
+> +++ b/tests/intel/xe_huc_copy.c
+> @@ -104,9 +104,9 @@ gen12_create_batch_huc_copy(uint32_t *batch,
+>   */
+>  
+>  static void
+> -test_huc_copy(int fd)
+> +__test_huc_copy(int fd, uint32_t vm, struct drm_xe_engine_class_instance *hwe)
+>  {
+> -	uint32_t vm, exec_queue;
+> +	uint32_t exec_queue;
+>  	char *dinput;
+>  	struct drm_xe_sync sync = { 0 };
+>  
+> @@ -117,8 +117,7 @@ test_huc_copy(int fd)
+>  		{ .addr = ADDR_BATCH, .size = SIZE_BATCH }, // batch
+>  	};
+>  
+> -	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
+> -	exec_queue = xe_exec_queue_create_class(fd, vm, DRM_XE_ENGINE_CLASS_VIDEO_DECODE);
+> +	exec_queue = xe_exec_queue_create(fd, vm, hwe, 0);
+>  	sync.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL;
+>  	sync.handle = syncobj_create(fd, 0);
+>  
+> @@ -148,6 +147,25 @@ test_huc_copy(int fd)
+>  
+>  	syncobj_destroy(fd, sync.handle);
+>  	xe_exec_queue_destroy(fd, exec_queue);
+> +}
+> +
+> +static void
+> +test_huc_copy(int fd)
+> +{
+> +	struct drm_xe_engine_class_instance *hwe;
+> +	uint32_t vm;
+> +	uint32_t tested_gts = 0;
+> +
+> +	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
+> +
+> +	xe_for_each_hw_engine(fd, hwe) {
+> +		if (hwe->engine_class == DRM_XE_ENGINE_CLASS_VIDEO_DECODE &&
+> +		    !(tested_gts & BIT(hwe->gt_id))) {
+> +			tested_gts |= BIT(hwe->gt_id);
+> +			__test_huc_copy(fd, vm, hwe);
+> +		}
+> +	}
+> +
 
-Opened device: /dev/dri/card1
-Starting subtest: multigpu-create-massive-size
-<g:1> Opened device: /dev/dri/card2
-<g:2> Opened device: /dev/dri/card3
-<g:3> Opened device: /dev/dri/card4
-Subtest multigpu-create-massive-size: SUCCESS (0.209s)
+Please add here check if any huc was tested, maybe something like:
+    igt_require_f(tested_gts, "No video class engines found\n");
 
-v2: dropped additional patch 2/3 ("lib/drmtest: add multigpu helpers")
-  changed 3/3 RFC patch as additional subtest
-v3: fixes in test (Zbigniew)
-  fixes in drmlib functions (Zbigniew, Kamil)
-v4: corrected test description (Kamil)
-v5: restore boundary index for already opened device (Kamil)
-v6: fixes in libdrm: start searching for driver from requested index,
-    limit checks for already opened drivers to currently
-    opened count (Kamil)
-v7: drop checks for already opened device with filters,
-  change a place for igt_debug message, improve debugs (Kamil)
+With that:
 
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Petri Latvala <adrinael@adrinael.net>
-Cc: Arkadiusz Hiler <arek@hiler.eu>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Kamil Konieczny (3):
-  lib/drmtest: allow out of order device opening
-  tests/intel/xe_create: extend massive subtest to multi-gpu
-  lib/drmtest: drop checks for opened device for filters
-
- lib/drmtest.c           | 42 ++++++++++++++++++++++++++++-------------
- tests/intel/xe_create.c | 25 ++++++++++++++++++++++++
- 2 files changed, 54 insertions(+), 13 deletions(-)
-
--- 
-2.42.0
+>  	xe_vm_destroy(fd, vm);
+>  }
+>  
+> -- 
+> 2.41.0
+> 
