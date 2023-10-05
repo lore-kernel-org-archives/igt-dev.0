@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============8019492005917406891=="
+ boundary="===============5263210985932979864=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Daniele Ceraolo Spurio" <daniele.ceraolospurio@intel.com>
-Date: Thu, 05 Oct 2023 14:28:11 -0000
-Message-ID: <169651609197.7515.15325455248908454261@emeril.freedesktop.org>
-References: <20231005103244.3262419-1-daniele.ceraolospurio@intel.com>
-In-Reply-To: <20231005103244.3262419-1-daniele.ceraolospurio@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/xe?=
- =?utf-8?q?=5Fhuc=5Fcopy=3A_Handle_multiple_GTs?=
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Date: Thu, 05 Oct 2023 17:23:42 -0000
+Message-ID: <169652662244.7512.14542070126528040279@emeril.freedesktop.org>
+References: <20231005125948.2986826-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20231005125948.2986826-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Update_X?=
+ =?utf-8?q?E_blocklist_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,20 +23,20 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8019492005917406891==
+--===============5263210985932979864==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/xe_huc_copy: Handle multiple GTs
-URL   : https://patchwork.freedesktop.org/series/124654/
+Series: Update XE blocklist (rev2)
+URL   : https://patchwork.freedesktop.org/series/123650/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_7516_BAT -> XEIGTPW_9924_BAT
+CI Bug Log - changes from XEIGT_7516_BAT -> XEIGTPW_9926_BAT
 ====================================================
 
 Summary
@@ -56,29 +56,21 @@ Participating hosts (4 -> 4)
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_9924_BAT that come from known issues:
+  Here are the changes found in XEIGTPW_9926_BAT that come from known issues:
 
 ### IGT changes ###
 
-#### Issues hit ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank:
-    - bat-dg2-oem2:       [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 other test fail
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7516/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9924/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html
-
-  
 #### Possible fixes ####
 
   * igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:
-    - bat-adlp-7:         [FAIL][3] ([Intel XE#480]) -> [PASS][4] +2 other tests pass
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7516/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9924/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
+    - bat-adlp-7:         [FAIL][1] ([Intel XE#480]) -> [PASS][2] +2 other tests pass
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7516/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9926/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
 
   * {igt@xe_create@create-execqueues-noleak}:
-    - bat-adlp-7:         [FAIL][5] ([Intel XE#524]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7516/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9924/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
+    - bat-adlp-7:         [FAIL][3] ([Intel XE#524]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7516/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9926/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
 
   
   {name}: This element is suppressed. This means it is ignored when computing
@@ -91,17 +83,17 @@ Known issues
 Build changes
 -------------
 
-  * IGT: IGT_7516 -> IGTPW_9924
+  * IGT: IGT_7516 -> IGTPW_9926
 
-  IGTPW_9924: 9924
+  IGTPW_9926: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9926/index.html
   IGT_7516: 40b5a184f6da0a3295ee429947696d254522bb22 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   xe-415-3d2b298aaf52e74d4e90470cd65de047362e4875: 3d2b298aaf52e74d4e90470cd65de047362e4875
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9924/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9926/index.html
 
---===============8019492005917406891==
+--===============5263210985932979864==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -121,43 +113,36 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/xe_huc_copy: Handle multiple GTs</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124654/">https://patchwork.freedesktop.org/series/124654/</a></td></tr>
+<tr><td><b>Series:</b></td><td>Update XE blocklist (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123650/">https://patchwork.freedesktop.org/series/123650/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9924/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9924/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9926/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9926/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_7516_BAT -&gt; XEIGTPW_9924_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_7516_BAT -&gt; XEIGTPW_9926_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
 <h2>Participating hosts (4 -&gt; 4)</h2>
 <p>No changes in participating hosts</p>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_9924_BAT that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_9926_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7516/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9924/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
-</ul>
-</li>
-</ul>
 <h4>Possible fixes</h4>
 <ul>
 <li>
 <p>igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:</p>
 <ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7516/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9924/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">PASS</a> +2 other tests pass</li>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7516/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9926/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">PASS</a> +2 other tests pass</li>
 </ul>
 </li>
 <li>
 <p>{igt@xe_create@create-execqueues-noleak}:</p>
 <ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7516/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9924/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">PASS</a></li>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7516/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9926/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">PASS</a></li>
 </ul>
 </li>
 </ul>
@@ -165,13 +150,13 @@ Content-Transfer-Encoding: 7bit
           the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_7516 -&gt; IGTPW_9924</li>
+<li>IGT: IGT_7516 -&gt; IGTPW_9926</li>
 </ul>
-<p>IGTPW_9924: 9924<br />
+<p>IGTPW_9926: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9926/index.html<br />
   IGT_7516: 40b5a184f6da0a3295ee429947696d254522bb22 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   xe-415-3d2b298aaf52e74d4e90470cd65de047362e4875: 3d2b298aaf52e74d4e90470cd65de047362e4875</p>
 
 </body>
 </html>
 
---===============8019492005917406891==--
+--===============5263210985932979864==--
