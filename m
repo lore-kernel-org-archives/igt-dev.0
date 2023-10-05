@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AB10B10E48A
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Oct 2023 19:32:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A60EB10E48B
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Oct 2023 19:32:07 +0000 (UTC)
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  5 Oct 2023 18:57:29 +0000
-Message-ID: <20231005185745.3056219-12-marcin.bernatowicz@linux.intel.com>
+Date: Thu,  5 Oct 2023 18:57:30 +0000
+Message-ID: <20231005185745.3056219-13-marcin.bernatowicz@linux.intel.com>
 In-Reply-To: <20231005185745.3056219-1-marcin.bernatowicz@linux.intel.com>
 References: <20231005185745.3056219-1-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 11/17] benchmarks/gem_wsim: extract allocate
- and prepare contexts code to new functions
+Subject: [igt-dev] [PATCH i-g-t 12/17] benchmarks/gem_wsim: extract prepare
+ working sets code to new function
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,96 +25,141 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 No functional changes.
-Extracted allocate_contexts and prepare_contexts functions
-from prepare_workload.
+Extracted prepare_working_sets function from prepare_workload.
 
 v2:
-- propagate error code from prepare_contexts (Tvrtko)
-- don't mix unrelated changes (Tvrtko)
+- return void (Tvrtko)
 
 Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 ---
- benchmarks/gem_wsim.c | 43 ++++++++++++++++++++++++++++++++-----------
- 1 file changed, 32 insertions(+), 11 deletions(-)
+ benchmarks/gem_wsim.c | 104 +++++++++++++++++++++++-------------------
+ 1 file changed, 56 insertions(+), 48 deletions(-)
 
 diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-index 1914b81b7..8d853a909 100644
+index 8d853a909..5fdd28494 100644
 --- a/benchmarks/gem_wsim.c
 +++ b/benchmarks/gem_wsim.c
-@@ -1762,19 +1762,11 @@ static void measure_active_set(struct workload *wrk)
- 
- #define alloca0(sz) ({ size_t sz__ = (sz); memset(alloca(sz__), 0, sz__); })
+@@ -1966,10 +1966,64 @@ static int prepare_contexts(unsigned int id, struct workload *wrk)
+ 	return 0;
+ }
  
 -static int prepare_workload(unsigned int id, struct workload *wrk)
-+static void allocate_contexts(unsigned int id, struct workload *wrk)
++static void prepare_working_sets(unsigned int id, struct workload *wrk)
  {
--	struct working_set **sets;
--	unsigned long total = 0;
--	uint32_t share_vm = 0;
- 	int max_ctx = -1;
- 	struct w_step *w;
--	int i, j;
--
--	wrk->id = id;
--	wrk->bb_prng = (wrk->flags & FLAG_SYNCEDCLIENTS) ? master_prng : rand();
--	wrk->bo_prng = (wrk->flags & FLAG_SYNCEDCLIENTS) ? master_prng : rand();
--	wrk->run = true;
-+	int i;
- 
- 	/*
- 	 * Pre-scan workload steps to allocate context list storage.
-@@ -1798,6 +1790,13 @@ static int prepare_workload(unsigned int id, struct workload *wrk)
- 
- 		max_ctx = ctx;
- 	}
-+}
-+
-+static int prepare_contexts(unsigned int id, struct workload *wrk)
-+{
-+	uint32_t share_vm = 0;
+ 	struct working_set **sets;
+ 	unsigned long total = 0;
 +	struct w_step *w;
-+	int i, j;
- 
- 	/*
- 	 * Transfer over engine map configuration from the workload step.
-@@ -1964,6 +1963,28 @@ static int prepare_workload(unsigned int id, struct workload *wrk)
- 	if (share_vm)
- 		vm_destroy(fd, share_vm);
- 
-+	return 0;
++	int i;
++
++	/*
++	 * Allocate working sets.
++	 */
++	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
++		if (w->type == WORKINGSET && !w->working_set.shared)
++			total += allocate_working_set(wrk, &w->working_set);
++	}
++
++	if (verbose > 2)
++		printf("%u: %lu bytes in working sets.\n", wrk->id, total);
++
++	/*
++	 * Map of working set ids.
++	 */
++	wrk->max_working_set_id = -1;
++	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
++		if (w->type == WORKINGSET &&
++		    w->working_set.id > wrk->max_working_set_id)
++			wrk->max_working_set_id = w->working_set.id;
++	}
++
++	sets = wrk->working_sets;
++	wrk->working_sets = calloc(wrk->max_working_set_id + 1,
++				   sizeof(*wrk->working_sets));
++	igt_assert(wrk->working_sets);
++
++	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
++		struct working_set *set;
++
++		if (w->type != WORKINGSET)
++			continue;
++
++		if (!w->working_set.shared) {
++			set = &w->working_set;
++		} else {
++			igt_assert(sets);
++
++			set = sets[w->working_set.id];
++			igt_assert(set->shared);
++			igt_assert(set->sizes);
++		}
++
++		wrk->working_sets[w->working_set.id] = set;
++	}
++
++	if (sets)
++		free(sets);
 +}
 +
 +static int prepare_workload(unsigned int id, struct workload *wrk)
 +{
-+	struct working_set **sets;
-+	unsigned long total = 0;
-+	struct w_step *w;
-+	int i, j;
-+	int ret = 0;
-+
-+	wrk->id = id;
-+	wrk->bb_prng = (wrk->flags & FLAG_SYNCEDCLIENTS) ? master_prng : rand();
-+	wrk->bo_prng = (wrk->flags & FLAG_SYNCEDCLIENTS) ? master_prng : rand();
-+	wrk->run = true;
-+
-+	allocate_contexts(id, wrk);
-+
-+	ret = prepare_contexts(id, wrk);
-+	if (ret)
-+		return ret;
-+
- 	/* Record default preemption. */
- 	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
- 		if (w->type == BATCH)
-@@ -2065,7 +2086,7 @@ static int prepare_workload(unsigned int id, struct workload *wrk)
+ 	struct w_step *w;
+ 	int i, j;
+ 	int ret = 0;
+@@ -2026,53 +2080,7 @@ static int prepare_workload(unsigned int id, struct workload *wrk)
+ 		}
+ 	}
  
- 	measure_active_set(wrk);
+-	/*
+-	 * Allocate working sets.
+-	 */
+-	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
+-		if (w->type == WORKINGSET && !w->working_set.shared)
+-			total += allocate_working_set(wrk, &w->working_set);
+-	}
+-
+-	if (verbose > 2)
+-		printf("%u: %lu bytes in working sets.\n", wrk->id, total);
+-
+-	/*
+-	 * Map of working set ids.
+-	 */
+-	wrk->max_working_set_id = -1;
+-	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
+-		if (w->type == WORKINGSET &&
+-		    w->working_set.id > wrk->max_working_set_id)
+-			wrk->max_working_set_id = w->working_set.id;
+-	}
+-
+-	sets = wrk->working_sets;
+-	wrk->working_sets = calloc(wrk->max_working_set_id + 1,
+-				   sizeof(*wrk->working_sets));
+-	igt_assert(wrk->working_sets);
+-
+-	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
+-		struct working_set *set;
+-
+-		if (w->type != WORKINGSET)
+-			continue;
+-
+-		if (!w->working_set.shared) {
+-			set = &w->working_set;
+-		} else {
+-			igt_assert(sets);
+-
+-			set = sets[w->working_set.id];
+-			igt_assert(set->shared);
+-			igt_assert(set->sizes);
+-		}
+-
+-		wrk->working_sets[w->working_set.id] = set;
+-	}
+-
+-	if (sets)
+-		free(sets);
++	prepare_working_sets(id, wrk);
  
--	return 0;
-+	return ret;
- }
- 
- static double elapsed(const struct timespec *start, const struct timespec *end)
+ 	/*
+ 	 * Allocate batch buffers.
 -- 
 2.42.0
