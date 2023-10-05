@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Matthew Auld <matthew.auld@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  5 Oct 2023 16:31:06 +0100
-Message-ID: <20231005153116.452319-3-matthew.auld@intel.com>
+Date: Thu,  5 Oct 2023 16:31:07 +0100
+Message-ID: <20231005153116.452319-4-matthew.auld@intel.com>
 In-Reply-To: <20231005153116.452319-1-matthew.auld@intel.com>
 References: <20231005153116.452319-1-matthew.auld@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 02/12] lib/igt_fb: mark buffers as SCANOUT
+Subject: [igt-dev] [PATCH i-g-t 03/12] lib/igt_draw: mark buffers as SCANOUT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,22 +28,22 @@ Signed-off-by: Matthew Auld <matthew.auld@intel.com>
 Cc: José Roberto de Souza <jose.souza@intel.com>
 Cc: Pallavi Mishra <pallavi.mishra@intel.com>
 ---
- lib/igt_fb.c | 3 ++-
+ lib/igt_draw.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 54a66eb6a..f8a0db22c 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -1206,7 +1206,8 @@ static int create_bo_for_fb(struct igt_fb *fb, bool prefer_sysmem)
- 			igt_assert(err == 0 || err == -EOPNOTSUPP);
- 		} else if (is_xe_device(fd)) {
- 			fb->gem_handle = xe_bo_create_flags(fd, 0, fb->size,
--							visible_vram_if_possible(fd, 0));
-+							    visible_vram_if_possible(fd, 0) |
-+							    XE_GEM_CREATE_FLAG_SCANOUT);
- 		} else if (is_vc4_device(fd)) {
- 			fb->gem_handle = igt_vc4_create_bo(fd, fb->size);
+diff --git a/lib/igt_draw.c b/lib/igt_draw.c
+index 476778a13..2332bf94a 100644
+--- a/lib/igt_draw.c
++++ b/lib/igt_draw.c
+@@ -791,7 +791,8 @@ static void draw_rect_render(int fd, struct cmd_data *cmd_data,
+ 	else
+ 		tmp.handle = xe_bo_create_flags(fd, 0,
+ 						ALIGN(tmp.size, xe_get_default_alignment(fd)),
+-						visible_vram_if_possible(fd, 0));
++						visible_vram_if_possible(fd, 0) |
++						XE_GEM_CREATE_FLAG_SCANOUT);
  
+ 	tmp.stride = rect->w * pixel_size;
+ 	tmp.bpp = buf->bpp;
 -- 
 2.41.0
