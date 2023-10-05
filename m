@@ -1,25 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6370D10E3E6
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Oct 2023 12:30:48 +0000 (UTC)
-Message-ID: <ad7c74f5-c448-ba09-599a-b99cf43d456e@linux.intel.com>
-Date: Thu, 5 Oct 2023 13:30:42 +0100
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com
+ [IPv6:2a00:1450:4864:20::430])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D947710E3E6
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Oct 2023 12:32:48 +0000 (UTC)
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-32488a22810so827247f8f.3
+ for <igt-dev@lists.freedesktop.org>; Thu, 05 Oct 2023 05:32:48 -0700 (PDT)
+Message-ID: <9d6d71d4-621b-6329-dd22-c078f9e0b818@gmail.com>
+Date: Thu, 5 Oct 2023 15:32:40 +0300
 MIME-Version: 1.0
 Content-Language: en-US
-To: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230928174535.2074462-1-marcin.bernatowicz@linux.intel.com>
- <20230928174535.2074462-16-marcin.bernatowicz@linux.intel.com>
- <3d25cb8c-83b6-5bd4-181a-58d8066d4615@linux.intel.com>
- <06324cce-f5bd-4485-7bc2-25f3339d8575@linux.intel.com>
- <8cc14715-dac3-8336-e70e-f7fd95fb9be7@linux.intel.com>
- <8bb6299c-2807-3994-cb37-09415bb66798@linux.intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <8bb6299c-2807-3994-cb37-09415bb66798@linux.intel.com>
+To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
+References: <20231004134722.319334-1-juhapekka.heikkila@gmail.com>
+ <73b5370c-a61b-46e7-8041-2809ad8c3f50@linux.intel.com>
+ <e06efa0c-8f9f-dbb6-fbea-1199766d79d8@gmail.com>
+ <20231005111850.dvzha4frsaoiy7l2@zkempczy-mobl2>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+In-Reply-To: <20231005111850.dvzha4frsaoiy7l2@zkempczy-mobl2>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t 15/17] benchmarks/gem_wsim: introduce
- bb_size in w_step
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_fb: on Xe driver take into
+ account adlp with no extended block copy
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,133 +28,80 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: chris.p.wilson@linux.intel.com
+Reply-To: juhapekka.heikkila@gmail.com
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-On 05/10/2023 11:52, Bernatowicz, Marcin wrote:
-> 
-> 
-> On 9/29/2023 12:49 PM, Tvrtko Ursulin wrote:
+On 5.10.2023 14.18, Zbigniew Kempczyński wrote:
+> On Thu, Oct 05, 2023 at 11:39:54AM +0300, Juha-Pekka Heikkila wrote:
+>> Hei Maarten,
 >>
->> On 29/09/2023 11:08, Bernatowicz, Marcin wrote:
+>> On 4.10.2023 19.41, Maarten Lankhorst wrote:
+>>> Hey,
 >>>
+>>> Patch looks good, but right below HAS_FLATCCS is used instead.
 >>>
->>> On 9/29/2023 11:35 AM, Tvrtko Ursulin wrote:
->>>>
->>>> On 28/09/2023 18:45, Marcin Bernatowicz wrote:
->>>>> Put it next to bb_handle.
->>>>> Use it in alloc_step_batch and measure_active_set.
->>>>
->>>> Could say why.
->>>>
->>>> Like xe might need more than 4k? Might not be able to allocate only 
->>>> 4k? (Guessing only.)
->>>
->>> Xe uses following formula:
->>>
->>> w->bb_size = ALIGN(sizeof(*w->xe.data) + xe_cs_prefetch_size(fd),
->>>                 xe_get_default_alignment(fd));
->>>
->>> which equaled 4096 on platform I tested.
->>> I didn't want to put bb_size inside xe specifics as it is connected 
->>> with bb_handle.
+>>> Could you fix that too for consistency?
 >>
->> Hmmm could you dig a bit to figure out if sometimes this can be larger 
->> than 4k and if so why only xe and not i915. Because things like 
->> prefetch and alignment sound like should be more hardware than driver 
->> dependent.
+>> That is not cosmetic change, it will affect mtl behavior. Currently I don't
+>> have access to machine which would match to what ci has so I cannot test
+>> what will happen.
 > 
-> I got information there may be a case a prefetch size 4096 on some 
-> platform, but I did not get a clear answer why/if above calculation is 
-> needed/redundant. So I assume it's redundant and I will not copy/paste 
-> it from igt tests.
+> Looking at the code HAS_FLATCCS is not true for mtl so now we're
+> not using extended block-copy command. Bspec said it should and
+> BLT_CMD_EXTENDED property is set in intel_cmds_info.c. Do we
+> have working blitcopy() for mtl now?
 > 
-> There is one concern I have related to DRM_IOCTL_XE_GEM_CREATE ioctl and 
-> size field, suggesting a need for bb_size according to description:
-> 
-> struct drm_xe_gem_create {
->          ...
->      /**
->       * @size: Requested size for the object
->       *
->       * The (page-aligned) allocated size for the object will be returned.
->       */
->      __u64 size;
-> 
-> It suggests size could be adjusted after a call, but I think there is 
-> some discussion ongoing to that, so will wait. (and the 
-> xe_bo_create_flags does not take it into account and does not update 
-> size param)
 
-i915 gem_create also rounds up the size and reports it back btw.
+I cannot remember why it was set like this, on early mtl boxes there was 
+some reason. It has worked correctly ever since but probably should 
+check if this can be switched to use extended blt as expected. I only 
+have access to earlier stepping mtl which doesn't match to what ci has 
+for gt part.
 
-Regards,
+/Juha-Pekka
 
-Tvrtko
-
-> 
-> I will drop the patch, leave 4096 and I'm expecting a xe_bo_create 
-> failure if not possible.
-> 
-> Regards,
-> Marcin
-> 
->>
->> Regards,
->>
->> Tvrtko
->>
 >>>
->>> Regards,
->>> marcin
+>>> With that amended,
 >>>
+>>> Reviewed-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+>>>
+>>> Den 2023-10-04 kl. 15:47, skrev Juha-Pekka Heikkila:
+>>>> With Xe add check to not use extended block copy if it is not available.
 >>>>
->>>> Regards,
+>>>> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+>>>> ---
+>>>>    lib/igt_fb.c | 20 +++++++++++---------
+>>>>    1 file changed, 11 insertions(+), 9 deletions(-)
 >>>>
->>>> Tvrtko
->>>>
->>>>> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
->>>>> ---
->>>>>   benchmarks/gem_wsim.c | 6 ++++--
->>>>>   1 file changed, 4 insertions(+), 2 deletions(-)
->>>>>
->>>>> diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
->>>>> index 4618509ab..d22d66aeb 100644
->>>>> --- a/benchmarks/gem_wsim.c
->>>>> +++ b/benchmarks/gem_wsim.c
->>>>> @@ -183,6 +183,7 @@ struct w_step {
->>>>>           } i915;
->>>>>       };
->>>>>       uint32_t bb_handle;
->>>>> +    size_t bb_size;
->>>>>   };
->>>>>   struct ctx {
->>>>> @@ -1481,6 +1482,7 @@ alloc_step_batch(struct workload *wrk, struct 
->>>>> w_step *w)
->>>>>       unsigned int nr_obj = 2 + w->data_deps.nr;
->>>>>       unsigned int i;
->>>>> +    w->bb_size = 4096;
->>>>>       w->i915.obj = calloc(nr_obj, sizeof(*w->i915.obj));
->>>>>       igt_assert(w->i915.obj);
->>>>> @@ -1522,7 +1524,7 @@ alloc_step_batch(struct workload *wrk, struct 
->>>>> w_step *w)
->>>>>           igt_assert(j < nr_obj);
->>>>>       }
->>>>> -    w->bb_handle = w->i915.obj[j].handle = gem_create(fd, 4096);
->>>>> +    w->bb_handle = w->i915.obj[j].handle = gem_create(fd, 
->>>>> w->bb_size);
->>>>>       w->i915.obj[j].relocation_count = create_bb(w, j);
->>>>>       igt_assert(w->i915.obj[j].relocation_count <= 
->>>>> ARRAY_SIZE(w->i915.reloc));
->>>>>       w->i915.obj[j].relocs_ptr = to_user_pointer(&w->i915.reloc);
->>>>> @@ -1722,7 +1724,7 @@ static void measure_active_set(struct 
->>>>> workload *wrk)
->>>>>           if (w->type != BATCH)
->>>>>               continue;
->>>>> -        batch_sizes += 4096;
->>>>> +        batch_sizes += w->bb_size;
->>>>>           for (j = 0; j < w->data_deps.nr; j++) {
->>>>>               struct dep_entry *dep = &w->data_deps.list[j];
+>>>> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+>>>> index f0c0681ab..54a66eb6a 100644
+>>>> --- a/lib/igt_fb.c
+>>>> +++ b/lib/igt_fb.c
+>>>> @@ -2920,17 +2920,19 @@ static void blitcopy(const struct igt_fb *dst_fb,
+>>>>                blt_set_copy_object(&blt.src, src);
+>>>>                blt_set_copy_object(&blt.dst, dst);
+>>>> -            blt_set_object_ext(&ext.src,
+>>>> -                       blt_compression_format(&blt, src_fb),
+>>>> -                       src_fb->width, src_fb->height,
+>>>> -                       SURFACE_TYPE_2D);
+>>>> +            if (blt_uses_extended_block_copy(src_fb->fd)) {
+>>>> +                blt_set_object_ext(&ext.src,
+>>>> +                        blt_compression_format(&blt, src_fb),
+>>>> +                        src_fb->width, src_fb->height,
+>>>> +                        SURFACE_TYPE_2D);
+>>>> -            blt_set_object_ext(&ext.dst,
+>>>> -                       blt_compression_format(&blt, dst_fb),
+>>>> -                       dst_fb->width, dst_fb->height,
+>>>> -                       SURFACE_TYPE_2D);
+>>>> +                blt_set_object_ext(&ext.dst,
+>>>> +                        blt_compression_format(&blt, dst_fb),
+>>>> +                        dst_fb->width, dst_fb->height,
+>>>> +                        SURFACE_TYPE_2D);
+>>>> -            pext = &ext;
+>>>> +                pext = &ext;
+>>>> +            }
+>>>>                blt_set_batch(&blt.bb, xe_bb, bb_size, mem_region);
+>>
