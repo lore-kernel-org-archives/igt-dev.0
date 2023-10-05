@@ -1,14 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7CACE10E3DD
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Oct 2023 10:32:54 +0000 (UTC)
-From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu,  5 Oct 2023 03:32:44 -0700
-Message-ID: <20231005103244.3262419-1-daniele.ceraolospurio@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3C5C710E1E0
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Oct 2023 10:37:55 +0000 (UTC)
+Message-ID: <b7ff1268-b757-57e1-8b46-5f38f4a475e3@linux.intel.com>
+Date: Thu, 5 Oct 2023 12:37:50 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH] tests/xe_huc_copy: Handle multiple GTs
+To: Nirmoy Das <nirmoy.das@intel.com>, igt-dev@lists.freedesktop.org
+References: <20231002121428.3827-1-nirmoy.das@intel.com>
+Content-Language: en-US
+From: Nirmoy Das <nirmoy.das@linux.intel.com>
+In-Reply-To: <20231002121428.3827-1-nirmoy.das@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/prime_vgem: Use correct blitter
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,70 +24,112 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The test currently only looks for video engines on GT0, which is a
-problem because newer platforms (like MTL) have their video engines on
-the media GT. ALso, it is technically possible to have 1 HuC per-GT,
-though we don't currently have any platform that supports this.
-To handle the media GT use-case and to future proof against multiple
-HuCs, we can just loop and repeat the test on any GT that has video
-engines.
+ping
 
-Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
----
- tests/intel/xe_huc_copy.c | 26 ++++++++++++++++++++++----
- 1 file changed, 22 insertions(+), 4 deletions(-)
-
-diff --git a/tests/intel/xe_huc_copy.c b/tests/intel/xe_huc_copy.c
-index c9891a729..1c1b9d72c 100644
---- a/tests/intel/xe_huc_copy.c
-+++ b/tests/intel/xe_huc_copy.c
-@@ -104,9 +104,9 @@ gen12_create_batch_huc_copy(uint32_t *batch,
-  */
- 
- static void
--test_huc_copy(int fd)
-+__test_huc_copy(int fd, uint32_t vm, struct drm_xe_engine_class_instance *hwe)
- {
--	uint32_t vm, exec_queue;
-+	uint32_t exec_queue;
- 	char *dinput;
- 	struct drm_xe_sync sync = { 0 };
- 
-@@ -117,8 +117,7 @@ test_huc_copy(int fd)
- 		{ .addr = ADDR_BATCH, .size = SIZE_BATCH }, // batch
- 	};
- 
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
--	exec_queue = xe_exec_queue_create_class(fd, vm, DRM_XE_ENGINE_CLASS_VIDEO_DECODE);
-+	exec_queue = xe_exec_queue_create(fd, vm, hwe, 0);
- 	sync.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL;
- 	sync.handle = syncobj_create(fd, 0);
- 
-@@ -148,6 +147,25 @@ test_huc_copy(int fd)
- 
- 	syncobj_destroy(fd, sync.handle);
- 	xe_exec_queue_destroy(fd, exec_queue);
-+}
-+
-+static void
-+test_huc_copy(int fd)
-+{
-+	struct drm_xe_engine_class_instance *hwe;
-+	uint32_t vm;
-+	uint32_t tested_gts = 0;
-+
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
-+
-+	xe_for_each_hw_engine(fd, hwe) {
-+		if (hwe->engine_class == DRM_XE_ENGINE_CLASS_VIDEO_DECODE &&
-+		    !(tested_gts & BIT(hwe->gt_id))) {
-+			tested_gts |= BIT(hwe->gt_id);
-+			__test_huc_copy(fd, vm, hwe);
-+		}
-+	}
-+
- 	xe_vm_destroy(fd, vm);
- }
- 
--- 
-2.41.0
+On 10/2/2023 2:14 PM, Nirmoy Das wrote:
+> Use igt_blitter_copy() which picks a correct blitter
+> command depending on platform.
+>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+> ---
+>   tests/prime_vgem.c | 52 +++++++++++++++++++++++-----------------------
+>   1 file changed, 26 insertions(+), 26 deletions(-)
+>
+> diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
+> index 876e04ed0..551a731f5 100644
+> --- a/tests/prime_vgem.c
+> +++ b/tests/prime_vgem.c
+> @@ -29,7 +29,7 @@
+>   #include "i915/gem_create.h"
+>   #include "igt.h"
+>   #include "igt_vgem.h"
+> -#include "intel_batchbuffer.h"	/* igt_blitter_src_copy() */
+> +#include "intel_batchbuffer.h"	/* igt_blitter_copy() */
+>   /**
+>    * TEST: prime vgem
+>    * Description: Basic check of polling for prime/vgem fences.
+> @@ -351,11 +351,11 @@ static void test_fence_blt(int i915, int vgem)
+>   		write(master[1], &child, sizeof(child));
+>   		read(slave[0], &child, sizeof(child));
+>   
+> -		igt_blitter_src_copy(i915, ahnd, 0, NULL, prime, 0, scratch.pitch,
+> -				     I915_TILING_NONE, 0, 0, scratch.size,
+> -				     scratch.width, scratch.height, scratch.bpp,
+> -				     native, 0, scratch.pitch,
+> -				     I915_TILING_NONE, 0, 0, scratch.size);
+> +		igt_blitter_copy(i915, ahnd, 0, NULL, prime, 0, scratch.pitch,
+> +				 I915_TILING_NONE, 0, 0, scratch.size,
+> +				 scratch.width, scratch.height, scratch.bpp,
+> +				 native, 0, scratch.pitch,
+> +				 I915_TILING_NONE, 0, 0, scratch.size);
+>   		gem_sync(i915, native);
+>   
+>   		for (i = 0; i < scratch.height; i++)
+> @@ -480,11 +480,11 @@ static void test_blt(int vgem, int i915)
+>   		ptr[scratch.pitch * i / sizeof(*ptr)] = i;
+>   	munmap(ptr, scratch.size);
+>   
+> -	igt_blitter_src_copy(i915, ahnd, 0, NULL, native, 0, scratch.pitch,
+> -			     I915_TILING_NONE, 0, 0, scratch.size,
+> -			     scratch.width, scratch.height, scratch.bpp,
+> -			     prime, 0, scratch.pitch, I915_TILING_NONE, 0, 0,
+> -			     scratch.size);
+> +	igt_blitter_copy(i915, ahnd, 0, NULL, native, 0, scratch.pitch,
+> +			 I915_TILING_NONE, 0, 0, scratch.size,
+> +			 scratch.width, scratch.height, scratch.bpp,
+> +			 prime, 0, scratch.pitch, I915_TILING_NONE, 0, 0,
+> +			 scratch.size);
+>   	prime_sync_start(dmabuf, true);
+>   	prime_sync_end(dmabuf, true);
+>   	close(dmabuf);
+> @@ -496,11 +496,11 @@ static void test_blt(int vgem, int i915)
+>   	}
+>   	munmap(ptr, scratch.size);
+>   
+> -	igt_blitter_src_copy(i915, ahnd, 0, NULL, prime, 0, scratch.pitch,
+> -			     I915_TILING_NONE, 0, 0, scratch.size,
+> -			     scratch.width, scratch.height, scratch.bpp,
+> -			     native, 0, scratch.pitch, I915_TILING_NONE, 0, 0,
+> -			     scratch.size);
+> +	igt_blitter_copy(i915, ahnd, 0, NULL, prime, 0, scratch.pitch,
+> +			 I915_TILING_NONE, 0, 0, scratch.size,
+> +			 scratch.width, scratch.height, scratch.bpp,
+> +			 native, 0, scratch.pitch, I915_TILING_NONE, 0, 0,
+> +			 scratch.size);
+>   	gem_sync(i915, native);
+>   
+>   	ptr = gem_mmap__device_coherent(i915, native, 0, scratch.size, PROT_READ);
+> @@ -620,22 +620,22 @@ static void test_blt_interleaved(int vgem, int i915)
+>   
+>   	for (i = 0; i < SLOW_QUICK(scratch.height, 64); i++) {
+>   		local[scratch.pitch * i / sizeof(*local)] = i;
+> -		igt_blitter_src_copy(i915, ahnd, 0, NULL, native, 0,
+> -				     scratch.pitch, I915_TILING_NONE, 0, i,
+> -				     scratch.size, scratch.width, 1,
+> -				     scratch.bpp, prime, 0, scratch.pitch,
+> -				     I915_TILING_NONE, 0, i, scratch.size);
+> +		igt_blitter_copy(i915, ahnd, 0, NULL, native, 0,
+> +				 scratch.pitch, I915_TILING_NONE, 0, i,
+> +				 scratch.size, scratch.width, 1,
+> +				 scratch.bpp, prime, 0, scratch.pitch,
+> +				 I915_TILING_NONE, 0, i, scratch.size);
+>   		prime_sync_start(dmabuf, true);
+>   		igt_assert_eq_u32(foreign[scratch.pitch * i / sizeof(*foreign)],
+>   				  i);
+>   		prime_sync_end(dmabuf, true);
+>   
+>   		foreign[scratch.pitch * i / sizeof(*foreign)] = ~i;
+> -		igt_blitter_src_copy(i915, ahnd, 0, NULL, prime, 0, scratch.pitch,
+> -				     I915_TILING_NONE, 0, i, scratch.size,
+> -				     scratch.width, 1,
+> -				     scratch.bpp, native, 0, scratch.pitch,
+> -				     I915_TILING_NONE, 0, i, scratch.size);
+> +		igt_blitter_copy(i915, ahnd, 0, NULL, prime, 0, scratch.pitch,
+> +				 I915_TILING_NONE, 0, i, scratch.size,
+> +				 scratch.width, 1,
+> +				 scratch.bpp, native, 0, scratch.pitch,
+> +				 I915_TILING_NONE, 0, i, scratch.size);
+>   		gem_sync(i915, native);
+>   		igt_assert_eq_u32(local[scratch.pitch * i / sizeof(*local)],
+>   				  ~i);
