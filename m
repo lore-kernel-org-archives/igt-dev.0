@@ -1,21 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 58B3910E499
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Oct 2023 22:05:31 +0000 (UTC)
-Date: Fri, 6 Oct 2023 00:05:13 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20231005220513.npwoxe3ey7k6ts7s@kamilkon-desk.igk.intel.com>
-References: <20231004164946.138398-1-kamil.konieczny@linux.intel.com>
- <20231004164946.138398-5-kamil.konieczny@linux.intel.com>
- <20231005162945.lxxhf4mturmwuuhn@zkempczy-mobl2>
+Content-Type: multipart/alternative;
+ boundary="===============7796763607298449375=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231005162945.lxxhf4mturmwuuhn@zkempczy-mobl2>
-Subject: Re: [igt-dev] [PATCH i-g-t v8 4/6] lib/drmtest: save skip offset
- for first opened device
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Wu, Hersen" <hersenxs.wu@amd.com>
+Date: Thu, 05 Oct 2023 22:06:09 -0000
+Message-ID: <169654356904.7515.483292255715957128@emeril.freedesktop.org>
+References: <20231001162828.74566-1-hersenxs.wu@amd.com>
+In-Reply-To: <20231001162828.74566-1-hersenxs.wu@amd.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_s?=
+ =?utf-8?q?tarting_with_=5B1/2=2Ci-g-t=5D_tests/kms=5Fcursor=5Fcrc=3A_Fix_?=
+ =?utf-8?q?tests_be_skipped_on_AMD_gpu_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,90 +18,137 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Zbigniew,
-On 2023-10-05 at 18:29:45 +0200, Zbigniew Kempczyński wrote:
-> On Wed, Oct 04, 2023 at 06:49:40PM +0200, Kamil Konieczny wrote:
-> > On some boards with many discrete GPU cards it may happen that
-> > on-board one is integrated and will be skipped during opening
-> > a first device. With out-of-order try and open it may result
-> > with off-by-one error opening wrong card. Fixed this with saving
-> > skip offset for first device name.
-> > 
-> > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > ---
-> >  lib/drmtest.c | 17 +++++++++++++++--
-> >  1 file changed, 15 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/lib/drmtest.c b/lib/drmtest.c
-> > index dbfa0282d..5e559737e 100644
-> > --- a/lib/drmtest.c
-> > +++ b/lib/drmtest.c
-> > @@ -292,6 +292,8 @@ static struct {
-> >  }_opened_fds[64];
-> >  
-> >  static int _opened_fds_count;
-> > +static int _opened_fds0_skip;
-> > +static int _opened_fds0_chipset;
-> >  
-> >  static void _set_opened_fd(int idx, int fd)
-> >  {
-> > @@ -350,7 +352,11 @@ static int __search_and_open(const char *base, int offset, unsigned int chipset,
-> >  	if (forced)
-> >  		igt_debug("Force option used: Using driver %s\n", forced);
-> >  
-> > -	offset += as_idx;
-> > +	if (offset == 0 && as_idx != 0 && _opened_fds0_chipset == chipset)
-> > +		offset += as_idx + _opened_fds0_skip;
-> > +	else
-> > +		offset += as_idx;
-> > +
-> >  	for (int i = 0; i < 16; i++) {
-> >  		char name[80];
-> >  		int fd;
-> > @@ -361,8 +367,15 @@ static int __search_and_open(const char *base, int offset, unsigned int chipset,
-> >  			continue;
-> >  
-> >  		fd = open_device(name, chipset);
-> > -		if (fd != -1)
-> > +		if (fd != -1) {
-> > +			if (i != 0 && offset == as_idx && as_idx == 0
-> > +			    && chipset != DRIVER_VGEM && chipset != DRIVER_ANY) {
-> > +				_opened_fds0_skip = i;
-> > +				_opened_fds0_chipset = chipset;
-> > +			}
-> > +
-> 
-> I wondered can we simplify above. What you really need is to open
-> as_idx card of requested chipset. The most time consuming part is
-> underneath open_device() function. At the moment you're already
-> tracking is as_idx slot occupied. You can introduce additional
-> variable counter before the loop and increment it each time you
-> hit as_idx is occupied - if (_is_already_counted()) or when
-> fd = open_driver() will succeed. But you need to compare as_idx
-> with current counter. If not equal close fd and continue. This
-> would allow you to handle out-of-order calls with not monotonic
-> as_idx.
-> 
-> --
-> Zbigniew
-> 
+--===============7796763607298449375==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-I agree, it is a little too much complicated, I will change this
-according to your suggestions.
+== Series Details ==
 
-Regards,
-Kamil
+Series: series starting with [1/2,i-g-t] tests/kms_cursor_crc: Fix tests be skipped on AMD gpu (rev3)
+URL   : https://patchwork.freedesktop.org/series/124496/
+State : success
 
-> 
-> >  			return fd;
-> > +		}
-> >  	}
-> >  
-> >  	return -1;
-> > -- 
-> > 2.42.0
-> > 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7517_BAT -> XEIGTPW_9931_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9931_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@xe_exec_store@basic-store:
+    - bat-adlp-7:         [FAIL][1] ([Intel XE#761]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7517/bat-adlp-7/igt@xe_exec_store@basic-store.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9931/bat-adlp-7/igt@xe_exec_store@basic-store.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+  [Intel XE#761]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/761
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7517 -> IGTPW_9931
+  * Linux: xe-415-3d2b298aaf52e74d4e90470cd65de047362e4875 -> xe-416-be79dc2504eef9a437df54ca9aac316755e475cf
+
+  IGTPW_9931: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9931/index.html
+  IGT_7517: 8368e3ad3f9459a8f5cdd24f813ae802c1211029 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-415-3d2b298aaf52e74d4e90470cd65de047362e4875: 3d2b298aaf52e74d4e90470cd65de047362e4875
+  xe-416-be79dc2504eef9a437df54ca9aac316755e475cf: be79dc2504eef9a437df54ca9aac316755e475cf
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9931/index.html
+
+--===============7796763607298449375==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [1/2,i-g-t] tests/kms_cursor_crc: Fix tests be skipped on AMD gpu (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124496/">https://patchwork.freedesktop.org/series/124496/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9931/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9931/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7517_BAT -&gt; XEIGTPW_9931_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9931_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_exec_store@basic-store:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7517/bat-adlp-7/igt@xe_exec_store@basic-store.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/761">Intel XE#761</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9931/bat-adlp-7/igt@xe_exec_store@basic-store.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7517 -&gt; IGTPW_9931</li>
+<li>Linux: xe-415-3d2b298aaf52e74d4e90470cd65de047362e4875 -&gt; xe-416-be79dc2504eef9a437df54ca9aac316755e475cf</li>
+</ul>
+<p>IGTPW_9931: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9931/index.html<br />
+  IGT_7517: 8368e3ad3f9459a8f5cdd24f813ae802c1211029 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-415-3d2b298aaf52e74d4e90470cd65de047362e4875: 3d2b298aaf52e74d4e90470cd65de047362e4875<br />
+  xe-416-be79dc2504eef9a437df54ca9aac316755e475cf: be79dc2504eef9a437df54ca9aac316755e475cf</p>
+
+</body>
+</html>
+
+--===============7796763607298449375==--
