@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Matthew Auld <matthew.auld@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  5 Oct 2023 16:31:12 +0100
-Message-ID: <20231005153116.452319-9-matthew.auld@intel.com>
+Date: Thu,  5 Oct 2023 16:31:14 +0100
+Message-ID: <20231005153116.452319-11-matthew.auld@intel.com>
 In-Reply-To: <20231005153116.452319-1-matthew.auld@intel.com>
 References: <20231005153116.452319-1-matthew.auld@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 08/12] lib/intel_blt: support pat_index
+Subject: [igt-dev] [PATCH i-g-t 10/12] lib/xe_ioctl: update vm_bind to
+ account for pat_index
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,371 +22,94 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For the most part we can just use the default wb, however some users
-including display might want to use something else.
+Keep things minimal and select the 1way+ by default on all platforms.
+Other users can use intel_buf, get_offset_pat_index etc or use
+__xe_vm_bind() directly.  Display tests don't directly use this
+interface.
 
 Signed-off-by: Matthew Auld <matthew.auld@intel.com>
 Cc: José Roberto de Souza <jose.souza@intel.com>
 Cc: Pallavi Mishra <pallavi.mishra@intel.com>
 ---
- lib/igt_fb.c                    |  2 ++
- lib/intel_blt.c                 | 54 +++++++++++++++++++++------------
- lib/intel_blt.h                 |  7 +++--
- tests/intel/gem_ccs.c           | 16 +++++-----
- tests/intel/gem_lmem_swapping.c |  4 +--
- tests/intel/xe_ccs.c            | 19 +++++++-----
- 6 files changed, 64 insertions(+), 38 deletions(-)
+ lib/xe/xe_ioctl.c   | 8 ++++++--
+ lib/xe/xe_ioctl.h   | 2 +-
+ tests/intel/xe_vm.c | 4 +++-
+ 3 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index f8a0db22c..d290fd775 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -37,6 +37,7 @@
- #include "i915/gem_mman.h"
- #include "intel_blt.h"
- #include "intel_mocs.h"
-+#include "intel_pat.h"
- #include "igt_aux.h"
- #include "igt_color_encoding.h"
- #include "igt_fb.h"
-@@ -2768,6 +2769,7 @@ static struct blt_copy_object *blt_fb_init(const struct igt_fb *fb,
- 
- 	blt_set_object(blt, handle, fb->size, memregion,
- 		       intel_get_uc_mocs(fb->fd),
-+		       intel_get_pat_idx_wt(fb->fd),
- 		       blt_tile,
- 		       is_ccs_modifier(fb->modifier) ? COMPRESSION_ENABLED : COMPRESSION_DISABLED,
- 		       is_gen12_mc_ccs_modifier(fb->modifier) ? COMPRESSION_TYPE_MEDIA : COMPRESSION_TYPE_3D);
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index b55fa9b52..b7ac2902b 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -13,6 +13,7 @@
- #include "igt.h"
+diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+index 80696aa59..ebaed1e96 100644
+--- a/lib/xe/xe_ioctl.c
++++ b/lib/xe/xe_ioctl.c
+@@ -41,6 +41,7 @@
+ #include "config.h"
+ #include "drmtest.h"
  #include "igt_syncobj.h"
- #include "intel_blt.h"
 +#include "intel_pat.h"
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
- #include "xe/xe_util.h"
-@@ -810,10 +811,12 @@ uint64_t emit_blt_block_copy(int fd,
- 	igt_assert_f(blt, "block-copy requires data to do blit\n");
- 
- 	alignment = get_default_alignment(fd, blt->driver);
--	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment)
--		     + blt->src.plane_offset;
--	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment)
--		     + blt->dst.plane_offset;
-+	src_offset = get_offset_pat_index(ahnd, blt->src.handle, blt->src.size,
-+					  alignment, blt->src.pat_index) +
-+		blt->src.plane_offset;
-+	dst_offset = get_offset_pat_index(ahnd, blt->dst.handle, blt->dst.size,
-+					  alignment, blt->dst.pat_index) +
-+		blt->dst.plane_offset;
- 	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
- 
- 	fill_data(&data, blt, src_offset, dst_offset, ext);
-@@ -884,8 +887,10 @@ int blt_block_copy(int fd,
- 	igt_assert_neq(blt->driver, 0);
- 
- 	alignment = get_default_alignment(fd, blt->driver);
--	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment);
--	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment);
-+	src_offset = get_offset_pat_index(ahnd, blt->src.handle, blt->src.size,
-+					  alignment, blt->src.pat_index);
-+	dst_offset = get_offset_pat_index(ahnd, blt->dst.handle, blt->dst.size,
-+					  alignment, blt->dst.pat_index);
- 	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
- 
- 	emit_blt_block_copy(fd, ahnd, blt, ext, 0, true);
-@@ -1036,8 +1041,10 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
- 	data.dw00.size_of_ctrl_copy = __ccs_size(surf) / CCS_RATIO - 1;
- 	data.dw00.length = 0x3;
- 
--	src_offset = get_offset(ahnd, surf->src.handle, surf->src.size, alignment);
--	dst_offset = get_offset(ahnd, surf->dst.handle, surf->dst.size, alignment);
-+	src_offset = get_offset_pat_index(ahnd, surf->src.handle, surf->src.size,
-+					  alignment, surf->src.pat_index);
-+	dst_offset = get_offset_pat_index(ahnd, surf->dst.handle, surf->dst.size,
-+					  alignment, surf->dst.pat_index);
- 	bb_offset = get_offset(ahnd, surf->bb.handle, surf->bb.size, alignment);
- 
- 	data.dw01.src_address_lo = src_offset;
-@@ -1103,8 +1110,10 @@ int blt_ctrl_surf_copy(int fd,
- 	igt_assert_neq(surf->driver, 0);
- 
- 	alignment = max_t(uint64_t, get_default_alignment(fd, surf->driver), 1ull << 16);
--	src_offset = get_offset(ahnd, surf->src.handle, surf->src.size, alignment);
--	dst_offset = get_offset(ahnd, surf->dst.handle, surf->dst.size, alignment);
-+	src_offset = get_offset_pat_index(ahnd, surf->src.handle, surf->src.size,
-+					  alignment, surf->src.pat_index);
-+	dst_offset = get_offset_pat_index(ahnd, surf->dst.handle, surf->dst.size,
-+					  alignment, surf->dst.pat_index);
- 	bb_offset = get_offset(ahnd, surf->bb.handle, surf->bb.size, alignment);
- 
- 	emit_blt_ctrl_surf_copy(fd, ahnd, surf, 0, true);
-@@ -1308,10 +1317,12 @@ uint64_t emit_blt_fast_copy(int fd,
- 	data.dw03.dst_x2 = blt->dst.x2;
- 	data.dw03.dst_y2 = blt->dst.y2;
- 
--	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment)
--		     + blt->src.plane_offset;
--	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment)
--		     + blt->dst.plane_offset;
-+	src_offset = get_offset_pat_index(ahnd, blt->src.handle, blt->src.size,
-+					  alignment, blt->src.pat_index) +
-+		blt->src.plane_offset;
-+	dst_offset = get_offset_pat_index(ahnd, blt->dst.handle, blt->dst.size, alignment,
-+					  blt->dst.pat_index) +
-+		blt->dst.plane_offset;
- 	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
- 
- 	data.dw04.dst_address_lo = dst_offset;
-@@ -1380,8 +1391,10 @@ int blt_fast_copy(int fd,
- 	igt_assert_neq(blt->driver, 0);
- 
- 	alignment = get_default_alignment(fd, blt->driver);
--	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment);
--	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment);
-+	src_offset = get_offset_pat_index(ahnd, blt->src.handle, blt->src.size,
-+					  alignment, blt->src.pat_index);
-+	dst_offset = get_offset_pat_index(ahnd, blt->dst.handle, blt->dst.size,
-+					  alignment, blt->dst.pat_index);
- 	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
- 
- 	emit_blt_fast_copy(fd, ahnd, blt, 0, true);
-@@ -1460,7 +1473,7 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
- 							  &size, region) == 0);
- 	}
- 
--	blt_set_object(obj, handle, size, region, mocs, tiling,
-+	blt_set_object(obj, handle, size, region, mocs, DEFAULT_PAT_INDEX, tiling,
- 		       compression, compression_type);
- 	blt_set_geom(obj, stride, 0, 0, width, height, 0, 0);
- 
-@@ -1481,7 +1494,7 @@ void blt_destroy_object(int fd, struct blt_copy_object *obj)
- 
- void blt_set_object(struct blt_copy_object *obj,
- 		    uint32_t handle, uint64_t size, uint32_t region,
--		    uint8_t mocs, enum blt_tiling_type tiling,
-+		    uint8_t mocs, uint8_t pat_index, enum blt_tiling_type tiling,
- 		    enum blt_compression compression,
- 		    enum blt_compression_type compression_type)
+ #include "ioctl_wrappers.h"
+ #include "xe_ioctl.h"
+ #include "xe_query.h"
+@@ -92,7 +93,7 @@ void xe_vm_bind_array(int fd, uint32_t vm, uint32_t exec_queue,
+ int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
+ 		  uint64_t offset, uint64_t addr, uint64_t size, uint32_t op,
+ 		  struct drm_xe_sync *sync, uint32_t num_syncs, uint32_t region,
+-		  uint64_t ext)
++		  uint8_t pat_index, uint64_t ext)
  {
-@@ -1489,6 +1502,7 @@ void blt_set_object(struct blt_copy_object *obj,
- 	obj->size = size;
- 	obj->region = region;
- 	obj->mocs = mocs;
-+	obj->pat_index = pat_index;
- 	obj->tiling = tiling;
- 	obj->compression = compression;
- 	obj->compression_type = compression_type;
-@@ -1516,12 +1530,14 @@ void blt_set_copy_object(struct blt_copy_object *obj,
+ 	struct drm_xe_vm_bind bind = {
+ 		.extensions = ext,
+@@ -107,6 +108,8 @@ int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
+ 		.num_syncs = num_syncs,
+ 		.syncs = (uintptr_t)sync,
+ 		.exec_queue_id = exec_queue,
++		.bind.pat_index = (pat_index == DEFAULT_PAT_INDEX) ?
++			intel_get_pat_idx_wb(fd) : pat_index,
+ 	};
  
- void blt_set_ctrl_surf_object(struct blt_ctrl_surf_copy_object *obj,
- 			      uint32_t handle, uint32_t region, uint64_t size,
--			      uint8_t mocs, enum blt_access_type access_type)
-+			      uint8_t mocs, uint8_t pat_index,
-+			      enum blt_access_type access_type)
+ 	if (igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind))
+@@ -121,7 +124,8 @@ void  __xe_vm_bind_assert(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
+ 			  uint32_t num_syncs, uint32_t region, uint64_t ext)
  {
- 	obj->handle = handle;
- 	obj->region = region;
- 	obj->size = size;
- 	obj->mocs = mocs;
-+	obj->pat_index = pat_index;
- 	obj->access_type = access_type;
+ 	igt_assert_eq(__xe_vm_bind(fd, vm, exec_queue, bo, offset, addr, size,
+-				   op, sync, num_syncs, region, ext), 0);
++				   op, sync, num_syncs, region, DEFAULT_PAT_INDEX,
++				   ext), 0);
  }
  
-diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-index d9c8883c7..f8423a986 100644
---- a/lib/intel_blt.h
-+++ b/lib/intel_blt.h
-@@ -79,6 +79,7 @@ struct blt_copy_object {
- 	uint32_t region;
- 	uint64_t size;
- 	uint8_t mocs;
-+	uint8_t pat_index;
- 	enum blt_tiling_type tiling;
- 	enum blt_compression compression;  /* BC only */
- 	enum blt_compression_type compression_type; /* BC only */
-@@ -151,6 +152,7 @@ struct blt_ctrl_surf_copy_object {
- 	uint32_t region;
- 	uint64_t size;
- 	uint8_t mocs;
-+	uint8_t pat_index;
- 	enum blt_access_type access_type;
- };
+ void xe_vm_bind(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
+diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+index c18fc878c..cafbb011a 100644
+--- a/lib/xe/xe_ioctl.h
++++ b/lib/xe/xe_ioctl.h
+@@ -20,7 +20,7 @@ uint32_t xe_vm_create(int fd, uint32_t flags, uint64_t ext);
+ int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
+ 		  uint64_t offset, uint64_t addr, uint64_t size, uint32_t op,
+ 		  struct drm_xe_sync *sync, uint32_t num_syncs, uint32_t region,
+-		  uint64_t ext);
++		  uint8_t pat_index, uint64_t ext);
+ void  __xe_vm_bind_assert(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
+ 			  uint64_t offset, uint64_t addr, uint64_t size,
+ 			  uint32_t op, struct drm_xe_sync *sync,
+diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+index 4952ea786..ffb70973b 100644
+--- a/tests/intel/xe_vm.c
++++ b/tests/intel/xe_vm.c
+@@ -10,6 +10,7 @@
+  */
  
-@@ -247,7 +249,7 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
- void blt_destroy_object(int fd, struct blt_copy_object *obj);
- void blt_set_object(struct blt_copy_object *obj,
- 		    uint32_t handle, uint64_t size, uint32_t region,
--		    uint8_t mocs, enum blt_tiling_type tiling,
-+		    uint8_t mocs, uint8_t pat_index, enum blt_tiling_type tiling,
- 		    enum blt_compression compression,
- 		    enum blt_compression_type compression_type);
- void blt_set_object_ext(struct blt_block_copy_object_ext *obj,
-@@ -258,7 +260,8 @@ void blt_set_copy_object(struct blt_copy_object *obj,
- 			 const struct blt_copy_object *orig);
- void blt_set_ctrl_surf_object(struct blt_ctrl_surf_copy_object *obj,
- 			      uint32_t handle, uint32_t region, uint64_t size,
--			      uint8_t mocs, enum blt_access_type access_type);
-+			      uint8_t mocs, uint8_t pat_index,
-+			      enum blt_access_type access_type);
- 
- void blt_surface_info(const char *info,
- 		      const struct blt_copy_object *obj);
-diff --git a/tests/intel/gem_ccs.c b/tests/intel/gem_ccs.c
-index f5d4ab359..a98557b72 100644
---- a/tests/intel/gem_ccs.c
-+++ b/tests/intel/gem_ccs.c
-@@ -15,6 +15,7 @@
- #include "lib/intel_chipset.h"
- #include "intel_blt.h"
- #include "intel_mocs.h"
+ #include "igt.h"
 +#include "intel_pat.h"
- /**
-  * TEST: gem ccs
-  * Description: Exercise gen12 blitter with and without flatccs compression
-@@ -111,9 +112,9 @@ static void surf_copy(int i915,
- 	blt_ctrl_surf_copy_init(i915, &surf);
- 	surf.print_bb = param.print_bb;
- 	blt_set_ctrl_surf_object(&surf.src, mid->handle, mid->region, mid->size,
--				 uc_mocs, BLT_INDIRECT_ACCESS);
-+				 uc_mocs, DEFAULT_PAT_INDEX, BLT_INDIRECT_ACCESS);
- 	blt_set_ctrl_surf_object(&surf.dst, ccs, REGION_SMEM, ccssize,
--				 uc_mocs, DIRECT_ACCESS);
-+				 uc_mocs, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
- 	bb_size = 4096;
- 	igt_assert_eq(__gem_create(i915, &bb_size, &bb1), 0);
- 	blt_set_batch(&surf.bb, bb1, bb_size, REGION_SMEM);
-@@ -133,7 +134,7 @@ static void surf_copy(int i915,
- 		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
+ #include "lib/igt_syncobj.h"
+ #include "lib/intel_reg.h"
+ #include "xe_drm.h"
+@@ -316,7 +317,8 @@ static void userptr_invalid(int fd)
+ 	vm = xe_vm_create(fd, 0, 0);
+ 	munmap(data, size);
+ 	ret = __xe_vm_bind(fd, vm, 0, 0, to_user_pointer(data), 0x40000,
+-			   size, XE_VM_BIND_OP_MAP_USERPTR, NULL, 0, 0, 0);
++			   size, XE_VM_BIND_OP_MAP_USERPTR, NULL, 0, 0,
++			   DEFAULT_PAT_INDEX, 0);
+ 	igt_assert(ret == -EFAULT);
  
- 		blt_set_ctrl_surf_object(&surf.dst, ccs2, REGION_SMEM, ccssize,
--					 0, DIRECT_ACCESS);
-+					 0, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
- 		blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
- 		gem_sync(i915, surf.dst.handle);
- 
-@@ -155,9 +156,9 @@ static void surf_copy(int i915,
- 	for (int i = 0; i < surf.dst.size / sizeof(uint32_t); i++)
- 		ccsmap[i] = i;
- 	blt_set_ctrl_surf_object(&surf.src, ccs, REGION_SMEM, ccssize,
--				 uc_mocs, DIRECT_ACCESS);
-+				 uc_mocs, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
- 	blt_set_ctrl_surf_object(&surf.dst, mid->handle, mid->region, mid->size,
--				 uc_mocs, INDIRECT_ACCESS);
-+				 uc_mocs, DEFAULT_PAT_INDEX, INDIRECT_ACCESS);
- 	blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
- 
- 	blt_copy_init(i915, &blt);
-@@ -399,7 +400,8 @@ static void block_copy(int i915,
- 	blt_set_object_ext(&ext.dst, 0, width, height, SURFACE_TYPE_2D);
- 	if (config->inplace) {
- 		blt_set_object(&blt.dst, mid->handle, dst->size, mid->region, 0,
--			       T_LINEAR, COMPRESSION_DISABLED, comp_type);
-+			       DEFAULT_PAT_INDEX, T_LINEAR, COMPRESSION_DISABLED,
-+			       comp_type);
- 		blt.dst.ptr = mid->ptr;
- 	}
- 
-@@ -475,7 +477,7 @@ static void block_multicopy(int i915,
- 
- 	if (config->inplace) {
- 		blt_set_object(&blt3.dst, mid->handle, dst->size, mid->region,
--			       mid->mocs, mid_tiling, COMPRESSION_DISABLED,
-+			       mid->mocs, DEFAULT_PAT_INDEX, mid_tiling, COMPRESSION_DISABLED,
- 			       comp_type);
- 		blt3.dst.ptr = mid->ptr;
- 	}
-diff --git a/tests/intel/gem_lmem_swapping.c b/tests/intel/gem_lmem_swapping.c
-index ede545c92..7f2ab8bb6 100644
---- a/tests/intel/gem_lmem_swapping.c
-+++ b/tests/intel/gem_lmem_swapping.c
-@@ -486,7 +486,7 @@ static void __do_evict(int i915,
- 				   INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0));
- 		blt_set_object(tmp, tmp->handle, params->size.max,
- 			       INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0),
--			       intel_get_uc_mocs(i915), T_LINEAR,
-+			       intel_get_uc_mocs(i915), 0, T_LINEAR,
- 			       COMPRESSION_DISABLED, COMPRESSION_TYPE_3D);
- 		blt_set_geom(tmp, stride, 0, 0, width, height, 0, 0);
- 	}
-@@ -516,7 +516,7 @@ static void __do_evict(int i915,
- 			obj->blt_obj = calloc(1, sizeof(*obj->blt_obj));
- 			igt_assert(obj->blt_obj);
- 			blt_set_object(obj->blt_obj, obj->handle, obj->size, region_id,
--				       intel_get_uc_mocs(i915), T_LINEAR,
-+				       intel_get_uc_mocs(i915), 0, T_LINEAR,
- 				       COMPRESSION_ENABLED, COMPRESSION_TYPE_3D);
- 			blt_set_geom(obj->blt_obj, stride, 0, 0, width, height, 0, 0);
- 			init_object_ccs(i915, obj, tmp, rand(), blt_ctx,
-diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
-index 20bbc4448..27859d5ce 100644
---- a/tests/intel/xe_ccs.c
-+++ b/tests/intel/xe_ccs.c
-@@ -13,6 +13,7 @@
- #include "igt_syncobj.h"
- #include "intel_blt.h"
- #include "intel_mocs.h"
-+#include "intel_pat.h"
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
- #include "xe/xe_util.h"
-@@ -108,8 +109,9 @@ static void surf_copy(int xe,
- 	blt_ctrl_surf_copy_init(xe, &surf);
- 	surf.print_bb = param.print_bb;
- 	blt_set_ctrl_surf_object(&surf.src, mid->handle, mid->region, mid->size,
--				 uc_mocs, BLT_INDIRECT_ACCESS);
--	blt_set_ctrl_surf_object(&surf.dst, ccs, sysmem, ccssize, uc_mocs, DIRECT_ACCESS);
-+				 uc_mocs, DEFAULT_PAT_INDEX, BLT_INDIRECT_ACCESS);
-+	blt_set_ctrl_surf_object(&surf.dst, ccs, sysmem, ccssize, uc_mocs,
-+				 DEFAULT_PAT_INDEX, DIRECT_ACCESS);
- 	bb_size = xe_get_default_alignment(xe);
- 	bb1 = xe_bo_create_flags(xe, 0, bb_size, sysmem);
- 	blt_set_batch(&surf.bb, bb1, bb_size, sysmem);
-@@ -130,7 +132,7 @@ static void surf_copy(int xe,
- 		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
- 
- 		blt_set_ctrl_surf_object(&surf.dst, ccs2, system_memory(xe), ccssize,
--					 0, DIRECT_ACCESS);
-+					 0, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
- 		blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
- 		intel_ctx_xe_sync(ctx, true);
- 
-@@ -153,9 +155,9 @@ static void surf_copy(int xe,
- 	for (int i = 0; i < surf.dst.size / sizeof(uint32_t); i++)
- 		ccsmap[i] = i;
- 	blt_set_ctrl_surf_object(&surf.src, ccs, sysmem, ccssize,
--				 uc_mocs, DIRECT_ACCESS);
-+				 uc_mocs, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
- 	blt_set_ctrl_surf_object(&surf.dst, mid->handle, mid->region, mid->size,
--				 uc_mocs, INDIRECT_ACCESS);
-+				 uc_mocs, DEFAULT_PAT_INDEX, INDIRECT_ACCESS);
- 	blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
- 	intel_ctx_xe_sync(ctx, true);
- 
-@@ -369,7 +371,8 @@ static void block_copy(int xe,
- 	blt_set_object_ext(&ext.dst, 0, width, height, SURFACE_TYPE_2D);
- 	if (config->inplace) {
- 		blt_set_object(&blt.dst, mid->handle, dst->size, mid->region, 0,
--			       T_LINEAR, COMPRESSION_DISABLED, comp_type);
-+			       DEFAULT_PAT_INDEX, T_LINEAR, COMPRESSION_DISABLED,
-+			       comp_type);
- 		blt.dst.ptr = mid->ptr;
- 	}
- 
-@@ -450,8 +453,8 @@ static void block_multicopy(int xe,
- 
- 	if (config->inplace) {
- 		blt_set_object(&blt3.dst, mid->handle, dst->size, mid->region,
--			       mid->mocs, mid_tiling, COMPRESSION_DISABLED,
--			       comp_type);
-+			       mid->mocs, DEFAULT_PAT_INDEX, mid_tiling,
-+			       COMPRESSION_DISABLED, comp_type);
- 		blt3.dst.ptr = mid->ptr;
- 	}
- 
+ 	xe_vm_destroy(fd, vm);
 -- 
 2.41.0
