@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Matthew Auld <matthew.auld@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  5 Oct 2023 16:31:11 +0100
-Message-ID: <20231005153116.452319-8-matthew.auld@intel.com>
+Date: Thu,  5 Oct 2023 16:31:13 +0100
+Message-ID: <20231005153116.452319-10-matthew.auld@intel.com>
 In-Reply-To: <20231005153116.452319-1-matthew.auld@intel.com>
 References: <20231005153116.452319-1-matthew.auld@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 07/12] lib/allocator: add
- get_offset_pat_index() helper
+Subject: [igt-dev] [PATCH i-g-t 09/12] lib/intel_buf: support pat_index
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,240 +21,494 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For some cases we are going to need to pass the pat_index for the
-vm_bind op. Add a helper for this, such that we can allocate an address
-and give the mapping some pat_index.
+Some users need to able select their own pat_index. Some display tests
+use igt_draw which in turn uses intel_batchbuffer and intel_buf.  We
+also have a couple more display tests directly using these interfaces
+directly. Idea is to select wt/uc for anything display related, but also
+allow any test to select a pat_index for a given intel_buf.
 
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Signted-off-by: Matthew Auld <matthew.auld@intel.com>
 Cc: José Roberto de Souza <jose.souza@intel.com>
 Cc: Pallavi Mishra <pallavi.mishra@intel.com>
 ---
- lib/intel_allocator.c             | 43 +++++++++++++++++++++++--------
- lib/intel_allocator.h             |  5 +++-
- lib/xe/xe_util.c                  |  1 +
- lib/xe/xe_util.h                  |  1 +
- tests/intel/api_intel_allocator.c |  4 ++-
- 5 files changed, 41 insertions(+), 13 deletions(-)
+ lib/igt_draw.c            |  7 +++++-
+ lib/igt_fb.c              |  3 ++-
+ lib/intel_allocator.c     |  1 +
+ lib/intel_allocator.h     |  1 +
+ lib/intel_batchbuffer.c   | 51 ++++++++++++++++++++++++++++++---------
+ lib/intel_bufops.c        | 29 +++++++++++++++-------
+ lib/intel_bufops.h        |  9 +++++--
+ tests/intel/kms_big_fb.c  |  4 ++-
+ tests/intel/kms_dirtyfb.c |  7 ++++--
+ tests/intel/kms_psr.c     |  4 ++-
+ tests/intel/xe_intel_bb.c |  3 ++-
+ 11 files changed, 89 insertions(+), 30 deletions(-)
 
+diff --git a/lib/igt_draw.c b/lib/igt_draw.c
+index 2332bf94a..8db71ce5e 100644
+--- a/lib/igt_draw.c
++++ b/lib/igt_draw.c
+@@ -31,6 +31,7 @@
+ #include "intel_batchbuffer.h"
+ #include "intel_chipset.h"
+ #include "intel_mocs.h"
++#include "intel_pat.h"
+ #include "igt_core.h"
+ #include "igt_fb.h"
+ #include "ioctl_wrappers.h"
+@@ -75,6 +76,7 @@ struct buf_data {
+ 	uint32_t size;
+ 	uint32_t stride;
+ 	int bpp;
++	uint8_t pat_index;
+ };
+ 
+ struct rect {
+@@ -658,7 +660,8 @@ static struct intel_buf *create_buf(int fd, struct buf_ops *bops,
+ 				    width, height, from->bpp, 0,
+ 				    tiling, 0,
+ 				    size, 0,
+-				    region);
++				    region,
++				    from->pat_index);
+ 
+ 	/* Make sure we close handle on destroy path */
+ 	intel_buf_set_ownership(buf, true);
+@@ -785,6 +788,7 @@ static void draw_rect_render(int fd, struct cmd_data *cmd_data,
+ 	igt_skip_on(!rendercopy);
+ 
+ 	/* We create a temporary buffer and copy from it using rendercopy. */
++	tmp.pat_index = buf->pat_index;
+ 	tmp.size = rect->w * rect->h * pixel_size;
+ 	if (is_i915_device(fd))
+ 		tmp.handle = gem_create(fd, tmp.size);
+@@ -852,6 +856,7 @@ void igt_draw_rect(int fd, struct buf_ops *bops, uint32_t ctx,
+ 		.size = buf_size,
+ 		.stride = buf_stride,
+ 		.bpp = bpp,
++		.pat_index = intel_get_pat_idx_wt(fd),
+ 	};
+ 	struct rect rect = {
+ 		.x = rect_x,
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index d290fd775..61384c553 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -2637,7 +2637,8 @@ igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
+ 				    igt_fb_mod_to_tiling(fb->modifier),
+ 				    compression, fb->size,
+ 				    fb->strides[0],
+-				    region);
++				    region,
++				    intel_get_pat_idx_wt(fd));
+ 	intel_buf_set_name(buf, name);
+ 
+ 	/* Make sure we close handle on destroy path */
 diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
-index f0a9b7fb5..da357b833 100644
+index da357b833..b3e5c0226 100644
 --- a/lib/intel_allocator.c
 +++ b/lib/intel_allocator.c
-@@ -16,6 +16,7 @@
- #include "igt_map.h"
- #include "intel_allocator.h"
- #include "intel_allocator_msgchannel.h"
-+#include "intel_pat.h"
- #include "xe/xe_query.h"
- #include "xe/xe_util.h"
- 
-@@ -92,6 +93,7 @@ struct allocator_object {
- 	uint32_t handle;
- 	uint64_t offset;
- 	uint64_t size;
-+	uint8_t pat_index;
- 
- 	enum allocator_bind_op bind_op;
- };
-@@ -1122,14 +1124,14 @@ void intel_allocator_get_address_range(uint64_t allocator_handle,
- 
- static bool is_same(struct allocator_object *obj,
- 		    uint32_t handle, uint64_t offset, uint64_t size,
--		    enum allocator_bind_op bind_op)
-+		    uint8_t pat_index, enum allocator_bind_op bind_op)
+@@ -1449,6 +1449,7 @@ bool intel_allocator_is_reserved(uint64_t allocator_handle,
+ bool intel_allocator_reserve_if_not_allocated(uint64_t allocator_handle,
+ 					      uint32_t handle,
+ 					      uint64_t size, uint64_t offset,
++					      uint8_t pat_index,
+ 					      bool *is_allocatedp)
  {
- 	return obj->handle == handle &&	obj->offset == offset && obj->size == size &&
--	       (obj->bind_op == bind_op || obj->bind_op == BOUND);
-+	       obj->pat_index == pat_index && (obj->bind_op == bind_op || obj->bind_op == BOUND);
- }
- 
- static void track_object(uint64_t allocator_handle, uint32_t handle,
--			 uint64_t offset, uint64_t size,
-+			 uint64_t offset, uint64_t size, uint8_t pat_index,
- 			 enum allocator_bind_op bind_op)
- {
- 	struct ahnd_info *ainfo;
-@@ -1156,6 +1158,9 @@ static void track_object(uint64_t allocator_handle, uint32_t handle,
- 	if (ainfo->driver == INTEL_DRIVER_I915)
- 		return; /* no-op for i915, at least for now */
- 
-+	if (pat_index == DEFAULT_PAT_INDEX)
-+		pat_index = intel_get_pat_idx_wb(ainfo->fd);
-+
- 	pthread_mutex_lock(&ainfo->bind_map_mutex);
- 	obj = igt_map_search(ainfo->bind_map, &handle);
- 	if (obj) {
-@@ -1165,7 +1170,7 @@ static void track_object(uint64_t allocator_handle, uint32_t handle,
- 		 * bind_map.
- 		 */
- 		if (bind_op == TO_BIND) {
--			igt_assert_eq(is_same(obj, handle, offset, size, bind_op), true);
-+			igt_assert_eq(is_same(obj, handle, offset, size, pat_index, bind_op), true);
- 		} else if (bind_op == TO_UNBIND) {
- 			if (obj->bind_op == TO_BIND)
- 				igt_map_remove(ainfo->bind_map, &obj->handle, map_entry_free_func);
-@@ -1181,6 +1186,7 @@ static void track_object(uint64_t allocator_handle, uint32_t handle,
- 		obj->handle = handle;
- 		obj->offset = offset;
- 		obj->size = size;
-+		obj->pat_index = pat_index;
- 		obj->bind_op = bind_op;
- 		igt_map_insert(ainfo->bind_map, &obj->handle, obj);
- 	}
-@@ -1204,7 +1210,7 @@ out:
-  */
- uint64_t __intel_allocator_alloc(uint64_t allocator_handle, uint32_t handle,
- 				 uint64_t size, uint64_t alignment,
--				 enum allocator_strategy strategy)
-+				 uint8_t pat_index, enum allocator_strategy strategy)
- {
- 	struct alloc_req req = { .request_type = REQ_ALLOC,
- 				 .allocator_handle = allocator_handle,
-@@ -1219,7 +1225,8 @@ uint64_t __intel_allocator_alloc(uint64_t allocator_handle, uint32_t handle,
- 	igt_assert(handle_request(&req, &resp) == 0);
- 	igt_assert(resp.response_type == RESP_ALLOC);
- 
--	track_object(allocator_handle, handle, resp.alloc.offset, size, TO_BIND);
-+	track_object(allocator_handle, handle, resp.alloc.offset, size, pat_index,
-+		     TO_BIND);
- 
- 	return resp.alloc.offset;
- }
-@@ -1241,7 +1248,7 @@ uint64_t intel_allocator_alloc(uint64_t allocator_handle, uint32_t handle,
- 	uint64_t offset;
- 
- 	offset = __intel_allocator_alloc(allocator_handle, handle,
--					 size, alignment,
-+					 size, alignment, DEFAULT_PAT_INDEX,
- 					 ALLOC_STRATEGY_NONE);
- 	igt_assert(offset != ALLOC_INVALID_ADDRESS);
- 
-@@ -1268,7 +1275,8 @@ uint64_t intel_allocator_alloc_with_strategy(uint64_t allocator_handle,
- 	uint64_t offset;
- 
- 	offset = __intel_allocator_alloc(allocator_handle, handle,
--					 size, alignment, strategy);
-+					 size, alignment, DEFAULT_PAT_INDEX,
-+					 strategy);
- 	igt_assert(offset != ALLOC_INVALID_ADDRESS);
- 
- 	return offset;
-@@ -1298,7 +1306,7 @@ bool intel_allocator_free(uint64_t allocator_handle, uint32_t handle)
- 	igt_assert(handle_request(&req, &resp) == 0);
- 	igt_assert(resp.response_type == RESP_FREE);
- 
--	track_object(allocator_handle, handle, 0, 0, TO_UNBIND);
-+	track_object(allocator_handle, handle, 0, 0, 0, TO_UNBIND);
- 
- 	return resp.free.freed;
- }
-@@ -1500,16 +1508,17 @@ static void __xe_op_bind(struct ahnd_info *ainfo, uint32_t sync_in, uint32_t syn
- 		if (obj->bind_op == BOUND)
- 			continue;
- 
--		bind_info("= [vm: %u] %s => %u %lx %lx\n",
-+		bind_info("= [vm: %u] %s => %u %lx %lx %u\n",
- 			  ainfo->vm,
- 			  obj->bind_op == TO_BIND ? "TO BIND" : "TO UNBIND",
- 			  obj->handle, obj->offset,
--			  obj->size);
-+			  obj->size, obj->pat_index);
- 
- 		entry = malloc(sizeof(*entry));
- 		entry->handle = obj->handle;
- 		entry->offset = obj->offset;
- 		entry->size = obj->size;
-+		entry->pat_index = obj->pat_index;
- 		entry->bind_op = obj->bind_op == TO_BIND ? XE_OBJECT_BIND :
- 							   XE_OBJECT_UNBIND;
- 		igt_list_add(&entry->link, &obj_list);
-@@ -1534,6 +1543,18 @@ static void __xe_op_bind(struct ahnd_info *ainfo, uint32_t sync_in, uint32_t syn
- 	}
- }
- 
-+uint64_t get_offset_pat_index(uint64_t ahnd, uint32_t handle, uint64_t size,
-+			      uint64_t alignment, uint8_t pat_index)
-+{
-+	uint64_t offset;
-+
-+	offset = __intel_allocator_alloc(ahnd, handle, size, alignment,
-+					 pat_index, ALLOC_STRATEGY_NONE);
-+	igt_assert(offset != ALLOC_INVALID_ADDRESS);
-+
-+	return offset;
-+}
-+
- /**
-  * intel_allocator_bind:
-  * @allocator_handle: handle to an allocator
+ 	struct alloc_req req = { .request_type = REQ_RESERVE_IF_NOT_ALLOCATED,
 diff --git a/lib/intel_allocator.h b/lib/intel_allocator.h
-index f9ff7f1cc..5da8af7f9 100644
+index 5da8af7f9..d93c5828d 100644
 --- a/lib/intel_allocator.h
 +++ b/lib/intel_allocator.h
-@@ -186,7 +186,7 @@ bool intel_allocator_close(uint64_t allocator_handle);
- void intel_allocator_get_address_range(uint64_t allocator_handle,
- 				       uint64_t *startp, uint64_t *endp);
- uint64_t __intel_allocator_alloc(uint64_t allocator_handle, uint32_t handle,
--				 uint64_t size, uint64_t alignment,
-+				 uint64_t size, uint64_t alignment, uint8_t pat_index,
- 				 enum allocator_strategy strategy);
- uint64_t intel_allocator_alloc(uint64_t allocator_handle, uint32_t handle,
- 			       uint64_t size, uint64_t alignment);
-@@ -266,6 +266,9 @@ static inline bool put_ahnd(uint64_t ahnd)
- 	return !ahnd || intel_allocator_close(ahnd);
- }
+@@ -206,6 +206,7 @@ bool intel_allocator_is_reserved(uint64_t allocator_handle,
+ bool intel_allocator_reserve_if_not_allocated(uint64_t allocator_handle,
+ 					      uint32_t handle,
+ 					      uint64_t size, uint64_t offset,
++					      uint8_t pat_index,
+ 					      bool *is_allocatedp);
  
-+uint64_t get_offset_pat_index(uint64_t ahnd, uint32_t handle, uint64_t size,
-+			      uint64_t alignment, uint8_t pat_index);
-+
- static inline uint64_t get_offset(uint64_t ahnd, uint32_t handle,
- 				  uint64_t size, uint64_t alignment)
+ void intel_allocator_print(uint64_t allocator_handle);
+diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+index e7b1b755f..eaaf667ea 100644
+--- a/lib/intel_batchbuffer.c
++++ b/lib/intel_batchbuffer.c
+@@ -38,6 +38,7 @@
+ #include "intel_batchbuffer.h"
+ #include "intel_bufops.h"
+ #include "intel_chipset.h"
++#include "intel_pat.h"
+ #include "media_fill.h"
+ #include "media_spin.h"
+ #include "sw_sync.h"
+@@ -825,15 +826,18 @@ static void __reallocate_objects(struct intel_bb *ibb)
+ static inline uint64_t __intel_bb_get_offset(struct intel_bb *ibb,
+ 					     uint32_t handle,
+ 					     uint64_t size,
+-					     uint32_t alignment)
++					     uint32_t alignment,
++					     uint8_t pat_index)
  {
-diff --git a/lib/xe/xe_util.c b/lib/xe/xe_util.c
-index 2f9ffe2f1..8583326a9 100644
---- a/lib/xe/xe_util.c
-+++ b/lib/xe/xe_util.c
-@@ -145,6 +145,7 @@ static struct drm_xe_vm_bind_op *xe_alloc_bind_ops(struct igt_list_head *obj_lis
- 		ops->addr = obj->offset;
- 		ops->range = obj->size;
- 		ops->region = 0;
-+		ops->pat_index = obj->pat_index;
- 
- 		bind_info("  [%d]: [%6s] handle: %u, offset: %llx, size: %llx\n",
- 			  i, obj->bind_op == XE_OBJECT_BIND ? "BIND" : "UNBIND",
-diff --git a/lib/xe/xe_util.h b/lib/xe/xe_util.h
-index e97d236b8..e3bdf3d11 100644
---- a/lib/xe/xe_util.h
-+++ b/lib/xe/xe_util.h
-@@ -36,6 +36,7 @@ struct xe_object {
- 	uint32_t handle;
  	uint64_t offset;
- 	uint64_t size;
-+	uint8_t pat_index;
- 	enum xe_bind_op bind_op;
- 	struct igt_list_head link;
- };
-diff --git a/tests/intel/api_intel_allocator.c b/tests/intel/api_intel_allocator.c
-index f3fcf8a34..d19be3ce9 100644
---- a/tests/intel/api_intel_allocator.c
-+++ b/tests/intel/api_intel_allocator.c
-@@ -9,6 +9,7 @@
+ 
+ 	if (ibb->enforce_relocs)
+ 		return 0;
+ 
+-	offset = intel_allocator_alloc(ibb->allocator_handle,
+-				       handle, size, alignment);
++	offset = __intel_allocator_alloc(ibb->allocator_handle, handle,
++					 size, alignment, pat_index,
++					 ALLOC_STRATEGY_NONE);
++	igt_assert(offset != ALLOC_INVALID_ADDRESS);
+ 
+ 	return offset;
+ }
+@@ -1300,11 +1304,14 @@ static struct drm_xe_vm_bind_op *xe_alloc_bind_ops(struct intel_bb *ibb,
+ 		ops->op = op;
+ 		ops->obj_offset = 0;
+ 		ops->addr = objects[i]->offset;
+-		ops->range = objects[i]->rsvd1;
++		ops->range = objects[i]->rsvd1 & ~(4096-1);
+ 		ops->region = region;
++		if (set_obj)
++			ops->pat_index = objects[i]->rsvd1 & (4096-1);
+ 
+-		igt_debug("  [%d]: handle: %u, offset: %llx, size: %llx\n",
+-			  i, ops->obj, (long long)ops->addr, (long long)ops->range);
++		igt_debug("  [%d]: handle: %u, offset: %llx, size: %llx pat_index: %u\n",
++			  i, ops->obj, (long long)ops->addr, (long long)ops->range,
++			  ops->pat_index);
+ 	}
+ 
+ 	return bind_ops;
+@@ -1409,7 +1416,8 @@ void intel_bb_reset(struct intel_bb *ibb, bool purge_objects_cache)
+ 		ibb->batch_offset = __intel_bb_get_offset(ibb,
+ 							  ibb->handle,
+ 							  ibb->size,
+-							  ibb->alignment);
++							  ibb->alignment,
++							  DEFAULT_PAT_INDEX);
+ 
+ 	intel_bb_add_object(ibb, ibb->handle, ibb->size,
+ 			    ibb->batch_offset,
+@@ -1645,7 +1653,8 @@ static void __remove_from_objects(struct intel_bb *ibb,
+  */
+ static struct drm_i915_gem_exec_object2 *
+ __intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
+-		      uint64_t offset, uint64_t alignment, bool write)
++		      uint64_t offset, uint64_t alignment, uint8_t pat_index,
++		      bool write)
+ {
+ 	struct drm_i915_gem_exec_object2 *object;
+ 
+@@ -1661,6 +1670,9 @@ __intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
+ 	object = __add_to_cache(ibb, handle);
+ 	__add_to_objects(ibb, object);
+ 
++	if (pat_index == DEFAULT_PAT_INDEX)
++		pat_index = intel_get_pat_idx_wb(ibb->fd);
++
+ 	/*
+ 	 * If object->offset == INVALID_ADDRESS we added freshly object to the
+ 	 * cache. In that case we have two choices:
+@@ -1670,7 +1682,7 @@ __intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
+ 	if (INVALID_ADDR(object->offset)) {
+ 		if (INVALID_ADDR(offset)) {
+ 			offset = __intel_bb_get_offset(ibb, handle, size,
+-						       alignment);
++						       alignment, pat_index);
+ 		} else {
+ 			offset = offset & (ibb->gtt_size - 1);
+ 
+@@ -1683,6 +1695,7 @@ __intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
+ 
+ 				reserved = intel_allocator_reserve_if_not_allocated(ibb->allocator_handle,
+ 										    handle, size, offset,
++										    pat_index,
+ 										    &allocated);
+ 				igt_assert_f(allocated || reserved,
+ 					     "Can't get offset, allocated: %d, reserved: %d\n",
+@@ -1721,6 +1734,18 @@ __intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
+ 	if (ibb->driver == INTEL_DRIVER_XE) {
+ 		object->alignment = alignment;
+ 		object->rsvd1 = size;
++		igt_assert(!(size & (4096-1)));
++
++		if (pat_index == DEFAULT_PAT_INDEX)
++			pat_index = intel_get_pat_idx_wb(ibb->fd);
++
++		/*
++		 * XXX: For now encode the pat_index in the first few bits of
++		 * rsvd1. intel_batchbuffer should really stop using the i915
++		 * drm_i915_gem_exec_object2 to encode VMA placement
++		 * information on xe...
++		 */
++		object->rsvd1 |= pat_index;
+ 	}
+ 
+ 	return object;
+@@ -1733,7 +1758,7 @@ intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
+ 	struct drm_i915_gem_exec_object2 *obj = NULL;
+ 
+ 	obj = __intel_bb_add_object(ibb, handle, size, offset,
+-				    alignment, write);
++				    alignment, DEFAULT_PAT_INDEX, write);
+ 	igt_assert(obj);
+ 
+ 	return obj;
+@@ -1795,8 +1820,10 @@ __intel_bb_add_intel_buf(struct intel_bb *ibb, struct intel_buf *buf,
+ 		}
+ 	}
+ 
+-	obj = intel_bb_add_object(ibb, buf->handle, intel_buf_bo_size(buf),
+-				  buf->addr.offset, alignment, write);
++	obj = __intel_bb_add_object(ibb, buf->handle, intel_buf_bo_size(buf),
++				    buf->addr.offset, alignment, buf->pat_index,
++				    write);
++	igt_assert(obj);
+ 	buf->addr.offset = obj->offset;
+ 
+ 	if (igt_list_empty(&buf->link)) {
+diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
+index 2c91adb88..fbee4748e 100644
+--- a/lib/intel_bufops.c
++++ b/lib/intel_bufops.c
+@@ -29,6 +29,7 @@
  #include "igt.h"
- #include "igt_aux.h"
- #include "intel_allocator.h"
+ #include "igt_x86.h"
+ #include "intel_bufops.h"
 +#include "intel_pat.h"
  #include "xe/xe_ioctl.h"
  #include "xe/xe_query.h"
  
-@@ -131,7 +132,8 @@ static void alloc_simple(int fd)
+@@ -818,7 +819,7 @@ static void __intel_buf_init(struct buf_ops *bops,
+ 			     int width, int height, int bpp, int alignment,
+ 			     uint32_t req_tiling, uint32_t compression,
+ 			     uint64_t bo_size, int bo_stride,
+-			     uint64_t region)
++			     uint64_t region, uint8_t pat_index)
+ {
+ 	uint32_t tiling = req_tiling;
+ 	uint64_t size;
+@@ -839,6 +840,10 @@ static void __intel_buf_init(struct buf_ops *bops,
+ 	IGT_INIT_LIST_HEAD(&buf->link);
+ 	buf->mocs = INTEL_BUF_MOCS_DEFAULT;
  
- 	intel_allocator_get_address_range(ahnd, &start, &end);
- 	offset0 = intel_allocator_alloc(ahnd, 1, end - start, 0);
--	offset1 = __intel_allocator_alloc(ahnd, 2, 4096, 0, ALLOC_STRATEGY_NONE);
-+	offset1 = __intel_allocator_alloc(ahnd, 2, 4096, 0, DEFAULT_PAT_INDEX,
-+					  ALLOC_STRATEGY_NONE);
- 	igt_assert(offset1 == ALLOC_INVALID_ADDRESS);
- 	intel_allocator_free(ahnd, 1);
++	if (pat_index == DEFAULT_PAT_INDEX)
++		pat_index = intel_get_pat_idx_wb(bops->fd);
++	buf->pat_index = pat_index;
++
+ 	if (compression) {
+ 		igt_require(bops->intel_gen >= 9);
+ 		igt_assert(req_tiling == I915_TILING_Y ||
+@@ -957,7 +962,7 @@ void intel_buf_init(struct buf_ops *bops,
+ 	region = bops->driver == INTEL_DRIVER_I915 ? I915_SYSTEM_MEMORY :
+ 						     system_memory(bops->fd);
+ 	__intel_buf_init(bops, 0, buf, width, height, bpp, alignment,
+-			 tiling, compression, 0, 0, region);
++			 tiling, compression, 0, 0, region, DEFAULT_PAT_INDEX);
  
+ 	intel_buf_set_ownership(buf, true);
+ }
+@@ -974,7 +979,7 @@ void intel_buf_init_in_region(struct buf_ops *bops,
+ 			      uint64_t region)
+ {
+ 	__intel_buf_init(bops, 0, buf, width, height, bpp, alignment,
+-			 tiling, compression, 0, 0, region);
++			 tiling, compression, 0, 0, region, DEFAULT_PAT_INDEX);
+ 
+ 	intel_buf_set_ownership(buf, true);
+ }
+@@ -1033,7 +1038,7 @@ void intel_buf_init_using_handle(struct buf_ops *bops,
+ 				 uint32_t req_tiling, uint32_t compression)
+ {
+ 	__intel_buf_init(bops, handle, buf, width, height, bpp, alignment,
+-			 req_tiling, compression, 0, 0, -1);
++			 req_tiling, compression, 0, 0, -1, DEFAULT_PAT_INDEX);
+ }
+ 
+ /**
+@@ -1050,6 +1055,7 @@ void intel_buf_init_using_handle(struct buf_ops *bops,
+  * @size: real bo size
+  * @stride: bo stride
+  * @region: region
++ * @pat_index: pat_index to use for the binding (only used on xe)
+  *
+  * Function configures BO handle within intel_buf structure passed by the caller
+  * (with all its metadata - width, height, ...). Useful if BO was created
+@@ -1067,10 +1073,12 @@ void intel_buf_init_full(struct buf_ops *bops,
+ 			 uint32_t compression,
+ 			 uint64_t size,
+ 			 int stride,
+-			 uint64_t region)
++			 uint64_t region,
++			 uint8_t pat_index)
+ {
+ 	__intel_buf_init(bops, handle, buf, width, height, bpp, alignment,
+-			 req_tiling, compression, size, stride, region);
++			 req_tiling, compression, size, stride, region,
++			 pat_index);
+ }
+ 
+ /**
+@@ -1149,7 +1157,8 @@ struct intel_buf *intel_buf_create_using_handle_and_size(struct buf_ops *bops,
+ 							 int stride)
+ {
+ 	return intel_buf_create_full(bops, handle, width, height, bpp, alignment,
+-				     req_tiling, compression, size, stride, -1);
++				     req_tiling, compression, size, stride, -1,
++				     DEFAULT_PAT_INDEX);
+ }
+ 
+ struct intel_buf *intel_buf_create_full(struct buf_ops *bops,
+@@ -1160,7 +1169,8 @@ struct intel_buf *intel_buf_create_full(struct buf_ops *bops,
+ 					uint32_t compression,
+ 					uint64_t size,
+ 					int stride,
+-					uint64_t region)
++					uint64_t region,
++					uint8_t pat_index)
+ {
+ 	struct intel_buf *buf;
+ 
+@@ -1170,7 +1180,8 @@ struct intel_buf *intel_buf_create_full(struct buf_ops *bops,
+ 	igt_assert(buf);
+ 
+ 	__intel_buf_init(bops, handle, buf, width, height, bpp, alignment,
+-			 req_tiling, compression, size, stride, region);
++			 req_tiling, compression, size, stride, region,
++			 pat_index);
+ 
+ 	return buf;
+ }
+diff --git a/lib/intel_bufops.h b/lib/intel_bufops.h
+index 4dfe4681c..b6048402b 100644
+--- a/lib/intel_bufops.h
++++ b/lib/intel_bufops.h
+@@ -63,6 +63,9 @@ struct intel_buf {
+ 	/* Content Protection*/
+ 	bool is_protected;
+ 
++	/* pat_index to use for mapping this buf. Only used in Xe. */
++	uint8_t pat_index;
++
+ 	/* For debugging purposes */
+ 	char name[INTEL_BUF_NAME_MAXSIZE + 1];
+ };
+@@ -161,7 +164,8 @@ void intel_buf_init_full(struct buf_ops *bops,
+ 			 uint32_t compression,
+ 			 uint64_t size,
+ 			 int stride,
+-			 uint64_t region);
++			 uint64_t region,
++			 uint8_t pat_index);
+ 
+ struct intel_buf *intel_buf_create(struct buf_ops *bops,
+ 				   int width, int height,
+@@ -192,7 +196,8 @@ struct intel_buf *intel_buf_create_full(struct buf_ops *bops,
+ 					uint32_t compression,
+ 					uint64_t size,
+ 					int stride,
+-					uint64_t region);
++					uint64_t region,
++					uint8_t pat_index);
+ void intel_buf_destroy(struct intel_buf *buf);
+ 
+ static inline void intel_buf_set_pxp(struct intel_buf *buf, bool new_pxp_state)
+diff --git a/tests/intel/kms_big_fb.c b/tests/intel/kms_big_fb.c
+index 611e60896..854a77992 100644
+--- a/tests/intel/kms_big_fb.c
++++ b/tests/intel/kms_big_fb.c
+@@ -34,6 +34,7 @@
+ #include <string.h>
+ 
+ #include "i915/gem_create.h"
++#include "intel_pat.h"
+ #include "xe/xe_ioctl.h"
+ #include "xe/xe_query.h"
+ 
+@@ -88,7 +89,8 @@ static struct intel_buf *init_buf(data_t *data,
+ 	handle = gem_open(data->drm_fd, name);
+ 	buf = intel_buf_create_full(data->bops, handle, width, height,
+ 				    bpp, 0, tiling, 0, size, 0,
+-				    region);
++				    region,
++				    intel_get_pat_idx_wt(data->drm_fd));
+ 
+ 	intel_buf_set_name(buf, buf_name);
+ 	intel_buf_set_ownership(buf, true);
+diff --git a/tests/intel/kms_dirtyfb.c b/tests/intel/kms_dirtyfb.c
+index cc9529178..ec9b2a137 100644
+--- a/tests/intel/kms_dirtyfb.c
++++ b/tests/intel/kms_dirtyfb.c
+@@ -10,6 +10,7 @@
+ 
+ #include "i915/intel_drrs.h"
+ #include "i915/intel_fbc.h"
++#include "intel_pat.h"
+ 
+ #include "xe/xe_query.h"
+ 
+@@ -246,14 +247,16 @@ static void run_test(data_t *data)
+ 				    0,
+ 				    igt_fb_mod_to_tiling(data->fbs[1].modifier),
+ 				    0, 0, 0, is_xe_device(data->drm_fd) ?
+-				    system_memory(data->drm_fd) : 0);
++				    system_memory(data->drm_fd) : 0,
++				    intel_get_pat_idx_wt(data->drm_fd));
+ 	dst = intel_buf_create_full(data->bops, data->fbs[2].gem_handle,
+ 				    data->fbs[2].width,
+ 				    data->fbs[2].height,
+ 				    igt_drm_format_to_bpp(data->fbs[2].drm_format),
+ 				    0, igt_fb_mod_to_tiling(data->fbs[2].modifier),
+ 				    0, 0, 0, is_xe_device(data->drm_fd) ?
+-				    system_memory(data->drm_fd) : 0);
++				    system_memory(data->drm_fd) : 0,
++				    intel_get_pat_idx_wt(data->drm_fd));
+ 	ibb = intel_bb_create(data->drm_fd, PAGE_SIZE);
+ 
+ 	spin = igt_spin_new(data->drm_fd, .ahnd = ibb->allocator_handle);
+diff --git a/tests/intel/kms_psr.c b/tests/intel/kms_psr.c
+index ffecc5222..9c6ecd829 100644
+--- a/tests/intel/kms_psr.c
++++ b/tests/intel/kms_psr.c
+@@ -31,6 +31,7 @@
+ #include "igt.h"
+ #include "igt_sysfs.h"
+ #include "igt_psr.h"
++#include "intel_pat.h"
+ #include <errno.h>
+ #include <stdbool.h>
+ #include <stdio.h>
+@@ -356,7 +357,8 @@ static struct intel_buf *create_buf_from_fb(data_t *data,
+ 	name = gem_flink(data->drm_fd, fb->gem_handle);
+ 	handle = gem_open(data->drm_fd, name);
+ 	buf = intel_buf_create_full(data->bops, handle, width, height,
+-				    bpp, 0, tiling, 0, size, stride, region);
++				    bpp, 0, tiling, 0, size, stride, region,
++				    intel_get_pat_idx_wt(data->drm_fd));
+ 	intel_buf_set_ownership(buf, true);
+ 
+ 	return buf;
+diff --git a/tests/intel/xe_intel_bb.c b/tests/intel/xe_intel_bb.c
+index 0159a3164..e2480acf8 100644
+--- a/tests/intel/xe_intel_bb.c
++++ b/tests/intel/xe_intel_bb.c
+@@ -19,6 +19,7 @@
+ #include "igt.h"
+ #include "igt_crc.h"
+ #include "intel_bufops.h"
++#include "intel_pat.h"
+ #include "xe/xe_ioctl.h"
+ #include "xe/xe_query.h"
+ 
+@@ -400,7 +401,7 @@ static void create_in_region(struct buf_ops *bops, uint64_t region)
+ 	intel_buf_init_full(bops, handle, &buf,
+ 			    width/4, height, 32, 0,
+ 			    I915_TILING_NONE, 0,
+-			    size, 0, region);
++			    size, 0, region, DEFAULT_PAT_INDEX);
+ 	intel_buf_set_ownership(&buf, true);
+ 
+ 	intel_bb_add_intel_buf(ibb, &buf, false);
 -- 
 2.41.0
