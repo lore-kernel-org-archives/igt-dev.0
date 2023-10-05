@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B13BD10E1D1
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Oct 2023 11:18:55 +0000 (UTC)
-Date: Thu, 5 Oct 2023 13:18:50 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1C4F110E1ED
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Oct 2023 11:44:21 +0000 (UTC)
+Date: Thu, 5 Oct 2023 13:44:17 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Message-ID: <20231005111850.dvzha4frsaoiy7l2@zkempczy-mobl2>
-References: <20231004134722.319334-1-juhapekka.heikkila@gmail.com>
- <73b5370c-a61b-46e7-8041-2809ad8c3f50@linux.intel.com>
- <e06efa0c-8f9f-dbb6-fbea-1199766d79d8@gmail.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20231005114417.ql2uw4ezss2utmqx@zkempczy-mobl2>
+References: <20231004164946.138398-1-kamil.konieczny@linux.intel.com>
+ <20231004164946.138398-2-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <e06efa0c-8f9f-dbb6-fbea-1199766d79d8@gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_fb: on Xe driver take into
- account adlp with no extended block copy
+In-Reply-To: <20231004164946.138398-2-kamil.konieczny@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v8 1/6] lib/drmtest: allow out of order
+ device opening
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,70 +27,145 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Oct 05, 2023 at 11:39:54AM +0300, Juha-Pekka Heikkila wrote:
-> Hei Maarten,
+On Wed, Oct 04, 2023 at 06:49:37PM +0200, Kamil Konieczny wrote:
+> Allow to open cards with filters out of order, not in
+> the sequence 0...N. This will fix problem found out with test
+> gem_exec_gttfill@multigpu-basic with three discrete GPUs:
 > 
-> On 4.10.2023 19.41, Maarten Lankhorst wrote:
-> > Hey,
-> > 
-> > Patch looks good, but right below HAS_FLATCCS is used instead.
-> > 
-> > Could you fix that too for consistency?
+> Opened device: /dev/dri/card1
+> Starting subtest: multigpu-basic
+> <g:1> Opened device: /dev/dri/card2
+> gem_exec_gttfill: ../lib/drmtest.c:313: _is_already_opened: Assertion `as_idx <= _opened_fds_count' failed.
 > 
-> That is not cosmetic change, it will affect mtl behavior. Currently I don't
-> have access to machine which would match to what ci has so I cannot test
-> what will happen.
+> Added also some debug prints for diagnosing problems with
+> multi-GPU tests.
+> 
+> v2: fix setting opened count in _set_opened_fd()
+> v3: search all already opened fds in _is_already_opened()
+> v4: revert change in v3, this will cause treating zero as
+>     special index (no checks) as some test depend on it
+> v5: start searching for driver from requested index,
+>     limit checks for already opened drivers to currently
+>     opened count (Kamil)
+> 
+> Cc: Zbigniew Kempczy≈Ñski <zbigniew.kempczynski@intel.com>
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  lib/drmtest.c | 28 +++++++++++++++++++++++-----
+>  1 file changed, 23 insertions(+), 5 deletions(-)
+> 
+> diff --git a/lib/drmtest.c b/lib/drmtest.c
+> index e1da66c87..43524c5ad 100644
+> --- a/lib/drmtest.c
+> +++ b/lib/drmtest.c
+> @@ -296,13 +296,18 @@ static int _opened_fds_count;
+>  static void _set_opened_fd(int idx, int fd)
+>  {
+>  	assert(idx < ARRAY_SIZE(_opened_fds));
+> -	assert(idx <= _opened_fds_count);
+> +
+> +	if (idx >= _opened_fds_count) {
+> +		for (int i = _opened_fds_count; i < idx; ++i)
+> +			_opened_fds[i].fd = -1;
+> +	}
 
-Looking at the code HAS_FLATCCS is not true for mtl so now we're
-not using extended block-copy command. Bspec said it should and
-BLT_CMD_EXTENDED property is set in intel_cmds_info.c. Do we
-have working blitcopy() for mtl now?
+Do you need if conditional? I mean if idx == _opened_fds_count
+(let's say _opened _fds_count == 5 and idx == 5, so you're hiting
+next element) and for loop just won't run -> i = 5, i < 5.
 
+>  
+>  	_opened_fds[idx].fd = fd;
+
+And you're write fd at index 5.
+
+>  
+>  	assert(fstat(fd, &_opened_fds[idx].stat) == 0);
+>  
+> -	_opened_fds_count = idx+1;
+> +	if (idx >= _opened_fds_count)
+> +		_opened_fds_count = idx + 1;
+>  }
+
+Anyway, you're allowing to selectively extend currently opened
+fd array keeping -1 on not occupied slots.
+
+Rest looks good to me.
+
+Reviewed-by: Zbigniew Kempczy≈Ñski <zbigniew.kempczynski@intel.com>
 --
 Zbigniew
 
-> 
-> /Juha-Pekka
-> 
-> > 
-> > With that amended,
-> > 
-> > Reviewed-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> > 
-> > Den 2023-10-04 kl. 15:47, skrev Juha-Pekka Heikkila:
-> > > With Xe add check to not use extended block copy if it is not available.
-> > > 
-> > > Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> > > ---
-> > > † lib/igt_fb.c | 20 +++++++++++---------
-> > > † 1 file changed, 11 insertions(+), 9 deletions(-)
-> > > 
-> > > diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> > > index f0c0681ab..54a66eb6a 100644
-> > > --- a/lib/igt_fb.c
-> > > +++ b/lib/igt_fb.c
-> > > @@ -2920,17 +2920,19 @@ static void blitcopy(const struct igt_fb *dst_fb,
-> > > ††††††††††††† blt_set_copy_object(&blt.src, src);
-> > > ††††††††††††† blt_set_copy_object(&blt.dst, dst);
-> > > -††††††††††† blt_set_object_ext(&ext.src,
-> > > -†††††††††††††††††††††† blt_compression_format(&blt, src_fb),
-> > > -†††††††††††††††††††††† src_fb->width, src_fb->height,
-> > > -†††††††††††††††††††††† SURFACE_TYPE_2D);
-> > > +††††††††††† if (blt_uses_extended_block_copy(src_fb->fd)) {
-> > > +††††††††††††††† blt_set_object_ext(&ext.src,
-> > > +††††††††††††††††††††††† blt_compression_format(&blt, src_fb),
-> > > +††††††††††††††††††††††† src_fb->width, src_fb->height,
-> > > +††††††††††††††††††††††† SURFACE_TYPE_2D);
-> > > -††††††††††† blt_set_object_ext(&ext.dst,
-> > > -†††††††††††††††††††††† blt_compression_format(&blt, dst_fb),
-> > > -†††††††††††††††††††††† dst_fb->width, dst_fb->height,
-> > > -†††††††††††††††††††††† SURFACE_TYPE_2D);
-> > > +††††††††††††††† blt_set_object_ext(&ext.dst,
-> > > +††††††††††††††††††††††† blt_compression_format(&blt, dst_fb),
-> > > +††††††††††††††††††††††† dst_fb->width, dst_fb->height,
-> > > +††††††††††††††††††††††† SURFACE_TYPE_2D);
-> > > -††††††††††† pext = &ext;
-> > > +††††††††††††††† pext = &ext;
-> > > +††††††††††† }
-> > > ††††††††††††† blt_set_batch(&blt.bb, xe_bb, bb_size, mem_region);
+>  
+>  static bool _is_already_opened(const char *path, int as_idx)
+> @@ -310,16 +315,23 @@ static bool _is_already_opened(const char *path, int as_idx)
+>  	struct stat new;
+>  
+>  	assert(as_idx < ARRAY_SIZE(_opened_fds));
+> -	assert(as_idx <= _opened_fds_count);
+>  
+>  	/*
+>  	 * we cannot even stat the device, so it's of no use - let's claim it's
+>  	 * already opened
+>  	 */
+> -	if (igt_debug_on(stat(path, &new) != 0))
+> +	if (igt_debug_on(stat(path, &new) != 0)) {
+> +		igt_debug("cannot stat device: %s\n", path);
+>  		return true;
+> +	}
+> +
+> +	if (as_idx > _opened_fds_count)
+> +		as_idx = _opened_fds_count;
+
+Checking up to _opened_fds_count makes sense for me.
+
+>  
+>  	for (int i = 0; i < as_idx; ++i) {
+> +		if (_opened_fds[i].fd == -1)
+> +			continue;
+> +
+>  		/* did we cross filesystem boundary? */
+>  		assert(_opened_fds[i].stat.st_dev == new.st_dev);
+>  
+> @@ -338,6 +350,7 @@ static int __search_and_open(const char *base, int offset, unsigned int chipset,
+>  	if (forced)
+>  		igt_debug("Force option used: Using driver %s\n", forced);
+>  
+> +	offset += as_idx;
+>  	for (int i = 0; i < 16; i++) {
+>  		char name[80];
+>  		int fd;
+> @@ -484,6 +497,7 @@ int __drm_open_driver_another(int idx, int chipset)
+>  {
+>  	int fd = -1;
+>  
+> +	igt_debug("card idx: %d chipset: %d\n", idx, chipset);
+>  	if (chipset != DRIVER_VGEM && igt_device_filter_count() > idx) {
+>  		struct igt_device_card card;
+>  		bool found;
+> @@ -491,6 +505,7 @@ int __drm_open_driver_another(int idx, int chipset)
+>  		found = __get_card_for_nth_filter(idx, &card);
+>  
+>  		if (!found) {
+> +			igt_debug("cannot find card idx: %d, loading module\n", idx);
+>  			drm_load_module(chipset);
+>  			found = __get_card_for_nth_filter(idx, &card);
+>  		}
+> @@ -500,11 +515,14 @@ int __drm_open_driver_another(int idx, int chipset)
+>  				 igt_device_filter_get(idx));
+>  		else if (_is_already_opened(card.card, idx))
+>  			igt_warn("card maching filter %d is already opened\n", idx);
+> -		else
+> +		else {
+> +			igt_debug("card idx: %d found: %s\n", idx, card.card);
+>  			fd = __open_driver_exact(card.card, chipset);
+> +		}
+>  
+>  	} else {
+>  		/* no filter for device idx, let's open whatever is available */
+> +		igt_debug("No filter for device idx: %d\n", idx);
+>  		fd = __open_driver("/dev/dri/card", 0, chipset, idx);
+>  	}
+>  
+> -- 
+> 2.42.0
 > 
