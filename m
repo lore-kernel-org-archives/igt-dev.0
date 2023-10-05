@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3773010E48A
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A72E210E48A
  for <igt-dev@lists.freedesktop.org>; Thu,  5 Oct 2023 19:31:43 +0000 (UTC)
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  5 Oct 2023 18:57:25 +0000
-Message-ID: <20231005185745.3056219-8-marcin.bernatowicz@linux.intel.com>
+Date: Thu,  5 Oct 2023 18:57:23 +0000
+Message-ID: <20231005185745.3056219-6-marcin.bernatowicz@linux.intel.com>
 In-Reply-To: <20231005185745.3056219-1-marcin.bernatowicz@linux.intel.com>
 References: <20231005185745.3056219-1-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 07/17] benchmarks/gem_wsim: reposition
- repeat_start variable
+Subject: [igt-dev] [PATCH i-g-t 05/17] benchmarks/gem_wsim: fix conflicting
+ SSEU #define and enum
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,54 +24,89 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-No need for repeat_start in struct workload.
-It's now a variable in run_workload function scope.
+One SSEU is in enum w_step and then as #define SSEU (1 << 3).
+Fix this.
+
+v2:
+- add FLAG_ prefix to all flags (Tvrtko)
 
 Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 ---
- benchmarks/gem_wsim.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ benchmarks/gem_wsim.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
 diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-index c64397eae..24b51ec8a 100644
+index 91410d42d..67d2bce18 100644
 --- a/benchmarks/gem_wsim.c
 +++ b/benchmarks/gem_wsim.c
-@@ -209,8 +209,6 @@ struct workload {
- 	uint32_t bb_prng;
- 	uint32_t bo_prng;
+@@ -236,9 +236,9 @@ static struct drm_i915_gem_context_param_sseu device_sseu = {
+ 	.slice_mask = -1 /* Force read on first use. */
+ };
  
--	struct timespec repeat_start;
--
- 	unsigned int nr_ctxs;
- 	struct ctx *ctx_list;
+-#define SYNCEDCLIENTS	(1<<1)
+-#define DEPSYNC		(1<<2)
+-#define SSEU		(1<<3)
++#define FLAG_SYNCEDCLIENTS	(1<<1)
++#define FLAG_DEPSYNC		(1<<2)
++#define FLAG_SSEU		(1<<3)
  
-@@ -2280,7 +2278,7 @@ static void sync_deps(struct workload *wrk, struct w_step *w)
- static void *run_workload(void *data)
- {
- 	struct workload *wrk = (struct workload *)data;
--	struct timespec t_start, t_end;
-+	struct timespec t_start, t_end, repeat_start;
- 	struct w_step *w;
- 	int throttle = -1;
- 	int qd_throttle = -1;
-@@ -2294,7 +2292,7 @@ static void *run_workload(void *data)
- 	     count++) {
- 		unsigned int cur_seqno = wrk->sync_seqno;
+ static const char *ring_str_map[NUM_ENGINES] = {
+ 	[DEFAULT] = "DEFAULT",
+@@ -1230,7 +1230,7 @@ add_step:
+ 	wrk->sseu = arg->sseu;
+ 	wrk->max_working_set_id = -1;
+ 	wrk->working_sets = NULL;
+-	wrk->bo_prng = (flags & SYNCEDCLIENTS) ? master_prng : rand();
++	wrk->bo_prng = (flags & FLAG_SYNCEDCLIENTS) ? master_prng : rand();
  
--		clock_gettime(CLOCK_MONOTONIC, &wrk->repeat_start);
-+		clock_gettime(CLOCK_MONOTONIC, &repeat_start);
+ 	free(desc);
  
- 		for (i = 0, w = wrk->steps; wrk->run && (i < wrk->nr_steps);
- 		     i++, w++) {
-@@ -2308,7 +2306,7 @@ static void *run_workload(void *data)
- 				int elapsed;
+@@ -1868,8 +1868,8 @@ static int prepare_workload(unsigned int id, struct workload *wrk)
+ 	int i, j;
  
- 				clock_gettime(CLOCK_MONOTONIC, &now);
--				elapsed = elapsed_us(&wrk->repeat_start, &now);
-+				elapsed = elapsed_us(&repeat_start, &now);
- 				do_sleep = w->period - elapsed;
- 				time_tot += elapsed;
- 				if (elapsed < time_min)
+ 	wrk->id = id;
+-	wrk->bb_prng = (wrk->flags & SYNCEDCLIENTS) ? master_prng : rand();
+-	wrk->bo_prng = (wrk->flags & SYNCEDCLIENTS) ? master_prng : rand();
++	wrk->bb_prng = (wrk->flags & FLAG_SYNCEDCLIENTS) ? master_prng : rand();
++	wrk->bo_prng = (wrk->flags & FLAG_SYNCEDCLIENTS) ? master_prng : rand();
+ 	wrk->run = true;
+ 
+ 	/*
+@@ -2387,7 +2387,7 @@ static void *run_workload(void *data)
+ 
+ 			igt_assert(w->type == BATCH);
+ 
+-			if (wrk->flags & DEPSYNC)
++			if (wrk->flags & FLAG_DEPSYNC)
+ 				sync_deps(wrk, w);
+ 
+ 			if (throttle > 0)
+@@ -2594,7 +2594,7 @@ int main(int argc, char **argv)
+ 			/* Fall through */
+ 		case 'w':
+ 			w_args = add_workload_arg(w_args, ++nr_w_args, optarg,
+-						  prio, flags & SSEU);
++						  prio, flags & FLAG_SSEU);
+ 			break;
+ 		case 'p':
+ 			prio = atoi(optarg);
+@@ -2620,13 +2620,13 @@ int main(int argc, char **argv)
+ 			verbose++;
+ 			break;
+ 		case 'S':
+-			flags |= SYNCEDCLIENTS;
++			flags |= FLAG_SYNCEDCLIENTS;
+ 			break;
+ 		case 's':
+-			flags ^= SSEU;
++			flags ^= FLAG_SSEU;
+ 			break;
+ 		case 'd':
+-			flags |= DEPSYNC;
++			flags |= FLAG_DEPSYNC;
+ 			break;
+ 		case 'I':
+ 			master_prng = strtol(optarg, NULL, 0);
 -- 
 2.42.0
