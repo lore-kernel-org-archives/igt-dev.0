@@ -1,17 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C931D10E1D9
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Oct 2023 10:24:09 +0000 (UTC)
-Date: Thu, 5 Oct 2023 12:23:44 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20231005102344.frqk4rppagru6y7l@kamilkon-desk.igk.intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2A41E10E1D9
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Oct 2023 10:27:15 +0000 (UTC)
+From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Thu, 5 Oct 2023 10:27:09 +0000
+Message-ID: <CY5PR11MB6211DB6FD71F2F7790470B7295CAA@CY5PR11MB6211.namprd11.prod.outlook.com>
 References: <20230929101155.614980-1-anshuman.gupta@intel.com>
  <20230929101155.614980-3-anshuman.gupta@intel.com>
+ <20231005102344.frqk4rppagru6y7l@kamilkon-desk.igk.intel.com>
+In-Reply-To: <20231005102344.frqk4rppagru6y7l@kamilkon-desk.igk.intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230929101155.614980-3-anshuman.gupta@intel.com>
 Subject: Re: [igt-dev] [PATCH i-g-t v3 2/2] tests/xe_pm: Add d3-mmap IGT test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -20,166 +23,104 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: rodrigo.vivi@intel.com
+Cc: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Anshuman,
-
-On 2023-09-29 at 15:41:55 +0530, Anshuman Gupta wrote:
-> Adding a test to validate mmap memory mappings along with runtime
-> suspend and resume for both xe device and it's pci parent bridge
-> in device hierarchy.
-> 
-> v2:
-> - Use 0xc00fee pattern. [Rodrigo]
-> - Test the pagefault case on read and write the mapping. [Rodrigo]
-> 
-> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> ---
->  tests/intel/xe_pm.c | 88 +++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 88 insertions(+)
-> 
-> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-> index 48518a5e5..8656e2146 100644
-> --- a/tests/intel/xe_pm.c
-> +++ b/tests/intel/xe_pm.c
-> @@ -446,6 +446,77 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
->  	igt_assert(in_d3(device, IGT_ACPI_D3Cold));
->  }
->  
-> +/**
-> + * SUBTEST: d3-mmap-%s
-> + * Description:
-> + *	Validate mmap memory mapping with d3 state, for %arg[1] region,
-> + *	if supported by device.
-> + * arg[1]:
-> + *
-> + * @vram:	vram region
-> + * @system:	system region
-> + *
-> + * Functionality: pm-d3
-> + * Run type: FULL
------ ^^^^^^^^^^^^^^
-Delete this line, field was removed some days ago.
-
-> + */
-> +static void test_mmap(device_t device, uint32_t flags)
-> +{
-> +	size_t bo_size = 8192;
-> +	uint32_t *map = NULL;
-> +	uint32_t bo;
-> +	int i;
-> +
-> +	igt_require_f(flags, "Device doesn't support such memory region\n");
-> +
-> +	bo = xe_bo_create_flags(device.fd_xe, 0, bo_size, flags);
-> +	map = xe_bo_map(device.fd_xe, bo, bo_size);
-> +	igt_assert(map);
-> +	memset(map, 0, bo_size);
-> +
-> +	fw_handle = igt_debugfs_open(device.fd_xe, "forcewake_all", O_RDONLY);
-> +
-> +	igt_assert(fw_handle >= 0);
-> +	igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
-> +
-> +	for (i = 0; i < bo_size / 4; i++)
------------------------------ ^
-sizeof(*map) or sizeof(map[0])
-
-> +		map[i] = 0xc0ffee;
----------------- ^
-imho better use define or const, for example MAGIC_1
-
-> +
-> +	for (i = 0; i < bo_size / 4; i++)
------------------------------ ^
-Same here.
-
-> +		igt_assert(map[i] == 0xc0ffee);
----------------------------- ^
-
-> +
-> +	/* Runtime suspend and validate the pattern and changed the pattern */
-> +	close(fw_handle);
-> +	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
-> +
-> +	for (i = 0; i < bo_size / 4; i++)
------------------------------ ^
-Same here.
-> +		igt_assert(map[i] == 0xc0ffee);
------------------------------ ^
-Same here.
-
-> +
-> +	/* dgfx page-fault on mmaping should wake the gpu */
-> +	if (xe_has_vram(device.fd_xe))
-> +		igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
-> +
-> +	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
-> +
-> +	for (i = 0; i < bo_size / 4; i++)
------------------------------ ^
-Same here.
-> +		map[i] = 0xdeadbeef;
----------------- ^
-MAGIC_2
-
-> +
-> +	if (xe_has_vram(device.fd_xe))
-> +		igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
-> +
-> +	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
-> +
-> +	/* Runtime resume and check the pattern */
-> +	fw_handle = igt_debugfs_open(device.fd_xe, "forcewake_all", O_RDONLY);
-> +	igt_assert(fw_handle >= 0);
-> +	igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
-> +	for (i = 0; i < bo_size / 4; i++)
------------------------------ ^
-Same here.
-> +		igt_assert(map[i] == 0xdeadbeef);
------------------------------ ^
-Same here.
-
-Regards,
-Kamil
-
-> +
-> +	igt_assert(munmap(map, bo_size) == 0);
-> +	gem_close(device.fd_xe, bo);
-> +	close(fw_handle);
-> +}
-> +
->  igt_main
->  {
->  	struct drm_xe_engine_class_instance *hwe;
-> @@ -556,6 +627,23 @@ igt_main
->  			igt_install_exit_handler(vram_d3cold_threshold_restore);
->  			test_vram_d3cold_threshold(device, sysfs_fd);
->  		}
-> +
-> +		igt_describe("Validate mmap memory mappings with system region,"
-> +			     "when device along with parent bridge in d3");
-> +		igt_subtest("d3-mmap-system") {
-> +			test_mmap(device, system_memory(device.fd_xe));
-> +		}
-> +
-> +		igt_describe("Validate mmap memory mappings with vram region,"
-> +			     "when device along with parent bridge in d3");
-> +		igt_subtest("d3-mmap-vram") {
-> +			if (device.pci_root != device.pci_xe) {
-> +				igt_pm_enable_pci_card_runtime_pm(device.pci_root, NULL);
-> +				igt_pm_set_d3cold_allowed(device.pci_slot_name, 1);
-> +			}
-> +
-> +			test_mmap(device, visible_vram_memory(device.fd_xe, 0));
-> +		}
->  	}
->  
->  	igt_fixture {
-> -- 
-> 2.25.1
-> 
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS2FtaWwgS29uaWVjem55
+IDxrYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tPg0KPiBTZW50OiBUaHVyc2RheSwgT2N0
+b2JlciA1LCAyMDIzIDM6NTQgUE0NCj4gVG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
+DQo+IENjOiBHdXB0YSwgQW5zaHVtYW4gPGFuc2h1bWFuLmd1cHRhQGludGVsLmNvbT47IFZpdmks
+IFJvZHJpZ28NCj4gPHJvZHJpZ28udml2aUBpbnRlbC5jb20+DQo+IFN1YmplY3Q6IFJlOiBbaWd0
+LWRldl0gW1BBVENIIGktZy10IHYzIDIvMl0gdGVzdHMveGVfcG06IEFkZCBkMy1tbWFwIElHVA0K
+PiB0ZXN0DQo+IA0KPiBIaSBBbnNodW1hbiwNCj4gDQo+IE9uIDIwMjMtMDktMjkgYXQgMTU6NDE6
+NTUgKzA1MzAsIEFuc2h1bWFuIEd1cHRhIHdyb3RlOg0KPiA+IEFkZGluZyBhIHRlc3QgdG8gdmFs
+aWRhdGUgbW1hcCBtZW1vcnkgbWFwcGluZ3MgYWxvbmcgd2l0aCBydW50aW1lDQo+ID4gc3VzcGVu
+ZCBhbmQgcmVzdW1lIGZvciBib3RoIHhlIGRldmljZSBhbmQgaXQncyBwY2kgcGFyZW50IGJyaWRn
+ZSBpbg0KPiA+IGRldmljZSBoaWVyYXJjaHkuDQo+ID4NCj4gPiB2MjoNCj4gPiAtIFVzZSAweGMw
+MGZlZSBwYXR0ZXJuLiBbUm9kcmlnb10NCj4gPiAtIFRlc3QgdGhlIHBhZ2VmYXVsdCBjYXNlIG9u
+IHJlYWQgYW5kIHdyaXRlIHRoZSBtYXBwaW5nLiBbUm9kcmlnb10NCj4gPg0KPiA+IENjOiBSb2Ry
+aWdvIFZpdmkgPHJvZHJpZ28udml2aUBpbnRlbC5jb20+DQo+ID4gU2lnbmVkLW9mZi1ieTogQW5z
+aHVtYW4gR3VwdGEgPGFuc2h1bWFuLmd1cHRhQGludGVsLmNvbT4NCj4gPiAtLS0NCj4gPiAgdGVz
+dHMvaW50ZWwveGVfcG0uYyB8IDg4DQo+ID4gKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCA4OCBpbnNlcnRpb25zKCspDQo+
+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvdGVzdHMvaW50ZWwveGVfcG0uYyBiL3Rlc3RzL2ludGVsL3hl
+X3BtLmMgaW5kZXgNCj4gPiA0ODUxOGE1ZTUuLjg2NTZlMjE0NiAxMDA2NDQNCj4gPiAtLS0gYS90
+ZXN0cy9pbnRlbC94ZV9wbS5jDQo+ID4gKysrIGIvdGVzdHMvaW50ZWwveGVfcG0uYw0KPiA+IEBA
+IC00NDYsNiArNDQ2LDc3IEBAIHN0YXRpYyB2b2lkIHRlc3RfdnJhbV9kM2NvbGRfdGhyZXNob2xk
+KGRldmljZV90DQo+IGRldmljZSwgaW50IHN5c2ZzX2ZkKQ0KPiA+ICAJaWd0X2Fzc2VydChpbl9k
+MyhkZXZpY2UsIElHVF9BQ1BJX0QzQ29sZCkpOyAgfQ0KPiA+DQo+ID4gKy8qKg0KPiA+ICsgKiBT
+VUJURVNUOiBkMy1tbWFwLSVzDQo+ID4gKyAqIERlc2NyaXB0aW9uOg0KPiA+ICsgKglWYWxpZGF0
+ZSBtbWFwIG1lbW9yeSBtYXBwaW5nIHdpdGggZDMgc3RhdGUsIGZvciAlYXJnWzFdIHJlZ2lvbiwN
+Cj4gPiArICoJaWYgc3VwcG9ydGVkIGJ5IGRldmljZS4NCj4gPiArICogYXJnWzFdOg0KPiA+ICsg
+Kg0KPiA+ICsgKiBAdnJhbToJdnJhbSByZWdpb24NCj4gPiArICogQHN5c3RlbToJc3lzdGVtIHJl
+Z2lvbg0KPiA+ICsgKg0KPiA+ICsgKiBGdW5jdGlvbmFsaXR5OiBwbS1kMw0KPiA+ICsgKiBSdW4g
+dHlwZTogRlVMTA0KPiAtLS0tLSBeXl5eXl5eXl5eXl5eXg0KPiBEZWxldGUgdGhpcyBsaW5lLCBm
+aWVsZCB3YXMgcmVtb3ZlZCBzb21lIGRheXMgYWdvLg0KPiANCj4gPiArICovDQo+ID4gK3N0YXRp
+YyB2b2lkIHRlc3RfbW1hcChkZXZpY2VfdCBkZXZpY2UsIHVpbnQzMl90IGZsYWdzKSB7DQo+ID4g
+KwlzaXplX3QgYm9fc2l6ZSA9IDgxOTI7DQo+ID4gKwl1aW50MzJfdCAqbWFwID0gTlVMTDsNCj4g
+PiArCXVpbnQzMl90IGJvOw0KPiA+ICsJaW50IGk7DQo+ID4gKw0KPiA+ICsJaWd0X3JlcXVpcmVf
+ZihmbGFncywgIkRldmljZSBkb2Vzbid0IHN1cHBvcnQgc3VjaCBtZW1vcnkgcmVnaW9uXG4iKTsN
+Cj4gPiArDQo+ID4gKwlibyA9IHhlX2JvX2NyZWF0ZV9mbGFncyhkZXZpY2UuZmRfeGUsIDAsIGJv
+X3NpemUsIGZsYWdzKTsNCj4gPiArCW1hcCA9IHhlX2JvX21hcChkZXZpY2UuZmRfeGUsIGJvLCBi
+b19zaXplKTsNCj4gPiArCWlndF9hc3NlcnQobWFwKTsNCj4gPiArCW1lbXNldChtYXAsIDAsIGJv
+X3NpemUpOw0KPiA+ICsNCj4gPiArCWZ3X2hhbmRsZSA9IGlndF9kZWJ1Z2ZzX29wZW4oZGV2aWNl
+LmZkX3hlLCAiZm9yY2V3YWtlX2FsbCIsDQo+ID4gK09fUkRPTkxZKTsNCj4gPiArDQo+ID4gKwlp
+Z3RfYXNzZXJ0KGZ3X2hhbmRsZSA+PSAwKTsNCj4gPiArCWlndF9hc3NlcnQoaWd0X2dldF9ydW50
+aW1lX3BtX3N0YXR1cygpID09DQo+ID4gK0lHVF9SVU5USU1FX1BNX1NUQVRVU19BQ1RJVkUpOw0K
+PiA+ICsNCj4gPiArCWZvciAoaSA9IDA7IGkgPCBib19zaXplIC8gNDsgaSsrKQ0KPiAtLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBeDQo+IHNpemVvZigqbWFwKSBvciBzaXplb2YobWFwWzBd
+KQ0KPiANCj4gPiArCQltYXBbaV0gPSAweGMwZmZlZTsNCj4gLS0tLS0tLS0tLS0tLS0tLSBeDQo+
+IGltaG8gYmV0dGVyIHVzZSBkZWZpbmUgb3IgY29uc3QsIGZvciBleGFtcGxlIE1BR0lDXzENCj4g
+DQo+ID4gKw0KPiA+ICsJZm9yIChpID0gMDsgaSA8IGJvX3NpemUgLyA0OyBpKyspDQo+IC0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIF4NCj4gU2FtZSBoZXJlLg0KPiANCj4gPiArCQlpZ3Rf
+YXNzZXJ0KG1hcFtpXSA9PSAweGMwZmZlZSk7DQo+IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0gXg0KPiANCj4gPiArDQo+ID4gKwkvKiBSdW50aW1lIHN1c3BlbmQgYW5kIHZhbGlkYXRlIHRo
+ZSBwYXR0ZXJuIGFuZCBjaGFuZ2VkIHRoZSBwYXR0ZXJuDQo+ICovDQo+ID4gKwljbG9zZShmd19o
+YW5kbGUpOw0KPiA+ICsNCj4gCWlndF9hc3NlcnQoaWd0X3dhaXRfZm9yX3BtX3N0YXR1cyhJR1Rf
+UlVOVElNRV9QTV9TVEFUVVNfU1VTUA0KPiBFTkRFRCkpOw0KPiA+ICsNCj4gPiArCWZvciAoaSA9
+IDA7IGkgPCBib19zaXplIC8gNDsgaSsrKQ0KPiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LSBeDQo+IFNhbWUgaGVyZS4NCj4gPiArCQlpZ3RfYXNzZXJ0KG1hcFtpXSA9PSAweGMwZmZlZSk7
+DQo+IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIF4NCj4gU2FtZSBoZXJlLg0KPiANCj4g
+PiArDQo+ID4gKwkvKiBkZ2Z4IHBhZ2UtZmF1bHQgb24gbW1hcGluZyBzaG91bGQgd2FrZSB0aGUg
+Z3B1ICovDQo+ID4gKwlpZiAoeGVfaGFzX3ZyYW0oZGV2aWNlLmZkX3hlKSkNCj4gPiArCQlpZ3Rf
+YXNzZXJ0KGlndF9nZXRfcnVudGltZV9wbV9zdGF0dXMoKSA9PQ0KPiA+ICtJR1RfUlVOVElNRV9Q
+TV9TVEFUVVNfQUNUSVZFKTsNCj4gPiArDQo+ID4gKw0KPiAJaWd0X2Fzc2VydChpZ3Rfd2FpdF9m
+b3JfcG1fc3RhdHVzKElHVF9SVU5USU1FX1BNX1NUQVRVU19TVVNQDQo+IEVOREVEKSk7DQo+ID4g
+Kw0KPiA+ICsJZm9yIChpID0gMDsgaSA8IGJvX3NpemUgLyA0OyBpKyspDQo+IC0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tIF4NCj4gU2FtZSBoZXJlLg0KPiA+ICsJCW1hcFtpXSA9IDB4ZGVh
+ZGJlZWY7DQo+IC0tLS0tLS0tLS0tLS0tLS0gXg0KPiBNQUdJQ18yDQo+IA0KPiA+ICsNCj4gPiAr
+CWlmICh4ZV9oYXNfdnJhbShkZXZpY2UuZmRfeGUpKQ0KPiA+ICsJCWlndF9hc3NlcnQoaWd0X2dl
+dF9ydW50aW1lX3BtX3N0YXR1cygpID09DQo+ID4gK0lHVF9SVU5USU1FX1BNX1NUQVRVU19BQ1RJ
+VkUpOw0KPiA+ICsNCj4gPiArDQo+IAlpZ3RfYXNzZXJ0KGlndF93YWl0X2Zvcl9wbV9zdGF0dXMo
+SUdUX1JVTlRJTUVfUE1fU1RBVFVTX1NVU1ANCj4gRU5ERUQpKTsNCj4gPiArDQo+ID4gKwkvKiBS
+dW50aW1lIHJlc3VtZSBhbmQgY2hlY2sgdGhlIHBhdHRlcm4gKi8NCj4gPiArCWZ3X2hhbmRsZSA9
+IGlndF9kZWJ1Z2ZzX29wZW4oZGV2aWNlLmZkX3hlLCAiZm9yY2V3YWtlX2FsbCIsDQo+IE9fUkRP
+TkxZKTsNCj4gPiArCWlndF9hc3NlcnQoZndfaGFuZGxlID49IDApOw0KPiA+ICsJaWd0X2Fzc2Vy
+dChpZ3RfZ2V0X3J1bnRpbWVfcG1fc3RhdHVzKCkgPT0NCj4gSUdUX1JVTlRJTUVfUE1fU1RBVFVT
+X0FDVElWRSk7DQo+ID4gKwlmb3IgKGkgPSAwOyBpIDwgYm9fc2l6ZSAvIDQ7IGkrKykNCj4gLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gXg0KPiBTYW1lIGhlcmUuDQo+ID4gKwkJaWd0X2Fz
+c2VydChtYXBbaV0gPT0gMHhkZWFkYmVlZik7DQo+IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tIF4NCj4gU2FtZSBoZXJlLg0KVGhhbmtzIGZvciByZXZpZXcsIEkgd2lsbCBkbyBhbGwgb2Yg
+dGhvc2UgY2hhbmdlLg0KQnIsDQpBbnNodW1hbi4NCj4gDQo+IFJlZ2FyZHMsDQo+IEthbWlsDQo+
+IA0KPiA+ICsNCj4gPiArCWlndF9hc3NlcnQobXVubWFwKG1hcCwgYm9fc2l6ZSkgPT0gMCk7DQo+
+ID4gKwlnZW1fY2xvc2UoZGV2aWNlLmZkX3hlLCBibyk7DQo+ID4gKwljbG9zZShmd19oYW5kbGUp
+Ow0KPiA+ICt9DQo+ID4gKw0KPiA+ICBpZ3RfbWFpbg0KPiA+ICB7DQo+ID4gIAlzdHJ1Y3QgZHJt
+X3hlX2VuZ2luZV9jbGFzc19pbnN0YW5jZSAqaHdlOyBAQCAtNTU2LDYgKzYyNywyMyBAQA0KPiA+
+IGlndF9tYWluDQo+ID4NCj4gCWlndF9pbnN0YWxsX2V4aXRfaGFuZGxlcih2cmFtX2QzY29sZF90
+aHJlc2hvbGRfcmVzdG9yZSk7DQo+ID4gIAkJCXRlc3RfdnJhbV9kM2NvbGRfdGhyZXNob2xkKGRl
+dmljZSwgc3lzZnNfZmQpOw0KPiA+ICAJCX0NCj4gPiArDQo+ID4gKwkJaWd0X2Rlc2NyaWJlKCJW
+YWxpZGF0ZSBtbWFwIG1lbW9yeSBtYXBwaW5ncyB3aXRoIHN5c3RlbQ0KPiByZWdpb24sIg0KPiA+
+ICsJCQkgICAgICJ3aGVuIGRldmljZSBhbG9uZyB3aXRoIHBhcmVudCBicmlkZ2UgaW4gZDMiKTsN
+Cj4gPiArCQlpZ3Rfc3VidGVzdCgiZDMtbW1hcC1zeXN0ZW0iKSB7DQo+ID4gKwkJCXRlc3RfbW1h
+cChkZXZpY2UsIHN5c3RlbV9tZW1vcnkoZGV2aWNlLmZkX3hlKSk7DQo+ID4gKwkJfQ0KPiA+ICsN
+Cj4gPiArCQlpZ3RfZGVzY3JpYmUoIlZhbGlkYXRlIG1tYXAgbWVtb3J5IG1hcHBpbmdzIHdpdGgg
+dnJhbQ0KPiByZWdpb24sIg0KPiA+ICsJCQkgICAgICJ3aGVuIGRldmljZSBhbG9uZyB3aXRoIHBh
+cmVudCBicmlkZ2UgaW4gZDMiKTsNCj4gPiArCQlpZ3Rfc3VidGVzdCgiZDMtbW1hcC12cmFtIikg
+ew0KPiA+ICsJCQlpZiAoZGV2aWNlLnBjaV9yb290ICE9IGRldmljZS5wY2lfeGUpIHsNCj4gPiAr
+DQo+IAlpZ3RfcG1fZW5hYmxlX3BjaV9jYXJkX3J1bnRpbWVfcG0oZGV2aWNlLnBjaV9yb290LCBO
+VUxMKTsNCj4gPiArDQo+IAlpZ3RfcG1fc2V0X2QzY29sZF9hbGxvd2VkKGRldmljZS5wY2lfc2xv
+dF9uYW1lLCAxKTsNCj4gPiArCQkJfQ0KPiA+ICsNCj4gPiArCQkJdGVzdF9tbWFwKGRldmljZSwN
+Cj4gdmlzaWJsZV92cmFtX21lbW9yeShkZXZpY2UuZmRfeGUsIDApKTsNCj4gPiArCQl9DQo+ID4g
+IAl9DQo+ID4NCj4gPiAgCWlndF9maXh0dXJlIHsNCj4gPiAtLQ0KPiA+IDIuMjUuMQ0KPiA+DQo=
