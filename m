@@ -1,20 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0B98910E406
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Oct 2023 13:38:05 +0000 (UTC)
-Date: Thu, 5 Oct 2023 15:36:20 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20231005133620.uadmrh3i3gx4yznr@zkempczy-mobl2>
-References: <20231004164946.138398-1-kamil.konieczny@linux.intel.com>
- <20231004164946.138398-3-kamil.konieczny@linux.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A63C210E3ED
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Oct 2023 13:48:58 +0000 (UTC)
+Message-ID: <ae35734e-36c6-43c8-888e-9509c489b1fa@intel.com>
+Date: Thu, 5 Oct 2023 19:18:51 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231004164946.138398-3-kamil.konieczny@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v8 2/6] tests/intel/xe_create: extend
- massive subtest to multi-gpu
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20231005125948.2986826-1-bhanuprakash.modem@intel.com>
+ <20231005125948.2986826-2-bhanuprakash.modem@intel.com>
+Content-Language: en-US
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20231005125948.2986826-2-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [i-g-t V2 1/2] intel-ci/xe: Update kms blocklist
+ documentation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,89 +23,61 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Oct 04, 2023 at 06:49:38PM +0200, Kamil Konieczny wrote:
-> Sample code extends existing create-massive-size subtest to run
-> on multi-GPUs boards. This will currently work only with
-> --drivers or IGT_DRIVERS options selecting at least two dGPU
+LGTM
 
-s/IGT_DRIVERS/IGT_DEVICE/
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 
-Rest looks good to me.
 
-With above fixed:
-
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
---
-Zbigniew
-
-> cards.
+On 05-Oct-23 6:29 PM, Bhanuprakash Modem wrote:
+> Add justification to kms blocklist.
 > 
-> v2: Fixed bug in opening wrong multi-gpu device (Zbigniew)
-> v3: revert to use filter count, add require for xe, change
->     subtest description
-> v4: correct description
+> V2: - Add justification for multidisplay blocklist
 > 
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Swati Sharma <swati2.sharma@intel.com>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > ---
->  tests/intel/xe_create.c | 25 +++++++++++++++++++++++++
->  1 file changed, 25 insertions(+)
+>   tests/intel-ci/xe.blocklist.txt | 15 +++++++++------
+>   1 file changed, 9 insertions(+), 6 deletions(-)
 > 
-> diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
-> index 8d845e5c8..ee970450f 100644
-> --- a/tests/intel/xe_create.c
-> +++ b/tests/intel/xe_create.c
-> @@ -12,6 +12,7 @@
->  #include <string.h>
->  
->  #include "igt.h"
-> +#include "igt_device_scan.h"
->  #include "xe_drm.h"
->  #include "xe/xe_ioctl.h"
->  #include "xe/xe_query.h"
-> @@ -191,6 +192,13 @@ static void create_execqueues(int fd, enum exec_queue_destroy ed)
->   * Test category: functionality test
->   * Description: Verifies xe bo create returns expected error code on massive
->   *              buffer sizes.
-> + *
-> + * SUBTEST: multigpu-create-massive-size
-> + * Functionality: ioctl
-> + * Test category: functionality test
-> + * Feature: multigpu
-> + * Description: Verifies xe bo create with massive buffer sizes runs correctly
-> + *		on two or more GPUs.
->   */
->  static void create_massive_size(int fd)
->  {
-> @@ -228,6 +236,23 @@ igt_main
->  		create_massive_size(xe);
->  	}
->  
-> +	igt_subtest("multigpu-create-massive-size") {
-> +		int gpu_filter_count = igt_device_filter_count();
-> +
-> +		igt_require(xe > 0);
-> +		igt_require(gpu_filter_count >= 2);
-> +		igt_multi_fork(child, gpu_filter_count) {
-> +			int gpu_fd;
-> +
-> +			gpu_fd = child ? __drm_open_driver_another(child, DRIVER_XE) : drm_reopen_driver(xe);
-> +			igt_assert_f(gpu_fd > 0, "cannot open gpu-%d, errno=%d\n", child, errno);
-> +
-> +			create_massive_size(gpu_fd);
-> +			drm_close_driver(gpu_fd);
-> +		}
-> +		igt_waitchildren();
-> +	}
-> +
->  	igt_fixture
->  		drm_close_driver(xe);
->  }
-> -- 
-> 2.42.0
-> 
+> diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
+> index e73018ec6..f4a57aa01 100644
+> --- a/tests/intel-ci/xe.blocklist.txt
+> +++ b/tests/intel-ci/xe.blocklist.txt
+> @@ -44,20 +44,18 @@ igt@syncobj_.*
+>   igt@template
+>   igt@tools_test
+>   ##################################################################
+> -# Pipe E, F, G and H
+> +# KMS: Pipe E, F, G and H are not available on Intel hardware,
+> +# hence can't use more than 4 displays.
+>   ##################################################################
+>   igt@.*@.*pipe-(e|f|g|h).*
+> -##################################################################
+> -# Multidisplay
+> -##################################################################
+>   igt@kms_bw@.*-(5|6|7|8)-displays-.*
+>   ##################################################################
+> +# KMS: Tests specific to i915 driver
+> +##################################################################
+>   igt@kms_draw_crc@draw-method-(mmap-cpu|mmap-gtt|pwrite)
+>   igt@kms_pipe_b_c_ivb@.*
+>   igt@kms_pwrite_crc
+> -igt@kms_ccs@.*
+>   igt@kms_frontbuffer_tracking@.*-(cpu|gtt|pwrite)
+> -igt@kms_fbcon_fbt@(fbc|psr)(-suspend)
+>   igt@kms_fence_pin_leak
+>   igt@kms_busy@.*
+>   igt@kms_psr@.*_mmap_(cpu|gtt)
+> @@ -69,3 +67,8 @@ igt@kms_addfb_basic@clobberred-modifier
+>   igt@kms_rotation_crc@exhaust-fences
+>   igt@kms_force_connector_basic@force-load-detect
+>   ##################################################################
+> +# KMS: Yet to add/missing XE support
+> +##################################################################
+> +igt@kms_ccs@.*
+> +igt@kms_fbcon_fbt@(fbc|psr)(-suspend)
+> +##################################################################
