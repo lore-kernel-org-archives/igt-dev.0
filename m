@@ -1,25 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com
- [IPv6:2a00:1450:4864:20::12e])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AE7D510E1C0
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Oct 2023 08:40:02 +0000 (UTC)
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-5042bfb4fe9so899684e87.1
- for <igt-dev@lists.freedesktop.org>; Thu, 05 Oct 2023 01:40:02 -0700 (PDT)
-Message-ID: <e06efa0c-8f9f-dbb6-fbea-1199766d79d8@gmail.com>
-Date: Thu, 5 Oct 2023 11:39:54 +0300
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C931D10E1D9
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Oct 2023 10:24:09 +0000 (UTC)
+Date: Thu, 5 Oct 2023 12:23:44 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20231005102344.frqk4rppagru6y7l@kamilkon-desk.igk.intel.com>
+References: <20230929101155.614980-1-anshuman.gupta@intel.com>
+ <20230929101155.614980-3-anshuman.gupta@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20231004134722.319334-1-juhapekka.heikkila@gmail.com>
- <73b5370c-a61b-46e7-8041-2809ad8c3f50@linux.intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <73b5370c-a61b-46e7-8041-2809ad8c3f50@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_fb: on Xe driver take into
- account adlp with no extended block copy
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230929101155.614980-3-anshuman.gupta@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 2/2] tests/xe_pm: Add d3-mmap IGT test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,64 +20,166 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
+Cc: rodrigo.vivi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hei Maarten,
+Hi Anshuman,
 
-On 4.10.2023 19.41, Maarten Lankhorst wrote:
-> Hey,
+On 2023-09-29 at 15:41:55 +0530, Anshuman Gupta wrote:
+> Adding a test to validate mmap memory mappings along with runtime
+> suspend and resume for both xe device and it's pci parent bridge
+> in device hierarchy.
 > 
-> Patch looks good, but right below HAS_FLATCCS is used instead.
+> v2:
+> - Use 0xc00fee pattern. [Rodrigo]
+> - Test the pagefault case on read and write the mapping. [Rodrigo]
 > 
-> Could you fix that too for consistency?
+> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+> ---
+>  tests/intel/xe_pm.c | 88 +++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 88 insertions(+)
+> 
+> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+> index 48518a5e5..8656e2146 100644
+> --- a/tests/intel/xe_pm.c
+> +++ b/tests/intel/xe_pm.c
+> @@ -446,6 +446,77 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
+>  	igt_assert(in_d3(device, IGT_ACPI_D3Cold));
+>  }
+>  
+> +/**
+> + * SUBTEST: d3-mmap-%s
+> + * Description:
+> + *	Validate mmap memory mapping with d3 state, for %arg[1] region,
+> + *	if supported by device.
+> + * arg[1]:
+> + *
+> + * @vram:	vram region
+> + * @system:	system region
+> + *
+> + * Functionality: pm-d3
+> + * Run type: FULL
+----- ^^^^^^^^^^^^^^
+Delete this line, field was removed some days ago.
 
-That is not cosmetic change, it will affect mtl behavior. Currently I 
-don't have access to machine which would match to what ci has so I 
-cannot test what will happen.
+> + */
+> +static void test_mmap(device_t device, uint32_t flags)
+> +{
+> +	size_t bo_size = 8192;
+> +	uint32_t *map = NULL;
+> +	uint32_t bo;
+> +	int i;
+> +
+> +	igt_require_f(flags, "Device doesn't support such memory region\n");
+> +
+> +	bo = xe_bo_create_flags(device.fd_xe, 0, bo_size, flags);
+> +	map = xe_bo_map(device.fd_xe, bo, bo_size);
+> +	igt_assert(map);
+> +	memset(map, 0, bo_size);
+> +
+> +	fw_handle = igt_debugfs_open(device.fd_xe, "forcewake_all", O_RDONLY);
+> +
+> +	igt_assert(fw_handle >= 0);
+> +	igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
+> +
+> +	for (i = 0; i < bo_size / 4; i++)
+----------------------------- ^
+sizeof(*map) or sizeof(map[0])
 
-/Juha-Pekka
+> +		map[i] = 0xc0ffee;
+---------------- ^
+imho better use define or const, for example MAGIC_1
 
+> +
+> +	for (i = 0; i < bo_size / 4; i++)
+----------------------------- ^
+Same here.
+
+> +		igt_assert(map[i] == 0xc0ffee);
+---------------------------- ^
+
+> +
+> +	/* Runtime suspend and validate the pattern and changed the pattern */
+> +	close(fw_handle);
+> +	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
+> +
+> +	for (i = 0; i < bo_size / 4; i++)
+----------------------------- ^
+Same here.
+> +		igt_assert(map[i] == 0xc0ffee);
+----------------------------- ^
+Same here.
+
+> +
+> +	/* dgfx page-fault on mmaping should wake the gpu */
+> +	if (xe_has_vram(device.fd_xe))
+> +		igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
+> +
+> +	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
+> +
+> +	for (i = 0; i < bo_size / 4; i++)
+----------------------------- ^
+Same here.
+> +		map[i] = 0xdeadbeef;
+---------------- ^
+MAGIC_2
+
+> +
+> +	if (xe_has_vram(device.fd_xe))
+> +		igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
+> +
+> +	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
+> +
+> +	/* Runtime resume and check the pattern */
+> +	fw_handle = igt_debugfs_open(device.fd_xe, "forcewake_all", O_RDONLY);
+> +	igt_assert(fw_handle >= 0);
+> +	igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
+> +	for (i = 0; i < bo_size / 4; i++)
+----------------------------- ^
+Same here.
+> +		igt_assert(map[i] == 0xdeadbeef);
+----------------------------- ^
+Same here.
+
+Regards,
+Kamil
+
+> +
+> +	igt_assert(munmap(map, bo_size) == 0);
+> +	gem_close(device.fd_xe, bo);
+> +	close(fw_handle);
+> +}
+> +
+>  igt_main
+>  {
+>  	struct drm_xe_engine_class_instance *hwe;
+> @@ -556,6 +627,23 @@ igt_main
+>  			igt_install_exit_handler(vram_d3cold_threshold_restore);
+>  			test_vram_d3cold_threshold(device, sysfs_fd);
+>  		}
+> +
+> +		igt_describe("Validate mmap memory mappings with system region,"
+> +			     "when device along with parent bridge in d3");
+> +		igt_subtest("d3-mmap-system") {
+> +			test_mmap(device, system_memory(device.fd_xe));
+> +		}
+> +
+> +		igt_describe("Validate mmap memory mappings with vram region,"
+> +			     "when device along with parent bridge in d3");
+> +		igt_subtest("d3-mmap-vram") {
+> +			if (device.pci_root != device.pci_xe) {
+> +				igt_pm_enable_pci_card_runtime_pm(device.pci_root, NULL);
+> +				igt_pm_set_d3cold_allowed(device.pci_slot_name, 1);
+> +			}
+> +
+> +			test_mmap(device, visible_vram_memory(device.fd_xe, 0));
+> +		}
+>  	}
+>  
+>  	igt_fixture {
+> -- 
+> 2.25.1
 > 
-> With that amended,
-> 
-> Reviewed-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> 
-> Den 2023-10-04 kl. 15:47, skrev Juha-Pekka Heikkila:
->> With Xe add check to not use extended block copy if it is not available.
->>
->> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
->> ---
->>   lib/igt_fb.c | 20 +++++++++++---------
->>   1 file changed, 11 insertions(+), 9 deletions(-)
->>
->> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
->> index f0c0681ab..54a66eb6a 100644
->> --- a/lib/igt_fb.c
->> +++ b/lib/igt_fb.c
->> @@ -2920,17 +2920,19 @@ static void blitcopy(const struct igt_fb *dst_fb,
->>               blt_set_copy_object(&blt.src, src);
->>               blt_set_copy_object(&blt.dst, dst);
->> -            blt_set_object_ext(&ext.src,
->> -                       blt_compression_format(&blt, src_fb),
->> -                       src_fb->width, src_fb->height,
->> -                       SURFACE_TYPE_2D);
->> +            if (blt_uses_extended_block_copy(src_fb->fd)) {
->> +                blt_set_object_ext(&ext.src,
->> +                        blt_compression_format(&blt, src_fb),
->> +                        src_fb->width, src_fb->height,
->> +                        SURFACE_TYPE_2D);
->> -            blt_set_object_ext(&ext.dst,
->> -                       blt_compression_format(&blt, dst_fb),
->> -                       dst_fb->width, dst_fb->height,
->> -                       SURFACE_TYPE_2D);
->> +                blt_set_object_ext(&ext.dst,
->> +                        blt_compression_format(&blt, dst_fb),
->> +                        dst_fb->width, dst_fb->height,
->> +                        SURFACE_TYPE_2D);
->> -            pext = &ext;
->> +                pext = &ext;
->> +            }
->>               blt_set_batch(&blt.bb, xe_bb, bb_size, mem_region);
