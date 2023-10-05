@@ -1,25 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com
- [IPv6:2a00:1450:4864:20::32d])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C340410E22C
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Oct 2023 08:01:34 +0000 (UTC)
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-40651a726acso39463545e9.1
- for <igt-dev@lists.freedesktop.org>; Mon, 02 Oct 2023 01:01:34 -0700 (PDT)
-Message-ID: <c554a0df-8b91-57bc-a955-b0b5a5b63de0@gmail.com>
-Date: Mon, 2 Oct 2023 11:01:25 +0300
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C2F8D10E1BD
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Oct 2023 08:10:10 +0000 (UTC)
+Date: Thu, 5 Oct 2023 10:09:41 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20231005080941.tgy543mswkdzmhhx@kamilkon-desk.igk.intel.com>
+References: <20231004172119.289318-1-robdclark@gmail.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Hersen Wu <hersenxs.wu@amd.com>, igt-dev@lists.freedesktop.org,
- rodrigo.siqueira@amd.com, aurabindo.pillai@amd.com, alex.hung@amd.com,
- hamza.mahfooz@amd.com, sunpeng.li@amd.com
-References: <20231001162828.74566-1-hersenxs.wu@amd.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20231001162828.74566-1-hersenxs.wu@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH 1/2] [i-g-t] tests/kms_cursor_crc: Fix tests
- be skipped on AMD gpu
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231004172119.289318-1-robdclark@gmail.com>
+Subject: Re: [igt-dev] [PATCH v5] core_getversion: Test for desired device
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,46 +20,60 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
-Cc: markyacoub@google.com
+Cc: Rob Clark <robdclark@chromium.org>, Emma Anholt <emma@anholt.net>,
+ Helen Koike <helen.koike@collabora.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Hi Rob,
+On 2023-10-04 at 10:21:19 -0700, Rob Clark wrote:
+> From: Rob Clark <robdclark@chromium.org>
+> 
+> We discovered in drm/ci that if the drm device fails to probe, all the
+> tests come back as "Skip" and the job is considered successful. Fix
+> the getversion test to fail if there is no drm device or if the drm
+> device does not match the expected device as specified by the optional
+> IGT_FORCE_DRIVER environment variable.
+> 
+> Signed-off-by: Rob Clark <robdclark@chromium.org>
+> Acked-by: Helen Koike <helen.koike@collabora.com>
+> Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Tested-by: Helen Koike <helen.koike@collabora.com>
 
-On 1.10.2023 19.28, Hersen Wu wrote:
-> Remove extra line when create cursor fb for AMD gpu.
-> 
-> AMD gpu does not support cursor buffer crop. AMD driver
-> fails validation with fb size not equal to cursor size.
-> 
-> Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
 > ---
->   tests/kms_cursor_crc.c | 6 +++++-
->   1 file changed, 5 insertions(+), 1 deletion(-)
+>  tests/core_getversion.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
 > 
-> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-> index 76c01f557..ba29ff65d 100644
-> --- a/tests/kms_cursor_crc.c
-> +++ b/tests/kms_cursor_crc.c
-> @@ -560,14 +560,18 @@ static void create_cursor_fb(data_t *data, int cur_w, int cur_h)
->   {
->   	cairo_t *cr;
->   	uint32_t fb_id;
-> +	int cur_h_extra_line = 1;
->   
-> +	/* Cropping is not supported for cursor plane by AMD */
-> +	if (is_amdgpu_device(data->drm_fd))
-> +		cur_h_extra_line = 0;
->   	/*
->   	 * Make the FB slightly taller and leave the extra
->   	 * line opaque white, so that we can see that the
->   	 * hardware won't scan beyond what it should (esp.
->   	 * with non-square cursors).
->   	 */
-> -	fb_id = igt_create_color_fb(data->drm_fd, cur_w, cur_h + 1,
-> +	fb_id = igt_create_color_fb(data->drm_fd, cur_w, cur_h + cur_h_extra_line,
->   				    DRM_FORMAT_ARGB8888,
->   				    DRM_FORMAT_MOD_LINEAR,
->   				    1.0, 1.0, 1.0,
+> diff --git a/tests/core_getversion.c b/tests/core_getversion.c
+> index 32cb976e4923..8c8e0c9a3e5e 100644
+> --- a/tests/core_getversion.c
+> +++ b/tests/core_getversion.c
+> @@ -48,14 +48,21 @@ igt_simple_main
+>  {
+>  	int fd;
+>  	drmVersionPtr v;
+> +	const char *name = getenv("IGT_FORCE_DRIVER");
+>  
+> -	fd = drm_open_driver(DRIVER_ANY);
+> +	fd = __drm_open_driver(DRIVER_ANY);
+> +	igt_assert_fd(fd);
+>  	v = drmGetVersion(fd);
+>  	igt_assert_neq(strlen(v->name), 0);
+>  	igt_assert_neq(strlen(v->date), 0);
+>  	igt_assert_neq(strlen(v->desc), 0);
+>  	if (is_i915_device(fd))
+>  		igt_assert_lte(1, v->version_major);
+> +	if (name) {
+> +		igt_assert_f(!strcmp(name, v->name),
+> +			     "Expected driver \"%s\" but got \"%s\"\n",
+> +			     name, v->name);
+> +	}
+>  
+>  	drmFree(v);
+>  	drm_close_driver(fd);
+> -- 
+> 2.41.0
+> 
