@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0912D10E48E
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Oct 2023 19:31:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BCE3010E48E
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Oct 2023 19:31:52 +0000 (UTC)
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  5 Oct 2023 18:57:26 +0000
-Message-ID: <20231005185745.3056219-9-marcin.bernatowicz@linux.intel.com>
+Date: Thu,  5 Oct 2023 18:57:27 +0000
+Message-ID: <20231005185745.3056219-10-marcin.bernatowicz@linux.intel.com>
 In-Reply-To: <20231005185745.3056219-1-marcin.bernatowicz@linux.intel.com>
 References: <20231005185745.3056219-1-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 08/17] benchmarks/gem_wsim: use lib code to
- query engines
+Subject: [igt-dev] [PATCH i-g-t 09/17] benchmarks/gem_wsim: allow comments
+ in workload description files
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,220 +24,88 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Use code in lib/i915/gem_engine_topology to query engines.
+Lines starting with '#' are skipped.
+If command line step separator (',') is encountered after '#'
+it is replaced with ';' to not break parsing.
 
 v2:
-- keep i unsigned, restore igt_assert(count)
-  in num_engines_in_class (Tvrtko)
+- SKIP step type is not needed (Tvrtko)
+v3:
+- correct README comment (Tvrtko)
+- removed hunk for trailing comments after BATCH step,
+  as some other steps do not support it either (Tvrtko)
+v4:
+- correct out of bound access if file ends with hash (Tvrtko)
 
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 ---
- benchmarks/gem_wsim.c | 153 +++++-------------------------------------
- 1 file changed, 17 insertions(+), 136 deletions(-)
+ benchmarks/gem_wsim.c  | 18 +++++++++++++++++-
+ benchmarks/wsim/README |  2 ++
+ 2 files changed, 19 insertions(+), 1 deletion(-)
 
 diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-index 24b51ec8a..2a1991ca6 100644
+index 2a1991ca6..43779c70e 100644
 --- a/benchmarks/gem_wsim.c
 +++ b/benchmarks/gem_wsim.c
-@@ -456,146 +456,27 @@ static int str_to_engine(const char *str)
- 	return -1;
- }
+@@ -43,6 +43,7 @@
+ #include <limits.h>
+ #include <pthread.h>
+ #include <math.h>
++#include <ctype.h>
  
--static bool __engines_queried;
--static unsigned int __num_engines;
--static struct i915_engine_class_instance *__engines;
--
--static int
--__i915_query(int i915, struct drm_i915_query *q)
--{
--	if (igt_ioctl(i915, DRM_IOCTL_I915_QUERY, q))
--		return -errno;
--	return 0;
--}
--
--static int
--__i915_query_items(int i915, struct drm_i915_query_item *items, uint32_t n_items)
--{
--	struct drm_i915_query q = {
--		.num_items = n_items,
--		.items_ptr = to_user_pointer(items),
--	};
--	return __i915_query(i915, &q);
--}
--
--static void
--i915_query_items(int i915, struct drm_i915_query_item *items, uint32_t n_items)
--{
--	igt_assert_eq(__i915_query_items(i915, items, n_items), 0);
--}
--
--static bool has_engine_query(int i915)
--{
--	struct drm_i915_query_item item = {
--		.query_id = DRM_I915_QUERY_ENGINE_INFO,
--	};
--
--	return __i915_query_items(i915, &item, 1) == 0 && item.length > 0;
--}
--
--static void query_engines(void)
-+static struct intel_engine_data *query_engines(void)
- {
--	struct i915_engine_class_instance *engines;
--	unsigned int num;
--
--	if (__engines_queried)
--		return;
--
--	__engines_queried = true;
--
--	if (!has_engine_query(fd)) {
--		unsigned int num_bsd = gem_has_bsd(fd) + gem_has_bsd2(fd);
--		unsigned int i = 0;
--
--		igt_assert(num_bsd);
--
--		num = 1 + num_bsd;
-+	static struct intel_engine_data engines = {};
+ #include "drm.h"
+ #include "drmtest.h"
+@@ -813,6 +814,14 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+ 		if (field) {
+ 			fstart = NULL;
  
--		if (gem_has_blt(fd))
--			num++;
-+	if (engines.nengines)
-+		return &engines;
++			/* line starting with # is a comment */
++			if (field[0] == '#') {
++				if (verbose > 3)
++					printf("skipped line: %s\n", _token);
++				free(token);
++				continue;
++			}
++
+ 			if (!strcmp(field, "d")) {
+ 				int_field(DELAY, delay, tmp <= 0,
+ 					  "Invalid delay at step %u!\n");
+@@ -2403,6 +2412,7 @@ static char *load_workload_descriptor(char *filename)
+ 	char *buf;
+ 	int infd, ret, i;
+ 	ssize_t len;
++	bool in_comment = false;
  
--		if (gem_has_vebox(fd))
--			num++;
--
--		engines = calloc(num,
--				 sizeof(struct i915_engine_class_instance));
--		igt_assert(engines);
--
--		engines[i].engine_class = I915_ENGINE_CLASS_RENDER;
--		engines[i].engine_instance = 0;
--		i++;
--
--		if (gem_has_blt(fd)) {
--			engines[i].engine_class = I915_ENGINE_CLASS_COPY;
--			engines[i].engine_instance = 0;
--			i++;
--		}
--
--		if (gem_has_bsd(fd)) {
--			engines[i].engine_class = I915_ENGINE_CLASS_VIDEO;
--			engines[i].engine_instance = 0;
--			i++;
--		}
--
--		if (gem_has_bsd2(fd)) {
--			engines[i].engine_class = I915_ENGINE_CLASS_VIDEO;
--			engines[i].engine_instance = 1;
--			i++;
--		}
--
--		if (gem_has_vebox(fd)) {
--			engines[i].engine_class =
--				I915_ENGINE_CLASS_VIDEO_ENHANCE;
--			engines[i].engine_instance = 0;
--			i++;
--		}
--	} else {
--		struct drm_i915_query_engine_info *engine_info;
--		struct drm_i915_query_item item = {
--			.query_id = DRM_I915_QUERY_ENGINE_INFO,
--		};
--		const unsigned int sz = 4096;
--		unsigned int i;
--
--		engine_info = malloc(sz);
--		igt_assert(engine_info);
--		memset(engine_info, 0, sz);
--
--		item.data_ptr = to_user_pointer(engine_info);
--		item.length = sz;
--
--		i915_query_items(fd, &item, 1);
--		igt_assert(item.length > 0);
--		igt_assert(item.length <= sz);
--
--		num = engine_info->num_engines;
--
--		engines = calloc(num,
--				 sizeof(struct i915_engine_class_instance));
--		igt_assert(engines);
--
--		for (i = 0; i < num; i++) {
--			struct drm_i915_engine_info *engine =
--				(struct drm_i915_engine_info *)&engine_info->engines[i];
--
--			engines[i] = engine->engine;
--		}
--	}
--
--	__engines = engines;
--	__num_engines = num;
-+	engines = intel_engine_list_of_physical(fd);
-+	igt_assert(engines.nengines);
-+	return &engines;
- }
+ 	ret = stat(filename, &sbuf);
+ 	if (ret || !S_ISREG(sbuf.st_mode))
+@@ -2419,8 +2429,14 @@ static char *load_workload_descriptor(char *filename)
+ 	close(infd);
  
- static unsigned int num_engines_in_class(enum intel_engine_id class)
- {
-+	const struct intel_engine_data *engines = query_engines();
- 	unsigned int i, count = 0;
- 
- 	igt_assert(class == VCS);
- 
--	query_engines();
--
--	for (i = 0; i < __num_engines; i++) {
--		if (__engines[i].engine_class == I915_ENGINE_CLASS_VIDEO)
-+	for (i = 0; i < engines->nengines; i++) {
-+		if (engines->engines[i].class == I915_ENGINE_CLASS_VIDEO)
- 			count++;
+ 	for (i = 0; i < len; i++) {
+-		if (buf[i] == '\n')
++		/* '#' starts comment till end of line */
++		if (buf[i] == '#')
++			in_comment = true;
++		else if (buf[i] == '\n') {
+ 			buf[i] = ',';
++			in_comment = false;
++		} else if (in_comment && buf[i] == ',')
++			buf[i] = ';';
  	}
  
-@@ -607,16 +488,15 @@ static void
- fill_engines_id_class(enum intel_engine_id *list,
- 		      enum intel_engine_id class)
- {
-+	const struct intel_engine_data *engines = query_engines();
- 	enum intel_engine_id engine = VCS1;
- 	unsigned int i, j = 0;
+ 	len--;
+diff --git a/benchmarks/wsim/README b/benchmarks/wsim/README
+index 8c71f2fe6..d4f3dd8ae 100644
+--- a/benchmarks/wsim/README
++++ b/benchmarks/wsim/README
+@@ -1,6 +1,8 @@
+ Workload descriptor format
+ ==========================
  
- 	igt_assert(class == VCS);
- 	igt_assert(num_engines_in_class(VCS) <= 2);
- 
--	query_engines();
--
--	for (i = 0; i < __num_engines; i++) {
--		if (__engines[i].engine_class != I915_ENGINE_CLASS_VIDEO)
-+	for (i = 0; i < engines->nengines; i++) {
-+		if (engines->engines[i].class != I915_ENGINE_CLASS_VIDEO)
- 			continue;
- 
- 		list[j++] = engine++;
-@@ -626,17 +506,18 @@ fill_engines_id_class(enum intel_engine_id *list,
- static unsigned int
- find_physical_instance(enum intel_engine_id class, unsigned int logical)
- {
-+	const struct intel_engine_data *engines = query_engines();
- 	unsigned int i, j = 0;
- 
- 	igt_assert(class == VCS);
- 
--	for (i = 0; i < __num_engines; i++) {
--		if (__engines[i].engine_class != I915_ENGINE_CLASS_VIDEO)
-+	for (i = 0; i < engines->nengines; i++) {
-+		if (engines->engines[i].class != I915_ENGINE_CLASS_VIDEO)
- 			continue;
- 
- 		/* Map logical to physical instances. */
- 		if (logical == j++)
--			return __engines[i].engine_instance;
-+			return engines->engines[i].instance;
- 	}
- 
- 	igt_assert(0);
++Lines starting with '#' are treated as comments and will not create a work step.
++
+ ctx.engine.duration_us.dependency.wait,...
+ <uint>.<str>.<uint>[-<uint>]|*.<int <= 0>[/<int <= 0>][...].<0|1>,...
+ B.<uint>
 -- 
 2.42.0
