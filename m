@@ -1,25 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com
- [IPv6:2a00:1450:4864:20::32d])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 20F2810E3E6
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Oct 2023 12:35:31 +0000 (UTC)
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-40572aeb673so8625725e9.0
- for <igt-dev@lists.freedesktop.org>; Thu, 05 Oct 2023 05:35:30 -0700 (PDT)
-Message-ID: <660121ed-7973-6a64-209a-8186639db59e@gmail.com>
-Date: Thu, 5 Oct 2023 15:35:23 +0300
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4846C10E3F3
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Oct 2023 13:08:45 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu,  5 Oct 2023 18:29:47 +0530
+Message-Id: <20231005125948.2986826-2-bhanuprakash.modem@intel.com>
+In-Reply-To: <20231005125948.2986826-1-bhanuprakash.modem@intel.com>
+References: <20231005125948.2986826-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20231004134722.319334-1-juhapekka.heikkila@gmail.com>
- <20231005111009.3bhbl4qaz4pwlnir@kamilkon-desk.igk.intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20231005111009.3bhbl4qaz4pwlnir@kamilkon-desk.igk.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_fb: on Xe driver take into
- account adlp with no extended block copy
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t V2 1/2] intel-ci/xe: Update kms blocklist
+ documentation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,80 +19,57 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Kamil,
+Add justification to kms blocklist.
 
-On 5.10.2023 14.10, Kamil Konieczny wrote:
-> Hi Juha-Pekka,
-> On 2023-10-04 at 16:47:22 +0300, Juha-Pekka Heikkila wrote:
-> 
-> Could you make your patch title a little shorter?
-> 
-> [PATCH i-g-t] lib/igt_fb: on Xe driver take into account adlp with no extended block copy
-> 
-> imho better:
-> 
-> [PATCH i-g-t] lib/igt_fb: fix for platforms with no extended block copy
-> 
+V2: - Add justification for multidisplay blocklist
 
-Alas I had already merged this because there were people asking to get 
-it in.
+Cc: Swati Sharma <swati2.sharma@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/intel-ci/xe.blocklist.txt | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
->> With Xe add check to not use extended block copy if it is not available.
-> ------ ^^
-> Is it limited to Xe only?
-
-This patch is only about Xe.
-
-/Juha-Pekka
-
-> 
-> Regards,
-> Kamil
-> 
->>
->> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
->> ---
->>   lib/igt_fb.c | 20 +++++++++++---------
->>   1 file changed, 11 insertions(+), 9 deletions(-)
->>
->> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
->> index f0c0681ab..54a66eb6a 100644
->> --- a/lib/igt_fb.c
->> +++ b/lib/igt_fb.c
->> @@ -2920,17 +2920,19 @@ static void blitcopy(const struct igt_fb *dst_fb,
->>   			blt_set_copy_object(&blt.src, src);
->>   			blt_set_copy_object(&blt.dst, dst);
->>   
->> -			blt_set_object_ext(&ext.src,
->> -					   blt_compression_format(&blt, src_fb),
->> -					   src_fb->width, src_fb->height,
->> -					   SURFACE_TYPE_2D);
->> +			if (blt_uses_extended_block_copy(src_fb->fd)) {
->> +				blt_set_object_ext(&ext.src,
->> +						blt_compression_format(&blt, src_fb),
->> +						src_fb->width, src_fb->height,
->> +						SURFACE_TYPE_2D);
->>   
->> -			blt_set_object_ext(&ext.dst,
->> -					   blt_compression_format(&blt, dst_fb),
->> -					   dst_fb->width, dst_fb->height,
->> -					   SURFACE_TYPE_2D);
->> +				blt_set_object_ext(&ext.dst,
->> +						blt_compression_format(&blt, dst_fb),
->> +						dst_fb->width, dst_fb->height,
->> +						SURFACE_TYPE_2D);
->>   
->> -			pext = &ext;
->> +				pext = &ext;
->> +			}
->>   
->>   			blt_set_batch(&blt.bb, xe_bb, bb_size, mem_region);
->>   
->> -- 
->> 2.34.1
->>
+diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
+index e73018ec6..f4a57aa01 100644
+--- a/tests/intel-ci/xe.blocklist.txt
++++ b/tests/intel-ci/xe.blocklist.txt
+@@ -44,20 +44,18 @@ igt@syncobj_.*
+ igt@template
+ igt@tools_test
+ ##################################################################
+-# Pipe E, F, G and H
++# KMS: Pipe E, F, G and H are not available on Intel hardware,
++# hence can't use more than 4 displays.
+ ##################################################################
+ igt@.*@.*pipe-(e|f|g|h).*
+-##################################################################
+-# Multidisplay
+-##################################################################
+ igt@kms_bw@.*-(5|6|7|8)-displays-.*
+ ##################################################################
++# KMS: Tests specific to i915 driver
++##################################################################
+ igt@kms_draw_crc@draw-method-(mmap-cpu|mmap-gtt|pwrite)
+ igt@kms_pipe_b_c_ivb@.*
+ igt@kms_pwrite_crc
+-igt@kms_ccs@.*
+ igt@kms_frontbuffer_tracking@.*-(cpu|gtt|pwrite)
+-igt@kms_fbcon_fbt@(fbc|psr)(-suspend)
+ igt@kms_fence_pin_leak
+ igt@kms_busy@.*
+ igt@kms_psr@.*_mmap_(cpu|gtt)
+@@ -69,3 +67,8 @@ igt@kms_addfb_basic@clobberred-modifier
+ igt@kms_rotation_crc@exhaust-fences
+ igt@kms_force_connector_basic@force-load-detect
+ ##################################################################
++# KMS: Yet to add/missing XE support
++##################################################################
++igt@kms_ccs@.*
++igt@kms_fbcon_fbt@(fbc|psr)(-suspend)
++##################################################################
+-- 
+2.40.0
