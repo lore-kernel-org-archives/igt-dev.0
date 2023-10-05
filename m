@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1405110E166
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Oct 2023 12:12:12 +0000 (UTC)
-Message-ID: <d51813fd-762a-62a4-aa46-f499a41bf3cb@intel.com>
-Date: Thu, 5 Oct 2023 17:41:50 +0530
-Content-Language: en-US
-To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20230928155604.546419-1-swati2.sharma@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20230928155604.546419-1-swati2.sharma@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7999610E050
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Oct 2023 12:17:34 +0000 (UTC)
+Date: Thu, 5 Oct 2023 14:17:09 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20231005121709.ncviptevhz6lv3ir@kamilkon-desk.igk.intel.com>
+References: <20230928174535.2074462-1-marcin.bernatowicz@linux.intel.com>
+ <20230928174535.2074462-2-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [v2 0/2] tests/kms_universal_plane: Dynamic conversion
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230928174535.2074462-2-marcin.bernatowicz@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 01/17] lib/igt_device_scan: Xe get
+ integrated/discrete card functions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,26 +21,133 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: chris.p.wilson@linux.intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Swati,
+Hi Marcin,
+On 2023-09-28 at 17:45:16 +0000, Marcin Bernatowicz wrote:
+> Xe functions to get integrated/discrete card.
+--------------------------------^
+s!/discrete! or first discrete!
 
-On Thu-28-09-2023 09:26 pm, Swati Sharma wrote:
-> Convert subtests to dynamic subtests and update documentation
-> accordingly.
-> 
-> Swati Sharma (2):
->    tests/kms_universal_plane: convert subtests to dynamic subtests
->    tests/kms_universal_plane: update testplan doc
-
-You need to combine these two patches, otherwise it'll break the 'git 
-bisect'.
-
-- Bhanu
+With that
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 > 
->   tests/kms_universal_plane.c | 150 ++++++++----------------------------
->   1 file changed, 34 insertions(+), 116 deletions(-)
+> v2:
+> - renamed __find_first_i915_card to __find_first_intel_card_by_driver_name (Zbyszek)
+> v3:
+> - added documentation to public functions (Kamil)
+> 
+> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> ---
+>  lib/igt_device_scan.c | 52 +++++++++++++++++++++++++++++++++++--------
+>  lib/igt_device_scan.h |  2 ++
+>  2 files changed, 45 insertions(+), 9 deletions(-)
+> 
+> diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+> index ae69ed09f..f4f95fef3 100644
+> --- a/lib/igt_device_scan.c
+> +++ b/lib/igt_device_scan.c
+> @@ -769,25 +769,27 @@ __copy_dev_to_card(struct igt_device *dev, struct igt_device_card *card)
+>   * Iterate over all igt_devices array and find first discrete/integrated card.
+>   * card->pci_slot_name will be updated only if a card is found.
+>   */
+> -static bool __find_first_i915_card(struct igt_device_card *card, bool discrete)
+> +static bool __find_first_intel_card_by_driver_name(struct igt_device_card *card,
+> +				bool want_discrete, const char *drv_name)
+>  {
+>  	struct igt_device *dev;
+> -	int cmp;
+> +	int is_integrated;
+>  
+> +	igt_assert(drv_name);
+>  	memset(card, 0, sizeof(*card));
+>  
+>  	igt_list_for_each_entry(dev, &igt_devs.all, link) {
+>  
+> -		if (!is_pci_subsystem(dev) || strcmp(dev->driver, "i915"))
+> +		if (!is_pci_subsystem(dev) || strcmp(dev->driver, drv_name))
+>  			continue;
+>  
+> -		cmp = strncmp(dev->pci_slot_name, INTEGRATED_I915_GPU_PCI_ID,
+> -			      PCI_SLOT_NAME_SIZE);
+> +		is_integrated = !strncmp(dev->pci_slot_name, INTEGRATED_I915_GPU_PCI_ID,
+> +					 PCI_SLOT_NAME_SIZE);
+>  
+> -		if (discrete && cmp) {
+> +		if (want_discrete && !is_integrated) {
+>  			__copy_dev_to_card(dev, card);
+>  			return true;
+> -		} else if (!discrete && !cmp) {
+> +		} else if (!want_discrete && is_integrated) {
+>  			__copy_dev_to_card(dev, card);
+>  			return true;
+>  		}
+> @@ -800,14 +802,46 @@ bool igt_device_find_first_i915_discrete_card(struct igt_device_card *card)
+>  {
+>  	igt_assert(card);
+>  
+> -	return __find_first_i915_card(card, true);
+> +	return __find_first_intel_card_by_driver_name(card, true, "i915");
+> +}
+> +
+> +/**
+> + * igt_device_find_first_xe_discrete_card
+> + * @card: pointer to igt_device_card structure
+> + *
+> + * Iterate over all igt_devices array and find first xe discrete card.
+> + * card will be updated only if a device is found.
+> + *
+> + * Returns: true if device is found, false otherwise.
+> + */
+> +bool igt_device_find_first_xe_discrete_card(struct igt_device_card *card)
+> +{
+> +	igt_assert(card);
+> +
+> +	return __find_first_intel_card_by_driver_name(card, true, "xe");
+>  }
+>  
+>  bool igt_device_find_integrated_card(struct igt_device_card *card)
+>  {
+>  	igt_assert(card);
+>  
+> -	return __find_first_i915_card(card, false);
+> +	return __find_first_intel_card_by_driver_name(card, false, "i915");
+> +}
+> +
+> +/**
+> + * igt_device_find_xe_integrated_card
+> + * @card: pointer to igt_device_card structure
+> + *
+> + * Iterate over all igt_devices array and find first xe integrated card.
+> + * card will be updated only if a device is found.
+> + *
+> + * Returns: true if device is found, false otherwise.
+> + */
+> +bool igt_device_find_xe_integrated_card(struct igt_device_card *card)
+> +{
+> +	igt_assert(card);
+> +
+> +	return __find_first_intel_card_by_driver_name(card, false, "xe");
+>  }
+>  
+>  static struct igt_device *igt_device_from_syspath(const char *syspath)
+> diff --git a/lib/igt_device_scan.h b/lib/igt_device_scan.h
+> index e6b0f1b90..b8f6a843d 100644
+> --- a/lib/igt_device_scan.h
+> +++ b/lib/igt_device_scan.h
+> @@ -87,6 +87,8 @@ bool igt_device_card_match_pci(const char *filter,
+>  	struct igt_device_card *card);
+>  bool igt_device_find_first_i915_discrete_card(struct igt_device_card *card);
+>  bool igt_device_find_integrated_card(struct igt_device_card *card);
+> +bool igt_device_find_first_xe_discrete_card(struct igt_device_card *card);
+> +bool igt_device_find_xe_integrated_card(struct igt_device_card *card);
+>  char *igt_device_get_pretty_name(struct igt_device_card *card, bool numeric);
+>  int igt_open_card(struct igt_device_card *card);
+>  int igt_open_render(struct igt_device_card *card);
+> -- 
+> 2.42.0
 > 
