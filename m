@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AAAF210E547
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Oct 2023 16:41:27 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4B40810E544
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Oct 2023 16:41:22 +0000 (UTC)
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  6 Oct 2023 16:06:49 +0000
-Message-ID: <20231006160654.3220198-16-marcin.bernatowicz@linux.intel.com>
+Date: Fri,  6 Oct 2023 16:06:48 +0000
+Message-ID: <20231006160654.3220198-15-marcin.bernatowicz@linux.intel.com>
 In-Reply-To: <20231006160654.3220198-1-marcin.bernatowicz@linux.intel.com>
 References: <20231006160654.3220198-1-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 15/17] benchmarks/gem_wsim: for_each_ctx
+Subject: [igt-dev] [PATCH i-g-t 14/17] benchmarks/gem_wsim: for_each_dep
  macro
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -24,103 +24,135 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-__for_each_ctx, for_each_ctx macros to easy traverse contexts.
-
-v2:
-- more readable macro name (Tvrtko)
+Utility macro to easy traverse dependencies.
 
 Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 ---
- benchmarks/gem_wsim.c | 46 ++++++++++++++++++++++++-------------------
- 1 file changed, 26 insertions(+), 20 deletions(-)
+ benchmarks/gem_wsim.c | 45 ++++++++++++++++++++++++-------------------
+ 1 file changed, 25 insertions(+), 20 deletions(-)
 
 diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-index e33fc285d..fc2960c4b 100644
+index d575d65be..e33fc285d 100644
 --- a/benchmarks/gem_wsim.c
 +++ b/benchmarks/gem_wsim.c
-@@ -231,6 +231,13 @@ struct workload {
- 	unsigned int nrequest[NUM_ENGINES];
+@@ -109,6 +109,10 @@ struct deps {
+ 	struct dep_entry *list;
  };
  
-+#define __for_each_ctx(__ctx, __wrk, __ctx_idx) \
-+	for (typeof((__wrk)->nr_ctxs) __ctx_idx = 0; __ctx_idx < (__wrk)->nr_ctxs && \
-+	     (__ctx = &(__wrk)->ctx_list[__ctx_idx]); ++__ctx_idx)
++#define for_each_dep(__dep, __deps) \
++	for (int __i = 0; __i < __deps.nr && \
++	     (__dep = &__deps.list[__i]); ++__i)
 +
-+#define for_each_ctx(__ctx, __wrk) \
-+	__for_each_ctx(__ctx, __wrk, igt_unique(__ctx_idx))
+ struct w_arg {
+ 	char *filename;
+ 	char *desc;
+@@ -1147,8 +1151,10 @@ add_step:
+ 	 * referencing them as a sync fence dependency.
+ 	 */
+ 	for (i = 0; i < nr_steps; i++) {
+-		for (j = 0; j < steps[i].fence_deps.nr; j++) {
+-			tmp = steps[i].idx + steps[i].fence_deps.list[j].target;
++		struct dep_entry *dep;
 +
- static unsigned int master_prng;
- 
- static int verbose = 1;
-@@ -1804,16 +1811,15 @@ static int prepare_contexts(unsigned int id, struct workload *wrk)
++		for_each_dep(dep, steps[i].fence_deps) {
++			tmp = steps[i].idx + dep->target;
+ 			check_arg(tmp < 0 || tmp >= i ||
+ 				  (steps[tmp].type != BATCH &&
+ 				   steps[tmp].type != SW_FENCE),
+@@ -1475,9 +1481,9 @@ static void
+ alloc_step_batch(struct workload *wrk, struct w_step *w)
  {
- 	uint32_t share_vm = 0;
+ 	enum intel_engine_id engine = w->engine;
++	struct dep_entry *dep;
+ 	unsigned int j = 0;
+ 	unsigned int nr_obj = 2 + w->data_deps.nr;
+-	unsigned int i;
+ 
+ 	w->i915.obj = calloc(nr_obj, sizeof(*w->i915.obj));
+ 	igt_assert(w->i915.obj);
+@@ -1487,14 +1493,13 @@ alloc_step_batch(struct workload *wrk, struct w_step *w)
+ 	j++;
+ 	igt_assert(j < nr_obj);
+ 
+-	for (i = 0; i < w->data_deps.nr; i++) {
+-		struct dep_entry *entry = &w->data_deps.list[i];
++	for_each_dep(dep, w->data_deps) {
+ 		uint32_t dep_handle;
+ 
+-		if (entry->working_set == -1) {
+-			int dep_idx = w->idx + entry->target;
++		if (dep->working_set == -1) {
++			int dep_idx = w->idx + dep->target;
+ 
+-			igt_assert(entry->target <= 0);
++			igt_assert(dep->target <= 0);
+ 			igt_assert(dep_idx >= 0 && dep_idx < w->idx);
+ 			igt_assert(wrk->steps[dep_idx].type == BATCH);
+ 
+@@ -1502,19 +1507,19 @@ alloc_step_batch(struct workload *wrk, struct w_step *w)
+ 		} else {
+ 			struct working_set *set;
+ 
+-			igt_assert(entry->working_set <=
++			igt_assert(dep->working_set <=
+ 				   wrk->max_working_set_id);
+ 
+-			set = wrk->working_sets[entry->working_set];
++			set = wrk->working_sets[dep->working_set];
+ 
+ 			igt_assert(set->nr);
+-			igt_assert(entry->target < set->nr);
+-			igt_assert(set->sizes[entry->target].size);
++			igt_assert(dep->target < set->nr);
++			igt_assert(set->sizes[dep->target].size);
+ 
+-			dep_handle = set->handles[entry->target];
++			dep_handle = set->handles[dep->target];
+ 		}
+ 
+-		w->i915.obj[j].flags = entry->write ? EXEC_OBJECT_WRITE : 0;
++		w->i915.obj[j].flags = dep->write ? EXEC_OBJECT_WRITE : 0;
+ 		w->i915.obj[j].handle = dep_handle;
+ 		j++;
+ 		igt_assert(j < nr_obj);
+@@ -1709,8 +1714,8 @@ find_dep(struct dep_entry *deps, unsigned int nr, struct dep_entry dep)
+ static void measure_active_set(struct workload *wrk)
+ {
+ 	unsigned long total = 0, batch_sizes = 0;
+-	struct dep_entry *deps = NULL;
+-	unsigned int nr = 0, i, j;
++	struct dep_entry *dep, *deps = NULL;
++	unsigned int nr = 0, i;
  	struct w_step *w;
--	int i, j;
-+	struct ctx *ctx, *ctx2;
-+	unsigned int i, j;
  
- 	/*
- 	 * Transfer over engine map configuration from the workload step.
- 	 */
--	for (j = 0; j < wrk->nr_ctxs; j++) {
--		struct ctx *ctx = &wrk->ctx_list[j];
--
-+	__for_each_ctx(ctx, wrk, ctx_idx) {
- 		for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
--			if (w->context != j)
-+			if (w->context != ctx_idx)
- 				continue;
+ 	if (verbose < 3)
+@@ -1722,8 +1727,7 @@ static void measure_active_set(struct workload *wrk)
  
- 			if (w->type == ENGINE_MAP) {
-@@ -1850,32 +1856,32 @@ static int prepare_contexts(unsigned int id, struct workload *wrk)
- 	/*
- 	 * Create and configure contexts.
- 	 */
--	for (i = 0; i < wrk->nr_ctxs; i++) {
-+	for_each_ctx(ctx, wrk) {
- 		struct drm_i915_gem_context_create_ext_setparam ext = {
- 			.base.name = I915_CONTEXT_CREATE_EXT_SETPARAM,
- 			.param.param = I915_CONTEXT_PARAM_VM,
- 		};
- 		struct drm_i915_gem_context_create_ext args = { };
--		struct ctx *ctx = &wrk->ctx_list[i];
- 		uint32_t ctx_id;
+ 		batch_sizes += 4096;
  
- 		igt_assert(!ctx->id);
+-		for (j = 0; j < w->data_deps.nr; j++) {
+-			struct dep_entry *dep = &w->data_deps.list[j];
++		for_each_dep(dep, w->data_deps) {
+ 			struct dep_entry _dep = *dep;
  
- 		/* Find existing context to share ppgtt with. */
--		for (j = 0; !share_vm && j < wrk->nr_ctxs; j++) {
--			struct drm_i915_gem_context_param param = {
--				.param = I915_CONTEXT_PARAM_VM,
--				.ctx_id = wrk->ctx_list[j].id,
--			};
--
--			if (!param.ctx_id)
--				continue;
-+		if (!share_vm)
-+			for_each_ctx(ctx2, wrk) {
-+				struct drm_i915_gem_context_param param = {
-+					.param = I915_CONTEXT_PARAM_VM,
-+					.ctx_id = ctx2->id,
-+				};
-+
-+				if (!param.ctx_id)
-+					continue;
+ 			if (dep->working_set == -1 && dep->target < 0) {
+@@ -2146,13 +2150,14 @@ static void w_sync_to(struct workload *wrk, struct w_step *w, int target)
+ static void
+ do_eb(struct workload *wrk, struct w_step *w, enum intel_engine_id engine)
+ {
++	struct dep_entry *dep;
+ 	unsigned int i;
  
--			gem_context_get_param(fd, &param);
--			igt_assert(param.value);
--			share_vm = param.value;
--			break;
--		}
-+				gem_context_get_param(fd, &param);
-+				igt_assert(param.value);
-+				share_vm = param.value;
-+				break;
-+			}
+ 	eb_update_flags(wrk, w, engine);
+ 	update_bb_start(wrk, w);
  
- 		if (share_vm) {
- 			ext.param.value = share_vm;
+-	for (i = 0; i < w->fence_deps.nr; i++) {
+-		int tgt = w->idx + w->fence_deps.list[i].target;
++	for_each_dep(dep, w->fence_deps) {
++		int tgt = w->idx + dep->target;
+ 
+ 		/* TODO: fence merging needed to support multiple inputs */
+ 		igt_assert(i == 0);
 -- 
 2.42.0
