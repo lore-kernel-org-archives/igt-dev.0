@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7E9ED10E06B
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Oct 2023 10:43:49 +0000 (UTC)
-Message-ID: <7e6af56b-a21e-4308-8814-50411190332f@intel.com>
-Date: Fri, 6 Oct 2023 03:43:40 -0700
-Content-Language: en-US
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20231005103244.3262419-1-daniele.ceraolospurio@intel.com>
- <20231005200945.subqjgr2cqrfhyqd@kamilkon-desk.igk.intel.com>
-From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-In-Reply-To: <20231005200945.subqjgr2cqrfhyqd@kamilkon-desk.igk.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative;
+ boundary="===============4046050187515773074=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH] tests/xe_huc_copy: Handle multiple GTs
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Date: Fri, 06 Oct 2023 10:45:20 -0000
+Message-ID: <169658912087.6467.14238297254422261422@emeril.freedesktop.org>
+References: <20231006075819.3055887-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20231006075819.3055887-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIENJLnhlQkFUOiBmYWlsdXJlIGZvciBLTVM6IE1p?=
+ =?utf-8?q?nor_cleanups?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,100 +17,161 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============4046050187515773074==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: KMS: Minor cleanups
+URL   : https://patchwork.freedesktop.org/series/124702/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7518_BAT -> XEIGTPW_9938_BAT
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with XEIGTPW_9938_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_9938_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_9938_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_cursor_legacy@basic-flip-before-cursor-atomic:
+    - bat-adlp-7:         [PASS][1] -> [FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7518/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9938/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9938_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:
+    - bat-dg2-oem2:       [FAIL][3] ([Intel XE#773]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7518/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9938/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
+
+  
+  [Intel XE#773]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/773
 
 
-On 10/5/2023 1:09 PM, Kamil Konieczny wrote:
-> Hi Daniele,
->
-> On 2023-10-05 at 03:32:44 -0700, Daniele Ceraolo Spurio wrote:
->> The test currently only looks for video engines on GT0, which is a
->> problem because newer platforms (like MTL) have their video engines on
->> the media GT. ALso, it is technically possible to have 1 HuC per-GT,
->> though we don't currently have any platform that supports this.
->> To handle the media GT use-case and to future proof against multiple
->> HuCs, we can just loop and repeat the test on any GT that has video
->> engines.
->>
->> Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
->> ---
->>   tests/intel/xe_huc_copy.c | 26 ++++++++++++++++++++++----
->>   1 file changed, 22 insertions(+), 4 deletions(-)
->>
->> diff --git a/tests/intel/xe_huc_copy.c b/tests/intel/xe_huc_copy.c
->> index c9891a729..1c1b9d72c 100644
->> --- a/tests/intel/xe_huc_copy.c
->> +++ b/tests/intel/xe_huc_copy.c
->> @@ -104,9 +104,9 @@ gen12_create_batch_huc_copy(uint32_t *batch,
->>    */
->>   
->>   static void
->> -test_huc_copy(int fd)
->> +__test_huc_copy(int fd, uint32_t vm, struct drm_xe_engine_class_instance *hwe)
->>   {
->> -	uint32_t vm, exec_queue;
->> +	uint32_t exec_queue;
->>   	char *dinput;
->>   	struct drm_xe_sync sync = { 0 };
->>   
->> @@ -117,8 +117,7 @@ test_huc_copy(int fd)
->>   		{ .addr = ADDR_BATCH, .size = SIZE_BATCH }, // batch
->>   	};
->>   
->> -	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
->> -	exec_queue = xe_exec_queue_create_class(fd, vm, DRM_XE_ENGINE_CLASS_VIDEO_DECODE);
->> +	exec_queue = xe_exec_queue_create(fd, vm, hwe, 0);
->>   	sync.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL;
->>   	sync.handle = syncobj_create(fd, 0);
->>   
->> @@ -148,6 +147,25 @@ test_huc_copy(int fd)
->>   
->>   	syncobj_destroy(fd, sync.handle);
->>   	xe_exec_queue_destroy(fd, exec_queue);
->> +}
->> +
->> +static void
->> +test_huc_copy(int fd)
->> +{
->> +	struct drm_xe_engine_class_instance *hwe;
->> +	uint32_t vm;
->> +	uint32_t tested_gts = 0;
->> +
->> +	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
->> +
->> +	xe_for_each_hw_engine(fd, hwe) {
->> +		if (hwe->engine_class == DRM_XE_ENGINE_CLASS_VIDEO_DECODE &&
->> +		    !(tested_gts & BIT(hwe->gt_id))) {
->> +			tested_gts |= BIT(hwe->gt_id);
->> +			__test_huc_copy(fd, vm, hwe);
->> +		}
->> +	}
->> +
-> Please add here check if any huc was tested, maybe something like:
->      igt_require_f(tested_gts, "No video class engines found\n");
+Build changes
+-------------
 
-Note that there is already a check in the igt_main below that ensures 
-that at least 1 GT has a running HuC, which can only happen if that GT 
-has video engines. However, it's probably still worth to add this second 
-check you suggested to protect against mismatches in the queries. Will 
-respin.
+  * IGT: IGT_7518 -> IGTPW_9938
 
->
-> With that:
->
-> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+  IGTPW_9938: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/index.html
+  IGT_7518: 2d4a57e28db0c2ccbf8b2e763074c9aa74a1ae52 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-417-b3daf7f07d6accbe43feafcadeb0b0498063761e: b3daf7f07d6accbe43feafcadeb0b0498063761e
 
-Thanks!
+== Logs ==
 
-Daniele
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9938/index.html
 
->
->>   	xe_vm_destroy(fd, vm);
->>   }
->>   
->> -- 
->> 2.41.0
->>
+--===============4046050187515773074==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>KMS: Minor cleanups</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124702/">https://patchwork.freedesktop.org/series/124702/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9938/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9938/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7518_BAT -&gt; XEIGTPW_9938_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_9938_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_9938_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_9938_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@kms_cursor_legacy@basic-flip-before-cursor-atomic:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7518/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9938/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html">FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9938_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7518/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/773">Intel XE#773</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9938/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7518 -&gt; IGTPW_9938</li>
+</ul>
+<p>IGTPW_9938: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/index.html<br />
+  IGT_7518: 2d4a57e28db0c2ccbf8b2e763074c9aa74a1ae52 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-417-b3daf7f07d6accbe43feafcadeb0b0498063761e: b3daf7f07d6accbe43feafcadeb0b0498063761e</p>
+
+</body>
+</html>
+
+--===============4046050187515773074==--
