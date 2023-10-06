@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============4209285550475377409=="
+ boundary="===============3299189690592601879=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Lucas De Marchi" <lucas.demarchi@intel.com>
-Date: Fri, 06 Oct 2023 23:34:14 -0000
-Message-ID: <169663525423.6466.8873914584007564822@emeril.freedesktop.org>
+Date: Fri, 06 Oct 2023 23:34:28 -0000
+Message-ID: <169663526857.6466.11737089330729390893@emeril.freedesktop.org>
 References: <20231004154922.3478014-1-lucas.demarchi@intel.com>
 In-Reply-To: <20231004154922.3478014-1-lucas.demarchi@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQWRhcHQg?=
- =?utf-8?q?copy_commands_for_Xe2_=28rev6=29?=
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Adapt_co?=
+ =?utf-8?q?py_commands_for_Xe2_=28rev6=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,7 +23,7 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============4209285550475377409==
+--===============3299189690592601879==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -36,92 +36,61 @@ State : success
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_13723 -> IGTPW_9944
+CI Bug Log - changes from XEIGT_7519_BAT -> XEIGTPW_9944_BAT
 ====================================================
 
 Summary
 -------
 
-  **WARNING**
+  **SUCCESS**
 
-  Minor unknown changes coming with IGTPW_9944 need to be verified
-  manually.
+  No regressions found.
+
   
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_9944, please notify your bug team (lgci.bug.filing@intel.com) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9944/index.html
-
-Participating hosts (40 -> 38)
+Participating hosts (4 -> 4)
 ------------------------------
 
-  Missing    (2): fi-hsw-4770 fi-snb-2520m 
+  No changes in participating hosts
 
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_9944:
-
-### IGT changes ###
-
-#### Warnings ####
-
-  * igt@i915_suspend@basic-s2idle-without-i915:
-    - bat-atsm-1:         [DMESG-WARN][1] ([i915#8841]) -> [ABORT][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13723/bat-atsm-1/igt@i915_suspend@basic-s2idle-without-i915.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9944/bat-atsm-1/igt@i915_suspend@basic-s2idle-without-i915.html
-
-  
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_9944 that come from known issues:
+  Here are the changes found in XEIGTPW_9944_BAT that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
-    - bat-adlp-9:         NOTRUN -> [SKIP][3] ([i915#3546]) +2 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9944/bat-adlp-9/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - bat-dg2-oem2:       [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 other test fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7519/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9944/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html
 
   
-#### Possible fixes ####
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
 
-  * igt@gem_exec_suspend@basic-s0@lmem0:
-    - bat-dg2-9:          [INCOMPLETE][4] ([i915#9275]) -> [PASS][5]
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13723/bat-dg2-9/igt@gem_exec_suspend@basic-s0@lmem0.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9944/bat-dg2-9/igt@gem_exec_suspend@basic-s0@lmem0.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - fi-bsw-nick:        [FAIL][6] ([i915#9276]) -> [PASS][7]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13723/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9944/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html
-
-  
-  [i915#3546]: https://gitlab.freedesktop.org/drm/intel/issues/3546
-  [i915#8841]: https://gitlab.freedesktop.org/drm/intel/issues/8841
-  [i915#9275]: https://gitlab.freedesktop.org/drm/intel/issues/9275
-  [i915#9276]: https://gitlab.freedesktop.org/drm/intel/issues/9276
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
   * IGT: IGT_7519 -> IGTPW_9944
+  * Linux: xe-417-b3daf7f07d6accbe43feafcadeb0b0498063761e -> xe-420-7b54cdb001d6ff7cc474b31dbcf8a32f61c4fa1e
 
-  CI-20190529: 20190529
-  CI_DRM_13723: 2f2f3a5735816736995263c4de4f221480183a99 @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_9944: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9944/index.html
   IGT_7519: d1db7333d9c5fbbb05e50b0804123950d9dc1c46 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-417-b3daf7f07d6accbe43feafcadeb0b0498063761e: b3daf7f07d6accbe43feafcadeb0b0498063761e
+  xe-420-7b54cdb001d6ff7cc474b31dbcf8a32f61c4fa1e: 7b54cdb001d6ff7cc474b31dbcf8a32f61c4fa1e
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9944/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9944/index.html
 
---===============4209285550475377409==
+--===============3299189690592601879==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -145,68 +114,40 @@ Content-Transfer-Encoding: 7bit
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123773/">https://patchwork.freedesktop.org/series/123773/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9944/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9944/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9944/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9944/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from CI_DRM_13723 -&gt; IGTPW_9944</h1>
+    <h1>CI Bug Log - changes from XEIGT_7519_BAT -&gt; XEIGTPW_9944_BAT</h1>
 <h2>Summary</h2>
-<p><strong>WARNING</strong></p>
-<p>Minor unknown changes coming with IGTPW_9944 need to be verified<br />
-  manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_9944, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9944/index.html</p>
-<h2>Participating hosts (40 -&gt; 38)</h2>
-<p>Missing    (2): fi-hsw-4770 fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_9944:</p>
-<h3>IGT changes</h3>
-<h4>Warnings</h4>
-<ul>
-<li>igt@i915_suspend@basic-s2idle-without-i915:<ul>
-<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13723/bat-atsm-1/igt@i915_suspend@basic-s2idle-without-i915.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8841">i915#8841</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9944/bat-atsm-1/igt@i915_suspend@basic-s2idle-without-i915.html">ABORT</a></li>
-</ul>
-</li>
-</ul>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_9944 that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_9944_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
-<li>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:<ul>
-<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9944/bat-adlp-9/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3546">i915#3546</a>) +2 other tests skip</li>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7519/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9944/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
 </ul>
 </li>
 </ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s0@lmem0:</p>
-<ul>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13723/bat-dg2-9/igt@gem_exec_suspend@basic-s0@lmem0.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9275">i915#9275</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9944/bat-dg2-9/igt@gem_exec_suspend@basic-s0@lmem0.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13723/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9276">i915#9276</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9944/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
-</ul>
-</li>
-</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_7519 -&gt; IGTPW_9944</li>
+<li>Linux: xe-417-b3daf7f07d6accbe43feafcadeb0b0498063761e -&gt; xe-420-7b54cdb001d6ff7cc474b31dbcf8a32f61c4fa1e</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13723: 2f2f3a5735816736995263c4de4f221480183a99 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_9944: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9944/index.html<br />
-  IGT_7519: d1db7333d9c5fbbb05e50b0804123950d9dc1c46 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>IGTPW_9944: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9944/index.html<br />
+  IGT_7519: d1db7333d9c5fbbb05e50b0804123950d9dc1c46 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-417-b3daf7f07d6accbe43feafcadeb0b0498063761e: b3daf7f07d6accbe43feafcadeb0b0498063761e<br />
+  xe-420-7b54cdb001d6ff7cc474b31dbcf8a32f61c4fa1e: 7b54cdb001d6ff7cc474b31dbcf8a32f61c4fa1e</p>
 
 </body>
 </html>
 
---===============4209285550475377409==--
+--===============3299189690592601879==--
