@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7623D10E28A
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Oct 2023 07:49:32 +0000 (UTC)
-Date: Fri, 6 Oct 2023 09:49:27 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: sai.gowtham.ch@intel.com
-Message-ID: <20231006074927.o5dbwbn263t33wtz@zkempczy-mobl2>
-References: <20231003073344.20470-1-sai.gowtham.ch@intel.com>
- <20231003073344.20470-2-sai.gowtham.ch@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6D78010E4BF
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Oct 2023 08:02:15 +0000 (UTC)
+Message-ID: <126ae5fa-3bcc-808a-9c5a-2acedf177a58@intel.com>
+Date: Fri, 6 Oct 2023 10:02:14 +0200
+Content-Language: en-US
+To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
+References: <20231004163729.464980-1-zbigniew.kempczynski@intel.com>
+ <20231004163729.464980-2-zbigniew.kempczynski@intel.com>
+From: Karolina Stolarek <karolina.stolarek@intel.com>
+In-Reply-To: <20231004163729.464980-2-zbigniew.kempczynski@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231003073344.20470-2-sai.gowtham.ch@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/intel_blt: Add wrappers to
- prepare batch buffers and submit exec
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/intel_blt: Release an offset in
+ the allocator on buffer destroy
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,391 +27,88 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Oct 03, 2023 at 01:03:43PM +0530, sai.gowtham.ch@intel.com wrote:
-> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+On 4.10.2023 18:37, Zbigniew Kempczyński wrote:
+> Blitter library code requires allocator handle only at the execution
+> time. That means blt_copy_object structure is allocator agnostic and
+> offsets are taken for block-copy or fast-copy just before operation.
+> Operations on bo's like close/create requires to reflect on the
+> allocator state, otherwise allocator will contain outdated
+> offsets + sizes leading to fail on allocator operations or the exec.
 > 
-> Adding wrapper for mem-set and mem-copy instructions to prepare
-> batch buffers and submit exec, (blt_mem_copy, blt_mem_set,
-> emit_blt_mem_copy, emit,blt_set_mem)
-                         ^--- s/,/_/
+> Helpers blt_create_object() and blt_destroy_object() are unaware
+> of allocator so if in the meantime object was used in block-copy or
+> fast-copy it has assigned offset in the allocator. 
+
+Something is slightly off with that sentence. It gets assigned the same 
+offset as the "old" object, right?
+
+But the solution itself looks good to me:
+
+Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
+
+Thanks,
+Karolina
+
+> Destroying object
+> with blt_destroy_object() doesn't release this offset what might
+> cause failures described above.
 > 
+> There're two possibilities how to solve this - to couple blitter
+> library with allocator or provide additional helpers which will
+> release offset in the allocator on destroy path. Latter one is
+> easier to provide so this is a subject of this change.
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > Cc: Karolina Stolarek <karolina.stolarek@intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 > ---
->  lib/intel_blt.c | 195 ++++++++++++++++++++++++++++++++++++++++++++++++
->  lib/intel_blt.h |  39 ++++++++++
->  lib/intel_reg.h |   4 +
->  3 files changed, 238 insertions(+)
+>   lib/intel_blt.c | 15 ++++++++++++++-
+>   lib/intel_blt.h |  2 ++
+>   2 files changed, 16 insertions(+), 1 deletion(-)
 > 
 > diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-> index b55fa9b52..cea97c9f3 100644
+> index b55fa9b529..d2ea88d95f 100644
 > --- a/lib/intel_blt.c
 > +++ b/lib/intel_blt.c
-> @@ -13,12 +13,14 @@
->  #include "igt.h"
->  #include "igt_syncobj.h"
->  #include "intel_blt.h"
-> +#include "intel_mocs.h"
->  #include "xe/xe_ioctl.h"
->  #include "xe/xe_query.h"
->  #include "xe/xe_util.h"
->  
->  #define BITRANGE(start, end) (end - start + 1)
->  #define GET_CMDS_INFO(__fd) intel_get_cmds_info(intel_get_drm_devid(__fd))
-> +#define MEM_COPY_MOCS_SHIFT                     25
->  
->  /* Blitter tiling definitions sanity checks */
->  static_assert(T_LINEAR == I915_TILING_NONE, "Linear definitions have to match");
-> @@ -778,6 +780,14 @@ void blt_copy_init(int fd, struct blt_copy_data *blt)
->  	blt->driver = get_intel_driver(fd);
->  }
->  
-> +void blt_mem_init(int fd, struct blt_mem_data *mem)
+> @@ -1470,15 +1470,28 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
+>   	return obj;
+>   }
+>   
+> -void blt_destroy_object(int fd, struct blt_copy_object *obj)
+> +static void __blt_destroy_object(int fd, uint64_t ahnd, struct blt_copy_object *obj)
+>   {
+>   	if (obj->ptr)
+>   		munmap(obj->ptr, obj->size);
+>   
+>   	gem_close(fd, obj->handle);
+> +	if (ahnd)
+> +		intel_allocator_free(ahnd, obj->handle);
+>   	free(obj);
+>   }
+>   
+> +void blt_destroy_object(int fd, struct blt_copy_object *obj)
 > +{
-> +	memset(mem, 0, sizeof(*mem));
-> +
-> +	mem->fd = fd;
-> +	mem->driver = get_intel_driver(fd);
+> +	__blt_destroy_object(fd, 0, obj);
 > +}
 > +
-
-Move this to place where mem-copy/set functions reside.
-And as this is public function document it.
-
->  /**
->   * emit_blt_block_copy:
->   * @fd: drm fd
-> @@ -1412,6 +1422,174 @@ int blt_fast_copy(int fd,
->  	return ret;
->  }
->  
-> +static void emit_blt_mem_copy(int fd, uint64_t ahnd, const struct blt_mem_data *mem, uint32_t col_size)
-
-What col_size is for?
-
+> +void blt_destroy_object_and_alloc_free(int fd, uint64_t ahnd,
+> +				       struct blt_copy_object *obj)
 > +{
-> +	uint64_t dst_offset, src_offset, alignment;
-> +	int i;
-> +	uint8_t src_mocs = intel_get_uc_mocs(fd);
-> +	uint8_t dst_mocs = src_mocs;
-
-Mocs are part of blt_mem_object.
-
-> +	uint32_t *batch;
-> +
-> +	alignment = get_default_alignment(fd, mem->driver);
-> +	src_offset = get_offset(ahnd, mem->src.handle, mem->src.size, alignment);
-> +	dst_offset = get_offset(ahnd, mem->dst.handle, mem->dst.size, alignment);
-> +
-> +	batch = bo_map(fd, mem->bb.handle, mem->bb.size, mem->driver);
-> +
-> +	i = 0;
-> +	batch[i++] = MEM_COPY_CMD | (1 << 19);
-
-Bit 19 is reserved. What about 17-18 - linear and matrix copy?
-Use type field from the object to establish the operation.
-
-> +	batch[i++] = mem->src.width - 1;
-> +	batch[i++] = mem->src.height - 1;
-> +	batch[i++] = mem->src.pitch - 1;
-> +	batch[i++] = mem->dst.pitch - 1;
-> +	batch[i++] = src_offset;
-> +	batch[i++] = src_offset << 32;
-> +	batch[i++] = dst_offset;
-> +	batch[i++] = dst_offset << 32;
-> +	batch[i++] = src_mocs << MEM_COPY_MOCS_SHIFT | dst_mocs;
-> +	batch[i++] = MI_BATCH_BUFFER_END;
-> +	batch[i++] = MI_NOOP;
-
-Batch is mmaped so zeroed, MI_NOOP is not necessary.
-
-> +
-> +	munmap(batch, mem->bb.size);
+> +	__blt_destroy_object(fd, ahnd, obj);
 > +}
 > +
-> +/**
-> + * blt_mem_copy:
-> + * @fd: drm fd
-> + * @ctx: intel_ctx_t context
-> + * @e: blitter engine for @ctx
-> + * @ahnd: allocator handle
-> + * @blt: blitter data for mem-copy.
-> + *
-> + * Function does mem blit between @src and @dst described in @blt object.
-> + *
-> + * Returns:
-> + * execbuffer status.
-> + */
-> +int blt_mem_copy(int fd, const intel_ctx_t *ctx,
-> +		 const struct intel_execution_engine2 *e,
-> +		 uint64_t ahnd,
-> +		 const struct blt_mem_data *mem,
-> +		 uint32_t col_size)
-
-Same here with col_size. It is unused.
-
-> +{
-> +	struct drm_i915_gem_execbuffer2 execbuf = {};
-> +	struct drm_i915_gem_exec_object2 obj[3] = {};
-> +	uint64_t dst_offset, src_offset, bb_offset, alignment;
-> +	int ret;
-> +
-> +	alignment = get_default_alignment(fd, mem->driver);
-> +	src_offset = get_offset(ahnd, mem->src.handle, mem->src.size, alignment);
-> +	dst_offset = get_offset(ahnd, mem->dst.handle, mem->dst.size, alignment);
-> +	bb_offset = get_offset(ahnd, mem->bb.handle, mem->bb.size, alignment);
-> +
-> +	emit_blt_mem_copy(fd, ahnd, mem, col_size);
-> +
-> +	if (mem->driver == INTEL_DRIVER_XE) {
-> +		intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
-> +	} else {
-> +		obj[0].offset = CANONICAL(dst_offset);
-> +		obj[1].offset = CANONICAL(src_offset);
-> +		obj[2].offset = CANONICAL(bb_offset);
-> +		obj[0].handle = mem->dst.handle;
-> +		obj[1].handle = mem->src.handle;
-> +		obj[2].handle = mem->bb.handle;
-> +		obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
-> +			EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-> +		obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-> +		obj[2].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-> +		execbuf.buffer_count = 3;
-> +		execbuf.buffers_ptr = to_user_pointer(obj);
-> +		execbuf.rsvd1 = ctx ? ctx->id : 0;
-> +		execbuf.flags = e ? e->flags : I915_EXEC_BLT;
-> +		ret = __gem_execbuf(fd, &execbuf);
-> +		put_offset(ahnd, mem->dst.handle);
-> +		put_offset(ahnd, mem->src.handle);
-> +		put_offset(ahnd, mem->bb.handle);
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +static void emit_blt_mem_set(int fd, uint64_t ahnd, const struct blt_mem_data *mem,
-> +			     uint8_t fill_data)
-> +{
-> +	uint64_t dst_offset, alignment;
-> +	int b;
-> +	uint32_t *batch;
-> +	uint32_t value;
-> +
-> +	alignment = get_default_alignment(fd, mem->driver);
-> +	dst_offset = get_offset(ahnd, mem->dst.handle, mem->dst.size, alignment);
-> +
-> +	batch = bo_map(fd, mem->bb.handle, mem->bb.size, mem->driver);
-> +	value = (uint32_t)fill_data << 24;
-> +
-> +	b = 0;
-> +	batch[b++] = MEM_SET_CMD;
-> +	batch[b++] = mem->dst.width - 1;
-> +	batch[b++] = mem->dst.height;
-> +	batch[b++] = mem->dst.pitch;
-
-Height and pitch are also U18-1.
-
-> +	batch[b++] = dst_offset;
-> +	batch[b++] = dst_offset << 32;
-> +	batch[b++] = value | mem->dst.mocs;
-> +	batch[b++] = MI_BATCH_BUFFER_END;
-> +	batch[b++] = MI_NOOP;
-
-Batch is mmaped so zeroed, MI_NOOP is not necessary.
-
-> +
-> +	munmap(batch, mem->bb.size);
-> +}
-> +
-> +/**
-> + * blt_mem_set:
-> + * @fd: drm fd
-> + * @ctx: intel_ctx_t context
-> + * @e: blitter engine for @ctx
-> + * @ahnd: allocator handle
-> + * @blt: blitter data for mem-set.
-> + *
-> + * Function does mem set blit in described @blt object.
-> + *
-> + * Returns:
-> + * execbuffer status.
-> + */
-> +int blt_mem_set(int fd, const intel_ctx_t *ctx,
-> +		const struct intel_execution_engine2 *e,
-> +		uint64_t ahnd,
-> +		const struct blt_mem_data *mem,
-> +		uint8_t fill_data)
-> +{
-> +	struct drm_i915_gem_execbuffer2 execbuf = {};
-> +	struct drm_i915_gem_exec_object2 obj[2] = {};
-> +	uint64_t dst_offset, bb_offset, alignment;
-> +	int ret;
-> +
-> +	alignment = get_default_alignment(fd, mem->driver);
-> +	dst_offset = get_offset(ahnd, mem->dst.handle, mem->dst.size, alignment);
-> +	bb_offset = get_offset(ahnd, mem->bb.handle, mem->bb.size, alignment);
-> +
-> +	emit_blt_mem_set(fd, ahnd, mem, fill_data);
-> +
-> +	if (mem->driver == INTEL_DRIVER_XE) {
-> +		intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
-> +	} else {
-> +		obj[0].offset = CANONICAL(dst_offset);
-> +		obj[1].offset = CANONICAL(bb_offset);
-> +		obj[0].handle = mem->dst.handle;
-> +		obj[1].handle = mem->bb.handle;
-> +		obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
-> +			       EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-> +		obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-> +		execbuf.buffer_count = 2;
-> +		execbuf.buffers_ptr = to_user_pointer(obj);
-> +		execbuf.rsvd1 = ctx ? ctx->id : 0;
-> +		execbuf.flags = e ? e->flags : I915_EXEC_BLT;
-> +		ret = __gem_execbuf(fd, &execbuf);
-> +		put_offset(ahnd, mem->dst.handle);
-> +		put_offset(ahnd, mem->bb.handle);
-> +	}
-> +
-> +	return ret;
-> +}
-> +
->  void blt_set_geom(struct blt_copy_object *obj, uint32_t pitch,
->  		  int16_t x1, int16_t y1, int16_t x2, int16_t y2,
->  		  uint16_t x_offset, uint16_t y_offset)
-> @@ -1494,6 +1672,23 @@ void blt_set_object(struct blt_copy_object *obj,
->  	obj->compression_type = compression_type;
->  }
->  
-> +void blt_set_mem_object(struct blt_mem_object *obj,
-> +			uint32_t handle, uint64_t size, uint32_t pitch,
-> +			uint32_t width, uint32_t height, uint32_t region,
-> +			uint8_t mocs, enum blt_memop_type type,
-> +			enum blt_compression compression)
-> +{
-> +	obj->handle = handle;
-> +	obj->region = region;
-> +	obj->size = size;
-> +	obj->mocs = mocs;
-> +	obj->type = type;
-
-So you have most important information about object here (M_LINEAR
-or M_MATRIX). Use this in above instructions where you're emitting
-batch. I mean depending on this field you should use appropriate
-width/height/pitch.
-
-> +	obj->compression = compression;
-> +	obj->width = width;
-> +	obj->height = height;
-> +	obj->pitch = pitch;
-> +}
-> +
->  void blt_set_object_ext(struct blt_block_copy_object_ext *obj,
->  			uint8_t compression_format,
->  			uint16_t surface_width, uint16_t surface_height,
+>   void blt_set_object(struct blt_copy_object *obj,
+>   		    uint32_t handle, uint64_t size, uint32_t region,
+>   		    uint8_t mocs, enum blt_tiling_type tiling,
 > diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-> index d9c8883c7..d4038e9ef 100644
+> index d9c8883c7d..a9ddb99647 100644
 > --- a/lib/intel_blt.h
 > +++ b/lib/intel_blt.h
-> @@ -93,6 +93,19 @@ struct blt_copy_object {
->  	uint32_t plane_offset;
->  };
->  
-> +struct blt_mem_object {
-> +	uint32_t handle;
-> +	uint32_t region;
-> +	uint64_t size;
-> +	uint8_t mocs;
-> +	enum blt_memop_type type;
-> +	enum blt_compression compression;
-> +	uint32_t width;
-> +	uint32_t height;
-> +	uint32_t pitch;
-> +	uint32_t *ptr;
-> +};
-> +
-
-I think above fields are fine.
-
->  struct blt_copy_batch {
->  	uint32_t handle;
->  	uint32_t region;
-> @@ -112,6 +125,14 @@ struct blt_copy_data {
->  	bool print_bb;
-
-As you've added print_bb implement dumping instruction similar
-to block-copy/fast-copy/ctrl-surf-copy if user will set it to true.
-
---
-Zbigniew
-
->  };
->  
-> +struct blt_mem_data {
-> +	int fd;
-> +	enum intel_driver driver;
-> +	struct blt_mem_object src;
-> +	struct blt_mem_object dst;
-> +	struct blt_copy_batch bb;
-> +};
-> +
->  enum blt_surface_type {
->  	SURFACE_TYPE_1D,
->  	SURFACE_TYPE_2D,
-> @@ -190,6 +211,7 @@ bool blt_uses_extended_block_copy(int fd);
->  const char *blt_tiling_name(enum blt_tiling_type tiling);
->  
->  void blt_copy_init(int fd, struct blt_copy_data *blt);
-> +void blt_mem_init(int fd, struct blt_mem_data *mem);
->  
->  uint64_t emit_blt_block_copy(int fd,
->  			     uint64_t ahnd,
-> @@ -231,6 +253,16 @@ int blt_fast_copy(int fd,
->  		  uint64_t ahnd,
->  		  const struct blt_copy_data *blt);
->  
-> +int blt_mem_copy(int fd, const intel_ctx_t *ctx,
-> +			 const struct intel_execution_engine2 *e,
-> +			 uint64_t ahnd,
-> +			 const struct blt_mem_data *mem,
-> +			 uint32_t col_size);
-> +
-> +int blt_mem_set(int fd, const intel_ctx_t *ctx,
-> +			const struct intel_execution_engine2 *e, uint64_t ahnd,
-> +			const struct blt_mem_data *mem, uint8_t fill_data);
-> +
->  void blt_set_geom(struct blt_copy_object *obj, uint32_t pitch,
->  		  int16_t x1, int16_t y1, int16_t x2, int16_t y2,
->  		  uint16_t x_offset, uint16_t y_offset);
-> @@ -250,6 +282,13 @@ void blt_set_object(struct blt_copy_object *obj,
->  		    uint8_t mocs, enum blt_tiling_type tiling,
->  		    enum blt_compression compression,
->  		    enum blt_compression_type compression_type);
-> +
-> +void blt_set_mem_object(struct blt_mem_object *obj,
-> +			uint32_t handle, uint64_t size, uint32_t pitch,
-> +			uint32_t width, uint32_t height, uint32_t region,
-> +			uint8_t mocs, enum blt_memop_type type,
-> +			enum blt_compression compression);
-> +
->  void blt_set_object_ext(struct blt_block_copy_object_ext *obj,
->  			uint8_t compression_format,
->  			uint16_t surface_width, uint16_t surface_height,
-> diff --git a/lib/intel_reg.h b/lib/intel_reg.h
-> index 3bf3676dc..eb65da911 100644
-> --- a/lib/intel_reg.h
-> +++ b/lib/intel_reg.h
-> @@ -2586,6 +2586,10 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
->  #define   XY_FAST_COPY_COLOR_DEPTH_64			(4  << 24)
->  #define   XY_FAST_COPY_COLOR_DEPTH_128			(5  << 24)
->  
-> +/* RAW memory commands */
-> +#define MEM_COPY_CMD                    ((0x2 << 29)|(0x5a << 22)|0x8)
-> +#define MEM_SET_CMD                     ((0x2 << 29)|(0x5b << 22)|0x5)
-> +
->  #define CTXT_NO_RESTORE			(1)
->  #define CTXT_PALETTE_SAVE_DISABLE	(1<<3)
->  #define CTXT_PALETTE_RESTORE_DISABLE	(1<<2)
-> -- 
-> 2.39.1
-> 
+> @@ -245,6 +245,8 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
+>   		  enum blt_compression_type compression_type,
+>   		  bool create_mapping);
+>   void blt_destroy_object(int fd, struct blt_copy_object *obj);
+> +void blt_destroy_object_and_alloc_free(int fd, uint64_t ahnd,
+> +				       struct blt_copy_object *obj);
+>   void blt_set_object(struct blt_copy_object *obj,
+>   		    uint32_t handle, uint64_t size, uint32_t region,
+>   		    uint8_t mocs, enum blt_tiling_type tiling,
