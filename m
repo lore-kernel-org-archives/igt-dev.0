@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 82AB588CFA
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Oct 2023 08:23:15 +0000 (UTC)
-From: "B, Jeevan" <jeevan.b@intel.com>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Fri, 6 Oct 2023 08:23:06 +0000
-Message-ID: <DM4PR11MB6312E171CF1F4AE91A8A623790C9A@DM4PR11MB6312.namprd11.prod.outlook.com>
-References: <20231006075819.3055887-1-bhanuprakash.modem@intel.com>
- <20231006075819.3055887-3-bhanuprakash.modem@intel.com>
-In-Reply-To: <20231006075819.3055887-3-bhanuprakash.modem@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7019F10E4CA
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Oct 2023 08:37:26 +0000 (UTC)
+Message-ID: <8d9935c0-8fbf-9073-b6d0-97b55f01c0c3@linux.intel.com>
+Date: Fri, 6 Oct 2023 09:37:22 +0100
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t 2/4] lib/igt_kms: Expose helper to convert
- rotation to string
+Content-Language: en-US
+To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20231005185745.3056219-1-marcin.bernatowicz@linux.intel.com>
+ <20231005185745.3056219-10-marcin.bernatowicz@linux.intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20231005185745.3056219-10-marcin.bernatowicz@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t 09/17] benchmarks/gem_wsim: allow
+ comments in workload description files
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,53 +23,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: chris.p.wilson@linux.intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-TEdUTQ0KDQpSZXZpZXdlZC1ieTogSmVldmFuIEIgPGplZXZhbi5iQGludGVsLmNvbT4NCg0KPiAt
-LS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBpZ3QtZGV2IDxpZ3QtZGV2LWJvdW5j
-ZXNAbGlzdHMuZnJlZWRlc2t0b3Aub3JnPiBPbiBCZWhhbGYgT2YNCj4gQmhhbnVwcmFrYXNoIE1v
-ZGVtDQo+IFNlbnQ6IEZyaWRheSwgT2N0b2JlciA2LCAyMDIzIDE6MjggUE0NCj4gVG86IGlndC1k
-ZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IFN1YmplY3Q6IFtpZ3QtZGV2XSBbaS1nLXQgMi80
-XSBsaWIvaWd0X2ttczogRXhwb3NlIGhlbHBlciB0byBjb252ZXJ0IHJvdGF0aW9uIHRvDQo+IHN0
-cmluZw0KPiANCj4gRXhwb3NlIGhlbHBlciB0byBjb252ZXJ0IHJvdGF0aW9uIHRvIHN0cmluZy4N
-Cj4gDQo+IFNpZ25lZC1vZmYtYnk6IEJoYW51cHJha2FzaCBNb2RlbSA8YmhhbnVwcmFrYXNoLm1v
-ZGVtQGludGVsLmNvbT4NCj4gLS0tDQo+ICBsaWIvaWd0X2ttcy5jIHwgMjAgKysrKysrKysrKysr
-Ky0tLS0tLS0gIGxpYi9pZ3Rfa21zLmggfCAgMSArDQo+ICAyIGZpbGVzIGNoYW5nZWQsIDE0IGlu
-c2VydGlvbnMoKyksIDcgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvbGliL2lndF9r
-bXMuYyBiL2xpYi9pZ3Rfa21zLmMgaW5kZXggYzJmMzcyOGE2Li5lYzRjZDc4Y2QgMTAwNjQ0DQo+
-IC0tLSBhL2xpYi9pZ3Rfa21zLmMNCj4gKysrIGIvbGliL2lndF9rbXMuYw0KPiBAQCAtNDkwMiwx
-NyArNDkwMiwyMyBAQCB2b2lkIGlndF9mYl9zZXRfc2l6ZShzdHJ1Y3QgaWd0X2ZiICpmYiwgaWd0
-X3BsYW5lX3QNCj4gKnBsYW5lLA0KPiAgCWlndF9wbGFuZV9zZXRfcHJvcF92YWx1ZShwbGFuZSwg
-SUdUX1BMQU5FX1NSQ19ILCBJR1RfRklYRUQoaCwgMCkpOyAgfQ0KPiANCj4gLXN0YXRpYyBjb25z
-dCBjaGFyICpyb3RhdGlvbl9uYW1lKGlndF9yb3RhdGlvbl90IHJvdGF0aW9uKQ0KPiArLyoqDQo+
-ICsgKiBpZ3RfcGxhbmVfcm90YXRpb25fbmFtZToNCj4gKyAqIEByb3RhdGlvbjogUGxhbmUgcm90
-YXRpb24gdmFsdWUgKDAsIDkwLCAxODAsIDI3MCkNCj4gKyAqDQo+ICsgKiBSZXR1cm5zOiBQbGFu
-ZSByb3RhdGlvbiB2YWx1ZSBhcyBhIHN0cmluZyAgKi8gY29uc3QgY2hhcg0KPiArKmlndF9wbGFu
-ZV9yb3RhdGlvbl9uYW1lKGlndF9yb3RhdGlvbl90IHJvdGF0aW9uKQ0KPiAgew0KPiAgCXN3aXRj
-aCAocm90YXRpb24gJiBJR1RfUk9UQVRJT05fTUFTSykgew0KPiAgCWNhc2UgSUdUX1JPVEFUSU9O
-XzA6DQo+IC0JCXJldHVybiAiMMKwIjsNCj4gKwkJcmV0dXJuICIwIjsNCj4gIAljYXNlIElHVF9S
-T1RBVElPTl85MDoNCj4gLQkJcmV0dXJuICI5MMKwIjsNCj4gKwkJcmV0dXJuICI5MCI7DQo+ICAJ
-Y2FzZSBJR1RfUk9UQVRJT05fMTgwOg0KPiAtCQlyZXR1cm4gIjE4MMKwIjsNCj4gKwkJcmV0dXJu
-ICIxODAiOw0KPiAgCWNhc2UgSUdUX1JPVEFUSU9OXzI3MDoNCj4gLQkJcmV0dXJuICIyNzDCsCI7
-DQo+ICsJCXJldHVybiAiMjcwIjsNCj4gIAlkZWZhdWx0Og0KPiAgCQlpZ3RfYXNzZXJ0KDApOw0K
-PiAgCX0NCj4gQEAgLTQ5MzIsOSArNDkzOCw5IEBAIHZvaWQgaWd0X3BsYW5lX3NldF9yb3RhdGlv
-bihpZ3RfcGxhbmVfdCAqcGxhbmUsDQo+IGlndF9yb3RhdGlvbl90IHJvdGF0aW9uKQ0KPiAgCWln
-dF9waXBlX3QgKnBpcGUgPSBwbGFuZS0+cGlwZTsNCj4gIAlpZ3RfZGlzcGxheV90ICpkaXNwbGF5
-ID0gcGlwZS0+ZGlzcGxheTsNCj4gDQo+IC0JTE9HKGRpc3BsYXksICIlcy4lZDogcGxhbmVfc2V0
-X3JvdGF0aW9uKCVzKVxuIiwNCj4gKwlMT0coZGlzcGxheSwgIiVzLiVkOiBwbGFuZV9zZXRfcm90
-YXRpb24oJXPCsClcbiIsDQo+ICAJICAgIGttc3Rlc3RfcGlwZV9uYW1lKHBpcGUtPnBpcGUpLA0K
-PiAtCSAgICBwbGFuZS0+aW5kZXgsIHJvdGF0aW9uX25hbWUocm90YXRpb24pKTsNCj4gKwkgICAg
-cGxhbmUtPmluZGV4LCBpZ3RfcGxhbmVfcm90YXRpb25fbmFtZShyb3RhdGlvbikpOw0KPiANCj4g
-IAlpZ3RfcGxhbmVfc2V0X3Byb3BfdmFsdWUocGxhbmUsIElHVF9QTEFORV9ST1RBVElPTiwgcm90
-YXRpb24pOyAgfSBkaWZmDQo+IC0tZ2l0IGEvbGliL2lndF9rbXMuaCBiL2xpYi9pZ3Rfa21zLmgg
-aW5kZXggZjJjMzc0MWZjLi40YmNhZjNmNzMgMTAwNjQ0DQo+IC0tLSBhL2xpYi9pZ3Rfa21zLmgN
-Cj4gKysrIGIvbGliL2lndF9rbXMuaA0KPiBAQCAtNTM2LDYgKzUzNiw3IEBAIHN0YXRpYyBpbmxp
-bmUgYm9vbCBpZ3RfcGxhbmVfaGFzX3JvdGF0aW9uKGlndF9wbGFuZV90DQo+ICpwbGFuZSwgaWd0
-X3JvdGF0aW9uX3Qgcm90ICB7DQo+ICAJcmV0dXJuIChwbGFuZS0+cm90YXRpb25zICYgcm90YXRp
-b24pID09IHJvdGF0aW9uOyAgfQ0KPiArY29uc3QgY2hhciAqaWd0X3BsYW5lX3JvdGF0aW9uX25h
-bWUoaWd0X3JvdGF0aW9uX3Qgcm90YXRpb24pOw0KPiANCj4gIHZvaWQgaWd0X3dhaXRfZm9yX3Zi
-bGFuayhpbnQgZHJtX2ZkLCBpbnQgY3J0Y19vZmZzZXQpOyAgdm9pZA0KPiBpZ3Rfd2FpdF9mb3Jf
-dmJsYW5rX2NvdW50KGludCBkcm1fZmQsIGludCBjcnRjX29mZnNldCwgaW50IGNvdW50KTsNCj4g
-LS0NCj4gMi40MC4wDQoNCg==
+
+On 05/10/2023 19:57, Marcin Bernatowicz wrote:
+> Lines starting with '#' are skipped.
+> If command line step separator (',') is encountered after '#'
+> it is replaced with ';' to not break parsing.
+> 
+> v2:
+> - SKIP step type is not needed (Tvrtko)
+> v3:
+> - correct README comment (Tvrtko)
+> - removed hunk for trailing comments after BATCH step,
+>    as some other steps do not support it either (Tvrtko)
+> v4:
+> - correct out of bound access if file ends with hash (Tvrtko)
+> 
+> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> ---
+>   benchmarks/gem_wsim.c  | 18 +++++++++++++++++-
+>   benchmarks/wsim/README |  2 ++
+>   2 files changed, 19 insertions(+), 1 deletion(-)
+> 
+> diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
+> index 2a1991ca6..43779c70e 100644
+> --- a/benchmarks/gem_wsim.c
+> +++ b/benchmarks/gem_wsim.c
+> @@ -43,6 +43,7 @@
+>   #include <limits.h>
+>   #include <pthread.h>
+>   #include <math.h>
+> +#include <ctype.h>
+>   
+>   #include "drm.h"
+>   #include "drmtest.h"
+> @@ -813,6 +814,14 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+>   		if (field) {
+>   			fstart = NULL;
+>   
+> +			/* line starting with # is a comment */
+> +			if (field[0] == '#') {
+> +				if (verbose > 3)
+> +					printf("skipped line: %s\n", _token);
+> +				free(token);
+> +				continue;
+> +			}
+> +
+>   			if (!strcmp(field, "d")) {
+>   				int_field(DELAY, delay, tmp <= 0,
+>   					  "Invalid delay at step %u!\n");
+> @@ -2403,6 +2412,7 @@ static char *load_workload_descriptor(char *filename)
+>   	char *buf;
+>   	int infd, ret, i;
+>   	ssize_t len;
+> +	bool in_comment = false;
+>   
+>   	ret = stat(filename, &sbuf);
+>   	if (ret || !S_ISREG(sbuf.st_mode))
+> @@ -2419,8 +2429,14 @@ static char *load_workload_descriptor(char *filename)
+>   	close(infd);
+>   
+>   	for (i = 0; i < len; i++) {
+> -		if (buf[i] == '\n')
+> +		/* '#' starts comment till end of line */
+> +		if (buf[i] == '#')
+> +			in_comment = true;
+> +		else if (buf[i] == '\n') {
+>   			buf[i] = ',';
+> +			in_comment = false;
+> +		} else if (in_comment && buf[i] == ',')
+> +			buf[i] = ';';
+
+If you checked this works it looks good to me.
+
+Perhaps just add the full text from the commit message as a comment?
+
+/*
+  * Lines starting with '#' are skipped.
+  * If command line step separator (',') is encountered after '#'
+  * it is replaced with ';' to not break parsing.
+  */
+
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+
+Regards,
+
+Tvrtko
+
+>   	}
+>   
+>   	len--;
+> diff --git a/benchmarks/wsim/README b/benchmarks/wsim/README
+> index 8c71f2fe6..d4f3dd8ae 100644
+> --- a/benchmarks/wsim/README
+> +++ b/benchmarks/wsim/README
+> @@ -1,6 +1,8 @@
+>   Workload descriptor format
+>   ==========================
+>   
+> +Lines starting with '#' are treated as comments and will not create a work step.
+> +
+>   ctx.engine.duration_us.dependency.wait,...
+>   <uint>.<str>.<uint>[-<uint>]|*.<int <= 0>[/<int <= 0>][...].<0|1>,...
+>   B.<uint>
