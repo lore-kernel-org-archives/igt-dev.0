@@ -1,20 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4A7FE10E0B6
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Oct 2023 08:59:15 +0000 (UTC)
-Message-ID: <26811181-c8c3-eaf2-914e-22ae336638ab@linux.intel.com>
-Date: Fri, 6 Oct 2023 10:59:11 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2310D10E185
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Oct 2023 08:59:22 +0000 (UTC)
+Message-ID: <2701b664-9f24-565e-c1f0-1c64622a19f4@linux.intel.com>
+Date: Fri, 6 Oct 2023 10:56:41 +0200
 MIME-Version: 1.0
-Content-Language: en-US
 To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Nirmoy Das <nirmoy.das@intel.com>
-References: <20231002121428.3827-1-nirmoy.das@intel.com>
- <20231005110156.uhj24eusferydmcz@kamilkon-desk.igk.intel.com>
+ igt-dev@lists.freedesktop.org, Nirmoy Das <nirmoy.das@intel.com>,
+ Andi Shyti <andi.shyti@linux.intel.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>
+References: <20231002104846.21443-1-nirmoy.das@intel.com>
+ <6b302953-93de-b544-2549-c2bb198f974b@linux.intel.com>
+ <20231005105432.v5vs6xe5w5aga3go@kamilkon-desk.igk.intel.com>
+Content-Language: en-US
 From: Nirmoy Das <nirmoy.das@linux.intel.com>
-In-Reply-To: <20231005110156.uhj24eusferydmcz@kamilkon-desk.igk.intel.com>
+In-Reply-To: <20231005105432.v5vs6xe5w5aga3go@kamilkon-desk.igk.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/prime_vgem: Use correct blitter
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/intel/gem_eio: Skip stress test
+ on BCS0 for MTL
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,133 +30,65 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Hi Kamil,
 
-On 10/5/2023 1:01 PM, Kamil Konieczny wrote:
+On 10/5/2023 12:54 PM, Kamil Konieczny wrote:
 > Hi Nirmoy,
-> On 2023-10-02 at 14:14:28 +0200, Nirmoy Das wrote:
->> Use igt_blitter_copy() which picks a correct blitter
->> command depending on platform.
+> On 2023-10-05 at 12:39:07 +0200, Nirmoy Das wrote:
+>> ping
 >>
->> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
->> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-> Here also please ask bug filing for masking BAT error
-> and spin full testing.
+>> On 10/2/2023 12:48 PM, Nirmoy Das wrote:
+>>> We do GGTT update on MTL using bcs engine, blocking that would
+>>> fail the test so skip such subtests on bcs engine for MTL.
+>>>
+>>> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>>> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+> Please ask Sai from bug filing team for respin
+> (look at BAT fail).
 
-Will do that.
+repin didn't help :/  unrelated failures. Let me check with Sai.
 
 
-> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>
+>>> ---
+>>>    tests/intel/gem_eio.c | 10 +++++++++-
+>>>    1 file changed, 9 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/tests/intel/gem_eio.c b/tests/intel/gem_eio.c
+>>> index 6d4b8f7df..99891ad15 100644
+>>> --- a/tests/intel/gem_eio.c
+>>> +++ b/tests/intel/gem_eio.c
+>>> @@ -1111,8 +1111,16 @@ static void test_reset_stress(int fd, unsigned int flags)
+>>>    	const intel_ctx_t *ctx0 = context_create_safe(fd);
+>>>    	uint64_t ahnd = get_reloc_ahnd(fd, ctx0->id);
+>>> -	for_each_ring(e, fd)
+>>> +	for_each_ring(e, fd) {
+>>> +		struct intel_execution_engine2 engine;
+>>> +
+>>> +		engine = gem_eb_flags_to_engine(eb_ring(e));
+>>> +
+>>> +		if (gem_engine_can_block_ggtt_binder(fd, &engine))
+>>> +			continue;
+> Is it possible that this loop will have only bcs egines?
+> Or due to (future?) bug in gem_engine_can_block_ggtt_binder this
+> loop will never execute any test? In that case:
 
-Thanks, Kamil!
+for_each_ring() iterate over the device so it is not possible to just have copy engine.
+Don't think we need to check that.
 
-
+Regards,
 Nirmoy
 
+>
+>              ++counter;
+>
+>>> +
+>>>    		reset_stress(fd, ahnd, ctx0, e->name, eb_ring(e), flags);
+>>> +	}
+> igt_require(counter);
 >
 > Regards,
 > Kamil
 >
->> ---
->>   tests/prime_vgem.c | 52 +++++++++++++++++++++++-----------------------
->>   1 file changed, 26 insertions(+), 26 deletions(-)
->>
->> diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
->> index 876e04ed0..551a731f5 100644
->> --- a/tests/prime_vgem.c
->> +++ b/tests/prime_vgem.c
->> @@ -29,7 +29,7 @@
->>   #include "i915/gem_create.h"
->>   #include "igt.h"
->>   #include "igt_vgem.h"
->> -#include "intel_batchbuffer.h"	/* igt_blitter_src_copy() */
->> +#include "intel_batchbuffer.h"	/* igt_blitter_copy() */
->>   /**
->>    * TEST: prime vgem
->>    * Description: Basic check of polling for prime/vgem fences.
->> @@ -351,11 +351,11 @@ static void test_fence_blt(int i915, int vgem)
->>   		write(master[1], &child, sizeof(child));
->>   		read(slave[0], &child, sizeof(child));
->>   
->> -		igt_blitter_src_copy(i915, ahnd, 0, NULL, prime, 0, scratch.pitch,
->> -				     I915_TILING_NONE, 0, 0, scratch.size,
->> -				     scratch.width, scratch.height, scratch.bpp,
->> -				     native, 0, scratch.pitch,
->> -				     I915_TILING_NONE, 0, 0, scratch.size);
->> +		igt_blitter_copy(i915, ahnd, 0, NULL, prime, 0, scratch.pitch,
->> +				 I915_TILING_NONE, 0, 0, scratch.size,
->> +				 scratch.width, scratch.height, scratch.bpp,
->> +				 native, 0, scratch.pitch,
->> +				 I915_TILING_NONE, 0, 0, scratch.size);
->>   		gem_sync(i915, native);
->>   
->>   		for (i = 0; i < scratch.height; i++)
->> @@ -480,11 +480,11 @@ static void test_blt(int vgem, int i915)
->>   		ptr[scratch.pitch * i / sizeof(*ptr)] = i;
->>   	munmap(ptr, scratch.size);
->>   
->> -	igt_blitter_src_copy(i915, ahnd, 0, NULL, native, 0, scratch.pitch,
->> -			     I915_TILING_NONE, 0, 0, scratch.size,
->> -			     scratch.width, scratch.height, scratch.bpp,
->> -			     prime, 0, scratch.pitch, I915_TILING_NONE, 0, 0,
->> -			     scratch.size);
->> +	igt_blitter_copy(i915, ahnd, 0, NULL, native, 0, scratch.pitch,
->> +			 I915_TILING_NONE, 0, 0, scratch.size,
->> +			 scratch.width, scratch.height, scratch.bpp,
->> +			 prime, 0, scratch.pitch, I915_TILING_NONE, 0, 0,
->> +			 scratch.size);
->>   	prime_sync_start(dmabuf, true);
->>   	prime_sync_end(dmabuf, true);
->>   	close(dmabuf);
->> @@ -496,11 +496,11 @@ static void test_blt(int vgem, int i915)
->>   	}
->>   	munmap(ptr, scratch.size);
->>   
->> -	igt_blitter_src_copy(i915, ahnd, 0, NULL, prime, 0, scratch.pitch,
->> -			     I915_TILING_NONE, 0, 0, scratch.size,
->> -			     scratch.width, scratch.height, scratch.bpp,
->> -			     native, 0, scratch.pitch, I915_TILING_NONE, 0, 0,
->> -			     scratch.size);
->> +	igt_blitter_copy(i915, ahnd, 0, NULL, prime, 0, scratch.pitch,
->> +			 I915_TILING_NONE, 0, 0, scratch.size,
->> +			 scratch.width, scratch.height, scratch.bpp,
->> +			 native, 0, scratch.pitch, I915_TILING_NONE, 0, 0,
->> +			 scratch.size);
->>   	gem_sync(i915, native);
->>   
->>   	ptr = gem_mmap__device_coherent(i915, native, 0, scratch.size, PROT_READ);
->> @@ -620,22 +620,22 @@ static void test_blt_interleaved(int vgem, int i915)
->>   
->>   	for (i = 0; i < SLOW_QUICK(scratch.height, 64); i++) {
->>   		local[scratch.pitch * i / sizeof(*local)] = i;
->> -		igt_blitter_src_copy(i915, ahnd, 0, NULL, native, 0,
->> -				     scratch.pitch, I915_TILING_NONE, 0, i,
->> -				     scratch.size, scratch.width, 1,
->> -				     scratch.bpp, prime, 0, scratch.pitch,
->> -				     I915_TILING_NONE, 0, i, scratch.size);
->> +		igt_blitter_copy(i915, ahnd, 0, NULL, native, 0,
->> +				 scratch.pitch, I915_TILING_NONE, 0, i,
->> +				 scratch.size, scratch.width, 1,
->> +				 scratch.bpp, prime, 0, scratch.pitch,
->> +				 I915_TILING_NONE, 0, i, scratch.size);
->>   		prime_sync_start(dmabuf, true);
->>   		igt_assert_eq_u32(foreign[scratch.pitch * i / sizeof(*foreign)],
->>   				  i);
->>   		prime_sync_end(dmabuf, true);
->>   
->>   		foreign[scratch.pitch * i / sizeof(*foreign)] = ~i;
->> -		igt_blitter_src_copy(i915, ahnd, 0, NULL, prime, 0, scratch.pitch,
->> -				     I915_TILING_NONE, 0, i, scratch.size,
->> -				     scratch.width, 1,
->> -				     scratch.bpp, native, 0, scratch.pitch,
->> -				     I915_TILING_NONE, 0, i, scratch.size);
->> +		igt_blitter_copy(i915, ahnd, 0, NULL, prime, 0, scratch.pitch,
->> +				 I915_TILING_NONE, 0, i, scratch.size,
->> +				 scratch.width, 1,
->> +				 scratch.bpp, native, 0, scratch.pitch,
->> +				 I915_TILING_NONE, 0, i, scratch.size);
->>   		gem_sync(i915, native);
->>   		igt_assert_eq_u32(local[scratch.pitch * i / sizeof(*local)],
->>   				  ~i);
->> -- 
->> 2.41.0
->>
+>>>    	intel_ctx_destroy(fd, ctx0);
+>>>    	put_ahnd(ahnd);
