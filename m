@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6A8E910E1D3
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Oct 2023 04:45:23 +0000 (UTC)
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri,  6 Oct 2023 10:24:30 +0530
-Message-Id: <20231006045430.4968-1-nidhi1.gupta@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8D71F10E201
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Oct 2023 06:45:42 +0000 (UTC)
+From: priyanka.dandamudi@intel.com
+To: janga.rahul.kumar@intel.com, igt-dev@lists.freedesktop.org,
+ tejas.upadhyay@intel.com, priyanka.dandamudi@intel.com
+Date: Fri,  6 Oct 2023 12:10:37 +0530
+Message-Id: <20231006064037.1954962-1-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_cursor_crc: Optimize the test for
- simulation
+Subject: [igt-dev] [PATCH i-g-t] tests/xe/xe_access_counter: New access
+ counter test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,103 +19,108 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Currently the test is blacklisted in simulation due to
-taking more than 1200s which is causing timeout.
-Restricted the execution of all the subtests to single
-pipe to atleast check the basic functionality on
-simulation.
+From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+Added a negative test related to access counter.
+It tries to test GRANULARITY access counter parameter.
+
+Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 ---
- tests/kms_cursor_crc.c | 36 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+ tests/intel/xe_access_counter.c | 67 +++++++++++++++++++++++++++++++++
+ tests/meson.build               |  1 +
+ 2 files changed, 68 insertions(+)
+ create mode 100644 tests/intel/xe_access_counter.c
 
-diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-index 76c01f557..38d591b8d 100644
---- a/tests/kms_cursor_crc.c
-+++ b/tests/kms_cursor_crc.c
-@@ -879,6 +879,12 @@ static void run_size_tests(data_t *data, int w, int h)
- 				igt_dynamic_f("pipe-%s-%s",
- 					      kmstest_pipe_name(pipe), igt_output_name(data->output))
- 					run_test(data, size_tests[i].testfunc, w, h);
-+				/*
-+				* For simulation env, no need to run
-+				* test for each pipe.
-+				*/
-+				if (igt_run_in_simulation())
-+					break;
- 			}
- 		}
- 	}
-@@ -915,6 +921,12 @@ static void run_tests_on_pipe(data_t *data)
- 				      data->output->name)
- 				run_test(data, test_cursor_size,
- 					 data->cursor_max_w, data->cursor_max_h);
-+			/*
-+			* For simulation env, no need to run
-+			* test for each pipe.
-+			*/
-+			if (igt_run_in_simulation())
-+				break;
- 		}
- 	}
+diff --git a/tests/intel/xe_access_counter.c b/tests/intel/xe_access_counter.c
+new file mode 100644
+index 000000000..98882405f
+--- /dev/null
++++ b/tests/intel/xe_access_counter.c
+@@ -0,0 +1,67 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2023 Intel Corporation
++ */
++
++/**
++ * TEST: Basic tests for access counter functionality
++ * Category: Software building block
++ * Run type: FULL
++ * Sub-category: access counter
++ * Functionality: access counter
++ * Test category: functionality test
++ * SUBTEST: invalid-param
++ */
++
++#include "igt.h"
++#include "lib/igt_syncobj.h"
++#include "lib/intel_reg.h"
++#include "xe_drm.h"
++
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++#include <string.h>
++
++igt_main
++{
++	int fd;
++
++	igt_fixture {
++		uint16_t devid;
++
++		fd = drm_open_driver(DRIVER_XE);
++		devid = intel_get_drm_devid(fd);
++		igt_require(IS_PONTEVECCHIO(devid));
++	}
++
++	igt_subtest("invalid-param") {
++		struct drm_xe_engine_class_instance instance = {
++			 .engine_class = DRM_XE_ENGINE_CLASS_VM_BIND,
++		 };
++
++		int err;
++		const int expected = -EINVAL;
++
++		struct drm_xe_ext_exec_queue_set_property ext = {
++			.base.next_extension = 0,
++			.base.name = XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
++			.property = XE_EXEC_QUEUE_SET_PROPERTY_ACC_GRANULARITY,
++			.value = 5,
++		};
++
++		struct drm_xe_exec_queue_create create = {
++			.extensions = to_user_pointer(&ext),
++			.vm_id = xe_vm_create(fd, 0, 0),
++			.width = 1,
++			.num_placements = 1,
++			.instances = to_user_pointer(&instance),
++		};
++
++		err = igt_ioctl(fd, DRM_IOCTL_XE_EXEC_QUEUE_CREATE, &create);
++
++		igt_assert_eq(err, expected);
++	}
++
++	igt_fixture
++		drm_close_driver(fd);
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 2404b2d4a..af5da1bdc 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -271,6 +271,7 @@ intel_kms_progs = [
+ ]
  
-@@ -935,6 +947,12 @@ static void run_tests_on_pipe(data_t *data)
- 				      data->output->name)
- 				run_test(data, test_cursor_opaque,
- 					 data->cursor_max_w, data->cursor_max_h);
-+			/*
-+			* For simulation env, no need to run
-+			* test for each pipe.
-+			*/
-+			if (igt_run_in_simulation())
-+				break;
- 		}
- 	}
- 
-@@ -955,6 +973,12 @@ static void run_tests_on_pipe(data_t *data)
- 				      data->output->name)
- 				run_test(data, test_cursor_transparent,
- 					 data->cursor_max_w, data->cursor_max_h);
-+			/*
-+			* For simulation env, no need to run
-+			* test for each pipe.
-+			*/
-+			if (igt_run_in_simulation())
-+				break;
- 		}
- 	}
- 
-@@ -979,6 +1003,12 @@ static void run_tests_on_pipe(data_t *data)
- 				      data->output->name)
- 				run_test(data, test_crc_random,
- 					 data->cursor_max_w, data->cursor_max_h);
-+			/*
-+			* For simulation env, no need to run
-+			* test for each pipe.
-+			*/
-+			if (igt_run_in_simulation())
-+				break;
- 		}
- 		data->flags = 0;
- 	}
-@@ -1000,6 +1030,12 @@ static void run_tests_on_pipe(data_t *data)
- 				      data->output->name)
- 				run_test(data, test_crc_random,
- 					 data->cursor_max_w, data->cursor_max_h);
-+			/*
-+			* For simulation env, no need to run
-+			* test for each pipe.
-+			*/
-+			if (igt_run_in_simulation())
-+				break;
- 		}
- 		data->flags = 0;
- 	}
+ intel_xe_progs = [
++	'xe_access_counter',
+ 	'xe_ccs',
+ 	'xe_create',
+ 	'xe_compute',
 -- 
-2.39.0
+2.25.1
