@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4B40810E544
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Oct 2023 16:41:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7278C10E545
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Oct 2023 16:41:32 +0000 (UTC)
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  6 Oct 2023 16:06:48 +0000
-Message-ID: <20231006160654.3220198-15-marcin.bernatowicz@linux.intel.com>
+Date: Fri,  6 Oct 2023 16:06:50 +0000
+Message-ID: <20231006160654.3220198-17-marcin.bernatowicz@linux.intel.com>
 In-Reply-To: <20231006160654.3220198-1-marcin.bernatowicz@linux.intel.com>
 References: <20231006160654.3220198-1-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 14/17] benchmarks/gem_wsim: for_each_dep
+Subject: [igt-dev] [PATCH i-g-t 16/17] benchmarks/gem_wsim: for_each_w_step
  macro
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -24,135 +24,320 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Utility macro to easy traverse dependencies.
+for_each_w_step macro to easy traverse workload steps.
+
+v2:
+- added comment on igt_unique in macro
 
 Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 ---
- benchmarks/gem_wsim.c | 45 ++++++++++++++++++++++++-------------------
- 1 file changed, 25 insertions(+), 20 deletions(-)
+ benchmarks/gem_wsim.c | 81 +++++++++++++++++++++++--------------------
+ 1 file changed, 43 insertions(+), 38 deletions(-)
 
 diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-index d575d65be..e33fc285d 100644
+index fc2960c4b..95c1e71f7 100644
 --- a/benchmarks/gem_wsim.c
 +++ b/benchmarks/gem_wsim.c
-@@ -109,6 +109,10 @@ struct deps {
- 	struct dep_entry *list;
- };
+@@ -238,6 +238,11 @@ struct workload {
+ #define for_each_ctx(__ctx, __wrk) \
+ 	__for_each_ctx(__ctx, __wrk, igt_unique(__ctx_idx))
  
-+#define for_each_dep(__dep, __deps) \
-+	for (int __i = 0; __i < __deps.nr && \
-+	     (__dep = &__deps.list[__i]); ++__i)
++/* igt_unique(idx) is same on both lines as macro when expanded comes out on one line */
++#define for_each_w_step(__w_step, __wrk) \
++	for (typeof(__wrk->nr_steps) igt_unique(idx) = ({__w_step = __wrk->steps; 0; }); \
++	     igt_unique(idx) < __wrk->nr_steps; igt_unique(idx)++, __w_step++)
 +
- struct w_arg {
- 	char *filename;
- 	char *desc;
-@@ -1147,8 +1151,10 @@ add_step:
- 	 * referencing them as a sync fence dependency.
+ static unsigned int master_prng;
+ 
+ static int verbose = 1;
+@@ -1183,14 +1188,14 @@ add_step:
+ 	/*
+ 	 * Check no duplicate working set ids.
  	 */
- 	for (i = 0; i < nr_steps; i++) {
--		for (j = 0; j < steps[i].fence_deps.nr; j++) {
--			tmp = steps[i].idx + steps[i].fence_deps.list[j].target;
-+		struct dep_entry *dep;
-+
-+		for_each_dep(dep, steps[i].fence_deps) {
-+			tmp = steps[i].idx + dep->target;
- 			check_arg(tmp < 0 || tmp >= i ||
- 				  (steps[tmp].type != BATCH &&
- 				   steps[tmp].type != SW_FENCE),
-@@ -1475,9 +1481,9 @@ static void
- alloc_step_batch(struct workload *wrk, struct w_step *w)
+-	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
++	for_each_w_step(w, wrk) {
+ 		struct w_step *w2;
+ 
+ 		if (w->type != WORKINGSET)
+ 			continue;
+ 
+-		for (j = 0, w2 = wrk->steps; j < wrk->nr_steps; w2++, j++) {
+-			if (j == i)
++		for_each_w_step(w2, wrk) {
++			if (w->idx == w2->idx)
+ 				continue;
+ 			if (w2->type != WORKINGSET)
+ 				continue;
+@@ -1203,7 +1208,7 @@ add_step:
+ 	/*
+ 	 * Allocate shared working sets.
+ 	 */
+-	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
++	for_each_w_step(w, wrk) {
+ 		if (w->type == WORKINGSET && w->working_set.shared) {
+ 			unsigned long total =
+ 				allocate_working_set(wrk, &w->working_set);
+@@ -1215,7 +1220,7 @@ add_step:
+ 	}
+ 
+ 	wrk->max_working_set_id = -1;
+-	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
++	for_each_w_step(w, wrk) {
+ 		if (w->type == WORKINGSET &&
+ 		    w->working_set.shared &&
+ 		    w->working_set.id > wrk->max_working_set_id)
+@@ -1226,7 +1231,7 @@ add_step:
+ 				   sizeof(*wrk->working_sets));
+ 	igt_assert(wrk->working_sets);
+ 
+-	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
++	for_each_w_step(w, wrk) {
+ 		if (w->type == WORKINGSET && w->working_set.shared)
+ 			wrk->working_sets[w->working_set.id] = &w->working_set;
+ 	}
+@@ -1238,6 +1243,7 @@ static struct workload *
+ clone_workload(struct workload *_wrk)
  {
- 	enum intel_engine_id engine = w->engine;
-+	struct dep_entry *dep;
- 	unsigned int j = 0;
- 	unsigned int nr_obj = 2 + w->data_deps.nr;
--	unsigned int i;
+ 	struct workload *wrk;
++	struct w_step *w;
+ 	int i;
  
- 	w->i915.obj = calloc(nr_obj, sizeof(*w->i915.obj));
- 	igt_assert(w->i915.obj);
-@@ -1487,14 +1493,13 @@ alloc_step_batch(struct workload *wrk, struct w_step *w)
- 	j++;
- 	igt_assert(j < nr_obj);
+ 	wrk = malloc(sizeof(*wrk));
+@@ -1265,8 +1271,8 @@ clone_workload(struct workload *_wrk)
+ 	}
  
--	for (i = 0; i < w->data_deps.nr; i++) {
--		struct dep_entry *entry = &w->data_deps.list[i];
-+	for_each_dep(dep, w->data_deps) {
- 		uint32_t dep_handle;
- 
--		if (entry->working_set == -1) {
--			int dep_idx = w->idx + entry->target;
-+		if (dep->working_set == -1) {
-+			int dep_idx = w->idx + dep->target;
- 
--			igt_assert(entry->target <= 0);
-+			igt_assert(dep->target <= 0);
- 			igt_assert(dep_idx >= 0 && dep_idx < w->idx);
- 			igt_assert(wrk->steps[dep_idx].type == BATCH);
- 
-@@ -1502,19 +1507,19 @@ alloc_step_batch(struct workload *wrk, struct w_step *w)
- 		} else {
- 			struct working_set *set;
- 
--			igt_assert(entry->working_set <=
-+			igt_assert(dep->working_set <=
- 				   wrk->max_working_set_id);
- 
--			set = wrk->working_sets[entry->working_set];
-+			set = wrk->working_sets[dep->working_set];
- 
- 			igt_assert(set->nr);
--			igt_assert(entry->target < set->nr);
--			igt_assert(set->sizes[entry->target].size);
-+			igt_assert(dep->target < set->nr);
-+			igt_assert(set->sizes[dep->target].size);
- 
--			dep_handle = set->handles[entry->target];
-+			dep_handle = set->handles[dep->target];
- 		}
- 
--		w->i915.obj[j].flags = entry->write ? EXEC_OBJECT_WRITE : 0;
-+		w->i915.obj[j].flags = dep->write ? EXEC_OBJECT_WRITE : 0;
- 		w->i915.obj[j].handle = dep_handle;
- 		j++;
- 		igt_assert(j < nr_obj);
-@@ -1709,8 +1714,8 @@ find_dep(struct dep_entry *deps, unsigned int nr, struct dep_entry dep)
- static void measure_active_set(struct workload *wrk)
+ 	/* Check if we need a sw sync timeline. */
+-	for (i = 0; i < wrk->nr_steps; i++) {
+-		if (wrk->steps[i].type == SW_FENCE) {
++	for_each_w_step(w, wrk) {
++		if (w->type == SW_FENCE) {
+ 			wrk->sync_timeline = sw_sync_timeline_create();
+ 			igt_assert(wrk->sync_timeline >= 0);
+ 			break;
+@@ -1722,13 +1728,13 @@ static void measure_active_set(struct workload *wrk)
  {
  	unsigned long total = 0, batch_sizes = 0;
--	struct dep_entry *deps = NULL;
--	unsigned int nr = 0, i, j;
-+	struct dep_entry *dep, *deps = NULL;
-+	unsigned int nr = 0, i;
+ 	struct dep_entry *dep, *deps = NULL;
+-	unsigned int nr = 0, i;
++	unsigned int nr = 0;
  	struct w_step *w;
  
  	if (verbose < 3)
-@@ -1722,8 +1727,7 @@ static void measure_active_set(struct workload *wrk)
+ 		return;
  
- 		batch_sizes += 4096;
+-	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
++	for_each_w_step(w, wrk) {
+ 		if (w->type != BATCH)
+ 			continue;
  
--		for (j = 0; j < w->data_deps.nr; j++) {
--			struct dep_entry *dep = &w->data_deps.list[j];
-+		for_each_dep(dep, w->data_deps) {
- 			struct dep_entry _dep = *dep;
- 
- 			if (dep->working_set == -1 && dep->target < 0) {
-@@ -2146,13 +2150,14 @@ static void w_sync_to(struct workload *wrk, struct w_step *w, int target)
- static void
- do_eb(struct workload *wrk, struct w_step *w, enum intel_engine_id engine)
+@@ -1781,12 +1787,11 @@ static void allocate_contexts(unsigned int id, struct workload *wrk)
  {
-+	struct dep_entry *dep;
- 	unsigned int i;
+ 	int max_ctx = -1;
+ 	struct w_step *w;
+-	int i;
  
- 	eb_update_flags(wrk, w, engine);
- 	update_bb_start(wrk, w);
+ 	/*
+ 	 * Pre-scan workload steps to allocate context list storage.
+ 	 */
+-	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
++	for_each_w_step(w, wrk) {
+ 		int ctx = w->context + 1;
+ 		int delta;
  
--	for (i = 0; i < w->fence_deps.nr; i++) {
--		int tgt = w->idx + w->fence_deps.list[i].target;
-+	for_each_dep(dep, w->fence_deps) {
-+		int tgt = w->idx + dep->target;
+@@ -1812,13 +1817,13 @@ static int prepare_contexts(unsigned int id, struct workload *wrk)
+ 	uint32_t share_vm = 0;
+ 	struct w_step *w;
+ 	struct ctx *ctx, *ctx2;
+-	unsigned int i, j;
++	unsigned int j;
  
- 		/* TODO: fence merging needed to support multiple inputs */
- 		igt_assert(i == 0);
+ 	/*
+ 	 * Transfer over engine map configuration from the workload step.
+ 	 */
+ 	__for_each_ctx(ctx, wrk, ctx_idx) {
+-		for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
++		for_each_w_step(w, wrk) {
+ 			if (w->context != ctx_idx)
+ 				continue;
+ 
+@@ -1985,12 +1990,11 @@ static void prepare_working_sets(unsigned int id, struct workload *wrk)
+ 	struct working_set **sets;
+ 	unsigned long total = 0;
+ 	struct w_step *w;
+-	int i;
+ 
+ 	/*
+ 	 * Allocate working sets.
+ 	 */
+-	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
++	for_each_w_step(w, wrk) {
+ 		if (w->type == WORKINGSET && !w->working_set.shared)
+ 			total += allocate_working_set(wrk, &w->working_set);
+ 	}
+@@ -2002,7 +2006,7 @@ static void prepare_working_sets(unsigned int id, struct workload *wrk)
+ 	 * Map of working set ids.
+ 	 */
+ 	wrk->max_working_set_id = -1;
+-	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
++	for_each_w_step(w, wrk) {
+ 		if (w->type == WORKINGSET &&
+ 		    w->working_set.id > wrk->max_working_set_id)
+ 			wrk->max_working_set_id = w->working_set.id;
+@@ -2013,7 +2017,7 @@ static void prepare_working_sets(unsigned int id, struct workload *wrk)
+ 				   sizeof(*wrk->working_sets));
+ 	igt_assert(wrk->working_sets);
+ 
+-	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
++	for_each_w_step(w, wrk) {
+ 		struct working_set *set;
+ 
+ 		if (w->type != WORKINGSET)
+@@ -2039,7 +2043,6 @@ static void prepare_working_sets(unsigned int id, struct workload *wrk)
+ static int prepare_workload(unsigned int id, struct workload *wrk)
+ {
+ 	struct w_step *w;
+-	int i, j;
+ 	int ret = 0;
+ 
+ 	wrk->id = id;
+@@ -2054,23 +2057,22 @@ static int prepare_workload(unsigned int id, struct workload *wrk)
+ 		return ret;
+ 
+ 	/* Record default preemption. */
+-	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
++	for_each_w_step(w, wrk)
+ 		if (w->type == BATCH)
+ 			w->preempt_us = 100;
+-	}
+ 
+ 	/*
+ 	 * Scan for contexts with modified preemption config and record their
+ 	 * preemption period for the following steps belonging to the same
+ 	 * context.
+ 	 */
+-	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
++	for_each_w_step(w, wrk) {
+ 		struct w_step *w2;
+ 
+ 		if (w->type != PREEMPTION)
+ 			continue;
+ 
+-		for (j = i + 1; j < wrk->nr_steps; j++) {
++		for (int j = w->idx + 1; j < wrk->nr_steps; j++) {
+ 			w2 = &wrk->steps[j];
+ 
+ 			if (w2->context != w->context)
+@@ -2087,7 +2089,7 @@ static int prepare_workload(unsigned int id, struct workload *wrk)
+ 	/*
+ 	 * Scan for SSEU control steps.
+ 	 */
+-	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
++	for_each_w_step(w, wrk) {
+ 		if (w->type == SSEU) {
+ 			get_device_sseu();
+ 			break;
+@@ -2099,7 +2101,7 @@ static int prepare_workload(unsigned int id, struct workload *wrk)
+ 	/*
+ 	 * Allocate batch buffers.
+ 	 */
+-	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
++	for_each_w_step(w, wrk) {
+ 		if (w->type != BATCH)
+ 			continue;
+ 
+@@ -2223,7 +2225,6 @@ static void *run_workload(void *data)
+ 	int qd_throttle = -1;
+ 	int count, missed = 0;
+ 	unsigned long time_tot = 0, time_min = ULONG_MAX, time_max = 0;
+-	int i;
+ 
+ 	clock_gettime(CLOCK_MONOTONIC, &t_start);
+ 
+@@ -2233,11 +2234,13 @@ static void *run_workload(void *data)
+ 
+ 		clock_gettime(CLOCK_MONOTONIC, &repeat_start);
+ 
+-		for (i = 0, w = wrk->steps; wrk->run && (i < wrk->nr_steps);
+-		     i++, w++) {
++		for_each_w_step(w, wrk) {
+ 			enum intel_engine_id engine = w->engine;
+ 			int do_sleep = 0;
+ 
++			if (!wrk->run)
++				break;
++
+ 			if (w->type == DELAY) {
+ 				do_sleep = w->delay;
+ 			} else if (w->type == PERIOD) {
+@@ -2256,13 +2259,13 @@ static void *run_workload(void *data)
+ 					missed++;
+ 					if (verbose > 2)
+ 						printf("%u: Dropped period @ %u/%u (%dus late)!\n",
+-						       wrk->id, count, i, do_sleep);
++						       wrk->id, count, w->idx, do_sleep);
+ 					continue;
+ 				}
+ 			} else if (w->type == SYNC) {
+-				unsigned int s_idx = i + w->target;
++				unsigned int s_idx = w->idx + w->target;
+ 
+-				igt_assert(s_idx >= 0 && s_idx < i);
++				igt_assert(s_idx >= 0 && s_idx < w->idx);
+ 				igt_assert(wrk->steps[s_idx].type == BATCH);
+ 				w_step_sync(&wrk->steps[s_idx]);
+ 				continue;
+@@ -2283,7 +2286,7 @@ static void *run_workload(void *data)
+ 				int tgt = w->idx + w->target;
+ 				int inc;
+ 
+-				igt_assert(tgt >= 0 && tgt < i);
++				igt_assert(tgt >= 0 && tgt < w->idx);
+ 				igt_assert(wrk->steps[tgt].type == SW_FENCE);
+ 				cur_seqno += wrk->steps[tgt].idx;
+ 				inc = cur_seqno - wrk->sync_seqno;
+@@ -2303,9 +2306,9 @@ static void *run_workload(void *data)
+ 				}
+ 				continue;
+ 			} else if (w->type == TERMINATE) {
+-				unsigned int t_idx = i + w->target;
++				unsigned int t_idx = w->idx + w->target;
+ 
+-				igt_assert(t_idx >= 0 && t_idx < i);
++				igt_assert(t_idx >= 0 && t_idx < w->idx);
+ 				igt_assert(wrk->steps[t_idx].type == BATCH);
+ 				igt_assert(wrk->steps[t_idx].duration.unbound);
+ 
+@@ -2339,7 +2342,7 @@ static void *run_workload(void *data)
+ 				sync_deps(wrk, w);
+ 
+ 			if (throttle > 0)
+-				w_sync_to(wrk, w, i - throttle);
++				w_sync_to(wrk, w, w->idx - throttle);
+ 
+ 			do_eb(wrk, w, engine);
+ 
+@@ -2382,8 +2385,10 @@ static void *run_workload(void *data)
+ 		}
+ 
+ 		/* Cleanup all fences instantiated in this iteration. */
+-		for (i = 0, w = wrk->steps; wrk->run && (i < wrk->nr_steps);
+-		     i++, w++) {
++		for_each_w_step(w, wrk) {
++			if (!wrk->run)
++				break;
++
+ 			if (w->emit_fence > 0) {
+ 				close(w->emit_fence);
+ 				w->emit_fence = -1;
+@@ -2391,7 +2396,7 @@ static void *run_workload(void *data)
+ 		}
+ 	}
+ 
+-	for (i = 0; i < NUM_ENGINES; i++) {
++	for (int i = 0; i < NUM_ENGINES; i++) {
+ 		if (!wrk->nrequest[i])
+ 			continue;
+ 
 -- 
 2.42.0
