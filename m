@@ -1,23 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 08FC210E4DF
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Oct 2023 12:01:09 +0000 (UTC)
-From: "Yedireswarapu, SaiX Nandan" <saix.nandan.yedireswarapu@intel.com>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Fri, 6 Oct 2023 12:01:02 +0000
-Message-ID: <PH8PR11MB6952DC03251C7559C2B7326AB3C9A@PH8PR11MB6952.namprd11.prod.outlook.com>
-References: <20231006075819.3055887-1-bhanuprakash.modem@intel.com>
- <169658630117.6465.6805255808900931998@emeril.freedesktop.org>
- <f6b7a0b5-144e-821c-54c1-006b2adab04d@intel.com>
-In-Reply-To: <f6b7a0b5-144e-821c-54c1-006b2adab04d@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Message-ID: <504919dd-da5e-4b64-3dcd-18e8810763f3@intel.com>
+Date: Fri, 6 Oct 2023 13:08:50 +0100
 MIME-Version: 1.0
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgS01TOiBN?=
- =?utf-8?q?inor_cleanups?=
+To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
+References: <20231005153116.452319-1-matthew.auld@intel.com>
+ <20231005153116.452319-9-matthew.auld@intel.com>
+ <20231006115147.sboxniiobenbvls2@zkempczy-mobl2>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <20231006115147.sboxniiobenbvls2@zkempczy-mobl2>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH i-g-t 08/12] lib/intel_blt: support pat_index
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,199 +19,405 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, intel-xe@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGksDQoNCklzc3VlIHJlLXJlcG9ydGVkLCBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5v
-cmcvc2VyaWVzLzEyNDcwMi8NCg0KLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCkZyb206IE1v
-ZGVtLCBCaGFudXByYWthc2ggPGJoYW51cHJha2FzaC5tb2RlbUBpbnRlbC5jb20+IA0KU2VudDog
-RnJpZGF5LCBPY3RvYmVyIDYsIDIwMjMgMzozNyBQTQ0KVG86IGlndC1kZXZAbGlzdHMuZnJlZWRl
-c2t0b3Aub3JnOyBZZWRpcmVzd2FyYXB1LCBTYWlYIE5hbmRhbiA8c2FpeC5uYW5kYW4ueWVkaXJl
-c3dhcmFwdUBpbnRlbC5jb20+DQpTdWJqZWN0OiBSZTog4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBm
-b3IgS01TOiBNaW5vciBjbGVhbnVwcw0KDQpIaSBTYWksDQoNCkNhbiB5b3UgcGxlYXNlIHJlLXJl
-cG9ydCBiZWxvdyBmYWxzZSBwb3NpdGl2ZT8NCg0KLSBCaGFudQ0KDQpPbiBGcmktMDYtMTAtMjAy
-MyAwMzoyOCBwbSwgUGF0Y2h3b3JrIHdyb3RlOg0KPiAqUGF0Y2ggRGV0YWlscyoNCj4gKlNlcmll
-czoqCUtNUzogTWlub3IgY2xlYW51cHMNCj4gKlVSTDoqCWh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVk
-ZXNrdG9wLm9yZy9zZXJpZXMvMTI0NzAyLyANCj4gPGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNr
-dG9wLm9yZy9zZXJpZXMvMTI0NzAyLz4NCj4gKlN0YXRlOioJZmFpbHVyZQ0KPiAqRGV0YWlsczoq
-DQo+IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfOTkzOC9p
-bmRleC5odG1sDQo+IDxodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lH
-VFBXXzk5MzgvaW5kZXguaHRtbD4NCj4gDQo+IA0KPiAgIENJIEJ1ZyBMb2cgLSBjaGFuZ2VzIGZy
-b20gQ0lfRFJNXzEzNzIyIC0+IElHVFBXXzk5MzgNCj4gDQo+IA0KPiAgICAgU3VtbWFyeQ0KPiAN
-Cj4gKkZBSUxVUkUqDQo+IA0KPiBTZXJpb3VzIHVua25vd24gY2hhbmdlcyBjb21pbmcgd2l0aCBJ
-R1RQV185OTM4IGFic29sdXRlbHkgbmVlZCB0byBiZSANCj4gdmVyaWZpZWQgbWFudWFsbHkuDQo+
-IA0KPiBJZiB5b3UgdGhpbmsgdGhlIHJlcG9ydGVkIGNoYW5nZXMgaGF2ZSBub3RoaW5nIHRvIGRv
-IHdpdGggdGhlIGNoYW5nZXMgDQo+IGludHJvZHVjZWQgaW4gSUdUUFdfOTkzOCwgcGxlYXNlIG5v
-dGlmeSB5b3VyIGJ1ZyB0ZWFtDQo+IChsZ2NpLmJ1Zy5maWxpbmdAaW50ZWwuY29tKSB0byBhbGxv
-dyB0aGVtIHRvIGRvY3VtZW50IHRoaXMgbmV3IGZhaWx1cmUgDQo+IG1vZGUsIHdoaWNoIHdpbGwg
-cmVkdWNlIGZhbHNlIHBvc2l0aXZlcyBpbiBDSS4NCj4gDQo+IEV4dGVybmFsIFVSTDogDQo+IGh0
-dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfOTkzOC9pbmRleC5o
-dG1sDQo+IA0KPiANCj4gICAgIFBhcnRpY2lwYXRpbmcgaG9zdHMgKDM5IC0+IDM5KQ0KPiANCj4g
-QWRkaXRpb25hbCAoMik6IGZpLWtibC1zb3Jha2EgYmF0LWRnMi05IE1pc3NpbmcgKDIpOiBmaS1o
-c3ctNDc3MCANCj4gZmktc25iLTI1MjBtDQo+IA0KPiANCj4gICAgIFBvc3NpYmxlIG5ldyBpc3N1
-ZXMNCj4gDQo+IEhlcmUgYXJlIHRoZSB1bmtub3duIGNoYW5nZXMgdGhhdCBtYXkgaGF2ZSBiZWVu
-IGludHJvZHVjZWQgaW4gSUdUUFdfOTkzODoNCj4gDQo+IA0KPiAgICAgICBJR1QgY2hhbmdlcw0K
-PiANCj4gDQo+ICAgICAgICAgUG9zc2libGUgcmVncmVzc2lvbnMNCj4gDQo+ICAgKiBpZ3RAaTkx
-NV9wbV9ycG1AbW9kdWxlLXJlbG9hZDoNCj4gICAgICAgbyBiYXQtYXRzbS0xOiBQQVNTDQo+ICAg
-ICAgICAgDQo+IDxodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0NJX0RS
-TV8xMzcyMi9iYXQtYXRzbS0xL2lndEANCj4gaTkxNV9wbV9ycG1AbW9kdWxlLXJlbG9hZC5odG1s
-PiAtPiBTS0lQIA0KPiA8aHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9J
-R1RQV185OTM4L2JhdC1hdHNtLTEvaWd0QGk5DQo+IDE1X3BtX3JwbUBtb2R1bGUtcmVsb2FkLmh0
-bWw+DQo+IA0KPiANCj4gICAgIEtub3duIGlzc3Vlcw0KPiANCj4gSGVyZSBhcmUgdGhlIGNoYW5n
-ZXMgZm91bmQgaW4gSUdUUFdfOTkzOCB0aGF0IGNvbWUgZnJvbSBrbm93biBpc3N1ZXM6DQo+IA0K
-PiANCj4gICAgICAgSUdUIGNoYW5nZXMNCj4gDQo+IA0KPiAgICAgICAgIElzc3VlcyBoaXQNCj4g
-DQo+ICAgKg0KPiANCj4gICAgIGlndEBnZW1fZXhlY19zdXNwZW5kQGJhc2ljLXMwQHNtZW06DQo+
-IA0KPiAgICAgICBvIGJhdC1kZzItOTogTk9UUlVOIC0+IElOQ09NUExFVEUNCj4gICAgICAgICA8
-aHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV185OTM4L2JhdC1k
-ZzItOS9pZ3RAZ2VtX2V4ZWNfc3VzcGVuZEBiYXNpYy1zMEBzbWVtLmh0bWw+IChpOTE1IzkyNzUg
-PGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaW50ZWwvaXNzdWVzLzkyNzU+KQ0K
-PiAgICoNCj4gDQo+ICAgICBpZ3RAZ2VtX2h1Y19jb3B5QGh1Yy1jb3B5Og0KPiANCj4gICAgICAg
-byBmaS1rYmwtc29yYWthOiBOT1RSVU4gLT4gU0tJUA0KPiAgICAgICAgIDxodHRwczovL2ludGVs
-LWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzk5MzgvZmkta2JsLXNvcmFrYS9pZ3RA
-Z2VtX2h1Y19jb3B5QGh1Yy1jb3B5Lmh0bWw+IChmZG8jMTA5MjcxIDxodHRwczovL2J1Z3MuZnJl
-ZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDkyNzE+IC8gaTkxNSMyMTkwIDxodHRwczov
-L2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2ludGVsL2lzc3Vlcy8yMTkwPikNCj4gICAqDQo+
-IA0KPiAgICAgaWd0QGdlbV9sbWVtX3N3YXBwaW5nQGJhc2ljOg0KPiANCj4gICAgICAgbyBmaS1r
-Ymwtc29yYWthOiBOT1RSVU4gLT4gU0tJUA0KPiAgICAgICAgIDxodHRwczovL2ludGVsLWdmeC1j
-aS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzk5MzgvZmkta2JsLXNvcmFrYS9pZ3RAZ2VtX2xt
-ZW1fc3dhcHBpbmdAYmFzaWMuaHRtbD4gKGZkbyMxMDkyNzEgPGh0dHBzOi8vYnVncy5mcmVlZGVz
-a3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwOTI3MT4gLyBpOTE1IzQ2MTMgPGh0dHBzOi8vZ2l0
-bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaW50ZWwvaXNzdWVzLzQ2MTM+KSArMyBvdGhlciB0ZXN0
-cyBza2lwDQo+ICAgKg0KPiANCj4gICAgIGlndEBnZW1fbW1hcEBiYXNpYzoNCj4gDQo+ICAgICAg
-IG8gYmF0LWRnMi05OiBOT1RSVU4gLT4gU0tJUA0KPiAgICAgICAgIDxodHRwczovL2ludGVsLWdm
-eC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzk5MzgvYmF0LWRnMi05L2lndEBnZW1fbW1h
-cEBiYXNpYy5odG1sPiAoaTkxNSM0MDgzIDxodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcv
-ZHJtL2ludGVsL2lzc3Vlcy80MDgzPikNCj4gICAqDQo+IA0KPiAgICAgaWd0QGdlbV9tbWFwX2d0
-dEBiYXNpYzoNCj4gDQo+ICAgICAgIG8gYmF0LWRnMi05OiBOT1RSVU4gLT4gU0tJUA0KPiAgICAg
-ICAgIDxodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzk5Mzgv
-YmF0LWRnMi05L2lndEBnZW1fbW1hcF9ndHRAYmFzaWMuaHRtbD4gKGk5MTUjNDA3NyA8aHR0cHM6
-Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pbnRlbC9pc3N1ZXMvNDA3Nz4pICsyIG90aGVy
-IHRlc3RzIHNraXANCj4gICAqDQo+IA0KPiAgICAgaWd0QGdlbV9yZW5kZXJfdGlsZWRfYmxpdHNA
-YmFzaWM6DQo+IA0KPiAgICAgICBvIGJhdC1kZzItOTogTk9UUlVOIC0+IFNLSVANCj4gICAgICAg
-ICA8aHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV185OTM4L2Jh
-dC1kZzItOS9pZ3RAZ2VtX3JlbmRlcl90aWxlZF9ibGl0c0BiYXNpYy5odG1sPiAoaTkxNSM0MDc5
-IDxodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2ludGVsL2lzc3Vlcy80MDc5Pikg
-KzEgb3RoZXIgdGVzdCBza2lwDQo+ICAgKg0KPiANCj4gICAgIGlndEBpOTE1X21vZHVsZV9sb2Fk
-QHJlbG9hZDoNCj4gDQo+ICAgICAgIG8gZmkta2JsLXNvcmFrYTogTk9UUlVOIC0+IERNRVNHLVdB
-Uk4NCj4gICAgICAgICA8aHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9J
-R1RQV185OTM4L2ZpLWtibC1zb3Jha2EvaWd0QGk5MTVfbW9kdWxlX2xvYWRAcmVsb2FkLmh0bWw+
-IChpOTE1IzE5ODIgPGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaW50ZWwvaXNz
-dWVzLzE5ODI+KQ0KPiAgICoNCj4gDQo+ICAgICBpZ3RAaTkxNV9wbV9ycHNAYmFzaWMtYXBpOg0K
-PiANCj4gICAgICAgbyBiYXQtZGcyLTk6IE5PVFJVTiAtPiBTS0lQDQo+ICAgICAgICAgPGh0dHBz
-Oi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfOTkzOC9iYXQtZGcyLTkv
-aWd0QGk5MTVfcG1fcnBzQGJhc2ljLWFwaS5odG1sPiAoaTkxNSM2NjIxIDxodHRwczovL2dpdGxh
-Yi5mcmVlZGVza3RvcC5vcmcvZHJtL2ludGVsL2lzc3Vlcy82NjIxPikNCj4gICAqDQo+IA0KPiAg
-ICAgaWd0QGk5MTVfc2VsZnRlc3RAbGl2ZUBndF9oZWFydGJlYXQ6DQo+IA0KPiAgICAgICBvIGJh
-dC1qc2wtMzogUEFTUw0KPiAgICAgICAgIDxodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJl
-ZS9kcm0tdGlwL0NJX0RSTV8xMzcyMi9iYXQtanNsLTMvaWd0QGk5MTVfc2VsZnRlc3RAbGl2ZUBn
-dF9oZWFydGJlYXQuaHRtbD4gLT4gRE1FU0ctRkFJTCA8aHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEu
-b3JnL3RyZWUvZHJtLXRpcC9JR1RQV185OTM4L2JhdC1qc2wtMy9pZ3RAaTkxNV9zZWxmdGVzdEBs
-aXZlQGd0X2hlYXJ0YmVhdC5odG1sPiAoaTkxNSM1MzM0IDxodHRwczovL2dpdGxhYi5mcmVlZGVz
-a3RvcC5vcmcvZHJtL2ludGVsL2lzc3Vlcy81MzM0PikNCj4gICAqDQo+IA0KPiAgICAgaWd0QGk5
-MTVfc2VsZnRlc3RAbGl2ZUBndF9wbToNCj4gDQo+ICAgICAgIG8gZmkta2JsLXNvcmFrYTogTk9U
-UlVOIC0+IERNRVNHLUZBSUwNCj4gICAgICAgICA8aHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3Jn
-L3RyZWUvZHJtLXRpcC9JR1RQV185OTM4L2ZpLWtibC1zb3Jha2EvaWd0QGk5MTVfc2VsZnRlc3RA
-bGl2ZUBndF9wbS5odG1sPiAoaTkxNSMxODg2IDxodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5v
-cmcvZHJtL2ludGVsL2lzc3Vlcy8xODg2PikNCj4gICAqDQo+IA0KPiAgICAgaWd0QGk5MTVfc2Vs
-ZnRlc3RAbGl2ZUByZXF1ZXN0czoNCj4gDQo+ICAgICAgIG8gYmF0LW10bHAtODogUEFTUw0KPiAg
-ICAgICAgIDxodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0NJX0RSTV8x
-MzcyMi9iYXQtbXRscC04L2lndEBpOTE1X3NlbGZ0ZXN0QGxpdmVAcmVxdWVzdHMuaHRtbD4gLT4g
-QUJPUlQgPGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfOTkz
-OC9iYXQtbXRscC04L2lndEBpOTE1X3NlbGZ0ZXN0QGxpdmVAcmVxdWVzdHMuaHRtbD4gKGk5MTUj
-OTQxNCA8aHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pbnRlbC9pc3N1ZXMvOTQx
-ND4pDQo+ICAgKg0KPiANCj4gICAgIGlndEBrbXNfYWRkZmJfYmFzaWNAYWRkZmIyNS15LXRpbGVk
-LXNtYWxsLWxlZ2FjeToNCj4gDQo+ICAgICAgIG8gYmF0LWRnMi05OiBOT1RSVU4gLT4gU0tJUA0K
-PiAgICAgICAgIDxodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBX
-Xzk5MzgvYmF0LWRnMi05L2lndEBrbXNfYWRkZmJfYmFzaWNAYWRkZmIyNS15LXRpbGVkLXNtYWxs
-LWxlZ2FjeS5odG1sPiAoaTkxNSM1MTkwIDxodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcv
-ZHJtL2ludGVsL2lzc3Vlcy81MTkwPikNCj4gICAqDQo+IA0KPiAgICAgaWd0QGttc19hZGRmYl9i
-YXNpY0BiYXNpYy15LXRpbGVkLWxlZ2FjeToNCj4gDQo+ICAgICAgIG8gYmF0LWRnMi05OiBOT1RS
-VU4gLT4gU0tJUA0KPiAgICAgICAgIDxodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9k
-cm0tdGlwL0lHVFBXXzk5MzgvYmF0LWRnMi05L2lndEBrbXNfYWRkZmJfYmFzaWNAYmFzaWMteS10
-aWxlZC1sZWdhY3kuaHRtbD4gKGk5MTUjNDIxNSA8aHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Au
-b3JnL2RybS9pbnRlbC9pc3N1ZXMvNDIxNT4gLyBpOTE1IzUxOTAgPGh0dHBzOi8vZ2l0bGFiLmZy
-ZWVkZXNrdG9wLm9yZy9kcm0vaW50ZWwvaXNzdWVzLzUxOTA+KQ0KPiAgICoNCj4gDQo+ICAgICBp
-Z3RAa21zX2FkZGZiX2Jhc2ljQGZyYW1lYnVmZmVyLXZzLXNldC10aWxpbmc6DQo+IA0KPiAgICAg
-ICBvIGJhdC1kZzItOTogTk9UUlVOIC0+IFNLSVANCj4gICAgICAgICA8aHR0cHM6Ly9pbnRlbC1n
-ZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV185OTM4L2JhdC1kZzItOS9pZ3RAa21zX2Fk
-ZGZiX2Jhc2ljQGZyYW1lYnVmZmVyLXZzLXNldC10aWxpbmcuaHRtbD4gKGk5MTUjNDIxMiA8aHR0
-cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pbnRlbC9pc3N1ZXMvNDIxMj4pICs2IG90
-aGVyIHRlc3RzIHNraXANCj4gICAqDQo+IA0KPiAgICAgaWd0QGttc19hZGRmYl9iYXNpY0B0aWxl
-LXBpdGNoLW1pc21hdGNoOg0KPiANCj4gICAgICAgbyBiYXQtZGcyLTk6IE5PVFJVTiAtPiBTS0lQ
-DQo+ICAgICAgICAgPGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdU
-UFdfOTkzOC9iYXQtZGcyLTkvaWd0QGttc19hZGRmYl9iYXNpY0B0aWxlLXBpdGNoLW1pc21hdGNo
-Lmh0bWw+IChpOTE1IzQyMTIgPGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaW50
-ZWwvaXNzdWVzLzQyMTI+IC8gaTkxNSM1NjA4IDxodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5v
-cmcvZHJtL2ludGVsL2lzc3Vlcy81NjA4PikNCj4gICAqDQo+IA0KPiAgICAgaWd0QGttc19jdXJz
-b3JfbGVnYWN5QGJhc2ljLWJ1c3ktZmxpcC1iZWZvcmUtY3Vyc29yLWxlZ2FjeToNCj4gDQo+ICAg
-ICAgIG8gYmF0LWRnMi05OiBOT1RSVU4gLT4gU0tJUA0KPiAgICAgICAgIDxodHRwczovL2ludGVs
-LWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzk5MzgvYmF0LWRnMi05L2lndEBrbXNf
-Y3Vyc29yX2xlZ2FjeUBiYXNpYy1idXN5LWZsaXAtYmVmb3JlLWN1cnNvci1sZWdhY3kuaHRtbD4g
-KGk5MTUjNDEwMyA8aHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pbnRlbC9pc3N1
-ZXMvNDEwMz4gLyBpOTE1IzQyMTMgPGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0v
-aW50ZWwvaXNzdWVzLzQyMTM+IC8gaTkxNSM1NjA4IDxodHRwczovL2dpdGxhYi5mcmVlZGVza3Rv
-cC5vcmcvZHJtL2ludGVsL2lzc3Vlcy81NjA4PikgKzEgb3RoZXIgdGVzdCBza2lwDQo+ICAgKg0K
-PiANCj4gICAgIGlndEBrbXNfZHNjQGRzYy1iYXNpYzoNCj4gDQo+ICAgICAgIG8gZmkta2JsLXNv
-cmFrYTogTk9UUlVOIC0+IFNLSVANCj4gICAgICAgICA8aHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEu
-b3JnL3RyZWUvZHJtLXRpcC9JR1RQV185OTM4L2ZpLWtibC1zb3Jha2EvaWd0QGttc19kc2NAZHNj
-LWJhc2ljLmh0bWw+IChmZG8jMTA5MjcxIDxodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3No
-b3dfYnVnLmNnaT9pZD0xMDkyNzE+KSArOSBvdGhlciB0ZXN0cyBza2lwDQo+ICAgKg0KPiANCj4g
-ICAgIGlndEBrbXNfZm9yY2VfY29ubmVjdG9yX2Jhc2ljQGZvcmNlLWxvYWQtZGV0ZWN0Og0KPiAN
-Cj4gICAgICAgbyBiYXQtZGcyLTk6IE5PVFJVTiAtPiBTS0lQDQo+ICAgICAgICAgPGh0dHBzOi8v
-aW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfOTkzOC9iYXQtZGcyLTkvaWd0
-QGttc19mb3JjZV9jb25uZWN0b3JfYmFzaWNAZm9yY2UtbG9hZC1kZXRlY3QuaHRtbD4gKGZkbyMx
-MDkyODUgPGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwOTI4
-NT4pDQo+ICAgKg0KPiANCj4gICAgIGlndEBrbXNfZm9yY2VfY29ubmVjdG9yX2Jhc2ljQHBydW5l
-LXN0YWxlLW1vZGVzOg0KPiANCj4gICAgICAgbyBiYXQtZGcyLTk6IE5PVFJVTiAtPiBTS0lQDQo+
-ICAgICAgICAgPGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdf
-OTkzOC9iYXQtZGcyLTkvaWd0QGttc19mb3JjZV9jb25uZWN0b3JfYmFzaWNAcHJ1bmUtc3RhbGUt
-bW9kZXMuaHRtbD4gKGk5MTUjNTI3NCA8aHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2Ry
-bS9pbnRlbC9pc3N1ZXMvNTI3ND4pDQo+ICAgKg0KPiANCj4gICAgIGlndEBrbXNfcGlwZV9jcmNf
-YmFzaWNAcmVhZC1jcmMtZnJhbWUtc2VxdWVuY2VAcGlwZS1kLWVkcC0xOg0KPiANCj4gICAgICAg
-byBiYXQtcnBscC0xOiBQQVNTDQo+ICAgICAgICAgPGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9y
-Zy90cmVlL2RybS10aXAvQ0lfRFJNXzEzNzIyL2JhdC1ycGxwLTEvaWd0QGttc19waXBlX2NyY19i
-YXNpY0ByZWFkLWNyYy1mcmFtZS1zZXF1ZW5jZUBwaXBlLWQtZWRwLTEuaHRtbD4gLT4gQUJPUlQg
-PGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfOTkzOC9iYXQt
-cnBscC0xL2lndEBrbXNfcGlwZV9jcmNfYmFzaWNAcmVhZC1jcmMtZnJhbWUtc2VxdWVuY2VAcGlw
-ZS1kLWVkcC0xLmh0bWw+IChpOTE1Izg2NjggPGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9y
-Zy9kcm0vaW50ZWwvaXNzdWVzLzg2Njg+KQ0KPiAgICoNCj4gDQo+ICAgICBpZ3RAa21zX3BzckBz
-cHJpdGVfcGxhbmVfb25vZmY6DQo+IA0KPiAgICAgICBvIGJhdC1kZzItOTogTk9UUlVOIC0+IFNL
-SVANCj4gICAgICAgICA8aHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9J
-R1RQV185OTM4L2JhdC1kZzItOS9pZ3RAa21zX3BzckBzcHJpdGVfcGxhbmVfb25vZmYuaHRtbD4g
-KGk5MTUjMTA3MiA8aHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pbnRlbC9pc3N1
-ZXMvMTA3Mj4pICszIG90aGVyIHRlc3RzIHNraXANCj4gICAqDQo+IA0KPiAgICAgaWd0QGttc19z
-ZXRtb2RlQGJhc2ljLWNsb25lLXNpbmdsZS1jcnRjOg0KPiANCj4gICAgICAgbyBiYXQtZGcyLTk6
-IE5PVFJVTiAtPiBTS0lQDQo+ICAgICAgICAgPGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90
-cmVlL2RybS10aXAvSUdUUFdfOTkzOC9iYXQtZGcyLTkvaWd0QGttc19zZXRtb2RlQGJhc2ljLWNs
-b25lLXNpbmdsZS1jcnRjLmh0bWw+IChpOTE1IzM1NTUgPGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNr
-dG9wLm9yZy9kcm0vaW50ZWwvaXNzdWVzLzM1NTU+KQ0KPiAgICoNCj4gDQo+ICAgICBpZ3RAcHJp
-bWVfdmdlbUBiYXNpYy1mZW5jZS1mbGlwOg0KPiANCj4gICAgICAgbyBiYXQtZGcyLTk6IE5PVFJV
-TiAtPiBTS0lQDQo+ICAgICAgICAgPGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2Ry
-bS10aXAvSUdUUFdfOTkzOC9iYXQtZGcyLTkvaWd0QHByaW1lX3ZnZW1AYmFzaWMtZmVuY2UtZmxp
-cC5odG1sPiAoaTkxNSMzNzA4IDxodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2lu
-dGVsL2lzc3Vlcy8zNzA4PikNCj4gICAqDQo+IA0KPiAgICAgaWd0QHByaW1lX3ZnZW1AYmFzaWMt
-ZmVuY2UtbW1hcDoNCj4gDQo+ICAgICAgIG8gYmF0LWRnMi05OiBOT1RSVU4gLT4gU0tJUA0KPiAg
-ICAgICAgIDxodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzk5
-MzgvYmF0LWRnMi05L2lndEBwcmltZV92Z2VtQGJhc2ljLWZlbmNlLW1tYXAuaHRtbD4gKGk5MTUj
-MzcwOCA8aHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pbnRlbC9pc3N1ZXMvMzcw
-OD4gLyBpOTE1IzQwNzcgPGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaW50ZWwv
-aXNzdWVzLzQwNzc+KSArMSBvdGhlciB0ZXN0IHNraXANCj4gICAqDQo+IA0KPiAgICAgaWd0QHBy
-aW1lX3ZnZW1AYmFzaWMtd3JpdGU6DQo+IA0KPiAgICAgICBvIGJhdC1kZzItOTogTk9UUlVOIC0+
-IFNLSVANCj4gICAgICAgICANCj4gPGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2Ry
-bS10aXAvSUdUUFdfOTkzOC9iYXQtZGcyLTkvaWd0QHByaQ0KPiBtZV92Z2VtQGJhc2ljLXdyaXRl
-Lmh0bWw+IChpOTE1IzMyOTEgDQo+IDxodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJt
-L2ludGVsL2lzc3Vlcy8zMjkxPiAvIGk5MTUjMzcwOCANCj4gPGh0dHBzOi8vZ2l0bGFiLmZyZWVk
-ZXNrdG9wLm9yZy9kcm0vaW50ZWwvaXNzdWVzLzM3MDg+KSArMiBvdGhlciB0ZXN0cyANCj4gc2tp
-cA0KPiANCj4ge25hbWV9OiBUaGlzIGVsZW1lbnQgaXMgc3VwcHJlc3NlZC4gVGhpcyBtZWFucyBp
-dCBpcyBpZ25vcmVkIHdoZW4gDQo+IGNvbXB1dGluZyB0aGUgc3RhdHVzIG9mIHRoZSBkaWZmZXJl
-bmNlIChTVUNDRVNTLCBXQVJOSU5HLCBvciBGQUlMVVJFKS4NCj4gDQo+IA0KPiAgICAgQnVpbGQg
-Y2hhbmdlcw0KPiANCj4gICAqIENJOiBDSS0yMDE5MDUyOSAtPiBOb25lDQo+ICAgKiBJR1Q6IElH
-VF83NTE4IC0+IElHVFBXXzk5MzgNCj4gDQo+IENJLTIwMTkwNTI5OiAyMDE5MDUyOQ0KPiBDSV9E
-Uk1fMTM3MjI6IGVhZDY5M2VjMmQyZmRkYjMwYmZmNDcxODg0NWQ0MmY5YWRhYmNjZTYgQCANCj4g
-Z2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2xpbnV4DQo+IElHVFBXXzk5Mzg6
-IA0KPiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzk5Mzgv
-aW5kZXguaHRtbA0KPiBJR1RfNzUxODogMmQ0YTU3ZTI4ZGIwYzJjY2JmOGIyZTc2MzA3NGM5YWE3
-NGExYWU1MiBAIA0KPiBodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2lndC1ncHUt
-dG9vbHMuZ2l0DQo+IA0KPiANCj4gICAgIFRlc3RsaXN0IGNoYW5nZXMNCj4gDQo+ICsrKyA3MjAg
-bGluZXMNCj4gLS0tIDcyMSBsaW5lcw0KPiANCg==
+On 06/10/2023 12:51, Zbigniew Kempczyński wrote:
+> On Thu, Oct 05, 2023 at 04:31:12PM +0100, Matthew Auld wrote:
+>> For the most part we can just use the default wb, however some users
+>> including display might want to use something else.
+>>
+>> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+>> Cc: José Roberto de Souza <jose.souza@intel.com>
+>> Cc: Pallavi Mishra <pallavi.mishra@intel.com>
+>> ---
+>>   lib/igt_fb.c                    |  2 ++
+>>   lib/intel_blt.c                 | 54 +++++++++++++++++++++------------
+>>   lib/intel_blt.h                 |  7 +++--
+>>   tests/intel/gem_ccs.c           | 16 +++++-----
+>>   tests/intel/gem_lmem_swapping.c |  4 +--
+>>   tests/intel/xe_ccs.c            | 19 +++++++-----
+>>   6 files changed, 64 insertions(+), 38 deletions(-)
+>>
+>> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+>> index f8a0db22c..d290fd775 100644
+>> --- a/lib/igt_fb.c
+>> +++ b/lib/igt_fb.c
+>> @@ -37,6 +37,7 @@
+>>   #include "i915/gem_mman.h"
+>>   #include "intel_blt.h"
+>>   #include "intel_mocs.h"
+>> +#include "intel_pat.h"
+>>   #include "igt_aux.h"
+>>   #include "igt_color_encoding.h"
+>>   #include "igt_fb.h"
+>> @@ -2768,6 +2769,7 @@ static struct blt_copy_object *blt_fb_init(const struct igt_fb *fb,
+>>   
+>>   	blt_set_object(blt, handle, fb->size, memregion,
+>>   		       intel_get_uc_mocs(fb->fd),
+>> +		       intel_get_pat_idx_wt(fb->fd),
+>>   		       blt_tile,
+>>   		       is_ccs_modifier(fb->modifier) ? COMPRESSION_ENABLED : COMPRESSION_DISABLED,
+>>   		       is_gen12_mc_ccs_modifier(fb->modifier) ? COMPRESSION_TYPE_MEDIA : COMPRESSION_TYPE_3D);
+>> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+>> index b55fa9b52..b7ac2902b 100644
+>> --- a/lib/intel_blt.c
+>> +++ b/lib/intel_blt.c
+>> @@ -13,6 +13,7 @@
+>>   #include "igt.h"
+>>   #include "igt_syncobj.h"
+>>   #include "intel_blt.h"
+>> +#include "intel_pat.h"
+>>   #include "xe/xe_ioctl.h"
+>>   #include "xe/xe_query.h"
+>>   #include "xe/xe_util.h"
+>> @@ -810,10 +811,12 @@ uint64_t emit_blt_block_copy(int fd,
+>>   	igt_assert_f(blt, "block-copy requires data to do blit\n");
+>>   
+>>   	alignment = get_default_alignment(fd, blt->driver);
+>> -	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment)
+>> -		     + blt->src.plane_offset;
+>> -	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment)
+>> -		     + blt->dst.plane_offset;
+>> +	src_offset = get_offset_pat_index(ahnd, blt->src.handle, blt->src.size,
+>> +					  alignment, blt->src.pat_index) +
+>> +		blt->src.plane_offset;
+>> +	dst_offset = get_offset_pat_index(ahnd, blt->dst.handle, blt->dst.size,
+>> +					  alignment, blt->dst.pat_index) +
+>> +		blt->dst.plane_offset;
+> 
+> To less tabs in formatting for src and dst plane_offset.
+> 
+>>   	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
+>>   
+>>   	fill_data(&data, blt, src_offset, dst_offset, ext);
+>> @@ -884,8 +887,10 @@ int blt_block_copy(int fd,
+>>   	igt_assert_neq(blt->driver, 0);
+>>   
+>>   	alignment = get_default_alignment(fd, blt->driver);
+>> -	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment);
+>> -	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment);
+>> +	src_offset = get_offset_pat_index(ahnd, blt->src.handle, blt->src.size,
+>> +					  alignment, blt->src.pat_index);
+>> +	dst_offset = get_offset_pat_index(ahnd, blt->dst.handle, blt->dst.size,
+>> +					  alignment, blt->dst.pat_index);
+>>   	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
+>>   
+>>   	emit_blt_block_copy(fd, ahnd, blt, ext, 0, true);
+>> @@ -1036,8 +1041,10 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
+>>   	data.dw00.size_of_ctrl_copy = __ccs_size(surf) / CCS_RATIO - 1;
+>>   	data.dw00.length = 0x3;
+>>   
+>> -	src_offset = get_offset(ahnd, surf->src.handle, surf->src.size, alignment);
+>> -	dst_offset = get_offset(ahnd, surf->dst.handle, surf->dst.size, alignment);
+>> +	src_offset = get_offset_pat_index(ahnd, surf->src.handle, surf->src.size,
+>> +					  alignment, surf->src.pat_index);
+>> +	dst_offset = get_offset_pat_index(ahnd, surf->dst.handle, surf->dst.size,
+>> +					  alignment, surf->dst.pat_index);
+>>   	bb_offset = get_offset(ahnd, surf->bb.handle, surf->bb.size, alignment);
+>>   
+>>   	data.dw01.src_address_lo = src_offset;
+>> @@ -1103,8 +1110,10 @@ int blt_ctrl_surf_copy(int fd,
+>>   	igt_assert_neq(surf->driver, 0);
+>>   
+>>   	alignment = max_t(uint64_t, get_default_alignment(fd, surf->driver), 1ull << 16);
+>> -	src_offset = get_offset(ahnd, surf->src.handle, surf->src.size, alignment);
+>> -	dst_offset = get_offset(ahnd, surf->dst.handle, surf->dst.size, alignment);
+>> +	src_offset = get_offset_pat_index(ahnd, surf->src.handle, surf->src.size,
+>> +					  alignment, surf->src.pat_index);
+>> +	dst_offset = get_offset_pat_index(ahnd, surf->dst.handle, surf->dst.size,
+>> +					  alignment, surf->dst.pat_index);
+>>   	bb_offset = get_offset(ahnd, surf->bb.handle, surf->bb.size, alignment);
+>>   
+>>   	emit_blt_ctrl_surf_copy(fd, ahnd, surf, 0, true);
+>> @@ -1308,10 +1317,12 @@ uint64_t emit_blt_fast_copy(int fd,
+>>   	data.dw03.dst_x2 = blt->dst.x2;
+>>   	data.dw03.dst_y2 = blt->dst.y2;
+>>   
+>> -	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment)
+>> -		     + blt->src.plane_offset;
+>> -	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment)
+>> -		     + blt->dst.plane_offset;
+>> +	src_offset = get_offset_pat_index(ahnd, blt->src.handle, blt->src.size,
+>> +					  alignment, blt->src.pat_index) +
+>> +		blt->src.plane_offset;
+>> +	dst_offset = get_offset_pat_index(ahnd, blt->dst.handle, blt->dst.size, alignment,
+>> +					  blt->dst.pat_index) +
+>> +		blt->dst.plane_offset;
+> 
+> Ditto.
+> 
+>>   	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
+>>   
+>>   	data.dw04.dst_address_lo = dst_offset;
+>> @@ -1380,8 +1391,10 @@ int blt_fast_copy(int fd,
+>>   	igt_assert_neq(blt->driver, 0);
+>>   
+>>   	alignment = get_default_alignment(fd, blt->driver);
+>> -	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment);
+>> -	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment);
+>> +	src_offset = get_offset_pat_index(ahnd, blt->src.handle, blt->src.size,
+>> +					  alignment, blt->src.pat_index);
+>> +	dst_offset = get_offset_pat_index(ahnd, blt->dst.handle, blt->dst.size,
+>> +					  alignment, blt->dst.pat_index);
+>>   	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
+>>   
+>>   	emit_blt_fast_copy(fd, ahnd, blt, 0, true);
+>> @@ -1460,7 +1473,7 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
+>>   							  &size, region) == 0);
+>>   	}
+> 
+> I think blt_create_object() should have also pat_index passed as an
+> argument.
+
+I think you would also have to pass in the cpu_caching mode, and maybe 
+even the coh_mode, if we wanted that. Currently blt_create_object() 
+gives you a combination of cpu_caching, coh_mode and pat_index that is 
+the default and should "just work" for most cases. Idea is if you need 
+something more exotic you would instead create your own object (using 
+say gem_create_caching) and then also select whatever pat_index you needed.
+
+I can change it to expose everything but figured blt_create_object() 
+should be more "I don't care, just give me the defaults".
+
+> 
+> Rest looks ok.
+> 
+> --
+> Zbigniew
+> 
+>>   
+>> -	blt_set_object(obj, handle, size, region, mocs, tiling,
+>> +	blt_set_object(obj, handle, size, region, mocs, DEFAULT_PAT_INDEX, tiling,
+>>   		       compression, compression_type);
+>>   	blt_set_geom(obj, stride, 0, 0, width, height, 0, 0);
+>>   
+>> @@ -1481,7 +1494,7 @@ void blt_destroy_object(int fd, struct blt_copy_object *obj)
+>>   
+>>   void blt_set_object(struct blt_copy_object *obj,
+>>   		    uint32_t handle, uint64_t size, uint32_t region,
+>> -		    uint8_t mocs, enum blt_tiling_type tiling,
+>> +		    uint8_t mocs, uint8_t pat_index, enum blt_tiling_type tiling,
+>>   		    enum blt_compression compression,
+>>   		    enum blt_compression_type compression_type)
+>>   {
+>> @@ -1489,6 +1502,7 @@ void blt_set_object(struct blt_copy_object *obj,
+>>   	obj->size = size;
+>>   	obj->region = region;
+>>   	obj->mocs = mocs;
+>> +	obj->pat_index = pat_index;
+>>   	obj->tiling = tiling;
+>>   	obj->compression = compression;
+>>   	obj->compression_type = compression_type;
+>> @@ -1516,12 +1530,14 @@ void blt_set_copy_object(struct blt_copy_object *obj,
+>>   
+>>   void blt_set_ctrl_surf_object(struct blt_ctrl_surf_copy_object *obj,
+>>   			      uint32_t handle, uint32_t region, uint64_t size,
+>> -			      uint8_t mocs, enum blt_access_type access_type)
+>> +			      uint8_t mocs, uint8_t pat_index,
+>> +			      enum blt_access_type access_type)
+>>   {
+>>   	obj->handle = handle;
+>>   	obj->region = region;
+>>   	obj->size = size;
+>>   	obj->mocs = mocs;
+>> +	obj->pat_index = pat_index;
+>>   	obj->access_type = access_type;
+>>   }
+>>   
+>> diff --git a/lib/intel_blt.h b/lib/intel_blt.h
+>> index d9c8883c7..f8423a986 100644
+>> --- a/lib/intel_blt.h
+>> +++ b/lib/intel_blt.h
+>> @@ -79,6 +79,7 @@ struct blt_copy_object {
+>>   	uint32_t region;
+>>   	uint64_t size;
+>>   	uint8_t mocs;
+>> +	uint8_t pat_index;
+>>   	enum blt_tiling_type tiling;
+>>   	enum blt_compression compression;  /* BC only */
+>>   	enum blt_compression_type compression_type; /* BC only */
+>> @@ -151,6 +152,7 @@ struct blt_ctrl_surf_copy_object {
+>>   	uint32_t region;
+>>   	uint64_t size;
+>>   	uint8_t mocs;
+>> +	uint8_t pat_index;
+>>   	enum blt_access_type access_type;
+>>   };
+>>   
+>> @@ -247,7 +249,7 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
+>>   void blt_destroy_object(int fd, struct blt_copy_object *obj);
+>>   void blt_set_object(struct blt_copy_object *obj,
+>>   		    uint32_t handle, uint64_t size, uint32_t region,
+>> -		    uint8_t mocs, enum blt_tiling_type tiling,
+>> +		    uint8_t mocs, uint8_t pat_index, enum blt_tiling_type tiling,
+>>   		    enum blt_compression compression,
+>>   		    enum blt_compression_type compression_type);
+>>   void blt_set_object_ext(struct blt_block_copy_object_ext *obj,
+>> @@ -258,7 +260,8 @@ void blt_set_copy_object(struct blt_copy_object *obj,
+>>   			 const struct blt_copy_object *orig);
+>>   void blt_set_ctrl_surf_object(struct blt_ctrl_surf_copy_object *obj,
+>>   			      uint32_t handle, uint32_t region, uint64_t size,
+>> -			      uint8_t mocs, enum blt_access_type access_type);
+>> +			      uint8_t mocs, uint8_t pat_index,
+>> +			      enum blt_access_type access_type);
+>>   
+>>   void blt_surface_info(const char *info,
+>>   		      const struct blt_copy_object *obj);
+>> diff --git a/tests/intel/gem_ccs.c b/tests/intel/gem_ccs.c
+>> index f5d4ab359..a98557b72 100644
+>> --- a/tests/intel/gem_ccs.c
+>> +++ b/tests/intel/gem_ccs.c
+>> @@ -15,6 +15,7 @@
+>>   #include "lib/intel_chipset.h"
+>>   #include "intel_blt.h"
+>>   #include "intel_mocs.h"
+>> +#include "intel_pat.h"
+>>   /**
+>>    * TEST: gem ccs
+>>    * Description: Exercise gen12 blitter with and without flatccs compression
+>> @@ -111,9 +112,9 @@ static void surf_copy(int i915,
+>>   	blt_ctrl_surf_copy_init(i915, &surf);
+>>   	surf.print_bb = param.print_bb;
+>>   	blt_set_ctrl_surf_object(&surf.src, mid->handle, mid->region, mid->size,
+>> -				 uc_mocs, BLT_INDIRECT_ACCESS);
+>> +				 uc_mocs, DEFAULT_PAT_INDEX, BLT_INDIRECT_ACCESS);
+>>   	blt_set_ctrl_surf_object(&surf.dst, ccs, REGION_SMEM, ccssize,
+>> -				 uc_mocs, DIRECT_ACCESS);
+>> +				 uc_mocs, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
+>>   	bb_size = 4096;
+>>   	igt_assert_eq(__gem_create(i915, &bb_size, &bb1), 0);
+>>   	blt_set_batch(&surf.bb, bb1, bb_size, REGION_SMEM);
+>> @@ -133,7 +134,7 @@ static void surf_copy(int i915,
+>>   		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
+>>   
+>>   		blt_set_ctrl_surf_object(&surf.dst, ccs2, REGION_SMEM, ccssize,
+>> -					 0, DIRECT_ACCESS);
+>> +					 0, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
+>>   		blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
+>>   		gem_sync(i915, surf.dst.handle);
+>>   
+>> @@ -155,9 +156,9 @@ static void surf_copy(int i915,
+>>   	for (int i = 0; i < surf.dst.size / sizeof(uint32_t); i++)
+>>   		ccsmap[i] = i;
+>>   	blt_set_ctrl_surf_object(&surf.src, ccs, REGION_SMEM, ccssize,
+>> -				 uc_mocs, DIRECT_ACCESS);
+>> +				 uc_mocs, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
+>>   	blt_set_ctrl_surf_object(&surf.dst, mid->handle, mid->region, mid->size,
+>> -				 uc_mocs, INDIRECT_ACCESS);
+>> +				 uc_mocs, DEFAULT_PAT_INDEX, INDIRECT_ACCESS);
+>>   	blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
+>>   
+>>   	blt_copy_init(i915, &blt);
+>> @@ -399,7 +400,8 @@ static void block_copy(int i915,
+>>   	blt_set_object_ext(&ext.dst, 0, width, height, SURFACE_TYPE_2D);
+>>   	if (config->inplace) {
+>>   		blt_set_object(&blt.dst, mid->handle, dst->size, mid->region, 0,
+>> -			       T_LINEAR, COMPRESSION_DISABLED, comp_type);
+>> +			       DEFAULT_PAT_INDEX, T_LINEAR, COMPRESSION_DISABLED,
+>> +			       comp_type);
+>>   		blt.dst.ptr = mid->ptr;
+>>   	}
+>>   
+>> @@ -475,7 +477,7 @@ static void block_multicopy(int i915,
+>>   
+>>   	if (config->inplace) {
+>>   		blt_set_object(&blt3.dst, mid->handle, dst->size, mid->region,
+>> -			       mid->mocs, mid_tiling, COMPRESSION_DISABLED,
+>> +			       mid->mocs, DEFAULT_PAT_INDEX, mid_tiling, COMPRESSION_DISABLED,
+>>   			       comp_type);
+>>   		blt3.dst.ptr = mid->ptr;
+>>   	}
+>> diff --git a/tests/intel/gem_lmem_swapping.c b/tests/intel/gem_lmem_swapping.c
+>> index ede545c92..7f2ab8bb6 100644
+>> --- a/tests/intel/gem_lmem_swapping.c
+>> +++ b/tests/intel/gem_lmem_swapping.c
+>> @@ -486,7 +486,7 @@ static void __do_evict(int i915,
+>>   				   INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0));
+>>   		blt_set_object(tmp, tmp->handle, params->size.max,
+>>   			       INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0),
+>> -			       intel_get_uc_mocs(i915), T_LINEAR,
+>> +			       intel_get_uc_mocs(i915), 0, T_LINEAR,
+>>   			       COMPRESSION_DISABLED, COMPRESSION_TYPE_3D);
+>>   		blt_set_geom(tmp, stride, 0, 0, width, height, 0, 0);
+>>   	}
+>> @@ -516,7 +516,7 @@ static void __do_evict(int i915,
+>>   			obj->blt_obj = calloc(1, sizeof(*obj->blt_obj));
+>>   			igt_assert(obj->blt_obj);
+>>   			blt_set_object(obj->blt_obj, obj->handle, obj->size, region_id,
+>> -				       intel_get_uc_mocs(i915), T_LINEAR,
+>> +				       intel_get_uc_mocs(i915), 0, T_LINEAR,
+>>   				       COMPRESSION_ENABLED, COMPRESSION_TYPE_3D);
+>>   			blt_set_geom(obj->blt_obj, stride, 0, 0, width, height, 0, 0);
+>>   			init_object_ccs(i915, obj, tmp, rand(), blt_ctx,
+>> diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
+>> index 20bbc4448..27859d5ce 100644
+>> --- a/tests/intel/xe_ccs.c
+>> +++ b/tests/intel/xe_ccs.c
+>> @@ -13,6 +13,7 @@
+>>   #include "igt_syncobj.h"
+>>   #include "intel_blt.h"
+>>   #include "intel_mocs.h"
+>> +#include "intel_pat.h"
+>>   #include "xe/xe_ioctl.h"
+>>   #include "xe/xe_query.h"
+>>   #include "xe/xe_util.h"
+>> @@ -108,8 +109,9 @@ static void surf_copy(int xe,
+>>   	blt_ctrl_surf_copy_init(xe, &surf);
+>>   	surf.print_bb = param.print_bb;
+>>   	blt_set_ctrl_surf_object(&surf.src, mid->handle, mid->region, mid->size,
+>> -				 uc_mocs, BLT_INDIRECT_ACCESS);
+>> -	blt_set_ctrl_surf_object(&surf.dst, ccs, sysmem, ccssize, uc_mocs, DIRECT_ACCESS);
+>> +				 uc_mocs, DEFAULT_PAT_INDEX, BLT_INDIRECT_ACCESS);
+>> +	blt_set_ctrl_surf_object(&surf.dst, ccs, sysmem, ccssize, uc_mocs,
+>> +				 DEFAULT_PAT_INDEX, DIRECT_ACCESS);
+>>   	bb_size = xe_get_default_alignment(xe);
+>>   	bb1 = xe_bo_create_flags(xe, 0, bb_size, sysmem);
+>>   	blt_set_batch(&surf.bb, bb1, bb_size, sysmem);
+>> @@ -130,7 +132,7 @@ static void surf_copy(int xe,
+>>   		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
+>>   
+>>   		blt_set_ctrl_surf_object(&surf.dst, ccs2, system_memory(xe), ccssize,
+>> -					 0, DIRECT_ACCESS);
+>> +					 0, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
+>>   		blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
+>>   		intel_ctx_xe_sync(ctx, true);
+>>   
+>> @@ -153,9 +155,9 @@ static void surf_copy(int xe,
+>>   	for (int i = 0; i < surf.dst.size / sizeof(uint32_t); i++)
+>>   		ccsmap[i] = i;
+>>   	blt_set_ctrl_surf_object(&surf.src, ccs, sysmem, ccssize,
+>> -				 uc_mocs, DIRECT_ACCESS);
+>> +				 uc_mocs, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
+>>   	blt_set_ctrl_surf_object(&surf.dst, mid->handle, mid->region, mid->size,
+>> -				 uc_mocs, INDIRECT_ACCESS);
+>> +				 uc_mocs, DEFAULT_PAT_INDEX, INDIRECT_ACCESS);
+>>   	blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
+>>   	intel_ctx_xe_sync(ctx, true);
+>>   
+>> @@ -369,7 +371,8 @@ static void block_copy(int xe,
+>>   	blt_set_object_ext(&ext.dst, 0, width, height, SURFACE_TYPE_2D);
+>>   	if (config->inplace) {
+>>   		blt_set_object(&blt.dst, mid->handle, dst->size, mid->region, 0,
+>> -			       T_LINEAR, COMPRESSION_DISABLED, comp_type);
+>> +			       DEFAULT_PAT_INDEX, T_LINEAR, COMPRESSION_DISABLED,
+>> +			       comp_type);
+>>   		blt.dst.ptr = mid->ptr;
+>>   	}
+>>   
+>> @@ -450,8 +453,8 @@ static void block_multicopy(int xe,
+>>   
+>>   	if (config->inplace) {
+>>   		blt_set_object(&blt3.dst, mid->handle, dst->size, mid->region,
+>> -			       mid->mocs, mid_tiling, COMPRESSION_DISABLED,
+>> -			       comp_type);
+>> +			       mid->mocs, DEFAULT_PAT_INDEX, mid_tiling,
+>> +			       COMPRESSION_DISABLED, comp_type);
+>>   		blt3.dst.ptr = mid->ptr;
+>>   	}
+>>   
+>> -- 
+>> 2.41.0
+>>
