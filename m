@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E4C6A10E4C2
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Oct 2023 08:07:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B8A4910E4C4
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Oct 2023 08:07:20 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  6 Oct 2023 13:28:18 +0530
-Message-Id: <20231006075819.3055887-4-bhanuprakash.modem@intel.com>
+Date: Fri,  6 Oct 2023 13:28:19 +0530
+Message-Id: <20231006075819.3055887-5-bhanuprakash.modem@intel.com>
 In-Reply-To: <20231006075819.3055887-1-bhanuprakash.modem@intel.com>
 References: <20231006075819.3055887-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 3/4] tests/intel/kms_ccs: Rename subtests
+Subject: [igt-dev] [i-g-t 4/4] tests/kms_rotation_crc: Use helpers from lib
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,126 +22,77 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Use '-' instead of '_' while naming subtests.
+Instead of having local implementations, use helpers from lib.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/intel/kms_ccs.c | 82 +++++++++++++++++++++----------------------
- 1 file changed, 41 insertions(+), 41 deletions(-)
+ tests/kms_rotation_crc.c | 40 ++++------------------------------------
+ 1 file changed, 4 insertions(+), 36 deletions(-)
 
-diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
-index 9df094a4d..09b98fbec 100644
---- a/tests/intel/kms_ccs.c
-+++ b/tests/intel/kms_ccs.c
-@@ -61,14 +61,14 @@
-  *
-  * arg[3]:
-  *
-- * @y_tiled_ccs:               Y tiled ccs
-- * @y_tiled_gen12_mc_ccs:      Y tiled gen12 mc ccs
-- * @y_tiled_gen12_rc_ccs:      Y tiled gen12 rc ccs
-- * @y_tiled_gen12_rc_ccs_cc:   Y tiled gen12 rc ccs cc
-- * @yf_tiled_ccs:              YF tiled ccs
-- * @4_tiled_mtl_mc_ccs:        4 tiled mtl mc ccs
-- * @4_tiled_mtl_rc_ccs:        4 tiled mtl rc ccs
-- * @4_tiled_mtl_rc_ccs_cc:     4 tiled mtl rc ccs cc
-+ * @y-tiled-ccs:               Y tiled ccs
-+ * @y-tiled-gen12-mc-ccs:      Y tiled gen12 mc ccs
-+ * @y-tiled-gen12-rc-ccs:      Y tiled gen12 rc ccs
-+ * @y-tiled-gen12-rc-ccs-cc:   Y tiled gen12 rc ccs cc
-+ * @yf-tiled-ccs:              YF tiled ccs
-+ * @4-tiled-mtl-mc-ccs:        4 tiled mtl mc ccs
-+ * @4-tiled-mtl-rc-ccs:        4 tiled mtl rc ccs
-+ * @4-tiled-mtl-rc-ccs-cc:     4 tiled mtl rc ccs cc
-  */
+diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
+index f171fcd22..c48e0d672 100644
+--- a/tests/kms_rotation_crc.c
++++ b/tests/kms_rotation_crc.c
+@@ -1178,38 +1178,6 @@ static const char *plane_test_str(unsigned plane)
+ 	}
+ }
  
- /**
-@@ -99,17 +99,17 @@
-  *
-  * arg[3]:
-  *
-- * @4_tiled_dg2_mc_ccs:        4 tiled mc ccs
-- * @4_tiled_dg2_rc_ccs:        4 tiled dg2 rc ccs
-- * @4_tiled_dg2_rc_ccs_cc:     4 tiled dg2 rc ccs cc
-- * @4_tiled_mtl_mc_ccs:        4 tiled mtl mc ccs
-- * @4_tiled_mtl_rc_ccs:        4 tiled mtl rc ccs
-- * @4_tiled_mtl_rc_ccs_cc:     4 tiled mtl rc ccs cc
-- * @y_tiled_ccs:               Y tiled ccs
-- * @y_tiled_gen12_mc_ccs:      Y tiled gen12 mc ccs
-- * @y_tiled_gen12_rc_ccs:      Y tiled gen12 rc ccs
-- * @y_tiled_gen12_rc_ccs_cc:   Y tiled gen12 rc ccs cc
-- * @yf_tiled_ccs:              YF tiled ccs
-+ * @4-tiled-dg2-mc-ccs:        4 tiled mc ccs
-+ * @4-tiled-dg2-rc-ccs:        4 tiled dg2 rc ccs
-+ * @4-tiled-dg2-rc-ccs-cc:     4 tiled dg2 rc ccs cc
-+ * @4-tiled-mtl-mc-ccs:        4 tiled mtl mc ccs
-+ * @4-tiled-mtl-rc-ccs:        4 tiled mtl rc ccs
-+ * @4-tiled-mtl-rc-ccs-cc:     4 tiled mtl rc ccs cc
-+ * @y-tiled-ccs:               Y tiled ccs
-+ * @y-tiled-gen12-mc-ccs:      Y tiled gen12 mc ccs
-+ * @y-tiled-gen12-rc-ccs:      Y tiled gen12 rc ccs
-+ * @y-tiled-gen12-rc-ccs-cc:   Y tiled gen12 rc ccs cc
-+ * @yf-tiled-ccs:              YF tiled ccs
-  */
+-static const char *rot_test_str(igt_rotation_t rot)
+-{
+-	switch (rot) {
+-	case IGT_ROTATION_0:
+-		return "0";
+-	case IGT_ROTATION_90:
+-		return "90";
+-	case IGT_ROTATION_180:
+-		return "180";
+-	case IGT_ROTATION_270:
+-		return "270";
+-	default:
+-		igt_assert(0);
+-	}
+-}
+-
+-static const char *modifier_test_str(uint64_t modifier)
+-{
+-	switch (modifier) {
+-	case I915_FORMAT_MOD_X_TILED:
+-		return "x-tiled";
+-	case I915_FORMAT_MOD_Y_TILED:
+-		return "y-tiled";
+-	case I915_FORMAT_MOD_Yf_TILED:
+-		return "yf-tiled";
+-	case I915_FORMAT_MOD_4_TILED:
+-		return "4-tiled";
+-	default:
+-		igt_assert(0);
+-	}
+-}
+-
+ static int opt_handler(int opt, int opt_index, void *_data)
+ {
+ 	data_t *data = _data;
+@@ -1289,7 +1257,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 	for (subtest = subtests; subtest->rot; subtest++) {
+ 		igt_subtest_f("%s-rotation-%s",
+ 			      plane_test_str(subtest->plane),
+-			      rot_test_str(subtest->rot)) {
++			      igt_plane_rotation_name(subtest->rot)) {
+ 			if (is_amdgpu_device(data.gfx_fd)) {
+ 				data.override_fmt = DRM_FORMAT_XRGB8888;
+ 				if (igt_rotation_90_or_270(subtest->rot))
+@@ -1339,9 +1307,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 		igt_fixture
+ 			igt_require_intel(data.gfx_fd);
  
- /**
-@@ -138,17 +138,17 @@
-  *
-  * arg[3]:
-  *
-- * @4_tiled_dg2_mc_ccs:        4 tiled mc ccs
-- * @4_tiled_dg2_rc_ccs:        4 tiled dg2 rc ccs
-- * @4_tiled_dg2_rc_ccs_cc:     4 tiled dg2 rc ccs cc
-- * @4_tiled_mtl_mc_ccs:        4 tiled mtl mc ccs
-- * @4_tiled_mtl_rc_ccs:        4 tiled mtl rc ccs
-- * @4_tiled_mtl_rc_ccs_cc:     4 tiled mtl rc ccs cc
-- * @y_tiled_ccs:               Y tiled ccs
-- * @y_tiled_gen12_mc_ccs:      Y tiled gen12 mc ccs
-- * @y_tiled_gen12_rc_ccs:      Y tiled gen12 rc ccs
-- * @y_tiled_gen12_rc_ccs_cc:   Y tiled gen12 rc ccs cc
-- * @yf_tiled_ccs:              YF tiled ccs
-+ * @4-tiled-dg2-mc-ccs:        4 tiled mc ccs
-+ * @4-tiled-dg2-rc-ccs:        4 tiled dg2 rc ccs
-+ * @4-tiled-dg2-rc-ccs-cc:     4 tiled dg2 rc ccs cc
-+ * @4-tiled-mtl-mc-ccs:        4 tiled mtl mc ccs
-+ * @4-tiled-mtl-rc-ccs:        4 tiled mtl rc ccs
-+ * @4-tiled-mtl-rc-ccs-cc:     4 tiled mtl rc ccs cc
-+ * @y-tiled-ccs:               Y tiled ccs
-+ * @y-tiled-gen12-mc-ccs:      Y tiled gen12 mc ccs
-+ * @y-tiled-gen12-rc-ccs:      Y tiled gen12 rc ccs
-+ * @y-tiled-gen12-rc-ccs-cc:   Y tiled gen12 rc ccs cc
-+ * @yf-tiled-ccs:              YF tiled ccs
-  */
- 
- #define SDR_PLANE_BASE	3
-@@ -218,17 +218,17 @@ static const struct {
- 	uint64_t modifier;
- 	const char *str;
- } ccs_modifiers[] = {
--	{I915_FORMAT_MOD_Y_TILED_CCS, "y_tiled_ccs"},
--	{I915_FORMAT_MOD_Yf_TILED_CCS, "yf_tiled_ccs"},
--	{I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS, "y_tiled_gen12_rc_ccs"},
--	{I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC, "y_tiled_gen12_rc_ccs_cc"},
--	{I915_FORMAT_MOD_Y_TILED_GEN12_MC_CCS, "y_tiled_gen12_mc_ccs"},
--	{I915_FORMAT_MOD_4_TILED_DG2_RC_CCS, "4_tiled_dg2_rc_ccs"},
--	{I915_FORMAT_MOD_4_TILED_DG2_MC_CCS, "4_tiled_dg2_mc_ccs"},
--	{I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC, "4_tiled_dg2_rc_ccs_cc"},
--	{I915_FORMAT_MOD_4_TILED_MTL_RC_CCS, "4_tiled_mtl_rc_ccs"},
--	{I915_FORMAT_MOD_4_TILED_MTL_MC_CCS, "4_tiled_mtl_mc_ccs"},
--	{I915_FORMAT_MOD_4_TILED_MTL_RC_CCS_CC, "4_tiled_mtl_rc_ccs_cc"},
-+	{I915_FORMAT_MOD_Y_TILED_CCS, "y-tiled-ccs"},
-+	{I915_FORMAT_MOD_Yf_TILED_CCS, "yf-tiled-ccs"},
-+	{I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS, "y-tiled-gen12-rc-ccs"},
-+	{I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC, "y-tiled-gen12-rc-ccs-cc"},
-+	{I915_FORMAT_MOD_Y_TILED_GEN12_MC_CCS, "y-tiled-gen12-mc-ccs"},
-+	{I915_FORMAT_MOD_4_TILED_DG2_RC_CCS, "4-tiled-dg2-rc-ccs"},
-+	{I915_FORMAT_MOD_4_TILED_DG2_MC_CCS, "4-tiled-dg2-mc-ccs"},
-+	{I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC, "4-tiled-dg2-rc-ccs-cc"},
-+	{I915_FORMAT_MOD_4_TILED_MTL_RC_CCS, "4-tiled-mtl-rc-ccs"},
-+	{I915_FORMAT_MOD_4_TILED_MTL_MC_CCS, "4-tiled-mtl-mc-ccs"},
-+	{I915_FORMAT_MOD_4_TILED_MTL_RC_CCS_CC, "4-tiled-mtl-rc-ccs-cc"},
- };
- 
- static bool check_ccs_planes;
+-		igt_subtest_f("primary-%s-reflect-x-%s",
+-			      modifier_test_str(reflect_x->modifier),
+-			      rot_test_str(reflect_x->rot)) {
++		igt_subtest_f("primary-%s-tiled-reflect-x-%s",
++			      igt_fb_modifier_name(reflect_x->modifier),
++			      igt_plane_rotation_name(reflect_x->rot)) {
+ 			data.rotation = (IGT_REFLECT_X | reflect_x->rot);
+ 			data.override_modifier = reflect_x->modifier;
+ 			test_plane_rotation(&data, DRM_PLANE_TYPE_PRIMARY, false);
 -- 
 2.40.0
