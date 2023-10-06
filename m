@@ -1,17 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Date: Fri, 06 Oct 2023 11:05:43 +0200
-Message-ID: <2903555.e9J7NaK4W3@jkrzyszt-mobl2.ger.corp.intel.com>
-In-Reply-To: <20231005212844.weokomm5mn4mutux@kamilkon-desk.igk.intel.com>
-References: <20231003091044.407965-11-janusz.krzysztofik@linux.intel.com>
- <20231003091044.407965-19-janusz.krzysztofik@linux.intel.com>
- <20231005212844.weokomm5mn4mutux@kamilkon-desk.igk.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4A7FE10E0B6
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Oct 2023 08:59:15 +0000 (UTC)
+Message-ID: <26811181-c8c3-eaf2-914e-22ae336638ab@linux.intel.com>
+Date: Fri, 6 Oct 2023 10:59:11 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-Subject: Re: [igt-dev] [PATCH i-g-t 8/9] lib/kunit: Fetch a list of test
- cases in advance
+Content-Language: en-US
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Nirmoy Das <nirmoy.das@intel.com>
+References: <20231002121428.3827-1-nirmoy.das@intel.com>
+ <20231005110156.uhj24eusferydmcz@kamilkon-desk.igk.intel.com>
+From: Nirmoy Das <nirmoy.das@linux.intel.com>
+In-Reply-To: <20231005110156.uhj24eusferydmcz@kamilkon-desk.igk.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/prime_vgem: Use correct blitter
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,109 +22,137 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Kamil,
 
-Thanks for review.
+On 10/5/2023 1:01 PM, Kamil Konieczny wrote:
+> Hi Nirmoy,
+> On 2023-10-02 at 14:14:28 +0200, Nirmoy Das wrote:
+>> Use igt_blitter_copy() which picks a correct blitter
+>> command depending on platform.
+>>
+>> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+> Here also please ask bug filing for masking BAT error
+> and spin full testing.
 
-On Thursday, 5 October 2023 23:28:44 CEST Kamil Konieczny wrote:
-> Hi Janusz,
-> 
-> On 2023-10-03 at 11:10:53 +0200, Janusz Krzysztofik wrote:
-> > Recent improvements to the kernel kunit framework allow us to obtain a
-> > list of test cases provided by a kunit test module without actually
-> > running them.  Use that feature to get a list of expected test cases
-> > before we enter a loop around igt_dynamic().  Once done, enter the
-> > igt_dynamic() section for each consecutive test case immediately, even
-> > before first line of a related KTAP report appears, then look for a result
-> > from that test case.  That should make our IGT results output still better
-> > synchronized with related kernel messages.
-> > 
-> > The list of test cases provided by a kunit test module can be obtained by
-> > loading the kunit base module with specific options, then loading the test
-> > module.  For that to be possible, take care of unloading the kunit base
-> > module before each kunit subtest (I was wrong when in one of my previous
-> > commit messages I suggested that on final unload of a kunit test module
-> > the kunit base module is unloaded automatically as its dependency,
-> > however, that didn't matter before, then no separate fix was required).
-> > Since that module can then be left loaded with non-default options if an
-> > error occurs, unload it explicitly before returning from igt_kunit().
-> > 
-> > There are two possible ways of getting a list of test cases: by loading
-> > the base kunit module with action=list module option, or by filtering
-> > out all test cases from being executed while asking for SKIP results from
-> > those filtered out.  Since the latter provides regular KTAP report that we
-> > can alredy parse perfectly, use it instead of trying to identify an
-> ----- ^^^^^^
-> s/alredy/already/
+Will do that.
 
-Thanks.
 
-> 
-> > unstructured list of test cases of unknown length submitted by the former.
-> > 
-> > If an IGT test that calls igt_kunit() provides a subtest name then use
-> > that name to filter out potential test cases that don't belong to the
-> > named test suite from the list.
-> > 
-> > To avoid loading any modules if no subtest is going to be executed (e.g.,
-> > if a nonexistent subtest has been requested), load the kunit modules in
-> > list mode from inside the igt_subtest_with_dynamic() section.  In order to
-> > be free to skip the whole subtest on unmet requirements that need to be
-> > verified after that list has been already populated, clean it up from a
-> > follow up igt_fixture section.
-> > 
-> > Since we start reading the list of test cases from /dev/kmsg only after
-> > the kunit test module is loaded successfully in list only mode, don't
-> > synchronize reads with potential modprobe breakage in that case, unlike we
-> > still do later when parsing KTAP results in parallel to loading the test
-> > module in normal (execute) mode.
-> > 
-> > Since we neither fetch KTAP results before entering igt_dynamic section
-> > nor even return an error from KTAP result fetch attempts immediately on
-> > modprobe error or kernel taint, break the loop of dynamic sub-subtests
-> > explicitly as soon as one of those conditions is detected.
-> 
-> Could you split this patch into two, one with reading names and rest
-> with modprobe error or kernel taint detection?
+> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Yes, sounds like a good idea.
+Thanks, Kamil!
 
-> 
-> > Also, don't
-> > force IGT SKIP result from the subtest if KTAP parsing hasn't completed.
-> > That's perfectly legitimate since we no longer iterate over KTAP results,
-> > only over a list of test cases obtained in advance, then we stop parsing
-> > KTAP report as soon as we get a result from the last test case from the
-> > list.
-> > 
-> > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> > ---
-> >  lib/igt_kmod.c | 217 +++++++++++++++++++++++++++++++++++--------------
-> >  1 file changed, 157 insertions(+), 60 deletions(-)
-> > 
-> > diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-> > index 387efbb59f..4fba77ead4 100644
-> > --- a/lib/igt_kmod.c
-> > +++ b/lib/igt_kmod.c
-...  
-> > @@ -905,6 +905,63 @@ __igt_kunit(struct igt_ktest *tst, const char *name, const char *opts)
-> >  
-> >  	igt_skip_on(lseek(tst->kmsg, 0, SEEK_END) < 0);
-> >  
-> > +	/*
-> > +	 * To get a list of test cases provided by a kunit test module, ask the
-> > +	 * generic kunit module to respond with SKIP result for each test found.
-> > +	 * We could also use action=list kunit parameter to get the listing,
-> > +	 * however, parsing a KTAP report -- something that we alredy can do
-> --------------------------------------------------------------^
-> Same here.
 
-One more thank you.
-Janusz
+Nirmoy
 
+>
+> Regards,
+> Kamil
+>
+>> ---
+>>   tests/prime_vgem.c | 52 +++++++++++++++++++++++-----------------------
+>>   1 file changed, 26 insertions(+), 26 deletions(-)
+>>
+>> diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
+>> index 876e04ed0..551a731f5 100644
+>> --- a/tests/prime_vgem.c
+>> +++ b/tests/prime_vgem.c
+>> @@ -29,7 +29,7 @@
+>>   #include "i915/gem_create.h"
+>>   #include "igt.h"
+>>   #include "igt_vgem.h"
+>> -#include "intel_batchbuffer.h"	/* igt_blitter_src_copy() */
+>> +#include "intel_batchbuffer.h"	/* igt_blitter_copy() */
+>>   /**
+>>    * TEST: prime vgem
+>>    * Description: Basic check of polling for prime/vgem fences.
+>> @@ -351,11 +351,11 @@ static void test_fence_blt(int i915, int vgem)
+>>   		write(master[1], &child, sizeof(child));
+>>   		read(slave[0], &child, sizeof(child));
+>>   
+>> -		igt_blitter_src_copy(i915, ahnd, 0, NULL, prime, 0, scratch.pitch,
+>> -				     I915_TILING_NONE, 0, 0, scratch.size,
+>> -				     scratch.width, scratch.height, scratch.bpp,
+>> -				     native, 0, scratch.pitch,
+>> -				     I915_TILING_NONE, 0, 0, scratch.size);
+>> +		igt_blitter_copy(i915, ahnd, 0, NULL, prime, 0, scratch.pitch,
+>> +				 I915_TILING_NONE, 0, 0, scratch.size,
+>> +				 scratch.width, scratch.height, scratch.bpp,
+>> +				 native, 0, scratch.pitch,
+>> +				 I915_TILING_NONE, 0, 0, scratch.size);
+>>   		gem_sync(i915, native);
+>>   
+>>   		for (i = 0; i < scratch.height; i++)
+>> @@ -480,11 +480,11 @@ static void test_blt(int vgem, int i915)
+>>   		ptr[scratch.pitch * i / sizeof(*ptr)] = i;
+>>   	munmap(ptr, scratch.size);
+>>   
+>> -	igt_blitter_src_copy(i915, ahnd, 0, NULL, native, 0, scratch.pitch,
+>> -			     I915_TILING_NONE, 0, 0, scratch.size,
+>> -			     scratch.width, scratch.height, scratch.bpp,
+>> -			     prime, 0, scratch.pitch, I915_TILING_NONE, 0, 0,
+>> -			     scratch.size);
+>> +	igt_blitter_copy(i915, ahnd, 0, NULL, native, 0, scratch.pitch,
+>> +			 I915_TILING_NONE, 0, 0, scratch.size,
+>> +			 scratch.width, scratch.height, scratch.bpp,
+>> +			 prime, 0, scratch.pitch, I915_TILING_NONE, 0, 0,
+>> +			 scratch.size);
+>>   	prime_sync_start(dmabuf, true);
+>>   	prime_sync_end(dmabuf, true);
+>>   	close(dmabuf);
+>> @@ -496,11 +496,11 @@ static void test_blt(int vgem, int i915)
+>>   	}
+>>   	munmap(ptr, scratch.size);
+>>   
+>> -	igt_blitter_src_copy(i915, ahnd, 0, NULL, prime, 0, scratch.pitch,
+>> -			     I915_TILING_NONE, 0, 0, scratch.size,
+>> -			     scratch.width, scratch.height, scratch.bpp,
+>> -			     native, 0, scratch.pitch, I915_TILING_NONE, 0, 0,
+>> -			     scratch.size);
+>> +	igt_blitter_copy(i915, ahnd, 0, NULL, prime, 0, scratch.pitch,
+>> +			 I915_TILING_NONE, 0, 0, scratch.size,
+>> +			 scratch.width, scratch.height, scratch.bpp,
+>> +			 native, 0, scratch.pitch, I915_TILING_NONE, 0, 0,
+>> +			 scratch.size);
+>>   	gem_sync(i915, native);
+>>   
+>>   	ptr = gem_mmap__device_coherent(i915, native, 0, scratch.size, PROT_READ);
+>> @@ -620,22 +620,22 @@ static void test_blt_interleaved(int vgem, int i915)
+>>   
+>>   	for (i = 0; i < SLOW_QUICK(scratch.height, 64); i++) {
+>>   		local[scratch.pitch * i / sizeof(*local)] = i;
+>> -		igt_blitter_src_copy(i915, ahnd, 0, NULL, native, 0,
+>> -				     scratch.pitch, I915_TILING_NONE, 0, i,
+>> -				     scratch.size, scratch.width, 1,
+>> -				     scratch.bpp, prime, 0, scratch.pitch,
+>> -				     I915_TILING_NONE, 0, i, scratch.size);
+>> +		igt_blitter_copy(i915, ahnd, 0, NULL, native, 0,
+>> +				 scratch.pitch, I915_TILING_NONE, 0, i,
+>> +				 scratch.size, scratch.width, 1,
+>> +				 scratch.bpp, prime, 0, scratch.pitch,
+>> +				 I915_TILING_NONE, 0, i, scratch.size);
+>>   		prime_sync_start(dmabuf, true);
+>>   		igt_assert_eq_u32(foreign[scratch.pitch * i / sizeof(*foreign)],
+>>   				  i);
+>>   		prime_sync_end(dmabuf, true);
+>>   
+>>   		foreign[scratch.pitch * i / sizeof(*foreign)] = ~i;
+>> -		igt_blitter_src_copy(i915, ahnd, 0, NULL, prime, 0, scratch.pitch,
+>> -				     I915_TILING_NONE, 0, i, scratch.size,
+>> -				     scratch.width, 1,
+>> -				     scratch.bpp, native, 0, scratch.pitch,
+>> -				     I915_TILING_NONE, 0, i, scratch.size);
+>> +		igt_blitter_copy(i915, ahnd, 0, NULL, prime, 0, scratch.pitch,
+>> +				 I915_TILING_NONE, 0, i, scratch.size,
+>> +				 scratch.width, 1,
+>> +				 scratch.bpp, native, 0, scratch.pitch,
+>> +				 I915_TILING_NONE, 0, i, scratch.size);
+>>   		gem_sync(i915, native);
+>>   		igt_assert_eq_u32(local[scratch.pitch * i / sizeof(*local)],
+>>   				  ~i);
+>> -- 
+>> 2.41.0
+>>
