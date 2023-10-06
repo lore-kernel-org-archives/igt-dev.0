@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Tue, 10 Oct 2023 18:35:18 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20231010163518.hgcqkap3dx655hrk@kamilkon-desk.igk.intel.com>
-References: <20231010110714.749239-1-tvrtko.ursulin@linux.intel.com>
- <20231010110714.749239-4-tvrtko.ursulin@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============0699886870711602545=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231010110714.749239-4-tvrtko.ursulin@linux.intel.com>
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 3/4] tools/intel_gpu_top:
- Optimise interactive display a bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Wu, Hersen" <hersenxs.wu@amd.com>
+Date: Fri, 06 Oct 2023 14:56:37 -0000
+Message-ID: <169660419773.6465.4549976196971224540@emeril.freedesktop.org>
+References: <20231001162828.74566-1-hersenxs.wu@amd.com>
+In-Reply-To: <20231001162828.74566-1-hersenxs.wu@amd.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_s?=
+ =?utf-8?q?tarting_with_=5B1/2=2Ci-g-t=5D_tests/kms=5Fcursor=5Fcrc=3A_Fix_?=
+ =?utf-8?q?tests_be_skipped_on_AMD_gpu_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,95 +18,127 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Tvrtko,
-On 2023-10-10 at 12:07:13 +0100, Tvrtko Ursulin wrote:
-> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> 
-> Padding the percentage bars and table columns with spaces happens quite a
-> lot so lets do better than putchar at a time. Have a table of visually
-> empty strings and build the required length out of those chunks.
-> 
-> While at it, also move the percentage bar table into its function scope.
-> 
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> ---
->  tools/intel_gpu_top.c | 38 +++++++++++++++++++++++++++++++++-----
->  1 file changed, 33 insertions(+), 5 deletions(-)
-> 
-> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-> index c5abd0c92155..472ce3f13ba9 100644
-> --- a/tools/intel_gpu_top.c
-> +++ b/tools/intel_gpu_top.c
-> @@ -926,14 +926,40 @@ static void free_display_clients(struct igt_drm_clients *clients)
->  	free(clients);
->  }
->  
-> -static const char *bars[] = { " ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█" };
-> -
->  static unsigned int n_spaces(const unsigned int n)
->  {
-> -	unsigned int i;
-> +	static const char *spaces[] = {
-> +		" ",
-> +		"  ",
-> +		"   ",
-> +		"    ",
-> +		"     ",
-> +		"      ",
-> +		"       ",
-> +		"        ",
-> +		"         ",
-> +		"          ",
-> +		"           ",
-> +		"            ",
-> +		"             ",
-> +		"              ",
-> +		"               ",
-> +		"                ",
-> +		"                 ",
-> +		"                  ",
-> +		"                   ",
-> +#define MAX_SPACES 19
-----^^^^^^^^^^^^^^^^^^^^
-imho better sizeof(spaces)
+--===============0699886870711602545==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-> +	};
-> +	unsigned int i, r = n;
->  
-> -	for (i = 0; i < n; i++)
-> -		putchar(' ');
-> +	while (r) {
-> +		if (r > MAX_SPACES)
-> +			i = MAX_SPACES - 1;
-> +		else
-> +			i = r - 1;
-> +		fputs(spaces[i], stdout);
-> +		r -= i + 1;
-> +	}
->  
->  	return n;
->  }
-> @@ -941,6 +967,8 @@ static unsigned int n_spaces(const unsigned int n)
->  static void
->  print_percentage_bar(double percent, double max, int max_len, bool numeric)
->  {
-> +	static const char *bars[] =
-> +		{ " ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█" };
+== Series Details ==
 
-Please write it in one line or start with '= {' as checkpatch.pl
-is complaining here.
+Series: series starting with [1/2,i-g-t] tests/kms_cursor_crc: Fix tests be skipped on AMD gpu (rev4)
+URL   : https://patchwork.freedesktop.org/series/124496/
+State : success
 
-Regards,
-Kamil
+== Summary ==
 
->  	int bar_len, i, len = max_len - 2;
->  	const int w = 8;
->  
-> -- 
-> 2.39.2
-> 
+CI Bug Log - changes from XEIGT_7519_BAT -> XEIGTPW_9941_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9941_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size:
+    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([i915#2346])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7519/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9941/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
+
+  
+  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7519 -> IGTPW_9941
+
+  IGTPW_9941: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9941/index.html
+  IGT_7519: d1db7333d9c5fbbb05e50b0804123950d9dc1c46 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-417-b3daf7f07d6accbe43feafcadeb0b0498063761e: b3daf7f07d6accbe43feafcadeb0b0498063761e
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9941/index.html
+
+--===============0699886870711602545==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [1/2,i-g-t] tests/kms_cursor_crc: Fix tests be skipped on AMD gpu (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124496/">https://patchwork.freedesktop.org/series/124496/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9941/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9941/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7519_BAT -&gt; XEIGTPW_9941_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9941_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7519/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9941/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7519 -&gt; IGTPW_9941</li>
+</ul>
+<p>IGTPW_9941: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9941/index.html<br />
+  IGT_7519: d1db7333d9c5fbbb05e50b0804123950d9dc1c46 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-417-b3daf7f07d6accbe43feafcadeb0b0498063761e: b3daf7f07d6accbe43feafcadeb0b0498063761e</p>
+
+</body>
+</html>
+
+--===============0699886870711602545==--
