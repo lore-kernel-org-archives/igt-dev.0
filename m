@@ -1,20 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A6BDB88CFA
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Oct 2023 08:22:25 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 82AB588CFA
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Oct 2023 08:23:15 +0000 (UTC)
 From: "B, Jeevan" <jeevan.b@intel.com>
 To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Fri, 6 Oct 2023 08:21:57 +0000
-Message-ID: <DM4PR11MB63124D7401FB13D1E10C992890C9A@DM4PR11MB6312.namprd11.prod.outlook.com>
+Date: Fri, 6 Oct 2023 08:23:06 +0000
+Message-ID: <DM4PR11MB6312E171CF1F4AE91A8A623790C9A@DM4PR11MB6312.namprd11.prod.outlook.com>
 References: <20231006075819.3055887-1-bhanuprakash.modem@intel.com>
- <20231006075819.3055887-4-bhanuprakash.modem@intel.com>
-In-Reply-To: <20231006075819.3055887-4-bhanuprakash.modem@intel.com>
+ <20231006075819.3055887-3-bhanuprakash.modem@intel.com>
+In-Reply-To: <20231006075819.3055887-3-bhanuprakash.modem@intel.com>
 Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t 3/4] tests/intel/kms_ccs: Rename subtests
+Subject: Re: [igt-dev] [i-g-t 2/4] lib/igt_kms: Expose helper to convert
+ rotation to string
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,145 +27,49 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-> -----Original Message-----
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
-> Bhanuprakash Modem
-> Sent: Friday, October 6, 2023 1:28 PM
-> To: igt-dev@lists.freedesktop.org
-> Subject: [igt-dev] [i-g-t 3/4] tests/intel/kms_ccs: Rename subtests
->=20
-> Use '-' instead of '_' while naming subtests.
->=20
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-LGTM
-
-Reviewed-by: Jeevan B <jeevan.b@intel.com>
-> ---
->  tests/intel/kms_ccs.c | 82 +++++++++++++++++++++----------------------
->  1 file changed, 41 insertions(+), 41 deletions(-)
->=20
-> diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c index
-> 9df094a4d..09b98fbec 100644
-> --- a/tests/intel/kms_ccs.c
-> +++ b/tests/intel/kms_ccs.c
-> @@ -61,14 +61,14 @@
->   *
->   * arg[3]:
->   *
-> - * @y_tiled_ccs:               Y tiled ccs
-> - * @y_tiled_gen12_mc_ccs:      Y tiled gen12 mc ccs
-> - * @y_tiled_gen12_rc_ccs:      Y tiled gen12 rc ccs
-> - * @y_tiled_gen12_rc_ccs_cc:   Y tiled gen12 rc ccs cc
-> - * @yf_tiled_ccs:              YF tiled ccs
-> - * @4_tiled_mtl_mc_ccs:        4 tiled mtl mc ccs
-> - * @4_tiled_mtl_rc_ccs:        4 tiled mtl rc ccs
-> - * @4_tiled_mtl_rc_ccs_cc:     4 tiled mtl rc ccs cc
-> + * @y-tiled-ccs:               Y tiled ccs
-> + * @y-tiled-gen12-mc-ccs:      Y tiled gen12 mc ccs
-> + * @y-tiled-gen12-rc-ccs:      Y tiled gen12 rc ccs
-> + * @y-tiled-gen12-rc-ccs-cc:   Y tiled gen12 rc ccs cc
-> + * @yf-tiled-ccs:              YF tiled ccs
-> + * @4-tiled-mtl-mc-ccs:        4 tiled mtl mc ccs
-> + * @4-tiled-mtl-rc-ccs:        4 tiled mtl rc ccs
-> + * @4-tiled-mtl-rc-ccs-cc:     4 tiled mtl rc ccs cc
->   */
->=20
->  /**
-> @@ -99,17 +99,17 @@
->   *
->   * arg[3]:
->   *
-> - * @4_tiled_dg2_mc_ccs:        4 tiled mc ccs
-> - * @4_tiled_dg2_rc_ccs:        4 tiled dg2 rc ccs
-> - * @4_tiled_dg2_rc_ccs_cc:     4 tiled dg2 rc ccs cc
-> - * @4_tiled_mtl_mc_ccs:        4 tiled mtl mc ccs
-> - * @4_tiled_mtl_rc_ccs:        4 tiled mtl rc ccs
-> - * @4_tiled_mtl_rc_ccs_cc:     4 tiled mtl rc ccs cc
-> - * @y_tiled_ccs:               Y tiled ccs
-> - * @y_tiled_gen12_mc_ccs:      Y tiled gen12 mc ccs
-> - * @y_tiled_gen12_rc_ccs:      Y tiled gen12 rc ccs
-> - * @y_tiled_gen12_rc_ccs_cc:   Y tiled gen12 rc ccs cc
-> - * @yf_tiled_ccs:              YF tiled ccs
-> + * @4-tiled-dg2-mc-ccs:        4 tiled mc ccs
-> + * @4-tiled-dg2-rc-ccs:        4 tiled dg2 rc ccs
-> + * @4-tiled-dg2-rc-ccs-cc:     4 tiled dg2 rc ccs cc
-> + * @4-tiled-mtl-mc-ccs:        4 tiled mtl mc ccs
-> + * @4-tiled-mtl-rc-ccs:        4 tiled mtl rc ccs
-> + * @4-tiled-mtl-rc-ccs-cc:     4 tiled mtl rc ccs cc
-> + * @y-tiled-ccs:               Y tiled ccs
-> + * @y-tiled-gen12-mc-ccs:      Y tiled gen12 mc ccs
-> + * @y-tiled-gen12-rc-ccs:      Y tiled gen12 rc ccs
-> + * @y-tiled-gen12-rc-ccs-cc:   Y tiled gen12 rc ccs cc
-> + * @yf-tiled-ccs:              YF tiled ccs
->   */
->=20
->  /**
-> @@ -138,17 +138,17 @@
->   *
->   * arg[3]:
->   *
-> - * @4_tiled_dg2_mc_ccs:        4 tiled mc ccs
-> - * @4_tiled_dg2_rc_ccs:        4 tiled dg2 rc ccs
-> - * @4_tiled_dg2_rc_ccs_cc:     4 tiled dg2 rc ccs cc
-> - * @4_tiled_mtl_mc_ccs:        4 tiled mtl mc ccs
-> - * @4_tiled_mtl_rc_ccs:        4 tiled mtl rc ccs
-> - * @4_tiled_mtl_rc_ccs_cc:     4 tiled mtl rc ccs cc
-> - * @y_tiled_ccs:               Y tiled ccs
-> - * @y_tiled_gen12_mc_ccs:      Y tiled gen12 mc ccs
-> - * @y_tiled_gen12_rc_ccs:      Y tiled gen12 rc ccs
-> - * @y_tiled_gen12_rc_ccs_cc:   Y tiled gen12 rc ccs cc
-> - * @yf_tiled_ccs:              YF tiled ccs
-> + * @4-tiled-dg2-mc-ccs:        4 tiled mc ccs
-> + * @4-tiled-dg2-rc-ccs:        4 tiled dg2 rc ccs
-> + * @4-tiled-dg2-rc-ccs-cc:     4 tiled dg2 rc ccs cc
-> + * @4-tiled-mtl-mc-ccs:        4 tiled mtl mc ccs
-> + * @4-tiled-mtl-rc-ccs:        4 tiled mtl rc ccs
-> + * @4-tiled-mtl-rc-ccs-cc:     4 tiled mtl rc ccs cc
-> + * @y-tiled-ccs:               Y tiled ccs
-> + * @y-tiled-gen12-mc-ccs:      Y tiled gen12 mc ccs
-> + * @y-tiled-gen12-rc-ccs:      Y tiled gen12 rc ccs
-> + * @y-tiled-gen12-rc-ccs-cc:   Y tiled gen12 rc ccs cc
-> + * @yf-tiled-ccs:              YF tiled ccs
->   */
->=20
->  #define SDR_PLANE_BASE	3
-> @@ -218,17 +218,17 @@ static const struct {
->  	uint64_t modifier;
->  	const char *str;
->  } ccs_modifiers[] =3D {
-> -	{I915_FORMAT_MOD_Y_TILED_CCS, "y_tiled_ccs"},
-> -	{I915_FORMAT_MOD_Yf_TILED_CCS, "yf_tiled_ccs"},
-> -	{I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS,
-> "y_tiled_gen12_rc_ccs"},
-> -	{I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC,
-> "y_tiled_gen12_rc_ccs_cc"},
-> -	{I915_FORMAT_MOD_Y_TILED_GEN12_MC_CCS,
-> "y_tiled_gen12_mc_ccs"},
-> -	{I915_FORMAT_MOD_4_TILED_DG2_RC_CCS, "4_tiled_dg2_rc_ccs"},
-> -	{I915_FORMAT_MOD_4_TILED_DG2_MC_CCS, "4_tiled_dg2_mc_ccs"},
-> -	{I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC,
-> "4_tiled_dg2_rc_ccs_cc"},
-> -	{I915_FORMAT_MOD_4_TILED_MTL_RC_CCS, "4_tiled_mtl_rc_ccs"},
-> -	{I915_FORMAT_MOD_4_TILED_MTL_MC_CCS, "4_tiled_mtl_mc_ccs"},
-> -	{I915_FORMAT_MOD_4_TILED_MTL_RC_CCS_CC,
-> "4_tiled_mtl_rc_ccs_cc"},
-> +	{I915_FORMAT_MOD_Y_TILED_CCS, "y-tiled-ccs"},
-> +	{I915_FORMAT_MOD_Yf_TILED_CCS, "yf-tiled-ccs"},
-> +	{I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS, "y-tiled-gen12-rc-ccs"},
-> +	{I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC, "y-tiled-gen12-rc-
-> ccs-cc"},
-> +	{I915_FORMAT_MOD_Y_TILED_GEN12_MC_CCS, "y-tiled-gen12-mc-
-> ccs"},
-> +	{I915_FORMAT_MOD_4_TILED_DG2_RC_CCS, "4-tiled-dg2-rc-ccs"},
-> +	{I915_FORMAT_MOD_4_TILED_DG2_MC_CCS, "4-tiled-dg2-mc-ccs"},
-> +	{I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC, "4-tiled-dg2-rc-ccs-
-> cc"},
-> +	{I915_FORMAT_MOD_4_TILED_MTL_RC_CCS, "4-tiled-mtl-rc-ccs"},
-> +	{I915_FORMAT_MOD_4_TILED_MTL_MC_CCS, "4-tiled-mtl-mc-ccs"},
-> +	{I915_FORMAT_MOD_4_TILED_MTL_RC_CCS_CC, "4-tiled-mtl-rc-ccs-
-> cc"},
->  };
->=20
->  static bool check_ccs_planes;
-> --
-> 2.40.0
+TEdUTQ0KDQpSZXZpZXdlZC1ieTogSmVldmFuIEIgPGplZXZhbi5iQGludGVsLmNvbT4NCg0KPiAt
+LS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBpZ3QtZGV2IDxpZ3QtZGV2LWJvdW5j
+ZXNAbGlzdHMuZnJlZWRlc2t0b3Aub3JnPiBPbiBCZWhhbGYgT2YNCj4gQmhhbnVwcmFrYXNoIE1v
+ZGVtDQo+IFNlbnQ6IEZyaWRheSwgT2N0b2JlciA2LCAyMDIzIDE6MjggUE0NCj4gVG86IGlndC1k
+ZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IFN1YmplY3Q6IFtpZ3QtZGV2XSBbaS1nLXQgMi80
+XSBsaWIvaWd0X2ttczogRXhwb3NlIGhlbHBlciB0byBjb252ZXJ0IHJvdGF0aW9uIHRvDQo+IHN0
+cmluZw0KPiANCj4gRXhwb3NlIGhlbHBlciB0byBjb252ZXJ0IHJvdGF0aW9uIHRvIHN0cmluZy4N
+Cj4gDQo+IFNpZ25lZC1vZmYtYnk6IEJoYW51cHJha2FzaCBNb2RlbSA8YmhhbnVwcmFrYXNoLm1v
+ZGVtQGludGVsLmNvbT4NCj4gLS0tDQo+ICBsaWIvaWd0X2ttcy5jIHwgMjAgKysrKysrKysrKysr
+Ky0tLS0tLS0gIGxpYi9pZ3Rfa21zLmggfCAgMSArDQo+ICAyIGZpbGVzIGNoYW5nZWQsIDE0IGlu
+c2VydGlvbnMoKyksIDcgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvbGliL2lndF9r
+bXMuYyBiL2xpYi9pZ3Rfa21zLmMgaW5kZXggYzJmMzcyOGE2Li5lYzRjZDc4Y2QgMTAwNjQ0DQo+
+IC0tLSBhL2xpYi9pZ3Rfa21zLmMNCj4gKysrIGIvbGliL2lndF9rbXMuYw0KPiBAQCAtNDkwMiwx
+NyArNDkwMiwyMyBAQCB2b2lkIGlndF9mYl9zZXRfc2l6ZShzdHJ1Y3QgaWd0X2ZiICpmYiwgaWd0
+X3BsYW5lX3QNCj4gKnBsYW5lLA0KPiAgCWlndF9wbGFuZV9zZXRfcHJvcF92YWx1ZShwbGFuZSwg
+SUdUX1BMQU5FX1NSQ19ILCBJR1RfRklYRUQoaCwgMCkpOyAgfQ0KPiANCj4gLXN0YXRpYyBjb25z
+dCBjaGFyICpyb3RhdGlvbl9uYW1lKGlndF9yb3RhdGlvbl90IHJvdGF0aW9uKQ0KPiArLyoqDQo+
+ICsgKiBpZ3RfcGxhbmVfcm90YXRpb25fbmFtZToNCj4gKyAqIEByb3RhdGlvbjogUGxhbmUgcm90
+YXRpb24gdmFsdWUgKDAsIDkwLCAxODAsIDI3MCkNCj4gKyAqDQo+ICsgKiBSZXR1cm5zOiBQbGFu
+ZSByb3RhdGlvbiB2YWx1ZSBhcyBhIHN0cmluZyAgKi8gY29uc3QgY2hhcg0KPiArKmlndF9wbGFu
+ZV9yb3RhdGlvbl9uYW1lKGlndF9yb3RhdGlvbl90IHJvdGF0aW9uKQ0KPiAgew0KPiAgCXN3aXRj
+aCAocm90YXRpb24gJiBJR1RfUk9UQVRJT05fTUFTSykgew0KPiAgCWNhc2UgSUdUX1JPVEFUSU9O
+XzA6DQo+IC0JCXJldHVybiAiMMKwIjsNCj4gKwkJcmV0dXJuICIwIjsNCj4gIAljYXNlIElHVF9S
+T1RBVElPTl85MDoNCj4gLQkJcmV0dXJuICI5MMKwIjsNCj4gKwkJcmV0dXJuICI5MCI7DQo+ICAJ
+Y2FzZSBJR1RfUk9UQVRJT05fMTgwOg0KPiAtCQlyZXR1cm4gIjE4MMKwIjsNCj4gKwkJcmV0dXJu
+ICIxODAiOw0KPiAgCWNhc2UgSUdUX1JPVEFUSU9OXzI3MDoNCj4gLQkJcmV0dXJuICIyNzDCsCI7
+DQo+ICsJCXJldHVybiAiMjcwIjsNCj4gIAlkZWZhdWx0Og0KPiAgCQlpZ3RfYXNzZXJ0KDApOw0K
+PiAgCX0NCj4gQEAgLTQ5MzIsOSArNDkzOCw5IEBAIHZvaWQgaWd0X3BsYW5lX3NldF9yb3RhdGlv
+bihpZ3RfcGxhbmVfdCAqcGxhbmUsDQo+IGlndF9yb3RhdGlvbl90IHJvdGF0aW9uKQ0KPiAgCWln
+dF9waXBlX3QgKnBpcGUgPSBwbGFuZS0+cGlwZTsNCj4gIAlpZ3RfZGlzcGxheV90ICpkaXNwbGF5
+ID0gcGlwZS0+ZGlzcGxheTsNCj4gDQo+IC0JTE9HKGRpc3BsYXksICIlcy4lZDogcGxhbmVfc2V0
+X3JvdGF0aW9uKCVzKVxuIiwNCj4gKwlMT0coZGlzcGxheSwgIiVzLiVkOiBwbGFuZV9zZXRfcm90
+YXRpb24oJXPCsClcbiIsDQo+ICAJICAgIGttc3Rlc3RfcGlwZV9uYW1lKHBpcGUtPnBpcGUpLA0K
+PiAtCSAgICBwbGFuZS0+aW5kZXgsIHJvdGF0aW9uX25hbWUocm90YXRpb24pKTsNCj4gKwkgICAg
+cGxhbmUtPmluZGV4LCBpZ3RfcGxhbmVfcm90YXRpb25fbmFtZShyb3RhdGlvbikpOw0KPiANCj4g
+IAlpZ3RfcGxhbmVfc2V0X3Byb3BfdmFsdWUocGxhbmUsIElHVF9QTEFORV9ST1RBVElPTiwgcm90
+YXRpb24pOyAgfSBkaWZmDQo+IC0tZ2l0IGEvbGliL2lndF9rbXMuaCBiL2xpYi9pZ3Rfa21zLmgg
+aW5kZXggZjJjMzc0MWZjLi40YmNhZjNmNzMgMTAwNjQ0DQo+IC0tLSBhL2xpYi9pZ3Rfa21zLmgN
+Cj4gKysrIGIvbGliL2lndF9rbXMuaA0KPiBAQCAtNTM2LDYgKzUzNiw3IEBAIHN0YXRpYyBpbmxp
+bmUgYm9vbCBpZ3RfcGxhbmVfaGFzX3JvdGF0aW9uKGlndF9wbGFuZV90DQo+ICpwbGFuZSwgaWd0
+X3JvdGF0aW9uX3Qgcm90ICB7DQo+ICAJcmV0dXJuIChwbGFuZS0+cm90YXRpb25zICYgcm90YXRp
+b24pID09IHJvdGF0aW9uOyAgfQ0KPiArY29uc3QgY2hhciAqaWd0X3BsYW5lX3JvdGF0aW9uX25h
+bWUoaWd0X3JvdGF0aW9uX3Qgcm90YXRpb24pOw0KPiANCj4gIHZvaWQgaWd0X3dhaXRfZm9yX3Zi
+bGFuayhpbnQgZHJtX2ZkLCBpbnQgY3J0Y19vZmZzZXQpOyAgdm9pZA0KPiBpZ3Rfd2FpdF9mb3Jf
+dmJsYW5rX2NvdW50KGludCBkcm1fZmQsIGludCBjcnRjX29mZnNldCwgaW50IGNvdW50KTsNCj4g
+LS0NCj4gMi40MC4wDQoNCg==
