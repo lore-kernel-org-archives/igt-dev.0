@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7278C10E545
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Oct 2023 16:41:32 +0000 (UTC)
-From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri,  6 Oct 2023 16:06:50 +0000
-Message-ID: <20231006160654.3220198-17-marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20231006160654.3220198-1-marcin.bernatowicz@linux.intel.com>
-References: <20231006160654.3220198-1-marcin.bernatowicz@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============4048665302185796066=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 16/17] benchmarks/gem_wsim: for_each_w_step
- macro
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Tvrtko Ursulin" <tvrtko.ursulin@linux.intel.com>
+Date: Fri, 06 Oct 2023 17:34:41 -0000
+Message-ID: <169661368118.6468.13829231193934598126@emeril.freedesktop.org>
+References: <20231006160654.3220198-1-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20231006160654.3220198-1-marcin.bernatowicz@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgYmVuY2ht?=
+ =?utf-8?q?arks/gem=5Fwsim=3A_added_basic_xe_support_=28rev7=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,325 +17,245 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: chris.p.wilson@linux.intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-for_each_w_step macro to easy traverse workload steps.
+--===============4048665302185796066==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2:
-- added comment on igt_unique in macro
+== Series Details ==
 
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
----
- benchmarks/gem_wsim.c | 81 +++++++++++++++++++++++--------------------
- 1 file changed, 43 insertions(+), 38 deletions(-)
+Series: benchmarks/gem_wsim: added basic xe support (rev7)
+URL   : https://patchwork.freedesktop.org/series/122920/
+State : success
 
-diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-index fc2960c4b..95c1e71f7 100644
---- a/benchmarks/gem_wsim.c
-+++ b/benchmarks/gem_wsim.c
-@@ -238,6 +238,11 @@ struct workload {
- #define for_each_ctx(__ctx, __wrk) \
- 	__for_each_ctx(__ctx, __wrk, igt_unique(__ctx_idx))
- 
-+/* igt_unique(idx) is same on both lines as macro when expanded comes out on one line */
-+#define for_each_w_step(__w_step, __wrk) \
-+	for (typeof(__wrk->nr_steps) igt_unique(idx) = ({__w_step = __wrk->steps; 0; }); \
-+	     igt_unique(idx) < __wrk->nr_steps; igt_unique(idx)++, __w_step++)
-+
- static unsigned int master_prng;
- 
- static int verbose = 1;
-@@ -1183,14 +1188,14 @@ add_step:
- 	/*
- 	 * Check no duplicate working set ids.
- 	 */
--	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
-+	for_each_w_step(w, wrk) {
- 		struct w_step *w2;
- 
- 		if (w->type != WORKINGSET)
- 			continue;
- 
--		for (j = 0, w2 = wrk->steps; j < wrk->nr_steps; w2++, j++) {
--			if (j == i)
-+		for_each_w_step(w2, wrk) {
-+			if (w->idx == w2->idx)
- 				continue;
- 			if (w2->type != WORKINGSET)
- 				continue;
-@@ -1203,7 +1208,7 @@ add_step:
- 	/*
- 	 * Allocate shared working sets.
- 	 */
--	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
-+	for_each_w_step(w, wrk) {
- 		if (w->type == WORKINGSET && w->working_set.shared) {
- 			unsigned long total =
- 				allocate_working_set(wrk, &w->working_set);
-@@ -1215,7 +1220,7 @@ add_step:
- 	}
- 
- 	wrk->max_working_set_id = -1;
--	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
-+	for_each_w_step(w, wrk) {
- 		if (w->type == WORKINGSET &&
- 		    w->working_set.shared &&
- 		    w->working_set.id > wrk->max_working_set_id)
-@@ -1226,7 +1231,7 @@ add_step:
- 				   sizeof(*wrk->working_sets));
- 	igt_assert(wrk->working_sets);
- 
--	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
-+	for_each_w_step(w, wrk) {
- 		if (w->type == WORKINGSET && w->working_set.shared)
- 			wrk->working_sets[w->working_set.id] = &w->working_set;
- 	}
-@@ -1238,6 +1243,7 @@ static struct workload *
- clone_workload(struct workload *_wrk)
- {
- 	struct workload *wrk;
-+	struct w_step *w;
- 	int i;
- 
- 	wrk = malloc(sizeof(*wrk));
-@@ -1265,8 +1271,8 @@ clone_workload(struct workload *_wrk)
- 	}
- 
- 	/* Check if we need a sw sync timeline. */
--	for (i = 0; i < wrk->nr_steps; i++) {
--		if (wrk->steps[i].type == SW_FENCE) {
-+	for_each_w_step(w, wrk) {
-+		if (w->type == SW_FENCE) {
- 			wrk->sync_timeline = sw_sync_timeline_create();
- 			igt_assert(wrk->sync_timeline >= 0);
- 			break;
-@@ -1722,13 +1728,13 @@ static void measure_active_set(struct workload *wrk)
- {
- 	unsigned long total = 0, batch_sizes = 0;
- 	struct dep_entry *dep, *deps = NULL;
--	unsigned int nr = 0, i;
-+	unsigned int nr = 0;
- 	struct w_step *w;
- 
- 	if (verbose < 3)
- 		return;
- 
--	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
-+	for_each_w_step(w, wrk) {
- 		if (w->type != BATCH)
- 			continue;
- 
-@@ -1781,12 +1787,11 @@ static void allocate_contexts(unsigned int id, struct workload *wrk)
- {
- 	int max_ctx = -1;
- 	struct w_step *w;
--	int i;
- 
- 	/*
- 	 * Pre-scan workload steps to allocate context list storage.
- 	 */
--	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
-+	for_each_w_step(w, wrk) {
- 		int ctx = w->context + 1;
- 		int delta;
- 
-@@ -1812,13 +1817,13 @@ static int prepare_contexts(unsigned int id, struct workload *wrk)
- 	uint32_t share_vm = 0;
- 	struct w_step *w;
- 	struct ctx *ctx, *ctx2;
--	unsigned int i, j;
-+	unsigned int j;
- 
- 	/*
- 	 * Transfer over engine map configuration from the workload step.
- 	 */
- 	__for_each_ctx(ctx, wrk, ctx_idx) {
--		for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
-+		for_each_w_step(w, wrk) {
- 			if (w->context != ctx_idx)
- 				continue;
- 
-@@ -1985,12 +1990,11 @@ static void prepare_working_sets(unsigned int id, struct workload *wrk)
- 	struct working_set **sets;
- 	unsigned long total = 0;
- 	struct w_step *w;
--	int i;
- 
- 	/*
- 	 * Allocate working sets.
- 	 */
--	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
-+	for_each_w_step(w, wrk) {
- 		if (w->type == WORKINGSET && !w->working_set.shared)
- 			total += allocate_working_set(wrk, &w->working_set);
- 	}
-@@ -2002,7 +2006,7 @@ static void prepare_working_sets(unsigned int id, struct workload *wrk)
- 	 * Map of working set ids.
- 	 */
- 	wrk->max_working_set_id = -1;
--	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
-+	for_each_w_step(w, wrk) {
- 		if (w->type == WORKINGSET &&
- 		    w->working_set.id > wrk->max_working_set_id)
- 			wrk->max_working_set_id = w->working_set.id;
-@@ -2013,7 +2017,7 @@ static void prepare_working_sets(unsigned int id, struct workload *wrk)
- 				   sizeof(*wrk->working_sets));
- 	igt_assert(wrk->working_sets);
- 
--	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
-+	for_each_w_step(w, wrk) {
- 		struct working_set *set;
- 
- 		if (w->type != WORKINGSET)
-@@ -2039,7 +2043,6 @@ static void prepare_working_sets(unsigned int id, struct workload *wrk)
- static int prepare_workload(unsigned int id, struct workload *wrk)
- {
- 	struct w_step *w;
--	int i, j;
- 	int ret = 0;
- 
- 	wrk->id = id;
-@@ -2054,23 +2057,22 @@ static int prepare_workload(unsigned int id, struct workload *wrk)
- 		return ret;
- 
- 	/* Record default preemption. */
--	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
-+	for_each_w_step(w, wrk)
- 		if (w->type == BATCH)
- 			w->preempt_us = 100;
--	}
- 
- 	/*
- 	 * Scan for contexts with modified preemption config and record their
- 	 * preemption period for the following steps belonging to the same
- 	 * context.
- 	 */
--	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
-+	for_each_w_step(w, wrk) {
- 		struct w_step *w2;
- 
- 		if (w->type != PREEMPTION)
- 			continue;
- 
--		for (j = i + 1; j < wrk->nr_steps; j++) {
-+		for (int j = w->idx + 1; j < wrk->nr_steps; j++) {
- 			w2 = &wrk->steps[j];
- 
- 			if (w2->context != w->context)
-@@ -2087,7 +2089,7 @@ static int prepare_workload(unsigned int id, struct workload *wrk)
- 	/*
- 	 * Scan for SSEU control steps.
- 	 */
--	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
-+	for_each_w_step(w, wrk) {
- 		if (w->type == SSEU) {
- 			get_device_sseu();
- 			break;
-@@ -2099,7 +2101,7 @@ static int prepare_workload(unsigned int id, struct workload *wrk)
- 	/*
- 	 * Allocate batch buffers.
- 	 */
--	for (i = 0, w = wrk->steps; i < wrk->nr_steps; i++, w++) {
-+	for_each_w_step(w, wrk) {
- 		if (w->type != BATCH)
- 			continue;
- 
-@@ -2223,7 +2225,6 @@ static void *run_workload(void *data)
- 	int qd_throttle = -1;
- 	int count, missed = 0;
- 	unsigned long time_tot = 0, time_min = ULONG_MAX, time_max = 0;
--	int i;
- 
- 	clock_gettime(CLOCK_MONOTONIC, &t_start);
- 
-@@ -2233,11 +2234,13 @@ static void *run_workload(void *data)
- 
- 		clock_gettime(CLOCK_MONOTONIC, &repeat_start);
- 
--		for (i = 0, w = wrk->steps; wrk->run && (i < wrk->nr_steps);
--		     i++, w++) {
-+		for_each_w_step(w, wrk) {
- 			enum intel_engine_id engine = w->engine;
- 			int do_sleep = 0;
- 
-+			if (!wrk->run)
-+				break;
-+
- 			if (w->type == DELAY) {
- 				do_sleep = w->delay;
- 			} else if (w->type == PERIOD) {
-@@ -2256,13 +2259,13 @@ static void *run_workload(void *data)
- 					missed++;
- 					if (verbose > 2)
- 						printf("%u: Dropped period @ %u/%u (%dus late)!\n",
--						       wrk->id, count, i, do_sleep);
-+						       wrk->id, count, w->idx, do_sleep);
- 					continue;
- 				}
- 			} else if (w->type == SYNC) {
--				unsigned int s_idx = i + w->target;
-+				unsigned int s_idx = w->idx + w->target;
- 
--				igt_assert(s_idx >= 0 && s_idx < i);
-+				igt_assert(s_idx >= 0 && s_idx < w->idx);
- 				igt_assert(wrk->steps[s_idx].type == BATCH);
- 				w_step_sync(&wrk->steps[s_idx]);
- 				continue;
-@@ -2283,7 +2286,7 @@ static void *run_workload(void *data)
- 				int tgt = w->idx + w->target;
- 				int inc;
- 
--				igt_assert(tgt >= 0 && tgt < i);
-+				igt_assert(tgt >= 0 && tgt < w->idx);
- 				igt_assert(wrk->steps[tgt].type == SW_FENCE);
- 				cur_seqno += wrk->steps[tgt].idx;
- 				inc = cur_seqno - wrk->sync_seqno;
-@@ -2303,9 +2306,9 @@ static void *run_workload(void *data)
- 				}
- 				continue;
- 			} else if (w->type == TERMINATE) {
--				unsigned int t_idx = i + w->target;
-+				unsigned int t_idx = w->idx + w->target;
- 
--				igt_assert(t_idx >= 0 && t_idx < i);
-+				igt_assert(t_idx >= 0 && t_idx < w->idx);
- 				igt_assert(wrk->steps[t_idx].type == BATCH);
- 				igt_assert(wrk->steps[t_idx].duration.unbound);
- 
-@@ -2339,7 +2342,7 @@ static void *run_workload(void *data)
- 				sync_deps(wrk, w);
- 
- 			if (throttle > 0)
--				w_sync_to(wrk, w, i - throttle);
-+				w_sync_to(wrk, w, w->idx - throttle);
- 
- 			do_eb(wrk, w, engine);
- 
-@@ -2382,8 +2385,10 @@ static void *run_workload(void *data)
- 		}
- 
- 		/* Cleanup all fences instantiated in this iteration. */
--		for (i = 0, w = wrk->steps; wrk->run && (i < wrk->nr_steps);
--		     i++, w++) {
-+		for_each_w_step(w, wrk) {
-+			if (!wrk->run)
-+				break;
-+
- 			if (w->emit_fence > 0) {
- 				close(w->emit_fence);
- 				w->emit_fence = -1;
-@@ -2391,7 +2396,7 @@ static void *run_workload(void *data)
- 		}
- 	}
- 
--	for (i = 0; i < NUM_ENGINES; i++) {
-+	for (int i = 0; i < NUM_ENGINES; i++) {
- 		if (!wrk->nrequest[i])
- 			continue;
- 
--- 
-2.42.0
+== Summary ==
+
+CI Bug Log - changes from IGT_7519 -> IGTPW_9943
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9943/index.html
+
+Participating hosts (40 -> 40)
+------------------------------
+
+  Additional (1): fi-kbl-soraka 
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_9943 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271] / [i915#2190])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9943/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#4613]) +3 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9943/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
+
+  * igt@gem_lmem_swapping@random-engines:
+    - fi-bsw-n3050:       NOTRUN -> [SKIP][3] ([fdo#109271]) +18 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9943/fi-bsw-n3050/igt@gem_lmem_swapping@random-engines.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-apl-guc:         [PASS][4] -> [DMESG-FAIL][5] ([i915#5334])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7519/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9943/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][6] ([i915#1886])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9943/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-mtlp-8:         [PASS][7] -> [ABORT][8] ([i915#9414])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7519/bat-mtlp-8/igt@i915_selftest@live@requests.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9943/bat-mtlp-8/igt@i915_selftest@live@requests.html
+
+  * igt@kms_dsc@dsc-basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][9] ([fdo#109271]) +9 other tests skip
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9943/fi-kbl-soraka/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - fi-bsw-n3050:       NOTRUN -> [FAIL][10] ([IGT#3])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9943/fi-bsw-n3050/igt@kms_hdmi_inject@inject-audio.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc:
+    - bat-adls-5:         NOTRUN -> [SKIP][11] ([i915#1845])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9943/bat-adls-5/igt@kms_pipe_crc_basic@suspend-read-crc.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:
+    - bat-rplp-1:         [ABORT][12] ([i915#8668]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7519/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9943/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [IGT#3]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
+  [i915#9414]: https://gitlab.freedesktop.org/drm/intel/issues/9414
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7519 -> IGTPW_9943
+
+  CI-20190529: 20190529
+  CI_DRM_13722: ead693ec2d2fddb30bff4718845d42f9adabcce6 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_9943: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9943/index.html
+  IGT_7519: d1db7333d9c5fbbb05e50b0804123950d9dc1c46 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9943/index.html
+
+--===============4048665302185796066==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>benchmarks/gem_wsim: added basic xe support (rev7)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122920/">https://patchwork.freedesktop.org/series/122920/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9943/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9943/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7519 -&gt; IGTPW_9943</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9943/index.html</p>
+<h2>Participating hosts (40 -&gt; 40)</h2>
+<p>Additional (1): fi-kbl-soraka <br />
+  Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_9943 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9943/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9943/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@random-engines:</p>
+<ul>
+<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9943/fi-bsw-n3050/igt@gem_lmem_swapping@random-engines.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +18 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7519/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9943/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9943/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7519/bat-mtlp-8/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9943/bat-mtlp-8/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9414">i915#9414</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9943/fi-kbl-soraka/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +9 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9943/fi-bsw-n3050/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3">IGT#3</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc:</p>
+<ul>
+<li>bat-adls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9943/bat-adls-5/igt@kms_pipe_crc_basic@suspend-read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7519/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9943/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7519 -&gt; IGTPW_9943</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13722: ead693ec2d2fddb30bff4718845d42f9adabcce6 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_9943: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9943/index.html<br />
+  IGT_7519: d1db7333d9c5fbbb05e50b0804123950d9dc1c46 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============4048665302185796066==--
