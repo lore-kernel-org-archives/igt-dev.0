@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7812210E54C
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Oct 2023 16:40:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 92A4B10E53D
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Oct 2023 16:40:25 +0000 (UTC)
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  6 Oct 2023 16:06:35 +0000
-Message-ID: <20231006160654.3220198-2-marcin.bernatowicz@linux.intel.com>
+Date: Fri,  6 Oct 2023 16:06:37 +0000
+Message-ID: <20231006160654.3220198-4-marcin.bernatowicz@linux.intel.com>
 In-Reply-To: <20231006160654.3220198-1-marcin.bernatowicz@linux.intel.com>
 References: <20231006160654.3220198-1-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 01/17] lib/igt_device_scan: added functions
- to get first Xe card
+Subject: [igt-dev] [PATCH i-g-t 03/17] benchmarks/gem_wsim: fix duration
+ range check
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,123 +24,34 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Added functions to get integrated or first discrete Xe card.
+When scale duration (-f) command line option is provided,
+the max duration check does not take it into account, fix it.
 
 v2:
-- renamed __find_first_i915_card to
-  __find_first_intel_card_by_driver_name (Zbyszek)
-v3:
-- added documentation to public functions (Kamil)
-v4:
-- updated commit description (Kamil)
+- improve error message (Tvrtko)
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 ---
- lib/igt_device_scan.c | 52 +++++++++++++++++++++++++++++++++++--------
- lib/igt_device_scan.h |  2 ++
- 2 files changed, 45 insertions(+), 9 deletions(-)
+ benchmarks/gem_wsim.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-index ae69ed09f..f4f95fef3 100644
---- a/lib/igt_device_scan.c
-+++ b/lib/igt_device_scan.c
-@@ -769,25 +769,27 @@ __copy_dev_to_card(struct igt_device *dev, struct igt_device_card *card)
-  * Iterate over all igt_devices array and find first discrete/integrated card.
-  * card->pci_slot_name will be updated only if a card is found.
-  */
--static bool __find_first_i915_card(struct igt_device_card *card, bool discrete)
-+static bool __find_first_intel_card_by_driver_name(struct igt_device_card *card,
-+				bool want_discrete, const char *drv_name)
- {
- 	struct igt_device *dev;
--	int cmp;
-+	int is_integrated;
- 
-+	igt_assert(drv_name);
- 	memset(card, 0, sizeof(*card));
- 
- 	igt_list_for_each_entry(dev, &igt_devs.all, link) {
- 
--		if (!is_pci_subsystem(dev) || strcmp(dev->driver, "i915"))
-+		if (!is_pci_subsystem(dev) || strcmp(dev->driver, drv_name))
- 			continue;
- 
--		cmp = strncmp(dev->pci_slot_name, INTEGRATED_I915_GPU_PCI_ID,
--			      PCI_SLOT_NAME_SIZE);
-+		is_integrated = !strncmp(dev->pci_slot_name, INTEGRATED_I915_GPU_PCI_ID,
-+					 PCI_SLOT_NAME_SIZE);
- 
--		if (discrete && cmp) {
-+		if (want_discrete && !is_integrated) {
- 			__copy_dev_to_card(dev, card);
- 			return true;
--		} else if (!discrete && !cmp) {
-+		} else if (!want_discrete && is_integrated) {
- 			__copy_dev_to_card(dev, card);
- 			return true;
- 		}
-@@ -800,14 +802,46 @@ bool igt_device_find_first_i915_discrete_card(struct igt_device_card *card)
- {
- 	igt_assert(card);
- 
--	return __find_first_i915_card(card, true);
-+	return __find_first_intel_card_by_driver_name(card, true, "i915");
-+}
-+
-+/**
-+ * igt_device_find_first_xe_discrete_card
-+ * @card: pointer to igt_device_card structure
-+ *
-+ * Iterate over all igt_devices array and find first xe discrete card.
-+ * card will be updated only if a device is found.
-+ *
-+ * Returns: true if device is found, false otherwise.
-+ */
-+bool igt_device_find_first_xe_discrete_card(struct igt_device_card *card)
-+{
-+	igt_assert(card);
-+
-+	return __find_first_intel_card_by_driver_name(card, true, "xe");
- }
- 
- bool igt_device_find_integrated_card(struct igt_device_card *card)
- {
- 	igt_assert(card);
- 
--	return __find_first_i915_card(card, false);
-+	return __find_first_intel_card_by_driver_name(card, false, "i915");
-+}
-+
-+/**
-+ * igt_device_find_xe_integrated_card
-+ * @card: pointer to igt_device_card structure
-+ *
-+ * Iterate over all igt_devices array and find first xe integrated card.
-+ * card will be updated only if a device is found.
-+ *
-+ * Returns: true if device is found, false otherwise.
-+ */
-+bool igt_device_find_xe_integrated_card(struct igt_device_card *card)
-+{
-+	igt_assert(card);
-+
-+	return __find_first_intel_card_by_driver_name(card, false, "xe");
- }
- 
- static struct igt_device *igt_device_from_syspath(const char *syspath)
-diff --git a/lib/igt_device_scan.h b/lib/igt_device_scan.h
-index e6b0f1b90..b8f6a843d 100644
---- a/lib/igt_device_scan.h
-+++ b/lib/igt_device_scan.h
-@@ -87,6 +87,8 @@ bool igt_device_card_match_pci(const char *filter,
- 	struct igt_device_card *card);
- bool igt_device_find_first_i915_discrete_card(struct igt_device_card *card);
- bool igt_device_find_integrated_card(struct igt_device_card *card);
-+bool igt_device_find_first_xe_discrete_card(struct igt_device_card *card);
-+bool igt_device_find_xe_integrated_card(struct igt_device_card *card);
- char *igt_device_get_pretty_name(struct igt_device_card *card, bool numeric);
- int igt_open_card(struct igt_device_card *card);
- int igt_open_render(struct igt_device_card *card);
+diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
+index 42690d3d0..9d9cbd9c2 100644
+--- a/benchmarks/gem_wsim.c
++++ b/benchmarks/gem_wsim.c
+@@ -1142,10 +1142,10 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+ 				if (sep && *sep == '-') {
+ 					tmpl = strtol(sep + 1, NULL, 10);
+ 					check_arg(tmpl <= 0 ||
+-						tmpl <= step.duration.min ||
++						__duration(tmpl, scale_dur) <= step.duration.min ||
+ 						tmpl == LONG_MIN ||
+ 						tmpl == LONG_MAX,
+-						"Invalid duration range at step %u!\n",
++						"Invalid maximum duration at step %u!\n",
+ 						nr_steps);
+ 					step.duration.max = __duration(tmpl,
+ 								       scale_dur);
 -- 
 2.42.0
