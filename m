@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Fri, 6 Oct 2023 13:51:47 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Matthew Auld <matthew.auld@intel.com>
-Message-ID: <20231006115147.sboxniiobenbvls2@zkempczy-mobl2>
-References: <20231005153116.452319-1-matthew.auld@intel.com>
- <20231005153116.452319-9-matthew.auld@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============0681372487461753799=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231005153116.452319-9-matthew.auld@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 08/12] lib/intel_blt: support pat_index
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Date: Fri, 06 Oct 2023 11:53:17 -0000
+Message-ID: <169659319705.6467.3357568753292130789@emeril.freedesktop.org>
+References: <20231006075819.3055887-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20231006075819.3055887-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgS01TOiBN?=
+ =?utf-8?q?inor_cleanups?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,393 +17,430 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, intel-xe@lists.freedesktop.org
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Oct 05, 2023 at 04:31:12PM +0100, Matthew Auld wrote:
-> For the most part we can just use the default wb, however some users
-> including display might want to use something else.
-> 
-> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-> Cc: José Roberto de Souza <jose.souza@intel.com>
-> Cc: Pallavi Mishra <pallavi.mishra@intel.com>
-> ---
->  lib/igt_fb.c                    |  2 ++
->  lib/intel_blt.c                 | 54 +++++++++++++++++++++------------
->  lib/intel_blt.h                 |  7 +++--
->  tests/intel/gem_ccs.c           | 16 +++++-----
->  tests/intel/gem_lmem_swapping.c |  4 +--
->  tests/intel/xe_ccs.c            | 19 +++++++-----
->  6 files changed, 64 insertions(+), 38 deletions(-)
-> 
-> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> index f8a0db22c..d290fd775 100644
-> --- a/lib/igt_fb.c
-> +++ b/lib/igt_fb.c
-> @@ -37,6 +37,7 @@
->  #include "i915/gem_mman.h"
->  #include "intel_blt.h"
->  #include "intel_mocs.h"
-> +#include "intel_pat.h"
->  #include "igt_aux.h"
->  #include "igt_color_encoding.h"
->  #include "igt_fb.h"
-> @@ -2768,6 +2769,7 @@ static struct blt_copy_object *blt_fb_init(const struct igt_fb *fb,
->  
->  	blt_set_object(blt, handle, fb->size, memregion,
->  		       intel_get_uc_mocs(fb->fd),
-> +		       intel_get_pat_idx_wt(fb->fd),
->  		       blt_tile,
->  		       is_ccs_modifier(fb->modifier) ? COMPRESSION_ENABLED : COMPRESSION_DISABLED,
->  		       is_gen12_mc_ccs_modifier(fb->modifier) ? COMPRESSION_TYPE_MEDIA : COMPRESSION_TYPE_3D);
-> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-> index b55fa9b52..b7ac2902b 100644
-> --- a/lib/intel_blt.c
-> +++ b/lib/intel_blt.c
-> @@ -13,6 +13,7 @@
->  #include "igt.h"
->  #include "igt_syncobj.h"
->  #include "intel_blt.h"
-> +#include "intel_pat.h"
->  #include "xe/xe_ioctl.h"
->  #include "xe/xe_query.h"
->  #include "xe/xe_util.h"
-> @@ -810,10 +811,12 @@ uint64_t emit_blt_block_copy(int fd,
->  	igt_assert_f(blt, "block-copy requires data to do blit\n");
->  
->  	alignment = get_default_alignment(fd, blt->driver);
-> -	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment)
-> -		     + blt->src.plane_offset;
-> -	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment)
-> -		     + blt->dst.plane_offset;
-> +	src_offset = get_offset_pat_index(ahnd, blt->src.handle, blt->src.size,
-> +					  alignment, blt->src.pat_index) +
-> +		blt->src.plane_offset;
-> +	dst_offset = get_offset_pat_index(ahnd, blt->dst.handle, blt->dst.size,
-> +					  alignment, blt->dst.pat_index) +
-> +		blt->dst.plane_offset;
+--===============0681372487461753799==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-To less tabs in formatting for src and dst plane_offset.
+== Series Details ==
 
->  	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
->  
->  	fill_data(&data, blt, src_offset, dst_offset, ext);
-> @@ -884,8 +887,10 @@ int blt_block_copy(int fd,
->  	igt_assert_neq(blt->driver, 0);
->  
->  	alignment = get_default_alignment(fd, blt->driver);
-> -	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment);
-> -	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment);
-> +	src_offset = get_offset_pat_index(ahnd, blt->src.handle, blt->src.size,
-> +					  alignment, blt->src.pat_index);
-> +	dst_offset = get_offset_pat_index(ahnd, blt->dst.handle, blt->dst.size,
-> +					  alignment, blt->dst.pat_index);
->  	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
->  
->  	emit_blt_block_copy(fd, ahnd, blt, ext, 0, true);
-> @@ -1036,8 +1041,10 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
->  	data.dw00.size_of_ctrl_copy = __ccs_size(surf) / CCS_RATIO - 1;
->  	data.dw00.length = 0x3;
->  
-> -	src_offset = get_offset(ahnd, surf->src.handle, surf->src.size, alignment);
-> -	dst_offset = get_offset(ahnd, surf->dst.handle, surf->dst.size, alignment);
-> +	src_offset = get_offset_pat_index(ahnd, surf->src.handle, surf->src.size,
-> +					  alignment, surf->src.pat_index);
-> +	dst_offset = get_offset_pat_index(ahnd, surf->dst.handle, surf->dst.size,
-> +					  alignment, surf->dst.pat_index);
->  	bb_offset = get_offset(ahnd, surf->bb.handle, surf->bb.size, alignment);
->  
->  	data.dw01.src_address_lo = src_offset;
-> @@ -1103,8 +1110,10 @@ int blt_ctrl_surf_copy(int fd,
->  	igt_assert_neq(surf->driver, 0);
->  
->  	alignment = max_t(uint64_t, get_default_alignment(fd, surf->driver), 1ull << 16);
-> -	src_offset = get_offset(ahnd, surf->src.handle, surf->src.size, alignment);
-> -	dst_offset = get_offset(ahnd, surf->dst.handle, surf->dst.size, alignment);
-> +	src_offset = get_offset_pat_index(ahnd, surf->src.handle, surf->src.size,
-> +					  alignment, surf->src.pat_index);
-> +	dst_offset = get_offset_pat_index(ahnd, surf->dst.handle, surf->dst.size,
-> +					  alignment, surf->dst.pat_index);
->  	bb_offset = get_offset(ahnd, surf->bb.handle, surf->bb.size, alignment);
->  
->  	emit_blt_ctrl_surf_copy(fd, ahnd, surf, 0, true);
-> @@ -1308,10 +1317,12 @@ uint64_t emit_blt_fast_copy(int fd,
->  	data.dw03.dst_x2 = blt->dst.x2;
->  	data.dw03.dst_y2 = blt->dst.y2;
->  
-> -	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment)
-> -		     + blt->src.plane_offset;
-> -	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment)
-> -		     + blt->dst.plane_offset;
-> +	src_offset = get_offset_pat_index(ahnd, blt->src.handle, blt->src.size,
-> +					  alignment, blt->src.pat_index) +
-> +		blt->src.plane_offset;
-> +	dst_offset = get_offset_pat_index(ahnd, blt->dst.handle, blt->dst.size, alignment,
-> +					  blt->dst.pat_index) +
-> +		blt->dst.plane_offset;
+Series: KMS: Minor cleanups
+URL   : https://patchwork.freedesktop.org/series/124702/
+State : success
 
-Ditto.
+== Summary ==
 
->  	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
->  
->  	data.dw04.dst_address_lo = dst_offset;
-> @@ -1380,8 +1391,10 @@ int blt_fast_copy(int fd,
->  	igt_assert_neq(blt->driver, 0);
->  
->  	alignment = get_default_alignment(fd, blt->driver);
-> -	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment);
-> -	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment);
-> +	src_offset = get_offset_pat_index(ahnd, blt->src.handle, blt->src.size,
-> +					  alignment, blt->src.pat_index);
-> +	dst_offset = get_offset_pat_index(ahnd, blt->dst.handle, blt->dst.size,
-> +					  alignment, blt->dst.pat_index);
->  	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
->  
->  	emit_blt_fast_copy(fd, ahnd, blt, 0, true);
-> @@ -1460,7 +1473,7 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
->  							  &size, region) == 0);
->  	}
+CI Bug Log - changes from CI_DRM_13722 -> IGTPW_9938
+====================================================
 
-I think blt_create_object() should have also pat_index passed as an
-argument.
+Summary
+-------
 
-Rest looks ok.
+  **SUCCESS**
 
---
-Zbigniew
+  No regressions found.
 
->  
-> -	blt_set_object(obj, handle, size, region, mocs, tiling,
-> +	blt_set_object(obj, handle, size, region, mocs, DEFAULT_PAT_INDEX, tiling,
->  		       compression, compression_type);
->  	blt_set_geom(obj, stride, 0, 0, width, height, 0, 0);
->  
-> @@ -1481,7 +1494,7 @@ void blt_destroy_object(int fd, struct blt_copy_object *obj)
->  
->  void blt_set_object(struct blt_copy_object *obj,
->  		    uint32_t handle, uint64_t size, uint32_t region,
-> -		    uint8_t mocs, enum blt_tiling_type tiling,
-> +		    uint8_t mocs, uint8_t pat_index, enum blt_tiling_type tiling,
->  		    enum blt_compression compression,
->  		    enum blt_compression_type compression_type)
->  {
-> @@ -1489,6 +1502,7 @@ void blt_set_object(struct blt_copy_object *obj,
->  	obj->size = size;
->  	obj->region = region;
->  	obj->mocs = mocs;
-> +	obj->pat_index = pat_index;
->  	obj->tiling = tiling;
->  	obj->compression = compression;
->  	obj->compression_type = compression_type;
-> @@ -1516,12 +1530,14 @@ void blt_set_copy_object(struct blt_copy_object *obj,
->  
->  void blt_set_ctrl_surf_object(struct blt_ctrl_surf_copy_object *obj,
->  			      uint32_t handle, uint32_t region, uint64_t size,
-> -			      uint8_t mocs, enum blt_access_type access_type)
-> +			      uint8_t mocs, uint8_t pat_index,
-> +			      enum blt_access_type access_type)
->  {
->  	obj->handle = handle;
->  	obj->region = region;
->  	obj->size = size;
->  	obj->mocs = mocs;
-> +	obj->pat_index = pat_index;
->  	obj->access_type = access_type;
->  }
->  
-> diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-> index d9c8883c7..f8423a986 100644
-> --- a/lib/intel_blt.h
-> +++ b/lib/intel_blt.h
-> @@ -79,6 +79,7 @@ struct blt_copy_object {
->  	uint32_t region;
->  	uint64_t size;
->  	uint8_t mocs;
-> +	uint8_t pat_index;
->  	enum blt_tiling_type tiling;
->  	enum blt_compression compression;  /* BC only */
->  	enum blt_compression_type compression_type; /* BC only */
-> @@ -151,6 +152,7 @@ struct blt_ctrl_surf_copy_object {
->  	uint32_t region;
->  	uint64_t size;
->  	uint8_t mocs;
-> +	uint8_t pat_index;
->  	enum blt_access_type access_type;
->  };
->  
-> @@ -247,7 +249,7 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
->  void blt_destroy_object(int fd, struct blt_copy_object *obj);
->  void blt_set_object(struct blt_copy_object *obj,
->  		    uint32_t handle, uint64_t size, uint32_t region,
-> -		    uint8_t mocs, enum blt_tiling_type tiling,
-> +		    uint8_t mocs, uint8_t pat_index, enum blt_tiling_type tiling,
->  		    enum blt_compression compression,
->  		    enum blt_compression_type compression_type);
->  void blt_set_object_ext(struct blt_block_copy_object_ext *obj,
-> @@ -258,7 +260,8 @@ void blt_set_copy_object(struct blt_copy_object *obj,
->  			 const struct blt_copy_object *orig);
->  void blt_set_ctrl_surf_object(struct blt_ctrl_surf_copy_object *obj,
->  			      uint32_t handle, uint32_t region, uint64_t size,
-> -			      uint8_t mocs, enum blt_access_type access_type);
-> +			      uint8_t mocs, uint8_t pat_index,
-> +			      enum blt_access_type access_type);
->  
->  void blt_surface_info(const char *info,
->  		      const struct blt_copy_object *obj);
-> diff --git a/tests/intel/gem_ccs.c b/tests/intel/gem_ccs.c
-> index f5d4ab359..a98557b72 100644
-> --- a/tests/intel/gem_ccs.c
-> +++ b/tests/intel/gem_ccs.c
-> @@ -15,6 +15,7 @@
->  #include "lib/intel_chipset.h"
->  #include "intel_blt.h"
->  #include "intel_mocs.h"
-> +#include "intel_pat.h"
->  /**
->   * TEST: gem ccs
->   * Description: Exercise gen12 blitter with and without flatccs compression
-> @@ -111,9 +112,9 @@ static void surf_copy(int i915,
->  	blt_ctrl_surf_copy_init(i915, &surf);
->  	surf.print_bb = param.print_bb;
->  	blt_set_ctrl_surf_object(&surf.src, mid->handle, mid->region, mid->size,
-> -				 uc_mocs, BLT_INDIRECT_ACCESS);
-> +				 uc_mocs, DEFAULT_PAT_INDEX, BLT_INDIRECT_ACCESS);
->  	blt_set_ctrl_surf_object(&surf.dst, ccs, REGION_SMEM, ccssize,
-> -				 uc_mocs, DIRECT_ACCESS);
-> +				 uc_mocs, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
->  	bb_size = 4096;
->  	igt_assert_eq(__gem_create(i915, &bb_size, &bb1), 0);
->  	blt_set_batch(&surf.bb, bb1, bb_size, REGION_SMEM);
-> @@ -133,7 +134,7 @@ static void surf_copy(int i915,
->  		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
->  
->  		blt_set_ctrl_surf_object(&surf.dst, ccs2, REGION_SMEM, ccssize,
-> -					 0, DIRECT_ACCESS);
-> +					 0, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
->  		blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
->  		gem_sync(i915, surf.dst.handle);
->  
-> @@ -155,9 +156,9 @@ static void surf_copy(int i915,
->  	for (int i = 0; i < surf.dst.size / sizeof(uint32_t); i++)
->  		ccsmap[i] = i;
->  	blt_set_ctrl_surf_object(&surf.src, ccs, REGION_SMEM, ccssize,
-> -				 uc_mocs, DIRECT_ACCESS);
-> +				 uc_mocs, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
->  	blt_set_ctrl_surf_object(&surf.dst, mid->handle, mid->region, mid->size,
-> -				 uc_mocs, INDIRECT_ACCESS);
-> +				 uc_mocs, DEFAULT_PAT_INDEX, INDIRECT_ACCESS);
->  	blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
->  
->  	blt_copy_init(i915, &blt);
-> @@ -399,7 +400,8 @@ static void block_copy(int i915,
->  	blt_set_object_ext(&ext.dst, 0, width, height, SURFACE_TYPE_2D);
->  	if (config->inplace) {
->  		blt_set_object(&blt.dst, mid->handle, dst->size, mid->region, 0,
-> -			       T_LINEAR, COMPRESSION_DISABLED, comp_type);
-> +			       DEFAULT_PAT_INDEX, T_LINEAR, COMPRESSION_DISABLED,
-> +			       comp_type);
->  		blt.dst.ptr = mid->ptr;
->  	}
->  
-> @@ -475,7 +477,7 @@ static void block_multicopy(int i915,
->  
->  	if (config->inplace) {
->  		blt_set_object(&blt3.dst, mid->handle, dst->size, mid->region,
-> -			       mid->mocs, mid_tiling, COMPRESSION_DISABLED,
-> +			       mid->mocs, DEFAULT_PAT_INDEX, mid_tiling, COMPRESSION_DISABLED,
->  			       comp_type);
->  		blt3.dst.ptr = mid->ptr;
->  	}
-> diff --git a/tests/intel/gem_lmem_swapping.c b/tests/intel/gem_lmem_swapping.c
-> index ede545c92..7f2ab8bb6 100644
-> --- a/tests/intel/gem_lmem_swapping.c
-> +++ b/tests/intel/gem_lmem_swapping.c
-> @@ -486,7 +486,7 @@ static void __do_evict(int i915,
->  				   INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0));
->  		blt_set_object(tmp, tmp->handle, params->size.max,
->  			       INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0),
-> -			       intel_get_uc_mocs(i915), T_LINEAR,
-> +			       intel_get_uc_mocs(i915), 0, T_LINEAR,
->  			       COMPRESSION_DISABLED, COMPRESSION_TYPE_3D);
->  		blt_set_geom(tmp, stride, 0, 0, width, height, 0, 0);
->  	}
-> @@ -516,7 +516,7 @@ static void __do_evict(int i915,
->  			obj->blt_obj = calloc(1, sizeof(*obj->blt_obj));
->  			igt_assert(obj->blt_obj);
->  			blt_set_object(obj->blt_obj, obj->handle, obj->size, region_id,
-> -				       intel_get_uc_mocs(i915), T_LINEAR,
-> +				       intel_get_uc_mocs(i915), 0, T_LINEAR,
->  				       COMPRESSION_ENABLED, COMPRESSION_TYPE_3D);
->  			blt_set_geom(obj->blt_obj, stride, 0, 0, width, height, 0, 0);
->  			init_object_ccs(i915, obj, tmp, rand(), blt_ctx,
-> diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
-> index 20bbc4448..27859d5ce 100644
-> --- a/tests/intel/xe_ccs.c
-> +++ b/tests/intel/xe_ccs.c
-> @@ -13,6 +13,7 @@
->  #include "igt_syncobj.h"
->  #include "intel_blt.h"
->  #include "intel_mocs.h"
-> +#include "intel_pat.h"
->  #include "xe/xe_ioctl.h"
->  #include "xe/xe_query.h"
->  #include "xe/xe_util.h"
-> @@ -108,8 +109,9 @@ static void surf_copy(int xe,
->  	blt_ctrl_surf_copy_init(xe, &surf);
->  	surf.print_bb = param.print_bb;
->  	blt_set_ctrl_surf_object(&surf.src, mid->handle, mid->region, mid->size,
-> -				 uc_mocs, BLT_INDIRECT_ACCESS);
-> -	blt_set_ctrl_surf_object(&surf.dst, ccs, sysmem, ccssize, uc_mocs, DIRECT_ACCESS);
-> +				 uc_mocs, DEFAULT_PAT_INDEX, BLT_INDIRECT_ACCESS);
-> +	blt_set_ctrl_surf_object(&surf.dst, ccs, sysmem, ccssize, uc_mocs,
-> +				 DEFAULT_PAT_INDEX, DIRECT_ACCESS);
->  	bb_size = xe_get_default_alignment(xe);
->  	bb1 = xe_bo_create_flags(xe, 0, bb_size, sysmem);
->  	blt_set_batch(&surf.bb, bb1, bb_size, sysmem);
-> @@ -130,7 +132,7 @@ static void surf_copy(int xe,
->  		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
->  
->  		blt_set_ctrl_surf_object(&surf.dst, ccs2, system_memory(xe), ccssize,
-> -					 0, DIRECT_ACCESS);
-> +					 0, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
->  		blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
->  		intel_ctx_xe_sync(ctx, true);
->  
-> @@ -153,9 +155,9 @@ static void surf_copy(int xe,
->  	for (int i = 0; i < surf.dst.size / sizeof(uint32_t); i++)
->  		ccsmap[i] = i;
->  	blt_set_ctrl_surf_object(&surf.src, ccs, sysmem, ccssize,
-> -				 uc_mocs, DIRECT_ACCESS);
-> +				 uc_mocs, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
->  	blt_set_ctrl_surf_object(&surf.dst, mid->handle, mid->region, mid->size,
-> -				 uc_mocs, INDIRECT_ACCESS);
-> +				 uc_mocs, DEFAULT_PAT_INDEX, INDIRECT_ACCESS);
->  	blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
->  	intel_ctx_xe_sync(ctx, true);
->  
-> @@ -369,7 +371,8 @@ static void block_copy(int xe,
->  	blt_set_object_ext(&ext.dst, 0, width, height, SURFACE_TYPE_2D);
->  	if (config->inplace) {
->  		blt_set_object(&blt.dst, mid->handle, dst->size, mid->region, 0,
-> -			       T_LINEAR, COMPRESSION_DISABLED, comp_type);
-> +			       DEFAULT_PAT_INDEX, T_LINEAR, COMPRESSION_DISABLED,
-> +			       comp_type);
->  		blt.dst.ptr = mid->ptr;
->  	}
->  
-> @@ -450,8 +453,8 @@ static void block_multicopy(int xe,
->  
->  	if (config->inplace) {
->  		blt_set_object(&blt3.dst, mid->handle, dst->size, mid->region,
-> -			       mid->mocs, mid_tiling, COMPRESSION_DISABLED,
-> -			       comp_type);
-> +			       mid->mocs, DEFAULT_PAT_INDEX, mid_tiling,
-> +			       COMPRESSION_DISABLED, comp_type);
->  		blt3.dst.ptr = mid->ptr;
->  	}
->  
-> -- 
-> 2.41.0
-> 
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/index.html
+
+Participating hosts (39 -> 39)
+------------------------------
+
+  Additional (2): fi-kbl-soraka bat-dg2-9 
+  Missing    (2): fi-hsw-4770 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_9938 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_suspend@basic-s0@smem:
+    - bat-dg2-9:          NOTRUN -> [INCOMPLETE][1] ([i915#9275])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#2190])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][3] ([fdo#109271] / [i915#4613]) +3 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
+
+  * igt@gem_mmap@basic:
+    - bat-dg2-9:          NOTRUN -> [SKIP][4] ([i915#4083])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@gem_mmap@basic.html
+
+  * igt@gem_mmap_gtt@basic:
+    - bat-dg2-9:          NOTRUN -> [SKIP][5] ([i915#4077]) +2 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@gem_mmap_gtt@basic.html
+
+  * igt@gem_render_tiled_blits@basic:
+    - bat-dg2-9:          NOTRUN -> [SKIP][6] ([i915#4079]) +1 other test skip
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@gem_render_tiled_blits@basic.html
+
+  * igt@i915_module_load@reload:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-WARN][7] ([i915#1982])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/fi-kbl-soraka/igt@i915_module_load@reload.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-atsm-1:         [PASS][8] -> [SKIP][9] ([i915#9471])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13722/bat-atsm-1/igt@i915_pm_rpm@module-reload.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-atsm-1/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_pm_rps@basic-api:
+    - bat-dg2-9:          NOTRUN -> [SKIP][10] ([i915#6621])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@i915_pm_rps@basic-api.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - bat-jsl-3:          [PASS][11] -> [DMESG-FAIL][12] ([i915#5334])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13722/bat-jsl-3/igt@i915_selftest@live@gt_heartbeat.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-jsl-3/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][13] ([i915#1886])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-mtlp-8:         [PASS][14] -> [ABORT][15] ([i915#9414])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13722/bat-mtlp-8/igt@i915_selftest@live@requests.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-mtlp-8/igt@i915_selftest@live@requests.html
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - bat-dg2-9:          NOTRUN -> [SKIP][16] ([i915#5190])
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_addfb_basic@basic-y-tiled-legacy:
+    - bat-dg2-9:          NOTRUN -> [SKIP][17] ([i915#4215] / [i915#5190])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@kms_addfb_basic@basic-y-tiled-legacy.html
+
+  * igt@kms_addfb_basic@framebuffer-vs-set-tiling:
+    - bat-dg2-9:          NOTRUN -> [SKIP][18] ([i915#4212]) +6 other tests skip
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@kms_addfb_basic@framebuffer-vs-set-tiling.html
+
+  * igt@kms_addfb_basic@tile-pitch-mismatch:
+    - bat-dg2-9:          NOTRUN -> [SKIP][19] ([i915#4212] / [i915#5608])
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@kms_addfb_basic@tile-pitch-mismatch.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
+    - bat-dg2-9:          NOTRUN -> [SKIP][20] ([i915#4103] / [i915#4213] / [i915#5608]) +1 other test skip
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+
+  * igt@kms_dsc@dsc-basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][21] ([fdo#109271]) +9 other tests skip
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/fi-kbl-soraka/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - bat-dg2-9:          NOTRUN -> [SKIP][22] ([fdo#109285])
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_force_connector_basic@prune-stale-modes:
+    - bat-dg2-9:          NOTRUN -> [SKIP][23] ([i915#5274])
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@kms_force_connector_basic@prune-stale-modes.html
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:
+    - bat-rplp-1:         [PASS][24] -> [ABORT][25] ([i915#8668])
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13722/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+
+  * igt@kms_psr@sprite_plane_onoff:
+    - bat-dg2-9:          NOTRUN -> [SKIP][26] ([i915#1072]) +3 other tests skip
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@kms_psr@sprite_plane_onoff.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - bat-dg2-9:          NOTRUN -> [SKIP][27] ([i915#3555])
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@kms_setmode@basic-clone-single-crtc.html
+
+  * igt@prime_vgem@basic-fence-flip:
+    - bat-dg2-9:          NOTRUN -> [SKIP][28] ([i915#3708])
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@prime_vgem@basic-fence-flip.html
+
+  * igt@prime_vgem@basic-fence-mmap:
+    - bat-dg2-9:          NOTRUN -> [SKIP][29] ([i915#3708] / [i915#4077]) +1 other test skip
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@prime_vgem@basic-fence-mmap.html
+
+  * igt@prime_vgem@basic-write:
+    - bat-dg2-9:          NOTRUN -> [SKIP][30] ([i915#3291] / [i915#3708]) +2 other tests skip
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@prime_vgem@basic-write.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
+  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
+  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
+  [i915#4213]: https://gitlab.freedesktop.org/drm/intel/issues/4213
+  [i915#4215]: https://gitlab.freedesktop.org/drm/intel/issues/4215
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#5190]: https://gitlab.freedesktop.org/drm/intel/issues/5190
+  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
+  [i915#5608]: https://gitlab.freedesktop.org/drm/intel/issues/5608
+  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
+  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
+  [i915#9275]: https://gitlab.freedesktop.org/drm/intel/issues/9275
+  [i915#9414]: https://gitlab.freedesktop.org/drm/intel/issues/9414
+  [i915#9471]: https://gitlab.freedesktop.org/drm/intel/issues/9471
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7518 -> IGTPW_9938
+
+  CI-20190529: 20190529
+  CI_DRM_13722: ead693ec2d2fddb30bff4718845d42f9adabcce6 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_9938: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/index.html
+  IGT_7518: 2d4a57e28db0c2ccbf8b2e763074c9aa74a1ae52 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++++ 720 lines
+--- 721 lines
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/index.html
+
+--===============0681372487461753799==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>KMS: Minor cleanups</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124702/">https://patchwork.freedesktop.org/series/124702/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13722 -&gt; IGTPW_9938</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/index.html</p>
+<h2>Participating hosts (39 -&gt; 39)</h2>
+<p>Additional (2): fi-kbl-soraka bat-dg2-9 <br />
+  Missing    (2): fi-hsw-4770 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_9938 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s0@smem:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9275">i915#9275</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_mmap@basic:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@gem_mmap@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4083">i915#4083</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_mmap_gtt@basic:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@gem_mmap_gtt@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4077">i915#4077</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_render_tiled_blits@basic:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@gem_render_tiled_blits@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4079">i915#4079</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_module_load@reload:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/fi-kbl-soraka/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13722/bat-atsm-1/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-atsm-1/igt@i915_pm_rpm@module-reload.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9471">i915#9471</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rps@basic-api:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@i915_pm_rps@basic-api.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6621">i915#6621</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>bat-jsl-3:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13722/bat-jsl-3/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-jsl-3/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13722/bat-mtlp-8/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-mtlp-8/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9414">i915#9414</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5190">i915#5190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@basic-y-tiled-legacy:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@kms_addfb_basic@basic-y-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4215">i915#4215</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5190">i915#5190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@framebuffer-vs-set-tiling:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@kms_addfb_basic@framebuffer-vs-set-tiling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4212">i915#4212</a>) +6 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@tile-pitch-mismatch:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@kms_addfb_basic@tile-pitch-mismatch.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4212">i915#4212</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5608">i915#5608</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4213">i915#4213</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5608">i915#5608</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/fi-kbl-soraka/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +9 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@prune-stale-modes:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5274">i915#5274</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:</p>
+<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13722/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@sprite_plane_onoff:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-fence-flip:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@prime_vgem@basic-fence-flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-fence-mmap:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@prime_vgem@basic-fence-mmap.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4077">i915#4077</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-write:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/bat-dg2-9/igt@prime_vgem@basic-write.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3291">i915#3291</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>) +2 other tests skip</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7518 -&gt; IGTPW_9938</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13722: ead693ec2d2fddb30bff4718845d42f9adabcce6 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_9938: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9938/index.html<br />
+  IGT_7518: 2d4a57e28db0c2ccbf8b2e763074c9aa74a1ae52 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+++ 720 lines<br />
+--- 721 lines</p>
+
+</body>
+</html>
+
+--===============0681372487461753799==--
