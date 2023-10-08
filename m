@@ -1,20 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6C8EF10E02B
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Oct 2023 15:34:51 +0000 (UTC)
-Message-ID: <a7ceb9f5-a32e-4d3e-b6cd-f8685cac06d6@amd.com>
-Date: Thu, 5 Oct 2023 11:34:43 -0400
-Content-Language: en-CA, en-US
-To: vitaly.prosyak@amd.com, igt-dev@lists.freedesktop.org
-References: <20231004231130.310640-1-vitaly.prosyak@amd.com>
-From: Luben Tuikov <luben.tuikov@amd.com>
-In-Reply-To: <20231004231130.310640-1-vitaly.prosyak@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative;
+ boundary="===============8447782972017117643=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH] tests/amdgpu: add IP availability condition
- to deadlock test
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Wu, Hersen" <hersenxs.wu@amd.com>
+Date: Sun, 08 Oct 2023 17:00:13 -0000
+Message-ID: <169678441393.31955.14725415448662187175@emeril.freedesktop.org>
+References: <20231001162828.74566-1-hersenxs.wu@amd.com>
+In-Reply-To: <20231001162828.74566-1-hersenxs.wu@amd.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_s?=
+ =?utf-8?q?tarting_with_=5B1/2=2Ci-g-t=5D_tests/kms=5Fcursor=5Fcrc=3A_Fix_?=
+ =?utf-8?q?tests_be_skipped_on_AMD_gpu_=28rev5=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,142 +18,145 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Alex Deucher <alexander.deucher@amd.com>,
- Christian Koenig <christian.koenig@amd.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2023-10-04 19:11, vitaly.prosyak@amd.com wrote:
-> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
-> 
-> Some ASICs may not have a GFX ring and we use IGT built-in dynamic
-> feature for conditional execution. If GFX IP is not present the test
-> is skipped and the appropriate message is printed.
-> 
-> Cc: Luben Tuikov <luben.tuikov@amd.com>
-> Cc: Alex Deucher <alexander.deucher@amd.com>
-> Cc: Christian Koenig <christian.koenig@amd.com>
-> Cc: Jesse Zhang <jesse.zhang@amd.com>
-> 
-> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+--===============8447782972017117643==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-No spaces between tags (Cc and S-O-B and R-V, etc.).
+== Series Details ==
 
-Reviewed-by: Luben Tuikov <luben.tuikov@amd.com>
--- 
-Regards,
-Luben
+Series: series starting with [1/2,i-g-t] tests/kms_cursor_crc: Fix tests be skipped on AMD gpu (rev5)
+URL   : https://patchwork.freedesktop.org/series/124496/
+State : success
 
-> ---
->  tests/amdgpu/amd_deadlock.c | 73 +++++++++++++++++--------------------
->  1 file changed, 33 insertions(+), 40 deletions(-)
-> 
-> diff --git a/tests/amdgpu/amd_deadlock.c b/tests/amdgpu/amd_deadlock.c
-> index 0a81f3717..6147b7636 100644
-> --- a/tests/amdgpu/amd_deadlock.c
-> +++ b/tests/amdgpu/amd_deadlock.c
-> @@ -9,42 +9,13 @@
->  #include "lib/amdgpu/amd_command_submission.h"
->  #include "lib/amdgpu/amd_deadlock_helpers.h"
->  
-> -static void
-> -amdgpu_deadlock_gfx(amdgpu_device_handle device_handle)
-> -{
-> -	amdgpu_wait_memory_helper(device_handle, AMDGPU_HW_IP_GFX);
-> -}
-> -
-> -static void
-> -amdgpu_deadlock_compute(amdgpu_device_handle device_handle)
-> -{
-> -	amdgpu_wait_memory_helper(device_handle, AMDGPU_HW_IP_COMPUTE);
-> -}
-> -
-> -static void
-> -amdgpu_deadlock_sdma(amdgpu_device_handle device_handle)
-> -{
-> -	amdgpu_wait_memory_helper(device_handle, AMDGPU_HW_IP_DMA);
-> -}
-> -
-> -static void
-> -amdgpu_gfx_illegal_reg_access(amdgpu_device_handle device_handle)
-> -{
-> -	bad_access_helper(device_handle, 1, AMDGPU_HW_IP_GFX);
-> -}
-> -
-> -static void
-> -amdgpu_gfx_illegal_mem_access(amdgpu_device_handle device_handle)
-> -{
-> -	bad_access_helper(device_handle, 0, AMDGPU_HW_IP_GFX);
-> -}
-> -
->  igt_main
->  {
->  	amdgpu_device_handle device;
->  	struct amdgpu_gpu_info gpu_info = {0};
->  	int fd = -1;
->  	int r;
-> +	bool arr_cap[AMD_IP_MAX] = {0};
->  
->  	igt_fixture {
->  		uint32_t major, minor;
-> @@ -62,27 +33,49 @@ igt_main
->  		igt_assert_eq(r, 0);
->  		r = setup_amdgpu_ip_blocks(major, minor, &gpu_info, device);
->  		igt_assert_eq(r, 0);
-> +		asic_rings_readness(device, 1, arr_cap);
->  
->  	}
->  	igt_describe("Test-GPU-reset-by-flooding-sdma-ring-with-jobs");
-> -	igt_subtest("amdgpu-deadlock-sdma")
-> -	amdgpu_deadlock_sdma(device);
-> +	igt_subtest_with_dynamic("amdgpu-deadlock-sdma") {
-> +		if (arr_cap[AMD_IP_DMA]) {
-> +			igt_dynamic_f("amdgpu-deadlock-sdma")
-> +			amdgpu_wait_memory_helper(device, AMDGPU_HW_IP_DMA);
-> +		}
-> +	}
->  
->  	igt_describe("Test-GPU-reset-by-access-gfx-illegal-reg");
-> -	igt_subtest("amdgpu-gfx-illegal-reg-access")
-> -	amdgpu_gfx_illegal_reg_access(device);
-> +	igt_subtest_with_dynamic("amdgpu-gfx-illegal-reg-access") {
-> +		if (arr_cap[AMD_IP_GFX]) {
-> +			igt_dynamic_f("amdgpu-illegal-reg-access")
-> +			bad_access_helper(device, 1, AMDGPU_HW_IP_GFX);
-> +		}
-> +	}
->  
->  	igt_describe("Test-GPU-reset-by-access-gfx-illegal-mem-addr");
-> -	igt_subtest("amdgpu-gfx-illegal-mem-access")
-> -	amdgpu_gfx_illegal_mem_access(device);
-> +	igt_subtest_with_dynamic("amdgpu-gfx-illegal-mem-access") {
-> +		if (arr_cap[AMD_IP_GFX]) {
-> +			igt_dynamic_f("amdgpu-illegal-mem-access")
-> +			bad_access_helper(device, 0, AMDGPU_HW_IP_GFX);
-> +		}
-> +	}
-> +
->  
->  	igt_describe("Test-GPU-reset-by-flooding-gfx-ring-with-jobs");
-> -	igt_subtest("amdgpu-deadlock-gfx")
-> -	amdgpu_deadlock_gfx(device);
-> +	igt_subtest_with_dynamic("amdgpu-deadlock-gfx") {
-> +		if (arr_cap[AMD_IP_GFX]) {
-> +			igt_dynamic_f("amdgpu-deadlock-gfx")
-> +			amdgpu_wait_memory_helper(device, AMDGPU_HW_IP_GFX);
-> +		}
-> +	}
->  
->  	igt_describe("Test-GPU-reset-by-flooding-compute-ring-with-jobs");
-> -	igt_subtest("amdgpu-deadlock-compute")
-> -	amdgpu_deadlock_compute(device);
-> +	igt_subtest_with_dynamic("amdgpu-deadlock-compute") {
-> +		if (arr_cap[AMD_IP_COMPUTE]) {
-> +			igt_dynamic_f("amdgpu-deadlock-compute")
-> +			amdgpu_wait_memory_helper(device, AMDGPU_HW_IP_COMPUTE);
-> +		}
-> +	}
->  
->  	igt_fixture {
->  		amdgpu_device_deinitialize(device);
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7519_BAT -> XEIGTPW_9945_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9945_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:
+    - bat-dg2-oem2:       [PASS][1] -> [FAIL][2] ([i915#2346])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7519/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9945/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
+    - bat-adlp-7:         [PASS][3] -> [FAIL][4] ([Intel XE#480]) +1 other test fail
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7519/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9945/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+
+  
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7519 -> IGTPW_9945
+  * Linux: xe-417-b3daf7f07d6accbe43feafcadeb0b0498063761e -> xe-421-053bb04c94ec48fb951556b86e92f4a0773f9af0
+
+  IGTPW_9945: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9945/index.html
+  IGT_7519: d1db7333d9c5fbbb05e50b0804123950d9dc1c46 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-417-b3daf7f07d6accbe43feafcadeb0b0498063761e: b3daf7f07d6accbe43feafcadeb0b0498063761e
+  xe-421-053bb04c94ec48fb951556b86e92f4a0773f9af0: 053bb04c94ec48fb951556b86e92f4a0773f9af0
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9945/index.html
+
+--===============8447782972017117643==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [1/2,i-g-t] tests/kms_cursor_crc: Fix tests be skipped on AMD gpu (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124496/">https://patchwork.freedesktop.org/series/124496/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9945/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9945/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7519_BAT -&gt; XEIGTPW_9945_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9945_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7519/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9945/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7519/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9945/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7519 -&gt; IGTPW_9945</li>
+<li>Linux: xe-417-b3daf7f07d6accbe43feafcadeb0b0498063761e -&gt; xe-421-053bb04c94ec48fb951556b86e92f4a0773f9af0</li>
+</ul>
+<p>IGTPW_9945: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9945/index.html<br />
+  IGT_7519: d1db7333d9c5fbbb05e50b0804123950d9dc1c46 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-417-b3daf7f07d6accbe43feafcadeb0b0498063761e: b3daf7f07d6accbe43feafcadeb0b0498063761e<br />
+  xe-421-053bb04c94ec48fb951556b86e92f4a0773f9af0: 053bb04c94ec48fb951556b86e92f4a0773f9af0</p>
+
+</body>
+</html>
+
+--===============8447782972017117643==--
