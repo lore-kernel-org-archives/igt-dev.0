@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from madras.collabora.co.uk (madras.collabora.co.uk
- [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2C33910E07A
- for <igt-dev@lists.freedesktop.org>; Sun,  8 Oct 2023 22:23:53 +0000 (UTC)
-From: Helen Koike <helen.koike@collabora.com>
-To: igt-dev@lists.freedesktop.org
-Date: Sun,  8 Oct 2023 19:23:06 -0300
-Message-Id: <20231008222306.145122-2-helen.koike@collabora.com>
-In-Reply-To: <20231008222306.145122-1-helen.koike@collabora.com>
-References: <20231008222306.145122-1-helen.koike@collabora.com>
+Content-Type: multipart/alternative;
+ boundary="===============5645992865149806444=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 2/2] core_getversion: drop unused assert
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Helen Koike" <helen.koike@collabora.com>
+Date: Sun, 08 Oct 2023 23:17:09 -0000
+Message-ID: <169680702913.31951.15324137157707622775@emeril.freedesktop.org>
+References: <20231008222306.145122-1-helen.koike@collabora.com>
+In-Reply-To: <20231008222306.145122-1-helen.koike@collabora.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_s?=
+ =?utf-8?q?tarting_with_=5B1/2=5D_lib/drmtest=3A_add_igt=5Fdebug_when_forc?=
+ =?utf-8?q?ed_and_dev=5Fname_doesn=27t_match?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,43 +18,112 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: robdclark@chromium.org, emma@anholt.net,
- Helen Koike <helen.koike@collabora.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-If IGT_FORCE_DRIVER is used, open_device() already checks if the name
-matches, so igt_assert_fd(fd) is already enough.
+--===============5645992865149806444==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Helen Koike <helen.koike@collabora.com>
----
- tests/core_getversion.c | 6 ------
- 1 file changed, 6 deletions(-)
+== Series Details ==
 
-diff --git a/tests/core_getversion.c b/tests/core_getversion.c
-index 8c8e0c9a3..9945c3855 100644
---- a/tests/core_getversion.c
-+++ b/tests/core_getversion.c
-@@ -48,7 +48,6 @@ igt_simple_main
- {
- 	int fd;
- 	drmVersionPtr v;
--	const char *name = getenv("IGT_FORCE_DRIVER");
- 
- 	fd = __drm_open_driver(DRIVER_ANY);
- 	igt_assert_fd(fd);
-@@ -58,11 +57,6 @@ igt_simple_main
- 	igt_assert_neq(strlen(v->desc), 0);
- 	if (is_i915_device(fd))
- 		igt_assert_lte(1, v->version_major);
--	if (name) {
--		igt_assert_f(!strcmp(name, v->name),
--			     "Expected driver \"%s\" but got \"%s\"\n",
--			     name, v->name);
--	}
- 
- 	drmFree(v);
- 	drm_close_driver(fd);
--- 
-2.34.1
+Series: series starting with [1/2] lib/drmtest: add igt_debug when forced and dev_name doesn't match
+URL   : https://patchwork.freedesktop.org/series/124788/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7519_BAT -> XEIGTPW_9947_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7519 -> IGTPW_9947
+  * Linux: xe-417-b3daf7f07d6accbe43feafcadeb0b0498063761e -> xe-421-053bb04c94ec48fb951556b86e92f4a0773f9af0
+
+  IGTPW_9947: 9947
+  IGT_7519: d1db7333d9c5fbbb05e50b0804123950d9dc1c46 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-417-b3daf7f07d6accbe43feafcadeb0b0498063761e: b3daf7f07d6accbe43feafcadeb0b0498063761e
+  xe-421-053bb04c94ec48fb951556b86e92f4a0773f9af0: 053bb04c94ec48fb951556b86e92f4a0773f9af0
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9947/index.html
+
+--===============5645992865149806444==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [1/2] lib/drmtest: add igt_debug when forced and dev_name doesn&#39;t match</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124788/">https://patchwork.freedesktop.org/series/124788/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9947/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9947/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7519_BAT -&gt; XEIGTPW_9947_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7519 -&gt; IGTPW_9947</li>
+<li>Linux: xe-417-b3daf7f07d6accbe43feafcadeb0b0498063761e -&gt; xe-421-053bb04c94ec48fb951556b86e92f4a0773f9af0</li>
+</ul>
+<p>IGTPW_9947: 9947<br />
+  IGT_7519: d1db7333d9c5fbbb05e50b0804123950d9dc1c46 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-417-b3daf7f07d6accbe43feafcadeb0b0498063761e: b3daf7f07d6accbe43feafcadeb0b0498063761e<br />
+  xe-421-053bb04c94ec48fb951556b86e92f4a0773f9af0: 053bb04c94ec48fb951556b86e92f4a0773f9af0</p>
+
+</body>
+</html>
+
+--===============5645992865149806444==--
