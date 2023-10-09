@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7C0A710E188
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Oct 2023 05:18:46 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 10 Oct 2023 10:49:21 +0530
-Message-Id: <20231010051923.41431-1-swati2.sharma@intel.com>
+Date: Mon,  9 Oct 2023 14:27:59 +0200
+Message-ID: <20231009122750.519112-21-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20231009122750.519112-13-janusz.krzysztofik@linux.intel.com>
+References: <20231009122750.519112-13-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/2] tests/kms_vblank: Test cleanup and
- dynamic conversion
+Subject: [igt-dev] [PATCH i-g-t v2 08/11] lib/kunit: Provide all results
+ cleanup helper
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,21 +16,63 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Subtests are converted to dynamic subtests. Also, testplan
-documentation is updated.
-Review comments addressed from
-https://patchwork.freedesktop.org/series/109170/
+Planned changes require a couple of loops around kunit_result_free().
+Since we already have such loop, move it into a helper in preparation for
+future uses.
 
-Swati Sharma (2):
-  tests/kms_vblank: cosmetic changes
-  tests/kms_vblank: convert test to dynamic
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+---
+ lib/igt_kmod.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
- tests/kms_vblank.c | 266 +++++++++++++++------------------------------
- 1 file changed, 86 insertions(+), 180 deletions(-)
-
+diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+index 387efbb59f..fed0855c84 100644
+--- a/lib/igt_kmod.c
++++ b/lib/igt_kmod.c
+@@ -885,13 +885,25 @@ static void kunit_result_free(struct igt_ktap_result **r,
+ 	*r = NULL;
+ }
+ 
++static void kunit_results_free(struct igt_list_head *results,
++			       char **suite_name, char **case_name)
++{
++	struct igt_ktap_result *r, *rn;
++
++	igt_list_for_each_entry_safe(r, rn, results, link)
++		kunit_result_free(&r, suite_name, case_name);
++
++	free(*case_name);
++	free(*suite_name);
++}
++
+ static void
+ __igt_kunit(struct igt_ktest *tst, const char *name, const char *opts)
+ {
+ 	struct modprobe_data modprobe = { pthread_self(), tst->kmod, opts, 0, };
+ 	char *suite_name = NULL, *case_name = NULL;
+-	struct igt_ktap_result *r, *rn;
+ 	struct igt_ktap_results *ktap;
++	struct igt_ktap_result *r;
+ 	pthread_mutexattr_t attr;
+ 	IGT_LIST_HEAD(results);
+ 	unsigned long taints;
+@@ -997,11 +1009,7 @@ __igt_kunit(struct igt_ktest *tst, const char *name, const char *opts)
+ 
+ 	} while (ret == -EINPROGRESS);
+ 
+-	igt_list_for_each_entry_safe(r, rn, &results, link)
+-		kunit_result_free(&r, &suite_name, &case_name);
+-
+-	free(case_name);
+-	free(suite_name);
++	kunit_results_free(&results, &suite_name, &case_name);
+ 
+ 	switch (pthread_mutex_lock(&modprobe.lock)) {
+ 	case 0:
 -- 
-2.25.1
+2.42.0
