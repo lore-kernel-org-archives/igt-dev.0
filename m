@@ -1,13 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A680D10E340
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Oct 2023 12:58:42 +0000 (UTC)
-From: Melanie Lobo <melanie.lobo@intel.corp-partner.google.com>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 10 Oct 2023 18:41:24 +0530
-Message-Id: <20231010131124.14541-1-melanie.lobo@intel.corp-partner.google.com>
-Subject: [igt-dev] [PATCH] [RFC]: tests/intel/kms_flip_scaled_crc: Add
- support for FP16 format of MTL compressed modifier
+Date: Mon,  9 Oct 2023 14:28:00 +0200
+Message-ID: <20231009122750.519112-22-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20231009122750.519112-13-janusz.krzysztofik@linux.intel.com>
+References: <20231009122750.519112-13-janusz.krzysztofik@linux.intel.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2 09/11] lib/kunit: Prepare for KTAP
+ parsing after modprobe completed
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,72 +16,89 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: juha-pekka.heikkila@intel.com
+Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Melanie Lobo <melanie.lobo@intel.com>
+We are going to add support for reading a list of kunit test cases
+provided by a kunit test module prior to executing those test cases.  That
+will be done by first loading kunit modules in list only mode, then
+reading the list from /dev/kmsg with our KTAP parser.  Since that parsing
+will be performed after the kunit test module is successfully loaded and
+there will be no concurrently running modprobe thread, we need to make
+synchronization of reads from /dev/kmsg with potential errors modprobe
+thread optional.
 
-MTL supports new FP16 format which is a binary floating-point computer
-number format that occupies 16 bits in computer memory.
-
-Change-Id: I7fa8169d54cbd9e6dcdf765065659e541a31e481
-Signed-off-by: Melanie Lobo <melanie.lobo@intel.com>
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 ---
- lib/intel_aux_pgtable.c           |  5 +++++
- tests/intel/kms_flip_scaled_crc.c | 16 ++++++++++++++++
- 2 files changed, 21 insertions(+)
+ lib/igt_kmod.c | 50 ++++++++++++++++++++++++++------------------------
+ 1 file changed, 26 insertions(+), 24 deletions(-)
 
-diff --git a/lib/intel_aux_pgtable.c b/lib/intel_aux_pgtable.c
-index 7c79521344de..a612df407692 100644
---- a/lib/intel_aux_pgtable.c
-+++ b/lib/intel_aux_pgtable.c
-@@ -21,6 +21,7 @@
- #define AUX_FORMAT_AYUV		0x09
- #define AUX_FORMAT_ARGB_8B	0x0A
- #define AUX_FORMAT_NV12_21	0x0F
-+#define AUX_FORMAT_XRGB16161616_64B 0x10
+diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+index fed0855c84..ed41aa1235 100644
+--- a/lib/igt_kmod.c
++++ b/lib/igt_kmod.c
+@@ -802,34 +802,36 @@ static int kunit_kmsg_result_get(struct igt_list_head *results,
+ 		if (igt_debug_on(igt_kernel_tainted(&taints)))
+ 			return -ENOTRECOVERABLE;
  
- struct pgtable_level_desc {
- 	int idx_shift;
-@@ -305,6 +306,10 @@ static uint64_t pgt_get_l1_flags(const struct intel_buf *buf, int surface_idx)
- 			entry.e.format = AUX_FORMAT_ARGB_8B;
- 			entry.e.depth = bpp_to_depth_val(32);
- 			break;
-+		case 64:
-+			entry.e.format = AUX_FORMAT_XRGB16161616_64B;
-+			entry.e.depth = bpp_to_depth_val(64);
-+			break;
- 		default:
- 			igt_assert(0);
+-		err = igt_debug_on(sigaction(SIGCHLD, &sigchld, saved));
+-		if (err == -1)
+-			return -errno;
+-		else if (unlikely(err))
+-			return err;
+-
+-		err = pthread_mutex_lock(&modprobe->lock);
+-		switch (err) {
+-		case EOWNERDEAD:
+-			/* leave the mutex unrecoverable */
+-			igt_debug_on(pthread_mutex_unlock(&modprobe->lock));
+-			__attribute__ ((fallthrough));
+-		case ENOTRECOVERABLE:
+-			igt_debug_on(sigaction(SIGCHLD, saved, NULL));
+-			if (igt_debug_on(modprobe->err))
+-				return modprobe->err;
+-			break;
+-		case 0:
+-			break;
+-		default:
+-			igt_debug("pthread_mutex_lock() error: %d\n", err);
+-			igt_debug_on(sigaction(SIGCHLD, saved, NULL));
+-			return -err;
++		if (modprobe) {
++			err = igt_debug_on(sigaction(SIGCHLD, &sigchld, saved));
++			if (err == -1)
++				return -errno;
++			else if (unlikely(err))
++				return err;
++
++			err = pthread_mutex_lock(&modprobe->lock);
++			switch (err) {
++			case EOWNERDEAD:
++				/* leave the mutex unrecoverable */
++				igt_debug_on(pthread_mutex_unlock(&modprobe->lock));
++				__attribute__ ((fallthrough));
++			case ENOTRECOVERABLE:
++				igt_debug_on(sigaction(SIGCHLD, saved, NULL));
++				if (igt_debug_on(modprobe->err))
++					return modprobe->err;
++				break;
++			case 0:
++				break;
++			default:
++				igt_debug("pthread_mutex_lock() error: %d\n", err);
++				igt_debug_on(sigaction(SIGCHLD, saved, NULL));
++				return -err;
++			}
  		}
-diff --git a/tests/intel/kms_flip_scaled_crc.c b/tests/intel/kms_flip_scaled_crc.c
-index 2997b63fac40..0d5e994af2b7 100644
---- a/tests/intel/kms_flip_scaled_crc.c
-+++ b/tests/intel/kms_flip_scaled_crc.c
-@@ -590,6 +590,22 @@ const struct {
- 		0.5,
- 		1.0,
- 	},
-+	{
-+		"flip-64bpp-4tile-to-32bpp-4tilemtlrcccs-upscaling",
-+		"Flip from 64bpp non scaled fb to 32bpp upscaled fb to stress CD clock programming",
-+		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
-+		I915_FORMAT_MOD_4_TILED_MTL_RC_CCS, DRM_FORMAT_XRGB16161616F,
-+		0.5,
-+		1.0,
-+	},
-+	{
-+		"flip-64bpp-4tile-to-32bpp-4tilemtlrcccs-downscaling",
-+		"Flip from 64bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
-+		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
-+		I915_FORMAT_MOD_4_TILED_MTL_RC_CCS, DRM_FORMAT_XRGB16161616F,
-+		1.0,
-+		2.0,
-+	},
- };
  
- static void setup_fb(data_t *data, struct igt_fb *newfb, uint32_t width,
+ 		ret = read(fd, record, BUF_LEN);
+ 
+-		if (!err) {
++		if (modprobe && !err) {
+ 			igt_debug_on(pthread_mutex_unlock(&modprobe->lock));
+ 			igt_debug_on(sigaction(SIGCHLD, saved, NULL));
+ 		}
 -- 
-2.17.1
+2.42.0
