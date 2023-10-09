@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9700410E079
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Oct 2023 15:00:00 +0000 (UTC)
-Date: Tue, 10 Oct 2023 16:59:34 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EBFFE10E25C
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Oct 2023 10:30:55 +0000 (UTC)
+Date: Mon, 9 Oct 2023 12:30:51 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20231010145934.vdjflo3qnyja33ox@kamilkon-desk.igk.intel.com>
-References: <20231010131743.535504-1-mauro.chehab@linux.intel.com>
- <20231010131743.535504-2-mauro.chehab@linux.intel.com>
+Message-ID: <20231009103051.uifamleq5gyxxrgp@kamilkon-desk.igk.intel.com>
+References: <20231009100332.392968-1-mauro.chehab@linux.intel.com>
+ <20231009100332.392968-5-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231010131743.535504-2-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] testplan/meson.build: disable kms
- check testlist if not chamelium
+In-Reply-To: <20231009100332.392968-5-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 4/4] intel/kms_frontbuffer_tracking.c:
+ remove fbc-slowdraw test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,74 +27,52 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Mauro,
 
-thank you for a fix.
+please correct subject:
 
-On 2023-10-10 at 15:17:19 +0200, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> The KMS JSON file contains some tests that can optionally be disabled.
-> When those are disabled, the code can't check for missing documents,
-> as the JSON file specifies both enabled and disabled tests.
-> 
-> Detect that to avoid build problems.
-> 
-> While here, remove a left-over dictionary (xe_test_dict).
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+intel/kms_frontbuffer_tracking.c: remove fbc-slowdraw test
+----------------------------------------------------- ^^^^
+s/test/docs/
+
+I will also add Bhanu and Swati to cc.
 
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-> ---
->  docs/testplan/meson.build | 15 +++++++++------
->  1 file changed, 9 insertions(+), 6 deletions(-)
+On 2023-10-09 at 12:01:41 +0200, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
-> diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
-> index 16dd578266cd..9e0c3aee06af 100644
-> --- a/docs/testplan/meson.build
-> +++ b/docs/testplan/meson.build
-> @@ -11,12 +11,19 @@ kms_test_config = join_paths(source_root, 'tests', 'intel', 'kms_test_config.jso
->  i915_test_config = join_paths(source_root, 'tests', 'intel', 'i915_test_config.json')
->  
->  check_testlist = []
-> +kms_check_testlist = []
->  if build_tests
->  	doc_dependencies = testlist_files
->  	# Check if documentation matches the actual tests and tests can run
->  	if not meson.is_cross_build()
->  		build_info += 'Will Check if documentation is in sync with testlist'
->  		check_testlist = [ '--check-testlist', '--igt-build-path', build_root ]
-> +
-> +		if not chamelium.found()
-> +			warning('WARNING: Will not check if documentation is in sync for KMS as chamelium is disabled')
-> +		else
-> +			kms_check_testlist = check_testlist
-> +		endif
->  	else
->  		warning('WARNING: Will not check if documentation is in sync with testlist')
->  	endif
-> @@ -24,20 +31,16 @@ else
->  	doc_dependencies = []
->  endif
->  
-> -xe_test_dict = {
-> -		 'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist }
-> -	       }
-> -
->  if build_xe
->  	test_dict = {
->  		'i915_tests': { 'input': i915_test_config, 'extra_args': check_testlist },
-> -		'kms_tests': { 'input': kms_test_config, 'extra_args': check_testlist },
-> +		'kms_tests': { 'input': kms_test_config, 'extra_args': kms_check_testlist },
->  		'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist }
->  	    }
->  else
->  	test_dict = {
->  	      'i915_tests': { 'input': i915_test_config, 'extra_args': check_testlist },
-> -	      'kms_tests': { 'input': kms_test_config, 'extra_args': check_testlist }
-> +	      'kms_tests': { 'input': kms_test_config, 'extra_args': kms_check_testlist }
->  	    }
->  endif
->  
+> The slowdraw test is defined to run only for two features:
+> 
+> 	if ((t.feature & FEATURE_PSR) || (t.feature & FEATURE_DRRS))
+> 		igt_subtest_f("%s-slowdraw", feature_str(t.feature)) {
+> 			igt_require(igt_draw_supports_method(drm.fd, t.method));
+> 			slow_draw_subtest(&t);
+> 		}
+> 
+> As it won't be reported for FBC, remove documentation for it.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> ---
+>  tests/intel/kms_frontbuffer_tracking.c | 7 -------
+>  1 file changed, 7 deletions(-)
+> 
+> diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+> index 6526e1c3cffa..f90d09f9f06d 100644
+> --- a/tests/intel/kms_frontbuffer_tracking.c
+> +++ b/tests/intel/kms_frontbuffer_tracking.c
+> @@ -3025,13 +3025,6 @@ static bool tiling_is_valid(int feature_flags, enum tiling_type tiling)
+>   * Mega feature: General Display Features
+>   * Test category: functionality test
+>   *
+> - * SUBTEST: fbc-slowdraw
+> - * Description: Sleep a little bit between drawing operations with FBC
+> - * Driver requirement: i915, xe
+> - * Functionality: fbc, fbt, kms_core
+> - * Mega feature: General Display Features
+> - * Test category: functionality test
+> - *
+>   * SUBTEST: psr-slowdraw
+>   * Description: Sleep a little bit between drawing operations with PSR
+>   * Driver requirement: i915, xe
 > -- 
 > 2.41.0
 > 
