@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0E70310E114
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Oct 2023 13:51:38 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon,  9 Oct 2023 19:22:19 +0530
-Message-Id: <20231009135219.29612-1-swati2.sharma@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3428610E265
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Oct 2023 12:12:17 +0000 (UTC)
+Message-ID: <abd9c230-6e06-4f59-b46f-dae7d74dacc3@intel.com>
+Date: Mon, 9 Oct 2023 14:12:15 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v2] tests/kms_concurrent: remove pipe dependency in
- subtest name
+Content-Language: en-US
+To: Nirmoy Das <nirmoy.das@intel.com>, igt-dev@lists.freedesktop.org
+References: <20231002121428.3827-1-nirmoy.das@intel.com>
+From: Andrzej Hajda <andrzej.hajda@intel.com>
+In-Reply-To: <20231002121428.3827-1-nirmoy.das@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/prime_vgem: Use correct blitter
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,106 +24,118 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Remove pipe dependency in subtest name and give some
-meaningful name to subtest.
 
-v2: -use for_each_pipe_with_valid_output() since these tests
-     depends upon resolution
-    -drop pipe from data_t
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/kms_concurrent.c | 38 +++++++++-----------------------------
- 1 file changed, 9 insertions(+), 29 deletions(-)
+On 02.10.2023 14:14, Nirmoy Das wrote:
+> Use igt_blitter_copy() which picks a correct blitter
+> command depending on platform.
+>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
 
-diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
-index d9cb197de..fd2c88fcc 100644
---- a/tests/kms_concurrent.c
-+++ b/tests/kms_concurrent.c
-@@ -30,24 +30,13 @@
-  * Description: Test atomic mode setting concurrently with multiple planes and
-  *              screen resolution
-  *
-- * SUBTEST: pipe-%s
-+ * SUBTEST: multi-plane-atomic-resolution
-  * Description: Test atomic mode setting concurrently with multiple planes and
-- *              screen resolution on %arg[1].
-+ *              screen resolution.
-  * Driver requirement: i915, xe
-  * Functionality: kms_core
-  * Mega feature: General Display Features
-  * Test category: functionality test
-- *
-- * arg[1]:
-- *
-- * @A:      pipe A
-- * @B:      pipe B
-- * @C:      pipe C
-- * @D:      pipe D
-- * @E:      pipe E
-- * @F:      pipe F
-- * @G:      pipe G
-- * @H:      pipe H
-  */
- 
- IGT_TEST_DESCRIPTION("Test atomic mode setting concurrently with multiple planes and screen resolution");
-@@ -341,20 +330,14 @@ run_test(data_t *data, enum pipe pipe, igt_output_t *output)
- }
- 
- static void
--run_tests_for_pipe(data_t *data, enum pipe pipe)
-+run_tests_for_pipe(data_t *data)
- {
- 	igt_output_t *output;
--
--	igt_fixture {
--		igt_require_pipe(&data->display, pipe);
--		igt_require(data->display.pipes[pipe].n_planes > 0);
--
--		igt_display_require_output(&data->display);
--	}
-+	enum pipe pipe;
- 
- 	igt_describe("Test atomic mode setting concurrently with multiple planes and screen "
- 		     "resolution.");
--	igt_subtest_with_dynamic_f("pipe-%s", kmstest_pipe_name(pipe)) {
-+	igt_subtest_with_dynamic("multi-plane-atomic-resolution") {
- 		for_each_valid_output_on_pipe(&data->display, pipe, output) {
- 			igt_display_reset(&data->display);
- 
-@@ -363,7 +346,8 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
- 				continue;
- 
- 			igt_output_set_pipe(output, PIPE_NONE);
--			igt_dynamic_f("%s", igt_output_name(output))
-+			igt_require(data->display.pipes[pipe].n_planes > 0);
-+			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
- 				run_test(data, pipe, output);
- 		}
- 	}
-@@ -405,21 +389,17 @@ static data_t data;
- 
- igt_main_args("", long_options, help_str, opt_handler, NULL)
- {
--	enum pipe pipe;
--
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
- 		kmstest_set_vt_graphics_mode();
- 		igt_display_require(&data.display, data.drm_fd);
- 		igt_require(data.display.is_atomic);
-+		igt_display_require_output(&data.display);
- 		if (is_intel_device(data.drm_fd))
- 			intel_allocator_multiprocess_start();
- 	}
- 
--	for_each_pipe_static(pipe) {
--		igt_subtest_group
--			run_tests_for_pipe(&data, pipe);
--	}
-+	run_tests_for_pipe(&data);
- 
- 	igt_fixture {
- 		if (is_intel_device(data.drm_fd))
--- 
-2.25.1
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+
+Regards
+Andrzej
+
+> ---
+>   tests/prime_vgem.c | 52 +++++++++++++++++++++++-----------------------
+>   1 file changed, 26 insertions(+), 26 deletions(-)
+>
+> diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
+> index 876e04ed0..551a731f5 100644
+> --- a/tests/prime_vgem.c
+> +++ b/tests/prime_vgem.c
+> @@ -29,7 +29,7 @@
+>   #include "i915/gem_create.h"
+>   #include "igt.h"
+>   #include "igt_vgem.h"
+> -#include "intel_batchbuffer.h"	/* igt_blitter_src_copy() */
+> +#include "intel_batchbuffer.h"	/* igt_blitter_copy() */
+>   /**
+>    * TEST: prime vgem
+>    * Description: Basic check of polling for prime/vgem fences.
+> @@ -351,11 +351,11 @@ static void test_fence_blt(int i915, int vgem)
+>   		write(master[1], &child, sizeof(child));
+>   		read(slave[0], &child, sizeof(child));
+>   
+> -		igt_blitter_src_copy(i915, ahnd, 0, NULL, prime, 0, scratch.pitch,
+> -				     I915_TILING_NONE, 0, 0, scratch.size,
+> -				     scratch.width, scratch.height, scratch.bpp,
+> -				     native, 0, scratch.pitch,
+> -				     I915_TILING_NONE, 0, 0, scratch.size);
+> +		igt_blitter_copy(i915, ahnd, 0, NULL, prime, 0, scratch.pitch,
+> +				 I915_TILING_NONE, 0, 0, scratch.size,
+> +				 scratch.width, scratch.height, scratch.bpp,
+> +				 native, 0, scratch.pitch,
+> +				 I915_TILING_NONE, 0, 0, scratch.size);
+>   		gem_sync(i915, native);
+>   
+>   		for (i = 0; i < scratch.height; i++)
+> @@ -480,11 +480,11 @@ static void test_blt(int vgem, int i915)
+>   		ptr[scratch.pitch * i / sizeof(*ptr)] = i;
+>   	munmap(ptr, scratch.size);
+>   
+> -	igt_blitter_src_copy(i915, ahnd, 0, NULL, native, 0, scratch.pitch,
+> -			     I915_TILING_NONE, 0, 0, scratch.size,
+> -			     scratch.width, scratch.height, scratch.bpp,
+> -			     prime, 0, scratch.pitch, I915_TILING_NONE, 0, 0,
+> -			     scratch.size);
+> +	igt_blitter_copy(i915, ahnd, 0, NULL, native, 0, scratch.pitch,
+> +			 I915_TILING_NONE, 0, 0, scratch.size,
+> +			 scratch.width, scratch.height, scratch.bpp,
+> +			 prime, 0, scratch.pitch, I915_TILING_NONE, 0, 0,
+> +			 scratch.size);
+>   	prime_sync_start(dmabuf, true);
+>   	prime_sync_end(dmabuf, true);
+>   	close(dmabuf);
+> @@ -496,11 +496,11 @@ static void test_blt(int vgem, int i915)
+>   	}
+>   	munmap(ptr, scratch.size);
+>   
+> -	igt_blitter_src_copy(i915, ahnd, 0, NULL, prime, 0, scratch.pitch,
+> -			     I915_TILING_NONE, 0, 0, scratch.size,
+> -			     scratch.width, scratch.height, scratch.bpp,
+> -			     native, 0, scratch.pitch, I915_TILING_NONE, 0, 0,
+> -			     scratch.size);
+> +	igt_blitter_copy(i915, ahnd, 0, NULL, prime, 0, scratch.pitch,
+> +			 I915_TILING_NONE, 0, 0, scratch.size,
+> +			 scratch.width, scratch.height, scratch.bpp,
+> +			 native, 0, scratch.pitch, I915_TILING_NONE, 0, 0,
+> +			 scratch.size);
+>   	gem_sync(i915, native);
+>   
+>   	ptr = gem_mmap__device_coherent(i915, native, 0, scratch.size, PROT_READ);
+> @@ -620,22 +620,22 @@ static void test_blt_interleaved(int vgem, int i915)
+>   
+>   	for (i = 0; i < SLOW_QUICK(scratch.height, 64); i++) {
+>   		local[scratch.pitch * i / sizeof(*local)] = i;
+> -		igt_blitter_src_copy(i915, ahnd, 0, NULL, native, 0,
+> -				     scratch.pitch, I915_TILING_NONE, 0, i,
+> -				     scratch.size, scratch.width, 1,
+> -				     scratch.bpp, prime, 0, scratch.pitch,
+> -				     I915_TILING_NONE, 0, i, scratch.size);
+> +		igt_blitter_copy(i915, ahnd, 0, NULL, native, 0,
+> +				 scratch.pitch, I915_TILING_NONE, 0, i,
+> +				 scratch.size, scratch.width, 1,
+> +				 scratch.bpp, prime, 0, scratch.pitch,
+> +				 I915_TILING_NONE, 0, i, scratch.size);
+>   		prime_sync_start(dmabuf, true);
+>   		igt_assert_eq_u32(foreign[scratch.pitch * i / sizeof(*foreign)],
+>   				  i);
+>   		prime_sync_end(dmabuf, true);
+>   
+>   		foreign[scratch.pitch * i / sizeof(*foreign)] = ~i;
+> -		igt_blitter_src_copy(i915, ahnd, 0, NULL, prime, 0, scratch.pitch,
+> -				     I915_TILING_NONE, 0, i, scratch.size,
+> -				     scratch.width, 1,
+> -				     scratch.bpp, native, 0, scratch.pitch,
+> -				     I915_TILING_NONE, 0, i, scratch.size);
+> +		igt_blitter_copy(i915, ahnd, 0, NULL, prime, 0, scratch.pitch,
+> +				 I915_TILING_NONE, 0, i, scratch.size,
+> +				 scratch.width, 1,
+> +				 scratch.bpp, native, 0, scratch.pitch,
+> +				 I915_TILING_NONE, 0, i, scratch.size);
+>   		gem_sync(i915, native);
+>   		igt_assert_eq_u32(local[scratch.pitch * i / sizeof(*local)],
+>   				  ~i);
