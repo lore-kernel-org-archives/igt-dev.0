@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9CA4310E281
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Oct 2023 16:15:56 +0000 (UTC)
-Date: Mon, 9 Oct 2023 18:15:44 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20231009161544.acirmnubt2ne2czh@kamilkon-desk.igk.intel.com>
-References: <20231009084433.1659178-1-jesse.zhang@amd.com>
+Content-Type: multipart/alternative;
+ boundary="===============3239790035271490973=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231009084433.1659178-1-jesse.zhang@amd.com>
-Subject: Re: [igt-dev] [PATCH] tests/amd_dispatch: add negative test
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Date: Mon, 09 Oct 2023 16:21:57 -0000
+Message-ID: <169686851701.24834.5179018231578614845@emeril.freedesktop.org>
+References: <20231009135219.29612-1-swati2.sharma@intel.com>
+In-Reply-To: <20231009135219.29612-1-swati2.sharma@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fconcurrent=3A_remove_pipe_dependency_in_subtest_name_=28r?=
+ =?utf-8?q?ev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,161 +18,275 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Alex Deucher <alexander.deucher@amd.com>,
- Luben Tuikov <luben.tuikov@amd.com>,
- Christian Koenig <christian.koenig@amd.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Jesse,
-On 2023-10-09 at 16:44:33 +0800, Jesse Zhang wrote:
-> add negative test for gfx and compute
---^ ---------------------------------- ^
-s/add/Add/
-Also add dot '.' at end of sentence(s) in description.
+--===============3239790035271490973==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Could you describe a little more what negative scenario(s)
-do you tests?
+== Series Details ==
 
-> 
-> Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-> Cc: Luben Tuikov <luben.tuikov@amd.com>
-> Cc: Alex Deucher <alexander.deucher@amd.com>
-> Cc: Christian Koenig <christian.koenig@amd.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> 
-> Signed-off-by: Jesse zhang <jesse.zhang@amd.com>
-> ---
->  lib/amdgpu/amd_dispatch.c   |  4 ++--
->  lib/amdgpu/amd_dispatch.h   |  2 +-
->  tests/amdgpu/amd_dispatch.c | 36 ++++++++++++++++++++++++++++++++----
->  3 files changed, 35 insertions(+), 7 deletions(-)
-> 
-> diff --git a/lib/amdgpu/amd_dispatch.c b/lib/amdgpu/amd_dispatch.c
-> index 9de3986ba..040381a11 100644
-> --- a/lib/amdgpu/amd_dispatch.c
-> +++ b/lib/amdgpu/amd_dispatch.c
-> @@ -524,7 +524,7 @@ amdgpu_dispatch_hang_slow_helper(amdgpu_device_handle device_handle,
->  	}
->  }
->  
-> -void amdgpu_gfx_dispatch_test(amdgpu_device_handle device_handle, uint32_t ip_type)
-> +void amdgpu_gfx_dispatch_test(amdgpu_device_handle device_handle, uint32_t ip_type, int hang)
->  {
->  	int r;
->  	struct drm_amdgpu_info_hw_ip info;
-> @@ -547,7 +547,7 @@ void amdgpu_gfx_dispatch_test(amdgpu_device_handle device_handle, uint32_t ip_ty
->  		amdgpu_memset_dispatch_test(device_handle, ip_type, ring_id,
->  					    version);
->  		amdgpu_memcpy_dispatch_test(device_handle, ip_type, ring_id,
-> -					    version, 0);
-> +					    version, hang);
->  	}
->  }
->  
-> diff --git a/lib/amdgpu/amd_dispatch.h b/lib/amdgpu/amd_dispatch.h
-> index c500b5b3f..4df8b1355 100644
-> --- a/lib/amdgpu/amd_dispatch.h
-> +++ b/lib/amdgpu/amd_dispatch.h
-> @@ -27,7 +27,7 @@
->  #include <amdgpu.h>
->  
->  void amdgpu_gfx_dispatch_test(amdgpu_device_handle device_handle,
-> -			      uint32_t ip_type);
-> +			      uint32_t ip_type, int hang);
->  
->  void amdgpu_memcpy_dispatch_test(amdgpu_device_handle device_handle,
->  					uint32_t ip_type,
-> diff --git a/tests/amdgpu/amd_dispatch.c b/tests/amdgpu/amd_dispatch.c
-> index 769f26cd0..e0e55781c 100644
-> --- a/tests/amdgpu/amd_dispatch.c
-> +++ b/tests/amdgpu/amd_dispatch.c
-> @@ -24,6 +24,18 @@ amdgpu_dispatch_hang_slow_compute(amdgpu_device_handle device_handle)
->  	amdgpu_dispatch_hang_slow_helper(device_handle, AMDGPU_HW_IP_COMPUTE);
->  }
->  
-> +static void
-> +amdgpu_dispatch_hang_gfx(amdgpu_device_handle device_handle)
-> +{
-> +	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_GFX, 1);
-> +}
-> +
-> +static void
-> +amdgpu_dispatch_hang_compute(amdgpu_device_handle device_handle)
-> +{
-> +	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_COMPUTE, 1);
-> +}
-> +
->  static void
->  amdgpu_gpu_reset_test(amdgpu_device_handle device_handle, int drm_amdgpu)
->  {
-> @@ -54,8 +66,8 @@ amdgpu_gpu_reset_test(amdgpu_device_handle device_handle, int drm_amdgpu)
->  	r = amdgpu_cs_ctx_free(context_handle);
->  	igt_assert_eq(r, 0);
->  
-> -	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_GFX);
-> -	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_COMPUTE);
-> +	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_GFX, 0);
-> +	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_COMPUTE, 0);
->  }
->  
->  igt_main
-> @@ -85,7 +97,7 @@ igt_main
->  		asic_rings_readness(device, 1, arr_cap);
->  
->  	}
-> -	igt_describe("Test-GPU-reset-using-a-binary-shader-to-hang-the-job-on-compute-ring");
-> +	igt_describe("Test-GPU-reset-using-a-binary-shader-to-slow-hang-the-job-on-compute-ring");
---------------------- ^
-Generally in descriptions use spaces to separate words,
-while in test names we should use '-'. This goes for all descriptions.
+Series: tests/kms_concurrent: remove pipe dependency in subtest name (rev2)
+URL   : https://patchwork.freedesktop.org/series/123865/
+State : success
 
->  	igt_subtest_with_dynamic("amdgpu-dispatch-test-compute-with-IP-COMPUTE") {
-------------------------------------^
-Here it is ok, it is test name.
+== Summary ==
 
-You may also look at Mauro patches for descriptions and use of
-testplan for generating test names at build time, not with
-running binary.
+CI Bug Log - changes from IGT_7522 -> IGTPW_9952
+====================================================
 
-Regards,
-Kamil
+Summary
+-------
 
->  		if (arr_cap[AMD_IP_COMPUTE]) {
->  			igt_dynamic_f("amdgpu-dispatch-test-compute")
-> @@ -93,7 +105,7 @@ igt_main
->  		}
->  	}
->  
-> -	igt_describe("Test-GPU-reset-using-a-binary-shader-to-hang-the-job-on-gfx-ring");
-> +	igt_describe("Test-GPU-reset-using-a-binary-shader-to-slow-hang-the-job-on-gfx-ring");
->  	igt_subtest_with_dynamic("amdgpu-dispatch-test-gfx-with-IP-GFX") {
->  		if (arr_cap[AMD_IP_GFX]) {
->  			igt_dynamic_f("amdgpu-dispatch-test-gfx")
-> @@ -101,6 +113,22 @@ igt_main
->  		}
->  	}
->  
-> +	igt_describe("Test-GPU-reset-using-a-binary-shader-to-the-job-on-gfx-ring");
-> +	igt_subtest_with_dynamic("amdgpu-dispatch-hang-test-gfx-with-IP-GFX") {
-> +		if (arr_cap[AMD_IP_GFX]) {
-> +			igt_dynamic_f("amdgpu-dispatch-hang-test-gfx")
-> +			amdgpu_dispatch_hang_gfx(device);
-> +		}
-> +	}
-> +
-> +	igt_describe("Test-GPU-reset-using-a-binary-shader-to-the-job-on-compute-ring");
-> +	igt_subtest_with_dynamic("amdgpu-dispatch-hang-test-compute-with-IP-COMPUTE") {
-> +		if (arr_cap[AMD_IP_COMPUTE]) {
-> +			igt_dynamic_f("amdgpu-dispatch-hang-test-compute")
-> +			amdgpu_dispatch_hang_compute(device);
-> +		}
-> +	}
-> +
->  	igt_describe("Test-GPU-reset-using-amdgpu-debugfs-to-hang-the-job-on-gfx-ring");
->  	igt_subtest_with_dynamic("amdgpu-reset-test-gfx-with-IP-GFX-and-COMPUTE") {
->  		if (arr_cap[AMD_IP_GFX] && arr_cap[AMD_IP_COMPUTE]) {
-> -- 
-> 2.25.1
-> 
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9952/index.html
+
+Participating hosts (37 -> 36)
+------------------------------
+
+  Additional (1): fi-kbl-soraka 
+  Missing    (2): bat-dg2-8 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_9952 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271] / [i915#2190])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9952/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#4613]) +3 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9952/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][3] ([i915#1886])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9952/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+
+  * igt@kms_dsc@dsc-basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][4] ([fdo#109271]) +9 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9952/fi-kbl-soraka/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-edp-1:
+    - bat-adlp-6:         [PASS][5] -> [ABORT][6] ([i915#7977] / [i915#8668])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7522/bat-adlp-6/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-edp-1.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9952/bat-adlp-6/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-edp-1.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - bat-mtlp-8:         [ABORT][7] ([i915#8213] / [i915#9262]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7522/bat-mtlp-8/igt@gem_exec_suspend@basic-s3@smem.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9952/bat-mtlp-8/igt@gem_exec_suspend@basic-s3@smem.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-bsw-nick:        [FAIL][9] ([i915#9276]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7522/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9952/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - fi-kbl-guc:         [FAIL][11] ([IGT#3]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7522/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9952/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [IGT#3]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#7359]: https://gitlab.freedesktop.org/drm/intel/issues/7359
+  [i915#7977]: https://gitlab.freedesktop.org/drm/intel/issues/7977
+  [i915#8213]: https://gitlab.freedesktop.org/drm/intel/issues/8213
+  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
+  [i915#8981]: https://gitlab.freedesktop.org/drm/intel/issues/8981
+  [i915#9262]: https://gitlab.freedesktop.org/drm/intel/issues/9262
+  [i915#9276]: https://gitlab.freedesktop.org/drm/intel/issues/9276
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7522 -> IGTPW_9952
+
+  CI-20190529: 20190529
+  CI_DRM_13729: fe7c35e5be39964f7c0b83899b9d5d9355848544 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_9952: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9952/index.html
+  IGT_7522: 334a1178a36a1327dc7fbba43ab16d1f3a7d887b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@kms_concurrent@multi-plane-atomic-resolution
++igt@kms_selftest@drm_cmdline
++igt@kms_selftest@drm_damage
++igt@kms_selftest@drm_dp_mst
++igt@kms_selftest@drm_plane
++igt@kms_selftest@framebuffer
+-igt@kms_concurrent@pipe-a
+-igt@kms_concurrent@pipe-b
+-igt@kms_concurrent@pipe-c
+-igt@kms_concurrent@pipe-d
+-igt@kms_concurrent@pipe-e
+-igt@kms_concurrent@pipe-f
+-igt@kms_concurrent@pipe-g
+-igt@kms_concurrent@pipe-h
+-igt@kms_selftest@drm_cmdline_parser
+-igt@kms_selftest@drm_damage_helper
+-igt@kms_selftest@drm_dp_mst_helper
+-igt@kms_selftest@drm_framebuffer
+-igt@kms_selftest@drm_plane_helper
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9952/index.html
+
+--===============3239790035271490973==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_concurrent: remove pipe dependency in subtest name (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123865/">https://patchwork.freedesktop.org/series/123865/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9952/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9952/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7522 -&gt; IGTPW_9952</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9952/index.html</p>
+<h2>Participating hosts (37 -&gt; 36)</h2>
+<p>Additional (1): fi-kbl-soraka <br />
+  Missing    (2): bat-dg2-8 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_9952 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9952/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9952/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9952/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9952/fi-kbl-soraka/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +9 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-edp-1:</p>
+<ul>
+<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7522/bat-adlp-6/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-edp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9952/bat-adlp-6/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7977">i915#7977</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@smem:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7522/bat-mtlp-8/igt@gem_exec_suspend@basic-s3@smem.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8213">i915#8213</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9262">i915#9262</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9952/bat-mtlp-8/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7522/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9276">i915#9276</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9952/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7522/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3">IGT#3</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9952/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7522 -&gt; IGTPW_9952</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13729: fe7c35e5be39964f7c0b83899b9d5d9355848544 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_9952: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9952/index.html<br />
+  IGT_7522: 334a1178a36a1327dc7fbba43ab16d1f3a7d887b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@kms_concurrent@multi-plane-atomic-resolution<br />
++igt@kms_selftest@drm_cmdline<br />
++igt@kms_selftest@drm_damage<br />
++igt@kms_selftest@drm_dp_mst<br />
++igt@kms_selftest@drm_plane<br />
++igt@kms_selftest@framebuffer<br />
+-igt@kms_concurrent@pipe-a<br />
+-igt@kms_concurrent@pipe-b<br />
+-igt@kms_concurrent@pipe-c<br />
+-igt@kms_concurrent@pipe-d<br />
+-igt@kms_concurrent@pipe-e<br />
+-igt@kms_concurrent@pipe-f<br />
+-igt@kms_concurrent@pipe-g<br />
+-igt@kms_concurrent@pipe-h<br />
+-igt@kms_selftest@drm_cmdline_parser<br />
+-igt@kms_selftest@drm_damage_helper<br />
+-igt@kms_selftest@drm_dp_mst_helper<br />
+-igt@kms_selftest@drm_framebuffer<br />
+-igt@kms_selftest@drm_plane_helper</p>
+
+</body>
+</html>
+
+--===============3239790035271490973==--
