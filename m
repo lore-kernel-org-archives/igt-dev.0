@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Mon, 9 Oct 2023 19:10:20 +0200
+Date: Mon, 9 Oct 2023 19:33:40 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20231009171020.c3zxnz4tkivysr3n@kamilkon-desk.igk.intel.com>
+Message-ID: <20231009173340.fddpdgblnlkisxfr@kamilkon-desk.igk.intel.com>
 References: <20231009122750.519112-13-janusz.krzysztofik@linux.intel.com>
- <20231009122750.519112-24-janusz.krzysztofik@linux.intel.com>
+ <20231009122750.519112-21-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231009122750.519112-24-janusz.krzysztofik@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 11/11] lib/kunit: Execute kunit test
- cases only when needed
+In-Reply-To: <20231009122750.519112-21-janusz.krzysztofik@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 08/11] lib/kunit: Provide all results
+ cleanup helper
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,134 +24,63 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Janusz,
-On 2023-10-09 at 14:28:02 +0200, Janusz Krzysztofik wrote:
-> IGT user interface allows to request execution of only those dynamic sub-
-> subtests that match a user provided name pattern.  If the user pattern
-> doesn't match any names of test cases provided by a kunit test module used
-> with the subtest to be run then no results from any dynamic sub-subtests
-> will be reported.  Since we already know the list of test cases provided
-> by the kunit test module, there is no need to load that module to execute
-> them unless the user pattern matches at least one of those test cases.
-> 
-> Don't load the kunit test module in execute mode before entering the loop
-> of dynamic sub-subtests, and do that only from the first actually executed
-> dynamic sub-subtest.
-> 
-> v2: Always pass last result to next dynamic sub-subtest, fetch first
->     result right after loading the kunit test module for execution.
+On 2023-10-09 at 14:27:59 +0200, Janusz Krzysztofik wrote:
+> Planned changes require a couple of loops around kunit_result_free().
+> Since we already have such loop, move it into a helper in preparation for
+> future uses.
 > 
 > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 > ---
->  lib/igt_kmod.c | 66 ++++++++++++++++++++++++++------------------------
->  1 file changed, 35 insertions(+), 31 deletions(-)
+>  lib/igt_kmod.c | 20 ++++++++++++++------
+>  1 file changed, 14 insertions(+), 6 deletions(-)
 > 
 > diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-> index 150fe49803..69915adc40 100644
+> index 387efbb59f..fed0855c84 100644
 > --- a/lib/igt_kmod.c
 > +++ b/lib/igt_kmod.c
-> @@ -981,33 +981,37 @@ static void __igt_kunit(struct igt_ktest *tst,
+> @@ -885,13 +885,25 @@ static void kunit_result_free(struct igt_ktap_result **r,
+>  	*r = NULL;
+>  }
 >  
->  	igt_skip_on(lseek(tst->kmsg, 0, SEEK_END) < 0);
->  
-> -	igt_skip_on(pthread_mutexattr_init(&attr));
-> -	igt_skip_on(pthread_mutexattr_setrobust(&attr, PTHREAD_MUTEX_ROBUST));
-> -	igt_skip_on(pthread_mutex_init(&modprobe.lock, &attr));
-> -
->  	ktap = igt_ktap_alloc(&results);
->  	igt_require(ktap);
->  
-> -	if (igt_debug_on(pthread_create(&modprobe.thread, NULL,
-> -					modprobe_task, &modprobe))) {
-> -		igt_ktap_free(ktap);
-> -		igt_skip("Failed to create a modprobe thread\n");
-> -	}
-> -
->  	igt_list_for_each_entry(t, tests, link) {
->  		igt_dynamic_f("%s%s%s",
->  			      strcmp(t->suite_name, name) ?  t->suite_name : "",
->  			      strcmp(t->suite_name, name) ? "-" : "",
->  			      t->case_name) {
->  
-> -			if (igt_list_empty(&results)) {
-> +			if (!modprobe.thread) {
-> +				igt_assert_eq(pthread_mutexattr_init(&attr), 0);
-> +				igt_assert_eq(pthread_mutexattr_setrobust(&attr,
-> +							  PTHREAD_MUTEX_ROBUST),
-> +					      0);
-> +				igt_assert_eq(pthread_mutex_init(&modprobe.lock,
-> +								 &attr), 0);
+> +static void kunit_results_free(struct igt_list_head *results,
+> +			       char **suite_name, char **case_name)
+> +{
+> +	struct igt_ktap_result *r, *rn;
 > +
-> +				modprobe.err = pthread_create(&modprobe.thread,
-> +							      NULL,
-> +							      modprobe_task,
-> +							      &modprobe);
-> +				igt_assert_eq(modprobe.err, 0);
+> +	igt_list_for_each_entry_safe(r, rn, results, link)
+> +		kunit_result_free(&r, suite_name, case_name);
 > +
-> +				igt_assert(igt_list_empty(&results));
->  				igt_assert_eq(ret, -EINPROGRESS);
->  				ret = kunit_kmsg_result_get(&results, &modprobe,
->  							    tst->kmsg, ktap);
->  				igt_fail_on(igt_list_empty(&results));
-> -			}
+> +	free(*case_name);
+> +	free(*suite_name);
+> +}
+> +
+>  static void
+>  __igt_kunit(struct igt_ktest *tst, const char *name, const char *opts)
+>  {
+>  	struct modprobe_data modprobe = { pthread_self(), tst->kmod, opts, 0, };
+>  	char *suite_name = NULL, *case_name = NULL;
+> -	struct igt_ktap_result *r, *rn;
+>  	struct igt_ktap_results *ktap;
+> +	struct igt_ktap_result *r;
+>  	pthread_mutexattr_t attr;
+>  	IGT_LIST_HEAD(results);
+>  	unsigned long taints;
+> @@ -997,11 +1009,7 @@ __igt_kunit(struct igt_ktest *tst, const char *name, const char *opts)
 >  
-> -			r = igt_list_first_entry(&results, r, link);
-> +				r = igt_list_first_entry(&results, r, link);
-> +			}
+>  	} while (ret == -EINPROGRESS);
 >  
->  			while (igt_debug_on_f(strcmp(r->suite_name, t->suite_name),
->  					      "suite_name expected: %s, got: %s\n",
-> @@ -1079,30 +1083,30 @@ static void __igt_kunit(struct igt_ktest *tst,
->  			igt_assert_eq(igt_kernel_tainted(&taints), 0);
->  		}
->  
+> -	igt_list_for_each_entry_safe(r, rn, &results, link)
 > -		kunit_result_free(&r, &suite_name, &case_name);
 > -
->  		if (igt_debug_on(ret != -EINPROGRESS))
->  			break;
->  	}
+> -	free(case_name);
+> -	free(suite_name);
+> +	kunit_results_free(&results, &suite_name, &case_name);
 >  
->  	kunit_results_free(&results, &suite_name, &case_name);
->  
-> -	switch (pthread_mutex_lock(&modprobe.lock)) {
-> -	case 0:
-> -		igt_debug_on(pthread_cancel(modprobe.thread));
-> -		igt_debug_on(pthread_mutex_unlock(&modprobe.lock));
-> -		igt_debug_on(pthread_join(modprobe.thread, NULL));
-> -		break;
-> -	case EOWNERDEAD:
-> -		/* leave the mutex unrecoverable */
-> -		igt_debug_on(pthread_mutex_unlock(&modprobe.lock));
-> -		break;
-> -	case ENOTRECOVERABLE:
-> -		break;
-> -	default:
-> -		igt_debug("pthread_mutex_lock() failed\n");
-> -		igt_debug_on(pthread_join(modprobe.thread, NULL));
-> -		break;
-> +	if (modprobe.thread) {
-> +		switch (pthread_mutex_lock(&modprobe.lock)) {
-> +		case 0:
-> +			igt_debug_on(pthread_cancel(modprobe.thread));
-> +			igt_debug_on(pthread_mutex_unlock(&modprobe.lock));
-> +			igt_debug_on(pthread_join(modprobe.thread, NULL));
-> +			break;
-> +		case EOWNERDEAD:
-> +			/* leave the mutex unrecoverable */
-> +			igt_debug_on(pthread_mutex_unlock(&modprobe.lock));
-> +			break;
-> +		case ENOTRECOVERABLE:
-> +			break;
-> +		default:
-> +			igt_debug("pthread_mutex_lock() failed\n");
-> +			igt_debug_on(pthread_join(modprobe.thread, NULL));
-> +			break;
-> +		}
->  	}
->  
->  	igt_ktap_free(ktap);
+>  	switch (pthread_mutex_lock(&modprobe.lock)) {
+>  	case 0:
 > -- 
 > 2.42.0
 > 
