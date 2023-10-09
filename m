@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 64ED110E0EB
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9B4B810E0F6
  for <igt-dev@lists.freedesktop.org>; Mon,  9 Oct 2023 10:03:37 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.31.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 1C257580DBE
+ by linux.intel.com (Postfix) with ESMTPS id 17ACA58041D
  for <igt-dev@lists.freedesktop.org>; Mon,  9 Oct 2023 03:03:36 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qpn6s-001eFj-0F
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qpn6s-001eFm-0I
  for igt-dev@lists.freedesktop.org; Mon, 09 Oct 2023 12:03:34 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon,  9 Oct 2023 12:01:38 +0200
-Message-ID: <20231009100332.392968-2-mauro.chehab@linux.intel.com>
+Date: Mon,  9 Oct 2023 12:01:39 +0200
+Message-ID: <20231009100332.392968-3-mauro.chehab@linux.intel.com>
 In-Reply-To: <20231009100332.392968-1-mauro.chehab@linux.intel.com>
 References: <20231009100332.392968-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/4] scripts/test_list.py: fix and simplify
- missing doc check
+Subject: [igt-dev] [PATCH i-g-t 2/4] intel/xe_sysfs_scheduler.c: remove
+ nonpriviledged-user tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,61 +34,30 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Instead of using regexes, we can simply use sets to check what's
-missing. I means an easier check and less error-prone.
+The logic which used to implement those were removed, but the doc
+tag was kept, making this out of sync with the actual tests on
+this file.
 
+Fixes: fc53c6bf1dad ("xe/xe_sysfs: Removing non privileged user test")
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- scripts/test_list.py | 34 ++++------------------------------
- 1 file changed, 4 insertions(+), 30 deletions(-)
+ tests/intel/xe_sysfs_scheduler.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/scripts/test_list.py b/scripts/test_list.py
-index daca290a02bd..c0462188ba8a 100644
---- a/scripts/test_list.py
-+++ b/scripts/test_list.py
-@@ -1105,39 +1105,13 @@ class TestList:
- 
-             doc_subtests.add(subtest)
- 
--        doc_subtests = list(sorted(doc_subtests))
--
-         # Get a list of tests from
--        run_subtests = self.get_testlist()
-+        run_subtests = set(self.get_testlist())
- 
--        # Compare arrays
-+        # Compare sets
- 
--        run_missing = []
--        doc_uneeded = []
--
--        test_regex = r""
--        for doc_test in doc_subtests:
--            if test_regex != r"":
--                test_regex += r"|"
--            test_regex += doc_test
--
--        test_regex = re.compile(r'^(' + test_regex + r')$')
--
--        for doc_test in doc_subtests:
--            found = False
--            for run_test in run_subtests:
--                if test_regex.match(run_test):
--                    found = True
--                    break
--            if not found:
--                doc_uneeded.append(doc_test)
--
--        for run_test in run_subtests:
--            found = False
--            if test_regex.match(run_test):
--                found = True
--            if not found:
--                run_missing.append(run_test)
-+        run_missing = list(sorted(run_subtests - doc_subtests))
-+        doc_uneeded = list(sorted(doc_subtests - run_subtests))
- 
-         if doc_uneeded:
-             for test_name in doc_uneeded:
+diff --git a/tests/intel/xe_sysfs_scheduler.c b/tests/intel/xe_sysfs_scheduler.c
+index e41fc4b6bb61..954dad1305f1 100644
+--- a/tests/intel/xe_sysfs_scheduler.c
++++ b/tests/intel/xe_sysfs_scheduler.c
+@@ -17,10 +17,6 @@
+  * Description: Test to check if %s arg[1] schedule parameter checks for min max values.
+  * Test category: functionality test
+  *
+- * SUBTEST: %s-nonprivileged-user
+- * Description: Test %s arg[1] schedule parameter for nonprivileged user.
+- * Test category: functionality test
+- *
+  * arg[1]:
+  *
+  * @preempt_timeout_us:		preempt timeout us
 -- 
 2.41.0
