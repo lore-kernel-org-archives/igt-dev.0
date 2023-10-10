@@ -1,14 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============1067680489778765124=="
-MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 10 Oct 2023 17:56:41 -0000
-Message-ID: <169696060123.28096.13190634771641946372@emeril.freedesktop.org>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7FD4310E32C
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Oct 2023 15:15:23 +0000 (UTC)
+Date: Tue, 10 Oct 2023 17:15:19 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20231010151519.ej4mjx5gkfench6r@kamilkon-desk.igk.intel.com>
 References: <20231010131743.535504-1-mauro.chehab@linux.intel.com>
-In-Reply-To: <20231010131743.535504-1-mauro.chehab@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgUHJvcGVy?=
- =?utf-8?q?ly_fix_compilation_breakage_when_Chamelium_is_disabled?=
+ <20231010131743.535504-3-mauro.chehab@linux.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231010131743.535504-3-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] scripts/test_list.py: fix and
+ simplify missing doc check
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,61 +20,75 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1067680489778765124==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Mauro,
+On 2023-10-10 at 15:17:20 +0200, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> Instead of using regexes, we can simply use sets to check what's
+> missing. This make checks easier and less error-prone.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-== Series Details ==
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Series: Properly fix compilation breakage when Chamelium is disabled
-URL   : https://patchwork.freedesktop.org/series/124903/
-State : failure
-
-== Summary ==
-
-Series 124903 revision 1 was fully merged or fully failed: no git log
-
-
-
---===============1067680489778765124==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Properly fix compilation breakage when Chamelium is disabled</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124903/">https://patchwork.freedesktop.org/series/124903/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-</table>
-
-
-    <p>Series 124903 revision 1 was fully merged or fully failed: no git log</p>
-
-</body>
-</html>
-
---===============1067680489778765124==--
+> ---
+>  scripts/test_list.py | 34 ++++------------------------------
+>  1 file changed, 4 insertions(+), 30 deletions(-)
+> 
+> diff --git a/scripts/test_list.py b/scripts/test_list.py
+> index daca290a02bd..c0462188ba8a 100644
+> --- a/scripts/test_list.py
+> +++ b/scripts/test_list.py
+> @@ -1105,39 +1105,13 @@ class TestList:
+>  
+>              doc_subtests.add(subtest)
+>  
+> -        doc_subtests = list(sorted(doc_subtests))
+> -
+>          # Get a list of tests from
+> -        run_subtests = self.get_testlist()
+> +        run_subtests = set(self.get_testlist())
+>  
+> -        # Compare arrays
+> +        # Compare sets
+>  
+> -        run_missing = []
+> -        doc_uneeded = []
+> -
+> -        test_regex = r""
+> -        for doc_test in doc_subtests:
+> -            if test_regex != r"":
+> -                test_regex += r"|"
+> -            test_regex += doc_test
+> -
+> -        test_regex = re.compile(r'^(' + test_regex + r')$')
+> -
+> -        for doc_test in doc_subtests:
+> -            found = False
+> -            for run_test in run_subtests:
+> -                if test_regex.match(run_test):
+> -                    found = True
+> -                    break
+> -            if not found:
+> -                doc_uneeded.append(doc_test)
+> -
+> -        for run_test in run_subtests:
+> -            found = False
+> -            if test_regex.match(run_test):
+> -                found = True
+> -            if not found:
+> -                run_missing.append(run_test)
+> +        run_missing = list(sorted(run_subtests - doc_subtests))
+> +        doc_uneeded = list(sorted(doc_subtests - run_subtests))
+>  
+>          if doc_uneeded:
+>              for test_name in doc_uneeded:
+> -- 
+> 2.41.0
+> 
 
