@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7C0A710E188
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Oct 2023 05:18:46 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon,  9 Oct 2023 14:28:00 +0200
-Message-ID: <20231009122750.519112-22-janusz.krzysztofik@linux.intel.com>
-In-Reply-To: <20231009122750.519112-13-janusz.krzysztofik@linux.intel.com>
-References: <20231009122750.519112-13-janusz.krzysztofik@linux.intel.com>
+Date: Tue, 10 Oct 2023 10:49:21 +0530
+Message-Id: <20231010051923.41431-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 09/11] lib/kunit: Prepare for KTAP
- parsing after modprobe completed
+Subject: [igt-dev] [PATCH i-g-t 0/2] tests/kms_vblank: Test cleanup and
+ dynamic conversion
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,89 +17,21 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We are going to add support for reading a list of kunit test cases
-provided by a kunit test module prior to executing those test cases.  That
-will be done by first loading kunit modules in list only mode, then
-reading the list from /dev/kmsg with our KTAP parser.  Since that parsing
-will be performed after the kunit test module is successfully loaded and
-there will be no concurrently running modprobe thread, we need to make
-synchronization of reads from /dev/kmsg with potential errors modprobe
-thread optional.
+Subtests are converted to dynamic subtests. Also, testplan
+documentation is updated.
+Review comments addressed from
+https://patchwork.freedesktop.org/series/109170/
 
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
----
- lib/igt_kmod.c | 50 ++++++++++++++++++++++++++------------------------
- 1 file changed, 26 insertions(+), 24 deletions(-)
+Swati Sharma (2):
+  tests/kms_vblank: cosmetic changes
+  tests/kms_vblank: convert test to dynamic
 
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index fed0855c84..ed41aa1235 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -802,34 +802,36 @@ static int kunit_kmsg_result_get(struct igt_list_head *results,
- 		if (igt_debug_on(igt_kernel_tainted(&taints)))
- 			return -ENOTRECOVERABLE;
- 
--		err = igt_debug_on(sigaction(SIGCHLD, &sigchld, saved));
--		if (err == -1)
--			return -errno;
--		else if (unlikely(err))
--			return err;
--
--		err = pthread_mutex_lock(&modprobe->lock);
--		switch (err) {
--		case EOWNERDEAD:
--			/* leave the mutex unrecoverable */
--			igt_debug_on(pthread_mutex_unlock(&modprobe->lock));
--			__attribute__ ((fallthrough));
--		case ENOTRECOVERABLE:
--			igt_debug_on(sigaction(SIGCHLD, saved, NULL));
--			if (igt_debug_on(modprobe->err))
--				return modprobe->err;
--			break;
--		case 0:
--			break;
--		default:
--			igt_debug("pthread_mutex_lock() error: %d\n", err);
--			igt_debug_on(sigaction(SIGCHLD, saved, NULL));
--			return -err;
-+		if (modprobe) {
-+			err = igt_debug_on(sigaction(SIGCHLD, &sigchld, saved));
-+			if (err == -1)
-+				return -errno;
-+			else if (unlikely(err))
-+				return err;
-+
-+			err = pthread_mutex_lock(&modprobe->lock);
-+			switch (err) {
-+			case EOWNERDEAD:
-+				/* leave the mutex unrecoverable */
-+				igt_debug_on(pthread_mutex_unlock(&modprobe->lock));
-+				__attribute__ ((fallthrough));
-+			case ENOTRECOVERABLE:
-+				igt_debug_on(sigaction(SIGCHLD, saved, NULL));
-+				if (igt_debug_on(modprobe->err))
-+					return modprobe->err;
-+				break;
-+			case 0:
-+				break;
-+			default:
-+				igt_debug("pthread_mutex_lock() error: %d\n", err);
-+				igt_debug_on(sigaction(SIGCHLD, saved, NULL));
-+				return -err;
-+			}
- 		}
- 
- 		ret = read(fd, record, BUF_LEN);
- 
--		if (!err) {
-+		if (modprobe && !err) {
- 			igt_debug_on(pthread_mutex_unlock(&modprobe->lock));
- 			igt_debug_on(sigaction(SIGCHLD, saved, NULL));
- 		}
+ tests/kms_vblank.c | 266 +++++++++++++++------------------------------
+ 1 file changed, 86 insertions(+), 180 deletions(-)
+
 -- 
-2.42.0
+2.25.1
