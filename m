@@ -1,16 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============0724192951734871226=="
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0FBB810E32C
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Oct 2023 15:32:21 +0000 (UTC)
+Message-ID: <10312d16-e516-447b-8ba8-cdc10ed0aca8@intel.com>
+Date: Tue, 10 Oct 2023 21:02:15 +0530
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Wu, Hersen" <hersenxs.wu@amd.com>
-Date: Tue, 10 Oct 2023 14:59:20 -0000
-Message-ID: <169694996003.28097.11732753088099856183@emeril.freedesktop.org>
-References: <20231001162828.74566-1-hersenxs.wu@amd.com>
-In-Reply-To: <20231001162828.74566-1-hersenxs.wu@amd.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_s?=
- =?utf-8?q?tarting_with_=5B1/2=2Ci-g-t=5D_tests/kms=5Fcursor=5Fcrc=3A_Fix_?=
- =?utf-8?q?tests_be_skipped_on_AMD_gpu_=28rev6=29?=
+Content-Language: en-US
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20230926114751.2757259-1-bhanuprakash.modem@intel.com>
+ <20230926114751.2757259-2-bhanuprakash.modem@intel.com>
+ <1489acac-66a9-02a5-912a-280a1c5d1b96@intel.com>
+In-Reply-To: <1489acac-66a9-02a5-912a-280a1c5d1b96@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [i-g-t 1/2] tests/intel/kms_pm_lpsp: Test optimization
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,158 +23,131 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0724192951734871226==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+LGTM
 
-== Series Details ==
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 
-Series: series starting with [1/2,i-g-t] tests/kms_cursor_crc: Fix tests be skipped on AMD gpu (rev6)
-URL   : https://patchwork.freedesktop.org/series/124496/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7524_BAT -> XEIGTPW_9961_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_9961_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank:
-    - bat-adlp-7:         [FAIL][1] ([Intel XE#480]) -> [PASS][2] +1 other test pass
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7524/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9961/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html
-
-  * {igt@xe_create@create-execqueues-noleak}:
-    - bat-adlp-7:         [FAIL][3] ([Intel XE#524]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7524/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9961/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
-
-  * igt@xe_exec_store@basic-store:
-    - bat-pvc-2:          [DMESG-WARN][5] ([Intel XE#696]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7524/bat-pvc-2/igt@xe_exec_store@basic-store.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9961/bat-pvc-2/igt@xe_exec_store@basic-store.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
-  [Intel XE#696]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/696
-
-
-Build changes
--------------
-
-  * IGT: IGT_7524 -> IGTPW_9961
-
-  IGTPW_9961: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9961/index.html
-  IGT_7524: 37904ee1b9f4eb39b99641e79fa174d241b0e3ca @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-423-37b2d042c23ae6a10055ea92101a15083d64c718: 37b2d042c23ae6a10055ea92101a15083d64c718
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9961/index.html
-
---===============0724192951734871226==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [1/2,i-g-t] tests/kms_cursor_crc: Fix tests be skipped on AMD gpu (rev6)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124496/">https://patchwork.freedesktop.org/series/124496/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9961/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9961/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7524_BAT -&gt; XEIGTPW_9961_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_9961_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7524/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9961/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>{igt@xe_create@create-execqueues-noleak}:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7524/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9961/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_store@basic-store:</p>
-<ul>
-<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7524/bat-pvc-2/igt@xe_exec_store@basic-store.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/696">Intel XE#696</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9961/bat-pvc-2/igt@xe_exec_store@basic-store.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7524 -&gt; IGTPW_9961</li>
-</ul>
-<p>IGTPW_9961: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9961/index.html<br />
-  IGT_7524: 37904ee1b9f4eb39b99641e79fa174d241b0e3ca @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-423-37b2d042c23ae6a10055ea92101a15083d64c718: 37b2d042c23ae6a10055ea92101a15083d64c718</p>
-
-</body>
-</html>
-
---===============0724192951734871226==--
+On 27-Sep-23 12:48 PM, Sharma, Swati2 wrote:
+> Hi Bhanu,
+> 
+> On 26-Sep-23 5:17 PM, Bhanuprakash Modem wrote:
+>> - Don't skip dynamic subtest, instead don't run it
+>> - Remove hard coded pipe & make it generic
+> 
+> LPSP is enabled only on pipe A, then why we want to make this generic?
+> 
+>>
+>> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>> ---
+>>   tests/intel/kms_pm_lpsp.c | 49 +++++++++++++++++++++++++--------------
+>>   1 file changed, 32 insertions(+), 17 deletions(-)
+>>
+>> diff --git a/tests/intel/kms_pm_lpsp.c b/tests/intel/kms_pm_lpsp.c
+>> index 14f4b77f5..d3e543048 100644
+>> --- a/tests/intel/kms_pm_lpsp.c
+>> +++ b/tests/intel/kms_pm_lpsp.c
+>> @@ -38,7 +38,7 @@
+>>    * Category: Display
+>>    *
+>>    * SUBTEST: kms-lpsp
+>> - * Description: This test validates lpsp on all connected outputs on 
+>> low power PIPE_A
+>> + * Description: This test validates lpsp on all connected outputs on 
+>> low power pipes
+>>    * Driver requirement: i915, xe
+>>    * Functionality: pm_lpsp
+>>    * Mega feature: Display Power
+>> @@ -65,6 +65,7 @@ typedef struct {
+>>       struct igt_fb fb;
+>>       drmModeModeInfo *mode;
+>>       igt_output_t *output;
+>> +    enum pipe pipe;
+>>   } data_t;
+>>   static bool lpsp_is_enabled(data_t *data)
+>> @@ -122,8 +123,7 @@ static void setup_lpsp_output(data_t *data)
+>>   {
+>>       igt_plane_t *primary;
+>> -    /* set output pipe = PIPE_A for LPSP */
+>> -    igt_output_set_pipe(data->output, PIPE_A);
+>> +    igt_output_set_pipe(data->output, data->pipe);
+>>       primary = igt_output_get_plane_type(data->output,
+>>                           DRM_PLANE_TYPE_PRIMARY);
+>>       igt_plane_set_fb(primary, NULL);
+>> @@ -152,15 +152,12 @@ static void test_cleanup(data_t *data)
+>>       data->output = NULL;
+>>   }
+>> -static void test_lpsp(data_t *data)
+>> +static bool test_constraint(data_t *data)
+>>   {
+>>       drmModeConnectorPtr c = data->output->config.connector;
+>>       int i;
+>> -    /* LPSP is low power single pipe usages i.e. PIPE_A */
+>> -    igt_require(igt_pipe_connector_valid(PIPE_A, data->output));
+>> -    igt_require_f(i915_output_is_lpsp_capable(data->drm_fd, 
+>> data->output),
+>> -              "output is not lpsp capable\n");
+>> +    igt_display_reset(&data->display);
+>>       data->mode = igt_output_get_mode(data->output);
+>> @@ -172,13 +169,15 @@ static void test_lpsp(data_t *data)
+>>                   data->mode = &c->modes[i];
+>>                   igt_output_override_mode(data->output,
+>>                                data->mode);
+>> -                break;
+>> +                return true;
+>>               }
+>>           }
+>> -    igt_require(data->mode->hdisplay <= 3840 &&
+>> -            data->mode->vdisplay <= 2160);
+>> +    return false;
+>> +}
+>> +static void test_lpsp(data_t *data)
+>> +{
+>>       setup_lpsp_output(data);
+>>       igt_assert_f(igt_wait(lpsp_is_enabled(data), 1000, 100),
+>>                "%s: lpsp is not enabled\n%s:\n%s\n",
+>> @@ -211,19 +210,35 @@ igt_main
+>>           screens_disabled_subtest(&data);
+>>       }
+>> -    igt_describe("This test validates lpsp on all connected outputs 
+>> on low power PIPE_A");
+>> +    igt_describe("This test validates lpsp on all connected outputs 
+>> on low power pipes");
+>>       igt_subtest_with_dynamic_f("kms-lpsp") {
+>>           igt_display_t *display = &data.display;
+>>           igt_output_t *output;
+>> +        enum pipe pipe;
+>>           for_each_connected_output(display, output) {
+>> -            igt_dynamic_f("kms-lpsp-%s",
+>> -                      
+>> kmstest_connector_type_str(output->config.connector->connector_type)) {
+>> +            if (!i915_output_is_lpsp_capable(data.drm_fd, output))
+>> +                continue;
+>> +
+>> +            for_each_pipe(display, pipe) {
+>> +                if (!igt_pipe_connector_valid(pipe, output))
+>> +                    continue;
+>> +
+>> +                /* LPSP is low power single pipe usages i.e. PIPE_A */
+>> +                if (pipe != PIPE_A)
+>> +                    continue;
+>> +
+>>                   data.output = output;
+>> -                test_lpsp(&data);
+>> -            }
+>> +                data.pipe = pipe;
+>> +
+>> +                if (!test_constraint(&data))
+>> +                    continue;
+>> -            test_cleanup(&data);
+>> +                igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), 
+>> igt_output_name(output))
+>> +                    test_lpsp(&data);
+>> +
+>> +                test_cleanup(&data);
+>> +            }
+>>           }
+>>       }
