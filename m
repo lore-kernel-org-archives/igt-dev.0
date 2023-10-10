@@ -1,21 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 55F9010E399
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Oct 2023 15:33:54 +0000 (UTC)
-Message-ID: <c3744d85-c417-4044-83bb-e1e4d884b341@intel.com>
-Date: Tue, 10 Oct 2023 21:03:30 +0530
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E48ED10E395
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Oct 2023 15:49:35 +0000 (UTC)
+Date: Tue, 10 Oct 2023 10:49:27 -0500
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: <igt-dev@lists.freedesktop.org>
+Message-ID: <p3vtsaitav4qftz6wibwk6fh5okqfmq74mt22ph4rx7trazhps@r7rq3k6m6eyr>
+References: <20231004154922.3478014-1-lucas.demarchi@intel.com>
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20231004154922.3478014-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230926114751.2757259-1-bhanuprakash.modem@intel.com>
- <20230926114751.2757259-3-bhanuprakash.modem@intel.com>
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20230926114751.2757259-3-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [i-g-t 2/2] tests/intel/kms_pm_lpsp: Fix Bigjoiner
- checks
+Subject: Re: [igt-dev] [PATCH i-g-t v3 00/13] Adapt copy commands for Xe2
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,78 +23,32 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LGTM
+On Wed, Oct 04, 2023 at 08:49:09AM -0700, Lucas De Marchi wrote:
+>A few copy commands changed for Xe2, mainly adding or moving the bits
+>used for MOCS. This adapts the places we are manually adding the
+>commands in the batch buffer, the gpu_cmds and the intel_blt libraries.
+>
+>Missing here is the conversion of lib/intel_batchbuffer.c. I had
+>understood that intel_batchbuffer would end up using the new intel_blt.
+>So, it may just be that we have some patches being cooked for that. Or
+>I understood it wrong. Anyway, it doesn't seem good that we have
+>basically 3 ways to do the same thing.
+>
+>Also it seems that this is the first time we are updating intel_blt for
+>a platform with a breaking change. I used 2 different approaches in how
+>to adapt the struct: one for xy-block-copy/xy-fast-copy and another for
+>ctrl-surf-copy. The reason is that for the former there was just a minor
+>change and the latter basically rewrites all the dwords. Going forward I
+>think we should keep applying small deltas to at most 1 or 2 breaking
+>changes, otherwise it makes it harder to read.
+>
+>v2: Provide fixes according to the feedback in v1
+>v3:
+>  - Fix build: for some reason ninja was caching tests/intel/gem_ccs.o,
+>    so it was not getting rebuilt
+>  - Use mocs index 4 for WB (depends on kernel patch)
+>
 
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+Patches applied. Thanks for the reviews
 
-On 26-Sep-23 5:17 PM, Bhanuprakash Modem wrote:
-> Instead of writing a new logic to check the Bigjoiner validity,
-> use the existing helpers from IGT lib.
-> 
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->   tests/intel/kms_pm_lpsp.c | 25 +++++++++++++++----------
->   1 file changed, 15 insertions(+), 10 deletions(-)
-> 
-> diff --git a/tests/intel/kms_pm_lpsp.c b/tests/intel/kms_pm_lpsp.c
-> index d3e543048..cb3c3e379 100644
-> --- a/tests/intel/kms_pm_lpsp.c
-> +++ b/tests/intel/kms_pm_lpsp.c
-> @@ -68,6 +68,8 @@ typedef struct {
->   	enum pipe pipe;
->   } data_t;
->   
-> +static int max_dotclock;
-> +
->   static bool lpsp_is_enabled(data_t *data)
->   {
->   	char buf[MAX_SINK_LPSP_INFO_BUF_LEN];
-> @@ -123,7 +125,6 @@ static void setup_lpsp_output(data_t *data)
->   {
->   	igt_plane_t *primary;
->   
-> -	igt_output_set_pipe(data->output, data->pipe);
->   	primary = igt_output_get_plane_type(data->output,
->   					    DRM_PLANE_TYPE_PRIMARY);
->   	igt_plane_set_fb(primary, NULL);
-> @@ -158,20 +159,22 @@ static bool test_constraint(data_t *data)
->   	int i;
->   
->   	igt_display_reset(&data->display);
-> +	igt_output_set_pipe(data->output, data->pipe);
->   
->   	data->mode = igt_output_get_mode(data->output);
->   
-> -	/* For LPSP avoid pipe big joiner by atleast 4k mode */
-> -	if (data->mode->hdisplay > 3840 && data->mode->vdisplay > 2160)
-> +	/* For LPSP avoid Bigjoiner. */
-> +	if (igt_bigjoiner_possible(data->mode, max_dotclock)) {
->   		for (i = 0; i < c->count_modes; i++) {
-> -			if (c->modes[i].hdisplay <= 3840 &&
-> -			    c->modes[i].vdisplay <= 2160) {
-> -				data->mode = &c->modes[i];
-> -				igt_output_override_mode(data->output,
-> -							 data->mode);
-> -				return true;
-> -			}
-> +			data->mode = &c->modes[i];
-> +			if (igt_bigjoiner_possible(data->mode, max_dotclock))
-> +				continue;
-> +
-> +			igt_output_override_mode(data->output, data->mode);
-> +
-> +			return true;
->   		}
-> +	}
->   
->   	return false;
->   }
-> @@ -200,6 +203,8 @@ igt_main
->   		data.devid = intel_get_drm_devid(data.drm_fd);
->   		igt_display_require(&data.display, data.drm_fd);
->   		igt_require(igt_pm_dmc_loaded(data.debugfs_fd));
-> +
-> +		max_dotclock = igt_get_max_dotclock(data.drm_fd);
->   	}
->   
->   	igt_describe("This test validates lpsp while all crtc are disabled");
+Lucas De Marchi
