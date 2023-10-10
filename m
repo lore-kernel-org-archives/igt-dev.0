@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com
- (mail-bn7nam10on2050.outbound.protection.outlook.com [40.107.92.50])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6F07010E1B5
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Oct 2023 06:50:42 +0000 (UTC)
-From: Jesse Zhang <jesse.zhang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Tue, 10 Oct 2023 14:50:01 +0800
-Message-ID: <20231010065001.1785964-1-jesse.zhang@amd.com>
+Content-Type: multipart/alternative;
+ boundary="===============1249455907855027078=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH] tests/amd_dispatch: add negative test
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Date: Tue, 10 Oct 2023 06:55:28 -0000
+Message-ID: <169692092804.28098.14506756307587622886@emeril.freedesktop.org>
+References: <20231010051923.41431-1-swati2.sharma@intel.com>
+In-Reply-To: <20231010051923.41431-1-swati2.sharma@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_tests/km?=
+ =?utf-8?q?s=5Fvblank=3A_Test_cleanup_and_dynamic_conversion_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,141 +17,178 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Luben Tuikov <luben.tuikov@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>, Christian
- Koenig <christian.koenig@amd.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Dispatch a bad program on gfx/compute ring.
-Check wether they will hang.
+--===============1249455907855027078==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-V2:
-  -add detail description and fix code style(Kamil)
+== Series Details ==
 
-Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Cc: Luben Tuikov <luben.tuikov@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian Koenig <christian.koenig@amd.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- lib/amdgpu/amd_dispatch.c   |  4 ++--
- lib/amdgpu/amd_dispatch.h   |  2 +-
- tests/amdgpu/amd_dispatch.c | 38 ++++++++++++++++++++++++++++++++-----
- 3 files changed, 36 insertions(+), 8 deletions(-)
+Series: tests/kms_vblank: Test cleanup and dynamic conversion (rev2)
+URL   : https://patchwork.freedesktop.org/series/123847/
+State : failure
 
-diff --git a/lib/amdgpu/amd_dispatch.c b/lib/amdgpu/amd_dispatch.c
-index 9de3986ba..040381a11 100644
---- a/lib/amdgpu/amd_dispatch.c
-+++ b/lib/amdgpu/amd_dispatch.c
-@@ -524,7 +524,7 @@ amdgpu_dispatch_hang_slow_helper(amdgpu_device_handle device_handle,
- 	}
- }
- 
--void amdgpu_gfx_dispatch_test(amdgpu_device_handle device_handle, uint32_t ip_type)
-+void amdgpu_gfx_dispatch_test(amdgpu_device_handle device_handle, uint32_t ip_type, int hang)
- {
- 	int r;
- 	struct drm_amdgpu_info_hw_ip info;
-@@ -547,7 +547,7 @@ void amdgpu_gfx_dispatch_test(amdgpu_device_handle device_handle, uint32_t ip_ty
- 		amdgpu_memset_dispatch_test(device_handle, ip_type, ring_id,
- 					    version);
- 		amdgpu_memcpy_dispatch_test(device_handle, ip_type, ring_id,
--					    version, 0);
-+					    version, hang);
- 	}
- }
- 
-diff --git a/lib/amdgpu/amd_dispatch.h b/lib/amdgpu/amd_dispatch.h
-index c500b5b3f..4df8b1355 100644
---- a/lib/amdgpu/amd_dispatch.h
-+++ b/lib/amdgpu/amd_dispatch.h
-@@ -27,7 +27,7 @@
- #include <amdgpu.h>
- 
- void amdgpu_gfx_dispatch_test(amdgpu_device_handle device_handle,
--			      uint32_t ip_type);
-+			      uint32_t ip_type, int hang);
- 
- void amdgpu_memcpy_dispatch_test(amdgpu_device_handle device_handle,
- 					uint32_t ip_type,
-diff --git a/tests/amdgpu/amd_dispatch.c b/tests/amdgpu/amd_dispatch.c
-index 769f26cd0..323284306 100644
---- a/tests/amdgpu/amd_dispatch.c
-+++ b/tests/amdgpu/amd_dispatch.c
-@@ -24,6 +24,18 @@ amdgpu_dispatch_hang_slow_compute(amdgpu_device_handle device_handle)
- 	amdgpu_dispatch_hang_slow_helper(device_handle, AMDGPU_HW_IP_COMPUTE);
- }
- 
-+static void
-+amdgpu_dispatch_hang_gfx(amdgpu_device_handle device_handle)
-+{
-+	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_GFX, 1);
-+}
-+
-+static void
-+amdgpu_dispatch_hang_compute(amdgpu_device_handle device_handle)
-+{
-+	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_COMPUTE, 1);
-+}
-+
- static void
- amdgpu_gpu_reset_test(amdgpu_device_handle device_handle, int drm_amdgpu)
- {
-@@ -54,8 +66,8 @@ amdgpu_gpu_reset_test(amdgpu_device_handle device_handle, int drm_amdgpu)
- 	r = amdgpu_cs_ctx_free(context_handle);
- 	igt_assert_eq(r, 0);
- 
--	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_GFX);
--	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_COMPUTE);
-+	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_GFX, 0);
-+	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_COMPUTE, 0);
- }
- 
- igt_main
-@@ -85,7 +97,7 @@ igt_main
- 		asic_rings_readness(device, 1, arr_cap);
- 
- 	}
--	igt_describe("Test-GPU-reset-using-a-binary-shader-to-hang-the-job-on-compute-ring");
-+	igt_describe("Test GPU reset using a binary shader to slow hang the job on compute ring");
- 	igt_subtest_with_dynamic("amdgpu-dispatch-test-compute-with-IP-COMPUTE") {
- 		if (arr_cap[AMD_IP_COMPUTE]) {
- 			igt_dynamic_f("amdgpu-dispatch-test-compute")
-@@ -93,7 +105,7 @@ igt_main
- 		}
- 	}
- 
--	igt_describe("Test-GPU-reset-using-a-binary-shader-to-hang-the-job-on-gfx-ring");
-+	igt_describe("Test GPU reset using a binary shader to slow hang the job on gfx ring");
- 	igt_subtest_with_dynamic("amdgpu-dispatch-test-gfx-with-IP-GFX") {
- 		if (arr_cap[AMD_IP_GFX]) {
- 			igt_dynamic_f("amdgpu-dispatch-test-gfx")
-@@ -101,7 +113,23 @@ igt_main
- 		}
- 	}
- 
--	igt_describe("Test-GPU-reset-using-amdgpu-debugfs-to-hang-the-job-on-gfx-ring");
-+	igt_describe("Test GPU reset using a binary shader to hang the job on gfx ring");
-+	igt_subtest_with_dynamic("amdgpu-dispatch-hang-test-gfx-with-IP-GFX") {
-+		if (arr_cap[AMD_IP_GFX]) {
-+			igt_dynamic_f("amdgpu-dispatch-hang-test-gfx")
-+			amdgpu_dispatch_hang_gfx(device);
-+		}
-+	}
-+
-+	igt_describe("Test GPU reset using a binary shader to hang the job on compute ring");
-+	igt_subtest_with_dynamic("amdgpu-dispatch-hang-test-compute-with-IP-COMPUTE") {
-+		if (arr_cap[AMD_IP_COMPUTE]) {
-+			igt_dynamic_f("amdgpu-dispatch-hang-test-compute")
-+			amdgpu_dispatch_hang_compute(device);
-+		}
-+	}
-+
-+	igt_describe("Test GPU reset using amdgpu debugfs to hang the job on gfx ring");
- 	igt_subtest_with_dynamic("amdgpu-reset-test-gfx-with-IP-GFX-and-COMPUTE") {
- 		if (arr_cap[AMD_IP_GFX] && arr_cap[AMD_IP_COMPUTE]) {
- 			igt_dynamic_f("amdgpu-reset-gfx-compute")
--- 
-2.25.1
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7523_BAT -> XEIGTPW_9955_BAT
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with XEIGTPW_9955_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_9955_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_9955_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-atsm-2:         [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7523/bat-atsm-2/igt@core_hotunplug@unbind-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9955/bat-atsm-2/igt@core_hotunplug@unbind-rebind.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9955_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:
+    - bat-dg2-oem2:       [FAIL][3] ([i915#2346]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7523/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9955/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
+
+  
+#### Warnings ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [INCOMPLETE][5] ([Intel XE#606] / [Intel XE#632]) -> [INCOMPLETE][6] ([Intel XE#632])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7523/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9955/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  [Intel XE#606]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/606
+  [Intel XE#632]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/632
+  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7523 -> IGTPW_9955
+
+  IGTPW_9955: 9955
+  IGT_7523: 361c2f92f1fe5641090f2fc59951fcaba15387f5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-423-37b2d042c23ae6a10055ea92101a15083d64c718: 37b2d042c23ae6a10055ea92101a15083d64c718
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9955/index.html
+
+--===============1249455907855027078==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_vblank: Test cleanup and dynamic conversion (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123847/">https://patchwork.freedesktop.org/series/123847/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9955/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9955/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7523_BAT -&gt; XEIGTPW_9955_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_9955_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_9955_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_9955_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@core_hotunplug@unbind-rebind:<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7523/bat-atsm-2/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9955/bat-atsm-2/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9955_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7523/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9955/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_frontbuffer_tracking@basic:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7523/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/606">Intel XE#606</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/632">Intel XE#632</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9955/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/632">Intel XE#632</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7523 -&gt; IGTPW_9955</li>
+</ul>
+<p>IGTPW_9955: 9955<br />
+  IGT_7523: 361c2f92f1fe5641090f2fc59951fcaba15387f5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-423-37b2d042c23ae6a10055ea92101a15083d64c718: 37b2d042c23ae6a10055ea92101a15083d64c718</p>
+
+</body>
+</html>
+
+--===============1249455907855027078==--
