@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam12on2050.outbound.protection.outlook.com [40.107.244.50])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EDDE010E3B1
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Oct 2023 17:48:47 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="------------UW9pFBOs0ZLCm0AO0fq0T6so"
-Message-ID: <00e82dce-720f-43ba-b9d6-556589b32170@amd.com>
-Date: Tue, 10 Oct 2023 13:48:39 -0400
-To: Jesse Zhang <jesse.zhang@amd.com>, igt-dev@lists.freedesktop.org
-References: <20231010065001.1785964-1-jesse.zhang@amd.com>
-Content-Language: en-US
-From: vitaly prosyak <vprosyak@amd.com>
-In-Reply-To: <20231010065001.1785964-1-jesse.zhang@amd.com>
+ boundary="===============5905140256876566718=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH] tests/amd_dispatch: add negative test
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Wu, Hersen" <hersenxs.wu@amd.com>
+Date: Tue, 10 Oct 2023 18:05:22 -0000
+Message-ID: <169696112231.28096.9054321214858192403@emeril.freedesktop.org>
+References: <20231002142023.713415-1-hersenxs.wu@amd.com>
+In-Reply-To: <20231002142023.713415-1-hersenxs.wu@amd.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/km?=
+ =?utf-8?q?s=5Fcursor=5Fcrc=3A_Fix_test_intermittent_failures_on_AMD_gpu_?=
+ =?utf-8?b?KHJldjgp?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,330 +18,146 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Alex Deucher <alexander.deucher@amd.com>,
- Luben Tuikov <luben.tuikov@amd.com>,
- Christian Koenig <christian.koenig@amd.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---------------UW9pFBOs0ZLCm0AO0fq0T6so
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+--===============5905140256876566718==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Hi Jesse,
+== Series Details ==
 
-Please ,add to the commit message as below.
+Series: tests/kms_cursor_crc: Fix test intermittent failures on AMD gpu (rev8)
+URL   : https://patchwork.freedesktop.org/series/124524/
+State : success
 
-The change looks good to me.
+== Summary ==
 
-Reviewed-by : Vitaly Prosyak <vitaly.prosyak@amd.com>
+CI Bug Log - changes from XEIGT_7527_BAT -> XEIGTPW_9962_BAT
+====================================================
 
---
+Summary
+-------
 
-Thanks, Vitaly
+  **SUCCESS**
 
-On 2023-10-10 02:50, Jesse Zhang wrote:
-> Dispatch a bad program on gfx/compute ring.
-> Check wether they will hang.
-Expose the additional parameter 'hung' to the upper layer.
+  No regressions found.
 
-Dispatch existent a binary shader that waits for the register to be changed, 
+  
 
-but it does not occur and as a result, we have GPU reset and check this.
+Participating hosts (4 -> 4)
+------------------------------
 
-Improve test description.
+  No changes in participating hosts
 
->
-> V2:
->   -add detail description and fix code style(Kamil)
->
-> Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-> Cc: Luben Tuikov <luben.tuikov@amd.com>
-> Cc: Alex Deucher <alexander.deucher@amd.com>
-> Cc: Christian Koenig <christian.koenig@amd.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  lib/amdgpu/amd_dispatch.c   |  4 ++--
->  lib/amdgpu/amd_dispatch.h   |  2 +-
->  tests/amdgpu/amd_dispatch.c | 38 ++++++++++++++++++++++++++++++++-----
->  3 files changed, 36 insertions(+), 8 deletions(-)
->
-> diff --git a/lib/amdgpu/amd_dispatch.c b/lib/amdgpu/amd_dispatch.c
-> index 9de3986ba..040381a11 100644
-> --- a/lib/amdgpu/amd_dispatch.c
-> +++ b/lib/amdgpu/amd_dispatch.c
-> @@ -524,7 +524,7 @@ amdgpu_dispatch_hang_slow_helper(amdgpu_device_handle device_handle,
->  	}
->  }
->  
-> -void amdgpu_gfx_dispatch_test(amdgpu_device_handle device_handle, uint32_t ip_type)
-> +void amdgpu_gfx_dispatch_test(amdgpu_device_handle device_handle, uint32_t ip_type, int hang)
->  {
->  	int r;
->  	struct drm_amdgpu_info_hw_ip info;
-> @@ -547,7 +547,7 @@ void amdgpu_gfx_dispatch_test(amdgpu_device_handle device_handle, uint32_t ip_ty
->  		amdgpu_memset_dispatch_test(device_handle, ip_type, ring_id,
->  					    version);
->  		amdgpu_memcpy_dispatch_test(device_handle, ip_type, ring_id,
-> -					    version, 0);
-> +					    version, hang);
->  	}
->  }
->  
-> diff --git a/lib/amdgpu/amd_dispatch.h b/lib/amdgpu/amd_dispatch.h
-> index c500b5b3f..4df8b1355 100644
-> --- a/lib/amdgpu/amd_dispatch.h
-> +++ b/lib/amdgpu/amd_dispatch.h
-> @@ -27,7 +27,7 @@
->  #include <amdgpu.h>
->  
->  void amdgpu_gfx_dispatch_test(amdgpu_device_handle device_handle,
-> -			      uint32_t ip_type);
-> +			      uint32_t ip_type, int hang);
->  
->  void amdgpu_memcpy_dispatch_test(amdgpu_device_handle device_handle,
->  					uint32_t ip_type,
-> diff --git a/tests/amdgpu/amd_dispatch.c b/tests/amdgpu/amd_dispatch.c
-> index 769f26cd0..323284306 100644
-> --- a/tests/amdgpu/amd_dispatch.c
-> +++ b/tests/amdgpu/amd_dispatch.c
-> @@ -24,6 +24,18 @@ amdgpu_dispatch_hang_slow_compute(amdgpu_device_handle device_handle)
->  	amdgpu_dispatch_hang_slow_helper(device_handle, AMDGPU_HW_IP_COMPUTE);
->  }
->  
-> +static void
-> +amdgpu_dispatch_hang_gfx(amdgpu_device_handle device_handle)
-> +{
-> +	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_GFX, 1);
-> +}
-> +
-> +static void
-> +amdgpu_dispatch_hang_compute(amdgpu_device_handle device_handle)
-> +{
-> +	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_COMPUTE, 1);
-> +}
-> +
->  static void
->  amdgpu_gpu_reset_test(amdgpu_device_handle device_handle, int drm_amdgpu)
->  {
-> @@ -54,8 +66,8 @@ amdgpu_gpu_reset_test(amdgpu_device_handle device_handle, int drm_amdgpu)
->  	r = amdgpu_cs_ctx_free(context_handle);
->  	igt_assert_eq(r, 0);
->  
-> -	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_GFX);
-> -	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_COMPUTE);
-> +	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_GFX, 0);
-> +	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_COMPUTE, 0);
->  }
->  
->  igt_main
-> @@ -85,7 +97,7 @@ igt_main
->  		asic_rings_readness(device, 1, arr_cap);
->  
->  	}
-> -	igt_describe("Test-GPU-reset-using-a-binary-shader-to-hang-the-job-on-compute-ring");
-> +	igt_describe("Test GPU reset using a binary shader to slow hang the job on compute ring");
->  	igt_subtest_with_dynamic("amdgpu-dispatch-test-compute-with-IP-COMPUTE") {
->  		if (arr_cap[AMD_IP_COMPUTE]) {
->  			igt_dynamic_f("amdgpu-dispatch-test-compute")
-> @@ -93,7 +105,7 @@ igt_main
->  		}
->  	}
->  
-> -	igt_describe("Test-GPU-reset-using-a-binary-shader-to-hang-the-job-on-gfx-ring");
-> +	igt_describe("Test GPU reset using a binary shader to slow hang the job on gfx ring");
->  	igt_subtest_with_dynamic("amdgpu-dispatch-test-gfx-with-IP-GFX") {
->  		if (arr_cap[AMD_IP_GFX]) {
->  			igt_dynamic_f("amdgpu-dispatch-test-gfx")
-> @@ -101,7 +113,23 @@ igt_main
->  		}
->  	}
->  
-> -	igt_describe("Test-GPU-reset-using-amdgpu-debugfs-to-hang-the-job-on-gfx-ring");
-> +	igt_describe("Test GPU reset using a binary shader to hang the job on gfx ring");
-> +	igt_subtest_with_dynamic("amdgpu-dispatch-hang-test-gfx-with-IP-GFX") {
-> +		if (arr_cap[AMD_IP_GFX]) {
-> +			igt_dynamic_f("amdgpu-dispatch-hang-test-gfx")
-> +			amdgpu_dispatch_hang_gfx(device);
-> +		}
-> +	}
-> +
-> +	igt_describe("Test GPU reset using a binary shader to hang the job on compute ring");
-> +	igt_subtest_with_dynamic("amdgpu-dispatch-hang-test-compute-with-IP-COMPUTE") {
-> +		if (arr_cap[AMD_IP_COMPUTE]) {
-> +			igt_dynamic_f("amdgpu-dispatch-hang-test-compute")
-> +			amdgpu_dispatch_hang_compute(device);
-> +		}
-> +	}
-> +
-> +	igt_describe("Test GPU reset using amdgpu debugfs to hang the job on gfx ring");
->  	igt_subtest_with_dynamic("amdgpu-reset-test-gfx-with-IP-GFX-and-COMPUTE") {
->  		if (arr_cap[AMD_IP_GFX] && arr_cap[AMD_IP_COMPUTE]) {
->  			igt_dynamic_f("amdgpu-reset-gfx-compute")
---------------UW9pFBOs0ZLCm0AO0fq0T6so
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Known issues
+------------
 
-<!DOCTYPE html><html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body>
-    <p>Hi Jesse,</p>
-    <p>Please ,add to the commit message as below.</p>
-    <p>The change looks good to me.<br>
-    </p>
-    <p><span style="white-space: pre-wrap">Reviewed-by : Vitaly Prosyak <a class="moz-txt-link-rfc2396E" href="mailto:luben.tuikov@amd.com">&lt;vitaly.prosyak@amd.com&gt;</a>
-</span></p>
-    <p><span style="white-space: pre-wrap">--</span></p>
-    <p><span style="white-space: pre-wrap">Thanks, Vitaly
-</span></p>
-    <p></p>
-    <p></p>
-    On 2023-10-10 02:50, Jesse Zhang wrote:<br>
-    <blockquote type="cite" cite="mid:20231010065001.1785964-1-jesse.zhang@amd.com">
-      <pre class="moz-quote-pre" wrap="">Dispatch a bad program on gfx/compute ring.
-Check wether they will hang.</pre>
-    </blockquote>
-    Expose the additional parameter 'hung' to the upper layer.<br>
-    <p>Dispatch existent a binary shader that waits for the register to
-      be changed,&nbsp;</p>
-    <p>but it does not occur and as a result, we have GPU reset and
-      check this.</p>
-    <p>Improve test description.<br>
-    </p>
-    <blockquote type="cite" cite="mid:20231010065001.1785964-1-jesse.zhang@amd.com">
-      <pre class="moz-quote-pre" wrap="">
+  Here are the changes found in XEIGTPW_9962_BAT that come from known issues:
 
-V2:
-  -add detail description and fix code style(Kamil)
+### IGT changes ###
 
-Cc: Vitaly Prosyak <a class="moz-txt-link-rfc2396E" href="mailto:vitaly.prosyak@amd.com">&lt;vitaly.prosyak@amd.com&gt;</a>
-Cc: Luben Tuikov <a class="moz-txt-link-rfc2396E" href="mailto:luben.tuikov@amd.com">&lt;luben.tuikov@amd.com&gt;</a>
-Cc: Alex Deucher <a class="moz-txt-link-rfc2396E" href="mailto:alexander.deucher@amd.com">&lt;alexander.deucher@amd.com&gt;</a>
-Cc: Christian Koenig <a class="moz-txt-link-rfc2396E" href="mailto:christian.koenig@amd.com">&lt;christian.koenig@amd.com&gt;</a>
-Cc: Kamil Konieczny <a class="moz-txt-link-rfc2396E" href="mailto:kamil.konieczny@linux.intel.com">&lt;kamil.konieczny@linux.intel.com&gt;</a>
----
- lib/amdgpu/amd_dispatch.c   |  4 ++--
- lib/amdgpu/amd_dispatch.h   |  2 +-
- tests/amdgpu/amd_dispatch.c | 38 ++++++++++++++++++++++++++++++++-----
- 3 files changed, 36 insertions(+), 8 deletions(-)
+#### Possible fixes ####
 
-diff --git a/lib/amdgpu/amd_dispatch.c b/lib/amdgpu/amd_dispatch.c
-index 9de3986ba..040381a11 100644
---- a/lib/amdgpu/amd_dispatch.c
-+++ b/lib/amdgpu/amd_dispatch.c
-@@ -524,7 +524,7 @@ amdgpu_dispatch_hang_slow_helper(amdgpu_device_handle device_handle,
- 	}
- }
- 
--void amdgpu_gfx_dispatch_test(amdgpu_device_handle device_handle, uint32_t ip_type)
-+void amdgpu_gfx_dispatch_test(amdgpu_device_handle device_handle, uint32_t ip_type, int hang)
- {
- 	int r;
- 	struct drm_amdgpu_info_hw_ip info;
-@@ -547,7 +547,7 @@ void amdgpu_gfx_dispatch_test(amdgpu_device_handle device_handle, uint32_t ip_ty
- 		amdgpu_memset_dispatch_test(device_handle, ip_type, ring_id,
- 					    version);
- 		amdgpu_memcpy_dispatch_test(device_handle, ip_type, ring_id,
--					    version, 0);
-+					    version, hang);
- 	}
- }
- 
-diff --git a/lib/amdgpu/amd_dispatch.h b/lib/amdgpu/amd_dispatch.h
-index c500b5b3f..4df8b1355 100644
---- a/lib/amdgpu/amd_dispatch.h
-+++ b/lib/amdgpu/amd_dispatch.h
-@@ -27,7 +27,7 @@
- #include &lt;amdgpu.h&gt;
- 
- void amdgpu_gfx_dispatch_test(amdgpu_device_handle device_handle,
--			      uint32_t ip_type);
-+			      uint32_t ip_type, int hang);
- 
- void amdgpu_memcpy_dispatch_test(amdgpu_device_handle device_handle,
- 					uint32_t ip_type,
-diff --git a/tests/amdgpu/amd_dispatch.c b/tests/amdgpu/amd_dispatch.c
-index 769f26cd0..323284306 100644
---- a/tests/amdgpu/amd_dispatch.c
-+++ b/tests/amdgpu/amd_dispatch.c
-@@ -24,6 +24,18 @@ amdgpu_dispatch_hang_slow_compute(amdgpu_device_handle device_handle)
- 	amdgpu_dispatch_hang_slow_helper(device_handle, AMDGPU_HW_IP_COMPUTE);
- }
- 
-+static void
-+amdgpu_dispatch_hang_gfx(amdgpu_device_handle device_handle)
-+{
-+	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_GFX, 1);
-+}
-+
-+static void
-+amdgpu_dispatch_hang_compute(amdgpu_device_handle device_handle)
-+{
-+	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_COMPUTE, 1);
-+}
-+
- static void
- amdgpu_gpu_reset_test(amdgpu_device_handle device_handle, int drm_amdgpu)
- {
-@@ -54,8 +66,8 @@ amdgpu_gpu_reset_test(amdgpu_device_handle device_handle, int drm_amdgpu)
- 	r = amdgpu_cs_ctx_free(context_handle);
- 	igt_assert_eq(r, 0);
- 
--	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_GFX);
--	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_COMPUTE);
-+	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_GFX, 0);
-+	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_COMPUTE, 0);
- }
- 
- igt_main
-@@ -85,7 +97,7 @@ igt_main
- 		asic_rings_readness(device, 1, arr_cap);
- 
- 	}
--	igt_describe(&quot;Test-GPU-reset-using-a-binary-shader-to-hang-the-job-on-compute-ring&quot;);
-+	igt_describe(&quot;Test GPU reset using a binary shader to slow hang the job on compute ring&quot;);
- 	igt_subtest_with_dynamic(&quot;amdgpu-dispatch-test-compute-with-IP-COMPUTE&quot;) {
- 		if (arr_cap[AMD_IP_COMPUTE]) {
- 			igt_dynamic_f(&quot;amdgpu-dispatch-test-compute&quot;)
-@@ -93,7 +105,7 @@ igt_main
- 		}
- 	}
- 
--	igt_describe(&quot;Test-GPU-reset-using-a-binary-shader-to-hang-the-job-on-gfx-ring&quot;);
-+	igt_describe(&quot;Test GPU reset using a binary shader to slow hang the job on gfx ring&quot;);
- 	igt_subtest_with_dynamic(&quot;amdgpu-dispatch-test-gfx-with-IP-GFX&quot;) {
- 		if (arr_cap[AMD_IP_GFX]) {
- 			igt_dynamic_f(&quot;amdgpu-dispatch-test-gfx&quot;)
-@@ -101,7 +113,23 @@ igt_main
- 		}
- 	}
- 
--	igt_describe(&quot;Test-GPU-reset-using-amdgpu-debugfs-to-hang-the-job-on-gfx-ring&quot;);
-+	igt_describe(&quot;Test GPU reset using a binary shader to hang the job on gfx ring&quot;);
-+	igt_subtest_with_dynamic(&quot;amdgpu-dispatch-hang-test-gfx-with-IP-GFX&quot;) {
-+		if (arr_cap[AMD_IP_GFX]) {
-+			igt_dynamic_f(&quot;amdgpu-dispatch-hang-test-gfx&quot;)
-+			amdgpu_dispatch_hang_gfx(device);
-+		}
-+	}
-+
-+	igt_describe(&quot;Test GPU reset using a binary shader to hang the job on compute ring&quot;);
-+	igt_subtest_with_dynamic(&quot;amdgpu-dispatch-hang-test-compute-with-IP-COMPUTE&quot;) {
-+		if (arr_cap[AMD_IP_COMPUTE]) {
-+			igt_dynamic_f(&quot;amdgpu-dispatch-hang-test-compute&quot;)
-+			amdgpu_dispatch_hang_compute(device);
-+		}
-+	}
-+
-+	igt_describe(&quot;Test GPU reset using amdgpu debugfs to hang the job on gfx ring&quot;);
- 	igt_subtest_with_dynamic(&quot;amdgpu-reset-test-gfx-with-IP-GFX-and-COMPUTE&quot;) {
- 		if (arr_cap[AMD_IP_GFX] &amp;&amp; arr_cap[AMD_IP_COMPUTE]) {
- 			igt_dynamic_f(&quot;amdgpu-reset-gfx-compute&quot;)
-</pre>
-    </blockquote>
-  </body>
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
+    - bat-adlp-7:         [FAIL][1] ([Intel XE#480]) -> [PASS][2] +1 other test pass
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7527/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9962/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+
+  * {igt@xe_create@create-execqueues-noleak}:
+    - bat-pvc-2:          [FAIL][3] -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7527/bat-pvc-2/igt@xe_create@create-execqueues-noleak.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9962/bat-pvc-2/igt@xe_create@create-execqueues-noleak.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7527 -> IGTPW_9962
+
+  IGTPW_9962: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9962/index.html
+  IGT_7527: 46f98a3041f73a1d6ee7ec3ace6eba79b15369c4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-423-37b2d042c23ae6a10055ea92101a15083d64c718: 37b2d042c23ae6a10055ea92101a15083d64c718
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9962/index.html
+
+--===============5905140256876566718==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_cursor_crc: Fix test intermittent failures on AMD gpu (rev8)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124524/">https://patchwork.freedesktop.org/series/124524/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9962/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9962/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7527_BAT -&gt; XEIGTPW_9962_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9962_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7527/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9962/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>{igt@xe_create@create-execqueues-noleak}:</p>
+<ul>
+<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7527/bat-pvc-2/igt@xe_create@create-execqueues-noleak.html">FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9962/bat-pvc-2/igt@xe_create@create-execqueues-noleak.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7527 -&gt; IGTPW_9962</li>
+</ul>
+<p>IGTPW_9962: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9962/index.html<br />
+  IGT_7527: 46f98a3041f73a1d6ee7ec3ace6eba79b15369c4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-423-37b2d042c23ae6a10055ea92101a15083d64c718: 37b2d042c23ae6a10055ea92101a15083d64c718</p>
+
+</body>
 </html>
 
---------------UW9pFBOs0ZLCm0AO0fq0T6so--
+--===============5905140256876566718==--
