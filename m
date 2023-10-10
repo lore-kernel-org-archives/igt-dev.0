@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============4235379246467271395=="
+ boundary="===============9197749840608828628=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
-Date: Mon, 09 Oct 2023 20:25:34 -0000
-Message-ID: <169688313486.24832.10348215853669028332@emeril.freedesktop.org>
-References: <20231009182507.390403-1-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20231009182507.390403-1-juhapekka.heikkila@gmail.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/km?=
- =?utf-8?q?s=5Fplane=3A_test_odd_size_planar_yuv?=
+To: "Jesse Zhang" <jesse.zhang@amd.com>
+Date: Tue, 10 Oct 2023 08:09:22 -0000
+Message-ID: <169692536282.28099.14296545766985093734@emeril.freedesktop.org>
+References: <20231010065001.1785964-1-jesse.zhang@amd.com>
+In-Reply-To: <20231010065001.1785964-1-jesse.zhang@amd.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/am?=
+ =?utf-8?q?d=5Fdispatch=3A_add_negative_test_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,20 +23,20 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============4235379246467271395==
+--===============9197749840608828628==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/kms_plane: test odd size planar yuv
-URL   : https://patchwork.freedesktop.org/series/124848/
+Series: tests/amd_dispatch: add negative test (rev2)
+URL   : https://patchwork.freedesktop.org/series/124802/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_7523_BAT -> XEIGTPW_9954_BAT
+CI Bug Log - changes from XEIGT_7523_BAT -> XEIGTPW_9957_BAT
 ====================================================
 
 Summary
@@ -56,7 +56,7 @@ Participating hosts (4 -> 4)
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_9954_BAT that come from known issues:
+  Here are the changes found in XEIGTPW_9957_BAT that come from known issues:
 
 ### IGT changes ###
 
@@ -65,12 +65,12 @@ Known issues
   * igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:
     - bat-dg2-oem2:       [FAIL][1] ([i915#2346]) -> [PASS][2]
    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7523/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9954/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9957/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
 
   * {igt@xe_create@create-execqueues-noleak}:
-    - bat-adlp-7:         [FAIL][3] ([Intel XE#524]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7523/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9954/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
+    - bat-atsm-2:         [FAIL][3] ([Intel XE#524]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7523/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9957/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html
 
   
 #### Warnings ####
@@ -78,7 +78,7 @@ Known issues
   * igt@kms_frontbuffer_tracking@basic:
     - bat-adlp-7:         [INCOMPLETE][5] ([Intel XE#606] / [Intel XE#632]) -> [INCOMPLETE][6] ([Intel XE#632])
    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7523/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9954/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9957/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
 
   
   {name}: This element is suppressed. This means it is ignored when computing
@@ -93,17 +93,17 @@ Known issues
 Build changes
 -------------
 
-  * IGT: IGT_7523 -> IGTPW_9954
+  * IGT: IGT_7523 -> IGTPW_9957
 
-  IGTPW_9954: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9954/index.html
+  IGTPW_9957: 9957
   IGT_7523: 361c2f92f1fe5641090f2fc59951fcaba15387f5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   xe-423-37b2d042c23ae6a10055ea92101a15083d64c718: 37b2d042c23ae6a10055ea92101a15083d64c718
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9954/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9957/index.html
 
---===============4235379246467271395==
+--===============9197749840608828628==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -123,43 +123,43 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/kms_plane: test odd size planar yuv</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124848/">https://patchwork.freedesktop.org/series/124848/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/amd_dispatch: add negative test (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124802/">https://patchwork.freedesktop.org/series/124802/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9954/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9954/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9957/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9957/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_7523_BAT -&gt; XEIGTPW_9954_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_7523_BAT -&gt; XEIGTPW_9957_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
 <h2>Participating hosts (4 -&gt; 4)</h2>
 <p>No changes in participating hosts</p>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_9954_BAT that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_9957_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Possible fixes</h4>
 <ul>
 <li>
 <p>igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:</p>
 <ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7523/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9954/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">PASS</a></li>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7523/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9957/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">PASS</a></li>
 </ul>
 </li>
 <li>
 <p>{igt@xe_create@create-execqueues-noleak}:</p>
 <ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7523/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9954/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">PASS</a></li>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7523/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9957/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html">PASS</a></li>
 </ul>
 </li>
 </ul>
 <h4>Warnings</h4>
 <ul>
 <li>igt@kms_frontbuffer_tracking@basic:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7523/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/606">Intel XE#606</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/632">Intel XE#632</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9954/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/632">Intel XE#632</a>)</li>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7523/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/606">Intel XE#606</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/632">Intel XE#632</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9957/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/632">Intel XE#632</a>)</li>
 </ul>
 </li>
 </ul>
@@ -167,13 +167,13 @@ Content-Transfer-Encoding: 7bit
           the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_7523 -&gt; IGTPW_9954</li>
+<li>IGT: IGT_7523 -&gt; IGTPW_9957</li>
 </ul>
-<p>IGTPW_9954: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9954/index.html<br />
+<p>IGTPW_9957: 9957<br />
   IGT_7523: 361c2f92f1fe5641090f2fc59951fcaba15387f5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   xe-423-37b2d042c23ae6a10055ea92101a15083d64c718: 37b2d042c23ae6a10055ea92101a15083d64c718</p>
 
 </body>
 </html>
 
---===============4235379246467271395==--
+--===============9197749840608828628==--
