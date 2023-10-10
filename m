@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3048010E32C
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Oct 2023 14:51:36 +0000 (UTC)
-Message-ID: <f02f80b4-37ab-42cb-ac45-bbbb07b97496@intel.com>
-Date: Tue, 10 Oct 2023 20:21:30 +0530
+Content-Type: multipart/alternative;
+ boundary="===============0437122689879989737=="
 MIME-Version: 1.0
-Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20231006075819.3055887-1-bhanuprakash.modem@intel.com>
- <20231006075819.3055887-5-bhanuprakash.modem@intel.com>
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20231006075819.3055887-5-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [i-g-t 4/4] tests/kms_rotation_crc: Use helpers from
- lib
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
+Date: Tue, 10 Oct 2023 18:37:20 -0000
+Message-ID: <169696304061.28097.12424535839406097547@emeril.freedesktop.org>
+References: <20231010114726.393671-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20231010114726.393671-1-juhapekka.heikkila@gmail.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/km?=
+ =?utf-8?q?s=5Fplane=3A_test_odd_size_planar_yuv_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,84 +17,146 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LGTM
+--===============0437122689879989737==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+== Series Details ==
 
-On 06-Oct-23 1:28 PM, Bhanuprakash Modem wrote:
-> Instead of having local implementations, use helpers from lib.
-> 
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->   tests/kms_rotation_crc.c | 40 ++++------------------------------------
->   1 file changed, 4 insertions(+), 36 deletions(-)
-> 
-> diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
-> index f171fcd22..c48e0d672 100644
-> --- a/tests/kms_rotation_crc.c
-> +++ b/tests/kms_rotation_crc.c
-> @@ -1178,38 +1178,6 @@ static const char *plane_test_str(unsigned plane)
->   	}
->   }
->   
-> -static const char *rot_test_str(igt_rotation_t rot)
-> -{
-> -	switch (rot) {
-> -	case IGT_ROTATION_0:
-> -		return "0";
-> -	case IGT_ROTATION_90:
-> -		return "90";
-> -	case IGT_ROTATION_180:
-> -		return "180";
-> -	case IGT_ROTATION_270:
-> -		return "270";
-> -	default:
-> -		igt_assert(0);
-> -	}
-> -}
-> -
-> -static const char *modifier_test_str(uint64_t modifier)
-> -{
-> -	switch (modifier) {
-> -	case I915_FORMAT_MOD_X_TILED:
-> -		return "x-tiled";
-> -	case I915_FORMAT_MOD_Y_TILED:
-> -		return "y-tiled";
-> -	case I915_FORMAT_MOD_Yf_TILED:
-> -		return "yf-tiled";
-> -	case I915_FORMAT_MOD_4_TILED:
-> -		return "4-tiled";
-> -	default:
-> -		igt_assert(0);
-> -	}
-> -}
-> -
->   static int opt_handler(int opt, int opt_index, void *_data)
->   {
->   	data_t *data = _data;
-> @@ -1289,7 +1257,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
->   	for (subtest = subtests; subtest->rot; subtest++) {
->   		igt_subtest_f("%s-rotation-%s",
->   			      plane_test_str(subtest->plane),
-> -			      rot_test_str(subtest->rot)) {
-> +			      igt_plane_rotation_name(subtest->rot)) {
->   			if (is_amdgpu_device(data.gfx_fd)) {
->   				data.override_fmt = DRM_FORMAT_XRGB8888;
->   				if (igt_rotation_90_or_270(subtest->rot))
-> @@ -1339,9 +1307,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
->   		igt_fixture
->   			igt_require_intel(data.gfx_fd);
->   
-> -		igt_subtest_f("primary-%s-reflect-x-%s",
-> -			      modifier_test_str(reflect_x->modifier),
-> -			      rot_test_str(reflect_x->rot)) {
-> +		igt_subtest_f("primary-%s-tiled-reflect-x-%s",
-> +			      igt_fb_modifier_name(reflect_x->modifier),
-> +			      igt_plane_rotation_name(reflect_x->rot)) {
->   			data.rotation = (IGT_REFLECT_X | reflect_x->rot);
->   			data.override_modifier = reflect_x->modifier;
->   			test_plane_rotation(&data, DRM_PLANE_TYPE_PRIMARY, false);
+Series: tests/kms_plane: test odd size planar yuv (rev3)
+URL   : https://patchwork.freedesktop.org/series/124848/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7527_BAT -> XEIGTPW_9963_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9963_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
+    - bat-adlp-7:         [FAIL][1] ([Intel XE#480]) -> [PASS][2] +1 other test pass
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7527/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9963/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+
+  * {igt@xe_create@create-execqueues-noleak}:
+    - bat-pvc-2:          [FAIL][3] -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7527/bat-pvc-2/igt@xe_create@create-execqueues-noleak.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9963/bat-pvc-2/igt@xe_create@create-execqueues-noleak.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7527 -> IGTPW_9963
+
+  IGTPW_9963: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9963/index.html
+  IGT_7527: 46f98a3041f73a1d6ee7ec3ace6eba79b15369c4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-423-37b2d042c23ae6a10055ea92101a15083d64c718: 37b2d042c23ae6a10055ea92101a15083d64c718
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9963/index.html
+
+--===============0437122689879989737==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_plane: test odd size planar yuv (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124848/">https://patchwork.freedesktop.org/series/124848/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9963/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9963/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7527_BAT -&gt; XEIGTPW_9963_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9963_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7527/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9963/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>{igt@xe_create@create-execqueues-noleak}:</p>
+<ul>
+<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7527/bat-pvc-2/igt@xe_create@create-execqueues-noleak.html">FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9963/bat-pvc-2/igt@xe_create@create-execqueues-noleak.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7527 -&gt; IGTPW_9963</li>
+</ul>
+<p>IGTPW_9963: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9963/index.html<br />
+  IGT_7527: 46f98a3041f73a1d6ee7ec3ace6eba79b15369c4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-423-37b2d042c23ae6a10055ea92101a15083d64c718: 37b2d042c23ae6a10055ea92101a15083d64c718</p>
+
+</body>
+</html>
+
+--===============0437122689879989737==--
