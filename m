@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1932A10E32E
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Oct 2023 08:50:54 +0000 (UTC)
-From: priyanka.dandamudi@intel.com
-To: janga.rahul.kumar@intel.com, igt-dev@lists.freedesktop.org,
- sai.gowtham.ch@intel.com, priyanka.dandamudi@intel.com
-Date: Tue, 10 Oct 2023 14:16:52 +0530
-Message-Id: <20231010084652.1982822-1-priyanka.dandamudi@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============6448234653411877551=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/xe/xe_access_counter: Negative access
- counter test
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Helen Koike" <helen.koike@collabora.com>
+Date: Tue, 10 Oct 2023 09:32:32 -0000
+Message-ID: <169693035272.28096.10348068583376289736@emeril.freedesktop.org>
+References: <20231008222306.145122-1-helen.koike@collabora.com>
+In-Reply-To: <20231008222306.145122-1-helen.koike@collabora.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5B1/2=5D_lib/drmtest=3A_add_igt=5Fdebug_when_fo?=
+ =?utf-8?q?rced_and_dev=5Fname_doesn=27t_match?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,113 +18,202 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+--===============6448234653411877551==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Added a negative test related to access counter.
-It tries to test GRANULARITY access counter parameter.
-It should return -EINVAL parameter beyond SZ_64M.
+== Series Details ==
 
-v2: Added subtest description.
+Series: series starting with [1/2] lib/drmtest: add igt_debug when forced and dev_name doesn't match
+URL   : https://patchwork.freedesktop.org/series/124788/
+State : failure
 
-Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
----
- tests/intel/xe_access_counter.c | 69 +++++++++++++++++++++++++++++++++
- tests/meson.build               |  1 +
- 2 files changed, 70 insertions(+)
- create mode 100644 tests/intel/xe_access_counter.c
+== Summary ==
 
-diff --git a/tests/intel/xe_access_counter.c b/tests/intel/xe_access_counter.c
-new file mode 100644
-index 000000000..d98cdf56e
---- /dev/null
-+++ b/tests/intel/xe_access_counter.c
-@@ -0,0 +1,69 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ */
-+
-+/**
-+ * TEST: Basic tests for access counter functionality
-+ * Category: Software building block
-+ * Run type: FULL
-+ * Sub-category: access counter
-+ * Functionality: access counter
-+ * Test category: functionality test
-+ * SUBTEST: invalid-param
-+ * Description: Giving invalid granularity size parameter and checks for invalid error.
-+ */
-+
-+#include "igt.h"
-+#include "lib/igt_syncobj.h"
-+#include "lib/intel_reg.h"
-+#include "xe_drm.h"
-+
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
-+#include <string.h>
-+
-+#define SZ_64M  3
-+igt_main
-+{
-+	int fd;
-+
-+	igt_fixture {
-+		uint16_t devid;
-+
-+		fd = drm_open_driver(DRIVER_XE);
-+		devid = intel_get_drm_devid(fd);
-+		igt_require(IS_PONTEVECCHIO(devid));
-+	}
-+
-+	igt_subtest("invalid-param") {
-+		struct drm_xe_engine_class_instance instance = {
-+			 .engine_class = DRM_XE_ENGINE_CLASS_VM_BIND,
-+		 };
-+
-+		int err;
-+		const int expected = -EINVAL;
-+
-+		struct drm_xe_ext_exec_queue_set_property ext = {
-+			.base.next_extension = 0,
-+			.base.name = XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-+			.property = XE_EXEC_QUEUE_SET_PROPERTY_ACC_GRANULARITY,
-+			.value = SZ_64M + 1,
-+		};
-+
-+		struct drm_xe_exec_queue_create create = {
-+			.extensions = to_user_pointer(&ext),
-+			.vm_id = xe_vm_create(fd, 0, 0),
-+			.width = 1,
-+			.num_placements = 1,
-+			.instances = to_user_pointer(&instance),
-+		};
-+
-+		err = igt_ioctl(fd, DRM_IOCTL_XE_EXEC_QUEUE_CREATE, &create);
-+
-+		igt_assert_eq(err, expected);
-+	}
-+
-+	igt_fixture
-+		drm_close_driver(fd);
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 05fda7d94..aa0b4e888 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -271,6 +271,7 @@ intel_kms_progs = [
- ]
- 
- intel_xe_progs = [
-+	'xe_access_counter',
- 	'xe_ccs',
- 	'xe_create',
- 	'xe_compute',
--- 
-2.25.1
+CI Bug Log - changes from CI_DRM_13725 -> IGTPW_9947
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_9947 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_9947, please notify your bug team (lgci.bug.filing@intel.com) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9947/index.html
+
+Participating hosts (39 -> 18)
+------------------------------
+
+  ERROR: It appears as if the changes made in IGTPW_9947 prevented too many machines from booting.
+
+  Additional (1): fi-hsw-4770 
+  Missing    (22): bat-adls-5 fi-apl-guc fi-snb-2520m fi-pnv-d510 fi-blb-e6850 fi-skl-6600u bat-dg2-8 fi-ilk-650 bat-adln-1 fi-ivb-3770 fi-elk-e7500 fi-bsw-nick fi-kbl-7567u bat-adlp-9 fi-cfl-8700k bat-mtlp-8 bat-jsl-1 fi-tgl-1115g4 fi-kbl-guc fi-kbl-x1275 bat-dg2-14 bat-dg2-13 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_9947 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][1] ([fdo#109271]) +13 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9947/fi-hsw-4770/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
+    - bat-dg2-11:         NOTRUN -> [SKIP][2] ([i915#1845]) +2 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9947/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1:
+    - fi-hsw-4770:        NOTRUN -> [DMESG-WARN][3] ([i915#8841]) +6 other tests dmesg-warn
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9947/fi-hsw-4770/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1.html
+
+  * igt@kms_psr@sprite_plane_onoff:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][4] ([fdo#109271] / [i915#1072]) +3 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9947/fi-hsw-4770/igt@kms_psr@sprite_plane_onoff.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_module_load@load:
+    - bat-adlp-6:         [DMESG-WARN][5] ([i915#1982] / [i915#8449]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13725/bat-adlp-6/igt@i915_module_load@load.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9947/bat-adlp-6/igt@i915_module_load@load.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#8449]: https://gitlab.freedesktop.org/drm/intel/issues/8449
+  [i915#8841]: https://gitlab.freedesktop.org/drm/intel/issues/8841
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7519 -> IGTPW_9947
+
+  CI-20190529: 20190529
+  CI_DRM_13725: fe09b9f4c1435d9ce59b4729994b86a856db852f @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_9947: 9947
+  IGT_7519: d1db7333d9c5fbbb05e50b0804123950d9dc1c46 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9947/index.html
+
+--===============6448234653411877551==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [1/2] lib/drmtest: add igt_debug when forced and dev_name doesn&#39;t match</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124788/">https://patchwork.freedesktop.org/series/124788/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9947/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9947/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13725 -&gt; IGTPW_9947</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_9947 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_9947, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9947/index.html</p>
+<h2>Participating hosts (39 -&gt; 18)</h2>
+<p>ERROR: It appears as if the changes made in IGTPW_9947 prevented too many machines from booting.</p>
+<p>Additional (1): fi-hsw-4770 <br />
+  Missing    (22): bat-adls-5 fi-apl-guc fi-snb-2520m fi-pnv-d510 fi-blb-e6850 fi-skl-6600u bat-dg2-8 fi-ilk-650 bat-adln-1 fi-ivb-3770 fi-elk-e7500 fi-bsw-nick fi-kbl-7567u bat-adlp-9 fi-cfl-8700k bat-mtlp-8 bat-jsl-1 fi-tgl-1115g4 fi-kbl-guc fi-kbl-x1275 bat-dg2-14 bat-dg2-13 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_9947 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9947/fi-hsw-4770/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +13 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9947/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9947/fi-hsw-4770/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8841">i915#8841</a>) +6 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@sprite_plane_onoff:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9947/fi-hsw-4770/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_module_load@load:<ul>
+<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13725/bat-adlp-6/igt@i915_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8449">i915#8449</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9947/bat-adlp-6/igt@i915_module_load@load.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7519 -&gt; IGTPW_9947</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13725: fe09b9f4c1435d9ce59b4729994b86a856db852f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_9947: 9947<br />
+  IGT_7519: d1db7333d9c5fbbb05e50b0804123950d9dc1c46 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============6448234653411877551==--
