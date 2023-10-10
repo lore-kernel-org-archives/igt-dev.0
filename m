@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5C39010E329
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Oct 2023 08:38:30 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1932A10E32E
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Oct 2023 08:50:54 +0000 (UTC)
 From: priyanka.dandamudi@intel.com
 To: janga.rahul.kumar@intel.com, igt-dev@lists.freedesktop.org,
  sai.gowtham.ch@intel.com, priyanka.dandamudi@intel.com
-Date: Tue, 10 Oct 2023 14:04:56 +0530
-Message-Id: <20231010083456.1982626-1-priyanka.dandamudi@intel.com>
+Date: Tue, 10 Oct 2023 14:16:52 +0530
+Message-Id: <20231010084652.1982822-1-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
@@ -26,24 +26,8 @@ List-ID: <igt-dev@lists.freedesktop.org>
 From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
 Added a negative test related to access counter.
-It tries to invalid test GRANULARITY access counter parameter.
-
-It should return invalid parameter beyond SZ_64M.
-In KMD there is no conditional check beyond SZ_64M,
-KMD need to be updated with the conditional check.
-Until then the test will be passed.
-Below is the KMD code.
-granularity_in_byte(int val)
-case 0:
-return SZ_128K;
-case 1:
-return SZ_2M;
-case 2:
-return SZ_16M;
-case 3:
-return SZ_64M;
-default:
-return 0;
+It tries to test GRANULARITY access counter parameter.
+It should return -EINVAL parameter beyond SZ_64M.
 
 v2: Added subtest description.
 
