@@ -1,14 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A680D10E340
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Oct 2023 12:58:42 +0000 (UTC)
+From: Melanie Lobo <melanie.lobo@intel.corp-partner.google.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon,  9 Oct 2023 14:27:58 +0200
-Message-ID: <20231009122750.519112-20-janusz.krzysztofik@linux.intel.com>
-In-Reply-To: <20231009122750.519112-13-janusz.krzysztofik@linux.intel.com>
-References: <20231009122750.519112-13-janusz.krzysztofik@linux.intel.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 07/11] lib/ktap: Drop workaround for
- missing top level KTAP headers
+Date: Tue, 10 Oct 2023 18:41:24 +0530
+Message-Id: <20231010131124.14541-1-melanie.lobo@intel.corp-partner.google.com>
+Subject: [igt-dev] [PATCH] [RFC]: tests/intel/kms_flip_scaled_crc: Add
+ support for FP16 format of MTL compressed modifier
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,59 +15,72 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org
+Cc: juha-pekka.heikkila@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-A workaround was implemented in IGT KTAP parser so it could accepted KTAP
-reports with missing top level KTAP version and test suite plan headers.
-Since kernel side commit c95e7c05c139 ("kunit: Report the count of test
-suites in a module"), included in the mainline kernel since v6.6-rc1, has
-fixed that issue, that workaround is no longer needed.  Drop it.
+From: Melanie Lobo <melanie.lobo@intel.com>
 
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+MTL supports new FP16 format which is a binary floating-point computer
+number format that occupies 16 bits in computer memory.
+
+Change-Id: I7fa8169d54cbd9e6dcdf765065659e541a31e481
+Signed-off-by: Melanie Lobo <melanie.lobo@intel.com>
 ---
- lib/igt_ktap.c              | 12 ------------
- lib/tests/igt_ktap_parser.c |  3 +--
- 2 files changed, 1 insertion(+), 14 deletions(-)
+ lib/intel_aux_pgtable.c           |  5 +++++
+ tests/intel/kms_flip_scaled_crc.c | 16 ++++++++++++++++
+ 2 files changed, 21 insertions(+)
 
-diff --git a/lib/igt_ktap.c b/lib/igt_ktap.c
-index 53a6c63288..7c52ba11ed 100644
---- a/lib/igt_ktap.c
-+++ b/lib/igt_ktap.c
-@@ -84,18 +84,6 @@ int igt_ktap_parse(const char *buf, struct igt_ktap_results *ktap)
- 		   igt_debug_on(sscanf(buf,
- 				       "%*1[ ]%*1[ ]%*1[ ]%*1[ ]KTAP%*[ ]version%*[ ]%u %n",
- 				       &n, &len) == 1 && len == strlen(buf))) {
--		/*
--		 * TODO: drop the following workaround as soon as
--		 * kernel side issue of missing lines with top level
--		 * KTAP version and test suite plan is fixed.
--		 */
--		if (ktap->expect == KTAP_START) {
--			ktap->suite_count = 1;
--			ktap->suite_last = 0;
--			ktap->suite_name = NULL;
--			ktap->expect = SUITE_START;
--		}
--
- 		if (igt_debug_on(ktap->expect != SUITE_START))
- 			return -EPROTO;
+diff --git a/lib/intel_aux_pgtable.c b/lib/intel_aux_pgtable.c
+index 7c79521344de..a612df407692 100644
+--- a/lib/intel_aux_pgtable.c
++++ b/lib/intel_aux_pgtable.c
+@@ -21,6 +21,7 @@
+ #define AUX_FORMAT_AYUV		0x09
+ #define AUX_FORMAT_ARGB_8B	0x0A
+ #define AUX_FORMAT_NV12_21	0x0F
++#define AUX_FORMAT_XRGB16161616_64B 0x10
  
-diff --git a/lib/tests/igt_ktap_parser.c b/lib/tests/igt_ktap_parser.c
-index 6357bdf6a5..476e14092f 100644
---- a/lib/tests/igt_ktap_parser.c
-+++ b/lib/tests/igt_ktap_parser.c
-@@ -190,8 +190,7 @@ static void ktap_top_version(void)
+ struct pgtable_level_desc {
+ 	int idx_shift;
+@@ -305,6 +306,10 @@ static uint64_t pgt_get_l1_flags(const struct intel_buf *buf, int surface_idx)
+ 			entry.e.format = AUX_FORMAT_ARGB_8B;
+ 			entry.e.depth = bpp_to_depth_val(32);
+ 			break;
++		case 64:
++			entry.e.format = AUX_FORMAT_XRGB16161616_64B;
++			entry.e.depth = bpp_to_depth_val(64);
++			break;
+ 		default:
+ 			igt_assert(0);
+ 		}
+diff --git a/tests/intel/kms_flip_scaled_crc.c b/tests/intel/kms_flip_scaled_crc.c
+index 2997b63fac40..0d5e994af2b7 100644
+--- a/tests/intel/kms_flip_scaled_crc.c
++++ b/tests/intel/kms_flip_scaled_crc.c
+@@ -590,6 +590,22 @@ const struct {
+ 		0.5,
+ 		1.0,
+ 	},
++	{
++		"flip-64bpp-4tile-to-32bpp-4tilemtlrcccs-upscaling",
++		"Flip from 64bpp non scaled fb to 32bpp upscaled fb to stress CD clock programming",
++		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
++		I915_FORMAT_MOD_4_TILED_MTL_RC_CCS, DRM_FORMAT_XRGB16161616F,
++		0.5,
++		1.0,
++	},
++	{
++		"flip-64bpp-4tile-to-32bpp-4tilemtlrcccs-downscaling",
++		"Flip from 64bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
++		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
++		I915_FORMAT_MOD_4_TILED_MTL_RC_CCS, DRM_FORMAT_XRGB16161616F,
++		1.0,
++		2.0,
++	},
+ };
  
- 	ktap = igt_ktap_alloc(&results);
- 	igt_require(ktap);
--	/* TODO: change to -EPROTO as soon as related workaround is dropped */
--	igt_assert_eq(igt_ktap_parse("    KTAP version 1\n", ktap), -EINPROGRESS);
-+	igt_assert_eq(igt_ktap_parse("    KTAP version 1\n", ktap), -EPROTO);
- 	igt_ktap_free(ktap);
- 
- 	ktap = igt_ktap_alloc(&results);
+ static void setup_fb(data_t *data, struct igt_fb *newfb, uint32_t width,
 -- 
-2.42.0
+2.17.1
