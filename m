@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============1249455907855027078=="
+ boundary="===============6426477628699361510=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Swati Sharma" <swati2.sharma@intel.com>
-Date: Tue, 10 Oct 2023 06:55:28 -0000
-Message-ID: <169692092804.28098.14506756307587622886@emeril.freedesktop.org>
+Date: Tue, 10 Oct 2023 06:58:39 -0000
+Message-ID: <169692111961.28098.7404032256517331868@emeril.freedesktop.org>
 References: <20231010051923.41431-1-swati2.sharma@intel.com>
 In-Reply-To: <20231010051923.41431-1-swati2.sharma@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_tests/km?=
- =?utf-8?q?s=5Fvblank=3A_Test_cleanup_and_dynamic_conversion_=28rev2=29?=
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fvblank=3A_Test_cleanup_and_dynamic_conversion_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,7 +23,7 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1249455907855027078==
+--===============6426477628699361510==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -32,89 +32,91 @@ Content-Transfer-Encoding: 7bit
 
 Series: tests/kms_vblank: Test cleanup and dynamic conversion (rev2)
 URL   : https://patchwork.freedesktop.org/series/123847/
-State : failure
+State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_7523_BAT -> XEIGTPW_9955_BAT
+CI Bug Log - changes from CI_DRM_13732 -> IGTPW_9955
 ====================================================
 
 Summary
 -------
 
-  **FAILURE**
+  **SUCCESS**
 
-  Serious unknown changes coming with XEIGTPW_9955_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_9955_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+  No regressions found.
 
-  
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9955/index.html
 
-Participating hosts (4 -> 4)
+Participating hosts (36 -> 35)
 ------------------------------
 
-  No changes in participating hosts
+  Additional (2): fi-hsw-4770 bat-dg2-13 
+  Missing    (3): fi-kbl-soraka bat-dg2-9 fi-snb-2520m 
 
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_9955_BAT:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - bat-atsm-2:         [PASS][1] -> [INCOMPLETE][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7523/bat-atsm-2/igt@core_hotunplug@unbind-rebind.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9955/bat-atsm-2/igt@core_hotunplug@unbind-rebind.html
-
-  
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_9955_BAT that come from known issues:
+  Here are the changes found in IGTPW_9955 that come from known issues:
 
 ### IGT changes ###
 
+#### Issues hit ####
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][1] ([fdo#109271]) +13 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9955/fi-hsw-4770/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1:
+    - fi-hsw-4770:        NOTRUN -> [DMESG-WARN][2] ([i915#8841]) +6 other tests dmesg-warn
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9955/fi-hsw-4770/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1.html
+
+  * igt@kms_psr@sprite_plane_onoff:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][3] ([fdo#109271] / [i915#1072]) +3 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9955/fi-hsw-4770/igt@kms_psr@sprite_plane_onoff.html
+
+  
 #### Possible fixes ####
 
-  * igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:
-    - bat-dg2-oem2:       [FAIL][3] ([i915#2346]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7523/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9955/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
-
-  
-#### Warnings ####
-
   * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [INCOMPLETE][5] ([Intel XE#606] / [Intel XE#632]) -> [INCOMPLETE][6] ([Intel XE#632])
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7523/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9955/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+    - fi-bsw-nick:        [FAIL][4] ([i915#9276]) -> [PASS][5]
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13732/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9955/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html
 
   
-  [Intel XE#606]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/606
-  [Intel XE#632]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/632
-  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#8841]: https://gitlab.freedesktop.org/drm/intel/issues/8841
+  [i915#8913]: https://gitlab.freedesktop.org/drm/intel/issues/8913
+  [i915#9276]: https://gitlab.freedesktop.org/drm/intel/issues/9276
 
 
 Build changes
 -------------
 
+  * CI: CI-20190529 -> None
   * IGT: IGT_7523 -> IGTPW_9955
 
+  CI-20190529: 20190529
+  CI_DRM_13732: 7c57bbfe2c6194cc4d4edf50466b057d7b191251 @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_9955: 9955
   IGT_7523: 361c2f92f1fe5641090f2fc59951fcaba15387f5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-423-37b2d042c23ae6a10055ea92101a15083d64c718: 37b2d042c23ae6a10055ea92101a15083d64c718
+
+
+Testlist changes
+----------------
+
++++ 25 lines
+--- 200 lines
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9955/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9955/index.html
 
---===============1249455907855027078==
+--===============6426477628699361510==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -136,59 +138,68 @@ Content-Transfer-Encoding: 7bit
 <table>
 <tr><td><b>Series:</b></td><td>tests/kms_vblank: Test cleanup and dynamic conversion (rev2)</td></tr>
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123847/">https://patchwork.freedesktop.org/series/123847/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9955/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9955/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9955/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9955/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_7523_BAT -&gt; XEIGTPW_9955_BAT</h1>
+    <h1>CI Bug Log - changes from CI_DRM_13732 -&gt; IGTPW_9955</h1>
 <h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_9955_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_9955_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_9955_BAT:</p>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9955/index.html</p>
+<h2>Participating hosts (36 -&gt; 35)</h2>
+<p>Additional (2): fi-hsw-4770 bat-dg2-13 <br />
+  Missing    (3): fi-kbl-soraka bat-dg2-9 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_9955 that come from known issues:</p>
 <h3>IGT changes</h3>
-<h4>Possible regressions</h4>
+<h4>Issues hit</h4>
 <ul>
-<li>igt@core_hotunplug@unbind-rebind:<ul>
-<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7523/bat-atsm-2/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9955/bat-atsm-2/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a></li>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9955/fi-hsw-4770/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +13 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9955/fi-hsw-4770/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8841">i915#8841</a>) +6 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@sprite_plane_onoff:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9955/fi-hsw-4770/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 other tests skip</li>
 </ul>
 </li>
 </ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_9955_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
 <h4>Possible fixes</h4>
 <ul>
-<li>igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7523/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9955/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
 <li>igt@kms_frontbuffer_tracking@basic:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7523/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/606">Intel XE#606</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/632">Intel XE#632</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9955/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/632">Intel XE#632</a>)</li>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13732/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9276">i915#9276</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9955/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
 </ul>
 </li>
 </ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
 <h2>Build changes</h2>
 <ul>
+<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_7523 -&gt; IGTPW_9955</li>
 </ul>
-<p>IGTPW_9955: 9955<br />
-  IGT_7523: 361c2f92f1fe5641090f2fc59951fcaba15387f5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-423-37b2d042c23ae6a10055ea92101a15083d64c718: 37b2d042c23ae6a10055ea92101a15083d64c718</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13732: 7c57bbfe2c6194cc4d4edf50466b057d7b191251 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_9955: 9955<br />
+  IGT_7523: 361c2f92f1fe5641090f2fc59951fcaba15387f5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+++ 25 lines<br />
+--- 200 lines</p>
 
 </body>
 </html>
 
---===============1249455907855027078==--
+--===============6426477628699361510==--
