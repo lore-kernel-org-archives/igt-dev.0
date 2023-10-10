@@ -1,37 +1,35 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
 From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Tue, 10 Oct 2023 19:54:45 +0200
-Message-ID: <1999837.PIDvDuAF1L@jkrzyszt-mobl2.ger.corp.intel.com>
-In-Reply-To: <20231010153357.480aa553@maurocar-mobl2>
+Date: Tue, 10 Oct 2023 19:49:35 +0200
+Message-ID: <2210123.72vocr9iq0@jkrzyszt-mobl2.ger.corp.intel.com>
+In-Reply-To: <20231010155956.75sootid33ibdwh4@kamilkon-desk.igk.intel.com>
 References: <20231009122750.519112-13-janusz.krzysztofik@linux.intel.com>
  <20231009122750.519112-17-janusz.krzysztofik@linux.intel.com>
- <20231010153357.480aa553@maurocar-mobl2>
+ <20231010155956.75sootid33ibdwh4@kamilkon-desk.igk.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="iso-8859-1"
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t v2 04/11] lib/kunit: Parse
- KTAP report from the main process thread
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org
+Subject: Re: [Intel-gfx] [PATCH i-g-t v2 04/11] lib/kunit: Parse KTAP report
+ from the main process thread
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, igt-dev@lists.freedesktop.org, Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>, intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org, Mauro Carvalho Chehab <mchehab@kernel.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mauro,
+Hi Kamil,
 
 Thanks for review.
 
-On Tuesday, 10 October 2023 15:33:57 CEST Mauro Carvalho Chehab wrote:
-> On Mon,  9 Oct 2023 14:27:55 +0200
-> Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com> wrote:
->=20
+On Tuesday, 10 October 2023 17:59:56 CEST Kamil Konieczny wrote:
+> Hi Janusz,
+> On 2023-10-09 at 14:27:55 +0200, Janusz Krzysztofik wrote:
 > > There was an attempt to parse KTAP reports in the background while a ku=
 nit
 > > test module is loading.  However, since dynamic sub-subtests can be
@@ -101,6 +99,18 @@ ware"),
 > > +#include <unistd.h>
 > > +
 > > +#include "assembler/brw_compat.h"	/* [un]likely() */
+> ------------ ^^^^^^^^^
+> Do we really need this?
+
+I think the correct question is if wee really need [un]likely().  I'm using=
+ it=20
+to document unlikely cases, which is a widely accepted method of documentin=
+g=20
+cases like that, I believe.  Having that clarified, I hope you just tell me=
+ if=20
+you think we need those cases documented, and how, if not that way.
+
+>=20
 > > =20
 > >  #include "igt_aux.h"
 > >  #include "igt_core.h"
@@ -110,6 +120,20 @@ mod,
 > > =20
 > >  struct modprobe_data {
 > > +	pthread_t parent;
+> --- ^^^^^^^^^^^^^^^^
+> Please move it below to other related thread data.
+> Also consider a comment why(or for what purpose)
+> did you put this here.
+
+No problem to move it to the bottom, if that's important to you, but regard=
+ing=20
+the comment, do you think that the purpose of this field of the structure,=
+=20
+compared to other fields, is so unclear form review of the code, despite it=
+s=20
+name, that it requires a comment, unlike the other fields?
+
+>=20
 > >  	struct kmod_module *kmod;
 > >  	const char *opts;
 > >  	int err;
@@ -128,21 +152,6 @@ mod,
 > > +		while (err =3D pthread_mutex_trylock(&data->lock),
 > > +		       err && !igt_debug_on(err !=3D EBUSY))
 > > +			igt_debug_on(pthread_kill(data->parent, SIGCHLD));
->=20
-> I guess you need here an "igt_debug_on_once", as it doesn't make
-> sense to have a (potentially) endless loop here printing error
-> messages.
-
-Right.  Since we don't have igt_debug_on_once() implemented, I'll open code=
-=20
-that improvement.
-
-Thanks,
-Janusz
-
->=20
-> the other changes LGTM.
->=20
 > > +	} else {
 > > +		/* let main thread use mutex to detect modprobe completion */
 > > +		igt_debug_on(pthread_mutex_lock(&data->lock));
@@ -154,6 +163,12 @@ Janusz
 > > +static void kunit_sigchld_handler(int signal)
 > > +{
 > > +	return;
+> --- ^^^^^^^
+> Why not removing this? checkpatch complains about return from void.
+
+OK.
+
+>=20
 > > +}
 > > +
 > > +static int kunit_kmsg_result_get(struct igt_list_head *results,
@@ -189,6 +204,16 @@ Janusz
 > > +			igt_debug_on(sigaction(SIGCHLD, saved, NULL));
 > > +			if (igt_debug_on(modprobe->err))
 > > +				return modprobe->err;
+>=20
+> Why no 'return -err;' here?
+
+Because modprobe->err, which can tell us more about what has gone bad in th=
+e=20
+modprobe thread, is more important here than err which only informs us abou=
+t=20
+completion of the modprobe thread, also if successful, isn't it?
+
+>=20
 > > +			break;
 > > +		case 0:
 > > +			break;
@@ -201,6 +226,18 @@ Janusz
 > > +		ret =3D read(fd, record, BUF_LEN);
 > > +
 > > +		if (!err) {
+>         ^^^^^^^^^^^
+> Looks strange here.
+
+Here err still carries a return code from pthread_mutex_lock(), then !err=20
+means that the modprobe thread was still running and we have 1) acquired=20
+the mutex which now we have to release, 2) installed a non-default=20
+SIGCHLD handler that we should now reset.  Have you got a better idea=20
+how to encode that so it looks less strange?  Would a comment that reminds=
+=20
+a reader where that err comes from be sufficient?
+
+>=20
 > > +			igt_debug_on(pthread_mutex_unlock(&modprobe->lock));
 > > +			igt_debug_on(sigaction(SIGCHLD, saved, NULL));
 > > +		}
@@ -214,6 +251,18 @@ Janusz
 > > +
 > > +		/* skip kmsg continuation lines */
 > > +		if (igt_debug_on(*record =3D=3D ' '))
+> ----------- ^^^^^^^^^^^^
+> Why debug here? imho it is not needed.
+
+Because we don't expect continuation lines while reading a KTAP report. Sin=
+ce=20
+the kernel log may still contain them, we want to know about them when=20
+something wrong happens to our KTAP parser.  That's the purpose of all thos=
+e=20
+debug_on() calls: provide as much information on unexpected conditions as=20
+possible when the test fails, isn't it?
+
+>=20
 > > +			continue;
 > > +
 > > +		/* NULL-terminate the record */
@@ -222,6 +271,16 @@ Janusz
 > > +		/* detect start of log message, continue if not found */
 > > +		buf =3D strchrnul(record, ';');
 > > +		if (igt_debug_on(*buf =3D=3D '\0'))
+> ----------- ^^^^^^^^^^^^
+> Same here, you just continue loop if no ';'?
+
+That means we are getting incorrectly formatted records from /dev/kmsg, and=
+=20
+I'm sure we would like to be informed about that if something goes wrong wi=
+th=20
+the test, wouldn't we?
+
+>=20
 > > +			continue;
 > > +		buf++;
 > > +
@@ -386,6 +445,30 @@ LE_BUILTIN;
 > > +			case ENOTRECOVERABLE:
 > >  				igt_assert_eq(modprobe.err, 0);
 > > +				break;
+>=20
+> imho we should also break a do-while loop in case of error.
+
+We are inside igt_dynamic() body, then I don't think we can safely break th=
+e=20
+outer loop from here, only pass, skip, or fail.
+
+If we are not able to check whether the modprobe thread hasn't returned an=
+=20
+error then I don't think that's a good reason for failing or skipping the=20
+current dynamic sub-subtest since we have its KTAP results already collecte=
+d=20
+and we should just report them in that case, I believe.
+
+If the error persists then the loop will get broken on next attempt to lock=
+=20
+the mutex before entering blocking read(), next dynamic sub-subtests won't =
+be=20
+executed, and the whole subtest will inform the user about that incompleten=
+ess=20
+of results from dynamic sub-subtests by returning SKIP.  Isn't that=20
+sufficient?
+
+>=20
 > > +			default:
 > > +				igt_debug("pthread_mutex_lock() failed\n");
 > > +				break;
@@ -570,6 +653,23 @@ d.
 per
 > > -	 * https://kernel.org/doc/html/latest/dev-tools/ktap.html#version-lin=
 es
+>=20
+> Could you save these two lines comment in some other place?
+
+Why?  Do you think that just that information from a multi-paragraph=20
+description of KTAP format is of particular importance?
+
+Instead, let me add just the reference to the KTAP standard to a comment ab=
+ove=20
+the current parser implementation, OK?
+
+Thanks,
+Janusz
+
+>=20
+> Regards,
+> Kamil
+>=20
 > > -	 *
 > > -	 * but actually isn't, as it currently depends on the KUnit module
 > > -	 * being built-in, so we can't rely on it every time
