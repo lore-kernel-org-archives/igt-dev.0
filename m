@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 11 Oct 2023 16:17:44 +0200
-Message-ID: <20231011141734.590321-22-janusz.krzysztofik@linux.intel.com>
+Date: Wed, 11 Oct 2023 16:17:42 +0200
+Message-ID: <20231011141734.590321-20-janusz.krzysztofik@linux.intel.com>
 In-Reply-To: <20231011141734.590321-13-janusz.krzysztofik@linux.intel.com>
 References: <20231011141734.590321-13-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 09/11] lib/kunit: Prepare for KTAP
- parsing after modprobe completed
+Subject: [igt-dev] [PATCH i-g-t v3 07/11] tests/kms_selftest: Let subtest
+ names match suite names
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,85 +21,87 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We are going to add support for reading a list of kunit test cases
-provided by a kunit test module prior to executing those test cases.  That
-will be done by first loading kunit modules in list only mode, then
-reading the list from /dev/kmsg with our KTAP parser.  Since that parsing
-will be performed after the kunit test module is successfully loaded and
-there will be no concurrently running modprobe thread, we need to make
-synchronization of reads from /dev/kmsg with potential errors modprobe
-thread optional.
+There is a rule specified in Kunit Test Style and Nomenclature guidelines
+[1] that states modules should be named after the test suite, followed by
+_test.  Of course, that rule applies only to modules that provide one test
+suite per module.
+
+As long as that rule is obeyed by authors of Kunit test modules, there is
+no need to hardcode related IGT subtest names in IGT source code.  We are
+already able to derive subtest names from module names, with their _test
+or _kunit suffixes stripped.  We may expect those names will match Kunit
+suite names provided by the modules.
+
+Drop custom subtest names from IGT Kunit tests that still use them.
+However, keep the mechanism that allows us to provide a name that differs
+from that derived from module name.  That will be required if we ever need
+to support a kunit test module that provides multiple test suites (think
+of i915 selftests code converted to kunit and the i915 module potentially
+providing three test suites: mock, live and perf).
+
+[1] https://docs.kernel.org/dev-tools/kunit/style.html
 
 Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/igt_kmod.c | 50 ++++++++++++++++++++++++++------------------------
- 1 file changed, 26 insertions(+), 24 deletions(-)
+ tests/kms_selftest.c | 37 ++++++++++++++++---------------------
+ 1 file changed, 16 insertions(+), 21 deletions(-)
 
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index 21c547bf42..5d85732b08 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -805,34 +805,36 @@ static int kunit_kmsg_result_get(struct igt_list_head *results,
- 		if (igt_debug_on(igt_kernel_tainted(&taints)))
- 			return -ENOTRECOVERABLE;
+diff --git a/tests/kms_selftest.c b/tests/kms_selftest.c
+index 080ffdf2c0..6618dbe50b 100644
+--- a/tests/kms_selftest.c
++++ b/tests/kms_selftest.c
+@@ -37,35 +37,30 @@
+  *
+  * arg[1]:
+  *
+- * @drm_cmdline:            drm cmdline
+- * @drm_damage:             drm damage
+- * @drm_dp_mst:             drm dp mst
++ * @drm_cmdline_parser:     drm cmdline parser
++ * @drm_damage_helper:      drm damage helper
++ * @drm_dp_mst_helper:      drm dp mst helper
+  * @drm_format_helper:      drm format helper
+  * @drm_format:             drm format
+- * @drm_plane:              drm plane
+- * @framebuffer:            framebuffer
++ * @drm_plane_helper:       drm plane helper
++ * @drm_framebuffer:        drm framebuffer
+  */
  
--		err = igt_debug_on(sigaction(SIGCHLD, &sigchld, saved));
--		if (err == -1)
--			return -errno;
--		else if (unlikely(err))
--			return err;
+ IGT_TEST_DESCRIPTION("Basic sanity check of KMS selftests.");
+ 
+-struct kms_kunittests {
+-	const char *kunit;
+-	const char *name;
+-};
 -
--		err = pthread_mutex_lock(&modprobe->lock);
--		switch (err) {
--		case EOWNERDEAD:
--			/* leave the mutex unrecoverable */
--			igt_debug_on(pthread_mutex_unlock(&modprobe->lock));
--			__attribute__ ((fallthrough));
--		case ENOTRECOVERABLE:
--			igt_debug_on(sigaction(SIGCHLD, saved, NULL));
--			if (igt_debug_on(modprobe->err))
--				return modprobe->err;
--			break;
--		case 0:
--			break;
--		default:
--			igt_debug("pthread_mutex_lock() error: %d\n", err);
--			igt_debug_on(sigaction(SIGCHLD, saved, NULL));
--			return -err;
-+		if (modprobe) {
-+			err = igt_debug_on(sigaction(SIGCHLD, &sigchld, saved));
-+			if (err == -1)
-+				return -errno;
-+			else if (unlikely(err))
-+				return err;
-+
-+			err = pthread_mutex_lock(&modprobe->lock);
-+			switch (err) {
-+			case EOWNERDEAD:
-+				/* leave the mutex unrecoverable */
-+				igt_debug_on(pthread_mutex_unlock(&modprobe->lock));
-+				__attribute__ ((fallthrough));
-+			case ENOTRECOVERABLE:
-+				igt_debug_on(sigaction(SIGCHLD, saved, NULL));
-+				if (igt_debug_on(modprobe->err))
-+					return modprobe->err;
-+				break;
-+			case 0:
-+				break;
-+			default:
-+				igt_debug("pthread_mutex_lock() error: %d\n", err);
-+				igt_debug_on(sigaction(SIGCHLD, saved, NULL));
-+				return -err;
-+			}
- 		}
+ igt_main
+ {
+-	static const struct kms_kunittests kunit_subtests[] = {
+-		{ "drm_cmdline_parser_test",	"drm_cmdline" },
+-		{ "drm_damage_helper_test",	"drm_damage" },
+-		{ "drm_dp_mst_helper_test",	"drm_dp_mst" },
+-		{ "drm_format_helper_test",	"drm_format_helper" },
+-		{ "drm_format_test",		"drm_format" },
+-		{ "drm_framebuffer_test",	"framebuffer" },
+-		{ "drm_plane_helper_test",	"drm_plane" },
+-		{ NULL, NULL}
++	static const char *kunit_subtests[] = {
++		"drm_cmdline_parser_test",
++		"drm_damage_helper_test",
++		"drm_dp_mst_helper_test",
++		"drm_format_helper_test",
++		"drm_format_test",
++		"drm_framebuffer_test",
++		"drm_plane_helper_test",
++		NULL,
+ 	};
  
- 		ret = read(fd, record, BUF_LEN);
- 
--		if (!err) {	/* pthread_mutex_lock() succeeded */
-+		if (modprobe && !err) {	/* pthread_mutex_lock() succeeded */
- 			igt_debug_on(pthread_mutex_unlock(&modprobe->lock));
- 			igt_debug_on(sigaction(SIGCHLD, saved, NULL));
- 		}
+-	for (int i = 0; kunit_subtests[i].kunit != NULL; i++)
+-		igt_kunit(kunit_subtests[i].kunit, kunit_subtests[i].name, NULL);
++	for (int i = 0; kunit_subtests[i] != NULL; i++)
++		igt_kunit(kunit_subtests[i], NULL, NULL);
+ }
 -- 
 2.42.0
