@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2608710E47C
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Oct 2023 07:14:21 +0000 (UTC)
-From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
-To: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Ch, Sai
- Gowtham" <sai.gowtham.ch@intel.com>
-Date: Wed, 11 Oct 2023 07:14:04 +0000
-Message-ID: <MW3PR11MB47482D0E5AB78A5FA887D29DAECCA@MW3PR11MB4748.namprd11.prod.outlook.com>
-References: <20231010084652.1982822-1-priyanka.dandamudi@intel.com>
-In-Reply-To: <20231010084652.1982822-1-priyanka.dandamudi@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Message-ID: <7c36db01-1534-535a-c1ce-71369bc5405a@linux.intel.com>
+Date: Wed, 11 Oct 2023 09:22:36 +0100
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe/xe_access_counter: Negative
- access counter test
+Content-Language: en-US
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Intel-gfx@lists.freedesktop.org,
+ Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+References: <20231010110714.749239-1-tvrtko.ursulin@linux.intel.com>
+ <20231010110714.749239-5-tvrtko.ursulin@linux.intel.com>
+ <20231010164336.dikudseydggrrux7@kamilkon-desk.igk.intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20231010164336.dikudseydggrrux7@kamilkon-desk.igk.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 4/4] tools/intel_gpu_top:
+ Handle narrow terminals more gracefully
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,67 +26,105 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRGFuZGFtdWRpLCBQcml5
-YW5rYSA8cHJpeWFua2EuZGFuZGFtdWRpQGludGVsLmNvbT4NCj4gU2VudDogVHVlc2RheSwgT2N0
-b2JlciAxMCwgMjAyMyAyOjE3IFBNDQo+IFRvOiBLdW1hciwgSmFuZ2EgUmFodWwgPGphbmdhLnJh
-aHVsLmt1bWFyQGludGVsLmNvbT47IGlndC0NCj4gZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZzsg
-Q2gsIFNhaSBHb3d0aGFtIDxzYWkuZ293dGhhbS5jaEBpbnRlbC5jb20+Ow0KPiBEYW5kYW11ZGks
-IFByaXlhbmthIDxwcml5YW5rYS5kYW5kYW11ZGlAaW50ZWwuY29tPg0KPiBTdWJqZWN0OiBbUEFU
-Q0ggaS1nLXRdIHRlc3RzL3hlL3hlX2FjY2Vzc19jb3VudGVyOiBOZWdhdGl2ZSBhY2Nlc3MgY291
-bnRlcg0KPiB0ZXN0DQo+IA0KPiBGcm9tOiBQcml5YW5rYSBEYW5kYW11ZGkgPHByaXlhbmthLmRh
-bmRhbXVkaUBpbnRlbC5jb20+DQo+IA0KPiBBZGRlZCBhIG5lZ2F0aXZlIHRlc3QgcmVsYXRlZCB0
-byBhY2Nlc3MgY291bnRlci4NCj4gSXQgdHJpZXMgdG8gdGVzdCBHUkFOVUxBUklUWSBhY2Nlc3Mg
-Y291bnRlciBwYXJhbWV0ZXIuDQo+IEl0IHNob3VsZCByZXR1cm4gLUVJTlZBTCBwYXJhbWV0ZXIg
-YmV5b25kIFNaXzY0TS4NCj4gDQo+IHYyOiBBZGRlZCBzdWJ0ZXN0IGRlc2NyaXB0aW9uLg0KPiAN
-Cj4gQ2M6IEphbmdhIFJhaHVsIEt1bWFyIDxqYW5nYS5yYWh1bC5rdW1hckBpbnRlbC5jb20+DQo+
-IENjOiBTYWkgR293dGhhbSBDaCA8c2FpLmdvd3RoYW0uY2hAaW50ZWwuY29tPg0KPiBTaWduZWQt
-b2ZmLWJ5OiBQcml5YW5rYSBEYW5kYW11ZGkgPHByaXlhbmthLmRhbmRhbXVkaUBpbnRlbC5jb20+
-DQo+IC0tLQ0KPiAgdGVzdHMvaW50ZWwveGVfYWNjZXNzX2NvdW50ZXIuYyB8IDY5ICsrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKw0KPiAgdGVzdHMvbWVzb24uYnVpbGQgICAgICAgICAg
-ICAgICB8ICAxICsNCj4gIDIgZmlsZXMgY2hhbmdlZCwgNzAgaW5zZXJ0aW9ucygrKQ0KPiAgY3Jl
-YXRlIG1vZGUgMTAwNjQ0IHRlc3RzL2ludGVsL3hlX2FjY2Vzc19jb3VudGVyLmMNCj4gDQo+IGRp
-ZmYgLS1naXQgYS90ZXN0cy9pbnRlbC94ZV9hY2Nlc3NfY291bnRlci5jIGIvdGVzdHMvaW50ZWwv
-eGVfYWNjZXNzX2NvdW50ZXIuYw0KPiBuZXcgZmlsZSBtb2RlIDEwMDY0NCBpbmRleCAwMDAwMDAw
-MDAuLmQ5OGNkZjU2ZQ0KPiAtLS0gL2Rldi9udWxsDQo+ICsrKyBiL3Rlc3RzL2ludGVsL3hlX2Fj
-Y2Vzc19jb3VudGVyLmMNCj4gQEAgLTAsMCArMSw2OSBAQA0KPiArLy8gU1BEWC1MaWNlbnNlLUlk
-ZW50aWZpZXI6IE1JVA0KPiArLyoNCj4gKyAqIENvcHlyaWdodCDCqSAyMDIzIEludGVsIENvcnBv
-cmF0aW9uDQo+ICsgKi8NCj4gKw0KPiArLyoqDQo+ICsgKiBURVNUOiBCYXNpYyB0ZXN0cyBmb3Ig
-YWNjZXNzIGNvdW50ZXIgZnVuY3Rpb25hbGl0eQ0KPiArICogQ2F0ZWdvcnk6IFNvZnR3YXJlIGJ1
-aWxkaW5nIGJsb2NrDQo+ICsgKiBSdW4gdHlwZTogRlVMTA0KPiArICogU3ViLWNhdGVnb3J5OiBh
-Y2Nlc3MgY291bnRlcg0KPiArICogRnVuY3Rpb25hbGl0eTogYWNjZXNzIGNvdW50ZXINCj4gKyAq
-IFRlc3QgY2F0ZWdvcnk6IGZ1bmN0aW9uYWxpdHkgdGVzdA0KPiArICogU1VCVEVTVDogaW52YWxp
-ZC1wYXJhbQ0KPiArICogRGVzY3JpcHRpb246IEdpdmluZyBpbnZhbGlkIGdyYW51bGFyaXR5IHNp
-emUgcGFyYW1ldGVyIGFuZCBjaGVja3MgZm9yDQo+IGludmFsaWQgZXJyb3IuDQo+ICsgKi8NCj4g
-Kw0KPiArI2luY2x1ZGUgImlndC5oIg0KPiArI2luY2x1ZGUgImxpYi9pZ3Rfc3luY29iai5oIg0K
-PiArI2luY2x1ZGUgImxpYi9pbnRlbF9yZWcuaCINCj4gKyNpbmNsdWRlICJ4ZV9kcm0uaCINCj4g
-Kw0KPiArI2luY2x1ZGUgInhlL3hlX2lvY3RsLmgiDQo+ICsjaW5jbHVkZSAieGUveGVfcXVlcnku
-aCINCj4gKyNpbmNsdWRlIDxzdHJpbmcuaD4NCj4gKw0KPiArI2RlZmluZSBTWl82NE0gIDMNCj4g
-K2lndF9tYWluDQo+ICt7DQo+ICsJaW50IGZkOw0KPiArDQo+ICsJaWd0X2ZpeHR1cmUgew0KPiAr
-CQl1aW50MTZfdCBkZXZpZDsNCj4gKw0KPiArCQlmZCA9IGRybV9vcGVuX2RyaXZlcihEUklWRVJf
-WEUpOw0KPiArCQlkZXZpZCA9IGludGVsX2dldF9kcm1fZGV2aWQoZmQpOw0KPiArCQlpZ3RfcmVx
-dWlyZShJU19QT05URVZFQ0NISU8oZGV2aWQpKTsNCj4gKwl9DQo+ICsNCj4gKwlpZ3Rfc3VidGVz
-dCgiaW52YWxpZC1wYXJhbSIpIHsNCj4gKwkJc3RydWN0IGRybV94ZV9lbmdpbmVfY2xhc3NfaW5z
-dGFuY2UgaW5zdGFuY2UgPSB7DQo+ICsJCQkgLmVuZ2luZV9jbGFzcyA9IERSTV9YRV9FTkdJTkVf
-Q0xBU1NfVk1fQklORCwNCj4gKwkJIH07DQo+ICsNCj4gKwkJaW50IGVycjsNCj4gKwkJY29uc3Qg
-aW50IGV4cGVjdGVkID0gLUVJTlZBTDsNCj4gKw0KPiArCQlzdHJ1Y3QgZHJtX3hlX2V4dF9leGVj
-X3F1ZXVlX3NldF9wcm9wZXJ0eSBleHQgPSB7DQo+ICsJCQkuYmFzZS5uZXh0X2V4dGVuc2lvbiA9
-IDAsDQo+ICsJCQkuYmFzZS5uYW1lID0NCj4gWEVfRVhFQ19RVUVVRV9FWFRFTlNJT05fU0VUX1BS
-T1BFUlRZLA0KPiArCQkJLnByb3BlcnR5ID0NCj4gWEVfRVhFQ19RVUVVRV9TRVRfUFJPUEVSVFlf
-QUNDX0dSQU5VTEFSSVRZLA0KPiArCQkJLnZhbHVlID0gU1pfNjRNICsgMSwgDQpUaGlzIHRlc3Qg
-Y2hlY2tzIGZvciB2YWx1ZSBncmVhdGVyIHRoYW4gbWF4aW11bSBsaW1pdCwgZXh0ZW5kIHRoaXMg
-dGVzdCB0byB0ZXN0IGNoZWNrIHZhbHVlcyBsb3dlciB0aGFuIA0KTG93ZXN0IHZhbHVlIHN1cHBv
-cnRlZCggaS4sZSBmb3IgZ3JhbnVsYXJpdHk9LTEpIGFzIHdlbGwgd2hpY2ggY2FuIG1ha2UgdGhp
-cyB0ZXN0IGNvbXBsZXRlLg0KDQpUaGFua3MsDQpSYWh1bA0KDQoNCj4gKwkJfTsNCj4gKw0KPiAr
-CQlzdHJ1Y3QgZHJtX3hlX2V4ZWNfcXVldWVfY3JlYXRlIGNyZWF0ZSA9IHsNCj4gKwkJCS5leHRl
-bnNpb25zID0gdG9fdXNlcl9wb2ludGVyKCZleHQpLA0KPiArCQkJLnZtX2lkID0geGVfdm1fY3Jl
-YXRlKGZkLCAwLCAwKSwNCj4gKwkJCS53aWR0aCA9IDEsDQo+ICsJCQkubnVtX3BsYWNlbWVudHMg
-PSAxLA0KPiArCQkJLmluc3RhbmNlcyA9IHRvX3VzZXJfcG9pbnRlcigmaW5zdGFuY2UpLA0KPiAr
-CQl9Ow0KPiArDQo+ICsJCWVyciA9IGlndF9pb2N0bChmZCwgRFJNX0lPQ1RMX1hFX0VYRUNfUVVF
-VUVfQ1JFQVRFLA0KPiAmY3JlYXRlKTsNCj4gKw0KPiArCQlpZ3RfYXNzZXJ0X2VxKGVyciwgZXhw
-ZWN0ZWQpOw0KPiArCX0NCj4gKw0KPiArCWlndF9maXh0dXJlDQo+ICsJCWRybV9jbG9zZV9kcml2
-ZXIoZmQpOw0KPiArfQ0KPiBkaWZmIC0tZ2l0IGEvdGVzdHMvbWVzb24uYnVpbGQgYi90ZXN0cy9t
-ZXNvbi5idWlsZCBpbmRleA0KPiAwNWZkYTdkOTQuLmFhMGI0ZTg4OCAxMDA2NDQNCj4gLS0tIGEv
-dGVzdHMvbWVzb24uYnVpbGQNCj4gKysrIGIvdGVzdHMvbWVzb24uYnVpbGQNCj4gQEAgLTI3MSw2
-ICsyNzEsNyBAQCBpbnRlbF9rbXNfcHJvZ3MgPSBbDQo+ICBdDQo+IA0KPiAgaW50ZWxfeGVfcHJv
-Z3MgPSBbDQo+ICsJJ3hlX2FjY2Vzc19jb3VudGVyJywNCj4gIAkneGVfY2NzJywNCj4gIAkneGVf
-Y3JlYXRlJywNCj4gIAkneGVfY29tcHV0ZScsDQo+IC0tDQo+IDIuMjUuMQ0KDQo=
+
+On 10/10/2023 17:43, Kamil Konieczny wrote:
+> Hi Tvrtko,
+> On 2023-10-10 at 12:07:14 +0100, Tvrtko Ursulin wrote:
+>> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+>>
+>> Instead of asserting just skip trying to print columns when terminal is
+>> too narrow.
+>>
+>> At the same time fix some type confusion to fix calculations going huge.
+>>
+>> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+>> Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/143
+> 
+> Did you tested this in screensaver? I mean running intel_gpu_top
+> in terminal windows under X (Gnome or other) and leaving desktop
+> unattanded, entering screen saver mode (possible with screen
+> turned off) and then re-enabling screen?
+
+I tested it by resizing the terminal to crazy small dimensions and 
+confirmed asserts and endless printing of spaces failure modes are 
+fixed. Also under the screen lock.
+
+But no DPMS and no console screensavers.
+
+> 
+>> ---
+>>   tools/intel_gpu_top.c | 12 +++++++-----
+>>   1 file changed, 7 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+>> index 472ce3f13ba9..6d1397cb8214 100644
+>> --- a/tools/intel_gpu_top.c
+>> +++ b/tools/intel_gpu_top.c
+>> @@ -926,7 +926,7 @@ static void free_display_clients(struct igt_drm_clients *clients)
+>>   	free(clients);
+>>   }
+>>   
+>> -static unsigned int n_spaces(const unsigned int n)
+>> +static int n_spaces(const int n)
+> --------- ^^^
+> Could you make it int at your first patch touching this function?
+
+Honestly no, can't be bothered to churn this too much. I think argument 
+can be made that this patch is fixing type confusion in many places so 
+hopefully you can accept it as is.
+
+Regards,
+
+Tvrtko
+
+> 
+> With or without this suggestion,
+> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> 
+> Regards,
+> Kamil
+> 
+>>   {
+>>   	static const char *spaces[] = {
+>>   		" ",
+>> @@ -950,7 +950,7 @@ static unsigned int n_spaces(const unsigned int n)
+>>   		"                   ",
+>>   #define MAX_SPACES 19
+>>   	};
+>> -	unsigned int i, r = n;
+>> +	int i, r = n;
+>>   
+>>   	while (r) {
+>>   		if (r > MAX_SPACES)
+>> @@ -972,7 +972,8 @@ print_percentage_bar(double percent, double max, int max_len, bool numeric)
+>>   	int bar_len, i, len = max_len - 2;
+>>   	const int w = 8;
+>>   
+>> -	assert(max_len > 0);
+>> +	if (len < 2) /* For edge lines '|' */
+>> +		return;
+>>   
+>>   	bar_len = ceil(w * percent * len / max);
+>>   	if (bar_len > w * len)
+>> @@ -986,6 +987,8 @@ print_percentage_bar(double percent, double max, int max_len, bool numeric)
+>>   		printf("%s", bars[i]);
+>>   
+>>   	len -= (bar_len + (w - 1)) / w;
+>> +	if (len < 1)
+>> +		return;
+>>   	n_spaces(len);
+>>   
+>>   	putchar('|');
+>> @@ -2001,8 +2004,7 @@ print_clients_header(struct igt_drm_clients *clients, int lines,
+>>   				 4 : clients->max_name_len; /* At least "NAME" */
+>>   
+>>   	if (output_mode == INTERACTIVE) {
+>> -		unsigned int num_active = 0;
+>> -		int len;
+>> +		int len, num_active = 0;
+>>   
+>>   		if (lines++ >= con_h)
+>>   			return lines;
+>> -- 
+>> 2.39.2
+>>
