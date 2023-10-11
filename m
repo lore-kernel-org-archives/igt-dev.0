@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EE38110E891
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Oct 2023 14:19:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C1D9510E89A
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Oct 2023 14:19:14 +0000 (UTC)
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 11 Oct 2023 14:18:32 +0000
-Message-Id: <20231011141841.7-12-francois.dugast@intel.com>
+Date: Wed, 11 Oct 2023 14:18:35 +0000
+Message-Id: <20231011141841.7-15-francois.dugast@intel.com>
 In-Reply-To: <20231011141841.7-1-francois.dugast@intel.com>
 References: <20231011141841.7-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [RFC v1 11/20] drm-uapi/xe: Remove GT_TYPE_REMOTE.
+Subject: [igt-dev] [RFC v1 14/20] xe_ioctl: Converge bo_create to the most
+ used version
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,29 +26,100 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-Align with commit ("drm/xe/uapi: Remove GT_TYPE_REMOTE")
+Let's unify the call instead of having 2 separated
+options for the same goal.
 
-Cc: Francois Dugast <francois.dugast@intel.com>
 Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- include/drm-uapi/xe_drm.h | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ lib/xe/xe_ioctl.c           | 15 ---------------
+ lib/xe/xe_ioctl.h           |  1 -
+ tests/intel/xe_spin_batch.c |  2 +-
+ tests/intel/xe_vm.c         |  7 ++++---
+ 4 files changed, 5 insertions(+), 20 deletions(-)
 
-diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index 2fc4278ae..09e6bef79 100644
---- a/include/drm-uapi/xe_drm.h
-+++ b/include/drm-uapi/xe_drm.h
-@@ -376,9 +376,8 @@ struct drm_xe_query_config {
-  */
- struct drm_xe_query_gt {
- #define DRM_XE_QUERY_GT_TYPE_MAIN		0
--#define DRM_XE_QUERY_GT_TYPE_REMOTE		1
--#define DRM_XE_QUERY_GT_TYPE_MEDIA		2
--	/** @type: GT type: Main, Remote, or Media */
-+#define DRM_XE_QUERY_GT_TYPE_MEDIA		1
-+	/** @type: GT type: Main or Media */
- 	__u16 type;
- 	/** @gt_id: Unique ID of this GT within the PCI Device */
- 	__u16 gt_id;
+diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+index db41d5ba5..2edf8a7cf 100644
+--- a/lib/xe/xe_ioctl.c
++++ b/lib/xe/xe_ioctl.c
+@@ -253,21 +253,6 @@ uint32_t xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags)
+ 	return handle;
+ }
+ 
+-uint32_t xe_bo_create(int fd, int gt, uint32_t vm, uint64_t size)
+-{
+-	struct drm_xe_gem_create create = {
+-		.vm_id = vm,
+-		.size = size,
+-		.flags = vram_if_possible(fd, gt),
+-	};
+-	int err;
+-
+-	err = igt_ioctl(fd, DRM_IOCTL_XE_GEM_CREATE, &create);
+-	igt_assert_eq(err, 0);
+-
+-	return create.handle;
+-}
+-
+ uint32_t xe_bind_exec_queue_create(int fd, uint32_t vm, uint64_t ext, bool async)
+ {
+ 	struct drm_xe_engine_class_instance instance = {
+diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+index d9c97bf22..993ba8158 100644
+--- a/lib/xe/xe_ioctl.h
++++ b/lib/xe/xe_ioctl.h
+@@ -67,7 +67,6 @@ void xe_vm_destroy(int fd, uint32_t vm);
+ uint32_t __xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags,
+ 			      uint32_t *handle);
+ uint32_t xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags);
+-uint32_t xe_bo_create(int fd, int gt, uint32_t vm, uint64_t size);
+ uint32_t xe_exec_queue_create(int fd, uint32_t vm,
+ 			  struct drm_xe_engine_class_instance *instance,
+ 			  uint64_t ext);
+diff --git a/tests/intel/xe_spin_batch.c b/tests/intel/xe_spin_batch.c
+index 6ab604d9b..261fde9af 100644
+--- a/tests/intel/xe_spin_batch.c
++++ b/tests/intel/xe_spin_batch.c
+@@ -169,7 +169,7 @@ static void xe_spin_fixed_duration(int fd)
+ 	exec_queue = xe_exec_queue_create_class(fd, vm, DRM_XE_ENGINE_CLASS_COPY);
+ 	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
+ 	bo_size = ALIGN(sizeof(*spin) + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
+-	bo = xe_bo_create(fd, 0, vm, bo_size);
++	bo = xe_bo_create_flags(fd, vm, bo_size, vram_if_possible(fd, 0));
+ 	spin = xe_bo_map(fd, bo, bo_size);
+ 	spin_addr = intel_allocator_alloc_with_strategy(ahnd, bo, bo_size, 0,
+ 							ALLOC_STRATEGY_LOW_TO_HIGH);
+diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+index 7164f8c12..27d44af7f 100644
+--- a/tests/intel/xe_vm.c
++++ b/tests/intel/xe_vm.c
+@@ -276,7 +276,7 @@ static void unbind_all(int fd, int n_vmas)
+ 	};
+ 
+ 	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
+-	bo = xe_bo_create(fd, 0, vm, bo_size);
++	bo = xe_bo_create_flags(fd, vm, bo_size, vram_if_possible(fd, 0));
+ 
+ 	for (i = 0; i < n_vmas; ++i)
+ 		xe_vm_bind_async(fd, vm, 0, bo, 0, addr + i * bo_size,
+@@ -322,6 +322,7 @@ static void userptr_invalid(int fd)
+ 	xe_vm_destroy(fd, vm);
+ }
+ 
++
+ /**
+  * SUBTEST: shared-%s-page
+  * Description: Test shared arg[1] page
+@@ -1532,9 +1533,9 @@ test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
+ 		igt_assert(map0 != MAP_FAILED);
+ 		igt_assert(map1 != MAP_FAILED);
+ 	} else {
+-		bo0 = xe_bo_create(fd, eci->gt_id, vm, bo_size);
++		bo0 = xe_bo_create_flags(fd, vm, bo_size, vram_if_possible(fd, eci->gt_id));
+ 		map0 = xe_bo_map(fd, bo0, bo_size);
+-		bo1 = xe_bo_create(fd, eci->gt_id, vm, bo_size);
++		bo1 = xe_bo_create_flags(fd, vm, bo_size, vram_if_possible(fd, eci->gt_id));
+ 		map1 = xe_bo_map(fd, bo1, bo_size);
+ 	}
+ 	memset(map0, 0, bo_size);
 -- 
 2.34.1
