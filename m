@@ -2,15 +2,14 @@ Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Intel-gfx@lists.freedesktop.org
-Date: Wed, 11 Oct 2023 09:38:43 +0100
-Message-Id: <20231011083845.798413-2-tvrtko.ursulin@linux.intel.com>
+Date: Wed, 11 Oct 2023 09:38:45 +0100
+Message-Id: <20231011083845.798413-4-tvrtko.ursulin@linux.intel.com>
 In-Reply-To: <20231011083845.798413-1-tvrtko.ursulin@linux.intel.com>
 References: <20231011083845.798413-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/4] tools/intel_gpu_top: Fix client layout
- on first sample period
+Subject: [igt-dev] [PATCH i-g-t 4/4] tools/intel_gpu_top: Handle narrow
+ terminals more gracefully
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,64 +24,50 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-When I moved the client name to be last, I did not account for the fact
-current code skips showing engine utilisation until at least two sampling
-periods have passed. Consequence of this is that client name gets printed
-as the second field and not under the "NAME" column header.
+Instead of asserting just skip trying to print columns when terminal is
+too narrow.
 
-Fix it by emitting spaces instead of engine utilisation until two samples
-have been collected.
-
-v2:
- * Fix n_spaces return type to signed.
+At the same time fix some type confusion to fix calculations going huge.
 
 Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/143
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tools/intel_gpu_top.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ tools/intel_gpu_top.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
 diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index 60fe06917531..b6d1014f00b8 100644
+index 006879c4ae67..00506c63db4e 100644
 --- a/tools/intel_gpu_top.c
 +++ b/tools/intel_gpu_top.c
-@@ -928,12 +928,14 @@ static void free_display_clients(struct igt_drm_clients *clients)
+@@ -972,7 +972,8 @@ print_percentage_bar(double percent, double max, int max_len, bool numeric)
+ 	int bar_len, i, len = max_len - 2;
+ 	const int w = 8;
  
- static const char *bars[] = { " ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█" };
+-	assert(max_len > 0);
++	if (len < 2) /* For edge lines '|' */
++		return;
  
--static void n_spaces(const unsigned int n)
-+static int n_spaces(const int n)
- {
--	unsigned int i;
-+	int i;
+ 	bar_len = ceil(w * percent * len / max);
+ 	if (bar_len > w * len)
+@@ -986,6 +987,8 @@ print_percentage_bar(double percent, double max, int max_len, bool numeric)
+ 		printf("%s", bars[i]);
  
- 	for (i = 0; i < n; i++)
- 		putchar(' ');
-+
-+	return n;
- }
+ 	len -= (bar_len + (w - 1)) / w;
++	if (len < 1)
++		return;
+ 	n_spaces(len);
  
- static void
-@@ -2043,14 +2045,17 @@ print_client(struct igt_drm_client *c, struct engines *engines, double t, int li
+ 	putchar('|');
+@@ -2001,8 +2004,7 @@ print_clients_header(struct igt_drm_clients *clients, int lines,
+ 				 4 : clients->max_name_len; /* At least "NAME" */
  
- 		len = printf("%*s ", clients->max_pid_len, c->pid_str);
+ 	if (output_mode == INTERACTIVE) {
+-		unsigned int num_active = 0;
+-		int len;
++		int len, num_active = 0;
  
--		for (i = 0;
--		     c->samples > 1 && i <= iclients->classes.max_engine_id;
--		     i++) {
-+		for (i = 0; i <= iclients->classes.max_engine_id; i++) {
- 			double pct, max;
- 
- 			if (!iclients->classes.capacity[i])
- 				continue;
- 
-+			if (c->samples < 2) {
-+				len += n_spaces(*class_w);
-+				continue;
-+			}
-+
- 			pct = (double)c->val[i] / period_us / 1e3 * 100;
- 
- 			/*
+ 		if (lines++ >= con_h)
+ 			return lines;
 -- 
 2.39.2
