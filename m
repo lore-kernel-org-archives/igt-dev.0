@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DB77310E648
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Oct 2023 10:26:35 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7279E10E64F
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Oct 2023 10:26:37 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 11 Oct 2023 15:47:20 +0530
-Message-Id: <20231011101722.3188258-3-bhanuprakash.modem@intel.com>
+Date: Wed, 11 Oct 2023 15:47:21 +0530
+Message-Id: <20231011101722.3188258-4-bhanuprakash.modem@intel.com>
 In-Reply-To: <20231011101722.3188258-1-bhanuprakash.modem@intel.com>
 References: <20231011101722.3188258-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V7 2/4] tests/intel/pm_rpm: Split module-reload
- test
+Subject: [igt-dev] [i-g-t V7 3/4] tests/intel/pm_rpm: Fix CI with renamed
+ tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,77 +23,68 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Split module-reload test as with & w/o display.
+As Display PM rpm tests are seperated from core, update
+the CI testlist with the new ones.
 
-- i915_pm_rpm@module-reload: Without display
-- kms_pm_rpm@module-reload:  With display
+V2: - New patch for module-reload test.
 
 Cc: Swati Sharma <swati2.sharma@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/intel/i915_pm_rpm.c | 11 -----------
- tests/intel/kms_pm_rpm.c  | 22 ++++++++++++++++++++++
- 2 files changed, 22 insertions(+), 11 deletions(-)
+ tests/intel-ci/blacklist-pre-merge.txt | 8 ++++----
+ tests/intel-ci/fast-feedback.testlist  | 4 ++--
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/tests/intel/i915_pm_rpm.c b/tests/intel/i915_pm_rpm.c
-index 2b0a63bde..c0365b304 100644
---- a/tests/intel/i915_pm_rpm.c
-+++ b/tests/intel/i915_pm_rpm.c
-@@ -1468,17 +1468,6 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		igt_assert(igt_wait(device_in_pci_d3(pci_dev), 2000, 100));
- 		teardown_environment(false);
+diff --git a/tests/intel-ci/blacklist-pre-merge.txt b/tests/intel-ci/blacklist-pre-merge.txt
+index d4e5ef66e..0a1315aae 100644
+--- a/tests/intel-ci/blacklist-pre-merge.txt
++++ b/tests/intel-ci/blacklist-pre-merge.txt
+@@ -13,8 +13,8 @@
+ #
+ # Data acquired on 2020-02-19 by Martin Peres
+ ###############################################################################
+-igt@i915_pm_rpm@legacy-planes(-dpms)?
+-igt@i915_pm_rpm@universal-planes(-dpms)?
++igt@kms_pm_rpm@legacy-planes(-dpms)?
++igt@kms_pm_rpm@universal-planes(-dpms)?
  
--		igt_debug("Reload as normal\n");
--		igt_i915_driver_unload();
--
--		igt_kmsg(KMSG_INFO "Reloading i915 as normal\n");
--		igt_assert_eq(igt_i915_driver_load("mmio_debug=-1"), 0);
--
--		igt_assert(setup_environment(true));
--		pci_dev = igt_device_get_pci_device(drm_fd);
--		igt_assert(igt_wait(device_in_pci_d3(pci_dev), 2000, 100));
--		teardown_environment(true);
--
- 		/* Remove our mmio_debugging module */
- 		igt_i915_driver_unload();
- 	}
-diff --git a/tests/intel/kms_pm_rpm.c b/tests/intel/kms_pm_rpm.c
-index 2882e265f..3e578cbf7 100644
---- a/tests/intel/kms_pm_rpm.c
-+++ b/tests/intel/kms_pm_rpm.c
-@@ -114,6 +114,9 @@
-  * SUBTEST: modeset-stress-extra-wait
-  * Description: Stress test with modeset (extra wait) using runtime PM
-  *
-+ * SUBTEST: module-reload
-+ * Description: Test to check D3 state after module reload
-+ *
-  * SUBTEST: pc8-residency
-  * Description: Basic sanity test for PC8+ states
-  *
-@@ -1697,4 +1700,23 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		teardown_environment();
- 		forcewake_put(&ms_data);
- 	}
-+
-+	igt_subtest("module-reload") {
-+		struct pci_device *pci_dev;
-+
-+		igt_i915_driver_unload();
-+
-+		igt_kmsg(KMSG_INFO "Reloading i915 as normal\n");
-+		igt_assert_eq(igt_i915_driver_load("mmio_debug=-1"), 0);
-+
-+		igt_assert(setup_environment());
-+		pci_dev = igt_device_get_pci_device(drm_fd);
-+		igt_assert(igt_wait(device_in_pci_d3(pci_dev), 2000, 100));
-+		if (enable_one_screen_with_type(&ms_data, SCREEN_TYPE_ANY))
-+			drm_resources_equal_subtest();
-+		teardown_environment();
-+
-+		/* Remove our mmio_debugging module */
-+		igt_i915_driver_unload();
-+	}
- }
+ 
+ ###############################################################################
+@@ -67,7 +67,7 @@ igt@gem_exec_alignment@.*
+ #
+ # Data acquired on 2020-02-20 by Martin Peres
+ ###############################################################################
+-igt@i915_pm_rpm@debugfs-read
++igt@kms_pm_rpm@debugfs-read
+ 
+ 
+ ###############################################################################
+@@ -109,4 +109,4 @@ igt@gem_tiled_wc
+ #
+ # Data acquired on 2020-02-20 by Martin Peres
+ ###############################################################################
+-igt@i915_pm_rpm@modeset-stress-extra-wait
++igt@kms_pm_rpm@modeset-stress-extra-wait
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index 3d8b23073..c252e2cf0 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -121,13 +121,13 @@ igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
+ igt@kms_pipe_crc_basic@read-crc
+ igt@kms_pipe_crc_basic@read-crc-frame-sequence
+ igt@kms_pm_backlight@basic-brightness
++igt@kms_pm_rpm@basic-pci-d3-state
++igt@kms_pm_rpm@basic-rte
+ igt@kms_psr@primary_page_flip
+ igt@kms_psr@cursor_plane_move
+ igt@kms_psr@sprite_plane_onoff
+ igt@kms_psr@primary_mmap_gtt
+ igt@kms_setmode@basic-clone-single-crtc
+-igt@i915_pm_rpm@basic-pci-d3-state
+-igt@i915_pm_rpm@basic-rte
+ igt@i915_pm_rps@basic-api
+ igt@prime_self_import@basic-llseek-bad
+ igt@prime_self_import@basic-llseek-size
 -- 
 2.40.0
