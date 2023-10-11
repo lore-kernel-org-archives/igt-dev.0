@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <429810f6-d955-ebb7-89f0-79d822d0bd6c@linux.intel.com>
-Date: Wed, 11 Oct 2023 09:31:22 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 25BDC10E5A6
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Oct 2023 08:35:14 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 11 Oct 2023 14:05:57 +0530
+Message-Id: <20231011083557.65193-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Intel-gfx@lists.freedesktop.org,
- Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-References: <20231010110714.749239-1-tvrtko.ursulin@linux.intel.com>
- <20231010110714.749239-5-tvrtko.ursulin@linux.intel.com>
- <20231010164336.dikudseydggrrux7@kamilkon-desk.igk.intel.com>
- <7c36db01-1534-535a-c1ce-71369bc5405a@linux.intel.com>
-In-Reply-To: <7c36db01-1534-535a-c1ce-71369bc5405a@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 4/4] tools/intel_gpu_top:
- Handle narrow terminals more gracefully
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_atomic_interruptible: use
+ pipe_name followed by output_name
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,111 +21,79 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Use pipe_name followed by output_name.
 
-On 11/10/2023 09:22, Tvrtko Ursulin wrote:
-> 
-> On 10/10/2023 17:43, Kamil Konieczny wrote:
->> Hi Tvrtko,
->> On 2023-10-10 at 12:07:14 +0100, Tvrtko Ursulin wrote:
->>> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->>>
->>> Instead of asserting just skip trying to print columns when terminal is
->>> too narrow.
->>>
->>> At the same time fix some type confusion to fix calculations going huge.
->>>
->>> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->>> Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/143
->>
->> Did you tested this in screensaver? I mean running intel_gpu_top
->> in terminal windows under X (Gnome or other) and leaving desktop
->> unattanded, entering screen saver mode (possible with screen
->> turned off) and then re-enabling screen?
-> 
-> I tested it by resizing the terminal to crazy small dimensions and 
-> confirmed asserts and endless printing of spaces failure modes are 
-> fixed. Also under the screen lock.
-> 
-> But no DPMS and no console screensavers.
-> 
->>
->>> ---
->>>   tools/intel_gpu_top.c | 12 +++++++-----
->>>   1 file changed, 7 insertions(+), 5 deletions(-)
->>>
->>> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
->>> index 472ce3f13ba9..6d1397cb8214 100644
->>> --- a/tools/intel_gpu_top.c
->>> +++ b/tools/intel_gpu_top.c
->>> @@ -926,7 +926,7 @@ static void free_display_clients(struct 
->>> igt_drm_clients *clients)
->>>       free(clients);
->>>   }
->>> -static unsigned int n_spaces(const unsigned int n)
->>> +static int n_spaces(const int n)
->> --------- ^^^
->> Could you make it int at your first patch touching this function?
-> 
-> Honestly no, can't be bothered to churn this too much. I think argument 
-> can be made that this patch is fixing type confusion in many places so 
-> hopefully you can accept it as is.
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ tests/kms_atomic_interruptible.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-Ah sorry, I did make it unsigned in in a previous patch.. I will respin 
-the whole series.
-
-Regards,
-
-Tvrtko
-
-> 
-> Regards,
-> 
-> Tvrtko
-> 
->>
->> With or without this suggestion,
->> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
->>
->> Regards,
->> Kamil
->>
->>>   {
->>>       static const char *spaces[] = {
->>>           " ",
->>> @@ -950,7 +950,7 @@ static unsigned int n_spaces(const unsigned int n)
->>>           "                   ",
->>>   #define MAX_SPACES 19
->>>       };
->>> -    unsigned int i, r = n;
->>> +    int i, r = n;
->>>       while (r) {
->>>           if (r > MAX_SPACES)
->>> @@ -972,7 +972,8 @@ print_percentage_bar(double percent, double max, 
->>> int max_len, bool numeric)
->>>       int bar_len, i, len = max_len - 2;
->>>       const int w = 8;
->>> -    assert(max_len > 0);
->>> +    if (len < 2) /* For edge lines '|' */
->>> +        return;
->>>       bar_len = ceil(w * percent * len / max);
->>>       if (bar_len > w * len)
->>> @@ -986,6 +987,8 @@ print_percentage_bar(double percent, double max, 
->>> int max_len, bool numeric)
->>>           printf("%s", bars[i]);
->>>       len -= (bar_len + (w - 1)) / w;
->>> +    if (len < 1)
->>> +        return;
->>>       n_spaces(len);
->>>       putchar('|');
->>> @@ -2001,8 +2004,7 @@ print_clients_header(struct igt_drm_clients 
->>> *clients, int lines,
->>>                    4 : clients->max_name_len; /* At least "NAME" */
->>>       if (output_mode == INTERACTIVE) {
->>> -        unsigned int num_active = 0;
->>> -        int len;
->>> +        int len, num_active = 0;
->>>           if (lines++ >= con_h)
->>>               return lines;
->>> -- 
->>> 2.39.2
->>>
+diff --git a/tests/kms_atomic_interruptible.c b/tests/kms_atomic_interruptible.c
+index 0ae2435f9..1a104106a 100644
+--- a/tests/kms_atomic_interruptible.c
++++ b/tests/kms_atomic_interruptible.c
+@@ -363,7 +363,7 @@ igt_main
+ 			if (!pipe_output_combo_valid(&display, pipe, output))
+ 				continue;
+ 
+-			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
+ 				run_plane_test(&display, pipe, output, test_legacy_modeset, DRM_PLANE_TYPE_PRIMARY);
+ 			break;
+ 		}
+@@ -375,7 +375,7 @@ igt_main
+ 			if (!pipe_output_combo_valid(&display, pipe, output))
+ 				continue;
+ 
+-			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
+ 				run_plane_test(&display, pipe, output, test_atomic_modeset, DRM_PLANE_TYPE_PRIMARY);
+ 			break;
+ 		}
+@@ -387,7 +387,7 @@ igt_main
+ 			if (!pipe_output_combo_valid(&display, pipe, output))
+ 				continue;
+ 
+-			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
+ 				run_plane_test(&display, pipe, output, test_legacy_dpms, DRM_PLANE_TYPE_PRIMARY);
+ 			break;
+ 		}
+@@ -399,7 +399,7 @@ igt_main
+ 			if (!pipe_output_combo_valid(&display, pipe, output))
+ 				continue;
+ 
+-			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
+ 				run_plane_test(&display, pipe, output, test_pageflip, DRM_PLANE_TYPE_PRIMARY);
+ 			break;
+ 		}
+@@ -411,7 +411,7 @@ igt_main
+ 			if (!pipe_output_combo_valid(&display, pipe, output))
+ 				continue;
+ 
+-			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
+ 				run_plane_test(&display, pipe, output, test_setcursor, DRM_PLANE_TYPE_CURSOR);
+ 			break;
+ 		}
+@@ -423,7 +423,7 @@ igt_main
+ 			if (!pipe_output_combo_valid(&display, pipe, output))
+ 				continue;
+ 
+-			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
+ 				run_plane_test(&display, pipe, output, test_setplane, DRM_PLANE_TYPE_PRIMARY);
+ 			break;
+ 		}
+@@ -435,7 +435,7 @@ igt_main
+ 			if (!pipe_output_combo_valid(&display, pipe, output))
+ 				continue;
+ 
+-			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
+ 				run_plane_test(&display, pipe, output, test_setplane, DRM_PLANE_TYPE_CURSOR);
+ 			break;
+ 		}
+-- 
+2.25.1
