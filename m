@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E788510E099
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Oct 2023 09:20:51 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A6FFA10E030
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Oct 2023 09:27:53 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 11 Oct 2023 14:51:32 +0530
-Message-Id: <20231011092132.66219-1-swati2.sharma@intel.com>
+Date: Wed, 11 Oct 2023 14:58:33 +0530
+Message-Id: <20231011092833.66391-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_sequence: use pipe_name followed
- by output_name
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane: drop planes from dynamic
+ subtest name
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,25 +21,25 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Use pipe_name followed by output_name.
+Drop planes from dynamic subtest name.
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_sequence.c | 2 +-
+ tests/kms_plane.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
-index c6d6dea00..6716d3860 100644
---- a/tests/kms_sequence.c
-+++ b/tests/kms_sequence.c
-@@ -320,7 +320,7 @@ igt_main
- 					if (!i915_pipe_output_combo_valid(&data.display))
- 						continue;
+diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+index 9a515559c..edaddd928 100644
+--- a/tests/kms_plane.c
++++ b/tests/kms_plane.c
+@@ -1307,7 +1307,7 @@ static void run_test(data_t *data, void (*test)(data_t *, enum pipe))
+ 			continue;
  
--					igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(p)) {
-+					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), igt_output_name(output)) {
- 						data.pipe = p;
- 						data.output = output;
- 						data.flags = m->flags;
+ 		igt_output_set_pipe(data->output, PIPE_NONE);
+-		igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
++		igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
+ 			test(data, pipe);
+ 
+ 		if (is_pipe_limit_reached(++count))
 -- 
 2.25.1
