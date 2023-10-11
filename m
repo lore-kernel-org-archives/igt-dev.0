@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 43CA410E8A1
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Oct 2023 14:19:20 +0000 (UTC)
-From: Francois Dugast <francois.dugast@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 11 Oct 2023 14:18:40 +0000
-Message-Id: <20231011141841.7-20-francois.dugast@intel.com>
-In-Reply-To: <20231011141841.7-1-francois.dugast@intel.com>
-References: <20231011141841.7-1-francois.dugast@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============3354420861323179378=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [RFC v1 19/20] drm-uapi/xe: Align with GuC version type
- update
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Tvrtko Ursulin" <tvrtko.ursulin@linux.intel.com>
+Date: Wed, 11 Oct 2023 14:28:11 -0000
+Message-ID: <169703449164.26515.2332814376894045563@emeril.freedesktop.org>
+References: <20231010110714.749239-1-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20231010110714.749239-1-tvrtko.ursulin@linux.intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Fix_vari?=
+ =?utf-8?q?ous_intel=5Fgpu=5Ftop_UI_layout_issues_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,49 +17,207 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+--===============3354420861323179378==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Align with kernel commit ("drm/xe/uapi: Be more specific around GuC Version Type")
+== Series Details ==
 
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
----
- include/drm-uapi/xe_drm.h | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+Series: Fix various intel_gpu_top UI layout issues (rev2)
+URL   : https://patchwork.freedesktop.org/series/124890/
+State : success
 
-diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index 6e29a6776..ce1a1cc2e 100644
---- a/include/drm-uapi/xe_drm.h
-+++ b/include/drm-uapi/xe_drm.h
-@@ -468,11 +468,23 @@ struct drm_xe_query_topology_mask {
-  *
-  * Given a uc_type this will return the major, minor, patch and branch version
-  * of the micro-controller firmware.
-+ *
-+ * The @uc_type can be:
-+ *  - %DRM_XE_QUERY_UC_TYPE_GUC_SUBMISSION - This is the GuC Submission Version,
-+ * a.k.a 'VF version'. It is not the actual GuC blob version. A running GuC can
-+ * support multiple VF APIs with different Submission Versions. This version is
-+ * negotiated by the VF KMD with GuC during VF initialization. In most of the
-+ * current available GuC blobs, this is a 1-1 relationship where the Submission
-+ * version could be inferred from the running version and vice-versa. However,
-+ * the submission version is the most useful information for the user space
-+ * perspective and needs.
-+ *  - %DRM_XE_QUERY_TYPE_HUC - The actual HuC blob that is currently running
-+ * in the platform. It returns 0 when HuC is not currently loaded.
-  */
- struct drm_xe_query_uc_fw_version {
- 	/** @uc_type: The micro-controller type to query firmware version */
--#define DRM_XE_QUERY_UC_TYPE_GUC	0
--#define DRM_XE_QUERY_UC_TYPE_HUC	1
-+#define DRM_XE_QUERY_UC_TYPE_GUC_SUBMISSION	0
-+#define DRM_XE_QUERY_UC_TYPE_HUC		1
- 	__u16 uc_type;
- 
- 	/** @pad: MBZ */
--- 
-2.34.1
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7530_BAT -> XEIGTPW_9969_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 2)
+------------------------------
+
+  Missing    (2): bat-pvc-2 bat-atsm-2 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9969_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_psr@primary_page_flip:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][1] ([Intel XE#535]) +2 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9969/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_pipe_crc_basic@hang-read-crc:
+    - bat-dg2-oem2:       [INCOMPLETE][2] ([Intel XE#749]) -> [PASS][3]
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7530/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9969/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3:
+    - bat-dg2-oem2:       [INCOMPLETE][4] -> [PASS][5]
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7530/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9969/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html
+
+  * {igt@xe_create@create-execqueues-noleak}:
+    - bat-adlp-7:         [FAIL][6] ([Intel XE#524]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7530/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9969/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
+
+  
+#### Warnings ####
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
+    - bat-dg2-oem2:       [TIMEOUT][8] ([Intel XE#430] / [Intel XE#530]) -> [FAIL][9] ([Intel XE#400])
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7530/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9969/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3:
+    - bat-dg2-oem2:       [TIMEOUT][10] ([Intel XE#530]) -> [FAIL][11] ([Intel XE#400])
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7530/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9969/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
+  [Intel XE#430]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/430
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+  [Intel XE#530]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/530
+  [Intel XE#535]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/535
+  [Intel XE#749]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/749
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7530 -> IGTPW_9969
+  * Linux: xe-426-3c98b0d3446e97713b2647ac6e0ad4024f0fbf15 -> xe-427-473f882e90c57a20e9f9d0dc8674fdc9cde4c984
+
+  IGTPW_9969: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9969/index.html
+  IGT_7530: 9f420648bface59553ffd4481d17ba14b7982840 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-426-3c98b0d3446e97713b2647ac6e0ad4024f0fbf15: 3c98b0d3446e97713b2647ac6e0ad4024f0fbf15
+  xe-427-473f882e90c57a20e9f9d0dc8674fdc9cde4c984: 473f882e90c57a20e9f9d0dc8674fdc9cde4c984
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9969/index.html
+
+--===============3354420861323179378==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Fix various intel_gpu_top UI layout issues (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124890/">https://patchwork.freedesktop.org/series/124890/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9969/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9969/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7530_BAT -&gt; XEIGTPW_9969_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 2)</h2>
+<p>Missing    (2): bat-pvc-2 bat-atsm-2 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9969_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_psr@primary_page_flip:<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9969/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/535">Intel XE#535</a>) +2 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7530/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/749">Intel XE#749</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9969/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7530/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9969/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>{igt@xe_create@create-execqueues-noleak}:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7530/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9969/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7530/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/430">Intel XE#430</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/530">Intel XE#530</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9969/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7530/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/530">Intel XE#530</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9969/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7530 -&gt; IGTPW_9969</li>
+<li>Linux: xe-426-3c98b0d3446e97713b2647ac6e0ad4024f0fbf15 -&gt; xe-427-473f882e90c57a20e9f9d0dc8674fdc9cde4c984</li>
+</ul>
+<p>IGTPW_9969: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9969/index.html<br />
+  IGT_7530: 9f420648bface59553ffd4481d17ba14b7982840 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-426-3c98b0d3446e97713b2647ac6e0ad4024f0fbf15: 3c98b0d3446e97713b2647ac6e0ad4024f0fbf15<br />
+  xe-427-473f882e90c57a20e9f9d0dc8674fdc9cde4c984: 473f882e90c57a20e9f9d0dc8674fdc9cde4c984</p>
+
+</body>
+</html>
+
+--===============3354420861323179378==--
