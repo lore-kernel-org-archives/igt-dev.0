@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-To: igt-dev@lists.freedesktop.org,
-	Intel-gfx@lists.freedesktop.org
-Date: Wed, 11 Oct 2023 09:38:44 +0100
-Message-Id: <20231011083845.798413-3-tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20231011083845.798413-1-tvrtko.ursulin@linux.intel.com>
-References: <20231011083845.798413-1-tvrtko.ursulin@linux.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1E93210E5C5
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Oct 2023 08:48:50 +0000 (UTC)
+From: Lee Shawn C <shawn.c.lee@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 11 Oct 2023 16:42:22 +0800
+Message-Id: <20231011084222.226352-1-shawn.c.lee@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/4] tools/intel_gpu_top: Optimise
- interactive display a bit
+Subject: [igt-dev] [PATCH] tests: read engine name again before restore
+ timeout value
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,86 +17,52 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: Lee Shawn C <shawn.c.lee@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+We encounter a unexpected error on chrome book device while
+running this test. The tool will restore GPU engine's timeout
+value but open incorrect file name (XR24 in below). This is
+a workaround patch to avoid this problem before we got the
+root cause.
 
-Padding the percentage bars and table columns with spaces happens quite a
-lot so lets do better than putchar at a time. Have a table of visually
-empty strings and build the required length out of those chunks.
+openat(AT_FDCWD, "/sys/dev/char/226:0", O_RDONLY) = 12
+openat(12, "dev", O_RDONLY)             = 13
+read(13, "226:0\n", 1023)               = 6
+close(13)                               = 0
+openat(12, "engine", O_RDONLY)          = 13
+close(12)                               = 0
+openat(13, "XR24", O_RDONLY)            = -1 ENOENT (No such file or directory)
 
-While at it, also move the percentage bar table into its function scope.
-
-v2:
- * Fix checkpatch and use ARRAY_SIZE. (Kamil)
-
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Lee Shawn C <shawn.c.lee@intel.com>
+Issue: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/147
 ---
- tools/intel_gpu_top.c | 38 +++++++++++++++++++++++++++++++++-----
- 1 file changed, 33 insertions(+), 5 deletions(-)
+ tests/intel/kms_busy.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index b6d1014f00b8..006879c4ae67 100644
---- a/tools/intel_gpu_top.c
-+++ b/tools/intel_gpu_top.c
-@@ -926,14 +926,39 @@ static void free_display_clients(struct igt_drm_clients *clients)
- 	free(clients);
+diff --git a/tests/intel/kms_busy.c b/tests/intel/kms_busy.c
+index 5b620658fb18..119e6f1652ce 100644
+--- a/tests/intel/kms_busy.c
++++ b/tests/intel/kms_busy.c
+@@ -414,9 +414,15 @@ static void gpu_engines_init_timeouts(int fd, int max_engines,
+ 	}
  }
  
--static const char *bars[] = { " ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█" };
--
- static int n_spaces(const int n)
+-static void gpu_engines_restore_timeouts(int fd, int num_engines, const struct gem_engine_properties *props)
++static void gpu_engines_restore_timeouts(int fd, int num_engines, struct gem_engine_properties *props)
  {
 -	int i;
-+	static const char *spaces[] = {
-+		" ",
-+		"  ",
-+		"   ",
-+		"    ",
-+		"     ",
-+		"      ",
-+		"       ",
-+		"        ",
-+		"         ",
-+		"          ",
-+		"           ",
-+		"            ",
-+		"             ",
-+		"              ",
-+		"               ",
-+		"                ",
-+		"                 ",
-+		"                  ",
-+		"                   ",
-+	};
-+	int i, r = n;
- 
--	for (i = 0; i < n; i++)
--		putchar(' ');
-+	while (r) {
-+		if (r > ARRAY_SIZE(spaces))
-+			i = ARRAY_SIZE(spaces) - 1;
-+		else
-+			i = r - 1;
-+		fputs(spaces[i], stdout);
-+		r -= i + 1;
++	const struct intel_execution_engine2 *e;
++	int i = 0;
++
++	for_each_physical_engine(fd, e) {
++		props[i].engine = e;
++		i++;
 +	}
  
- 	return n;
- }
-@@ -941,6 +966,9 @@ static int n_spaces(const int n)
- static void
- print_percentage_bar(double percent, double max, int max_len, bool numeric)
- {
-+	static const char *bars[] = {
-+		" ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█"
-+	};
- 	int bar_len, i, len = max_len - 2;
- 	const int w = 8;
- 
+ 	for (i = 0; i < num_engines; i++)
+ 		gem_engine_properties_restore(fd, &props[i]);
 -- 
-2.39.2
+2.34.1
