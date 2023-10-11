@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0061D10E5D7
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Oct 2023 09:01:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DE71510E5E9
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Oct 2023 09:08:52 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 11 Oct 2023 14:32:31 +0530
-Message-Id: <20231011090231.65619-1-swati2.sharma@intel.com>
+Date: Wed, 11 Oct 2023 14:39:37 +0530
+Message-Id: <20231011090937.65903-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/intel/kms_flip_tiling: pipe_name
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_invalid_mode: use pipe_name
  followed by output_name
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -25,24 +25,21 @@ Use pipe_name followed by output_name.
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/intel/kms_flip_tiling.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/kms_invalid_mode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/intel/kms_flip_tiling.c b/tests/intel/kms_flip_tiling.c
-index 44121d7cf..295f097ec 100644
---- a/tests/intel/kms_flip_tiling.c
-+++ b/tests/intel/kms_flip_tiling.c
-@@ -229,9 +229,9 @@ igt_main
- 					if (plane->formats[j] != data.testformat)
- 						continue;
+diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
+index 017c2c195..db7b703c0 100644
+--- a/tests/kms_invalid_mode.c
++++ b/tests/kms_invalid_mode.c
+@@ -317,7 +317,7 @@ igt_main
+ 				if (!i915_pipe_output_combo_valid(&data.display))
+ 					continue;
  
--					igt_dynamic_f("%s-pipe-%s-%s-to-%s",
--						      igt_output_name(output),
-+					igt_dynamic_f("pipe-%s-%s-%s-to-%s",
- 						      kmstest_pipe_name(pipe),
-+						      igt_output_name(output),
- 						      igt_fb_modifier_name(modifier[0]),
- 						      igt_fb_modifier_name(modifier[1]))
- 						test_flip_tiling(&data, pipe, output, modifier);
+-				igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe)) {
++				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+ 					data.output = output;
+ 					data.pipe = pipe;
+ 					data.adjust_mode = subtests[i].adjust_mode;
 -- 
 2.25.1
