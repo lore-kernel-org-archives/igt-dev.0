@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A38BC10E939
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Oct 2023 15:12:10 +0000 (UTC)
-From: Matthew Auld <matthew.auld@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 11 Oct 2023 16:09:47 +0100
-Message-ID: <20231011150953.284936-7-matthew.auld@intel.com>
-In-Reply-To: <20231011150953.284936-1-matthew.auld@intel.com>
-References: <20231011150953.284936-1-matthew.auld@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============1915041739788156339=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 06/12] lib/intel_pat: add helpers for
- common pat_index modes
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Tvrtko Ursulin" <tvrtko.ursulin@linux.intel.com>
+Date: Wed, 11 Oct 2023 15:13:57 -0000
+Message-ID: <169703723764.26512.14745139956866678371@emeril.freedesktop.org>
+References: <20231011083845.798413-1-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20231011083845.798413-1-tvrtko.ursulin@linux.intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_s?=
+ =?utf-8?q?tarting_with_=5Bi-g-t=2C1/4=5D_tools/intel=5Fgpu=5Ftop=3A_Fix_c?=
+ =?utf-8?q?lients_header_width_when_no_clients?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,146 +18,207 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For now just add uc, wt and wb for every platform. The wb mode should
-always be at least 1way coherent, if messing around with system memory.
-Also make non-matching platforms throw an error rather than trying to
-inherit the modes from previous platforms since they will likely be
-different.
+--===============1915041739788156339==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: José Roberto de Souza <jose.souza@intel.com>
-Cc: Pallavi Mishra <pallavi.mishra@intel.com>
----
- lib/intel_pat.c | 77 +++++++++++++++++++++++++++++++++++++++++++++++++
- lib/intel_pat.h | 19 ++++++++++++
- lib/meson.build |  1 +
- 3 files changed, 97 insertions(+)
- create mode 100644 lib/intel_pat.c
- create mode 100644 lib/intel_pat.h
+== Series Details ==
 
-diff --git a/lib/intel_pat.c b/lib/intel_pat.c
-new file mode 100644
-index 000000000..2b892ee52
---- /dev/null
-+++ b/lib/intel_pat.c
-@@ -0,0 +1,77 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ */
-+
-+#include "intel_pat.h"
-+
-+#include "igt.h"
-+
-+struct intel_pat_cache {
-+	uint8_t uc; /* UC + COH_NONE */
-+	uint8_t wt; /* WT + COH_NONE */
-+	uint8_t wb; /* WB + COH_AT_LEAST_1WAY */
-+
-+	uint8_t max_index;
-+};
-+
-+static void intel_get_pat_idx(int fd, struct intel_pat_cache *pat)
-+{
-+	uint16_t dev_id = intel_get_drm_devid(fd);
-+
-+	if (intel_get_device_info(dev_id)->graphics_ver == 20) {
-+		pat->uc = 3;
-+		pat->wt = 15; /* Compressed + WB-transient */
-+		pat->wb = 2;
-+		pat->max_index = 31;
-+	} else if (IS_METEORLAKE(dev_id)) {
-+		pat->uc = 2;
-+		pat->wt = 1;
-+		pat->wb = 3;
-+		pat->max_index = 3;
-+	} else if (IS_PONTEVECCHIO(dev_id)) {
-+		pat->uc = 0;
-+		pat->wt = 2;
-+		pat->wb = 3;
-+		pat->max_index = 7;
-+	} else if (intel_graphics_ver(dev_id) <= IP_VER(12, 60)) {
-+		pat->uc = 3;
-+		pat->wt = 2;
-+		pat->wb = 0;
-+		pat->max_index = 3;
-+	} else {
-+		igt_critical("Platform is missing PAT settings for uc/wt/wb\n");
-+	}
-+}
-+
-+uint8_t intel_get_max_pat_index(int fd)
-+{
-+	struct intel_pat_cache pat = {};
-+
-+	intel_get_pat_idx(fd, &pat);
-+	return pat.max_index;
-+}
-+
-+uint8_t intel_get_pat_idx_uc(int fd)
-+{
-+	struct intel_pat_cache pat = {};
-+
-+	intel_get_pat_idx(fd, &pat);
-+	return pat.uc;
-+}
-+
-+uint8_t intel_get_pat_idx_wt(int fd)
-+{
-+	struct intel_pat_cache pat = {};
-+
-+	intel_get_pat_idx(fd, &pat);
-+	return pat.wt;
-+}
-+
-+uint8_t intel_get_pat_idx_wb(int fd)
-+{
-+	struct intel_pat_cache pat = {};
-+
-+	intel_get_pat_idx(fd, &pat);
-+	return pat.wb;
-+}
-diff --git a/lib/intel_pat.h b/lib/intel_pat.h
-new file mode 100644
-index 000000000..c24dbc275
---- /dev/null
-+++ b/lib/intel_pat.h
-@@ -0,0 +1,19 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ */
-+
-+#ifndef INTEL_PAT_H
-+#define INTEL_PAT_H
-+
-+#include <stdint.h>
-+
-+#define DEFAULT_PAT_INDEX ((uint8_t)-1) /* igt-core can pick 1way or better */
-+
-+uint8_t intel_get_max_pat_index(int fd);
-+
-+uint8_t intel_get_pat_idx_uc(int fd);
-+uint8_t intel_get_pat_idx_wt(int fd);
-+uint8_t intel_get_pat_idx_wb(int fd);
-+
-+#endif /* INTEL_PAT_H */
-diff --git a/lib/meson.build b/lib/meson.build
-index a7bccafc3..48466a2e9 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -64,6 +64,7 @@ lib_sources = [
- 	'intel_device_info.c',
- 	'intel_mmio.c',
- 	'intel_mocs.c',
-+	'intel_pat.c',
- 	'ioctl_wrappers.c',
- 	'media_spin.c',
- 	'media_fill.c',
--- 
-2.41.0
+Series: series starting with [i-g-t,1/4] tools/intel_gpu_top: Fix clients header width when no clients
+URL   : https://patchwork.freedesktop.org/series/124947/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7530_BAT -> XEIGTPW_9971_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 2)
+------------------------------
+
+  Missing    (2): bat-pvc-2 bat-atsm-2 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9971_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_psr@primary_page_flip:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][1] ([Intel XE#535]) +2 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9971/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_pipe_crc_basic@hang-read-crc:
+    - bat-dg2-oem2:       [INCOMPLETE][2] ([Intel XE#749]) -> [PASS][3]
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7530/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9971/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3:
+    - bat-dg2-oem2:       [INCOMPLETE][4] -> [PASS][5]
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7530/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9971/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html
+
+  * {igt@xe_create@create-execqueues-noleak}:
+    - bat-adlp-7:         [FAIL][6] ([Intel XE#524]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7530/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9971/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
+
+  
+#### Warnings ####
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
+    - bat-dg2-oem2:       [TIMEOUT][8] ([Intel XE#430] / [Intel XE#530]) -> [FAIL][9] ([Intel XE#400])
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7530/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9971/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3:
+    - bat-dg2-oem2:       [TIMEOUT][10] ([Intel XE#530]) -> [FAIL][11] ([Intel XE#400])
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7530/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9971/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
+  [Intel XE#430]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/430
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+  [Intel XE#530]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/530
+  [Intel XE#535]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/535
+  [Intel XE#749]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/749
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7530 -> IGTPW_9971
+  * Linux: xe-426-3c98b0d3446e97713b2647ac6e0ad4024f0fbf15 -> xe-427-473f882e90c57a20e9f9d0dc8674fdc9cde4c984
+
+  IGTPW_9971: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9971/index.html
+  IGT_7530: 9f420648bface59553ffd4481d17ba14b7982840 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-426-3c98b0d3446e97713b2647ac6e0ad4024f0fbf15: 3c98b0d3446e97713b2647ac6e0ad4024f0fbf15
+  xe-427-473f882e90c57a20e9f9d0dc8674fdc9cde4c984: 473f882e90c57a20e9f9d0dc8674fdc9cde4c984
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9971/index.html
+
+--===============1915041739788156339==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/4] tools/intel_gpu_top: Fix clients header width when no clients</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124947/">https://patchwork.freedesktop.org/series/124947/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9971/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9971/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7530_BAT -&gt; XEIGTPW_9971_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 2)</h2>
+<p>Missing    (2): bat-pvc-2 bat-atsm-2 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9971_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_psr@primary_page_flip:<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9971/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/535">Intel XE#535</a>) +2 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7530/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/749">Intel XE#749</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9971/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7530/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9971/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>{igt@xe_create@create-execqueues-noleak}:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7530/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9971/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7530/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/430">Intel XE#430</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/530">Intel XE#530</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9971/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7530/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/530">Intel XE#530</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9971/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7530 -&gt; IGTPW_9971</li>
+<li>Linux: xe-426-3c98b0d3446e97713b2647ac6e0ad4024f0fbf15 -&gt; xe-427-473f882e90c57a20e9f9d0dc8674fdc9cde4c984</li>
+</ul>
+<p>IGTPW_9971: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9971/index.html<br />
+  IGT_7530: 9f420648bface59553ffd4481d17ba14b7982840 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-426-3c98b0d3446e97713b2647ac6e0ad4024f0fbf15: 3c98b0d3446e97713b2647ac6e0ad4024f0fbf15<br />
+  xe-427-473f882e90c57a20e9f9d0dc8674fdc9cde4c984: 473f882e90c57a20e9f9d0dc8674fdc9cde4c984</p>
+
+</body>
+</html>
+
+--===============1915041739788156339==--
