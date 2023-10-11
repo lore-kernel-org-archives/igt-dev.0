@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5240210E4FA
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E53D710E4FA
  for <igt-dev@lists.freedesktop.org>; Wed, 11 Oct 2023 14:18:56 +0000 (UTC)
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 11 Oct 2023 14:18:21 +0000
-Message-Id: <20231011141841.7-1-francois.dugast@intel.com>
+Date: Wed, 11 Oct 2023 14:18:22 +0000
+Message-Id: <20231011141841.7-2-francois.dugast@intel.com>
+In-Reply-To: <20231011141841.7-1-francois.dugast@intel.com>
+References: <20231011141841.7-1-francois.dugast@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [RFC v1 00/20] uAPI Alignment - take 2
+Subject: [igt-dev] [RFC v1 01/20] drm-uapi/xe: Add documentation for query
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,92 +22,79 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This is the second take of uAPI updates that would lead to
-breakage in the compatibility, which it is not acceptable after
-we are merged upstream. So, let's break it before it is too late,
-and start upstreaming a good, reliable and clean uapi.
+Align with commit ("Add documentation for query")
 
-This series is not complete yet but it is sent for early review
-as some patches are already a few weeks old.
+Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+---
+ include/drm-uapi/xe_drm.h | 41 ++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 38 insertions(+), 3 deletions(-)
 
-It is intended to be applied after take 1 [1] which is not
-merged yet, so it will break CI.
-
-The matching kernel series is [2].
-
-[1] https://patchwork.freedesktop.org/series/124710/
-[2] https://patchwork.freedesktop.org/series/124977/
-
-Francois Dugast (11):
-  drm-uapi/xe: Add documentation for query
-  drm-uapi/xe: Extend drm_xe_vm_bind_op
-  drm-uapi/xe: Add uAPI to query micro-controler firmware version
-  drm-uapi/xe: Document DRM_XE_DEVICE_QUERY_HWCONFIG
-  drm-uapi/xe: Extend uAPI to query HuC micro-controler firmware version
-  drm-uapi/xe: Remove useless query config num_params
-  drm-uapi/xe: Add missing DRM_ prefix in uAPI constants
-  drm-uapi/xe: Add _FLAG to uAPI constants usable for flags
-  drm-uapi/xe: Make constant comments visible in kernel doc
-  fixup! tests/intel/xe_query: Add a test for querying engine cycles
-  drm-uapi/xe: Remove unused inaccessible memory region
-
-Rodrigo Vivi (9):
-  drm-uapi/xe: Remove GT_TYPE_REMOTE.
-  drm-uapi/xe: Kill VM_MADVISE IOCTL and the atomic tests
-  drm/xe_query: Remove backward compatibility of vram_visible_size.
-  xe_ioctl: Converge bo_create to the most used version
-  xe_ioctl: Rename *xe_bo_create_flags to simply xe_bo_create
-  xe_query: Add missing include.
-  xe_query: Kill visible_vram_if_possible
-  drm-uapi/xe: Separate bo_create placement from flags
-  drm-uapi/xe: Align with GuC version type update
-
- include/drm-uapi/xe_drm.h          | 478 ++++++++++++++++-------------
- lib/igt_draw.c                     |   7 +-
- lib/igt_fb.c                       |   9 +-
- lib/intel_batchbuffer.c            |  28 +-
- lib/intel_blt.c                    |   2 +-
- lib/intel_bufops.c                 |   2 +-
- lib/intel_compute.c                |   6 +-
- lib/intel_ctx.c                    |   4 +-
- lib/xe/xe_ioctl.c                  |  86 +++---
- lib/xe/xe_ioctl.h                  |  10 +-
- lib/xe/xe_query.c                  |  83 +----
- lib/xe/xe_query.h                  |   8 +-
- lib/xe/xe_spin.c                   |  13 +-
- lib/xe/xe_util.c                   |  14 +-
- lib/xe/xe_util.h                   |   4 +-
- tests/intel/api_intel_allocator.c  |   4 +-
- tests/intel/kms_big_fb.c           |  22 +-
- tests/intel/xe_ccs.c               |  20 +-
- tests/intel/xe_create.c            |  10 +-
- tests/intel/xe_debugfs.c           |  14 +-
- tests/intel/xe_dma_buf_sync.c      |   9 +-
- tests/intel/xe_drm_fdinfo.c        |  24 +-
- tests/intel/xe_evict.c             |  70 +++--
- tests/intel/xe_exec_balancer.c     |  43 +--
- tests/intel/xe_exec_basic.c        |  30 +-
- tests/intel/xe_exec_compute_mode.c |  11 +-
- tests/intel/xe_exec_fault_mode.c   | 198 ++----------
- tests/intel/xe_exec_reset.c        |  83 ++---
- tests/intel/xe_exec_store.c        |  26 +-
- tests/intel/xe_exec_threads.c      |  63 ++--
- tests/intel/xe_exercise_blt.c      |  10 +-
- tests/intel/xe_guc_pc.c            |  17 +-
- tests/intel/xe_huc_copy.c          |   4 +-
- tests/intel/xe_intel_bb.c          |   4 +-
- tests/intel/xe_mmap.c              |  49 +--
- tests/intel/xe_noexec_ping_pong.c  |   6 +-
- tests/intel/xe_pm.c                |  27 +-
- tests/intel/xe_pm_residency.c      |   7 +-
- tests/intel/xe_prime_self_import.c |  37 ++-
- tests/intel/xe_query.c             |  52 ++--
- tests/intel/xe_spin_batch.c        |   4 +-
- tests/intel/xe_vm.c                | 171 ++++++-----
- tests/intel/xe_waitfence.c         |  20 +-
- tests/kms_addfb_basic.c            |   2 +-
- tests/kms_getfb.c                  |   2 +-
- 45 files changed, 826 insertions(+), 967 deletions(-)
-
+diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+index 6ff1106e4..ddc227f5a 100644
+--- a/include/drm-uapi/xe_drm.h
++++ b/include/drm-uapi/xe_drm.h
+@@ -321,14 +321,43 @@ struct drm_xe_query_config {
+ 	/** @pad: MBZ */
+ 	__u32 pad;
+ 
++	/*
++	 * Device ID (lower 16 bits) and the device revision (next
++	 * 8 bits)
++	 */
+ #define XE_QUERY_CONFIG_REV_AND_DEVICE_ID	0
++	/*
++	 * Flags describing the device configuration, see list below
++	 */
+ #define XE_QUERY_CONFIG_FLAGS			1
++	/*
++	 * Flag is set if the device has usable VRAM
++	 */
+ 	#define XE_QUERY_CONFIG_FLAGS_HAS_VRAM		(0x1 << 0)
++	/*
++	 * Minimal memory alignment required by this device,
++	 * typically SZ_4K or SZ_64K
++	 */
+ #define XE_QUERY_CONFIG_MIN_ALIGNMENT		2
++	/*
++	 * Maximum bits of a virtual address
++	 */
+ #define XE_QUERY_CONFIG_VA_BITS			3
++	/*
++	 * Total number of GTs for the entire device
++	 */
+ #define XE_QUERY_CONFIG_GT_COUNT		4
++	/*
++	 * Total number of accessible memory regions
++	 */
+ #define XE_QUERY_CONFIG_MEM_REGION_COUNT	5
++	/*
++	 * Value of the highest available exec queue priority
++	 */
+ #define XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY	6
++	/*
++	 * Number of elements in the info array
++	 */
+ #define XE_QUERY_CONFIG_NUM_PARAM		(XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY + 1)
+ 	/** @info: array of elements containing the config info */
+ 	__u64 info[];
+@@ -440,9 +469,15 @@ struct drm_xe_query_topology_mask {
+ /**
+  * struct drm_xe_device_query - main structure to query device information
+  *
+- * If size is set to 0, the driver fills it with the required size for the
+- * requested type of data to query. If size is equal to the required size,
+- * the queried information is copied into data.
++ * The user selects the type of data to query among DRM_XE_DEVICE_QUERY_*
++ * and sets the value in the query member. This determines the type of
++ * the structure provided by the driver in data, among struct drm_xe_query_*.
++ *
++ * If size is set to 0, the driver fills it with the required size for
++ * the requested type of data to query. If size is equal to the required
++ * size, the queried information is copied into data. If size is set to
++ * a value different from 0 and different from the required size, the
++ * IOCTL call returns -EINVAL.
+  *
+  * For example the following code snippet allows retrieving and printing
+  * information about the device engines with DRM_XE_DEVICE_QUERY_ENGINES:
 -- 
 2.34.1
