@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 267E910E1D4
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Oct 2023 21:13:50 +0000 (UTC)
-From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 11 Oct 2023 14:13:40 -0700
-Message-ID: <20231011211341.453878-1-daniele.ceraolospurio@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============5851765408410828820=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2] tests/xe_huc_copy: Handle multiple GTs
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Wu, Hersen" <hersenxs.wu@amd.com>
+Date: Wed, 11 Oct 2023 21:18:53 -0000
+Message-ID: <169705913357.26512.17939474245510392209@emeril.freedesktop.org>
+References: <20231001162828.74566-1-hersenxs.wu@amd.com>
+In-Reply-To: <20231001162828.74566-1-hersenxs.wu@amd.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_s?=
+ =?utf-8?q?tarting_with_=5B1/2=2Ci-g-t=5D_tests/kms=5Fcursor=5Fcrc=3A_Fix_?=
+ =?utf-8?q?tests_be_skipped_on_AMD_gpu_=28rev7=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,79 +18,127 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The test currently only looks for video engines on GT0, which is a
-problem because newer platforms (like MTL) have their video engines on
-the media GT. ALso, it is technically possible to have 1 HuC per-GT,
-though we don't currently have any platform that supports this.
-To handle the media GT use-case and to future proof against multiple
-HuCs, we can just loop and repeat the test on any GT that has video
-engines.
+--===============5851765408410828820==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: mark the test as skipped if no video engines are found (Kamil)
+== Series Details ==
 
-Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/intel/xe_huc_copy.c | 28 ++++++++++++++++++++++++----
- 1 file changed, 24 insertions(+), 4 deletions(-)
+Series: series starting with [1/2,i-g-t] tests/kms_cursor_crc: Fix tests be skipped on AMD gpu (rev7)
+URL   : https://patchwork.freedesktop.org/series/124496/
+State : success
 
-diff --git a/tests/intel/xe_huc_copy.c b/tests/intel/xe_huc_copy.c
-index c9891a729..2c12d9f07 100644
---- a/tests/intel/xe_huc_copy.c
-+++ b/tests/intel/xe_huc_copy.c
-@@ -104,9 +104,9 @@ gen12_create_batch_huc_copy(uint32_t *batch,
-  */
- 
- static void
--test_huc_copy(int fd)
-+__test_huc_copy(int fd, uint32_t vm, struct drm_xe_engine_class_instance *hwe)
- {
--	uint32_t vm, exec_queue;
-+	uint32_t exec_queue;
- 	char *dinput;
- 	struct drm_xe_sync sync = { 0 };
- 
-@@ -117,8 +117,7 @@ test_huc_copy(int fd)
- 		{ .addr = ADDR_BATCH, .size = SIZE_BATCH }, // batch
- 	};
- 
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
--	exec_queue = xe_exec_queue_create_class(fd, vm, DRM_XE_ENGINE_CLASS_VIDEO_DECODE);
-+	exec_queue = xe_exec_queue_create(fd, vm, hwe, 0);
- 	sync.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL;
- 	sync.handle = syncobj_create(fd, 0);
- 
-@@ -148,6 +147,27 @@ test_huc_copy(int fd)
- 
- 	syncobj_destroy(fd, sync.handle);
- 	xe_exec_queue_destroy(fd, exec_queue);
-+}
-+
-+static void
-+test_huc_copy(int fd)
-+{
-+	struct drm_xe_engine_class_instance *hwe;
-+	uint32_t vm;
-+	uint32_t tested_gts = 0;
-+
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
-+
-+	xe_for_each_hw_engine(fd, hwe) {
-+		if (hwe->engine_class == DRM_XE_ENGINE_CLASS_VIDEO_DECODE &&
-+		    !(tested_gts & BIT(hwe->gt_id))) {
-+			tested_gts |= BIT(hwe->gt_id);
-+			__test_huc_copy(fd, vm, hwe);
-+		}
-+	}
-+
-+	igt_require_f(tested_gts, "No video class engines found\n");
-+
- 	xe_vm_destroy(fd, vm);
- }
- 
--- 
-2.41.0
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7532_BAT -> XEIGTPW_9981_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (2 -> 2)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9981_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - bat-dg2-oem2:       [FAIL][1] ([Intel XE#480]) -> [PASS][2] +1 other test pass
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7532/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9981/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7532 -> IGTPW_9981
+
+  IGTPW_9981: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9981/index.html
+  IGT_7532: bf24b157b1049afc086fe65a60b22bd6bb3e18b7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-429-81cbfcc83d65c3c69866f356cb83497a47f9d297: 81cbfcc83d65c3c69866f356cb83497a47f9d297
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9981/index.html
+
+--===============5851765408410828820==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [1/2,i-g-t] tests/kms_cursor_crc: Fix tests be skipped on AMD gpu (rev7)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124496/">https://patchwork.freedesktop.org/series/124496/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9981/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9981/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7532_BAT -&gt; XEIGTPW_9981_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (2 -&gt; 2)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9981_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7532/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9981/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7532 -&gt; IGTPW_9981</li>
+</ul>
+<p>IGTPW_9981: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9981/index.html<br />
+  IGT_7532: bf24b157b1049afc086fe65a60b22bd6bb3e18b7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-429-81cbfcc83d65c3c69866f356cb83497a47f9d297: 81cbfcc83d65c3c69866f356cb83497a47f9d297</p>
+
+</body>
+</html>
+
+--===============5851765408410828820==--
