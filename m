@@ -1,21 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C0BF710E00C
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Oct 2023 06:54:36 +0000 (UTC)
-From: "Lobo, Melanie" <melanie.lobo@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Thu, 12 Oct 2023 06:54:27 +0000
-Message-ID: <DS0PR11MB6495BDEC39BB5113D5C32BCB88D3A@DS0PR11MB6495.namprd11.prod.outlook.com>
-References: <20231011095520.10768-1-melanie.lobo@intel.com>
- <20231011131533.txryfgabfncj4ltn@kamilkon-desk.igk.intel.com>
-In-Reply-To: <20231011131533.txryfgabfncj4ltn@kamilkon-desk.igk.intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B287810E420
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Oct 2023 07:01:41 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 12 Oct 2023 09:01:33 +0200
+Message-Id: <20231012070133.31106-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/intel/kms_flip_scaled_crc: Add
- support for FP16 format of MTL compressed modifier
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/xe_create: Remove create-invalid-size
+ subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,62 +18,91 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS2FtaWwgS29uaWVjem55
-IDxrYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tPg0KPiBTZW50OiBXZWRuZXNkYXksIE9j
-dG9iZXIgMTEsIDIwMjMgNjo0NiBQTQ0KPiBUbzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5v
-cmcNCj4gQ2M6IExvYm8sIE1lbGFuaWUgPG1lbGFuaWUubG9ib0BpbnRlbC5jb20+OyBIZWlra2ls
-YSwgSnVoYS1wZWtrYSA8anVoYS0NCj4gcGVra2EuaGVpa2tpbGFAaW50ZWwuY29tPg0KPiBTdWJq
-ZWN0OiBSZTogW2lndC1kZXZdIFtQQVRDSCBpLWctdF0gdGVzdHMvaW50ZWwva21zX2ZsaXBfc2Nh
-bGVkX2NyYzogQWRkDQo+IHN1cHBvcnQgZm9yIEZQMTYgZm9ybWF0IG9mIE1UTCBjb21wcmVzc2Vk
-IG1vZGlmaWVyDQo+IA0KPiBIaSBNZWxhbmllLA0KPiANCj4gcGxlYXNlIHN1YnNjcmliZSB0byBp
-Z3QtZGV2IG1haWxpbmdsaXN0Lg0KPiANCj4gT24gMjAyMy0xMC0xMSBhdCAxNToyNToyMCArMDUz
-MCwgTWVsYW5pZSBMb2JvIHdyb3RlOg0KPiA+IE1UTCBzdXBwb3J0cyBuZXcgRlAxNiBmb3JtYXQg
-d2hpY2ggaXMgYSBiaW5hcnkgZmxvYXRpbmctcG9pbnQgY29tcHV0ZXINCj4gPiBudW1iZXIgZm9y
-bWF0IHRoYXQgb2NjdXBpZXMgMTYgYml0cyBpbiBjb21wdXRlciBtZW1vcnkuDQo+ID4NCj4gPiBD
-aGFuZ2UtSWQ6IEk3ZmE4MTY5ZDU0Y2JkOWU2ZGNkZjc2NTA2NTY1OWU1NDFhMzFlNDgxDQo+IC0g
-Xl5eXl5eXl5eDQo+IERyb3AgdGhpcyBsaW5lLg0KPiANCj4gUmVnYXJkcywNCj4gS2FtaWwNCj4g
-DQpIaSBLYW1pbCwNCg0KVGhhbmsgeW91IGZvciB5b3VyIHJlcGx5LiBJIGhhdmUgc3Vic2NyaWJl
-ZCB0byBpZ3QtZGV2IG1haWxpbmcgbGlzdC4gSSB3aWxsIHJlbW92ZSB0aGUgQ2hhbmdlLUlkIGFu
-ZCBmbG9hdCB0aGUgbmV4dCByZXZpc2lvbi4gDQoNClJlZ2FyZHMsDQpNZWxhbmllIExvYm8NCg0K
-PiA+IFNpZ25lZC1vZmYtYnk6IE1lbGFuaWUgTG9ibyA8bWVsYW5pZS5sb2JvQGludGVsLmNvbT4N
-Cj4gPiAtLS0NCj4gPiAgbGliL2ludGVsX2F1eF9wZ3RhYmxlLmMgICAgICAgICAgIHwgIDUgKysr
-KysNCj4gPiAgdGVzdHMvaW50ZWwva21zX2ZsaXBfc2NhbGVkX2NyYy5jIHwgMTYgKysrKysrKysr
-KysrKysrKw0KPiA+ICAyIGZpbGVzIGNoYW5nZWQsIDIxIGluc2VydGlvbnMoKykNCj4gPg0KPiA+
-IGRpZmYgLS1naXQgYS9saWIvaW50ZWxfYXV4X3BndGFibGUuYyBiL2xpYi9pbnRlbF9hdXhfcGd0
-YWJsZS5jIGluZGV4DQo+ID4gN2M3OTUyMTM0NGRlLi5hNjEyZGY0MDc2OTIgMTAwNjQ0DQo+ID4g
-LS0tIGEvbGliL2ludGVsX2F1eF9wZ3RhYmxlLmMNCj4gPiArKysgYi9saWIvaW50ZWxfYXV4X3Bn
-dGFibGUuYw0KPiA+IEBAIC0yMSw2ICsyMSw3IEBADQo+ID4gICNkZWZpbmUgQVVYX0ZPUk1BVF9B
-WVVWCQkweDA5DQo+ID4gICNkZWZpbmUgQVVYX0ZPUk1BVF9BUkdCXzhCCTB4MEENCj4gPiAgI2Rl
-ZmluZSBBVVhfRk9STUFUX05WMTJfMjEJMHgwRg0KPiA+ICsjZGVmaW5lIEFVWF9GT1JNQVRfWFJH
-QjE2MTYxNjE2XzY0QiAweDEwDQo+ID4NCj4gPiAgc3RydWN0IHBndGFibGVfbGV2ZWxfZGVzYyB7
-DQo+ID4gIAlpbnQgaWR4X3NoaWZ0Ow0KPiA+IEBAIC0zMDUsNiArMzA2LDEwIEBAIHN0YXRpYyB1
-aW50NjRfdCBwZ3RfZ2V0X2wxX2ZsYWdzKGNvbnN0IHN0cnVjdA0KPiBpbnRlbF9idWYgKmJ1Ziwg
-aW50IHN1cmZhY2VfaWR4KQ0KPiA+ICAJCQllbnRyeS5lLmZvcm1hdCA9IEFVWF9GT1JNQVRfQVJH
-Ql84QjsNCj4gPiAgCQkJZW50cnkuZS5kZXB0aCA9IGJwcF90b19kZXB0aF92YWwoMzIpOw0KPiA+
-ICAJCQlicmVhazsNCj4gPiArCQljYXNlIDY0Og0KPiA+ICsJCQllbnRyeS5lLmZvcm1hdCA9IEFV
-WF9GT1JNQVRfWFJHQjE2MTYxNjE2XzY0QjsNCj4gPiArCQkJZW50cnkuZS5kZXB0aCA9IGJwcF90
-b19kZXB0aF92YWwoNjQpOw0KPiA+ICsJCQlicmVhazsNCj4gPiAgCQlkZWZhdWx0Og0KPiA+ICAJ
-CQlpZ3RfYXNzZXJ0KDApOw0KPiA+ICAJCX0NCj4gPiBkaWZmIC0tZ2l0IGEvdGVzdHMvaW50ZWwv
-a21zX2ZsaXBfc2NhbGVkX2NyYy5jDQo+ID4gYi90ZXN0cy9pbnRlbC9rbXNfZmxpcF9zY2FsZWRf
-Y3JjLmMNCj4gPiBpbmRleCAyOTk3YjYzZmFjNDAuLjBkNWU5OTRhZjJiNyAxMDA2NDQNCj4gPiAt
-LS0gYS90ZXN0cy9pbnRlbC9rbXNfZmxpcF9zY2FsZWRfY3JjLmMNCj4gPiArKysgYi90ZXN0cy9p
-bnRlbC9rbXNfZmxpcF9zY2FsZWRfY3JjLmMNCj4gPiBAQCAtNTkwLDYgKzU5MCwyMiBAQCBjb25z
-dCBzdHJ1Y3Qgew0KPiA+ICAJCTAuNSwNCj4gPiAgCQkxLjAsDQo+ID4gIAl9LA0KPiA+ICsJew0K
-PiA+ICsJCSJmbGlwLTY0YnBwLTR0aWxlLXRvLTMyYnBwLTR0aWxlbXRscmNjY3MtdXBzY2FsaW5n
-IiwNCj4gPiArCQkiRmxpcCBmcm9tIDY0YnBwIG5vbiBzY2FsZWQgZmIgdG8gMzJicHAgdXBzY2Fs
-ZWQgZmIgdG8gc3RyZXNzDQo+IENEIGNsb2NrIHByb2dyYW1taW5nIiwNCj4gPiArCQlJOTE1X0ZP
-Uk1BVF9NT0RfNF9USUxFRCwNCj4gRFJNX0ZPUk1BVF9YUkdCMTYxNjE2MTZGLA0KPiA+ICsJCUk5
-MTVfRk9STUFUX01PRF80X1RJTEVEX01UTF9SQ19DQ1MsDQo+IERSTV9GT1JNQVRfWFJHQjE2MTYx
-NjE2RiwNCj4gPiArCQkwLjUsDQo+ID4gKwkJMS4wLA0KPiA+ICsJfSwNCj4gPiArCXsNCj4gPiAr
-CQkiZmxpcC02NGJwcC00dGlsZS10by0zMmJwcC00dGlsZW10bHJjY2NzLWRvd25zY2FsaW5nIiwN
-Cj4gPiArCQkiRmxpcCBmcm9tIDY0YnBwIG5vbiBzY2FsZWQgZmIgdG8gMzJicHAgZG93bnNjYWxl
-ZCBmYiB0bw0KPiBzdHJlc3MgQ0QgY2xvY2sgcHJvZ3JhbW1pbmciLA0KPiA+ICsJCUk5MTVfRk9S
-TUFUX01PRF80X1RJTEVELA0KPiBEUk1fRk9STUFUX1hSR0IxNjE2MTYxNkYsDQo+ID4gKwkJSTkx
-NV9GT1JNQVRfTU9EXzRfVElMRURfTVRMX1JDX0NDUywNCj4gRFJNX0ZPUk1BVF9YUkdCMTYxNjE2
-MTZGLA0KPiA+ICsJCTEuMCwNCj4gPiArCQkyLjAsDQo+ID4gKwl9LA0KPiA+ICB9Ow0KPiA+DQo+
-ID4gIHN0YXRpYyB2b2lkIHNldHVwX2ZiKGRhdGFfdCAqZGF0YSwgc3RydWN0IGlndF9mYiAqbmV3
-ZmIsIHVpbnQzMl90DQo+ID4gd2lkdGgsDQo+ID4gLS0NCj4gPiAyLjE3LjENCj4gPg0K
+Test exercises kernel returns EINVAL on bo create ioctl with unaligned
+size what was never merged and according to discussion with Thomas
+will never be. Lets remove this test as it is incorrect in this case.
+
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+---
+ tests/intel/xe_create.c | 52 -----------------------------------------
+ 1 file changed, 52 deletions(-)
+
+diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+index 8d845e5c86..541fc2b335 100644
+--- a/tests/intel/xe_create.c
++++ b/tests/intel/xe_create.c
+@@ -39,54 +39,6 @@ static int __create_bo(int fd, uint32_t vm, uint64_t size, uint32_t flags,
+ 	return ret;
+ }
+ 
+-/**
+- * SUBTEST: create-invalid-size
+- * Functionality: ioctl
+- * Test category: negative test
+- * Description: Verifies xe bo create returns expected error code on invalid
+- *              buffer sizes.
+- */
+-static void create_invalid_size(int fd)
+-{
+-	struct drm_xe_query_mem_region *memregion;
+-	uint64_t memreg = all_memory_regions(fd), region;
+-	uint32_t vm;
+-	uint32_t handle;
+-	int ret;
+-
+-	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
+-
+-	xe_for_each_mem_region(fd, memreg, region) {
+-		memregion = xe_mem_region(fd, region);
+-
+-		/* first try, use half of possible min page size */
+-		ret = __create_bo(fd, vm, memregion->min_page_size >> 1,
+-				  region, &handle);
+-		if (!ret) {
+-			gem_close(fd, handle);
+-			xe_vm_destroy(fd, vm);
+-		}
+-		igt_assert_eq(ret, -EINVAL);
+-
+-		/*
+-		 * second try, add page size to min page size if it is
+-		 * bigger than page size.
+-		 */
+-		if (memregion->min_page_size > PAGE_SIZE) {
+-			ret = __create_bo(fd, vm,
+-					  memregion->min_page_size + PAGE_SIZE,
+-					  region, &handle);
+-			if (!ret) {
+-				gem_close(fd, handle);
+-				xe_vm_destroy(fd, vm);
+-			}
+-			igt_assert_eq(ret, -EINVAL);
+-		}
+-	}
+-
+-	xe_vm_destroy(fd, vm);
+-}
+-
+ enum exec_queue_destroy {
+ 	NOLEAK,
+ 	LEAK
+@@ -214,10 +166,6 @@ igt_main
+ 	igt_fixture
+ 		xe = drm_open_driver(DRIVER_XE);
+ 
+-	igt_subtest("create-invalid-size") {
+-		create_invalid_size(xe);
+-	}
+-
+ 	igt_subtest("create-execqueues-noleak")
+ 		create_execqueues(xe, NOLEAK);
+ 
+-- 
+2.34.1
