@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1586F10E42F
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Oct 2023 07:38:37 +0000 (UTC)
-From: Jeevan B <jeevan.b@intel.com>
+Date: Thu, 12 Oct 2023 09:41:59 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 12 Oct 2023 13:14:49 +0530
-Message-Id: <20231012074449.2764136-1-jeevan.b@intel.com>
+Message-ID: <20231012074159.c4w67nj7klkbdiei@kamilkon-desk.igk.intel.com>
+References: <20231011141734.590321-13-janusz.krzysztofik@linux.intel.com>
+ <20231011141734.590321-14-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH] intel-ci/blacklist: Update blocklist
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231011141734.590321-14-janusz.krzysztofik@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 01/11] lib/ktap: Improve TODO
+ workaround description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,27 +18,56 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-targets virtualized drivers only.
+Hi Janusz,
+On 2023-10-11 at 16:17:36 +0200, Janusz Krzysztofik wrote:
+> A workaround was implemented in IGT KTAP parser so it could accepted KTAP
+> reports with missing top level KTAP version and test suite plan headers.
+> While the issue has been fixed by a kernel side commit c95e7c05c139
+> ("kunit: Report the count of test suites in a module"), included in the
+> mainline kernel since v6.6-rc1, we still need to keep that workaround in
+> place to preserve IGT compatibility with LTS kernel version 6.1 as long as
+> it is used by major Linux distributions.
+> 
+> Update the comment with a reference to the kernel side fix and a
+> clarification on why we need to keep the workaround in place.
+> 
+> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
----
- tests/intel-ci/blacklist.txt | 3 +++
- 1 file changed, 3 insertions(+)
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
-index e13759d3e..cfd4a7768 100644
---- a/tests/intel-ci/blacklist.txt
-+++ b/tests/intel-ci/blacklist.txt
-@@ -138,3 +138,6 @@ igt@device_reset@reset-bound
- 
- # not working for i915
- igt@kms_bw@.*
-+
-+# targets virtualized drivers only
-+igt@kms_cursor_legacy@modeset-atomic-cursor-hotspot
--- 
-2.25.1
+> ---
+>  lib/igt_ktap.c | 13 ++++++++++---
+>  1 file changed, 10 insertions(+), 3 deletions(-)
+> 
+> diff --git a/lib/igt_ktap.c b/lib/igt_ktap.c
+> index 5eac102417..3df4d6950d 100644
+> --- a/lib/igt_ktap.c
+> +++ b/lib/igt_ktap.c
+> @@ -91,9 +91,16 @@ int igt_ktap_parse(const char *buf, struct igt_ktap_results *ktap)
+>  				       "%*1[ ]%*1[ ]%*1[ ]%*1[ ]KTAP%*[ ]version%*[ ]%u %n",
+>  				       &n, &len) == 1 && len == strlen(buf))) {
+>  		/*
+> -		 * TODO: drop the following workaround as soon as
+> -		 * kernel side issue of missing lines with top level
+> -		 * KTAP version and test suite plan is fixed.
+> +		 * TODO: drop the following workaround, which addresses a kernel
+> +		 * side issue of missing lines that provide top level KTAP
+> +		 * version and test suite plan, as soon as no longer needed.
+> +		 *
+> +		 * The issue has been fixed in v6.6-rc1, commit c95e7c05c139
+> +		 * ("kunit: Report the count of test suites in a module"),
+> +		 * but we still need this workaround for as long as LTS kernel
+> +		 * version 6.1, with DRM selftests already converted to Kunit,
+> +		 * but without that missing Kunit headers issue fixed, is used
+> +		 * by major Linux distributions.
+>  		 */
+>  		if (ktap->expect == KTAP_START) {
+>  			ktap->suite_count = 1;
+> -- 
+> 2.42.0
+> 
