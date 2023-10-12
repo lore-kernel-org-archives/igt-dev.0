@@ -2,12 +2,14 @@ Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Intel-gfx@lists.freedesktop.org
-Date: Thu, 12 Oct 2023 09:15:38 +0100
-Message-Id: <20231012081547.852052-1-tvrtko.ursulin@linux.intel.com>
+Date: Thu, 12 Oct 2023 09:15:39 +0100
+Message-Id: <20231012081547.852052-2-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20231012081547.852052-1-tvrtko.ursulin@linux.intel.com>
+References: <20231012081547.852052-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/9] Client memory fdinfo test and
- intel_gpu_top support
+Subject: [igt-dev] [PATCH i-g-t 1/9] tests/i915/drm_fdinfo: Check engine
+ info is supported
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,31 +24,27 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-Some new tests to exercise per client fdinfo memory stats.
+On top of checking that parsing works, check that there are some engines
+present. This will be needed once the memory stats are added and so return
+value from __igt_parse_drm_fdinfo() will then be possible to be greater
+than zero even when engine stats are not supported.
 
-Same as the previous posting, just rebased on top of latest intel_gpu_top fixes.
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+---
+ tests/intel/drm_fdinfo.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-i915 kernel side at https://patchwork.freedesktop.org/series/119082/.
-
-Tvrtko Ursulin (9):
-  tests/i915/drm_fdinfo: Check engine info is supported
-  tests/i915/drm_fdinfo: Stress test context close versus fdinfo reads
-  tests/i915/drm_fdinfo: Add some memory info tests
-  lib/igt_drm_fdinfo: Copy over region map name on match
-  lib/igt_drm_clients: Fix client id type confusion
-  lib/igt_drm_clients: Allow passing in the memory region map
-  tools/intel_gpu_top: Fully wrap clients operations
-  tools/intel_gpu_top: Add per client memory info
-  tools/intel_gpu_top: Add ability to show memory region breakdown
-
- lib/igt_drm_clients.c    |   7 +-
- lib/igt_drm_clients.h    |   5 +-
- lib/igt_drm_fdinfo.c     |   4 +
- man/intel_gpu_top.rst    |   4 +
- tests/intel/drm_fdinfo.c | 286 +++++++++++++++++++++++++++++++++++++++
- tools/gputop.c           |   4 +-
- tools/intel_gpu_top.c    | 191 +++++++++++++++++++++++---
- 7 files changed, 472 insertions(+), 29 deletions(-)
-
+diff --git a/tests/intel/drm_fdinfo.c b/tests/intel/drm_fdinfo.c
+index aca19db50680..344c44dce78b 100644
+--- a/tests/intel/drm_fdinfo.c
++++ b/tests/intel/drm_fdinfo.c
+@@ -737,6 +737,7 @@ igt_main
+ 
+ 		igt_require_gem(i915);
+ 		igt_require(igt_parse_drm_fdinfo(i915, &info, NULL, 0, NULL, 0));
++		igt_require(info.num_engines);
+ 
+ 		ctx = intel_ctx_create_all_physical(i915);
+ 
 -- 
 2.39.2
