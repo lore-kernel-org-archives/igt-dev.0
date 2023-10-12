@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B287810E420
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Oct 2023 07:01:41 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 12 Oct 2023 09:01:33 +0200
-Message-Id: <20231012070133.31106-1-zbigniew.kempczynski@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============1513661454451033735=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/xe_create: Remove create-invalid-size
- subtest
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Date: Thu, 12 Oct 2023 07:23:23 -0000
+Message-ID: <169709540373.25006.16365987218018383193@emeril.freedesktop.org>
+References: <20231012061444.78748-1-swati2.sharma@intel.com>
+In-Reply-To: <20231012061444.78748-1-swati2.sharma@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Add_XE_s?=
+ =?utf-8?q?upport_for_kms=5Fpm=5Frpm?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,91 +17,144 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Test exercises kernel returns EINVAL on bo create ioctl with unaligned
-size what was never merged and according to discussion with Thomas
-will never be. Lets remove this test as it is incorrect in this case.
+--===============1513661454451033735==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
----
- tests/intel/xe_create.c | 52 -----------------------------------------
- 1 file changed, 52 deletions(-)
+== Series Details ==
 
-diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
-index 8d845e5c86..541fc2b335 100644
---- a/tests/intel/xe_create.c
-+++ b/tests/intel/xe_create.c
-@@ -39,54 +39,6 @@ static int __create_bo(int fd, uint32_t vm, uint64_t size, uint32_t flags,
- 	return ret;
- }
- 
--/**
-- * SUBTEST: create-invalid-size
-- * Functionality: ioctl
-- * Test category: negative test
-- * Description: Verifies xe bo create returns expected error code on invalid
-- *              buffer sizes.
-- */
--static void create_invalid_size(int fd)
--{
--	struct drm_xe_query_mem_region *memregion;
--	uint64_t memreg = all_memory_regions(fd), region;
--	uint32_t vm;
--	uint32_t handle;
--	int ret;
--
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
--
--	xe_for_each_mem_region(fd, memreg, region) {
--		memregion = xe_mem_region(fd, region);
--
--		/* first try, use half of possible min page size */
--		ret = __create_bo(fd, vm, memregion->min_page_size >> 1,
--				  region, &handle);
--		if (!ret) {
--			gem_close(fd, handle);
--			xe_vm_destroy(fd, vm);
--		}
--		igt_assert_eq(ret, -EINVAL);
--
--		/*
--		 * second try, add page size to min page size if it is
--		 * bigger than page size.
--		 */
--		if (memregion->min_page_size > PAGE_SIZE) {
--			ret = __create_bo(fd, vm,
--					  memregion->min_page_size + PAGE_SIZE,
--					  region, &handle);
--			if (!ret) {
--				gem_close(fd, handle);
--				xe_vm_destroy(fd, vm);
--			}
--			igt_assert_eq(ret, -EINVAL);
--		}
--	}
--
--	xe_vm_destroy(fd, vm);
--}
--
- enum exec_queue_destroy {
- 	NOLEAK,
- 	LEAK
-@@ -214,10 +166,6 @@ igt_main
- 	igt_fixture
- 		xe = drm_open_driver(DRIVER_XE);
- 
--	igt_subtest("create-invalid-size") {
--		create_invalid_size(xe);
--	}
--
- 	igt_subtest("create-execqueues-noleak")
- 		create_execqueues(xe, NOLEAK);
- 
--- 
-2.34.1
+Series: Add XE support for kms_pm_rpm
+URL   : https://patchwork.freedesktop.org/series/125029/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7532_BAT -> XEIGTPW_9989_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (2 -> 2)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9989_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - bat-dg2-oem2:       [FAIL][1] ([Intel XE#480]) -> [PASS][2] +1 other test pass
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7532/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9989/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:
+    - bat-adlp-7:         [FAIL][3] ([Intel XE#480]) -> [PASS][4] +1 other test pass
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7532/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9989/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
+
+  
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7532 -> IGTPW_9989
+  * Linux: xe-429-81cbfcc83d65c3c69866f356cb83497a47f9d297 -> xe-432-6c0d1e36f310682297a5b07336b0883afc77f66e
+
+  IGTPW_9989: 9989
+  IGT_7532: bf24b157b1049afc086fe65a60b22bd6bb3e18b7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-429-81cbfcc83d65c3c69866f356cb83497a47f9d297: 81cbfcc83d65c3c69866f356cb83497a47f9d297
+  xe-432-6c0d1e36f310682297a5b07336b0883afc77f66e: 6c0d1e36f310682297a5b07336b0883afc77f66e
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9989/index.html
+
+--===============1513661454451033735==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add XE support for kms_pm_rpm</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/125029/">https://patchwork.freedesktop.org/series/125029/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9989/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9989/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7532_BAT -&gt; XEIGTPW_9989_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (2 -&gt; 2)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9989_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7532/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9989/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7532/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9989/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7532 -&gt; IGTPW_9989</li>
+<li>Linux: xe-429-81cbfcc83d65c3c69866f356cb83497a47f9d297 -&gt; xe-432-6c0d1e36f310682297a5b07336b0883afc77f66e</li>
+</ul>
+<p>IGTPW_9989: 9989<br />
+  IGT_7532: bf24b157b1049afc086fe65a60b22bd6bb3e18b7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-429-81cbfcc83d65c3c69866f356cb83497a47f9d297: 81cbfcc83d65c3c69866f356cb83497a47f9d297<br />
+  xe-432-6c0d1e36f310682297a5b07336b0883afc77f66e: 6c0d1e36f310682297a5b07336b0883afc77f66e</p>
+
+</body>
+</html>
+
+--===============1513661454451033735==--
