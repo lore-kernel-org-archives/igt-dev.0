@@ -1,16 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============8358804875127964588=="
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4CD5810E043
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Oct 2023 14:25:39 +0000 (UTC)
+Date: Thu, 12 Oct 2023 17:25:45 +0300
+From: Imre Deak <imre.deak@intel.com>
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <ZSgB6VPuwVNssKfy@ideak-desk>
+References: <20231011084222.226352-1-shawn.c.lee@intel.com>
+ <a514f33c-650e-a306-836c-98f2b8602a77@linux.intel.com>
+ <ZSfZb6QTiUlBAPqw@ideak-desk>
+ <09ef7bc6-6ab5-9b05-ab6f-9a8eee083c0a@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Swati Sharma" <swati2.sharma@intel.com>
-Date: Thu, 12 Oct 2023 12:59:32 -0000
-Message-ID: <169711557235.25006.16656912158963933279@emeril.freedesktop.org>
-References: <20231011044052.53282-1-swati2.sharma@intel.com>
-In-Reply-To: <20231011044052.53282-1-swati2.sharma@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?intel/kms=5Fbig=5Ffb=3A_skip_if_rendercopy_support_is_not_prese?=
- =?utf-8?q?nt?=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <09ef7bc6-6ab5-9b05-ab6f-9a8eee083c0a@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH] tests: read engine name again before restore
+ timeout value
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,193 +23,137 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Reply-To: imre.deak@intel.com
+Cc: igt-dev@lists.freedesktop.org, Lee Shawn C <shawn.c.lee@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8358804875127964588==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Thu, Oct 12, 2023 at 01:11:03PM +0100, Tvrtko Ursulin wrote:
+> 
+> On 12/10/2023 12:33, Imre Deak wrote:
+> > On Thu, Oct 12, 2023 at 09:53:44AM +0100, Tvrtko Ursulin wrote:
+> > > 
+> > > On 11/10/2023 09:42, Lee Shawn C wrote:
+> > > > We encounter a unexpected error on chrome book device while
+> > > > running this test. The tool will restore GPU engine's timeout
+> > > > value but open incorrect file name (XR24 in below). This is
+> > > > a workaround patch to avoid this problem before we got the
+> > > > root cause.
+> > > > 
+> > > > openat(AT_FDCWD, "/sys/dev/char/226:0", O_RDONLY) = 12
+> > > > openat(12, "dev", O_RDONLY)             = 13
+> > > > read(13, "226:0\n", 1023)               = 6
+> > > > close(13)                               = 0
+> > > > openat(12, "engine", O_RDONLY)          = 13
+> > > > close(12)                               = 0
+> > > > openat(13, "XR24", O_RDONLY)            = -1 ENOENT (No such file or directory)
+> > > > 
+> > > > Signed-off-by: Lee Shawn C <shawn.c.lee@intel.com>
+> > > > Issue: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/147
+> > > > ---
+> > > >    tests/intel/kms_busy.c | 10 ++++++++--
+> > > >    1 file changed, 8 insertions(+), 2 deletions(-)
+> > > > 
+> > > > diff --git a/tests/intel/kms_busy.c b/tests/intel/kms_busy.c
+> > > > index 5b620658fb18..119e6f1652ce 100644
+> > > > --- a/tests/intel/kms_busy.c
+> > > > +++ b/tests/intel/kms_busy.c
+> > > > @@ -414,9 +414,15 @@ static void gpu_engines_init_timeouts(int fd, int max_engines,
+> > > >    	}
+> > > >    }
+> > > > -static void gpu_engines_restore_timeouts(int fd, int num_engines, const struct gem_engine_properties *props)
+> > > > +static void gpu_engines_restore_timeouts(int fd, int num_engines, struct gem_engine_properties *props)
+> > > >    {
+> > > > -	int i;
+> > > > +	const struct intel_execution_engine2 *e;
+> > > > +	int i = 0;
+> > > > +
+> > > > +	for_each_physical_engine(fd, e) {
+> > > > +		props[i].engine = e;
+> > > > +		i++;
+> > > > +	}
+> > > >    	for (i = 0; i < num_engines; i++)
+> > > >    		gem_engine_properties_restore(fd, &props[i]);
+> > > 
+> > > By the look of it bug is in gpu_engines_init_timeouts(). This pointer
+> > > assignment:
+> > > 
+> > > 	for_each_physical_engine(fd, e) {
+> > > 		igt_assert(*num_engines < max_engines);
+> > > 
+> > > 		props[*num_engines].engine = e;
+> > > 
+> > > ^^^ e is on stack, in scope of for_each_physical_engine, so by the time
+> > > gpu_engines_restore_timeouts() runs it can legitimately point to garbage,
+> > > like XR24 in your example.
+> > > 
+> > > Your workaround works, although strictly don't think the order of engines is
+> > > guaranteed. Which is also moot since same preempt_timeout and
+> > > hearbeat_interval is used for all.
+> > > 
+> > > Nevertheless, proper fix would be to allocate a make a copy of each engine
+> > > and store a pointer to that. It might be an overkill but, up for discussion
+> > > I guess.
+> > > 
+> > > Fixes: 9e635a1c5029 ("tests/kms_busy: Ensure GPU reset when waiting for a
+> > > new FB during modeset")
+> > > 
+> > > So I'll be cheeky and add Imre and Juha-Pekka too.
+> > 
+> > ugh, thanks for catching this.
+> > 
+> > Would it work to save the engine class/instance instead in
+> > gpu_engines_init_timeouts(), and look up the engines using these in
+> > gpu_engines_restore_timeouts() ?
+> 
+> Not sure exactly what you have in mind. Modify struct gem_engine_properties
+> to not store the pointer to the engine? But e->name is what it needs to
+> restore. Storing class:instance and then on restore iterate all engines
+> again to find the class:instance and use the name from local copy?
 
-== Series Details ==
+Yes, assuming class:instance is unique, so could be used for a key.
 
-Series: tests/intel/kms_big_fb: skip if rendercopy support is not present
-URL   : https://patchwork.freedesktop.org/series/124936/
-State : success
+> Hm yes, that would work.
+> 
+> Also, on a deeper look gem_exec_capture also appears has the same bug.
+> 
+> find_first_available_engine
+>   for_each_ctx_engine
+>     configure_hangs
+>       props.engine = e;
+> 
+> And i915_hangman AFAICT. Unless I am super confused..
+> 
+> I tried running it under Valgrind but it is not detecting anything which I
+> guess is because it is stack and not heap.
+> 
+> Hm maybe more elegant is to change the struct to:
+> 
+>  struct gem_engine_properties {
+> -	const struct intel_execution_engine2 *engine;
+> +	const struct intel_execution_engine2 engine;
 
-== Summary ==
+Yes, this looks ok to me.
 
-CI Bug Log - changes from IGT_7528 -> IGTPW_9968
-====================================================
+I suppose the alternative would be to store the non-static list of
+engines in a driver specific location, but not sure how feasible that is
+and the fix should be in any case simpler based on what you suggested. 
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9968/index.html
-
-Participating hosts (39 -> 33)
-------------------------------
-
-  Missing    (6): fi-kbl-soraka fi-bsw-n3050 bat-dg2-8 bat-dg2-9 fi-hsw-4770 fi-pnv-d510 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_9968 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-dg2-11:         [PASS][1] -> [ABORT][2] ([i915#9523])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7528/bat-dg2-11/igt@i915_selftest@live@hangcheck.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9968/bat-dg2-11/igt@i915_selftest@live@hangcheck.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-11:         [PASS][3] -> [DMESG-FAIL][4] ([i915#9500])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7528/bat-dg2-11/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9968/bat-dg2-11/igt@i915_selftest@live@workarounds.html
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - fi-kbl-guc:         [PASS][5] -> [FAIL][6] ([IGT#3])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7528/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9968/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - fi-bsw-nick:        [FAIL][7] ([i915#9276]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7528/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9968/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:
-    - bat-rplp-1:         [ABORT][9] ([i915#8668]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7528/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9968/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [IGT#3]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3
-  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
-  [i915#9276]: https://gitlab.freedesktop.org/drm/intel/issues/9276
-  [i915#9500]: https://gitlab.freedesktop.org/drm/intel/issues/9500
-  [i915#9523]: https://gitlab.freedesktop.org/drm/intel/issues/9523
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7528 -> IGTPW_9968
-
-  CI-20190529: 20190529
-  CI_DRM_13737: c768959add20d28639e5bfa4cea2544aab51879e @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_9968: 9968
-  IGT_7528: 5c8af52f630edfea70624d2bd71b32280a53c8f4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9968/index.html
-
---===============8358804875127964588==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/kms_big_fb: skip if rendercopy support is not present</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124936/">https://patchwork.freedesktop.org/series/124936/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9968/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9968/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_7528 -&gt; IGTPW_9968</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9968/index.html</p>
-<h2>Participating hosts (39 -&gt; 33)</h2>
-<p>Missing    (6): fi-kbl-soraka fi-bsw-n3050 bat-dg2-8 bat-dg2-9 fi-hsw-4770 fi-pnv-d510 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_9968 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7528/bat-dg2-11/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9968/bat-dg2-11/igt@i915_selftest@live@hangcheck.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9523">i915#9523</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7528/bat-dg2-11/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9968/bat-dg2-11/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9500">i915#9500</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_hdmi_inject@inject-audio:</p>
-<ul>
-<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7528/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9968/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3">IGT#3</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7528/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9276">i915#9276</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9968/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:</p>
-<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7528/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9968/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7528 -&gt; IGTPW_9968</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13737: c768959add20d28639e5bfa4cea2544aab51879e @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_9968: 9968<br />
-  IGT_7528: 5c8af52f630edfea70624d2bd71b32280a53c8f4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============8358804875127964588==--
+> 	int preempt_timeout;
+> 	int heartbeat_interval;
+>  };
+> 
+> So instead of storing a pointer a copy is made, which will include a copy of
+> the name. (Since it is embedded in struct intel_execution_engine2.)
+> 
+> Then places which record engines would just need to:
+> 
+> - saved_params[num_engines].engine = e;
+> + saved_params[num_engines].engine = *e;
+> 
+> No further churn then, I think..
+> 
+> Regards,
+> 
+> Tvrtko
