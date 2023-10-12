@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============6170221935569440764=="
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Rob Clark" <robdclark@gmail.com>
-Date: Thu, 12 Oct 2023 02:13:32 -0000
-Message-ID: <169707681295.25008.7741319360513935554@emeril.freedesktop.org>
-References: <20231011210352.671199-1-robdclark@gmail.com>
-In-Reply-To: <20231011210352.671199-1-robdclark@gmail.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fplane=3A_Fix_skips/fails_vs_CRC_cleanup?=
+To: "Daniele Ceraolo Spurio" <daniele.ceraolospurio@intel.com>
+Date: Thu, 12 Oct 2023 02:15:54 -0000
+Message-ID: <169707695424.25006.5480961857480891993@emeril.freedesktop.org>
+References: <20231011211341.453878-1-daniele.ceraolospurio@intel.com>
+In-Reply-To: <20231011211341.453878-1-daniele.ceraolospurio@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/xe=5Fhuc=5Fcopy=3A_Handle_multiple_GTs_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,213 +23,40 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============6170221935569440764==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
 == Series Details ==
 
-Series: tests/kms_plane: Fix skips/fails vs CRC cleanup
-URL   : https://patchwork.freedesktop.org/series/125001/
-State : success
+Series: tests/xe_huc_copy: Handle multiple GTs (rev2)
+URL   : https://patchwork.freedesktop.org/series/124654/
+State : warning
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_13741 -> IGTPW_9987
-====================================================
+Pipeline status: FAILED.
 
-Summary
--------
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1008132 for the overview.
 
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9987/index.html
-
-Participating hosts (39 -> 37)
-------------------------------
-
-  Additional (1): fi-pnv-d510 
-  Missing    (3): fi-kbl-soraka fi-snb-2520m fi-bsw-n3050 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_9987 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_exec_suspend@basic-s0@smem:
-    - bat-dg2-9:          [PASS][1] -> [INCOMPLETE][2] ([i915#9275])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13741/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9987/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html
-
-  * igt@kms_flip@basic-flip-vs-modeset@b-dp6:
-    - bat-adlp-11:        [PASS][3] -> [FAIL][4] ([i915#6121]) +4 other tests fail
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13741/bat-adlp-11/igt@kms_flip@basic-flip-vs-modeset@b-dp6.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9987/bat-adlp-11/igt@kms_flip@basic-flip-vs-modeset@b-dp6.html
-
-  * igt@kms_flip@basic-flip-vs-modeset@c-dp5:
-    - bat-adlp-11:        [PASS][5] -> [DMESG-WARN][6] ([i915#6868]) +1 other test dmesg-warn
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13741/bat-adlp-11/igt@kms_flip@basic-flip-vs-modeset@c-dp5.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9987/bat-adlp-11/igt@kms_flip@basic-flip-vs-modeset@c-dp5.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank:
-    - bat-adlp-11:        NOTRUN -> [SKIP][7] ([i915#3637])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9987/bat-adlp-11/igt@kms_flip@basic-flip-vs-wf_vblank.html
-
-  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:
-    - bat-rplp-1:         [PASS][8] -> [ABORT][9] ([i915#8668])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13741/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9987/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
-
-  * igt@kms_psr@primary_page_flip:
-    - fi-pnv-d510:        NOTRUN -> [SKIP][10] ([fdo#109271]) +29 other tests skip
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9987/fi-pnv-d510/igt@kms_psr@primary_page_flip.html
-
+build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50199178):
+  section_start:1697076512:get_sources
+  Getting source from Git repository
+  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh -s -- pre_get_sources_script
+  Checking if the user of the pipeline is allowed...
+  Checking if the job's project is part of a well-known group...
+  Thank you for contributing to freedesktop.org
+  Fetching changes...
+  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  Checking out 576a46f9 as detached HEAD (ref is intel/IGTPW_9988)...
   
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
-  [i915#6121]: https://gitlab.freedesktop.org/drm/intel/issues/6121
-  [i915#6868]: https://gitlab.freedesktop.org/drm/intel/issues/6868
-  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
-  [i915#9275]: https://gitlab.freedesktop.org/drm/intel/issues/9275
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7532 -> IGTPW_9987
-
-  CI-20190529: 20190529
-  CI_DRM_13741: 46d442e3684a03ccb1bc9e9822acdd33f264d521 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_9987: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9987/index.html
-  IGT_7532: bf24b157b1049afc086fe65a60b22bd6bb3e18b7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
--igt@xe_mmap@cpu-caching-coh
--igt@xe_pat@pat-index-all
--igt@xe_pat@pat-index-common-blt
--igt@xe_pat@pat-index-common-render
--igt@xe_pat@pat-index-xe2-blt
--igt@xe_pat@pat-index-xe2-render
--igt@xe_pat@userptr-coh-none
+  Skipping Git submodules setup
+  section_end:1697076514:get_sources
+  section_start:1697076514:step_script
+  Executing "step_script" stage of the job script
+  Using docker image sha256:4a4103f1a476d355d866b481ff96ac05a32a3a715cefcc1cbc1356a8959fb5f8 for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-armhf:commit-576a46f98e8a6dd78ca1369dd3627f52a9197f12 with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-armhf@sha256:3a0ffeb305cdc6ef081dde81d86afee76102e74f76c0f7bd5685fc2457ec707b ...
+  section_end:1697076515:step_script
+  section_start:1697076515:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1697076516:cleanup_file_variables
+  ERROR: Job failed (system failure): Error response from daemon: container 2da374287c52c00b82b9b711d5df04cf58afa66dda594df158da9d5181e1db0c does not exist in database: no such container (exec.go:78:0s)
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9987/index.html
-
---===============6170221935569440764==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_plane: Fix skips/fails vs CRC cleanup</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/125001/">https://patchwork.freedesktop.org/series/125001/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9987/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9987/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_13741 -&gt; IGTPW_9987</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9987/index.html</p>
-<h2>Participating hosts (39 -&gt; 37)</h2>
-<p>Additional (1): fi-pnv-d510 <br />
-  Missing    (3): fi-kbl-soraka fi-snb-2520m fi-bsw-n3050 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_9987 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s0@smem:</p>
-<ul>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13741/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9987/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9275">i915#9275</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-modeset@b-dp6:</p>
-<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13741/bat-adlp-11/igt@kms_flip@basic-flip-vs-modeset@b-dp6.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9987/bat-adlp-11/igt@kms_flip@basic-flip-vs-modeset@b-dp6.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6121">i915#6121</a>) +4 other tests fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-modeset@c-dp5:</p>
-<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13741/bat-adlp-11/igt@kms_flip@basic-flip-vs-modeset@c-dp5.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9987/bat-adlp-11/igt@kms_flip@basic-flip-vs-modeset@c-dp5.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6868">i915#6868</a>) +1 other test dmesg-warn</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank:</p>
-<ul>
-<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9987/bat-adlp-11/igt@kms_flip@basic-flip-vs-wf_vblank.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3637">i915#3637</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:</p>
-<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13741/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9987/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@primary_page_flip:</p>
-<ul>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9987/fi-pnv-d510/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +29 other tests skip</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7532 -&gt; IGTPW_9987</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13741: 46d442e3684a03ccb1bc9e9822acdd33f264d521 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_9987: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9987/index.html<br />
-  IGT_7532: bf24b157b1049afc086fe65a60b22bd6bb3e18b7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>-igt@xe_mmap@cpu-caching-coh<br />
--igt@xe_pat@pat-index-all<br />
--igt@xe_pat@pat-index-common-blt<br />
--igt@xe_pat@pat-index-common-render<br />
--igt@xe_pat@pat-index-xe2-blt<br />
--igt@xe_pat@pat-index-xe2-render<br />
--igt@xe_pat@userptr-coh-none</p>
-
-</body>
-</html>
-
---===============6170221935569440764==--
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1008132
