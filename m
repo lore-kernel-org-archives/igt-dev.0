@@ -1,21 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4CD5810E043
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Oct 2023 14:25:39 +0000 (UTC)
-Date: Thu, 12 Oct 2023 17:25:45 +0300
-From: Imre Deak <imre.deak@intel.com>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Message-ID: <ZSgB6VPuwVNssKfy@ideak-desk>
-References: <20231011084222.226352-1-shawn.c.lee@intel.com>
- <a514f33c-650e-a306-836c-98f2b8602a77@linux.intel.com>
- <ZSfZb6QTiUlBAPqw@ideak-desk>
- <09ef7bc6-6ab5-9b05-ab6f-9a8eee083c0a@linux.intel.com>
+Date: Thu, 12 Oct 2023 16:45:34 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Message-ID: <20231012164534.574aa0d3@maurocar-mobl2>
+In-Reply-To: <20231011141734.590321-14-janusz.krzysztofik@linux.intel.com>
+References: <20231011141734.590321-13-janusz.krzysztofik@linux.intel.com>
+ <20231011141734.590321-14-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <09ef7bc6-6ab5-9b05-ab6f-9a8eee083c0a@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH] tests: read engine name again before restore
- timeout value
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t v3 01/11] lib/ktap: Improve
+ TODO workaround description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,137 +18,55 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: imre.deak@intel.com
-Cc: igt-dev@lists.freedesktop.org, Lee Shawn C <shawn.c.lee@intel.com>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Oct 12, 2023 at 01:11:03PM +0100, Tvrtko Ursulin wrote:
-> 
-> On 12/10/2023 12:33, Imre Deak wrote:
-> > On Thu, Oct 12, 2023 at 09:53:44AM +0100, Tvrtko Ursulin wrote:
-> > > 
-> > > On 11/10/2023 09:42, Lee Shawn C wrote:
-> > > > We encounter a unexpected error on chrome book device while
-> > > > running this test. The tool will restore GPU engine's timeout
-> > > > value but open incorrect file name (XR24 in below). This is
-> > > > a workaround patch to avoid this problem before we got the
-> > > > root cause.
-> > > > 
-> > > > openat(AT_FDCWD, "/sys/dev/char/226:0", O_RDONLY) = 12
-> > > > openat(12, "dev", O_RDONLY)             = 13
-> > > > read(13, "226:0\n", 1023)               = 6
-> > > > close(13)                               = 0
-> > > > openat(12, "engine", O_RDONLY)          = 13
-> > > > close(12)                               = 0
-> > > > openat(13, "XR24", O_RDONLY)            = -1 ENOENT (No such file or directory)
-> > > > 
-> > > > Signed-off-by: Lee Shawn C <shawn.c.lee@intel.com>
-> > > > Issue: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/147
-> > > > ---
-> > > >    tests/intel/kms_busy.c | 10 ++++++++--
-> > > >    1 file changed, 8 insertions(+), 2 deletions(-)
-> > > > 
-> > > > diff --git a/tests/intel/kms_busy.c b/tests/intel/kms_busy.c
-> > > > index 5b620658fb18..119e6f1652ce 100644
-> > > > --- a/tests/intel/kms_busy.c
-> > > > +++ b/tests/intel/kms_busy.c
-> > > > @@ -414,9 +414,15 @@ static void gpu_engines_init_timeouts(int fd, int max_engines,
-> > > >    	}
-> > > >    }
-> > > > -static void gpu_engines_restore_timeouts(int fd, int num_engines, const struct gem_engine_properties *props)
-> > > > +static void gpu_engines_restore_timeouts(int fd, int num_engines, struct gem_engine_properties *props)
-> > > >    {
-> > > > -	int i;
-> > > > +	const struct intel_execution_engine2 *e;
-> > > > +	int i = 0;
-> > > > +
-> > > > +	for_each_physical_engine(fd, e) {
-> > > > +		props[i].engine = e;
-> > > > +		i++;
-> > > > +	}
-> > > >    	for (i = 0; i < num_engines; i++)
-> > > >    		gem_engine_properties_restore(fd, &props[i]);
-> > > 
-> > > By the look of it bug is in gpu_engines_init_timeouts(). This pointer
-> > > assignment:
-> > > 
-> > > 	for_each_physical_engine(fd, e) {
-> > > 		igt_assert(*num_engines < max_engines);
-> > > 
-> > > 		props[*num_engines].engine = e;
-> > > 
-> > > ^^^ e is on stack, in scope of for_each_physical_engine, so by the time
-> > > gpu_engines_restore_timeouts() runs it can legitimately point to garbage,
-> > > like XR24 in your example.
-> > > 
-> > > Your workaround works, although strictly don't think the order of engines is
-> > > guaranteed. Which is also moot since same preempt_timeout and
-> > > hearbeat_interval is used for all.
-> > > 
-> > > Nevertheless, proper fix would be to allocate a make a copy of each engine
-> > > and store a pointer to that. It might be an overkill but, up for discussion
-> > > I guess.
-> > > 
-> > > Fixes: 9e635a1c5029 ("tests/kms_busy: Ensure GPU reset when waiting for a
-> > > new FB during modeset")
-> > > 
-> > > So I'll be cheeky and add Imre and Juha-Pekka too.
-> > 
-> > ugh, thanks for catching this.
-> > 
-> > Would it work to save the engine class/instance instead in
-> > gpu_engines_init_timeouts(), and look up the engines using these in
-> > gpu_engines_restore_timeouts() ?
-> 
-> Not sure exactly what you have in mind. Modify struct gem_engine_properties
-> to not store the pointer to the engine? But e->name is what it needs to
-> restore. Storing class:instance and then on restore iterate all engines
-> again to find the class:instance and use the name from local copy?
+On Wed, 11 Oct 2023 16:17:36 +0200
+Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com> wrote:
 
-Yes, assuming class:instance is unique, so could be used for a key.
+> A workaround was implemented in IGT KTAP parser so it could accepted KTAP
+> reports with missing top level KTAP version and test suite plan headers.
+> While the issue has been fixed by a kernel side commit c95e7c05c139
+> ("kunit: Report the count of test suites in a module"), included in the
+> mainline kernel since v6.6-rc1, we still need to keep that workaround in
+> place to preserve IGT compatibility with LTS kernel version 6.1 as long as
+> it is used by major Linux distributions.
+> 
+> Update the comment with a reference to the kernel side fix and a
+> clarification on why we need to keep the workaround in place.
+> 
+> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
-> Hm yes, that would work.
-> 
-> Also, on a deeper look gem_exec_capture also appears has the same bug.
-> 
-> find_first_available_engine
->   for_each_ctx_engine
->     configure_hangs
->       props.engine = e;
-> 
-> And i915_hangman AFAICT. Unless I am super confused..
-> 
-> I tried running it under Valgrind but it is not detecting anything which I
-> guess is because it is stack and not heap.
-> 
-> Hm maybe more elegant is to change the struct to:
-> 
->  struct gem_engine_properties {
-> -	const struct intel_execution_engine2 *engine;
-> +	const struct intel_execution_engine2 engine;
+Reviewed-by: Mauro Carvaho Chehab <mchehab@kernel.org>
 
-Yes, this looks ok to me.
-
-I suppose the alternative would be to store the non-static list of
-engines in a driver specific location, but not sure how feasible that is
-and the fix should be in any case simpler based on what you suggested. 
-
-> 	int preempt_timeout;
-> 	int heartbeat_interval;
->  };
+> ---
+>  lib/igt_ktap.c | 13 ++++++++++---
+>  1 file changed, 10 insertions(+), 3 deletions(-)
 > 
-> So instead of storing a pointer a copy is made, which will include a copy of
-> the name. (Since it is embedded in struct intel_execution_engine2.)
-> 
-> Then places which record engines would just need to:
-> 
-> - saved_params[num_engines].engine = e;
-> + saved_params[num_engines].engine = *e;
-> 
-> No further churn then, I think..
-> 
-> Regards,
-> 
-> Tvrtko
+> diff --git a/lib/igt_ktap.c b/lib/igt_ktap.c
+> index 5eac102417..3df4d6950d 100644
+> --- a/lib/igt_ktap.c
+> +++ b/lib/igt_ktap.c
+> @@ -91,9 +91,16 @@ int igt_ktap_parse(const char *buf, struct igt_ktap_results *ktap)
+>  				       "%*1[ ]%*1[ ]%*1[ ]%*1[ ]KTAP%*[ ]version%*[ ]%u %n",
+>  				       &n, &len) == 1 && len == strlen(buf))) {
+>  		/*
+> -		 * TODO: drop the following workaround as soon as
+> -		 * kernel side issue of missing lines with top level
+> -		 * KTAP version and test suite plan is fixed.
+> +		 * TODO: drop the following workaround, which addresses a kernel
+> +		 * side issue of missing lines that provide top level KTAP
+> +		 * version and test suite plan, as soon as no longer needed.
+> +		 *
+> +		 * The issue has been fixed in v6.6-rc1, commit c95e7c05c139
+> +		 * ("kunit: Report the count of test suites in a module"),
+> +		 * but we still need this workaround for as long as LTS kernel
+> +		 * version 6.1, with DRM selftests already converted to Kunit,
+> +		 * but without that missing Kunit headers issue fixed, is used
+> +		 * by major Linux distributions.
+>  		 */
+>  		if (ktap->expect == KTAP_START) {
+>  			ktap->suite_count = 1;
