@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Thu, 12 Oct 2023 16:45:34 +0200
+Date: Thu, 12 Oct 2023 16:46:29 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Message-ID: <20231012164534.574aa0d3@maurocar-mobl2>
-In-Reply-To: <20231011141734.590321-14-janusz.krzysztofik@linux.intel.com>
+Message-ID: <20231012164629.71f9a91b@maurocar-mobl2>
+In-Reply-To: <20231011141734.590321-15-janusz.krzysztofik@linux.intel.com>
 References: <20231011141734.590321-13-janusz.krzysztofik@linux.intel.com>
- <20231011141734.590321-14-janusz.krzysztofik@linux.intel.com>
+ <20231011141734.590321-15-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t v3 01/11] lib/ktap: Improve
- TODO workaround description
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t v3 02/11] lib/kunit: Fix
+ handling of potential errors from F_GETFL
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,49 +24,34 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, 11 Oct 2023 16:17:36 +0200
+On Wed, 11 Oct 2023 16:17:37 +0200
 Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com> wrote:
 
-> A workaround was implemented in IGT KTAP parser so it could accepted KTAP
-> reports with missing top level KTAP version and test suite plan headers.
-> While the issue has been fixed by a kernel side commit c95e7c05c139
-> ("kunit: Report the count of test suites in a module"), included in the
-> mainline kernel since v6.6-rc1, we still need to keep that workaround in
-> place to preserve IGT compatibility with LTS kernel version 6.1 as long as
-> it is used by major Linux distributions.
-> 
-> Update the comment with a reference to the kernel side fix and a
-> clarification on why we need to keep the workaround in place.
+> Function fcntl(..., F_GETFL, ...) that returns file status flags may also
+> return a negative error code.  Handle that error instead of blindly using
+> the returned value as flags.
 > 
 > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 Reviewed-by: Mauro Carvaho Chehab <mchehab@kernel.org>
 
 > ---
->  lib/igt_ktap.c | 13 ++++++++++---
->  1 file changed, 10 insertions(+), 3 deletions(-)
+>  lib/igt_kmod.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/lib/igt_ktap.c b/lib/igt_ktap.c
-> index 5eac102417..3df4d6950d 100644
-> --- a/lib/igt_ktap.c
-> +++ b/lib/igt_ktap.c
-> @@ -91,9 +91,16 @@ int igt_ktap_parse(const char *buf, struct igt_ktap_results *ktap)
->  				       "%*1[ ]%*1[ ]%*1[ ]%*1[ ]KTAP%*[ ]version%*[ ]%u %n",
->  				       &n, &len) == 1 && len == strlen(buf))) {
->  		/*
-> -		 * TODO: drop the following workaround as soon as
-> -		 * kernel side issue of missing lines with top level
-> -		 * KTAP version and test suite plan is fixed.
-> +		 * TODO: drop the following workaround, which addresses a kernel
-> +		 * side issue of missing lines that provide top level KTAP
-> +		 * version and test suite plan, as soon as no longer needed.
-> +		 *
-> +		 * The issue has been fixed in v6.6-rc1, commit c95e7c05c139
-> +		 * ("kunit: Report the count of test suites in a module"),
-> +		 * but we still need this workaround for as long as LTS kernel
-> +		 * version 6.1, with DRM selftests already converted to Kunit,
-> +		 * but without that missing Kunit headers issue fixed, is used
-> +		 * by major Linux distributions.
->  		 */
->  		if (ktap->expect == KTAP_START) {
->  			ktap->suite_count = 1;
+> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+> index d98e6c5f9e..05ff178b27 100644
+> --- a/lib/igt_kmod.c
+> +++ b/lib/igt_kmod.c
+> @@ -783,8 +783,8 @@ static void __igt_kunit(struct igt_ktest *tst, const char *opts)
+>  
+>  	igt_skip_on_f(tst->kmsg < 0, "Could not open /dev/kmsg\n");
+>  
+> -	flags = fcntl(tst->kmsg, F_GETFL, 0) & ~O_NONBLOCK;
+> -	igt_skip_on_f(fcntl(tst->kmsg, F_SETFL, flags) == -1,
+> +	igt_skip_on((flags = fcntl(tst->kmsg, F_GETFL, 0), flags < 0));
+> +	igt_skip_on_f(fcntl(tst->kmsg, F_SETFL, flags & ~O_NONBLOCK) == -1,
+>  		      "Could not set /dev/kmsg to blocking mode\n");
+>  
+>  	igt_skip_on(lseek(tst->kmsg, 0, SEEK_END) < 0);
