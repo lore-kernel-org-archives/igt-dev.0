@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E6CF410E03A
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Oct 2023 12:22:02 +0000 (UTC)
-Date: Thu, 12 Oct 2023 14:21:27 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 28BCB10E189
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Oct 2023 12:25:50 +0000 (UTC)
+Date: Thu, 12 Oct 2023 14:25:45 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20231012122127.cbtpozrqz4alrlkn@kamilkon-desk.igk.intel.com>
-References: <20231010134540.28485-1-melanie.lobo@intel.com>
- <20231012082535.8001-1-melanie.lobo@intel.com>
+Message-ID: <20231012122545.tkrj5mof7lwuyzrv@kamilkon-desk.igk.intel.com>
+References: <20231011211341.453878-1-daniele.ceraolospurio@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231012082535.8001-1-melanie.lobo@intel.com>
-Subject: Re: [igt-dev] [PATCH] intel/kms_flip_scaled_crc.c: Add support for
- FP16 compressed formats in MTL.
+In-Reply-To: <20231011211341.453878-1-daniele.ceraolospurio@intel.com>
+Subject: Re: [igt-dev] [PATCH v2] tests/xe_huc_copy: Handle multiple GTs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,99 +23,86 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Melanie,
-On 2023-10-12 at 13:55:35 +0530, Melanie Lobo wrote:
-
-please correct subject:
-
-intel/kms_flip_scaled_crc.c: Add support for FP16 compressed formats in MTL.
-^^^^^--------------------^^ --------------------------------------- ^^^^^^^^
-Start with test/, no ".c" in filename, no dot "." at end of subject.
-imho here we may also drop "in MTL." part, so it will be:
-
-tests/intel/kms_flip_scaled_crc: Add support for FP16 compressed formats
-
-For kms correctness, please add some KMS devs, I am adding now
-Juha-Pekka, Swati and Bhanu.
-
-> MTL supports FP16 format which is a binary floating-point computer
-> number format that occupies 16 bits in computer memory.In this test
--------------------------------------------------------- ^
-Put space after dot: "memory. In"
-
-> platform shall render compression in display engine to receive
-> FP16 compressed formats.
+Hi Daniele,
+On 2023-10-11 at 14:13:40 -0700, Daniele Ceraolo Spurio wrote:
+> The test currently only looks for video engines on GT0, which is a
+> problem because newer platforms (like MTL) have their video engines on
+> the media GT. ALso, it is technically possible to have 1 HuC per-GT,
+> though we don't currently have any platform that supports this.
+> To handle the media GT use-case and to future proof against multiple
+> HuCs, we can just loop and repeat the test on any GT that has video
+> engines.
 > 
-> Signed-off-by: Melanie Lobo <melanie.lobo@intel.com>
+> v2: mark the test as skipped if no video engines are found (Kamil)
+> 
+> Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > ---
->  lib/intel_aux_pgtable.c           |  5 +++++
->  tests/intel/kms_flip_scaled_crc.c | 16 ++++++++++++++++
->  2 files changed, 21 insertions(+)
+>  tests/intel/xe_huc_copy.c | 28 ++++++++++++++++++++++++----
+>  1 file changed, 24 insertions(+), 4 deletions(-)
 > 
-> diff --git a/lib/intel_aux_pgtable.c b/lib/intel_aux_pgtable.c
-> index 7c79521344de..a612df407692 100644
-> --- a/lib/intel_aux_pgtable.c
-> +++ b/lib/intel_aux_pgtable.c
-> @@ -21,6 +21,7 @@
->  #define AUX_FORMAT_AYUV		0x09
->  #define AUX_FORMAT_ARGB_8B	0x0A
->  #define AUX_FORMAT_NV12_21	0x0F
-> +#define AUX_FORMAT_XRGB16161616_64B 0x10
+> diff --git a/tests/intel/xe_huc_copy.c b/tests/intel/xe_huc_copy.c
+> index c9891a729..2c12d9f07 100644
+> --- a/tests/intel/xe_huc_copy.c
+> +++ b/tests/intel/xe_huc_copy.c
+> @@ -104,9 +104,9 @@ gen12_create_batch_huc_copy(uint32_t *batch,
+>   */
 >  
->  struct pgtable_level_desc {
->  	int idx_shift;
-> @@ -305,6 +306,10 @@ static uint64_t pgt_get_l1_flags(const struct intel_buf *buf, int surface_idx)
->  			entry.e.format = AUX_FORMAT_ARGB_8B;
->  			entry.e.depth = bpp_to_depth_val(32);
->  			break;
-> +		case 64:
-> +			entry.e.format = AUX_FORMAT_XRGB16161616_64B;
-> +			entry.e.depth = bpp_to_depth_val(64);
-> +			break;
->  		default:
->  			igt_assert(0);
->  		}
-> diff --git a/tests/intel/kms_flip_scaled_crc.c b/tests/intel/kms_flip_scaled_crc.c
-> index 2997b63fac40..0d5e994af2b7 100644
-> --- a/tests/intel/kms_flip_scaled_crc.c
-> +++ b/tests/intel/kms_flip_scaled_crc.c
-> @@ -590,6 +590,22 @@ const struct {
->  		0.5,
->  		1.0,
->  	},
-> +	{
-> +		"flip-64bpp-4tile-to-32bpp-4tilemtlrcccs-upscaling",
-> +		"Flip from 64bpp non scaled fb to 32bpp upscaled fb to stress CD clock programming",
-> +		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
-> +		I915_FORMAT_MOD_4_TILED_MTL_RC_CCS, DRM_FORMAT_XRGB16161616F,
-> +		0.5,
-> +		1.0,
-> +	},
-> +	{
-> +		"flip-64bpp-4tile-to-32bpp-4tilemtlrcccs-downscaling",
-> +		"Flip from 64bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
-> +		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
-> +		I915_FORMAT_MOD_4_TILED_MTL_RC_CCS, DRM_FORMAT_XRGB16161616F,
-> +		1.0,
-> +		2.0,
-> +	},
+>  static void
+> -test_huc_copy(int fd)
+> +__test_huc_copy(int fd, uint32_t vm, struct drm_xe_engine_class_instance *hwe)
+>  {
+> -	uint32_t vm, exec_queue;
+> +	uint32_t exec_queue;
+>  	char *dinput;
+>  	struct drm_xe_sync sync = { 0 };
+>  
+> @@ -117,8 +117,7 @@ test_huc_copy(int fd)
+>  		{ .addr = ADDR_BATCH, .size = SIZE_BATCH }, // batch
+>  	};
+>  
+> -	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
+> -	exec_queue = xe_exec_queue_create_class(fd, vm, DRM_XE_ENGINE_CLASS_VIDEO_DECODE);
+> +	exec_queue = xe_exec_queue_create(fd, vm, hwe, 0);
+>  	sync.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL;
+>  	sync.handle = syncobj_create(fd, 0);
+>  
+> @@ -148,6 +147,27 @@ test_huc_copy(int fd)
+>  
+>  	syncobj_destroy(fd, sync.handle);
+>  	xe_exec_queue_destroy(fd, exec_queue);
+> +}
+> +
+> +static void
+> +test_huc_copy(int fd)
+> +{
+> +	struct drm_xe_engine_class_instance *hwe;
+> +	uint32_t vm;
+> +	uint32_t tested_gts = 0;
+> +
+> +	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
+> +
+> +	xe_for_each_hw_engine(fd, hwe) {
+> +		if (hwe->engine_class == DRM_XE_ENGINE_CLASS_VIDEO_DECODE &&
+> +		    !(tested_gts & BIT(hwe->gt_id))) {
+> +			tested_gts |= BIT(hwe->gt_id);
+> +			__test_huc_copy(fd, vm, hwe);
+> +		}
+> +	}
+> +
+> +	igt_require_f(tested_gts, "No video class engines found\n");
+--- ^^^^^^^^^^^^^
 
-Please add these at respective sections, it looks like there is
-downscaling first, after that follows upscaling.
-
-Add also SUBTEST: descriptions and check before resend with:
-
-meson -Dtestplan=enabled build
-ninja -C build
-
-See also build failure/warning on gitlab.
+Could you move this after xe_vm_destroy() below?
+With or without it you can keep my r-b,
 
 Regards,
 Kamil
 
->  };
+> +
+>  	xe_vm_destroy(fd, vm);
+>  }
 >  
->  static void setup_fb(data_t *data, struct igt_fb *newfb, uint32_t width,
 > -- 
-> 2.17.1
+> 2.41.0
 > 
