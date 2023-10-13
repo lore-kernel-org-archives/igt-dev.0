@@ -1,16 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============0514681060438565946=="
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EE83510E080
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Oct 2023 03:21:57 +0000 (UTC)
+Message-ID: <b8a4470c-914f-4345-7cc5-b30014cf99f4@intel.com>
+Date: Fri, 13 Oct 2023 08:51:29 +0530
+To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20231011133114.68627-1-swati2.sharma@intel.com>
+ <20231011133114.68627-3-swati2.sharma@intel.com>
+Content-Language: en-US
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <20231011133114.68627-3-swati2.sharma@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Nidhi Gupta" <nidhi1.gupta@intel.com>
-Date: Fri, 13 Oct 2023 02:10:41 -0000
-Message-ID: <169716304195.31157.7845447047278202011@emeril.freedesktop.org>
-References: <20231013013158.16760-1-nidhi1.gupta@intel.com>
-In-Reply-To: <20231013013158.16760-1-nidhi1.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fcursor=5Fcrc=3A_Optimize_the_test_for_simulation_=28rev2?=
- =?utf-8?q?=29?=
+Subject: Re: [igt-dev] [PATCH i-g-t 2/3] tests/kms_vblank: convert test to
+ dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,394 +22,439 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0514681060438565946==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi,
 
-== Series Details ==
+On 10/11/2023 7:01 PM, Swati Sharma wrote:
+> Convert existing subtests to dynamic subtests at pipe/output level
+> and update testplan documentation.
+>
+> v2: -Remove redundant debug prints
+>      -Convert all subtests into dynamic
+> v3: -Use pipe & output from struct data_t
+> v4: -Directly use data->pipe instead of using p
+> v5: -Use for_each_pipe_with_valid_output()
+>
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> ---
+>   tests/kms_vblank.c | 251 +++++++++++++++------------------------------
+>   1 file changed, 81 insertions(+), 170 deletions(-)
+>
+> diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
+> index bcfd8d012..4edd3f6bc 100644
+> --- a/tests/kms_vblank.c
+> +++ b/tests/kms_vblank.c
+> @@ -56,107 +56,63 @@
+>    */
+>   
+>   /**
+> - * SUBTEST: pipe-%s-ts-continuation-dpms-rpm
+> + * SUBTEST: ts-continuation-dpms-rpm
+>    * Description: Test TS continuty with DPMS & RPM while hanging by introducing
+> - *              NOHANG flag on %arg[1]
+> + *              NOHANG flag
+>    * Driver requirement: i915, xe
+>    * Functionality: dpms, hang, rpm, vblank
+>    * Mega feature: General Display Features
+>    * Test category: functionality test
+> - *
+> - * arg[1]:
+> - *
+> - * @A:     pipe A
+> - * @B:     pipe B
+> - * @C:     pipe C
+> - * @D:     pipe D
+> - * @E:     pipe E
+> - * @F:     pipe F
+> - * @G:     pipe G
+> - * @H:     pipe H
+>    */
+>   
+>   /**
+> - * SUBTEST: pipe-%s-ts-continuation-dpms-suspend
+> + * SUBTEST: ts-continuation-dpms-suspend
+>    * Description: Test TS continuty with DPMS & Suspend while hanging by introducing
+> - *              NOHANG flag on %arg[1]
+> + *              NOHANG flag
+>    * Driver requirement: i915, xe
+>    * Functionality: dpms, hang, suspend, vblank
+>    * Mega feature: General Display Features
+>    * Test category: functionality test
+> - *
+> - * arg[1]:
+> - *
+> - * @A:     pipe A
+> - * @B:     pipe B
+> - * @C:     pipe C
+> - * @D:     pipe D
+> - * @E:     pipe E
+> - * @F:     pipe F
+> - * @G:     pipe G
+> - * @H:     pipe H
+>    */
+>   
+>   /**
+> - * SUBTEST: pipe-%s-ts-continuation-suspend
+> + * SUBTEST: ts-continuation-suspend
+>    * Description: Test TS continuty with Suspend while hanging by introducing NOHANG
+> - *              flag on %arg[1]
+> + *              flag
+>    * Driver requirement: i915, xe
+>    * Functionality: hang, suspend, vblank
+>    * Mega feature: General Display Features
+>    * Test category: functionality test
+> - *
+> - * arg[1]:
+> - *
+> - * @A:     pipe A
+> - * @B:     pipe B
+> - * @C:     pipe C
+> - * @D:     pipe D
+> - * @E:     pipe E
+> - * @F:     pipe F
+> - * @G:     pipe G
+> - * @H:     pipe H
+>    */
+>   
+>   /**
+> - * SUBTEST: pipe-%s-ts-continuation-modeset-rpm
+> + * SUBTEST: ts-continuation-modeset-rpm
+>    * Description: Test TS continuty during Modeset with Suspend while hanging by
+> - *              introducing NOHANG flag on %arg[1]
+> + *              introducing NOHANG flag
+>    * Driver requirement: i915, xe
+>    * Functionality: hang, rpm, vblank
+>    * Mega feature: General Display Features
+>    * Test category: functionality test
+> - *
+> - * arg[1]:
+> - *
+> - * @A:     pipe A
+> - * @B:     pipe B
+> - * @C:     pipe C
+> - * @D:     pipe D
+> - * @E:     pipe E
+> - * @F:     pipe F
+> - * @G:     pipe G
+> - * @H:     pipe H
+>    */
+>   
+>   /**
+> - * SUBTEST: pipe-%s-accuracy-idle
+> + * SUBTEST: accuracy-idle
+>    * Description: Test Accuracy of vblank events while hanging by introducing NOHANG
+> - *              flag on %arg[1]
+> + *              flag
+>    * Driver requirement: i915, xe
+>    * Functionality: hang, vblank
+>    * Mega feature: General Display Features
+>    * Test category: functionality test
+>    *
+> - * SUBTEST: pipe-%s-%s
+> - * Description: Test %arg[2] while hanging by introducing NOHANG flag on %arg[1]
+> + * SUBTEST: %s
+> + * Description: Test %arg[1] while hanging by introducing NOHANG flag
+>    * Driver requirement: i915, xe
+>    * Functionality: hang, vblank
+>    * Mega feature: General Display Features
+>    * Test category: functionality test
+>    *
+> - * SUBTEST: pipe-%s-%s-hang
+> - * Description: Test %arg[2] with injected hang is working properly on %arg[1]
+> + * SUBTEST: %s-hang
+> + * Description: Test %arg[1] with injected hang is working properly
+>    * Driver requirement: i915, xe
+>    * Functionality: hang, vblank
+>    * Mega feature: General Display Features
+> @@ -164,17 +120,6 @@
+>    *
+>    * arg[1]:
+>    *
+> - * @A:     pipe A
+> - * @B:     pipe B
+> - * @C:     pipe C
+> - * @D:     pipe D
+> - * @E:     pipe E
+> - * @F:     pipe F
+> - * @G:     pipe G
+> - * @H:     pipe H
+> - *
+> - * arg[2]:
+> - *
+>    * @query-idle:              Time taken to Query vblank counters
+>    * @query-forked:            Time taken to Query vblank counters (multithreaded)
+>    * @query-busy:              Time taken to Query vblank counters (during V-active)
+> @@ -270,10 +215,6 @@ static void run_test(data_t *data, void (*testfunc)(data_t *, int, int))
+>   	if (data->flags & RPM)
+>   		igt_require(igt_setup_runtime_pm(fd));
+>   
+> -	igt_info("Beginning %s on pipe %s, connector %s\n",
+> -		 igt_subtest_name(), kmstest_pipe_name(data->pipe),
+> -		 igt_output_name(output));
+> -
+>   	if (!(data->flags & NOHANG)) {
+>   		ahnd = is_i915_device(fd) ?
+>   			get_reloc_ahnd(fd, 0) :
+> @@ -314,9 +255,6 @@ static void run_test(data_t *data, void (*testfunc)(data_t *, int, int))
+>   	if (!(data->flags & NOHANG))
+>   		igt_post_hang_ring(fd, hang);
+>   
+> -	igt_info("\n%s on pipe %s, connector %s: PASSED\n\n",
+> -		 igt_subtest_name(), kmstest_pipe_name(data->pipe), igt_output_name(output));
+> -
+>   	put_ahnd(ahnd);
+>   
+>   	/* cleanup what prepare_crtc() has done */
+> @@ -342,63 +280,50 @@ pipe_output_combo_valid(igt_display_t *display,
+>   static void crtc_id_subtest(data_t *data, int fd)
+>   {
+>   	igt_display_t *display = &data->display;
+> -	igt_output_t *output;
+> -	enum pipe p;
+> -
+> -	for_each_pipe_with_valid_output(display, p, output) {
+> -		struct drm_event_vblank buf;
+> -		const uint32_t pipe_id_flag = kmstest_get_vbl_flag(p);
+> -		unsigned crtc_id, expected_crtc_id;
+> -		uint64_t val;
+> -		union drm_wait_vblank vbl;
+> +	enum pipe p = data->pipe;
+> +	igt_output_t *output = data->output;
+> +	struct drm_event_vblank buf;
+> +	const uint32_t pipe_id_flag = kmstest_get_vbl_flag(p);
+> +	unsigned crtc_id, expected_crtc_id;
+> +	uint64_t val;
+> +	union drm_wait_vblank vbl;
+>   
+> -		igt_display_reset(display);
+> +	crtc_id = display->pipes[p].crtc_id;
+> +	if (drmGetCap(display->drm_fd, DRM_CAP_CRTC_IN_VBLANK_EVENT, &val) == 0)
+> +		expected_crtc_id = crtc_id;
+> +	else
+> +		expected_crtc_id = 0;
+>   
+> -		igt_output_set_pipe(output, p);
+> -		if (!i915_pipe_output_combo_valid(display))
+> -			continue;
+> +	prepare_crtc(data, fd, output);
+>   
+> -		igt_info("Using (pipe %s + %s) to run the subtest.\n",
+> -			 kmstest_pipe_name(p), igt_output_name(output));
+> +	memset(&vbl, 0, sizeof(vbl));
+> +	vbl.request.type = DRM_VBLANK_RELATIVE | DRM_VBLANK_EVENT;
+> +	vbl.request.type |= pipe_id_flag;
+> +	vbl.request.sequence = 1;
+> +	igt_assert_eq(wait_vblank(fd, &vbl), 0);
+>   
+> -		crtc_id = display->pipes[p].crtc_id;
+> -		if (drmGetCap(display->drm_fd, DRM_CAP_CRTC_IN_VBLANK_EVENT, &val) == 0)
+> -			expected_crtc_id = crtc_id;
+> -		else
+> -			expected_crtc_id = 0;
+> +	igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
+> +	igt_assert_eq(buf.crtc_id, expected_crtc_id);
+>   
+> -		data->pipe = p;
+> -		prepare_crtc(data, fd, output);
+> +	do_or_die(drmModePageFlip(fd, crtc_id,
+> +				  data->primary_fb.fb_id,
+> +				  DRM_MODE_PAGE_FLIP_EVENT, NULL));
+>   
+> -		memset(&vbl, 0, sizeof(vbl));
+> -		vbl.request.type = DRM_VBLANK_RELATIVE | DRM_VBLANK_EVENT;
+> -		vbl.request.type |= pipe_id_flag;
+> -		vbl.request.sequence = 1;
+> -		igt_assert_eq(wait_vblank(fd, &vbl), 0);
+> +	igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
+> +	igt_assert_eq(buf.crtc_id, expected_crtc_id);
+>   
+> -		igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
+> -		igt_assert_eq(buf.crtc_id, expected_crtc_id);
+> +	if (display->is_atomic) {
+> +		igt_plane_t *primary = igt_output_get_plane(output, 0);
+>   
+> -		do_or_die(drmModePageFlip(fd, crtc_id,
+> -					  data->primary_fb.fb_id,
+> -					  DRM_MODE_PAGE_FLIP_EVENT, NULL));
+> +		igt_plane_set_fb(primary, &data->primary_fb);
+> +		igt_display_commit_atomic(display, DRM_MODE_PAGE_FLIP_EVENT, NULL);
+>   
+>   		igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
+>   		igt_assert_eq(buf.crtc_id, expected_crtc_id);
+> -
+> -		if (display->is_atomic) {
+> -			igt_plane_t *primary = igt_output_get_plane(output, 0);
+> -
+> -			igt_plane_set_fb(primary, &data->primary_fb);
+> -			igt_display_commit_atomic(display, DRM_MODE_PAGE_FLIP_EVENT, NULL);
+> -
+> -			igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
+> -			igt_assert_eq(buf.crtc_id, expected_crtc_id);
+> -		}
+> -
+> -		cleanup_crtc(data, fd, output);
+> -		return;
+>   	}
+> +
+> +	cleanup_crtc(data, fd, output);
+> +	return;
+>   }
+>   
+>   static void accuracy(data_t *data, int fd, int nchildren)
+> @@ -576,7 +501,7 @@ static void vblank_ts_cont(data_t *data, int fd, int nchildren)
+>   			estimated_vblanks, seq2, seq1 + estimated_vblanks);
+>   }
+>   
+> -static void run_subtests_for_pipe(data_t *data)
+> +static void run_subtests(data_t *data)
+>   {
+>   	const struct {
+>   		const char *name;
+> @@ -610,30 +535,22 @@ static void run_subtests_for_pipe(data_t *data)
+>   		{ }
+>   	}, *m;
+>   
+> -	igt_fixture
+> -		igt_display_require_output_on_pipe(&data->display, data->pipe);
+> -
+>   	for (f = funcs; f->name; f++) {
+>   		for (m = modes; m->name; m++) {
+>   			if (m->flags & ~(f->valid | NOHANG))
+>   				continue;
+>   
+>   			igt_describe("Check if test run while hanging by introducing NOHANG flag.");
+> -			igt_subtest_f("pipe-%s-%s-%s",
+> -				      kmstest_pipe_name(data->pipe),
+> -				      f->name, m->name) {
+> -				int found = 0;
+> -
+> -				for_each_valid_output_on_pipe(&data->display, data->pipe, data->output) {
+> +			igt_subtest_with_dynamic_f("%s-%s", f->name, m->name) {
+> +				for_each_pipe_with_valid_output(&data->display, data->pipe, data->output) {
+>   					if (!pipe_output_combo_valid(&data->display, data->pipe, data->output))
+>   						continue;
+>   
+> -					data->flags = m->flags | NOHANG;
+> -					run_test(data, f->func);
+> -
+> -					found++;
+> +					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data->pipe), data->output->name) {
+> +						data->flags = m->flags | NOHANG;
+> +						run_test(data, f->func);
+> +					}
+>   				}
+> -				igt_require_f(found, "No valid pipe/output combo found.\n");
+>   			}
+>   
+>   			/* Skip the -hang version if NOHANG flag is set */
+> @@ -641,24 +558,20 @@ static void run_subtests_for_pipe(data_t *data)
+>   				continue;
+>   
+>   			igt_describe("Check if injected hang is working properly.");
+> -			igt_subtest_f("pipe-%s-%s-%s-hang",
+> -				      kmstest_pipe_name(data->pipe),
+> -				      f->name, m->name) {
+> +			igt_subtest_with_dynamic_f("%s-%s-hang", f->name, m->name) {
+>   				igt_hang_t hang;
+> -				int found = 0;
+>   
+>   				hang = igt_allow_hang(data->display.drm_fd, 0, 0);
+> -				for_each_valid_output_on_pipe(&data->display, data->pipe, data->output) {
+> +				for_each_pipe_with_valid_output(&data->display, data->pipe, data->output) {
+>   					if (!pipe_output_combo_valid(&data->display, data->pipe, data->output))
+>   						continue;
+>   
+> -					data->flags = m->flags;
+> -					run_test(data, f->func);
+> -
+> -					found++;
+> +					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data->pipe), data->output->name) {
+> +						data->flags = m->flags;
+> +						run_test(data, f->func);
+> +					}
+>   				}
+>   				igt_disallow_hang(data->display.drm_fd, hang);
+> -				igt_require_f(found, "No valid pipe/output combo found.\n");
+>   			}
+>   		}
+>   	}
+> @@ -668,23 +581,7 @@ static void invalid_subtest(data_t *data, int fd)
+>   {
+>   	union drm_wait_vblank vbl;
+>   	unsigned long valid_flags;
+> -	igt_display_t* display = &data->display;
+> -	enum pipe pipe = 0;
+> -	igt_output_t *output;
+> -
+> -	igt_display_reset(display);
+> -
+> -	output = igt_get_single_output_for_pipe(display, pipe);
+> -	igt_require(output);
+> -
+> -	data->pipe = pipe;
+> -	data->output = output;
+> -
+> -	igt_output_set_pipe(output, pipe);
+> -	igt_require(i915_pipe_output_combo_valid(display));
+> -
+> -	igt_info("Using (pipe %s + %s) to run the subtest.\n",
+> -		 kmstest_pipe_name(pipe), igt_output_name(output));
+> +	igt_output_t *output = data->output;
+>   
+>   	prepare_crtc(data, fd, output);
+>   
+> @@ -738,18 +635,32 @@ igt_main
+>   	}
+>   
+>   	igt_describe("Negative test for vblank request.");
+> -	igt_subtest("invalid")
+> -		invalid_subtest(&data, fd);
+> +	igt_subtest_with_dynamic("invalid") {
+> +		for_each_pipe_with_valid_output(&data.display, data.pipe, data.output) {
+> +			if (!pipe_output_combo_valid(&data.display, data.pipe, data.output))
+> +				continue;
+> +
+> +			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data.pipe), data.output->name)
+> +				invalid_subtest(&data, fd);
+> +			break;
 
-Series: tests/kms_cursor_crc: Optimize the test for simulation (rev2)
-URL   : https://patchwork.freedesktop.org/series/124696/
-State : success
+I see that without this patch also this subtest was anyway running on 
+just one pipe/output combination, so I'm fine with taking that same 
+design forward. But as we're now adding this loop and then breaking 
+after the first valid combination, may be we could just add a small 
+comment saying why we're breaking here as this is the one subtest which 
+is different from others.
 
-== Summary ==
+With this added,
 
-CI Bug Log - changes from CI_DRM_13749 -> IGTPW_9994
-====================================================
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/index.html
-
-Participating hosts (37 -> 35)
-------------------------------
-
-  Additional (2): bat-dg2-9 fi-pnv-d510 
-  Missing    (4): fi-kbl-soraka fi-hsw-4770 bat-adlp-11 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_9994 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_exec_suspend@basic-s0@smem:
-    - bat-dg2-9:          NOTRUN -> [INCOMPLETE][1] ([i915#9275])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html
-
-  * igt@gem_mmap@basic:
-    - bat-dg2-9:          NOTRUN -> [SKIP][2] ([i915#4083])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@gem_mmap@basic.html
-
-  * igt@gem_mmap_gtt@basic:
-    - bat-dg2-9:          NOTRUN -> [SKIP][3] ([i915#4077]) +2 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@gem_mmap_gtt@basic.html
-
-  * igt@gem_render_tiled_blits@basic:
-    - bat-dg2-9:          NOTRUN -> [SKIP][4] ([i915#4079]) +1 other test skip
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@gem_render_tiled_blits@basic.html
-
-  * igt@i915_module_load@load:
-    - bat-adlp-6:         [PASS][5] -> [DMESG-WARN][6] ([i915#8449])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13749/bat-adlp-6/igt@i915_module_load@load.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-adlp-6/igt@i915_module_load@load.html
-
-  * igt@i915_pm_rps@basic-api:
-    - bat-dg2-9:          NOTRUN -> [SKIP][7] ([i915#6621])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@i915_pm_rps@basic-api.html
-
-  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
-    - bat-dg2-9:          NOTRUN -> [SKIP][8] ([i915#5190])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-
-  * igt@kms_addfb_basic@basic-y-tiled-legacy:
-    - bat-dg2-9:          NOTRUN -> [SKIP][9] ([i915#4215] / [i915#5190])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@kms_addfb_basic@basic-y-tiled-legacy.html
-
-  * igt@kms_addfb_basic@framebuffer-vs-set-tiling:
-    - bat-dg2-9:          NOTRUN -> [SKIP][10] ([i915#4212]) +6 other tests skip
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@kms_addfb_basic@framebuffer-vs-set-tiling.html
-
-  * igt@kms_addfb_basic@tile-pitch-mismatch:
-    - bat-dg2-9:          NOTRUN -> [SKIP][11] ([i915#4212] / [i915#5608])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@kms_addfb_basic@tile-pitch-mismatch.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
-    - bat-dg2-9:          NOTRUN -> [SKIP][12] ([i915#4103] / [i915#4213] / [i915#5608]) +1 other test skip
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - bat-dg2-9:          NOTRUN -> [SKIP][13] ([fdo#109285])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_force_connector_basic@prune-stale-modes:
-    - bat-dg2-9:          NOTRUN -> [SKIP][14] ([i915#5274])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@kms_force_connector_basic@prune-stale-modes.html
-
-  * igt@kms_psr@primary_page_flip:
-    - fi-pnv-d510:        NOTRUN -> [SKIP][15] ([fdo#109271]) +29 other tests skip
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/fi-pnv-d510/igt@kms_psr@primary_page_flip.html
-
-  * igt@kms_psr@sprite_plane_onoff:
-    - bat-dg2-9:          NOTRUN -> [SKIP][16] ([i915#1072]) +3 other tests skip
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@kms_psr@sprite_plane_onoff.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - bat-dg2-9:          NOTRUN -> [SKIP][17] ([i915#3555] / [i915#4098])
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@kms_setmode@basic-clone-single-crtc.html
-
-  * igt@prime_vgem@basic-fence-flip:
-    - bat-dg2-9:          NOTRUN -> [SKIP][18] ([i915#3708])
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@prime_vgem@basic-fence-flip.html
-
-  * igt@prime_vgem@basic-fence-mmap:
-    - bat-dg2-9:          NOTRUN -> [SKIP][19] ([i915#3708] / [i915#4077]) +1 other test skip
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@prime_vgem@basic-fence-mmap.html
-
-  * igt@prime_vgem@basic-write:
-    - bat-dg2-9:          NOTRUN -> [SKIP][20] ([i915#3291] / [i915#3708]) +2 other tests skip
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@prime_vgem@basic-write.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s0@smem:
-    - bat-jsl-3:          [INCOMPLETE][21] ([i915#9275]) -> [PASS][22]
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13749/bat-jsl-3/igt@gem_exec_suspend@basic-s0@smem.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-jsl-3/igt@gem_exec_suspend@basic-s0@smem.html
-
-  * igt@gem_exec_suspend@basic-s3@smem:
-    - bat-mtlp-8:         [ABORT][23] ([i915#8213] / [i915#9262]) -> [PASS][24]
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13749/bat-mtlp-8/igt@gem_exec_suspend@basic-s3@smem.html
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-mtlp-8/igt@gem_exec_suspend@basic-s3@smem.html
-
-  * igt@i915_suspend@basic-s2idle-without-i915:
-    - bat-mtlp-6:         [FAIL][25] ([fdo#103375]) -> [PASS][26] +2 other tests pass
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13749/bat-mtlp-6/igt@i915_suspend@basic-s2idle-without-i915.html
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-mtlp-6/igt@i915_suspend@basic-s2idle-without-i915.html
-
-  * igt@i915_suspend@basic-s3-without-i915:
-    - bat-jsl-3:          [FAIL][27] ([fdo#103375]) -> [PASS][28]
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13749/bat-jsl-3/igt@i915_suspend@basic-s3-without-i915.html
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-jsl-3/igt@i915_suspend@basic-s3-without-i915.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#103375]: https://bugs.freedesktop.org/show_bug.cgi?id=103375
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
-  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
-  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
-  [i915#4098]: https://gitlab.freedesktop.org/drm/intel/issues/4098
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
-  [i915#4213]: https://gitlab.freedesktop.org/drm/intel/issues/4213
-  [i915#4215]: https://gitlab.freedesktop.org/drm/intel/issues/4215
-  [i915#5190]: https://gitlab.freedesktop.org/drm/intel/issues/5190
-  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#5608]: https://gitlab.freedesktop.org/drm/intel/issues/5608
-  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
-  [i915#8213]: https://gitlab.freedesktop.org/drm/intel/issues/8213
-  [i915#8449]: https://gitlab.freedesktop.org/drm/intel/issues/8449
-  [i915#9262]: https://gitlab.freedesktop.org/drm/intel/issues/9262
-  [i915#9275]: https://gitlab.freedesktop.org/drm/intel/issues/9275
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7533 -> IGTPW_9994
-
-  CI-20190529: 20190529
-  CI_DRM_13749: 09d775a292872ee2dab9fbf58ae774701d3b53bd @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_9994: 9994
-  IGT_7533: 7533
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/index.html
-
---===============0514681060438565946==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_cursor_crc: Optimize the test for simulation (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124696/">https://patchwork.freedesktop.org/series/124696/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_13749 -&gt; IGTPW_9994</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/index.html</p>
-<h2>Participating hosts (37 -&gt; 35)</h2>
-<p>Additional (2): bat-dg2-9 fi-pnv-d510 <br />
-  Missing    (4): fi-kbl-soraka fi-hsw-4770 bat-adlp-11 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_9994 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s0@smem:</p>
-<ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9275">i915#9275</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_mmap@basic:</p>
-<ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@gem_mmap@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4083">i915#4083</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_mmap_gtt@basic:</p>
-<ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@gem_mmap_gtt@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4077">i915#4077</a>) +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_render_tiled_blits@basic:</p>
-<ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@gem_render_tiled_blits@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4079">i915#4079</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_module_load@load:</p>
-<ul>
-<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13749/bat-adlp-6/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-adlp-6/igt@i915_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8449">i915#8449</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rps@basic-api:</p>
-<ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@i915_pm_rps@basic-api.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6621">i915#6621</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
-<ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5190">i915#5190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@basic-y-tiled-legacy:</p>
-<ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@kms_addfb_basic@basic-y-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4215">i915#4215</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5190">i915#5190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@framebuffer-vs-set-tiling:</p>
-<ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@kms_addfb_basic@framebuffer-vs-set-tiling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4212">i915#4212</a>) +6 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@tile-pitch-mismatch:</p>
-<ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@kms_addfb_basic@tile-pitch-mismatch.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4212">i915#4212</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5608">i915#5608</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
-<ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4213">i915#4213</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5608">i915#5608</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@prune-stale-modes:</p>
-<ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5274">i915#5274</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@primary_page_flip:</p>
-<ul>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/fi-pnv-d510/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +29 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@sprite_plane_onoff:</p>
-<ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4098">i915#4098</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-fence-flip:</p>
-<ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@prime_vgem@basic-fence-flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-fence-mmap:</p>
-<ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@prime_vgem@basic-fence-mmap.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4077">i915#4077</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-write:</p>
-<ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-dg2-9/igt@prime_vgem@basic-write.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3291">i915#3291</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>) +2 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s0@smem:</p>
-<ul>
-<li>bat-jsl-3:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13749/bat-jsl-3/igt@gem_exec_suspend@basic-s0@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9275">i915#9275</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-jsl-3/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_suspend@basic-s3@smem:</p>
-<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13749/bat-mtlp-8/igt@gem_exec_suspend@basic-s3@smem.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8213">i915#8213</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9262">i915#9262</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-mtlp-8/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
-<ul>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13749/bat-mtlp-6/igt@i915_suspend@basic-s2idle-without-i915.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=103375">fdo#103375</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-mtlp-6/igt@i915_suspend@basic-s2idle-without-i915.html">PASS</a> +2 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s3-without-i915:</p>
-<ul>
-<li>bat-jsl-3:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13749/bat-jsl-3/igt@i915_suspend@basic-s3-without-i915.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=103375">fdo#103375</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9994/bat-jsl-3/igt@i915_suspend@basic-s3-without-i915.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7533 -&gt; IGTPW_9994</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13749: 09d775a292872ee2dab9fbf58ae774701d3b53bd @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_9994: 9994<br />
-  IGT_7533: 7533</p>
-
-</body>
-</html>
-
---===============0514681060438565946==--
+> +		}
+> +	}
+>   
+>   	igt_describe("Check the vblank and flip events works with given crtc id.");
+> -	igt_subtest("crtc-id")
+> -		crtc_id_subtest(&data, fd);
+> +	igt_subtest_with_dynamic("crtc-id") {
+> +		for_each_pipe_with_valid_output(&data.display, data.pipe, data.output) {
+> +			if (!pipe_output_combo_valid(&data.display, data.pipe, data.output))
+> +				continue;
+> +
+> +			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data.pipe), data.output->name)
+> +				crtc_id_subtest(&data, fd);
+> +		}
+> +	}
+>   
+> -	for_each_pipe_static(data.pipe)
+> -		igt_subtest_group
+> -			run_subtests_for_pipe(&data);
+> +	run_subtests(&data);
+>   
+>   	igt_fixture {
+> +		igt_display_fini(&data.display);
+>   		drm_close_driver(fd);
+>   	}
+>   }
