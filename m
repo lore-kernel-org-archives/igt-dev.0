@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Lee Shawn C <shawn.c.lee@intel.com>
-To: intel-gfx@lists.freedesktop.org,
-	igt-dev@lists.freedesktop.org
-Date: Fri, 13 Oct 2023 12:20:12 +0800
-Message-Id: <20231013042012.409376-1-shawn.c.lee@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============6314140163760941148=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH] tests: save GPU engine information more properly
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Lee Shawn C" <shawn.c.lee@intel.com>
+Date: Fri, 13 Oct 2023 04:55:15 -0000
+Message-ID: <169717291564.31155.288339499581472816@emeril.freedesktop.org>
+References: <20231013042012.409376-1-shawn.c.lee@intel.com>
+In-Reply-To: <20231013042012.409376-1-shawn.c.lee@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIENJLnhlQkFUOiBzdWNjZXNzIGZvciB0ZXN0czog?=
+ =?utf-8?q?save_GPU_engine_information_more_properly?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,155 +17,254 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Lee Shawn C <shawn.c.lee@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We encounter a unexpected error on chrome book device while
-running kms_busy test. It will restore GPU engine's timeout
-value but open incorrect file name (XR24 in below).
+--===============6314140163760941148==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-openat(AT_FDCWD, "/sys/dev/char/226:0", O_RDONLY) = 12
-openat(12, "dev", O_RDONLY)             = 13
-read(13, "226:0\n", 1023)               = 6
-close(13)                               = 0
-openat(12, "engine", O_RDONLY)          = 13
-close(12)                               = 0
-openat(13, "XR24", O_RDONLY)            = -1 ENOENT (No such file or directory)
+== Series Details ==
 
-Test code did not save engine data properly to cause this problem.
-So modify the code to save GPU engine information into a globla variable
-to avoid test deamon to open incorrect file again.
+Series: tests: save GPU engine information more properly
+URL   : https://patchwork.freedesktop.org/series/125089/
+State : success
 
-Issue: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/147
-Fixes: 9e635a1c5029 ("tests/kms_busy: Ensure GPU reset when waiting
-for a new FB during modeset")
-Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Cc: Imre Deak <imre.deak@intel.com>
-Cc: Vidya Srinivas <vidya.srinivas@intel.com>
-Signed-off-by: Lee Shawn C <shawn.c.lee@intel.com>
----
- lib/i915/gem_engine_topology.c | 12 ++++++------
- lib/i915/gem_engine_topology.h |  2 +-
- tests/intel/gem_exec_capture.c |  2 +-
- tests/intel/gem_reset_stats.c  |  2 +-
- tests/intel/i915_hangman.c     |  2 +-
- tests/intel/kms_busy.c         |  2 +-
- 6 files changed, 11 insertions(+), 11 deletions(-)
+== Summary ==
 
-diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
-index 7c6cd9ba97db..afb576afb2dc 100644
---- a/lib/i915/gem_engine_topology.c
-+++ b/lib/i915/gem_engine_topology.c
-@@ -571,23 +571,23 @@ void gem_engine_properties_configure(int fd, struct gem_engine_properties *param
- 	int ret;
- 	struct gem_engine_properties write = *params;
- 
--	ret = gem_engine_property_scanf(fd, write.engine->name,
-+	ret = gem_engine_property_scanf(fd, write.engine.name,
- 					"heartbeat_interval_ms",
- 					"%d", &params->heartbeat_interval);
- 	igt_assert_eq(ret, 1);
- 
--	ret = gem_engine_property_printf(fd, write.engine->name,
-+	ret = gem_engine_property_printf(fd, write.engine.name,
- 					 "heartbeat_interval_ms", "%d",
- 					 write.heartbeat_interval);
- 	igt_assert_lt(0, ret);
- 
- 	if (gem_scheduler_has_preemption(fd)) {
--		ret = gem_engine_property_scanf(fd, write.engine->name,
-+		ret = gem_engine_property_scanf(fd, write.engine.name,
- 						"preempt_timeout_ms",
- 						"%d", &params->preempt_timeout);
- 		igt_assert_eq(ret, 1);
- 
--		ret = gem_engine_property_printf(fd, write.engine->name,
-+		ret = gem_engine_property_printf(fd, write.engine.name,
- 						 "preempt_timeout_ms", "%d",
- 						 write.preempt_timeout);
- 		igt_assert_lt(0, ret);
-@@ -598,13 +598,13 @@ void gem_engine_properties_restore(int fd, const struct gem_engine_properties *s
- {
- 	int ret;
- 
--	ret = gem_engine_property_printf(fd, saved->engine->name,
-+	ret = gem_engine_property_printf(fd, saved->engine.name,
- 					 "heartbeat_interval_ms", "%d",
- 					 saved->heartbeat_interval);
- 	igt_assert_lt(0, ret);
- 
- 	if (gem_scheduler_has_preemption(fd)) {
--		ret = gem_engine_property_printf(fd, saved->engine->name,
-+		ret = gem_engine_property_printf(fd, saved->engine.name,
- 						 "preempt_timeout_ms", "%d",
- 						 saved->preempt_timeout);
- 		igt_assert_lt(0, ret);
-diff --git a/lib/i915/gem_engine_topology.h b/lib/i915/gem_engine_topology.h
-index 89642c31721c..9eb9d5ddc888 100644
---- a/lib/i915/gem_engine_topology.h
-+++ b/lib/i915/gem_engine_topology.h
-@@ -122,7 +122,7 @@ struct intel_execution_engine2 gem_eb_flags_to_engine(unsigned int flags);
- 	     intel_next_engine(&i__##e__))
- 
- struct gem_engine_properties {
--	const struct intel_execution_engine2 *engine;
-+	struct intel_execution_engine2 engine;
- 	int preempt_timeout;
- 	int heartbeat_interval;
- };
-diff --git a/tests/intel/gem_exec_capture.c b/tests/intel/gem_exec_capture.c
-index ab8305e4dfaf..d231c53b98e1 100644
---- a/tests/intel/gem_exec_capture.c
-+++ b/tests/intel/gem_exec_capture.c
-@@ -258,7 +258,7 @@ configure_hangs(int fd, const struct intel_execution_engine2 *e, int ctxt_id)
- 	struct gem_engine_properties props;
- 
- 	/* Ensure fast hang detection */
--	props.engine = e;
-+	props.engine = *e;
- 	props.preempt_timeout = 250;
- 	props.heartbeat_interval = 500;
- 	gem_engine_properties_configure(fd, &props);
-diff --git a/tests/intel/gem_reset_stats.c b/tests/intel/gem_reset_stats.c
-index 6939722c7001..5dfc1fc677ec 100644
---- a/tests/intel/gem_reset_stats.c
-+++ b/tests/intel/gem_reset_stats.c
-@@ -1004,7 +1004,7 @@ static void test_shared_reset_domain(const intel_ctx_cfg_t *base_cfg,
- 
- 	sync_gpu();
- 
--	params.engine = e;
-+	params.engine = *e;
- 	params.preempt_timeout = 1;
- 	params.heartbeat_interval = 250;
- 	gem_engine_properties_configure(device, &params);
-diff --git a/tests/intel/i915_hangman.c b/tests/intel/i915_hangman.c
-index dcd34cd0ebfe..8a7de562609c 100644
---- a/tests/intel/i915_hangman.c
-+++ b/tests/intel/i915_hangman.c
-@@ -600,7 +600,7 @@ igt_main
- 		gem_require_mmap_device_coherent(device);
- 
- 		for_each_physical_engine(device, e) {
--			saved_params[num_engines].engine = e;
-+			saved_params[num_engines].engine = *e;
- 			saved_params[num_engines].preempt_timeout = 500;
- 			saved_params[num_engines].heartbeat_interval = 1000;
- 			gem_engine_properties_configure(device, saved_params + num_engines++);
-diff --git a/tests/intel/kms_busy.c b/tests/intel/kms_busy.c
-index 5b620658fb18..50616513c5ba 100644
---- a/tests/intel/kms_busy.c
-+++ b/tests/intel/kms_busy.c
-@@ -404,7 +404,7 @@ static void gpu_engines_init_timeouts(int fd, int max_engines,
- 	for_each_physical_engine(fd, e) {
- 		igt_assert(*num_engines < max_engines);
- 
--		props[*num_engines].engine = e;
-+		props[*num_engines].engine = *e;
- 		props[*num_engines].preempt_timeout = 0;
- 		props[*num_engines].heartbeat_interval = 250;
- 
--- 
-2.34.1
+CI Bug Log - changes from XEIGT_7533_BAT -> XEIGTPW_9995_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (2 -> 2)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_9995_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][1] ([Intel XE#623])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9995/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_addfb_basic@basic-y-tiled-legacy:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][2] ([Intel XE#624])
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9995/bat-dg2-oem2/igt@kms_addfb_basic@basic-y-tiled-legacy.html
+
+  * igt@kms_addfb_basic@tile-pitch-mismatch:
+    - bat-dg2-oem2:       NOTRUN -> [FAIL][3] ([Intel XE#609]) +1 other test fail
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9995/bat-dg2-oem2/igt@kms_addfb_basic@tile-pitch-mismatch.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][4] ([Intel XE#423])
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9995/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1:
+    - bat-adlp-7:         [PASS][5] -> [FAIL][6] ([Intel XE#480]) +1 other test fail
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7533/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9995/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3:
+    - bat-dg2-oem2:       NOTRUN -> [FAIL][7] ([Intel XE#480]) +1 other test fail
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9995/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3.html
+
+  * igt@kms_force_connector_basic@prune-stale-modes:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][8] ([i915#5274])
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9995/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-dg2-oem2:       NOTRUN -> [FAIL][9] ([Intel XE#608])
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9995/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3:
+    - bat-dg2-oem2:       NOTRUN -> [FAIL][10] ([Intel XE#400]) +2 other tests fail
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9995/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3.html
+
+  * igt@kms_psr@primary_page_flip:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][11] ([Intel XE#535]) +2 other tests skip
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9995/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html
+
+  * igt@xe_huc_copy@huc_copy:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][12] ([Intel XE#255])
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9995/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size:
+    - bat-adlp-7:         [FAIL][13] ([i915#2346]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7533/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9995/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
+
+  
+  [Intel XE#255]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/255
+  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
+  [Intel XE#423]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/423
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#535]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/535
+  [Intel XE#608]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/608
+  [Intel XE#609]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/609
+  [Intel XE#623]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/623
+  [Intel XE#624]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/624
+  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
+  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7533 -> IGTPW_9995
+
+  IGTPW_9995: 9995
+  IGT_7533: 7533
+  xe-432-6c0d1e36f310682297a5b07336b0883afc77f66e: 6c0d1e36f310682297a5b07336b0883afc77f66e
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9995/index.html
+
+--===============6314140163760941148==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests: save GPU engine information more properly</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/125089/">https://patchwork.freedesktop.org/series/125089/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9995/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9995/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7533_BAT -&gt; XEIGTPW_9995_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (2 -&gt; 2)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_9995_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9995/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/623">Intel XE#623</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@basic-y-tiled-legacy:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9995/bat-dg2-oem2/igt@kms_addfb_basic@basic-y-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/624">Intel XE#624</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@tile-pitch-mismatch:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9995/bat-dg2-oem2/igt@kms_addfb_basic@tile-pitch-mismatch.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/609">Intel XE#609</a>) +1 other test fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9995/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/423">Intel XE#423</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7533/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9995/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9995/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@prune-stale-modes:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9995/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5274">i915#5274</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9995/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/608">Intel XE#608</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9995/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a>) +2 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_page_flip:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9995/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/535">Intel XE#535</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_huc_copy@huc_copy:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9995/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7533/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9995/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7533 -&gt; IGTPW_9995</li>
+</ul>
+<p>IGTPW_9995: 9995<br />
+  IGT_7533: 7533<br />
+  xe-432-6c0d1e36f310682297a5b07336b0883afc77f66e: 6c0d1e36f310682297a5b07336b0883afc77f66e</p>
+
+</body>
+</html>
+
+--===============6314140163760941148==--
