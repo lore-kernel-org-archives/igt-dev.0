@@ -1,19 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CA02510E5D8
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Oct 2023 10:39:13 +0000 (UTC)
-From: sai.gowtham.ch@intel.com
-To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
- karolina.stolarek@intel.com, sai.gowtham.ch@intel.com
-Date: Fri, 13 Oct 2023 16:07:27 +0530
-Message-Id: <20231013103728.24748-2-sai.gowtham.ch@intel.com>
-In-Reply-To: <20231013103728.24748-1-sai.gowtham.ch@intel.com>
-References: <20231013103728.24748-1-sai.gowtham.ch@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 48F3B10E067
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Oct 2023 11:24:05 +0000 (UTC)
+Message-ID: <1ea08ddd-d0c6-4a21-bde1-5a6e365c95b0@intel.com>
+Date: Fri, 13 Oct 2023 16:54:00 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Language: en-US
+To: Karthik B S <karthik.b.s@intel.com>, igt-dev@lists.freedesktop.org
+References: <20231010055940.41997-1-swati2.sharma@intel.com>
+ <20231010055940.41997-6-swati2.sharma@intel.com>
+ <bcb7be7b-b75e-9d99-fe6c-ba6422aaab95@intel.com>
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <bcb7be7b-b75e-9d99-fe6c-ba6422aaab95@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] lib/intel_blt: Add wrappers to prepare
- batch buffers and submit exec
+Subject: Re: [igt-dev] [v2 5/6] tests/kms_atomic: check validity of
+ pipe-output combo
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,336 +27,174 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Hi Karthik,
 
-Adding wrapper for mem-set and mem-copy instructions to prepare
-batch buffers and submit exec, (blt_mem_copy, blt_mem_set,
-emit_blt_mem_copy, emit_blt_set_mem)
+On 13-Oct-23 9:17 AM, Karthik B S wrote:
+> Hi,
+> 
+> On 10/10/2023 11:29 AM, Swati Sharma wrote:
+>> Check validity of pipe-output combination.
+>>
+>> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+>> ---
+>>   tests/kms_atomic.c | 43 +++++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 43 insertions(+)
+>>
+>> diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
+>> index e9159ded2..bed468e4b 100644
+>> --- a/tests/kms_atomic.c
+>> +++ b/tests/kms_atomic.c
+>> @@ -1393,6 +1393,22 @@ static bool has_zpos(igt_plane_t *plane)
+>>       return igt_plane_has_prop(plane, IGT_PLANE_ZPOS);
+>>   }
+>> +static bool
+>> +pipe_output_combo_valid(igt_display_t *display,
+>> +            enum pipe pipe, igt_output_t *output)
+> 
+> Could this be moved into lib? I see this is already being used in 
+> kms_vblank as well. May be even other tests can use this?
 
-Cc: Karolina Stolarek <karolina.stolarek@intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
----
- lib/intel_blt.c | 199 ++++++++++++++++++++++++++++++++++++++++++++++++
- lib/intel_blt.h |  39 ++++++++++
- lib/intel_reg.h |   4 +
- 3 files changed, 242 insertions(+)
+This is used in other binaries too. May be with some follow-up patch,
+will add this to lib and update other igts as well.
 
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index a76c7a404..4e7357b6f 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -13,12 +13,14 @@
- #include "igt.h"
- #include "igt_syncobj.h"
- #include "intel_blt.h"
-+#include "intel_mocs.h"
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
- #include "xe/xe_util.h"
- 
- #define BITRANGE(start, end) (end - start + 1)
- #define GET_CMDS_INFO(__fd) intel_get_cmds_info(intel_get_drm_devid(__fd))
-+#define MEM_COPY_MOCS_SHIFT                     25
- 
- /* Blitter tiling definitions sanity checks */
- static_assert(T_LINEAR == I915_TILING_NONE, "Linear definitions have to match");
-@@ -1577,6 +1579,186 @@ int blt_fast_copy(int fd,
- 	return ret;
- }
- 
-+/**
-+ * blt_mem_init:
-+ * @fd: drm fd
-+ * @mem: structure for initialization
-+ *
-+ * Function is zeroing @mem and sets fd and driver fields (INTEL_DRIVER_I915 or
-+ * INTEL_DRIVER_XE).
-+ */
-+void blt_mem_init(int fd, struct blt_mem_data *mem)
-+{
-+	memset(mem, 0, sizeof(*mem));
-+
-+	mem->fd = fd;
-+	mem->driver = get_intel_driver(fd);
-+}
-+
-+static void emit_blt_mem_copy(int fd, uint64_t ahnd, const struct blt_mem_data *mem)
-+{
-+	uint64_t dst_offset, src_offset, alignment;
-+	int i;
-+	uint32_t *batch;
-+	uint32_t optype;
-+
-+	alignment = get_default_alignment(fd, mem->driver);
-+	src_offset = get_offset(ahnd, mem->src.handle, mem->src.size, alignment);
-+	dst_offset = get_offset(ahnd, mem->dst.handle, mem->dst.size, alignment);
-+
-+	batch = bo_map(fd, mem->bb.handle, mem->bb.size, mem->driver);
-+	optype = mem->src.type == M_MATRIX ? 1 << 17 : 0;
-+
-+	i = 0;
-+	batch[i++] = MEM_COPY_CMD | (1 << 19) | optype;
-+	batch[i++] = mem->src.width - 1;
-+	batch[i++] = mem->src.height - 1;
-+	batch[i++] = mem->src.pitch - 1;
-+	batch[i++] = mem->dst.pitch - 1;
-+	batch[i++] = src_offset;
-+	batch[i++] = src_offset << 32;
-+	batch[i++] = dst_offset;
-+	batch[i++] = dst_offset << 32;
-+	batch[i++] = mem->src.mocs << MEM_COPY_MOCS_SHIFT | mem->dst.mocs;
-+	batch[i++] = MI_BATCH_BUFFER_END;
-+
-+	munmap(batch, mem->bb.size);
-+}
-+
-+/**
-+ * blt_mem_copy:
-+ * @fd: drm fd
-+ * @ctx: intel_ctx_t context
-+ * @e: blitter engine for @ctx
-+ * @ahnd: allocator handle
-+ * @blt: blitter data for mem-copy.
-+ *
-+ * Function does mem blit between @src and @dst described in @blt object.
-+ *
-+ * Returns:
-+ * execbuffer status.
-+ */
-+int blt_mem_copy(int fd, const intel_ctx_t *ctx,
-+		 const struct intel_execution_engine2 *e,
-+		 uint64_t ahnd,
-+		 const struct blt_mem_data *mem)
-+{
-+	struct drm_i915_gem_execbuffer2 execbuf = {};
-+	struct drm_i915_gem_exec_object2 obj[3] = {};
-+	uint64_t dst_offset, src_offset, bb_offset, alignment;
-+	int ret;
-+
-+	alignment = get_default_alignment(fd, mem->driver);
-+	src_offset = get_offset(ahnd, mem->src.handle, mem->src.size, alignment);
-+	dst_offset = get_offset(ahnd, mem->dst.handle, mem->dst.size, alignment);
-+	bb_offset = get_offset(ahnd, mem->bb.handle, mem->bb.size, alignment);
-+
-+	emit_blt_mem_copy(fd, ahnd, mem);
-+
-+	if (mem->driver == INTEL_DRIVER_XE) {
-+		intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
-+	} else {
-+		obj[0].offset = CANONICAL(dst_offset);
-+		obj[1].offset = CANONICAL(src_offset);
-+		obj[2].offset = CANONICAL(bb_offset);
-+		obj[0].handle = mem->dst.handle;
-+		obj[1].handle = mem->src.handle;
-+		obj[2].handle = mem->bb.handle;
-+		obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
-+			EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+		obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+		obj[2].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+		execbuf.buffer_count = 3;
-+                execbuf.buffers_ptr = to_user_pointer(obj);
-+		execbuf.rsvd1 = ctx ? ctx->id : 0;
-+		execbuf.flags = e ? e->flags : I915_EXEC_BLT;
-+		ret = __gem_execbuf(fd, &execbuf);
-+		put_offset(ahnd, mem->dst.handle);
-+		put_offset(ahnd, mem->src.handle);
-+		put_offset(ahnd, mem->bb.handle);
-+	}
-+
-+	return ret;
-+}
-+
-+static void emit_blt_mem_set(int fd, uint64_t ahnd, const struct blt_mem_data *mem,
-+			     uint8_t fill_data)
-+{
-+	uint64_t dst_offset, alignment;
-+	int b;
-+	uint32_t *batch;
-+	uint32_t value;
-+
-+	alignment = get_default_alignment(fd, mem->driver);
-+	dst_offset = get_offset(ahnd, mem->dst.handle, mem->dst.size, alignment);
-+
-+	batch = bo_map(fd, mem->bb.handle, mem->bb.size, mem->driver);
-+	value = (uint32_t)fill_data << 24;
-+
-+	b = 0;
-+	batch[b++] = MEM_SET_CMD;
-+	batch[b++] = mem->dst.width - 1;
-+	batch[b++] = mem->dst.height - 1;
-+	batch[b++] = mem->dst.pitch - 1;
-+	batch[b++] = dst_offset;
-+	batch[b++] = dst_offset << 32;
-+	batch[b++] = value | mem->dst.mocs;
-+	batch[b++] = MI_BATCH_BUFFER_END;
-+
-+	munmap(batch, mem->bb.size);
-+}
-+/**
-+ * blt_mem_set:
-+ * @fd: drm fd
-+ * @ctx: intel_ctx_t context
-+ * @e: blitter engine for @ctx
-+ * @ahnd: allocator handle
-+ * @blt: blitter data for mem-set.
-+ *
-+ * Function does mem set blit in described @blt object.
-+ *
-+ * Returns:
-+ * execbuffer status.
-+ */
-+int blt_mem_set(int fd, const intel_ctx_t *ctx,
-+		const struct intel_execution_engine2 *e,
-+		uint64_t ahnd,
-+		const struct blt_mem_data *mem,
-+		uint8_t fill_data)
-+{
-+	struct drm_i915_gem_execbuffer2 execbuf = {};
-+	struct drm_i915_gem_exec_object2 obj[2] = {};
-+	uint64_t dst_offset, bb_offset, alignment;
-+	int ret;
-+
-+	alignment = get_default_alignment(fd, mem->driver);
-+	dst_offset = get_offset(ahnd, mem->dst.handle, mem->dst.size, alignment);
-+	bb_offset = get_offset(ahnd, mem->bb.handle, mem->bb.size, alignment);
-+
-+	emit_blt_mem_set(fd, ahnd, mem, fill_data);
-+
-+	if (mem->driver == INTEL_DRIVER_XE) {
-+		intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
-+	} else {
-+		obj[0].offset = CANONICAL(dst_offset);
-+		obj[1].offset = CANONICAL(bb_offset);
-+		obj[0].handle = mem->dst.handle;
-+		obj[1].handle = mem->bb.handle;
-+		obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
-+						    EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+		obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+		execbuf.buffer_count = 2;
-+		execbuf.buffers_ptr = to_user_pointer(obj);
-+		execbuf.rsvd1 = ctx ? ctx->id : 0;
-+		execbuf.flags = e ? e->flags : I915_EXEC_BLT;
-+		ret = __gem_execbuf(fd, &execbuf);
-+		put_offset(ahnd, mem->dst.handle);
-+		put_offset(ahnd, mem->bb.handle);
-+	}
-+
-+	return ret;
-+}
-+
- void blt_set_geom(struct blt_copy_object *obj, uint32_t pitch,
- 		  int16_t x1, int16_t y1, int16_t x2, int16_t y2,
- 		  uint16_t x_offset, uint16_t y_offset)
-@@ -1659,6 +1841,23 @@ void blt_set_object(struct blt_copy_object *obj,
- 	obj->compression_type = compression_type;
- }
- 
-+void blt_set_mem_object(struct blt_mem_object *obj,
-+			uint32_t handle, uint64_t size, uint32_t pitch,
-+			uint32_t width, uint32_t height, uint32_t region,
-+			uint8_t mocs, enum blt_memop_type type,
-+			enum blt_compression compression)
-+{
-+	obj->handle = handle;
-+	obj->region = region;
-+	obj->size = size;
-+	obj->mocs = mocs;
-+	obj->type = type;
-+	obj->compression = compression;
-+	obj->width = width;
-+	obj->height = height;
-+	obj->pitch = pitch;
-+}
-+
- void blt_set_object_ext(struct blt_block_copy_object_ext *obj,
- 			uint8_t compression_format,
- 			uint16_t surface_width, uint16_t surface_height,
-diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-index 7b4271620..d6f40680d 100644
---- a/lib/intel_blt.h
-+++ b/lib/intel_blt.h
-@@ -93,6 +93,19 @@ struct blt_copy_object {
- 	uint32_t plane_offset;
- };
- 
-+struct blt_mem_object {
-+	uint32_t handle;
-+	uint32_t region;
-+	uint64_t size;
-+	uint8_t mocs;
-+	enum blt_memop_type type;
-+	enum blt_compression compression;
-+	uint32_t width;
-+	uint32_t height;
-+	uint32_t pitch;
-+	uint32_t *ptr;
-+};
-+
- struct blt_copy_batch {
- 	uint32_t handle;
- 	uint32_t region;
-@@ -112,6 +125,14 @@ struct blt_copy_data {
- 	bool print_bb;
- };
- 
-+struct blt_mem_data {
-+	int fd;
-+	enum intel_driver driver;
-+	struct blt_mem_object src;
-+	struct blt_mem_object dst;
-+	struct blt_copy_batch bb;
-+};
-+
- enum blt_surface_type {
- 	SURFACE_TYPE_1D,
- 	SURFACE_TYPE_2D,
-@@ -231,6 +252,17 @@ int blt_fast_copy(int fd,
- 		  uint64_t ahnd,
- 		  const struct blt_copy_data *blt);
- 
-+void blt_mem_init(int fd, struct blt_mem_data *mem);
-+
-+int blt_mem_copy(int fd, const intel_ctx_t *ctx,
-+			 const struct intel_execution_engine2 *e,
-+			 uint64_t ahnd,
-+			 const struct blt_mem_data *mem);
-+
-+int blt_mem_set(int fd, const intel_ctx_t *ctx,
-+			const struct intel_execution_engine2 *e, uint64_t ahnd,
-+			const struct blt_mem_data *mem, uint8_t fill_data);
-+
- void blt_set_geom(struct blt_copy_object *obj, uint32_t pitch,
- 		  int16_t x1, int16_t y1, int16_t x2, int16_t y2,
- 		  uint16_t x_offset, uint16_t y_offset);
-@@ -250,6 +282,13 @@ void blt_set_object(struct blt_copy_object *obj,
- 		    uint8_t mocs_index, enum blt_tiling_type tiling,
- 		    enum blt_compression compression,
- 		    enum blt_compression_type compression_type);
-+
-+void blt_set_mem_object(struct blt_mem_object *obj,
-+			uint32_t handle, uint64_t size, uint32_t pitch,
-+			uint32_t width, uint32_t height, uint32_t region,
-+			uint8_t mocs, enum blt_memop_type type,
-+			enum blt_compression compression);
-+
- void blt_set_object_ext(struct blt_block_copy_object_ext *obj,
- 			uint8_t compression_format,
- 			uint16_t surface_width, uint16_t surface_height,
-diff --git a/lib/intel_reg.h b/lib/intel_reg.h
-index ea463376b..a8190d683 100644
---- a/lib/intel_reg.h
-+++ b/lib/intel_reg.h
-@@ -2588,6 +2588,10 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- #define   XY_FAST_COPY_COLOR_DEPTH_64			(4  << 24)
- #define   XY_FAST_COPY_COLOR_DEPTH_128			(5  << 24)
- 
-+/* RAW memory commands */
-+#define MEM_COPY_CMD                    ((0x2 << 29)|(0x5a << 22)|0x8)
-+#define MEM_SET_CMD                     ((0x2 << 29)|(0x5b << 22)|0x5)
-+
- #define CTXT_NO_RESTORE			(1)
- #define CTXT_PALETTE_SAVE_DISABLE	(1<<3)
- #define CTXT_PALETTE_RESTORE_DISABLE	(1<<2)
--- 
-2.39.1
+> 
+> Thanks,
+> Karthik.B.S
+>> +{
+>> +    bool ret = true;
+>> +
+>> +    igt_display_reset(display);
+>> +
+>> +    igt_output_set_pipe(output, pipe);
+>> +    if (!i915_pipe_output_combo_valid(display))
+>> +        ret = false;
+>> +    igt_output_set_pipe(output, PIPE_NONE);
+>> +
+>> +    return ret;
+>> +}
+>> +
+>>   igt_main
+>>   {
+>>       enum pipe pipe = PIPE_NONE;
+>> @@ -1415,6 +1431,8 @@ igt_main
+>>                   igt_pipe_get_plane_type(&data.display.pipes[pipe], 
+>> DRM_PLANE_TYPE_OVERLAY);
+>>               uint32_t format = plane_get_igt_format(overlay);
+>> +            if (!pipe_output_combo_valid(&data.display, pipe, output))
+>> +                continue;
+>>               if (!overlay || !format)
+>>                   continue;
+>>               igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), 
+>> igt_output_name(output)) {
+>> @@ -1430,6 +1448,8 @@ igt_main
+>>                "the legacy and atomic interfaces.");
+>>       igt_subtest_with_dynamic("plane-primary-legacy") {
+>>           for_each_pipe_with_single_output(&data.display, pipe, output) {
+>> +            if (!pipe_output_combo_valid(&data.display, pipe, output))
+>> +                continue;
+>>               igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), 
+>> igt_output_name(output)) {
+>>                   atomic_setup(&data, pipe, output);
+>>                   plane_primary(&data);
+>> @@ -1446,6 +1466,9 @@ igt_main
+>>               igt_plane_t *overlay =
+>>                   igt_pipe_get_plane_type(&data.display.pipes[pipe], 
+>> DRM_PLANE_TYPE_OVERLAY);
+>> +            if (!pipe_output_combo_valid(&data.display, pipe, output))
+>> +                continue;
+>> +
+>>               atomic_setup(&data, pipe, output);
+>>               if (!overlay)
+>>                   continue;
+>> @@ -1469,6 +1492,8 @@ igt_main
+>>           for_each_pipe_with_single_output(&data.display, pipe, output) {
+>>               int n_planes = data.display.pipes[pipe].n_planes;
+>> +            if (!pipe_output_combo_valid(&data.display, pipe, output))
+>> +                continue;
+>>               if (n_planes < 2)
+>>                   continue;
+>>               igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), 
+>> igt_output_name(output)) {
+>> @@ -1486,6 +1511,9 @@ igt_main
+>>           for_each_pipe_with_single_output(&data.display, pipe, output) {
+>>               uint32_t format;
+>> +            if (!pipe_output_combo_valid(&data.display, pipe, output))
+>> +                continue;
+>> +
+>>               atomic_setup(&data, pipe, output);
+>>               format = plane_get_igt_format(data.primary);
+>> @@ -1506,6 +1534,8 @@ igt_main
+>>               igt_plane_t *cursor =
+>>                   igt_pipe_get_plane_type(&data.display.pipes[pipe], 
+>> DRM_PLANE_TYPE_CURSOR);
+>> +            if (!pipe_output_combo_valid(&data.display, pipe, output))
+>> +                continue;
+>>               if (!cursor)
+>>                   continue;
+>>               igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), 
+>> igt_output_name(output)) {
+>> @@ -1520,6 +1550,8 @@ igt_main
+>>       igt_describe("Test error handling when invalid plane parameters 
+>> are passed");
+>>       igt_subtest_with_dynamic("plane-invalid-params") {
+>>           for_each_pipe_with_single_output(&data.display, pipe, output) {
+>> +            if (!pipe_output_combo_valid(&data.display, pipe, output))
+>> +                continue;
+>>               igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), 
+>> igt_output_name(output)) {
+>>                   atomic_setup(&data, pipe, output);
+>>                   plane_invalid_params(&data, output);
+>> @@ -1532,6 +1564,8 @@ igt_main
+>>       igt_describe("Test error handling when invalid plane fence 
+>> parameters are passed");
+>>       igt_subtest_with_dynamic("plane-invalid-params-fence") {
+>>           for_each_pipe_with_single_output(&data.display, pipe, output) {
+>> +            if (!pipe_output_combo_valid(&data.display, pipe, output))
+>> +                continue;
+>>               igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), 
+>> igt_output_name(output)) {
+>>                   atomic_setup(&data, pipe, output);
+>>                   plane_invalid_params_fence(&data, output);
+>> @@ -1544,6 +1578,8 @@ igt_main
+>>       igt_describe("Test error handling when invalid crtc parameters 
+>> are passed");
+>>       igt_subtest_with_dynamic("crtc-invalid-params") {
+>>           for_each_pipe_with_single_output(&data.display, pipe, output) {
+>> +            if (!pipe_output_combo_valid(&data.display, pipe, output))
+>> +                continue;
+>>               igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), 
+>> igt_output_name(output)) {
+>>                   atomic_setup(&data, pipe, output);
+>>                   crtc_invalid_params(&data, output);
+>> @@ -1556,6 +1592,8 @@ igt_main
+>>       igt_describe("Test error handling when invalid crtc fence 
+>> parameters are passed");
+>>       igt_subtest_with_dynamic("crtc-invalid-params-fence") {
+>>           for_each_pipe_with_single_output(&data.display, pipe, output) {
+>> +            if (!pipe_output_combo_valid(&data.display, pipe, output))
+>> +                continue;
+>>               igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), 
+>> igt_output_name(output)) {
+>>                   atomic_setup(&data, pipe, output);
+>>                   crtc_invalid_params_fence(&data, output);
+>> @@ -1570,6 +1608,8 @@ igt_main
+>>                "allow us to create.");
+>>       igt_subtest_with_dynamic("atomic-invalid-params") {
+>>           for_each_pipe_with_single_output(&data.display, pipe, output) {
+>> +            if (!pipe_output_combo_valid(&data.display, pipe, output))
+>> +                continue;
+>>               igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), 
+>> igt_output_name(output)) {
+>>                   atomic_setup(&data, pipe, output);
+>>                   atomic_invalid_params(&data, output);
+>> @@ -1582,6 +1622,9 @@ igt_main
+>>       igt_describe("Simple test cases to use FB_DAMAGE_CLIPS plane 
+>> property");
+>>       igt_subtest_with_dynamic("atomic-plane-damage") {
+>>           for_each_pipe_with_single_output(&data.display, pipe, output) {
+>> +            if (!pipe_output_combo_valid(&data.display, pipe, output))
+>> +                continue;
+>> +
+>>               atomic_setup(&data, pipe, output);
+>>               if (!igt_plane_has_prop(data.primary, 
+>> IGT_PLANE_FB_DAMAGE_CLIPS))
