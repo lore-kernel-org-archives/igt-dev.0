@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-To: igt-dev@lists.freedesktop.org,
-	Intel-gfx@lists.freedesktop.org
-Date: Thu, 12 Oct 2023 09:15:44 +0100
-Message-Id: <20231012081547.852052-7-tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20231012081547.852052-1-tvrtko.ursulin@linux.intel.com>
-References: <20231012081547.852052-1-tvrtko.ursulin@linux.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EB76410E18A
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Oct 2023 18:57:40 +0000 (UTC)
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 13 Oct 2023 20:57:27 +0200
+Message-ID: <20231013185732.98000-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 6/9] lib/igt_drm_clients: Allow passing in
- the memory region map
+Subject: [igt-dev] [PATCH i-g-t 0/5] introduce gem_multigpu and other
+ multi-GPU helpers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,109 +18,65 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Add some multi-gpu function helpers and macros. One thing
+that allows it to use  __drm_open_driver_another(2, ...)
+is that in macros, before calling multi_fork() it opens all
+devices in-order, one after another. The drawback is somewhat
+time consuming work before test begins and it also do not
+print in logs <g:gpu-number> for opening devices.
 
-Same concept as with the engine map, allowing callers to pass in fixed
-map of names to indices, simplifying their implementation and avoiding
-auto-detection while parsing.
+Sample runs when first device is non-Intel, first one
+without filters:
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
----
- lib/igt_drm_clients.c | 5 +++--
- lib/igt_drm_clients.h | 3 ++-
- tools/gputop.c        | 4 ++--
- tools/intel_gpu_top.c | 8 +++++---
- 4 files changed, 12 insertions(+), 8 deletions(-)
+sudo build/tests/xe_create --r multigpu-create-massive-size
 
-diff --git a/lib/igt_drm_clients.c b/lib/igt_drm_clients.c
-index da51d7335b2b..025d60c51503 100644
---- a/lib/igt_drm_clients.c
-+++ b/lib/igt_drm_clients.c
-@@ -445,7 +445,8 @@ struct igt_drm_clients *
- igt_drm_clients_scan(struct igt_drm_clients *clients,
- 		     bool (*filter_client)(const struct igt_drm_clients *,
- 					   const struct drm_client_fdinfo *),
--		     const char **name_map, unsigned int map_entries)
-+		     const char **name_map, unsigned int map_entries,
-+		     const char **region_map, unsigned int region_entries)
- {
- 	struct dirent *proc_dent;
- 	struct igt_drm_client *c;
-@@ -524,7 +525,7 @@ igt_drm_clients_scan(struct igt_drm_clients *clients,
- 			if (!__igt_parse_drm_fdinfo(dirfd(fdinfo_dir),
- 						    fdinfo_dent->d_name, &info,
- 						    name_map, map_entries,
--						    NULL, 0))
-+						    region_map, region_entries))
- 				continue;
- 
- 			if (filter_client && !filter_client(clients, &info))
-diff --git a/lib/igt_drm_clients.h b/lib/igt_drm_clients.h
-index cd37f8508b20..52888aedc25a 100644
---- a/lib/igt_drm_clients.h
-+++ b/lib/igt_drm_clients.h
-@@ -93,7 +93,8 @@ struct igt_drm_clients *
- igt_drm_clients_scan(struct igt_drm_clients *clients,
- 		     bool (*filter_client)(const struct igt_drm_clients *,
- 					   const struct drm_client_fdinfo *),
--		     const char **name_map, unsigned int map_entries);
-+		     const char **name_map, unsigned int map_entries,
-+		     const char **region_map, unsigned int region_entries);
- 
- struct igt_drm_clients *
- igt_drm_clients_sort(struct igt_drm_clients *clients,
-diff --git a/tools/gputop.c b/tools/gputop.c
-index ea95e0333dd2..71e28f43ee4c 100644
---- a/tools/gputop.c
-+++ b/tools/gputop.c
-@@ -253,7 +253,7 @@ int main(int argc, char **argv)
- 	if (!clients)
- 		exit(1);
- 
--	igt_drm_clients_scan(clients, NULL, NULL, 0);
-+	igt_drm_clients_scan(clients, NULL, NULL, 0, NULL, 0);
- 
- 	for (;;) {
- 		struct igt_drm_client *c, *prevc = NULL;
-@@ -270,7 +270,7 @@ int main(int argc, char **argv)
- 			}
- 		}
- 
--		igt_drm_clients_scan(clients, NULL, NULL, 0);
-+		igt_drm_clients_scan(clients, NULL, NULL, 0, NULL, 0);
- 		igt_drm_clients_sort(clients, client_cmp);
- 
- 		printf("\033[H\033[J");
-diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index 34fa99235e11..091fe28068dc 100644
---- a/tools/intel_gpu_top.c
-+++ b/tools/intel_gpu_top.c
-@@ -2619,8 +2619,9 @@ int main(int argc, char **argv)
- 	}
- 
- 	pmu_sample(engines);
--	igt_drm_clients_scan(clients, client_match, engine_map,
--			     ARRAY_SIZE(engine_map));
-+	igt_drm_clients_scan(clients, client_match,
-+			     engine_map, ARRAY_SIZE(engine_map),
-+			     NULL, 0);
- 	gettime(&ts);
- 
- 	if (output_mode == JSON)
-@@ -2655,7 +2656,8 @@ int main(int argc, char **argv)
- 			display_clients(igt_drm_clients_scan(clients,
- 							     client_match,
- 							     engine_map,
--							     ARRAY_SIZE(engine_map)));
-+							     ARRAY_SIZE(engine_map),
-+							     NULL, 0));
- 		scan_us = elapsed_us(&ts, period_us);
- 
- 		if (stop_top)
+Opened device: /dev/dri/card1
+Starting subtest: multigpu-create-massive-size
+Opened device: /dev/dri/card2
+Opened device: /dev/dri/card3
+Subtest multigpu-create-massive-size: SUCCESS (4.302s)
+
+Second one with filters:
+
+sudo IGT_DEVICE=pci:vendor=Intel,device=discrete,card=all build/tests/xe_create --r multigpu-create-massive-size
+
+Opened device: /dev/dri/card1
+Starting subtest: multigpu-create-massive-size
+Opened device: /dev/dri/card2
+Opened device: /dev/dri/card3
+Subtest multigpu-create-massive-size: SUCCESS (3.824s)
+
+Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
+Cc: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+
+Dominik Karol Piątkowski (4):
+  lib/igt_device_scan: Introduce filtering out non-PCI devices
+  lib/i915/gem_multigpu: Introduce library for multi-GPU scenarios
+  lib/drmtest: Introduced drm_open_driver_another
+  lib/i915/gem_multigpu: Introduced gem_multigpu_count_class and
+    igt_multi_fork_foreach_gpu
+
+Kamil Konieczny (1):
+  RFC: tests/intel/xe_create: example for useing macro for multi-gpu
+    testing
+
+ lib/drmtest.c           | 19 +++++++++++++++++++
+ lib/drmtest.h           |  1 +
+ lib/i915/gem_multigpu.c | 39 +++++++++++++++++++++++++++++++++++++++
+ lib/i915/gem_multigpu.h | 27 +++++++++++++++++++++++++++
+ lib/igt_device_scan.c   | 21 +++++++++++++++++++++
+ lib/igt_device_scan.h   |  2 ++
+ lib/meson.build         |  1 +
+ tests/intel/xe_create.c | 20 ++++++++++++++++++++
+ 8 files changed, 130 insertions(+)
+ create mode 100644 lib/i915/gem_multigpu.c
+ create mode 100644 lib/i915/gem_multigpu.h
+
 -- 
-2.39.2
+2.42.0
