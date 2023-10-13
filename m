@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1F15B10E5C7
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Oct 2023 07:49:05 +0000 (UTC)
-Date: Fri, 13 Oct 2023 09:48:38 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E916810E00E
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Oct 2023 08:07:44 +0000 (UTC)
+Date: Fri, 13 Oct 2023 10:07:40 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Matthew Auld <matthew.auld@intel.com>
-Message-ID: <20231013074838.f7cu4qb224oy6wul@zkempczy-mobl2>
+Message-ID: <20231013080740.e3ofgl3p2jknqwfg@zkempczy-mobl2>
 References: <20231011150953.284936-1-matthew.auld@intel.com>
- <20231011150953.284936-9-matthew.auld@intel.com>
+ <20231011150953.284936-10-matthew.auld@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231011150953.284936-9-matthew.auld@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 08/12] lib/intel_blt: support
+In-Reply-To: <20231011150953.284936-10-matthew.auld@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 09/12] lib/intel_buf: support
  pat_index
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -27,382 +27,524 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Oct 11, 2023 at 04:09:49PM +0100, Matthew Auld wrote:
-> For the most part we can just use the default wb, however some users
-> including display might want to use something else.
+On Wed, Oct 11, 2023 at 04:09:50PM +0100, Matthew Auld wrote:
+> Some users need to able select their own pat_index. Some display tests
+> use igt_draw which in turn uses intel_batchbuffer and intel_buf.  We
+> also have a couple more display tests directly using these interfaces
+> directly. Idea is to select wt/uc for anything display related, but also
+> allow any test to select a pat_index for a given intel_buf.
 > 
-> v2 (Zbigniew):
->   - Fix the formatting slightly.
+> v2: (Zbigniew):
+>   - Add some macro helpers for decoding pat_index and range in rsvd1 (Zbigniew):
+>   - Rather use uc than wt. On xe2+ wt uses compression so CPU access
+>     might not work as expected, so for now just use uc.
 > 
 > Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > Cc: José Roberto de Souza <jose.souza@intel.com>
 > Cc: Pallavi Mishra <pallavi.mishra@intel.com>
+> Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > ---
->  lib/igt_fb.c                    |  2 ++
->  lib/intel_blt.c                 | 54 +++++++++++++++++++++------------
->  lib/intel_blt.h                 |  7 +++--
->  tests/intel/gem_ccs.c           | 16 +++++-----
->  tests/intel/gem_lmem_swapping.c |  4 +--
->  tests/intel/xe_ccs.c            | 19 +++++++-----
->  6 files changed, 64 insertions(+), 38 deletions(-)
+>  lib/igt_draw.c            |  7 ++++-
+>  lib/igt_fb.c              |  3 ++-
+>  lib/intel_allocator.c     |  1 +
+>  lib/intel_allocator.h     |  1 +
+>  lib/intel_batchbuffer.c   | 55 ++++++++++++++++++++++++++++++---------
+>  lib/intel_bufops.c        | 29 ++++++++++++++-------
+>  lib/intel_bufops.h        |  9 +++++--
+>  tests/intel/kms_big_fb.c  |  4 ++-
+>  tests/intel/kms_dirtyfb.c |  7 +++--
+>  tests/intel/kms_psr.c     |  4 ++-
+>  tests/intel/xe_intel_bb.c |  3 ++-
+>  11 files changed, 93 insertions(+), 30 deletions(-)
 > 
-> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> index 0c3c67979..0a9855453 100644
-> --- a/lib/igt_fb.c
-> +++ b/lib/igt_fb.c
-> @@ -37,6 +37,7 @@
->  #include "i915/gem_mman.h"
->  #include "intel_blt.h"
+> diff --git a/lib/igt_draw.c b/lib/igt_draw.c
+> index 1cf9d87c9..efd3a2436 100644
+> --- a/lib/igt_draw.c
+> +++ b/lib/igt_draw.c
+> @@ -31,6 +31,7 @@
+>  #include "intel_batchbuffer.h"
+>  #include "intel_chipset.h"
 >  #include "intel_mocs.h"
 > +#include "intel_pat.h"
->  #include "igt_aux.h"
->  #include "igt_color_encoding.h"
+>  #include "igt_core.h"
 >  #include "igt_fb.h"
-> @@ -2768,6 +2769,7 @@ static struct blt_copy_object *blt_fb_init(const struct igt_fb *fb,
->  
->  	blt_set_object(blt, handle, fb->size, memregion,
->  		       intel_get_uc_mocs_index(fb->fd),
-> +		       intel_get_pat_idx_uc(fb->fd),
->  		       blt_tile,
->  		       is_ccs_modifier(fb->modifier) ? COMPRESSION_ENABLED : COMPRESSION_DISABLED,
->  		       is_gen12_mc_ccs_modifier(fb->modifier) ? COMPRESSION_TYPE_MEDIA : COMPRESSION_TYPE_3D);
-> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-> index a76c7a404..49657b399 100644
-> --- a/lib/intel_blt.c
-> +++ b/lib/intel_blt.c
-> @@ -13,6 +13,7 @@
->  #include "igt.h"
->  #include "igt_syncobj.h"
->  #include "intel_blt.h"
-> +#include "intel_pat.h"
->  #include "xe/xe_ioctl.h"
->  #include "xe/xe_query.h"
->  #include "xe/xe_util.h"
-> @@ -847,10 +848,12 @@ uint64_t emit_blt_block_copy(int fd,
->  	igt_assert_f(blt, "block-copy requires data to do blit\n");
->  
->  	alignment = get_default_alignment(fd, blt->driver);
-> -	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment)
-> -		     + blt->src.plane_offset;
-> -	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment)
-> -		     + blt->dst.plane_offset;
-> +	src_offset = get_offset_pat_index(ahnd, blt->src.handle, blt->src.size,
-> +					  alignment, blt->src.pat_index);
-> +	src_offset += blt->src.plane_offset;
-> +	dst_offset = get_offset_pat_index(ahnd, blt->dst.handle, blt->dst.size,
-> +					  alignment, blt->dst.pat_index);
-> +	dst_offset += blt->dst.plane_offset;
->  	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
->  
->  	fill_data(&data, blt, src_offset, dst_offset, ext, ip_ver);
-> @@ -921,8 +924,10 @@ int blt_block_copy(int fd,
->  	igt_assert_neq(blt->driver, 0);
->  
->  	alignment = get_default_alignment(fd, blt->driver);
-> -	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment);
-> -	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment);
-> +	src_offset = get_offset_pat_index(ahnd, blt->src.handle, blt->src.size,
-> +					  alignment, blt->src.pat_index);
-> +	dst_offset = get_offset_pat_index(ahnd, blt->dst.handle, blt->dst.size,
-> +					  alignment, blt->dst.pat_index);
->  	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
->  
->  	emit_blt_block_copy(fd, ahnd, blt, ext, 0, true);
-> @@ -1126,8 +1131,10 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
->  	igt_assert_f(surf, "ctrl-surf-copy requires data to do ctrl-surf-copy blit\n");
->  
->  	alignment = max_t(uint64_t, get_default_alignment(fd, surf->driver), 1ull << 16);
-> -	src_offset = get_offset(ahnd, surf->src.handle, surf->src.size, alignment);
-> -	dst_offset = get_offset(ahnd, surf->dst.handle, surf->dst.size, alignment);
-> +	src_offset = get_offset_pat_index(ahnd, surf->src.handle, surf->src.size,
-> +					  alignment, surf->src.pat_index);
-> +	dst_offset = get_offset_pat_index(ahnd, surf->dst.handle, surf->dst.size,
-> +					  alignment, surf->dst.pat_index);
->  	bb_offset = get_offset(ahnd, surf->bb.handle, surf->bb.size, alignment);
->  
->  	if (ip_ver >= IP_VER(20, 0)) {
-> @@ -1228,8 +1235,10 @@ int blt_ctrl_surf_copy(int fd,
->  	igt_assert_neq(surf->driver, 0);
->  
->  	alignment = max_t(uint64_t, get_default_alignment(fd, surf->driver), 1ull << 16);
-> -	src_offset = get_offset(ahnd, surf->src.handle, surf->src.size, alignment);
-> -	dst_offset = get_offset(ahnd, surf->dst.handle, surf->dst.size, alignment);
-> +	src_offset = get_offset_pat_index(ahnd, surf->src.handle, surf->src.size,
-> +					  alignment, surf->src.pat_index);
-> +	dst_offset = get_offset_pat_index(ahnd, surf->dst.handle, surf->dst.size,
-> +					  alignment, surf->dst.pat_index);
->  	bb_offset = get_offset(ahnd, surf->bb.handle, surf->bb.size, alignment);
->  
->  	emit_blt_ctrl_surf_copy(fd, ahnd, surf, 0, true);
-> @@ -1468,10 +1477,12 @@ uint64_t emit_blt_fast_copy(int fd,
->  	data.dw03.dst_x2 = blt->dst.x2;
->  	data.dw03.dst_y2 = blt->dst.y2;
->  
-> -	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment)
-> -		     + blt->src.plane_offset;
-> -	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment)
-> -		     + blt->dst.plane_offset;
-> +	src_offset = get_offset_pat_index(ahnd, blt->src.handle, blt->src.size,
-> +					  alignment, blt->src.pat_index);
-> +	src_offset += blt->src.plane_offset;
-> +	dst_offset = get_offset_pat_index(ahnd, blt->dst.handle, blt->dst.size, alignment,
-> +					  blt->dst.pat_index);
-> +	dst_offset += blt->dst.plane_offset;
->  	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
->  
->  	data.dw04.dst_address_lo = dst_offset;
-> @@ -1545,8 +1556,10 @@ int blt_fast_copy(int fd,
->  	igt_assert_neq(blt->driver, 0);
->  
->  	alignment = get_default_alignment(fd, blt->driver);
-> -	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment);
-> -	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment);
-> +	src_offset = get_offset_pat_index(ahnd, blt->src.handle, blt->src.size,
-> +					  alignment, blt->src.pat_index);
-> +	dst_offset = get_offset_pat_index(ahnd, blt->dst.handle, blt->dst.size,
-> +					  alignment, blt->dst.pat_index);
->  	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
->  
->  	emit_blt_fast_copy(fd, ahnd, blt, 0, true);
-> @@ -1625,7 +1638,7 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
->  							  &size, region) == 0);
->  	}
->  
-> -	blt_set_object(obj, handle, size, region, mocs_index, tiling,
-> +	blt_set_object(obj, handle, size, region, mocs_index, DEFAULT_PAT_INDEX, tiling,
->  		       compression, compression_type);
->  	blt_set_geom(obj, stride, 0, 0, width, height, 0, 0);
->  
-> @@ -1646,7 +1659,7 @@ void blt_destroy_object(int fd, struct blt_copy_object *obj)
->  
->  void blt_set_object(struct blt_copy_object *obj,
->  		    uint32_t handle, uint64_t size, uint32_t region,
-> -		    uint8_t mocs_index, enum blt_tiling_type tiling,
-> +		    uint8_t mocs_index, uint8_t pat_index, enum blt_tiling_type tiling,
->  		    enum blt_compression compression,
->  		    enum blt_compression_type compression_type)
->  {
-> @@ -1654,6 +1667,7 @@ void blt_set_object(struct blt_copy_object *obj,
->  	obj->size = size;
->  	obj->region = region;
->  	obj->mocs_index = mocs_index;
-> +	obj->pat_index = pat_index;
->  	obj->tiling = tiling;
->  	obj->compression = compression;
->  	obj->compression_type = compression_type;
-> @@ -1681,12 +1695,14 @@ void blt_set_copy_object(struct blt_copy_object *obj,
->  
->  void blt_set_ctrl_surf_object(struct blt_ctrl_surf_copy_object *obj,
->  			      uint32_t handle, uint32_t region, uint64_t size,
-> -			      uint8_t mocs_index, enum blt_access_type access_type)
-> +			      uint8_t mocs_index, uint8_t pat_index,
-> +			      enum blt_access_type access_type)
->  {
->  	obj->handle = handle;
->  	obj->region = region;
->  	obj->size = size;
->  	obj->mocs_index = mocs_index;
-> +	obj->pat_index = pat_index;
->  	obj->access_type = access_type;
->  }
->  
-> diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-> index 7b4271620..4523008f2 100644
-> --- a/lib/intel_blt.h
-> +++ b/lib/intel_blt.h
-> @@ -79,6 +79,7 @@ struct blt_copy_object {
->  	uint32_t region;
->  	uint64_t size;
->  	uint8_t mocs_index;
+>  #include "ioctl_wrappers.h"
+> @@ -75,6 +76,7 @@ struct buf_data {
+>  	uint32_t size;
+>  	uint32_t stride;
+>  	int bpp;
 > +	uint8_t pat_index;
->  	enum blt_tiling_type tiling;
->  	enum blt_compression compression;  /* BC only */
->  	enum blt_compression_type compression_type; /* BC only */
-> @@ -151,6 +152,7 @@ struct blt_ctrl_surf_copy_object {
->  	uint32_t region;
->  	uint64_t size;
->  	uint8_t mocs_index;
-> +	uint8_t pat_index;
->  	enum blt_access_type access_type;
 >  };
 >  
-> @@ -247,7 +249,7 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
->  void blt_destroy_object(int fd, struct blt_copy_object *obj);
->  void blt_set_object(struct blt_copy_object *obj,
->  		    uint32_t handle, uint64_t size, uint32_t region,
-> -		    uint8_t mocs_index, enum blt_tiling_type tiling,
-> +		    uint8_t mocs_index, uint8_t pat_index, enum blt_tiling_type tiling,
->  		    enum blt_compression compression,
->  		    enum blt_compression_type compression_type);
->  void blt_set_object_ext(struct blt_block_copy_object_ext *obj,
-> @@ -258,7 +260,8 @@ void blt_set_copy_object(struct blt_copy_object *obj,
->  			 const struct blt_copy_object *orig);
->  void blt_set_ctrl_surf_object(struct blt_ctrl_surf_copy_object *obj,
->  			      uint32_t handle, uint32_t region, uint64_t size,
-> -			      uint8_t mocs_index, enum blt_access_type access_type);
-> +			      uint8_t mocs_index, uint8_t pat_index,
-> +			      enum blt_access_type access_type);
+>  struct rect {
+> @@ -658,7 +660,8 @@ static struct intel_buf *create_buf(int fd, struct buf_ops *bops,
+>  				    width, height, from->bpp, 0,
+>  				    tiling, 0,
+>  				    size, 0,
+> -				    region);
+> +				    region,
+> +				    from->pat_index);
 >  
->  void blt_surface_info(const char *info,
->  		      const struct blt_copy_object *obj);
-> diff --git a/tests/intel/gem_ccs.c b/tests/intel/gem_ccs.c
-> index ed149ef9e..0a691778d 100644
-> --- a/tests/intel/gem_ccs.c
-> +++ b/tests/intel/gem_ccs.c
-> @@ -15,6 +15,7 @@
->  #include "lib/intel_chipset.h"
->  #include "intel_blt.h"
->  #include "intel_mocs.h"
-> +#include "intel_pat.h"
->  /**
->   * TEST: gem ccs
->   * Description: Exercise gen12 blitter with and without flatccs compression
-> @@ -111,9 +112,9 @@ static void surf_copy(int i915,
->  	blt_ctrl_surf_copy_init(i915, &surf);
->  	surf.print_bb = param.print_bb;
->  	blt_set_ctrl_surf_object(&surf.src, mid->handle, mid->region, mid->size,
-> -				 uc_mocs, BLT_INDIRECT_ACCESS);
-> +				 uc_mocs, DEFAULT_PAT_INDEX, BLT_INDIRECT_ACCESS);
->  	blt_set_ctrl_surf_object(&surf.dst, ccs, REGION_SMEM, ccssize,
-> -				 uc_mocs, DIRECT_ACCESS);
-> +				 uc_mocs, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
->  	bb_size = 4096;
->  	igt_assert_eq(__gem_create(i915, &bb_size, &bb1), 0);
->  	blt_set_batch(&surf.bb, bb1, bb_size, REGION_SMEM);
-> @@ -133,7 +134,7 @@ static void surf_copy(int i915,
->  		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
+>  	/* Make sure we close handle on destroy path */
+>  	intel_buf_set_ownership(buf, true);
+> @@ -791,6 +794,7 @@ static void draw_rect_render(int fd, struct cmd_data *cmd_data,
+>  	igt_skip_on(!rendercopy);
 >  
->  		blt_set_ctrl_surf_object(&surf.dst, ccs2, REGION_SMEM, ccssize,
-> -					 0, DIRECT_ACCESS);
-> +					 0, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
->  		blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
->  		gem_sync(i915, surf.dst.handle);
+>  	/* We create a temporary buffer and copy from it using rendercopy. */
+> +	tmp.pat_index = buf->pat_index;
+>  	tmp.size = rect->w * rect->h * pixel_size;
+>  	if (is_i915_device(fd))
+>  		tmp.handle = gem_create(fd, tmp.size);
+> @@ -858,6 +862,7 @@ void igt_draw_rect(int fd, struct buf_ops *bops, uint32_t ctx,
+>  		.size = buf_size,
+>  		.stride = buf_stride,
+>  		.bpp = bpp,
+> +		.pat_index = intel_get_pat_idx_uc(fd),
+>  	};
+>  	struct rect rect = {
+>  		.x = rect_x,
+> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> index 0a9855453..9a70f7d6a 100644
+> --- a/lib/igt_fb.c
+> +++ b/lib/igt_fb.c
+> @@ -2637,7 +2637,8 @@ igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
+>  				    igt_fb_mod_to_tiling(fb->modifier),
+>  				    compression, fb->size,
+>  				    fb->strides[0],
+> -				    region);
+> +				    region,
+> +				    intel_get_pat_idx_uc(fd));
+>  	intel_buf_set_name(buf, name);
 >  
-> @@ -155,9 +156,9 @@ static void surf_copy(int i915,
->  	for (int i = 0; i < surf.dst.size / sizeof(uint32_t); i++)
->  		ccsmap[i] = i;
->  	blt_set_ctrl_surf_object(&surf.src, ccs, REGION_SMEM, ccssize,
-> -				 uc_mocs, DIRECT_ACCESS);
-> +				 uc_mocs, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
->  	blt_set_ctrl_surf_object(&surf.dst, mid->handle, mid->region, mid->size,
-> -				 uc_mocs, INDIRECT_ACCESS);
-> +				 uc_mocs, DEFAULT_PAT_INDEX, INDIRECT_ACCESS);
->  	blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
->  
->  	blt_copy_init(i915, &blt);
-> @@ -399,7 +400,8 @@ static void block_copy(int i915,
->  	blt_set_object_ext(&ext.dst, 0, width, height, SURFACE_TYPE_2D);
->  	if (config->inplace) {
->  		blt_set_object(&blt.dst, mid->handle, dst->size, mid->region, 0,
-> -			       T_LINEAR, COMPRESSION_DISABLED, comp_type);
-> +			       DEFAULT_PAT_INDEX, T_LINEAR, COMPRESSION_DISABLED,
-> +			       comp_type);
->  		blt.dst.ptr = mid->ptr;
->  	}
->  
-> @@ -475,7 +477,7 @@ static void block_multicopy(int i915,
->  
->  	if (config->inplace) {
->  		blt_set_object(&blt3.dst, mid->handle, dst->size, mid->region,
-> -			       mid->mocs_index, mid_tiling, COMPRESSION_DISABLED,
-> +			       mid->mocs_index, DEFAULT_PAT_INDEX, mid_tiling, COMPRESSION_DISABLED,
->  			       comp_type);
->  		blt3.dst.ptr = mid->ptr;
->  	}
-> diff --git a/tests/intel/gem_lmem_swapping.c b/tests/intel/gem_lmem_swapping.c
-> index 2e0ba0793..fa3ec6d99 100644
-> --- a/tests/intel/gem_lmem_swapping.c
-> +++ b/tests/intel/gem_lmem_swapping.c
-> @@ -486,7 +486,7 @@ static void __do_evict(int i915,
->  				   INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0));
->  		blt_set_object(tmp, tmp->handle, params->size.max,
->  			       INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0),
-> -			       intel_get_uc_mocs_index(i915), T_LINEAR,
-> +			       intel_get_uc_mocs_index(i915), 0, T_LINEAR,
->  			       COMPRESSION_DISABLED, COMPRESSION_TYPE_3D);
->  		blt_set_geom(tmp, stride, 0, 0, width, height, 0, 0);
->  	}
-> @@ -516,7 +516,7 @@ static void __do_evict(int i915,
->  			obj->blt_obj = calloc(1, sizeof(*obj->blt_obj));
->  			igt_assert(obj->blt_obj);
->  			blt_set_object(obj->blt_obj, obj->handle, obj->size, region_id,
-> -				       intel_get_uc_mocs_index(i915), T_LINEAR,
-> +				       intel_get_uc_mocs_index(i915), 0, T_LINEAR,
->  				       COMPRESSION_ENABLED, COMPRESSION_TYPE_3D);
->  			blt_set_geom(obj->blt_obj, stride, 0, 0, width, height, 0, 0);
->  			init_object_ccs(i915, obj, tmp, rand(), blt_ctx,
-> diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
-> index c3382bfde..3316f042b 100644
-> --- a/tests/intel/xe_ccs.c
-> +++ b/tests/intel/xe_ccs.c
-> @@ -13,6 +13,7 @@
->  #include "igt_syncobj.h"
->  #include "intel_blt.h"
->  #include "intel_mocs.h"
-> +#include "intel_pat.h"
->  #include "xe/xe_ioctl.h"
->  #include "xe/xe_query.h"
->  #include "xe/xe_util.h"
-> @@ -108,8 +109,9 @@ static void surf_copy(int xe,
->  	blt_ctrl_surf_copy_init(xe, &surf);
->  	surf.print_bb = param.print_bb;
->  	blt_set_ctrl_surf_object(&surf.src, mid->handle, mid->region, mid->size,
-> -				 uc_mocs, BLT_INDIRECT_ACCESS);
-> -	blt_set_ctrl_surf_object(&surf.dst, ccs, sysmem, ccssize, uc_mocs, DIRECT_ACCESS);
-> +				 uc_mocs, DEFAULT_PAT_INDEX, BLT_INDIRECT_ACCESS);
-> +	blt_set_ctrl_surf_object(&surf.dst, ccs, sysmem, ccssize, uc_mocs,
-> +				 DEFAULT_PAT_INDEX, DIRECT_ACCESS);
->  	bb_size = xe_get_default_alignment(xe);
->  	bb1 = xe_bo_create_flags(xe, 0, bb_size, sysmem);
->  	blt_set_batch(&surf.bb, bb1, bb_size, sysmem);
-> @@ -130,7 +132,7 @@ static void surf_copy(int xe,
->  		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
->  
->  		blt_set_ctrl_surf_object(&surf.dst, ccs2, system_memory(xe), ccssize,
-> -					 0, DIRECT_ACCESS);
-> +					 0, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
->  		blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
->  		intel_ctx_xe_sync(ctx, true);
->  
-> @@ -153,9 +155,9 @@ static void surf_copy(int xe,
->  	for (int i = 0; i < surf.dst.size / sizeof(uint32_t); i++)
->  		ccsmap[i] = i;
->  	blt_set_ctrl_surf_object(&surf.src, ccs, sysmem, ccssize,
-> -				 uc_mocs, DIRECT_ACCESS);
-> +				 uc_mocs, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
->  	blt_set_ctrl_surf_object(&surf.dst, mid->handle, mid->region, mid->size,
-> -				 uc_mocs, INDIRECT_ACCESS);
-> +				 uc_mocs, DEFAULT_PAT_INDEX, INDIRECT_ACCESS);
->  	blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
->  	intel_ctx_xe_sync(ctx, true);
->  
-> @@ -369,7 +371,8 @@ static void block_copy(int xe,
->  	blt_set_object_ext(&ext.dst, 0, width, height, SURFACE_TYPE_2D);
->  	if (config->inplace) {
->  		blt_set_object(&blt.dst, mid->handle, dst->size, mid->region, 0,
-> -			       T_LINEAR, COMPRESSION_DISABLED, comp_type);
-> +			       DEFAULT_PAT_INDEX, T_LINEAR, COMPRESSION_DISABLED,
-> +			       comp_type);
->  		blt.dst.ptr = mid->ptr;
->  	}
->  
-> @@ -450,8 +453,8 @@ static void block_multicopy(int xe,
->  
->  	if (config->inplace) {
->  		blt_set_object(&blt3.dst, mid->handle, dst->size, mid->region,
-> -			       mid->mocs_index, mid_tiling, COMPRESSION_DISABLED,
-> -			       comp_type);
-> +			       mid->mocs_index, DEFAULT_PAT_INDEX, mid_tiling,
-> +			       COMPRESSION_DISABLED, comp_type);
->  		blt3.dst.ptr = mid->ptr;
->  	}
->  
-> -- 
-> 2.41.0
-> 
+>  	/* Make sure we close handle on destroy path */
+> diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
+> index d7e9dc0a6..52b4e5bb0 100644
+> --- a/lib/intel_allocator.c
+> +++ b/lib/intel_allocator.c
+> @@ -1452,6 +1452,7 @@ bool intel_allocator_is_reserved(uint64_t allocator_handle,
+>  bool intel_allocator_reserve_if_not_allocated(uint64_t allocator_handle,
+>  					      uint32_t handle,
+>  					      uint64_t size, uint64_t offset,
+> +					      uint8_t pat_index,
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+I haven't seen you extended reservation request with pat_index in
+allocator so this finally is no-op. I would likely drop this
+pat_index for reserve_if_not_allocated as you're not passing
+it to intel_allocator_is_allocated() (checking is this range
+is occupied regardless pat index is fine for me).
 
 --
 Zbigniew
+
+
+>  					      bool *is_allocatedp)
+>  {
+>  	struct alloc_req req = { .request_type = REQ_RESERVE_IF_NOT_ALLOCATED,
+> diff --git a/lib/intel_allocator.h b/lib/intel_allocator.h
+> index 4b6292f06..14852db2d 100644
+> --- a/lib/intel_allocator.h
+> +++ b/lib/intel_allocator.h
+> @@ -206,6 +206,7 @@ bool intel_allocator_is_reserved(uint64_t allocator_handle,
+>  bool intel_allocator_reserve_if_not_allocated(uint64_t allocator_handle,
+>  					      uint32_t handle,
+>  					      uint64_t size, uint64_t offset,
+> +					      uint8_t pat_index,
+>  					      bool *is_allocatedp);
+>  
+>  void intel_allocator_print(uint64_t allocator_handle);
+> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+> index e7b1b755f..b7d63765b 100644
+> --- a/lib/intel_batchbuffer.c
+> +++ b/lib/intel_batchbuffer.c
+> @@ -38,6 +38,7 @@
+>  #include "intel_batchbuffer.h"
+>  #include "intel_bufops.h"
+>  #include "intel_chipset.h"
+> +#include "intel_pat.h"
+>  #include "media_fill.h"
+>  #include "media_spin.h"
+>  #include "sw_sync.h"
+> @@ -825,15 +826,18 @@ static void __reallocate_objects(struct intel_bb *ibb)
+>  static inline uint64_t __intel_bb_get_offset(struct intel_bb *ibb,
+>  					     uint32_t handle,
+>  					     uint64_t size,
+> -					     uint32_t alignment)
+> +					     uint32_t alignment,
+> +					     uint8_t pat_index)
+>  {
+>  	uint64_t offset;
+>  
+>  	if (ibb->enforce_relocs)
+>  		return 0;
+>  
+> -	offset = intel_allocator_alloc(ibb->allocator_handle,
+> -				       handle, size, alignment);
+> +	offset = __intel_allocator_alloc(ibb->allocator_handle, handle,
+> +					 size, alignment, pat_index,
+> +					 ALLOC_STRATEGY_NONE);
+> +	igt_assert(offset != ALLOC_INVALID_ADDRESS);
+>  
+>  	return offset;
+>  }
+> @@ -1280,6 +1284,10 @@ void intel_bb_destroy(struct intel_bb *ibb)
+>  	free(ibb);
+>  }
+>  
+> +#define SZ_4K	0x1000
+> +#define XE_OBJ_SIZE(rsvd1) ((rsvd1) & ~(SZ_4K-1))
+> +#define XE_OBJ_PAT_IDX(rsvd1) ((rsvd1) & (SZ_4K-1))
+> +
+>  static struct drm_xe_vm_bind_op *xe_alloc_bind_ops(struct intel_bb *ibb,
+>  						   uint32_t op, uint32_t region)
+>  {
+> @@ -1300,11 +1308,14 @@ static struct drm_xe_vm_bind_op *xe_alloc_bind_ops(struct intel_bb *ibb,
+>  		ops->op = op;
+>  		ops->obj_offset = 0;
+>  		ops->addr = objects[i]->offset;
+> -		ops->range = objects[i]->rsvd1;
+> +		ops->range = XE_OBJ_SIZE(objects[i]->rsvd1);
+>  		ops->region = region;
+> +		if (set_obj)
+> +			ops->pat_index = XE_OBJ_PAT_IDX(objects[i]->rsvd1);
+>  
+> -		igt_debug("  [%d]: handle: %u, offset: %llx, size: %llx\n",
+> -			  i, ops->obj, (long long)ops->addr, (long long)ops->range);
+> +		igt_debug("  [%d]: handle: %u, offset: %llx, size: %llx pat_index: %u\n",
+> +			  i, ops->obj, (long long)ops->addr, (long long)ops->range,
+> +			  ops->pat_index);
+>  	}
+>  
+>  	return bind_ops;
+> @@ -1409,7 +1420,8 @@ void intel_bb_reset(struct intel_bb *ibb, bool purge_objects_cache)
+>  		ibb->batch_offset = __intel_bb_get_offset(ibb,
+>  							  ibb->handle,
+>  							  ibb->size,
+> -							  ibb->alignment);
+> +							  ibb->alignment,
+> +							  DEFAULT_PAT_INDEX);
+>  
+>  	intel_bb_add_object(ibb, ibb->handle, ibb->size,
+>  			    ibb->batch_offset,
+> @@ -1645,7 +1657,8 @@ static void __remove_from_objects(struct intel_bb *ibb,
+>   */
+>  static struct drm_i915_gem_exec_object2 *
+>  __intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
+> -		      uint64_t offset, uint64_t alignment, bool write)
+> +		      uint64_t offset, uint64_t alignment, uint8_t pat_index,
+> +		      bool write)
+>  {
+>  	struct drm_i915_gem_exec_object2 *object;
+>  
+> @@ -1661,6 +1674,9 @@ __intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
+>  	object = __add_to_cache(ibb, handle);
+>  	__add_to_objects(ibb, object);
+>  
+> +	if (pat_index == DEFAULT_PAT_INDEX)
+> +		pat_index = intel_get_pat_idx_wb(ibb->fd);
+> +
+>  	/*
+>  	 * If object->offset == INVALID_ADDRESS we added freshly object to the
+>  	 * cache. In that case we have two choices:
+> @@ -1670,7 +1686,7 @@ __intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
+>  	if (INVALID_ADDR(object->offset)) {
+>  		if (INVALID_ADDR(offset)) {
+>  			offset = __intel_bb_get_offset(ibb, handle, size,
+> -						       alignment);
+> +						       alignment, pat_index);
+>  		} else {
+>  			offset = offset & (ibb->gtt_size - 1);
+>  
+> @@ -1683,6 +1699,7 @@ __intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
+>  
+>  				reserved = intel_allocator_reserve_if_not_allocated(ibb->allocator_handle,
+>  										    handle, size, offset,
+> +										    pat_index,
+>  										    &allocated);
+>  				igt_assert_f(allocated || reserved,
+>  					     "Can't get offset, allocated: %d, reserved: %d\n",
+> @@ -1721,6 +1738,18 @@ __intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
+>  	if (ibb->driver == INTEL_DRIVER_XE) {
+>  		object->alignment = alignment;
+>  		object->rsvd1 = size;
+> +		igt_assert(!XE_OBJ_PAT_IDX(object->rsvd1));
+> +
+> +		if (pat_index == DEFAULT_PAT_INDEX)
+> +			pat_index = intel_get_pat_idx_wb(ibb->fd);
+> +
+> +		/*
+> +		 * XXX: For now encode the pat_index in the first few bits of
+> +		 * rsvd1. intel_batchbuffer should really stop using the i915
+> +		 * drm_i915_gem_exec_object2 to encode VMA placement
+> +		 * information on xe...
+> +		 */
+> +		object->rsvd1 |= pat_index;
+>  	}
+>  
+>  	return object;
+> @@ -1733,7 +1762,7 @@ intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
+>  	struct drm_i915_gem_exec_object2 *obj = NULL;
+>  
+>  	obj = __intel_bb_add_object(ibb, handle, size, offset,
+> -				    alignment, write);
+> +				    alignment, DEFAULT_PAT_INDEX, write);
+>  	igt_assert(obj);
+>  
+>  	return obj;
+> @@ -1795,8 +1824,10 @@ __intel_bb_add_intel_buf(struct intel_bb *ibb, struct intel_buf *buf,
+>  		}
+>  	}
+>  
+> -	obj = intel_bb_add_object(ibb, buf->handle, intel_buf_bo_size(buf),
+> -				  buf->addr.offset, alignment, write);
+> +	obj = __intel_bb_add_object(ibb, buf->handle, intel_buf_bo_size(buf),
+> +				    buf->addr.offset, alignment, buf->pat_index,
+> +				    write);
+> +	igt_assert(obj);
+>  	buf->addr.offset = obj->offset;
+>  
+>  	if (igt_list_empty(&buf->link)) {
+> diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
+> index 2c91adb88..fbee4748e 100644
+> --- a/lib/intel_bufops.c
+> +++ b/lib/intel_bufops.c
+> @@ -29,6 +29,7 @@
+>  #include "igt.h"
+>  #include "igt_x86.h"
+>  #include "intel_bufops.h"
+> +#include "intel_pat.h"
+>  #include "xe/xe_ioctl.h"
+>  #include "xe/xe_query.h"
+>  
+> @@ -818,7 +819,7 @@ static void __intel_buf_init(struct buf_ops *bops,
+>  			     int width, int height, int bpp, int alignment,
+>  			     uint32_t req_tiling, uint32_t compression,
+>  			     uint64_t bo_size, int bo_stride,
+> -			     uint64_t region)
+> +			     uint64_t region, uint8_t pat_index)
+>  {
+>  	uint32_t tiling = req_tiling;
+>  	uint64_t size;
+> @@ -839,6 +840,10 @@ static void __intel_buf_init(struct buf_ops *bops,
+>  	IGT_INIT_LIST_HEAD(&buf->link);
+>  	buf->mocs = INTEL_BUF_MOCS_DEFAULT;
+>  
+> +	if (pat_index == DEFAULT_PAT_INDEX)
+> +		pat_index = intel_get_pat_idx_wb(bops->fd);
+> +	buf->pat_index = pat_index;
+> +
+>  	if (compression) {
+>  		igt_require(bops->intel_gen >= 9);
+>  		igt_assert(req_tiling == I915_TILING_Y ||
+> @@ -957,7 +962,7 @@ void intel_buf_init(struct buf_ops *bops,
+>  	region = bops->driver == INTEL_DRIVER_I915 ? I915_SYSTEM_MEMORY :
+>  						     system_memory(bops->fd);
+>  	__intel_buf_init(bops, 0, buf, width, height, bpp, alignment,
+> -			 tiling, compression, 0, 0, region);
+> +			 tiling, compression, 0, 0, region, DEFAULT_PAT_INDEX);
+>  
+>  	intel_buf_set_ownership(buf, true);
+>  }
+> @@ -974,7 +979,7 @@ void intel_buf_init_in_region(struct buf_ops *bops,
+>  			      uint64_t region)
+>  {
+>  	__intel_buf_init(bops, 0, buf, width, height, bpp, alignment,
+> -			 tiling, compression, 0, 0, region);
+> +			 tiling, compression, 0, 0, region, DEFAULT_PAT_INDEX);
+>  
+>  	intel_buf_set_ownership(buf, true);
+>  }
+> @@ -1033,7 +1038,7 @@ void intel_buf_init_using_handle(struct buf_ops *bops,
+>  				 uint32_t req_tiling, uint32_t compression)
+>  {
+>  	__intel_buf_init(bops, handle, buf, width, height, bpp, alignment,
+> -			 req_tiling, compression, 0, 0, -1);
+> +			 req_tiling, compression, 0, 0, -1, DEFAULT_PAT_INDEX);
+>  }
+>  
+>  /**
+> @@ -1050,6 +1055,7 @@ void intel_buf_init_using_handle(struct buf_ops *bops,
+>   * @size: real bo size
+>   * @stride: bo stride
+>   * @region: region
+> + * @pat_index: pat_index to use for the binding (only used on xe)
+>   *
+>   * Function configures BO handle within intel_buf structure passed by the caller
+>   * (with all its metadata - width, height, ...). Useful if BO was created
+> @@ -1067,10 +1073,12 @@ void intel_buf_init_full(struct buf_ops *bops,
+>  			 uint32_t compression,
+>  			 uint64_t size,
+>  			 int stride,
+> -			 uint64_t region)
+> +			 uint64_t region,
+> +			 uint8_t pat_index)
+>  {
+>  	__intel_buf_init(bops, handle, buf, width, height, bpp, alignment,
+> -			 req_tiling, compression, size, stride, region);
+> +			 req_tiling, compression, size, stride, region,
+> +			 pat_index);
+>  }
+>  
+>  /**
+> @@ -1149,7 +1157,8 @@ struct intel_buf *intel_buf_create_using_handle_and_size(struct buf_ops *bops,
+>  							 int stride)
+>  {
+>  	return intel_buf_create_full(bops, handle, width, height, bpp, alignment,
+> -				     req_tiling, compression, size, stride, -1);
+> +				     req_tiling, compression, size, stride, -1,
+> +				     DEFAULT_PAT_INDEX);
+>  }
+>  
+>  struct intel_buf *intel_buf_create_full(struct buf_ops *bops,
+> @@ -1160,7 +1169,8 @@ struct intel_buf *intel_buf_create_full(struct buf_ops *bops,
+>  					uint32_t compression,
+>  					uint64_t size,
+>  					int stride,
+> -					uint64_t region)
+> +					uint64_t region,
+> +					uint8_t pat_index)
+>  {
+>  	struct intel_buf *buf;
+>  
+> @@ -1170,7 +1180,8 @@ struct intel_buf *intel_buf_create_full(struct buf_ops *bops,
+>  	igt_assert(buf);
+>  
+>  	__intel_buf_init(bops, handle, buf, width, height, bpp, alignment,
+> -			 req_tiling, compression, size, stride, region);
+> +			 req_tiling, compression, size, stride, region,
+> +			 pat_index);
+>  
+>  	return buf;
+>  }
+> diff --git a/lib/intel_bufops.h b/lib/intel_bufops.h
+> index 4dfe4681c..b6048402b 100644
+> --- a/lib/intel_bufops.h
+> +++ b/lib/intel_bufops.h
+> @@ -63,6 +63,9 @@ struct intel_buf {
+>  	/* Content Protection*/
+>  	bool is_protected;
+>  
+> +	/* pat_index to use for mapping this buf. Only used in Xe. */
+> +	uint8_t pat_index;
+> +
+>  	/* For debugging purposes */
+>  	char name[INTEL_BUF_NAME_MAXSIZE + 1];
+>  };
+> @@ -161,7 +164,8 @@ void intel_buf_init_full(struct buf_ops *bops,
+>  			 uint32_t compression,
+>  			 uint64_t size,
+>  			 int stride,
+> -			 uint64_t region);
+> +			 uint64_t region,
+> +			 uint8_t pat_index);
+>  
+>  struct intel_buf *intel_buf_create(struct buf_ops *bops,
+>  				   int width, int height,
+> @@ -192,7 +196,8 @@ struct intel_buf *intel_buf_create_full(struct buf_ops *bops,
+>  					uint32_t compression,
+>  					uint64_t size,
+>  					int stride,
+> -					uint64_t region);
+> +					uint64_t region,
+> +					uint8_t pat_index);
+>  void intel_buf_destroy(struct intel_buf *buf);
+>  
+>  static inline void intel_buf_set_pxp(struct intel_buf *buf, bool new_pxp_state)
+> diff --git a/tests/intel/kms_big_fb.c b/tests/intel/kms_big_fb.c
+> index 2c7b24fca..64a67e34a 100644
+> --- a/tests/intel/kms_big_fb.c
+> +++ b/tests/intel/kms_big_fb.c
+> @@ -34,6 +34,7 @@
+>  #include <string.h>
+>  
+>  #include "i915/gem_create.h"
+> +#include "intel_pat.h"
+>  #include "xe/xe_ioctl.h"
+>  #include "xe/xe_query.h"
+>  
+> @@ -88,7 +89,8 @@ static struct intel_buf *init_buf(data_t *data,
+>  	handle = gem_open(data->drm_fd, name);
+>  	buf = intel_buf_create_full(data->bops, handle, width, height,
+>  				    bpp, 0, tiling, 0, size, 0,
+> -				    region);
+> +				    region,
+> +				    intel_get_pat_idx_uc(data->drm_fd));
+>  
+>  	intel_buf_set_name(buf, buf_name);
+>  	intel_buf_set_ownership(buf, true);
+> diff --git a/tests/intel/kms_dirtyfb.c b/tests/intel/kms_dirtyfb.c
+> index cc9529178..bf9f91505 100644
+> --- a/tests/intel/kms_dirtyfb.c
+> +++ b/tests/intel/kms_dirtyfb.c
+> @@ -10,6 +10,7 @@
+>  
+>  #include "i915/intel_drrs.h"
+>  #include "i915/intel_fbc.h"
+> +#include "intel_pat.h"
+>  
+>  #include "xe/xe_query.h"
+>  
+> @@ -246,14 +247,16 @@ static void run_test(data_t *data)
+>  				    0,
+>  				    igt_fb_mod_to_tiling(data->fbs[1].modifier),
+>  				    0, 0, 0, is_xe_device(data->drm_fd) ?
+> -				    system_memory(data->drm_fd) : 0);
+> +				    system_memory(data->drm_fd) : 0,
+> +				    intel_get_pat_idx_uc(data->drm_fd));
+>  	dst = intel_buf_create_full(data->bops, data->fbs[2].gem_handle,
+>  				    data->fbs[2].width,
+>  				    data->fbs[2].height,
+>  				    igt_drm_format_to_bpp(data->fbs[2].drm_format),
+>  				    0, igt_fb_mod_to_tiling(data->fbs[2].modifier),
+>  				    0, 0, 0, is_xe_device(data->drm_fd) ?
+> -				    system_memory(data->drm_fd) : 0);
+> +				    system_memory(data->drm_fd) : 0,
+> +				    intel_get_pat_idx_uc(data->drm_fd));
+>  	ibb = intel_bb_create(data->drm_fd, PAGE_SIZE);
+>  
+>  	spin = igt_spin_new(data->drm_fd, .ahnd = ibb->allocator_handle);
+> diff --git a/tests/intel/kms_psr.c b/tests/intel/kms_psr.c
+> index ffecc5222..4cc41e479 100644
+> --- a/tests/intel/kms_psr.c
+> +++ b/tests/intel/kms_psr.c
+> @@ -31,6 +31,7 @@
+>  #include "igt.h"
+>  #include "igt_sysfs.h"
+>  #include "igt_psr.h"
+> +#include "intel_pat.h"
+>  #include <errno.h>
+>  #include <stdbool.h>
+>  #include <stdio.h>
+> @@ -356,7 +357,8 @@ static struct intel_buf *create_buf_from_fb(data_t *data,
+>  	name = gem_flink(data->drm_fd, fb->gem_handle);
+>  	handle = gem_open(data->drm_fd, name);
+>  	buf = intel_buf_create_full(data->bops, handle, width, height,
+> -				    bpp, 0, tiling, 0, size, stride, region);
+> +				    bpp, 0, tiling, 0, size, stride, region,
+> +				    intel_get_pat_idx_uc(data->drm_fd));
+>  	intel_buf_set_ownership(buf, true);
+>  
+>  	return buf;
+> diff --git a/tests/intel/xe_intel_bb.c b/tests/intel/xe_intel_bb.c
+> index 0159a3164..e2480acf8 100644
+> --- a/tests/intel/xe_intel_bb.c
+> +++ b/tests/intel/xe_intel_bb.c
+> @@ -19,6 +19,7 @@
+>  #include "igt.h"
+>  #include "igt_crc.h"
+>  #include "intel_bufops.h"
+> +#include "intel_pat.h"
+>  #include "xe/xe_ioctl.h"
+>  #include "xe/xe_query.h"
+>  
+> @@ -400,7 +401,7 @@ static void create_in_region(struct buf_ops *bops, uint64_t region)
+>  	intel_buf_init_full(bops, handle, &buf,
+>  			    width/4, height, 32, 0,
+>  			    I915_TILING_NONE, 0,
+> -			    size, 0, region);
+> +			    size, 0, region, DEFAULT_PAT_INDEX);
+>  	intel_buf_set_ownership(&buf, true);
+>  
+>  	intel_bb_add_intel_buf(ibb, &buf, false);
+> -- 
+> 2.41.0
+> 
