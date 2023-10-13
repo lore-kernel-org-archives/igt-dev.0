@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============0591188575948274040=="
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C79CD10E61C
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Oct 2023 15:10:19 +0000 (UTC)
+Date: Fri, 13 Oct 2023 17:10:07 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20231013171007.425b376c@maurocar-mobl2>
+In-Reply-To: <20231013144609.waeh4wq3zgyrrlda@kamilkon-desk.igk.intel.com>
+References: <20231013093152.737239-1-mauro.chehab@linux.intel.com>
+ <20231013093152.737239-4-mauro.chehab@linux.intel.com>
+ <20231013144609.waeh4wq3zgyrrlda@kamilkon-desk.igk.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: sai.gowtham.ch@intel.com
-Date: Fri, 13 Oct 2023 14:44:04 -0000
-Message-ID: <169720824464.31159.8297311614112949541@emeril.freedesktop.org>
-References: <20231013103728.24748-1-sai.gowtham.ch@intel.com>
-In-Reply-To: <20231013103728.24748-1-sai.gowtham.ch@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Add_copy?=
- =?utf-8?q?_basic_test_to_exercise_blt_commands_=28rev6=29?=
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t 3/3] scripts/test_list.py: better name
+ testlist include/exclude config fields
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,147 +22,162 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0591188575948274040==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Fri, 13 Oct 2023 16:46:09 +0200
+Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
 
-== Series Details ==
+> Hi Mauro,
+> On 2023-10-13 at 11:29:29 +0200, Mauro Carvalho Chehab wrote:
+> > From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> > 
+> > The config names "testlists" and "blocklists" are confusing, as they
+> > don't have the same concept of such lists used within IGT.
+> > 
+> > What the test_list logic does, instead, is to fill a field with
+> > a value for all tests included from a file, except for the ones
+> > marked on an exclude testlist.
+> > 
+> > Use the name "include" for the tag defining the file name
+> > containing a list of tests to be included.
+> > 
+> > On a similar way, use "exclude" to mean the file name containg
+> > a list of tests to be excluded.
+> > 
+> > While here, remove two class variables originally planned for
+> > the testlist/blocklist logic that aren't actually used.
+> > 
+> > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> Exclude seems ok but include may be somewhat confusing.
+> I hope it will not mislead people.
 
-Series: Add copy basic test to exercise blt commands (rev6)
-URL   : https://patchwork.freedesktop.org/series/122615/
-State : success
+Well, we need something symmetric. So include/exclude is an option,
+due to the lack of a better name for those ;-)
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7536_BAT -> XEIGTPW_9998_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_9998_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
-    - bat-adlp-7:         [FAIL][1] ([Intel XE#480]) -> [PASS][2] +1 other test pass
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7536/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9998/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-
-  * igt@xe_exec_reset@virtual-close-fd-no-exec:
-    - bat-pvc-2:          [DMESG-WARN][3] ([Intel XE#696]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7536/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9998/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
-  [Intel XE#696]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/696
-
-
-Build changes
--------------
-
-  * IGT: IGT_7536 -> IGTPW_9998
-
-  IGTPW_9998: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9998/index.html
-  IGT_7536: fdd51d526a9a7cb875cfad2641e90a72af392d98 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-433-037b6c8b23818fa71223e996c68a4f55f2d91338: 037b6c8b23818fa71223e996c68a4f55f2d91338
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9998/index.html
-
---===============0591188575948274040==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Add copy basic test to exercise blt commands (rev6)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122615/">https://patchwork.freedesktop.org/series/122615/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9998/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9998/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7536_BAT -&gt; XEIGTPW_9998_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_9998_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7536/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9998/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_reset@virtual-close-fd-no-exec:</p>
-<ul>
-<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7536/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/696">Intel XE#696</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9998/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7536 -&gt; IGTPW_9998</li>
-</ul>
-<p>IGTPW_9998: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9998/index.html<br />
-  IGT_7536: fdd51d526a9a7cb875cfad2641e90a72af392d98 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-433-037b6c8b23818fa71223e996c68a4f55f2d91338: 037b6c8b23818fa71223e996c68a4f55f2d91338</p>
-
-</body>
-</html>
-
---===============0591188575948274040==--
+> 
+> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> 
+> > ---
+> >  scripts/test_list.py             | 24 +++++++++++-------------
+> >  tests/intel/kms_test_config.json |  4 ++--
+> >  tests/intel/xe_test_config.json  |  4 ++--
+> >  3 files changed, 15 insertions(+), 17 deletions(-)
+> > 
+> > diff --git a/scripts/test_list.py b/scripts/test_list.py
+> > index c75d15bfca73..e54873f07e20 100644
+> > --- a/scripts/test_list.py
+> > +++ b/scripts/test_list.py
+> > @@ -260,8 +260,6 @@ class TestList:
+> >          self.igt_build_path = igt_build_path
+> >          self.level_count = 0
+> >          self.field_list = {}
+> > -        self.testlist = {}
+> > -        self.blocklist = {}
+> >          self.title = None
+> >          self.filters = {}
+> >          self.subtest_separator = subtest_separator
+> > @@ -335,22 +333,22 @@ class TestList:
+> >                      del item["_properties_"]["sublevel"]
+> >  
+> >              # Read testlist files if any
+> > -            if "testlists" in item["_properties_"]:
+> > +            if "include" in item["_properties_"]:
+> >                  testlist = {}
+> > -                for value in item["_properties_"]["testlists"]:
+> > +                for value in item["_properties_"]["include"]:
+> >                      for name in value.keys():
+> >                          self.read_testlist(testlist, name, cfg_path + value[name], flags)
+> >  
+> > -                item["_properties_"]["testlist"] = testlist
+> > +                item["_properties_"]["include"] = testlist
+> >  
+> >              # Read blocklist files if any
+> > -            if "blocklists" in item["_properties_"]:
+> > -                blocklist = {}
+> > -                for value in item["_properties_"]["blocklists"]:
+> > +            if "exclude" in item["_properties_"]:
+> > +                testlist = {}
+> > +                for value in item["_properties_"]["exclude"]:
+> >                      for name in value.keys():
+> >                          self.read_testlist(testlist, name, cfg_path + value[name], flags)
+> >  
+> > -                item["_properties_"]["blocklist"] = blocklist
+> > +                item["_properties_"]["exclude"] = testlist
+> >  
+> >          if "_properties_" in self.props:
+> >              del self.props["_properties_"]
+> > @@ -490,7 +488,7 @@ class TestList:
+> >              if "_properties_" not in self.props[field]:
+> >                  continue
+> >  
+> > -            if "testlist" not in self.props[field]["_properties_"]:
+> > +            if "include" not in self.props[field]["_properties_"]:
+> >                  continue
+> >  
+> >              default_value = self.props[field]["_properties_"].get("default-testlist")
+> > @@ -503,7 +501,7 @@ class TestList:
+> >              else:
+> >                  values = set()
+> >  
+> > -            for names, regex_array in self.props[field]["_properties_"]["testlist"].items():
+> > +            for names, regex_array in self.props[field]["_properties_"]["include"].items():
+> >                  name = set(re.split(",\s*", names))
+> >                  for regex in regex_array:
+> >                      if regex.match(testname):
+> > @@ -512,8 +510,8 @@ class TestList:
+> >  
+> >              # If test is at a global blocklist, ignore it
+> >              set_full_if_empty = True
+> > -            if "blocklist" in self.props[field]["_properties_"]:
+> > -                for names, regex_array in self.props[field]["_properties_"]["testlist"].items():
+> > +            if "exclude" in self.props[field]["_properties_"]:
+> > +                for names, regex_array in self.props[field]["_properties_"]["exclude"].items():
+> >                      deleted_names = set(re.split(",\s*", names))
+> >                      for regex in regex_array:
+> >                          if regex.match(testname):
+> > diff --git a/tests/intel/kms_test_config.json b/tests/intel/kms_test_config.json
+> > index 6c9b7194a58f..40cf69dd0904 100644
+> > --- a/tests/intel/kms_test_config.json
+> > +++ b/tests/intel/kms_test_config.json
+> > @@ -24,7 +24,7 @@
+> >                  "_properties_": {
+> >                      "description": "Defines what category of testlist it belongs",
+> >                      "default-testlist": "FULL",
+> > -                    "testlists": [
+> > +                    "include": [
+> >                          { "i915 BAT": "../intel-ci/fast-feedback.testlist" },
+> >                          { "i915 BAT chamelium": "../intel-ci/fast-feedback-chamelium-only.testlist" },
+> >                          { "i915 chamelium": "../intel-ci/chamelium-only.testlist" },
+> > @@ -32,7 +32,7 @@
+> >                          { "Xe BAT": "../intel-ci/xe-fast-feedback.testlist" },
+> >                          { "Xe BAT chamelium": "../intel-ci/xe-fast-feedback-chamelium-only.testlist" }
+> >                      ],
+> > -                    "blocklists": [
+> > +                    "exclude": [
+> >                          { "i915 BAT, i915 BAT chamelium, i915 chamelium": "../intel-ci/blacklist.txt" },
+> >                          { "Xe BAT, Xe BAT chamelium": "../intel-ci/xe.blocklist.txt" }
+> >                      ]
+> > diff --git a/tests/intel/xe_test_config.json b/tests/intel/xe_test_config.json
+> > index 89df8a1a3ad2..20faf73b7270 100644
+> > --- a/tests/intel/xe_test_config.json
+> > +++ b/tests/intel/xe_test_config.json
+> > @@ -33,10 +33,10 @@
+> >                              "mandatory": true,
+> >                              "description": "Defines what category of testlist it belongs",
+> >                              "default-testlist": "FULL",
+> > -                            "testlists": [
+> > +                            "include": [
+> >                                  { "Xe BAT": "../intel-ci/xe-fast-feedback.testlist" }
+> >                              ],
+> > -                            "blocklists": [
+> > +                            "exclude": [
+> >                                  { "Xe BAT": "../intel-ci/xe.blocklist.txt" }
+> >                              ],
+> >                              "order": [
+> > -- 
+> > 2.41.0
+> > 
