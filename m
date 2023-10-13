@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 668A610E073
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Oct 2023 11:31:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5CA1D10E067
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Oct 2023 11:31:04 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 13 Oct 2023 13:28:45 +0200
-Message-Id: <20231013112848.68164-2-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20231013112848.68164-1-zbigniew.kempczynski@intel.com>
-References: <20231013112848.68164-1-zbigniew.kempczynski@intel.com>
+Date: Fri, 13 Oct 2023 13:28:44 +0200
+Message-Id: <20231013112848.68164-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 1/4] lib/intel_blt: Release an offset in
- the allocator on buffer destroy
+Subject: [igt-dev] [PATCH i-g-t v2 0/4] Add flat-ccs tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,78 +21,36 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Blitter library code requires allocator handle only at the execution
-time. That means blt_copy_object structure is allocator agnostic and
-offsets are taken for block-copy or fast-copy just before operation.
-Operations on bo's like close/create requires to reflect on the
-allocator state, otherwise allocator will contain outdated
-offsets + sizes leading to fail on allocator operations or the exec.
+On DG2 I observe data inconsistency with flat-ccs when buffers are
+returning back from system to vram. For the verification first group
+of subtests is run on 20% of vram, second on 110% which triggers
+eviction. Issue is visible mostly on 'parallel' subtests.
 
-Helpers blt_create_object() and blt_destroy_object() are unaware
-of allocator so if in the meantime object was used in block-copy or
-fast-copy it has assigned offset in the allocator. Destroying object
-with blt_destroy_object() doesn't release this offset what might
-cause failures described above.
+v2: Add different cmdline switches to exercise eviction using different
+    sizes and vram overcommitment percent 
 
-There're two possibilities how to solve this - to couple blitter
-library with allocator or provide additional helpers which will
-release offset in the allocator on destroy path. Latter one is
-easier to provide so this is a subject of this change.
+Zbigniew Kempczyński (4):
+  lib/intel_blt: Release an offset in the allocator on buffer destroy
+  lib/igt_sizes: Add common SZ_* header
+  tests/xe_evict_ccs: Add evict ccs test
+  intel-ci/xe-fast-feedback: Add two xe_evict_ccs subtests for Xe run
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Karolina Stolarek <karolina.stolarek@intel.com>
-Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
----
- lib/intel_blt.c | 15 ++++++++++++++-
- lib/intel_blt.h |  2 ++
- 2 files changed, 16 insertions(+), 1 deletion(-)
+ lib/igt.h                                |   1 +
+ lib/igt_sizes.h                          |  44 ++
+ lib/intel_blt.c                          |  15 +-
+ lib/intel_blt.h                          |   2 +
+ lib/xe/xe_query.h                        |   4 +-
+ tests/intel-ci/xe-fast-feedback.testlist |   2 +
+ tests/intel/gem_exec_async.c             |   2 -
+ tests/intel/gem_lmem_swapping.c          |   1 -
+ tests/intel/i915_query.c                 |   1 -
+ tests/intel/xe_evict.c                   |   3 -
+ tests/intel/xe_evict_ccs.c               | 522 +++++++++++++++++++++++
+ tests/meson.build                        |   1 +
+ tests/msm/msm_shrink.c                   |   2 -
+ 13 files changed, 587 insertions(+), 13 deletions(-)
+ create mode 100644 lib/igt_sizes.h
+ create mode 100644 tests/intel/xe_evict_ccs.c
 
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index a76c7a4045..3c5e97963d 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -1635,15 +1635,28 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
- 	return obj;
- }
- 
--void blt_destroy_object(int fd, struct blt_copy_object *obj)
-+static void __blt_destroy_object(int fd, uint64_t ahnd, struct blt_copy_object *obj)
- {
- 	if (obj->ptr)
- 		munmap(obj->ptr, obj->size);
- 
- 	gem_close(fd, obj->handle);
-+	if (ahnd)
-+		intel_allocator_free(ahnd, obj->handle);
- 	free(obj);
- }
- 
-+void blt_destroy_object(int fd, struct blt_copy_object *obj)
-+{
-+	__blt_destroy_object(fd, 0, obj);
-+}
-+
-+void blt_destroy_object_and_alloc_free(int fd, uint64_t ahnd,
-+				       struct blt_copy_object *obj)
-+{
-+	__blt_destroy_object(fd, ahnd, obj);
-+}
-+
- void blt_set_object(struct blt_copy_object *obj,
- 		    uint32_t handle, uint64_t size, uint32_t region,
- 		    uint8_t mocs_index, enum blt_tiling_type tiling,
-diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-index 7b4271620a..657e51dd57 100644
---- a/lib/intel_blt.h
-+++ b/lib/intel_blt.h
-@@ -245,6 +245,8 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
- 		  enum blt_compression_type compression_type,
- 		  bool create_mapping);
- void blt_destroy_object(int fd, struct blt_copy_object *obj);
-+void blt_destroy_object_and_alloc_free(int fd, uint64_t ahnd,
-+				       struct blt_copy_object *obj);
- void blt_set_object(struct blt_copy_object *obj,
- 		    uint32_t handle, uint64_t size, uint32_t region,
- 		    uint8_t mocs_index, enum blt_tiling_type tiling,
 -- 
 2.34.1
