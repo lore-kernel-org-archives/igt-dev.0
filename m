@@ -1,27 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com
- [IPv6:2a00:1450:4864:20::42c])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 95A0A10E0E7
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Oct 2023 11:49:33 +0000 (UTC)
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3231dff4343so1288537f8f.0
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Oct 2023 04:49:33 -0700 (PDT)
-Message-ID: <046b5eeb-215c-b100-9674-a19b8fe25f9e@gmail.com>
-Date: Fri, 13 Oct 2023 14:49:22 +0300
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com
+ [IPv6:2a00:1450:4864:20::434])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 585FE10E5E9
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Oct 2023 12:06:35 +0000 (UTC)
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-323ef9a8b59so1945046f8f.3
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Oct 2023 05:06:35 -0700 (PDT)
+Message-ID: <7ef46b76-33f2-25fe-2b9f-97be81febce1@gmail.com>
+Date: Fri, 13 Oct 2023 15:06:26 +0300
 MIME-Version: 1.0
 Content-Language: en-US
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Hersen Wu <hersenxs.wu@amd.com>,
- rodrigo.siqueira@amd.com, aurabindo.pillai@amd.com, alex.hung@amd.com,
- hamza.mahfooz@amd.com, sunpeng.li@amd.com, markyacoub@google.com
-References: <20231002142023.713415-1-hersenxs.wu@amd.com>
- <20231013113841.taitcycfsxxzgzyn@kamilkon-desk.igk.intel.com>
+To: Swati Sharma <swati2.sharma@intel.com>, igt-dev@lists.freedesktop.org
+References: <20231013102346.95872-1-swati2.sharma@intel.com>
+ <20231013102346.95872-3-swati2.sharma@intel.com>
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20231013113841.taitcycfsxxzgzyn@kamilkon-desk.igk.intel.com>
+In-Reply-To: <20231013102346.95872-3-swati2.sharma@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH] [i-g-t] tests/kms_cursor_crc: Fix test
- intermittent failures on AMD gpu
+Subject: Re: [igt-dev] [PATCH i-g-t 2/3] lib/igt_kms: add get_num_scalers()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,69 +30,73 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 13.10.2023 14.38, Kamil Konieczny wrote:
-> Hi Hersen,
-> On 2023-10-02 at 10:20:23 -0400, Hersen Wu wrote:
->> Wait for two more vblanks before reading crc on AMD gpu.
->>
->> Without waiting for two vblanks, AMD cursor updates may not
->> synchronized to the same frame of pipe, crc generated may
->> not be reliable.
->>
->> Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
->> ---
->>   tests/kms_cursor_crc.c | 15 ++++++++++++++-
->>   1 file changed, 14 insertions(+), 1 deletion(-)
->>
->> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
->> index ba29ff65d..e3259e147 100644
->> --- a/tests/kms_cursor_crc.c
->> +++ b/tests/kms_cursor_crc.c
->> @@ -276,6 +276,15 @@ static void do_single_test(data_t *data, int x, int y, bool hw_test,
->>   		restore_image(data, swbufidx, &((cursorarea){x, y, data->curw, data->curh}));
->>   		igt_plane_set_fb(data->primary, &data->primary_fb[swbufidx]);
->>   		igt_display_commit(display);
->> +
->> +		/* Wait for two more vblanks since cursor updates may not
->> +		 * synchronized to the same frame on AMD HW
->> +		 */
->> +		if (is_amdgpu_device(data->drm_fd))
-> ----------- ^^^^^^^^^^^^^^^^
-> Why not
->          if(data->vblank_wait_count)
+On 13.10.2023 13.23, Swati Sharma wrote:
+> Add get_num_scalers(), which will return no. of scalers/CRTC.
 > 
-> as for msm driver we also need to wait? Btw how it worked before
-> for msm without that wait here? If you need to wait 2+2 maybe set
-> it already to 4 and drop this hunk?
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> ---
+>   lib/igt_kms.c | 39 +++++++++++++++++++++++++++++++++++++++
+>   lib/igt_kms.h |  1 +
+>   2 files changed, 40 insertions(+)
 > 
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 8dc0edc89..666a69495 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -6084,3 +6084,42 @@ int igt_get_dp_mst_connector_id(igt_output_t *output)
+>   
+>   	return connector_id;
+>   }
+> +
+> +/**
+> + * get_num_scalers:
+> + * @drm_fd: drm file descriptor
+> + * @pipe: display pipe
+> + *
+> + * Returns: num_scalers supported/pipe.
+> + */
+> +int get_num_scalers(int drm_fd, enum pipe pipe)
+> +{
+> +	char buf[8120];
+> +	char *start_loc1, *start_loc2;
+> +	int dir, res;
+> +	int num_scalers = 0;
+> +	char dest[20] = ":pipe ";
+> +
+> +	strcat(dest, kmstest_pipe_name(pipe));
+> +
+> +	if (is_intel_device(drm_fd) &&
+> +	    intel_display_ver(intel_get_drm_devid(drm_fd)) >= 9) {
+> +
+> +		dir = igt_debugfs_dir(drm_fd);
+> +		igt_assert(dir >= 0);
+> +
+> +		res = igt_debugfs_simple_read(dir, "i915_display_info", buf, sizeof(buf));
+> +		close(dir);
+> +		igt_require(res > 0);
+> +
+> +		start_loc1 = strstr(buf, dest);
+> +		printf("start_loc1=%s\n", start_loc1);
 
-As I understood before issue with msm is different. With msm it's about 
-async cursor settling in place while on amd its about crc settling. 
-Here's normal flip, nothing about cursor here, hence no point in waiting 
-with msm. That comment above check for amd will need to be updated.
+this printf I think doesn't belong here. Otherwise patch look ok.
 
-/Juha-Pekka
-
->> +			igt_wait_for_vblank_count(data->drm_fd,
->> +				display->pipes[data->pipe].crtc_offset,
->> +				data->vblank_wait_count);
->> +
->>   		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
->>   		igt_assert_crc_equal(&crc, hwcrc);
->>   	}
->> @@ -1079,7 +1088,11 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
->>   
->>   		igt_require_pipe_crc(data.drm_fd);
->>   
->> -		data.vblank_wait_count = is_msm_device(data.drm_fd) ? 2 : 1;
->> +		/* Wait for two more vblanks since cursor updates may not
->> +		 * synchronized to the same frame on AMD HW
->> +		 */
->> +		data.vblank_wait_count =
->> +			(is_msm_device(data.drm_fd) || is_amdgpu_device(data.drm_fd)) ? 2 : 1;
->>   	}
->>   
->>   	data.cursor_max_w = cursor_width;
->> -- 
->> 2.25.1
->>
+> +
+> +		if ((start_loc1 = strstr(buf, dest))) {
+> +			igt_assert(start_loc2 = strstr(start_loc1, "num_scalers="));
+> +			igt_assert_eq(sscanf(start_loc2, "num_scalers=%d", &num_scalers), 1);
+> +		}
+> +	}
+> +
+> +	return num_scalers;
+> +}
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index 4bcaf3f73..356620dc6 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -1016,5 +1016,6 @@ bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode);
+>   bool i915_pipe_output_combo_valid(igt_display_t *display);
+>   bool igt_check_output_is_dp_mst(igt_output_t *output);
+>   int igt_get_dp_mst_connector_id(igt_output_t *output);
+> +int get_num_scalers(int drm_fd, enum pipe pipe);
+>   
+>   #endif /* __IGT_KMS_H__ */
