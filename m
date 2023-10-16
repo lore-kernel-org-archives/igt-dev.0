@@ -1,20 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 767A610E21F
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Oct 2023 15:19:08 +0000 (UTC)
-Message-ID: <98a7af5d-c45d-e9b0-2ac7-6d2e1694a006@linux.intel.com>
-Date: Mon, 16 Oct 2023 17:19:00 +0200
-MIME-Version: 1.0
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 53A1810E1FF
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Oct 2023 16:06:09 +0000 (UTC)
+From: "Mishra, Pallavi" <pallavi.mishra@intel.com>
+To: "Auld, Matthew" <matthew.auld@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+Date: Mon, 16 Oct 2023 16:04:27 +0000
+Message-ID: <PH0PR11MB5782EC4296CBC4A62F33794382D7A@PH0PR11MB5782.namprd11.prod.outlook.com>
+References: <20231016141450.55936-1-matthew.auld@intel.com>
+ <20231016141450.55936-6-matthew.auld@intel.com>
+In-Reply-To: <20231016141450.55936-6-matthew.auld@intel.com>
 Content-Language: en-US
-To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20231012070133.31106-1-zbigniew.kempczynski@intel.com>
-From: =?UTF-8?Q?Thomas_Hellstr=c3=b6m?= <thomas.hellstrom@linux.intel.com>
-In-Reply-To: <20231012070133.31106-1-zbigniew.kempczynski@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe_create: Remove
- create-invalid-size subtest
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t v3 05/12] tests/xe/mmap: add some tests
+ for cpu_caching and coh_mode
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,109 +27,78 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi, Zbigniew, Maarten
-
-On 10/12/23 09:01, Zbigniew Kempczyński wrote:
-> Test exercises kernel returns EINVAL on bo create ioctl with unaligned
-> size what was never merged and according to discussion with Thomas
-> will never be. Lets remove this test as it is incorrect in this case.
->
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-
-I have been looking at an implementation over the weekend where the 
-buffer object size alignment restrictions are pushed out to the ttm 
-resources, so that a buffer object has a 4K-aligned size and any other 
-size alignment restrictions are solved by allocating the TTM resource 
-larger when needed.
-
-It turns out that this requires changes with TTM, that accounts memory 
-using the buffer object size, but also would, I figure, require 
-non-standard dma-buf scatter-gather lists if attempting to bind p2p vram 
-buffers if not using PCI p2p.
-
-So given the relative simplicity of the -EINVAL solution for unaligned 
-buffer objects and the fact that we could relax this in the future if we 
-implement pushing out the alignment to TTM resources I can indeed see 
-the benefit of using the -EINVAL solution for now.
-
-That would mean keeping this test and adding the check for -EINVAL for 
-unaligned size buffer objects.
-
-/Thomas
-
-> ---
->   tests/intel/xe_create.c | 52 -----------------------------------------
->   1 file changed, 52 deletions(-)
->
-> diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
-> index 8d845e5c86..541fc2b335 100644
-> --- a/tests/intel/xe_create.c
-> +++ b/tests/intel/xe_create.c
-> @@ -39,54 +39,6 @@ static int __create_bo(int fd, uint32_t vm, uint64_t size, uint32_t flags,
->   	return ret;
->   }
->   
-> -/**
-> - * SUBTEST: create-invalid-size
-> - * Functionality: ioctl
-> - * Test category: negative test
-> - * Description: Verifies xe bo create returns expected error code on invalid
-> - *              buffer sizes.
-> - */
-> -static void create_invalid_size(int fd)
-> -{
-> -	struct drm_xe_query_mem_region *memregion;
-> -	uint64_t memreg = all_memory_regions(fd), region;
-> -	uint32_t vm;
-> -	uint32_t handle;
-> -	int ret;
-> -
-> -	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
-> -
-> -	xe_for_each_mem_region(fd, memreg, region) {
-> -		memregion = xe_mem_region(fd, region);
-> -
-> -		/* first try, use half of possible min page size */
-> -		ret = __create_bo(fd, vm, memregion->min_page_size >> 1,
-> -				  region, &handle);
-> -		if (!ret) {
-> -			gem_close(fd, handle);
-> -			xe_vm_destroy(fd, vm);
-> -		}
-> -		igt_assert_eq(ret, -EINVAL);
-> -
-> -		/*
-> -		 * second try, add page size to min page size if it is
-> -		 * bigger than page size.
-> -		 */
-> -		if (memregion->min_page_size > PAGE_SIZE) {
-> -			ret = __create_bo(fd, vm,
-> -					  memregion->min_page_size + PAGE_SIZE,
-> -					  region, &handle);
-> -			if (!ret) {
-> -				gem_close(fd, handle);
-> -				xe_vm_destroy(fd, vm);
-> -			}
-> -			igt_assert_eq(ret, -EINVAL);
-> -		}
-> -	}
-> -
-> -	xe_vm_destroy(fd, vm);
-> -}
-> -
->   enum exec_queue_destroy {
->   	NOLEAK,
->   	LEAK
-> @@ -214,10 +166,6 @@ igt_main
->   	igt_fixture
->   		xe = drm_open_driver(DRIVER_XE);
->   
-> -	igt_subtest("create-invalid-size") {
-> -		create_invalid_size(xe);
-> -	}
-> -
->   	igt_subtest("create-execqueues-noleak")
->   		create_execqueues(xe, NOLEAK);
->   
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQXVsZCwgTWF0dGhldyA8
+bWF0dGhldy5hdWxkQGludGVsLmNvbT4NCj4gU2VudDogTW9uZGF5LCBPY3RvYmVyIDE2LCAyMDIz
+IDc6MTUgQU0NCj4gVG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IENjOiBTb3V6
+YSwgSm9zZSA8am9zZS5zb3V6YUBpbnRlbC5jb20+OyBNaXNocmEsIFBhbGxhdmkNCj4gPHBhbGxh
+dmkubWlzaHJhQGludGVsLmNvbT4NCj4gU3ViamVjdDogW1BBVENIIGktZy10IHYzIDA1LzEyXSB0
+ZXN0cy94ZS9tbWFwOiBhZGQgc29tZSB0ZXN0cyBmb3INCj4gY3B1X2NhY2hpbmcgYW5kIGNvaF9t
+b2RlDQo+IA0KPiBFbnN1cmUgdGhlIHZhcmlvdXMgaW52YWxpZCBjb21iaW5hdGlvbnMgYXJlIHJl
+amVjdGVkLiBBbHNvIGVuc3VyZSB3ZSBjYW4NCj4gbW1hcCBhbmQgZmF1bHQgYW55dGhpbmcgdGhh
+dCBpcyB2YWxpZC4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IE1hdHRoZXcgQXVsZCA8bWF0dGhldy5h
+dWxkQGludGVsLmNvbT4NCj4gQ2M6IEpvc8OpIFJvYmVydG8gZGUgU291emEgPGpvc2Uuc291emFA
+aW50ZWwuY29tPg0KPiBDYzogUGFsbGF2aSBNaXNocmEgPHBhbGxhdmkubWlzaHJhQGludGVsLmNv
+bT4NCg0KUmV2aWV3ZWQtYnk6IFBhbGxhdmkgTWlzaHJhIDxwYWxsYXZpLm1pc2hyYUBpbnRlbC5j
+b20+DQoNCj4gLS0tDQo+ICB0ZXN0cy9pbnRlbC94ZV9tbWFwLmMgfCA3Nw0KPiArKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrDQo+ICAxIGZpbGUgY2hhbmdlZCwgNzcg
+aW5zZXJ0aW9ucygrKQ0KPiANCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ludGVsL3hlX21tYXAuYyBi
+L3Rlc3RzL2ludGVsL3hlX21tYXAuYyBpbmRleA0KPiA3ZTdlNDNjMDAuLjA5ZTljOGFhZSAxMDA2
+NDQNCj4gLS0tIGEvdGVzdHMvaW50ZWwveGVfbW1hcC5jDQo+ICsrKyBiL3Rlc3RzL2ludGVsL3hl
+X21tYXAuYw0KPiBAQCAtMTk5LDYgKzE5OSw4MCBAQCBzdGF0aWMgdm9pZCB0ZXN0X3NtYWxsX2Jh
+cihpbnQgZmQpDQo+ICAJZ2VtX2Nsb3NlKGZkLCBibyk7DQo+ICB9DQo+IA0KPiArc3RhdGljIHZv
+aWQgYXNzZXJ0X2NhY2hpbmcoaW50IGZkLCB1aW50NjRfdCBmbGFncywgdWludDE2X3QgY3B1X2Nh
+Y2hpbmcsDQo+ICsJCQkgICB1aW50MTZfdCBjb2hfbW9kZSwgYm9vbCBmYWlsKQ0KPiArew0KPiAr
+CXVpbnQ2NF90IHNpemUgPSB4ZV9nZXRfZGVmYXVsdF9hbGlnbm1lbnQoZmQpOw0KPiArCXVpbnQ2
+NF90IG1tbzsNCj4gKwl1aW50MzJfdCBoYW5kbGU7DQo+ICsJdWludDMyX3QgKm1hcDsNCj4gKwli
+b29sIHJldDsNCj4gKw0KPiArCXJldCA9IF9feGVfYm9fY3JlYXRlX2NhY2hpbmcoZmQsIDAsIHNp
+emUsIGZsYWdzLCBjcHVfY2FjaGluZywNCj4gKwkJCQkgICAgIGNvaF9tb2RlLCAmaGFuZGxlKTsN
+Cj4gKwlpZ3RfYXNzZXJ0KHJldCA9PSBmYWlsKTsNCj4gKw0KPiArCWlmIChmYWlsKQ0KPiArCQly
+ZXR1cm47DQo+ICsNCj4gKwltbW8gPSB4ZV9ib19tbWFwX29mZnNldChmZCwgaGFuZGxlKTsNCj4g
+KwltYXAgPSBtbWFwKE5VTEwsIHNpemUsIFBST1RfV1JJVEUsIE1BUF9TSEFSRUQsIGZkLCBtbW8p
+Ow0KPiArCWlndF9hc3NlcnQobWFwICE9IE1BUF9GQUlMRUQpOw0KPiArCW1hcFswXSA9IDB4ZGVh
+ZGJlYWY7DQo+ICsJZ2VtX2Nsb3NlKGZkLCBoYW5kbGUpOw0KPiArfQ0KPiArDQo+ICsvKioNCj4g
+KyAqIFNVQlRFU1Q6IGNwdS1jYWNoaW5nLWNvaA0KPiArICogRGVzY3JpcHRpb246IFRlc3QgY3B1
+X2NhY2hpbmcgYW5kIGNvaCwgaW5jbHVkaW5nIG1tYXAgYmVoYXZpb3VyLg0KPiArICogVGVzdCBj
+YXRlZ29yeTogZnVuY3Rpb25hbGl0eSB0ZXN0DQo+ICsgKi8NCj4gK3N0YXRpYyB2b2lkIHRlc3Rf
+Y3B1X2NhY2hpbmcoaW50IGZkKQ0KPiArew0KPiArCWlmICh2cmFtX21lbW9yeShmZCwgMCkpIHsN
+Cj4gKwkJYXNzZXJ0X2NhY2hpbmcoZmQsIHZyYW1fbWVtb3J5KGZkLCAwKSwNCj4gKwkJCSAgICAg
+ICBEUk1fWEVfR0VNX0NQVV9DQUNISU5HX1dDLA0KPiBEUk1fWEVfR0VNX0NPSF9OT05FLA0KPiAr
+CQkJICAgICAgIGZhbHNlKTsNCj4gKwkJYXNzZXJ0X2NhY2hpbmcoZmQsIHZyYW1fbWVtb3J5KGZk
+LCAwKSwNCj4gKwkJCSAgICAgICBEUk1fWEVfR0VNX0NQVV9DQUNISU5HX1dDLA0KPiBEUk1fWEVf
+R0VNX0NPSF9BVF9MRUFTVF8xV0FZLA0KPiArCQkJICAgICAgIGZhbHNlKTsNCj4gKwkJYXNzZXJ0
+X2NhY2hpbmcoZmQsIHZyYW1fbWVtb3J5KGZkLCAwKSB8DQo+IHN5c3RlbV9tZW1vcnkoZmQpLA0K
+PiArCQkJICAgICAgIERSTV9YRV9HRU1fQ1BVX0NBQ0hJTkdfV0MsDQo+IERSTV9YRV9HRU1fQ09I
+X05PTkUsDQo+ICsJCQkgICAgICAgZmFsc2UpOw0KPiArDQo+ICsJCWFzc2VydF9jYWNoaW5nKGZk
+LCB2cmFtX21lbW9yeShmZCwgMCksDQo+ICsJCQkgICAgICAgRFJNX1hFX0dFTV9DUFVfQ0FDSElO
+R19XQiwNCj4gRFJNX1hFX0dFTV9DT0hfTk9ORSwNCj4gKwkJCSAgICAgICB0cnVlKTsNCj4gKwkJ
+YXNzZXJ0X2NhY2hpbmcoZmQsIHZyYW1fbWVtb3J5KGZkLCAwKSwNCj4gKwkJCSAgICAgICBEUk1f
+WEVfR0VNX0NQVV9DQUNISU5HX1dCLA0KPiBEUk1fWEVfR0VNX0NPSF9BVF9MRUFTVF8xV0FZLA0K
+PiArCQkJICAgICAgIHRydWUpOw0KPiArCQlhc3NlcnRfY2FjaGluZyhmZCwgdnJhbV9tZW1vcnko
+ZmQsIDApIHwNCj4gc3lzdGVtX21lbW9yeShmZCksDQo+ICsJCQkgICAgICAgRFJNX1hFX0dFTV9D
+UFVfQ0FDSElOR19XQiwNCj4gRFJNX1hFX0dFTV9DT0hfTk9ORSwNCj4gKwkJCSAgICAgICB0cnVl
+KTsNCj4gKwkJYXNzZXJ0X2NhY2hpbmcoZmQsIHZyYW1fbWVtb3J5KGZkLCAwKSB8DQo+IHN5c3Rl
+bV9tZW1vcnkoZmQpLA0KPiArCQkJICAgICAgIERSTV9YRV9HRU1fQ1BVX0NBQ0hJTkdfV0IsDQo+
+IERSTV9YRV9HRU1fQ09IX0FUX0xFQVNUXzFXQVksDQo+ICsJCQkgICAgICAgdHJ1ZSk7DQo+ICsJ
+fQ0KPiArDQo+ICsJYXNzZXJ0X2NhY2hpbmcoZmQsIHN5c3RlbV9tZW1vcnkoZmQpLA0KPiBEUk1f
+WEVfR0VNX0NQVV9DQUNISU5HX1dCLA0KPiArCQkgICAgICAgRFJNX1hFX0dFTV9DT0hfQVRfTEVB
+U1RfMVdBWSwgZmFsc2UpOw0KPiArCWFzc2VydF9jYWNoaW5nKGZkLCBzeXN0ZW1fbWVtb3J5KGZk
+KSwNCj4gRFJNX1hFX0dFTV9DUFVfQ0FDSElOR19XQywNCj4gKwkJICAgICAgIERSTV9YRV9HRU1f
+Q09IX05PTkUsIGZhbHNlKTsNCj4gKwlhc3NlcnRfY2FjaGluZyhmZCwgc3lzdGVtX21lbW9yeShm
+ZCksDQo+IERSTV9YRV9HRU1fQ1BVX0NBQ0hJTkdfV0MsDQo+ICsJCSAgICAgICBEUk1fWEVfR0VN
+X0NPSF9BVF9MRUFTVF8xV0FZLCBmYWxzZSk7DQo+ICsNCj4gKwlhc3NlcnRfY2FjaGluZyhmZCwg
+c3lzdGVtX21lbW9yeShmZCksDQo+IERSTV9YRV9HRU1fQ1BVX0NBQ0hJTkdfV0IsDQo+ICsJCSAg
+ICAgICBEUk1fWEVfR0VNX0NPSF9OT05FLCB0cnVlKTsNCj4gKwlhc3NlcnRfY2FjaGluZyhmZCwg
+c3lzdGVtX21lbW9yeShmZCksIC0xLCAtMSwgdHJ1ZSk7DQo+ICsJYXNzZXJ0X2NhY2hpbmcoZmQs
+IHN5c3RlbV9tZW1vcnkoZmQpLCAwLCAwLCB0cnVlKTsNCj4gKwlhc3NlcnRfY2FjaGluZyhmZCwg
+c3lzdGVtX21lbW9yeShmZCksIDAsDQo+IERSTV9YRV9HRU1fQ09IX0FUX0xFQVNUXzFXQVksIHRy
+dWUpOw0KPiArCWFzc2VydF9jYWNoaW5nKGZkLCBzeXN0ZW1fbWVtb3J5KGZkKSwNCj4gRFJNX1hF
+X0dFTV9DUFVfQ0FDSElOR19XQywgMCwgdHJ1ZSk7DQo+ICsJYXNzZXJ0X2NhY2hpbmcoZmQsIHN5
+c3RlbV9tZW1vcnkoZmQpLA0KPiBEUk1fWEVfR0VNX0NQVV9DQUNISU5HX1dDICsgMSwNCj4gKwkJ
+ICAgICAgIERSTV9YRV9HRU1fQ09IX0FUX0xFQVNUXzFXQVksIHRydWUpOw0KPiArCWFzc2VydF9j
+YWNoaW5nKGZkLCBzeXN0ZW1fbWVtb3J5KGZkKSwNCj4gRFJNX1hFX0dFTV9DUFVfQ0FDSElOR19X
+QywNCj4gKwkJICAgICAgIERSTV9YRV9HRU1fQ09IX0FUX0xFQVNUXzFXQVkgKyAxLCB0cnVlKTsg
+fQ0KPiArDQo+ICBpZ3RfbWFpbg0KPiAgew0KPiAgCWludCBmZDsNCj4gQEAgLTIzMCw2ICszMDQs
+OSBAQCBpZ3RfbWFpbg0KPiAgCQl0ZXN0X3NtYWxsX2JhcihmZCk7DQo+ICAJfQ0KPiANCj4gKwlp
+Z3Rfc3VidGVzdCgiY3B1LWNhY2hpbmctY29oIikNCj4gKwkJdGVzdF9jcHVfY2FjaGluZyhmZCk7
+DQo+ICsNCj4gIAlpZ3RfZml4dHVyZQ0KPiAgCQlkcm1fY2xvc2VfZHJpdmVyKGZkKTsNCj4gIH0N
+Cj4gLS0NCj4gMi40MS4wDQoNCg==
