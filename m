@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C3F6410E1D7
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Oct 2023 13:18:00 +0000 (UTC)
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com
+ [IPv6:2a00:1450:4864:20::12a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3AA0B10E1D9
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Oct 2023 13:49:00 +0000 (UTC)
+Received: by mail-lf1-x12a.google.com with SMTP id
+ 2adb3069b0e04-5079f9675c6so3495428e87.2
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Oct 2023 06:49:00 -0700 (PDT)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 16 Oct 2023 15:17:52 +0200
-Message-ID: <20231016131752.39196-1-kamil.konieczny@linux.intel.com>
+Date: Mon, 16 Oct 2023 16:48:52 +0300
+Message-Id: <20231016134852.413678-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tools/intel_gpu_frequency: fix device
- opening
+Subject: [igt-dev] [PATCH i-g-t] lib/igt_fb/xe: use engine copy where
+ available
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,38 +25,87 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-High-level device open cleans device cache before running a test
-by using debugfs. This may be a problem when using a tool to
-change GPU frequency as there are systems with debugfs turned off
-or protected, as seen in bug report:
+On Xe driver there seems to be some problems with blitter while copying
+framebuffers. Switch to use engine copy instead of blitter copy
+where possible at least until blitter path is fixed.
 
-(intel_gpu_frequency:14896) igt_debugfs-CRITICAL: Test assertion failure function igt_drop_caches_set, file ../lib/igt_debugfs.c:1142:
-
-[ 3553.930373] Lockdown: intel_gpu_frequ: debugfs access is restricted; see man kernel_lockdown.7
-none [integrity] confidentiality
-
-intel_gpu_frequency is the tool, not a test, so fixed this by
-using more suitable device opening function.
-
-Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/146
-Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- tools/intel_gpu_frequency.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/igt_fb.c | 30 ++++++++++++++++++++++++------
+ 1 file changed, 24 insertions(+), 6 deletions(-)
 
-diff --git a/tools/intel_gpu_frequency.c b/tools/intel_gpu_frequency.c
-index 3ed331ab4..de0c6ddba 100644
---- a/tools/intel_gpu_frequency.c
-+++ b/tools/intel_gpu_frequency.c
-@@ -283,7 +283,7 @@ int main(int argc, char *argv[])
- 	bool write, fail, targets[MAX+1] = {false};
- 	int i, fd, try = 1, set_freq[MAX+1] = {0};
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index e82393909..0ff610dc2 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -2502,12 +2502,17 @@ static bool block_copy_ok(const struct igt_fb *fb)
  
--	fd = drm_open_driver(DRIVER_INTEL);
-+	fd = __drm_open_driver(DRIVER_INTEL);
- 	devid = intel_get_drm_devid(fd);
- 	device = igt_device_get_card_index(fd);
- 	close(fd);
+ static bool blitter_ok(const struct igt_fb *fb)
+ {
++	int devid;
++
+ 	if (!is_intel_device(fb->fd))
+ 		return false;
+ 
++	devid = intel_get_drm_devid(fb->fd);
++
+ 	if ((is_ccs_modifier(fb->modifier) &&
+-	     !HAS_FLATCCS(intel_get_drm_devid(fb->fd))) ||
+-	     is_gen12_mc_ccs_modifier(fb->modifier))
++	     !HAS_FLATCCS(devid)) ||
++	     is_gen12_mc_ccs_modifier(fb->modifier) ||
++	     (is_xe_device(fb->fd) && igt_get_render_copyfunc(devid)))
+ 		return false;
+ 
+ 	for (int i = 0; i < fb->num_planes; i++) {
+@@ -2538,15 +2543,20 @@ static bool blitter_ok(const struct igt_fb *fb)
+ 
+ static bool use_enginecopy(const struct igt_fb *fb)
+ {
++	int devid;
++
+ 	if (!is_intel_device(fb->fd))
+ 		return false;
+ 
+ 	if (blitter_ok(fb))
+ 		return false;
+ 
++	devid = intel_get_drm_devid(fb->fd);
++
+ 	return fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
+-	       (!HAS_FLATCCS(intel_get_drm_devid(fb->fd)) && is_ccs_modifier(fb->modifier)) ||
+-	       is_gen12_mc_ccs_modifier(fb->modifier);
++	       (!HAS_FLATCCS(devid) && is_ccs_modifier(fb->modifier)) ||
++	       is_gen12_mc_ccs_modifier(fb->modifier) ||
++	       (is_xe_device(fb->fd) && igt_get_render_copyfunc(devid));
+ }
+ 
+ static bool use_blitter(const struct igt_fb *fb)
+@@ -3052,7 +3062,12 @@ static void free_linear_mapping(struct fb_blit_upload *blit)
+ 		igt_nouveau_delete_bo(&linear->fb);
+ 	} else if (is_xe_device(fd)) {
+ 		gem_munmap(linear->map, linear->fb.size);
+-		blitcopy(fb, &linear->fb);
++
++		if (blit->ibb)
++			copy_with_engine(blit, fb, &linear->fb);
++		else
++			blitcopy(fb, &linear->fb);
++
+ 		gem_close(fd, linear->fb.gem_handle);
+ 	} else {
+ 		gem_munmap(linear->map, linear->fb.size);
+@@ -3132,7 +3147,10 @@ static void setup_linear_mapping(struct fb_blit_upload *blit)
+ 
+ 		linear->map = igt_nouveau_mmap_bo(&linear->fb, PROT_READ | PROT_WRITE);
+ 	} else if (is_xe_device(fd)) {
+-		blitcopy(&linear->fb, fb);
++		if (blit->ibb)
++			copy_with_engine(blit, &linear->fb, fb);
++		else
++			blitcopy(&linear->fb, fb);
+ 
+ 		linear->map = xe_bo_mmap_ext(fd, linear->fb.gem_handle,
+ 					     linear->fb.size, PROT_READ | PROT_WRITE);
 -- 
-2.42.0
+2.34.1
