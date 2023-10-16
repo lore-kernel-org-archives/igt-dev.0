@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5820810E180
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Oct 2023 22:07:19 +0000 (UTC)
-Date: Mon, 16 Oct 2023 15:07:07 -0700
-From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-To: Matthew Auld <matthew.auld@intel.com>
-Message-ID: <ZS20C/zIb2rwYBhL@nvishwa1-DESK>
-References: <20231016141450.55936-1-matthew.auld@intel.com>
- <20231016141450.55936-7-matthew.auld@intel.com>
-Content-Type: text/plain; charset="iso-8859-1"; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231016141450.55936-7-matthew.auld@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============4230707557850667130=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v3 06/12] lib/intel_pat: add helpers for
- common pat_index modes
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Daniele Ceraolo Spurio" <daniele.ceraolospurio@intel.com>
+Date: Mon, 16 Oct 2023 22:18:57 -0000
+Message-ID: <169749473715.13509.12218724034912654318@emeril.freedesktop.org>
+References: <20231016203750.156726-1-daniele.ceraolospurio@intel.com>
+In-Reply-To: <20231016203750.156726-1-daniele.ceraolospurio@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/xe?=
+ =?utf-8?q?=5Fhuc=5Fcopy=3A_Handle_multiple_GTs_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,162 +17,137 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Oct 16, 2023 at 03:14:44PM +0100, Matthew Auld wrote:
->For now just add uc, wt and wb for every platform. The wb mode should
->always be at least 1way coherent, if messing around with system memory.
->Also make non-matching platforms throw an error rather than trying to
->inherit the modes from previous platforms since they will likely be
->different.
->
->Signed-off-by: Matthew Auld <matthew.auld@intel.com>
->Cc: José Roberto de Souza <jose.souza@intel.com>
->Cc: Pallavi Mishra <pallavi.mishra@intel.com>
->---
-> lib/intel_pat.c | 77 +++++++++++++++++++++++++++++++++++++++++++++++++
-> lib/intel_pat.h | 19 ++++++++++++
-> lib/meson.build |  1 +
-> 3 files changed, 97 insertions(+)
-> create mode 100644 lib/intel_pat.c
-> create mode 100644 lib/intel_pat.h
->
->diff --git a/lib/intel_pat.c b/lib/intel_pat.c
->new file mode 100644
->index 000000000..2b892ee52
->--- /dev/null
->+++ b/lib/intel_pat.c
->@@ -0,0 +1,77 @@
->+// SPDX-License-Identifier: MIT
->+/*
->+ * Copyright © 2023 Intel Corporation
->+ */
->+
->+#include "intel_pat.h"
->+
->+#include "igt.h"
->+
->+struct intel_pat_cache {
->+	uint8_t uc; /* UC + COH_NONE */
->+	uint8_t wt; /* WT + COH_NONE */
->+	uint8_t wb; /* WB + COH_AT_LEAST_1WAY */
->+
->+	uint8_t max_index;
->+};
->+
->+static void intel_get_pat_idx(int fd, struct intel_pat_cache *pat)
->+{
->+	uint16_t dev_id = intel_get_drm_devid(fd);
->+
->+	if (intel_get_device_info(dev_id)->graphics_ver == 20) {
->+		pat->uc = 3;
->+		pat->wt = 15; /* Compressed + WB-transient */
->+		pat->wb = 2;
->+		pat->max_index = 31;
->+	} else if (IS_METEORLAKE(dev_id)) {
->+		pat->uc = 2;
->+		pat->wt = 1;
->+		pat->wb = 3;
->+		pat->max_index = 3;
->+	} else if (IS_PONTEVECCHIO(dev_id)) {
->+		pat->uc = 0;
->+		pat->wt = 2;
->+		pat->wb = 3;
->+		pat->max_index = 7;
->+	} else if (intel_graphics_ver(dev_id) <= IP_VER(12, 60)) {
->+		pat->uc = 3;
->+		pat->wt = 2;
->+		pat->wb = 0;
->+		pat->max_index = 3;
->+	} else {
->+		igt_critical("Platform is missing PAT settings for uc/wt/wb\n");
->+	}
->+}
->+
->+uint8_t intel_get_max_pat_index(int fd)
->+{
->+	struct intel_pat_cache pat = {};
->+
->+	intel_get_pat_idx(fd, &pat);
->+	return pat.max_index;
->+}
->+
->+uint8_t intel_get_pat_idx_uc(int fd)
->+{
->+	struct intel_pat_cache pat = {};
->+
->+	intel_get_pat_idx(fd, &pat);
->+	return pat.uc;
->+}
->+
->+uint8_t intel_get_pat_idx_wt(int fd)
->+{
->+	struct intel_pat_cache pat = {};
->+
->+	intel_get_pat_idx(fd, &pat);
->+	return pat.wt;
->+}
->+
->+uint8_t intel_get_pat_idx_wb(int fd)
->+{
->+	struct intel_pat_cache pat = {};
->+
->+	intel_get_pat_idx(fd, &pat);
->+	return pat.wb;
->+}
->diff --git a/lib/intel_pat.h b/lib/intel_pat.h
->new file mode 100644
->index 000000000..c24dbc275
->--- /dev/null
->+++ b/lib/intel_pat.h
->@@ -0,0 +1,19 @@
->+/* SPDX-License-Identifier: MIT */
->+/*
->+ * Copyright © 2023 Intel Corporation
->+ */
->+
->+#ifndef INTEL_PAT_H
->+#define INTEL_PAT_H
->+
->+#include <stdint.h>
->+
->+#define DEFAULT_PAT_INDEX ((uint8_t)-1) /* igt-core can pick 1way or better */
+--===============4230707557850667130==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-In the uapi pat_index is u16.
-But here and elsewhere in tests, we are using uint8_t.
-Why not use uint16_t?
+== Series Details ==
 
-Given pat_index 0 is valid, it forces user to always specify pat_index in
-vm_bind call (hence this DEFAULT_PAT_INDEX). Not sure if it is worth
-considering making pat_index a extension so that by not including this
-extension, XeKMD will use the default value? I am fine either way and 
-I understand uapi is already reviewed, but just thought of bringint it up.
+Series: tests/xe_huc_copy: Handle multiple GTs (rev3)
+URL   : https://patchwork.freedesktop.org/series/124654/
+State : success
 
-Niranjana
+== Summary ==
 
->+
->+uint8_t intel_get_max_pat_index(int fd);
->+
->+uint8_t intel_get_pat_idx_uc(int fd);
->+uint8_t intel_get_pat_idx_wt(int fd);
->+uint8_t intel_get_pat_idx_wb(int fd);
->+
->+#endif /* INTEL_PAT_H */
->diff --git a/lib/meson.build b/lib/meson.build
->index a7bccafc3..48466a2e9 100644
->--- a/lib/meson.build
->+++ b/lib/meson.build
->@@ -64,6 +64,7 @@ lib_sources = [
-> 	'intel_device_info.c',
-> 	'intel_mmio.c',
-> 	'intel_mocs.c',
->+	'intel_pat.c',
-> 	'ioctl_wrappers.c',
-> 	'media_spin.c',
-> 	'media_fill.c',
->-- 
->2.41.0
->
+CI Bug Log - changes from XEIGT_7541_BAT -> XEIGTPW_10009_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 2)
+------------------------------
+
+  Missing    (2): bat-dg2-oem2 bat-adlp-7 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10009_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@xe_exec_reset@virtual-close-fd-no-exec:
+    - bat-pvc-2:          [DMESG-WARN][1] ([Intel XE#696]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10009/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+  [Intel XE#696]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/696
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7541 -> IGTPW_10009
+  * Linux: xe-435-ab7cd1b4af95baba2d6ce5487d35ffda523e895d -> xe-436-9471d9e9efb920d70538445ffa07193d603b8cdb
+
+  IGTPW_10009: 10009
+  IGT_7541: fcddb77c3f8a77020f7f3b2660a66cae27cfaa2b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-435-ab7cd1b4af95baba2d6ce5487d35ffda523e895d: ab7cd1b4af95baba2d6ce5487d35ffda523e895d
+  xe-436-9471d9e9efb920d70538445ffa07193d603b8cdb: 9471d9e9efb920d70538445ffa07193d603b8cdb
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10009/index.html
+
+--===============4230707557850667130==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/xe_huc_copy: Handle multiple GTs (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124654/">https://patchwork.freedesktop.org/series/124654/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10009/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10009/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7541_BAT -&gt; XEIGTPW_10009_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 2)</h2>
+<p>Missing    (2): bat-dg2-oem2 bat-adlp-7 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10009_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_exec_reset@virtual-close-fd-no-exec:<ul>
+<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/696">Intel XE#696</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10009/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7541 -&gt; IGTPW_10009</li>
+<li>Linux: xe-435-ab7cd1b4af95baba2d6ce5487d35ffda523e895d -&gt; xe-436-9471d9e9efb920d70538445ffa07193d603b8cdb</li>
+</ul>
+<p>IGTPW_10009: 10009<br />
+  IGT_7541: fcddb77c3f8a77020f7f3b2660a66cae27cfaa2b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-435-ab7cd1b4af95baba2d6ce5487d35ffda523e895d: ab7cd1b4af95baba2d6ce5487d35ffda523e895d<br />
+  xe-436-9471d9e9efb920d70538445ffa07193d603b8cdb: 9471d9e9efb920d70538445ffa07193d603b8cdb</p>
+
+</body>
+</html>
+
+--===============4230707557850667130==--
