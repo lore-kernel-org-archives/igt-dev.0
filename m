@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DD66F10E1EB
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Oct 2023 14:17:10 +0000 (UTC)
+From: Matthew Auld <matthew.auld@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 16 Oct 2023 15:14:40 +0100
+Message-ID: <20231016141450.55936-3-matthew.auld@intel.com>
+In-Reply-To: <20231016141450.55936-1-matthew.auld@intel.com>
+References: <20231016141450.55936-1-matthew.auld@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
-Date: Mon, 16 Oct 2023 14:24:57 -0000
-Message-ID: <169746629793.13505.15664443856295215480@emeril.freedesktop.org>
-References: <20231016131752.39196-1-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20231016131752.39196-1-kamil.konieczny@linux.intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
- =?utf-8?q?ools/intel=5Fgpu=5Ffrequency=3A_fix_device_opening?=
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v3 02/12] lib/igt_fb: mark buffers as SCANOUT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,67 +19,34 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Display buffers likely will want WC, instead of the default WB on the
+CPU side, given that display engine is incoherent with CPU caches.
 
-Series: tools/intel_gpu_frequency: fix device opening
-URL   : https://patchwork.freedesktop.org/series/125170/
-State : warning
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: José Roberto de Souza <jose.souza@intel.com>
+Cc: Pallavi Mishra <pallavi.mishra@intel.com>
+Reviewed-by: Pallavi Mishra <pallavi.mishra@intel.com>
+---
+ lib/igt_fb.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-== Summary ==
-
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1011498 for the overview.
-
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50376860):
-  Removing installdir/
-  Removing undocumented_tests.txt
-  
-  Skipping Git submodules setup
-  section_end:1697465840:get_sources
-  section_start:1697465840:step_script
-  Executing "step_script" stage of the job script
-  Using docker image sha256:4a4103f1a476d355d866b481ff96ac05a32a3a715cefcc1cbc1356a8959fb5f8 for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-armhf:commit-b5e66552e5c58d9c4a430eaa38f8b494c454b7b8 with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-armhf@sha256:3a0ffeb305cdc6ef081dde81d86afee76102e74f76c0f7bd5685fc2457ec707b ...
-  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh  | sh
-  Checking if the user of the pipeline is allowed...
-  Checking if the job's project is part of a well-known group...
-  Thank you for contributing to freedesktop.org
-  $ export PKG_CONFIG_PATH=/usr/lib/arm-linux-gnueabihf/pkgconfig/
-  $ meson --cross-file meson-cross-armhf.txt build
-  section_end:1697465844:step_script
-  section_start:1697465844:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1697465846:cleanup_file_variables
-  ERROR: Job failed: exit code 137
-  
-
-build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50376855):
-  Transaction test succeeded.
-  Running transaction
-    Preparing        :                                                        1/1 
-    Erasing          : meson-0.52.0-1.module_f31+6771+f5d842eb.noarch         1/1 
-    Running scriptlet: meson-0.52.0-1.module_f31+6771+f5d842eb.noarch         1/1 
-    Verifying        : meson-0.52.0-1.module_f31+6771+f5d842eb.noarch         1/1 
-  
-  Removed:
-    meson-0.52.0-1.module_f31+6771+f5d842eb.noarch                                
-  
-  Complete!
-  $ pip install /usr/src/meson-*.tar.gz
-  WARNING: Running pip install with root privileges is generally not a good idea. Try `pip install --user` instead.
-  Processing /usr/src/meson-0.47.2.tar.gz
-  section_end:1697465843:step_script
-  section_start:1697465843:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1697465845:cleanup_file_variables
-  ERROR: Job failed: exit code 137
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1011498
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index e82393909..0c3c67979 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -1206,7 +1206,8 @@ static int create_bo_for_fb(struct igt_fb *fb, bool prefer_sysmem)
+ 			igt_assert(err == 0 || err == -EOPNOTSUPP);
+ 		} else if (is_xe_device(fd)) {
+ 			fb->gem_handle = xe_bo_create_flags(fd, 0, fb->size,
+-							visible_vram_if_possible(fd, 0));
++							    visible_vram_if_possible(fd, 0) |
++							    XE_GEM_CREATE_FLAG_SCANOUT);
+ 		} else if (is_vc4_device(fd)) {
+ 			fb->gem_handle = igt_vc4_create_bo(fd, fb->size);
+ 
+-- 
+2.41.0
