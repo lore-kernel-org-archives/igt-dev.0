@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0BFCD10E123
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Oct 2023 07:29:03 +0000 (UTC)
-From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
-To: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Ch, Sai
- Gowtham" <sai.gowtham.ch@intel.com>
-Date: Mon, 16 Oct 2023 07:28:57 +0000
-Message-ID: <MW3PR11MB4748723D8F4AEF85B45F8C99AED7A@MW3PR11MB4748.namprd11.prod.outlook.com>
-References: <20231016051016.2009725-1-priyanka.dandamudi@intel.com>
-In-Reply-To: <20231016051016.2009725-1-priyanka.dandamudi@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A3A3010E13E
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Oct 2023 08:31:48 +0000 (UTC)
+Message-ID: <65ba6395-2428-4371-b3c2-b38a13bb131a@intel.com>
+Date: Mon, 16 Oct 2023 14:01:42 +0530
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe/xe_access_counter: Negative
- access counter test
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ igt-dev@lists.freedesktop.org
+References: <20231010114726.393671-1-juhapekka.heikkila@gmail.com>
+Content-Language: en-US
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20231010114726.393671-1-juhapekka.heikkila@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane: test odd size planar
+ yuv
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,68 +26,122 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRGFuZGFtdWRpLCBQcml5
-YW5rYSA8cHJpeWFua2EuZGFuZGFtdWRpQGludGVsLmNvbT4NCj4gU2VudDogTW9uZGF5LCBPY3Rv
-YmVyIDE2LCAyMDIzIDEwOjQwIEFNDQo+IFRvOiBLdW1hciwgSmFuZ2EgUmFodWwgPGphbmdhLnJh
-aHVsLmt1bWFyQGludGVsLmNvbT47IGlndC0NCj4gZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZzsg
-Q2gsIFNhaSBHb3d0aGFtIDxzYWkuZ293dGhhbS5jaEBpbnRlbC5jb20+Ow0KPiBEYW5kYW11ZGks
-IFByaXlhbmthIDxwcml5YW5rYS5kYW5kYW11ZGlAaW50ZWwuY29tPg0KPiBTdWJqZWN0OiBbUEFU
-Q0ggaS1nLXRdIHRlc3RzL3hlL3hlX2FjY2Vzc19jb3VudGVyOiBOZWdhdGl2ZSBhY2Nlc3MgY291
-bnRlcg0KPiB0ZXN0DQo+IA0KPiBGcm9tOiBQcml5YW5rYSBEYW5kYW11ZGkgPHByaXlhbmthLmRh
-bmRhbXVkaUBpbnRlbC5jb20+DQo+IA0KPiBBZGRlZCBhIG5lZ2F0aXZlIHRlc3QgcmVsYXRlZCB0
-byBhY2Nlc3MgY291bnRlci4NCj4gSXQgdHJpZXMgdG8gdGVzdCBHUkFOVUxBUklUWSBhY2Nlc3Mg
-Y291bnRlciBwYXJhbWV0ZXIuDQo+IEl0IHNob3VsZCByZXR1cm4gLUVJTlZBTCBwYXJhbWV0ZXIg
-Zm9yIGludmFsaWQgdmFsdWVzLg0KPiANCj4gdjI6IEFkZGVkIHN1YnRlc3QgZGVzY3JpcHRpb24u
-DQo+IA0KPiB2MzogQWRkZWQgbWluIHZhbHVlIC0xIHRvIGNoZWNrIGZvciBtaW4gZ3JhbnVsYXJp
-dHkgcmFuZ2UuKFJhaHVsKQ0KPiANCj4gQ2M6IEphbmdhIFJhaHVsIEt1bWFyIDxqYW5nYS5yYWh1
-bC5rdW1hckBpbnRlbC5jb20+DQo+IENjOiBTYWkgR293dGhhbSBDaCA8c2FpLmdvd3RoYW0uY2hA
-aW50ZWwuY29tPg0KPiBTaWduZWQtb2ZmLWJ5OiBQcml5YW5rYSBEYW5kYW11ZGkgPHByaXlhbmth
-LmRhbmRhbXVkaUBpbnRlbC5jb20+DQoNCg0KUmV2aWV3ZWQtYnk6IEphbmdhIFJhaHVsIEt1bWFy
-PGphbmdhLnJhaHVsLmt1bWFyQGludGVsLmNvbT4NCg0KPiAtLS0NCj4gIHRlc3RzL2ludGVsL3hl
-X2FjY2Vzc19jb3VudGVyLmMgfCA3MiArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysN
-Cj4gIHRlc3RzL21lc29uLmJ1aWxkICAgICAgICAgICAgICAgfCAgMSArDQo+ICAyIGZpbGVzIGNo
-YW5nZWQsIDczIGluc2VydGlvbnMoKykNCj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCB0ZXN0cy9pbnRl
-bC94ZV9hY2Nlc3NfY291bnRlci5jDQo+IA0KPiBkaWZmIC0tZ2l0IGEvdGVzdHMvaW50ZWwveGVf
-YWNjZXNzX2NvdW50ZXIuYyBiL3Rlc3RzL2ludGVsL3hlX2FjY2Vzc19jb3VudGVyLmMNCj4gbmV3
-IGZpbGUgbW9kZSAxMDA2NDQgaW5kZXggMDAwMDAwMDAwLi4zNjYwMTg0YTgNCj4gLS0tIC9kZXYv
-bnVsbA0KPiArKysgYi90ZXN0cy9pbnRlbC94ZV9hY2Nlc3NfY291bnRlci5jDQo+IEBAIC0wLDAg
-KzEsNzIgQEANCj4gKy8vIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBNSVQNCj4gKy8qDQo+ICsg
-KiBDb3B5cmlnaHQgwqkgMjAyMyBJbnRlbCBDb3Jwb3JhdGlvbg0KPiArICovDQo+ICsNCj4gKy8q
-Kg0KPiArICogVEVTVDogQmFzaWMgdGVzdHMgZm9yIGFjY2VzcyBjb3VudGVyIGZ1bmN0aW9uYWxp
-dHkNCj4gKyAqIENhdGVnb3J5OiBTb2Z0d2FyZSBidWlsZGluZyBibG9jaw0KPiArICogUnVuIHR5
-cGU6IEZVTEwNCj4gKyAqIFN1Yi1jYXRlZ29yeTogYWNjZXNzIGNvdW50ZXINCj4gKyAqIEZ1bmN0
-aW9uYWxpdHk6IGFjY2VzcyBjb3VudGVyDQo+ICsgKiBUZXN0IGNhdGVnb3J5OiBmdW5jdGlvbmFs
-aXR5IHRlc3QNCj4gKyAqIFNVQlRFU1Q6IGludmFsaWQtcGFyYW0NCj4gKyAqIERlc2NyaXB0aW9u
-OiBHaXZpbmcgaW52YWxpZCBncmFudWxhcml0eSBzaXplIHBhcmFtZXRlciBhbmQgY2hlY2tzIGZv
-cg0KPiBpbnZhbGlkIGVycm9yLg0KPiArICovDQo+ICsNCj4gKyNpbmNsdWRlICJpZ3QuaCINCj4g
-KyNpbmNsdWRlICJsaWIvaWd0X3N5bmNvYmouaCINCj4gKyNpbmNsdWRlICJsaWIvaW50ZWxfcmVn
-LmgiDQo+ICsjaW5jbHVkZSAieGVfZHJtLmgiDQo+ICsNCj4gKyNpbmNsdWRlICJ4ZS94ZV9pb2N0
-bC5oIg0KPiArI2luY2x1ZGUgInhlL3hlX3F1ZXJ5LmgiDQo+ICsjaW5jbHVkZSA8c3RyaW5nLmg+
-DQo+ICsNCj4gKyNkZWZpbmUgU1pfNjRNICAzDQo+ICtpZ3RfbWFpbg0KPiArew0KPiArCWludCBm
-ZDsNCj4gKw0KPiArCWlndF9maXh0dXJlIHsNCj4gKwkJdWludDE2X3QgZGV2aWQ7DQo+ICsNCj4g
-KwkJZmQgPSBkcm1fb3Blbl9kcml2ZXIoRFJJVkVSX1hFKTsNCj4gKwkJZGV2aWQgPSBpbnRlbF9n
-ZXRfZHJtX2RldmlkKGZkKTsNCj4gKwkJaWd0X3JlcXVpcmUoSVNfUE9OVEVWRUNDSElPKGRldmlk
-KSk7DQo+ICsJfQ0KPiArDQo+ICsJaWd0X3N1YnRlc3QoImludmFsaWQtcGFyYW0iKSB7DQo+ICsJ
-CXN0cnVjdCBkcm1feGVfZW5naW5lX2NsYXNzX2luc3RhbmNlIGluc3RhbmNlID0gew0KPiArCQkJ
-IC5lbmdpbmVfY2xhc3MgPSBEUk1fWEVfRU5HSU5FX0NMQVNTX1ZNX0JJTkQsDQo+ICsJCSB9Ow0K
-PiArDQo+ICsJCWludCBlcnI7DQo+ICsJCWNvbnN0IGludCBleHBlY3RlZCA9IC1FSU5WQUw7DQo+
-ICsNCj4gKwkJc3RydWN0IGRybV94ZV9leHRfZXhlY19xdWV1ZV9zZXRfcHJvcGVydHkgZXh0ID0g
-ew0KPiArCQkJLmJhc2UubmV4dF9leHRlbnNpb24gPSAwLA0KPiArCQkJLmJhc2UubmFtZSA9DQo+
-IFhFX0VYRUNfUVVFVUVfRVhURU5TSU9OX1NFVF9QUk9QRVJUWSwNCj4gKwkJCS5wcm9wZXJ0eSA9
-DQo+IFhFX0VYRUNfUVVFVUVfU0VUX1BST1BFUlRZX0FDQ19HUkFOVUxBUklUWSwNCj4gKwkJCS52
-YWx1ZSA9IFNaXzY0TSArIDEsDQo+ICsJCX07DQo+ICsNCj4gKwkJc3RydWN0IGRybV94ZV9leGVj
-X3F1ZXVlX2NyZWF0ZSBjcmVhdGUgPSB7DQo+ICsJCQkuZXh0ZW5zaW9ucyA9IHRvX3VzZXJfcG9p
-bnRlcigmZXh0KSwNCj4gKwkJCS52bV9pZCA9IHhlX3ZtX2NyZWF0ZShmZCwgMCwgMCksDQo+ICsJ
-CQkud2lkdGggPSAxLA0KPiArCQkJLm51bV9wbGFjZW1lbnRzID0gMSwNCj4gKwkJCS5pbnN0YW5j
-ZXMgPSB0b191c2VyX3BvaW50ZXIoJmluc3RhbmNlKSwNCj4gKwkJfTsNCj4gKw0KPiArCQllcnIg
-PSBpZ3RfaW9jdGwoZmQsIERSTV9JT0NUTF9YRV9FWEVDX1FVRVVFX0NSRUFURSwNCj4gJmNyZWF0
-ZSk7DQo+ICsJCWlndF9hc3NlcnRfZXEoZXJyLCBleHBlY3RlZCk7DQo+ICsNCj4gKwkJZXh0LnZh
-bCA9IC0xOw0KPiArCQllcnIgPSBpZ3RfaW9jdGwoZmQsIERSTV9JT0NUTF9YRV9FWEVDX1FVRVVF
-X0NSRUFURSwNCj4gJmNyZWF0ZSk7DQo+ICsJCWlndF9hc3NlcnRfZXEoZXJyLCBleHBlY3RlZCk7
-DQo+ICsJfQ0KPiArDQo+ICsJaWd0X2ZpeHR1cmUNCj4gKwkJZHJtX2Nsb3NlX2RyaXZlcihmZCk7
-DQo+ICt9DQo+IGRpZmYgLS1naXQgYS90ZXN0cy9tZXNvbi5idWlsZCBiL3Rlc3RzL21lc29uLmJ1
-aWxkIGluZGV4DQo+IDA1ZmRhN2Q5NC4uYWEwYjRlODg4IDEwMDY0NA0KPiAtLS0gYS90ZXN0cy9t
-ZXNvbi5idWlsZA0KPiArKysgYi90ZXN0cy9tZXNvbi5idWlsZA0KPiBAQCAtMjcxLDYgKzI3MSw3
-IEBAIGludGVsX2ttc19wcm9ncyA9IFsNCj4gIF0NCj4gDQo+ICBpbnRlbF94ZV9wcm9ncyA9IFsN
-Cj4gKwkneGVfYWNjZXNzX2NvdW50ZXInLA0KPiAgCSd4ZV9jY3MnLA0KPiAgCSd4ZV9jcmVhdGUn
-LA0KPiAgCSd4ZV9jb21wdXRlJywNCj4gLS0NCj4gMi4yNS4xDQoNCg==
+LGTM
+
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+
+On 10-Oct-23 5:17 PM, Juha-Pekka Heikkila wrote:
+> Test odd size planar yuv formats are allowed on graphics ver >= 20
+> 
+> Rename invalid pixel format settings test to planar pixel format settings
+> test to refect the changes.
+> 
+> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> ---
+>   tests/kms_plane.c | 43 +++++++++++++++++++++++++++++++------------
+>   1 file changed, 31 insertions(+), 12 deletions(-)
+> 
+> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+> index 9a515559c..a13fcc36e 100644
+> --- a/tests/kms_plane.c
+> +++ b/tests/kms_plane.c
+> @@ -1229,27 +1229,30 @@ test_pixel_formats(data_t *data, enum pipe pipe)
+>   }
+>   
+>   /**
+> - * SUBTEST: invalid-pixel-format-settings
+> - * Description: verify invalid settings for pixel format are not accepted
+> + * SUBTEST: planar-pixel-format-settings
+> + * Description: verify planar settings for pixel format are handled correctly
+>    * Driver requirement: i915, xe
+>    * Functionality: pixel_format, plane
+>    * Mega feature: General Display Features
+>    * Test category: functionality test
+>    */
+> -static void test_invalid_settings(data_t *data)
+> +static void test_planar_settings(data_t *data)
+>   {
+>   	enum pipe pipe = PIPE_A;
+>   	igt_output_t *output;
+>   	igt_fb_t fb;
+>   	igt_plane_t *primary;
+> +	int devid;
+>   	int rval;
+>   
+>   	/*
+>   	 * If here is added non-intel tests below require will need to be
+>   	 * changed to if(..)
+>   	 */
+> +	igt_require(data->display.is_atomic);
+>   	igt_require_intel(data->drm_fd);
+> -	igt_require(intel_display_ver(intel_get_drm_devid(data->drm_fd)) >= 9);
+> +	devid = intel_get_drm_devid(data->drm_fd);
+> +	igt_require(intel_display_ver(devid) >= 9);
+>   
+>   	output = igt_get_single_output_for_pipe(&data->display, pipe);
+>   	igt_require(output);
+> @@ -1257,17 +1260,26 @@ static void test_invalid_settings(data_t *data)
+>   	igt_output_set_pipe(output, pipe);
+>   	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+>   
+> -	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+> +	igt_display_commit_atomic(&data->display,
+> +				  DRM_MODE_ATOMIC_ALLOW_MODESET,
+> +				  NULL);
+>   
+>   	/* test against intel_plane_check_src_coordinates() in i915 */
+>   	if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
+>   				     DRM_FORMAT_MOD_LINEAR)) {
+> +		int expected_rval = -EINVAL;
+> +
+> +		if (intel_display_ver(devid) >= 20)
+> +			expected_rval = 0;
+> +
+>   		igt_create_fb(data->drm_fd, 257, 256,
+>   			      DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &fb);
+>   		igt_plane_set_fb(primary, &fb);
+> -		rval = igt_display_try_commit_atomic(&data->display, 0, NULL);
+> +		rval = igt_display_try_commit_atomic(&data->display,
+> +						     DRM_MODE_ATOMIC_ALLOW_MODESET,
+> +						     NULL);
+>   		igt_remove_fb(data->drm_fd, &fb);
+> -		igt_assert_f(rval == -EINVAL, "Odd width NV12 framebuffer\n");
+> +		igt_assert_f(rval == expected_rval, "Odd width NV12 framebuffer\n");
+>   	} else {
+>   		igt_debug("Odd width NV12 framebuffer test skipped\n");
+>   	}
+> @@ -1275,12 +1287,19 @@ static void test_invalid_settings(data_t *data)
+>   	/* test against intel_plane_check_src_coordinates() in i915 */
+>   	if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
+>   				     DRM_FORMAT_MOD_LINEAR)) {
+> +		int expected_rval = -EINVAL;
+> +
+> +		if (intel_display_ver(devid) >= 20)
+> +			expected_rval = 0;
+> +
+>   		igt_create_fb(data->drm_fd, 256, 257,
+>   			      DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &fb);
+>   		igt_plane_set_fb(primary, &fb);
+> -		rval = igt_display_try_commit_atomic(&data->display, 0, NULL);
+> +		rval = igt_display_try_commit_atomic(&data->display,
+> +						     DRM_MODE_ATOMIC_ALLOW_MODESET,
+> +						     NULL);
+>   		igt_remove_fb(data->drm_fd, &fb);
+> -		igt_assert_f(rval == -EINVAL, "Odd height NV12 framebuffer\n");
+> +		igt_assert_f(rval == expected_rval, "Odd height NV12 framebuffer\n");
+>   	} else {
+>   		igt_debug("Odd height NV12 framebuffer test skipped\n");
+>   	}
+> @@ -1367,9 +1386,9 @@ run_tests_for_pipe_plane(data_t *data)
+>   		run_test(data, test_plane_panning);
+>   	}
+>   
+> -	igt_describe("verify invalid settings for pixel format are not accepted");
+> -	igt_subtest_f("invalid-pixel-format-settings")
+> -		test_invalid_settings(data);
+> +	igt_describe("verify planar settings for pixel format are accepted or rejected correctly");
+> +	igt_subtest_f("planar-pixel-format-settings")
+> +		test_planar_settings(data);
+>   }
+>   
+>   static int opt_handler(int opt, int opt_index, void *_data)
