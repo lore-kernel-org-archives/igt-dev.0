@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============0671284488344670701=="
+ boundary="===============2549904611477521363=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
-Date: Mon, 16 Oct 2023 19:31:13 -0000
-Message-ID: <169748467323.13510.6523745507945909352@emeril.freedesktop.org>
-References: <20231016134852.413678-1-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20231016134852.413678-1-juhapekka.heikkila@gmail.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgbGliL2ln?=
- =?utf-8?q?t=5Ffb/xe=3A_use_engine_copy_where_available?=
+To: "Matthew Auld" <matthew.auld@intel.com>
+Date: Mon, 16 Oct 2023 20:03:12 -0000
+Message-ID: <169748659258.13509.14412631247018078803@emeril.freedesktop.org>
+References: <20231016141450.55936-1-matthew.auld@intel.com>
+In-Reply-To: <20231016141450.55936-1-matthew.auld@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_PAT_and_?=
+ =?utf-8?q?cache_coherency_support_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,20 +23,20 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0671284488344670701==
+--===============2549904611477521363==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: lib/igt_fb/xe: use engine copy where available
-URL   : https://patchwork.freedesktop.org/series/125171/
+Series: PAT and cache coherency support (rev3)
+URL   : https://patchwork.freedesktop.org/series/124667/
 State : failure
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_13762 -> IGTPW_10005
+CI Bug Log - changes from XEIGT_7541_BAT -> XEIGTPW_10006_BAT
 ====================================================
 
 Summary
@@ -44,204 +44,769 @@ Summary
 
   **FAILURE**
 
-  Serious unknown changes coming with IGTPW_10005 absolutely need to be
+  Serious unknown changes coming with XEIGTPW_10006_BAT absolutely need to be
   verified manually.
   
   If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_10005, please notify your bug team (lgci.bug.filing@intel.com) to allow them
+  introduced in XEIGTPW_10006_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them
   to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/index.html
+  
 
-Participating hosts (33 -> 32)
+Participating hosts (4 -> 4)
 ------------------------------
 
-  Additional (2): bat-dg2-9 bat-jsl-1 
-  Missing    (3): fi-kbl-soraka fi-ilk-650 fi-apl-guc 
+  No changes in participating hosts
 
 Possible new issues
 -------------------
 
-  Here are the unknown changes that may have been introduced in IGTPW_10005:
+  Here are the unknown changes that may have been introduced in XEIGTPW_10006_BAT:
 
 ### IGT changes ###
 
 #### Possible regressions ####
 
-  * igt@core_hotunplug@unbind-rebind:
-    - bat-jsl-1:          NOTRUN -> [INCOMPLETE][1]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-jsl-1/igt@core_hotunplug@unbind-rebind.html
+  * igt@kms_addfb_basic@addfb25-yf-tiled-legacy:
+    - bat-dg2-oem2:       [PASS][1] -> [WARN][2] +7 other tests warn
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html
 
-  * igt@gem_exec_parallel@engines@contexts:
-    - bat-adln-1:         [PASS][2] -> [INCOMPLETE][3]
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13762/bat-adln-1/igt@gem_exec_parallel@engines@contexts.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-adln-1/igt@gem_exec_parallel@engines@contexts.html
+  * igt@kms_addfb_basic@too-high:
+    - bat-adlp-7:         [PASS][3] -> [WARN][4] +8 other tests warn
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-adlp-7/igt@kms_addfb_basic@too-high.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-adlp-7/igt@kms_addfb_basic@too-high.html
 
-  * igt@i915_module_load@load:
-    - bat-kbl-2:          [PASS][4] -> [INCOMPLETE][5]
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13762/bat-kbl-2/igt@i915_module_load@load.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-kbl-2/igt@i915_module_load@load.html
+  * igt@xe_intel_bb@create-in-region:
+    - bat-dg2-oem2:       [PASS][5] -> [FAIL][6] +147 other tests fail
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-dg2-oem2/igt@xe_intel_bb@create-in-region.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-dg2-oem2/igt@xe_intel_bb@create-in-region.html
+
+  * igt@xe_intel_bb@intel-bb-blit-y:
+    - bat-pvc-2:          [PASS][7] -> [FAIL][8] +80 other tests fail
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-pvc-2/igt@xe_intel_bb@intel-bb-blit-y.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-pvc-2/igt@xe_intel_bb@intel-bb-blit-y.html
+
+  * igt@xe_intel_bb@offset-control:
+    - bat-adlp-7:         [PASS][9] -> [FAIL][10] +84 other tests fail
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-adlp-7/igt@xe_intel_bb@offset-control.html
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-adlp-7/igt@xe_intel_bb@offset-control.html
+
+  * {igt@xe_pat@pat-index-common-blt@system-system-wt-uc} (NEW):
+    - bat-adlp-7:         NOTRUN -> [FAIL][11] +74 other tests fail
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-adlp-7/igt@xe_pat@pat-index-common-blt@system-system-wt-uc.html
+
+  * {igt@xe_pat@pat-index-common-blt@vram01-system-wb-uc} (NEW):
+    - bat-pvc-2:          NOTRUN -> [FAIL][12] +67 other tests fail
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-pvc-2/igt@xe_pat@pat-index-common-blt@vram01-system-wb-uc.html
+
+  * {igt@xe_pat@pat-index-common-blt@vram01-vram01-uc-uc} (NEW):
+    - bat-atsm-2:         NOTRUN -> [FAIL][13] +132 other tests fail
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-atsm-2/igt@xe_pat@pat-index-common-blt@vram01-vram01-uc-uc.html
+
+  * {igt@xe_pat@pat-index-common-render@system-vram01-wb-cpu-wc-wb} (NEW):
+    - bat-dg2-oem2:       NOTRUN -> [FAIL][14] +132 other tests fail
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-dg2-oem2/igt@xe_pat@pat-index-common-render@system-vram01-wb-cpu-wc-wb.html
+
+  * {igt@xe_pat@pat-index-xe2-blt} (NEW):
+    - bat-atsm-2:         NOTRUN -> [SKIP][15] +1 other test skip
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-atsm-2/igt@xe_pat@pat-index-xe2-blt.html
+    - bat-adlp-7:         NOTRUN -> [SKIP][16] +1 other test skip
+   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-adlp-7/igt@xe_pat@pat-index-xe2-blt.html
+
+  * {igt@xe_pat@pat-index-xe2-render} (NEW):
+    - bat-pvc-2:          NOTRUN -> [SKIP][17] +2 other tests skip
+   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-pvc-2/igt@xe_pat@pat-index-xe2-render.html
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][18] +1 other test skip
+   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-dg2-oem2/igt@xe_pat@pat-index-xe2-render.html
+
+  * igt@xe_prime_self_import@basic-with_one_bo:
+    - bat-atsm-2:         [PASS][19] -> [FAIL][20] +88 other tests fail
+   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-atsm-2/igt@xe_prime_self_import@basic-with_one_bo.html
+   [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-atsm-2/igt@xe_prime_self_import@basic-with_one_bo.html
 
   
+#### Warnings ####
+
+  * igt@kms_addfb_basic@basic-y-tiled-legacy:
+    - bat-adlp-7:         [FAIL][21] ([Intel XE#609]) -> [FAIL][22] +1 other test fail
+   [21]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-adlp-7/igt@kms_addfb_basic@basic-y-tiled-legacy.html
+   [22]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-adlp-7/igt@kms_addfb_basic@basic-y-tiled-legacy.html
+    - bat-dg2-oem2:       [SKIP][23] ([Intel XE#624]) -> [FAIL][24]
+   [23]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-dg2-oem2/igt@kms_addfb_basic@basic-y-tiled-legacy.html
+   [24]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-dg2-oem2/igt@kms_addfb_basic@basic-y-tiled-legacy.html
+
+  * igt@kms_addfb_basic@tile-pitch-mismatch:
+    - bat-dg2-oem2:       [FAIL][25] ([Intel XE#609]) -> [FAIL][26]
+   [25]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-dg2-oem2/igt@kms_addfb_basic@tile-pitch-mismatch.html
+   [26]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-dg2-oem2/igt@kms_addfb_basic@tile-pitch-mismatch.html
+
+  * igt@kms_cursor_legacy@basic-flip-before-cursor-atomic:
+    - bat-adlp-7:         [FAIL][27] ([i915#2346]) -> [FAIL][28]
+   [27]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html
+   [28]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
+    - bat-adlp-7:         [FAIL][29] ([Intel XE#480]) -> [FAIL][30] +1 other test fail
+   [29]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+   [30]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [INCOMPLETE][31] ([Intel XE#632]) -> [FAIL][32]
+   [31]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [32]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+    - bat-dg2-oem2:       [FAIL][33] ([Intel XE#608]) -> [FAIL][34]
+   [33]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html
+   [34]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
+    - bat-dg2-oem2:       [FAIL][35] ([Intel XE#400]) -> [FAIL][36] +2 other tests fail
+   [35]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
+   [36]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
+
+  * igt@xe_evict@evict-beng-small-external:
+    - bat-pvc-2:          [FAIL][37] ([Intel XE#389]) -> [FAIL][38] +3 other tests fail
+   [37]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-pvc-2/igt@xe_evict@evict-beng-small-external.html
+   [38]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-pvc-2/igt@xe_evict@evict-beng-small-external.html
+
+  * igt@xe_evict@evict-small-external-cm:
+    - bat-pvc-2:          [DMESG-FAIL][39] ([Intel XE#482]) -> [FAIL][40] +3 other tests fail
+   [39]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-pvc-2/igt@xe_evict@evict-small-external-cm.html
+   [40]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-pvc-2/igt@xe_evict@evict-small-external-cm.html
+
+  * igt@xe_exec_reset@virtual-close-fd-no-exec:
+    - bat-pvc-2:          [DMESG-WARN][41] ([Intel XE#696]) -> [FAIL][42]
+   [41]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html
+   [42]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html
+
+  
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * {igt@xe_exec_basic@twice-bindexecqueue}:
+    - bat-adlp-7:         [PASS][43] -> [FAIL][44] +5 other tests fail
+   [43]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-adlp-7/igt@xe_exec_basic@twice-bindexecqueue.html
+   [44]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-adlp-7/igt@xe_exec_basic@twice-bindexecqueue.html
+
+  * {igt@xe_exec_basic@twice-bindexecqueue-rebind}:
+    - bat-dg2-oem2:       [PASS][45] -> [FAIL][46] +5 other tests fail
+   [45]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-dg2-oem2/igt@xe_exec_basic@twice-bindexecqueue-rebind.html
+   [46]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-dg2-oem2/igt@xe_exec_basic@twice-bindexecqueue-rebind.html
+
+  * {igt@xe_exec_compute_mode@twice-bindexecqueue}:
+    - bat-atsm-2:         [PASS][47] -> [FAIL][48] +5 other tests fail
+   [47]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-atsm-2/igt@xe_exec_compute_mode@twice-bindexecqueue.html
+   [48]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-atsm-2/igt@xe_exec_compute_mode@twice-bindexecqueue.html
+
+  * {igt@xe_exec_fault_mode@twice-bindexecqueue-rebind}:
+    - bat-pvc-2:          [PASS][49] -> [FAIL][50] +11 other tests fail
+   [49]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-pvc-2/igt@xe_exec_fault_mode@twice-bindexecqueue-rebind.html
+   [50]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-pvc-2/igt@xe_exec_fault_mode@twice-bindexecqueue-rebind.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between XEIGT_7541_BAT and XEIGTPW_10006_BAT:
+
+### New IGT tests (135) ###
+
+  * igt@xe_mmap@cpu-caching-coh:
+    - Statuses : 4 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-all:
+    - Statuses : 4 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt:
+    - Statuses : 4 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-system-uc-uc:
+    - Statuses : 4 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-system-uc-wb:
+    - Statuses : 4 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-system-uc-wb-cpu-wc:
+    - Statuses : 4 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-system-uc-wt:
+    - Statuses : 4 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-system-wb-cpu-wc-uc:
+    - Statuses : 4 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-system-wb-cpu-wc-wb:
+    - Statuses : 4 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-system-wb-cpu-wc-wb-cpu-wc:
+    - Statuses : 4 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-system-wb-cpu-wc-wt:
+    - Statuses : 4 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-system-wb-uc:
+    - Statuses : 4 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-system-wb-wb:
+    - Statuses : 4 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-system-wb-wb-cpu-wc:
+    - Statuses : 4 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-system-wb-wt:
+    - Statuses : 4 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-system-wt-uc:
+    - Statuses : 4 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-system-wt-wb:
+    - Statuses : 4 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-system-wt-wb-cpu-wc:
+    - Statuses : 4 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-system-wt-wt:
+    - Statuses : 4 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-vram01-uc-uc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-vram01-uc-wb:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-vram01-uc-wb-cpu-wc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-vram01-uc-wt:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-vram01-wb-cpu-wc-uc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-vram01-wb-cpu-wc-wb:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-vram01-wb-cpu-wc-wb-cpu-wc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-vram01-wb-cpu-wc-wt:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-vram01-wb-uc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-vram01-wb-wb:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-vram01-wb-wb-cpu-wc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-vram01-wb-wt:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-vram01-wt-uc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-vram01-wt-wb:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-vram01-wt-wb-cpu-wc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@system-vram01-wt-wt:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-system-uc-uc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-system-uc-wb:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-system-uc-wb-cpu-wc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-system-uc-wt:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-system-wb-cpu-wc-uc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-system-wb-cpu-wc-wb:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-system-wb-cpu-wc-wb-cpu-wc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-system-wb-cpu-wc-wt:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-system-wb-uc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-system-wb-wb:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-system-wb-wb-cpu-wc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-system-wb-wt:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-system-wt-uc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-system-wt-wb:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-system-wt-wb-cpu-wc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-system-wt-wt:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-vram01-uc-uc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-vram01-uc-wb:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-vram01-uc-wb-cpu-wc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-vram01-uc-wt:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-vram01-wb-cpu-wc-uc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-vram01-wb-cpu-wc-wb:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-vram01-wb-cpu-wc-wb-cpu-wc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-vram01-wb-cpu-wc-wt:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-vram01-wb-uc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-vram01-wb-wb:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-vram01-wb-wb-cpu-wc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-vram01-wb-wt:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-vram01-wt-uc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-vram01-wt-wb:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-vram01-wt-wb-cpu-wc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-blt@vram01-vram01-wt-wt:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render:
+    - Statuses : 3 fail(s) 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-system-uc-uc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-system-uc-wb:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-system-uc-wb-cpu-wc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-system-uc-wt:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-system-wb-cpu-wc-uc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-system-wb-cpu-wc-wb:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-system-wb-cpu-wc-wb-cpu-wc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-system-wb-cpu-wc-wt:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-system-wb-uc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-system-wb-wb:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-system-wb-wb-cpu-wc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-system-wb-wt:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-system-wt-uc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-system-wt-wb:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-system-wt-wb-cpu-wc:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-system-wt-wt:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-vram01-uc-uc:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-vram01-uc-wb:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-vram01-uc-wb-cpu-wc:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-vram01-uc-wt:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-vram01-wb-cpu-wc-uc:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-vram01-wb-cpu-wc-wb:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-vram01-wb-cpu-wc-wb-cpu-wc:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-vram01-wb-cpu-wc-wt:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-vram01-wb-uc:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-vram01-wb-wb:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-vram01-wb-wb-cpu-wc:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-vram01-wb-wt:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-vram01-wt-uc:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-vram01-wt-wb:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-vram01-wt-wb-cpu-wc:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@system-vram01-wt-wt:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-system-uc-uc:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-system-uc-wb:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-system-uc-wb-cpu-wc:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-system-uc-wt:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-system-wb-cpu-wc-uc:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-system-wb-cpu-wc-wb:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-system-wb-cpu-wc-wb-cpu-wc:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-system-wb-cpu-wc-wt:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-system-wb-uc:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-system-wb-wb:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-system-wb-wb-cpu-wc:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-system-wb-wt:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-system-wt-uc:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-system-wt-wb:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-system-wt-wb-cpu-wc:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-system-wt-wt:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-vram01-uc-uc:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-vram01-uc-wb:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-vram01-uc-wb-cpu-wc:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-vram01-uc-wt:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-vram01-wb-cpu-wc-uc:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-vram01-wb-cpu-wc-wb:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-vram01-wb-cpu-wc-wb-cpu-wc:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-vram01-wb-cpu-wc-wt:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-vram01-wb-uc:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-vram01-wb-wb:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-vram01-wb-wb-cpu-wc:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-vram01-wb-wt:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-vram01-wt-uc:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-vram01-wt-wb:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-vram01-wt-wb-cpu-wc:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-common-render@vram01-vram01-wt-wt:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-xe2-blt:
+    - Statuses : 4 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@pat-index-xe2-render:
+    - Statuses : 4 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_pat@userptr-coh-none:
+    - Statuses : 4 fail(s)
+    - Exec time: [0.0] s
+
+  
+
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_10005 that come from known issues:
+  Here are the changes found in XEIGTPW_10006_BAT that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@debugfs_test@basic-hwmon:
-    - bat-jsl-1:          NOTRUN -> [SKIP][6] ([i915#9318])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-jsl-1/igt@debugfs_test@basic-hwmon.html
+  * igt@xe_exec_threads@threads-mixed-userptr-invalidate:
+    - bat-pvc-2:          [PASS][51] -> [DMESG-WARN][52] ([Intel XE#696])
+   [51]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-pvc-2/igt@xe_exec_threads@threads-mixed-userptr-invalidate.html
+   [52]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-pvc-2/igt@xe_exec_threads@threads-mixed-userptr-invalidate.html
 
-  * igt@gem_huc_copy@huc-copy:
-    - bat-jsl-1:          NOTRUN -> [SKIP][7] ([i915#2190])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-jsl-1/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_mmap@basic:
-    - bat-dg2-9:          NOTRUN -> [SKIP][8] ([i915#4083])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@gem_mmap@basic.html
-
-  * igt@gem_mmap_gtt@basic:
-    - bat-dg2-9:          NOTRUN -> [SKIP][9] ([i915#4077]) +2 other tests skip
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@gem_mmap_gtt@basic.html
-
-  * igt@gem_render_tiled_blits@basic:
-    - bat-dg2-9:          NOTRUN -> [SKIP][10] ([i915#4079]) +1 other test skip
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@gem_render_tiled_blits@basic.html
-
-  * igt@i915_pm_rps@basic-api:
-    - bat-dg2-9:          NOTRUN -> [SKIP][11] ([i915#6621])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@i915_pm_rps@basic-api.html
-
-  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
-    - bat-dg2-9:          NOTRUN -> [SKIP][12] ([i915#5190])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-
-  * igt@kms_addfb_basic@basic-y-tiled-legacy:
-    - bat-dg2-9:          NOTRUN -> [SKIP][13] ([i915#4215] / [i915#5190])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@kms_addfb_basic@basic-y-tiled-legacy.html
-
-  * igt@kms_addfb_basic@framebuffer-vs-set-tiling:
-    - bat-dg2-9:          NOTRUN -> [SKIP][14] ([i915#4212]) +6 other tests skip
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@kms_addfb_basic@framebuffer-vs-set-tiling.html
-
-  * igt@kms_addfb_basic@tile-pitch-mismatch:
-    - bat-dg2-9:          NOTRUN -> [SKIP][15] ([i915#4212] / [i915#5608])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@kms_addfb_basic@tile-pitch-mismatch.html
-
-  * igt@kms_busy@basic@modeset:
-    - bat-adlp-11:        [PASS][16] -> [DMESG-WARN][17] ([i915#6868])
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13762/bat-adlp-11/igt@kms_busy@basic@modeset.html
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-adlp-11/igt@kms_busy@basic@modeset.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
-    - bat-dg2-9:          NOTRUN -> [SKIP][18] ([i915#4103] / [i915#4213] / [i915#5608]) +1 other test skip
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
-    - bat-jsl-1:          NOTRUN -> [SKIP][19] ([i915#4103]) +1 other test skip
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-jsl-1/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
-
-  * igt@kms_dsc@dsc-basic:
-    - bat-jsl-1:          NOTRUN -> [SKIP][20] ([i915#3555]) +1 other test skip
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-jsl-1/igt@kms_dsc@dsc-basic.html
-
-  * igt@kms_flip@basic-flip-vs-dpms@a-dp5:
-    - bat-adlp-11:        [PASS][21] -> [DMESG-FAIL][22] ([i915#6868])
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13762/bat-adlp-11/igt@kms_flip@basic-flip-vs-dpms@a-dp5.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-adlp-11/igt@kms_flip@basic-flip-vs-dpms@a-dp5.html
-
-  * igt@kms_flip@basic-flip-vs-dpms@d-dp6:
-    - bat-adlp-11:        [PASS][23] -> [FAIL][24] ([i915#6121]) +6 other tests fail
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13762/bat-adlp-11/igt@kms_flip@basic-flip-vs-dpms@d-dp6.html
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-adlp-11/igt@kms_flip@basic-flip-vs-dpms@d-dp6.html
-
-  * igt@kms_flip@basic-flip-vs-modeset:
-    - bat-adlp-11:        NOTRUN -> [SKIP][25] ([i915#3637])
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-adlp-11/igt@kms_flip@basic-flip-vs-modeset.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - bat-dg2-9:          NOTRUN -> [SKIP][26] ([fdo#109285])
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@kms_force_connector_basic@force-load-detect.html
-    - bat-jsl-1:          NOTRUN -> [SKIP][27] ([fdo#109285])
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-jsl-1/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_force_connector_basic@prune-stale-modes:
-    - bat-dg2-9:          NOTRUN -> [SKIP][28] ([i915#5274])
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@kms_force_connector_basic@prune-stale-modes.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
-    - bat-dg2-11:         NOTRUN -> [SKIP][29] ([i915#1845] / [i915#9197]) +3 other tests skip
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
-
-  * igt@kms_psr@sprite_plane_onoff:
-    - bat-dg2-9:          NOTRUN -> [SKIP][30] ([i915#1072]) +3 other tests skip
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@kms_psr@sprite_plane_onoff.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - bat-dg2-9:          NOTRUN -> [SKIP][31] ([i915#3555] / [i915#4098])
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@kms_setmode@basic-clone-single-crtc.html
-
-  * igt@prime_vgem@basic-fence-flip:
-    - bat-dg2-9:          NOTRUN -> [SKIP][32] ([i915#3708])
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@prime_vgem@basic-fence-flip.html
-
-  * igt@prime_vgem@basic-fence-mmap:
-    - bat-dg2-9:          NOTRUN -> [SKIP][33] ([i915#3708] / [i915#4077]) +1 other test skip
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@prime_vgem@basic-fence-mmap.html
-
-  * igt@prime_vgem@basic-write:
-    - bat-dg2-9:          NOTRUN -> [SKIP][34] ([i915#3291] / [i915#3708]) +2 other tests skip
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@prime_vgem@basic-write.html
+  * igt@xe_live_ktest@migrate:
+    - bat-adlp-7:         NOTRUN -> [INCOMPLETE][53] ([Intel XE#753])
+   [53]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-adlp-7/igt@xe_live_ktest@migrate.html
 
   
   {name}: This element is suppressed. This means it is ignored when computing
           the status of the difference (SUCCESS, WARNING, or FAILURE).
 
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
-  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
-  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
-  [i915#4098]: https://gitlab.freedesktop.org/drm/intel/issues/4098
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
-  [i915#4213]: https://gitlab.freedesktop.org/drm/intel/issues/4213
-  [i915#4215]: https://gitlab.freedesktop.org/drm/intel/issues/4215
-  [i915#5190]: https://gitlab.freedesktop.org/drm/intel/issues/5190
-  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#5608]: https://gitlab.freedesktop.org/drm/intel/issues/5608
-  [i915#6121]: https://gitlab.freedesktop.org/drm/intel/issues/6121
-  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
-  [i915#6868]: https://gitlab.freedesktop.org/drm/intel/issues/6868
-  [i915#9197]: https://gitlab.freedesktop.org/drm/intel/issues/9197
-  [i915#9318]: https://gitlab.freedesktop.org/drm/intel/issues/9318
+  [Intel XE#389]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/389
+  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#482]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/482
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+  [Intel XE#608]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/608
+  [Intel XE#609]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/609
+  [Intel XE#624]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/624
+  [Intel XE#632]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/632
+  [Intel XE#696]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/696
+  [Intel XE#753]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/753
+  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7541 -> IGTPW_10005
+  * IGT: IGT_7541 -> IGTPW_10006
+  * Linux: xe-435-ab7cd1b4af95baba2d6ce5487d35ffda523e895d -> xe-436-9471d9e9efb920d70538445ffa07193d603b8cdb
 
-  CI-20190529: 20190529
-  CI_DRM_13762: 5f3d2f483aa4182d5d6e6629d56f46a1f38168c4 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_10005: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/index.html
+  IGTPW_10006: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10006/index.html
   IGT_7541: fcddb77c3f8a77020f7f3b2660a66cae27cfaa2b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-435-ab7cd1b4af95baba2d6ce5487d35ffda523e895d: ab7cd1b4af95baba2d6ce5487d35ffda523e895d
+  xe-436-9471d9e9efb920d70538445ffa07193d603b8cdb: 9471d9e9efb920d70538445ffa07193d603b8cdb
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/index.html
 
---===============0671284488344670701==
+--===============2549904611477521363==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -261,208 +826,1174 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>lib/igt_fb/xe: use engine copy where available</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/125171/">https://patchwork.freedesktop.org/series/125171/</a></td></tr>
+<tr><td><b>Series:</b></td><td>PAT and cache coherency support (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124667/">https://patchwork.freedesktop.org/series/124667/</a></td></tr>
 <tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from CI_DRM_13762 -&gt; IGTPW_10005</h1>
+    <h1>CI Bug Log - changes from XEIGT_7541_BAT -&gt; XEIGTPW_10006_BAT</h1>
 <h2>Summary</h2>
 <p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_10005 absolutely need to be<br />
+<p>Serious unknown changes coming with XEIGTPW_10006_BAT absolutely need to be<br />
   verified manually.</p>
 <p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_10005, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
+  introduced in XEIGTPW_10006_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
   to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/index.html</p>
-<h2>Participating hosts (33 -&gt; 32)</h2>
-<p>Additional (2): bat-dg2-9 bat-jsl-1 <br />
-  Missing    (3): fi-kbl-soraka fi-ilk-650 fi-apl-guc </p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
 <h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_10005:</p>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_10006_BAT:</p>
 <h3>IGT changes</h3>
 <h4>Possible regressions</h4>
 <ul>
 <li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
+<p>igt@kms_addfb_basic@addfb25-yf-tiled-legacy:</p>
 <ul>
-<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-jsl-1/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a></li>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html">WARN</a> +7 other tests warn</li>
 </ul>
 </li>
 <li>
-<p>igt@gem_exec_parallel@engines@contexts:</p>
+<p>igt@kms_addfb_basic@too-high:</p>
 <ul>
-<li>bat-adln-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13762/bat-adln-1/igt@gem_exec_parallel@engines@contexts.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-adln-1/igt@gem_exec_parallel@engines@contexts.html">INCOMPLETE</a></li>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-adlp-7/igt@kms_addfb_basic@too-high.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-adlp-7/igt@kms_addfb_basic@too-high.html">WARN</a> +8 other tests warn</li>
 </ul>
 </li>
 <li>
-<p>igt@i915_module_load@load:</p>
+<p>igt@xe_intel_bb@create-in-region:</p>
 <ul>
-<li>bat-kbl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13762/bat-kbl-2/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-kbl-2/igt@i915_module_load@load.html">INCOMPLETE</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_10005 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@debugfs_test@basic-hwmon:</p>
-<ul>
-<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-jsl-1/igt@debugfs_test@basic-hwmon.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9318">i915#9318</a>)</li>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-dg2-oem2/igt@xe_intel_bb@create-in-region.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-dg2-oem2/igt@xe_intel_bb@create-in-region.html">FAIL</a> +147 other tests fail</li>
 </ul>
 </li>
 <li>
-<p>igt@gem_huc_copy@huc-copy:</p>
+<p>igt@xe_intel_bb@intel-bb-blit-y:</p>
 <ul>
-<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-jsl-1/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-pvc-2/igt@xe_intel_bb@intel-bb-blit-y.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-pvc-2/igt@xe_intel_bb@intel-bb-blit-y.html">FAIL</a> +80 other tests fail</li>
 </ul>
 </li>
 <li>
-<p>igt@gem_mmap@basic:</p>
+<p>igt@xe_intel_bb@offset-control:</p>
 <ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@gem_mmap@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4083">i915#4083</a>)</li>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-adlp-7/igt@xe_intel_bb@offset-control.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-adlp-7/igt@xe_intel_bb@offset-control.html">FAIL</a> +84 other tests fail</li>
 </ul>
 </li>
 <li>
-<p>igt@gem_mmap_gtt@basic:</p>
+<p>{igt@xe_pat@pat-index-common-blt@system-system-wt-uc} (NEW):</p>
 <ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@gem_mmap_gtt@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4077">i915#4077</a>) +2 other tests skip</li>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-adlp-7/igt@xe_pat@pat-index-common-blt@system-system-wt-uc.html">FAIL</a> +74 other tests fail</li>
 </ul>
 </li>
 <li>
-<p>igt@gem_render_tiled_blits@basic:</p>
+<p>{igt@xe_pat@pat-index-common-blt@vram01-system-wb-uc} (NEW):</p>
 <ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@gem_render_tiled_blits@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4079">i915#4079</a>) +1 other test skip</li>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-pvc-2/igt@xe_pat@pat-index-common-blt@vram01-system-wb-uc.html">FAIL</a> +67 other tests fail</li>
 </ul>
 </li>
 <li>
-<p>igt@i915_pm_rps@basic-api:</p>
+<p>{igt@xe_pat@pat-index-common-blt@vram01-vram01-uc-uc} (NEW):</p>
 <ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@i915_pm_rps@basic-api.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6621">i915#6621</a>)</li>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-atsm-2/igt@xe_pat@pat-index-common-blt@vram01-vram01-uc-uc.html">FAIL</a> +132 other tests fail</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<p>{igt@xe_pat@pat-index-common-render@system-vram01-wb-cpu-wc-wb} (NEW):</p>
 <ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5190">i915#5190</a>)</li>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-dg2-oem2/igt@xe_pat@pat-index-common-render@system-vram01-wb-cpu-wc-wb.html">FAIL</a> +132 other tests fail</li>
 </ul>
 </li>
+<li>
+<p>{igt@xe_pat@pat-index-xe2-blt} (NEW):</p>
+<ul>
+<li>
+<p>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-atsm-2/igt@xe_pat@pat-index-xe2-blt.html">SKIP</a> +1 other test skip</p>
+</li>
+<li>
+<p>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-adlp-7/igt@xe_pat@pat-index-xe2-blt.html">SKIP</a> +1 other test skip</p>
+</li>
+</ul>
+</li>
+<li>
+<p>{igt@xe_pat@pat-index-xe2-render} (NEW):</p>
+<ul>
+<li>
+<p>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-pvc-2/igt@xe_pat@pat-index-xe2-render.html">SKIP</a> +2 other tests skip</p>
+</li>
+<li>
+<p>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-dg2-oem2/igt@xe_pat@pat-index-xe2-render.html">SKIP</a> +1 other test skip</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_prime_self_import@basic-with_one_bo:</p>
+<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-atsm-2/igt@xe_prime_self_import@basic-with_one_bo.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-atsm-2/igt@xe_prime_self_import@basic-with_one_bo.html">FAIL</a> +88 other tests fail</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
 <li>
 <p>igt@kms_addfb_basic@basic-y-tiled-legacy:</p>
 <ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@kms_addfb_basic@basic-y-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4215">i915#4215</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5190">i915#5190</a>)</li>
-</ul>
+<li>
+<p>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-adlp-7/igt@kms_addfb_basic@basic-y-tiled-legacy.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/609">Intel XE#609</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-adlp-7/igt@kms_addfb_basic@basic-y-tiled-legacy.html">FAIL</a> +1 other test fail</p>
 </li>
 <li>
-<p>igt@kms_addfb_basic@framebuffer-vs-set-tiling:</p>
-<ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@kms_addfb_basic@framebuffer-vs-set-tiling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4212">i915#4212</a>) +6 other tests skip</li>
+<p>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-dg2-oem2/igt@kms_addfb_basic@basic-y-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/624">Intel XE#624</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-dg2-oem2/igt@kms_addfb_basic@basic-y-tiled-legacy.html">FAIL</a></p>
+</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_addfb_basic@tile-pitch-mismatch:</p>
 <ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@kms_addfb_basic@tile-pitch-mismatch.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4212">i915#4212</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5608">i915#5608</a>)</li>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-dg2-oem2/igt@kms_addfb_basic@tile-pitch-mismatch.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/609">Intel XE#609</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-dg2-oem2/igt@kms_addfb_basic@tile-pitch-mismatch.html">FAIL</a></li>
 </ul>
 </li>
 <li>
-<p>igt@kms_busy@basic@modeset:</p>
+<p>igt@kms_cursor_legacy@basic-flip-before-cursor-atomic:</p>
 <ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13762/bat-adlp-11/igt@kms_busy@basic@modeset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-adlp-11/igt@kms_busy@basic@modeset.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6868">i915#6868</a>)</li>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html">FAIL</a></li>
 </ul>
 </li>
 <li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:</p>
 <ul>
-<li>
-<p>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4213">i915#4213</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5608">i915#5608</a>) +1 other test skip</p>
-</li>
-<li>
-<p>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-jsl-1/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>) +1 other test skip</p>
-</li>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">FAIL</a> +1 other test fail</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_dsc@dsc-basic:</p>
-<ul>
-<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-jsl-1/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-dpms@a-dp5:</p>
-<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13762/bat-adlp-11/igt@kms_flip@basic-flip-vs-dpms@a-dp5.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-adlp-11/igt@kms_flip@basic-flip-vs-dpms@a-dp5.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6868">i915#6868</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-dpms@d-dp6:</p>
-<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13762/bat-adlp-11/igt@kms_flip@basic-flip-vs-dpms@d-dp6.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-adlp-11/igt@kms_flip@basic-flip-vs-dpms@d-dp6.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6121">i915#6121</a>) +6 other tests fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-modeset:</p>
-<ul>
-<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-adlp-11/igt@kms_flip@basic-flip-vs-modeset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3637">i915#3637</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
 <ul>
 <li>
-<p>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</p>
+<p>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/632">Intel XE#632</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a></p>
 </li>
 <li>
-<p>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-jsl-1/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</p>
+<p>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/608">Intel XE#608</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html">FAIL</a></p>
 </li>
 </ul>
 </li>
 <li>
-<p>igt@kms_force_connector_basic@prune-stale-modes:</p>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:</p>
 <ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5274">i915#5274</a>)</li>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">FAIL</a> +2 other tests fail</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:</p>
+<p>igt@xe_evict@evict-beng-small-external:</p>
 <ul>
-<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9197">i915#9197</a>) +3 other tests skip</li>
+<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-pvc-2/igt@xe_evict@evict-beng-small-external.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/389">Intel XE#389</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-pvc-2/igt@xe_evict@evict-beng-small-external.html">FAIL</a> +3 other tests fail</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr@sprite_plane_onoff:</p>
+<p>igt@xe_evict@evict-small-external-cm:</p>
 <ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 other tests skip</li>
+<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-pvc-2/igt@xe_evict@evict-small-external-cm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/482">Intel XE#482</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-pvc-2/igt@xe_evict@evict-small-external-cm.html">FAIL</a> +3 other tests fail</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<p>igt@xe_exec_reset@virtual-close-fd-no-exec:</p>
 <ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4098">i915#4098</a>)</li>
+<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/696">Intel XE#696</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html">FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>
+<p>{igt@xe_exec_basic@twice-bindexecqueue}:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-adlp-7/igt@xe_exec_basic@twice-bindexecqueue.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-adlp-7/igt@xe_exec_basic@twice-bindexecqueue.html">FAIL</a> +5 other tests fail</li>
 </ul>
 </li>
 <li>
-<p>igt@prime_vgem@basic-fence-flip:</p>
+<p>{igt@xe_exec_basic@twice-bindexecqueue-rebind}:</p>
 <ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@prime_vgem@basic-fence-flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>)</li>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-dg2-oem2/igt@xe_exec_basic@twice-bindexecqueue-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-dg2-oem2/igt@xe_exec_basic@twice-bindexecqueue-rebind.html">FAIL</a> +5 other tests fail</li>
 </ul>
 </li>
 <li>
-<p>igt@prime_vgem@basic-fence-mmap:</p>
+<p>{igt@xe_exec_compute_mode@twice-bindexecqueue}:</p>
 <ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@prime_vgem@basic-fence-mmap.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4077">i915#4077</a>) +1 other test skip</li>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-atsm-2/igt@xe_exec_compute_mode@twice-bindexecqueue.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-atsm-2/igt@xe_exec_compute_mode@twice-bindexecqueue.html">FAIL</a> +5 other tests fail</li>
 </ul>
 </li>
 <li>
-<p>igt@prime_vgem@basic-write:</p>
+<p>{igt@xe_exec_fault_mode@twice-bindexecqueue-rebind}:</p>
 <ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/bat-dg2-9/igt@prime_vgem@basic-write.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3291">i915#3291</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>) +2 other tests skip</li>
+<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-pvc-2/igt@xe_exec_fault_mode@twice-bindexecqueue-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-pvc-2/igt@xe_exec_fault_mode@twice-bindexecqueue-rebind.html">FAIL</a> +11 other tests fail</li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between XEIGT_7541_BAT and XEIGTPW_10006_BAT:</p>
+<h3>New IGT tests (135)</h3>
+<ul>
+<li>
+<p>igt@xe_mmap@cpu-caching-coh:</p>
+<ul>
+<li>Statuses : 4 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-all:</p>
+<ul>
+<li>Statuses : 4 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt:</p>
+<ul>
+<li>Statuses : 4 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-system-uc-uc:</p>
+<ul>
+<li>Statuses : 4 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-system-uc-wb:</p>
+<ul>
+<li>Statuses : 4 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-system-uc-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 4 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-system-uc-wt:</p>
+<ul>
+<li>Statuses : 4 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-system-wb-cpu-wc-uc:</p>
+<ul>
+<li>Statuses : 4 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-system-wb-cpu-wc-wb:</p>
+<ul>
+<li>Statuses : 4 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-system-wb-cpu-wc-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 4 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-system-wb-cpu-wc-wt:</p>
+<ul>
+<li>Statuses : 4 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-system-wb-uc:</p>
+<ul>
+<li>Statuses : 4 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-system-wb-wb:</p>
+<ul>
+<li>Statuses : 4 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-system-wb-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 4 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-system-wb-wt:</p>
+<ul>
+<li>Statuses : 4 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-system-wt-uc:</p>
+<ul>
+<li>Statuses : 4 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-system-wt-wb:</p>
+<ul>
+<li>Statuses : 4 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-system-wt-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 4 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-system-wt-wt:</p>
+<ul>
+<li>Statuses : 4 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-vram01-uc-uc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-vram01-uc-wb:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-vram01-uc-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-vram01-uc-wt:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-vram01-wb-cpu-wc-uc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-vram01-wb-cpu-wc-wb:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-vram01-wb-cpu-wc-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-vram01-wb-cpu-wc-wt:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-vram01-wb-uc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-vram01-wb-wb:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-vram01-wb-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-vram01-wb-wt:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-vram01-wt-uc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-vram01-wt-wb:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-vram01-wt-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@system-vram01-wt-wt:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-system-uc-uc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-system-uc-wb:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-system-uc-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-system-uc-wt:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-system-wb-cpu-wc-uc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-system-wb-cpu-wc-wb:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-system-wb-cpu-wc-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-system-wb-cpu-wc-wt:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-system-wb-uc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-system-wb-wb:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-system-wb-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-system-wb-wt:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-system-wt-uc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-system-wt-wb:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-system-wt-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-system-wt-wt:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-vram01-uc-uc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-vram01-uc-wb:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-vram01-uc-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-vram01-uc-wt:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-vram01-wb-cpu-wc-uc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-vram01-wb-cpu-wc-wb:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-vram01-wb-cpu-wc-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-vram01-wb-cpu-wc-wt:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-vram01-wb-uc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-vram01-wb-wb:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-vram01-wb-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-vram01-wb-wt:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-vram01-wt-uc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-vram01-wt-wb:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-vram01-wt-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-blt@vram01-vram01-wt-wt:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render:</p>
+<ul>
+<li>Statuses : 3 fail(s) 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-system-uc-uc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-system-uc-wb:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-system-uc-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-system-uc-wt:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-system-wb-cpu-wc-uc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-system-wb-cpu-wc-wb:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-system-wb-cpu-wc-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-system-wb-cpu-wc-wt:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-system-wb-uc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-system-wb-wb:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-system-wb-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-system-wb-wt:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-system-wt-uc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-system-wt-wb:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-system-wt-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-system-wt-wt:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-vram01-uc-uc:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-vram01-uc-wb:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-vram01-uc-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-vram01-uc-wt:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-vram01-wb-cpu-wc-uc:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-vram01-wb-cpu-wc-wb:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-vram01-wb-cpu-wc-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-vram01-wb-cpu-wc-wt:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-vram01-wb-uc:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-vram01-wb-wb:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-vram01-wb-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-vram01-wb-wt:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-vram01-wt-uc:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-vram01-wt-wb:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-vram01-wt-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@system-vram01-wt-wt:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-system-uc-uc:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-system-uc-wb:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-system-uc-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-system-uc-wt:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-system-wb-cpu-wc-uc:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-system-wb-cpu-wc-wb:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-system-wb-cpu-wc-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-system-wb-cpu-wc-wt:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-system-wb-uc:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-system-wb-wb:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-system-wb-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-system-wb-wt:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-system-wt-uc:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-system-wt-wb:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-system-wt-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-system-wt-wt:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-vram01-uc-uc:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-vram01-uc-wb:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-vram01-uc-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-vram01-uc-wt:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-vram01-wb-cpu-wc-uc:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-vram01-wb-cpu-wc-wb:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-vram01-wb-cpu-wc-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-vram01-wb-cpu-wc-wt:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-vram01-wb-uc:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-vram01-wb-wb:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-vram01-wb-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-vram01-wb-wt:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-vram01-wt-uc:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-vram01-wt-wb:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-vram01-wt-wb-cpu-wc:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-common-render@vram01-vram01-wt-wt:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xe2-blt:</p>
+<ul>
+<li>Statuses : 4 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xe2-render:</p>
+<ul>
+<li>Statuses : 4 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@userptr-coh-none:</p>
+<ul>
+<li>Statuses : 4 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10006_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@xe_exec_threads@threads-mixed-userptr-invalidate:</p>
+<ul>
+<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-pvc-2/igt@xe_exec_threads@threads-mixed-userptr-invalidate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-pvc-2/igt@xe_exec_threads@threads-mixed-userptr-invalidate.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/696">Intel XE#696</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@migrate:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10006/bat-adlp-7/igt@xe_live_ktest@migrate.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/753">Intel XE#753</a>)</li>
 </ul>
 </li>
 </ul>
@@ -470,15 +2001,15 @@ Content-Transfer-Encoding: 7bit
           the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7541 -&gt; IGTPW_10005</li>
+<li>IGT: IGT_7541 -&gt; IGTPW_10006</li>
+<li>Linux: xe-435-ab7cd1b4af95baba2d6ce5487d35ffda523e895d -&gt; xe-436-9471d9e9efb920d70538445ffa07193d603b8cdb</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13762: 5f3d2f483aa4182d5d6e6629d56f46a1f38168c4 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_10005: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10005/index.html<br />
-  IGT_7541: fcddb77c3f8a77020f7f3b2660a66cae27cfaa2b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>IGTPW_10006: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10006/index.html<br />
+  IGT_7541: fcddb77c3f8a77020f7f3b2660a66cae27cfaa2b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-435-ab7cd1b4af95baba2d6ce5487d35ffda523e895d: ab7cd1b4af95baba2d6ce5487d35ffda523e895d<br />
+  xe-436-9471d9e9efb920d70538445ffa07193d603b8cdb: 9471d9e9efb920d70538445ffa07193d603b8cdb</p>
 
 </body>
 </html>
 
---===============0671284488344670701==--
+--===============2549904611477521363==--
