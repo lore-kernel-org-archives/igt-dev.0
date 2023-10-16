@@ -1,16 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: priyanka.dandamudi@intel.com
-Date: Mon, 16 Oct 2023 06:11:10 -0000
-Message-ID: <169743667078.13510.7504807003081225781@emeril.freedesktop.org>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0BFCD10E123
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Oct 2023 07:29:03 +0000 (UTC)
+From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
+To: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Ch, Sai
+ Gowtham" <sai.gowtham.ch@intel.com>
+Date: Mon, 16 Oct 2023 07:28:57 +0000
+Message-ID: <MW3PR11MB4748723D8F4AEF85B45F8C99AED7A@MW3PR11MB4748.namprd11.prod.outlook.com>
 References: <20231016051016.2009725-1-priyanka.dandamudi@intel.com>
 In-Reply-To: <20231016051016.2009725-1-priyanka.dandamudi@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
- =?utf-8?q?s/xe/xe=5Faccess=5Fcounter=3A_Negative_access_counter_test_=28r?=
- =?utf-8?q?ev3=29?=
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe/xe_access_counter: Negative
+ access counter test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,72 +23,72 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
-
-Series: tests/xe/xe_access_counter: Negative access counter test (rev3)
-URL   : https://patchwork.freedesktop.org/series/124883/
-State : failure
-
-== Summary ==
-
-IGT patchset build failed on latest successful build
-08e87a32fa113a9b6f30cbd9766fec346b53faac tests/kms_atomic: add flexibility to run tests on all pipes
-
-Tail of build.log:
-[580/1650] Compiling C object 'tests/59830eb@@xe_gpgpu_fill@exe/intel_xe_gpgpu_fill.c.o'.
-[581/1650] Compiling C object 'tests/59830eb@@xe_exec_store@exe/intel_xe_exec_store.c.o'.
-[582/1650] Compiling C object 'tests/59830eb@@kms_busy@exe/intel_kms_busy.c.o'.
-[583/1650] Compiling C object 'tests/59830eb@@gem_reset_stats@exe/intel_gem_reset_stats.c.o'.
-[584/1650] Compiling C object 'tests/59830eb@@xe_drm_fdinfo@exe/intel_xe_drm_fdinfo.c.o'.
-[585/1650] Compiling C object 'tests/59830eb@@xe_media_fill@exe/intel_xe_media_fill.c.o'.
-[586/1650] Compiling C object 'tests/59830eb@@xe_module_load@exe/intel_xe_module_load.c.o'.
-[587/1650] Compiling C object 'tests/59830eb@@xe_huc_copy@exe/intel_xe_huc_copy.c.o'.
-[588/1650] Compiling C object 'tests/59830eb@@kms_psr@exe/intel_kms_psr.c.o'.
-[589/1650] Compiling C object 'tests/59830eb@@xe_noexec_ping_pong@exe/intel_xe_noexec_ping_pong.c.o'.
-[590/1650] Compiling C object 'tests/59830eb@@xe_exercise_blt@exe/intel_xe_exercise_blt.c.o'.
-[591/1650] Compiling C object 'tests/59830eb@@xe_mmio@exe/intel_xe_mmio.c.o'.
-[592/1650] Compiling C object 'lib/76b5a35@@igt-igt_fb_c@sta/igt_fb.c.o'.
-[593/1650] Compiling C object 'tests/59830eb@@xe_mmap@exe/intel_xe_mmap.c.o'.
-[594/1650] Compiling C object 'tests/59830eb@@xe_waitfence@exe/intel_xe_waitfence.c.o'.
-[595/1650] Compiling C object 'lib/76b5a35@@igt-igt_kms_c@sta/igt_kms.c.o'.
-[596/1650] Compiling C object 'tests/59830eb@@gem_pxp@exe/intel_gem_pxp.c.o'.
-[597/1650] Compiling C object 'tests/59830eb@@xe_exec_compute_mode@exe/intel_xe_exec_compute_mode.c.o'.
-[598/1650] Compiling C object 'tests/59830eb@@gem_mmap_gtt@exe/intel_gem_mmap_gtt.c.o'.
-[599/1650] Compiling C object 'tests/59830eb@@i915_pm_rps@exe/intel_i915_pm_rps.c.o'.
-[600/1650] Compiling C object 'tests/59830eb@@kms_pm_dc@exe/intel_kms_pm_dc.c.o'.
-[601/1650] Compiling C object 'tests/59830eb@@xe_perf_pmu@exe/intel_xe_perf_pmu.c.o'.
-[602/1650] Compiling C object 'tests/59830eb@@xe_exec_basic@exe/intel_xe_exec_basic.c.o'.
-[603/1650] Compiling C object 'tests/59830eb@@xe_exec_fault_mode@exe/intel_xe_exec_fault_mode.c.o'.
-[604/1650] Compiling C object 'tests/59830eb@@kms_big_fb@exe/intel_kms_big_fb.c.o'.
-[605/1650] Compiling C object 'tests/59830eb@@xe_pm_residency@exe/intel_xe_pm_residency.c.o'.
-[606/1650] Compiling C object 'tests/59830eb@@xe_guc_pc@exe/intel_xe_guc_pc.c.o'.
-[607/1650] Compiling C object 'tests/59830eb@@xe_ccs@exe/intel_xe_ccs.c.o'.
-[608/1650] Compiling C object 'tests/59830eb@@gem_sync@exe/intel_gem_sync.c.o'.
-[609/1650] Compiling C object 'tests/59830eb@@xe_query@exe/intel_xe_query.c.o'.
-[610/1650] Compiling C object 'tests/59830eb@@gem_softpin@exe/intel_gem_softpin.c.o'.
-[611/1650] Compiling C object 'tests/59830eb@@xe_exec_balancer@exe/intel_xe_exec_balancer.c.o'.
-[612/1650] Compiling C object 'tests/59830eb@@i915_pm_rpm@exe/intel_i915_pm_rpm.c.o'.
-[613/1650] Compiling C object 'tests/59830eb@@xe_pm@exe/intel_xe_pm.c.o'.
-[614/1650] Compiling C object 'tests/59830eb@@xe_exec_reset@exe/intel_xe_exec_reset.c.o'.
-[615/1650] Compiling C object 'tests/59830eb@@xe_evict@exe/intel_xe_evict.c.o'.
-[616/1650] Compiling C object 'tests/59830eb@@xe_intel_bb@exe/intel_xe_intel_bb.c.o'.
-[617/1650] Compiling C object 'tests/59830eb@@kms_psr2_sf@exe/intel_kms_psr2_sf.c.o'.
-[618/1650] Compiling C object 'tests/59830eb@@kms_pm_rpm@exe/intel_kms_pm_rpm.c.o'.
-[619/1650] Compiling C object 'tests/59830eb@@i915_query@exe/intel_i915_query.c.o'.
-[620/1650] Compiling C object 'tests/59830eb@@xe_exec_threads@exe/intel_xe_exec_threads.c.o'.
-[621/1650] Compiling C object 'tests/59830eb@@gem_exec_balancer@exe/intel_gem_exec_balancer.c.o'.
-[622/1650] Compiling C object 'tests/59830eb@@perf@exe/intel_perf.c.o'.
-[623/1650] Generating i915-perf-equations with a custom command.
-[624/1650] Compiling C object 'tests/59830eb@@gem_userptr_blits@exe/intel_gem_userptr_blits.c.o'.
-[625/1650] Compiling C object 'tests/59830eb@@kms_frontbuffer_tracking@exe/intel_kms_frontbuffer_tracking.c.o'.
-[626/1650] Compiling C object 'tests/59830eb@@gem_exec_fence@exe/intel_gem_exec_fence.c.o'.
-[627/1650] Compiling C object 'tests/59830eb@@perf_pmu@exe/intel_perf_pmu.c.o'.
-[628/1650] Compiling C object 'tests/59830eb@@gem_exec_schedule@exe/intel_gem_exec_schedule.c.o'.
-ninja: build stopped: subcommand failed.
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRGFuZGFtdWRpLCBQcml5
+YW5rYSA8cHJpeWFua2EuZGFuZGFtdWRpQGludGVsLmNvbT4NCj4gU2VudDogTW9uZGF5LCBPY3Rv
+YmVyIDE2LCAyMDIzIDEwOjQwIEFNDQo+IFRvOiBLdW1hciwgSmFuZ2EgUmFodWwgPGphbmdhLnJh
+aHVsLmt1bWFyQGludGVsLmNvbT47IGlndC0NCj4gZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZzsg
+Q2gsIFNhaSBHb3d0aGFtIDxzYWkuZ293dGhhbS5jaEBpbnRlbC5jb20+Ow0KPiBEYW5kYW11ZGks
+IFByaXlhbmthIDxwcml5YW5rYS5kYW5kYW11ZGlAaW50ZWwuY29tPg0KPiBTdWJqZWN0OiBbUEFU
+Q0ggaS1nLXRdIHRlc3RzL3hlL3hlX2FjY2Vzc19jb3VudGVyOiBOZWdhdGl2ZSBhY2Nlc3MgY291
+bnRlcg0KPiB0ZXN0DQo+IA0KPiBGcm9tOiBQcml5YW5rYSBEYW5kYW11ZGkgPHByaXlhbmthLmRh
+bmRhbXVkaUBpbnRlbC5jb20+DQo+IA0KPiBBZGRlZCBhIG5lZ2F0aXZlIHRlc3QgcmVsYXRlZCB0
+byBhY2Nlc3MgY291bnRlci4NCj4gSXQgdHJpZXMgdG8gdGVzdCBHUkFOVUxBUklUWSBhY2Nlc3Mg
+Y291bnRlciBwYXJhbWV0ZXIuDQo+IEl0IHNob3VsZCByZXR1cm4gLUVJTlZBTCBwYXJhbWV0ZXIg
+Zm9yIGludmFsaWQgdmFsdWVzLg0KPiANCj4gdjI6IEFkZGVkIHN1YnRlc3QgZGVzY3JpcHRpb24u
+DQo+IA0KPiB2MzogQWRkZWQgbWluIHZhbHVlIC0xIHRvIGNoZWNrIGZvciBtaW4gZ3JhbnVsYXJp
+dHkgcmFuZ2UuKFJhaHVsKQ0KPiANCj4gQ2M6IEphbmdhIFJhaHVsIEt1bWFyIDxqYW5nYS5yYWh1
+bC5rdW1hckBpbnRlbC5jb20+DQo+IENjOiBTYWkgR293dGhhbSBDaCA8c2FpLmdvd3RoYW0uY2hA
+aW50ZWwuY29tPg0KPiBTaWduZWQtb2ZmLWJ5OiBQcml5YW5rYSBEYW5kYW11ZGkgPHByaXlhbmth
+LmRhbmRhbXVkaUBpbnRlbC5jb20+DQoNCg0KUmV2aWV3ZWQtYnk6IEphbmdhIFJhaHVsIEt1bWFy
+PGphbmdhLnJhaHVsLmt1bWFyQGludGVsLmNvbT4NCg0KPiAtLS0NCj4gIHRlc3RzL2ludGVsL3hl
+X2FjY2Vzc19jb3VudGVyLmMgfCA3MiArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysN
+Cj4gIHRlc3RzL21lc29uLmJ1aWxkICAgICAgICAgICAgICAgfCAgMSArDQo+ICAyIGZpbGVzIGNo
+YW5nZWQsIDczIGluc2VydGlvbnMoKykNCj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCB0ZXN0cy9pbnRl
+bC94ZV9hY2Nlc3NfY291bnRlci5jDQo+IA0KPiBkaWZmIC0tZ2l0IGEvdGVzdHMvaW50ZWwveGVf
+YWNjZXNzX2NvdW50ZXIuYyBiL3Rlc3RzL2ludGVsL3hlX2FjY2Vzc19jb3VudGVyLmMNCj4gbmV3
+IGZpbGUgbW9kZSAxMDA2NDQgaW5kZXggMDAwMDAwMDAwLi4zNjYwMTg0YTgNCj4gLS0tIC9kZXYv
+bnVsbA0KPiArKysgYi90ZXN0cy9pbnRlbC94ZV9hY2Nlc3NfY291bnRlci5jDQo+IEBAIC0wLDAg
+KzEsNzIgQEANCj4gKy8vIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBNSVQNCj4gKy8qDQo+ICsg
+KiBDb3B5cmlnaHQgwqkgMjAyMyBJbnRlbCBDb3Jwb3JhdGlvbg0KPiArICovDQo+ICsNCj4gKy8q
+Kg0KPiArICogVEVTVDogQmFzaWMgdGVzdHMgZm9yIGFjY2VzcyBjb3VudGVyIGZ1bmN0aW9uYWxp
+dHkNCj4gKyAqIENhdGVnb3J5OiBTb2Z0d2FyZSBidWlsZGluZyBibG9jaw0KPiArICogUnVuIHR5
+cGU6IEZVTEwNCj4gKyAqIFN1Yi1jYXRlZ29yeTogYWNjZXNzIGNvdW50ZXINCj4gKyAqIEZ1bmN0
+aW9uYWxpdHk6IGFjY2VzcyBjb3VudGVyDQo+ICsgKiBUZXN0IGNhdGVnb3J5OiBmdW5jdGlvbmFs
+aXR5IHRlc3QNCj4gKyAqIFNVQlRFU1Q6IGludmFsaWQtcGFyYW0NCj4gKyAqIERlc2NyaXB0aW9u
+OiBHaXZpbmcgaW52YWxpZCBncmFudWxhcml0eSBzaXplIHBhcmFtZXRlciBhbmQgY2hlY2tzIGZv
+cg0KPiBpbnZhbGlkIGVycm9yLg0KPiArICovDQo+ICsNCj4gKyNpbmNsdWRlICJpZ3QuaCINCj4g
+KyNpbmNsdWRlICJsaWIvaWd0X3N5bmNvYmouaCINCj4gKyNpbmNsdWRlICJsaWIvaW50ZWxfcmVn
+LmgiDQo+ICsjaW5jbHVkZSAieGVfZHJtLmgiDQo+ICsNCj4gKyNpbmNsdWRlICJ4ZS94ZV9pb2N0
+bC5oIg0KPiArI2luY2x1ZGUgInhlL3hlX3F1ZXJ5LmgiDQo+ICsjaW5jbHVkZSA8c3RyaW5nLmg+
+DQo+ICsNCj4gKyNkZWZpbmUgU1pfNjRNICAzDQo+ICtpZ3RfbWFpbg0KPiArew0KPiArCWludCBm
+ZDsNCj4gKw0KPiArCWlndF9maXh0dXJlIHsNCj4gKwkJdWludDE2X3QgZGV2aWQ7DQo+ICsNCj4g
+KwkJZmQgPSBkcm1fb3Blbl9kcml2ZXIoRFJJVkVSX1hFKTsNCj4gKwkJZGV2aWQgPSBpbnRlbF9n
+ZXRfZHJtX2RldmlkKGZkKTsNCj4gKwkJaWd0X3JlcXVpcmUoSVNfUE9OVEVWRUNDSElPKGRldmlk
+KSk7DQo+ICsJfQ0KPiArDQo+ICsJaWd0X3N1YnRlc3QoImludmFsaWQtcGFyYW0iKSB7DQo+ICsJ
+CXN0cnVjdCBkcm1feGVfZW5naW5lX2NsYXNzX2luc3RhbmNlIGluc3RhbmNlID0gew0KPiArCQkJ
+IC5lbmdpbmVfY2xhc3MgPSBEUk1fWEVfRU5HSU5FX0NMQVNTX1ZNX0JJTkQsDQo+ICsJCSB9Ow0K
+PiArDQo+ICsJCWludCBlcnI7DQo+ICsJCWNvbnN0IGludCBleHBlY3RlZCA9IC1FSU5WQUw7DQo+
+ICsNCj4gKwkJc3RydWN0IGRybV94ZV9leHRfZXhlY19xdWV1ZV9zZXRfcHJvcGVydHkgZXh0ID0g
+ew0KPiArCQkJLmJhc2UubmV4dF9leHRlbnNpb24gPSAwLA0KPiArCQkJLmJhc2UubmFtZSA9DQo+
+IFhFX0VYRUNfUVVFVUVfRVhURU5TSU9OX1NFVF9QUk9QRVJUWSwNCj4gKwkJCS5wcm9wZXJ0eSA9
+DQo+IFhFX0VYRUNfUVVFVUVfU0VUX1BST1BFUlRZX0FDQ19HUkFOVUxBUklUWSwNCj4gKwkJCS52
+YWx1ZSA9IFNaXzY0TSArIDEsDQo+ICsJCX07DQo+ICsNCj4gKwkJc3RydWN0IGRybV94ZV9leGVj
+X3F1ZXVlX2NyZWF0ZSBjcmVhdGUgPSB7DQo+ICsJCQkuZXh0ZW5zaW9ucyA9IHRvX3VzZXJfcG9p
+bnRlcigmZXh0KSwNCj4gKwkJCS52bV9pZCA9IHhlX3ZtX2NyZWF0ZShmZCwgMCwgMCksDQo+ICsJ
+CQkud2lkdGggPSAxLA0KPiArCQkJLm51bV9wbGFjZW1lbnRzID0gMSwNCj4gKwkJCS5pbnN0YW5j
+ZXMgPSB0b191c2VyX3BvaW50ZXIoJmluc3RhbmNlKSwNCj4gKwkJfTsNCj4gKw0KPiArCQllcnIg
+PSBpZ3RfaW9jdGwoZmQsIERSTV9JT0NUTF9YRV9FWEVDX1FVRVVFX0NSRUFURSwNCj4gJmNyZWF0
+ZSk7DQo+ICsJCWlndF9hc3NlcnRfZXEoZXJyLCBleHBlY3RlZCk7DQo+ICsNCj4gKwkJZXh0LnZh
+bCA9IC0xOw0KPiArCQllcnIgPSBpZ3RfaW9jdGwoZmQsIERSTV9JT0NUTF9YRV9FWEVDX1FVRVVF
+X0NSRUFURSwNCj4gJmNyZWF0ZSk7DQo+ICsJCWlndF9hc3NlcnRfZXEoZXJyLCBleHBlY3RlZCk7
+DQo+ICsJfQ0KPiArDQo+ICsJaWd0X2ZpeHR1cmUNCj4gKwkJZHJtX2Nsb3NlX2RyaXZlcihmZCk7
+DQo+ICt9DQo+IGRpZmYgLS1naXQgYS90ZXN0cy9tZXNvbi5idWlsZCBiL3Rlc3RzL21lc29uLmJ1
+aWxkIGluZGV4DQo+IDA1ZmRhN2Q5NC4uYWEwYjRlODg4IDEwMDY0NA0KPiAtLS0gYS90ZXN0cy9t
+ZXNvbi5idWlsZA0KPiArKysgYi90ZXN0cy9tZXNvbi5idWlsZA0KPiBAQCAtMjcxLDYgKzI3MSw3
+IEBAIGludGVsX2ttc19wcm9ncyA9IFsNCj4gIF0NCj4gDQo+ICBpbnRlbF94ZV9wcm9ncyA9IFsN
+Cj4gKwkneGVfYWNjZXNzX2NvdW50ZXInLA0KPiAgCSd4ZV9jY3MnLA0KPiAgCSd4ZV9jcmVhdGUn
+LA0KPiAgCSd4ZV9jb21wdXRlJywNCj4gLS0NCj4gMi4yNS4xDQoNCg==
