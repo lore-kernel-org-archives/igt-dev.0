@@ -1,19 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C871910E00D
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Oct 2023 18:09:09 +0000 (UTC)
-From: sai.gowtham.ch@intel.com
-To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
- karolina.stolarek@intel.com, sai.gowtham.ch@intel.com
-Date: Mon, 16 Oct 2023 23:37:16 +0530
-Message-Id: <20231016180716.8513-4-sai.gowtham.ch@intel.com>
-In-Reply-To: <20231016180716.8513-1-sai.gowtham.ch@intel.com>
-References: <20231016180716.8513-1-sai.gowtham.ch@intel.com>
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam10on2044.outbound.protection.outlook.com [40.107.94.44])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E98EC10E099
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Oct 2023 19:14:33 +0000 (UTC)
+From: "Wu, Hersen" <hersenxs.wu@amd.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Mon, 16 Oct 2023 19:14:30 +0000
+Message-ID: <PH8PR12MB69626C5C203B504630FDC4EDFDD7A@PH8PR12MB6962.namprd12.prod.outlook.com>
+References: <20231001162828.74566-1-hersenxs.wu@amd.com>
+ <20231012165121.shruvfbmqixg3uin@kamilkon-desk.igk.intel.com>
+In-Reply-To: <20231012165121.shruvfbmqixg3uin@kamilkon-desk.igk.intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/3] intel/xe_copy_basic: Add copy basic
- test to exercise blt commands
+Subject: Re: [igt-dev] [PATCH 1/2] [i-g-t] tests/kms_cursor_crc: Fix tests
+ be skipped on AMD gpu
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,232 +24,68 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "Mahfooz,
+ Hamza" <Hamza.Mahfooz@amd.com>, "Wang, Yu \(Charlie\)" <Yu.Wang4@amd.com>,
+ "markyacoub@google.com" <markyacoub@google.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-
-Add copy basic test to exercise copy commands like mem-copy and mem-set.
-
-Cc: Karolina Stolarek <karolina.stolarek@intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
----
- tests/intel/xe_copy_basic.c | 192 ++++++++++++++++++++++++++++++++++++
- tests/meson.build           |   1 +
- 2 files changed, 193 insertions(+)
- create mode 100644 tests/intel/xe_copy_basic.c
-
-diff --git a/tests/intel/xe_copy_basic.c b/tests/intel/xe_copy_basic.c
-new file mode 100644
-index 000000000..253631102
---- /dev/null
-+++ b/tests/intel/xe_copy_basic.c
-@@ -0,0 +1,192 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ *
-+ * Authors:
-+ *      Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-+ */
-+
-+#include "igt.h"
-+#include "lib/igt_syncobj.h"
-+#include "intel_blt.h"
-+#include "lib/intel_cmds_info.h"
-+#include "lib/intel_mocs.h"
-+#include "lib/intel_reg.h"
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
-+#include "xe/xe_util.h"
-+
-+#define MEM_FILL 0x8b
-+
-+/**
-+ * TEST: Test to validate copy commands on xe
-+ * Category: Software building block
-+ * Sub-category: Copy
-+ * Functionality: blitter
-+ */
-+
-+/**
-+ * SUBTEST: mem-copy-linear-%s
-+ * Description: Test validates MEM_COPY command, it takes various
-+ *              parameters needed for the filling batch buffer for MEM_COPY command
-+ *              with size %arg[1].
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ * @0x369: 0x369
-+ * @0x3fff: 0x3fff
-+ * @0xfd: 0xfd
-+ * @0xfffe: 0xfffe
-+ */
-+static void
-+mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle,
-+		 const intel_ctx_t *ctx, uint32_t size, uint32_t width,
-+		 uint32_t height, uint32_t region)
-+{
-+	struct blt_mem_data mem = {};
-+	uint64_t bb_size = xe_get_default_alignment(fd);
-+	uint64_t ahnd = intel_allocator_open_full(fd, ctx->vm, 0, 0,
-+						  INTEL_ALLOCATOR_SIMPLE,
-+						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-+	uint32_t bb;
-+	int result;
-+	uint8_t src_mocs = intel_get_uc_mocs_index(fd);
-+	uint8_t dst_mocs = src_mocs;
-+
-+	bb = xe_bo_create_flags(fd, 0, bb_size, region);
-+
-+	blt_mem_init(fd, &mem);
-+	blt_set_mem_object(&mem.src, src_handle, size, 0, width, height,
-+			   region, src_mocs, M_LINEAR, COMPRESSION_DISABLED);
-+	blt_set_mem_object(&mem.dst, dst_handle, size, 0, width, height,
-+			   region, dst_mocs, M_LINEAR, COMPRESSION_DISABLED);
-+	mem.src.ptr = xe_bo_map(fd, src_handle, size);
-+	mem.dst.ptr = xe_bo_map(fd, dst_handle, size);
-+
-+	blt_set_batch(&mem.bb, bb, bb_size, region);
-+	igt_assert(mem.src.width == mem.dst.width);
-+
-+	blt_mem_copy(fd, ctx, NULL, ahnd, &mem);
-+	result = memcmp(mem.src.ptr, mem.dst.ptr, mem.src.size);
-+	igt_assert_f(!result, "source and destination differ\n");
-+
-+	intel_allocator_bind(ahnd, 0, 0);
-+	munmap(mem.src.ptr, size);
-+	munmap(mem.dst.ptr, size);
-+	gem_close(fd, bb);
-+	put_ahnd(ahnd);
-+}
-+
-+/**
-+ * SUBTEST: mem-set-linear-%s
-+ * Description: Test validates MEM_SET command with size %arg[1].
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @0x369: 0x369
-+ * @0x3fff: 0x3fff
-+ * @0xfd: 0xfd
-+ * @0xfffe: 0xfffe
-+ */
-+static void mem_set(int fd, uint32_t dst_handle, const intel_ctx_t *ctx,
-+			uint32_t size, uint32_t width, uint32_t height,
-+			uint8_t fill_data, uint32_t region)
-+{
-+	struct blt_mem_data mem = {};
-+	uint64_t bb_size = xe_get_default_alignment(fd);
-+	uint64_t ahnd = intel_allocator_open_full(fd, ctx->vm, 0, 0,
-+						  INTEL_ALLOCATOR_SIMPLE,
-+						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-+	uint32_t bb;
-+	uint8_t *result;
-+	uint8_t dst_mocs = intel_get_uc_mocs_index(fd);
-+
-+	bb = xe_bo_create_flags(fd, 0, bb_size, region);
-+	blt_mem_init(fd, &mem);
-+	blt_set_mem_object(&mem.dst, dst_handle, size, 0, width, height, region,
-+			   dst_mocs, M_LINEAR, COMPRESSION_DISABLED);
-+	mem.dst.ptr = xe_bo_map(fd, dst_handle, size);
-+	blt_set_batch(&mem.bb, bb, bb_size, region);
-+	blt_mem_set(fd, ctx, NULL, ahnd, &mem, fill_data);
-+
-+	result = (uint8_t *)mem.dst.ptr;
-+
-+	igt_assert(result[0] == fill_data);
-+	igt_assert(result[width - 1] == fill_data);
-+	igt_assert(result[width] != fill_data);
-+
-+	intel_allocator_bind(ahnd, 0, 0);
-+	munmap(mem.dst.ptr, size);
-+	gem_close(fd, bb);
-+	put_ahnd(ahnd);
-+}
-+
-+static void copy_test(int fd, uint32_t size, enum blt_cmd_type cmd, uint32_t region)
-+{
-+	struct drm_xe_engine_class_instance inst = {
-+		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
-+	};
-+	uint32_t src_handle, dst_handle, vm, exec_queue, src_size, dst_size;
-+	uint32_t bo_size = ALIGN(size, xe_get_default_alignment(fd));
-+	const intel_ctx_t *ctx;
-+
-+	src_handle = xe_bo_create_flags(fd, 0, bo_size, region);
-+	dst_handle = xe_bo_create_flags(fd, 0, bo_size, region);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
-+	exec_queue = xe_exec_queue_create(fd, vm, &inst, 0);
-+	ctx = intel_ctx_xe(fd, vm, exec_queue, 0, 0, 0);
-+
-+	src_size = bo_size;
-+	dst_size = bo_size;
-+
-+	if (cmd == MEM_COPY)
-+		mem_copy(fd, src_handle, dst_handle, ctx, src_size, size, 1, region);
-+	else if (cmd == MEM_SET)
-+		mem_set(fd, dst_handle, ctx, dst_size, size, 1, MEM_FILL, region);
-+
-+	gem_close(fd, src_handle);
-+	gem_close(fd, dst_handle);
-+	xe_exec_queue_destroy(fd, exec_queue);
-+	xe_vm_destroy(fd, vm);
-+}
-+
-+igt_main
-+{
-+	int fd;
-+	struct igt_collection *set, *regions;
-+	uint32_t region;
-+	uint64_t size[] = {0xFD, 0x369, 0x3FFF, 0xFFFE};
-+
-+	igt_fixture {
-+		fd = drm_open_driver(DRIVER_XE);
-+		xe_device_get(fd);
-+		set = xe_get_memory_region_set(fd,
-+					       XE_MEM_REGION_CLASS_SYSMEM,
-+					       XE_MEM_REGION_CLASS_VRAM);
-+	}
-+
-+	for (int i = 0; i < ARRAY_SIZE(size); i++) {
-+		igt_subtest_f("mem-copy-linear-0x%lx", size[i]) {
-+			igt_require(blt_has_mem_copy(fd));
-+			for_each_variation_r(regions, 1, set) {
-+				region = igt_collection_get_value(regions, 0);
-+				copy_test(fd, size[i], MEM_COPY, region);
-+			}
-+		}
-+	}
-+
-+	for (int i = 0; i < ARRAY_SIZE(size); i++) {
-+		igt_subtest_f("mem-set-linear-0x%lx", size[i]) {
-+			igt_require(blt_has_mem_set(fd));
-+			for_each_variation_r(regions, 1, set) {
-+				region = igt_collection_get_value(regions, 0);
-+				copy_test(fd, size[i], MEM_SET, region);
-+			}
-+		}
-+	}
-+
-+	igt_fixture {
-+		drm_close_driver(fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 2c2e1ca9a..5b19994f7 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -275,6 +275,7 @@ intel_xe_progs = [
- 	'xe_ccs',
- 	'xe_create',
- 	'xe_compute',
-+	'xe_copy_basic',
- 	'xe_dma_buf_sync',
- 	'xe_debugfs',
- 	'xe_drm_fdinfo',
--- 
-2.39.1
+W0FNRCBPZmZpY2lhbCBVc2UgT25seSAtIEdlbmVyYWxdDQoNCkhpIEthbWlsLA0KDQpJIGhhdmUg
+bWFkZSBjb21taXQgdGl0bGUgY2hhbmdlIGFjY29yZGluZyB0byB5b3VyIHN1Z2dlc3Rpb24uDQpU
+aGVyZSBhcmUgdHdvIGlzc3VlcyBmb3IgY3Vyc29yIHRlc3QgZnJvbSBBTUQgR1BVIHNpZGVzLg0K
+DQoxLiBBTUQgR1BVIGNvdWxkIG5vdCBkbyBjdXJzb3IgY3JvcC4gIFBhdGNoIDEvMiBoYW5kbGUg
+dGhpcyBjYXNlLg0KMi4gQnkgQU1EIEdQVS9Ecml2ZXIgY3Vyc29yIHVwZGF0ZSBpbXBsZW1lbnRh
+dGlvbiwgcGlwZSBDUkMgY291bGQgbm90IGJlIGdlbmVyYXRlZCByZWxpYWJseSB3aXRoaW4gb25l
+IHZibGFuayBmb3IgYm90aCBIVyBhbmQgU1cgY3Vyc29yLiBUaGlzIGlzIHdoeSBzZXQgZGF0YS52
+Ymxhbmtfd2FpdF9jb3VudCA9IDIuDQogICAgRm9yIFNXIGN1cnNvciwgd2UgbmVlZCBhZGRpbmcg
+d2FpdCBmb3IgdHdvIHZibGFua3Mgd2hpY2ggYXJlIG5vdCBuZWVkZWQgZm9yIG90aGVyIEdQVSB2
+ZW5kb3JzLg0KDQogICAgV2Ugc3RpbGwgbmVlZCBwYXRjaCAyLzIgZm9yIEFNRCBHUFUuDQoNClRo
+YW5rcyENCkhlcnNlbg0KDQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBLYW1p
+bCBLb25pZWN6bnkgPGthbWlsLmtvbmllY3pueUBsaW51eC5pbnRlbC5jb20+DQpTZW50OiBUaHVy
+c2RheSwgT2N0b2JlciAxMiwgMjAyMyAxMjo1MSBQTQ0KVG86IGlndC1kZXZAbGlzdHMuZnJlZWRl
+c2t0b3Aub3JnDQpDYzogV3UsIEhlcnNlbiA8aGVyc2VueHMud3VAYW1kLmNvbT47IFNpcXVlaXJh
+LCBSb2RyaWdvIDxSb2RyaWdvLlNpcXVlaXJhQGFtZC5jb20+OyBQaWxsYWksIEF1cmFiaW5kbyA8
+QXVyYWJpbmRvLlBpbGxhaUBhbWQuY29tPjsgSHVuZywgQWxleCA8QWxleC5IdW5nQGFtZC5jb20+
+OyBNYWhmb296LCBIYW16YSA8SGFtemEuTWFoZm9vekBhbWQuY29tPjsgTGksIFN1biBwZW5nIChM
+ZW8pIDxTdW5wZW5nLkxpQGFtZC5jb20+OyBtYXJreWFjb3ViQGdvb2dsZS5jb207IEp1aGEtUGVr
+a2EgSGVpa2tpbGEgPGp1aGFwZWtrYS5oZWlra2lsYUBnbWFpbC5jb20+DQpTdWJqZWN0OiBSZTog
+W2lndC1kZXZdIFtQQVRDSCAxLzJdIFtpLWctdF0gdGVzdHMva21zX2N1cnNvcl9jcmM6IEZpeCB0
+ZXN0cyBiZSBza2lwcGVkIG9uIEFNRCBncHUNCg0KSGkgSGVyc2VuLA0KDQpPbiAyMDIzLTEwLTAx
+IGF0IDEyOjI4OjI3IC0wNDAwLCBIZXJzZW4gV3Ugd3JvdGU6DQoNCnBsZWFzZSBpbXByb3ZlIHlv
+dXIgcGF0Y2ggZGVzY3JpcHRpb24sIGluc3RlYWQgb2Y6DQoNCnRlc3RzL2ttc19jdXJzb3JfY3Jj
+OiBGaXggdGVzdHMgYmUgc2tpcHBlZCBvbiBBTUQgZ3B1DQoNCml0IGlzIGJldHRlciB0byB3cml0
+ZSB3aHkgb3Igd2hhdCB5b3UgZml4ZWQsIGZvciBleGFtcGxlOg0KDQp0ZXN0cy9rbXNfY3Vyc29y
+X2NyYzogRml4IGN1cnNvciBjcm9wIG9uIEFNRCBncHUNCg0KUGxlYXNlIHJlc2VuZCB3aXRoIHRo
+aXMgZml4IGFuZCBhZGRlZCByLWIgZnJvbSBKdWhhLVBla2thLg0KDQpBbHNvIG5vIG5lZWQgdG8g
+cmV0ZXN0IHlvdXIgdGVzdCBvbiBvdXIgQ0ksIGp1c3QgcmVwbHkgdG8gaWd0IG1haWxpbmcgbGlz
+dCB0aGF0IGZhaWx1cmVzIGFyZSBub3QgcmVsYXRlZCB0byBBTUQgZ3B1IChzb21ldGltZXMgdGhl
+eSBjb3VsZCBiZSB3aGVuIHlvdSBjaGFuZ2UgbGlicmFyeSBmdW5jdGlvbiBvciB5b3UgdG91Y2gg
+Y29tbW9uIGxvZ2ljKS4gQWZ0ZXIgdGhhdCBvdXIgYnVnIGZpbGluZyB0ZWFtIHdpbGwgbWFzayBh
+bmQvb3IgcmV0ZXN0IGl0Lg0KDQpJIGFzc3VtZSB0aGF0IHlvdSBkcm9wcGVkIDIvMiBmcm9tIHRo
+aXMgc2VyaWVzPw0KDQpSZWdhcmRzLA0KS2FtaWwNCg0KPiBSZW1vdmUgZXh0cmEgbGluZSB3aGVu
+IGNyZWF0ZSBjdXJzb3IgZmIgZm9yIEFNRCBncHUuDQo+DQo+IEFNRCBncHUgZG9lcyBub3Qgc3Vw
+cG9ydCBjdXJzb3IgYnVmZmVyIGNyb3AuIEFNRCBkcml2ZXIgZmFpbHMNCj4gdmFsaWRhdGlvbiB3
+aXRoIGZiIHNpemUgbm90IGVxdWFsIHRvIGN1cnNvciBzaXplLg0KPg0KPiBTaWduZWQtb2ZmLWJ5
+OiBIZXJzZW4gV3UgPGhlcnNlbnhzLnd1QGFtZC5jb20+DQo+IC0tLQ0KPiAgdGVzdHMva21zX2N1
+cnNvcl9jcmMuYyB8IDYgKysrKystDQo+ICAxIGZpbGUgY2hhbmdlZCwgNSBpbnNlcnRpb25zKCsp
+LCAxIGRlbGV0aW9uKC0pDQo+DQo+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfY3Vyc29yX2NyYy5j
+IGIvdGVzdHMva21zX2N1cnNvcl9jcmMuYyBpbmRleA0KPiA3NmMwMWY1NTcuLmJhMjlmZjY1ZCAx
+MDA2NDQNCj4gLS0tIGEvdGVzdHMva21zX2N1cnNvcl9jcmMuYw0KPiArKysgYi90ZXN0cy9rbXNf
+Y3Vyc29yX2NyYy5jDQo+IEBAIC01NjAsMTQgKzU2MCwxOCBAQCBzdGF0aWMgdm9pZCBjcmVhdGVf
+Y3Vyc29yX2ZiKGRhdGFfdCAqZGF0YSwgaW50DQo+IGN1cl93LCBpbnQgY3VyX2gpICB7DQo+ICAg
+ICAgIGNhaXJvX3QgKmNyOw0KPiAgICAgICB1aW50MzJfdCBmYl9pZDsNCj4gKyAgICAgaW50IGN1
+cl9oX2V4dHJhX2xpbmUgPSAxOw0KPg0KPiArICAgICAvKiBDcm9wcGluZyBpcyBub3Qgc3VwcG9y
+dGVkIGZvciBjdXJzb3IgcGxhbmUgYnkgQU1EICovDQo+ICsgICAgIGlmIChpc19hbWRncHVfZGV2
+aWNlKGRhdGEtPmRybV9mZCkpDQo+ICsgICAgICAgICAgICAgY3VyX2hfZXh0cmFfbGluZSA9IDA7
+DQo+ICAgICAgIC8qDQo+ICAgICAgICAqIE1ha2UgdGhlIEZCIHNsaWdodGx5IHRhbGxlciBhbmQg
+bGVhdmUgdGhlIGV4dHJhDQo+ICAgICAgICAqIGxpbmUgb3BhcXVlIHdoaXRlLCBzbyB0aGF0IHdl
+IGNhbiBzZWUgdGhhdCB0aGUNCj4gICAgICAgICogaGFyZHdhcmUgd29uJ3Qgc2NhbiBiZXlvbmQg
+d2hhdCBpdCBzaG91bGQgKGVzcC4NCj4gICAgICAgICogd2l0aCBub24tc3F1YXJlIGN1cnNvcnMp
+Lg0KPiAgICAgICAgKi8NCj4gLSAgICAgZmJfaWQgPSBpZ3RfY3JlYXRlX2NvbG9yX2ZiKGRhdGEt
+PmRybV9mZCwgY3VyX3csIGN1cl9oICsgMSwNCj4gKyAgICAgZmJfaWQgPSBpZ3RfY3JlYXRlX2Nv
+bG9yX2ZiKGRhdGEtPmRybV9mZCwgY3VyX3csIGN1cl9oICsNCj4gK2N1cl9oX2V4dHJhX2xpbmUs
+DQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBEUk1fRk9STUFUX0FSR0I4ODg4
+LA0KPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgRFJNX0ZPUk1BVF9NT0RfTElO
+RUFSLA0KPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgMS4wLCAxLjAsIDEuMCwN
+Cj4gLS0NCj4gMi4yNS4xDQo+DQo=
