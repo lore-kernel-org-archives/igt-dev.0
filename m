@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E7A6D10E1F1
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Oct 2023 14:17:22 +0000 (UTC)
-From: Matthew Auld <matthew.auld@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 16 Oct 2023 15:14:48 +0100
-Message-ID: <20231016141450.55936-11-matthew.auld@intel.com>
-In-Reply-To: <20231016141450.55936-1-matthew.auld@intel.com>
-References: <20231016141450.55936-1-matthew.auld@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============1290336558538040650=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 10/12] lib/xe_ioctl: update vm_bind to
- account for pat_index
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
+Date: Mon, 16 Oct 2023 14:43:05 -0000
+Message-ID: <169746738577.13505.5579198700583290392@emeril.freedesktop.org>
+References: <20231016131752.39196-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20231016131752.39196-1-kamil.konieczny@linux.intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tools/in?=
+ =?utf-8?q?tel=5Fgpu=5Ffrequency=3A_fix_device_opening?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,98 +17,159 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Keep things minimal and select the 1way+ by default on all platforms.
-Other users can use intel_buf, get_offset_pat_index etc or use
-__xe_vm_bind() directly.  Display tests don't directly use this
-interface.
+--===============1290336558538040650==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: José Roberto de Souza <jose.souza@intel.com>
-Cc: Pallavi Mishra <pallavi.mishra@intel.com>
----
- lib/xe/xe_ioctl.c   | 8 ++++++--
- lib/xe/xe_ioctl.h   | 2 +-
- tests/intel/xe_vm.c | 4 +++-
- 3 files changed, 10 insertions(+), 4 deletions(-)
+== Series Details ==
 
-diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index 80696aa59..ebaed1e96 100644
---- a/lib/xe/xe_ioctl.c
-+++ b/lib/xe/xe_ioctl.c
-@@ -41,6 +41,7 @@
- #include "config.h"
- #include "drmtest.h"
- #include "igt_syncobj.h"
-+#include "intel_pat.h"
- #include "ioctl_wrappers.h"
- #include "xe_ioctl.h"
- #include "xe_query.h"
-@@ -92,7 +93,7 @@ void xe_vm_bind_array(int fd, uint32_t vm, uint32_t exec_queue,
- int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
- 		  uint64_t offset, uint64_t addr, uint64_t size, uint32_t op,
- 		  struct drm_xe_sync *sync, uint32_t num_syncs, uint32_t region,
--		  uint64_t ext)
-+		  uint8_t pat_index, uint64_t ext)
- {
- 	struct drm_xe_vm_bind bind = {
- 		.extensions = ext,
-@@ -107,6 +108,8 @@ int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
- 		.num_syncs = num_syncs,
- 		.syncs = (uintptr_t)sync,
- 		.exec_queue_id = exec_queue,
-+		.bind.pat_index = (pat_index == DEFAULT_PAT_INDEX) ?
-+			intel_get_pat_idx_wb(fd) : pat_index,
- 	};
- 
- 	if (igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind))
-@@ -121,7 +124,8 @@ void  __xe_vm_bind_assert(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
- 			  uint32_t num_syncs, uint32_t region, uint64_t ext)
- {
- 	igt_assert_eq(__xe_vm_bind(fd, vm, exec_queue, bo, offset, addr, size,
--				   op, sync, num_syncs, region, ext), 0);
-+				   op, sync, num_syncs, region, DEFAULT_PAT_INDEX,
-+				   ext), 0);
- }
- 
- void xe_vm_bind(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
-diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index c18fc878c..cafbb011a 100644
---- a/lib/xe/xe_ioctl.h
-+++ b/lib/xe/xe_ioctl.h
-@@ -20,7 +20,7 @@ uint32_t xe_vm_create(int fd, uint32_t flags, uint64_t ext);
- int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
- 		  uint64_t offset, uint64_t addr, uint64_t size, uint32_t op,
- 		  struct drm_xe_sync *sync, uint32_t num_syncs, uint32_t region,
--		  uint64_t ext);
-+		  uint8_t pat_index, uint64_t ext);
- void  __xe_vm_bind_assert(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
- 			  uint64_t offset, uint64_t addr, uint64_t size,
- 			  uint32_t op, struct drm_xe_sync *sync,
-diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-index 4952ea786..ffb70973b 100644
---- a/tests/intel/xe_vm.c
-+++ b/tests/intel/xe_vm.c
-@@ -10,6 +10,7 @@
-  */
- 
- #include "igt.h"
-+#include "intel_pat.h"
- #include "lib/igt_syncobj.h"
- #include "lib/intel_reg.h"
- #include "xe_drm.h"
-@@ -316,7 +317,8 @@ static void userptr_invalid(int fd)
- 	vm = xe_vm_create(fd, 0, 0);
- 	munmap(data, size);
- 	ret = __xe_vm_bind(fd, vm, 0, 0, to_user_pointer(data), 0x40000,
--			   size, XE_VM_BIND_OP_MAP_USERPTR, NULL, 0, 0, 0);
-+			   size, XE_VM_BIND_OP_MAP_USERPTR, NULL, 0, 0,
-+			   DEFAULT_PAT_INDEX, 0);
- 	igt_assert(ret == -EFAULT);
- 
- 	xe_vm_destroy(fd, vm);
--- 
-2.41.0
+Series: tools/intel_gpu_frequency: fix device opening
+URL   : https://patchwork.freedesktop.org/series/125170/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7541_BAT -> XEIGTPW_10004_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10004_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_cursor_legacy@basic-flip-before-cursor-atomic:
+    - bat-adlp-7:         [FAIL][1] ([i915#2346]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10004/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
+    - bat-adlp-7:         [FAIL][3] ([Intel XE#480]) -> [PASS][4] +1 other test pass
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10004/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+
+  * igt@xe_exec_reset@virtual-close-fd-no-exec:
+    - bat-pvc-2:          [DMESG-WARN][5] ([Intel XE#696]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10004/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+  [Intel XE#696]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/696
+  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7541 -> IGTPW_10004
+
+  IGTPW_10004: 10004
+  IGT_7541: fcddb77c3f8a77020f7f3b2660a66cae27cfaa2b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-435-ab7cd1b4af95baba2d6ce5487d35ffda523e895d: ab7cd1b4af95baba2d6ce5487d35ffda523e895d
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10004/index.html
+
+--===============1290336558538040650==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tools/intel_gpu_frequency: fix device opening</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/125170/">https://patchwork.freedesktop.org/series/125170/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10004/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10004/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7541_BAT -&gt; XEIGTPW_10004_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10004_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-before-cursor-atomic:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10004/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10004/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_reset@virtual-close-fd-no-exec:</p>
+<ul>
+<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/696">Intel XE#696</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10004/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7541 -&gt; IGTPW_10004</li>
+</ul>
+<p>IGTPW_10004: 10004<br />
+  IGT_7541: fcddb77c3f8a77020f7f3b2660a66cae27cfaa2b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-435-ab7cd1b4af95baba2d6ce5487d35ffda523e895d: ab7cd1b4af95baba2d6ce5487d35ffda523e895d</p>
+
+</body>
+</html>
+
+--===============1290336558538040650==--
