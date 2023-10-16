@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A3A3010E13E
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Oct 2023 08:31:48 +0000 (UTC)
-Message-ID: <65ba6395-2428-4371-b3c2-b38a13bb131a@intel.com>
-Date: Mon, 16 Oct 2023 14:01:42 +0530
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 51DC710E154
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Oct 2023 08:54:50 +0000 (UTC)
+Date: Mon, 16 Oct 2023 10:54:46 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: sai.gowtham.ch@intel.com
+Message-ID: <20231016085446.exvruxg2w5j6hweg@zkempczy-mobl2>
+References: <20231013103728.24748-1-sai.gowtham.ch@intel.com>
+ <20231013103728.24748-2-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- igt-dev@lists.freedesktop.org
-References: <20231010114726.393671-1-juhapekka.heikkila@gmail.com>
-Content-Language: en-US
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20231010114726.393671-1-juhapekka.heikkila@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane: test odd size planar
- yuv
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231013103728.24748-2-sai.gowtham.ch@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/intel_blt: Add wrappers to
+ prepare batch buffers and submit exec
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,126 +22,359 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LGTM
-
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
-
-On 10-Oct-23 5:17 PM, Juha-Pekka Heikkila wrote:
-> Test odd size planar yuv formats are allowed on graphics ver >= 20
+On Fri, Oct 13, 2023 at 04:07:27PM +0530, sai.gowtham.ch@intel.com wrote:
+> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 > 
-> Rename invalid pixel format settings test to planar pixel format settings
-> test to refect the changes.
+> Adding wrapper for mem-set and mem-copy instructions to prepare
+> batch buffers and submit exec, (blt_mem_copy, blt_mem_set,
+> emit_blt_mem_copy, emit_blt_set_mem)
 > 
-> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> Cc: Karolina Stolarek <karolina.stolarek@intel.com>
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 > ---
->   tests/kms_plane.c | 43 +++++++++++++++++++++++++++++++------------
->   1 file changed, 31 insertions(+), 12 deletions(-)
+>  lib/intel_blt.c | 199 ++++++++++++++++++++++++++++++++++++++++++++++++
+>  lib/intel_blt.h |  39 ++++++++++
+>  lib/intel_reg.h |   4 +
+>  3 files changed, 242 insertions(+)
 > 
-> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-> index 9a515559c..a13fcc36e 100644
-> --- a/tests/kms_plane.c
-> +++ b/tests/kms_plane.c
-> @@ -1229,27 +1229,30 @@ test_pixel_formats(data_t *data, enum pipe pipe)
->   }
->   
->   /**
-> - * SUBTEST: invalid-pixel-format-settings
-> - * Description: verify invalid settings for pixel format are not accepted
-> + * SUBTEST: planar-pixel-format-settings
-> + * Description: verify planar settings for pixel format are handled correctly
->    * Driver requirement: i915, xe
->    * Functionality: pixel_format, plane
->    * Mega feature: General Display Features
->    * Test category: functionality test
->    */
-> -static void test_invalid_settings(data_t *data)
-> +static void test_planar_settings(data_t *data)
->   {
->   	enum pipe pipe = PIPE_A;
->   	igt_output_t *output;
->   	igt_fb_t fb;
->   	igt_plane_t *primary;
-> +	int devid;
->   	int rval;
->   
->   	/*
->   	 * If here is added non-intel tests below require will need to be
->   	 * changed to if(..)
->   	 */
-> +	igt_require(data->display.is_atomic);
->   	igt_require_intel(data->drm_fd);
-> -	igt_require(intel_display_ver(intel_get_drm_devid(data->drm_fd)) >= 9);
-> +	devid = intel_get_drm_devid(data->drm_fd);
-> +	igt_require(intel_display_ver(devid) >= 9);
->   
->   	output = igt_get_single_output_for_pipe(&data->display, pipe);
->   	igt_require(output);
-> @@ -1257,17 +1260,26 @@ static void test_invalid_settings(data_t *data)
->   	igt_output_set_pipe(output, pipe);
->   	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
->   
-> -	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
-> +	igt_display_commit_atomic(&data->display,
-> +				  DRM_MODE_ATOMIC_ALLOW_MODESET,
-> +				  NULL);
->   
->   	/* test against intel_plane_check_src_coordinates() in i915 */
->   	if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
->   				     DRM_FORMAT_MOD_LINEAR)) {
-> +		int expected_rval = -EINVAL;
+> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+> index a76c7a404..4e7357b6f 100644
+> --- a/lib/intel_blt.c
+> +++ b/lib/intel_blt.c
+> @@ -13,12 +13,14 @@
+>  #include "igt.h"
+>  #include "igt_syncobj.h"
+>  #include "intel_blt.h"
+> +#include "intel_mocs.h"
+>  #include "xe/xe_ioctl.h"
+>  #include "xe/xe_query.h"
+>  #include "xe/xe_util.h"
+>  
+>  #define BITRANGE(start, end) (end - start + 1)
+>  #define GET_CMDS_INFO(__fd) intel_get_cmds_info(intel_get_drm_devid(__fd))
+> +#define MEM_COPY_MOCS_SHIFT                     25
+>  
+>  /* Blitter tiling definitions sanity checks */
+>  static_assert(T_LINEAR == I915_TILING_NONE, "Linear definitions have to match");
+> @@ -1577,6 +1579,186 @@ int blt_fast_copy(int fd,
+>  	return ret;
+>  }
+>  
+> +/**
+> + * blt_mem_init:
+> + * @fd: drm fd
+> + * @mem: structure for initialization
+> + *
+> + * Function is zeroing @mem and sets fd and driver fields (INTEL_DRIVER_I915 or
+> + * INTEL_DRIVER_XE).
+> + */
+> +void blt_mem_init(int fd, struct blt_mem_data *mem)
+> +{
+> +	memset(mem, 0, sizeof(*mem));
 > +
-> +		if (intel_display_ver(devid) >= 20)
-> +			expected_rval = 0;
+> +	mem->fd = fd;
+> +	mem->driver = get_intel_driver(fd);
+> +}
 > +
->   		igt_create_fb(data->drm_fd, 257, 256,
->   			      DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &fb);
->   		igt_plane_set_fb(primary, &fb);
-> -		rval = igt_display_try_commit_atomic(&data->display, 0, NULL);
-> +		rval = igt_display_try_commit_atomic(&data->display,
-> +						     DRM_MODE_ATOMIC_ALLOW_MODESET,
-> +						     NULL);
->   		igt_remove_fb(data->drm_fd, &fb);
-> -		igt_assert_f(rval == -EINVAL, "Odd width NV12 framebuffer\n");
-> +		igt_assert_f(rval == expected_rval, "Odd width NV12 framebuffer\n");
->   	} else {
->   		igt_debug("Odd width NV12 framebuffer test skipped\n");
->   	}
-> @@ -1275,12 +1287,19 @@ static void test_invalid_settings(data_t *data)
->   	/* test against intel_plane_check_src_coordinates() in i915 */
->   	if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
->   				     DRM_FORMAT_MOD_LINEAR)) {
-> +		int expected_rval = -EINVAL;
+> +static void emit_blt_mem_copy(int fd, uint64_t ahnd, const struct blt_mem_data *mem)
+> +{
+> +	uint64_t dst_offset, src_offset, alignment;
+> +	int i;
+> +	uint32_t *batch;
+> +	uint32_t optype;
 > +
-> +		if (intel_display_ver(devid) >= 20)
-> +			expected_rval = 0;
+> +	alignment = get_default_alignment(fd, mem->driver);
+> +	src_offset = get_offset(ahnd, mem->src.handle, mem->src.size, alignment);
+> +	dst_offset = get_offset(ahnd, mem->dst.handle, mem->dst.size, alignment);
 > +
->   		igt_create_fb(data->drm_fd, 256, 257,
->   			      DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR, &fb);
->   		igt_plane_set_fb(primary, &fb);
-> -		rval = igt_display_try_commit_atomic(&data->display, 0, NULL);
-> +		rval = igt_display_try_commit_atomic(&data->display,
-> +						     DRM_MODE_ATOMIC_ALLOW_MODESET,
-> +						     NULL);
->   		igt_remove_fb(data->drm_fd, &fb);
-> -		igt_assert_f(rval == -EINVAL, "Odd height NV12 framebuffer\n");
-> +		igt_assert_f(rval == expected_rval, "Odd height NV12 framebuffer\n");
->   	} else {
->   		igt_debug("Odd height NV12 framebuffer test skipped\n");
->   	}
-> @@ -1367,9 +1386,9 @@ run_tests_for_pipe_plane(data_t *data)
->   		run_test(data, test_plane_panning);
->   	}
->   
-> -	igt_describe("verify invalid settings for pixel format are not accepted");
-> -	igt_subtest_f("invalid-pixel-format-settings")
-> -		test_invalid_settings(data);
-> +	igt_describe("verify planar settings for pixel format are accepted or rejected correctly");
-> +	igt_subtest_f("planar-pixel-format-settings")
-> +		test_planar_settings(data);
->   }
->   
->   static int opt_handler(int opt, int opt_index, void *_data)
+> +	batch = bo_map(fd, mem->bb.handle, mem->bb.size, mem->driver);
+> +	optype = mem->src.type == M_MATRIX ? 1 << 17 : 0;
+> +
+> +	i = 0;
+> +	batch[i++] = MEM_COPY_CMD | (1 << 19) | optype;
+> +	batch[i++] = mem->src.width - 1;
+> +	batch[i++] = mem->src.height - 1;
+> +	batch[i++] = mem->src.pitch - 1;
+> +	batch[i++] = mem->dst.pitch - 1;
+> +	batch[i++] = src_offset;
+> +	batch[i++] = src_offset << 32;
+> +	batch[i++] = dst_offset;
+> +	batch[i++] = dst_offset << 32;
+> +	batch[i++] = mem->src.mocs << MEM_COPY_MOCS_SHIFT | mem->dst.mocs;
+> +	batch[i++] = MI_BATCH_BUFFER_END;
+> +
+> +	munmap(batch, mem->bb.size);
+> +}
+> +
+> +/**
+> + * blt_mem_copy:
+> + * @fd: drm fd
+> + * @ctx: intel_ctx_t context
+> + * @e: blitter engine for @ctx
+> + * @ahnd: allocator handle
+> + * @blt: blitter data for mem-copy.
+> + *
+> + * Function does mem blit between @src and @dst described in @blt object.
+> + *
+> + * Returns:
+> + * execbuffer status.
+> + */
+> +int blt_mem_copy(int fd, const intel_ctx_t *ctx,
+> +		 const struct intel_execution_engine2 *e,
+> +		 uint64_t ahnd,
+> +		 const struct blt_mem_data *mem)
+> +{
+> +	struct drm_i915_gem_execbuffer2 execbuf = {};
+> +	struct drm_i915_gem_exec_object2 obj[3] = {};
+> +	uint64_t dst_offset, src_offset, bb_offset, alignment;
+> +	int ret;
+> +
+> +	alignment = get_default_alignment(fd, mem->driver);
+> +	src_offset = get_offset(ahnd, mem->src.handle, mem->src.size, alignment);
+> +	dst_offset = get_offset(ahnd, mem->dst.handle, mem->dst.size, alignment);
+> +	bb_offset = get_offset(ahnd, mem->bb.handle, mem->bb.size, alignment);
+> +
+> +	emit_blt_mem_copy(fd, ahnd, mem);
+> +
+> +	if (mem->driver == INTEL_DRIVER_XE) {
+> +		intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
+> +	} else {
+> +		obj[0].offset = CANONICAL(dst_offset);
+> +		obj[1].offset = CANONICAL(src_offset);
+> +		obj[2].offset = CANONICAL(bb_offset);
+> +		obj[0].handle = mem->dst.handle;
+> +		obj[1].handle = mem->src.handle;
+> +		obj[2].handle = mem->bb.handle;
+> +		obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
+> +			EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> +		obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> +		obj[2].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> +		execbuf.buffer_count = 3;
+> +                execbuf.buffers_ptr = to_user_pointer(obj);
+> +		execbuf.rsvd1 = ctx ? ctx->id : 0;
+> +		execbuf.flags = e ? e->flags : I915_EXEC_BLT;
+> +		ret = __gem_execbuf(fd, &execbuf);
+> +		put_offset(ahnd, mem->dst.handle);
+> +		put_offset(ahnd, mem->src.handle);
+> +		put_offset(ahnd, mem->bb.handle);
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +static void emit_blt_mem_set(int fd, uint64_t ahnd, const struct blt_mem_data *mem,
+> +			     uint8_t fill_data)
+> +{
+> +	uint64_t dst_offset, alignment;
+> +	int b;
+> +	uint32_t *batch;
+> +	uint32_t value;
+> +
+> +	alignment = get_default_alignment(fd, mem->driver);
+> +	dst_offset = get_offset(ahnd, mem->dst.handle, mem->dst.size, alignment);
+> +
+> +	batch = bo_map(fd, mem->bb.handle, mem->bb.size, mem->driver);
+> +	value = (uint32_t)fill_data << 24;
+> +
+> +	b = 0;
+> +	batch[b++] = MEM_SET_CMD;
+> +	batch[b++] = mem->dst.width - 1;
+> +	batch[b++] = mem->dst.height - 1;
+> +	batch[b++] = mem->dst.pitch - 1;
+> +	batch[b++] = dst_offset;
+> +	batch[b++] = dst_offset << 32;
+> +	batch[b++] = value | mem->dst.mocs;
+> +	batch[b++] = MI_BATCH_BUFFER_END;
+> +
+> +	munmap(batch, mem->bb.size);
+> +}
+> +/**
+> + * blt_mem_set:
+> + * @fd: drm fd
+> + * @ctx: intel_ctx_t context
+> + * @e: blitter engine for @ctx
+> + * @ahnd: allocator handle
+> + * @blt: blitter data for mem-set.
+> + *
+> + * Function does mem set blit in described @blt object.
+> + *
+> + * Returns:
+> + * execbuffer status.
+> + */
+> +int blt_mem_set(int fd, const intel_ctx_t *ctx,
+> +		const struct intel_execution_engine2 *e,
+> +		uint64_t ahnd,
+> +		const struct blt_mem_data *mem,
+> +		uint8_t fill_data)
+> +{
+> +	struct drm_i915_gem_execbuffer2 execbuf = {};
+> +	struct drm_i915_gem_exec_object2 obj[2] = {};
+> +	uint64_t dst_offset, bb_offset, alignment;
+> +	int ret;
+> +
+> +	alignment = get_default_alignment(fd, mem->driver);
+> +	dst_offset = get_offset(ahnd, mem->dst.handle, mem->dst.size, alignment);
+> +	bb_offset = get_offset(ahnd, mem->bb.handle, mem->bb.size, alignment);
+> +
+> +	emit_blt_mem_set(fd, ahnd, mem, fill_data);
+> +
+> +	if (mem->driver == INTEL_DRIVER_XE) {
+> +		intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
+> +	} else {
+> +		obj[0].offset = CANONICAL(dst_offset);
+> +		obj[1].offset = CANONICAL(bb_offset);
+> +		obj[0].handle = mem->dst.handle;
+> +		obj[1].handle = mem->bb.handle;
+> +		obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
+> +						    EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> +		obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> +		execbuf.buffer_count = 2;
+> +		execbuf.buffers_ptr = to_user_pointer(obj);
+> +		execbuf.rsvd1 = ctx ? ctx->id : 0;
+> +		execbuf.flags = e ? e->flags : I915_EXEC_BLT;
+> +		ret = __gem_execbuf(fd, &execbuf);
+> +		put_offset(ahnd, mem->dst.handle);
+> +		put_offset(ahnd, mem->bb.handle);
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+>  void blt_set_geom(struct blt_copy_object *obj, uint32_t pitch,
+>  		  int16_t x1, int16_t y1, int16_t x2, int16_t y2,
+>  		  uint16_t x_offset, uint16_t y_offset)
+> @@ -1659,6 +1841,23 @@ void blt_set_object(struct blt_copy_object *obj,
+>  	obj->compression_type = compression_type;
+>  }
+>  
+> +void blt_set_mem_object(struct blt_mem_object *obj,
+> +			uint32_t handle, uint64_t size, uint32_t pitch,
+> +			uint32_t width, uint32_t height, uint32_t region,
+> +			uint8_t mocs, enum blt_memop_type type,
+> +			enum blt_compression compression)
+> +{
+> +	obj->handle = handle;
+> +	obj->region = region;
+> +	obj->size = size;
+> +	obj->mocs = mocs;
+> +	obj->type = type;
+> +	obj->compression = compression;
+> +	obj->width = width;
+> +	obj->height = height;
+> +	obj->pitch = pitch;
+> +}
+> +
+>  void blt_set_object_ext(struct blt_block_copy_object_ext *obj,
+>  			uint8_t compression_format,
+>  			uint16_t surface_width, uint16_t surface_height,
+> diff --git a/lib/intel_blt.h b/lib/intel_blt.h
+> index 7b4271620..d6f40680d 100644
+> --- a/lib/intel_blt.h
+> +++ b/lib/intel_blt.h
+> @@ -93,6 +93,19 @@ struct blt_copy_object {
+>  	uint32_t plane_offset;
+>  };
+>  
+> +struct blt_mem_object {
+> +	uint32_t handle;
+> +	uint32_t region;
+> +	uint64_t size;
+> +	uint8_t mocs;
+
+Rename to mocs_index (see gen12_block_copy_data) for consistency.
+
+Rest looks ok. BTW looking at mem-copy I see M_MATRIX is supported
+for pvc so you should update intel_cmds_info.c either.
+
+What about printing instruction debug similar to dump_bb_fast_cmd?
+(print_bb = true?).
+
+With above nits addressed:
+
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+
+--
+Zbigniew
+
+> +	enum blt_memop_type type;
+> +	enum blt_compression compression;
+> +	uint32_t width;
+> +	uint32_t height;
+> +	uint32_t pitch;
+> +	uint32_t *ptr;
+> +};
+> +
+>  struct blt_copy_batch {
+>  	uint32_t handle;
+>  	uint32_t region;
+> @@ -112,6 +125,14 @@ struct blt_copy_data {
+>  	bool print_bb;
+>  };
+>  
+> +struct blt_mem_data {
+> +	int fd;
+> +	enum intel_driver driver;
+> +	struct blt_mem_object src;
+> +	struct blt_mem_object dst;
+> +	struct blt_copy_batch bb;
+> +};
+> +
+>  enum blt_surface_type {
+>  	SURFACE_TYPE_1D,
+>  	SURFACE_TYPE_2D,
+> @@ -231,6 +252,17 @@ int blt_fast_copy(int fd,
+>  		  uint64_t ahnd,
+>  		  const struct blt_copy_data *blt);
+>  
+> +void blt_mem_init(int fd, struct blt_mem_data *mem);
+> +
+> +int blt_mem_copy(int fd, const intel_ctx_t *ctx,
+> +			 const struct intel_execution_engine2 *e,
+> +			 uint64_t ahnd,
+> +			 const struct blt_mem_data *mem);
+> +
+> +int blt_mem_set(int fd, const intel_ctx_t *ctx,
+> +			const struct intel_execution_engine2 *e, uint64_t ahnd,
+> +			const struct blt_mem_data *mem, uint8_t fill_data);
+> +
+>  void blt_set_geom(struct blt_copy_object *obj, uint32_t pitch,
+>  		  int16_t x1, int16_t y1, int16_t x2, int16_t y2,
+>  		  uint16_t x_offset, uint16_t y_offset);
+> @@ -250,6 +282,13 @@ void blt_set_object(struct blt_copy_object *obj,
+>  		    uint8_t mocs_index, enum blt_tiling_type tiling,
+>  		    enum blt_compression compression,
+>  		    enum blt_compression_type compression_type);
+> +
+> +void blt_set_mem_object(struct blt_mem_object *obj,
+> +			uint32_t handle, uint64_t size, uint32_t pitch,
+> +			uint32_t width, uint32_t height, uint32_t region,
+> +			uint8_t mocs, enum blt_memop_type type,
+> +			enum blt_compression compression);
+> +
+>  void blt_set_object_ext(struct blt_block_copy_object_ext *obj,
+>  			uint8_t compression_format,
+>  			uint16_t surface_width, uint16_t surface_height,
+> diff --git a/lib/intel_reg.h b/lib/intel_reg.h
+> index ea463376b..a8190d683 100644
+> --- a/lib/intel_reg.h
+> +++ b/lib/intel_reg.h
+> @@ -2588,6 +2588,10 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+>  #define   XY_FAST_COPY_COLOR_DEPTH_64			(4  << 24)
+>  #define   XY_FAST_COPY_COLOR_DEPTH_128			(5  << 24)
+>  
+> +/* RAW memory commands */
+> +#define MEM_COPY_CMD                    ((0x2 << 29)|(0x5a << 22)|0x8)
+> +#define MEM_SET_CMD                     ((0x2 << 29)|(0x5b << 22)|0x5)
+> +
+>  #define CTXT_NO_RESTORE			(1)
+>  #define CTXT_PALETTE_SAVE_DISABLE	(1<<3)
+>  #define CTXT_PALETTE_RESTORE_DISABLE	(1<<2)
+> -- 
+> 2.39.1
+> 
