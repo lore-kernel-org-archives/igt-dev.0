@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4439010E1EB
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Oct 2023 14:17:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B47A510E1EB
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Oct 2023 14:17:12 +0000 (UTC)
 From: Matthew Auld <matthew.auld@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 16 Oct 2023 15:14:42 +0100
-Message-ID: <20231016141450.55936-5-matthew.auld@intel.com>
+Date: Mon, 16 Oct 2023 15:14:44 +0100
+Message-ID: <20231016141450.55936-7-matthew.auld@intel.com>
 In-Reply-To: <20231016141450.55936-1-matthew.auld@intel.com>
 References: <20231016141450.55936-1-matthew.auld@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 04/12] lib/xe: support cpu_caching and
- coh_mod for gem_create
+Subject: [igt-dev] [PATCH i-g-t v3 06/12] lib/intel_pat: add helpers for
+ common pat_index modes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,151 +24,142 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Most tests shouldn't about such things, so likely it's just a case of
-picking the most sane default. However we also add some helpers for the
-tests that do care.
+For now just add uc, wt and wb for every platform. The wb mode should
+always be at least 1way coherent, if messing around with system memory.
+Also make non-matching platforms throw an error rather than trying to
+inherit the modes from previous platforms since they will likely be
+different.
 
 Signed-off-by: Matthew Auld <matthew.auld@intel.com>
 Cc: José Roberto de Souza <jose.souza@intel.com>
 Cc: Pallavi Mishra <pallavi.mishra@intel.com>
-Reviewed-by: Pallavi Mishra <pallavi.mishra@intel.com>
 ---
- lib/xe/xe_ioctl.c       | 65 ++++++++++++++++++++++++++++++++++-------
- lib/xe/xe_ioctl.h       |  8 +++++
- tests/intel/xe_create.c |  3 ++
- 3 files changed, 65 insertions(+), 11 deletions(-)
+ lib/intel_pat.c | 77 +++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/intel_pat.h | 19 ++++++++++++
+ lib/meson.build |  1 +
+ 3 files changed, 97 insertions(+)
+ create mode 100644 lib/intel_pat.c
+ create mode 100644 lib/intel_pat.h
 
-diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index 730dcfd16..80696aa59 100644
---- a/lib/xe/xe_ioctl.c
-+++ b/lib/xe/xe_ioctl.c
-@@ -233,13 +233,30 @@ void xe_vm_destroy(int fd, uint32_t vm)
- 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_VM_DESTROY, &destroy), 0);
- }
- 
--uint32_t __xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags,
--			      uint32_t *handle)
-+void __xe_default_coh_caching_from_flags(int fd, uint32_t flags,
-+					 uint16_t *cpu_caching,
-+					 uint16_t *coh_mode)
+diff --git a/lib/intel_pat.c b/lib/intel_pat.c
+new file mode 100644
+index 000000000..2b892ee52
+--- /dev/null
++++ b/lib/intel_pat.c
+@@ -0,0 +1,77 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2023 Intel Corporation
++ */
++
++#include "intel_pat.h"
++
++#include "igt.h"
++
++struct intel_pat_cache {
++	uint8_t uc; /* UC + COH_NONE */
++	uint8_t wt; /* WT + COH_NONE */
++	uint8_t wb; /* WB + COH_AT_LEAST_1WAY */
++
++	uint8_t max_index;
++};
++
++static void intel_get_pat_idx(int fd, struct intel_pat_cache *pat)
 +{
-+	if ((flags & all_memory_regions(fd)) != system_memory(fd) ||
-+	    flags & XE_GEM_CREATE_FLAG_SCANOUT) {
-+		/* VRAM placements or scanout should always use WC */
-+		*cpu_caching = DRM_XE_GEM_CPU_CACHING_WC;
-+		*coh_mode = DRM_XE_GEM_COH_NONE;
++	uint16_t dev_id = intel_get_drm_devid(fd);
++
++	if (intel_get_device_info(dev_id)->graphics_ver == 20) {
++		pat->uc = 3;
++		pat->wt = 15; /* Compressed + WB-transient */
++		pat->wb = 2;
++		pat->max_index = 31;
++	} else if (IS_METEORLAKE(dev_id)) {
++		pat->uc = 2;
++		pat->wt = 1;
++		pat->wb = 3;
++		pat->max_index = 3;
++	} else if (IS_PONTEVECCHIO(dev_id)) {
++		pat->uc = 0;
++		pat->wt = 2;
++		pat->wb = 3;
++		pat->max_index = 7;
++	} else if (intel_graphics_ver(dev_id) <= IP_VER(12, 60)) {
++		pat->uc = 3;
++		pat->wt = 2;
++		pat->wb = 0;
++		pat->max_index = 3;
 +	} else {
-+		*cpu_caching = DRM_XE_GEM_CPU_CACHING_WB;
-+		*coh_mode = DRM_XE_GEM_COH_AT_LEAST_1WAY;
++		igt_critical("Platform is missing PAT settings for uc/wt/wb\n");
 +	}
 +}
 +
-+static uint32_t ___xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags,
-+				      uint16_t cpu_caching, uint16_t coh_mode, uint32_t *handle)
- {
- 	struct drm_xe_gem_create create = {
- 		.vm_id = vm,
- 		.size = size,
- 		.flags = flags,
-+		.cpu_caching = cpu_caching,
-+		.coh_mode = coh_mode,
- 	};
- 	int err;
- 
-@@ -249,6 +266,18 @@ uint32_t __xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags
- 
- 	*handle = create.handle;
- 	return 0;
++uint8_t intel_get_max_pat_index(int fd)
++{
++	struct intel_pat_cache pat = {};
 +
++	intel_get_pat_idx(fd, &pat);
++	return pat.max_index;
 +}
 +
-+uint32_t __xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags,
-+			      uint32_t *handle)
++uint8_t intel_get_pat_idx_uc(int fd)
 +{
-+	uint16_t cpu_caching, coh_mode;
++	struct intel_pat_cache pat = {};
 +
-+	__xe_default_coh_caching_from_flags(fd, flags, &cpu_caching, &coh_mode);
-+
-+	return ___xe_bo_create_flags(fd, vm, size, flags, cpu_caching, coh_mode,
-+				     handle);
- }
- 
- uint32_t xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags)
-@@ -260,19 +289,33 @@ uint32_t xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags)
- 	return handle;
- }
- 
-+uint32_t __xe_bo_create_caching(int fd, uint32_t vm, uint64_t size, uint32_t flags,
-+				uint16_t cpu_caching, uint16_t coh_mode,
-+				uint32_t *handle)
-+{
-+	return ___xe_bo_create_flags(fd, vm, size, flags, cpu_caching, coh_mode,
-+				     handle);
++	intel_get_pat_idx(fd, &pat);
++	return pat.uc;
 +}
 +
-+uint32_t xe_bo_create_caching(int fd, uint32_t vm, uint64_t size, uint32_t flags,
-+			      uint16_t cpu_caching, uint16_t coh_mode)
++uint8_t intel_get_pat_idx_wt(int fd)
 +{
-+	uint32_t handle;
++	struct intel_pat_cache pat = {};
 +
-+	igt_assert_eq(__xe_bo_create_caching(fd, vm, size, flags,
-+					     cpu_caching, coh_mode, &handle), 0);
-+
-+	return handle;
++	intel_get_pat_idx(fd, &pat);
++	return pat.wt;
 +}
 +
- uint32_t xe_bo_create(int fd, int gt, uint32_t vm, uint64_t size)
- {
--	struct drm_xe_gem_create create = {
--		.vm_id = vm,
--		.size = size,
--		.flags = vram_if_possible(fd, gt),
--	};
--	int err;
-+	uint32_t handle;
- 
--	err = igt_ioctl(fd, DRM_IOCTL_XE_GEM_CREATE, &create);
--	igt_assert_eq(err, 0);
-+	igt_assert_eq(__xe_bo_create_flags(fd, vm, size, vram_if_possible(fd, gt),
-+					   &handle), 0);
- 
--	return create.handle;
-+	return handle;
- }
- 
- uint32_t xe_bind_exec_queue_create(int fd, uint32_t vm, uint64_t ext)
-diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index 6c281b3bf..c18fc878c 100644
---- a/lib/xe/xe_ioctl.h
-+++ b/lib/xe/xe_ioctl.h
-@@ -67,6 +67,14 @@ void xe_vm_destroy(int fd, uint32_t vm);
- uint32_t __xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags,
- 			      uint32_t *handle);
- uint32_t xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags);
-+uint32_t __xe_bo_create_caching(int fd, uint32_t vm, uint64_t size, uint32_t flags,
-+				uint16_t cpu_caching, uint16_t coh_mode,
-+				uint32_t *handle);
-+uint32_t xe_bo_create_caching(int fd, uint32_t vm, uint64_t size, uint32_t flags,
-+			      uint16_t cpu_caching, uint16_t coh_mode);
-+void __xe_default_coh_caching_from_flags(int fd, uint32_t flags,
-+					 uint16_t *cpu_caching,
-+					 uint16_t *coh_mode);
- uint32_t xe_bo_create(int fd, int gt, uint32_t vm, uint64_t size);
- uint32_t xe_exec_queue_create(int fd, uint32_t vm,
- 			  struct drm_xe_engine_class_instance *instance,
-diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
-index 8d845e5c8..f5d2cc1b2 100644
---- a/tests/intel/xe_create.c
-+++ b/tests/intel/xe_create.c
-@@ -30,6 +30,9 @@ static int __create_bo(int fd, uint32_t vm, uint64_t size, uint32_t flags,
- 
- 	igt_assert(handlep);
- 
-+	__xe_default_coh_caching_from_flags(fd, flags, &create.cpu_caching,
-+					    &create.coh_mode);
++uint8_t intel_get_pat_idx_wb(int fd)
++{
++	struct intel_pat_cache pat = {};
 +
- 	if (igt_ioctl(fd, DRM_IOCTL_XE_GEM_CREATE, &create)) {
- 		ret = -errno;
- 		errno = 0;
++	intel_get_pat_idx(fd, &pat);
++	return pat.wb;
++}
+diff --git a/lib/intel_pat.h b/lib/intel_pat.h
+new file mode 100644
+index 000000000..c24dbc275
+--- /dev/null
++++ b/lib/intel_pat.h
+@@ -0,0 +1,19 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2023 Intel Corporation
++ */
++
++#ifndef INTEL_PAT_H
++#define INTEL_PAT_H
++
++#include <stdint.h>
++
++#define DEFAULT_PAT_INDEX ((uint8_t)-1) /* igt-core can pick 1way or better */
++
++uint8_t intel_get_max_pat_index(int fd);
++
++uint8_t intel_get_pat_idx_uc(int fd);
++uint8_t intel_get_pat_idx_wt(int fd);
++uint8_t intel_get_pat_idx_wb(int fd);
++
++#endif /* INTEL_PAT_H */
+diff --git a/lib/meson.build b/lib/meson.build
+index a7bccafc3..48466a2e9 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -64,6 +64,7 @@ lib_sources = [
+ 	'intel_device_info.c',
+ 	'intel_mmio.c',
+ 	'intel_mocs.c',
++	'intel_pat.c',
+ 	'ioctl_wrappers.c',
+ 	'media_spin.c',
+ 	'media_fill.c',
 -- 
 2.41.0
