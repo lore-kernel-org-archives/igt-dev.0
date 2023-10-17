@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CFDFA10E009
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Oct 2023 09:00:17 +0000 (UTC)
-Date: Tue, 17 Oct 2023 11:00:12 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: sai.gowtham.ch@intel.com
-Message-ID: <20231017090012.jx3qaerg2qqgknmw@zkempczy-mobl2>
-References: <20231016180716.8513-1-sai.gowtham.ch@intel.com>
- <20231016180716.8513-4-sai.gowtham.ch@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1840F10E297
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Oct 2023 09:00:33 +0000 (UTC)
+Date: Tue, 17 Oct 2023 10:55:20 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20231017085520.l2n4i6cvox2g675d@kamilkon-desk.igk.intel.com>
+References: <20231017055252.781140-1-kunal1.joshi@intel.com>
+ <20231017055252.781140-2-kunal1.joshi@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231016180716.8513-4-sai.gowtham.ch@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 3/3] intel/xe_copy_basic: Add copy basic
- test to exercise blt commands
+In-Reply-To: <20231017055252.781140-2-kunal1.joshi@intel.com>
+Subject: Re: [igt-dev] [PATCH 1/2] lib/igt_dpcd: move dpcd_read and
+ dpcd_write to lib
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,243 +22,330 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Oct 16, 2023 at 11:37:16PM +0530, sai.gowtham.ch@intel.com wrote:
-> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Hi Kunal,
+
+On 2023-10-17 at 11:22:51 +0530, Kunal Joshi wrote:
+> moved dpcd_read and dpcd_write to lib/igt_dpcd
+- ^
+s/moved/Moved/
+
+Start with uppercase, also imho this should be "Copy"
+not a move, see below.
+
 > 
-> Add copy basic test to exercise copy commands like mem-copy and mem-set.
+> v2: added copyright (swati)
+-----------------------^
+Uppercase: s/swati/Swati/
+
+>     added comment for functions (swati)
+---------------------------------- ^
+Same here.
+
+>     sorted headers (swati)
+--------------------- ^
+Same here.
+
+
+>     added new function dpcd_read_buf (kunal)
+--------------------------------------- ^
+Same here, s/kunal/Kunal/
+
 > 
-> Cc: Karolina Stolarek <karolina.stolarek@intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> Cc: Swati Sharma <swati2.sharma@intel.com>
+> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 > ---
->  tests/intel/xe_copy_basic.c | 192 ++++++++++++++++++++++++++++++++++++
->  tests/meson.build           |   1 +
->  2 files changed, 193 insertions(+)
->  create mode 100644 tests/intel/xe_copy_basic.c
+>  lib/igt_dpcd.c   | 104 +++++++++++++++++++++++++++++++++++++++++++++++
+>  lib/igt_dpcd.h   |  24 +++++++++++
+>  tools/dpcd_reg.c |  60 +--------------------------
+
+It would help if you add a useage of these new functions in
+actual test.
+
+>  3 files changed, 129 insertions(+), 59 deletions(-)
+>  create mode 100644 lib/igt_dpcd.c
+>  create mode 100644 lib/igt_dpcd.h
 > 
-> diff --git a/tests/intel/xe_copy_basic.c b/tests/intel/xe_copy_basic.c
+> diff --git a/lib/igt_dpcd.c b/lib/igt_dpcd.c
 > new file mode 100644
-> index 000000000..253631102
+> index 000000000..edddad8c7
 > --- /dev/null
-> +++ b/tests/intel/xe_copy_basic.c
-> @@ -0,0 +1,192 @@
-> +// SPDX-License-Identifier: MIT
+> +++ b/lib/igt_dpcd.c
+> @@ -0,0 +1,104 @@
+
+Add at begin of file licence:
+
+// SPDX-License-Identifier: MIT
+
+> +/* 
+> + * Copyright © 2023 Intel Corporation
+> +*/
+> +
+> +#include "igt_dpcd.h"
+> +
+> +/**
+> + * dpcd_read:
+> + * @fd: drm_fd
+> + * @offset: dpcd address to read
+> + * @count: bytes to read from @offset
+
+If regs are byte/word/dword you may consider returning it's value
+with pointer.
+
+> + *
+> + * Returns: EXIT_SUCCESS on success else errno
+------------------------------------------- ^
+imho better -errno
+
+> + */
+> +int dpcd_read(int fd, uint32_t offset, size_t count)
+> +{
+> +    int ret = EXIT_SUCCESS;
+> +    uint8_t *buf = calloc(count, sizeof(uint8_t));
+--------------- ^
+This should be parameter of function.
+
+> +    ssize_t bytes_read;
+> +
+> +    if (!buf) {
+> +        fprintf(stderr, "Can't allocate read buffer\n");
+---------- ^
+In igt lib you should use igt_debug.
+
+> +        return ENOMEM;
+
+Here better to igt_assert.
+
+> +    }
+> +
+> +    bytes_read = pread(fd, buf, count, offset);
+> +
+> +    if (bytes_read < 0) {
+> +        fprintf(stderr, "Failed to read - %s\n", strerror(errno));
+---------- ^
+Same here, use igt_debug.
+
+> +        ret = errno;
+> +    } else {
+> +        printf("0x%04x: ", offset);
+---------- ^
+Same here, use igt_debug.
+
+> +        for (ssize_t i = 0; i < bytes_read; i++) {
+> +            printf(" %02x", buf[i]);
+-------------- ^
+Same here, use igt_debug.
+
+> +        }
+> +        printf("\n");
+-------------- ^
+Same here, use igt_debug.
+
+> +    }
+> +
+> +    free(buf);
+> +    return ret;
+> +}
+> +
+> +/* dpcd_read_buf:
+> + * @fd: drm_fd
+> + * @offset: dpcd address to read
+> + * @count: bytes to read from @offset
+> + * @buf:   buf to write read data
+> + *
+> + * Returns: EXIT_SUCCESS on success else errno
+> + */
+> +int dpcd_read_buf(int fd, uint32_t offset, size_t count, uint8_t *buf)
+
+The same goes here - rewrite it as above.
+
+> +{
+> +    int ret = EXIT_SUCCESS;
+> +    *buf = calloc(count, sizeof(uint8_t));
+------- ^^^
+This is your param?
+
+> +    ssize_t bytes_read;
+> +
+> +    if (!buf) {
+> +        fprintf(stderr, "Can't allocate read buffer\n");
+> +        return ENOMEM;
+> +    }
+> +
+> +    bytes_read = pread(fd, buf, count, offset);
+> +
+> +    if (bytes_read < 0) {
+> +        fprintf(stderr, "Failed to read - %s\n", strerror(errno));
+> +        ret = errno;
+> +    } else {
+> +        printf("0x%04x: ", offset);
+> +        for (ssize_t i = 0; i < bytes_read; i++) {
+> +            printf(" %02x", buf[i]);
+> +        }
+> +        printf("\n");
+> +    }
+> +
+> +    free(buf);
+> +    return ret;
+> +}
+> +
+> +
+> +/**
+> + * dpcd_write:
+> + * @fd: drm_fd
+> + * @offset: dpcd address to write
+> + * @cal : value to write
+-------^
+s/cal/val/
+
+> + *
+> + * Returns: EXIT_SUCCESS on success else errno
+------------------------------------------- ^^
+
+> + */
+> +int dpcd_write(int fd, uint32_t offset, uint8_t val)
+
+Same here - no printf/fprintf in lib.
+
+> +{
+> +    int ret = EXIT_SUCCESS;
+> +    ssize_t bytes_written;
+> +
+> +    bytes_written = pwrite(fd, &val, sizeof(uint8_t), offset);
+> +
+> +    if (bytes_written < 0) {
+> +        fprintf(stderr, "Failed to write - %s\n", strerror(errno));
+> +        ret = errno;
+> +    } else if (bytes_written == 0) {
+> +        fprintf(stderr, "Zero bytes were written\n");
+> +        ret = EXIT_FAILURE;
+> +    }
+> +
+> +    return ret;
+> +}
+> diff --git a/lib/igt_dpcd.h b/lib/igt_dpcd.h
+> new file mode 100644
+> index 000000000..a5abe900f
+> --- /dev/null
+> +++ b/lib/igt_dpcd.h
+> @@ -0,0 +1,24 @@
 > +/*
 > + * Copyright © 2023 Intel Corporation
-> + *
-> + * Authors:
-> + *      Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-> + */
+> +*/
 > +
-> +#include "igt.h"
-> +#include "lib/igt_syncobj.h"
-> +#include "intel_blt.h"
-> +#include "lib/intel_cmds_info.h"
-> +#include "lib/intel_mocs.h"
-> +#include "lib/intel_reg.h"
-> +#include "xe/xe_ioctl.h"
-> +#include "xe/xe_query.h"
-> +#include "xe/xe_util.h"
+> +#ifndef IGT_DPCD_H
+> +#define IGT_DPCD_H
 > +
-> +#define MEM_FILL 0x8b
-> +
-> +/**
-> + * TEST: Test to validate copy commands on xe
-> + * Category: Software building block
-> + * Sub-category: Copy
-> + * Functionality: blitter
-> + */
-> +
-> +/**
-> + * SUBTEST: mem-copy-linear-%s
-> + * Description: Test validates MEM_COPY command, it takes various
-> + *              parameters needed for the filling batch buffer for MEM_COPY command
-> + *              with size %arg[1].
-> + * Test category: functionality test
-> + *
-> + * arg[1]:
-> + * @0x369: 0x369
-> + * @0x3fff: 0x3fff
-> + * @0xfd: 0xfd
-> + * @0xfffe: 0xfffe
-> + */
-> +static void
-> +mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle,
-> +		 const intel_ctx_t *ctx, uint32_t size, uint32_t width,
-> +		 uint32_t height, uint32_t region)
+> +#include <errno.h>
+> +#include <fcntl.h>
+> +#include <getopt.h>
+-------------^^^^^^
+No need for this.
 
-Here I got objections about formatting.
+> +#include <limits.h>
+> +#include <stdbool.h>
+> +#include <stdint.h>
+> +#include <stdio.h>
+> +#include <stdlib.h>
+> +#include <string.h>
+> +#include <unistd.h>
+> +
+> +int dpcd_read(int fd, uint32_t offset, size_t count);
+> +int dpcd_read_buf(int fd, uint32_t offset, size_t count,
+> +		  uint8_t *buf);
+> +int dpcd_write(int fd, uint32_t offset, uint8_t val);
+> +
+> +#endif /* IGT_DPCD_H */
+> diff --git a/tools/dpcd_reg.c b/tools/dpcd_reg.c
+> index 2761168d0..b7454cca1 100644
+> --- a/tools/dpcd_reg.c
+> +++ b/tools/dpcd_reg.c
 
-> +{
-> +	struct blt_mem_data mem = {};
-> +	uint64_t bb_size = xe_get_default_alignment(fd);
-> +	uint64_t ahnd = intel_allocator_open_full(fd, ctx->vm, 0, 0,
-> +						  INTEL_ALLOCATOR_SIMPLE,
-> +						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-> +	uint32_t bb;
-> +	int result;
-> +	uint8_t src_mocs = intel_get_uc_mocs_index(fd);
-> +	uint8_t dst_mocs = src_mocs;
-> +
-> +	bb = xe_bo_create_flags(fd, 0, bb_size, region);
-> +
-> +	blt_mem_init(fd, &mem);
-> +	blt_set_mem_object(&mem.src, src_handle, size, 0, width, height,
-> +			   region, src_mocs, M_LINEAR, COMPRESSION_DISABLED);
-> +	blt_set_mem_object(&mem.dst, dst_handle, size, 0, width, height,
-> +			   region, dst_mocs, M_LINEAR, COMPRESSION_DISABLED);
-> +	mem.src.ptr = xe_bo_map(fd, src_handle, size);
-> +	mem.dst.ptr = xe_bo_map(fd, dst_handle, size);
-> +
-> +	blt_set_batch(&mem.bb, bb, bb_size, region);
-> +	igt_assert(mem.src.width == mem.dst.width);
-> +
-> +	blt_mem_copy(fd, ctx, NULL, ahnd, &mem);
-> +	result = memcmp(mem.src.ptr, mem.dst.ptr, mem.src.size);
-> +	igt_assert_f(!result, "source and destination differ\n");
-> +
-> +	intel_allocator_bind(ahnd, 0, 0);
-> +	munmap(mem.src.ptr, size);
-> +	munmap(mem.dst.ptr, size);
-> +	gem_close(fd, bb);
-> +	put_ahnd(ahnd);
-> +}
-> +
-> +/**
-> + * SUBTEST: mem-set-linear-%s
-> + * Description: Test validates MEM_SET command with size %arg[1].
-> + * Test category: functionality test
-> + *
-> + * arg[1]:
-> + *
-> + * @0x369: 0x369
-> + * @0x3fff: 0x3fff
-> + * @0xfd: 0xfd
-> + * @0xfffe: 0xfffe
-> + */
-> +static void mem_set(int fd, uint32_t dst_handle, const intel_ctx_t *ctx,
-> +			uint32_t size, uint32_t width, uint32_t height,
-> +			uint8_t fill_data, uint32_t region)
+imho we should keep this tool without change as it may help in
+debugging.
 
-And here.
+Regards,
+Kamil
 
---
-Zbigniew
-> +{
-> +	struct blt_mem_data mem = {};
-> +	uint64_t bb_size = xe_get_default_alignment(fd);
-> +	uint64_t ahnd = intel_allocator_open_full(fd, ctx->vm, 0, 0,
-> +						  INTEL_ALLOCATOR_SIMPLE,
-> +						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-> +	uint32_t bb;
-> +	uint8_t *result;
-> +	uint8_t dst_mocs = intel_get_uc_mocs_index(fd);
-> +
-> +	bb = xe_bo_create_flags(fd, 0, bb_size, region);
-> +	blt_mem_init(fd, &mem);
-> +	blt_set_mem_object(&mem.dst, dst_handle, size, 0, width, height, region,
-> +			   dst_mocs, M_LINEAR, COMPRESSION_DISABLED);
-> +	mem.dst.ptr = xe_bo_map(fd, dst_handle, size);
-> +	blt_set_batch(&mem.bb, bb, bb_size, region);
-> +	blt_mem_set(fd, ctx, NULL, ahnd, &mem, fill_data);
-> +
-> +	result = (uint8_t *)mem.dst.ptr;
-> +
-> +	igt_assert(result[0] == fill_data);
-> +	igt_assert(result[width - 1] == fill_data);
-> +	igt_assert(result[width] != fill_data);
-> +
-> +	intel_allocator_bind(ahnd, 0, 0);
-> +	munmap(mem.dst.ptr, size);
-> +	gem_close(fd, bb);
-> +	put_ahnd(ahnd);
-> +}
-> +
-> +static void copy_test(int fd, uint32_t size, enum blt_cmd_type cmd, uint32_t region)
-> +{
-> +	struct drm_xe_engine_class_instance inst = {
-> +		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
-> +	};
-> +	uint32_t src_handle, dst_handle, vm, exec_queue, src_size, dst_size;
-> +	uint32_t bo_size = ALIGN(size, xe_get_default_alignment(fd));
-> +	const intel_ctx_t *ctx;
-> +
-> +	src_handle = xe_bo_create_flags(fd, 0, bo_size, region);
-> +	dst_handle = xe_bo_create_flags(fd, 0, bo_size, region);
-> +	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
-> +	exec_queue = xe_exec_queue_create(fd, vm, &inst, 0);
-> +	ctx = intel_ctx_xe(fd, vm, exec_queue, 0, 0, 0);
-> +
-> +	src_size = bo_size;
-> +	dst_size = bo_size;
-> +
-> +	if (cmd == MEM_COPY)
-> +		mem_copy(fd, src_handle, dst_handle, ctx, src_size, size, 1, region);
-> +	else if (cmd == MEM_SET)
-> +		mem_set(fd, dst_handle, ctx, dst_size, size, 1, MEM_FILL, region);
-> +
-> +	gem_close(fd, src_handle);
-> +	gem_close(fd, dst_handle);
-> +	xe_exec_queue_destroy(fd, exec_queue);
-> +	xe_vm_destroy(fd, vm);
-> +}
-> +
-> +igt_main
-> +{
-> +	int fd;
-> +	struct igt_collection *set, *regions;
-> +	uint32_t region;
-> +	uint64_t size[] = {0xFD, 0x369, 0x3FFF, 0xFFFE};
-> +
-> +	igt_fixture {
-> +		fd = drm_open_driver(DRIVER_XE);
-> +		xe_device_get(fd);
-> +		set = xe_get_memory_region_set(fd,
-> +					       XE_MEM_REGION_CLASS_SYSMEM,
-> +					       XE_MEM_REGION_CLASS_VRAM);
-> +	}
-> +
-> +	for (int i = 0; i < ARRAY_SIZE(size); i++) {
-> +		igt_subtest_f("mem-copy-linear-0x%lx", size[i]) {
-> +			igt_require(blt_has_mem_copy(fd));
-> +			for_each_variation_r(regions, 1, set) {
-> +				region = igt_collection_get_value(regions, 0);
-> +				copy_test(fd, size[i], MEM_COPY, region);
-> +			}
-> +		}
-> +	}
-> +
-> +	for (int i = 0; i < ARRAY_SIZE(size); i++) {
-> +		igt_subtest_f("mem-set-linear-0x%lx", size[i]) {
-> +			igt_require(blt_has_mem_set(fd));
-> +			for_each_variation_r(regions, 1, set) {
-> +				region = igt_collection_get_value(regions, 0);
-> +				copy_test(fd, size[i], MEM_SET, region);
-> +			}
-> +		}
-> +	}
-> +
-> +	igt_fixture {
-> +		drm_close_driver(fd);
-> +	}
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 2c2e1ca9a..5b19994f7 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -275,6 +275,7 @@ intel_xe_progs = [
->  	'xe_ccs',
->  	'xe_create',
->  	'xe_compute',
-> +	'xe_copy_basic',
->  	'xe_dma_buf_sync',
->  	'xe_debugfs',
->  	'xe_drm_fdinfo',
+> @@ -25,16 +25,7 @@
+>   * and write, so CONFIG_DRM_DP_AUX_DEV needs to be set.
+>   */
+>  
+> -#include <stdio.h>
+> -#include <errno.h>
+> -#include <string.h>
+> -#include <stdlib.h>
+> -#include <fcntl.h>
+> -#include <getopt.h>
+> -#include <stdint.h>
+> -#include <unistd.h>
+> -#include <limits.h>
+> -#include <stdbool.h>
+> +#include "igt_dpcd.h"
+>  
+>  #define MAX_DP_OFFSET	0xfffff
+>  #define DRM_AUX_MINORS	256
+> @@ -214,55 +205,6 @@ static int parse_opts(struct dpcd_data *dpcd, int argc, char **argv)
+>  	return EXIT_SUCCESS;
+>  }
+>  
+> -static int dpcd_read(int fd, uint32_t offset, size_t count)
+> -{
+> -	int ret = EXIT_SUCCESS, pret, i;
+> -	uint8_t *buf = calloc(count, sizeof(uint8_t));
+> -
+> -	if (!buf) {
+> -		fprintf(stderr, "Can't allocate read buffer\n");
+> -		return ENOMEM;
+> -	}
+> -
+> -	pret = pread(fd, buf, count, offset);
+> -	if (pret < 0) {
+> -		fprintf(stderr, "Failed to read - %s\n", strerror(errno));
+> -		ret = errno;
+> -		goto out;
+> -	}
+> -
+> -	if (pret < count) {
+> -		fprintf(stderr,
+> -			"Read %u byte(s), expected %zu bytes, starting at offset %x\n\n", pret, count, offset);
+> -		ret = EXIT_FAILURE;
+> -	}
+> -
+> -	printf("0x%04x: ", offset);
+> -	for (i = 0; i < pret; i++)
+> -		printf(" %02x", *(buf + i));
+> -	printf("\n");
+> -
+> -out:
+> -	free(buf);
+> -	return ret;
+> -}
+> -
+> -static int dpcd_write(int fd, uint32_t offset, uint8_t val)
+> -{
+> -	int ret = EXIT_SUCCESS, pret;
+> -
+> -	pret = pwrite(fd, (const void *)&val, sizeof(uint8_t), offset);
+> -	if (pret < 0) {
+> -		fprintf(stderr, "Failed to write - %s\n", strerror(errno));
+> -		ret = errno;
+> -	} else if (pret == 0) {
+> -		fprintf(stderr, "Zero bytes were written\n");
+> -		ret = EXIT_FAILURE;
+> -	}
+> -
+> -	return ret;
+> -}
+> -
+>  static int dpcd_dump(int fd)
+>  {
+>  	size_t count;
 > -- 
-> 2.39.1
+> 2.25.1
 > 
