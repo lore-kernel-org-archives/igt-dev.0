@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============7242561258319002781=="
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 78A7F10E27F
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Oct 2023 07:40:11 +0000 (UTC)
+Date: Tue, 17 Oct 2023 09:40:06 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20231017074006.jxsu6hyv7syacfgv@kamilkon-desk.igk.intel.com>
+References: <20231016142327.2671-1-contact@emersion.fr>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kunal Joshi" <kunal1.joshi@intel.com>
-Date: Tue, 17 Oct 2023 07:37:02 -0000
-Message-ID: <169752822288.14380.16387999261472996756@emeril.freedesktop.org>
-References: <20231017055252.781140-1-kunal1.joshi@intel.com>
-In-Reply-To: <20231017055252.781140-1-kunal1.joshi@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Move_dpc?=
- =?utf-8?b?ZF8ocmVhZC93cml0ZSkgdG8gaWd0X2RwY2QgKHJldjMp?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231016142327.2671-1-contact@emersion.fr>
+Subject: Re: [igt-dev] [PATCH] tests/kms_closefb: add CLOSEFB IOCTL test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,178 +20,203 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Simon Ser <contact@emersion.fr>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7242561258319002781==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Simon,
 
-== Series Details ==
+On 2023-10-16 at 14:23:31 +0000, Simon Ser wrote:
+> CLOSEFB is the same as RMFB but keeps the FB alive as long as any
+> plane is using it. Check the behavior of that IOCTL.
+> 
+> Signed-off-by: Simon Ser <contact@emersion.fr>
+> ---
+>  tests/kms_closefb.c | 141 ++++++++++++++++++++++++++++++++++++++++++++
+>  tests/meson.build   |   1 +
+>  2 files changed, 142 insertions(+)
+>  create mode 100644 tests/kms_closefb.c
+> 
+> diff --git a/tests/kms_closefb.c b/tests/kms_closefb.c
+> new file mode 100644
+> index 000000000000..26e1670bd29a
+> --- /dev/null
+> +++ b/tests/kms_closefb.c
+> @@ -0,0 +1,141 @@
 
-Series: Move dpcd_(read/write) to igt_dpcd (rev3)
-URL   : https://patchwork.freedesktop.org/series/124248/
-State : success
+Put SPDX MIT here:
+// SPDX-License-Identifier: MIT
 
-== Summary ==
+> +/*
+> + * Copyright © 2023 Simon Ser
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining a
 
-CI Bug Log - changes from XEIGT_7541_BAT -> XEIGTPW_10015_BAT
-====================================================
+Delete this (SPDX above replaces this).
 
-Summary
--------
+> + * copy of this software and associated documentation files (the "Software"),
+> + * to deal in the Software without restriction, including without limitation
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice (including the next
+> + * paragraph) shall be included in all copies or substantial portions of the
+> + * Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+> + * IN THE SOFTWARE.
+> + */
+> +
+> +#include "igt.h"
+> +#include "drmtest.h"
+------------^^^
+igt includes should follow after systems ones (below)
+and should also be sorted alphabetically (drmtest.h before igt.h)
 
-  **SUCCESS**
+> +#include <errno.h>
+> +#include <stdbool.h>
+> +#include <stdio.h>
+> +#include <string.h>
+> +#include <time.h>
 
-  No regressions found.
+Here put igt includes (after newline).
 
-  
+This is kms test so adding Juha-Pekka and Bhanu on cc.
 
-Participating hosts (4 -> 4)
-------------------------------
+Regards,
+Kamil
 
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10015_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:
-    - bat-dg2-oem2:       [PASS][1] -> [FAIL][2] ([i915#2346])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10015/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_cursor_legacy@basic-flip-before-cursor-atomic:
-    - bat-adlp-7:         [FAIL][3] ([i915#2346]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10015/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
-    - bat-adlp-7:         [FAIL][5] ([Intel XE#480]) -> [PASS][6] +1 other test pass
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10015/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-
-  * igt@xe_exec_reset@virtual-close-fd-no-exec:
-    - bat-pvc-2:          [DMESG-WARN][7] ([Intel XE#696]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10015/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
-  [Intel XE#696]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/696
-  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
-
-
-Build changes
--------------
-
-  * IGT: IGT_7541 -> IGTPW_10015
-  * Linux: xe-435-ab7cd1b4af95baba2d6ce5487d35ffda523e895d -> xe-436-9471d9e9efb920d70538445ffa07193d603b8cdb
-
-  IGTPW_10015: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10015/index.html
-  IGT_7541: fcddb77c3f8a77020f7f3b2660a66cae27cfaa2b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-435-ab7cd1b4af95baba2d6ce5487d35ffda523e895d: ab7cd1b4af95baba2d6ce5487d35ffda523e895d
-  xe-436-9471d9e9efb920d70538445ffa07193d603b8cdb: 9471d9e9efb920d70538445ffa07193d603b8cdb
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10015/index.html
-
---===============7242561258319002781==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Move dpcd_(read/write) to igt_dpcd (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124248/">https://patchwork.freedesktop.org/series/124248/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10015/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10015/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7541_BAT -&gt; XEIGTPW_10015_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10015_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10015/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_cursor_legacy@basic-flip-before-cursor-atomic:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10015/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10015/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_reset@virtual-close-fd-no-exec:</p>
-<ul>
-<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/696">Intel XE#696</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10015/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7541 -&gt; IGTPW_10015</li>
-<li>Linux: xe-435-ab7cd1b4af95baba2d6ce5487d35ffda523e895d -&gt; xe-436-9471d9e9efb920d70538445ffa07193d603b8cdb</li>
-</ul>
-<p>IGTPW_10015: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10015/index.html<br />
-  IGT_7541: fcddb77c3f8a77020f7f3b2660a66cae27cfaa2b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-435-ab7cd1b4af95baba2d6ce5487d35ffda523e895d: ab7cd1b4af95baba2d6ce5487d35ffda523e895d<br />
-  xe-436-9471d9e9efb920d70538445ffa07193d603b8cdb: 9471d9e9efb920d70538445ffa07193d603b8cdb</p>
-
-</body>
-</html>
-
---===============7242561258319002781==--
+> +
+> +/**
+> + * TEST: kms closefb
+> + * Category: Display
+> + * Description: This tests CLOSEFB behavior. Contrary to RMFB, the
+> + *              framebuffers should not be removed from the CRTC.
+> + *
+> + * SUBTEST: closefb-ioctl
+> + * Description: CLOSEFB is supposed to leave all planes intact.
+> + */
+> +
+> +IGT_TEST_DESCRIPTION("This tests CLOSEFB behavior. Contrary to RMFB, the"
+> +		     "framebuffers should not be removed from the CRTC.");
+> +
+> +// TODO: drop when shipped in kernel header
+> +#ifndef DRM_IOCTL_MODE_CLOSEFB
+> +#define DRM_IOCTL_MODE_CLOSEFB DRM_IOWR(0xD0, unsigned int)
+> +#endif
+> +
+> +/* 1. Set primary plane to a known FB.
+> + * 2. Make sure GETCRTC returns the correct FB ID.
+> + * 3. Call CLOSEFB on the FB.
+> + * 4. Make sure GETCRTC returns non-0 FB ID.
+> + */
+> +static void
+> +test_closefb(int *drm_fd, igt_display_t *display, igt_output_t *output,
+> +	     enum pipe pipe)
+> +{
+> +	struct igt_fb fb;
+> +	drmModeModeInfo *mode;
+> +	igt_plane_t *plane;
+> +	drmModeCrtc *crtc;
+> +	int ret;
+> +
+> +	mode = igt_output_get_mode(output);
+> +	plane = igt_pipe_get_plane_type(&display->pipes[pipe], DRM_PLANE_TYPE_PRIMARY);
+> +
+> +	igt_create_fb(*drm_fd, mode->hdisplay, mode->vdisplay,
+> +		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, &fb);
+> +	igt_plane_set_fb(plane, &fb);
+> +	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+> +
+> +	crtc = drmModeGetCrtc(*drm_fd, output->config.crtc->crtc_id);
+> +	igt_assert_eq(crtc->buffer_id, fb.fb_id);
+> +	drmModeFreeCrtc(crtc);
+> +
+> +	ret = drmIoctl(*drm_fd, DRM_IOCTL_MODE_CLOSEFB, &fb.fb_id);
+> +	igt_assert_eq(ret, 0);
+> +
+> +	/* Re-open our DRM FD. Without CLOSEFB, this would implicitly turn off
+> +	 * the CRTC and remove the FB (see test kms_rmfb@close-fd). */
+> +	drm_close_driver(*drm_fd);
+> +	*drm_fd = drm_open_driver_master(DRIVER_ANY);
+> +	drmSetClientCap(*drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
+> +	drmSetClientCap(*drm_fd, DRM_CLIENT_CAP_ATOMIC, 1);
+> +	igt_pipe_refresh(display, pipe, true);
+> +
+> +	/* Check that our CRTC still has the FB attached */
+> +	crtc = drmModeGetCrtc(*drm_fd, output->config.crtc->crtc_id);
+> +	igt_assert_eq(crtc->buffer_id, fb.fb_id);
+> +	drmModeFreeCrtc(crtc);
+> +}
+> +
+> +static void
+> +run_closefb_test(int *drm_fd, igt_display_t *display)
+> +{
+> +	igt_output_t *output;
+> +	enum pipe pipe;
+> +
+> +	for_each_pipe_with_single_output(display, pipe, output) {
+> +		igt_display_reset(display);
+> +
+> +		igt_output_set_pipe(output, pipe);
+> +
+> +		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
+> +			      igt_output_name(output))
+> +			test_closefb(drm_fd, display, output, pipe);
+> +	}
+> +}
+> +
+> +igt_main
+> +{
+> +	int drm_fd;
+> +	igt_display_t display;
+> +	uint32_t fb_id = 0;
+> +	int ret;
+> +
+> +	igt_fixture {
+> +		drm_fd = drm_open_driver_master(DRIVER_ANY);
+> +
+> +		kmstest_set_vt_graphics_mode();
+> +
+> +		igt_display_require(&display, drm_fd);
+> +		igt_display_require_output(&display);
+> +
+> +		/* Detect kernel support for CLOSEFB */
+> +		ret = drmIoctl(drm_fd, DRM_IOCTL_MODE_CLOSEFB, &fb_id);
+> +		igt_require(ret != 0 && errno == ENOENT);
+> +	}
+> +
+> +	igt_describe("CLOSEFB is supposed to not touch any plane the FB is "
+> +		     "currently attached to. Check that behavior.");
+> +	igt_subtest_with_dynamic("closefb-ioctl") {
+> +		run_closefb_test(&drm_fd, &display);
+> +	}
+> +
+> +	igt_fixture {
+> +		igt_display_fini(&display);
+> +		drm_close_driver(drm_fd);
+> +	}
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 2c2e1ca9acad..6b1b15973bde 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -21,6 +21,7 @@ test_progs = [
+>  	'kms_atomic_interruptible',
+>  	'kms_atomic_transition',
+>  	'kms_bw',
+> +	'kms_closefb',
+>  	'kms_color',
+>  	'kms_concurrent',
+>  	'kms_content_protection',
+> -- 
+> 2.42.0
+> 
+> 
