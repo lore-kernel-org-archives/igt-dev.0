@@ -1,15 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============1168717637535154954=="
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com
+ [IPv6:2a00:1450:4864:20::134])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 083E489190
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Oct 2023 15:28:42 +0000 (UTC)
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-5046bf37ec1so7142940e87.1
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Oct 2023 08:28:41 -0700 (PDT)
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: sai.gowtham.ch@intel.com
-Date: Tue, 17 Oct 2023 14:54:08 -0000
-Message-ID: <169755444827.14379.5872219250234274848@emeril.freedesktop.org>
-References: <20231017140530.547-1-sai.gowtham.ch@intel.com>
-In-Reply-To: <20231017140530.547-1-sai.gowtham.ch@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_Add_copy?=
- =?utf-8?q?_basic_test_to_exercise_blt_commands_=28rev8=29?=
+References: <20231013112848.68164-1-zbigniew.kempczynski@intel.com>
+ <20231013112848.68164-4-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20231013112848.68164-4-zbigniew.kempczynski@intel.com>
+From: Matthew Auld <matthew.william.auld@gmail.com>
+Date: Tue, 17 Oct 2023 16:28:12 +0100
+Message-ID: <CAM0jSHMktZJYzw6u4TMmE8Z_HGLprcKLJ7b=eK3hk_1F6bG+=A@mail.gmail.com>
+To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [igt-dev] [PATCH i-g-t v2 3/4] tests/xe_evict_ccs: Add evict
+ ccs test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,399 +25,623 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1168717637535154954==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Fri, 13 Oct 2023 at 12:31, Zbigniew Kempczy=C5=84ski
+<zbigniew.kempczynski@intel.com> wrote:
+>
+> Exercise is flat-ccs eviction working fine in the kernel driver
+> when buffers takes more than available vram. Differentiate with
+> standalone/parallel execution, same or separate drm fd and buffer
+> freeing time. Tests are divided to two groups - first which won't
+> exceed vram memory size (thus don't trigger eviction, but it is
+> good for the reference logic is properly compress/decompress
+> buffers) and second which exceeds.
+>
+> v2:
+> - Add command line switches to exercise kernel with different
+>   sizes, number of objects and vram overcommitment
+> - Add -simple test which creates single big object which enforces
+>   eviction (Matt)
+>
+> Signed-off-by: Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.com>
+> Cc: Matthew Auld <matthew.auld@intel.com>
+> ---
+>  tests/intel/xe_evict_ccs.c | 522 +++++++++++++++++++++++++++++++++++++
+>  tests/meson.build          |   1 +
+>  2 files changed, 523 insertions(+)
+>  create mode 100644 tests/intel/xe_evict_ccs.c
+>
+> diff --git a/tests/intel/xe_evict_ccs.c b/tests/intel/xe_evict_ccs.c
+> new file mode 100644
+> index 0000000000..72872f952b
+> --- /dev/null
+> +++ b/tests/intel/xe_evict_ccs.c
+> @@ -0,0 +1,522 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright =C2=A9 2023 Intel Corporation
+> + */
+> +
+> +/**
+> + * TEST: Check flat-ccs eviction
+> + * Category: Software building block
+> + * Sub-category: Flat-CCS
+> + * Functionality: evict
+> + * GPU requirements: GPU needs to have dedicated VRAM
+> + */
+> +
+> +#include "igt.h"
+> +#include "igt_list.h"
+> +#include "intel_blt.h"
+> +#include "intel_mocs.h"
+> +#include "lib/igt_syncobj.h"
+> +#include "lib/intel_reg.h"
+> +#include "xe_drm.h"
+> +
+> +#include "xe/xe_ioctl.h"
+> +#include "xe/xe_query.h"
+> +#include <math.h>
+> +#include <string.h>
+> +
+> +#define OVERCOMMIT_VRAM_PERCENT 110
+> +#define MIN_OBJ_KB 64
+> +#define MAX_OBJ_KB (256 * 1024)
+> +#define DUMP_FILENAME "/tmp/object.data"
+> +#define DUMP_EXPFILENAME "/tmp/object.expected"
+> +
+> +static struct param {
+> +       bool print_bb;
+> +       bool disable_compression;
+> +       bool dump_corrupted_surface;
+> +       int num_objs;
+> +       int vram_percent;
+> +       int min_size_kb;
+> +       int max_size_kb;
+> +       bool verify;
+> +} params =3D {
+> +       .num_objs =3D 0,
+> +       .vram_percent =3D OVERCOMMIT_VRAM_PERCENT,
+> +       .min_size_kb =3D MIN_OBJ_KB,
+> +       .max_size_kb =3D MAX_OBJ_KB,
+> +};
+> +
+> +struct object {
+> +       uint64_t size;
+> +       uint32_t start_value;
+> +       struct blt_copy_object *blt_obj;
+> +       struct igt_list_head link;
+> +};
+> +
+> +#define TEST_PARALLEL          (1 << 0)
+> +#define TEST_INSTANTFREE       (1 << 1)
+> +#define TEST_REOPEN            (1 << 2)
+> +#define TEST_SIMPLE            (1 << 3)
+> +
+> +#define MAX_NPROC 8
+> +struct config {
+> +       uint32_t flags;
+> +       int nproc;
+> +       int free_mb, total_mb;
+> +       int test_mb, mb_per_proc;
+> +       const struct param *param;
+> +};
+> +
+> +static void copy_obj(struct blt_copy_data *blt,
+> +                    struct blt_copy_object *src_obj,
+> +                    struct blt_copy_object *dst_obj,
+> +                    intel_ctx_t *ctx,
+> +                    uint64_t ahnd)
+> +{
+> +       struct blt_block_copy_data_ext ext =3D {};
+> +       int fd =3D blt->fd;
+> +       uint64_t bb_size =3D xe_get_default_alignment(fd);
+> +       uint32_t bb;
+> +       uint32_t w, h;
+> +
+> +       w =3D src_obj->x2;
+> +       h =3D src_obj->y2;
+> +
+> +       bb =3D xe_bo_create_flags(fd, 0, bb_size,
+> +                               vram_memory(fd, 0) | XE_GEM_CREATE_FLAG_N=
+EEDS_VISIBLE_VRAM);
 
-== Series Details ==
+Nit: we can use visible_vram_memory() here.
 
-Series: Add copy basic test to exercise blt commands (rev8)
-URL   : https://patchwork.freedesktop.org/series/122615/
-State : failure
+> +
+> +       blt->color_depth =3D CD_32bit;
+> +       blt->print_bb =3D params.print_bb;
+> +       blt_set_copy_object(&blt->src, src_obj);
+> +       blt_set_copy_object(&blt->dst, dst_obj);
+> +       blt_set_object_ext(&ext.src, 0, w, h, SURFACE_TYPE_2D);
+> +       blt_set_object_ext(&ext.dst, 0, w, h, SURFACE_TYPE_2D);
+> +       blt_set_batch(&blt->bb, bb, bb_size, vram_if_possible(fd, 0));
+> +       blt_block_copy(fd, ctx, NULL, ahnd, blt, &ext);
+> +       intel_ctx_xe_sync(ctx, true);
+> +
+> +       gem_close(fd, bb);
+> +       put_offset(ahnd, bb);
+> +       put_offset(ahnd, blt->src.handle);
+> +       put_offset(ahnd, blt->dst.handle);
+> +       intel_allocator_bind(ahnd, 0, 0);
+> +}
+> +
+> +static uint32_t rand_and_update(uint32_t *left, uint32_t min, uint32_t m=
+ax)
+> +{
+> +       int left_bit, min_bit, max_bit, rand_id, rand_kb;
+> +
+> +       left_bit =3D igt_fls(*left) - 1;
+> +       min_bit =3D igt_fls(min) - 1;
+> +       max_bit =3D max_t(int, min_t(int, igt_fls(max) - 1, left_bit), ig=
+t_fls(max));
+> +       rand_id =3D rand() % (max_bit - min_bit);
+> +       rand_kb =3D 1 << (rand_id + min_bit);
+> +
+> +       if (*left >=3D rand_kb)
+> +               *left -=3D rand_kb;
+> +       else
+> +               *left =3D 0;
+> +
+> +       return rand_kb;
+> +}
+> +
+> +static struct object *create_obj(struct blt_copy_data *blt,
+> +                                intel_ctx_t *ctx, uint64_t ahnd,
+> +                                uint64_t size, int start_value,
+> +                                bool disable_compression)
+> +{
+> +       int fd =3D blt->fd;
+> +       struct object *obj;
+> +       uint32_t w, h;
+> +       uint8_t uc_mocs =3D intel_get_uc_mocs_index(fd);
+> +       int i;
+> +       struct blt_copy_object *src;
+> +
+> +       obj =3D calloc(1, sizeof(*obj));
+> +       igt_assert(obj);
+> +       obj->size =3D size;
+> +       obj->start_value =3D start_value;
+> +
+> +       w =3D max_t(int, 1024, roundup_power_of_two(sqrt(size/4)));
+> +       h =3D size / w / 4; /* /4 - 32bpp */
+> +
+> +       igt_debug("Obj size: %ldKiB (%ldMiB) <w: %d, h: %d>\n",
+> +                 size / SZ_1K, size / SZ_1M, w, h);
+> +
+> +       src =3D blt_create_object(blt,
+> +                               system_memory(fd),
+> +                               w, h, 32, uc_mocs,
+> +                               T_LINEAR, COMPRESSION_DISABLED,
+> +                               COMPRESSION_TYPE_3D, true);
+> +
+> +       obj->blt_obj =3D blt_create_object(blt,
+> +                                        vram_memory(fd, 0) | XE_GEM_CREA=
+TE_FLAG_NEEDS_VISIBLE_VRAM,
 
-== Summary ==
+Same here. I assume blt_create_object() knows to ignore the non-region
+bits when setting obj->region, or doesn't it really matter?
 
-CI Bug Log - changes from XEIGT_7543_BAT -> XEIGTPW_10018_BAT
-====================================================
+> +                                        w, h, 32, uc_mocs,
+> +                                        T_LINEAR,
+> +                                        disable_compression ? COMPRESSIO=
+N_DISABLED :
+> +                                                              COMPRESSIO=
+N_ENABLED,
+> +                                        COMPRESSION_TYPE_3D, true);
+> +
+> +       for (i =3D 0; i < size / sizeof(uint32_t); i++)
+> +               src->ptr[i] =3D start_value++;
+> +
+> +       copy_obj(blt, src, obj->blt_obj, ctx, ahnd);
+> +
+> +       blt_destroy_object_and_alloc_free(fd, ahnd, src);
+> +       intel_allocator_bind(ahnd, 0, 0);
+> +
+> +       return obj;
+> +}
+> +
+> +static void dump_obj(const struct blt_copy_object *obj, int start_value)
+> +{
+> +       FILE *out;
+> +
+> +       if (!params.dump_corrupted_surface)
+> +               return;
+> +
+> +       out =3D fopen(DUMP_FILENAME, "wb");
+> +       fwrite(obj->ptr, obj->size, 1, out);
+> +       fclose(out);
+> +
+> +       out =3D fopen(DUMP_EXPFILENAME, "wb");
+> +       for (int i =3D 0; i < obj->size / 4; i++) {
+> +               int v =3D start_value + i;
+> +
+> +               fwrite(&v, sizeof(int), 1, out);
+> +       }
+> +       fclose(out);
+> +}
+> +
+> +static void check_obj(const char *check_mode,
+> +                     const struct blt_copy_object *obj, uint64_t size,
+> +                     int start_value, int num_obj)
+> +{
+> +       int i, idx;
+> +
+> +       if (obj->ptr[0] !=3D start_value ||
+> +           (obj->ptr[size/4 - 1] !=3D start_value + size/4 - 1)) {
+> +               igt_info("[%s] Failed object w: %d, h: %d, size: %ldKiB (=
+%ldMiB)\n",
+> +                        check_mode, obj->x2, obj->y2, obj->size / SZ_1K,=
+ obj->size / SZ_1M);
+> +               dump_obj(obj, start_value);
+> +       }
+> +
+> +       igt_assert_eq(obj->ptr[0], start_value);
+> +       igt_assert_eq(obj->ptr[size/4 - 1], start_value + size/4 - 1);
+> +
+> +       /* Couple of checks of random indices */
+> +       for (i =3D 0; i < 128; i++) {
+> +               idx =3D rand() % (size/4);
+> +
+> +               if (obj->ptr[idx] !=3D start_value + idx) {
+> +                       igt_info("[%s] Failed object w: %d, h: %d, size: =
+%ldKiB (%ldMiB)\n",
+> +                                check_mode, obj->x2, obj->y2,
+> +                                obj->size / SZ_1K, obj->size / SZ_1M);
+> +                       dump_obj(obj, start_value);
+> +               }
+> +
+> +               igt_assert_f(obj->ptr[idx] =3D=3D start_value + idx,
+> +                            "[%s] Object number %d doesn't contain valid=
+ data",
+> +                            check_mode, num_obj);
+> +       }
+> +}
+> +
+> +static void evict_single(int fd, int child, const struct config *config)
+> +{
+> +       struct blt_copy_data blt =3D {};
+> +       struct blt_copy_object *orig_obj;
+> +       uint32_t kb_left =3D config->mb_per_proc * SZ_1K;
+> +       uint32_t min_alloc_kb =3D config->param->min_size_kb;
+> +       uint32_t max_alloc_kb =3D config->param->max_size_kb;
+> +       uint32_t vm =3D xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS,=
+ 0);
+> +       uint64_t ahnd =3D intel_allocator_open(fd, vm, INTEL_ALLOCATOR_RE=
+LOC);
+> +       uint8_t uc_mocs =3D intel_get_uc_mocs_index(fd);
+> +       struct object *obj, *tmp;
+> +       struct igt_list_head list;
+> +       struct drm_xe_engine_class_instance inst =3D {
+> +               .engine_class =3D DRM_XE_ENGINE_CLASS_COPY,
+> +       };
+> +       intel_ctx_t *ctx;
+> +       uint32_t exec_queue, big_obj;
+> +       int num_obj =3D 0;
+> +
+> +       srandom(time(NULL));
+> +       IGT_INIT_LIST_HEAD(&list);
+> +       igt_debug("[%2d] child : to allocate: %uMiB\n", child, kb_left/SZ=
+_1K);
+> +
+> +       blt_copy_init(fd, &blt);
+> +
+> +       exec_queue =3D xe_exec_queue_create(fd, vm, &inst, 0);
+> +       ctx =3D intel_ctx_xe(fd, vm, exec_queue, 0, 0, 0);
+> +
+> +       while (kb_left) {
+> +               struct blt_copy_object *verify_obj;
+> +               uint64_t obj_size =3D rand_and_update(&kb_left, min_alloc=
+_kb, max_alloc_kb) * SZ_1K;
+> +               int start_value =3D rand();
+> +
+> +               if (config->flags & TEST_SIMPLE)
+> +                       obj_size =3D max_alloc_kb * SZ_1K;
+> +
+> +               obj =3D create_obj(&blt, ctx, ahnd, obj_size, start_value=
+,
+> +                                config->param->disable_compression);
+> +               igt_list_add(&obj->link, &list);
+> +
+> +               if (config->param->verify) {
+> +                       verify_obj =3D blt_create_object(&blt, system_mem=
+ory(fd),
+> +                                                      obj->blt_obj->x2,
+> +                                                      obj->blt_obj->y2,
+> +                                                      32, uc_mocs,
+> +                                                      T_LINEAR, COMPRESS=
+ION_DISABLED,
+> +                                                      0, true);
+> +                       copy_obj(&blt, obj->blt_obj, verify_obj, ctx, ahn=
+d);
+> +                       check_obj("Verify", verify_obj, obj->blt_obj->siz=
+e,
+> +                                 obj->start_value, num_obj++);
+> +                       blt_destroy_object_and_alloc_free(fd, ahnd, verif=
+y_obj);
+> +                       intel_allocator_bind(ahnd, 0, 0);
+> +               }
+> +
+> +               if (config->flags & TEST_SIMPLE) {
+> +                       big_obj =3D xe_bo_create_flags(fd, vm, kb_left * =
+SZ_1K,
+> +                                                    vram_memory(fd, 0));
+> +                       break;
+> +               }
+> +
+> +               if (config->param->num_objs && ++num_obj =3D=3D config->p=
+aram->num_objs)
+> +                       break;
+> +       }
+> +
+> +       if (config->param->verify)
+> +               igt_info("[%8d] Verify ok\n", getpid());
+> +
+> +       num_obj =3D 0;
+> +       igt_list_for_each_entry_safe(obj, tmp, &list, link) {
+> +               orig_obj =3D blt_create_object(&blt, system_memory(fd),
+> +                                            obj->blt_obj->x2,
+> +                                            obj->blt_obj->y2,
+> +                                            32, uc_mocs,
+> +                                            T_LINEAR, COMPRESSION_DISABL=
+ED,
+> +                                            0, true);
+> +               copy_obj(&blt, obj->blt_obj, orig_obj, ctx, ahnd);
+> +               check_obj("Check", orig_obj, obj->blt_obj->size, obj->sta=
+rt_value, num_obj++);
+> +               blt_destroy_object_and_alloc_free(fd, ahnd, orig_obj);
+> +
+> +               if (config->flags & TEST_INSTANTFREE) {
+> +                       igt_list_del(&obj->link);
+> +                       blt_destroy_object_and_alloc_free(fd, ahnd, obj->=
+blt_obj);
+> +                       free(obj);
+> +               }
+> +               intel_allocator_bind(ahnd, 0, 0);
+> +       }
+> +
+> +       if (!(config->flags & TEST_INSTANTFREE))
+> +               igt_list_for_each_entry_safe(obj, tmp, &list, link) {
+> +                       igt_list_del(&obj->link);
+> +                       blt_destroy_object_and_alloc_free(fd, ahnd, obj->=
+blt_obj);
+> +                       free(obj);
+> +               }
+> +
+> +       if (config->flags & TEST_SIMPLE)
+> +               gem_close(fd, big_obj);
+> +}
+> +
+> +static void set_config(int fd, uint32_t flags, const struct param *param=
+,
+> +                      struct config *config)
+> +{
+> +       int nproc =3D 1;
+> +
+> +       config->param =3D param;
+> +       config->flags =3D flags;
+> +       config->free_mb =3D xe_vram_available(fd, 0) / SZ_1M;
 
-Summary
--------
+Should this be visible avail?
 
-  **FAILURE**
-
-  Serious unknown changes coming with XEIGTPW_10018_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_10018_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_10018_BAT:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         NOTRUN -> [DMESG-FAIL][1]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10018_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_addfb_basic@basic-y-tiled-legacy:
-    - bat-adlp-7:         NOTRUN -> [FAIL][2] ([Intel XE#609]) +2 other tests fail
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-adlp-7/igt@kms_addfb_basic@basic-y-tiled-legacy.html
-
-  * igt@kms_addfb_basic@invalid-set-prop-any:
-    - bat-atsm-2:         NOTRUN -> [SKIP][3] ([i915#6077]) +33 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@kms_addfb_basic@invalid-set-prop-any.html
-
-  * igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size:
-    - bat-adlp-7:         NOTRUN -> [FAIL][4] ([i915#2346])
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
-
-  * igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:
-    - bat-atsm-2:         NOTRUN -> [SKIP][5] ([Intel XE#782]) +5 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
-
-  * igt@kms_dsc@dsc-basic:
-    - bat-atsm-2:         NOTRUN -> [SKIP][6] ([Intel XE#784])
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@kms_dsc@dsc-basic.html
-    - bat-adlp-7:         NOTRUN -> [SKIP][7] ([Intel XE#423])
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-adlp-7/igt@kms_dsc@dsc-basic.html
-
-  * igt@kms_flip@basic-flip-vs-modeset:
-    - bat-atsm-2:         NOTRUN -> [SKIP][8] ([Intel XE#541]) +3 other tests skip
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@kms_flip@basic-flip-vs-modeset.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:
-    - bat-adlp-7:         NOTRUN -> [FAIL][9] ([Intel XE#480]) +2 other tests fail
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3:
-    - bat-dg2-oem2:       [PASS][10] -> [FAIL][11] ([Intel XE#480]) +1 other test fail
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7543/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html
-
-  * igt@kms_force_connector_basic@force-connector-state:
-    - bat-atsm-2:         NOTRUN -> [SKIP][12] ([Intel XE#540]) +3 other tests skip
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@kms_force_connector_basic@force-connector-state.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-atsm-2:         NOTRUN -> [SKIP][13] ([Intel XE#783])
-   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:
-    - bat-atsm-2:         NOTRUN -> [SKIP][14] ([i915#1836]) +6 other tests skip
-   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html
-
-  * igt@kms_prop_blob@basic:
-    - bat-atsm-2:         NOTRUN -> [SKIP][15] ([Intel XE#780])
-   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@kms_prop_blob@basic.html
-
-  * igt@kms_psr@cursor_plane_move:
-    - bat-atsm-2:         NOTRUN -> [SKIP][16] ([Intel XE#535]) +2 other tests skip
-   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@kms_psr@cursor_plane_move.html
-
-  * igt@xe_compute@compute-square:
-    - bat-atsm-2:         NOTRUN -> [SKIP][17] ([Intel XE#672])
-   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@xe_compute@compute-square.html
-
-  * igt@xe_evict@evict-beng-small-external:
-    - bat-adlp-7:         NOTRUN -> [SKIP][18] ([Intel XE#261] / [Intel XE#688]) +15 other tests skip
-   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-adlp-7/igt@xe_evict@evict-beng-small-external.html
-
-  * igt@xe_exec_fault_mode@twice-userptr:
-    - bat-adlp-7:         NOTRUN -> [SKIP][19] ([Intel XE#288]) +17 other tests skip
-   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-adlp-7/igt@xe_exec_fault_mode@twice-userptr.html
-
-  * igt@xe_exec_fault_mode@twice-userptr-invalidate-imm:
-    - bat-atsm-2:         NOTRUN -> [SKIP][20] ([Intel XE#288]) +17 other tests skip
-   [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@xe_exec_fault_mode@twice-userptr-invalidate-imm.html
-
-  * igt@xe_huc_copy@huc_copy:
-    - bat-atsm-2:         NOTRUN -> [SKIP][21] ([Intel XE#255])
-   [21]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@xe_huc_copy@huc_copy.html
-
-  * igt@xe_live_ktest@migrate:
-    - bat-adlp-7:         NOTRUN -> [INCOMPLETE][22] ([Intel XE#753])
-   [22]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-adlp-7/igt@xe_live_ktest@migrate.html
-
-  * igt@xe_mmap@vram:
-    - bat-adlp-7:         NOTRUN -> [SKIP][23] ([Intel XE#263])
-   [23]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-adlp-7/igt@xe_mmap@vram.html
-
-  
-#### Possible fixes ####
-
-  * igt@xe_module_load@load:
-    - bat-atsm-2:         [INCOMPLETE][24] -> [PASS][25]
-   [24]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7543/bat-atsm-2/igt@xe_module_load@load.html
-   [25]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@xe_module_load@load.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#255]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/255
-  [Intel XE#261]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/261
-  [Intel XE#263]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/263
-  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
-  [Intel XE#423]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/423
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
-  [Intel XE#535]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/535
-  [Intel XE#540]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/540
-  [Intel XE#541]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/541
-  [Intel XE#609]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/609
-  [Intel XE#672]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/672
-  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
-  [Intel XE#753]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/753
-  [Intel XE#780]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/780
-  [Intel XE#782]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/782
-  [Intel XE#783]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/783
-  [Intel XE#784]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/784
-  [i915#1836]: https://gitlab.freedesktop.org/drm/intel/issues/1836
-  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
-  [i915#6077]: https://gitlab.freedesktop.org/drm/intel/issues/6077
-
-
-Build changes
--------------
-
-  * IGT: IGT_7543 -> IGTPW_10018
-
-  IGTPW_10018: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10018/index.html
-  IGT_7543: 688f12831f876590e084e9b13b4d5ab85fe13d51 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-439-cbcd3e95647ff14d508d1a42dce785693446c7f2: cbcd3e95647ff14d508d1a42dce785693446c7f2
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/index.html
-
---===============1168717637535154954==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Add copy basic test to exercise blt commands (rev8)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122615/">https://patchwork.freedesktop.org/series/122615/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7543_BAT -&gt; XEIGTPW_10018_BAT</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_10018_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_10018_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_10018_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@kms_frontbuffer_tracking@basic:<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10018_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_addfb_basic@basic-y-tiled-legacy:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-adlp-7/igt@kms_addfb_basic@basic-y-tiled-legacy.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/609">Intel XE#609</a>) +2 other tests fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@invalid-set-prop-any:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@kms_addfb_basic@invalid-set-prop-any.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6077">i915#6077</a>) +33 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/782">Intel XE#782</a>) +5 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_dsc@dsc-basic:</p>
-<ul>
-<li>
-<p>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/784">Intel XE#784</a>)</p>
-</li>
-<li>
-<p>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-adlp-7/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/423">Intel XE#423</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-modeset:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@kms_flip@basic-flip-vs-modeset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/541">Intel XE#541</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +2 other tests fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7543/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-connector-state:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@kms_force_connector_basic@force-connector-state.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/540">Intel XE#540</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/783">Intel XE#783</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1836">i915#1836</a>) +6 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_prop_blob@basic:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@kms_prop_blob@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/780">Intel XE#780</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@cursor_plane_move:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@kms_psr@cursor_plane_move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/535">Intel XE#535</a>) +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_compute@compute-square:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@xe_compute@compute-square.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/672">Intel XE#672</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_evict@evict-beng-small-external:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-adlp-7/igt@xe_evict@evict-beng-small-external.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/261">Intel XE#261</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +15 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_fault_mode@twice-userptr:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-adlp-7/igt@xe_exec_fault_mode@twice-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +17 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_fault_mode@twice-userptr-invalidate-imm:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@xe_exec_fault_mode@twice-userptr-invalidate-imm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +17 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_huc_copy@huc_copy:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@migrate:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-adlp-7/igt@xe_live_ktest@migrate.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/753">Intel XE#753</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_mmap@vram:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-adlp-7/igt@xe_mmap@vram.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/263">Intel XE#263</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@xe_module_load@load:<ul>
-<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7543/bat-atsm-2/igt@xe_module_load@load.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@xe_module_load@load.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7543 -&gt; IGTPW_10018</li>
-</ul>
-<p>IGTPW_10018: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10018/index.html<br />
-  IGT_7543: 688f12831f876590e084e9b13b4d5ab85fe13d51 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-439-cbcd3e95647ff14d508d1a42dce785693446c7f2: cbcd3e95647ff14d508d1a42dce785693446c7f2</p>
-
-</body>
-</html>
-
---===============1168717637535154954==--
+> +       config->total_mb =3D xe_visible_vram_size(fd, 0) / SZ_1M;
+> +       config->test_mb =3D min_t(int, config->free_mb * config->param->v=
+ram_percent / 100,
+> +                               config->total_mb * config->param->vram_pe=
+rcent / 100);
+> +
+> +       igt_debug("VRAM memory size: %dMB/%dMB (use %dMB), overcommit per=
+c: %d\n",
+> +                 config->free_mb, config->total_mb,
+> +                 config->test_mb, config->param->vram_percent);
+> +
+> +       if (flags & TEST_PARALLEL)
+> +               nproc =3D min_t(int, sysconf(_SC_NPROCESSORS_ONLN), MAX_N=
+PROC);
+> +       config->nproc =3D nproc;
+> +       config->mb_per_proc =3D config->test_mb / nproc;
+> +
+> +       igt_debug("nproc: %d, mem per proc: %dMB\n", nproc, config->mb_pe=
+r_proc);
+> +}
+> +
+> +static void evict_ccs(int fd, uint32_t flags, const struct param *param)
+> +{
+> +       struct config config;
+> +       char numstr[32];
+> +
+> +       igt_info("Test mode <parallel: %d, instant free: %d, reopen: %d, =
+simple: %d>\n",
+> +                !!(flags & TEST_PARALLEL),
+> +                !!(flags & TEST_INSTANTFREE),
+> +                !!(flags & TEST_REOPEN),
+> +                !!(flags & TEST_SIMPLE));
+> +       if (param->num_objs)
+> +               snprintf(numstr, sizeof(numstr), "%d", param->num_objs);
+> +       else
+> +               strncpy(numstr, "limited to vram", sizeof(numstr));
+> +       igt_info("Params: compression: %s, num objects: %s, vram percent:=
+ %d, kb <min: %d, max: %d>\n",
+> +                param->disable_compression ? "disabled" : "enabled",
+> +                numstr, param->vram_percent,
+> +                param->min_size_kb, param->max_size_kb);
+> +
+> +       set_config(fd, flags, param, &config);
+> +
+> +       if (flags & TEST_PARALLEL) {
+> +               igt_fork(n, config.nproc) {
+> +                       if (flags & TEST_REOPEN) {
+> +                               fd =3D drm_reopen_driver(fd);
+> +                               intel_allocator_init();
+> +                       }
+> +                       evict_single(fd, n, &config);
+> +               }
+> +               igt_waitchildren();
+> +       } else {
+> +               if (flags & TEST_REOPEN)
+> +                       fd =3D drm_reopen_driver(fd);
+> +               evict_single(fd, 0, &config);
+> +       }
+> +}
+> +
+> +/**
+> + *
+> + * SUBTEST: evict-ccs-overcommit-simple
+> + * Description: FlatCCS eviction test.
+> + * Feature: flatccs
+> + * Test category: stress test
+> + */
+> +/**
+> + *
+> + * SUBTEST: evict-ccs-overcommit-%s-%s-%s
+> + * Description: FlatCCS eviction test.
+> + * Feature: flatccs
+> + * Test category: stress test
+> + *
+> + * arg[1]:
+> + *
+> + * @standalone:                        single process
+> + * @parallel:                  multiple processes
+> + *
+> + * arg[2]:
+> + *
+> + * @nofree:                    keep objects till the end of the test
+> + * @instantfree:               free object after it was verified and it =
+won't
+> + *                             be used anymore
+> + *
+> + * arg[3]:
+> + *
+> + * @samefd:                    operate on same opened drm fd
+> + * @reopen:                    use separately opened drm fds
+> + *
+> + */
+> +static int opt_handler(int opt, int opt_index, void *data)
+> +{
+> +       switch (opt) {
+> +       case 'b':
+> +               params.print_bb =3D true;
+> +               igt_debug("Print bb: %d\n", params.print_bb);
+> +               break;
+> +       case 'd':
+> +               params.disable_compression =3D true;
+> +               igt_debug("Print bb: %d\n", params.disable_compression);
+> +               break;
+> +       case 'D':
+> +               params.dump_corrupted_surface =3D true;
+> +               igt_debug("Print bb: %d\n", params.dump_corrupted_surface=
+);
+> +               break;
+> +       case 'n':
+> +               params.num_objs =3D atoi(optarg);
+> +               igt_debug("Number objects: %d\n", params.num_objs);
+> +               break;
+> +       case 'p':
+> +               params.vram_percent =3D atoi(optarg);
+> +               igt_debug("Percent vram: %d\n", params.vram_percent);
+> +               break;
+> +       case 's':
+> +               params.min_size_kb =3D atoi(optarg);
+> +               igt_debug("Min size kb: %d\n", params.min_size_kb);
+> +               break;
+> +       case 'S':
+> +               params.max_size_kb =3D atoi(optarg);
+> +               igt_debug("Max size kb: %d\n", params.max_size_kb);
+> +               break;
+> +       case 'V':
+> +               params.verify =3D true;
+> +               igt_debug("Verify: %d\n", params.verify);
+> +               break;
+> +       default:
+> +               return IGT_OPT_HANDLER_ERROR;
+> +       }
+> +
+> +       return IGT_OPT_HANDLER_SUCCESS;
+> +}
+> +
+> +const char *help_str =3D
+> +       "  -b\tPrint bb\n"
+> +       "  -d\tDisable compression (don't use flatccs area)\n"
+> +       "  -D\tDump surface which doesn't match\n"
+> +       "  -e\tAdd temporary object which enforce eviction\n"
+> +       "  -n\tNumber of objects to create (0 - 31)\n"
+> +       "  -p\tPercent of VRAM to alloc\n"
+> +       "  -s\tMinimum size of object in kb\n"
+> +       "  -S\tMaximum size of object in kb\n"
+> +       "  -V\tVerify object after compressing\n"
+> +       ;
+> +
+> +igt_main_args("bdDn:p:s:S:V", NULL, help_str, opt_handler, NULL)
+> +{
+> +       struct drm_xe_engine_class_instance *hwe;
+> +
+> +       const struct ccs {
+> +               const char *name;
+> +               uint32_t flags;
+> +       } ccs[] =3D {
+> +               { "simple",
+> +                       TEST_SIMPLE },
+> +               { "standalone-nofree-samefd",
+> +                       0 },
+> +               { "standalone-nofree-reopen",
+> +                       TEST_REOPEN },
+> +               { "standalone-instantfree-samefd",
+> +                       TEST_INSTANTFREE },
+> +               { "standalone-instantfree-reopen",
+> +                       TEST_INSTANTFREE | TEST_REOPEN },
+> +               { "parallel-nofree-samefd",
+> +                       TEST_PARALLEL },
+> +               { "parallel-nofree-reopen",
+> +                       TEST_PARALLEL | TEST_REOPEN },
+> +               { "parallel-instantfree-samefd",
+> +                       TEST_PARALLEL | TEST_INSTANTFREE },
+> +               { "parallel-instantfree-reopen",
+> +                       TEST_PARALLEL | TEST_INSTANTFREE | TEST_REOPEN },
+> +               { },
+> +       };
+> +       uint64_t vram_size;
+> +       int fd;
+> +
+> +       igt_fixture {
+> +               fd =3D drm_open_driver(DRIVER_XE);
+> +               igt_require(xe_has_vram(fd));
+> +               vram_size =3D xe_visible_vram_size(fd, 0);
+> +               igt_assert(vram_size);
+> +
+> +               xe_for_each_hw_engine(fd, hwe)
+> +                       if (hwe->engine_class !=3D DRM_XE_ENGINE_CLASS_CO=
+PY)
+> +                               break;
+> +       }
+> +
+> +       igt_fixture
+> +               intel_allocator_multiprocess_start();
+> +
+> +       for (const struct ccs *s =3D ccs; s->name; s++) {
+> +               igt_subtest_f("evict-ccs-overcommit-%s", s->name)
+> +                       evict_ccs(fd, s->flags, &params);
+> +       }
+> +
+> +       igt_fixture {
+> +               intel_allocator_multiprocess_stop();
+> +               drm_close_driver(fd);
+> +       }
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 2c2e1ca9ac..831947567f 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -279,6 +279,7 @@ intel_xe_progs =3D [
+>         'xe_debugfs',
+>         'xe_drm_fdinfo',
+>         'xe_evict',
+> +       'xe_evict_ccs',
+>         'xe_exec_balancer',
+>         'xe_exec_basic',
+>         'xe_exec_compute_mode',
+> --
+> 2.34.1
+>
