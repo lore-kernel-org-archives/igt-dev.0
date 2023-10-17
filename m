@@ -1,25 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com
- [IPv6:2a00:1450:4864:20::62c])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6377C10E2EB
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Oct 2023 13:08:07 +0000 (UTC)
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-99c3d3c3db9so910965466b.3
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Oct 2023 06:08:07 -0700 (PDT)
-Message-ID: <6bb16227-a898-63b8-f82a-3babc1d28840@gmail.com>
-Date: Tue, 17 Oct 2023 16:07:58 +0300
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EBD9C899B7
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Oct 2023 14:07:17 +0000 (UTC)
+From: sai.gowtham.ch@intel.com
+To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
+ karolina.stolarek@intel.com, sai.gowtham.ch@intel.com
+Date: Tue, 17 Oct 2023 19:35:27 +0530
+Message-Id: <20231017140530.547-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Simon Ser <contact@emersion.fr>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-References: <20231016142327.2671-1-contact@emersion.fr>
- <20231017074006.jxsu6hyv7syacfgv@kamilkon-desk.igk.intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20231017074006.jxsu6hyv7syacfgv@kamilkon-desk.igk.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH] tests/kms_closefb: add CLOSEFB IOCTL test
+Subject: [igt-dev] [PATCH i-g-t 0/3] Add copy basic test to exercise blt
+ commands
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,211 +18,35 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Simon,
+From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-On 17.10.2023 10.40, Kamil Konieczny wrote:
-> Hi Simon,
-> 
-> On 2023-10-16 at 14:23:31 +0000, Simon Ser wrote:
->> CLOSEFB is the same as RMFB but keeps the FB alive as long as any
->> plane is using it. Check the behavior of that IOCTL.
->>
->> Signed-off-by: Simon Ser <contact@emersion.fr>
->> ---
->>   tests/kms_closefb.c | 141 ++++++++++++++++++++++++++++++++++++++++++++
->>   tests/meson.build   |   1 +
->>   2 files changed, 142 insertions(+)
->>   create mode 100644 tests/kms_closefb.c
->>
->> diff --git a/tests/kms_closefb.c b/tests/kms_closefb.c
->> new file mode 100644
->> index 000000000000..26e1670bd29a
->> --- /dev/null
->> +++ b/tests/kms_closefb.c
->> @@ -0,0 +1,141 @@
-> 
-> Put SPDX MIT here:
-> // SPDX-License-Identifier: MIT
-> 
->> +/*
->> + * Copyright © 2023 Simon Ser
->> + *
->> + * Permission is hereby granted, free of charge, to any person obtaining a
-> 
-> Delete this (SPDX above replaces this).
-> 
->> + * copy of this software and associated documentation files (the "Software"),
->> + * to deal in the Software without restriction, including without limitation
->> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
->> + * and/or sell copies of the Software, and to permit persons to whom the
->> + * Software is furnished to do so, subject to the following conditions:
->> + *
->> + * The above copyright notice and this permission notice (including the next
->> + * paragraph) shall be included in all copies or substantial portions of the
->> + * Software.
->> + *
->> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
->> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
->> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
->> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
->> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
->> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
->> + * IN THE SOFTWARE.
->> + */
->> +
->> +#include "igt.h"
->> +#include "drmtest.h"
-> ------------^^^
-> igt includes should follow after systems ones (below)
-> and should also be sorted alphabetically (drmtest.h before igt.h)
-> 
->> +#include <errno.h>
->> +#include <stdbool.h>
->> +#include <stdio.h>
->> +#include <string.h>
->> +#include <time.h>
-> 
-> Here put igt includes (after newline).
-> 
-> This is kms test so adding Juha-Pekka and Bhanu on cc.
+Add copy basic test which exercies mem-se and mem-copy commands, this
+patch series involves in following changes:
 
-On quick look test generally look ok but was the discussion already 
-finished on dri-devel? Will this ioctl be merged as you had on your drm 
-patches or are there still changes expected? Ie. should I look at this 
-version closer or wait for a minute?
+1. Add copy basic test to exercise blt commands.
+2. Add wrappers for batch preparation and submit exec.
+3. Add copy commands MEM_SET_CMD and MEM_COPY_CMD in the lib.
 
-/Juha-Pekka
+Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-> 
->> +
->> +/**
->> + * TEST: kms closefb
->> + * Category: Display
->> + * Description: This tests CLOSEFB behavior. Contrary to RMFB, the
->> + *              framebuffers should not be removed from the CRTC.
->> + *
->> + * SUBTEST: closefb-ioctl
->> + * Description: CLOSEFB is supposed to leave all planes intact.
->> + */
->> +
->> +IGT_TEST_DESCRIPTION("This tests CLOSEFB behavior. Contrary to RMFB, the"
->> +		     "framebuffers should not be removed from the CRTC.");
->> +
->> +// TODO: drop when shipped in kernel header
->> +#ifndef DRM_IOCTL_MODE_CLOSEFB
->> +#define DRM_IOCTL_MODE_CLOSEFB DRM_IOWR(0xD0, unsigned int)
->> +#endif
->> +
->> +/* 1. Set primary plane to a known FB.
->> + * 2. Make sure GETCRTC returns the correct FB ID.
->> + * 3. Call CLOSEFB on the FB.
->> + * 4. Make sure GETCRTC returns non-0 FB ID.
->> + */
->> +static void
->> +test_closefb(int *drm_fd, igt_display_t *display, igt_output_t *output,
->> +	     enum pipe pipe)
->> +{
->> +	struct igt_fb fb;
->> +	drmModeModeInfo *mode;
->> +	igt_plane_t *plane;
->> +	drmModeCrtc *crtc;
->> +	int ret;
->> +
->> +	mode = igt_output_get_mode(output);
->> +	plane = igt_pipe_get_plane_type(&display->pipes[pipe], DRM_PLANE_TYPE_PRIMARY);
->> +
->> +	igt_create_fb(*drm_fd, mode->hdisplay, mode->vdisplay,
->> +		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, &fb);
->> +	igt_plane_set_fb(plane, &fb);
->> +	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
->> +
->> +	crtc = drmModeGetCrtc(*drm_fd, output->config.crtc->crtc_id);
->> +	igt_assert_eq(crtc->buffer_id, fb.fb_id);
->> +	drmModeFreeCrtc(crtc);
->> +
->> +	ret = drmIoctl(*drm_fd, DRM_IOCTL_MODE_CLOSEFB, &fb.fb_id);
->> +	igt_assert_eq(ret, 0);
->> +
->> +	/* Re-open our DRM FD. Without CLOSEFB, this would implicitly turn off
->> +	 * the CRTC and remove the FB (see test kms_rmfb@close-fd). */
->> +	drm_close_driver(*drm_fd);
->> +	*drm_fd = drm_open_driver_master(DRIVER_ANY);
->> +	drmSetClientCap(*drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
->> +	drmSetClientCap(*drm_fd, DRM_CLIENT_CAP_ATOMIC, 1);
->> +	igt_pipe_refresh(display, pipe, true);
->> +
->> +	/* Check that our CRTC still has the FB attached */
->> +	crtc = drmModeGetCrtc(*drm_fd, output->config.crtc->crtc_id);
->> +	igt_assert_eq(crtc->buffer_id, fb.fb_id);
->> +	drmModeFreeCrtc(crtc);
->> +}
->> +
->> +static void
->> +run_closefb_test(int *drm_fd, igt_display_t *display)
->> +{
->> +	igt_output_t *output;
->> +	enum pipe pipe;
->> +
->> +	for_each_pipe_with_single_output(display, pipe, output) {
->> +		igt_display_reset(display);
->> +
->> +		igt_output_set_pipe(output, pipe);
->> +
->> +		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
->> +			      igt_output_name(output))
->> +			test_closefb(drm_fd, display, output, pipe);
->> +	}
->> +}
->> +
->> +igt_main
->> +{
->> +	int drm_fd;
->> +	igt_display_t display;
->> +	uint32_t fb_id = 0;
->> +	int ret;
->> +
->> +	igt_fixture {
->> +		drm_fd = drm_open_driver_master(DRIVER_ANY);
->> +
->> +		kmstest_set_vt_graphics_mode();
->> +
->> +		igt_display_require(&display, drm_fd);
->> +		igt_display_require_output(&display);
->> +
->> +		/* Detect kernel support for CLOSEFB */
->> +		ret = drmIoctl(drm_fd, DRM_IOCTL_MODE_CLOSEFB, &fb_id);
->> +		igt_require(ret != 0 && errno == ENOENT);
->> +	}
->> +
->> +	igt_describe("CLOSEFB is supposed to not touch any plane the FB is "
->> +		     "currently attached to. Check that behavior.");
->> +	igt_subtest_with_dynamic("closefb-ioctl") {
->> +		run_closefb_test(&drm_fd, &display);
->> +	}
->> +
->> +	igt_fixture {
->> +		igt_display_fini(&display);
->> +		drm_close_driver(drm_fd);
->> +	}
->> +}
->> diff --git a/tests/meson.build b/tests/meson.build
->> index 2c2e1ca9acad..6b1b15973bde 100644
->> --- a/tests/meson.build
->> +++ b/tests/meson.build
->> @@ -21,6 +21,7 @@ test_progs = [
->>   	'kms_atomic_interruptible',
->>   	'kms_atomic_transition',
->>   	'kms_bw',
->> +	'kms_closefb',
->>   	'kms_color',
->>   	'kms_concurrent',
->>   	'kms_content_protection',
->> -- 
->> 2.42.0
->>
->>
+Sai Gowtham Ch (3):
+  lib/intel_blt: Add wrappers to prepare batch buffers and submit exec
+  lib/intel_cmds_info: Add M_MATRIX in mem_copy as it is supported for
+    PVC
+  intel/xe_copy_basic: Add copy basic test to exercise blt commands
+
+ lib/intel_blt.c             | 200 ++++++++++++++++++++++++++++++++++++
+ lib/intel_blt.h             |  39 +++++++
+ lib/intel_cmds_info.c       |   3 +-
+ lib/intel_reg.h             |   4 +
+ tests/intel/xe_copy_basic.c | 191 ++++++++++++++++++++++++++++++++++
+ tests/meson.build           |   1 +
+ 6 files changed, 437 insertions(+), 1 deletion(-)
+ create mode 100644 tests/intel/xe_copy_basic.c
+
+-- 
+2.39.1
