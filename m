@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============0121438541824959846=="
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam12on2079.outbound.protection.outlook.com [40.107.244.79])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D194B10E101
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Oct 2023 06:31:24 +0000 (UTC)
+From: Jesse Zhang <jesse.zhang@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Tue, 17 Oct 2023 14:31:13 +0800
+Message-ID: <20231017063113.4156984-1-jesse.zhang@amd.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
-Date: Tue, 17 Oct 2023 06:20:49 -0000
-Message-ID: <169752364954.14380.12845783947204924514@emeril.freedesktop.org>
-References: <20231016134852.413678-1-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20231016134852.413678-1-juhapekka.heikkila@gmail.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/igt?=
- =?utf-8?q?=5Ffb/xe=3A_use_engine_copy_where_available_=28rev3=29?=
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH i-g-t] tests/amd_dispatch: add negative test for
+ SDMA
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,191 +19,267 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Tim Huang <tim.huang@amd.com>, Luben Tuikov <luben.tuikov@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>, Christian
+ Koenig <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0121438541824959846==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Issue corrupted header or slow sdma linear copy
+to trigger SDMA hang test.
 
-== Series Details ==
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Signed-off-by: Tim Huang <tim.huang@amd.com>
+---
+ lib/amdgpu/amd_deadlock_helpers.c | 144 ++++++++++++++++++++++++++++++
+ lib/amdgpu/amd_deadlock_helpers.h |   4 +
+ tests/amdgpu/amd_deadlock.c       |  26 ++++--
+ 3 files changed, 169 insertions(+), 5 deletions(-)
 
-Series: lib/igt_fb/xe: use engine copy where available (rev3)
-URL   : https://patchwork.freedesktop.org/series/125171/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7541_BAT -> XEIGTPW_10014_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10014_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_exec_store@basic-store:
-    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#761])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-adlp-7/igt@xe_exec_store@basic-store.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10014/bat-adlp-7/igt@xe_exec_store@basic-store.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_cursor_legacy@basic-flip-before-cursor-atomic:
-    - bat-adlp-7:         [FAIL][3] ([i915#2346]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10014/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
-    - bat-adlp-7:         [FAIL][5] ([Intel XE#480]) -> [PASS][6] +1 other test pass
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10014/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
-    - bat-dg2-oem2:       [FAIL][7] ([Intel XE#400]) -> [PASS][8] +2 other tests pass
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10014/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
-
-  * igt@xe_exec_reset@virtual-close-fd-no-exec:
-    - bat-pvc-2:          [DMESG-WARN][9] ([Intel XE#696]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10014/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
-  [Intel XE#696]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/696
-  [Intel XE#761]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/761
-  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
-
-
-Build changes
--------------
-
-  * IGT: IGT_7541 -> IGTPW_10014
-  * Linux: xe-435-ab7cd1b4af95baba2d6ce5487d35ffda523e895d -> xe-436-9471d9e9efb920d70538445ffa07193d603b8cdb
-
-  IGTPW_10014: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10014/index.html
-  IGT_7541: fcddb77c3f8a77020f7f3b2660a66cae27cfaa2b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-435-ab7cd1b4af95baba2d6ce5487d35ffda523e895d: ab7cd1b4af95baba2d6ce5487d35ffda523e895d
-  xe-436-9471d9e9efb920d70538445ffa07193d603b8cdb: 9471d9e9efb920d70538445ffa07193d603b8cdb
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10014/index.html
-
---===============0121438541824959846==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/igt_fb/xe: use engine copy where available (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/125171/">https://patchwork.freedesktop.org/series/125171/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10014/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10014/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7541_BAT -&gt; XEIGTPW_10014_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10014_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@xe_exec_store@basic-store:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-adlp-7/igt@xe_exec_store@basic-store.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10014/bat-adlp-7/igt@xe_exec_store@basic-store.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/761">Intel XE#761</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_cursor_legacy@basic-flip-before-cursor-atomic:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10014/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10014/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10014/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">PASS</a> +2 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_reset@virtual-close-fd-no-exec:</p>
-<ul>
-<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7541/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/696">Intel XE#696</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10014/bat-pvc-2/igt@xe_exec_reset@virtual-close-fd-no-exec.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7541 -&gt; IGTPW_10014</li>
-<li>Linux: xe-435-ab7cd1b4af95baba2d6ce5487d35ffda523e895d -&gt; xe-436-9471d9e9efb920d70538445ffa07193d603b8cdb</li>
-</ul>
-<p>IGTPW_10014: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10014/index.html<br />
-  IGT_7541: fcddb77c3f8a77020f7f3b2660a66cae27cfaa2b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-435-ab7cd1b4af95baba2d6ce5487d35ffda523e895d: ab7cd1b4af95baba2d6ce5487d35ffda523e895d<br />
-  xe-436-9471d9e9efb920d70538445ffa07193d603b8cdb: 9471d9e9efb920d70538445ffa07193d603b8cdb</p>
-
-</body>
-</html>
-
---===============0121438541824959846==--
+diff --git a/lib/amdgpu/amd_deadlock_helpers.c b/lib/amdgpu/amd_deadlock_helpers.c
+index a6be5f02a..4f450fbcc 100644
+--- a/lib/amdgpu/amd_deadlock_helpers.c
++++ b/lib/amdgpu/amd_deadlock_helpers.c
+@@ -248,3 +248,147 @@ bad_access_helper(amdgpu_device_handle device_handle, int reg_access, unsigned i
+ 	free_cmd_base(base_cmd);
+ 	amdgpu_cs_ctx_free(context_handle);
+ }
++
++void
++amdgpu_hang_sdma_helper(amdgpu_device_handle device_handle, unsigned hang_type)
++{
++	const int sdma_write_length = 1024;
++	amdgpu_context_handle context_handle;
++	amdgpu_bo_handle ib_result_handle;
++	amdgpu_bo_handle bo1, bo2;
++	amdgpu_bo_handle resources[3];
++	amdgpu_bo_list_handle bo_list;
++	void *ib_result_cpu;
++	struct amdgpu_cs_ib_info ib_info;
++	struct amdgpu_cs_request ibs_request;
++	struct amdgpu_cs_fence fence_status;
++	uint64_t bo1_mc, bo2_mc;
++	uint64_t ib_result_mc_address;
++	volatile unsigned char *bo1_cpu, *bo2_cpu;
++	amdgpu_va_handle bo1_va_handle, bo2_va_handle;
++	amdgpu_va_handle va_handle;
++	struct drm_amdgpu_info_hw_ip hw_ip_info;
++	int i, j, r;
++	uint32_t expired, ib_size;
++	uint32_t *ptr;
++
++	r = amdgpu_query_hw_ip_info(device_handle, AMDGPU_HW_IP_DMA, 0, &hw_ip_info);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_cs_ctx_create(device_handle, &context_handle);
++	igt_assert_eq(r, 0);
++
++	if (hang_type == DMA_CORRUPTED_HEADER_HANG)
++		ib_size = 4096;
++	else
++		ib_size = 4096 * 0x20000;
++
++	r = amdgpu_bo_alloc_and_map(device_handle, ib_size, 4096,
++				    AMDGPU_GEM_DOMAIN_GTT, 0,
++				    &ib_result_handle, &ib_result_cpu,
++				    &ib_result_mc_address, &va_handle);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_alloc_and_map(device_handle,
++				    sdma_write_length, 4096,
++				    AMDGPU_GEM_DOMAIN_GTT,
++				    0, &bo1,
++				    (void**)&bo1_cpu, &bo1_mc,
++				    &bo1_va_handle);
++	igt_assert_eq(r, 0);
++
++	/* set bo1 */
++	memset((void*)bo1_cpu, 0xaa, sdma_write_length);
++
++	/* allocate UC bo2 for sDMA use */
++	r = amdgpu_bo_alloc_and_map(device_handle,
++				    sdma_write_length, 4096,
++				    AMDGPU_GEM_DOMAIN_GTT,
++				    0, &bo2,
++				    (void**)&bo2_cpu, &bo2_mc,
++				    &bo2_va_handle);
++	igt_assert_eq(r, 0);
++
++	/* clear bo2 */
++	memset((void*)bo2_cpu, 0, sdma_write_length);
++
++	resources[0] = bo1;
++	resources[1] = bo2;
++	resources[2] = ib_result_handle;
++	r = amdgpu_bo_list_create(device_handle, 3,
++				  resources, NULL, &bo_list);
++
++	/* fulfill PM4: with bad copy linear header */
++	ptr = ib_result_cpu;
++	i = 0;
++	if (hang_type == DMA_CORRUPTED_HEADER_HANG) {
++		ptr[i++] = 0x23decd3d;
++		ptr[i++] = sdma_write_length - 1;
++		ptr[i++] = 0;
++		ptr[i++] = 0xffffffff & bo1_mc;
++		ptr[i++] = (0xffffffff00000000 & bo1_mc) >> 32;
++		ptr[i++] = 0xffffffff & bo2_mc;
++		ptr[i++] = (0xffffffff00000000 & bo2_mc) >> 32;
++	} else {
++		for (j = 1; j < 0x20000; j++) {
++			ptr[i++] = 0x1;
++			ptr[i++] = sdma_write_length - 1;
++			ptr[i++] = 0;
++			ptr[i++] = 0xffffffff & bo1_mc;
++			ptr[i++] = (0xffffffff00000000 & bo1_mc) >> 32;
++			ptr[i++] = 0xffffffff & bo2_mc;
++			ptr[i++] = (0xffffffff00000000 & bo2_mc) >> 32;
++			ptr[i++] = 0x1;
++			ptr[i++] = sdma_write_length - 1;
++			ptr[i++] = 0;
++			ptr[i++] = 0xffffffff & bo2_mc;
++			ptr[i++] = (0xffffffff00000000 & bo2_mc) >> 32;
++			ptr[i++] = 0xffffffff & bo1_mc;
++			ptr[i++] = (0xffffffff00000000 & bo1_mc) >> 32;
++		}
++	}
++
++	/* exec command */
++	memset(&ib_info, 0, sizeof(struct amdgpu_cs_ib_info));
++	ib_info.ib_mc_address = ib_result_mc_address;
++	ib_info.size = i;
++
++	memset(&ibs_request, 0, sizeof(struct amdgpu_cs_request));
++	ibs_request.ip_type = AMDGPU_HW_IP_DMA;
++	ibs_request.ring = 0;
++	ibs_request.number_of_ibs = 1;
++	ibs_request.ibs = &ib_info;
++	ibs_request.resources = bo_list;
++	ibs_request.fence_info.handle = NULL;
++
++	r = amdgpu_cs_submit(context_handle, 0, &ibs_request, 1);
++	igt_assert_eq(r, 0);
++
++	memset(&fence_status, 0, sizeof(struct amdgpu_cs_fence));
++	fence_status.context = context_handle;
++	fence_status.ip_type = AMDGPU_HW_IP_DMA;
++	fence_status.ip_instance = 0;
++	fence_status.ring = 0;
++	fence_status.fence = ibs_request.seq_no;
++
++	r = amdgpu_cs_query_fence_status(&fence_status,
++					 AMDGPU_TIMEOUT_INFINITE,
++					 0, &expired);
++	if (r != 0 && r != -ECANCELED && r != -ETIME)
++		igt_assert(0);
++
++	r = amdgpu_bo_list_destroy(bo_list);
++	igt_assert_eq(r, 0);
++
++	amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
++				     ib_result_mc_address, 4096);
++
++	amdgpu_bo_unmap_and_free(bo1, bo1_va_handle, bo1_mc,
++				     sdma_write_length);
++
++	amdgpu_bo_unmap_and_free(bo2, bo2_va_handle, bo2_mc,
++				     sdma_write_length);
++	/* end of test */
++	r = amdgpu_cs_ctx_free(context_handle);
++	igt_assert_eq(r, 0);
++}
+diff --git a/lib/amdgpu/amd_deadlock_helpers.h b/lib/amdgpu/amd_deadlock_helpers.h
+index cc8eba7f7..3ce74dae7 100644
+--- a/lib/amdgpu/amd_deadlock_helpers.h
++++ b/lib/amdgpu/amd_deadlock_helpers.h
+@@ -24,11 +24,15 @@
+ #ifndef __AMD_DEADLOCK_HELPERS_H__
+ #define __AMD_DEADLOCK_HELPERS_H__
+ 
++#define DMA_CORRUPTED_HEADER_HANG	1
++#define DMA_SLOW_LINEARCOPY_HANG	2
+ void
+ amdgpu_wait_memory_helper(amdgpu_device_handle device_handle, unsigned ip_type);
+ 
+ void
+ bad_access_helper(amdgpu_device_handle device_handle, int reg_access, unsigned ip_type);
+ 
++void
++amdgpu_hang_sdma_helper(amdgpu_device_handle device_handle, unsigned hang_type);
+ #endif
+ 
+diff --git a/tests/amdgpu/amd_deadlock.c b/tests/amdgpu/amd_deadlock.c
+index 6147b7636..9f799a4a7 100644
+--- a/tests/amdgpu/amd_deadlock.c
++++ b/tests/amdgpu/amd_deadlock.c
+@@ -36,7 +36,7 @@ igt_main
+ 		asic_rings_readness(device, 1, arr_cap);
+ 
+ 	}
+-	igt_describe("Test-GPU-reset-by-flooding-sdma-ring-with-jobs");
++	igt_describe("Test GPU reset by flooding sdma ring with jobs");
+ 	igt_subtest_with_dynamic("amdgpu-deadlock-sdma") {
+ 		if (arr_cap[AMD_IP_DMA]) {
+ 			igt_dynamic_f("amdgpu-deadlock-sdma")
+@@ -44,7 +44,7 @@ igt_main
+ 		}
+ 	}
+ 
+-	igt_describe("Test-GPU-reset-by-access-gfx-illegal-reg");
++	igt_describe("Test GPU reset by access gfx illegal reg");
+ 	igt_subtest_with_dynamic("amdgpu-gfx-illegal-reg-access") {
+ 		if (arr_cap[AMD_IP_GFX]) {
+ 			igt_dynamic_f("amdgpu-illegal-reg-access")
+@@ -52,7 +52,7 @@ igt_main
+ 		}
+ 	}
+ 
+-	igt_describe("Test-GPU-reset-by-access-gfx-illegal-mem-addr");
++	igt_describe("Test GPU reset by access gfx illegal mem addr");
+ 	igt_subtest_with_dynamic("amdgpu-gfx-illegal-mem-access") {
+ 		if (arr_cap[AMD_IP_GFX]) {
+ 			igt_dynamic_f("amdgpu-illegal-mem-access")
+@@ -61,7 +61,7 @@ igt_main
+ 	}
+ 
+ 
+-	igt_describe("Test-GPU-reset-by-flooding-gfx-ring-with-jobs");
++	igt_describe("Test GPU reset by flooding gfx ring with jobs");
+ 	igt_subtest_with_dynamic("amdgpu-deadlock-gfx") {
+ 		if (arr_cap[AMD_IP_GFX]) {
+ 			igt_dynamic_f("amdgpu-deadlock-gfx")
+@@ -69,7 +69,7 @@ igt_main
+ 		}
+ 	}
+ 
+-	igt_describe("Test-GPU-reset-by-flooding-compute-ring-with-jobs");
++	igt_describe("Test GPU reset by flooding compute ring with jobs");
+ 	igt_subtest_with_dynamic("amdgpu-deadlock-compute") {
+ 		if (arr_cap[AMD_IP_COMPUTE]) {
+ 			igt_dynamic_f("amdgpu-deadlock-compute")
+@@ -77,6 +77,22 @@ igt_main
+ 		}
+ 	}
+ 
++	igt_describe("Test GPU reset by sdma corrupted header with jobs");
++	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-corrupted-header-test") {
++		if (arr_cap[AMD_IP_DMA]) {
++			igt_dynamic_f("amdgpu-deadlock-sdma-corrupted-header-test")
++			amdgpu_hang_sdma_helper(device, DMA_CORRUPTED_HEADER_HANG);
++		}
++	}
++
++	igt_describe("Test GPU reset by sdma slow linear copy with jobs");
++	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-slow-linear-copy") {
++		if (arr_cap[AMD_IP_DMA]) {
++			igt_dynamic_f("amdgpu-deadlock-sdma-slow-linear-copy")
++			amdgpu_hang_sdma_helper(device, DMA_SLOW_LINEARCOPY_HANG);
++		}
++	}
++
+ 	igt_fixture {
+ 		amdgpu_device_deinitialize(device);
+ 		drm_close_driver(fd);
+-- 
+2.25.1
