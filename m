@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <12b425f9-1b13-5c75-2e74-0c45ec4f46e0@linux.intel.com>
-Date: Fri, 13 Oct 2023 08:47:30 +0100
+Content-Type: multipart/alternative;
+ boundary="===============8690160861117905970=="
 MIME-Version: 1.0
-Content-Language: en-US
-To: Lee Shawn C <shawn.c.lee@intel.com>, intel-gfx@lists.freedesktop.org,
- igt-dev@lists.freedesktop.org
-References: <20231013042012.409376-1-shawn.c.lee@intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20231013042012.409376-1-shawn.c.lee@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH] tests: save GPU engine information more
- properly
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jesse Zhang" <jesse.zhang@amd.com>
+Date: Wed, 18 Oct 2023 07:48:10 -0000
+Message-ID: <169761529072.15109.12519645098152905861@emeril.freedesktop.org>
+References: <20231018053336.107138-1-jesse.zhang@amd.com>
+In-Reply-To: <20231018053336.107138-1-jesse.zhang@amd.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?amd=5Fdispatch=3A_add_negative_test_for_SDMA_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,167 +17,201 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============8690160861117905970==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 13/10/2023 05:20, Lee Shawn C wrote:
-> We encounter a unexpected error on chrome book device while
-> running kms_busy test. It will restore GPU engine's timeout
-> value but open incorrect file name (XR24 in below).
-> 
-> openat(AT_FDCWD, "/sys/dev/char/226:0", O_RDONLY) = 12
-> openat(12, "dev", O_RDONLY)             = 13
-> read(13, "226:0\n", 1023)               = 6
-> close(13)                               = 0
-> openat(12, "engine", O_RDONLY)          = 13
-> close(12)                               = 0
-> openat(13, "XR24", O_RDONLY)            = -1 ENOENT (No such file or directory)
-> 
-> Test code did not save engine data properly to cause this problem.
-> So modify the code to save GPU engine information into a globla variable
-> to avoid test deamon to open incorrect file again.
-> 
-> Issue: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/147
-> Fixes: 9e635a1c5029 ("tests/kms_busy: Ensure GPU reset when waiting
-> for a new FB during modeset")
+== Series Details ==
 
-I guess if we are having one Fixes: could add some more for i915_hangman 
-and gem_exec_capture but it is not that important for igt so meh.
+Series: tests/amd_dispatch: add negative test for SDMA (rev2)
+URL   : https://patchwork.freedesktop.org/series/125215/
+State : success
 
-Changes look good to me. Presumably it fixes things for you and if CI 
-ends up green:
+== Summary ==
 
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+CI Bug Log - changes from CI_DRM_13769 -> IGTPW_10020
+====================================================
 
-Regards,
+Summary
+-------
 
-Tvrtko
+  **SUCCESS**
 
-> Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-> Cc: Imre Deak <imre.deak@intel.com>
-> Cc: Vidya Srinivas <vidya.srinivas@intel.com>
-> Signed-off-by: Lee Shawn C <shawn.c.lee@intel.com>
-> ---
->   lib/i915/gem_engine_topology.c | 12 ++++++------
->   lib/i915/gem_engine_topology.h |  2 +-
->   tests/intel/gem_exec_capture.c |  2 +-
->   tests/intel/gem_reset_stats.c  |  2 +-
->   tests/intel/i915_hangman.c     |  2 +-
->   tests/intel/kms_busy.c         |  2 +-
->   6 files changed, 11 insertions(+), 11 deletions(-)
-> 
-> diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
-> index 7c6cd9ba97db..afb576afb2dc 100644
-> --- a/lib/i915/gem_engine_topology.c
-> +++ b/lib/i915/gem_engine_topology.c
-> @@ -571,23 +571,23 @@ void gem_engine_properties_configure(int fd, struct gem_engine_properties *param
->   	int ret;
->   	struct gem_engine_properties write = *params;
->   
-> -	ret = gem_engine_property_scanf(fd, write.engine->name,
-> +	ret = gem_engine_property_scanf(fd, write.engine.name,
->   					"heartbeat_interval_ms",
->   					"%d", &params->heartbeat_interval);
->   	igt_assert_eq(ret, 1);
->   
-> -	ret = gem_engine_property_printf(fd, write.engine->name,
-> +	ret = gem_engine_property_printf(fd, write.engine.name,
->   					 "heartbeat_interval_ms", "%d",
->   					 write.heartbeat_interval);
->   	igt_assert_lt(0, ret);
->   
->   	if (gem_scheduler_has_preemption(fd)) {
-> -		ret = gem_engine_property_scanf(fd, write.engine->name,
-> +		ret = gem_engine_property_scanf(fd, write.engine.name,
->   						"preempt_timeout_ms",
->   						"%d", &params->preempt_timeout);
->   		igt_assert_eq(ret, 1);
->   
-> -		ret = gem_engine_property_printf(fd, write.engine->name,
-> +		ret = gem_engine_property_printf(fd, write.engine.name,
->   						 "preempt_timeout_ms", "%d",
->   						 write.preempt_timeout);
->   		igt_assert_lt(0, ret);
-> @@ -598,13 +598,13 @@ void gem_engine_properties_restore(int fd, const struct gem_engine_properties *s
->   {
->   	int ret;
->   
-> -	ret = gem_engine_property_printf(fd, saved->engine->name,
-> +	ret = gem_engine_property_printf(fd, saved->engine.name,
->   					 "heartbeat_interval_ms", "%d",
->   					 saved->heartbeat_interval);
->   	igt_assert_lt(0, ret);
->   
->   	if (gem_scheduler_has_preemption(fd)) {
-> -		ret = gem_engine_property_printf(fd, saved->engine->name,
-> +		ret = gem_engine_property_printf(fd, saved->engine.name,
->   						 "preempt_timeout_ms", "%d",
->   						 saved->preempt_timeout);
->   		igt_assert_lt(0, ret);
-> diff --git a/lib/i915/gem_engine_topology.h b/lib/i915/gem_engine_topology.h
-> index 89642c31721c..9eb9d5ddc888 100644
-> --- a/lib/i915/gem_engine_topology.h
-> +++ b/lib/i915/gem_engine_topology.h
-> @@ -122,7 +122,7 @@ struct intel_execution_engine2 gem_eb_flags_to_engine(unsigned int flags);
->   	     intel_next_engine(&i__##e__))
->   
->   struct gem_engine_properties {
-> -	const struct intel_execution_engine2 *engine;
-> +	struct intel_execution_engine2 engine;
->   	int preempt_timeout;
->   	int heartbeat_interval;
->   };
-> diff --git a/tests/intel/gem_exec_capture.c b/tests/intel/gem_exec_capture.c
-> index ab8305e4dfaf..d231c53b98e1 100644
-> --- a/tests/intel/gem_exec_capture.c
-> +++ b/tests/intel/gem_exec_capture.c
-> @@ -258,7 +258,7 @@ configure_hangs(int fd, const struct intel_execution_engine2 *e, int ctxt_id)
->   	struct gem_engine_properties props;
->   
->   	/* Ensure fast hang detection */
-> -	props.engine = e;
-> +	props.engine = *e;
->   	props.preempt_timeout = 250;
->   	props.heartbeat_interval = 500;
->   	gem_engine_properties_configure(fd, &props);
-> diff --git a/tests/intel/gem_reset_stats.c b/tests/intel/gem_reset_stats.c
-> index 6939722c7001..5dfc1fc677ec 100644
-> --- a/tests/intel/gem_reset_stats.c
-> +++ b/tests/intel/gem_reset_stats.c
-> @@ -1004,7 +1004,7 @@ static void test_shared_reset_domain(const intel_ctx_cfg_t *base_cfg,
->   
->   	sync_gpu();
->   
-> -	params.engine = e;
-> +	params.engine = *e;
->   	params.preempt_timeout = 1;
->   	params.heartbeat_interval = 250;
->   	gem_engine_properties_configure(device, &params);
-> diff --git a/tests/intel/i915_hangman.c b/tests/intel/i915_hangman.c
-> index dcd34cd0ebfe..8a7de562609c 100644
-> --- a/tests/intel/i915_hangman.c
-> +++ b/tests/intel/i915_hangman.c
-> @@ -600,7 +600,7 @@ igt_main
->   		gem_require_mmap_device_coherent(device);
->   
->   		for_each_physical_engine(device, e) {
-> -			saved_params[num_engines].engine = e;
-> +			saved_params[num_engines].engine = *e;
->   			saved_params[num_engines].preempt_timeout = 500;
->   			saved_params[num_engines].heartbeat_interval = 1000;
->   			gem_engine_properties_configure(device, saved_params + num_engines++);
-> diff --git a/tests/intel/kms_busy.c b/tests/intel/kms_busy.c
-> index 5b620658fb18..50616513c5ba 100644
-> --- a/tests/intel/kms_busy.c
-> +++ b/tests/intel/kms_busy.c
-> @@ -404,7 +404,7 @@ static void gpu_engines_init_timeouts(int fd, int max_engines,
->   	for_each_physical_engine(fd, e) {
->   		igt_assert(*num_engines < max_engines);
->   
-> -		props[*num_engines].engine = e;
-> +		props[*num_engines].engine = *e;
->   		props[*num_engines].preempt_timeout = 0;
->   		props[*num_engines].heartbeat_interval = 250;
->   
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10020/index.html
+
+Participating hosts (31 -> 30)
+------------------------------
+
+  Missing    (1): bat-jsl-3 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10020 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_module_load@load:
+    - bat-adlp-6:         [PASS][1] -> [DMESG-WARN][2] ([i915#1982] / [i915#8449])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-adlp-6/igt@i915_module_load@load.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10020/bat-adlp-6/igt@i915_module_load@load.html
+
+  * igt@i915_selftest@live@mman:
+    - bat-rpls-1:         [PASS][3] -> [TIMEOUT][4] ([i915#6794] / [i915#7392])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-rpls-1/igt@i915_selftest@live@mman.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10020/bat-rpls-1/igt@i915_selftest@live@mman.html
+
+  * igt@i915_suspend@basic-s2idle-without-i915:
+    - bat-rpls-1:         [PASS][5] -> [WARN][6] ([i915#8747])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-rpls-1/igt@i915_suspend@basic-s2idle-without-i915.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10020/bat-rpls-1/igt@i915_suspend@basic-s2idle-without-i915.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc:
+    - bat-dg2-11:         NOTRUN -> [SKIP][7] ([i915#1845] / [i915#9197])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10020/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@mman:
+    - fi-elk-e7500:       [INCOMPLETE][8] -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/fi-elk-e7500/igt@i915_selftest@live@mman.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10020/fi-elk-e7500/igt@i915_selftest@live@mman.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-bsw-nick:        [FAIL][10] ([i915#9276]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10020/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#6794]: https://gitlab.freedesktop.org/drm/intel/issues/6794
+  [i915#7392]: https://gitlab.freedesktop.org/drm/intel/issues/7392
+  [i915#8449]: https://gitlab.freedesktop.org/drm/intel/issues/8449
+  [i915#8747]: https://gitlab.freedesktop.org/drm/intel/issues/8747
+  [i915#9197]: https://gitlab.freedesktop.org/drm/intel/issues/9197
+  [i915#9276]: https://gitlab.freedesktop.org/drm/intel/issues/9276
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7543 -> IGTPW_10020
+
+  CI-20190529: 20190529
+  CI_DRM_13769: 30f23d5bc2534f1707286bbf60be32d234fb54c3 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10020: 10020
+  IGT_7543: 688f12831f876590e084e9b13b4d5ab85fe13d51 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10020/index.html
+
+--===============8690160861117905970==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/amd_dispatch: add negative test for SDMA (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/125215/">https://patchwork.freedesktop.org/series/125215/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10020/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10020/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13769 -&gt; IGTPW_10020</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10020/index.html</p>
+<h2>Participating hosts (31 -&gt; 30)</h2>
+<p>Missing    (1): bat-jsl-3 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10020 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_module_load@load:</p>
+<ul>
+<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-adlp-6/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10020/bat-adlp-6/igt@i915_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8449">i915#8449</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@mman:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-rpls-1/igt@i915_selftest@live@mman.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10020/bat-rpls-1/igt@i915_selftest@live@mman.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6794">i915#6794</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7392">i915#7392</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-rpls-1/igt@i915_suspend@basic-s2idle-without-i915.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10020/bat-rpls-1/igt@i915_suspend@basic-s2idle-without-i915.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8747">i915#8747</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10020/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9197">i915#9197</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@mman:</p>
+<ul>
+<li>fi-elk-e7500:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/fi-elk-e7500/igt@i915_selftest@live@mman.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10020/fi-elk-e7500/igt@i915_selftest@live@mman.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9276">i915#9276</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10020/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7543 -&gt; IGTPW_10020</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13769: 30f23d5bc2534f1707286bbf60be32d234fb54c3 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10020: 10020<br />
+  IGT_7543: 688f12831f876590e084e9b13b4d5ab85fe13d51 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============8690160861117905970==--
