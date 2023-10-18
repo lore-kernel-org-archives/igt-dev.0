@@ -1,27 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com
- [IPv6:2a00:1450:4864:20::22a])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 43BB910E0AA
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Oct 2023 13:51:34 +0000 (UTC)
-Received: by mail-lj1-x22a.google.com with SMTP id
- 38308e7fff4ca-2c50305c5c4so84424791fa.1
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Oct 2023 06:51:34 -0700 (PDT)
-Message-ID: <571655a3-1898-58a1-ecad-88a3ebfc9f4f@gmail.com>
-Date: Wed, 18 Oct 2023 16:51:26 +0300
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 879C510E3D8
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Oct 2023 14:19:24 +0000 (UTC)
+Date: Wed, 18 Oct 2023 16:19:00 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20231018141900.v37lwo7xkylxzoe6@kamilkon-desk.igk.intel.com>
+References: <20231017140530.547-1-sai.gowtham.ch@intel.com>
+ <169755444827.14379.5872219250234274848@emeril.freedesktop.org>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20231016134852.413678-1-juhapekka.heikkila@gmail.com>
- <20231017064451.mohdfg7vfkiqdrjr@zkempczy-mobl2>
- <161bd2a0-1395-ffab-76a9-d53bf2abc02e@gmail.com>
- <23af5e03-1f03-538e-49b6-0eff9353c2e7@linux.intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <23af5e03-1f03-538e-49b6-0eff9353c2e7@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_fb/xe: use engine copy where
- available
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <169755444827.14379.5872219250234274848@emeril.freedesktop.org>
+Subject: Re: [igt-dev]
+ =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure__for_Add_cop?=
+ =?utf-8?q?y_basic_test_to_exercise_blt_commands_=28rev8=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,133 +22,203 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
-Cc: igt-dev@lists.freedesktop.org
+Cc: sai.gowtham.ch@intel.com,
+ SaiX Nandan Yedireswarapu <saix.nandan.yedireswarapu@intel.com>,
+ Tejasree Illipilli <tejasreex.illipilli@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hei Maarten,
+Hi Tejasree,
 
-On 18.10.2023 15.57, Maarten Lankhorst wrote:
-> Hey,
+as Sai said in private conversation, below is not related to new
+subtest, could you supress failures? No need for respin.
+Same goes for i915 tests for Fi.CI.IGT
+
+Regards,
+Kamil
+
+On 2023-10-17 at 14:54:08 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> On i915 the X tiling mode is detiled in mmap directly and there is no 
-> need for an internal copy. What happens if you explicitly force i915 to 
-> take the same path as Xe here?
+> Series: Add copy basic test to exercise blt commands (rev8)
+> URL   : https://patchwork.freedesktop.org/series/122615/
+> State : failure
 > 
-
-During summer time i915 was taking same path and back then there was no 
-reported errors. X-tile on i915 was taken away from blitter because it 
-was failing async flip tests when doing copies w/ blitter was too slow 
-for those tests but otherwise everything did seem to work. Those dpt 
-patches for Xe driver went in yesterday so we'll soon see this in tests 
-and get to figure out where the bug is hiding, we agree with Zbigniew to 
-drop this change for now.
-
-/Juha-Pekka
-
+> == Summary ==
 > 
-> On 2023-10-17 09:08, Juha-Pekka Heikkila wrote:
->> On 17.10.2023 9.44, Zbigniew Kempczyński wrote:
->>> On Mon, Oct 16, 2023 at 04:48:52PM +0300, Juha-Pekka Heikkila wrote:
->>>> On Xe driver there seems to be some problems with blitter while copying
->>>> framebuffers. Switch to use engine copy instead of blitter copy
->>>> where possible at least until blitter path is fixed.
->>>
->>> Do we have separated test which exposes this bug on Xe?
->>> If not this looks like hiding bugs what's wrong as this might
->>> be triggered on another path.
->>>
->>
->> As discussed offline, any x-tile test will show this on adlp. 
->> Framebuffers here are for display testing, agreed this would put the 
->> bug in hiding on blitter but allow some basic display testing with rgb 
->> framebuffers on Xe. With this set once testing proceed to yuv 
->> framebuffers we'll see all of those failing as Vebox doesn't yet work 
->> on Xe either.
->>
->> /Juha-Pekka
->>
->>>
->>>
->>>>
->>>> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
->>>
->>>> ---
->>>>   lib/igt_fb.c | 30 ++++++++++++++++++++++++------
->>>>   1 file changed, 24 insertions(+), 6 deletions(-)
->>>>
->>>> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
->>>> index e82393909..0ff610dc2 100644
->>>> --- a/lib/igt_fb.c
->>>> +++ b/lib/igt_fb.c
->>>> @@ -2502,12 +2502,17 @@ static bool block_copy_ok(const struct 
->>>> igt_fb *fb)
->>>>   static bool blitter_ok(const struct igt_fb *fb)
->>>>   {
->>>> +    int devid;
->>>> +
->>>>       if (!is_intel_device(fb->fd))
->>>>           return false;
->>>> +    devid = intel_get_drm_devid(fb->fd);
->>>> +
->>>>       if ((is_ccs_modifier(fb->modifier) &&
->>>> -         !HAS_FLATCCS(intel_get_drm_devid(fb->fd))) ||
->>>> -         is_gen12_mc_ccs_modifier(fb->modifier))
->>>> +         !HAS_FLATCCS(devid)) ||
->>>> +         is_gen12_mc_ccs_modifier(fb->modifier) ||
->>>> +         (is_xe_device(fb->fd) && igt_get_render_copyfunc(devid)))
->>>>           return false;
->>>>       for (int i = 0; i < fb->num_planes; i++) {
->>>> @@ -2538,15 +2543,20 @@ static bool blitter_ok(const struct igt_fb *fb)
->>>>   static bool use_enginecopy(const struct igt_fb *fb)
->>>>   {
->>>> +    int devid;
->>>> +
->>>>       if (!is_intel_device(fb->fd))
->>>>           return false;
->>>>       if (blitter_ok(fb))
->>>>           return false;
->>>> +    devid = intel_get_drm_devid(fb->fd);
->>>> +
->>>>       return fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
->>>> -           (!HAS_FLATCCS(intel_get_drm_devid(fb->fd)) && 
->>>> is_ccs_modifier(fb->modifier)) ||
->>>> -           is_gen12_mc_ccs_modifier(fb->modifier);
->>>> +           (!HAS_FLATCCS(devid) && is_ccs_modifier(fb->modifier)) ||
->>>> +           is_gen12_mc_ccs_modifier(fb->modifier) ||
->>>> +           (is_xe_device(fb->fd) && igt_get_render_copyfunc(devid));
->>>>   }
->>>>   static bool use_blitter(const struct igt_fb *fb)
->>>> @@ -3052,7 +3062,12 @@ static void free_linear_mapping(struct 
->>>> fb_blit_upload *blit)
->>>>           igt_nouveau_delete_bo(&linear->fb);
->>>>       } else if (is_xe_device(fd)) {
->>>>           gem_munmap(linear->map, linear->fb.size);
->>>> -        blitcopy(fb, &linear->fb);
->>>> +
->>>> +        if (blit->ibb)
->>>> +            copy_with_engine(blit, fb, &linear->fb);
->>>> +        else
->>>> +            blitcopy(fb, &linear->fb);
->>>> +
->>>>           gem_close(fd, linear->fb.gem_handle);
->>>>       } else {
->>>>           gem_munmap(linear->map, linear->fb.size);
->>>> @@ -3132,7 +3147,10 @@ static void setup_linear_mapping(struct 
->>>> fb_blit_upload *blit)
->>>>           linear->map = igt_nouveau_mmap_bo(&linear->fb, PROT_READ | 
->>>> PROT_WRITE);
->>>>       } else if (is_xe_device(fd)) {
->>>> -        blitcopy(&linear->fb, fb);
->>>> +        if (blit->ibb)
->>>> +            copy_with_engine(blit, &linear->fb, fb);
->>>> +        else
->>>> +            blitcopy(&linear->fb, fb);
->>>>           linear->map = xe_bo_mmap_ext(fd, linear->fb.gem_handle,
->>>>                            linear->fb.size, PROT_READ | PROT_WRITE);
->>>> -- 
->>>> 2.34.1
->>>>
->>
+> CI Bug Log - changes from XEIGT_7543_BAT -> XEIGTPW_10018_BAT
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with XEIGTPW_10018_BAT absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in XEIGTPW_10018_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   
+> 
+> Participating hosts (4 -> 4)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in XEIGTPW_10018_BAT:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@kms_frontbuffer_tracking@basic:
+>     - bat-adlp-7:         NOTRUN -> [DMESG-FAIL][1]
+>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+> 
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in XEIGTPW_10018_BAT that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@kms_addfb_basic@basic-y-tiled-legacy:
+>     - bat-adlp-7:         NOTRUN -> [FAIL][2] ([Intel XE#609]) +2 other tests fail
+>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-adlp-7/igt@kms_addfb_basic@basic-y-tiled-legacy.html
+> 
+>   * igt@kms_addfb_basic@invalid-set-prop-any:
+>     - bat-atsm-2:         NOTRUN -> [SKIP][3] ([i915#6077]) +33 other tests skip
+>    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@kms_addfb_basic@invalid-set-prop-any.html
+> 
+>   * igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size:
+>     - bat-adlp-7:         NOTRUN -> [FAIL][4] ([i915#2346])
+>    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
+> 
+>   * igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:
+>     - bat-atsm-2:         NOTRUN -> [SKIP][5] ([Intel XE#782]) +5 other tests skip
+>    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
+> 
+>   * igt@kms_dsc@dsc-basic:
+>     - bat-atsm-2:         NOTRUN -> [SKIP][6] ([Intel XE#784])
+>    [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@kms_dsc@dsc-basic.html
+>     - bat-adlp-7:         NOTRUN -> [SKIP][7] ([Intel XE#423])
+>    [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-adlp-7/igt@kms_dsc@dsc-basic.html
+> 
+>   * igt@kms_flip@basic-flip-vs-modeset:
+>     - bat-atsm-2:         NOTRUN -> [SKIP][8] ([Intel XE#541]) +3 other tests skip
+>    [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@kms_flip@basic-flip-vs-modeset.html
+> 
+>   * igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:
+>     - bat-adlp-7:         NOTRUN -> [FAIL][9] ([Intel XE#480]) +2 other tests fail
+>    [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
+> 
+>   * igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3:
+>     - bat-dg2-oem2:       [PASS][10] -> [FAIL][11] ([Intel XE#480]) +1 other test fail
+>    [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7543/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html
+>    [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html
+> 
+>   * igt@kms_force_connector_basic@force-connector-state:
+>     - bat-atsm-2:         NOTRUN -> [SKIP][12] ([Intel XE#540]) +3 other tests skip
+>    [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@kms_force_connector_basic@force-connector-state.html
+> 
+>   * igt@kms_frontbuffer_tracking@basic:
+>     - bat-atsm-2:         NOTRUN -> [SKIP][13] ([Intel XE#783])
+>    [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@kms_frontbuffer_tracking@basic.html
+> 
+>   * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:
+>     - bat-atsm-2:         NOTRUN -> [SKIP][14] ([i915#1836]) +6 other tests skip
+>    [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html
+> 
+>   * igt@kms_prop_blob@basic:
+>     - bat-atsm-2:         NOTRUN -> [SKIP][15] ([Intel XE#780])
+>    [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@kms_prop_blob@basic.html
+> 
+>   * igt@kms_psr@cursor_plane_move:
+>     - bat-atsm-2:         NOTRUN -> [SKIP][16] ([Intel XE#535]) +2 other tests skip
+>    [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@kms_psr@cursor_plane_move.html
+> 
+>   * igt@xe_compute@compute-square:
+>     - bat-atsm-2:         NOTRUN -> [SKIP][17] ([Intel XE#672])
+>    [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@xe_compute@compute-square.html
+> 
+>   * igt@xe_evict@evict-beng-small-external:
+>     - bat-adlp-7:         NOTRUN -> [SKIP][18] ([Intel XE#261] / [Intel XE#688]) +15 other tests skip
+>    [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-adlp-7/igt@xe_evict@evict-beng-small-external.html
+> 
+>   * igt@xe_exec_fault_mode@twice-userptr:
+>     - bat-adlp-7:         NOTRUN -> [SKIP][19] ([Intel XE#288]) +17 other tests skip
+>    [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-adlp-7/igt@xe_exec_fault_mode@twice-userptr.html
+> 
+>   * igt@xe_exec_fault_mode@twice-userptr-invalidate-imm:
+>     - bat-atsm-2:         NOTRUN -> [SKIP][20] ([Intel XE#288]) +17 other tests skip
+>    [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@xe_exec_fault_mode@twice-userptr-invalidate-imm.html
+> 
+>   * igt@xe_huc_copy@huc_copy:
+>     - bat-atsm-2:         NOTRUN -> [SKIP][21] ([Intel XE#255])
+>    [21]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@xe_huc_copy@huc_copy.html
+> 
+>   * igt@xe_live_ktest@migrate:
+>     - bat-adlp-7:         NOTRUN -> [INCOMPLETE][22] ([Intel XE#753])
+>    [22]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-adlp-7/igt@xe_live_ktest@migrate.html
+> 
+>   * igt@xe_mmap@vram:
+>     - bat-adlp-7:         NOTRUN -> [SKIP][23] ([Intel XE#263])
+>    [23]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-adlp-7/igt@xe_mmap@vram.html
+> 
+>   
+> #### Possible fixes ####
+> 
+>   * igt@xe_module_load@load:
+>     - bat-atsm-2:         [INCOMPLETE][24] -> [PASS][25]
+>    [24]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7543/bat-atsm-2/igt@xe_module_load@load.html
+>    [25]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/bat-atsm-2/igt@xe_module_load@load.html
+> 
+>   
+>   {name}: This element is suppressed. This means it is ignored when computing
+>           the status of the difference (SUCCESS, WARNING, or FAILURE).
+> 
+>   [Intel XE#255]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/255
+>   [Intel XE#261]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/261
+>   [Intel XE#263]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/263
+>   [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+>   [Intel XE#423]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/423
+>   [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+>   [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+>   [Intel XE#535]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/535
+>   [Intel XE#540]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/540
+>   [Intel XE#541]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/541
+>   [Intel XE#609]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/609
+>   [Intel XE#672]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/672
+>   [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
+>   [Intel XE#753]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/753
+>   [Intel XE#780]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/780
+>   [Intel XE#782]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/782
+>   [Intel XE#783]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/783
+>   [Intel XE#784]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/784
+>   [i915#1836]: https://gitlab.freedesktop.org/drm/intel/issues/1836
+>   [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
+>   [i915#6077]: https://gitlab.freedesktop.org/drm/intel/issues/6077
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * IGT: IGT_7543 -> IGTPW_10018
+> 
+>   IGTPW_10018: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10018/index.html
+>   IGT_7543: 688f12831f876590e084e9b13b4d5ab85fe13d51 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   xe-439-cbcd3e95647ff14d508d1a42dce785693446c7f2: cbcd3e95647ff14d508d1a42dce785693446c7f2
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10018/index.html
