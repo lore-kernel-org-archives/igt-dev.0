@@ -1,19 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-4018.proton.ch (mail-4018.proton.ch [185.70.40.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4FB6B10E3D5
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Oct 2023 12:34:28 +0000 (UTC)
-Date: Wed, 18 Oct 2023 12:34:20 +0000
-To: juhapekka.heikkila@gmail.com
+Received: from mail-4323.proton.ch (mail-4323.proton.ch [185.70.43.23])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D2B1810E0D4
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Oct 2023 12:43:24 +0000 (UTC)
+Date: Wed, 18 Oct 2023 12:43:15 +0000
+To: =?utf-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 From: Simon Ser <contact@emersion.fr>
-Message-ID: <hexug4BreDOHp96MSCKNt7lYYV1kyE3FSzFUvpTRCudQejGjk3VjgbJuGm6bPSEj7uLM3kw4SFQToP8fYtm8Umdwdyhv_VTepjSvkmDCtgs=@emersion.fr>
-In-Reply-To: <6bb16227-a898-63b8-f82a-3babc1d28840@gmail.com>
-References: <20231016142327.2671-1-contact@emersion.fr>
- <20231017074006.jxsu6hyv7syacfgv@kamilkon-desk.igk.intel.com>
- <6bb16227-a898-63b8-f82a-3babc1d28840@gmail.com>
+Message-ID: <0vj29IBo_zFxaIrXnzeUotDmeBQpzlC36NS8Rp_V6ab3LUG8_YZ41n3uTeX0RYziCXEmbkHUpdSBf9nsl27X1N5JhgcG8wKzMbg7Os3duXc=@emersion.fr>
+In-Reply-To: <20230728090939.anuxjefizpbx2q2x@zkempczy-mobl2>
+References: <20230727174311.327796-1-contact@emersion.fr>
+ <20230728082150.pz267tg26xgltqow@zkempczy-mobl2>
+ <K4cmpjO20z_cvNP63T2Ihn2eLPSopWBkrxkLC2hMJH1vcpwSajGBR3qtIYXaoRpa6dfNE3zOekFpEusdkFGrRNC72CjqUU6wjPoDTDSRfkI=@emersion.fr>
+ <20230728084926.y4bqdwxhlnzj74sc@zkempczy-mobl2>
+ <3KpLowHjLEfx8C2CRCgiOAnPE8datEXVEm_sVUzxfB2eown1XJe0l9kaQ68Hr8B2wLh-X54Y8Z40xrMvd_2sNe05PZH0-KkNvET0vfPu1wU=@emersion.fr>
+ <20230728090939.anuxjefizpbx2q2x@zkempczy-mobl2>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [igt-dev] [PATCH] tests/kms_closefb: add CLOSEFB IOCTL test
+Subject: Re: [igt-dev] [PATCH v2] drm-uapi: sync with drm-next
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,20 +24,11 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org,
+ =?utf-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Fei Yang <fei.yang@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tuesday, October 17th, 2023 at 15:07, Juha-Pekka Heikkila <juhapekka.hei=
-kkila@gmail.com> wrote:
-
-> On quick look test generally look ok but was the discussion already
-> finished on dri-devel? Will this ioctl be merged as you had on your drm
-> patches or are there still changes expected? Ie. should I look at this
-> version closer or wait for a minute?
-
-Yes, the IOCTL will probably be merged as-is, it's been discussed with
-various kernel folks (e.g. Sima Vetter) before-hand.
-
-Thanks for having a look!
+Any news about this? Can I get a R-b?
