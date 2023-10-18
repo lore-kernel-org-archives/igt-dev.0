@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 92A4B10E0BF
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Oct 2023 15:28:11 +0000 (UTC)
-Date: Wed, 18 Oct 2023 17:28:07 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F1E2510E132
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Oct 2023 15:35:10 +0000 (UTC)
+Date: Wed, 18 Oct 2023 17:35:05 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20231018152807.46mc4l2ubrb5ttuv@kamilkon-desk.igk.intel.com>
-References: <20231017143654.617723-1-marcin.bernatowicz@linux.intel.com>
+Message-ID: <20231018153505.4qa76dgyff3gjqzm@kamilkon-desk.igk.intel.com>
+References: <20231010134540.28485-1-melanie.lobo@intel.com>
+ <20231018105230.9082-1-melanie.lobo@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231017143654.617723-1-marcin.bernatowicz@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/intel_blt.c: ensure uint64_t result
- of multiplication
+In-Reply-To: <20231018105230.9082-1-melanie.lobo@intel.com>
+Subject: Re: [igt-dev] [PATCH] tests/intel/kms_flip_scaled_crc: Add support
+ for FP16 compressed formats
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,65 +25,106 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Marcin,
-On 2023-10-17 at 14:36:54 +0000, Marcin Bernatowicz wrote:
-> Additionally check for overflow.
+Hi Melanie,
+
+On 2023-10-18 at 16:22:30 +0530, Melanie Lobo wrote:
+> MTL supports FP16 format which is a binary floating-point computer
+> number format that occupies 16 bits in computer memory. In this test
+> platform shall render compression in display engine to receive
+> FP16 compressed formats.
+> 
+> Change-Id: Idb017e24856242ae19bc1b9e30e89db0e311fbee
 - ^^^^^^^^^^^^
-This type was from the start uint64, so imho change subject from:
+I forgot to ask you about removing this line, it may be
+done before merge.
 
-lib/intel_blt.c: ensure uint64_t result of multiplication
------------- ^^
-sidenote: remove ".c"
+Please add some kms devs here, I added:
 
-into:
-lib/intel_blt: check for overflow in multiplication
-
-and adjust description.
-
-> 
-> This should allow to exercise large buffers
-> ex. xe_exercise_blt -W 16384 -H 16384
-
-Please explain - this should fit in 32bit? 16K*16K*32 = 0x40000000
-Or do you mean much higher values for W and H?
-
-> 
-> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> ---
->  lib/intel_blt.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-> index a76c7a404..f46c85e91 100644
-> --- a/lib/intel_blt.c
-> +++ b/lib/intel_blt.c
-> @@ -1607,12 +1607,18 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
->  		  bool create_mapping)
->  {
->  	struct blt_copy_object *obj;
-> -	uint64_t size = width * height * bpp / 8;
->  	uint32_t stride = tiling == T_LINEAR ? width * 4 : width;
->  	uint32_t handle;
-> +	uint64_t size;
->  
->  	igt_assert_f(blt->driver, "Driver isn't set, have you called blt_copy_init()?\n");
->  
-> +	igt_assert_f((UINT64_MAX / 8) >= width &&
------------------ ^^^^^^^^^^^^^^
-This is not needed, it checks for MAX >= w * 8, while you want
-size > 0, imho add a second assert after calculating size.
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Cc: Swati Sharma <swati2.sharma@intel.com>
 
 Regards,
 Kamil
 
-> +		     (UINT64_MAX / width) >= height &&
-> +		     (UINT64_MAX / (width * height)) >= bpp, "Overflow detected!\n");
-> +
-> +	size = (uint64_t)width * height * bpp / 8;
-> +
->  	obj = calloc(1, sizeof(*obj));
+> Signed-off-by: Melanie Lobo <melanie.lobo@intel.com>
+> ---
+>  lib/intel_aux_pgtable.c           |  5 +++++
+>  tests/intel/kms_flip_scaled_crc.c | 24 ++++++++++++++++++++++++
+>  2 files changed, 29 insertions(+)
+> 
+> diff --git a/lib/intel_aux_pgtable.c b/lib/intel_aux_pgtable.c
+> index 7c79521344de..a612df407692 100644
+> --- a/lib/intel_aux_pgtable.c
+> +++ b/lib/intel_aux_pgtable.c
+> @@ -21,6 +21,7 @@
+>  #define AUX_FORMAT_AYUV		0x09
+>  #define AUX_FORMAT_ARGB_8B	0x0A
+>  #define AUX_FORMAT_NV12_21	0x0F
+> +#define AUX_FORMAT_XRGB16161616_64B 0x10
 >  
->  	obj->size = size;
+>  struct pgtable_level_desc {
+>  	int idx_shift;
+> @@ -305,6 +306,10 @@ static uint64_t pgt_get_l1_flags(const struct intel_buf *buf, int surface_idx)
+>  			entry.e.format = AUX_FORMAT_ARGB_8B;
+>  			entry.e.depth = bpp_to_depth_val(32);
+>  			break;
+> +		case 64:
+> +			entry.e.format = AUX_FORMAT_XRGB16161616_64B;
+> +			entry.e.depth = bpp_to_depth_val(64);
+> +			break;
+>  		default:
+>  			igt_assert(0);
+>  		}
+> diff --git a/tests/intel/kms_flip_scaled_crc.c b/tests/intel/kms_flip_scaled_crc.c
+> index 2997b63fac40..6874f747b280 100644
+> --- a/tests/intel/kms_flip_scaled_crc.c
+> +++ b/tests/intel/kms_flip_scaled_crc.c
+> @@ -142,6 +142,14 @@
+>   * Mega feature: General Display Features
+>   * Test category: functionality test
+>   *
+> + * SUBTEST: flip-64bpp-4tile-to-32bpp-4tilemtlrcccs-%s
+> + * Description: Flip from 64bpp non scaled fb to 32bpp %arg[1] fb to stress CD
+> + *              clock programming
+> + * Driver requirement: i915, xe
+> + * Functionality: ccs, scaling, tiling, vblank
+> + * Mega feature: General Display Features
+> + * Test category: functionality test
+> + *
+>   * arg[1]:
+>   *
+>   * @downscaling:        Downscaled
+> @@ -406,6 +414,14 @@ const struct {
+>  		1.0,
+>  		2.0,
+>  	},
+> +	{
+> +		"flip-64bpp-4tile-to-32bpp-4tilemtlrcccs-downscaling",
+> +		"Flip from 64bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
+> +		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
+> +		I915_FORMAT_MOD_4_TILED_MTL_RC_CCS, DRM_FORMAT_XRGB16161616F,
+> +		1.0,
+> +		2.0,
+> +	},
+>  	{
+>  		"flip-32bpp-ytile-to-64bpp-ytile-upscaling",
+>  		"Flip from 32bpp non scaled fb to 64bpp upscaled fb to stress CD clock programming",
+> @@ -590,6 +606,14 @@ const struct {
+>  		0.5,
+>  		1.0,
+>  	},
+> +	{
+> +		"flip-64bpp-4tile-to-32bpp-4tilemtlrcccs-upscaling",
+> +		"Flip from 64bpp non scaled fb to 32bpp upscaled fb to stress CD clock programming",
+> +		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
+> +		I915_FORMAT_MOD_4_TILED_MTL_RC_CCS, DRM_FORMAT_XRGB16161616F,
+> +		0.5,
+> +		1.0,
+> +	},
+>  };
+>  
+>  static void setup_fb(data_t *data, struct igt_fb *newfb, uint32_t width,
 > -- 
-> 2.42.0
+> 2.17.1
 > 
