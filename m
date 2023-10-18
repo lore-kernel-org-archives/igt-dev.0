@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3C0CC10E387
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Oct 2023 08:10:16 +0000 (UTC)
-Message-ID: <fa43946b-152c-717a-10a2-5c621078839c@intel.com>
-Date: Wed, 18 Oct 2023 09:10:11 +0100
+Content-Type: multipart/alternative;
+ boundary="===============6621254282050303307=="
 MIME-Version: 1.0
-From: Matthew Auld <matthew.auld@intel.com>
-To: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-References: <20231016141450.55936-1-matthew.auld@intel.com>
- <20231016141450.55936-12-matthew.auld@intel.com>
- <ZS9cO6BT6jBaytU1@nvishwa1-DESK>
-Content-Language: en-GB
-In-Reply-To: <ZS9cO6BT6jBaytU1@nvishwa1-DESK>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t v3 11/12] tests/xe: add some vm_bind
- pat_index tests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Date: Wed, 18 Oct 2023 08:22:57 -0000
+Message-ID: <169761737782.15109.14953678088165022717@emeril.freedesktop.org>
+References: <20231018063537.140125-1-swati2.sharma@intel.com>
+In-Reply-To: <20231018063537.140125-1-swati2.sharma@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgbGliL2ln?=
+ =?utf-8?q?t=5Fdsc=3A_update_debugfs?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,798 +17,427 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Nitish Kumar <nitish.kumar@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 18/10/2023 05:16, Niranjana Vishwanathapura wrote:
-> On Mon, Oct 16, 2023 at 03:14:49PM +0100, Matthew Auld wrote:
->> Add some basic tests for pat_index and vm_bind.
->>
->> v2: Make sure to actually use srand() with the chosen seed
->>  - Make it work on xe2; the wt mode now has compression.
->>  - Also test some xe2+ specific pat_index modes.
->> v3: Fix decompress step.
->>
->> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
->> Cc: José Roberto de Souza <jose.souza@intel.com>
->> Cc: Pallavi Mishra <pallavi.mishra@intel.com>
->> Cc: Nitish Kumar <nitish.kumar@intel.com>
->> ---
->> tests/intel/xe_pat.c | 680 +++++++++++++++++++++++++++++++++++++++++++
->> tests/meson.build    |   1 +
->> 2 files changed, 681 insertions(+)
->> create mode 100644 tests/intel/xe_pat.c
->>
->> diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
->> new file mode 100644
->> index 000000000..59688165f
->> --- /dev/null
->> +++ b/tests/intel/xe_pat.c
->> @@ -0,0 +1,680 @@
->> +// SPDX-License-Identifier: MIT
->> +/*
->> + * Copyright © 2023 Intel Corporation
->> + */
->> +
->> +/**
->> + * TEST: Test for selecting per-VMA pat_index
->> + * Category: Software building block
->> + * Sub-category: VMA
->> + * Functionality: pat_index
->> + */
->> +
->> +#include "igt.h"
->> +#include "intel_blt.h"
->> +#include "intel_mocs.h"
->> +#include "intel_pat.h"
->> +
->> +#include "xe/xe_ioctl.h"
->> +#include "xe/xe_query.h"
->> +#include "xe/xe_util.h"
->> +
->> +#define PAGE_SIZE 4096
->> +
->> +static bool do_slow_check;
->> +
->> +/**
->> + * SUBTEST: userptr-coh-none
->> + * Test category: functionality test
->> + * Description: Test non-coherent pat_index on userptr
->> + */
->> +static void userptr_coh_none(int fd)
->> +{
->> +    size_t size = xe_get_default_alignment(fd);
->> +    uint32_t vm;
->> +    void *data;
->> +
->> +    data = mmap(0, size, PROT_READ |
->> +            PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
->> +    igt_assert(data != MAP_FAILED);
->> +
->> +    vm = xe_vm_create(fd, 0, 0);
->> +
->> +    /*
->> +     * Try some valid combinations first just to make sure we're not 
->> being
->> +     * swindled.
->> +     */
->> +    igt_assert_eq(__xe_vm_bind(fd, vm, 0, 0, to_user_pointer(data), 
->> 0x40000,
->> +                   size, XE_VM_BIND_OP_MAP_USERPTR, NULL, 0, 0,
->> +                   DEFAULT_PAT_INDEX, 0),
->> +              0);
->> +    xe_vm_unbind_sync(fd, vm, 0, 0x40000, size);
->> +    igt_assert_eq(__xe_vm_bind(fd, vm, 0, 0, to_user_pointer(data), 
->> 0x40000,
->> +                   size, XE_VM_BIND_OP_MAP_USERPTR, NULL, 0, 0,
->> +                   intel_get_pat_idx_wb(fd), 0),
->> +              0);
->> +    xe_vm_unbind_sync(fd, vm, 0, 0x40000, size);
->> +
->> +    /* And then some known COH_NONE pat_index combos which should 
->> fail. */
->> +    igt_assert_eq(__xe_vm_bind(fd, vm, 0, 0, to_user_pointer(data), 
->> 0x40000,
->> +                   size, XE_VM_BIND_OP_MAP_USERPTR, NULL, 0, 0,
->> +                   intel_get_pat_idx_uc(fd), 0),
->> +              -EINVAL);
->> +    igt_assert_eq(__xe_vm_bind(fd, vm, 0, 0, to_user_pointer(data), 
->> 0x40000,
->> +                   size, XE_VM_BIND_OP_MAP_USERPTR, NULL, 0, 0,
->> +                   intel_get_pat_idx_wt(fd), 0),
->> +              -EINVAL);
->> +
-> 
-> Why not test with wc pat index? Also, there seems to be no 
-> intel_get_pat_idx_wc(). Why?
-> Sorry, I am not on top of all the coherency stuff here.
+--===============6621254282050303307==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-It's just that there no common "wc" mode on all platforms. On xe2 there 
-is no mention of wc in any of the available memory attributes.
+== Series Details ==
 
-It should be possible to add some more pat tables for pre-xe2 I think 
-and test it with blt and render below.
+Series: lib/igt_dsc: update debugfs
+URL   : https://patchwork.freedesktop.org/series/125274/
+State : failure
 
-> 
->> +    munmap(data, size);
->> +    xe_vm_destroy(fd, vm);
->> +}
->> +
->> +/**
->> + * SUBTEST: pat-index-all
->> + * Test category: functionality test
->> + * Description: Test every pat_index
->> + */
->> +static void pat_index_all(int fd)
->> +{
->> +    uint16_t dev_id = intel_get_drm_devid(fd);
->> +    size_t size = xe_get_default_alignment(fd);
->> +    uint32_t vm, bo;
->> +    uint8_t pat_index;
->> +
->> +    vm = xe_vm_create(fd, 0, 0);
->> +
->> +    bo = xe_bo_create_caching(fd, 0, size, all_memory_regions(fd),
->> +                  DRM_XE_GEM_CPU_CACHING_WC,
->> +                  DRM_XE_GEM_COH_NONE);
->> +
->> +    igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x40000,
->> +                   size, XE_VM_BIND_OP_MAP, NULL, 0, 0,
->> +                   intel_get_pat_idx_uc(fd), 0),
->> +              0);
->> +    xe_vm_unbind_sync(fd, vm, 0, 0x40000, size);
->> +
->> +    igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x40000,
->> +                   size, XE_VM_BIND_OP_MAP, NULL, 0, 0,
->> +                   intel_get_pat_idx_wt(fd), 0),
->> +              0);
->> +    xe_vm_unbind_sync(fd, vm, 0, 0x40000, size);
->> +
->> +    igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x40000,
->> +                   size, XE_VM_BIND_OP_MAP, NULL, 0, 0,
->> +                   intel_get_pat_idx_wb(fd), 0),
->> +              0);
->> +    xe_vm_unbind_sync(fd, vm, 0, 0x40000, size);
->> +
-> 
-> These above vm_binds and vm_unbinds are also done in the for loop below.
-> So, not sure if they are really needed. Are they here to test the
-> intel_get_pat_idx_*() functions?
+== Summary ==
 
-Yes, they are to make sure that the "common" lib modes work. If the 
-platform is super new and we don't have the common modes defined we 
-should see an igt_critical() warning here. If we only use the "raw" 
-pat_index we might miss that. So I think pat_index_all should do both.
+CI Bug Log - changes from CI_DRM_13769 -> IGTPW_10021
+====================================================
 
-> 
->> +    igt_assert(intel_get_max_pat_index(fd));
->> +
->> +    for (pat_index = 0; pat_index <= intel_get_max_pat_index(fd);
->> +         pat_index++) {
->> +        if (intel_get_device_info(dev_id)->graphics_ver == 20 &&
->> +            pat_index >= 16 && pat_index <= 19) { /* hw reserved */
->> +            igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x40000,
->> +                           size, XE_VM_BIND_OP_MAP, NULL, 0, 0,
->> +                           pat_index, 0),
->> +                      -EINVAL);
->> +        } else {
->> +            igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x40000,
->> +                           size, XE_VM_BIND_OP_MAP, NULL, 0, 0,
->> +                           pat_index, 0),
->> +                      0);
->> +            xe_vm_unbind_sync(fd, vm, 0, 0x40000, size);
->> +        }
->> +    }
->> +
->> +    igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x40000,
->> +                   size, XE_VM_BIND_OP_MAP, NULL, 0, 0,
->> +                   pat_index, 0),
->> +              -EINVAL);
->> +
->> +    gem_close(fd, bo);
->> +
->> +    /* Must be at least as coherent as the gem_create coh_mode. */
->> +    bo = xe_bo_create_caching(fd, 0, size, system_memory(fd),
->> +                  DRM_XE_GEM_CPU_CACHING_WB,
->> +                  DRM_XE_GEM_COH_AT_LEAST_1WAY);
->> +
->> +    igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x40000,
->> +                   size, XE_VM_BIND_OP_MAP, NULL, 0, 0,
->> +                   intel_get_pat_idx_uc(fd), 0),
->> +              -EINVAL);
->> +
->> +    igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x40000,
->> +                   size, XE_VM_BIND_OP_MAP, NULL, 0, 0,
->> +                   intel_get_pat_idx_wt(fd), 0),
->> +              -EINVAL);
->> +
-> 
-> Do we need test with valid pat indices for BO created with 
-> DRM_XE_GEM_CPU_CACHING_WB?
+Summary
+-------
 
-Yeah, we should also make sure _wb() works here.
+  **FAILURE**
 
-> 
->> +    gem_close(fd, bo);
->> +
->> +    xe_vm_destroy(fd, vm);
->> +}
->> +
->> +#define CLEAR_1 0xFFFFFFFF /* something compressible */
->> +
->> +static void xe2_blt_decompress_dst(int fd,
->> +                   intel_ctx_t *ctx,
->> +                   uint64_t ahnd,
->> +                   struct blt_copy_data *blt,
->> +                   uint32_t alias_handle,
->> +                   uint32_t size)
->> +{
->> +    struct blt_copy_object tmp = {};
->> +
->> +    /*
->> +     * Xe2 in-place decompression using an alias to the same physical
->> +     * memory, but with the dst mapped using some uncompressed 
->> pat_index.
->> +     * This should allow checking the object pages via mmap.
->> +     */
->> +
->> +    memcpy(&tmp, &blt->src, sizeof(blt->dst));
->> +    memcpy(&blt->src, &blt->dst, sizeof(blt->dst));
->> +    blt_set_object(&blt->dst, alias_handle, size, 0,
->> +               intel_get_uc_mocs_index(fd),
->> +               intel_get_pat_idx_uc(fd), /* compression disabled */
->> +               T_LINEAR, 0, 0);
->> +    blt_fast_copy(fd, ctx, NULL, ahnd, blt);
->> +    memcpy(&blt->dst, &blt->src, sizeof(blt->dst));
->> +    memcpy(&blt->src, &tmp, sizeof(blt->dst));
->> +}
->> +
->> +struct xe_pat_param {
->> +    int fd;
->> +
->> +    uint32_t r1;
->> +    uint8_t  r1_pat_index;
->> +    uint16_t r1_coh_mode;
->> +    bool     r1_force_cpu_wc;
->> +
->> +    uint32_t r2;
->> +    uint8_t  r2_pat_index;
->> +    uint16_t r2_coh_mode;
->> +    bool     r2_force_cpu_wc;
->> +    bool     r2_compressed; /* xe2+ compression */
->> +
->> +};
->> +
->> +/**
->> + * SUBTEST: pat-index-common-blt
->> + * Test category: functionality test
->> + * Description: Check the common pat_index modes with blitter copy.
->> + */
->> +
->> +/**
->> + * SUBTEST: pat-index-xe2-blt
->> + * Test category: functionality test
->> + * Description: Check some of the xe2 pat_index modes with blitter copy.
->> + */
->> +
->> +static void pat_index_blt(struct xe_pat_param *p)
->> +{
->> +    struct drm_xe_engine_class_instance inst = {
->> +        .engine_class = DRM_XE_ENGINE_CLASS_COPY,
->> +    };
->> +    struct blt_copy_data blt = {};
->> +    struct blt_copy_object src = {};
->> +    struct blt_copy_object dst = {};
->> +    uint32_t vm, exec_queue, src_bo, dst_bo, bb;
->> +    uint32_t *src_map, *dst_map;
->> +    uint16_t r1_cpu_caching, r2_cpu_caching;
->> +    uint32_t r1_flags, r2_flags;
->> +    intel_ctx_t *ctx;
->> +    uint64_t ahnd;
->> +    int width = 512, height = 512;
->> +    int size, stride, bb_size;
->> +    int bpp = 32;
->> +    uint32_t alias, name;
->> +    int fd = p->fd;
->> +    int i;
->> +
->> +    vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
->> +    exec_queue = xe_exec_queue_create(fd, vm, &inst, 0);
->> +    ctx = intel_ctx_xe(fd, vm, exec_queue, 0, 0, 0);
->> +    ahnd = intel_allocator_open_full(fd, ctx->vm, 0, 0,
->> +                     INTEL_ALLOCATOR_SIMPLE,
->> +                     ALLOC_STRATEGY_LOW_TO_HIGH, 0);
->> +
->> +    bb_size = xe_get_default_alignment(fd);
->> +    bb = xe_bo_create_flags(fd, 0, bb_size, system_memory(fd));
->> +
->> +    size = width * height * bpp / 8;
->> +    stride = width * 4;
->> +
->> +    r1_flags = 0;
->> +    if (p->r1 != system_memory(fd))
->> +        r1_flags |= XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
->> +
->> +    if (p->r1_coh_mode == DRM_XE_GEM_COH_AT_LEAST_1WAY
->> +        && p->r1 == system_memory(fd) && !p->r1_force_cpu_wc)
->> +        r1_cpu_caching = DRM_XE_GEM_CPU_CACHING_WB;
->> +    else
->> +        r1_cpu_caching = DRM_XE_GEM_CPU_CACHING_WC;
->> +
->> +    r2_flags = 0;
->> +    if (p->r2 != system_memory(fd))
->> +        r2_flags |= XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
->> +
->> +    if (p->r2_coh_mode == DRM_XE_GEM_COH_AT_LEAST_1WAY &&
->> +        p->r2 == system_memory(fd) && !p->r2_force_cpu_wc)
->> +        r2_cpu_caching = DRM_XE_GEM_CPU_CACHING_WB;
->> +    else
->> +        r2_cpu_caching = DRM_XE_GEM_CPU_CACHING_WC;
->> +
->> +
->> +    src_bo = xe_bo_create_caching(fd, 0, size, p->r1 | r1_flags, 
->> r1_cpu_caching,
->> +                      p->r1_coh_mode);
->> +    dst_bo = xe_bo_create_caching(fd, 0, size, p->r2 | r2_flags, 
->> r2_cpu_caching,
->> +                      p->r2_coh_mode);
->> +    if (p->r2_compressed) {
->> +        name = gem_flink(fd, dst_bo);
->> +        alias = gem_open(fd, name);
->> +    }
->> +
->> +    blt_copy_init(fd, &blt);
->> +    blt.color_depth = CD_32bit;
->> +
->> +    blt_set_object(&src, src_bo, size, p->r1, 
->> intel_get_uc_mocs_index(fd),
->> +               p->r1_pat_index, T_LINEAR,
->> +               COMPRESSION_DISABLED, COMPRESSION_TYPE_3D);
->> +    blt_set_geom(&src, stride, 0, 0, width, height, 0, 0);
->> +
->> +    blt_set_object(&dst, dst_bo, size, p->r2, 
->> intel_get_uc_mocs_index(fd),
->> +               p->r2_pat_index, T_LINEAR,
->> +               COMPRESSION_DISABLED, COMPRESSION_TYPE_3D);
->> +    blt_set_geom(&dst, stride, 0, 0, width, height, 0, 0);
->> +
->> +    blt_set_copy_object(&blt.src, &src);
->> +    blt_set_copy_object(&blt.dst, &dst);
->> +    blt_set_batch(&blt.bb, bb, bb_size, system_memory(fd));
->> +
->> +    src_map = xe_bo_map(fd, src_bo, size);
->> +    dst_map = xe_bo_map(fd, dst_bo, size);
->> +
->> +    /* Ensure we always see zeroes for the initial KMD zeroing */
->> +    blt_fast_copy(fd, ctx, NULL, ahnd, &blt);
->> +    if (p->r2_compressed)
->> +        xe2_blt_decompress_dst(fd, ctx, ahnd, &blt, alias, size);
->> +
->> +    /*
->> +     * Only sample random dword in every page if we are doing slow 
->> uncached
->> +     * reads from VRAM.
->> +     */
->> +    if (!do_slow_check && p->r2 != system_memory(fd)) {
->> +        int dwords_page = PAGE_SIZE / sizeof(uint32_t);
->> +        int dword = rand() % dwords_page;
->> +
->> +        igt_debug("random dword: %d\n", dword);
->> +
->> +        for (i = dword; i < size / sizeof(uint32_t); i += dwords_page)
->> +            igt_assert_eq(dst_map[i], 0);
->> +
->> +    } else {
->> +        for (i = 0; i < size / sizeof(uint32_t); i++)
->> +            igt_assert_eq(dst_map[i], 0);
->> +    }
->> +
->> +    /* Write some values from the CPU, potentially dirtying the CPU 
->> cache */
->> +    for (i = 0; i < size / sizeof(uint32_t); i++) {
->> +        if (p->r2_compressed)
->> +            src_map[i] = CLEAR_1;
->> +        else
->> +            src_map[i] = i;
->> +    }
->> +
->> +    /* And finally ensure we always see the CPU written values */
->> +    blt_fast_copy(fd, ctx, NULL, ahnd, &blt);
->> +    if (p->r2_compressed)
->> +        xe2_blt_decompress_dst(fd, ctx, ahnd, &blt, alias, size);
->> +
->> +    if (!do_slow_check && p->r2 != system_memory(fd)) {
->> +        int dwords_page = PAGE_SIZE / sizeof(uint32_t);
->> +        int dword = rand() % dwords_page;
->> +
->> +        igt_debug("random dword: %d\n", dword);
->> +
->> +        for (i = dword; i < size / sizeof(uint32_t); i += dwords_page) {
->> +            if (p->r2_compressed)
->> +                igt_assert_eq(dst_map[i], CLEAR_1);
->> +            else
->> +                igt_assert_eq(dst_map[i], i);
->> +        }
->> +
->> +    } else {
->> +        for (i = 0; i < size / sizeof(uint32_t); i++) {
->> +            if (p->r2_compressed)
->> +                igt_assert_eq(dst_map[i], CLEAR_1);
->> +            else
->> +                igt_assert_eq(dst_map[i], i);
->> +        }
->> +    }
->> +
->> +    munmap(src_map, size);
->> +    munmap(dst_map, size);
->> +
->> +    gem_close(fd, src_bo);
->> +    gem_close(fd, dst_bo);
->> +    gem_close(fd, bb);
->> +
->> +    xe_exec_queue_destroy(fd, exec_queue);
->> +    xe_vm_destroy(fd, vm);
->> +
->> +    put_ahnd(ahnd);
->> +    intel_ctx_destroy(fd, ctx);
->> +}
->> +
->> +/**
->> + * SUBTEST: pat-index-common-render
->> + * Test category: functionality test
->> + * Description: Check the common pat_index modes with render.
->> + */
->> +
->> +/**
->> + * SUBTEST: pat-index-xe2-render
->> + * Test category: functionality test
->> + * Description: Check some of the xe2 pat_index modes with render.
->> + */
->> +
->> +static void pat_index_render(struct xe_pat_param *p)
->> +{
->> +    int fd = p->fd;
->> +    uint32_t devid = intel_get_drm_devid(fd);
->> +    igt_render_copyfunc_t render_copy = NULL;
->> +    int size, stride, width = 512, height = 512;
->> +    struct intel_buf src, dst;
->> +    struct intel_bb *ibb;
->> +    struct buf_ops *bops;
->> +    uint16_t r1_cpu_caching, r2_cpu_caching;
->> +    uint32_t r1_flags, r2_flags;
->> +    uint32_t src_bo, dst_bo;
->> +    uint32_t *src_map, *dst_map;
->> +    int bpp = 32;
->> +    int i;
->> +
->> +    bops = buf_ops_create(fd);
->> +
->> +    render_copy = igt_get_render_copyfunc(devid);
->> +    igt_require(render_copy);
->> +    igt_require(!p->r2_compressed); /* XXX */
->> +
->> +    ibb = intel_bb_create(fd, xe_get_default_alignment(fd));
->> +
->> +    if (p->r1_coh_mode == DRM_XE_GEM_COH_AT_LEAST_1WAY
->> +        && p->r1 == system_memory(fd) && !p->r1_force_cpu_wc)
->> +        r1_cpu_caching = DRM_XE_GEM_CPU_CACHING_WB;
->> +    else
->> +        r1_cpu_caching = DRM_XE_GEM_CPU_CACHING_WC;
->> +
->> +    if (p->r2_coh_mode == DRM_XE_GEM_COH_AT_LEAST_1WAY &&
->> +        p->r2 == system_memory(fd) && !p->r2_force_cpu_wc)
->> +        r2_cpu_caching = DRM_XE_GEM_CPU_CACHING_WB;
->> +    else
->> +        r2_cpu_caching = DRM_XE_GEM_CPU_CACHING_WC;
->> +
->> +    size = width * height * bpp / 8;
->> +    stride = width * 4;
->> +
->> +    r1_flags = 0;
->> +    if (p->r1 != system_memory(fd))
->> +        r1_flags |= XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
->> +
->> +    src_bo = xe_bo_create_caching(fd, 0, size, p->r1 | r1_flags, 
->> r1_cpu_caching,
->> +                      p->r1_coh_mode);
->> +    intel_buf_init_full(bops, src_bo, &src, width, height, bpp, 0,
->> +                I915_TILING_NONE, I915_COMPRESSION_NONE, size,
->> +                stride, p->r1, p->r1_pat_index);
->> +
->> +    r2_flags = 0;
->> +    if (p->r2 != system_memory(fd))
->> +        r2_flags |= XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
->> +
->> +    dst_bo = xe_bo_create_caching(fd, 0, size, p->r2 | r2_flags, 
->> r2_cpu_caching,
->> +                      p->r2_coh_mode);
->> +    intel_buf_init_full(bops, dst_bo, &dst, width, height, bpp, 0,
->> +                I915_TILING_NONE, I915_COMPRESSION_NONE, size,
->> +                stride, p->r2, p->r2_pat_index);
->> +
->> +    src_map = xe_bo_map(fd, src_bo, size);
->> +    dst_map = xe_bo_map(fd, dst_bo, size);
->> +
->> +    /* Ensure we always see zeroes for the initial KMD zeroing */
->> +    render_copy(ibb,
->> +            &src,
->> +            0, 0, width, height,
->> +            &dst,
->> +            0, 0);
->> +    intel_bb_sync(ibb);
->> +
->> +    if (!do_slow_check && p->r2 != system_memory(fd)) {
->> +        int dwords_page = PAGE_SIZE / sizeof(uint32_t);
->> +        int dword = rand() % dwords_page;
->> +
->> +        igt_debug("random dword: %d\n", dword);
->> +
->> +        for (i = dword; i < size / sizeof(uint32_t); i += dwords_page)
->> +            igt_assert_eq(dst_map[i], 0);
->> +    } else {
->> +        for (i = 0; i < size / sizeof(uint32_t); i++)
->> +            igt_assert_eq(dst_map[i], 0);
->> +    }
->> +
->> +    /* Write some values from the CPU, potentially dirtying the CPU 
->> cache */
->> +    for (i = 0; i < size / sizeof(uint32_t); i++)
->> +        src_map[i] = i;
->> +
->> +    /* And finally ensure we always see the CPU written values */
->> +    render_copy(ibb,
->> +            &src,
->> +            0, 0, width, height,
->> +            &dst,
->> +            0, 0);
->> +    intel_bb_sync(ibb);
->> +
->> +    if (!do_slow_check && p->r2 != system_memory(fd)) {
->> +        int dwords_page = PAGE_SIZE / sizeof(uint32_t);
->> +        int dword = rand() % dwords_page;
->> +
->> +        igt_debug("random dword: %d\n", dword);
->> +
->> +        for (i = dword; i < size / sizeof(uint32_t); i += dwords_page)
->> +            igt_assert_eq(dst_map[i], i);
->> +    } else {
->> +        for (i = 0; i < size / sizeof(uint32_t); i++)
->> +            igt_assert_eq(dst_map[i], i);
->> +    }
->> +
->> +    munmap(src_map, size);
->> +    munmap(dst_map, size);
->> +
->> +    intel_bb_destroy(ibb);
->> +
->> +    gem_close(fd, src_bo);
->> +    gem_close(fd, dst_bo);
->> +}
->> +
->> +static uint8_t get_pat_idx_uc(int fd, bool *compressed)
->> +{
->> +    if (compressed)
->> +        *compressed = false;
->> +
->> +    return intel_get_pat_idx_uc(fd);
->> +}
->> +
->> +static uint8_t get_pat_idx_wt(int fd, bool *compressed)
->> +{
->> +    uint16_t dev_id = intel_get_drm_devid(fd);
->> +
->> +    if (compressed)
->> +        *compressed = intel_get_device_info(dev_id)->graphics_ver == 20;
->> +
->> +    return intel_get_pat_idx_wt(fd);
->> +}
->> +
->> +static uint8_t get_pat_idx_wb(int fd, bool *compressed)
->> +{
->> +    if (compressed)
->> +        *compressed = false;
->> +
->> +    return intel_get_pat_idx_wb(fd);
->> +}
->> +
->> +static uint8_t xe2_get_pat_idx_uc_comp(int fd, bool *compressed)
->> +{
->> +    if (compressed)
->> +        *compressed = true;
->> +
->> +    return 3;
-> 
-> Why are we hard coding with 3 (and 2 below)?
-> Can't use use intel_get_pat_idx_*() functions?
+  Serious unknown changes coming with IGTPW_10021 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_10021, please notify your bug team (lgci.bug.filing@intel.com) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-Mostly to keep the stuff in lib/intel_pat.c with the just the "common" 
-modes that work on all platforms supported by Xe. The only real gotcha 
-is that wt is compressed on xe2.
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/index.html
 
-I don't expect there will be many users of uc-compressed for example. 
-The one below is currently the same as intel_get_pat_idx_wb() on xe2, 
-however that could in theory change from the lib pov so figured we need 
-something that explicitly tests the 2way mode on xe2.
+Participating hosts (31 -> 32)
+------------------------------
 
-> 
-> Niranjana
-> 
->> +}
->> +
->> +static uint8_t xe2_get_pat_idx_wb_2way(int fd, bool *compressed)
->> +{
->> +    if (compressed)
->> +        *compressed = false;
->> +
->> +    return 2;
->> +}
->> +
->> +struct pat_index_entry {
->> +    uint8_t (*get_pat_index)(int fd, bool *compressed);
->> +    const char *name;
->> +    uint16_t coh_mode;
->> +    bool force_cpu_wc;
->> +};
->> +
->> +const struct pat_index_entry common_pat_index_modes[] = {
->> +    { get_pat_idx_uc, "uc",        DRM_XE_GEM_COH_NONE },
->> +    { get_pat_idx_wt, "wt",        DRM_XE_GEM_COH_NONE },
->> +    { get_pat_idx_wb, "wb",        DRM_XE_GEM_COH_AT_LEAST_1WAY },
->> +    { get_pat_idx_wb, "wb-cpu-wc", DRM_XE_GEM_COH_AT_LEAST_1WAY, true },
->> +};
->> +
->> +const struct pat_index_entry xe2_pat_index_modes[] = {
->> +    { xe2_get_pat_idx_uc_comp, "uc-comp",     DRM_XE_GEM_COH_NONE },
->> +    { xe2_get_pat_idx_wb_2way, "2way-cpu-wb", 
->> DRM_XE_GEM_COH_AT_LEAST_1WAY },
->> +    { xe2_get_pat_idx_wb_2way, "2way-cpu-wc", 
->> DRM_XE_GEM_COH_AT_LEAST_1WAY, true },
->> +};
->> +
->> +typedef void (*pat_index_fn)(struct xe_pat_param *p);
->> +
->> +static void subtest_pat_index_modes_with_regions(int fd,
->> +                         const struct pat_index_entry *modes_arr,
->> +                         int n_modes, pat_index_fn fn)
->> +{
->> +    struct igt_collection *pat_index_set;
->> +    struct igt_collection *regions_set;
->> +    struct igt_collection *regions;
->> +    struct xe_pat_param p = {};
->> +
->> +    p.fd = fd;
->> +
->> +    pat_index_set = igt_collection_create(n_modes);
->> +
->> +    regions_set = xe_get_memory_region_set(fd,
->> +                           XE_MEM_REGION_CLASS_SYSMEM,
->> +                           XE_MEM_REGION_CLASS_VRAM);
->> +
->> +    for_each_variation_r(regions, 2, regions_set) {
->> +        struct igt_collection *modes;
->> +        uint32_t r1, r2;
->> +        char *reg_str;
->> +
->> +        r1 = igt_collection_get_value(regions, 0);
->> +        r2 = igt_collection_get_value(regions, 1);
->> +
->> +        reg_str = xe_memregion_dynamic_subtest_name(fd, regions);
->> +
->> +        for_each_variation_r(modes, 2, pat_index_set) {
->> +            struct pat_index_entry r1_entry, r2_entry;
->> +            int r1_idx, r2_idx;
->> +
->> +            r1_idx = igt_collection_get_value(modes, 0);
->> +            r2_idx = igt_collection_get_value(modes, 1);
->> +
->> +            r1_entry = modes_arr[r1_idx];
->> +            r2_entry = modes_arr[r2_idx];
->> +
->> +            p.r1_pat_index = r1_entry.get_pat_index(fd, NULL);
->> +            p.r2_pat_index = r2_entry.get_pat_index(fd, 
->> &p.r2_compressed);
->> +
->> +            p.r1_coh_mode = r1_entry.coh_mode;
->> +            p.r2_coh_mode = r2_entry.coh_mode;
->> +
->> +            p.r1_force_cpu_wc = r1_entry.force_cpu_wc;
->> +            p.r2_force_cpu_wc = r2_entry.force_cpu_wc;
->> +
->> +            p.r1 = r1;
->> +            p.r2 = r2;
->> +
->> +            igt_debug("[r1]: r: %u, idx: %u, coh: %u, wc=%d\n",
->> +                  p.r1, p.r1_pat_index, p.r1_coh_mode, 
->> p.r1_force_cpu_wc);
->> +            igt_debug("[r2]: r: %u, idx: %u, coh: %u, wc=%d, comp=%d\n",
->> +                  p.r2, p.r2_pat_index, p.r2_coh_mode, 
->> p.r2_force_cpu_wc,
->> +                  p.r2_compressed);
->> +
->> +            igt_dynamic_f("%s-%s-%s", reg_str, r1_entry.name, 
->> r2_entry.name)
->> +                fn(&p);
->> +        }
->> +
->> +        free(reg_str);
->> +    }
->> +}
->> +
->> +igt_main
->> +{
->> +    int fd;
->> +
->> +    igt_fixture {
->> +        uint32_t seed;
->> +
->> +        fd = drm_open_driver(DRIVER_XE);
->> +
->> +        seed = time(NULL);
->> +        srand(seed);
->> +        igt_debug("seed: %d\n", seed);
->> +
->> +        xe_device_get(fd);
->> +    }
->> +
->> +    igt_subtest("pat-index-all")
->> +        pat_index_all(fd);
->> +
->> +    igt_subtest("userptr-coh-none")
->> +        userptr_coh_none(fd);
->> +
->> +    igt_subtest_with_dynamic("pat-index-common-blt") {
->> +        igt_require(blt_has_fast_copy(fd));
->> +        subtest_pat_index_modes_with_regions(fd, common_pat_index_modes,
->> +                             ARRAY_SIZE(common_pat_index_modes),
->> +                             pat_index_blt);
->> +    }
->> +
->> +    igt_subtest_with_dynamic("pat-index-common-render") {
->> +        igt_require(xe_has_engine_class(fd, 
->> DRM_XE_ENGINE_CLASS_RENDER));
->> +        subtest_pat_index_modes_with_regions(fd, common_pat_index_modes,
->> +                             ARRAY_SIZE(common_pat_index_modes),
->> +                             pat_index_render);
->> +    }
->> +
->> +    igt_subtest_with_dynamic("pat-index-xe2-blt") {
->> +        uint16_t dev_id = intel_get_drm_devid(fd);
->> +
->> +        igt_require(intel_get_device_info(dev_id)->graphics_ver >= 20);
->> +        igt_require(blt_has_fast_copy(fd));
->> +        subtest_pat_index_modes_with_regions(fd, xe2_pat_index_modes,
->> +                             ARRAY_SIZE(xe2_pat_index_modes),
->> +                             pat_index_blt);
->> +    }
->> +
->> +    igt_subtest_with_dynamic("pat-index-xe2-render") {
->> +        uint16_t dev_id = intel_get_drm_devid(fd);
->> +
->> +        igt_require(intel_get_device_info(dev_id)->graphics_ver >= 20);
->> +        igt_require(xe_has_engine_class(fd, 
->> DRM_XE_ENGINE_CLASS_RENDER));
->> +        subtest_pat_index_modes_with_regions(fd, xe2_pat_index_modes,
->> +                             ARRAY_SIZE(xe2_pat_index_modes),
->> +                             pat_index_render);
->> +    }
->> +
->> +    igt_fixture
->> +        drm_close_driver(fd);
->> +}
->> diff --git a/tests/meson.build b/tests/meson.build
->> index 2c2e1ca9a..652173767 100644
->> --- a/tests/meson.build
->> +++ b/tests/meson.build
->> @@ -297,6 +297,7 @@ intel_xe_progs = [
->>     'xe_mmio',
->>     'xe_module_load',
->>     'xe_noexec_ping_pong',
->> +    'xe_pat',
->>     'xe_pm',
->>     'xe_pm_residency',
->>     'xe_prime_self_import',
->> -- 
->> 2.41.0
->>
+  Additional (1): fi-cfl-8109u 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_10021:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@gt_mocs:
+    - bat-adlm-1:         [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-adlm-1/igt@i915_selftest@live@gt_mocs.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-adlm-1/igt@i915_selftest@live@gt_mocs.html
+
+  * igt@i915_selftest@live@gtt:
+    - bat-dg1-5:          [PASS][3] -> [INCOMPLETE][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-dg1-5/igt@i915_selftest@live@gtt.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-dg1-5/igt@i915_selftest@live@gtt.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-dg2-9:          NOTRUN -> [SKIP][5]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-dg2-9/igt@kms_dsc@dsc-basic.html
+    - bat-jsl-3:          NOTRUN -> [SKIP][6]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-jsl-3/igt@kms_dsc@dsc-basic.html
+
+  
+#### Warnings ####
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-dg2-11:         [SKIP][7] ([i915#3555] / [i915#3840]) -> [SKIP][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-dg2-11/igt@kms_dsc@dsc-basic.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-dg2-11/igt@kms_dsc@dsc-basic.html
+    - bat-adln-1:         [SKIP][9] ([i915#3555] / [i915#3840]) -> [SKIP][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-adln-1/igt@kms_dsc@dsc-basic.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-adln-1/igt@kms_dsc@dsc-basic.html
+    - bat-rplp-1:         [SKIP][11] ([i915#3555] / [i915#3840]) -> [SKIP][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-rplp-1/igt@kms_dsc@dsc-basic.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-rplp-1/igt@kms_dsc@dsc-basic.html
+    - fi-rkl-11600:       [SKIP][13] ([i915#3555] / [i915#3840]) -> [SKIP][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/fi-rkl-11600/igt@kms_dsc@dsc-basic.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/fi-rkl-11600/igt@kms_dsc@dsc-basic.html
+    - bat-adlp-11:        [SKIP][15] ([i915#3555] / [i915#3840]) -> [SKIP][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-adlp-11/igt@kms_dsc@dsc-basic.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-adlp-11/igt@kms_dsc@dsc-basic.html
+    - bat-mtlp-8:         [SKIP][17] ([i915#3555] / [i915#3840] / [i915#9159]) -> [SKIP][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-mtlp-8/igt@kms_dsc@dsc-basic.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-mtlp-8/igt@kms_dsc@dsc-basic.html
+    - bat-adlp-6:         [SKIP][19] ([i915#3555] / [i915#3840]) -> [SKIP][20]
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-adlp-6/igt@kms_dsc@dsc-basic.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-adlp-6/igt@kms_dsc@dsc-basic.html
+    - bat-dg1-5:          [SKIP][21] ([i915#3555] / [i915#3840]) -> [SKIP][22]
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-dg1-5/igt@kms_dsc@dsc-basic.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-dg1-5/igt@kms_dsc@dsc-basic.html
+    - bat-adlp-9:         [SKIP][23] ([i915#3555] / [i915#3840]) -> [SKIP][24]
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-adlp-9/igt@kms_dsc@dsc-basic.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-adlp-9/igt@kms_dsc@dsc-basic.html
+
+  
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@kms_dsc@dsc-basic:
+    - {bat-dg2-14}:       [SKIP][25] ([i915#3555] / [i915#3840]) -> [SKIP][26]
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-dg2-14/igt@kms_dsc@dsc-basic.html
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-dg2-14/igt@kms_dsc@dsc-basic.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10021 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@debugfs_test@basic-hwmon:
+    - bat-jsl-3:          NOTRUN -> [SKIP][27] ([i915#9318])
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-jsl-3/igt@debugfs_test@basic-hwmon.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-cfl-8109u:       NOTRUN -> [SKIP][28] ([fdo#109271] / [i915#2190])
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/fi-cfl-8109u/igt@gem_huc_copy@huc-copy.html
+    - bat-jsl-3:          NOTRUN -> [SKIP][29] ([i915#2190])
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-jsl-3/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - bat-jsl-3:          NOTRUN -> [SKIP][30] ([i915#4613]) +3 other tests skip
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-jsl-3/igt@gem_lmem_swapping@basic.html
+
+  * igt@gem_lmem_swapping@verify-random:
+    - fi-cfl-8109u:       NOTRUN -> [SKIP][31] ([fdo#109271] / [i915#4613]) +3 other tests skip
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/fi-cfl-8109u/igt@gem_lmem_swapping@verify-random.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
+    - bat-jsl-3:          NOTRUN -> [SKIP][32] ([i915#4103]) +1 other test skip
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-jsl-3/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+    - fi-cfl-8109u:       NOTRUN -> [SKIP][33] ([fdo#109271]) +10 other tests skip
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/fi-cfl-8109u/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - bat-jsl-3:          NOTRUN -> [SKIP][34] ([fdo#109285])
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-jsl-3/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - bat-jsl-3:          NOTRUN -> [SKIP][35] ([i915#3555])
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-jsl-3/igt@kms_setmode@basic-clone-single-crtc.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_module_load@load:
+    - bat-jsl-3:          [INCOMPLETE][36] -> [PASS][37]
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-jsl-3/igt@i915_module_load@load.html
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-jsl-3/igt@i915_module_load@load.html
+
+  * igt@i915_selftest@live@mman:
+    - fi-elk-e7500:       [INCOMPLETE][38] -> [PASS][39]
+   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/fi-elk-e7500/igt@i915_selftest@live@mman.html
+   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/fi-elk-e7500/igt@i915_selftest@live@mman.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - fi-kbl-guc:         [FAIL][40] ([IGT#3]) -> [PASS][41]
+   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
+   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
+
+  
+#### Warnings ####
+
+  * igt@debugfs_test@basic-hwmon:
+    - bat-kbl-2:          [SKIP][42] ([fdo#109271]) -> [INCOMPLETE][43] ([i915#2295])
+   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-kbl-2/igt@debugfs_test@basic-hwmon.html
+   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-kbl-2/igt@debugfs_test@basic-hwmon.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [IGT#3]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2295]: https://gitlab.freedesktop.org/drm/intel/issues/2295
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3840]: https://gitlab.freedesktop.org/drm/intel/issues/3840
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#9159]: https://gitlab.freedesktop.org/drm/intel/issues/9159
+  [i915#9318]: https://gitlab.freedesktop.org/drm/intel/issues/9318
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7543 -> IGTPW_10021
+
+  CI-20190529: 20190529
+  CI_DRM_13769: 30f23d5bc2534f1707286bbf60be32d234fb54c3 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10021: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/index.html
+  IGT_7543: 688f12831f876590e084e9b13b4d5ab85fe13d51 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/index.html
+
+--===============6621254282050303307==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/igt_dsc: update debugfs</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/125274/">https://patchwork.freedesktop.org/series/125274/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13769 -&gt; IGTPW_10021</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_10021 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_10021, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/index.html</p>
+<h2>Participating hosts (31 -&gt; 32)</h2>
+<p>Additional (1): fi-cfl-8109u </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_10021:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_mocs:</p>
+<ul>
+<li>bat-adlm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-adlm-1/igt@i915_selftest@live@gt_mocs.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-adlm-1/igt@i915_selftest@live@gt_mocs.html">INCOMPLETE</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gtt:</p>
+<ul>
+<li>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-dg1-5/igt@i915_selftest@live@gtt.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-dg1-5/igt@i915_selftest@live@gtt.html">INCOMPLETE</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>
+<p>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-dg2-9/igt@kms_dsc@dsc-basic.html">SKIP</a></p>
+</li>
+<li>
+<p>bat-jsl-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-jsl-3/igt@kms_dsc@dsc-basic.html">SKIP</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>
+<p>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-dg2-11/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3840">i915#3840</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-dg2-11/igt@kms_dsc@dsc-basic.html">SKIP</a></p>
+</li>
+<li>
+<p>bat-adln-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-adln-1/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3840">i915#3840</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-adln-1/igt@kms_dsc@dsc-basic.html">SKIP</a></p>
+</li>
+<li>
+<p>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-rplp-1/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3840">i915#3840</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-rplp-1/igt@kms_dsc@dsc-basic.html">SKIP</a></p>
+</li>
+<li>
+<p>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/fi-rkl-11600/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3840">i915#3840</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/fi-rkl-11600/igt@kms_dsc@dsc-basic.html">SKIP</a></p>
+</li>
+<li>
+<p>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-adlp-11/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3840">i915#3840</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-adlp-11/igt@kms_dsc@dsc-basic.html">SKIP</a></p>
+</li>
+<li>
+<p>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-mtlp-8/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3840">i915#3840</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9159">i915#9159</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-mtlp-8/igt@kms_dsc@dsc-basic.html">SKIP</a></p>
+</li>
+<li>
+<p>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-adlp-6/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3840">i915#3840</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-adlp-6/igt@kms_dsc@dsc-basic.html">SKIP</a></p>
+</li>
+<li>
+<p>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-dg1-5/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3840">i915#3840</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-dg1-5/igt@kms_dsc@dsc-basic.html">SKIP</a></p>
+</li>
+<li>
+<p>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-adlp-9/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3840">i915#3840</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-adlp-9/igt@kms_dsc@dsc-basic.html">SKIP</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@kms_dsc@dsc-basic:<ul>
+<li>{bat-dg2-14}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-dg2-14/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3840">i915#3840</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-dg2-14/igt@kms_dsc@dsc-basic.html">SKIP</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10021 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@debugfs_test@basic-hwmon:</p>
+<ul>
+<li>bat-jsl-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-jsl-3/igt@debugfs_test@basic-hwmon.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9318">i915#9318</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>
+<p>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/fi-cfl-8109u/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
+</li>
+<li>
+<p>bat-jsl-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-jsl-3/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>bat-jsl-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-jsl-3/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@verify-random:</p>
+<ul>
+<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/fi-cfl-8109u/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
+<ul>
+<li>
+<p>bat-jsl-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-jsl-3/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>) +1 other test skip</p>
+</li>
+<li>
+<p>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/fi-cfl-8109u/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +10 other tests skip</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>bat-jsl-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-jsl-3/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>bat-jsl-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-jsl-3/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_module_load@load:</p>
+<ul>
+<li>bat-jsl-3:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-jsl-3/igt@i915_module_load@load.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-jsl-3/igt@i915_module_load@load.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@mman:</p>
+<ul>
+<li>fi-elk-e7500:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/fi-elk-e7500/igt@i915_selftest@live@mman.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/fi-elk-e7500/igt@i915_selftest@live@mman.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3">IGT#3</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@debugfs_test@basic-hwmon:<ul>
+<li>bat-kbl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13769/bat-kbl-2/igt@debugfs_test@basic-hwmon.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/bat-kbl-2/igt@debugfs_test@basic-hwmon.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2295">i915#2295</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7543 -&gt; IGTPW_10021</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13769: 30f23d5bc2534f1707286bbf60be32d234fb54c3 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10021: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10021/index.html<br />
+  IGT_7543: 688f12831f876590e084e9b13b4d5ab85fe13d51 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============6621254282050303307==--
