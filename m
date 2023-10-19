@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 777FA10E562
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Oct 2023 21:23:24 +0000 (UTC)
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam10on2050.outbound.protection.outlook.com [40.107.94.50])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F027C10E567
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Oct 2023 21:23:28 +0000 (UTC)
 From: Harry Wentland <harry.wentland@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Thu, 19 Oct 2023 17:22:54 -0400
-Message-ID: <20231019212301.245282-2-harry.wentland@amd.com>
+Date: Thu, 19 Oct 2023 17:22:58 -0400
+Message-ID: <20231019212301.245282-6-harry.wentland@amd.com>
 In-Reply-To: <20231019212301.245282-1-harry.wentland@amd.com>
 References: <20231019212301.245282-1-harry.wentland@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [RFC PATCH v2 1/8] lib/drmtest: Add is_vkms_device()
+Subject: [igt-dev] [RFC PATCH v2 5/8] tests/kms_properties: Add colorop
+ properties test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -62,37 +63,107 @@ Cc: Hector Martin <marcan@marcan.st>
 Cc: Liviu Dudau <Liviu.Dudau@arm.com>
 Cc: Sasha McIntosh <sashamcintosh@google.com>
 ---
- lib/drmtest.c | 5 +++++
- lib/drmtest.h | 1 +
- 2 files changed, 6 insertions(+)
+ tests/kms_properties.c | 67 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 67 insertions(+)
 
-diff --git a/lib/drmtest.c b/lib/drmtest.c
-index e1da66c877e9..7ffd238bf499 100644
---- a/lib/drmtest.c
-+++ b/lib/drmtest.c
-@@ -106,6 +106,11 @@ static bool __is_device(int fd, const char *expect)
- 	return strcmp(expect, name) == 0;
+diff --git a/tests/kms_properties.c b/tests/kms_properties.c
+index 3284366228c0..45744c64a54f 100644
+--- a/tests/kms_properties.c
++++ b/tests/kms_properties.c
+@@ -46,6 +46,7 @@
+  * @crtc:            CRTC
+  * @plane:           Plane
+  * @invalid:         Invalid (connector/crtc/plane)
++ * @colorop:         Colorop
+  *
+  * arg[2]:
+  *
+@@ -208,6 +209,39 @@ static void test_properties(int fd, uint32_t type, uint32_t id, bool atomic)
+ 	}
  }
  
-+bool is_vkms_device(int fd)
++static void run_colorop_property_tests(igt_display_t *display, enum pipe pipe, igt_output_t *output)
 +{
-+	return __is_device(fd, "vkms");
++	struct igt_fb fb;
++	igt_plane_t *plane;
++	int i;
++
++	prepare_pipe(display, pipe, output, &fb);
++
++	for_each_plane_on_pipe(display, pipe, plane) {
++		igt_info("Testing colorop properties on plane %s.#%d-%s (output: %s)\n",
++			 kmstest_pipe_name(pipe), plane->index, kmstest_plane_type_name(plane->type), output->name);
++
++		for (i = 0; i < display->n_colorops; i++) {
++			igt_colorop_t *global_colorop = &display->colorops[i];
++			drmModeColorop *drm_colorop = global_colorop->drm_colorop;
++
++			igt_info("Testing colorop properties on %s.#%d.#%d-%s (output: %s)\n",
++				kmstest_pipe_name(pipe), plane->index, drm_colorop->colorop_id, kmstest_plane_type_name(plane->type), output->name);
++
++			if (drm_colorop->plane_id != plane->drm_plane->plane_id) {
++				printf("bla: colorop %d is on plane %d, not on plane %d\n",
++					drm_colorop->colorop_id,
++					drm_colorop->plane_id,
++					plane->drm_plane->plane_id);
++				continue;
++			}
++			test_properties(display->drm_fd, DRM_MODE_OBJECT_COLOROP, drm_colorop->colorop_id, true);
++		}
++	}
++
++	cleanup_pipe(display, pipe, output, &fb);
 +}
 +
- bool is_amdgpu_device(int fd)
+ static void run_plane_property_tests(igt_display_t *display, enum pipe pipe, igt_output_t *output, bool atomic)
  {
- 	return __is_device(fd, "amdgpu");
-diff --git a/lib/drmtest.h b/lib/drmtest.h
-index 97ab6e759edf..eab8bc0b591f 100644
---- a/lib/drmtest.h
-+++ b/lib/drmtest.h
-@@ -116,6 +116,7 @@ void igt_require_nouveau(int fd);
- void igt_require_vc4(int fd);
- void igt_require_xe(int fd);
+ 	struct igt_fb fb;
+@@ -253,6 +287,35 @@ static void run_connector_property_tests(igt_display_t *display, enum pipe pipe,
+ 		cleanup_pipe(display, pipe, output, &fb);
+ }
  
-+bool is_vkms_device(int fd);
- bool is_amdgpu_device(int fd);
- bool is_i915_device(int fd);
- bool is_mtk_device(int fd);
++static void colorop_properties(igt_display_t *display)
++{
++	bool found_any = false, found;
++	igt_output_t *output;
++	enum pipe pipe;
++
++	/* colorops are only available with atomic */
++	igt_skip_on(!display->is_atomic);
++
++	for_each_pipe(display, pipe) {
++		found = false;
++
++		for_each_valid_output_on_pipe(display, pipe, output) {
++			igt_display_reset(display);
++
++			igt_output_set_pipe(output, pipe);
++			if (!i915_pipe_output_combo_valid(display))
++				continue;
++
++			found_any = found = true;
++
++			run_colorop_property_tests(display, pipe, output);
++			break;
++		}
++	}
++
++	igt_skip_on(!found_any);
++}
++
+ static void plane_properties(igt_display_t *display, bool atomic)
+ {
+ 	bool found_any = false, found;
+@@ -800,6 +863,10 @@ igt_main
+ 	igt_subtest("plane-properties-atomic")
+ 		plane_properties(&display, true);
+ 
++	igt_describe("Tests colorop properties with atomic commit");
++	igt_subtest("colorop-properties-atomic")
++		colorop_properties(&display);
++
+ 	igt_describe("Tests crtc properties with legacy commit");
+ 	igt_subtest("crtc-properties-legacy")
+ 		crtc_properties(&display, false);
 -- 
 2.42.0
