@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9E30710E536
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Oct 2023 19:33:39 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BA0B310E537
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Oct 2023 19:33:41 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 19 Oct 2023 21:33:19 +0200
-Message-Id: <20231019193321.90009-4-zbigniew.kempczynski@intel.com>
+Date: Thu, 19 Oct 2023 21:33:20 +0200
+Message-Id: <20231019193321.90009-5-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20231019193321.90009-1-zbigniew.kempczynski@intel.com>
 References: <20231019193321.90009-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 3/5] lib/igt_sizes: Add common SZ_* header
+Subject: [igt-dev] [PATCH i-g-t v3 4/5] tests/xe_evict_ccs: Add evict ccs
+ test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,162 +24,567 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We're often use SZ_.* macros so add this globally to IGTs.
+Exercise is flat-ccs eviction working fine in the kernel driver
+when buffers takes more than available vram. Differentiate with
+standalone/parallel execution, same or separate drm fd and buffer
+freeing time. Tests are divided to two groups - first which won't
+exceed vram memory size (thus don't trigger eviction, but it is
+good for the reference logic is properly compress/decompress
+buffers) and second which exceeds.
+
+v2:
+- Add command line switches to exercise kernel with different
+  sizes, number of objects and vram overcommitment
+- Add -simple test which creates single big object which enforces
+  eviction (Matt)
+v3:
+- Address review comments (Matt)
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
 ---
- lib/igt.h                       |  1 +
- lib/igt_sizes.h                 | 44 +++++++++++++++++++++++++++++++++
- lib/xe/xe_query.h               |  4 +--
- tests/intel/gem_exec_async.c    |  2 --
- tests/intel/gem_lmem_swapping.c |  1 -
- tests/intel/i915_query.c        |  1 -
- tests/intel/xe_evict.c          |  3 ---
- tests/msm/msm_shrink.c          |  2 --
- 8 files changed, 46 insertions(+), 12 deletions(-)
- create mode 100644 lib/igt_sizes.h
+ tests/intel/xe_evict_ccs.c | 520 +++++++++++++++++++++++++++++++++++++
+ tests/meson.build          |   1 +
+ 2 files changed, 521 insertions(+)
+ create mode 100644 tests/intel/xe_evict_ccs.c
 
-diff --git a/lib/igt.h b/lib/igt.h
-index 73b6f77272..7af3d10cbc 100644
---- a/lib/igt.h
-+++ b/lib/igt.h
-@@ -39,6 +39,7 @@
- #include "igt_params.h"
- #include "igt_pipe_crc.h"
- #include "igt_pm.h"
-+#include "igt_sizes.h"
- #include "igt_stats.h"
- #include "igt_dsc.h"
- #ifdef HAVE_CHAMELIUM
-diff --git a/lib/igt_sizes.h b/lib/igt_sizes.h
+diff --git a/tests/intel/xe_evict_ccs.c b/tests/intel/xe_evict_ccs.c
 new file mode 100644
-index 0000000000..fbbcba8217
+index 0000000000..6f3a142683
 --- /dev/null
-+++ b/lib/igt_sizes.h
-@@ -0,0 +1,44 @@
++++ b/tests/intel/xe_evict_ccs.c
+@@ -0,0 +1,520 @@
 +// SPDX-License-Identifier: MIT
 +/*
-+ * Taken and adopted to IGT from kernel include/linux/sizes.h
++ * Copyright © 2023 Intel Corporation
 + */
-+#ifndef __IGT_SIZES_H__
-+#define __IGT_SIZES_H__
 +
-+#define SZ_1				0x00000001
-+#define SZ_2				0x00000002
-+#define SZ_4				0x00000004
-+#define SZ_8				0x00000008
-+#define SZ_16				0x00000010
-+#define SZ_32				0x00000020
-+#define SZ_64				0x00000040
-+#define SZ_128				0x00000080
-+#define SZ_256				0x00000100
-+#define SZ_512				0x00000200
++/**
++ * TEST: Check flat-ccs eviction
++ * Category: Software building block
++ * Sub-category: Flat-CCS
++ * Functionality: evict
++ * GPU requirements: GPU needs to have dedicated VRAM
++ */
 +
-+#define SZ_1K				0x00000400
-+#define SZ_2K				0x00000800
-+#define SZ_4K				0x00001000
-+#define SZ_8K				0x00002000
-+#define SZ_16K				0x00004000
-+#define SZ_32K				0x00008000
-+#define SZ_64K				0x00010000
-+#define SZ_128K				0x00020000
-+#define SZ_256K				0x00040000
-+#define SZ_512K				0x00080000
++#include "igt.h"
++#include "igt_list.h"
++#include "intel_blt.h"
++#include "intel_mocs.h"
++#include "lib/igt_syncobj.h"
++#include "lib/intel_reg.h"
++#include "xe_drm.h"
 +
-+#define SZ_1M				0x00100000
-+#define SZ_2M				0x00200000
-+#define SZ_4M				0x00400000
-+#define SZ_8M				0x00800000
-+#define SZ_16M				0x01000000
-+#define SZ_32M				0x02000000
-+#define SZ_64M				0x04000000
-+#define SZ_128M				0x08000000
-+#define SZ_256M				0x10000000
-+#define SZ_512M				0x20000000
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++#include <math.h>
++#include <string.h>
 +
-+#define SZ_1G				0x40000000
-+#define SZ_2G				0x80000000
++#define OVERCOMMIT_VRAM_PERCENT 110
++#define MIN_OBJ_KB 64
++#define MAX_OBJ_KB (256 * 1024)
++#define DUMP_FILENAME "/tmp/object.data"
++#define DUMP_EXPFILENAME "/tmp/object.expected"
 +
-+#endif /* __IGT_SIZES_H__ */
-diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-index da7deaf4cc..7c0849bc12 100644
---- a/lib/xe/xe_query.h
-+++ b/lib/xe/xe_query.h
-@@ -12,9 +12,7 @@
- #include <stdint.h>
- #include <xe_drm.h>
- #include "igt_list.h"
--
--#define SZ_4K	0x1000
--#define SZ_64K	0x10000
-+#include "igt_sizes.h"
- 
- #define XE_DEFAULT_ALIGNMENT           SZ_4K
- #define XE_DEFAULT_ALIGNMENT_64K       SZ_64K
-diff --git a/tests/intel/gem_exec_async.c b/tests/intel/gem_exec_async.c
-index 8c131d8e13..1497c5c6c8 100644
---- a/tests/intel/gem_exec_async.c
-+++ b/tests/intel/gem_exec_async.c
-@@ -41,8 +41,6 @@
- 
- IGT_TEST_DESCRIPTION("Check that we can issue concurrent writes across the engines.");
- 
--#define SZ_1M (1024 * 1024)
--
- static void store_dword(int fd, int id, const intel_ctx_t *ctx,
- 			 unsigned ring, uint32_t target, uint64_t target_offset,
- 			 uint32_t offset, uint32_t value)
-diff --git a/tests/intel/gem_lmem_swapping.c b/tests/intel/gem_lmem_swapping.c
-index 2e0ba07935..6aed806294 100644
---- a/tests/intel/gem_lmem_swapping.c
-+++ b/tests/intel/gem_lmem_swapping.c
-@@ -198,7 +198,6 @@ IGT_TEST_DESCRIPTION("Exercise local memory swapping.");
- #define round_up(x, y) ((((x) - 1) | __round_mask(x, y)) + 1)
- 
- #define PAGE_SIZE  (1ULL << 12)
--#define SZ_64K	   (16 * PAGE_SIZE)
- 
- static const char *readable_unit(uint64_t size)
- {
-diff --git a/tests/intel/i915_query.c b/tests/intel/i915_query.c
-index f97379b83b..e9cc495973 100644
---- a/tests/intel/i915_query.c
-+++ b/tests/intel/i915_query.c
-@@ -863,7 +863,6 @@ static void test_query_regions_sanity_check(int fd)
- }
- 
- #define rounddown(x, y) (x - (x % y))
--#define SZ_64K (1ULL << 16)
- 
- static void fill_unallocated(int fd, struct drm_i915_query_item *item, int idx,
- 			     bool cpu_access)
-diff --git a/tests/intel/xe_evict.c b/tests/intel/xe_evict.c
-index eec001218d..5d8463270c 100644
---- a/tests/intel/xe_evict.c
-+++ b/tests/intel/xe_evict.c
-@@ -448,9 +448,6 @@ threads(int fd, struct drm_xe_engine_class_instance *eci,
- 		pthread_join(threads_data[i].thread, NULL);
- }
- 
--#define SZ_256M 0x10000000
--#define SZ_1G   0x40000000
--
- static uint64_t calc_bo_size(uint64_t vram_size, int mul, int div)
- {
- 	if (vram_size >= SZ_1G)
-diff --git a/tests/msm/msm_shrink.c b/tests/msm/msm_shrink.c
-index d0b098aaf3..8e6c582ffc 100644
---- a/tests/msm/msm_shrink.c
-+++ b/tests/msm/msm_shrink.c
-@@ -30,8 +30,6 @@
- #include "igt_os.h"
- #include "igt_sysfs.h"
- 
--#define SZ_1M (1024 * 1024)
--
- static void leak(uint64_t alloc)
- {
- 	char *ptr;
++static struct param {
++	bool print_bb;
++	bool disable_compression;
++	bool dump_corrupted_surface;
++	int num_objs;
++	int vram_percent;
++	int min_size_kb;
++	int max_size_kb;
++	bool verify;
++} params = {
++	.num_objs = 0,
++	.vram_percent = OVERCOMMIT_VRAM_PERCENT,
++	.min_size_kb = MIN_OBJ_KB,
++	.max_size_kb = MAX_OBJ_KB,
++};
++
++struct object {
++	uint64_t size;
++	uint32_t start_value;
++	struct blt_copy_object *blt_obj;
++	struct igt_list_head link;
++};
++
++#define TEST_PARALLEL		(1 << 0)
++#define TEST_INSTANTFREE	(1 << 1)
++#define TEST_REOPEN		(1 << 2)
++#define TEST_SIMPLE		(1 << 3)
++
++#define MAX_NPROC 8
++struct config {
++	uint32_t flags;
++	int nproc;
++	int free_mb, total_mb;
++	int test_mb, mb_per_proc;
++	const struct param *param;
++};
++
++static void copy_obj(struct blt_copy_data *blt,
++		     struct blt_copy_object *src_obj,
++		     struct blt_copy_object *dst_obj,
++		     intel_ctx_t *ctx,
++		     uint64_t ahnd)
++{
++	struct blt_block_copy_data_ext ext = {};
++	int fd = blt->fd;
++	uint64_t bb_size = xe_get_default_alignment(fd);
++	uint32_t bb;
++	uint32_t w, h;
++
++	w = src_obj->x2;
++	h = src_obj->y2;
++
++	bb = xe_bo_create_flags(fd, 0, bb_size, visible_vram_memory(fd, 0));
++
++	blt->color_depth = CD_32bit;
++	blt->print_bb = params.print_bb;
++	blt_set_copy_object(&blt->src, src_obj);
++	blt_set_copy_object(&blt->dst, dst_obj);
++	blt_set_object_ext(&ext.src, 0, w, h, SURFACE_TYPE_2D);
++	blt_set_object_ext(&ext.dst, 0, w, h, SURFACE_TYPE_2D);
++	blt_set_batch(&blt->bb, bb, bb_size, vram_if_possible(fd, 0));
++	blt_block_copy(fd, ctx, NULL, ahnd, blt, &ext);
++	intel_ctx_xe_sync(ctx, true);
++
++	gem_close(fd, bb);
++	put_offset(ahnd, bb);
++	put_offset(ahnd, blt->src.handle);
++	put_offset(ahnd, blt->dst.handle);
++	intel_allocator_bind(ahnd, 0, 0);
++}
++
++static uint32_t rand_and_update(uint32_t *left, uint32_t min, uint32_t max)
++{
++	int left_bit, min_bit, max_bit, rand_id, rand_kb;
++
++	left_bit = igt_fls(*left) - 1;
++	min_bit = igt_fls(min) - 1;
++	max_bit = max_t(int, min_t(int, igt_fls(max) - 1, left_bit), igt_fls(max));
++	rand_id = rand() % (max_bit - min_bit);
++	rand_kb = 1 << (rand_id + min_bit);
++
++	if (*left >= rand_kb)
++		*left -= rand_kb;
++	else
++		*left = 0;
++
++	return rand_kb;
++}
++
++static struct object *create_obj(struct blt_copy_data *blt,
++				 intel_ctx_t *ctx, uint64_t ahnd,
++				 uint64_t size, int start_value,
++				 bool disable_compression)
++{
++	int fd = blt->fd;
++	struct object *obj;
++	uint32_t w, h;
++	uint8_t uc_mocs = intel_get_uc_mocs_index(fd);
++	int i;
++	struct blt_copy_object *src;
++
++	obj = calloc(1, sizeof(*obj));
++	igt_assert(obj);
++	obj->size = size;
++	obj->start_value = start_value;
++
++	w = max_t(int, 1024, roundup_power_of_two(sqrt(size/4)));
++	h = size / w / 4; /* /4 - 32bpp */
++
++	igt_debug("[%8d] Obj size: %ldKiB (%ldMiB) <w: %d, h: %d>\n",
++		  getpid(), size / SZ_1K, size / SZ_1M, w, h);
++
++	src = blt_create_object(blt,
++				system_memory(fd),
++				w, h, 32, uc_mocs,
++				T_LINEAR, COMPRESSION_DISABLED,
++				COMPRESSION_TYPE_3D, true);
++
++	obj->blt_obj = blt_create_object(blt, vram_memory(fd, 0),
++					 w, h, 32, uc_mocs,
++					 T_LINEAR,
++					 disable_compression ? COMPRESSION_DISABLED :
++							       COMPRESSION_ENABLED,
++					 COMPRESSION_TYPE_3D, true);
++
++	for (i = 0; i < size / sizeof(uint32_t); i++)
++		src->ptr[i] = start_value++;
++
++	copy_obj(blt, src, obj->blt_obj, ctx, ahnd);
++
++	blt_destroy_object_and_alloc_free(fd, ahnd, src);
++	intel_allocator_bind(ahnd, 0, 0);
++
++	return obj;
++}
++
++static void dump_obj(const struct blt_copy_object *obj, int start_value)
++{
++	FILE *out;
++
++	if (!params.dump_corrupted_surface)
++		return;
++
++	out = fopen(DUMP_FILENAME, "wb");
++	fwrite(obj->ptr, obj->size, 1, out);
++	fclose(out);
++
++	out = fopen(DUMP_EXPFILENAME, "wb");
++	for (int i = 0; i < obj->size / 4; i++) {
++		int v = start_value + i;
++
++		fwrite(&v, sizeof(int), 1, out);
++	}
++	fclose(out);
++}
++
++static void check_obj(const char *check_mode,
++		      const struct blt_copy_object *obj, uint64_t size,
++		      int start_value, int num_obj)
++{
++	int i, idx;
++
++	if (obj->ptr[0] != start_value ||
++	    (obj->ptr[size/4 - 1] != start_value + size/4 - 1)) {
++		igt_info("[%s] Failed object w: %d, h: %d, size: %ldKiB (%ldMiB)\n",
++			 check_mode, obj->x2, obj->y2, obj->size / SZ_1K, obj->size / SZ_1M);
++		dump_obj(obj, start_value);
++	}
++
++	igt_assert_eq(obj->ptr[0], start_value);
++	igt_assert_eq(obj->ptr[size/4 - 1], start_value + size/4 - 1);
++
++	/* Couple of checks of random indices */
++	for (i = 0; i < 128; i++) {
++		idx = rand() % (size/4);
++
++		if (obj->ptr[idx] != start_value + idx) {
++			igt_info("[%s] Failed object w: %d, h: %d, size: %ldKiB (%ldMiB)\n",
++				 check_mode, obj->x2, obj->y2,
++				 obj->size / SZ_1K, obj->size / SZ_1M);
++			dump_obj(obj, start_value);
++		}
++
++		igt_assert_f(obj->ptr[idx] == start_value + idx,
++			     "[%s] Object number %d doesn't contain valid data",
++			     check_mode, num_obj);
++	}
++}
++
++static void evict_single(int fd, int child, const struct config *config)
++{
++	struct blt_copy_data blt = {};
++	struct blt_copy_object *orig_obj;
++	uint32_t kb_left = config->mb_per_proc * SZ_1K;
++	uint32_t min_alloc_kb = config->param->min_size_kb;
++	uint32_t max_alloc_kb = config->param->max_size_kb;
++	uint32_t vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
++	uint64_t ahnd = intel_allocator_open(fd, vm, INTEL_ALLOCATOR_RELOC);
++	uint8_t uc_mocs = intel_get_uc_mocs_index(fd);
++	struct object *obj, *tmp;
++	struct igt_list_head list;
++	struct drm_xe_engine_class_instance inst = {
++		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
++	};
++	intel_ctx_t *ctx;
++	uint32_t exec_queue, big_obj;
++	int num_obj = 0;
++
++	srandom(time(NULL) + getpid());
++	IGT_INIT_LIST_HEAD(&list);
++	igt_debug("[%2d] child : to allocate: %uMiB\n", child, kb_left/SZ_1K);
++
++	blt_copy_init(fd, &blt);
++
++	exec_queue = xe_exec_queue_create(fd, vm, &inst, 0);
++	ctx = intel_ctx_xe(fd, vm, exec_queue, 0, 0, 0);
++
++	while (kb_left) {
++		struct blt_copy_object *verify_obj;
++		uint64_t obj_size = rand_and_update(&kb_left, min_alloc_kb, max_alloc_kb) * SZ_1K;
++		int start_value = rand();
++
++		if (config->flags & TEST_SIMPLE)
++			obj_size = max_alloc_kb * SZ_1K;
++
++		obj = create_obj(&blt, ctx, ahnd, obj_size, start_value,
++				 config->param->disable_compression);
++		igt_list_add(&obj->link, &list);
++
++		if (config->param->verify) {
++			verify_obj = blt_create_object(&blt, system_memory(fd),
++						       obj->blt_obj->x2,
++						       obj->blt_obj->y2,
++						       32, uc_mocs,
++						       T_LINEAR, COMPRESSION_DISABLED,
++						       0, true);
++			copy_obj(&blt, obj->blt_obj, verify_obj, ctx, ahnd);
++			check_obj("Verify", verify_obj, obj->blt_obj->size,
++				  obj->start_value, num_obj++);
++			blt_destroy_object_and_alloc_free(fd, ahnd, verify_obj);
++			intel_allocator_bind(ahnd, 0, 0);
++		}
++
++		if (config->flags & TEST_SIMPLE) {
++			big_obj = xe_bo_create_flags(fd, vm, kb_left * SZ_1K,
++						     vram_memory(fd, 0));
++			break;
++		}
++
++		if (config->param->num_objs && ++num_obj == config->param->num_objs)
++			break;
++	}
++
++	if (config->param->verify)
++		igt_info("[%8d] Verify ok\n", getpid());
++
++	num_obj = 0;
++	igt_list_for_each_entry_safe(obj, tmp, &list, link) {
++		orig_obj = blt_create_object(&blt, system_memory(fd),
++					     obj->blt_obj->x2,
++					     obj->blt_obj->y2,
++					     32, uc_mocs,
++					     T_LINEAR, COMPRESSION_DISABLED,
++					     0, true);
++		copy_obj(&blt, obj->blt_obj, orig_obj, ctx, ahnd);
++		check_obj("Check", orig_obj, obj->blt_obj->size, obj->start_value, num_obj++);
++		blt_destroy_object_and_alloc_free(fd, ahnd, orig_obj);
++
++		if (config->flags & TEST_INSTANTFREE) {
++			igt_list_del(&obj->link);
++			blt_destroy_object_and_alloc_free(fd, ahnd, obj->blt_obj);
++			free(obj);
++		}
++		intel_allocator_bind(ahnd, 0, 0);
++	}
++
++	if (!(config->flags & TEST_INSTANTFREE))
++		igt_list_for_each_entry_safe(obj, tmp, &list, link) {
++			igt_list_del(&obj->link);
++			blt_destroy_object_and_alloc_free(fd, ahnd, obj->blt_obj);
++			free(obj);
++		}
++
++	if (config->flags & TEST_SIMPLE)
++		gem_close(fd, big_obj);
++}
++
++static void set_config(int fd, uint32_t flags, const struct param *param,
++		       struct config *config)
++{
++	int nproc = 1;
++
++	config->param = param;
++	config->flags = flags;
++	config->free_mb = xe_visible_vram_size(fd, 0) / SZ_1M;
++	config->total_mb = xe_vram_available(fd, 0) / SZ_1M;
++	config->test_mb = min_t(int, config->free_mb * config->param->vram_percent / 100,
++				config->total_mb * config->param->vram_percent / 100);
++
++	igt_debug("VRAM memory size: %dMB/%dMB (use %dMB), overcommit perc: %d\n",
++		  config->free_mb, config->total_mb,
++		  config->test_mb, config->param->vram_percent);
++
++	if (flags & TEST_PARALLEL)
++		nproc = min_t(int, sysconf(_SC_NPROCESSORS_ONLN), MAX_NPROC);
++	config->nproc = nproc;
++	config->mb_per_proc = config->test_mb / nproc;
++
++	igt_debug("nproc: %d, mem per proc: %dMB\n", nproc, config->mb_per_proc);
++}
++
++static void evict_ccs(int fd, uint32_t flags, const struct param *param)
++{
++	struct config config;
++	char numstr[32];
++
++	igt_info("Test mode <parallel: %d, instant free: %d, reopen: %d, simple: %d>\n",
++		 !!(flags & TEST_PARALLEL),
++		 !!(flags & TEST_INSTANTFREE),
++		 !!(flags & TEST_REOPEN),
++		 !!(flags & TEST_SIMPLE));
++	if (param->num_objs)
++		snprintf(numstr, sizeof(numstr), "%d", param->num_objs);
++	else
++		strncpy(numstr, "limited to vram", sizeof(numstr));
++	igt_info("Params: compression: %s, num objects: %s, vram percent: %d, kb <min: %d, max: %d>\n",
++		 param->disable_compression ? "disabled" : "enabled",
++		 numstr, param->vram_percent,
++		 param->min_size_kb, param->max_size_kb);
++
++	set_config(fd, flags, param, &config);
++
++	if (flags & TEST_PARALLEL) {
++		igt_fork(n, config.nproc) {
++			if (flags & TEST_REOPEN) {
++				fd = drm_reopen_driver(fd);
++				intel_allocator_init();
++			}
++			evict_single(fd, n, &config);
++		}
++		igt_waitchildren();
++	} else {
++		if (flags & TEST_REOPEN)
++			fd = drm_reopen_driver(fd);
++		evict_single(fd, 0, &config);
++	}
++}
++
++/**
++ *
++ * SUBTEST: evict-ccs-overcommit-simple
++ * Description: FlatCCS eviction test.
++ * Feature: flatccs
++ * Test category: stress test
++ */
++/**
++ *
++ * SUBTEST: evict-ccs-overcommit-%s-%s-%s
++ * Description: FlatCCS eviction test.
++ * Feature: flatccs
++ * Test category: stress test
++ *
++ * arg[1]:
++ *
++ * @standalone:			single process
++ * @parallel:			multiple processes
++ *
++ * arg[2]:
++ *
++ * @nofree:			keep objects till the end of the test
++ * @instantfree:		free object after it was verified and it won't
++ *				be used anymore
++ *
++ * arg[3]:
++ *
++ * @samefd:			operate on same opened drm fd
++ * @reopen:			use separately opened drm fds
++ *
++ */
++static int opt_handler(int opt, int opt_index, void *data)
++{
++	switch (opt) {
++	case 'b':
++		params.print_bb = true;
++		igt_debug("Print bb: %d\n", params.print_bb);
++		break;
++	case 'd':
++		params.disable_compression = true;
++		igt_debug("Print bb: %d\n", params.disable_compression);
++		break;
++	case 'D':
++		params.dump_corrupted_surface = true;
++		igt_debug("Print bb: %d\n", params.dump_corrupted_surface);
++		break;
++	case 'n':
++		params.num_objs = atoi(optarg);
++		igt_debug("Number objects: %d\n", params.num_objs);
++		break;
++	case 'p':
++		params.vram_percent = atoi(optarg);
++		igt_debug("Percent vram: %d\n", params.vram_percent);
++		break;
++	case 's':
++		params.min_size_kb = atoi(optarg);
++		igt_debug("Min size kb: %d\n", params.min_size_kb);
++		break;
++	case 'S':
++		params.max_size_kb = atoi(optarg);
++		igt_debug("Max size kb: %d\n", params.max_size_kb);
++		break;
++	case 'V':
++		params.verify = true;
++		igt_debug("Verify: %d\n", params.verify);
++		break;
++	default:
++		return IGT_OPT_HANDLER_ERROR;
++	}
++
++	return IGT_OPT_HANDLER_SUCCESS;
++}
++
++const char *help_str =
++	"  -b\tPrint bb\n"
++	"  -d\tDisable compression (don't use flatccs area)\n"
++	"  -D\tDump surface which doesn't match\n"
++	"  -e\tAdd temporary object which enforce eviction\n"
++	"  -n\tNumber of objects to create (0 - 31)\n"
++	"  -p\tPercent of VRAM to alloc\n"
++	"  -s\tMinimum size of object in kb\n"
++	"  -S\tMaximum size of object in kb\n"
++	"  -V\tVerify object after compressing\n"
++	;
++
++igt_main_args("bdDn:p:s:S:V", NULL, help_str, opt_handler, NULL)
++{
++	struct drm_xe_engine_class_instance *hwe;
++
++	const struct ccs {
++		const char *name;
++		uint32_t flags;
++	} ccs[] = {
++		{ "simple",
++			TEST_SIMPLE },
++		{ "standalone-nofree-samefd",
++			0 },
++		{ "standalone-nofree-reopen",
++			TEST_REOPEN },
++		{ "standalone-instantfree-samefd",
++			TEST_INSTANTFREE },
++		{ "standalone-instantfree-reopen",
++			TEST_INSTANTFREE | TEST_REOPEN },
++		{ "parallel-nofree-samefd",
++			TEST_PARALLEL },
++		{ "parallel-nofree-reopen",
++			TEST_PARALLEL | TEST_REOPEN },
++		{ "parallel-instantfree-samefd",
++			TEST_PARALLEL | TEST_INSTANTFREE },
++		{ "parallel-instantfree-reopen",
++			TEST_PARALLEL | TEST_INSTANTFREE | TEST_REOPEN },
++		{ },
++	};
++	uint64_t vram_size;
++	int fd;
++
++	igt_fixture {
++		fd = drm_open_driver(DRIVER_XE);
++		igt_require(xe_has_vram(fd));
++		vram_size = xe_visible_vram_size(fd, 0);
++		igt_assert(vram_size);
++
++		xe_for_each_hw_engine(fd, hwe)
++			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COPY)
++				break;
++	}
++
++	igt_fixture
++		intel_allocator_multiprocess_start();
++
++	for (const struct ccs *s = ccs; s->name; s++) {
++		igt_subtest_f("evict-ccs-overcommit-%s", s->name)
++			evict_ccs(fd, s->flags, &params);
++	}
++
++	igt_fixture {
++		intel_allocator_multiprocess_stop();
++		drm_close_driver(fd);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 14b5bfda26..df64bf18b9 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -279,6 +279,7 @@ intel_xe_progs = [
+ 	'xe_debugfs',
+ 	'xe_drm_fdinfo',
+ 	'xe_evict',
++	'xe_evict_ccs',
+ 	'xe_exec_balancer',
+ 	'xe_exec_basic',
+ 	'xe_exec_compute_mode',
 -- 
 2.34.1
