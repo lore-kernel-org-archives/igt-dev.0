@@ -1,20 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 283BD10E503
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Oct 2023 14:41:47 +0000 (UTC)
-Message-ID: <966a8a76-cf95-48ed-888f-d3b13417a8b5@linux.intel.com>
-Date: Thu, 19 Oct 2023 16:41:41 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D4B3310E500
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Oct 2023 14:41:45 +0000 (UTC)
+From: Matthew Auld <matthew.auld@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 19 Oct 2023 15:40:52 +0100
+Message-ID: <20231019144106.560624-2-matthew.auld@intel.com>
+In-Reply-To: <20231019144106.560624-1-matthew.auld@intel.com>
+References: <20231019144106.560624-1-matthew.auld@intel.com>
 MIME-Version: 1.0
-To: Karolina Stolarek <karolina.stolarek@intel.com>
-References: <20231017143654.617723-1-marcin.bernatowicz@linux.intel.com>
- <c9d57a2d-5c2b-0d80-7c52-cfb66fc0e866@intel.com>
-Content-Language: en-US
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <c9d57a2d-5c2b-0d80-7c52-cfb66fc0e866@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/intel_blt.c: ensure uint64_t result
- of multiplication
+Subject: [igt-dev] [PATCH i-g-t v4 01/15] drm-uapi/xe_drm: sync to get pat
+ and coherency bits
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,84 +20,131 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
+Grab the PAT & coherency uapi additions.
 
-On 10/18/2023 11:08 AM, Karolina Stolarek wrote:
-> On 17.10.2023 16:36, Marcin Bernatowicz wrote:
->> Additionally check for overflow.
->>
->> This should allow to exercise large buffers
->> ex. xe_exercise_blt -W 16384 -H 16384
-> 
-> I think it would be good to add a dedicated (sub)test case to test large 
-> buffers.
-> 
-Maybe, but it's not the purpose of this patch.
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: José Roberto de Souza <jose.souza@intel.com>
+Cc: Pallavi Mishra <pallavi.mishra@intel.com>
+Reviewed-by: Pallavi Mishra <pallavi.mishra@intel.com>
+---
+ include/drm-uapi/xe_drm.h | 93 +++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 90 insertions(+), 3 deletions(-)
 
->>
->> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
->> ---
->>   lib/intel_blt.c | 8 +++++++-
->>   1 file changed, 7 insertions(+), 1 deletion(-)
->>
->> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
->> index a76c7a404..f46c85e91 100644
->> --- a/lib/intel_blt.c
->> +++ b/lib/intel_blt.c
->> @@ -1607,12 +1607,18 @@ blt_create_object(const struct blt_copy_data 
->> *blt, uint32_t region,
->>             bool create_mapping)
->>   {
->>       struct blt_copy_object *obj;
->> -    uint64_t size = width * height * bpp / 8;
->>       uint32_t stride = tiling == T_LINEAR ? width * 4 : width;
->>       uint32_t handle;
->> +    uint64_t size;
->>       igt_assert_f(blt->driver, "Driver isn't set, have you called 
->> blt_copy_init()?\n");
->> +    igt_assert_f((UINT64_MAX / 8) >= width &&
->> +             (UINT64_MAX / width) >= height &&
->> +             (UINT64_MAX / (width * height)) >= bpp, "Overflow 
->> detected!\n");
-> 
-> OK, it took a bit for me to parse it... So, we first check if we have 
-> enough space to at least fit width, then compare it against height, and 
-> then compare all of this to what's left for bpp. Is that correct?
-
-This one is to check if (width * height * bpp / 8) fits in UINT64_MAX
-and is just a paranoid check.
-
-> 
-> But still, width and height is limited by surface_with and 
-> surface_height field that are u14 iirc. I don't think that overflow is 
-> possible here?
-
-Where do we limit width and height to u14 ? I see uint32_t is used for 
-width, height and bpp input params.
-
-The current code overflows uint32_t when width = height = 16384 and bpp 
-= 32 => 16384 * 16384 * 32 / 8 => 0 => size == 0 :(
-
-We need (uint64_t) cast to ensure the entire multiplication is done in 
-64-bit arithmetic.
-
---
-marcin
-> 
->> +
->> +    size = (uint64_t)width * height * bpp / 8;
-> 
-> Cast takes precedence over *, but this line doesn't trigger any 
-> warnings, so I think we don't have to add extra ().
-> 
-> All the best,
-> Karolina
-> 
->> +
->>       obj = calloc(1, sizeof(*obj));
->>       obj->size = size;
+diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+index 6ff1106e4..d9ed75f53 100644
+--- a/include/drm-uapi/xe_drm.h
++++ b/include/drm-uapi/xe_drm.h
+@@ -548,8 +548,54 @@ struct drm_xe_gem_create {
+ 	 */
+ 	__u32 handle;
+ 
+-	/** @pad: MBZ */
+-	__u32 pad;
++	/**
++	 * @coh_mode: The coherency mode for this object. This will limit the
++	 * possible @cpu_caching values.
++	 *
++	 * Supported values:
++	 *
++	 * DRM_XE_GEM_COH_NONE: GPU access is assumed to be not coherent with
++	 * CPU. CPU caches are not snooped.
++	 *
++	 * DRM_XE_GEM_COH_AT_LEAST_1WAY:
++	 *
++	 * CPU-GPU coherency must be at least 1WAY.
++	 *
++	 * If 1WAY then GPU access is coherent with CPU (CPU caches are snooped)
++	 * until GPU acquires. The acquire by the GPU is not tracked by CPU
++	 * caches.
++	 *
++	 * If 2WAY then should be fully coherent between GPU and CPU.  Fully
++	 * tracked by CPU caches. Both CPU and GPU caches are snooped.
++	 *
++	 * Note: On dgpu the GPU device never caches system memory. The device
++	 * should be thought of as always 1WAY coherent, with the addition that
++	 * the GPU never caches system memory. At least on current dgpu HW there
++	 * is no way to turn off snooping so likely the different coherency
++	 * modes of the pat_index make no difference for system memory.
++	 */
++#define DRM_XE_GEM_COH_NONE		1
++#define DRM_XE_GEM_COH_AT_LEAST_1WAY	2
++	__u16 coh_mode;
++
++	/**
++	 * @cpu_caching: The CPU caching mode to select for this object. If
++	 * mmaping the object the mode selected here will also be used.
++	 *
++	 * Supported values:
++	 *
++	 * DRM_XE_GEM_CPU_CACHING_WB: Allocate the pages with write-back caching.
++	 * On iGPU this can't be used for scanout surfaces. The @coh_mode must
++	 * be DRM_XE_GEM_COH_AT_LEAST_1WAY. Currently not allowed for objects placed
++	 * in VRAM.
++	 *
++	 * DRM_XE_GEM_CPU_CACHING_WC: Allocate the pages as write-combined. This is
++	 * uncached. Any @coh_mode is permitted. Scanout surfaces should likely
++	 * use this. All objects that can be placed in VRAM must use this.
++	 */
++#define DRM_XE_GEM_CPU_CACHING_WB                      1
++#define DRM_XE_GEM_CPU_CACHING_WC                      2
++	__u16 cpu_caching;
+ 
+ 	/** @reserved: Reserved */
+ 	__u64 reserved[2];
+@@ -626,8 +672,49 @@ struct drm_xe_vm_bind_op {
+ 	 */
+ 	__u32 obj;
+ 
++	/**
++	 * @pat_index: The platform defined @pat_index to use for this mapping.
++	 * The index basically maps to some predefined memory attributes,
++	 * including things like caching, coherency, compression etc.  The exact
++	 * meaning of the pat_index is platform specific and defined in the
++	 * Bspec and PRMs.  When the KMD sets up the binding the index here is
++	 * encoded into the ppGTT PTE.
++	 *
++	 * For coherency the @pat_index needs to be least as coherent as
++	 * drm_xe_gem_create.coh_mode. i.e coh_mode(pat_index) >=
++	 * drm_xe_gem_create.coh_mode. The KMD will extract the coherency mode
++	 * from the @pat_index and reject if there is a mismatch (see note below
++	 * for pre-MTL platforms).
++	 *
++	 * Note: On pre-MTL platforms there is only a caching mode and no
++	 * explicit coherency mode, but on such hardware there is always a
++	 * shared-LLC (or is dgpu) so all GT memory accesses are coherent with
++	 * CPU caches even with the caching mode set as uncached.  It's only the
++	 * display engine that is incoherent (on dgpu it must be in VRAM which
++	 * is always mapped as WC on the CPU). However to keep the uapi somewhat
++	 * consistent with newer platforms the KMD groups the different cache
++	 * levels into the following coherency buckets on all pre-MTL platforms:
++	 *
++	 *	ppGTT UC -> DRM_XE_GEM_COH_NONE
++	 *	ppGTT WC -> DRM_XE_GEM_COH_NONE
++	 *	ppGTT WT -> DRM_XE_GEM_COH_NONE
++	 *	ppGTT WB -> DRM_XE_GEM_COH_AT_LEAST_1WAY
++	 *
++	 * In practice UC/WC/WT should only ever used for scanout surfaces on
++	 * such platforms (or perhaps in general for dma-buf if shared with
++	 * another device) since it is only the display engine that is actually
++	 * incoherent.  Everything else should typically use WB given that we
++	 * have a shared-LLC.  On MTL+ this completely changes and the HW
++	 * defines the coherency mode as part of the @pat_index, where
++	 * incoherent GT access is possible.
++	 *
++	 * Note: For userptr and externally imported dma-buf the kernel expects
++	 * either 1WAY or 2WAY for the @pat_index.
++	 */
++	__u16 pat_index;
++
+ 	/** @pad: MBZ */
+-	__u32 pad;
++	__u16 pad;
+ 
+ 	union {
+ 		/**
+-- 
+2.41.0
