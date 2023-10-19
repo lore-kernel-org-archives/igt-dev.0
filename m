@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E03DF10E532
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Oct 2023 17:38:07 +0000 (UTC)
-Date: Thu, 19 Oct 2023 10:37:57 -0700
-From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-To: Matthew Auld <matthew.auld@intel.com>
-Message-ID: <ZTFpdQygxYz25ESW@nvishwa1-DESK>
-References: <20231019144106.560624-1-matthew.auld@intel.com>
- <20231019144106.560624-11-matthew.auld@intel.com>
-Content-Type: text/plain; charset="iso-8859-1"; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231019144106.560624-11-matthew.auld@intel.com>
-MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v4 10/15] lib/xe_ioctl: update vm_bind
- to account for pat_index
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 729A010E533
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Oct 2023 17:53:03 +0000 (UTC)
+From: Melanie Lobo <melanie.lobo@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 19 Oct 2023 23:36:30 +0530
+Message-Id: <20231019180630.20689-1-melanie.lobo@intel.com>
+In-Reply-To: <20231010134540.28485-1-melanie.lobo@intel.com>
+References: <20231010134540.28485-1-melanie.lobo@intel.com>
+Subject: [igt-dev] [PATCH] tests/intel/kms_flip_scaled_crc: Add support for
+ FP16 compressed formats
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,118 +17,95 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Oct 19, 2023 at 03:41:01PM +0100, Matthew Auld wrote:
->Keep things minimal and select the 1way+ by default on all platforms.
->Other users can use intel_buf, get_offset_pat_index etc or use
->__xe_vm_bind() directly.  Display tests don't directly use this
->interface.
->
->Signed-off-by: Matthew Auld <matthew.auld@intel.com>
->Cc: José Roberto de Souza <jose.souza@intel.com>
->Cc: Pallavi Mishra <pallavi.mishra@intel.com>
->---
-> lib/xe/xe_ioctl.c   | 8 ++++++--
-> lib/xe/xe_ioctl.h   | 2 +-
-> tests/intel/xe_vm.c | 5 ++++-
-> 3 files changed, 11 insertions(+), 4 deletions(-)
->
->diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
->index 4cf44f1ee..f51f931ee 100644
->--- a/lib/xe/xe_ioctl.c
->+++ b/lib/xe/xe_ioctl.c
->@@ -41,6 +41,7 @@
-> #include "config.h"
-> #include "drmtest.h"
-> #include "igt_syncobj.h"
->+#include "intel_pat.h"
-> #include "ioctl_wrappers.h"
-> #include "xe_ioctl.h"
-> #include "xe_query.h"
->@@ -92,7 +93,7 @@ void xe_vm_bind_array(int fd, uint32_t vm, uint32_t exec_queue,
-> int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
-> 		  uint64_t offset, uint64_t addr, uint64_t size, uint32_t op,
-> 		  uint32_t flags, struct drm_xe_sync *sync, uint32_t num_syncs,
->-		  uint32_t region, uint64_t ext)
->+		  uint32_t region, uint8_t pat_index, uint64_t ext)
-> {
-> 	struct drm_xe_vm_bind bind = {
-> 		.extensions = ext,
->@@ -108,6 +109,8 @@ int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
-> 		.num_syncs = num_syncs,
-> 		.syncs = (uintptr_t)sync,
-> 		.exec_queue_id = exec_queue,
->+		.bind.pat_index = (pat_index == DEFAULT_PAT_INDEX) ?
->+			intel_get_pat_idx_wb(fd) : pat_index,
-> 	};
->
-> 	if (igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind))
->@@ -122,7 +125,8 @@ void  __xe_vm_bind_assert(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
-> 			  uint32_t num_syncs, uint32_t region, uint64_t ext)
-> {
-> 	igt_assert_eq(__xe_vm_bind(fd, vm, exec_queue, bo, offset, addr, size,
->-				   op, flags, sync, num_syncs, region, ext), 0);
->+				   op, flags, sync, num_syncs, region, DEFAULT_PAT_INDEX,
->+				   ext), 0);
-> }
->
-> void xe_vm_bind(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
->diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
->index e3f62a28a..a28375d3e 100644
->--- a/lib/xe/xe_ioctl.h
->+++ b/lib/xe/xe_ioctl.h
->@@ -20,7 +20,7 @@ uint32_t xe_vm_create(int fd, uint32_t flags, uint64_t ext);
-> int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
-> 		  uint64_t offset, uint64_t addr, uint64_t size, uint32_t op,
-> 		  uint32_t flags, struct drm_xe_sync *sync, uint32_t num_syncs,
->-		  uint32_t region, uint64_t ext);
->+		  uint32_t region, uint8_t pat_index, uint64_t ext);
-> void  __xe_vm_bind_assert(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
-> 			  uint64_t offset, uint64_t addr, uint64_t size,
-> 			  uint32_t op, uint32_t flags, struct drm_xe_sync *sync,
->diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
->index dd3302337..a01e1ba47 100644
->--- a/tests/intel/xe_vm.c
->+++ b/tests/intel/xe_vm.c
->@@ -10,6 +10,7 @@
->  */
->
-> #include "igt.h"
->+#include "intel_pat.h"
-> #include "lib/igt_syncobj.h"
-> #include "lib/intel_reg.h"
-> #include "xe_drm.h"
->@@ -316,7 +317,8 @@ static void userptr_invalid(int fd)
-> 	vm = xe_vm_create(fd, 0, 0);
-> 	munmap(data, size);
-> 	ret = __xe_vm_bind(fd, vm, 0, 0, to_user_pointer(data), 0x40000,
->-			   size, XE_VM_BIND_OP_MAP_USERPTR, 0, NULL, 0, 0, 0);
->+			   size, XE_VM_BIND_OP_MAP_USERPTR, 0, NULL, 0, 0,
->+			   DEFAULT_PAT_INDEX, 0);
-> 	igt_assert(ret == -EFAULT);
->
-> 	xe_vm_destroy(fd, vm);
->@@ -755,6 +757,7 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
-> 		bind_ops[i].op = XE_VM_BIND_OP_MAP;
-> 		bind_ops[i].flags = XE_VM_BIND_FLAG_ASYNC;
-> 		bind_ops[i].region = 0;
->+		bind_ops[i].pat_index = intel_get_pat_idx_wb(fd);
-> 		bind_ops[i].reserved[0] = 0;
-> 		bind_ops[i].reserved[1] = 0;
+MTL supports FP16 format which is a binary floating-point computer
+number format that occupies 16 bits in computer memory. In this test
+platform shall render compression in display engine to receive
+FP16 compressed formats.
 
-I am seeing few other (below) usage of vm_bind_array() calls.
-lib/xe/xe_util.c
-lib/intel_batchbuffer.c
+cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+cc: Swati Sharma <swati2.sharma@intel.com>
+Signed-off-by: Melanie Lobo <melanie.lobo@intel.com>
+---
+ lib/intel_aux_pgtable.c           |  5 +++++
+ tests/intel/kms_flip_scaled_crc.c | 24 ++++++++++++++++++++++++
+ 2 files changed, 29 insertions(+)
 
-I think they need to be updated too.
-
-Niranjana
-
->
->-- 
->2.41.0
->
+diff --git a/lib/intel_aux_pgtable.c b/lib/intel_aux_pgtable.c
+index 7c79521344de..a612df407692 100644
+--- a/lib/intel_aux_pgtable.c
++++ b/lib/intel_aux_pgtable.c
+@@ -21,6 +21,7 @@
+ #define AUX_FORMAT_AYUV		0x09
+ #define AUX_FORMAT_ARGB_8B	0x0A
+ #define AUX_FORMAT_NV12_21	0x0F
++#define AUX_FORMAT_XRGB16161616_64B 0x10
+ 
+ struct pgtable_level_desc {
+ 	int idx_shift;
+@@ -305,6 +306,10 @@ static uint64_t pgt_get_l1_flags(const struct intel_buf *buf, int surface_idx)
+ 			entry.e.format = AUX_FORMAT_ARGB_8B;
+ 			entry.e.depth = bpp_to_depth_val(32);
+ 			break;
++		case 64:
++			entry.e.format = AUX_FORMAT_XRGB16161616_64B;
++			entry.e.depth = bpp_to_depth_val(64);
++			break;
+ 		default:
+ 			igt_assert(0);
+ 		}
+diff --git a/tests/intel/kms_flip_scaled_crc.c b/tests/intel/kms_flip_scaled_crc.c
+index 2997b63fac40..6874f747b280 100644
+--- a/tests/intel/kms_flip_scaled_crc.c
++++ b/tests/intel/kms_flip_scaled_crc.c
+@@ -142,6 +142,14 @@
+  * Mega feature: General Display Features
+  * Test category: functionality test
+  *
++ * SUBTEST: flip-64bpp-4tile-to-32bpp-4tilemtlrcccs-%s
++ * Description: Flip from 64bpp non scaled fb to 32bpp %arg[1] fb to stress CD
++ *              clock programming
++ * Driver requirement: i915, xe
++ * Functionality: ccs, scaling, tiling, vblank
++ * Mega feature: General Display Features
++ * Test category: functionality test
++ *
+  * arg[1]:
+  *
+  * @downscaling:        Downscaled
+@@ -406,6 +414,14 @@ const struct {
+ 		1.0,
+ 		2.0,
+ 	},
++	{
++		"flip-64bpp-4tile-to-32bpp-4tilemtlrcccs-downscaling",
++		"Flip from 64bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
++		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
++		I915_FORMAT_MOD_4_TILED_MTL_RC_CCS, DRM_FORMAT_XRGB16161616F,
++		1.0,
++		2.0,
++	},
+ 	{
+ 		"flip-32bpp-ytile-to-64bpp-ytile-upscaling",
+ 		"Flip from 32bpp non scaled fb to 64bpp upscaled fb to stress CD clock programming",
+@@ -590,6 +606,14 @@ const struct {
+ 		0.5,
+ 		1.0,
+ 	},
++	{
++		"flip-64bpp-4tile-to-32bpp-4tilemtlrcccs-upscaling",
++		"Flip from 64bpp non scaled fb to 32bpp upscaled fb to stress CD clock programming",
++		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
++		I915_FORMAT_MOD_4_TILED_MTL_RC_CCS, DRM_FORMAT_XRGB16161616F,
++		0.5,
++		1.0,
++	},
+ };
+ 
+ static void setup_fb(data_t *data, struct igt_fb *newfb, uint32_t width,
+-- 
+2.17.1
