@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam10on2040.outbound.protection.outlook.com [40.107.93.40])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 66F7010E56E
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Oct 2023 21:23:28 +0000 (UTC)
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com
+ (mail-co1nam11on2048.outbound.protection.outlook.com [40.107.220.48])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4815D10E56C
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Oct 2023 21:23:33 +0000 (UTC)
 From: Harry Wentland <harry.wentland@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Thu, 19 Oct 2023 17:22:57 -0400
-Message-ID: <20231019212301.245282-5-harry.wentland@amd.com>
+Date: Thu, 19 Oct 2023 17:23:00 -0400
+Message-ID: <20231019212301.245282-8-harry.wentland@amd.com>
 In-Reply-To: <20231019212301.245282-1-harry.wentland@amd.com>
 References: <20231019212301.245282-1-harry.wentland@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [RFC PATCH v2 4/8] lib/igt_kms: Add new COLOR PIPELINE
- plane property
+Subject: [igt-dev] [RFC PATCH v2 7/8] lib/igt_fb: Add copy_fb function
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -63,143 +62,66 @@ Cc: Hector Martin <marcan@marcan.st>
 Cc: Liviu Dudau <Liviu.Dudau@arm.com>
 Cc: Sasha McIntosh <sashamcintosh@google.com>
 ---
- lib/igt_kms.c | 53 +++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_kms.h | 10 ++++++++++
- 2 files changed, 63 insertions(+)
+ lib/igt_fb.c | 34 ++++++++++++++++++++++++++++++++++
+ lib/igt_fb.h |  1 +
+ 2 files changed, 35 insertions(+)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index cd36e778bae7..a03eae8fa992 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -616,6 +616,7 @@ const char * const igt_plane_prop_names[IGT_NUM_PLANE_PROPS] = {
- 	[IGT_PLANE_ZPOS] = "zpos",
- 	[IGT_PLANE_FB_DAMAGE_CLIPS] = "FB_DAMAGE_CLIPS",
- 	[IGT_PLANE_SCALING_FILTER] = "SCALING_FILTER",
-+	[IGT_PLANE_COLOR_PIPELINE] = "COLOR_PIPELINE",
- };
- 
- const char * const igt_colorop_prop_names[IGT_NUM_COLOROP_PROPS] = {
-@@ -705,6 +706,27 @@ igt_colorop_t *igt_find_colorop(igt_display_t *display, uint32_t id)
- 	return NULL;
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 9196deda2eac..46fe3cd0f27b 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -2151,6 +2151,40 @@ unsigned int igt_create_fb(int fd, int width, int height, uint32_t format,
+ 					  fb, 0, 0);
  }
  
-+static void
-+igt_fill_plane_color_pipelines(igt_display_t *display, igt_plane_t *plane,
-+			       drmModePropertyPtr prop)
++unsigned int igt_copy_fb(int fd, struct igt_fb *src, struct igt_fb *fb)
 +{
-+	int i;
++	char *in_ptr, *out_ptr;
++	int cpp = igt_drm_format_to_bpp(src->drm_format) / 8;
 +
-+	plane->num_color_pipelines = 0;
++	int fb_id = 0;
++	igt_assert(src);
 +
-+	for (i = 0; i < prop->count_enums; i++) {
-+		igt_colorop_t *colorop = igt_find_colorop(display, prop->enums[i].value);
++	/* TODO allow multiple planes */
++	if (src->num_planes != 1)
++		return -EINVAL;
 +
-+		if (colorop) {
-+			plane->color_pipelines[plane->num_color_pipelines++] = colorop;
-+			memcpy(colorop->name, prop->enums[i].name, sizeof(colorop->name));
-+		}
-+	}
++	/* TODO expand for other formats */
++	if (src->drm_format != DRM_FORMAT_XRGB8888)
++		return -EINVAL;
 +
-+	igt_assert(plane->num_color_pipelines < IGT_NUM_PLANE_COLOR_PIPELINES);
++	fb_id = igt_create_fb(fd, src->width, src->height, src->drm_format,
++			    src->modifier, fb);
 +
++	/* copy buffer contents */
++	/* TODO simplify :D */
++	in_ptr = igt_fb_map_buffer(fb->fd, src);
++	igt_assert(in_ptr);
++	out_ptr = igt_fb_map_buffer(fb->fd, fb);
++	igt_assert(out_ptr);
++
++	igt_memcpy_from_wc(out_ptr, in_ptr, fb->width * fb->height * cpp);
++
++	igt_fb_unmap_buffer(fb, out_ptr);
++	igt_fb_unmap_buffer(src, in_ptr);
++
++	return fb_id;
 +}
-+
- /*
-  * Retrieve all the properies specified in props_name and store them into
-  * plane->props.
-@@ -736,6 +758,9 @@ igt_fill_plane_props(igt_display_t *display, igt_plane_t *plane,
- 		if (strcmp(prop->name, "rotation") == 0)
- 			plane->rotations = igt_plane_rotations(display, plane, prop);
- 
-+		if (strcmp(prop->name, "COLOR_PIPELINE") == 0)
-+			igt_fill_plane_color_pipelines(display, plane, prop);
-+
- 		drmModeFreeProperty(prop);
- 	}
- 
-@@ -3998,6 +4023,29 @@ bool igt_colorop_try_prop_enum(igt_display_t *display,
- 	return true;
- }
- 
-+bool igt_plane_is_valid_colorop(igt_plane_t *plane, igt_colorop_t *colorop)
-+{
-+	int i;
-+	bool found = false;
-+
-+	for (i = 0; i < plane->num_color_pipelines; i++) {
-+		if (plane->color_pipelines[i] == colorop) {
-+			found = true;
-+			break;
-+		}
-+	}
-+
-+	return found;
-+}
-+
-+void igt_plane_set_color_pipeline(igt_plane_t *plane, igt_colorop_t *colorop)
-+{
-+	igt_assert(igt_plane_is_valid_colorop(plane, colorop));
-+
-+	plane->assigned_color_pipeline = colorop;
-+	igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_PIPELINE, colorop->name);
-+}
-+
- void igt_colorop_set_prop_enum(igt_display_t *display,
- 			       igt_colorop_t *colorop,
- 			       enum igt_atomic_colorop_properties prop,
-@@ -4277,6 +4325,11 @@ static int igt_atomic_commit(igt_display_t *display, uint32_t flags, void *user_
- 
- 			if (plane->changed)
- 				igt_atomic_prepare_plane_commit(plane, pipe_obj, req);
-+
-+			/* TODO iterate over assigned color pipeline and prepare colorop commit */
-+			if (plane->assigned_color_pipeline)
-+				igt_atomic_prepare_colorop_commit(plane->assigned_color_pipeline,
-+								  pipe_obj, req);
- 		}
- 
- 	}
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index c6402979d10f..c24ae0017ff6 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -326,6 +326,7 @@ enum igt_atomic_plane_properties {
-        IGT_PLANE_SCALING_FILTER,
-        IGT_PLANE_HOTSPOT_X,
-        IGT_PLANE_HOTSPOT_Y,
-+       IGT_PLANE_COLOR_PIPELINE,
-        IGT_NUM_PLANE_PROPS
- };
- 
-@@ -362,6 +363,8 @@ typedef struct igt_display igt_display_t;
- typedef struct igt_pipe igt_pipe_t;
- typedef uint32_t igt_fixed_t;			/* 16.16 fixed point */
- 
-+#define IGT_NUM_PLANE_COLOR_PIPELINES 4
-+
- typedef enum {
- 	/* this maps to the kernel API */
- 	IGT_ROTATION_0   = 1 << 0,
-@@ -431,6 +434,11 @@ typedef struct igt_plane {
- 	uint64_t *modifiers;
- 	uint32_t *formats;
- 	int format_mod_count;
-+
-+	igt_colorop_t *color_pipelines[IGT_NUM_PLANE_COLOR_PIPELINES];
-+	int num_color_pipelines;
-+
-+	igt_colorop_t *assigned_color_pipeline;
- } igt_plane_t;
- 
- /*
-@@ -777,6 +785,8 @@ extern void igt_plane_set_prop_enum(igt_plane_t *plane,
- 
- extern bool igt_plane_is_valid_colorop(igt_plane_t *plane, igt_colorop_t *colorop);
- 
-+extern void igt_plane_set_color_pipeline(igt_plane_t *plane, igt_colorop_t *colorop);
 +
  /**
-  * igt_colorop_has_prop:
-  * @colorop: colorop to check.
+  * igt_create_color_fb:
+  * @fd: open drm file descriptor
+diff --git a/lib/igt_fb.h b/lib/igt_fb.h
+index d2751c0bb772..258a7669e434 100644
+--- a/lib/igt_fb.h
++++ b/lib/igt_fb.h
+@@ -142,6 +142,7 @@ struct intel_buf *igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
+ 					  const struct igt_fb *fb, const char *name);
+ unsigned int igt_create_fb(int fd, int width, int height, uint32_t format,
+ 			   uint64_t modifier, struct igt_fb *fb);
++unsigned int igt_copy_fb(int fd, struct igt_fb *src, struct igt_fb *fb);
+ unsigned int igt_create_color_fb(int fd, int width, int height,
+ 				 uint32_t format, uint64_t modifier,
+ 				 double r, double g, double b,
 -- 
 2.42.0
