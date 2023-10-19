@@ -1,20 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 266A410E4B6
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Oct 2023 09:55:55 +0000 (UTC)
-From: "Lee, Shawn C" <shawn.c.lee@intel.com>
-To: Mark Yacoub <markyacoub@chromium.org>
-Date: Thu, 19 Oct 2023 09:55:50 +0000
-Message-ID: <BYAPR11MB2710B4451401FB4541091CB3A3D4A@BYAPR11MB2710.namprd11.prod.outlook.com>
-References: <20231018075904.1834634-1-shawn.c.lee@intel.com>
- <CAJUqKUp2tCj4n+pnzFwFwFJjvKZJ-9y=QWCcUnZ3CVw55OuNeA@mail.gmail.com>
-In-Reply-To: <CAJUqKUp2tCj4n+pnzFwFwFJjvKZJ-9y=QWCcUnZ3CVw55OuNeA@mail.gmail.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2AD2310E4BC
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Oct 2023 10:26:14 +0000 (UTC)
+Date: Thu, 19 Oct 2023 12:25:56 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Simon Ser <contact@emersion.fr>
+Message-ID: <20231019102222.yr2dyri2ct5rgsgd@kamilkon-desk.igk.intel.com>
+References: <20230727174311.327796-1-contact@emersion.fr>
+ <20230728082150.pz267tg26xgltqow@zkempczy-mobl2>
+ <K4cmpjO20z_cvNP63T2Ihn2eLPSopWBkrxkLC2hMJH1vcpwSajGBR3qtIYXaoRpa6dfNE3zOekFpEusdkFGrRNC72CjqUU6wjPoDTDSRfkI=@emersion.fr>
+ <20230728084926.y4bqdwxhlnzj74sc@zkempczy-mobl2>
+ <3KpLowHjLEfx8C2CRCgiOAnPE8datEXVEm_sVUzxfB2eown1XJe0l9kaQ68Hr8B2wLh-X54Y8Z40xrMvd_2sNe05PZH0-KkNvET0vfPu1wU=@emersion.fr>
+ <20230728090939.anuxjefizpbx2q2x@zkempczy-mobl2>
+ <0vj29IBo_zFxaIrXnzeUotDmeBQpzlC36NS8Rp_V6ab3LUG8_YZ41n3uTeX0RYziCXEmbkHUpdSBf9nsl27X1N5JhgcG8wKzMbg7Os3duXc=@emersion.fr>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [[PATCH i-g-t]] tests/kms_setmode: disable DRRS if
- eDP support variable refresh rate
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <0vj29IBo_zFxaIrXnzeUotDmeBQpzlC36NS8Rp_V6ab3LUG8_YZ41n3uTeX0RYziCXEmbkHUpdSBf9nsl27X1N5JhgcG8wKzMbg7Os3duXc=@emersion.fr>
+Subject: Re: [igt-dev] [PATCH v2] drm-uapi: sync with drm-next
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,56 +25,36 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: "20231018075904.1834634-1-shawn.c.lee@intel.com"
- <20231018075904.1834634-1-shawn.c.lee@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: igt-dev@lists.freedesktop.org,
+ Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+ Fei Yang <fei.yang@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVGh1cnNkYXksIE9jdG9iZXIgMTksIDIwMjMgMTowNCBBTSwgTWFyayBZYWNvdWIgPG1hcmt5
-YWNvdWJAY2hyb21pdW0ub3JnPiB3cm90ZToNCj5PbiBXZWQsIE9jdCAxOCwgMjAyMyBhdCA0OjA1
-4oCvQU0gTGVlIFNoYXduIEMgPHNoYXduLmMubGVlQGludGVsLmNvbT4gd3JvdGU6DQo+Pg0KPj4g
-QmVsb3cgaXMgYSBmYWlsZWQgY2FzZSB3aGlsZSB0ZXN0aW5nIGttc19zZXRtb2RlLg0KPj4NCj4+
-IENSVENbODBdIFtQaXBlIEFdIE1vZGU6IDE5MjB4MTIwMEA2MEh6IENvbm5lY3RvcnM6IGVEUC0x
-WzIzNl0gRXhwZWN0ZWQgDQo+PiBmcmFtZXRpbWU6IDE2NjU5dXM7IG1lYXN1cmVkIDIwODI0LjR1
-cyArLSA0Ljc5OXVzIGFjY3VyYWN5IDAuMDElIFswLjEwIA0KPj4gc2NhbmxpbmVzXQ0KPj4NCj4+
-IFRoZSBleHBlY3RlZCBmcmFtZSB0aW1lIGlzIDE2NjU5dXMgKDYwSHogcmVmcmVzaCByYXRlKS4N
-Cj4+IEJ1dCBrbXNfc2V0bW9kZSByZXBvcnQgbWVhc3VyZWQgdGltZSB3YXMgMjA4MjQuNHVzICg0
-OEh6KSB0aGVuIGl0IA0KPj4gZmFpbGVkLiBXZSBmb3VuZCBsZWdhY3kgRFJSUyBtb2RlIHdhcyBh
-Y3RpdmUgYXQgdGhhdCB0aW1lIHRoZW4gcmVmcmVzaCANCj4+IHJhdGUgZmFsbCBpbnRvIGxvd2Vy
-IFJSIGF1dG9tYXRpY2FsbHkgdG8gY2F1c2UgdGhpcyBwcm9ibGVtLg0KPj4gRGlzYWJsZSBEUlJT
-IGFmdGVyIGNydGMgc2V0bW9kZSBjYW4gYXZvaWQgZHJpdmVyIHN3aXRjaCB0byBsb3dlciBSUiAN
-Cj4+IG1vZGUNCj4NCj5JcyBpdCBva2F5IGZvciB0aGUgZHJpdmVyIHRvIGRvIHNvPyBXb3VsZCBp
-dCBiZSB0aGF0IHRoZSBkcml2ZXIgc2hvdWxkIG5vdCBkbyB0aGF0IGlmIGl0IHdhc24ndCBhc2tl
-ZD8NCj5UaGFua3MsDQo+LU1hcmsNCj4NCg0KSGkgTWFyaywgdGhhbmtzIGZvciB5b3VyIGNvbW1l
-bnQhIEFmdGVyIG1vZGUgc2V0dGluZywgbGVnYWN5IERSUlMgd2lsbCBzY2hlZHVsZSBhIHRhc2sg
-dG8NCnN3dGljaCB0byBsb3dlciBSUiBpZiB1c2VyIHNwYWNlIGRpZCBub3QgdXBkYXRlIGZyb250
-YnVmZmVyIGFueW1vcmUuIEl0IGlzIGEgc3RhbmRhcmQgYWN0aXZpdHkNCnRvIHN3aXRjaCBoaWdo
-L2xvdyBSUiBmb3IgbGVnYWN5IERSUlMuIEFuZCB0aGVyZSBpcyBubyBhZGRpdGlvbmFsIHBhcmFt
-ZXRlciB0byB0ZWxsIGtlcm5lbA0KZHJpdmVyIHRvIGRpc2FibGUgRFJSUyB2aWEgSU9DVEwuDQoN
-ClNvIHdlIHVzZSB0aGlzIGZ1bmN0aW9uYWwgY2FsbCAoaW50ZWxfZHJyc19kaXNhYmxlKSB0byBj
-YW5jZWwga2VybmVsIHRhc2sgbWFudWFsbHkgYW5kIGF2b2lkIHRvIHN3dGljaCBsb3cgcmVmcmVz
-aCByYXRlLg0KQm90aCBrbXNfZnJvbnRidWZmZXJfdHJhY2tpbmcgYW5kIGttc19kaXJ0eWZiIGhh
-dmUgdGhlIHNhbWUgaW1wbGVtZW50YXRpb24gYXMgd2VsbC4gDQoNCkJlc3QgcmVnYXJkcywNClNo
-YXduDQoNCj4+IGFuZCBnZXQgcGFzcyBmb3IgdGhpcyB0ZXN0IGFzIHdlbGwuDQo+Pg0KPj4gSXNz
-dWU6IGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaWd0LWdwdS10b29scy8tL2lz
-c3Vlcy8xNDgNCj4+IENjOiBUdnJ0a28gVXJzdWxpbiA8dHZydGtvLnVyc3VsaW5AbGludXguaW50
-ZWwuY29tPg0KPj4gQ2M6IFZpZHlhIFNyaW5pdmFzIDx2aWR5YS5zcmluaXZhc0BpbnRlbC5jb20+
-DQo+PiBTaWduZWQtb2ZmLWJ5OiBMZWUgU2hhd24gQyA8c2hhd24uYy5sZWVAaW50ZWwuY29tPg0K
-Pj4gLS0tDQo+PiAgdGVzdHMva21zX3NldG1vZGUuYyB8IDQgKysrKw0KPj4gIDEgZmlsZSBjaGFu
-Z2VkLCA0IGluc2VydGlvbnMoKykNCj4+DQo+PiBkaWZmIC0tZ2l0IGEvdGVzdHMva21zX3NldG1v
-ZGUuYyBiL3Rlc3RzL2ttc19zZXRtb2RlLmMgaW5kZXggDQo+PiA1ZmM0NDIxYzAwODAuLmI2ZmUz
-ZjljMTU5YSAxMDA2NDQNCj4+IC0tLSBhL3Rlc3RzL2ttc19zZXRtb2RlLmMNCj4+ICsrKyBiL3Rl
-c3RzL2ttc19zZXRtb2RlLmMNCj4+IEBAIC0zMSw2ICszMSw3IEBADQo+PiAgI2luY2x1ZGUgPHN5
-cy90aW1lLmg+DQo+PiAgI2luY2x1ZGUgPG1hdGguaD4NCj4+ICAjaW5jbHVkZSAieGUveGVfcXVl
-cnkuaCINCj4+ICsjaW5jbHVkZSAiaTkxNS9pbnRlbF9kcnJzLmgiDQo+PiAgLyoqDQo+PiAgICog
-VEVTVDoga21zIHNldG1vZGUNCj4+ICAgKiBDYXRlZ29yeTogRGlzcGxheQ0KPj4gQEAgLTY1MSw2
-ICs2NTIsOSBAQCByZXRyeToNCj4+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgIGNydGMtPmZiX2luZm8uZmJfaWQsIDAsIDAsIGlkcywNCj4+ICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNydGMtPmNvbm5lY3Rvcl9jb3VudCwg
-DQo+PiAmY3J0Yy0+bW9kZSk7DQo+Pg0KPj4gKyAgICAgICAgICAgICAgIGlmIChpc19pbnRlbF9k
-ZXZpY2UoZHJtX2ZkKSkNCj4+ICsgICAgICAgICAgICAgICAgICAgICAgIGludGVsX2RycnNfZGlz
-YWJsZShkcm1fZmQsIGNydGMtPnBpcGVfaWQpOw0KPj4gKw0KPj4gICAgICAgICAgICAgICAgIGZy
-ZWUoaWRzKTsNCj4+DQo+PiAgICAgICAgICAgICAgICAgaWYgKHJldCA8IDApIHsNCj4+IC0tDQo+
-PiAyLjM0LjENCj4+DQo=
+Hi Simon,
+On 2023-10-18 at 12:43:15 +0000, Simon Ser wrote:
+> Any news about this? Can I get a R-b?
+
+Sorry for delay, could you split out into separate patches,
+each one for amd and i915 drivers:
+
+include/drm-uapi/amdgpu_drm.h
+Btw AMDGPU have some differences now between current drm-tip?
+
+include/drm-uapi/i915_drm.h
+lib/i915/i915_drm_local.h
+
+then drm related:
+
+include/drm-uapi/drm.h          |  94 ++++++++
+include/drm-uapi/drm_fourcc.h   |   2 +-
+include/drm-uapi/drm_mode.h     | 163 +++++++++++---
+
+and then rest of headers in one patch. For each of these please add
+respective contributors into Cc. I looked at diff between drm-tip
+and it seems like I could give r-b to almost all. I would leave amd
+for more discussion.
+
+Regards,
+Kamil
