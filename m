@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D4B3310E500
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Oct 2023 14:41:45 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A2EA810E507
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Oct 2023 14:41:52 +0000 (UTC)
 From: Matthew Auld <matthew.auld@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 19 Oct 2023 15:40:52 +0100
-Message-ID: <20231019144106.560624-2-matthew.auld@intel.com>
+Date: Thu, 19 Oct 2023 15:40:57 +0100
+Message-ID: <20231019144106.560624-7-matthew.auld@intel.com>
 In-Reply-To: <20231019144106.560624-1-matthew.auld@intel.com>
 References: <20231019144106.560624-1-matthew.auld@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 01/15] drm-uapi/xe_drm: sync to get pat
- and coherency bits
+Subject: [igt-dev] [PATCH i-g-t v4 06/15] lib/intel_pat: add helpers for
+ common pat_index modes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,127 +24,144 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Grab the PAT & coherency uapi additions.
+For now just add uc, wt and wb for every platform. The wb mode should
+always be at least 1way coherent, if messing around with system memory.
+Also make non-matching platforms throw an error rather than trying to
+inherit the modes from previous platforms since they will likely be
+different.
 
 Signed-off-by: Matthew Auld <matthew.auld@intel.com>
 Cc: José Roberto de Souza <jose.souza@intel.com>
 Cc: Pallavi Mishra <pallavi.mishra@intel.com>
 Reviewed-by: Pallavi Mishra <pallavi.mishra@intel.com>
+Reviewed-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 ---
- include/drm-uapi/xe_drm.h | 93 +++++++++++++++++++++++++++++++++++++--
- 1 file changed, 90 insertions(+), 3 deletions(-)
+ lib/intel_pat.c | 77 +++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/intel_pat.h | 19 ++++++++++++
+ lib/meson.build |  1 +
+ 3 files changed, 97 insertions(+)
+ create mode 100644 lib/intel_pat.c
+ create mode 100644 lib/intel_pat.h
 
-diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index 6ff1106e4..d9ed75f53 100644
---- a/include/drm-uapi/xe_drm.h
-+++ b/include/drm-uapi/xe_drm.h
-@@ -548,8 +548,54 @@ struct drm_xe_gem_create {
- 	 */
- 	__u32 handle;
- 
--	/** @pad: MBZ */
--	__u32 pad;
-+	/**
-+	 * @coh_mode: The coherency mode for this object. This will limit the
-+	 * possible @cpu_caching values.
-+	 *
-+	 * Supported values:
-+	 *
-+	 * DRM_XE_GEM_COH_NONE: GPU access is assumed to be not coherent with
-+	 * CPU. CPU caches are not snooped.
-+	 *
-+	 * DRM_XE_GEM_COH_AT_LEAST_1WAY:
-+	 *
-+	 * CPU-GPU coherency must be at least 1WAY.
-+	 *
-+	 * If 1WAY then GPU access is coherent with CPU (CPU caches are snooped)
-+	 * until GPU acquires. The acquire by the GPU is not tracked by CPU
-+	 * caches.
-+	 *
-+	 * If 2WAY then should be fully coherent between GPU and CPU.  Fully
-+	 * tracked by CPU caches. Both CPU and GPU caches are snooped.
-+	 *
-+	 * Note: On dgpu the GPU device never caches system memory. The device
-+	 * should be thought of as always 1WAY coherent, with the addition that
-+	 * the GPU never caches system memory. At least on current dgpu HW there
-+	 * is no way to turn off snooping so likely the different coherency
-+	 * modes of the pat_index make no difference for system memory.
-+	 */
-+#define DRM_XE_GEM_COH_NONE		1
-+#define DRM_XE_GEM_COH_AT_LEAST_1WAY	2
-+	__u16 coh_mode;
+diff --git a/lib/intel_pat.c b/lib/intel_pat.c
+new file mode 100644
+index 000000000..2b892ee52
+--- /dev/null
++++ b/lib/intel_pat.c
+@@ -0,0 +1,77 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2023 Intel Corporation
++ */
 +
-+	/**
-+	 * @cpu_caching: The CPU caching mode to select for this object. If
-+	 * mmaping the object the mode selected here will also be used.
-+	 *
-+	 * Supported values:
-+	 *
-+	 * DRM_XE_GEM_CPU_CACHING_WB: Allocate the pages with write-back caching.
-+	 * On iGPU this can't be used for scanout surfaces. The @coh_mode must
-+	 * be DRM_XE_GEM_COH_AT_LEAST_1WAY. Currently not allowed for objects placed
-+	 * in VRAM.
-+	 *
-+	 * DRM_XE_GEM_CPU_CACHING_WC: Allocate the pages as write-combined. This is
-+	 * uncached. Any @coh_mode is permitted. Scanout surfaces should likely
-+	 * use this. All objects that can be placed in VRAM must use this.
-+	 */
-+#define DRM_XE_GEM_CPU_CACHING_WB                      1
-+#define DRM_XE_GEM_CPU_CACHING_WC                      2
-+	__u16 cpu_caching;
- 
- 	/** @reserved: Reserved */
- 	__u64 reserved[2];
-@@ -626,8 +672,49 @@ struct drm_xe_vm_bind_op {
- 	 */
- 	__u32 obj;
- 
-+	/**
-+	 * @pat_index: The platform defined @pat_index to use for this mapping.
-+	 * The index basically maps to some predefined memory attributes,
-+	 * including things like caching, coherency, compression etc.  The exact
-+	 * meaning of the pat_index is platform specific and defined in the
-+	 * Bspec and PRMs.  When the KMD sets up the binding the index here is
-+	 * encoded into the ppGTT PTE.
-+	 *
-+	 * For coherency the @pat_index needs to be least as coherent as
-+	 * drm_xe_gem_create.coh_mode. i.e coh_mode(pat_index) >=
-+	 * drm_xe_gem_create.coh_mode. The KMD will extract the coherency mode
-+	 * from the @pat_index and reject if there is a mismatch (see note below
-+	 * for pre-MTL platforms).
-+	 *
-+	 * Note: On pre-MTL platforms there is only a caching mode and no
-+	 * explicit coherency mode, but on such hardware there is always a
-+	 * shared-LLC (or is dgpu) so all GT memory accesses are coherent with
-+	 * CPU caches even with the caching mode set as uncached.  It's only the
-+	 * display engine that is incoherent (on dgpu it must be in VRAM which
-+	 * is always mapped as WC on the CPU). However to keep the uapi somewhat
-+	 * consistent with newer platforms the KMD groups the different cache
-+	 * levels into the following coherency buckets on all pre-MTL platforms:
-+	 *
-+	 *	ppGTT UC -> DRM_XE_GEM_COH_NONE
-+	 *	ppGTT WC -> DRM_XE_GEM_COH_NONE
-+	 *	ppGTT WT -> DRM_XE_GEM_COH_NONE
-+	 *	ppGTT WB -> DRM_XE_GEM_COH_AT_LEAST_1WAY
-+	 *
-+	 * In practice UC/WC/WT should only ever used for scanout surfaces on
-+	 * such platforms (or perhaps in general for dma-buf if shared with
-+	 * another device) since it is only the display engine that is actually
-+	 * incoherent.  Everything else should typically use WB given that we
-+	 * have a shared-LLC.  On MTL+ this completely changes and the HW
-+	 * defines the coherency mode as part of the @pat_index, where
-+	 * incoherent GT access is possible.
-+	 *
-+	 * Note: For userptr and externally imported dma-buf the kernel expects
-+	 * either 1WAY or 2WAY for the @pat_index.
-+	 */
-+	__u16 pat_index;
++#include "intel_pat.h"
 +
- 	/** @pad: MBZ */
--	__u32 pad;
-+	__u16 pad;
- 
- 	union {
- 		/**
++#include "igt.h"
++
++struct intel_pat_cache {
++	uint8_t uc; /* UC + COH_NONE */
++	uint8_t wt; /* WT + COH_NONE */
++	uint8_t wb; /* WB + COH_AT_LEAST_1WAY */
++
++	uint8_t max_index;
++};
++
++static void intel_get_pat_idx(int fd, struct intel_pat_cache *pat)
++{
++	uint16_t dev_id = intel_get_drm_devid(fd);
++
++	if (intel_get_device_info(dev_id)->graphics_ver == 20) {
++		pat->uc = 3;
++		pat->wt = 15; /* Compressed + WB-transient */
++		pat->wb = 2;
++		pat->max_index = 31;
++	} else if (IS_METEORLAKE(dev_id)) {
++		pat->uc = 2;
++		pat->wt = 1;
++		pat->wb = 3;
++		pat->max_index = 3;
++	} else if (IS_PONTEVECCHIO(dev_id)) {
++		pat->uc = 0;
++		pat->wt = 2;
++		pat->wb = 3;
++		pat->max_index = 7;
++	} else if (intel_graphics_ver(dev_id) <= IP_VER(12, 60)) {
++		pat->uc = 3;
++		pat->wt = 2;
++		pat->wb = 0;
++		pat->max_index = 3;
++	} else {
++		igt_critical("Platform is missing PAT settings for uc/wt/wb\n");
++	}
++}
++
++uint8_t intel_get_max_pat_index(int fd)
++{
++	struct intel_pat_cache pat = {};
++
++	intel_get_pat_idx(fd, &pat);
++	return pat.max_index;
++}
++
++uint8_t intel_get_pat_idx_uc(int fd)
++{
++	struct intel_pat_cache pat = {};
++
++	intel_get_pat_idx(fd, &pat);
++	return pat.uc;
++}
++
++uint8_t intel_get_pat_idx_wt(int fd)
++{
++	struct intel_pat_cache pat = {};
++
++	intel_get_pat_idx(fd, &pat);
++	return pat.wt;
++}
++
++uint8_t intel_get_pat_idx_wb(int fd)
++{
++	struct intel_pat_cache pat = {};
++
++	intel_get_pat_idx(fd, &pat);
++	return pat.wb;
++}
+diff --git a/lib/intel_pat.h b/lib/intel_pat.h
+new file mode 100644
+index 000000000..c24dbc275
+--- /dev/null
++++ b/lib/intel_pat.h
+@@ -0,0 +1,19 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2023 Intel Corporation
++ */
++
++#ifndef INTEL_PAT_H
++#define INTEL_PAT_H
++
++#include <stdint.h>
++
++#define DEFAULT_PAT_INDEX ((uint8_t)-1) /* igt-core can pick 1way or better */
++
++uint8_t intel_get_max_pat_index(int fd);
++
++uint8_t intel_get_pat_idx_uc(int fd);
++uint8_t intel_get_pat_idx_wt(int fd);
++uint8_t intel_get_pat_idx_wb(int fd);
++
++#endif /* INTEL_PAT_H */
+diff --git a/lib/meson.build b/lib/meson.build
+index a7bccafc3..48466a2e9 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -64,6 +64,7 @@ lib_sources = [
+ 	'intel_device_info.c',
+ 	'intel_mmio.c',
+ 	'intel_mocs.c',
++	'intel_pat.c',
+ 	'ioctl_wrappers.c',
+ 	'media_spin.c',
+ 	'media_fill.c',
 -- 
 2.41.0
