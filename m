@@ -1,23 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8989310E50A
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Oct 2023 15:36:22 +0000 (UTC)
-Message-ID: <682734ee-f4c6-4d9a-938c-5818529d1554@linux.intel.com>
-Date: Thu, 19 Oct 2023 17:36:18 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 35C0410E500
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Oct 2023 14:41:45 +0000 (UTC)
+From: Matthew Auld <matthew.auld@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 19 Oct 2023 15:40:51 +0100
+Message-ID: <20231019144106.560624-1-matthew.auld@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
- karolina.stolarek@intel.com
-References: <20231017143654.617723-1-marcin.bernatowicz@linux.intel.com>
- <20231018152807.46mc4l2ubrb5ttuv@kamilkon-desk.igk.intel.com>
- <20231019152718.myvwj2n5oxi2adp7@kamilkon-desk.igk.intel.com>
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20231019152718.myvwj2n5oxi2adp7@kamilkon-desk.igk.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/intel_blt.c: ensure uint64_t result
- of multiplication
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v4 00/15] PAT and cache coherency support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,84 +21,23 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Series implements the IGT side of things needed to support the new Xe uapi here:
+https://patchwork.freedesktop.org/series/123027/
 
+Branch with the IGT changes:
+https://gitlab.freedesktop.org/mwa/igt-gpu-tools/-/commits/xe-pat-index
 
-On 10/19/2023 5:27 PM, Kamil Konieczny wrote:
-> Hi Marcin,
-> 
-> On 2023-10-18 at 17:28:11 +0200, Kamil Konieczny wrote:
->> Hi Marcin,
->> On 2023-10-17 at 14:36:54 +0000, Marcin Bernatowicz wrote:
->>> Additionally check for overflow.
->> - ^^^^^^^^^^^^
->> This type was from the start uint64, so imho change subject from:
->>
->> lib/intel_blt.c: ensure uint64_t result of multiplication
->> ------------ ^^
->> sidenote: remove ".c"
->>
->> into:
->> lib/intel_blt: check for overflow in multiplication
->>
->> and adjust description.
->>
->>>
->>> This should allow to exercise large buffers
->>> ex. xe_exercise_blt -W 16384 -H 16384
->>
->> Please explain - this should fit in 32bit? 16K*16K*32 = 0x40000000
->> Or do you mean much higher values for W and H?
->>
-> 
-> You were right here, sorry.
-> 
->>>
->>> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
->>> ---
->>>   lib/intel_blt.c | 8 +++++++-
->>>   1 file changed, 7 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
->>> index a76c7a404..f46c85e91 100644
->>> --- a/lib/intel_blt.c
->>> +++ b/lib/intel_blt.c
->>> @@ -1607,12 +1607,18 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
->>>   		  bool create_mapping)
->>>   {
->>>   	struct blt_copy_object *obj;
->>> -	uint64_t size = width * height * bpp / 8;
->>>   	uint32_t stride = tiling == T_LINEAR ? width * 4 : width;
->>>   	uint32_t handle;
->>> +	uint64_t size;
->>>   
->>>   	igt_assert_f(blt->driver, "Driver isn't set, have you called blt_copy_init()?\n");
->>>   
->>> +	igt_assert_f((UINT64_MAX / 8) >= width &&
->> ----------------- ^^^^^^^^^^^^^^
->> This is not needed, it checks for MAX >= w * 8, while you want
->> size > 0, imho add a second assert after calculating size.
->>
->> Regards,
->> Kamil
->>
-> 
-> One more thing, before these asserts you should check that
-> both width and height are not zero.
+Branch with the KMD changes:
+https://gitlab.freedesktop.org/mwa/kernel/-/tree/xe-pat-index?ref_type=heads
 
-True, more asserts needed :)
+v2:
+  - Various tweaks and improvements.
+  - Rebase on Xe2 additions.
+  - Handle compressed wt on Xe2 + some other xe2 specific pat_index modes.
+v3:
+  - Various fixes and improvements.
+v4:
+  - Various improvements. Rebase.
 
-> 
-> Regards,
-> Kamil
-> 
->>> +		     (UINT64_MAX / width) >= height &&
->>> +		     (UINT64_MAX / (width * height)) >= bpp, "Overflow detected!\n");
->>> +
->>> +	size = (uint64_t)width * height * bpp / 8;
->>> +
->>>   	obj = calloc(1, sizeof(*obj));
->>>   
->>>   	obj->size = size;
->>> -- 
->>> 2.42.0
->>>
+-- 
+2.41.0
