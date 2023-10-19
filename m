@@ -1,23 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2AD2310E4BC
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Oct 2023 10:26:14 +0000 (UTC)
-Date: Thu, 19 Oct 2023 12:25:56 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E8A2010E4BB
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Oct 2023 10:39:37 +0000 (UTC)
+Date: Thu, 19 Oct 2023 12:39:33 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Simon Ser <contact@emersion.fr>
-Message-ID: <20231019102222.yr2dyri2ct5rgsgd@kamilkon-desk.igk.intel.com>
-References: <20230727174311.327796-1-contact@emersion.fr>
- <20230728082150.pz267tg26xgltqow@zkempczy-mobl2>
- <K4cmpjO20z_cvNP63T2Ihn2eLPSopWBkrxkLC2hMJH1vcpwSajGBR3qtIYXaoRpa6dfNE3zOekFpEusdkFGrRNC72CjqUU6wjPoDTDSRfkI=@emersion.fr>
- <20230728084926.y4bqdwxhlnzj74sc@zkempczy-mobl2>
- <3KpLowHjLEfx8C2CRCgiOAnPE8datEXVEm_sVUzxfB2eown1XJe0l9kaQ68Hr8B2wLh-X54Y8Z40xrMvd_2sNe05PZH0-KkNvET0vfPu1wU=@emersion.fr>
- <20230728090939.anuxjefizpbx2q2x@zkempczy-mobl2>
- <0vj29IBo_zFxaIrXnzeUotDmeBQpzlC36NS8Rp_V6ab3LUG8_YZ41n3uTeX0RYziCXEmbkHUpdSBf9nsl27X1N5JhgcG8wKzMbg7Os3duXc=@emersion.fr>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20231019103933.kbwfumzy5cok2r2n@kamilkon-desk.igk.intel.com>
+References: <20231018075904.1834634-1-shawn.c.lee@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <0vj29IBo_zFxaIrXnzeUotDmeBQpzlC36NS8Rp_V6ab3LUG8_YZ41n3uTeX0RYziCXEmbkHUpdSBf9nsl27X1N5JhgcG8wKzMbg7Os3duXc=@emersion.fr>
-Subject: Re: [igt-dev] [PATCH v2] drm-uapi: sync with drm-next
+In-Reply-To: <20231018075904.1834634-1-shawn.c.lee@intel.com>
+Subject: Re: [igt-dev] [[PATCH i-g-t]] tests/kms_setmode: disable DRRS if
+ eDP support variable refresh rate
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,36 +20,83 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org,
- Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
- Fei Yang <fei.yang@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: Lee Shawn C <shawn.c.lee@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Simon,
-On 2023-10-18 at 12:43:15 +0000, Simon Ser wrote:
-> Any news about this? Can I get a R-b?
+Hi Lee,
+On 2023-10-18 at 15:59:04 +0800, Lee Shawn C wrote:
 
-Sorry for delay, could you split out into separate patches,
-each one for amd and i915 drivers:
+please correct subject in your patch:
 
-include/drm-uapi/amdgpu_drm.h
-Btw AMDGPU have some differences now between current drm-tip?
+[[PATCH i-g-t]] tests/kms_setmode: disable DRRS if eDP support variable refresh rate
+^ ----------- ^
 
-include/drm-uapi/i915_drm.h
-lib/i915/i915_drm_local.h
+Too many braceses here, should be:
+[PATCH i-g-t] tests/kms_setmode: disable DRRS if eDP support variable refresh rate
 
-then drm related:
+> Below is a failed case while testing kms_setmode.
+> 
+> CRTC[80] [Pipe A] Mode: 1920x1200@60Hz Connectors: eDP-1[236]
+> Expected frametime: 16659us; measured 20824.4us +- 4.799us accuracy 0.01% [0.10 scanlines]
+> 
+> The expected frame time is 16659us (60Hz refresh rate).
+> But kms_setmode report measured time was 20824.4us (48Hz) then
+> it failed. We found legacy DRRS mode was active at that time
+> then refresh rate fall into lower RR automatically to cause this problem.
+> Disable DRRS after crtc setmode can avoid driver switch to lower RR mode
+> and get pass for this test as well.
+> 
+> Issue: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/148
+> Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+> Cc: Vidya Srinivas <vidya.srinivas@intel.com>
 
-include/drm-uapi/drm.h          |  94 ++++++++
-include/drm-uapi/drm_fourcc.h   |   2 +-
-include/drm-uapi/drm_mode.h     | 163 +++++++++++---
+Adding Juha-Pekka and Bhanu to Cc.
 
-and then rest of headers in one patch. For each of these please add
-respective contributors into Cc. I looked at diff between drm-tip
-and it seems like I could give r-b to almost all. I would leave amd
-for more discussion.
+> Signed-off-by: Lee Shawn C <shawn.c.lee@intel.com>
+> ---
+>  tests/kms_setmode.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
+> index 5fc4421c0080..b6fe3f9c159a 100644
+> --- a/tests/kms_setmode.c
+> +++ b/tests/kms_setmode.c
+> @@ -31,6 +31,7 @@
+>  #include <sys/time.h>
+>  #include <math.h>
+>  #include "xe/xe_query.h"
+> +#include "i915/intel_drrs.h"
+
+Keep it sorted alphabetically, also add newline after system
+headers:
+
+#include <math.h>
+
+#include "i915/intel_drrs.h"
+#include "xe/xe_query.h"
+
+>  /**
+>   * TEST: kms setmode
+>   * Category: Display
+> @@ -651,6 +652,9 @@ retry:
+>  					     crtc->fb_info.fb_id, 0, 0, ids,
+>  					     crtc->connector_count, &crtc->mode);
+>  
+> +		if (is_intel_device(drm_fd))
+
+Question for Bhanu or Juha-Pekka: will this work for Xe?
+Should this be: 	if (is_i915_device(drm_fd))
 
 Regards,
 Kamil
+
+> +			intel_drrs_disable(drm_fd, crtc->pipe_id);
+> +
+>  		free(ids);
+>  
+>  		if (ret < 0) {
+> -- 
+> 2.34.1
+> 
