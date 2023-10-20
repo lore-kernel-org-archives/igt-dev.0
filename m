@@ -1,23 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E7FB510E5A0
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Oct 2023 10:21:51 +0000 (UTC)
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.252.0.134])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 67FD8580E39
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Oct 2023 03:21:50 -0700 (PDT)
-Received: from maurocar by linux.intel.com with local (Exim 4.96.1)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qtmdY-000Vbx-09
- for igt-dev@lists.freedesktop.org; Fri, 20 Oct 2023 12:21:48 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 20 Oct 2023 12:20:31 +0200
-Message-ID: <20231020102146.121478-1-mauro.chehab@linux.intel.com>
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com
+ [IPv6:2a00:1450:4864:20::12e])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7B5C810E59B
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Oct 2023 11:13:09 +0000 (UTC)
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-5079f9675c6so986661e87.2
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Oct 2023 04:13:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/2] Improve IGT runner dry-run logic
+References: <20231019193321.90009-1-zbigniew.kempczynski@intel.com>
+ <20231019193321.90009-3-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20231019193321.90009-3-zbigniew.kempczynski@intel.com>
+From: Matthew Auld <matthew.william.auld@gmail.com>
+Date: Fri, 20 Oct 2023 12:12:40 +0100
+Message-ID: <CAM0jSHPKhnFFJrwOqMzJNUsn1iq-O0AyxucQRgQ7BsB7LxCgbQ@mail.gmail.com>
+To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [igt-dev] [PATCH i-g-t v3 2/5] lib/intel_blt: Add visible vram
+ flag if object needs to be mapped
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,23 +25,18 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
-
-The IGT dry-run logic is currently almost useless, as it doesn't
-produce any output with the planned jobs. It also currently requires
-root access, but this is not needed.
-
-Mauro Carvalho Chehab (2):
-  igt_runner: don't require root for dry_run
-  igt_runner: output planned job_list tasks in dry-run mode
-
- runner/executor.c | 6 ++++++
- runner/settings.c | 1 +
- 2 files changed, 7 insertions(+)
-
--- 
-2.41.0
+On Thu, 19 Oct 2023 at 20:33, Zbigniew Kempczy=C5=84ski
+<zbigniew.kempczynski@intel.com> wrote:
+>
+> For objects with blitter helper in vram which needs to be mapped
+> add visible vram flag to ensure it will be placed in mappable
+> vram region.
+>
+> Signed-off-by: Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.com>
+> Cc: Matthew Auld <matthew.auld@intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
