@@ -1,17 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0F29E10E5B3
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Oct 2023 13:01:15 +0000 (UTC)
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com
+ [IPv6:2a00:1450:4864:20::130])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9A98110E0E8
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Oct 2023 13:30:49 +0000 (UTC)
+Received: by mail-lf1-x130.google.com with SMTP id
+ 2adb3069b0e04-507c8316abcso1027888e87.1
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Oct 2023 06:30:49 -0700 (PDT)
+From: Petri Latvala <adrinael@adrinael.net>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 20 Oct 2023 15:00:16 +0200
-Message-ID: <20231020130016.86398-9-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20231020130016.86398-1-kamil.konieczny@linux.intel.com>
-References: <20231020130016.86398-1-kamil.konieczny@linux.intel.com>
+Date: Fri, 20 Oct 2023 16:30:41 +0300
+Message-Id: <20231020133041.58257-3-adrinael@adrinael.net>
+In-Reply-To: <20231020133041.58257-1-adrinael@adrinael.net>
+References: <20231020133041.58257-1-adrinael@adrinael.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v9 8/8] tests/intel/xe_create: print first
- opened card
+Subject: [igt-dev] [PATCH 3/3] runner/runner_tests: Fix name of no-subtests
+ in unit tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,42 +27,35 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Use helper and allow to print message about first opened
-card, so it will be coherent with messages for other opened
-cards. Before this log for multi-gpu test:
+Now that runner normalizes no-subtest entries in testlists, make sure
+the name matches what's available.
 
-IGT-Version: 1.28-g24b5fbcb5 (x86_64) (Linux: 6.6.0-rc3-xe-public)
-Opened device: /dev/dri/card1
-Starting subtest: multigpu-create-massive-size
-<g:1> Opened device: /dev/dri/card2
-<g:2> Opened device: /dev/dri/card3
-Subtest multigpu-create-massive-size: SUCCESS
-
-After using helper we can see first GPU with <g:0> like:
-
-Opened device: /dev/dri/card1
-Starting subtest: multigpu-create-massive-size
-<g:0> Opened device: /dev/dri/card1
-<g:1> Opened device: /dev/dri/card2
-<g:2> Opened device: /dev/dri/card3
-Subtest multigpu-create-massive-size: SUCCESS
-
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Petri Latvala <adrinael@adrinael.net>
 ---
- tests/intel/xe_create.c | 1 +
- 1 file changed, 1 insertion(+)
+ runner/runner_tests.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
-index d17ebeb65..640afebc0 100644
---- a/tests/intel/xe_create.c
-+++ b/tests/intel/xe_create.c
-@@ -244,6 +244,7 @@ igt_main
- 		igt_multi_fork(child, gpu_filter_count) {
- 			int gpu_fd;
+diff --git a/runner/runner_tests.c b/runner/runner_tests.c
+index e6024de11..11ff05bc0 100644
+--- a/runner/runner_tests.c
++++ b/runner/runner_tests.c
+@@ -802,7 +802,7 @@ igt_main
+ 		char filename[] = "tmplistXXXXXX";
+ 		const char testlisttext[] = "igt@successtest@first-subtest\n"
+ 			"igt@successtest@second-subtest\n"
+-			"igt@nosubtests\n";
++			"igt@no-subtests\n";
+ 		int multiple;
+ 		struct job_list *list = malloc(sizeof(*list));
  
-+			__drm_invalidate_opened();
- 			gpu_fd = __drm_open_driver_another(child, DRIVER_XE);
- 			igt_assert_f(gpu_fd > 0, "cannot open gpu-%d, errno=%d\n", child, errno);
+@@ -830,7 +830,7 @@ igt_main
  
+ 				igt_assert_eqstr(list->entries[0].binary, "successtest");
+ 				if (!multiple) igt_assert_eqstr(list->entries[1].binary, "successtest");
+-				igt_assert_eqstr(list->entries[multiple ? 1 : 2].binary, "nosubtests");
++				igt_assert_eqstr(list->entries[multiple ? 1 : 2].binary, "no-subtests");
+ 
+ 				igt_assert_eq(list->entries[0].subtest_count, multiple ? 2 : 1);
+ 				igt_assert_eq(list->entries[1].subtest_count, multiple ? 0 : 1);
 -- 
-2.42.0
+2.39.2
