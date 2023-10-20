@@ -1,19 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com
- [IPv6:2a00:1450:4864:20::12a])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D661F10E0E8
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Oct 2023 13:30:49 +0000 (UTC)
-Received: by mail-lf1-x12a.google.com with SMTP id
- 2adb3069b0e04-5079eed8bfbso1126379e87.1
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Oct 2023 06:30:49 -0700 (PDT)
-From: Petri Latvala <adrinael@adrinael.net>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6A17910E5A9
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Oct 2023 13:34:19 +0000 (UTC)
+Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
+ [10.252.0.134])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id 40F42580CD9
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Oct 2023 06:34:18 -0700 (PDT)
+Received: from maurocar by linux.intel.com with local (Exim 4.96.1)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qtpdn-000ZFX-1D
+ for igt-dev@lists.freedesktop.org; Fri, 20 Oct 2023 15:34:15 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 20 Oct 2023 16:30:39 +0300
-Message-Id: <20231020133041.58257-1-adrinael@adrinael.net>
+Date: Fri, 20 Oct 2023 15:30:10 +0200
+Message-ID: <20231020133413.135395-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 1/3] runner: Normalize testlist entries that don't
- list subtests
+Subject: [igt-dev] [PATCH i-g-t 0/1] fix igt_runner job list handler
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,57 +29,23 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As the syntax for "all subtests" and "test that doesn't have subtests"
-is the same, check the subtest listing when building the execution
-plan. Doing that makes it possible to still have "all subtests" in
-testlists (albeit not originally designed to support that) and enables
-blocklisting particular subtests.
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Signed-off-by: Petri Latvala <adrinael@adrinael.net>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Arkadiusz Hiler <arek@hiler.eu>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/149
----
- runner/job_list.c | 22 +++++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
+As reported at:
+	https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/149
 
-diff --git a/runner/job_list.c b/runner/job_list.c
-index e6ea83631..27cbb10bc 100644
---- a/runner/job_list.c
-+++ b/runner/job_list.c
-@@ -230,8 +230,28 @@ static bool job_list_from_test_list(struct job_list *job_list,
- 			continue;
- 
- 		if (sscanf(line, "igt@%ms", &binary) == 1) {
--			if ((delim = strchr(binary, '@')) != NULL)
-+			if ((delim = strchr(binary, '@')) != NULL) {
- 				*delim++ = '\0';
-+			} else {
-+				/*
-+				 * No subtests specified. Check
-+				 * whether the user means "all
-+				 * subtests" or if the test doesn't
-+				 * have any.
-+				 */
-+				if (entry.binary) {
-+					/* First flush the entry we're building for multiple-mode */
-+					add_job_list_entry(job_list, entry.binary, entry.subtests, entry.subtest_count);
-+					memset(&entry, 0, sizeof(entry));
-+					any = true;
-+				}
-+
-+				add_subtests(job_list, settings, binary,
-+					     &settings->include_regexes,
-+					     &settings->exclude_regexes);
-+				any = true;
-+				continue;
-+			}
- 
- 			if (!settings->multiple_mode) {
- 				char **subtests = NULL;
+IGT runner is not properly generating a testlist on some cases.
+The problem is that subtest expansion is not done properly when
+a test list is passed to the runner together with blocklist(s).
+
+Fix it by ensuring that subtests will be handled whenever a block
+list is passed to it.
+
+Mauro Carvalho Chehab (1):
+  igt_runner: job_list: expand subtests also when --test-list is used
+
+ runner/job_list.c | 56 ++++++++++++++++++++++++++++-------------------
+ 1 file changed, 34 insertions(+), 22 deletions(-)
+
 -- 
-2.39.2
+2.41.0
