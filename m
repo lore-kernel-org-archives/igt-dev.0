@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C2A0B10E5A9
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Oct 2023 13:01:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0D10010E5B3
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Oct 2023 13:01:13 +0000 (UTC)
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 20 Oct 2023 15:00:12 +0200
-Message-ID: <20231020130016.86398-5-kamil.konieczny@linux.intel.com>
+Date: Fri, 20 Oct 2023 15:00:15 +0200
+Message-ID: <20231020130016.86398-8-kamil.konieczny@linux.intel.com>
 In-Reply-To: <20231020130016.86398-1-kamil.konieczny@linux.intel.com>
 References: <20231020130016.86398-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v9 4/8] lib/drmtest: save skip offset for
- first opened device
+Subject: [igt-dev] [PATCH i-g-t v9 7/8] lib/drmtest: create helper for
+ dropping opened paths
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,59 +23,83 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On some boards with many discrete GPU cards it may happen that
-on-board one is integrated and will be skipped during opening
-a first device. With out-of-order try and open it may result
-with off-by-one error opening wrong card. Fixed this with saving
-skip offset for first device name.
+Create helper for cleaning all cached opened paths for drivers.
+This may be used when we want to test multi-GPU scenarios and in
+them inform user about each opened GPU card including first one.
+Currently almost all tests open first card at start for
+performing checks for it but that cause a lost possibilty to
+inform user later about opening this first card.
 
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/drmtest.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ lib/drmtest.c | 24 +++++++++++++++++++++---
+ lib/drmtest.h |  1 +
+ 2 files changed, 22 insertions(+), 3 deletions(-)
 
 diff --git a/lib/drmtest.c b/lib/drmtest.c
-index 7c2fd7c56..89d045200 100644
+index 2cdeb8e3b..8eeb11976 100644
 --- a/lib/drmtest.c
 +++ b/lib/drmtest.c
-@@ -292,6 +292,8 @@ static struct {
- }_opened_fds[64];
+@@ -221,16 +221,17 @@ struct _opened_device_path {
+ 	struct igt_list_head link;
+ };
  
- static int _opened_fds_count;
-+static int _opened_fds0_skip;
-+static int _opened_fds0_chipset;
- 
- static void _set_opened_fd(int idx, int fd)
++static IGT_LIST_HEAD(_opened_paths);
++
+ /*
+  * Logs path of opened device. Device path opened for the first time is logged at info level,
+  * subsequent opens (if any) are logged at debug level.
+  */
+ static void log_opened_device_path(const char *device_path)
  {
-@@ -348,7 +350,11 @@ static int __search_and_open(const char *base, int offset, unsigned int chipset,
- 	if (forced)
- 		igt_debug("Force option used: Using driver %s\n", forced);
+-	static IGT_LIST_HEAD(opened_paths);
+ 	struct _opened_device_path *item;
  
--	offset += as_idx;
-+	if (offset == 0 && as_idx != 0 && _opened_fds0_chipset == chipset)
-+		offset += as_idx + _opened_fds0_skip;
-+	else
-+		offset += as_idx;
-+
- 	for (int i = 0; i < 16; i++) {
- 		char name[80];
- 		int fd;
-@@ -359,8 +365,15 @@ static int __search_and_open(const char *base, int offset, unsigned int chipset,
- 			continue;
+-	igt_list_for_each_entry(item, &opened_paths, link) {
++	igt_list_for_each_entry(item, &_opened_paths, link) {
+ 		if (!strcmp(item->path, device_path)) {
+ 			igt_debug("Opened previously opened device: %s\n", device_path);
+ 			return;
+@@ -241,10 +242,27 @@ static void log_opened_device_path(const char *device_path)
+ 	igt_assert(item);
+ 	item->path = strdup(device_path);
+ 	igt_assert(item->path);
+-	igt_list_add(&item->link, &opened_paths);
++	igt_list_add(&item->link, &_opened_paths);
+ 	igt_info("Opened device: %s\n", item->path);
+ }
  
- 		fd = open_device(name, chipset);
--		if (fd != -1)
-+		if (fd != -1) {
-+			if (i != 0 && offset == as_idx && as_idx == 0
-+			    && chipset != DRIVER_VGEM && chipset != DRIVER_ANY) {
-+				_opened_fds0_skip = i;
-+				_opened_fds0_chipset = chipset;
-+			}
++/**
++ * __drm_invalidate_opened:
++ *
++ * Invalidate cached opened paths.
++ */
++void __drm_invalidate_opened(void)
++{
++	struct _opened_device_path *item, *tmp;
 +
- 			return fd;
++	if (!igt_list_empty(&_opened_paths))
++		igt_list_for_each_entry_safe(item, tmp, &_opened_paths, link) {
++			free(item->path);
++			igt_list_del(&item->link);
++			free(item);
 +		}
- 	}
++}
++
+ static int open_device(const char *name, unsigned int chipset)
+ {
+ 	const char *forced;
+diff --git a/lib/drmtest.h b/lib/drmtest.h
+index 7db2292cb..f516412a0 100644
+--- a/lib/drmtest.h
++++ b/lib/drmtest.h
+@@ -110,6 +110,7 @@ int drm_close_driver(int fd);
+ int drm_reopen_driver(int fd);
  
- 	return -1;
+ int drm_get_gpu_count(int chipset);
++void __drm_invalidate_opened(void);
+ 
+ void igt_require_amdgpu(int fd);
+ void igt_require_intel(int fd);
 -- 
 2.42.0
