@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Fri, 20 Oct 2023 13:33:15 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D1C9F10E59B
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Oct 2023 11:37:50 +0000 (UTC)
+Date: Fri, 20 Oct 2023 13:37:46 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20231020113315.ewlogt27scndvser@kamilkon-desk.igk.intel.com>
-References: <20231011141734.590321-13-janusz.krzysztofik@linux.intel.com>
- <20231011141734.590321-23-janusz.krzysztofik@linux.intel.com>
+Message-ID: <20231020113746.iw3opgylxxsbwhwr@kamilkon-desk.igk.intel.com>
+References: <20231020052147.375497-1-jesse.zhang@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231011141734.590321-23-janusz.krzysztofik@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 10/11] lib/kunit: Fetch a list of
- test cases in advance
+In-Reply-To: <20231020052147.375497-1-jesse.zhang@amd.com>
+Subject: Re: [igt-dev] [PATCH] tests/amd_dispatch: add negative test for SDMA
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,403 +19,380 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org
+Cc: Tim Huang <tim.huang@amd.com>, Luben Tuikov <luben.tuikov@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Christian Koenig <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Janusz,
-On 2023-10-11 at 16:17:45 +0200, Janusz Krzysztofik wrote:
-> Recent improvements to the kernel kunit framework allow us to obtain a
-> list of test cases provided by a kunit test module without actually
-> running them.  Use that feature to get a list of expected test cases
-> before we enter a loop around igt_dynamic().  Once done, enter the
-> igt_dynamic() section for each consecutive test case immediately, even
-> before first line of a related KTAP report appears, then look for a result
-> from that test case.  That should make our IGT results output still better
-> synchronized with related kernel messages.
+Hi Jesse,
+On 2023-10-20 at 13:21:47 +0800, Jesse Zhang wrote:
+> Issue corrupted header or slow sdma linear copy
+> to trigger SDMA hang test.
 > 
-> The list of test cases provided by a kunit test module can be obtained by
-> loading the kunit base module with specific options, then loading the test
-> module.  For that to be possible, take care of unloading the kunit base
-> module before each kunit subtest (I was wrong when in one of my previous
-> commit messages I suggested that on final unload of a kunit test module
-> the kunit base module is unloaded automatically as its dependency,
-> however, that didn't matter before, then no separate fix was required).
-> Since that module can then be left loaded with non-default options if an
-> error occurs, unload it explicitly before returning from igt_kunit().
+> V3:
+>   - avoid generating warning,
+>     and optimize logical code. (Vitlaly)
+>   - Use existing interfaces
+>     to clean up code. (Vitaly)
 > 
-> There are two possible ways of getting a list of test cases: by loading
-> the base kunit module with action=list module option, or by filtering
-> out all test cases from being executed while asking for SKIP results from
-> those filtered out.  Since the latter provides regular KTAP report that we
-> can already parse perfectly, use it instead of trying to identify an
-> unstructured list of test cases of unknown length submitted by the former.
+> Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> Cc: Luben Tuikov <luben.tuikov@amd.com>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
+> Cc: Christian Koenig <christian.koenig@amd.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > 
-> If an IGT test that calls igt_kunit() provides a subtest name then use
-> that name to filter out potential test cases that don't belong to the
-> named test suite from the list.
-> 
-> To avoid loading any modules if no subtest is going to be executed (e.g.,
-> if a nonexistent subtest has been requested), load the kunit modules in
-> list mode from inside the igt_subtest_with_dynamic() section.  In order to
-> be free to skip the whole subtest on unmet requirements that need to be
-> verified after that list has been already populated, clean it up from a
-> follow up igt_fixture section.
-> 
-> Since we may now finish processing of all test cases / dynamic sub-
-> subtests before KTAP parsing completes, don't fail if we exit the loop of
-> dynamic sub-subtests with -EINPROGRESS error code returned by the parser.
-> 
-> v3: Preserve backward compatibility with kernels that can't provide
->     listings of kunit test cases when kunit core is built as a module.
-> v2: Split out changes in handling of modprobe errors and kernel taints to
->     separate patches (Kamil),
->   - fix some string duplicates referenced from filtered out test cases not
->     freed,
->   - don't check if next result is needed before fetching one, obviously
->     true in first dynamic sub-subtest, and we always free last result
->     before looping to next sub-subtest,
->   - still break the loop of test cases on unexpected return codes from
->     kunit_kmsg_get_result(),
->   - use kunit_results_free() helper,
->   - fix typos (Kamil),
->   - update commit description.
-> 
-> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com> # v2
-
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
+> Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+> Signed-off-by: Tim Huang <tim.huang@amd.com>
 > ---
->  lib/igt_kmod.c | 277 ++++++++++++++++++++++++++++++++++++++++++++++---
->  1 file changed, 264 insertions(+), 13 deletions(-)
+>  lib/amdgpu/amd_command_submission.c | 46 +++++++++------
+>  lib/amdgpu/amd_command_submission.h |  3 +-
+>  lib/amdgpu/amd_deadlock_helpers.c   | 90 +++++++++++++++++++++++++++++
+>  lib/amdgpu/amd_deadlock_helpers.h   |  7 +++
+>  tests/amdgpu/amd_basic.c            |  4 +-
+>  tests/amdgpu/amd_deadlock.c         | 16 +++++
+>  tests/amdgpu/amd_security.c         |  4 +-
+>  7 files changed, 148 insertions(+), 22 deletions(-)
 > 
-> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-> index 5d85732b08..c20c52d372 100644
-> --- a/lib/igt_kmod.c
-> +++ b/lib/igt_kmod.c
-> @@ -902,8 +902,9 @@ static void kunit_results_free(struct igt_list_head *results,
->  	free(*suite_name);
->  }
+> diff --git a/lib/amdgpu/amd_command_submission.c b/lib/amdgpu/amd_command_submission.c
+> index 02cf9357b..b674ba640 100644
+> --- a/lib/amdgpu/amd_command_submission.c
+> +++ b/lib/amdgpu/amd_command_submission.c
+> @@ -18,7 +18,7 @@
+>   */
 >  
-> -static void
-> -__igt_kunit(struct igt_ktest *tst, const char *name, const char *opts)
-> +static void __igt_kunit_legacy(struct igt_ktest *tst,
-> +			       const char *name,
-> +			       const char *opts)
+>  void amdgpu_test_exec_cs_helper(amdgpu_device_handle device, unsigned int ip_type,
+> -				struct amdgpu_ring_context *ring_context)
+> +				struct amdgpu_ring_context *ring_context, int expect)
 >  {
->  	struct modprobe_data modprobe = { tst->kmod, opts, 0, pthread_self(), };
->  	char *suite_name = NULL, *case_name = NULL;
-> @@ -912,13 +913,7 @@ __igt_kunit(struct igt_ktest *tst, const char *name, const char *opts)
->  	pthread_mutexattr_t attr;
->  	IGT_LIST_HEAD(results);
->  	unsigned long taints;
-> -	int flags, ret;
-> -
-> -	igt_skip_on_f(tst->kmsg < 0, "Could not open /dev/kmsg\n");
-> -
-> -	igt_skip_on((flags = fcntl(tst->kmsg, F_GETFL, 0), flags < 0));
-> -	igt_skip_on_f(fcntl(tst->kmsg, F_SETFL, flags & ~O_NONBLOCK) == -1,
-> -		      "Could not set /dev/kmsg to blocking mode\n");
-> +	int ret;
+>  	int r;
+>  	uint32_t expired;
+> @@ -31,15 +31,23 @@ void amdgpu_test_exec_cs_helper(amdgpu_device_handle device, unsigned int ip_typ
 >  
->  	igt_skip_on(lseek(tst->kmsg, 0, SEEK_END) < 0);
+>  	amdgpu_bo_handle *all_res = alloca(sizeof(ring_context->resources[0]) * (ring_context->res_cnt + 1));
 >  
-> @@ -1041,6 +1036,232 @@ __igt_kunit(struct igt_ktest *tst, const char *name, const char *opts)
->  	igt_skip_on_f(ret, "KTAP parser failed\n");
->  }
->  
-> +static void kunit_get_tests(struct igt_list_head *tests,
-> +			    struct igt_ktest *tst,
-> +			    const char *filter,
-> +			    const char *opts)
-> +{
-> +	char *suite_name = NULL, *case_name = NULL;
-> +	struct igt_ktap_result *r, *rn;
-> +	struct igt_ktap_results *ktap;
-> +	int flags, err;
-> +
-> +	igt_skip_on_f(tst->kmsg < 0, "Could not open /dev/kmsg\n");
-> +
-> +	igt_skip_on((flags = fcntl(tst->kmsg, F_GETFL, 0), flags < 0));
-> +	igt_skip_on_f(fcntl(tst->kmsg, F_SETFL, flags & ~O_NONBLOCK) == -1,
-> +		      "Could not set /dev/kmsg to blocking mode\n");
-> +
-> +	igt_skip_on(lseek(tst->kmsg, 0, SEEK_END) < 0);
-> +
-> +	/*
-> +	 * To get a list of test cases provided by a kunit test module, ask the
-> +	 * generic kunit module to respond with SKIP result for each test found.
-> +	 * We could also use action=list kunit parameter to get the listing,
-> +	 * however, parsing a KTAP report -- something that we already can do
-> +	 * perfectly -- seems to be more safe than extracting a test case list
-> +	 * of unknown length from /dev/kmsg.
-> +	 *
-> +	 * TODO: drop the following workaround, which is required by LTS kernel
-> +	 *       v6.1 not capable of listing test cases when built as a module.
-> +	 * If loading the kunit module with required parameters fails then
-> +	 * assume that we are running on a kernel with missing test case listing
-> +	 * capabilities.  Dont's skip but just return with empty list of test
-> +	 * cases, that should tell the caller to use a legacy method of
-> +	 * iterating over KTAP results collected from blind execution of all
-> +	 * Kunit test cases provided by a Kunit test module.
-> +	 */
-> +	if (igt_debug_on(igt_kmod_load("kunit",
-> +				       "filter=module=none filter_action=skip")))
-> +		return;
-> +
-> +	igt_skip_on(modprobe(tst->kmod, opts));
-> +
-> +	ktap = igt_ktap_alloc(tests);
-> +	igt_require(ktap);
-> +
-> +	do
-> +		err = kunit_kmsg_result_get(tests, NULL, tst->kmsg, ktap);
-> +	while (err == -EINPROGRESS);
-> +
-> +	igt_ktap_free(ktap);
-> +
-> +	if (!err)
-> +		igt_list_for_each_entry_safe(r, rn, tests, link) {
-> +			if (igt_debug_on(r->code != IGT_EXIT_SKIP)) {
-> +				err = r->code ?: -EPROTO;
-> +				break;
-> +			}
-> +
-> +			if (!filter)
-> +				continue;
-> +
-> +			if (strcmp(r->suite_name, filter))
-> +				kunit_result_free(&r, &case_name, &suite_name);
-> +		}
-> +
-> +	if (err) {
-> +		kunit_results_free(tests, &case_name, &suite_name);
+> +	if (expect) {
+> +		/* allocate IB */
+> +		r = amdgpu_bo_alloc_and_map(device, ring_context->write_length, 4096,
+> +					    AMDGPU_GEM_DOMAIN_GTT, 0,
+> +					    &ib_result_handle, &ib_result_cpu,
+> +					    &ib_result_mc_address, &va_handle);
 > +	} else {
-> +		free(suite_name);
-> +		free(case_name);
+> +		/* prepare CS */
+> +		igt_assert(ring_context->pm4_dw <= 1024);
+> +		/* allocate IB */
+> +		r = amdgpu_bo_alloc_and_map(device, 4096, 4096,
+> +					    AMDGPU_GEM_DOMAIN_GTT, 0,
+> +					    &ib_result_handle, &ib_result_cpu,
+> +					    &ib_result_mc_address, &va_handle);
+>  
+> -	/* prepare CS */
+> -	igt_assert(ring_context->pm4_dw <= 1024);
+>  
+> -	/* allocate IB */
+> -	r = amdgpu_bo_alloc_and_map(device, 4096, 4096,
+> -				    AMDGPU_GEM_DOMAIN_GTT, 0,
+> -				    &ib_result_handle, &ib_result_cpu,
+> -				    &ib_result_mc_address, &va_handle);
 > +	}
-> +
-> +	igt_skip_on(kmod_module_remove_module(tst->kmod, KMOD_REMOVE_FORCE));
-> +	igt_skip_on(igt_kmod_unload("kunit", KMOD_REMOVE_FORCE));
-> +
-> +	igt_skip_on_f(err,
-> +		      "KTAP parser failed while getting a list of test cases\n");
-> +}
-> +
-> +static void __igt_kunit(struct igt_ktest *tst,
-> +			const char *name,
-> +			const char *opts,
-> +			struct igt_list_head *tests)
-> +{
-> +	struct modprobe_data modprobe = { tst->kmod, opts, 0, pthread_self(), };
-> +	char *suite_name = NULL, *case_name = NULL;
-> +	struct igt_ktap_result *t, *r = NULL;
-> +	struct igt_ktap_results *ktap;
-> +	pthread_mutexattr_t attr;
-> +	IGT_LIST_HEAD(results);
-> +	int ret = -EINPROGRESS;
-> +	unsigned long taints;
-> +
-> +	igt_skip_on(lseek(tst->kmsg, 0, SEEK_END) < 0);
-> +
-> +	igt_skip_on(pthread_mutexattr_init(&attr));
-> +	igt_skip_on(pthread_mutexattr_setrobust(&attr, PTHREAD_MUTEX_ROBUST));
-> +	igt_skip_on(pthread_mutex_init(&modprobe.lock, &attr));
-> +
-> +	ktap = igt_ktap_alloc(&results);
-> +	igt_require(ktap);
-> +
-> +	if (igt_debug_on(pthread_create(&modprobe.thread, NULL,
-> +					modprobe_task, &modprobe))) {
-> +		igt_ktap_free(ktap);
-> +		igt_skip("Failed to create a modprobe thread\n");
-> +	}
-> +
-> +	igt_list_for_each_entry(t, tests, link) {
-> +		igt_dynamic_f("%s%s%s",
-> +			      strcmp(t->suite_name, name) ?  t->suite_name : "",
-> +			      strcmp(t->suite_name, name) ? "-" : "",
-> +			      t->case_name) {
-> +
-> +			if (igt_list_empty(&results)) {
-> +				igt_assert_eq(ret, -EINPROGRESS);
-> +				ret = kunit_kmsg_result_get(&results, &modprobe,
-> +							    tst->kmsg, ktap);
-> +				igt_fail_on(igt_list_empty(&results));
-> +			}
-> +
-> +			r = igt_list_first_entry(&results, r, link);
-> +
-> +			while (igt_debug_on_f(strcmp(r->suite_name, t->suite_name),
-> +					      "suite_name expected: %s, got: %s\n",
-> +					      t->suite_name, r->suite_name) ||
-> +			       igt_debug_on_f(strcmp(r->case_name, t->case_name),
-> +					      "case_name expected: %s, got: %s\n",
-> +					      t->case_name, r->case_name) ||
-> +			       r->code == IGT_EXIT_INVALID) {
-> +
-> +				int code = r->code;
-> +
-> +				kunit_result_free(&r, &suite_name, &case_name);
-> +				if (igt_list_empty(&results)) {
-> +					igt_assert_eq(ret, -EINPROGRESS);
-> +					ret = kunit_kmsg_result_get(&results,
-> +								    &modprobe,
-> +								    tst->kmsg,
-> +								    ktap);
-> +					igt_fail_on(igt_list_empty(&results));
-> +				}
-> +
-> +				r = igt_list_first_entry(&results, r, link);
-> +
-> +				if (code != IGT_EXIT_INVALID)
-> +					continue;
-> +
-> +				/* result from parametrized test case */
-> +				igt_fail_on_f(strcmp(r->suite_name, suite_name),
-> +					      "suite_name expected: %s, got: %s\n",
-> +					      suite_name, r->suite_name);
-> +				igt_fail_on_f(strcmp(r->case_name, case_name),
-> +					      "case_name expected: %s, got: %s\n",
-> +					      case_name, r->case_name);
-> +			}
-> +
-> +			igt_assert_neq(r->code, IGT_EXIT_INVALID);
-> +
-> +			if (r->msg && *r->msg) {
-> +				igt_skip_on_f(r->code == IGT_EXIT_SKIP,
-> +					      "%s\n", r->msg);
-> +				igt_fail_on_f(r->code == IGT_EXIT_FAILURE,
-> +					      "%s\n", r->msg);
-> +				igt_abort_on_f(r->code == IGT_EXIT_ABORT,
-> +					      "%s\n", r->msg);
-> +			} else {
-> +				igt_skip_on(r->code == IGT_EXIT_SKIP);
-> +				igt_fail_on(r->code == IGT_EXIT_FAILURE);
-> +				if (r->code == IGT_EXIT_ABORT)
-> +					igt_fail(r->code);
-> +			}
-> +			igt_assert_eq(r->code, IGT_EXIT_SUCCESS);
-> +
-> +			switch (pthread_mutex_lock(&modprobe.lock)) {
-> +			case 0:
-> +				igt_debug_on(pthread_mutex_unlock(&modprobe.lock));
-> +				break;
-> +			case EOWNERDEAD:
-> +				/* leave the mutex unrecoverable */
-> +				igt_debug_on(pthread_mutex_unlock(&modprobe.lock));
-> +				__attribute__ ((fallthrough));
-> +			case ENOTRECOVERABLE:
-> +				igt_assert_eq(modprobe.err, 0);
-> +				break;
-> +			default:
-> +				igt_debug("pthread_mutex_lock() failed\n");
-> +				break;
-> +			}
-> +
-> +			igt_assert_eq(igt_kernel_tainted(&taints), 0);
-> +		}
-> +
-> +		kunit_result_free(&r, &suite_name, &case_name);
-> +
-> +		if (igt_debug_on(ret != -EINPROGRESS))
-> +			break;
-> +	}
-> +
-> +	kunit_results_free(&results, &suite_name, &case_name);
-> +
-> +	switch (pthread_mutex_lock(&modprobe.lock)) {
-> +	case 0:
-> +		igt_debug_on(pthread_cancel(modprobe.thread));
-> +		igt_debug_on(pthread_mutex_unlock(&modprobe.lock));
-> +		igt_debug_on(pthread_join(modprobe.thread, NULL));
-> +		break;
-> +	case EOWNERDEAD:
-> +		/* leave the mutex unrecoverable */
-> +		igt_debug_on(pthread_mutex_unlock(&modprobe.lock));
-> +		break;
-> +	case ENOTRECOVERABLE:
-> +		break;
-> +	default:
-> +		igt_debug("pthread_mutex_lock() failed\n");
-> +		igt_debug_on(pthread_join(modprobe.thread, NULL));
-> +		break;
-> +	}
-> +
-> +	igt_ktap_free(ktap);
-> +
-> +	igt_skip_on(modprobe.err);
-> +	igt_skip_on(igt_kernel_tainted(&taints));
-> +	if (ret != -EINPROGRESS)
-> +		igt_skip_on_f(ret, "KTAP parser failed\n");
-> +}
-> +
->  /**
->   * igt_kunit:
->   * @module_name: the name of the module
-> @@ -1052,7 +1273,8 @@ __igt_kunit(struct igt_ktest *tst, const char *name, const char *opts)
->  void igt_kunit(const char *module_name, const char *name, const char *opts)
->  {
->  	struct igt_ktest tst = { .kmsg = -1, };
+>  	igt_assert_eq(r, 0);
+>  
+>  	/* copy PM4 packet to ring from caller */
+> @@ -81,9 +89,13 @@ void amdgpu_test_exec_cs_helper(amdgpu_device_handle device, unsigned int ip_typ
+>  	r = amdgpu_cs_query_fence_status(&fence_status,
+>  					 AMDGPU_TIMEOUT_INFINITE,
+>  					 0, &expired);
+> -	igt_assert_eq(r, 0);
+> -	igt_assert_eq(expired, true);
 > -
-> +	const char *filter = name;
-> +	IGT_LIST_HEAD(tests);
+> +	if (expect) {
+> +		igt_assert_neq(r, 0);
+> +		igt_assert_neq(expired, true);
+> +	} else {
+> +		igt_assert_eq(r, 0);
+> +		igt_assert_eq(expired, true);
+> +	}
+>  	amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
+>  				 ib_result_mc_address, 4096);
+>  }
+> @@ -145,7 +157,7 @@ void amdgpu_command_submission_write_linear_helper(amdgpu_device_handle device,
 >  
->  	/*
->  	 * If the caller (an IGT test) provides no subtest name then we
-> @@ -1077,6 +1299,17 @@ void igt_kunit(const char *module_name, const char *name, const char *opts)
+>  			ring_context->ring_id = ring_id;
 >  
->  		igt_skip_on(igt_ktest_init(&tst, module_name));
->  		igt_skip_on(igt_ktest_begin(&tst));
+> -			 amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context);
+> +			 amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context, 0);
+>  
+>  			/* verify if SDMA test result meets with expected */
+>  			i = 0;
+> @@ -155,20 +167,20 @@ void amdgpu_command_submission_write_linear_helper(amdgpu_device_handle device,
+>  			} else if (ip_block->type == AMDGPU_HW_IP_GFX) {
+>  				ip_block->funcs->write_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
+>  
+> -				amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context);
+> +				amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context, 0);
+>  
+>  			} else if (ip_block->type == AMDGPU_HW_IP_DMA) {
+>  				/* restore the bo_cpu to compare */
+>  				ring_context->bo_cpu_origin = ring_context->bo_cpu[0];
+>  				ip_block->funcs->write_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
+>  
+> -				amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context);
+> +				amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context, 0);
+>  
+>  				/* restore again, here dest_data should be */
+>  				ring_context->bo_cpu_origin = ring_context->bo_cpu[0];
+>  				ip_block->funcs->write_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
+>  
+> -				amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context);
+> +				amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context, 0);
+>  				/* here bo_cpu[0] should be unchanged, still is 0x12345678, otherwise failed*/
+>  				igt_assert_eq(ring_context->bo_cpu[0], ring_context->bo_cpu_origin);
+>  			}
+> @@ -236,7 +248,7 @@ void amdgpu_command_submission_const_fill_helper(amdgpu_device_handle device,
+>  			/* fulfill PM4: test DMA const fill */
+>  			ip_block->funcs->const_fill(ip_block->funcs, ring_context, &ring_context->pm4_dw);
+>  
+> -			amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context);
+> +			amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context, 0);
+>  
+>  			/* verify if SDMA test result meets with expected */
+>  			r = ip_block->funcs->compare(ip_block->funcs, ring_context, 4);
+> @@ -322,7 +334,7 @@ void amdgpu_command_submission_copy_linear_helper(amdgpu_device_handle device,
+>  
+>  				ip_block->funcs->copy_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
+>  
+> -				amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context);
+> +				amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context, 0);
+>  
+>  				/* verify if SDMA test result meets with expected */
+>  				r = ip_block->funcs->compare_pattern(ip_block->funcs, ring_context, 4);
+> diff --git a/lib/amdgpu/amd_command_submission.h b/lib/amdgpu/amd_command_submission.h
+> index 58f3221a3..44f0cc958 100644
+> --- a/lib/amdgpu/amd_command_submission.h
+> +++ b/lib/amdgpu/amd_command_submission.h
+> @@ -29,7 +29,8 @@
+>  #include "amd_ip_blocks.h"
+>  
+>  void amdgpu_test_exec_cs_helper(amdgpu_device_handle device,
+> -				unsigned int ip_type, struct amdgpu_ring_context *ring_context);
+> +				unsigned int ip_type, struct amdgpu_ring_context *ring_context,
+> +				int expect);
+>  
+>  void amdgpu_command_submission_write_linear_helper(amdgpu_device_handle device,
+>  						   const struct amdgpu_ip_block_version *ip_block,
+> diff --git a/lib/amdgpu/amd_deadlock_helpers.c b/lib/amdgpu/amd_deadlock_helpers.c
+> index a6be5f02a..5b7d51d94 100644
+> --- a/lib/amdgpu/amd_deadlock_helpers.c
+> +++ b/lib/amdgpu/amd_deadlock_helpers.c
+> @@ -13,6 +13,7 @@
+>  #include "amd_memory.h"
+>  #include "amd_deadlock_helpers.h"
+>  #include "amd_ip_blocks.h"
+> +#include "lib/amdgpu/amd_command_submission.h"
+>  
+>  #define MAX_JOB_COUNT 200
+>  
+> @@ -248,3 +249,92 @@ bad_access_helper(amdgpu_device_handle device_handle, int reg_access, unsigned i
+>  	free_cmd_base(base_cmd);
+>  	amdgpu_cs_ctx_free(context_handle);
+>  }
 > +
-> +		/*
-> +		 * Since we need to load kunit base module with specific
-> +		 * options in order to get a list of test cases, make
-> +		 * sure that the module is not loaded.  However, since
-> +		 * unload may fail if kunit base module is not loaded,
-> +		 * ignore any failures, we'll fail later if still loaded.
-> +		 */
-> +		igt_ignore_warn(igt_kmod_unload("kunit", KMOD_REMOVE_FORCE));
+> +void
+> +amdgpu_hang_sdma_helper(amdgpu_device_handle device_handle, uint8_t hang_type)
+> +{
+> +	int j, r;
+> +	uint32_t *ptr, offset;
+> +	struct amdgpu_ring_context *ring_context;
+> +	struct amdgpu_cmd_base *base_cmd = get_cmd_base();
+> +	const struct amdgpu_ip_block_version *ip_block = get_ip_block(device_handle, AMDGPU_HW_IP_DMA);
 > +
-> +		igt_assert(igt_list_empty(&tests));
+> +	ring_context = calloc(1, sizeof(*ring_context));
+> +	if (hang_type == DMA_CORRUPTED_HEADER_HANG) {
+> +		ring_context->write_length = 4096;
+> +		ring_context->pm4 = calloc(256, sizeof(*ring_context->pm4));
+> +		ring_context->pm4_size = 256;
+> +	} else {
+> +		ring_context->write_length = 1024 * 0x20000;
+> +		ring_context->pm4 = calloc(256 * 0x20000, sizeof(*ring_context->pm4));
+> +		ring_context->pm4_size = 256 * 0x20000;
+> +	}
+> +	ring_context->secure = false;
+> +	ring_context->res_cnt = 2;
+> +	igt_assert(ring_context->pm4);
+> +
+> +	r = amdgpu_cs_ctx_create(device_handle, &ring_context->context_handle);
+> +	igt_assert_eq(r, 0);
+> +
+> +	r = amdgpu_bo_alloc_and_map(device_handle, ring_context->write_length, 4096,
+> +					AMDGPU_GEM_DOMAIN_GTT, 0,
+> +					&ring_context->bo, (void **)&ring_context->bo_cpu,
+> +					&ring_context->bo_mc, &ring_context->va_handle);
+> +	igt_assert_eq(r, 0);
+> +
+> +	/* set bo */
+> +	memset((void *)ring_context->bo_cpu, 0, ring_context->write_length);
+> +	r = amdgpu_bo_alloc_and_map(device_handle,
+> +				    ring_context->write_length, 4096,
+> +				    AMDGPU_GEM_DOMAIN_GTT,
+> +				    0, &ring_context->bo2,
+> +				    (void **)&ring_context->bo2_cpu, &ring_context->bo_mc2,
+> +				    &ring_context->va_handle2);
+> +	igt_assert_eq(r, 0);
+> +
+> +	/* set bo2 */
+> +	memset((void *)ring_context->bo2_cpu, 0, ring_context->write_length);
+> +	ring_context->resources[0] = ring_context->bo;
+> +	ring_context->resources[1] = ring_context->bo2;
+> +	base_cmd->attach_buf(base_cmd, ring_context->pm4, ring_context->write_length);
+> +
+> +	/* fulfill PM4: with bad copy linear header */
+> +	if (hang_type == DMA_CORRUPTED_HEADER_HANG) {
+> +		ip_block->funcs->copy_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
+> +		base_cmd->emit_at_offset(base_cmd, 0x23decd3d, 0);
+> +	} else {
+> +		/* Save initialization pm4 */
+> +		ptr = ring_context->pm4;
+> +		for (j = 1; j < 0x20000; j++) {
+> +			ip_block->funcs->copy_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
+> +			ring_context->pm4 += ring_context->pm4_dw;
+> +			ip_block->funcs->copy_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
+> +
+> +			offset = ring_context->pm4_dw * 2 * j;
+> +			base_cmd->emit_at_offset(base_cmd, (0xffffffff & ring_context->bo_mc2), (offset - 4));
+> +			base_cmd->emit_at_offset(base_cmd,
+> +					((0xffffffff00000000 & ring_context->bo_mc2) >> 32), (offset - 3));
+> +			base_cmd->emit_at_offset(base_cmd, (0xffffffff & ring_context->bo_mc), (offset - 2));
+> +			base_cmd->emit_at_offset(base_cmd,
+> +					((0xffffffff00000000 & ring_context->bo_mc) >> 32), (offset - 1));
+> +			ring_context->pm4 += ring_context->pm4_dw;
+> +		}
+> +		/* restore pm4 */
+> +		ring_context->pm4 = ptr;
+> +		/* update the total pm4_dw */
+> +		ring_context->pm4_dw = ring_context->pm4_dw * 2 * j;
+> +	}
+> +
+> +	amdgpu_test_exec_cs_helper(device_handle, ip_block->type, ring_context, 1);
+> +	amdgpu_bo_unmap_and_free(ring_context->bo, ring_context->va_handle, ring_context->bo_mc,
+> +						 ring_context->write_length);
+> +	amdgpu_bo_unmap_and_free(ring_context->bo2, ring_context->va_handle2, ring_context->bo_mc2,
+> +						 ring_context->write_length);
+> +	/* clean resources */
+> +	free(ring_context->pm4);
+> +	/* end of test */
+> +	//r = amdgpu_cs_ctx_free(context_handle);
+> +	r = amdgpu_cs_ctx_free(ring_context->context_handle);
+> +	igt_assert_eq(r, 0);
+> +	free_cmd_base(base_cmd);
+> +}
+> diff --git a/lib/amdgpu/amd_deadlock_helpers.h b/lib/amdgpu/amd_deadlock_helpers.h
+> index cc8eba7f7..9c0d245a9 100644
+> --- a/lib/amdgpu/amd_deadlock_helpers.h
+> +++ b/lib/amdgpu/amd_deadlock_helpers.h
+> @@ -24,11 +24,18 @@
+>  #ifndef __AMD_DEADLOCK_HELPERS_H__
+>  #define __AMD_DEADLOCK_HELPERS_H__
+>  
+> +enum  hang_type {
+> +	DMA_CORRUPTED_HEADER_HANG,
+> +	DMA_SLOW_LINEARCOPY_HANG
+> +};
+> +
+>  void
+>  amdgpu_wait_memory_helper(amdgpu_device_handle device_handle, unsigned ip_type);
+>  
+>  void
+>  bad_access_helper(amdgpu_device_handle device_handle, int reg_access, unsigned ip_type);
+>  
+> +void
+> +amdgpu_hang_sdma_helper(amdgpu_device_handle device_handle, uint8_t hang_type);
+>  #endif
+>  
+> diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
+> index 88fdbd980..70e45649d 100644
+> --- a/tests/amdgpu/amd_basic.c
+> +++ b/tests/amdgpu/amd_basic.c
+> @@ -307,7 +307,7 @@ static void amdgpu_userptr_test(amdgpu_device_handle device)
+>  
+>  	ip_block->funcs->write_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
+>  
+> -	 amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context);
+> +	 amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context, 0);
+>  
+>  	r = ip_block->funcs->compare(ip_block->funcs, ring_context, 1);
+>  	igt_assert_eq(r, 0);
+> @@ -412,7 +412,7 @@ amdgpu_bo_eviction_test(amdgpu_device_handle device_handle)
+>  			ring_context->resources[2] = ring_context->boa_vram[loop2];
+>  			ring_context->resources[3] = ring_context->boa_gtt[loop2];
+>  			ip_block->funcs->copy_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
+> -			amdgpu_test_exec_cs_helper(device_handle, ip_block->type, ring_context);
+> +			amdgpu_test_exec_cs_helper(device_handle, ip_block->type, ring_context, 0);
+>  			/* fulfill PM4: test DMA copy linear */
+>  			r = ip_block->funcs->compare_pattern(ip_block->funcs, ring_context, sdma_write_length);
+>  			igt_assert_eq(r, 0);
+> diff --git a/tests/amdgpu/amd_deadlock.c b/tests/amdgpu/amd_deadlock.c
+> index 6147b7636..dc7ec4366 100644
+> --- a/tests/amdgpu/amd_deadlock.c
+> +++ b/tests/amdgpu/amd_deadlock.c
+> @@ -77,6 +77,22 @@ igt_main
+>  		}
 >  	}
 >  
->  	/*
-> @@ -1086,11 +1319,29 @@ void igt_kunit(const char *module_name, const char *name, const char *opts)
->  	 * proper namespace for dynamic subtests, with is required for CI
->  	 * and for documentation.
->  	 */
-> -	igt_subtest_with_dynamic(name)
-> -		__igt_kunit(&tst, name, opts);
-> +	igt_subtest_with_dynamic(name) {
-> +		kunit_get_tests(&tests, &tst, filter, opts);
-> +		/*
-> +		 * TODO: drop the __igt_kunit() legacy processing path, required
-> +		 *	 by kernels v6.1-v6.5 with DRM Kunit support but not
-> +		 *	 capable of listing test cases when built as a module,
-> +		 *	 as soon as no longer required by major Linux
-> +		 *	 distributions, now usually based on LTS kernel v6.1.
-> +		 */
-> +		if (igt_debug_on(igt_list_empty(&tests)))
-> +			__igt_kunit_legacy(&tst, name, opts);
-> +		else
-> +			__igt_kunit(&tst, name, opts, &tests);
+> +	igt_describe("Test-GPU-reset-by-sdma-corrupted-header-with-jobs");
+----------------------^---^-----^--^----^---------^------^----^
+s/-/ /g
+In descriptions you may use spaces.
+
+> +	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-corrupted-header-test") {
+
+And here it is ok - no spaces in tests names, use '-' in place of them.
+
+> +		if (arr_cap[AMD_IP_DMA]) {
+> +			igt_dynamic_f("amdgpu-deadlock-sdma-corrupted-header-test")
+> +			amdgpu_hang_sdma_helper(device, DMA_CORRUPTED_HEADER_HANG);
+> +		}
 > +	}
 > +
-> +	igt_fixture {
-> +		char *suite_name = NULL, *case_name = NULL;
-> +
-> +		kunit_results_free(&tests, &suite_name, &case_name);
->  
-> -	igt_fixture
->  		igt_ktest_end(&tst);
-> +		igt_debug_on(igt_kmod_unload("kunit", KMOD_REMOVE_FORCE));
+> +	igt_describe("Test-GPU-reset-by-sdma-slow-linear-copy-with-jobs");
+----------------------^---^...
+Same here.
+
+Regards,
+Kamil
+
+> +	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-slow-linear-copy") {
+> +		if (arr_cap[AMD_IP_DMA]) {
+> +			igt_dynamic_f("amdgpu-deadlock-sdma-slow-linear-copy")
+> +			amdgpu_hang_sdma_helper(device, DMA_SLOW_LINEARCOPY_HANG);
+> +		}
 > +	}
+> +
+>  	igt_fixture {
+>  		amdgpu_device_deinitialize(device);
+>  		drm_close_driver(fd);
+> diff --git a/tests/amdgpu/amd_security.c b/tests/amdgpu/amd_security.c
+> index 46180df2e..1a7eba9eb 100644
+> --- a/tests/amdgpu/amd_security.c
+> +++ b/tests/amdgpu/amd_security.c
+> @@ -110,7 +110,7 @@ amdgpu_bo_lcopy(amdgpu_device_handle device,
 >  
->  	igt_ktest_fini(&tst);
+>  	amdgpu_sdma_lcopy(ring_context->pm4, ring_context->bo_mc2,
+>  			ring_context->bo_mc, size, secure);
+> -	amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context);
+> +	amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context, 0);
+>  	free(ring_context->pm4);
 >  }
+>  
+> @@ -155,7 +155,7 @@ amdgpu_bo_move(amdgpu_device_handle device, int fd,
+>  	 * it to the desired location.
+>  	 */
+>  	amdgpu_sdma_nop(ring_context->pm4, PACKET_NOP_SIZE);
+> -	amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context);
+> +	amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context, 0);
+>  	free(ring_context->pm4);
+>  }
+>  
 > -- 
-> 2.42.0
+> 2.25.1
 > 
