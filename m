@@ -1,18 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com
- [IPv6:2a00:1450:4864:20::236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1BF6910E0E2
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Oct 2023 13:18:44 +0000 (UTC)
-Received: by mail-lj1-x236.google.com with SMTP id
- 38308e7fff4ca-2c5039d4e88so12682241fa.3
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Oct 2023 06:18:44 -0700 (PDT)
-Date: Fri, 20 Oct 2023 16:18:40 +0300
-From: Petri Latvala <adrinael@adrinael.net>
-Message-ID: <ZTJ+MDme83/yhZIy@adrinael.net>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0848110E5A9
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Oct 2023 11:29:41 +0000 (UTC)
+Date: Fri, 20 Oct 2023 13:29:36 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20231020112936.2vyf7upwtdhhhiu5@kamilkon-desk.igk.intel.com>
 References: <20231020102146.121478-1-mauro.chehab@linux.intel.com>
  <20231020102146.121478-3-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 In-Reply-To: <20231020102146.121478-3-mauro.chehab@linux.intel.com>
 Subject: Re: [igt-dev] [PATCH i-g-t 2/2] igt_runner: output planned job_list
@@ -26,27 +22,26 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Oct 20, 2023 at 12:20:33PM +0200, Mauro Carvalho Chehab wrote:
+Hi Mauro,
+On 2023-10-20 at 12:20:33 +0200, Mauro Carvalho Chehab wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
 > If igt_runner is executed in dry-run mode, show what jobs
 > were planned to be executed. That helps debugging issues at
 > the runner job plan logic.
-
-If you only need this for debugging, look at the job list file the dry
-run created.
-
-
--- 
-Petri Latvala
-
-
 > 
 > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+I will add Pteri on cc.
+
+Regards,
+Kamil
+
 > ---
 >  runner/executor.c | 6 ++++++
 >  1 file changed, 6 insertions(+)
