@@ -1,26 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4BA7E10E0E8
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Oct 2023 13:34:19 +0000 (UTC)
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.252.0.134])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 9F10B580D4F
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Oct 2023 06:34:17 -0700 (PDT)
-Received: from maurocar by linux.intel.com with local (Exim 4.96.1)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qtpdn-000ZFa-1M
- for igt-dev@lists.freedesktop.org; Fri, 20 Oct 2023 15:34:15 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 20 Oct 2023 15:30:11 +0200
-Message-ID: <20231020133413.135395-2-mauro.chehab@linux.intel.com>
-In-Reply-To: <20231020133413.135395-1-mauro.chehab@linux.intel.com>
-References: <20231020133413.135395-1-mauro.chehab@linux.intel.com>
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com
+ [IPv6:2a00:1450:4864:20::12c])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CEAA310E5BA
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Oct 2023 14:02:47 +0000 (UTC)
+Received: by mail-lf1-x12c.google.com with SMTP id
+ 2adb3069b0e04-507962561adso1193023e87.0
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Oct 2023 07:02:47 -0700 (PDT)
+Message-ID: <f715dc33-b102-4a76-86bf-38e5eb308487@gmail.com>
+Date: Fri, 20 Oct 2023 17:02:37 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/1] igt_runner: job_list: expand subtests
- also when --test-list is used
+Content-Language: en-US
+To: Lee Shawn C <shawn.c.lee@intel.com>, igt-dev@lists.freedesktop.org
+References: <20231018075904.1834634-1-shawn.c.lee@intel.com>
+ <20231019112729.1837000-1-shawn.c.lee@intel.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+In-Reply-To: <20231019112729.1837000-1-shawn.c.lee@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH] tests/kms_setmode: disable DRRS if eDP
+ support variable refresh rate
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,177 +26,63 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+Look ok to me.
 
-Runner has two separate functions to handle job lists:
+Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 
-- job_list_from_test_list()
-- filtered_job_list()
-
-Currently, only the first one expand subtests. The second one
-will ignore it. So, if one adds something like:
-
-	$ echo "igt@xe_huc_copy" >my.list
-	$ echo "igt@xe_huc_copy@huc_copy" >huc_copy.list
-	$ sudo ./build/runner/igt_runner -o build/tests result --test-list my.list -b huc_copy.list
-
-It will end adding the blocklisted job to job_list.
-
-Fix it by ensuring that add_subtests() will always be called
-if blocklist regex array contains one or more entries.
-
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- runner/job_list.c | 56 ++++++++++++++++++++++++++++-------------------
- 1 file changed, 34 insertions(+), 22 deletions(-)
-
-diff --git a/runner/job_list.c b/runner/job_list.c
-index e6ea836310fd..ba6426602c0e 100644
---- a/runner/job_list.c
-+++ b/runner/job_list.c
-@@ -26,7 +26,7 @@ static bool matches_any(const char *str, struct regex_list *list)
- 	return false;
- }
- 
--static void add_job_list_entry(struct job_list *job_list,
-+static void insert_job_entry(struct job_list *job_list,
- 			       char *binary,
- 			       char **subtests,
- 			       size_t subtest_count)
-@@ -96,7 +96,7 @@ static void add_subtests(struct job_list *job_list, struct settings *settings,
- 		} else {
- 			subtests = malloc(sizeof(*subtests));
- 			*subtests = strdup(subtestname);
--			add_job_list_entry(job_list, strdup(binary), subtests, 1);
-+			insert_job_entry(job_list, strdup(binary), subtests, 1);
- 			subtests = NULL;
- 		}
- 
-@@ -104,7 +104,7 @@ static void add_subtests(struct job_list *job_list, struct settings *settings,
- 	}
- 
- 	if (num_subtests)
--		add_job_list_entry(job_list, strdup(binary), subtests, num_subtests);
-+		insert_job_entry(job_list, strdup(binary), subtests, num_subtests);
- 
- 	s = pclose(p);
- 	if (s == 0) {
-@@ -124,7 +124,7 @@ static void add_subtests(struct job_list *job_list, struct settings *settings,
- 			}
- 			if (!include || !include->size ||
- 			    matches_any(piglitname, include)) {
--				add_job_list_entry(job_list, strdup(binary), NULL, 0);
-+				insert_job_entry(job_list, strdup(binary), NULL, 0);
- 				return;
- 			}
- 		}
-@@ -134,6 +134,23 @@ static void add_subtests(struct job_list *job_list, struct settings *settings,
- 	}
- }
- 
-+static void add_job_list_entry(struct settings *settings,
-+			       struct job_list *job_list,
-+			       char *binary,
-+			       char **subtests,
-+			       size_t subtest_count)
-+{
-+	if (settings->multiple_mode && !settings->exclude_regexes.size)
-+		/*
-+		 * Optimization; we know that all subtests will be included,
-+		 * so we get to omit executing --list-subtests.
-+		 */
-+		insert_job_entry(job_list, binary, subtests, subtest_count);
-+	else
-+		add_subtests(job_list, settings, binary,
-+			     NULL, &settings->exclude_regexes);
-+}
-+
- static bool filtered_job_list(struct job_list *job_list,
- 			      struct settings *settings,
- 			      int fd)
-@@ -165,17 +182,7 @@ static bool filtered_job_list(struct job_list *job_list,
- 		 * all subtests except those matching exclude filters are added.
- 		 */
- 		if (!settings->include_regexes.size || matches_any(buf, &settings->include_regexes)) {
--			if (settings->multiple_mode && !settings->exclude_regexes.size)
--				/*
--				 * Optimization; we know that all
--				 * subtests will be included, so we
--				 * get to omit executing
--				 * --list-subtests.
--				 */
--				add_job_list_entry(job_list, strdup(buf), NULL, 0);
--			else
--				add_subtests(job_list, settings, buf,
--					     NULL, &settings->exclude_regexes);
-+			add_job_list_entry(settings, job_list, strdup(buf), NULL, 0);
- 			continue;
- 		}
- 
-@@ -239,8 +246,9 @@ static bool job_list_from_test_list(struct job_list *job_list,
- 					subtests = malloc(sizeof(char*));
- 					subtests[0] = strdup(delim);
- 				}
--				add_job_list_entry(job_list, strdup(binary),
--						   subtests, (size_t)(subtests != NULL));
-+				add_job_list_entry(settings, job_list,
-+						   strdup(binary), subtests,
-+						   (size_t)(subtests != NULL));
- 				any = true;
- 				free(binary);
- 				binary = NULL;
-@@ -277,7 +285,9 @@ static bool job_list_from_test_list(struct job_list *job_list,
- 			}
- 
- 			if (entry.binary) {
--				add_job_list_entry(job_list, entry.binary, entry.subtests, entry.subtest_count);
-+				add_job_list_entry(settings, job_list,
-+						   entry.binary, entry.subtests,
-+						   entry.subtest_count);
- 				any = true;
- 			}
- 
-@@ -290,7 +300,8 @@ static bool job_list_from_test_list(struct job_list *job_list,
- 				subtests = malloc(sizeof(char*));
- 				subtests[0] = strdup(delim);
- 
--				add_job_list_entry(job_list, strdup(binary), subtests, 1);
-+				add_job_list_entry(settings, job_list,
-+						   strdup(binary), subtests, 1);
- 				any = true;
- 			} else {
- 				entry.binary = strdup(binary);
-@@ -307,7 +318,8 @@ static bool job_list_from_test_list(struct job_list *job_list,
- 	}
- 
- 	if (entry.binary) {
--		add_job_list_entry(job_list, entry.binary, entry.subtests, entry.subtest_count);
-+		add_job_list_entry(settings, job_list, entry.binary,
-+				   entry.subtests, entry.subtest_count);
- 		any = true;
- 	}
- 
-@@ -565,7 +577,7 @@ bool read_job_list(struct job_list *job_list, int dirfd)
- 
- 		sublist = strchr(line, ' ');
- 		if (!sublist) {
--			add_job_list_entry(job_list, strdup(line), NULL, 0);
-+			insert_job_entry(job_list, strdup(line), NULL, 0);
- 			continue;
- 		}
- 
-@@ -584,7 +596,7 @@ bool read_job_list(struct job_list *job_list, int dirfd)
- 			sublist = comma;
- 		} while (comma != NULL);
- 
--		add_job_list_entry(job_list, binary, subtests, num_subtests);
-+		insert_job_entry(job_list, binary, subtests, num_subtests);
- 	}
- 
- 	free(line);
--- 
-2.41.0
+On 19.10.2023 14.27, Lee Shawn C wrote:
+> Below is a failed case while testing kms_setmode.
+> 
+> CRTC[80] [Pipe A] Mode: 1920x1200@60Hz Connectors: eDP-1[236]
+> Expected frametime: 16659us; measured 20824.4us +- 4.799us accuracy 0.01% [0.10 scanlines]
+> 
+> The expected frame time is 16659us (60Hz refresh rate).
+> But kms_setmode report measured time was 20824.4us (48Hz) then
+> it failed. We found legacy DRRS mode was active at that time
+> then refresh rate fall into lower RR automatically to cause this problem.
+> Disable DRRS after crtc setmode can avoid driver switch to lower RR mode
+> and get pass for this test as well.
+> 
+> v2: fix prefix string and sort header file by alphabetical
+> 
+> Issue: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/148
+> Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+> Cc: Vidya Srinivas <vidya.srinivas@intel.com>
+> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Lee Shawn C <shawn.c.lee@intel.com>
+> ---
+>   tests/kms_setmode.c | 6 ++++++
+>   1 file changed, 6 insertions(+)
+> 
+> diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
+> index 5fc4421c0080..98e49bbf95f9 100644
+> --- a/tests/kms_setmode.c
+> +++ b/tests/kms_setmode.c
+> @@ -30,7 +30,10 @@
+>   #include <string.h>
+>   #include <sys/time.h>
+>   #include <math.h>
+> +
+> +#include "i915/intel_drrs.h"
+>   #include "xe/xe_query.h"
+> +
+>   /**
+>    * TEST: kms setmode
+>    * Category: Display
+> @@ -651,6 +654,9 @@ retry:
+>   					     crtc->fb_info.fb_id, 0, 0, ids,
+>   					     crtc->connector_count, &crtc->mode);
+>   
+> +		if (is_intel_device(drm_fd))
+> +			intel_drrs_disable(drm_fd, crtc->pipe_id);
+> +
+>   		free(ids);
+>   
+>   		if (ret < 0) {
