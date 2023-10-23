@@ -1,20 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DC7F610E084
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Oct 2023 08:18:13 +0000 (UTC)
-Date: Tue, 24 Oct 2023 10:17:48 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Message-ID: <20231024081748.qewo6ta34cxqpcrh@kamilkon-desk.igk.intel.com>
-References: <20211208192216.743364-1-robdclark@gmail.com>
- <20211208192216.743364-2-robdclark@gmail.com>
- <08cbf1e8-89c7-c0cd-2928-589e624710b1@quicinc.com>
+Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com
+ [IPv6:2607:f8b0:4864:20::82a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D864010E25E
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Oct 2023 20:59:25 +0000 (UTC)
+Received: by mail-qt1-x82a.google.com with SMTP id
+ d75a77b69052e-41cb76f3cf0so23661181cf.2
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Oct 2023 13:59:25 -0700 (PDT)
+From: Sean Paul <sean@poorly.run>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 23 Oct 2023 20:56:38 +0000
+Message-ID: <20231023205910.3556533-9-sean@poorly.run>
+In-Reply-To: <20231023205910.3556533-1-sean@poorly.run>
+References: <20231023205910.3556533-1-sean@poorly.run>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <08cbf1e8-89c7-c0cd-2928-589e624710b1@quicinc.com>
-Subject: Re: [igt-dev] [PATCH igt 1/2] tools/msm_dp_compliance: Small arg
- parsing cleanup
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH v2 8/8] tests/kms_vrr: Add a max/min test to
+ oscillate between rates
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,60 +23,63 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Rob Clark <robdclark@chromium.org>,
- Bjorn Andersson <bjorn.andersson@linaro.org>, linux-arm-msm@vger.kernel.org
+Cc: Sean Paul <seanpaul@chromium.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Rob,
+From: Sean Paul <seanpaul@chromium.org>
 
-please add here description, for example what options
-you added and why.
+The new MAXMIN test will oscillate between the max and min
+refresh rates every frame to stress test the panel. This is
+useful for manual profiling of flicker.
 
-On 2023-10-19 at 03:40:04 -0700, Abhinav Kumar wrote:
-> Reviving this:
-> 
-> On 12/8/2021 11:22 AM, Rob Clark wrote:
-> > From: Rob Clark <robdclark@chromium.org>
-> > 
-> > Signed-off-by: Rob Clark <robdclark@chromium.org>
-> 
-> Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-> 
-> Nit: shouldnt the patch prefix be "PATCH i-g-t" ?
-> 
-> We will test this out next week and land this.
-> 
-> > ---
-> >   tools/msm_dp_compliance.c | 5 ++++-
-> >   1 file changed, 4 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/tools/msm_dp_compliance.c b/tools/msm_dp_compliance.c
-> > index 5e491c89..a15a8dd9 100644
-> > --- a/tools/msm_dp_compliance.c
-> > +++ b/tools/msm_dp_compliance.c
-> > @@ -629,7 +629,9 @@ static const char optstr[] = "hi";
-> >   static void __attribute__((noreturn)) usage(char *name, char opt)
-> >   {
-> >   	igt_info("usage: %s [-hi]\n", name);
-> > -	igt_info("\t-i\tdump info\n");
-> > +	igt_info("\t-h, --help           - print this usage message");
-> > +	igt_info("\t--help-description   - print test description");
------------------------------------------------- ^^^^
-This is a tool, not a test, so imho s/test/tool/
+Signed-off-by: Sean Paul <seanpaul@chromium.org>
 
-Regards,
-Kamil
+Changes in v2:
+- Added to the set
+---
+ tests/kms_vrr.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-> > +	igt_info("\t-i, --info           - dump info\n");
-> >   	igt_info("\tDefault is to respond to Qd980 tests\n");
-> >   	exit((opt != 'h') ? -1 : 0);
-> >   }
-> > @@ -709,6 +711,7 @@ int main(int argc, char **argv)
-> >   	struct option long_opts[] = {
-> >   		{"help-description", 0, 0, HELP_DESCRIPTION},
-> >   		{"help", 0, 0, 'h'},
-> > +		{"info", 0, 0, 'i'},
-> >   	};
-> >   	enter_exec_path(argv);
+diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+index b986087f0..58bed4f20 100644
+--- a/tests/kms_vrr.c
++++ b/tests/kms_vrr.c
+@@ -89,6 +89,7 @@ enum {
+ 	TEST_SUSPEND = 1 << 2,
+ 	TEST_FLIPLINE = 1 << 3,
+ 	TEST_NEGATIVE = 1 << 4,
++	TEST_MAXMIN = 1 << 6,
+ };
+ 
+ typedef struct range {
+@@ -529,6 +530,14 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 			     (range.min - 5), rate[0], result);
+ 	}
+ 
++	if (flags & TEST_MAXMIN) {
++		uint64_t maxmin_rates[] = {vtest_ns.max, vtest_ns.min};
++		result = flip_and_measure(data, output, pipe, maxmin_rates, 2, data->duration_ns);
++		igt_assert_f(result < 50,
++			     "Refresh rate (%u Hz) %"PRIu64"ns/%"PRIu64"ns: Target VRR on threshold exceeded, result was %u%%\n",
++			     (range.min - 5), maxmin_rates[0], maxmin_rates[1], result);
++	}
++
+ 	/*
+ 	 * If we request VRR on a non-VRR panel, it is unlikely to reject the
+ 	 * modeset. And the expected behavior is the same as disabling VRR on
+@@ -654,6 +663,11 @@ igt_main_args("d:r:s", long_opts, help_str, opt_handler, &data)
+ 	igt_subtest_with_dynamic("negative-basic")
+ 		run_vrr_test(&data, test_basic, TEST_NEGATIVE);
+ 
++	igt_describe("Oscillates between highest and lowest refresh each frame for manual "
++		     "flicker profiling");
++	igt_subtest_with_dynamic("max-min")
++		run_vrr_test(&data, test_basic, TEST_MAXMIN);
++
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
+ 		drm_close_driver(data.drm_fd);
+-- 
+Sean Paul, Software Engineer, Google / Chromium OS
