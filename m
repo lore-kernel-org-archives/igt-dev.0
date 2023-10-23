@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam04on20603.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e8d::603])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2687F10E042
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Oct 2023 02:04:57 +0000 (UTC)
-From: Jesse Zhang <jesse.zhang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Mon, 23 Oct 2023 10:04:44 +0800
-Message-ID: <20231023020444.483422-1-jesse.zhang@amd.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2A2E710E076
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Oct 2023 03:56:12 +0000 (UTC)
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 23 Oct 2023 09:15:54 +0530
+Message-Id: <20231023034554.87875-3-mohammed.thasleem@intel.com>
+In-Reply-To: <20231023034554.87875-1-mohammed.thasleem@intel.com>
+References: <20231023034554.87875-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH] tests/amd_dispatch: add negative test for SDMA
+Subject: [igt-dev] [PATCH v5 2/2] tests/kms_lease: Add wrapper to create
+ lease and store mcl.fd
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,373 +19,301 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Tim Huang <tim.huang@amd.com>, Luben Tuikov <luben.tuikov@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>, Christian
- Koenig <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Issue corrupted header or slow sdma linear copy
-to trigger SDMA hang test.
+Add wrapper to create_lease to all subtest and store mcl.fd for
+all display dependent tests.
 
-V4:
-  - avoid generating warning,
-    and optimize logical code. (Vitaly)
-  - Use existing interfaces
-    to clean up code. (Vitaly)
-  - add define and additional
-    comments for clarification. (Vitaly)
+v2: Add wrapper to create lease and store mcl.fd. (Ankit)
+    Update terminate lease.
+v3: Add wrapper to all required subtests. (Ankit)
+v4: Update create_lease. (Karthik)
+v5: Use lease fd instead mcl.fd for display dependent tests.
+v6: Replace all _create_lease calls with create_lease. (Karthik)
+v7: Update commit message. (Karthi)
 
-Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Cc: Luben Tuikov <luben.tuikov@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian Koenig <christian.koenig@amd.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Signed-off-by: Tim Huang <tim.huang@amd.com>
-Reviewed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- lib/amdgpu/amd_command_submission.c | 46 ++++++++------
- lib/amdgpu/amd_command_submission.h |  3 +-
- lib/amdgpu/amd_deadlock_helpers.c   | 95 +++++++++++++++++++++++++++++
- lib/amdgpu/amd_deadlock_helpers.h   |  7 +++
- tests/amdgpu/amd_basic.c            |  4 +-
- tests/amdgpu/amd_deadlock.c         | 16 +++++
- tests/amdgpu/amd_security.c         |  4 +-
- 7 files changed, 153 insertions(+), 22 deletions(-)
+ tests/kms_lease.c | 85 ++++++++++++++++++++++++-----------------------
+ 1 file changed, 43 insertions(+), 42 deletions(-)
 
-diff --git a/lib/amdgpu/amd_command_submission.c b/lib/amdgpu/amd_command_submission.c
-index 02cf9357b..b674ba640 100644
---- a/lib/amdgpu/amd_command_submission.c
-+++ b/lib/amdgpu/amd_command_submission.c
-@@ -18,7 +18,7 @@
-  */
+diff --git a/tests/kms_lease.c b/tests/kms_lease.c
+index 44aa51362..a704601f5 100644
+--- a/tests/kms_lease.c
++++ b/tests/kms_lease.c
+@@ -280,7 +280,7 @@ static void cleanup_crtc(lease_t *lease, igt_output_t *output)
+ 	igt_display_commit(display);
+ }
  
- void amdgpu_test_exec_cs_helper(amdgpu_device_handle device, unsigned int ip_type,
--				struct amdgpu_ring_context *ring_context)
-+				struct amdgpu_ring_context *ring_context, int expect)
+-static int create_lease(int fd, struct drm_mode_create_lease *mcl)
++static int _create_lease(int fd, struct drm_mode_create_lease *mcl)
  {
- 	int r;
- 	uint32_t expired;
-@@ -31,15 +31,23 @@ void amdgpu_test_exec_cs_helper(amdgpu_device_handle device, unsigned int ip_typ
+ 	int err = 0;
  
- 	amdgpu_bo_handle *all_res = alloca(sizeof(ring_context->resources[0]) * (ring_context->res_cnt + 1));
- 
-+	if (expect) {
-+		/* allocate IB */
-+		r = amdgpu_bo_alloc_and_map(device, ring_context->write_length, 4096,
-+					    AMDGPU_GEM_DOMAIN_GTT, 0,
-+					    &ib_result_handle, &ib_result_cpu,
-+					    &ib_result_mc_address, &va_handle);
-+	} else {
-+		/* prepare CS */
-+		igt_assert(ring_context->pm4_dw <= 1024);
-+		/* allocate IB */
-+		r = amdgpu_bo_alloc_and_map(device, 4096, 4096,
-+					    AMDGPU_GEM_DOMAIN_GTT, 0,
-+					    &ib_result_handle, &ib_result_cpu,
-+					    &ib_result_mc_address, &va_handle);
- 
--	/* prepare CS */
--	igt_assert(ring_context->pm4_dw <= 1024);
- 
--	/* allocate IB */
--	r = amdgpu_bo_alloc_and_map(device, 4096, 4096,
--				    AMDGPU_GEM_DOMAIN_GTT, 0,
--				    &ib_result_handle, &ib_result_cpu,
--				    &ib_result_mc_address, &va_handle);
-+	}
- 	igt_assert_eq(r, 0);
- 
- 	/* copy PM4 packet to ring from caller */
-@@ -81,9 +89,13 @@ void amdgpu_test_exec_cs_helper(amdgpu_device_handle device, unsigned int ip_typ
- 	r = amdgpu_cs_query_fence_status(&fence_status,
- 					 AMDGPU_TIMEOUT_INFINITE,
- 					 0, &expired);
--	igt_assert_eq(r, 0);
--	igt_assert_eq(expired, true);
--
-+	if (expect) {
-+		igt_assert_neq(r, 0);
-+		igt_assert_neq(expired, true);
-+	} else {
-+		igt_assert_eq(r, 0);
-+		igt_assert_eq(expired, true);
-+	}
- 	amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
- 				 ib_result_mc_address, 4096);
+@@ -289,6 +289,17 @@ static int create_lease(int fd, struct drm_mode_create_lease *mcl)
+ 	return err;
  }
-@@ -145,7 +157,7 @@ void amdgpu_command_submission_write_linear_helper(amdgpu_device_handle device,
  
- 			ring_context->ring_id = ring_id;
- 
--			 amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context);
-+			 amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context, 0);
- 
- 			/* verify if SDMA test result meets with expected */
- 			i = 0;
-@@ -155,20 +167,20 @@ void amdgpu_command_submission_write_linear_helper(amdgpu_device_handle device,
- 			} else if (ip_block->type == AMDGPU_HW_IP_GFX) {
- 				ip_block->funcs->write_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
- 
--				amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context);
-+				amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context, 0);
- 
- 			} else if (ip_block->type == AMDGPU_HW_IP_DMA) {
- 				/* restore the bo_cpu to compare */
- 				ring_context->bo_cpu_origin = ring_context->bo_cpu[0];
- 				ip_block->funcs->write_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
- 
--				amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context);
-+				amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context, 0);
- 
- 				/* restore again, here dest_data should be */
- 				ring_context->bo_cpu_origin = ring_context->bo_cpu[0];
- 				ip_block->funcs->write_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
- 
--				amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context);
-+				amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context, 0);
- 				/* here bo_cpu[0] should be unchanged, still is 0x12345678, otherwise failed*/
- 				igt_assert_eq(ring_context->bo_cpu[0], ring_context->bo_cpu_origin);
- 			}
-@@ -236,7 +248,7 @@ void amdgpu_command_submission_const_fill_helper(amdgpu_device_handle device,
- 			/* fulfill PM4: test DMA const fill */
- 			ip_block->funcs->const_fill(ip_block->funcs, ring_context, &ring_context->pm4_dw);
- 
--			amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context);
-+			amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context, 0);
- 
- 			/* verify if SDMA test result meets with expected */
- 			r = ip_block->funcs->compare(ip_block->funcs, ring_context, 4);
-@@ -322,7 +334,7 @@ void amdgpu_command_submission_copy_linear_helper(amdgpu_device_handle device,
- 
- 				ip_block->funcs->copy_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
- 
--				amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context);
-+				amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context, 0);
- 
- 				/* verify if SDMA test result meets with expected */
- 				r = ip_block->funcs->compare_pattern(ip_block->funcs, ring_context, 4);
-diff --git a/lib/amdgpu/amd_command_submission.h b/lib/amdgpu/amd_command_submission.h
-index 58f3221a3..44f0cc958 100644
---- a/lib/amdgpu/amd_command_submission.h
-+++ b/lib/amdgpu/amd_command_submission.h
-@@ -29,7 +29,8 @@
- #include "amd_ip_blocks.h"
- 
- void amdgpu_test_exec_cs_helper(amdgpu_device_handle device,
--				unsigned int ip_type, struct amdgpu_ring_context *ring_context);
-+				unsigned int ip_type, struct amdgpu_ring_context *ring_context,
-+				int expect);
- 
- void amdgpu_command_submission_write_linear_helper(amdgpu_device_handle device,
- 						   const struct amdgpu_ip_block_version *ip_block,
-diff --git a/lib/amdgpu/amd_deadlock_helpers.c b/lib/amdgpu/amd_deadlock_helpers.c
-index a6be5f02a..612f127fd 100644
---- a/lib/amdgpu/amd_deadlock_helpers.c
-+++ b/lib/amdgpu/amd_deadlock_helpers.c
-@@ -13,6 +13,7 @@
- #include "amd_memory.h"
- #include "amd_deadlock_helpers.h"
- #include "amd_ip_blocks.h"
-+#include "lib/amdgpu/amd_command_submission.h"
- 
- #define MAX_JOB_COUNT 200
- 
-@@ -248,3 +249,97 @@ bad_access_helper(amdgpu_device_handle device_handle, int reg_access, unsigned i
- 	free_cmd_base(base_cmd);
- 	amdgpu_cs_ctx_free(context_handle);
- }
-+
-+#define MAX_DMABUF_COUNT 0x20000
-+#define MAX_DWORD_COUNT 256
-+
-+void
-+amdgpu_hang_sdma_helper(amdgpu_device_handle device_handle, uint8_t hang_type)
++static int create_lease(int fd, struct drm_mode_create_lease *mcl, int *lease_fd)
 +{
-+	int j, r;
-+	uint32_t *ptr, offset;
-+	struct amdgpu_ring_context *ring_context;
-+	struct amdgpu_cmd_base *base_cmd = get_cmd_base();
-+	const struct amdgpu_ip_block_version *ip_block = get_ip_block(device_handle, AMDGPU_HW_IP_DMA);
++	int ret;
 +
-+	ring_context = calloc(1, sizeof(*ring_context));
-+	if (hang_type == DMA_CORRUPTED_HEADER_HANG) {
-+		ring_context->write_length = 4096;
-+		ring_context->pm4 = calloc(MAX_DWORD_COUNT, sizeof(*ring_context->pm4));
-+		ring_context->pm4_size = MAX_DWORD_COUNT;
-+	} else {
-+		ring_context->write_length = MAX_DWORD_COUNT * 4 * MAX_DMABUF_COUNT;
-+		ring_context->pm4 = calloc(MAX_DWORD_COUNT * MAX_DMABUF_COUNT, sizeof(*ring_context->pm4));
-+		ring_context->pm4_size = MAX_DWORD_COUNT * MAX_DMABUF_COUNT;
-+	}
-+	ring_context->secure = false;
-+	ring_context->res_cnt = 2;
-+	igt_assert(ring_context->pm4);
++	ret = _create_lease(fd, mcl);
 +
-+	r = amdgpu_cs_ctx_create(device_handle, &ring_context->context_handle);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_bo_alloc_and_map(device_handle, ring_context->write_length, 4096,
-+					AMDGPU_GEM_DOMAIN_GTT, 0,
-+					&ring_context->bo, (void **)&ring_context->bo_cpu,
-+					&ring_context->bo_mc, &ring_context->va_handle);
-+	igt_assert_eq(r, 0);
-+
-+	/* set bo */
-+	memset((void *)ring_context->bo_cpu, 0, ring_context->write_length);
-+	r = amdgpu_bo_alloc_and_map(device_handle,
-+				    ring_context->write_length, 4096,
-+				    AMDGPU_GEM_DOMAIN_GTT,
-+				    0, &ring_context->bo2,
-+				    (void **)&ring_context->bo2_cpu, &ring_context->bo_mc2,
-+				    &ring_context->va_handle2);
-+	igt_assert_eq(r, 0);
-+
-+	/* set bo2 */
-+	memset((void *)ring_context->bo2_cpu, 0, ring_context->write_length);
-+	ring_context->resources[0] = ring_context->bo;
-+	ring_context->resources[1] = ring_context->bo2;
-+	base_cmd->attach_buf(base_cmd, ring_context->pm4, ring_context->write_length);
-+
-+	/* fulfill PM4: with bad copy linear header */
-+	if (hang_type == DMA_CORRUPTED_HEADER_HANG) {
-+		ip_block->funcs->copy_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
-+		base_cmd->emit_at_offset(base_cmd, 0x23decd3d, 0);
-+	} else {
-+		/* Save initialization pm4 */
-+		ptr = ring_context->pm4;
-+		for (j = 1; j < MAX_DMABUF_COUNT; j++) {
-+			/* copy from buf1 to buf2 */
-+			ip_block->funcs->copy_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
-+			ring_context->pm4 += ring_context->pm4_dw;
-+			ip_block->funcs->copy_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
-+
-+			offset = ring_context->pm4_dw * 2 * j;
-+			/* override  addr of buf1 and buf 2 in order to copy from buf2 to buf1 */
-+			base_cmd->emit_at_offset(base_cmd, (0xffffffff & ring_context->bo_mc2), (offset - 4));
-+			base_cmd->emit_at_offset(base_cmd,
-+					((0xffffffff00000000 & ring_context->bo_mc2) >> 32), (offset - 3));
-+			base_cmd->emit_at_offset(base_cmd, (0xffffffff & ring_context->bo_mc), (offset - 2));
-+			base_cmd->emit_at_offset(base_cmd,
-+					((0xffffffff00000000 & ring_context->bo_mc) >> 32), (offset - 1));
-+			ring_context->pm4 += ring_context->pm4_dw;
-+		}
-+		/* restore pm4 */
-+		ring_context->pm4 = ptr;
-+		/* update the total pm4_dw */
-+		ring_context->pm4_dw = ring_context->pm4_dw * 2 * j;
-+	}
-+
-+	amdgpu_test_exec_cs_helper(device_handle, ip_block->type, ring_context, 1);
-+	amdgpu_bo_unmap_and_free(ring_context->bo, ring_context->va_handle, ring_context->bo_mc,
-+						 ring_context->write_length);
-+	amdgpu_bo_unmap_and_free(ring_context->bo2, ring_context->va_handle2, ring_context->bo_mc2,
-+						 ring_context->write_length);
-+	/* clean resources */
-+	free(ring_context->pm4);
-+	/* end of test */
-+	//r = amdgpu_cs_ctx_free(context_handle);
-+	r = amdgpu_cs_ctx_free(ring_context->context_handle);
-+	igt_assert_eq(r, 0);
-+	free_cmd_base(base_cmd);
++	if (lease_fd != NULL)
++		*lease_fd = mcl->fd;
++	return ret;
 +}
-diff --git a/lib/amdgpu/amd_deadlock_helpers.h b/lib/amdgpu/amd_deadlock_helpers.h
-index cc8eba7f7..9c0d245a9 100644
---- a/lib/amdgpu/amd_deadlock_helpers.h
-+++ b/lib/amdgpu/amd_deadlock_helpers.h
-@@ -24,11 +24,18 @@
- #ifndef __AMD_DEADLOCK_HELPERS_H__
- #define __AMD_DEADLOCK_HELPERS_H__
- 
-+enum  hang_type {
-+	DMA_CORRUPTED_HEADER_HANG,
-+	DMA_SLOW_LINEARCOPY_HANG
-+};
 +
- void
- amdgpu_wait_memory_helper(amdgpu_device_handle device_handle, unsigned ip_type);
+ static int revoke_lease(int fd, struct drm_mode_revoke_lease *mrl)
+ {
+ 	int err = 0;
+@@ -331,12 +342,11 @@ static int make_lease(data_t *data)
+ 	/* We use universal planes, must add the primary plane */
+ 	object_ids[mcl.object_count++] = data->plane_id;
  
- void
- bad_access_helper(amdgpu_device_handle device_handle, int reg_access, unsigned ip_type);
+-	ret = create_lease(data->master.fd, &mcl);
++	ret = create_lease(data->master.fd, &mcl, &data->lease.fd);
  
-+void
-+amdgpu_hang_sdma_helper(amdgpu_device_handle device_handle, uint8_t hang_type);
- #endif
+ 	if (ret)
+ 		return ret;
  
-diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
-index 88fdbd980..70e45649d 100644
---- a/tests/amdgpu/amd_basic.c
-+++ b/tests/amdgpu/amd_basic.c
-@@ -307,7 +307,7 @@ static void amdgpu_userptr_test(amdgpu_device_handle device)
+-	data->lease.fd = mcl.fd;
+ 	data->lease.lessee_id = mcl.lessee_id;
+ 	return 0;
+ }
+@@ -393,8 +403,7 @@ static void empty_lease(data_t *data)
+ {
+ 	struct drm_mode_create_lease mcl = {0};
  
- 	ip_block->funcs->write_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
+-	igt_assert_eq(create_lease(data->master.fd, &mcl), 0);
+-	data->lease.fd = mcl.fd;
++	igt_assert_eq(create_lease(data->master.fd, &mcl, &data->lease.fd), 0);
+ }
  
--	 amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context);
-+	 amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context, 0);
+ static void page_flip_implicit_plane(data_t *data)
+@@ -426,8 +435,7 @@ static void page_flip_implicit_plane(data_t *data)
+ 	object_ids[mcl.object_count++] = data->crtc_id;
  
- 	r = ip_block->funcs->compare(ip_block->funcs, ring_context, 1);
- 	igt_assert_eq(r, 0);
-@@ -412,7 +412,7 @@ amdgpu_bo_eviction_test(amdgpu_device_handle device_handle)
- 			ring_context->resources[2] = ring_context->boa_vram[loop2];
- 			ring_context->resources[3] = ring_context->boa_gtt[loop2];
- 			ip_block->funcs->copy_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
--			amdgpu_test_exec_cs_helper(device_handle, ip_block->type, ring_context);
-+			amdgpu_test_exec_cs_helper(device_handle, ip_block->type, ring_context, 0);
- 			/* fulfill PM4: test DMA copy linear */
- 			r = ip_block->funcs->compare_pattern(ip_block->funcs, ring_context, sdma_write_length);
- 			igt_assert_eq(r, 0);
-diff --git a/tests/amdgpu/amd_deadlock.c b/tests/amdgpu/amd_deadlock.c
-index 6147b7636..dc7ec4366 100644
---- a/tests/amdgpu/amd_deadlock.c
-+++ b/tests/amdgpu/amd_deadlock.c
-@@ -77,6 +77,22 @@ igt_main
- 		}
+ 	drmSetClientCap(data->master.fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 0);
+-	do_or_die(create_lease(data->master.fd, &mcl));
+-	data->lease.fd = mcl.fd;
++	do_or_die(create_lease(data->master.fd, &mcl, &data->lease.fd));
+ 	drmSetClientCap(data->master.fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
+ 
+ 	/* Set a mode on the leased output */
+@@ -449,8 +457,7 @@ static void page_flip_implicit_plane(data_t *data)
+ 	close(data->lease.fd);
+ 
+ 	object_ids[mcl.object_count++] = wrong_plane_id;
+-	do_or_die(create_lease(data->master.fd, &mcl));
+-	data->lease.fd = mcl.fd;
++	do_or_die(create_lease(data->master.fd, &mcl, &data->lease.fd));
+ 
+ 	igt_wait_for_vblank(data->master.fd,
+ 			display->pipes[pipe].crtc_offset);
+@@ -496,8 +503,7 @@ static void setcrtc_implicit_plane(data_t *data)
+ 	object_ids[mcl.object_count++] = data->crtc_id;
+ 
+ 	drmSetClientCap(data->master.fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 0);
+-	do_or_die(create_lease(data->master.fd, &mcl));
+-	data->lease.fd = mcl.fd;
++	do_or_die(create_lease(data->master.fd, &mcl, &data->lease.fd));
+ 	drmSetClientCap(data->master.fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
+ 
+ 	/*
+@@ -521,9 +527,7 @@ static void setcrtc_implicit_plane(data_t *data)
+ 	igt_assert_eq(ret_mcl, 0);
+ 
+ 	object_ids[mcl.object_count++] = wrong_plane_id;
+-	do_or_die(create_lease(data->master.fd, &mcl));
+-	data->lease.fd = mcl.fd;
+-
++	do_or_die(create_lease(data->master.fd, &mcl, &data->lease.fd));
+ 	igt_assert_eq(drmModeSetCrtc(data->lease.fd, data->crtc_id, -1,
+ 				     0, 0, object_ids, 1, mode),
+ 		      -EACCES);
+@@ -548,8 +552,7 @@ static void cursor_implicit_plane(data_t *data)
+ 	object_ids[mcl.object_count++] = data->crtc_id;
+ 
+ 	drmSetClientCap(data->master.fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 0);
+-	do_or_die(create_lease(data->master.fd, &mcl));
+-	data->lease.fd = mcl.fd;
++	do_or_die(create_lease(data->master.fd, &mcl, &data->lease.fd));
+ 	drmSetClientCap(data->master.fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
+ 
+ 	/* Set a mode on the leased output */
+@@ -562,8 +565,7 @@ static void cursor_implicit_plane(data_t *data)
+ 
+ 	/* primary plane is never the cursor */
+ 	object_ids[mcl.object_count++] = data->plane_id;
+-	do_or_die(create_lease(data->master.fd, &mcl));
+-	data->lease.fd = mcl.fd;
++	do_or_die(create_lease(data->master.fd, &mcl, &data->lease.fd));
+ 
+ 	igt_assert_eq(drmModeSetCursor(data->lease.fd, data->crtc_id, 0, 0, 0),
+ 		      -EACCES);
+@@ -624,8 +626,7 @@ static void atomic_implicit_crtc(data_t *data)
+ 	drmModeFreeObjectProperties(props);
+ 	igt_assert(crtc_id_prop);
+ 
+-	do_or_die(create_lease(data->master.fd, &mcl));
+-	data->lease.fd = mcl.fd;
++	do_or_die(create_lease(data->master.fd, &mcl, &data->lease.fd));
+ 	do_or_die(drmSetClientCap(data->lease.fd, DRM_CLIENT_CAP_ATOMIC, 1));
+ 
+ 	/* check CRTC_ID property on the plane */
+@@ -952,76 +953,76 @@ static void invalid_create_leases(data_t *data)
+ 
+ 	/* NULL array pointer */
+ 	mcl.object_count = 1;
+-	igt_assert_eq(create_lease(data->master.fd, &mcl), -EFAULT);
++	igt_assert_eq(create_lease(data->master.fd, &mcl, NULL), -EFAULT);
+ 
+ 	/* nil object */
+ 	object_ids[0] = 0;
+ 	mcl.object_ids = (uint64_t) (uintptr_t) object_ids;
+ 	mcl.object_count = 1;
+-	igt_assert_eq(create_lease(data->master.fd, &mcl), -ENOENT);
++	igt_assert_eq(create_lease(data->master.fd, &mcl, NULL), -ENOENT);
+ 
+ 	/* no crtc, non-universal_plane */
+ 	drmSetClientCap(data->master.fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 0);
+ 	object_ids[0] = data->master.display.outputs[0].id;
+-	igt_assert_eq(create_lease(data->master.fd, &mcl), -EINVAL);
++	igt_assert_eq(create_lease(data->master.fd, &mcl, NULL), -EINVAL);
+ 
+ 	/* no connector, non-universal_plane */
+ 	object_ids[0] = data->master.display.pipes[0].crtc_id;
+-	igt_assert_eq(create_lease(data->master.fd, &mcl), -EINVAL);
++	igt_assert_eq(create_lease(data->master.fd, &mcl, NULL), -EINVAL);
+ 
+ 	/* sanity check */
+ 	object_ids[0] = data->master.display.pipes[0].crtc_id;
+ 	object_ids[1] = data->master.display.outputs[0].id;
+ 	mcl.object_count = 2;
+-	igt_assert_eq(create_lease(data->master.fd, &mcl), 0);
++	igt_assert_eq(create_lease(data->master.fd, &mcl, NULL), 0);
+ 	close(mcl.fd);
+ 
+ 	/* no plane, universal planes */
+ 	drmSetClientCap(data->master.fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
+-	igt_assert_eq(create_lease(data->master.fd, &mcl), -EINVAL);
++	igt_assert_eq(create_lease(data->master.fd, &mcl, NULL), -EINVAL);
+ 
+ 	/* sanity check */
+ 	object_ids[2] = igt_pipe_get_plane_type(&data->master.display.pipes[0],
+ 						DRM_PLANE_TYPE_PRIMARY)->drm_plane->plane_id;
+ 	mcl.object_count = 3;
+-	igt_assert_eq(create_lease(data->master.fd, &mcl), 0);
++	igt_assert_eq(create_lease(data->master.fd, &mcl, NULL), 0);
+ 	close(mcl.fd);
+ 
+ 	/* array overflow, do a small scan around overflow sizes */
+ 	for (int i = 1; i <= 4; i++) {
+ 		mcl.object_count = UINT32_MAX / sizeof(object_ids[0]) + i;
+-		igt_assert_eq(create_lease(data->master.fd, &mcl), -ENOMEM);
++		igt_assert_eq(create_lease(data->master.fd, &mcl, NULL), -ENOMEM);
  	}
  
-+	igt_describe("Test-GPU-reset-by-sdma-corrupted-header-with-jobs");
-+	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-corrupted-header-test") {
-+		if (arr_cap[AMD_IP_DMA]) {
-+			igt_dynamic_f("amdgpu-deadlock-sdma-corrupted-header-test")
-+			amdgpu_hang_sdma_helper(device, DMA_CORRUPTED_HEADER_HANG);
-+		}
-+	}
-+
-+	igt_describe("Test-GPU-reset-by-sdma-slow-linear-copy-with-jobs");
-+	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-slow-linear-copy") {
-+		if (arr_cap[AMD_IP_DMA]) {
-+			igt_dynamic_f("amdgpu-deadlock-sdma-slow-linear-copy")
-+			amdgpu_hang_sdma_helper(device, DMA_SLOW_LINEARCOPY_HANG);
-+		}
-+	}
-+
- 	igt_fixture {
- 		amdgpu_device_deinitialize(device);
- 		drm_close_driver(fd);
-diff --git a/tests/amdgpu/amd_security.c b/tests/amdgpu/amd_security.c
-index 46180df2e..1a7eba9eb 100644
---- a/tests/amdgpu/amd_security.c
-+++ b/tests/amdgpu/amd_security.c
-@@ -110,7 +110,7 @@ amdgpu_bo_lcopy(amdgpu_device_handle device,
+ 	/* sanity check */
+ 	mcl.object_count = 3;
+ 	mcl.flags = O_CLOEXEC | O_NONBLOCK;
+-	igt_assert_eq(create_lease(data->master.fd, &mcl), 0);
++	igt_assert_eq(create_lease(data->master.fd, &mcl, NULL), 0);
+ 	close(mcl.fd);
  
- 	amdgpu_sdma_lcopy(ring_context->pm4, ring_context->bo_mc2,
- 			ring_context->bo_mc, size, secure);
--	amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context);
-+	amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context, 0);
- 	free(ring_context->pm4);
+ 	/* invalid flags */
+ 	mcl.flags = -1;
+-	igt_assert_eq(create_lease(data->master.fd, &mcl), -EINVAL);
++	igt_assert_eq(create_lease(data->master.fd, &mcl, NULL), -EINVAL);
+ 
+ 	/* no subleasing */
+ 	mcl.object_count = 3;
+ 	mcl.flags = 0;
+-	igt_assert_eq(create_lease(data->master.fd, &mcl), 0);
++	igt_assert_eq(create_lease(data->master.fd, &mcl, NULL), 0);
+ 	tmp_fd = mcl.fd;
+-	igt_assert_eq(create_lease(tmp_fd, &mcl), -EINVAL);
++	igt_assert_eq(create_lease(tmp_fd, &mcl, NULL), -EINVAL);
+ 	close(tmp_fd);
+ 
+ 	/* no double-leasing */
+-	igt_assert_eq(create_lease(data->master.fd, &mcl), 0);
++	igt_assert_eq(create_lease(data->master.fd, &mcl, NULL), 0);
+ 	tmp_fd = mcl.fd;
+-	igt_assert_eq(create_lease(data->master.fd, &mcl), -EBUSY);
++	igt_assert_eq(create_lease(data->master.fd, &mcl, NULL), -EBUSY);
+ 	close(tmp_fd);
+ 
+ 	/* no double leasing */
+ 	object_ids[3] = object_ids[2];
+ 	mcl.object_count = 4;
+ 	/* Note: the ENOSPC is from idr double-insertion failing */
+-	ret = create_lease(data->master.fd, &mcl);
++	ret = create_lease(data->master.fd, &mcl, NULL);
+ 	assert_double_id_err(ret);
+ 
+ 	/* no encoder leasing */
+@@ -1029,7 +1030,7 @@ static void invalid_create_leases(data_t *data)
+ 	igt_assert(resources);
+ 	igt_assert(resources->count_encoders > 0);
+ 	object_ids[3] = resources->encoders[0];
+-	igt_assert_eq(create_lease(data->master.fd, &mcl), -EINVAL);
++	igt_assert_eq(create_lease(data->master.fd, &mcl, NULL), -EINVAL);
+ 	drmModeFreeResources(resources);
  }
  
-@@ -155,7 +155,7 @@ amdgpu_bo_move(amdgpu_device_handle device, int fd,
- 	 * it to the desired location.
- 	 */
- 	amdgpu_sdma_nop(ring_context->pm4, PACKET_NOP_SIZE);
--	amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context);
-+	amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context, 0);
- 	free(ring_context->pm4);
- }
+@@ -1120,7 +1121,7 @@ static void possible_crtcs_filtering(data_t *data)
+ 		object_ids[mcl.object_count - 1] =
+ 			resources->crtcs[i];
  
+-		igt_assert_eq(create_lease(master_fd, &mcl), 0);
++		igt_assert_eq(create_lease(master_fd, &mcl, NULL), 0);
+ 		lease_fd = mcl.fd;
+ 
+ 		drmSetClientCap(lease_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
+@@ -1154,7 +1155,7 @@ static int _create_simple_lease(int master_fd, data_t *data, int expected_ret)
+ 	mcl.object_count = 3;
+ 	mcl.flags = 0;
+ 
+-	igt_assert_eq(create_lease(master_fd, &mcl), expected_ret);
++	igt_assert_eq(create_lease(master_fd, &mcl, NULL), expected_ret);
+ 
+ 	return expected_ret == 0 ? mcl.fd : 0;
+ }
+@@ -1248,13 +1249,13 @@ static void implicit_plane_lease(data_t *data)
+ 	mcl.flags = 0;
+ 
+ 	/* sanity check */
+-	igt_assert_eq(create_lease(data->master.fd, &mcl), 0);
++	igt_assert_eq(create_lease(data->master.fd, &mcl, NULL), 0);
+ 	close(mcl.fd);
+ 	drmSetClientCap(data->master.fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 0);
+ 
+ 	/* non universal plane automatically adds primary/cursor plane */
+ 	mcl.object_count = 2;
+-	igt_assert_eq(create_lease(data->master.fd, &mcl), 0);
++	igt_assert_eq(create_lease(data->master.fd, &mcl, NULL), 0);
+ 
+ 	mgl.pad = 0;
+ 	mgl.count_objects = 0;
+@@ -1268,12 +1269,12 @@ static void implicit_plane_lease(data_t *data)
+ 	/* check that implicit lease doesn't lead to confusion when
+ 	 * explicitly adding primary plane */
+ 	mcl.object_count = 3;
+-	ret = create_lease(data->master.fd, &mcl);
++	ret = create_lease(data->master.fd, &mcl, NULL);
+ 	assert_double_id_err(ret);
+ 
+ 	/* same for the cursor */
+ 	object_ids[2] = cursor_id;
+-	ret = create_lease(data->master.fd, &mcl);
++	ret = create_lease(data->master.fd, &mcl, NULL);
+ 	assert_double_id_err(ret);
+ 
+ 	drmSetClientCap(data->master.fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
 -- 
 2.25.1
-
