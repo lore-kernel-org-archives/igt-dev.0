@@ -1,22 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6D2AD10E0FC
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Oct 2023 17:25:00 +0000 (UTC)
-Date: Fri, 20 Oct 2023 10:24:48 -0700
-From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-To: Matthew Auld <matthew.auld@intel.com>
-Message-ID: <ZTK34GOGxaWSrw2k@nvishwa1-DESK>
-References: <20231019144106.560624-1-matthew.auld@intel.com>
- <20231019144106.560624-15-matthew.auld@intel.com>
- <ZTIP1Lrj+fh1QnlY@nvishwa1-DESK>
- <b6e25708-3e3f-ded9-59de-b3d6a2da0cf6@intel.com>
-Content-Type: text/plain; charset="iso-8859-1"; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b6e25708-3e3f-ded9-59de-b3d6a2da0cf6@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C61D410E150
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Oct 2023 06:54:11 +0000 (UTC)
+From: "Hogander, Jouni" <jouni.hogander@intel.com>
+To: "Joshi, Kunal1" <kunal1.joshi@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+Date: Mon, 23 Oct 2023 06:54:02 +0000
+Message-ID: <37c94fe86ede8b92e1505eade961783203e5887d.camel@intel.com>
+References: <20231020060503.870173-1-kunal1.joshi@intel.com>
+ <20231020060503.870173-6-kunal1.joshi@intel.com>
+In-Reply-To: <20231020060503.870173-6-kunal1.joshi@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <E5BAB2E4319D1C48B8C91BD05C157A40@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v4 14/15] tests/xe: add some vm_bind
- pat_index tests
+Subject: Re: [igt-dev] [PATCH i-g-t 5/5] tests/intel/kms_psr: made test
+ compaitable with pr
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,880 +24,652 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Nitish
- Kumar <nitish.kumar@intel.com>
+Cc: "Murthy, Arun R" <arun.r.murthy@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Oct 20, 2023 at 09:21:13AM +0100, Matthew Auld wrote:
->On 20/10/2023 06:27, Niranjana Vishwanathapura wrote:
->>On Thu, Oct 19, 2023 at 03:41:05PM +0100, Matthew Auld wrote:
->>>Add some basic tests for pat_index and vm_bind.
->>>
->>>v2: Make sure to actually use srand() with the chosen seed
->>> - Make it work on xe2; the wt mode now has compression.
->>> - Also test some xe2+ specific pat_index modes.
->>>v3: Fix decompress step.
->>>v4: (Niranjana)
->>> - Various improvements, including testing more pat_index modes, like
->>>   wc where possible.
->>> - Document the idea behind "common" modes.
->>>
->>>Signed-off-by: Matthew Auld <matthew.auld@intel.com>
->>>Cc: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
->>>Cc: José Roberto de Souza <jose.souza@intel.com>
->>>Cc: Pallavi Mishra <pallavi.mishra@intel.com>
->>>Cc: Nitish Kumar <nitish.kumar@intel.com>
->>>---
->>>tests/intel/xe_pat.c | 754 +++++++++++++++++++++++++++++++++++++++++++
->>>tests/meson.build    |   1 +
->>>2 files changed, 755 insertions(+)
->>>create mode 100644 tests/intel/xe_pat.c
->>>
->>>diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
->>>new file mode 100644
->>>index 000000000..1e74014b8
->>>--- /dev/null
->>>+++ b/tests/intel/xe_pat.c
->>>@@ -0,0 +1,754 @@
->>>+// SPDX-License-Identifier: MIT
->>>+/*
->>>+ * Copyright © 2023 Intel Corporation
->>>+ */
->>>+
->>>+/**
->>>+ * TEST: Test for selecting per-VMA pat_index
->>>+ * Category: Software building block
->>>+ * Sub-category: VMA
->>>+ * Functionality: pat_index
->>>+ */
->>>+
->>>+#include "igt.h"
->>>+#include "intel_blt.h"
->>>+#include "intel_mocs.h"
->>>+#include "intel_pat.h"
->>>+
->>>+#include "xe/xe_ioctl.h"
->>>+#include "xe/xe_query.h"
->>>+#include "xe/xe_util.h"
->>>+
->>>+#define PAGE_SIZE 4096
->>>+
->>>+static bool do_slow_check;
->>>+
->>>+/**
->>>+ * SUBTEST: userptr-coh-none
->>>+ * Test category: functionality test
->>>+ * Description: Test non-coherent pat_index on userptr
->>>+ */
->>>+static void userptr_coh_none(int fd)
->>>+{
->>>+    size_t size = xe_get_default_alignment(fd);
->>>+    uint32_t vm;
->>>+    void *data;
->>>+
->>>+    data = mmap(0, size, PROT_READ |
->>>+            PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
->>>+    igt_assert(data != MAP_FAILED);
->>>+
->>>+    vm = xe_vm_create(fd, 0, 0);
->>>+
->>>+    /*
->>>+     * Try some valid combinations first just to make sure we're 
->>>not being
->>>+     * swindled.
->>>+     */
->>>+    igt_assert_eq(__xe_vm_bind(fd, vm, 0, 0, 
->>>to_user_pointer(data), 0x40000,
->>>+                   size, XE_VM_BIND_OP_MAP_USERPTR, 0, NULL, 0, 0,
->>>+                   DEFAULT_PAT_INDEX, 0),
->>>+              0);
->>>+    xe_vm_unbind_sync(fd, vm, 0, 0x40000, size);
->>>+    igt_assert_eq(__xe_vm_bind(fd, vm, 0, 0, 
->>>to_user_pointer(data), 0x40000,
->>>+                   size, XE_VM_BIND_OP_MAP_USERPTR, 0, NULL, 0, 0,
->>>+                   intel_get_pat_idx_wb(fd), 0),
->>>+              0);
->>>+    xe_vm_unbind_sync(fd, vm, 0, 0x40000, size);
->>>+
->>>+    /* And then some known COH_NONE pat_index combos which should 
->>>fail. */
->>>+    igt_assert_eq(__xe_vm_bind(fd, vm, 0, 0, 
->>>to_user_pointer(data), 0x40000,
->>>+                   size, XE_VM_BIND_OP_MAP_USERPTR, 0, NULL, 0, 0,
->>>+                   intel_get_pat_idx_uc(fd), 0),
->>>+              -EINVAL);
->>>+    igt_assert_eq(__xe_vm_bind(fd, vm, 0, 0, 
->>>to_user_pointer(data), 0x40000,
->>>+                   size, XE_VM_BIND_OP_MAP_USERPTR, 0, NULL, 0, 0,
->>>+                   intel_get_pat_idx_wt(fd), 0),
->>>+              -EINVAL);
->>>+
->>>+    munmap(data, size);
->>>+    xe_vm_destroy(fd, vm);
->>>+}
->>>+
->>>+/**
->>>+ * SUBTEST: pat-index-all
->>>+ * Test category: functionality test
->>>+ * Description: Test every pat_index
->>>+ */
->>>+static void pat_index_all(int fd)
->>>+{
->>>+    uint16_t dev_id = intel_get_drm_devid(fd);
->>>+    size_t size = xe_get_default_alignment(fd);
->>>+    uint32_t vm, bo;
->>>+    uint8_t pat_index;
->>>+
->>>+    vm = xe_vm_create(fd, 0, 0);
->>>+
->>>+    bo = xe_bo_create_caching(fd, 0, size, all_memory_regions(fd),
->>>+                  DRM_XE_GEM_CPU_CACHING_WC,
->>>+                  DRM_XE_GEM_COH_NONE);
->>>+
->>>+    igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x40000,
->>>+                   size, XE_VM_BIND_OP_MAP, 0, NULL, 0, 0,
->>>+                   intel_get_pat_idx_uc(fd), 0),
->>>+              0);
->>>+    xe_vm_unbind_sync(fd, vm, 0, 0x40000, size);
->>>+
->>>+    igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x40000,
->>>+                   size, XE_VM_BIND_OP_MAP, 0, NULL, 0, 0,
->>>+                   intel_get_pat_idx_wt(fd), 0),
->>>+              0);
->>>+    xe_vm_unbind_sync(fd, vm, 0, 0x40000, size);
->>>+
->>>+    igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x40000,
->>>+                   size, XE_VM_BIND_OP_MAP, 0, NULL, 0, 0,
->>>+                   intel_get_pat_idx_wb(fd), 0),
->>>+              0);
->>>+    xe_vm_unbind_sync(fd, vm, 0, 0x40000, size);
->>>+
->>>+    igt_assert(intel_get_max_pat_index(fd));
->>>+
->>>+    for (pat_index = 0; pat_index <= intel_get_max_pat_index(fd);
->>>+         pat_index++) {
->>>+        if (intel_get_device_info(dev_id)->graphics_ver == 20 &&
->>>+            pat_index >= 16 && pat_index <= 19) { /* hw reserved */
->>>+            igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x40000,
->>>+                           size, XE_VM_BIND_OP_MAP, 0, NULL, 0, 0,
->>>+                           pat_index, 0),
->>>+                      -EINVAL);
->>>+        } else {
->>>+            igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x40000,
->>>+                           size, XE_VM_BIND_OP_MAP, 0, NULL, 0, 0,
->>>+                           pat_index, 0),
->>>+                      0);
->>>+            xe_vm_unbind_sync(fd, vm, 0, 0x40000, size);
->>>+        }
->>>+    }
->>>+
->>>+    igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x40000,
->>>+                   size, XE_VM_BIND_OP_MAP, 0, NULL, 0, 0,
->>>+                   pat_index, 0),
->>>+              -EINVAL);
->>>+
->>>+    gem_close(fd, bo);
->>>+
->>>+    /* Must be at least as coherent as the gem_create coh_mode. */
->>>+    bo = xe_bo_create_caching(fd, 0, size, system_memory(fd),
->>>+                  DRM_XE_GEM_CPU_CACHING_WB,
->>>+                  DRM_XE_GEM_COH_AT_LEAST_1WAY);
->>>+
->>>+    igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x40000,
->>>+                   size, XE_VM_BIND_OP_MAP, 0, NULL, 0, 0,
->>>+                   intel_get_pat_idx_uc(fd), 0),
->>>+              -EINVAL);
->>>+
->>>+    igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x40000,
->>>+                   size, XE_VM_BIND_OP_MAP, 0, NULL, 0, 0,
->>>+                   intel_get_pat_idx_wt(fd), 0),
->>>+              -EINVAL);
->>>+
->>>+    igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x40000,
->>>+                   size, XE_VM_BIND_OP_MAP, 0, NULL, 0, 0,
->>>+                   intel_get_pat_idx_wb(fd), 0),
->>>+              0);
->>>+    xe_vm_unbind_sync(fd, vm, 0, 0x40000, size);
->>>+
->>>+    gem_close(fd, bo);
->>>+
->>>+    xe_vm_destroy(fd, vm);
->>>+}
->>>+
->>>+#define CLEAR_1 0xFFFFFFFF /* something compressible */
->>>+
->>>+static void xe2_blt_decompress_dst(int fd,
->>>+                   intel_ctx_t *ctx,
->>>+                   uint64_t ahnd,
->>>+                   struct blt_copy_data *blt,
->>>+                   uint32_t alias_handle,
->>>+                   uint32_t size)
->>>+{
->>>+    struct blt_copy_object tmp = {};
->>>+
->>>+    /*
->>>+     * Xe2 in-place decompression using an alias to the same physical
->>>+     * memory, but with the dst mapped using some uncompressed 
->>>pat_index.
->>>+     * This should allow checking the object pages via mmap.
->>>+     */
->>>+
->>>+    memcpy(&tmp, &blt->src, sizeof(blt->dst));
->>>+    memcpy(&blt->src, &blt->dst, sizeof(blt->dst));
->>>+    blt_set_object(&blt->dst, alias_handle, size, 0,
->>>+               intel_get_uc_mocs_index(fd),
->>>+               intel_get_pat_idx_uc(fd), /* compression disabled */
->>>+               T_LINEAR, 0, 0);
->>>+    blt_fast_copy(fd, ctx, NULL, ahnd, blt);
->>>+    memcpy(&blt->dst, &blt->src, sizeof(blt->dst));
->>>+    memcpy(&blt->src, &tmp, sizeof(blt->dst));
->>>+}
->>>+
->>>+struct xe_pat_size_mode {
->>>+    uint16_t width;
->>>+    uint16_t height;
->>>+    uint32_t alignment;
->>>+    const char *name;
->>>+};
->>>+
->>>+struct xe_pat_param {
->>>+    int fd;
->>>+
->>>+    const struct xe_pat_size_mode *size;
->>>+
->>>+    uint32_t r1;
->>>+    uint8_t  r1_pat_index;
->>>+    uint16_t r1_coh_mode;
->>>+    bool     r1_force_cpu_wc;
->>>+
->>>+    uint32_t r2;
->>>+    uint8_t  r2_pat_index;
->>>+    uint16_t r2_coh_mode;
->>>+    bool     r2_force_cpu_wc;
->>>+    bool     r2_compressed; /* xe2+ compression */
->>>+
->>>+};
->>>+
->>>+static void pat_index_blt(struct xe_pat_param *p)
->>>+{
->>>+    struct drm_xe_engine_class_instance inst = {
->>>+        .engine_class = DRM_XE_ENGINE_CLASS_COPY,
->>>+    };
->>>+    struct blt_copy_data blt = {};
->>>+    struct blt_copy_object src = {};
->>>+    struct blt_copy_object dst = {};
->>>+    uint32_t vm, exec_queue, src_bo, dst_bo, bb;
->>>+    uint32_t *src_map, *dst_map;
->>>+    uint16_t r1_cpu_caching, r2_cpu_caching;
->>>+    uint32_t r1_flags, r2_flags;
->>>+    intel_ctx_t *ctx;
->>>+    uint64_t ahnd;
->>>+    int width = p->size->width, height = p->size->height;
->>>+    int size, stride, bb_size;
->>>+    int bpp = 32;
->>>+    uint32_t alias, name;
->>>+    int fd = p->fd;
->>>+    int i;
->>>+
->>>+    igt_require(blt_has_fast_copy(fd));
->>>+
->>>+    vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
->>>+    exec_queue = xe_exec_queue_create(fd, vm, &inst, 0);
->>>+    ctx = intel_ctx_xe(fd, vm, exec_queue, 0, 0, 0);
->>>+    ahnd = intel_allocator_open_full(fd, ctx->vm, 0, 0,
->>>+                     INTEL_ALLOCATOR_SIMPLE,
->>>+                     ALLOC_STRATEGY_LOW_TO_HIGH,
->>>+                     p->size->alignment);
->>>+
->>>+    bb_size = xe_get_default_alignment(fd);
->>>+    bb = xe_bo_create_flags(fd, 0, bb_size, system_memory(fd));
->>>+
->>>+    size = width * height * bpp / 8;
->>>+    stride = width * 4;
->>>+
->>>+    r1_flags = 0;
->>>+    if (p->r1 != system_memory(fd))
->>>+        r1_flags |= XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
->>>+
->>>+    if (p->r1_coh_mode == DRM_XE_GEM_COH_AT_LEAST_1WAY
->>>+        && p->r1 == system_memory(fd) && !p->r1_force_cpu_wc)
->>>+        r1_cpu_caching = DRM_XE_GEM_CPU_CACHING_WB;
->>>+    else
->>>+        r1_cpu_caching = DRM_XE_GEM_CPU_CACHING_WC;
->>>+
->>>+    r2_flags = 0;
->>>+    if (p->r2 != system_memory(fd))
->>>+        r2_flags |= XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
->>>+
->>>+    if (p->r2_coh_mode == DRM_XE_GEM_COH_AT_LEAST_1WAY &&
->>>+        p->r2 == system_memory(fd) && !p->r2_force_cpu_wc)
->>>+        r2_cpu_caching = DRM_XE_GEM_CPU_CACHING_WB;
->>>+    else
->>>+        r2_cpu_caching = DRM_XE_GEM_CPU_CACHING_WC;
->>>+
->>>+
->>>+    src_bo = xe_bo_create_caching(fd, 0, size, p->r1 | r1_flags, 
->>>r1_cpu_caching,
->>>+                      p->r1_coh_mode);
->>>+    dst_bo = xe_bo_create_caching(fd, 0, size, p->r2 | r2_flags, 
->>>r2_cpu_caching,
->>>+                      p->r2_coh_mode);
->>>+    if (p->r2_compressed) {
->>>+        name = gem_flink(fd, dst_bo);
->>>+        alias = gem_open(fd, name);
->>>+    }
->>>+
->>>+    blt_copy_init(fd, &blt);
->>>+    blt.color_depth = CD_32bit;
->>>+
->>>+    blt_set_object(&src, src_bo, size, p->r1, 
->>>intel_get_uc_mocs_index(fd),
->>>+               p->r1_pat_index, T_LINEAR,
->>>+               COMPRESSION_DISABLED, COMPRESSION_TYPE_3D);
->>>+    blt_set_geom(&src, stride, 0, 0, width, height, 0, 0);
->>>+
->>>+    blt_set_object(&dst, dst_bo, size, p->r2, 
->>>intel_get_uc_mocs_index(fd),
->>>+               p->r2_pat_index, T_LINEAR,
->>>+               COMPRESSION_DISABLED, COMPRESSION_TYPE_3D);
->>>+    blt_set_geom(&dst, stride, 0, 0, width, height, 0, 0);
->>>+
->>>+    blt_set_copy_object(&blt.src, &src);
->>>+    blt_set_copy_object(&blt.dst, &dst);
->>>+    blt_set_batch(&blt.bb, bb, bb_size, system_memory(fd));
->>>+
->>>+    src_map = xe_bo_map(fd, src_bo, size);
->>>+    dst_map = xe_bo_map(fd, dst_bo, size);
->>>+
->>>+    /* Ensure we always see zeroes for the initial KMD zeroing */
->>>+    blt_fast_copy(fd, ctx, NULL, ahnd, &blt);
->>>+    if (p->r2_compressed)
->>>+        xe2_blt_decompress_dst(fd, ctx, ahnd, &blt, alias, size);
->>>+
->>>+    /*
->>>+     * Only sample random dword in every page if we are doing 
->>>slow uncached
->>>+     * reads from VRAM.
->>>+     */
->>>+    if (!do_slow_check && p->r2 != system_memory(fd)) {
->>>+        int dwords_page = PAGE_SIZE / sizeof(uint32_t);
->>>+        int dword = rand() % dwords_page;
->>>+
->>>+        igt_debug("random dword: %d\n", dword);
->>>+
->>>+        for (i = dword; i < size / sizeof(uint32_t); i += dwords_page)
->>>+            igt_assert_eq(dst_map[i], 0);
->>>+
->>>+    } else {
->>>+        for (i = 0; i < size / sizeof(uint32_t); i++)
->>>+            igt_assert_eq(dst_map[i], 0);
->>>+    }
->>>+
->>>+    /* Write some values from the CPU, potentially dirtying the 
->>>CPU cache */
->>>+    for (i = 0; i < size / sizeof(uint32_t); i++) {
->>>+        if (p->r2_compressed)
->>>+            src_map[i] = CLEAR_1;
->>>+        else
->>>+            src_map[i] = i;
->>>+    }
->>>+
->>>+    /* And finally ensure we always see the CPU written values */
->>>+    blt_fast_copy(fd, ctx, NULL, ahnd, &blt);
->>>+    if (p->r2_compressed)
->>>+        xe2_blt_decompress_dst(fd, ctx, ahnd, &blt, alias, size);
->>>+
->>>+    if (!do_slow_check && p->r2 != system_memory(fd)) {
->>>+        int dwords_page = PAGE_SIZE / sizeof(uint32_t);
->>>+        int dword = rand() % dwords_page;
->>>+
->>>+        igt_debug("random dword: %d\n", dword);
->>>+
->>>+        for (i = dword; i < size / sizeof(uint32_t); i += dwords_page) {
->>>+            if (p->r2_compressed)
->>>+                igt_assert_eq(dst_map[i], CLEAR_1);
->>>+            else
->>>+                igt_assert_eq(dst_map[i], i);
->>>+        }
->>>+
->>>+    } else {
->>>+        for (i = 0; i < size / sizeof(uint32_t); i++) {
->>>+            if (p->r2_compressed)
->>>+                igt_assert_eq(dst_map[i], CLEAR_1);
->>>+            else
->>>+                igt_assert_eq(dst_map[i], i);
->>>+        }
->>>+    }
->>>+
->>>+    munmap(src_map, size);
->>>+    munmap(dst_map, size);
->>>+
->>>+    gem_close(fd, src_bo);
->>>+    gem_close(fd, dst_bo);
->>>+    gem_close(fd, bb);
->>>+
->>>+    xe_exec_queue_destroy(fd, exec_queue);
->>>+    xe_vm_destroy(fd, vm);
->>>+
->>>+    put_ahnd(ahnd);
->>>+    intel_ctx_destroy(fd, ctx);
->>>+}
->>>+
->>>+static void pat_index_render(struct xe_pat_param *p)
->>>+{
->>>+    int fd = p->fd;
->>>+    uint32_t devid = intel_get_drm_devid(fd);
->>>+    igt_render_copyfunc_t render_copy = NULL;
->>>+    int size, stride, width = p->size->width, height = p->size->height;
->>>+    struct intel_buf src, dst;
->>>+    struct intel_bb *ibb;
->>>+    struct buf_ops *bops;
->>>+    uint16_t r1_cpu_caching, r2_cpu_caching;
->>>+    uint32_t r1_flags, r2_flags;
->>>+    uint32_t src_bo, dst_bo;
->>>+    uint32_t *src_map, *dst_map;
->>>+    int bpp = 32;
->>>+    int i;
->>>+
->>>+    bops = buf_ops_create(fd);
->>>+
->>>+    render_copy = igt_get_render_copyfunc(devid);
->>>+    igt_require(render_copy);
->>>+    igt_require(!p->r2_compressed); /* XXX */
->>>+    igt_require(xe_has_engine_class(fd, DRM_XE_ENGINE_CLASS_RENDER));
->>>+
->>>+    ibb = intel_bb_create_full(fd, 0, 0, NULL, 
->>>xe_get_default_alignment(fd),
->>>+                   0, 0, p->size->alignment,
->>>+                   INTEL_ALLOCATOR_SIMPLE,
->>>+                   ALLOC_STRATEGY_HIGH_TO_LOW);
->>>+
->>>+    if (p->r1_coh_mode == DRM_XE_GEM_COH_AT_LEAST_1WAY
->>>+        && p->r1 == system_memory(fd) && !p->r1_force_cpu_wc)
->>>+        r1_cpu_caching = DRM_XE_GEM_CPU_CACHING_WB;
->>>+    else
->>>+        r1_cpu_caching = DRM_XE_GEM_CPU_CACHING_WC;
->>>+
->>>+    if (p->r2_coh_mode == DRM_XE_GEM_COH_AT_LEAST_1WAY &&
->>>+        p->r2 == system_memory(fd) && !p->r2_force_cpu_wc)
->>>+        r2_cpu_caching = DRM_XE_GEM_CPU_CACHING_WB;
->>>+    else
->>>+        r2_cpu_caching = DRM_XE_GEM_CPU_CACHING_WC;
->>>+
->>>+    size = width * height * bpp / 8;
->>>+    stride = width * 4;
->>>+
->>>+    r1_flags = 0;
->>>+    if (p->r1 != system_memory(fd))
->>>+        r1_flags |= XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
->>>+
->>>+    src_bo = xe_bo_create_caching(fd, 0, size, p->r1 | r1_flags, 
->>>r1_cpu_caching,
->>>+                      p->r1_coh_mode);
->>>+    intel_buf_init_full(bops, src_bo, &src, width, height, bpp, 0,
->>>+                I915_TILING_NONE, I915_COMPRESSION_NONE, size,
->>>+                stride, p->r1, p->r1_pat_index);
->>>+
->>>+    r2_flags = 0;
->>>+    if (p->r2 != system_memory(fd))
->>>+        r2_flags |= XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
->>>+
->>>+    dst_bo = xe_bo_create_caching(fd, 0, size, p->r2 | r2_flags, 
->>>r2_cpu_caching,
->>>+                      p->r2_coh_mode);
->>>+    intel_buf_init_full(bops, dst_bo, &dst, width, height, bpp, 0,
->>>+                I915_TILING_NONE, I915_COMPRESSION_NONE, size,
->>>+                stride, p->r2, p->r2_pat_index);
->>>+
->>>+    src_map = xe_bo_map(fd, src_bo, size);
->>>+    dst_map = xe_bo_map(fd, dst_bo, size);
->>>+
->>>+    /* Ensure we always see zeroes for the initial KMD zeroing */
->>>+    render_copy(ibb,
->>>+            &src,
->>>+            0, 0, width, height,
->>>+            &dst,
->>>+            0, 0);
->>>+    intel_bb_sync(ibb);
->>>+
->>>+    if (!do_slow_check && p->r2 != system_memory(fd)) {
->>>+        int dwords_page = PAGE_SIZE / sizeof(uint32_t);
->>>+        int dword = rand() % dwords_page;
->>>+
->>>+        igt_debug("random dword: %d\n", dword);
->>>+
->>>+        for (i = dword; i < size / sizeof(uint32_t); i += dwords_page)
->>>+            igt_assert_eq(dst_map[i], 0);
->>>+    } else {
->>>+        for (i = 0; i < size / sizeof(uint32_t); i++)
->>>+            igt_assert_eq(dst_map[i], 0);
->>>+    }
->>>+
->>>+    /* Write some values from the CPU, potentially dirtying the 
->>>CPU cache */
->>>+    for (i = 0; i < size / sizeof(uint32_t); i++)
->>>+        src_map[i] = i;
->>>+
->>>+    /* And finally ensure we always see the CPU written values */
->>>+    render_copy(ibb,
->>>+            &src,
->>>+            0, 0, width, height,
->>>+            &dst,
->>>+            0, 0);
->>>+    intel_bb_sync(ibb);
->>>+
->>>+    if (!do_slow_check && p->r2 != system_memory(fd)) {
->>>+        int dwords_page = PAGE_SIZE / sizeof(uint32_t);
->>>+        int dword = rand() % dwords_page;
->>>+
->>>+        igt_debug("random dword: %d\n", dword);
->>>+
->>>+        for (i = dword; i < size / sizeof(uint32_t); i += dwords_page)
->>>+            igt_assert_eq(dst_map[i], i);
->>>+    } else {
->>>+        for (i = 0; i < size / sizeof(uint32_t); i++)
->>>+            igt_assert_eq(dst_map[i], i);
->>>+    }
->>>+
->>>+    munmap(src_map, size);
->>>+    munmap(dst_map, size);
->>>+
->>>+    intel_bb_destroy(ibb);
->>>+
->>>+    gem_close(fd, src_bo);
->>>+    gem_close(fd, dst_bo);
->>>+}
->>>+
->>>+static uint8_t get_pat_idx_uc(int fd, bool *compressed)
->>>+{
->>>+    if (compressed)
->>>+        *compressed = false;
->>>+
->>>+    return intel_get_pat_idx_uc(fd);
->>>+}
->>>+
->>>+static uint8_t get_pat_idx_wt(int fd, bool *compressed)
->>>+{
->>>+    uint16_t dev_id = intel_get_drm_devid(fd);
->>>+
->>>+    if (compressed)
->>>+        *compressed = intel_get_device_info(dev_id)->graphics_ver == 20;
->>>+
->>>+    return intel_get_pat_idx_wt(fd);
->>>+}
->>>+
->>>+static uint8_t get_pat_idx_wb(int fd, bool *compressed)
->>>+{
->>>+    if (compressed)
->>>+        *compressed = false;
->>>+
->>>+    return intel_get_pat_idx_wb(fd);
->>>+}
->>>+
->>>+struct pat_index_entry {
->>>+    uint8_t (*get_pat_index)(int fd, bool *compressed);
->>>+
->>>+    uint8_t pat_index;
->>>+    bool compressed;
->>>+
->>>+    const char *name;
->>>+    uint16_t coh_mode;
->>>+    bool force_cpu_wc;
->>>+};
->>>+
->>>+/*
->>>+ * The common modes are available on all platforms supported by 
->>>Xe and so should
->>>+ * be commonly supported. There are many more possible pat_index 
->>>modes, however
->>>+ * most IGTs shouldn't really care about them so likely no need 
->>>to add them to
->>>+ * lib/intel_pat.c. We do try to test some on the non-common modes here.
->>>+ */
->>>+const struct pat_index_entry common_pat_index_modes[] = {
->>>+    { get_pat_idx_uc, 0, 0, "uc",        
->>>DRM_XE_GEM_COH_NONE                },
->>>+    { get_pat_idx_wt, 0, 0, "wt",        
->>>DRM_XE_GEM_COH_NONE                },
->>>+    { get_pat_idx_wb, 0, 0, "wb",        
->>>DRM_XE_GEM_COH_AT_LEAST_1WAY       },
->>>+    { get_pat_idx_wb, 0, 0, "wb-cpu-wc", 
->>>DRM_XE_GEM_COH_AT_LEAST_1WAY, true },
->>>+};
->>>+
->>>+const struct pat_index_entry xelp_pat_index_modes[] = {
->>>+    { NULL, 1, false, "wc", DRM_XE_GEM_COH_NONE },
->>>+};
->>>+
->>>+const struct pat_index_entry xehpc_pat_index_modes[] = {
->>>+    { NULL, 1, false, "wc",    DRM_XE_GEM_COH_NONE          },
->>>+    { NULL, 4, false, "c1-wt", DRM_XE_GEM_COH_NONE          },
->>>+    { NULL, 5, false, "c1-wb", DRM_XE_GEM_COH_AT_LEAST_1WAY },
->>>+    { NULL, 6, false, "c2-wt", DRM_XE_GEM_COH_NONE          },
->>>+    { NULL, 7, false, "c2-wb", DRM_XE_GEM_COH_AT_LEAST_1WAY },
->>>+};
->>>+
->>>+/* Too many, just pick some interesting ones */
->>>+const struct pat_index_entry xe2_pat_index_modes[] = {
->>>+    { NULL, 1, false, "1way",        
->>>DRM_XE_GEM_COH_AT_LEAST_1WAY       },
->>>+    { NULL, 2, false, "2way",        
->>>DRM_XE_GEM_COH_AT_LEAST_1WAY       },
->>>+    { NULL, 2, false, "2way-cpu-wc", 
->>>DRM_XE_GEM_COH_AT_LEAST_1WAY, true },
->>>+    { NULL, 3, true,  "uc-comp",     
->>>DRM_XE_GEM_COH_NONE                },
->>>+    { NULL, 5, false, "uc-1way",     
->>>DRM_XE_GEM_COH_AT_LEAST_1WAY       },
->>>+};
->>>+
->>>+/*
->>>+ * Depending on 2M/1G GTT pages we might trigger different PTE 
->>>layouts for the
->>>+ * PAT bits, so make sure we test with and without huge-pages. 
->>>Also ensure we
->>>+ * have a mix of different pat_index modes for each PDE.
->>>+ */
->>>+const struct xe_pat_size_mode size_modes[] =  {
->>>+    { 256,  256,  0,        "mixed-pde"  },
->>>+    { 1024, 1024, 1u << 21, "single-pde" },
->>>+};
->>
->>I am bit confused with naming here (mixed-pde/single-pde).
->>The first case here creates BOs of size 256*256*8/2 = 256K which 
->>means it will
->>need updating few PTEs could be all under a single PTE. This tests 
->>pat_index
->>setting of PTEs
->>The second case here create BOs of size 1024*1024*8/2 = 4MB which at 
->>2MB offset
->>will occupy 2 PDEs. This tests pat_index setting of leaf PDEs.
->>Right?
->
->Yup, the "mixed-pde" just means that the pde contains multiple 
->different mappings using different pat_index. The "single-pde" means 
->that the mapping will entirely consume each pde, hopefully with 2M GTT 
->pages given the alignment. And yes this is mostly to test bit7/bit12 
->with pat[2].
->
-
-But the "mixed-pde" will have multiple PTE entries but all with the same
-pat_index right? ie., either r1_pat_index or r2_pat_index. I didn't get
-the "mixed" meaning here. My understanding is, tests are "multi-pte" and
-"single-pde".
-
-Niranjana
-
->I will change this to rather use 2M size, which is maybe less consufing.
->
->>
->>Other than that, the patch looks fine to me.
->>Reviewed-by: Niranjana Vishwanathapura 
->><niranjana.vishwanathapura@intel.com>
->
->Thanks.
->
->>
->>>+
->>>+typedef void (*copy_fn)(struct xe_pat_param *p);
->>>+
->>>+const struct xe_pat_copy_mode {
->>>+    copy_fn fn;
->>>+    const char *name;
->>>+} copy_modes[] =  {
->>>+    {  pat_index_blt,    "blt"    },
->>>+    {  pat_index_render, "render" },
->>>+};
->>>+
->>>+/**
->>>+ * SUBTEST: pat-index-common
->>>+ * Test category: functionality test
->>>+ * Description: Check the common pat_index modes.
->>>+ */
->>>+
->>>+/**
->>>+ * SUBTEST: pat-index-xelp
->>>+ * Test category: functionality test
->>>+ * Description: Check some of the xelp pat_index modes.
->>>+ */
->>>+
->>>+/**
->>>+ * SUBTEST: pat-index-xehpc
->>>+ * Test category: functionality test
->>>+ * Description: Check some of the xehpc pat_index modes.
->>>+ */
->>>+
->>>+/**
->>>+ * SUBTEST: pat-index-xe2
->>>+ * Test category: functionality test
->>>+ * Description: Check some of the xe2 pat_index modes.
->>>+ */
->>>+
->>>+static void subtest_pat_index_modes_with_regions(int fd,
->>>+                         const struct pat_index_entry *modes_arr,
->>>+                         int n_modes)
->>>+{
->>>+    struct igt_collection *copy_set;
->>>+    struct igt_collection *pat_index_set;
->>>+    struct igt_collection *regions_set;
->>>+    struct igt_collection *sizes_set;
->>>+    struct igt_collection *copies;
->>>+    struct xe_pat_param p = {};
->>>+
->>>+    p.fd = fd;
->>>+
->>>+    copy_set = igt_collection_create(ARRAY_SIZE(copy_modes));
->>>+
->>>+    pat_index_set = igt_collection_create(n_modes);
->>>+
->>>+    regions_set = xe_get_memory_region_set(fd,
->>>+                           XE_MEM_REGION_CLASS_SYSMEM,
->>>+                           XE_MEM_REGION_CLASS_VRAM);
->>>+
->>>+    sizes_set = igt_collection_create(ARRAY_SIZE(size_modes));
->>>+
->>>+    for_each_variation_r(copies, 1, copy_set) {
->>>+        struct igt_collection *regions;
->>>+        struct xe_pat_copy_mode copy_mode;
->>>+
->>>+        copy_mode = copy_modes[igt_collection_get_value(copies, 0)];
->>>+
->>>+        for_each_variation_r(regions, 2, regions_set) {
->>>+            struct igt_collection *pat_modes;
->>>+            uint32_t r1, r2;
->>>+            char *reg_str;
->>>+
->>>+            r1 = igt_collection_get_value(regions, 0);
->>>+            r2 = igt_collection_get_value(regions, 1);
->>>+
->>>+            reg_str = xe_memregion_dynamic_subtest_name(fd, regions);
->>>+
->>>+            for_each_variation_r(pat_modes, 2, pat_index_set) {
->>>+                struct igt_collection *sizes;
->>>+                struct pat_index_entry r1_entry, r2_entry;
->>>+                int r1_idx, r2_idx;
->>>+
->>>+                r1_idx = igt_collection_get_value(pat_modes, 0);
->>>+                r2_idx = igt_collection_get_value(pat_modes, 1);
->>>+
->>>+                r1_entry = modes_arr[r1_idx];
->>>+                r2_entry = modes_arr[r2_idx];
->>>+
->>>+                if (r1_entry.get_pat_index)
->>>+                    p.r1_pat_index = r1_entry.get_pat_index(fd, NULL);
->>>+                else
->>>+                    p.r1_pat_index = r1_entry.pat_index;
->>>+
->>>+                if (r2_entry.get_pat_index)
->>>+                    p.r2_pat_index = r2_entry.get_pat_index(fd, 
->>>&p.r2_compressed);
->>>+                else {
->>>+                    p.r2_pat_index = r2_entry.pat_index;
->>>+                    p.r2_compressed = r2_entry.compressed;
->>>+                }
->>>+
->>>+                p.r1_coh_mode = r1_entry.coh_mode;
->>>+                p.r2_coh_mode = r2_entry.coh_mode;
->>>+
->>>+                p.r1_force_cpu_wc = r1_entry.force_cpu_wc;
->>>+                p.r2_force_cpu_wc = r2_entry.force_cpu_wc;
->>>+
->>>+                p.r1 = r1;
->>>+                p.r2 = r2;
->>>+
->>>+                for_each_variation_r(sizes, 1, sizes_set) {
->>>+                    int size_mode_idx = 
->>>igt_collection_get_value(sizes, 0);
->>>+
->>>+                    p.size = &size_modes[size_mode_idx];
->>>+
->>>+                    igt_debug("[r1]: r: %u, idx: %u, coh: %u, wc: %d\n",
->>>+                          p.r1, p.r1_pat_index, p.r1_coh_mode, 
->>>p.r1_force_cpu_wc);
->>>+                    igt_debug("[r2]: r: %u, idx: %u, coh: %u, wc: 
->>>%d, comp: %d, w: %u, h: %u, a: %u\n",
->>>+                          p.r2, p.r2_pat_index, p.r2_coh_mode,
->>>+                          p.r2_force_cpu_wc, p.r2_compressed,
->>>+                          p.size->width, p.size->height,
->>>+                          p.size->alignment);
->>>+
->>>+                    igt_dynamic_f("%s-%s-%s-%s-%s",
->>>+                              copy_mode.name,
->>>+                              reg_str, r1_entry.name,
->>>+                              r2_entry.name, p.size->name)
->>>+                        copy_mode.fn(&p);
->>>+                }
->>>+            }
->>>+
->>>+            free(reg_str);
->>>+        }
->>>+    }
->>>+}
->>>+
->>>+igt_main
->>>+{
->>>+    uint16_t dev_id;
->>>+    int fd;
->>>+
->>>+    igt_fixture {
->>>+        uint32_t seed;
->>>+
->>>+        fd = drm_open_driver(DRIVER_XE);
->>>+        dev_id = intel_get_drm_devid(fd);
->>>+
->>>+        seed = time(NULL);
->>>+        srand(seed);
->>>+        igt_debug("seed: %d\n", seed);
->>>+
->>>+        xe_device_get(fd);
->>>+    }
->>>+
->>>+    igt_subtest("pat-index-all")
->>>+        pat_index_all(fd);
->>>+
->>>+    igt_subtest("userptr-coh-none")
->>>+        userptr_coh_none(fd);
->>>+
->>>+    igt_subtest_with_dynamic("pat-index-common") {
->>>+        subtest_pat_index_modes_with_regions(fd, common_pat_index_modes,
->>>+                             ARRAY_SIZE(common_pat_index_modes));
->>>+    }
->>>+
->>>+    igt_subtest_with_dynamic("pat-index-xelp") {
->>>+        igt_require(intel_graphics_ver(dev_id) <= IP_VER(12, 55));
->>>+        subtest_pat_index_modes_with_regions(fd, xelp_pat_index_modes,
->>>+                             ARRAY_SIZE(xelp_pat_index_modes));
->>>+    }
->>>+
->>>+    igt_subtest_with_dynamic("pat-index-xehpc") {
->>>+        igt_require(IS_PONTEVECCHIO(dev_id));
->>>+        subtest_pat_index_modes_with_regions(fd, xehpc_pat_index_modes,
->>>+                             ARRAY_SIZE(xehpc_pat_index_modes));
->>>+    }
->>>+
->>>+    igt_subtest_with_dynamic("pat-index-xe2") {
->>>+        igt_require(intel_get_device_info(dev_id)->graphics_ver >= 20);
->>>+        subtest_pat_index_modes_with_regions(fd, xe2_pat_index_modes,
->>>+                             ARRAY_SIZE(xe2_pat_index_modes));
->>>+    }
->>>+
->>>+    igt_fixture
->>>+        drm_close_driver(fd);
->>>+}
->>>diff --git a/tests/meson.build b/tests/meson.build
->>>index 5afcd8cbb..3aecfbee0 100644
->>>--- a/tests/meson.build
->>>+++ b/tests/meson.build
->>>@@ -297,6 +297,7 @@ intel_xe_progs = [
->>>    'xe_mmap',
->>>    'xe_module_load',
->>>    'xe_noexec_ping_pong',
->>>+    'xe_pat',
->>>    'xe_pm',
->>>    'xe_pm_residency',
->>>    'xe_prime_self_import',
->>>-- 
->>>2.41.0
->>>
+T24gRnJpLCAyMDIzLTEwLTIwIGF0IDExOjM1ICswNTMwLCBLdW5hbCBKb3NoaSB3cm90ZToKPiBN
+b2RpZmllZCBrbXNfcHNyIHRvIGhhdmUgc3VwcG9ydCBmb3IgRFAgcHIuCj4gCj4gQ2M6IEpvdW5p
+IEjDtmdhbmRlciA8am91bmkuaG9nYW5kZXJAaW50ZWwuY29tPgo+IENjOiBBbmltZXNoIE1hbm5h
+IDxhbmltZXNoLm1hbm5hQGludGVsLmNvbT4KPiBDYzogQXJ1biBSIE11cnRoeSA8YXJ1bi5yLm11
+cnRoeUBpbnRlbC5jb20+Cj4gU2lnbmVkLW9mZi1ieTogS3VuYWwgSm9zaGkgPGt1bmFsMS5qb3No
+aUBpbnRlbC5jb20+Cj4gLS0tCj4gwqB0ZXN0cy9pbnRlbC9rbXNfcHNyLmMgfCA0MDIgKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKy0tLS0tLQo+IC0tCj4gwqAxIGZpbGUgY2hhbmdl
+ZCwgMzMxIGluc2VydGlvbnMoKyksIDcxIGRlbGV0aW9ucygtKQo+IAo+IGRpZmYgLS1naXQgYS90
+ZXN0cy9pbnRlbC9rbXNfcHNyLmMgYi90ZXN0cy9pbnRlbC9rbXNfcHNyLmMKPiBpbmRleCBmZmVj
+YzUyMjIuLmIxNDI2N2RjZSAxMDA2NDQKPiAtLS0gYS90ZXN0cy9pbnRlbC9rbXNfcHNyLmMKPiAr
+KysgYi90ZXN0cy9pbnRlbC9rbXNfcHNyLmMKPiBAQCAtMjI5LDYgKzIyOSwxMDIgQEAKPiDCoCAq
+IEBwbGFuZV9tb3ZlOsKgwqDCoMKgwqDCoMKgwqAgTW92ZSBwbGFuZSBwb3NpdGlvbgo+IMKgICov
+Cj4gwqAKPiArLyoqCj4gKyAqIFNVQlRFU1Q6IHByX2RwbXMKPiArICogRGVzY3JpcHRpb246IENo
+ZWNrIGlmIHByIGlzIGRldGVjdGluZyBjaGFuZ2VzIHdoZW4gcmVuZGVyaW5nCj4gb3BlcmF0aW9u
+Cj4gKyAqwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaXMgcGVyZm9ybWVkwqAgd2l0aCBkcG1z
+IGVuYWJsZWQgb3IgZGlzYWJsZWQKPiArICogRHJpdmVyIHJlcXVpcmVtZW50OiBpOTE1LCB4ZQo+
+ICsgKiBGdW5jdGlvbmFsaXR5OiBkcG1zLCBwcgo+ICsgKiBNZWdhIGZlYXR1cmU6IFBhbmVsIFJl
+cGxheQo+ICsgKiBUZXN0IGNhdGVnb3J5OiBmdW5jdGlvbmFsaXR5IHRlc3QKPiArICoKPiArICog
+U1VCVEVTVDogcHJfbm9fZHJycwo+ICsgKiBEZXNjcmlwdGlvbjogQ2hlY2sgaWYgcHIgaXMgZGV0
+ZWN0aW5nIGNoYW5nZXMgd2hlbiBkcnJzIGlzCj4gZGlzYWJsZWQKPiArICogRHJpdmVyIHJlcXVp
+cmVtZW50OiBpOTE1LCB4ZQo+ICsgKiBGdW5jdGlvbmFsaXR5OiBkcnJzLCBwcgo+ICsgKiBNZWdh
+IGZlYXR1cmU6IFBhbmVsIFJlcGxheQo+ICsgKiBUZXN0IGNhdGVnb3J5OiBmdW5jdGlvbmFsaXR5
+IHRlc3QKPiArICoKPiArICogU1VCVEVTVDogcHJfc3VzcGVuZAo+ICsgKiBEZXNjcmlwdGlvbjog
+Q2hlY2sgaWYgcHIgaXMgZGV0ZWN0aW5nIGNoYW5nZXMgd2hlbiBwbGFuZQo+IG9wZXJhdGlvbiBp
+cwo+ICsgKsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHBlcmZvcm1lZCB3aXRoIHN1c3BlbmQg
+cmVzdW1lIGN5Y2xlcwo+ICsgKiBEcml2ZXIgcmVxdWlyZW1lbnQ6IGk5MTUsIHhlCj4gKyAqIEZ1
+bmN0aW9uYWxpdHk6IHByLCBzdXNwZW5kCj4gKyAqIE1lZ2EgZmVhdHVyZTogUGFuZWwgUmVwbGF5
+Cj4gKyAqIFRlc3QgY2F0ZWdvcnk6IGZ1bmN0aW9uYWxpdHkgdGVzdAo+ICsgKgo+ICsgKiBTVUJU
+RVNUOiBwcl9iYXNpYwo+ICsgKiBEZXNjcmlwdGlvbjogQmFzaWMgY2hlY2sgZm9yIHByIGlmIGl0
+IGlzIGRldGVjdGluZyBjaGFuZ2VzIG1hZGUKPiBpbiBwbGFuZXMKPiArICogRHJpdmVyIHJlcXVp
+cmVtZW50OiBpOTE1LCB4ZQo+ICsgKiBGdW5jdGlvbmFsaXR5OiBwcgo+ICsgKiBNZWdhIGZlYXR1
+cmU6IFBhbmVsIFJlcGxheQo+ICsgKiBUZXN0IGNhdGVnb3J5OiBmdW5jdGlvbmFsaXR5IHRlc3QK
+PiArICoKPiArICogU1VCVEVTVDogcHJfJXNfJXMKPiArICogRGVzY3JpcHRpb246IENoZWNrIGlm
+IHByIGlzIGRldGVjdGluZyBtZW1vcnkgbWFwcGluZywgcmVuZGVyaW5nCj4gYW5kIHBsYW5lCj4g
+KyAqwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgb3BlcmF0aW9ucyBwZXJmb3JtZWQgb24gJWFy
+Z1sxXSBwbGFuZXMKPiArICogRHJpdmVyIHJlcXVpcmVtZW50OiBpOTE1Cj4gKyAqIEZ1bmN0aW9u
+YWxpdHk6IGttc19jb3JlLCBwbGFuZSwgcHIKPiArICogTWVnYSBmZWF0dXJlOiBQYW5lbCBSZXBs
+YXkKPiArICogVGVzdCBjYXRlZ29yeTogZnVuY3Rpb25hbGl0eSB0ZXN0Cj4gKyAqCj4gKyAqIGFy
+Z1sxXToKPiArICoKPiArICogQGN1cnNvcjrCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgQ3Vyc29y
+IHBsYW5lCj4gKyAqIEBwcmltYXJ5OsKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgUHJpbWFyeSBwbGFu
+ZQo+ICsgKiBAc3ByaXRlOsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBTcHJpdGUgcGxhbmUKPiAr
+ICoKPiArICogYXJnWzJdOgo+ICsgKgo+ICsgKiBAbW1hcF9jcHU6wqDCoMKgwqDCoMKgwqDCoMKg
+wqAgTU1BUCBDUFUKPiArICogQG1tYXBfZ3R0OsKgwqDCoMKgwqDCoMKgwqDCoMKgIE1NQVAgR1RU
+Cj4gKyAqLwo+ICsKPiArLyoqCj4gKyAqIFNVQlRFU1Q6IHByX3ByaW1hcnlfcGFnZV9mbGlwCj4g
+KyAqIERlc2NyaXB0aW9uOiBDaGVjayBpZiBwciBpcyBkZXRlY3RpbmcgbWVtb3J5IG1hcHBpbmcs
+IHJlbmRlcmluZwo+IGFuZCBwbGFuZQo+ICsgKsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIG9w
+ZXJhdGlvbnMgcGVyZm9ybWVkIG9uIHByaW1hcnkgcGxhbmVzCj4gKyAqIERyaXZlciByZXF1aXJl
+bWVudDogaTkxNSwgeGUKPiArICogRnVuY3Rpb25hbGl0eTogcGxhbmUsIHByCj4gKyAqIE1lZ2Eg
+ZmVhdHVyZTogUGFuZWwgUmVwbGF5Cj4gKyAqIFRlc3QgY2F0ZWdvcnk6IGZ1bmN0aW9uYWxpdHkg
+dGVzdAo+ICsgKgo+ICsgKiBTVUJURVNUOiBwcl9wcmltYXJ5XyVzCj4gKyAqIERlc2NyaXB0aW9u
+OiBDaGVjayBpZiBwciBpcyBkZXRlY3RpbmcgbWVtb3J5IG1hcHBpbmcsIHJlbmRlcmluZwo+IGFu
+ZCBwbGFuZQo+ICsgKsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIG9wZXJhdGlvbnMgcGVyZm9y
+bWVkIG9uIHByaW1hcnkgcGxhbmVzCj4gKyAqIERyaXZlciByZXF1aXJlbWVudDogaTkxNSwgeGUK
+PiArICogRnVuY3Rpb25hbGl0eToga21zX2NvcmUsIHBsYW5lLCBwcgo+ICsgKiBNZWdhIGZlYXR1
+cmU6IFBhbmVsIFJlcGxheQo+ICsgKiBUZXN0IGNhdGVnb3J5OiBmdW5jdGlvbmFsaXR5IHRlc3QK
+PiArICoKPiArICogYXJnWzFdOgo+ICsgKgo+ICsgKiBAYmx0OsKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoCBCbGl0dGVyCj4gKyAqIEByZW5kZXI6wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+IFJlbmRlcgo+ICsgKi8KPiArCj4gKy8qKgo+ICsgKiBTVUJURVNUOiBwcl8lc18lcwo+ICsgKiBE
+ZXNjcmlwdGlvbjogQ2hlY2sgaWYgcHIgaXMgZGV0ZWN0aW5nIG1lbW9yeSBtYXBwaW5nLCByZW5k
+ZXJpbmcKPiBhbmQgcGxhbmUKPiArICrCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBvcGVyYXRp
+b25zIHBlcmZvcm1lZCBvbiAlYXJnWzFdIHBsYW5lcwo+ICsgKiBEcml2ZXIgcmVxdWlyZW1lbnQ6
+IGk5MTUsIHhlCj4gKyAqIEZ1bmN0aW9uYWxpdHk6IGttc19jb3JlLCBwbGFuZSwgcHIKPiArICog
+TWVnYSBmZWF0dXJlOiBQYW5lbCBSZXBsYXkKPiArICogVGVzdCBjYXRlZ29yeTogZnVuY3Rpb25h
+bGl0eSB0ZXN0Cj4gKyAqCj4gKyAqIGFyZ1sxXToKPiArICoKPiArICogQGN1cnNvcjrCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqAgQ3Vyc29yIHBsYW5lCj4gKyAqIEBzcHJpdGU6wqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgIFNwcml0ZSBwbGFuZQo+ICsgKgo+ICsgKiBhcmdbMl06Cj4gKyAqCj4gKyAq
+IEBibHQ6wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIEJsaXR0ZXIKPiArICogQHJlbmRl
+cjrCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgUmVuZGVyCj4gKyAqIEBwbGFuZV9vbm9mZjrCoMKg
+wqDCoMKgwqDCoCBQbGFuZSBPbiBvZmYKPiArICogQHBsYW5lX21vdmU6wqDCoMKgwqDCoMKgwqDC
+oCBNb3ZlIHBsYW5lIHBvc2l0aW9uCj4gKyAqLwo+ICsKPiDCoGVudW0gb3BlcmF0aW9ucyB7Cj4g
+wqDCoMKgwqDCoMKgwqDCoFBBR0VfRkxJUCwKPiDCoMKgwqDCoMKgwqDCoMKgTU1BUF9HVFQsCj4g
+QEAgLTI3Miw2ICszNjgsOSBAQCB0eXBlZGVmIHN0cnVjdCB7Cj4gwqDCoMKgwqDCoMKgwqDCoGln
+dF9vdXRwdXRfdCAqb3V0cHV0Owo+IMKgwqDCoMKgwqDCoMKgwqBib29sIHdpdGhfcHNyX2Rpc2Fi
+bGVkOwo+IMKgwqDCoMKgwqDCoMKgwqBib29sIHN1cHBvcnRzX3BzcjI7Cj4gK8KgwqDCoMKgwqDC
+oMKgIGJvb2wgc3VwcG9ydHNfcHNyOwo+ICvCoMKgwqDCoMKgwqDCoGJvb2wgc3VwcG9ydHNfcHI7
+Cj4gK8KgwqDCoMKgwqDCoMKgaWd0X291dHB1dF90ICoqcHJfb3V0cHV0czsKPiDCoH0gZGF0YV90
+Owo+IMKgCj4gwqBzdGF0aWMgdm9pZCBjcmVhdGVfY3Vyc29yX2ZiKGRhdGFfdCAqZGF0YSkKPiBA
+QCAtMzE2LDcgKzQxNSw2IEBAIHN0YXRpYyB2b2lkIHNldHVwX291dHB1dChkYXRhX3QgKmRhdGEp
+Cj4gwqBzdGF0aWMgdm9pZCBkaXNwbGF5X2luaXQoZGF0YV90ICpkYXRhKQo+IMKgewo+IMKgwqDC
+oMKgwqDCoMKgwqBpZ3RfZGlzcGxheV9yZXF1aXJlKCZkYXRhLT5kaXNwbGF5LCBkYXRhLT5kcm1f
+ZmQpOwo+IC3CoMKgwqDCoMKgwqDCoHNldHVwX291dHB1dChkYXRhKTsKPiDCoH0KPiDCoAo+IMKg
+c3RhdGljIHZvaWQgZGlzcGxheV9maW5pKGRhdGFfdCAqZGF0YSkKPiBAQCAtNDQ0LDYgKzU0Miwx
+NSBAQCBzdGF0aWMgYm9vbCBwc3Jfd2FpdF9lbnRyeV9pZl9lbmFibGVkKGRhdGFfdAo+ICpkYXRh
+KQo+IMKgwqDCoMKgwqDCoMKgwqByZXR1cm4gcHNyX3dhaXRfZW50cnkoZGF0YS0+ZGVidWdmc19m
+ZCwgZGF0YS0+b3BfcHNyX21vZGUpOwo+IMKgfQo+IMKgCj4gK3N0YXRpYyBib29sIHByX3dhaXRf
+ZW50cnkoZGF0YV90ICpkYXRhKQo+ICt7Cj4gK8KgwqDCoMKgwqDCoMKgIGlmIChkYXRhLT53aXRo
+X3Bzcl9kaXNhYmxlZCkKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJldHVybiB0
+cnVlOwo+ICsKPiArwqDCoMKgwqDCoMKgwqAgcmV0dXJuIGlndF93YWl0KGRwX3ByX2FjdGl2ZV9j
+aGVjayhkYXRhLT5kZWJ1Z2ZzX2ZkLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGRhdGEt
+Pm91dHB1dCksIDUwMCwgMjApOwo+ICt9Cj4gKwo+IMKgc3RhdGljIGJvb2wgcHNyX3dhaXRfdXBk
+YXRlX2lmX2VuYWJsZWQoZGF0YV90ICpkYXRhKQo+IMKgewo+IMKgwqDCoMKgwqDCoMKgwqBpZiAo
+ZGF0YS0+d2l0aF9wc3JfZGlzYWJsZWQpCj4gQEAgLTYwNCw3ICs3MTEsMTAgQEAgc3RhdGljIHZv
+aWQgcnVuX3Rlc3QoZGF0YV90ICpkYXRhKQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgZXhwZWN0ZWQgPSAic2NyZWVuIEdSRUVOIjsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoGJyZWFrOwo+IMKgwqDCoMKgwqDCoMKgwqB9Cj4gLcKgwqDCoMKgwqDCoMKgaWd0X2Fz
+c2VydChwc3Jfd2FpdF91cGRhdGVfaWZfZW5hYmxlZChkYXRhKSk7Cj4gK8KgwqDCoMKgwqDCoMKg
+aWYoc3Ryc3RyKGRhdGEtPm91dHB1dC0+bmFtZSwgIkRQIikpCj4gK8KgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoGlndF9hc3NlcnQocHJfd2FpdF9lbnRyeShkYXRhKSk7Cj4gK8KgwqDCoMKg
+wqDCoMKgZWxzZQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfYXNzZXJ0KHBz
+cl93YWl0X3VwZGF0ZV9pZl9lbmFibGVkKGRhdGEpKTsKPiDCoMKgwqDCoMKgwqDCoMKgbWFudWFs
+KGV4cGVjdGVkKTsKPiDCoH0KPiDCoAo+IEBAIC02ODcsNiArNzk3LDcgQEAgc3RhdGljIHZvaWQg
+dGVzdF9zZXR1cChkYXRhX3QgKmRhdGEpCj4gwqB7Cj4gwqDCoMKgwqDCoMKgwqDCoGRybU1vZGVD
+b25uZWN0b3JQdHIgY29ubmVjdG9yOwo+IMKgwqDCoMKgwqDCoMKgwqBib29sIHBzcl9lbnRlcmVk
+ID0gZmFsc2U7Cj4gK8KgwqDCoMKgwqDCoMKgYm9vbCBwcl9lbnRlcmVkID0gZmFsc2U7Cj4gwqAK
+PiDCoMKgwqDCoMKgwqDCoMKgaWd0X3JlcXVpcmVfZihkYXRhLT5vdXRwdXQsCj4gwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICJObyBhdmFpbGFibGUgb3V0cHV0IGZv
+dW5kXG4iKTsKPiBAQCAtNzAzLDE1ICs4MTQsMjMgQEAgc3RhdGljIHZvaWQgdGVzdF9zZXR1cChk
+YXRhX3QgKmRhdGEpCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZiAoZGF0YS0+
+b3BfcHNyX21vZGUgPT0gUFNSX01PREVfMikKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfcmVxdWlyZShkYXRhLT5zdXBwb3J0c19wc3IyKTsKPiDC
+oAo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBwc3JfZW5hYmxlX2lmX2VuYWJsZWQo
+ZGF0YSk7Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHNldHVwX3Rlc3RfcGxhbmUo
+ZGF0YSwgZGF0YS0+dGVzdF9wbGFuZV9pZCk7Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoGlmIChwc3Jfd2FpdF9lbnRyeV9pZl9lbmFibGVkKGRhdGEpKSB7Cj4gLcKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBwc3JfZW50ZXJlZCA9IHRydWU7Cj4g
+LcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBicmVhazsKPiAr
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKHN0cnN0cihkYXRhLT5vdXRwdXQtPm5h
+bWUsICJEUCIpKQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB7Cj4gK8KgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBzZXR1cF90ZXN0X3BsYW5lKGRh
+dGEsIGRhdGEtPnRlc3RfcGxhbmVfaWQpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgcHJfZW50ZXJlZCA9IHByX3dhaXRfZW50cnkoZGF0YSk7Cj4gK8Kg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZihwcl9lbnRlcmVk
+KQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoGJyZWFrOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9Cj4gK8Kg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGVsc2Ugewo+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcHNyX2VuYWJsZV9pZl9lbmFibGVkKGRhdGEpOwo+
+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgc2V0dXBfdGVz
+dF9wbGFuZShkYXRhLCBkYXRhLT50ZXN0X3BsYW5lX2lkKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlmKHBzcl93YWl0X2VudHJ5X2lmX2VuYWJsZWQo
+ZGF0YSkpIHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqBwc3JfZW50ZXJlZCA9IHRydWU7Cj4gK8KgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgYnJlYWs7Cj4gK8Kg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9Cj4gwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9Cj4gwqDCoMKgwqDCoMKgwqDCoH0KPiAtCj4gLcKgwqDC
+oMKgwqDCoMKgaWd0X2Fzc2VydChwc3JfZW50ZXJlZCk7Cj4gK8KgwqDCoMKgwqDCoMKgaWd0X2Fz
+c2VydChwc3JfZW50ZXJlZCB8fCBwcl9lbnRlcmVkKTsKPiDCoH0KPiDCoAo+IMKgc3RhdGljIHZv
+aWQgZHBtc19vZmZfb24oZGF0YV90ICpkYXRhKQo+IEBAIC03NDgsMTAgKzg2NywxNSBAQCBkYXRh
+X3QgZGF0YSA9IHt9Owo+IMKgaWd0X21haW5fYXJncygiIiwgbG9uZ19vcHRpb25zLCBoZWxwX3N0
+ciwgb3B0X2hhbmRsZXIsICZkYXRhKQo+IMKgewo+IMKgwqDCoMKgwqDCoMKgwqBlbnVtIG9wZXJh
+dGlvbnMgb3A7Cj4gLcKgwqDCoMKgwqDCoMKgY29uc3QgY2hhciAqYXBwZW5kX3N1YnRlc3RfbmFt
+ZVsyXSA9IHsKPiArwqDCoMKgwqDCoMKgwqBjb25zdCBjaGFyICphcHBlbmRfc3VidGVzdF9uYW1l
+WzNdID0gewo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIiIsCj4gLcKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCJwc3IyXyIKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgInBzcjJfIiwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgInByXyIKPiDC
+oMKgwqDCoMKgwqDCoMKgfTsKPiArwqDCoMKgwqDCoMKgwqBpbnQgcHJfb3V0cHV0X2NvdW50Owo+
+ICvCoMKgwqDCoMKgwqDCoGlndF9vdXRwdXRfdCAqb3V0Owo+ICvCoMKgwqDCoMKgwqDCoGludCBt
+b2Rlc1tdID0ge1BTUl9NT0RFXzEsIFBTUl9NT0RFXzEsIFBSX01PREV9OwoKUFNSX01PREVfMSBp
+cyBsaXN0ZWQgdHdpY2UuCgo+ICvCoMKgwqDCoMKgwqDCoGludCB6Owo+IMKgCj4gwqDCoMKgwqDC
+oMKgwqDCoGlndF9maXh0dXJlIHsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRh
+dGEuZHJtX2ZkID0gZHJtX29wZW5fZHJpdmVyX21hc3RlcihEUklWRVJfSU5URUwgfAo+IERSSVZF
+Ul9YRSk7Cj4gQEAgLTc1OSwxMDMgKzg4MywyMzkgQEAgaWd0X21haW5fYXJncygiIiwgbG9uZ19v
+cHRpb25zLCBoZWxwX3N0ciwKPiBvcHRfaGFuZGxlciwgJmRhdGEpCj4gwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqBrbXN0ZXN0X3NldF92dF9ncmFwaGljc19tb2RlKCk7Cj4gwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLmRldmlkID0gaW50ZWxfZ2V0X2RybV9kZXZp
+ZChkYXRhLmRybV9mZCk7Cj4gwqAKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0
+X3JlcXVpcmVfZihzaW5rX3N1cHBvcnQoJmRhdGEsIFBTUl9NT0RFXzEpLAo+IC3CoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAiU2luayBkb2Vz
+IG5vdCBzdXBwb3J0IFBTUlxuIik7Cj4gLQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqBwcl9vdXRwdXRfY291bnQgPSAwOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBk
+YXRhLnByX291dHB1dHMgPSAoaWd0X291dHB1dF90Cj4gKiopbWFsbG9jKHNpemVvZihpZ3Rfb3V0
+cHV0X3QgKikgKiBkYXRhLmRpc3BsYXkubl9vdXRwdXRzKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgZm9yX2VhY2hfY29ubmVjdGVkX291dHB1dCgmZGF0YS5kaXNwbGF5LCBvdXQp
+Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZihvdXRw
+dXRfc3VwcG9ydHNfcHIoZGF0YS5kZWJ1Z2ZzX2ZkLCBvdXQpKQo+ICvCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEucHJfb3V0
+cHV0c1twcl9vdXRwdXRfY291bnQrK10gPQo+IG91dDsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgZGF0YS5zdXBwb3J0c19wc3IgPSBzaW5rX3N1cHBvcnQoJmRhdGEsIFBTUl9NT0RF
+XzEpOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS5zdXBwb3J0c19wc3Iy
+ID0gc2lua19zdXBwb3J0KCZkYXRhLCBQU1JfTU9ERV8yKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgZGF0YS5zdXBwb3J0c19wciA9IHByX291dHB1dF9jb3VudCA+IDAgPyB0cnVl
+IDoKPiBmYWxzZTsKPiArCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9yZXF1
+aXJlX2YoZGF0YS5zdXBwb3J0c19wc3IgfHwgZGF0YS5zdXBwb3J0c19wciwKPiArwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgIlNpbmsgZG9l
+cyBub3Qgc3VwcG9ydCBQU1IvUFJcbiIpOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgZGF0YS5ib3BzID0gYnVmX29wc19jcmVhdGUoZGF0YS5kcm1fZmQpOwo+IMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgZGlzcGxheV9pbml0KCZkYXRhKTsKPiDCoMKgwqDCoMKgwqDC
+oMKgfQo+IMKgCj4gLcKgwqDCoMKgwqDCoMKgZm9yIChkYXRhLm9wX3Bzcl9tb2RlID0gUFNSX01P
+REVfMTsgZGF0YS5vcF9wc3JfbW9kZSA8PQo+IFBTUl9NT0RFXzI7Cj4gLcKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqAgZGF0YS5vcF9wc3JfbW9kZSsrKSB7Cj4gLQo+ICvCoMKgwqDCoMKgwqDCoGZvciAo
+eiA9IDA7IHogPCBBUlJBWV9TSVpFKG1vZGVzKTsgeisrKSB7Cj4gK8KgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoGRhdGEub3BfcHNyX21vZGUgPSBtb2Rlc1t6XTsKCldoeSBhcmUgeW91IGNo
+YW5naW5nIHRoaXM/IFRvIG15IG9waW5pb24gb3JpZ2luYWwgaXMgbW9yZSBjbGVhci4uLgoKPiDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9kZXNjcmliZSgiQmFzaWMgY2hlY2sg
+Zm9yIHBzciBpZiBpdCBpcyBkZXRlY3RpbmcKPiBjaGFuZ2VzIG1hZGUgaW4gcGxhbmVzIik7Cj4g
+LcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9zdWJ0ZXN0X2YoIiVzYmFzaWMiLAo+
+IGFwcGVuZF9zdWJ0ZXN0X25hbWVbZGF0YS5vcF9wc3JfbW9kZV0pIHsKPiAtwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEudGVzdF9wbGFuZV9pZCA9IERS
+TV9QTEFORV9UWVBFX1BSSU1BUlk7Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqB0ZXN0X3NldHVwKCZkYXRhKTsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHRlc3RfY2xlYW51cCgmZGF0YSk7Cj4gK8KgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9zdWJ0ZXN0X3dpdGhfZHluYW1pY19mKCIlc2Jhc2lj
+IiwKPiBhcHBlbmRfc3VidGVzdF9uYW1lW3pdKSB7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZiAoZGF0YS5vcF9wc3JfbW9kZSA9PSBQUl9NT0RFKQo+
+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgewo+ICvCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oGZvcihpbnQgayA9IDA7IGsgPCBwcl9vdXRwdXRfY291bnQ7Cj4gaysrKSB7Cj4gK8KgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoGlndF9keW5hbWljX2YoIiVzIiwKPiBkYXRhLnByX291dHB1dHNba10tPm5h
+bWUpCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoGRhdGEub3V0cHV0ID0KPiBkYXRhLnByX291dHB1dHNba107Cj4gK8KgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLnRlc3RfcGxhbmVfaWQgPQo+IERS
+TV9QTEFORV9UWVBFX1BSSU1BUlk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqB0ZXN0X3NldHVwKCZkYXRhKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoHRlc3RfY2xlYW51cCgmZGF0YSk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH0KPiAr
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqB9Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9
+Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBlbHNlIHsK
+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqBzZXR1cF9vdXRwdXQoJmRhdGEpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9keW5hbWljX2YoIiVzIiwg
+ZGF0YS5vdXRwdXQtCj4gPm5hbWUpIHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS50ZXN0
+X3BsYW5lX2lkID0KPiBEUk1fUExBTkVfVFlQRV9QUklNQVJZOwo+ICvCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqB0ZXN0X3NldHVwKCZkYXRhKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdGVzdF9jbGVh
+bnVwKCZkYXRhKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqB9Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqB9CgpJIHdvdWxkIHN1Z2dlc3QgdXNpbmcgb3V0cHV0cyBhbmQgb3V0cHV0
+X2NvdW50IGluc3RlYWQgb2YgcHJfKiBhbmQgZHJvcApzZXR1cF9vdXRwdXQgZm9yIFBTUiBhcyB3
+bGwuIFRoZW4geW91IHdpbGwgaGF2ZSAxIG91dHB1dCBmb3IgUFNSIGFuZAptYW55IG91dHB1cyBm
+b3IgUFIuIFRoaXMgd2F5IHRoZXJlIGlzIG5vIG5lZWQgdG8gZHVwbGljYXRlIHNvIG11Y2guClNh
+bWUgY29tbWVudCBhcHBsaWVzIG9uIGVhY2ggdGVzdCBiZWxvdy4KCkJSLAoKSm91bmkgSMO2Z2Fu
+ZGVyCgo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfQo+IMKgCj4gwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfZGVzY3JpYmUoIkNoZWNrIGlmIHBzciBpcyBkZXRl
+Y3RpbmcgY2hhbmdlcyB3aGVuCj4gZHJycyBpcyBkaXNhYmxlZCIpOwo+IC3CoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqBpZ3Rfc3VidGVzdF9mKCIlc25vX2RycnMiLAo+IGFwcGVuZF9zdWJ0
+ZXN0X25hbWVbZGF0YS5vcF9wc3JfbW9kZV0pIHsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEudGVzdF9wbGFuZV9pZCA9IERSTV9QTEFORV9UWVBF
+X1BSSU1BUlk7Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqB0ZXN0X3NldHVwKCZkYXRhKTsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoGlndF9hc3NlcnQoZHJyc19kaXNhYmxlZCgmZGF0YSkpOwo+IC3CoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdGVzdF9jbGVhbnVwKCZkYXRh
+KTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3N1YnRlc3Rfd2l0aF9keW5h
+bWljX2YoIiVzbm9fZHJycyIsCj4gYXBwZW5kX3N1YnRlc3RfbmFtZVt6XSkgewo+ICvCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGlmIChkYXRhLm9wX3Bzcl9t
+b2RlID09IFBSX01PREUpCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqAgewo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoCBmb3IoaW50IGsgPSAwOyBrIDwgcHJfb3V0cHV0X2NvdW50Owo+
+IGsrKykgewo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaWd0X2R5bmFtaWNfZigiJXMiLAo+IGRh
+dGEucHJfb3V0cHV0c1trXS0+bmFtZSkKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHsKPiArwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEub3V0cHV0ID0KPiBkYXRhLnBy
+X291dHB1dHNba107Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRh
+LnRlc3RfcGxhbmVfaWQgPQo+IERSTV9QTEFORV9UWVBFX1BSSU1BUlk7Cj4gK8KgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB0ZXN0X3NldHVwKCZkYXRhKTsKPiArwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9hc3NlcnQoZHJyc19kaXNhYgo+IGxlZCgm
+ZGF0YSkpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdGVzdF9jbGVh
+bnVwKCZkYXRhKTsKPiArCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB9Cj4gK8KgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfQo+ICvC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIH0KPiArwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGVsc2Ugewo+ICvCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHNl
+dHVwX291dHB1dCgmZGF0YSk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2R5bmFtaWNfZigiJXMiLCBkYXRhLm91dHB1
+dC0KPiA+bmFtZSkgewo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLnRlc3RfcGxhbmVfaWQg
+PQo+IERSTV9QTEFORV9UWVBFX1BSSU1BUlk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHRlc3Rf
+c2V0dXAoJmRhdGEpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfYXNzZXJ0KGRycnNfZGlz
+YWJsZWQoJmRhdAo+IGEpKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdGVzdF9jbGVhbnVwKCZk
+YXRhKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqB9Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqB9Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9Cj4gwqAKPiDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGZvciAob3AgPSBQQUdFX0ZMSVA7IG9wIDw9IFJF
+TkRFUjsgb3ArKykgewo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoGlndF9kZXNjcmliZSgiQ2hlY2sgaWYgcHNyIGlzIGRldGVjdGluZyBwYWdlLQo+IGZs
+aXBwaW5nLG1lbW9yeSBtYXBwaW5nIGFuZCAiCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAicmVu
+ZGVyaW5nIG9wZXJhdGlvbnMKPiBwZXJmb3JtZWQgb24gcHJpbWFyeSBwbGFuZXMiKTsKPiAtwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9zdWJ0ZXN0X2Yo
+IiVzcHJpbWFyeV8lcyIsCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoAo+IGFwcGVuZF9zdWJ0ZXN0X25hbWVb
+ZGF0YS5vcF9wc3JfbW9kZV0sCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqBpZ3Rfc3VidGVzdF93aXRoX2R5bmFtaWNfZigiJXNwcmltYXJ5XyVzIiwKPiAr
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgIGFwcGVuZF9zdWJ0ZXN0X25hbWVbel0sCj4gwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqAgb3Bfc3RyKG9wKSkgewo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3Rfc2tpcF9vbihpc194ZV9kZXZpY2UoZGF0YS5k
+cm1fZmQpCj4gJiYKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAob3AgPT0gTU1BUF9D
+UFUgfHwgb3AgPT0KPiBNTUFQX0dUVCkpOwo+IC0KPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLm9wID0gb3A7Cj4gLcKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgZGF0YS50ZXN0X3BsYW5lX2lkID0KPiBEUk1fUExBTkVfVFlQRV9QUklNQVJZOwo+IC3CoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oHRlc3Rfc2V0dXAoJmRhdGEpOwo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJ1bl90ZXN0KCZkYXRhKTsKPiAtwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB0ZXN0
+X2NsZWFudXAoJmRhdGEpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlmIChkYXRhLm9wX3Bzcl9tb2RlID09IFBSX01PREUp
+Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgewo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBmb3IoaW50IGsgPSAwOyBrIDwKPiBw
+cl9vdXRwdXRfY291bnQ7IGsrKykgewo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgaWd0X2R5bmFtaWNfZigiJXMiLAo+IGRhdGEucHJfb3V0cHV0c1trXS0+bmFtZSkKPiAr
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHsKPiArwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLm91dHB1dCA9Cj4gZGF0
+YS5wcl9vdXRwdXRzW2tdOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoGRhdGEub3AgPSBvcDsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLnRlc3RfcGxhCj4gbmVfaWQgPSBEUk1f
+UExBTkVfVFlQRV9QUklNQVJZOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoHRlc3Rfc2V0dXAoJmQKPiBhdGEpOwo+ICvCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJ1bl90ZXN0KCZkYXQKPiBh
+KTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqB0ZXN0X2NsZWFudXAoCj4gJmRhdGEpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgfQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9Cj4gK8KgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfQo+ICvCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGVs
+c2Ugewo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBzZXR1cF9vdXRwdXQoJmRhdGEpOwo+ICvCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqBpZ3RfZHluYW1pY19mKCIlcyIsCj4gZGF0YS5vdXRwdXQtPm5hbWUp
+IHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEub3AgPSBvcDsK
+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEudGVzdF9wbGFuZV9p
+ZCA9Cj4gRFJNX1BMQU5FX1RZUEVfUFJJTUFSWTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoHRlc3Rfc2V0dXAoJmRhdGEpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgcnVuX3Rlc3QoJmRhdGEpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgdGVzdF9jbGVhbnVwKCZkYXRhKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgfQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoH0KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqB9Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9Cj4gwqAKPiDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGZvciAob3AgPSBNTUFQX0dUVDsgb3AgPD0gUExB
+TkVfT05PRkY7IG9wKyspIHsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqBpZ3RfZGVzY3JpYmUoIkNoZWNrIGlmIHBzciBpcyBkZXRlY3RpbmcKPiBtZW1v
+cnkgbWFwcGluZyxyZW5kZXJpbmcgIgo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgImFuZCBwbGFu
+ZSBvcGVyYXRpb25zCj4gcGVyZm9ybWVkIG9uIHNwcml0ZSBwbGFuZXMiKTsKPiAtwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9zdWJ0ZXN0X2YoIiVzc3By
+aXRlXyVzIiwKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4gYXBwZW5kX3N1YnRlc3RfbmFtZVtkYXRhLm9w
+X3Bzcl9tb2RlXSwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoGlndF9zdWJ0ZXN0X3dpdGhfZHluYW1pY19mKCIlc3Nwcml0ZV8lcyIsCj4gK8KgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoCBhcHBlbmRfc3VidGVzdF9uYW1lW3pdLAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIG9wX3N0
+cihvcCkpIHsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgaWd0X3NraXBfb24oaXNfeGVfZGV2aWNlKGRhdGEuZHJtX2ZkKQo+
+ICYmCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKG9wID09IE1NQVBfQ1BVIHx8IG9w
+ID09Cj4gTU1BUF9HVFQpKTsKPiAtCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS5vcCA9IG9wOwo+IC3CoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEu
+dGVzdF9wbGFuZV9pZCA9Cj4gRFJNX1BMQU5FX1RZUEVfT1ZFUkxBWTsKPiAtwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB0ZXN0X3Nl
+dHVwKCZkYXRhKTsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqBydW5fdGVzdCgmZGF0YSk7Cj4gLcKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdGVzdF9jbGVhbnVw
+KCZkYXRhKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqBpZiAoZGF0YS5vcF9wc3JfbW9kZSA9PSBQUl9NT0RFKQo+ICvCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZm9yKGludCBrID0gMDsgayA8Cj4gcHJfb3V0cHV0
+X2NvdW50OyBrKyspIHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGln
+dF9keW5hbWljX2YoIiVzIiwKPiBkYXRhLnByX291dHB1dHNba10tPm5hbWUpCj4gK8KgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS5vdXRwdXQgPQo+IGRhdGEucHJfb3V0
+cHV0c1trXTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqBkYXRhLm9wID0gb3A7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS50ZXN0X3BsYQo+IG5lX2lkID0gRFJNX1BMQU5FX1RZ
+UEVfT1ZFUkxBWTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqB0ZXN0X3NldHVwKCZkCj4gYXRhKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBydW5fdGVzdCgmZGF0Cj4gYSk7Cj4gK8Kg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdGVzdF9j
+bGVhbnVwKAo+ICZkYXRhKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oH0KPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH0KPiArwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBlbHNlIHsKPiAr
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgc2V0dXBfb3V0cHV0KCZkYXRhKTsKPiArwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgaWd0X2R5bmFtaWNfZigiJXMiLAo+IGRhdGEub3V0cHV0LT5uYW1lKSB7Cj4gK8Kg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLm9wID0gb3A7Cj4gK8KgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLnRlc3RfcGxhbmVfaWQgPQo+IERS
+TV9QTEFORV9UWVBFX09WRVJMQVk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqB0ZXN0X3NldHVwKCZkYXRhKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoHJ1bl90ZXN0KCZkYXRhKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoHRlc3RfY2xlYW51cCgmZGF0YSk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH0KPiAr
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqB9Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+fQo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+aWd0X2Rlc2NyaWJlKCJDaGVjayBpZiBwc3IgaXMgZGV0ZWN0aW5nCj4gbWVtb3J5IG1hcHBpbmcs
+IHJlbmRlcmluZyAiCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCJhbmQgcGxhbmUgb3BlcmF0aW9u
+cwo+IHBlcmZvcm1lZCBvbiBjdXJzb3IgcGxhbmVzIik7Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3Rfc3VidGVzdF9mKCIlc2N1cnNvcl8lcyIsCj4g
+LcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoAo+IGFwcGVuZF9zdWJ0ZXN0X25hbWVbZGF0YS5vcF9wc3JfbW9kZV0s
+Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoCBvcF9zdHIob3ApKSB7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgImFuZCBw
+bGFuZSBvcGVyYXRpb25zIHBlcmZvcm1lZAo+IG9uIGN1cnNvciBwbGFuZXMiKTsKPiArwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9zdWJ0ZXN0X3dpdGhf
+ZHluYW1pY19mKCIlc2N1cnNvcl8lcyIsCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgCj4gYXBwZW5kX3N1YnRlc3RfbmFtZVt6XSwKPiArwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgb3Bfc3RyKG9wKSkgewo+IMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3Rfc2tp
+cF9vbihpc194ZV9kZXZpY2UoZGF0YS5kcm1fZmQpCj4gJiYKPiAtwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgIChvcCA9PSBNTUFQX0NQVSB8fCBvcCA9PQo+IE1NQVBfR1RUKSk7Cj4gLQo+IC3C
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoGRhdGEub3AgPSBvcDsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLnRlc3RfcGxhbmVfaWQgPQo+IERSTV9QTEFO
+RV9UWVBFX0NVUlNPUjsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB0ZXN0X3NldHVwKCZkYXRhKTsKPiAtwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBydW5fdGVz
+dCgmZGF0YSk7Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgdGVzdF9jbGVhbnVwKCZkYXRhKTsKPiArwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoCAob3AgPT0gTU1BUF9DUFUgfHwgb3AgPT0KPiBNTUFQX0dUVCkpOwo+ICvCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oGlmIChkYXRhLm9wX3Bzcl9tb2RlID09IFBSX01PREUpCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgewo+ICvCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqBmb3IoaW50IGsgPSAwOyBrIDwKPiBwcl9vdXRwdXRfY291bnQ7IGsrKykgewo+
+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2R5bmFtaWNfZigiJXMi
+LAo+IGRhdGEucHJfb3V0cHV0c1trXS0+bmFtZSkKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqBkYXRhLm91dHB1dCA9Cj4gZGF0YS5wcl9vdXRwdXRzW2tdOwo+ICvCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEub3Ag
+PSBvcDsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqBkYXRhLnRlc3RfcGxhCj4gbmVfaWQgPSBEUk1fUExBTkVfVFlQRV9DVVJTT1I7Cj4gK8Kg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdGVzdF9z
+ZXR1cCgmZAo+IGF0YSk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgcnVuX3Rlc3QoJmRhdAo+IGEpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHRlc3RfY2xlYW51cCgKPiAmZGF0YSk7
+Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9Cj4gK8KgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoH0KPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqB9Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZWxzZSB7Cj4gK8KgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoHNldHVwX291dHB1dCgmZGF0YSk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9keW5h
+bWljX2YoIiVzIiwKPiBkYXRhLm91dHB1dC0+bmFtZSkgewo+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgZGF0YS5vcCA9IG9wOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgZGF0YS50ZXN0X3BsYW5lX2lkID0KPiBEUk1fUExBTkVfVFlQRV9DVVJT
+T1I7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB0ZXN0X3NldHVwKCZk
+YXRhKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJ1bl90ZXN0KCZk
+YXRhKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHRlc3RfY2xlYW51
+cCgmZGF0YSk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH0KPiArwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9Cj4gwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfQo+IMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgfQo+IMKgCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oGlndF9kZXNjcmliZSgiQ2hlY2sgaWYgcHNyIGlzIGRldGVjdGluZyBjaGFuZ2VzIHdoZW4KPiBy
+ZW5kZXJpbmcgb3BlcmF0aW9uIGlzIHBlcmZvcm1lZCIKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAiwqAgd2l0aCBkcG1zIGVu
+YWJsZWQgb3IgZGlzYWJsZWQiKTsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0
+X3N1YnRlc3RfZigiJXNkcG1zIiwKPiBhcHBlbmRfc3VidGVzdF9uYW1lW2RhdGEub3BfcHNyX21v
+ZGVdKSB7Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBk
+YXRhLm9wID0gUkVOREVSOwo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgZGF0YS50ZXN0X3BsYW5lX2lkID0gRFJNX1BMQU5FX1RZUEVfUFJJTUFSWTsKPiAt
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHRlc3Rfc2V0dXAo
+JmRhdGEpOwo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+ZHBtc19vZmZfb24oJmRhdGEpOwo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgcnVuX3Rlc3QoJmRhdGEpOwo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgdGVzdF9jbGVhbnVwKCZkYXRhKTsKPiArwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgaWd0X2Rlc2NyaWJlKCJDaGVjayBpZiBwc3IgaXMgZGV0ZWN0aW5n
+IGNoYW5nZXMgd2hlbgo+IHJlbmRlcmluZyBvcGVyYXRpb24gaXMgcGVyZm9ybWVkICIKPiArwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICJ3aXRo
+IGRwbXMgZW5hYmxlZCBvciBkaXNhYmxlZCIpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqBpZ3Rfc3VidGVzdF93aXRoX2R5bmFtaWNfZigiJXNkcG1zIiwKPiBhcHBlbmRfc3VidGVz
+dF9uYW1lW3pdKSB7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqBpZiAoZGF0YS5vcF9wc3JfbW9kZSA9PSBQUl9NT0RFKQo+ICvCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgewo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGZvcihpbnQgayA9IDA7IGsg
+PCBwcl9vdXRwdXRfY291bnQ7Cj4gaysrKSB7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9k
+eW5hbWljX2YoIiVzIiwKPiBkYXRhLnByX291dHB1dHNba10tPm5hbWUpCj4gK8KgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEu
+b3V0cHV0ID0KPiBkYXRhLnByX291dHB1dHNba107Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqBkYXRhLm9wID0gUkVOREVSOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgZGF0YS50ZXN0X3BsYW5lX2lkID0KPiBEUk1fUExBTkVfVFlQRV9QUklN
+QVJZOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdGVzdF9zZXR1cCgm
+ZGF0YSk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkcG1zX29mZl9v
+bigmZGF0YSk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBydW5fdGVz
+dCgmZGF0YSk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB0ZXN0X2Ns
+ZWFudXAoJmRhdGEpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9Cj4gK8KgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfQo+ICvCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfQo+ICvCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZWxzZSB7Cj4gK8KgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgc2V0dXBf
+b3V0cHV0KCZkYXRhKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfZHluYW1pY19mKCIlcyIsIGRhdGEub3V0cHV0LQo+
+ID5uYW1lKSB7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEub3AgPSBSRU5ERVI7Cj4gK8Kg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEudGVzdF9wbGFuZV9pZCA9Cj4gRFJNX1BMQU5FX1RZUEVf
+UFJJTUFSWTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdGVzdF9zZXR1cCgmZGF0YSk7Cj4gK8Kg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoGRwbXNfb2ZmX29uKCZkYXRhKTsKPiArwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgcnVuX3Rlc3QoJmRhdGEpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB0ZXN0X2NsZWFu
+dXAoJmRhdGEpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoH0KPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoH0KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH0KPiDCoAo+
+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2Rlc2NyaWJlKCJDaGVjayBpZiBw
+c3IgaXMgZGV0ZWN0aW5nIGNoYW5nZXMgd2hlbgo+IHBsYW5lIG9wZXJhdGlvbiBpcyBwZXJmb3Jt
+ZWQgIgo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqAid2l0aCBzdXNwZW5kIHJlc3VtZSBjeWNsZXMiKTsKPiAtwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3N1YnRlc3RfZigiJXNzdXNwZW5kIiwKPiBhcHBlbmRf
+c3VidGVzdF9uYW1lW2RhdGEub3BfcHNyX21vZGVdKSB7Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLm9wID0gUExBTkVfT05PRkY7Cj4gLcKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLnRlc3RfcGxhbmVf
+aWQgPSBEUk1fUExBTkVfVFlQRV9DVVJTT1I7Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqB0ZXN0X3NldHVwKCZkYXRhKTsKPiAtCj4gwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9zeXN0ZW1fc3VzcGVuZF9hdXRv
+cmVzdW1lKFNVU1BFTkRfU1RBVEVfTUVNCj4gLAo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoAo+IFNVU1BFTkRfVEVTVF9OT05FKTsKPiAtwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9hc3NlcnQocHNyX3dhaXRf
+ZW50cnlfaWZfZW5hYmxlZCgmZGF0YSkpOwo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgcnVuX3Rlc3QoJmRhdGEpOwo+IC3CoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdGVzdF9jbGVhbnVwKCZkYXRhKTsKPiArwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3N1YnRlc3Rfd2l0aF9keW5hbWljX2YoIiVzc3Vz
+cGVuZCIsCj4gYXBwZW5kX3N1YnRlc3RfbmFtZVt6XSkgewo+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKGRhdGEub3BfcHNyX21vZGUgPT0gUFJfTU9E
+RSkKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHsKPiAr
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqBmb3IoaW50IGsgPSAwOyBrIDwgcHJfb3V0cHV0X2NvdW50Owo+IGsrKykgewo+ICvCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqBpZ3RfZHluYW1pY19mKCIlcyIsCj4gZGF0YS5wcl9vdXRwdXRzW2td
+LT5uYW1lKQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqBkYXRhLm91dHB1dCA9Cj4gZGF0YS5wcl9vdXRwdXRzW2tdOwo+ICvC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS5vcCA9Cj4gUExBTkVfT05P
+RkY7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLnRlc3RfcGxh
+bmVfaWQgPQo+IERSTV9QTEFORV9UWVBFX0NVUlNPUjsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoHRlc3Rfc2V0dXAoJmRhdGEpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgaWd0X3N5c3RlbV9zdXNwZW5kX2F1Cj4gdG9yZXN1bWUoU1VTUEVO
+RF9TVEFURV9NRU0sCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAKPiDCoMKgwqDCoMKgwqDCoMKg
+IFNVU1BFTkRfVEVTVF9OT05FKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoGlndF9hc3NlcnQocHJfd2FpdF9lbgo+IHRyeSgmZGF0YSkpOwo+ICvCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcnVuX3Rlc3QoJmRhdGEpOwo+ICvCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdGVzdF9jbGVhbnVwKCZkYXRhKTsKPiArwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgfQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoH0KPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoH0KPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoGVsc2Ugewo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHNldHVwX291dHB1dCgmZGF0YSk7Cj4gK8KgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0
+X2R5bmFtaWNfZigiJXMiLCBkYXRhLm91dHB1dC0KPiA+bmFtZSkgewo+ICvCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqBkYXRhLm9wID0gUkVOREVSOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLnRl
+c3RfcGxhbmVfaWQgPQo+IERSTV9QTEFORV9UWVBFX1BSSU1BUlk7Cj4gK8KgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoHRlc3Rfc2V0dXAoJmRhdGEpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkcG1zX29m
+Zl9vbigmZGF0YSk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJ1bl90ZXN0KCZkYXRhKTsKPiAr
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgdGVzdF9jbGVhbnVwKCZkYXRhKTsKPiArwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9Cj4gK8Kg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9Cj4gwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9Cj4gwqDCoMKgwqDCoMKgwqDCoH0KPiDCoAoK
