@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6E2D910E1A9
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Oct 2023 09:40:58 +0000 (UTC)
+Message-ID: <2bf9b06d-b3c4-43d1-a00f-3bc3a4fffa73@intel.com>
+Date: Mon, 23 Oct 2023 15:10:52 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Harry Wentland" <harry.wentland@amd.com>
-Date: Mon, 23 Oct 2023 21:23:19 -0000
-Message-ID: <169809619904.19838.12871895257000287223@emeril.freedesktop.org>
-References: <20231019212301.245282-1-harry.wentland@amd.com>
-In-Reply-To: <20231019212301.245282-1-harry.wentland@amd.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_I?=
- =?utf-8?q?GT_tests_for_the_KMS_Color_Pipeline_API_=28rev2=29?=
+Content-Language: en-US
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20231023081446.3886687-1-bhanuprakash.modem@intel.com>
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20231023081446.3886687-1-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [i-g-t V2] lib/kms: Fix the missing documentaion for
+ KMS library
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,509 +22,770 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-=3D=3D Series Details =3D=3D
+Hi Bhanu,
 
-Series: IGT tests for the KMS Color Pipeline API (rev2)
-URL   : https://patchwork.freedesktop.org/series/123448/
-State : warning
+LGTM
 
-=3D=3D Summary =3D=3D
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 
-Pipeline status: FAILED.
+Pushed!
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1017014 f=
-or the overview.
-
-build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/=
-igt-ci-tags/-/jobs/50654399):
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/1632] Generating version.h with a custom command.
-  [2/1632] Compiling C object 'lib/76b5a35@@igt-drmtest_c@sta/drmtest.c.o'.
-  [3/1632] Linking static target lib/libigt-drmtest_c.a.
-  [4/1632] Compiling C object 'lib/76b5a35@@igt-dmabuf_sync_file_c@sta/dmab=
-uf_sync_file.c.o'.
-  FAILED: lib/76b5a35@@igt-dmabuf_sync_file_c@sta/dmabuf_sync_file.c.o=20
-  cc -Ilib/76b5a35@@igt-dmabuf_sync_file_c@sta -Ilib -I../lib -I../include =
--I../include/drm-uapi -I../include/linux-uapi -I../lib/stubs/syscalls -I. -=
-I../ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-g=
-nu/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/uuid -I/usr/incl=
-ude/freetype2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/=
-libdrm/nouveau -I/usr/include/x86_64-linux-gnu -I/usr/include/valgrind -I/u=
-sr/include/alsa -I/usr/include -fdiagnostics-color=3Dalways -pipe -D_FILE_O=
-FFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOUR=
-CE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaratio=
-n-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmi=
-ssing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-=
-prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wredund=
-ant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-clobbe=
-red -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-pointer-a=
-rith -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unused-r=
-esult -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Werror=
-=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing=
--braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-ty=
-pe -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fn=
-o-builtin-malloc -fno-builtin-calloc -fPIC -pthread '-DIGT_DATADIR=3D"/usr/=
-local/share/igt-gpu-tools"' '-DIGT_SRCDIR=3D"/builds/gfx-ci/igt-ci-tags/tes=
-ts"' '-DIGT_LOG_DOMAIN=3D"dmabuf_sync_file"'  -MD -MQ 'lib/76b5a35@@igt-dma=
-buf_sync_file_c@sta/dmabuf_sync_file.c.o' -MF 'lib/76b5a35@@igt-dmabuf_sync=
-_file_c@sta/dmabuf_sync_file.c.o.d' -o 'lib/76b5a35@@igt-dmabuf_sync_file_c=
-@sta/dmabuf_sync_file.c.o' -c ../lib/dmabuf_sync_file.c
-  In file included from ../lib/igt.h:38,
-                   from ../lib/dmabuf_sync_file.c:6:
-  ../lib/igt_kms.h:399:2: error: unknown type name =E2=80=98drmModeColorop=
-=E2=80=99
-    drmModeColorop *drm_colorop;
-    ^~~~~~~~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1698096163:step_script
-  section_start:1698096163:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1698096164:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/g=
-fx-ci/igt-ci-tags/-/jobs/50654402):
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/1295] Generating version.h with a custom command.
-  [2/1295] Compiling C object 'lib/76b5a35@@igt-drmtest_c@sta/drmtest.c.o'.
-  [3/1295] Linking static target lib/libigt-drmtest_c.a.
-  [4/1295] Compiling C object 'lib/76b5a35@@igt-dmabuf_sync_file_c@sta/dmab=
-uf_sync_file.c.o'.
-  FAILED: lib/76b5a35@@igt-dmabuf_sync_file_c@sta/dmabuf_sync_file.c.o=20
-  /usr/bin/aarch64-linux-gnu-gcc -Ilib/76b5a35@@igt-dmabuf_sync_file_c@sta =
--Ilib -I../lib -I../include -I../include/drm-uapi -I../include/linux-uapi -=
-I../lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/glib-2=
-.0 -I/usr/lib/aarch64-linux-gnu/glib-2.0/include -I/usr/include/pixman-1 -I=
-/usr/include/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/i=
-nclude/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/aarch64-linux-gn=
-u -I/usr/include/valgrind -I/usr/include/alsa -fdiagnostics-color=3Dalways =
--pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2=
- -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-ca=
-st -Wdeclaration-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -W=
-logical-op -Wmissing-declarations -Wmissing-format-attribute -Wmissing-nore=
-turn -Wmissing-prototypes -Wnested-externs -Wold-style-definition -Wpointer=
--arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunu=
-sed -Wno-clobbered -Wno-maybe-uninitialized -Wno-missing-field-initializers=
- -Wno-pointer-arith -Wno-sign-compare -Wno-type-limits -Wno-unused-paramete=
-r -Wno-unused-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimp=
-licit -Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Wer=
-ror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werro=
-r=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrit=
-e-strings -fno-builtin-malloc -fno-builtin-calloc -fPIC -pthread '-DIGT_DAT=
-ADIR=3D"/usr/local/share/igt-gpu-tools"' '-DIGT_SRCDIR=3D"/builds/gfx-ci/ig=
-t-ci-tags/tests"' '-DIGT_LOG_DOMAIN=3D"dmabuf_sync_file"'  -MD -MQ 'lib/76b=
-5a35@@igt-dmabuf_sync_file_c@sta/dmabuf_sync_file.c.o' -MF 'lib/76b5a35@@ig=
-t-dmabuf_sync_file_c@sta/dmabuf_sync_file.c.o.d' -o 'lib/76b5a35@@igt-dmabu=
-f_sync_file_c@sta/dmabuf_sync_file.c.o' -c ../lib/dmabuf_sync_file.c
-  In file included from ../lib/igt.h:38,
-                   from ../lib/dmabuf_sync_file.c:6:
-  ../lib/igt_kms.h:399:2: error: unknown type name =E2=80=98drmModeColorop=
-=E2=80=99
-    drmModeColorop *drm_colorop;
-    ^~~~~~~~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1698096171:step_script
-  section_start:1698096171:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1698096172:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/g=
-fx-ci/igt-ci-tags/-/jobs/50654401):
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/1300] Generating version.h with a custom command.
-  [2/1300] Compiling C object 'lib/76b5a35@@igt-drmtest_c@sta/drmtest.c.o'.
-  [3/1300] Linking static target lib/libigt-drmtest_c.a.
-  [4/1300] Compiling C object 'lib/76b5a35@@igt-dmabuf_sync_file_c@sta/dmab=
-uf_sync_file.c.o'.
-  FAILED: lib/76b5a35@@igt-dmabuf_sync_file_c@sta/dmabuf_sync_file.c.o=20
-  /usr/bin/arm-linux-gnueabihf-gcc -Ilib/76b5a35@@igt-dmabuf_sync_file_c@st=
-a -Ilib -I../lib -I../include -I../include/drm-uapi -I../include/linux-uapi=
- -I../lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/glib=
--2.0 -I/usr/lib/arm-linux-gnueabihf/glib-2.0/include -I/usr/include/pixman-=
-1 -I/usr/include/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -I/u=
-sr/include/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/arm-linux-gn=
-ueabihf -I/usr/include/valgrind -I/usr/include/alsa -fdiagnostics-color=3Da=
-lways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu=
-11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-funct=
-ion-cast -Wdeclaration-after-statement -Wformat=3D2 -Wimplicit-fallthrough=
-=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -Wmissi=
-ng-noreturn -Wmissing-prototypes -Wnested-externs -Wold-style-definition -W=
-pointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuninitialize=
-d -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno-missing-field-initi=
-alizers -Wno-pointer-arith -Wno-sign-compare -Wno-type-limits -Wno-unused-p=
-arameter -Wno-unused-result -Werror=3Daddress -Werror=3Darray-bounds -Werro=
-r=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dma=
-in -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast=
- -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=
-=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -fPIC -pthread '-D=
-IGT_DATADIR=3D"/usr/local/share/igt-gpu-tools"' '-DIGT_SRCDIR=3D"/builds/gf=
-x-ci/igt-ci-tags/tests"' '-DIGT_LOG_DOMAIN=3D"dmabuf_sync_file"'  -MD -MQ '=
-lib/76b5a35@@igt-dmabuf_sync_file_c@sta/dmabuf_sync_file.c.o' -MF 'lib/76b5=
-a35@@igt-dmabuf_sync_file_c@sta/dmabuf_sync_file.c.o.d' -o 'lib/76b5a35@@ig=
-t-dmabuf_sync_file_c@sta/dmabuf_sync_file.c.o' -c ../lib/dmabuf_sync_file.c
-  In file included from ../lib/igt.h:38,
-                   from ../lib/dmabuf_sync_file.c:6:
-  ../lib/igt_kms.h:399:2: error: unknown type name =E2=80=98drmModeColorop=
-=E2=80=99
-    drmModeColorop *drm_colorop;
-    ^~~~~~~~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1698096175:step_script
-  section_start:1698096175:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1698096176:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gf=
-x-ci/igt-ci-tags/-/jobs/50654403):
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/1296] Generating version.h with a custom command.
-  [2/1296] Compiling C object 'lib/76b5a35@@igt-drmtest_c@sta/drmtest.c.o'.
-  [3/1296] Linking static target lib/libigt-drmtest_c.a.
-  [4/1296] Compiling C object 'lib/76b5a35@@igt-dmabuf_sync_file_c@sta/dmab=
-uf_sync_file.c.o'.
-  FAILED: lib/76b5a35@@igt-dmabuf_sync_file_c@sta/dmabuf_sync_file.c.o=20
-  /usr/bin/mips-linux-gnu-gcc -Ilib/76b5a35@@igt-dmabuf_sync_file_c@sta -Il=
-ib -I../lib -I../include -I../include/drm-uapi -I../include/linux-uapi -I..=
-/lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/glib-2.0 =
--I/usr/lib/mips-linux-gnu/glib-2.0/include -I/usr/include/pixman-1 -I/usr/i=
-nclude/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include=
-/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/mips-linux-gnu -I/usr/=
-include/valgrind -I/usr/include/alsa -fdiagnostics-color=3Dalways -pipe -D_=
-FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GN=
-U_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdecl=
-aration-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-o=
-p -Wmissing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmi=
-ssing-prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -W=
-redundant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-=
-clobbered -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-poi=
-nter-arith -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-un=
-used-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -We=
-rror=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmis=
-sing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dretur=
-n-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings=
- -fno-builtin-malloc -fno-builtin-calloc -fPIC -pthread '-DIGT_DATADIR=3D"/=
-usr/local/share/igt-gpu-tools"' '-DIGT_SRCDIR=3D"/builds/gfx-ci/igt-ci-tags=
-/tests"' '-DIGT_LOG_DOMAIN=3D"dmabuf_sync_file"'  -MD -MQ 'lib/76b5a35@@igt=
--dmabuf_sync_file_c@sta/dmabuf_sync_file.c.o' -MF 'lib/76b5a35@@igt-dmabuf_=
-sync_file_c@sta/dmabuf_sync_file.c.o.d' -o 'lib/76b5a35@@igt-dmabuf_sync_fi=
-le_c@sta/dmabuf_sync_file.c.o' -c ../lib/dmabuf_sync_file.c
-  In file included from ../lib/igt.h:38,
-                   from ../lib/dmabuf_sync_file.c:6:
-  ../lib/igt_kms.h:399:2: error: unknown type name =E2=80=98drmModeColorop=
-=E2=80=99
-    drmModeColorop *drm_colorop;
-    ^~~~~~~~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1698096173:step_script
-  section_start:1698096173:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1698096175:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-c=
-i/igt-ci-tags/-/jobs/50654400):
-  [30/556] Generating i915-perf-equations with a custom command.
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/530] Generating version.h with a custom command.
-  [2/529] Linking static target lib/libigt-drmtest_c.a.
-  [3/529] Compiling C object 'lib/76b5a35@@igt-dmabuf_sync_file_c@sta/dmabu=
-f_sync_file.c.o'.
-  FAILED: lib/76b5a35@@igt-dmabuf_sync_file_c@sta/dmabuf_sync_file.c.o=20
-  cc -Ilib/76b5a35@@igt-dmabuf_sync_file_c@sta -Ilib -I../lib -I../include =
--I../include/drm-uapi -I../include/linux-uapi -I../lib/stubs/syscalls -I. -=
-I../ -I../lib/stubs/libunwind -I/usr/include/cairo -I/usr/include/glib-2.0 =
--I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include/pixman-1 -I/usr=
-/include/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/inclu=
-de/libdrm -fdiagnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall=
- -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h =
--D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wf=
-ormat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -W=
-missing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-e=
-xterns -Wold-style-definition -Wpointer-arith -Wredundant-decls -Wshadow -W=
-strict-prototypes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninit=
-ialized -Wno-missing-field-initializers -Wno-pointer-arith -Wno-sign-compar=
-e -Wno-type-limits -Wno-unused-parameter -Wno-unused-result -Werror=3Daddre=
-ss -Werror=3Darray-bounds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3D=
-int-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnu=
-ll -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type -Werror=3Dsequence-p=
-oint -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-builtin-malloc -fno-b=
-uiltin-calloc -fPIC -pthread '-DIGT_DATADIR=3D"/usr/local/share/igt-gpu-too=
-ls"' '-DIGT_SRCDIR=3D"/builds/gfx-ci/igt-ci-tags/tests"' '-DIGT_LOG_DOMAIN=
-=3D"dmabuf_sync_file"'  -MD -MQ 'lib/76b5a35@@igt-dmabuf_sync_file_c@sta/dm=
-abuf_sync_file.c.o' -MF 'lib/76b5a35@@igt-dmabuf_sync_file_c@sta/dmabuf_syn=
-c_file.c.o.d' -o 'lib/76b5a35@@igt-dmabuf_sync_file_c@sta/dmabuf_sync_file.=
-c.o' -c ../lib/dmabuf_sync_file.c
-  In file included from ../lib/igt.h:38,
-                   from ../lib/dmabuf_sync_file.c:6:
-  ../lib/igt_kms.h:399:2: error: unknown type name =E2=80=98drmModeColorop=
-=E2=80=99
-    drmModeColorop *drm_colorop;
-    ^~~~~~~~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1698096165:step_script
-  section_start:1698096165:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1698096166:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci=
--tags/-/jobs/50654394):
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/1639] Generating version.h with a custom command.
-  [2/1639] Compiling C object 'lib/76b5a35@@igt-drmtest_c@sta/drmtest.c.o'.
-  [3/1639] Linking static target lib/libigt-drmtest_c.a.
-  [4/1639] Compiling C object 'lib/76b5a35@@igt-dmabuf_sync_file_c@sta/dmab=
-uf_sync_file.c.o'.
-  FAILED: lib/76b5a35@@igt-dmabuf_sync_file_c@sta/dmabuf_sync_file.c.o=20
-  cc -Ilib/76b5a35@@igt-dmabuf_sync_file_c@sta -Ilib -I../lib -I../include =
--I../include/drm-uapi -I../include/linux-uapi -I../lib/stubs/syscalls -I. -=
-I../ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/inc=
-lude -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng=
-16 -I/usr/include/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/valgr=
-ind -fdiagnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winv=
-alid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FOR=
-TIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=
-=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmissi=
-ng-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-extern=
-s -Wold-style-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstric=
-t-prototypes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitializ=
-ed -Wno-missing-field-initializers -Wno-pointer-arith -Wno-address-of-packe=
-d-member -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unus=
-ed-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Werr=
-or=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissi=
-ng-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-=
-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -=
-fno-builtin-malloc -fno-builtin-calloc -fPIC -pthread '-DIGT_DATADIR=3D"/op=
-t/igt/share/igt-gpu-tools"' '-DIGT_SRCDIR=3D"/builds/gfx-ci/igt-ci-tags/tes=
-ts"' '-DIGT_LOG_DOMAIN=3D"dmabuf_sync_file"' -MD -MQ 'lib/76b5a35@@igt-dmab=
-uf_sync_file_c@sta/dmabuf_sync_file.c.o' -MF 'lib/76b5a35@@igt-dmabuf_sync_=
-file_c@sta/dmabuf_sync_file.c.o.d' -o 'lib/76b5a35@@igt-dmabuf_sync_file_c@=
-sta/dmabuf_sync_file.c.o' -c ../lib/dmabuf_sync_file.c
-  In file included from ../lib/igt.h:38,
-                   from ../lib/dmabuf_sync_file.c:6:
-  ../lib/igt_kms.h:399:2: error: unknown type name =E2=80=98drmModeColorop=
-=E2=80=99
-    399 |  drmModeColorop *drm_colorop;
-        |  ^~~~~~~~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1698096163:step_script
-  section_start:1698096163:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1698096165:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/=
-igt-ci-tags/-/jobs/50654398):
-  [4/1637] Compiling C object 'lib/76b5a35@@igt-dmabuf_sync_file_c@sta/dmab=
-uf_sync_file.c.o'.
-  FAILED: lib/76b5a35@@igt-dmabuf_sync_file_c@sta/dmabuf_sync_file.c.o=20
-  clang -Ilib/76b5a35@@igt-dmabuf_sync_file_c@sta -Ilib -I../lib -I../inclu=
-de -I../include/drm-uapi -I../include/linux-uapi -I../lib/stubs/syscalls -I=
-. -I../ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/=
-include -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/lib=
-png16 -I/usr/include/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/va=
-lgrind -Xclang -fcolor-diagnostics -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Wi=
-nvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_F=
-ORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wforma=
-t=3D2 -Wmissing-declarations -Wmissing-format-attribute -Wmissing-noreturn =
--Wmissing-prototypes -Wnested-externs -Wold-style-definition -Wpointer-arit=
-h -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -=
-Wno-missing-field-initializers -Wno-pointer-arith -Wno-address-of-packed-me=
-mber -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unused-r=
-esult -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Werror=
-=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing=
--braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-ty=
-pe -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fn=
-o-builtin-malloc -fno-builtin-calloc -fPIC -pthread '-DIGT_DATADIR=3D"/usr/=
-local/share/igt-gpu-tools"' '-DIGT_SRCDIR=3D"/builds/gfx-ci/igt-ci-tags/tes=
-ts"' '-DIGT_LOG_DOMAIN=3D"dmabuf_sync_file"' -MD -MQ 'lib/76b5a35@@igt-dmab=
-uf_sync_file_c@sta/dmabuf_sync_file.c.o' -MF 'lib/76b5a35@@igt-dmabuf_sync_=
-file_c@sta/dmabuf_sync_file.c.o.d' -o 'lib/76b5a35@@igt-dmabuf_sync_file_c@=
-sta/dmabuf_sync_file.c.o' -c ../lib/dmabuf_sync_file.c
-  In file included from ../lib/dmabuf_sync_file.c:6:
-  In file included from ../lib/igt.h:38:
-  ../lib/igt_kms.h:399:2: error: unknown type name 'drmModeColorop'; did yo=
-u mean 'drmModeClip'?
-          drmModeColorop *drm_colorop;
-          ^~~~~~~~~~~~~~
-          drmModeClip
-  /usr/include/xf86drmMode.h:226:30: note: 'drmModeClip' declared here
-  typedef struct drm_clip_rect drmModeClip, *drmModeClipPtr;
-                               ^
-  1 error generated.
-  ninja: build stopped: subcommand failed.
-  section_end:1698096170:step_script
-  section_start:1698096170:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1698096171:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop=
-.org/gfx-ci/igt-ci-tags/-/jobs/50654397):
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/1477] Generating version.h with a custom command.
-  [2/1477] Compiling C object 'lib/76b5a35@@igt-drmtest_c@sta/drmtest.c.o'.
-  [3/1477] Linking static target lib/libigt-drmtest_c.a.
-  [4/1477] Compiling C object 'lib/76b5a35@@igt-dmabuf_sync_file_c@sta/dmab=
-uf_sync_file.c.o'.
-  FAILED: lib/76b5a35@@igt-dmabuf_sync_file_c@sta/dmabuf_sync_file.c.o=20
-  cc -Ilib/76b5a35@@igt-dmabuf_sync_file_c@sta -Ilib -I../lib -I../include =
--I../include/drm-uapi -I../include/linux-uapi -I../lib/stubs/syscalls -I. -=
-I../ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/inc=
-lude -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng=
-16 -I/usr/include/libdrm -I/usr/include/valgrind -fdiagnostics-color=3Dalwa=
-ys -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 =
--O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function=
--cast -Wdeclaration-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0=
- -Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -Wmissing-n=
-oreturn -Wmissing-prototypes -Wnested-externs -Wold-style-definition -Wpoin=
-ter-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -W=
-unused -Wno-clobbered -Wno-maybe-uninitialized -Wno-missing-field-initializ=
-ers -Wno-pointer-arith -Wno-address-of-packed-member -Wno-sign-compare -Wno=
--type-limits -Wno-unused-parameter -Wno-unused-result -Werror=3Daddress -We=
-rror=3Darray-bounds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-to=
--pointer-cast -Werror=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -We=
-rror=3Dpointer-to-int-cast -Werror=3Dreturn-type -Werror=3Dsequence-point -=
-Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-builtin-malloc -fno-builtin=
--calloc -fPIC -pthread '-DIGT_DATADIR=3D"/usr/local/share/igt-gpu-tools"' '=
--DIGT_SRCDIR=3D"/builds/gfx-ci/igt-ci-tags/tests"' '-DIGT_LOG_DOMAIN=3D"dma=
-buf_sync_file"' -MD -MQ 'lib/76b5a35@@igt-dmabuf_sync_file_c@sta/dmabuf_syn=
-c_file.c.o' -MF 'lib/76b5a35@@igt-dmabuf_sync_file_c@sta/dmabuf_sync_file.c=
-.o.d' -o 'lib/76b5a35@@igt-dmabuf_sync_file_c@sta/dmabuf_sync_file.c.o' -c =
-../lib/dmabuf_sync_file.c
-  In file included from ../lib/igt.h:38,
-                   from ../lib/dmabuf_sync_file.c:6:
-  ../lib/igt_kms.h:399:2: error: unknown type name =E2=80=98drmModeColorop=
-=E2=80=99
-    399 |  drmModeColorop *drm_colorop;
-        |  ^~~~~~~~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1698096163:step_script
-  section_start:1698096163:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1698096165:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/=
-gfx-ci/igt-ci-tags/-/jobs/50654395):
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/1640] Generating version.h with a custom command.
-  [2/1640] Compiling C object 'lib/76b5a35@@igt-drmtest_c@sta/drmtest.c.o'.
-  [3/1640] Linking static target lib/libigt-drmtest_c.a.
-  [4/1640] Compiling C object 'lib/76b5a35@@igt-dmabuf_sync_file_c@sta/dmab=
-uf_sync_file.c.o'.
-  FAILED: lib/76b5a35@@igt-dmabuf_sync_file_c@sta/dmabuf_sync_file.c.o=20
-  cc -Ilib/76b5a35@@igt-dmabuf_sync_file_c@sta -Ilib -I../lib -I../include =
--I../include/drm-uapi -I../include/linux-uapi -I../lib/stubs/syscalls -I. -=
-I../ -I../lib/stubs/libunwind -I/usr/include/cairo -I/usr/include/glib-2.0 =
--I/usr/lib64/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/freety=
-pe2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/libdrm/nou=
-veau -I/usr/include/valgrind -fdiagnostics-color=3Dalways -pipe -D_FILE_OFF=
-SET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE=
- -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-=
-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmiss=
-ing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-pr=
-ototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wredundan=
-t-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-clobbere=
-d -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-pointer-ari=
-th -Wno-address-of-packed-member -Wno-sign-compare -Wno-type-limits -Wno-un=
-used-parameter -Wno-unused-result -Werror=3Daddress -Werror=3Darray-bounds =
--Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -Werro=
-r=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-in=
-t-cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -=
-Werror=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -fPIC -pthre=
-ad '-DIGT_DATADIR=3D"/usr/local/share/igt-gpu-tools"' '-DIGT_SRCDIR=3D"/bui=
-lds/gfx-ci/igt-ci-tags/tests"' '-DIGT_LOG_DOMAIN=3D"dmabuf_sync_file"' -MD =
--MQ 'lib/76b5a35@@igt-dmabuf_sync_file_c@sta/dmabuf_sync_file.c.o' -MF 'lib=
-/76b5a35@@igt-dmabuf_sync_file_c@sta/dmabuf_sync_file.c.o.d' -o 'lib/76b5a3=
-5@@igt-dmabuf_sync_file_c@sta/dmabuf_sync_file.c.o' -c ../lib/dmabuf_sync_f=
-ile.c
-  In file included from ../lib/igt.h:38,
-                   from ../lib/dmabuf_sync_file.c:6:
-  ../lib/igt_kms.h:399:2: error: unknown type name =E2=80=98drmModeColorop=
-=E2=80=99
-    399 |  drmModeColorop *drm_colorop;
-        |  ^~~~~~~~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1698096165:step_script
-  section_start:1698096165:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1698096166:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/=
-gfx-ci/igt-ci-tags/-/jobs/50654396):
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/1641] Generating version.h with a custom command.
-  [2/1641] Compiling C object 'lib/lib@@igt-drmtest_c@sta/drmtest.c.o'.
-  [3/1641] Linking static target lib/libigt-drmtest_c.a.
-  [4/1641] Compiling C object 'lib/lib@@igt-dmabuf_sync_file_c@sta/dmabuf_s=
-ync_file.c.o'.
-  FAILED: lib/lib@@igt-dmabuf_sync_file_c@sta/dmabuf_sync_file.c.o=20
-  cc -Ilib/lib@@igt-dmabuf_sync_file_c@sta -Ilib -I../lib -I../include -I..=
-/include/drm-uapi -I../include/linux-uapi -I../lib/stubs/syscalls -I. -I../=
- -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include=
- -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng16 -=
-I/usr/include/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/valgrind =
--fdiagnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid=
--pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY=
-_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=3D2 =
--Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-fo=
-rmat-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Wo=
-ld-style-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-pro=
-totypes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -W=
-no-missing-field-initializers -Wno-pointer-arith -Wno-address-of-packed-mem=
-ber -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unused-re=
-sult -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Werror=3D=
-init-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-br=
-aces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type =
--Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-b=
-uiltin-malloc -fno-builtin-calloc -fPIC -pthread '-DIGT_DATADIR=3D"/usr/loc=
-al/share/igt-gpu-tools"' '-DIGT_SRCDIR=3D"/builds/gfx-ci/igt-ci-tags/tests"=
-' '-DIGT_LOG_DOMAIN=3D"dmabuf_sync_file"'  -MD -MQ 'lib/lib@@igt-dmabuf_syn=
-c_file_c@sta/dmabuf_sync_file.c.o' -MF 'lib/lib@@igt-dmabuf_sync_file_c@sta=
-/dmabuf_sync_file.c.o.d' -o 'lib/lib@@igt-dmabuf_sync_file_c@sta/dmabuf_syn=
-c_file.c.o' -c ../lib/dmabuf_sync_file.c
-  In file included from ../lib/igt.h:38,
-                   from ../lib/dmabuf_sync_file.c:6:
-  ../lib/igt_kms.h:399:2: error: unknown type name =E2=80=98drmModeColorop=
-=E2=80=99
-    399 |  drmModeColorop *drm_colorop;
-        |  ^~~~~~~~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1698096166:step_script
-  section_start:1698096166:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1698096167:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-=3D=3D Logs =3D=3D
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/p=
-ipelines/1017014
+On 23-Oct-23 1:44 PM, Bhanuprakash Modem wrote:
+> This patch will fix the missing documentaion for KMS library
+> includes:
+> 
+>    - Add missing documentaion
+>    - Fix the documentaion style to detect by the scripts
+>    - Other minor cleanups
+> 
+> V2: - Add missing return docs
+>      - Other minor cleanup
+> 
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>   lib/igt_kms.c | 214 +++++++++++++++++++++++++++++++++++++++++++++++++-
+>   lib/igt_kms.h | 181 ++++++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 392 insertions(+), 3 deletions(-)
+> 
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 53f9ff19f..e1dfc2137 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -133,6 +133,20 @@ const struct edid *igt_kms_get_base_edid(void)
+>   	return &edid;
+>   }
+>   
+> +/**
+> + * igt_kms_get_full_edid:
+> + *
+> + * Get the full edid block, which includes the following modes:
+> + *
+> + *  - 2288x1287 144Hz
+> + *  - 1920x1080 60Hz
+> + *  - 1280x720 60Hz
+> + *  - 1024x768 60Hz
+> + *  - 800x600 60Hz
+> + *  - 640x480 60Hz
+> + *
+> + * Returns: a full edid block
+> + */
+>   const struct edid *igt_kms_get_full_edid(void)
+>   {
+>   	static struct edid edid;
+> @@ -163,6 +177,20 @@ const struct edid *igt_kms_get_full_edid(void)
+>   	return &edid;
+>   }
+>   
+> +/**
+> + * igt_kms_get_base_tile_edid:
+> + *
+> + * Get the base tile edid block, which includes the following modes:
+> + *
+> + *  - 1920x2160 60Hz
+> + *  - 1920x1080 60Hz
+> + *  - 1280x720 60Hz
+> + *  - 1024x768 60Hz
+> + *  - 800x600 60Hz
+> + *  - 640x480 60Hz
+> + *
+> + * Returns: a basic tile edid block
+> + */
+>   const struct edid *igt_kms_get_base_tile_edid(void)
+>   {
+>   	static struct edid edid;
+> @@ -270,6 +298,13 @@ generate_audio_edid(unsigned char raw_edid[static AUDIO_EDID_SIZE],
+>   	return edid;
+>   }
+>   
+> +/**
+> + * igt_kms_get_hdmi_audio_edid:
+> + *
+> + * Get a basic edid block, which includes the HDMI Audio
+> + *
+> + * Returns: a basic HDMI Audio edid block
+> + */
+>   const struct edid *igt_kms_get_hdmi_audio_edid(void)
+>   {
+>   	int channels;
+> @@ -294,6 +329,13 @@ const struct edid *igt_kms_get_hdmi_audio_edid(void)
+>   	return generate_audio_edid(raw_edid, true, &sad, &speaker_alloc);
+>   }
+>   
+> +/**
+> + * igt_kms_get_dp_audio_edid:
+> + *
+> + * Get a basic edid block, which includes the DP Audio
+> + *
+> + * Returns: a basic DP Audio edid block
+> + */
+>   const struct edid *igt_kms_get_dp_audio_edid(void)
+>   {
+>   	int channels;
+> @@ -318,6 +360,15 @@ const struct edid *igt_kms_get_dp_audio_edid(void)
+>   	return generate_audio_edid(raw_edid, false, &sad, &speaker_alloc);
+>   }
+>   
+> +/**
+> + * igt_kms_get_tiled_edid:
+> + * @htile: Target H-tile
+> + * @vtile: Target V-tile
+> + *
+> + * Get a basic edid block, which includes tiled display
+> + *
+> + * Returns: a basic tiled display edid block
+> + */
+>   struct edid **igt_kms_get_tiled_edid(uint8_t htile, uint8_t vtile)
+>   {
+>   	uint8_t top[2];
+> @@ -405,6 +456,13 @@ static const uint8_t edid_4k_svds[] = {
+>   	19,                  /* 720p @ 50Hz */
+>   };
+>   
+> +/**
+> + * igt_kms_get_4k_edid:
+> + *
+> + * Get a basic edid block, which includes 4K resolution
+> + *
+> + * Returns: a basic edid block with 4K resolution
+> + */
+>   const struct edid *igt_kms_get_4k_edid(void)
+>   {
+>   	static unsigned char raw_edid[256] = {0};
+> @@ -457,6 +515,13 @@ const struct edid *igt_kms_get_4k_edid(void)
+>   	return edid;
+>   }
+>   
+> +/**
+> + * igt_kms_get_3d_edid:
+> + *
+> + * Get a basic edid block, which includes 3D mode
+> + *
+> + * Returns: a basic edid block with 3D mode
+> + */
+>   const struct edid *igt_kms_get_3d_edid(void)
+>   {
+>   	static unsigned char raw_edid[256] = {0};
+> @@ -1398,6 +1463,13 @@ static char *kmstest_connector_dirname(int idx,
+>   	return name;
+>   }
+>   
+> +/**
+> + * igt_connector_sysfs_open:
+> + * @drm_fd: drm file descriptor
+> + * @connector: drm connector
+> + *
+> + * Returns: The connector sysfs fd, or -1 on failure.
+> + */
+>   int igt_connector_sysfs_open(int drm_fd,
+>   			     drmModeConnector *connector)
+>   {
+> @@ -1607,6 +1679,9 @@ void kmstest_force_edid(int drm_fd, drmModeConnector *connector,
+>    * @b: second element
+>    *
+>    * Comparator function for sorting DRM modes in descending order by clock.
+> + *
+> + * Returns: True if first element's clock is less than second element's clock,
+> + * else False.
+>    */
+>   int sort_drm_modes_by_clk_dsc(const void *a, const void *b)
+>   {
+> @@ -1621,6 +1696,9 @@ int sort_drm_modes_by_clk_dsc(const void *a, const void *b)
+>    * @b: second element
+>    *
+>    * Comparator function for sorting DRM modes in ascending order by clock.
+> + *
+> + * Returns: True if first element's clock is greater than second element's clock,
+> + * else False.
+>    */
+>   int sort_drm_modes_by_clk_asc(const void *a, const void *b)
+>   {
+> @@ -1635,6 +1713,9 @@ int sort_drm_modes_by_clk_asc(const void *a, const void *b)
+>    * @b: second element
+>    *
+>    * Comparator function for sorting DRM modes in descending order by resolution.
+> + *
+> + * Returns: True if first element's resolution is less than second element's
+> + * resolution, else False.
+>    */
+>   int sort_drm_modes_by_res_dsc(const void *a, const void *b)
+>   {
+> @@ -1649,6 +1730,9 @@ int sort_drm_modes_by_res_dsc(const void *a, const void *b)
+>    * @b: second element
+>    *
+>    * Comparator function for sorting DRM modes in ascending order by resolution.
+> + *
+> + * Returns: True if first element's resolution is greater than second element's
+> + * resolution, else False.
+>    */
+>   int sort_drm_modes_by_res_asc(const void *a, const void *b)
+>   {
+> @@ -1790,6 +1874,9 @@ _kmstest_connector_config_find_encoder(int drm_fd, drmModeConnector *connector,
+>    *
+>    * This tries to find a suitable configuration for the given connector and CRTC
+>    * constraint and fills it into @config.
+> + *
+> + * Returns: True if suitable configuration found for a given connector & CRTC,
+> + * else False.
+>    */
+>   static bool _kmstest_connector_config(int drm_fd, uint32_t connector_id,
+>   				      unsigned long crtc_idx_mask,
+> @@ -1885,6 +1972,9 @@ err1:
+>    *
+>    * This tries to find a suitable configuration for the given connector and CRTC
+>    * constraint and fills it into @config.
+> + *
+> + * Returns: True if suitable configuration found for a given connector & CRTC,
+> + * else False.
+>    */
+>   bool kmstest_get_connector_config(int drm_fd, uint32_t connector_id,
+>   				  unsigned long crtc_idx_mask,
+> @@ -1894,6 +1984,15 @@ bool kmstest_get_connector_config(int drm_fd, uint32_t connector_id,
+>   					 config, 0);
+>   }
+>   
+> +/**
+> + * kmstest_get_path_blob:
+> + * @drm_fd: DRM fd
+> + * @connector_id: DRM connector id
+> + *
+> + * Finds a property with the name "PATH" on the connector object.
+> + *
+> + * Returns: Pointer to the connector's PATH property if found else NULL.
+> + */
+>   drmModePropertyBlobPtr kmstest_get_path_blob(int drm_fd, uint32_t connector_id)
+>   {
+>   	uint64_t path_blob_id = 0;
+> @@ -1920,6 +2019,9 @@ drmModePropertyBlobPtr kmstest_get_path_blob(int drm_fd, uint32_t connector_id)
+>    * This tries to find a suitable configuration for the given connector and CRTC
+>    * constraint and fills it into @config, fully probing the connector in the
+>    * process.
+> + *
+> + * Returns: True if suitable configuration found for a given connector & CRTC,
+> + * else False.
+>    */
+>   bool kmstest_probe_connector_config(int drm_fd, uint32_t connector_id,
+>   				    unsigned long crtc_idx_mask,
+> @@ -2062,6 +2164,8 @@ void kmstest_unset_all_crtcs(int drm_fd, drmModeResPtr resources)
+>    *
+>    * Get the CRTC index based on its ID. This is useful since a few places of
+>    * libdrm deal with CRTC masks.
+> + *
+> + * Returns: CRTC index for a given @crtc_id
+>    */
+>   int kmstest_get_crtc_idx(drmModeRes *res, uint32_t crtc_id)
+>   {
+> @@ -2196,6 +2300,12 @@ static void igt_display_log_shift(igt_display_t *display, int shift)
+>   	igt_assert(display->log_shift >= 0);
+>   }
+>   
+> +/**
+> + * igt_output_refresh:
+> + * @output: Target output
+> + *
+> + * This function sets the given @output to a valid default pipe
+> + */
+>   void igt_output_refresh(igt_output_t *output)
+>   {
+>   	igt_display_t *display = output->display;
+> @@ -2510,7 +2620,7 @@ static void igt_handle_spurious_hpd(igt_display_t *display)
+>   }
+>   
+>   /**
+> - * igt_display_require:
+> + * igt_display_reset_outputs:
+>    * @display: a pointer to an initialized #igt_display_t structure
+>    *
+>    * Initialize @display outputs with their connectors and pipes.
+> @@ -2922,6 +3032,14 @@ igt_output_t *igt_output_from_connector(igt_display_t *display,
+>   	return found;
+>   }
+>   
+> +/**
+> + * igt_std_1024_mode_get:
+> + * @vrefresh: Required refresh rate for 1024 mode
+> + *
+> + * This function will create a standard drm mode with a given @vrefresh
+> + *
+> + * Returns: Standard 1024@vrefresh mode.
+> + */
+>   drmModeModeInfo *igt_std_1024_mode_get(int vrefresh)
+>   {
+>   	const drmModeModeInfo std_1024_mode = {
+> @@ -3175,6 +3293,12 @@ igt_plane_t *igt_pipe_get_plane_type_index(igt_pipe_t *pipe, int plane_type,
+>   	return NULL;
+>   }
+>   
+> +/**
+> + * output_is_internal_panel:
+> + * @output: Target output
+> + *
+> + * Returns: True if the given @output type is internal else False.
+> + */
+>   bool output_is_internal_panel(igt_output_t *output)
+>   {
+>   	switch (output->config.connector->connector_type) {
+> @@ -3800,6 +3924,15 @@ static bool igt_mode_object_get_prop_enum_value(int drm_fd, uint32_t id, const c
+>   	return false;
+>   }
+>   
+> +/**
+> + * igt_plane_try_prop_enum:
+> + * @plane: Target plane.
+> + * @prop: Property to check.
+> + * @val: Value to set.
+> + *
+> + * Returns: False if the given @plane doesn't have the enum @prop or
+> + * failed to set the enum property @val else True.
+> + */
+>   bool igt_plane_try_prop_enum(igt_plane_t *plane,
+>   			     enum igt_atomic_plane_properties prop,
+>   			     const char *val)
+> @@ -3817,6 +3950,15 @@ bool igt_plane_try_prop_enum(igt_plane_t *plane,
+>   	return true;
+>   }
+>   
+> +/**
+> + * igt_plane_set_prop_enum:
+> + * @plane: Target plane.
+> + * @prop: Property to check.
+> + * @val: Value to set.
+> + *
+> + * This function tries to set given enum property @prop value @val to
+> + * the given @plane, and terminate the execution if its failed.
+> + */
+>   void igt_plane_set_prop_enum(igt_plane_t *plane,
+>   			     enum igt_atomic_plane_properties prop,
+>   			     const char *val)
+> @@ -3875,6 +4017,15 @@ uint64_t igt_output_get_prop(igt_output_t *output, enum igt_atomic_connector_pro
+>   					output->id, output->props[prop]);
+>   }
+>   
+> +/**
+> + * igt_output_try_prop_enum:
+> + * @output: Target output.
+> + * @prop: Property to check.
+> + * @val: Value to set.
+> + *
+> + * Returns: False if the given @output doesn't have the enum @prop or
+> + * failed to set the enum property @val else True.
+> + */
+>   bool igt_output_try_prop_enum(igt_output_t *output,
+>   			      enum igt_atomic_connector_properties prop,
+>   			      const char *val)
+> @@ -3892,6 +4043,15 @@ bool igt_output_try_prop_enum(igt_output_t *output,
+>   	return true;
+>   }
+>   
+> +/**
+> + * igt_output_set_prop_enum:
+> + * @output: Target output.
+> + * @prop: Property to check.
+> + * @val: Value to set.
+> + *
+> + * This function tries to set given enum property @prop value @val to
+> + * the given @output, and terminate the execution if its failed.
+> + */
+>   void igt_output_set_prop_enum(igt_output_t *output,
+>   			      enum igt_atomic_connector_properties prop,
+>   			      const char *val)
+> @@ -3950,6 +4110,15 @@ uint64_t igt_pipe_obj_get_prop(igt_pipe_t *pipe, enum igt_atomic_crtc_properties
+>   					pipe->crtc_id, pipe->props[prop]);
+>   }
+>   
+> +/**
+> + * igt_pipe_obj_try_prop_enum:
+> + * @pipe_obj: Target pipe object.
+> + * @prop: Property to check.
+> + * @val: Value to set.
+> + *
+> + * Returns: False if the given @pipe_obj doesn't have the enum @prop or
+> + * failed to set the enum property @val else True.
+> + */
+>   bool igt_pipe_obj_try_prop_enum(igt_pipe_t *pipe_obj,
+>   				enum igt_atomic_crtc_properties prop,
+>   				const char *val)
+> @@ -3967,6 +4136,15 @@ bool igt_pipe_obj_try_prop_enum(igt_pipe_t *pipe_obj,
+>   	return true;
+>   }
+>   
+> +/**
+> + * igt_pipe_obj_set_prop_enum:
+> + * @pipe_obj: Target pipe object.
+> + * @prop: Property to check.
+> + * @val: Value to set.
+> + *
+> + * This function tries to set given enum property @prop value @val to
+> + * the given @pipe_obj, and terminate the execution if its failed.
+> + */
+>   void igt_pipe_obj_set_prop_enum(igt_pipe_t *pipe_obj,
+>   				enum igt_atomic_crtc_properties prop,
+>   				const char *val)
+> @@ -4485,7 +4663,7 @@ void igt_output_override_mode(igt_output_t *output, const drmModeModeInfo *mode)
+>    * igt_output_preferred_vrefresh:
+>    * @output: Output whose preferred vrefresh is queried
+>    *
+> - * Return the vertical refresh rate of @output's preferred
+> + * Returns: The vertical refresh rate of @output's preferred
+>    * mode. If the output reports no modes return 60Hz as
+>    * a fallback.
+>    */
+> @@ -4648,6 +4826,17 @@ void igt_pipe_refresh(igt_display_t *display, enum pipe pipe, bool force)
+>   		igt_pipe_obj_set_prop_changed(pipe_obj, IGT_CRTC_MODE_ID);
+>   }
+>   
+> +/**
+> + * igt_output_get_plane:
+> + * @output: Target output
+> + * @plane_idx: Plane index
+> + *
+> + * Finds a driving pipe for the given @output otherwise and gets the valid
+> + * plane associated with that pipe for the given @plane_idx. This function
+> + * will terminate the execution if driving pipe is not for a given @output.
+> + *
+> + * Returns: A #igt_plane_t structure that matches the requested plane index
+> + */
+>   igt_plane_t *igt_output_get_plane(igt_output_t *output, int plane_idx)
+>   {
+>   	igt_pipe_t *pipe;
+> @@ -5363,6 +5552,14 @@ static void igt_fill_plane_format_mod(igt_display_t *display, igt_plane_t *plane
+>   	igt_assert_eq(idx, plane->format_mod_count);
+>   }
+>   
+> +/**
+> + * igt_plane_has_format_mod:
+> + * @plane: Target plane
+> + * @format: Target format
+> + * @modifier: Target modifier
+> + *
+> + * Returns: true if @plane supports the given @format and @modifier, else false
+> + */
+>   bool igt_plane_has_format_mod(igt_plane_t *plane, uint32_t format,
+>   			      uint64_t modifier)
+>   {
+> @@ -5439,6 +5636,14 @@ static void igt_fill_display_format_mod(igt_display_t *display)
+>   	}
+>   }
+>   
+> +/**
+> + * igt_display_has_format_mod:
+> + * @display: a pointer to an #igt_display_t structure
+> + * @format: Target format
+> + * @modifier: Target modifier
+> + *
+> + * Returns: true if @display supports the given @format and @modifier, else false
+> + */
+>   bool igt_display_has_format_mod(igt_display_t *display, uint32_t format,
+>   				uint64_t modifier)
+>   {
+> @@ -5783,6 +5988,9 @@ void igt_assert_output_bpc_equal(int drmfd, enum pipe pipe,
+>    *
+>    * This is similar to igt_assert_output_bpc_equal, instead of assert
+>    * it'll return True if crtc has the correct requested bpc, else False.
+> + *
+> + * Returns: True if crtc's current bpc is matched with the requested bpc,
+> + * else False.
+>    */
+>   bool igt_check_output_bpc_equal(int drmfd, enum pipe pipe,
+>   				char *output_name, unsigned int bpc)
+> @@ -5793,7 +6001,7 @@ bool igt_check_output_bpc_equal(int drmfd, enum pipe pipe,
+>   }
+>   
+>   /**
+> - * igt_max_bpc_constraint
+> + * igt_max_bpc_constraint:
+>    * @display: a pointer to an #igt_display_t structure
+>    * @pipe: Display pipe
+>    * @output: Target output
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index 356620dc6..9028ab9be 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -354,6 +354,13 @@ typedef enum {
+>   #define IGT_ROTATION_MASK \
+>   	(IGT_ROTATION_0 | IGT_ROTATION_90 | IGT_ROTATION_180 | IGT_ROTATION_270)
+>   
+> +/**
+> + * igt_rotation_90_or_270:
+> + * @rotation: Target rotation
+> + *
+> + * Returns: True if the given @rotation contains 90 or 270 degrees,
+> + * else False.
+> + */
+>   static inline bool igt_rotation_90_or_270(igt_rotation_t rotation)
+>   {
+>   	return rotation & (IGT_ROTATION_90 | IGT_ROTATION_270);
+> @@ -541,6 +548,13 @@ const char *igt_plane_rotation_name(igt_rotation_t rotation);
+>   void igt_wait_for_vblank(int drm_fd, int crtc_offset);
+>   void igt_wait_for_vblank_count(int drm_fd, int crtc_offset, int count);
+>   
+> +/**
+> + * igt_output_is_connected:
+> + * @output: #igt_output_t to check.
+> + *
+> + * Returns: True if given @output's connection status is CONNECTED,
+> + * else False.
+> + */
+>   static inline bool igt_output_is_connected(igt_output_t *output)
+>   {
+>   	/* Something went wrong during probe? */
+> @@ -682,10 +696,26 @@ igt_output_t **__igt_pipe_populate_outputs(igt_display_t *display,
+>   	for_each_connected_output((display), (output)) \
+>   		for_each_if (igt_pipe_connector_valid((pipe), (output)))
+>   
+> +/**
+> + * for_each_plane_on_pipe:
+> + * @display: a pointer to an #igt_display_t structure
+> + * @pipe: Pipe to enumerate valid outputs over
+> + * @plane: The enumerated plane.
+> + *
+> + * This for loop iterates over all planes associated to the given @pipe.
+> + * If there are no valid planes for this pipe, nothing happens.
+> + */
+>   #define for_each_plane_on_pipe(display, pipe, plane)			\
+>   	for (int j__ = 0; assert(igt_can_fail()), (plane) = &(display)->pipes[(pipe)].planes[j__], \
+>   		     j__ < (display)->pipes[(pipe)].n_planes; j__++)
+>   
+> +/**
+> + * for_each_connector_mode:
+> + * @output: Output to enumerate available modes.
+> + *
+> + * This for loop iterates over all modes associated to the given @output.
+> + * If there are no mode available for this output, nothing happens.
+> + */
+>   #define for_each_connector_mode(output)		\
+>   	for (int j__ = 0;  j__ < output->config.connector->count_modes; j__++)
+>   
+> @@ -708,15 +738,44 @@ igt_plane_has_prop(igt_plane_t *plane, enum igt_atomic_plane_properties prop)
+>   
+>   uint64_t igt_plane_get_prop(igt_plane_t *plane, enum igt_atomic_plane_properties prop);
+>   
+> +/**
+> + * igt_plane_is_prop_changed:
+> + * @plane: Plane to check.
+> + * @prop: Property to check.
+> + *
+> + * Check whether a given @prop changed for the @plane.
+> + */
+>   #define igt_plane_is_prop_changed(plane, prop) \
+>   	(!!((plane)->changed & (1 << (prop))))
+>   
+> +/**
+> + * igt_plane_set_prop_changed:
+> + * @plane: Plane to check.
+> + * @prop: Property to check.
+> + *
+> + * Sets the given @prop for the @plane.
+> + */
+>   #define igt_plane_set_prop_changed(plane, prop) \
+>   	(plane)->changed |= 1 << (prop)
+>   
+> +/**
+> + * igt_plane_clear_prop_changed:
+> + * @plane: Plane to check.
+> + * @prop: Property to check.
+> + *
+> + * Clears the given @prop for the @plane.
+> + */
+>   #define igt_plane_clear_prop_changed(plane, prop) \
+>   	(plane)->changed &= ~(1 << (prop))
+>   
+> +/**
+> + * igt_plane_set_prop_value:
+> + * @plane: Plane to check.
+> + * @prop: Property to check.
+> + * @value: Value to set.
+> + *
+> + * Sets the given @prop with the @value for the @plane.
+> + */
+>   #define igt_plane_set_prop_value(plane, prop, value) \
+>   	do { \
+>   		plane->values[prop] = value; \
+> @@ -752,14 +811,44 @@ igt_output_has_prop(igt_output_t *output, enum igt_atomic_connector_properties p
+>   
+>   uint64_t igt_output_get_prop(igt_output_t *output, enum igt_atomic_connector_properties prop);
+>   
+> +/**
+> + * igt_output_is_prop_changed:
+> + * @output: Output to check.
+> + * @prop: Property to check.
+> + *
+> + * Check whether a given @prop changed for the @Output.
+> + */
+>   #define igt_output_is_prop_changed(output, prop) \
+>   	(!!((output)->changed & (1 << (prop))))
+> +
+> +/**
+> + * igt_output_set_prop_changed:
+> + * @output: Output to check.
+> + * @prop: Property to check.
+> + *
+> + * Sets the given @prop for the @output.
+> + */
+>   #define igt_output_set_prop_changed(output, prop) \
+>   	(output)->changed |= 1 << (prop)
+>   
+> +/**
+> + * igt_output_clear_prop_changed:
+> + * @output: Output to check.
+> + * @prop: Property to check.
+> + *
+> + * Clears the given @prop for the @output.
+> + */
+>   #define igt_output_clear_prop_changed(output, prop) \
+>   	(output)->changed &= ~(1 << (prop))
+>   
+> +/**
+> + * igt_output_set_prop_value:
+> + * @output: Output to check.
+> + * @prop: Property to check.
+> + * @value: Value to set.
+> + *
+> + * Sets the given @prop with the @value for the @output.
+> + */
+>   #define igt_output_set_prop_value(output, prop, value) \
+>   	do { \
+>   		(output)->values[prop] = (value); \
+> @@ -830,30 +919,88 @@ igt_pipe_has_prop(igt_display_t *display, enum pipe pipe,
+>   	return display->pipes[pipe].props[prop];
+>   }
+>   
+> +/**
+> + * igt_pipe_obj_is_prop_changed:
+> + * @pipe_obj: Pipe object to check.
+> + * @prop: Property to check.
+> + *
+> + * Check whether a given @prop changed for the @pipe_obj.
+> + */
+>   #define igt_pipe_obj_is_prop_changed(pipe_obj, prop) \
+>   	(!!((pipe_obj)->changed & (1 << (prop))))
+>   
+> +/**
+> + * igt_pipe_is_prop_changed:
+> + * @pipe: Pipe object to check.
+> + * @prop: Property to check.
+> + *
+> + * Check whether a given @prop changed for the @pipe.
+> + */
+>   #define igt_pipe_is_prop_changed(display, pipe, prop) \
+>   	igt_pipe_obj_is_prop_changed(&(display)->pipes[(pipe)], prop)
+>   
+> +/**
+> + * igt_pipe_obj_set_prop_changed:
+> + * @pipe_obj: Pipe object to check.
+> + * @prop: Property to check.
+> + *
+> + * Sets the given @prop for the @pipe_obj.
+> + */
+>   #define igt_pipe_obj_set_prop_changed(pipe_obj, prop) \
+>   	(pipe_obj)->changed |= 1 << (prop)
+>   
+> +/**
+> + * igt_pipe_set_prop_changed:
+> + * @pipe: Pipe object to check.
+> + * @prop: Property to check.
+> + *
+> + * Sets the given @prop for the @pipe.
+> + */
+>   #define igt_pipe_set_prop_changed(display, pipe, prop) \
+>   	igt_pipe_obj_set_prop_changed(&(display)->pipes[(pipe)], prop)
+>   
+> +/**
+> + * igt_pipe_obj_clear_prop_changed:
+> + * @pipe_obj: Pipe object to check.
+> + * @prop: Property to check.
+> + *
+> + * Clears the given @prop for the @pipe_obj.
+> + */
+>   #define igt_pipe_obj_clear_prop_changed(pipe_obj, prop) \
+>   	(pipe_obj)->changed &= ~(1 << (prop))
+>   
+> +/**
+> + * igt_pipe_clear_prop_changed:
+> + * @pipe: Pipe object to check.
+> + * @prop: Property to check.
+> + *
+> + * Clears the given @prop for the @pipe.
+> + */
+>   #define igt_pipe_clear_prop_changed(display, pipe, prop) \
+>   	igt_pipe_obj_clear_prop_changed(&(display)->pipes[(pipe)], prop)
+>   
+> +/**
+> + * igt_pipe_obj_set_prop_value:
+> + * @pipe_obj: Pipe object to check.
+> + * @prop: Property to check.
+> + * @value: Value to set.
+> + *
+> + * Sets the given @prop with the @value for the @pipe_obj.
+> + */
+>   #define igt_pipe_obj_set_prop_value(pipe_obj, prop, value) \
+>   	do { \
+>   		(pipe_obj)->values[prop] = (value); \
+>   		igt_pipe_obj_set_prop_changed(pipe_obj, prop); \
+>   	} while (0)
+>   
+> +/**
+> + * igt_pipe_set_prop_value:
+> + * @pipe: Pipe to check.
+> + * @prop: Property to check.
+> + * @value: Value to set.
+> + *
+> + * Sets the given @prop with the @value for the @pipe.
+> + */
+>   #define igt_pipe_set_prop_value(display, pipe, prop, value) \
+>   	igt_pipe_obj_set_prop_value(&(display)->pipes[(pipe)], prop, value)
+>   
+> @@ -865,9 +1012,27 @@ extern void igt_pipe_obj_set_prop_enum(igt_pipe_t *pipe,
+>   				       enum igt_atomic_crtc_properties prop,
+>   				       const char *val);
+>   
+> +/**
+> + * igt_pipe_try_prop_enum:
+> + * @pipe: Target pipe.
+> + * @prop: Property to check.
+> + * @val: Value to set.
+> + *
+> + * Returns: False if the given @pipe doesn't have the enum @prop or
+> + * failed to set the enum property @val else True.
+> + */
+>   #define igt_pipe_try_prop_enum(display, pipe, prop, val) \
+>   	igt_pipe_obj_try_prop_enum(&(display)->pipes[(pipe)], prop, val)
+>   
+> +/**
+> + * igt_pipe_set_prop_enum:
+> + * @pipe: Target pipe.
+> + * @prop: Property to check.
+> + * @val: Value to set.
+> + *
+> + * This function tries to set given enum property @prop value @val to
+> + * the given @pipe, and terminate the execution if its failed.
+> + */
+>   #define igt_pipe_set_prop_enum(display, pipe, prop, val) \
+>   	igt_pipe_obj_set_prop_enum(&(display)->pipes[(pipe)], prop, val)
+>   
+> @@ -875,6 +1040,22 @@ extern void igt_pipe_obj_replace_prop_blob(igt_pipe_t *pipe,
+>   					   enum igt_atomic_crtc_properties prop,
+>   					   const void *ptr, size_t length);
+>   
+> +/**
+> + * igt_pipe_replace_prop_blob:
+> + * @pipe: pipe to set property on.
+> + * @prop: property for which the blob will be replaced.
+> + * @ptr: Pointer to contents for the property.
+> + * @length: Length of contents.
+> + *
+> + * This function will destroy the old property blob for the given property,
+> + * and will create a new property blob with the values passed to this function.
+> + *
+> + * The new property blob will be committed when you call igt_display_commit(),
+> + * igt_display_commit2() or igt_display_commit_atomic().
+> + *
+> + * Please use igt_output_override_mode() if you want to set #IGT_CRTC_MODE_ID,
+> + * it works better with legacy commit.
+> + */
+>   #define igt_pipe_replace_prop_blob(display, pipe, prop, ptr, length) \
+>   	igt_pipe_obj_replace_prop_blob(&(display)->pipes[(pipe)], prop, ptr, length)
+>   
