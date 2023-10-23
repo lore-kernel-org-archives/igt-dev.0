@@ -1,21 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-vs1-xe2a.google.com (mail-vs1-xe2a.google.com
- [IPv6:2607:f8b0:4864:20::e2a])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8A99910E25E
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Oct 2023 20:59:24 +0000 (UTC)
-Received: by mail-vs1-xe2a.google.com with SMTP id
- ada2fe7eead31-457c4e4a392so997103137.0
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Oct 2023 13:59:24 -0700 (PDT)
-From: Sean Paul <sean@poorly.run>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 23 Oct 2023 20:56:37 +0000
-Message-ID: <20231023205910.3556533-8-sean@poorly.run>
-In-Reply-To: <20231023205910.3556533-1-sean@poorly.run>
-References: <20231023205910.3556533-1-sean@poorly.run>
+Content-Type: multipart/alternative;
+ boundary="===============2451753761794028460=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 7/8] tests/kms_vrr: Allow for multiple rates in
- a test
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Wu, Hersen" <hersenxs.wu@amd.com>
+Date: Mon, 23 Oct 2023 21:08:26 -0000
+Message-ID: <169809530691.19839.823546851524674257@emeril.freedesktop.org>
+References: <20231016205805.86100-1-hersenxs.wu@amd.com>
+In-Reply-To: <20231016205805.86100-1-hersenxs.wu@amd.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_s?=
+ =?utf-8?q?tarting_with_=5B1/2=2Ci-g-t=5D_tests/kms=5Fcursor=5Fcrc=3A_Fix_?=
+ =?utf-8?q?cursor_crop_on_AMD_gpu_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,143 +18,144 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Sean Paul <seanpaul@chromium.org>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Sean Paul <seanpaul@chromium.org>
+--===============2451753761794028460==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Instead of passing just one rate into flip_and_measure, pass in an array
-to allow for tests which vary the refresh rate from one frame to the
-next. Currently the test will just cycle through the rates in order per
-frame.
+== Series Details ==
 
-Just framework, no changes to any tests.
+Series: series starting with [1/2,i-g-t] tests/kms_cursor_crc: Fix cursor crop on AMD gpu (rev3)
+URL   : https://patchwork.freedesktop.org/series/125202/
+State : success
 
-Signed-off-by: Sean Paul <seanpaul@chromium.org>
+== Summary ==
 
-Changes in v2:
-- Added to the set
----
- tests/kms_vrr.c | 43 ++++++++++++++++++++++++-------------------
- 1 file changed, 24 insertions(+), 19 deletions(-)
+CI Bug Log - changes from XEIGT_7549_BAT -> XEIGTPW_10033_BAT
+====================================================
 
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 57bd87ddf..b986087f0 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -375,7 +375,7 @@ do_flip(data_t *data, igt_fb_t *fb)
-  */
- static uint32_t
- flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
--		 uint64_t rate_ns, uint64_t duration_ns)
-+		 uint64_t *rates_ns, int num_rates, uint64_t duration_ns)
- {
- 	uint64_t start_ns, last_event_ns, target_ns;
- 	uint32_t total_flip = 0, total_pass = 0;
-@@ -387,9 +387,10 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
- 	start_ns = last_event_ns = target_ns = get_kernel_event_ns(data,
- 							DRM_EVENT_FLIP_COMPLETE);
- 
--	for (;;) {
-+	for (int i = 0;;++i) {
- 		uint64_t event_ns, wait_ns;
- 		int64_t diff_ns;
-+		uint64_t rate_ns = rates_ns[i % num_rates];
- 
- 		front = !front;
- 		do_flip(data, front ? &data->fb[1] : &data->fb[0]);
-@@ -440,8 +441,12 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
- 		while (get_time_ns() < target_ns - 10);
- 	}
- 
--	igt_info("Completed %u flips, %u were in threshold for (%llu Hz) %"PRIu64"ns.\n",
--		 total_flip, total_pass, (NSECS_PER_SEC/rate_ns), rate_ns);
-+	igt_info("Completed %u flips, %u were in threshold for [", total_flip, total_pass);
-+	for (int i = 0; i < num_rates; ++i) {
-+		igt_info("(%llu Hz) %"PRIu64"ns%s", (NSECS_PER_SEC/rates_ns[i]), rates_ns[i],
-+			 i < num_rates - 1 ? "," : "");
-+	}
-+	igt_info("]\n");
- 
- 	return total_flip ? ((total_pass * 100) / total_flip) : 0;
- }
-@@ -453,12 +458,12 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
- 	uint32_t result;
- 	vtest_ns_t vtest_ns;
- 	range_t range;
--	uint64_t rate;
-+	uint64_t rate[] = {0};
- 
- 	prepare_test(data, output, pipe);
- 	range = data->range;
- 	vtest_ns = data->vtest_ns;
--	rate = vtest_ns.rate_ns;
-+	rate[0] = vtest_ns.rate_ns;
- 
- 	igt_info("VRR Test execution on %s, PIPE_%s with VRR range: (%u-%u) Hz\n",
- 		 output->name, kmstest_pipe_name(pipe), range.min, range.max);
-@@ -470,7 +475,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
- 	 * This is to make sure we were actually in the middle of
- 	 * active flipping before doing the DPMS/suspend steps.
- 	 */
--	flip_and_measure(data, output, pipe, rate, 250000000ull);
-+	flip_and_measure(data, output, pipe, rate, 1, 250000000ull);
- 
- 	if (flags & TEST_DPMS) {
- 		kmstest_set_connector_dpms(output->display->drm_fd,
-@@ -501,27 +506,27 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
- 	 *      next Vmin.
- 	 */
- 	if (flags & TEST_FLIPLINE) {
--		rate = rate_from_refresh(range.max + 5);
--		result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
-+		rate[0] = rate_from_refresh(range.max + 5);
-+		result = flip_and_measure(data, output, pipe, rate, 1, data->duration_ns);
- 		igt_assert_f(result > 75,
- 			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
--			     (range.max + 5), rate, result);
-+			     (range.max + 5), rate[0], result);
- 	}
- 
- 	if (flags & ~TEST_NEGATIVE) {
--		rate = vtest_ns.rate_ns;
--		result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
-+		rate[0] = vtest_ns.rate_ns;
-+		result = flip_and_measure(data, output, pipe, rate, 1, data->duration_ns);
- 		igt_assert_f(result > 75,
- 			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
--			     ((range.max + range.min) / 2), rate, result);
-+			     ((range.max + range.min) / 2), rate[0], result);
- 	}
- 
- 	if (flags & TEST_FLIPLINE) {
--		rate = rate_from_refresh(range.min - 5);
--		result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
-+		rate[0] = rate_from_refresh(range.min - 5);
-+		result = flip_and_measure(data, output, pipe, rate, 1, data->duration_ns);
- 		igt_assert_f(result < 50,
- 			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold exceeded, result was %u%%\n",
--			     (range.min - 5), rate, result);
-+			     (range.min - 5), rate[0], result);
- 	}
- 
- 	/*
-@@ -530,11 +535,11 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
- 	 * a VRR capable panel.
- 	 */
- 	set_vrr_on_pipe(data, pipe, (flags & TEST_NEGATIVE)? true : false);
--	rate = vtest_ns.rate_ns;
--	result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
-+	rate[0] = vtest_ns.rate_ns;
-+	result = flip_and_measure(data, output, pipe, rate, 1, data->duration_ns);
- 	igt_assert_f(result < 10,
- 		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold exceeded, result was %u%%\n",
--		     ((range.max + range.min) / 2), rate, (flags & TEST_NEGATIVE)? "on" : "off", result);
-+		     ((range.max + range.min) / 2), rate[0], (flags & TEST_NEGATIVE)? "on" : "off", result);
- 
- 	/* Clean-up */
- 	igt_plane_set_fb(data->primary, NULL);
--- 
-Sean Paul, Software Engineer, Google / Chromium OS
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10033_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:
+    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([i915#2346])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7549/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10033/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
+
+  
+#### Warnings ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [DMESG-FAIL][3] ([Intel XE#282]) -> [FAIL][4] ([Intel XE#750])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7549/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10033/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  [Intel XE#282]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/282
+  [Intel XE#750]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/750
+  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7549 -> IGTPW_10033
+
+  IGTPW_10033: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10033/index.html
+  IGT_7549: bc3314b187318a4238c6fae583770b389afa83c3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-442-a0a80950176b39dbc76f8faa92fddf6caaa06191: a0a80950176b39dbc76f8faa92fddf6caaa06191
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10033/index.html
+
+--===============2451753761794028460==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [1/2,i-g-t] tests/kms_cursor_crc: Fix cursor crop on AMD gpu (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/125202/">https://patchwork.freedesktop.org/series/125202/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10033/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10033/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7549_BAT -&gt; XEIGTPW_10033_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10033_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7549/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10033/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_frontbuffer_tracking@basic:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7549/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10033/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/750">Intel XE#750</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7549 -&gt; IGTPW_10033</li>
+</ul>
+<p>IGTPW_10033: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10033/index.html<br />
+  IGT_7549: bc3314b187318a4238c6fae583770b389afa83c3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-442-a0a80950176b39dbc76f8faa92fddf6caaa06191: a0a80950176b39dbc76f8faa92fddf6caaa06191</p>
+
+</body>
+</html>
+
+--===============2451753761794028460==--
