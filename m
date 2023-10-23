@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com
- [IPv6:2607:f8b0:4864:20::82a])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D864010E25E
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Oct 2023 20:59:25 +0000 (UTC)
-Received: by mail-qt1-x82a.google.com with SMTP id
- d75a77b69052e-41cb76f3cf0so23661181cf.2
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Oct 2023 13:59:25 -0700 (PDT)
-From: Sean Paul <sean@poorly.run>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 23 Oct 2023 20:56:38 +0000
-Message-ID: <20231023205910.3556533-9-sean@poorly.run>
-In-Reply-To: <20231023205910.3556533-1-sean@poorly.run>
-References: <20231023205910.3556533-1-sean@poorly.run>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 8/8] tests/kms_vrr: Add a max/min test to
- oscillate between rates
+Content-Transfer-Encoding: quoted-printable
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Harry Wentland" <harry.wentland@amd.com>
+Date: Mon, 23 Oct 2023 21:16:25 -0000
+Message-ID: <169809578549.19838.12039879641809527896@emeril.freedesktop.org>
+References: <20231019212301.245282-1-harry.wentland@amd.com>
+In-Reply-To: <20231019212301.245282-1-harry.wentland@amd.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBJR1Qg?=
+ =?utf-8?q?tests_for_the_KMS_Color_Pipeline_API_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,63 +17,186 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Sean Paul <seanpaul@chromium.org>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Sean Paul <seanpaul@chromium.org>
+=3D=3D Series Details =3D=3D
 
-The new MAXMIN test will oscillate between the max and min
-refresh rates every frame to stress test the panel. This is
-useful for manual profiling of flicker.
+Series: IGT tests for the KMS Color Pipeline API (rev2)
+URL   : https://patchwork.freedesktop.org/series/123448/
+State : failure
 
-Signed-off-by: Sean Paul <seanpaul@chromium.org>
+=3D=3D Summary =3D=3D
 
-Changes in v2:
-- Added to the set
----
- tests/kms_vrr.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+IGT patchset build failed on latest successful build
+15e7d92ca5f98d10feffa27a76724c33cbd68da5 tests/kms_cursor_crc: Fix test int=
+ermittent failures on AMD gpu
 
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index b986087f0..58bed4f20 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -89,6 +89,7 @@ enum {
- 	TEST_SUSPEND = 1 << 2,
- 	TEST_FLIPLINE = 1 << 3,
- 	TEST_NEGATIVE = 1 << 4,
-+	TEST_MAXMIN = 1 << 6,
- };
- 
- typedef struct range {
-@@ -529,6 +530,14 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
- 			     (range.min - 5), rate[0], result);
- 	}
- 
-+	if (flags & TEST_MAXMIN) {
-+		uint64_t maxmin_rates[] = {vtest_ns.max, vtest_ns.min};
-+		result = flip_and_measure(data, output, pipe, maxmin_rates, 2, data->duration_ns);
-+		igt_assert_f(result < 50,
-+			     "Refresh rate (%u Hz) %"PRIu64"ns/%"PRIu64"ns: Target VRR on threshold exceeded, result was %u%%\n",
-+			     (range.min - 5), maxmin_rates[0], maxmin_rates[1], result);
-+	}
-+
- 	/*
- 	 * If we request VRR on a non-VRR panel, it is unlikely to reject the
- 	 * modeset. And the expected behavior is the same as disabling VRR on
-@@ -654,6 +663,11 @@ igt_main_args("d:r:s", long_opts, help_str, opt_handler, &data)
- 	igt_subtest_with_dynamic("negative-basic")
- 		run_vrr_test(&data, test_basic, TEST_NEGATIVE);
- 
-+	igt_describe("Oscillates between highest and lowest refresh each frame for manual "
-+		     "flicker profiling");
-+	igt_subtest_with_dynamic("max-min")
-+		run_vrr_test(&data, test_basic, TEST_MAXMIN);
-+
- 	igt_fixture {
- 		igt_display_fini(&data.display);
- 		drm_close_driver(data.drm_fd);
--- 
-Sean Paul, Software Engineer, Google / Chromium OS
+Tail of build.log:
+../../../usr/src/igt-gpu-tools/lib/igt_kms.h:399:2: error: unknown type nam=
+e =E2=80=98drmModeColorop=E2=80=99
+  399 |  drmModeColorop *drm_colorop;
+      |  ^~~~~~~~~~~~~~
+[112/1650] Compiling C object 'tests/59830eb@@kms_color@exe/kms_color_helpe=
+r.c.o'.
+FAILED: tests/59830eb@@kms_color@exe/kms_color_helper.c.o=20
+cc -Itests/59830eb@@kms_color@exe -Itests -I../../../usr/src/igt-gpu-tools/=
+tests -I../../../usr/src/igt-gpu-tools/include -I../../../usr/src/igt-gpu-t=
+ools/include/drm-uapi -I../../../usr/src/igt-gpu-tools/include/linux-uapi -=
+Ilib -I../../../usr/src/igt-gpu-tools/lib -I../../../usr/src/igt-gpu-tools/=
+lib/stubs/syscalls -I. -I../../../usr/src/igt-gpu-tools/ -I/usr/include/cai=
+ro -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/=
+usr/include/pixman-1 -I/usr/include/uuid -I/usr/include/freetype2 -I/usr/in=
+clude/libpng16 -I/usr/include/libdrm -I/usr/include/x86_64-linux-gnu -I/usr=
+/include/valgrind -I/usr/include -fdiagnostics-color=3Dalways -pipe -D_FILE=
+_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SO=
+URCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclarat=
+ion-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -W=
+missing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissin=
+g-prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wredu=
+ndant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-clob=
+bered -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-pointer=
+-arith -Wno-address-of-packed-member -Wno-sign-compare -Wno-type-limits -Wn=
+o-unused-parameter -Wno-unused-result -Werror=3Daddress -Werror=3Darray-bou=
+nds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -W=
+error=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-t=
+o-int-cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigrap=
+hs -Werror=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -pthread=
+ -MD -MQ 'tests/59830eb@@kms_color@exe/kms_color_helper.c.o' -MF 'tests/598=
+30eb@@kms_color@exe/kms_color_helper.c.o.d' -o 'tests/59830eb@@kms_color@ex=
+e/kms_color_helper.c.o' -c ../../../usr/src/igt-gpu-tools/tests/kms_color_h=
+elper.c
+In file included from ../../../usr/src/igt-gpu-tools/lib/igt.h:38,
+                 from ../../../usr/src/igt-gpu-tools/tests/kms_color_helper=
+.h:38,
+                 from ../../../usr/src/igt-gpu-tools/tests/kms_color_helper=
+.c:25:
+../../../usr/src/igt-gpu-tools/lib/igt_kms.h:399:2: error: unknown type nam=
+e =E2=80=98drmModeColorop=E2=80=99
+  399 |  drmModeColorop *drm_colorop;
+      |  ^~~~~~~~~~~~~~
+[113/1650] Compiling C object 'tests/59830eb@@kms_concurrent@exe/kms_concur=
+rent.c.o'.
+FAILED: tests/59830eb@@kms_concurrent@exe/kms_concurrent.c.o=20
+cc -Itests/59830eb@@kms_concurrent@exe -Itests -I../../../usr/src/igt-gpu-t=
+ools/tests -I../../../usr/src/igt-gpu-tools/include -I../../../usr/src/igt-=
+gpu-tools/include/drm-uapi -I../../../usr/src/igt-gpu-tools/include/linux-u=
+api -Ilib -I../../../usr/src/igt-gpu-tools/lib -I../../../usr/src/igt-gpu-t=
+ools/lib/stubs/syscalls -I. -I../../../usr/src/igt-gpu-tools/ -I/usr/includ=
+e/cairo -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/includ=
+e -I/usr/include/pixman-1 -I/usr/include/uuid -I/usr/include/freetype2 -I/u=
+sr/include/libpng16 -I/usr/include/libdrm -I/usr/include/x86_64-linux-gnu -=
+I/usr/include/valgrind -I/usr/include -fdiagnostics-color=3Dalways -pipe -D=
+_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_G=
+NU_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdec=
+laration-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-=
+op -Wmissing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wm=
+issing-prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -=
+Wredundant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno=
+-clobbered -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-po=
+inter-arith -Wno-address-of-packed-member -Wno-sign-compare -Wno-type-limit=
+s -Wno-unused-parameter -Wno-unused-result -Werror=3Daddress -Werror=3Darra=
+y-bounds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-to-pointer-ca=
+st -Werror=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpoin=
+ter-to-int-cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtr=
+igraphs -Werror=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -pt=
+hread -MD -MQ 'tests/59830eb@@kms_concurrent@exe/kms_concurrent.c.o' -MF 't=
+ests/59830eb@@kms_concurrent@exe/kms_concurrent.c.o.d' -o 'tests/59830eb@@k=
+ms_concurrent@exe/kms_concurrent.c.o' -c ../../../usr/src/igt-gpu-tools/tes=
+ts/kms_concurrent.c
+In file included from ../../../usr/src/igt-gpu-tools/lib/igt.h:38,
+                 from ../../../usr/src/igt-gpu-tools/tests/kms_concurrent.c=
+:25:
+../../../usr/src/igt-gpu-tools/lib/igt_kms.h:399:2: error: unknown type nam=
+e =E2=80=98drmModeColorop=E2=80=99
+  399 |  drmModeColorop *drm_colorop;
+      |  ^~~~~~~~~~~~~~
+[114/1650] Compiling C object 'tests/59830eb@@kms_atomic@exe/kms_atomic.c.o=
+'.
+FAILED: tests/59830eb@@kms_atomic@exe/kms_atomic.c.o=20
+cc -Itests/59830eb@@kms_atomic@exe -Itests -I../../../usr/src/igt-gpu-tools=
+/tests -I../../../usr/src/igt-gpu-tools/include -I../../../usr/src/igt-gpu-=
+tools/include/drm-uapi -I../../../usr/src/igt-gpu-tools/include/linux-uapi =
+-Ilib -I../../../usr/src/igt-gpu-tools/lib -I../../../usr/src/igt-gpu-tools=
+/lib/stubs/syscalls -I. -I../../../usr/src/igt-gpu-tools/ -I/usr/include/ca=
+iro -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I=
+/usr/include/pixman-1 -I/usr/include/uuid -I/usr/include/freetype2 -I/usr/i=
+nclude/libpng16 -I/usr/include/libdrm -I/usr/include/x86_64-linux-gnu -I/us=
+r/include/valgrind -I/usr/include -fdiagnostics-color=3Dalways -pipe -D_FIL=
+E_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_S=
+OURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclara=
+tion-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -=
+Wmissing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissi=
+ng-prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wred=
+undant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-clo=
+bbered -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-pointe=
+r-arith -Wno-address-of-packed-member -Wno-sign-compare -Wno-type-limits -W=
+no-unused-parameter -Wno-unused-result -Werror=3Daddress -Werror=3Darray-bo=
+unds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -=
+Werror=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-=
+to-int-cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigra=
+phs -Werror=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -pthrea=
+d -MD -MQ 'tests/59830eb@@kms_atomic@exe/kms_atomic.c.o' -MF 'tests/59830eb=
+@@kms_atomic@exe/kms_atomic.c.o.d' -o 'tests/59830eb@@kms_atomic@exe/kms_at=
+omic.c.o' -c ../../../usr/src/igt-gpu-tools/tests/kms_atomic.c
+In file included from ../../../usr/src/igt-gpu-tools/lib/igt.h:38,
+                 from ../../../usr/src/igt-gpu-tools/tests/kms_atomic.c:47:
+../../../usr/src/igt-gpu-tools/lib/igt_kms.h:399:2: error: unknown type nam=
+e =E2=80=98drmModeColorop=E2=80=99
+  399 |  drmModeColorop *drm_colorop;
+      |  ^~~~~~~~~~~~~~
+[115/1650] Compiling C object 'tests/59830eb@@kms_color@exe/kms_color.c.o'.
+FAILED: tests/59830eb@@kms_color@exe/kms_color.c.o=20
+cc -Itests/59830eb@@kms_color@exe -Itests -I../../../usr/src/igt-gpu-tools/=
+tests -I../../../usr/src/igt-gpu-tools/include -I../../../usr/src/igt-gpu-t=
+ools/include/drm-uapi -I../../../usr/src/igt-gpu-tools/include/linux-uapi -=
+Ilib -I../../../usr/src/igt-gpu-tools/lib -I../../../usr/src/igt-gpu-tools/=
+lib/stubs/syscalls -I. -I../../../usr/src/igt-gpu-tools/ -I/usr/include/cai=
+ro -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/=
+usr/include/pixman-1 -I/usr/include/uuid -I/usr/include/freetype2 -I/usr/in=
+clude/libpng16 -I/usr/include/libdrm -I/usr/include/x86_64-linux-gnu -I/usr=
+/include/valgrind -I/usr/include -fdiagnostics-color=3Dalways -pipe -D_FILE=
+_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SO=
+URCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclarat=
+ion-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -W=
+missing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissin=
+g-prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wredu=
+ndant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-clob=
+bered -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-pointer=
+-arith -Wno-address-of-packed-member -Wno-sign-compare -Wno-type-limits -Wn=
+o-unused-parameter -Wno-unused-result -Werror=3Daddress -Werror=3Darray-bou=
+nds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -W=
+error=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-t=
+o-int-cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigrap=
+hs -Werror=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -pthread=
+ -MD -MQ 'tests/59830eb@@kms_color@exe/kms_color.c.o' -MF 'tests/59830eb@@k=
+ms_color@exe/kms_color.c.o.d' -o 'tests/59830eb@@kms_color@exe/kms_color.c.=
+o' -c ../../../usr/src/igt-gpu-tools/tests/kms_color.c
+In file included from ../../../usr/src/igt-gpu-tools/lib/igt.h:38,
+                 from ../../../usr/src/igt-gpu-tools/tests/kms_color_helper=
+.h:38,
+                 from ../../../usr/src/igt-gpu-tools/tests/kms_color.c:30:
+../../../usr/src/igt-gpu-tools/lib/igt_kms.h:399:2: error: unknown type nam=
+e =E2=80=98drmModeColorop=E2=80=99
+  399 |  drmModeColorop *drm_colorop;
+      |  ^~~~~~~~~~~~~~
+[116/1650] Compiling C object 'lib/tests/dc197ac@@igt_ktap_parser@exe/igt_k=
+tap_parser.c.o'.
+[117/1650] Generating i915-perf-registers-mtlgt3 with a custom command.
+[118/1650] Compiling C object 'tests/59830eb@@dumb_buffer@exe/dumb_buffer.c=
+.o'.
+[119/1650] Generating i915-perf-metrics-mtlgt3 with a custom command.
+[120/1650] Generating i915-perf-registers-acmgt1 with a custom command.
+[121/1650] Generating i915-perf-metrics-acmgt1 with a custom command.
+[122/1650] Generating i915-perf-registers-acmgt2 with a custom command.
+[123/1650] Compiling C object 'lib/76b5a35@@igt_device_scan@sta/igt_device_=
+scan.c.o'.
+[124/1650] Generating i915-perf-metrics-acmgt2 with a custom command.
+[125/1650] Generating i915-perf-registers-acmgt3 with a custom command.
+[126/1650] Generating i915-perf-metrics-acmgt3 with a custom command.
+[127/1650] Generating i915-perf-equations with a custom command.
+ninja: build stopped: subcommand failed.
+
