@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E65B510E143
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Oct 2023 05:23:29 +0000 (UTC)
-Message-ID: <1ac9ac64-ebca-93f7-16dd-64bd0debc1ff@intel.com>
-Date: Mon, 23 Oct 2023 10:52:34 +0530
-To: Lee Shawn C <shawn.c.lee@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20231018075904.1834634-1-shawn.c.lee@intel.com>
- <20231019112729.1837000-1-shawn.c.lee@intel.com>
-Content-Language: en-US
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20231019112729.1837000-1-shawn.c.lee@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AC35610E14A
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Oct 2023 05:39:36 +0000 (UTC)
+Message-ID: <b5630343-e691-48ad-9ee7-93ff2eb6733b@intel.com>
+Date: Mon, 23 Oct 2023 11:09:30 +0530
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH] tests/kms_setmode: disable DRRS if eDP
- support variable refresh rate
+Content-Language: en-US
+To: Melanie Lobo <melanie.lobo@intel.com>, igt-dev@lists.freedesktop.org
+References: <20231010134540.28485-1-melanie.lobo@intel.com>
+ <20231019180630.20689-1-melanie.lobo@intel.com>
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20231019180630.20689-1-melanie.lobo@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH] tests/intel/kms_flip_scaled_crc: Add support
+ for FP16 compressed formats
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,65 +26,103 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Hi Melanie,
 
-On Thu-19-10-2023 04:57 pm, Lee Shawn C wrote:
-> Below is a failed case while testing kms_setmode.
+It seems tests are skipping on MTLP
+https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10024/shards-all.html?testfilter=4tilemtlrcccs
+
+Test requirement not met in function setup_fb, file 
+../../../usr/src/igt-gpu-tools/tests/intel/kms_flip_scaled_crc.c:622:
+Test requirement: igt_display_has_format_mod(&data->display, format, 
+modifier)
+Dynamic subtest pipe-A-default-mode: SKIP (0.378s)
+
+Can you check once?
+
+On 19-Oct-23 11:36 PM, Melanie Lobo wrote:
+> MTL supports FP16 format which is a binary floating-point computer
+> number format that occupies 16 bits in computer memory. In this test
+> platform shall render compression in display engine to receive
+> FP16 compressed formats.
 > 
-> CRTC[80] [Pipe A] Mode: 1920x1200@60Hz Connectors: eDP-1[236]
-> Expected frametime: 16659us; measured 20824.4us +- 4.799us accuracy 0.01% [0.10 scanlines]
-> 
-> The expected frame time is 16659us (60Hz refresh rate).
-> But kms_setmode report measured time was 20824.4us (48Hz) then
-> it failed. We found legacy DRRS mode was active at that time
-> then refresh rate fall into lower RR automatically to cause this problem.
-
-Then, this is applicable for all the timing related subtests like 
-kms_flip, kms_vblank etc..
-
-Also, is it applicable only for legacy drivers? If not, then IMHO the 
-correct place to call the helper (to disable drrs) would be some where 
-before starting the subtest (probably igt_display_reset())
-
-- Bhanu
-
-> Disable DRRS after crtc setmode can avoid driver switch to lower RR mode
-> and get pass for this test as well.
-> 
-> v2: fix prefix string and sort header file by alphabetical
-> 
-> Issue: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/148
-> Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-> Cc: Vidya Srinivas <vidya.srinivas@intel.com>
-> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Signed-off-by: Lee Shawn C <shawn.c.lee@intel.com>
+> cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> cc: Swati Sharma <swati2.sharma@intel.com>
+> Signed-off-by: Melanie Lobo <melanie.lobo@intel.com>
 > ---
->   tests/kms_setmode.c | 6 ++++++
->   1 file changed, 6 insertions(+)
+>   lib/intel_aux_pgtable.c           |  5 +++++
+>   tests/intel/kms_flip_scaled_crc.c | 24 ++++++++++++++++++++++++
+>   2 files changed, 29 insertions(+)
 > 
-> diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-> index 5fc4421c0080..98e49bbf95f9 100644
-> --- a/tests/kms_setmode.c
-> +++ b/tests/kms_setmode.c
-> @@ -30,7 +30,10 @@
->   #include <string.h>
->   #include <sys/time.h>
->   #include <math.h>
-> +
-> +#include "i915/intel_drrs.h"
->   #include "xe/xe_query.h"
-> +
->   /**
->    * TEST: kms setmode
->    * Category: Display
-> @@ -651,6 +654,9 @@ retry:
->   					     crtc->fb_info.fb_id, 0, 0, ids,
->   					     crtc->connector_count, &crtc->mode);
+> diff --git a/lib/intel_aux_pgtable.c b/lib/intel_aux_pgtable.c
+> index 7c79521344de..a612df407692 100644
+> --- a/lib/intel_aux_pgtable.c
+> +++ b/lib/intel_aux_pgtable.c
+> @@ -21,6 +21,7 @@
+>   #define AUX_FORMAT_AYUV		0x09
+>   #define AUX_FORMAT_ARGB_8B	0x0A
+>   #define AUX_FORMAT_NV12_21	0x0F
+> +#define AUX_FORMAT_XRGB16161616_64B 0x10
 >   
-> +		if (is_intel_device(drm_fd))
-> +			intel_drrs_disable(drm_fd, crtc->pipe_id);
-> +
->   		free(ids);
+>   struct pgtable_level_desc {
+>   	int idx_shift;
+> @@ -305,6 +306,10 @@ static uint64_t pgt_get_l1_flags(const struct intel_buf *buf, int surface_idx)
+>   			entry.e.format = AUX_FORMAT_ARGB_8B;
+>   			entry.e.depth = bpp_to_depth_val(32);
+>   			break;
+> +		case 64:
+> +			entry.e.format = AUX_FORMAT_XRGB16161616_64B;
+> +			entry.e.depth = bpp_to_depth_val(64);
+> +			break;
+>   		default:
+>   			igt_assert(0);
+>   		}
+> diff --git a/tests/intel/kms_flip_scaled_crc.c b/tests/intel/kms_flip_scaled_crc.c
+> index 2997b63fac40..6874f747b280 100644
+> --- a/tests/intel/kms_flip_scaled_crc.c
+> +++ b/tests/intel/kms_flip_scaled_crc.c
+> @@ -142,6 +142,14 @@
+>    * Mega feature: General Display Features
+>    * Test category: functionality test
+>    *
+> + * SUBTEST: flip-64bpp-4tile-to-32bpp-4tilemtlrcccs-%s
+> + * Description: Flip from 64bpp non scaled fb to 32bpp %arg[1] fb to stress CD
+> + *              clock programming
+> + * Driver requirement: i915, xe
+> + * Functionality: ccs, scaling, tiling, vblank
+> + * Mega feature: General Display Features
+> + * Test category: functionality test
+> + *
+>    * arg[1]:
+>    *
+>    * @downscaling:        Downscaled
+> @@ -406,6 +414,14 @@ const struct {
+>   		1.0,
+>   		2.0,
+>   	},
+> +	{
+> +		"flip-64bpp-4tile-to-32bpp-4tilemtlrcccs-downscaling",
+> +		"Flip from 64bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
+> +		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
+> +		I915_FORMAT_MOD_4_TILED_MTL_RC_CCS, DRM_FORMAT_XRGB16161616F,
+> +		1.0,
+> +		2.0,
+> +	},
+>   	{
+>   		"flip-32bpp-ytile-to-64bpp-ytile-upscaling",
+>   		"Flip from 32bpp non scaled fb to 64bpp upscaled fb to stress CD clock programming",
+> @@ -590,6 +606,14 @@ const struct {
+>   		0.5,
+>   		1.0,
+>   	},
+> +	{
+> +		"flip-64bpp-4tile-to-32bpp-4tilemtlrcccs-upscaling",
+> +		"Flip from 64bpp non scaled fb to 32bpp upscaled fb to stress CD clock programming",
+> +		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
+> +		I915_FORMAT_MOD_4_TILED_MTL_RC_CCS, DRM_FORMAT_XRGB16161616F,
+> +		0.5,
+> +		1.0,
+> +	},
+>   };
 >   
->   		if (ret < 0) {
+>   static void setup_fb(data_t *data, struct igt_fb *newfb, uint32_t width,
