@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-vs1-xe30.google.com (mail-vs1-xe30.google.com
- [IPv6:2607:f8b0:4864:20::e30])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B70AB10E258
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Oct 2023 20:59:19 +0000 (UTC)
-Received: by mail-vs1-xe30.google.com with SMTP id
- ada2fe7eead31-458289fb60bso1234292137.0
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Oct 2023 13:59:19 -0700 (PDT)
+Received: from mail-vs1-xe2a.google.com (mail-vs1-xe2a.google.com
+ [IPv6:2607:f8b0:4864:20::e2a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8A99910E25E
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Oct 2023 20:59:24 +0000 (UTC)
+Received: by mail-vs1-xe2a.google.com with SMTP id
+ ada2fe7eead31-457c4e4a392so997103137.0
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Oct 2023 13:59:24 -0700 (PDT)
 From: Sean Paul <sean@poorly.run>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 23 Oct 2023 20:56:34 +0000
-Message-ID: <20231023205910.3556533-5-sean@poorly.run>
+Date: Mon, 23 Oct 2023 20:56:37 +0000
+Message-ID: <20231023205910.3556533-8-sean@poorly.run>
 In-Reply-To: <20231023205910.3556533-1-sean@poorly.run>
 References: <20231023205910.3556533-1-sean@poorly.run>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 4/8] tests/kms_vrr: Allow test duration to be
- specified from the command line
+Subject: [igt-dev] [PATCH v2 7/8] tests/kms_vrr: Allow for multiple rates in
+ a test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,105 +30,136 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Sean Paul <seanpaul@chromium.org>
 
-Using --duration argument, otherwise use default.
+Instead of passing just one rate into flip_and_measure, pass in an array
+to allow for tests which vary the refresh rate from one frame to the
+next. Currently the test will just cycle through the rates in order per
+frame.
 
-Cc: Mark Yacoub <markyacoub@chromium.org>
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Just framework, no changes to any tests.
+
 Signed-off-by: Sean Paul <seanpaul@chromium.org>
 
 Changes in v2:
-- Add short opt to the main callsite (Bhanu)
+- Added to the set
 ---
- tests/kms_vrr.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ tests/kms_vrr.c | 43 ++++++++++++++++++++++++-------------------
+ 1 file changed, 24 insertions(+), 19 deletions(-)
 
 diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 62335e9bf..af61c312e 100644
+index 57bd87ddf..b986087f0 100644
 --- a/tests/kms_vrr.c
 +++ b/tests/kms_vrr.c
-@@ -109,6 +109,7 @@ typedef struct data {
- 	igt_fb_t fb[2];
- 	range_t range;
+@@ -375,7 +375,7 @@ do_flip(data_t *data, igt_fb_t *fb)
+  */
+ static uint32_t
+ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+-		 uint64_t rate_ns, uint64_t duration_ns)
++		 uint64_t *rates_ns, int num_rates, uint64_t duration_ns)
+ {
+ 	uint64_t start_ns, last_event_ns, target_ns;
+ 	uint32_t total_flip = 0, total_pass = 0;
+@@ -387,9 +387,10 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+ 	start_ns = last_event_ns = target_ns = get_kernel_event_ns(data,
+ 							DRM_EVENT_FLIP_COMPLETE);
+ 
+-	for (;;) {
++	for (int i = 0;;++i) {
+ 		uint64_t event_ns, wait_ns;
+ 		int64_t diff_ns;
++		uint64_t rate_ns = rates_ns[i % num_rates];
+ 
+ 		front = !front;
+ 		do_flip(data, front ? &data->fb[1] : &data->fb[0]);
+@@ -440,8 +441,12 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+ 		while (get_time_ns() < target_ns - 10);
+ 	}
+ 
+-	igt_info("Completed %u flips, %u were in threshold for (%llu Hz) %"PRIu64"ns.\n",
+-		 total_flip, total_pass, (NSECS_PER_SEC/rate_ns), rate_ns);
++	igt_info("Completed %u flips, %u were in threshold for [", total_flip, total_pass);
++	for (int i = 0; i < num_rates; ++i) {
++		igt_info("(%llu Hz) %"PRIu64"ns%s", (NSECS_PER_SEC/rates_ns[i]), rates_ns[i],
++			 i < num_rates - 1 ? "," : "");
++	}
++	igt_info("]\n");
+ 
+ 	return total_flip ? ((total_pass * 100) / total_flip) : 0;
+ }
+@@ -453,12 +458,12 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 	uint32_t result;
  	vtest_ns_t vtest_ns;
-+	uint64_t duration_ns;
- } data_t;
+ 	range_t range;
+-	uint64_t rate;
++	uint64_t rate[] = {0};
  
- typedef void (*test_t)(data_t*, enum pipe, igt_output_t*, uint32_t);
-@@ -257,6 +258,9 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
- 		     data->vtest_ns.rate_ns >= data->vtest_ns.max,
- 		     "Invalid test rate specified!\n");
+ 	prepare_test(data, output, pipe);
+ 	range = data->range;
+ 	vtest_ns = data->vtest_ns;
+-	rate = vtest_ns.rate_ns;
++	rate[0] = vtest_ns.rate_ns;
  
-+	if (data->duration_ns == 0)
-+		data->duration_ns = TEST_DURATION_NS;
-+
- 	/* Override mode with max vrefresh.
- 	 *   - vrr_min range should be less than the override mode vrefresh.
- 	 *   - Limit the vrr_max range with the override mode vrefresh.
-@@ -453,7 +457,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 	igt_info("VRR Test execution on %s, PIPE_%s with VRR range: (%u-%u) Hz\n",
+ 		 output->name, kmstest_pipe_name(pipe), range.min, range.max);
+@@ -470,7 +475,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 	 * This is to make sure we were actually in the middle of
+ 	 * active flipping before doing the DPMS/suspend steps.
+ 	 */
+-	flip_and_measure(data, output, pipe, rate, 250000000ull);
++	flip_and_measure(data, output, pipe, rate, 1, 250000000ull);
+ 
+ 	if (flags & TEST_DPMS) {
+ 		kmstest_set_connector_dpms(output->display->drm_fd,
+@@ -501,27 +506,27 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 	 *      next Vmin.
  	 */
  	if (flags & TEST_FLIPLINE) {
- 		rate = rate_from_refresh(range.max + 5);
--		result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
-+		result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
+-		rate = rate_from_refresh(range.max + 5);
+-		result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
++		rate[0] = rate_from_refresh(range.max + 5);
++		result = flip_and_measure(data, output, pipe, rate, 1, data->duration_ns);
  		igt_assert_f(result > 75,
  			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
- 			     (range.max + 5), rate, result);
-@@ -461,7 +465,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+-			     (range.max + 5), rate, result);
++			     (range.max + 5), rate[0], result);
+ 	}
  
  	if (flags & ~TEST_NEGATIVE) {
- 		rate = vtest_ns.rate_ns;
--		result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
-+		result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
+-		rate = vtest_ns.rate_ns;
+-		result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
++		rate[0] = vtest_ns.rate_ns;
++		result = flip_and_measure(data, output, pipe, rate, 1, data->duration_ns);
  		igt_assert_f(result > 75,
  			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
- 			     ((range.max + range.min) / 2), rate, result);
-@@ -469,7 +473,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+-			     ((range.max + range.min) / 2), rate, result);
++			     ((range.max + range.min) / 2), rate[0], result);
+ 	}
  
  	if (flags & TEST_FLIPLINE) {
- 		rate = rate_from_refresh(range.min - 5);
--		result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
-+		result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
+-		rate = rate_from_refresh(range.min - 5);
+-		result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
++		rate[0] = rate_from_refresh(range.min - 5);
++		result = flip_and_measure(data, output, pipe, rate, 1, data->duration_ns);
  		igt_assert_f(result < 50,
  			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold exceeded, result was %u%%\n",
- 			     (range.min - 5), rate, result);
-@@ -482,7 +486,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+-			     (range.min - 5), rate, result);
++			     (range.min - 5), rate[0], result);
+ 	}
+ 
+ 	/*
+@@ -530,11 +535,11 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 	 * a VRR capable panel.
  	 */
  	set_vrr_on_pipe(data, pipe, (flags & TEST_NEGATIVE)? true : false);
- 	rate = vtest_ns.rate_ns;
--	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
-+	result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
+-	rate = vtest_ns.rate_ns;
+-	result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
++	rate[0] = vtest_ns.rate_ns;
++	result = flip_and_measure(data, output, pipe, rate, 1, data->duration_ns);
  	igt_assert_f(result < 10,
  		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold exceeded, result was %u%%\n",
- 		     ((range.max + range.min) / 2), rate, (flags & TEST_NEGATIVE)? "on" : "off", result);
-@@ -538,6 +542,9 @@ static int opt_handler(int opt, int opt_index, void *_data)
- 	data_t *data = _data;
+-		     ((range.max + range.min) / 2), rate, (flags & TEST_NEGATIVE)? "on" : "off", result);
++		     ((range.max + range.min) / 2), rate[0], (flags & TEST_NEGATIVE)? "on" : "off", result);
  
- 	switch (opt) {
-+	case 'd':
-+		data->duration_ns = atoi(optarg) * NSECS_PER_SEC;
-+		break;
- 	case 'r':
- 		data->vtest_ns.rate_ns = rate_from_refresh(atoi(optarg));
- 		break;
-@@ -546,16 +553,18 @@ static int opt_handler(int opt, int opt_index, void *_data)
- }
- 
- static const struct option long_opts[] = {
-+	{ .name = "duration", .has_arg = true, .val = 'd', },
- 	{ .name = "refresh-rate", .has_arg = true, .val = 'r', },
- 	{}
- };
- 
- static const char help_str[] =
-+	"  --duration <duration-seconds>\t\tHow long to run the test for\n"
- 	"  --refresh-rate <refresh-hz>\t\tThe refresh rate to flip at\n";
- 
- static data_t data;
- 
--igt_main_args("r:", long_opts, help_str, opt_handler, &data)
-+igt_main_args("d:r:", long_opts, help_str, opt_handler, &data)
- {
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+ 	/* Clean-up */
+ 	igt_plane_set_fb(data->primary, NULL);
 -- 
 Sean Paul, Software Engineer, Google / Chromium OS
