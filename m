@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-qk1-x72f.google.com (mail-qk1-x72f.google.com
- [IPv6:2607:f8b0:4864:20::72f])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3735A10E258
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Oct 2023 20:59:18 +0000 (UTC)
-Received: by mail-qk1-x72f.google.com with SMTP id
- af79cd13be357-7789a4c01ddso256953285a.1
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Oct 2023 13:59:18 -0700 (PDT)
+Received: from mail-qv1-xf36.google.com (mail-qv1-xf36.google.com
+ [IPv6:2607:f8b0:4864:20::f36])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3ACED10E256
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Oct 2023 20:59:15 +0000 (UTC)
+Received: by mail-qv1-xf36.google.com with SMTP id
+ 6a1803df08f44-66d134a019cso27072826d6.3
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Oct 2023 13:59:15 -0700 (PDT)
 From: Sean Paul <sean@poorly.run>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 23 Oct 2023 20:56:33 +0000
-Message-ID: <20231023205910.3556533-4-sean@poorly.run>
+Date: Mon, 23 Oct 2023 20:56:31 +0000
+Message-ID: <20231023205910.3556533-2-sean@poorly.run>
 In-Reply-To: <20231023205910.3556533-1-sean@poorly.run>
 References: <20231023205910.3556533-1-sean@poorly.run>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 3/8] tests/kms_vrr: Allow test rate to be
- altered from the command line
+Subject: [igt-dev] [PATCH v2 1/8] tests/kms_vrr: Move fb0 and fb1 to an array
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,113 +29,86 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Sean Paul <seanpaul@chromium.org>
 
-Instead of always using the midpoint, introduce optional argument
---refresh-rate to allow callers to specify the target refresh rate for
-the test.
+Consolidate the 2 fb variables into an array. No functional changes.
 
 Cc: Mark Yacoub <markyacoub@chromium.org>
 Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Signed-off-by: Sean Paul <seanpaul@chromium.org>
 
 Changes in v2:
-- Add short opt to the main callsite (Bhanu)
+- Clarified commit msg (Bhanu)
 ---
- tests/kms_vrr.c | 44 ++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 36 insertions(+), 8 deletions(-)
+ tests/kms_vrr.c | 19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
 diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 36f5b100d..62335e9bf 100644
+index e203fd4d5..4eeae4747 100644
 --- a/tests/kms_vrr.c
 +++ b/tests/kms_vrr.c
-@@ -98,7 +98,7 @@ typedef struct range {
+@@ -100,8 +100,7 @@ typedef struct data {
+ 	igt_display_t display;
+ 	int drm_fd;
+ 	igt_plane_t *primary;
+-	igt_fb_t fb0;
+-	igt_fb_t fb1;
++	igt_fb_t fb[2];
+ 	range_t range;
+ } data_t;
  
- typedef struct vtest_ns {
- 	uint64_t min;
--	uint64_t mid;
-+	uint64_t rate_ns;
- 	uint64_t max;
- } vtest_ns_t;
+@@ -268,13 +267,13 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
+ 	/* Prepare resources */
+ 	igt_create_color_fb(data->drm_fd, mode.hdisplay, mode.vdisplay,
+ 			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+-			    0.50, 0.50, 0.50, &data->fb0);
++			    0.50, 0.50, 0.50, &data->fb[0]);
  
-@@ -245,10 +245,18 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
- 	data->range = get_vrr_range(data, output);
+ 	igt_create_color_fb(data->drm_fd, mode.hdisplay, mode.vdisplay,
+ 			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+-			    0.50, 0.50, 0.50, &data->fb1);
++			    0.50, 0.50, 0.50, &data->fb[1]);
  
- 	data->vtest_ns.min = rate_from_refresh(data->range.min);
--	data->vtest_ns.mid = rate_from_refresh(
--				(data->range.min + data->range.max) / 2);
- 	data->vtest_ns.max = rate_from_refresh(data->range.max);
+-	cr = igt_get_cairo_ctx(data->drm_fd, &data->fb0);
++	cr = igt_get_cairo_ctx(data->drm_fd, &data->fb[0]);
  
-+	/* If unspecified on the command line, default rate to the midpoint */
-+	if (data->vtest_ns.rate_ns == 0) {
-+		range_t *range = &data->range;
-+		data->vtest_ns.rate_ns = rate_from_refresh(
-+						(range->min + range->max) / 2);
-+	}
-+	igt_assert_f(data->vtest_ns.rate_ns <= data->vtest_ns.min &&
-+		     data->vtest_ns.rate_ns >= data->vtest_ns.max,
-+		     "Invalid test rate specified!\n");
-+
- 	/* Override mode with max vrefresh.
- 	 *   - vrr_min range should be less than the override mode vrefresh.
- 	 *   - Limit the vrr_max range with the override mode vrefresh.
-@@ -401,7 +409,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
- 	prepare_test(data, output, pipe);
- 	range = data->range;
- 	vtest_ns = data->vtest_ns;
--	rate = vtest_ns.mid;
-+	rate = vtest_ns.rate_ns;
+ 	igt_paint_color(cr, 0, 0, mode.hdisplay / 10, mode.vdisplay / 10,
+ 			1.00, 0.00, 0.00);
+@@ -283,7 +282,7 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
  
- 	igt_info("VRR Test execution on %s, PIPE_%s with VRR range: (%u-%u) Hz\n",
- 		 output->name, kmstest_pipe_name(pipe), range.min, range.max);
-@@ -452,7 +460,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
- 	}
+ 	/* Take care of any required modesetting before the test begins. */
+ 	data->primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+-	igt_plane_set_fb(data->primary, &data->fb0);
++	igt_plane_set_fb(data->primary, &data->fb[0]);
  
- 	if (flags & ~TEST_NEGATIVE) {
--		rate = vtest_ns.mid;
-+		rate = vtest_ns.rate_ns;
- 		result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
- 		igt_assert_f(result > 75,
- 			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
-@@ -473,7 +481,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
- 	 * a VRR capable panel.
- 	 */
- 	set_vrr_on_pipe(data, pipe, (flags & TEST_NEGATIVE)? true : false);
--	rate = vtest_ns.mid;
-+	rate = vtest_ns.rate_ns;
- 	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
- 	igt_assert_f(result < 10,
- 		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold exceeded, result was %u%%\n",
-@@ -525,10 +533,30 @@ run_vrr_test(data_t *data, test_t test, uint32_t flags)
- 	}
+ 	/* Clear vrr_enabled state before enabling it, because
+ 	 * it might be left enabled if the previous test fails.
+@@ -333,7 +332,7 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+ 	vtest_ns_t vtest_ns = get_test_rate_ns(data->range);
+ 
+ 	/* Align with the flip completion event to speed up convergence. */
+-	do_flip(data, &data->fb0);
++	do_flip(data, &data->fb[0]);
+ 	start_ns = last_event_ns = target_ns = get_kernel_event_ns(data,
+ 							DRM_EVENT_FLIP_COMPLETE);
+ 
+@@ -342,7 +341,7 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+ 		int64_t diff_ns;
+ 
+ 		front = !front;
+-		do_flip(data, front ? &data->fb1 : &data->fb0);
++		do_flip(data, front ? &data->fb[1] : &data->fb[0]);
+ 
+ 		/* We need to cpture flip event instead of vblank event,
+ 		 * because vblank is triggered after each frame, but depending
+@@ -492,8 +491,8 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 	igt_output_override_mode(output, NULL);
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 
+-	igt_remove_fb(data->drm_fd, &data->fb1);
+-	igt_remove_fb(data->drm_fd, &data->fb0);
++	igt_remove_fb(data->drm_fd, &data->fb[1]);
++	igt_remove_fb(data->drm_fd, &data->fb[0]);
  }
  
--igt_main
-+static int opt_handler(int opt, int opt_index, void *_data)
- {
--	data_t data = {};
-+	data_t *data = _data;
-+
-+	switch (opt) {
-+	case 'r':
-+		data->vtest_ns.rate_ns = rate_from_refresh(atoi(optarg));
-+		break;
-+	}
-+	return IGT_OPT_HANDLER_SUCCESS;
-+}
- 
-+static const struct option long_opts[] = {
-+	{ .name = "refresh-rate", .has_arg = true, .val = 'r', },
-+	{}
-+};
-+
-+static const char help_str[] =
-+	"  --refresh-rate <refresh-hz>\t\tThe refresh rate to flip at\n";
-+
-+static data_t data;
-+
-+igt_main_args("r:", long_opts, help_str, opt_handler, &data)
-+{
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
- 
+ /* Runs tests on outputs that are VRR capable. */
 -- 
 Sean Paul, Software Engineer, Google / Chromium OS
