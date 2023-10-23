@@ -1,20 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4233610E094
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Oct 2023 10:24:50 +0000 (UTC)
-From: "Lobo, Melanie" <melanie.lobo@intel.com>
-To: "Sharma, Swati2" <swati2.sharma@intel.com>,
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1F4E410E094
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Oct 2023 10:29:15 +0000 (UTC)
+Message-ID: <1750a0e6-c868-4f5a-b1fa-4dd3a5ac0947@intel.com>
+Date: Mon, 23 Oct 2023 15:59:09 +0530
+MIME-Version: 1.0
+Content-Language: en-US
+To: "Lobo, Melanie" <melanie.lobo@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Mon, 23 Oct 2023 10:24:45 +0000
-Message-ID: <DS0PR11MB64952CEC04ABDA995ED7EEB788D8A@DS0PR11MB6495.namprd11.prod.outlook.com>
 References: <20231010134540.28485-1-melanie.lobo@intel.com>
  <20231019180630.20689-1-melanie.lobo@intel.com>
  <b5630343-e691-48ad-9ee7-93ff2eb6733b@intel.com>
-In-Reply-To: <b5630343-e691-48ad-9ee7-93ff2eb6733b@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
+ <DS0PR11MB64952CEC04ABDA995ED7EEB788D8A@DS0PR11MB6495.namprd11.prod.outlook.com>
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <DS0PR11MB64952CEC04ABDA995ED7EEB788D8A@DS0PR11MB6495.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Subject: Re: [igt-dev] [PATCH] tests/intel/kms_flip_scaled_crc: Add support
  for FP16 compressed formats
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -28,83 +29,142 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogU2hhcm1hLCBTd2F0aTIg
-PHN3YXRpMi5zaGFybWFAaW50ZWwuY29tPg0KPiBTZW50OiBNb25kYXksIE9jdG9iZXIgMjMsIDIw
-MjMgMTE6MTAgQU0NCj4gVG86IExvYm8sIE1lbGFuaWUgPG1lbGFuaWUubG9ib0BpbnRlbC5jb20+
-OyBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBDYzoganVoYXBla2thLmhlaWtraWxh
-QGdtYWlsLmNvbTsgTW9kZW0sIEJoYW51cHJha2FzaA0KPiA8YmhhbnVwcmFrYXNoLm1vZGVtQGlu
-dGVsLmNvbT47IGthbWlsLmtvbmllY3pueUBsaW51eC5pbnRlbC5jb20NCj4gU3ViamVjdDogUmU6
-IFtQQVRDSF0gdGVzdHMvaW50ZWwva21zX2ZsaXBfc2NhbGVkX2NyYzogQWRkIHN1cHBvcnQgZm9y
-IEZQMTYNCj4gY29tcHJlc3NlZCBmb3JtYXRzDQo+IA0KPiBIaSBNZWxhbmllLA0KPiANCj4gSXQg
-c2VlbXMgdGVzdHMgYXJlIHNraXBwaW5nIG9uIE1UTFANCj4gaHR0cHM6Ly9pbnRlbC1nZngtY2ku
-MDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMDAyNC9zaGFyZHMtDQo+IGFsbC5odG1sP3Rlc3Rm
-aWx0ZXI9NHRpbGVtdGxyY2Njcw0KPiANCj4gVGVzdCByZXF1aXJlbWVudCBub3QgbWV0IGluIGZ1
-bmN0aW9uIHNldHVwX2ZiLCBmaWxlDQo+IC4uLy4uLy4uL3Vzci9zcmMvaWd0LWdwdS10b29scy90
-ZXN0cy9pbnRlbC9rbXNfZmxpcF9zY2FsZWRfY3JjLmM6NjIyOg0KPiBUZXN0IHJlcXVpcmVtZW50
-OiBpZ3RfZGlzcGxheV9oYXNfZm9ybWF0X21vZCgmZGF0YS0+ZGlzcGxheSwgZm9ybWF0LA0KPiBt
-b2RpZmllcikNCj4gRHluYW1pYyBzdWJ0ZXN0IHBpcGUtQS1kZWZhdWx0LW1vZGU6IFNLSVAgKDAu
-Mzc4cykNCj4gDQo+IENhbiB5b3UgY2hlY2sgb25jZT8NCj4gDQoNCkhpIFN3YXRpLA0KVGhpcyBJ
-R1QgdGVzdCByZXF1aXJlcyBrZXJuZWwgcGF0Y2ggaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0
-b3Aub3JnL3BhdGNoLzU2Mzg1NC8/c2VyaWVzPTEyNDk1NyZyZXY9NCAuDQogTWF5IGJlIGJlY2F1
-c2Ugb2YgdGhhdCBhbGwgdGhlIHRlc3RzIHNraXAuDQoNClJlZ2FyZHMsDQpNZWxhbmllIExvYm8N
-Cg0KPiBPbiAxOS1PY3QtMjMgMTE6MzYgUE0sIE1lbGFuaWUgTG9ibyB3cm90ZToNCj4gPiBNVEwg
-c3VwcG9ydHMgRlAxNiBmb3JtYXQgd2hpY2ggaXMgYSBiaW5hcnkgZmxvYXRpbmctcG9pbnQgY29t
-cHV0ZXINCj4gPiBudW1iZXIgZm9ybWF0IHRoYXQgb2NjdXBpZXMgMTYgYml0cyBpbiBjb21wdXRl
-ciBtZW1vcnkuIEluIHRoaXMgdGVzdA0KPiA+IHBsYXRmb3JtIHNoYWxsIHJlbmRlciBjb21wcmVz
-c2lvbiBpbiBkaXNwbGF5IGVuZ2luZSB0byByZWNlaXZlDQo+ID4gRlAxNiBjb21wcmVzc2VkIGZv
-cm1hdHMuDQo+ID4NCj4gPiBjYzogSnVoYS1QZWtrYSBIZWlra2lsYSA8anVoYXBla2thLmhlaWtr
-aWxhQGdtYWlsLmNvbT4NCj4gPiBjYzogQmhhbnVwcmFrYXNoIE1vZGVtIDxiaGFudXByYWthc2gu
-bW9kZW1AaW50ZWwuY29tPg0KPiA+IGNjOiBTd2F0aSBTaGFybWEgPHN3YXRpMi5zaGFybWFAaW50
-ZWwuY29tPg0KPiA+IFNpZ25lZC1vZmYtYnk6IE1lbGFuaWUgTG9ibyA8bWVsYW5pZS5sb2JvQGlu
-dGVsLmNvbT4NCj4gPiAtLS0NCj4gPiAgIGxpYi9pbnRlbF9hdXhfcGd0YWJsZS5jICAgICAgICAg
-ICB8ICA1ICsrKysrDQo+ID4gICB0ZXN0cy9pbnRlbC9rbXNfZmxpcF9zY2FsZWRfY3JjLmMgfCAy
-NCArKysrKysrKysrKysrKysrKysrKysrKysNCj4gPiAgIDIgZmlsZXMgY2hhbmdlZCwgMjkgaW5z
-ZXJ0aW9ucygrKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL2xpYi9pbnRlbF9hdXhfcGd0YWJsZS5j
-IGIvbGliL2ludGVsX2F1eF9wZ3RhYmxlLmMgaW5kZXgNCj4gPiA3Yzc5NTIxMzQ0ZGUuLmE2MTJk
-ZjQwNzY5MiAxMDA2NDQNCj4gPiAtLS0gYS9saWIvaW50ZWxfYXV4X3BndGFibGUuYw0KPiA+ICsr
-KyBiL2xpYi9pbnRlbF9hdXhfcGd0YWJsZS5jDQo+ID4gQEAgLTIxLDYgKzIxLDcgQEANCj4gPiAg
-ICNkZWZpbmUgQVVYX0ZPUk1BVF9BWVVWCQkweDA5DQo+ID4gICAjZGVmaW5lIEFVWF9GT1JNQVRf
-QVJHQl84QgkweDBBDQo+ID4gICAjZGVmaW5lIEFVWF9GT1JNQVRfTlYxMl8yMQkweDBGDQo+ID4g
-KyNkZWZpbmUgQVVYX0ZPUk1BVF9YUkdCMTYxNjE2MTZfNjRCIDB4MTANCj4gPg0KPiA+ICAgc3Ry
-dWN0IHBndGFibGVfbGV2ZWxfZGVzYyB7DQo+ID4gICAJaW50IGlkeF9zaGlmdDsNCj4gPiBAQCAt
-MzA1LDYgKzMwNiwxMCBAQCBzdGF0aWMgdWludDY0X3QgcGd0X2dldF9sMV9mbGFncyhjb25zdCBz
-dHJ1Y3QNCj4gaW50ZWxfYnVmICpidWYsIGludCBzdXJmYWNlX2lkeCkNCj4gPiAgIAkJCWVudHJ5
-LmUuZm9ybWF0ID0gQVVYX0ZPUk1BVF9BUkdCXzhCOw0KPiA+ICAgCQkJZW50cnkuZS5kZXB0aCA9
-IGJwcF90b19kZXB0aF92YWwoMzIpOw0KPiA+ICAgCQkJYnJlYWs7DQo+ID4gKwkJY2FzZSA2NDoN
-Cj4gPiArCQkJZW50cnkuZS5mb3JtYXQgPSBBVVhfRk9STUFUX1hSR0IxNjE2MTYxNl82NEI7DQo+
-ID4gKwkJCWVudHJ5LmUuZGVwdGggPSBicHBfdG9fZGVwdGhfdmFsKDY0KTsNCj4gPiArCQkJYnJl
-YWs7DQo+ID4gICAJCWRlZmF1bHQ6DQo+ID4gICAJCQlpZ3RfYXNzZXJ0KDApOw0KPiA+ICAgCQl9
-DQo+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ludGVsL2ttc19mbGlwX3NjYWxlZF9jcmMuYw0KPiA+
-IGIvdGVzdHMvaW50ZWwva21zX2ZsaXBfc2NhbGVkX2NyYy5jDQo+ID4gaW5kZXggMjk5N2I2M2Zh
-YzQwLi42ODc0Zjc0N2IyODAgMTAwNjQ0DQo+ID4gLS0tIGEvdGVzdHMvaW50ZWwva21zX2ZsaXBf
-c2NhbGVkX2NyYy5jDQo+ID4gKysrIGIvdGVzdHMvaW50ZWwva21zX2ZsaXBfc2NhbGVkX2NyYy5j
-DQo+ID4gQEAgLTE0Miw2ICsxNDIsMTQgQEANCj4gPiAgICAqIE1lZ2EgZmVhdHVyZTogR2VuZXJh
-bCBEaXNwbGF5IEZlYXR1cmVzDQo+ID4gICAgKiBUZXN0IGNhdGVnb3J5OiBmdW5jdGlvbmFsaXR5
-IHRlc3QNCj4gPiAgICAqDQo+ID4gKyAqIFNVQlRFU1Q6IGZsaXAtNjRicHAtNHRpbGUtdG8tMzJi
-cHAtNHRpbGVtdGxyY2Njcy0lcw0KPiA+ICsgKiBEZXNjcmlwdGlvbjogRmxpcCBmcm9tIDY0YnBw
-IG5vbiBzY2FsZWQgZmIgdG8gMzJicHAgJWFyZ1sxXSBmYiB0byBzdHJlc3MNCj4gQ0QNCj4gPiAr
-ICogICAgICAgICAgICAgIGNsb2NrIHByb2dyYW1taW5nDQo+ID4gKyAqIERyaXZlciByZXF1aXJl
-bWVudDogaTkxNSwgeGUNCj4gPiArICogRnVuY3Rpb25hbGl0eTogY2NzLCBzY2FsaW5nLCB0aWxp
-bmcsIHZibGFuaw0KPiA+ICsgKiBNZWdhIGZlYXR1cmU6IEdlbmVyYWwgRGlzcGxheSBGZWF0dXJl
-cw0KPiA+ICsgKiBUZXN0IGNhdGVnb3J5OiBmdW5jdGlvbmFsaXR5IHRlc3QNCj4gPiArICoNCj4g
-PiAgICAqIGFyZ1sxXToNCj4gPiAgICAqDQo+ID4gICAgKiBAZG93bnNjYWxpbmc6ICAgICAgICBE
-b3duc2NhbGVkDQo+ID4gQEAgLTQwNiw2ICs0MTQsMTQgQEAgY29uc3Qgc3RydWN0IHsNCj4gPiAg
-IAkJMS4wLA0KPiA+ICAgCQkyLjAsDQo+ID4gICAJfSwNCj4gPiArCXsNCj4gPiArCQkiZmxpcC02
-NGJwcC00dGlsZS10by0zMmJwcC00dGlsZW10bHJjY2NzLWRvd25zY2FsaW5nIiwNCj4gPiArCQki
-RmxpcCBmcm9tIDY0YnBwIG5vbiBzY2FsZWQgZmIgdG8gMzJicHAgZG93bnNjYWxlZCBmYiB0bw0K
-PiBzdHJlc3MgQ0QgY2xvY2sgcHJvZ3JhbW1pbmciLA0KPiA+ICsJCUk5MTVfRk9STUFUX01PRF80
-X1RJTEVELA0KPiBEUk1fRk9STUFUX1hSR0IxNjE2MTYxNkYsDQo+ID4gKwkJSTkxNV9GT1JNQVRf
-TU9EXzRfVElMRURfTVRMX1JDX0NDUywNCj4gRFJNX0ZPUk1BVF9YUkdCMTYxNjE2MTZGLA0KPiA+
-ICsJCTEuMCwNCj4gPiArCQkyLjAsDQo+ID4gKwl9LA0KPiA+ICAgCXsNCj4gPiAgIAkJImZsaXAt
-MzJicHAteXRpbGUtdG8tNjRicHAteXRpbGUtdXBzY2FsaW5nIiwNCj4gPiAgIAkJIkZsaXAgZnJv
-bSAzMmJwcCBub24gc2NhbGVkIGZiIHRvIDY0YnBwIHVwc2NhbGVkIGZiIHRvIHN0cmVzcw0KPiBD
-RA0KPiA+IGNsb2NrIHByb2dyYW1taW5nIiwgQEAgLTU5MCw2ICs2MDYsMTQgQEAgY29uc3Qgc3Ry
-dWN0IHsNCj4gPiAgIAkJMC41LA0KPiA+ICAgCQkxLjAsDQo+ID4gICAJfSwNCj4gPiArCXsNCj4g
-PiArCQkiZmxpcC02NGJwcC00dGlsZS10by0zMmJwcC00dGlsZW10bHJjY2NzLXVwc2NhbGluZyIs
-DQo+ID4gKwkJIkZsaXAgZnJvbSA2NGJwcCBub24gc2NhbGVkIGZiIHRvIDMyYnBwIHVwc2NhbGVk
-IGZiIHRvIHN0cmVzcw0KPiBDRCBjbG9jayBwcm9ncmFtbWluZyIsDQo+ID4gKwkJSTkxNV9GT1JN
-QVRfTU9EXzRfVElMRUQsDQo+IERSTV9GT1JNQVRfWFJHQjE2MTYxNjE2RiwNCj4gPiArCQlJOTE1
-X0ZPUk1BVF9NT0RfNF9USUxFRF9NVExfUkNfQ0NTLA0KPiBEUk1fRk9STUFUX1hSR0IxNjE2MTYx
-NkYsDQo+ID4gKwkJMC41LA0KPiA+ICsJCTEuMCwNCj4gPiArCX0sDQo+ID4gICB9Ow0KPiA+DQo+
-ID4gICBzdGF0aWMgdm9pZCBzZXR1cF9mYihkYXRhX3QgKmRhdGEsIHN0cnVjdCBpZ3RfZmIgKm5l
-d2ZiLCB1aW50MzJfdA0KPiA+IHdpZHRoLA0K
+
+On 23-Oct-23 3:54 PM, Lobo, Melanie wrote:
+> 
+> 
+>> -----Original Message-----
+>> From: Sharma, Swati2 <swati2.sharma@intel.com>
+>> Sent: Monday, October 23, 2023 11:10 AM
+>> To: Lobo, Melanie <melanie.lobo@intel.com>; igt-dev@lists.freedesktop.org
+>> Cc: juhapekka.heikkila@gmail.com; Modem, Bhanuprakash
+>> <bhanuprakash.modem@intel.com>; kamil.konieczny@linux.intel.com
+>> Subject: Re: [PATCH] tests/intel/kms_flip_scaled_crc: Add support for FP16
+>> compressed formats
+>>
+>> Hi Melanie,
+>>
+>> It seems tests are skipping on MTLP
+>> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10024/shards-
+>> all.html?testfilter=4tilemtlrcccs
+>>
+>> Test requirement not met in function setup_fb, file
+>> ../../../usr/src/igt-gpu-tools/tests/intel/kms_flip_scaled_crc.c:622:
+>> Test requirement: igt_display_has_format_mod(&data->display, format,
+>> modifier)
+>> Dynamic subtest pipe-A-default-mode: SKIP (0.378s)
+>>
+>> Can you check once?
+>>
+> 
+> Hi Swati,
+> This IGT test requires kernel patch https://patchwork.freedesktop.org/patch/563854/?series=124957&rev=4 .
+>   May be because of that all the tests skip.
+> 
+> Regards,
+> Melanie Lobo
+
+ohh
+Is it possible for you to use "Test-with" used to test combined IGT and 
+kernel changes. More details:
+https://intel-gfx-ci.01.org/test-with.html
+
+> 
+>> On 19-Oct-23 11:36 PM, Melanie Lobo wrote:
+>>> MTL supports FP16 format which is a binary floating-point computer
+>>> number format that occupies 16 bits in computer memory. In this test
+>>> platform shall render compression in display engine to receive
+>>> FP16 compressed formats.
+>>>
+>>> cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+>>> cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>>> cc: Swati Sharma <swati2.sharma@intel.com>
+>>> Signed-off-by: Melanie Lobo <melanie.lobo@intel.com>
+>>> ---
+>>>    lib/intel_aux_pgtable.c           |  5 +++++
+>>>    tests/intel/kms_flip_scaled_crc.c | 24 ++++++++++++++++++++++++
+>>>    2 files changed, 29 insertions(+)
+>>>
+>>> diff --git a/lib/intel_aux_pgtable.c b/lib/intel_aux_pgtable.c index
+>>> 7c79521344de..a612df407692 100644
+>>> --- a/lib/intel_aux_pgtable.c
+>>> +++ b/lib/intel_aux_pgtable.c
+>>> @@ -21,6 +21,7 @@
+>>>    #define AUX_FORMAT_AYUV		0x09
+>>>    #define AUX_FORMAT_ARGB_8B	0x0A
+>>>    #define AUX_FORMAT_NV12_21	0x0F
+>>> +#define AUX_FORMAT_XRGB16161616_64B 0x10
+>>>
+>>>    struct pgtable_level_desc {
+>>>    	int idx_shift;
+>>> @@ -305,6 +306,10 @@ static uint64_t pgt_get_l1_flags(const struct
+>> intel_buf *buf, int surface_idx)
+>>>    			entry.e.format = AUX_FORMAT_ARGB_8B;
+>>>    			entry.e.depth = bpp_to_depth_val(32);
+>>>    			break;
+>>> +		case 64:
+>>> +			entry.e.format = AUX_FORMAT_XRGB16161616_64B;
+>>> +			entry.e.depth = bpp_to_depth_val(64);
+>>> +			break;
+>>>    		default:
+>>>    			igt_assert(0);
+>>>    		}
+>>> diff --git a/tests/intel/kms_flip_scaled_crc.c
+>>> b/tests/intel/kms_flip_scaled_crc.c
+>>> index 2997b63fac40..6874f747b280 100644
+>>> --- a/tests/intel/kms_flip_scaled_crc.c
+>>> +++ b/tests/intel/kms_flip_scaled_crc.c
+>>> @@ -142,6 +142,14 @@
+>>>     * Mega feature: General Display Features
+>>>     * Test category: functionality test
+>>>     *
+>>> + * SUBTEST: flip-64bpp-4tile-to-32bpp-4tilemtlrcccs-%s
+>>> + * Description: Flip from 64bpp non scaled fb to 32bpp %arg[1] fb to stress
+>> CD
+>>> + *              clock programming
+>>> + * Driver requirement: i915, xe
+>>> + * Functionality: ccs, scaling, tiling, vblank
+>>> + * Mega feature: General Display Features
+>>> + * Test category: functionality test
+>>> + *
+>>>     * arg[1]:
+>>>     *
+>>>     * @downscaling:        Downscaled
+>>> @@ -406,6 +414,14 @@ const struct {
+>>>    		1.0,
+>>>    		2.0,
+>>>    	},
+>>> +	{
+>>> +		"flip-64bpp-4tile-to-32bpp-4tilemtlrcccs-downscaling",
+>>> +		"Flip from 64bpp non scaled fb to 32bpp downscaled fb to
+>> stress CD clock programming",
+>>> +		I915_FORMAT_MOD_4_TILED,
+>> DRM_FORMAT_XRGB16161616F,
+>>> +		I915_FORMAT_MOD_4_TILED_MTL_RC_CCS,
+>> DRM_FORMAT_XRGB16161616F,
+>>> +		1.0,
+>>> +		2.0,
+>>> +	},
+>>>    	{
+>>>    		"flip-32bpp-ytile-to-64bpp-ytile-upscaling",
+>>>    		"Flip from 32bpp non scaled fb to 64bpp upscaled fb to stress
+>> CD
+>>> clock programming", @@ -590,6 +606,14 @@ const struct {
+>>>    		0.5,
+>>>    		1.0,
+>>>    	},
+>>> +	{
+>>> +		"flip-64bpp-4tile-to-32bpp-4tilemtlrcccs-upscaling",
+>>> +		"Flip from 64bpp non scaled fb to 32bpp upscaled fb to stress
+>> CD clock programming",
+>>> +		I915_FORMAT_MOD_4_TILED,
+>> DRM_FORMAT_XRGB16161616F,
+>>> +		I915_FORMAT_MOD_4_TILED_MTL_RC_CCS,
+>> DRM_FORMAT_XRGB16161616F,
+>>> +		0.5,
+>>> +		1.0,
+>>> +	},
+>>>    };
+>>>
+>>>    static void setup_fb(data_t *data, struct igt_fb *newfb, uint32_t
+>>> width,
