@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Content-Type: multipart/alternative;
+ boundary="===============7407285429788091299=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Lobo, Melanie" <melanie.lobo@intel.com>
-Date: Mon, 23 Oct 2023 17:52:13 -0000
-Message-ID: <169808353381.19838.3597981281202567305@emeril.freedesktop.org>
-References: <20231010134540.28485-1-melanie.lobo@intel.com>
-In-Reply-To: <20231010134540.28485-1-melanie.lobo@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
- =?utf-8?q?ests/intel/kms=5Fflip=5Fscaled=5Fcrc=3A_Add_support_for_FP16_fo?=
- =?utf-8?q?rmat_of_MTL_compressed_modifier_=28rev6=29?=
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Date: Mon, 23 Oct 2023 18:11:56 -0000
+Message-ID: <169808471657.19838.10906409089571028540@emeril.freedesktop.org>
+References: <20231019093417.3782665-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20231019093417.3782665-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Optimize?=
+ =?utf-8?q?_kms_tesplan_documentation_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,39 +23,144 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============7407285429788091299==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
-Series: tests/intel/kms_flip_scaled_crc: Add support for FP16 format of MTL compressed modifier (rev6)
-URL   : https://patchwork.freedesktop.org/series/124956/
-State : warning
+Series: Optimize kms tesplan documentation (rev3)
+URL   : https://patchwork.freedesktop.org/series/123697/
+State : success
 
 == Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from XEIGT_7549_BAT -> XEIGTPW_10028_BAT
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1016870 for the overview.
+Summary
+-------
 
-test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50646666):
-  374/378 assembler test/rnde-intsrc              OK       0.06 s 
-  375/378 assembler test/rndz                     OK       0.04 s 
-  376/378 assembler test/lzd                      OK       0.04 s 
-  377/378 assembler test/not                      OK       0.04 s 
-  378/378 assembler test/immediate                OK       0.03 s 
+  **SUCCESS**
+
+  No regressions found.
+
   
-  Ok:                  370
-  Expected Fail:         4
-  Fail:                  0
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               4
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10028_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:
+    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 other test fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7549/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10028/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
+
   
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1698083522:step_script
-  section_start:1698083522:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1698083524:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+#### Warnings ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [DMESG-FAIL][3] ([Intel XE#282]) -> [FAIL][4] ([Intel XE#750])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7549/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10028/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#282]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/282
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+  [Intel XE#750]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/750
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7549 -> IGTPW_10028
+
+  IGTPW_10028: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10028/index.html
+  IGT_7549: bc3314b187318a4238c6fae583770b389afa83c3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-442-a0a80950176b39dbc76f8faa92fddf6caaa06191: a0a80950176b39dbc76f8faa92fddf6caaa06191
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1016870
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10028/index.html
+
+--===============7407285429788091299==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Optimize kms tesplan documentation (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123697/">https://patchwork.freedesktop.org/series/123697/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10028/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10028/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7549_BAT -&gt; XEIGTPW_10028_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10028_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7549/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10028/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_frontbuffer_tracking@basic:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7549/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10028/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/750">Intel XE#750</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7549 -&gt; IGTPW_10028</li>
+</ul>
+<p>IGTPW_10028: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10028/index.html<br />
+  IGT_7549: bc3314b187318a4238c6fae583770b389afa83c3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-442-a0a80950176b39dbc76f8faa92fddf6caaa06191: a0a80950176b39dbc76f8faa92fddf6caaa06191</p>
+
+</body>
+</html>
+
+--===============7407285429788091299==--
