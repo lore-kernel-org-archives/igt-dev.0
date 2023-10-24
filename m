@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4AFE410E3CA
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Oct 2023 14:19:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3D6A010E3CE
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Oct 2023 14:19:03 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.1.226])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id A417F580E5F
+ by linux.intel.com (Postfix) with ESMTPS id A1BE1580E5B
  for <igt-dev@lists.freedesktop.org>; Tue, 24 Oct 2023 07:19:00 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96.1)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qvIFG-000fqz-0G
- for igt-dev@lists.freedesktop.org; Tue, 24 Oct 2023 16:18:58 +0200
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qvIFF-000fqh-3D
+ for igt-dev@lists.freedesktop.org; Tue, 24 Oct 2023 16:18:57 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 24 Oct 2023 16:11:10 +0200
-Message-ID: <20231024141855.160633-8-mauro.chehab@linux.intel.com>
+Date: Tue, 24 Oct 2023 16:11:04 +0200
+Message-ID: <20231024141855.160633-2-mauro.chehab@linux.intel.com>
 In-Reply-To: <20231024141855.160633-1-mauro.chehab@linux.intel.com>
 References: <20231024141855.160633-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 7/7] runner/runner_tests: change a regex to
- match case-insensitive
+Subject: [igt-dev] [PATCH i-g-t 1/7] runner: Normalize testlist entries that
+ don't list subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,29 +32,59 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+From: Petri Latvala <adrinael@adrinael.net>
 
-As regular expressions are now case-insensitive, change an
-unit test to verify that case-insensitive logic is working
-as expected.
+As the syntax for "all subtests" and "test that doesn't have subtests"
+is the same, check the subtest listing when building the execution
+plan. Doing that makes it possible to still have "all subtests" in
+testlists (albeit not originally designed to support that) and enables
+blocklisting particular subtests.
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Petri Latvala <adrinael@adrinael.net>
+Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Arkadiusz Hiler <arek@hiler.eu>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/149
 ---
- runner/runner_tests.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ runner/job_list.c | 22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/runner/runner_tests.c b/runner/runner_tests.c
-index 11ff05bc0e7e..c35668bc8f0e 100644
---- a/runner/runner_tests.c
-+++ b/runner/runner_tests.c
-@@ -1812,7 +1812,7 @@ igt_main
+diff --git a/runner/job_list.c b/runner/job_list.c
+index e6ea836310fd..27cbb10bce56 100644
+--- a/runner/job_list.c
++++ b/runner/job_list.c
+@@ -230,8 +230,28 @@ static bool job_list_from_test_list(struct job_list *job_list,
+ 			continue;
  
- 	igt_subtest_group {
- 		const char testlisttext[] = "igt@successtest";
--		const char blocktext[] = "igt@successtest@first";
-+		const char blocktext[] = "igt@successTEST@first";
- 		struct job_list *list = malloc(sizeof(*list));
- 		volatile int dirfd = -1;
- 		char dirname[] = "tmpdirXXXXXX";
+ 		if (sscanf(line, "igt@%ms", &binary) == 1) {
+-			if ((delim = strchr(binary, '@')) != NULL)
++			if ((delim = strchr(binary, '@')) != NULL) {
+ 				*delim++ = '\0';
++			} else {
++				/*
++				 * No subtests specified. Check
++				 * whether the user means "all
++				 * subtests" or if the test doesn't
++				 * have any.
++				 */
++				if (entry.binary) {
++					/* First flush the entry we're building for multiple-mode */
++					add_job_list_entry(job_list, entry.binary, entry.subtests, entry.subtest_count);
++					memset(&entry, 0, sizeof(entry));
++					any = true;
++				}
++
++				add_subtests(job_list, settings, binary,
++					     &settings->include_regexes,
++					     &settings->exclude_regexes);
++				any = true;
++				continue;
++			}
+ 
+ 			if (!settings->multiple_mode) {
+ 				char **subtests = NULL;
 -- 
 2.41.0
