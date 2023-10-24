@@ -1,24 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A3DD610E2DF
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Oct 2023 05:32:45 +0000 (UTC)
-From: "Lobo, Melanie" <melanie.lobo@intel.com>
-To: "Sharma, Swati2" <swati2.sharma@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Tue, 24 Oct 2023 05:32:41 +0000
-Message-ID: <DS0PR11MB649582298ABA023FF4CA4DB188DFA@DS0PR11MB6495.namprd11.prod.outlook.com>
-References: <20231010134540.28485-1-melanie.lobo@intel.com>
- <20231019180630.20689-1-melanie.lobo@intel.com>
- <b5630343-e691-48ad-9ee7-93ff2eb6733b@intel.com>
- <DS0PR11MB64952CEC04ABDA995ED7EEB788D8A@DS0PR11MB6495.namprd11.prod.outlook.com>
- <1750a0e6-c868-4f5a-b1fa-4dd3a5ac0947@intel.com>
-In-Reply-To: <1750a0e6-c868-4f5a-b1fa-4dd3a5ac0947@intel.com>
-Content-Language: en-US
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH] tests/intel/kms_flip_scaled_crc: Add support
- for FP16 compressed formats
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Sean Paul" <sean@poorly.run>
+Date: Tue, 24 Oct 2023 07:42:54 -0000
+Message-ID: <169813337454.18360.1284457506396047122@emeril.freedesktop.org>
+References: <20231023205910.3556533-1-sean@poorly.run>
+In-Reply-To: <20231023205910.3556533-1-sean@poorly.run>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
+ =?utf-8?q?s/kms=5Fvrr=3A_Modify_kms=5Fvrr_to_allow_flicker_profiling?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,107 +17,72 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogU2hhcm1hLCBTd2F0aTIg
-PHN3YXRpMi5zaGFybWFAaW50ZWwuY29tPg0KPiBTZW50OiBNb25kYXksIE9jdG9iZXIgMjMsIDIw
-MjMgMzo1OSBQTQ0KPiBUbzogTG9ibywgTWVsYW5pZSA8bWVsYW5pZS5sb2JvQGludGVsLmNvbT47
-IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IENjOiBqdWhhcGVra2EuaGVpa2tpbGFA
-Z21haWwuY29tOyBNb2RlbSwgQmhhbnVwcmFrYXNoDQo+IDxiaGFudXByYWthc2gubW9kZW1AaW50
-ZWwuY29tPjsga2FtaWwua29uaWVjem55QGxpbnV4LmludGVsLmNvbQ0KPiBTdWJqZWN0OiBSZTog
-W1BBVENIXSB0ZXN0cy9pbnRlbC9rbXNfZmxpcF9zY2FsZWRfY3JjOiBBZGQgc3VwcG9ydCBmb3Ig
-RlAxNg0KPiBjb21wcmVzc2VkIGZvcm1hdHMNCj4gDQo+IA0KPiBPbiAyMy1PY3QtMjMgMzo1NCBQ
-TSwgTG9ibywgTWVsYW5pZSB3cm90ZToNCj4gPg0KPiA+DQo+ID4+IC0tLS0tT3JpZ2luYWwgTWVz
-c2FnZS0tLS0tDQo+ID4+IEZyb206IFNoYXJtYSwgU3dhdGkyIDxzd2F0aTIuc2hhcm1hQGludGVs
-LmNvbT4NCj4gPj4gU2VudDogTW9uZGF5LCBPY3RvYmVyIDIzLCAyMDIzIDExOjEwIEFNDQo+ID4+
-IFRvOiBMb2JvLCBNZWxhbmllIDxtZWxhbmllLmxvYm9AaW50ZWwuY29tPjsNCj4gPj4gaWd0LWRl
-dkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gPj4gQ2M6IGp1aGFwZWtrYS5oZWlra2lsYUBnbWFp
-bC5jb207IE1vZGVtLCBCaGFudXByYWthc2gNCj4gPj4gPGJoYW51cHJha2FzaC5tb2RlbUBpbnRl
-bC5jb20+OyBrYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tDQo+ID4+IFN1YmplY3Q6IFJl
-OiBbUEFUQ0hdIHRlc3RzL2ludGVsL2ttc19mbGlwX3NjYWxlZF9jcmM6IEFkZCBzdXBwb3J0IGZv
-cg0KPiA+PiBGUDE2IGNvbXByZXNzZWQgZm9ybWF0cw0KPiA+Pg0KPiA+PiBIaSBNZWxhbmllLA0K
-PiA+Pg0KPiA+PiBJdCBzZWVtcyB0ZXN0cyBhcmUgc2tpcHBpbmcgb24gTVRMUA0KPiA+PiBodHRw
-czovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzEwMDI0L3NoYXJkcy0N
-Cj4gPj4gYWxsLmh0bWw/dGVzdGZpbHRlcj00dGlsZW10bHJjY2NzDQo+ID4+DQo+ID4+IFRlc3Qg
-cmVxdWlyZW1lbnQgbm90IG1ldCBpbiBmdW5jdGlvbiBzZXR1cF9mYiwgZmlsZQ0KPiA+PiAuLi8u
-Li8uLi91c3Ivc3JjL2lndC1ncHUtdG9vbHMvdGVzdHMvaW50ZWwva21zX2ZsaXBfc2NhbGVkX2Ny
-Yy5jOjYyMjoNCj4gPj4gVGVzdCByZXF1aXJlbWVudDogaWd0X2Rpc3BsYXlfaGFzX2Zvcm1hdF9t
-b2QoJmRhdGEtPmRpc3BsYXksIGZvcm1hdCwNCj4gPj4gbW9kaWZpZXIpDQo+ID4+IER5bmFtaWMg
-c3VidGVzdCBwaXBlLUEtZGVmYXVsdC1tb2RlOiBTS0lQICgwLjM3OHMpDQo+ID4+DQo+ID4+IENh
-biB5b3UgY2hlY2sgb25jZT8NCj4gPj4NCj4gPg0KPiA+IEhpIFN3YXRpLA0KPiA+IFRoaXMgSUdU
-IHRlc3QgcmVxdWlyZXMga2VybmVsIHBhdGNoDQo+IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNr
-dG9wLm9yZy9wYXRjaC81NjM4NTQvP3Nlcmllcz0xMjQ5NTcmcmV2PTQgLg0KPiA+ICAgTWF5IGJl
-IGJlY2F1c2Ugb2YgdGhhdCBhbGwgdGhlIHRlc3RzIHNraXAuDQo+ID4NCj4gPiBSZWdhcmRzLA0K
-PiA+IE1lbGFuaWUgTG9ibw0KPiANCj4gb2hoDQo+IElzIGl0IHBvc3NpYmxlIGZvciB5b3UgdG8g
-dXNlICJUZXN0LXdpdGgiIHVzZWQgdG8gdGVzdCBjb21iaW5lZCBJR1QgYW5kIGtlcm5lbA0KPiBj
-aGFuZ2VzLiBNb3JlIGRldGFpbHM6DQo+IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90ZXN0
-LXdpdGguaHRtbA0KPiANCg0KSGkgU3dhdGksDQoNClRoYW5rIHlvdSBzbyBtdWNoLiBJIGhhdmUg
-YWRkZWQgIlRlc3Qtd2l0aCIgdGFnIGFuZCBmbG9hdGVkIHRoZSBuZXh0IHNlcmllcy4gDQoNClJl
-Z2FyZHMsDQpNZWxhbmllIExvYm8NCg0KPiA+DQo+ID4+IE9uIDE5LU9jdC0yMyAxMTozNiBQTSwg
-TWVsYW5pZSBMb2JvIHdyb3RlOg0KPiA+Pj4gTVRMIHN1cHBvcnRzIEZQMTYgZm9ybWF0IHdoaWNo
-IGlzIGEgYmluYXJ5IGZsb2F0aW5nLXBvaW50IGNvbXB1dGVyDQo+ID4+PiBudW1iZXIgZm9ybWF0
-IHRoYXQgb2NjdXBpZXMgMTYgYml0cyBpbiBjb21wdXRlciBtZW1vcnkuIEluIHRoaXMgdGVzdA0K
-PiA+Pj4gcGxhdGZvcm0gc2hhbGwgcmVuZGVyIGNvbXByZXNzaW9uIGluIGRpc3BsYXkgZW5naW5l
-IHRvIHJlY2VpdmUNCj4gPj4+IEZQMTYgY29tcHJlc3NlZCBmb3JtYXRzLg0KPiA+Pj4NCj4gPj4+
-IGNjOiBKdWhhLVBla2thIEhlaWtraWxhIDxqdWhhcGVra2EuaGVpa2tpbGFAZ21haWwuY29tPg0K
-PiA+Pj4gY2M6IEJoYW51cHJha2FzaCBNb2RlbSA8YmhhbnVwcmFrYXNoLm1vZGVtQGludGVsLmNv
-bT4NCj4gPj4+IGNjOiBTd2F0aSBTaGFybWEgPHN3YXRpMi5zaGFybWFAaW50ZWwuY29tPg0KPiA+
-Pj4gU2lnbmVkLW9mZi1ieTogTWVsYW5pZSBMb2JvIDxtZWxhbmllLmxvYm9AaW50ZWwuY29tPg0K
-PiA+Pj4gLS0tDQo+ID4+PiAgICBsaWIvaW50ZWxfYXV4X3BndGFibGUuYyAgICAgICAgICAgfCAg
-NSArKysrKw0KPiA+Pj4gICAgdGVzdHMvaW50ZWwva21zX2ZsaXBfc2NhbGVkX2NyYy5jIHwgMjQg
-KysrKysrKysrKysrKysrKysrKysrKysrDQo+ID4+PiAgICAyIGZpbGVzIGNoYW5nZWQsIDI5IGlu
-c2VydGlvbnMoKykNCj4gPj4+DQo+ID4+PiBkaWZmIC0tZ2l0IGEvbGliL2ludGVsX2F1eF9wZ3Rh
-YmxlLmMgYi9saWIvaW50ZWxfYXV4X3BndGFibGUuYyBpbmRleA0KPiA+Pj4gN2M3OTUyMTM0NGRl
-Li5hNjEyZGY0MDc2OTIgMTAwNjQ0DQo+ID4+PiAtLS0gYS9saWIvaW50ZWxfYXV4X3BndGFibGUu
-Yw0KPiA+Pj4gKysrIGIvbGliL2ludGVsX2F1eF9wZ3RhYmxlLmMNCj4gPj4+IEBAIC0yMSw2ICsy
-MSw3IEBADQo+ID4+PiAgICAjZGVmaW5lIEFVWF9GT1JNQVRfQVlVVgkJMHgwOQ0KPiA+Pj4gICAg
-I2RlZmluZSBBVVhfRk9STUFUX0FSR0JfOEIJMHgwQQ0KPiA+Pj4gICAgI2RlZmluZSBBVVhfRk9S
-TUFUX05WMTJfMjEJMHgwRg0KPiA+Pj4gKyNkZWZpbmUgQVVYX0ZPUk1BVF9YUkdCMTYxNjE2MTZf
-NjRCIDB4MTANCj4gPj4+DQo+ID4+PiAgICBzdHJ1Y3QgcGd0YWJsZV9sZXZlbF9kZXNjIHsNCj4g
-Pj4+ICAgIAlpbnQgaWR4X3NoaWZ0Ow0KPiA+Pj4gQEAgLTMwNSw2ICszMDYsMTAgQEAgc3RhdGlj
-IHVpbnQ2NF90IHBndF9nZXRfbDFfZmxhZ3MoY29uc3Qgc3RydWN0DQo+ID4+IGludGVsX2J1ZiAq
-YnVmLCBpbnQgc3VyZmFjZV9pZHgpDQo+ID4+PiAgICAJCQllbnRyeS5lLmZvcm1hdCA9IEFVWF9G
-T1JNQVRfQVJHQl84QjsNCj4gPj4+ICAgIAkJCWVudHJ5LmUuZGVwdGggPSBicHBfdG9fZGVwdGhf
-dmFsKDMyKTsNCj4gPj4+ICAgIAkJCWJyZWFrOw0KPiA+Pj4gKwkJY2FzZSA2NDoNCj4gPj4+ICsJ
-CQllbnRyeS5lLmZvcm1hdCA9IEFVWF9GT1JNQVRfWFJHQjE2MTYxNjE2XzY0QjsNCj4gPj4+ICsJ
-CQllbnRyeS5lLmRlcHRoID0gYnBwX3RvX2RlcHRoX3ZhbCg2NCk7DQo+ID4+PiArCQkJYnJlYWs7
-DQo+ID4+PiAgICAJCWRlZmF1bHQ6DQo+ID4+PiAgICAJCQlpZ3RfYXNzZXJ0KDApOw0KPiA+Pj4g
-ICAgCQl9DQo+ID4+PiBkaWZmIC0tZ2l0IGEvdGVzdHMvaW50ZWwva21zX2ZsaXBfc2NhbGVkX2Ny
-Yy5jDQo+ID4+PiBiL3Rlc3RzL2ludGVsL2ttc19mbGlwX3NjYWxlZF9jcmMuYw0KPiA+Pj4gaW5k
-ZXggMjk5N2I2M2ZhYzQwLi42ODc0Zjc0N2IyODAgMTAwNjQ0DQo+ID4+PiAtLS0gYS90ZXN0cy9p
-bnRlbC9rbXNfZmxpcF9zY2FsZWRfY3JjLmMNCj4gPj4+ICsrKyBiL3Rlc3RzL2ludGVsL2ttc19m
-bGlwX3NjYWxlZF9jcmMuYw0KPiA+Pj4gQEAgLTE0Miw2ICsxNDIsMTQgQEANCj4gPj4+ICAgICAq
-IE1lZ2EgZmVhdHVyZTogR2VuZXJhbCBEaXNwbGF5IEZlYXR1cmVzDQo+ID4+PiAgICAgKiBUZXN0
-IGNhdGVnb3J5OiBmdW5jdGlvbmFsaXR5IHRlc3QNCj4gPj4+ICAgICAqDQo+ID4+PiArICogU1VC
-VEVTVDogZmxpcC02NGJwcC00dGlsZS10by0zMmJwcC00dGlsZW10bHJjY2NzLSVzDQo+ID4+PiAr
-ICogRGVzY3JpcHRpb246IEZsaXAgZnJvbSA2NGJwcCBub24gc2NhbGVkIGZiIHRvIDMyYnBwICVh
-cmdbMV0gZmINCj4gPj4+ICsgdG8gc3RyZXNzDQo+ID4+IENEDQo+ID4+PiArICogICAgICAgICAg
-ICAgIGNsb2NrIHByb2dyYW1taW5nDQo+ID4+PiArICogRHJpdmVyIHJlcXVpcmVtZW50OiBpOTE1
-LCB4ZQ0KPiA+Pj4gKyAqIEZ1bmN0aW9uYWxpdHk6IGNjcywgc2NhbGluZywgdGlsaW5nLCB2Ymxh
-bmsNCj4gPj4+ICsgKiBNZWdhIGZlYXR1cmU6IEdlbmVyYWwgRGlzcGxheSBGZWF0dXJlcw0KPiA+
-Pj4gKyAqIFRlc3QgY2F0ZWdvcnk6IGZ1bmN0aW9uYWxpdHkgdGVzdA0KPiA+Pj4gKyAqDQo+ID4+
-PiAgICAgKiBhcmdbMV06DQo+ID4+PiAgICAgKg0KPiA+Pj4gICAgICogQGRvd25zY2FsaW5nOiAg
-ICAgICAgRG93bnNjYWxlZA0KPiA+Pj4gQEAgLTQwNiw2ICs0MTQsMTQgQEAgY29uc3Qgc3RydWN0
-IHsNCj4gPj4+ICAgIAkJMS4wLA0KPiA+Pj4gICAgCQkyLjAsDQo+ID4+PiAgICAJfSwNCj4gPj4+
-ICsJew0KPiA+Pj4gKwkJImZsaXAtNjRicHAtNHRpbGUtdG8tMzJicHAtNHRpbGVtdGxyY2Njcy1k
-b3duc2NhbGluZyIsDQo+ID4+PiArCQkiRmxpcCBmcm9tIDY0YnBwIG5vbiBzY2FsZWQgZmIgdG8g
-MzJicHAgZG93bnNjYWxlZCBmYiB0bw0KPiA+PiBzdHJlc3MgQ0QgY2xvY2sgcHJvZ3JhbW1pbmci
-LA0KPiA+Pj4gKwkJSTkxNV9GT1JNQVRfTU9EXzRfVElMRUQsDQo+ID4+IERSTV9GT1JNQVRfWFJH
-QjE2MTYxNjE2RiwNCj4gPj4+ICsJCUk5MTVfRk9STUFUX01PRF80X1RJTEVEX01UTF9SQ19DQ1Ms
-DQo+ID4+IERSTV9GT1JNQVRfWFJHQjE2MTYxNjE2RiwNCj4gPj4+ICsJCTEuMCwNCj4gPj4+ICsJ
-CTIuMCwNCj4gPj4+ICsJfSwNCj4gPj4+ICAgIAl7DQo+ID4+PiAgICAJCSJmbGlwLTMyYnBwLXl0
-aWxlLXRvLTY0YnBwLXl0aWxlLXVwc2NhbGluZyIsDQo+ID4+PiAgICAJCSJGbGlwIGZyb20gMzJi
-cHAgbm9uIHNjYWxlZCBmYiB0byA2NGJwcCB1cHNjYWxlZCBmYiB0byBzdHJlc3MNCj4gPj4gQ0QN
-Cj4gPj4+IGNsb2NrIHByb2dyYW1taW5nIiwgQEAgLTU5MCw2ICs2MDYsMTQgQEAgY29uc3Qgc3Ry
-dWN0IHsNCj4gPj4+ICAgIAkJMC41LA0KPiA+Pj4gICAgCQkxLjAsDQo+ID4+PiAgICAJfSwNCj4g
-Pj4+ICsJew0KPiA+Pj4gKwkJImZsaXAtNjRicHAtNHRpbGUtdG8tMzJicHAtNHRpbGVtdGxyY2Nj
-cy11cHNjYWxpbmciLA0KPiA+Pj4gKwkJIkZsaXAgZnJvbSA2NGJwcCBub24gc2NhbGVkIGZiIHRv
-IDMyYnBwIHVwc2NhbGVkIGZiIHRvIHN0cmVzcw0KPiA+PiBDRCBjbG9jayBwcm9ncmFtbWluZyIs
-DQo+ID4+PiArCQlJOTE1X0ZPUk1BVF9NT0RfNF9USUxFRCwNCj4gPj4gRFJNX0ZPUk1BVF9YUkdC
-MTYxNjE2MTZGLA0KPiA+Pj4gKwkJSTkxNV9GT1JNQVRfTU9EXzRfVElMRURfTVRMX1JDX0NDUywN
-Cj4gPj4gRFJNX0ZPUk1BVF9YUkdCMTYxNjE2MTZGLA0KPiA+Pj4gKwkJMC41LA0KPiA+Pj4gKwkJ
-MS4wLA0KPiA+Pj4gKwl9LA0KPiA+Pj4gICAgfTsNCj4gPj4+DQo+ID4+PiAgICBzdGF0aWMgdm9p
-ZCBzZXR1cF9mYihkYXRhX3QgKmRhdGEsIHN0cnVjdCBpZ3RfZmIgKm5ld2ZiLCB1aW50MzJfdA0K
-PiA+Pj4gd2lkdGgsDQo=
+== Series Details ==
+
+Series: tests/kms_vrr: Modify kms_vrr to allow flicker profiling
+URL   : https://patchwork.freedesktop.org/series/125479/
+State : failure
+
+== Summary ==
+
+IGT patchset build failed on latest successful build
+557856802dfee103802f1157f97c65bb476d5468 lib/igt_kmod: Remove wrong note regarding dependencies
+
+Tail of build.log:
+[1599/1645] Linking target tools/intel_infoframes.
+[1600/1645] Linking target tools/intel_reg.
+[1601/1645] Linking target tools/intel_dp_compliance.
+[1602/1645] Linking target tools/intel_residency.
+[1603/1645] Linking target tools/intel_gvtg_test.
+[1604/1645] Linking target runner/testdata/successtest.
+[1605/1645] Linking target runner/testdata/no-subtests.
+[1606/1645] Linking target runner/testdata/abort-dynamic.
+[1607/1645] Linking target tools/msm_dp_compliance.
+[1608/1645] Linking target tools/amd_hdmi_compliance.
+[1609/1645] Linking target runner/testdata/abort-fixture.
+[1610/1645] Generating gem_stress.testlist with a meson_exe.py custom command.
+[1611/1645] Linking target tools/lsgpu.
+[1612/1645] Linking target runner/testdata/dynamic.
+[1613/1645] Linking target tools/intel_l3_parity.
+[1614/1645] Linking target runner/testdata/abort-simple.
+[1615/1645] Linking target runner/igt_runner.
+[1616/1645] Linking target runner/igt_comms_decoder.
+[1617/1645] Linking target runner/testdata/skippers.
+[1618/1645] Linking target runner/testdata/abort.
+[1619/1645] Linking target runner/runner_json_test.
+[1620/1645] Linking target runner/igt_resume.
+[1621/1645] Linking target runner/igt_results.
+[1622/1645] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_mtlgt3.c.o'.
+[1623/1645] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt1.c.o'.
+[1624/1645] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
+[1625/1645] Linking target runner/runner_test.
+[1626/1645] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt2.c.o'.
+[1627/1645] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt3.c.o'.
+[1628/1645] Linking target lib/libi915_perf.so.1.5.
+[1629/1645] Generating symbol file 'lib/76b5a35@@i915_perf@sha/libi915_perf.so.1.5.symbols'.
+[1630/1645] Linking target tools/i915-perf/i915-perf-configs.
+[1631/1645] Linking target tools/i915-perf/i915-perf-recorder.
+[1632/1645] Linking target tools/i915-perf/i915-perf-reader.
+[1633/1645] Linking target tests/core_hotunplug.
+[1634/1645] Linking target tests/gem_barrier_race.
+[1635/1645] Linking target tests/perf.
+[1636/1645] Generating gem_barrier_race.testlist with a meson_exe.py custom command.
+[1637/1645] Generating perf.testlist with a meson_exe.py custom command.
+[1638/1645] Generating core_hotunplug.testlist with a meson_exe.py custom command.
+[1639/1645] Generating xe_tests.rst with a custom command.
+[1640/1645] Generating i915_tests.rst with a custom command.
+[1641/1645] Generating kms_tests.rst with a custom command.
+FAILED: docs/testplan/kms_tests.rst 
+/usr/src/igt-gpu-tools/scripts/igt_doc.py --config /usr/src/igt-gpu-tools/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /opt/igt/build
+Warning: Missing documentation for igt@kms_vrr@max-min
+Please refer: docs/test_documentation.md for more details
+[1642/1645] Generating xe_tests.html with a custom command.
+[1643/1645] Generating i915_tests.html with a custom command.
+ninja: build stopped: subcommand failed.
+
