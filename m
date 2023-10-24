@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2185110E3C6
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Oct 2023 13:51:10 +0000 (UTC)
-Date: Tue, 24 Oct 2023 15:51:05 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 12FEF10E002
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Oct 2023 13:57:44 +0000 (UTC)
+Date: Tue, 24 Oct 2023 15:57:38 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: Petri Latvala <adrinael@adrinael.net>
-Message-ID: <20231024155105.60f3a741@maurocar-mobl2>
-In-Reply-To: <20231020133041.58257-1-adrinael@adrinael.net>
+Message-ID: <20231024155738.552fe164@maurocar-mobl2>
+In-Reply-To: <20231020133041.58257-2-adrinael@adrinael.net>
 References: <20231020133041.58257-1-adrinael@adrinael.net>
+ <20231020133041.58257-2-adrinael@adrinael.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH 1/3] runner: Normalize testlist entries that
- don't list subtests
+Subject: Re: [igt-dev] [PATCH 2/3] runner/runner_tests: Unit tests for
+ binary-name-only testlist entries
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,63 +26,95 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, 20 Oct 2023 16:30:39 +0300
+On Fri, 20 Oct 2023 16:30:40 +0300
 Petri Latvala <adrinael@adrinael.net> wrote:
 
-> As the syntax for "all subtests" and "test that doesn't have subtests"
-> is the same, check the subtest listing when building the execution
-> plan. Doing that makes it possible to still have "all subtests" in
-> testlists (albeit not originally designed to support that) and enables
-> blocklisting particular subtests.
-> 
 > Signed-off-by: Petri Latvala <adrinael@adrinael.net>
-> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-> Cc: Arkadiusz Hiler <arek@hiler.eu>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/149
 
-That does the job.
-
-Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
 > ---
->  runner/job_list.c | 22 +++++++++++++++++++++-
->  1 file changed, 21 insertions(+), 1 deletion(-)
+>  runner/runner_tests.c | 70 +++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 70 insertions(+)
 > 
-> diff --git a/runner/job_list.c b/runner/job_list.c
-> index e6ea83631..27cbb10bc 100644
-> --- a/runner/job_list.c
-> +++ b/runner/job_list.c
-> @@ -230,8 +230,28 @@ static bool job_list_from_test_list(struct job_list *job_list,
->  			continue;
+> diff --git a/runner/runner_tests.c b/runner/runner_tests.c
+> index a7e968f85..e6024de11 100644
+> --- a/runner/runner_tests.c
+> +++ b/runner/runner_tests.c
+> @@ -1810,6 +1810,76 @@ igt_main
+>  		}
+>  	}
 >  
->  		if (sscanf(line, "igt@%ms", &binary) == 1) {
-> -			if ((delim = strchr(binary, '@')) != NULL)
-> +			if ((delim = strchr(binary, '@')) != NULL) {
->  				*delim++ = '\0';
-> +			} else {
-> +				/*
-> +				 * No subtests specified. Check
-> +				 * whether the user means "all
-> +				 * subtests" or if the test doesn't
-> +				 * have any.
-> +				 */
-> +				if (entry.binary) {
-> +					/* First flush the entry we're building for multiple-mode */
-> +					add_job_list_entry(job_list, entry.binary, entry.subtests, entry.subtest_count);
-> +					memset(&entry, 0, sizeof(entry));
-> +					any = true;
-> +				}
+> +	igt_subtest_group {
+> +		const char testlisttext[] = "igt@successtest";
+> +		const char blocktext[] = "igt@successtest@first";
+> +		struct job_list *list = malloc(sizeof(*list));
+> +		volatile int dirfd = -1;
+> +		char dirname[] = "tmpdirXXXXXX";
+> +		volatile int listfd;
+> +		volatile int blockfd;
+> +		char listfilename[] = "tmplistXXXXXX";
+> +		char blockfilename[] = "tmpblockXXXXXX";
 > +
-> +				add_subtests(job_list, settings, binary,
-> +					     &settings->include_regexes,
-> +					     &settings->exclude_regexes);
-> +				any = true;
-> +				continue;
-> +			}
->  
->  			if (!settings->multiple_mode) {
->  				char **subtests = NULL;
+> +		igt_fixture {
+> +			igt_require(mkdtemp(dirname) != NULL);
+> +			rmdir(dirname);
+> +
+> +			igt_require((listfd = mkstemp(listfilename)) >= 0);
+> +			igt_require(write(listfd, testlisttext, strlen(testlisttext)) == strlen(testlisttext));
+> +			igt_require((blockfd = mkstemp(blockfilename)) >= 0);
+> +			igt_require(write(blockfd, blocktext, strlen(blocktext)) == strlen(blocktext));
+> +			close(listfd);
+> +			close(blockfd);
+> +
+> +			init_job_list(list);
+> +		}
+> +
+> +		igt_subtest("only-binary-name-in-testlist") {
+> +			const char *argv[] = { "runner",
+> +				"--allow-non-root",
+> +				"--test-list", listfilename,
+> +				testdatadir,
+> +				dirname,
+> +			};
+> +
+> +			igt_assert(parse_options(ARRAY_SIZE(argv), (char**)argv, settings));
+> +
+> +			igt_assert(create_job_list(list, settings));
+> +			/* No multi-mode, binary has two subtests, should be normalized to have individual subtests */
+> +			igt_assert_eq(list->size, 2);
+> +			igt_assert_eq(list->entries[0].subtest_count, 1);
+> +			igt_assert_eq(list->entries[1].subtest_count, 1);
+> +		}
+> +
+> +		igt_subtest("only-binary-name-in-testlist-with-blocks") {
+> +			const char *argv[] = { "runner",
+> +				"--allow-non-root",
+> +				"--test-list", listfilename,
+> +				"-b", blockfilename,
+> +				testdatadir,
+> +				dirname,
+> +			};
+> +
+> +			igt_assert(parse_options(ARRAY_SIZE(argv), (char**)argv, settings));
+> +
+> +			igt_assert(create_job_list(list, settings));
+> +			/* No multi-mode, binary has two subtests, one of them blocked */
+> +			igt_assert_eq(list->size, 1);
+> +			igt_assert_eq(list->entries[0].subtest_count, 1);
+> +			igt_assert_eqstr(list->entries[0].subtests[0], "second-subtest");
+> +		}
+> +
+> +		igt_fixture {
+> +			unlink(listfilename);
+> +			unlink(blockfilename);
+> +			close(dirfd);
+> +			clear_directory(dirname);
+> +			free_job_list(list);
+> +			free(list);
+> +		}
+> +	}
+> +
+>  	igt_subtest_group {
+>  		struct job_list *list = malloc(sizeof(*list));
+>  		volatile int dirfd = -1;
