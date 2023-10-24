@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E5FB210E429
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Oct 2023 16:42:07 +0000 (UTC)
-Date: Tue, 24 Oct 2023 18:42:03 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Matthew Auld <matthew.auld@intel.com>
-Message-ID: <20231024164203.smld2j65qabpdjcl@zkempczy-mobl2>
-References: <20231020093801.631809-1-matthew.auld@intel.com>
- <20231020093801.631809-14-matthew.auld@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7EA0B10E312
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Oct 2023 16:54:33 +0000 (UTC)
+Date: Tue, 24 Oct 2023 18:53:50 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20231024165350.wynbj7cn67tr7owk@kamilkon-desk.igk.intel.com>
+References: <20231020133041.58257-1-adrinael@adrinael.net>
+ <20231020133041.58257-2-adrinael@adrinael.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231020093801.631809-14-matthew.auld@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v5 13/15] lib/intel_batchbuffer: extend
- to include optional alignment
+In-Reply-To: <20231020133041.58257-2-adrinael@adrinael.net>
+Subject: Re: [igt-dev] [PATCH 2/3] runner/runner_tests: Unit tests for
+ binary-name-only testlist entries
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,160 +21,135 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Oct 20, 2023 at 10:37:59AM +0100, Matthew Auld wrote:
-> Extend intel_bb_create_full() to support specifying the alignment for
-> the allocator. This will be useful in some upcoming test.
-> 
-> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: José Roberto de Souza <jose.souza@intel.com>
-> Cc: Pallavi Mishra <pallavi.mishra@intel.com>
-> Reviewed-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+Hi Petri,
+
+Please add a description here, see checkpatch.pl:
+
+WARNING: Missing commit description - Add an appropriate one
+
+On 2023-10-20 at 16:30:40 +0300, Petri Latvala wrote:
+> Signed-off-by: Petri Latvala <adrinael@adrinael.net>
 > ---
->  lib/intel_batchbuffer.c | 30 +++++++++++++++++++-----------
->  lib/intel_batchbuffer.h |  2 +-
->  2 files changed, 20 insertions(+), 12 deletions(-)
+>  runner/runner_tests.c | 70 +++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 70 insertions(+)
 > 
-> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-> index ef3e3154a..0fcf62452 100644
-> --- a/lib/intel_batchbuffer.c
-> +++ b/lib/intel_batchbuffer.c
-> @@ -894,7 +894,7 @@ static inline uint64_t __intel_bb_get_offset(struct intel_bb *ibb,
->  static struct intel_bb *
->  __intel_bb_create(int fd, uint32_t ctx, uint32_t vm, const intel_ctx_cfg_t *cfg,
->  		  uint32_t size, bool do_relocs,
-> -		  uint64_t start, uint64_t end,
-> +		  uint64_t start, uint64_t end, uint64_t alignment,
->  		  uint8_t allocator_type, enum allocator_strategy strategy)
->  {
->  	struct drm_i915_gem_exec_object2 *object;
-> @@ -918,7 +918,11 @@ __intel_bb_create(int fd, uint32_t ctx, uint32_t vm, const intel_ctx_cfg_t *cfg,
->  	 */
->  	if (ibb->driver == INTEL_DRIVER_I915) {
->  		ibb->uses_full_ppgtt = gem_uses_full_ppgtt(fd);
-> -		ibb->alignment = gem_detect_safe_alignment(fd);
+> diff --git a/runner/runner_tests.c b/runner/runner_tests.c
+> index a7e968f85..e6024de11 100644
+> --- a/runner/runner_tests.c
+> +++ b/runner/runner_tests.c
+> @@ -1810,6 +1810,76 @@ igt_main
+>  		}
+>  	}
+>  
+> +	igt_subtest_group {
+> +		const char testlisttext[] = "igt@successtest";
+
+WARNING: const array should probably be static const
+
+> +		const char blocktext[] = "igt@successtest@first";
+Same here.
+
+> +		struct job_list *list = malloc(sizeof(*list));
+> +		volatile int dirfd = -1;
+
+WARNING: Use of volatile is usually wrong: see Documentation/process/volatile-considered-harmful.rst
+Maybe static?
+
+> +		char dirname[] = "tmpdirXXXXXX";
+> +		volatile int listfd;
+--------^
+Same here.
+
+> +		volatile int blockfd;
+--------^
+Same here.
+
+> +		char listfilename[] = "tmplistXXXXXX";
+> +		char blockfilename[] = "tmpblockXXXXXX";
 > +
-> +		if (!alignment)
-> +			alignment = gem_detect_safe_alignment(fd);
+> +		igt_fixture {
+> +			igt_require(mkdtemp(dirname) != NULL);
+> +			rmdir(dirname);
 > +
-> +		ibb->alignment = alignment;
->  		ibb->gtt_size = gem_aperture_size(fd);
->  		ibb->handle = gem_create(fd, size);
->  
-> @@ -947,7 +951,10 @@ __intel_bb_create(int fd, uint32_t ctx, uint32_t vm, const intel_ctx_cfg_t *cfg,
->  	} else {
->  		igt_assert(!do_relocs);
->  
-> -		ibb->alignment = xe_get_default_alignment(fd);
-> +		if (!alignment)
-> +			alignment = xe_get_default_alignment(fd);
+> +			igt_require((listfd = mkstemp(listfilename)) >= 0);
+> +			igt_require(write(listfd, testlisttext, strlen(testlisttext)) == strlen(testlisttext));
+> +			igt_require((blockfd = mkstemp(blockfilename)) >= 0);
+> +			igt_require(write(blockfd, blocktext, strlen(blocktext)) == strlen(blocktext));
+> +			close(listfd);
+> +			close(blockfd);
 > +
-> +		ibb->alignment = alignment;
+> +			init_job_list(list);
+> +		}
+> +
+> +		igt_subtest("only-binary-name-in-testlist") {
+> +			const char *argv[] = { "runner",
 
-+ r-b from me either:
+WARNING: char * array declaration might be better as static const
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> +				"--allow-non-root",
+> +				"--test-list", listfilename,
+> +				testdatadir,
+> +				dirname,
+> +			};
+> +
+> +			igt_assert(parse_options(ARRAY_SIZE(argv), (char**)argv, settings));
 
---
-Zbigniew
+ERROR: "(foo**)" should be "(foo **)"
 
->  		size = ALIGN(size, ibb->alignment);
->  		ibb->handle = xe_bo_create_flags(fd, 0, size, visible_vram_if_possible(fd, 0));
->  
-> @@ -1018,6 +1025,7 @@ __intel_bb_create(int fd, uint32_t ctx, uint32_t vm, const intel_ctx_cfg_t *cfg,
->   * @size: size of the batchbuffer
->   * @start: allocator vm start address
->   * @end: allocator vm start address
-> + * @alignment: alignment to use for allocator, zero for default
->   * @allocator_type: allocator type, SIMPLE, RELOC, ...
->   * @strategy: allocation strategy
->   *
-> @@ -1034,11 +1042,11 @@ __intel_bb_create(int fd, uint32_t ctx, uint32_t vm, const intel_ctx_cfg_t *cfg,
->  struct intel_bb *intel_bb_create_full(int fd, uint32_t ctx, uint32_t vm,
->  				      const intel_ctx_cfg_t *cfg, uint32_t size,
->  				      uint64_t start, uint64_t end,
-> -				      uint8_t allocator_type,
-> +				      uint64_t alignment, uint8_t allocator_type,
->  				      enum allocator_strategy strategy)
->  {
->  	return __intel_bb_create(fd, ctx, vm, cfg, size, false, start, end,
-> -				 allocator_type, strategy);
-> +				 alignment, allocator_type, strategy);
->  }
->  
->  /**
-> @@ -1063,7 +1071,7 @@ struct intel_bb *intel_bb_create_with_allocator(int fd, uint32_t ctx, uint32_t v
->  						uint32_t size,
->  						uint8_t allocator_type)
->  {
-> -	return __intel_bb_create(fd, ctx, vm, cfg, size, false, 0, 0,
-> +	return __intel_bb_create(fd, ctx, vm, cfg, size, false, 0, 0, 0,
->  				 allocator_type, ALLOC_STRATEGY_HIGH_TO_LOW);
->  }
->  
-> @@ -1102,7 +1110,7 @@ struct intel_bb *intel_bb_create(int fd, uint32_t size)
->  	bool relocs = is_i915_device(fd) && gem_has_relocations(fd);
->  
->  	return __intel_bb_create(fd, 0, 0, NULL, size,
-> -				 relocs && !aux_needs_softpin(fd), 0, 0,
-> +				 relocs && !aux_needs_softpin(fd), 0, 0, 0,
->  				 INTEL_ALLOCATOR_SIMPLE,
->  				 ALLOC_STRATEGY_HIGH_TO_LOW);
->  }
-> @@ -1129,7 +1137,7 @@ intel_bb_create_with_context(int fd, uint32_t ctx, uint32_t vm,
->  	bool relocs = is_i915_device(fd) && gem_has_relocations(fd);
->  
->  	return __intel_bb_create(fd, ctx, vm, cfg, size,
-> -				 relocs && !aux_needs_softpin(fd), 0, 0,
-> +				 relocs && !aux_needs_softpin(fd), 0, 0, 0,
->  				 INTEL_ALLOCATOR_SIMPLE,
->  				 ALLOC_STRATEGY_HIGH_TO_LOW);
->  }
-> @@ -1150,7 +1158,7 @@ struct intel_bb *intel_bb_create_with_relocs(int fd, uint32_t size)
->  {
->  	igt_require(is_i915_device(fd) && gem_has_relocations(fd));
->  
-> -	return __intel_bb_create(fd, 0, 0, NULL, size, true, 0, 0,
-> +	return __intel_bb_create(fd, 0, 0, NULL, size, true, 0, 0, 0,
->  				 INTEL_ALLOCATOR_NONE, ALLOC_STRATEGY_NONE);
->  }
->  
-> @@ -1175,7 +1183,7 @@ intel_bb_create_with_relocs_and_context(int fd, uint32_t ctx,
->  {
->  	igt_require(is_i915_device(fd) && gem_has_relocations(fd));
->  
-> -	return __intel_bb_create(fd, ctx, 0, cfg, size, true, 0, 0,
-> +	return __intel_bb_create(fd, ctx, 0, cfg, size, true, 0, 0, 0,
->  				 INTEL_ALLOCATOR_NONE, ALLOC_STRATEGY_NONE);
->  }
->  
-> @@ -1195,7 +1203,7 @@ struct intel_bb *intel_bb_create_no_relocs(int fd, uint32_t size)
->  {
->  	igt_require(gem_uses_full_ppgtt(fd));
->  
-> -	return __intel_bb_create(fd, 0, 0, NULL, size, false, 0, 0,
-> +	return __intel_bb_create(fd, 0, 0, NULL, size, false, 0, 0, 0,
->  				 INTEL_ALLOCATOR_SIMPLE,
->  				 ALLOC_STRATEGY_HIGH_TO_LOW);
->  }
-> diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
-> index bdb3b6a67..8738cb5c4 100644
-> --- a/lib/intel_batchbuffer.h
-> +++ b/lib/intel_batchbuffer.h
-> @@ -307,7 +307,7 @@ struct intel_bb {
->  struct intel_bb *
->  intel_bb_create_full(int fd, uint32_t ctx, uint32_t vm,
->  		     const intel_ctx_cfg_t *cfg, uint32_t size, uint64_t start,
-> -		     uint64_t end, uint8_t allocator_type,
-> +		     uint64_t end, uint64_t alignment, uint8_t allocator_type,
->  		     enum allocator_strategy strategy);
->  struct intel_bb *
->  intel_bb_create_with_allocator(int fd, uint32_t ctx, uint32_t vm,
+> +
+> +			igt_assert(create_job_list(list, settings));
+> +			/* No multi-mode, binary has two subtests, should be normalized to have individual subtests */
+> +			igt_assert_eq(list->size, 2);
+> +			igt_assert_eq(list->entries[0].subtest_count, 1);
+> +			igt_assert_eq(list->entries[1].subtest_count, 1);
+> +		}
+> +
+> +		igt_subtest("only-binary-name-in-testlist-with-blocks") {
+> +			const char *argv[] = { "runner",
+
+WARNING: char * array declaration might be better as static const
+
+> +				"--allow-non-root",
+> +				"--test-list", listfilename,
+> +				"-b", blockfilename,
+> +				testdatadir,
+> +				dirname,
+> +			};
+> +
+> +			igt_assert(parse_options(ARRAY_SIZE(argv), (char**)argv, settings));
+
+ERROR: "(foo**)" should be "(foo **)"
+
+Looks ok, tests passes.
+
+Regards,
+Kamil
+
+> +
+> +			igt_assert(create_job_list(list, settings));
+> +			/* No multi-mode, binary has two subtests, one of them blocked */
+> +			igt_assert_eq(list->size, 1);
+> +			igt_assert_eq(list->entries[0].subtest_count, 1);
+> +			igt_assert_eqstr(list->entries[0].subtests[0], "second-subtest");
+> +		}
+> +
+> +		igt_fixture {
+> +			unlink(listfilename);
+> +			unlink(blockfilename);
+> +			close(dirfd);
+> +			clear_directory(dirname);
+> +			free_job_list(list);
+> +			free(list);
+> +		}
+> +	}
+> +
+>  	igt_subtest_group {
+>  		struct job_list *list = malloc(sizeof(*list));
+>  		volatile int dirfd = -1;
 > -- 
-> 2.41.0
+> 2.39.2
 > 
