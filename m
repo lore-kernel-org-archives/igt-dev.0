@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A898110E430
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Oct 2023 17:16:30 +0000 (UTC)
-Message-ID: <8de4e1c7-d353-620d-6920-05c4e1328808@intel.com>
-Date: Tue, 24 Oct 2023 18:16:26 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 770A210E447
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Oct 2023 17:36:23 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 24 Oct 2023 19:36:13 +0200
+Message-Id: <20231024173618.127007-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Language: en-GB
-To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20231020093801.631809-1-matthew.auld@intel.com>
- <20231020093801.631809-12-matthew.auld@intel.com>
- <20231024163949.v6gt7n6gprodvh7v@zkempczy-mobl2>
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20231024163949.v6gt7n6gprodvh7v@zkempczy-mobl2>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t v5 11/15] lib/intel_allocator: treat
- default_alignment as the minimum
+Subject: [igt-dev] [PATCH i-g-t v4 0/5] Add flat-ccs tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,75 +17,44 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 24/10/2023 17:39, Zbigniew Kempczyński wrote:
-> On Fri, Oct 20, 2023 at 10:37:57AM +0100, Matthew Auld wrote:
->> If something overrides the default alignment, we should only apply the
->> alignment if it is larger than the default_alignment.
->>
->> v2 (Niranjana):
->>    - Simplify slightly
->>
->> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
->> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
->> Cc: José Roberto de Souza <jose.souza@intel.com>
->> Cc: Pallavi Mishra <pallavi.mishra@intel.com>
->> Reviewed-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
->> ---
->>   lib/intel_allocator.c | 4 ++--
->>   1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
->> index e5b9457b8..96ffe40d5 100644
->> --- a/lib/intel_allocator.c
->> +++ b/lib/intel_allocator.c
->> @@ -584,8 +584,8 @@ static int handle_request(struct alloc_req *req, struct alloc_resp *resp)
->>   			break;
->>   
->>   		case REQ_ALLOC:
->> -			if (!req->alloc.alignment)
->> -				req->alloc.alignment = ial->default_alignment;
->> +			req->alloc.alignment = max(ial->default_alignment,
->> +						   req->alloc.alignment);
-> 
-> It will work but change current allocator behavior regarding
-> requested smaller alignment than default. I mean if allocator was
-> created with (let's say) 64K alignment and we want to suballocate
-> with 4K we can't do that with above code. All object regardless
-> our alignment requirement will be aligned to 64K.
-> 
-> Of course my need to have objects aligned to 4K is still reachable
-> if I create allocator with 4K as enforced alignment and pass 64K
-> as alignment argument on alloc().
+On DG2 I observe data inconsistency with flat-ccs when buffers are
+returning back from system to vram. For the verification first group
+of subtests is run on 20% of vram, second on 110% which triggers
+eviction. Issue is visible mostly on 'parallel' subtests.
 
-Yeah, that seems fine to me. If I don't ask for any specific alignment 
-when creating the allocator it should just give me the "safe" default 
-imo, and all further allocations should be at least that, no matter what.
+v2: Add different cmdline switches to exercise eviction using different
+    sizes and vram overcommitment percent 
+v3: Handle mappable vram flag in blitter helper + address some minor
+    nits
+v4: Remove hwe (Matt) + truncate sizes to SZ_1K+ (Kamil)
 
-If something more exotic (which doesn't seem to be the common case) is 
-needed with being able to use say 4K, then manually setting that when 
-creating the allocator isn't too unreasonable, with then having finer 
-control with each individual allocation?
+Zbigniew Kempczyński (5):
+  lib/intel_blt: Release an offset in the allocator on buffer destroy
+  lib/intel_blt: Add visible vram flag if object needs to be mapped
+  lib/igt_sizes: Add common SZ_* header
+  tests/xe_evict_ccs: Add evict ccs test
+  intel-ci/xe-fast-feedback: Add two xe_evict_ccs subtests for Xe run
 
-> 
-> What case are you solving with above code?
+ lib/igt.h                                |   1 +
+ lib/igt_sizes.h                          |  33 ++
+ lib/intel_blt.c                          |  22 +-
+ lib/intel_blt.h                          |   2 +
+ lib/xe/xe_query.h                        |   4 +-
+ tests/intel-ci/xe-fast-feedback.testlist |   2 +
+ tests/intel/gem_exec_async.c             |   2 -
+ tests/intel/gem_lmem_swapping.c          |   1 -
+ tests/intel/i915_query.c                 |   1 -
+ tests/intel/xe_evict.c                   |   3 -
+ tests/intel/xe_evict_ccs.c               | 514 +++++++++++++++++++++++
+ tests/meson.build                        |   1 +
+ tests/msm/msm_shrink.c                   |   2 -
+ 13 files changed, 574 insertions(+), 14 deletions(-)
+ create mode 100644 lib/igt_sizes.h
+ create mode 100644 tests/intel/xe_evict_ccs.c
 
-For my case I basically just want to force the allocator to always use 
-2M+ alignment, and I don't want random lib stuff passing in 4K/64K when 
-allocating an address and somehow overriding that. But perhaps I'm 
-misunderstanding how this all works?
-
-> 
-> --
-> Zbigniew
-> 
->>   
->>   			resp->response_type = RESP_ALLOC;
->>   			resp->alloc.offset = ial->alloc(ial,
->> -- 
->> 2.41.0
->>
+-- 
+2.34.1
