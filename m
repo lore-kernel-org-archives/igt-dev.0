@@ -1,15 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E0F3110E0A1
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Oct 2023 05:30:07 +0000 (UTC)
-From: Melanie Lobo <melanie.lobo@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 24 Oct 2023 11:13:58 +0530
-Message-Id: <20231024054358.24504-1-melanie.lobo@intel.com>
-In-Reply-To: <20231010134540.28485-1-melanie.lobo@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A3DD610E2DF
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Oct 2023 05:32:45 +0000 (UTC)
+From: "Lobo, Melanie" <melanie.lobo@intel.com>
+To: "Sharma, Swati2" <swati2.sharma@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Tue, 24 Oct 2023 05:32:41 +0000
+Message-ID: <DS0PR11MB649582298ABA023FF4CA4DB188DFA@DS0PR11MB6495.namprd11.prod.outlook.com>
 References: <20231010134540.28485-1-melanie.lobo@intel.com>
-Subject: [igt-dev] [PATCH] tests/intel/kms_flip_scaled_crc: Add support for
- FP16 compressed formats
+ <20231019180630.20689-1-melanie.lobo@intel.com>
+ <b5630343-e691-48ad-9ee7-93ff2eb6733b@intel.com>
+ <DS0PR11MB64952CEC04ABDA995ED7EEB788D8A@DS0PR11MB6495.namprd11.prod.outlook.com>
+ <1750a0e6-c868-4f5a-b1fa-4dd3a5ac0947@intel.com>
+In-Reply-To: <1750a0e6-c868-4f5a-b1fa-4dd3a5ac0947@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH] tests/intel/kms_flip_scaled_crc: Add support
+ for FP16 compressed formats
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,96 +30,103 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-MTL supports FP16 format which is a binary floating-point computer
-number format that occupies 16 bits in computer memory. In this test
-platform shall render compression in display engine to receive
-FP16 compressed formats.
-
-This IGT test was tested with kernel patch,
-https://patchwork.freedesktop.org/patch/563854
-
-Test-with: 20231012062620.23886-1-melanie.lobo@intel.com
-
-cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-cc: Swati Sharma <swati2.sharma@intel.com>
-Signed-off-by: Melanie Lobo <melanie.lobo@intel.com>
----
- lib/intel_aux_pgtable.c           |  5 +++++
- tests/intel/kms_flip_scaled_crc.c | 24 ++++++++++++++++++++++++
- 2 files changed, 29 insertions(+)
-
-diff --git a/lib/intel_aux_pgtable.c b/lib/intel_aux_pgtable.c
-index 7c79521344de..a612df407692 100644
---- a/lib/intel_aux_pgtable.c
-+++ b/lib/intel_aux_pgtable.c
-@@ -21,6 +21,7 @@
- #define AUX_FORMAT_AYUV		0x09
- #define AUX_FORMAT_ARGB_8B	0x0A
- #define AUX_FORMAT_NV12_21	0x0F
-+#define AUX_FORMAT_XRGB16161616_64B 0x10
- 
- struct pgtable_level_desc {
- 	int idx_shift;
-@@ -305,6 +306,10 @@ static uint64_t pgt_get_l1_flags(const struct intel_buf *buf, int surface_idx)
- 			entry.e.format = AUX_FORMAT_ARGB_8B;
- 			entry.e.depth = bpp_to_depth_val(32);
- 			break;
-+		case 64:
-+			entry.e.format = AUX_FORMAT_XRGB16161616_64B;
-+			entry.e.depth = bpp_to_depth_val(64);
-+			break;
- 		default:
- 			igt_assert(0);
- 		}
-diff --git a/tests/intel/kms_flip_scaled_crc.c b/tests/intel/kms_flip_scaled_crc.c
-index 2997b63fac40..6874f747b280 100644
---- a/tests/intel/kms_flip_scaled_crc.c
-+++ b/tests/intel/kms_flip_scaled_crc.c
-@@ -142,6 +142,14 @@
-  * Mega feature: General Display Features
-  * Test category: functionality test
-  *
-+ * SUBTEST: flip-64bpp-4tile-to-32bpp-4tilemtlrcccs-%s
-+ * Description: Flip from 64bpp non scaled fb to 32bpp %arg[1] fb to stress CD
-+ *              clock programming
-+ * Driver requirement: i915, xe
-+ * Functionality: ccs, scaling, tiling, vblank
-+ * Mega feature: General Display Features
-+ * Test category: functionality test
-+ *
-  * arg[1]:
-  *
-  * @downscaling:        Downscaled
-@@ -406,6 +414,14 @@ const struct {
- 		1.0,
- 		2.0,
- 	},
-+	{
-+		"flip-64bpp-4tile-to-32bpp-4tilemtlrcccs-downscaling",
-+		"Flip from 64bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
-+		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
-+		I915_FORMAT_MOD_4_TILED_MTL_RC_CCS, DRM_FORMAT_XRGB16161616F,
-+		1.0,
-+		2.0,
-+	},
- 	{
- 		"flip-32bpp-ytile-to-64bpp-ytile-upscaling",
- 		"Flip from 32bpp non scaled fb to 64bpp upscaled fb to stress CD clock programming",
-@@ -590,6 +606,14 @@ const struct {
- 		0.5,
- 		1.0,
- 	},
-+	{
-+		"flip-64bpp-4tile-to-32bpp-4tilemtlrcccs-upscaling",
-+		"Flip from 64bpp non scaled fb to 32bpp upscaled fb to stress CD clock programming",
-+		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
-+		I915_FORMAT_MOD_4_TILED_MTL_RC_CCS, DRM_FORMAT_XRGB16161616F,
-+		0.5,
-+		1.0,
-+	},
- };
- 
- static void setup_fb(data_t *data, struct igt_fb *newfb, uint32_t width,
--- 
-2.17.1
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogU2hhcm1hLCBTd2F0aTIg
+PHN3YXRpMi5zaGFybWFAaW50ZWwuY29tPg0KPiBTZW50OiBNb25kYXksIE9jdG9iZXIgMjMsIDIw
+MjMgMzo1OSBQTQ0KPiBUbzogTG9ibywgTWVsYW5pZSA8bWVsYW5pZS5sb2JvQGludGVsLmNvbT47
+IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IENjOiBqdWhhcGVra2EuaGVpa2tpbGFA
+Z21haWwuY29tOyBNb2RlbSwgQmhhbnVwcmFrYXNoDQo+IDxiaGFudXByYWthc2gubW9kZW1AaW50
+ZWwuY29tPjsga2FtaWwua29uaWVjem55QGxpbnV4LmludGVsLmNvbQ0KPiBTdWJqZWN0OiBSZTog
+W1BBVENIXSB0ZXN0cy9pbnRlbC9rbXNfZmxpcF9zY2FsZWRfY3JjOiBBZGQgc3VwcG9ydCBmb3Ig
+RlAxNg0KPiBjb21wcmVzc2VkIGZvcm1hdHMNCj4gDQo+IA0KPiBPbiAyMy1PY3QtMjMgMzo1NCBQ
+TSwgTG9ibywgTWVsYW5pZSB3cm90ZToNCj4gPg0KPiA+DQo+ID4+IC0tLS0tT3JpZ2luYWwgTWVz
+c2FnZS0tLS0tDQo+ID4+IEZyb206IFNoYXJtYSwgU3dhdGkyIDxzd2F0aTIuc2hhcm1hQGludGVs
+LmNvbT4NCj4gPj4gU2VudDogTW9uZGF5LCBPY3RvYmVyIDIzLCAyMDIzIDExOjEwIEFNDQo+ID4+
+IFRvOiBMb2JvLCBNZWxhbmllIDxtZWxhbmllLmxvYm9AaW50ZWwuY29tPjsNCj4gPj4gaWd0LWRl
+dkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gPj4gQ2M6IGp1aGFwZWtrYS5oZWlra2lsYUBnbWFp
+bC5jb207IE1vZGVtLCBCaGFudXByYWthc2gNCj4gPj4gPGJoYW51cHJha2FzaC5tb2RlbUBpbnRl
+bC5jb20+OyBrYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tDQo+ID4+IFN1YmplY3Q6IFJl
+OiBbUEFUQ0hdIHRlc3RzL2ludGVsL2ttc19mbGlwX3NjYWxlZF9jcmM6IEFkZCBzdXBwb3J0IGZv
+cg0KPiA+PiBGUDE2IGNvbXByZXNzZWQgZm9ybWF0cw0KPiA+Pg0KPiA+PiBIaSBNZWxhbmllLA0K
+PiA+Pg0KPiA+PiBJdCBzZWVtcyB0ZXN0cyBhcmUgc2tpcHBpbmcgb24gTVRMUA0KPiA+PiBodHRw
+czovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzEwMDI0L3NoYXJkcy0N
+Cj4gPj4gYWxsLmh0bWw/dGVzdGZpbHRlcj00dGlsZW10bHJjY2NzDQo+ID4+DQo+ID4+IFRlc3Qg
+cmVxdWlyZW1lbnQgbm90IG1ldCBpbiBmdW5jdGlvbiBzZXR1cF9mYiwgZmlsZQ0KPiA+PiAuLi8u
+Li8uLi91c3Ivc3JjL2lndC1ncHUtdG9vbHMvdGVzdHMvaW50ZWwva21zX2ZsaXBfc2NhbGVkX2Ny
+Yy5jOjYyMjoNCj4gPj4gVGVzdCByZXF1aXJlbWVudDogaWd0X2Rpc3BsYXlfaGFzX2Zvcm1hdF9t
+b2QoJmRhdGEtPmRpc3BsYXksIGZvcm1hdCwNCj4gPj4gbW9kaWZpZXIpDQo+ID4+IER5bmFtaWMg
+c3VidGVzdCBwaXBlLUEtZGVmYXVsdC1tb2RlOiBTS0lQICgwLjM3OHMpDQo+ID4+DQo+ID4+IENh
+biB5b3UgY2hlY2sgb25jZT8NCj4gPj4NCj4gPg0KPiA+IEhpIFN3YXRpLA0KPiA+IFRoaXMgSUdU
+IHRlc3QgcmVxdWlyZXMga2VybmVsIHBhdGNoDQo+IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNr
+dG9wLm9yZy9wYXRjaC81NjM4NTQvP3Nlcmllcz0xMjQ5NTcmcmV2PTQgLg0KPiA+ICAgTWF5IGJl
+IGJlY2F1c2Ugb2YgdGhhdCBhbGwgdGhlIHRlc3RzIHNraXAuDQo+ID4NCj4gPiBSZWdhcmRzLA0K
+PiA+IE1lbGFuaWUgTG9ibw0KPiANCj4gb2hoDQo+IElzIGl0IHBvc3NpYmxlIGZvciB5b3UgdG8g
+dXNlICJUZXN0LXdpdGgiIHVzZWQgdG8gdGVzdCBjb21iaW5lZCBJR1QgYW5kIGtlcm5lbA0KPiBj
+aGFuZ2VzLiBNb3JlIGRldGFpbHM6DQo+IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90ZXN0
+LXdpdGguaHRtbA0KPiANCg0KSGkgU3dhdGksDQoNClRoYW5rIHlvdSBzbyBtdWNoLiBJIGhhdmUg
+YWRkZWQgIlRlc3Qtd2l0aCIgdGFnIGFuZCBmbG9hdGVkIHRoZSBuZXh0IHNlcmllcy4gDQoNClJl
+Z2FyZHMsDQpNZWxhbmllIExvYm8NCg0KPiA+DQo+ID4+IE9uIDE5LU9jdC0yMyAxMTozNiBQTSwg
+TWVsYW5pZSBMb2JvIHdyb3RlOg0KPiA+Pj4gTVRMIHN1cHBvcnRzIEZQMTYgZm9ybWF0IHdoaWNo
+IGlzIGEgYmluYXJ5IGZsb2F0aW5nLXBvaW50IGNvbXB1dGVyDQo+ID4+PiBudW1iZXIgZm9ybWF0
+IHRoYXQgb2NjdXBpZXMgMTYgYml0cyBpbiBjb21wdXRlciBtZW1vcnkuIEluIHRoaXMgdGVzdA0K
+PiA+Pj4gcGxhdGZvcm0gc2hhbGwgcmVuZGVyIGNvbXByZXNzaW9uIGluIGRpc3BsYXkgZW5naW5l
+IHRvIHJlY2VpdmUNCj4gPj4+IEZQMTYgY29tcHJlc3NlZCBmb3JtYXRzLg0KPiA+Pj4NCj4gPj4+
+IGNjOiBKdWhhLVBla2thIEhlaWtraWxhIDxqdWhhcGVra2EuaGVpa2tpbGFAZ21haWwuY29tPg0K
+PiA+Pj4gY2M6IEJoYW51cHJha2FzaCBNb2RlbSA8YmhhbnVwcmFrYXNoLm1vZGVtQGludGVsLmNv
+bT4NCj4gPj4+IGNjOiBTd2F0aSBTaGFybWEgPHN3YXRpMi5zaGFybWFAaW50ZWwuY29tPg0KPiA+
+Pj4gU2lnbmVkLW9mZi1ieTogTWVsYW5pZSBMb2JvIDxtZWxhbmllLmxvYm9AaW50ZWwuY29tPg0K
+PiA+Pj4gLS0tDQo+ID4+PiAgICBsaWIvaW50ZWxfYXV4X3BndGFibGUuYyAgICAgICAgICAgfCAg
+NSArKysrKw0KPiA+Pj4gICAgdGVzdHMvaW50ZWwva21zX2ZsaXBfc2NhbGVkX2NyYy5jIHwgMjQg
+KysrKysrKysrKysrKysrKysrKysrKysrDQo+ID4+PiAgICAyIGZpbGVzIGNoYW5nZWQsIDI5IGlu
+c2VydGlvbnMoKykNCj4gPj4+DQo+ID4+PiBkaWZmIC0tZ2l0IGEvbGliL2ludGVsX2F1eF9wZ3Rh
+YmxlLmMgYi9saWIvaW50ZWxfYXV4X3BndGFibGUuYyBpbmRleA0KPiA+Pj4gN2M3OTUyMTM0NGRl
+Li5hNjEyZGY0MDc2OTIgMTAwNjQ0DQo+ID4+PiAtLS0gYS9saWIvaW50ZWxfYXV4X3BndGFibGUu
+Yw0KPiA+Pj4gKysrIGIvbGliL2ludGVsX2F1eF9wZ3RhYmxlLmMNCj4gPj4+IEBAIC0yMSw2ICsy
+MSw3IEBADQo+ID4+PiAgICAjZGVmaW5lIEFVWF9GT1JNQVRfQVlVVgkJMHgwOQ0KPiA+Pj4gICAg
+I2RlZmluZSBBVVhfRk9STUFUX0FSR0JfOEIJMHgwQQ0KPiA+Pj4gICAgI2RlZmluZSBBVVhfRk9S
+TUFUX05WMTJfMjEJMHgwRg0KPiA+Pj4gKyNkZWZpbmUgQVVYX0ZPUk1BVF9YUkdCMTYxNjE2MTZf
+NjRCIDB4MTANCj4gPj4+DQo+ID4+PiAgICBzdHJ1Y3QgcGd0YWJsZV9sZXZlbF9kZXNjIHsNCj4g
+Pj4+ICAgIAlpbnQgaWR4X3NoaWZ0Ow0KPiA+Pj4gQEAgLTMwNSw2ICszMDYsMTAgQEAgc3RhdGlj
+IHVpbnQ2NF90IHBndF9nZXRfbDFfZmxhZ3MoY29uc3Qgc3RydWN0DQo+ID4+IGludGVsX2J1ZiAq
+YnVmLCBpbnQgc3VyZmFjZV9pZHgpDQo+ID4+PiAgICAJCQllbnRyeS5lLmZvcm1hdCA9IEFVWF9G
+T1JNQVRfQVJHQl84QjsNCj4gPj4+ICAgIAkJCWVudHJ5LmUuZGVwdGggPSBicHBfdG9fZGVwdGhf
+dmFsKDMyKTsNCj4gPj4+ICAgIAkJCWJyZWFrOw0KPiA+Pj4gKwkJY2FzZSA2NDoNCj4gPj4+ICsJ
+CQllbnRyeS5lLmZvcm1hdCA9IEFVWF9GT1JNQVRfWFJHQjE2MTYxNjE2XzY0QjsNCj4gPj4+ICsJ
+CQllbnRyeS5lLmRlcHRoID0gYnBwX3RvX2RlcHRoX3ZhbCg2NCk7DQo+ID4+PiArCQkJYnJlYWs7
+DQo+ID4+PiAgICAJCWRlZmF1bHQ6DQo+ID4+PiAgICAJCQlpZ3RfYXNzZXJ0KDApOw0KPiA+Pj4g
+ICAgCQl9DQo+ID4+PiBkaWZmIC0tZ2l0IGEvdGVzdHMvaW50ZWwva21zX2ZsaXBfc2NhbGVkX2Ny
+Yy5jDQo+ID4+PiBiL3Rlc3RzL2ludGVsL2ttc19mbGlwX3NjYWxlZF9jcmMuYw0KPiA+Pj4gaW5k
+ZXggMjk5N2I2M2ZhYzQwLi42ODc0Zjc0N2IyODAgMTAwNjQ0DQo+ID4+PiAtLS0gYS90ZXN0cy9p
+bnRlbC9rbXNfZmxpcF9zY2FsZWRfY3JjLmMNCj4gPj4+ICsrKyBiL3Rlc3RzL2ludGVsL2ttc19m
+bGlwX3NjYWxlZF9jcmMuYw0KPiA+Pj4gQEAgLTE0Miw2ICsxNDIsMTQgQEANCj4gPj4+ICAgICAq
+IE1lZ2EgZmVhdHVyZTogR2VuZXJhbCBEaXNwbGF5IEZlYXR1cmVzDQo+ID4+PiAgICAgKiBUZXN0
+IGNhdGVnb3J5OiBmdW5jdGlvbmFsaXR5IHRlc3QNCj4gPj4+ICAgICAqDQo+ID4+PiArICogU1VC
+VEVTVDogZmxpcC02NGJwcC00dGlsZS10by0zMmJwcC00dGlsZW10bHJjY2NzLSVzDQo+ID4+PiAr
+ICogRGVzY3JpcHRpb246IEZsaXAgZnJvbSA2NGJwcCBub24gc2NhbGVkIGZiIHRvIDMyYnBwICVh
+cmdbMV0gZmINCj4gPj4+ICsgdG8gc3RyZXNzDQo+ID4+IENEDQo+ID4+PiArICogICAgICAgICAg
+ICAgIGNsb2NrIHByb2dyYW1taW5nDQo+ID4+PiArICogRHJpdmVyIHJlcXVpcmVtZW50OiBpOTE1
+LCB4ZQ0KPiA+Pj4gKyAqIEZ1bmN0aW9uYWxpdHk6IGNjcywgc2NhbGluZywgdGlsaW5nLCB2Ymxh
+bmsNCj4gPj4+ICsgKiBNZWdhIGZlYXR1cmU6IEdlbmVyYWwgRGlzcGxheSBGZWF0dXJlcw0KPiA+
+Pj4gKyAqIFRlc3QgY2F0ZWdvcnk6IGZ1bmN0aW9uYWxpdHkgdGVzdA0KPiA+Pj4gKyAqDQo+ID4+
+PiAgICAgKiBhcmdbMV06DQo+ID4+PiAgICAgKg0KPiA+Pj4gICAgICogQGRvd25zY2FsaW5nOiAg
+ICAgICAgRG93bnNjYWxlZA0KPiA+Pj4gQEAgLTQwNiw2ICs0MTQsMTQgQEAgY29uc3Qgc3RydWN0
+IHsNCj4gPj4+ICAgIAkJMS4wLA0KPiA+Pj4gICAgCQkyLjAsDQo+ID4+PiAgICAJfSwNCj4gPj4+
+ICsJew0KPiA+Pj4gKwkJImZsaXAtNjRicHAtNHRpbGUtdG8tMzJicHAtNHRpbGVtdGxyY2Njcy1k
+b3duc2NhbGluZyIsDQo+ID4+PiArCQkiRmxpcCBmcm9tIDY0YnBwIG5vbiBzY2FsZWQgZmIgdG8g
+MzJicHAgZG93bnNjYWxlZCBmYiB0bw0KPiA+PiBzdHJlc3MgQ0QgY2xvY2sgcHJvZ3JhbW1pbmci
+LA0KPiA+Pj4gKwkJSTkxNV9GT1JNQVRfTU9EXzRfVElMRUQsDQo+ID4+IERSTV9GT1JNQVRfWFJH
+QjE2MTYxNjE2RiwNCj4gPj4+ICsJCUk5MTVfRk9STUFUX01PRF80X1RJTEVEX01UTF9SQ19DQ1Ms
+DQo+ID4+IERSTV9GT1JNQVRfWFJHQjE2MTYxNjE2RiwNCj4gPj4+ICsJCTEuMCwNCj4gPj4+ICsJ
+CTIuMCwNCj4gPj4+ICsJfSwNCj4gPj4+ICAgIAl7DQo+ID4+PiAgICAJCSJmbGlwLTMyYnBwLXl0
+aWxlLXRvLTY0YnBwLXl0aWxlLXVwc2NhbGluZyIsDQo+ID4+PiAgICAJCSJGbGlwIGZyb20gMzJi
+cHAgbm9uIHNjYWxlZCBmYiB0byA2NGJwcCB1cHNjYWxlZCBmYiB0byBzdHJlc3MNCj4gPj4gQ0QN
+Cj4gPj4+IGNsb2NrIHByb2dyYW1taW5nIiwgQEAgLTU5MCw2ICs2MDYsMTQgQEAgY29uc3Qgc3Ry
+dWN0IHsNCj4gPj4+ICAgIAkJMC41LA0KPiA+Pj4gICAgCQkxLjAsDQo+ID4+PiAgICAJfSwNCj4g
+Pj4+ICsJew0KPiA+Pj4gKwkJImZsaXAtNjRicHAtNHRpbGUtdG8tMzJicHAtNHRpbGVtdGxyY2Nj
+cy11cHNjYWxpbmciLA0KPiA+Pj4gKwkJIkZsaXAgZnJvbSA2NGJwcCBub24gc2NhbGVkIGZiIHRv
+IDMyYnBwIHVwc2NhbGVkIGZiIHRvIHN0cmVzcw0KPiA+PiBDRCBjbG9jayBwcm9ncmFtbWluZyIs
+DQo+ID4+PiArCQlJOTE1X0ZPUk1BVF9NT0RfNF9USUxFRCwNCj4gPj4gRFJNX0ZPUk1BVF9YUkdC
+MTYxNjE2MTZGLA0KPiA+Pj4gKwkJSTkxNV9GT1JNQVRfTU9EXzRfVElMRURfTVRMX1JDX0NDUywN
+Cj4gPj4gRFJNX0ZPUk1BVF9YUkdCMTYxNjE2MTZGLA0KPiA+Pj4gKwkJMC41LA0KPiA+Pj4gKwkJ
+MS4wLA0KPiA+Pj4gKwl9LA0KPiA+Pj4gICAgfTsNCj4gPj4+DQo+ID4+PiAgICBzdGF0aWMgdm9p
+ZCBzZXR1cF9mYihkYXRhX3QgKmRhdGEsIHN0cnVjdCBpZ3RfZmIgKm5ld2ZiLCB1aW50MzJfdA0K
+PiA+Pj4gd2lkdGgsDQo=
