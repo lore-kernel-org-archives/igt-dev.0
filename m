@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3D6A010E3CE
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 99BE510E29C
  for <igt-dev@lists.freedesktop.org>; Tue, 24 Oct 2023 14:19:03 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.1.226])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id A1BE1580E5B
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Oct 2023 07:19:00 -0700 (PDT)
+ by linux.intel.com (Postfix) with ESMTPS id 03644580C99
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Oct 2023 07:19:01 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96.1)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qvIFF-000fqh-3D
- for igt-dev@lists.freedesktop.org; Tue, 24 Oct 2023 16:18:57 +0200
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qvIFG-000fqt-0B
+ for igt-dev@lists.freedesktop.org; Tue, 24 Oct 2023 16:18:58 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 24 Oct 2023 16:11:04 +0200
-Message-ID: <20231024141855.160633-2-mauro.chehab@linux.intel.com>
+Date: Tue, 24 Oct 2023 16:11:08 +0200
+Message-ID: <20231024141855.160633-6-mauro.chehab@linux.intel.com>
 In-Reply-To: <20231024141855.160633-1-mauro.chehab@linux.intel.com>
 References: <20231024141855.160633-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/7] runner: Normalize testlist entries that
- don't list subtests
+Subject: [igt-dev] [PATCH i-g-t 5/7] scripts/test_list.py: better handle
+ list of tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,59 +32,162 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Petri Latvala <adrinael@adrinael.net>
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-As the syntax for "all subtests" and "test that doesn't have subtests"
-is the same, check the subtest listing when building the execution
-plan. Doing that makes it possible to still have "all subtests" in
-testlists (albeit not originally designed to support that) and enables
-blocklisting particular subtests.
+Not all test lists are regular expressions. Some are just
+names. That's the case of IGT runner testlist files.
 
-Signed-off-by: Petri Latvala <adrinael@adrinael.net>
-Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Arkadiusz Hiler <arek@hiler.eu>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/149
+Add support for that.
+
+In practice, this change will produce the same testlists
+as before, but using a logic closer to what igt_runner()
+does.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- runner/job_list.c | 22 +++++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
+ scripts/test_list.py             | 54 +++++++++++++++++++++++---------
+ tests/intel/kms_test_config.json |  2 +-
+ tests/intel/xe_test_config.json  |  1 +
+ 3 files changed, 41 insertions(+), 16 deletions(-)
 
-diff --git a/runner/job_list.c b/runner/job_list.c
-index e6ea836310fd..27cbb10bce56 100644
---- a/runner/job_list.c
-+++ b/runner/job_list.c
-@@ -230,8 +230,28 @@ static bool job_list_from_test_list(struct job_list *job_list,
- 			continue;
+diff --git a/scripts/test_list.py b/scripts/test_list.py
+index e54873f07e20..06215242107a 100644
+--- a/scripts/test_list.py
++++ b/scripts/test_list.py
+@@ -319,10 +319,6 @@ class TestList:
+             self.props["Class"]["_properties_"]["level"] = 1
+             self.props["Class"]["_properties_"]["sublevel"] = sublevel_count[0] + 1
  
- 		if (sscanf(line, "igt@%ms", &binary) == 1) {
--			if ((delim = strchr(binary, '@')) != NULL)
-+			if ((delim = strchr(binary, '@')) != NULL) {
- 				*delim++ = '\0';
-+			} else {
-+				/*
-+				 * No subtests specified. Check
-+				 * whether the user means "all
-+				 * subtests" or if the test doesn't
-+				 * have any.
-+				 */
-+				if (entry.binary) {
-+					/* First flush the entry we're building for multiple-mode */
-+					add_job_list_entry(job_list, entry.binary, entry.subtests, entry.subtest_count);
-+					memset(&entry, 0, sizeof(entry));
-+					any = true;
-+				}
+-        flags = 0
+-        if self.config.get("case_insensitive_testlist", False):
+-            flags |= re.IGNORECASE
+-
+         # Remove non-multilevel items, as we're only interested on
+         # hierarchical item levels here
+         for field, item in self.props.items():
+@@ -337,7 +333,7 @@ class TestList:
+                 testlist = {}
+                 for value in item["_properties_"]["include"]:
+                     for name in value.keys():
+-                        self.read_testlist(testlist, name, cfg_path + value[name], flags)
++                        self.read_testlist(field, item, testlist, name, cfg_path + value[name])
+ 
+                 item["_properties_"]["include"] = testlist
+ 
+@@ -346,7 +342,7 @@ class TestList:
+                 testlist = {}
+                 for value in item["_properties_"]["exclude"]:
+                     for name in value.keys():
+-                        self.read_testlist(testlist, name, cfg_path + value[name], flags)
++                        self.read_testlist(field, item, testlist, name, cfg_path + value[name])
+ 
+                 item["_properties_"]["exclude"] = testlist
+ 
+@@ -450,7 +446,22 @@ class TestList:
+ 
+             self.__add_field(key, sublevel, hierarchy_level, field[key])
+ 
+-    def read_testlist(self, testlist, name, filename, flags):
++    def read_testlist(self, field, item, testlist, name, filename):
 +
-+				add_subtests(job_list, settings, binary,
-+					     &settings->include_regexes,
-+					     &settings->exclude_regexes);
-+				any = true;
-+				continue;
-+			}
++        match_type = item["_properties_"].get("match-type", "subtest-match")
++
++        match_type_regex = set(["regex", "regex-ignorecase"])
++        match_type_str = set(["subtest-match"])
++        match_types = match_type_regex | match_type_str
++
++        if match_type not in match_types:
++            sys.exit(f"Error: invalid match type '{match_type}' for {field}")
++
++        if match_type == "regex":
++            flags = 0
++        elif match_type == "regex-ignorecase":
++            flags = re.IGNORECASE
++
+         base = r"^\s*({}[^\s\{}]+)(\S*)\s*(\#.*)?$"
+         regex = re.compile(base.format(self.main_name, self.subtest_separator))
  
- 			if (!settings->multiple_mode) {
- 				char **subtests = NULL;
+@@ -459,12 +470,25 @@ class TestList:
+         with open(filename, 'r', newline = '', encoding = 'utf8') as fp:
+             for line in fp:
+                 match = regex.match(line)
+-                if match:
+-                    test = match.group(1)
+-                    subtest = match.group(2)
+-                    if not subtest.endswith("$"):
+-                        subtest += r"(\@.*)?$"
+-                    testlist[name].append(re.compile(f"{test}{subtest}", flags))
++                if not match:
++                    continue
++
++                test = match.group(1)
++                subtest = match.group(2)
++                test_name = f"{test}{subtest}"
++
++                if match_type in match_type_regex:
++                    testlist[name].append(re.compile(test_name, flags))
++                    continue
++
++                subtests = test_name.split(self.subtest_separator)[:3]
++
++                prefix=""
++                for subtest in subtests:
++                    subtest = prefix + subtest
++                    prefix = subtest + self.subtest_separator
++
++                testlist[name].append(re.compile(f"{subtest}(@.*)?"))
+ 
+     def __filter_subtest(self, test, subtest, field_not_found_value):
+ 
+@@ -504,7 +528,7 @@ class TestList:
+             for names, regex_array in self.props[field]["_properties_"]["include"].items():
+                 name = set(re.split(",\s*", names))
+                 for regex in regex_array:
+-                    if regex.match(testname):
++                    if regex.fullmatch(testname):
+                         values.update(name)
+                         break
+ 
+@@ -514,7 +538,7 @@ class TestList:
+                 for names, regex_array in self.props[field]["_properties_"]["exclude"].items():
+                     deleted_names = set(re.split(",\s*", names))
+                     for regex in regex_array:
+-                        if regex.match(testname):
++                        if regex.fullmatch(testname):
+                             if sorted(deleted_names) == sorted(values):
+                                 set_full_if_empty = False
+                             values.discard(deleted_names)
+diff --git a/tests/intel/kms_test_config.json b/tests/intel/kms_test_config.json
+index 40cf69dd0904..837380ee7fae 100644
+--- a/tests/intel/kms_test_config.json
++++ b/tests/intel/kms_test_config.json
+@@ -4,7 +4,6 @@
+     "files": [ "../chamelium/kms_*.c", "../kms_*.c", "../testdisplay.c", "kms_*.c" ],
+     "exclude_files": [ "../chamelium/kms_chamelium_helper.c", "../kms_color_helper.c",
+                        "kms_dsc_helper.c" ],
+-    "case_insensitive_testlist": true,
+     "fields": {
+         "Category": {
+             "_properties_": {
+@@ -24,6 +23,7 @@
+                 "_properties_": {
+                     "description": "Defines what category of testlist it belongs",
+                     "default-testlist": "FULL",
++                    "match-type": "subtest-match",
+                     "include": [
+                         { "i915 BAT": "../intel-ci/fast-feedback.testlist" },
+                         { "i915 BAT chamelium": "../intel-ci/fast-feedback-chamelium-only.testlist" },
+diff --git a/tests/intel/xe_test_config.json b/tests/intel/xe_test_config.json
+index 20faf73b7270..5fd7c888f274 100644
+--- a/tests/intel/xe_test_config.json
++++ b/tests/intel/xe_test_config.json
+@@ -33,6 +33,7 @@
+                             "mandatory": true,
+                             "description": "Defines what category of testlist it belongs",
+                             "default-testlist": "FULL",
++                            "match-type": "subtest-match",
+                             "include": [
+                                 { "Xe BAT": "../intel-ci/xe-fast-feedback.testlist" }
+                             ],
 -- 
 2.41.0
