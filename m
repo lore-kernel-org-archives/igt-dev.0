@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 24C3410E3CA
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3B50710E3CC
  for <igt-dev@lists.freedesktop.org>; Tue, 24 Oct 2023 14:19:03 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.1.226])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 81CE0580C99
+ by linux.intel.com (Postfix) with ESMTPS id 831CD580E36
  for <igt-dev@lists.freedesktop.org>; Tue, 24 Oct 2023 07:19:00 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96.1)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qvIFG-000fqk-02
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qvIFG-000fqq-08
  for igt-dev@lists.freedesktop.org; Tue, 24 Oct 2023 16:18:58 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 24 Oct 2023 16:11:05 +0200
-Message-ID: <20231024141855.160633-3-mauro.chehab@linux.intel.com>
+Date: Tue, 24 Oct 2023 16:11:07 +0200
+Message-ID: <20231024141855.160633-5-mauro.chehab@linux.intel.com>
 In-Reply-To: <20231024141855.160633-1-mauro.chehab@linux.intel.com>
 References: <20231024141855.160633-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/7] runner/runner_tests: Unit tests for
- binary-name-only testlist entries
+Subject: [igt-dev] [PATCH i-g-t 4/7] igt_runner: don't require root for
+ dry_run
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,94 +32,27 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Petri Latvala <adrinael@adrinael.net>
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Petri Latvala <adrinael@adrinael.net>
+When --dry-run option is used, there's no need to require root,
+as no tests will actually be executed.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- runner/runner_tests.c | 70 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 70 insertions(+)
+ runner/settings.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/runner/runner_tests.c b/runner/runner_tests.c
-index a7e968f85b91..e6024de11a60 100644
---- a/runner/runner_tests.c
-+++ b/runner/runner_tests.c
-@@ -1810,6 +1810,76 @@ igt_main
- 		}
- 	}
- 
-+	igt_subtest_group {
-+		const char testlisttext[] = "igt@successtest";
-+		const char blocktext[] = "igt@successtest@first";
-+		struct job_list *list = malloc(sizeof(*list));
-+		volatile int dirfd = -1;
-+		char dirname[] = "tmpdirXXXXXX";
-+		volatile int listfd;
-+		volatile int blockfd;
-+		char listfilename[] = "tmplistXXXXXX";
-+		char blockfilename[] = "tmpblockXXXXXX";
-+
-+		igt_fixture {
-+			igt_require(mkdtemp(dirname) != NULL);
-+			rmdir(dirname);
-+
-+			igt_require((listfd = mkstemp(listfilename)) >= 0);
-+			igt_require(write(listfd, testlisttext, strlen(testlisttext)) == strlen(testlisttext));
-+			igt_require((blockfd = mkstemp(blockfilename)) >= 0);
-+			igt_require(write(blockfd, blocktext, strlen(blocktext)) == strlen(blocktext));
-+			close(listfd);
-+			close(blockfd);
-+
-+			init_job_list(list);
-+		}
-+
-+		igt_subtest("only-binary-name-in-testlist") {
-+			const char *argv[] = { "runner",
-+				"--allow-non-root",
-+				"--test-list", listfilename,
-+				testdatadir,
-+				dirname,
-+			};
-+
-+			igt_assert(parse_options(ARRAY_SIZE(argv), (char**)argv, settings));
-+
-+			igt_assert(create_job_list(list, settings));
-+			/* No multi-mode, binary has two subtests, should be normalized to have individual subtests */
-+			igt_assert_eq(list->size, 2);
-+			igt_assert_eq(list->entries[0].subtest_count, 1);
-+			igt_assert_eq(list->entries[1].subtest_count, 1);
-+		}
-+
-+		igt_subtest("only-binary-name-in-testlist-with-blocks") {
-+			const char *argv[] = { "runner",
-+				"--allow-non-root",
-+				"--test-list", listfilename,
-+				"-b", blockfilename,
-+				testdatadir,
-+				dirname,
-+			};
-+
-+			igt_assert(parse_options(ARRAY_SIZE(argv), (char**)argv, settings));
-+
-+			igt_assert(create_job_list(list, settings));
-+			/* No multi-mode, binary has two subtests, one of them blocked */
-+			igt_assert_eq(list->size, 1);
-+			igt_assert_eq(list->entries[0].subtest_count, 1);
-+			igt_assert_eqstr(list->entries[0].subtests[0], "second-subtest");
-+		}
-+
-+		igt_fixture {
-+			unlink(listfilename);
-+			unlink(blockfilename);
-+			close(dirfd);
-+			clear_directory(dirname);
-+			free_job_list(list);
-+			free(list);
-+		}
-+	}
-+
- 	igt_subtest_group {
- 		struct job_list *list = malloc(sizeof(*list));
- 		volatile int dirfd = -1;
+diff --git a/runner/settings.c b/runner/settings.c
+index 23aa82963344..788957948b4f 100644
+--- a/runner/settings.c
++++ b/runner/settings.c
+@@ -687,6 +687,7 @@ bool parse_options(int argc, char **argv,
+ 			break;
+ 		case OPT_DRY_RUN:
+ 			settings->dry_run = true;
++			settings->allow_non_root = true;
+ 			break;
+ 		case OPT_ALLOW_NON_ROOT:
+ 			settings->allow_non_root = true;
 -- 
 2.41.0
