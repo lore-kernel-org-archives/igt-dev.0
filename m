@@ -3,13 +3,14 @@ Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Sean Paul" <sean@poorly.run>
-Date: Tue, 24 Oct 2023 07:42:54 -0000
-Message-ID: <169813337454.18360.1284457506396047122@emeril.freedesktop.org>
-References: <20231023205910.3556533-1-sean@poorly.run>
-In-Reply-To: <20231023205910.3556533-1-sean@poorly.run>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
- =?utf-8?q?s/kms=5Fvrr=3A_Modify_kms=5Fvrr_to_allow_flicker_profiling?=
+To: "Lobo, Melanie" <melanie.lobo@intel.com>
+Date: Tue, 24 Oct 2023 07:46:02 -0000
+Message-ID: <169813356216.18361.4540167359187985901@emeril.freedesktop.org>
+References: <20231010134540.28485-1-melanie.lobo@intel.com>
+In-Reply-To: <20231010134540.28485-1-melanie.lobo@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/intel/kms=5Fflip=5Fscaled=5Fcrc=3A_Add_support_for_FP16_fo?=
+ =?utf-8?q?rmat_of_MTL_compressed_modifier_=28rev7=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,64 +26,37 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: tests/kms_vrr: Modify kms_vrr to allow flicker profiling
-URL   : https://patchwork.freedesktop.org/series/125479/
-State : failure
+Series: tests/intel/kms_flip_scaled_crc: Add support for FP16 format of MTL compressed modifier (rev7)
+URL   : https://patchwork.freedesktop.org/series/124956/
+State : warning
 
 == Summary ==
 
-IGT patchset build failed on latest successful build
-557856802dfee103802f1157f97c65bb476d5468 lib/igt_kmod: Remove wrong note regarding dependencies
+Pipeline status: FAILED.
 
-Tail of build.log:
-[1599/1645] Linking target tools/intel_infoframes.
-[1600/1645] Linking target tools/intel_reg.
-[1601/1645] Linking target tools/intel_dp_compliance.
-[1602/1645] Linking target tools/intel_residency.
-[1603/1645] Linking target tools/intel_gvtg_test.
-[1604/1645] Linking target runner/testdata/successtest.
-[1605/1645] Linking target runner/testdata/no-subtests.
-[1606/1645] Linking target runner/testdata/abort-dynamic.
-[1607/1645] Linking target tools/msm_dp_compliance.
-[1608/1645] Linking target tools/amd_hdmi_compliance.
-[1609/1645] Linking target runner/testdata/abort-fixture.
-[1610/1645] Generating gem_stress.testlist with a meson_exe.py custom command.
-[1611/1645] Linking target tools/lsgpu.
-[1612/1645] Linking target runner/testdata/dynamic.
-[1613/1645] Linking target tools/intel_l3_parity.
-[1614/1645] Linking target runner/testdata/abort-simple.
-[1615/1645] Linking target runner/igt_runner.
-[1616/1645] Linking target runner/igt_comms_decoder.
-[1617/1645] Linking target runner/testdata/skippers.
-[1618/1645] Linking target runner/testdata/abort.
-[1619/1645] Linking target runner/runner_json_test.
-[1620/1645] Linking target runner/igt_resume.
-[1621/1645] Linking target runner/igt_results.
-[1622/1645] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_mtlgt3.c.o'.
-[1623/1645] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt1.c.o'.
-[1624/1645] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
-[1625/1645] Linking target runner/runner_test.
-[1626/1645] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt2.c.o'.
-[1627/1645] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt3.c.o'.
-[1628/1645] Linking target lib/libi915_perf.so.1.5.
-[1629/1645] Generating symbol file 'lib/76b5a35@@i915_perf@sha/libi915_perf.so.1.5.symbols'.
-[1630/1645] Linking target tools/i915-perf/i915-perf-configs.
-[1631/1645] Linking target tools/i915-perf/i915-perf-recorder.
-[1632/1645] Linking target tools/i915-perf/i915-perf-reader.
-[1633/1645] Linking target tests/core_hotunplug.
-[1634/1645] Linking target tests/gem_barrier_race.
-[1635/1645] Linking target tests/perf.
-[1636/1645] Generating gem_barrier_race.testlist with a meson_exe.py custom command.
-[1637/1645] Generating perf.testlist with a meson_exe.py custom command.
-[1638/1645] Generating core_hotunplug.testlist with a meson_exe.py custom command.
-[1639/1645] Generating xe_tests.rst with a custom command.
-[1640/1645] Generating i915_tests.rst with a custom command.
-[1641/1645] Generating kms_tests.rst with a custom command.
-FAILED: docs/testplan/kms_tests.rst 
-/usr/src/igt-gpu-tools/scripts/igt_doc.py --config /usr/src/igt-gpu-tools/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /opt/igt/build
-Warning: Missing documentation for igt@kms_vrr@max-min
-Please refer: docs/test_documentation.md for more details
-[1642/1645] Generating xe_tests.html with a custom command.
-[1643/1645] Generating i915_tests.html with a custom command.
-ninja: build stopped: subcommand failed.
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1017377 for the overview.
 
+build-containers:build-debian-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50673735):
+  time="2023-10-24T07:44:03Z" level=fatal msg="Error determining repository tags: unexpected http code: 500 (Internal Server Error), URL: https://gitlab.freedesktop.org/jwt/auth?account=gitlab-ci-token&scope=repository%3Agfx-ci%2Figt-ci-tags%2Fbuild-debian-arm64%3Apull&service=container_registry" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:99db33be616a9a2a0b0b1bc913b548317bab7bd11cb6968d357457e201c44077
+  Copying config sha256:75719d2c3a70cb6ce34a3faf75de7ff2e97fbd34137e6c2aa86bfe9043c963af
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-10-24T07:44:13Z" level=warning msg="signal: killed"
+  time="2023-10-24T07:44:13Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1698133455:step_script
+  section_start:1698133455:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1698133458:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1017377
