@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B5E6010E44B
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Oct 2023 17:36:35 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 24 Oct 2023 19:36:17 +0200
-Message-Id: <20231024173618.127007-5-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20231024173618.127007-1-zbigniew.kempczynski@intel.com>
-References: <20231024173618.127007-1-zbigniew.kempczynski@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============5911133654610902387=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 4/5] tests/xe_evict_ccs: Add evict ccs
- test
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Tue, 24 Oct 2023 18:19:45 -0000
+Message-ID: <169817158512.18361.17862064406388922818@emeril.freedesktop.org>
+References: <20231024173618.127007-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20231024173618.127007-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQWRkIGZs?=
+ =?utf-8?q?at-ccs_tests_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,568 +17,482 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Exercise is flat-ccs eviction working fine in the kernel driver
-when buffers takes more than available vram. Differentiate with
-standalone/parallel execution, same or separate drm fd and buffer
-freeing time. Tests are divided to two groups - first which won't
-exceed vram memory size (thus don't trigger eviction, but it is
-good for the reference logic is properly compress/decompress
-buffers) and second which exceeds.
+--===============5911133654610902387==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2:
-- Add command line switches to exercise kernel with different
-  sizes, number of objects and vram overcommitment
-- Add -simple test which creates single big object which enforces
-  eviction (Matt)
-v3:
-- Address review comments (Matt)
-v4:
-- Remove unnecessary engine loop (Matt)
+== Series Details ==
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
----
- tests/intel/xe_evict_ccs.c | 514 +++++++++++++++++++++++++++++++++++++
- tests/meson.build          |   1 +
- 2 files changed, 515 insertions(+)
- create mode 100644 tests/intel/xe_evict_ccs.c
+Series: Add flat-ccs tests (rev4)
+URL   : https://patchwork.freedesktop.org/series/124626/
+State : success
 
-diff --git a/tests/intel/xe_evict_ccs.c b/tests/intel/xe_evict_ccs.c
-new file mode 100644
-index 0000000000..4f2876ecb2
---- /dev/null
-+++ b/tests/intel/xe_evict_ccs.c
-@@ -0,0 +1,514 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ */
-+
-+/**
-+ * TEST: Check flat-ccs eviction
-+ * Category: Software building block
-+ * Sub-category: Flat-CCS
-+ * Functionality: evict
-+ * GPU requirements: GPU needs to have dedicated VRAM
-+ */
-+
-+#include "igt.h"
-+#include "igt_list.h"
-+#include "intel_blt.h"
-+#include "intel_mocs.h"
-+#include "lib/igt_syncobj.h"
-+#include "lib/intel_reg.h"
-+#include "xe_drm.h"
-+
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
-+#include <math.h>
-+#include <string.h>
-+
-+#define OVERCOMMIT_VRAM_PERCENT 110
-+#define MIN_OBJ_KB 64
-+#define MAX_OBJ_KB (256 * 1024)
-+#define DUMP_FILENAME "/tmp/object.data"
-+#define DUMP_EXPFILENAME "/tmp/object.expected"
-+
-+static struct param {
-+	bool print_bb;
-+	bool disable_compression;
-+	bool dump_corrupted_surface;
-+	int num_objs;
-+	int vram_percent;
-+	int min_size_kb;
-+	int max_size_kb;
-+	bool verify;
-+} params = {
-+	.num_objs = 0,
-+	.vram_percent = OVERCOMMIT_VRAM_PERCENT,
-+	.min_size_kb = MIN_OBJ_KB,
-+	.max_size_kb = MAX_OBJ_KB,
-+};
-+
-+struct object {
-+	uint64_t size;
-+	uint32_t start_value;
-+	struct blt_copy_object *blt_obj;
-+	struct igt_list_head link;
-+};
-+
-+#define TEST_PARALLEL		(1 << 0)
-+#define TEST_INSTANTFREE	(1 << 1)
-+#define TEST_REOPEN		(1 << 2)
-+#define TEST_SIMPLE		(1 << 3)
-+
-+#define MAX_NPROC 8
-+struct config {
-+	uint32_t flags;
-+	int nproc;
-+	int free_mb, total_mb;
-+	int test_mb, mb_per_proc;
-+	const struct param *param;
-+};
-+
-+static void copy_obj(struct blt_copy_data *blt,
-+		     struct blt_copy_object *src_obj,
-+		     struct blt_copy_object *dst_obj,
-+		     intel_ctx_t *ctx,
-+		     uint64_t ahnd)
-+{
-+	struct blt_block_copy_data_ext ext = {};
-+	int fd = blt->fd;
-+	uint64_t bb_size = xe_get_default_alignment(fd);
-+	uint32_t bb;
-+	uint32_t w, h;
-+
-+	w = src_obj->x2;
-+	h = src_obj->y2;
-+
-+	bb = xe_bo_create_flags(fd, 0, bb_size, visible_vram_memory(fd, 0));
-+
-+	blt->color_depth = CD_32bit;
-+	blt->print_bb = params.print_bb;
-+	blt_set_copy_object(&blt->src, src_obj);
-+	blt_set_copy_object(&blt->dst, dst_obj);
-+	blt_set_object_ext(&ext.src, 0, w, h, SURFACE_TYPE_2D);
-+	blt_set_object_ext(&ext.dst, 0, w, h, SURFACE_TYPE_2D);
-+	blt_set_batch(&blt->bb, bb, bb_size, vram_if_possible(fd, 0));
-+	blt_block_copy(fd, ctx, NULL, ahnd, blt, &ext);
-+	intel_ctx_xe_sync(ctx, true);
-+
-+	gem_close(fd, bb);
-+	put_offset(ahnd, bb);
-+	put_offset(ahnd, blt->src.handle);
-+	put_offset(ahnd, blt->dst.handle);
-+	intel_allocator_bind(ahnd, 0, 0);
-+}
-+
-+static uint32_t rand_and_update(uint32_t *left, uint32_t min, uint32_t max)
-+{
-+	int left_bit, min_bit, max_bit, rand_id, rand_kb;
-+
-+	left_bit = igt_fls(*left) - 1;
-+	min_bit = igt_fls(min) - 1;
-+	max_bit = max_t(int, min_t(int, igt_fls(max) - 1, left_bit), igt_fls(max));
-+	rand_id = rand() % (max_bit - min_bit);
-+	rand_kb = 1 << (rand_id + min_bit);
-+
-+	if (*left >= rand_kb)
-+		*left -= rand_kb;
-+	else
-+		*left = 0;
-+
-+	return rand_kb;
-+}
-+
-+static struct object *create_obj(struct blt_copy_data *blt,
-+				 intel_ctx_t *ctx, uint64_t ahnd,
-+				 uint64_t size, int start_value,
-+				 bool disable_compression)
-+{
-+	int fd = blt->fd;
-+	struct object *obj;
-+	uint32_t w, h;
-+	uint8_t uc_mocs = intel_get_uc_mocs_index(fd);
-+	int i;
-+	struct blt_copy_object *src;
-+
-+	obj = calloc(1, sizeof(*obj));
-+	igt_assert(obj);
-+	obj->size = size;
-+	obj->start_value = start_value;
-+
-+	w = max_t(int, 1024, roundup_power_of_two(sqrt(size/4)));
-+	h = size / w / 4; /* /4 - 32bpp */
-+
-+	igt_debug("[%8d] Obj size: %ldKiB (%ldMiB) <w: %d, h: %d>\n",
-+		  getpid(), size / SZ_1K, size / SZ_1M, w, h);
-+
-+	src = blt_create_object(blt,
-+				system_memory(fd),
-+				w, h, 32, uc_mocs,
-+				T_LINEAR, COMPRESSION_DISABLED,
-+				COMPRESSION_TYPE_3D, true);
-+
-+	obj->blt_obj = blt_create_object(blt, vram_memory(fd, 0),
-+					 w, h, 32, uc_mocs,
-+					 T_LINEAR,
-+					 disable_compression ? COMPRESSION_DISABLED :
-+							       COMPRESSION_ENABLED,
-+					 COMPRESSION_TYPE_3D, true);
-+
-+	for (i = 0; i < size / sizeof(uint32_t); i++)
-+		src->ptr[i] = start_value++;
-+
-+	copy_obj(blt, src, obj->blt_obj, ctx, ahnd);
-+
-+	blt_destroy_object_and_alloc_free(fd, ahnd, src);
-+	intel_allocator_bind(ahnd, 0, 0);
-+
-+	return obj;
-+}
-+
-+static void dump_obj(const struct blt_copy_object *obj, int start_value)
-+{
-+	FILE *out;
-+
-+	if (!params.dump_corrupted_surface)
-+		return;
-+
-+	out = fopen(DUMP_FILENAME, "wb");
-+	fwrite(obj->ptr, obj->size, 1, out);
-+	fclose(out);
-+
-+	out = fopen(DUMP_EXPFILENAME, "wb");
-+	for (int i = 0; i < obj->size / 4; i++) {
-+		int v = start_value + i;
-+
-+		fwrite(&v, sizeof(int), 1, out);
-+	}
-+	fclose(out);
-+}
-+
-+static void check_obj(const char *check_mode,
-+		      const struct blt_copy_object *obj, uint64_t size,
-+		      int start_value, int num_obj)
-+{
-+	int i, idx;
-+
-+	if (obj->ptr[0] != start_value ||
-+	    (obj->ptr[size/4 - 1] != start_value + size/4 - 1)) {
-+		igt_info("[%s] Failed object w: %d, h: %d, size: %ldKiB (%ldMiB)\n",
-+			 check_mode, obj->x2, obj->y2, obj->size / SZ_1K, obj->size / SZ_1M);
-+		dump_obj(obj, start_value);
-+	}
-+
-+	igt_assert_eq(obj->ptr[0], start_value);
-+	igt_assert_eq(obj->ptr[size/4 - 1], start_value + size/4 - 1);
-+
-+	/* Couple of checks of random indices */
-+	for (i = 0; i < 128; i++) {
-+		idx = rand() % (size/4);
-+
-+		if (obj->ptr[idx] != start_value + idx) {
-+			igt_info("[%s] Failed object w: %d, h: %d, size: %ldKiB (%ldMiB)\n",
-+				 check_mode, obj->x2, obj->y2,
-+				 obj->size / SZ_1K, obj->size / SZ_1M);
-+			dump_obj(obj, start_value);
-+		}
-+
-+		igt_assert_f(obj->ptr[idx] == start_value + idx,
-+			     "[%s] Object number %d doesn't contain valid data",
-+			     check_mode, num_obj);
-+	}
-+}
-+
-+static void evict_single(int fd, int child, const struct config *config)
-+{
-+	struct blt_copy_data blt = {};
-+	struct blt_copy_object *orig_obj;
-+	uint32_t kb_left = config->mb_per_proc * SZ_1K;
-+	uint32_t min_alloc_kb = config->param->min_size_kb;
-+	uint32_t max_alloc_kb = config->param->max_size_kb;
-+	uint32_t vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+	uint64_t ahnd = intel_allocator_open(fd, vm, INTEL_ALLOCATOR_RELOC);
-+	uint8_t uc_mocs = intel_get_uc_mocs_index(fd);
-+	struct object *obj, *tmp;
-+	struct igt_list_head list;
-+	struct drm_xe_engine_class_instance inst = {
-+		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
-+	};
-+	intel_ctx_t *ctx;
-+	uint32_t exec_queue, big_obj;
-+	int num_obj = 0;
-+
-+	srandom(time(NULL) + getpid());
-+	IGT_INIT_LIST_HEAD(&list);
-+	igt_debug("[%2d] child : to allocate: %uMiB\n", child, kb_left/SZ_1K);
-+
-+	blt_copy_init(fd, &blt);
-+
-+	exec_queue = xe_exec_queue_create(fd, vm, &inst, 0);
-+	ctx = intel_ctx_xe(fd, vm, exec_queue, 0, 0, 0);
-+
-+	while (kb_left) {
-+		struct blt_copy_object *verify_obj;
-+		uint64_t obj_size = rand_and_update(&kb_left, min_alloc_kb, max_alloc_kb) * SZ_1K;
-+		int start_value = rand();
-+
-+		if (config->flags & TEST_SIMPLE)
-+			obj_size = max_alloc_kb * SZ_1K;
-+
-+		obj = create_obj(&blt, ctx, ahnd, obj_size, start_value,
-+				 config->param->disable_compression);
-+		igt_list_add(&obj->link, &list);
-+
-+		if (config->param->verify) {
-+			verify_obj = blt_create_object(&blt, system_memory(fd),
-+						       obj->blt_obj->x2,
-+						       obj->blt_obj->y2,
-+						       32, uc_mocs,
-+						       T_LINEAR, COMPRESSION_DISABLED,
-+						       0, true);
-+			copy_obj(&blt, obj->blt_obj, verify_obj, ctx, ahnd);
-+			check_obj("Verify", verify_obj, obj->blt_obj->size,
-+				  obj->start_value, num_obj++);
-+			blt_destroy_object_and_alloc_free(fd, ahnd, verify_obj);
-+			intel_allocator_bind(ahnd, 0, 0);
-+		}
-+
-+		if (config->flags & TEST_SIMPLE) {
-+			big_obj = xe_bo_create_flags(fd, vm, kb_left * SZ_1K,
-+						     vram_memory(fd, 0));
-+			break;
-+		}
-+
-+		if (config->param->num_objs && ++num_obj == config->param->num_objs)
-+			break;
-+	}
-+
-+	if (config->param->verify)
-+		igt_info("[%8d] Verify ok\n", getpid());
-+
-+	num_obj = 0;
-+	igt_list_for_each_entry_safe(obj, tmp, &list, link) {
-+		orig_obj = blt_create_object(&blt, system_memory(fd),
-+					     obj->blt_obj->x2,
-+					     obj->blt_obj->y2,
-+					     32, uc_mocs,
-+					     T_LINEAR, COMPRESSION_DISABLED,
-+					     0, true);
-+		copy_obj(&blt, obj->blt_obj, orig_obj, ctx, ahnd);
-+		check_obj("Check", orig_obj, obj->blt_obj->size, obj->start_value, num_obj++);
-+		blt_destroy_object_and_alloc_free(fd, ahnd, orig_obj);
-+
-+		if (config->flags & TEST_INSTANTFREE) {
-+			igt_list_del(&obj->link);
-+			blt_destroy_object_and_alloc_free(fd, ahnd, obj->blt_obj);
-+			free(obj);
-+		}
-+		intel_allocator_bind(ahnd, 0, 0);
-+	}
-+
-+	if (!(config->flags & TEST_INSTANTFREE))
-+		igt_list_for_each_entry_safe(obj, tmp, &list, link) {
-+			igt_list_del(&obj->link);
-+			blt_destroy_object_and_alloc_free(fd, ahnd, obj->blt_obj);
-+			free(obj);
-+		}
-+
-+	if (config->flags & TEST_SIMPLE)
-+		gem_close(fd, big_obj);
-+}
-+
-+static void set_config(int fd, uint32_t flags, const struct param *param,
-+		       struct config *config)
-+{
-+	int nproc = 1;
-+
-+	config->param = param;
-+	config->flags = flags;
-+	config->free_mb = xe_visible_vram_size(fd, 0) / SZ_1M;
-+	config->total_mb = xe_vram_available(fd, 0) / SZ_1M;
-+	config->test_mb = min_t(int, config->free_mb * config->param->vram_percent / 100,
-+				config->total_mb * config->param->vram_percent / 100);
-+
-+	igt_debug("VRAM memory size: %dMB/%dMB (use %dMB), overcommit perc: %d\n",
-+		  config->free_mb, config->total_mb,
-+		  config->test_mb, config->param->vram_percent);
-+
-+	if (flags & TEST_PARALLEL)
-+		nproc = min_t(int, sysconf(_SC_NPROCESSORS_ONLN), MAX_NPROC);
-+	config->nproc = nproc;
-+	config->mb_per_proc = config->test_mb / nproc;
-+
-+	igt_debug("nproc: %d, mem per proc: %dMB\n", nproc, config->mb_per_proc);
-+}
-+
-+static void evict_ccs(int fd, uint32_t flags, const struct param *param)
-+{
-+	struct config config;
-+	char numstr[32];
-+
-+	igt_info("Test mode <parallel: %d, instant free: %d, reopen: %d, simple: %d>\n",
-+		 !!(flags & TEST_PARALLEL),
-+		 !!(flags & TEST_INSTANTFREE),
-+		 !!(flags & TEST_REOPEN),
-+		 !!(flags & TEST_SIMPLE));
-+	if (param->num_objs)
-+		snprintf(numstr, sizeof(numstr), "%d", param->num_objs);
-+	else
-+		strncpy(numstr, "limited to vram", sizeof(numstr));
-+	igt_info("Params: compression: %s, num objects: %s, vram percent: %d, kb <min: %d, max: %d>\n",
-+		 param->disable_compression ? "disabled" : "enabled",
-+		 numstr, param->vram_percent,
-+		 param->min_size_kb, param->max_size_kb);
-+
-+	set_config(fd, flags, param, &config);
-+
-+	if (flags & TEST_PARALLEL) {
-+		igt_fork(n, config.nproc) {
-+			if (flags & TEST_REOPEN) {
-+				fd = drm_reopen_driver(fd);
-+				intel_allocator_init();
-+			}
-+			evict_single(fd, n, &config);
-+		}
-+		igt_waitchildren();
-+	} else {
-+		if (flags & TEST_REOPEN)
-+			fd = drm_reopen_driver(fd);
-+		evict_single(fd, 0, &config);
-+	}
-+}
-+
-+/**
-+ *
-+ * SUBTEST: evict-ccs-overcommit-simple
-+ * Description: FlatCCS eviction test.
-+ * Feature: flatccs
-+ * Test category: stress test
-+ */
-+/**
-+ *
-+ * SUBTEST: evict-ccs-overcommit-%s-%s-%s
-+ * Description: FlatCCS eviction test.
-+ * Feature: flatccs
-+ * Test category: stress test
-+ *
-+ * arg[1]:
-+ *
-+ * @standalone:			single process
-+ * @parallel:			multiple processes
-+ *
-+ * arg[2]:
-+ *
-+ * @nofree:			keep objects till the end of the test
-+ * @instantfree:		free object after it was verified and it won't
-+ *				be used anymore
-+ *
-+ * arg[3]:
-+ *
-+ * @samefd:			operate on same opened drm fd
-+ * @reopen:			use separately opened drm fds
-+ *
-+ */
-+static int opt_handler(int opt, int opt_index, void *data)
-+{
-+	switch (opt) {
-+	case 'b':
-+		params.print_bb = true;
-+		igt_debug("Print bb: %d\n", params.print_bb);
-+		break;
-+	case 'd':
-+		params.disable_compression = true;
-+		igt_debug("Print bb: %d\n", params.disable_compression);
-+		break;
-+	case 'D':
-+		params.dump_corrupted_surface = true;
-+		igt_debug("Print bb: %d\n", params.dump_corrupted_surface);
-+		break;
-+	case 'n':
-+		params.num_objs = atoi(optarg);
-+		igt_debug("Number objects: %d\n", params.num_objs);
-+		break;
-+	case 'p':
-+		params.vram_percent = atoi(optarg);
-+		igt_debug("Percent vram: %d\n", params.vram_percent);
-+		break;
-+	case 's':
-+		params.min_size_kb = atoi(optarg);
-+		igt_debug("Min size kb: %d\n", params.min_size_kb);
-+		break;
-+	case 'S':
-+		params.max_size_kb = atoi(optarg);
-+		igt_debug("Max size kb: %d\n", params.max_size_kb);
-+		break;
-+	case 'V':
-+		params.verify = true;
-+		igt_debug("Verify: %d\n", params.verify);
-+		break;
-+	default:
-+		return IGT_OPT_HANDLER_ERROR;
-+	}
-+
-+	return IGT_OPT_HANDLER_SUCCESS;
-+}
-+
-+const char *help_str =
-+	"  -b\tPrint bb\n"
-+	"  -d\tDisable compression (don't use flatccs area)\n"
-+	"  -D\tDump surface which doesn't match\n"
-+	"  -e\tAdd temporary object which enforce eviction\n"
-+	"  -n\tNumber of objects to create (0 - 31)\n"
-+	"  -p\tPercent of VRAM to alloc\n"
-+	"  -s\tMinimum size of object in kb\n"
-+	"  -S\tMaximum size of object in kb\n"
-+	"  -V\tVerify object after compressing\n"
-+	;
-+
-+igt_main_args("bdDn:p:s:S:V", NULL, help_str, opt_handler, NULL)
-+{
-+	const struct ccs {
-+		const char *name;
-+		uint32_t flags;
-+	} ccs[] = {
-+		{ "simple",
-+			TEST_SIMPLE },
-+		{ "standalone-nofree-samefd",
-+			0 },
-+		{ "standalone-nofree-reopen",
-+			TEST_REOPEN },
-+		{ "standalone-instantfree-samefd",
-+			TEST_INSTANTFREE },
-+		{ "standalone-instantfree-reopen",
-+			TEST_INSTANTFREE | TEST_REOPEN },
-+		{ "parallel-nofree-samefd",
-+			TEST_PARALLEL },
-+		{ "parallel-nofree-reopen",
-+			TEST_PARALLEL | TEST_REOPEN },
-+		{ "parallel-instantfree-samefd",
-+			TEST_PARALLEL | TEST_INSTANTFREE },
-+		{ "parallel-instantfree-reopen",
-+			TEST_PARALLEL | TEST_INSTANTFREE | TEST_REOPEN },
-+		{ },
-+	};
-+	uint64_t vram_size;
-+	int fd;
-+
-+	igt_fixture {
-+		fd = drm_open_driver(DRIVER_XE);
-+		igt_require(xe_has_vram(fd));
-+		vram_size = xe_visible_vram_size(fd, 0);
-+		igt_assert(vram_size);
-+	}
-+
-+	igt_fixture
-+		intel_allocator_multiprocess_start();
-+
-+	for (const struct ccs *s = ccs; s->name; s++) {
-+		igt_subtest_f("evict-ccs-overcommit-%s", s->name)
-+			evict_ccs(fd, s->flags, &params);
-+	}
-+
-+	igt_fixture {
-+		intel_allocator_multiprocess_stop();
-+		drm_close_driver(fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 5afcd8cbba..8c3e2301c9 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -280,6 +280,7 @@ intel_xe_progs = [
- 	'xe_debugfs',
- 	'xe_drm_fdinfo',
- 	'xe_evict',
-+	'xe_evict_ccs',
- 	'xe_exec_balancer',
- 	'xe_exec_basic',
- 	'xe_exec_compute_mode',
--- 
-2.34.1
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_13781 -> IGTPW_10057
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/index.html
+
+Participating hosts (36 -> 35)
+------------------------------
+
+  Additional (2): fi-hsw-4770 bat-adlp-9 
+  Missing    (3): bat-mtlp-8 fi-snb-2520m bat-dg1-5 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10057 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@debugfs_test@basic-hwmon:
+    - bat-adlp-9:         NOTRUN -> [SKIP][1] ([i915#9318])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-9/igt@debugfs_test@basic-hwmon.html
+    - bat-adlp-11:        NOTRUN -> [SKIP][2] ([i915#9318])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-11/igt@debugfs_test@basic-hwmon.html
+    - bat-jsl-1:          NOTRUN -> [SKIP][3] ([i915#9318])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-jsl-1/igt@debugfs_test@basic-hwmon.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - bat-jsl-1:          NOTRUN -> [SKIP][4] ([i915#2190])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-jsl-1/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - bat-adlp-9:         NOTRUN -> [SKIP][5] ([i915#4613]) +3 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-9/igt@gem_lmem_swapping@basic.html
+
+  * igt@gem_lmem_swapping@verify-random:
+    - bat-jsl-1:          NOTRUN -> [SKIP][6] ([i915#4613]) +3 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-jsl-1/igt@gem_lmem_swapping@verify-random.html
+
+  * igt@gem_tiled_pread_basic:
+    - bat-adlp-9:         NOTRUN -> [SKIP][7] ([i915#3282])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-9/igt@gem_tiled_pread_basic.html
+    - bat-adlp-11:        NOTRUN -> [SKIP][8] ([i915#3282])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-11/igt@gem_tiled_pread_basic.html
+
+  * igt@i915_pm_rps@basic-api:
+    - bat-adlp-9:         NOTRUN -> [SKIP][9] ([i915#6621])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-9/igt@i915_pm_rps@basic-api.html
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][10] ([fdo#109271] / [i915#5190])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/fi-hsw-4770/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - bat-adlp-9:         NOTRUN -> [SKIP][11] ([i915#4103] / [i915#5608]) +1 other test skip
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-9/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
+    - bat-adlp-11:        NOTRUN -> [SKIP][12] ([i915#4103] / [i915#5608]) +1 other test skip
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-11/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+    - bat-jsl-1:          NOTRUN -> [SKIP][13] ([i915#4103]) +1 other test skip
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-jsl-1/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-adlp-11:        NOTRUN -> [SKIP][14] ([i915#3555] / [i915#3840])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-11/igt@kms_dsc@dsc-basic.html
+    - bat-jsl-1:          NOTRUN -> [SKIP][15] ([i915#3555]) +1 other test skip
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-jsl-1/igt@kms_dsc@dsc-basic.html
+    - bat-adlp-9:         NOTRUN -> [SKIP][16] ([i915#3555] / [i915#3840])
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-9/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - bat-jsl-1:          NOTRUN -> [SKIP][17] ([fdo#109285])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-jsl-1/igt@kms_force_connector_basic@force-load-detect.html
+    - bat-adlp-9:         NOTRUN -> [SKIP][18] ([fdo#109285])
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-9/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_force_connector_basic@prune-stale-modes:
+    - bat-adlp-11:        NOTRUN -> [SKIP][19] ([i915#4093]) +3 other tests skip
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-11/igt@kms_force_connector_basic@prune-stale-modes.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - bat-adlp-11:        NOTRUN -> [SKIP][20] ([i915#4369])
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-11/igt@kms_hdmi_inject@inject-audio.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-a-vga-1:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][21] ([fdo#109271]) +12 other tests skip
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/fi-hsw-4770/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-a-vga-1.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
+    - bat-dg2-11:         NOTRUN -> [SKIP][22] ([i915#1845] / [i915#9197]) +3 other tests skip
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc:
+    - bat-adlm-1:         NOTRUN -> [SKIP][23] ([i915#1845])
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlm-1/igt@kms_pipe_crc_basic@suspend-read-crc.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1:
+    - fi-hsw-4770:        NOTRUN -> [DMESG-WARN][24] ([i915#8841]) +6 other tests dmesg-warn
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/fi-hsw-4770/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1.html
+
+  * igt@kms_psr@sprite_plane_onoff:
+    - bat-adlp-9:         NOTRUN -> [SKIP][25] ([i915#1072]) +3 other tests skip
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-9/igt@kms_psr@sprite_plane_onoff.html
+    - fi-hsw-4770:        NOTRUN -> [SKIP][26] ([fdo#109271] / [i915#1072]) +3 other tests skip
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/fi-hsw-4770/igt@kms_psr@sprite_plane_onoff.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - bat-adlp-9:         NOTRUN -> [SKIP][27] ([i915#3555])
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-9/igt@kms_setmode@basic-clone-single-crtc.html
+
+  * igt@prime_vgem@basic-fence-read:
+    - bat-adlp-9:         NOTRUN -> [SKIP][28] ([fdo#109295] / [i915#3291] / [i915#3708]) +2 other tests skip
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-9/igt@prime_vgem@basic-fence-read.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-adlm-1:         [ABORT][29] -> [PASS][30]
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13781/bat-adlm-1/igt@i915_selftest@live@hangcheck.html
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlm-1/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-bsw-nick:        [FAIL][31] ([i915#9276]) -> [PASS][32]
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13781/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - fi-kbl-guc:         [FAIL][33] ([IGT#3]) -> [PASS][34]
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13781/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:
+    - bat-rplp-1:         [ABORT][35] ([i915#8668]) -> [PASS][36]
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13781/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [IGT#3]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
+  [i915#3546]: https://gitlab.freedesktop.org/drm/intel/issues/3546
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#3840]: https://gitlab.freedesktop.org/drm/intel/issues/3840
+  [i915#4093]: https://gitlab.freedesktop.org/drm/intel/issues/4093
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4369]: https://gitlab.freedesktop.org/drm/intel/issues/4369
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#5190]: https://gitlab.freedesktop.org/drm/intel/issues/5190
+  [i915#5608]: https://gitlab.freedesktop.org/drm/intel/issues/5608
+  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
+  [i915#7359]: https://gitlab.freedesktop.org/drm/intel/issues/7359
+  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
+  [i915#8841]: https://gitlab.freedesktop.org/drm/intel/issues/8841
+  [i915#8981]: https://gitlab.freedesktop.org/drm/intel/issues/8981
+  [i915#9197]: https://gitlab.freedesktop.org/drm/intel/issues/9197
+  [i915#9276]: https://gitlab.freedesktop.org/drm/intel/issues/9276
+  [i915#9318]: https://gitlab.freedesktop.org/drm/intel/issues/9318
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7552 -> IGTPW_10057
+
+  CI-20190529: 20190529
+  CI_DRM_13781: a983c752eb74b4af7f72fe09008a1169d315a77f @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10057: 10057
+  IGT_7552: 557856802dfee103802f1157f97c65bb476d5468 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@xe_evict_ccs@evict-ccs-overcommit-parallel-instantfree-reopen
++igt@xe_evict_ccs@evict-ccs-overcommit-parallel-instantfree-samefd
++igt@xe_evict_ccs@evict-ccs-overcommit-parallel-nofree-reopen
++igt@xe_evict_ccs@evict-ccs-overcommit-parallel-nofree-samefd
++igt@xe_evict_ccs@evict-ccs-overcommit-simple
++igt@xe_evict_ccs@evict-ccs-overcommit-standalone-instantfree-reopen
++igt@xe_evict_ccs@evict-ccs-overcommit-standalone-instantfree-samefd
++igt@xe_evict_ccs@evict-ccs-overcommit-standalone-nofree-reopen
++igt@xe_evict_ccs@evict-ccs-overcommit-standalone-nofree-samefd
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/index.html
+
+--===============5911133654610902387==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add flat-ccs tests (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124626/">https://patchwork.freedesktop.org/series/124626/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13781 -&gt; IGTPW_10057</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/index.html</p>
+<h2>Participating hosts (36 -&gt; 35)</h2>
+<p>Additional (2): fi-hsw-4770 bat-adlp-9 <br />
+  Missing    (3): bat-mtlp-8 fi-snb-2520m bat-dg1-5 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10057 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@debugfs_test@basic-hwmon:</p>
+<ul>
+<li>
+<p>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-9/igt@debugfs_test@basic-hwmon.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9318">i915#9318</a>)</p>
+</li>
+<li>
+<p>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-11/igt@debugfs_test@basic-hwmon.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9318">i915#9318</a>)</p>
+</li>
+<li>
+<p>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-jsl-1/igt@debugfs_test@basic-hwmon.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9318">i915#9318</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-jsl-1/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-9/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@verify-random:</p>
+<ul>
+<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-jsl-1/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_pread_basic:</p>
+<ul>
+<li>
+<p>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-9/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3282">i915#3282</a>)</p>
+</li>
+<li>
+<p>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-11/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3282">i915#3282</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rps@basic-api:</p>
+<ul>
+<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-9/igt@i915_pm_rps@basic-api.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6621">i915#6621</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/fi-hsw-4770/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5190">i915#5190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-9/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5608">i915#5608</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
+<ul>
+<li>
+<p>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-11/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5608">i915#5608</a>) +1 other test skip</p>
+</li>
+<li>
+<p>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-jsl-1/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>) +1 other test skip</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>
+<p>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-11/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3840">i915#3840</a>)</p>
+</li>
+<li>
+<p>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-jsl-1/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>) +1 other test skip</p>
+</li>
+<li>
+<p>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-9/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3840">i915#3840</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>
+<p>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-jsl-1/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</p>
+</li>
+<li>
+<p>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-9/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@prune-stale-modes:</p>
+<ul>
+<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-11/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4093">i915#4093</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-11/igt@kms_hdmi_inject@inject-audio.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4369">i915#4369</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-a-vga-1:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/fi-hsw-4770/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-a-vga-1.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +12 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9197">i915#9197</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc:</p>
+<ul>
+<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlm-1/igt@kms_pipe_crc_basic@suspend-read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/fi-hsw-4770/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8841">i915#8841</a>) +6 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@sprite_plane_onoff:</p>
+<ul>
+<li>
+<p>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-9/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 other tests skip</p>
+</li>
+<li>
+<p>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/fi-hsw-4770/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 other tests skip</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-9/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-fence-read:</p>
+<ul>
+<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlp-9/igt@prime_vgem@basic-fence-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3291">i915#3291</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>) +2 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-adlm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13781/bat-adlm-1/igt@i915_selftest@live@hangcheck.html">ABORT</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-adlm-1/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13781/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9276">i915#9276</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13781/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3">IGT#3</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:</p>
+<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13781/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10057/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7552 -&gt; IGTPW_10057</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13781: a983c752eb74b4af7f72fe09008a1169d315a77f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10057: 10057<br />
+  IGT_7552: 557856802dfee103802f1157f97c65bb476d5468 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@xe_evict_ccs@evict-ccs-overcommit-parallel-instantfree-reopen<br />
++igt@xe_evict_ccs@evict-ccs-overcommit-parallel-instantfree-samefd<br />
++igt@xe_evict_ccs@evict-ccs-overcommit-parallel-nofree-reopen<br />
++igt@xe_evict_ccs@evict-ccs-overcommit-parallel-nofree-samefd<br />
++igt@xe_evict_ccs@evict-ccs-overcommit-simple<br />
++igt@xe_evict_ccs@evict-ccs-overcommit-standalone-instantfree-reopen<br />
++igt@xe_evict_ccs@evict-ccs-overcommit-standalone-instantfree-samefd<br />
++igt@xe_evict_ccs@evict-ccs-overcommit-standalone-nofree-reopen<br />
++igt@xe_evict_ccs@evict-ccs-overcommit-standalone-nofree-samefd</p>
+
+</body>
+</html>
+
+--===============5911133654610902387==--
