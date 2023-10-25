@@ -1,15 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BE91210E507
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Oct 2023 07:12:05 +0000 (UTC)
+From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
+To: "Hogander, Jouni" <jouni.hogander@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Wed, 25 Oct 2023 07:12:02 +0000
+Message-ID: <CY8PR11MB6889D67487A43288EABA5703DADEA@CY8PR11MB6889.namprd11.prod.outlook.com>
+References: <20231020060503.870173-1-kunal1.joshi@intel.com>
+ <20231020060503.870173-4-kunal1.joshi@intel.com>
+ <335f0248a227d549268f3bcfbaf34d3d6aa8b5d1.camel@intel.com>
+ <CY8PR11MB68894CFF019B013FABDB7EBBDADEA@CY8PR11MB6889.namprd11.prod.outlook.com>
+ <34a1f156ccbccb7fac1393bab3d9f445325144cf.camel@intel.com>
+In-Reply-To: <34a1f156ccbccb7fac1393bab3d9f445325144cf.camel@intel.com>
+Content-Language: en-US
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jesse Zhang" <jesse.zhang@amd.com>
-Date: Wed, 25 Oct 2023 10:15:54 -0000
-Message-ID: <169822895449.20487.10248613141717098420@emeril.freedesktop.org>
-References: <20231025092432.726460-1-jesse.zhang@amd.com>
-In-Reply-To: <20231025092432.726460-1-jesse.zhang@amd.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
- =?utf-8?q?ests/amd=5Fdispatch=3A_add_dispatch_test_for_gfx_and_compute?=
+Subject: Re: [igt-dev] [PATCH i-g-t 3/5] lib/igt_psr: added function to
+ check output supports pr
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,67 +26,77 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: "Murthy, Arun R" <arun.r.murthy@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
-
-Series: tests/amd_dispatch: add dispatch test for gfx and compute
-URL   : https://patchwork.freedesktop.org/series/125554/
-State : warning
-
-== Summary ==
-
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1018406 for the overview.
-
-test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50736539):
-  374/378 assembler test/rnde-intsrc              OK       0.02 s 
-  375/378 assembler test/rndz                     OK       0.02 s 
-  376/378 assembler test/lzd                      OK       0.01 s 
-  377/378 assembler test/not                      OK       0.01 s 
-  378/378 assembler test/immediate                OK       0.02 s 
-  
-  Ok:                  372
-  Expected Fail:         4
-  Fail:                  2
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1698228802:step_script
-  section_start:1698228802:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1698228802:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50736538):
-  374/378 assembler test/rnde-intsrc              OK       0.02 s 
-  375/378 assembler test/rndz                     OK       0.02 s 
-  376/378 assembler test/lzd                      OK       0.02 s 
-  377/378 assembler test/not                      OK       0.01 s 
-  378/378 assembler test/immediate                OK       0.02 s 
-  
-  Ok:                  373
-  Expected Fail:         4
-  Fail:                  1
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1698228796:step_script
-  section_start:1698228796:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1698228797:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1018406
+SGVsbG8gSm91bmksDQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBIb2dhbmRl
+ciwgSm91bmkgPGpvdW5pLmhvZ2FuZGVyQGludGVsLmNvbT4gDQpTZW50OiBXZWRuZXNkYXksIE9j
+dG9iZXIgMjUsIDIwMjMgMTI6MzYgUE0NClRvOiBKb3NoaSwgS3VuYWwxIDxrdW5hbDEuam9zaGlA
+aW50ZWwuY29tPjsgaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCkNjOiBNdXJ0aHksIEFy
+dW4gUiA8YXJ1bi5yLm11cnRoeUBpbnRlbC5jb20+OyBNYW5uYSwgQW5pbWVzaCA8YW5pbWVzaC5t
+YW5uYUBpbnRlbC5jb20+DQpTdWJqZWN0OiBSZTogW1BBVENIIGktZy10IDMvNV0gbGliL2lndF9w
+c3I6IGFkZGVkIGZ1bmN0aW9uIHRvIGNoZWNrIG91dHB1dCBzdXBwb3J0cyBwcg0KDQpPbiBXZWQs
+IDIwMjMtMTAtMjUgYXQgMDY6MDEgKzAwMDAsIEpvc2hpLCBLdW5hbDEgd3JvdGU6DQo+IEhlbGxv
+IEpvdW5pLA0KPiANCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSG9nYW5k
+ZXIsIEpvdW5pIDxqb3VuaS5ob2dhbmRlckBpbnRlbC5jb20+DQo+IFNlbnQ6IEZyaWRheSwgT2N0
+b2JlciAyMCwgMjAyMyA1OjQzIFBNDQo+IFRvOiBKb3NoaSwgS3VuYWwxIDxrdW5hbDEuam9zaGlA
+aW50ZWwuY29tPjsgDQo+IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IENjOiBNdXJ0
+aHksIEFydW4gUiA8YXJ1bi5yLm11cnRoeUBpbnRlbC5jb20+OyBNYW5uYSwgQW5pbWVzaCANCj4g
+PGFuaW1lc2gubWFubmFAaW50ZWwuY29tPg0KPiBTdWJqZWN0OiBSZTogW1BBVENIIGktZy10IDMv
+NV0gbGliL2lndF9wc3I6IGFkZGVkIGZ1bmN0aW9uIHRvIGNoZWNrIA0KPiBvdXRwdXQgc3VwcG9y
+dHMgcHINCj4gDQo+IE9uIEZyaSwgMjAyMy0xMC0yMCBhdCAxMTozNSArMDUzMCwgS3VuYWwgSm9z
+aGkgd3JvdGU6DQo+ID4gYWRkZWQgZnVuY3Rpb24gdG8gY2hlY2sgb3V0cHV0IHN1cHBvcnRzIFBS
+DQo+ID4gDQo+ID4gTm90ZSA6LSBOZXcgZGVidWdmcyBpbnRlcmZhY2VzIHdoaWNoIGFyZSB1c2Vk
+DQo+ID4gwqDCoMKgwqDCoMKgwqAgd2lsbCBiZSBhZGRlZCBieSBiZWxvdyBwYXRjaCBpbiB0aGUg
+ZHJpdmVyDQo+ID4gwqDCoMKgwqDCoMKgwqAgaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Au
+b3JnL3Nlcmllcy85NDQ3MC8NCj4gPiANCj4gPiBDYzogSm91bmkgSMO2Z2FuZGVyIDxqb3VuaS5o
+b2dhbmRlckBpbnRlbC5jb20+DQo+ID4gQ2M6IEFuaW1lc2ggTWFubmEgPGFuaW1lc2gubWFubmFA
+aW50ZWwuY29tPg0KPiA+IENjOiBBcnVuIFIgTXVydGh5IDxhcnVuLnIubXVydGh5QGludGVsLmNv
+bT4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBLdW5hbCBKb3NoaSA8a3VuYWwxLmpvc2hpQGludGVsLmNv
+bT4NCj4gPiAtLS0NCj4gPiDCoGxpYi9pZ3RfcHNyLmMgfCAxNyArKysrKysrKysrKysrKysrKw0K
+PiA+IMKgbGliL2lndF9wc3IuaCB8wqAgMSArDQo+ID4gwqAyIGZpbGVzIGNoYW5nZWQsIDE4IGlu
+c2VydGlvbnMoKykNCj4gPiANCj4gPiBkaWZmIC0tZ2l0IGEvbGliL2lndF9wc3IuYyBiL2xpYi9p
+Z3RfcHNyLmMgaW5kZXgNCj4gPiBhY2FjZmEzMWYuLjRjOTEyYTA2NA0KPiA+IDEwMDY0NA0KPiA+
+IC0tLSBhL2xpYi9pZ3RfcHNyLmMNCj4gPiArKysgYi9saWIvaWd0X3Bzci5jDQo+ID4gQEAgLTIy
+LDYgKzIyLDcgQEANCj4gPiDCoCAqLw0KPiA+IMKgDQo+ID4gwqAjaW5jbHVkZSAiZHJtdGVzdC5o
+Ig0KPiA+ICsjaW5jbHVkZSAiaWd0X2ttcy5oIg0KPiA+IMKgI2luY2x1ZGUgImlndF9wYXJhbXMu
+aCINCj4gPiDCoCNpbmNsdWRlICJpZ3RfcHNyLmgiDQo+ID4gwqAjaW5jbHVkZSAiaWd0X3N5c2Zz
+LmgiDQo+ID4gQEAgLTM3MywzICszNzQsMTkgQEAgZW51bSBwc3JfbW9kZSBwc3JfZ2V0X21vZGUo
+aW50IGRlYnVnZnNfZmQpDQo+ID4gwqANCj4gPiDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuIFBTUl9E
+SVNBQkxFRDsNCj4gPiDCoH0NCj4gPiArDQo+ID4gK2Jvb2wgb3V0cHV0X3N1cHBvcnRzX3ByKGlu
+dCBkZWJ1Z2ZzX2ZkLCBpZ3Rfb3V0cHV0X3QgKm91dHB1dCkgew0KPiA+ICvCoMKgwqDCoMKgwqDC
+oGNoYXIgZGVidWdmc19maWxlWzEyOF0gPSB7MH07DQo+ID4gK8KgwqDCoMKgwqDCoMKgY2hhciBi
+dWZbUFNSX1NUQVRVU19NQVhfTEVOXTsNCj4gPiArDQo+ID4gK8KgwqDCoMKgwqDCoMKgaWYgKCFz
+dHJzdHIob3V0cHV0LT5uYW1lLCJEUCIpKQ0KPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqByZXR1cm4gZmFsc2U7DQo+ID4gKw0KPiA+ICvCoMKgwqDCoMKgwqDCoCBzcHJpbnRmKGRl
+YnVnZnNfZmlsZSwgIiVzL2k5MTVfcHNyX3N0YXR1cyIsIG91dHB1dC0+bmFtZSk7DQo+ID4gKw0K
+PiA+ICvCoMKgwqDCoMKgwqDCoCBpZ3RfZGVidWdmc19zaW1wbGVfcmVhZChkZWJ1Z2ZzX2ZkLCBk
+ZWJ1Z2ZzX2ZpbGUsDQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgYnVmLCBzaXplb2YoYnVmKSk7DQo+ID4gKw0KPiA+ICvC
+oMKgwqDCoMKgwqDCoCByZXR1cm4gc3Ryc3RyKGJ1ZiwgIlBhbmVsIFJlcGxheSA9IHllcyIpOyB9
+DQo+IA0KPiA+IFdoeSBkbyB5b3UgdGhpbmsgcHNyX3Npbmtfc3VwcG9ydCBjb3VsZG4ndCB3b3Jr
+IGZvciBEUCBhcyB3ZWxsPw0KPiA+IA0KPiA+IEJSLA0KPiANCj4gPiBKb3VuaSBIw7ZnYW5kZXIN
+Cj4gDQo+IEpvdW5pIHBzcl9zaW5rX3N1cHBvcnQgd29uJ3Qgd29yayBmb3IgRFAsIHBzcl9zaW5r
+X3N1cHBvcnQgaXMgbW9kaWZpZWQgDQo+IGZvciBlRFAgb25seS4gQ2hhbmdlcyBhcmUgYmFzZWQg
+b24gZHJpdmVyIGNoYW5nZXMgZG9uZSBpbiANCj4gaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0
+b3Aub3JnL3Nlcmllcy85NDQ3MC8NCg0KPiBPayBidXQgaW5zdGVhZCBvZiBhZGRpbmcgbmV3IHlv
+dSBjb3VsZCBtb2RpZnkgcHNyX3Npbmtfc3VwcG9ydCB0byBhY2NlcHQgUFJfTU9ERQ0KPiBQUl9N
+T0RFX1NFTF9GRVRDSD8NCj4NCj4gQlIsDQo+DQo+IEpvdW5pIEjDtmdhbmRlcg0KDQpGb3IgcHNy
+IGRlYnVnZnMgaXMNCi9zeXMva2VybmVsL2RlYnVnL2RyaS8wL2k5MTVfZWRwX3Bzcl9zdGF0dXMN
+Cg0KRm9yIERQIFByIGl0IGlzDQovc3lzL2tlcm5lbC9kZWJ1Zy9kcmkvMC9EUC1YL2k5MTUpcHNy
+X3N0YXR1cw0KDQpDZXJ0YWlubHkgSSBjYW4gbW9kaWZ5IHRvIGhhbmRsZSBQUiBmb3IgRFAgYXMg
+d2VsbCBpbg0KcHNyX3Npbmtfc3VwcG9ydCwgYnkgYmVsb3cNCg0KLSBib29sIHBzcl9zaW5rX3N1
+cHBvcnQoaW50IGRldmljZSwgaW50IGRlYnVnZnNfZmQsIGVudW0gcHNyX21vZGUgbW9kZSkNCisg
+IGJvb2wgcHNyX3Npbmtfc3VwcG9ydChpbnQgZGV2aWNlLCBpbnQgZGVidWdmc19mZCwgZW51bSBw
+c3JfbW9kZSBtb2RlLCBpZ3Rfb3V0cHV0ICpvdXRwdXQpDQoNCmNhbiBJIHByb2NlZWQgd2l0aCBh
+Ym92ZSBtb2RpZmljYXRpb24/DQoNCiANCj4gDQo+IA0KPiA+IGRpZmYgLS1naXQgYS9saWIvaWd0
+X3Bzci5oIGIvbGliL2lndF9wc3IuaCBpbmRleCANCj4gPiAyNDMxNTQ4OTcuLjhlMzZmY2YyZg0K
+PiA+IDEwMDY0NA0KPiA+IC0tLSBhL2xpYi9pZ3RfcHNyLmgNCj4gPiArKysgYi9saWIvaWd0X3Bz
+ci5oDQo+ID4gQEAgLTU1LDUgKzU1LDYgQEAgYm9vbCBpOTE1X3BzcjJfc2VsZWN0aXZlX2ZldGNo
+X2NoZWNrKGludCBkcm1fZmQpOw0KPiA+IMKgDQo+ID4gwqBib29sIGk5MTVfcHNyMl9zZWxfZmV0
+Y2hfdG9fcHNyMShpbnQgZHJtX2ZkKTsNCj4gPiDCoHZvaWQgaTkxNV9wc3IyX3NlbF9mZXRjaF9y
+ZXN0b3JlKGludCBkcm1fZmQpOw0KPiA+ICtib29sIG91dHB1dF9zdXBwb3J0c19wcihpbnQgZGVi
+dWdmc19mZCwgaWd0X291dHB1dF90ICpvdXRwdXQpOw0KPiA+IMKgDQo+ID4gwqAjZW5kaWYNCj4g
+DQoNClRoYW5rcyBhbmQgUmVnYXJkcw0KS3VuYWwgSm9zaGkNCg==
