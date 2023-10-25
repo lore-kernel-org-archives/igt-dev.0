@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1F60910E66E
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Oct 2023 14:19:51 +0000 (UTC)
-From: Kunal Joshi <kunal1.joshi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 25 Oct 2023 19:57:15 +0530
-Message-Id: <20231025142716.1019749-7-kunal1.joshi@intel.com>
-In-Reply-To: <20231025142716.1019749-1-kunal1.joshi@intel.com>
-References: <20231025142716.1019749-1-kunal1.joshi@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 588C510E66E
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Oct 2023 14:24:15 +0000 (UTC)
+From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Wed, 25 Oct 2023 14:23:58 +0000
+Message-ID: <MW3PR11MB47480FA0E3BA372C7D3065DAAEDEA@MW3PR11MB4748.namprd11.prod.outlook.com>
+References: <20231023141951.32425-1-kamil.konieczny@linux.intel.com>
+ <20231023141951.32425-4-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20231023141951.32425-4-kamil.konieczny@linux.intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 6/7] tests/intel/kms_psr: made test
- compaitable with pr
+Subject: Re: [igt-dev] [PATCH i-g-t v1 3/5] drm-uapi/msm: sync with drm-next
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,619 +22,225 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Kunal Joshi <kunal1.joshi@intel.com>,
- Arun R Murthy <arun.r.murthy@intel.com>
+Cc: Simon Ser <contact@emersion.fr>, Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Modified kms_psr to have support for PR.
+LGTM,
+Reviewed-by: Janga Rahul Kumar<janga.rahul.kumar@intel.com>
 
-v2: remove set_output and have outputs (Jouni)
-
-Cc: Jouni Högander <jouni.hogander@intel.com>
-Cc: Animesh Manna <animesh.manna@intel.com>
-Cc: Arun R Murthy <arun.r.murthy@intel.com>
-Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
----
- tests/intel/kms_psr.c | 405 ++++++++++++++++++++++++++++++++----------
- 1 file changed, 315 insertions(+), 90 deletions(-)
-
-diff --git a/tests/intel/kms_psr.c b/tests/intel/kms_psr.c
-index 8485e9894..31c8bbe77 100644
---- a/tests/intel/kms_psr.c
-+++ b/tests/intel/kms_psr.c
-@@ -25,7 +25,7 @@
- /**
-  * TEST: kms psr
-  * Category: Display
-- * Description: Tests behaviour of PSR & PSR2
-+ * Description: Tests behaviour of PSR & PSR2 & PR
-  */
- 
- #include "igt.h"
-@@ -39,14 +39,14 @@
- #include "xe/xe_query.h"
- 
- /**
-- * SUBTEST: basic
-+ * SUBTEST: psr_basic
-  * Description: Basic check for psr if it is detecting changes made in planes
-  * Driver requirement: i915, xe
-  * Functionality: psr
-  * Mega feature: PSR
-  * Test category: functionality test
-  *
-- * SUBTEST: %s_%s
-+ * SUBTEST: psr_%s_%s
-  * Description: Check if psr is detecting memory mapping, rendering and plane
-  *              operations performed on %arg[1]
-  * Driver requirement: i915
-@@ -67,7 +67,7 @@
-  */
- 
- /**
-- * SUBTEST: sprite_plane_move
-+ * SUBTEST: psr_sprite_plane_move
-  * Description: Check if psr is detecting memory mapping, rendering and plane
-  *              operations performed on sprite planes
-  * Driver requirement: i915, xe
-@@ -75,7 +75,7 @@
-  * Mega feature: PSR
-  * Test category: functionality test
-  *
-- * SUBTEST: %s_%s
-+ * SUBTEST: psr_%s_%s
-  * Description: Check if psr is detecting memory mapping, rendering and plane
-  *              operations performed on %arg[1] planes
-  * Driver requirement: i915, xe
-@@ -96,7 +96,7 @@
-  */
- 
- /**
-- * SUBTEST: primary_%s
-+ * SUBTEST: psr_primary_%s
-  * Description: Check if psr is detecting memory mapping, rendering and plane
-  *              operations performed on %arg[1] planes
-  * Driver requirement: i915, xe
-@@ -111,7 +111,7 @@
-  */
- 
- /**
-- * SUBTEST: dpms
-+ * SUBTEST: psr_dpms
-  * Description: Check if psr is detecting changes when rendering operation is
-  *              performed  with dpms enabled or disabled
-  * Driver requirement: i915, xe
-@@ -119,14 +119,14 @@
-  * Mega feature: PSR
-  * Test category: functionality test
-  *
-- * SUBTEST: no_drrs
-+ * SUBTEST: psr_no_drrs
-  * Description: Check if psr is detecting changes when drrs is disabled
-  * Driver requirement: i915, xe
-  * Functionality: drrs, psr
-  * Mega feature: PSR
-  * Test category: functionality test
-  *
-- * SUBTEST: suspend
-+ * SUBTEST: psr_suspend
-  * Description: Check if psr is detecting changes when plane operation
-  *              is performed with suspend resume cycles
-  * Driver requirement: i915, xe
-@@ -229,6 +229,112 @@
-  * @plane_move:         Move plane position
-  */
- 
-+/**
-+ * SUBTEST: pr_dpms
-+ * Description: Check if pr is detecting changes when rendering operation
-+ *              is performed with dpms enabled or disabled
-+ * Driver requirement: i915, xe
-+ * Functionality: dpms, pr
-+ * Mega feature: Panel Replay
-+ * Test category: functionality test
-+ */
-+
-+/**
-+ * SUBTEST: pr_no_drrs
-+ * Description: Check if pr is detecting changes when drrs is disabled
-+ * Driver requirement: i915, xe
-+ * Functionality: drrs, pr
-+ * Mega feature: Panel Replay
-+ * Test category: functionality test
-+ */
-+
-+/**
-+ * SUBTEST: pr_suspend
-+ * Description: Check if pr is detecting changes when plane operation is
-+ *              performed with suspend resume cycles
-+ * Driver requirement: i915, xe
-+ * Functionality: pr, suspend
-+ * Mega feature: Panel Replay
-+ * Test category: functionality test
-+ */
-+
-+/**
-+ * SUBTEST: pr_basic
-+ * Description: Basic check for pr if it is detecting changes made in planes
-+ * Driver requirement: i915, xe
-+ * Functionality: pr
-+ * Mega feature: Panel Replay
-+ * Test category: functionality test
-+ */
-+
-+/**
-+ * SUBTEST: pr_%s_%s
-+ * Description: Check if pr is detecting memory mapping, rendering and plane
-+ *              operations performed on %arg[1] planes
-+ * Driver requirement: i915
-+ * Functionality: kms_core, plane, pr
-+ * Mega feature: Panel Replay
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @cursor:             Cursor plane
-+ * @primary:            Primary plane
-+ * @sprite:             Sprite plane
-+ *
-+ * arg[2]:
-+ *
-+ * @mmap_cpu:           MMAP CPU
-+ * @mmap_gtt:           MMAP GTT
-+ */
-+
-+/**
-+ * SUBTEST: pr_primary_page_flip
-+ * Description: Check if pr is detecting memory mapping, rendering and plane
-+ *              operations performed on primary planes
-+ * Driver requirement: i915, xe
-+ * Functionality: plane, pr
-+ * Mega feature: Panel Replay
-+ * Test category: functionality test
-+ */
-+
-+/**
-+ * SUBTEST: pr_primary_%s
-+ * Description: Check if pr is detecting memory mapping, rendering and plane
-+ *              operations performed on primary planes
-+ * Driver requirement: i915, xe
-+ * Functionality: kms_core, plane, pr
-+ * Mega feature: Panel Replay
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @blt:                Blitter
-+ * @render:             Render
-+ */
-+
-+/**
-+ * SUBTEST: pr_%s_%s
-+ * Description: Check if pr is detecting memory mapping, rendering and plane
-+ *              operations performed on %arg[1] planes
-+ * Driver requirement: i915, xe
-+ * Functionality: kms_core, plane, pr
-+ * Mega feature: Panel Replay
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @cursor:             Cursor plane
-+ * @sprite:             Sprite plane
-+ *
-+ * arg[2]:
-+ *
-+ * @blt:                Blitter
-+ * @render:             Render
-+ * @plane_onoff:        Plane On off
-+ * @plane_move:         Move plane position
-+ */
-+
- enum operations {
- 	PAGE_FLIP,
- 	MMAP_GTT,
-@@ -270,8 +376,13 @@ typedef struct {
- 	int mod_stride;
- 	drmModeModeInfo *mode;
- 	igt_output_t *output;
-+	igt_output_t **outputs;
-+	int *output_type;
-+	int output_count;
- 	bool with_psr_disabled;
-+	bool supports_psr;
- 	bool supports_psr2;
-+	bool supports_pr;
- } data_t;
- 
- static void create_cursor_fb(data_t *data)
-@@ -289,34 +400,50 @@ static void create_cursor_fb(data_t *data)
- 	igt_put_cairo_ctx(cr);
- }
- 
--static void setup_output(data_t *data)
-+static void setup_outputs(data_t *data)
- {
--	igt_display_t *display = &data->display;
- 	igt_output_t *output;
--	enum pipe pipe;
+> -----Original Message-----
+> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Kamil
+> Konieczny
+> Sent: Monday, October 23, 2023 7:50 PM
+> To: igt-dev@lists.freedesktop.org
+> Cc: Simon Ser <contact@emersion.fr>; Petri Latvala
+> <petri.latvala@intel.com>
+> Subject: [igt-dev] [PATCH i-g-t v1 3/5] drm-uapi/msm: sync with drm-next
+>=20
+> From: Simon Ser <contact@emersion.fr>
+>=20
+> Sync msm drm-uapi header with
+> drm-next commit ("52920704df878050123dfeb469aa6ab8022547c1")
+>=20
+> v1: split msm header to separete patch (Kamil)
+>=20
+> Signed-off-by: Simon Ser <contact@emersion.fr>
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Petri Latvala <petri.latvala@intel.com>
+> Cc: Jessica Zhang <quic_jesszhan@quicinc.com>
+> ---
+>  include/drm-uapi/msm_drm.h | 62 ++++++++++++++++++++++++++++----------
+>  1 file changed, 46 insertions(+), 16 deletions(-)
+>=20
+> diff --git a/include/drm-uapi/msm_drm.h b/include/drm-uapi/msm_drm.h
+> index 6b8fffc28..6c34272a1 100644
+> --- a/include/drm-uapi/msm_drm.h
+> +++ b/include/drm-uapi/msm_drm.h
+> @@ -67,16 +67,25 @@ struct drm_msm_timespec {
+>  	__s64 tv_nsec;         /* nanoseconds */
+>  };
+>=20
+> -#define MSM_PARAM_GPU_ID     0x01
+> -#define MSM_PARAM_GMEM_SIZE  0x02
+> -#define MSM_PARAM_CHIP_ID    0x03
+> -#define MSM_PARAM_MAX_FREQ   0x04
+> -#define MSM_PARAM_TIMESTAMP  0x05
+> -#define MSM_PARAM_GMEM_BASE  0x06
+> -#define MSM_PARAM_PRIORITIES 0x07  /* The # of priority levels */ -
+> #define MSM_PARAM_PP_PGTABLE 0x08  /* =3D> 1 for per-process pagetables,
+> else 0 */
+> -#define MSM_PARAM_FAULTS     0x09
+> -#define MSM_PARAM_SUSPENDS   0x0a
+> +/* Below "RO" indicates a read-only param, "WO" indicates write-only,
+> +and
+> + * "RW" indicates a param that can be both read (GET_PARAM) and written
+> + * (SET_PARAM)
+> + */
+> +#define MSM_PARAM_GPU_ID     0x01  /* RO */
+> +#define MSM_PARAM_GMEM_SIZE  0x02  /* RO */
+> +#define MSM_PARAM_CHIP_ID    0x03  /* RO */
+> +#define MSM_PARAM_MAX_FREQ   0x04  /* RO */
+> +#define MSM_PARAM_TIMESTAMP  0x05  /* RO */ #define
+> MSM_PARAM_GMEM_BASE
+> +0x06  /* RO */ #define MSM_PARAM_PRIORITIES 0x07  /* RO: The # of
+> +priority levels */ #define MSM_PARAM_PP_PGTABLE 0x08  /* RO:
+> +Deprecated, always returns zero */
+> +#define MSM_PARAM_FAULTS     0x09  /* RO */
+> +#define MSM_PARAM_SUSPENDS   0x0a  /* RO */
+> +#define MSM_PARAM_SYSPROF    0x0b  /* WO: 1 preserves perfcntrs, 2 also
+> disables suspend */
+> +#define MSM_PARAM_COMM       0x0c  /* WO: override for task->comm */
+> +#define MSM_PARAM_CMDLINE    0x0d  /* WO: override for task cmdline */
+> +#define MSM_PARAM_VA_START   0x0e  /* RO: start of valid GPU iova
+> range */
+> +#define MSM_PARAM_VA_SIZE    0x0f  /* RO: size of valid GPU iova range
+> (bytes) */
+>=20
+>  /* For backwards compat.  The original support for preemption was based
+> on
+>   * a single ring per priority level so # of priority levels equals the #=
+ @@ -90,6
+> +99,8 @@ struct drm_msm_param {
+>  	__u32 pipe;           /* in, MSM_PIPE_x */
+>  	__u32 param;          /* in, MSM_PARAM_x */
+>  	__u64 value;          /* out (get_param) or in (set_param) */
+> +	__u32 len;            /* zero for non-pointer params */
+> +	__u32 pad;            /* must be zero */
+>  };
+>=20
+>  /*
+> @@ -126,6 +137,8 @@ struct drm_msm_gem_new {
+>  #define MSM_INFO_GET_IOVA	0x01   /* get iova, returned by value */
+>  #define MSM_INFO_SET_NAME	0x02   /* set the debug name (by
+> pointer) */
+>  #define MSM_INFO_GET_NAME	0x03   /* get debug name, returned
+> by pointer */
+> +#define MSM_INFO_SET_IOVA	0x04   /* set the iova, passed by value */
+> +#define MSM_INFO_GET_FLAGS	0x05   /* get the MSM_BO_x flags */
+>=20
+>  struct drm_msm_gem_info {
+>  	__u32 handle;         /* in */
+> @@ -138,8 +151,13 @@ struct drm_msm_gem_info {
+>  #define MSM_PREP_READ        0x01
+>  #define MSM_PREP_WRITE       0x02
+>  #define MSM_PREP_NOSYNC      0x04
+> +#define MSM_PREP_BOOST       0x08
+>=20
+> -#define MSM_PREP_FLAGS       (MSM_PREP_READ | MSM_PREP_WRITE |
+> MSM_PREP_NOSYNC)
+> +#define MSM_PREP_FLAGS       (MSM_PREP_READ | \
+> +			      MSM_PREP_WRITE | \
+> +			      MSM_PREP_NOSYNC | \
+> +			      MSM_PREP_BOOST | \
+> +			      0)
+>=20
+>  struct drm_msm_gem_cpu_prep {
+>  	__u32 handle;         /* in */
+> @@ -168,7 +186,11 @@ struct drm_msm_gem_cpu_fini {
+>   */
+>  struct drm_msm_gem_submit_reloc {
+>  	__u32 submit_offset;  /* in, offset from submit_bo */
+> +#ifdef __cplusplus
+> +	__u32 _or;            /* in, value OR'd with result */
+> +#else
+>  	__u32 or;             /* in, value OR'd with result */
+> +#endif
+>  	__s32 shift;          /* in, amount of left shift (can be negative) */
+>  	__u32 reloc_idx;      /* in, index of reloc_bo buffer */
+>  	__u64 reloc_offset;   /* in, offset from start of reloc_bo */
+> @@ -209,10 +231,12 @@ struct drm_msm_gem_submit_cmd {
+>  #define MSM_SUBMIT_BO_READ             0x0001
+>  #define MSM_SUBMIT_BO_WRITE            0x0002
+>  #define MSM_SUBMIT_BO_DUMP             0x0004
+> +#define MSM_SUBMIT_BO_NO_IMPLICIT      0x0008
+>=20
+>  #define MSM_SUBMIT_BO_FLAGS            (MSM_SUBMIT_BO_READ | \
+>  					MSM_SUBMIT_BO_WRITE | \
+> -					MSM_SUBMIT_BO_DUMP)
+> +					MSM_SUBMIT_BO_DUMP | \
+> +					MSM_SUBMIT_BO_NO_IMPLICIT)
+>=20
+>  struct drm_msm_gem_submit_bo {
+>  	__u32 flags;          /* in, mask of MSM_SUBMIT_BO_x */
+> @@ -227,6 +251,7 @@ struct drm_msm_gem_submit_bo {
+>  #define MSM_SUBMIT_SUDO          0x10000000 /* run submitted cmds from
+> RB */
+>  #define MSM_SUBMIT_SYNCOBJ_IN    0x08000000 /* enable input syncobj
+> */
+>  #define MSM_SUBMIT_SYNCOBJ_OUT   0x04000000 /* enable output
+> syncobj */
+> +#define MSM_SUBMIT_FENCE_SN_IN   0x02000000 /* userspace passes in
+> seqno fence */
+>  #define MSM_SUBMIT_FLAGS                ( \
+>  		MSM_SUBMIT_NO_IMPLICIT   | \
+>  		MSM_SUBMIT_FENCE_FD_IN   | \
+> @@ -234,6 +259,7 @@ struct drm_msm_gem_submit_bo {
+>  		MSM_SUBMIT_SUDO          | \
+>  		MSM_SUBMIT_SYNCOBJ_IN    | \
+>  		MSM_SUBMIT_SYNCOBJ_OUT   | \
+> +		MSM_SUBMIT_FENCE_SN_IN   | \
+>  		0)
+>=20
+>  #define MSM_SUBMIT_SYNCOBJ_RESET 0x00000001 /* Reset syncobj after
+> wait. */ @@ -253,7 +279,7 @@ struct drm_msm_gem_submit_syncobj {
+>   */
+>  struct drm_msm_gem_submit {
+>  	__u32 flags;          /* MSM_PIPE_x | MSM_SUBMIT_x */
+> -	__u32 fence;          /* out */
+> +	__u32 fence;          /* out (or in with MSM_SUBMIT_FENCE_SN_IN
+> flag) */
+>  	__u32 nr_bos;         /* in, number of submit_bo's */
+>  	__u32 nr_cmds;        /* in, number of submit_cmd's */
+>  	__u64 bos;            /* in, ptr to array of submit_bo's */
+> @@ -269,6 +295,11 @@ struct drm_msm_gem_submit {
+>=20
+>  };
+>=20
+> +#define MSM_WAIT_FENCE_BOOST	0x00000001
+> +#define MSM_WAIT_FENCE_FLAGS	( \
+> +		MSM_WAIT_FENCE_BOOST | \
+> +		0)
+> +
+>  /* The normal way to synchronize with the GPU is just to CPU_PREP on
+>   * a buffer if you need to access it from the CPU (other cmdstream
+>   * submission from same or other contexts, PAGE_FLIP ioctl, etc, all @@ =
 -
--	for_each_pipe_with_valid_output(display, pipe, output) {
--		drmModeConnectorPtr c = output->config.connector;
--
--		if (c->connector_type != DRM_MODE_CONNECTOR_eDP)
--			continue;
--
--		igt_display_reset(display);
--		igt_output_set_pipe(output, pipe);
--		if (!i915_pipe_output_combo_valid(display))
--			continue;
--
--		data->crtc_id = output->config.crtc->crtc_id;
--		data->output = output;
--
--		return;
-+	int i;
-+
-+	i = 0;
-+	data->outputs = (igt_output_t **)malloc(sizeof(igt_output_t *) * data->display.n_outputs);
-+	data->output_type = (int *) malloc(sizeof(int) * data->display.n_outputs);
-+
-+	for_each_connected_output(&data->display, output) {
-+                if(psr_sink_support(data->drm_fd, data->debugfs_fd,
-+                                    PSR_MODE_2, output))
-+                {
-+                        data->supports_psr2 = true;
-+                        data->outputs[i] = output;
-+			data->output_type[i++] = PSR_MODE_2;
-+                        igt_debug("PSR_2 supported on %s\n", output->name);
-+                }
-+		else if(psr_sink_support(data->drm_fd, data->debugfs_fd,
-+				    PSR_MODE_1, output))
-+		{
-+			data->supports_psr = true;
-+			data->outputs[i] = output;
-+			data->output_type[i++] = PSR_MODE_1;
-+			igt_debug("PSR_1 supported on %s\n", output->name);
-+		}
-+		else if(psr_sink_support(data->drm_fd, data->debugfs_fd,
-+                                    PR_MODE, output))
-+                {
-+                        data->supports_pr = true;
-+                        data->outputs[i] = output;
-+			data->output_type[i++] = PR_MODE;
-+			igt_debug("PR supported on %s\n", output->name);
-+                }
-+		else
-+			igt_debug("PSR/PSR2/PR not supported on %s\n", output->name);
- 	}
-+	data->output_count = i;
- }
- 
- static void display_init(data_t *data)
- {
- 	igt_display_require(&data->display, data->drm_fd);
--	setup_output(data);
-+	setup_outputs(data);
- }
- 
- static void display_fini(data_t *data)
-@@ -502,7 +629,7 @@ static void fb_dirty_fb_ioctl(data_t *data, struct igt_fb *fb)
- }
- 
- /**
-- * SUBTEST: cursor_plane_move
-+ * SUBTEST: psr_cursor_plane_move
-  * Description: Check if psr is detecting the plane operations performed on
-  *		cursor planes
-  * Driver requirement: i915, xe
-@@ -510,7 +637,7 @@ static void fb_dirty_fb_ioctl(data_t *data, struct igt_fb *fb)
-  * Functionality: psr
-  * Mega feature: PSR
-  *
-- * SUBTEST: primary_page_flip
-+ * SUBTEST: psr_primary_page_flip
-  * Description: Check if psr is detecting page-flipping operations performed
-  *		on primary planes
-  * Driver requirement: i915, xe
-@@ -518,7 +645,7 @@ static void fb_dirty_fb_ioctl(data_t *data, struct igt_fb *fb)
-  * Functionality: psr
-  * Mega feature: PSR
-  *
-- * SUBTEST: sprite_plane_onoff
-+ * SUBTEST: psr_sprite_plane_onoff
-  * Description: Check if psr is detecting the plane operations performed on
-  *		sprite planes
-  * Driver requirement: i915, xe
-@@ -683,15 +810,36 @@ static void setup_test_plane(data_t *data, int test_plane)
- 	igt_display_commit(&data->display);
- }
- 
-+static enum pipe get_pipe_for_output(igt_display_t *display,
-+				     igt_output_t *output)
-+{
-+        enum pipe pipe;
-+
-+        for_each_pipe(display, pipe) {
-+                if (igt_pipe_connector_valid(pipe, output)) {
-+                        return pipe;
-+                }
-+        }
-+
-+        igt_assert_f(false, "No pipe found for output %s\n",
-+                     igt_output_name(output));
-+}
-+
- static void test_setup(data_t *data)
- {
-+	enum pipe pipe;
- 	drmModeConnectorPtr connector;
- 	bool psr_entered = false;
- 
- 	igt_require_f(data->output,
- 		      "No available output found\n");
- 
-+	data->crtc_id = data->output->config.crtc->crtc_id;
- 	connector = data->output->config.connector;
-+	pipe = get_pipe_for_output(&data->display, data->output);
-+	igt_output_set_pipe(data->output, pipe);
-+	igt_require_f(i915_pipe_output_combo_valid(&data->display),
-+		      "output pipe combo not valid\n");
- 
- 	for (int i = 0; i < connector->count_modes; i++) {
- 		data->mode = &connector->modes[i];
-@@ -747,115 +895,192 @@ data_t data = {};
- 
- igt_main_args("", long_options, help_str, opt_handler, &data)
- {
-+	int z;
- 	enum operations op;
--	const char *append_subtest_name[2] = {
--		"",
--		"psr2_"
-+	const char *append_subtest_name[3] = {
-+		"psr_",
-+		"psr2_",
-+		"pr_"
- 	};
-+	int modes[] = {PSR_MODE_1, PSR_MODE_2, PR_MODE};
- 
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
- 		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
- 		kmstest_set_vt_graphics_mode();
- 		data.devid = intel_get_drm_devid(data.drm_fd);
--
--		igt_require_f(sink_support(&data, PSR_MODE_1),
--			      "Sink does not support PSR\n");
--
- 		data.supports_psr2 = sink_support(&data, PSR_MODE_2);
- 		data.bops = buf_ops_create(data.drm_fd);
- 		display_init(&data);
-+
-+                igt_require_f(data.supports_psr || data.supports_psr2 || data.supports_pr,
-+                              "Sink does not support PSR/PSR2/PR\n");
-+
- 	}
- 
--	for (data.op_psr_mode = PSR_MODE_1; data.op_psr_mode <= PSR_MODE_2;
--	     data.op_psr_mode++) {
-+	for (z = 0; z < ARRAY_SIZE(modes); z++) {
-+		data.op_psr_mode = modes[z];
- 
- 		igt_describe("Basic check for psr if it is detecting changes made in planes");
--		igt_subtest_f("%sbasic", append_subtest_name[data.op_psr_mode]) {
--			data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
--			test_setup(&data);
--			test_cleanup(&data);
-+		igt_subtest_with_dynamic_f("%sbasic", append_subtest_name[z]) {
-+			int k;
-+			for ( k = 0; k < data.output_count; k++)
-+			{
-+				igt_display_reset(&data.display);
-+				data.output = data.outputs[k];
-+				igt_dynamic_f("%s", data.output->name) {
-+                                        if (data.output_type[k] != data.op_psr_mode)
-+                                                igt_skip_on_f(true, "Expected skip: %s doesn't support %s",
-+                                                              data.output->name, append_subtest_name[z]);
-+					data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
-+					test_setup(&data);
-+					test_cleanup(&data);
-+				}
-+			}
- 		}
- 
- 		igt_describe("Check if psr is detecting changes when drrs is disabled");
--		igt_subtest_f("%sno_drrs", append_subtest_name[data.op_psr_mode]) {
--			data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
--			test_setup(&data);
--			igt_assert(drrs_disabled(&data));
--			test_cleanup(&data);
-+		igt_subtest_with_dynamic_f("%sno_drrs", append_subtest_name[z]) {
-+                        int k;
-+                        for ( k = 0; k < data.output_count; k++)
-+                        {
-+                                igt_display_reset(&data.display);
-+                                data.output = data.outputs[k];
-+                                igt_dynamic_f("%s", data.output->name) {
-+                                        if (data.output_type[k] != data.op_psr_mode)
-+                                                igt_skip_on_f(true, "Expected skip: %s doesn't support %s",
-+                                                              data.output->name, append_subtest_name[z]);
-+					data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
-+					test_setup(&data);
-+					igt_assert(drrs_disabled(&data));
-+					test_cleanup(&data);
-+				}
-+			}
- 		}
- 
- 		for (op = PAGE_FLIP; op <= RENDER; op++) {
- 			igt_describe("Check if psr is detecting page-flipping,memory mapping and "
- 					"rendering operations performed on primary planes");
--			igt_subtest_f("%sprimary_%s",
--				      append_subtest_name[data.op_psr_mode],
-+			igt_subtest_with_dynamic_f("%sprimary_%s",
-+				      append_subtest_name[z],
- 				      op_str(op)) {
-+				int k;
- 				igt_skip_on(is_xe_device(data.drm_fd) &&
- 					    (op == MMAP_CPU || op == MMAP_GTT));
--
--				data.op = op;
--				data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
--				test_setup(&data);
--				run_test(&data);
--				test_cleanup(&data);
-+				for ( k = 0; k < data.output_count; k++)
-+				{
-+					igt_display_reset(&data.display);
-+					data.output = data.outputs[k];
-+					igt_dynamic_f("%s", data.output->name) {
-+						if (data.output_type[k] != data.op_psr_mode)
-+							igt_skip_on_f(true, "Expected skip: %s doesn't support %s",
-+								      data.output->name, append_subtest_name[z]);
-+						data.op = op;
-+						data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
-+						test_setup(&data);
-+						run_test(&data);
-+						test_cleanup(&data);
-+					}
-+				}
- 			}
- 		}
- 
- 		for (op = MMAP_GTT; op <= PLANE_ONOFF; op++) {
- 			igt_describe("Check if psr is detecting memory mapping,rendering "
- 					"and plane operations performed on sprite planes");
--			igt_subtest_f("%ssprite_%s",
--				      append_subtest_name[data.op_psr_mode],
-+			igt_subtest_with_dynamic_f("%ssprite_%s",
-+				      append_subtest_name[z],
- 				      op_str(op)) {
-+				int k;
- 				igt_skip_on(is_xe_device(data.drm_fd) &&
- 					    (op == MMAP_CPU || op == MMAP_GTT));
--
--				data.op = op;
--				data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
--				test_setup(&data);
--				run_test(&data);
--				test_cleanup(&data);
-+				for ( k = 0; k < data.output_count; k++)
-+				{
-+					igt_display_reset(&data.display);
-+					data.output = data.outputs[k];
-+					igt_dynamic_f("%s", data.output->name) {
-+						if (data.output_type[k] != data.op_psr_mode)
-+							igt_skip_on_f(true, "Expected skip: %s doesn't support %s",
-+								      data.output->name, append_subtest_name[z]);
-+						data.op = op;
-+						data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
-+						test_setup(&data);
-+						run_test(&data);
-+						test_cleanup(&data);
-+					}
-+				}
- 			}
- 
- 			igt_describe("Check if psr is detecting memory mapping, rendering "
- 					"and plane operations performed on cursor planes");
--			igt_subtest_f("%scursor_%s",
--				      append_subtest_name[data.op_psr_mode],
-+			igt_subtest_with_dynamic_f("%scursor_%s",
-+				      append_subtest_name[z],
- 				      op_str(op)) {
-+				int k;
- 				igt_skip_on(is_xe_device(data.drm_fd) &&
- 					    (op == MMAP_CPU || op == MMAP_GTT));
--
--				data.op = op;
--				data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
--				test_setup(&data);
--				run_test(&data);
--				test_cleanup(&data);
-+				for ( k = 0; k < data.output_count; k++)
-+				{
-+					igt_display_reset(&data.display);
-+					data.output = data.outputs[k];
-+					igt_dynamic_f("%s", data.output->name) {
-+						if (data.output_type[k] != data.op_psr_mode)
-+							igt_skip_on_f(true, "Expected skip: %s doesn't support %s",
-+								      data.output->name, append_subtest_name[z]);
-+						data.op = op;
-+						data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
-+						test_setup(&data);
-+						run_test(&data);
-+						test_cleanup(&data);
-+					}
-+				}
- 			}
- 		}
- 
- 		igt_describe("Check if psr is detecting changes when rendering operation is performed"
- 				"  with dpms enabled or disabled");
--		igt_subtest_f("%sdpms", append_subtest_name[data.op_psr_mode]) {
--			data.op = RENDER;
--			data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
--			test_setup(&data);
--			dpms_off_on(&data);
--			run_test(&data);
--			test_cleanup(&data);
-+		igt_subtest_with_dynamic_f("%sdpms", append_subtest_name[z]) {
-+                        int k;
-+                        for ( k = 0; k < data.output_count; k++)
-+                        {
-+                                igt_display_reset(&data.display);
-+                                data.output = data.outputs[k];
-+                                igt_dynamic_f("%s", data.output->name) {
-+					if (data.output_type[k] != data.op_psr_mode)
-+						igt_skip_on_f(true, "Expected skip: %s doesn't support %s",
-+                                                              data.output->name, append_subtest_name[z]);
-+					data.op = RENDER;
-+					data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
-+					test_setup(&data);
-+					dpms_off_on(&data);
-+					run_test(&data);
-+					test_cleanup(&data);
-+				}
-+			}
- 		}
- 
- 		igt_describe("Check if psr is detecting changes when plane operation is performed "
- 				"with suspend resume cycles");
--		igt_subtest_f("%ssuspend", append_subtest_name[data.op_psr_mode]) {
--			data.op = PLANE_ONOFF;
--			data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
--			test_setup(&data);
--			igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
--						      SUSPEND_TEST_NONE);
--			igt_assert(psr_wait_entry_if_enabled(&data));
--			run_test(&data);
--			test_cleanup(&data);
-+		igt_subtest_with_dynamic_f("%ssuspend", append_subtest_name[z]) {
-+                        int k;
-+                        for ( k = 0; k < data.output_count; k++)
-+                        {
-+                                igt_display_reset(&data.display);
-+                                data.output = data.outputs[k];
-+                                igt_dynamic_f("%s", data.output->name) {
-+					if (data.output_type[k] != data.op_psr_mode)
-+						igt_skip_on_f(true, "Expected skip: %s doesn't support %s",
-+							      data.output->name, append_subtest_name[z]);
-+					data.op = PLANE_ONOFF;
-+					data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
-+					test_setup(&data);
-+					igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
-+								      SUSPEND_TEST_NONE);
-+					igt_assert(psr_wait_entry_if_enabled(&data));
-+					run_test(&data);
-+					test_cleanup(&data);
-+				}
-+			}
- 		}
- 	}
- 
--- 
-2.25.1
+> 278,7 +309,7 @@ struct drm_msm_gem_submit {
+>   */
+>  struct drm_msm_wait_fence {
+>  	__u32 fence;          /* in */
+> -	__u32 pad;
+> +	__u32 flags;          /* in, bitmask of MSM_WAIT_FENCE_x */
+>  	struct drm_msm_timespec timeout;   /* in */
+>  	__u32 queueid;         /* in, submitqueue id */
+>  };
+> @@ -333,9 +364,7 @@ struct drm_msm_submitqueue_query {  };
+>=20
+>  #define DRM_MSM_GET_PARAM              0x00
+> -/* placeholder:
+>  #define DRM_MSM_SET_PARAM              0x01
+> - */
+>  #define DRM_MSM_GEM_NEW                0x02
+>  #define DRM_MSM_GEM_INFO               0x03
+>  #define DRM_MSM_GEM_CPU_PREP           0x04
+> @@ -351,6 +380,7 @@ struct drm_msm_submitqueue_query {
+>  #define DRM_MSM_SUBMITQUEUE_QUERY      0x0C
+>=20
+>  #define DRM_IOCTL_MSM_GET_PARAM
+> DRM_IOWR(DRM_COMMAND_BASE + DRM_MSM_GET_PARAM, struct
+> drm_msm_param)
+> +#define DRM_IOCTL_MSM_SET_PARAM        DRM_IOW
+> (DRM_COMMAND_BASE + DRM_MSM_SET_PARAM, struct drm_msm_param)
+>  #define DRM_IOCTL_MSM_GEM_NEW
+> DRM_IOWR(DRM_COMMAND_BASE + DRM_MSM_GEM_NEW, struct
+> drm_msm_gem_new)
+>  #define DRM_IOCTL_MSM_GEM_INFO
+> DRM_IOWR(DRM_COMMAND_BASE + DRM_MSM_GEM_INFO, struct
+> drm_msm_gem_info)
+>  #define DRM_IOCTL_MSM_GEM_CPU_PREP     DRM_IOW
+> (DRM_COMMAND_BASE + DRM_MSM_GEM_CPU_PREP, struct
+> drm_msm_gem_cpu_prep)
+> --
+> 2.42.0
