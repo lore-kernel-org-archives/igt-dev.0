@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A8BE510E578
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Oct 2023 07:57:42 +0000 (UTC)
-Date: Wed, 25 Oct 2023 09:56:02 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20231025075602.v7lhdzh5xbpp4aaq@kamilkon-desk.igk.intel.com>
-References: <20231024141855.160633-1-mauro.chehab@linux.intel.com>
- <20231024141855.160633-7-mauro.chehab@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231024141855.160633-7-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 6/7] runner/job_list: use
- case-insensitive regular expressions
+Content-Transfer-Encoding: 8bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 25 Oct 2023 10:10:48 -0000
+Message-ID: <169822864869.20487.14911703642624611110@emeril.freedesktop.org>
+References: <20231025091841.191503-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20231025091841.191503-1-mauro.chehab@linux.intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_l?=
+ =?utf-8?q?ib/igt=5Fsysfs=3A_move_kick=5Fsnd=5Fhda=5Fintel=28=29_to_igt=5F?=
+ =?utf-8?q?kmod=2Ec?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,44 +17,245 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mauro,
-On 2023-10-24 at 16:11:09 +0200, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> There are some KMS tests that are case-sensitive. Eventually,
-> those could be blocklisted with a different case, causing troubles
-> for CI runs.
-> 
-> As it makes no sense to have the same test name with different
-> cases, handle regular expressions in a case-insensitive way.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+== Series Details ==
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Series: lib/igt_sysfs: move kick_snd_hda_intel() to igt_kmod.c
+URL   : https://patchwork.freedesktop.org/series/125553/
+State : warning
 
-> ---
->  runner/settings.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/runner/settings.c b/runner/settings.c
-> index 788957948b4f..42d8137f18e9 100644
-> --- a/runner/settings.c
-> +++ b/runner/settings.c
-> @@ -323,7 +323,7 @@ static bool add_regex(struct regex_list *list, char *new)
->  	GRegex *regex;
->  	GError *error = NULL;
->  
-> -	regex = g_regex_new(new, G_REGEX_OPTIMIZE, 0, &error);
-> +	regex = g_regex_new(new, G_REGEX_CASELESS | G_REGEX_OPTIMIZE, 0, &error);
->  	if (error) {
->  		usage(stderr, "Invalid regex '%s': %s", new, error->message);
->  		g_error_free(error);
-> -- 
-> 2.41.0
-> 
+== Summary ==
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1018404 for the overview.
+
+build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50736039):
+     if (!S_ISLNK(st.st_mode))
+          ^~~~~~~
+          S_IFLNK
+  ../lib/igt_kmod.c:478:8: warning: nested extern declaration of ‘S_ISLNK’ [-Wnested-externs]
+  ../lib/igt_kmod.c:469:8: warning: unused variable ‘fpath’ [-Wunused-variable]
+     char fpath[PATH_MAX];
+          ^~~~~
+  ../lib/igt_kmod.c:487:2: error: implicit declaration of function ‘closedir’; did you mean ‘close’? [-Werror=implicit-function-declaration]
+    closedir(dir);
+    ^~~~~~~~
+    close
+  ../lib/igt_kmod.c:487:2: warning: nested extern declaration of ‘closedir’ [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1698228409:step_script
+  section_start:1698228409:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1698228410:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50736042):
+     if (!S_ISLNK(st.st_mode))
+          ^~~~~~~
+          S_IFLNK
+  ../lib/igt_kmod.c:478:8: warning: nested extern declaration of ‘S_ISLNK’ [-Wnested-externs]
+  ../lib/igt_kmod.c:469:8: warning: unused variable ‘fpath’ [-Wunused-variable]
+     char fpath[PATH_MAX];
+          ^~~~~
+  ../lib/igt_kmod.c:487:2: error: implicit declaration of function ‘closedir’; did you mean ‘close’? [-Werror=implicit-function-declaration]
+    closedir(dir);
+    ^~~~~~~~
+    close
+  ../lib/igt_kmod.c:487:2: warning: nested extern declaration of ‘closedir’ [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1698228434:step_script
+  section_start:1698228434:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1698228435:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50736041):
+     if (!S_ISLNK(st.st_mode))
+          ^~~~~~~
+          S_IFLNK
+  ../lib/igt_kmod.c:478:8: warning: nested extern declaration of ‘S_ISLNK’ [-Wnested-externs]
+  ../lib/igt_kmod.c:469:8: warning: unused variable ‘fpath’ [-Wunused-variable]
+     char fpath[PATH_MAX];
+          ^~~~~
+  ../lib/igt_kmod.c:487:2: error: implicit declaration of function ‘closedir’; did you mean ‘close’? [-Werror=implicit-function-declaration]
+    closedir(dir);
+    ^~~~~~~~
+    close
+  ../lib/igt_kmod.c:487:2: warning: nested extern declaration of ‘closedir’ [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1698228425:step_script
+  section_start:1698228425:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1698228426:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50736043):
+     if (!S_ISLNK(st.st_mode))
+          ^~~~~~~
+          S_IFLNK
+  ../lib/igt_kmod.c:478:8: warning: nested extern declaration of ‘S_ISLNK’ [-Wnested-externs]
+  ../lib/igt_kmod.c:469:8: warning: unused variable ‘fpath’ [-Wunused-variable]
+     char fpath[PATH_MAX];
+          ^~~~~
+  ../lib/igt_kmod.c:487:2: error: implicit declaration of function ‘closedir’; did you mean ‘close’? [-Werror=implicit-function-declaration]
+    closedir(dir);
+    ^~~~~~~~
+    close
+  ../lib/igt_kmod.c:487:2: warning: nested extern declaration of ‘closedir’ [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1698228420:step_script
+  section_start:1698228420:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1698228420:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50736040):
+     if (!S_ISLNK(st.st_mode))
+          ^~~~~~~
+          S_IFLNK
+  ../lib/igt_kmod.c:478:8: warning: nested extern declaration of ‘S_ISLNK’ [-Wnested-externs]
+  ../lib/igt_kmod.c:469:8: warning: unused variable ‘fpath’ [-Wunused-variable]
+     char fpath[PATH_MAX];
+          ^~~~~
+  ../lib/igt_kmod.c:487:2: error: implicit declaration of function ‘closedir’; did you mean ‘close’? [-Werror=implicit-function-declaration]
+    closedir(dir);
+    ^~~~~~~~
+    close
+  ../lib/igt_kmod.c:487:2: warning: nested extern declaration of ‘closedir’ [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1698228405:step_script
+  section_start:1698228405:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1698228406:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50736034):
+    478 |   if (!S_ISLNK(st.st_mode))
+        |        ^~~~~~~
+        |        S_IFLNK
+  ../lib/igt_kmod.c:478:8: warning: nested extern declaration of ‘S_ISLNK’ [-Wnested-externs]
+  ../lib/igt_kmod.c:469:8: warning: unused variable ‘fpath’ [-Wunused-variable]
+    469 |   char fpath[PATH_MAX];
+        |        ^~~~~
+  ../lib/igt_kmod.c:487:2: error: implicit declaration of function ‘closedir’; did you mean ‘close’? [-Werror=implicit-function-declaration]
+    487 |  closedir(dir);
+        |  ^~~~~~~~
+        |  close
+  ../lib/igt_kmod.c:487:2: warning: nested extern declaration of ‘closedir’ [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1698228410:step_script
+  section_start:1698228410:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1698228410:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50736038):
+  /usr/include/stdlib.h:852:14: note: 'div' declared here
+  extern div_t div (int __numer, int __denom)
+               ^
+  ../lib/igt_kmod.c:868:5: warning: declaration does not declare anything [-Wmissing-declarations]
+                                  __attribute__ ((fallthrough));
+                                  ^
+  ../lib/igt_kmod.c:1044:5: warning: declaration does not declare anything [-Wmissing-declarations]
+                                  __attribute__ ((fallthrough));
+                                  ^
+  ../lib/igt_kmod.c:1271:5: warning: declaration does not declare anything [-Wmissing-declarations]
+                                  __attribute__ ((fallthrough));
+                                  ^
+  4 warnings and 18 errors generated.
+  ninja: build stopped: subcommand failed.
+  section_end:1698228421:step_script
+  section_start:1698228421:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1698228424:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50736037):
+    478 |   if (!S_ISLNK(st.st_mode))
+        |        ^~~~~~~
+        |        S_IFLNK
+  ../lib/igt_kmod.c:478:8: warning: nested extern declaration of ‘S_ISLNK’ [-Wnested-externs]
+  ../lib/igt_kmod.c:469:8: warning: unused variable ‘fpath’ [-Wunused-variable]
+    469 |   char fpath[PATH_MAX];
+        |        ^~~~~
+  ../lib/igt_kmod.c:487:2: error: implicit declaration of function ‘closedir’; did you mean ‘close’? [-Werror=implicit-function-declaration]
+    487 |  closedir(dir);
+        |  ^~~~~~~~
+        |  close
+  ../lib/igt_kmod.c:487:2: warning: nested extern declaration of ‘closedir’ [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1698228405:step_script
+  section_start:1698228405:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1698228405:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50736035):
+    478 |   if (!S_ISLNK(st.st_mode))
+        |        ^~~~~~~
+        |        S_IFLNK
+  ../lib/igt_kmod.c:478:8: warning: nested extern declaration of ‘S_ISLNK’ [-Wnested-externs]
+  ../lib/igt_kmod.c:469:8: warning: unused variable ‘fpath’ [-Wunused-variable]
+    469 |   char fpath[PATH_MAX];
+        |        ^~~~~
+  ../lib/igt_kmod.c:487:2: error: implicit declaration of function ‘closedir’; did you mean ‘close’? [-Werror=implicit-function-declaration]
+    487 |  closedir(dir);
+        |  ^~~~~~~~
+        |  close
+  ../lib/igt_kmod.c:487:2: warning: nested extern declaration of ‘closedir’ [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1698228407:step_script
+  section_start:1698228407:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1698228408:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50736036):
+    478 |   if (!S_ISLNK(st.st_mode))
+        |        ^~~~~~~
+        |        S_IFLNK
+  ../lib/igt_kmod.c:478:8: warning: nested extern declaration of ‘S_ISLNK’ [-Wnested-externs]
+  ../lib/igt_kmod.c:469:8: warning: unused variable ‘fpath’ [-Wunused-variable]
+    469 |   char fpath[PATH_MAX];
+        |        ^~~~~
+  ../lib/igt_kmod.c:487:2: error: implicit declaration of function ‘closedir’; did you mean ‘close’? [-Werror=implicit-function-declaration]
+    487 |  closedir(dir);
+        |  ^~~~~~~~
+        |  close
+  ../lib/igt_kmod.c:487:2: warning: nested extern declaration of ‘closedir’ [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1698228410:step_script
+  section_start:1698228410:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1698228411:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1018404
 
