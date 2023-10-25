@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4D89A10E576
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Oct 2023 07:45:11 +0000 (UTC)
-Date: Wed, 25 Oct 2023 09:44:37 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20231025074437.rcwbw5nrbxzmrmuw@kamilkon-desk.igk.intel.com>
-References: <20231020141122.137376-1-mauro.chehab@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231020141122.137376-1-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] scripts/test_list.py: better handle
- list of tests
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 25 Oct 2023 10:05:51 -0000
+Message-ID: <169822835128.20488.15880356888364214047@emeril.freedesktop.org>
+References: <20231025091841.191503-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20231025091841.191503-1-mauro.chehab@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBsaWIv?=
+ =?utf-8?q?igt=5Fsysfs=3A_move_kick=5Fsnd=5Fhda=5Fintel=28=29_to_igt=5Fkmo?=
+ =?utf-8?b?ZC5j?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,174 +17,75 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mauro,
-On 2023-10-20 at 16:11:22 +0200, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> Not all test lists are regular expressions. Some are just
-> names. That's the case of IGT runner testlist files.
-> 
-> Add support for that.
-> 
-> In practice, this change will produce the same testlists
-> as before, but using a logic closer to what igt_runner()
-> does.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+== Series Details ==
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Series: lib/igt_sysfs: move kick_snd_hda_intel() to igt_kmod.c
+URL   : https://patchwork.freedesktop.org/series/125553/
+State : failure
 
-> ---
->  scripts/test_list.py             | 54 +++++++++++++++++++++++---------
->  tests/intel/kms_test_config.json |  2 +-
->  tests/intel/xe_test_config.json  |  1 +
->  3 files changed, 41 insertions(+), 16 deletions(-)
-> 
-> diff --git a/scripts/test_list.py b/scripts/test_list.py
-> index e54873f07e20..06215242107a 100644
-> --- a/scripts/test_list.py
-> +++ b/scripts/test_list.py
-> @@ -319,10 +319,6 @@ class TestList:
->              self.props["Class"]["_properties_"]["level"] = 1
->              self.props["Class"]["_properties_"]["sublevel"] = sublevel_count[0] + 1
->  
-> -        flags = 0
-> -        if self.config.get("case_insensitive_testlist", False):
-> -            flags |= re.IGNORECASE
-> -
->          # Remove non-multilevel items, as we're only interested on
->          # hierarchical item levels here
->          for field, item in self.props.items():
-> @@ -337,7 +333,7 @@ class TestList:
->                  testlist = {}
->                  for value in item["_properties_"]["include"]:
->                      for name in value.keys():
-> -                        self.read_testlist(testlist, name, cfg_path + value[name], flags)
-> +                        self.read_testlist(field, item, testlist, name, cfg_path + value[name])
->  
->                  item["_properties_"]["include"] = testlist
->  
-> @@ -346,7 +342,7 @@ class TestList:
->                  testlist = {}
->                  for value in item["_properties_"]["exclude"]:
->                      for name in value.keys():
-> -                        self.read_testlist(testlist, name, cfg_path + value[name], flags)
-> +                        self.read_testlist(field, item, testlist, name, cfg_path + value[name])
->  
->                  item["_properties_"]["exclude"] = testlist
->  
-> @@ -450,7 +446,22 @@ class TestList:
->  
->              self.__add_field(key, sublevel, hierarchy_level, field[key])
->  
-> -    def read_testlist(self, testlist, name, filename, flags):
-> +    def read_testlist(self, field, item, testlist, name, filename):
-> +
-> +        match_type = item["_properties_"].get("match-type", "subtest-match")
-> +
-> +        match_type_regex = set(["regex", "regex-ignorecase"])
-> +        match_type_str = set(["subtest-match"])
-> +        match_types = match_type_regex | match_type_str
-> +
-> +        if match_type not in match_types:
-> +            sys.exit(f"Error: invalid match type '{match_type}' for {field}")
-> +
-> +        if match_type == "regex":
-> +            flags = 0
-> +        elif match_type == "regex-ignorecase":
-> +            flags = re.IGNORECASE
-> +
->          base = r"^\s*({}[^\s\{}]+)(\S*)\s*(\#.*)?$"
->          regex = re.compile(base.format(self.main_name, self.subtest_separator))
->  
-> @@ -459,12 +470,25 @@ class TestList:
->          with open(filename, 'r', newline = '', encoding = 'utf8') as fp:
->              for line in fp:
->                  match = regex.match(line)
-> -                if match:
-> -                    test = match.group(1)
-> -                    subtest = match.group(2)
-> -                    if not subtest.endswith("$"):
-> -                        subtest += r"(\@.*)?$"
-> -                    testlist[name].append(re.compile(f"{test}{subtest}", flags))
-> +                if not match:
-> +                    continue
-> +
-> +                test = match.group(1)
-> +                subtest = match.group(2)
-> +                test_name = f"{test}{subtest}"
-> +
-> +                if match_type in match_type_regex:
-> +                    testlist[name].append(re.compile(test_name, flags))
-> +                    continue
-> +
-> +                subtests = test_name.split(self.subtest_separator)[:3]
-> +
-> +                prefix=""
-> +                for subtest in subtests:
-> +                    subtest = prefix + subtest
-> +                    prefix = subtest + self.subtest_separator
-> +
-> +                testlist[name].append(re.compile(f"{subtest}(@.*)?"))
->  
->      def __filter_subtest(self, test, subtest, field_not_found_value):
->  
-> @@ -504,7 +528,7 @@ class TestList:
->              for names, regex_array in self.props[field]["_properties_"]["include"].items():
->                  name = set(re.split(",\s*", names))
->                  for regex in regex_array:
-> -                    if regex.match(testname):
-> +                    if regex.fullmatch(testname):
->                          values.update(name)
->                          break
->  
-> @@ -514,7 +538,7 @@ class TestList:
->                  for names, regex_array in self.props[field]["_properties_"]["exclude"].items():
->                      deleted_names = set(re.split(",\s*", names))
->                      for regex in regex_array:
-> -                        if regex.match(testname):
-> +                        if regex.fullmatch(testname):
->                              if sorted(deleted_names) == sorted(values):
->                                  set_full_if_empty = False
->                              values.discard(deleted_names)
-> diff --git a/tests/intel/kms_test_config.json b/tests/intel/kms_test_config.json
-> index 40cf69dd0904..837380ee7fae 100644
-> --- a/tests/intel/kms_test_config.json
-> +++ b/tests/intel/kms_test_config.json
-> @@ -4,7 +4,6 @@
->      "files": [ "../chamelium/kms_*.c", "../kms_*.c", "../testdisplay.c", "kms_*.c" ],
->      "exclude_files": [ "../chamelium/kms_chamelium_helper.c", "../kms_color_helper.c",
->                         "kms_dsc_helper.c" ],
-> -    "case_insensitive_testlist": true,
->      "fields": {
->          "Category": {
->              "_properties_": {
-> @@ -24,6 +23,7 @@
->                  "_properties_": {
->                      "description": "Defines what category of testlist it belongs",
->                      "default-testlist": "FULL",
-> +                    "match-type": "subtest-match",
->                      "include": [
->                          { "i915 BAT": "../intel-ci/fast-feedback.testlist" },
->                          { "i915 BAT chamelium": "../intel-ci/fast-feedback-chamelium-only.testlist" },
-> diff --git a/tests/intel/xe_test_config.json b/tests/intel/xe_test_config.json
-> index 20faf73b7270..5fd7c888f274 100644
-> --- a/tests/intel/xe_test_config.json
-> +++ b/tests/intel/xe_test_config.json
-> @@ -33,6 +33,7 @@
->                              "mandatory": true,
->                              "description": "Defines what category of testlist it belongs",
->                              "default-testlist": "FULL",
-> +                            "match-type": "subtest-match",
->                              "include": [
->                                  { "Xe BAT": "../intel-ci/xe-fast-feedback.testlist" }
->                              ],
-> -- 
-> 2.41.0
-> 
+== Summary ==
+
+IGT patchset build failed on latest successful build
+cdc8d1fcd23c0480145f83af79a222fd9ca2eeb6 tests/device_reset: fix logic to unbind when snd_hda_intel is loaded
+
+Tail of build.log:
+[270/1645] Compiling C object 'lib/76b5a35@@igt-rendercopy_i915_c@sta/rendercopy_i915.c.o'.
+[271/1645] Compiling C object 'lib/76b5a35@@igt-rendercopy_i830_c@sta/rendercopy_i830.c.o'.
+[272/1645] Compiling C object 'lib/76b5a35@@igt-igt_msm_c@sta/igt_msm.c.o'.
+[273/1645] Compiling C object 'lib/76b5a35@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o'.
+[274/1645] Compiling C object 'lib/76b5a35@@igt-intel_aux_pgtable_c@sta/intel_aux_pgtable.c.o'.
+[275/1645] Compiling C object 'lib/76b5a35@@igt-intel_allocator_simple_c@sta/intel_allocator_simple.c.o'.
+[276/1645] Compiling C object 'lib/76b5a35@@igt-igt_vc4_c@sta/igt_vc4.c.o'.
+[277/1645] Compiling C object 'tests/59830eb@@kms_atomic_transition@exe/kms_atomic_transition.c.o'.
+[278/1645] Compiling C object 'lib/76b5a35@@igt-intel_compute_c@sta/intel_compute.c.o'.
+[279/1645] Compiling C object 'lib/76b5a35@@igt-veboxcopy_gen12_c@sta/veboxcopy_gen12.c.o'.
+[280/1645] Compiling C object 'lib/76b5a35@@igt-igt_draw_c@sta/igt_draw.c.o'.
+[281/1645] Compiling C object 'tests/59830eb@@kms_lease@exe/kms_lease.c.o'.
+[282/1645] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen4_c@sta/rendercopy_gen4.c.o'.
+[283/1645] Compiling C object 'tests/59830eb@@kms_flip@exe/kms_flip.c.o'.
+[284/1645] Compiling C object 'lib/76b5a35@@igt-igt_edid_c@sta/igt_edid.c.o'.
+[285/1645] Compiling C object 'lib/76b5a35@@igt-xe_xe_spin_c@sta/xe_xe_spin.c.o'.
+[286/1645] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen7_c@sta/rendercopy_gen7.c.o'.
+[287/1645] Compiling C object 'lib/76b5a35@@igt-xe_xe_ioctl_c@sta/xe_xe_ioctl.c.o'.
+[288/1645] Compiling C object 'lib/76b5a35@@igt-ioctl_wrappers_c@sta/ioctl_wrappers.c.o'.
+[289/1645] Compiling C object 'lib/76b5a35@@igt-igt_frame_c@sta/igt_frame.c.o'.
+[290/1645] Compiling C object 'lib/76b5a35@@igt-instdone_c@sta/instdone.c.o'.
+[291/1645] Compiling C object 'lib/76b5a35@@igt-xe_xe_util_c@sta/xe_xe_util.c.o'.
+[292/1645] Compiling C object 'lib/76b5a35@@igt-igt_device_scan_c@sta/igt_device_scan.c.o'.
+[293/1645] Compiling C object 'lib/76b5a35@@igt-intel_allocator_c@sta/intel_allocator.c.o'.
+[294/1645] Compiling C object 'lib/76b5a35@@igt-xe_xe_query_c@sta/xe_xe_query.c.o'.
+[295/1645] Compiling C object 'lib/76b5a35@@igt-igt_dummyload_c@sta/igt_dummyload.c.o'.
+[296/1645] Compiling C object 'lib/76b5a35@@igt-gpu_cmds_c@sta/gpu_cmds.c.o'.
+[297/1645] Compiling C object 'lib/76b5a35@@igt-igt_v3d_c@sta/igt_v3d.c.o'.
+[298/1645] Compiling C object 'lib/76b5a35@@igt-igt_aux_c@sta/igt_aux.c.o'.
+[299/1645] Compiling C object 'lib/76b5a35@@igt-igt_pm_c@sta/igt_pm.c.o'.
+[300/1645] Compiling C object 'lib/76b5a35@@igt-intel_bufops_c@sta/intel_bufops.c.o'.
+[301/1645] Compiling C object 'lib/76b5a35@@igt-igt_vmwgfx_c@sta/igt_vmwgfx.c.o'.
+[302/1645] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen6_c@sta/rendercopy_gen6.c.o'.
+[303/1645] Compiling C object 'tests/59830eb@@kms_atomic@exe/kms_atomic.c.o'.
+[304/1645] Compiling C object 'lib/76b5a35@@igt-intel_blt_c@sta/intel_blt.c.o'.
+[305/1645] Compiling C object 'lib/76b5a35@@igt-igt_amd_c@sta/igt_amd.c.o'.
+[306/1645] Generating i915-perf-registers-acmgt3 with a custom command.
+[307/1645] Compiling C object 'lib/76b5a35@@igt-igt_core_c@sta/igt_core.c.o'.
+[308/1645] Compiling C object 'lib/76b5a35@@igt-intel_batchbuffer_c@sta/intel_batchbuffer.c.o'.
+[309/1645] Compiling C object 'lib/76b5a35@@igt-igt_chamelium_c@sta/igt_chamelium.c.o'.
+[310/1645] Generating i915-perf-metrics-acmgt3 with a custom command.
+[311/1645] Compiling C object 'tests/59830eb@@kms_cursor_legacy@exe/kms_cursor_legacy.c.o'.
+[312/1645] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen8_c@sta/rendercopy_gen8.c.o'.
+[313/1645] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen9_c@sta/rendercopy_gen9.c.o'.
+[314/1645] Compiling C object 'lib/76b5a35@@igt-i915_intel_decode_c@sta/i915_intel_decode.c.o'.
+[315/1645] Compiling C object 'lib/76b5a35@@igt-igt_fb_c@sta/igt_fb.c.o'.
+[316/1645] Compiling C object 'lib/76b5a35@@igt-igt_kms_c@sta/igt_kms.c.o'.
+[317/1645] Compiling C object 'tests/59830eb@@perf@exe/intel_perf.c.o'.
+[318/1645] Generating i915-perf-equations with a custom command.
+ninja: build stopped: subcommand failed.
+
+
 
