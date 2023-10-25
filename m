@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 52C9B10E5D1
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Oct 2023 16:57:02 +0000 (UTC)
+Date: Wed, 25 Oct 2023 18:56:56 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20231025165656.kgxd5zem5ql7vyrw@kamilkon-desk.igk.intel.com>
+References: <20231025092432.726460-1-jesse.zhang@amd.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Nidhi Gupta" <nidhi1.gupta@intel.com>
-Date: Wed, 25 Oct 2023 16:52:40 -0000
-Message-ID: <169825276032.20490.17738848977164915752@emeril.freedesktop.org>
-References: <20231025120256.27326-1-nidhi1.gupta@intel.com>
-In-Reply-To: <20231025120256.27326-1-nidhi1.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
- =?utf-8?q?ests/kms=5Ffrontbuffer=5Ftracking=3A_Extend_the_test_to_enable_?=
- =?utf-8?q?FBC_for_each_plane_=28rev4=29?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231025092432.726460-1-jesse.zhang@amd.com>
+Subject: Re: [igt-dev] [PATCH] tests/amd_dispatch: add dispatch test for gfx
+ and compute
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,155 +20,118 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Tim Huang <tim.huang@amd.com>, Luben Tuikov <luben.tuikov@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Christian Koenig <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Hi Jesse,
+On 2023-10-25 at 17:24:32 +0800, Jesse Zhang wrote:
+> Add dispatch test on gfx and compute ring.
+> Through  memset shader and memcpy shader,
+> and validate the result.
+> 
+> Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> Cc: Luben Tuikov <luben.tuikov@amd.com>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
+> Cc: Christian Koenig <christian.koenig@amd.com>
+> Cc: Tim Huang <tim.huang@amd.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> 
+> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
 
-Series: tests/kms_frontbuffer_tracking: Extend the test to enable FBC for each plane (rev4)
-URL   : https://patchwork.freedesktop.org/series/123724/
-State : warning
+Look at gitlab report with warning, it turns out you have now
+duplicate subtests:
 
-== Summary ==
+tests/amdgpu/amd_dispatch:
+Checking invalid option handling...
+Checking valid option handling...
+Checking subtest enumeration...
+Checking subtest uniqueness...
+test has duplicate subtest names!
+amdgpu-dispatch-test-compute-with-IP-COMPUTE amdgpu-dispatch-test-gfx-with-IP-GFX
+FAIL: tests/amdgpu/amd_dispatch
 
-Pipeline status: FAILED.
+to replicate, compile and then run:
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1018792 for the overview.
+meson test -C build
 
-build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50757436):
-  [1640/1642] Generating i915_tests.html with a custom command.
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/727] Generating version.h with a custom command.
-  [2/4] Linking target runner/runner_test.
-  [3/4] Generating kms_tests.rst with a custom command.
-  FAILED: docs/testplan/kms_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: Documented igt@kms_frontbuffer_tracking@plane-0-fbc-rte doesn't exist on source files
-  Warning: Documented igt@kms_frontbuffer_tracking@plane-1-fbc-rte doesn't exist on source files
-  Warning: Documented igt@kms_frontbuffer_tracking@plane-2-fbc-rte doesn't exist on source files
-  Warning: Missing documentation for igt@kms_frontbuffer_tracking@plane-fbc-rte
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1698252389:step_script
-  section_start:1698252389:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1698252391:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+See also some notes about checkpatch.pl and few other.
 
-build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50757431):
-  [1646/1648] Generating i915_tests.html with a custom command.
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/729] Generating version.h with a custom command.
-  [2/4] Linking target runner/runner_test.
-  [3/4] Generating kms_tests.rst with a custom command.
-  FAILED: docs/testplan/kms_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: Documented igt@kms_frontbuffer_tracking@plane-0-fbc-rte doesn't exist on source files
-  Warning: Documented igt@kms_frontbuffer_tracking@plane-1-fbc-rte doesn't exist on source files
-  Warning: Documented igt@kms_frontbuffer_tracking@plane-2-fbc-rte doesn't exist on source files
-  Warning: Missing documentation for igt@kms_frontbuffer_tracking@plane-fbc-rte
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1698252359:step_script
-  section_start:1698252359:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1698252361:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+> ---
+>  tests/amdgpu/amd_dispatch.c | 27 +++++++++++++++++++++++++++
+>  1 file changed, 27 insertions(+)
+> 
+> diff --git a/tests/amdgpu/amd_dispatch.c b/tests/amdgpu/amd_dispatch.c
+> index 323284306..d62dc7a3d 100644
+> --- a/tests/amdgpu/amd_dispatch.c
+> +++ b/tests/amdgpu/amd_dispatch.c
+> @@ -36,6 +36,16 @@ amdgpu_dispatch_hang_compute(amdgpu_device_handle device_handle)
+>  	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_COMPUTE, 1);
+>  }
+>  
+> +static void
+> +amdgpu_gfx_dispatch_test_gfx(amdgpu_device_handle device_handle) {
+------------------------------------------------------------------- ^
+This should be at start of line:
+{
 
-build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50757435):
-  Please refer: docs/test_documentation.md for more details
-  [1647/1648] Generating i915_tests.html with a custom command.
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/729] Generating version.h with a custom command.
-  [2/3] Generating kms_tests.rst with a custom command.
-  FAILED: docs/testplan/kms_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: Documented igt@kms_frontbuffer_tracking@plane-0-fbc-rte doesn't exist on source files
-  Warning: Documented igt@kms_frontbuffer_tracking@plane-1-fbc-rte doesn't exist on source files
-  Warning: Documented igt@kms_frontbuffer_tracking@plane-2-fbc-rte doesn't exist on source files
-  Warning: Missing documentation for igt@kms_frontbuffer_tracking@plane-fbc-rte
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1698252382:step_script
-  section_start:1698252382:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1698252383:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+> +	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_GFX, 0);
+> +}
+> +
+> +static void
+> +amdgpu_gfx_dispatch_test_compute(amdgpu_device_handle device_handle) {
+------------------------------------------------------------------- ^
+Same here.
 
-build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50757434):
-  [1490/1492] Generating i915_tests.html with a custom command.
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/683] Generating version.h with a custom command.
-  [2/4] Linking target runner/runner_test.
-  [3/4] Generating kms_tests.rst with a custom command.
-  FAILED: docs/testplan/kms_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: Documented igt@kms_frontbuffer_tracking@plane-0-fbc-rte doesn't exist on source files
-  Warning: Documented igt@kms_frontbuffer_tracking@plane-1-fbc-rte doesn't exist on source files
-  Warning: Documented igt@kms_frontbuffer_tracking@plane-2-fbc-rte doesn't exist on source files
-  Warning: Missing documentation for igt@kms_frontbuffer_tracking@plane-fbc-rte
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1698252359:step_script
-  section_start:1698252359:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1698252360:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+> +	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_COMPUTE, 0);
+> +}
+> +
+>  static void
+>  amdgpu_gpu_reset_test(amdgpu_device_handle device_handle, int drm_amdgpu)
+>  {
+> @@ -97,6 +107,23 @@ igt_main
+>  		asic_rings_readness(device, 1, arr_cap);
+>  
+>  	}
+> +
+> +	igt_describe("Check-dispatch-test-gfx-for-each-ring-using-memset-memcpy-shaders-and-validate-after");
+-----------------------^
+No need for dashes '-' in subtest description.
 
-build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50757432):
-  [1646/1648] Generating i915_tests.html with a custom command.
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/729] Generating version.h with a custom command.
-  [2/4] Linking target runner/runner_test.
-  [3/4] Generating kms_tests.rst with a custom command.
-  FAILED: docs/testplan/kms_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: Documented igt@kms_frontbuffer_tracking@plane-0-fbc-rte doesn't exist on source files
-  Warning: Documented igt@kms_frontbuffer_tracking@plane-1-fbc-rte doesn't exist on source files
-  Warning: Documented igt@kms_frontbuffer_tracking@plane-2-fbc-rte doesn't exist on source files
-  Warning: Missing documentation for igt@kms_frontbuffer_tracking@plane-fbc-rte
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1698252357:step_script
-  section_start:1698252357:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1698252358:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+> +	igt_subtest_with_dynamic("amdgpu-dispatch-test-gfx-with-IP-GFX") {
+> +		if (arr_cap[AMD_IP_GFX]) {
+> +			igt_dynamic_f("amdgpu-dispatch-test-gfx")
+-------------------------- ^
+Keep it uniqe.
 
-build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50757433):
-  [1646/1648] Generating i915_tests.html with a custom command.
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/729] Generating version.h with a custom command.
-  [2/4] Linking target runner/runner_test.
-  [3/4] Generating kms_tests.rst with a custom command.
-  FAILED: docs/testplan/kms_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: Documented igt@kms_frontbuffer_tracking@plane-0-fbc-rte doesn't exist on source files
-  Warning: Documented igt@kms_frontbuffer_tracking@plane-1-fbc-rte doesn't exist on source files
-  Warning: Documented igt@kms_frontbuffer_tracking@plane-2-fbc-rte doesn't exist on source files
-  Warning: Missing documentation for igt@kms_frontbuffer_tracking@plane-fbc-rte
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1698252357:step_script
-  section_start:1698252357:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1698252359:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+> +			amdgpu_gfx_dispatch_test_gfx(device);
+> +		}
+> +	}
+> +
+> +	igt_describe("Check-dispatch-test-compute-for-each-ring-using-memset-memcpy-shaders-and-validate-after");
+-----------------------^
+Same here.
 
-== Logs ==
+> +	igt_subtest_with_dynamic("amdgpu-dispatch-test-compute-with-IP-COMPUTE") {
+> +		if (arr_cap[AMD_IP_COMPUTE]) {
+> +			igt_dynamic_f("amdgpu-dispatch-test-compute")
+-------------------------- ^
+Keep it uniqe.
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1018792
+Regards,
+Kamil
+
+> +			amdgpu_gfx_dispatch_test_compute(device);
+> +		}
+> +	}
+> +
+>  	igt_describe("Test GPU reset using a binary shader to slow hang the job on compute ring");
+>  	igt_subtest_with_dynamic("amdgpu-dispatch-test-compute-with-IP-COMPUTE") {
+>  		if (arr_cap[AMD_IP_COMPUTE]) {
+> -- 
+> 2.25.1
+> 
