@@ -1,24 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2EBF210E507
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Oct 2023 07:13:50 +0000 (UTC)
-From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
-To: "Hogander, Jouni" <jouni.hogander@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Wed, 25 Oct 2023 07:13:46 +0000
-Message-ID: <CY8PR11MB68891A148ECEA923FB8F675CDADEA@CY8PR11MB6889.namprd11.prod.outlook.com>
-References: <20231020060503.870173-1-kunal1.joshi@intel.com>
- <20231020060503.870173-5-kunal1.joshi@intel.com>
- <1f6639776e01e62f20554bc7df83067c8554368b.camel@intel.com>
- <CY8PR11MB6889B7F1125EB54237D3DEC9DADEA@CY8PR11MB6889.namprd11.prod.outlook.com>
- <b85ee350dacef5b171936046872f441bbe817bd8.camel@intel.com>
-In-Reply-To: <b85ee350dacef5b171936046872f441bbe817bd8.camel@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B2BB210E56E
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Oct 2023 07:43:32 +0000 (UTC)
+Message-ID: <5c61a73d-f30c-504b-79d4-603b7a65ecdc@intel.com>
+Date: Wed, 25 Oct 2023 13:13:12 +0530
 Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+To: "Sharma, Swati2" <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20230911072249.1935228-1-bhanuprakash.modem@intel.com>
+ <20230911072249.1935228-3-bhanuprakash.modem@intel.com>
+ <b1d4b535-4550-49df-8f4a-a8a4f411e02e@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <b1d4b535-4550-49df-8f4a-a8a4f411e02e@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 4/5] lib/igt_psr: added function to
- check active dp pr
+Subject: Re: [igt-dev] [i-g-t V5 2/5] tests/i915/kms_fb_coherency: Add XE
+ support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,75 +23,120 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Murthy, Arun R" <arun.r.murthy@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGVsbG8gSm91bmksDQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBIb2dhbmRl
-ciwgSm91bmkgPGpvdW5pLmhvZ2FuZGVyQGludGVsLmNvbT4gDQpTZW50OiBXZWRuZXNkYXksIE9j
-dG9iZXIgMjUsIDIwMjMgMTI6MzggUE0NClRvOiBKb3NoaSwgS3VuYWwxIDxrdW5hbDEuam9zaGlA
-aW50ZWwuY29tPjsgaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCkNjOiBNdXJ0aHksIEFy
-dW4gUiA8YXJ1bi5yLm11cnRoeUBpbnRlbC5jb20+OyBNYW5uYSwgQW5pbWVzaCA8YW5pbWVzaC5t
-YW5uYUBpbnRlbC5jb20+DQpTdWJqZWN0OiBSZTogW1BBVENIIGktZy10IDQvNV0gbGliL2lndF9w
-c3I6IGFkZGVkIGZ1bmN0aW9uIHRvIGNoZWNrIGFjdGl2ZSBkcCBwcg0KDQpPbiBXZWQsIDIwMjMt
-MTAtMjUgYXQgMDY6MTYgKzAwMDAsIEpvc2hpLCBLdW5hbDEgd3JvdGU6DQo+IEhlbGxvIEpvdW5p
-LA0KPiANCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSG9nYW5kZXIsIEpv
-dW5pIDxqb3VuaS5ob2dhbmRlckBpbnRlbC5jb20+DQo+IFNlbnQ6IEZyaWRheSwgT2N0b2JlciAy
-MCwgMjAyMyA1OjQ2IFBNDQo+IFRvOiBKb3NoaSwgS3VuYWwxIDxrdW5hbDEuam9zaGlAaW50ZWwu
-Y29tPjsgDQo+IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IENjOiBNdXJ0aHksIEFy
-dW4gUiA8YXJ1bi5yLm11cnRoeUBpbnRlbC5jb20+OyBNYW5uYSwgQW5pbWVzaCANCj4gPGFuaW1l
-c2gubWFubmFAaW50ZWwuY29tPg0KPiBTdWJqZWN0OiBSZTogW1BBVENIIGktZy10IDQvNV0gbGli
-L2lndF9wc3I6IGFkZGVkIGZ1bmN0aW9uIHRvIGNoZWNrIA0KPiBhY3RpdmUgZHAgcHINCj4gDQo+
-IE9uIEZyaSwgMjAyMy0xMC0yMCBhdCAxMTozNSArMDUzMCwgS3VuYWwgSm9zaGkgd3JvdGU6DQo+
-ID4gQWRkZWQgZnVuY3Rpb24gdG8gY2hlY2sgaWYgcHIgaXMgYWN0aXZlIG9uIGEgb3V0cHV0Lg0K
-PiA+IGFzc3VtaW5nIFNSREVOVCBpcyB0aGUgc3RhdGUgdG8gY29tcGFyZSB3aGVuIHByIGlzIGFj
-dGl2ZQ0KPiA+IA0KPiA+IENjOiBKb3VuaSBIw7ZnYW5kZXIgPGpvdW5pLmhvZ2FuZGVyQGludGVs
-LmNvbT4NCj4gPiBDYzogQW5pbWVzaCBNYW5uYSA8YW5pbWVzaC5tYW5uYUBpbnRlbC5jb20+DQo+
-ID4gQ2M6IEFydW4gUiBNdXJ0aHkgPGFydW4uci5tdXJ0aHlAaW50ZWwuY29tPg0KPiA+IFNpZ25l
-ZC1vZmYtYnk6IEt1bmFsIEpvc2hpIDxrdW5hbDEuam9zaGlAaW50ZWwuY29tPg0KPiA+IC0tLQ0K
-PiA+IMKgbGliL2lndF9wc3IuYyB8IDIzICsrKysrKysrKysrKysrKysrKysrKysrDQo+ID4gwqBs
-aWIvaWd0X3Bzci5oIHzCoCAyICstDQo+ID4gwqAyIGZpbGVzIGNoYW5nZWQsIDI0IGluc2VydGlv
-bnMoKyksIDEgZGVsZXRpb24oLSkNCj4gPiANCj4gPiBkaWZmIC0tZ2l0IGEvbGliL2lndF9wc3Iu
-YyBiL2xpYi9pZ3RfcHNyLmMgaW5kZXgNCj4gPiA0YzkxMmEwNjQuLjY4MzM3OWRiNg0KPiA+IDEw
-MDY0NA0KPiA+IC0tLSBhL2xpYi9pZ3RfcHNyLmMNCj4gPiArKysgYi9saWIvaWd0X3Bzci5jDQo+
-ID4gQEAgLTM5MCwzICszOTAsMjYgQEAgYm9vbCBvdXRwdXRfc3VwcG9ydHNfcHIoaW50IGRlYnVn
-ZnNfZmQsIA0KPiA+IGlndF9vdXRwdXRfdCAqb3V0cHV0KQ0KPiA+IMKgDQo+ID4gwqDCoMKgwqDC
-oMKgwqDCoCByZXR1cm4gc3Ryc3RyKGJ1ZiwgIlBhbmVsIFJlcGxheSA9IHllcyIpOw0KPiA+IMKg
-fQ0KPiA+ICsNCj4gPiArYm9vbCBkcF9wcl9hY3RpdmVfY2hlY2soaW50IGRlYnVnZnNfZmQsIGln
-dF9vdXRwdXRfdCAqb3V0cHV0KSB7DQo+ID4gK8KgwqDCoMKgwqDCoMKgIGNoYXIgZGVidWdmc19m
-aWxlWzEyOF0gPSB7MH07DQo+ID4gK8KgwqDCoMKgwqDCoMKgIGNoYXIgYnVmW1BTUl9TVEFUVVNf
-TUFYX0xFTl07DQo+ID4gK8KgwqDCoMKgwqDCoMKgIGNvbnN0IGNoYXIgKnN0YXRlID0gIlNSREVO
-VCI7DQo+ID4gK8KgwqDCoMKgwqDCoMKgIGludCByZXQ7DQo+ID4gKw0KPiA+ICvCoMKgwqDCoMKg
-wqDCoCBpZiAoIXN0cnN0cihvdXRwdXQtPm5hbWUsIkRQIikpDQo+ID4gK8KgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoCByZXR1cm4gZmFsc2U7DQo+ID4gKw0KPiA+ICvCoMKgwqDCoMKgwqDC
-oCBzcHJpbnRmKGRlYnVnZnNfZmlsZSwgIiVzL2k5MTVfc2lua19zdGF0dXMiLCBvdXRwdXQtDQo+
-ID4gPm5hbWUpOw0KPiA+ICsNCj4gPiArwqDCoMKgwqDCoMKgwqAgcmV0ID0gaWd0X2RlYnVnZnNf
-c2ltcGxlX3JlYWQoZGVidWdmc19mZCwgZGVidWdmc19maWxlLA0KPiA+ICvCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqAgYnVmLCBzaXplb2YoYnVmKSk7DQo+ID4gK8KgwqDCoMKgwqDCoMKgIGlmIChyZXQgPCAwKSB7
-DQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpZ3RfaW5mbygiQ291bGQgbm90
-IHJlYWQgaTkxNV9lZHBfcHNyX3N0YXR1czoNCj4gPiAlc1xuIiwNCj4gPiArwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHN0cmVycm9yKC1yZXQpKTsNCj4g
-PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJldHVybiBmYWxzZTsNCj4gPiArwqDC
-oMKgwqDCoMKgwqAgfQ0KPiA+ICvCoMKgwqDCoMKgwqDCoCBpZ3Rfc2tpcF9vbihzdHJzdHIoYnVm
-LCAiUFNSIHNpbmsgbm90IHJlbGlhYmxlOiB5ZXMiKSk7DQo+ID4gK8KgwqDCoMKgwqDCoMKgIHJl
-dHVybiBzdHJzdHIoYnVmLCBzdGF0ZSk7DQo+ID4gK30NCj4gDQo+ID4gV2h5IGRpZCB5b3UgY2hv
-b3NlIHRvIHdyaXRlIG5ldyBpbnN0ZWFkIG9mIG1vZGlmeWluZyBleGlzdGluZyBjID8NCj4gPiAN
-Cj4gPiBCUg0KPiBGb3IgRFAgcHIgd2UgYXJlIHVzaW5nIGRpZmZlcmVudCBkZWJ1Z2ZzIGRpcmVj
-dG9yeSB0byByZWFkLCBzbyB0aG91Z2h0IA0KPiBvZiBjcmVhdGluZyBuZXcgZnVuY3Rpb24gZm9y
-IGNsZWFyIHNlcGFyYXRpb24sDQo+IA0KPiBCdXQgY2FuIG1vZGlmeSBwc3Jfc2lua19zdXBwb3J0
-IGlmIHlvdSB0aGluayB0aGF0IHdpbGwgYmUgYmV0dGVyIHdheS4NCj4NCj4gSSB0aGluayB0aGF0
-IHdvdWxkIGJlIGJldHRlciBhcHByb2FjaC4gQWxzbyBlYXNlcyB5b3VyIG1vZGlmaWNhdGlvbnMg
-aW4ga21zX3Bzci5jDQo+DQo+IEJSLA0KPg0KPiBKb3VuaSBIw7ZnYW5kZXINCg0KU3VyZSBKb3Vu
-aSwgdGhhbmtzIGZvciB0aGUgc3VnZ2VzdGlvbiDwn5iKDQoNCj4gDQo+IEpvdW5pIEjDtmdhbmRl
-cg0KPiA+IGRpZmYgLS1naXQgYS9saWIvaWd0X3Bzci5oIGIvbGliL2lndF9wc3IuaCBpbmRleA0K
-PiA+IDhlMzZmY2YyZi4uZGM2MDNmZmMzDQo+ID4gMTAwNjQ0DQo+ID4gLS0tIGEvbGliL2lndF9w
-c3IuaA0KPiA+ICsrKyBiL2xpYi9pZ3RfcHNyLmgNCj4gPiBAQCAtNTYsNSArNTYsNSBAQCBib29s
-IGk5MTVfcHNyMl9zZWxlY3RpdmVfZmV0Y2hfY2hlY2soaW50IGRybV9mZCk7DQo+ID4gwqBib29s
-IGk5MTVfcHNyMl9zZWxfZmV0Y2hfdG9fcHNyMShpbnQgZHJtX2ZkKTsNCj4gPiDCoHZvaWQgaTkx
-NV9wc3IyX3NlbF9mZXRjaF9yZXN0b3JlKGludCBkcm1fZmQpOw0KPiA+IMKgYm9vbCBvdXRwdXRf
-c3VwcG9ydHNfcHIoaW50IGRlYnVnZnNfZmQsIGlndF9vdXRwdXRfdCAqb3V0cHV0KTsNCj4gPiAt
-DQo+ID4gK2Jvb2wgZHBfcHJfYWN0aXZlX2NoZWNrKGludCBkZWJ1Z2ZzX2ZkLCBpZ3Rfb3V0cHV0
-X3QgKm91dHB1dCk7DQo+ID4gwqAjZW5kaWYNCj4gDQo+IFRoYW5rcyBhbmQgUmVnYXJkcw0KPiBL
-dW5hbCBKb3NoaQ0KPiANCg0KVGhhbmtzIGFuZCBSZWdhcmRzDQpLdW5hbCBKb3NoaQ0K
+Hi Swati,
+
+On Mon-23-10-2023 02:11 pm, Sharma, Swati2 wrote:
+> Hi Bhanu,
+> 
+> On 11-Sep-23 12:52 PM, Bhanuprakash Modem wrote:
+>> Add XE driver support for kms tests. This patch will add a support
+>> to call the corresponding apis based on the driver (i915/xe)
+>>
+>> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>> ---
+>>   tests/intel/kms_fb_coherency.c | 43 ++++++++++++++++++----------------
+>>   1 file changed, 23 insertions(+), 20 deletions(-)
+>>
+>> diff --git a/tests/intel/kms_fb_coherency.c 
+>> b/tests/intel/kms_fb_coherency.c
+>> index c772ddcdc..745ffcdd2 100644
+>> --- a/tests/intel/kms_fb_coherency.c
+>> +++ b/tests/intel/kms_fb_coherency.c
+>> @@ -16,6 +16,7 @@
+>>   #include <string.h>
+>>   #include "igt.h"
+>> +#include "xe/xe_ioctl.h"
+>>   typedef struct {
+>>       int drm_fd;
+>> @@ -91,7 +92,7 @@ static struct igt_fb *prepare_fb(data_t *data)
+>>               0, 0, fb->width, fb->height,
+>>               0, 0, fb->width << 16, fb->height << 16);
+>> -    if (!gem_has_lmem(data->drm_fd)) {
+>> +    if (is_i915_device(data->drm_fd) && !gem_has_lmem(data->drm_fd)) {
+>>           uint32_t caching;
+>>           /* make sure caching mode has become UC/WT */
+>> @@ -160,7 +161,10 @@ static void test_mmap_offset_wc(data_t *data)
+>>       fb = prepare_fb(data);
+>> -    buf = gem_mmap_offset__wc(data->drm_fd, fb->gem_handle, 0, 
+>> fb->size, PROT_WRITE);
+>> +    if (is_i915_device(data->drm_fd))
+>> +        buf = gem_mmap_offset__wc(data->drm_fd, fb->gem_handle, 0, 
+>> fb->size, PROT_WRITE);
+>> +    else
+>> +        buf = xe_bo_mmap_ext(data->drm_fd, fb->gem_handle, fb->size, 
+>> PROT_WRITE);
+>>       check_buf_crc(data, buf, fb);
+>>   }
+>> @@ -226,7 +230,7 @@ igt_main
+>>       data_t data;
+>>       igt_fixture {
+>> -        data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+>> +        data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
+>>           data.devid = intel_get_drm_devid(data.drm_fd);
+>> @@ -251,39 +255,38 @@ igt_main
+>>        * Test category: functionality test
+>>        */
+>>       igt_subtest_with_dynamic("memset-crc") {
+>> -        if (gem_has_mappable_ggtt(data.drm_fd)) {
+>> +        if (igt_draw_supports_method(data.drm_fd, IGT_DRAW_MMAP_GTT)) {
+>>               igt_dynamic("mmap-gtt")
+>>                   test_mmap_gtt(&data);
+>>               cleanup_crtc(&data);
+>>           }
+>> -        if (gem_mmap_offset__has_wc(data.drm_fd)) {
+>> +        if (igt_draw_supports_method(data.drm_fd, IGT_DRAW_MMAP_WC)) {
+>>               igt_dynamic("mmap-offset-wc")
+>>                   test_mmap_offset_wc(&data);
+>>               cleanup_crtc(&data);
+>>           }
+>> -        if (gem_has_lmem(data.drm_fd)) {
+>> -            igt_dynamic("mmap-offset-fixed")
+>> -                test_mmap_offset_fixed(&data);
+>> +        if (is_i915_device(data.drm_fd)) {
+> 
+> Instead of using if (is_i915_device()), can we use 
+> igt_require_i915(data.drm_fd) instead if these subtests are executable 
+> on i915 driver only?
+
+No, we can't use igt_require_i915() here.
+
+For XE device, IGT will always throw a SKIP after the execution of 
+"mmap-offset-wc".
+
+BTW, we can't use igt_fixture inside igt_subtest_*().
+
+- Bhanu
+
+> 
+>> +            if (gem_has_lmem(data.drm_fd)) {
+>> +                igt_dynamic("mmap-offset-fixed")
+>> +                    test_mmap_offset_fixed(&data);
+>> +            } else if (gem_has_mmap_offset(data.drm_fd)) {
+>> +                igt_dynamic("mmap-offset-uc")
+>> +                    test_mmap_offset_uc(&data);
+>> +            }
+>>               cleanup_crtc(&data);
+>> -        } else if (gem_has_mmap_offset(data.drm_fd)) {
+>> -            igt_dynamic("mmap-offset-uc")
+>> -                test_mmap_offset_uc(&data);
+>> +            if (gem_has_legacy_mmap(data.drm_fd) &&
+>> +                gem_mmap__has_wc(data.drm_fd)) {
+>> +                igt_dynamic("mmap-legacy-wc")
+>> +                    test_legacy_mmap_wc(&data);
+>> -            cleanup_crtc(&data);
+>> -        }
+>> -
+>> -        if (gem_has_legacy_mmap(data.drm_fd) &&
+>> -            gem_mmap__has_wc(data.drm_fd)) {
+>> -            igt_dynamic("mmap-legacy-wc")
+>> -                test_legacy_mmap_wc(&data);
+>> -
+>> -            cleanup_crtc(&data);
+>> +                cleanup_crtc(&data);
+>> +            }
+>>           }
+>>       }
