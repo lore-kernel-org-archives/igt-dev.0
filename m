@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F034810E590
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Oct 2023 09:03:00 +0000 (UTC)
-Message-ID: <6f00153b-4e3c-3770-75ab-dfe1824a3266@linux.intel.com>
-Date: Wed, 25 Oct 2023 11:02:56 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6DE9510E590
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Oct 2023 08:51:56 +0000 (UTC)
+Message-ID: <baf84235-0674-4548-89e8-6ba5e17f9164@intel.com>
+Date: Wed, 25 Oct 2023 10:51:53 +0200
 MIME-Version: 1.0
 References: <20231019091505.41673-1-mauro.chehab@linux.intel.com>
 Content-Language: en-US
-From: Nirmoy Das <nirmoy.das@linux.intel.com>
+From: Andrzej Hajda <andrzej.hajda@intel.com>
 In-Reply-To: <20231019091505.41673-1-mauro.chehab@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
@@ -26,7 +26,8 @@ To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>, igt-dev@lists.freedesk
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
-On 10/19/2023 11:15 AM, Mauro Carvalho Chehab wrote:
+
+On 19.10.2023 11:15, Mauro Carvalho Chehab wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
 >
 > For i915 devices are used, there's a glue with snd_hda_intel.
@@ -43,15 +44,18 @@ On 10/19/2023 11:15 AM, Mauro Carvalho Chehab wrote:
 > module using the library.
 >
 > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-
-Looks much cleaner.
-
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-
-
 > ---
 >   tests/device_reset.c | 47 ++++++--------------------------------------
 >   1 file changed, 6 insertions(+), 41 deletions(-)
+
+Nice cleanup, now kick_snd_hda_intel has no other users, could be 
+moved/staticized.
+
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+
+Regards
+Andrzej
+
 >
 > diff --git a/tests/device_reset.c b/tests/device_reset.c
 > index 9ebd479dfefa..ef08164aad41 100644
@@ -141,4 +145,5 @@ Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
 >   }
 >   
 >   /* Initiate device reset */
+
 
