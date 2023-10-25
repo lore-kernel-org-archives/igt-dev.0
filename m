@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2DF4A10E66E
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Oct 2023 14:19:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 75B4610E66A
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Oct 2023 14:19:46 +0000 (UTC)
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 25 Oct 2023 19:57:12 +0530
-Message-Id: <20231025142716.1019749-4-kunal1.joshi@intel.com>
+Date: Wed, 25 Oct 2023 19:57:11 +0530
+Message-Id: <20231025142716.1019749-3-kunal1.joshi@intel.com>
 In-Reply-To: <20231025142716.1019749-1-kunal1.joshi@intel.com>
 References: <20231025142716.1019749-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/7] lib/igt_psr: modified psr_active_check
+Subject: [igt-dev] [PATCH i-g-t 2/7] lib/igt_psr: modified psr_sink_support
  for pr compatability
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -26,284 +26,284 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Whenever PR is acrive, system will be in SRDENT,
-modify psr_active_check to accomadte PR_MODE
+New debugfs directory for all DP connectors will be added
+with below patch series https://patchwork.freedesktop.org/series/94470/
+
+For DP Connectors
+	/sys/kernel/debug/dri/0/DP-x/i915_psr_status
+
+For eDP Connectors
+	/sys/kernel/debug/dri/0/i915_edp_psr_status
+			or
+	/sys/kernel/debug/dri/0/eDP-x/i915_psr_status
+
+v2: reuse psr_sink_support (Jouni)
 
 Cc: Jouni Högander <jouni.hogander@intel.com>
 Cc: Animesh Manna <animesh.manna@intel.com>
 Cc: Arun R Murthy <arun.r.murthy@intel.com>
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- lib/igt_psr.c                          | 24 +++++++++++++++---------
- lib/igt_psr.h                          |  6 +++---
+ lib/igt_psr.c                          | 54 ++++++++++++++++++--------
+ lib/igt_psr.h                          |  3 +-
  tests/intel/kms_dirtyfb.c              |  2 +-
- tests/intel/kms_fbcon_fbt.c            |  4 ++--
- tests/intel/kms_frontbuffer_tracking.c |  4 ++--
- tests/intel/kms_pm_dc.c                |  6 +++---
- tests/intel/kms_psr.c                  |  4 ++--
- tests/intel/kms_psr2_sf.c              | 10 +++++-----
- tests/intel/kms_psr2_su.c              |  4 ++--
+ tests/intel/kms_fbcon_fbt.c            |  4 +-
+ tests/intel/kms_frontbuffer_tracking.c |  2 +-
+ tests/intel/kms_pm_dc.c                |  9 +++--
+ tests/intel/kms_psr.c                  |  2 +-
+ tests/intel/kms_psr2_sf.c              |  3 +-
+ tests/intel/kms_psr2_su.c              |  3 +-
  tests/intel/kms_psr_stress_test.c      |  2 +-
- 10 files changed, 36 insertions(+), 30 deletions(-)
+ tests/kms_feature_discovery.c          |  4 +-
+ 11 files changed, 57 insertions(+), 31 deletions(-)
 
 diff --git a/lib/igt_psr.c b/lib/igt_psr.c
-index aa3ca9ddb..665b28a76 100644
+index 13f7c567d..aa3ca9ddb 100644
 --- a/lib/igt_psr.c
 +++ b/lib/igt_psr.c
-@@ -47,13 +47,19 @@ bool psr2_selective_fetch_check(int debugfs_fd)
- 	return strstr(buf, "PSR2 selective fetch: enabled");
+@@ -192,31 +192,51 @@ bool psr_disable(int device, int debugfs_fd)
+ 	return psr_set(device, debugfs_fd, -1);
  }
  
--static bool psr_active_check(int debugfs_fd, enum psr_mode mode)
-+static bool psr_active_check(int debugfs_fd, enum psr_mode mode, igt_output_t *output)
+-bool psr_sink_support(int device, int debugfs_fd, enum psr_mode mode)
++bool psr_sink_support(int device, int debugfs_fd, enum psr_mode mode, igt_output_t *output)
  {
++	char *line;
 +	char debugfs_file[128] = {0};
  	char buf[PSR_STATUS_MAX_LEN];
--	const char *state = mode == PSR_MODE_1 ? "SRDENT" : "DEEP_SLEEP";
-+	const char *state = mode == PSR_MODE_1 || PR_MODE ? "SRDENT" : "DEEP_SLEEP";
  	int ret;
  
--	ret = igt_debugfs_simple_read(debugfs_fd, "i915_edp_psr_status",
+-	ret = igt_debugfs_simple_read(debugfs_fd, "i915_edp_psr_status", buf,
 +	if (output)
 +		sprintf(debugfs_file, "%s/i915_psr_status", output->name);
 +	else
 +		sprintf(debugfs_file, "%s", "i915_edp_psr_status");
 +
-+	ret = igt_debugfs_simple_read(debugfs_fd, debugfs_file,
- 				     buf, sizeof(buf));
- 	if (ret < 0) {
- 		igt_info("Could not read i915_edp_psr_status: %s\n",
-@@ -69,19 +75,19 @@ static bool psr_active_check(int debugfs_fd, enum psr_mode mode)
- /*
-  * For PSR1, we wait until PSR is active. We wait until DEEP_SLEEP for PSR2.
-  */
--bool psr_wait_entry(int debugfs_fd, enum psr_mode mode)
-+bool psr_wait_entry(int debugfs_fd, enum psr_mode mode, igt_output_t *output)
- {
--	return igt_wait(psr_active_check(debugfs_fd, mode), 500, 20);
-+	return igt_wait(psr_active_check(debugfs_fd, mode, output), 500, 20);
++	ret = igt_debugfs_simple_read(debugfs_fd, debugfs_file, buf,
+ 				      sizeof(buf));
+ 	if (ret < 1)
+ 		return false;
+ 
+-	if (mode == PSR_MODE_1)
+-		return strstr(buf, "Sink_Support: yes\n") ||
+-		       strstr(buf, "Sink support: yes");
+-	else
+-		/*
+-		 * i915 requires PSR version 0x03 that is PSR2 + SU with
+-		 * Y-coordinate to support PSR2
+-		 *
+-		 * or
+-		 *
+-		 * PSR version 0x4 that is PSR2 + SU w/ Y-coordinate and SU
+-		 * Region Early Transport to support PSR2 (eDP 1.5)
+-		 */
+-		return strstr(buf, "Sink support: yes [0x03]") ||
+-		       strstr(buf, "Sink support: yes [0x04]");
++	line = strstr(buf, "Sink support: ");
++	if (!line)
++		return false;
++
++	switch (mode) {
++		case PSR_MODE_1:
++			return strstr(line, "PSR = yes");
++		case PSR_MODE_2:
++		case PSR_MODE_2_SEL_FETCH:
++			/*
++			 * i915 requires PSR version 0x03 that is PSR2 + SU with
++			 * Y-coordinate to support PSR2
++			 * or
++			 *
++			 * PSR version 0x4 that is PSR2 + SU w/ Y-coordinate and SU
++			 * Region Early Transport to support PSR2 (eDP 1.5)
++			 */
++			return strstr(line, "PSR = yes") &&
++			       (strstr(line, "[0x03]") || strstr(line, "[0x04]"));
++		case PR_MODE:
++			return strstr(line, "Panel Replay = yes");
++		case PR_MODE_SEL_FETCH:
++			return strstr(line, "Panel Replay = yes") &&
++			       strstr(buf, "PSR2 selective fetch: enabled");
++		default:
++			igt_assert_f(false, "Invalid psr mode\n");
++			return false;
++	}
  }
  
--bool psr_wait_update(int debugfs_fd, enum psr_mode mode)
-+bool psr_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *output)
- {
--	return igt_wait(!psr_active_check(debugfs_fd, mode), 40, 10);
-+	return igt_wait(!psr_active_check(debugfs_fd, mode, output), 40, 10);
- }
- 
--bool psr_long_wait_update(int debugfs_fd, enum psr_mode mode)
-+bool psr_long_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *output)
- {
--	return igt_wait(!psr_active_check(debugfs_fd, mode), 500, 10);
-+	return igt_wait(!psr_active_check(debugfs_fd, mode, output), 500, 10);
- }
- 
- static ssize_t psr_write(int debugfs_fd, const char *buf)
+ #define PSR2_SU_BLOCK_STR_LOOKUP "PSR2 SU blocks:\n0\t"
 diff --git a/lib/igt_psr.h b/lib/igt_psr.h
-index e213b05e9..a30330e6c 100644
+index 243154897..e213b05e9 100644
 --- a/lib/igt_psr.h
 +++ b/lib/igt_psr.h
-@@ -42,9 +42,9 @@ enum psr_mode {
+@@ -27,6 +27,7 @@
+ #include "igt_debugfs.h"
+ #include "igt_core.h"
+ #include "igt_aux.h"
++#include "igt_kms.h"
  
- bool psr_disabled_check(int debugfs_fd);
- bool psr2_selective_fetch_check(int debugfs_fd);
--bool psr_wait_entry(int debugfs_fd, enum psr_mode mode);
--bool psr_wait_update(int debugfs_fd, enum psr_mode mode);
--bool psr_long_wait_update(int debugfs_fd, enum psr_mode mode);
-+bool psr_wait_entry(int debugfs_fd, enum psr_mode mode, igt_output_t *output);
-+bool psr_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *output);
-+bool psr_long_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *output);
+ #define PSR_STATUS_MAX_LEN 512
+ 
+@@ -46,7 +47,7 @@ bool psr_wait_update(int debugfs_fd, enum psr_mode mode);
+ bool psr_long_wait_update(int debugfs_fd, enum psr_mode mode);
  bool psr_enable(int device, int debugfs_fd, enum psr_mode);
  bool psr_disable(int device, int debugfs_fd);
- bool psr_sink_support(int device, int debugfs_fd, enum psr_mode mode, igt_output_t *output);
+-bool psr_sink_support(int device, int debugfs_fd, enum psr_mode mode);
++bool psr_sink_support(int device, int debugfs_fd, enum psr_mode mode, igt_output_t *output);
+ bool psr2_wait_su(int debugfs_fd, uint16_t *num_su_blocks);
+ void psr_print_debugfs(int debugfs_fd);
+ enum psr_mode psr_get_mode(int debugfs_fd);
 diff --git a/tests/intel/kms_dirtyfb.c b/tests/intel/kms_dirtyfb.c
-index f7ff1ac0b..b14cc8bec 100644
+index cc9529178..f7ff1ac0b 100644
 --- a/tests/intel/kms_dirtyfb.c
 +++ b/tests/intel/kms_dirtyfb.c
-@@ -135,7 +135,7 @@ static void check_feature(data_t *data)
- 			     "FBC still disabled");
- 		break;
- 	case FEATURE_PSR:
--		igt_assert_f(psr_wait_entry(data->debugfs_fd, PSR_MODE_1),
-+		igt_assert_f(psr_wait_entry(data->debugfs_fd, PSR_MODE_1, NULL),
- 			     "PSR still disabled\n");
- 		break;
+@@ -92,7 +92,7 @@ static bool check_support(data_t *data)
+ 		    DRM_MODE_CONNECTOR_eDP)
+ 			return false;
+ 		return psr_sink_support(data->drm_fd, data->debugfs_fd,
+-					PSR_MODE_1);
++					PSR_MODE_1, NULL);
  	case FEATURE_DRRS:
+ 		return intel_is_drrs_supported(data->drm_fd, data->pipe) &&
+ 			intel_output_has_drrs(data->drm_fd, data->output);
 diff --git a/tests/intel/kms_fbcon_fbt.c b/tests/intel/kms_fbcon_fbt.c
-index a7f24e669..4078309d9 100644
+index 8d6bb3cb6..a7f24e669 100644
 --- a/tests/intel/kms_fbcon_fbt.c
 +++ b/tests/intel/kms_fbcon_fbt.c
-@@ -253,7 +253,7 @@ static void psr_print_status(int debugfs_fd)
+@@ -269,7 +269,7 @@ static bool psr_is_disabled(int debugfs_fd)
  
- static bool psr_wait_until_enabled(int debugfs_fd)
+ static bool psr_supported_on_chipset(int device, int debugfs_fd)
  {
--	bool r = psr_wait_entry(debugfs_fd, PSR_MODE_1);
-+	bool r = psr_wait_entry(debugfs_fd, PSR_MODE_1, NULL);
- 
- 	psr_print_status(debugfs_fd);
- 	return r;
-@@ -274,7 +274,7 @@ static bool psr_supported_on_chipset(int device, int debugfs_fd)
+-	return psr_sink_support(device, debugfs_fd, PSR_MODE_1);
++	return psr_sink_support(device, debugfs_fd, PSR_MODE_1, NULL);
+ }
  
  static bool psr_wait_until_update(struct drm_info *drm)
+@@ -280,7 +280,7 @@ static bool psr_wait_until_update(struct drm_info *drm)
+ static void disable_features(int device, int debugfs_fd)
  {
--	return psr_long_wait_update(drm->debugfs_fd, PSR_MODE_1);
-+	return psr_long_wait_update(drm->debugfs_fd, PSR_MODE_1, NULL);
+ 	igt_set_module_param_int(device, "enable_fbc", 0);
+-	if (psr_sink_support(device, debugfs_fd, PSR_MODE_1))
++	if (psr_sink_support(device, debugfs_fd, PSR_MODE_1, NULL))
+ 		psr_disable(device, debugfs_fd);
  }
  
- static void disable_features(int device, int debugfs_fd)
 diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-index 2d588e836..0a9033fad 100644
+index f90d09f9f..2d588e836 100644
 --- a/tests/intel/kms_frontbuffer_tracking.c
 +++ b/tests/intel/kms_frontbuffer_tracking.c
-@@ -1563,10 +1563,10 @@ static void do_status_assertions(int flags)
+@@ -1362,7 +1362,7 @@ static void setup_psr(void)
+ 		return;
  	}
  
- 	if (flags & ASSERT_PSR_ENABLED)
--		igt_assert_f(psr_wait_entry(drm.debugfs, PSR_MODE_1),
-+		igt_assert_f(psr_wait_entry(drm.debugfs, PSR_MODE_1, NULL),
- 			     "PSR still disabled\n");
- 	else if (flags & ASSERT_PSR_DISABLED)
--		igt_assert_f(psr_wait_update(drm.debugfs, PSR_MODE_1),
-+		igt_assert_f(psr_wait_update(drm.debugfs, PSR_MODE_1, NULL),
- 			     "PSR still enabled\n");
- }
- 
+-	if (!psr_sink_support(drm.fd, drm.debugfs, PSR_MODE_1)) {
++	if (!psr_sink_support(drm.fd, drm.debugfs, PSR_MODE_1, NULL)) {
+ 		igt_info("Can't test PSR: not supported by sink.\n");
+ 		return;
+ 	}
 diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
-index e5daacb84..a3c7c4018 100644
+index 1e9ca5d6c..e5daacb84 100644
 --- a/tests/intel/kms_pm_dc.c
 +++ b/tests/intel/kms_pm_dc.c
-@@ -382,7 +382,7 @@ static void setup_dc3co(data_t *data)
- {
- 	data->op_psr_mode = PSR_MODE_2;
- 	psr_enable(data->drm_fd, data->debugfs_fd, data->op_psr_mode);
--	igt_require_f(psr_wait_entry(data->debugfs_fd, data->op_psr_mode),
-+	igt_require_f(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, NULL),
- 		      "PSR2 is not enabled\n");
- }
+@@ -673,14 +673,16 @@ igt_main
+ 	igt_describe("In this test we make sure that system enters DC3CO "
+ 		     "when PSR2 is active and system is in SLEEP state");
+ 	igt_subtest("dc3co-vpb-simulation") {
+-		igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd, PSR_MODE_2));
++		igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
++					     PSR_MODE_2, NULL));
+ 		test_dc3co_vpb_simulation(&data);
+ 	}
  
-@@ -418,7 +418,7 @@ static void test_dc_state_psr(data_t *data, int dc_flag)
- 	dc_counter_before_psr = read_dc_counter(data->debugfs_fd, dc_flag);
- 	setup_output(data);
- 	setup_primary(data);
--	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode));
-+	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, NULL));
- 	check_dc_counter(data, dc_flag, dc_counter_before_psr);
- 	cleanup_dc_psr(data);
- }
-@@ -624,7 +624,7 @@ static void test_pkgc_state_psr(data_t *data)
- 	prev_value = read_pkgc_counter(data->debugfs_root_fd);
- 	setup_output(data);
- 	setup_primary(data);
--	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode));
-+	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, NULL));
- 	psr_dpms(data, DRM_MODE_DPMS_OFF);
- 	igt_wait((cur_value = read_pkgc_counter(data->debugfs_root_fd)) > prev_value,
- 		  timeout_sec * 1000, 100);
+ 	igt_describe("This test validates display engine entry to DC5 state "
+ 		     "while PSR is active");
+ 	igt_subtest("dc5-psr") {
+-		igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd, PSR_MODE_1));
++		igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
++					     PSR_MODE_1, NULL));
+ 		data.op_psr_mode = PSR_MODE_1;
+ 		psr_enable(data.drm_fd, data.debugfs_fd, data.op_psr_mode);
+ 		test_dc_state_psr(&data, CHECK_DC5);
+@@ -689,7 +691,8 @@ igt_main
+ 	igt_describe("This test validates display engine entry to DC6 state "
+ 		     "while PSR is active");
+ 	igt_subtest("dc6-psr") {
+-		igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd, PSR_MODE_1));
++		igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
++					     PSR_MODE_1, NULL));
+ 		data.op_psr_mode = PSR_MODE_1;
+ 		psr_enable(data.drm_fd, data.debugfs_fd, data.op_psr_mode);
+ 		igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
 diff --git a/tests/intel/kms_psr.c b/tests/intel/kms_psr.c
-index 260095aec..8485e9894 100644
+index ffecc5222..260095aec 100644
 --- a/tests/intel/kms_psr.c
 +++ b/tests/intel/kms_psr.c
-@@ -441,7 +441,7 @@ static bool psr_wait_entry_if_enabled(data_t *data)
- 	if (data->with_psr_disabled)
- 		return true;
- 
--	return psr_wait_entry(data->debugfs_fd, data->op_psr_mode);
-+	return psr_wait_entry(data->debugfs_fd, data->op_psr_mode, data->output);
+@@ -433,7 +433,7 @@ static void fill_render(data_t *data, const struct igt_fb *fb,
+ static bool sink_support(data_t *data, enum psr_mode mode)
+ {
+ 	return data->with_psr_disabled ||
+-	       psr_sink_support(data->drm_fd, data->debugfs_fd, mode);
++	       psr_sink_support(data->drm_fd, data->debugfs_fd, mode, NULL);
  }
  
- static bool psr_wait_update_if_enabled(data_t *data)
-@@ -449,7 +449,7 @@ static bool psr_wait_update_if_enabled(data_t *data)
- 	if (data->with_psr_disabled)
- 		return true;
- 
--	return psr_wait_update(data->debugfs_fd, data->op_psr_mode);
-+	return psr_wait_update(data->debugfs_fd, data->op_psr_mode, data->output);
- }
- 
- static bool psr_enable_if_enabled(data_t *data)
+ static bool psr_wait_entry_if_enabled(data_t *data)
 diff --git a/tests/intel/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
-index 2d05f1110..9f5186eee 100644
+index d7a746211..2d05f1110 100644
 --- a/tests/intel/kms_psr2_sf.c
 +++ b/tests/intel/kms_psr2_sf.c
-@@ -677,7 +677,7 @@ static void damaged_plane_move(data_t *data)
+@@ -980,7 +980,8 @@ igt_main
+ 		kmstest_set_vt_graphics_mode();
  
- 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 		igt_require_f(psr_sink_support(data.drm_fd,
+-					       data.debugfs_fd, PSR_MODE_2),
++					       data.debugfs_fd, PSR_MODE_2,
++					       NULL),
+ 			      "Sink does not support PSR2\n");
  
--	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2));
-+	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2, NULL));
- 
- 	expected_output(data);
- }
-@@ -777,7 +777,7 @@ static void plane_move_continuous(data_t *data)
- {
- 	int target_x, target_y;
- 
--	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2));
-+	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2, NULL));
- 
- 	get_target_coords(data, &target_x, &target_y);
- 
-@@ -854,7 +854,7 @@ static void damaged_plane_update(data_t *data)
- 	igt_plane_set_position(data->test_plane, 0, 0);
- 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
- 
--	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2));
-+	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2, NULL));
- 
- 	expected_output(data);
- }
-@@ -863,7 +863,7 @@ static void run(data_t *data)
- {
- 	int i;
- 
--	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2));
-+	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2, NULL));
- 
- 	data->screen_changes = 0;
- 
-@@ -941,7 +941,7 @@ static int check_psr2_support(data_t *data)
- 	int status;
- 
- 	prepare(data);
--	status = psr_wait_entry(data->debugfs_fd, PSR_MODE_2);
-+	status = psr_wait_entry(data->debugfs_fd, PSR_MODE_2, NULL);
- 	cleanup(data);
- 
- 	return status;
+ 		display_init(&data);
 diff --git a/tests/intel/kms_psr2_su.c b/tests/intel/kms_psr2_su.c
-index 2f89de435..3506409b7 100644
+index 834fec1ec..2f89de435 100644
 --- a/tests/intel/kms_psr2_su.c
 +++ b/tests/intel/kms_psr2_su.c
-@@ -258,7 +258,7 @@ static void run(data_t *data, igt_output_t *output)
- {
- 	bool result = false;
+@@ -327,7 +327,8 @@ igt_main
+ 		kmstest_set_vt_graphics_mode();
  
--	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2));
-+	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2, output));
+ 		igt_require_f(psr_sink_support(data.drm_fd,
+-					       data.debugfs_fd, PSR_MODE_2),
++					       data.debugfs_fd,
++					       PSR_MODE_2, NULL),
+ 			      "Sink does not support PSR2\n");
  
- 	for (data->screen_changes = 0;
- 	     data->screen_changes < MAX_SCREEN_CHANGES && !result;
-@@ -304,7 +304,7 @@ static int check_psr2_support(data_t *data, enum pipe pipe)
- 	igt_output_set_pipe(output, pipe);
- 
- 	prepare(data, output);
--	status = psr_wait_entry(data->debugfs_fd, PSR_MODE_2);
-+	status = psr_wait_entry(data->debugfs_fd, PSR_MODE_2, output);
- 	cleanup(data, output);
- 
- 	return status;
+ 		igt_require_f(intel_display_ver(intel_get_drm_devid(data.drm_fd)) < 13,
 diff --git a/tests/intel/kms_psr_stress_test.c b/tests/intel/kms_psr_stress_test.c
-index beded3b94..e3b21603a 100644
+index b6759eece..beded3b94 100644
 --- a/tests/intel/kms_psr_stress_test.c
 +++ b/tests/intel/kms_psr_stress_test.c
-@@ -232,7 +232,7 @@ static void prepare(data_t *data)
+@@ -357,7 +357,7 @@ igt_main
+ 		kmstest_set_vt_graphics_mode();
  
- 	data->initial_state = psr_get_mode(data->debugfs_fd);
- 	igt_require(data->initial_state != PSR_DISABLED);
--	igt_require(psr_wait_entry(data->debugfs_fd, data->initial_state));
-+	igt_require(psr_wait_entry(data->debugfs_fd, data->initial_state, NULL));
- }
+ 		igt_require_f(psr_sink_support(data.drm_fd, data.debugfs_fd,
+-					       PSR_MODE_1),
++					       PSR_MODE_1, NULL),
+ 			      "Sink does not support PSR\n");
  
- static void cleanup(data_t *data)
+ 		setup_output(&data);
+diff --git a/tests/kms_feature_discovery.c b/tests/kms_feature_discovery.c
+index 3a1f6d21d..428f97ffe 100644
+--- a/tests/kms_feature_discovery.c
++++ b/tests/kms_feature_discovery.c
+@@ -159,12 +159,12 @@ igt_main {
+ 
+ 		igt_describe("Make sure that we have eDP panel with PSR1 support.");
+ 		igt_subtest("psr1") {
+-			igt_require(psr_sink_support(fd, debugfs_fd, PSR_MODE_1));
++			igt_require(psr_sink_support(fd, debugfs_fd, PSR_MODE_1, NULL));
+ 		}
+ 
+ 		igt_describe("Make sure that we have eDP panel with PSR2 support.");
+ 		igt_subtest("psr2") {
+-			igt_require(psr_sink_support(fd, debugfs_fd, PSR_MODE_2));
++			igt_require(psr_sink_support(fd, debugfs_fd, PSR_MODE_2, NULL));
+ 		}
+ 
+ 		igt_describe("Make sure that we have DP-MST configuration.");
 -- 
 2.25.1
