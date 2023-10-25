@@ -1,16 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8AA4110E55B
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Oct 2023 07:07:55 +0000 (UTC)
+From: "Hogander, Jouni" <jouni.hogander@intel.com>
+To: "Joshi, Kunal1" <kunal1.joshi@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+Date: Wed, 25 Oct 2023 07:07:51 +0000
+Message-ID: <b85ee350dacef5b171936046872f441bbe817bd8.camel@intel.com>
+References: <20231020060503.870173-1-kunal1.joshi@intel.com>
+ <20231020060503.870173-5-kunal1.joshi@intel.com>
+ <1f6639776e01e62f20554bc7df83067c8554368b.camel@intel.com>
+ <CY8PR11MB6889B7F1125EB54237D3DEC9DADEA@CY8PR11MB6889.namprd11.prod.outlook.com>
+In-Reply-To: <CY8PR11MB6889B7F1125EB54237D3DEC9DADEA@CY8PR11MB6889.namprd11.prod.outlook.com>
+Content-Language: en-US
 Content-Type: text/plain; charset="utf-8"
+Content-ID: <70D09F9D01E3964DB9C9DF7C9B6F9C8D@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Nidhi Gupta" <nidhi1.gupta@intel.com>
-Date: Wed, 25 Oct 2023 07:06:53 -0000
-Message-ID: <169821761309.20487.10227304488597319661@emeril.freedesktop.org>
-References: <20231025053157.15470-1-nidhi1.gupta@intel.com>
-In-Reply-To: <20231025053157.15470-1-nidhi1.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
- =?utf-8?q?s/kms=5Ffrontbuffer=5Ftracking=3A_Extend_the_test_to_enable_FBC?=
- =?utf-8?q?_for_each_plane_=28rev3=29?=
+Subject: Re: [igt-dev] [PATCH i-g-t 4/5] lib/igt_psr: added function to
+ check active dp pr
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,72 +26,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: "Murthy, Arun R" <arun.r.murthy@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
-
-Series: tests/kms_frontbuffer_tracking: Extend the test to enable FBC for each plane (rev3)
-URL   : https://patchwork.freedesktop.org/series/123724/
-State : failure
-
-== Summary ==
-
-IGT patchset build failed on latest successful build
-03ded26cd2697ce3b4d7ceb0d7d2706460f87ca1 tests/intel/xe_copy_basic: Fix validating the mem set values.
-
-Tail of build.log:
-[584/1645] Compiling C object 'lib/76b5a35@@igt-igt_kms_c@sta/igt_kms.c.o'.
-[585/1645] Compiling C object 'tests/59830eb@@kms_psr_stress_test@exe/intel_kms_psr_stress_test.c.o'.
-[586/1645] Compiling C object 'tests/59830eb@@kms_ccs@exe/intel_kms_ccs.c.o'.
-[587/1645] Compiling C object 'tests/59830eb@@xe_create@exe/intel_xe_create.c.o'.
-[588/1645] Compiling C object 'tests/59830eb@@xe_dma_buf_sync@exe/intel_xe_dma_buf_sync.c.o'.
-[589/1645] Compiling C object 'lib/76b5a35@@igt-igt_fb_c@sta/igt_fb.c.o'.
-[590/1645] Compiling C object 'tests/59830eb@@xe_live_ktest@exe/intel_xe_live_ktest.c.o'.
-[591/1645] Compiling C object 'tests/59830eb@@xe_debugfs@exe/intel_xe_debugfs.c.o'.
-[592/1645] Compiling C object 'tests/59830eb@@xe_gpgpu_fill@exe/intel_xe_gpgpu_fill.c.o'.
-[593/1645] Compiling C object 'tests/59830eb@@xe_mmap@exe/intel_xe_mmap.c.o'.
-[594/1645] Compiling C object 'tests/59830eb@@xe_huc_copy@exe/intel_xe_huc_copy.c.o'.
-[595/1645] Compiling C object 'tests/59830eb@@gem_mmap_gtt@exe/intel_gem_mmap_gtt.c.o'.
-[596/1645] Compiling C object 'tests/59830eb@@xe_media_fill@exe/intel_xe_media_fill.c.o'.
-[597/1645] Compiling C object 'tests/59830eb@@xe_exec_compute_mode@exe/intel_xe_exec_compute_mode.c.o'.
-[598/1645] Compiling C object 'tests/59830eb@@kms_busy@exe/intel_kms_busy.c.o'.
-[599/1645] Compiling C object 'tests/59830eb@@xe_exec_store@exe/intel_xe_exec_store.c.o'.
-[600/1645] Compiling C object 'tests/59830eb@@kms_pm_dc@exe/intel_kms_pm_dc.c.o'.
-[601/1645] Compiling C object 'tests/59830eb@@xe_module_load@exe/intel_xe_module_load.c.o'.
-[602/1645] Compiling C object 'tests/59830eb@@kms_psr@exe/intel_kms_psr.c.o'.
-[603/1645] Compiling C object 'tests/59830eb@@xe_exercise_blt@exe/intel_xe_exercise_blt.c.o'.
-[604/1645] Compiling C object 'tests/59830eb@@i915_pm_rps@exe/intel_i915_pm_rps.c.o'.
-[605/1645] Compiling C object 'tests/59830eb@@xe_drm_fdinfo@exe/intel_xe_drm_fdinfo.c.o'.
-[606/1645] Compiling C object 'tests/59830eb@@xe_ccs@exe/intel_xe_ccs.c.o'.
-[607/1645] Compiling C object 'tests/59830eb@@xe_exec_basic@exe/intel_xe_exec_basic.c.o'.
-[608/1645] Compiling C object 'tests/59830eb@@gem_sync@exe/intel_gem_sync.c.o'.
-[609/1645] Compiling C object 'tests/59830eb@@kms_big_fb@exe/intel_kms_big_fb.c.o'.
-[610/1645] Compiling C object 'tests/59830eb@@xe_pm_residency@exe/intel_xe_pm_residency.c.o'.
-[611/1645] Compiling C object 'tests/59830eb@@xe_guc_pc@exe/intel_xe_guc_pc.c.o'.
-[612/1645] Compiling C object 'tests/59830eb@@gem_pxp@exe/intel_gem_pxp.c.o'.
-[613/1645] Compiling C object 'tests/59830eb@@xe_pm@exe/intel_xe_pm.c.o'.
-[614/1645] Compiling C object 'tests/59830eb@@xe_exec_fault_mode@exe/intel_xe_exec_fault_mode.c.o'.
-[615/1645] Compiling C object 'tests/59830eb@@i915_pm_rpm@exe/intel_i915_pm_rpm.c.o'.
-[616/1645] Compiling C object 'tests/59830eb@@xe_exec_balancer@exe/intel_xe_exec_balancer.c.o'.
-[617/1645] Compiling C object 'tests/59830eb@@xe_evict@exe/intel_xe_evict.c.o'.
-[618/1645] Compiling C object 'tests/59830eb@@xe_exec_reset@exe/intel_xe_exec_reset.c.o'.
-[619/1645] Compiling C object 'tests/59830eb@@gem_softpin@exe/intel_gem_softpin.c.o'.
-[620/1645] Compiling C object 'tests/59830eb@@kms_psr2_sf@exe/intel_kms_psr2_sf.c.o'.
-[621/1645] Compiling C object 'tests/59830eb@@xe_intel_bb@exe/intel_xe_intel_bb.c.o'.
-[622/1645] Compiling C object 'tests/59830eb@@xe_exec_threads@exe/intel_xe_exec_threads.c.o'.
-[623/1645] Compiling C object 'tests/59830eb@@kms_pm_rpm@exe/intel_kms_pm_rpm.c.o'.
-[624/1645] Compiling C object 'tests/59830eb@@i915_query@exe/intel_i915_query.c.o'.
-[625/1645] Compiling C object 'tests/59830eb@@gem_exec_balancer@exe/intel_gem_exec_balancer.c.o'.
-[626/1645] Compiling C object 'tests/59830eb@@perf@exe/intel_perf.c.o'.
-[627/1645] Compiling C object 'tests/59830eb@@xe_vm@exe/intel_xe_vm.c.o'.
-[628/1645] Compiling C object 'tests/59830eb@@gem_exec_fence@exe/intel_gem_exec_fence.c.o'.
-[629/1645] Compiling C object 'tests/59830eb@@gem_userptr_blits@exe/intel_gem_userptr_blits.c.o'.
-[630/1645] Compiling C object 'tests/59830eb@@perf_pmu@exe/intel_perf_pmu.c.o'.
-[631/1645] Generating i915-perf-equations with a custom command.
-[632/1645] Compiling C object 'tests/59830eb@@gem_exec_schedule@exe/intel_gem_exec_schedule.c.o'.
-ninja: build stopped: subcommand failed.
-
+T24gV2VkLCAyMDIzLTEwLTI1IGF0IDA2OjE2ICswMDAwLCBKb3NoaSwgS3VuYWwxIHdyb3RlOg0K
+PiBIZWxsbyBKb3VuaSwNCj4gDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206
+IEhvZ2FuZGVyLCBKb3VuaSA8am91bmkuaG9nYW5kZXJAaW50ZWwuY29tPiANCj4gU2VudDogRnJp
+ZGF5LCBPY3RvYmVyIDIwLCAyMDIzIDU6NDYgUE0NCj4gVG86IEpvc2hpLCBLdW5hbDEgPGt1bmFs
+MS5qb3NoaUBpbnRlbC5jb20+Ow0KPiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBD
+YzogTXVydGh5LCBBcnVuIFIgPGFydW4uci5tdXJ0aHlAaW50ZWwuY29tPjsgTWFubmEsIEFuaW1l
+c2gNCj4gPGFuaW1lc2gubWFubmFAaW50ZWwuY29tPg0KPiBTdWJqZWN0OiBSZTogW1BBVENIIGkt
+Zy10IDQvNV0gbGliL2lndF9wc3I6IGFkZGVkIGZ1bmN0aW9uIHRvIGNoZWNrDQo+IGFjdGl2ZSBk
+cCBwcg0KPiANCj4gT24gRnJpLCAyMDIzLTEwLTIwIGF0IDExOjM1ICswNTMwLCBLdW5hbCBKb3No
+aSB3cm90ZToNCj4gPiBBZGRlZCBmdW5jdGlvbiB0byBjaGVjayBpZiBwciBpcyBhY3RpdmUgb24g
+YSBvdXRwdXQuDQo+ID4gYXNzdW1pbmcgU1JERU5UIGlzIHRoZSBzdGF0ZSB0byBjb21wYXJlIHdo
+ZW4gcHIgaXMgYWN0aXZlDQo+ID4gDQo+ID4gQ2M6IEpvdW5pIEjDtmdhbmRlciA8am91bmkuaG9n
+YW5kZXJAaW50ZWwuY29tPg0KPiA+IENjOiBBbmltZXNoIE1hbm5hIDxhbmltZXNoLm1hbm5hQGlu
+dGVsLmNvbT4NCj4gPiBDYzogQXJ1biBSIE11cnRoeSA8YXJ1bi5yLm11cnRoeUBpbnRlbC5jb20+
+DQo+ID4gU2lnbmVkLW9mZi1ieTogS3VuYWwgSm9zaGkgPGt1bmFsMS5qb3NoaUBpbnRlbC5jb20+
+DQo+ID4gLS0tDQo+ID4gwqBsaWIvaWd0X3Bzci5jIHwgMjMgKysrKysrKysrKysrKysrKysrKysr
+KysNCj4gPiDCoGxpYi9pZ3RfcHNyLmggfMKgIDIgKy0NCj4gPiDCoDIgZmlsZXMgY2hhbmdlZCwg
+MjQgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQ0KPiA+IA0KPiA+IGRpZmYgLS1naXQgYS9s
+aWIvaWd0X3Bzci5jIGIvbGliL2lndF9wc3IuYyBpbmRleA0KPiA+IDRjOTEyYTA2NC4uNjgzMzc5
+ZGI2IA0KPiA+IDEwMDY0NA0KPiA+IC0tLSBhL2xpYi9pZ3RfcHNyLmMNCj4gPiArKysgYi9saWIv
+aWd0X3Bzci5jDQo+ID4gQEAgLTM5MCwzICszOTAsMjYgQEAgYm9vbCBvdXRwdXRfc3VwcG9ydHNf
+cHIoaW50IGRlYnVnZnNfZmQsIA0KPiA+IGlndF9vdXRwdXRfdCAqb3V0cHV0KQ0KPiA+IMKgDQo+
+ID4gwqDCoMKgwqDCoMKgwqDCoCByZXR1cm4gc3Ryc3RyKGJ1ZiwgIlBhbmVsIFJlcGxheSA9IHll
+cyIpOw0KPiA+IMKgfQ0KPiA+ICsNCj4gPiArYm9vbCBkcF9wcl9hY3RpdmVfY2hlY2soaW50IGRl
+YnVnZnNfZmQsIGlndF9vdXRwdXRfdCAqb3V0cHV0KSB7DQo+ID4gK8KgwqDCoMKgwqDCoMKgIGNo
+YXIgZGVidWdmc19maWxlWzEyOF0gPSB7MH07DQo+ID4gK8KgwqDCoMKgwqDCoMKgIGNoYXIgYnVm
+W1BTUl9TVEFUVVNfTUFYX0xFTl07DQo+ID4gK8KgwqDCoMKgwqDCoMKgIGNvbnN0IGNoYXIgKnN0
+YXRlID0gIlNSREVOVCI7DQo+ID4gK8KgwqDCoMKgwqDCoMKgIGludCByZXQ7DQo+ID4gKw0KPiA+
+ICvCoMKgwqDCoMKgwqDCoCBpZiAoIXN0cnN0cihvdXRwdXQtPm5hbWUsIkRQIikpDQo+ID4gK8Kg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCByZXR1cm4gZmFsc2U7DQo+ID4gKw0KPiA+ICvC
+oMKgwqDCoMKgwqDCoCBzcHJpbnRmKGRlYnVnZnNfZmlsZSwgIiVzL2k5MTVfc2lua19zdGF0dXMi
+LCBvdXRwdXQtDQo+ID4gPm5hbWUpOw0KPiA+ICsNCj4gPiArwqDCoMKgwqDCoMKgwqAgcmV0ID0g
+aWd0X2RlYnVnZnNfc2ltcGxlX3JlYWQoZGVidWdmc19mZCwgZGVidWdmc19maWxlLA0KPiA+ICvC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqAgYnVmLCBzaXplb2YoYnVmKSk7DQo+ID4gK8KgwqDCoMKgwqDCoMKgIGlm
+IChyZXQgPCAwKSB7DQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpZ3RfaW5m
+bygiQ291bGQgbm90IHJlYWQgaTkxNV9lZHBfcHNyX3N0YXR1czoNCj4gPiAlc1xuIiwNCj4gPiAr
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHN0cmVycm9y
+KC1yZXQpKTsNCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJldHVybiBmYWxz
+ZTsNCj4gPiArwqDCoMKgwqDCoMKgwqAgfQ0KPiA+ICvCoMKgwqDCoMKgwqDCoCBpZ3Rfc2tpcF9v
+bihzdHJzdHIoYnVmLCAiUFNSIHNpbmsgbm90IHJlbGlhYmxlOiB5ZXMiKSk7DQo+ID4gK8KgwqDC
+oMKgwqDCoMKgIHJldHVybiBzdHJzdHIoYnVmLCBzdGF0ZSk7DQo+ID4gK30NCj4gDQo+ID4gV2h5
+IGRpZCB5b3UgY2hvb3NlIHRvIHdyaXRlIG5ldyBpbnN0ZWFkIG9mIG1vZGlmeWluZyBleGlzdGlu
+ZyBjID8NCj4gPiANCj4gPiBCUg0KPiBGb3IgRFAgcHIgd2UgYXJlIHVzaW5nIGRpZmZlcmVudCBk
+ZWJ1Z2ZzIGRpcmVjdG9yeSB0byByZWFkLA0KPiBzbyB0aG91Z2h0IG9mIGNyZWF0aW5nIG5ldyBm
+dW5jdGlvbiBmb3IgY2xlYXIgc2VwYXJhdGlvbiwNCj4gDQo+IEJ1dCBjYW4gbW9kaWZ5IHBzcl9z
+aW5rX3N1cHBvcnQgaWYgeW91IHRoaW5rIHRoYXQgd2lsbCBiZSBiZXR0ZXIgd2F5Lg0KDQpJIHRo
+aW5rIHRoYXQgd291bGQgYmUgYmV0dGVyIGFwcHJvYWNoLiBBbHNvIGVhc2VzIHlvdXIgbW9kaWZp
+Y2F0aW9ucyBpbg0Ka21zX3Bzci5jDQoNCkJSLA0KDQpKb3VuaSBIw7ZnYW5kZXINCg0KPiANCj4g
+Sm91bmkgSMO2Z2FuZGVyDQo+ID4gZGlmZiAtLWdpdCBhL2xpYi9pZ3RfcHNyLmggYi9saWIvaWd0
+X3Bzci5oIGluZGV4DQo+ID4gOGUzNmZjZjJmLi5kYzYwM2ZmYzMgDQo+ID4gMTAwNjQ0DQo+ID4g
+LS0tIGEvbGliL2lndF9wc3IuaA0KPiA+ICsrKyBiL2xpYi9pZ3RfcHNyLmgNCj4gPiBAQCAtNTYs
+NSArNTYsNSBAQCBib29sIGk5MTVfcHNyMl9zZWxlY3RpdmVfZmV0Y2hfY2hlY2soaW50IGRybV9m
+ZCk7DQo+ID4gwqBib29sIGk5MTVfcHNyMl9zZWxfZmV0Y2hfdG9fcHNyMShpbnQgZHJtX2ZkKTsN
+Cj4gPiDCoHZvaWQgaTkxNV9wc3IyX3NlbF9mZXRjaF9yZXN0b3JlKGludCBkcm1fZmQpOw0KPiA+
+IMKgYm9vbCBvdXRwdXRfc3VwcG9ydHNfcHIoaW50IGRlYnVnZnNfZmQsIGlndF9vdXRwdXRfdCAq
+b3V0cHV0KTsNCj4gPiAtDQo+ID4gK2Jvb2wgZHBfcHJfYWN0aXZlX2NoZWNrKGludCBkZWJ1Z2Zz
+X2ZkLCBpZ3Rfb3V0cHV0X3QgKm91dHB1dCk7DQo+ID4gwqAjZW5kaWYNCj4gDQo+IFRoYW5rcyBh
+bmQgUmVnYXJkcw0KPiBLdW5hbCBKb3NoaQ0KPiANCg0K
