@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D382610E66E
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Oct 2023 14:25:12 +0000 (UTC)
-From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Wed, 25 Oct 2023 14:25:09 +0000
-Message-ID: <MW3PR11MB4748C1A5214CC8BFAF616E28AEDEA@MW3PR11MB4748.namprd11.prod.outlook.com>
-References: <20231023141951.32425-1-kamil.konieczny@linux.intel.com>
- <20231023141951.32425-5-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20231023141951.32425-5-kamil.konieczny@linux.intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EEEE110E110
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Oct 2023 16:25:31 +0000 (UTC)
+Date: Wed, 25 Oct 2023 18:25:13 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20231025162513.mbedzmjqvhrj32h6@kamilkon-desk.igk.intel.com>
+References: <20231024173618.127007-1-zbigniew.kempczynski@intel.com>
+ <20231024173618.127007-4-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v1 4/5] drm-uapi/panfrost: sync with
- drm-next
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231024173618.127007-4-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v4 3/5] lib/igt_sizes: Add common SZ_*
+ header
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,120 +22,163 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Simon Ser <contact@emersion.fr>, Alyssa Rosenzweig <alyssa@collabora.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LGTM,
-Reviewed-by: Janga Rahul Kumar<janga.rahul.kumar@intel.com>
+Hi Zbigniew,
+On 2023-10-24 at 19:36:16 +0200, Zbigniew Kempczyński wrote:
+> We often use SZ_.* macros so add this globally to IGTs.
+> 
+> v2: Keep SZ_1K+, add copyright notice (Kamil)
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-> -----Original Message-----
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Kamil
-> Konieczny
-> Sent: Monday, October 23, 2023 7:50 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Simon Ser <contact@emersion.fr>; Alyssa Rosenzweig
-> <alyssa@collabora.com>
-> Subject: [igt-dev] [PATCH i-g-t v1 4/5] drm-uapi/panfrost: sync with drm-=
-next
->=20
-> From: Simon Ser <contact@emersion.fr>
->=20
-> Sync panfrost drm-uapi header with
-> drm-next commit ("52920704df878050123dfeb469aa6ab8022547c1")
->=20
-> v1: split panfrost header to separete patch (Kamil)
->=20
-> Signed-off-by: Simon Ser <contact@emersion.fr>
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Boris Brezillon <boris.brezillon@collabora.com>
-> Cc: Alyssa Rosenzweig <alyssa@collabora.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
 > ---
->  include/drm-uapi/panfrost_drm.h | 55
-> +++++++++++++++++++++++++++++++--
->  1 file changed, 53 insertions(+), 2 deletions(-)
->=20
-> diff --git a/include/drm-uapi/panfrost_drm.h b/include/drm-
-> uapi/panfrost_drm.h index 061e700dd..9f231d40a 100644
-> --- a/include/drm-uapi/panfrost_drm.h
-> +++ b/include/drm-uapi/panfrost_drm.h
-> @@ -84,14 +84,14 @@ struct drm_panfrost_wait_bo {
->  	__s64 timeout_ns;	/* absolute */
->  };
->=20
-> +/* Valid flags to pass to drm_panfrost_create_bo */
->  #define PANFROST_BO_NOEXEC	1
->  #define PANFROST_BO_HEAP	2
->=20
->  /**
->   * struct drm_panfrost_create_bo - ioctl argument for creating Panfrost =
-BOs.
->   *
-> - * There are currently no values for the flags argument, but it may be
-> - * used in a future extension.
-> + * The flags argument is a bit mask of PANFROST_BO_* flags.
->   */
->  struct drm_panfrost_create_bo {
->  	__u32 size;
-> @@ -224,6 +224,57 @@ struct drm_panfrost_madvise {
->  	__u32 retained;       /* out, whether backing store still exists */
->  };
->=20
-> +/* Definitions for coredump decoding in user space */ #define
-> +PANFROSTDUMP_MAJOR 1 #define PANFROSTDUMP_MINOR 0
-> +
-> +#define PANFROSTDUMP_MAGIC 0x464E4150 /* PANF */
-> +
-> +#define PANFROSTDUMP_BUF_REG 0
-> +#define PANFROSTDUMP_BUF_BOMAP (PANFROSTDUMP_BUF_REG + 1)
-> #define
-> +PANFROSTDUMP_BUF_BO (PANFROSTDUMP_BUF_BOMAP + 1) #define
-> +PANFROSTDUMP_BUF_TRAILER (PANFROSTDUMP_BUF_BO + 1)
-> +
+>  lib/igt.h                       |  1 +
+>  lib/igt_sizes.h                 | 33 +++++++++++++++++++++++++++++++++
+>  lib/xe/xe_query.h               |  4 +---
+>  tests/intel/gem_exec_async.c    |  2 --
+>  tests/intel/gem_lmem_swapping.c |  1 -
+>  tests/intel/i915_query.c        |  1 -
+>  tests/intel/xe_evict.c          |  3 ---
+>  tests/msm/msm_shrink.c          |  2 --
+>  8 files changed, 35 insertions(+), 12 deletions(-)
+>  create mode 100644 lib/igt_sizes.h
+> 
+> diff --git a/lib/igt.h b/lib/igt.h
+> index 73b6f77272..7af3d10cbc 100644
+> --- a/lib/igt.h
+> +++ b/lib/igt.h
+> @@ -39,6 +39,7 @@
+>  #include "igt_params.h"
+>  #include "igt_pipe_crc.h"
+>  #include "igt_pm.h"
+> +#include "igt_sizes.h"
+>  #include "igt_stats.h"
+>  #include "igt_dsc.h"
+>  #ifdef HAVE_CHAMELIUM
+> diff --git a/lib/igt_sizes.h b/lib/igt_sizes.h
+> new file mode 100644
+> index 0000000000..1157beb984
+> --- /dev/null
+> +++ b/lib/igt_sizes.h
+> @@ -0,0 +1,33 @@
+> +// SPDX-License-Identifier: MIT
 > +/*
-> + * This structure is the native endianness of the dumping machine,
-> +tools can
-> + * detect the endianness by looking at the value in 'magic'.
+> + * Copyright © 2023 Intel Corporation
 > + */
-> +struct panfrost_dump_object_header {
-> +	__u32 magic;
-> +	__u32 type;
-> +	__u32 file_size;
-> +	__u32 file_offset;
+> +#ifndef __IGT_SIZES_H__
+> +#define __IGT_SIZES_H__
 > +
-> +	union {
-> +		struct {
-> +			__u64 jc;
-> +			__u32 gpu_id;
-> +			__u32 major;
-> +			__u32 minor;
-> +			__u64 nbos;
-> +		} reghdr;
+> +#define SZ_1K				0x00000400
+> +#define SZ_2K				0x00000800
+> +#define SZ_4K				0x00001000
+> +#define SZ_8K				0x00002000
+> +#define SZ_16K				0x00004000
+> +#define SZ_32K				0x00008000
+> +#define SZ_64K				0x00010000
+> +#define SZ_128K				0x00020000
+> +#define SZ_256K				0x00040000
+> +#define SZ_512K				0x00080000
 > +
-> +		struct {
-> +			__u32 valid;
-> +			__u64 iova;
-> +			__u32 data[2];
-> +		} bomap;
+> +#define SZ_1M				0x00100000
+> +#define SZ_2M				0x00200000
+> +#define SZ_4M				0x00400000
+> +#define SZ_8M				0x00800000
+> +#define SZ_16M				0x01000000
+> +#define SZ_32M				0x02000000
+> +#define SZ_64M				0x04000000
+> +#define SZ_128M				0x08000000
+> +#define SZ_256M				0x10000000
+> +#define SZ_512M				0x20000000
 > +
-> +		/*
-> +		 * Force same size in case we want to expand the header
-> +		 * with new fields and also keep it 512-byte aligned
-> +		 */
+> +#define SZ_1G				0x40000000
+> +#define SZ_2G				0x80000000
 > +
-> +		__u32 sizer[496];
-> +	};
-> +};
-> +
-> +/* Registers object, an array of these */ struct
-> +panfrost_dump_registers {
-> +	__u32 reg;
-> +	__u32 value;
-> +};
-> +
->  #if defined(__cplusplus)
+> +#endif /* __IGT_SIZES_H__ */
+> diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+> index da7deaf4cc..7c0849bc12 100644
+> --- a/lib/xe/xe_query.h
+> +++ b/lib/xe/xe_query.h
+> @@ -12,9 +12,7 @@
+>  #include <stdint.h>
+>  #include <xe_drm.h>
+>  #include "igt_list.h"
+> -
+> -#define SZ_4K	0x1000
+> -#define SZ_64K	0x10000
+> +#include "igt_sizes.h"
+>  
+>  #define XE_DEFAULT_ALIGNMENT           SZ_4K
+>  #define XE_DEFAULT_ALIGNMENT_64K       SZ_64K
+> diff --git a/tests/intel/gem_exec_async.c b/tests/intel/gem_exec_async.c
+> index 8c131d8e13..1497c5c6c8 100644
+> --- a/tests/intel/gem_exec_async.c
+> +++ b/tests/intel/gem_exec_async.c
+> @@ -41,8 +41,6 @@
+>  
+>  IGT_TEST_DESCRIPTION("Check that we can issue concurrent writes across the engines.");
+>  
+> -#define SZ_1M (1024 * 1024)
+> -
+>  static void store_dword(int fd, int id, const intel_ctx_t *ctx,
+>  			 unsigned ring, uint32_t target, uint64_t target_offset,
+>  			 uint32_t offset, uint32_t value)
+> diff --git a/tests/intel/gem_lmem_swapping.c b/tests/intel/gem_lmem_swapping.c
+> index 2e0ba07935..6aed806294 100644
+> --- a/tests/intel/gem_lmem_swapping.c
+> +++ b/tests/intel/gem_lmem_swapping.c
+> @@ -198,7 +198,6 @@ IGT_TEST_DESCRIPTION("Exercise local memory swapping.");
+>  #define round_up(x, y) ((((x) - 1) | __round_mask(x, y)) + 1)
+>  
+>  #define PAGE_SIZE  (1ULL << 12)
+> -#define SZ_64K	   (16 * PAGE_SIZE)
+>  
+>  static const char *readable_unit(uint64_t size)
+>  {
+> diff --git a/tests/intel/i915_query.c b/tests/intel/i915_query.c
+> index f97379b83b..e9cc495973 100644
+> --- a/tests/intel/i915_query.c
+> +++ b/tests/intel/i915_query.c
+> @@ -863,7 +863,6 @@ static void test_query_regions_sanity_check(int fd)
 >  }
->  #endif
-> --
-> 2.42.0
+>  
+>  #define rounddown(x, y) (x - (x % y))
+> -#define SZ_64K (1ULL << 16)
+>  
+>  static void fill_unallocated(int fd, struct drm_i915_query_item *item, int idx,
+>  			     bool cpu_access)
+> diff --git a/tests/intel/xe_evict.c b/tests/intel/xe_evict.c
+> index eec001218d..5d8463270c 100644
+> --- a/tests/intel/xe_evict.c
+> +++ b/tests/intel/xe_evict.c
+> @@ -448,9 +448,6 @@ threads(int fd, struct drm_xe_engine_class_instance *eci,
+>  		pthread_join(threads_data[i].thread, NULL);
+>  }
+>  
+> -#define SZ_256M 0x10000000
+> -#define SZ_1G   0x40000000
+> -
+>  static uint64_t calc_bo_size(uint64_t vram_size, int mul, int div)
+>  {
+>  	if (vram_size >= SZ_1G)
+> diff --git a/tests/msm/msm_shrink.c b/tests/msm/msm_shrink.c
+> index d0b098aaf3..8e6c582ffc 100644
+> --- a/tests/msm/msm_shrink.c
+> +++ b/tests/msm/msm_shrink.c
+> @@ -30,8 +30,6 @@
+>  #include "igt_os.h"
+>  #include "igt_sysfs.h"
+>  
+> -#define SZ_1M (1024 * 1024)
+> -
+>  static void leak(uint64_t alloc)
+>  {
+>  	char *ptr;
+> -- 
+> 2.34.1
+> 
