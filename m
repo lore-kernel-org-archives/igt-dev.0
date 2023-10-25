@@ -1,24 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8AA4110E55B
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Oct 2023 07:07:55 +0000 (UTC)
-From: "Hogander, Jouni" <jouni.hogander@intel.com>
-To: "Joshi, Kunal1" <kunal1.joshi@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Wed, 25 Oct 2023 07:07:51 +0000
-Message-ID: <b85ee350dacef5b171936046872f441bbe817bd8.camel@intel.com>
-References: <20231020060503.870173-1-kunal1.joshi@intel.com>
- <20231020060503.870173-5-kunal1.joshi@intel.com>
- <1f6639776e01e62f20554bc7df83067c8554368b.camel@intel.com>
- <CY8PR11MB6889B7F1125EB54237D3DEC9DADEA@CY8PR11MB6889.namprd11.prod.outlook.com>
-In-Reply-To: <CY8PR11MB6889B7F1125EB54237D3DEC9DADEA@CY8PR11MB6889.namprd11.prod.outlook.com>
-Content-Language: en-US
 Content-Type: text/plain; charset="utf-8"
-Content-ID: <70D09F9D01E3964DB9C9DF7C9B6F9C8D@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 4/5] lib/igt_psr: added function to
- check active dp pr
+Content-Transfer-Encoding: 8bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Nidhi Gupta" <nidhi1.gupta@intel.com>
+Date: Wed, 25 Oct 2023 07:09:53 -0000
+Message-ID: <169821779322.20487.246393917867180890@emeril.freedesktop.org>
+References: <20231025053157.15470-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20231025053157.15470-1-nidhi1.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/kms=5Ffrontbuffer=5Ftracking=3A_Extend_the_test_to_enable_?=
+ =?utf-8?q?FBC_for_each_plane_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,67 +18,221 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Murthy, Arun R" <arun.r.murthy@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gV2VkLCAyMDIzLTEwLTI1IGF0IDA2OjE2ICswMDAwLCBKb3NoaSwgS3VuYWwxIHdyb3RlOg0K
-PiBIZWxsbyBKb3VuaSwNCj4gDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206
-IEhvZ2FuZGVyLCBKb3VuaSA8am91bmkuaG9nYW5kZXJAaW50ZWwuY29tPiANCj4gU2VudDogRnJp
-ZGF5LCBPY3RvYmVyIDIwLCAyMDIzIDU6NDYgUE0NCj4gVG86IEpvc2hpLCBLdW5hbDEgPGt1bmFs
-MS5qb3NoaUBpbnRlbC5jb20+Ow0KPiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBD
-YzogTXVydGh5LCBBcnVuIFIgPGFydW4uci5tdXJ0aHlAaW50ZWwuY29tPjsgTWFubmEsIEFuaW1l
-c2gNCj4gPGFuaW1lc2gubWFubmFAaW50ZWwuY29tPg0KPiBTdWJqZWN0OiBSZTogW1BBVENIIGkt
-Zy10IDQvNV0gbGliL2lndF9wc3I6IGFkZGVkIGZ1bmN0aW9uIHRvIGNoZWNrDQo+IGFjdGl2ZSBk
-cCBwcg0KPiANCj4gT24gRnJpLCAyMDIzLTEwLTIwIGF0IDExOjM1ICswNTMwLCBLdW5hbCBKb3No
-aSB3cm90ZToNCj4gPiBBZGRlZCBmdW5jdGlvbiB0byBjaGVjayBpZiBwciBpcyBhY3RpdmUgb24g
-YSBvdXRwdXQuDQo+ID4gYXNzdW1pbmcgU1JERU5UIGlzIHRoZSBzdGF0ZSB0byBjb21wYXJlIHdo
-ZW4gcHIgaXMgYWN0aXZlDQo+ID4gDQo+ID4gQ2M6IEpvdW5pIEjDtmdhbmRlciA8am91bmkuaG9n
-YW5kZXJAaW50ZWwuY29tPg0KPiA+IENjOiBBbmltZXNoIE1hbm5hIDxhbmltZXNoLm1hbm5hQGlu
-dGVsLmNvbT4NCj4gPiBDYzogQXJ1biBSIE11cnRoeSA8YXJ1bi5yLm11cnRoeUBpbnRlbC5jb20+
-DQo+ID4gU2lnbmVkLW9mZi1ieTogS3VuYWwgSm9zaGkgPGt1bmFsMS5qb3NoaUBpbnRlbC5jb20+
-DQo+ID4gLS0tDQo+ID4gwqBsaWIvaWd0X3Bzci5jIHwgMjMgKysrKysrKysrKysrKysrKysrKysr
-KysNCj4gPiDCoGxpYi9pZ3RfcHNyLmggfMKgIDIgKy0NCj4gPiDCoDIgZmlsZXMgY2hhbmdlZCwg
-MjQgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQ0KPiA+IA0KPiA+IGRpZmYgLS1naXQgYS9s
-aWIvaWd0X3Bzci5jIGIvbGliL2lndF9wc3IuYyBpbmRleA0KPiA+IDRjOTEyYTA2NC4uNjgzMzc5
-ZGI2IA0KPiA+IDEwMDY0NA0KPiA+IC0tLSBhL2xpYi9pZ3RfcHNyLmMNCj4gPiArKysgYi9saWIv
-aWd0X3Bzci5jDQo+ID4gQEAgLTM5MCwzICszOTAsMjYgQEAgYm9vbCBvdXRwdXRfc3VwcG9ydHNf
-cHIoaW50IGRlYnVnZnNfZmQsIA0KPiA+IGlndF9vdXRwdXRfdCAqb3V0cHV0KQ0KPiA+IMKgDQo+
-ID4gwqDCoMKgwqDCoMKgwqDCoCByZXR1cm4gc3Ryc3RyKGJ1ZiwgIlBhbmVsIFJlcGxheSA9IHll
-cyIpOw0KPiA+IMKgfQ0KPiA+ICsNCj4gPiArYm9vbCBkcF9wcl9hY3RpdmVfY2hlY2soaW50IGRl
-YnVnZnNfZmQsIGlndF9vdXRwdXRfdCAqb3V0cHV0KSB7DQo+ID4gK8KgwqDCoMKgwqDCoMKgIGNo
-YXIgZGVidWdmc19maWxlWzEyOF0gPSB7MH07DQo+ID4gK8KgwqDCoMKgwqDCoMKgIGNoYXIgYnVm
-W1BTUl9TVEFUVVNfTUFYX0xFTl07DQo+ID4gK8KgwqDCoMKgwqDCoMKgIGNvbnN0IGNoYXIgKnN0
-YXRlID0gIlNSREVOVCI7DQo+ID4gK8KgwqDCoMKgwqDCoMKgIGludCByZXQ7DQo+ID4gKw0KPiA+
-ICvCoMKgwqDCoMKgwqDCoCBpZiAoIXN0cnN0cihvdXRwdXQtPm5hbWUsIkRQIikpDQo+ID4gK8Kg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCByZXR1cm4gZmFsc2U7DQo+ID4gKw0KPiA+ICvC
-oMKgwqDCoMKgwqDCoCBzcHJpbnRmKGRlYnVnZnNfZmlsZSwgIiVzL2k5MTVfc2lua19zdGF0dXMi
-LCBvdXRwdXQtDQo+ID4gPm5hbWUpOw0KPiA+ICsNCj4gPiArwqDCoMKgwqDCoMKgwqAgcmV0ID0g
-aWd0X2RlYnVnZnNfc2ltcGxlX3JlYWQoZGVidWdmc19mZCwgZGVidWdmc19maWxlLA0KPiA+ICvC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqAgYnVmLCBzaXplb2YoYnVmKSk7DQo+ID4gK8KgwqDCoMKgwqDCoMKgIGlm
-IChyZXQgPCAwKSB7DQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpZ3RfaW5m
-bygiQ291bGQgbm90IHJlYWQgaTkxNV9lZHBfcHNyX3N0YXR1czoNCj4gPiAlc1xuIiwNCj4gPiAr
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHN0cmVycm9y
-KC1yZXQpKTsNCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJldHVybiBmYWxz
-ZTsNCj4gPiArwqDCoMKgwqDCoMKgwqAgfQ0KPiA+ICvCoMKgwqDCoMKgwqDCoCBpZ3Rfc2tpcF9v
-bihzdHJzdHIoYnVmLCAiUFNSIHNpbmsgbm90IHJlbGlhYmxlOiB5ZXMiKSk7DQo+ID4gK8KgwqDC
-oMKgwqDCoMKgIHJldHVybiBzdHJzdHIoYnVmLCBzdGF0ZSk7DQo+ID4gK30NCj4gDQo+ID4gV2h5
-IGRpZCB5b3UgY2hvb3NlIHRvIHdyaXRlIG5ldyBpbnN0ZWFkIG9mIG1vZGlmeWluZyBleGlzdGlu
-ZyBjID8NCj4gPiANCj4gPiBCUg0KPiBGb3IgRFAgcHIgd2UgYXJlIHVzaW5nIGRpZmZlcmVudCBk
-ZWJ1Z2ZzIGRpcmVjdG9yeSB0byByZWFkLA0KPiBzbyB0aG91Z2h0IG9mIGNyZWF0aW5nIG5ldyBm
-dW5jdGlvbiBmb3IgY2xlYXIgc2VwYXJhdGlvbiwNCj4gDQo+IEJ1dCBjYW4gbW9kaWZ5IHBzcl9z
-aW5rX3N1cHBvcnQgaWYgeW91IHRoaW5rIHRoYXQgd2lsbCBiZSBiZXR0ZXIgd2F5Lg0KDQpJIHRo
-aW5rIHRoYXQgd291bGQgYmUgYmV0dGVyIGFwcHJvYWNoLiBBbHNvIGVhc2VzIHlvdXIgbW9kaWZp
-Y2F0aW9ucyBpbg0Ka21zX3Bzci5jDQoNCkJSLA0KDQpKb3VuaSBIw7ZnYW5kZXINCg0KPiANCj4g
-Sm91bmkgSMO2Z2FuZGVyDQo+ID4gZGlmZiAtLWdpdCBhL2xpYi9pZ3RfcHNyLmggYi9saWIvaWd0
-X3Bzci5oIGluZGV4DQo+ID4gOGUzNmZjZjJmLi5kYzYwM2ZmYzMgDQo+ID4gMTAwNjQ0DQo+ID4g
-LS0tIGEvbGliL2lndF9wc3IuaA0KPiA+ICsrKyBiL2xpYi9pZ3RfcHNyLmgNCj4gPiBAQCAtNTYs
-NSArNTYsNSBAQCBib29sIGk5MTVfcHNyMl9zZWxlY3RpdmVfZmV0Y2hfY2hlY2soaW50IGRybV9m
-ZCk7DQo+ID4gwqBib29sIGk5MTVfcHNyMl9zZWxfZmV0Y2hfdG9fcHNyMShpbnQgZHJtX2ZkKTsN
-Cj4gPiDCoHZvaWQgaTkxNV9wc3IyX3NlbF9mZXRjaF9yZXN0b3JlKGludCBkcm1fZmQpOw0KPiA+
-IMKgYm9vbCBvdXRwdXRfc3VwcG9ydHNfcHIoaW50IGRlYnVnZnNfZmQsIGlndF9vdXRwdXRfdCAq
-b3V0cHV0KTsNCj4gPiAtDQo+ID4gK2Jvb2wgZHBfcHJfYWN0aXZlX2NoZWNrKGludCBkZWJ1Z2Zz
-X2ZkLCBpZ3Rfb3V0cHV0X3QgKm91dHB1dCk7DQo+ID4gwqAjZW5kaWYNCj4gDQo+IFRoYW5rcyBh
-bmQgUmVnYXJkcw0KPiBLdW5hbCBKb3NoaQ0KPiANCg0K
+== Series Details ==
+
+Series: tests/kms_frontbuffer_tracking: Extend the test to enable FBC for each plane (rev3)
+URL   : https://patchwork.freedesktop.org/series/123724/
+State : warning
+
+== Summary ==
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1018261 for the overview.
+
+build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50727644):
+    ^~~
+  ../tests/intel/kms_frontbuffer_tracking.c:5024:3: note: in expansion of macro ‘for_each_plane_on_pipe’
+     for_each_plane_on_pipe(&drm.display, prim_mode_params.pipe, plane)
+     ^~~~~~~~~~~~~~~~~~~~~~
+  ../tests/intel/kms_frontbuffer_tracking.c:5026:4: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+      if (n_planes == 3)
+      ^~
+  ../tests/intel/kms_frontbuffer_tracking.c:5029:26: error: incompatible type for argument 1 of ‘prepare_subtest_data’
+       prepare_subtest_data(t, NULL);
+                            ^
+  ../tests/intel/kms_frontbuffer_tracking.c:1833:58: note: expected ‘const struct test_mode *’ but argument is of type ‘struct test_mode’
+   static void prepare_subtest_data(const struct test_mode *t,
+                                    ~~~~~~~~~~~~~~~~~~~~~~~~^
+  ninja: build stopped: subcommand failed.
+  section_end:1698217561:step_script
+  section_start:1698217561:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1698217562:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50727647):
+    ^~~
+  ../tests/intel/kms_frontbuffer_tracking.c:5024:3: note: in expansion of macro ‘for_each_plane_on_pipe’
+     for_each_plane_on_pipe(&drm.display, prim_mode_params.pipe, plane)
+     ^~~~~~~~~~~~~~~~~~~~~~
+  ../tests/intel/kms_frontbuffer_tracking.c:5026:4: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+      if (n_planes == 3)
+      ^~
+  ../tests/intel/kms_frontbuffer_tracking.c:5029:26: error: incompatible type for argument 1 of ‘prepare_subtest_data’
+       prepare_subtest_data(t, NULL);
+                            ^
+  ../tests/intel/kms_frontbuffer_tracking.c:1833:58: note: expected ‘const struct test_mode *’ but argument is of type ‘struct test_mode’
+   static void prepare_subtest_data(const struct test_mode *t,
+                                    ~~~~~~~~~~~~~~~~~~~~~~~~^
+  ninja: build stopped: subcommand failed.
+  section_end:1698217570:step_script
+  section_start:1698217570:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1698217570:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50727646):
+    ^~~
+  ../tests/intel/kms_frontbuffer_tracking.c:5024:3: note: in expansion of macro ‘for_each_plane_on_pipe’
+     for_each_plane_on_pipe(&drm.display, prim_mode_params.pipe, plane)
+     ^~~~~~~~~~~~~~~~~~~~~~
+  ../tests/intel/kms_frontbuffer_tracking.c:5026:4: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+      if (n_planes == 3)
+      ^~
+  ../tests/intel/kms_frontbuffer_tracking.c:5029:26: error: incompatible type for argument 1 of ‘prepare_subtest_data’
+       prepare_subtest_data(t, NULL);
+                            ^
+  ../tests/intel/kms_frontbuffer_tracking.c:1833:58: note: expected ‘const struct test_mode *’ but argument is of type ‘struct test_mode’
+   static void prepare_subtest_data(const struct test_mode *t,
+                                    ~~~~~~~~~~~~~~~~~~~~~~~~^
+  ninja: build stopped: subcommand failed.
+  section_end:1698217575:step_script
+  section_start:1698217575:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1698217576:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50727648):
+    ^~~
+  ../tests/intel/kms_frontbuffer_tracking.c:5024:3: note: in expansion of macro ‘for_each_plane_on_pipe’
+     for_each_plane_on_pipe(&drm.display, prim_mode_params.pipe, plane)
+     ^~~~~~~~~~~~~~~~~~~~~~
+  ../tests/intel/kms_frontbuffer_tracking.c:5026:4: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+      if (n_planes == 3)
+      ^~
+  ../tests/intel/kms_frontbuffer_tracking.c:5029:26: error: incompatible type for argument 1 of ‘prepare_subtest_data’
+       prepare_subtest_data(t, NULL);
+                            ^
+  ../tests/intel/kms_frontbuffer_tracking.c:1833:58: note: expected ‘const struct test_mode *’ but argument is of type ‘struct test_mode’
+   static void prepare_subtest_data(const struct test_mode *t,
+                                    ~~~~~~~~~~~~~~~~~~~~~~~~^
+  ninja: build stopped: subcommand failed.
+  section_end:1698217572:step_script
+  section_start:1698217572:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1698217573:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50727639):
+   5024 |   for_each_plane_on_pipe(&drm.display, prim_mode_params.pipe, plane)
+        |   ^~~~~~~~~~~~~~~~~~~~~~
+  ../tests/intel/kms_frontbuffer_tracking.c:5026:4: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+   5026 |    if (n_planes == 3)
+        |    ^~
+  ../tests/intel/kms_frontbuffer_tracking.c:5029:26: error: incompatible type for argument 1 of ‘prepare_subtest_data’
+   5029 |     prepare_subtest_data(t, NULL);
+        |                          ^
+        |                          |
+        |                          struct test_mode
+  ../tests/intel/kms_frontbuffer_tracking.c:1833:58: note: expected ‘const struct test_mode *’ but argument is of type ‘struct test_mode’
+   1833 | static void prepare_subtest_data(const struct test_mode *t,
+        |                                  ~~~~~~~~~~~~~~~~~~~~~~~~^
+  ninja: build stopped: subcommand failed.
+  section_end:1698217557:step_script
+  section_start:1698217557:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1698217558:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50727643):
+                                            ^~~~~
+                                            clone
+  /usr/include/bits/sched.h:80:12: note: 'clone' declared here
+  extern int clone (int (*__fn) (void *__arg), void *__child_stack,
+             ^
+  ../tests/intel/kms_frontbuffer_tracking.c:5029:26: error: passing 'struct test_mode' to parameter of incompatible type 'const struct test_mode *'; take the address with &
+                                  prepare_subtest_data(t, NULL);
+                                                       ^
+                                                       &
+  ../tests/intel/kms_frontbuffer_tracking.c:1833:58: note: passing argument to parameter 't' here
+  static void prepare_subtest_data(const struct test_mode *t,
+                                                           ^
+  5 errors generated.
+  ninja: build stopped: subcommand failed.
+  section_end:1698217580:step_script
+  section_start:1698217580:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1698217581:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50727642):
+   5024 |   for_each_plane_on_pipe(&drm.display, prim_mode_params.pipe, plane)
+        |   ^~~~~~~~~~~~~~~~~~~~~~
+  ../tests/intel/kms_frontbuffer_tracking.c:5026:4: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+   5026 |    if (n_planes == 3)
+        |    ^~
+  ../tests/intel/kms_frontbuffer_tracking.c:5029:26: error: incompatible type for argument 1 of ‘prepare_subtest_data’
+   5029 |     prepare_subtest_data(t, NULL);
+        |                          ^
+        |                          |
+        |                          struct test_mode
+  ../tests/intel/kms_frontbuffer_tracking.c:1833:58: note: expected ‘const struct test_mode *’ but argument is of type ‘struct test_mode’
+   1833 | static void prepare_subtest_data(const struct test_mode *t,
+        |                                  ~~~~~~~~~~~~~~~~~~~~~~~~^
+  ninja: build stopped: subcommand failed.
+  section_end:1698217565:step_script
+  section_start:1698217565:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1698217565:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50727640):
+   5024 |   for_each_plane_on_pipe(&drm.display, prim_mode_params.pipe, plane)
+        |   ^~~~~~~~~~~~~~~~~~~~~~
+  ../tests/intel/kms_frontbuffer_tracking.c:5026:4: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+   5026 |    if (n_planes == 3)
+        |    ^~
+  ../tests/intel/kms_frontbuffer_tracking.c:5029:26: error: incompatible type for argument 1 of ‘prepare_subtest_data’
+   5029 |     prepare_subtest_data(t, NULL);
+        |                          ^
+        |                          |
+        |                          struct test_mode
+  ../tests/intel/kms_frontbuffer_tracking.c:1833:58: note: expected ‘const struct test_mode *’ but argument is of type ‘struct test_mode’
+   1833 | static void prepare_subtest_data(const struct test_mode *t,
+        |                                  ~~~~~~~~~~~~~~~~~~~~~~~~^
+  ninja: build stopped: subcommand failed.
+  section_end:1698217566:step_script
+  section_start:1698217566:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1698217566:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50727641):
+   5024 |   for_each_plane_on_pipe(&drm.display, prim_mode_params.pipe, plane)
+        |   ^~~~~~~~~~~~~~~~~~~~~~
+  ../tests/intel/kms_frontbuffer_tracking.c:5026:4: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+   5026 |    if (n_planes == 3)
+        |    ^~
+  ../tests/intel/kms_frontbuffer_tracking.c:5029:26: error: incompatible type for argument 1 of ‘prepare_subtest_data’
+   5029 |     prepare_subtest_data(t, NULL);
+        |                          ^
+        |                          |
+        |                          struct test_mode
+  ../tests/intel/kms_frontbuffer_tracking.c:1833:58: note: expected ‘const struct test_mode *’ but argument is of type ‘struct test_mode’
+   1833 | static void prepare_subtest_data(const struct test_mode *t,
+        |                                  ~~~~~~~~~~~~~~~~~~~~~~~~^
+  ninja: build stopped: subcommand failed.
+  section_end:1698217563:step_script
+  section_start:1698217563:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1698217564:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1018261
