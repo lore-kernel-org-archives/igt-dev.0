@@ -1,23 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 76DEA10E63D
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Oct 2023 10:54:38 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 64F0910E63D
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Oct 2023 10:56:19 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.1.139])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 0B887580ADF
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Oct 2023 03:54:24 -0700 (PDT)
+ by linux.intel.com (Postfix) with ESMTPS id 366A6580D93
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Oct 2023 03:56:18 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96.1)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qvbWn-000tUb-1d
- for igt-dev@lists.freedesktop.org; Wed, 25 Oct 2023 12:54:21 +0200
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qvbYd-000tYK-2H
+ for igt-dev@lists.freedesktop.org; Wed, 25 Oct 2023 12:56:15 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 25 Oct 2023 12:54:20 +0200
-Message-ID: <20231025105420.213301-1-mauro.chehab@linux.intel.com>
+Date: Wed, 25 Oct 2023 12:56:14 +0200
+Message-ID: <20231025105614.213533-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] lib/igt_sysfs: move kick_snd_hda_intel()
+Subject: [igt-dev] [PATCH i-g-t v3] lib/igt_sysfs: move kick_snd_hda_intel()
  to igt_kmod.c
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -43,6 +43,7 @@ Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
 ---
 
+v3: fix a typo on a message: cand ->can
 v2: added some missing includes
 ---
  lib/igt_kmod.c  | 57 ++++++++++++++++++++++++++++++++++++++++++++++++-
@@ -51,7 +52,7 @@ v2: added some missing includes
  3 files changed, 56 insertions(+), 54 deletions(-)
 
 diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index 4785d724aec8..a901933b521d 100644
+index 4785d724aec8..63801778de7f 100644
 --- a/lib/igt_kmod.c
 +++ b/lib/igt_kmod.c
 @@ -22,13 +22,16 @@
@@ -79,7 +80,7 @@ index 4785d724aec8..a901933b521d 100644
 +/**
 + * kick_snd_hda_intel:
 + *
-+ * This function unbinds the snd_hda_intel driver so the module cand be
++ * This function unbinds the snd_hda_intel driver so the module can be
 + * unloaded.
 + *
 + */
