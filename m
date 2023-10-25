@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CE6A110E6EF
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Oct 2023 02:20:56 +0000 (UTC)
-From: Vignesh Raman <vignesh.raman@collabora.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9151410E5A5
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Oct 2023 11:53:35 +0000 (UTC)
+From: Nidhi Gupta <nidhi1.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 26 Oct 2023 07:50:41 +0530
-Message-Id: <20231026022041.1851831-1-vignesh.raman@collabora.com>
+Date: Wed, 25 Oct 2023 17:32:56 +0530
+Message-Id: <20231025120256.27326-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] lib/igt_kms: Fix memory corruption
+Subject: [igt-dev] [PATCH i-g-t v4] tests/kms_frontbuffer_tracking: Extend
+ the test to enable FBC for each plane
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,60 +17,190 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: helen.koike@collabora.com, daniels@collabora.com
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In crosvm, the kernel reports 16 for count_crtcs, which exceeds
-IGT_MAX_PIPES set to 8. The function igt_display_require allocates
-memory for IGT_MAX_PIPES members of igt_pipe_t structures, but then
-writes into it based on the count_crtcs reported by the kernel,
-resulting in memory corruption.
+Added a new subtest to validate FBC on each plane, this new subtest
+will first disable the fbc feature on all pipes and planes and then
+enable it on all plane one by one and confirm.
 
- # malloc(): corrupted top size
- # Received signal SIGABRT.
- # Stack trace:
- #  #0 [fatal_sig_handler+0x17b]
- #  #1 [__sigaction+0x40]
- #  #2 [pthread_key_delete+0x14c]
- #  #3 [gsignal+0x12]
- #  #4 [abort+0xd3]
- #  #5 [__fsetlocking+0x290]
- #  #6 [timer_settime+0x37a]
- #  #7 [__default_morecore+0x1f1b]
- #  #8 [__libc_calloc+0x161]
- #  #9 [drmModeGetPlaneResources+0x44]
- #  #10 [igt_display_require+0x194]
- #  #11 [__igt_unique____real_main1356+0x93c]
- #  #12 [main+0x3f]
- #  #13 [__libc_init_first+0x8a]
- #  #14 [__libc_start_main+0x85]
- #  #15 [_start+0x21]
+v2: Modify tests to disable primary and enable other plane
+    to check fbc is enabled or not. <Bhanu>
 
-Limit the loop which initializes igt_pipe_t structure to
-a maximum of IGT_MAX_PIPES iterations, ensuring it does not
-exceed the allocated pipe count. This prevents igt_display_require
-overwriting the heap and avoids memory corruption. This fix is
-required for drm-ci to run igt tests on virtio-gpu.
-
-Signed-off-by: Vignesh Raman <vignesh.raman@collabora.com>
+Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 ---
- lib/igt_kms.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/intel/kms_frontbuffer_tracking.c | 122 +++++++++++++++++++++++++
+ 1 file changed, 122 insertions(+)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 453103f90..f3484a942 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -2774,7 +2774,7 @@ void igt_display_require(igt_display_t *display, int drm_fd)
- 	display->pipes = calloc(sizeof(igt_pipe_t), display->n_pipes);
- 	igt_assert_f(display->pipes, "Failed to allocate memory for %d pipes\n", display->n_pipes);
+diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+index f90d09f9f..1c7903249 100644
+--- a/tests/intel/kms_frontbuffer_tracking.c
++++ b/tests/intel/kms_frontbuffer_tracking.c
+@@ -224,6 +224,8 @@ struct fb_region {
+ 	int h;
+ };
  
--	for (i = 0; i < resources->count_crtcs; i++) {
-+	for (i = 0; i < min(resources->count_crtcs, IGT_MAX_PIPES); i++) {
- 		igt_pipe_t *pipe;
- 		int pipe_enum = (is_intel_dev)?
- 			__intel_get_pipe_from_crtc_id(drm_fd,
++struct igt_fb default_fb;
++
+ struct draw_pattern_info {
+ 	bool frames_stack;
+ 	int n_rects;
+@@ -888,6 +890,14 @@ static bool fbc_mode_too_large(void)
+ 	return strstr(buf, "FBC disabled: mode too large for compression\n");
+ }
+ 
++static bool fbc_enable_per_plane(void)
++{
++	char buf[128];
++
++	debugfs_read_crtc("i915_fbc_status", buf);
++	return strstr(buf, "*");
++}
++
+ static bool drrs_wait_until_rr_switch_to_low(void)
+ {
+ 	return igt_wait(is_drrs_low(), 5000, 1);
+@@ -1691,6 +1701,31 @@ static void set_region_for_test(const struct test_mode *t,
+ 	do_assertions(ASSERT_NO_ACTION_CHANGE);
+ }
+ 
++static void set_plane_for_test_fbc(const struct test_mode *t, igt_plane_t *plane)
++{
++	//create_fb
++	struct igt_fb fb;
++	uint32_t color;
++
++	igt_create_fb(drm.fd, prim_mode_params.mode.hdisplay, prim_mode_params.mode.vdisplay,
++			t->format, DRM_FORMAT_MOD_LINEAR, &fb);
++	//fill_fb_region
++	color = pick_color(&fb, COLOR_PRIM_BG);
++
++	igt_draw_rect_fb(drm.fd, drm.bops, 0, &fb, IGT_DRAW_BLT,
++			 0, 0, fb.width, fb.height,
++			 color);
++	set_mode_for_params(&prim_mode_params);
++	igt_plane_set_fb(plane, &fb);
++	igt_plane_set_position(plane, 0, 0);
++	igt_plane_set_size(plane, prim_mode_params.mode.hdisplay, prim_mode_params.mode.vdisplay);
++	igt_fb_set_size(&fb, plane, prim_mode_params.mode.hdisplay, prim_mode_params.mode.vdisplay);
++
++	igt_display_commit(&drm.display);
++	igt_require(!fbc_enable_per_plane());
++	do_assertions(ASSERT_NO_ACTION_CHANGE);
++}
++
+ static bool enable_features_for_test(const struct test_mode *t)
+ {
+ 	bool ret = false;
+@@ -1941,6 +1976,65 @@ static void rte_subtest(const struct test_mode *t)
+ 	}
+ }
+ 
++/**
++ * SUBTEST: plane-%u-fbc-rte
++ * Description: Disable the provided %arg[1] plane and enable again
++ * Driver requirement: i915, xe
++ * Functionality: fbc
++ * Mega feature: General Display Features
++ * Test category: functionality test
++ *
++ * arg[1].values:  0, 1, 2
++ */
++
++/**
++ * SUBTEST: plane-0-fbc-rte
++ * Description: Disable the provided %arg[1] plane and enable again
++ * Driver requirement: i915, xe
++ * Functionality: fbc
++ * Mega feature: General Display Features
++ * Test category: functionality test
++ *
++ * SUBTEST: plane-1-fbc-rte
++ * Description: Disable the provided %arg[1] plane and enable again
++ * Driver requirement: i915, xe
++ * Functionality: fbc
++ * Mega feature: General Display Features
++ * Test category: functionality test
++ *
++ * SUBTEST: plane-2-fbc-rte
++ * Description: Disable the provided %arg[1] plane and enable again
++ * Driver requirement: i915, xe
++ * Functionality: fbc
++ * Mega feature: General Display Features
++ * Test category: functionality test
++ */
++
++/**
++ * plane-fbc-rte - the basic sanity test
++ *
++ * METHOD
++ *   Just disable all screens, assert everything is disabled, then enable all
++ *   screens  and planes  and assert that the tested feature is enabled.
++ *
++ * EXPECTED RESULTS
++ *   Blue screens and t->feature enabled.
++ *
++ * FAILURES
++ *   A failure here means that every other subtest will probably fail too. It
++ *   probably means that the Kernel is just not enabling the feature we want.
++ */
++static void plane_fbc_rte_subtest(const struct test_mode *t, igt_plane_t *plane)
++{
++	do_assertions(ASSERT_FBC_DISABLED);
++
++	if (plane->index == 0)
++		enable_prim_screen_and_wait(t);
++	if (plane->index > 0)
++		set_plane_for_test_fbc(t, plane);
++
++}
++
+ static void update_wanted_crc(const struct test_mode *t, igt_crc_t *crc)
+ {
+ 	if (t->screen == SCREEN_PRIM)
+@@ -4910,6 +5004,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ {
+ 	struct test_mode t;
+ 	int devid;
++	igt_plane_t *plane;
+ 
+ 	igt_fixture {
+ 		setup_environment();
+@@ -4936,6 +5031,33 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 		}
+ 	}
+ 
++	igt_subtest_with_dynamic("plane-fbc-rte") {
++
++		int n_planes = 0;
++
++		t.pipes = PIPE_SINGLE;
++		t.feature = FEATURE_FBC;
++		t.screen = SCREEN_PRIM;
++		t.fbs = FBS_INDIVIDUAL;
++		t.format = FORMAT_DEFAULT;
++		/* Make sure nothing is using these values. */
++		t.flip = -1;
++		t.method = -1;
++		t.tiling = opt.tiling;
++
++		for_each_plane_on_pipe(&drm.display, prim_mode_params.pipe, plane) {
++			n_planes++;
++			if (n_planes == 4)
++				break;
++			igt_dynamic_f("plane-%u-fbc-rte", plane->index) {
++				prepare_subtest_data(&t, NULL);
++				unset_all_crtcs();
++				plane_fbc_rte_subtest(&t, plane);
++				n_planes++;
++			}
++		}
++	}
++
+ 	TEST_MODE_ITER_BEGIN(t)
+ 
+ 		igt_subtest_f("%s-%s-%s-%s-%s-draw-%s",
 -- 
-2.40.1
+2.39.0
