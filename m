@@ -1,21 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 204ED10E554
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Oct 2023 05:56:23 +0000 (UTC)
-From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
-To: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Ch, Sai
- Gowtham" <sai.gowtham.ch@intel.com>
-Date: Wed, 25 Oct 2023 05:56:18 +0000
-Message-ID: <MW3PR11MB4748128D31F08CD3A38006A3AEDEA@MW3PR11MB4748.namprd11.prod.outlook.com>
-References: <20231025022050.14282-1-sai.gowtham.ch@intel.com>
-In-Reply-To: <20231025022050.14282-1-sai.gowtham.ch@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 33EE010E554
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Oct 2023 06:02:01 +0000 (UTC)
+From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
+To: "Hogander, Jouni" <jouni.hogander@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Wed, 25 Oct 2023 06:01:51 +0000
+Message-ID: <CY8PR11MB68894CFF019B013FABDB7EBBDADEA@CY8PR11MB6889.namprd11.prod.outlook.com>
+References: <20231020060503.870173-1-kunal1.joshi@intel.com>
+ <20231020060503.870173-4-kunal1.joshi@intel.com>
+ <335f0248a227d549268f3bcfbaf34d3d6aa8b5d1.camel@intel.com>
+In-Reply-To: <335f0248a227d549268f3bcfbaf34d3d6aa8b5d1.camel@intel.com>
 Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/intel/xe_copy_basic: Fix
- validating the mem set values.
+Subject: Re: [igt-dev] [PATCH i-g-t 3/5] lib/igt_psr: added function to
+ check output supports pr
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,56 +24,55 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "Murthy, Arun R" <arun.r.murthy@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LGTM,
-Reviewed-by: Janga Rahul Kumar<janga.rahul.kumar@intel.com>
-
-> -----Original Message-----
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
-> sai.gowtham.ch@intel.com
-> Sent: Wednesday, October 25, 2023 7:51 AM
-> To: igt-dev@lists.freedesktop.org; Ch, Sai Gowtham
-> <sai.gowtham.ch@intel.com>
-> Subject: [igt-dev] [PATCH i-g-t] tests/intel/xe_copy_basic: Fix validatin=
-g the
-> mem set values.
->=20
-> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
->=20
-> Avoid crash by memory un mapping the dst.ptr after validating the set
-> values.
->=20
-> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-> ---
->  tests/intel/xe_copy_basic.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->=20
-> diff --git a/tests/intel/xe_copy_basic.c b/tests/intel/xe_copy_basic.c in=
-dex
-> 059c54488..fe78ac50f 100644
-> --- a/tests/intel/xe_copy_basic.c
-> +++ b/tests/intel/xe_copy_basic.c
-> @@ -113,13 +113,14 @@ mem_set(int fd, uint32_t dst_handle, const
-> intel_ctx_t *ctx, uint32_t size,
->  	result =3D (uint8_t *)mem.dst.ptr;
->=20
->  	intel_allocator_bind(ahnd, 0, 0);
-> -	munmap(mem.dst.ptr, size);
->  	gem_close(fd, bb);
->  	put_ahnd(ahnd);
->=20
->  	igt_assert(result[0] =3D=3D fill_data);
->  	igt_assert(result[width - 1] =3D=3D fill_data);
->  	igt_assert(result[width] !=3D fill_data);
-> +
-> +	munmap(mem.dst.ptr, size);
->  }
->=20
->  static void copy_test(int fd, uint32_t size, enum blt_cmd_type cmd, uint=
-32_t
-> region)
-> --
-> 2.39.1
+SGVsbG8gSm91bmksDQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBIb2dhbmRl
+ciwgSm91bmkgPGpvdW5pLmhvZ2FuZGVyQGludGVsLmNvbT4gDQpTZW50OiBGcmlkYXksIE9jdG9i
+ZXIgMjAsIDIwMjMgNTo0MyBQTQ0KVG86IEpvc2hpLCBLdW5hbDEgPGt1bmFsMS5qb3NoaUBpbnRl
+bC5jb20+OyBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KQ2M6IE11cnRoeSwgQXJ1biBS
+IDxhcnVuLnIubXVydGh5QGludGVsLmNvbT47IE1hbm5hLCBBbmltZXNoIDxhbmltZXNoLm1hbm5h
+QGludGVsLmNvbT4NClN1YmplY3Q6IFJlOiBbUEFUQ0ggaS1nLXQgMy81XSBsaWIvaWd0X3Bzcjog
+YWRkZWQgZnVuY3Rpb24gdG8gY2hlY2sgb3V0cHV0IHN1cHBvcnRzIHByDQoNCk9uIEZyaSwgMjAy
+My0xMC0yMCBhdCAxMTozNSArMDUzMCwgS3VuYWwgSm9zaGkgd3JvdGU6DQo+IGFkZGVkIGZ1bmN0
+aW9uIHRvIGNoZWNrIG91dHB1dCBzdXBwb3J0cyBQUg0KPiANCj4gTm90ZSA6LSBOZXcgZGVidWdm
+cyBpbnRlcmZhY2VzIHdoaWNoIGFyZSB1c2VkDQo+IMKgwqDCoMKgwqDCoMKgIHdpbGwgYmUgYWRk
+ZWQgYnkgYmVsb3cgcGF0Y2ggaW4gdGhlIGRyaXZlcg0KPiDCoMKgwqDCoMKgwqDCoCBodHRwczov
+L3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzk0NDcwLw0KPiANCj4gQ2M6IEpvdW5p
+IEjDtmdhbmRlciA8am91bmkuaG9nYW5kZXJAaW50ZWwuY29tPg0KPiBDYzogQW5pbWVzaCBNYW5u
+YSA8YW5pbWVzaC5tYW5uYUBpbnRlbC5jb20+DQo+IENjOiBBcnVuIFIgTXVydGh5IDxhcnVuLnIu
+bXVydGh5QGludGVsLmNvbT4NCj4gU2lnbmVkLW9mZi1ieTogS3VuYWwgSm9zaGkgPGt1bmFsMS5q
+b3NoaUBpbnRlbC5jb20+DQo+IC0tLQ0KPiDCoGxpYi9pZ3RfcHNyLmMgfCAxNyArKysrKysrKysr
+KysrKysrKw0KPiDCoGxpYi9pZ3RfcHNyLmggfMKgIDEgKw0KPiDCoDIgZmlsZXMgY2hhbmdlZCwg
+MTggaW5zZXJ0aW9ucygrKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2xpYi9pZ3RfcHNyLmMgYi9saWIv
+aWd0X3Bzci5jIGluZGV4IGFjYWNmYTMxZi4uNGM5MTJhMDY0IA0KPiAxMDA2NDQNCj4gLS0tIGEv
+bGliL2lndF9wc3IuYw0KPiArKysgYi9saWIvaWd0X3Bzci5jDQo+IEBAIC0yMiw2ICsyMiw3IEBA
+DQo+IMKgICovDQo+IMKgDQo+IMKgI2luY2x1ZGUgImRybXRlc3QuaCINCj4gKyNpbmNsdWRlICJp
+Z3Rfa21zLmgiDQo+IMKgI2luY2x1ZGUgImlndF9wYXJhbXMuaCINCj4gwqAjaW5jbHVkZSAiaWd0
+X3Bzci5oIg0KPiDCoCNpbmNsdWRlICJpZ3Rfc3lzZnMuaCINCj4gQEAgLTM3MywzICszNzQsMTkg
+QEAgZW51bSBwc3JfbW9kZSBwc3JfZ2V0X21vZGUoaW50IGRlYnVnZnNfZmQpDQo+IMKgDQo+IMKg
+wqDCoMKgwqDCoMKgwqByZXR1cm4gUFNSX0RJU0FCTEVEOw0KPiDCoH0NCj4gKw0KPiArYm9vbCBv
+dXRwdXRfc3VwcG9ydHNfcHIoaW50IGRlYnVnZnNfZmQsIGlndF9vdXRwdXRfdCAqb3V0cHV0KSB7
+DQo+ICvCoMKgwqDCoMKgwqDCoGNoYXIgZGVidWdmc19maWxlWzEyOF0gPSB7MH07DQo+ICvCoMKg
+wqDCoMKgwqDCoGNoYXIgYnVmW1BTUl9TVEFUVVNfTUFYX0xFTl07DQo+ICsNCj4gK8KgwqDCoMKg
+wqDCoMKgaWYgKCFzdHJzdHIob3V0cHV0LT5uYW1lLCJEUCIpKQ0KPiArwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgcmV0dXJuIGZhbHNlOw0KPiArDQo+ICvCoMKgwqDCoMKgwqDCoCBzcHJp
+bnRmKGRlYnVnZnNfZmlsZSwgIiVzL2k5MTVfcHNyX3N0YXR1cyIsIG91dHB1dC0+bmFtZSk7DQo+
+ICsNCj4gK8KgwqDCoMKgwqDCoMKgIGlndF9kZWJ1Z2ZzX3NpbXBsZV9yZWFkKGRlYnVnZnNfZmQs
+IGRlYnVnZnNfZmlsZSwNCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgYnVmLCBzaXplb2YoYnVmKSk7DQo+ICsNCj4gK8KgwqDC
+oMKgwqDCoMKgIHJldHVybiBzdHJzdHIoYnVmLCAiUGFuZWwgUmVwbGF5ID0geWVzIik7IH0NCg0K
+PiBXaHkgZG8geW91IHRoaW5rIHBzcl9zaW5rX3N1cHBvcnQgY291bGRuJ3Qgd29yayBmb3IgRFAg
+YXMgd2VsbD8NCj4NCj4gQlIsDQoNCj4gSm91bmkgSMO2Z2FuZGVyDQoNCkpvdW5pIHBzcl9zaW5r
+X3N1cHBvcnQgd29uJ3Qgd29yayBmb3IgRFAsIHBzcl9zaW5rX3N1cHBvcnQgaXMgbW9kaWZpZWQN
+CmZvciBlRFAgb25seS4gQ2hhbmdlcyBhcmUgYmFzZWQgb24gZHJpdmVyIGNoYW5nZXMgZG9uZSBp
+bg0KaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy85NDQ3MC8NCg0KDQo+
+IGRpZmYgLS1naXQgYS9saWIvaWd0X3Bzci5oIGIvbGliL2lndF9wc3IuaCBpbmRleCAyNDMxNTQ4
+OTcuLjhlMzZmY2YyZiANCj4gMTAwNjQ0DQo+IC0tLSBhL2xpYi9pZ3RfcHNyLmgNCj4gKysrIGIv
+bGliL2lndF9wc3IuaA0KPiBAQCAtNTUsNSArNTUsNiBAQCBib29sIGk5MTVfcHNyMl9zZWxlY3Rp
+dmVfZmV0Y2hfY2hlY2soaW50IGRybV9mZCk7DQo+IMKgDQo+IMKgYm9vbCBpOTE1X3BzcjJfc2Vs
+X2ZldGNoX3RvX3BzcjEoaW50IGRybV9mZCk7DQo+IMKgdm9pZCBpOTE1X3BzcjJfc2VsX2ZldGNo
+X3Jlc3RvcmUoaW50IGRybV9mZCk7DQo+ICtib29sIG91dHB1dF9zdXBwb3J0c19wcihpbnQgZGVi
+dWdmc19mZCwgaWd0X291dHB1dF90ICpvdXRwdXQpOw0KPiDCoA0KPiDCoCNlbmRpZg0KDQo=
