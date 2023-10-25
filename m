@@ -1,24 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5147310E61B
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Oct 2023 09:18:49 +0000 (UTC)
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.252.1.139])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id E82B5580DD4
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Oct 2023 02:18:47 -0700 (PDT)
-Received: from maurocar by linux.intel.com with local (Exim 4.96.1)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qva2H-000np1-1I
- for igt-dev@lists.freedesktop.org; Wed, 25 Oct 2023 11:18:45 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 25 Oct 2023 11:18:41 +0200
-Message-ID: <20231025091841.191503-1-mauro.chehab@linux.intel.com>
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam11on2078.outbound.protection.outlook.com [40.107.223.78])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3025A10E614
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Oct 2023 09:25:04 +0000 (UTC)
+From: Jesse Zhang <jesse.zhang@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Wed, 25 Oct 2023 17:24:32 +0800
+Message-ID: <20231025092432.726460-1-jesse.zhang@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] lib/igt_sysfs: move kick_snd_hda_intel() to
- igt_kmod.c
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH] tests/amd_dispatch: add dispatch test for gfx and
+ compute
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,163 +19,74 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Tim Huang <tim.huang@amd.com>, Luben Tuikov <luben.tuikov@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>, Christian
+ Koenig <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+Add dispatch test on gfx and compute ring.
+Through  memset shader and memcpy shader,
+and validate the result.
 
-This unbind function is now used only inside igt_kmod, and
-should be called only via igt_always_unload_audio_driver(),
-which does other required steps to unbind the audio driver.
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Cc: Luben Tuikov <luben.tuikov@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: Tim Huang <tim.huang@amd.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-So, move it to igt_kmod and make it static.
-
-Suggested-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
 ---
- lib/igt_kmod.c  | 52 +++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_sysfs.c | 52 -------------------------------------------------
- lib/igt_sysfs.h |  1 -
- 3 files changed, 52 insertions(+), 53 deletions(-)
+ tests/amdgpu/amd_dispatch.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index 4785d724aec8..55a9de4d725c 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -437,6 +437,58 @@ igt_intel_driver_load(const char *opts, const char *driver)
- 	return 0;
+diff --git a/tests/amdgpu/amd_dispatch.c b/tests/amdgpu/amd_dispatch.c
+index 323284306..d62dc7a3d 100644
+--- a/tests/amdgpu/amd_dispatch.c
++++ b/tests/amdgpu/amd_dispatch.c
+@@ -36,6 +36,16 @@ amdgpu_dispatch_hang_compute(amdgpu_device_handle device_handle)
+ 	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_COMPUTE, 1);
  }
  
-+/**
-+ * kick_snd_hda_intel:
-+ *
-+ * This function unbinds the snd_hda_intel driver so the module cand be
-+ * unloaded.
-+ *
-+ */
-+static void kick_snd_hda_intel(void)
-+{
-+	DIR *dir;
-+	struct dirent *snd_hda;
-+	int fd; size_t len;
++static void
++amdgpu_gfx_dispatch_test_gfx(amdgpu_device_handle device_handle) {
++	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_GFX, 0);
++}
 +
-+	const char *dpath = "/sys/bus/pci/drivers/snd_hda_intel";
-+	const char *path = "/sys/bus/pci/drivers/snd_hda_intel/unbind";
-+	const char *devid = "0000:";
++static void
++amdgpu_gfx_dispatch_test_compute(amdgpu_device_handle device_handle) {
++	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_COMPUTE, 0);
++}
 +
-+	fd = open(path, O_WRONLY);
-+	if (fd < 0) {
-+		return;
-+	}
+ static void
+ amdgpu_gpu_reset_test(amdgpu_device_handle device_handle, int drm_amdgpu)
+ {
+@@ -97,6 +107,23 @@ igt_main
+ 		asic_rings_readness(device, 1, arr_cap);
+ 
+ 	}
 +
-+	dir = opendir(dpath);
-+	if (!dir)
-+		goto out;
-+
-+	len = strlen(devid);
-+	while ((snd_hda = readdir(dir))) {
-+		struct stat st;
-+		char fpath[PATH_MAX];
-+
-+		if (*snd_hda->d_name == '.')
-+			continue;
-+
-+		snprintf(fpath, sizeof(fpath), "%s/%s", dpath, snd_hda->d_name);
-+		if (lstat(fpath, &st))
-+			continue;
-+
-+		if (!S_ISLNK(st.st_mode))
-+			continue;
-+
-+		if (!strncmp(devid, snd_hda->d_name, len)) {
-+			igt_ignore_warn(write(fd, snd_hda->d_name,
-+					strlen(snd_hda->d_name)));
++	igt_describe("Check-dispatch-test-gfx-for-each-ring-using-memset-memcpy-shaders-and-validate-after");
++	igt_subtest_with_dynamic("amdgpu-dispatch-test-gfx-with-IP-GFX") {
++		if (arr_cap[AMD_IP_GFX]) {
++			igt_dynamic_f("amdgpu-dispatch-test-gfx")
++			amdgpu_gfx_dispatch_test_gfx(device);
 +		}
 +	}
 +
-+	closedir(dir);
-+out:
-+	close(fd);
-+}
++	igt_describe("Check-dispatch-test-compute-for-each-ring-using-memset-memcpy-shaders-and-validate-after");
++	igt_subtest_with_dynamic("amdgpu-dispatch-test-compute-with-IP-COMPUTE") {
++		if (arr_cap[AMD_IP_COMPUTE]) {
++			igt_dynamic_f("amdgpu-dispatch-test-compute")
++			amdgpu_gfx_dispatch_test_compute(device);
++		}
++	}
 +
- static int igt_always_unload_audio_driver(char **who)
- {
- 	int ret;
-diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
-index 83182020b498..567b4f6d5f03 100644
---- a/lib/igt_sysfs.c
-+++ b/lib/igt_sysfs.c
-@@ -856,58 +856,6 @@ void bind_fbcon(bool enable)
- 	bind_con("frame buffer device", enable);
- }
- 
--/**
-- * kick_snd_hda_intel:
-- *
-- * This functions unbinds the snd_hda_intel driver so the module cand be
-- * unloaded.
-- *
-- */
--void kick_snd_hda_intel(void)
--{
--	DIR *dir;
--	struct dirent *snd_hda;
--	int fd; size_t len;
--
--	const char *dpath = "/sys/bus/pci/drivers/snd_hda_intel";
--	const char *path = "/sys/bus/pci/drivers/snd_hda_intel/unbind";
--	const char *devid = "0000:";
--
--	fd = open(path, O_WRONLY);
--	if (fd < 0) {
--		return;
--	}
--
--	dir = opendir(dpath);
--	if (!dir)
--		goto out;
--
--	len = strlen(devid);
--	while ((snd_hda = readdir(dir))) {
--		struct stat st;
--		char fpath[PATH_MAX];
--
--		if (*snd_hda->d_name == '.')
--			continue;
--
--		snprintf(fpath, sizeof(fpath), "%s/%s", dpath, snd_hda->d_name);
--		if (lstat(fpath, &st))
--			continue;
--
--		if (!S_ISLNK(st.st_mode))
--			continue;
--
--		if (!strncmp(devid, snd_hda->d_name, len)) {
--			igt_ignore_warn(write(fd, snd_hda->d_name,
--					strlen(snd_hda->d_name)));
--		}
--	}
--
--	closedir(dir);
--out:
--	close(fd);
--}
--
- static int fbcon_cursor_blink_fd = -1;
- static char fbcon_cursor_blink_prev_value[2];
- 
-diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
-index 0087c03b706a..e804cf8e109d 100644
---- a/lib/igt_sysfs.h
-+++ b/lib/igt_sysfs.h
-@@ -135,7 +135,6 @@ bool __igt_sysfs_set_boolean(int dir, const char *attr, bool value);
- void igt_sysfs_set_boolean(int dir, const char *attr, bool value);
- 
- void bind_fbcon(bool enable);
--void kick_snd_hda_intel(void);
- void fbcon_blink_enable(bool enable);
- 
- /**
+ 	igt_describe("Test GPU reset using a binary shader to slow hang the job on compute ring");
+ 	igt_subtest_with_dynamic("amdgpu-dispatch-test-compute-with-IP-COMPUTE") {
+ 		if (arr_cap[AMD_IP_COMPUTE]) {
 -- 
-2.41.0
+2.25.1
