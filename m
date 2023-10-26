@@ -1,20 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3D23D10E070
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Oct 2023 07:21:50 +0000 (UTC)
-Message-ID: <df628c14-8fdb-f5b5-a932-c804e910b00c@intel.com>
-Date: Thu, 26 Oct 2023 12:51:22 +0530
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C049210E76C
+ for <igt-dev@lists.freedesktop.org>; Thu, 26 Oct 2023 07:31:26 +0000 (UTC)
+Message-ID: <e5fe59c4-baed-d686-73e7-8964532385d2@intel.com>
+Date: Thu, 26 Oct 2023 13:01:04 +0530
 Content-Language: en-US
-To: Nidhi Gupta <nidhi1.gupta@intel.com>, <igt-dev@lists.freedesktop.org>,
- <vinod.govindapillai@intel.com>
-References: <20231026031610.21625-1-nidhi1.gupta@intel.com>
+To: "Joshi, Kunal1" <kunal1.joshi@intel.com>, Kamil Konieczny
+ <kamil.konieczny@linux.intel.com>, Juha-Pekka Heikkila
+ <juhapekka.heikkila@gmail.com>, <igt-dev@lists.freedesktop.org>
+References: <20231001103006.431894-1-kunal1.joshi@intel.com>
+ <17bd5bee-d5ff-9351-ed9b-e917b780d491@intel.com>
+ <1f8f7bfc-21cb-e986-401a-591892adefeb@intel.com>
+ <8bba0a41-769f-4921-89b5-0f5d2d315459@gmail.com>
+ <20231004103641.wj5dukxexd73r62e@kamilkon-desk.igk.intel.com>
+ <672e13c3-3d92-63c3-07d2-6dd5491d3c8e@intel.com>
 From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20231026031610.21625-1-nidhi1.gupta@intel.com>
+In-Reply-To: <672e13c3-3d92-63c3-07d2-6dd5491d3c8e@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v5] tests/kms_frontbuffer_tracking:
- Extend the test to enable FBC for each plane
+Subject: Re: [igt-dev] [PATCH i-g-t 0/2] Add test for hotplug validation in
+ simulation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,221 +32,70 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Nidhi,
+Hi Kunal,
 
-On Thu-26-10-2023 08:46 am, Nidhi Gupta wrote:
-> Added a new subtest to validate FBC on each plane, this new subtest
-> will first disable the fbc feature on all pipes and planes and then
-> enable it on all plane one by one and confirm.
+On Thu-26-10-2023 12:08 pm, Joshi, Kunal1 wrote:
+> Hello Kamil,
 > 
-> v2: Modify tests to disable primary and enable other plane
->      to check fbc is enabled or not. <Bhanu>
+> On 10/4/2023 4:06 PM, Kamil Konieczny wrote:
+>> Hi Juha-Pekka,
+>>
+>> On 2023-10-04 at 11:15:25 +0300, Juha-Pekka Heikkila wrote:
+>>> On 4.10.2023 8.48, Modem, Bhanuprakash wrote:
+>>>> Forgot to add Kamil to the TO/CC list.
+>>>>
+>>>> On Tue-03-10-2023 02:42 pm, Modem, Bhanuprakash wrote:
+>>>>> Hi Kunal,
+>>>>>
+>>>>> On Sun-01-10-2023 04:00 pm, Kunal Joshi wrote:
+>>>>>> Test to validate hotplug in simulation environment we
+>>>>>> have scratch pad register 0x4f080 from which we can
+>>>>>> trigger uevents such as HPD, VBLANK..etc, Idea is to
+>>>>>> have port mapping placed in igtrcthrough which test
+>>>>>> can write to 0x4f080 and check if we get hotplug
+>>>>> In first glance, do we really need to upstream this test? I am
+>>>>> pretty sure, no one (including Intel) is going to use this test from
+>>>>> upstream repo (We don't have any simulation environment in public
+>>>>> CI).
+>>>>>
+>>>>> So, we can't merge this.
+>>>>>
+>>>>> + Kamil, thoughts?
+>>>>>
+>>> Not sure why this wouldn't fit in upstream? It is valid igt test, 
+>>> will be of
+>>> interest only for Intel guys hence in in intel directory and when in
+>>> upstream it will not be causing issues during backports. We anyway 
+>>> already
+>>> have more generic tests taking into account if they're being run in
+>>> simulated environments.
+>>>
+>>> /Juha-Pekka
+>>>
+>> imho this should not be upstreamed as any user outside Intel
+>> will not be able to run it. Why it cannot be a subtest with
+>> some generic test like kms_hotplug.c with only timeout increased
+>> for simulation? Such test may be in upstream if it will work
+>> with existing hardware in CI.
+>>
+>> Regards,
+>> Kamil
 > 
-
-Cc: Vinod Govindapillai <vinod.govindapillai@intel.com>
-
-> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
-> ---
->   tests/intel/kms_frontbuffer_tracking.c | 95 ++++++++++++++++++++++++++
->   1 file changed, 95 insertions(+)
+> This test will only work in presi environment, for testing hotplug in 
+> hardware we have kms_chamelium_hpd,
+> But we can have it in upstream as someday we may require to run upstream 
+> igt's on presi.
 > 
-> diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-> index f90d09f9f..a3dd3f63b 100644
-> --- a/tests/intel/kms_frontbuffer_tracking.c
-> +++ b/tests/intel/kms_frontbuffer_tracking.c
-> @@ -224,6 +224,8 @@ struct fb_region {
->   	int h;
->   };
->   
-> +struct igt_fb default_fb;
+> Any thoughts bhanu and JP?
 
-Unused variable, please drop it.
-
-> +
->   struct draw_pattern_info {
->   	bool frames_stack;
->   	int n_rects;
-> @@ -888,6 +890,14 @@ static bool fbc_mode_too_large(void)
->   	return strstr(buf, "FBC disabled: mode too large for compression\n");
->   }
->   
-> +static bool fbc_enable_per_plane(void)
-> +{
-> +	char buf[128];
-> +
-> +	debugfs_read_crtc("i915_fbc_status", buf);
-> +	return strstr(buf, "*");
-
-Just reading the '*' is not enough, but need to make sure that the 
-requested plane & FBC enabled plane are same.
-
-Example:
-# cat i915_fbc_status
-* [PLANE:40:plane 2A]: FBC possible
-
-hint: parse the plane index or id & compare with the requested plane.
-
-> +}
-> +
->   static bool drrs_wait_until_rr_switch_to_low(void)
->   {
->   	return igt_wait(is_drrs_low(), 5000, 1);
-> @@ -1691,6 +1701,31 @@ static void set_region_for_test(const struct test_mode *t,
->   	do_assertions(ASSERT_NO_ACTION_CHANGE);
->   }
->   
-> +static void set_plane_for_test_fbc(const struct test_mode *t, igt_plane_t *plane)
-> +{
-> +	//create_fb
-
-Please drop this comment.
-
-> +	struct igt_fb fb;
-> +	uint32_t color;
-> +
-> +	igt_create_fb(drm.fd, prim_mode_params.mode.hdisplay, prim_mode_params.mode.vdisplay,
-> +			t->format, DRM_FORMAT_MOD_LINEAR, &fb);
-> +	//fill_fb_region
-
-Please drop this comment or use the single line comment style /* */
-
-> +	color = pick_color(&fb, COLOR_PRIM_BG);
-> +
-> +	igt_draw_rect_fb(drm.fd, drm.bops, 0, &fb, IGT_DRAW_BLT,
-> +			 0, 0, fb.width, fb.height,
-> +			 color);
-> +	set_mode_for_params(&prim_mode_params);
-
-This api always uses primary plane only.
-
-> +	igt_plane_set_fb(plane, &fb);
-> +	igt_plane_set_position(plane, 0, 0);
-> +	igt_plane_set_size(plane, prim_mode_params.mode.hdisplay, prim_mode_params.mode.vdisplay);
-> +	igt_fb_set_size(&fb, plane, prim_mode_params.mode.hdisplay, prim_mode_params.mode.vdisplay);
-> +
-> +	igt_display_commit(&drm.display);
-> +	igt_require(!fbc_enable_per_plane());
-> +	do_assertions(ASSERT_NO_ACTION_CHANGE);
-> +}
-> +
->   static bool enable_features_for_test(const struct test_mode *t)
->   {
->   	bool ret = false;
-> @@ -1940,6 +1975,39 @@ static void rte_subtest(const struct test_mode *t)
->   		set_region_for_test(t, &scnd_mode_params.sprite);
->   	}
->   }
-> +/**
-> + * SUBTEST: plane-fbc-rte
-> + * Description: Sanity test to enable FBC on a plane.
-> + * Driver requirement: i915, xe
-> + * Functionality: fbc
-> + * Mega feature: General Display Features
-> + * Test category: functionality test
-> + */
-
-Please move the documentation to top of the file & just below the all 
-#includes.
-
-> +
-> +/**
-> + * plane-fbc-rte - the basic sanity test
-> + *
-> + * METHOD
-> + *   Just disable all screens, assert everything is disabled, then enable all
-> + *   screens  and planes  and assert that the tested feature is enabled.
-
-Not all screens & planes together. Our intention is to test individual 
-plane.
-
-> + *
-> + * EXPECTED RESULTS
-> + *   Blue screens and t->feature enabled.
-> + *
-> + * FAILURES
-> + *   A failure here means that every other subtest will probably fail too. It
-> + *   probably means that the Kernel is just not enabling the feature we want.
-> + */
-> +static void plane_fbc_rte_subtest(const struct test_mode *t, igt_plane_t *plane)
-> +{
-> +	do_assertions(ASSERT_FBC_DISABLED);
-> +
-> +	if (plane->index == 0)
-> +		enable_prim_screen_and_wait(t);
-> +	if (plane->index > 0)
-> +		set_plane_for_test_fbc(t, plane);
-
-Looks, bit odd to me to read the code. I think we need to redesign the 
-test as below:
-
-1. Initialize the fb_region struct with requested plane.
-2. fill_fb_region()
-3. set plane params like fb, size, position etc.. and commit
-4. Check for the fbc status.
-
-> +
-> +}
->   
->   static void update_wanted_crc(const struct test_mode *t, igt_crc_t *crc)
->   {
-> @@ -4910,6 +4978,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
->   {
->   	struct test_mode t;
->   	int devid;
-> +	igt_plane_t *plane;
->   
->   	igt_fixture {
->   		setup_environment();
-> @@ -4936,6 +5005,32 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
->   		}
->   	}
->   
-> +	igt_subtest_with_dynamic("plane-fbc-rte") {
-
-Dynamic subtests are not required, as we are using single pipe & output 
-combination only.
-
-> +
-> +		int n_planes = 0;
-> +
-> +		t.pipes = PIPE_SINGLE;
-> +		t.feature = FEATURE_FBC;
-> +		t.screen = SCREEN_PRIM;
-> +		t.fbs = FBS_INDIVIDUAL;
-> +		t.format = FORMAT_DEFAULT;
-> +		/* Make sure nothing is using these values. */
-> +		t.flip = -1;
-> +		t.method = -1;
-> +		t.tiling = opt.tiling;
-> +
-> +		for_each_plane_on_pipe(&drm.display, prim_mode_params.pipe, plane) {
-> +			n_planes++;
-> +			if (n_planes == 4)
-> +				break;
-
-Better create a function (maybe is_valid_plane()) to check for the plane 
-validity.
-
-And use it as:
-
-if (!is_valid_plane(plane))
-     continue;
-
-Example: kms_plane.c --> skip_plane();
-
-> +			igt_dynamic_f("plane-%u-fbc-rte", plane->index) {
-> +				prepare_subtest_data(&t, NULL);
-> +				unset_all_crtcs();
-
-Use it before preparing the subtest.
+As mentioned in previous replies, I am fine to upstream these changes as 
+we are keeping these tests inside the "tests/intel" directory, and 
+non-intel users are not going to use these tests.
 
 - Bhanu
 
-> +				plane_fbc_rte_subtest(&t, plane);
-> +			}
-> +		}
-> +	}
-> +
->   	TEST_MODE_ITER_BEGIN(t)
->   
->   		igt_subtest_f("%s-%s-%s-%s-%s-draw-%s",
+> 
+> Thanks and Regards
+> Kunal Joshi
+> 
+> 
