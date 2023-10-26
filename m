@@ -1,18 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 98A9D10E834
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Oct 2023 15:50:47 +0000 (UTC)
-From: Andrzej Hajda <andrzej.hajda@intel.com>
-Date: Thu, 26 Oct 2023 17:50:30 +0200
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20231026-gtt_size_fix-v1-2-882d0e0022ec@intel.com>
-References: <20231026-gtt_size_fix-v1-0-882d0e0022ec@intel.com>
-In-Reply-To: <20231026-gtt_size_fix-v1-0-882d0e0022ec@intel.com>
+Received: from dd20012.kasserver.com (dd20012.kasserver.com [85.13.140.57])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BE77110E835
+ for <igt-dev@lists.freedesktop.org>; Thu, 26 Oct 2023 17:14:43 +0000 (UTC)
+Received: from fli4l.lan.fli4l (p4fd6ced1.dip0.t-ipconnect.de [79.214.206.209])
+ by dd20012.kasserver.com (Postfix) with ESMTPSA id B84E7A4C1143
+ for <igt-dev@lists.freedesktop.org>; Thu, 26 Oct 2023 19:14:41 +0200 (CEST)
+Received: from bruckner.lan.fli4l ([192.168.1.1]:58180)
+ by fli4l.lan.fli4l with esmtp (Exim 4.96.2)
+ (envelope-from <bernd@kuhls.net>) id 1qw3wO-0002zh-3C
+ for igt-dev@lists.freedesktop.org; Thu, 26 Oct 2023 19:14:41 +0200
+From: Bernd Kuhls <bernd@kuhls.net>
 To: igt-dev@lists.freedesktop.org
-Subject: [igt-dev] [PATCH 2/2] lib/intel_batchbuffer: allow GTT size be not
- power of 2
+Date: Thu, 26 Oct 2023 19:14:35 +0200
+Message-Id: <20231026171440.4046190-2-bernd@kuhls.net>
+In-Reply-To: <20231026171440.4046190-1-bernd@kuhls.net>
+References: <20231026171440.4046190-1-bernd@kuhls.net>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH v2 1/6] build: check that outb is present in io.h
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,37 +25,33 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>,
- Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-GTT size reported by the driver can be shorter than
-the actual size due to possible reserved addresses.
-Rounding it up to power of 2 should give us back
-actual GTT size.
-The patch is prerequisite for upcoming driver changes
-introducing per context batch buffers.
+With glibc if io.h exists, inb/outb are always defined.
+However on musl, io.h always exists but it may not define inb/outb.
 
-Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Thus, igt-gpu-tools builds with musl on non-x86 platforms will fail to
+link. Fix this by checking for both io.h and that outb() is defined.
+
+Signed-off-by: Bernd Kuhls <bernd@kuhls.net>
 ---
- lib/intel_batchbuffer.c | 2 +-
+ meson.build | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index df82ef5f5ca..c32d04302fe 100644
---- a/lib/intel_batchbuffer.c
-+++ b/lib/intel_batchbuffer.c
-@@ -1675,7 +1675,7 @@ __intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
- 			offset = __intel_bb_get_offset(ibb, handle, size,
- 						       alignment);
- 		} else {
--			offset = offset & (ibb->gtt_size - 1);
-+			offset = offset & (roundup_power_of_two(ibb->gtt_size) - 1);
- 
- 			/*
- 			 * For simple allocator check entry consistency
-
+diff --git a/meson.build b/meson.build
+index b35a00faa..cee8a7446 100644
+--- a/meson.build
++++ b/meson.build
+@@ -220,7 +220,7 @@ endif
+ if cc.has_header('libgen.h')
+ 	config.set('HAVE_LIBGEN_H', 1)
+ endif
+-if cc.has_header('sys/io.h')
++if cc.has_header('sys/io.h') and cc.has_function('outb', prefix: '#include <sys/io.h>')
+ 	config.set('HAVE_SYS_IO_H', 1)
+ endif
+ if cc.links('''
 -- 
-2.34.1
+2.39.2
