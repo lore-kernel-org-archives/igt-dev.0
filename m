@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 85CE110E82D
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Oct 2023 15:50:45 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 98A9D10E834
+ for <igt-dev@lists.freedesktop.org>; Thu, 26 Oct 2023 15:50:47 +0000 (UTC)
 From: Andrzej Hajda <andrzej.hajda@intel.com>
-Date: Thu, 26 Oct 2023 17:50:29 +0200
+Date: Thu, 26 Oct 2023 17:50:30 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231026-gtt_size_fix-v1-1-882d0e0022ec@intel.com>
+Message-Id: <20231026-gtt_size_fix-v1-2-882d0e0022ec@intel.com>
 References: <20231026-gtt_size_fix-v1-0-882d0e0022ec@intel.com>
 In-Reply-To: <20231026-gtt_size_fix-v1-0-882d0e0022ec@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [igt-dev] [PATCH 1/2] lib/igt_aux: fix roundup_power_of_two
- implementation
+Subject: [igt-dev] [PATCH 2/2] lib/intel_batchbuffer: allow GTT size be not
+ power of 2
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,27 +26,31 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For arguments greater than (1<<31) 64bit value must
-be shifted, otherwise the result is incorrect.
+GTT size reported by the driver can be shorter than
+the actual size due to possible reserved addresses.
+Rounding it up to power of 2 should give us back
+actual GTT size.
+The patch is prerequisite for upcoming driver changes
+introducing per context batch buffers.
 
 Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
 ---
- lib/igt_aux.h | 2 +-
+ lib/intel_batchbuffer.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/igt_aux.h b/lib/igt_aux.h
-index fb76b031318..4d887045af7 100644
---- a/lib/igt_aux.h
-+++ b/lib/igt_aux.h
-@@ -329,7 +329,7 @@ void pipewire_pulse_stop_reserve(void);
- 						64 - __builtin_clzll(x), \
- 						32 - __builtin_clz(x)) : 0)
+diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+index df82ef5f5ca..c32d04302fe 100644
+--- a/lib/intel_batchbuffer.c
++++ b/lib/intel_batchbuffer.c
+@@ -1675,7 +1675,7 @@ __intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
+ 			offset = __intel_bb_get_offset(ibb, handle, size,
+ 						       alignment);
+ 		} else {
+-			offset = offset & (ibb->gtt_size - 1);
++			offset = offset & (roundup_power_of_two(ibb->gtt_size) - 1);
  
--#define roundup_power_of_two(x) ((x) != 0 ? 1 << igt_fls((x) - 1) : 0)
-+#define roundup_power_of_two(x) ((x) != 0 ? 1ULL << igt_fls((x) - 1) : 0)
- 
- #define DIV_ROUND_UP(n, d) (((n) + (d) - 1) / (d))
- 
+ 			/*
+ 			 * For simple allocator check entry consistency
 
 -- 
 2.34.1
