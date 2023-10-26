@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from dd20012.kasserver.com (dd20012.kasserver.com [85.13.140.57])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 40C5810E842
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Oct 2023 17:15:55 +0000 (UTC)
-From: Bernd Kuhls <bernd@kuhls.net>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 26 Oct 2023 19:14:40 +0200
-Message-Id: <20231026171440.4046190-7-bernd@kuhls.net>
-In-Reply-To: <20231026171440.4046190-1-bernd@kuhls.net>
-References: <20231026171440.4046190-1-bernd@kuhls.net>
+Content-Type: multipart/alternative;
+ boundary="===============5627091680392923474=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 6/6] benchmarks/gem_exec_tracer.c: Fix musl
- build
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kunal Joshi" <kunal1.joshi@intel.com>
+Date: Thu, 26 Oct 2023 18:00:17 -0000
+Message-ID: <169834321776.20472.7831201547896792842@emeril.freedesktop.org>
+References: <20231026120233.1044177-1-kunal1.joshi@intel.com>
+In-Reply-To: <20231026120233.1044177-1-kunal1.joshi@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_added_ne?=
+ =?utf-8?q?w_subtest_simultaneous-modeset?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,45 +17,153 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Mohammed Anas <triallax@tutanota.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mohammed Anas <triallax@tutanota.com>
+--===============5627091680392923474==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Original patch was added to void-linux:
-https://github.com/void-linux/void-packages/commit/111918317d06598fe1459dbe139923404f3f4b9d
+== Series Details ==
 
-Fixes build error:
-../benchmarks/gem_exec_tracer.c:274:1: error: conflicting types for ‘ioctl’; have ‘int(int,  long unsigned int, ...)’
-  274 | ioctl(int fd, unsigned long request, ...)
+Series: added new subtest simultaneous-modeset
+URL   : https://patchwork.freedesktop.org/series/125631/
+State : success
 
-Bug report with request to split the original patch into some
-functional changes:
-Link: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/138
+== Summary ==
 
-Signed-off-by: Mohammed Anas <triallax@tutanota.com>
-Signed-off-by: Bernd Kuhls <bernd@kuhls.net>
----
- benchmarks/gem_exec_tracer.c | 4 ++++
- 1 file changed, 4 insertions(+)
+CI Bug Log - changes from XEIGT_7559_BAT -> XEIGTPW_10074_BAT
+====================================================
 
-diff --git a/benchmarks/gem_exec_tracer.c b/benchmarks/gem_exec_tracer.c
-index 7e86473e4..3156dfc23 100644
---- a/benchmarks/gem_exec_tracer.c
-+++ b/benchmarks/gem_exec_tracer.c
-@@ -271,7 +271,11 @@ static int is_i915(int fd)
- }
- 
- int
-+#ifdef __GLIBC__
- ioctl(int fd, unsigned long request, ...)
-+#else
-+ioctl(int fd, int request, ...)
-+#endif
- {
- 	struct trace *t, **p;
- 	va_list args;
--- 
-2.39.2
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 3)
+------------------------------
+
+  Missing    (1): bat-dg2-oem2 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10074_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
+    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 other test fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7559/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10074/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size:
+    - bat-adlp-7:         [FAIL][3] ([Intel XE#692]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7559/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10074/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+  [Intel XE#692]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/692
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7559 -> IGTPW_10074
+  * Linux: xe-449-4c7ed0ef2d582ae173d9a2062ee6f7360d1aa1df -> xe-451-21919db9eeaabfaf401c2470a6a95450ac92fafd
+
+  IGTPW_10074: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10074/index.html
+  IGT_7559: 62ac3d2ddb6005b16df00a36565779848c1390c9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-449-4c7ed0ef2d582ae173d9a2062ee6f7360d1aa1df: 4c7ed0ef2d582ae173d9a2062ee6f7360d1aa1df
+  xe-451-21919db9eeaabfaf401c2470a6a95450ac92fafd: 21919db9eeaabfaf401c2470a6a95450ac92fafd
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10074/index.html
+
+--===============5627091680392923474==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>added new subtest simultaneous-modeset</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/125631/">https://patchwork.freedesktop.org/series/125631/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10074/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10074/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7559_BAT -&gt; XEIGTPW_10074_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 3)</h2>
+<p>Missing    (1): bat-dg2-oem2 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10074_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7559/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10074/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7559/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/692">Intel XE#692</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10074/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7559 -&gt; IGTPW_10074</li>
+<li>Linux: xe-449-4c7ed0ef2d582ae173d9a2062ee6f7360d1aa1df -&gt; xe-451-21919db9eeaabfaf401c2470a6a95450ac92fafd</li>
+</ul>
+<p>IGTPW_10074: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10074/index.html<br />
+  IGT_7559: 62ac3d2ddb6005b16df00a36565779848c1390c9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-449-4c7ed0ef2d582ae173d9a2062ee6f7360d1aa1df: 4c7ed0ef2d582ae173d9a2062ee6f7360d1aa1df<br />
+  xe-451-21919db9eeaabfaf401c2470a6a95450ac92fafd: 21919db9eeaabfaf401c2470a6a95450ac92fafd</p>
+
+</body>
+</html>
+
+--===============5627091680392923474==--
