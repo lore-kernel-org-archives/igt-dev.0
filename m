@@ -1,23 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5F12F10E047
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Oct 2023 05:23:32 +0000 (UTC)
-Message-ID: <c0d500fe-5aa6-4e47-88e4-69ade612fe1d@intel.com>
-Date: Thu, 26 Oct 2023 10:53:27 +0530
+Content-Type: multipart/alternative;
+ boundary="===============5439845169785423748=="
 MIME-Version: 1.0
-Content-Language: en-US
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230911072249.1935228-1-bhanuprakash.modem@intel.com>
- <20230911072249.1935228-3-bhanuprakash.modem@intel.com>
- <b1d4b535-4550-49df-8f4a-a8a4f411e02e@intel.com>
- <5c61a73d-f30c-504b-79d4-603b7a65ecdc@intel.com>
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <5c61a73d-f30c-504b-79d4-603b7a65ecdc@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [i-g-t V5 2/5] tests/i915/kms_fb_coherency: Add XE
- support
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Nidhi Gupta" <nidhi1.gupta@intel.com>
+Date: Thu, 26 Oct 2023 05:28:58 -0000
+Message-ID: <169829813887.20470.129914031027228125@emeril.freedesktop.org>
+References: <20231026031610.21625-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20231026031610.21625-1-nidhi1.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/km?=
+ =?utf-8?q?s=5Ffrontbuffer=5Ftracking=3A_Extend_the_test_to_enable_FBC_for?=
+ =?utf-8?q?_each_plane_=28rev5=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,130 +18,152 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Bhanu,
+--===============5439845169785423748==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 25-Oct-23 1:13 PM, Modem, Bhanuprakash wrote:
-> Hi Swati,
-> 
-> On Mon-23-10-2023 02:11 pm, Sharma, Swati2 wrote:
->> Hi Bhanu,
->>
->> On 11-Sep-23 12:52 PM, Bhanuprakash Modem wrote:
->>> Add XE driver support for kms tests. This patch will add a support
->>> to call the corresponding apis based on the driver (i915/xe)
->>>
->>> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
->>> ---
->>>   tests/intel/kms_fb_coherency.c | 43 ++++++++++++++++++----------------
->>>   1 file changed, 23 insertions(+), 20 deletions(-)
->>>
->>> diff --git a/tests/intel/kms_fb_coherency.c 
->>> b/tests/intel/kms_fb_coherency.c
->>> index c772ddcdc..745ffcdd2 100644
->>> --- a/tests/intel/kms_fb_coherency.c
->>> +++ b/tests/intel/kms_fb_coherency.c
->>> @@ -16,6 +16,7 @@
->>>   #include <string.h>
->>>   #include "igt.h"
->>> +#include "xe/xe_ioctl.h"
->>>   typedef struct {
->>>       int drm_fd;
->>> @@ -91,7 +92,7 @@ static struct igt_fb *prepare_fb(data_t *data)
->>>               0, 0, fb->width, fb->height,
->>>               0, 0, fb->width << 16, fb->height << 16);
->>> -    if (!gem_has_lmem(data->drm_fd)) {
->>> +    if (is_i915_device(data->drm_fd) && !gem_has_lmem(data->drm_fd)) {
->>>           uint32_t caching;
->>>           /* make sure caching mode has become UC/WT */
->>> @@ -160,7 +161,10 @@ static void test_mmap_offset_wc(data_t *data)
->>>       fb = prepare_fb(data);
->>> -    buf = gem_mmap_offset__wc(data->drm_fd, fb->gem_handle, 0, 
->>> fb->size, PROT_WRITE);
->>> +    if (is_i915_device(data->drm_fd))
->>> +        buf = gem_mmap_offset__wc(data->drm_fd, fb->gem_handle, 0, 
->>> fb->size, PROT_WRITE);
->>> +    else
->>> +        buf = xe_bo_mmap_ext(data->drm_fd, fb->gem_handle, fb->size, 
->>> PROT_WRITE);
->>>       check_buf_crc(data, buf, fb);
->>>   }
->>> @@ -226,7 +230,7 @@ igt_main
->>>       data_t data;
->>>       igt_fixture {
->>> -        data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
->>> +        data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
->>>           data.devid = intel_get_drm_devid(data.drm_fd);
->>> @@ -251,39 +255,38 @@ igt_main
->>>        * Test category: functionality test
->>>        */
->>>       igt_subtest_with_dynamic("memset-crc") {
->>> -        if (gem_has_mappable_ggtt(data.drm_fd)) {
->>> +        if (igt_draw_supports_method(data.drm_fd, IGT_DRAW_MMAP_GTT)) {
->>>               igt_dynamic("mmap-gtt")
->>>                   test_mmap_gtt(&data);
->>>               cleanup_crtc(&data);
->>>           }
->>> -        if (gem_mmap_offset__has_wc(data.drm_fd)) {
->>> +        if (igt_draw_supports_method(data.drm_fd, IGT_DRAW_MMAP_WC)) {
->>>               igt_dynamic("mmap-offset-wc")
->>>                   test_mmap_offset_wc(&data);
->>>               cleanup_crtc(&data);
->>>           }
->>> -        if (gem_has_lmem(data.drm_fd)) {
->>> -            igt_dynamic("mmap-offset-fixed")
->>> -                test_mmap_offset_fixed(&data);
->>> +        if (is_i915_device(data.drm_fd)) {
->>
->> Instead of using if (is_i915_device()), can we use 
->> igt_require_i915(data.drm_fd) instead if these subtests are executable 
->> on i915 driver only?
-> 
-> No, we can't use igt_require_i915() here.
-> 
-> For XE device, IGT will always throw a SKIP after the execution of 
-> "mmap-offset-wc".
-> 
-> BTW, we can't use igt_fixture inside igt_subtest_*().
-> 
-> - Bhanu
+== Series Details ==
 
-IMO its better to list the subtest to have mapping b/w i915 and xe which 
-will help in validation matrix.
-If we need to go with above approach only, i guess we need to change 
-other IGTs too like kms_pm_lpsp, kms_addfb_basic, 
-kms_force_connector_basic, etc. to not list xe specific subtests.
+Series: tests/kms_frontbuffer_tracking: Extend the test to enable FBC for each plane (rev5)
+URL   : https://patchwork.freedesktop.org/series/123724/
+State : success
 
-> 
->>
->>> +            if (gem_has_lmem(data.drm_fd)) {
->>> +                igt_dynamic("mmap-offset-fixed")
->>> +                    test_mmap_offset_fixed(&data);
->>> +            } else if (gem_has_mmap_offset(data.drm_fd)) {
->>> +                igt_dynamic("mmap-offset-uc")
->>> +                    test_mmap_offset_uc(&data);
->>> +            }
->>>               cleanup_crtc(&data);
->>> -        } else if (gem_has_mmap_offset(data.drm_fd)) {
->>> -            igt_dynamic("mmap-offset-uc")
->>> -                test_mmap_offset_uc(&data);
->>> +            if (gem_has_legacy_mmap(data.drm_fd) &&
->>> +                gem_mmap__has_wc(data.drm_fd)) {
->>> +                igt_dynamic("mmap-legacy-wc")
->>> +                    test_legacy_mmap_wc(&data);
->>> -            cleanup_crtc(&data);
->>> -        }
->>> -
->>> -        if (gem_has_legacy_mmap(data.drm_fd) &&
->>> -            gem_mmap__has_wc(data.drm_fd)) {
->>> -            igt_dynamic("mmap-legacy-wc")
->>> -                test_legacy_mmap_wc(&data);
->>> -
->>> -            cleanup_crtc(&data);
->>> +                cleanup_crtc(&data);
->>> +            }
->>>           }
->>>       }
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7557_BAT -> XEIGTPW_10069_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10069_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
+    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 other test fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7557/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10069/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+
+  
+#### Possible fixes ####
+
+  * {igt@xe_create@create-execqueues-noleak}:
+    - bat-atsm-2:         [FAIL][3] ([Intel XE#524]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7557/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10069/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7557 -> IGTPW_10069
+  * Linux: xe-446-bbcc0af8b09bb7f275f8d2d6e55eeec9c74281c3 -> xe-449-4c7ed0ef2d582ae173d9a2062ee6f7360d1aa1df
+
+  IGTPW_10069: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10069/index.html
+  IGT_7557: 18fc864d68d382847596594d7eb3488f2c8fb45e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-446-bbcc0af8b09bb7f275f8d2d6e55eeec9c74281c3: bbcc0af8b09bb7f275f8d2d6e55eeec9c74281c3
+  xe-449-4c7ed0ef2d582ae173d9a2062ee6f7360d1aa1df: 4c7ed0ef2d582ae173d9a2062ee6f7360d1aa1df
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10069/index.html
+
+--===============5439845169785423748==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_frontbuffer_tracking: Extend the test to enable FBC for each plane (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123724/">https://patchwork.freedesktop.org/series/123724/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10069/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10069/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7557_BAT -&gt; XEIGTPW_10069_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10069_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7557/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10069/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>{igt@xe_create@create-execqueues-noleak}:<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7557/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10069/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7557 -&gt; IGTPW_10069</li>
+<li>Linux: xe-446-bbcc0af8b09bb7f275f8d2d6e55eeec9c74281c3 -&gt; xe-449-4c7ed0ef2d582ae173d9a2062ee6f7360d1aa1df</li>
+</ul>
+<p>IGTPW_10069: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10069/index.html<br />
+  IGT_7557: 18fc864d68d382847596594d7eb3488f2c8fb45e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-446-bbcc0af8b09bb7f275f8d2d6e55eeec9c74281c3: bbcc0af8b09bb7f275f8d2d6e55eeec9c74281c3<br />
+  xe-449-4c7ed0ef2d582ae173d9a2062ee6f7360d1aa1df: 4c7ed0ef2d582ae173d9a2062ee6f7360d1aa1df</p>
+
+</body>
+</html>
+
+--===============5439845169785423748==--
