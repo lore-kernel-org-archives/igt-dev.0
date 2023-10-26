@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============6325179315411906681=="
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 589D610E7A5
+ for <igt-dev@lists.freedesktop.org>; Thu, 26 Oct 2023 10:40:47 +0000 (UTC)
+Date: Thu, 26 Oct 2023 12:40:27 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20231026104027.4legnydomqvogi36@kamilkon-desk.igk.intel.com>
+References: <20231026092724.260267-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 30 Oct 2023 17:04:30 -0000
-Message-ID: <169868547067.25482.16465247721427700756@emeril.freedesktop.org>
-References: <20231030095206.108025-1-mauro.chehab@linux.intel.com>
-In-Reply-To: <20231030095206.108025-1-mauro.chehab@linux.intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_better_s?=
- =?utf-8?q?ync_test=5Flist=2Epy_with_igt=5Frunner_=28rev2=29?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231026092724.260267-1-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_sysfs: move
+ kick_snd_hda_intel() to igt_kmod.c
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,183 +19,194 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============6325179315411906681==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Mauro,
+On 2023-10-26 at 11:27:24 +0200, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> This unbind function is now used only inside igt_kmod, and
+> should be called only via igt_always_unload_audio_driver(),
+> which does other required steps to unbind the audio driver.
+> 
+> So, move it to igt_kmod and make it static.
+> 
+> Suggested-by: Andrzej Hajda <andrzej.hajda@intel.com>
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-== Series Details ==
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Series: better sync test_list.py with igt_runner (rev2)
-URL   : https://patchwork.freedesktop.org/series/125512/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7566_BAT -> XEIGTPW_10083_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_10083_BAT:
-
-### IGT changes ###
-
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * {igt@xe_evict_ccs@evict-ccs-overcommit-parallel-nofree-samefd}:
-    - bat-atsm-2:         [PASS][1] -> [FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7566/bat-atsm-2/igt@xe_evict_ccs@evict-ccs-overcommit-parallel-nofree-samefd.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10083/bat-atsm-2/igt@xe_evict_ccs@evict-ccs-overcommit-parallel-nofree-samefd.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10083_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * {igt@xe_create@create-execqueues-noleak}:
-    - bat-adlp-7:         [FAIL][3] ([Intel XE#524]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7566/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10083/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
-
-  
-#### Warnings ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [DMESG-FAIL][5] ([Intel XE#282] / [i915#2017]) -> [FAIL][6] ([Intel XE#616] / [Intel XE#750])
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7566/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10083/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#282]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/282
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
-  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
-  [Intel XE#750]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/750
-  [i915#2017]: https://gitlab.freedesktop.org/drm/intel/issues/2017
-
-
-Build changes
--------------
-
-  * IGT: IGT_7566 -> IGTPW_10083
-
-  IGTPW_10083: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10083/index.html
-  IGT_7566: 7566
-  xe-456-d7eb9a5c3acda8d87699bc82add7e8d88f5f4700: d7eb9a5c3acda8d87699bc82add7e8d88f5f4700
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10083/index.html
-
---===============6325179315411906681==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>better sync test_list.py with igt_runner (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/125512/">https://patchwork.freedesktop.org/series/125512/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10083/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10083/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7566_BAT -&gt; XEIGTPW_10083_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_10083_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>{igt@xe_evict_ccs@evict-ccs-overcommit-parallel-nofree-samefd}:<ul>
-<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7566/bat-atsm-2/igt@xe_evict_ccs@evict-ccs-overcommit-parallel-nofree-samefd.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10083/bat-atsm-2/igt@xe_evict_ccs@evict-ccs-overcommit-parallel-nofree-samefd.html">FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10083_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>{igt@xe_create@create-execqueues-noleak}:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7566/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10083/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_frontbuffer_tracking@basic:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7566/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2017">i915#2017</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10083/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/750">Intel XE#750</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7566 -&gt; IGTPW_10083</li>
-</ul>
-<p>IGTPW_10083: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10083/index.html<br />
-  IGT_7566: 7566<br />
-  xe-456-d7eb9a5c3acda8d87699bc82add7e8d88f5f4700: d7eb9a5c3acda8d87699bc82add7e8d88f5f4700</p>
-
-</body>
-</html>
-
---===============6325179315411906681==--
+> 
+> ---
+> 
+> v4: place includes in alphabetic order
+> v3: fix a typo on a message: cand ->can
+> v2: added some missing includes
+> ---
+>  lib/igt_kmod.c  | 57 ++++++++++++++++++++++++++++++++++++++++++++++++-
+>  lib/igt_sysfs.c | 52 --------------------------------------------
+>  lib/igt_sysfs.h |  1 -
+>  3 files changed, 56 insertions(+), 54 deletions(-)
+> 
+> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+> index 4785d724aec8..e967c9bcdce0 100644
+> --- a/lib/igt_kmod.c
+> +++ b/lib/igt_kmod.c
+> @@ -22,12 +22,15 @@
+>   */
+>  
+>  #include <ctype.h>
+> -#include <signal.h>
+> +#include <dirent.h>
+>  #include <errno.h>
+>  #include <fcntl.h>
+>  #include <pthread.h>
+> +#include <signal.h>
+>  #include <stdlib.h>
+>  #include <string.h>
+> +#include <sys/stat.h>
+> +#include <sys/types.h>
+>  #include <sys/utsname.h>
+>  #include <unistd.h>
+>  
+> @@ -437,6 +440,58 @@ igt_intel_driver_load(const char *opts, const char *driver)
+>  	return 0;
+>  }
+>  
+> +/**
+> + * kick_snd_hda_intel:
+> + *
+> + * This function unbinds the snd_hda_intel driver so the module can be
+> + * unloaded.
+> + *
+> + */
+> +static void kick_snd_hda_intel(void)
+> +{
+> +	DIR *dir;
+> +	struct dirent *snd_hda;
+> +	int fd; size_t len;
+> +
+> +	const char *dpath = "/sys/bus/pci/drivers/snd_hda_intel";
+> +	const char *path = "/sys/bus/pci/drivers/snd_hda_intel/unbind";
+> +	const char *devid = "0000:";
+> +
+> +	fd = open(path, O_WRONLY);
+> +	if (fd < 0) {
+> +		return;
+> +	}
+> +
+> +	dir = opendir(dpath);
+> +	if (!dir)
+> +		goto out;
+> +
+> +	len = strlen(devid);
+> +	while ((snd_hda = readdir(dir))) {
+> +		struct stat st;
+> +		char fpath[PATH_MAX];
+> +
+> +		if (*snd_hda->d_name == '.')
+> +			continue;
+> +
+> +		snprintf(fpath, sizeof(fpath), "%s/%s", dpath, snd_hda->d_name);
+> +		if (lstat(fpath, &st))
+> +			continue;
+> +
+> +		if (!S_ISLNK(st.st_mode))
+> +			continue;
+> +
+> +		if (!strncmp(devid, snd_hda->d_name, len)) {
+> +			igt_ignore_warn(write(fd, snd_hda->d_name,
+> +					strlen(snd_hda->d_name)));
+> +		}
+> +	}
+> +
+> +	closedir(dir);
+> +out:
+> +	close(fd);
+> +}
+> +
+>  static int igt_always_unload_audio_driver(char **who)
+>  {
+>  	int ret;
+> diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
+> index 83182020b498..567b4f6d5f03 100644
+> --- a/lib/igt_sysfs.c
+> +++ b/lib/igt_sysfs.c
+> @@ -856,58 +856,6 @@ void bind_fbcon(bool enable)
+>  	bind_con("frame buffer device", enable);
+>  }
+>  
+> -/**
+> - * kick_snd_hda_intel:
+> - *
+> - * This functions unbinds the snd_hda_intel driver so the module cand be
+> - * unloaded.
+> - *
+> - */
+> -void kick_snd_hda_intel(void)
+> -{
+> -	DIR *dir;
+> -	struct dirent *snd_hda;
+> -	int fd; size_t len;
+> -
+> -	const char *dpath = "/sys/bus/pci/drivers/snd_hda_intel";
+> -	const char *path = "/sys/bus/pci/drivers/snd_hda_intel/unbind";
+> -	const char *devid = "0000:";
+> -
+> -	fd = open(path, O_WRONLY);
+> -	if (fd < 0) {
+> -		return;
+> -	}
+> -
+> -	dir = opendir(dpath);
+> -	if (!dir)
+> -		goto out;
+> -
+> -	len = strlen(devid);
+> -	while ((snd_hda = readdir(dir))) {
+> -		struct stat st;
+> -		char fpath[PATH_MAX];
+> -
+> -		if (*snd_hda->d_name == '.')
+> -			continue;
+> -
+> -		snprintf(fpath, sizeof(fpath), "%s/%s", dpath, snd_hda->d_name);
+> -		if (lstat(fpath, &st))
+> -			continue;
+> -
+> -		if (!S_ISLNK(st.st_mode))
+> -			continue;
+> -
+> -		if (!strncmp(devid, snd_hda->d_name, len)) {
+> -			igt_ignore_warn(write(fd, snd_hda->d_name,
+> -					strlen(snd_hda->d_name)));
+> -		}
+> -	}
+> -
+> -	closedir(dir);
+> -out:
+> -	close(fd);
+> -}
+> -
+>  static int fbcon_cursor_blink_fd = -1;
+>  static char fbcon_cursor_blink_prev_value[2];
+>  
+> diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
+> index 0087c03b706a..e804cf8e109d 100644
+> --- a/lib/igt_sysfs.h
+> +++ b/lib/igt_sysfs.h
+> @@ -135,7 +135,6 @@ bool __igt_sysfs_set_boolean(int dir, const char *attr, bool value);
+>  void igt_sysfs_set_boolean(int dir, const char *attr, bool value);
+>  
+>  void bind_fbcon(bool enable);
+> -void kick_snd_hda_intel(void);
+>  void fbcon_blink_enable(bool enable);
+>  
+>  /**
+> -- 
+> 2.41.0
+> 
 
