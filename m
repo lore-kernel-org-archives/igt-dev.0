@@ -1,25 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9CD4510E76A
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Oct 2023 06:38:14 +0000 (UTC)
-Message-ID: <672e13c3-3d92-63c3-07d2-6dd5491d3c8e@intel.com>
-Date: Thu, 26 Oct 2023 12:08:05 +0530
-Content-Language: en-US
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, Juha-Pekka Heikkila
- <juhapekka.heikkila@gmail.com>, "Modem, Bhanuprakash"
- <bhanuprakash.modem@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20231001103006.431894-1-kunal1.joshi@intel.com>
- <17bd5bee-d5ff-9351-ed9b-e917b780d491@intel.com>
- <1f8f7bfc-21cb-e986-401a-591892adefeb@intel.com>
- <8bba0a41-769f-4921-89b5-0f5d2d315459@gmail.com>
- <20231004103641.wj5dukxexd73r62e@kamilkon-desk.igk.intel.com>
-From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
-In-Reply-To: <20231004103641.wj5dukxexd73r62e@kamilkon-desk.igk.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative;
+ boundary="===============8222066470696514682=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 0/2] Add test for hotplug validation in
- simulation
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jesse Zhang" <jesse.zhang@amd.com>
+Date: Thu, 26 Oct 2023 07:06:41 -0000
+Message-ID: <169830400116.20472.2279776877435393710@emeril.freedesktop.org>
+References: <20231026055631.888388-1-jesse.zhang@amd.com>
+In-Reply-To: <20231026055631.888388-1-jesse.zhang@amd.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/am?=
+ =?utf-8?q?d=5Fdispatch=3A_add_dispatch_test_for_gfx_and_compute_=28rev2?=
+ =?utf-8?q?=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,61 +18,151 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hello Kamil,
+--===============8222066470696514682==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 10/4/2023 4:06 PM, Kamil Konieczny wrote:
-> Hi Juha-Pekka,
->
-> On 2023-10-04 at 11:15:25 +0300, Juha-Pekka Heikkila wrote:
->> On 4.10.2023 8.48, Modem, Bhanuprakash wrote:
->>> Forgot to add Kamil to the TO/CC list.
->>>
->>> On Tue-03-10-2023 02:42 pm, Modem, Bhanuprakash wrote:
->>>> Hi Kunal,
->>>>
->>>> On Sun-01-10-2023 04:00 pm, Kunal Joshi wrote:
->>>>> Test to validate hotplug in simulation environment we
->>>>> have scratch pad register 0x4f080 from which we can
->>>>> trigger uevents such as HPD, VBLANK..etc, Idea is to
->>>>> have port mapping placed in igtrcthrough which test
->>>>> can write to 0x4f080 and check if we get hotplug
->>>> In first glance, do we really need to upstream this test? I am
->>>> pretty sure, no one (including Intel) is going to use this test from
->>>> upstream repo (We don't have any simulation environment in public
->>>> CI).
->>>>
->>>> So, we can't merge this.
->>>>
->>>> + Kamil, thoughts?
->>>>
->> Not sure why this wouldn't fit in upstream? It is valid igt test, will be of
->> interest only for Intel guys hence in in intel directory and when in
->> upstream it will not be causing issues during backports. We anyway already
->> have more generic tests taking into account if they're being run in
->> simulated environments.
->>
->> /Juha-Pekka
->>
-> imho this should not be upstreamed as any user outside Intel
-> will not be able to run it. Why it cannot be a subtest with
-> some generic test like kms_hotplug.c with only timeout increased
-> for simulation? Such test may be in upstream if it will work
-> with existing hardware in CI.
->
-> Regards,
-> Kamil
+== Series Details ==
 
-This test will only work in presi environment, for testing hotplug in 
-hardware we have kms_chamelium_hpd,
-But we can have it in upstream as someday we may require to run upstream 
-igt's on presi.
+Series: tests/amd_dispatch: add dispatch test for gfx and compute (rev2)
+URL   : https://patchwork.freedesktop.org/series/125554/
+State : success
 
-Any thoughts bhanu and JP?
+== Summary ==
 
-Thanks and Regards
-Kunal Joshi
+CI Bug Log - changes from XEIGT_7558_BAT -> XEIGTPW_10070_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10070_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3:
+    - bat-dg2-oem2:       [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 other test fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7558/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10070/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3.html
+
+  
+#### Warnings ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [DMESG-FAIL][3] ([Intel XE#282]) -> [FAIL][4] ([Intel XE#616] / [Intel XE#750])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7558/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10070/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#282]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/282
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
+  [Intel XE#750]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/750
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7558 -> IGTPW_10070
+
+  IGTPW_10070: 10070
+  IGT_7558: f347c169c0ee259f5ac3e58d8524f1e4127d061f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-449-4c7ed0ef2d582ae173d9a2062ee6f7360d1aa1df: 4c7ed0ef2d582ae173d9a2062ee6f7360d1aa1df
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10070/index.html
+
+--===============8222066470696514682==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/amd_dispatch: add dispatch test for gfx and compute (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/125554/">https://patchwork.freedesktop.org/series/125554/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10070/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10070/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7558_BAT -&gt; XEIGTPW_10070_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10070_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7558/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10070/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_frontbuffer_tracking@basic:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7558/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10070/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/750">Intel XE#750</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7558 -&gt; IGTPW_10070</li>
+</ul>
+<p>IGTPW_10070: 10070<br />
+  IGT_7558: f347c169c0ee259f5ac3e58d8524f1e4127d061f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-449-4c7ed0ef2d582ae173d9a2062ee6f7360d1aa1df: 4c7ed0ef2d582ae173d9a2062ee6f7360d1aa1df</p>
+
+</body>
+</html>
+
+--===============8222066470696514682==--
