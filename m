@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============2471257115751414585=="
+ boundary="===============9112884078955879957=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Andrzej Hajda" <andrzej.hajda@intel.com>
-Date: Thu, 26 Oct 2023 18:39:41 -0000
-Message-ID: <169834558167.20472.6533628945429118791@emeril.freedesktop.org>
-References: <20231026-gtt_size_fix-v1-0-882d0e0022ec@intel.com>
-In-Reply-To: <20231026-gtt_size_fix-v1-0-882d0e0022ec@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/inte?=
- =?utf-8?q?l=5Fbatchbuffer=3A_allow_GTT_size_be_not_power_of_2?=
+To: "Bernd Kuhls" <bernd@kuhls.net>
+Date: Thu, 26 Oct 2023 19:13:24 -0000
+Message-ID: <169834760410.20469.2956036352274969450@emeril.freedesktop.org>
+References: <20231026171440.4046190-1-bernd@kuhls.net>
+In-Reply-To: <20231026171440.4046190-1-bernd@kuhls.net>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Fix_musl?=
+ =?utf-8?q?/uclibc_build?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,20 +23,20 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2471257115751414585==
+--===============9112884078955879957==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: lib/intel_batchbuffer: allow GTT size be not power of 2
-URL   : https://patchwork.freedesktop.org/series/125640/
+Series: Fix musl/uclibc build
+URL   : https://patchwork.freedesktop.org/series/125643/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_7559_BAT -> XEIGTPW_10075_BAT
+CI Bug Log - changes from XEIGT_7559_BAT -> XEIGTPW_10076_BAT
 ====================================================
 
 Summary
@@ -48,29 +48,37 @@ Summary
 
   
 
-Participating hosts (4 -> 3)
+Participating hosts (4 -> 4)
 ------------------------------
 
-  Missing    (1): bat-pvc-2 
+  No changes in participating hosts
 
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_10075_BAT that come from known issues:
+  Here are the changes found in XEIGTPW_10076_BAT that come from known issues:
 
 ### IGT changes ###
 
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3:
+    - bat-dg2-oem2:       [PASS][1] -> [FAIL][2] ([Intel XE#480])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7559/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10076/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html
+
+  
 #### Possible fixes ####
 
   * igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size:
-    - bat-adlp-7:         [FAIL][1] ([Intel XE#692]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7559/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10075/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
+    - bat-adlp-7:         [FAIL][3] ([Intel XE#692]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7559/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10076/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
 
-  * igt@kms_flip@basic-flip-vs-wf_vblank:
-    - bat-dg2-oem2:       [FAIL][3] ([Intel XE#480]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7559/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10075/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html
+  * igt@kms_flip@basic-flip-vs-wf_vblank@a-dp3:
+    - bat-dg2-oem2:       [FAIL][5] ([Intel XE#480]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7559/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@a-dp3.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10076/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@a-dp3.html
 
   
   {name}: This element is suppressed. This means it is ignored when computing
@@ -84,19 +92,19 @@ Known issues
 Build changes
 -------------
 
-  * IGT: IGT_7559 -> IGTPW_10075
+  * IGT: IGT_7559 -> IGTPW_10076
   * Linux: xe-449-4c7ed0ef2d582ae173d9a2062ee6f7360d1aa1df -> xe-451-21919db9eeaabfaf401c2470a6a95450ac92fafd
 
-  IGTPW_10075: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10075/index.html
+  IGTPW_10076: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10076/index.html
   IGT_7559: 62ac3d2ddb6005b16df00a36565779848c1390c9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   xe-449-4c7ed0ef2d582ae173d9a2062ee6f7360d1aa1df: 4c7ed0ef2d582ae173d9a2062ee6f7360d1aa1df
   xe-451-21919db9eeaabfaf401c2470a6a95450ac92fafd: 21919db9eeaabfaf401c2470a6a95450ac92fafd
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10075/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10076/index.html
 
---===============2471257115751414585==
+--===============9112884078955879957==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -116,36 +124,43 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>lib/intel_batchbuffer: allow GTT size be not power of 2</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/125640/">https://patchwork.freedesktop.org/series/125640/</a></td></tr>
+<tr><td><b>Series:</b></td><td>Fix musl/uclibc build</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/125643/">https://patchwork.freedesktop.org/series/125643/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10075/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10075/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10076/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10076/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_7559_BAT -&gt; XEIGTPW_10075_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_7559_BAT -&gt; XEIGTPW_10076_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 3)</h2>
-<p>Missing    (1): bat-pvc-2 </p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10075_BAT that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_10076_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7559/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10076/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>)</li>
+</ul>
+</li>
+</ul>
 <h4>Possible fixes</h4>
 <ul>
 <li>
 <p>igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size:</p>
 <ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7559/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/692">Intel XE#692</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10075/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">PASS</a></li>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7559/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/692">Intel XE#692</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10076/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">PASS</a></li>
 </ul>
 </li>
 <li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank:</p>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@a-dp3:</p>
 <ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7559/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10075/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> +1 other test pass</li>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7559/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@a-dp3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10076/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@a-dp3.html">PASS</a></li>
 </ul>
 </li>
 </ul>
@@ -153,10 +168,10 @@ Content-Transfer-Encoding: 7bit
           the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_7559 -&gt; IGTPW_10075</li>
+<li>IGT: IGT_7559 -&gt; IGTPW_10076</li>
 <li>Linux: xe-449-4c7ed0ef2d582ae173d9a2062ee6f7360d1aa1df -&gt; xe-451-21919db9eeaabfaf401c2470a6a95450ac92fafd</li>
 </ul>
-<p>IGTPW_10075: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10075/index.html<br />
+<p>IGTPW_10076: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10076/index.html<br />
   IGT_7559: 62ac3d2ddb6005b16df00a36565779848c1390c9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   xe-449-4c7ed0ef2d582ae173d9a2062ee6f7360d1aa1df: 4c7ed0ef2d582ae173d9a2062ee6f7360d1aa1df<br />
   xe-451-21919db9eeaabfaf401c2470a6a95450ac92fafd: 21919db9eeaabfaf401c2470a6a95450ac92fafd</p>
@@ -164,4 +179,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============2471257115751414585==--
+--===============9112884078955879957==--
