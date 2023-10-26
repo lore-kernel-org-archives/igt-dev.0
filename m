@@ -1,19 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EDD4D10E75B
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Oct 2023 04:49:32 +0000 (UTC)
-Message-ID: <59230665-790f-4bd8-37b4-30b5446127f7@intel.com>
-Date: Thu, 26 Oct 2023 10:18:28 +0530
-Content-Language: en-US
-To: Vignesh Raman <vignesh.raman@collabora.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20231026022041.1851831-1-vignesh.raman@collabora.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20231026022041.1851831-1-vignesh.raman@collabora.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5F12F10E047
+ for <igt-dev@lists.freedesktop.org>; Thu, 26 Oct 2023 05:23:32 +0000 (UTC)
+Message-ID: <c0d500fe-5aa6-4e47-88e4-69ade612fe1d@intel.com>
+Date: Thu, 26 Oct 2023 10:53:27 +0530
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_kms: Fix memory corruption
+Content-Language: en-US
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20230911072249.1935228-1-bhanuprakash.modem@intel.com>
+ <20230911072249.1935228-3-bhanuprakash.modem@intel.com>
+ <b1d4b535-4550-49df-8f4a-a8a4f411e02e@intel.com>
+ <5c61a73d-f30c-504b-79d4-603b7a65ecdc@intel.com>
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <5c61a73d-f30c-504b-79d4-603b7a65ecdc@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [i-g-t V5 2/5] tests/i915/kms_fb_coherency: Add XE
+ support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,73 +25,130 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: helen.koike@collabora.com, daniels@collabora.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Vignesh,
+Hi Bhanu,
 
-On Thu-26-10-2023 07:50 am, Vignesh Raman wrote:
-> In crosvm, the kernel reports 16 for count_crtcs, which exceeds
-> IGT_MAX_PIPES set to 8. The function igt_display_require allocates
-> memory for IGT_MAX_PIPES members of igt_pipe_t structures, but then
-> writes into it based on the count_crtcs reported by the kernel,
-> resulting in memory corruption.
+On 25-Oct-23 1:13 PM, Modem, Bhanuprakash wrote:
+> Hi Swati,
 > 
->   # malloc(): corrupted top size
->   # Received signal SIGABRT.
->   # Stack trace:
->   #  #0 [fatal_sig_handler+0x17b]
->   #  #1 [__sigaction+0x40]
->   #  #2 [pthread_key_delete+0x14c]
->   #  #3 [gsignal+0x12]
->   #  #4 [abort+0xd3]
->   #  #5 [__fsetlocking+0x290]
->   #  #6 [timer_settime+0x37a]
->   #  #7 [__default_morecore+0x1f1b]
->   #  #8 [__libc_calloc+0x161]
->   #  #9 [drmModeGetPlaneResources+0x44]
->   #  #10 [igt_display_require+0x194]
->   #  #11 [__igt_unique____real_main1356+0x93c]
->   #  #12 [main+0x3f]
->   #  #13 [__libc_init_first+0x8a]
->   #  #14 [__libc_start_main+0x85]
->   #  #15 [_start+0x21]
+> On Mon-23-10-2023 02:11 pm, Sharma, Swati2 wrote:
+>> Hi Bhanu,
+>>
+>> On 11-Sep-23 12:52 PM, Bhanuprakash Modem wrote:
+>>> Add XE driver support for kms tests. This patch will add a support
+>>> to call the corresponding apis based on the driver (i915/xe)
+>>>
+>>> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>>> ---
+>>>   tests/intel/kms_fb_coherency.c | 43 ++++++++++++++++++----------------
+>>>   1 file changed, 23 insertions(+), 20 deletions(-)
+>>>
+>>> diff --git a/tests/intel/kms_fb_coherency.c 
+>>> b/tests/intel/kms_fb_coherency.c
+>>> index c772ddcdc..745ffcdd2 100644
+>>> --- a/tests/intel/kms_fb_coherency.c
+>>> +++ b/tests/intel/kms_fb_coherency.c
+>>> @@ -16,6 +16,7 @@
+>>>   #include <string.h>
+>>>   #include "igt.h"
+>>> +#include "xe/xe_ioctl.h"
+>>>   typedef struct {
+>>>       int drm_fd;
+>>> @@ -91,7 +92,7 @@ static struct igt_fb *prepare_fb(data_t *data)
+>>>               0, 0, fb->width, fb->height,
+>>>               0, 0, fb->width << 16, fb->height << 16);
+>>> -    if (!gem_has_lmem(data->drm_fd)) {
+>>> +    if (is_i915_device(data->drm_fd) && !gem_has_lmem(data->drm_fd)) {
+>>>           uint32_t caching;
+>>>           /* make sure caching mode has become UC/WT */
+>>> @@ -160,7 +161,10 @@ static void test_mmap_offset_wc(data_t *data)
+>>>       fb = prepare_fb(data);
+>>> -    buf = gem_mmap_offset__wc(data->drm_fd, fb->gem_handle, 0, 
+>>> fb->size, PROT_WRITE);
+>>> +    if (is_i915_device(data->drm_fd))
+>>> +        buf = gem_mmap_offset__wc(data->drm_fd, fb->gem_handle, 0, 
+>>> fb->size, PROT_WRITE);
+>>> +    else
+>>> +        buf = xe_bo_mmap_ext(data->drm_fd, fb->gem_handle, fb->size, 
+>>> PROT_WRITE);
+>>>       check_buf_crc(data, buf, fb);
+>>>   }
+>>> @@ -226,7 +230,7 @@ igt_main
+>>>       data_t data;
+>>>       igt_fixture {
+>>> -        data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+>>> +        data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
+>>>           data.devid = intel_get_drm_devid(data.drm_fd);
+>>> @@ -251,39 +255,38 @@ igt_main
+>>>        * Test category: functionality test
+>>>        */
+>>>       igt_subtest_with_dynamic("memset-crc") {
+>>> -        if (gem_has_mappable_ggtt(data.drm_fd)) {
+>>> +        if (igt_draw_supports_method(data.drm_fd, IGT_DRAW_MMAP_GTT)) {
+>>>               igt_dynamic("mmap-gtt")
+>>>                   test_mmap_gtt(&data);
+>>>               cleanup_crtc(&data);
+>>>           }
+>>> -        if (gem_mmap_offset__has_wc(data.drm_fd)) {
+>>> +        if (igt_draw_supports_method(data.drm_fd, IGT_DRAW_MMAP_WC)) {
+>>>               igt_dynamic("mmap-offset-wc")
+>>>                   test_mmap_offset_wc(&data);
+>>>               cleanup_crtc(&data);
+>>>           }
+>>> -        if (gem_has_lmem(data.drm_fd)) {
+>>> -            igt_dynamic("mmap-offset-fixed")
+>>> -                test_mmap_offset_fixed(&data);
+>>> +        if (is_i915_device(data.drm_fd)) {
+>>
+>> Instead of using if (is_i915_device()), can we use 
+>> igt_require_i915(data.drm_fd) instead if these subtests are executable 
+>> on i915 driver only?
 > 
-> Limit the loop which initializes igt_pipe_t structure to
-> a maximum of IGT_MAX_PIPES iterations, ensuring it does not
-> exceed the allocated pipe count. This prevents igt_display_require
-> overwriting the heap and avoids memory corruption. This fix is
-> required for drm-ci to run igt tests on virtio-gpu.
+> No, we can't use igt_require_i915() here.
 > 
-> Signed-off-by: Vignesh Raman <vignesh.raman@collabora.com>
-> ---
->   lib/igt_kms.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> For XE device, IGT will always throw a SKIP after the execution of 
+> "mmap-offset-wc".
 > 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 453103f90..f3484a942 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -2774,7 +2774,7 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+> BTW, we can't use igt_fixture inside igt_subtest_*().
+> 
+> - Bhanu
 
-Why don't we use n_pipes = count_crtcs (before allocating the memory)?
+IMO its better to list the subtest to have mapping b/w i915 and xe which 
+will help in validation matrix.
+If we need to go with above approach only, i guess we need to change 
+other IGTs too like kms_pm_lpsp, kms_addfb_basic, 
+kms_force_connector_basic, etc. to not list xe specific subtests.
 
--       display->n_pipes = IGT_MAX_PIPES;
-+       display->n_pipes = resources->count_crtcs;
-
->   	display->pipes = calloc(sizeof(igt_pipe_t), display->n_pipes);
->   	igt_assert_f(display->pipes, "Failed to allocate memory for %d pipes\n", display->n_pipes);
->   
-> -	for (i = 0; i < resources->count_crtcs; i++) {
-> +	for (i = 0; i < min(resources->count_crtcs, IGT_MAX_PIPES); i++) {
-
-With this change, we are missing the information of crtc index 7 to 15 
-in the display structure, aren't we?
-
-- Bhanu
-
->   		igt_pipe_t *pipe;
->   		int pipe_enum = (is_intel_dev)?
->   			__intel_get_pipe_from_crtc_id(drm_fd,
+> 
+>>
+>>> +            if (gem_has_lmem(data.drm_fd)) {
+>>> +                igt_dynamic("mmap-offset-fixed")
+>>> +                    test_mmap_offset_fixed(&data);
+>>> +            } else if (gem_has_mmap_offset(data.drm_fd)) {
+>>> +                igt_dynamic("mmap-offset-uc")
+>>> +                    test_mmap_offset_uc(&data);
+>>> +            }
+>>>               cleanup_crtc(&data);
+>>> -        } else if (gem_has_mmap_offset(data.drm_fd)) {
+>>> -            igt_dynamic("mmap-offset-uc")
+>>> -                test_mmap_offset_uc(&data);
+>>> +            if (gem_has_legacy_mmap(data.drm_fd) &&
+>>> +                gem_mmap__has_wc(data.drm_fd)) {
+>>> +                igt_dynamic("mmap-legacy-wc")
+>>> +                    test_legacy_mmap_wc(&data);
+>>> -            cleanup_crtc(&data);
+>>> -        }
+>>> -
+>>> -        if (gem_has_legacy_mmap(data.drm_fd) &&
+>>> -            gem_mmap__has_wc(data.drm_fd)) {
+>>> -            igt_dynamic("mmap-legacy-wc")
+>>> -                test_legacy_mmap_wc(&data);
+>>> -
+>>> -            cleanup_crtc(&data);
+>>> +                cleanup_crtc(&data);
+>>> +            }
+>>>           }
+>>>       }
