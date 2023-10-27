@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============4565375707803674517=="
+Received: from madras.collabora.co.uk (madras.collabora.co.uk
+ [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9BF1B10E9C7
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Oct 2023 14:40:40 +0000 (UTC)
+From: Vignesh Raman <vignesh.raman@collabora.com>
+To: bhanuprakash.modem@intel.com,
+	igt-dev@lists.freedesktop.org
+Date: Fri, 27 Oct 2023 20:10:22 +0530
+Message-Id: <20231027144022.2016354-1-vignesh.raman@collabora.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Simon Ser" <contact@emersion.fr>
-Date: Fri, 27 Oct 2023 14:37:50 -0000
-Message-ID: <169841747077.19712.8887748610286655216@emeril.freedesktop.org>
-References: <20231027104351.449765-1-contact@emersion.fr>
-In-Reply-To: <20231027104351.449765-1-contact@emersion.fr>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_tests/km?=
- =?utf-8?q?s=5Fclosefb=3A_add_CLOSEFB_IOCTL_test_=28rev3=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2] lib/igt_kms: Fix memory corruption
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,120 +18,102 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: helen.koike@collabora.com, daniels@collabora.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============4565375707803674517==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+In crosvm, the kernel reports 16 for count_crtcs, which exceeds
+IGT_MAX_PIPES set to 8. The function igt_display_require allocates
+memory for IGT_MAX_PIPES members of igt_pipe_t structures, but then
+writes into it based on the count_crtcs reported by the kernel,
+resulting in memory corruption.
 
-== Series Details ==
+ # malloc(): corrupted top size
+ # Received signal SIGABRT.
+ # Stack trace:
+ #  #0 [fatal_sig_handler+0x17b]
+ #  #1 [__sigaction+0x40]
+ #  #2 [pthread_key_delete+0x14c]
+ #  #3 [gsignal+0x12]
+ #  #4 [abort+0xd3]
+ #  #5 [__fsetlocking+0x290]
+ #  #6 [timer_settime+0x37a]
+ #  #7 [__default_morecore+0x1f1b]
+ #  #8 [__libc_calloc+0x161]
+ #  #9 [drmModeGetPlaneResources+0x44]
+ #  #10 [igt_display_require+0x194]
+ #  #11 [__igt_unique____real_main1356+0x93c]
+ #  #12 [main+0x3f]
+ #  #13 [__libc_init_first+0x8a]
+ #  #14 [__libc_start_main+0x85]
+ #  #15 [_start+0x21]
 
-Series: tests/kms_closefb: add CLOSEFB IOCTL test (rev3)
-URL   : https://patchwork.freedesktop.org/series/125174/
-State : failure
+Increase IGT_MAX_PIPES to 16 to fix this memory corruption issue.
+This fix is required for drm-ci to run igt tests on virtio-gpu.
 
-== Summary ==
+Suggested-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Signed-off-by: Vignesh Raman <vignesh.raman@collabora.com>
+---
 
-CI Bug Log - changes from XEIGT_7562_BAT -> XEIGTPW_10078_BAT
-====================================================
+v2:
+  - Rework the fix to increase IGT_MAX_PIPES to 16
 
-Summary
--------
+---
+ lib/igt_kms.c |  2 +-
+ lib/igt_kms.h | 20 +++++++++++++++++++-
+ 2 files changed, 20 insertions(+), 2 deletions(-)
 
-  **FAILURE**
-
-  Serious unknown changes coming with XEIGTPW_10078_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_10078_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  
-
-Participating hosts (4 -> 0)
-------------------------------
-
-  ERROR: It appears as if the changes made in XEIGTPW_10078_BAT prevented too many machines from booting.
-
-  Missing    (4): bat-pvc-2 bat-dg2-oem2 bat-adlp-7 bat-atsm-2 
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_7562 -> IGTPW_10078
-
-  IGTPW_10078: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10078/index.html
-  IGT_7562: 5e82a8ee42d58c5e183c3d4208ae4ccd977a4830 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-453-4eb34051b614ebb41c3f505c058e6645acf8cd7f: 4eb34051b614ebb41c3f505c058e6645acf8cd7f
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10078/index.html
-
---===============4565375707803674517==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_closefb: add CLOSEFB IOCTL test (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/125174/">https://patchwork.freedesktop.org/series/125174/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10078/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10078/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7562_BAT -&gt; XEIGTPW_10078_BAT</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_10078_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_10078_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (4 -&gt; 0)</h2>
-<p>ERROR: It appears as if the changes made in XEIGTPW_10078_BAT prevented too many machines from booting.</p>
-<p>Missing    (4): bat-pvc-2 bat-dg2-oem2 bat-adlp-7 bat-atsm-2 </p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7562 -&gt; IGTPW_10078</li>
-</ul>
-<p>IGTPW_10078: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10078/index.html<br />
-  IGT_7562: 5e82a8ee42d58c5e183c3d4208ae4ccd977a4830 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-453-4eb34051b614ebb41c3f505c058e6645acf8cd7f: 4eb34051b614ebb41c3f505c058e6645acf8cd7f</p>
-
-</body>
-</html>
-
---===============4565375707803674517==--
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 453103f90..9239b71c4 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -906,7 +906,7 @@ static igt_plane_t *igt_get_assigned_primary(igt_output_t *output, igt_pipe_t *p
+  */
+ const char *kmstest_pipe_name(enum pipe pipe)
+ {
+-	static const char str[] = "A\0B\0C\0D\0E\0F\0G\0H";
++	static const char str[] = "A\0B\0C\0D\0E\0F\0G\0H\0I\0J\0K\0L\0M\0N\0O\0P";
+ 
+ 	_Static_assert(sizeof(str) == IGT_MAX_PIPES * 2,
+ 		       "Missing pipe name");
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 9028ab9be..5c705b585 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -57,6 +57,16 @@
+  * @PIPE_D: Fourth crtc.
+  * @PIPE_E: Fifth crtc.
+  * @PIPE_F: Sixth crtc.
++ * @PIPE_G: Seventh crtc.
++ * @PIPE_H: Eighth crtc.
++ * @PIPE_I: Ninth crtc.
++ * @PIPE_J: Tenth crtc.
++ * @PIPE_K: Eleventh crtc.
++ * @PIPE_L: Twelfth crtc.
++ * @PIPE_M: Thirteenth crtc.
++ * @PIPE_N: Fourteenth crtc.
++ * @PIPE_O: Fifteenth crtc.
++ * @PIPE_P: Sixteenth crtc.
+  * @IGT_MAX_PIPES: Max number of pipes allowed.
+  */
+ enum pipe {
+@@ -70,7 +80,15 @@ enum pipe {
+         PIPE_F,
+ 	PIPE_G,
+ 	PIPE_H,
+-        IGT_MAX_PIPES
++	PIPE_I,
++	PIPE_J,
++	PIPE_K,
++	PIPE_L,
++	PIPE_M,
++	PIPE_N,
++	PIPE_O,
++	PIPE_P,
++	IGT_MAX_PIPES
+ };
+ const char *kmstest_pipe_name(enum pipe pipe);
+ int kmstest_pipe_to_index(char pipe);
+-- 
+2.40.1
