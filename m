@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from dd20012.kasserver.com (dd20012.kasserver.com [85.13.140.57])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9B58710E835
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Oct 2023 17:15:43 +0000 (UTC)
-From: Bernd Kuhls <bernd@kuhls.net>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 26 Oct 2023 19:14:39 +0200
-Message-Id: <20231026171440.4046190-6-bernd@kuhls.net>
-In-Reply-To: <20231026171440.4046190-1-bernd@kuhls.net>
-References: <20231026171440.4046190-1-bernd@kuhls.net>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 5/6] lib/igt_halffloat.c: Fix musl/uclibc build
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Vignesh Raman" <vignesh.raman@collabora.com>
+Date: Fri, 27 Oct 2023 18:21:57 -0000
+Message-ID: <169843091751.19712.10817515251266869556@emeril.freedesktop.org>
+References: <20231027144022.2016354-1-vignesh.raman@collabora.com>
+In-Reply-To: <20231027144022.2016354-1-vignesh.raman@collabora.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBsaWIv?=
+ =?utf-8?q?igt=5Fkms=3A_Fix_memory_corruption_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,45 +17,72 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Stefano Ragni <st3r4g@protonmail.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Stefano Ragni <st3r4g@protonmail.com>
+== Series Details ==
 
-Original patch was added to void-linux:
-https://github.com/void-linux/void-packages/commit/ddfc1f66a0c571b420303c33aed29fd38ace4fc7
+Series: lib/igt_kms: Fix memory corruption (rev2)
+URL   : https://patchwork.freedesktop.org/series/125599/
+State : failure
 
-Fixes build error:
-../lib/igt_halffloat.c:205:6: error: ‘ifunc’ is not supported on this target
-  205 | void igt_float_to_half(const float *f, uint16_t *h, unsigned int num)
+== Summary ==
 
-../lib/igt_halffloat.c:216:6: error: ‘ifunc’ is not supported on this target
-  216 | void igt_half_to_float(const uint16_t *h, float *f, unsigned int num)
+IGT patchset build failed on latest successful build
+5e82a8ee42d58c5e183c3d4208ae4ccd977a4830 intel-ci/xe-fast-feedback: Add two xe_evict_ccs subtests for Xe run
 
-Bug report with request to split the original patch into some
-functional changes:
-Link: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/138
+Tail of build.log:
+Warning: Missing documentation for igt@kms_ccs@pipe-P-crc-primary-basic-y-tiled-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-crc-primary-basic-y-tiled-gen12-mc-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-crc-primary-basic-y-tiled-gen12-rc-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-crc-primary-basic-y-tiled-gen12-rc-ccs-cc
+Warning: Missing documentation for igt@kms_ccs@pipe-P-crc-primary-basic-yf-tiled-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-crc-primary-rotation-180-4-tiled-dg2-mc-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-crc-primary-rotation-180-4-tiled-dg2-rc-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-crc-primary-rotation-180-4-tiled-dg2-rc-ccs-cc
+Warning: Missing documentation for igt@kms_ccs@pipe-P-crc-primary-rotation-180-4-tiled-mtl-mc-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-crc-primary-rotation-180-4-tiled-mtl-rc-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-crc-primary-rotation-180-4-tiled-mtl-rc-ccs-cc
+Warning: Missing documentation for igt@kms_ccs@pipe-P-crc-primary-rotation-180-y-tiled-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-crc-primary-rotation-180-y-tiled-gen12-mc-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-crc-primary-rotation-180-y-tiled-gen12-rc-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-crc-primary-rotation-180-y-tiled-gen12-rc-ccs-cc
+Warning: Missing documentation for igt@kms_ccs@pipe-P-crc-primary-rotation-180-yf-tiled-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-crc-sprite-planes-basic-4-tiled-dg2-mc-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-crc-sprite-planes-basic-4-tiled-dg2-rc-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-crc-sprite-planes-basic-4-tiled-dg2-rc-ccs-cc
+Warning: Missing documentation for igt@kms_ccs@pipe-P-crc-sprite-planes-basic-4-tiled-mtl-mc-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-crc-sprite-planes-basic-4-tiled-mtl-rc-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-crc-sprite-planes-basic-4-tiled-mtl-rc-ccs-cc
+Warning: Missing documentation for igt@kms_ccs@pipe-P-crc-sprite-planes-basic-y-tiled-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-crc-sprite-planes-basic-y-tiled-gen12-mc-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-crc-sprite-planes-basic-y-tiled-gen12-rc-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-crc-sprite-planes-basic-y-tiled-gen12-rc-ccs-cc
+Warning: Missing documentation for igt@kms_ccs@pipe-P-crc-sprite-planes-basic-yf-tiled-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-missing-ccs-buffer-4-tiled-mtl-mc-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-missing-ccs-buffer-4-tiled-mtl-rc-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-missing-ccs-buffer-4-tiled-mtl-rc-ccs-cc
+Warning: Missing documentation for igt@kms_ccs@pipe-P-missing-ccs-buffer-y-tiled-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-missing-ccs-buffer-y-tiled-gen12-mc-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-missing-ccs-buffer-y-tiled-gen12-rc-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-missing-ccs-buffer-y-tiled-gen12-rc-ccs-cc
+Warning: Missing documentation for igt@kms_ccs@pipe-P-missing-ccs-buffer-yf-tiled-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-dg2-mc-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-dg2-rc-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-dg2-rc-ccs-cc
+Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-mtl-mc-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-mtl-rc-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-mtl-rc-ccs-cc
+Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-y-tiled-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-y-tiled-gen12-mc-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-y-tiled-gen12-rc-ccs
+Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-y-tiled-gen12-rc-ccs-cc
+Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-yf-tiled-ccs
+Please refer: docs/test_documentation.md for more details
+[1648/1651] Generating xe_tests.html with a custom command.
+[1649/1651] Generating i915_tests.html with a custom command.
+ninja: build stopped: subcommand failed.
 
-Signed-off-by: Stefano Ragni <st3r4g@protonmail.com>
-Signed-off-by: Bernd Kuhls <bernd@kuhls.net>
----
- lib/igt_halffloat.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/lib/igt_halffloat.c b/lib/igt_halffloat.c
-index 08ab05fce..5dbe08e01 100644
---- a/lib/igt_halffloat.c
-+++ b/lib/igt_halffloat.c
-@@ -162,7 +162,7 @@ static inline float _half_to_float(uint16_t val)
- 	return fi.f;
- }
- 
--#if defined(__x86_64__) && !defined(__clang__)
-+#if defined(__x86_64__) && !defined(__clang__) && defined(__GLIBC__) && !defined(__UCLIBC__)
- #pragma GCC push_options
- #pragma GCC target("f16c")
- 
--- 
-2.39.2
