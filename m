@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A8E6B10E96E
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Oct 2023 09:56:15 +0000 (UTC)
-Message-ID: <2b05e124-6772-ec09-1b50-f1dbfa860d57@intel.com>
-Date: Fri, 27 Oct 2023 15:25:52 +0530
-Content-Language: en-US
-To: Vignesh Raman <vignesh.raman@collabora.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20231026022041.1851831-1-vignesh.raman@collabora.com>
- <59230665-790f-4bd8-37b4-30b5446127f7@intel.com>
- <7421357d-5adf-85b4-de1a-30eee373d86b@collabora.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <7421357d-5adf-85b4-de1a-30eee373d86b@collabora.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Received: from mail-4323.proton.ch (mail-4323.proton.ch [185.70.43.23])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 25B7810E06E
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Oct 2023 10:44:23 +0000 (UTC)
+Date: Fri, 27 Oct 2023 10:44:01 +0000
+To: igt-dev@lists.freedesktop.org
+From: Simon Ser <contact@emersion.fr>
+Message-ID: <20231027104351.449765-1-contact@emersion.fr>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_kms: Fix memory corruption
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: [igt-dev] [PATCH v3] tests/kms_closefb: add CLOSEFB IOCTL test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,110 +17,173 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: helen.koike@collabora.com, daniels@collabora.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Vignesh,
+CLOSEFB is the same as RMFB but keeps the FB alive as long as any
+plane is using it. Check the behavior of that IOCTL.
 
-On Thu-26-10-2023 03:15 pm, Vignesh Raman wrote:
-> Hi Bhanu,
-> 
-> On 26/10/23 10:18, Modem, Bhanuprakash wrote:
-> 
->> Why don't we use n_pipes = count_crtcs (before allocating the memory)?
->>
->> -       display->n_pipes = IGT_MAX_PIPES;
->> +       display->n_pipes = resources->count_crtcs;
->>
-> 
-> If we dynamically allocate memory for display->pipes using count_crtcs 
-> instead of IGT_MAX_PIPES, subtest all-pipes is failing in the below tests,
-> kms_cursor_legacy@forked-bo
-> kms_cursor_legacy@forked-move
-> kms_cursor_legacy@single-bo
-> kms_cursor_legacy@single-move
-> kms_cursor_legacy@torture-bo
-> kms_cursor_legacy@torture-move
-> 
-> Starting dynamic subtest: all-pipes
-> Stack trace:
->    #0 ../lib/igt_core.c:1988 __igt_fail_assert()
->    #1 ../tests/kms_cursor_legacy.c:138 stress.constprop.0()
->    #2 ../tests/kms_cursor_legacy.c:1942 __igt_unique____real_main1887()
->    #3 ../tests/kms_cursor_legacy.c:1887 main()
->    #4 [__libc_init_first+0x8a]
->    #5 [__libc_start_main+0x85]
->    #6 [_start+0x21]
-> child 0 failed with exit status 98
-> Dynamic subtest all-pipes: FAIL (0.021s)
-> Subtest forked-bo: FAIL (43.029s)
-> Test requirement not met in function igt_require_pipe_crc, file 
-> ../lib/igt_pipe_crc.c:211:
-> Test requirement: fstatat(dir, "crtc-0/crc/control", &stat, 0) == 0
-> CRCs not supported on this platform
-> Last errno: 2, No such file or directory
-> Test requirement not met in function igt_require_intel, file 
-> ../lib/drmtest.c:787:
-> Test requirement: is_intel_device(fd)
-> Last errno: 2, No such file or directory
-> stderr:
-> -------
-> (kms_cursor_legacy:721) CRITICAL: Test assertion failure function 
-> stress, file ../tests/kms_cursor_legacy.c:158:
-> (kms_cursor_legacy:721) CRITICAL: Failed assertion: 
-> igt_ioctl((display->drm_fd), ((((2U|1U) << (((0+8)+8)+14)) | ((('d')) << 
-> (0+8)) | (((0xA3)) << 0) | ((((sizeof(struct drm_mode_cursor)))) << 
-> ((0+8)+8)))), (&arg)) == 0
-> (kms_cursor_legacy:721) CRITICAL: Last errno: 2, No such file or directory
-> (kms_cursor_legacy:721) CRITICAL: error: -1 != 0
-> (kms_cursor_legacy:722) CRITICAL: Test assertion failure function 
-> stress, file ../tests/kms_cursor_legacy.c:158:
-> (kms_cursor_legacy:722) CRITICAL: Failed assertion: 
-> igt_ioctl((display->drm_fd), ((((2U|1U) << (((0+8)+8)+14)) | ((('d')) << 
-> (0+8)) | (((0xA3)) << 0) | ((((sizeof(struct drm_mode_cursor)))) << 
-> ((0+8)+8)))), (&arg)) == 0
-> (kms_cursor_legacy:722) CRITICAL: Last errno: 2, No such file or directory
-> (kms_cursor_legacy:722) CRITICAL: error: -1 != 0
-> Dynamic subtest all-pipes failed.
-> 
-> With the initial patch all-pipes subtest was passing.
+See https://patchwork.freedesktop.org/patch/563722/
 
-Looks, these tests are considering crtc count as display->n_pipes (16), 
-but for_each_pipe() operates on IGT_MAX_PIPES (8) causing the failures.
+v2: address Kamil's code style comments
 
-> 
-> 
->>> -    for (i = 0; i < resources->count_crtcs; i++) {
->>> +    for (i = 0; i < min(resources->count_crtcs, IGT_MAX_PIPES); i++) {
->>
->> With this change, we are missing the information of crtc index 7 to 15 
->> in the display structure, aren't we?
-> 
-> Yes agree. Do we need to fix the all-pipes subtest failure with your 
-> proposed solution?
+v3: update for minor uAPI update with new struct
 
-IMHO, increasing IGT_MAX_PIPES to 16 would be the simplest solution.
+Signed-off-by: Simon Ser <contact@emersion.fr>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_closefb.c | 124 ++++++++++++++++++++++++++++++++++++++++++++
+ tests/meson.build   |   1 +
+ 2 files changed, 125 insertions(+)
+ create mode 100644 tests/kms_closefb.c
 
-@@ -68,8 +68,15 @@ enum pipe {
-          PIPE_D,
-          PIPE_E,
-          PIPE_F,
-          PIPE_G,
-          PIPE_H,
-+        PIPE_I,
-+        PIPE_J,
-+        PIPE_K,
-+        PIPE_L,
-+        PIPE_M,
-+        PIPE_N,
-+        PIPE_O,
-          IGT_MAX_PIPES
-  };
+diff --git a/tests/kms_closefb.c b/tests/kms_closefb.c
+new file mode 100644
+index 000000000000..2a684ad83fdf
+--- /dev/null
++++ b/tests/kms_closefb.c
+@@ -0,0 +1,124 @@
++// SPDX-License-Identifier: MIT
++// Copyright =C2=A9 2023 Simon Ser
++
++#include "igt.h"
++
++/**
++ * TEST: kms closefb
++ * Category: Display
++ * Description: This tests CLOSEFB behavior. Contrary to RMFB, the
++ *              framebuffers should not be removed from the CRTC.
++ *
++ * SUBTEST: closefb-ioctl
++ * Description: CLOSEFB is supposed to leave all planes intact.
++ */
++
++IGT_TEST_DESCRIPTION("This tests CLOSEFB behavior. Contrary to RMFB, the"
++=09=09     "framebuffers should not be removed from the CRTC.");
++
++// TODO: drop when shipped in kernel header
++#ifndef DRM_IOCTL_MODE_CLOSEFB
++struct drm_mode_closefb {
++=09__u32 fb_id;
++=09__u32 pad;
++};
++#define DRM_IOCTL_MODE_CLOSEFB DRM_IOWR(0xD0, struct drm_mode_closefb)
++#endif
++
++/* 1. Set primary plane to a known FB.
++ * 2. Make sure GETCRTC returns the correct FB ID.
++ * 3. Call CLOSEFB on the FB.
++ * 4. Make sure GETCRTC returns non-0 FB ID.
++ */
++static void
++test_closefb(int *drm_fd, igt_display_t *display, igt_output_t *output,
++=09     enum pipe pipe)
++{
++=09struct igt_fb fb;
++=09drmModeModeInfo *mode;
++=09igt_plane_t *plane;
++=09drmModeCrtc *crtc;
++=09int ret;
++=09struct drm_mode_closefb closefb;
++
++=09mode =3D igt_output_get_mode(output);
++=09plane =3D igt_pipe_get_plane_type(&display->pipes[pipe], DRM_PLANE_TYPE=
+_PRIMARY);
++
++=09igt_create_fb(*drm_fd, mode->hdisplay, mode->vdisplay,
++=09=09      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, &fb);
++=09igt_plane_set_fb(plane, &fb);
++=09igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMI=
+T_LEGACY);
++
++=09crtc =3D drmModeGetCrtc(*drm_fd, output->config.crtc->crtc_id);
++=09igt_assert_eq(crtc->buffer_id, fb.fb_id);
++=09drmModeFreeCrtc(crtc);
++
++=09closefb.fb_id =3D fb.fb_id;
++=09closefb.pad =3D 0;
++=09ret =3D drmIoctl(*drm_fd, DRM_IOCTL_MODE_CLOSEFB, &closefb);
++=09igt_assert_eq(ret, 0);
++
++=09/* Re-open our DRM FD. Without CLOSEFB, this would implicitly turn off
++=09 * the CRTC and remove the FB (see test kms_rmfb@close-fd). */
++=09drm_close_driver(*drm_fd);
++=09*drm_fd =3D drm_open_driver_master(DRIVER_ANY);
++=09drmSetClientCap(*drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
++=09drmSetClientCap(*drm_fd, DRM_CLIENT_CAP_ATOMIC, 1);
++=09igt_pipe_refresh(display, pipe, true);
++
++=09/* Check that our CRTC still has the FB attached */
++=09crtc =3D drmModeGetCrtc(*drm_fd, output->config.crtc->crtc_id);
++=09igt_assert_eq(crtc->buffer_id, fb.fb_id);
++=09drmModeFreeCrtc(crtc);
++}
++
++static void
++run_closefb_test(int *drm_fd, igt_display_t *display)
++{
++=09igt_output_t *output;
++=09enum pipe pipe;
++
++=09for_each_pipe_with_single_output(display, pipe, output) {
++=09=09igt_display_reset(display);
++
++=09=09igt_output_set_pipe(output, pipe);
++
++=09=09igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
++=09=09=09      igt_output_name(output))
++=09=09=09test_closefb(drm_fd, display, output, pipe);
++=09}
++}
++
++igt_main
++{
++=09int drm_fd;
++=09igt_display_t display;
++=09struct drm_mode_closefb closefb;
++=09int ret;
++
++=09igt_fixture {
++=09=09drm_fd =3D drm_open_driver_master(DRIVER_ANY);
++
++=09=09kmstest_set_vt_graphics_mode();
++
++=09=09igt_display_require(&display, drm_fd);
++=09=09igt_display_require_output(&display);
++
++=09=09/* Detect kernel support for CLOSEFB */
++=09=09closefb.fb_id =3D 0;
++=09=09closefb.pad =3D 0;
++=09=09ret =3D drmIoctl(drm_fd, DRM_IOCTL_MODE_CLOSEFB, &closefb);
++=09=09igt_require(ret !=3D 0 && errno =3D=3D ENOENT);
++=09}
++
++=09igt_describe("CLOSEFB is supposed to not touch any plane the FB is "
++=09=09     "currently attached to. Check that behavior.");
++=09igt_subtest_with_dynamic("closefb-ioctl") {
++=09=09run_closefb_test(&drm_fd, &display);
++=09}
++
++=09igt_fixture {
++=09=09igt_display_fini(&display);
++=09=09drm_close_driver(drm_fd);
++=09}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index a8a7115e3a25..b35bc068cbd8 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -21,6 +21,7 @@ test_progs =3D [
+ =09'kms_atomic_interruptible',
+ =09'kms_atomic_transition',
+ =09'kms_bw',
++=09'kms_closefb',
+ =09'kms_color',
+ =09'kms_concurrent',
+ =09'kms_content_protection',
+--=20
+2.42.0
 
-- Bhanu
-
-> 
-> Regards,
-> Vignesh
