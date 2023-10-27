@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com
- (mail-bn7nam10on2070.outbound.protection.outlook.com [40.107.92.70])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 33DB510E099
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Oct 2023 01:48:40 +0000 (UTC)
-From: Jesse Zhang <jesse.zhang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Fri, 27 Oct 2023 09:48:19 +0800
-Message-ID: <20231027014819.984129-1-jesse.zhang@amd.com>
+Content-Type: multipart/alternative;
+ boundary="===============5461451819329980441=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH v2 i-g-t] tests/amd_security: add secure write
- test for gfx
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jesse Zhang" <jesse.zhang@amd.com>
+Date: Fri, 27 Oct 2023 02:33:17 -0000
+Message-ID: <169837399714.19709.18002685726206468844@emeril.freedesktop.org>
+References: <20231027014819.984129-1-jesse.zhang@amd.com>
+In-Reply-To: <20231027014819.984129-1-jesse.zhang@amd.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/am?=
+ =?utf-8?q?d=5Fsecurity=3A_add_secure_write_test_for_gfx_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,385 +17,152 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Tim Huang <tim.huang@amd.com>, Luben Tuikov <luben.tuikov@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>, Christian
- Koenig <christian.koenig@amd.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-To verify writes in Trusted Memory Zone(TMZ),
-add secure writing and verify the results of gfx.
+--===============5461451819329980441==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-V2:
-  - Improve description and coding style.
-     Encoding using helpers for high and low 32 bits (Kamil)
-  - Add i-g-t for the subject and
-    replace the "_" with spaces in igt_describe(Kamil)
+== Series Details ==
 
-Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Cc: Luben Tuikov <luben.tuikov@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian Koenig <christian.koenig@amd.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Series: tests/amd_security: add secure write test for gfx (rev3)
+URL   : https://patchwork.freedesktop.org/series/125534/
+State : success
 
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Signed-off-by: Tim Huang <tim.huang@amd.com>
----
- lib/amdgpu/amd_command_submission.c |   9 +-
- lib/amdgpu/amd_ip_blocks.c          | 173 ++++++++++++++++------------
- lib/amdgpu/amd_ip_blocks.h          |   1 +
- tests/amdgpu/amd_security.c         |  13 ++-
- 4 files changed, 111 insertions(+), 85 deletions(-)
+== Summary ==
 
-diff --git a/lib/amdgpu/amd_command_submission.c b/lib/amdgpu/amd_command_submission.c
-index b674ba640..ddcf3d96e 100644
---- a/lib/amdgpu/amd_command_submission.c
-+++ b/lib/amdgpu/amd_command_submission.c
-@@ -165,20 +165,19 @@ void amdgpu_command_submission_write_linear_helper(amdgpu_device_handle device,
- 				r = ip_block->funcs->compare(ip_block->funcs, ring_context, 1);
- 				igt_assert_eq(r, 0);
- 			} else if (ip_block->type == AMDGPU_HW_IP_GFX) {
--				ip_block->funcs->write_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
--
-+				ip_block->funcs->atomic(ip_block->funcs, ring_context, &ring_context->pm4_dw);
- 				amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context, 0);
--
- 			} else if (ip_block->type == AMDGPU_HW_IP_DMA) {
- 				/* restore the bo_cpu to compare */
- 				ring_context->bo_cpu_origin = ring_context->bo_cpu[0];
--				ip_block->funcs->write_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
-+				ip_block->funcs->atomic(ip_block->funcs, ring_context, &ring_context->pm4_dw);
- 
- 				amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context, 0);
- 
-+				igt_assert_neq(ring_context->bo_cpu[0], ring_context->bo_cpu_origin);
- 				/* restore again, here dest_data should be */
- 				ring_context->bo_cpu_origin = ring_context->bo_cpu[0];
--				ip_block->funcs->write_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
-+				ip_block->funcs->atomic(ip_block->funcs, ring_context, &ring_context->pm4_dw);
- 
- 				amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context, 0);
- 				/* here bo_cpu[0] should be unchanged, still is 0x12345678, otherwise failed*/
-diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
-index 96130ccd5..81db27817 100644
---- a/lib/amdgpu/amd_ip_blocks.c
-+++ b/lib/amdgpu/amd_ip_blocks.c
-@@ -18,6 +18,7 @@
- #include "amdgpu_asic_addr.h"
- #include "amd_family.h"
- #include "amd_gfx_v8_0.h"
-+#include "ioctl_wrappers.h"
- 
- /*
-  * SDMA functions:
-@@ -34,48 +35,58 @@ sdma_ring_write_linear(const struct amdgpu_ip_funcs *func,
- 
- 	i = 0;
- 	j = 0;
--	if (ring_context->secure == false) {
--		if (func->family_id == AMDGPU_FAMILY_SI)
--			ring_context->pm4[i++] = SDMA_PACKET_SI(SDMA_OPCODE_WRITE, 0, 0, 0,
--						 ring_context->write_length);
--		else
--			ring_context->pm4[i++] = SDMA_PACKET(SDMA_OPCODE_WRITE,
--						 SDMA_WRITE_SUB_OPCODE_LINEAR,
--						 ring_context->secure ? SDMA_ATOMIC_TMZ(1) : 0);
-+	if (func->family_id == AMDGPU_FAMILY_SI)
-+		ring_context->pm4[i++] = SDMA_PACKET_SI(SDMA_OPCODE_WRITE, 0, 0, 0,
-+					 ring_context->write_length);
-+	else
-+		ring_context->pm4[i++] = SDMA_PACKET(SDMA_OPCODE_WRITE,
-+					 SDMA_WRITE_SUB_OPCODE_LINEAR,
-+					 ring_context->secure ? SDMA_ATOMIC_TMZ(1) : 0);
-+
-+	ring_context->pm4[i++] = 0xfffffffc & ring_context->bo_mc;
-+	ring_context->pm4[i++] = upper_32_bits(ring_context->bo_mc);
-+	if (func->family_id >= AMDGPU_FAMILY_AI)
-+		ring_context->pm4[i++] = ring_context->write_length - 1;
-+	else
-+		ring_context->pm4[i++] = ring_context->write_length;
- 
--		ring_context->pm4[i++] = 0xfffffffc & ring_context->bo_mc;
--		ring_context->pm4[i++] = (0xffffffff00000000 & ring_context->bo_mc) >> 32;
--		if (func->family_id >= AMDGPU_FAMILY_AI)
--			ring_context->pm4[i++] = ring_context->write_length - 1;
--		else
--			ring_context->pm4[i++] = ring_context->write_length;
-+	while (j++ < ring_context->write_length)
-+		ring_context->pm4[i++] = func->deadbeaf;
- 
--		while (j++ < ring_context->write_length)
--			ring_context->pm4[i++] = func->deadbeaf;
--	} else {
--		memset(ring_context->pm4, 0, ring_context->pm4_size * sizeof(uint32_t));
-+	*pm4_dw = i;
-+
-+	return 0;
-+}
-+
-+static int
-+sdma_ring_atomic(const struct amdgpu_ip_funcs *func,
-+		       const struct amdgpu_ring_context *ring_context,
-+		       uint32_t *pm4_dw)
-+{
-+	uint32_t i = 0;
-+
-+	memset(ring_context->pm4, 0, ring_context->pm4_size * sizeof(uint32_t));
- 
- 		/* atomic opcode for 32b w/ RTN and ATOMIC_SWAPCMP_RTN
- 		 * loop, 1-loop_until_compare_satisfied.
- 		 * single_pass_atomic, 0-lru
- 		 */
--		ring_context->pm4[i++] = SDMA_PACKET(SDMA_OPCODE_ATOMIC,
--					       0,
--					       SDMA_ATOMIC_LOOP(1) |
--					       SDMA_ATOMIC_TMZ(1) |
--					       SDMA_ATOMIC_OPCODE(TC_OP_ATOMIC_CMPSWAP_RTN_32));
--		ring_context->pm4[i++] = 0xfffffffc & ring_context->bo_mc;
--		ring_context->pm4[i++] = (0xffffffff00000000 & ring_context->bo_mc) >> 32;
--		ring_context->pm4[i++] = 0x12345678;
--		ring_context->pm4[i++] = 0x0;
--		ring_context->pm4[i++] = func->deadbeaf;
--		ring_context->pm4[i++] = 0x0;
--		ring_context->pm4[i++] = 0x100;
--	}
--
-+	ring_context->pm4[i++] = SDMA_PACKET(SDMA_OPCODE_ATOMIC,
-+				       0,
-+				       SDMA_ATOMIC_LOOP(1) |
-+				       (ring_context->secure ? SDMA_ATOMIC_TMZ(1) : SDMA_ATOMIC_TMZ(0)) |
-+				       SDMA_ATOMIC_OPCODE(TC_OP_ATOMIC_CMPSWAP_RTN_32));
-+	ring_context->pm4[i++] = 0xfffffffc & ring_context->bo_mc;
-+	ring_context->pm4[i++] = upper_32_bits(ring_context->bo_mc);
-+	ring_context->pm4[i++] = 0x12345678;
-+	ring_context->pm4[i++] = 0x0;
-+	ring_context->pm4[i++] = func->deadbeaf;
-+	ring_context->pm4[i++] = 0x0;
-+	ring_context->pm4[i++] = 0x100;
- 	*pm4_dw = i;
- 
- 	return 0;
-+
- }
- 
- static int
-@@ -95,8 +106,8 @@ sdma_ring_const_fill(const struct amdgpu_ip_funcs *func,
- 	} else {
- 		context->pm4[i++] = SDMA_PACKET(SDMA_OPCODE_CONSTANT_FILL, 0,
- 						SDMA_CONSTANT_FILL_EXTRA_SIZE(2));
--		context->pm4[i++] = 0xffffffff & context->bo_mc;
--		context->pm4[i++] = (0xffffffff00000000 & context->bo_mc) >> 32;
-+		context->pm4[i++] = lower_32_bits(context->bo_mc);
-+		context->pm4[i++] = upper_32_bits(context->bo_mc);
- 		context->pm4[i++] = func->deadbeaf;
- 
- 		if (func->family_id >= AMDGPU_FAMILY_AI)
-@@ -121,10 +132,10 @@ sdma_ring_copy_linear(const struct amdgpu_ip_funcs *func,
- 		context->pm4[i++] = SDMA_PACKET_SI(SDMA_OPCODE_COPY_SI,
- 					  0, 0, 0,
- 					  context->write_length);
--		context->pm4[i++] = 0xffffffff & context->bo_mc;
--		context->pm4[i++] = (0xffffffff00000000 & context->bo_mc) >> 32;
--		context->pm4[i++] = 0xffffffff & context->bo_mc2;
--		context->pm4[i++] = (0xffffffff00000000 & context->bo_mc2) >> 32;
-+		context->pm4[i++] = lower_32_bits(context->bo_mc);
-+		context->pm4[i++] = upper_32_bits(context->bo_mc);
-+		context->pm4[i++] = lower_32_bits(context->bo_mc2);
-+		context->pm4[i++] = upper_32_bits(context->bo_mc2);
- 	} else {
- 		context->pm4[i++] = SDMA_PACKET(SDMA_OPCODE_COPY,
- 				       SDMA_COPY_SUB_OPCODE_LINEAR,
-@@ -134,10 +145,10 @@ sdma_ring_copy_linear(const struct amdgpu_ip_funcs *func,
- 		else
- 			context->pm4[i++] = context->write_length;
- 		context->pm4[i++] = 0;
--		context->pm4[i++] = 0xffffffff & context->bo_mc;
--		context->pm4[i++] = (0xffffffff00000000 & context->bo_mc) >> 32;
--		context->pm4[i++] = 0xffffffff & context->bo_mc2;
--		context->pm4[i++] = (0xffffffff00000000 & context->bo_mc2) >> 32;
-+		context->pm4[i++] = lower_32_bits(context->bo_mc);
-+		context->pm4[i++] = upper_32_bits(context->bo_mc);
-+		context->pm4[i++] = lower_32_bits(context->bo_mc2);
-+		context->pm4[i++] = upper_32_bits(context->bo_mc2);
- 	}
- 
- 	*pm4_dw = i;
-@@ -163,37 +174,45 @@ gfx_ring_write_linear(const struct amdgpu_ip_funcs *func,
- 	i = 0;
- 	j = 0;
- 
--	if (ring_context->secure == false) {
--		ring_context->pm4[i++] = PACKET3(PACKET3_WRITE_DATA, 2 +  ring_context->write_length);
--		ring_context->pm4[i++] = WRITE_DATA_DST_SEL(5) | WR_CONFIRM;
--		ring_context->pm4[i++] = 0xfffffffc & ring_context->bo_mc;
--		ring_context->pm4[i++] = (0xffffffff00000000 & ring_context->bo_mc) >> 32;
--		while (j++ < ring_context->write_length)
--			ring_context->pm4[i++] = func->deadbeaf;
--	} else {
--		memset(ring_context->pm4, 0, ring_context->pm4_size * sizeof(uint32_t));
-+	ring_context->pm4[i++] = PACKET3(PACKET3_WRITE_DATA, 2 +  ring_context->write_length);
-+	ring_context->pm4[i++] = WRITE_DATA_DST_SEL(5) | WR_CONFIRM;
-+	ring_context->pm4[i++] = 0xfffffffc & ring_context->bo_mc;
-+	ring_context->pm4[i++] = upper_32_bits(ring_context->bo_mc);
-+	while (j++ < ring_context->write_length)
-+		ring_context->pm4[i++] = func->deadbeaf;
-+
-+	*pm4_dw = i;
-+	return 0;
-+}
-+
-+static int
-+gfx_ring_atomic(const struct amdgpu_ip_funcs *func,
-+		      const struct amdgpu_ring_context *ring_context,
-+		      uint32_t *pm4_dw)
-+{
-+	uint32_t i = 0;
-+
-+	memset(ring_context->pm4, 0, ring_context->pm4_size * sizeof(uint32_t));
- 		ring_context->pm4[i++] = PACKET3(PACKET3_ATOMIC_MEM, 7);
- 
--		/* atomic opcode for 32b w/ RTN and ATOMIC_SWAPCMP_RTN
--		 * command, 1-loop_until_compare_satisfied.
--		 * single_pass_atomic, 0-lru
--		 * engine_sel, 0-micro_engine
--		 */
--		ring_context->pm4[i++] = (TC_OP_ATOMIC_CMPSWAP_RTN_32 |
--					ATOMIC_MEM_COMMAND(1) |
--					ATOMIC_MEM_CACHEPOLICAY(0) |
--					ATOMIC_MEM_ENGINESEL(0));
--		ring_context->pm4[i++] = 0xfffffffc & ring_context->bo_mc;
--		ring_context->pm4[i++] = (0xffffffff00000000 & ring_context->bo_mc) >> 32;
--		ring_context->pm4[i++] = 0x12345678;
--		ring_context->pm4[i++] = 0x0;
--		ring_context->pm4[i++] = 0xdeadbeaf;
--		ring_context->pm4[i++] = 0x0;
--		ring_context->pm4[i++] = 0x100;
--	}
-+	/* atomic opcode for 32b w/ RTN and ATOMIC_SWAPCMP_RTN
-+	 * command, 1-loop_until_compare_satisfied.
-+	 * single_pass_atomic, 0-lru
-+	 * engine_sel, 0-micro_engine
-+	 */
-+	ring_context->pm4[i++] = (TC_OP_ATOMIC_CMPSWAP_RTN_32 |
-+				ATOMIC_MEM_COMMAND(1) |
-+				ATOMIC_MEM_CACHEPOLICAY(0) |
-+				ATOMIC_MEM_ENGINESEL(0));
-+	ring_context->pm4[i++] = 0xfffffffc & ring_context->bo_mc;
-+	ring_context->pm4[i++] = upper_32_bits(ring_context->bo_mc);
-+	ring_context->pm4[i++] = 0x12345678;
-+	ring_context->pm4[i++] = 0x0;
-+	ring_context->pm4[i++] = 0xdeadbeaf;
-+	ring_context->pm4[i++] = 0x0;
-+	ring_context->pm4[i++] = 0x100;
- 
- 	*pm4_dw = i;
--
- 	return 0;
- }
- 
-@@ -212,8 +231,8 @@ gfx_ring_const_fill(const struct amdgpu_ip_funcs *func,
- 					 PACKET3_DMA_DATA_SI_DST_SEL(0) |
- 					 PACKET3_DMA_DATA_SI_SRC_SEL(2) |
- 					 PACKET3_DMA_DATA_SI_CP_SYNC;
--		ring_context->pm4[i++] = 0xffffffff & ring_context->bo_mc;
--		ring_context->pm4[i++] = (0xffffffff00000000 & ring_context->bo_mc) >> 32;
-+		ring_context->pm4[i++] = lower_32_bits(ring_context->bo_mc);
-+		ring_context->pm4[i++] = upper_32_bits(ring_context->bo_mc);
- 		ring_context->pm4[i++] = ring_context->write_length;
- 	} else {
- 		ring_context->pm4[i++] = PACKET3(PACKET3_DMA_DATA, 5);
-@@ -224,7 +243,7 @@ gfx_ring_const_fill(const struct amdgpu_ip_funcs *func,
- 		ring_context->pm4[i++] = func->deadbeaf;
- 		ring_context->pm4[i++] = 0;
- 		ring_context->pm4[i++] = 0xfffffffc & ring_context->bo_mc;
--		ring_context->pm4[i++] = (0xffffffff00000000 & ring_context->bo_mc) >> 32;
-+		ring_context->pm4[i++] = upper_32_bits(ring_context->bo_mc);
- 		ring_context->pm4[i++] = ring_context->write_length;
- 	}
- 	*pm4_dw = i;
-@@ -247,9 +266,9 @@ gfx_ring_copy_linear(const struct amdgpu_ip_funcs *func,
- 			   PACKET3_DMA_DATA_SI_DST_SEL(0) |
- 			   PACKET3_DMA_DATA_SI_SRC_SEL(0) |
- 			   PACKET3_DMA_DATA_SI_CP_SYNC |
--			   (0xffff00000000 & context->bo_mc) >> 32;
-+			   upper_32_bits(context->bo_mc);
- 		context->pm4[i++] = 0xfffffffc & context->bo_mc2;
--		context->pm4[i++] = (0xffffffff00000000 & context->bo_mc2) >> 32;
-+		context->pm4[i++] = upper_32_bits(context->bo_mc2);
- 		context->pm4[i++] = context->write_length;
- 	} else {
- 		context->pm4[i++] = PACKET3(PACKET3_DMA_DATA, 5);
-@@ -258,9 +277,9 @@ gfx_ring_copy_linear(const struct amdgpu_ip_funcs *func,
- 			   PACKET3_DMA_DATA_SRC_SEL(0) |
- 			   PACKET3_DMA_DATA_CP_SYNC;
- 		context->pm4[i++] = 0xfffffffc & context->bo_mc;
--		context->pm4[i++] = (0xffffffff00000000 & context->bo_mc) >> 32;
-+		context->pm4[i++] = upper_32_bits(context->bo_mc);
- 		context->pm4[i++] = 0xfffffffc & context->bo_mc2;
--		context->pm4[i++] = (0xffffffff00000000 & context->bo_mc2) >> 32;
-+		context->pm4[i++] = upper_32_bits(context->bo_mc2);
- 		context->pm4[i++] = context->write_length;
- 	}
- 
-@@ -311,6 +330,7 @@ static struct amdgpu_ip_funcs gfx_v8_x_ip_funcs = {
- 	.deadbeaf = 0xdeadbeaf,
- 	.pattern = 0xaaaaaaaa,
- 	.write_linear = gfx_ring_write_linear,
-+	.atomic = gfx_ring_atomic,
- 	.const_fill = gfx_ring_const_fill,
- 	.copy_linear = gfx_ring_copy_linear,
- 	.compare = x_compare,
-@@ -325,6 +345,7 @@ static struct amdgpu_ip_funcs sdma_v3_x_ip_funcs = {
- 	.deadbeaf = 0xdeadbeaf,
- 	.pattern = 0xaaaaaaaa,
- 	.write_linear = sdma_ring_write_linear,
-+	.atomic = sdma_ring_atomic,
- 	.const_fill = sdma_ring_const_fill,
- 	.copy_linear = sdma_ring_copy_linear,
- 	.compare = x_compare,
-diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
-index 7f6fb3fb4..09a5e61f9 100644
---- a/lib/amdgpu/amd_ip_blocks.h
-+++ b/lib/amdgpu/amd_ip_blocks.h
-@@ -70,6 +70,7 @@ struct amdgpu_ip_funcs {
- 	uint32_t	pattern;
- 	/* functions */
- 	int (*write_linear)(const struct amdgpu_ip_funcs *func, const struct amdgpu_ring_context *context, uint32_t *pm4_dw);
-+	int (*atomic)(const struct amdgpu_ip_funcs *func, const struct amdgpu_ring_context *context, uint32_t *pm4_dw);
- 	int (*const_fill)(const struct amdgpu_ip_funcs *func, const struct amdgpu_ring_context *context, uint32_t *pm4_dw);
- 	int (*copy_linear)(const struct amdgpu_ip_funcs *func, const struct amdgpu_ring_context *context, uint32_t *pm4_dw);
- 	int (*compare)(const struct amdgpu_ip_funcs *func, const struct amdgpu_ring_context *context, int div);
-diff --git a/tests/amdgpu/amd_security.c b/tests/amdgpu/amd_security.c
-index 1a7eba9eb..d1146a7ce 100644
---- a/tests/amdgpu/amd_security.c
-+++ b/tests/amdgpu/amd_security.c
-@@ -351,17 +351,22 @@ igt_main
- 		igt_skip_on(!is_security_tests_enable(device, &gpu_info, major, minor));
- 	}
- 
--	igt_describe("amdgpu_security_alloc_buf_test");
-+	igt_describe("amdgpu security alloc buf test");
- 	igt_subtest("amdgpu-security-alloc-buf-test")
- 	amdgpu_security_alloc_buf_test(device);
- 
--	igt_describe("amdgpu_command_submission_write_linear_helper");
--	igt_subtest("write-linear-helper-secure")
-+	igt_describe("amdgpu sdma command submission write linear helper");
-+	igt_subtest("sdma-write-linear-helper-secure")
- 	amdgpu_command_submission_write_linear_helper(device,
- 			get_ip_block(device, AMDGPU_HW_IP_DMA), is_secure);
- 
-+	igt_describe("amdgpu gfx command submission write linear helper");
-+	igt_subtest("gfx-write-linear-helper-secure")
-+	 amdgpu_command_submission_write_linear_helper(device,
-+			get_ip_block(device, AMDGPU_HW_IP_GFX), is_secure);
-+
- 	/* dynamic test based on sdma_info.available rings */
--	igt_describe("amdgpu_secure_bounce");
-+	igt_describe("amdgpu secure bounce");
- 	igt_subtest("amdgpu-secure-bounce")
- 	amdgpu_secure_bounce(device, fd, &sdma_info, get_ip_block(device,
- 			AMDGPU_HW_IP_DMA), is_secure);
--- 
-2.25.1
+CI Bug Log - changes from XEIGT_7559_BAT -> XEIGTPW_10077_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10077_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:
+    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#692])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7559/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10077/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size:
+    - bat-adlp-7:         [FAIL][3] ([Intel XE#692]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7559/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10077/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+  [Intel XE#692]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/692
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7559 -> IGTPW_10077
+  * Linux: xe-449-4c7ed0ef2d582ae173d9a2062ee6f7360d1aa1df -> xe-452-76d7314ce7ceb58ee595a0ae1ba45bc99b9e277d
+
+  IGTPW_10077: 10077
+  IGT_7559: 62ac3d2ddb6005b16df00a36565779848c1390c9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-449-4c7ed0ef2d582ae173d9a2062ee6f7360d1aa1df: 4c7ed0ef2d582ae173d9a2062ee6f7360d1aa1df
+  xe-452-76d7314ce7ceb58ee595a0ae1ba45bc99b9e277d: 76d7314ce7ceb58ee595a0ae1ba45bc99b9e277d
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10077/index.html
+
+--===============5461451819329980441==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/amd_security: add secure write test for gfx (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/125534/">https://patchwork.freedesktop.org/series/125534/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10077/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10077/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7559_BAT -&gt; XEIGTPW_10077_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10077_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7559/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10077/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/692">Intel XE#692</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7559/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/692">Intel XE#692</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10077/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7559 -&gt; IGTPW_10077</li>
+<li>Linux: xe-449-4c7ed0ef2d582ae173d9a2062ee6f7360d1aa1df -&gt; xe-452-76d7314ce7ceb58ee595a0ae1ba45bc99b9e277d</li>
+</ul>
+<p>IGTPW_10077: 10077<br />
+  IGT_7559: 62ac3d2ddb6005b16df00a36565779848c1390c9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-449-4c7ed0ef2d582ae173d9a2062ee6f7360d1aa1df: 4c7ed0ef2d582ae173d9a2062ee6f7360d1aa1df<br />
+  xe-452-76d7314ce7ceb58ee595a0ae1ba45bc99b9e277d: 76d7314ce7ceb58ee595a0ae1ba45bc99b9e277d</p>
+
+</body>
+</html>
+
+--===============5461451819329980441==--
