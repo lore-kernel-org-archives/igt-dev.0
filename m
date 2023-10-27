@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from madras.collabora.co.uk (madras.collabora.co.uk
- [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9BF1B10E9C7
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Oct 2023 14:40:40 +0000 (UTC)
-From: Vignesh Raman <vignesh.raman@collabora.com>
-To: bhanuprakash.modem@intel.com,
-	igt-dev@lists.freedesktop.org
-Date: Fri, 27 Oct 2023 20:10:22 +0530
-Message-Id: <20231027144022.2016354-1-vignesh.raman@collabora.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E0D2510E9E7
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Oct 2023 15:17:54 +0000 (UTC)
+Date: Fri, 27 Oct 2023 17:17:35 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: sai.gowtham.ch@intel.com
+Message-ID: <20231027151735.gjfqbfetzuh5eloa@kamilkon-desk.igk.intel.com>
+References: <20231027131746.18635-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] lib/igt_kms: Fix memory corruption
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231027131746.18635-1-sai.gowtham.ch@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] intel/xe_exec_store.c: Fix the check
+ for num of placements in store_all.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,102 +20,60 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: helen.koike@collabora.com, daniels@collabora.com
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In crosvm, the kernel reports 16 for count_crtcs, which exceeds
-IGT_MAX_PIPES set to 8. The function igt_display_require allocates
-memory for IGT_MAX_PIPES members of igt_pipe_t structures, but then
-writes into it based on the count_crtcs reported by the kernel,
-resulting in memory corruption.
+Hi Sai,
 
- # malloc(): corrupted top size
- # Received signal SIGABRT.
- # Stack trace:
- #  #0 [fatal_sig_handler+0x17b]
- #  #1 [__sigaction+0x40]
- #  #2 [pthread_key_delete+0x14c]
- #  #3 [gsignal+0x12]
- #  #4 [abort+0xd3]
- #  #5 [__fsetlocking+0x290]
- #  #6 [timer_settime+0x37a]
- #  #7 [__default_morecore+0x1f1b]
- #  #8 [__libc_calloc+0x161]
- #  #9 [drmModeGetPlaneResources+0x44]
- #  #10 [igt_display_require+0x194]
- #  #11 [__igt_unique____real_main1356+0x93c]
- #  #12 [main+0x3f]
- #  #13 [__libc_init_first+0x8a]
- #  #14 [__libc_start_main+0x85]
- #  #15 [_start+0x21]
+On 2023-10-27 at 18:47:46 +0530, sai.gowtham.ch@intel.com wrote:
+> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> 
 
-Increase IGT_MAX_PIPES to 16 to fix this memory corruption issue.
-This fix is required for drm-ci to run igt tests on virtio-gpu.
+please improve subject:
 
-Suggested-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Signed-off-by: Vignesh Raman <vignesh.raman@collabora.com>
----
+[PATCH i-g-t] intel/xe_exec_store.c: Fix the check for num of placements in store_all.
+-------------------------------- ^^ ------------------------------------------------ ^
+Drop ".c" and last dot ".":
+s/_store.c:/_store:/
+s/_all./_all/
 
-v2:
-  - Rework the fix to increase IGT_MAX_PIPES to 16
+Also add "tests/" at begin:
 
----
- lib/igt_kms.c |  2 +-
- lib/igt_kms.h | 20 +++++++++++++++++++-
- 2 files changed, 20 insertions(+), 2 deletions(-)
+[PATCH i-g-t] tests/intel/xe_exec_store: Fix the check for num of placements in store_all
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 453103f90..9239b71c4 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -906,7 +906,7 @@ static igt_plane_t *igt_get_assigned_primary(igt_output_t *output, igt_pipe_t *p
-  */
- const char *kmstest_pipe_name(enum pipe pipe)
- {
--	static const char str[] = "A\0B\0C\0D\0E\0F\0G\0H";
-+	static const char str[] = "A\0B\0C\0D\0E\0F\0G\0H\0I\0J\0K\0L\0M\0N\0O\0P";
- 
- 	_Static_assert(sizeof(str) == IGT_MAX_PIPES * 2,
- 		       "Missing pipe name");
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 9028ab9be..5c705b585 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -57,6 +57,16 @@
-  * @PIPE_D: Fourth crtc.
-  * @PIPE_E: Fifth crtc.
-  * @PIPE_F: Sixth crtc.
-+ * @PIPE_G: Seventh crtc.
-+ * @PIPE_H: Eighth crtc.
-+ * @PIPE_I: Ninth crtc.
-+ * @PIPE_J: Tenth crtc.
-+ * @PIPE_K: Eleventh crtc.
-+ * @PIPE_L: Twelfth crtc.
-+ * @PIPE_M: Thirteenth crtc.
-+ * @PIPE_N: Fourteenth crtc.
-+ * @PIPE_O: Fifteenth crtc.
-+ * @PIPE_P: Sixteenth crtc.
-  * @IGT_MAX_PIPES: Max number of pipes allowed.
-  */
- enum pipe {
-@@ -70,7 +80,15 @@ enum pipe {
-         PIPE_F,
- 	PIPE_G,
- 	PIPE_H,
--        IGT_MAX_PIPES
-+	PIPE_I,
-+	PIPE_J,
-+	PIPE_K,
-+	PIPE_L,
-+	PIPE_M,
-+	PIPE_N,
-+	PIPE_O,
-+	PIPE_P,
-+	IGT_MAX_PIPES
- };
- const char *kmstest_pipe_name(enum pipe pipe);
- int kmstest_pipe_to_index(char pipe);
--- 
-2.40.1
+> Intension is to run this test on GT's with supported engines and whose
+> number of placements expected to be atleast one.
+--------------------------------------^
+s/atleast/at least/
+
+> 
+> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> ---
+>  tests/intel/xe_exec_store.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
+> index 90684b8cb..0b084eb10 100644
+> --- a/tests/intel/xe_exec_store.c
+> +++ b/tests/intel/xe_exec_store.c
+> @@ -147,7 +147,8 @@ static void store_all(int fd, int gt, int class)
+>  		eci[num_placements++] = *hwe;
+>  	}
+>  
+> -	igt_require(num_placements);
+> +	if (num_placements < 1)
+> +		return;
+
+This change could hide case when no test will be executed.
+
+Regards,
+Kamil
+
+>  
+>  	for (i = 0; i < num_placements; i++) {
+>  		struct drm_xe_exec_queue_create create = {
+> -- 
+> 2.39.1
+> 
