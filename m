@@ -1,24 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 66DB110E267
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8EEE310E268
  for <igt-dev@lists.freedesktop.org>; Mon, 30 Oct 2023 09:52:11 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.2.104])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 118D3580699
+ by linux.intel.com (Postfix) with ESMTPS id 1581B580E5C
  for <igt-dev@lists.freedesktop.org>; Mon, 30 Oct 2023 02:52:10 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96.1)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qxOwJ-000S7v-3B
- for igt-dev@lists.freedesktop.org; Mon, 30 Oct 2023 10:52:07 +0100
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qxOwK-000S81-06
+ for igt-dev@lists.freedesktop.org; Mon, 30 Oct 2023 10:52:08 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 30 Oct 2023 10:49:55 +0100
-Message-ID: <20231030095206.108025-1-mauro.chehab@linux.intel.com>
+Date: Mon, 30 Oct 2023 10:49:57 +0100
+Message-ID: <20231030095206.108025-3-mauro.chehab@linux.intel.com>
+In-Reply-To: <20231030095206.108025-1-mauro.chehab@linux.intel.com>
+References: <20231030095206.108025-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 0/7] better sync test_list.py with
- igt_runner
+Subject: [igt-dev] [PATCH i-g-t v2 2/7] runner/runner_tests: Unit tests for
+ binary-name-only testlist entries
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,52 +32,94 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+From: Petri Latvala <adrinael@adrinael.net>
 
-This patch series contains the patches from:
-	https://patchwork.freedesktop.org/series/125401/
-
-It contains some additional changes meant to sync how IGT
-runner, documentation tools and CI works with regular expressions:
-
-- the IGT runner regular expressions are now case-insensitive.
-  As there are several KMS tests have upper case letters to indicate
-  port entries. There's no sense of having tests named:
-  igt@foo-port-A being different than igt@foo-port-a. One of
-  the runner tests were changed to only match if case is not
-  sensitive on regular expressions;
-
-- when igt_runner is in dry-run mode, it doesn't need root
-  permissions;
-
-- currently, test_list.py is considering testlists as regular
-  expressions, but they're really a normal list of tests.
-  Change the logic to handle it accordingly.
-
+Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Petri Latvala <adrinael@adrinael.net>
 ---
+ runner/runner_tests.c | 70 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 70 insertions(+)
 
-v2:
-  - instead of modifying a test for case-insensitive regex, add a
-    new subtest.
-
-Mauro Carvalho Chehab (4):
-  igt_runner: don't require root for dry_run
-  scripts/test_list.py: better handle list of tests
-  runner/job_list: use case-insensitive regular expressions
-  runner/runner_tests: add a test to check case-insensitive match
-
-Petri Latvala (3):
-  runner: Normalize testlist entries that don't list subtests
-  runner/runner_tests: Unit tests for binary-name-only testlist entries
-  runner/runner_tests: Fix name of no-subtests in unit tests
-
- runner/job_list.c                | 22 ++++++-
- runner/runner_tests.c            | 99 +++++++++++++++++++++++++++++++-
- runner/settings.c                |  3 +-
- scripts/test_list.py             | 54 ++++++++++++-----
- tests/intel/kms_test_config.json |  2 +-
- tests/intel/xe_test_config.json  |  1 +
- 6 files changed, 161 insertions(+), 20 deletions(-)
-
+diff --git a/runner/runner_tests.c b/runner/runner_tests.c
+index a7e968f85b91..e6024de11a60 100644
+--- a/runner/runner_tests.c
++++ b/runner/runner_tests.c
+@@ -1810,6 +1810,76 @@ igt_main
+ 		}
+ 	}
+ 
++	igt_subtest_group {
++		const char testlisttext[] = "igt@successtest";
++		const char blocktext[] = "igt@successtest@first";
++		struct job_list *list = malloc(sizeof(*list));
++		volatile int dirfd = -1;
++		char dirname[] = "tmpdirXXXXXX";
++		volatile int listfd;
++		volatile int blockfd;
++		char listfilename[] = "tmplistXXXXXX";
++		char blockfilename[] = "tmpblockXXXXXX";
++
++		igt_fixture {
++			igt_require(mkdtemp(dirname) != NULL);
++			rmdir(dirname);
++
++			igt_require((listfd = mkstemp(listfilename)) >= 0);
++			igt_require(write(listfd, testlisttext, strlen(testlisttext)) == strlen(testlisttext));
++			igt_require((blockfd = mkstemp(blockfilename)) >= 0);
++			igt_require(write(blockfd, blocktext, strlen(blocktext)) == strlen(blocktext));
++			close(listfd);
++			close(blockfd);
++
++			init_job_list(list);
++		}
++
++		igt_subtest("only-binary-name-in-testlist") {
++			const char *argv[] = { "runner",
++				"--allow-non-root",
++				"--test-list", listfilename,
++				testdatadir,
++				dirname,
++			};
++
++			igt_assert(parse_options(ARRAY_SIZE(argv), (char**)argv, settings));
++
++			igt_assert(create_job_list(list, settings));
++			/* No multi-mode, binary has two subtests, should be normalized to have individual subtests */
++			igt_assert_eq(list->size, 2);
++			igt_assert_eq(list->entries[0].subtest_count, 1);
++			igt_assert_eq(list->entries[1].subtest_count, 1);
++		}
++
++		igt_subtest("only-binary-name-in-testlist-with-blocks") {
++			const char *argv[] = { "runner",
++				"--allow-non-root",
++				"--test-list", listfilename,
++				"-b", blockfilename,
++				testdatadir,
++				dirname,
++			};
++
++			igt_assert(parse_options(ARRAY_SIZE(argv), (char**)argv, settings));
++
++			igt_assert(create_job_list(list, settings));
++			/* No multi-mode, binary has two subtests, one of them blocked */
++			igt_assert_eq(list->size, 1);
++			igt_assert_eq(list->entries[0].subtest_count, 1);
++			igt_assert_eqstr(list->entries[0].subtests[0], "second-subtest");
++		}
++
++		igt_fixture {
++			unlink(listfilename);
++			unlink(blockfilename);
++			close(dirfd);
++			clear_directory(dirname);
++			free_job_list(list);
++			free(list);
++		}
++	}
++
+ 	igt_subtest_group {
+ 		struct job_list *list = malloc(sizeof(*list));
+ 		volatile int dirfd = -1;
 -- 
 2.41.0
