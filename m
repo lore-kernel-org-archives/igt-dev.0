@@ -1,15 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2F5B410E0E1
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Oct 2023 14:31:29 +0000 (UTC)
+Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
+ [10.252.2.104])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id 51E86580699
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Oct 2023 07:31:27 -0700 (PDT)
+Received: from maurocar by linux.intel.com with local (Exim 4.96.1)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qxTIb-000Z1e-0k
+ for igt-dev@lists.freedesktop.org; Mon, 30 Oct 2023 15:31:25 +0100
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 30 Oct 2023 15:31:22 +0100
+Message-ID: <20231030143122.134627-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Vignesh Raman" <vignesh.raman@collabora.com>
-Date: Fri, 27 Oct 2023 18:23:50 -0000
-Message-ID: <169843103001.19710.15350001942438622828@emeril.freedesktop.org>
-References: <20231027144022.2016354-1-vignesh.raman@collabora.com>
-In-Reply-To: <20231027144022.2016354-1-vignesh.raman@collabora.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_l?=
- =?utf-8?q?ib/igt=5Fkms=3A_Fix_memory_corruption_=28rev2=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] intel/xe_test_config.json: add
+ igt@intel_hwmon to testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,155 +26,32 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Series: lib/igt_kms: Fix memory corruption (rev2)
-URL   : https://patchwork.freedesktop.org/series/125599/
-State : warning
+The tests on such file is used on both i915 and Xe driver.
+Add it to Xe testplan documentation.
 
-== Summary ==
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ tests/intel/xe_test_config.json | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1020725 for the overview.
-
-build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50889720):
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-missing-ccs-buffer-yf-tiled-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-dg2-mc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-dg2-rc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-dg2-rc-ccs-cc
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-mtl-mc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-mtl-rc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-mtl-rc-ccs-cc
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-y-tiled-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-y-tiled-gen12-mc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-y-tiled-gen12-rc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-y-tiled-gen12-rc-ccs-cc
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-yf-tiled-ccs
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1698430990:step_script
-  section_start:1698430990:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1698430992:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50889715):
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-missing-ccs-buffer-yf-tiled-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-dg2-mc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-dg2-rc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-dg2-rc-ccs-cc
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-mtl-mc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-mtl-rc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-mtl-rc-ccs-cc
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-y-tiled-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-y-tiled-gen12-mc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-y-tiled-gen12-rc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-y-tiled-gen12-rc-ccs-cc
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-yf-tiled-ccs
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1698430994:step_script
-  section_start:1698430994:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1698430995:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50889719):
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-missing-ccs-buffer-yf-tiled-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-dg2-mc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-dg2-rc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-dg2-rc-ccs-cc
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-mtl-mc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-mtl-rc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-mtl-rc-ccs-cc
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-y-tiled-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-y-tiled-gen12-mc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-y-tiled-gen12-rc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-y-tiled-gen12-rc-ccs-cc
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-yf-tiled-ccs
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1698431011:step_script
-  section_start:1698431011:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1698431012:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50889718):
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-missing-ccs-buffer-yf-tiled-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-dg2-mc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-dg2-rc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-dg2-rc-ccs-cc
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-mtl-mc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-mtl-rc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-mtl-rc-ccs-cc
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-y-tiled-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-y-tiled-gen12-mc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-y-tiled-gen12-rc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-y-tiled-gen12-rc-ccs-cc
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-yf-tiled-ccs
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1698430990:step_script
-  section_start:1698430990:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1698430992:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50889716):
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-missing-ccs-buffer-yf-tiled-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-dg2-mc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-dg2-rc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-dg2-rc-ccs-cc
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-mtl-mc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-mtl-rc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-mtl-rc-ccs-cc
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-y-tiled-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-y-tiled-gen12-mc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-y-tiled-gen12-rc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-y-tiled-gen12-rc-ccs-cc
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-yf-tiled-ccs
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1698430993:step_script
-  section_start:1698430993:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1698430994:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/50889717):
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-missing-ccs-buffer-yf-tiled-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-dg2-mc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-dg2-rc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-dg2-rc-ccs-cc
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-mtl-mc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-mtl-rc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-4-tiled-mtl-rc-ccs-cc
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-y-tiled-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-y-tiled-gen12-mc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-y-tiled-gen12-rc-ccs
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-y-tiled-gen12-rc-ccs-cc
-  Warning: Missing documentation for igt@kms_ccs@pipe-P-random-ccs-data-yf-tiled-ccs
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1698430991:step_script
-  section_start:1698430991:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1698430992:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1020725
+diff --git a/tests/intel/xe_test_config.json b/tests/intel/xe_test_config.json
+index 5fd7c888f274..dd7aa4776ec6 100644
+--- a/tests/intel/xe_test_config.json
++++ b/tests/intel/xe_test_config.json
+@@ -1,7 +1,7 @@
+ {
+     "description": "JSON file to be used to parse Xe documentation",
+     "name": "Tests for Xe Driver",
+-    "files": [ "xe_*.c", "../core_hotunplug.c" ],
++    "files": [ "xe_*.c", "../core_hotunplug.c", "intel_hwmon.c" ],
+     "fields": {
+         "Category": {
+             "_properties_": {
+-- 
+2.41.0
