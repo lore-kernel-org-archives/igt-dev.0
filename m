@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from dd20012.kasserver.com (dd20012.kasserver.com [85.13.140.57])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2008910E365
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Oct 2023 19:59:23 +0000 (UTC)
-From: Bernd Kuhls <bernd@kuhls.net>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 30 Oct 2023 20:58:08 +0100
-Message-Id: <20231030195809.3527410-6-bernd@kuhls.net>
-In-Reply-To: <20231030195809.3527410-1-bernd@kuhls.net>
-References: <20231030195809.3527410-1-bernd@kuhls.net>
+Content-Type: multipart/alternative;
+ boundary="===============4836529171437102955=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 6/7] lib: include limits.h to fix build with
- musl libc
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Marcin Bernatowicz" <marcin.bernatowicz@intel.com>
+Date: Mon, 30 Oct 2023 19:59:31 -0000
+Message-ID: <169869597145.25482.11824554690415113150@emeril.freedesktop.org>
+References: <20231030110918.8347-1-marcin.bernatowicz@intel.com>
+In-Reply-To: <20231030110918.8347-1-marcin.bernatowicz@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_benchmar?=
+ =?utf-8?q?ks/gem=5Fwsim=3A_introduce_bb=5Fsize_field_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,67 +17,170 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Stefano Ragni <st3r4g@protonmail.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Stefano Ragni <st3r4g@protonmail.com>
+--===============4836529171437102955==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Original patch was added to void-linux:
-https://github.com/void-linux/void-packages/commit/ddfc1f66a0c571b420303c33aed29fd38ace4fc7
+== Series Details ==
 
-Bug report with request to split the original patch into some
-functional changes:
-Link: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/138
+Series: benchmarks/gem_wsim: introduce bb_size field (rev2)
+URL   : https://patchwork.freedesktop.org/series/125689/
+State : success
 
-Signed-off-by: Stefano Ragni <st3r4g@protonmail.com>
-Signed-off-by: Bernd Kuhls <bernd@kuhls.net>
-[Bernd: alphabetically sorted includes, removed includes not needed
- anymore]
----
-v3: split patches for lib/ and tests/ (Kamil)
+== Summary ==
 
- lib/igt_aux.c   | 1 +
- lib/igt_eld.c   | 1 +
- lib/igt_hwmon.c | 1 +
- 3 files changed, 3 insertions(+)
+CI Bug Log - changes from XEIGT_7566_BAT -> XEIGTPW_10084_BAT
+====================================================
 
-diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-index 18edc5ef9..d6aeb876b 100644
---- a/lib/igt_aux.c
-+++ b/lib/igt_aux.c
-@@ -31,6 +31,7 @@
- #endif
- #include <stdio.h>
- #include <fcntl.h>
-+#include <limits.h> // PATH_MAX
- #include <pwd.h>
- #include <sys/stat.h>
- #include <sys/ioctl.h>
-diff --git a/lib/igt_eld.c b/lib/igt_eld.c
-index ef6625df1..6cec9abdd 100644
---- a/lib/igt_eld.c
-+++ b/lib/igt_eld.c
-@@ -28,6 +28,7 @@
- #include <dirent.h>
- #include <errno.h>
- #include <glob.h>
-+#include <limits.h> // PATH_MAX
- #include <stdint.h>
- #include <stdio.h>
- #include <string.h>
-diff --git a/lib/igt_hwmon.c b/lib/igt_hwmon.c
-index f37ced2d9..53c346e73 100644
---- a/lib/igt_hwmon.c
-+++ b/lib/igt_hwmon.c
-@@ -2,6 +2,7 @@
- /*
-  * Copyright © 2022 Intel Corporation
-  */
-+#include <limits.h> // PATH_MAX
- #include <sys/stat.h>
- #include <sys/sysmacros.h>
- #include <dirent.h>
--- 
-2.39.2
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 3)
+------------------------------
+
+  Missing    (1): bat-pvc-2 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_10084_BAT:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * {igt@xe_evict_ccs@evict-ccs-overcommit-parallel-nofree-samefd}:
+    - bat-atsm-2:         [PASS][1] -> [FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7566/bat-atsm-2/igt@xe_evict_ccs@evict-ccs-overcommit-parallel-nofree-samefd.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10084/bat-atsm-2/igt@xe_evict_ccs@evict-ccs-overcommit-parallel-nofree-samefd.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10084_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Warnings ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [DMESG-FAIL][3] ([Intel XE#282] / [i915#2017]) -> [FAIL][4] ([Intel XE#616] / [Intel XE#750])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7566/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10084/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#282]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/282
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
+  [Intel XE#750]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/750
+  [i915#2017]: https://gitlab.freedesktop.org/drm/intel/issues/2017
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7566 -> IGTPW_10084
+  * Linux: xe-456-d7eb9a5c3acda8d87699bc82add7e8d88f5f4700 -> xe-457-1e652bcf7cc139244f4f8c0cd1fc184029240050
+
+  IGTPW_10084: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10084/index.html
+  IGT_7566: 7566
+  xe-456-d7eb9a5c3acda8d87699bc82add7e8d88f5f4700: d7eb9a5c3acda8d87699bc82add7e8d88f5f4700
+  xe-457-1e652bcf7cc139244f4f8c0cd1fc184029240050: 1e652bcf7cc139244f4f8c0cd1fc184029240050
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10084/index.html
+
+--===============4836529171437102955==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>benchmarks/gem_wsim: introduce bb_size field (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/125689/">https://patchwork.freedesktop.org/series/125689/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10084/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10084/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7566_BAT -&gt; XEIGTPW_10084_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 3)</h2>
+<p>Missing    (1): bat-pvc-2 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_10084_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>{igt@xe_evict_ccs@evict-ccs-overcommit-parallel-nofree-samefd}:<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7566/bat-atsm-2/igt@xe_evict_ccs@evict-ccs-overcommit-parallel-nofree-samefd.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10084/bat-atsm-2/igt@xe_evict_ccs@evict-ccs-overcommit-parallel-nofree-samefd.html">FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10084_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_frontbuffer_tracking@basic:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7566/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2017">i915#2017</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10084/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/750">Intel XE#750</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7566 -&gt; IGTPW_10084</li>
+<li>Linux: xe-456-d7eb9a5c3acda8d87699bc82add7e8d88f5f4700 -&gt; xe-457-1e652bcf7cc139244f4f8c0cd1fc184029240050</li>
+</ul>
+<p>IGTPW_10084: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10084/index.html<br />
+  IGT_7566: 7566<br />
+  xe-456-d7eb9a5c3acda8d87699bc82add7e8d88f5f4700: d7eb9a5c3acda8d87699bc82add7e8d88f5f4700<br />
+  xe-457-1e652bcf7cc139244f4f8c0cd1fc184029240050: 1e652bcf7cc139244f4f8c0cd1fc184029240050</p>
+
+</body>
+</html>
+
+--===============4836529171437102955==--
