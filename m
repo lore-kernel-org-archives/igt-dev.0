@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CBA1610E61D
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Oct 2023 09:56:42 +0000 (UTC)
-Date: Wed, 25 Oct 2023 11:56:22 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 57EE310E2B4
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Oct 2023 12:48:36 +0000 (UTC)
+Date: Mon, 30 Oct 2023 13:48:31 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20231025095622.q6mmkda4h4km54fp@kamilkon-desk.igk.intel.com>
-References: <20231024141855.160633-1-mauro.chehab@linux.intel.com>
- <20231024141855.160633-8-mauro.chehab@linux.intel.com>
+Message-ID: <20231030124831.bw4bg46xvcmdtfgf@kamilkon-desk.igk.intel.com>
+References: <20231030095206.108025-1-mauro.chehab@linux.intel.com>
+ <20231030095206.108025-4-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231024141855.160633-8-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 7/7] runner/runner_tests: change a regex
- to match case-insensitive
+In-Reply-To: <20231030095206.108025-4-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 3/7] runner/runner_tests: Fix name of
+ no-subtests in unit tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,38 +26,43 @@ To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Mauro,
-On 2023-10-24 at 16:11:10 +0200, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+On 2023-10-30 at 10:49:58 +0100, Mauro Carvalho Chehab wrote:
+> From: Petri Latvala <adrinael@adrinael.net>
 > 
-> As regular expressions are now case-insensitive, change an
-> unit test to verify that case-insensitive logic is working
-> as expected.
+> Now that runner normalizes no-subtest entries in testlists, make sure
+> the name matches what's available.
 > 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Signed-off-by: Petri Latvala <adrinael@adrinael.net>
+
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
 > ---
->  runner/runner_tests.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  runner/runner_tests.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
 > diff --git a/runner/runner_tests.c b/runner/runner_tests.c
-> index 11ff05bc0e7e..c35668bc8f0e 100644
+> index e6024de11a60..11ff05bc0e7e 100644
 > --- a/runner/runner_tests.c
 > +++ b/runner/runner_tests.c
-> @@ -1812,7 +1812,7 @@ igt_main
->  
->  	igt_subtest_group {
->  		const char testlisttext[] = "igt@successtest";
-> -		const char blocktext[] = "igt@successtest@first";
-> +		const char blocktext[] = "igt@successTEST@first";
-
-Please make a separate test for this, also add Petri on Cc.
-You can also consider upper-case test names (or subtests).
-
-Regards,
-Kamil
-
+> @@ -802,7 +802,7 @@ igt_main
+>  		char filename[] = "tmplistXXXXXX";
+>  		const char testlisttext[] = "igt@successtest@first-subtest\n"
+>  			"igt@successtest@second-subtest\n"
+> -			"igt@nosubtests\n";
+> +			"igt@no-subtests\n";
+>  		int multiple;
 >  		struct job_list *list = malloc(sizeof(*list));
->  		volatile int dirfd = -1;
->  		char dirname[] = "tmpdirXXXXXX";
+>  
+> @@ -830,7 +830,7 @@ igt_main
+>  
+>  				igt_assert_eqstr(list->entries[0].binary, "successtest");
+>  				if (!multiple) igt_assert_eqstr(list->entries[1].binary, "successtest");
+> -				igt_assert_eqstr(list->entries[multiple ? 1 : 2].binary, "nosubtests");
+> +				igt_assert_eqstr(list->entries[multiple ? 1 : 2].binary, "no-subtests");
+>  
+>  				igt_assert_eq(list->entries[0].subtest_count, multiple ? 2 : 1);
+>  				igt_assert_eq(list->entries[1].subtest_count, multiple ? 0 : 1);
 > -- 
 > 2.41.0
 > 
