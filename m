@@ -1,11 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============4086870525124400633=="
+ boundary="===============5807149192026611456=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
-Date: Mon, 30 Oct 2023 22:34:26 -0000
-Message-ID: <169870526622.25484.8366997073077711900@emeril.freedesktop.org>
+Date: Mon, 30 Oct 2023 22:40:23 -0000
+Message-ID: <169870562396.25482.6410416965290585020@emeril.freedesktop.org>
 References: <20231026100909.13317-1-kamil.konieczny@linux.intel.com>
 In-Reply-To: <20231026100909.13317-1-kamil.konieczny@linux.intel.com>
 Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgZHJtLXVh?=
@@ -23,7 +23,7 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============4086870525124400633==
+--===============5807149192026611456==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -1522,7 +1522,7 @@ Known issues
 
 For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10073/index.html
 
---===============4086870525124400633==
+--===============5807149192026611456==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -3888,4 +3888,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============4086870525124400633==--
+--===============5807149192026611456==--
