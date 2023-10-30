@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2116D10E581
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Oct 2023 07:55:08 +0000 (UTC)
-Date: Wed, 25 Oct 2023 09:54:49 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2EA8510E2AC
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Oct 2023 12:39:03 +0000 (UTC)
+Date: Mon, 30 Oct 2023 13:38:40 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20231025075449.x6cjl6nspt5inb4m@kamilkon-desk.igk.intel.com>
-References: <20231024141855.160633-1-mauro.chehab@linux.intel.com>
- <20231024141855.160633-6-mauro.chehab@linux.intel.com>
+Message-ID: <20231030123840.blvvd5ombrkuiyuf@kamilkon-desk.igk.intel.com>
+References: <20231030095206.108025-1-mauro.chehab@linux.intel.com>
+ <20231030095206.108025-8-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231024141855.160633-6-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 5/7] scripts/test_list.py: better handle
- list of tests
+In-Reply-To: <20231030095206.108025-8-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 7/7] runner/runner_tests: add a test
+ to check case-insensitive match
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,167 +26,84 @@ To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Mauro,
-On 2023-10-24 at 16:11:08 +0200, Mauro Carvalho Chehab wrote:
+On 2023-10-30 at 10:50:02 +0100, Mauro Carvalho Chehab wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
-> Not all test lists are regular expressions. Some are just
-> names. That's the case of IGT runner testlist files.
+> As regular expressions are now case-insensitive, add ab
+> unit test to verify that case-insensitive logic is working
+> as expected.
 > 
-> Add support for that.
-> 
-> In practice, this change will produce the same testlists
-> as before, but using a logic closer to what igt_runner()
-> does.
-> 
+> CC: Petri Latvala <adrinael@adrinael.net>
 > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 > ---
->  scripts/test_list.py             | 54 +++++++++++++++++++++++---------
->  tests/intel/kms_test_config.json |  2 +-
->  tests/intel/xe_test_config.json  |  1 +
->  3 files changed, 41 insertions(+), 16 deletions(-)
+>  runner/runner_tests.c | 25 +++++++++++++++++++++++++
+>  1 file changed, 25 insertions(+)
 > 
-> diff --git a/scripts/test_list.py b/scripts/test_list.py
-> index e54873f07e20..06215242107a 100644
-> --- a/scripts/test_list.py
-> +++ b/scripts/test_list.py
-> @@ -319,10 +319,6 @@ class TestList:
->              self.props["Class"]["_properties_"]["level"] = 1
->              self.props["Class"]["_properties_"]["sublevel"] = sublevel_count[0] + 1
+> diff --git a/runner/runner_tests.c b/runner/runner_tests.c
+> index 11ff05bc0e7e..0aa7dd6626b7 100644
+> --- a/runner/runner_tests.c
+> +++ b/runner/runner_tests.c
+> @@ -1813,13 +1813,16 @@ igt_main
+>  	igt_subtest_group {
+>  		const char testlisttext[] = "igt@successtest";
+>  		const char blocktext[] = "igt@successtest@first";
+> +		const char blocktext_upper[] = "igt@successTEST@first";
+>  		struct job_list *list = malloc(sizeof(*list));
+>  		volatile int dirfd = -1;
+>  		char dirname[] = "tmpdirXXXXXX";
+>  		volatile int listfd;
+>  		volatile int blockfd;
+> +		volatile int blockfd_upper;
+>  		char listfilename[] = "tmplistXXXXXX";
+>  		char blockfilename[] = "tmpblockXXXXXX";
+> +		char blockfilename_upper[] = "tmpBLOCKXXXXXX";
 >  
-> -        flags = 0
-> -        if self.config.get("case_insensitive_testlist", False):
-> -            flags |= re.IGNORECASE
-> -
->          # Remove non-multilevel items, as we're only interested on
->          # hierarchical item levels here
->          for field, item in self.props.items():
-> @@ -337,7 +333,7 @@ class TestList:
->                  testlist = {}
->                  for value in item["_properties_"]["include"]:
->                      for name in value.keys():
-> -                        self.read_testlist(testlist, name, cfg_path + value[name], flags)
-> +                        self.read_testlist(field, item, testlist, name, cfg_path + value[name])
+>  		igt_fixture {
+>  			igt_require(mkdtemp(dirname) != NULL);
+> @@ -1829,8 +1832,11 @@ igt_main
+>  			igt_require(write(listfd, testlisttext, strlen(testlisttext)) == strlen(testlisttext));
+>  			igt_require((blockfd = mkstemp(blockfilename)) >= 0);
+>  			igt_require(write(blockfd, blocktext, strlen(blocktext)) == strlen(blocktext));
+> +			igt_require((blockfd_upper = mkstemp(blockfilename_upper)) >= 0);
+> +			igt_require(write(blockfd_upper, blocktext_upper, strlen(blocktext_upper)) == strlen(blocktext_upper));
+>  			close(listfd);
+>  			close(blockfd);
+> +			close(blockfd_upper);
 >  
->                  item["_properties_"]["include"] = testlist
+>  			init_job_list(list);
+>  		}
+> @@ -1870,9 +1876,28 @@ igt_main
+>  			igt_assert_eqstr(list->entries[0].subtests[0], "second-subtest");
+>  		}
 >  
-> @@ -346,7 +342,7 @@ class TestList:
->                  testlist = {}
->                  for value in item["_properties_"]["exclude"]:
->                      for name in value.keys():
-> -                        self.read_testlist(testlist, name, cfg_path + value[name], flags)
-> +                        self.read_testlist(field, item, testlist, name, cfg_path + value[name])
->  
->                  item["_properties_"]["exclude"] = testlist
->  
-> @@ -450,7 +446,22 @@ class TestList:
->  
->              self.__add_field(key, sublevel, hierarchy_level, field[key])
->  
-> -    def read_testlist(self, testlist, name, filename, flags):
-> +    def read_testlist(self, field, item, testlist, name, filename):
+> +		igt_subtest("only-binary-name-in-testlist-with-case-insensitive-blocklist") {
+> +			const char *argv[] = { "runner",
+> +				"--allow-non-root",
+> +				"--test-list", listfilename,
+> +				"-b", blockfilename_upper,
+> +				testdatadir,
+> +				dirname,
+> +			};
 > +
-> +        match_type = item["_properties_"].get("match-type", "subtest-match")
+> +			igt_assert(parse_options(ARRAY_SIZE(argv), (char**)argv, settings));
 > +
-> +        match_type_regex = set(["regex", "regex-ignorecase"])
-> +        match_type_str = set(["subtest-match"])
-> +        match_types = match_type_regex | match_type_str
+> +			igt_assert(create_job_list(list, settings));
+> +			/* No multi-mode, binary has two subtests, one of them blocked */
+> +			igt_assert_eq(list->size, 1);
+> +			igt_assert_eq(list->entries[0].subtest_count, 1);
+> +			igt_assert_eqstr(list->entries[0].subtests[0], "second-subtest");
+> +		}
 > +
-> +        if match_type not in match_types:
-> +            sys.exit(f"Error: invalid match type '{match_type}' for {field}")
-> +
-> +        if match_type == "regex":
-> +            flags = 0
-> +        elif match_type == "regex-ignorecase":
-> +            flags = re.IGNORECASE
-> +
->          base = r"^\s*({}[^\s\{}]+)(\S*)\s*(\#.*)?$"
->          regex = re.compile(base.format(self.main_name, self.subtest_separator))
->  
-> @@ -459,12 +470,25 @@ class TestList:
->          with open(filename, 'r', newline = '', encoding = 'utf8') as fp:
->              for line in fp:
->                  match = regex.match(line)
-> -                if match:
-> -                    test = match.group(1)
-> -                    subtest = match.group(2)
-> -                    if not subtest.endswith("$"):
-> -                        subtest += r"(\@.*)?$"
-> -                    testlist[name].append(re.compile(f"{test}{subtest}", flags))
-> +                if not match:
-> +                    continue
-> +
-> +                test = match.group(1)
-> +                subtest = match.group(2)
-> +                test_name = f"{test}{subtest}"
-> +
-> +                if match_type in match_type_regex:
-> +                    testlist[name].append(re.compile(test_name, flags))
-> +                    continue
-> +
-> +                subtests = test_name.split(self.subtest_separator)[:3]
-> +
-> +                prefix=""
-> +                for subtest in subtests:
-> +                    subtest = prefix + subtest
-> +                    prefix = subtest + self.subtest_separator
-> +
-> +                testlist[name].append(re.compile(f"{subtest}(@.*)?"))
->  
->      def __filter_subtest(self, test, subtest, field_not_found_value):
->  
-> @@ -504,7 +528,7 @@ class TestList:
->              for names, regex_array in self.props[field]["_properties_"]["include"].items():
->                  name = set(re.split(",\s*", names))
->                  for regex in regex_array:
-> -                    if regex.match(testname):
-> +                    if regex.fullmatch(testname):
->                          values.update(name)
->                          break
->  
-> @@ -514,7 +538,7 @@ class TestList:
->                  for names, regex_array in self.props[field]["_properties_"]["exclude"].items():
->                      deleted_names = set(re.split(",\s*", names))
->                      for regex in regex_array:
-> -                        if regex.match(testname):
-> +                        if regex.fullmatch(testname):
->                              if sorted(deleted_names) == sorted(values):
->                                  set_full_if_empty = False
->                              values.discard(deleted_names)
-> diff --git a/tests/intel/kms_test_config.json b/tests/intel/kms_test_config.json
-> index 40cf69dd0904..837380ee7fae 100644
-> --- a/tests/intel/kms_test_config.json
-> +++ b/tests/intel/kms_test_config.json
-> @@ -4,7 +4,6 @@
->      "files": [ "../chamelium/kms_*.c", "../kms_*.c", "../testdisplay.c", "kms_*.c" ],
->      "exclude_files": [ "../chamelium/kms_chamelium_helper.c", "../kms_color_helper.c",
->                         "kms_dsc_helper.c" ],
-> -    "case_insensitive_testlist": true,
->      "fields": {
->          "Category": {
->              "_properties_": {
-> @@ -24,6 +23,7 @@
->                  "_properties_": {
->                      "description": "Defines what category of testlist it belongs",
->                      "default-testlist": "FULL",
-> +                    "match-type": "subtest-match",
->                      "include": [
->                          { "i915 BAT": "../intel-ci/fast-feedback.testlist" },
->                          { "i915 BAT chamelium": "../intel-ci/fast-feedback-chamelium-only.testlist" },
-> diff --git a/tests/intel/xe_test_config.json b/tests/intel/xe_test_config.json
-> index 20faf73b7270..5fd7c888f274 100644
-> --- a/tests/intel/xe_test_config.json
-> +++ b/tests/intel/xe_test_config.json
-> @@ -33,6 +33,7 @@
->                              "mandatory": true,
->                              "description": "Defines what category of testlist it belongs",
->                              "default-testlist": "FULL",
-> +                            "match-type": "subtest-match",
->                              "include": [
->                                  { "Xe BAT": "../intel-ci/xe-fast-feedback.testlist" }
->                              ],
+>  		igt_fixture {
+>  			unlink(listfilename);
+>  			unlink(blockfilename);
+> +			unlink(blockfilename_upper);
+>  			close(dirfd);
+>  			clear_directory(dirname);
+>  			free_job_list(list);
 > -- 
 > 2.41.0
 > 
