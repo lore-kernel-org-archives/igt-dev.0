@@ -1,14 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 25F7510E293
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Oct 2023 11:09:24 +0000 (UTC)
-From: Marcin Bernatowicz <marcin.bernatowicz@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 30 Oct 2023 12:09:18 +0100
-Message-Id: <20231030110918.8347-1-marcin.bernatowicz@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3BD1210E294
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Oct 2023 11:25:02 +0000 (UTC)
+Message-ID: <e4e1ae4b-b781-e1d7-7c36-b61f9724342e@intel.com>
+Date: Mon, 30 Oct 2023 16:54:42 +0530
+Content-Language: en-US
+To: Nidhi Gupta <nidhi1.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20231030075815.26761-1-nidhi1.gupta@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20231030075815.26761-1-nidhi1.gupta@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] benchmarks/gem_wsim: introduce bb_size field
+Subject: Re: [igt-dev] [PATCH i-g-t v4] tests/kms_frontbuffer_tracking:
+ Extend the test to enable FBC for each plane
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,145 +21,221 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: chris.p.wilson@linux.intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In certain scenarios (ATS-M when using LMEM), PAGE_SIZE=4096
-is insufficient for Xe, necessitating alignment considerations.
-This change ensures that 'bb_size' aligns properly,
-preventing VM BIND failures in cases where the size is not aligned
-to the minimum page size of the region.
+Hi Nidhi,
 
-Additionally, 'alloc_bo' for i915 has been updated to
-accommodate page-aligned allocated size.
+On Mon-30-10-2023 01:28 pm, Nidhi Gupta wrote:
+> Added a new subtest to validate FBC on each plane, this new subtest
+> will first disable the fbc feature on all pipes and planes and then
+> enable it on all plane one by one and confirm.
+> 
+> v2: Modify tests to disable primary and enable other plane
+>      to check fbc is enabled or not. <Bhanu>
+> 
+> v3: Implemented design changes as suggested <Bhanu>
+> 
+> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+> ---
+>   tests/intel/kms_frontbuffer_tracking.c | 113 +++++++++++++++++++++++--
+>   1 file changed, 105 insertions(+), 8 deletions(-)
+> 
+> diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+> index f90d09f9f..a549a7fea 100644
+> --- a/tests/intel/kms_frontbuffer_tracking.c
+> +++ b/tests/intel/kms_frontbuffer_tracking.c
+> @@ -45,6 +45,15 @@
+>   
+>   #define TIME SLOW_QUICK(1000, 10000)
+>   
+> +/**
+> + * SUBTEST: plane-fbc-rte
+> + * Description: Sanity test to enable FBC on a plane.
+> + * Driver requirement: i915, xe
+> + * Functionality: fbc
+> + * Mega feature: General Display Features
+> + * Test category: functionality test
+> + */
 
-v2: Reverted to intel_allocator_alloc_with_strategy as not related
-    to the change and for clarity due to its origin in a library
-    rather than local definition. (Tvrtko)
+Please move the documentation to just below #includes.
 
-Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@intel.com>
----
- benchmarks/gem_wsim.c | 39 +++++++++++++++++++++++++--------------
- 1 file changed, 25 insertions(+), 14 deletions(-)
+> +
+>   IGT_TEST_DESCRIPTION("Test the Kernel's frontbuffer tracking mechanism and "
+>   		     "its related features: FBC, PSR and DRRS");
+>   
+> @@ -381,14 +390,6 @@ static void init_mode_params(struct modeset_params *params,
+>   	params->cursor.w = 64;
+>   	params->cursor.h = 64;
+>   
+> -	params->sprite.plane = igt_pipe_get_plane_type(&drm.display.pipes[pipe], DRM_PLANE_TYPE_OVERLAY);
+> -	igt_require(params->sprite.plane);
+> -	params->sprite.fb = NULL;
+> -	params->sprite.x = 0;
+> -	params->sprite.y = 0;
+> -	params->sprite.w = 64;
+> -	params->sprite.h = 64;
 
-diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-index 28b809520..58e0ff6e8 100644
---- a/benchmarks/gem_wsim.c
-+++ b/benchmarks/gem_wsim.c
-@@ -201,6 +201,7 @@ struct w_step {
- 			struct drm_xe_sync *syncs;
- 		} xe;
- 	};
-+	unsigned long bb_size;
- 	uint32_t bb_handle;
- };
- 
-@@ -1503,7 +1504,7 @@ static unsigned int create_bb(struct w_step *w, int self)
- 	gem_set_domain(fd, w->bb_handle,
- 		       I915_GEM_DOMAIN_WC, I915_GEM_DOMAIN_WC);
- 
--	cs = ptr = gem_mmap__wc(fd, w->bb_handle, 0, 4096, PROT_WRITE);
-+	cs = ptr = gem_mmap__wc(fd, w->bb_handle, 0, w->bb_size, PROT_WRITE);
- 
- 	/* Store initial 64b timestamp: start */
- 	*cs++ = MI_LOAD_REGISTER_IMM(1) | MI_CS_MMIO_DST;
-@@ -1653,9 +1654,16 @@ xe_get_vm(struct workload *wrk, const struct w_step *w)
- 	return wrk->xe.vm_list;
- }
- 
--static uint32_t alloc_bo(int i915, unsigned long size)
-+static uint32_t alloc_bo(int i915, unsigned long *size)
- {
--	return gem_create(i915, size);
-+	uint32_t handle;
-+	uint64_t sz = *size;
-+
-+	igt_assert_eq(__gem_create(i915, &sz, &handle), 0);
-+	igt_assert(sz <= ULONG_MAX);
-+	*size = sz;
-+
-+	return handle;
- }
- 
- static void
-@@ -1669,7 +1677,8 @@ alloc_step_batch(struct workload *wrk, struct w_step *w)
- 	w->i915.obj = calloc(nr_obj, sizeof(*w->i915.obj));
- 	igt_assert(w->i915.obj);
- 
--	w->i915.obj[j].handle = alloc_bo(fd, 4096);
-+	w->bb_size = PAGE_SIZE;
-+	w->i915.obj[j].handle = alloc_bo(fd, &w->bb_size);
- 	w->i915.obj[j].flags = EXEC_OBJECT_WRITE;
- 	j++;
- 	igt_assert(j < nr_obj);
-@@ -1706,7 +1715,7 @@ alloc_step_batch(struct workload *wrk, struct w_step *w)
- 		igt_assert(j < nr_obj);
- 	}
- 
--	w->bb_handle = w->i915.obj[j].handle = gem_create(fd, 4096);
-+	w->bb_handle = w->i915.obj[j].handle = alloc_bo(fd, &w->bb_size);
- 	w->i915.obj[j].relocation_count = create_bb(w, j);
- 	igt_assert(w->i915.obj[j].relocation_count <= ARRAY_SIZE(w->i915.reloc));
- 	w->i915.obj[j].relocs_ptr = to_user_pointer(&w->i915.reloc);
-@@ -1734,13 +1743,15 @@ xe_alloc_step_batch(struct workload *wrk, struct w_step *w)
- 	struct dep_entry *dep;
- 	int i;
- 
--	w->bb_handle = xe_bo_create_flags(fd, vm->id, PAGE_SIZE,
-+	w->bb_size = ALIGN(PAGE_SIZE + xe_cs_prefetch_size(fd),
-+			   xe_get_default_alignment(fd));
-+	w->bb_handle = xe_bo_create_flags(fd, vm->id, w->bb_size,
- 				visible_vram_if_possible(fd, eq->hwe_list[0].gt_id));
--	w->xe.data = xe_bo_map(fd, w->bb_handle, PAGE_SIZE);
-+	w->xe.data = xe_bo_map(fd, w->bb_handle, w->bb_size);
- 	w->xe.exec.address =
--		intel_allocator_alloc_with_strategy(vm->ahnd, w->bb_handle, PAGE_SIZE,
-+		intel_allocator_alloc_with_strategy(vm->ahnd, w->bb_handle, w->bb_size,
- 						    0, ALLOC_STRATEGY_LOW_TO_HIGH);
--	xe_vm_bind_sync(fd, vm->id, w->bb_handle, 0, w->xe.exec.address, PAGE_SIZE);
-+	xe_vm_bind_sync(fd, vm->id, w->bb_handle, 0, w->xe.exec.address, w->bb_size);
- 	xe_spin_init_opts(&w->xe.data->spin, .addr = w->xe.exec.address,
- 				   .preempt = (w->preempt_us > 0),
- 				   .ctx_ticks = duration_to_ctx_ticks(fd, eq->hwe_list[0].gt_id,
-@@ -1936,7 +1947,7 @@ allocate_working_set(struct workload *wrk, struct working_set *set)
- 
- 	for (i = 0; i < set->nr; i++) {
- 		set->sizes[i].size = get_buffer_size(wrk, &set->sizes[i]);
--		set->handles[i] = alloc_bo(fd, set->sizes[i].size);
-+		set->handles[i] = alloc_bo(fd, &set->sizes[i].size);
- 		total += set->sizes[i].size;
- 	}
- 
-@@ -1971,7 +1982,7 @@ static void measure_active_set(struct workload *wrk)
- 		if (w->type != BATCH)
- 			continue;
- 
--		batch_sizes += 4096;
-+		batch_sizes += w->bb_size;
- 
- 		if (is_xe)
- 			continue;
-@@ -1990,7 +2001,7 @@ static void measure_active_set(struct workload *wrk)
- 
- 			if (!find_dep(deps, nr, _dep)) {
- 				if (dep->working_set == -1) {
--					total += 4096;
-+					total += w->bb_size;
- 				} else {
- 					struct working_set *set;
- 
-@@ -2834,8 +2845,8 @@ static void *run_workload(void *data)
- 				syncobj_destroy(fd, w->xe.syncs[0].handle);
- 				free(w->xe.syncs);
- 				xe_vm_unbind_sync(fd, xe_get_vm(wrk, w)->id, 0, w->xe.exec.address,
--						  PAGE_SIZE);
--				gem_munmap(w->xe.data, PAGE_SIZE);
-+						  w->bb_size);
-+				gem_munmap(w->xe.data, w->bb_size);
- 				gem_close(fd, w->bb_handle);
- 			} else if (w->type == SW_FENCE) {
- 				syncobj_destroy(fd, w->xe.syncs[0].handle);
--- 
-2.31.1
+Why did you drop these changes? It'll cause a regression.
+
+> -
+>   	free(mode);
+>   }
+>   
+> @@ -888,6 +889,19 @@ static bool fbc_mode_too_large(void)
+>   	return strstr(buf, "FBC disabled: mode too large for compression\n");
+>   }
+>   
+> +static bool fbc_enable_per_plane(int plane_index, enum pipe pipe)
+> +{
+> +	char buf[128];
+> +	char buf1[128];
+
+Please use some meaningful name, probably "buf_plane"
+
+> +	char pipe_name;
+> +
+> +	pipe_name = *kmstest_pipe_name(pipe);
+> +	sprintf(buf1, "%d%s", plane_index, &pipe_name);
+--------------------------------------------^
+Please drop the variable "pipe_name", instead you can use 
+kmstest_pipe_name() directly.
+
+> +
+> +	debugfs_read_crtc("i915_fbc_status", buf);
+> +	return strstr(buf, buf1);
+
+We need to check if '*' is present in front of the enabled plane.
+
+Example:
+* [PLANE:40:plane 2A]: FBC possible
+
+Probably, you need a similar change as below:
+-       return strstr(buf, buf1);
++       return strstr(strstr(buf, '*'), buf1);
+
+> +}
+> +
+>   static bool drrs_wait_until_rr_switch_to_low(void)
+>   {
+>   	return igt_wait(is_drrs_low(), 5000, 1);
+> @@ -1691,6 +1705,32 @@ static void set_region_for_test(const struct test_mode *t,
+>   	do_assertions(ASSERT_NO_ACTION_CHANGE);
+>   }
+>   
+> +static void set_plane_for_test_fbc(const struct test_mode *t, igt_plane_t *plane)
+> +{
+> +	struct igt_fb fb;
+> +	uint32_t color;
+> +
+> +	igt_create_fb(drm.fd, prim_mode_params.mode.hdisplay, prim_mode_params.mode.vdisplay,
+> +			t->format, DRM_FORMAT_MOD_LINEAR, &fb);
+> +	color = pick_color(&fb, COLOR_PRIM_BG);
+> +
+> +	igt_draw_rect_fb(drm.fd, drm.bops, 0, &fb, IGT_DRAW_BLT,
+> +			 0, 0, fb.width, fb.height,
+> +			 color);
+> +
+> +	igt_output_override_mode(prim_mode_params.output, &prim_mode_params.mode);
+> +	igt_output_set_pipe(prim_mode_params.output, prim_mode_params.pipe);
+> +
+> +	igt_plane_set_fb(plane, &fb);
+> +	igt_plane_set_position(plane, 0, 0);
+> +	igt_plane_set_size(plane, prim_mode_params.mode.hdisplay, prim_mode_params.mode.vdisplay);
+> +	igt_fb_set_size(&fb, plane, prim_mode_params.mode.hdisplay, prim_mode_params.mode.vdisplay);
+> +
+> +	igt_display_commit(&drm.display);
+> +	igt_require(!fbc_enable_per_plane(plane->index, prim_mode_params.pipe));
+> +	do_assertions(ASSERT_NO_ACTION_CHANGE);
+----------------------^
+Should be ASSERT_FBC_ENABLED, right?
+
+> +}
+> +
+>   static bool enable_features_for_test(const struct test_mode *t)
+>   {
+>   	bool ret = false;
+> @@ -1941,6 +1981,49 @@ static void rte_subtest(const struct test_mode *t)
+>   	}
+>   }
+>   
+> +static bool is_valid_plane(igt_plane_t *plane)
+> +{
+> +	int index = plane->index;
+> +	/*
+> +	 * Execute test only on first three planes
+> +	 */
+> +
+> +	return index != 0 && index != 1 && index != 2;
+
+Please fix this logic as it returns False if plane->index is less than 
+3, else True.
+
+Also please add a check to reject the cursor plane.
+
+> +}
+> +
+> +/**
+> + * plane-fbc-rte - the basic sanity test
+> + *
+> + * METHOD
+> + *   Just disable primary screen, assert everything is disabled, then enable single
+> + *   screens and single plane one by one  and assert that the tested fbc is enabled
+> + *   for the particular plane.
+> + *
+> + * EXPECTED RESULTS
+> + *   Blue screens and t->feature enabled.
+> + *
+> + * FAILURES
+> + *   A failure here means that every other subtest will probably fail too. It
+> + *   probably means that the Kernel is just not enabling the feature we want.
+> + */
+> +
+> +static void plane_fbc_rte_subtest(const struct test_mode *t)
+> +{
+> +	igt_plane_t *plane;
+> +
+> +	for_each_plane_on_pipe(&drm.display, t->pipes, plane) {
+> +
+> +		if (!is_valid_plane(plane))
+> +			continue;
+> +
+> +		prepare_subtest_data(t, NULL);
+> +		unset_all_crtcs();
+> +		do_assertions(ASSERT_FBC_DISABLED);
+
+I think, these three calls are not required for each plane, since we are 
+not using any plane info.
+
+- Bhanu
+
+> +		set_plane_for_test_fbc(t, plane);
+> +	}
+> +
+> +}
+> +
+>   static void update_wanted_crc(const struct test_mode *t, igt_crc_t *crc)
+>   {
+>   	if (t->screen == SCREEN_PRIM)
+> @@ -4936,6 +5019,20 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>   		}
+>   	}
+>   
+> +	t.pipes = PIPE_SINGLE;
+> +	t.feature = FEATURE_FBC;
+> +	t.screen = SCREEN_PRIM;
+> +	t.fbs = FBS_INDIVIDUAL;
+> +	t.format = FORMAT_DEFAULT;
+> +	/* Make sure nothing is using these values. */
+> +	t.flip = -1;
+> +	t.method = -1;
+> +	t.tiling = opt.tiling;
+> +
+> +	igt_subtest_f("plane-fbc-rte") {
+> +		plane_fbc_rte_subtest(&t);
+> +	}
+> +
+>   	TEST_MODE_ITER_BEGIN(t)
+>   
+>   		igt_subtest_f("%s-%s-%s-%s-%s-draw-%s",
