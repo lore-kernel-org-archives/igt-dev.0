@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B209110E5AD
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Oct 2023 18:02:03 +0000 (UTC)
-Date: Tue, 31 Oct 2023 19:01:59 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 24B4710E5AC
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Oct 2023 18:16:00 +0000 (UTC)
+Date: Tue, 31 Oct 2023 19:15:51 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20231031180159.5cysaw3u4cyuwtz3@kamilkon-desk.igk.intel.com>
+Message-ID: <20231031181551.h6hamsef54eesjy5@kamilkon-desk.igk.intel.com>
 References: <20231030195809.3527410-1-bernd@kuhls.net>
- <20231030195809.3527410-2-bernd@kuhls.net>
+ <20231030195809.3527410-5-bernd@kuhls.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231030195809.3527410-2-bernd@kuhls.net>
-Subject: Re: [igt-dev] [PATCH v3 2/7] lib/igt_aux.h: Fix musl build
+In-Reply-To: <20231030195809.3527410-5-bernd@kuhls.net>
+Subject: Re: [igt-dev] [PATCH v3 5/7] benchmarks/gem_exec_tracer.c: Fix musl
+ build
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,62 +22,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Bernd Kuhls <bernd@kuhls.net>
+Cc: Mohammed Anas <triallax@tutanota.com>, Bernd Kuhls <bernd@kuhls.net>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Bernd,
-On 2023-10-30 at 20:58:04 +0100, Bernd Kuhls wrote:
-> Inspired by https://www.openwall.com/lists/musl/2020/10/28/11
+On 2023-10-30 at 20:58:07 +0100, Bernd Kuhls wrote:
+> From: Mohammed Anas <triallax@tutanota.com>
 > 
-> Define sigev_notify_thread_id only when needed, quoting
-> https://sourceware.org/bugzilla/show_bug.cgi?id=27417
-> Both freebsd and musl actually have this macro defined under <signal.h>
+> Original patch was added to void-linux:
+> https://github.com/void-linux/void-packages/commit/111918317d06598fe1459dbe139923404f3f4b9d
 > 
 > Fixes build error:
+> ../benchmarks/gem_exec_tracer.c:274:1: error: conflicting types for ‘ioctl’; have ‘int(int,  long unsigned int, ...)’
+>   274 | ioctl(int fd, unsigned long request, ...)
 > 
-> ../lib/igt_aux.c:191:20: error: ‘struct sigevent’ has no member named ‘_sigev_un’
->   191 |                 sev.sigev_notify_thread_id = __igt_sigiter.tid;
-> 
-> ../lib/igt_aux.c:1994:12: error: ‘struct sigevent’ has no member named ‘_sigev_un’
->  1994 |         sev.sigev_notify_thread_id = gettid();
-> 
+> Bug report with request to split the original patch into some
+> functional changes:
 > Link: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/138
 > 
+> Signed-off-by: Mohammed Anas <triallax@tutanota.com>
 > Signed-off-by: Bernd Kuhls <bernd@kuhls.net>
-
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
 > ---
 > v3: no changes
 > 
->  lib/igt_aux.h | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+>  benchmarks/gem_exec_tracer.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
-> diff --git a/lib/igt_aux.h b/lib/igt_aux.h
-> index 4d887045a..4664559dc 100644
-> --- a/lib/igt_aux.h
-> +++ b/lib/igt_aux.h
-> @@ -29,6 +29,7 @@
->  #define IGT_AUX_H
+> diff --git a/benchmarks/gem_exec_tracer.c b/benchmarks/gem_exec_tracer.c
+> index 7e86473e4..3156dfc23 100644
+> --- a/benchmarks/gem_exec_tracer.c
+> +++ b/benchmarks/gem_exec_tracer.c
+> @@ -271,7 +271,11 @@ static int is_i915(int fd)
+>  }
 >  
->  #include <inttypes.h>
-> +#include <signal.h>
->  #include <stdbool.h>
->  #include <stddef.h>
->  #include <sys/time.h>
-> @@ -48,7 +49,9 @@
->  # ifndef HAVE_GETTID
->  #  define gettid() (pid_t)(syscall(__NR_gettid))
->  # endif
-> -# define sigev_notify_thread_id _sigev_un._tid
-> +# ifndef sigev_notify_thread_id
-> +#  define sigev_notify_thread_id _sigev_un._tid
-> +# endif
->  #endif
->  
->  /* auxialiary igt helpers from igt_aux.c */
+>  int
+> +#ifdef __GLIBC__
+>  ioctl(int fd, unsigned long request, ...)
+> +#else
+> +ioctl(int fd, int request, ...)
+> +#endif
+
+While it works it looks ugly, what about introduce type request_t?
+We can then use:
+
+int ioctl(int fd, ioctl_request_t request, ...)
+
+Btw did you look at lib, there is also:
+ioctl_wrappers.h: * igt_ioctl:
+
+Did you test linking? Or only compiling? Is a basic test working,
+like core_getversion?
+
++cc Petri
+
+Regards,
+Kamil
+
+>  {
+>  	struct trace *t, **p;
+>  	va_list args;
 > -- 
 > 2.39.2
 > 
