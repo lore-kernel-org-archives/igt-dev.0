@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D509210E5AC
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Oct 2023 18:16:46 +0000 (UTC)
-Date: Tue, 31 Oct 2023 19:16:42 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 095AC10E139
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Oct 2023 18:17:34 +0000 (UTC)
+Date: Tue, 31 Oct 2023 19:17:28 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20231031181642.qm5xlsm2jv7rdqcd@kamilkon-desk.igk.intel.com>
+Message-ID: <20231031181728.mzgkhp5klnrcdhaf@kamilkon-desk.igk.intel.com>
 References: <20231030195809.3527410-1-bernd@kuhls.net>
- <20231030195809.3527410-6-bernd@kuhls.net>
+ <20231030195809.3527410-7-bernd@kuhls.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231030195809.3527410-6-bernd@kuhls.net>
-Subject: Re: [igt-dev] [PATCH v3 6/7] lib: include limits.h to fix build
+In-Reply-To: <20231030195809.3527410-7-bernd@kuhls.net>
+Subject: Re: [igt-dev] [PATCH v3 7/7] tests: include limits.h to fix build
  with musl libc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,7 +27,7 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Bernd,
-On 2023-10-30 at 20:58:08 +0100, Bernd Kuhls wrote:
+On 2023-10-30 at 20:58:09 +0100, Bernd Kuhls wrote:
 > From: Stefano Ragni <st3r4g@protonmail.com>
 > 
 > Original patch was added to void-linux:
@@ -41,54 +40,43 @@ On 2023-10-30 at 20:58:08 +0100, Bernd Kuhls wrote:
 > Signed-off-by: Stefano Ragni <st3r4g@protonmail.com>
 > Signed-off-by: Bernd Kuhls <bernd@kuhls.net>
 > [Bernd: alphabetically sorted includes, removed includes not needed
->  anymore]
+>  anymore, patched tests/intel/kms_pm_rpm.c instead of
+>  tests/intel/i915_pm_rpm.c]
 
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 > ---
 > v3: split patches for lib/ and tests/ (Kamil)
+>     moved include in kms_pm_rpm.c (Kamil)
 > 
->  lib/igt_aux.c   | 1 +
->  lib/igt_eld.c   | 1 +
->  lib/igt_hwmon.c | 1 +
->  3 files changed, 3 insertions(+)
+>  tests/intel/kms_pm_rpm.c      | 1 +
+>  tests/kms_sysfs_edid_timing.c | 1 +
+>  2 files changed, 2 insertions(+)
 > 
-> diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-> index 18edc5ef9..d6aeb876b 100644
-> --- a/lib/igt_aux.c
-> +++ b/lib/igt_aux.c
-> @@ -31,6 +31,7 @@
->  #endif
->  #include <stdio.h>
+> diff --git a/tests/intel/kms_pm_rpm.c b/tests/intel/kms_pm_rpm.c
+> index 14f34d904..7e54c8619 100644
+> --- a/tests/intel/kms_pm_rpm.c
+> +++ b/tests/intel/kms_pm_rpm.c
+> @@ -17,6 +17,7 @@
+>   * Test category: functionality test
+>   */
+>  
+> +#include <limits.h> // PATH_MAX
+>  #if defined(__linux__)
+>  #include <linux/i2c.h>
+>  #include <linux/i2c-dev.h>
+> diff --git a/tests/kms_sysfs_edid_timing.c b/tests/kms_sysfs_edid_timing.c
+> index ee47a024e..c371a5e5e 100644
+> --- a/tests/kms_sysfs_edid_timing.c
+> +++ b/tests/kms_sysfs_edid_timing.c
+> @@ -24,6 +24,7 @@
+>  
+>  #include <dirent.h>
 >  #include <fcntl.h>
 > +#include <limits.h> // PATH_MAX
->  #include <pwd.h>
 >  #include <sys/stat.h>
->  #include <sys/ioctl.h>
-> diff --git a/lib/igt_eld.c b/lib/igt_eld.c
-> index ef6625df1..6cec9abdd 100644
-> --- a/lib/igt_eld.c
-> +++ b/lib/igt_eld.c
-> @@ -28,6 +28,7 @@
->  #include <dirent.h>
->  #include <errno.h>
->  #include <glob.h>
-> +#include <limits.h> // PATH_MAX
->  #include <stdint.h>
->  #include <stdio.h>
->  #include <string.h>
-> diff --git a/lib/igt_hwmon.c b/lib/igt_hwmon.c
-> index f37ced2d9..53c346e73 100644
-> --- a/lib/igt_hwmon.c
-> +++ b/lib/igt_hwmon.c
-> @@ -2,6 +2,7 @@
->  /*
->   * Copyright © 2022 Intel Corporation
->   */
-> +#include <limits.h> // PATH_MAX
->  #include <sys/stat.h>
->  #include <sys/sysmacros.h>
->  #include <dirent.h>
+>  /**
+>   * TEST: kms sysfs edid timing
 > -- 
 > 2.39.2
 > 
