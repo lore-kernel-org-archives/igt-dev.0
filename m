@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DC5B210E7F4
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7932010E7F4
  for <igt-dev@lists.freedesktop.org>; Wed,  1 Nov 2023 23:55:36 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  1 Nov 2023 16:53:01 -0700
-Message-Id: <20231101235303.4645-2-niranjana.vishwanathapura@intel.com>
+Date: Wed,  1 Nov 2023 16:53:03 -0700
+Message-Id: <20231101235303.4645-4-niranjana.vishwanathapura@intel.com>
 In-Reply-To: <20231101235303.4645-1-niranjana.vishwanathapura@intel.com>
 References: <20231101235303.4645-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [RFC v2 i-g-t 1/3] lib/xe: Add __xe_exec_queue_create()
+Subject: [igt-dev] [RFC v2 i-g-t 3/3] tests/xe_compute: Validate ccs_mode
+ setting
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,114 +23,180 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add __xe_exec_queue_create() which does not assert upon error.
+Validate 'ccs_mode' sysfs uapi interface and ensure compute
+kernels can be run on enabled compute engines.
 
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 ---
- lib/xe/xe_ioctl.c       | 29 ++++++++++++++++++++++++-----
- lib/xe/xe_ioctl.h       |  3 +++
- tests/intel/xe_create.c | 26 --------------------------
- 3 files changed, 27 insertions(+), 31 deletions(-)
+ tests/intel/xe_compute.c | 146 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 146 insertions(+)
 
-diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index 895e3bd4e..6f06c304c 100644
---- a/lib/xe/xe_ioctl.c
-+++ b/lib/xe/xe_ioctl.c
-@@ -287,9 +287,9 @@ uint32_t xe_bind_exec_queue_create(int fd, uint32_t vm, uint64_t ext, bool async
- 	return create.exec_queue_id;
- }
+diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
+index 35ba8b346..7f30b1cdd 100644
+--- a/tests/intel/xe_compute.c
++++ b/tests/intel/xe_compute.c
+@@ -13,9 +13,149 @@
+ #include <string.h>
  
--uint32_t xe_exec_queue_create(int fd, uint32_t vm,
--			  struct drm_xe_engine_class_instance *instance,
--			  uint64_t ext)
-+uint32_t __xe_exec_queue_create(int fd, uint32_t vm,
-+				struct drm_xe_engine_class_instance *instance,
-+				uint64_t ext, uint32_t *exec_queue_id)
- {
- 	struct drm_xe_exec_queue_create create = {
- 		.extensions = ext,
-@@ -298,10 +298,29 @@ uint32_t xe_exec_queue_create(int fd, uint32_t vm,
- 		.num_placements = 1,
- 		.instances = to_user_pointer(instance),
- 	};
-+	int err;
+ #include "igt.h"
++#include "igt_sysfs.h"
+ #include "intel_compute.h"
++#include "xe/xe_ioctl.h"
+ #include "xe/xe_query.h"
  
--	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC_QUEUE_CREATE, &create), 0);
-+	err = igt_ioctl(fd, DRM_IOCTL_XE_EXEC_QUEUE_CREATE, &create);
-+	if (err) {
-+		err = -errno;
-+		igt_assume(err);
-+		errno = 0;
-+		return err;
-+	}
- 
--	return create.exec_queue_id;
-+	*exec_queue_id = create.exec_queue_id;
-+	return 0;
++#define MAX_TILE	4
++
++static bool ccs_mode_supported(int fd)
++{
++	int tilefd, ret;
++	u32 ccs_mode;
++
++	tilefd = xe_sysfs_tile_open(fd, 0);
++	ret = igt_sysfs_scanf(tilefd, "ccs_mode", "%x", &ccs_mode);
++	close(tilefd);
++
++	return ret > 0;
 +}
 +
-+uint32_t xe_exec_queue_create(int fd, uint32_t vm,
-+			      struct drm_xe_engine_class_instance *instance,
-+			      uint64_t ext)
++/**
++ * SUBTEST: ccs-mode-basic
++ * GPU requirement: PVC
++ * Description: Validate 'ccs_mode' sysfs uapi
++ * Functionality: ccs_mode user interface
++ */
++static void
++test_ccs_mode(int fd)
 +{
-+	uint32_t exec_queue_id;
++	u32 t, m, ccs_mode, vm, q, cslices[MAX_TILE] = { };
++	struct drm_xe_engine_class_instance *hwe;
++	int tilefd, ret;
 +
-+	igt_assert_eq(__xe_exec_queue_create(fd, vm, instance, ext, &exec_queue_id), 0);
++	igt_require(ccs_mode_supported(fd));
 +
-+	return exec_queue_id;
++	/* Get available compute slices */
++	xe_for_each_hw_engine(fd, hwe)
++		if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
++			cslices[hwe->gt_id]++;
++
++	vm = xe_vm_create(fd, 0, 0);
++
++	for (t = 0; t < MAX_TILE; t++) {
++		if (!cslices[t])
++			continue;
++
++		tilefd = xe_sysfs_tile_open(fd, t);
++		igt_assert(igt_sysfs_printf(tilefd, "ccs_mode", "%u", 0) < 0);
++		for (m = 1; m <= cslices[t]; m++) {
++			/* compute slices are to be equally distributed among enabled engines */
++			if (cslices[t] % m) {
++				igt_assert(igt_sysfs_printf(tilefd, "ccs_mode", "%u", m) < 0);
++				continue;
++			}
++
++			/* Validate allowed ccs mode setting by reading it back */
++			igt_assert(igt_sysfs_printf(tilefd, "ccs_mode", "%u", m) > 0);
++			igt_assert(igt_sysfs_scanf(tilefd, "ccs_mode", "%x", &ccs_mode) > 0);
++			igt_assert(m == ccs_mode);
++
++			xe_for_each_hw_engine(fd, hwe) {
++				if (hwe->gt_id != t ||
++				    hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
++					continue;
++
++				ret = __xe_exec_queue_create(fd, vm, hwe, 0, &q);
++				if (hwe->engine_instance < m) {
++					/* exec_queues creation is allowed for enabled CCS engines */
++					igt_assert_eq(ret, 0);
++					xe_exec_queue_destroy(fd, q);
++				} else {
++					/* Can't create exec_queues with disabled CCS engines */
++					igt_assert_neq(ret, 0);
++				}
++			}
++		}
++		igt_assert(igt_sysfs_printf(tilefd, "ccs_mode", "%u", m) < 0);
++
++		/* Can't change ccs_mode with an open exec_queue */
++		q = xe_exec_queue_create_class(fd, vm, DRM_XE_ENGINE_CLASS_COMPUTE);
++		igt_assert(igt_sysfs_printf(tilefd, "ccs_mode", "%u", 1) < 0);
++		xe_exec_queue_destroy(fd, q);
++
++		/* Set ccs_mode back to default value */
++		igt_assert(igt_sysfs_printf(tilefd, "ccs_mode", "%u", 1) > 0);
++
++		close(tilefd);
++	}
++
++	xe_vm_destroy(fd, vm);
++}
++
++/**
++ * SUBTEST: ccs-mode-compute-kernel
++ * GPU requirement: PVC
++ * Description: Validate 'ccs_mode' by running compute kernel
++ * Functionality: CCS mode funtionality
++ */
++static void
++test_compute_kernel_with_ccs_mode(int fd)
++{
++	struct drm_xe_engine_class_instance *hwe;
++	u32 t, m, cslices[MAX_TILE] = { };
++	int tilefd;
++
++	igt_require(ccs_mode_supported(fd));
++
++	/* Get available compute slices */
++	xe_for_each_hw_engine(fd, hwe)
++		if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
++			cslices[hwe->gt_id]++;
++
++	for (t = 0; t < MAX_TILE; t++) {
++		if (!cslices[t])
++			continue;
++
++		tilefd = xe_sysfs_tile_open(fd, t);
++		for (m = 1; m <= cslices[t]; m++) {
++			if (cslices[t] % m)
++				continue;
++
++			igt_assert(igt_sysfs_printf(tilefd, "ccs_mode", "%u", m) > 0);
++
++			/* Run compute kernel on enabled engines */
++			xe_for_each_hw_engine(fd, hwe) {
++				if (hwe->gt_id != t ||
++				    hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE ||
++				    hwe->engine_instance >= m)
++					continue;
++
++				igt_info("Tile-%d ccs_mode %d engine %d\n",
++					 t, m, hwe->engine_instance);
++				igt_assert_f(run_intel_compute_kernel_on_engine(fd, hwe),
++					     "Unable to run compute kernel successfully\n");
++			}
++		}
++
++		/* Set ccs_mode back to default value */
++		igt_assert(igt_sysfs_printf(tilefd, "ccs_mode", "%u", 1) > 0);
++
++		close(tilefd);
++	}
++}
++
+ /**
+  * SUBTEST: compute-square
+  * GPU requirement: TGL, PVC
+@@ -40,6 +180,12 @@ igt_main
+ 	igt_subtest("compute-square")
+ 		test_compute_square(xe);
+ 
++	igt_subtest("ccs-mode-basic")
++		test_ccs_mode(xe);
++
++	igt_subtest("ccs-mode-compute-kernel")
++		test_compute_kernel_with_ccs_mode(xe);
++
+ 	igt_fixture
+ 		drm_close_driver(xe);
  }
- 
- uint32_t xe_exec_queue_create_class(int fd, uint32_t vm, uint16_t class)
-diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index a8dbcf376..96aac8544 100644
---- a/lib/xe/xe_ioctl.h
-+++ b/lib/xe/xe_ioctl.h
-@@ -68,6 +68,9 @@ uint32_t __xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags
- 			      uint32_t *handle);
- uint32_t xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags);
- uint32_t xe_bo_create(int fd, int gt, uint32_t vm, uint64_t size);
-+uint32_t __xe_exec_queue_create(int fd, uint32_t vm,
-+				struct drm_xe_engine_class_instance *instance,
-+				uint64_t ext, uint32_t *exec_queue_id);
- uint32_t xe_exec_queue_create(int fd, uint32_t vm,
- 			  struct drm_xe_engine_class_instance *instance,
- 			  uint64_t ext);
-diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
-index d99bd51cf..145d936f2 100644
---- a/tests/intel/xe_create.c
-+++ b/tests/intel/xe_create.c
-@@ -92,32 +92,6 @@ enum exec_queue_destroy {
- 	LEAK
- };
- 
--static uint32_t __xe_exec_queue_create(int fd, uint32_t vm,
--				   struct drm_xe_engine_class_instance *instance,
--				   uint64_t ext,
--				   uint32_t *exec_queuep)
--{
--	struct drm_xe_exec_queue_create create = {
--		.extensions = ext,
--		.vm_id = vm,
--		.width = 1,
--		.num_placements = 1,
--		.instances = to_user_pointer(instance),
--	};
--	int err = 0;
--
--	if (igt_ioctl(fd, DRM_IOCTL_XE_EXEC_QUEUE_CREATE, &create) == 0) {
--		*exec_queuep = create.exec_queue_id;
--	} else {
--		igt_warn("Can't create exec_queue, errno: %d\n", errno);
--		err = -errno;
--		igt_assume(err);
--	}
--	errno = 0;
--
--	return err;
--}
--
- #define MAXEXECQUEUES 2048
- #define MAXTIME 5
- 
 -- 
 2.21.0.rc0.32.g243a4c7e27
