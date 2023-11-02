@@ -1,17 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 27CD510E078
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Nov 2023 06:15:21 +0000 (UTC)
-From: Kunal Joshi <kunal1.joshi@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1012210E879
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Nov 2023 13:10:07 +0000 (UTC)
+Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
+ [10.249.131.127])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id D8665580E62
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Nov 2023 06:10:02 -0700 (PDT)
+Received: from maurocar by linux.intel.com with local (Exim 4.96.1)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qyXSS-001I12-0y
+ for igt-dev@lists.freedesktop.org; Thu, 02 Nov 2023 14:10:00 +0100
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  2 Nov 2023 11:53:04 +0530
-Message-Id: <20231102062304.1204625-3-kunal1.joshi@intel.com>
-In-Reply-To: <20231102062304.1204625-1-kunal1.joshi@intel.com>
-References: <20231102062304.1204625-1-kunal1.joshi@intel.com>
+Date: Thu,  2 Nov 2023 14:06:23 +0100
+Message-ID: <20231102130957.307435-2-mauro.chehab@linux.intel.com>
+In-Reply-To: <20231102130957.307435-1-mauro.chehab@linux.intel.com>
+References: <20231102130957.307435-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] tests/kms_pipe_crc_basic: added new
- subtest for darkscreen detection
+Subject: [igt-dev] [PATCH i-g-t 1/5] scripts/test_list.py: better parse list
+ of tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,145 +28,238 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Kunal Joshi <kunal1.joshi@intel.com>, Nemesa Garg <nemesa.garg@intel.com>,
- Arun R Murthy <arun.r.murthy@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-dark screen detection feature when enable will monitor frames
-and if black frame is detcted it will raise drm_error, added
-two tests for positive (black frame) and negative case (white frame)
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Cc: Nemesa Garg <nemesa.garg@intel.com>
-Cc: Arun R Murthy <arun.r.murthy@intel.com>
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+The JSON config items for using a list of tests to fill a
+field is confusing:
+- there are several fields defined under __properties__, but
+  they're not grouped altogether;
+- the names of such fields are badly defined;
+- the "FULL" testlist is not really a list of all tests, as
+  it currently exclude tests used on other platforms.
+
+Rewrite the logic to group them into a dict inside a field,
+like:
+
+    { "Field": {
+        "_properties_": {
+            "update-from-file": {
+                "type": "subtest-match", # or "regex", "regex-ignorecase"
+                "default-if-not-excluded": "not on testlists",
+                "append-value-if-not-excluded": "FULL",
+                "include": [
+                    { "BAT": "../ci-dir/driver-bat.testlist" },
+                    { "func1": "../ci-dir/driver-func1.testlist" },
+                ],
+                "exclude": [
+                    { "Xe BAT, FULL": "../ci-dir/driver.blocklist" }
+                    { "func1, FULL": "../ci-dir/driver-func1.blocklist" }
+                ]
+            }
+        }
+    }
+
+This will update all tests from ../ci-dir/driver-bat.testlist setting
+"Field" with "BAT", excluding the ones at ../ci-dir/driver.blocklist.
+Similarly, the "func1" value will be parsed.
+
+The "FULL" testlist will contain all tests but the ones inside the
+two exclude lists: ../ci-dir/driver.blocklist and ../ci-dir/driver-func1.blocklist.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/kms_pipe_crc_basic.c | 60 +++++++++++++++++++++++++++++++++-----
- 1 file changed, 52 insertions(+), 8 deletions(-)
+ scripts/test_list.py             | 70 ++++++++++++++++++--------------
+ tests/intel/kms_test_config.json | 28 +++++++------
+ tests/intel/xe_test_config.json  | 16 ++++----
+ 3 files changed, 63 insertions(+), 51 deletions(-)
 
-diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-index d980c3786..479241e79 100644
---- a/tests/kms_pipe_crc_basic.c
-+++ b/tests/kms_pipe_crc_basic.c
-@@ -47,13 +47,10 @@ typedef struct {
- 	struct igt_fb fb;
- } data_t;
+diff --git a/scripts/test_list.py b/scripts/test_list.py
+index 741ec5f4b5b5..bd609feeb1f1 100644
+--- a/scripts/test_list.py
++++ b/scripts/test_list.py
+@@ -328,23 +328,25 @@ class TestList:
+                     del item["_properties_"]["level"]
+                     del item["_properties_"]["sublevel"]
  
--static struct {
-+typedef struct {
- 	double r, g, b;
- 	igt_crc_t crc;
--} colors[2] = {
--	{ .r = 0.0, .g = 1.0, .b = 0.0 },
--	{ .r = 0.0, .g = 1.0, .b = 1.0 },
--};
-+} color;
+-            # Read testlist files if any
+-            if "include" in item["_properties_"]:
+-                testlist = {}
+-                for value in item["_properties_"]["include"]:
+-                    for name in value.keys():
+-                        self.read_testlist(field, item, testlist, name, cfg_path + value[name])
++            update = self.props[field]["_properties_"].get("update-from-file")
++            if update:
++                # Read testlist files if any
++                if "include" in update:
++                    testlist = {}
++                    for value in update["include"]:
++                        for name in value.keys():
++                            self.read_testlist(update, field, item, testlist, name, cfg_path + value[name])
  
- static bool simulation_constraint(enum pipe pipe)
- {
-@@ -92,6 +89,8 @@ enum {
- 	TEST_NONBLOCK = 1 << 1,
- 	TEST_SUSPEND = 1 << 2,
- 	TEST_HANG = 1 << 3,
-+	TEST_DARK_SCREEN = 1 << 4,
-+	TEST_DARK_SCREEN_NEGATIVE = 1 << 5,
- };
+-                item["_properties_"]["include"] = testlist
++                    update["include"] = testlist
  
- /**
-@@ -136,6 +135,21 @@ enum {
-  * Test category: functionality test
-  * Functionality: crc, hang
-  * Mega feature: General Display Features
-+ *
-+ * SUBTEST: darkscreen-read-crc
-+ * Description: Test dark screen detection works
-+ * Driver requirement: i915, xe
-+ * Test category: functionality test
-+ * Functionality: crc, hang, darkscreen
-+ * Mega feature: General Display Features
-+ *
-+ * SUBTEST: negative-darkscreen-read-crc
-+ * Description: Test false positives aren't reported by dark screen detection
-+ * Driver requirement: i915, xe
-+ * Test category: functionality test
-+ * Functionality: crc, hang, darkscreen
-+ * Mega feature: General Display Features
-+ *
-  */
- static void test_read_crc(data_t *data, enum pipe pipe,
- 			  igt_output_t *output, unsigned flags)
-@@ -144,7 +158,8 @@ static void test_read_crc(data_t *data, enum pipe pipe,
- 	igt_plane_t *primary;
- 	drmModeModeInfo *mode;
- 	igt_crc_t *crcs = NULL;
--	int c, j;
-+        color *colors;
-+	int c, j, no_of_colors;
+-            # Read blocklist files if any
+-            if "exclude" in item["_properties_"]:
+-                testlist = {}
+-                for value in item["_properties_"]["exclude"]:
+-                    for name in value.keys():
+-                        self.read_testlist(field, item, testlist, name, cfg_path + value[name])
++                # Read blocklist files if any
++                if "exclude" in update:
++                    testlist = {}
++                    for value in update["exclude"]:
++                        for name in value.keys():
++                            self.read_testlist(update, field, item, testlist, name, cfg_path + value[name])
  
- 	igt_display_reset(display);
+-                item["_properties_"]["exclude"] = testlist
++                    update["exclude"] = testlist
  
-@@ -153,7 +168,24 @@ static void test_read_crc(data_t *data, enum pipe pipe,
+         if "_properties_" in self.props:
+             del self.props["_properties_"]
+@@ -446,9 +448,9 @@ class TestList:
  
- 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+             self.__add_field(key, sublevel, hierarchy_level, field[key])
  
--	for (c = 0; c < ARRAY_SIZE(colors); c++) {
-+	if (flags & TEST_DARK_SCREEN) {
-+		no_of_colors = 1;
-+		colors = (color*)malloc(no_of_colors * sizeof(color));
-+		colors[0] = (color){ .r = 0.0, .g = 0.0, .b = 0.0 };
-+	}
-+	else if (flags & TEST_DARK_SCREEN_NEGATIVE) {
-+                no_of_colors = 1;
-+                colors = (color*)malloc(no_of_colors * sizeof(color));
-+                colors[0] = (color){ .r = 1.0, .g = 1.0, .b = 1.0 };
-+	}
-+	else {
-+		no_of_colors = 2;
-+		colors = (color*)malloc(no_of_colors * sizeof(color));
-+		colors[0] = (color){ .r = 0.0, .g = 1.0, .b = 0.0 };
-+		colors[1] = (color){ .r = 0.0, .g = 1.0, .b = 1.0 };
-+	}
+-    def read_testlist(self, field, item, testlist, name, filename):
++    def read_testlist(self, update, field, item, testlist, name, filename):
+ 
+-        match_type = item["_properties_"].get("match-type", "subtest-match")
++        match_type = update.get("type", "subtest-match")
+ 
+         match_type_regex = set(["regex", "regex-ignorecase"])
+         match_type_str = set(["subtest-match"])
+@@ -514,10 +516,13 @@ class TestList:
+             if "_properties_" not in self.props[field]:
+                 continue
+ 
+-            if "include" not in self.props[field]["_properties_"]:
++            update = self.props[field]["_properties_"].get("update-from-file")
++            if not update:
+                 continue
+ 
+-            default_value = self.props[field]["_properties_"].get("default-testlist")
++            match_type = update.get("type", "subtest-match")
++            default_value = update.get("default--if-not-excluded")
++            append_value = update.get("append-value-if-not-excluded")
+ 
+             testname = subtest_dict["_summary_"]
+ 
+@@ -527,7 +532,11 @@ class TestList:
+             else:
+                 values = set()
+ 
+-            for names, regex_array in self.props[field]["_properties_"]["include"].items():
++            if append_value:
++                include_names = set(re.split(",\s*", append_value))
++                values.update(include_names)
 +
-+	for (c = 0; c < no_of_colors; c++) {
- 		char *crc_str;
- 		int n_crcs;
++            for names, regex_array in update.get("include", {}).items():
+                 name = set(re.split(",\s*", names))
+                 for regex in regex_array:
+                     if regex.fullmatch(testname):
+@@ -535,20 +544,19 @@ class TestList:
+                         break
  
-@@ -229,6 +261,7 @@ static void test_read_crc(data_t *data, enum pipe pipe,
- 	}
+             # If test is at a global blocklist, ignore it
+-            set_full_if_empty = True
+-            if "exclude" in self.props[field]["_properties_"]:
+-                for names, regex_array in self.props[field]["_properties_"]["exclude"].items():
+-                    deleted_names = set(re.split(",\s*", names))
+-                    for regex in regex_array:
+-                        if regex.fullmatch(testname):
+-                            if sorted(deleted_names) == sorted(values):
+-                                set_full_if_empty = False
+-                            values.discard(deleted_names)
++            set_default = True
++            for names, regex_array in update.get("exclude", {}).items():
++                deleted_names = set(re.split(",\s*", names))
++                for regex in regex_array:
++                    if regex.fullmatch(testname):
++                        if sorted(deleted_names) == sorted(values):
++                            set_default = False
++                        values -= deleted_names
  
- 	/* Clean-up */
-+	free(colors);
- 	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_plane_set_fb(primary, NULL);
- 	igt_display_commit(display);
-@@ -422,6 +455,10 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 			"Suspend test for pipe CRC reads." },
- 		{ "hang-read-crc", TEST_HANG,
- 			"Hang test for pipe CRC read." },
-+		{"darkscreen-read-crc", TEST_DARK_SCREEN,
-+			"Test dark screen detection works."},
-+		{"negative-darkscreen-read-crc", TEST_DARK_SCREEN_NEGATIVE,
-+			"Test false positives aren't reported by dark screen detection."},
- 	};
- 	int i;
- 	last_pipe = 0;
-@@ -475,7 +512,14 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 						test_read_crc(&data, pipe, output, 0);
+-            if default_value and set_full_if_empty and not values:
+-                values = set([default_value])
++            if default_value and set_default and not values:
++                values.update([default_value])
  
- 						igt_disallow_hang(data.drm_fd, hang);
--					} else {
-+					} else if (tests[i].flags & TEST_DARK_SCREEN || tests[i].flags & TEST_DARK_SCREEN_NEGATIVE) {
-+						igt_require_f(igt_is_dark_screen_supported(data.drm_fd, pipe),
-+							     "Dark Screen Detection not supported\n");
-+						igt_enable_dark_screen_detection(data.drm_fd, pipe);
-+						test_read_crc(&data, pipe, output, tests[i].flags);
-+						igt_disable_dark_screen_detection(data.drm_fd, pipe);
-+					}
-+					else {
- 						test_read_crc(&data, pipe, output, tests[i].flags);
- 					}
- 				}
+-            if values:
++            if values or self.props[field]["_properties_"].get("mandatory"):
+                 subtest_dict[field] = ", ".join(sorted(values))
+ 
+     def expand_subtest(self, fname, test_name, test, allow_inherit, with_lines = False, with_subtest_nr = False):
+diff --git a/tests/intel/kms_test_config.json b/tests/intel/kms_test_config.json
+index 837380ee7fae..53465c534bdc 100644
+--- a/tests/intel/kms_test_config.json
++++ b/tests/intel/kms_test_config.json
+@@ -22,20 +22,22 @@
+             "Run type": {
+                 "_properties_": {
+                     "description": "Defines what category of testlist it belongs",
+-                    "default-testlist": "FULL",
+-                    "match-type": "subtest-match",
+-                    "include": [
+-                        { "i915 BAT": "../intel-ci/fast-feedback.testlist" },
+-                        { "i915 BAT chamelium": "../intel-ci/fast-feedback-chamelium-only.testlist" },
+-                        { "i915 chamelium": "../intel-ci/chamelium-only.testlist" },
++                    "update-from-file": {
++                        "append-value-if-not-excluded": "FULL",
++                        "match-type": "subtest-match",
++                        "include": [
++                            { "i915 BAT": "../intel-ci/fast-feedback.testlist" },
++                            { "i915 BAT chamelium": "../intel-ci/fast-feedback-chamelium-only.testlist" },
++                            { "i915 chamelium": "../intel-ci/chamelium-only.testlist" },
+ 
+-                        { "Xe BAT": "../intel-ci/xe-fast-feedback.testlist" },
+-                        { "Xe BAT chamelium": "../intel-ci/xe-fast-feedback-chamelium-only.testlist" }
+-                    ],
+-                    "exclude": [
+-                        { "i915 BAT, i915 BAT chamelium, i915 chamelium": "../intel-ci/blacklist.txt" },
+-                        { "Xe BAT, Xe BAT chamelium": "../intel-ci/xe.blocklist.txt" }
+-                    ]
++                            { "Xe BAT": "../intel-ci/xe-fast-feedback.testlist" },
++                            { "Xe BAT chamelium": "../intel-ci/xe-fast-feedback-chamelium-only.testlist" }
++                        ],
++                        "exclude": [
++                            { "i915 BAT, i915 BAT chamelium, i915 chamelium, FULL": "../intel-ci/blacklist.txt" },
++                            { "Xe BAT, Xe BAT chamelium, FULL": "../intel-ci/xe.blocklist.txt" }
++                        ]
++                    }
+                 }
+             }
+         },
+diff --git a/tests/intel/xe_test_config.json b/tests/intel/xe_test_config.json
+index dd7aa4776ec6..6c8059b6f21f 100644
+--- a/tests/intel/xe_test_config.json
++++ b/tests/intel/xe_test_config.json
+@@ -33,13 +33,15 @@
+                             "mandatory": true,
+                             "description": "Defines what category of testlist it belongs",
+                             "default-testlist": "FULL",
+-                            "match-type": "subtest-match",
+-                            "include": [
+-                                { "Xe BAT": "../intel-ci/xe-fast-feedback.testlist" }
+-                            ],
+-                            "exclude": [
+-                                { "Xe BAT": "../intel-ci/xe.blocklist.txt" }
+-                            ],
++                            "update-from-file": {
++                                "type": "subtest-match",
++                                "include": [
++                                    { "Xe BAT": "../intel-ci/xe-fast-feedback.testlist" }
++                                ],
++                                "exclude": [
++                                    { "Xe BAT": "../intel-ci/xe.blocklist.txt" }
++                                ],
++                            },
+                             "order": [
+                                 "boot",
+                                 "__all__",
 -- 
-2.25.1
+2.41.0
