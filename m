@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 93E8B10E037
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Nov 2023 19:57:56 +0000 (UTC)
-Date: Thu, 2 Nov 2023 20:57:08 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A0D0810E99A
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Nov 2023 19:55:35 +0000 (UTC)
+Date: Thu, 2 Nov 2023 20:55:31 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20231102195708.z33oudk6jub2bl73@zkempczy-mobl2>
+Message-ID: <20231102195531.2utuznmpb75phfuk@zkempczy-mobl2>
 References: <20231102121044.58786-1-kamil.konieczny@linux.intel.com>
- <20231102121044.58786-5-kamil.konieczny@linux.intel.com>
+ <20231102121044.58786-4-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231102121044.58786-5-kamil.konieczny@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v1 4/4] tests/intel/xe_create: print
- first opened card
+In-Reply-To: <20231102121044.58786-4-kamil.konieczny@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v1 3/4] lib/drmtest: create helper for
+ dropping logged opened paths
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,52 +26,93 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Nov 02, 2023 at 01:10:39PM +0100, Kamil Konieczny wrote:
-> Use helper and allow to print message about first opened
-> card, so it will be coherent with other messages. Before
-> this log for multi-gpu test will miss <g:0> like:
-> 
-> IGT-Version: 1.28-g24b5fbcb5 (x86_64) (Linux: 6.6.0-rc3-xe-public)
-> Opened device: /dev/dri/card1
-> Starting subtest: multigpu-create-massive-size
-> <g:1> Opened device: /dev/dri/card2
-> <g:2> Opened device: /dev/dri/card3
-> Subtest multigpu-create-massive-size: SUCCESS
-> 
-> After using helper we can see first GPU with <g:0> like:
-> 
-> Opened device: /dev/dri/card1
-> Starting subtest: multigpu-create-massive-size
-> <g:0> Opened device: /dev/dri/card1
-> <g:1> Opened device: /dev/dri/card2
-> <g:2> Opened device: /dev/dri/card3
-> Subtest multigpu-create-massive-size: SUCCESS
+On Thu, Nov 02, 2023 at 01:10:38PM +0100, Kamil Konieczny wrote:
+> Create helper for cleaning all cached opened paths for drivers.
+> This may be used when we want to test multi-GPU scenarios and in
+> them inform user about each opened GPU card including first one.
+> Currently almost all tests open first card at start for
+> performing checks for it but that cause a lost possibilty to
+> inform user later about opening this first card.
 > 
 > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > ---
->  tests/intel/xe_create.c | 1 +
->  1 file changed, 1 insertion(+)
+>  lib/drmtest.c | 24 +++++++++++++++++++++---
+>  lib/drmtest.h |  2 ++
+>  2 files changed, 23 insertions(+), 3 deletions(-)
 > 
-> diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
-> index dc7c9502e..a882489f3 100644
-> --- a/tests/intel/xe_create.c
-> +++ b/tests/intel/xe_create.c
-> @@ -243,6 +243,7 @@ igt_main
->  		igt_multi_fork(child, gpu_count) {
->  			int gpu_fd;
+> diff --git a/lib/drmtest.c b/lib/drmtest.c
+> index 4425d4ca9..d114e8ecf 100644
+> --- a/lib/drmtest.c
+> +++ b/lib/drmtest.c
+> @@ -221,16 +221,17 @@ struct _opened_device_path {
+>  	struct igt_list_head link;
+>  };
 >  
-> +			__drm_invalidate_opened_log();
+> +static IGT_LIST_HEAD(_opened_paths);
+> +
+>  /*
+>   * Logs path of opened device. Device path opened for the first time is logged at info level,
+>   * subsequent opens (if any) are logged at debug level.
+>   */
+>  static void log_opened_device_path(const char *device_path)
+>  {
+> -	static IGT_LIST_HEAD(opened_paths);
+>  	struct _opened_device_path *item;
+>  
+> -	igt_list_for_each_entry(item, &opened_paths, link) {
+> +	igt_list_for_each_entry(item, &_opened_paths, link) {
+>  		if (!strcmp(item->path, device_path)) {
+>  			igt_debug("Opened previously opened device: %s\n", device_path);
+>  			return;
+> @@ -241,10 +242,27 @@ static void log_opened_device_path(const char *device_path)
+>  	igt_assert(item);
+>  	item->path = strdup(device_path);
+>  	igt_assert(item->path);
+> -	igt_list_add(&item->link, &opened_paths);
+> +	igt_list_add(&item->link, &_opened_paths);
+>  	igt_info("Opened device: %s\n", item->path);
+>  }
+>  
+> +/**
+> + * __drm_invalidate_opened:
+> + *
+> + * Invalidate cached opened paths.
+> + */
+> +void __drm_invalidate_opened_log(void)
+> +{
+> +	struct _opened_device_path *item, *tmp;
+> +
+> +	if (!igt_list_empty(&_opened_paths))
+> +		igt_list_for_each_entry_safe(item, tmp, &_opened_paths, link) {
+> +			free(item->path);
+> +			igt_list_del(&item->link);
+> +			free(item);
+> +		}
+> +}
 
-Shouldn't this be called in the igt_core on igt subtest exit?
-Such "voluntary" log cleaning might be confusing on next tests
-outcome.
+What about devices opened in the fixture? They are long lived
+but they will be reported as opened again.
 
 --
 Zbigniew
 
->  			gpu_fd = drm_open_filtered_card(child);
->  			igt_assert_f(gpu_fd > 0, "cannot open gpu-%d, errno=%d\n", child, errno);
->  			igt_assert(is_xe_device(gpu_fd));
+> +
+>  static int open_device(const char *name, unsigned int chipset)
+>  {
+>  	const char *forced;
+> diff --git a/lib/drmtest.h b/lib/drmtest.h
+> index 992ada194..635a1b47c 100644
+> --- a/lib/drmtest.h
+> +++ b/lib/drmtest.h
+> @@ -98,6 +98,8 @@ void __set_forced_driver(const char *name);
+>   */
+>  #define ALIGN_DOWN(x, a)	ALIGN((x) - ((a) - 1), (a))
+>  
+> +void __drm_invalidate_opened_log(void);
+> +
+>  void drm_load_module(unsigned int chipset);
+>  int drm_open_driver(int chipset);
+>  int drm_open_driver_master(int chipset);
 > -- 
 > 2.42.0
 > 
