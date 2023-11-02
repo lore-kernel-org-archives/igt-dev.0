@@ -1,26 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1012210E879
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Nov 2023 13:10:07 +0000 (UTC)
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.249.131.127])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id D8665580E62
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Nov 2023 06:10:02 -0700 (PDT)
-Received: from maurocar by linux.intel.com with local (Exim 4.96.1)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qyXSS-001I12-0y
- for igt-dev@lists.freedesktop.org; Thu, 02 Nov 2023 14:10:00 +0100
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu,  2 Nov 2023 14:06:23 +0100
-Message-ID: <20231102130957.307435-2-mauro.chehab@linux.intel.com>
-In-Reply-To: <20231102130957.307435-1-mauro.chehab@linux.intel.com>
-References: <20231102130957.307435-1-mauro.chehab@linux.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0FD0910E078
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Nov 2023 06:33:37 +0000 (UTC)
+Message-ID: <53ca4143-5214-f731-8a80-d30e35749bb7@intel.com>
+Date: Thu, 2 Nov 2023 12:03:19 +0530
+Content-Language: en-US
+To: Nidhi Gupta <nidhi1.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20231031045811.30138-1-nidhi1.gupta@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20231031045811.30138-1-nidhi1.gupta@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/5] scripts/test_list.py: better parse list
- of tests
+Subject: Re: [igt-dev] [PATCH i-g-t v5] tests/kms_frontbuffer_tracking:
+ Extend the test to enable FBC for each plane
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,234 +25,212 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+Hi Nidhi,
 
-The JSON config items for using a list of tests to fill a
-field is confusing:
-- there are several fields defined under __properties__, but
-  they're not grouped altogether;
-- the names of such fields are badly defined;
-- the "FULL" testlist is not really a list of all tests, as
-  it currently exclude tests used on other platforms.
+On Tue-31-10-2023 10:28 am, Nidhi Gupta wrote:
+> Added a new subtest to validate FBC on each plane, this new subtest
+> will first disable the fbc feature on all pipes and planes and then
+> enable it on all plane one by one and confirm.
+> 
+> v2: Modify tests to disable primary and enable other plane
+>      to check fbc is enabled or not. <Bhanu>
+> 
+> v3: Implemented design changes as suggested <Bhanu>
+> 
+> v4: Fixed nitpicks (Bhanu)
+> 
+> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+> ---
+>   tests/intel/kms_frontbuffer_tracking.c | 109 +++++++++++++++++++++++++
+>   1 file changed, 109 insertions(+)
+> 
+> diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+> index f90d09f9f..daa3ba58e 100644
+> --- a/tests/intel/kms_frontbuffer_tracking.c
+> +++ b/tests/intel/kms_frontbuffer_tracking.c
+> @@ -43,6 +43,15 @@
+>   #include "igt_sysfs.h"
+>   #include "igt_psr.h"
+>   
+> +/**
+> + * SUBTEST: plane-fbc-rte
+> + * Description: Sanity test to enable FBC on a plane.
+> + * Driver requirement: i915, xe
+> + * Functionality: fbc
+> + * Mega feature: General Display Features
+> + * Test category: functionality test
+> + */
+> +
+>   #define TIME SLOW_QUICK(1000, 10000)
+>   
+>   IGT_TEST_DESCRIPTION("Test the Kernel's frontbuffer tracking mechanism and "
+> @@ -888,6 +897,17 @@ static bool fbc_mode_too_large(void)
+>   	return strstr(buf, "FBC disabled: mode too large for compression\n");
+>   }
+>   
+> +static bool fbc_enable_per_plane(int plane_index, enum pipe pipe)
+> +{
+> +	char buf[128];
+> +	char buf_plane[128];
+> +
+> +	sprintf(buf_plane, "%d%s", plane_index, kmstest_pipe_name(pipe));
+> +
+> +	debugfs_read_crtc("i915_fbc_status", buf);
+> +	return strstr(strstr(buf, "*"), buf_plane);
+> +}
+> +
+>   static bool drrs_wait_until_rr_switch_to_low(void)
+>   {
+>   	return igt_wait(is_drrs_low(), 5000, 1);
+> @@ -1691,6 +1711,32 @@ static void set_region_for_test(const struct test_mode *t,
+>   	do_assertions(ASSERT_NO_ACTION_CHANGE);
+>   }
+>   
+> +static void set_plane_for_test_fbc(const struct test_mode *t, igt_plane_t *plane)
+> +{
+> +	struct igt_fb fb;
+> +	uint32_t color;
+> +
+> +	igt_create_fb(drm.fd, prim_mode_params.mode.hdisplay, prim_mode_params.mode.vdisplay,
+> +			t->format, DRM_FORMAT_MOD_LINEAR, &fb);
+> +	color = pick_color(&fb, COLOR_PRIM_BG);
+> +
+> +	igt_draw_rect_fb(drm.fd, drm.bops, 0, &fb, IGT_DRAW_BLT,
+> +			 0, 0, fb.width, fb.height,
+> +			 color);
+> +
+> +	igt_output_override_mode(prim_mode_params.output, &prim_mode_params.mode);
+> +	igt_output_set_pipe(prim_mode_params.output, prim_mode_params.pipe);
 
-Rewrite the logic to group them into a dict inside a field,
-like:
+As pipe, output & modes won't change for each pipe, move these 2 calls 
+to pipe level.
 
-    { "Field": {
-        "_properties_": {
-            "update-from-file": {
-                "type": "subtest-match", # or "regex", "regex-ignorecase"
-                "default-if-not-excluded": "not on testlists",
-                "append-value-if-not-excluded": "FULL",
-                "include": [
-                    { "BAT": "../ci-dir/driver-bat.testlist" },
-                    { "func1": "../ci-dir/driver-func1.testlist" },
-                ],
-                "exclude": [
-                    { "Xe BAT, FULL": "../ci-dir/driver.blocklist" }
-                    { "func1, FULL": "../ci-dir/driver-func1.blocklist" }
-                ]
-            }
-        }
-    }
+> +
+> +	igt_plane_set_fb(plane, &fb);
+> +	igt_plane_set_position(plane, 0, 0);
+> +	igt_plane_set_size(plane, prim_mode_params.mode.hdisplay, prim_mode_params.mode.vdisplay);
+> +	igt_fb_set_size(&fb, plane, prim_mode_params.mode.hdisplay, prim_mode_params.mode.vdisplay);
+> +
+> +	igt_display_commit(&drm.display);
 
-This will update all tests from ../ci-dir/driver-bat.testlist setting
-"Field" with "BAT", excluding the ones at ../ci-dir/driver.blocklist.
-Similarly, the "func1" value will be parsed.
+Don't we need to check for fbc last action here?
 
-The "FULL" testlist will contain all tests but the ones inside the
-two exclude lists: ../ci-dir/driver.blocklist and ../ci-dir/driver-func1.blocklist.
+> +	igt_require(!fbc_enable_per_plane(plane->index, prim_mode_params.pipe));
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- scripts/test_list.py             | 70 ++++++++++++++++++--------------
- tests/intel/kms_test_config.json | 28 +++++++------
- tests/intel/xe_test_config.json  | 16 ++++----
- 3 files changed, 63 insertions(+), 51 deletions(-)
+We must fail the subtest instead of skip.
 
-diff --git a/scripts/test_list.py b/scripts/test_list.py
-index 741ec5f4b5b5..bd609feeb1f1 100644
---- a/scripts/test_list.py
-+++ b/scripts/test_list.py
-@@ -328,23 +328,25 @@ class TestList:
-                     del item["_properties_"]["level"]
-                     del item["_properties_"]["sublevel"]
- 
--            # Read testlist files if any
--            if "include" in item["_properties_"]:
--                testlist = {}
--                for value in item["_properties_"]["include"]:
--                    for name in value.keys():
--                        self.read_testlist(field, item, testlist, name, cfg_path + value[name])
-+            update = self.props[field]["_properties_"].get("update-from-file")
-+            if update:
-+                # Read testlist files if any
-+                if "include" in update:
-+                    testlist = {}
-+                    for value in update["include"]:
-+                        for name in value.keys():
-+                            self.read_testlist(update, field, item, testlist, name, cfg_path + value[name])
- 
--                item["_properties_"]["include"] = testlist
-+                    update["include"] = testlist
- 
--            # Read blocklist files if any
--            if "exclude" in item["_properties_"]:
--                testlist = {}
--                for value in item["_properties_"]["exclude"]:
--                    for name in value.keys():
--                        self.read_testlist(field, item, testlist, name, cfg_path + value[name])
-+                # Read blocklist files if any
-+                if "exclude" in update:
-+                    testlist = {}
-+                    for value in update["exclude"]:
-+                        for name in value.keys():
-+                            self.read_testlist(update, field, item, testlist, name, cfg_path + value[name])
- 
--                item["_properties_"]["exclude"] = testlist
-+                    update["exclude"] = testlist
- 
-         if "_properties_" in self.props:
-             del self.props["_properties_"]
-@@ -446,9 +448,9 @@ class TestList:
- 
-             self.__add_field(key, sublevel, hierarchy_level, field[key])
- 
--    def read_testlist(self, field, item, testlist, name, filename):
-+    def read_testlist(self, update, field, item, testlist, name, filename):
- 
--        match_type = item["_properties_"].get("match-type", "subtest-match")
-+        match_type = update.get("type", "subtest-match")
- 
-         match_type_regex = set(["regex", "regex-ignorecase"])
-         match_type_str = set(["subtest-match"])
-@@ -514,10 +516,13 @@ class TestList:
-             if "_properties_" not in self.props[field]:
-                 continue
- 
--            if "include" not in self.props[field]["_properties_"]:
-+            update = self.props[field]["_properties_"].get("update-from-file")
-+            if not update:
-                 continue
- 
--            default_value = self.props[field]["_properties_"].get("default-testlist")
-+            match_type = update.get("type", "subtest-match")
-+            default_value = update.get("default--if-not-excluded")
-+            append_value = update.get("append-value-if-not-excluded")
- 
-             testname = subtest_dict["_summary_"]
- 
-@@ -527,7 +532,11 @@ class TestList:
-             else:
-                 values = set()
- 
--            for names, regex_array in self.props[field]["_properties_"]["include"].items():
-+            if append_value:
-+                include_names = set(re.split(",\s*", append_value))
-+                values.update(include_names)
-+
-+            for names, regex_array in update.get("include", {}).items():
-                 name = set(re.split(",\s*", names))
-                 for regex in regex_array:
-                     if regex.fullmatch(testname):
-@@ -535,20 +544,19 @@ class TestList:
-                         break
- 
-             # If test is at a global blocklist, ignore it
--            set_full_if_empty = True
--            if "exclude" in self.props[field]["_properties_"]:
--                for names, regex_array in self.props[field]["_properties_"]["exclude"].items():
--                    deleted_names = set(re.split(",\s*", names))
--                    for regex in regex_array:
--                        if regex.fullmatch(testname):
--                            if sorted(deleted_names) == sorted(values):
--                                set_full_if_empty = False
--                            values.discard(deleted_names)
-+            set_default = True
-+            for names, regex_array in update.get("exclude", {}).items():
-+                deleted_names = set(re.split(",\s*", names))
-+                for regex in regex_array:
-+                    if regex.fullmatch(testname):
-+                        if sorted(deleted_names) == sorted(values):
-+                            set_default = False
-+                        values -= deleted_names
- 
--            if default_value and set_full_if_empty and not values:
--                values = set([default_value])
-+            if default_value and set_default and not values:
-+                values.update([default_value])
- 
--            if values:
-+            if values or self.props[field]["_properties_"].get("mandatory"):
-                 subtest_dict[field] = ", ".join(sorted(values))
- 
-     def expand_subtest(self, fname, test_name, test, allow_inherit, with_lines = False, with_subtest_nr = False):
-diff --git a/tests/intel/kms_test_config.json b/tests/intel/kms_test_config.json
-index 837380ee7fae..53465c534bdc 100644
---- a/tests/intel/kms_test_config.json
-+++ b/tests/intel/kms_test_config.json
-@@ -22,20 +22,22 @@
-             "Run type": {
-                 "_properties_": {
-                     "description": "Defines what category of testlist it belongs",
--                    "default-testlist": "FULL",
--                    "match-type": "subtest-match",
--                    "include": [
--                        { "i915 BAT": "../intel-ci/fast-feedback.testlist" },
--                        { "i915 BAT chamelium": "../intel-ci/fast-feedback-chamelium-only.testlist" },
--                        { "i915 chamelium": "../intel-ci/chamelium-only.testlist" },
-+                    "update-from-file": {
-+                        "append-value-if-not-excluded": "FULL",
-+                        "match-type": "subtest-match",
-+                        "include": [
-+                            { "i915 BAT": "../intel-ci/fast-feedback.testlist" },
-+                            { "i915 BAT chamelium": "../intel-ci/fast-feedback-chamelium-only.testlist" },
-+                            { "i915 chamelium": "../intel-ci/chamelium-only.testlist" },
- 
--                        { "Xe BAT": "../intel-ci/xe-fast-feedback.testlist" },
--                        { "Xe BAT chamelium": "../intel-ci/xe-fast-feedback-chamelium-only.testlist" }
--                    ],
--                    "exclude": [
--                        { "i915 BAT, i915 BAT chamelium, i915 chamelium": "../intel-ci/blacklist.txt" },
--                        { "Xe BAT, Xe BAT chamelium": "../intel-ci/xe.blocklist.txt" }
--                    ]
-+                            { "Xe BAT": "../intel-ci/xe-fast-feedback.testlist" },
-+                            { "Xe BAT chamelium": "../intel-ci/xe-fast-feedback-chamelium-only.testlist" }
-+                        ],
-+                        "exclude": [
-+                            { "i915 BAT, i915 BAT chamelium, i915 chamelium, FULL": "../intel-ci/blacklist.txt" },
-+                            { "Xe BAT, Xe BAT chamelium, FULL": "../intel-ci/xe.blocklist.txt" }
-+                        ]
-+                    }
-                 }
-             }
-         },
-diff --git a/tests/intel/xe_test_config.json b/tests/intel/xe_test_config.json
-index dd7aa4776ec6..6c8059b6f21f 100644
---- a/tests/intel/xe_test_config.json
-+++ b/tests/intel/xe_test_config.json
-@@ -33,13 +33,15 @@
-                             "mandatory": true,
-                             "description": "Defines what category of testlist it belongs",
-                             "default-testlist": "FULL",
--                            "match-type": "subtest-match",
--                            "include": [
--                                { "Xe BAT": "../intel-ci/xe-fast-feedback.testlist" }
--                            ],
--                            "exclude": [
--                                { "Xe BAT": "../intel-ci/xe.blocklist.txt" }
--                            ],
-+                            "update-from-file": {
-+                                "type": "subtest-match",
-+                                "include": [
-+                                    { "Xe BAT": "../intel-ci/xe-fast-feedback.testlist" }
-+                                ],
-+                                "exclude": [
-+                                    { "Xe BAT": "../intel-ci/xe.blocklist.txt" }
-+                                ],
-+                            },
-                             "order": [
-                                 "boot",
-                                 "__all__",
--- 
-2.41.0
+> +	do_assertions(ASSERT_FBC_ENABLED);
+
+Please check this before reading fbc_enable_per_plane()
+
+> +}
+> +
+>   static bool enable_features_for_test(const struct test_mode *t)
+>   {
+>   	bool ret = false;
+> @@ -1941,6 +1987,55 @@ static void rte_subtest(const struct test_mode *t)
+>   	}
+>   }
+>   
+> +static bool is_valid_plane(igt_plane_t *plane)
+> +{
+> +	int index = plane->index;
+> +
+> +	if (plane->type == DRM_PLANE_TYPE_CURSOR)
+> +		return false;
+> +	/*
+> +	 * Execute test only on first three planes
+> +	 */
+> +	if (index < 3)
+
+Please check for negative index too.
+
+return (index >= 0) && (index < 3);
+
+> +		return true;
+> +	else
+> +		return false;
+> +
+> +}
+> +
+> +/**
+> + * plane-fbc-rte - the basic sanity test
+> + *
+> + * METHOD
+> + *   Just disable primary screen, assert everything is disabled, then enable single
+> + *   screens and single plane one by one  and assert that the tested fbc is enabled
+> + *   for the particular plane.
+> + *
+> + * EXPECTED RESULTS
+> + *   Blue screens and t->feature enabled.
+> + *
+> + * FAILURES
+> + *   A failure here means that every other subtest will probably fail too. It
+
+This is not correct if kernel failed to enable the FBC on non-primary 
+planes.
+
+> + *   probably means that the Kernel is just not enabling the feature we want.
+> + */
+> +
+> +static void plane_fbc_rte_subtest(const struct test_mode *t)
+> +{
+> +	igt_plane_t *plane;
+> +
+> +	prepare_subtest_data(t, NULL);
+> +	unset_all_crtcs();
+> +	do_assertions(ASSERT_FBC_DISABLED);
+-----------------------------------------^
+Please use DONT_ASSERT_CRC too.
+
+
+Also, please fill wanted_crc here.
+
+> +
+> +	for_each_plane_on_pipe(&drm.display, t->pipes, plane) {
+---------------------------------------------^
+This is not a pipe enum. Please fix this.
+
+> +		if (!is_valid_plane(plane))
+> +			continue;
+> +
+> +		set_plane_for_test_fbc(t, plane);
+
+After testing the each plane, we must clear the plane.
+
+> +	}
+> +
+
+Please drop this extra line.
+
+> +}
+> +
+>   static void update_wanted_crc(const struct test_mode *t, igt_crc_t *crc)
+>   {
+>   	if (t->screen == SCREEN_PRIM)
+> @@ -4936,6 +5031,20 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>   		}
+>   	}
+>   
+> +	t.pipes = PIPE_SINGLE;
+> +	t.feature = FEATURE_FBC;
+> +	t.screen = SCREEN_PRIM;
+> +	t.fbs = FBS_INDIVIDUAL;
+> +	t.format = FORMAT_DEFAULT;
+> +	/* Make sure nothing is using these values. */
+> +	t.flip = -1;
+> +	t.method = -1;
+> +	t.tiling = opt.tiling;
+> +
+> +	igt_subtest_f("plane-fbc-rte") {
+> +		plane_fbc_rte_subtest(&t);
+
+Is this test applicable to all older platforms too?
+
+- Bhanu
+
+> +	}
+> +
+>   	TEST_MODE_ITER_BEGIN(t)
+>   
+>   		igt_subtest_f("%s-%s-%s-%s-%s-draw-%s",
