@@ -1,24 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DEF6310E85A
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Nov 2023 11:43:00 +0000 (UTC)
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.249.131.127])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 1A955580D74
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Nov 2023 04:43:00 -0700 (PDT)
-Received: from maurocar by linux.intel.com with local (Exim 4.96.1)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qyW6D-001FHb-2O
- for igt-dev@lists.freedesktop.org; Thu, 02 Nov 2023 12:42:57 +0100
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu,  2 Nov 2023 12:42:56 +0100
-Message-ID: <20231102114256.297063-1-mauro.chehab@linux.intel.com>
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com
+ [IPv6:2a00:1450:4864:20::32f])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6D10510E85A
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Nov 2023 11:45:41 +0000 (UTC)
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-40806e40fccso5446785e9.2
+ for <igt-dev@lists.freedesktop.org>; Thu, 02 Nov 2023 04:45:41 -0700 (PDT)
+Message-ID: <d5330fb2-6d69-4491-aba1-2cef521bda3e@gmail.com>
+Date: Thu, 2 Nov 2023 13:45:33 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] intel/intel_hwmon.c: Fix test
- documentation
+Content-Language: en-US
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20231030163458.4101383-1-bhanuprakash.modem@intel.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+In-Reply-To: <20231030163458.4101383-1-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [i-g-t] tests/intel/kms_ccs: Avoid i915 calls on XE
+ device
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,42 +26,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+On 30.10.2023 18.34, Bhanuprakash Modem wrote:
+> For XE device, use XE specific APIs to create the BO.
+> 
+> Fixes: https://gitlab.freedesktop.org/drm/xe/kernel/issues/812
+> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>   tests/intel/kms_ccs.c | 6 +++++-
+>   1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
+> index 09b98fbec..64489b7a3 100644
+> --- a/tests/intel/kms_ccs.c
+> +++ b/tests/intel/kms_ccs.c
+> @@ -33,6 +33,7 @@
+>   
+>   #include "i915/gem_create.h"
+>   #include "xe/xe_ioctl.h"
+> +#include "xe/xe_query.h"
+>   
+>   /**
+>    * SUBTEST: %s-%s-%s
+> @@ -431,7 +432,10 @@ static void test_bad_ccs_plane(data_t *data, int width, int height, int ccs_plan
+>   
+>   	/* Put the CCS buffer on a different BO. */
+>   	if (data->flags & TEST_BAD_CCS_HANDLE) {
+> -		bad_ccs_bo = gem_create(data->drm_fd, fb.size);
+> +		bad_ccs_bo = is_i915_device(data->drm_fd) ?
+> +				gem_create(data->drm_fd, fb.size) :
+> +				xe_bo_create_flags(data->drm_fd, 0, fb.size,
+> +						   visible_vram_if_possible(data->drm_fd, 0));;
 
-The test documentation is incomplete, causing warnings:
+You have extra semicolon above. With that removed
 
-Warning: igt@intel_hwmon@hwmon-read Category documentation is missing
-Warning: igt@intel_hwmon@hwmon-read Functionality documentation is missing
-Warning: igt@intel_hwmon@hwmon-read Sub-category documentation is missing
-Warning: igt@intel_hwmon@hwmon-write Category documentation is missing
-Warning: igt@intel_hwmon@hwmon-write Functionality documentation is missing
-Warning: igt@intel_hwmon@hwmon-write Sub-category documentation is missing
+Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 
-Reported-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Badal Nilawar <badal.nilawar@intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- tests/intel/intel_hwmon.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/tests/intel/intel_hwmon.c b/tests/intel/intel_hwmon.c
-index 1cc9cd399c85..c3e5033d52ff 100644
---- a/tests/intel/intel_hwmon.c
-+++ b/tests/intel/intel_hwmon.c
-@@ -11,7 +11,9 @@
- /**
-  * TEST: intel hwmon
-  * Description: Tests for intel hwmon
-- * Feature: hwmon
-+ * Category: Software Building Block
-+ * Sub-category: RAS
-+ * Functionality: hwmon
-  * Run type: FULL
-  * Test category: functionality
-  *
--- 
-2.41.0
+>   		f.handles[ccs_plane] = bad_ccs_bo;
+>   	}
+>   
