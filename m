@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4B8B510E878
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Nov 2023 12:10:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9D2D610E879
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Nov 2023 12:10:58 +0000 (UTC)
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  2 Nov 2023 13:10:35 +0100
-Message-ID: <20231102121044.58786-1-kamil.konieczny@linux.intel.com>
+Date: Thu,  2 Nov 2023 13:10:37 +0100
+Message-ID: <20231102121044.58786-3-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20231102121044.58786-1-kamil.konieczny@linux.intel.com>
+References: <20231102121044.58786-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v1 0/4] drmtest changes for filtering GPUs
- on multi-gpu
+Subject: [igt-dev] [PATCH i-g-t v1 2/4] tests/intel/xe_create: add multi-GPU
+ basic test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,35 +23,56 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Here is a proposed solution for multi-GPU testing with the help
-of new drmtest functions. It will work with and without filters,
-also when first card is non-Intel one with no render device.
+Add basic multi-GPU test using drm filtered helpers.
 
-sudo build/tests/xe_create --r multigpu-create-massive-size
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ tests/intel/xe_create.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-sudo IGT_DEVICE=pci:vendor=Intel,device=discrete,card=all build/tests/xe_create --r multigpu-create-massive-size
-
-IGT-Version: 1.28-g24b5fbcb5 (x86_64) (Linux: 6.6.0-rc3-xe-public-37b2d042c23a+ x86_64)
-Opened device: /dev/dri/card1
-Starting subtest: multigpu-create-massive-size
-<g:0> Opened device: /dev/dri/card1
-<g:1> Opened device: /dev/dri/card2
-<g:2> Opened device: /dev/dri/card3
-Subtest multigpu-create-massive-size: SUCCESS (0.202s)
-
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-
-
-Kamil Konieczny (4):
-  lib/drmtest: add multi-GPU helpers for filtered devices
-  tests/intel/xe_create: add multi-GPU basic test
-  lib/drmtest: create helper for dropping logged opened paths
-  tests/intel/xe_create: print first opened card
-
- lib/drmtest.c           | 126 +++++++++++++++++++++++++++++++++++++++-
- lib/drmtest.h           |   5 ++
- tests/intel/xe_create.c |  27 +++++++++
- 3 files changed, 155 insertions(+), 3 deletions(-)
-
+diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+index d99bd51cf..dc7c9502e 100644
+--- a/tests/intel/xe_create.c
++++ b/tests/intel/xe_create.c
+@@ -191,6 +191,13 @@ static void create_execqueues(int fd, enum exec_queue_destroy ed)
+  * Test category: functionality test
+  * Description: Verifies xe bo create returns expected error code on massive
+  *              buffer sizes.
++ *
++ * SUBTEST: multigpu-create-massive-size
++ * Functionality: ioctl
++ * Test category: functionality test
++ * Feature: multigpu
++ * Description: Verifies xe bo create with massive buffer sizes runs correctly
++ *		on two or more GPUs.
+  */
+ static void create_massive_size(int fd)
+ {
+@@ -228,6 +235,25 @@ igt_main
+ 		create_massive_size(xe);
+ 	}
+ 
++	igt_subtest("multigpu-create-massive-size") {
++		int gpu_count = drm_get_filtered_gpu_count(DRIVER_XE);
++
++		igt_require(xe > 0);
++		igt_require(gpu_count >= 2);
++		igt_multi_fork(child, gpu_count) {
++			int gpu_fd;
++
++			gpu_fd = drm_open_filtered_card(child);
++			igt_assert_f(gpu_fd > 0, "cannot open gpu-%d, errno=%d\n", child, errno);
++			igt_assert(is_xe_device(gpu_fd));
++
++			create_massive_size(gpu_fd);
++			drm_close_driver(gpu_fd);
++		}
++		igt_waitchildren();
++	}
++
++
+ 	igt_fixture
+ 		drm_close_driver(xe);
+ }
 -- 
 2.42.0
