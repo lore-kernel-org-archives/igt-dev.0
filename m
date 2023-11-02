@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A0D0810E99A
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Nov 2023 19:55:35 +0000 (UTC)
-Date: Thu, 2 Nov 2023 20:55:31 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20231102195531.2utuznmpb75phfuk@zkempczy-mobl2>
-References: <20231102121044.58786-1-kamil.konieczny@linux.intel.com>
- <20231102121044.58786-4-kamil.konieczny@linux.intel.com>
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam04on2062.outbound.protection.outlook.com [40.107.100.62])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6EB7710E9A1
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Nov 2023 20:00:09 +0000 (UTC)
+From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Thu, 2 Nov 2023 15:59:57 -0400
+Message-ID: <20231102200000.969208-1-aurabindo.pillai@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231102121044.58786-4-kamil.konieczny@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v1 3/4] lib/drmtest: create helper for
- dropping logged opened paths
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH i-g-t 1/4] lib/amd: improve MALL capabilities
+ checking logic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,98 +19,48 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Nov 02, 2023 at 01:10:38PM +0100, Kamil Konieczny wrote:
-> Create helper for cleaning all cached opened paths for drivers.
-> This may be used when we want to test multi-GPU scenarios and in
-> them inform user about each opened GPU card including first one.
-> Currently almost all tests open first card at start for
-> performing checks for it but that cause a lost possibilty to
-> inform user later about opening this first card.
-> 
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  lib/drmtest.c | 24 +++++++++++++++++++++---
->  lib/drmtest.h |  2 ++
->  2 files changed, 23 insertions(+), 3 deletions(-)
-> 
-> diff --git a/lib/drmtest.c b/lib/drmtest.c
-> index 4425d4ca9..d114e8ecf 100644
-> --- a/lib/drmtest.c
-> +++ b/lib/drmtest.c
-> @@ -221,16 +221,17 @@ struct _opened_device_path {
->  	struct igt_list_head link;
->  };
->  
-> +static IGT_LIST_HEAD(_opened_paths);
-> +
->  /*
->   * Logs path of opened device. Device path opened for the first time is logged at info level,
->   * subsequent opens (if any) are logged at debug level.
->   */
->  static void log_opened_device_path(const char *device_path)
->  {
-> -	static IGT_LIST_HEAD(opened_paths);
->  	struct _opened_device_path *item;
->  
-> -	igt_list_for_each_entry(item, &opened_paths, link) {
-> +	igt_list_for_each_entry(item, &_opened_paths, link) {
->  		if (!strcmp(item->path, device_path)) {
->  			igt_debug("Opened previously opened device: %s\n", device_path);
->  			return;
-> @@ -241,10 +242,27 @@ static void log_opened_device_path(const char *device_path)
->  	igt_assert(item);
->  	item->path = strdup(device_path);
->  	igt_assert(item->path);
-> -	igt_list_add(&item->link, &opened_paths);
-> +	igt_list_add(&item->link, &_opened_paths);
->  	igt_info("Opened device: %s\n", item->path);
->  }
->  
-> +/**
-> + * __drm_invalidate_opened:
-> + *
-> + * Invalidate cached opened paths.
-> + */
-> +void __drm_invalidate_opened_log(void)
-> +{
-> +	struct _opened_device_path *item, *tmp;
-> +
-> +	if (!igt_list_empty(&_opened_paths))
-> +		igt_list_for_each_entry_safe(item, tmp, &_opened_paths, link) {
-> +			free(item->path);
-> +			igt_list_del(&item->link);
-> +			free(item);
-> +		}
-> +}
+improve strstr() arguments to be more accurate when
+multiple features are exposed in DM capabilities end point
 
-What about devices opened in the fixture? They are long lived
-but they will be reported as opened again.
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+---
+ lib/igt_amd.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---
-Zbigniew
-
-> +
->  static int open_device(const char *name, unsigned int chipset)
->  {
->  	const char *forced;
-> diff --git a/lib/drmtest.h b/lib/drmtest.h
-> index 992ada194..635a1b47c 100644
-> --- a/lib/drmtest.h
-> +++ b/lib/drmtest.h
-> @@ -98,6 +98,8 @@ void __set_forced_driver(const char *name);
->   */
->  #define ALIGN_DOWN(x, a)	ALIGN((x) - ((a) - 1), (a))
->  
-> +void __drm_invalidate_opened_log(void);
-> +
->  void drm_load_module(unsigned int chipset);
->  int drm_open_driver(int chipset);
->  int drm_open_driver_master(int chipset);
-> -- 
-> 2.42.0
-> 
+diff --git a/lib/igt_amd.c b/lib/igt_amd.c
+index 84c6d7545..85afec99e 100644
+--- a/lib/igt_amd.c
++++ b/lib/igt_amd.c
+@@ -45,6 +45,12 @@
+ #define Y6 64
+ #define Y7 128
+ 
++#define SUPP "supported: yes"
++#define EN ", enabled: yes"
++
++#define MALL_SUPP "mall " SUPP
++#define MALL_EN MALL_SUPP EN
++
+ struct dim2d
+ {
+     int w;
+@@ -1197,11 +1203,11 @@ void igt_amd_get_mall_status(int drm_fd, bool *supported, bool *enabled)
+ 	if (!get_dm_capabilities(drm_fd, buf, 1024))
+ 		return;
+ 
+-	mall_loc = strstr(buf, "mall supported: yes");
++	mall_loc = strstr(buf, MALL_SUPP);
+ 	if (mall_loc)
+ 		*supported = true;
+ 
+-	mall_loc = strstr(buf, "enabled: yes");
++	mall_loc = strstr(buf, MALL_EN);
+ 	if (mall_loc && *supported)
+ 		*enabled = true;
+ }
+-- 
+2.39.2
