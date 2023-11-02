@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 693CE10E07B
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Nov 2023 10:47:38 +0000 (UTC)
-Date: Thu, 30 Nov 2023 11:47:15 +0100
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 740B510E8D5
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Nov 2023 14:37:59 +0000 (UTC)
+Date: Thu, 2 Nov 2023 15:37:51 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20231130104715.5tz6l57bzqkwxt5h@kamilkon-desk.igk.intel.com>
-References: <20231130071253.114028-1-mauro.chehab@linux.intel.com>
- <20231130071253.114028-2-mauro.chehab@linux.intel.com>
+Message-ID: <20231102143751.fyi54dfmc6ureunq@kamilkon-desk.igk.intel.com>
+References: <20231102130957.307435-1-mauro.chehab@linux.intel.com>
+ <20231102130957.307435-3-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231130071253.114028-2-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/1] scripts/igt_doc.py: rewrite intelci
- testlist logic
+In-Reply-To: <20231102130957.307435-3-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/5] scripts/test_list.py: speedup
+ update testlist logic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,270 +26,63 @@ To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Mauro,
-On 2023-11-30 at 08:11:50 +0100, Mauro Carvalho Chehab wrote:
+On 2023-11-02 at 14:06:24 +0100, Mauro Carvalho Chehab wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
-> Cleanup the block/accept testlist code, reducing one step on it,
-> and fixing some issues at testlist generation.
+> Compile the expand regex to speed it up the parsing of
+> test lists.
 > 
 > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-Btw could you add in separate patch documentation for this new option?
-I am afraid it wil be lost in patchwork but should be in code
-or in one of commit description. Alternativly, write it somewhere,
-what about igt_doc_examples.txt with examples?
-
-Regards,
-Kamil
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 > ---
->  scripts/igt_doc.py | 181 +++++++++++++++++++++++++--------------------
->  1 file changed, 99 insertions(+), 82 deletions(-)
+>  scripts/test_list.py | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
 > 
-> diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
-> index 0ec6e3e5ec97..df3f72c8d69f 100755
-> --- a/scripts/igt_doc.py
-> +++ b/scripts/igt_doc.py
-> @@ -1,5 +1,5 @@
->  #!/usr/bin/env python3
-> -# pylint: disable=C0301,C0201,C0206
-> +# pylint: disable=C0301,R0914,R0915,R1702
->  # SPDX-License-Identifier: (GPL-2.0 OR MIT)
+> diff --git a/scripts/test_list.py b/scripts/test_list.py
+> index bd609feeb1f1..252fda576c92 100644
+> --- a/scripts/test_list.py
+> +++ b/scripts/test_list.py
+> @@ -512,6 +512,8 @@ class TestList:
+>          return False
 >  
->  ## Copyright (C) 2023    Intel Corporation                 ##
-> @@ -56,7 +56,7 @@ class IgtTestList(TestList):
->          subtest_dict = self.expand_dictionary(True)
->  
->          # Create a tests_per_list dict
-> -        gpus = set()
-> +        gpu_set = set()
->          tests_per_list = {}
->          split_regex = re.compile(r",\s*")
->  
-> @@ -68,115 +68,126 @@ class IgtTestList(TestList):
->              for run_type in set(split_regex.split(run_types)):
->                  run_type = run_type.lower()
->  
-> -                if run_type.startswith(tuple(self.drivers)):
-> -                    run_type_set.add(run_type)
-> -                else:
-> -                    for driver in self.drivers:
-> -                        run_type = f"{driver.lower()}_{run_type}"
-> -                        run_type_set.add(run_type)
-> +                drivers = set(self.drivers)
->  
-> -            for run_type in run_type_set:
-> -                if run_type not in tests_per_list:
-> -                    tests_per_list[run_type] = {}
-> +                for driver in self.drivers:
-> +                    driver = driver.lower()
->  
-> -                if subname not in tests_per_list[run_type]:
-> -                    tests_per_list[run_type][subname] = {}
-> -
-> -                if "GPU" in subtest:
-> -                    for gpu_list in split_regex.split(subtest["GPU"]):
-> -                        gpus.add(gpu_list)
-> -                        tests_per_list[run_type][subname][gpu_list] = True
-> -
-> -                if "GPU excluded platform" in subtest:
-> -                    for gpu_list in split_regex.split(subtest["GPU excluded platform"]):
-> -                        gpus.add(gpu_list)
-> -                        tests_per_list[run_type][subname][gpu_list] = False
-> -
-> -        # Handle block and permit lists
-> -
-> -        for run_type in tests_per_list.keys():
-> -            for subname, gpu in tests_per_list[run_type].items():
-> -
-> -                # Trivial case: fields not defined
-> -                if not gpus:
-> -                    tests_per_list[run_type][subname]["default"] = True
-> -                    continue
-> -
-> -                if not gpu:
-> -                    tests_per_list[run_type][subname] = {}
-> -                    for gpu in gpus:
-> -                        tests_per_list[run_type][subname][gpu] = True
-> -                    continue
-> -
-> -                default_gpu_value = True
-> -                for gpu, value in tests_per_list[run_type][subname].items():
-> -                    if value:
-> -                        default_gpu_value = False
-> +                    if run_type.startswith(driver):
-> +                        run_type = re.sub(r"^" + driver + r"[\W_]*", "", run_type)
-> +                        drivers = set([driver])
->                          break
-> -                    if not gpu in tests_per_list[run_type][subname]:
-> -                        for gpu in gpus:
-> -                            tests_per_list[run_type][subname][gpu] = default_gpu_value
->  
-> -                if "all" in tests_per_list[run_type][subname]:
-> -                    if not tests_per_list[run_type][subname]["all"]:
-> -                        for gpu in gpus:
-> -                            tests_per_list[run_type][subname][gpu] = False
-> +                run_type_set.add(run_type)
->  
-> -                if default_gpu_value:
-> -                    tests_per_list[run_type][subname]["default"] = True
-> +            for driver in drivers:
-> +                if driver not in tests_per_list:
-> +                    tests_per_list[driver] = {}
->  
-> -        return (gpus, tests_per_list)
-> +                for run_type in run_type_set:
-> +                    if run_type not in tests_per_list[driver]:
-> +                        tests_per_list[driver][run_type] = {}
->  
-> -    def write_intelci_testlist(self, directory):
-> -        '''Create testlist directory (if needed) and files'''
-> +                    if subname not in tests_per_list[driver][run_type]:
-> +                        tests_per_list[driver][run_type][subname] = {}
->  
-> -        if not os.path.exists(directory):
-> -            os.makedirs(directory)
-> +                    if "GPU" in subtest:
-> +                        for gpu in split_regex.split(subtest["GPU"]):
-> +                            gpu_set.add(gpu)
-> +                            tests_per_list[driver][run_type][subname][gpu] = True
+>      def update_testlist_field(self, subtest_dict):
+> +        expand = re.compile(",\s*")
 > +
-> +                    if "GPU excluded platform" in subtest:
-> +                        for gpu in split_regex.split(subtest["GPU excluded platform"]):
-> +                            gpu_set.add(gpu)
-> +                            tests_per_list[driver][run_type][subname][gpu] = False
-> +
-> +        # Create a testlist dictionary
+>          for field in self.props.keys():
+>              if "_properties_" not in self.props[field]:
+>                  continue
+> @@ -528,16 +530,16 @@ class TestList:
 >  
-> -        (gpus, tests_per_list)  = self.gen_intelci_testlist()
->          testlists = {}
+>              value = subtest_dict.get(field)
+>              if value:
+> -                values = set(re.split(",\s*", value))
+> +                values = set(expand.split(value))
+>              else:
+>                  values = set()
 >  
-> -        for run_type in tests_per_list.keys():
-> -            for subname, gpu_dict in tests_per_list[run_type].items():
-> -                for gpu, value in gpu_dict.items():
-> -                    if gpu == "all":
-> +        for driver, run_types in tests_per_list.items():
-> +            testlists[driver] = {}
-> +            for run_type, subnames in run_types.items():
-> +                for subname, gpus in subnames.items():
-> +                    if not gpu_set:
-> +                        gpu = "default"
-> +
-> +                    if gpu not in testlists[driver]:
-> +                        testlists[driver][gpu] = {}
-> +
-> +                    if run_type not in testlists[driver][gpu]:
-> +                        testlists[driver][gpu][run_type] = set()
-> +
-> +                    # Trivial case: fields not defined
-> +                    if not gpu_set:
-> +                        testlists[driver][gpu][run_type].add(subname)
-> +                        continue
-> +
-> +                    # Globally blocklisted values
-> +                    if "all" in tests_per_list[driver][run_type][subname]:
->                          continue
+>              if append_value:
+> -                include_names = set(re.split(",\s*", append_value))
+> +                include_names = set(expand.split(append_value))
+>                  values.update(include_names)
 >  
-> -                    gpu = re.sub(r"[\W_]+", "-", gpu).lower()
-> -                    name = re.sub(r"[\W_]+", "-", run_type).lower()
-> -                    name = re.sub(r"_+", "_", name)
-> +                    # Nothing blocked of explicitly added.
-> +                    # It means that test should be on testlists
-> +                    if not gpus:
-> +                        for gpu in gpu_set:
-> +                            if gpu == "all":
-> +                                continue
-> +
-> +                            if gpu not in testlists[driver]:
-> +                                testlists[driver][gpu] = {}
->  
-> -                    drivers = set(self.drivers)
-> +                            if run_type not in testlists[driver][gpu]:
-> +                                testlists[driver][gpu][run_type] = set()
-> +
-> +                            testlists[driver][gpu][run_type].add(subname)
-> +                        continue
->  
-> -                    for driver in self.drivers:
-> -                        driver = driver.lower()
-> +                    default_gpu_value = True
->  
-> -                        if name.startswith(driver):
-> -                            all_drivers = False
-> -                            name = re.sub(r"^" + driver + r"[\W_]*", "", name)
-> -                            drivers = set([driver])
-> +                    # If GPU field is used, default is to block list
-> +                    for gpu, value in gpus.items():
-> +                        if value:
-> +                            default_gpu_value = False
->                              break
->  
-> -                    for driver in drivers:
-> -                        if driver not in testlists:
-> -                            testlists[driver] = {}
-> -
-> +                    for gpu, value in gpus.items():
->                          if gpu not in testlists[driver]:
->                              testlists[driver][gpu] = {}
->  
-> -                        if name not in testlists[driver][gpu]:
-> -                            testlists[driver][gpu][name] = set()
-> +                        if run_type not in testlists[driver][gpu]:
-> +                            testlists[driver][gpu][run_type] = set()
->  
-> -                        testlists[driver][gpu][name].add(subname)
-> +                        value = default_gpu_value
-> +                        if gpu in tests_per_list[driver][run_type][subname]:
-> +                            value = tests_per_list[driver][run_type][subname]
->  
-> -        for driver in testlists.keys():
-> +                        if value:
-> +                            testlists[driver][gpu][run_type].add(subname)
-> +
-> +                    if default_gpu_value:
-> +                        testlists[driver][gpu][run_type].add(subname)
-> +
-> +        return (testlists, gpu_set)
-> +
-> +    def write_intelci_testlist(self, directory):
-> +        '''Create testlist directory (if needed) and files'''
-> +
-> +        if not os.path.exists(directory):
-> +            os.makedirs(directory)
-> +
-> +        testlists = self.gen_intelci_testlist()
-> +
-> +        for driver, gpus in testlists[0].items():
->              driver_path = os.path.join(directory, driver)
->              try:
->                  os.makedirs(driver_path)
->              except FileExistsError:
->                  pass
->  
-> -            for gpu, names in testlists[driver].items():
-> +            for gpu, names in gpus.items():
-> +                gpu = re.sub(r"[\W_]+", "-", gpu).lower()
-> +
->                  dname = os.path.join(driver_path, gpu)
->                  try:
->                      os.makedirs(dname)
-> @@ -185,7 +196,13 @@ class IgtTestList(TestList):
->  
->                  for testlist, subtests in names.items():
->                      if testlist == "":
-> +                        if not subtests:
-> +                            continue
-> +
->                          testlist = "other"
-> +                    else:
-> +                        testlist = re.sub(r"[\W_]+", "-", testlist).lower()
-> +                        testlist = re.sub(r"_+", "_", testlist)
->  
->                      if not subtests:
->                          print(f"Warning: empty testlist: {testlist}")
+>              for names, regex_array in update.get("include", {}).items():
+> -                name = set(re.split(",\s*", names))
+> +                name = set(expand.split(names))
+>                  for regex in regex_array:
+>                      if regex.fullmatch(testname):
+>                          values.update(name)
+> @@ -546,7 +548,7 @@ class TestList:
+>              # If test is at a global blocklist, ignore it
+>              set_default = True
+>              for names, regex_array in update.get("exclude", {}).items():
+> -                deleted_names = set(re.split(",\s*", names))
+> +                deleted_names = set(expand.split(names))
+>                  for regex in regex_array:
+>                      if regex.fullmatch(testname):
+>                          if sorted(deleted_names) == sorted(values):
 > -- 
-> 2.42.0
+> 2.41.0
 > 
 
