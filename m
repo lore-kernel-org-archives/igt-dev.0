@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9D2D610E879
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Nov 2023 12:10:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 403D710E884
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Nov 2023 12:11:02 +0000 (UTC)
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  2 Nov 2023 13:10:37 +0100
-Message-ID: <20231102121044.58786-3-kamil.konieczny@linux.intel.com>
+Date: Thu,  2 Nov 2023 13:10:38 +0100
+Message-ID: <20231102121044.58786-4-kamil.konieczny@linux.intel.com>
 In-Reply-To: <20231102121044.58786-1-kamil.konieczny@linux.intel.com>
 References: <20231102121044.58786-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v1 2/4] tests/intel/xe_create: add multi-GPU
- basic test
+Subject: [igt-dev] [PATCH i-g-t v1 3/4] lib/drmtest: create helper for
+ dropping logged opened paths
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,56 +23,84 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add basic multi-GPU test using drm filtered helpers.
+Create helper for cleaning all cached opened paths for drivers.
+This may be used when we want to test multi-GPU scenarios and in
+them inform user about each opened GPU card including first one.
+Currently almost all tests open first card at start for
+performing checks for it but that cause a lost possibilty to
+inform user later about opening this first card.
 
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/intel/xe_create.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ lib/drmtest.c | 24 +++++++++++++++++++++---
+ lib/drmtest.h |  2 ++
+ 2 files changed, 23 insertions(+), 3 deletions(-)
 
-diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
-index d99bd51cf..dc7c9502e 100644
---- a/tests/intel/xe_create.c
-+++ b/tests/intel/xe_create.c
-@@ -191,6 +191,13 @@ static void create_execqueues(int fd, enum exec_queue_destroy ed)
-  * Test category: functionality test
-  * Description: Verifies xe bo create returns expected error code on massive
-  *              buffer sizes.
-+ *
-+ * SUBTEST: multigpu-create-massive-size
-+ * Functionality: ioctl
-+ * Test category: functionality test
-+ * Feature: multigpu
-+ * Description: Verifies xe bo create with massive buffer sizes runs correctly
-+ *		on two or more GPUs.
-  */
- static void create_massive_size(int fd)
- {
-@@ -228,6 +235,25 @@ igt_main
- 		create_massive_size(xe);
- 	}
+diff --git a/lib/drmtest.c b/lib/drmtest.c
+index 4425d4ca9..d114e8ecf 100644
+--- a/lib/drmtest.c
++++ b/lib/drmtest.c
+@@ -221,16 +221,17 @@ struct _opened_device_path {
+ 	struct igt_list_head link;
+ };
  
-+	igt_subtest("multigpu-create-massive-size") {
-+		int gpu_count = drm_get_filtered_gpu_count(DRIVER_XE);
++static IGT_LIST_HEAD(_opened_paths);
 +
-+		igt_require(xe > 0);
-+		igt_require(gpu_count >= 2);
-+		igt_multi_fork(child, gpu_count) {
-+			int gpu_fd;
-+
-+			gpu_fd = drm_open_filtered_card(child);
-+			igt_assert_f(gpu_fd > 0, "cannot open gpu-%d, errno=%d\n", child, errno);
-+			igt_assert(is_xe_device(gpu_fd));
-+
-+			create_massive_size(gpu_fd);
-+			drm_close_driver(gpu_fd);
-+		}
-+		igt_waitchildren();
-+	}
-+
-+
- 	igt_fixture
- 		drm_close_driver(xe);
+ /*
+  * Logs path of opened device. Device path opened for the first time is logged at info level,
+  * subsequent opens (if any) are logged at debug level.
+  */
+ static void log_opened_device_path(const char *device_path)
+ {
+-	static IGT_LIST_HEAD(opened_paths);
+ 	struct _opened_device_path *item;
+ 
+-	igt_list_for_each_entry(item, &opened_paths, link) {
++	igt_list_for_each_entry(item, &_opened_paths, link) {
+ 		if (!strcmp(item->path, device_path)) {
+ 			igt_debug("Opened previously opened device: %s\n", device_path);
+ 			return;
+@@ -241,10 +242,27 @@ static void log_opened_device_path(const char *device_path)
+ 	igt_assert(item);
+ 	item->path = strdup(device_path);
+ 	igt_assert(item->path);
+-	igt_list_add(&item->link, &opened_paths);
++	igt_list_add(&item->link, &_opened_paths);
+ 	igt_info("Opened device: %s\n", item->path);
  }
+ 
++/**
++ * __drm_invalidate_opened:
++ *
++ * Invalidate cached opened paths.
++ */
++void __drm_invalidate_opened_log(void)
++{
++	struct _opened_device_path *item, *tmp;
++
++	if (!igt_list_empty(&_opened_paths))
++		igt_list_for_each_entry_safe(item, tmp, &_opened_paths, link) {
++			free(item->path);
++			igt_list_del(&item->link);
++			free(item);
++		}
++}
++
+ static int open_device(const char *name, unsigned int chipset)
+ {
+ 	const char *forced;
+diff --git a/lib/drmtest.h b/lib/drmtest.h
+index 992ada194..635a1b47c 100644
+--- a/lib/drmtest.h
++++ b/lib/drmtest.h
+@@ -98,6 +98,8 @@ void __set_forced_driver(const char *name);
+  */
+ #define ALIGN_DOWN(x, a)	ALIGN((x) - ((a) - 1), (a))
+ 
++void __drm_invalidate_opened_log(void);
++
+ void drm_load_module(unsigned int chipset);
+ int drm_open_driver(int chipset);
+ int drm_open_driver_master(int chipset);
 -- 
 2.42.0
