@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam12on20625.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:fe5b::625])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CCB7610E9A2
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Nov 2023 20:00:15 +0000 (UTC)
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Thu, 2 Nov 2023 16:00:00 -0400
-Message-ID: <20231102200000.969208-4-aurabindo.pillai@amd.com>
-In-Reply-To: <20231102200000.969208-1-aurabindo.pillai@amd.com>
-References: <20231102200000.969208-1-aurabindo.pillai@amd.com>
+Content-Type: multipart/alternative;
+ boundary="===============2789153420321248791=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t 4/4] test/amdgpu: Add test for Sub-viewport
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Aurabindo Pillai" <aurabindo.pillai@amd.com>
+Date: Thu, 02 Nov 2023 20:55:05 -0000
+Message-ID: <169895850571.28160.9032573466575217909@emeril.freedesktop.org>
+References: <20231102200000.969208-1-aurabindo.pillai@amd.com>
+In-Reply-To: <20231102200000.969208-1-aurabindo.pillai@amd.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/4=5D_lib/amd=3A_improve_MALL_capabi?=
+ =?utf-8?q?lities_checking_logic?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,233 +18,206 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Sub-viewport is a power saving feature found on DCN32/DCN321 and newer dGPUs.
+--===============2789153420321248791==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Add a test that commit a high resolution test pattern on multiple displays
-and checks whether Sub-viewport feature is engaged.
+== Series Details ==
 
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
----
- tests/amdgpu/amd_subvp.c | 194 +++++++++++++++++++++++++++++++++++++++
- tests/amdgpu/meson.build |   1 +
- 2 files changed, 195 insertions(+)
- create mode 100644 tests/amdgpu/amd_subvp.c
+Series: series starting with [i-g-t,1/4] lib/amd: improve MALL capabilities checking logic
+URL   : https://patchwork.freedesktop.org/series/125930/
+State : success
 
-diff --git a/tests/amdgpu/amd_subvp.c b/tests/amdgpu/amd_subvp.c
-new file mode 100644
-index 000000000..110ae31a5
---- /dev/null
-+++ b/tests/amdgpu/amd_subvp.c
-@@ -0,0 +1,194 @@
-+/*
-+ * Copyright 2023 Advanced Micro Devices, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ */
-+
-+#include "igt.h"
-+#include "igt_amd.h"
-+#include "igt_core.h"
-+#include <fcntl.h>
-+
-+IGT_TEST_DESCRIPTION("Test enabling sub-viewport feature");
-+
-+/* Common test data. */
-+typedef struct data {
-+	igt_display_t display;
-+	igt_plane_t *primary[IGT_MAX_PIPES];
-+	igt_output_t *output[IGT_MAX_PIPES];
-+	igt_pipe_t *pipe[IGT_MAX_PIPES];
-+	igt_pipe_crc_t *pipe_crc[IGT_MAX_PIPES];
-+	drmModeModeInfo mode[IGT_MAX_PIPES];
-+	enum pipe pipe_id[IGT_MAX_PIPES];
-+	int fd;
-+} data_t;
-+
-+struct line_check {
-+	int found;
-+	const char *substr;
-+};
-+
-+static const drmModeModeInfo test_mode[] = {
-+	{ 533250,
-+	3840, 3888, 3920, 4000, 0,
-+	2160, 2214, 2219, 2222, 0,
-+	60,
-+	DRM_MODE_FLAG_NHSYNC,
-+	0x48,
-+	"4k60\0",
-+	}, /* from LG Ultra HD, product_id = 5B09, serial_number = 1010101 */
-+};
-+
-+/* Forces a mode for a connector. */
-+static void force_output_mode(struct data *d, igt_output_t *output,
-+			      const drmModeModeInfo *mode)
-+{
-+	/* This allows us to create a virtual sink. */
-+	if (!igt_output_is_connected(output)) {
-+		kmstest_force_edid(d->fd, output->config.connector,
-+				   igt_kms_get_4k_edid());
-+
-+		kmstest_force_connector(d->fd, output->config.connector,
-+					FORCE_CONNECTOR_DIGITAL);
-+	}
-+
-+	igt_output_override_mode(output, mode);
-+}
-+
-+/* Common test setup. */
-+static void test_init(data_t *data)
-+{
-+	igt_display_t *display = &data->display;
-+	int i, n;
-+	bool subvp_capable = false;
-+	bool subvp_en = false;
-+
-+	for_each_pipe(display, i) {
-+		data->pipe_id[i] = PIPE_A + i;
-+		data->pipe[i] = &data->display.pipes[data->pipe_id[i]];
-+		data->primary[i] = igt_pipe_get_plane_type(data->pipe[i], DRM_PLANE_TYPE_PRIMARY);
-+		data->pipe_crc[i] = igt_pipe_crc_new(data->fd, data->pipe_id[i], IGT_PIPE_CRC_SOURCE_AUTO);
-+	}
-+
-+	for (i = 0, n = 0; i < display->n_outputs && n < display->n_pipes; ++i) {
-+		igt_output_t *output = &display->outputs[i];
-+		data->output[n] = output;
-+
-+		/* Only allow physically connected displays for the tests. */
-+		if (!igt_output_is_connected(output))
-+				continue;
-+
-+		/* SubVP is only enabled on DP */
-+		if (output->config.connector->connector_type !=
-+			DRM_MODE_CONNECTOR_DisplayPort)
-+			continue;
-+
-+		igt_assert(kmstest_get_connector_default_mode(
-+				data->fd, output->config.connector, &data->mode[n]));
-+
-+		force_output_mode(data, data->output[n], &test_mode[0]);
-+
-+		n += 1;
-+	}
-+
-+	igt_require_f(n >= 2, "Requires at least two connected display\n");\
-+
-+	igt_amd_get_subvp_status(data->fd, &subvp_capable, &subvp_en);
-+	igt_require_f(subvp_capable, "Requires hardware that supports Sub-viewport\n");
-+
-+	igt_display_reset(display);
-+}
-+
-+/* Common test cleanup. */
-+static void test_fini(data_t *data)
-+{
-+	igt_display_t *display = &data->display;
-+	int i;
-+
-+	for_each_pipe(display, i) {
-+		igt_pipe_crc_free(data->pipe_crc[i]);
-+	}
-+
-+	igt_display_reset(display);
-+	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
-+}
-+
-+static void test_subvp(data_t *data)
-+{
-+	igt_display_t *display = &data->display;
-+	igt_fb_t rfb;
-+	bool subvp_supp, subvp_en;
-+	igt_output_t *output;
-+	int i;
-+
-+	test_init(data);
-+	igt_enable_connectors(data->fd);
-+
-+	for_each_pipe(&data->display, i) {
-+		/* Setup the output */
-+		output = data->output[i];
-+		if (!output || !igt_output_is_connected(output))
-+			continue;
-+
-+		igt_create_pattern_fb(data->fd,
-+					test_mode[0].hdisplay,
-+					test_mode[0].vdisplay,
-+					DRM_FORMAT_XRGB8888,
-+					0,
-+					&rfb);
-+
-+		igt_output_set_pipe(output, data->pipe_id[i]);
-+		igt_plane_set_fb(data->primary[i], &rfb);
-+		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
-+	}
-+
-+
-+	igt_amd_get_subvp_status(data->fd, &subvp_supp, &subvp_en);
-+	igt_fail_on_f(!(subvp_supp && subvp_en), "SUBVP did not get enabled\n");
-+
-+	igt_remove_fb(data->fd, &rfb);
-+	test_fini(data);
-+}
-+
-+igt_main
-+{
-+	data_t data;
-+
-+	igt_skip_on_simulation();
-+
-+	memset(&data, 0, sizeof(data));
-+
-+	igt_fixture
-+	{
-+		data.fd = drm_open_driver_master(DRIVER_AMDGPU);
-+		igt_display_require(&data.display, data.fd);
-+		igt_display_require_output(&data.display);
-+		igt_require(data.display.is_atomic);
-+
-+		kmstest_set_vt_graphics_mode();
-+	}
-+
-+	igt_describe("Tests whether system enables sub-viewport when a specific mode is commited");
-+	igt_subtest("dual-4k60") test_subvp(&data);
-+
-+	igt_fixture
-+	{
-+		igt_display_fini(&data.display);
-+	}
-+}
-diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
-index f52fc3645..efd911fab 100644
---- a/tests/amdgpu/meson.build
-+++ b/tests/amdgpu/meson.build
-@@ -36,6 +36,7 @@ if libdrm_amdgpu.found()
- 			  'amd_vrr_range',
- 			  'amd_mall',
- 			  'amd_odm',
-+			  'amd_subvp',
- 			]
- 	if libdrm_amdgpu.version().version_compare('> 2.4.97')
- 		amdgpu_progs +=[ 'amd_syncobj', ]
--- 
-2.39.2
+== Summary ==
+
+CI Bug Log - changes from IGT_7571 -> IGTPW_10108
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10108/index.html
+
+Participating hosts (38 -> 35)
+------------------------------
+
+  Missing    (3): bat-adlm-1 fi-snb-2520m fi-pnv-d510 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10108 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@debugfs_test@read_all_entries:
+    - bat-adlp-11:        [PASS][1] -> [DMESG-WARN][2] ([i915#6868])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7571/bat-adlp-11/igt@debugfs_test@read_all_entries.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10108/bat-adlp-11/igt@debugfs_test@read_all_entries.html
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][3] ([fdo#109271] / [i915#5190])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10108/fi-hsw-4770/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-a-vga-1:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][4] ([fdo#109271]) +12 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10108/fi-hsw-4770/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-a-vga-1.html
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:
+    - bat-rplp-1:         [PASS][5] -> [ABORT][6] ([i915#8668])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7571/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10108/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-vga-1:
+    - fi-hsw-4770:        NOTRUN -> [DMESG-WARN][7] ([i915#1982] / [i915#8841])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10108/fi-hsw-4770/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-vga-1.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1:
+    - fi-hsw-4770:        NOTRUN -> [DMESG-WARN][8] ([i915#8841]) +5 other tests dmesg-warn
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10108/fi-hsw-4770/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1.html
+
+  * igt@kms_psr@sprite_plane_onoff:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][9] ([fdo#109271] / [i915#1072]) +3 other tests skip
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10108/fi-hsw-4770/igt@kms_psr@sprite_plane_onoff.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#5190]: https://gitlab.freedesktop.org/drm/intel/issues/5190
+  [i915#6868]: https://gitlab.freedesktop.org/drm/intel/issues/6868
+  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
+  [i915#8841]: https://gitlab.freedesktop.org/drm/intel/issues/8841
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7571 -> IGTPW_10108
+
+  CI-20190529: 20190529
+  CI_DRM_13831: 76cfd6fff7dfdf40e85e23c7deb727e633209b1f @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10108: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10108/index.html
+  IGT_7571: 9b79b510e53d913da5d23e86f3baa6c58a2feed8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10108/index.html
+
+--===============2789153420321248791==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/4] lib/amd: improve MALL capabilities checking logic</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/125930/">https://patchwork.freedesktop.org/series/125930/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10108/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10108/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7571 -&gt; IGTPW_10108</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10108/index.html</p>
+<h2>Participating hosts (38 -&gt; 35)</h2>
+<p>Missing    (3): bat-adlm-1 fi-snb-2520m fi-pnv-d510 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10108 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@debugfs_test@read_all_entries:</p>
+<ul>
+<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7571/bat-adlp-11/igt@debugfs_test@read_all_entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10108/bat-adlp-11/igt@debugfs_test@read_all_entries.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6868">i915#6868</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10108/fi-hsw-4770/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5190">i915#5190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-a-vga-1:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10108/fi-hsw-4770/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-a-vga-1.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +12 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:</p>
+<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7571/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10108/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-vga-1:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10108/fi-hsw-4770/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-vga-1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8841">i915#8841</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10108/fi-hsw-4770/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8841">i915#8841</a>) +5 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@sprite_plane_onoff:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10108/fi-hsw-4770/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 other tests skip</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7571 -&gt; IGTPW_10108</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13831: 76cfd6fff7dfdf40e85e23c7deb727e633209b1f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10108: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10108/index.html<br />
+  IGT_7571: 9b79b510e53d913da5d23e86f3baa6c58a2feed8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============2789153420321248791==--
