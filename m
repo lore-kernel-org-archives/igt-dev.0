@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0FD0910E078
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Nov 2023 06:33:37 +0000 (UTC)
-Message-ID: <53ca4143-5214-f731-8a80-d30e35749bb7@intel.com>
-Date: Thu, 2 Nov 2023 12:03:19 +0530
-Content-Language: en-US
-To: Nidhi Gupta <nidhi1.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20231031045811.30138-1-nidhi1.gupta@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20231031045811.30138-1-nidhi1.gupta@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative;
+ boundary="===============2321879177870054667=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v5] tests/kms_frontbuffer_tracking:
- Extend the test to enable FBC for each plane
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kunal Joshi" <kunal1.joshi@intel.com>
+Date: Thu, 02 Nov 2023 07:47:52 -0000
+Message-ID: <169891127291.28157.11267737915083586559@emeril.freedesktop.org>
+References: <20231102062304.1204625-1-kunal1.joshi@intel.com>
+In-Reply-To: <20231102062304.1204625-1-kunal1.joshi@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_add_new_?=
+ =?utf-8?q?subtests_for_dark_screen_detection?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,216 +17,171 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Nidhi,
+--===============2321879177870054667==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On Tue-31-10-2023 10:28 am, Nidhi Gupta wrote:
-> Added a new subtest to validate FBC on each plane, this new subtest
-> will first disable the fbc feature on all pipes and planes and then
-> enable it on all plane one by one and confirm.
-> 
-> v2: Modify tests to disable primary and enable other plane
->      to check fbc is enabled or not. <Bhanu>
-> 
-> v3: Implemented design changes as suggested <Bhanu>
-> 
-> v4: Fixed nitpicks (Bhanu)
-> 
-> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
-> ---
->   tests/intel/kms_frontbuffer_tracking.c | 109 +++++++++++++++++++++++++
->   1 file changed, 109 insertions(+)
-> 
-> diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-> index f90d09f9f..daa3ba58e 100644
-> --- a/tests/intel/kms_frontbuffer_tracking.c
-> +++ b/tests/intel/kms_frontbuffer_tracking.c
-> @@ -43,6 +43,15 @@
->   #include "igt_sysfs.h"
->   #include "igt_psr.h"
->   
-> +/**
-> + * SUBTEST: plane-fbc-rte
-> + * Description: Sanity test to enable FBC on a plane.
-> + * Driver requirement: i915, xe
-> + * Functionality: fbc
-> + * Mega feature: General Display Features
-> + * Test category: functionality test
-> + */
-> +
->   #define TIME SLOW_QUICK(1000, 10000)
->   
->   IGT_TEST_DESCRIPTION("Test the Kernel's frontbuffer tracking mechanism and "
-> @@ -888,6 +897,17 @@ static bool fbc_mode_too_large(void)
->   	return strstr(buf, "FBC disabled: mode too large for compression\n");
->   }
->   
-> +static bool fbc_enable_per_plane(int plane_index, enum pipe pipe)
-> +{
-> +	char buf[128];
-> +	char buf_plane[128];
-> +
-> +	sprintf(buf_plane, "%d%s", plane_index, kmstest_pipe_name(pipe));
-> +
-> +	debugfs_read_crtc("i915_fbc_status", buf);
-> +	return strstr(strstr(buf, "*"), buf_plane);
-> +}
-> +
->   static bool drrs_wait_until_rr_switch_to_low(void)
->   {
->   	return igt_wait(is_drrs_low(), 5000, 1);
-> @@ -1691,6 +1711,32 @@ static void set_region_for_test(const struct test_mode *t,
->   	do_assertions(ASSERT_NO_ACTION_CHANGE);
->   }
->   
-> +static void set_plane_for_test_fbc(const struct test_mode *t, igt_plane_t *plane)
-> +{
-> +	struct igt_fb fb;
-> +	uint32_t color;
-> +
-> +	igt_create_fb(drm.fd, prim_mode_params.mode.hdisplay, prim_mode_params.mode.vdisplay,
-> +			t->format, DRM_FORMAT_MOD_LINEAR, &fb);
-> +	color = pick_color(&fb, COLOR_PRIM_BG);
-> +
-> +	igt_draw_rect_fb(drm.fd, drm.bops, 0, &fb, IGT_DRAW_BLT,
-> +			 0, 0, fb.width, fb.height,
-> +			 color);
-> +
-> +	igt_output_override_mode(prim_mode_params.output, &prim_mode_params.mode);
-> +	igt_output_set_pipe(prim_mode_params.output, prim_mode_params.pipe);
+== Series Details ==
 
-As pipe, output & modes won't change for each pipe, move these 2 calls 
-to pipe level.
+Series: add new subtests for dark screen detection
+URL   : https://patchwork.freedesktop.org/series/125880/
+State : success
 
-> +
-> +	igt_plane_set_fb(plane, &fb);
-> +	igt_plane_set_position(plane, 0, 0);
-> +	igt_plane_set_size(plane, prim_mode_params.mode.hdisplay, prim_mode_params.mode.vdisplay);
-> +	igt_fb_set_size(&fb, plane, prim_mode_params.mode.hdisplay, prim_mode_params.mode.vdisplay);
-> +
-> +	igt_display_commit(&drm.display);
+== Summary ==
 
-Don't we need to check for fbc last action here?
+CI Bug Log - changes from XEIGT_7568_BAT -> XEIGTPW_10099_BAT
+====================================================
 
-> +	igt_require(!fbc_enable_per_plane(plane->index, prim_mode_params.pipe));
+Summary
+-------
 
-We must fail the subtest instead of skip.
+  **SUCCESS**
 
-> +	do_assertions(ASSERT_FBC_ENABLED);
+  No regressions found.
 
-Please check this before reading fbc_enable_per_plane()
+  
 
-> +}
-> +
->   static bool enable_features_for_test(const struct test_mode *t)
->   {
->   	bool ret = false;
-> @@ -1941,6 +1987,55 @@ static void rte_subtest(const struct test_mode *t)
->   	}
->   }
->   
-> +static bool is_valid_plane(igt_plane_t *plane)
-> +{
-> +	int index = plane->index;
-> +
-> +	if (plane->type == DRM_PLANE_TYPE_CURSOR)
-> +		return false;
-> +	/*
-> +	 * Execute test only on first three planes
-> +	 */
-> +	if (index < 3)
+Participating hosts (4 -> 4)
+------------------------------
 
-Please check for negative index too.
+  No changes in participating hosts
 
-return (index >= 0) && (index < 3);
+Known issues
+------------
 
-> +		return true;
-> +	else
-> +		return false;
-> +
-> +}
-> +
-> +/**
-> + * plane-fbc-rte - the basic sanity test
-> + *
-> + * METHOD
-> + *   Just disable primary screen, assert everything is disabled, then enable single
-> + *   screens and single plane one by one  and assert that the tested fbc is enabled
-> + *   for the particular plane.
-> + *
-> + * EXPECTED RESULTS
-> + *   Blue screens and t->feature enabled.
-> + *
-> + * FAILURES
-> + *   A failure here means that every other subtest will probably fail too. It
+  Here are the changes found in XEIGTPW_10099_BAT that come from known issues:
 
-This is not correct if kernel failed to enable the FBC on non-primary 
-planes.
+### IGT changes ###
 
-> + *   probably means that the Kernel is just not enabling the feature we want.
-> + */
-> +
-> +static void plane_fbc_rte_subtest(const struct test_mode *t)
-> +{
-> +	igt_plane_t *plane;
-> +
-> +	prepare_subtest_data(t, NULL);
-> +	unset_all_crtcs();
-> +	do_assertions(ASSERT_FBC_DISABLED);
------------------------------------------^
-Please use DONT_ASSERT_CRC too.
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3:
+    - bat-dg2-oem2:       [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 other test fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7568/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10099/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html
+
+  
+#### Possible fixes ####
+
+  * {igt@xe_create@create-execqueues-noleak}:
+    - bat-adlp-7:         [FAIL][3] ([Intel XE#524]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7568/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10099/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
+
+  
+#### Warnings ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [DMESG-FAIL][5] ([Intel XE#282] / [i915#2017]) -> [FAIL][6] ([Intel XE#616] / [Intel XE#750])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7568/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10099/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#282]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/282
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
+  [Intel XE#750]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/750
+  [i915#2017]: https://gitlab.freedesktop.org/drm/intel/issues/2017
 
 
-Also, please fill wanted_crc here.
+Build changes
+-------------
 
-> +
-> +	for_each_plane_on_pipe(&drm.display, t->pipes, plane) {
----------------------------------------------^
-This is not a pipe enum. Please fix this.
+  * IGT: IGT_7568 -> IGTPW_10099
+  * Linux: xe-459-76bba03c4f90371e7b2da536b966a49c68d589b0 -> xe-465-34a82567688cfe0c7e63e9cda15b6da4b449abfe
 
-> +		if (!is_valid_plane(plane))
-> +			continue;
-> +
-> +		set_plane_for_test_fbc(t, plane);
+  IGTPW_10099: 10099
+  IGT_7568: 9e3c3791e7e0297f277211b19a3388a1ee87f3d0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-459-76bba03c4f90371e7b2da536b966a49c68d589b0: 76bba03c4f90371e7b2da536b966a49c68d589b0
+  xe-465-34a82567688cfe0c7e63e9cda15b6da4b449abfe: 34a82567688cfe0c7e63e9cda15b6da4b449abfe
 
-After testing the each plane, we must clear the plane.
+== Logs ==
 
-> +	}
-> +
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10099/index.html
 
-Please drop this extra line.
+--===============2321879177870054667==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-> +}
-> +
->   static void update_wanted_crc(const struct test_mode *t, igt_crc_t *crc)
->   {
->   	if (t->screen == SCREEN_PRIM)
-> @@ -4936,6 +5031,20 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
->   		}
->   	}
->   
-> +	t.pipes = PIPE_SINGLE;
-> +	t.feature = FEATURE_FBC;
-> +	t.screen = SCREEN_PRIM;
-> +	t.fbs = FBS_INDIVIDUAL;
-> +	t.format = FORMAT_DEFAULT;
-> +	/* Make sure nothing is using these values. */
-> +	t.flip = -1;
-> +	t.method = -1;
-> +	t.tiling = opt.tiling;
-> +
-> +	igt_subtest_f("plane-fbc-rte") {
-> +		plane_fbc_rte_subtest(&t);
 
-Is this test applicable to all older platforms too?
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
 
-- Bhanu
 
-> +	}
-> +
->   	TEST_MODE_ITER_BEGIN(t)
->   
->   		igt_subtest_f("%s-%s-%s-%s-%s-draw-%s",
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>add new subtests for dark screen detection</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/125880/">https://patchwork.freedesktop.org/series/125880/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10099/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10099/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7568_BAT -&gt; XEIGTPW_10099_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10099_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7568/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10099/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>{igt@xe_create@create-execqueues-noleak}:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7568/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10099/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_frontbuffer_tracking@basic:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7568/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2017">i915#2017</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10099/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/750">Intel XE#750</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7568 -&gt; IGTPW_10099</li>
+<li>Linux: xe-459-76bba03c4f90371e7b2da536b966a49c68d589b0 -&gt; xe-465-34a82567688cfe0c7e63e9cda15b6da4b449abfe</li>
+</ul>
+<p>IGTPW_10099: 10099<br />
+  IGT_7568: 9e3c3791e7e0297f277211b19a3388a1ee87f3d0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-459-76bba03c4f90371e7b2da536b966a49c68d589b0: 76bba03c4f90371e7b2da536b966a49c68d589b0<br />
+  xe-465-34a82567688cfe0c7e63e9cda15b6da4b449abfe: 34a82567688cfe0c7e63e9cda15b6da4b449abfe</p>
+
+</body>
+</html>
+
+--===============2321879177870054667==--
