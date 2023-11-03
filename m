@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4C28C10E9FA
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Nov 2023 14:44:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0D07010EA16
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Nov 2023 14:44:58 +0000 (UTC)
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  3 Nov 2023 14:43:16 +0000
-Message-Id: <20231103144359.7-22-francois.dugast@intel.com>
+Date: Fri,  3 Nov 2023 14:43:23 +0000
+Message-Id: <20231103144359.7-29-francois.dugast@intel.com>
 In-Reply-To: <20231103144359.7-1-francois.dugast@intel.com>
 References: <20231103144359.7-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 21/64] drm-uapi/xe: Remove unused
- QUERY_CONFIG_GT_COUNT
+Subject: [igt-dev] [PATCH v2 28/64] drm-uapi/xe: Reject bo creation of
+ unaligned size
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,121 +23,62 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Align with commit ("drm/xe/uapi: Remove unused QUERY_CONFIG_GT_COUNT")
+Align with kernel commit ("xe/xe_bo: Reject bo creation of unaligned size")
 
 Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 ---
- include/drm-uapi/xe_drm.h |  5 +----
- lib/xe/xe_query.c         | 11 +++++------
- lib/xe/xe_query.h         |  3 ---
- tests/intel/xe_debugfs.c  |  2 --
- tests/intel/xe_query.c    |  2 --
- 5 files changed, 6 insertions(+), 17 deletions(-)
+ include/drm-uapi/xe_drm.h | 25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
 diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index dc0c35e06..d876b62ae 100644
+index 286f00254..addadead9 100644
 --- a/include/drm-uapi/xe_drm.h
 +++ b/include/drm-uapi/xe_drm.h
-@@ -340,8 +340,6 @@ struct drm_xe_query_mem_usage {
-  *  - %DRM_XE_QUERY_CONFIG_MIN_ALIGNMENT - Minimal memory alignment
-  *    required by this device, typically SZ_4K or SZ_64K
-  *  - %DRM_XE_QUERY_CONFIG_VA_BITS - Maximum bits of a virtual address
-- *  - %DRM_XE_QUERY_CONFIG_GT_COUNT - Total number of GTs for the entire
-- *    device
-  *  - %DRM_XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY - Value of the highest
-  *    available exec queue priority
-  */
-@@ -354,8 +352,7 @@ struct drm_xe_query_config {
+@@ -212,11 +212,13 @@ struct drm_xe_query_mem_region {
+ 	 *
+ 	 * When the kernel allocates memory for this region, the
+ 	 * underlying pages will be at least @min_page_size in size.
+-	 *
+-	 * Important note: When userspace allocates a GTT address which
+-	 * can point to memory allocated from this region, it must also
+-	 * respect this minimum alignment. This is enforced by the
+-	 * kernel.
++	 * Buffer objects with an allowable placement in this region must be
++	 * created with a size aligned to this value.
++	 * GPU virtual address mappings of (parts of) buffer objects that
++	 * may be placed in this region must also have their GPU virtual
++	 * address and range aligned to this value.
++	 * Affected IOCTLS will return %-EINVAL if alignment restrictions are
++	 * not met.
+ 	 */
+ 	__u32 min_page_size;
+ 	/**
+@@ -362,6 +364,14 @@ struct drm_xe_query_config {
+ #define DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID		0
+ #define DRM_XE_QUERY_CONFIG_FLAGS			1
  	#define DRM_XE_QUERY_CONFIG_FLAGS_HAS_VRAM	(0x1 << 0)
++	/*
++	 * DRM_XE_QUERY_CONFIG_MIN_ALIGNMENT - This returns the
++	 * maximum value of the &min_page_size across all memory regions
++	 * the device implements. User-space code that does not want
++	 * to track @min_page_size per region can use this value for
++	 * a buffer-object size and GPU virtual address and -range
++	 * alignment value that is valid for all regions.
++	 */
  #define DRM_XE_QUERY_CONFIG_MIN_ALIGNMENT		2
  #define DRM_XE_QUERY_CONFIG_VA_BITS			3
--#define DRM_XE_QUERY_CONFIG_GT_COUNT			4
--#define DRM_XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY	5
-+#define DRM_XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY	4
- 	/** @info: array of elements containing the config info */
- 	__u64 info[];
- };
-diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index 68f334e6a..7582f2868 100644
---- a/lib/xe/xe_query.c
-+++ b/lib/xe/xe_query.c
-@@ -247,16 +247,15 @@ struct xe_device *xe_device_get(int fd)
+ #define DRM_XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY	4
+@@ -615,9 +625,8 @@ struct drm_xe_gem_create {
+ 	__u64 extensions;
  
- 	xe_dev->fd = fd;
- 	xe_dev->config = xe_query_config_new(fd);
--	xe_dev->number_gt = xe_dev->config->info[DRM_XE_QUERY_CONFIG_GT_COUNT];
- 	xe_dev->va_bits = xe_dev->config->info[DRM_XE_QUERY_CONFIG_VA_BITS];
- 	xe_dev->dev_id = xe_dev->config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff;
- 	xe_dev->gt_list = xe_query_gt_list_new(fd);
- 	xe_dev->memory_regions = __memory_regions(xe_dev->gt_list);
- 	xe_dev->hw_engines = xe_query_engines_new(fd, &xe_dev->number_hw_engines);
- 	xe_dev->mem_usage = xe_query_mem_usage_new(fd);
--	xe_dev->vram_size = calloc(xe_dev->number_gt, sizeof(*xe_dev->vram_size));
--	xe_dev->visible_vram_size = calloc(xe_dev->number_gt, sizeof(*xe_dev->visible_vram_size));
--	for (int gt = 0; gt < xe_dev->number_gt; gt++) {
-+	xe_dev->vram_size = calloc(xe_dev->gt_list->num_gt, sizeof(*xe_dev->vram_size));
-+	xe_dev->visible_vram_size = calloc(xe_dev->gt_list->num_gt, sizeof(*xe_dev->visible_vram_size));
-+	for (int gt = 0; gt < xe_dev->gt_list->num_gt; gt++) {
- 		xe_dev->vram_size[gt] = gt_vram_size(xe_dev->mem_usage,
- 						     xe_dev->gt_list, gt);
- 		xe_dev->visible_vram_size[gt] =
-@@ -356,7 +355,7 @@ _TYPE _NAME(int fd)			\
-  *
-  * Return number of gt_list for xe device fd.
-  */
--xe_dev_FN(xe_number_gt, number_gt, unsigned int);
-+xe_dev_FN(xe_number_gt, gt_list->num_gt, unsigned int);
+ 	/**
+-	 * @size: Requested size for the object
+-	 *
+-	 * The (page-aligned) allocated size for the object will be returned.
++	 * @size: Size of the object to be created, must match region
++	 * (system or vram) minimum alignment (&min_page_size).
+ 	 */
+ 	__u64 size;
  
- /**
-  * all_memory_regions:
-@@ -392,7 +391,7 @@ uint64_t vram_memory(int fd, int gt)
- 
- 	xe_dev = find_in_cache(fd);
- 	igt_assert(xe_dev);
--	igt_assert(gt >= 0 && gt < xe_dev->number_gt);
-+	igt_assert(gt >= 0 && gt < xe_dev->gt_list->num_gt);
- 
- 	return xe_has_vram(fd) ? native_region_for_gt(xe_dev->gt_list, gt) : 0;
- }
-diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-index eb23a89fb..90ddd795c 100644
---- a/lib/xe/xe_query.h
-+++ b/lib/xe/xe_query.h
-@@ -29,9 +29,6 @@ struct xe_device {
- 	/** @gt_list: gt info */
- 	struct drm_xe_query_gt_list *gt_list;
- 
--	/** @number_gt: number of gt */
--	unsigned int number_gt;
--
- 	/** @gt_list: bitmask of all memory regions */
- 	uint64_t memory_regions;
- 
-diff --git a/tests/intel/xe_debugfs.c b/tests/intel/xe_debugfs.c
-index 9ffc6f6d8..60ddceda7 100644
---- a/tests/intel/xe_debugfs.c
-+++ b/tests/intel/xe_debugfs.c
-@@ -121,8 +121,6 @@ test_base(int fd, struct drm_xe_query_config *config)
- 	igt_assert(igt_debugfs_search(fd, "info", reference));
- 
- 	igt_assert(igt_debugfs_exists(fd, "gt0", O_RDONLY));
--	if (config->info[DRM_XE_QUERY_CONFIG_GT_COUNT] > 1)
--		igt_assert(igt_debugfs_exists(fd, "gt1", O_RDONLY));
- 
- 	igt_assert(igt_debugfs_exists(fd, "gtt_mm", O_RDONLY));
- 	igt_debugfs_dump(fd, "gtt_mm");
-diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
-index 5e657a4d4..086582352 100644
---- a/tests/intel/xe_query.c
-+++ b/tests/intel/xe_query.c
-@@ -373,8 +373,6 @@ test_query_config(int fd)
- 		config->info[DRM_XE_QUERY_CONFIG_MIN_ALIGNMENT]);
- 	igt_info("DRM_XE_QUERY_CONFIG_VA_BITS\t\t\t%llu\n",
- 		config->info[DRM_XE_QUERY_CONFIG_VA_BITS]);
--	igt_info("DRM_XE_QUERY_CONFIG_GT_COUNT\t\t%llu\n",
--		config->info[DRM_XE_QUERY_CONFIG_GT_COUNT]);
- 	igt_info("DRM_XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY\t%llu\n",
- 		config->info[DRM_XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY]);
- 	dump_hex_debug(config, query.size);
 -- 
 2.34.1
