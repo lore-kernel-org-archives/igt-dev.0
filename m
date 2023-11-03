@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com
- (mail-co1nam11on20618.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7eab::618])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 342EA10E18D
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam11on2062d.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:7eaa::62d])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6A3ED10E18E
  for <igt-dev@lists.freedesktop.org>; Fri,  3 Nov 2023 18:22:37 +0000 (UTC)
 From: Aurabindo Pillai <aurabindo.pillai@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Fri, 3 Nov 2023 14:22:26 -0400
-Message-ID: <20231103182230.1039191-2-aurabindo.pillai@amd.com>
-In-Reply-To: <20231103182230.1039191-1-aurabindo.pillai@amd.com>
-References: <20231103182230.1039191-1-aurabindo.pillai@amd.com>
+Date: Fri, 3 Nov 2023 14:22:25 -0400
+Message-ID: <20231103182230.1039191-1-aurabindo.pillai@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t v2 1/5] lib/amdgpu: Remove unused struct
+Subject: [igt-dev] [PATCH i-g-t v2 0/5] Add a new test for Sub-viewport
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,28 +24,29 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-dim2d has no references within AMDGPU tests, so remove it
+Changes in v2
+=================
 
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+* Removed an unused struct definition
+* Fixes style issues reported by checkpatch.pl 
+* Added SPDX license identifier to the new test
+* Fixed #include order for system includes
+
 ---
- lib/igt_amd.c | 5 -----
- 1 file changed, 5 deletions(-)
 
-diff --git a/lib/igt_amd.c b/lib/igt_amd.c
-index 84c6d7545..f0fbe97ef 100644
---- a/lib/igt_amd.c
-+++ b/lib/igt_amd.c
-@@ -45,11 +45,6 @@
- #define Y6 64
- #define Y7 128
- 
--struct dim2d
--{
--    int w;
--    int h;
--};
- 
- uint32_t igt_amd_create_bo(int fd, uint64_t size)
- {
+Aurabindo Pillai (5):
+  lib/amdgpu: Remove unused struct
+  llib/amd: Update function documentation
+  lib/amd: improve readablity for MALL capability check
+  lib/amd: Add check for SubVP feature status
+  test/amdgpu: Add test for Sub-viewport
+
+ lib/igt_amd.c            |  44 ++++++++--
+ lib/igt_amd.h            |   1 +
+ tests/amdgpu/amd_subvp.c | 180 +++++++++++++++++++++++++++++++++++++++
+ tests/amdgpu/meson.build |   1 +
+ 4 files changed, 217 insertions(+), 9 deletions(-)
+ create mode 100644 tests/amdgpu/amd_subvp.c
+
 -- 
 2.39.2
