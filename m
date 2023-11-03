@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 72A9010EA19
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Nov 2023 14:44:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 832BF10EA09
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Nov 2023 14:44:57 +0000 (UTC)
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  3 Nov 2023 14:43:27 +0000
-Message-Id: <20231103144359.7-33-francois.dugast@intel.com>
+Date: Fri,  3 Nov 2023 14:43:18 +0000
+Message-Id: <20231103144359.7-24-francois.dugast@intel.com>
 In-Reply-To: <20231103144359.7-1-francois.dugast@intel.com>
 References: <20231103144359.7-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 32/64] fixup! drm-uapi/xe: Align with
- drm_xe_query_engine_info
+Subject: [igt-dev] [PATCH v2 23/64] drm-uapi/xe: Rename query's mem_usage to
+ mem_regions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,192 +26,394 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
----
- benchmarks/gem_wsim.c             | 2 +-
- lib/xe/xe_query.c                 | 6 +++---
- lib/xe/xe_query.h                 | 4 ++--
- tests/intel/xe_create.c           | 7 ++++---
- tests/intel/xe_drm_fdinfo.c       | 5 +++--
- tests/intel/xe_exec_store.c       | 8 ++++----
- tests/intel/xe_intel_bb.c         | 3 ++-
- tests/intel/xe_noexec_ping_pong.c | 5 +++--
- 8 files changed, 22 insertions(+), 18 deletions(-)
+Align with kernel's commit ("drm/xe/uapi: Rename query's mem_usage to mem_regions")
 
-diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-index d451b8733..5d5353c94 100644
---- a/benchmarks/gem_wsim.c
-+++ b/benchmarks/gem_wsim.c
-@@ -688,7 +688,7 @@ xe_get_default_engine(void)
- 	struct drm_xe_engine_class_instance default_hwe, *hwe;
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+---
+ include/drm-uapi/xe_drm.h | 16 +++++-----
+ lib/xe/xe_query.c         | 66 +++++++++++++++++++--------------------
+ lib/xe/xe_query.h         |  4 +--
+ tests/intel/xe_pm.c       | 18 +++++------
+ tests/intel/xe_query.c    | 58 +++++++++++++++++-----------------
+ 5 files changed, 81 insertions(+), 81 deletions(-)
+
+diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+index 31ccf6b3d..9cd1f623a 100644
+--- a/include/drm-uapi/xe_drm.h
++++ b/include/drm-uapi/xe_drm.h
+@@ -307,13 +307,13 @@ struct drm_xe_query_engine_cycles {
+ };
  
- 	/* select RCS0 | CCS0 or first available engine */
--	default_hwe = *xe_engine(fd, 0);
-+	default_hwe = xe_engine(fd, 0)->instance;
- 	xe_for_each_engine(fd, hwe) {
- 		if ((hwe->engine_class == DRM_XE_ENGINE_CLASS_RENDER ||
- 		     hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE) &&
+ /**
+- * struct drm_xe_query_mem_usage - describe memory regions and usage
++ * struct drm_xe_query_mem_regions - describe memory regions
+  *
+  * If a query is made with a struct drm_xe_device_query where .query
+- * is equal to DRM_XE_DEVICE_QUERY_MEM_USAGE, then the reply uses
+- * struct drm_xe_query_mem_usage in .data.
++ * is equal to DRM_XE_DEVICE_QUERY_MEM_REGIONS, then the reply uses
++ * struct drm_xe_query_mem_regions in .data.
+  */
+-struct drm_xe_query_mem_usage {
++struct drm_xe_query_mem_regions {
+ 	/** @num_regions: number of memory regions returned in @regions */
+ 	__u32 num_regions;
+ 	/** @pad: MBZ */
+@@ -377,12 +377,12 @@ struct drm_xe_query_gt {
+ 	__u32 clock_freq;
+ 	/**
+ 	 * @near_mem_regions: Bit mask of instances from
+-	 * drm_xe_query_mem_usage that is near the current engines of this GT.
++	 * drm_xe_query_mem_regions that is near the current engines of this GT.
+ 	 */
+ 	__u64 near_mem_regions;
+ 	/**
+ 	 * @far_mem_regions: Bit mask of instances from
+-	 * drm_xe_query_mem_usage that is far from the engines of this GT.
++	 * drm_xe_query_mem_regions that is far from the engines of this GT.
+ 	 * In general, it has extra indirections when compared to the
+ 	 * @near_mem_regions. For a discrete device this could mean system
+ 	 * memory and memory living in a different Tile.
+@@ -505,7 +505,7 @@ struct drm_xe_query_uc_fw_version {
+  *
+  * The @query can be:
+  *  - %DRM_XE_DEVICE_QUERY_ENGINES
+- *  - %DRM_XE_DEVICE_QUERY_MEM_USAGE
++ *  - %DRM_XE_DEVICE_QUERY_MEM_REGIONS
+  *  - %DRM_XE_DEVICE_QUERY_CONFIG
+  *  - %DRM_XE_DEVICE_QUERY_GT_LIST - Query type to retrieve the hardware
+  *    configuration of the device such as information on slices, memory,
+@@ -555,7 +555,7 @@ struct drm_xe_device_query {
+ 	__u64 extensions;
+ 
+ #define DRM_XE_DEVICE_QUERY_ENGINES		0
+-#define DRM_XE_DEVICE_QUERY_MEM_USAGE		1
++#define DRM_XE_DEVICE_QUERY_MEM_REGIONS		1
+ #define DRM_XE_DEVICE_QUERY_CONFIG		2
+ #define DRM_XE_DEVICE_QUERY_GT_LIST		3
+ #define DRM_XE_DEVICE_QUERY_HWCONFIG		4
 diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index 4c1715b18..63f80a8b3 100644
+index 2ff1ff735..ecfaa8ac6 100644
 --- a/lib/xe/xe_query.c
 +++ b/lib/xe/xe_query.c
-@@ -422,9 +422,9 @@ xe_dev_FN(xe_engines, engines, struct drm_xe_query_engine_info *);
-  * @fd: xe device fd
-  * @idx: engine index
-  *
-- * Returns engine instance of xe device @fd and @idx.
-+ * Returns engine info of xe device @fd and @idx.
-  */
--struct drm_xe_engine_class_instance *xe_engine(int fd, int idx)
-+struct drm_xe_query_engine_info *xe_engine(int fd, int idx)
+@@ -95,25 +95,25 @@ xe_query_engines_new(int fd, unsigned int *num_engines)
+ 	return hw_engines;
+ }
+ 
+-static struct drm_xe_query_mem_usage *xe_query_mem_usage_new(int fd)
++static struct drm_xe_query_mem_regions *xe_query_mem_regions_new(int fd)
  {
- 	struct xe_device *xe_dev;
+-	struct drm_xe_query_mem_usage *mem_usage;
++	struct drm_xe_query_mem_regions *mem_regions;
+ 	struct drm_xe_device_query query = {
+ 		.extensions = 0,
+-		.query = DRM_XE_DEVICE_QUERY_MEM_USAGE,
++		.query = DRM_XE_DEVICE_QUERY_MEM_REGIONS,
+ 		.size = 0,
+ 		.data = 0,
+ 	};
  
-@@ -432,7 +432,7 @@ struct drm_xe_engine_class_instance *xe_engine(int fd, int idx)
+ 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+ 
+-	mem_usage = malloc(query.size);
+-	igt_assert(mem_usage);
++	mem_regions = malloc(query.size);
++	igt_assert(mem_regions);
+ 
+-	query.data = to_user_pointer(mem_usage);
++	query.data = to_user_pointer(mem_regions);
+ 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+ 
+-	return mem_usage;
++	return mem_regions;
+ }
+ 
+ static uint64_t native_region_for_gt(const struct drm_xe_query_gt_list *gt_list, int gt)
+@@ -127,44 +127,44 @@ static uint64_t native_region_for_gt(const struct drm_xe_query_gt_list *gt_list,
+ 	return region;
+ }
+ 
+-static uint64_t gt_vram_size(const struct drm_xe_query_mem_usage *mem_usage,
++static uint64_t gt_vram_size(const struct drm_xe_query_mem_regions *mem_regions,
+ 			     const struct drm_xe_query_gt_list *gt_list, int gt)
+ {
+ 	int region_idx = ffs(native_region_for_gt(gt_list, gt)) - 1;
+ 
+-	if (XE_IS_CLASS_VRAM(&mem_usage->regions[region_idx]))
+-		return mem_usage->regions[region_idx].total_size;
++	if (XE_IS_CLASS_VRAM(&mem_regions->regions[region_idx]))
++		return mem_regions->regions[region_idx].total_size;
+ 
+ 	return 0;
+ }
+ 
+-static uint64_t gt_visible_vram_size(const struct drm_xe_query_mem_usage *mem_usage,
++static uint64_t gt_visible_vram_size(const struct drm_xe_query_mem_regions *mem_regions,
+ 				     const struct drm_xe_query_gt_list *gt_list, int gt)
+ {
+ 	int region_idx = ffs(native_region_for_gt(gt_list, gt)) - 1;
+ 
+-	if (XE_IS_CLASS_VRAM(&mem_usage->regions[region_idx]))
+-		return mem_usage->regions[region_idx].cpu_visible_size;
++	if (XE_IS_CLASS_VRAM(&mem_regions->regions[region_idx]))
++		return mem_regions->regions[region_idx].cpu_visible_size;
+ 
+ 	return 0;
+ }
+ 
+-static bool __mem_has_vram(struct drm_xe_query_mem_usage *mem_usage)
++static bool __mem_has_vram(struct drm_xe_query_mem_regions *mem_regions)
+ {
+-	for (int i = 0; i < mem_usage->num_regions; i++)
+-		if (XE_IS_CLASS_VRAM(&mem_usage->regions[i]))
++	for (int i = 0; i < mem_regions->num_regions; i++)
++		if (XE_IS_CLASS_VRAM(&mem_regions->regions[i]))
+ 			return true;
+ 
+ 	return false;
+ }
+ 
+-static uint32_t __mem_default_alignment(struct drm_xe_query_mem_usage *mem_usage)
++static uint32_t __mem_default_alignment(struct drm_xe_query_mem_regions *mem_regions)
+ {
+ 	uint32_t alignment = XE_DEFAULT_ALIGNMENT;
+ 
+-	for (int i = 0; i < mem_usage->num_regions; i++)
+-		if (alignment < mem_usage->regions[i].min_page_size)
+-			alignment = mem_usage->regions[i].min_page_size;
++	for (int i = 0; i < mem_regions->num_regions; i++)
++		if (alignment < mem_regions->regions[i].min_page_size)
++			alignment = mem_regions->regions[i].min_page_size;
+ 
+ 	return alignment;
+ }
+@@ -220,7 +220,7 @@ static void xe_device_free(struct xe_device *xe_dev)
+ 	free(xe_dev->config);
+ 	free(xe_dev->gt_list);
+ 	free(xe_dev->hw_engines);
+-	free(xe_dev->mem_usage);
++	free(xe_dev->mem_regions);
+ 	free(xe_dev->vram_size);
+ 	free(xe_dev);
+ }
+@@ -252,18 +252,18 @@ struct xe_device *xe_device_get(int fd)
+ 	xe_dev->gt_list = xe_query_gt_list_new(fd);
+ 	xe_dev->memory_regions = __memory_regions(xe_dev->gt_list);
+ 	xe_dev->hw_engines = xe_query_engines_new(fd, &xe_dev->number_hw_engines);
+-	xe_dev->mem_usage = xe_query_mem_usage_new(fd);
++	xe_dev->mem_regions = xe_query_mem_regions_new(fd);
+ 	xe_dev->vram_size = calloc(xe_dev->gt_list->num_gt, sizeof(*xe_dev->vram_size));
+ 	xe_dev->visible_vram_size = calloc(xe_dev->gt_list->num_gt, sizeof(*xe_dev->visible_vram_size));
+ 	for (int gt = 0; gt < xe_dev->gt_list->num_gt; gt++) {
+-		xe_dev->vram_size[gt] = gt_vram_size(xe_dev->mem_usage,
++		xe_dev->vram_size[gt] = gt_vram_size(xe_dev->mem_regions,
+ 						     xe_dev->gt_list, gt);
+ 		xe_dev->visible_vram_size[gt] =
+-			gt_visible_vram_size(xe_dev->mem_usage,
++			gt_visible_vram_size(xe_dev->mem_regions,
+ 					     xe_dev->gt_list, gt);
+ 	}
+-	xe_dev->default_alignment = __mem_default_alignment(xe_dev->mem_usage);
+-	xe_dev->has_vram = __mem_has_vram(xe_dev->mem_usage);
++	xe_dev->default_alignment = __mem_default_alignment(xe_dev->mem_regions);
++	xe_dev->has_vram = __mem_has_vram(xe_dev->mem_regions);
+ 
+ 	/* We may get here from multiple threads, use first cached xe_dev */
+ 	pthread_mutex_lock(&cache.cache_mutex);
+@@ -449,9 +449,9 @@ struct drm_xe_query_mem_region *xe_mem_region(int fd, uint64_t region)
+ 
+ 	xe_dev = find_in_cache(fd);
  	igt_assert(xe_dev);
- 	igt_assert(idx >= 0 && idx < xe_dev->number_engines);
+-	igt_assert(xe_dev->mem_usage->num_regions > region_idx);
++	igt_assert(xe_dev->mem_regions->num_regions > region_idx);
  
--	return &xe_dev->engines[idx].instance;
-+	return &xe_dev->engines[idx];
+-	return &xe_dev->mem_usage->regions[region_idx];
++	return &xe_dev->mem_regions->regions[region_idx];
  }
  
  /**
+@@ -578,23 +578,23 @@ uint64_t xe_vram_available(int fd, int gt)
+ 	struct xe_device *xe_dev;
+ 	int region_idx;
+ 	struct drm_xe_query_mem_region *mem_region;
+-	struct drm_xe_query_mem_usage *mem_usage;
++	struct drm_xe_query_mem_regions *mem_regions;
+ 
+ 	xe_dev = find_in_cache(fd);
+ 	igt_assert(xe_dev);
+ 
+ 	region_idx = ffs(native_region_for_gt(xe_dev->gt_list, gt)) - 1;
+-	mem_region = &xe_dev->mem_usage->regions[region_idx];
++	mem_region = &xe_dev->mem_regions->regions[region_idx];
+ 
+ 	if (XE_IS_CLASS_VRAM(mem_region)) {
+ 		uint64_t available_vram;
+ 
+-		mem_usage = xe_query_mem_usage_new(fd);
++		mem_regions = xe_query_mem_regions_new(fd);
+ 		pthread_mutex_lock(&cache.cache_mutex);
+-		mem_region->used = mem_usage->regions[region_idx].used;
++		mem_region->used = mem_regions->regions[region_idx].used;
+ 		available_vram = mem_region->total_size - mem_region->used;
+ 		pthread_mutex_unlock(&cache.cache_mutex);
+-		free(mem_usage);
++		free(mem_regions);
+ 
+ 		return available_vram;
+ 	}
 diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-index 149606c37..fede00036 100644
+index 90ddd795c..be92ec5ed 100644
 --- a/lib/xe/xe_query.h
 +++ b/lib/xe/xe_query.h
-@@ -62,7 +62,7 @@ struct xe_device {
+@@ -38,8 +38,8 @@ struct xe_device {
+ 	/** @number_hw_engines: length of hardware engines array */
+ 	unsigned int number_hw_engines;
  
- #define xe_for_each_engine(__fd, __hwe) \
- 	for (int __i = 0; __i < xe_number_engines(__fd) && \
--	     (__hwe = xe_engine(__fd, __i)); ++__i)
-+	     (__hwe = &xe_engine(__fd, __i)->instance); ++__i)
- #define xe_for_each_engine_class(__class) \
- 	for (__class = 0; __class < DRM_XE_ENGINE_CLASS_COMPUTE + 1; \
- 	     ++__class)
-@@ -82,7 +82,7 @@ uint64_t system_memory(int fd);
- uint64_t vram_memory(int fd, int gt);
- uint64_t vram_if_possible(int fd, int gt);
- struct drm_xe_query_engine_info *xe_engines(int fd);
--struct drm_xe_engine_class_instance *xe_engine(int fd, int idx);
-+struct drm_xe_query_engine_info *xe_engine(int fd, int idx);
- struct drm_xe_query_mem_region *xe_mem_region(int fd, uint64_t region);
- const char *xe_region_name(uint64_t region);
- uint16_t xe_region_class(int fd, uint64_t region);
-diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
-index 9d71b7463..b04a3443f 100644
---- a/tests/intel/xe_create.c
-+++ b/tests/intel/xe_create.c
-@@ -148,7 +148,7 @@ static void create_execqueues(int fd, enum exec_queue_destroy ed)
- 	igt_nsec_elapsed(&tv);
+-	/** @mem_usage: regions memory information and usage */
+-	struct drm_xe_query_mem_usage *mem_usage;
++	/** @mem_regions: regions memory information and usage */
++	struct drm_xe_query_mem_regions *mem_regions;
  
- 	igt_fork(n, nproc) {
--		struct drm_xe_engine_class_instance *hwe;
-+		struct drm_xe_query_engine_info *engine;
- 		uint32_t exec_queue, exec_queues[exec_queues_per_process];
- 		int idx, err, i;
- 
-@@ -156,8 +156,9 @@ static void create_execqueues(int fd, enum exec_queue_destroy ed)
- 
- 		for (i = 0; i < exec_queues_per_process; i++) {
- 			idx = rand() % num_engines;
--			hwe = xe_engine(fd, idx);
--			err = __xe_exec_queue_create(fd, vm, hwe, 0, &exec_queue);
-+			engine = xe_engine(fd, idx);
-+			err = __xe_exec_queue_create(fd, vm, &engine->instance,
-+						     0, &exec_queue);
- 			igt_debug("[%2d] Create exec_queue: err=%d, exec_queue=%u [idx = %d]\n",
- 				  n, err, exec_queue, i);
- 			if (err)
-diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
-index d50cc6df1..cec3e0825 100644
---- a/tests/intel/xe_drm_fdinfo.c
-+++ b/tests/intel/xe_drm_fdinfo.c
-@@ -40,7 +40,7 @@ IGT_TEST_DESCRIPTION("Read and verify drm client memory consumption using fdinfo
- #define BO_SIZE (65536)
- 
- /* Subtests */
--static void test_active(int fd, struct drm_xe_engine_class_instance *eci)
-+static void test_active(int fd, struct drm_xe_query_engine_info *engine)
- {
- 	struct drm_xe_query_mem_region *memregion;
- 	uint64_t memreg = all_memory_regions(fd), region;
-@@ -89,7 +89,8 @@ static void test_active(int fd, struct drm_xe_engine_class_instance *eci)
- 		data = xe_bo_map(fd, bo, bo_size);
- 
- 		for (i = 0; i < N_EXEC_QUEUES; i++) {
--			exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
-+			exec_queues[i] = xe_exec_queue_create(fd, vm,
-+							      &engine->instance, 0);
- 			bind_exec_queues[i] = xe_bind_exec_queue_create(fd, vm, 0, true);
- 			syncobjs[i] = syncobj_create(fd, 0);
- 		}
-diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
-index 6a0092954..c84087c72 100644
---- a/tests/intel/xe_exec_store.c
-+++ b/tests/intel/xe_exec_store.c
-@@ -63,7 +63,7 @@ static void store(int fd)
- 		.syncs = to_user_pointer(&sync),
- 	};
- 	struct data *data;
--	struct drm_xe_engine_class_instance *engine;
-+	struct drm_xe_query_engine_info *engine;
- 	uint32_t vm;
- 	uint32_t exec_queue;
- 	uint32_t syncobj;
-@@ -82,14 +82,14 @@ static void store(int fd)
- 
- 	engine = xe_engine(fd, 1);
- 	bo = xe_bo_create(fd, vm, bo_size,
--			  vram_if_possible(fd, engine->gt_id),
-+			  vram_if_possible(fd, engine->instance.gt_id),
- 			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 
--	xe_vm_bind_async(fd, vm, engine->gt_id, bo, 0, addr, bo_size, &sync, 1);
-+	xe_vm_bind_async(fd, vm, engine->instance.gt_id, bo, 0, addr, bo_size, &sync, 1);
- 	data = xe_bo_map(fd, bo, bo_size);
- 	store_dword_batch(data, addr, value);
- 
--	exec_queue = xe_exec_queue_create(fd, vm, engine, 0);
-+	exec_queue = xe_exec_queue_create(fd, vm, &engine->instance, 0);
- 	exec.exec_queue_id = exec_queue;
- 	exec.address = data->addr;
- 	sync.flags &= DRM_XE_SYNC_FLAG_SIGNAL;
-diff --git a/tests/intel/xe_intel_bb.c b/tests/intel/xe_intel_bb.c
-index e7a566f62..b64812f9d 100644
---- a/tests/intel/xe_intel_bb.c
-+++ b/tests/intel/xe_intel_bb.c
-@@ -192,7 +192,8 @@ static void simple_bb(struct buf_ops *bops, bool new_context)
- 
- 	if (new_context) {
- 		vm = xe_vm_create(xe, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
--		ctx = xe_exec_queue_create(xe, vm, xe_engine(xe, 0), 0);
-+		ctx = xe_exec_queue_create(xe, vm, &xe_engine(xe, 0)->instance,
-+					   0);
- 		intel_bb_destroy(ibb);
- 		ibb = intel_bb_create_with_context(xe, ctx, vm, NULL, PAGE_SIZE);
- 		intel_bb_out(ibb, MI_BATCH_BUFFER_END);
-diff --git a/tests/intel/xe_noexec_ping_pong.c b/tests/intel/xe_noexec_ping_pong.c
-index e27cc4582..585af413d 100644
---- a/tests/intel/xe_noexec_ping_pong.c
-+++ b/tests/intel/xe_noexec_ping_pong.c
-@@ -43,7 +43,7 @@
-   *	there is worked queued on one of the VM's compute exec_queues.
+ 	/** @vram_size: array of vram sizes for all gt_list */
+ 	uint64_t *vram_size;
+diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+index 4f42a2c3b..2e5c61b59 100644
+--- a/tests/intel/xe_pm.c
++++ b/tests/intel/xe_pm.c
+@@ -373,10 +373,10 @@ NULL));
   */
- 
--static void test_ping_pong(int fd, struct drm_xe_engine_class_instance *eci)
-+static void test_ping_pong(int fd, struct drm_xe_query_engine_info *engine)
+ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
  {
- 	size_t vram_size = xe_vram_size(fd, 0);
- 	size_t align = xe_get_default_alignment(fd);
-@@ -75,7 +75,8 @@ static void test_ping_pong(int fd, struct drm_xe_engine_class_instance *eci)
- 			xe_vm_bind(fd, vm[i], bo[i][j], 0, 0x40000 + j*bo_size,
- 				   bo_size, NULL, 0);
+-	struct drm_xe_query_mem_usage *mem_usage;
++	struct drm_xe_query_mem_regions *mem_regions;
+ 	struct drm_xe_device_query query = {
+ 		.extensions = 0,
+-		.query = DRM_XE_DEVICE_QUERY_MEM_USAGE,
++		.query = DRM_XE_DEVICE_QUERY_MEM_REGIONS,
+ 		.size = 0,
+ 		.data = 0,
+ 	};
+@@ -394,16 +394,16 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
+ 	igt_assert_eq(igt_ioctl(device.fd_xe, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+ 	igt_assert_neq(query.size, 0);
+ 
+-	mem_usage = malloc(query.size);
+-	igt_assert(mem_usage);
++	mem_regions = malloc(query.size);
++	igt_assert(mem_regions);
+ 
+-	query.data = to_user_pointer(mem_usage);
++	query.data = to_user_pointer(mem_regions);
+ 	igt_assert_eq(igt_ioctl(device.fd_xe, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+ 
+-	for (i = 0; i < mem_usage->num_regions; i++) {
+-		if (mem_usage->regions[i].mem_class == DRM_XE_MEM_REGION_CLASS_VRAM) {
+-			vram_used_mb +=  (mem_usage->regions[i].used / (1024 * 1024));
+-			vram_total_mb += (mem_usage->regions[i].total_size / (1024 * 1024));
++	for (i = 0; i < mem_regions->num_regions; i++) {
++		if (mem_regions->regions[i].mem_class == DRM_XE_MEM_REGION_CLASS_VRAM) {
++			vram_used_mb +=  (mem_regions->regions[i].used / (1024 * 1024));
++			vram_total_mb += (mem_regions->regions[i].total_size / (1024 * 1024));
  		}
--		exec_queues[i] = xe_exec_queue_create(fd, vm[i], eci, 0);
-+		exec_queues[i] = xe_exec_queue_create(fd, vm[i],
-+						      &engine->instance, 0);
  	}
  
- 	igt_info("Now sleeping for %ds.\n", SECONDS_TO_WAIT);
+diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
+index df8cf9b9e..a302a296f 100644
+--- a/tests/intel/xe_query.c
++++ b/tests/intel/xe_query.c
+@@ -199,12 +199,12 @@ test_query_engines(int fd)
+  *	and alignment.
+  */
+ static void
+-test_query_mem_usage(int fd)
++test_query_mem_regions(int fd)
+ {
+-	struct drm_xe_query_mem_usage *mem_usage;
++	struct drm_xe_query_mem_regions *mem_regions;
+ 	struct drm_xe_device_query query = {
+ 		.extensions = 0,
+-		.query = DRM_XE_DEVICE_QUERY_MEM_USAGE,
++		.query = DRM_XE_DEVICE_QUERY_MEM_REGIONS,
+ 		.size = 0,
+ 		.data = 0,
+ 	};
+@@ -213,43 +213,43 @@ test_query_mem_usage(int fd)
+ 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+ 	igt_assert_neq(query.size, 0);
+ 
+-	mem_usage = malloc(query.size);
+-	igt_assert(mem_usage);
++	mem_regions = malloc(query.size);
++	igt_assert(mem_regions);
+ 
+-	query.data = to_user_pointer(mem_usage);
++	query.data = to_user_pointer(mem_regions);
+ 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+ 
+-	for (i = 0; i < mem_usage->num_regions; i++) {
++	for (i = 0; i < mem_regions->num_regions; i++) {
+ 		igt_info("mem region %d: %s\t%#llx / %#llx\n", i,
+-			mem_usage->regions[i].mem_class ==
++			mem_regions->regions[i].mem_class ==
+ 			DRM_XE_MEM_REGION_CLASS_SYSMEM ? "SYSMEM"
+-			:mem_usage->regions[i].mem_class ==
++			:mem_regions->regions[i].mem_class ==
+ 			DRM_XE_MEM_REGION_CLASS_VRAM ? "VRAM" : "?",
+-			mem_usage->regions[i].used,
+-			mem_usage->regions[i].total_size
++			mem_regions->regions[i].used,
++			mem_regions->regions[i].total_size
+ 		);
+ 		igt_info("min_page_size=0x%x\n",
+-		       mem_usage->regions[i].min_page_size);
++		       mem_regions->regions[i].min_page_size);
+ 
+ 		igt_info("visible size=%lluMiB\n",
+-			 mem_usage->regions[i].cpu_visible_size >> 20);
++			 mem_regions->regions[i].cpu_visible_size >> 20);
+ 		igt_info("visible used=%lluMiB\n",
+-			 mem_usage->regions[i].cpu_visible_used >> 20);
+-
+-		igt_assert_lte_u64(mem_usage->regions[i].cpu_visible_size,
+-				   mem_usage->regions[i].total_size);
+-		igt_assert_lte_u64(mem_usage->regions[i].cpu_visible_used,
+-				   mem_usage->regions[i].cpu_visible_size);
+-		igt_assert_lte_u64(mem_usage->regions[i].cpu_visible_used,
+-				   mem_usage->regions[i].used);
+-		igt_assert_lte_u64(mem_usage->regions[i].used,
+-				   mem_usage->regions[i].total_size);
+-		igt_assert_lte_u64(mem_usage->regions[i].used -
+-				   mem_usage->regions[i].cpu_visible_used,
+-				   mem_usage->regions[i].total_size);
++			 mem_regions->regions[i].cpu_visible_used >> 20);
++
++		igt_assert_lte_u64(mem_regions->regions[i].cpu_visible_size,
++				   mem_regions->regions[i].total_size);
++		igt_assert_lte_u64(mem_regions->regions[i].cpu_visible_used,
++				   mem_regions->regions[i].cpu_visible_size);
++		igt_assert_lte_u64(mem_regions->regions[i].cpu_visible_used,
++				   mem_regions->regions[i].used);
++		igt_assert_lte_u64(mem_regions->regions[i].used,
++				   mem_regions->regions[i].total_size);
++		igt_assert_lte_u64(mem_regions->regions[i].used -
++				   mem_regions->regions[i].cpu_visible_used,
++				   mem_regions->regions[i].total_size);
+ 	}
+-	dump_hex_debug(mem_usage, query.size);
+-	free(mem_usage);
++	dump_hex_debug(mem_regions, query.size);
++	free(mem_regions);
+ }
+ 
+ /**
+@@ -668,7 +668,7 @@ igt_main
+ 		test_query_engines(xe);
+ 
+ 	igt_subtest("query-mem-usage")
+-		test_query_mem_usage(xe);
++		test_query_mem_regions(xe);
+ 
+ 	igt_subtest("query-gt-list")
+ 		test_query_gt_list(xe);
 -- 
 2.34.1
