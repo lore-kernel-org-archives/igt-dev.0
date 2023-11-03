@@ -1,21 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam10on2079.outbound.protection.outlook.com [40.107.94.79])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 554FC10E18E
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Nov 2023 18:25:51 +0000 (UTC)
-Message-ID: <de7acffc-7c0b-45ed-925d-f3d9826151f6@amd.com>
-Date: Fri, 3 Nov 2023 14:25:45 -0400
-Content-Language: en-US
+Date: Fri, 3 Nov 2023 19:32:54 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-References: <20231103182230.1039191-1-aurabindo.pillai@amd.com>
- <20231103182230.1039191-6-aurabindo.pillai@amd.com>
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
-In-Reply-To: <20231103182230.1039191-6-aurabindo.pillai@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Message-ID: <20231103183254.kl4uhqzbfw7nw6i4@kamilkon-desk.igk.intel.com>
+References: <20231012081547.852052-1-tvrtko.ursulin@linux.intel.com>
+ <20231012081547.852052-3-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 5/5] test/amdgpu: Add test for
- Sub-viewport
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231012081547.852052-3-tvrtko.ursulin@linux.intel.com>
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 2/9] tests/i915/drm_fdinfo:
+ Stress test context close versus fdinfo reads
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,225 +18,145 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: hersenxs.wu@amd.com
+Cc: Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-
-On 2023-11-03 14:22, Aurabindo Pillai wrote:
-> Sub-viewport is a power saving feature found on DCN32/DCN321
-> and newer dGPUs.
+Hi Tvrtko,
+On 2023-10-12 at 09:15:40 +0100, Tvrtko Ursulin wrote:
+> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 > 
-> Add a test that commit a high resolution test pattern on multiple
-> displays and checks whether Sub-viewport feature is engaged.
+> A short smoke tests to exercise fdinfo reads in parallel to contexts
+> getting created and destroyed.
 > 
-> Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 > ---
->   tests/amdgpu/amd_subvp.c | 180 +++++++++++++++++++++++++++++++++++++++
->   tests/amdgpu/meson.build |   1 +
->   2 files changed, 181 insertions(+)
->   create mode 100644 tests/amdgpu/amd_subvp.c
+>  tests/intel/drm_fdinfo.c | 68 ++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 68 insertions(+)
 > 
-> diff --git a/tests/amdgpu/amd_subvp.c b/tests/amdgpu/amd_subvp.c
-> new file mode 100644
-> index 000000000..aa959441b
-> --- /dev/null
-> +++ b/tests/amdgpu/amd_subvp.c
-> @@ -0,0 +1,180 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright 2023 Advanced Micro Devices, Inc.
-> + */
-> +
+> diff --git a/tests/intel/drm_fdinfo.c b/tests/intel/drm_fdinfo.c
+> index 344c44dce78b..c4218b0d16e6 100644
+> --- a/tests/intel/drm_fdinfo.c
+> +++ b/tests/intel/drm_fdinfo.c
+> @@ -22,11 +22,14 @@
+>   *
+>   */
+>  
 > +#include <fcntl.h>
 > +
-> +#include "igt.h"
-> +#include "igt_amd.h"
-> +#include "igt_core.h"
-> +
-> +IGT_TEST_DESCRIPTION("Test enabling sub-viewport feature");
-> +
-> +/* Common test data. */
-> +struct data {
-> +	igt_display_t display;
-> +	igt_plane_t *primary[IGT_MAX_PIPES];
-> +	igt_output_t *output[IGT_MAX_PIPES];
-> +	igt_pipe_t *pipe[IGT_MAX_PIPES];
-> +	igt_pipe_crc_t *pipe_crc[IGT_MAX_PIPES];
-> +	drmModeModeInfo mode[IGT_MAX_PIPES];
-> +	enum pipe pipe_id[IGT_MAX_PIPES];
-> +	int fd;
-> +};
-> +
-> +struct line_check {
-> +	int found;
-> +	const char *substr;
-> +};
-> +
-> +static const drmModeModeInfo test_mode[] = {
-> +	{ 533250,
-> +	3840, 3888, 3920, 4000, 0,
-> +	2160, 2214, 2219, 2222, 0,
-> +	60,
-> +	DRM_MODE_FLAG_NHSYNC,
-> +	0x48,
-> +	"4k60\0",
-> +	}, /* from LG Ultra HD, product_id = 5B09, serial_number = 1010101 */
-> +};
-> +
-> +/* Forces a mode for a connector. */
-> +static void force_output_mode(struct data *d, igt_output_t *output,
-> +			      const drmModeModeInfo *mode)
+>  #include "igt.h"
+>  #include "igt_core.h"
+>  #include "igt_device.h"
+>  #include "igt_drm_fdinfo.h"
+>  #include "i915/gem.h"
+> +#include "i915/gem_create.h"
+>  #include "i915/gem_vm.h"
+>  #include "intel_ctx.h"
+>  /**
+> @@ -72,6 +75,8 @@
+>   * SUBTEST: virtual-busy-idle-all
+>   *
+>   * SUBTEST: virtual-idle
+> + *
+> + * SUBTEST: context-close-stress
+>   */
+>  
+>  IGT_TEST_DESCRIPTION("Test the i915 drm fdinfo data");
+> @@ -717,6 +722,56 @@ virtual_all(int i915, const intel_ctx_cfg_t *base_cfg, unsigned int flags)
+>  	}
+>  }
+>  
+> +static void stress_context_close(int i915)
 > +{
-> +	/* This allows us to create a virtual sink. */
-> +	if (!igt_output_is_connected(output)) {
-> +		kmstest_force_edid(d->fd, output->config.connector,
-> +				   igt_kms_get_4k_edid());
+> +	const uint32_t bbe = MI_BATCH_BUFFER_END;
+> +	struct igt_helper_process reader = { };
+> +	struct drm_client_fdinfo info;
+> +	uint32_t batch;
+> +	int dir, ret;
+> +	char buf[64];
 > +
-> +		kmstest_force_connector(d->fd, output->config.connector,
-> +					FORCE_CONNECTOR_DIGITAL);
-> +	}
+> +	ret = snprintf(buf, sizeof(buf), "%u", i915);
+> +	igt_assert(ret > 0 && ret < sizeof(buf));
 > +
-> +	igt_output_override_mode(output, mode);
-> +}
+> +	dir = open("/proc/self/fdinfo", O_DIRECTORY | O_RDONLY);
+> +	igt_assert_fd(dir);
 > +
-> +/* Common test setup. */
-> +static void test_init(struct data *data)
-> +{
-> +	igt_display_t *display = &data->display;
-> +	int i, n;
-> +	bool subvp_capable = false;
-> +	bool subvp_en = false;
-> +
-> +	for_each_pipe(display, i) {
-> +		data->pipe_id[i] = PIPE_A + i;
-> +		data->pipe[i] = &data->display.pipes[data->pipe_id[i]];
-> +		data->primary[i] = igt_pipe_get_plane_type(data->pipe[i],
-> +												   DRM_PLANE_TYPE_PRIMARY);
-> +		data->pipe_crc[i] = igt_pipe_crc_new(data->fd,
-> +											 data->pipe_id[i],
-> +											 IGT_PIPE_CRC_SOURCE_AUTO);
+> +	memset(&info, 0, sizeof(info));
+> +	ret = __igt_parse_drm_fdinfo(dir, buf, &info, NULL, 0, NULL, 0);
+> +	igt_assert(ret > 0);
 
-Sorry, will fix this before merging.
+You repeat this pattern later, it can be made into
+function:
 
+igt_parse_drm_fdinfo(dir, buf, *info, p1, i1, p2, i2)
+{
+	memset(info, 0, sizeof(*info));
+	ret = __igt_parse_drm_fdinfo(dir, buf, info, p1, i1, p2, i2);
+	igt_assert(ret > 0);
+}
+
+> +	igt_require(info.num_regions);
+> +
+> +	batch = gem_create(i915, 4096);
+> +	gem_write(i915, batch, 0, &bbe, sizeof(bbe));
+> +
+> +	igt_fork_helper(&reader) {
+> +		for (;;) {
+> +			memset(&info, 0, sizeof(info));
+> +			ret = __igt_parse_drm_fdinfo(dir, buf, &info,
+> +						     NULL, 0, NULL, 0);
+> +			igt_assert(ret > 0);
+
+Here you repeat this.
+
+With or without makeing this a function,
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+> +		}
 > +	}
 > +
-> +	for (i = 0, n = 0; i < display->n_outputs && n < display->n_pipes; ++i) {
-> +		igt_output_t *output = &display->outputs[i];
+> +	igt_until_timeout(10) {
+> +		struct drm_i915_gem_exec_object2 obj = {
+> +			.handle = batch,
+> +		};
+> +		struct drm_i915_gem_execbuffer2 eb = {
+> +			.buffers_ptr = to_user_pointer(&obj),
+> +			.buffer_count = 1,
+> +		};
 > +
-> +		data->output[n] = output;
-> +		/* Only allow physically connected displays for the tests. */
-> +		if (!igt_output_is_connected(output))
-> +			continue;
-> +		/* SubVP is only enabled on DP */
-> +		if (output->config.connector->connector_type !=
-> +			DRM_MODE_CONNECTOR_DisplayPort)
-> +			continue;
-> +
-> +		igt_assert(kmstest_get_connector_default_mode(
-> +				data->fd, output->config.connector, &data->mode[n]));
-> +
-> +		force_output_mode(data, data->output[n], &test_mode[0]);
-> +
-> +		n += 1;
+> +		eb.rsvd1 = gem_context_create(i915);
+> +		igt_assert(eb.rsvd1);
+> +		gem_execbuf(i915, &eb);
+> +		gem_context_destroy(i915, eb.rsvd1);
 > +	}
 > +
-> +	igt_require_f(n >= 2, "Requires at least two connected display\n");
-> +
-> +	igt_amd_get_subvp_status(data->fd, &subvp_capable, &subvp_en);
-> +	igt_require_f(subvp_capable, "Requires hardware that supports Sub-viewport\n");
-> +
-> +	igt_display_reset(display);
+> +	igt_stop_helper(&reader);
 > +}
 > +
-> +/* Common test cleanup. */
-> +static void test_fini(struct data *data)
-> +{
-> +	igt_display_t *display = &data->display;
-> +	int i;
+>  #define test_each_engine(T, i915, ctx, e) \
+>  	igt_subtest_with_dynamic(T) for_each_ctx_engine(i915, ctx, e) \
+>  		igt_dynamic_f("%s", e->name)
+> @@ -848,6 +903,19 @@ igt_main
+>  	test_each_engine("isolation", i915, ctx, e)
+>  		single(i915, ctx, e, TEST_BUSY | TEST_ISOLATION);
+>  
+> +	igt_subtest_group {
+> +		int newfd;
 > +
-> +	for_each_pipe(display, i) {
-> +		igt_pipe_crc_free(data->pipe_crc[i]);
+> +		igt_fixture
+> +			newfd = drm_reopen_driver(i915);
+> +
+> +		igt_subtest("context-close-stress")
+> +			stress_context_close(newfd);
+> +
+> +		igt_fixture
+> +			drm_close_driver(newfd);
 > +	}
 > +
-> +	igt_display_reset(display);
-> +	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
-> +}
-> +
-> +static void test_subvp(struct data *data)
-> +{
-> +	igt_display_t *display = &data->display;
-> +	igt_fb_t rfb;
-> +	bool subvp_supp, subvp_en;
-> +	igt_output_t *output;
-> +	int i;
-> +
-> +	test_init(data);
-> +	igt_enable_connectors(data->fd);
-> +
-> +	for_each_pipe(&data->display, i) {
-> +		/* Setup the output */
-> +		output = data->output[i];
-> +		if (!output || !igt_output_is_connected(output))
-> +			continue;
-> +
-> +		igt_create_pattern_fb(data->fd,
-> +					test_mode[0].hdisplay,
-> +					test_mode[0].vdisplay,
-> +					DRM_FORMAT_XRGB8888,
-> +					0,
-> +					&rfb);
-> +
-> +		igt_output_set_pipe(output, data->pipe_id[i]);
-> +		igt_plane_set_fb(data->primary[i], &rfb);
-> +		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
-> +	}
-> +
-> +
-> +	igt_amd_get_subvp_status(data->fd, &subvp_supp, &subvp_en);
-> +	igt_fail_on_f(!(subvp_supp && subvp_en), "SUBVP did not get enabled\n");
-> +
-> +	igt_remove_fb(data->fd, &rfb);
-> +	test_fini(data);
-> +}
-> +
-> +igt_main
-> +{
-> +	struct data data;
-> +
-> +	igt_skip_on_simulation();
-> +
-> +	memset(&data, 0, sizeof(data));
-> +
-> +	igt_fixture
-> +	{
-> +		data.fd = drm_open_driver_master(DRIVER_AMDGPU);
-> +		igt_display_require(&data.display, data.fd);
-> +		igt_display_require_output(&data.display);
-> +		igt_require(data.display.is_atomic);
-> +
-> +		kmstest_set_vt_graphics_mode();
-> +	}
-> +
-> +	igt_describe("Tests whether system enables sub-viewport when a specific mode is committed");
-> +	igt_subtest("dual-4k60") test_subvp(&data);
-> +
-> +	igt_fixture
-> +	{
-> +		igt_display_fini(&data.display);
-> +	}
-> +}
-> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
-> index f52fc3645..efd911fab 100644
-> --- a/tests/amdgpu/meson.build
-> +++ b/tests/amdgpu/meson.build
-> @@ -36,6 +36,7 @@ if libdrm_amdgpu.found()
->   			  'amd_vrr_range',
->   			  'amd_mall',
->   			  'amd_odm',
-> +			  'amd_subvp',
->   			]
->   	if libdrm_amdgpu.version().version_compare('> 2.4.97')
->   		amdgpu_progs +=[ 'amd_syncobj', ]
+>  	igt_fixture {
+>  		intel_ctx_destroy(i915, ctx);
+>  		drm_close_driver(i915);
+> -- 
+> 2.39.2
+> 
