@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1A00010E1A0
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Nov 2023 20:47:24 +0000 (UTC)
-From: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
-To: 
-Date: Fri,  3 Nov 2023 13:47:19 -0700
-Message-Id: <20231103204719.690769-2-jagmeet.randhawa@intel.com>
-In-Reply-To: <20231103204719.690769-1-jagmeet.randhawa@intel.com>
-References: <20231103204719.690769-1-jagmeet.randhawa@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============6971367591979592764=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 1/1] lib/gpgpu_fill: Add support for Xe2 platforms
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jagmeet Randhawa" <jagmeet.randhawa@intel.com>
+Date: Fri, 03 Nov 2023 21:56:47 -0000
+Message-ID: <169904860769.29108.10171279329314837179@emeril.freedesktop.org>
+References: <20231103204719.690769-1-jagmeet.randhawa@intel.com>
+In-Reply-To: <20231103204719.690769-1-jagmeet.randhawa@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_s?=
+ =?utf-8?q?tarting_with_=5B1/1=5D_lib/gpgpu=5Ffill=3A_Add_support_for_Xe2_?=
+ =?utf-8?q?platforms?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,253 +18,146 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add xe2lpg_gpgpu_fillfunc to have gpgpu_fill running on XE2
-On XE2 there are a few changes to gpu command instruction lengths.
+--===============6971367591979592764==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-There's also no 'Media Block Write' message, thus 'Typed 2D Block
-Store' message has to be used in the shader.
+== Series Details ==
 
-The shader was compiled using the following command:
+Series: series starting with [1/1] lib/gpgpu_fill: Add support for Xe2 platforms
+URL   : https://patchwork.freedesktop.org/series/125979/
+State : success
 
-iga64 -p=2 -Wall -Xprint-ldst -Xauto-deps --assemble xe2lpg_gpgpu_kernel.asm
-| od -A n -v -t x4 |sed -e 's/ / 0x/g' | sed -e 's/^/\t{/' | sed -e
-'s/([0-9]|[a-f]|[A-F]) /\1, /g' | sed -e 's/$/ },/g' | sed -e 's/\t /\t/g'
+== Summary ==
 
-Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
-Signed-off-by: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
-Reviewed-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
----
- lib/gpgpu_fill.c                              | 23 +++++++
- lib/gpgpu_fill.h                              |  6 ++
- lib/gpu_cmds.c                                | 61 ++++++++++++++++---
- .../shaders/gpgpu/xe2lpg_gpgpu_kernel.asm     | 13 ++++
- lib/intel_batchbuffer.c                       |  4 +-
- 5 files changed, 96 insertions(+), 11 deletions(-)
- create mode 100644 lib/i915/shaders/gpgpu/xe2lpg_gpgpu_kernel.asm
+CI Bug Log - changes from XEIGT_7573_BAT -> XEIGTPW_10117_BAT
+====================================================
 
-diff --git a/lib/gpgpu_fill.c b/lib/gpgpu_fill.c
-index eed821872..1270c2b22 100644
---- a/lib/gpgpu_fill.c
-+++ b/lib/gpgpu_fill.c
-@@ -124,6 +124,18 @@ static const uint32_t xehpc_gpgpu_kernel[][4] = {
- 	{ 0x000c0031, 0x00000004, 0x3000500c, 0x00000000 },
- };
- 
-+static const uint32_t xe2lpg_gpgpu_kernel[][4] = {
-+	{ 0x00080061, 0x01050000, 0x00000104, 0x00000000 },
-+	{ 0x00000069, 0x02058220, 0x02000014, 0x00000004 },
-+	{ 0x00000061, 0x02150220, 0x00000064, 0x00000000 },
-+	{ 0x00100061, 0x04054220, 0x00000000, 0x00000000 },
-+	{ 0x00041a61, 0x04550220, 0x00220205, 0x00000000 },
-+	{ 0x00000061, 0x04754550, 0x00000000, 0x000f000f },
-+	{ 0x00101e61, 0x05050220, 0x00000104, 0x00000000 },
-+	{ 0x00132031, 0x00000000, 0xd00e0494, 0x04000000 },
-+	{ 0x000c0031, 0x00000004, 0x3000500c, 0x00000000 },
-+};
-+
- /*
-  * This sets up the gpgpu pipeline,
-  *
-@@ -398,3 +410,14 @@ void xehpc_gpgpu_fillfunc(int i915,
- 			      xehpc_gpgpu_kernel,
- 			      sizeof(xehpc_gpgpu_kernel));
- }
-+
-+void xe2lpg_gpgpu_fillfunc(int i915,
-+			   struct intel_buf *buf,
-+			   unsigned int x, unsigned int y,
-+			   unsigned int width, unsigned int height,
-+			   uint8_t color)
-+{
-+	__xehp_gpgpu_fillfunc(i915, buf, x, y, width, height, color,
-+			      xe2lpg_gpgpu_kernel,
-+			      sizeof(xe2lpg_gpgpu_kernel));
-+}
-diff --git a/lib/gpgpu_fill.h b/lib/gpgpu_fill.h
-index f81cd0b53..c3b47c10a 100644
---- a/lib/gpgpu_fill.h
-+++ b/lib/gpgpu_fill.h
-@@ -75,4 +75,10 @@ xehpc_gpgpu_fillfunc(int i915,
- 		     unsigned int width, unsigned int height,
- 		     uint8_t color);
- 
-+void xe2lpg_gpgpu_fillfunc(int i915,
-+			   struct intel_buf *buf,
-+			   unsigned int x, unsigned int y,
-+			   unsigned int width, unsigned int height,
-+			   uint8_t color);
-+
- #endif /* GPGPU_FILL_H */
-diff --git a/lib/gpu_cmds.c b/lib/gpu_cmds.c
-index f19f93b28..ed608e95a 100644
---- a/lib/gpu_cmds.c
-+++ b/lib/gpu_cmds.c
-@@ -328,18 +328,45 @@ fill_binding_table(struct intel_bb *ibb, struct intel_buf *buf)
- 	binding_table = intel_bb_ptr(ibb);
- 	intel_bb_ptr_add(ibb, 64);
- 
--	if (intel_graphics_ver(devid) >= IP_VER(12, 50))
-+	if (intel_graphics_ver(devid) >= IP_VER(20, 0)){
-+		/*
-+		* Up until now, SURFACEFORMAT_R8_UNROM was used regardless of the 'bpp' value.
-+		* For bpp 32 this results in a surface that is 4x narrower than expected. However
-+		* it worked, because the 'Media Block Read/Write' message assumes the surface width
-+		* is always in units of dwords.
-+		*
-+		* Since Xe2 the Media Block Write message got replaced with 'Typed 2D Block
-+		* Load/Store Message' which correctly interprets the surface format.
-+		*/
-+		if (buf->bpp == 32)
-+			binding_table[0] = xehp_fill_surface_state(ibb, buf,
-+								      SURFACEFORMAT_R8G8B8A8_UNORM,
-+								      1);
-+		else if (buf->bpp == 8)
-+			binding_table[0] = xehp_fill_surface_state(ibb, buf,
-+								      SURFACEFORMAT_R8_UNORM,
-+								      1);
-+		else
-+			igt_assert_f(false,
-+				     "Surface state for bpp = %u not implemented",
-+				     buf->bpp);
-+	}
-+	else if (intel_graphics_ver(devid) >= IP_VER(12, 50)){
- 		binding_table[0] = xehp_fill_surface_state(ibb, buf,
- 							   SURFACEFORMAT_R8_UNORM, 1);
--	else if (intel_graphics_ver(devid) >= IP_VER(9, 0))
-+	}
-+	else if (intel_graphics_ver(devid) >= IP_VER(9, 0)){
- 		binding_table[0] = gen9_fill_surface_state(ibb, buf,
- 							   SURFACEFORMAT_R8_UNORM, 1);
--	else if (intel_graphics_ver(devid) >= IP_VER(8, 0))
-+	}
-+	else if (intel_graphics_ver(devid) >= IP_VER(8, 0)){
- 		binding_table[0] = gen8_fill_surface_state(ibb, buf,
- 							   SURFACEFORMAT_R8_UNORM, 1);
--	else
-+	}
-+	else {
- 		binding_table[0] = gen7_fill_surface_state(ibb, buf,
- 							   SURFACEFORMAT_R8_UNORM, 1);
-+	}
- 
- 	return binding_table_offset;
- }
-@@ -959,8 +986,12 @@ xehp_emit_cfe_state(struct intel_bb *ibb, uint32_t threads)
- void
- xehp_emit_state_compute_mode(struct intel_bb *ibb)
- {
--	intel_bb_out(ibb, XEHP_STATE_COMPUTE_MODE);
-+	uint32_t dword_length = intel_graphics_ver(ibb->devid) >= IP_VER(20, 0);
-+	intel_bb_out(ibb, XEHP_STATE_COMPUTE_MODE | dword_length);
- 	intel_bb_out(ibb, 0);
-+
-+	if (dword_length)
-+		intel_bb_out(ibb, 0);
- }
- 
- void
-@@ -976,6 +1007,8 @@ xehp_emit_state_binding_table_pool_alloc(struct intel_bb *ibb)
- void
- xehp_emit_state_base_address(struct intel_bb *ibb)
- {
-+	uint32_t tmp;
-+
- 	intel_bb_out(ibb, GEN8_STATE_BASE_ADDRESS | 0x14);            //dw0
- 
- 	/* general */
-@@ -983,7 +1016,8 @@ xehp_emit_state_base_address(struct intel_bb *ibb)
- 	intel_bb_out(ibb, 0);
- 
- 	/* stateless data port */
--	intel_bb_out(ibb, 0 | BASE_ADDRESS_MODIFY);                   //dw3
-+	tmp = intel_graphics_ver(ibb->devid) == IP_VER(20, 0) ? 0 : BASE_ADDRESS_MODIFY;
-+	intel_bb_out(ibb, 0 | tmp);                  //dw3
- 
- 	/* surface */
- 	intel_bb_emit_reloc(ibb, ibb->handle, I915_GEM_DOMAIN_SAMPLER, //dw4-dw5
-@@ -1008,7 +1042,10 @@ xehp_emit_state_base_address(struct intel_bb *ibb)
- 	/* dynamic state buffer size */
- 	intel_bb_out(ibb, 1 << 12 | 1);                             //dw13
- 	/* indirect object buffer size */
--	intel_bb_out(ibb, 0xfffff000 | 1);                          //dw14
-+	if (intel_graphics_ver(ibb->devid) == IP_VER(20, 0))	    //dw14
-+		intel_bb_out(ibb, 0);
-+	else
-+		intel_bb_out(ibb, 0xfffff000 | 1);
- 	/* intruction buffer size */
- 	intel_bb_out(ibb, 1 << 12 | 1);                             //dw15
- 
-@@ -1030,7 +1067,7 @@ xehp_emit_compute_walk(struct intel_bb *ibb,
- 		       struct xehp_interface_descriptor_data *pidd,
- 		       uint8_t color)
- {
--	uint32_t x_dim, y_dim, mask;
-+	uint32_t x_dim, y_dim, mask, dword_length;
- 
- 	/*
- 	 * Simply do SIMD16 based dispatch, so every thread uses
-@@ -1052,7 +1089,8 @@ xehp_emit_compute_walk(struct intel_bb *ibb,
- 	else
- 		mask = (1 << mask) - 1;
- 
--	intel_bb_out(ibb, XEHP_COMPUTE_WALKER | 0x25);
-+	dword_length = intel_graphics_ver(ibb->devid) >= IP_VER(20, 0) ? 0x26 : 0x25;
-+	intel_bb_out(ibb, XEHP_COMPUTE_WALKER | dword_length);
- 
- 	intel_bb_out(ibb, 0); /* debug object */		//dw1
- 	intel_bb_out(ibb, 0); /* indirect data length */	//dw2
-@@ -1090,9 +1128,12 @@ xehp_emit_compute_walk(struct intel_bb *ibb,
- 	intel_bb_out(ibb, 0);					//dw15
- 	intel_bb_out(ibb, 0);					//dw16
- 	intel_bb_out(ibb, 0);					//dw17
-+	
-+	if (intel_graphics_ver(ibb->devid) >= IP_VER(20, 0))	//Xe2:dw18
-+		intel_bb_out(ibb, 0);
- 
- 	/* Interface descriptor data */
--	for (int i = 0; i < 8; i++) {			       //dw18-25
-+	for (int i = 0; i < 8; i++) {			       //dw18-25 (Xe2:dw19-26)
- 		intel_bb_out(ibb, ((uint32_t *) pidd)[i]);
- 	}
- 
-diff --git a/lib/i915/shaders/gpgpu/xe2lpg_gpgpu_kernel.asm b/lib/i915/shaders/gpgpu/xe2lpg_gpgpu_kernel.asm
-new file mode 100644
-index 000000000..e2ecc71f5
---- /dev/null
-+++ b/lib/i915/shaders/gpgpu/xe2lpg_gpgpu_kernel.asm
-@@ -0,0 +1,13 @@
-+L0:
-+         mov (4|M0)               r1.0<1>:ub    r1.0<0;1,0>:ub                        // Load r1.0-3 with color byte
-+         shl (1|M0)               r2.0<1>:ud    r0.1<0;1,0>:ud    0x4:ud              // Load r2.0-3 with tg id X << 4
-+         mov (1|M0)               r2.1<1>:ud    r0.6<0;1,0>:ud                        // Load r2.4-7 with tg id Y
-+
-+         // payload setup
-+         mov (16|M0)              r4.0<1>:ud    0x0:ud                                // Zero out register R4
-+         mov (2|M0)               r4.5<1>:ud    r2.0<2;2,1>:ud                        // Store X and Y block start (160:191 and 192:223)
-+         mov (1|M0)               r4.14<1>:w    0xF:w                                 // Store X and Y block size (224:231 and 232:239)
-+         mov (16|M0)              r5.0<1>:ud    r1.0<0;1,0>:ud                        // Load r5-r6 with color byte
-+
-+         send.tgm (16|M0)         null     r4    null:0    0x0    0x64000007          // Send TypedStore2DBlock to tgm port
-+         send.gtwy (8|M0)         null    r80    null:0    0x0    0x02000000 {EOT}
-diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index df82ef5f5..d23c04073 100644
---- a/lib/intel_batchbuffer.c
-+++ b/lib/intel_batchbuffer.c
-@@ -755,7 +755,9 @@ igt_fillfunc_t igt_get_gpgpu_fillfunc(int devid)
- {
- 	igt_fillfunc_t fill = NULL;
- 
--	if (IS_METEORLAKE(devid))
-+	if (intel_graphics_ver(devid) >= IP_VER(20, 0))
-+                fill = xe2lpg_gpgpu_fillfunc;
-+	else if (IS_METEORLAKE(devid))
- 		fill = xehp_gpgpu_fillfunc;
- 	else if (intel_graphics_ver(devid) >= IP_VER(12, 60))
- 		fill = xehpc_gpgpu_fillfunc;
--- 
-2.25.1
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10117_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:
+    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#480])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7573/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10117/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1:
+    - bat-adlp-7:         [FAIL][3] ([Intel XE#480]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7573/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10117/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html
+
+  
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7573 -> IGTPW_10117
+  * Linux: xe-467-58dfdb8dc78e5668f9891c798ec3191863c1e0d2 -> xe-468-3eda14181cf05365b96272eec03df94bcfd264b5
+
+  IGTPW_10117: 10117
+  IGT_7573: 69485d223b256208614e9949a4a7e84bde52d5f5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-467-58dfdb8dc78e5668f9891c798ec3191863c1e0d2: 58dfdb8dc78e5668f9891c798ec3191863c1e0d2
+  xe-468-3eda14181cf05365b96272eec03df94bcfd264b5: 3eda14181cf05365b96272eec03df94bcfd264b5
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10117/index.html
+
+--===============6971367591979592764==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [1/1] lib/gpgpu_fill: Add support for Xe2 platforms</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/125979/">https://patchwork.freedesktop.org/series/125979/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10117/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10117/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7573_BAT -&gt; XEIGTPW_10117_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10117_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7573/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10117/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7573/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10117/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7573 -&gt; IGTPW_10117</li>
+<li>Linux: xe-467-58dfdb8dc78e5668f9891c798ec3191863c1e0d2 -&gt; xe-468-3eda14181cf05365b96272eec03df94bcfd264b5</li>
+</ul>
+<p>IGTPW_10117: 10117<br />
+  IGT_7573: 69485d223b256208614e9949a4a7e84bde52d5f5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-467-58dfdb8dc78e5668f9891c798ec3191863c1e0d2: 58dfdb8dc78e5668f9891c798ec3191863c1e0d2<br />
+  xe-468-3eda14181cf05365b96272eec03df94bcfd264b5: 3eda14181cf05365b96272eec03df94bcfd264b5</p>
+
+</body>
+</html>
+
+--===============6971367591979592764==--
