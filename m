@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9CF2D10E525
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Nov 2023 09:22:09 +0000 (UTC)
-Date: Fri, 3 Nov 2023 10:21:55 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 900CA10E53C
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Nov 2023 09:32:46 +0000 (UTC)
+Date: Fri, 3 Nov 2023 10:32:41 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20231103092155.x3yuifgv5pjeiujp@kamilkon-desk.igk.intel.com>
-References: <20231102200000.969208-1-aurabindo.pillai@amd.com>
- <20231102200000.969208-4-aurabindo.pillai@amd.com>
+Message-ID: <20231103093241.vbvyyjnb475leiqm@kamilkon-desk.igk.intel.com>
+References: <20231102214251.669712-1-jagmeet.randhawa@intel.com>
+ <20231102214251.669712-2-jagmeet.randhawa@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231102200000.969208-4-aurabindo.pillai@amd.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 4/4] test/amdgpu: Add test for
- Sub-viewport
+In-Reply-To: <20231102214251.669712-2-jagmeet.randhawa@intel.com>
+Subject: Re: [igt-dev] [PATCH 1/1] XE2: lib/gpgpu_fill: Add support for Xe2
+ platforms
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,247 +25,252 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Aurabindo,
-On 2023-11-02 at 16:00:00 -0400, Aurabindo Pillai wrote:
-> Sub-viewport is a power saving feature found on DCN32/DCN321 and newer dGPUs.
+Hi Jagmeet,
+
+please correct Subject: of your letter:
+[PATCH 1/1] XE2: lib/gpgpu_fill: Add support for Xe2 platforms
+----------- ^^^^^
+s/XE2: //
+so it will be:
+
+[PATCH 1/1] lib/gpgpu_fill: Add support for Xe2 platforms
+
+No need to change cover letter, only subject of patch itself.
+
+On 2023-11-02 at 14:42:51 -0700, Jagmeet Randhawa wrote:
+> Add xe2lpg_gpgpu_fillfunc to have gpgpu_fill running on XE2
+> On XE2 there are a few changes to gpu command instruction lengths.
 > 
-> Add a test that commit a high resolution test pattern on multiple displays
-> and checks whether Sub-viewport feature is engaged.
+> There's also no 'Media Block Write' message, thus 'Typed 2D Block
+> Store' message has to be used in the shader.
 > 
-
-Please add a few AMD devs in Cc.
-
-> Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-> ---
->  tests/amdgpu/amd_subvp.c | 194 +++++++++++++++++++++++++++++++++++++++
->  tests/amdgpu/meson.build |   1 +
->  2 files changed, 195 insertions(+)
->  create mode 100644 tests/amdgpu/amd_subvp.c
+> The shader was compiled using the following command:
 > 
-> diff --git a/tests/amdgpu/amd_subvp.c b/tests/amdgpu/amd_subvp.c
-> new file mode 100644
-> index 000000000..110ae31a5
-> --- /dev/null
-> +++ b/tests/amdgpu/amd_subvp.c
-> @@ -0,0 +1,194 @@
-> +/*
-> + * Copyright 2023 Advanced Micro Devices, Inc.
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining a
------- ^^^^^
-Delete this and write SPDX at begin, see other *.c test with SPDX licence.
+> iga64 -p=2 -Wall -Xprint-ldst -Xauto-deps --assemble xe2lpg_gpgpu_kernel.asm
+> | od -A n -v -t x4 |sed -e 's/ / 0x/g' | sed -e 's/^/\t{/' | sed -e
+> 's/([0-9]|[a-f]|[A-F]) /\1, /g' | sed -e 's/$/ },/g' | sed -e 's/\t /\t/g'
+> 
+> Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
+> Signed-off-by: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
 
-> + * copy of this software and associated documentation files (the "Software"),
-> + * to deal in the Software without restriction, including without limitation
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice shall be included in
-> + * all copies or substantial portions of the Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-> + * OTHER DEALINGS IN THE SOFTWARE.
-> + */
-> +
-> +#include "igt.h"
-> +#include "igt_amd.h"
-> +#include "igt_core.h"
-> +#include <fcntl.h>
------------ ^
-Reverse order, first go system includes, then igt.
-
-Please also use checkpatch.pl from Linux kernel for some style pointers
-or spelling corrections.
+When you addressed mine and Dominik comments, then you should
+also add his r-b here. Also add him and Christoph on Cc.
 
 Regards,
 Kamil
 
-> +
-> +IGT_TEST_DESCRIPTION("Test enabling sub-viewport feature");
-> +
-> +/* Common test data. */
-> +typedef struct data {
-> +	igt_display_t display;
-> +	igt_plane_t *primary[IGT_MAX_PIPES];
-> +	igt_output_t *output[IGT_MAX_PIPES];
-> +	igt_pipe_t *pipe[IGT_MAX_PIPES];
-> +	igt_pipe_crc_t *pipe_crc[IGT_MAX_PIPES];
-> +	drmModeModeInfo mode[IGT_MAX_PIPES];
-> +	enum pipe pipe_id[IGT_MAX_PIPES];
-> +	int fd;
-> +} data_t;
-> +
-> +struct line_check {
-> +	int found;
-> +	const char *substr;
+> ---
+>  lib/gpgpu_fill.c                              | 23 ++++++++
+>  lib/gpgpu_fill.h                              |  6 +++
+>  lib/gpu_cmds.c                                | 53 ++++++++++++++++---
+>  .../shaders/gpgpu/xe2lpg_gpgpu_kernel.asm     | 13 +++++
+>  lib/intel_batchbuffer.c                       |  4 +-
+>  5 files changed, 90 insertions(+), 9 deletions(-)
+>  create mode 100644 lib/i915/shaders/gpgpu/xe2lpg_gpgpu_kernel.asm
+> 
+> diff --git a/lib/gpgpu_fill.c b/lib/gpgpu_fill.c
+> index eed821872..1270c2b22 100644
+> --- a/lib/gpgpu_fill.c
+> +++ b/lib/gpgpu_fill.c
+> @@ -124,6 +124,18 @@ static const uint32_t xehpc_gpgpu_kernel[][4] = {
+>  	{ 0x000c0031, 0x00000004, 0x3000500c, 0x00000000 },
+>  };
+>  
+> +static const uint32_t xe2lpg_gpgpu_kernel[][4] = {
+> +	{ 0x00080061, 0x01050000, 0x00000104, 0x00000000 },
+> +	{ 0x00000069, 0x02058220, 0x02000014, 0x00000004 },
+> +	{ 0x00000061, 0x02150220, 0x00000064, 0x00000000 },
+> +	{ 0x00100061, 0x04054220, 0x00000000, 0x00000000 },
+> +	{ 0x00041a61, 0x04550220, 0x00220205, 0x00000000 },
+> +	{ 0x00000061, 0x04754550, 0x00000000, 0x000f000f },
+> +	{ 0x00101e61, 0x05050220, 0x00000104, 0x00000000 },
+> +	{ 0x00132031, 0x00000000, 0xd00e0494, 0x04000000 },
+> +	{ 0x000c0031, 0x00000004, 0x3000500c, 0x00000000 },
 > +};
 > +
-> +static const drmModeModeInfo test_mode[] = {
-> +	{ 533250,
-> +	3840, 3888, 3920, 4000, 0,
-> +	2160, 2214, 2219, 2222, 0,
-> +	60,
-> +	DRM_MODE_FLAG_NHSYNC,
-> +	0x48,
-> +	"4k60\0",
-> +	}, /* from LG Ultra HD, product_id = 5B09, serial_number = 1010101 */
-> +};
+>  /*
+>   * This sets up the gpgpu pipeline,
+>   *
+> @@ -398,3 +410,14 @@ void xehpc_gpgpu_fillfunc(int i915,
+>  			      xehpc_gpgpu_kernel,
+>  			      sizeof(xehpc_gpgpu_kernel));
+>  }
 > +
-> +/* Forces a mode for a connector. */
-> +static void force_output_mode(struct data *d, igt_output_t *output,
-> +			      const drmModeModeInfo *mode)
+> +void xe2lpg_gpgpu_fillfunc(int i915,
+> +			   struct intel_buf *buf,
+> +			   unsigned int x, unsigned int y,
+> +			   unsigned int width, unsigned int height,
+> +			   uint8_t color)
 > +{
-> +	/* This allows us to create a virtual sink. */
-> +	if (!igt_output_is_connected(output)) {
-> +		kmstest_force_edid(d->fd, output->config.connector,
-> +				   igt_kms_get_4k_edid());
-> +
-> +		kmstest_force_connector(d->fd, output->config.connector,
-> +					FORCE_CONNECTOR_DIGITAL);
-> +	}
-> +
-> +	igt_output_override_mode(output, mode);
+> +	__xehp_gpgpu_fillfunc(i915, buf, x, y, width, height, color,
+> +			      xe2lpg_gpgpu_kernel,
+> +			      sizeof(xe2lpg_gpgpu_kernel));
 > +}
+> diff --git a/lib/gpgpu_fill.h b/lib/gpgpu_fill.h
+> index f81cd0b53..c3b47c10a 100644
+> --- a/lib/gpgpu_fill.h
+> +++ b/lib/gpgpu_fill.h
+> @@ -75,4 +75,10 @@ xehpc_gpgpu_fillfunc(int i915,
+>  		     unsigned int width, unsigned int height,
+>  		     uint8_t color);
+>  
+> +void xe2lpg_gpgpu_fillfunc(int i915,
+> +			   struct intel_buf *buf,
+> +			   unsigned int x, unsigned int y,
+> +			   unsigned int width, unsigned int height,
+> +			   uint8_t color);
 > +
-> +/* Common test setup. */
-> +static void test_init(data_t *data)
-> +{
-> +	igt_display_t *display = &data->display;
-> +	int i, n;
-> +	bool subvp_capable = false;
-> +	bool subvp_en = false;
-> +
-> +	for_each_pipe(display, i) {
-> +		data->pipe_id[i] = PIPE_A + i;
-> +		data->pipe[i] = &data->display.pipes[data->pipe_id[i]];
-> +		data->primary[i] = igt_pipe_get_plane_type(data->pipe[i], DRM_PLANE_TYPE_PRIMARY);
-> +		data->pipe_crc[i] = igt_pipe_crc_new(data->fd, data->pipe_id[i], IGT_PIPE_CRC_SOURCE_AUTO);
+>  #endif /* GPGPU_FILL_H */
+> diff --git a/lib/gpu_cmds.c b/lib/gpu_cmds.c
+> index f19f93b28..77ebbea2d 100644
+> --- a/lib/gpu_cmds.c
+> +++ b/lib/gpu_cmds.c
+> @@ -328,7 +328,30 @@ fill_binding_table(struct intel_bb *ibb, struct intel_buf *buf)
+>  	binding_table = intel_bb_ptr(ibb);
+>  	intel_bb_ptr_add(ibb, 64);
+>  
+> -	if (intel_graphics_ver(devid) >= IP_VER(12, 50))
+> +	if (intel_graphics_ver(devid) >= IP_VER(20, 0)){
+> +		/*
+> +		* Up until now, SURFACEFORMAT_R8_UNROM was used regardless of the 'bpp' value.
+> +		* For bpp 32 this results in a surface that is 4x narrower than expected. However
+> +		* it worked, because the 'Media Block Read/Write' message assumes the surface width
+> +		* is always in units of dwords.
+> +		*
+> +		* Since Xe2 the Media Block Write message got replaced with 'Typed 2D Block
+> +		* Load/Store Message' which correctly interprets the surface format.
+> +		*/
+> +		if (buf->bpp == 32)
+> +			binding_table[0] = xehp_fill_surface_state(ibb, buf,
+> +								      SURFACEFORMAT_R8G8B8A8_UNORM,
+> +								      1);
+> +		else if (buf->bpp == 8)
+> +			binding_table[0] = xehp_fill_surface_state(ibb, buf,
+> +								      SURFACEFORMAT_R8_UNORM,
+> +								      1);
+> +		else
+> +			igt_assert_f(false,
+> +				     "Surface state for bpp = %u not implemented",
+> +				     buf->bpp);
 > +	}
+> +	else if (intel_graphics_ver(devid) >= IP_VER(12, 50))
+>  		binding_table[0] = xehp_fill_surface_state(ibb, buf,
+>  							   SURFACEFORMAT_R8_UNORM, 1);
+>  	else if (intel_graphics_ver(devid) >= IP_VER(9, 0))
+> @@ -959,8 +982,12 @@ xehp_emit_cfe_state(struct intel_bb *ibb, uint32_t threads)
+>  void
+>  xehp_emit_state_compute_mode(struct intel_bb *ibb)
+>  {
+> -	intel_bb_out(ibb, XEHP_STATE_COMPUTE_MODE);
+> +	uint32_t dword_length = intel_graphics_ver(ibb->devid) >= IP_VER(20, 0);
+> +	intel_bb_out(ibb, XEHP_STATE_COMPUTE_MODE | dword_length);
+>  	intel_bb_out(ibb, 0);
 > +
-> +	for (i = 0, n = 0; i < display->n_outputs && n < display->n_pipes; ++i) {
-> +		igt_output_t *output = &display->outputs[i];
-> +		data->output[n] = output;
+> +	if (dword_length)
+> +		intel_bb_out(ibb, 0);
+>  }
+>  
+>  void
+> @@ -976,6 +1003,8 @@ xehp_emit_state_binding_table_pool_alloc(struct intel_bb *ibb)
+>  void
+>  xehp_emit_state_base_address(struct intel_bb *ibb)
+>  {
+> +	uint32_t tmp;
 > +
-> +		/* Only allow physically connected displays for the tests. */
-> +		if (!igt_output_is_connected(output))
-> +				continue;
+>  	intel_bb_out(ibb, GEN8_STATE_BASE_ADDRESS | 0x14);            //dw0
+>  
+>  	/* general */
+> @@ -983,7 +1012,8 @@ xehp_emit_state_base_address(struct intel_bb *ibb)
+>  	intel_bb_out(ibb, 0);
+>  
+>  	/* stateless data port */
+> -	intel_bb_out(ibb, 0 | BASE_ADDRESS_MODIFY);                   //dw3
+> +	tmp = intel_graphics_ver(ibb->devid) == IP_VER(20, 0) ? 0 : BASE_ADDRESS_MODIFY;
+> +	intel_bb_out(ibb, 0 | tmp);                  //dw3
+>  
+>  	/* surface */
+>  	intel_bb_emit_reloc(ibb, ibb->handle, I915_GEM_DOMAIN_SAMPLER, //dw4-dw5
+> @@ -1008,7 +1038,10 @@ xehp_emit_state_base_address(struct intel_bb *ibb)
+>  	/* dynamic state buffer size */
+>  	intel_bb_out(ibb, 1 << 12 | 1);                             //dw13
+>  	/* indirect object buffer size */
+> -	intel_bb_out(ibb, 0xfffff000 | 1);                          //dw14
+> +	if (intel_graphics_ver(ibb->devid) == IP_VER(20, 0))	    //dw14
+> +		intel_bb_out(ibb, 0);
+> +	else
+> +		intel_bb_out(ibb, 0xfffff000 | 1);
+>  	/* intruction buffer size */
+>  	intel_bb_out(ibb, 1 << 12 | 1);                             //dw15
+>  
+> @@ -1030,7 +1063,7 @@ xehp_emit_compute_walk(struct intel_bb *ibb,
+>  		       struct xehp_interface_descriptor_data *pidd,
+>  		       uint8_t color)
+>  {
+> -	uint32_t x_dim, y_dim, mask;
+> +	uint32_t x_dim, y_dim, mask, dword_length;
+>  
+>  	/*
+>  	 * Simply do SIMD16 based dispatch, so every thread uses
+> @@ -1051,8 +1084,9 @@ xehp_emit_compute_walk(struct intel_bb *ibb,
+>  		mask = (1 << 16) - 1;
+>  	else
+>  		mask = (1 << mask) - 1;
+> -
+> -	intel_bb_out(ibb, XEHP_COMPUTE_WALKER | 0x25);
+> +	
+> +	dword_length = intel_graphics_ver(ibb->devid) >= IP_VER(20, 0) ? 0x26 : 0x25;
+> +	intel_bb_out(ibb, XEHP_COMPUTE_WALKER | dword_length);
+>  
+>  	intel_bb_out(ibb, 0); /* debug object */		//dw1
+>  	intel_bb_out(ibb, 0); /* indirect data length */	//dw2
+> @@ -1090,9 +1124,12 @@ xehp_emit_compute_walk(struct intel_bb *ibb,
+>  	intel_bb_out(ibb, 0);					//dw15
+>  	intel_bb_out(ibb, 0);					//dw16
+>  	intel_bb_out(ibb, 0);					//dw17
+> +	
+> +	if (intel_graphics_ver(ibb->devid) >= IP_VER(20, 0))	//XE2:dw18
+> +		intel_bb_out(ibb, 0);
+>  
+>  	/* Interface descriptor data */
+> -	for (int i = 0; i < 8; i++) {			       //dw18-25
+> +	for (int i = 0; i < 8; i++) {			       //dw18-25 (XE2:dw19-26)
+>  		intel_bb_out(ibb, ((uint32_t *) pidd)[i]);
+>  	}
+>  
+> diff --git a/lib/i915/shaders/gpgpu/xe2lpg_gpgpu_kernel.asm b/lib/i915/shaders/gpgpu/xe2lpg_gpgpu_kernel.asm
+> new file mode 100644
+> index 000000000..e2ecc71f5
+> --- /dev/null
+> +++ b/lib/i915/shaders/gpgpu/xe2lpg_gpgpu_kernel.asm
+> @@ -0,0 +1,13 @@
+> +L0:
+> +         mov (4|M0)               r1.0<1>:ub    r1.0<0;1,0>:ub                        // Load r1.0-3 with color byte
+> +         shl (1|M0)               r2.0<1>:ud    r0.1<0;1,0>:ud    0x4:ud              // Load r2.0-3 with tg id X << 4
+> +         mov (1|M0)               r2.1<1>:ud    r0.6<0;1,0>:ud                        // Load r2.4-7 with tg id Y
 > +
-> +		/* SubVP is only enabled on DP */
-> +		if (output->config.connector->connector_type !=
-> +			DRM_MODE_CONNECTOR_DisplayPort)
-> +			continue;
+> +         // payload setup
+> +         mov (16|M0)              r4.0<1>:ud    0x0:ud                                // Zero out register R4
+> +         mov (2|M0)               r4.5<1>:ud    r2.0<2;2,1>:ud                        // Store X and Y block start (160:191 and 192:223)
+> +         mov (1|M0)               r4.14<1>:w    0xF:w                                 // Store X and Y block size (224:231 and 232:239)
+> +         mov (16|M0)              r5.0<1>:ud    r1.0<0;1,0>:ud                        // Load r5-r6 with color byte
 > +
-> +		igt_assert(kmstest_get_connector_default_mode(
-> +				data->fd, output->config.connector, &data->mode[n]));
-> +
-> +		force_output_mode(data, data->output[n], &test_mode[0]);
-> +
-> +		n += 1;
-> +	}
-> +
-> +	igt_require_f(n >= 2, "Requires at least two connected display\n");\
-> +
-> +	igt_amd_get_subvp_status(data->fd, &subvp_capable, &subvp_en);
-> +	igt_require_f(subvp_capable, "Requires hardware that supports Sub-viewport\n");
-> +
-> +	igt_display_reset(display);
-> +}
-> +
-> +/* Common test cleanup. */
-> +static void test_fini(data_t *data)
-> +{
-> +	igt_display_t *display = &data->display;
-> +	int i;
-> +
-> +	for_each_pipe(display, i) {
-> +		igt_pipe_crc_free(data->pipe_crc[i]);
-> +	}
-> +
-> +	igt_display_reset(display);
-> +	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
-> +}
-> +
-> +static void test_subvp(data_t *data)
-> +{
-> +	igt_display_t *display = &data->display;
-> +	igt_fb_t rfb;
-> +	bool subvp_supp, subvp_en;
-> +	igt_output_t *output;
-> +	int i;
-> +
-> +	test_init(data);
-> +	igt_enable_connectors(data->fd);
-> +
-> +	for_each_pipe(&data->display, i) {
-> +		/* Setup the output */
-> +		output = data->output[i];
-> +		if (!output || !igt_output_is_connected(output))
-> +			continue;
-> +
-> +		igt_create_pattern_fb(data->fd,
-> +					test_mode[0].hdisplay,
-> +					test_mode[0].vdisplay,
-> +					DRM_FORMAT_XRGB8888,
-> +					0,
-> +					&rfb);
-> +
-> +		igt_output_set_pipe(output, data->pipe_id[i]);
-> +		igt_plane_set_fb(data->primary[i], &rfb);
-> +		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
-> +	}
-> +
-> +
-> +	igt_amd_get_subvp_status(data->fd, &subvp_supp, &subvp_en);
-> +	igt_fail_on_f(!(subvp_supp && subvp_en), "SUBVP did not get enabled\n");
-> +
-> +	igt_remove_fb(data->fd, &rfb);
-> +	test_fini(data);
-> +}
-> +
-> +igt_main
-> +{
-> +	data_t data;
-> +
-> +	igt_skip_on_simulation();
-> +
-> +	memset(&data, 0, sizeof(data));
-> +
-> +	igt_fixture
-> +	{
-> +		data.fd = drm_open_driver_master(DRIVER_AMDGPU);
-> +		igt_display_require(&data.display, data.fd);
-> +		igt_display_require_output(&data.display);
-> +		igt_require(data.display.is_atomic);
-> +
-> +		kmstest_set_vt_graphics_mode();
-> +	}
-> +
-> +	igt_describe("Tests whether system enables sub-viewport when a specific mode is commited");
-> +	igt_subtest("dual-4k60") test_subvp(&data);
-> +
-> +	igt_fixture
-> +	{
-> +		igt_display_fini(&data.display);
-> +	}
-> +}
-> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
-> index f52fc3645..efd911fab 100644
-> --- a/tests/amdgpu/meson.build
-> +++ b/tests/amdgpu/meson.build
-> @@ -36,6 +36,7 @@ if libdrm_amdgpu.found()
->  			  'amd_vrr_range',
->  			  'amd_mall',
->  			  'amd_odm',
-> +			  'amd_subvp',
->  			]
->  	if libdrm_amdgpu.version().version_compare('> 2.4.97')
->  		amdgpu_progs +=[ 'amd_syncobj', ]
+> +         send.tgm (16|M0)         null     r4    null:0    0x0    0x64000007          // Send TypedStore2DBlock to tgm port
+> +         send.gtwy (8|M0)         null    r80    null:0    0x0    0x02000000 {EOT}
+> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+> index df82ef5f5..d23c04073 100644
+> --- a/lib/intel_batchbuffer.c
+> +++ b/lib/intel_batchbuffer.c
+> @@ -755,7 +755,9 @@ igt_fillfunc_t igt_get_gpgpu_fillfunc(int devid)
+>  {
+>  	igt_fillfunc_t fill = NULL;
+>  
+> -	if (IS_METEORLAKE(devid))
+> +	if (intel_graphics_ver(devid) >= IP_VER(20, 0))
+> +                fill = xe2lpg_gpgpu_fillfunc;
+> +	else if (IS_METEORLAKE(devid))
+>  		fill = xehp_gpgpu_fillfunc;
+>  	else if (intel_graphics_ver(devid) >= IP_VER(12, 60))
+>  		fill = xehpc_gpgpu_fillfunc;
 > -- 
-> 2.39.2
+> 2.25.1
 > 
