@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6D9BE10EA09
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Nov 2023 14:44:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 49A1510EA12
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Nov 2023 14:44:58 +0000 (UTC)
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  3 Nov 2023 14:43:17 +0000
-Message-Id: <20231103144359.7-23-francois.dugast@intel.com>
+Date: Fri,  3 Nov 2023 14:43:26 +0000
+Message-Id: <20231103144359.7-32-francois.dugast@intel.com>
 In-Reply-To: <20231103144359.7-1-francois.dugast@intel.com>
 References: <20231103144359.7-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 22/64] drm-uapi/xe: Rename *_mem_regions mask.
+Subject: [igt-dev] [PATCH v2 31/64] fixup! drm-uapi/xe: Align with
+ drm_xe_query_engine_info
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,88 +26,71 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-Aligns with kernel commit ("drm/xe/uapi: Rename *_mem_regions masks")
-
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Aligns with e1c6a20e7b57 ("fixup! drm/xe: Make DRM_XE_DEVICE_QUERY_ENGINES future proof")
 ---
- include/drm-uapi/xe_drm.h | 17 +++++++++--------
- lib/xe/xe_query.c         |  6 +++---
- tests/intel/xe_query.c    |  8 ++++----
- 3 files changed, 16 insertions(+), 15 deletions(-)
+ include/drm-uapi/xe_drm.h          | 15 +++++++++++----
+ tests/intel/xe_prime_self_import.c |  5 +----
+ 2 files changed, 12 insertions(+), 8 deletions(-)
 
 diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index d876b62ae..31ccf6b3d 100644
+index addadead9..d65f065a2 100644
 --- a/include/drm-uapi/xe_drm.h
 +++ b/include/drm-uapi/xe_drm.h
-@@ -376,17 +376,18 @@ struct drm_xe_query_gt {
- 	/** @clock_freq: A clock frequency for timestamp */
- 	__u32 clock_freq;
- 	/**
--	 * @native_mem_regions: Bit mask of instances from
--	 * drm_xe_query_mem_usage that lives on the same GPU/Tile and have
--	 * direct access.
-+	 * @near_mem_regions: Bit mask of instances from
-+	 * drm_xe_query_mem_usage that is near the current engines of this GT.
- 	 */
--	__u64 native_mem_regions;
-+	__u64 near_mem_regions;
- 	/**
--	 * @slow_mem_regions: Bit mask of instances from
--	 * drm_xe_query_mem_usage that this GT can indirectly access, although
--	 * they live on a different GPU/Tile.
-+	 * @far_mem_regions: Bit mask of instances from
-+	 * drm_xe_query_mem_usage that is far from the engines of this GT.
-+	 * In general, it has extra indirections when compared to the
-+	 * @near_mem_regions. For a discrete device this could mean system
-+	 * memory and memory living in a different Tile.
- 	 */
--	__u64 slow_mem_regions;
-+	__u64 far_mem_regions;
- 	/** @reserved: Reserved */
- 	__u64 reserved[8];
+@@ -127,6 +127,10 @@ struct xe_user_extension {
+ /**
+  * struct drm_xe_engine_class_instance - instance of an engine class
+  *
++ * It is returned as part of the @drm_xe_query_engine_info, but it also is
++ * used as the input of engine selection for both @drm_xe_exec_queue_create
++ * and @drm_xe_query_engine_cycles
++ *
+  * The @engine_class can be:
+  *  - %DRM_XE_ENGINE_CLASS_RENDER
+  *  - %DRM_XE_ENGINE_CLASS_COPY
+@@ -164,13 +168,16 @@ struct drm_xe_engine_class_instance {
+ /**
+  * struct drm_xe_query_engine_info - describe hardware engine
+  *
+- * If a query is made with a struct drm_xe_device_query where .query
+- * is equal to DRM_XE_DEVICE_QUERY_ENGINES, then the reply uses an array of
+- * struct drm_xe_query_engine_info in .data.
++ * If a query is made with a struct @drm_xe_device_query where .query
++ * is equal to %DRM_XE_DEVICE_QUERY_ENGINES, then the reply uses an array of
++ * struct @drm_xe_query_engine_info in .data.
+  */
+ struct drm_xe_query_engine_info {
++	/** @instance: The @drm_xe_engine_class_instance */
+ 	struct drm_xe_engine_class_instance instance;
+-	__u64 rsvd[3];
++
++	/** @reserved: Reserved */
++	__u64 reserved[3];
  };
-diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index 7582f2868..2ff1ff735 100644
---- a/lib/xe/xe_query.c
-+++ b/lib/xe/xe_query.c
-@@ -64,8 +64,8 @@ static uint64_t __memory_regions(const struct drm_xe_query_gt_list *gt_list)
+ 
+ /**
+diff --git a/tests/intel/xe_prime_self_import.c b/tests/intel/xe_prime_self_import.c
+index 504e6a13d..ad988ef3b 100644
+--- a/tests/intel/xe_prime_self_import.c
++++ b/tests/intel/xe_prime_self_import.c
+@@ -59,7 +59,6 @@ IGT_TEST_DESCRIPTION("Check whether prime import/export works on the same"
+ static char counter;
+ static int g_time_out = 5;
+ static pthread_barrier_t g_barrier;
+-static size_t bo_size;
+ 
+ static size_t get_min_bo_size(int fd1, int fd2)
+ {
+@@ -532,10 +531,8 @@ igt_main
  	int i;
+ 	int fd;
  
- 	for (i = 0; i < gt_list->num_gt; i++)
--		regions |= gt_list->gt_list[i].native_mem_regions |
--			   gt_list->gt_list[i].slow_mem_regions;
-+		regions |= gt_list->gt_list[i].near_mem_regions |
-+			   gt_list->gt_list[i].far_mem_regions;
+-	igt_fixture {
++	igt_fixture
+ 		fd = drm_open_driver(DRIVER_XE);
+-		bo_size = xe_get_default_alignment(fd);
+-	}
  
- 	return regions;
- }
-@@ -121,7 +121,7 @@ static uint64_t native_region_for_gt(const struct drm_xe_query_gt_list *gt_list,
- 	uint64_t region;
- 
- 	igt_assert(gt_list->num_gt > gt);
--	region = gt_list->gt_list[gt].native_mem_regions;
-+	region = gt_list->gt_list[gt].near_mem_regions;
- 	igt_assert(region);
- 
- 	return region;
-diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
-index 086582352..df8cf9b9e 100644
---- a/tests/intel/xe_query.c
-+++ b/tests/intel/xe_query.c
-@@ -282,10 +282,10 @@ test_query_gt_list(int fd)
- 		igt_info("type: %d\n", gt_list->gt_list[i].type);
- 		igt_info("gt_id: %d\n", gt_list->gt_list[i].gt_id);
- 		igt_info("clock_freq: %u\n", gt_list->gt_list[i].clock_freq);
--		igt_info("native_mem_regions: 0x%016llx\n",
--		       gt_list->gt_list[i].native_mem_regions);
--		igt_info("slow_mem_regions: 0x%016llx\n",
--		       gt_list->gt_list[i].slow_mem_regions);
-+		igt_info("near_mem_regions: 0x%016llx\n",
-+		       gt_list->gt_list[i].near_mem_regions);
-+		igt_info("far_mem_regions: 0x%016llx\n",
-+		       gt_list->gt_list[i].far_mem_regions);
- 	}
- }
- 
+ 	for (i = 0; i < ARRAY_SIZE(tests); i++) {
+ 		igt_subtest(tests[i].name)
 -- 
 2.34.1
