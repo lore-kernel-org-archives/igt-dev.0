@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4875810EA21
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Nov 2023 16:02:05 +0000 (UTC)
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9610110EA1A
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Nov 2023 16:03:06 +0000 (UTC)
+From: Matthew Auld <matthew.auld@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  3 Nov 2023 17:01:47 +0100
-Message-ID: <20231103160148.94811-4-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20231103160148.94811-1-kamil.konieczny@linux.intel.com>
-References: <20231103160148.94811-1-kamil.konieczny@linux.intel.com>
+Date: Fri,  3 Nov 2023 16:02:22 +0000
+Message-ID: <20231103160237.405122-1-matthew.auld@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 3/3] tests/intel/xe_create: add multi-GPU
- basic test
+Subject: [igt-dev] [PATCH i-g-t v7 00/15] PAT and cache coherency support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,59 +21,32 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add basic multi-GPU test using drm filtered helpers.
+Series implements the IGT side of things needed to support the new Xe uapi
+here:
+https://patchwork.freedesktop.org/series/123027/
 
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Branch with the IGT changes:
+https://gitlab.freedesktop.org/mwa/igt-gpu-tools/-/commits/xe-pat-index
 
----
-v2: use new helper
----
- tests/intel/xe_create.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+Branch with the KMD changes:
+https://gitlab.freedesktop.org/mwa/kernel/-/tree/xe-pat-index?ref_type=heads
 
-diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
-index d99bd51cf..ac5418ef2 100644
---- a/tests/intel/xe_create.c
-+++ b/tests/intel/xe_create.c
-@@ -191,6 +191,13 @@ static void create_execqueues(int fd, enum exec_queue_destroy ed)
-  * Test category: functionality test
-  * Description: Verifies xe bo create returns expected error code on massive
-  *              buffer sizes.
-+ *
-+ * SUBTEST: multigpu-create-massive-size
-+ * Functionality: ioctl
-+ * Test category: functionality test
-+ * Feature: multigpu
-+ * Description: Verifies xe bo create with massive buffer sizes runs correctly
-+ *		on two or more GPUs.
-  */
- static void create_massive_size(int fd)
- {
-@@ -228,6 +235,25 @@ igt_main
- 		create_massive_size(xe);
- 	}
- 
-+	igt_subtest("multigpu-create-massive-size") {
-+		int gpu_count = drm_prepare_filtered_multigpu(DRIVER_XE);
-+
-+		igt_require(xe > 0);
-+		igt_require(gpu_count >= 2);
-+		igt_multi_fork(child, gpu_count) {
-+			int gpu_fd;
-+
-+			gpu_fd = drm_open_filtered_card(child);
-+			igt_assert_f(gpu_fd > 0, "cannot open gpu-%d, errno=%d\n", child, errno);
-+			igt_assert(is_xe_device(gpu_fd));
-+
-+			create_massive_size(gpu_fd);
-+			drm_close_driver(gpu_fd);
-+		}
-+		igt_waitchildren();
-+	}
-+
-+
- 	igt_fixture
- 		drm_close_driver(xe);
- }
+v2:
+  - Various tweaks and improvements.
+  - Rebase on Xe2 additions.
+  - Handle compressed wt on Xe2 + some other xe2 specific pat_index modes.
+v3:
+  - Various fixes and improvements.
+v4:
+  - Various improvements. Rebase
+v5:
+  - Some more improvements, including testing some xelpg modes.
+v6:
+  - Some more minor improvements.
+v7:
+  - Account for dropping coh_mode.
+  - Add store-dword mode for the xe_pat tests to ensure we run on every engine
+    (randomised over runs).
+
 -- 
-2.42.0
+2.41.0
