@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5F36910EA04
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Nov 2023 14:44:18 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1CF8B10E9FA
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Nov 2023 14:44:15 +0000 (UTC)
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  3 Nov 2023 14:43:01 +0000
-Message-Id: <20231103144359.7-7-francois.dugast@intel.com>
+Date: Fri,  3 Nov 2023 14:42:58 +0000
+Message-Id: <20231103144359.7-4-francois.dugast@intel.com>
 In-Reply-To: <20231103144359.7-1-francois.dugast@intel.com>
 References: <20231103144359.7-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 06/64] drm-uapi/xe: Remove useless query config
- num_params
+Subject: [igt-dev] [PATCH v2 03/64] drm-uapi/xe: Add uAPI to query
+ micro-controler firmware version
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,65 +23,73 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Align with commit ("Remove useless query config num_params")
+Align with commit ("Add uAPI to query micro-controler firmware version ")
 
 Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 ---
- include/drm-uapi/xe_drm.h | 7 -------
- lib/xe/xe_query.c         | 2 --
- tests/intel/xe_query.c    | 2 --
- 3 files changed, 11 deletions(-)
+ include/drm-uapi/xe_drm.h | 43 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
 
 diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index a8b88f506..bd8c705ee 100644
+index 3d123fc95..e724ebc95 100644
 --- a/include/drm-uapi/xe_drm.h
 +++ b/include/drm-uapi/xe_drm.h
-@@ -315,9 +315,6 @@ struct drm_xe_query_mem_usage {
-  * struct drm_xe_query_config in .data.
-  */
- struct drm_xe_query_config {
--	/** @num_params: number of parameters returned in info */
--	__u32 num_params;
--
- 	/** @pad: MBZ */
- 	__u32 pad;
- 
-@@ -355,10 +352,6 @@ struct drm_xe_query_config {
- 	 * Value of the highest available exec queue priority
- 	 */
- #define XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY	6
--	/*
--	 * Number of elements in the info array
--	 */
--#define XE_QUERY_CONFIG_NUM_PARAM		(XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY + 1)
- 	/** @info: array of elements containing the config info */
- 	__u64 info[];
+@@ -466,6 +466,48 @@ struct drm_xe_query_topology_mask {
+ 	__u8 mask[];
  };
-diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index 986a3a0c1..cd0e29dcc 100644
---- a/lib/xe/xe_query.c
-+++ b/lib/xe/xe_query.c
-@@ -34,8 +34,6 @@ static struct drm_xe_query_config *xe_query_config_new(int fd)
- 	query.data = to_user_pointer(config);
- 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
  
--	igt_assert(config->num_params > 0);
--
- 	return config;
- }
++/**
++ * struct drm_xe_query_uc_fw_version - query a micro-controller firmware version
++ *
++ * Given a uc_type this will return the major, minor, patch and branch version
++ * of the micro-controller firmware.
++ *
++ * The @uc_type can be:
++ *  - %DRM_XE_QUERY_UC_TYPE_GUC_SUBMISSION - This is the GuC Submission Version,
++ * a.k.a 'VF version'. It is not the actual GuC blob version. A running GuC can
++ * support multiple VF APIs with different Submission Versions. This version is
++ * negotiated by the VF KMD with GuC during VF initialization. In most of the
++ * current available GuC blobs, this is a 1-1 relationship where the Submission
++ * version could be inferred from the running version and vice-versa. However,
++ * the submission version is the most useful information for the user space
++ * perspective and needs.
++ *  - %DRM_XE_QUERY_TYPE_HUC - The actual HuC blob that is currently running
++ * in the platform. It returns 0 when HuC is not currently loaded.
++ */
++struct drm_xe_query_uc_fw_version {
++	/** @uc_type: The micro-controller type to query firmware version */
++#define DRM_XE_QUERY_UC_TYPE_GUC_SUBMISSION	0
++	__u16 uc_type;
++
++	/** @reserved: Reserved */
++	__u16 reserved;
++
++	/* @major_ver: major uc fw version */
++	__u32 major_ver;
++	/* @minor_ver: minor uc fw version */
++	__u32 minor_ver;
++	/* @patch_ver: patch uc fw version */
++	__u32 patch_ver;
++	/* @branch_ver: branch uc fw version */
++	__u32 branch_ver;
++
++	/** @pad2: MBZ */
++	__u32 pad2;
++
++	/** @reserved2: Reserved */
++	__u64 reserved2;
++};
++
+ /**
+  * struct drm_xe_device_query - main structure to query device information
+  *
+@@ -518,6 +560,7 @@ struct drm_xe_device_query {
+ #define DRM_XE_DEVICE_QUERY_HWCONFIG		4
+ #define DRM_XE_DEVICE_QUERY_GT_TOPOLOGY		5
+ #define DRM_XE_DEVICE_QUERY_ENGINE_CYCLES	6
++#define DRM_XE_DEVICE_QUERY_UC_FW_VERSION	7
+ 	/** @query: The type of data to query */
+ 	__u32 query;
  
-diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
-index 2cff75414..dc19a9d32 100644
---- a/tests/intel/xe_query.c
-+++ b/tests/intel/xe_query.c
-@@ -359,8 +359,6 @@ test_query_config(int fd)
- 	query.data = to_user_pointer(config);
- 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
- 
--	igt_assert(config->num_params > 0);
--
- 	igt_info("XE_QUERY_CONFIG_REV_AND_DEVICE_ID\t%#llx\n",
- 		config->info[XE_QUERY_CONFIG_REV_AND_DEVICE_ID]);
- 	igt_info("  REV_ID\t\t\t\t%#llx\n",
 -- 
 2.34.1
