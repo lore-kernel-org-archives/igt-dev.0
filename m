@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Fri, 3 Nov 2023 19:57:29 +0100
+Date: Fri, 3 Nov 2023 20:01:44 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20231103185729.agdu2qkvty22rxwd@kamilkon-desk.igk.intel.com>
+Message-ID: <20231103190144.5wjowsvxxyxhpo7f@kamilkon-desk.igk.intel.com>
 References: <20231012081547.852052-1-tvrtko.ursulin@linux.intel.com>
- <20231012081547.852052-8-tvrtko.ursulin@linux.intel.com>
+ <20231012081547.852052-9-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231012081547.852052-8-tvrtko.ursulin@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 7/9] tools/intel_gpu_top: Fully wrap
- clients operations
+In-Reply-To: <20231012081547.852052-9-tvrtko.ursulin@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 8/9] tools/intel_gpu_top: Add per client
+ memory info
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,128 +24,210 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Tvrtko,
-On 2023-10-12 at 09:15:45 +0100, Tvrtko Ursulin wrote:
+On 2023-10-12 at 09:15:46 +0100, Tvrtko Ursulin wrote:
 > From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 > 
-> Wrap all operations on clients via the Intel specific wrappers in order to
-> simplify upcoming work.
+> JSON output has the full breakdown but for now the interactive mode only
+> shows total and resident aggregated for all memory regions.
 > 
 > Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 > ---
->  tools/intel_gpu_top.c | 42 ++++++++++++++++++++++--------------------
->  1 file changed, 22 insertions(+), 20 deletions(-)
+>  tools/intel_gpu_top.c | 114 +++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 112 insertions(+), 2 deletions(-)
 > 
 > diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-> index 091fe28068dc..b2e81d5f9ffb 100644
+> index b2e81d5f9ffb..2c09895c79dd 100644
 > --- a/tools/intel_gpu_top.c
 > +++ b/tools/intel_gpu_top.c
-> @@ -132,6 +132,7 @@ struct engines {
->  struct intel_clients {
+> @@ -133,11 +133,24 @@ struct intel_clients {
 >  	const char *pci_slot;
 >  	struct igt_drm_client_engines classes;
-> +	struct igt_drm_clients *clients;
+>  	struct igt_drm_clients *clients;
+> +	struct igt_drm_client_regions *regions; /* Borrowed from first client */
 >  };
 >  
 >  static struct termios termios_orig;
-> @@ -2436,19 +2437,22 @@ intel_init_clients(struct intel_clients *iclients,
->  		iclients->classes.capacity[i] = engines->class[i].num_engines;
->  		iclients->classes.names[i] = strdup(engines->class[i].name);
+>  static bool class_view;
+>  
+> +/* Maps i915 fdinfo names to indices */
+> +static const char *memory_region_map[] = {
+> +	"system0",
+> +	"local0",
+> +};
+> +
+> +/* For JSON, 1:1 with indices above. */
+> +static const char *json_memory_region_names[] = {
+> +	"system",
+> +	"local",
+> +};
+> +
+>  __attribute__((format(scanf,3,4)))
+>  static int igt_sysfs_scanf(int dir, const char *attr, const char *fmt, ...)
+>  {
+> @@ -882,6 +895,9 @@ static struct igt_drm_clients *display_clients(struct igt_drm_clients *clients)
+>  			ac->val = calloc(c->engines->max_engine_id + 1,
+>  					 sizeof(ac->val[0]));
+>  			assert(ac->val);
+> +			ac->regions = c->regions;
+> +			ac->memory = calloc(c->regions->max_region_id + 1,
+> +					    sizeof(ac->memory[0]));
+>  			ac->samples = 1;
+>  		}
+>  
+> @@ -896,6 +912,14 @@ static struct igt_drm_clients *display_clients(struct igt_drm_clients *clients)
+>  
+>  		for (i = 0; i <= c->engines->max_engine_id; i++)
+>  			ac->val[i] += c->val[i];
+> +
+> +		for (i = 0; i <= c->regions->max_region_id; i++) {
+> +			ac->memory[i].total += c->memory[i].total;
+> +			ac->memory[i].shared += c->memory[i].shared;
+> +			ac->memory[i].resident += c->memory[i].resident;
+> +			ac->memory[i].purgeable += c->memory[i].purgeable;
+> +			ac->memory[i].active += c->memory[i].active;
+> +		}
 >  	}
-> +
-> +	iclients->clients = igt_drm_clients_init(iclients);
->  }
 >  
->  static void intel_free_clients(struct intel_clients *iclients)
->  {
-> +	if (iclients->clients)
-> +		igt_drm_clients_free(iclients->clients);
-> +
->  	free((void *)iclients->pci_slot);
->  	free(iclients->classes.capacity);
->  	free(iclients->classes.names);
->  }
+>  	aggregated->num_clients = num;
+> @@ -920,8 +944,10 @@ static void free_display_clients(struct igt_drm_clients *clients)
+>  	 * "display" clients are not proper clients and have un-initialized
+>  	 * or borrowed fields which we don't want the library to try and free.
+>  	 */
+> -	igt_for_each_drm_client(clients, c, tmp)
+> +	igt_for_each_drm_client(clients, c, tmp) {
+>  		free(c->val);
+> +		free(c->memory);
+> +	}
 >  
-> -int main(int argc, char **argv)
-> +static void intel_scan_clients(struct intel_clients *iclients)
->  {
-> -	unsigned int period_us = DEFAULT_PERIOD_MS * 1000;
-> -	struct igt_drm_clients *clients = NULL;
->  	static const char *engine_map[] = {
->  		"render",
->  		"copy",
-> @@ -2456,6 +2460,15 @@ int main(int argc, char **argv)
+>  	free(clients->client);
+>  	free(clients);
+> @@ -2016,6 +2042,9 @@ print_clients_header(struct igt_drm_clients *clients, int lines,
+>  		if (lines++ >= con_h || len >= con_w)
+>  			return lines;
+>  
+> +		if (iclients->regions)
+> +			len += printf("     MEM      RSS ");
+> +
+>  		if (iclients->classes.num_engines) {
+>  			unsigned int i;
+>  			int width;
+> @@ -2059,6 +2088,20 @@ print_clients_header(struct igt_drm_clients *clients, int lines,
+>  static bool numeric_clients;
+>  static bool filter_idle;
+>  
+> +static int print_size(uint64_t sz)
+> +{
+> +	char units[] = { ' ', 'K', 'M', 'G' };
+> +	unsigned int u;
+> +
+> +	for (u = 0; u < ARRAY_SIZE(units) - 1; u++) {
+> +		if (sz & 1023 || sz < 1024)
+> +			break;
+> +		sz /= 1024;
+> +	}
+> +
+> +	return printf("%7"PRIu64"%c ", sz, units[u]);
+> +}
+> +
+>  static int
+>  print_client(struct igt_drm_client *c, struct engines *engines, double t, int lines,
+>  	     int con_w, int con_h, unsigned int period_us, int *class_w)
+> @@ -2076,6 +2119,18 @@ print_client(struct igt_drm_client *c, struct engines *engines, double t, int li
+>  
+>  		len = printf("%*s ", clients->max_pid_len, c->pid_str);
+>  
+> +		if (iclients->regions) {
+> +			uint64_t sz;
+> +
+> +			for (sz = 0, i = 0; i <= c->regions->max_region_id; i++)
+> +				sz += c->memory[i].total;
+> +			len += print_size(sz);
+> +
+> +			for (sz = 0, i = 0; i <= c->regions->max_region_id; i++)
+> +				sz += c->memory[i].resident;
+> +			len += print_size(sz);
+> +		}
+> +
+>  		for (i = 0; i <= iclients->classes.max_engine_id; i++) {
+>  			double pct, max;
+>  
+> @@ -2115,6 +2170,42 @@ print_client(struct igt_drm_client *c, struct engines *engines, double t, int li
+>  		snprintf(buf, sizeof(buf), "%u", c->pid);
+>  		__json_add_member("pid", buf);
+>  
+> +		if (iclients->regions) {
+> +			pops->open_struct("memory");
+> +
+> +			for (i = 0; i < ARRAY_SIZE(json_memory_region_names);
+> +			     i++) {
+> +				if (i > c->regions->max_region_id)
+> +					break;
+> +
+> +				pops->open_struct(json_memory_region_names[i]);
+> +
+> +				snprintf(buf, sizeof(buf), "%" PRIu64,
+> +					 c->memory[i].total);
+> +				__json_add_member("total", buf);
+> +
+> +				snprintf(buf, sizeof(buf), "%" PRIu64,
+> +					 c->memory[i].shared);
+> +				__json_add_member("shared", buf);
+> +
+> +				snprintf(buf, sizeof(buf), "%" PRIu64,
+> +					 c->memory[i].resident);
+> +				__json_add_member("resident", buf);
+> +
+> +				snprintf(buf, sizeof(buf), "%" PRIu64,
+> +					 c->memory[i].purgeable);
+> +				__json_add_member("purgeable", buf);
+> +
+> +				snprintf(buf, sizeof(buf), "%" PRIu64,
+> +					 c->memory[i].active);
+> +				__json_add_member("active", buf);
+> +
+> +				pops->close_struct();
+> +			}
+> +
+> +			pops->close_struct();
+> +		}
+> +
+>  		if (c->samples > 1) {
+>  			pops->open_struct("engine-classes");
+>  
+> @@ -2460,10 +2551,29 @@ static void intel_scan_clients(struct intel_clients *iclients)
 >  		"video-enhance",
 >  		"compute",
 >  	};
-> +
-> +	igt_drm_clients_scan(iclients->clients, client_match,
-> +			     engine_map, ARRAY_SIZE(engine_map),
-> +			     NULL, 0);
-> +}
-> +
-> +int main(int argc, char **argv)
-> +{
-> +	unsigned int period_us = DEFAULT_PERIOD_MS * 1000;
->  	bool physical_engines = false;
->  	struct intel_clients iclients;
->  	int con_w = -1, con_h = -1;
-> @@ -2613,15 +2626,11 @@ int main(int argc, char **argv)
+> +	struct igt_drm_client *c;
+> +	unsigned int i;
 >  
->  	init_engine_classes(engines);
->  
-> -	if (has_drm_fdinfo(&card)) {
-> +	if (has_drm_fdinfo(&card))
->  		intel_init_clients(&iclients, &card, engines);
-> -		clients = igt_drm_clients_init(&iclients);
-> -	}
->  
->  	pmu_sample(engines);
-> -	igt_drm_clients_scan(clients, client_match,
-> -			     engine_map, ARRAY_SIZE(engine_map),
+>  	igt_drm_clients_scan(iclients->clients, client_match,
+>  			     engine_map, ARRAY_SIZE(engine_map),
 > -			     NULL, 0);
-> +	intel_scan_clients(&iclients);
->  	gettime(&ts);
+> +			     memory_region_map, ARRAY_SIZE(memory_region_map));
+> +
+> +	iclients->regions = NULL;
+> +
+> +	if (!iclients->clients)
+> +		return;
+> +
+> +	/*
+> +	 * Borrow memory region data from first client so we can use it
+> +	 * when displaying stuff. All regions are the same due our client_match.
+> +	 */
+> +	igt_for_each_drm_client(iclients->clients, c, i) {
+> +		if (c->status == IGT_DRM_CLIENT_ALIVE) {
+> +			if (c->regions->num_regions)
+> +				iclients->regions = c->regions;
+> +			break;
+> +		}
+> +	}
+>  }
 >  
->  	if (output_mode == JSON)
-> @@ -2652,12 +2661,8 @@ int main(int argc, char **argv)
->  		pmu_sample(engines);
->  		t = (double)(engines->ts.cur - engines->ts.prev) / 1e9;
->  
-> -		disp_clients =
-> -			display_clients(igt_drm_clients_scan(clients,
-> -							     client_match,
-> -							     engine_map,
-> -							     ARRAY_SIZE(engine_map),
-> -							     NULL, 0));
-> +		intel_scan_clients(&iclients);
-> +		disp_clients = display_clients(iclients.clients);
->  		scan_us = elapsed_us(&ts, period_us);
->  
->  		if (stop_top)
-> @@ -2708,7 +2713,7 @@ int main(int argc, char **argv)
->  			pops->close_struct();
->  		}
->  
-> -		if (disp_clients != clients)
-> +		if (disp_clients != iclients.clients)
->  			free_display_clients(disp_clients);
->  
->  		if (stop_top)
-> @@ -2723,10 +2728,7 @@ int main(int argc, char **argv)
->  	if (output_mode == JSON)
->  		printf("]\n");
->  
-> -	if (clients) {
-> -		igt_drm_clients_free(clients);
-> -		intel_free_clients(&iclients);
-> -	}
-> +	intel_free_clients(&iclients);
->  
->  	free(codename);
->  err_pmu:
+>  int main(int argc, char **argv)
 > -- 
 > 2.39.2
 > 
