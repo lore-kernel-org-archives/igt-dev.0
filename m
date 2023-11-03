@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7F92210EA34
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Nov 2023 14:45:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6EBFC10EA34
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Nov 2023 14:45:17 +0000 (UTC)
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  3 Nov 2023 14:43:54 +0000
-Message-Id: <20231103144359.7-60-francois.dugast@intel.com>
+Date: Fri,  3 Nov 2023 14:43:55 +0000
+Message-Id: <20231103144359.7-61-francois.dugast@intel.com>
 In-Reply-To: <20231103144359.7-1-francois.dugast@intel.com>
 References: <20231103144359.7-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 59/64] drm-uapi/xe: Remove bogus engine list
- from the wait_user_fence IOCTL
+Subject: [igt-dev] [PATCH v2 60/64] drm-uapi/xe: Align on a common way to
+ return arrays (memory regions)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,431 +19,522 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Align with commit ("drm/xe/uapi: Align on a common way to return
+arrays (memory regions)")
 
-Aligns with kernel commit ("drm/xe/uapi: Remove bogus engine list from the wait_user_fence IOCTL")
-
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 ---
- include/drm-uapi/xe_drm.h          | 17 ++---------------
- lib/xe/xe_ioctl.c                  |  9 +--------
- lib/xe/xe_ioctl.h                  |  2 --
- tests/intel/xe_evict.c             |  4 ++--
- tests/intel/xe_exec_balancer.c     | 12 ++++++------
- tests/intel/xe_exec_compute_mode.c | 12 ++++++------
- tests/intel/xe_exec_fault_mode.c   | 14 +++++++-------
- tests/intel/xe_exec_reset.c        |  6 +++---
- tests/intel/xe_exec_threads.c      | 12 ++++++------
- tests/intel/xe_waitfence.c         |  4 ++--
- 10 files changed, 35 insertions(+), 57 deletions(-)
+ include/drm-uapi/xe_drm.h   | 38 ++++++++++----------
+ lib/xe/xe_query.c           | 72 ++++++++++++++++++-------------------
+ lib/xe/xe_query.h           |  4 +--
+ lib/xe/xe_util.c            |  6 ++--
+ tests/intel/xe_create.c     |  2 +-
+ tests/intel/xe_drm_fdinfo.c |  8 ++---
+ tests/intel/xe_pm.c         | 12 +++----
+ tests/intel/xe_query.c      | 44 +++++++++++------------
+ tests/kms_plane.c           |  2 +-
+ 9 files changed, 94 insertions(+), 94 deletions(-)
 
 diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index 6eee35d99..6acb39c7b 100644
+index 6acb39c7b..23beea9e9 100644
 --- a/include/drm-uapi/xe_drm.h
 +++ b/include/drm-uapi/xe_drm.h
-@@ -1278,8 +1278,7 @@ struct drm_xe_wait_user_fence {
- 	/** @op: wait operation (type of comparison) */
- 	__u16 op;
+@@ -238,23 +238,23 @@ struct drm_xe_query_engine_info {
  
--#define DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP	(1 << 0)	/* e.g. Wait on VM bind */
--#define DRM_XE_UFENCE_WAIT_FLAG_ABSTIME	(1 << 1)
-+#define DRM_XE_UFENCE_WAIT_FLAG_ABSTIME	(1 << 0)
- 	/** @flags: wait flags */
- 	__u16 flags;
- 
-@@ -1312,20 +1311,8 @@ struct drm_xe_wait_user_fence {
+ 	/**
+ 	 * @near_mem_regions: Bit mask of instances from
+-	 * drm_xe_query_mem_regions that is near this engine.
++	 * drm_xe_query_mem_region that is near this engine.
+ 	 * Each index in this mask refers directly to the struct
+-	 * drm_xe_query_mem_regions' instance, no assumptions should
++	 * drm_xe_query_mem_region's instance, no assumptions should
+ 	 * be made about order. The type of each region is described
+-	 * by struct drm_xe_query_mem_regions' mem_class.
++	 * by struct drm_xe_mem_region's mem_class.
  	 */
- 	__s64 timeout;
+ 	__u64 near_mem_regions;
+ 	/**
+ 	 * @far_mem_regions: Bit mask of instances from
+-	 * drm_xe_query_mem_regions that is far from this engine.
++	 * drm_xe_query_mem_region that is far from this engine.
+ 	 * In general, it has extra indirections when compared to the
+ 	 * @near_mem_regions. For a discrete device this could mean system
+ 	 * memory and memory living in a different Tile.
+ 	 * Each index in this mask refers directly to the struct
+-	 * drm_xe_query_mem_regions' instance, no assumptions should
++	 * drm_xe_query_mem_region's instance, no assumptions should
+ 	 * be made about order. The type of each region is described
+-	 * by struct drm_xe_query_mem_regions' mem_class.
++	 * by struct drm_xe_mem_region's mem_class.
+ 	 */
+ 	__u64 far_mem_regions;
  
--	/**
--	 * @num_engines: number of engine instances to wait on, must be zero
--	 * when DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP set
--	 */
--	__u64 num_engines;
--
--	/**
--	 * @instances: user pointer to array of drm_xe_engine_class_instance to
--	 * wait on, must be NULL when DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP set
--	 */
--	__u64 instances;
--
- 	/** @reserved: Reserved */
--	__u64 reserved[2];
-+	__u64 reserved[4];
+@@ -277,10 +277,10 @@ enum drm_xe_memory_class {
  };
  
  /**
-diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index a8b18021e..0426d4851 100644
---- a/lib/xe/xe_ioctl.c
-+++ b/lib/xe/xe_ioctl.c
-@@ -417,18 +417,14 @@ void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr)
+- * struct drm_xe_query_mem_region - Describes some region as known to
++ * struct drm_xe_mem_region - Describes some region as known to
+  * the driver.
+  */
+-struct drm_xe_query_mem_region {
++struct drm_xe_mem_region {
+ 	/**
+ 	 * @mem_class: The memory class describing this region.
+ 	 *
+@@ -355,19 +355,19 @@ struct drm_xe_query_mem_region {
+ };
+ 
+ /**
+- * struct drm_xe_query_mem_regions - describe memory regions
++ * struct drm_xe_query_mem_region - describe memory regions
+  *
+  * If a query is made with a struct drm_xe_device_query where .query
+- * is equal to DRM_XE_DEVICE_QUERY_MEM_REGIONS, then the reply uses
+- * struct drm_xe_query_mem_regions in .data.
++ * is equal to DRM_XE_DEVICE_QUERY_MEM_REGION, then the reply uses
++ * struct drm_xe_query_mem_region in .data.
+  */
+-struct drm_xe_query_mem_regions {
+-	/** @num_regions: number of memory regions returned in @regions */
+-	__u32 num_regions;
++struct drm_xe_query_mem_region {
++	/** @num_mem_regions: number of memory regions returned in @mem_regions */
++	__u32 num_mem_regions;
+ 	/** @pad: MBZ */
+ 	__u32 pad;
+-	/** @regions: The returned regions for this device */
+-	struct drm_xe_query_mem_region regions[];
++	/** @mem_regions: The returned memory regions for this device */
++	struct drm_xe_mem_region mem_regions[];
+ };
+ 
+ /**
+@@ -652,7 +652,7 @@ struct drm_xe_device_query {
+ 	__u64 extensions;
+ 
+ #define DRM_XE_DEVICE_QUERY_ENGINES		0
+-#define DRM_XE_DEVICE_QUERY_MEM_REGIONS		1
++#define DRM_XE_DEVICE_QUERY_MEM_REGION		1
+ #define DRM_XE_DEVICE_QUERY_CONFIG		2
+ #define DRM_XE_DEVICE_QUERY_GT_LIST		3
+ #define DRM_XE_DEVICE_QUERY_HWCONFIG		4
+@@ -709,9 +709,9 @@ struct drm_xe_gem_create {
+ 	/**
+ 	 * @placement: A mask of memory instances of where GEM can be placed.
+ 	 * Each index in this mask refers directly to the struct
+-	 * drm_xe_query_mem_regions' instance, no assumptions should
++	 * drm_xe_query_mem_region's instance, no assumptions should
+ 	 * be made about order. The type of each region is described
+-	 * by struct drm_xe_query_mem_regions' mem_class.
++	 * by struct drm_xe_mem_region's mem_class.
+ 	 */
+ 	__u32 placement;
+ 
+diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+index 7fe3d2849..b3b38fe54 100644
+--- a/lib/xe/xe_query.c
++++ b/lib/xe/xe_query.c
+@@ -58,12 +58,12 @@ static struct drm_xe_query_gt_list *xe_query_gt_list_new(int fd)
+ 	return gt_list;
  }
  
- int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
--		       struct drm_xe_engine_class_instance *eci,
- 		       int64_t timeout)
+-static uint64_t __all_memory_regions(struct drm_xe_query_mem_regions *mem_regions)
++static uint64_t __all_memory_regions(struct drm_xe_query_mem_region *mem_regions)
  {
- 	struct drm_xe_wait_user_fence wait = {
- 		.addr = to_user_pointer(addr),
- 		.op = DRM_XE_UFENCE_WAIT_OP_EQ,
--		.flags = !eci ? DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP : 0,
- 		.value = value,
- 		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
- 		.timeout = timeout,
--		.num_engines = eci ? 1 :0,
--		.instances = eci ? to_user_pointer(eci) : 0,
- 	};
+ 	uint64_t regions = 0;
  
- 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait), 0);
-@@ -449,18 +445,15 @@ int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
-  * Returns elapsed time in nanoseconds if user fence was signalled.
+-	for (int i = 0; i < mem_regions->num_regions; i++)
+-		regions |= 1 << mem_regions->regions[i].instance;
++	for (int i = 0; i < mem_regions->num_mem_regions; i++)
++		regions |= 1 << mem_regions->mem_regions[i].instance;
+ 
+ 	return regions;
+ }
+@@ -93,12 +93,12 @@ xe_query_engines(int fd, unsigned int *num_engines)
+ 	return engines;
+ }
+ 
+-static struct drm_xe_query_mem_regions *xe_query_mem_regions_new(int fd)
++static struct drm_xe_query_mem_region *xe_query_mem_regions_new(int fd)
+ {
+-	struct drm_xe_query_mem_regions *mem_regions;
++	struct drm_xe_query_mem_region *mem_regions;
+ 	struct drm_xe_device_query query = {
+ 		.extensions = 0,
+-		.query = DRM_XE_DEVICE_QUERY_MEM_REGIONS,
++		.query = DRM_XE_DEVICE_QUERY_MEM_REGION,
+ 		.size = 0,
+ 		.data = 0,
+ 	};
+@@ -125,22 +125,22 @@ static uint64_t mem_region_near_engine(struct drm_xe_query_engine_info *engine)
+ 	return region;
+ }
+ 
+-static bool __mem_has_vram(struct drm_xe_query_mem_regions *mem_regions)
++static bool __mem_has_vram(struct drm_xe_query_mem_region *mem_regions)
+ {
+-	for (int i = 0; i < mem_regions->num_regions; i++)
+-		if (XE_IS_CLASS_VRAM(&mem_regions->regions[i]))
++	for (int i = 0; i < mem_regions->num_mem_regions; i++)
++		if (XE_IS_CLASS_VRAM(&mem_regions->mem_regions[i]))
+ 			return true;
+ 
+ 	return false;
+ }
+ 
+-static uint32_t __mem_default_alignment(struct drm_xe_query_mem_regions *mem_regions)
++static uint32_t __mem_default_alignment(struct drm_xe_query_mem_region *mem_regions)
+ {
+ 	uint32_t alignment = XE_DEFAULT_ALIGNMENT;
+ 
+-	for (int i = 0; i < mem_regions->num_regions; i++)
+-		if (alignment < mem_regions->regions[i].min_page_size)
+-			alignment = mem_regions->regions[i].min_page_size;
++	for (int i = 0; i < mem_regions->num_mem_regions; i++)
++		if (alignment < mem_regions->mem_regions[i].min_page_size)
++			alignment = mem_regions->mem_regions[i].min_page_size;
+ 
+ 	return alignment;
+ }
+@@ -358,9 +358,9 @@ uint64_t any_vram(int fd)
+ 	xe_dev = find_in_cache(fd);
+ 	igt_assert(xe_dev);
+ 
+-	for (int i = 0; i < xe_dev->mem_regions->num_regions; i++)
+-		if (XE_IS_CLASS_VRAM(&xe_dev->mem_regions->regions[i]))
+-			return 1 << xe_dev->mem_regions->regions[i].instance;
++	for (int i = 0; i < xe_dev->mem_regions->num_mem_regions; i++)
++		if (XE_IS_CLASS_VRAM(&xe_dev->mem_regions->mem_regions[i]))
++			return 1 << xe_dev->mem_regions->mem_regions[i].instance;
+ 	return 0;
+ }
+ 
+@@ -441,16 +441,16 @@ struct drm_xe_query_engine_info *xe_engine(int fd, int idx)
+  *
+  * Returns memory region structure for @region mask.
   */
- int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
--			       struct drm_xe_engine_class_instance *eci,
- 			       int64_t timeout)
+-struct drm_xe_query_mem_region *xe_mem_region(int fd, uint64_t region)
++struct drm_xe_mem_region *xe_mem_region(int fd, uint64_t region)
  {
- 	struct drm_xe_wait_user_fence wait = {
- 		.addr = to_user_pointer(addr),
- 		.op = DRM_XE_UFENCE_WAIT_OP_EQ,
--		.flags = !eci ? DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP | DRM_XE_UFENCE_WAIT_FLAG_ABSTIME : 0,
-+		.flags = DRM_XE_UFENCE_WAIT_FLAG_ABSTIME,
- 		.value = value,
- 		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
- 		.timeout = timeout,
--		.num_engines = eci ? 1 : 0,
--		.instances = eci ? to_user_pointer(eci) : 0,
+ 	struct xe_device *xe_dev;
+ 	int region_idx = ffs(region) - 1;
+ 
+ 	xe_dev = find_in_cache(fd);
+ 	igt_assert(xe_dev);
+-	igt_assert(xe_dev->mem_regions->num_regions > region_idx);
++	igt_assert(xe_dev->mem_regions->num_mem_regions > region_idx);
+ 
+-	return &xe_dev->mem_regions->regions[region_idx];
++	return &xe_dev->mem_regions->mem_regions[region_idx];
+ }
+ 
+ /**
+@@ -488,7 +488,7 @@ const char *xe_region_name(uint64_t region)
+  */
+ uint16_t xe_region_class(int fd, uint64_t region)
+ {
+-	struct drm_xe_query_mem_region *memreg;
++	struct drm_xe_mem_region *memreg;
+ 
+ 	memreg = xe_mem_region(fd, region);
+ 
+@@ -544,9 +544,9 @@ uint64_t xe_vram_size_any_region(int fd)
+ 	xe_dev = find_in_cache(fd);
+ 	igt_assert(xe_dev);
+ 
+-	for (int i = 0; i < xe_dev->mem_regions->num_regions; i++)
+-		if (XE_IS_CLASS_VRAM(&xe_dev->mem_regions->regions[i]))
+-			return xe_dev->mem_regions->regions[i].total_size;
++	for (int i = 0; i < xe_dev->mem_regions->num_mem_regions; i++)
++		if (XE_IS_CLASS_VRAM(&xe_dev->mem_regions->mem_regions[i]))
++			return xe_dev->mem_regions->mem_regions[i].total_size;
+ 
+ 	return 0;
+ }
+@@ -568,11 +568,11 @@ uint64_t xe_vram_size_region_near_tile(int fd, int tile)
+ 
+ 	xe_for_each_engine(fd, engine) {
+ 		if (tile == engine->tile_id)
+-			for (int i = 0; i < xe_dev->mem_regions->num_regions; i++)
+-				if (XE_IS_CLASS_VRAM(&xe_dev->mem_regions->regions[i]) &&
+-				    ((1 << xe_dev->mem_regions->regions[i].instance) &
++			for (int i = 0; i < xe_dev->mem_regions->num_mem_regions; i++)
++				if (XE_IS_CLASS_VRAM(&xe_dev->mem_regions->mem_regions[i]) &&
++				    ((1 << xe_dev->mem_regions->mem_regions[i].instance) &
+ 				     mem_region_near_engine(engine)))
+-					return xe_dev->mem_regions->regions[i].total_size;
++					return xe_dev->mem_regions->mem_regions[i].total_size;
+ 	}
+ 
+ 	return 0;
+@@ -610,9 +610,9 @@ uint64_t xe_visible_vram_size_any_region(int fd)
+ 	xe_dev = find_in_cache(fd);
+ 	igt_assert(xe_dev);
+ 
+-	for (int i = 0; i < xe_dev->mem_regions->num_regions; i++)
+-		if (XE_IS_CLASS_VRAM(&xe_dev->mem_regions->regions[i]))
+-			return xe_dev->mem_regions->regions[i].cpu_visible_size;
++	for (int i = 0; i < xe_dev->mem_regions->num_mem_regions; i++)
++		if (XE_IS_CLASS_VRAM(&xe_dev->mem_regions->mem_regions[i]))
++			return xe_dev->mem_regions->mem_regions[i].cpu_visible_size;
+ 
+ 	return 0;
+ }
+@@ -628,10 +628,10 @@ uint64_t xe_visible_vram_size_any_region(int fd)
+  */
+ uint64_t xe_vram_available_any_region(int fd)
+ {
+-	struct drm_xe_query_mem_regions *mem_regions;
++	struct drm_xe_query_mem_region *mem_regions;
+ 	struct drm_xe_device_query query = {
+ 		.extensions = 0,
+-		.query = DRM_XE_DEVICE_QUERY_MEM_REGIONS,
++		.query = DRM_XE_DEVICE_QUERY_MEM_REGION,
+ 		.size = 0,
+ 		.data = 0,
  	};
- 	struct timespec ts;
+@@ -645,10 +645,10 @@ uint64_t xe_vram_available_any_region(int fd)
+ 	query.data = to_user_pointer(mem_regions);
+ 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
  
-diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index bc609442a..7aa33664b 100644
---- a/lib/xe/xe_ioctl.h
-+++ b/lib/xe/xe_ioctl.h
-@@ -84,10 +84,8 @@ void xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
- 		  struct drm_xe_sync *sync, uint32_t num_syncs);
- void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr);
- int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
--		       struct drm_xe_engine_class_instance *eci,
- 		       int64_t timeout);
- int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
--			       struct drm_xe_engine_class_instance *eci,
- 			       int64_t timeout);
- void xe_force_gt_reset(int fd, int gt);
+-	for (int i = 0; i < mem_regions->num_regions; i++)
+-		if (XE_IS_CLASS_VRAM(&mem_regions->regions[i]))
+-			return mem_regions->regions[i].total_size -
+-				mem_regions->regions[i].used;
++	for (int i = 0; i < mem_regions->num_mem_regions; i++)
++		if (XE_IS_CLASS_VRAM(&mem_regions->mem_regions[i]))
++			return mem_regions->mem_regions[i].total_size -
++				mem_regions->mem_regions[i].used;
  
-diff --git a/tests/intel/xe_evict.c b/tests/intel/xe_evict.c
-index 7f7eba52f..3d06570bf 100644
---- a/tests/intel/xe_evict.c
-+++ b/tests/intel/xe_evict.c
-@@ -320,7 +320,7 @@ test_evict_cm(int fd, struct drm_xe_query_engine_info *engine,
- 			}
- #define TWENTY_SEC	MS_TO_NS(20000)
- 			xe_wait_ufence(fd, &data[i].vm_sync, USER_FENCE_VALUE,
--				       NULL, TWENTY_SEC);
-+				       TWENTY_SEC);
+ 	return 0;
+ }
+diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+index bfe860390..7b99eec5e 100644
+--- a/lib/xe/xe_query.h
++++ b/lib/xe/xe_query.h
+@@ -39,7 +39,7 @@ struct xe_device {
+ 	unsigned int number_engines;
+ 
+ 	/** @mem_regions: regions memory information and usage */
+-	struct drm_xe_query_mem_regions *mem_regions;
++	struct drm_xe_query_mem_region *mem_regions;
+ 
+ 	/** @default_alignment: safe alignment regardless region location */
+ 	uint32_t default_alignment;
+@@ -82,7 +82,7 @@ uint64_t any_vram_if_possible(int fd);
+ uint64_t vram_near_engine_if_possible(int fd, struct drm_xe_query_engine_info *engine);
+ struct drm_xe_query_engine_info *xe_engines(int fd);
+ struct drm_xe_query_engine_info *xe_engine(int fd, int idx);
+-struct drm_xe_query_mem_region *xe_mem_region(int fd, uint64_t region);
++struct drm_xe_mem_region *xe_mem_region(int fd, uint64_t region);
+ const char *xe_region_name(uint64_t region);
+ uint16_t xe_region_class(int fd, uint64_t region);
+ uint32_t xe_min_page_size(int fd, uint64_t region);
+diff --git a/lib/xe/xe_util.c b/lib/xe/xe_util.c
+index 62f00b305..cc8b26120 100644
+--- a/lib/xe/xe_util.c
++++ b/lib/xe/xe_util.c
+@@ -10,7 +10,7 @@
+ #include "xe/xe_query.h"
+ #include "xe/xe_util.h"
+ 
+-static bool __region_belongs_to_regions_type(struct drm_xe_query_mem_region *region,
++static bool __region_belongs_to_regions_type(struct drm_xe_mem_region *region,
+ 					     uint32_t *mem_regions_type,
+ 					     int num_regions)
+ {
+@@ -23,7 +23,7 @@ static bool __region_belongs_to_regions_type(struct drm_xe_query_mem_region *reg
+ struct igt_collection *
+ __xe_get_memory_region_set(int xe, uint32_t *mem_regions_type, int num_regions)
+ {
+-	struct drm_xe_query_mem_region *memregion;
++	struct drm_xe_mem_region *memregion;
+ 	struct igt_collection *set = NULL;
+ 	uint64_t memreg = all_memory_regions(xe), region;
+ 	int count = 0, pos = 0;
+@@ -78,7 +78,7 @@ char *xe_memregion_dynamic_subtest_name(int xe, struct igt_collection *set)
+ 	igt_assert(name);
+ 
+ 	for_each_collection_data(data, set) {
+-		struct drm_xe_query_mem_region *memreg;
++		struct drm_xe_mem_region *memreg;
+ 		int r;
+ 
+ 		region = data->value;
+diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+index c70729ebd..edd8e2e43 100644
+--- a/tests/intel/xe_create.c
++++ b/tests/intel/xe_create.c
+@@ -48,7 +48,7 @@ static int __create_bo(int fd, uint32_t vm, uint64_t size, uint32_t placement,
+  */
+ static void create_invalid_size(int fd)
+ {
+-	struct drm_xe_query_mem_region *memregion;
++	struct drm_xe_mem_region *memregion;
+ 	uint64_t memreg = all_memory_regions(fd), region;
+ 	uint32_t vm;
+ 	uint32_t handle;
+diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
+index e085dc307..03a724e9c 100644
+--- a/tests/intel/xe_drm_fdinfo.c
++++ b/tests/intel/xe_drm_fdinfo.c
+@@ -42,7 +42,7 @@ IGT_TEST_DESCRIPTION("Read and verify drm client memory consumption using fdinfo
+ /* Subtests */
+ static void test_active(int fd, struct drm_xe_query_engine_info *engine)
+ {
+-	struct drm_xe_query_mem_region *memregion;
++	struct drm_xe_mem_region *memregion;
+ 	uint64_t memreg = all_memory_regions(fd), region;
+ 	struct drm_client_fdinfo info = { };
+ 	uint32_t vm;
+@@ -171,7 +171,7 @@ static void test_active(int fd, struct drm_xe_query_engine_info *engine)
+ 
+ static void test_shared(int xe)
+ {
+-	struct drm_xe_query_mem_region *memregion;
++	struct drm_xe_mem_region *memregion;
+ 	uint64_t memreg = all_memory_regions(xe), region;
+ 	struct drm_client_fdinfo info = { };
+ 	struct drm_gem_flink flink;
+@@ -216,7 +216,7 @@ static void test_shared(int xe)
+ 
+ static void test_total_resident(int xe)
+ {
+-	struct drm_xe_query_mem_region *memregion;
++	struct drm_xe_mem_region *memregion;
+ 	uint64_t memreg = all_memory_regions(xe), region;
+ 	struct drm_client_fdinfo info = { };
+ 	uint32_t vm;
+@@ -264,7 +264,7 @@ static void test_total_resident(int xe)
+ 
+ static void basic(int xe)
+ {
+-	struct drm_xe_query_mem_region *memregion;
++	struct drm_xe_mem_region *memregion;
+ 	uint64_t memreg = all_memory_regions(xe), region;
+ 	struct drm_client_fdinfo info = { };
+ 	unsigned int ret;
+diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+index 5ca499915..2ae4237ea 100644
+--- a/tests/intel/xe_pm.c
++++ b/tests/intel/xe_pm.c
+@@ -375,10 +375,10 @@ NULL));
+  */
+ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
+ {
+-	struct drm_xe_query_mem_regions *mem_regions;
++	struct drm_xe_query_mem_region *mem_regions;
+ 	struct drm_xe_device_query query = {
+ 		.extensions = 0,
+-		.query = DRM_XE_DEVICE_QUERY_MEM_REGIONS,
++		.query = DRM_XE_DEVICE_QUERY_MEM_REGION,
+ 		.size = 0,
+ 		.data = 0,
+ 	};
+@@ -402,10 +402,10 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
+ 	query.data = to_user_pointer(mem_regions);
+ 	igt_assert_eq(igt_ioctl(device.fd_xe, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+ 
+-	for (i = 0; i < mem_regions->num_regions; i++) {
+-		if (mem_regions->regions[i].mem_class == DRM_XE_MEM_REGION_CLASS_VRAM) {
+-			vram_used_mb +=  (mem_regions->regions[i].used / (1024 * 1024));
+-			vram_total_mb += (mem_regions->regions[i].total_size / (1024 * 1024));
++	for (i = 0; i < mem_regions->num_mem_regions; i++) {
++		if (mem_regions->mem_regions[i].mem_class == DRM_XE_MEM_REGION_CLASS_VRAM) {
++			vram_used_mb +=  (mem_regions->mem_regions[i].used / (1024 * 1024));
++			vram_total_mb += (mem_regions->mem_regions[i].total_size / (1024 * 1024));
  		}
- 		sync[0].addr = addr + (char *)&data[i].exec_sync -
- 			(char *)data;
-@@ -355,7 +355,7 @@ test_evict_cm(int fd, struct drm_xe_query_engine_info *engine,
- 		data = xe_bo_map(fd, __bo,
- 				 ALIGN(sizeof(*data) * n_execs, 0x1000));
- 		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
--			       NULL, TWENTY_SEC);
-+			       TWENTY_SEC);
- 		igt_assert_eq(data[i].data, 0xc0ffee);
- 	}
- 	munmap(data, ALIGN(sizeof(*data) * n_execs, 0x1000));
-diff --git a/tests/intel/xe_exec_balancer.c b/tests/intel/xe_exec_balancer.c
-index 00e2949af..fe806677d 100644
---- a/tests/intel/xe_exec_balancer.c
-+++ b/tests/intel/xe_exec_balancer.c
-@@ -515,7 +515,7 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 					 bo_size, sync, 1);
- 
- #define ONE_SEC	MS_TO_NS(1000)
--	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, ONE_SEC);
-+	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, ONE_SEC);
- 	data[0].vm_sync = 0;
- 
- 	for (i = 0; i < n_execs; i++) {
-@@ -546,7 +546,7 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 
- 		if (flags & REBIND && i + 1 != n_execs) {
- 			xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
--				       NULL, ONE_SEC);
-+				       ONE_SEC);
- 			xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, NULL,
- 					   0);
- 
-@@ -561,7 +561,7 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 							 addr, bo_size, sync,
- 							 1);
- 			xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
--				       NULL, ONE_SEC);
-+				       ONE_SEC);
- 			data[0].vm_sync = 0;
- 		}
- 
-@@ -574,7 +574,7 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 				 * an invalidate.
- 				 */
- 				xe_wait_ufence(fd, &data[i].exec_sync,
--					       USER_FENCE_VALUE, NULL, ONE_SEC);
-+					       USER_FENCE_VALUE, ONE_SEC);
- 				igt_assert_eq(data[i].data, 0xc0ffee);
- 			} else if (i * 2 != n_execs) {
- 				/*
-@@ -603,7 +603,7 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 
- 	j = flags & INVALIDATE && n_execs ? n_execs - 1 : 0;
- 	for (i = j; i < n_execs; i++)
--		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE, NULL,
-+		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
- 			       ONE_SEC);
- 
- 	/* Wait for all execs to complete */
-@@ -612,7 +612,7 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 
- 	sync[0].addr = to_user_pointer(&data[0].vm_sync);
- 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
--	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, ONE_SEC);
-+	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, ONE_SEC);
- 
- 	for (i = (flags & INVALIDATE && n_execs) ? n_execs - 1 : 0;
- 	     i < n_execs; i++)
-diff --git a/tests/intel/xe_exec_compute_mode.c b/tests/intel/xe_exec_compute_mode.c
-index fe4bf4522..4928b47f6 100644
---- a/tests/intel/xe_exec_compute_mode.c
-+++ b/tests/intel/xe_exec_compute_mode.c
-@@ -171,7 +171,7 @@ test_exec(int fd, struct drm_xe_query_engine_info *engine,
- 
- 	fence_timeout = igt_run_in_simulation() ? HUNDRED_SEC : ONE_SEC;
- 
--	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
-+	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
- 		       fence_timeout);
- 	data[0].vm_sync = 0;
- 
-@@ -198,7 +198,7 @@ test_exec(int fd, struct drm_xe_query_engine_info *engine,
- 
- 		if (flags & REBIND && i + 1 != n_execs) {
- 			xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
--				       NULL, fence_timeout);
-+				       fence_timeout);
- 			xe_vm_unbind_async(fd, vm, bind_exec_queues[e], 0,
- 					   addr, bo_size, NULL, 0);
- 
-@@ -214,7 +214,7 @@ test_exec(int fd, struct drm_xe_query_engine_info *engine,
- 							 addr, bo_size, sync,
- 							 1);
- 			xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
--				       NULL, fence_timeout);
-+				       fence_timeout);
- 			data[0].vm_sync = 0;
- 		}
- 
-@@ -227,7 +227,7 @@ test_exec(int fd, struct drm_xe_query_engine_info *engine,
- 				 * an invalidate.
- 				 */
- 				xe_wait_ufence(fd, &data[i].exec_sync,
--					       USER_FENCE_VALUE, NULL,
-+					       USER_FENCE_VALUE,
- 					       fence_timeout);
- 				igt_assert_eq(data[i].data, 0xc0ffee);
- 			} else if (i * 2 != n_execs) {
-@@ -257,7 +257,7 @@ test_exec(int fd, struct drm_xe_query_engine_info *engine,
- 
- 	j = flags & INVALIDATE ? n_execs - 1 : 0;
- 	for (i = j; i < n_execs; i++)
--		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE, NULL,
-+		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
- 			       fence_timeout);
- 
- 	/* Wait for all execs to complete */
-@@ -267,7 +267,7 @@ test_exec(int fd, struct drm_xe_query_engine_info *engine,
- 	sync[0].addr = to_user_pointer(&data[0].vm_sync);
- 	xe_vm_unbind_async(fd, vm, bind_exec_queues[0], 0, addr, bo_size,
- 			   sync, 1);
--	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
-+	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
- 		       fence_timeout);
- 
- 	for (i = j; i < n_execs; i++)
-diff --git a/tests/intel/xe_exec_fault_mode.c b/tests/intel/xe_exec_fault_mode.c
-index 1cd3688ac..61d40a0b2 100644
---- a/tests/intel/xe_exec_fault_mode.c
-+++ b/tests/intel/xe_exec_fault_mode.c
-@@ -195,14 +195,14 @@ test_exec(int fd, struct drm_xe_query_engine_info *engine,
  	}
  
- #define ONE_SEC	MS_TO_NS(1000)
--	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, ONE_SEC);
-+	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, ONE_SEC);
- 	data[0].vm_sync = 0;
+diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
+index b595e978b..fd04f2b30 100644
+--- a/tests/intel/xe_query.c
++++ b/tests/intel/xe_query.c
+@@ -226,10 +226,10 @@ test_query_engines(int fd)
+ static void
+ test_query_mem_regions(int fd)
+ {
+-	struct drm_xe_query_mem_regions *mem_regions;
++	struct drm_xe_query_mem_region *mem_regions;
+ 	struct drm_xe_device_query query = {
+ 		.extensions = 0,
+-		.query = DRM_XE_DEVICE_QUERY_MEM_REGIONS,
++		.query = DRM_XE_DEVICE_QUERY_MEM_REGION,
+ 		.size = 0,
+ 		.data = 0,
+ 	};
+@@ -244,34 +244,34 @@ test_query_mem_regions(int fd)
+ 	query.data = to_user_pointer(mem_regions);
+ 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
  
- 	if (flags & PREFETCH) {
- 		/* Should move to system memory */
- 		xe_vm_prefetch_async(fd, vm, bind_exec_queues[0], 0, addr,
- 				     bo_size, sync, 1, 0);
--		xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
-+		xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
- 			       ONE_SEC);
- 		data[0].vm_sync = 0;
+-	for (i = 0; i < mem_regions->num_regions; i++) {
++	for (i = 0; i < mem_regions->num_mem_regions; i++) {
+ 		igt_info("mem region %d: %s\t%#llx / %#llx\n", i,
+-			mem_regions->regions[i].mem_class ==
++			mem_regions->mem_regions[i].mem_class ==
+ 			DRM_XE_MEM_REGION_CLASS_SYSMEM ? "SYSMEM"
+-			:mem_regions->regions[i].mem_class ==
++			:mem_regions->mem_regions[i].mem_class ==
+ 			DRM_XE_MEM_REGION_CLASS_VRAM ? "VRAM" : "?",
+-			mem_regions->regions[i].used,
+-			mem_regions->regions[i].total_size
++			mem_regions->mem_regions[i].used,
++			mem_regions->mem_regions[i].total_size
+ 		);
+ 		igt_info("min_page_size=0x%x\n",
+-		       mem_regions->regions[i].min_page_size);
++		       mem_regions->mem_regions[i].min_page_size);
+ 
+ 		igt_info("visible size=%lluMiB\n",
+-			 mem_regions->regions[i].cpu_visible_size >> 20);
++			 mem_regions->mem_regions[i].cpu_visible_size >> 20);
+ 		igt_info("visible used=%lluMiB\n",
+-			 mem_regions->regions[i].cpu_visible_used >> 20);
+-
+-		igt_assert_lte_u64(mem_regions->regions[i].cpu_visible_size,
+-				   mem_regions->regions[i].total_size);
+-		igt_assert_lte_u64(mem_regions->regions[i].cpu_visible_used,
+-				   mem_regions->regions[i].cpu_visible_size);
+-		igt_assert_lte_u64(mem_regions->regions[i].cpu_visible_used,
+-				   mem_regions->regions[i].used);
+-		igt_assert_lte_u64(mem_regions->regions[i].used,
+-				   mem_regions->regions[i].total_size);
+-		igt_assert_lte_u64(mem_regions->regions[i].used -
+-				   mem_regions->regions[i].cpu_visible_used,
+-				   mem_regions->regions[i].total_size);
++			 mem_regions->mem_regions[i].cpu_visible_used >> 20);
++
++		igt_assert_lte_u64(mem_regions->mem_regions[i].cpu_visible_size,
++				   mem_regions->mem_regions[i].total_size);
++		igt_assert_lte_u64(mem_regions->mem_regions[i].cpu_visible_used,
++				   mem_regions->mem_regions[i].cpu_visible_size);
++		igt_assert_lte_u64(mem_regions->mem_regions[i].cpu_visible_used,
++				   mem_regions->mem_regions[i].used);
++		igt_assert_lte_u64(mem_regions->mem_regions[i].used,
++				   mem_regions->mem_regions[i].total_size);
++		igt_assert_lte_u64(mem_regions->mem_regions[i].used -
++				   mem_regions->mem_regions[i].cpu_visible_used,
++				   mem_regions->mem_regions[i].total_size);
  	}
-@@ -230,7 +230,7 @@ test_exec(int fd, struct drm_xe_query_engine_info *engine,
- 
- 		if (flags & REBIND && i + 1 != n_execs) {
- 			xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
--				       NULL, ONE_SEC);
-+				       ONE_SEC);
- 			xe_vm_unbind_async(fd, vm, bind_exec_queues[e], 0,
- 					   addr, bo_size, NULL, 0);
- 
-@@ -246,7 +246,7 @@ test_exec(int fd, struct drm_xe_query_engine_info *engine,
- 							 addr, bo_size, sync,
- 							 1);
- 			xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
--				       NULL, ONE_SEC);
-+				       ONE_SEC);
- 			data[0].vm_sync = 0;
- 		}
- 
-@@ -259,7 +259,7 @@ test_exec(int fd, struct drm_xe_query_engine_info *engine,
- 				 * an invalidate.
- 				 */
- 				xe_wait_ufence(fd, &data[i].exec_sync,
--					       USER_FENCE_VALUE, NULL, ONE_SEC);
-+					       USER_FENCE_VALUE, ONE_SEC);
- 				igt_assert_eq(data[i].data, 0xc0ffee);
- 			} else if (i * 2 != n_execs) {
- 				/*
-@@ -290,13 +290,13 @@ test_exec(int fd, struct drm_xe_query_engine_info *engine,
- 		j = flags & INVALIDATE ? n_execs - 1 : 0;
- 		for (i = j; i < n_execs; i++)
- 			xe_wait_ufence(fd, &data[i].exec_sync,
--				       USER_FENCE_VALUE, NULL, ONE_SEC);
-+				       USER_FENCE_VALUE, ONE_SEC);
+ 	dump_hex_debug(mem_regions, query.size);
+ 	free(mem_regions);
+diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+index 24df7e8ca..419d4e9be 100644
+--- a/tests/kms_plane.c
++++ b/tests/kms_plane.c
+@@ -458,7 +458,7 @@ test_plane_panning(data_t *data, enum pipe pipe)
  	}
  
- 	sync[0].addr = to_user_pointer(&data[0].vm_sync);
- 	xe_vm_unbind_async(fd, vm, bind_exec_queues[0], 0, addr, bo_size,
- 			   sync, 1);
--	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, ONE_SEC);
-+	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, ONE_SEC);
+ 	if (is_xe_device(data->drm_fd)) {
+-		struct drm_xe_query_mem_region *memregion;
++		struct drm_xe_mem_region *memregion;
+ 		uint64_t memreg = all_memory_regions(data->drm_fd), region;
  
- 	if (!(flags & INVALID_FAULT)) {
- 		for (i = j; i < n_execs; i++)
-diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-index fc90d965c..05ce4cdf2 100644
---- a/tests/intel/xe_exec_reset.c
-+++ b/tests/intel/xe_exec_reset.c
-@@ -580,7 +580,7 @@ test_compute_mode(int fd, struct drm_xe_query_engine_info *engine,
- 	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
- 
- #define THREE_SEC	MS_TO_NS(3000)
--	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, THREE_SEC);
-+	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, THREE_SEC);
- 	data[0].vm_sync = 0;
- 
- 	for (i = 0; i < n_execs; i++) {
-@@ -634,11 +634,11 @@ test_compute_mode(int fd, struct drm_xe_query_engine_info *engine,
- 
- 	for (i = 1; i < n_execs; i++)
- 		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
--			       NULL, THREE_SEC);
-+			       THREE_SEC);
- 
- 	sync[0].addr = to_user_pointer(&data[0].vm_sync);
- 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
--	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, THREE_SEC);
-+	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, THREE_SEC);
- 
- 	for (i = 1; i < n_execs; i++)
- 		igt_assert_eq(data[i].data, 0xc0ffee);
-diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
-index df87fab2b..a0b0c96ea 100644
---- a/tests/intel/xe_exec_threads.c
-+++ b/tests/intel/xe_exec_threads.c
-@@ -343,7 +343,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 
- 	fence_timeout = igt_run_in_simulation() ? THIRTY_SEC : THREE_SEC;
- 
--	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, fence_timeout);
-+	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, fence_timeout);
- 	data[0].vm_sync = 0;
- 
- 	for (i = 0; i < n_execs; i++) {
-@@ -371,7 +371,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 			for (j = i - 0x20; j <= i; ++j)
- 				xe_wait_ufence(fd, &data[j].exec_sync,
- 					       USER_FENCE_VALUE,
--					       NULL, fence_timeout);
-+					       fence_timeout);
- 			xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size,
- 					   NULL, 0);
- 
-@@ -386,7 +386,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 							 addr, bo_size, sync,
- 							 1);
- 			xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
--				       NULL, fence_timeout);
-+				       fence_timeout);
- 			data[0].vm_sync = 0;
- 		}
- 
-@@ -401,7 +401,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 				for (j = i == 0x20 ? 0 : i - 0x1f; j <= i; ++j)
- 					xe_wait_ufence(fd, &data[j].exec_sync,
- 						       USER_FENCE_VALUE,
--						       NULL, fence_timeout);
-+						       fence_timeout);
- 				igt_assert_eq(data[i].data, 0xc0ffee);
- 			} else if (i * 2 != n_execs) {
- 				/*
-@@ -433,7 +433,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 	j = flags & INVALIDATE ?
- 		(flags & RACE ? n_execs / 2 + 1 : n_execs - 1) : 0;
- 	for (i = j; i < n_execs; i++)
--		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE, NULL,
-+		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
- 			       fence_timeout);
- 
- 	/* Wait for all execs to complete */
-@@ -442,7 +442,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 
- 	sync[0].addr = to_user_pointer(&data[0].vm_sync);
- 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
--	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, fence_timeout);
-+	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, fence_timeout);
- 
- 	for (i = j; i < n_execs; i++)
- 		igt_assert_eq(data[i].data, 0xc0ffee);
-diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
-index 0835a1ff1..1ee365c56 100644
---- a/tests/intel/xe_waitfence.c
-+++ b/tests/intel/xe_waitfence.c
-@@ -80,7 +80,7 @@ waitfence(int fd, enum waittype wt)
- 	do_bind(fd, vm, bo_7, 0, 0xeffff0000, 0x10000, 7);
- 
- 	if (wt == RELTIME) {
--		timeout = xe_wait_ufence(fd, &wait_fence, 7, NULL, MS_TO_NS(10));
-+		timeout = xe_wait_ufence(fd, &wait_fence, 7, MS_TO_NS(10));
- 		igt_debug("wait type: RELTIME - timeout: %ld, timeout left: %ld\n",
- 			  MS_TO_NS(10), timeout);
- 	} else {
-@@ -90,7 +90,7 @@ waitfence(int fd, enum waittype wt)
- 		clock_gettime(CLOCK_MONOTONIC, &ts);
- 		current = ts.tv_sec * 1e9 + ts.tv_nsec;
- 		timeout = current + MS_TO_NS(10);
--		signalled = xe_wait_ufence_abstime(fd, &wait_fence, 7, NULL, timeout);
-+		signalled = xe_wait_ufence_abstime(fd, &wait_fence, 7, timeout);
- 		igt_debug("wait type: ABSTIME - timeout: %" PRId64
- 			  ", signalled: %" PRId64
- 			  ", elapsed: %" PRId64 "\n",
+ 		xe_for_each_mem_region(data->drm_fd, memreg, region) {
 -- 
 2.34.1
