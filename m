@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 49A1510EA12
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D4E2B10EA12
  for <igt-dev@lists.freedesktop.org>; Fri,  3 Nov 2023 14:44:58 +0000 (UTC)
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  3 Nov 2023 14:43:26 +0000
-Message-Id: <20231103144359.7-32-francois.dugast@intel.com>
+Date: Fri,  3 Nov 2023 14:43:32 +0000
+Message-Id: <20231103144359.7-38-francois.dugast@intel.com>
 In-Reply-To: <20231103144359.7-1-francois.dugast@intel.com>
 References: <20231103144359.7-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 31/64] fixup! drm-uapi/xe: Align with
- drm_xe_query_engine_info
+Subject: [igt-dev] [PATCH v2 37/64] drm-uapi/xe: Differentiate WAIT_OP from
+ WAIT_MASK
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,71 +26,117 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-Aligns with e1c6a20e7b57 ("fixup! drm/xe: Make DRM_XE_DEVICE_QUERY_ENGINES future proof")
+Align with kernel commit ("drm/xe/uapi: Differentiate WAIT_OP from WAIT_MASK")
+
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- include/drm-uapi/xe_drm.h          | 15 +++++++++++----
- tests/intel/xe_prime_self_import.c |  5 +----
- 2 files changed, 12 insertions(+), 8 deletions(-)
+ include/drm-uapi/xe_drm.h | 41 ++++++++++++++++++++-------------------
+ lib/xe/xe_ioctl.c         |  8 ++++----
+ 2 files changed, 25 insertions(+), 24 deletions(-)
 
 diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index addadead9..d65f065a2 100644
+index cadb1e2b1..b546e42a5 100644
 --- a/include/drm-uapi/xe_drm.h
 +++ b/include/drm-uapi/xe_drm.h
-@@ -127,6 +127,10 @@ struct xe_user_extension {
- /**
-  * struct drm_xe_engine_class_instance - instance of an engine class
+@@ -1123,22 +1123,22 @@ struct drm_xe_exec_queue_get_property {
+  * Returns to user on user fence completion or timeout.
   *
-+ * It is returned as part of the @drm_xe_query_engine_info, but it also is
-+ * used as the input of engine selection for both @drm_xe_exec_queue_create
-+ * and @drm_xe_query_engine_cycles
-+ *
-  * The @engine_class can be:
-  *  - %DRM_XE_ENGINE_CLASS_RENDER
-  *  - %DRM_XE_ENGINE_CLASS_COPY
-@@ -164,13 +168,16 @@ struct drm_xe_engine_class_instance {
- /**
-  * struct drm_xe_query_engine_info - describe hardware engine
+  * The wait @op can be:
+- *  - %DRM_XE_UFENCE_WAIT_EQ
+- *  - %DRM_XE_UFENCE_WAIT_NEQ
+- *  - %DRM_XE_UFENCE_WAIT_GT
+- *  - %DRM_XE_UFENCE_WAIT_GTE
+- *  - %DRM_XE_UFENCE_WAIT_LT
+- *  - %DRM_XE_UFENCE_WAIT_LTE
++ *  - %DRM_XE_UFENCE_WAIT_OP_EQ
++ *  - %DRM_XE_UFENCE_WAIT_OP_NEQ
++ *  - %DRM_XE_UFENCE_WAIT_OP_GT
++ *  - %DRM_XE_UFENCE_WAIT_OP_GTE
++ *  - %DRM_XE_UFENCE_WAIT_OP_LT
++ *  - %DRM_XE_UFENCE_WAIT_OP_LTE
   *
-- * If a query is made with a struct drm_xe_device_query where .query
-- * is equal to DRM_XE_DEVICE_QUERY_ENGINES, then the reply uses an array of
-- * struct drm_xe_query_engine_info in .data.
-+ * If a query is made with a struct @drm_xe_device_query where .query
-+ * is equal to %DRM_XE_DEVICE_QUERY_ENGINES, then the reply uses an array of
-+ * struct @drm_xe_query_engine_info in .data.
+  * The wait @flags can be:
+  *  - %DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP
+  *  - %DRM_XE_UFENCE_WAIT_FLAG_ABSTIME
+  *
+  * The wait @mask can be:
+- *  - %DRM_XE_UFENCE_WAIT_U8
+- *  - %DRM_XE_UFENCE_WAIT_U16
+- *  - %DRM_XE_UFENCE_WAIT_U32
+- *  - %DRM_XE_UFENCE_WAIT_U64
++ *  - %DRM_XE_UFENCE_WAIT_MASK_U8
++ *  - %DRM_XE_UFENCE_WAIT_MASK_U16
++ *  - %DRM_XE_UFENCE_WAIT_MASK_U32
++ *  - %DRM_XE_UFENCE_WAIT_MASK_U64
+  *
   */
- struct drm_xe_query_engine_info {
-+	/** @instance: The @drm_xe_engine_class_instance */
- 	struct drm_xe_engine_class_instance instance;
--	__u64 rsvd[3];
+ struct drm_xe_wait_user_fence {
+@@ -1150,12 +1150,12 @@ struct drm_xe_wait_user_fence {
+ 	 */
+ 	__u64 addr;
+ 
+-#define DRM_XE_UFENCE_WAIT_EQ	0
+-#define DRM_XE_UFENCE_WAIT_NEQ	1
+-#define DRM_XE_UFENCE_WAIT_GT	2
+-#define DRM_XE_UFENCE_WAIT_GTE	3
+-#define DRM_XE_UFENCE_WAIT_LT	4
+-#define DRM_XE_UFENCE_WAIT_LTE	5
++#define DRM_XE_UFENCE_WAIT_OP_EQ	0x0
++#define DRM_XE_UFENCE_WAIT_OP_NEQ	0x1
++#define DRM_XE_UFENCE_WAIT_OP_GT	0x2
++#define DRM_XE_UFENCE_WAIT_OP_GTE	0x3
++#define DRM_XE_UFENCE_WAIT_OP_LT	0x4
++#define DRM_XE_UFENCE_WAIT_OP_LTE	0x5
+ 	/** @op: wait operation (type of comparison) */
+ 	__u16 op;
+ 
+@@ -1170,12 +1170,13 @@ struct drm_xe_wait_user_fence {
+ 	/** @value: compare value */
+ 	__u64 value;
+ 
+-#define DRM_XE_UFENCE_WAIT_U8		0xffu
+-#define DRM_XE_UFENCE_WAIT_U16		0xffffu
+-#define DRM_XE_UFENCE_WAIT_U32		0xffffffffu
+-#define DRM_XE_UFENCE_WAIT_U64		0xffffffffffffffffu
++#define DRM_XE_UFENCE_WAIT_MASK_U8	0xffu
++#define DRM_XE_UFENCE_WAIT_MASK_U16	0xffffu
++#define DRM_XE_UFENCE_WAIT_MASK_U32	0xffffffffu
++#define DRM_XE_UFENCE_WAIT_MASK_U64	0xffffffffffffffffu
+ 	/** @mask: comparison mask */
+ 	__u64 mask;
 +
-+	/** @reserved: Reserved */
-+	__u64 reserved[3];
- };
- 
- /**
-diff --git a/tests/intel/xe_prime_self_import.c b/tests/intel/xe_prime_self_import.c
-index 504e6a13d..ad988ef3b 100644
---- a/tests/intel/xe_prime_self_import.c
-+++ b/tests/intel/xe_prime_self_import.c
-@@ -59,7 +59,6 @@ IGT_TEST_DESCRIPTION("Check whether prime import/export works on the same"
- static char counter;
- static int g_time_out = 5;
- static pthread_barrier_t g_barrier;
--static size_t bo_size;
- 
- static size_t get_min_bo_size(int fd1, int fd2)
+ 	/**
+ 	 * @timeout: how long to wait before bailing, value in nanoseconds.
+ 	 * Without DRM_XE_UFENCE_WAIT_FLAG_ABSTIME flag set (relative timeout)
+diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+index e928148ee..5d4f2fcd8 100644
+--- a/lib/xe/xe_ioctl.c
++++ b/lib/xe/xe_ioctl.c
+@@ -422,10 +422,10 @@ int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
  {
-@@ -532,10 +531,8 @@ igt_main
- 	int i;
- 	int fd;
- 
--	igt_fixture {
-+	igt_fixture
- 		fd = drm_open_driver(DRIVER_XE);
--		bo_size = xe_get_default_alignment(fd);
--	}
- 
- 	for (i = 0; i < ARRAY_SIZE(tests); i++) {
- 		igt_subtest(tests[i].name)
+ 	struct drm_xe_wait_user_fence wait = {
+ 		.addr = to_user_pointer(addr),
+-		.op = DRM_XE_UFENCE_WAIT_EQ,
++		.op = DRM_XE_UFENCE_WAIT_OP_EQ,
+ 		.flags = !eci ? DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP : 0,
+ 		.value = value,
+-		.mask = DRM_XE_UFENCE_WAIT_U64,
++		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
+ 		.timeout = timeout,
+ 		.num_engines = eci ? 1 :0,
+ 		.instances = eci ? to_user_pointer(eci) : 0,
+@@ -454,10 +454,10 @@ int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
+ {
+ 	struct drm_xe_wait_user_fence wait = {
+ 		.addr = to_user_pointer(addr),
+-		.op = DRM_XE_UFENCE_WAIT_EQ,
++		.op = DRM_XE_UFENCE_WAIT_OP_EQ,
+ 		.flags = !eci ? DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP | DRM_XE_UFENCE_WAIT_FLAG_ABSTIME : 0,
+ 		.value = value,
+-		.mask = DRM_XE_UFENCE_WAIT_U64,
++		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
+ 		.timeout = timeout,
+ 		.num_engines = eci ? 1 : 0,
+ 		.instances = eci ? to_user_pointer(eci) : 0,
 -- 
 2.34.1
