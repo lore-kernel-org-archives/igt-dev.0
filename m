@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 528CF10EA21
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Nov 2023 14:45:02 +0000 (UTC)
-From: Francois Dugast <francois.dugast@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri,  3 Nov 2023 14:43:41 +0000
-Message-Id: <20231103144359.7-47-francois.dugast@intel.com>
-In-Reply-To: <20231103144359.7-1-francois.dugast@intel.com>
-References: <20231103144359.7-1-francois.dugast@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 46/64] drm-uapi/xe: Move memory_region masks
- from GT to engine
+Content-Transfer-Encoding: quoted-printable
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Francois Dugast" <francois.dugast@intel.com>
+Date: Fri, 03 Nov 2023 16:25:03 -0000
+Message-ID: <169902870333.29107.8617505651259334238@emeril.freedesktop.org>
+References: <20231103144359.7-1-francois.dugast@intel.com>
+In-Reply-To: <20231103144359.7-1-francois.dugast@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_u?=
+ =?utf-8?q?API_Alignment_-_take_2?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,589 +17,464 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+=3D=3D Series Details =3D=3D
 
-Align with kernel commit ("drm/xe/uapi: Move memory_region masks from GT to engine")
+Series: uAPI Alignment - take 2
+URL   : https://patchwork.freedesktop.org/series/125956/
+State : warning
 
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
----
- benchmarks/gem_wsim.c              |  2 +-
- include/drm-uapi/xe_drm.h          | 27 ++++++++-------
- lib/xe/xe_query.c                  | 54 +++++++++++++++++++-----------
- lib/xe/xe_query.h                  |  8 +++--
- lib/xe/xe_spin.c                   |  2 +-
- tests/intel/xe_dma_buf_sync.c      |  2 +-
- tests/intel/xe_evict.c             | 12 +++----
- tests/intel/xe_exec_balancer.c     |  6 ++--
- tests/intel/xe_exec_basic.c        |  2 +-
- tests/intel/xe_exec_compute_mode.c |  2 +-
- tests/intel/xe_exec_fault_mode.c   |  2 +-
- tests/intel/xe_exec_reset.c        |  8 ++---
- tests/intel/xe_exec_store.c        |  2 +-
- tests/intel/xe_exec_threads.c      |  6 ++--
- tests/intel/xe_guc_pc.c            |  2 +-
- tests/intel/xe_pm.c                |  2 +-
- tests/intel/xe_pm_residency.c      |  2 +-
- tests/intel/xe_query.c             |  8 ++---
- tests/intel/xe_vm.c                | 14 ++++----
- 19 files changed, 92 insertions(+), 71 deletions(-)
+=3D=3D Summary =3D=3D
 
-diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-index 5ba5f2e2c..5154974e3 100644
---- a/benchmarks/gem_wsim.c
-+++ b/benchmarks/gem_wsim.c
-@@ -1735,7 +1735,7 @@ xe_alloc_step_batch(struct workload *wrk, struct w_step *w)
- 	int i;
- 
- 	w->bb_handle = xe_bo_create(fd, vm->id, PAGE_SIZE,
--				    vram_near_gt_if_possible(fd, eq->eci_list[0].gt_id),
-+				    vram_near_eci_if_possible(fd, &eq->eci_list[0]),
- 				    DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 	w->xe.data = xe_bo_map(fd, w->bb_handle, PAGE_SIZE);
- 	w->xe.exec.address =
-diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index 9ec0506d5..aecd2d736 100644
---- a/include/drm-uapi/xe_drm.h
-+++ b/include/drm-uapi/xe_drm.h
-@@ -228,6 +228,20 @@ struct drm_xe_query_engine_info {
- 	/** @instance: The @drm_xe_engine_class_instance */
- 	struct drm_xe_engine_class_instance instance;
- 
-+	/**
-+	 * @near_mem_regions: Bit mask of instances from
-+	 * drm_xe_query_mem_regions that is near this engine.
-+	 */
-+	__u64 near_mem_regions;
-+	/**
-+	 * @far_mem_regions: Bit mask of instances from
-+	 * drm_xe_query_mem_regions that is far from this engine.
-+	 * In general, it has extra indirections when compared to the
-+	 * @near_mem_regions. For a discrete device this could mean system
-+	 * memory and memory living in a different Tile.
-+	 */
-+	__u64 far_mem_regions;
-+
- 	/** @reserved: Reserved */
- 	__u64 reserved[3];
- };
-@@ -401,19 +415,6 @@ struct drm_xe_query_gt {
- 	__u16 gt_id;
- 	/** @clock_freq: A clock frequency for timestamp */
- 	__u32 clock_freq;
--	/**
--	 * @near_mem_regions: Bit mask of instances from
--	 * drm_xe_query_mem_regions that is near the current engines of this GT.
--	 */
--	__u64 near_mem_regions;
--	/**
--	 * @far_mem_regions: Bit mask of instances from
--	 * drm_xe_query_mem_regions that is far from the engines of this GT.
--	 * In general, it has extra indirections when compared to the
--	 * @near_mem_regions. For a discrete device this could mean system
--	 * memory and memory living in a different Tile.
--	 */
--	__u64 far_mem_regions;
- 	/** @reserved: Reserved */
- 	__u64 reserved[8];
- };
-diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index a9f4bbba1..267e538d0 100644
---- a/lib/xe/xe_query.c
-+++ b/lib/xe/xe_query.c
-@@ -114,12 +114,12 @@ static struct drm_xe_query_mem_regions *xe_query_mem_regions_new(int fd)
- 	return mem_regions;
- }
- 
--static uint64_t mem_region_near_gt(const struct drm_xe_query_gt_list *gt_list, int gt)
-+static uint64_t mem_region_near_engine(struct drm_xe_query_engine_info *engine)
- {
- 	uint64_t region;
- 
--	igt_assert(gt_list->num_gt > gt);
--	region = gt_list->gt_list[gt].near_mem_regions;
-+	igt_assert(engine);
-+	region = engine->near_mem_regions;
- 	igt_assert(region);
- 
- 	return region;
-@@ -365,21 +365,33 @@ uint64_t any_vram(int fd)
- }
- 
- /**
-- * vram_near_gt:
-+ * vram_near_eci:
-  * @fd: xe device fd
-- * @gt: gt id
-+ * @eci: engine class instance
-  *
-- * Returns memory bitmask for the vram region that is near the given @gt id.
-+ * Returns memory bitmask for the vram region that is near the given @eci.
-  */
--uint64_t vram_near_gt(int fd, int gt)
-+uint64_t vram_near_eci(int fd, struct drm_xe_engine_class_instance *eci)
- {
- 	struct xe_device *xe_dev;
-+	struct drm_xe_query_engine_info *engine;
-+	struct drm_xe_engine_class_instance *eci1;
-+
-+	if (!xe_has_vram(fd))
-+		return 0;
- 
- 	xe_dev = find_in_cache(fd);
- 	igt_assert(xe_dev);
--	igt_assert(gt >= 0 && gt < xe_dev->gt_list->num_gt);
- 
--	return xe_has_vram(fd) ? mem_region_near_gt(xe_dev->gt_list, gt) : 0;
-+	xe_for_each_engine(fd, engine) {
-+		eci1 = &engine->instance;
-+		if (eci1->engine_class == eci->engine_class &&
-+		    eci1->engine_instance == eci->engine_instance &&
-+		    eci1->gt_id == eci->gt_id)
-+			return mem_region_near_engine(engine);
-+	}
-+
-+	return 0;
- }
- 
- /**
-@@ -396,17 +408,17 @@ uint64_t any_vram_if_possible(int fd)
- }
- 
- /**
-- * vram_near_gt_if_possible:
-+ * vram_near_eci_if_possible:
-  * @fd: xe device fd
-- * @gt: gt id
-+ * @eci: engine class instance
-  *
-  * Returns a memory region bitmask. If possible, it returns a bitmask for a
-- * vram region near the given @gt id. Otherwise it returns a bitmask for a
-+ * vram region near the given @eci. Otherwise it returns a bitmask for a
-  * system memory region.
-  */
--uint64_t vram_near_gt_if_possible(int fd, int gt)
-+uint64_t vram_near_eci_if_possible(int fd, struct drm_xe_engine_class_instance *eci)
- {
--	return vram_near_gt(fd, gt) ?: system_memory(fd);
-+	return vram_near_eci(fd, eci) ?: system_memory(fd);
- }
- 
- /**
-@@ -562,15 +574,19 @@ uint64_t xe_vram_size_any_region(int fd)
- uint64_t xe_vram_size_region_near_gt(int fd, int gt)
- {
- 	struct xe_device *xe_dev;
-+	struct drm_xe_query_engine_info *engine;
- 
- 	xe_dev = find_in_cache(fd);
- 	igt_assert(xe_dev);
- 
--	for (int i = 0; i < xe_dev->mem_regions->num_regions; i++)
--		if (XE_IS_CLASS_VRAM(&xe_dev->mem_regions->regions[i]) &&
--		    ((1 << xe_dev->mem_regions->regions[i].instance) &
--		     mem_region_near_gt(xe_dev->gt_list, gt)))
--			return xe_dev->mem_regions->regions[i].total_size;
-+	xe_for_each_engine(fd, engine) {
-+		if (gt == engine->instance.gt_id)
-+			for (int i = 0; i < xe_dev->mem_regions->num_regions; i++)
-+				if (XE_IS_CLASS_VRAM(&xe_dev->mem_regions->regions[i]) &&
-+				    ((1 << xe_dev->mem_regions->regions[i].instance) &
-+				     mem_region_near_engine(engine)))
-+					return xe_dev->mem_regions->regions[i].total_size;
-+	}
- 
- 	return 0;
- }
-diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-index bec2a7ed6..3eee75ff4 100644
---- a/lib/xe/xe_query.h
-+++ b/lib/xe/xe_query.h
-@@ -54,6 +54,9 @@ struct xe_device {
- 	uint16_t dev_id;
- };
- 
-+#define xe_for_each_engine(__fd, __engine) \
-+	for (int __i = 0; __i < xe_number_engines(__fd) && \
-+	     (__engine = xe_engine(__fd, __i)); ++__i)
- #define xe_for_each_engine_instance(__fd, __eci) \
- 	for (int __i = 0; __i < xe_number_engines(__fd) && \
- 	     (__eci = &xe_engine(__fd, __i)->instance); ++__i)
-@@ -74,9 +77,9 @@ unsigned int xe_number_gt(int fd);
- uint64_t all_memory_regions(int fd);
- uint64_t system_memory(int fd);
- uint64_t any_vram(int fd);
--uint64_t vram_near_gt(int fd, int gt);
-+uint64_t vram_near_eci(int fd, struct drm_xe_engine_class_instance *eci);
- uint64_t any_vram_if_possible(int fd);
--uint64_t vram_near_gt_if_possible(int fd, int gt);
-+uint64_t vram_near_eci_if_possible(int fd, struct drm_xe_engine_class_instance *eci);
- struct drm_xe_query_engine_info *xe_engines(int fd);
- struct drm_xe_query_engine_info *xe_engine(int fd, int idx);
- struct drm_xe_query_mem_region *xe_mem_region(int fd, uint64_t region);
-@@ -90,6 +93,7 @@ uint64_t xe_vram_size_any_region(int fd);
- uint64_t xe_vram_size_region_near_gt(int fd, int gt);
- uint64_t xe_visible_vram_size_any_region(int fd);
- uint64_t xe_vram_available_any_region(int fd);
-+uint64_t xe_visible_vram_size_region_near_gt(int fd, int gt);
- uint32_t xe_get_default_alignment(int fd);
- uint32_t xe_va_bits(int fd);
- uint16_t xe_dev_id(int fd);
-diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-index 0aeddb9ac..506ddc090 100644
---- a/lib/xe/xe_spin.c
-+++ b/lib/xe/xe_spin.c
-@@ -301,7 +301,7 @@ void xe_cork_init(int fd, struct drm_xe_engine_class_instance *eci,
- 
- 	vm = xe_vm_create(fd, 0, 0);
- 
--	bo = xe_bo_create(fd, vm, bo_size, vram_near_gt_if_possible(fd, eci->gt_id),
-+	bo = xe_bo_create(fd, vm, bo_size, vram_near_eci_if_possible(fd, eci),
- 			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 	spin = xe_bo_map(fd, bo, 0x1000);
- 
-diff --git a/tests/intel/xe_dma_buf_sync.c b/tests/intel/xe_dma_buf_sync.c
-index 86441864e..9a42f8e35 100644
---- a/tests/intel/xe_dma_buf_sync.c
-+++ b/tests/intel/xe_dma_buf_sync.c
-@@ -120,7 +120,7 @@ test_export_dma_buf(struct drm_xe_engine_class_instance *eci0,
- 			xe_get_default_alignment(fd[0]));
- 	for (i = 0; i < n_bo; ++i) {
- 		bo[i] = xe_bo_create(fd[0], 0, bo_size,
--				     vram_near_gt_if_possible(fd[0], eci0->gt_id),
-+				     vram_near_eci_if_possible(fd[0], eci0),
- 				     DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 		dma_buf_fd[i] = prime_handle_to_fd(fd[0], bo[i]);
- 		import_bo[i] = prime_fd_to_handle(fd[1], dma_buf_fd[i]);
-diff --git a/tests/intel/xe_evict.c b/tests/intel/xe_evict.c
-index 1c8d52358..2a667a679 100644
---- a/tests/intel/xe_evict.c
-+++ b/tests/intel/xe_evict.c
-@@ -103,17 +103,17 @@ test_evict(int fd, struct drm_xe_engine_class_instance *eci,
- 			if (flags & MULTI_VM) {
- 				__bo = bo[i] = xe_bo_create(fd, 0,
- 							    bo_size,
--							    vram_near_gt(fd, eci->gt_id),
-+							    vram_near_eci(fd, eci),
- 							    DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 			} else if (flags & THREADED) {
- 				__bo = bo[i] = xe_bo_create(fd, vm,
- 							    bo_size,
--							    vram_near_gt(fd, eci->gt_id),
-+							    vram_near_eci(fd, eci),
- 							    DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 			} else {
- 				__bo = bo[i] = xe_bo_create(fd, _vm,
- 							    bo_size,
--							    vram_near_gt(fd, eci->gt_id) |
-+							    vram_near_eci(fd, eci) |
- 							    system_memory(fd),
- 							    DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 			}
-@@ -283,17 +283,17 @@ test_evict_cm(int fd, struct drm_xe_engine_class_instance *eci,
- 			if (flags & MULTI_VM) {
- 				__bo = bo[i] = xe_bo_create(fd, 0,
- 							    bo_size,
--							    vram_near_gt(fd, eci->gt_id),
-+							    vram_near_eci(fd, eci),
- 							    DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 			} else if (flags & THREADED) {
- 				__bo = bo[i] = xe_bo_create(fd, vm,
- 							    bo_size,
--							    vram_near_gt(fd, eci->gt_id),
-+							    vram_near_eci(fd, eci),
- 							    DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 			} else {
- 				__bo = bo[i] = xe_bo_create(fd, _vm,
- 							    bo_size,
--							    vram_near_gt(fd, eci->gt_id) |
-+							    vram_near_eci(fd, eci) |
- 							    system_memory(fd),
- 							    DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 			}
-diff --git a/tests/intel/xe_exec_balancer.c b/tests/intel/xe_exec_balancer.c
-index e06414c14..22fce66f7 100644
---- a/tests/intel/xe_exec_balancer.c
-+++ b/tests/intel/xe_exec_balancer.c
-@@ -72,7 +72,7 @@ static void test_all_active(int fd, int gt, int class)
- 	bo_size = sizeof(*data) * num_placements;
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
- 
--	bo = xe_bo_create(fd, vm, bo_size, vram_near_gt_if_possible(fd, gt),
-+	bo = xe_bo_create(fd, vm, bo_size, vram_near_eci_if_possible(fd, &eci_list[0]),
- 			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 	data = xe_bo_map(fd, bo, bo_size);
- 
-@@ -229,7 +229,7 @@ test_exec(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 		}
- 		memset(data, 0, bo_size);
- 	} else {
--		bo = xe_bo_create(fd, vm, bo_size, vram_near_gt_if_possible(fd, gt),
-+		bo = xe_bo_create(fd, vm, bo_size, vram_near_eci_if_possible(fd, &eci_list[0]),
- 				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 		data = xe_bo_map(fd, bo, bo_size);
- 	}
-@@ -459,7 +459,7 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 			igt_assert(data);
- 		}
- 	} else {
--		bo = xe_bo_create(fd, vm, bo_size, vram_near_gt_if_possible(fd, gt),
-+		bo = xe_bo_create(fd, vm, bo_size, vram_near_eci_if_possible(fd, &eci_list[0]),
- 				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 		data = xe_bo_map(fd, bo, bo_size);
- 	}
-diff --git a/tests/intel/xe_exec_basic.c b/tests/intel/xe_exec_basic.c
-index 923e8d2db..5b1fe6469 100644
---- a/tests/intel/xe_exec_basic.c
-+++ b/tests/intel/xe_exec_basic.c
-@@ -143,7 +143,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 			bo_flags |= DRM_XE_GEM_CREATE_FLAG_DEFER_BACKING;
- 
- 		bo = xe_bo_create(fd, n_vm == 1 ? vm[0] : 0, bo_size,
--				  vram_near_gt_if_possible(fd, eci->gt_id), bo_flags);
-+				  vram_near_eci_if_possible(fd, eci), bo_flags);
- 		if (!(flags & DEFER_BIND))
- 			data = xe_bo_map(fd, bo, bo_size);
- 	}
-diff --git a/tests/intel/xe_exec_compute_mode.c b/tests/intel/xe_exec_compute_mode.c
-index ba0f09104..91c2319e7 100644
---- a/tests/intel/xe_exec_compute_mode.c
-+++ b/tests/intel/xe_exec_compute_mode.c
-@@ -143,7 +143,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 		}
- 	} else {
- 		bo = xe_bo_create(fd, flags & VM_FOR_BO ? vm : 0,
--				  bo_size, vram_near_gt_if_possible(fd, eci->gt_id),
-+				  bo_size, vram_near_eci_if_possible(fd, eci),
- 				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 		data = xe_bo_map(fd, bo, bo_size);
- 	}
-diff --git a/tests/intel/xe_exec_fault_mode.c b/tests/intel/xe_exec_fault_mode.c
-index 1b2024f38..7f5ad8701 100644
---- a/tests/intel/xe_exec_fault_mode.c
-+++ b/tests/intel/xe_exec_fault_mode.c
-@@ -158,7 +158,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 					  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 		else
- 			bo = xe_bo_create(fd, 0, bo_size,
--					  vram_near_gt_if_possible(fd, eci->gt_id),
-+					  vram_near_eci_if_possible(fd, eci),
- 					  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 		data = xe_bo_map(fd, bo, bo_size);
- 	}
-diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-index 72a9d902d..119356338 100644
---- a/tests/intel/xe_exec_reset.c
-+++ b/tests/intel/xe_exec_reset.c
-@@ -53,7 +53,7 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci)
- 			xe_get_default_alignment(fd));
- 
- 	bo = xe_bo_create(fd, vm, bo_size,
--			  vram_near_gt_if_possible(fd, eci->gt_id),
-+			  vram_near_eci_if_possible(fd, eci),
- 			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 	spin = xe_bo_map(fd, bo, bo_size);
- 
-@@ -186,7 +186,7 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
- 			xe_get_default_alignment(fd));
- 
--	bo = xe_bo_create(fd, vm, bo_size, vram_near_gt_if_possible(fd, gt),
-+	bo = xe_bo_create(fd, vm, bo_size, vram_near_eci_if_possible(fd, &eci_list[0]),
- 			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 	data = xe_bo_map(fd, bo, bo_size);
- 
-@@ -376,7 +376,7 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
- 			xe_get_default_alignment(fd));
- 
- 	bo = xe_bo_create(fd, vm, bo_size,
--			  vram_near_gt_if_possible(fd, eci->gt_id),
-+			  vram_near_eci_if_possible(fd, eci),
- 			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 	data = xe_bo_map(fd, bo, bo_size);
- 
-@@ -545,7 +545,7 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
- 			xe_get_default_alignment(fd));
- 
- 	bo = xe_bo_create(fd, vm, bo_size,
--			  vram_near_gt_if_possible(fd, eci->gt_id),
-+			  vram_near_eci_if_possible(fd, eci),
- 			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 	data = xe_bo_map(fd, bo, bo_size);
- 	memset(data, 0, bo_size);
-diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
-index 5c74e63a5..1c99e7569 100644
---- a/tests/intel/xe_exec_store.c
-+++ b/tests/intel/xe_exec_store.c
-@@ -83,7 +83,7 @@ static void store(int fd)
- 
- 	engine = xe_engine(fd, 1);
- 	bo = xe_bo_create(fd, vm, bo_size,
--			  vram_near_gt_if_possible(fd, engine->instance.gt_id),
-+			  vram_near_eci_if_possible(fd, &engine->instance),
- 			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 
- 	xe_vm_bind_async(fd, vm, engine->instance.gt_id, bo, 0, addr, bo_size, &sync, 1);
-diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
-index 7ad2233dc..fa8ef8645 100644
---- a/tests/intel/xe_exec_threads.c
-+++ b/tests/intel/xe_exec_threads.c
-@@ -109,7 +109,7 @@ test_balancer(int fd, int gt, uint32_t vm, uint64_t addr, uint64_t userptr,
- 		}
- 	} else {
- 		bo = xe_bo_create(fd, vm, bo_size,
--				  vram_near_gt_if_possible(fd, gt),
-+				  vram_near_eci_if_possible(fd, &eci_list[0]),
- 				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 		data = xe_bo_map(fd, bo, bo_size);
- 	}
-@@ -312,7 +312,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 		}
- 	} else {
- 		bo = xe_bo_create(fd, 0, bo_size,
--				  vram_near_gt_if_possible(fd, eci->gt_id),
-+				  vram_near_eci_if_possible(fd, eci),
- 				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 		data = xe_bo_map(fd, bo, bo_size);
- 	}
-@@ -518,7 +518,7 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 		}
- 	} else {
- 		bo = xe_bo_create(fd, vm, bo_size,
--				  vram_near_gt_if_possible(fd, eci->gt_id),
-+				  vram_near_eci_if_possible(fd, eci),
- 				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 		data = xe_bo_map(fd, bo, bo_size);
- 	}
-diff --git a/tests/intel/xe_guc_pc.c b/tests/intel/xe_guc_pc.c
-index b04a145be..a36f6542b 100644
---- a/tests/intel/xe_guc_pc.c
-+++ b/tests/intel/xe_guc_pc.c
-@@ -68,7 +68,7 @@ static void exec_basic(int fd, struct drm_xe_engine_class_instance *eci,
- 			xe_get_default_alignment(fd));
- 
- 	bo = xe_bo_create(fd, vm, bo_size,
--			  vram_near_gt_if_possible(fd, eci->gt_id),
-+			  vram_near_eci_if_possible(fd, eci),
- 			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 	data = xe_bo_map(fd, bo, bo_size);
- 
-diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-index e4a410a8a..3c0aed4f9 100644
---- a/tests/intel/xe_pm.c
-+++ b/tests/intel/xe_pm.c
-@@ -274,7 +274,7 @@ test_exec(device_t device, struct drm_xe_engine_class_instance *eci,
- 		rpm_usage = igt_pm_get_runtime_usage(device.pci_xe);
- 
- 	bo = xe_bo_create(device.fd_xe, vm, bo_size,
--			  vram_near_gt_if_possible(device.fd_xe, eci->gt_id),
-+			  vram_near_eci_if_possible(device.fd_xe, eci),
- 			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 	data = xe_bo_map(device.fd_xe, bo, bo_size);
- 
-diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
-index b5c304df3..f701696ac 100644
---- a/tests/intel/xe_pm_residency.c
-+++ b/tests/intel/xe_pm_residency.c
-@@ -102,7 +102,7 @@ static void exec_load(int fd, struct drm_xe_engine_class_instance *eci, unsigned
- 	bo_size = xe_get_default_alignment(fd);
- 
- 	bo = xe_bo_create(fd, vm, bo_size,
--			  vram_near_gt_if_possible(fd, eci->gt_id),
-+			  vram_near_eci_if_possible(fd, eci),
- 			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 	data = xe_bo_map(fd, bo, bo_size);
- 	syncobj = syncobj_create(fd, 0);
-diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
-index de3b66564..9111e2a08 100644
---- a/tests/intel/xe_query.c
-+++ b/tests/intel/xe_query.c
-@@ -206,6 +206,10 @@ test_query_engines(int fd)
- 			 xe_engine_class_string(eci->engine_class),
- 			 eci->engine_instance,
- 			 eci->gt_id);
-+		igt_info("near_mem_regions: 0x%016llx\n",
-+			 engines[i].near_mem_regions);
-+		igt_info("far_mem_regions: 0x%016llx\n",
-+			 engines[i].far_mem_regions);
- 	}
- 
- 	igt_assert(i > 0);
-@@ -302,10 +306,6 @@ test_query_gt_list(int fd)
- 		igt_info("type: %d\n", gt_list->gt_list[i].type);
- 		igt_info("gt_id: %d\n", gt_list->gt_list[i].gt_id);
- 		igt_info("clock_freq: %u\n", gt_list->gt_list[i].clock_freq);
--		igt_info("near_mem_regions: 0x%016llx\n",
--		       gt_list->gt_list[i].near_mem_regions);
--		igt_info("far_mem_regions: 0x%016llx\n",
--		       gt_list->gt_list[i].far_mem_regions);
- 	}
- }
- 
-diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-index 9fc61c179..7dd0ec5f2 100644
---- a/tests/intel/xe_vm.c
-+++ b/tests/intel/xe_vm.c
-@@ -384,7 +384,7 @@ shared_pte_page(int fd, struct drm_xe_engine_class_instance *eci, int n_bo,
- 
- 	for (i = 0; i < n_bo; ++i) {
- 		bo[i] = xe_bo_create(fd, vm, bo_size,
--				     vram_near_gt_if_possible(fd, eci->gt_id),
-+				     vram_near_eci_if_possible(fd, eci),
- 				     DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 		data[i] = xe_bo_map(fd, bo[i], bo_size);
- 	}
-@@ -566,7 +566,7 @@ test_bind_execqueues_independent(int fd, struct drm_xe_engine_class_instance *ec
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
- 			xe_get_default_alignment(fd));
- 	bo = xe_bo_create(fd, vm, bo_size,
--			  vram_near_gt_if_possible(fd, eci->gt_id),
-+			  vram_near_eci_if_possible(fd, eci),
- 			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 	data = xe_bo_map(fd, bo, bo_size);
- 
-@@ -750,7 +750,7 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
- 			xe_get_default_alignment(fd));
- 
- 	bo = xe_bo_create(fd, vm, bo_size,
--			  vram_near_gt_if_possible(fd, eci->gt_id),
-+			  vram_near_eci_if_possible(fd, eci),
- 			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 	data = xe_bo_map(fd, bo, bo_size);
- 
-@@ -951,7 +951,7 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
- 			    xe_visible_vram_size_any_region(fd));
- 
- 		bo = xe_bo_create(fd, vm, bo_size,
--				  vram_near_gt_if_possible(fd, eci->gt_id),
-+				  vram_near_eci_if_possible(fd, eci),
- 				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 		map = xe_bo_map(fd, bo, bo_size);
- 	}
-@@ -1247,7 +1247,7 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
- 		igt_assert(map != MAP_FAILED);
- 	} else {
- 		bo = xe_bo_create(fd, vm, bo_size,
--				  vram_near_gt_if_possible(fd, eci->gt_id),
-+				  vram_near_eci_if_possible(fd, eci),
- 				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 		map = xe_bo_map(fd, bo, bo_size);
- 	}
-@@ -1552,9 +1552,9 @@ test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
- 		igt_assert(map0 != MAP_FAILED);
- 		igt_assert(map1 != MAP_FAILED);
- 	} else {
--		bo0 = xe_bo_create(fd, vm, bo_size, vram_near_gt_if_possible(fd, eci->gt_id), 0);
-+		bo0 = xe_bo_create(fd, vm, bo_size, vram_near_eci_if_possible(fd, eci), 0);
- 		map0 = xe_bo_map(fd, bo0, bo_size);
--		bo1 = xe_bo_create(fd, vm, bo_size, vram_near_gt_if_possible(fd, eci->gt_id), 0);
-+		bo1 = xe_bo_create(fd, vm, bo_size, vram_near_eci_if_possible(fd, eci), 0);
- 		map1 = xe_bo_map(fd, bo1, bo_size);
- 	}
- 	memset(map0, 0, bo_size);
--- 
-2.34.1
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1025841 f=
+or the overview.
+
+build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/=
+igt-ci-tags/-/jobs/51161468):
+  cc -Itests/59830eb@@kms_ccs@exe -Itests -I../tests -I../include -I../incl=
+ude/drm-uapi -I../include/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls=
+ -I. -I../ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib/x86_64-l=
+inux-gnu/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/uuid -I/us=
+r/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/in=
+clude/libdrm/nouveau -I/usr/include/x86_64-linux-gnu -I/usr/include/valgrin=
+d -I/usr/include/alsa -I/usr/include -fdiagnostics-color=3Dalways -pipe -D_=
+FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GN=
+U_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdecl=
+aration-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-o=
+p -Wmissing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmi=
+ssing-prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -W=
+redundant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-=
+clobbered -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-poi=
+nter-arith -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-un=
+used-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -We=
+rror=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmis=
+sing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dretur=
+n-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings=
+ -fno-builtin-malloc -fno-builtin-calloc -pthread  -MD -MQ 'tests/59830eb@@=
+kms_ccs@exe/intel_kms_ccs.c.o' -MF 'tests/59830eb@@kms_ccs@exe/intel_kms_cc=
+s.c.o.d' -o 'tests/59830eb@@kms_ccs@exe/intel_kms_ccs.c.o' -c ../tests/inte=
+l/kms_ccs.c
+  ../tests/intel/kms_ccs.c: In function =E2=80=98test_bad_ccs_plane=E2=80=
+=99:
+  ../tests/intel/kms_ccs.c:437:5: error: implicit declaration of function =
+=E2=80=98xe_bo_create_flags=E2=80=99; did you mean =E2=80=98xe_bo_create=E2=
+=80=99? [-Werror=3Dimplicit-function-declaration]
+       xe_bo_create_flags(data->drm_fd, 0, fb.size,
+       ^~~~~~~~~~~~~~~~~~
+       xe_bo_create
+  ../tests/intel/kms_ccs.c:437:5: warning: nested extern declaration of =E2=
+=80=98xe_bo_create_flags=E2=80=99 [-Wnested-externs]
+  ../tests/intel/kms_ccs.c:438:10: error: implicit declaration of function =
+=E2=80=98visible_vram_if_possible=E2=80=99; did you mean =E2=80=98any_vram_=
+if_possible=E2=80=99? [-Werror=3Dimplicit-function-declaration]
+            visible_vram_if_possible(data->drm_fd, 0));
+            ^~~~~~~~~~~~~~~~~~~~~~~~
+            any_vram_if_possible
+  ../tests/intel/kms_ccs.c:438:10: warning: nested extern declaration of =
+=E2=80=98visible_vram_if_possible=E2=80=99 [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1699028600:step_script
+  section_start:1699028600:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1699028601:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
+
+build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/g=
+fx-ci/igt-ci-tags/-/jobs/51161471):
+  /usr/bin/aarch64-linux-gnu-gcc -Itests/59830eb@@kms_ccs@exe -Itests -I../=
+tests -I../include -I../include/drm-uapi -I../include/linux-uapi -Ilib -I..=
+/lib -I../lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/=
+glib-2.0 -I/usr/lib/aarch64-linux-gnu/glib-2.0/include -I/usr/include/pixma=
+n-1 -I/usr/include/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -I=
+/usr/include/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/aarch64-li=
+nux-gnu -I/usr/include/valgrind -I/usr/include/alsa -fdiagnostics-color=3Da=
+lways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu=
+11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-funct=
+ion-cast -Wdeclaration-after-statement -Wformat=3D2 -Wimplicit-fallthrough=
+=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -Wmissi=
+ng-noreturn -Wmissing-prototypes -Wnested-externs -Wold-style-definition -W=
+pointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuninitialize=
+d -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno-missing-field-initi=
+alizers -Wno-pointer-arith -Wno-sign-compare -Wno-type-limits -Wno-unused-p=
+arameter -Wno-unused-result -Werror=3Daddress -Werror=3Darray-bounds -Werro=
+r=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dma=
+in -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast=
+ -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=
+=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -pthread  -MD -MQ =
+'tests/59830eb@@kms_ccs@exe/intel_kms_ccs.c.o' -MF 'tests/59830eb@@kms_ccs@=
+exe/intel_kms_ccs.c.o.d' -o 'tests/59830eb@@kms_ccs@exe/intel_kms_ccs.c.o' =
+-c ../tests/intel/kms_ccs.c
+  ../tests/intel/kms_ccs.c: In function =E2=80=98test_bad_ccs_plane=E2=80=
+=99:
+  ../tests/intel/kms_ccs.c:437:5: error: implicit declaration of function =
+=E2=80=98xe_bo_create_flags=E2=80=99; did you mean =E2=80=98xe_bo_create=E2=
+=80=99? [-Werror=3Dimplicit-function-declaration]
+       xe_bo_create_flags(data->drm_fd, 0, fb.size,
+       ^~~~~~~~~~~~~~~~~~
+       xe_bo_create
+  ../tests/intel/kms_ccs.c:437:5: warning: nested extern declaration of =E2=
+=80=98xe_bo_create_flags=E2=80=99 [-Wnested-externs]
+  ../tests/intel/kms_ccs.c:438:10: error: implicit declaration of function =
+=E2=80=98visible_vram_if_possible=E2=80=99; did you mean =E2=80=98any_vram_=
+if_possible=E2=80=99? [-Werror=3Dimplicit-function-declaration]
+            visible_vram_if_possible(data->drm_fd, 0));
+            ^~~~~~~~~~~~~~~~~~~~~~~~
+            any_vram_if_possible
+  ../tests/intel/kms_ccs.c:438:10: warning: nested extern declaration of =
+=E2=80=98visible_vram_if_possible=E2=80=99 [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1699028608:step_script
+  section_start:1699028608:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1699028609:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
+
+build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/g=
+fx-ci/igt-ci-tags/-/jobs/51161470):
+  /usr/bin/arm-linux-gnueabihf-gcc -Itests/59830eb@@kms_ccs@exe -Itests -I.=
+./tests -I../include -I../include/drm-uapi -I../include/linux-uapi -Ilib -I=
+../lib -I../lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/includ=
+e/glib-2.0 -I/usr/lib/arm-linux-gnueabihf/glib-2.0/include -I/usr/include/p=
+ixman-1 -I/usr/include/uuid -I/usr/include/freetype2 -I/usr/include/libpng1=
+6 -I/usr/include/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/arm-li=
+nux-gnueabihf -I/usr/include/valgrind -I/usr/include/alsa -fdiagnostics-col=
+or=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=
+=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad=
+-function-cast -Wdeclaration-after-statement -Wformat=3D2 -Wimplicit-fallth=
+rough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -W=
+missing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-style-definiti=
+on -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuniniti=
+alized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno-missing-field-=
+initializers -Wno-pointer-arith -Wno-sign-compare -Wno-type-limits -Wno-unu=
+sed-parameter -Wno-unused-result -Werror=3Daddress -Werror=3Darray-bounds -=
+Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=
+=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int=
+-cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -W=
+error=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -pthread  -MD=
+ -MQ 'tests/59830eb@@kms_ccs@exe/intel_kms_ccs.c.o' -MF 'tests/59830eb@@kms=
+_ccs@exe/intel_kms_ccs.c.o.d' -o 'tests/59830eb@@kms_ccs@exe/intel_kms_ccs.=
+c.o' -c ../tests/intel/kms_ccs.c
+  ../tests/intel/kms_ccs.c: In function =E2=80=98test_bad_ccs_plane=E2=80=
+=99:
+  ../tests/intel/kms_ccs.c:437:5: error: implicit declaration of function =
+=E2=80=98xe_bo_create_flags=E2=80=99; did you mean =E2=80=98xe_bo_create=E2=
+=80=99? [-Werror=3Dimplicit-function-declaration]
+       xe_bo_create_flags(data->drm_fd, 0, fb.size,
+       ^~~~~~~~~~~~~~~~~~
+       xe_bo_create
+  ../tests/intel/kms_ccs.c:437:5: warning: nested extern declaration of =E2=
+=80=98xe_bo_create_flags=E2=80=99 [-Wnested-externs]
+  ../tests/intel/kms_ccs.c:438:10: error: implicit declaration of function =
+=E2=80=98visible_vram_if_possible=E2=80=99; did you mean =E2=80=98any_vram_=
+if_possible=E2=80=99? [-Werror=3Dimplicit-function-declaration]
+            visible_vram_if_possible(data->drm_fd, 0));
+            ^~~~~~~~~~~~~~~~~~~~~~~~
+            any_vram_if_possible
+  ../tests/intel/kms_ccs.c:438:10: warning: nested extern declaration of =
+=E2=80=98visible_vram_if_possible=E2=80=99 [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1699028610:step_script
+  section_start:1699028610:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1699028610:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
+
+build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gf=
+x-ci/igt-ci-tags/-/jobs/51161472):
+  /usr/bin/mips-linux-gnu-gcc -Itests/59830eb@@kms_ccs@exe -Itests -I../tes=
+ts -I../include -I../include/drm-uapi -I../include/linux-uapi -Ilib -I../li=
+b -I../lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/gli=
+b-2.0 -I/usr/lib/mips-linux-gnu/glib-2.0/include -I/usr/include/pixman-1 -I=
+/usr/include/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/i=
+nclude/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/mips-linux-gnu -=
+I/usr/include/valgrind -I/usr/include/alsa -fdiagnostics-color=3Dalways -pi=
+pe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g=
+ -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast =
+-Wdeclaration-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlog=
+ical-op -Wmissing-declarations -Wmissing-format-attribute -Wmissing-noretur=
+n -Wmissing-prototypes -Wnested-externs -Wold-style-definition -Wpointer-ar=
+ith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused=
+ -Wno-clobbered -Wno-maybe-uninitialized -Wno-missing-field-initializers -W=
+no-pointer-arith -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -=
+Wno-unused-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplic=
+it -Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=
+=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=
+=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite=
+-strings -fno-builtin-malloc -fno-builtin-calloc -pthread  -MD -MQ 'tests/5=
+9830eb@@kms_ccs@exe/intel_kms_ccs.c.o' -MF 'tests/59830eb@@kms_ccs@exe/inte=
+l_kms_ccs.c.o.d' -o 'tests/59830eb@@kms_ccs@exe/intel_kms_ccs.c.o' -c ../te=
+sts/intel/kms_ccs.c
+  ../tests/intel/kms_ccs.c: In function =E2=80=98test_bad_ccs_plane=E2=80=
+=99:
+  ../tests/intel/kms_ccs.c:437:5: error: implicit declaration of function =
+=E2=80=98xe_bo_create_flags=E2=80=99; did you mean =E2=80=98xe_bo_create=E2=
+=80=99? [-Werror=3Dimplicit-function-declaration]
+       xe_bo_create_flags(data->drm_fd, 0, fb.size,
+       ^~~~~~~~~~~~~~~~~~
+       xe_bo_create
+  ../tests/intel/kms_ccs.c:437:5: warning: nested extern declaration of =E2=
+=80=98xe_bo_create_flags=E2=80=99 [-Wnested-externs]
+  ../tests/intel/kms_ccs.c:438:10: error: implicit declaration of function =
+=E2=80=98visible_vram_if_possible=E2=80=99; did you mean =E2=80=98any_vram_=
+if_possible=E2=80=99? [-Werror=3Dimplicit-function-declaration]
+            visible_vram_if_possible(data->drm_fd, 0));
+            ^~~~~~~~~~~~~~~~~~~~~~~~
+            any_vram_if_possible
+  ../tests/intel/kms_ccs.c:438:10: warning: nested extern declaration of =
+=E2=80=98visible_vram_if_possible=E2=80=99 [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1699028614:step_script
+  section_start:1699028614:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1699028614:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
+
+build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci=
+-tags/-/jobs/51161463):
+  cc -Itests/59830eb@@kms_ccs@exe -Itests -I../tests -I../include -I../incl=
+ude/drm-uapi -I../include/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls=
+ -I. -I../ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib64/glib-2=
+.0/include -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/=
+libpng16 -I/usr/include/libdrm -I/usr/include/libdrm/nouveau -I/usr/include=
+/valgrind -fdiagnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall=
+ -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h =
+-D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wf=
+ormat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -W=
+missing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-e=
+xterns -Wold-style-definition -Wpointer-arith -Wredundant-decls -Wshadow -W=
+strict-prototypes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninit=
+ialized -Wno-missing-field-initializers -Wno-pointer-arith -Wno-address-of-=
+packed-member -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno=
+-unused-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit =
+-Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3D=
+missing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dre=
+turn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-stri=
+ngs -fno-builtin-malloc -fno-builtin-calloc -pthread -MD -MQ 'tests/59830eb=
+@@kms_ccs@exe/intel_kms_ccs.c.o' -MF 'tests/59830eb@@kms_ccs@exe/intel_kms_=
+ccs.c.o.d' -o 'tests/59830eb@@kms_ccs@exe/intel_kms_ccs.c.o' -c ../tests/in=
+tel/kms_ccs.c
+  ../tests/intel/kms_ccs.c: In function =E2=80=98test_bad_ccs_plane=E2=80=
+=99:
+  ../tests/intel/kms_ccs.c:437:5: error: implicit declaration of function =
+=E2=80=98xe_bo_create_flags=E2=80=99; did you mean =E2=80=98xe_bo_create=E2=
+=80=99? [-Werror=3Dimplicit-function-declaration]
+    437 |     xe_bo_create_flags(data->drm_fd, 0, fb.size,
+        |     ^~~~~~~~~~~~~~~~~~
+        |     xe_bo_create
+  ../tests/intel/kms_ccs.c:437:5: warning: nested extern declaration of =E2=
+=80=98xe_bo_create_flags=E2=80=99 [-Wnested-externs]
+  ../tests/intel/kms_ccs.c:438:10: error: implicit declaration of function =
+=E2=80=98visible_vram_if_possible=E2=80=99; did you mean =E2=80=98any_vram_=
+if_possible=E2=80=99? [-Werror=3Dimplicit-function-declaration]
+    438 |          visible_vram_if_possible(data->drm_fd, 0));
+        |          ^~~~~~~~~~~~~~~~~~~~~~~~
+        |          any_vram_if_possible
+  ../tests/intel/kms_ccs.c:438:10: warning: nested extern declaration of =
+=E2=80=98visible_vram_if_possible=E2=80=99 [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1699028594:step_script
+  section_start:1699028594:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1699028595:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
+
+build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/=
+igt-ci-tags/-/jobs/51161467):
+                                  ^
+  ../tests/intel/kms_ccs.c:437:5: note: did you mean 'xe_bo_create'?
+  ../lib/xe/xe_ioctl.h:69:10: note: 'xe_bo_create' declared here
+  uint32_t xe_bo_create(int fd, uint32_t vm, uint64_t size, uint32_t placem=
+ent,
+           ^
+  ../tests/intel/kms_ccs.c:438:10: error: implicit declaration of function =
+'visible_vram_if_possible' is invalid in C99 [-Werror,-Wimplicit-function-d=
+eclaration]
+                                                     visible_vram_if_possib=
+le(data->drm_fd, 0));
+                                                     ^
+  ../tests/intel/kms_ccs.c:438:10: note: did you mean 'any_vram_if_possible=
+'?
+  ../lib/xe/xe_query.h:78:10: note: 'any_vram_if_possible' declared here
+  uint64_t any_vram_if_possible(int fd);
+           ^
+  2 errors generated.
+  ninja: build stopped: subcommand failed.
+  section_end:1699028624:step_script
+  section_start:1699028624:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1699028625:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
+
+build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop=
+.org/gfx-ci/igt-ci-tags/-/jobs/51161466):
+  cc -Itests/59830eb@@kms_ccs@exe -Itests -I../tests -I../include -I../incl=
+ude/drm-uapi -I../include/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls=
+ -I. -I../ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib64/glib-2=
+.0/include -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/=
+libpng16 -I/usr/include/libdrm -I/usr/include/valgrind -fdiagnostics-color=
+=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=
+=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad=
+-function-cast -Wdeclaration-after-statement -Wformat=3D2 -Wimplicit-fallth=
+rough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -W=
+missing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-style-definiti=
+on -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuniniti=
+alized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno-missing-field-=
+initializers -Wno-pointer-arith -Wno-address-of-packed-member -Wno-sign-com=
+pare -Wno-type-limits -Wno-unused-parameter -Wno-unused-result -Werror=3Dad=
+dress -Werror=3Darray-bounds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=
+=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-braces -Werror=3Dno=
+nnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type -Werror=3Dsequenc=
+e-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-builtin-malloc -fn=
+o-builtin-calloc -pthread -MD -MQ 'tests/59830eb@@kms_ccs@exe/intel_kms_ccs=
+.c.o' -MF 'tests/59830eb@@kms_ccs@exe/intel_kms_ccs.c.o.d' -o 'tests/59830e=
+b@@kms_ccs@exe/intel_kms_ccs.c.o' -c ../tests/intel/kms_ccs.c
+  ../tests/intel/kms_ccs.c: In function =E2=80=98test_bad_ccs_plane=E2=80=
+=99:
+  ../tests/intel/kms_ccs.c:437:5: error: implicit declaration of function =
+=E2=80=98xe_bo_create_flags=E2=80=99; did you mean =E2=80=98xe_bo_create=E2=
+=80=99? [-Werror=3Dimplicit-function-declaration]
+    437 |     xe_bo_create_flags(data->drm_fd, 0, fb.size,
+        |     ^~~~~~~~~~~~~~~~~~
+        |     xe_bo_create
+  ../tests/intel/kms_ccs.c:437:5: warning: nested extern declaration of =E2=
+=80=98xe_bo_create_flags=E2=80=99 [-Wnested-externs]
+  ../tests/intel/kms_ccs.c:438:10: error: implicit declaration of function =
+=E2=80=98visible_vram_if_possible=E2=80=99; did you mean =E2=80=98any_vram_=
+if_possible=E2=80=99? [-Werror=3Dimplicit-function-declaration]
+    438 |          visible_vram_if_possible(data->drm_fd, 0));
+        |          ^~~~~~~~~~~~~~~~~~~~~~~~
+        |          any_vram_if_possible
+  ../tests/intel/kms_ccs.c:438:10: warning: nested extern declaration of =
+=E2=80=98visible_vram_if_possible=E2=80=99 [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1699028595:step_script
+  section_start:1699028595:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1699028596:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
+
+build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/=
+gfx-ci/igt-ci-tags/-/jobs/51161464):
+  cc -Itests/59830eb@@kms_ccs@exe -Itests -I../tests -I../include -I../incl=
+ude/drm-uapi -I../include/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls=
+ -I. -I../ -I../lib/stubs/libunwind -I/usr/include/cairo -I/usr/include/gli=
+b-2.0 -I/usr/lib64/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/=
+freetype2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/libd=
+rm/nouveau -I/usr/include/valgrind -fdiagnostics-color=3Dalways -pipe -D_FI=
+LE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_=
+SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclar=
+ation-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op =
+-Wmissing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmiss=
+ing-prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wre=
+dundant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-cl=
+obbered -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-point=
+er-arith -Wno-address-of-packed-member -Wno-sign-compare -Wno-type-limits -=
+Wno-unused-parameter -Wno-unused-result -Werror=3Daddress -Werror=3Darray-b=
+ounds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-to-pointer-cast =
+-Werror=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer=
+-to-int-cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigr=
+aphs -Werror=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -pthre=
+ad -MD -MQ 'tests/59830eb@@kms_ccs@exe/intel_kms_ccs.c.o' -MF 'tests/59830e=
+b@@kms_ccs@exe/intel_kms_ccs.c.o.d' -o 'tests/59830eb@@kms_ccs@exe/intel_km=
+s_ccs.c.o' -c ../tests/intel/kms_ccs.c
+  ../tests/intel/kms_ccs.c: In function =E2=80=98test_bad_ccs_plane=E2=80=
+=99:
+  ../tests/intel/kms_ccs.c:437:5: error: implicit declaration of function =
+=E2=80=98xe_bo_create_flags=E2=80=99; did you mean =E2=80=98xe_bo_create=E2=
+=80=99? [-Werror=3Dimplicit-function-declaration]
+    437 |     xe_bo_create_flags(data->drm_fd, 0, fb.size,
+        |     ^~~~~~~~~~~~~~~~~~
+        |     xe_bo_create
+  ../tests/intel/kms_ccs.c:437:5: warning: nested extern declaration of =E2=
+=80=98xe_bo_create_flags=E2=80=99 [-Wnested-externs]
+  ../tests/intel/kms_ccs.c:438:10: error: implicit declaration of function =
+=E2=80=98visible_vram_if_possible=E2=80=99; did you mean =E2=80=98any_vram_=
+if_possible=E2=80=99? [-Werror=3Dimplicit-function-declaration]
+    438 |          visible_vram_if_possible(data->drm_fd, 0));
+        |          ^~~~~~~~~~~~~~~~~~~~~~~~
+        |          any_vram_if_possible
+  ../tests/intel/kms_ccs.c:438:10: warning: nested extern declaration of =
+=E2=80=98visible_vram_if_possible=E2=80=99 [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1699028598:step_script
+  section_start:1699028598:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1699028599:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
+
+build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/=
+gfx-ci/igt-ci-tags/-/jobs/51161465):
+  cc -Itests/tests@@kms_ccs@exe -Itests -I../tests -I../include -I../includ=
+e/drm-uapi -I../include/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls -=
+I. -I../ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0=
+/include -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/li=
+bpng16 -I/usr/include/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/v=
+algrind -fdiagnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -=
+Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D=
+_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wfor=
+mat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmi=
+ssing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-ext=
+erns -Wold-style-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wst=
+rict-prototypes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitia=
+lized -Wno-missing-field-initializers -Wno-pointer-arith -Wno-address-of-pa=
+cked-member -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-u=
+nused-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -W=
+error=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmi=
+ssing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dretu=
+rn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-string=
+s -fno-builtin-malloc -fno-builtin-calloc -pthread  -MD -MQ 'tests/tests@@k=
+ms_ccs@exe/intel_kms_ccs.c.o' -MF 'tests/tests@@kms_ccs@exe/intel_kms_ccs.c=
+.o.d' -o 'tests/tests@@kms_ccs@exe/intel_kms_ccs.c.o' -c ../tests/intel/kms=
+_ccs.c
+  ../tests/intel/kms_ccs.c: In function =E2=80=98test_bad_ccs_plane=E2=80=
+=99:
+  ../tests/intel/kms_ccs.c:437:5: error: implicit declaration of function =
+=E2=80=98xe_bo_create_flags=E2=80=99; did you mean =E2=80=98xe_bo_create=E2=
+=80=99? [-Werror=3Dimplicit-function-declaration]
+    437 |     xe_bo_create_flags(data->drm_fd, 0, fb.size,
+        |     ^~~~~~~~~~~~~~~~~~
+        |     xe_bo_create
+  ../tests/intel/kms_ccs.c:437:5: warning: nested extern declaration of =E2=
+=80=98xe_bo_create_flags=E2=80=99 [-Wnested-externs]
+  ../tests/intel/kms_ccs.c:438:10: error: implicit declaration of function =
+=E2=80=98visible_vram_if_possible=E2=80=99; did you mean =E2=80=98any_vram_=
+if_possible=E2=80=99? [-Werror=3Dimplicit-function-declaration]
+    438 |          visible_vram_if_possible(data->drm_fd, 0));
+        |          ^~~~~~~~~~~~~~~~~~~~~~~~
+        |          any_vram_if_possible
+  ../tests/intel/kms_ccs.c:438:10: warning: nested extern declaration of =
+=E2=80=98visible_vram_if_possible=E2=80=99 [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1699028596:step_script
+  section_start:1699028596:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1699028597:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+=3D=3D Logs =3D=3D
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/p=
+ipelines/1025841
