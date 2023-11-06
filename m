@@ -1,16 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com
- (mail-bn1nam02on2080.outbound.protection.outlook.com [40.107.212.80])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8B61F10E030
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Nov 2023 05:43:32 +0000 (UTC)
-From: Jesse Zhang <jesse.zhang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Mon, 6 Nov 2023 13:43:17 +0800
-Message-ID: <20231106054317.2740044-1-jesse.zhang@amd.com>
+Message-ID: <710eaf92-46d5-42e8-9c46-b59571401494@linux.intel.com>
+Date: Mon, 6 Nov 2023 12:38:45 +0000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t 1/2] lib/amdgpu: fix code sytle issue
+Content-Language: en-US
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Intel-gfx@lists.freedesktop.org,
+ Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+References: <20231012081547.852052-1-tvrtko.ursulin@linux.intel.com>
+ <20231012081547.852052-3-tvrtko.ursulin@linux.intel.com>
+ <20231103183254.kl4uhqzbfw7nw6i4@kamilkon-desk.igk.intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20231103183254.kl4uhqzbfw7nw6i4@kamilkon-desk.igk.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 2/9] tests/i915/drm_fdinfo:
+ Stress test context close versus fdinfo reads
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,220 +22,159 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Tim Huang <tim.huang@amd.com>, Luben Tuikov <luben.tuikov@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>, Christian
- Koenig <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Fix some waring and error when check with checkpatch.pl,
-like these:
 
-RROR: spaces required around that '=' (ctx:VxW)
-+       int fd= -1;
-              ^
-Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Cc: Luben Tuikov <luben.tuikov@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian Koenig <christian.koenig@amd.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Tim Huang <tim.huang@amd.com>
+On 03/11/2023 18:32, Kamil Konieczny wrote:
+> Hi Tvrtko,
+> On 2023-10-12 at 09:15:40 +0100, Tvrtko Ursulin wrote:
+>> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+>>
+>> A short smoke tests to exercise fdinfo reads in parallel to contexts
+>> getting created and destroyed.
+>>
+>> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+>> ---
+>>   tests/intel/drm_fdinfo.c | 68 ++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 68 insertions(+)
+>>
+>> diff --git a/tests/intel/drm_fdinfo.c b/tests/intel/drm_fdinfo.c
+>> index 344c44dce78b..c4218b0d16e6 100644
+>> --- a/tests/intel/drm_fdinfo.c
+>> +++ b/tests/intel/drm_fdinfo.c
+>> @@ -22,11 +22,14 @@
+>>    *
+>>    */
+>>   
+>> +#include <fcntl.h>
+>> +
+>>   #include "igt.h"
+>>   #include "igt_core.h"
+>>   #include "igt_device.h"
+>>   #include "igt_drm_fdinfo.h"
+>>   #include "i915/gem.h"
+>> +#include "i915/gem_create.h"
+>>   #include "i915/gem_vm.h"
+>>   #include "intel_ctx.h"
+>>   /**
+>> @@ -72,6 +75,8 @@
+>>    * SUBTEST: virtual-busy-idle-all
+>>    *
+>>    * SUBTEST: virtual-idle
+>> + *
+>> + * SUBTEST: context-close-stress
+>>    */
+>>   
+>>   IGT_TEST_DESCRIPTION("Test the i915 drm fdinfo data");
+>> @@ -717,6 +722,56 @@ virtual_all(int i915, const intel_ctx_cfg_t *base_cfg, unsigned int flags)
+>>   	}
+>>   }
+>>   
+>> +static void stress_context_close(int i915)
+>> +{
+>> +	const uint32_t bbe = MI_BATCH_BUFFER_END;
+>> +	struct igt_helper_process reader = { };
+>> +	struct drm_client_fdinfo info;
+>> +	uint32_t batch;
+>> +	int dir, ret;
+>> +	char buf[64];
+>> +
+>> +	ret = snprintf(buf, sizeof(buf), "%u", i915);
+>> +	igt_assert(ret > 0 && ret < sizeof(buf));
+>> +
+>> +	dir = open("/proc/self/fdinfo", O_DIRECTORY | O_RDONLY);
+>> +	igt_assert_fd(dir);
+>> +
+>> +	memset(&info, 0, sizeof(info));
+>> +	ret = __igt_parse_drm_fdinfo(dir, buf, &info, NULL, 0, NULL, 0);
+>> +	igt_assert(ret > 0);
+> 
+> You repeat this pattern later, it can be made into
+> function:
+> 
+> igt_parse_drm_fdinfo(dir, buf, *info, p1, i1, p2, i2)
+> {
+> 	memset(info, 0, sizeof(*info));
+> 	ret = __igt_parse_drm_fdinfo(dir, buf, info, p1, i1, p2, i2);
+> 	igt_assert(ret > 0);
+> }
+> 
+>> +	igt_require(info.num_regions);
+>> +
+>> +	batch = gem_create(i915, 4096);
+>> +	gem_write(i915, batch, 0, &bbe, sizeof(bbe));
+>> +
+>> +	igt_fork_helper(&reader) {
+>> +		for (;;) {
+>> +			memset(&info, 0, sizeof(info));
+>> +			ret = __igt_parse_drm_fdinfo(dir, buf, &info,
+>> +						     NULL, 0, NULL, 0);
+>> +			igt_assert(ret > 0);
+> 
+> Here you repeat this.
+> 
+> With or without makeing this a function,
+> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
----
- lib/amdgpu/amd_pci_unplug.c | 50 ++++++++++++++++++++-----------------
- 1 file changed, 27 insertions(+), 23 deletions(-)
+Thanks Kamil!
 
-diff --git a/lib/amdgpu/amd_pci_unplug.c b/lib/amdgpu/amd_pci_unplug.c
-index 078398b5e..9811e0cc2 100644
---- a/lib/amdgpu/amd_pci_unplug.c
-+++ b/lib/amdgpu/amd_pci_unplug.c
-@@ -1,4 +1,5 @@
--/* SPDX-License-Identifier: MIT
-+//SPDX-License-Identifier: MIT
-+/*
-  * Copyright 2022 Advanced Micro Devices, Inc.
-  *
-  * Permission is hereby granted, free of charge, to any person obtaining a
-@@ -19,7 +20,8 @@
-  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-  * OTHER DEALINGS IN THE SOFTWARE.
-  *
--*/
-+ */
-+
- #include <linux/limits.h>
- #include <fcntl.h>
- #include <sys/stat.h>
-@@ -68,10 +70,10 @@ static int
- amdgpu_hotunplug_trigger(const char *pathname)
- {
- 	int len;
--	int fd= -1;
-+	int fd = -1;
- 
- 	fd = open(pathname, O_WRONLY);
--	if (fd <= 0 )
-+	if (fd <= 0)
- 		goto release;
- 
- 	len = write(fd, "1", 1);
-@@ -93,7 +95,7 @@ amdgpu_hotunplug_setup_test(bool render_mode, const struct amd_pci_unplug_setup
- 
- 	unplug->num_devices = amdgpu_open_devices(render_mode, MAX_CARDS_SUPPORTED,
- 											  unplug->drm_amdgpu_fds);
--	if (unplug->num_devices == 0 )
-+	if (unplug->num_devices == 0)
- 		goto release;
- 
- 	if (setup->open_device && setup->open_device2 && unplug->num_devices < 2) {
-@@ -105,7 +107,7 @@ amdgpu_hotunplug_setup_test(bool render_mode, const struct amd_pci_unplug_setup
- 	tmp_str = amdgpu_get_device_from_fd(unplug->drm_amdgpu_fds[0]);
- 	abort_oom_if_null(tmp_str);
- 	unplug->sysfs_remove = realloc(tmp_str, strlen(tmp_str) * 2);
--	abort_oom_if_null(unplug->sysfs_remove );
-+	abort_oom_if_null(unplug->sysfs_remove);
- 	strcat(unplug->sysfs_remove, "/remove");
- 
- 	r = amdgpu_device_initialize(unplug->drm_amdgpu_fds[0], &major_version,
-@@ -140,6 +142,7 @@ static void
- amdgpu_hotunplug_teardown_test(struct amd_pci_unplug *unplug)
- {
- 	int i;
-+
- 	if (unplug->device_handle) {
- 		amdgpu_device_deinitialize(unplug->device_handle);
- 		unplug->device_handle = NULL;
-@@ -149,7 +152,7 @@ amdgpu_hotunplug_teardown_test(struct amd_pci_unplug *unplug)
- 		unplug->device_handle2 = NULL;
- 	}
- 	for (i = 0; i < unplug->num_devices; i++) {
--		if (unplug->drm_amdgpu_fds[i] >= 0 ) {
-+		if (unplug->drm_amdgpu_fds[i] >= 0) {
- 			close(unplug->drm_amdgpu_fds[i]);
- 			unplug->drm_amdgpu_fds[i] = -1;
- 		}
-@@ -206,10 +209,11 @@ amdgpu_nop_cs(void *handle)
- 	struct amdgpu_cs_request ibs_request;
- 	struct amdgpu_cs_ib_info ib_info;
- 	int bo_cmd_size = 4096;
--	struct amd_pci_unplug * unplug = handle;
-+	struct amd_pci_unplug *unplug = handle;
- 	amdgpu_device_handle device_handle = unplug->device_handle;
- 
--	struct amdgpu_cmd_base * base_cmd = get_cmd_base();
-+	struct amdgpu_cmd_base *base_cmd = get_cmd_base();
-+
- 	r = amdgpu_cs_ctx_create(device_handle, &context);
- 	igt_assert_eq(r, 0);
- 
-@@ -221,7 +225,7 @@ amdgpu_nop_cs(void *handle)
- 
- 	memset(ib_result_cpu, 0, bo_cmd_size);
- 	base_cmd->attach_buf(base_cmd, ib_result_cpu, bo_cmd_size);
--	base_cmd->emit_repeat(base_cmd, GFX_COMPUTE_NOP , 16);
-+	base_cmd->emit_repeat(base_cmd, GFX_COMPUTE_NOP, 16);
- 
- 	r = amdgpu_bo_list_create(device_handle, 1, &ib_result_handle, NULL, &bo_list);
- 	igt_assert_eq(r, 0);
-@@ -252,10 +256,11 @@ amdgpu_nop_cs(void *handle)
- }
- 
- static pthread_t*
--amdgpu_create_cs_thread(struct amd_pci_unplug * unplug)
-+amdgpu_create_cs_thread(struct amd_pci_unplug *unplug)
- {
- 	int r;
- 	pthread_t *thread = malloc(sizeof(*thread));
-+
- 	if (!thread)
- 		return NULL;
- 
-@@ -270,7 +275,7 @@ amdgpu_create_cs_thread(struct amd_pci_unplug * unplug)
- }
- 
- static void
--amdgpu_wait_cs_thread(struct amd_pci_unplug * unplug, pthread_t *thread)
-+amdgpu_wait_cs_thread(struct amd_pci_unplug *unplug, pthread_t *thread)
- {
- 	unplug->do_cs = false;
- 
-@@ -280,13 +285,13 @@ amdgpu_wait_cs_thread(struct amd_pci_unplug * unplug, pthread_t *thread)
- 
- static void
- amdgpu_hotunplug_test(bool render_mode, const struct amd_pci_unplug_setup *setup,
--					  struct amd_pci_unplug * unplug,  bool with_cs)
-+					  struct amd_pci_unplug *unplug,  bool with_cs)
- {
- 	int r;
- 	pthread_t *thread = NULL;
- 
- 	r = amdgpu_hotunplug_setup_test(render_mode, setup, unplug);
--	igt_assert_eq(r , 1);
-+	igt_assert_eq(r, 1);
- 
- 	if (with_cs)
- 		thread = amdgpu_create_cs_thread(unplug);
-@@ -311,9 +316,9 @@ amdgpu_hotunplug_simple(struct amd_pci_unplug_setup *setup,
- 	amdgpu_hotunplug_test(true, setup, unplug, false);
- }
- 
-- void
-- amdgpu_hotunplug_with_cs(struct amd_pci_unplug_setup *setup,
-- 						 struct amd_pci_unplug *unplug)
-+void
-+amdgpu_hotunplug_with_cs(struct amd_pci_unplug_setup *setup,
-+						 struct amd_pci_unplug *unplug)
- {
- 	memset(unplug, 0, sizeof(*unplug));
- 	setup->open_device = true;
-@@ -339,7 +344,7 @@ amdgpu_hotunplug_with_exported_bo(struct amd_pci_unplug_setup *setup,
- 	setup->open_device = true;
- 
- 	r = amdgpu_hotunplug_setup_test(true, setup, unplug);
--	igt_assert_eq(r , 1);
-+	igt_assert_eq(r, 1);
- 
- 	r = amdgpu_bo_alloc(unplug->device_handle, &request, &bo_handle);
- 	igt_assert_eq(r, 0);
-@@ -359,7 +364,7 @@ amdgpu_hotunplug_with_exported_bo(struct amd_pci_unplug_setup *setup,
- 	*ptr = 0xdeafbeef;
- 
- 	munmap(ptr, 4096);
--	close (dma_buf_fd);
-+	close(dma_buf_fd);
- 
- 	r = amdgpu_hotunplug_rescan();
- 	igt_assert_eq(r > 0, 1);
-@@ -382,7 +387,7 @@ amdgpu_hotunplug_with_exported_fence(struct amd_pci_unplug_setup *setup,
- 	struct amdgpu_cs_fence fence_status = {0};
- 	int shared_fd;
- 	int bo_cmd_size = 4096;
--	struct amdgpu_cmd_base * base_cmd = get_cmd_base();
-+	struct amdgpu_cmd_base *base_cmd = get_cmd_base();
- 
- 	memset(unplug, 0, sizeof(*unplug));
- 	setup->open_device = true;
-@@ -390,9 +395,8 @@ amdgpu_hotunplug_with_exported_fence(struct amd_pci_unplug_setup *setup,
- 
- 
- 	r = amdgpu_hotunplug_setup_test(true, setup, unplug);
--	if( r != 1) {
-+	if (r != 1)
- 		goto release;
--	}
- 
- 	r = amdgpu_cs_ctx_create(unplug->device_handle, &context);
- 	igt_assert_eq(r, 0);
-@@ -404,7 +408,7 @@ amdgpu_hotunplug_with_exported_fence(struct amd_pci_unplug_setup *setup,
- 	igt_assert_eq(r, 0);
- 	memset(ib_result_cpu, 0, bo_cmd_size);
- 	base_cmd->attach_buf(base_cmd, ib_result_cpu, bo_cmd_size);
--	base_cmd->emit_repeat(base_cmd, GFX_COMPUTE_NOP , 16);
-+	base_cmd->emit_repeat(base_cmd, GFX_COMPUTE_NOP, 16);
- 
- 	r = amdgpu_bo_list_create(unplug->device_handle, 1, &ib_result_handle, NULL,
- 							  &bo_list);
--- 
-2.25.1
+I opted to keep it as is to avoid having to come with a name for a new 
+helper, and because it is only two instances.
+
+Doing another CI pass on both IGT and i915 series and fingers crossed it 
+is still all healthy.
+
+Regards,
+
+Tvrtko
+
+> 
+>> +		}
+>> +	}
+>> +
+>> +	igt_until_timeout(10) {
+>> +		struct drm_i915_gem_exec_object2 obj = {
+>> +			.handle = batch,
+>> +		};
+>> +		struct drm_i915_gem_execbuffer2 eb = {
+>> +			.buffers_ptr = to_user_pointer(&obj),
+>> +			.buffer_count = 1,
+>> +		};
+>> +
+>> +		eb.rsvd1 = gem_context_create(i915);
+>> +		igt_assert(eb.rsvd1);
+>> +		gem_execbuf(i915, &eb);
+>> +		gem_context_destroy(i915, eb.rsvd1);
+>> +	}
+>> +
+>> +	igt_stop_helper(&reader);
+>> +}
+>> +
+>>   #define test_each_engine(T, i915, ctx, e) \
+>>   	igt_subtest_with_dynamic(T) for_each_ctx_engine(i915, ctx, e) \
+>>   		igt_dynamic_f("%s", e->name)
+>> @@ -848,6 +903,19 @@ igt_main
+>>   	test_each_engine("isolation", i915, ctx, e)
+>>   		single(i915, ctx, e, TEST_BUSY | TEST_ISOLATION);
+>>   
+>> +	igt_subtest_group {
+>> +		int newfd;
+>> +
+>> +		igt_fixture
+>> +			newfd = drm_reopen_driver(i915);
+>> +
+>> +		igt_subtest("context-close-stress")
+>> +			stress_context_close(newfd);
+>> +
+>> +		igt_fixture
+>> +			drm_close_driver(newfd);
+>> +	}
+>> +
+>>   	igt_fixture {
+>>   		intel_ctx_destroy(i915, ctx);
+>>   		drm_close_driver(i915);
+>> -- 
+>> 2.39.2
+>>
