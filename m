@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 13F0110E3F4
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Nov 2023 20:00:12 +0000 (UTC)
-From: Lukasz Laguna <lukasz.laguna@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon,  6 Nov 2023 20:59:42 +0100
-Message-Id: <20231106195947.14640-4-lukasz.laguna@intel.com>
-In-Reply-To: <20231106195947.14640-1-lukasz.laguna@intel.com>
-References: <20231106195947.14640-1-lukasz.laguna@intel.com>
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com
+ (mail-dm3nam02on2077.outbound.protection.outlook.com [40.107.95.77])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5B98F10E3F1
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Nov 2023 20:00:39 +0000 (UTC)
+Message-ID: <8896a7e9-5ce6-4ae8-81b8-43e8c815901f@amd.com>
+Date: Mon, 6 Nov 2023 15:00:35 -0500
+Content-Language: en-US
+To: igt-dev@lists.freedesktop.org, kamil.konieczny@linux.intel.com
+References: <20231103182230.1039191-1-aurabindo.pillai@amd.com>
+From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+In-Reply-To: <20231103182230.1039191-1-aurabindo.pillai@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/8] lib/igt_sriov_device: add helper for
- checking if VF DRM driver is probed
+Subject: Re: [igt-dev] [PATCH i-g-t v2 0/5] Add a new test for Sub-viewport
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,72 +21,39 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: hersenxs.wu@amd.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Daniel Mrzyglod <daniel.t.mrzyglod@intel.com>
 
-Probe check is based on existence of the DRM subsystem attribute in
-sysfs.
 
-Signed-off-by: Daniel Mrzyglod <daniel.t.mrzyglod@intel.com>
-Reviewed-by: Katarzyna Dec <katarzyna.dec@intel.com>
-Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
-Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
----
- lib/igt_sriov_device.c | 30 ++++++++++++++++++++++++++++++
- lib/igt_sriov_device.h |  1 +
- 2 files changed, 31 insertions(+)
+On 2023-11-03 14:22, Aurabindo Pillai wrote:
+> Changes in v2
+> =================
+> 
+> * Removed an unused struct definition
+> * Fixes style issues reported by checkpatch.pl
+> * Added SPDX license identifier to the new test
+> * Fixed #include order for system includes
+> 
+> ---
+> 
+> Aurabindo Pillai (5):
+>    lib/amdgpu: Remove unused struct
+>    llib/amd: Update function documentation
+>    lib/amd: improve readablity for MALL capability check
+>    lib/amd: Add check for SubVP feature status
+>    test/amdgpu: Add test for Sub-viewport
+> 
+>   lib/igt_amd.c            |  44 ++++++++--
+>   lib/igt_amd.h            |   1 +
+>   tests/amdgpu/amd_subvp.c | 180 +++++++++++++++++++++++++++++++++++++++
+>   tests/amdgpu/meson.build |   1 +
+>   4 files changed, 217 insertions(+), 9 deletions(-)
+>   create mode 100644 tests/amdgpu/amd_subvp.c
+> 
 
-diff --git a/lib/igt_sriov_device.c b/lib/igt_sriov_device.c
-index 2898765f1..81b046cf9 100644
---- a/lib/igt_sriov_device.c
-+++ b/lib/igt_sriov_device.c
-@@ -220,3 +220,33 @@ int igt_sriov_open_vf_drm_device(int pf, unsigned int vf_num)
- 
- 	return drm_open_device(dev_name, DRIVER_ANY);
- }
-+
-+/**
-+ * igt_sriov_is_vf_drm_driver_probed:
-+ * @pf: PF device file descriptor
-+ * @vf_num: VF number (1-based to identify single VF)
-+ *
-+ * This function verifies if DRM driver is bound to VF device.
-+ *
-+ * Probe check is based on existence of the DRM subsystem attribute in sysfs.
-+ *
-+ * Returns:
-+ * True if VF has DRM driver loaded, false if not.
-+ */
-+bool igt_sriov_is_vf_drm_driver_probed(int pf, unsigned int vf_num)
-+{
-+	char path[PATH_MAX];
-+	int sysfs;
-+	bool ret;
-+
-+	igt_assert(vf_num > 0);
-+
-+	sysfs = igt_sysfs_open(pf);
-+	igt_assert_fd(sysfs);
-+	/* vf_num is 1-based, but virtfn is 0-based */
-+	snprintf(path, sizeof(path), "device/virtfn%u/drm", vf_num - 1);
-+	ret = igt_sysfs_has_attr(sysfs, path);
-+	close(sysfs);
-+
-+	return ret;
-+}
-diff --git a/lib/igt_sriov_device.h b/lib/igt_sriov_device.h
-index b58dd4098..be4e56cf3 100644
---- a/lib/igt_sriov_device.h
-+++ b/lib/igt_sriov_device.h
-@@ -17,5 +17,6 @@ bool igt_sriov_is_driver_autoprobe_enabled(int pf);
- bool igt_sriov_enable_driver_autoprobe(int pf);
- bool igt_sriov_disable_driver_autoprobe(int pf);
- int igt_sriov_open_vf_drm_device(int pf, unsigned int vf_num);
-+bool igt_sriov_is_vf_drm_driver_probed(int pf, unsigned int vf_num);
- 
- #endif /* __IGT_SRIOV_DEVICE_H__ */
--- 
-2.40.0
+Hi Kamil,
+
+Any other concerns?
