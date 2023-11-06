@@ -2,14 +2,14 @@ Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Intel-gfx@lists.freedesktop.org
-Date: Mon,  6 Nov 2023 12:35:16 +0000
-Message-Id: <20231106123518.588528-7-tvrtko.ursulin@linux.intel.com>
+Date: Mon,  6 Nov 2023 12:35:18 +0000
+Message-Id: <20231106123518.588528-9-tvrtko.ursulin@linux.intel.com>
 In-Reply-To: <20231106123518.588528-1-tvrtko.ursulin@linux.intel.com>
 References: <20231106123518.588528-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [CI 7/9] tools/intel_gpu_top: Fully wrap clients
- operations
+Subject: [igt-dev] [CI 9/9] tools/intel_gpu_top: Add ability to show memory
+ region breakdown
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,122 +23,183 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-Wrap all operations on clients via the Intel specific wrappers in order to
-simplify upcoming work.
+Similar as we can toggle between aggregated engines and clients, add the
+capability to toggle between aggregated and per memory region stats.
+
+It starts in aggregated mode by default and interactive command 'm' and
+command line switch '-m' can be used to toggle that.
+
+Both only affect the interactive view, while JSON output always contains
+separate memory regions.
 
 Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tools/intel_gpu_top.c | 42 ++++++++++++++++++++++--------------------
- 1 file changed, 22 insertions(+), 20 deletions(-)
+ man/intel_gpu_top.rst |  4 ++++
+ tools/intel_gpu_top.c | 55 ++++++++++++++++++++++++++++++++++---------
+ 2 files changed, 48 insertions(+), 11 deletions(-)
 
+diff --git a/man/intel_gpu_top.rst b/man/intel_gpu_top.rst
+index 9499f87f1b4d..44a54a5f219d 100644
+--- a/man/intel_gpu_top.rst
++++ b/man/intel_gpu_top.rst
+@@ -55,6 +55,9 @@ OPTIONS
+ -p
+    Default to showing physical engines instead of aggregated classes.
+ 
++-m
++   Default to showing all memory regions separately.
++
+ RUNTIME CONTROL
+ ===============
+ 
+@@ -68,6 +71,7 @@ Supported keys:
+ |    's'    Toggle between sort modes (runtime, total runtime, pid, client id).
+ |    'i'    Toggle display of clients which used no GPU time.
+ |    'H'    Toggle between per PID aggregation and individual clients.
++|    'm'    Toggle between aggregated memory regions and full breakdown.
+ 
+ DEVICE SELECTION
+ ================
 diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index 091fe28068dc..b2e81d5f9ffb 100644
+index 2c09895c79dd..046ead15a122 100644
 --- a/tools/intel_gpu_top.c
 +++ b/tools/intel_gpu_top.c
-@@ -132,6 +132,7 @@ struct engines {
- struct intel_clients {
- 	const char *pci_slot;
- 	struct igt_drm_client_engines classes;
-+	struct igt_drm_clients *clients;
- };
+@@ -138,6 +138,7 @@ struct intel_clients {
  
  static struct termios termios_orig;
-@@ -2436,19 +2437,22 @@ intel_init_clients(struct intel_clients *iclients,
- 		iclients->classes.capacity[i] = engines->class[i].num_engines;
- 		iclients->classes.names[i] = strdup(engines->class[i].name);
- 	}
-+
-+	iclients->clients = igt_drm_clients_init(iclients);
- }
+ static bool class_view;
++static bool aggregate_regions;
  
- static void intel_free_clients(struct intel_clients *iclients)
- {
-+	if (iclients->clients)
-+		igt_drm_clients_free(iclients->clients);
-+
- 	free((void *)iclients->pci_slot);
- 	free(iclients->classes.capacity);
- 	free(iclients->classes.names);
- }
+ /* Maps i915 fdinfo names to indices */
+ static const char *memory_region_map[] = {
+@@ -1050,6 +1051,7 @@ usage(const char *appname)
+ 		"\t[-L]            List all cards.\n"
+ 		"\t[-d <device>]   Device filter, please check manual page for more details.\n"
+ 		"\t[-p]            Default to showing physical engines instead of classes.\n"
++		"\t[-m]            Default to showing all memory regions.\n"
+ 		"\n",
+ 		appname, DEFAULT_PERIOD_MS);
+ 	igt_device_print_filter_types();
+@@ -2032,6 +2034,7 @@ print_clients_header(struct igt_drm_clients *clients, int lines,
  
--int main(int argc, char **argv)
-+static void intel_scan_clients(struct intel_clients *iclients)
- {
--	unsigned int period_us = DEFAULT_PERIOD_MS * 1000;
--	struct igt_drm_clients *clients = NULL;
- 	static const char *engine_map[] = {
- 		"render",
- 		"copy",
-@@ -2456,6 +2460,15 @@ int main(int argc, char **argv)
- 		"video-enhance",
- 		"compute",
- 	};
-+
-+	igt_drm_clients_scan(iclients->clients, client_match,
-+			     engine_map, ARRAY_SIZE(engine_map),
-+			     NULL, 0);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	unsigned int period_us = DEFAULT_PERIOD_MS * 1000;
- 	bool physical_engines = false;
- 	struct intel_clients iclients;
- 	int con_w = -1, con_h = -1;
-@@ -2613,15 +2626,11 @@ int main(int argc, char **argv)
+ 	if (output_mode == INTERACTIVE) {
+ 		int len, num_active = 0;
++		unsigned int i;
  
- 	init_engine_classes(engines);
+ 		if (lines++ >= con_h)
+ 			return lines;
+@@ -2042,11 +2045,17 @@ print_clients_header(struct igt_drm_clients *clients, int lines,
+ 		if (lines++ >= con_h || len >= con_w)
+ 			return lines;
  
--	if (has_drm_fdinfo(&card)) {
-+	if (has_drm_fdinfo(&card))
- 		intel_init_clients(&iclients, &card, engines);
--		clients = igt_drm_clients_init(&iclients);
--	}
+-		if (iclients->regions)
+-			len += printf("     MEM      RSS ");
++		if (iclients->regions) {
++			if (aggregate_regions) {
++				len += printf("     MEM      RSS ");
++			} else {
++				len += printf("     RAM      RSS ");
++				if (iclients->regions->num_regions > 1)
++					len += printf("    VRAM     VRSS ");
++			}
++		}
  
- 	pmu_sample(engines);
--	igt_drm_clients_scan(clients, client_match,
--			     engine_map, ARRAY_SIZE(engine_map),
--			     NULL, 0);
-+	intel_scan_clients(&iclients);
- 	gettime(&ts);
+ 		if (iclients->classes.num_engines) {
+-			unsigned int i;
+ 			int width;
  
- 	if (output_mode == JSON)
-@@ -2652,12 +2661,8 @@ int main(int argc, char **argv)
- 		pmu_sample(engines);
- 		t = (double)(engines->ts.cur - engines->ts.prev) / 1e9;
+ 			for (i = 0; i <= iclients->classes.max_engine_id; i++) {
+@@ -2120,15 +2129,26 @@ print_client(struct igt_drm_client *c, struct engines *engines, double t, int li
+ 		len = printf("%*s ", clients->max_pid_len, c->pid_str);
  
--		disp_clients =
--			display_clients(igt_drm_clients_scan(clients,
--							     client_match,
--							     engine_map,
--							     ARRAY_SIZE(engine_map),
--							     NULL, 0));
-+		intel_scan_clients(&iclients);
-+		disp_clients = display_clients(iclients.clients);
- 		scan_us = elapsed_us(&ts, period_us);
+ 		if (iclients->regions) {
+-			uint64_t sz;
++			if (aggregate_regions) {
++				uint64_t sz;
  
- 		if (stop_top)
-@@ -2708,7 +2713,7 @@ int main(int argc, char **argv)
- 			pops->close_struct();
+-			for (sz = 0, i = 0; i <= c->regions->max_region_id; i++)
+-				sz += c->memory[i].total;
+-			len += print_size(sz);
++				for (sz = 0, i = 0;
++				     i <= c->regions->max_region_id; i++)
++					sz += c->memory[i].total;
++				len += print_size(sz);
+ 
+-			for (sz = 0, i = 0; i <= c->regions->max_region_id; i++)
+-				sz += c->memory[i].resident;
+-			len += print_size(sz);
++				for (sz = 0, i = 0;
++				     i <= c->regions->max_region_id; i++)
++					sz += c->memory[i].resident;
++				len += print_size(sz);
++			} else {
++				len += print_size(c->memory[0].total);
++				len += print_size(c->memory[0].resident);
++				if (c->regions->num_regions > 1) {
++					len += print_size(c->memory[1].total);
++					len += print_size(c->memory[1].resident);
++				}
++			}
  		}
  
--		if (disp_clients != clients)
-+		if (disp_clients != iclients.clients)
- 			free_display_clients(disp_clients);
+ 		for (i = 0; i <= iclients->classes.max_engine_id; i++) {
+@@ -2405,6 +2425,13 @@ static void process_normal_stdin(void)
+ 			else
+ 				header_msg = "Showing individual clients.";
+ 			break;
++		case 'm':
++			aggregate_regions ^= true;
++			if (aggregate_regions)
++				header_msg = "Aggregating memory regions.";
++			else
++				header_msg = "Showing memory regions.";
++			break;
+ 		};
+ 	}
+ }
+@@ -2453,6 +2480,7 @@ static void show_help_screen(void)
+ "    's'    Toggle between sort modes (runtime, total runtime, pid, client id).\n"
+ "    'i'    Toggle display of clients which used no GPU time.\n"
+ "    'H'    Toggle between per PID aggregation and individual clients.\n"
++"    'm'    Toggle between aggregated memory regions and full breakdown.\n"
+ "\n"
+ "    'h' or 'q'    Exit interactive help.\n"
+ "\n");
+@@ -2580,6 +2608,7 @@ int main(int argc, char **argv)
+ {
+ 	unsigned int period_us = DEFAULT_PERIOD_MS * 1000;
+ 	bool physical_engines = false;
++	bool separate_regions = false;
+ 	struct intel_clients iclients;
+ 	int con_w = -1, con_h = -1;
+ 	char *output_path = NULL;
+@@ -2592,7 +2621,7 @@ int main(int argc, char **argv)
+ 	struct timespec ts;
  
- 		if (stop_top)
-@@ -2723,10 +2728,7 @@ int main(int argc, char **argv)
- 	if (output_mode == JSON)
- 		printf("]\n");
+ 	/* Parse options */
+-	while ((ch = getopt(argc, argv, "o:s:d:pcJLlh")) != -1) {
++	while ((ch = getopt(argc, argv, "o:s:d:mpcJLlh")) != -1) {
+ 		switch (ch) {
+ 		case 'o':
+ 			output_path = optarg;
+@@ -2606,6 +2635,9 @@ int main(int argc, char **argv)
+ 		case 'p':
+ 			physical_engines = true;
+ 			break;
++		case 'm':
++			separate_regions = true;
++			break;
+ 		case 'c':
+ 			output_mode = CSV;
+ 			break;
+@@ -2649,6 +2681,7 @@ int main(int argc, char **argv)
+ 		fprintf(stderr, "Failed to install signal handler!\n");
  
--	if (clients) {
--		igt_drm_clients_free(clients);
--		intel_free_clients(&iclients);
--	}
-+	intel_free_clients(&iclients);
+ 	class_view = !physical_engines;
++	aggregate_regions = !separate_regions;
  
- 	free(codename);
- err_pmu:
+ 	switch (output_mode) {
+ 	case INTERACTIVE:
 -- 
 2.39.2
