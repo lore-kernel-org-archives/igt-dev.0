@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com
- (mail-dm3nam02on2077.outbound.protection.outlook.com [40.107.95.77])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5B98F10E3F1
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Nov 2023 20:00:39 +0000 (UTC)
-Message-ID: <8896a7e9-5ce6-4ae8-81b8-43e8c815901f@amd.com>
-Date: Mon, 6 Nov 2023 15:00:35 -0500
-Content-Language: en-US
-To: igt-dev@lists.freedesktop.org, kamil.konieczny@linux.intel.com
-References: <20231103182230.1039191-1-aurabindo.pillai@amd.com>
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
-In-Reply-To: <20231103182230.1039191-1-aurabindo.pillai@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 38ACB10E0F0
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Nov 2023 20:01:13 +0000 (UTC)
+From: Lukasz Laguna <lukasz.laguna@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon,  6 Nov 2023 20:59:44 +0100
+Message-Id: <20231106195947.14640-6-lukasz.laguna@intel.com>
+In-Reply-To: <20231106195947.14640-1-lukasz.laguna@intel.com>
+References: <20231106195947.14640-1-lukasz.laguna@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 0/5] Add a new test for Sub-viewport
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 5/8] tests/sriov_basic: add basic tests for
+ enabling SR-IOV VFs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,39 +19,168 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: hersenxs.wu@amd.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+From: Katarzyna Dec <katarzyna.dec@intel.com>
 
+Add subtests that validate SR-IOV VFs enabling in two variants: with
+autoprobe disabled and enabled.
 
-On 2023-11-03 14:22, Aurabindo Pillai wrote:
-> Changes in v2
-> =================
-> 
-> * Removed an unused struct definition
-> * Fixes style issues reported by checkpatch.pl
-> * Added SPDX license identifier to the new test
-> * Fixed #include order for system includes
-> 
-> ---
-> 
-> Aurabindo Pillai (5):
->    lib/amdgpu: Remove unused struct
->    llib/amd: Update function documentation
->    lib/amd: improve readablity for MALL capability check
->    lib/amd: Add check for SubVP feature status
->    test/amdgpu: Add test for Sub-viewport
-> 
->   lib/igt_amd.c            |  44 ++++++++--
->   lib/igt_amd.h            |   1 +
->   tests/amdgpu/amd_subvp.c | 180 +++++++++++++++++++++++++++++++++++++++
->   tests/amdgpu/meson.build |   1 +
->   4 files changed, 217 insertions(+), 9 deletions(-)
->   create mode 100644 tests/amdgpu/amd_subvp.c
-> 
+Signed-off-by: Katarzyna Dec <katarzyna.dec@intel.com>
+Reviewed-by: Lukasz Laguna <lukasz.laguna@intel.com>
+Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
+Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+---
+ tests/meson.build   |   1 +
+ tests/sriov_basic.c | 126 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 127 insertions(+)
+ create mode 100644 tests/sriov_basic.c
 
-Hi Kamil,
-
-Any other concerns?
+diff --git a/tests/meson.build b/tests/meson.build
+index 62721157d..7413d978c 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -71,6 +71,7 @@ test_progs = [
+ 	'panfrost_submit',
+ 	'prime_udl',
+ 	'prime_vgem',
++	'sriov_basic',
+ 	'syncobj_basic',
+ 	'syncobj_eventfd',
+ 	'syncobj_wait',
+diff --git a/tests/sriov_basic.c b/tests/sriov_basic.c
+new file mode 100644
+index 000000000..fc0914962
+--- /dev/null
++++ b/tests/sriov_basic.c
+@@ -0,0 +1,126 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright(c) 2023 Intel Corporation. All rights reserved.
++ */
++
++#include "drmtest.h"
++#include "igt_core.h"
++#include "igt_sriov_device.h"
++
++IGT_TEST_DESCRIPTION("Basic tests for enabling SR-IOV Virtual Functions");
++
++/**
++ * TEST: sriov_basic
++ * Category: Software building block
++ * Mega feature: SR-IOV
++ * Sub-category: VFs enabling
++ * Run type: BAT
++ * Description: Validate SR-IOV VFs enabling
++ */
++
++/**
++ * SUBTEST: enable-vfs-autoprobe-off
++ * Description:
++ *   Verify VFs enabling without probing VF driver
++ */
++static void enable_disable_vfs(int pf_fd, unsigned int num_vfs)
++{
++	igt_debug("Using num_vfs=%u\n", num_vfs);
++
++	igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
++	igt_assert(igt_sriov_disable_driver_autoprobe(pf_fd));
++	igt_assert(!igt_sriov_is_driver_autoprobe_enabled(pf_fd));
++	igt_assert(igt_sriov_enable_vfs(pf_fd, num_vfs));
++	igt_assert_eq(num_vfs, igt_sriov_get_enabled_vfs(pf_fd));
++	igt_assert(igt_sriov_disable_vfs(pf_fd));
++}
++
++/**
++ * SUBTEST: enable-vfs-autoprobe-on
++ * Description:
++ *   Verify VFs enabling and auto-probing VF driver
++ */
++static void probe_disable_vfs(int pf_fd, unsigned int num_vfs)
++{
++	bool err = false;
++
++	igt_debug("Using num_vfs=%u\n", num_vfs);
++
++	igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
++	igt_assert(igt_sriov_enable_driver_autoprobe(pf_fd));
++	igt_assert(igt_sriov_is_driver_autoprobe_enabled(pf_fd));
++	igt_assert(igt_sriov_enable_vfs(pf_fd, num_vfs));
++	igt_assert_eq(num_vfs, igt_sriov_get_enabled_vfs(pf_fd));
++	for (int vf_num = 1; vf_num <= num_vfs; ++vf_num) {
++		if (!igt_sriov_is_vf_drm_driver_probed(pf_fd, vf_num)) {
++			igt_debug("VF%u probe failed\n", vf_num);
++			err = true;
++		}
++	}
++	igt_assert(igt_sriov_disable_vfs(pf_fd));
++	igt_assert(!err);
++}
++
++igt_main
++{
++	int pf_fd;
++	bool autoprobe;
++
++	igt_fixture {
++		pf_fd = drm_open_driver(DRIVER_ANY);
++		igt_require(igt_sriov_is_pf(pf_fd));
++		igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
++		autoprobe = igt_sriov_is_driver_autoprobe_enabled(pf_fd);
++
++		igt_srandom();
++	}
++
++	igt_describe("Verify VFs enabling without probing VF driver");
++	igt_subtest_with_dynamic("enable-vfs-autoprobe-off") {
++		for_each_num_vfs(pf_fd, num_vfs) {
++			igt_dynamic_f("numvfs-%u", num_vfs) {
++				enable_disable_vfs(pf_fd, num_vfs);
++			}
++		}
++		for_random_num_vfs(pf_fd, num_vfs) {
++			igt_dynamic_f("numvfs-random") {
++				enable_disable_vfs(pf_fd, num_vfs);
++			}
++		}
++		for_max_num_vfs(pf_fd, num_vfs) {
++			igt_dynamic_f("numvfs-all") {
++				enable_disable_vfs(pf_fd, num_vfs);
++			}
++		}
++	}
++
++	igt_describe("Verify VFs enabling and auto-probing VF driver");
++	igt_subtest_with_dynamic("enable-vfs-autoprobe-on") {
++		for_each_num_vfs(pf_fd, num_vfs) {
++			igt_dynamic_f("numvfs-%u", num_vfs) {
++				probe_disable_vfs(pf_fd, num_vfs);
++			}
++		}
++		for_random_num_vfs(pf_fd, num_vfs) {
++			igt_dynamic_f("numvfs-random") {
++				probe_disable_vfs(pf_fd, num_vfs);
++			}
++		}
++		for_max_num_vfs(pf_fd, num_vfs) {
++			igt_dynamic_f("numvfs-all") {
++				probe_disable_vfs(pf_fd, num_vfs);
++			}
++		}
++	}
++
++	igt_fixture {
++		igt_sriov_disable_vfs(pf_fd);
++		/* abort to avoid execution of next tests with enabled VFs */
++		igt_abort_on_f(igt_sriov_get_enabled_vfs(pf_fd) > 0, "Failed to disable VF(s)");
++		autoprobe ? igt_sriov_enable_driver_autoprobe(pf_fd) :
++			    igt_sriov_disable_driver_autoprobe(pf_fd);
++		igt_abort_on_f(autoprobe != igt_sriov_is_driver_autoprobe_enabled(pf_fd),
++			       "Failed to restore sriov_drivers_autoprobe value\n");
++		close(pf_fd);
++	}
++}
+-- 
+2.40.0
