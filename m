@@ -2,14 +2,14 @@ Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Intel-gfx@lists.freedesktop.org
-Date: Mon,  6 Nov 2023 12:35:15 +0000
-Message-Id: <20231106123518.588528-6-tvrtko.ursulin@linux.intel.com>
+Date: Mon,  6 Nov 2023 12:35:16 +0000
+Message-Id: <20231106123518.588528-7-tvrtko.ursulin@linux.intel.com>
 In-Reply-To: <20231106123518.588528-1-tvrtko.ursulin@linux.intel.com>
 References: <20231106123518.588528-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [CI 6/9] lib/igt_drm_clients: Allow passing in the memory
- region map
+Subject: [igt-dev] [CI 7/9] tools/intel_gpu_top: Fully wrap clients
+ operations
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,103 +23,122 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-Same concept as with the engine map, allowing callers to pass in fixed
-map of names to indices, simplifying their implementation and avoiding
-auto-detection while parsing.
+Wrap all operations on clients via the Intel specific wrappers in order to
+simplify upcoming work.
 
 Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/igt_drm_clients.c | 5 +++--
- lib/igt_drm_clients.h | 3 ++-
- tools/gputop.c        | 4 ++--
- tools/intel_gpu_top.c | 8 +++++---
- 4 files changed, 12 insertions(+), 8 deletions(-)
+ tools/intel_gpu_top.c | 42 ++++++++++++++++++++++--------------------
+ 1 file changed, 22 insertions(+), 20 deletions(-)
 
-diff --git a/lib/igt_drm_clients.c b/lib/igt_drm_clients.c
-index da51d7335b2b..025d60c51503 100644
---- a/lib/igt_drm_clients.c
-+++ b/lib/igt_drm_clients.c
-@@ -445,7 +445,8 @@ struct igt_drm_clients *
- igt_drm_clients_scan(struct igt_drm_clients *clients,
- 		     bool (*filter_client)(const struct igt_drm_clients *,
- 					   const struct drm_client_fdinfo *),
--		     const char **name_map, unsigned int map_entries)
-+		     const char **name_map, unsigned int map_entries,
-+		     const char **region_map, unsigned int region_entries)
- {
- 	struct dirent *proc_dent;
- 	struct igt_drm_client *c;
-@@ -524,7 +525,7 @@ igt_drm_clients_scan(struct igt_drm_clients *clients,
- 			if (!__igt_parse_drm_fdinfo(dirfd(fdinfo_dir),
- 						    fdinfo_dent->d_name, &info,
- 						    name_map, map_entries,
--						    NULL, 0))
-+						    region_map, region_entries))
- 				continue;
- 
- 			if (filter_client && !filter_client(clients, &info))
-diff --git a/lib/igt_drm_clients.h b/lib/igt_drm_clients.h
-index cd37f8508b20..52888aedc25a 100644
---- a/lib/igt_drm_clients.h
-+++ b/lib/igt_drm_clients.h
-@@ -93,7 +93,8 @@ struct igt_drm_clients *
- igt_drm_clients_scan(struct igt_drm_clients *clients,
- 		     bool (*filter_client)(const struct igt_drm_clients *,
- 					   const struct drm_client_fdinfo *),
--		     const char **name_map, unsigned int map_entries);
-+		     const char **name_map, unsigned int map_entries,
-+		     const char **region_map, unsigned int region_entries);
- 
- struct igt_drm_clients *
- igt_drm_clients_sort(struct igt_drm_clients *clients,
-diff --git a/tools/gputop.c b/tools/gputop.c
-index ea95e0333dd2..71e28f43ee4c 100644
---- a/tools/gputop.c
-+++ b/tools/gputop.c
-@@ -253,7 +253,7 @@ int main(int argc, char **argv)
- 	if (!clients)
- 		exit(1);
- 
--	igt_drm_clients_scan(clients, NULL, NULL, 0);
-+	igt_drm_clients_scan(clients, NULL, NULL, 0, NULL, 0);
- 
- 	for (;;) {
- 		struct igt_drm_client *c, *prevc = NULL;
-@@ -270,7 +270,7 @@ int main(int argc, char **argv)
- 			}
- 		}
- 
--		igt_drm_clients_scan(clients, NULL, NULL, 0);
-+		igt_drm_clients_scan(clients, NULL, NULL, 0, NULL, 0);
- 		igt_drm_clients_sort(clients, client_cmp);
- 
- 		printf("\033[H\033[J");
 diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index 34fa99235e11..091fe28068dc 100644
+index 091fe28068dc..b2e81d5f9ffb 100644
 --- a/tools/intel_gpu_top.c
 +++ b/tools/intel_gpu_top.c
-@@ -2619,8 +2619,9 @@ int main(int argc, char **argv)
- 	}
+@@ -132,6 +132,7 @@ struct engines {
+ struct intel_clients {
+ 	const char *pci_slot;
+ 	struct igt_drm_client_engines classes;
++	struct igt_drm_clients *clients;
+ };
  
- 	pmu_sample(engines);
--	igt_drm_clients_scan(clients, client_match, engine_map,
--			     ARRAY_SIZE(engine_map));
-+	igt_drm_clients_scan(clients, client_match,
+ static struct termios termios_orig;
+@@ -2436,19 +2437,22 @@ intel_init_clients(struct intel_clients *iclients,
+ 		iclients->classes.capacity[i] = engines->class[i].num_engines;
+ 		iclients->classes.names[i] = strdup(engines->class[i].name);
+ 	}
++
++	iclients->clients = igt_drm_clients_init(iclients);
+ }
+ 
+ static void intel_free_clients(struct intel_clients *iclients)
+ {
++	if (iclients->clients)
++		igt_drm_clients_free(iclients->clients);
++
+ 	free((void *)iclients->pci_slot);
+ 	free(iclients->classes.capacity);
+ 	free(iclients->classes.names);
+ }
+ 
+-int main(int argc, char **argv)
++static void intel_scan_clients(struct intel_clients *iclients)
+ {
+-	unsigned int period_us = DEFAULT_PERIOD_MS * 1000;
+-	struct igt_drm_clients *clients = NULL;
+ 	static const char *engine_map[] = {
+ 		"render",
+ 		"copy",
+@@ -2456,6 +2460,15 @@ int main(int argc, char **argv)
+ 		"video-enhance",
+ 		"compute",
+ 	};
++
++	igt_drm_clients_scan(iclients->clients, client_match,
 +			     engine_map, ARRAY_SIZE(engine_map),
 +			     NULL, 0);
++}
++
++int main(int argc, char **argv)
++{
++	unsigned int period_us = DEFAULT_PERIOD_MS * 1000;
+ 	bool physical_engines = false;
+ 	struct intel_clients iclients;
+ 	int con_w = -1, con_h = -1;
+@@ -2613,15 +2626,11 @@ int main(int argc, char **argv)
+ 
+ 	init_engine_classes(engines);
+ 
+-	if (has_drm_fdinfo(&card)) {
++	if (has_drm_fdinfo(&card))
+ 		intel_init_clients(&iclients, &card, engines);
+-		clients = igt_drm_clients_init(&iclients);
+-	}
+ 
+ 	pmu_sample(engines);
+-	igt_drm_clients_scan(clients, client_match,
+-			     engine_map, ARRAY_SIZE(engine_map),
+-			     NULL, 0);
++	intel_scan_clients(&iclients);
  	gettime(&ts);
  
  	if (output_mode == JSON)
-@@ -2655,7 +2656,8 @@ int main(int argc, char **argv)
- 			display_clients(igt_drm_clients_scan(clients,
- 							     client_match,
- 							     engine_map,
--							     ARRAY_SIZE(engine_map)));
-+							     ARRAY_SIZE(engine_map),
-+							     NULL, 0));
+@@ -2652,12 +2661,8 @@ int main(int argc, char **argv)
+ 		pmu_sample(engines);
+ 		t = (double)(engines->ts.cur - engines->ts.prev) / 1e9;
+ 
+-		disp_clients =
+-			display_clients(igt_drm_clients_scan(clients,
+-							     client_match,
+-							     engine_map,
+-							     ARRAY_SIZE(engine_map),
+-							     NULL, 0));
++		intel_scan_clients(&iclients);
++		disp_clients = display_clients(iclients.clients);
  		scan_us = elapsed_us(&ts, period_us);
  
  		if (stop_top)
+@@ -2708,7 +2713,7 @@ int main(int argc, char **argv)
+ 			pops->close_struct();
+ 		}
+ 
+-		if (disp_clients != clients)
++		if (disp_clients != iclients.clients)
+ 			free_display_clients(disp_clients);
+ 
+ 		if (stop_top)
+@@ -2723,10 +2728,7 @@ int main(int argc, char **argv)
+ 	if (output_mode == JSON)
+ 		printf("]\n");
+ 
+-	if (clients) {
+-		igt_drm_clients_free(clients);
+-		intel_free_clients(&iclients);
+-	}
++	intel_free_clients(&iclients);
+ 
+ 	free(codename);
+ err_pmu:
 -- 
 2.39.2
