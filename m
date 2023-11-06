@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 217D910E448
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Nov 2023 22:07:10 +0000 (UTC)
-Message-ID: <5304b828-d2f1-4bda-a4b1-3be8129f4ce1@intel.com>
-Date: Mon, 6 Nov 2023 23:07:06 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 58F0A10E279
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Nov 2023 22:13:35 +0000 (UTC)
+Message-ID: <36149e36-d8c0-4ce8-a33d-1602884a8df3@intel.com>
+Date: Mon, 6 Nov 2023 23:13:31 +0100
 MIME-Version: 1.0
 Content-Language: en-US
 To: Lukasz Laguna <lukasz.laguna@intel.com>, igt-dev@lists.freedesktop.org
 References: <20231106195947.14640-1-lukasz.laguna@intel.com>
- <20231106195947.14640-2-lukasz.laguna@intel.com>
+ <20231106195947.14640-5-lukasz.laguna@intel.com>
 From: Michal Wajdeczko <michal.wajdeczko@intel.com>
-In-Reply-To: <20231106195947.14640-2-lukasz.laguna@intel.com>
+In-Reply-To: <20231106195947.14640-5-lukasz.laguna@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 1/8] lib/igt_sriov_device: add core
- SR-IOV helpers
+Subject: Re: [igt-dev] [PATCH i-g-t 4/8] lib/igt_sriov_device: add helpers
+ for operations in different VFs scenarios
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,285 +29,47 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 
 On 06.11.2023 20:59, Lukasz Laguna wrote:
-> From: Katarzyna Dec <katarzyna.dec@intel.com>
+> Added helpers:
+> - for_each_vf and for_each_num_vfs
+> - for_random_vf and for_random_num_vfs
+> - for_last_vf and for_max_num_vfs
 > 
-> Create lib for core SR-IOV helpers that allow to manage SR-IOV devices.
-> 
-> Signed-off-by: Katarzyna Dec <katarzyna.dec@intel.com>
-> Reviewed-by: Lukasz Laguna <lukasz.laguna@intel.com>
 > Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
 > Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 > ---
->  lib/igt_sriov_device.c | 174 +++++++++++++++++++++++++++++++++++++++++
->  lib/igt_sriov_device.h |  20 +++++
->  lib/meson.build        |   1 +
->  3 files changed, 195 insertions(+)
->  create mode 100644 lib/igt_sriov_device.c
->  create mode 100644 lib/igt_sriov_device.h
+>  lib/igt_sriov_device.h | 18 ++++++++++++++++++
+>  1 file changed, 18 insertions(+)
 > 
-> diff --git a/lib/igt_sriov_device.c b/lib/igt_sriov_device.c
-> new file mode 100644
-> index 000000000..7d53c2045
-> --- /dev/null
-> +++ b/lib/igt_sriov_device.c
-> @@ -0,0 +1,174 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright(c) 2023 Intel Corporation. All rights reserved.
-> + */
-> +
-> +#include "igt_core.h"
-> +#include "igt_sriov_device.h"
-> +#include "igt_sysfs.h"
-> +
-> +/**
-> + * igt_sriov_is_pf:
-
-nit: short function description missing, not required anymore?
-
-> + * @device: device file descriptor
-> + *
-> + * Check if device is PF by checking existence of sriov_totalvfs file
-> + * and non-zero value read from that file.
-
-just to clarify/be precise, do you want to check here "device"
-capability or "driver" capability ?
-
-IIRC the PCI subsystem will set these attributes on the "PF device" even
-if attached "PF driver" does not provide required hook to enable VFs
-(and this is main purpose of being a "PF", no?)
-
-> + *
-> + * Returns:
-> + * True if device is PF, false otherwise.
-> + */
-> +bool igt_sriov_is_pf(int device)
-> +{
-> +	int sysfs;
-> +	bool ret;
-> +	uint32_t totalvfs;
-
-nit: we shouldn't specify width if not needed, maybe plain unsigned int
-will just work ? shame that there are no __igt_sysfs_get_uint()
-
-> +
-> +	sysfs = igt_sysfs_open(device);
-> +	igt_assert_fd(sysfs);
-> +
-> +	ret = __igt_sysfs_get_u32(sysfs, "device/sriov_totalvfs", &totalvfs);
-> +	close(sysfs);
-> +
-> +	if (!ret)
-> +		return false;
-> +
-> +	return totalvfs > 0;
-> +}
-> +
-> +static uint32_t __pf_attr_get_u32(int pf, const char *attr)
-> +{
-> +	int sysfs;
-> +	uint32_t value;
-> +
-> +	igt_assert(igt_sriov_is_pf(pf));
-> +
-> +	sysfs = igt_sysfs_open(pf);
-> +	igt_assert_fd(sysfs);
-> +
-> +	value = igt_sysfs_get_u32(sysfs, attr);
-> +	close(sysfs);
-> +
-> +	return value;
-> +}
-> +
-> +static bool __pf_attr_set_u32(int pf, const char *attr, uint32_t value)
-> +{
-> +	int sysfs;
-> +	bool ret;
-> +
-> +	igt_assert(igt_sriov_is_pf(pf));
-> +
-> +	sysfs = igt_sysfs_open(pf);
-> +	igt_assert_fd(sysfs);
-> +
-> +	ret = __igt_sysfs_set_u32(sysfs, attr, value);
-> +	close(sysfs);
-> +
-> +	return ret;
-> +}
-> +
-> +/**
-> + * igt_sriov_get_totalvfs:
-> + * @pf: PF device file descriptor
-> + *
-> + * Get maximum number of VFs that can be enabled.
-> + *
-> + * Returns:
-> + * Maximum number of VFs that could be associated with given PF.
-> + */
-> +unsigned int igt_sriov_get_total_vfs(int pf)
-> +{
-> +	return __pf_attr_get_u32(pf, "device/sriov_totalvfs");
-> +}
-> +
-> +/**
-> + * igt_sriov_get_numvfs:
-> + * @pf: PF device file descriptor
-> + *
-> + * Get number of enabled VFs.
-> + *
-> + * Returns:
-> + * Number of VFs enabled by given PF.
-> + */
-> +unsigned int igt_sriov_get_enabled_vfs(int pf)
-> +{
-> +	return __pf_attr_get_u32(pf, "device/sriov_numvfs");
-> +}
-> +
-> +/**
-> + * igt_sriov_enable_vfs:
-
-Helper for VFs enabling
-
-> + * @pf: PF device file descriptor
-> + * @num_vfs: Number of virtual functions to be enabled
-> + *
-> + * Helper for VFs enabling.
-
-"This will try to enable VFs by writing @num_vfs to ...
-
-> + *
-> + * Returns:
-> + * True on success and false on failure.
-> + */
-> +bool igt_sriov_enable_vfs(int pf, unsigned int num_vfs)
-> +{
-> +	igt_assert(num_vfs > 0);
-> +	igt_debug("Enabling %u VFs\n", num_vfs);
-> +	return __pf_attr_set_u32(pf, "device/sriov_numvfs", num_vfs);
-> +}
-> +
-> +/**
-> + * igt_sriov_disable_vfs:
-
-Helper for VFs disabling
-
-> + * @pf: PF device file descriptor
-> + *
-> + * Set 0 in sriov_numvfs file to disable VFs.
-
-"This will try to disable already enabled VFs by writing 0 to ...
-
-> + *
-> + * Returns:
-> + * True on success and false on failure.
-> + */
-> +bool igt_sriov_disable_vfs(int pf)
-> +{
-> +	igt_debug("Disabling %u VFs\n", igt_sriov_get_enabled_vfs(pf));
-
-this will trigger unnecessary "read" operation just for debug purposes,
-while in log you should already see "Enabling N VFs", so we know the N.
-
-> +	return __pf_attr_set_u32(pf, "device/sriov_numvfs", 0);
-> +}
-> +
-> +/**
-> + * igt_sriov_is_driver_autoprobe_enabled:
-> + * @pf: PF device file descriptor
-> + *
-> + * Get current driver autoprobe setting.
-
-hmm, this is SRIOV driver autoprobe (or VF driver autoprobe for
-short/clarity)
-
-> + *
-> + * Returns:
-> + * True if autoprobe is enabled, false otherwise.
-> + */
-> +bool igt_sriov_is_driver_autoprobe_enabled(int pf)
-> +{
-> +	return __pf_attr_get_u32(pf, "device/sriov_drivers_autoprobe");
-> +}
-> +
-> +/**
-> + * igt_sriov_enable_driver_autoprobe:
-> + * @pf: PF device file descriptor
-> + *
-> + * Set driver autoprobe to true.
-> + *
-> + * During VFs enabling driver will be bound to VFs.
-
-"If successful, then kernel will automatically bind VFs to a compatible
-driver immediately after they are enabled.
-
-> + *
-> + * Return:
-> + * True if setting driver autoprobe succeed, otherwise false.
-> + */
-> +bool igt_sriov_enable_driver_autoprobe(int pf)
-> +{
-> +	return __pf_attr_set_u32(pf,  "device/sriov_drivers_autoprobe", true);
-> +}
-> +
-> +/**
-> + * igt_sriov_disable_driver_autoprobe:
-> + * @pf: PF device file descriptor
-> + *
-> + * Set driver autoprobe to false.
-> + *
-> + * During VFs enabling driver won't be bound to VFs.
-> + *
-> + * Return:
-> + * True if setting driver autoprobe succeed, otherwise false.
-> + */
-> +bool igt_sriov_disable_driver_autoprobe(int pf)
-> +{
-> +	return __pf_attr_set_u32(pf,  "device/sriov_drivers_autoprobe", false);
-> +}
 > diff --git a/lib/igt_sriov_device.h b/lib/igt_sriov_device.h
-> new file mode 100644
-> index 000000000..f2c5c44fa
-> --- /dev/null
+> index be4e56cf3..78cb0e73b 100644
+> --- a/lib/igt_sriov_device.h
 > +++ b/lib/igt_sriov_device.h
-> @@ -0,0 +1,20 @@
-> +/* SPDX-License-Identifier: MIT */
-> +/*
-> + * Copyright(c) 2023 Intel Corporation. All rights reserved.
-> + */
-> +
-> +#ifndef __IGT_SRIOV_DEVICE_H__
-> +#define __IGT_SRIOV_DEVICE_H__
-> +
-> +#include <stdint.h>
-> +
-> +bool igt_sriov_is_pf(int device);
-> +unsigned int igt_sriov_get_total_vfs(int pf);
-> +unsigned int igt_sriov_get_enabled_vfs(int pf);
-> +bool igt_sriov_enable_vfs(int pf, unsigned int num_vfs);
-> +bool igt_sriov_disable_vfs(int pf);
-> +bool igt_sriov_is_driver_autoprobe_enabled(int pf);
-> +bool igt_sriov_enable_driver_autoprobe(int pf);
-> +bool igt_sriov_disable_driver_autoprobe(int pf);
+> @@ -19,4 +19,22 @@ bool igt_sriov_disable_driver_autoprobe(int pf);
+>  int igt_sriov_open_vf_drm_device(int pf, unsigned int vf_num);
+>  bool igt_sriov_is_vf_drm_driver_probed(int pf, unsigned int vf_num);
+>  
 
-nit: I'm wondering if there is any pattern to have:
+please document macros and their params
 
-a) void function that has igt_assert() inside
-b) bool function that has no igt_assert() inside
+> +#define for_each_vf(__pf_fd, __vf_num) \
+> +	for (unsigned int __vf_num = 1, __total_vfs = igt_sriov_get_total_vfs(__pf_fd); \
+> +	     __vf_num <= __total_vfs; \
+> +	     ++__vf_num)
+> +#define for_each_num_vfs for_each_vf
 
-then for writing scenario you just use a) without need to check
-and use b) only when doing lower level testing and use dedicated checks
+why do you need this alias ?
 
 > +
-> +#endif /* __IGT_SRIOV_DEVICE_H__ */
-> diff --git a/lib/meson.build b/lib/meson.build
-> index a7bccafc3..083baa68a 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -38,6 +38,7 @@ lib_sources = [
->  	'igt_primes.c',
->  	'igt_pci.c',
->  	'igt_rand.c',
-> +	'igt_sriov_device.c',
->  	'igt_stats.c',
->  	'igt_syncobj.c',
->  	'igt_sysfs.c',
+> +#define for_random_vf(__pf_fd, __vf_num) \
+> +	for (unsigned int __vf_num = 1 + random() % igt_sriov_get_total_vfs(__pf_fd), __tmp = 0; \
+> +	     __tmp < 1; \
+> +	     ++__tmp)
+> +#define for_random_num_vfs for_random_vf
+> +
+> +#define for_last_vf(__pf_fd, __vf_num) \
+> +	for (unsigned int __vf_num = igt_sriov_get_total_vfs(__pf_fd), __tmp = 0; \
+> +	     __tmp < 1; \
+> +	     ++__tmp)
+> +#define for_max_num_vfs for_last_vf
+> +
+>  #endif /* __IGT_SRIOV_DEVICE_H__ */
