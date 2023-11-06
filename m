@@ -1,20 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 798BA10E455
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Nov 2023 22:59:52 +0000 (UTC)
-Message-ID: <ede911d8-3053-4446-b69e-427c473e7a20@intel.com>
-Date: Mon, 6 Nov 2023 23:59:48 +0100
-MIME-Version: 1.0
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5790510E10D
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Nov 2023 23:27:22 +0000 (UTC)
+From: "Govindapillai, Vinod" <vinod.govindapillai@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Gupta,
+ Nidhi1" <nidhi1.gupta@intel.com>
+Date: Mon, 6 Nov 2023 23:27:16 +0000
+Message-ID: <82e29dea45f25eb038930fa327d93f6f611f550f.camel@intel.com>
+References: <20231106060641.18659-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20231106060641.18659-1-nidhi1.gupta@intel.com>
 Content-Language: en-US
-To: Lukasz Laguna <lukasz.laguna@intel.com>, igt-dev@lists.freedesktop.org
-References: <20231106195947.14640-1-lukasz.laguna@intel.com>
- <20231106195947.14640-8-lukasz.laguna@intel.com>
-From: Michal Wajdeczko <michal.wajdeczko@intel.com>
-In-Reply-To: <20231106195947.14640-8-lukasz.laguna@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 7/8] tests/sriov_basic: validate driver
- binding to VFs
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <BCDB102C40C7C54AAF37FC665F175C2D@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t v9] tests/kms_frontbuffer_tracking:
+ Extend the test to enable FBC for each plane
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,122 +27,140 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-
-On 06.11.2023 20:59, Lukasz Laguna wrote:
-> From: Katarzyna Dec <katarzyna.dec@intel.com>
-> 
-> Test enables VFs in range <1..totalvfs>, bind driver to all of them and
-> then unbind driver from all of them.
-
-commit message seems outdated
-
-> 
-> Signed-off-by: Katarzyna Dec <katarzyna.dec@intel.com>
-> Reviewed-by: Lukasz Laguna <lukasz.laguna@intel.com>
-> Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
-> Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> ---
->  tests/sriov_basic.c | 51 +++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 51 insertions(+)
-> 
-> diff --git a/tests/sriov_basic.c b/tests/sriov_basic.c
-> index fc0914962..179731daf 100644
-> --- a/tests/sriov_basic.c
-> +++ b/tests/sriov_basic.c
-> @@ -61,6 +61,38 @@ static void probe_disable_vfs(int pf_fd, unsigned int num_vfs)
->  	igt_assert(!err);
->  }
->  
-> +/**
-> + * SUBTEST: enable-vfs-bind-all-unbind-all
-> + * Description:
-> + *   Verify VFs enabling, binding the driver and then unbinding it from all of them
-> + */
-> +static void enable_vfs_bind_all_unbind_all(int pf_fd, unsigned int num_vfs)
-> +{
-> +	igt_debug("Using num_vfs=%u\n", num_vfs);
-
-nit: "Testing %u VFs" ?
-
-> +
-> +	igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
-
-duplicates main fixture
-
-> +	igt_warn_on(!igt_sriov_disable_driver_autoprobe(pf_fd));
-> +	igt_skip_on(igt_sriov_is_driver_autoprobe_enabled(pf_fd));
-
-why do we need warn/skip here ?
-can't we just assert that 'disable' worked ?
-
-> +
-> +	igt_warn_on(!igt_sriov_enable_vfs(pf_fd, num_vfs));
-
-can't we just assert ?
-
-> +	igt_assert_eq(num_vfs, igt_sriov_get_enabled_vfs(pf_fd));
-
-why we care here ? if not all are enabled then we fail just later
-and this is not a test for "enable VFs" that enabled==requested
-
-> +	igt_warn_on(!igt_sriov_enable_driver_autoprobe(pf_fd));
-> +	igt_assert(igt_sriov_is_driver_autoprobe_enabled(pf_fd));
-
-can't we just warn ?
-if that we fail to enable then probe below will fail anyway
-
-> +
-> +	for (int i = 1; i <= num_vfs; i++) {
-> +		igt_assert(!igt_sriov_is_vf_drm_driver_probed(pf_fd, i));
-> +		igt_assert(igt_sriov_bind_vf_drm_driver(pf_fd, i));
-> +		igt_assert(igt_sriov_is_vf_drm_driver_probed(pf_fd, i));
-
-shouldn't we just "expect" to make sure to call "disable VFs" ?
-
-> +	}
-> +
-> +	for (int i = 1; i <= num_vfs; i++) {
-> +		igt_assert(igt_sriov_unbind_vf_drm_driver(pf_fd, i));
-> +		igt_assert(!igt_sriov_is_vf_drm_driver_probed(pf_fd, i));
-
-do we need to have all VFs loaded ?
-maybe for BAT test we can just bind/unload one VF at the time ?
-
-otherwise it will be almost the same level of stress as in
-"enable-vfs-autoprobe-on" but with 'manual probe' loop of all VFs
-
-> +	}
-> +
-> +	igt_assert(igt_sriov_disable_vfs(pf_fd));
-> +}
-> +
->  igt_main
->  {
->  	int pf_fd;
-> @@ -113,6 +145,25 @@ igt_main
->  		}
->  	}
->  
-> +	igt_describe("Verify VFs enabling, binding the driver and then unbinding it from all of them");
-> +	igt_subtest_with_dynamic("enable-vfs-bind-all-unbind-all") {
-> +		for_each_num_vfs(pf_fd, num_vfs) {
-> +			igt_dynamic_f("numvfs-%u", num_vfs) {
-> +				enable_vfs_bind_all_unbind_all(pf_fd, num_vfs);
-> +			}
-> +		}
-> +		for_random_num_vfs(pf_fd, num_vfs) {
-> +			igt_dynamic_f("numvfs-random") {
-> +				enable_vfs_bind_all_unbind_all(pf_fd, num_vfs);
-> +			}
-> +		}
-> +		for_max_num_vfs(pf_fd, num_vfs) {
-> +			igt_dynamic_f("numvfs-all") {
-> +				enable_vfs_bind_all_unbind_all(pf_fd, num_vfs);
-> +			}
-> +		}
-> +	}
-> +
->  	igt_fixture {
->  		igt_sriov_disable_vfs(pf_fd);
->  		/* abort to avoid execution of next tests with enabled VFs */
+SGkgTmlkaGksDQoNClRoYW5rcyBmb3IgdGhlIHBhdGNoLg0KDQpJIHRyaWVkIHRoaXMgb24gbG5s
+IGFuZCB0aGUgdGVzdCBwYXNzZXMgd2l0aCBzb21lIG1pbm9yIGNoYW5nZXMgbGlzdGVkIGlubGlu
+ZS4NCg0KQWxzbyBuZWVkIG9uZSBkcml2ZXIgY2hhbmdlIGZvciBGSUZPIHVuZGVycnVuICggd2hp
+Y2ggaXMgYWxyZWFkeSBmbG9hdGVkIGZvciBzb21lIGFub3RoZXINCnJlYXNvbsKgaHR0cHM6Ly9w
+YXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy8xMjU5MzQvKQ0KDQpXaGVuIEZJRk8gdW5k
+ZXJydW4gaGFwcGVucywgRkJDIGlzIGRpc2FibGVkIGFuZCB0aGUgdGVzdCB3aWxsIGJlIGEgZmFp
+bHVyZSBpbiB0aGF0IGNhc2UuIEkgdGhpbmsNCnRoYXQgaXMgaGFuZGxlZCBjb3JyZWN0bHkgYXMg
+d2VsbC4NCg0KT24gTW9uLCAyMDIzLTExLTA2IGF0IDExOjM2ICswNTMwLCBOaWRoaSBHdXB0YSB3
+cm90ZToNCj4gQWRkZWQgYSBuZXcgc3VidGVzdCB0byB2YWxpZGF0ZSBGQkMgb24gZWFjaCBwbGFu
+ZSwgdGhpcyBuZXcgc3VidGVzdA0KPiB3aWxsIGZpcnN0IGRpc2FibGUgdGhlIGZiYyBmZWF0dXJl
+IG9uIGFsbCBwaXBlcyBhbmQgcGxhbmVzIGFuZCB0aGVuDQo+IGVuYWJsZSBpdCBvbiBhbGwgcGxh
+bmUgb25lIGJ5IG9uZSBhbmQgY29uZmlybS4NCj4gDQo+IHYyOiBNb2RpZnkgdGVzdHMgdG8gZGlz
+YWJsZSBwcmltYXJ5IGFuZCBlbmFibGUgb3RoZXIgcGxhbmUNCj4gwqDCoMKgIHRvIGNoZWNrIGZi
+YyBpcyBlbmFibGVkIG9yIG5vdC4gPEJoYW51Pg0KPiANCj4gdjM6IEltcGxlbWVudGVkIGRlc2ln
+biBjaGFuZ2VzIGFzIHN1Z2dlc3RlZCA8QmhhbnU+DQo+IA0KPiB2NDogRml4ZWQgbml0cGlja3Mg
+KEJoYW51KQ0KPiANCj4gdjU6IEFkZCBwbGFuZSBjbGVhbnVwIGZ1bmN0aW9ucyAoQmhhbnUpDQo+
+IA0KPiBTaWduZWQtb2ZmLWJ5OiBOaWRoaSBHdXB0YSA8bmlkaGkxLmd1cHRhQGludGVsLmNvbT4N
+Cj4gLS0tDQo+IMKgdGVzdHMvaW50ZWwva21zX2Zyb250YnVmZmVyX3RyYWNraW5nLmMgfCAxMTcg
+KysrKysrKysrKysrKysrKysrKysrKysrKw0KPiDCoDEgZmlsZSBjaGFuZ2VkLCAxMTcgaW5zZXJ0
+aW9ucygrKQ0KPiANCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ludGVsL2ttc19mcm9udGJ1ZmZlcl90
+cmFja2luZy5jIGIvdGVzdHMvaW50ZWwva21zX2Zyb250YnVmZmVyX3RyYWNraW5nLmMNCj4gaW5k
+ZXggZjkwZDA5ZjlmLi4yMGNkMTUxZDUgMTAwNjQ0DQo+IC0tLSBhL3Rlc3RzL2ludGVsL2ttc19m
+cm9udGJ1ZmZlcl90cmFja2luZy5jDQo+ICsrKyBiL3Rlc3RzL2ludGVsL2ttc19mcm9udGJ1ZmZl
+cl90cmFja2luZy5jDQo+IEBAIC00Myw2ICs0MywxNSBAQA0KPiDCoCNpbmNsdWRlICJpZ3Rfc3lz
+ZnMuaCINCj4gwqAjaW5jbHVkZSAiaWd0X3Bzci5oIg0KPiDCoA0KPiArLyoqDQo+ICsgKiBTVUJU
+RVNUOiBwbGFuZS1mYmMtcnRlDQo+ICsgKiBEZXNjcmlwdGlvbjogU2FuaXR5IHRlc3QgdG8gZW5h
+YmxlIEZCQyBvbiBhIHBsYW5lLg0KPiArICogRHJpdmVyIHJlcXVpcmVtZW50OiBpOTE1LCB4ZQ0K
+PiArICogRnVuY3Rpb25hbGl0eTogZmJjDQo+ICsgKiBNZWdhIGZlYXR1cmU6IEdlbmVyYWwgRGlz
+cGxheSBGZWF0dXJlcw0KPiArICogVGVzdCBjYXRlZ29yeTogZnVuY3Rpb25hbGl0eSB0ZXN0DQo+
+ICsgKi8NCj4gKw0KPiDCoCNkZWZpbmUgVElNRSBTTE9XX1FVSUNLKDEwMDAsIDEwMDAwKQ0KPiDC
+oA0KPiDCoElHVF9URVNUX0RFU0NSSVBUSU9OKCJUZXN0IHRoZSBLZXJuZWwncyBmcm9udGJ1ZmZl
+ciB0cmFja2luZyBtZWNoYW5pc20gYW5kICINCj4gQEAgLTg4OCw2ICs4OTcsMTcgQEAgc3RhdGlj
+IGJvb2wgZmJjX21vZGVfdG9vX2xhcmdlKHZvaWQpDQo+IMKgwqDCoMKgwqDCoMKgwqByZXR1cm4g
+c3Ryc3RyKGJ1ZiwgIkZCQyBkaXNhYmxlZDogbW9kZSB0b28gbGFyZ2UgZm9yIGNvbXByZXNzaW9u
+XG4iKTsNCj4gwqB9DQo+IMKgDQo+ICtzdGF0aWMgYm9vbCBmYmNfZW5hYmxlX3Blcl9wbGFuZShp
+bnQgcGxhbmVfaW5kZXgsIGVudW0gcGlwZSBwaXBlKQ0KPiArew0KPiArwqDCoMKgwqDCoMKgwqBj
+aGFyIGJ1ZlsxMjhdOw0KPiArwqDCoMKgwqDCoMKgwqBjaGFyIGJ1Zl9wbGFuZVsxMjhdOw0KDQpU
+aGUgcGFydGlhbCBwcmludHMgeW91IGdldCBpcyBiZWNhdXNlIG9mIHRoZSBzaXplIG9mIGJ1ZiBp
+cyB0b28gc21hbGwgY29uc2lkZXJpbmcgMyBwbGFuZXMgaGF2ZSBzb21lDQp0ZXh0cy4gWW91IG5l
+ZWQgdG8gaW5jcmVhc2UgdGhlIHNpemUNCg0KPiArDQo+ICvCoMKgwqDCoMKgwqDCoHNwcmludGYo
+YnVmX3BsYW5lLCAiJWQlcyIsIHBsYW5lX2luZGV4LCBrbXN0ZXN0X3BpcGVfbmFtZShwaXBlKSk7
+DQo+ICsNCj4gK8KgwqDCoMKgwqDCoMKgZGVidWdmc19yZWFkX2NydGMoImk5MTVfZmJjX3N0YXR1
+cyIsIGJ1Zik7DQo+ICvCoMKgwqDCoMKgwqDCoHJldHVybiBzdHJzdHIoc3Ryc3RyKGJ1ZiwgIioi
+KSwgYnVmX3BsYW5lKTsNCj4gK30NCj4gKw0KPiDCoHN0YXRpYyBib29sIGRycnNfd2FpdF91bnRp
+bF9ycl9zd2l0Y2hfdG9fbG93KHZvaWQpDQo+IMKgew0KPiDCoMKgwqDCoMKgwqDCoMKgcmV0dXJu
+IGlndF93YWl0KGlzX2RycnNfbG93KCksIDUwMDAsIDEpOw0KPiBAQCAtMTY5MSw2ICsxNzExLDM0
+IEBAIHN0YXRpYyB2b2lkIHNldF9yZWdpb25fZm9yX3Rlc3QoY29uc3Qgc3RydWN0IHRlc3RfbW9k
+ZSAqdCwNCj4gwqDCoMKgwqDCoMKgwqDCoGRvX2Fzc2VydGlvbnMoQVNTRVJUX05PX0FDVElPTl9D
+SEFOR0UpOw0KPiDCoH0NCj4gwqANCj4gK3N0YXRpYyB2b2lkIHNldF9wbGFuZV9mb3JfdGVzdF9m
+YmMoY29uc3Qgc3RydWN0IHRlc3RfbW9kZSAqdCwgaWd0X3BsYW5lX3QgKnBsYW5lKQ0KPiArew0K
+PiArwqDCoMKgwqDCoMKgwqBzdHJ1Y3QgaWd0X2ZiIGZiOw0KPiArwqDCoMKgwqDCoMKgwqB1aW50
+MzJfdCBjb2xvcjsNCj4gKw0KPiArwqDCoMKgwqDCoMKgwqBpZ3RfZGVidWcoIlRlc3RpbmcgZmJj
+IG9uIHBsYW5lICVpXG4iLCBwbGFuZS0+aW5kZXgpOw0KPiArDQo+ICvCoMKgwqDCoMKgwqDCoGNy
+ZWF0ZV9mYih0LT5mb3JtYXQsIHByaW1fbW9kZV9wYXJhbXMubW9kZS5oZGlzcGxheSwgcHJpbV9t
+b2RlX3BhcmFtcy5tb2RlLnZkaXNwbGF5LCB0LQ0KPiA+dGlsaW5nLCB0LT5wbGFuZSwgJmZiKTsN
+Cj4gK8KgwqDCoMKgwqDCoMKgY29sb3IgPSBwaWNrX2NvbG9yKCZmYiwgQ09MT1JfUFJJTV9CRyk7
+DQo+ICvCoMKgwqDCoMKgwqDCoGlndF9kcmF3X3JlY3RfZmIoZHJtLmZkLCBkcm0uYm9wcywgMCwg
+JmZiLCBJR1RfRFJBV19CTFQsDQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgIDAsIDAsIGZiLndpZHRoLCBmYi5oZWlnaHQsDQo+ICvCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGNvbG9yKTsNCj4gKw0KPiArwqDCoMKg
+wqDCoMKgwqBpZ3RfcGxhbmVfc2V0X2ZiKHBsYW5lLCAmZmIpOw0KPiArwqDCoMKgwqDCoMKgwqBp
+Z3RfcGxhbmVfc2V0X3Bvc2l0aW9uKHBsYW5lLCAwLCAwKTsNCj4gK8KgwqDCoMKgwqDCoMKgaWd0
+X3BsYW5lX3NldF9zaXplKHBsYW5lLCBwcmltX21vZGVfcGFyYW1zLm1vZGUuaGRpc3BsYXksIHBy
+aW1fbW9kZV9wYXJhbXMubW9kZS52ZGlzcGxheSk7DQo+ICvCoMKgwqDCoMKgwqDCoGlndF9mYl9z
+ZXRfc2l6ZSgmZmIsIHBsYW5lLCBwcmltX21vZGVfcGFyYW1zLm1vZGUuaGRpc3BsYXksDQo+IHBy
+aW1fbW9kZV9wYXJhbXMubW9kZS52ZGlzcGxheSk7DQo+ICvCoMKgwqDCoMKgwqDCoGlndF9kaXNw
+bGF5X2NvbW1pdF9hdG9taWMoJmRybS5kaXNwbGF5LCBEUk1fTU9ERV9BVE9NSUNfQUxMT1dfTU9E
+RVNFVCwgTlVMTCk7DQo+ICsNCj4gK8KgwqDCoMKgwqDCoMKgZmJjX3VwZGF0ZV9sYXN0X2FjdGlv
+bigpOw0KPiArwqDCoMKgwqDCoMKgwqBkb19hc3NlcnRpb25zKEFTU0VSVF9GQkNfRU5BQkxFRCB8
+IEFTU0VSVF9OT19BQ1RJT05fQ0hBTkdFKTsNCj4gK8KgwqDCoMKgwqDCoMKgaWd0X2Fzc2VydF9m
+KGZiY19lbmFibGVfcGVyX3BsYW5lKHBsYW5lLT5pbmRleCwgcHJpbV9tb2RlX3BhcmFtcy5waXBl
+KSwgIkZCQyBkaXNhYmxlZFxuIik7DQoNCkFuZCBoZXJlIHlvdSBuZWVkIHRvIHBhc3MgInBsYW5l
+LT5pbmRleCArIDEiIGZvciBjb21wYXJpc29uLiBXaGF0IGhhcyBiZWVuIHRoZSBwcmFjdGljZSBz
+byBmYXIgaW4NCm90aGVyIHRlc3RzPw0KDQpJIHRyaWVkIHRoZXNlIGNoYW5nZXMgd2l0aCB0aGUg
+a2VybmVsIHdpdGggRklGTyB1bmRlcnJ1biBmaXgsIHRoZSB0ZXN0IGlzIHBhc3NpbmcuDQoNClNv
+IHdpdGggdGhlc2UgY2hhbmdlcyBhbmQgQmhhbnUncyBSQiwNCg0KQWNrZWQtYnk6IFZpbm9kIEdv
+dmluZGFwaWxsYWkgPHZpbm9kLmdvdmluZGFwaWxsYWlAaW50ZWwuY29tPg0KDQpUaGFua3MNClZp
+bm9kDQoNCg0KPiArDQo+ICvCoMKgwqDCoMKgwqDCoGlndF9yZW1vdmVfZmIoZHJtLmZkLCAmZmIp
+Ow0KPiArwqDCoMKgwqDCoMKgwqBpZ3RfcGxhbmVfc2V0X2ZiKHBsYW5lLCBOVUxMKTsNCj4gK8Kg
+wqDCoMKgwqDCoMKgaWd0X2Rpc3BsYXlfY29tbWl0MigmZHJtLmRpc3BsYXksIENPTU1JVF9BVE9N
+SUMpOw0KPiArfQ0KPiArDQo+IMKgc3RhdGljIGJvb2wgZW5hYmxlX2ZlYXR1cmVzX2Zvcl90ZXN0
+KGNvbnN0IHN0cnVjdCB0ZXN0X21vZGUgKnQpDQo+IMKgew0KPiDCoMKgwqDCoMKgwqDCoMKgYm9v
+bCByZXQgPSBmYWxzZTsNCj4gQEAgLTE5NDEsNiArMTk4OSw2MSBAQCBzdGF0aWMgdm9pZCBydGVf
+c3VidGVzdChjb25zdCBzdHJ1Y3QgdGVzdF9tb2RlICp0KQ0KPiDCoMKgwqDCoMKgwqDCoMKgfQ0K
+PiDCoH0NCj4gwqANCj4gK3N0YXRpYyBib29sIGlzX3ZhbGlkX3BsYW5lKGlndF9wbGFuZV90ICpw
+bGFuZSkNCj4gK3sNCj4gK8KgwqDCoMKgwqDCoMKgaW50IGluZGV4ID0gcGxhbmUtPmluZGV4Ow0K
+PiArDQo+ICvCoMKgwqDCoMKgwqDCoGlmIChwbGFuZS0+dHlwZSA9PSBEUk1fUExBTkVfVFlQRV9D
+VVJTT1IpDQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXR1cm4gZmFsc2U7DQo+
+ICvCoMKgwqDCoMKgwqDCoC8qDQo+ICvCoMKgwqDCoMKgwqDCoCAqIEV4ZWN1dGUgdGVzdCBvbmx5
+IG9uIGZpcnN0IHRocmVlIHBsYW5lcw0KPiArwqDCoMKgwqDCoMKgwqAgKi8NCj4gK8KgwqDCoMKg
+wqDCoMKgcmV0dXJuICgoaW5kZXggPj0gMCkgJiYgKGluZGV4IDwgMykpOw0KPiArfQ0KPiArDQo+
+ICsvKioNCj4gKyAqIHBsYW5lLWZiYy1ydGUgLSB0aGUgYmFzaWMgc2FuaXR5IHRlc3QNCj4gKyAq
+DQo+ICsgKiBNRVRIT0QNCj4gKyAqwqDCoCBKdXN0IGRpc2FibGUgcHJpbWFyeSBzY3JlZW4sIGFz
+c2VydCBldmVyeXRoaW5nIGlzIGRpc2FibGVkLCB0aGVuIGVuYWJsZSBzaW5nbGUNCj4gKyAqwqDC
+oCBzY3JlZW5zIGFuZCBzaW5nbGUgcGxhbmUgb25lIGJ5IG9uZcKgIGFuZCBhc3NlcnQgdGhhdCB0
+aGUgdGVzdGVkIGZiYyBpcyBlbmFibGVkDQo+ICsgKsKgwqAgZm9yIHRoZSBwYXJ0aWN1bGFyIHBs
+YW5lLg0KPiArICoNCj4gKyAqIEVYUEVDVEVEIFJFU1VMVFMNCj4gKyAqwqDCoCBCbHVlIHNjcmVl
+bnMgYW5kIHQtPmZlYXR1cmUgZW5hYmxlZC4NCj4gKyAqDQo+ICsgKiBGQUlMVVJFUw0KPiArICrC
+oMKgIEEgZmFpbHVyZSBoZXJlIG1lYW5zIHRoYXQgZmJjIGlzIG5vdCBnZXR0aW5nIGVuYWJsZWQg
+Zm9yIHJlcXVlc3RlZCBwbGFuZS4gSXQgbWVhbnMNCj4gKyAqwqDCoCBrZXJuZWwgaXMgbm90IGFi
+bGUgdG8gZW5hYmxlIGZiYyBvbiB0aGUgcmVxdWVzdGVkIHBsYW5lLg0KPiArICovDQo+ICsNCj4g
+K3N0YXRpYyB2b2lkIHBsYW5lX2ZiY19ydGVfc3VidGVzdChjb25zdCBzdHJ1Y3QgdGVzdF9tb2Rl
+ICp0KQ0KPiArew0KPiArwqDCoMKgwqDCoMKgwqBpbnQgdmVyOw0KPiArwqDCoMKgwqDCoMKgwqBp
+Z3RfcGxhbmVfdCAqcGxhbmU7DQo+ICsNCj4gK8KgwqDCoMKgwqDCoMKgdmVyID0gaW50ZWxfZGlz
+cGxheV92ZXIoaW50ZWxfZ2V0X2RybV9kZXZpZChkcm0uZmQpKTsNCj4gK8KgwqDCoMKgwqDCoMKg
+aWd0X3JlcXVpcmVfZigodmVyID49IDIwKSwgIkNhbid0IHRlc3QgZmJjIGZvciBlYWNoIHBsYW5l
+XG4iKTsNCj4gKw0KPiArwqDCoMKgwqDCoMKgwqBwcmVwYXJlX3N1YnRlc3RfZGF0YSh0LCBOVUxM
+KTsNCj4gK8KgwqDCoMKgwqDCoMKgdW5zZXRfYWxsX2NydGNzKCk7DQo+ICvCoMKgwqDCoMKgwqDC
+oGRvX2Fzc2VydGlvbnMoQVNTRVJUX0ZCQ19ESVNBQkxFRCB8IERPTlRfQVNTRVJUX0NSQyk7DQo+
+ICsNCj4gK8KgwqDCoMKgwqDCoMKgaWd0X291dHB1dF9vdmVycmlkZV9tb2RlKHByaW1fbW9kZV9w
+YXJhbXMub3V0cHV0LCAmcHJpbV9tb2RlX3BhcmFtcy5tb2RlKTsNCj4gK8KgwqDCoMKgwqDCoMKg
+aWd0X291dHB1dF9zZXRfcGlwZShwcmltX21vZGVfcGFyYW1zLm91dHB1dCwgcHJpbV9tb2RlX3Bh
+cmFtcy5waXBlKTsNCj4gKw0KPiArwqDCoMKgwqDCoMKgwqB3YW50ZWRfY3JjID0gJmJsdWVfY3Jj
+c1t0LT5mb3JtYXRdLmNyYzsNCj4gKw0KPiArwqDCoMKgwqDCoMKgwqBmb3JfZWFjaF9wbGFuZV9v
+bl9waXBlKCZkcm0uZGlzcGxheSwgcHJpbV9tb2RlX3BhcmFtcy5waXBlLCBwbGFuZSkgew0KPiAr
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKCFpc192YWxpZF9wbGFuZShwbGFuZSkp
+DQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgY29udGlu
+dWU7DQo+ICsNCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHNldF9wbGFuZV9mb3Jf
+dGVzdF9mYmModCwgcGxhbmUpOw0KPiArwqDCoMKgwqDCoMKgwqB9DQo+ICsNCj4gK8KgwqDCoMKg
+wqDCoMKgaWd0X2Rpc3BsYXlfcmVzZXQoJmRybS5kaXNwbGF5KTsNCj4gK30NCj4gKw0KPiDCoHN0
+YXRpYyB2b2lkIHVwZGF0ZV93YW50ZWRfY3JjKGNvbnN0IHN0cnVjdCB0ZXN0X21vZGUgKnQsIGln
+dF9jcmNfdCAqY3JjKQ0KPiDCoHsNCj4gwqDCoMKgwqDCoMKgwqDCoGlmICh0LT5zY3JlZW4gPT0g
+U0NSRUVOX1BSSU0pDQo+IEBAIC00OTM2LDYgKzUwMzksMjAgQEAgaWd0X21haW5fYXJncygiIiwg
+bG9uZ19vcHRpb25zLCBoZWxwX3N0ciwgb3B0X2hhbmRsZXIsIE5VTEwpDQo+IMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgfQ0KPiDCoMKgwqDCoMKgwqDCoMKgfQ0KPiDCoA0KPiArwqDC
+oMKgwqDCoMKgwqB0LnBpcGVzID0gUElQRV9TSU5HTEU7DQo+ICvCoMKgwqDCoMKgwqDCoHQuZmVh
+dHVyZSA9IEZFQVRVUkVfRkJDOw0KPiArwqDCoMKgwqDCoMKgwqB0LnNjcmVlbiA9IFNDUkVFTl9Q
+UklNOw0KPiArwqDCoMKgwqDCoMKgwqB0LmZicyA9IEZCU19JTkRJVklEVUFMOw0KPiArwqDCoMKg
+wqDCoMKgwqB0LmZvcm1hdCA9IEZPUk1BVF9ERUZBVUxUOw0KPiArwqDCoMKgwqDCoMKgwqAvKiBN
+YWtlIHN1cmUgbm90aGluZyBpcyB1c2luZyB0aGVzZSB2YWx1ZXMuICovDQo+ICvCoMKgwqDCoMKg
+wqDCoHQuZmxpcCA9IC0xOw0KPiArwqDCoMKgwqDCoMKgwqB0Lm1ldGhvZCA9IC0xOw0KPiArwqDC
+oMKgwqDCoMKgwqB0LnRpbGluZyA9IG9wdC50aWxpbmc7DQo+ICsNCj4gK8KgwqDCoMKgwqDCoMKg
+aWd0X3N1YnRlc3RfZigicGxhbmUtZmJjLXJ0ZSIpIHsNCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoHBsYW5lX2ZiY19ydGVfc3VidGVzdCgmdCk7DQo+ICvCoMKgwqDCoMKgwqDCoH0N
+Cj4gKw0KPiDCoMKgwqDCoMKgwqDCoMKgVEVTVF9NT0RFX0lURVJfQkVHSU4odCkNCj4gwqANCj4g
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3Rfc3VidGVzdF9mKCIlcy0lcy0lcy0l
+cy0lcy1kcmF3LSVzIiwNCg0K
