@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5867E10E51C
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Nov 2023 11:48:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 445CC10E510
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Nov 2023 11:48:56 +0000 (UTC)
 From: Matthew Auld <matthew.auld@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  7 Nov 2023 11:48:11 +0000
-Message-ID: <20231107114816.190793-11-matthew.auld@intel.com>
+Date: Tue,  7 Nov 2023 11:48:14 +0000
+Message-ID: <20231107114816.190793-14-matthew.auld@intel.com>
 In-Reply-To: <20231107114816.190793-1-matthew.auld@intel.com>
 References: <20231107114816.190793-1-matthew.auld@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v8 10/15] lib/xe_ioctl: update vm_bind to
- account for pat_index
+Subject: [igt-dev] [PATCH i-g-t v8 13/15] lib/intel_batchbuffer: extend to
+ include optional alignment
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,104 +24,146 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Keep things minimal and select the 1way+ by default on all platforms.
-Other users can use intel_buf, get_offset_pat_index etc or use
-__xe_vm_bind() directly.  Display tests don't directly use this
-interface.
+Extend intel_bb_create_full() to support specifying the alignment for
+the allocator. This will be useful in some upcoming test.
 
 Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: José Roberto de Souza <jose.souza@intel.com>
 Cc: Pallavi Mishra <pallavi.mishra@intel.com>
 Reviewed-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/xe/xe_ioctl.c   | 8 ++++++--
- lib/xe/xe_ioctl.h   | 2 +-
- tests/intel/xe_vm.c | 5 ++++-
- 3 files changed, 11 insertions(+), 4 deletions(-)
+ lib/intel_batchbuffer.c | 30 +++++++++++++++++++-----------
+ lib/intel_batchbuffer.h |  2 +-
+ 2 files changed, 20 insertions(+), 12 deletions(-)
 
-diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index 9010380c3..bd4d28448 100644
---- a/lib/xe/xe_ioctl.c
-+++ b/lib/xe/xe_ioctl.c
-@@ -41,6 +41,7 @@
- #include "config.h"
- #include "drmtest.h"
- #include "igt_syncobj.h"
-+#include "intel_pat.h"
- #include "ioctl_wrappers.h"
- #include "xe_ioctl.h"
- #include "xe_query.h"
-@@ -92,7 +93,7 @@ void xe_vm_bind_array(int fd, uint32_t vm, uint32_t exec_queue,
- int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
- 		  uint64_t offset, uint64_t addr, uint64_t size, uint32_t op,
- 		  uint32_t flags, struct drm_xe_sync *sync, uint32_t num_syncs,
--		  uint32_t region, uint64_t ext)
-+		  uint32_t region, uint8_t pat_index, uint64_t ext)
+diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+index 16ce7c62a..01d80c841 100644
+--- a/lib/intel_batchbuffer.c
++++ b/lib/intel_batchbuffer.c
+@@ -894,7 +894,7 @@ static inline uint64_t __intel_bb_get_offset(struct intel_bb *ibb,
+ static struct intel_bb *
+ __intel_bb_create(int fd, uint32_t ctx, uint32_t vm, const intel_ctx_cfg_t *cfg,
+ 		  uint32_t size, bool do_relocs,
+-		  uint64_t start, uint64_t end,
++		  uint64_t start, uint64_t end, uint64_t alignment,
+ 		  uint8_t allocator_type, enum allocator_strategy strategy)
  {
- 	struct drm_xe_vm_bind bind = {
- 		.extensions = ext,
-@@ -108,6 +109,8 @@ int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
- 		.num_syncs = num_syncs,
- 		.syncs = (uintptr_t)sync,
- 		.exec_queue_id = exec_queue,
-+		.bind.pat_index = (pat_index == DEFAULT_PAT_INDEX) ?
-+			intel_get_pat_idx_wb(fd) : pat_index,
- 	};
+ 	struct drm_i915_gem_exec_object2 *object;
+@@ -918,7 +918,11 @@ __intel_bb_create(int fd, uint32_t ctx, uint32_t vm, const intel_ctx_cfg_t *cfg,
+ 	 */
+ 	if (ibb->driver == INTEL_DRIVER_I915) {
+ 		ibb->uses_full_ppgtt = gem_uses_full_ppgtt(fd);
+-		ibb->alignment = gem_detect_safe_alignment(fd);
++
++		if (!alignment)
++			alignment = gem_detect_safe_alignment(fd);
++
++		ibb->alignment = alignment;
+ 		ibb->gtt_size = gem_aperture_size(fd);
+ 		ibb->handle = gem_create(fd, size);
  
- 	if (igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind))
-@@ -122,7 +125,8 @@ void  __xe_vm_bind_assert(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
- 			  uint32_t num_syncs, uint32_t region, uint64_t ext)
+@@ -947,7 +951,10 @@ __intel_bb_create(int fd, uint32_t ctx, uint32_t vm, const intel_ctx_cfg_t *cfg,
+ 	} else {
+ 		igt_assert(!do_relocs);
+ 
+-		ibb->alignment = xe_get_default_alignment(fd);
++		if (!alignment)
++			alignment = xe_get_default_alignment(fd);
++
++		ibb->alignment = alignment;
+ 		size = ALIGN(size, ibb->alignment);
+ 		ibb->handle = xe_bo_create_flags(fd, 0, size, visible_vram_if_possible(fd, 0));
+ 
+@@ -1018,6 +1025,7 @@ __intel_bb_create(int fd, uint32_t ctx, uint32_t vm, const intel_ctx_cfg_t *cfg,
+  * @size: size of the batchbuffer
+  * @start: allocator vm start address
+  * @end: allocator vm start address
++ * @alignment: alignment to use for allocator, zero for default
+  * @allocator_type: allocator type, SIMPLE, RELOC, ...
+  * @strategy: allocation strategy
+  *
+@@ -1034,11 +1042,11 @@ __intel_bb_create(int fd, uint32_t ctx, uint32_t vm, const intel_ctx_cfg_t *cfg,
+ struct intel_bb *intel_bb_create_full(int fd, uint32_t ctx, uint32_t vm,
+ 				      const intel_ctx_cfg_t *cfg, uint32_t size,
+ 				      uint64_t start, uint64_t end,
+-				      uint8_t allocator_type,
++				      uint64_t alignment, uint8_t allocator_type,
+ 				      enum allocator_strategy strategy)
  {
- 	igt_assert_eq(__xe_vm_bind(fd, vm, exec_queue, bo, offset, addr, size,
--				   op, flags, sync, num_syncs, region, ext), 0);
-+				   op, flags, sync, num_syncs, region, DEFAULT_PAT_INDEX,
-+				   ext), 0);
+ 	return __intel_bb_create(fd, ctx, vm, cfg, size, false, start, end,
+-				 allocator_type, strategy);
++				 alignment, allocator_type, strategy);
  }
  
- void xe_vm_bind(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
-diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index 3681a6977..59c07e2d3 100644
---- a/lib/xe/xe_ioctl.h
-+++ b/lib/xe/xe_ioctl.h
-@@ -20,7 +20,7 @@ uint32_t xe_vm_create(int fd, uint32_t flags, uint64_t ext);
- int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
- 		  uint64_t offset, uint64_t addr, uint64_t size, uint32_t op,
- 		  uint32_t flags, struct drm_xe_sync *sync, uint32_t num_syncs,
--		  uint32_t region, uint64_t ext);
-+		  uint32_t region, uint8_t pat_index, uint64_t ext);
- void  __xe_vm_bind_assert(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
- 			  uint64_t offset, uint64_t addr, uint64_t size,
- 			  uint32_t op, uint32_t flags, struct drm_xe_sync *sync,
-diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-index eeb49122a..6088a65bc 100644
---- a/tests/intel/xe_vm.c
-+++ b/tests/intel/xe_vm.c
-@@ -10,6 +10,7 @@
-  */
+ /**
+@@ -1063,7 +1071,7 @@ struct intel_bb *intel_bb_create_with_allocator(int fd, uint32_t ctx, uint32_t v
+ 						uint32_t size,
+ 						uint8_t allocator_type)
+ {
+-	return __intel_bb_create(fd, ctx, vm, cfg, size, false, 0, 0,
++	return __intel_bb_create(fd, ctx, vm, cfg, size, false, 0, 0, 0,
+ 				 allocator_type, ALLOC_STRATEGY_HIGH_TO_LOW);
+ }
  
- #include "igt.h"
-+#include "intel_pat.h"
- #include "lib/igt_syncobj.h"
- #include "lib/intel_reg.h"
- #include "xe_drm.h"
-@@ -356,7 +357,8 @@ static void userptr_invalid(int fd)
- 	vm = xe_vm_create(fd, 0, 0);
- 	munmap(data, size);
- 	ret = __xe_vm_bind(fd, vm, 0, 0, to_user_pointer(data), 0x40000,
--			   size, XE_VM_BIND_OP_MAP_USERPTR, 0, NULL, 0, 0, 0);
-+			   size, XE_VM_BIND_OP_MAP_USERPTR, 0, NULL, 0, 0,
-+			   DEFAULT_PAT_INDEX, 0);
- 	igt_assert(ret == -EFAULT);
+@@ -1102,7 +1110,7 @@ struct intel_bb *intel_bb_create(int fd, uint32_t size)
+ 	bool relocs = is_i915_device(fd) && gem_has_relocations(fd);
  
- 	xe_vm_destroy(fd, vm);
-@@ -795,6 +797,7 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
- 		bind_ops[i].op = XE_VM_BIND_OP_MAP;
- 		bind_ops[i].flags = XE_VM_BIND_FLAG_ASYNC;
- 		bind_ops[i].region = 0;
-+		bind_ops[i].pat_index = intel_get_pat_idx_wb(fd);
- 		bind_ops[i].reserved[0] = 0;
- 		bind_ops[i].reserved[1] = 0;
+ 	return __intel_bb_create(fd, 0, 0, NULL, size,
+-				 relocs && !aux_needs_softpin(fd), 0, 0,
++				 relocs && !aux_needs_softpin(fd), 0, 0, 0,
+ 				 INTEL_ALLOCATOR_SIMPLE,
+ 				 ALLOC_STRATEGY_HIGH_TO_LOW);
+ }
+@@ -1129,7 +1137,7 @@ intel_bb_create_with_context(int fd, uint32_t ctx, uint32_t vm,
+ 	bool relocs = is_i915_device(fd) && gem_has_relocations(fd);
  
+ 	return __intel_bb_create(fd, ctx, vm, cfg, size,
+-				 relocs && !aux_needs_softpin(fd), 0, 0,
++				 relocs && !aux_needs_softpin(fd), 0, 0, 0,
+ 				 INTEL_ALLOCATOR_SIMPLE,
+ 				 ALLOC_STRATEGY_HIGH_TO_LOW);
+ }
+@@ -1150,7 +1158,7 @@ struct intel_bb *intel_bb_create_with_relocs(int fd, uint32_t size)
+ {
+ 	igt_require(is_i915_device(fd) && gem_has_relocations(fd));
+ 
+-	return __intel_bb_create(fd, 0, 0, NULL, size, true, 0, 0,
++	return __intel_bb_create(fd, 0, 0, NULL, size, true, 0, 0, 0,
+ 				 INTEL_ALLOCATOR_NONE, ALLOC_STRATEGY_NONE);
+ }
+ 
+@@ -1175,7 +1183,7 @@ intel_bb_create_with_relocs_and_context(int fd, uint32_t ctx,
+ {
+ 	igt_require(is_i915_device(fd) && gem_has_relocations(fd));
+ 
+-	return __intel_bb_create(fd, ctx, 0, cfg, size, true, 0, 0,
++	return __intel_bb_create(fd, ctx, 0, cfg, size, true, 0, 0, 0,
+ 				 INTEL_ALLOCATOR_NONE, ALLOC_STRATEGY_NONE);
+ }
+ 
+@@ -1195,7 +1203,7 @@ struct intel_bb *intel_bb_create_no_relocs(int fd, uint32_t size)
+ {
+ 	igt_require(gem_uses_full_ppgtt(fd));
+ 
+-	return __intel_bb_create(fd, 0, 0, NULL, size, false, 0, 0,
++	return __intel_bb_create(fd, 0, 0, NULL, size, false, 0, 0, 0,
+ 				 INTEL_ALLOCATOR_SIMPLE,
+ 				 ALLOC_STRATEGY_HIGH_TO_LOW);
+ }
+diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
+index bdb3b6a67..8738cb5c4 100644
+--- a/lib/intel_batchbuffer.h
++++ b/lib/intel_batchbuffer.h
+@@ -307,7 +307,7 @@ struct intel_bb {
+ struct intel_bb *
+ intel_bb_create_full(int fd, uint32_t ctx, uint32_t vm,
+ 		     const intel_ctx_cfg_t *cfg, uint32_t size, uint64_t start,
+-		     uint64_t end, uint8_t allocator_type,
++		     uint64_t end, uint64_t alignment, uint8_t allocator_type,
+ 		     enum allocator_strategy strategy);
+ struct intel_bb *
+ intel_bb_create_with_allocator(int fd, uint32_t ctx, uint32_t vm,
 -- 
 2.41.0
