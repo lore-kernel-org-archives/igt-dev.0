@@ -1,16 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============0956342351506699475=="
+Received: from madras.collabora.co.uk (madras.collabora.co.uk
+ [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 49FF210E13E
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Nov 2023 11:24:10 +0000 (UTC)
+Message-ID: <653b83e4-940c-42f8-b72f-d8fb3fc0a604@collabora.com>
+Date: Tue, 7 Nov 2023 11:24:04 +0000
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Helen Koike" <helen.koike@collabora.com>
-Date: Tue, 07 Nov 2023 11:02:52 -0000
-Message-ID: <169935497228.21168.8856960807884432017@emeril.freedesktop.org>
-References: <20231008222306.145122-1-helen.koike@collabora.com>
-In-Reply-To: <20231008222306.145122-1-helen.koike@collabora.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_s?=
- =?utf-8?q?tarting_with_=5B1/2=5D_lib/drmtest=3A_add_igt=5Fdebug_when_forc?=
- =?utf-8?q?ed_and_dev=5Fname_doesn=27t_match_=28rev2=29?=
+Content-Language: en-US
+To: Vignesh Raman <vignesh.raman@collabora.com>,
+ bhanuprakash.modem@intel.com, igt-dev@lists.freedesktop.org
+References: <20231027144022.2016354-1-vignesh.raman@collabora.com>
+ <797dd2bf-25a3-4a6a-b2eb-5c5cbdb25b09@collabora.com>
+ <a106c443-eb67-c413-1ac0-cb8a86e8ab30@collabora.com>
+ <c1431a29-7346-4812-aad7-1802f4e33952@collabora.com>
+ <1b0a6bc9-9e45-95b7-a108-738dd7fd2a90@collabora.com>
+From: Daniel Stone <daniels@collabora.com>
+In-Reply-To: <1b0a6bc9-9e45-95b7-a108-738dd7fd2a90@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t v2] lib/igt_kms: Fix memory corruption
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,134 +26,37 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: helen.koike@collabora.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0956342351506699475==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On 07/11/2023 08:58, Vignesh Raman wrote:
+> On 06/11/23 20:13, Daniel Stone wrote:
+>> What I mean is to make sure that the code cannot access out of 
+>> bounds, regardless of the number. We can set IGT_MAX_PIPES to 32 but 
+>> then someone will hit the same failure when there are more CRTCs than 
+>> that.
+>>
+>> The way to do this would probably be to igt_require() that 
+>> count_crtcs does not exceed IGT_MAX_PIPES, in all the paths where we 
+>> access the crtcs array. There is no need to bump the limit to 32 
+>> until it's required.
+>
+> Okay understood. We can use igt_assert_f to make the test fail 
+> (instead of skipping it) if count_crtcs exceeds IGT_MAX_PIPES.
+>
+> ERROR - Igt error: (kms_vblank:81) igt_kms-CRITICAL: Failed assertion: 
+> resources->count_crtcs <= IGT_MAX_PIPES
+> ERROR - Igt error: (kms_vblank:81) igt_kms-CRITICAL: count_crtcs 
+> exceeds IGT_MAX_PIPES, count_crtcs=16, IGT_MAX_PIPES=8
+> ERROR - Igt error: Test kms_vblank failed.
+>
+> I will check other code paths as well. Thanks.
 
-== Series Details ==
+That's perfect, thanks Vignesh.
 
-Series: series starting with [1/2] lib/drmtest: add igt_debug when forced and dev_name doesn't match (rev2)
-URL   : https://patchwork.freedesktop.org/series/124788/
-State : success
+Cheers,
 
-== Summary ==
+Daniel
 
-CI Bug Log - changes from XEIGT_7575_BAT -> XEIGTPW_10127_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10127_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
-    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 other test fail
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7575/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10127/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#854]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/854
-  [Intel XE#862]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/862
-
-
-Build changes
--------------
-
-  * IGT: IGT_7575 -> IGTPW_10127
-
-  IGTPW_10127: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10127/index.html
-  IGT_7575: 6edf8b6808de2bde968415926d2b55817f7ea1de @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-472-5a3a6fdda31fc8fa60db6d2fa30bd4db2509eb8b: 5a3a6fdda31fc8fa60db6d2fa30bd4db2509eb8b
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10127/index.html
-
---===============0956342351506699475==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [1/2] lib/drmtest: add igt_debug when forced and dev_name doesn&#39;t match (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124788/">https://patchwork.freedesktop.org/series/124788/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10127/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10127/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7575_BAT -&gt; XEIGTPW_10127_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10127_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7575/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10127/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7575 -&gt; IGTPW_10127</li>
-</ul>
-<p>IGTPW_10127: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10127/index.html<br />
-  IGT_7575: 6edf8b6808de2bde968415926d2b55817f7ea1de @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-472-5a3a6fdda31fc8fa60db6d2fa30bd4db2509eb8b: 5a3a6fdda31fc8fa60db6d2fa30bd4db2509eb8b</p>
-
-</body>
-</html>
-
---===============0956342351506699475==--
