@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6724210E4CB
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Nov 2023 08:26:42 +0000 (UTC)
-From: janga.rahul.kumar@intel.com
-To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
- janga.rahul.kumar@intel.com
-Date: Tue,  7 Nov 2023 14:00:23 +0530
-Message-Id: <20231107083023.751059-1-janga.rahul.kumar@intel.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/intel/xe_vm: Correct stride to avoid
- address range collision
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A04AD10E4CF
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Nov 2023 08:40:03 +0000 (UTC)
+From: Melanie Lobo <melanie.lobo@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue,  7 Nov 2023 14:24:54 +0530
+Message-Id: <20231107085455.22706-1-melanie.lobo@intel.com>
+In-Reply-To: <20231010134540.28485-1-melanie.lobo@intel.com>
+References: <20231010134540.28485-1-melanie.lobo@intel.com>
+Subject: [igt-dev] [PATCH 1/2] lib/intel_aux_pgtable: Library to add support
+ for FP16 compressed formats
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,39 +17,52 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: lucas.demarchi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+MTL supports FP16 format which is a binary floating-point computer
+number format that occupies 16 bits in computer memory. In this test
+platform shall render compression in display engine to receive
+FP16 compressed formats.
 
-For XE2, the minimum page size for both VRAM and system memory is only 4K.
+This was tested with kernel patch,
+https://patchwork.freedesktop.org/patch/563854
 
-Minimum page size was used as the address stride, which is 4K.
-When attempting to bind a 4K range, consecutive VM BIND IOCTL calls
-resulted in a range collision. Update stride based on bo size.
+Test-with: 20231012062620.23886-1-melanie.lobo@intel.com
 
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+cc: Swati Sharma <swati2.sharma@intel.com>
+
+Change-Id: I4f012e7b52a00730fe8fc99381b7615611d50b67
+Signed-off-by: Melanie Lobo <melanie.lobo@intel.com>
 ---
- tests/intel/xe_vm.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ lib/intel_aux_pgtable.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-index dd3302337..2aead9427 100644
---- a/tests/intel/xe_vm.c
-+++ b/tests/intel/xe_vm.c
-@@ -377,6 +377,10 @@ shared_pte_page(int fd, struct drm_xe_engine_class_instance *eci, int n_bo,
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
- 			xe_get_default_alignment(fd));
+diff --git a/lib/intel_aux_pgtable.c b/lib/intel_aux_pgtable.c
+index 7c79521344de..a612df407692 100644
+--- a/lib/intel_aux_pgtable.c
++++ b/lib/intel_aux_pgtable.c
+@@ -21,6 +21,7 @@
+ #define AUX_FORMAT_AYUV		0x09
+ #define AUX_FORMAT_ARGB_8B	0x0A
+ #define AUX_FORMAT_NV12_21	0x0F
++#define AUX_FORMAT_XRGB16161616_64B 0x10
  
-+	if (addr_stride <= bo_size) {
-+		addr_stride = addr_stride + bo_size;
-+	}
-+
- 	for (i = 0; i < n_bo; ++i) {
- 		bo[i] = xe_bo_create_flags(fd, vm, bo_size,
- 					   visible_vram_if_possible(fd, eci->gt_id));
+ struct pgtable_level_desc {
+ 	int idx_shift;
+@@ -305,6 +306,10 @@ static uint64_t pgt_get_l1_flags(const struct intel_buf *buf, int surface_idx)
+ 			entry.e.format = AUX_FORMAT_ARGB_8B;
+ 			entry.e.depth = bpp_to_depth_val(32);
+ 			break;
++		case 64:
++			entry.e.format = AUX_FORMAT_XRGB16161616_64B;
++			entry.e.depth = bpp_to_depth_val(64);
++			break;
+ 		default:
+ 			igt_assert(0);
+ 		}
 -- 
-2.25.1
+2.17.1
