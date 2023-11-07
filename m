@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 41E1C10E51D
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Nov 2023 11:48:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5867E10E51C
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Nov 2023 11:48:50 +0000 (UTC)
 From: Matthew Auld <matthew.auld@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  7 Nov 2023 11:48:12 +0000
-Message-ID: <20231107114816.190793-12-matthew.auld@intel.com>
+Date: Tue,  7 Nov 2023 11:48:11 +0000
+Message-ID: <20231107114816.190793-11-matthew.auld@intel.com>
 In-Reply-To: <20231107114816.190793-1-matthew.auld@intel.com>
 References: <20231107114816.190793-1-matthew.auld@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v8 11/15] lib/intel_allocator: treat
- default_alignment as the minimum
+Subject: [igt-dev] [PATCH i-g-t v8 10/15] lib/xe_ioctl: update vm_bind to
+ account for pat_index
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,69 +24,104 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-If something overrides the default alignment, we should only apply the
-alignment if it is larger than the default_alignment.
-
-v2 (Niranjana):
-  - Simplify slightly
-v3:
-  - Also update the default-alignment testcase
+Keep things minimal and select the 1way+ by default on all platforms.
+Other users can use intel_buf, get_offset_pat_index etc or use
+__xe_vm_bind() directly.  Display tests don't directly use this
+interface.
 
 Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 Cc: José Roberto de Souza <jose.souza@intel.com>
 Cc: Pallavi Mishra <pallavi.mishra@intel.com>
 Reviewed-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/intel_allocator.c             | 4 ++--
- tests/intel/api_intel_allocator.c | 8 ++++----
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ lib/xe/xe_ioctl.c   | 8 ++++++--
+ lib/xe/xe_ioctl.h   | 2 +-
+ tests/intel/xe_vm.c | 5 ++++-
+ 3 files changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
-index 01e025b46..341db2a50 100644
---- a/lib/intel_allocator.c
-+++ b/lib/intel_allocator.c
-@@ -584,8 +584,8 @@ static int handle_request(struct alloc_req *req, struct alloc_resp *resp)
- 			break;
- 
- 		case REQ_ALLOC:
--			if (!req->alloc.alignment)
--				req->alloc.alignment = ial->default_alignment;
-+			req->alloc.alignment = max(ial->default_alignment,
-+						   req->alloc.alignment);
- 
- 			resp->response_type = RESP_ALLOC;
- 			resp->alloc.offset = ial->alloc(ial,
-diff --git a/tests/intel/api_intel_allocator.c b/tests/intel/api_intel_allocator.c
-index d19be3ce9..8e13a8808 100644
---- a/tests/intel/api_intel_allocator.c
-+++ b/tests/intel/api_intel_allocator.c
-@@ -206,7 +206,7 @@ static void reserve(int fd, uint8_t type)
- static void default_alignment(int fd)
+diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+index 9010380c3..bd4d28448 100644
+--- a/lib/xe/xe_ioctl.c
++++ b/lib/xe/xe_ioctl.c
+@@ -41,6 +41,7 @@
+ #include "config.h"
+ #include "drmtest.h"
+ #include "igt_syncobj.h"
++#include "intel_pat.h"
+ #include "ioctl_wrappers.h"
+ #include "xe_ioctl.h"
+ #include "xe_query.h"
+@@ -92,7 +93,7 @@ void xe_vm_bind_array(int fd, uint32_t vm, uint32_t exec_queue,
+ int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
+ 		  uint64_t offset, uint64_t addr, uint64_t size, uint32_t op,
+ 		  uint32_t flags, struct drm_xe_sync *sync, uint32_t num_syncs,
+-		  uint32_t region, uint64_t ext)
++		  uint32_t region, uint8_t pat_index, uint64_t ext)
  {
- 	struct test_obj obj[3];
--	uint64_t ahnd, default_alignment = 0x4000;
-+	uint64_t ahnd, default_alignment = SZ_4K;
+ 	struct drm_xe_vm_bind bind = {
+ 		.extensions = ext,
+@@ -108,6 +109,8 @@ int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
+ 		.num_syncs = num_syncs,
+ 		.syncs = (uintptr_t)sync,
+ 		.exec_queue_id = exec_queue,
++		.bind.pat_index = (pat_index == DEFAULT_PAT_INDEX) ?
++			intel_get_pat_idx_wb(fd) : pat_index,
+ 	};
  
- 	ahnd = intel_allocator_open_full(fd, 0, 0, 0, INTEL_ALLOCATOR_SIMPLE,
- 					 ALLOC_STRATEGY_LOW_TO_HIGH,
-@@ -214,13 +214,13 @@ static void default_alignment(int fd)
+ 	if (igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind))
+@@ -122,7 +125,8 @@ void  __xe_vm_bind_assert(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
+ 			  uint32_t num_syncs, uint32_t region, uint64_t ext)
+ {
+ 	igt_assert_eq(__xe_vm_bind(fd, vm, exec_queue, bo, offset, addr, size,
+-				   op, flags, sync, num_syncs, region, ext), 0);
++				   op, flags, sync, num_syncs, region, DEFAULT_PAT_INDEX,
++				   ext), 0);
+ }
  
- 	for (int i = 0; i < ARRAY_SIZE(obj); i++) {
- 		obj[i].handle = gem_handle_gen();
--		obj[i].offset = intel_allocator_alloc(ahnd, obj[i].handle, 4096,
--				i == 2 ? 4096 : 0);
-+		obj[i].offset = intel_allocator_alloc(ahnd, obj[i].handle,
-+						      SZ_4K, i == 2 ? 0 : SZ_16K);
- 		igt_debug("obj[%d].offset: %llx, handle: %u\n", i,
- 			 (long long) obj[i].offset, obj[i].handle);
- 	}
+ void xe_vm_bind(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
+diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+index 3681a6977..59c07e2d3 100644
+--- a/lib/xe/xe_ioctl.h
++++ b/lib/xe/xe_ioctl.h
+@@ -20,7 +20,7 @@ uint32_t xe_vm_create(int fd, uint32_t flags, uint64_t ext);
+ int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
+ 		  uint64_t offset, uint64_t addr, uint64_t size, uint32_t op,
+ 		  uint32_t flags, struct drm_xe_sync *sync, uint32_t num_syncs,
+-		  uint32_t region, uint64_t ext);
++		  uint32_t region, uint8_t pat_index, uint64_t ext);
+ void  __xe_vm_bind_assert(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
+ 			  uint64_t offset, uint64_t addr, uint64_t size,
+ 			  uint32_t op, uint32_t flags, struct drm_xe_sync *sync,
+diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+index eeb49122a..6088a65bc 100644
+--- a/tests/intel/xe_vm.c
++++ b/tests/intel/xe_vm.c
+@@ -10,6 +10,7 @@
+  */
  
--	igt_assert_eq(obj[1].offset - obj[0].offset, default_alignment);
-+	igt_assert_eq(obj[1].offset - obj[0].offset, SZ_16K);
- 	/* obj[2] should be between obj[0] and obj[1] */
- 	igt_assert(obj[0].offset < obj[2].offset);
- 	igt_assert(obj[2].offset < obj[1].offset);
+ #include "igt.h"
++#include "intel_pat.h"
+ #include "lib/igt_syncobj.h"
+ #include "lib/intel_reg.h"
+ #include "xe_drm.h"
+@@ -356,7 +357,8 @@ static void userptr_invalid(int fd)
+ 	vm = xe_vm_create(fd, 0, 0);
+ 	munmap(data, size);
+ 	ret = __xe_vm_bind(fd, vm, 0, 0, to_user_pointer(data), 0x40000,
+-			   size, XE_VM_BIND_OP_MAP_USERPTR, 0, NULL, 0, 0, 0);
++			   size, XE_VM_BIND_OP_MAP_USERPTR, 0, NULL, 0, 0,
++			   DEFAULT_PAT_INDEX, 0);
+ 	igt_assert(ret == -EFAULT);
+ 
+ 	xe_vm_destroy(fd, vm);
+@@ -795,6 +797,7 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
+ 		bind_ops[i].op = XE_VM_BIND_OP_MAP;
+ 		bind_ops[i].flags = XE_VM_BIND_FLAG_ASYNC;
+ 		bind_ops[i].region = 0;
++		bind_ops[i].pat_index = intel_get_pat_idx_wb(fd);
+ 		bind_ops[i].reserved[0] = 0;
+ 		bind_ops[i].reserved[1] = 0;
+ 
 -- 
 2.41.0
