@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============6983128949255398365=="
+ boundary="===============7091266491424884006=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: janga.rahul.kumar@intel.com
-Date: Tue, 07 Nov 2023 09:45:21 -0000
-Message-ID: <169935032148.21167.8487890945108977927@emeril.freedesktop.org>
-References: <20231107083023.751059-1-janga.rahul.kumar@intel.com>
-In-Reply-To: <20231107083023.751059-1-janga.rahul.kumar@intel.com>
+To: "Melanie Lobo" <melanie.lobo@intel.com>
+Date: Tue, 07 Nov 2023 10:27:16 -0000
+Message-ID: <169935283611.21167.6220063749213802244@emeril.freedesktop.org>
+References: <20231010134540.28485-1-melanie.lobo@intel.com>
+In-Reply-To: <20231010134540.28485-1-melanie.lobo@intel.com>
 Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/in?=
- =?utf-8?q?tel/xe=5Fvm=3A_Correct_stride_to_avoid_address_range_collision?=
+ =?utf-8?q?tel/kms=5Fflip=5Fscaled=5Fcrc=3A_Add_support_for_FP16_format_of?=
+ =?utf-8?q?_MTL_compressed_modifier_=28rev12=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,20 +24,20 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============6983128949255398365==
+--===============7091266491424884006==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/intel/xe_vm: Correct stride to avoid address range collision
-URL   : https://patchwork.freedesktop.org/series/126059/
+Series: tests/intel/kms_flip_scaled_crc: Add support for FP16 format of MTL compressed modifier (rev12)
+URL   : https://patchwork.freedesktop.org/series/124956/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_7575_BAT -> XEIGTPW_10125_BAT
+CI Bug Log - changes from XEIGT_7575_BAT -> XEIGTPW_10126_BAT
 ====================================================
 
 Summary
@@ -48,46 +49,57 @@ Summary
 
   
 
-Participating hosts (4 -> 3)
+Participating hosts (4 -> 4)
 ------------------------------
 
-  Missing    (1): bat-pvc-2 
+  No changes in participating hosts
 
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_10125_BAT that come from known issues:
+  Here are the changes found in XEIGTPW_10126_BAT that come from known issues:
 
 ### IGT changes ###
 
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - bat-dg2-oem2:       [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 other test fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7575/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10126/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  
 #### Possible fixes ####
 
   * {igt@xe_create@create-execqueues-noleak}:
-    - bat-adlp-7:         [FAIL][1] ([Intel XE#524]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7575/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10125/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
+    - bat-adlp-7:         [FAIL][3] ([Intel XE#524]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7575/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10126/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
 
   
   {name}: This element is suppressed. This means it is ignored when computing
           the status of the difference (SUCCESS, WARNING, or FAILURE).
 
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
   [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+  [Intel XE#854]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/854
+  [Intel XE#862]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/862
 
 
 Build changes
 -------------
 
-  * IGT: IGT_7575 -> IGTPW_10125
+  * IGT: IGT_7575 -> IGTPW_10126
 
-  IGTPW_10125: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10125/index.html
+  IGTPW_10126: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10126/index.html
   IGT_7575: 6edf8b6808de2bde968415926d2b55817f7ea1de @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   xe-472-5a3a6fdda31fc8fa60db6d2fa30bd4db2509eb8b: 5a3a6fdda31fc8fa60db6d2fa30bd4db2509eb8b
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10125/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10126/index.html
 
---===============6983128949255398365==
+--===============7091266491424884006==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -107,28 +119,35 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_vm: Correct stride to avoid address range collision</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126059/">https://patchwork.freedesktop.org/series/126059/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/intel/kms_flip_scaled_crc: Add support for FP16 format of MTL compressed modifier (rev12)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/124956/">https://patchwork.freedesktop.org/series/124956/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10125/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10125/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10126/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10126/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_7575_BAT -&gt; XEIGTPW_10125_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_7575_BAT -&gt; XEIGTPW_10126_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 3)</h2>
-<p>Missing    (1): bat-pvc-2 </p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10125_BAT that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_10126_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7575/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10126/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
+</ul>
+</li>
+</ul>
 <h4>Possible fixes</h4>
 <ul>
 <li>{igt@xe_create@create-execqueues-noleak}:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7575/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10125/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">PASS</a></li>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7575/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10126/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">PASS</a></li>
 </ul>
 </li>
 </ul>
@@ -136,13 +155,13 @@ Content-Transfer-Encoding: 7bit
           the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_7575 -&gt; IGTPW_10125</li>
+<li>IGT: IGT_7575 -&gt; IGTPW_10126</li>
 </ul>
-<p>IGTPW_10125: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10125/index.html<br />
+<p>IGTPW_10126: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10126/index.html<br />
   IGT_7575: 6edf8b6808de2bde968415926d2b55817f7ea1de @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   xe-472-5a3a6fdda31fc8fa60db6d2fa30bd4db2509eb8b: 5a3a6fdda31fc8fa60db6d2fa30bd4db2509eb8b</p>
 
 </body>
 </html>
 
---===============6983128949255398365==--
+--===============7091266491424884006==--
