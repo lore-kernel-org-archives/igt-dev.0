@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EC9E310E080
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Nov 2023 09:12:42 +0000 (UTC)
-Date: Tue, 7 Nov 2023 10:12:26 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20231107091226.zmrrpu6jekao34os@kamilkon-desk.igk.intel.com>
-References: <20231107033733.2772666-1-jesse.zhang@amd.com>
+Content-Type: multipart/alternative;
+ boundary="===============8832653783996195160=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231107033733.2772666-1-jesse.zhang@amd.com>
-Subject: Re: [igt-dev] [PATCH V2 i-g-t] test/amdgpu: add apu check for
- pciplug test
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: janga.rahul.kumar@intel.com
+Date: Tue, 07 Nov 2023 09:44:40 -0000
+Message-ID: <169935028025.21168.12723493081177193048@emeril.freedesktop.org>
+References: <20231107083023.751059-1-janga.rahul.kumar@intel.com>
+In-Reply-To: <20231107083023.751059-1-janga.rahul.kumar@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?intel/xe=5Fvm=3A_Correct_stride_to_avoid_address_range_collisio?=
+ =?utf-8?q?n?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,116 +18,172 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Tim Huang <tim.huang@amd.com>, Luben Tuikov <luben.tuikov@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Christian Koenig <christian.koenig@amd.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Jesse,
-On 2023-11-07 at 11:37:33 +0800, Jesse Zhang wrote:
-> For apu, it is integrated with cpu.
-> So hotplug test should be unnecessary for it.
-> 
-> V2:
->  -IGT built-in approach to check this condition
->    in the fixture function. (Vitlay)
-> 
-> Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-> Cc: Luben Tuikov <luben.tuikov@amd.com>
-> Cc: Alex Deucher <alexander.deucher@amd.com>
-> Cc: Christian Koenig <christian.koenig@amd.com>
-> Cc: Tim Huang <tim.huang@amd.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> 
-> Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-> Reviewed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-> ---
->  tests/amdgpu/amd_pci_unplug.c | 32 +++++++++++++++++++++++++++++++-
->  1 file changed, 31 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/amdgpu/amd_pci_unplug.c b/tests/amdgpu/amd_pci_unplug.c
-> index 4c055b99f..22e053795 100644
-> --- a/tests/amdgpu/amd_pci_unplug.c
-> +++ b/tests/amdgpu/amd_pci_unplug.c
-> @@ -30,15 +30,42 @@
->  #include "lib/amdgpu/amd_pci_unplug.h"
->  #include "lib/amdgpu/amd_ip_blocks.h"
->  
-> +static bool
-> +is_hot_plug_test_enable(amdgpu_device_handle device_handle, const struct amdgpu_gpu_info *gpu_info)
----^^^^^^^^^^^^^^^^^^^
-Better: is_hotplug_supported
+--===============8832653783996195160==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-> +{
-> +	bool enable = true;
-> +
-> +		/* skip hotplug test on APUs */
----------- ^
-You are not skipping anything in this function.
+== Series Details ==
 
-> +	if (gpu_info->ids_flags & AMDGPU_IDS_FLAGS_FUSION) {
-> +		igt_info("Don't support hot plug on APUs, hot plug test is disabled\n");
------------------ ^^^^^^^^^^^^^
-Better: Hotplug not possible for APU.
+Series: tests/intel/xe_vm: Correct stride to avoid address range collision
+URL   : https://patchwork.freedesktop.org/series/126059/
+State : success
 
-Btw what is APU? I ask because that is another shortcut.
+== Summary ==
 
-> +		enable = false;
-> +	}
-> +	return enable;
-> +}
->  
->  igt_main
->  {
->  
->  	struct amd_pci_unplug_setup setup = {0};
->  	struct amd_pci_unplug unplug = {0};
-> +	amdgpu_device_handle device;
-> +	struct amdgpu_gpu_info gpu_info = {};
-> +	int fd = -1;
->  
->  	igt_fixture {
-> +		uint32_t major, minor;
-> +		int err;
-> +
-> +		fd = drm_open_driver(DRIVER_AMDGPU);
-> +		err = amdgpu_device_initialize(fd, &major, &minor, &device);
-> +		igt_require(err == 0);
-> +		igt_info("Initialized amdgpu, driver version %d.%d\n",
-> +			 major, minor);
-> +		err = amdgpu_query_gpu_info(device, &gpu_info);
-> +		igt_assert_eq(err, 0);
-> +
->  		setup.minor_version_req = 46;
-> +		igt_skip_on(!is_hot_plug_test_enable(device, &gpu_info));
+CI Bug Log - changes from CI_DRM_13845 -> IGTPW_10125
+====================================================
 
-Problem with such skip in fixture is that it is global,
-it will aplly to all cases even when you will not have APU
-or have both APU and dGPU connected by PCI.
-Imho it is better to place this in particular subtests.
+Summary
+-------
 
-Btw when you have APU you still would want to test hotunplug
-for dGPU connected by PCI? Or am I missing something?
-Could you have APU on separate PCI card?
+  **SUCCESS**
 
-Regards,
-Kamil
+  No regressions found.
 
->  	}
->  
->  	igt_subtest("amdgpu_hotunplug_simple")
-> @@ -54,5 +81,8 @@ igt_main
->  	igt_subtest("amdgpu_hotunplug_with_exported_fence")
->  		amdgpu_hotunplug_with_exported_fence(&setup, &unplug);
->  
-> -	igt_fixture { }
-> +	igt_fixture {
-> +		amdgpu_device_deinitialize(device);
-> +		drm_close_driver(fd);
-> +	}
->  }
-> -- 
-> 2.25.1
-> 
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10125/index.html
+
+Participating hosts (29 -> 28)
+------------------------------
+
+  Additional (1): fi-pnv-d510 
+  Missing    (2): fi-hsw-4770 bat-adlp-11 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10125 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_suspend@basic-s2idle-without-i915:
+    - fi-tgl-1115g4:      [PASS][1] -> [ABORT][2] ([i915#8213])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13845/fi-tgl-1115g4/igt@i915_suspend@basic-s2idle-without-i915.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10125/fi-tgl-1115g4/igt@i915_suspend@basic-s2idle-without-i915.html
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:
+    - bat-rplp-1:         [PASS][3] -> [ABORT][4] ([i915#8668])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13845/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10125/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+
+  * igt@kms_psr@primary_page_flip:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][5] ([fdo#109271]) +29 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10125/fi-pnv-d510/igt@kms_psr@primary_page_flip.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#8213]: https://gitlab.freedesktop.org/drm/intel/issues/8213
+  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7575 -> IGTPW_10125
+
+  CI-20190529: 20190529
+  CI_DRM_13845: 46b5c3c2d11368e301dcdee33587e529547c6411 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10125: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10125/index.html
+  IGT_7575: 6edf8b6808de2bde968415926d2b55817f7ea1de @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
+-igt@kms_frontbuffer_tracking@plane-fbc-rte
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10125/index.html
+
+--===============8832653783996195160==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_vm: Correct stride to avoid address range collision</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126059/">https://patchwork.freedesktop.org/series/126059/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10125/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10125/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13845 -&gt; IGTPW_10125</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10125/index.html</p>
+<h2>Participating hosts (29 -&gt; 28)</h2>
+<p>Additional (1): fi-pnv-d510 <br />
+  Missing    (2): fi-hsw-4770 bat-adlp-11 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10125 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
+<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13845/fi-tgl-1115g4/igt@i915_suspend@basic-s2idle-without-i915.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10125/fi-tgl-1115g4/igt@i915_suspend@basic-s2idle-without-i915.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8213">i915#8213</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:</p>
+<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13845/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10125/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_page_flip:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10125/fi-pnv-d510/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +29 other tests skip</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7575 -&gt; IGTPW_10125</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13845: 46b5c3c2d11368e301dcdee33587e529547c6411 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10125: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10125/index.html<br />
+  IGT_7575: 6edf8b6808de2bde968415926d2b55817f7ea1de @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>-igt@kms_frontbuffer_tracking@plane-fbc-rte</p>
+
+</body>
+</html>
+
+--===============8832653783996195160==--
