@@ -1,26 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com
- (mail-co1nam11on2068.outbound.protection.outlook.com [40.107.220.68])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1D9E310E0BF
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Nov 2023 18:31:19 +0000 (UTC)
-Message-ID: <fefce6f7-be26-4c36-9e9d-60a94f5a2503@amd.com>
-Date: Tue, 7 Nov 2023 13:31:12 -0500
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Jesse Zhang <jesse.zhang@amd.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>, Luben Tuikov
- <luben.tuikov@amd.com>, Christian Koenig <christian.koenig@amd.com>,
- Tim Huang <tim.huang@amd.com>
-References: <20231107033733.2772666-1-jesse.zhang@amd.com>
- <20231107091226.zmrrpu6jekao34os@kamilkon-desk.igk.intel.com>
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A0E3110E656
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Nov 2023 18:35:30 +0000 (UTC)
+Message-ID: <c3737499-cd44-411f-b90a-07334ad37cb8@amd.com>
+Date: Tue, 7 Nov 2023 13:35:24 -0500
 Content-Language: en-US
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20231107174349.60255-1-kamil.konieczny@linux.intel.com>
+ <20231107174349.60255-3-kamil.konieczny@linux.intel.com>
 From: vitaly prosyak <vprosyak@amd.com>
-In-Reply-To: <20231107091226.zmrrpu6jekao34os@kamilkon-desk.igk.intel.com>
+In-Reply-To: <20231107174349.60255-3-kamil.konieczny@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH V2 i-g-t] test/amdgpu: add apu check for
- pciplug test
+Subject: Re: [igt-dev] [PATCH i-g-t v1 2/5] drm-uapi/amdgpu: sync with
+ drm-next
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,123 +24,161 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Kamil,
+Thanks Kamil.
 
+Reviewed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-On 2023-11-07 04:12, Kamil Konieczny wrote:
-> Hi Jesse,
-> On 2023-11-07 at 11:37:33 +0800, Jesse Zhang wrote:
->> For apu, it is integrated with cpu.
->> So hotplug test should be unnecessary for it.
->>
->> V2:
->>  -IGT built-in approach to check this condition
->>    in the fixture function. (Vitlay)
->>
->> Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
->> Cc: Luben Tuikov <luben.tuikov@amd.com>
->> Cc: Alex Deucher <alexander.deucher@amd.com>
->> Cc: Christian Koenig <christian.koenig@amd.com>
->> Cc: Tim Huang <tim.huang@amd.com>
->> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
->>
->> Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
->> Reviewed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
->> ---
->>  tests/amdgpu/amd_pci_unplug.c | 32 +++++++++++++++++++++++++++++++-
->>  1 file changed, 31 insertions(+), 1 deletion(-)
->>
->> diff --git a/tests/amdgpu/amd_pci_unplug.c b/tests/amdgpu/amd_pci_unplug.c
->> index 4c055b99f..22e053795 100644
->> --- a/tests/amdgpu/amd_pci_unplug.c
->> +++ b/tests/amdgpu/amd_pci_unplug.c
->> @@ -30,15 +30,42 @@
->>  #include "lib/amdgpu/amd_pci_unplug.h"
->>  #include "lib/amdgpu/amd_ip_blocks.h"
->>  
->> +static bool
->> +is_hot_plug_test_enable(amdgpu_device_handle device_handle, const struct amdgpu_gpu_info *gpu_info)
-> ---^^^^^^^^^^^^^^^^^^^
-> Better: is_hotplug_supported
->
->> +{
->> +	bool enable = true;
->> +
->> +		/* skip hotplug test on APUs */
-> ---------- ^
-> You are not skipping anything in this function.
->
->> +	if (gpu_info->ids_flags & AMDGPU_IDS_FLAGS_FUSION) {
->> +		igt_info("Don't support hot plug on APUs, hot plug test is disabled\n");
-> ----------------- ^^^^^^^^^^^^^
-> Better: Hotplug not possible for APU.
->
-> Btw what is APU? I ask because that is another shortcut.
->
->> +		enable = false;
->> +	}
->> +	return enable;
->> +}
->>  
->>  igt_main
->>  {
->>  
->>  	struct amd_pci_unplug_setup setup = {0};
->>  	struct amd_pci_unplug unplug = {0};
->> +	amdgpu_device_handle device;
->> +	struct amdgpu_gpu_info gpu_info = {};
->> +	int fd = -1;
->>  
->>  	igt_fixture {
->> +		uint32_t major, minor;
->> +		int err;
->> +
->> +		fd = drm_open_driver(DRIVER_AMDGPU);
->> +		err = amdgpu_device_initialize(fd, &major, &minor, &device);
->> +		igt_require(err == 0);
->> +		igt_info("Initialized amdgpu, driver version %d.%d\n",
->> +			 major, minor);
->> +		err = amdgpu_query_gpu_info(device, &gpu_info);
->> +		igt_assert_eq(err, 0);
->> +
->>  		setup.minor_version_req = 46;
->> +		igt_skip_on(!is_hot_plug_test_enable(device, &gpu_info));
-> Problem with such skip in fixture is that it is global,
-> it will aplly to all cases even when you will not have APU
-> or have both APU and dGPU connected by PCI.
-> Imho it is better to place this in particular subtests.
->
-> Btw when you have APU you still would want to test hotunplug
-> for dGPU connected by PCI? Or am I missing something?
-> Could you have APU on separate PCI card?
-You are correct, we may have APU and dGPU in this case the skip-in fixture would be a mistake solution.
-We implemented in IGT where we handle more than one GPU case where exported fence to another GPU(amdgpu_hotunplug_with_exported_fence)
-The function amdgpu_hotunplug_setup_test would be a good place to check whether it is dGPU or APU.
+Vitaly
 
-We have to manually igt_info {.. about skipping the test} vs when having built-in feature in fixture function.
-
-Thanks Vitaly
-
-> Regards,
-> Kamil
+On 2023-11-07 12:43, Kamil Konieczny wrote:
+> Sync with drm-next commit ("f2cab4b318ee8023f4ad640b906ae268942a7db4")
 >
->>  	}
->>  
->>  	igt_subtest("amdgpu_hotunplug_simple")
->> @@ -54,5 +81,8 @@ igt_main
->>  	igt_subtest("amdgpu_hotunplug_with_exported_fence")
->>  		amdgpu_hotunplug_with_exported_fence(&setup, &unplug);
->>  
->> -	igt_fixture { }
->> +	igt_fixture {
->> +		amdgpu_device_deinitialize(device);
->> +		drm_close_driver(fd);
->> +	}
->>  }
->> -- 
->> 2.25.1
->>
+> Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  include/drm-uapi/amdgpu_drm.h | 50 ++++++++++++++++++++++++++---------
+>  1 file changed, 38 insertions(+), 12 deletions(-)
+>
+> diff --git a/include/drm-uapi/amdgpu_drm.h b/include/drm-uapi/amdgpu_drm.h
+> index f44e140ad..ad21c613f 100644
+> --- a/include/drm-uapi/amdgpu_drm.h
+> +++ b/include/drm-uapi/amdgpu_drm.h
+> @@ -94,6 +94,9 @@ extern "C" {
+>   *
+>   * %AMDGPU_GEM_DOMAIN_OA	Ordered append, used by 3D or Compute engines
+>   * for appending data.
+> + *
+> + * %AMDGPU_GEM_DOMAIN_DOORBELL	Doorbell. It is an MMIO region for
+> + * signalling user mode queues.
+>   */
+>  #define AMDGPU_GEM_DOMAIN_CPU		0x1
+>  #define AMDGPU_GEM_DOMAIN_GTT		0x2
+> @@ -101,12 +104,14 @@ extern "C" {
+>  #define AMDGPU_GEM_DOMAIN_GDS		0x8
+>  #define AMDGPU_GEM_DOMAIN_GWS		0x10
+>  #define AMDGPU_GEM_DOMAIN_OA		0x20
+> +#define AMDGPU_GEM_DOMAIN_DOORBELL	0x40
+>  #define AMDGPU_GEM_DOMAIN_MASK		(AMDGPU_GEM_DOMAIN_CPU | \
+>  					 AMDGPU_GEM_DOMAIN_GTT | \
+>  					 AMDGPU_GEM_DOMAIN_VRAM | \
+>  					 AMDGPU_GEM_DOMAIN_GDS | \
+>  					 AMDGPU_GEM_DOMAIN_GWS | \
+> -					 AMDGPU_GEM_DOMAIN_OA)
+> +					 AMDGPU_GEM_DOMAIN_OA | \
+> +					 AMDGPU_GEM_DOMAIN_DOORBELL)
+>  
+>  /* Flag that CPU access will be required for the case of VRAM domain */
+>  #define AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED	(1 << 0)
+> @@ -145,7 +150,7 @@ extern "C" {
+>   */
+>  #define AMDGPU_GEM_CREATE_DISCARDABLE		(1 << 12)
+>  /* Flag that BO is shared coherently between multiple devices or CPU threads.
+> - * May depend on GPU instructions to flush caches explicitly
+> + * May depend on GPU instructions to flush caches to system scope explicitly.
+>   *
+>   * This influences the choice of MTYPE in the PTEs on GFXv9 and later GPUs and
+>   * may override the MTYPE selected in AMDGPU_VA_OP_MAP.
+> @@ -158,6 +163,14 @@ extern "C" {
+>   * may override the MTYPE selected in AMDGPU_VA_OP_MAP.
+>   */
+>  #define AMDGPU_GEM_CREATE_UNCACHED		(1 << 14)
+> +/* Flag that BO should be coherent across devices when using device-level
+> + * atomics. May depend on GPU instructions to flush caches to device scope
+> + * explicitly, promoting them to system scope automatically.
+> + *
+> + * This influences the choice of MTYPE in the PTEs on GFXv9 and later GPUs and
+> + * may override the MTYPE selected in AMDGPU_VA_OP_MAP.
+> + */
+> +#define AMDGPU_GEM_CREATE_EXT_COHERENT		(1 << 15)
+>  
+>  struct drm_amdgpu_gem_create_in  {
+>  	/** the requested memory size */
+> @@ -236,9 +249,9 @@ union drm_amdgpu_bo_list {
+>  /* unknown cause */
+>  #define AMDGPU_CTX_UNKNOWN_RESET	3
+>  
+> -/* indicate gpu reset occured after ctx created */
+> +/* indicate gpu reset occurred after ctx created */
+>  #define AMDGPU_CTX_QUERY2_FLAGS_RESET    (1<<0)
+> -/* indicate vram lost occured after ctx created */
+> +/* indicate vram lost occurred after ctx created */
+>  #define AMDGPU_CTX_QUERY2_FLAGS_VRAMLOST (1<<1)
+>  /* indicate some job from this context once cause gpu hang */
+>  #define AMDGPU_CTX_QUERY2_FLAGS_GUILTY   (1<<2)
+> @@ -259,13 +272,6 @@ union drm_amdgpu_bo_list {
+>  */
+>  #define AMDGPU_CTX_PRIORITY_HIGH        512
+>  #define AMDGPU_CTX_PRIORITY_VERY_HIGH   1023
+> -/* select a stable profiling pstate for perfmon tools */
+> -#define AMDGPU_CTX_STABLE_PSTATE_FLAGS_MASK  0xf
+> -#define AMDGPU_CTX_STABLE_PSTATE_NONE  0
+> -#define AMDGPU_CTX_STABLE_PSTATE_STANDARD  1
+> -#define AMDGPU_CTX_STABLE_PSTATE_MIN_SCLK  2
+> -#define AMDGPU_CTX_STABLE_PSTATE_MIN_MCLK  3
+> -#define AMDGPU_CTX_STABLE_PSTATE_PEAK  4
+>  
+>  /* select a stable profiling pstate for perfmon tools */
+>  #define AMDGPU_CTX_STABLE_PSTATE_FLAGS_MASK  0xf
+> @@ -588,7 +594,8 @@ struct drm_amdgpu_gem_va {
+>   */
+>  #define AMDGPU_HW_IP_VCN_ENC      7
+>  #define AMDGPU_HW_IP_VCN_JPEG     8
+> -#define AMDGPU_HW_IP_NUM          9
+> +#define AMDGPU_HW_IP_VPE          9
+> +#define AMDGPU_HW_IP_NUM          10
+>  
+>  #define AMDGPU_HW_IP_INSTANCE_MAX_COUNT 1
+>  
+> @@ -799,6 +806,8 @@ struct drm_amdgpu_cs_chunk_cp_gfx_shadow {
+>  	#define AMDGPU_INFO_FW_MES		0x1a
+>  	/* Subquery id: Query IMU firmware version */
+>  	#define AMDGPU_INFO_FW_IMU		0x1b
+> +	/* Subquery id: Query VPE firmware version */
+> +	#define AMDGPU_INFO_FW_VPE		0x1c
+>  
+>  /* number of bytes moved for TTM migration */
+>  #define AMDGPU_INFO_NUM_BYTES_MOVED		0x0f
+> @@ -897,6 +906,8 @@ struct drm_amdgpu_cs_chunk_cp_gfx_shadow {
+>  	#define AMDGPU_INFO_VIDEO_CAPS_ENCODE		1
+>  /* Query the max number of IBs per gang per submission */
+>  #define AMDGPU_INFO_MAX_IBS			0x22
+> +/* query last page fault info */
+> +#define AMDGPU_INFO_GPUVM_FAULT			0x23
+>  
+>  #define AMDGPU_INFO_MMR_SE_INDEX_SHIFT	0
+>  #define AMDGPU_INFO_MMR_SE_INDEX_MASK	0xff
+> @@ -1222,6 +1233,20 @@ struct drm_amdgpu_info_video_caps {
+>  	struct drm_amdgpu_info_video_codec_info codec_info[AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_COUNT];
+>  };
+>  
+> +#define AMDGPU_VMHUB_TYPE_MASK			0xff
+> +#define AMDGPU_VMHUB_TYPE_SHIFT			0
+> +#define AMDGPU_VMHUB_TYPE_GFX			0
+> +#define AMDGPU_VMHUB_TYPE_MM0			1
+> +#define AMDGPU_VMHUB_TYPE_MM1			2
+> +#define AMDGPU_VMHUB_IDX_MASK			0xff00
+> +#define AMDGPU_VMHUB_IDX_SHIFT			8
+> +
+> +struct drm_amdgpu_info_gpuvm_fault {
+> +	__u64 addr;
+> +	__u32 status;
+> +	__u32 vmhub;
+> +};
+> +
+>  /*
+>   * Supported GPU families
+>   */
+> @@ -1240,6 +1265,7 @@ struct drm_amdgpu_info_video_caps {
+>  #define AMDGPU_FAMILY_GC_11_0_1			148 /* GC 11.0.1 */
+>  #define AMDGPU_FAMILY_GC_10_3_6			149 /* GC 10.3.6 */
+>  #define AMDGPU_FAMILY_GC_10_3_7			151 /* GC 10.3.7 */
+> +#define AMDGPU_FAMILY_GC_11_5_0			150 /* GC 11.5.0 */
+>  
+>  #if defined(__cplusplus)
+>  }
