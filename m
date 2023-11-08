@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 11D1810E71A
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Nov 2023 11:19:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 44BA610E71C
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Nov 2023 11:19:17 +0000 (UTC)
 From: janga.rahul.kumar@intel.com
 To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
  janga.rahul.kumar@intel.com
-Date: Wed,  8 Nov 2023 16:52:49 +0530
-Message-Id: <20231108112251.819141-2-janga.rahul.kumar@intel.com>
+Date: Wed,  8 Nov 2023 16:52:51 +0530
+Message-Id: <20231108112251.819141-4-janga.rahul.kumar@intel.com>
 In-Reply-To: <20231108112251.819141-1-janga.rahul.kumar@intel.com>
 References: <20231108112251.819141-1-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/3] tests/intel/xe_waitfence: Add
- invalid-flag subtest
+Subject: [igt-dev] [PATCH i-g-t 3/3] tests/intel/xe_waitfence: Add
+ invalid-engine subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,47 +26,45 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 
-Negative test to check ioctl returns expected error when invalid
-flag param is used.
+Negative test to check ioctl returns expected error when
+invalid enigne is used.
 
 Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 ---
- tests/intel/xe_waitfence.c | 40 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+ tests/intel/xe_waitfence.c | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
 diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
-index e0116f181..32ffc6eca 100644
+index 87e7b2284..dc662d26d 100644
 --- a/tests/intel/xe_waitfence.c
 +++ b/tests/intel/xe_waitfence.c
-@@ -98,6 +98,43 @@ waitfence(int fd, enum waittype wt)
- 	}
+@@ -111,6 +111,9 @@ waitfence(int fd, enum waittype wt)
+  *
+  * SUBTEST: invalid-ops
+  * Description: Check query with invalid engine info returns expected error code
++ *
++ * SUBTEST: invalid-engine
++ * Description: Check query with invalid engine info returns expected error code
+  */
+ 
+ static void
+@@ -163,6 +166,31 @@ invalid_ops(int fd)
+ 	do_ioctl_err(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait, EINVAL);
  }
  
-+/**
-+ * TEST: Negative test for wait ufence ioctl
-+ * Category: Software building block
-+ * Sub-category: waitfence
-+ * Functionality: waitfence
-+ * Run type: FULL
-+ * Test category: negative test
-+ *
-+ * SUBTEST: invalid-flag
-+ * Description: Check query with invalid flag returns expected error code
-+ */
-+
 +static void
-+invalid_flag(int fd)
++invalid_engine(int fd)
 +{
 +	uint32_t bo;
 +
 +	struct drm_xe_wait_user_fence wait = {
 +		.addr = to_user_pointer(&wait_fence),
 +		.op = DRM_XE_UFENCE_WAIT_EQ,
-+		.flags = -1,
++		.flags = 0,
 +		.value = 1,
 +		.mask = DRM_XE_UFENCE_WAIT_U64,
 +		.timeout = -1,
-+		.num_engines = 0,
++		.num_engines = 1,
 +		.instances = 0,
 +	};
 +
@@ -76,18 +74,18 @@ index e0116f181..32ffc6eca 100644
 +
 +	do_bind(fd, vm, bo, 0, 0x200000, 0x40000, 1);
 +
-+	do_ioctl_err(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait, EINVAL);
++	do_ioctl_err(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait, EFAULT);
 +}
 +
+ 
  igt_main
  {
- 	int fd;
-@@ -111,6 +148,9 @@ igt_main
- 	igt_subtest("abstime")
- 		waitfence(fd, ABSTIME);
+@@ -183,6 +211,9 @@ igt_main
+ 	igt_subtest("invalid-ops")
+ 		invalid_ops(fd);
  
-+	igt_subtest("invalid-flag")
-+		invalid_flag(fd);
++	igt_subtest("invalid-engine")
++		invalid_engine(fd);
 +
  	igt_fixture
  		drm_close_driver(fd);
