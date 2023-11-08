@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam11on2083.outbound.protection.outlook.com [40.107.223.83])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4EDB410E0C0
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 02:42:48 +0000 (UTC)
-From: Jesse Zhang <jesse.zhang@amd.com>
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10on2050.outbound.protection.outlook.com [40.107.93.50])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D959710E7E4
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Nov 2023 16:40:18 +0000 (UTC)
+From: Harry Wentland <harry.wentland@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Thu, 9 Nov 2023 10:42:29 +0800
-Message-ID: <20231109024229.2950206-1-jesse.zhang@amd.com>
+Date: Wed, 8 Nov 2023 11:39:49 -0500
+Message-ID: <20231108164006.106967-1-harry.wentland@amd.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t 3/3] lib/amdgpu:fix the error when skip
- hotplug test
+Subject: [igt-dev] [RFC PATCH v3 00/12] IGT tests for the KMS Color Pipeline
+ API
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,85 +19,112 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Tim Huang <tim.huang@amd.com>, Luben Tuikov <luben.tuikov@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>, Christian
- Koenig <christian.koenig@amd.com>
+Cc: Sasha McIntosh <sashamcintosh@google.com>,
+ Liviu Dudau <Liviu.Dudau@arm.com>, Victoria
+ Brekenfeld <victoria@system76.com>,
+ =?UTF-8?q?Michel=20D=C3=A4nzer?= <mdaenzer@redhat.com>,
+ Sebastian Wick <sebastian.wick@redhat.com>,
+ Shashank Sharma <shashank.sharma@amd.com>, Christopher
+ Braga <quic_cbraga@quicinc.com>,
+ =?UTF-8?q?Jonas=20=C3=85dahl?= <jadahl@redhat.com>,
+ Naseer Ahmed <quic_naseer@quicinc.com>, Aleix Pol <aleixpol@kde.org>,
+ Alexander Goins <agoins@nvidia.com>,
+ Pekka Paalanen <pekka.paalanen@collabora.com>, Simon Ser <contact@emersion.fr>,
+ Hector Martin <marcan@marcan.st>, Xaver Hugl <xaver.hugl@gmail.com>,
+ Sima <daniel@ffwll.ch>, Joshua Ashton <joshua@froggi.es>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For skipped cases, we should print "SKIP"
-rather than "failure." For example
+This series introduces support for
+* drm_colorop DRM objects
+* COLOR_PIPELINE plane property
 
-IGT-Version: 1.28-g4b3e1dc37 (x86_64) (Linux: 6.3.7+ x86_64)
-Starting subtest: amdgpu_hotunplug_simple
-SKIP ... more than 1 GPU is required for this test
-(amd_pci_unplug:70496) amdgpu/amd_pci_unplug-CRITICAL: Test assertion failure function amdgpu_hotunplug_test, file ../lib/amdgpu/amd_pci_unplug.c:305:
-(amd_pci_unplug:70496) amdgpu/amd_pci_unplug-CRITICAL: Failed assertion: r == 1
-(amd_pci_unplug:70496) amdgpu/amd_pci_unplug-CRITICAL: Last errno: 22, Invalid argument
-(amd_pci_unplug:70496) amdgpu/amd_pci_unplug-CRITICAL: error: 0 != 1
-Stack trace:
-  #0 ../lib/igt_core.c:1988 __igt_fail_assert()
-  #1 ../lib/amdgpu/amd_pci_unplug.c:305 amdgpu_hotunplug_test.constprop.0.isra.0()
-  #2 [amdgpu_hotunplug_simple+0x29]
-  #3 ../tests/amdgpu/amd_pci_unplug.c:44 __igt_unique____real_main34()
-  #4 ../tests/amdgpu/amd_pci_unplug.c:34 main()
-  #5 ../sysdeps/nptl/libc_start_call_main.h:58 __libc_start_call_main()
-  #6 ../csu/libc-start.c:128 __libc_start_main@@GLIBC_2.34()
-  #7 [_start+0x25]
-Subtest amdgpu_hotunplug_simple failed.
+Kernel changes:
+https://gitlab.freedesktop.org/hwentland/linux/-/merge_requests/5
 
-V2:
-  - replace igt_skip_on with igt_skip_f(Kamil)
+It also adds a new kms_colorop test case that tests the color pipeline
+API. The tests are designed to be easily extensible with a "transform"
+and "compare" function pointer for each test. The "transform" function
+performs the transformations under test via SW routines. The "compare"
+function compares the DRM/KMS result (via a writeback connector) with
+the result derived via the SW "transform".
 
-Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Cc: Luben Tuikov <luben.tuikov@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian Koenig <christian.koenig@amd.com>
-Cc: Tim Huang <tim.huang@amd.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+There are three tests for LUTs:
+ - plane-srgb_eotf: pre-blending sRGB EOTF
+ - plane-srgb_inv_eotf: pre-blending sRGB Inverse EOTF
+ - plane-srgb_eotf-srgb_inv_eotf: pre-blending sRGB EOTF,
+   followed by its inverse
 
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Reviewed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
----
- lib/amdgpu/amd_pci_unplug.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+And a number of tests for matrices.
 
-diff --git a/lib/amdgpu/amd_pci_unplug.c b/lib/amdgpu/amd_pci_unplug.c
-index b7af95dec..8346aeb98 100644
---- a/lib/amdgpu/amd_pci_unplug.c
-+++ b/lib/amdgpu/amd_pci_unplug.c
-@@ -101,8 +101,7 @@ amdgpu_hotunplug_setup_test(bool render_mode, const struct amd_pci_unplug_setup
- 
- 	if (setup->open_device && setup->open_device2 && unplug->num_devices < 2) {
- 		/*Not enough board for the test*/
--		printf("SKIP ... more than 1 GPU is required for this test\n");
--		goto release;
-+		igt_skip_on_f(ret, "SKIP ... more than 1 GPU is required for this test\n");
- 	}
- 
- 	tmp_str = amdgpu_get_device_from_fd(unplug->drm_amdgpu_fds[0]);
-@@ -117,7 +116,9 @@ amdgpu_hotunplug_setup_test(bool render_mode, const struct amd_pci_unplug_setup
- 		goto release;
- 
- 	if (minor_version < setup->minor_version_req)
--		goto release;
-+		igt_skip_on_f(minor_version < setup->minor_version_req,
-+			"It has minor_version: %d but it is required: %d for this test\n",
-+			minor_version, setup->minor_version_req);
- 
- 	/* skip hotplug test on APU (Accelerated Processing Unit CPU + iGPU) */
- 	r = amdgpu_query_gpu_info(unplug->device_handle, &gpu_info);
-@@ -138,7 +139,9 @@ amdgpu_hotunplug_setup_test(bool render_mode, const struct amd_pci_unplug_setup
- 		if (r != 0)
- 			goto release;
- 		if (minor_version < setup->minor_version_req)
--			goto release;
-+			igt_skip_on_f(minor_version < setup->minor_version_req,
-+				"It has minor_version: %d but it is required: %d for this test\n",
-+				minor_version, setup->minor_version_req);
- 
- 		r = amdgpu_query_gpu_info(unplug->device_handle2, &gpu_info);
- 		igt_assert_eq(r, 0);
--- 
-2.25.1
+v3:
+ - Remove need for IOCTLs and libdrm changes
+ - Test colorop properties with both atomic and legacy code paths
+ - move enum drm_colorop_type to drm_mode.h
+ - Add descriptions for public functions in lib (Kamil)
+ - Use SPDX style license identifier (Kamil)
+ - Replace Skia license comment with copyright note in file header
+ - Fix kms_colorop subtests if applicable color pipeline not found
+
+Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
+Cc: Pekka Paalanen <pekka.paalanen@collabora.com>
+Cc: Simon Ser <contact@emersion.fr>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Melissa Wen <mwen@igalia.com>
+Cc: Jonas Ådahl <jadahl@redhat.com>
+Cc: Sebastian Wick <sebastian.wick@redhat.com>
+Cc: Shashank Sharma <shashank.sharma@amd.com>
+Cc: Alexander Goins <agoins@nvidia.com>
+Cc: Joshua Ashton <joshua@froggi.es>
+Cc: Michel Dänzer <mdaenzer@redhat.com>
+Cc: Aleix Pol <aleixpol@kde.org>
+Cc: Xaver Hugl <xaver.hugl@gmail.com>
+Cc: Victoria Brekenfeld <victoria@system76.com>
+Cc: Sima <daniel@ffwll.ch>
+Cc: Uma Shankar <uma.shankar@intel.com>
+Cc: Naseer Ahmed <quic_naseer@quicinc.com>
+Cc: Christopher Braga <quic_cbraga@quicinc.com>
+Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Cc: Arthur Grillo <arthurgrillo@riseup.net>
+Cc: Hector Martin <marcan@marcan.st>
+Cc: Liviu Dudau <Liviu.Dudau@arm.com>
+Cc: Sasha McIntosh <sashamcintosh@google.com>
+
+Harry Wentland (12):
+  lib/drmtest: Add is_vkms_device()
+  lib/igt_kms: Introduce DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE
+  include/drm-uapi: Add COLOROP object
+  lib/igt_kms: Introduce drm_colorop and COLOR_PIPELINE
+  tests/kms_properties: Add colorop properties test
+  igt/color: Add SW color transform functionality
+  lib/igt_fb: Add copy_fb function
+  tests/kms_colorop: Add kms_colorop tests
+  drm-uapi: Add 3x4 CTM
+  lib/igt_kms: Add support for DATA colorop property
+  lib/igt_color: Add support for 3x4 matrices
+  tests/kms_colorop: Add 3x4 CTM tests
+
+ include/drm-uapi/drm.h      |  15 +
+ include/drm-uapi/drm_mode.h |  22 ++
+ lib/drmtest.c               |   5 +
+ lib/drmtest.h               |   1 +
+ lib/igt_color.c             | 344 +++++++++++++++++++++++
+ lib/igt_color.h             | 114 ++++++++
+ lib/igt_fb.c                |  40 ++-
+ lib/igt_fb.h                |   3 +
+ lib/igt_kms.c               | 306 +++++++++++++++++++-
+ lib/igt_kms.h               |  94 +++++++
+ lib/meson.build             |   1 +
+ tests/kms_colorop.c         | 539 ++++++++++++++++++++++++++++++++++++
+ tests/kms_colorop.h         | 124 +++++++++
+ tests/kms_properties.c      |  76 +++++
+ tests/meson.build           |   1 +
+ 15 files changed, 1676 insertions(+), 9 deletions(-)
+ create mode 100644 lib/igt_color.c
+ create mode 100644 lib/igt_color.h
+ create mode 100644 tests/kms_colorop.c
+ create mode 100644 tests/kms_colorop.h
+
+--
+2.42.0
