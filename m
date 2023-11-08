@@ -1,14 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DE01910E6AB
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Nov 2023 20:59:35 +0000 (UTC)
-From: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
-To: 
-Date: Tue,  7 Nov 2023 12:59:31 -0800
-Message-Id: <20231107205932.701351-1-jagmeet.randhawa@intel.com>
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6098F10E072
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Nov 2023 06:38:57 +0000 (UTC)
+Message-ID: <66c88602-eb73-410a-9481-dd02a2c37f8f@amd.com>
+Date: Tue, 7 Nov 2023 23:38:53 -0700
+Content-Language: en-US
+To: Aurabindo Pillai <aurabindo.pillai@amd.com>, igt-dev@lists.freedesktop.org
+References: <20231103182230.1039191-1-aurabindo.pillai@amd.com>
+ <20231103182230.1039191-3-aurabindo.pillai@amd.com>
+From: Alex Hung <alex.hung@amd.com>
+In-Reply-To: <20231103182230.1039191-3-aurabindo.pillai@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v4] lib/gpgpu_fill: Add support for Xe2 platforms
+Subject: Re: [igt-dev] [PATCH i-g-t v2 2/5] llib/amd: Update function
+ documentation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,24 +23,34 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: hersenxs.wu@amd.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Addresed Christoph Manszewski comments: fixed warnings and errors
-brought up by checkpatch
+Reviewed-by: Alex Hung <alex.hung@amd.com>
 
-Jagmeet Randhawa (1):
-  lib/gpgpu_fill: Add support for Xe2 platforms
-
- lib/gpgpu_fill.c                              | 23 ++++++++
- lib/gpgpu_fill.h                              |  6 ++
- lib/gpu_cmds.c                                | 59 +++++++++++++++----
- .../shaders/gpgpu/xe2lpg_gpgpu_kernel.asm     | 13 ++++
- lib/intel_batchbuffer.c                       |  4 +-
- 5 files changed, 93 insertions(+), 12 deletions(-)
- create mode 100644 lib/i915/shaders/gpgpu/xe2lpg_gpgpu_kernel.asm
-
--- 
-2.25.1
+On 2023-11-03 12:22, Aurabindo Pillai wrote:
+> The existing documetation incorrectly specifies the return value.
+> Update the doc entry for functions that check MALL status
+> 
+> Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+> ---
+>   lib/igt_amd.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/lib/igt_amd.c b/lib/igt_amd.c
+> index f0fbe97ef..8c736b3e2 100644
+> --- a/lib/igt_amd.c
+> +++ b/lib/igt_amd.c
+> @@ -1178,8 +1178,8 @@ static bool get_dm_capabilities(int drm_fd, char *buf, size_t size)
+>    * @brief check if AMDGPU mall_capable interface entry exist and defined
+>    *
+>    * @param drm_fd DRM file descriptor
+> - * @return true if dm capabilities interface exists and MALL is supported
+> - * @return false if capabilities could not be read.
+> + * @param supported will be set to true if hardware supports MALL
+> + * @param enabled will be set to true if MALL is currently in use
+>    */
+>   void igt_amd_get_mall_status(int drm_fd, bool *supported, bool *enabled)
+>   {
