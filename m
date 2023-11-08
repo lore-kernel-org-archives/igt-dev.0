@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 400E410E7E8
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Nov 2023 16:40:41 +0000 (UTC)
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com
+ (mail-bn7nam10on2075.outbound.protection.outlook.com [40.107.92.75])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 167FA10E7E8
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Nov 2023 16:40:45 +0000 (UTC)
 From: Harry Wentland <harry.wentland@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Wed, 8 Nov 2023 11:39:56 -0500
-Message-ID: <20231108164006.106967-8-harry.wentland@amd.com>
+Date: Wed, 8 Nov 2023 11:40:01 -0500
+Message-ID: <20231108164006.106967-13-harry.wentland@amd.com>
 In-Reply-To: <20231108164006.106967-1-harry.wentland@amd.com>
 References: <20231108164006.106967-1-harry.wentland@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [RFC PATCH v3 07/12] lib/igt_fb: Add copy_fb function
+Subject: [igt-dev] [RFC PATCH v3 12/12] tests/kms_colorop: Add 3x4 CTM tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,66 +26,167 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Signed-off-by: Harry Wentland <harry.wentland@amd.com>
 ---
- lib/igt_fb.c | 34 ++++++++++++++++++++++++++++++++++
- lib/igt_fb.h |  1 +
- 2 files changed, 35 insertions(+)
+ tests/kms_colorop.c | 43 ++++++++++++++++++++++++++++++-------------
+ tests/kms_colorop.h | 39 ++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 68 insertions(+), 14 deletions(-)
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 9196deda2eac..46fe3cd0f27b 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -2151,6 +2151,40 @@ unsigned int igt_create_fb(int fd, int width, int height, uint32_t format,
- 					  fb, 0, 0);
- }
+diff --git a/tests/kms_colorop.c b/tests/kms_colorop.c
+index 2a14294a2b20..72e59725dac3 100644
+--- a/tests/kms_colorop.c
++++ b/tests/kms_colorop.c
+@@ -40,9 +40,16 @@
+  *
+  * arg[1]:
+  *
+- * @srgb_eotf:                   sRGB EOTF
+- * @srgb_inv_eotf:               sRGB Inverse EOTF
+- * @srgb_eotf-srgb_inv_eotf:     sRGB EOTF -> sRGB Inverse EOTF
++ * @srgb_eotf:                  sRGB EOTF
++ * @srgb_inv_eotf:              sRGB Inverse EOTF
++ * @srgb_eotf-srgb_inv_eotf:    sRGB EOTF -> sRGB Inverse EOTF
++ * @ctm_3x4_50_desat:		3x4 matrix doing a 50% desaturation
++ * @ctm_3x4_overdrive:		3x4 matrix overdring all values by 50%
++ * @ctm_3x4_oversaturate:	3x4 matrix oversaturating values
++ * @ctm_3x4_bt709_enc:		BT709 encoding matrix
++ * @ctm_3x4_bt709_dec:		BT709 decoding matrix
++ * @ctm_3x4_bt709_enc_dec:	BT709 encoding matrix, followed by decoding matrix
++ * @ctm_3x4_bt709_dec_enc:	BT709 decoding matrix, followed by encoding matrix
+  *
+  */
  
-+unsigned int igt_copy_fb(int fd, struct igt_fb *src, struct igt_fb *fb)
-+{
-+	char *in_ptr, *out_ptr;
-+	int cpp = igt_drm_format_to_bpp(src->drm_format) / 8;
+@@ -181,11 +188,10 @@ static bool can_use_colorop(igt_display_t *display, igt_colorop_t *colorop, kms_
+ {
+ 	switch (desired->type) {
+ 	case KMS_COLOROP_ENUMERATED_LUT1D:
+-		if (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_1D_CURVE) {
+-			return true;
+-		}
++		return (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_1D_CURVE);
++	case KMS_COLOROP_CTM_3X4:
++		return (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_CTM_3X4);
+ 	case KMS_COLOROP_CUSTOM_LUT1D:
+-	case KMS_COLOROP_CTM:
+ 	case KMS_COLOROP_LUT3D:
+ 	default:
+ 		return false;
+@@ -205,13 +211,15 @@ static bool map_to_pipeline(igt_display_t *display,
+ 	int i = 0;
+ 	int prop_val = 0;
+ 
+-	current_op = colorops[i++];
++	current_op = colorops[i];
++	i++;
+ 	igt_require(current_op);
+ 
+ 	while (next) {
+ 		if (can_use_colorop(display, next, current_op)) {
+ 			current_op->colorop = next;
+-			current_op = colorops[i++];
++			current_op = colorops[i];
++			i++;
+ 			if (!current_op)
+ 				break;
+ 		}
+@@ -273,8 +281,10 @@ static void set_colorop(igt_display_t *display,
+ 			igt_fail(IGT_EXIT_FAILURE);
+ 		}
+ 		break;
++	case KMS_COLOROP_CTM_3X4:
++		igt_colorop_set_ctm_3x4(display, colorop->colorop, colorop->matrix_3x4);
++		break;
+ 	case KMS_COLOROP_CUSTOM_LUT1D:
+-	case KMS_COLOROP_CTM:
+ 	case KMS_COLOROP_LUT3D:
+ 	default:
+ 		igt_fail(IGT_EXIT_FAILURE);
+@@ -331,8 +341,8 @@ static bool compare_with_bracket(igt_fb_t *in, igt_fb_t *out)
+ 
+ #define DUMP_FBS 1
+ 
+-#define MAX_COLOROPS 3
+-#define NUM_COLOROP_TESTS 3
++#define MAX_COLOROPS 5
++#define NUM_COLOROP_TESTS 12
+ #define MAX_NAME_SIZE 256
+ 
+ static void apply_transforms(kms_colorop_t *colorops[], igt_fb_t *sw_transform_fb)
+@@ -481,7 +491,14 @@ igt_main
+ 	} tests[] = {
+ 		{ { &kms_colorop_srgb_eotf, NULL }, "srgb_eotf" },
+ 		{ { &kms_colorop_srgb_inv_eotf, NULL }, "srgb_inv_eotf" },
+-		{ { &kms_colorop_srgb_eotf, &kms_colorop_srgb_inv_eotf, NULL }, "srgb_eotf-srgb_inv_eotf" }
++		{ { &kms_colorop_srgb_eotf, &kms_colorop_srgb_inv_eotf, NULL }, "srgb_eotf-srgb_inv_eotf" },
++		{ { &kms_colorop_ctm_3x4_50_desat, NULL }, "ctm_3x4_50_desat" },
++		{ { &kms_colorop_ctm_3x4_overdrive, NULL }, "ctm_3x4_overdrive" },
++		{ { &kms_colorop_ctm_3x4_oversaturate, NULL }, "ctm_3x4_oversaturate" },
++		{ { &kms_colorop_ctm_3x4_bt709_enc, NULL }, "ctm_3x4_bt709_enc" },
++		{ { &kms_colorop_ctm_3x4_bt709_dec, NULL }, "ctm_3x4_bt709_dec" },
++		{ { &kms_colorop_ctm_3x4_bt709_enc, &kms_colorop_ctm_3x4_bt709_dec, NULL }, "ctm_3x4_bt709_enc_dec" },
++		{ { &kms_colorop_ctm_3x4_bt709_dec, &kms_colorop_ctm_3x4_bt709_enc, NULL }, "ctm_3x4_bt709_dec_enc" },
+ 	};
+ 
+ 	igt_display_t display;
+diff --git a/tests/kms_colorop.h b/tests/kms_colorop.h
+index 8102d25b13be..30278ca4edbd 100644
+--- a/tests/kms_colorop.h
++++ b/tests/kms_colorop.h
+@@ -35,7 +35,7 @@ typedef int (*transform_pixel)(igt_pixel_t *pixel);
+ typedef enum kms_colorop_type {
+ 	KMS_COLOROP_ENUMERATED_LUT1D,
+ 	KMS_COLOROP_CUSTOM_LUT1D,
+-	KMS_COLOROP_CTM,
++	KMS_COLOROP_CTM_3X4,
+ 	KMS_COLOROP_LUT3D
+ } kms_colorop_type_t;
+ 
+@@ -55,6 +55,7 @@ typedef struct kms_colorop {
+ 
+ 	union {
+ 		kms_colorop_enumerated_lut1d_info_t enumerated_lut1d_info;
++		const igt_matrix_3x4_t *matrix_3x4;
+ 	};
+ 
+ 	const char *name;
+@@ -84,4 +85,40 @@ kms_colorop_t kms_colorop_srgb_inv_eotf = {
+ 	.transform = &igt_color_srgb_inv_eotf
+ };
+ 
++kms_colorop_t kms_colorop_ctm_3x4_50_desat = {
++	.type = KMS_COLOROP_CTM_3X4,
++	.matrix_3x4 = &igt_matrix_3x4_50_desat,
++	.name = "ctm_3x4_50_desat",
++	.transform = &igt_color_ctm_3x4_50_desat
++};
 +
-+	int fb_id = 0;
-+	igt_assert(src);
++kms_colorop_t kms_colorop_ctm_3x4_overdrive = {
++	.type = KMS_COLOROP_CTM_3X4,
++	.matrix_3x4 = &igt_matrix_3x4_overdrive,
++	.name = "ctm_3x4_overdrive",
++	.transform = &igt_color_ctm_3x4_overdrive
++};
 +
-+	/* TODO allow multiple planes */
-+	if (src->num_planes != 1)
-+		return -EINVAL;
++kms_colorop_t kms_colorop_ctm_3x4_oversaturate = {
++	.type = KMS_COLOROP_CTM_3X4,
++	.matrix_3x4 = &igt_matrix_3x4_oversaturate,
++	.name = "ctm_3x4_oversaturate",
++	.transform = &igt_color_ctm_3x4_oversaturate
++};
 +
-+	/* TODO expand for other formats */
-+	if (src->drm_format != DRM_FORMAT_XRGB8888)
-+		return -EINVAL;
++kms_colorop_t kms_colorop_ctm_3x4_bt709_enc = {
++	.type = KMS_COLOROP_CTM_3X4,
++	.matrix_3x4 = &igt_matrix_3x4_bt709_enc,
++	.name = "ctm_3x4_bt709_enc",
++	.transform = &igt_color_ctm_3x4_bt709_enc
++};
 +
-+	fb_id = igt_create_fb(fd, src->width, src->height, src->drm_format,
-+			    src->modifier, fb);
++kms_colorop_t kms_colorop_ctm_3x4_bt709_dec = {
++	.type = KMS_COLOROP_CTM_3X4,
++	.matrix_3x4 = &igt_matrix_3x4_bt709_dec,
++	.name = "ctm_3x4_bt709_dec",
++	.transform = &igt_color_ctm_3x4_bt709_dec
++};
 +
-+	/* copy buffer contents */
-+	/* TODO simplify :D */
-+	in_ptr = igt_fb_map_buffer(fb->fd, src);
-+	igt_assert(in_ptr);
-+	out_ptr = igt_fb_map_buffer(fb->fd, fb);
-+	igt_assert(out_ptr);
 +
-+	igt_memcpy_from_wc(out_ptr, in_ptr, fb->width * fb->height * cpp);
-+
-+	igt_fb_unmap_buffer(fb, out_ptr);
-+	igt_fb_unmap_buffer(src, in_ptr);
-+
-+	return fb_id;
-+}
-+
- /**
-  * igt_create_color_fb:
-  * @fd: open drm file descriptor
-diff --git a/lib/igt_fb.h b/lib/igt_fb.h
-index d2751c0bb772..258a7669e434 100644
---- a/lib/igt_fb.h
-+++ b/lib/igt_fb.h
-@@ -142,6 +142,7 @@ struct intel_buf *igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
- 					  const struct igt_fb *fb, const char *name);
- unsigned int igt_create_fb(int fd, int width, int height, uint32_t format,
- 			   uint64_t modifier, struct igt_fb *fb);
-+unsigned int igt_copy_fb(int fd, struct igt_fb *src, struct igt_fb *fb);
- unsigned int igt_create_color_fb(int fd, int width, int height,
- 				 uint32_t format, uint64_t modifier,
- 				 double r, double g, double b,
+ #endif /* __KMS_COLOROP_H__ */
 -- 
 2.42.0
