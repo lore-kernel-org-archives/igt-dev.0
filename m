@@ -1,18 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9E08D10E78B
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Nov 2023 15:04:08 +0000 (UTC)
-Date: Wed, 8 Nov 2023 16:04:03 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20231108150403.vy56glc375s7etnt@kamilkon-desk.igk.intel.com>
-References: <20231108025738.2914175-1-jesse.zhang@amd.com>
+Received: from madras.collabora.co.uk (madras.collabora.co.uk
+ [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A1E7C10E478
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Nov 2023 15:18:20 +0000 (UTC)
+Message-ID: <fa673bd3-5c9b-42be-9297-e007e077583c@collabora.com>
+Date: Wed, 8 Nov 2023 12:18:12 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231108025738.2914175-1-jesse.zhang@amd.com>
-Subject: Re: [igt-dev] [PATCH V3 i-g-t 2/2] test/amdgpu: add apu check for
- pciplug test
+Content-Language: en-US
+To: Vignesh Raman <vignesh.raman@collabora.com>,
+ bhanuprakash.modem@intel.com, daniels@collabora.com,
+ igt-dev@lists.freedesktop.org
+References: <20231108062902.390248-1-vignesh.raman@collabora.com>
+From: Helen Koike <helen.koike@collabora.com>
+In-Reply-To: <20231108062902.390248-1-vignesh.raman@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t v3] lib/igt_kms: Fix memory corruption
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,129 +23,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Tim Huang <tim.huang@amd.com>, Luben Tuikov <luben.tuikov@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Christian Koenig <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Jesse,
 
-On 2023-11-08 at 10:57:38 +0800, Jesse Zhang wrote:
-> It is integrated with cpu,
-> for APU(Accelerated Processing Unit CPU + iGPU).
-> So hotplug test should be unnecessary for it.
+
+On 08/11/2023 03:29, Vignesh Raman wrote:
+> In crosvm, the kernel reports 16 for count_crtcs, which exceeds
+> IGT_MAX_PIPES set to 8. The function igt_display_require allocates
+> memory for IGT_MAX_PIPES members of igt_pipe_t structures, but then
+> writes into it based on the count_crtcs reported by the kernel,
+> resulting in memory corruption.
 > 
-> V3:
->  - place the APU check in particular subtests.(Kamil)
->  - Add igt_info about skipping tests (Vitaly)
+>   # malloc(): corrupted top size
+>   # Received signal SIGABRT.
+>   # Stack trace:
+>   #  #0 [fatal_sig_handler+0x17b]
+>   #  #1 [__sigaction+0x40]
+>   #  #2 [pthread_key_delete+0x14c]
+>   #  #3 [gsignal+0x12]
+>   #  #4 [abort+0xd3]
+>   #  #5 [__fsetlocking+0x290]
+>   #  #6 [timer_settime+0x37a]
+>   #  #7 [__default_morecore+0x1f1b]
+>   #  #8 [__libc_calloc+0x161]
+>   #  #9 [drmModeGetPlaneResources+0x44]
+>   #  #10 [igt_display_require+0x194]
+>   #  #11 [__igt_unique____real_main1356+0x93c]
+>   #  #12 [main+0x3f]
+>   #  #13 [__libc_init_first+0x8a]
+>   #  #14 [__libc_start_main+0x85]
+>   #  #15 [_start+0x21]
 > 
-> Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-> Cc: Luben Tuikov <luben.tuikov@amd.com>
-> Cc: Alex Deucher <alexander.deucher@amd.com>
-> Cc: Christian Koenig <christian.koenig@amd.com>
-> Cc: Tim Huang <tim.huang@amd.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Increase IGT_MAX_PIPES to 16 to fix this memory corruption issue.
+> igt_display_require initializes display and allocate resources as
+> a prerequisite for the tests. Fail the test if count_crtcs exceeds
+> IGT_MAX_PIPES with debug information.
 > 
-> Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-> Reviewed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> This fix is required for drm-ci to run igt tests on virtio-gpu.
+> 
+> Suggested-by: Daniel Stone <daniels@collabora.com>
+> Suggested-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> Signed-off-by: Vignesh Raman <vignesh.raman@collabora.com>
+
+lgtm
+
+Acked-by: Helen Koike <helen.koike@collabora.com>
+
+Thanks
+Helen
+
 > ---
->  lib/amdgpu/amd_pci_unplug.c | 34 +++++++++++++++++++++++++++++-----
->  1 file changed, 29 insertions(+), 5 deletions(-)
 > 
-> diff --git a/lib/amdgpu/amd_pci_unplug.c b/lib/amdgpu/amd_pci_unplug.c
-> index 9811e0cc2..1e795757d 100644
-> --- a/lib/amdgpu/amd_pci_unplug.c
-> +++ b/lib/amdgpu/amd_pci_unplug.c
-> @@ -92,6 +92,7 @@ amdgpu_hotunplug_setup_test(bool render_mode, const struct amd_pci_unplug_setup
->  	bool ret = false;
->  	int r;
->  	uint32_t  major_version, minor_version;
-> +	struct amdgpu_gpu_info gpu_info = {0};
->  
->  	unplug->num_devices = amdgpu_open_devices(render_mode, MAX_CARDS_SUPPORTED,
->  											  unplug->drm_amdgpu_fds);
-> @@ -101,7 +102,7 @@ amdgpu_hotunplug_setup_test(bool render_mode, const struct amd_pci_unplug_setup
->  	if (setup->open_device && setup->open_device2 && unplug->num_devices < 2) {
->  		/*Not enough board for the test*/
->  		printf("SKIP ... more than 1 GPU is required for this test\n");
-------- ^^^^^^
-printf in igt lib? Should be igt_info or igt_debug
-If you will correct this please do it in separate patch(es).
-
-> -		goto release;
-> +		igt_skip_on(!ret);
->  	}
->  
->  	tmp_str = amdgpu_get_device_from_fd(unplug->drm_amdgpu_fds[0]);
-> @@ -115,8 +116,19 @@ amdgpu_hotunplug_setup_test(bool render_mode, const struct amd_pci_unplug_setup
->  	if (r != 0)
->  		goto release;
->  
-> -	if (minor_version < setup->minor_version_req)
-> -		goto release;
-> +	if (minor_version < setup->minor_version_req) {
-> +		igt_info("SKIP ... minor_version:%d mismatch, required: %d for this test\n",
-> +			minor_version, setup->minor_version_req);
-> +		igt_skip_on(!ret);
-------------------- ^^^^^ ?
-
-> +	}
-
-You do not need to print message before skip_on, look at other
-skip_on like:
-
-igt_skip_on_f(ret, "KTAP parser failed\n");
-or
-igt_skip_on_f(fd<0, "No known gpu found for chipset flags 0x%u (%s)\n",
-
-So here just:
-	    igt_skip_on_f(minor_version < setup->minor_version_req, "minor version mismatch\n");
-or
-	    igt_skip_on_f(minor_version < setup->minor_version_req,
-                     "It has minor_version: %d but it is required: %d for this test\n",
-                     minor_version, setup->minor_version_req);
-
-Regards,
-Kamil
-
-> +
-> +	/* skip hotplug test on APU (Accelerated Processing Unit CPU + iGPU) */
-> +	r = amdgpu_query_gpu_info(unplug->device_handle, &gpu_info);
-> +	igt_assert_eq(r, 0);
-> +	if (gpu_info.ids_flags & AMDGPU_IDS_FLAGS_FUSION) {
-> +		igt_info("SKIP ... APU does not require this test\n");
-> +		igt_skip_on(!ret);
-> +	}
->  
->  	if (!setup->open_device) {
->  			/* device handle is not always required for test */
-> @@ -130,10 +142,22 @@ amdgpu_hotunplug_setup_test(bool render_mode, const struct amd_pci_unplug_setup
->  						   &minor_version, &unplug->device_handle2);
->  		if (r != 0)
->  			goto release;
-> -		if (minor_version < setup->minor_version_req)
-> -			goto release;
-> +		if (minor_version < setup->minor_version_req) {
-> +			igt_info("SKIP ... minor_version:%d mismatch, required: %d for this test\n",
-> +				minor_version, setup->minor_version_req);
-> +			igt_skip_on(!ret);
-> +		}
-> +
-> +		/* skip hotplug test on APU (Accelerated Processing Unit CPU + iGPU) */
-> +		r = amdgpu_query_gpu_info(unplug->device_handle2, &gpu_info);
-> +		igt_assert_eq(r, 0);
-> +		if (gpu_info.ids_flags & AMDGPU_IDS_FLAGS_FUSION) {
-> +			igt_info("SKIP ... APU does not require this test\n");
-> +			igt_skip_on(!ret);
-> +		}
->  	}
->  	ret = true;
-> +
->  release:
->  	return ret;
->  }
-> -- 
-> 2.25.1
+> v2:
+>    - Rework the fix to increase IGT_MAX_PIPES to 16
 > 
+> v3:
+>    - Fail the test if count_crtcs exceeds IGT_MAX_PIPES with debug information
+> 
+> ---
+>   lib/igt_kms.c |  6 +++++-
+>   lib/igt_kms.h | 20 +++++++++++++++++++-
+>   2 files changed, 24 insertions(+), 2 deletions(-)
+> 
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 453103f90..6ad7cc127 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -906,7 +906,7 @@ static igt_plane_t *igt_get_assigned_primary(igt_output_t *output, igt_pipe_t *p
+>    */
+>   const char *kmstest_pipe_name(enum pipe pipe)
+>   {
+> -	static const char str[] = "A\0B\0C\0D\0E\0F\0G\0H";
+> +	static const char str[] = "A\0B\0C\0D\0E\0F\0G\0H\0I\0J\0K\0L\0M\0N\0O\0P";
+>   
+>   	_Static_assert(sizeof(str) == IGT_MAX_PIPES * 2,
+>   		       "Missing pipe name");
+> @@ -2770,6 +2770,10 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+>   	}
+>   #endif
+>   
+> +	igt_assert_f(resources->count_crtcs <= IGT_MAX_PIPES,
+> +		     "count_crtcs exceeds IGT_MAX_PIPES, resources->count_crtcs=%d, IGT_MAX_PIPES=%d\n",
+> +		     resources->count_crtcs, IGT_MAX_PIPES);
+> +
+>   	display->n_pipes = IGT_MAX_PIPES;
+>   	display->pipes = calloc(sizeof(igt_pipe_t), display->n_pipes);
+>   	igt_assert_f(display->pipes, "Failed to allocate memory for %d pipes\n", display->n_pipes);
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index 9028ab9be..5c705b585 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -57,6 +57,16 @@
+>    * @PIPE_D: Fourth crtc.
+>    * @PIPE_E: Fifth crtc.
+>    * @PIPE_F: Sixth crtc.
+> + * @PIPE_G: Seventh crtc.
+> + * @PIPE_H: Eighth crtc.
+> + * @PIPE_I: Ninth crtc.
+> + * @PIPE_J: Tenth crtc.
+> + * @PIPE_K: Eleventh crtc.
+> + * @PIPE_L: Twelfth crtc.
+> + * @PIPE_M: Thirteenth crtc.
+> + * @PIPE_N: Fourteenth crtc.
+> + * @PIPE_O: Fifteenth crtc.
+> + * @PIPE_P: Sixteenth crtc.
+>    * @IGT_MAX_PIPES: Max number of pipes allowed.
+>    */
+>   enum pipe {
+> @@ -70,7 +80,15 @@ enum pipe {
+>           PIPE_F,
+>   	PIPE_G,
+>   	PIPE_H,
+> -        IGT_MAX_PIPES
+> +	PIPE_I,
+> +	PIPE_J,
+> +	PIPE_K,
+> +	PIPE_L,
+> +	PIPE_M,
+> +	PIPE_N,
+> +	PIPE_O,
+> +	PIPE_P,
+> +	IGT_MAX_PIPES
+>   };
+>   const char *kmstest_pipe_name(enum pipe pipe);
+>   int kmstest_pipe_to_index(char pipe);
