@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C26C010E8E2
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 15:54:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 08C1E10E8EE
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 15:56:06 +0000 (UTC)
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  9 Nov 2023 15:53:36 +0000
-Message-Id: <20231109155410.7-24-francois.dugast@intel.com>
+Date: Thu,  9 Nov 2023 15:53:57 +0000
+Message-Id: <20231109155410.7-45-francois.dugast@intel.com>
 In-Reply-To: <20231109155410.7-1-francois.dugast@intel.com>
 References: <20231109155410.7-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 23/57] drm-uapi/xe: Rename *_mem_regions mask.
+Subject: [igt-dev] [PATCH v3 44/57] drm-uapi/xe: Document the memory_region
+ bitmask
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,95 +19,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Align with kernel commit ("drm/xe/uapi: Document the memory_region bitmask")
 
-Align with kernel commit ("drm/xe/uapi: Rename *_mem_regions masks")
-
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 ---
- include/drm-uapi/xe_drm.h | 17 +++++++++--------
- lib/xe/xe_query.c         |  6 +++---
- tests/intel/xe_query.c    |  8 ++++----
- 3 files changed, 16 insertions(+), 15 deletions(-)
+ include/drm-uapi/xe_drm.h | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
 diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index a80d1f460..e08928fe8 100644
+index be30d506c..d3f48c7ce 100644
 --- a/include/drm-uapi/xe_drm.h
 +++ b/include/drm-uapi/xe_drm.h
-@@ -379,17 +379,18 @@ struct drm_xe_query_gt {
- 	/** @clock_freq: A clock frequency for timestamp */
- 	__u32 clock_freq;
+@@ -231,6 +231,10 @@ struct drm_xe_query_engine_info {
  	/**
--	 * @native_mem_regions: Bit mask of instances from
--	 * drm_xe_query_mem_usage that lives on the same GPU/Tile and have
--	 * direct access.
-+	 * @near_mem_regions: Bit mask of instances from
-+	 * drm_xe_query_mem_usage that is near the current engines of this GT.
+ 	 * @near_mem_regions: Bit mask of instances from
+ 	 * drm_xe_query_mem_regions that is near this engine.
++	 * Each index in this mask refers directly to the struct
++	 * drm_xe_query_mem_regions' instance, no assumptions should
++	 * be made about order. The type of each region is described
++	 * by struct drm_xe_query_mem_regions' mem_class.
  	 */
--	__u64 native_mem_regions;
-+	__u64 near_mem_regions;
+ 	__u64 near_mem_regions;
  	/**
--	 * @slow_mem_regions: Bit mask of instances from
--	 * drm_xe_query_mem_usage that this GT can indirectly access, although
--	 * they live on a different GPU/Tile.
-+	 * @far_mem_regions: Bit mask of instances from
-+	 * drm_xe_query_mem_usage that is far from the engines of this GT.
-+	 * In general, it has extra indirections when compared to the
-+	 * @near_mem_regions. For a discrete device this could mean system
-+	 * memory and memory living in a different Tile.
+@@ -239,6 +243,10 @@ struct drm_xe_query_engine_info {
+ 	 * In general, it has extra indirections when compared to the
+ 	 * @near_mem_regions. For a discrete device this could mean system
+ 	 * memory and memory living in a different Tile.
++	 * Each index in this mask refers directly to the struct
++	 * drm_xe_query_mem_regions' instance, no assumptions should
++	 * be made about order. The type of each region is described
++	 * by struct drm_xe_query_mem_regions' mem_class.
  	 */
--	__u64 slow_mem_regions;
-+	__u64 far_mem_regions;
- 	/** @reserved: Reserved */
- 	__u64 reserved[8];
- };
-diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index 9e917cfee..00acafb69 100644
---- a/lib/xe/xe_query.c
-+++ b/lib/xe/xe_query.c
-@@ -66,8 +66,8 @@ static uint64_t __memory_regions(const struct drm_xe_query_gt_list *gt_list)
- 	int i;
+ 	__u64 far_mem_regions;
  
- 	for (i = 0; i < gt_list->num_gt; i++)
--		regions |= gt_list->gt_list[i].native_mem_regions |
--			   gt_list->gt_list[i].slow_mem_regions;
-+		regions |= gt_list->gt_list[i].near_mem_regions |
-+			   gt_list->gt_list[i].far_mem_regions;
+@@ -272,10 +280,9 @@ struct drm_xe_query_mem_region {
+ 	 */
+ 	__u16 mem_class;
+ 	/**
+-	 * @instance: The instance for this region.
+-	 *
+-	 * The @mem_class and @instance taken together will always give
+-	 * a unique pair.
++	 * @instance: The unique ID for this region, which serves as the
++	 * index in the placement bitmask used as argument for
++	 * &DRM_IOCTL_XE_GEM_CREATE
+ 	 */
+ 	__u16 instance;
+ 	/** @pad: MBZ */
+@@ -695,7 +702,13 @@ struct drm_xe_gem_create {
+ 	 */
+ 	__u64 size;
  
- 	return regions;
- }
-@@ -123,7 +123,7 @@ static uint64_t native_region_for_gt(const struct drm_xe_query_gt_list *gt_list,
- 	uint64_t region;
+-	/** @placement: A mask of memory instances of where GEM can be placed. */
++	/**
++	 * @placement: A mask of memory instances of where GEM can be placed.
++	 * Each index in this mask refers directly to the struct
++	 * drm_xe_query_mem_regions' instance, no assumptions should
++	 * be made about order. The type of each region is described
++	 * by struct drm_xe_query_mem_regions' mem_class.
++	 */
+ 	__u32 placement;
  
- 	igt_assert(gt_list->num_gt > gt);
--	region = gt_list->gt_list[gt].native_mem_regions;
-+	region = gt_list->gt_list[gt].near_mem_regions;
- 	igt_assert(region);
- 
- 	return region;
-diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
-index 969ad1c7f..b960ccfa2 100644
---- a/tests/intel/xe_query.c
-+++ b/tests/intel/xe_query.c
-@@ -281,10 +281,10 @@ test_query_gt_list(int fd)
- 		igt_info("type: %d\n", gt_list->gt_list[i].type);
- 		igt_info("gt_id: %d\n", gt_list->gt_list[i].gt_id);
- 		igt_info("clock_freq: %u\n", gt_list->gt_list[i].clock_freq);
--		igt_info("native_mem_regions: 0x%016llx\n",
--		       gt_list->gt_list[i].native_mem_regions);
--		igt_info("slow_mem_regions: 0x%016llx\n",
--		       gt_list->gt_list[i].slow_mem_regions);
-+		igt_info("near_mem_regions: 0x%016llx\n",
-+		       gt_list->gt_list[i].near_mem_regions);
-+		igt_info("far_mem_regions: 0x%016llx\n",
-+		       gt_list->gt_list[i].far_mem_regions);
- 	}
- }
- 
+ #define DRM_XE_GEM_CREATE_FLAG_DEFER_BACKING		(1 << 0)
 -- 
 2.34.1
