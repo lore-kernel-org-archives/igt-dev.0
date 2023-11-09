@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1FA1E10E8DB
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 15:54:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1D9A310E8E3
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 15:54:52 +0000 (UTC)
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  9 Nov 2023 15:53:23 +0000
-Message-Id: <20231109155410.7-11-francois.dugast@intel.com>
+Date: Thu,  9 Nov 2023 15:53:27 +0000
+Message-Id: <20231109155410.7-15-francois.dugast@intel.com>
 In-Reply-To: <20231109155410.7-1-francois.dugast@intel.com>
 References: <20231109155410.7-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 10/57] drm-uapi/xe: Make constant comments
- visible in kernel doc
+Subject: [igt-dev] [PATCH v3 14/57] drm/xe_query: Remove backward
+ compatibility of vram_visible_size.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,414 +19,97 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Align with commit ("drm/xe/uapi: Make constant comments visible in kernel doc")
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+We are breaking the uapi compatibility at this time, so this
+is useless anyway.
+
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- include/drm-uapi/xe_drm.h | 264 ++++++++++++++++++++++----------------
- 1 file changed, 150 insertions(+), 114 deletions(-)
+ lib/xe/xe_query.c | 42 +++++++-----------------------------------
+ 1 file changed, 7 insertions(+), 35 deletions(-)
 
-diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index 01a276376..e0308aa52 100644
---- a/include/drm-uapi/xe_drm.h
-+++ b/include/drm-uapi/xe_drm.h
-@@ -126,23 +126,40 @@ struct xe_user_extension {
- #define DRM_IOCTL_XE_WAIT_USER_FENCE		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_WAIT_USER_FENCE, struct drm_xe_wait_user_fence)
- #define DRM_IOCTL_XE_VM_MADVISE			 DRM_IOW(DRM_COMMAND_BASE + DRM_XE_VM_MADVISE, struct drm_xe_vm_madvise)
+diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+index 9f1ab0cd9..3afbd0c63 100644
+--- a/lib/xe/xe_query.c
++++ b/lib/xe/xe_query.c
+@@ -399,16 +399,6 @@ uint64_t vram_memory(int fd, int gt)
+ 	return xe_has_vram(fd) ? native_region_for_gt(xe_dev->gt_list, gt) : 0;
+ }
  
--/** struct drm_xe_engine_class_instance - instance of an engine class */
-+/**
-+ * struct drm_xe_engine_class_instance - instance of an engine class
-+ *
-+ * The @engine_class can be:
-+ *  - %DRM_XE_ENGINE_CLASS_RENDER
-+ *  - %DRM_XE_ENGINE_CLASS_COPY
-+ *  - %DRM_XE_ENGINE_CLASS_VIDEO_DECODE
-+ *  - %DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE
-+ *  - %DRM_XE_ENGINE_CLASS_COMPUTE
-+ *  - %DRM_XE_ENGINE_CLASS_VM_BIND_ASYNC - Kernel only class (not actual
-+ *    hardware engine class) used for creating ordered queues of
-+ *    asynchronous VM bind operations.
-+ *  - %DRM_XE_ENGINE_CLASS_VM_BIND_SYNC - Kernel only class (not actual
-+ *    synchronous VM bind operations.
-+ *
-+ */
- struct drm_xe_engine_class_instance {
- #define DRM_XE_ENGINE_CLASS_RENDER		0
- #define DRM_XE_ENGINE_CLASS_COPY		1
- #define DRM_XE_ENGINE_CLASS_VIDEO_DECODE	2
- #define DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE	3
- #define DRM_XE_ENGINE_CLASS_COMPUTE		4
--	/*
--	 * Kernel only classes (not actual hardware engine class). Used for
--	 * creating ordered queues of VM bind operations.
--	 */
- #define DRM_XE_ENGINE_CLASS_VM_BIND_ASYNC	5
- #define DRM_XE_ENGINE_CLASS_VM_BIND_SYNC	6
-+	/**
-+	 * @engine_class: Class of this instance among possible
-+	 * DRM_XE_ENGINE_CLASS_*
-+	 */
- 	__u16 engine_class;
+-static uint64_t __xe_visible_vram_size(int fd, int gt)
+-{
+-	struct xe_device *xe_dev;
 -
-+	/** @engine_instance: Engine instance */
- 	__u16 engine_instance;
-+	/** @gt_id: GT ID the instance is associated with */
- 	__u16 gt_id;
-+	/** @rsvd: Reserved */
- 	__u16 rsvd;
- };
- 
-@@ -313,6 +330,24 @@ struct drm_xe_query_mem_usage {
-  * If a query is made with a struct drm_xe_device_query where .query
-  * is equal to DRM_XE_DEVICE_QUERY_CONFIG, then the reply uses
-  * struct drm_xe_query_config in .data.
-+ *
-+ * The index in @info can be:
-+ *  - %DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID - Device ID (lower 16 bits)
-+ *    and the device revision (next 8 bits)
-+ *  - %DRM_XE_QUERY_CONFIG_FLAGS - Flags describing the device
-+ *    configuration, see list below
-+ *
-+ *    - %DRM_XE_QUERY_CONFIG_FLAGS_HAS_VRAM - Flag is set if the device
-+ *      has usable VRAM
-+ *  - %DRM_XE_QUERY_CONFIG_MIN_ALIGNMENT - Minimal memory alignment
-+ *    required by this device, typically SZ_4K or SZ_64K
-+ *  - %DRM_XE_QUERY_CONFIG_VA_BITS - Maximum bits of a virtual address
-+ *  - %DRM_XE_QUERY_CONFIG_GT_COUNT - Total number of GTs for the entire
-+ *    device
-+ *  - %DRM_XE_QUERY_CONFIG_MEM_REGION_COUNT - Total number of accessible
-+ *    memory regions
-+ *  - %DRM_XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY - Value of the highest
-+ *    available exec queue priority
+-	xe_dev = find_in_cache(fd);
+-	igt_assert(xe_dev);
+-
+-	return xe_dev->visible_vram_size[gt];
+-}
+-
+ /**
+  * visible_vram_memory:
+  * @fd: xe device fd
+@@ -420,14 +410,7 @@ static uint64_t __xe_visible_vram_size(int fd, int gt)
   */
- struct drm_xe_query_config {
- 	/** @num_params: number of parameters returned in info */
-@@ -321,39 +356,13 @@ struct drm_xe_query_config {
- 	/** @pad: MBZ */
- 	__u32 pad;
+ uint64_t visible_vram_memory(int fd, int gt)
+ {
+-	/*
+-	 * TODO: Keep it backwards compat for now. Fixup once the kernel side
+-	 * has landed.
+-	 */
+-	if (__xe_visible_vram_size(fd, gt))
+-		return vram_memory(fd, gt) | DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
+-	else
+-		return vram_memory(fd, gt); /* older kernel */
++	return vram_memory(fd, gt) | DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
+ }
+ 
+ /**
+@@ -459,14 +442,7 @@ uint64_t visible_vram_if_possible(int fd, int gt)
+ 	uint64_t system_memory = regions & 0x1;
+ 	uint64_t vram = regions & (0x2 << gt);
  
 -	/*
--	 * Device ID (lower 16 bits) and the device revision (next
--	 * 8 bits)
+-	 * TODO: Keep it backwards compat for now. Fixup once the kernel side
+-	 * has landed.
 -	 */
- #define DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID		0
--	/*
--	 * Flags describing the device configuration, see list below
--	 */
- #define DRM_XE_QUERY_CONFIG_FLAGS			1
--	/*
--	 * Flag is set if the device has usable VRAM
--	 */
- 	#define DRM_XE_QUERY_CONFIG_FLAGS_HAS_VRAM	(0x1 << 0)
--	/*
--	 * Minimal memory alignment required by this device,
--	 * typically SZ_4K or SZ_64K
--	 */
- #define DRM_XE_QUERY_CONFIG_MIN_ALIGNMENT		2
--	/*
--	 * Maximum bits of a virtual address
--	 */
- #define DRM_XE_QUERY_CONFIG_VA_BITS			3
--	/*
--	 * Total number of GTs for the entire device
--	 */
- #define DRM_XE_QUERY_CONFIG_GT_COUNT			4
--	/*
--	 * Total number of accessible memory regions
--	 */
- #define DRM_XE_QUERY_CONFIG_MEM_REGION_COUNT		5
--	/*
--	 * Value of the highest available exec queue priority
--	 */
- #define DRM_XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY	6
- 	/** @info: array of elements containing the config info */
- 	__u64 info[];
-@@ -366,6 +375,7 @@ struct drm_xe_query_config {
-  * existing GT individual descriptions.
-  * Graphics Technology (GT) is a subset of a GPU/tile that is responsible for
-  * implementing graphics and/or media operations.
-+ *
+-	if (__xe_visible_vram_size(fd, gt))
+-		return vram ? vram | DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM : system_memory;
+-	else
+-		return vram ? vram : system_memory; /* older kernel */
++	return vram ? vram | DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM : system_memory;
+ }
+ 
+ /**
+@@ -618,18 +594,14 @@ uint64_t xe_vram_size(int fd, int gt)
   */
- struct drm_xe_query_gt {
- #define DRM_XE_QUERY_GT_TYPE_MAIN		0
-@@ -423,34 +433,31 @@ struct drm_xe_query_gt_list {
-  * If a query is made with a struct drm_xe_device_query where .query
-  * is equal to DRM_XE_DEVICE_QUERY_GT_TOPOLOGY, then the reply uses
-  * struct drm_xe_query_topology_mask in .data.
-+ *
-+ * The @type can be:
-+ *  - %DRM_XE_TOPO_DSS_GEOMETRY - To query the mask of Dual Sub Slices
-+ *    (DSS) available for geometry operations. For example a query response
-+ *    containing the following in mask:
-+ *    ``DSS_GEOMETRY    ff ff ff ff 00 00 00 00``
-+ *    means 32 DSS are available for geometry.
-+ *  - %DRM_XE_TOPO_DSS_COMPUTE - To query the mask of Dual Sub Slices
-+ *    (DSS) available for compute operations. For example a query response
-+ *    containing the following in mask:
-+ *    ``DSS_COMPUTE    ff ff ff ff 00 00 00 00``
-+ *    means 32 DSS are available for compute.
-+ *  - %DRM_XE_TOPO_EU_PER_DSS - To query the mask of Execution Units (EU)
-+ *    available per Dual Sub Slices (DSS). For example a query response
-+ *    containing the following in mask:
-+ *    ``EU_PER_DSS    ff ff 00 00 00 00 00 00``
-+ *    means each DSS has 16 EU.
-+ *
-  */
- struct drm_xe_query_topology_mask {
- 	/** @gt_id: GT ID the mask is associated with */
- 	__u16 gt_id;
+ uint64_t xe_visible_vram_size(int fd, int gt)
+ {
+-	uint64_t visible_size;
++	struct xe_device *xe_dev;
  
 -	/*
--	 * To query the mask of Dual Sub Slices (DSS) available for geometry
--	 * operations. For example a query response containing the following
--	 * in mask:
--	 *   DSS_GEOMETRY    ff ff ff ff 00 00 00 00
--	 * means 32 DSS are available for geometry.
+-	 * TODO: Keep it backwards compat for now. Fixup once the kernel side
+-	 * has landed.
 -	 */
- #define DRM_XE_TOPO_DSS_GEOMETRY	(1 << 0)
--	/*
--	 * To query the mask of Dual Sub Slices (DSS) available for compute
--	 * operations. For example a query response containing the following
--	 * in mask:
--	 *   DSS_COMPUTE    ff ff ff ff 00 00 00 00
--	 * means 32 DSS are available for compute.
--	 */
- #define DRM_XE_TOPO_DSS_COMPUTE		(1 << 1)
--	/*
--	 * To query the mask of Execution Units (EU) available per Dual Sub
--	 * Slices (DSS). For example a query response containing the following
--	 * in mask:
--	 *   EU_PER_DSS    ff ff 00 00 00 00 00 00
--	 * means each DSS has 16 EU.
--	 */
- #define DRM_XE_TOPO_EU_PER_DSS		(1 << 2)
- 	/** @type: type of mask */
- 	__u16 type;
-@@ -512,6 +519,19 @@ struct drm_xe_query_uc_fw_version {
-  * and sets the value in the query member. This determines the type of
-  * the structure provided by the driver in data, among struct drm_xe_query_*.
-  *
-+ * The @query can be:
-+ *  - %DRM_XE_DEVICE_QUERY_ENGINES
-+ *  - %DRM_XE_DEVICE_QUERY_MEM_USAGE
-+ *  - %DRM_XE_DEVICE_QUERY_CONFIG
-+ *  - %DRM_XE_DEVICE_QUERY_GT_LIST - Query type to retrieve the hardware
-+ *    configuration of the device such as information on slices, memory,
-+ *    caches, and so on. It is provided as a table of key / value
-+ *    attributes.
-+ *  - %DRM_XE_DEVICE_QUERY_HWCONFIG
-+ *  - %DRM_XE_DEVICE_QUERY_GT_TOPOLOGY
-+ *  - %DRM_XE_DEVICE_QUERY_ENGINE_CYCLES
-+ *  - %DRM_XE_DEVICE_QUERY_UC_FW_VERSION
-+ *
-  * If size is set to 0, the driver fills it with the required size for
-  * the requested type of data to query. If size is equal to the required
-  * size, the queried information is copied into data. If size is set to
-@@ -554,11 +574,6 @@ struct drm_xe_device_query {
- #define DRM_XE_DEVICE_QUERY_MEM_USAGE		1
- #define DRM_XE_DEVICE_QUERY_CONFIG		2
- #define DRM_XE_DEVICE_QUERY_GT_LIST		3
--	/*
--	 * Query type to retrieve the hardware configuration of the device
--	 * such as information on slices, memory, caches, and so on. It is
--	 * provided as a table of attributes (key / value).
--	 */
- #define DRM_XE_DEVICE_QUERY_HWCONFIG		4
- #define DRM_XE_DEVICE_QUERY_GT_TOPOLOGY		5
- #define DRM_XE_DEVICE_QUERY_ENGINE_CYCLES	6
-@@ -576,6 +591,29 @@ struct drm_xe_device_query {
- 	__u64 reserved[2];
- };
+-	visible_size = __xe_visible_vram_size(fd, gt);
+-	if (!visible_size) /* older kernel */
+-		visible_size = xe_vram_size(fd, gt);
++	xe_dev = find_in_cache(fd);
++	igt_assert(xe_dev);
  
-+/**
-+ * struct drm_xe_gem_create - structure for gem creation
-+ *
-+ * The @flags can be:
-+ *  - %DRM_XE_GEM_CREATE_FLAG_DEFER_BACKING
-+ *  - %DRM_XE_GEM_CREATE_FLAG_SCANOUT
-+ *  - %DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM - When using VRAM as a
-+ *    possible placement, ensure that the corresponding VRAM allocation
-+ *    will always use the CPU accessible part of VRAM. This is important
-+ *    for small-bar systems (on full-bar systems this gets turned into a
-+ *    noop).
-+ *    Note1: System memory can be used as an extra placement if the kernel
-+ *    should spill the allocation to system memory, if space can't be made
-+ *    available in the CPU accessible part of VRAM (giving the same
-+ *    behaviour as the i915 interface, see
-+ *    I915_GEM_CREATE_EXT_FLAG_NEEDS_CPU_ACCESS).
-+ *    Note2: For clear-color CCS surfaces the kernel needs to read the
-+ *    clear-color value stored in the buffer, and on discrete platforms we
-+ *    need to use VRAM for display surfaces, therefore the kernel requires
-+ *    setting this flag for such objects, otherwise an error is thrown on
-+ *    small-bar systems.
-+ *
-+ */
- struct drm_xe_gem_create {
- 	/** @extensions: Pointer to the first extension struct, if any */
- 	__u64 extensions;
-@@ -589,21 +627,6 @@ struct drm_xe_gem_create {
- 
- #define DRM_XE_GEM_CREATE_FLAG_DEFER_BACKING		(0x1 << 24)
- #define DRM_XE_GEM_CREATE_FLAG_SCANOUT			(0x1 << 25)
--/*
-- * When using VRAM as a possible placement, ensure that the corresponding VRAM
-- * allocation will always use the CPU accessible part of VRAM. This is important
-- * for small-bar systems (on full-bar systems this gets turned into a noop).
-- *
-- * Note: System memory can be used as an extra placement if the kernel should
-- * spill the allocation to system memory, if space can't be made available in
-- * the CPU accessible part of VRAM (giving the same behaviour as the i915
-- * interface, see I915_GEM_CREATE_EXT_FLAG_NEEDS_CPU_ACCESS).
-- *
-- * Note: For clear-color CCS surfaces the kernel needs to read the clear-color
-- * value stored in the buffer, and on discrete platforms we need to use VRAM for
-- * display surfaces, therefore the kernel requires setting this flag for such
-- * objects, otherwise an error is thrown on small-bar systems.
-- */
- #define DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM	(0x1 << 26)
- 	/**
- 	 * @flags: Flags, currently a mask of memory instances of where BO can
-@@ -700,6 +723,30 @@ struct drm_xe_vm_destroy {
- 	__u64 reserved[2];
- };
- 
-+/**
-+ * struct drm_xe_vm_bind_op - run bind operations
-+ *
-+ * The @op can be:
-+ *  - %DRM_XE_VM_BIND_OP_MAP
-+ *  - %DRM_XE_VM_BIND_OP_UNMAP
-+ *  - %DRM_XE_VM_BIND_OP_MAP_USERPTR
-+ *  - %DRM_XE_VM_BIND_OP_UNMAP_ALL
-+ *  - %DRM_XE_VM_BIND_OP_PREFETCH
-+ *
-+ * and the @flags can be:
-+ *  - %DRM_XE_VM_BIND_FLAG_READONLY
-+ *  - %DRM_XE_VM_BIND_FLAG_ASYNC
-+ *  - %DRM_XE_VM_BIND_FLAG_IMMEDIATE - Valid on a faulting VM only, do the
-+ *    MAP operation immediately rather than deferring the MAP to the page
-+ *    fault handler.
-+ *  - %DRM_XE_VM_BIND_FLAG_NULL - When the NULL flag is set, the page
-+ *    tables are setup with a special bit which indicates writes are
-+ *    dropped and all reads return zero. In the future, the NULL flags
-+ *    will only be valid for DRM_XE_VM_BIND_OP_MAP operations, the BO
-+ *    handle MBZ, and the BO offset MBZ. This flag is intended to
-+ *    implement VK sparse bindings.
-+ *
-+ */
- struct drm_xe_vm_bind_op {
- 	/** @extensions: Pointer to the first extension struct, if any */
- 	__u64 extensions;
-@@ -747,23 +794,12 @@ struct drm_xe_vm_bind_op {
- 
- #define DRM_XE_VM_BIND_FLAG_READONLY	(0x1 << 0)
- #define DRM_XE_VM_BIND_FLAG_ASYNC	(0x1 << 1)
--	/*
--	 * Valid on a faulting VM only, do the MAP operation immediately rather
--	 * than deferring the MAP to the page fault handler.
--	 */
- #define DRM_XE_VM_BIND_FLAG_IMMEDIATE	(0x1 << 2)
--	/*
--	 * When the NULL flag is set, the page tables are setup with a special
--	 * bit which indicates writes are dropped and all reads return zero.  In
--	 * the future, the NULL flags will only be valid for DRM_XE_VM_BIND_OP_MAP
--	 * operations, the BO handle MBZ, and the BO offset MBZ. This flag is
--	 * intended to implement VK sparse bindings.
--	 */
- #define DRM_XE_VM_BIND_FLAG_NULL	(0x1 << 3)
- 	/** @flags: Bind flags */
- 	__u32 flags;
- 
--	/** @mem_region: Memory region to prefetch VMA to, instance not a mask */
-+	/** @region: Memory region to prefetch VMA to, instance not a mask */
- 	__u32 region;
- 
- 	/** @reserved: Reserved */
-@@ -1063,6 +1099,35 @@ struct drm_xe_wait_user_fence {
- 	__u64 reserved[2];
- };
- 
-+/**
-+ * struct drm_xe_vm_madvise - give advice about use of memory
-+ *
-+ * The @property can be:
-+ *  - %DRM_XE_VM_MADVISE_PREFERRED_MEM_CLASS - Setting the preferred
-+ *    location will trigger a migrate of the VMA backing store to new
-+ *    location if the backing store is already allocated.
-+ *    For DRM_XE_VM_MADVISE_PREFERRED_MEM_CLASS usage, see enum
-+ *    drm_xe_memory_class.
-+ *  - %DRM_XE_VM_MADVISE_PREFERRED_GT
-+ *  - %DRM_XE_VM_MADVISE_PREFERRED_MEM_CLASS_GT - In this case lower 32 bits
-+ *    are mem class, upper 32 are GT. Combination provides a single IOCTL
-+ *    plus migrate VMA to preferred location.
-+ *  - %DRM_XE_VM_MADVISE_CPU_ATOMIC - The CPU will do atomic memory
-+ *    operations to this VMA. Must be set on some devices for atomics to
-+ *    behave correctly.
-+ *  - %DRM_XE_VM_MADVISE_DEVICE_ATOMIC - The device will do atomic memory
-+ *    operations to this VMA. Must be set on some devices for atomics to
-+ *    behave correctly.
-+ *  - %DRM_XE_VM_MADVISE_PRIORITY - Priority WRT to eviction (moving from
-+ *    preferred memory location due to memory pressure). The lower the
-+ *    priority, the more likely to be evicted.
-+ *
-+ *    - %DRM_XE_VMA_PRIORITY_LOW
-+ *    - %DRM_XE_VMA_PRIORITY_NORMAL - Default
-+ *    - %DRM_XE_VMA_PRIORITY_HIGH - Must be user with elevated privileges
-+ *  - %DRM_XE_VM_MADVISE_PIN - Pin the VMA in memory, must be user with
-+ *    elevated privileges
-+ */
- struct drm_xe_vm_madvise {
- 	/** @extensions: Pointer to the first extension struct, if any */
- 	__u64 extensions;
-@@ -1079,44 +1144,15 @@ struct drm_xe_vm_madvise {
- 	/** @addr: Address of the VMA to operation on */
- 	__u64 addr;
- 
--	/*
--	 * Setting the preferred location will trigger a migrate of the VMA
--	 * backing store to new location if the backing store is already
--	 * allocated.
--	 *
--	 * For DRM_XE_VM_MADVISE_PREFERRED_MEM_CLASS usage, see enum
--	 * drm_xe_memory_class.
--	 */
- #define DRM_XE_VM_MADVISE_PREFERRED_MEM_CLASS		0
- #define DRM_XE_VM_MADVISE_PREFERRED_GT			1
--	/*
--	 * In this case lower 32 bits are mem class, upper 32 are GT.
--	 * Combination provides a single IOCTL plus migrate VMA to preferred
--	 * location.
--	 */
- #define DRM_XE_VM_MADVISE_PREFERRED_MEM_CLASS_GT	2
--	/*
--	 * The CPU will do atomic memory operations to this VMA. Must be set on
--	 * some devices for atomics to behave correctly.
--	 */
- #define DRM_XE_VM_MADVISE_CPU_ATOMIC			3
--	/*
--	 * The device will do atomic memory operations to this VMA. Must be set
--	 * on some devices for atomics to behave correctly.
--	 */
- #define DRM_XE_VM_MADVISE_DEVICE_ATOMIC			4
--	/*
--	 * Priority WRT to eviction (moving from preferred memory location due
--	 * to memory pressure). The lower the priority, the more likely to be
--	 * evicted.
--	 */
- #define DRM_XE_VM_MADVISE_PRIORITY			5
- #define		DRM_XE_VMA_PRIORITY_LOW			0
--		/* Default */
- #define		DRM_XE_VMA_PRIORITY_NORMAL		1
--		/* Must be user with elevated privileges */
- #define		DRM_XE_VMA_PRIORITY_HIGH		2
--	/* Pin the VMA in memory, must be user with elevated privileges */
- #define DRM_XE_VM_MADVISE_PIN				6
- 	/** @property: property to set */
- 	__u32 property;
+-	return visible_size;
++	return xe_dev->visible_vram_size[gt];
+ }
++
+ /**
+  * xe_vram_available:
+  * @fd: xe device fd
 -- 
 2.34.1
