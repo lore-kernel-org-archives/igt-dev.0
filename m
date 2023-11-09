@@ -1,17 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com
- (mail-co1nam11on2041.outbound.protection.outlook.com [40.107.220.41])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 76FDE10E1BD
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 07:07:54 +0000 (UTC)
-From: Lang Yu <Lang.Yu@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Thu, 9 Nov 2023 15:07:34 +0800
-Message-ID: <20231109070735.1957435-1-Lang.Yu@amd.com>
-MIME-Version: 1.0
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0B3DD10E1BE
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 07:07:04 +0000 (UTC)
+Message-ID: <cfd5dfb7-25bd-b6d1-069b-cf53c9c021d9@intel.com>
+Date: Thu, 9 Nov 2023 08:06:41 +0100
+Content-Language: pl
+To: Michal Wajdeczko <michal.wajdeczko@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20231106195947.14640-1-lukasz.laguna@intel.com>
+ <20231106195947.14640-8-lukasz.laguna@intel.com>
+ <ede911d8-3053-4446-b69e-427c473e7a20@intel.com>
+From: "Laguna, Lukasz" <lukasz.laguna@intel.com>
+In-Reply-To: <ede911d8-3053-4446-b69e-427c473e7a20@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH 1/2] include/drm-uapi/amdgpu_drm.h: update
- amdgpu_drm.h
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t 7/8] tests/sriov_basic: validate driver
+ binding to VFs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,157 +24,131 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Alex Deucher <alexander.deucher@amd.com>, Lang Yu <Lang.Yu@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Take from https://anongit.freedesktop.org/git/drm/drm.git.
 
-branch: drm-next
-commit: 9ccde17d46554dbb2757c427f2cdf67688701f96
-
-Signed-off-by: Lang Yu <Lang.Yu@amd.com>
----
- include/drm-uapi/amdgpu_drm.h | 50 ++++++++++++++++++++++++++---------
- 1 file changed, 38 insertions(+), 12 deletions(-)
-
-diff --git a/include/drm-uapi/amdgpu_drm.h b/include/drm-uapi/amdgpu_drm.h
-index f44e140ad..ad21c613f 100644
---- a/include/drm-uapi/amdgpu_drm.h
-+++ b/include/drm-uapi/amdgpu_drm.h
-@@ -94,6 +94,9 @@ extern "C" {
-  *
-  * %AMDGPU_GEM_DOMAIN_OA	Ordered append, used by 3D or Compute engines
-  * for appending data.
-+ *
-+ * %AMDGPU_GEM_DOMAIN_DOORBELL	Doorbell. It is an MMIO region for
-+ * signalling user mode queues.
-  */
- #define AMDGPU_GEM_DOMAIN_CPU		0x1
- #define AMDGPU_GEM_DOMAIN_GTT		0x2
-@@ -101,12 +104,14 @@ extern "C" {
- #define AMDGPU_GEM_DOMAIN_GDS		0x8
- #define AMDGPU_GEM_DOMAIN_GWS		0x10
- #define AMDGPU_GEM_DOMAIN_OA		0x20
-+#define AMDGPU_GEM_DOMAIN_DOORBELL	0x40
- #define AMDGPU_GEM_DOMAIN_MASK		(AMDGPU_GEM_DOMAIN_CPU | \
- 					 AMDGPU_GEM_DOMAIN_GTT | \
- 					 AMDGPU_GEM_DOMAIN_VRAM | \
- 					 AMDGPU_GEM_DOMAIN_GDS | \
- 					 AMDGPU_GEM_DOMAIN_GWS | \
--					 AMDGPU_GEM_DOMAIN_OA)
-+					 AMDGPU_GEM_DOMAIN_OA | \
-+					 AMDGPU_GEM_DOMAIN_DOORBELL)
- 
- /* Flag that CPU access will be required for the case of VRAM domain */
- #define AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED	(1 << 0)
-@@ -145,7 +150,7 @@ extern "C" {
-  */
- #define AMDGPU_GEM_CREATE_DISCARDABLE		(1 << 12)
- /* Flag that BO is shared coherently between multiple devices or CPU threads.
-- * May depend on GPU instructions to flush caches explicitly
-+ * May depend on GPU instructions to flush caches to system scope explicitly.
-  *
-  * This influences the choice of MTYPE in the PTEs on GFXv9 and later GPUs and
-  * may override the MTYPE selected in AMDGPU_VA_OP_MAP.
-@@ -158,6 +163,14 @@ extern "C" {
-  * may override the MTYPE selected in AMDGPU_VA_OP_MAP.
-  */
- #define AMDGPU_GEM_CREATE_UNCACHED		(1 << 14)
-+/* Flag that BO should be coherent across devices when using device-level
-+ * atomics. May depend on GPU instructions to flush caches to device scope
-+ * explicitly, promoting them to system scope automatically.
-+ *
-+ * This influences the choice of MTYPE in the PTEs on GFXv9 and later GPUs and
-+ * may override the MTYPE selected in AMDGPU_VA_OP_MAP.
-+ */
-+#define AMDGPU_GEM_CREATE_EXT_COHERENT		(1 << 15)
- 
- struct drm_amdgpu_gem_create_in  {
- 	/** the requested memory size */
-@@ -236,9 +249,9 @@ union drm_amdgpu_bo_list {
- /* unknown cause */
- #define AMDGPU_CTX_UNKNOWN_RESET	3
- 
--/* indicate gpu reset occured after ctx created */
-+/* indicate gpu reset occurred after ctx created */
- #define AMDGPU_CTX_QUERY2_FLAGS_RESET    (1<<0)
--/* indicate vram lost occured after ctx created */
-+/* indicate vram lost occurred after ctx created */
- #define AMDGPU_CTX_QUERY2_FLAGS_VRAMLOST (1<<1)
- /* indicate some job from this context once cause gpu hang */
- #define AMDGPU_CTX_QUERY2_FLAGS_GUILTY   (1<<2)
-@@ -259,13 +272,6 @@ union drm_amdgpu_bo_list {
- */
- #define AMDGPU_CTX_PRIORITY_HIGH        512
- #define AMDGPU_CTX_PRIORITY_VERY_HIGH   1023
--/* select a stable profiling pstate for perfmon tools */
--#define AMDGPU_CTX_STABLE_PSTATE_FLAGS_MASK  0xf
--#define AMDGPU_CTX_STABLE_PSTATE_NONE  0
--#define AMDGPU_CTX_STABLE_PSTATE_STANDARD  1
--#define AMDGPU_CTX_STABLE_PSTATE_MIN_SCLK  2
--#define AMDGPU_CTX_STABLE_PSTATE_MIN_MCLK  3
--#define AMDGPU_CTX_STABLE_PSTATE_PEAK  4
- 
- /* select a stable profiling pstate for perfmon tools */
- #define AMDGPU_CTX_STABLE_PSTATE_FLAGS_MASK  0xf
-@@ -588,7 +594,8 @@ struct drm_amdgpu_gem_va {
-  */
- #define AMDGPU_HW_IP_VCN_ENC      7
- #define AMDGPU_HW_IP_VCN_JPEG     8
--#define AMDGPU_HW_IP_NUM          9
-+#define AMDGPU_HW_IP_VPE          9
-+#define AMDGPU_HW_IP_NUM          10
- 
- #define AMDGPU_HW_IP_INSTANCE_MAX_COUNT 1
- 
-@@ -799,6 +806,8 @@ struct drm_amdgpu_cs_chunk_cp_gfx_shadow {
- 	#define AMDGPU_INFO_FW_MES		0x1a
- 	/* Subquery id: Query IMU firmware version */
- 	#define AMDGPU_INFO_FW_IMU		0x1b
-+	/* Subquery id: Query VPE firmware version */
-+	#define AMDGPU_INFO_FW_VPE		0x1c
- 
- /* number of bytes moved for TTM migration */
- #define AMDGPU_INFO_NUM_BYTES_MOVED		0x0f
-@@ -897,6 +906,8 @@ struct drm_amdgpu_cs_chunk_cp_gfx_shadow {
- 	#define AMDGPU_INFO_VIDEO_CAPS_ENCODE		1
- /* Query the max number of IBs per gang per submission */
- #define AMDGPU_INFO_MAX_IBS			0x22
-+/* query last page fault info */
-+#define AMDGPU_INFO_GPUVM_FAULT			0x23
- 
- #define AMDGPU_INFO_MMR_SE_INDEX_SHIFT	0
- #define AMDGPU_INFO_MMR_SE_INDEX_MASK	0xff
-@@ -1222,6 +1233,20 @@ struct drm_amdgpu_info_video_caps {
- 	struct drm_amdgpu_info_video_codec_info codec_info[AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_COUNT];
- };
- 
-+#define AMDGPU_VMHUB_TYPE_MASK			0xff
-+#define AMDGPU_VMHUB_TYPE_SHIFT			0
-+#define AMDGPU_VMHUB_TYPE_GFX			0
-+#define AMDGPU_VMHUB_TYPE_MM0			1
-+#define AMDGPU_VMHUB_TYPE_MM1			2
-+#define AMDGPU_VMHUB_IDX_MASK			0xff00
-+#define AMDGPU_VMHUB_IDX_SHIFT			8
-+
-+struct drm_amdgpu_info_gpuvm_fault {
-+	__u64 addr;
-+	__u32 status;
-+	__u32 vmhub;
-+};
-+
- /*
-  * Supported GPU families
-  */
-@@ -1240,6 +1265,7 @@ struct drm_amdgpu_info_video_caps {
- #define AMDGPU_FAMILY_GC_11_0_1			148 /* GC 11.0.1 */
- #define AMDGPU_FAMILY_GC_10_3_6			149 /* GC 10.3.6 */
- #define AMDGPU_FAMILY_GC_10_3_7			151 /* GC 10.3.7 */
-+#define AMDGPU_FAMILY_GC_11_5_0			150 /* GC 11.5.0 */
- 
- #if defined(__cplusplus)
- }
--- 
-2.25.1
+On 11/6/2023 23:59, Michal Wajdeczko wrote:
+>
+> On 06.11.2023 20:59, Lukasz Laguna wrote:
+>> From: Katarzyna Dec <katarzyna.dec@intel.com>
+>>
+>> Test enables VFs in range <1..totalvfs>, bind driver to all of them and
+>> then unbind driver from all of them.
+> commit message seems outdated
+What do you mean? I don't see anything wrong
+>
+>> Signed-off-by: Katarzyna Dec <katarzyna.dec@intel.com>
+>> Reviewed-by: Lukasz Laguna <lukasz.laguna@intel.com>
+>> Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
+>> Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+>> ---
+>>   tests/sriov_basic.c | 51 +++++++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 51 insertions(+)
+>>
+>> diff --git a/tests/sriov_basic.c b/tests/sriov_basic.c
+>> index fc0914962..179731daf 100644
+>> --- a/tests/sriov_basic.c
+>> +++ b/tests/sriov_basic.c
+>> @@ -61,6 +61,38 @@ static void probe_disable_vfs(int pf_fd, unsigned int num_vfs)
+>>   	igt_assert(!err);
+>>   }
+>>   
+>> +/**
+>> + * SUBTEST: enable-vfs-bind-all-unbind-all
+>> + * Description:
+>> + *   Verify VFs enabling, binding the driver and then unbinding it from all of them
+>> + */
+>> +static void enable_vfs_bind_all_unbind_all(int pf_fd, unsigned int num_vfs)
+>> +{
+>> +	igt_debug("Using num_vfs=%u\n", num_vfs);
+> nit: "Testing %u VFs" ?
+Done
+>
+>> +
+>> +	igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
+> duplicates main fixture
+As already answered in different patch - first fixtureis not executed 
+between dynamic subtests.
+>
+>> +	igt_warn_on(!igt_sriov_disable_driver_autoprobe(pf_fd));
+>> +	igt_skip_on(igt_sriov_is_driver_autoprobe_enabled(pf_fd));
+> why do we need warn/skip here ?
+> can't we just assert that 'disable' worked ?
+Done
+>
+>> +
+>> +	igt_warn_on(!igt_sriov_enable_vfs(pf_fd, num_vfs));
+> can't we just assert ?
+Done
+>
+>> +	igt_assert_eq(num_vfs, igt_sriov_get_enabled_vfs(pf_fd));
+> why we care here ? if not all are enabled then we fail just later
+> and this is not a test for "enable VFs" that enabled==requested
+Done
+>
+>> +	igt_warn_on(!igt_sriov_enable_driver_autoprobe(pf_fd));
+>> +	igt_assert(igt_sriov_is_driver_autoprobe_enabled(pf_fd));
+> can't we just warn ?
+> if that we fail to enable then probe below will fail anyway
+Done
+>
+>> +
+>> +	for (int i = 1; i <= num_vfs; i++) {
+>> +		igt_assert(!igt_sriov_is_vf_drm_driver_probed(pf_fd, i));
+>> +		igt_assert(igt_sriov_bind_vf_drm_driver(pf_fd, i));
+>> +		igt_assert(igt_sriov_is_vf_drm_driver_probed(pf_fd, i));
+> shouldn't we just "expect" to make sure to call "disable VFs" ?
+VFs will be disabled in exit fixture. VFs disabling in subtest is needed 
+between dynamic subtests.
+>
+>> +	}
+>> +
+>> +	for (int i = 1; i <= num_vfs; i++) {
+>> +		igt_assert(igt_sriov_unbind_vf_drm_driver(pf_fd, i));
+>> +		igt_assert(!igt_sriov_is_vf_drm_driver_probed(pf_fd, i));
+> do we need to have all VFs loaded ?
+> maybe for BAT test we can just bind/unload one VF at the time ?
+We have such test as well:
+[PATCH i-g-t 8/8] tests/sriov_basic: add more tests for VF driver binding
+     SUBTEST: enable-vfs-bind-unbind-each
+     SUBTEST: bind-unbind-vf
+>
+> otherwise it will be almost the same level of stress as in
+> "enable-vfs-autoprobe-on" but with 'manual probe' loop of all VFs
+>
+>> +	}
+>> +
+>> +	igt_assert(igt_sriov_disable_vfs(pf_fd));
+>> +}
+>> +
+>>   igt_main
+>>   {
+>>   	int pf_fd;
+>> @@ -113,6 +145,25 @@ igt_main
+>>   		}
+>>   	}
+>>   
+>> +	igt_describe("Verify VFs enabling, binding the driver and then unbinding it from all of them");
+>> +	igt_subtest_with_dynamic("enable-vfs-bind-all-unbind-all") {
+>> +		for_each_num_vfs(pf_fd, num_vfs) {
+>> +			igt_dynamic_f("numvfs-%u", num_vfs) {
+>> +				enable_vfs_bind_all_unbind_all(pf_fd, num_vfs);
+>> +			}
+>> +		}
+>> +		for_random_num_vfs(pf_fd, num_vfs) {
+>> +			igt_dynamic_f("numvfs-random") {
+>> +				enable_vfs_bind_all_unbind_all(pf_fd, num_vfs);
+>> +			}
+>> +		}
+>> +		for_max_num_vfs(pf_fd, num_vfs) {
+>> +			igt_dynamic_f("numvfs-all") {
+>> +				enable_vfs_bind_all_unbind_all(pf_fd, num_vfs);
+>> +			}
+>> +		}
+>> +	}
+>> +
+>>   	igt_fixture {
+>>   		igt_sriov_disable_vfs(pf_fd);
+>>   		/* abort to avoid execution of next tests with enabled VFs */
