@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============2829127430085980284=="
+ boundary="===============4317377619245356714=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: priyanka.dandamudi@intel.com
-Date: Thu, 09 Nov 2023 19:09:12 -0000
-Message-ID: <169955695229.26588.2511406790757796458@emeril.freedesktop.org>
-References: <20231109151347.2129614-1-priyanka.dandamudi@intel.com>
-In-Reply-To: <20231109151347.2129614-1-priyanka.dandamudi@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_Tests_fo?=
- =?utf-8?q?r_engine_set_property?=
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Thu, 09 Nov 2023 19:38:55 -0000
+Message-ID: <169955873530.26589.11773060583258592118@emeril.freedesktop.org>
+References: <20231109171554.313952-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20231109171554.313952-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_tests/xe?=
+ =?utf-8?q?=5Fevict=5Fccs=3A_Disable_compression_on_platforms_without_flat?=
+ =?utf-8?q?ccs?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,20 +24,20 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2829127430085980284==
+--===============4317377619245356714==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Tests for engine set property
-URL   : https://patchwork.freedesktop.org/series/126201/
+Series: tests/xe_evict_ccs: Disable compression on platforms without flatccs
+URL   : https://patchwork.freedesktop.org/series/126210/
 State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_7580_BAT -> XEIGTPW_10152_BAT
+CI Bug Log - changes from XEIGT_7580_BAT -> XEIGTPW_10154_BAT
 ====================================================
 
 Summary
@@ -44,11 +45,11 @@ Summary
 
   **FAILURE**
 
-  Serious unknown changes coming with XEIGTPW_10152_BAT absolutely need to be
+  Serious unknown changes coming with XEIGTPW_10154_BAT absolutely need to be
   verified manually.
   
   If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_10152_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them
+  introduced in XEIGTPW_10154_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them
   to document this new failure mode, which will reduce false positives in CI.
 
   
@@ -56,7 +57,7 @@ Summary
 Participating hosts (2 -> 0)
 ------------------------------
 
-  ERROR: It appears as if the changes made in XEIGTPW_10152_BAT prevented too many machines from booting.
+  ERROR: It appears as if the changes made in XEIGTPW_10154_BAT prevented too many machines from booting.
 
   Missing    (2): bat-pvc-2 bat-atsm-2 
 
@@ -70,19 +71,19 @@ Changes
 Build changes
 -------------
 
-  * IGT: IGT_7580 -> IGTPW_10152
+  * IGT: IGT_7580 -> IGTPW_10154
   * Linux: xe-481-7a0da606f1fcf4b59d7164419f1ccd1c48d366af -> xe-483-2096aea11094f62fea27af97d949423bea156686
 
-  IGTPW_10152: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10152/index.html
+  IGTPW_10154: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10154/index.html
   IGT_7580: 847ee1e7d365e2fb08bf4198d3bf5ee8a852649f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   xe-481-7a0da606f1fcf4b59d7164419f1ccd1c48d366af: 7a0da606f1fcf4b59d7164419f1ccd1c48d366af
   xe-483-2096aea11094f62fea27af97d949423bea156686: 2096aea11094f62fea27af97d949423bea156686
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10152/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10154/index.html
 
---===============2829127430085980284==
+--===============4317377619245356714==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -102,34 +103,34 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Tests for engine set property</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126201/">https://patchwork.freedesktop.org/series/126201/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/xe_evict_ccs: Disable compression on platforms without flatccs</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126210/">https://patchwork.freedesktop.org/series/126210/</a></td></tr>
 <tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10152/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10152/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10154/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10154/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_7580_BAT -&gt; XEIGTPW_10152_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_7580_BAT -&gt; XEIGTPW_10154_BAT</h1>
 <h2>Summary</h2>
 <p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_10152_BAT absolutely need to be<br />
+<p>Serious unknown changes coming with XEIGTPW_10154_BAT absolutely need to be<br />
   verified manually.</p>
 <p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_10152_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
+  introduced in XEIGTPW_10154_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
   to document this new failure mode, which will reduce false positives in CI.</p>
 <h2>Participating hosts (2 -&gt; 0)</h2>
-<p>ERROR: It appears as if the changes made in XEIGTPW_10152_BAT prevented too many machines from booting.</p>
+<p>ERROR: It appears as if the changes made in XEIGTPW_10154_BAT prevented too many machines from booting.</p>
 <p>Missing    (2): bat-pvc-2 bat-atsm-2 </p>
 <h2>Changes</h2>
 <p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_7580 -&gt; IGTPW_10152</li>
+<li>IGT: IGT_7580 -&gt; IGTPW_10154</li>
 <li>Linux: xe-481-7a0da606f1fcf4b59d7164419f1ccd1c48d366af -&gt; xe-483-2096aea11094f62fea27af97d949423bea156686</li>
 </ul>
-<p>IGTPW_10152: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10152/index.html<br />
+<p>IGTPW_10154: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10154/index.html<br />
   IGT_7580: 847ee1e7d365e2fb08bf4198d3bf5ee8a852649f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   xe-481-7a0da606f1fcf4b59d7164419f1ccd1c48d366af: 7a0da606f1fcf4b59d7164419f1ccd1c48d366af<br />
   xe-483-2096aea11094f62fea27af97d949423bea156686: 2096aea11094f62fea27af97d949423bea156686</p>
@@ -137,4 +138,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============2829127430085980284==--
+--===============4317377619245356714==--
