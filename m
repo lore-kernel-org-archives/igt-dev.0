@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7059310E1BD
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 06:01:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1FFCC10E1C2
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 06:02:02 +0000 (UTC)
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  9 Nov 2023 11:39:27 +0530
-Message-Id: <20231109060931.1347354-4-kunal1.joshi@intel.com>
+Date: Thu,  9 Nov 2023 11:39:30 +0530
+Message-Id: <20231109060931.1347354-7-kunal1.joshi@intel.com>
 In-Reply-To: <20231109060931.1347354-1-kunal1.joshi@intel.com>
 References: <20231109060931.1347354-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/7] lib/igt_psr: modified psr_active_check
- for pr compatability
+Subject: [igt-dev] [PATCH i-g-t 6/7] tests/intel/kms_psr: made test
+ compaitable with pr
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,285 +26,588 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Whenever PR is active, system will be in SRDENT,
-modify psr_active_check to accomadte PR_MODE
+Modified kms_psr to have support for PR.
+
+v2: remove set_output and have outputs (Jouni)
+v3: loop over connected outputs (Jouni)
+v4: set pipe before reading crtc
 
 Cc: Jouni Högander <jouni.hogander@intel.com>
 Cc: Animesh Manna <animesh.manna@intel.com>
 Cc: Arun R Murthy <arun.r.murthy@intel.com>
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-Reviewed-by: Jouni Högander <jouni.hogander@intel.com>
 ---
- lib/igt_psr.c                          | 24 +++++++++++++++---------
- lib/igt_psr.h                          |  6 +++---
- tests/intel/kms_dirtyfb.c              |  2 +-
- tests/intel/kms_fbcon_fbt.c            |  4 ++--
- tests/intel/kms_frontbuffer_tracking.c |  4 ++--
- tests/intel/kms_pm_dc.c                |  6 +++---
- tests/intel/kms_psr.c                  |  4 ++--
- tests/intel/kms_psr2_sf.c              | 10 +++++-----
- tests/intel/kms_psr2_su.c              |  4 ++--
- tests/intel/kms_psr_stress_test.c      |  2 +-
- 10 files changed, 36 insertions(+), 30 deletions(-)
+ tests/intel/kms_psr.c | 387 +++++++++++++++++++++++++++++++-----------
+ 1 file changed, 290 insertions(+), 97 deletions(-)
 
-diff --git a/lib/igt_psr.c b/lib/igt_psr.c
-index 054622d79..818151228 100644
---- a/lib/igt_psr.c
-+++ b/lib/igt_psr.c
-@@ -47,13 +47,19 @@ bool psr2_selective_fetch_check(int debugfs_fd)
- 	return strstr(buf, "PSR2 selective fetch: enabled");
- }
- 
--static bool psr_active_check(int debugfs_fd, enum psr_mode mode)
-+static bool psr_active_check(int debugfs_fd, enum psr_mode mode, igt_output_t *output)
- {
-+	char debugfs_file[128] = {0};
- 	char buf[PSR_STATUS_MAX_LEN];
--	const char *state = mode == PSR_MODE_1 ? "SRDENT" : "DEEP_SLEEP";
-+	const char *state = mode == PSR_MODE_1 || PR_MODE ? "SRDENT" : "DEEP_SLEEP";
- 	int ret;
- 
--	ret = igt_debugfs_simple_read(debugfs_fd, "i915_edp_psr_status",
-+	if (output)
-+		sprintf(debugfs_file, "%s/i915_psr_status", output->name);
-+	else
-+		sprintf(debugfs_file, "%s", "i915_edp_psr_status");
-+
-+	ret = igt_debugfs_simple_read(debugfs_fd, debugfs_file,
- 				     buf, sizeof(buf));
- 	if (ret < 0) {
- 		igt_info("Could not read i915_edp_psr_status: %s\n",
-@@ -69,19 +75,19 @@ static bool psr_active_check(int debugfs_fd, enum psr_mode mode)
- /*
-  * For PSR1, we wait until PSR is active. We wait until DEEP_SLEEP for PSR2.
-  */
--bool psr_wait_entry(int debugfs_fd, enum psr_mode mode)
-+bool psr_wait_entry(int debugfs_fd, enum psr_mode mode, igt_output_t *output)
- {
--	return igt_wait(psr_active_check(debugfs_fd, mode), 500, 20);
-+	return igt_wait(psr_active_check(debugfs_fd, mode, output), 500, 20);
- }
- 
--bool psr_wait_update(int debugfs_fd, enum psr_mode mode)
-+bool psr_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *output)
- {
--	return igt_wait(!psr_active_check(debugfs_fd, mode), 40, 10);
-+	return igt_wait(!psr_active_check(debugfs_fd, mode, output), 40, 10);
- }
- 
--bool psr_long_wait_update(int debugfs_fd, enum psr_mode mode)
-+bool psr_long_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *output)
- {
--	return igt_wait(!psr_active_check(debugfs_fd, mode), 500, 10);
-+	return igt_wait(!psr_active_check(debugfs_fd, mode, output), 500, 10);
- }
- 
- static ssize_t psr_write(int debugfs_fd, const char *buf)
-diff --git a/lib/igt_psr.h b/lib/igt_psr.h
-index e213b05e9..a30330e6c 100644
---- a/lib/igt_psr.h
-+++ b/lib/igt_psr.h
-@@ -42,9 +42,9 @@ enum psr_mode {
- 
- bool psr_disabled_check(int debugfs_fd);
- bool psr2_selective_fetch_check(int debugfs_fd);
--bool psr_wait_entry(int debugfs_fd, enum psr_mode mode);
--bool psr_wait_update(int debugfs_fd, enum psr_mode mode);
--bool psr_long_wait_update(int debugfs_fd, enum psr_mode mode);
-+bool psr_wait_entry(int debugfs_fd, enum psr_mode mode, igt_output_t *output);
-+bool psr_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *output);
-+bool psr_long_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *output);
- bool psr_enable(int device, int debugfs_fd, enum psr_mode);
- bool psr_disable(int device, int debugfs_fd);
- bool psr_sink_support(int device, int debugfs_fd, enum psr_mode mode, igt_output_t *output);
-diff --git a/tests/intel/kms_dirtyfb.c b/tests/intel/kms_dirtyfb.c
-index f7ff1ac0b..b14cc8bec 100644
---- a/tests/intel/kms_dirtyfb.c
-+++ b/tests/intel/kms_dirtyfb.c
-@@ -135,7 +135,7 @@ static void check_feature(data_t *data)
- 			     "FBC still disabled");
- 		break;
- 	case FEATURE_PSR:
--		igt_assert_f(psr_wait_entry(data->debugfs_fd, PSR_MODE_1),
-+		igt_assert_f(psr_wait_entry(data->debugfs_fd, PSR_MODE_1, NULL),
- 			     "PSR still disabled\n");
- 		break;
- 	case FEATURE_DRRS:
-diff --git a/tests/intel/kms_fbcon_fbt.c b/tests/intel/kms_fbcon_fbt.c
-index a7f24e669..4078309d9 100644
---- a/tests/intel/kms_fbcon_fbt.c
-+++ b/tests/intel/kms_fbcon_fbt.c
-@@ -253,7 +253,7 @@ static void psr_print_status(int debugfs_fd)
- 
- static bool psr_wait_until_enabled(int debugfs_fd)
- {
--	bool r = psr_wait_entry(debugfs_fd, PSR_MODE_1);
-+	bool r = psr_wait_entry(debugfs_fd, PSR_MODE_1, NULL);
- 
- 	psr_print_status(debugfs_fd);
- 	return r;
-@@ -274,7 +274,7 @@ static bool psr_supported_on_chipset(int device, int debugfs_fd)
- 
- static bool psr_wait_until_update(struct drm_info *drm)
- {
--	return psr_long_wait_update(drm->debugfs_fd, PSR_MODE_1);
-+	return psr_long_wait_update(drm->debugfs_fd, PSR_MODE_1, NULL);
- }
- 
- static void disable_features(int device, int debugfs_fd)
-diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-index 3cfa22bbf..e5f139195 100644
---- a/tests/intel/kms_frontbuffer_tracking.c
-+++ b/tests/intel/kms_frontbuffer_tracking.c
-@@ -1584,10 +1584,10 @@ static void do_status_assertions(int flags)
- 	}
- 
- 	if (flags & ASSERT_PSR_ENABLED)
--		igt_assert_f(psr_wait_entry(drm.debugfs, PSR_MODE_1),
-+		igt_assert_f(psr_wait_entry(drm.debugfs, PSR_MODE_1, NULL),
- 			     "PSR still disabled\n");
- 	else if (flags & ASSERT_PSR_DISABLED)
--		igt_assert_f(psr_wait_update(drm.debugfs, PSR_MODE_1),
-+		igt_assert_f(psr_wait_update(drm.debugfs, PSR_MODE_1, NULL),
- 			     "PSR still enabled\n");
- }
- 
-diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
-index e5daacb84..a3c7c4018 100644
---- a/tests/intel/kms_pm_dc.c
-+++ b/tests/intel/kms_pm_dc.c
-@@ -382,7 +382,7 @@ static void setup_dc3co(data_t *data)
- {
- 	data->op_psr_mode = PSR_MODE_2;
- 	psr_enable(data->drm_fd, data->debugfs_fd, data->op_psr_mode);
--	igt_require_f(psr_wait_entry(data->debugfs_fd, data->op_psr_mode),
-+	igt_require_f(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, NULL),
- 		      "PSR2 is not enabled\n");
- }
- 
-@@ -418,7 +418,7 @@ static void test_dc_state_psr(data_t *data, int dc_flag)
- 	dc_counter_before_psr = read_dc_counter(data->debugfs_fd, dc_flag);
- 	setup_output(data);
- 	setup_primary(data);
--	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode));
-+	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, NULL));
- 	check_dc_counter(data, dc_flag, dc_counter_before_psr);
- 	cleanup_dc_psr(data);
- }
-@@ -624,7 +624,7 @@ static void test_pkgc_state_psr(data_t *data)
- 	prev_value = read_pkgc_counter(data->debugfs_root_fd);
- 	setup_output(data);
- 	setup_primary(data);
--	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode));
-+	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, NULL));
- 	psr_dpms(data, DRM_MODE_DPMS_OFF);
- 	igt_wait((cur_value = read_pkgc_counter(data->debugfs_root_fd)) > prev_value,
- 		  timeout_sec * 1000, 100);
 diff --git a/tests/intel/kms_psr.c b/tests/intel/kms_psr.c
-index 260095aec..8485e9894 100644
+index 8485e9894..4a7c514e8 100644
 --- a/tests/intel/kms_psr.c
 +++ b/tests/intel/kms_psr.c
-@@ -441,7 +441,7 @@ static bool psr_wait_entry_if_enabled(data_t *data)
- 	if (data->with_psr_disabled)
- 		return true;
+@@ -25,7 +25,7 @@
+ /**
+  * TEST: kms psr
+  * Category: Display
+- * Description: Tests behaviour of PSR & PSR2
++ * Description: Tests behaviour of PSR & PSR2 & PR
+  */
  
--	return psr_wait_entry(data->debugfs_fd, data->op_psr_mode);
-+	return psr_wait_entry(data->debugfs_fd, data->op_psr_mode, data->output);
+ #include "igt.h"
+@@ -39,14 +39,14 @@
+ #include "xe/xe_query.h"
+ 
+ /**
+- * SUBTEST: basic
++ * SUBTEST: psr_basic
+  * Description: Basic check for psr if it is detecting changes made in planes
+  * Driver requirement: i915, xe
+  * Functionality: psr
+  * Mega feature: PSR
+  * Test category: functionality test
+  *
+- * SUBTEST: %s_%s
++ * SUBTEST: psr_%s_%s
+  * Description: Check if psr is detecting memory mapping, rendering and plane
+  *              operations performed on %arg[1]
+  * Driver requirement: i915
+@@ -67,7 +67,7 @@
+  */
+ 
+ /**
+- * SUBTEST: sprite_plane_move
++ * SUBTEST: psr_sprite_plane_move
+  * Description: Check if psr is detecting memory mapping, rendering and plane
+  *              operations performed on sprite planes
+  * Driver requirement: i915, xe
+@@ -75,7 +75,7 @@
+  * Mega feature: PSR
+  * Test category: functionality test
+  *
+- * SUBTEST: %s_%s
++ * SUBTEST: psr_%s_%s
+  * Description: Check if psr is detecting memory mapping, rendering and plane
+  *              operations performed on %arg[1] planes
+  * Driver requirement: i915, xe
+@@ -96,7 +96,7 @@
+  */
+ 
+ /**
+- * SUBTEST: primary_%s
++ * SUBTEST: psr_primary_%s
+  * Description: Check if psr is detecting memory mapping, rendering and plane
+  *              operations performed on %arg[1] planes
+  * Driver requirement: i915, xe
+@@ -111,7 +111,7 @@
+  */
+ 
+ /**
+- * SUBTEST: dpms
++ * SUBTEST: psr_dpms
+  * Description: Check if psr is detecting changes when rendering operation is
+  *              performed  with dpms enabled or disabled
+  * Driver requirement: i915, xe
+@@ -119,14 +119,14 @@
+  * Mega feature: PSR
+  * Test category: functionality test
+  *
+- * SUBTEST: no_drrs
++ * SUBTEST: psr_no_drrs
+  * Description: Check if psr is detecting changes when drrs is disabled
+  * Driver requirement: i915, xe
+  * Functionality: drrs, psr
+  * Mega feature: PSR
+  * Test category: functionality test
+  *
+- * SUBTEST: suspend
++ * SUBTEST: psr_suspend
+  * Description: Check if psr is detecting changes when plane operation
+  *              is performed with suspend resume cycles
+  * Driver requirement: i915, xe
+@@ -229,6 +229,112 @@
+  * @plane_move:         Move plane position
+  */
+ 
++/**
++ * SUBTEST: pr_dpms
++ * Description: Check if pr is detecting changes when rendering operation
++ *              is performed with dpms enabled or disabled
++ * Driver requirement: i915, xe
++ * Functionality: dpms, pr
++ * Mega feature: Panel Replay
++ * Test category: functionality test
++ */
++
++/**
++ * SUBTEST: pr_no_drrs
++ * Description: Check if pr is detecting changes when drrs is disabled
++ * Driver requirement: i915, xe
++ * Functionality: drrs, pr
++ * Mega feature: Panel Replay
++ * Test category: functionality test
++ */
++
++/**
++ * SUBTEST: pr_suspend
++ * Description: Check if pr is detecting changes when plane operation is
++ *              performed with suspend resume cycles
++ * Driver requirement: i915, xe
++ * Functionality: pr, suspend
++ * Mega feature: Panel Replay
++ * Test category: functionality test
++ */
++
++/**
++ * SUBTEST: pr_basic
++ * Description: Basic check for pr if it is detecting changes made in planes
++ * Driver requirement: i915, xe
++ * Functionality: pr
++ * Mega feature: Panel Replay
++ * Test category: functionality test
++ */
++
++/**
++ * SUBTEST: pr_%s_%s
++ * Description: Check if pr is detecting memory mapping, rendering and plane
++ *              operations performed on %arg[1] planes
++ * Driver requirement: i915
++ * Functionality: kms_core, plane, pr
++ * Mega feature: Panel Replay
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @cursor:             Cursor plane
++ * @primary:            Primary plane
++ * @sprite:             Sprite plane
++ *
++ * arg[2]:
++ *
++ * @mmap_cpu:           MMAP CPU
++ * @mmap_gtt:           MMAP GTT
++ */
++
++/**
++ * SUBTEST: pr_primary_page_flip
++ * Description: Check if pr is detecting memory mapping, rendering and plane
++ *              operations performed on primary planes
++ * Driver requirement: i915, xe
++ * Functionality: plane, pr
++ * Mega feature: Panel Replay
++ * Test category: functionality test
++ */
++
++/**
++ * SUBTEST: pr_primary_%s
++ * Description: Check if pr is detecting memory mapping, rendering and plane
++ *              operations performed on primary planes
++ * Driver requirement: i915, xe
++ * Functionality: kms_core, plane, pr
++ * Mega feature: Panel Replay
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @blt:                Blitter
++ * @render:             Render
++ */
++
++/**
++ * SUBTEST: pr_%s_%s
++ * Description: Check if pr is detecting memory mapping, rendering and plane
++ *              operations performed on %arg[1] planes
++ * Driver requirement: i915, xe
++ * Functionality: kms_core, plane, pr
++ * Mega feature: Panel Replay
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @cursor:             Cursor plane
++ * @sprite:             Sprite plane
++ *
++ * arg[2]:
++ *
++ * @blt:                Blitter
++ * @render:             Render
++ * @plane_onoff:        Plane On off
++ * @plane_move:         Move plane position
++ */
++
+ enum operations {
+ 	PAGE_FLIP,
+ 	MMAP_GTT,
+@@ -271,7 +377,9 @@ typedef struct {
+ 	drmModeModeInfo *mode;
+ 	igt_output_t *output;
+ 	bool with_psr_disabled;
++	bool supports_psr;
+ 	bool supports_psr2;
++	bool supports_pr;
+ } data_t;
+ 
+ static void create_cursor_fb(data_t *data)
+@@ -289,34 +397,38 @@ static void create_cursor_fb(data_t *data)
+ 	igt_put_cairo_ctx(cr);
  }
  
- static bool psr_wait_update_if_enabled(data_t *data)
-@@ -449,7 +449,7 @@ static bool psr_wait_update_if_enabled(data_t *data)
- 	if (data->with_psr_disabled)
- 		return true;
- 
--	return psr_wait_update(data->debugfs_fd, data->op_psr_mode);
-+	return psr_wait_update(data->debugfs_fd, data->op_psr_mode, data->output);
- }
- 
- static bool psr_enable_if_enabled(data_t *data)
-diff --git a/tests/intel/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
-index 2d05f1110..9f5186eee 100644
---- a/tests/intel/kms_psr2_sf.c
-+++ b/tests/intel/kms_psr2_sf.c
-@@ -677,7 +677,7 @@ static void damaged_plane_move(data_t *data)
- 
- 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
- 
--	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2));
-+	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2, NULL));
- 
- 	expected_output(data);
- }
-@@ -777,7 +777,7 @@ static void plane_move_continuous(data_t *data)
+-static void setup_output(data_t *data)
++static bool output_supports_psr(data_t *data)
  {
- 	int target_x, target_y;
- 
--	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2));
-+	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2, NULL));
- 
- 	get_target_coords(data, &target_x, &target_y);
- 
-@@ -854,7 +854,7 @@ static void damaged_plane_update(data_t *data)
- 	igt_plane_set_position(data->test_plane, 0, 0);
- 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
- 
--	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2));
-+	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2, NULL));
- 
- 	expected_output(data);
- }
-@@ -863,7 +863,7 @@ static void run(data_t *data)
- {
- 	int i;
- 
--	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2));
-+	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2, NULL));
- 
- 	data->screen_changes = 0;
- 
-@@ -941,7 +941,7 @@ static int check_psr2_support(data_t *data)
- 	int status;
- 
- 	prepare(data);
--	status = psr_wait_entry(data->debugfs_fd, PSR_MODE_2);
-+	status = psr_wait_entry(data->debugfs_fd, PSR_MODE_2, NULL);
- 	cleanup(data);
- 
- 	return status;
-diff --git a/tests/intel/kms_psr2_su.c b/tests/intel/kms_psr2_su.c
-index 2f89de435..3506409b7 100644
---- a/tests/intel/kms_psr2_su.c
-+++ b/tests/intel/kms_psr2_su.c
-@@ -258,7 +258,7 @@ static void run(data_t *data, igt_output_t *output)
- {
- 	bool result = false;
- 
--	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2));
-+	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2, output));
- 
- 	for (data->screen_changes = 0;
- 	     data->screen_changes < MAX_SCREEN_CHANGES && !result;
-@@ -304,7 +304,7 @@ static int check_psr2_support(data_t *data, enum pipe pipe)
- 	igt_output_set_pipe(output, pipe);
- 
- 	prepare(data, output);
--	status = psr_wait_entry(data->debugfs_fd, PSR_MODE_2);
-+	status = psr_wait_entry(data->debugfs_fd, PSR_MODE_2, output);
- 	cleanup(data, output);
- 
- 	return status;
-diff --git a/tests/intel/kms_psr_stress_test.c b/tests/intel/kms_psr_stress_test.c
-index beded3b94..e3b21603a 100644
---- a/tests/intel/kms_psr_stress_test.c
-+++ b/tests/intel/kms_psr_stress_test.c
-@@ -232,7 +232,7 @@ static void prepare(data_t *data)
- 
- 	data->initial_state = psr_get_mode(data->debugfs_fd);
- 	igt_require(data->initial_state != PSR_DISABLED);
--	igt_require(psr_wait_entry(data->debugfs_fd, data->initial_state));
-+	igt_require(psr_wait_entry(data->debugfs_fd, data->initial_state, NULL));
+-	igt_display_t *display = &data->display;
+ 	igt_output_t *output;
+-	enum pipe pipe;
+-
+-	for_each_pipe_with_valid_output(display, pipe, output) {
+-		drmModeConnectorPtr c = output->config.connector;
+-
+-		if (c->connector_type != DRM_MODE_CONNECTOR_eDP)
+-			continue;
+-
+-		igt_display_reset(display);
+-		igt_output_set_pipe(output, pipe);
+-		if (!i915_pipe_output_combo_valid(display))
+-			continue;
+-
+-		data->crtc_id = output->config.crtc->crtc_id;
+-		data->output = output;
+-
+-		return;
++	bool supports_psr;
++
++	supports_psr = false;
++	for_each_connected_output(&data->display, output) {
++                if(psr_sink_support(data->drm_fd, data->debugfs_fd,
++                                    PSR_MODE_2, output))
++                {
++			supports_psr = true;
++                        data->supports_psr2 = true;
++                        igt_debug("PSR_2 supported on %s\n", output->name);
++                }
++		else if(psr_sink_support(data->drm_fd, data->debugfs_fd,
++				    PSR_MODE_1, output))
++		{
++			supports_psr = true;
++			data->supports_psr = true;
++			igt_debug("PSR_1 supported on %s\n", output->name);
++		}
++		else if(psr_sink_support(data->drm_fd, data->debugfs_fd,
++                                    PR_MODE, output))
++                {
++			supports_psr = true;
++                        data->supports_pr = true;
++			igt_debug("PR supported on %s\n", output->name);
++                }
++		else
++			igt_debug("PSR/PSR2/PR not supported on %s\n", output->name);
+ 	}
+-}
+-
+-static void display_init(data_t *data)
+-{
+-	igt_display_require(&data->display, data->drm_fd);
+-	setup_output(data);
++	return supports_psr;
  }
  
- static void cleanup(data_t *data)
+ static void display_fini(data_t *data)
+@@ -502,7 +614,7 @@ static void fb_dirty_fb_ioctl(data_t *data, struct igt_fb *fb)
+ }
+ 
+ /**
+- * SUBTEST: cursor_plane_move
++ * SUBTEST: psr_cursor_plane_move
+  * Description: Check if psr is detecting the plane operations performed on
+  *		cursor planes
+  * Driver requirement: i915, xe
+@@ -510,7 +622,7 @@ static void fb_dirty_fb_ioctl(data_t *data, struct igt_fb *fb)
+  * Functionality: psr
+  * Mega feature: PSR
+  *
+- * SUBTEST: primary_page_flip
++ * SUBTEST: psr_primary_page_flip
+  * Description: Check if psr is detecting page-flipping operations performed
+  *		on primary planes
+  * Driver requirement: i915, xe
+@@ -518,7 +630,7 @@ static void fb_dirty_fb_ioctl(data_t *data, struct igt_fb *fb)
+  * Functionality: psr
+  * Mega feature: PSR
+  *
+- * SUBTEST: sprite_plane_onoff
++ * SUBTEST: psr_sprite_plane_onoff
+  * Description: Check if psr is detecting the plane operations performed on
+  *		sprite planes
+  * Driver requirement: i915, xe
+@@ -683,14 +795,35 @@ static void setup_test_plane(data_t *data, int test_plane)
+ 	igt_display_commit(&data->display);
+ }
+ 
++static enum pipe get_pipe_for_output(igt_display_t *display,
++				     igt_output_t *output)
++{
++        enum pipe pipe;
++
++        for_each_pipe(display, pipe) {
++                if (igt_pipe_connector_valid(pipe, output)) {
++                        return pipe;
++                }
++        }
++
++        igt_assert_f(false, "No pipe found for output %s\n",
++                     igt_output_name(output));
++}
++
+ static void test_setup(data_t *data)
+ {
++	enum pipe pipe;
+ 	drmModeConnectorPtr connector;
+ 	bool psr_entered = false;
+ 
+ 	igt_require_f(data->output,
+ 		      "No available output found\n");
+ 
++        pipe = get_pipe_for_output(&data->display, data->output);
++        igt_output_set_pipe(data->output, pipe);
++        igt_require_f(i915_pipe_output_combo_valid(&data->display),
++                      "output pipe combo not valid\n");
++	data->crtc_id = data->output->config.crtc->crtc_id;
+ 	connector = data->output->config.connector;
+ 
+ 	for (int i = 0; i < connector->count_modes; i++) {
+@@ -747,115 +880,175 @@ data_t data = {};
+ 
+ igt_main_args("", long_options, help_str, opt_handler, &data)
+ {
++	int z;
+ 	enum operations op;
+-	const char *append_subtest_name[2] = {
+-		"",
+-		"psr2_"
++	const char *append_subtest_name[3] = {
++		"psr_",
++		"psr2_",
++		"pr_"
+ 	};
++	int modes[] = {PSR_MODE_1, PSR_MODE_2, PR_MODE};
++	igt_output_t *output;
+ 
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
+ 		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
+ 		kmstest_set_vt_graphics_mode();
+ 		data.devid = intel_get_drm_devid(data.drm_fd);
+-
+-		igt_require_f(sink_support(&data, PSR_MODE_1),
+-			      "Sink does not support PSR\n");
+-
+-		data.supports_psr2 = sink_support(&data, PSR_MODE_2);
+ 		data.bops = buf_ops_create(data.drm_fd);
+-		display_init(&data);
++		igt_display_require(&data.display, data.drm_fd);
++		data.supports_psr2 = data.supports_psr2 | sink_support(&data, PSR_MODE_2);
++                igt_require_f(output_supports_psr(&data), "Sink does not support PSR/PSR2/PR\n");
+ 	}
+ 
+-	for (data.op_psr_mode = PSR_MODE_1; data.op_psr_mode <= PSR_MODE_2;
+-	     data.op_psr_mode++) {
++	for (z = 0; z < ARRAY_SIZE(modes); z++) {
++		data.op_psr_mode = modes[z];
+ 
+ 		igt_describe("Basic check for psr if it is detecting changes made in planes");
+-		igt_subtest_f("%sbasic", append_subtest_name[data.op_psr_mode]) {
+-			data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
+-			test_setup(&data);
+-			test_cleanup(&data);
++		igt_subtest_with_dynamic_f("%sbasic", append_subtest_name[z]) {
++			for_each_connected_output(&data.display, output) {
++				if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
++						      data.op_psr_mode, output))
++					continue;
++				igt_display_reset(&data.display);
++				data.output = output;
++				igt_dynamic_f("%s", data.output->name) {
++					data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
++					test_setup(&data);
++					test_cleanup(&data);
++				}
++			}
+ 		}
+ 
+ 		igt_describe("Check if psr is detecting changes when drrs is disabled");
+-		igt_subtest_f("%sno_drrs", append_subtest_name[data.op_psr_mode]) {
+-			data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
+-			test_setup(&data);
+-			igt_assert(drrs_disabled(&data));
+-			test_cleanup(&data);
++		igt_subtest_with_dynamic_f("%sno_drrs", append_subtest_name[z]) {
++			for_each_connected_output(&data.display, output) {
++				if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
++						      data.op_psr_mode, output))
++					continue;
++                                igt_display_reset(&data.display);
++                                data.output = output;
++                                igt_dynamic_f("%s", data.output->name) {
++					data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
++					test_setup(&data);
++					igt_assert(drrs_disabled(&data));
++					test_cleanup(&data);
++				}
++			}
+ 		}
+ 
+ 		for (op = PAGE_FLIP; op <= RENDER; op++) {
+ 			igt_describe("Check if psr is detecting page-flipping,memory mapping and "
+ 					"rendering operations performed on primary planes");
+-			igt_subtest_f("%sprimary_%s",
+-				      append_subtest_name[data.op_psr_mode],
++			igt_subtest_with_dynamic_f("%sprimary_%s",
++				      append_subtest_name[z],
+ 				      op_str(op)) {
+ 				igt_skip_on(is_xe_device(data.drm_fd) &&
+ 					    (op == MMAP_CPU || op == MMAP_GTT));
+-
+-				data.op = op;
+-				data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
+-				test_setup(&data);
+-				run_test(&data);
+-				test_cleanup(&data);
++				for_each_connected_output(&data.display, output) {
++					if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
++							      data.op_psr_mode, output))
++						continue;
++					igt_display_reset(&data.display);
++					data.output = output;
++					igt_dynamic_f("%s", data.output->name) {
++						data.op = op;
++						data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
++						test_setup(&data);
++						run_test(&data);
++						test_cleanup(&data);
++					}
++				}
+ 			}
+ 		}
+ 
+ 		for (op = MMAP_GTT; op <= PLANE_ONOFF; op++) {
+ 			igt_describe("Check if psr is detecting memory mapping,rendering "
+ 					"and plane operations performed on sprite planes");
+-			igt_subtest_f("%ssprite_%s",
+-				      append_subtest_name[data.op_psr_mode],
++			igt_subtest_with_dynamic_f("%ssprite_%s",
++				      append_subtest_name[z],
+ 				      op_str(op)) {
+ 				igt_skip_on(is_xe_device(data.drm_fd) &&
+ 					    (op == MMAP_CPU || op == MMAP_GTT));
+-
+-				data.op = op;
+-				data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+-				test_setup(&data);
+-				run_test(&data);
+-				test_cleanup(&data);
++				for_each_connected_output(&data.display, output) {
++					if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
++							      data.op_psr_mode, output))
++						continue;
++					igt_display_reset(&data.display);
++					data.output = output;
++					igt_dynamic_f("%s", data.output->name) {
++						data.op = op;
++						data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
++						test_setup(&data);
++						run_test(&data);
++						test_cleanup(&data);
++					}
++				}
+ 			}
+ 
+ 			igt_describe("Check if psr is detecting memory mapping, rendering "
+ 					"and plane operations performed on cursor planes");
+-			igt_subtest_f("%scursor_%s",
+-				      append_subtest_name[data.op_psr_mode],
++			igt_subtest_with_dynamic_f("%scursor_%s",
++				      append_subtest_name[z],
+ 				      op_str(op)) {
+ 				igt_skip_on(is_xe_device(data.drm_fd) &&
+ 					    (op == MMAP_CPU || op == MMAP_GTT));
+-
+-				data.op = op;
+-				data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
+-				test_setup(&data);
+-				run_test(&data);
+-				test_cleanup(&data);
++				for_each_connected_output(&data.display, output) {
++					if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
++							      data.op_psr_mode, output))
++						continue;
++					igt_display_reset(&data.display);
++					data.output = output;
++					igt_dynamic_f("%s", data.output->name) {
++						data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
++						test_setup(&data);
++						run_test(&data);
++						test_cleanup(&data);
++					}
++				}
+ 			}
+ 		}
+ 
+ 		igt_describe("Check if psr is detecting changes when rendering operation is performed"
+ 				"  with dpms enabled or disabled");
+-		igt_subtest_f("%sdpms", append_subtest_name[data.op_psr_mode]) {
+-			data.op = RENDER;
+-			data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
+-			test_setup(&data);
+-			dpms_off_on(&data);
+-			run_test(&data);
+-			test_cleanup(&data);
++		igt_subtest_with_dynamic_f("%sdpms", append_subtest_name[z]) {
++			for_each_connected_output(&data.display, output) {
++				if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
++						      data.op_psr_mode, output))
++					continue;
++                                igt_display_reset(&data.display);
++                                data.output = output;
++                                igt_dynamic_f("%s", data.output->name) {
++					data.op = RENDER;
++					data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
++					test_setup(&data);
++					dpms_off_on(&data);
++					run_test(&data);
++					test_cleanup(&data);
++				}
++			}
+ 		}
+ 
+ 		igt_describe("Check if psr is detecting changes when plane operation is performed "
+ 				"with suspend resume cycles");
+-		igt_subtest_f("%ssuspend", append_subtest_name[data.op_psr_mode]) {
+-			data.op = PLANE_ONOFF;
+-			data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
+-			test_setup(&data);
+-			igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
+-						      SUSPEND_TEST_NONE);
+-			igt_assert(psr_wait_entry_if_enabled(&data));
+-			run_test(&data);
+-			test_cleanup(&data);
++		igt_subtest_with_dynamic_f("%ssuspend", append_subtest_name[z]) {
++			for_each_connected_output(&data.display, output) {
++				if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
++						      data.op_psr_mode, output))
++					continue;
++                                igt_display_reset(&data.display);
++                                data.output = output;
++                                igt_dynamic_f("%s", data.output->name) {
++					data.op = PLANE_ONOFF;
++					data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
++					test_setup(&data);
++					igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
++								      SUSPEND_TEST_NONE);
++					igt_assert(psr_wait_entry_if_enabled(&data));
++					run_test(&data);
++					test_cleanup(&data);
++				}
++			}
+ 		}
+ 	}
+ 
 -- 
 2.25.1
