@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam10on2059.outbound.protection.outlook.com [40.107.93.59])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 093A110E004
- for <igt-dev@lists.freedesktop.org>; Sun, 12 Nov 2023 22:37:33 +0000 (UTC)
-Message-ID: <ef39d175-776b-4a5b-8a3c-0ae06d2a967a@amd.com>
-Date: Sun, 12 Nov 2023 17:37:21 -0500
-To: Lang Yu <Lang.Yu@amd.com>, igt-dev@lists.freedesktop.org
-References: <20231110025327.7395-1-Lang.Yu@amd.com>
-Content-Language: en-US
-From: vitaly prosyak <vprosyak@amd.com>
-In-Reply-To: <20231110025327.7395-1-Lang.Yu@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AB511896F7
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 16:07:29 +0000 (UTC)
+Date: Thu, 9 Nov 2023 17:07:10 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20231109160710.6tfhmeqpvhwu7o7z@kamilkon-desk.igk.intel.com>
+References: <20231109151347.2129614-1-priyanka.dandamudi@intel.com>
+ <20231109151347.2129614-2-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v2] tests/amdgpu: add VPE tests
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231109151347.2129614-2-priyanka.dandamudi@intel.com>
+Subject: Re: [igt-dev] [PATCH 1/2 i-g-t] tests/intel/xe_engine_property: Add
+ engine set property tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,359 +22,155 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Deucher Alexander <Alexander.Deucher@amd.com>, "Liu, Leo" <Leo.Liu@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Added Leo.
+Hi Priyanka,
 
-Hi Lang,
-
-Please, use the checkpatch.pl and fix formatting errors, for example,
-
-vprosyak@desktop-host:~/src/igt-gpu-tools$ ../linux/scripts/checkpatch.pl -f --no-tree /home/vprosyak/src/igt-gpu-tools/tests/amdgpu/amd_vpe.c
-ERROR: code indent should use tabs where possible
-#54: FILE: /home/vprosyak/src/igt-gpu-tools/tests/amdgpu/amd_vpe.c:54:
-+                                 struct mmd_context *context)$
-
-WARNING: please, no spaces at the start of a line
-#54: FILE: /home/vprosyak/src/igt-gpu-tools/tests/amdgpu/amd_vpe.c:54:
-+                                 struct mmd_context *context)$
-
-ERROR: code indent should use tabs where possible
-#56: FILE: /home/vprosyak/src/igt-gpu-tools/tests/amdgpu/amd_vpe.c:56:
-+        struct drm_amdgpu_info_hw_ip info;$
-
-WARNING: please, no spaces at the start of a line
-#56: FILE: /home/vprosyak/src/igt-gpu-tools/tests/amdgpu/amd_vpe.c:56:
-+        struct drm_amdgpu_info_hw_ip info;$
-
-ERROR: code indent should use tabs where possible
-#57: FILE: /home/vprosyak/src/igt-gpu-tools/tests/amdgpu/amd_vpe.c:57:
-+        int r;$
-
-WARNING: please, no spaces at the start of a line
-#57: FILE: /home/vprosyak/src/igt-gpu-tools/tests/amdgpu/amd_vpe.c:57:
-+        int r;$
-
-ERROR: code indent should use tabs where possible
-#59: FILE: /home/vprosyak/src/igt-gpu-tools/tests/amdgpu/amd_vpe.c:59:
-+        r = amdgpu_query_hw_ip_info(device_handle, AMDGPU_HW_IP_VPE, 0, &info);$
-
-Please, see inline below.
-
-
-Thanks, Vitaly
-
-On 2023-11-09 21:53, Lang Yu wrote:
-> Add tests for Video Processing Engine,
-> including fence and blit tests.
->
-> Signed-off-by: Lang Yu <Lang.Yu@amd.com>
+On 2023-11-09 at 20:43:46 +0530, priyanka.dandamudi@intel.com wrote:
+> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> 
+> Added tests to check engine set properties.
+> It tests basic positive and invalid values for priority and persistence.
+> 
+> Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 > ---
->  lib/amdgpu/amd_mmd_shared.h |   5 +
->  tests/amdgpu/amd_vpe.c      | 253 ++++++++++++++++++++++++++++++++++++
->  tests/amdgpu/meson.build    |   1 +
->  3 files changed, 259 insertions(+)
->  create mode 100644 tests/amdgpu/amd_vpe.c
->
-> diff --git a/lib/amdgpu/amd_mmd_shared.h b/lib/amdgpu/amd_mmd_shared.h
-> index 82e732509..14f9ecb4d 100644
-> --- a/lib/amdgpu/amd_mmd_shared.h
-> +++ b/lib/amdgpu/amd_mmd_shared.h
-> @@ -54,6 +54,11 @@ struct mmd_context {
->  	bool enc_ring;
->  	/* jpeg */
->  	bool jpeg_direct_reg;
-> +
-> +	/*vpe*/
-> +	uint32_t vpe_ip_version_major;
-> +	uint32_t vpe_ip_version_minor;
-> +	bool vpe_ring;
->  };
->  
->  struct amdgpu_mmd_bo {
-> diff --git a/tests/amdgpu/amd_vpe.c b/tests/amdgpu/amd_vpe.c
+>  tests/intel/xe_engine_property.c | 102 +++++++++++++++++++++++++++++++
+>  tests/meson.build                |   1 +
+>  2 files changed, 103 insertions(+)
+>  create mode 100644 tests/intel/xe_engine_property.c
+> 
+> diff --git a/tests/intel/xe_engine_property.c b/tests/intel/xe_engine_property.c
 > new file mode 100644
-> index 000000000..782f10915
+> index 000000000..18e050f96
 > --- /dev/null
-> +++ b/tests/amdgpu/amd_vpe.c
-> @@ -0,0 +1,253 @@
+> +++ b/tests/intel/xe_engine_property.c
+> @@ -0,0 +1,102 @@
 > +// SPDX-License-Identifier: MIT
 > +/*
-> + * Copyright 2023 Advanced Micro Devices, Inc.
+> + * Copyright © 2023 Intel Corporation
 > + */
 > +
-> +#include <amdgpu.h>
-> +#include "amdgpu_drm.h"
+> +/**
+> + * TEST: Basic tests to check engine set property functionality
+> + * Category: Software building block
+> + * Run type: FULL
+----- ^^^^^^^^^^^^^^
+No need for specifing this anymore.
+
+> + * Sub-category: engine property
+> + * Functionality: engine set property
+> + * Test category: functionality test
+> + * SUBTEST: priority-set-property
+> + * Description: tests basic priority property by setting invalid values and positive values.
+> + * SUBTEST: persistence-set-property
+> + * Description: tests basic persistence property by setting positive values
+> + */
+> +
+> +#include <dirent.h>
+> +#include <fcntl.h>
+> +#include <string.h>
+> +#include <sys/stat.h>
+> +#include <sys/types.h>
 > +
 > +#include "igt.h"
-> +
-> +#include "lib/amdgpu/amd_mmd_shared.h"
-> +
-> +IGT_TEST_DESCRIPTION("Test VPE functionality");
-> +
-> +#define IB_SIZE                 4096
-> +#define MAX_RESOURCES           16
-> +
-> +#define PLANE_WIDTH             1024
-> +#define PLANE_HEIGHT            256
-> +#define PLANE_SIZE              (PLANE_WIDTH*PLANE_HEIGHT*4)
-> +
-> +#define SRC_PLANE_PATTERN       0x12345678
-> +#define DST_PLANE_PATTERN       0xff123456
+> +#include "xe_drm.h"
+------------ ^^^^
+Move this after "lib/..."
 
-Please, use the shared header for such definitions as we did for example into 'AMD_MMD_VCE_IB_H" 
+Regards,
+Kamil
 
-unless you are sure that these definitions will be not used in the future for other tests.
-
+> +#include "lib/igt_syncobj.h"
+> +#include "lib/intel_reg.h"
+> +#include "xe/xe_ioctl.h"
+> +#include "xe/xe_query.h"
 > +
-> +static uint32_t vpe_descriptor[] = {
-> +0x00000001, 0x33002200, 0xff000021, 0x00000003, 0x33002234, 0xff000021, 0x33002328, 0xff000021,
-> +0x33002384, 0xff000021, 0x330023c0, 0xff000021,
-> +};
+> +#define DRM_SCHED_PRIORITY_HIGH  2
+> +#define DRM_SCHED_PRIORITY_NORMAL 1
 > +
-> +static uint32_t vpe_config[] = {
-> +0x00000002, 0x00000000, 0xbeefbe00, 0xff005678, 0x000003ff, 0x00000000, 0x00ff43ff, 0x00000000,
-> +0xbeefbe00, 0xff005679, 0x000003ff, 0x00000000, 0x00ff43ff, 0x003b0003, 0x00047808, 0x00000809,
-> +0x0004780c, 0x000000e4, 0x00047d10, 0x00000009, 0x00047d14, 0x00000101, 0x00047d18, 0x00000000,
-> +0x00047d1c, 0x00000000, 0x00047d20, 0x00000000, 0x00047d24, 0x0001f010, 0x00047d28, 0x0001f010,
-> +0x00047d2c, 0x0001f010, 0x00547ee9, 0x00002000, 0x00000000, 0x20000000, 0x00000000, 0x00000000,
-> +0x00002000, 0x00047ee4, 0x00000001, 0x00047ee0, 0x00000000, 0x00047f24, 0x00000000, 0x00047fc4,
-> +0x00000000, 0x00547f05, 0x00002000, 0x00000000, 0x20000000, 0x00000000, 0x00000000, 0x00002000,
-> +0x00047f00, 0x00000001, 0x00049700, 0x00000000, 0x00049704, 0x0000000f, 0x00049f30, 0x00000000,
-> +0x00049708, 0x00000000, 0x0004970c, 0xffff0462, 0x0004a208, 0x00000000, 0x0004971c, 0x00000000,
-> +0x00047fc0, 0x0001f000, 0x00150003, 0x00047df8, 0x00000001, 0x00047dfc, 0x00000001, 0x00047da8,
-> +0x00000006, 0x00047e18, 0x00000000, 0x0004970c, 0xffff0422, 0x00049710, 0x0001f000, 0x00049714,
-> +0x0001f000, 0x00049718, 0x0001f000, 0x00049720, 0x00000000, 0x00049724, 0x00000000, 0x00049728,
-> +0x00000000, 0x000d0003, 0x00047810, 0x00000000, 0x00047814, 0x01000400, 0x00047818, 0x00000000,
-> +0x0004781c, 0x01000400, 0x00047e00, 0x00000000, 0x00047e04, 0x01000400, 0x00047e08, 0x01000400,
-> +0x00280003, 0x00047820, 0x00000036, 0x00047824, 0x0960f015, 0x0004972c, 0x00000014, 0x0004972c,
-> +0x00000014, 0x0004972c, 0x00000014, 0x00049f90, 0x00000000, 0x00049f94, 0x00000001, 0x00549f99,
-> +0x00002000, 0x00000000, 0x20000000, 0x00000000, 0x00000000, 0x00002000, 0x00049850, 0x00000000,
-> +0x00049f34, 0x00000000, 0x00049f38, 0x02fff000, 0x00049f3c, 0x00fff000, 0x00049f40, 0x00fff000,
-> +0x0004aba0, 0xffff0000, 0x0004aba0, 0xffff0000, 0x0004aacc, 0x00000000, 0x0004aad4, 0x00000013,
-> +0x0004aad4, 0x00000013,
-> +};
-> +
-> +static bool is_vpe_tests_enabled(amdgpu_device_handle device_handle,
-> +                                 struct mmd_context *context)
+> +static void test_set_property(int xe, int property_name,
+> +			      int property_value, int err_val)
 > +{
-> +        struct drm_amdgpu_info_hw_ip info;
-> +        int r;
+> +	struct drm_xe_engine_class_instance instance = {
+> +			.engine_class = DRM_XE_ENGINE_CLASS_VM_BIND_SYNC,
+> +	};
+> +	struct drm_xe_ext_set_property ext = {
+> +		.base.next_extension = 0,
+> +		.base.name = XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
+> +		.property = property_name,
+> +		.value = property_value,
+> +	};
 > +
-> +        r = amdgpu_query_hw_ip_info(device_handle, AMDGPU_HW_IP_VPE, 0, &info);
-> +        igt_assert_eq(r, 0);
+> +	struct drm_xe_exec_queue_create create = {
+> +		.extensions = to_user_pointer(&ext),
+> +		.width = 1,
+> +		.num_placements = 1,
+> +		.instances = to_user_pointer(&instance),
+> +		.vm_id = xe_vm_create(xe, 0, 0),
+> +	};
+> +	int ret = 0;
 > +
-> +        context->vpe_ip_version_major = info.hw_ip_version_major;
-> +        context->vpe_ip_version_minor = info.hw_ip_version_minor;
-> +        context->vpe_ring = !!info.available_rings;
-> +
-> +        if (!context->vpe_ring) {
-> +                igt_info("VPE no available rings");
-> +		igt_info("VPE fence test disable");
-> +		igt_info("VPE blit test disable");
-> +        }
-> +
-Please, fix return from this function
-> +	return true;
-> +}
-> +
-> +static void amdgpu_cs_vpe_fence(amdgpu_device_handle device_handle,
-> +                                struct mmd_context *context)
-> +{
-> +        const uint32_t test_pattern = 0xdeadbeef;
-> +        uint32_t *ib_cpu = context->ib_cpu;
-> +        struct amdgpu_mmd_bo test_bo;
-> +        int r;
-> +
-> +        context->num_resources = 0;
-> +        alloc_resource(device_handle, &test_bo, 4096, AMDGPU_GEM_DOMAIN_GTT);
-> +        context->resources[context->num_resources++] = test_bo.handle;
-> +
-> +        r = amdgpu_bo_cpu_map(test_bo.handle, (void **)&test_bo.ptr);
-> +        igt_assert_eq(r, 0);
-> +
-> +        memset(test_bo.ptr, 0, 4096);
-> +
-> +        memset(ib_cpu, 0, IB_SIZE);
-> +
-> +        ib_cpu[0] = 0x5;
-
-Please, use macro lower_32_bits & upper_32_bits, as we are using, for example,
-
-    ring_context->pm4[i++] = lower_32_bits(ring_context->bo_mc);
-
-    ring_context->pm4[i++] = upper_32_bits(ring_context->bo_mc);
-> +        ib_cpu[1] = 0xfffffffc & test_bo.addr;
-> +        ib_cpu[2] = (0xffffffff00000000 & test_bo.addr) >> 32;
-> +        ib_cpu[3] = test_pattern;
-> +        ib_cpu[4] = 0x0;
-> +        ib_cpu[5] = 0x0;
-> +        ib_cpu[6] = 0x0;
-> +        ib_cpu[7] = 0x0;
-> +
-> +        context->resources[context->num_resources++] = context->ib_handle;
-> +
-> +        r = submit(device_handle, context, 8, AMDGPU_HW_IP_VPE);
-> +        igt_assert_eq(r, 0);
-> +
-> +        igt_assert_eq(((uint32_t *)test_bo.ptr)[0], test_pattern);
-> +
-> +        r = amdgpu_bo_cpu_unmap(test_bo.handle);
-> +        igt_assert_eq(r, 0);
-> +
-> +        free_resource(&test_bo);
-> +}
-> +
-> +// a in byte 0, b in byte 1, g in byte 2, r in byte 3
-> +static void create_rgba8888(void *addr, uint32_t width, uint32_t height)
-> +{
-> +        uint32_t *ptr = (uint32_t *)addr;
-> +
-> +        for (int i = 0; i < height; i++) {
-> +                for (int j = 0; j < width; j++)
-> +                        ptr[j] = SRC_PLANE_PATTERN;
-> +                ptr += width;
-> +        }
-> +}
-> +// b in byte 0, g in byte 1, r in byte 2, a in byte 3
-> +static int check_argb8888(void *addr, uint32_t width, uint32_t height)
-> +{
-> +        uint32_t *ptr = (uint32_t *)addr;
-> +
-> +        for (int i = 0; i < height; i++) {
-> +                for (int j = 0; j < width; j++)
-> +                        if (ptr[j] != DST_PLANE_PATTERN)
-> +                                return 1;
-> +                ptr += width;
-> +        }
-> +
-> +        return 0;
-> +}
-> +
-> +static void amdgpu_cs_vpe_blit(amdgpu_device_handle device_handle,
-> +                               struct mmd_context *context)
-> +{
-> +        const uint32_t vpep_config_offsets[] = {0x34, 0x128, 0x184, 0x1c0};
-> +        struct amdgpu_mmd_bo vpe_config_bo, src_plane_bo, dst_plane_bo;
-> +        int r;
-> +
-> +        context->num_resources = 0;
-> +
-> +        alloc_resource(device_handle, &vpe_config_bo, sizeof(vpe_config), AMDGPU_GEM_DOMAIN_GTT);
-> +        alloc_resource(device_handle, &src_plane_bo, PLANE_SIZE, AMDGPU_GEM_DOMAIN_GTT);
-> +        alloc_resource(device_handle, &dst_plane_bo, PLANE_SIZE, AMDGPU_GEM_DOMAIN_GTT);
-> +
-> +        r = amdgpu_bo_cpu_map(vpe_config_bo.handle, (void **)&vpe_config_bo.ptr);
-> +        igt_assert_eq(r, 0);
-> +
-> +        r = amdgpu_bo_cpu_map(src_plane_bo.handle, (void **)&src_plane_bo.ptr);
-> +        igt_assert_eq(r, 0);
-> +
-> +        r = amdgpu_bo_cpu_map(dst_plane_bo.handle, (void **)&dst_plane_bo.ptr);
-> +        igt_assert_eq(r, 0);
-> +
-> +        context->resources[context->num_resources++] = vpe_config_bo.handle;
-> +        context->resources[context->num_resources++] = src_plane_bo.handle;
-> +        context->resources[context->num_resources++] = dst_plane_bo.handle;
-> +
-> +        // plane config gpu addr
-> +        *(uint64_t *)(vpe_descriptor + 1) = vpe_config_bo.addr;
-> +        // vpep config0 gpu addr
-> +        *(uint64_t *)(vpe_descriptor + 4) = vpe_config_bo.addr + vpep_config_offsets[0];
-> +        // vpep config1 gpu addr
-> +        *(uint64_t *)(vpe_descriptor + 6) = vpe_config_bo.addr + vpep_config_offsets[1];
-> +        // vpep config2 gpu addr
-> +        *(uint64_t *)(vpe_descriptor + 8) = vpe_config_bo.addr + vpep_config_offsets[2];
-> +        // vpep config3 gpu addr
-> +        *(uint64_t *)(vpe_descriptor + 10) = vpe_config_bo.addr + vpep_config_offsets[3];
-> +
-> +        memset(src_plane_bo.ptr, 0, PLANE_SIZE);
-> +        memset(dst_plane_bo.ptr, 0, PLANE_SIZE);
-> +        create_rgba8888(src_plane_bo.ptr, PLANE_WIDTH, PLANE_HEIGHT);
-> +
-> +        /* gpu address of src */
-> +        *(uint64_t *)(vpe_config + 2) = src_plane_bo.addr;
-> +        /* gpu address of dst */
-> +        *(uint64_t *)(vpe_config + 8) = dst_plane_bo.addr;
-> +
-> +        memset(vpe_config_bo.ptr, 0, sizeof(vpe_config));
-> +        memcpy(vpe_config_bo.ptr, vpe_config, sizeof(vpe_config));
-> +
-> +        memset(context->ib_cpu, 0, IB_SIZE);
-> +        memcpy(context->ib_cpu, vpe_descriptor, sizeof(vpe_descriptor));
-> +
-> +        context->resources[context->num_resources++] = context->ib_handle;
-> +
-> +        r = submit(device_handle, context, sizeof(vpe_descriptor)/4, AMDGPU_HW_IP_VPE);
-> +        igt_assert_eq(r, 0);
-> +
-> +        r = check_argb8888(dst_plane_bo.ptr, PLANE_WIDTH, PLANE_HEIGHT);
-> +        igt_assert_eq(r, 0);
-> +
-> +        r = amdgpu_bo_cpu_unmap(vpe_config_bo.handle);
-> +        igt_assert_eq(r, 0);
-> +
-> +        r = amdgpu_bo_cpu_unmap(src_plane_bo.handle);
-> +        igt_assert_eq(r, 0);
-> +
-> +        r = amdgpu_bo_cpu_unmap(dst_plane_bo.handle);
-> +        igt_assert_eq(r, 0);
-> +
-> +        free_resource(&vpe_config_bo);
-> +        free_resource(&src_plane_bo);
-> +        free_resource(&dst_plane_bo);
+> +	if (igt_ioctl(xe, DRM_IOCTL_XE_EXEC_QUEUE_CREATE, &create)) {
+> +		ret = -errno;
+> +		errno = 0;
+> +	}
+> +	igt_assert_eq(ret, err_val);
 > +}
 > +
 > +igt_main
 > +{
-> +        struct mmd_context context = {};
-> +	amdgpu_device_handle device;
-> +	int fd = -1;
+> +	int xe;
 > +
 > +	igt_fixture {
-> +		uint32_t major, minor;
-> +		int r;
-> +
-> +		fd = drm_open_driver(DRIVER_AMDGPU);
-> +                igt_require(fd > 0);
-> +
-> +		r = amdgpu_device_initialize(fd, &major, &minor, &device);
-> +		igt_require(r == 0);
-> +
-> +		igt_info("Initialized amdgpu, driver version %d.%d\n", major, minor);
-> +
-> +		r = mmd_context_init(device, &context);
-> +		igt_require(r == 0);
-> +
-> +		igt_skip_on(!is_vpe_tests_enabled(device, &context));
+> +		xe = drm_open_driver(DRIVER_XE);
 > +	}
 > +
-> +        igt_describe("Test VPE fence");
-> +	igt_subtest("vpe-fence-test")
-> +	amdgpu_cs_vpe_fence(device, &context);
+> +	igt_subtest("priority-set-property") {
+> +		/* Tests priority property by setting positive values. */
+> +		test_set_property(xe, XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY,
+> +				  DRM_SCHED_PRIORITY_NORMAL, 0);
 > +
-> +        igt_describe("Test VPE blit");
-> +	igt_subtest("vpe-blit-test")
-> +	amdgpu_cs_vpe_blit(device, &context);
+> +		/* Tests priority property by setting invalid value. */
+> +		test_set_property(xe, XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY,
+> +				  DRM_SCHED_PRIORITY_HIGH + 1, -EINVAL);
+> +		igt_fork(child, 1) {
+> +			igt_drop_root();
+> +
+> +			/* Tests priority property by dropping root permissions. */
+> +			test_set_property(xe, XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY,
+> +					  DRM_SCHED_PRIORITY_HIGH, -EPERM);
+> +			test_set_property(xe, XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY,
+> +					  DRM_SCHED_PRIORITY_NORMAL, 0);
+> +		}
+> +		igt_waitchildren();
+> +	}
+> +
+> +	igt_subtest("persistence-set-property") {
+> +		/* Tests persistence property by setting positive values. */
+> +		test_set_property(xe, XE_EXEC_QUEUE_SET_PROPERTY_PERSISTENCE, 1, 0);
+> +
+> +	}
 > +
 > +	igt_fixture {
-> +		amdgpu_device_deinitialize(device);
-> +		drm_close_driver(fd);
+> +		xe_device_put(xe);
+> +		drm_close_driver(xe);
 > +	}
-> +
 > +}
-> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
-> index efd911fab..bbb8edc93 100644
-> --- a/tests/amdgpu/meson.build
-> +++ b/tests/amdgpu/meson.build
-> @@ -37,6 +37,7 @@ if libdrm_amdgpu.found()
->  			  'amd_mall',
->  			  'amd_odm',
->  			  'amd_subvp',
-> +			  'amd_vpe',
->  			]
->  	if libdrm_amdgpu.version().version_compare('> 2.4.97')
->  		amdgpu_progs +=[ 'amd_syncobj', ]
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 62721157d..1b7cd6544 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -281,6 +281,7 @@ intel_xe_progs = [
+>  	'xe_dma_buf_sync',
+>  	'xe_debugfs',
+>  	'xe_drm_fdinfo',
+> +	'xe_engine_property',
+>  	'xe_evict',
+>  	'xe_evict_ccs',
+>  	'xe_exec_balancer',
+> -- 
+> 2.25.1
+> 
