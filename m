@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 580F610E210
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 13:40:39 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 397A510E212
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 13:40:40 +0000 (UTC)
 From: Matthew Auld <matthew.auld@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  9 Nov 2023 13:38:18 +0000
-Message-ID: <20231109133833.503891-1-matthew.auld@intel.com>
+Date: Thu,  9 Nov 2023 13:38:21 +0000
+Message-ID: <20231109133833.503891-4-matthew.auld@intel.com>
+In-Reply-To: <20231109133833.503891-1-matthew.auld@intel.com>
+References: <20231109133833.503891-1-matthew.auld@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v9 00/15] PAT and cache coherency support
+Subject: [igt-dev] [PATCH i-g-t v9 03/15] lib/igt_draw: mark buffers as
+ SCANOUT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,36 +24,30 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Series implements the IGT side of things needed to support the new Xe uapi
-here:
-https://patchwork.freedesktop.org/series/123027/
+Display buffers likely will want WC, instead of the default WB on the
+CPU side, given that display engine is incoherent with CPU caches.
 
-Branch with the IGT changes:
-https://gitlab.freedesktop.org/mwa/igt-gpu-tools/-/commits/xe-pat-index
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: José Roberto de Souza <jose.souza@intel.com>
+Cc: Pallavi Mishra <pallavi.mishra@intel.com>
+Reviewed-by: Pallavi Mishra <pallavi.mishra@intel.com>
+---
+ lib/igt_draw.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Branch with the KMD changes:
-https://gitlab.freedesktop.org/mwa/kernel/-/tree/xe-pat-index?ref_type=heads
-
-v2:
-  - Various tweaks and improvements.
-  - Rebase on Xe2 additions.
-  - Handle compressed wt on Xe2 + some other xe2 specific pat_index modes.
-v3:
-  - Various fixes and improvements.
-v4:
-  - Various improvements. Rebase
-v5:
-  - Some more improvements, including testing some xelpg modes.
-v6:
-  - Some more minor improvements.
-v7:
-  - Account for dropping coh_mode.
-  - Add store-dword mode for the xe_pat tests to ensure we run on every engine
-    (randomised over runs).
-v8:
-  - Couple minor fixes, like unbreaking api_intel_allocator@default-alignment
-v9:
-  - Add some prime tests for both self and external import
-
+diff --git a/lib/igt_draw.c b/lib/igt_draw.c
+index 9a7664a37..1cf9d87c9 100644
+--- a/lib/igt_draw.c
++++ b/lib/igt_draw.c
+@@ -797,7 +797,8 @@ static void draw_rect_render(int fd, struct cmd_data *cmd_data,
+ 	else
+ 		tmp.handle = xe_bo_create_flags(fd, 0,
+ 						ALIGN(tmp.size, xe_get_default_alignment(fd)),
+-						visible_vram_if_possible(fd, 0));
++						visible_vram_if_possible(fd, 0) |
++						XE_GEM_CREATE_FLAG_SCANOUT);
+ 
+ 	tmp.stride = rect->w * pixel_size;
+ 	tmp.bpp = buf->bpp;
 -- 
 2.41.0
