@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6843710E8E2
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 15:56:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 454E310E8DF
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 15:54:52 +0000 (UTC)
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  9 Nov 2023 15:54:02 +0000
-Message-Id: <20231109155410.7-50-francois.dugast@intel.com>
+Date: Thu,  9 Nov 2023 15:53:28 +0000
+Message-Id: <20231109155410.7-16-francois.dugast@intel.com>
 In-Reply-To: <20231109155410.7-1-francois.dugast@intel.com>
 References: <20231109155410.7-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 49/57] drm-uapi/xe: Crystal Reference Clock
- updates
+Subject: [igt-dev] [PATCH v3 15/57] xe_ioctl: Converge bo_create to the most
+ used version
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,235 +26,133 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-Align with kernel commit ("drm/xe/uapi: Crystal Reference Clock updates")
+Let's unify the call instead of having 2 separated
+options for the same goal.
 
 Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 ---
- include/drm-uapi/xe_drm.h | 11 ++++-------
- lib/xe/xe_query.c         | 19 +++++++++++++++++++
- lib/xe/xe_query.h         |  1 +
- lib/xe/xe_spin.c          | 12 +-----------
- tests/intel/xe_query.c    | 39 +++++++++++++++++++++------------------
- 5 files changed, 46 insertions(+), 36 deletions(-)
+ lib/xe/xe_ioctl.c           | 15 ---------------
+ lib/xe/xe_ioctl.h           |  1 -
+ tests/intel/xe_perf_pmu.c   |  4 ++--
+ tests/intel/xe_spin_batch.c |  2 +-
+ tests/intel/xe_vm.c         |  9 +++++----
+ 5 files changed, 8 insertions(+), 23 deletions(-)
 
-diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index 5949f6f6f..3881f8a94 100644
---- a/include/drm-uapi/xe_drm.h
-+++ b/include/drm-uapi/xe_drm.h
-@@ -429,8 +429,8 @@ struct drm_xe_query_gt {
- 	__u16 type;
- 	/** @gt_id: Unique ID of this GT within the PCI Device */
- 	__u16 gt_id;
--	/** @clock_freq: A clock frequency for timestamp */
--	__u32 clock_freq;
-+	/** @reference_clock: A clock frequency for timestamp */
-+	__u32 reference_clock;
- 	/** @reserved: Reserved */
- 	__u64 reserved[8];
- };
-@@ -504,8 +504,8 @@ struct drm_xe_query_topology_mask {
-  * in .data. struct drm_xe_query_engine_cycles is allocated by the user and
-  * .data points to this allocated structure.
-  *
-- * The query returns the engine cycles and the frequency that can
-- * be used to calculate the engine timestamp. In addition the
-+ * The query returns the engine cycles, which along with GT's @reference_clock,
-+ * can be used to calculate the engine timestamp. In addition the
-  * query returns a set of cpu timestamps that indicate when the command
-  * streamer cycle count was captured.
-  */
-@@ -533,9 +533,6 @@ struct drm_xe_query_engine_cycles {
- 	 */
- 	__u64 engine_cycles;
- 
--	/** @engine_frequency: Frequency of the engine cycles in Hz. */
--	__u64 engine_frequency;
--
- 	/**
- 	 * @cpu_timestamp: CPU timestamp in ns. The timestamp is captured before
- 	 * reading the engine_cycles register using the reference clockid set by the
-diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index e0554907e..f9db6d012 100644
---- a/lib/xe/xe_query.c
-+++ b/lib/xe/xe_query.c
-@@ -580,6 +580,25 @@ uint64_t xe_vram_size_region_near_gt(int fd, int gt)
- 	return 0;
+diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+index db41d5ba5..2edf8a7cf 100644
+--- a/lib/xe/xe_ioctl.c
++++ b/lib/xe/xe_ioctl.c
+@@ -253,21 +253,6 @@ uint32_t xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags)
+ 	return handle;
  }
  
-+/**
-+ * xe_gt_reference_clock:
-+ * @fd: xe device fd
-+ * @gt: gt ID
-+ *
-+ * Returns GT's reference crystal clock.
-+ */
-+uint32_t xe_gt_reference_clock(int fd, int gt)
-+{
-+	struct xe_device *xe_dev;
-+
-+	xe_dev = find_in_cache(fd);
-+	igt_assert(xe_dev);
-+
-+	igt_assert(gt >= 0 && gt < xe_number_gt(fd));
-+
-+	return xe_dev->gt_list->gt_list[gt].reference_clock;
-+}
-+
- /**
-  * xe_visible_vram_size_any_region:
-  * @fd: xe device fd
-diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-index 4fa6f0270..da3b5ef36 100644
---- a/lib/xe/xe_query.h
-+++ b/lib/xe/xe_query.h
-@@ -91,6 +91,7 @@ unsigned int xe_number_engines(int fd);
- bool xe_has_vram(int fd);
- uint64_t xe_vram_size_any_region(int fd);
- uint64_t xe_vram_size_region_near_gt(int fd, int gt);
-+uint32_t xe_gt_reference_clock(int fd, int gt);
- uint64_t xe_visible_vram_size_any_region(int fd);
- uint64_t xe_vram_available_any_region(int fd);
- uint64_t xe_visible_vram_size_region_near_gt(int fd, int gt);
-diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-index f4c5a3076..90194918f 100644
---- a/lib/xe/xe_spin.c
-+++ b/lib/xe/xe_spin.c
-@@ -16,16 +16,6 @@
- #include "xe_ioctl.h"
- #include "xe_spin.h"
- 
--static uint32_t read_timestamp_frequency(int fd, int gt_id)
+-uint32_t xe_bo_create(int fd, int gt, uint32_t vm, uint64_t size)
 -{
--	struct xe_device *dev = xe_device_get(fd);
+-	struct drm_xe_gem_create create = {
+-		.vm_id = vm,
+-		.size = size,
+-		.flags = vram_if_possible(fd, gt),
+-	};
+-	int err;
 -
--	igt_assert(dev && dev->gt_list && dev->gt_list->num_gt);
--	igt_assert(gt_id >= 0 && gt_id <= dev->gt_list->num_gt);
+-	err = igt_ioctl(fd, DRM_IOCTL_XE_GEM_CREATE, &create);
+-	igt_assert_eq(err, 0);
 -
--	return dev->gt_list->gt_list[gt_id].clock_freq;
+-	return create.handle;
 -}
 -
- static uint64_t div64_u64_round_up(const uint64_t x, const uint64_t y)
+ uint32_t xe_bind_exec_queue_create(int fd, uint32_t vm, uint64_t ext, bool async)
  {
- 	igt_assert(y > 0);
-@@ -43,7 +33,7 @@ static uint64_t div64_u64_round_up(const uint64_t x, const uint64_t y)
-  */
- uint32_t duration_to_ctx_ticks(int fd, int gt_id, uint64_t duration_ns)
+ 	struct drm_xe_engine_class_instance instance = {
+diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+index d9c97bf22..993ba8158 100644
+--- a/lib/xe/xe_ioctl.h
++++ b/lib/xe/xe_ioctl.h
+@@ -67,7 +67,6 @@ void xe_vm_destroy(int fd, uint32_t vm);
+ uint32_t __xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags,
+ 			      uint32_t *handle);
+ uint32_t xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags);
+-uint32_t xe_bo_create(int fd, int gt, uint32_t vm, uint64_t size);
+ uint32_t xe_exec_queue_create(int fd, uint32_t vm,
+ 			  struct drm_xe_engine_class_instance *instance,
+ 			  uint64_t ext);
+diff --git a/tests/intel/xe_perf_pmu.c b/tests/intel/xe_perf_pmu.c
+index e9d05cf2b..2c549f778 100644
+--- a/tests/intel/xe_perf_pmu.c
++++ b/tests/intel/xe_perf_pmu.c
+@@ -103,7 +103,7 @@ static void test_any_engine_busyness(int fd, struct drm_xe_engine_class_instance
+ 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
+ 			xe_get_default_alignment(fd));
+ 
+-	bo = xe_bo_create(fd, eci->gt_id, vm, bo_size);
++	bo = xe_bo_create_flags(fd, vm, bo_size, vram_if_possible(fd, 0));
+ 	spin = xe_bo_map(fd, bo, bo_size);
+ 
+ 	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
+@@ -223,7 +223,7 @@ static void test_engine_group_busyness(int fd, int gt, int class, const char *na
+ 	bo_size = sizeof(*data) * num_placements;
+ 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
+ 
+-	bo = xe_bo_create(fd, gt, vm, bo_size);
++	bo = xe_bo_create_flags(fd, vm, bo_size, vram_if_possible(fd, 0));
+ 	data = xe_bo_map(fd, bo, bo_size);
+ 
+ 	for (i = 0; i < num_placements; i++) {
+diff --git a/tests/intel/xe_spin_batch.c b/tests/intel/xe_spin_batch.c
+index 6ab604d9b..261fde9af 100644
+--- a/tests/intel/xe_spin_batch.c
++++ b/tests/intel/xe_spin_batch.c
+@@ -169,7 +169,7 @@ static void xe_spin_fixed_duration(int fd)
+ 	exec_queue = xe_exec_queue_create_class(fd, vm, DRM_XE_ENGINE_CLASS_COPY);
+ 	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
+ 	bo_size = ALIGN(sizeof(*spin) + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
+-	bo = xe_bo_create(fd, 0, vm, bo_size);
++	bo = xe_bo_create_flags(fd, vm, bo_size, vram_if_possible(fd, 0));
+ 	spin = xe_bo_map(fd, bo, bo_size);
+ 	spin_addr = intel_allocator_alloc_with_strategy(ahnd, bo, bo_size, 0,
+ 							ALLOC_STRATEGY_LOW_TO_HIGH);
+diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+index 48834f2de..3a34fde67 100644
+--- a/tests/intel/xe_vm.c
++++ b/tests/intel/xe_vm.c
+@@ -267,7 +267,7 @@ static void test_partial_unbinds(int fd)
  {
--	uint32_t f = read_timestamp_frequency(fd, gt_id);
-+	uint32_t f = xe_gt_reference_clock(fd, gt_id);
- 	uint64_t ctx_ticks = div64_u64_round_up(duration_ns * f, NSEC_PER_SEC);
+ 	uint32_t vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
+ 	size_t bo_size = 3 * xe_get_default_alignment(fd);
+-	uint32_t bo = xe_bo_create(fd, 0, vm, bo_size);
++	uint32_t bo = xe_bo_create_flags(fd, vm, bo_size, vram_if_possible(fd, 0));
+ 	uint64_t unbind_size = bo_size / 3;
+ 	uint64_t addr = 0x1a0000;
  
- 	igt_assert_lt_u64(ctx_ticks, XE_SPIN_MAX_CTX_TICKS);
-diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
-index e6cfafd0a..524a1949b 100644
---- a/tests/intel/xe_query.c
-+++ b/tests/intel/xe_query.c
-@@ -306,7 +306,7 @@ test_query_gt_list(int fd)
- 	for (i = 0; i < gt_list->num_gt; i++) {
- 		igt_info("type: %d\n", gt_list->gt_list[i].type);
- 		igt_info("gt_id: %d\n", gt_list->gt_list[i].gt_id);
--		igt_info("clock_freq: %u\n", gt_list->gt_list[i].clock_freq);
-+		igt_info("reference_clock: %u\n", gt_list->gt_list[i].reference_clock);
- 	}
- }
- 
-@@ -519,7 +519,7 @@ query_engine_cycles(int fd, struct drm_xe_query_engine_cycles *resp)
- }
- 
- static void
--__engine_cycles(int fd, struct drm_xe_engine_class_instance *eci)
-+__engine_cycles(int fd, struct drm_xe_query_engine_info *engine)
- {
- 	struct drm_xe_query_engine_cycles ts1 = {};
- 	struct drm_xe_query_engine_cycles ts2 = {};
-@@ -528,7 +528,7 @@ __engine_cycles(int fd, struct drm_xe_engine_class_instance *eci)
- 	int i, usable = 0;
- 	igt_spin_t *spin;
- 	uint64_t ahnd;
--	uint32_t vm;
-+	uint32_t vm, ref_clock;
- 	struct {
- 		int32_t id;
- 		const char *name;
-@@ -541,11 +541,14 @@ __engine_cycles(int fd, struct drm_xe_engine_class_instance *eci)
+@@ -316,7 +316,7 @@ static void unbind_all(int fd, int n_vmas)
  	};
  
- 	igt_debug("engine[%u:%u]\n",
--		  eci->engine_class,
--		  eci->engine_instance);
-+		  engine->instance.engine_class,
-+		  engine->instance.engine_instance);
-+
-+	ref_clock = xe_gt_reference_clock(fd, engine->gt_id);
-+	igt_debug("GT reference_clock %u\n", ref_clock);
+ 	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
+-	bo = xe_bo_create(fd, 0, vm, bo_size);
++	bo = xe_bo_create_flags(fd, vm, bo_size, vram_if_possible(fd, 0));
  
- 	vm = xe_vm_create(fd, 0, 0);
--	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
-+	exec_queue = xe_exec_queue_create(fd, vm, &engine->instance, 0);
- 	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
- 	spin = igt_spin_new(fd, .ahnd = ahnd, .engine = exec_queue, .vm = vm);
- 
-@@ -554,10 +557,10 @@ __engine_cycles(int fd, struct drm_xe_engine_class_instance *eci)
- 	for (i = 0; i < NUM_SNAPSHOTS * ARRAY_SIZE(clock); i++) {
- 		int index = i / NUM_SNAPSHOTS;
- 
--		ts1.eci = *eci;
-+		ts1.eci = engine->instance;
- 		ts1.clockid = clock[index].id;
- 
--		ts2.eci = *eci;
-+		ts2.eci = engine->instance;
- 		ts2.clockid = clock[index].id;
- 
- 		query_engine_cycles(fd, &ts1);
-@@ -566,23 +569,23 @@ __engine_cycles(int fd, struct drm_xe_engine_class_instance *eci)
- 		igt_debug("[1] cpu_ts before %llu, reg read time %llu\n",
- 			  ts1.cpu_timestamp,
- 			  ts1.cpu_delta);
--		igt_debug("[1] engine_ts %llu, freq %llu Hz, width %u\n",
--			  ts1.engine_cycles, ts1.engine_frequency, ts1.width);
-+		igt_debug("[1] engine_ts %llu, width %u\n",
-+			  ts1.engine_cycles, ts1.width);
- 
- 		igt_debug("[2] cpu_ts before %llu, reg read time %llu\n",
- 			  ts2.cpu_timestamp,
- 			  ts2.cpu_delta);
--		igt_debug("[2] engine_ts %llu, freq %llu Hz, width %u\n",
--			  ts2.engine_cycles, ts2.engine_frequency, ts2.width);
-+		igt_debug("[2] engine_ts %llu, width %u\n",
-+			  ts2.engine_cycles, ts2.width);
- 
- 		delta_cpu = ts2.cpu_timestamp - ts1.cpu_timestamp;
- 
- 		if (ts2.engine_cycles >= ts1.engine_cycles)
- 			delta_cs = (ts2.engine_cycles - ts1.engine_cycles) *
--				   NSEC_PER_SEC / ts1.engine_frequency;
-+				   NSEC_PER_SEC / ref_clock;
- 		else
- 			delta_cs = (((1 << ts2.width) - ts2.engine_cycles) + ts1.engine_cycles) *
--				   NSEC_PER_SEC / ts1.engine_frequency;
-+				   NSEC_PER_SEC / ref_clock;
- 
- 		igt_debug("delta_cpu[%lu], delta_cs[%lu]\n",
- 			  delta_cpu, delta_cs);
-@@ -620,13 +623,13 @@ __engine_cycles(int fd, struct drm_xe_engine_class_instance *eci)
-  */
- static void test_query_engine_cycles(int fd)
- {
--	struct drm_xe_engine_class_instance *eci;
-+	struct drm_xe_query_engine_info *engine;
- 
- 	igt_require(query_engine_cycles_supported(fd));
- 
--	xe_for_each_engine_instance(fd, eci) {
--		igt_assert(eci);
--		__engine_cycles(fd, eci);
-+	xe_for_each_engine(fd, engine) {
-+		igt_assert(engine);
-+		__engine_cycles(fd, engine);
- 	}
+ 	for (i = 0; i < n_vmas; ++i)
+ 		xe_vm_bind_async(fd, vm, 0, bo, 0, addr + i * bo_size,
+@@ -362,6 +362,7 @@ static void userptr_invalid(int fd)
+ 	xe_vm_destroy(fd, vm);
  }
  
++
+ /**
+  * SUBTEST: shared-%s-page
+  * Description: Test shared arg[1] page
+@@ -1572,9 +1573,9 @@ test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
+ 		igt_assert(map0 != MAP_FAILED);
+ 		igt_assert(map1 != MAP_FAILED);
+ 	} else {
+-		bo0 = xe_bo_create(fd, eci->gt_id, vm, bo_size);
++		bo0 = xe_bo_create_flags(fd, vm, bo_size, vram_if_possible(fd, eci->gt_id));
+ 		map0 = xe_bo_map(fd, bo0, bo_size);
+-		bo1 = xe_bo_create(fd, eci->gt_id, vm, bo_size);
++		bo1 = xe_bo_create_flags(fd, vm, bo_size, vram_if_possible(fd, eci->gt_id));
+ 		map1 = xe_bo_map(fd, bo1, bo_size);
+ 	}
+ 	memset(map0, 0, bo_size);
 -- 
 2.34.1
