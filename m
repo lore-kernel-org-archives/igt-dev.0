@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0ACF310E212
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 12:26:56 +0000 (UTC)
-Date: Thu, 9 Nov 2023 13:26:52 +0100
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1991810E209
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 12:30:13 +0000 (UTC)
+Date: Thu, 9 Nov 2023 13:30:07 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20231109122652.peh4wo4dp5x2jpap@kamilkon-desk.igk.intel.com>
-References: <20231109024150.2950150-1-jesse.zhang@amd.com>
+Message-ID: <20231109123007.pq472ezhzhadavks@kamilkon-desk.igk.intel.com>
+References: <20231109024229.2950206-1-jesse.zhang@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231109024150.2950150-1-jesse.zhang@amd.com>
-Subject: Re: [igt-dev] [PATCH V4 i-g-t 2/3] lib/amdgpu: add apu check for
- pciplug test
+In-Reply-To: <20231109024229.2950206-1-jesse.zhang@amd.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 3/3] lib/amdgpu:fix the error when skip
+ hotplug test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,23 +28,30 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Jesse,
-On 2023-11-09 at 10:41:50 +0800, Jesse Zhang wrote:
-> It is integrated with cpu,
-> for APU(Accelerated Processing Unit CPU + iGPU).
-
-Thank you for writing out what APU means.
-
-> So hotplug test should be unnecessary for it.
-
-I am not so sure about it, I will add Janusz to Cc
-Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-
-Btw is core test: core_hotunplug working for amdgpu APU?
-
+On 2023-11-09 at 10:42:29 +0800, Jesse Zhang wrote:
+> For skipped cases, we should print "SKIP"
+> rather than "failure." For example
 > 
-> V4:
->  - place the APU check in particular subtests.(Kamil)
->  - Add igt_info about skipping tests (Vitaly) 
+> IGT-Version: 1.28-g4b3e1dc37 (x86_64) (Linux: 6.3.7+ x86_64)
+> Starting subtest: amdgpu_hotunplug_simple
+> SKIP ... more than 1 GPU is required for this test
+> (amd_pci_unplug:70496) amdgpu/amd_pci_unplug-CRITICAL: Test assertion failure function amdgpu_hotunplug_test, file ../lib/amdgpu/amd_pci_unplug.c:305:
+> (amd_pci_unplug:70496) amdgpu/amd_pci_unplug-CRITICAL: Failed assertion: r == 1
+> (amd_pci_unplug:70496) amdgpu/amd_pci_unplug-CRITICAL: Last errno: 22, Invalid argument
+> (amd_pci_unplug:70496) amdgpu/amd_pci_unplug-CRITICAL: error: 0 != 1
+> Stack trace:
+>   #0 ../lib/igt_core.c:1988 __igt_fail_assert()
+>   #1 ../lib/amdgpu/amd_pci_unplug.c:305 amdgpu_hotunplug_test.constprop.0.isra.0()
+>   #2 [amdgpu_hotunplug_simple+0x29]
+>   #3 ../tests/amdgpu/amd_pci_unplug.c:44 __igt_unique____real_main34()
+>   #4 ../tests/amdgpu/amd_pci_unplug.c:34 main()
+>   #5 ../sysdeps/nptl/libc_start_call_main.h:58 __libc_start_call_main()
+>   #6 ../csu/libc-start.c:128 __libc_start_main@@GLIBC_2.34()
+>   #7 [_start+0x25]
+> Subtest amdgpu_hotunplug_simple failed.
+> 
+> V2:
+>   - replace igt_skip_on with igt_skip_f(Kamil)
 > 
 > Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
 > Cc: Luben Tuikov <luben.tuikov@amd.com>
@@ -56,55 +63,52 @@ Btw is core test: core_hotunplug working for amdgpu APU?
 > Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
 > Reviewed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 > ---
->  lib/amdgpu/amd_pci_unplug.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
+>  lib/amdgpu/amd_pci_unplug.c | 11 +++++++----
+>  1 file changed, 7 insertions(+), 4 deletions(-)
 > 
 > diff --git a/lib/amdgpu/amd_pci_unplug.c b/lib/amdgpu/amd_pci_unplug.c
-> index 047a8700b..b7af95dec 100644
+> index b7af95dec..8346aeb98 100644
 > --- a/lib/amdgpu/amd_pci_unplug.c
 > +++ b/lib/amdgpu/amd_pci_unplug.c
-> @@ -92,6 +92,7 @@ amdgpu_hotunplug_setup_test(bool render_mode, const struct amd_pci_unplug_setup
->  	bool ret = false;
->  	int r;
->  	uint32_t  major_version, minor_version;
-> +	struct amdgpu_gpu_info gpu_info = {0};
+> @@ -101,8 +101,7 @@ amdgpu_hotunplug_setup_test(bool render_mode, const struct amd_pci_unplug_setup
 >  
->  	unplug->num_devices = amdgpu_open_devices(render_mode, MAX_CARDS_SUPPORTED,
->  											  unplug->drm_amdgpu_fds);
-> @@ -118,6 +119,12 @@ amdgpu_hotunplug_setup_test(bool render_mode, const struct amd_pci_unplug_setup
->  	if (minor_version < setup->minor_version_req)
->  		goto release;
->  
-> +	/* skip hotplug test on APU (Accelerated Processing Unit CPU + iGPU) */
-> +	r = amdgpu_query_gpu_info(unplug->device_handle, &gpu_info);
-> +	igt_assert_eq(r, 0);
-> +	if (gpu_info.ids_flags & AMDGPU_IDS_FLAGS_FUSION)
-> +		igt_skip_on_f(!ret, "SKIP ... APU does not require this test\n");
----------------------------- ^^^^^^^^
-No need for SKIP, it will be printed by igt_skip_on.
+>  	if (setup->open_device && setup->open_device2 && unplug->num_devices < 2) {
+>  		/*Not enough board for the test*/
+> -		printf("SKIP ... more than 1 GPU is required for this test\n");
+> -		goto release;
+> +		igt_skip_on_f(ret, "SKIP ... more than 1 GPU is required for this test\n");
+--------------------------- ^^^^^^^^^
+No need for repeating SKIP here.
 
-> +
->  	if (!setup->open_device) {
->  			/* device handle is not always required for test */
->  			/* but for drm version is required always */
-> @@ -132,6 +139,11 @@ amdgpu_hotunplug_setup_test(bool render_mode, const struct amd_pci_unplug_setup
->  			goto release;
->  		if (minor_version < setup->minor_version_req)
->  			goto release;
-> +
-> +		r = amdgpu_query_gpu_info(unplug->device_handle2, &gpu_info);
-> +		igt_assert_eq(r, 0);
-> +		if (gpu_info.ids_flags & AMDGPU_IDS_FLAGS_FUSION)
-> +			igt_skip_on_f(!ret, "SKIP ... APU does not require this test\n");
--------------------------------- ^^^^^^^^
-Same here.
+With this fixed:
 
-Regards,
-Kamil
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 >  	}
->  	ret = true;
->  release:
+>  
+>  	tmp_str = amdgpu_get_device_from_fd(unplug->drm_amdgpu_fds[0]);
+> @@ -117,7 +116,9 @@ amdgpu_hotunplug_setup_test(bool render_mode, const struct amd_pci_unplug_setup
+>  		goto release;
+>  
+>  	if (minor_version < setup->minor_version_req)
+> -		goto release;
+> +		igt_skip_on_f(minor_version < setup->minor_version_req,
+> +			"It has minor_version: %d but it is required: %d for this test\n",
+> +			minor_version, setup->minor_version_req);
+>  
+>  	/* skip hotplug test on APU (Accelerated Processing Unit CPU + iGPU) */
+>  	r = amdgpu_query_gpu_info(unplug->device_handle, &gpu_info);
+> @@ -138,7 +139,9 @@ amdgpu_hotunplug_setup_test(bool render_mode, const struct amd_pci_unplug_setup
+>  		if (r != 0)
+>  			goto release;
+>  		if (minor_version < setup->minor_version_req)
+> -			goto release;
+> +			igt_skip_on_f(minor_version < setup->minor_version_req,
+> +				"It has minor_version: %d but it is required: %d for this test\n",
+> +				minor_version, setup->minor_version_req);
+>  
+>  		r = amdgpu_query_gpu_info(unplug->device_handle2, &gpu_info);
+>  		igt_assert_eq(r, 0);
 > -- 
 > 2.25.1
 > 
