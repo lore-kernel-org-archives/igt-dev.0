@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6B66A10E208
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 11:13:51 +0000 (UTC)
-Date: Thu, 9 Nov 2023 12:13:46 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20231109111346.4lpi3t6afgbnxcb6@kamilkon-desk.igk.intel.com>
-References: <20231109070735.1957435-1-Lang.Yu@amd.com>
- <20231109070735.1957435-2-Lang.Yu@amd.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EB8C110E8AA
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 11:35:55 +0000 (UTC)
+From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
+To: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Thu, 9 Nov 2023 11:35:46 +0000
+Message-ID: <MW3PR11MB4748E30FF731FF52C72A1E5FAEAFA@MW3PR11MB4748.namprd11.prod.outlook.com>
+References: <20231109091136.2119007-1-priyanka.dandamudi@intel.com>
+In-Reply-To: <20231109091136.2119007-1-priyanka.dandamudi@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231109070735.1957435-2-Lang.Yu@amd.com>
-Subject: Re: [igt-dev] [PATCH 2/2] tests/amdgpu: add VPE tests
+Subject: Re: [igt-dev] [PATCH] tests/intel/xe_engine_property: Add engine
+ set property tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,331 +22,145 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Alex Deucher <alexander.deucher@amd.com>, Lang Yu <Lang.Yu@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Lang,
-On 2023-11-09 at 15:07:35 +0800, Lang Yu wrote:
-> Add tests for Video Processing Engine,
-> including fence and blit tests.
-> 
-> Signed-off-by: Lang Yu <Lang.Yu@amd.com>
-> ---
->  lib/amdgpu/amd_mmd_shared.h |   5 +
->  tests/amdgpu/amd_vpe.c      | 254 ++++++++++++++++++++++++++++++++++++
->  tests/amdgpu/meson.build    |   1 +
->  3 files changed, 260 insertions(+)
->  create mode 100644 tests/amdgpu/amd_vpe.c
-> 
-> diff --git a/lib/amdgpu/amd_mmd_shared.h b/lib/amdgpu/amd_mmd_shared.h
-> index 82e732509..14f9ecb4d 100644
-> --- a/lib/amdgpu/amd_mmd_shared.h
-> +++ b/lib/amdgpu/amd_mmd_shared.h
-> @@ -54,6 +54,11 @@ struct mmd_context {
->  	bool enc_ring;
->  	/* jpeg */
->  	bool jpeg_direct_reg;
-> +
-> +	/*vpe*/
-> +	uint32_t vpe_ip_version_major;
-> +	uint32_t vpe_ip_version_minor;
-> +	bool vpe_ring;
->  };
->  
->  struct amdgpu_mmd_bo {
-> diff --git a/tests/amdgpu/amd_vpe.c b/tests/amdgpu/amd_vpe.c
-> new file mode 100644
-> index 000000000..4aeb7395e
-> --- /dev/null
-> +++ b/tests/amdgpu/amd_vpe.c
-> @@ -0,0 +1,254 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright 2023 Advanced Micro Devices, Inc.
-> + */
-> +#include "igt.h"
-
-Put this after "amdgpu_drm.h" - first goes system includes,
-then igt ones, all in alphabetical order.
-
-> +
-> +#include <amdgpu.h>
-
-Put newline here.
-
-> +#include "amdgpu_drm.h"
-> +#include "lib/amdgpu/amd_mmd_shared.h"
-
-Put here global test description:
-
-IGT_TEST_DESCRIPTION("Your test description")
-
-> +
-> +#define IB_SIZE                 4096
-> +#define MAX_RESOURCES           16
-> +
-> +#define PLANE_WIDTH             1024
-> +#define PLANE_HEIGHT            256
-> +#define PLANE_SIZE              (PLANE_WIDTH*PLANE_HEIGHT*4)
-> +
-> +#define SRC_PLANE_PATTERN       0x12345678
-> +#define DST_PLANE_PATTERN       0xff123456
-> +
-> +static uint32_t vpe_descriptor[] = {
-> +0x00000001, 0x33002200, 0xff000021, 0x00000003, 0x33002234, 0xff000021, 0x33002328, 0xff000021,
-> +0x33002384, 0xff000021, 0x330023c0, 0xff000021,
-> +};
-> +
-> +static uint32_t vpe_config[] = {
-> +0x00000002, 0x00000000, 0xbeefbe00, 0xff005678, 0x000003ff, 0x00000000, 0x00ff43ff, 0x00000000,
-> +0xbeefbe00, 0xff005679, 0x000003ff, 0x00000000, 0x00ff43ff, 0x003b0003, 0x00047808, 0x00000809,
-> +0x0004780c, 0x000000e4, 0x00047d10, 0x00000009, 0x00047d14, 0x00000101, 0x00047d18, 0x00000000,
-> +0x00047d1c, 0x00000000, 0x00047d20, 0x00000000, 0x00047d24, 0x0001f010, 0x00047d28, 0x0001f010,
-> +0x00047d2c, 0x0001f010, 0x00547ee9, 0x00002000, 0x00000000, 0x20000000, 0x00000000, 0x00000000,
-> +0x00002000, 0x00047ee4, 0x00000001, 0x00047ee0, 0x00000000, 0x00047f24, 0x00000000, 0x00047fc4,
-> +0x00000000, 0x00547f05, 0x00002000, 0x00000000, 0x20000000, 0x00000000, 0x00000000, 0x00002000,
-> +0x00047f00, 0x00000001, 0x00049700, 0x00000000, 0x00049704, 0x0000000f, 0x00049f30, 0x00000000,
-> +0x00049708, 0x00000000, 0x0004970c, 0xffff0462, 0x0004a208, 0x00000000, 0x0004971c, 0x00000000,
-> +0x00047fc0, 0x0001f000, 0x00150003, 0x00047df8, 0x00000001, 0x00047dfc, 0x00000001, 0x00047da8,
-> +0x00000006, 0x00047e18, 0x00000000, 0x0004970c, 0xffff0422, 0x00049710, 0x0001f000, 0x00049714,
-> +0x0001f000, 0x00049718, 0x0001f000, 0x00049720, 0x00000000, 0x00049724, 0x00000000, 0x00049728,
-> +0x00000000, 0x000d0003, 0x00047810, 0x00000000, 0x00047814, 0x01000400, 0x00047818, 0x00000000,
-> +0x0004781c, 0x01000400, 0x00047e00, 0x00000000, 0x00047e04, 0x01000400, 0x00047e08, 0x01000400,
-> +0x00280003, 0x00047820, 0x00000036, 0x00047824, 0x0960f015, 0x0004972c, 0x00000014, 0x0004972c,
-> +0x00000014, 0x0004972c, 0x00000014, 0x00049f90, 0x00000000, 0x00049f94, 0x00000001, 0x00549f99,
-> +0x00002000, 0x00000000, 0x20000000, 0x00000000, 0x00000000, 0x00002000, 0x00049850, 0x00000000,
-> +0x00049f34, 0x00000000, 0x00049f38, 0x02fff000, 0x00049f3c, 0x00fff000, 0x00049f40, 0x00fff000,
-> +0x0004aba0, 0xffff0000, 0x0004aba0, 0xffff0000, 0x0004aacc, 0x00000000, 0x0004aad4, 0x00000013,
-> +0x0004aad4, 0x00000013,
-> +};
-> +
-> +static bool is_vpe_tests_enabled(amdgpu_device_handle device_handle,
-> +                                 struct mmd_context *context)
-> +{
-> +        struct drm_amdgpu_info_hw_ip info;
-> +        int r;
-> +
-> +        r = amdgpu_query_hw_ip_info(device_handle, AMDGPU_HW_IP_VPE, 0, &info);
-> +        igt_assert_eq(r, 0);
-> +
-> +        context->vpe_ip_version_major = info.hw_ip_version_major;
-> +        context->vpe_ip_version_minor = info.hw_ip_version_minor;
-> +        context->vpe_ring = !!info.available_rings;
-> +
-> +        if (!context->vpe_ring) {
-> +                igt_info("VPE no available rings");
-> +		igt_info("VPE fence test disable");
-> +		igt_info("VPE blit test disable");
-> +        }
-> +
-> +	return true;
-> +}
-> +
-> +static void amdgpu_cs_vpe_fence(amdgpu_device_handle device_handle,
-> +                               struct mmd_context *context);
-> +static void amdgpu_cs_vpe_blit(amdgpu_device_handle device_handle,
-> +                               struct mmd_context *context);
-> +
-> +igt_main
-
-Main is useally last one, then you don't need to declare called
-functions.
-
-Regards,
-Kamil
-
-> +{
-> +        struct mmd_context context = {};
-> +	amdgpu_device_handle device;
-> +	int fd = -1;
-> +
-> +	igt_fixture {
-> +		uint32_t major, minor;
-> +		int r;
-> +
-> +		fd = drm_open_driver(DRIVER_AMDGPU);
-> +                igt_require(fd > 0);
-> +
-> +		r = amdgpu_device_initialize(fd, &major, &minor, &device);
-> +		igt_require(r == 0);
-> +
-> +		igt_info("Initialized amdgpu, driver version %d.%d\n", major, minor);
-> +
-> +		r = mmd_context_init(device, &context);
-> +		igt_require(r == 0);
-> +
-> +		igt_skip_on(!is_vpe_tests_enabled(device, &context));
-> +	}
-> +
-> +        igt_describe("Test VPE fence");
-> +	igt_subtest("vpe-fence-test")
-> +	amdgpu_cs_vpe_fence(device, &context);
-> +
-> +        igt_describe("Test VPE blit");
-> +	igt_subtest("vpe-blit-test")
-> +	amdgpu_cs_vpe_blit(device, &context);
-> +
-> +	igt_fixture {
-> +		amdgpu_device_deinitialize(device);
-> +		drm_close_driver(fd);
-> +	}
-> +
-> +}
-> +
-> +static void amdgpu_cs_vpe_fence(amdgpu_device_handle device_handle,
-> +                                struct mmd_context *context)
-> +{
-> +        const uint32_t test_pattern = 0xdeadbeef;
-> +        uint32_t *ib_cpu = context->ib_cpu;
-> +        struct amdgpu_mmd_bo test_bo;
-> +        int r;
-> +
-> +        context->num_resources = 0;
-> +        alloc_resource(device_handle, &test_bo, 4096, AMDGPU_GEM_DOMAIN_GTT);
-> +        context->resources[context->num_resources++] = test_bo.handle;
-> +
-> +        r = amdgpu_bo_cpu_map(test_bo.handle, (void **)&test_bo.ptr);
-> +        igt_assert_eq(r, 0);
-> +
-> +        memset(test_bo.ptr, 0, 4096);
-> +
-> +        memset(ib_cpu, 0, IB_SIZE);
-> +
-> +        ib_cpu[0] = 0x5;
-> +        ib_cpu[1] = 0xfffffffc & test_bo.addr;
-> +        ib_cpu[2] = (0xffffffff00000000 & test_bo.addr) >> 32;
-> +        ib_cpu[3] = test_pattern;
-> +        ib_cpu[4] = 0x0;
-> +        ib_cpu[5] = 0x0;
-> +        ib_cpu[6] = 0x0;
-> +        ib_cpu[7] = 0x0;
-> +
-> +        context->resources[context->num_resources++] = context->ib_handle;
-> +
-> +        r = submit(device_handle, context, 8, AMDGPU_HW_IP_VPE);
-> +        igt_assert_eq(r, 0);
-> +
-> +        igt_assert_eq(((uint32_t *)test_bo.ptr)[0], test_pattern);
-> +
-> +        r = amdgpu_bo_cpu_unmap(test_bo.handle);
-> +        igt_assert_eq(r, 0);
-> +
-> +        free_resource(&test_bo);
-> +}
-> +
-> +// a in byte 0, b in byte 1, g in byte 2, r in byte 3
-> +static void create_rgba8888(void *addr, uint32_t width, uint32_t height)
-> +{
-> +        uint32_t *ptr = (uint32_t *)addr;
-> +
-> +        for (int i = 0; i < height; i++) {
-> +                for (int j = 0; j < width; j++)
-> +                        ptr[j] = SRC_PLANE_PATTERN;
-> +                ptr += width;
-> +        }
-> +}
-> +// b in byte 0, g in byte 1, r in byte 2, a in byte 3
-> +static int check_argb8888(void *addr, uint32_t width, uint32_t height)
-> +{
-> +        uint32_t *ptr = (uint32_t *)addr;
-> +
-> +        for (int i = 0; i < height; i++) {
-> +                for (int j = 0; j < width; j++)
-> +                        if (ptr[j] != DST_PLANE_PATTERN)
-> +                                return 1;
-> +                ptr += width;
-> +        }
-> +
-> +        return 0;
-> +}
-> +
-> +static void amdgpu_cs_vpe_blit(amdgpu_device_handle device_handle,
-> +                               struct mmd_context *context)
-> +{
-> +        const uint32_t vpep_config_offsets[] = {0x34, 0x128, 0x184, 0x1c0};
-> +        struct amdgpu_mmd_bo vpe_config_bo, src_plane_bo, dst_plane_bo;
-> +        int r;
-> +
-> +        context->num_resources = 0;
-> +
-> +        alloc_resource(device_handle, &vpe_config_bo, sizeof(vpe_config), AMDGPU_GEM_DOMAIN_GTT);
-> +        alloc_resource(device_handle, &src_plane_bo, PLANE_SIZE, AMDGPU_GEM_DOMAIN_GTT);
-> +        alloc_resource(device_handle, &dst_plane_bo, PLANE_SIZE, AMDGPU_GEM_DOMAIN_GTT);
-> +
-> +        r = amdgpu_bo_cpu_map(vpe_config_bo.handle, (void **)&vpe_config_bo.ptr);
-> +        igt_assert_eq(r, 0);
-> +
-> +        r = amdgpu_bo_cpu_map(src_plane_bo.handle, (void **)&src_plane_bo.ptr);
-> +        igt_assert_eq(r, 0);
-> +
-> +        r = amdgpu_bo_cpu_map(dst_plane_bo.handle, (void **)&dst_plane_bo.ptr);
-> +        igt_assert_eq(r, 0);
-> +
-> +        context->resources[context->num_resources++] = vpe_config_bo.handle;
-> +        context->resources[context->num_resources++] = src_plane_bo.handle;
-> +        context->resources[context->num_resources++] = dst_plane_bo.handle;
-> +
-> +        // plane config gpu addr
-> +        *(uint64_t *)(vpe_descriptor + 1) = vpe_config_bo.addr;
-> +        // vpep config0 gpu addr
-> +        *(uint64_t *)(vpe_descriptor + 4) = vpe_config_bo.addr + vpep_config_offsets[0];
-> +        // vpep config1 gpu addr
-> +        *(uint64_t *)(vpe_descriptor + 6) = vpe_config_bo.addr + vpep_config_offsets[1];
-> +        // vpep config2 gpu addr
-> +        *(uint64_t *)(vpe_descriptor + 8) = vpe_config_bo.addr + vpep_config_offsets[2];
-> +        // vpep config3 gpu addr
-> +        *(uint64_t *)(vpe_descriptor + 10) = vpe_config_bo.addr + vpep_config_offsets[3];
-> +
-> +        memset(src_plane_bo.ptr, 0, PLANE_SIZE);
-> +        memset(dst_plane_bo.ptr, 0, PLANE_SIZE);
-> +        create_rgba8888(src_plane_bo.ptr, PLANE_WIDTH, PLANE_HEIGHT);
-> +
-> +        /* gpu address of src */
-> +        *(uint64_t *)(vpe_config + 2) = src_plane_bo.addr;
-> +        /* gpu address of dst */
-> +        *(uint64_t *)(vpe_config + 8) = dst_plane_bo.addr;
-> +
-> +        memset(vpe_config_bo.ptr, 0, sizeof(vpe_config));
-> +        memcpy(vpe_config_bo.ptr, vpe_config, sizeof(vpe_config));
-> +
-> +        memset(context->ib_cpu, 0, IB_SIZE);
-> +        memcpy(context->ib_cpu, vpe_descriptor, sizeof(vpe_descriptor));
-> +
-> +        context->resources[context->num_resources++] = context->ib_handle;
-> +
-> +        r = submit(device_handle, context, sizeof(vpe_descriptor)/4, AMDGPU_HW_IP_VPE);
-> +        igt_assert_eq(r, 0);
-> +
-> +        r = check_argb8888(dst_plane_bo.ptr, PLANE_WIDTH, PLANE_HEIGHT);
-> +        igt_assert_eq(r, 0);
-> +
-> +        r = amdgpu_bo_cpu_unmap(vpe_config_bo.handle);
-> +        igt_assert_eq(r, 0);
-> +
-> +        r = amdgpu_bo_cpu_unmap(src_plane_bo.handle);
-> +        igt_assert_eq(r, 0);
-> +
-> +        r = amdgpu_bo_cpu_unmap(dst_plane_bo.handle);
-> +        igt_assert_eq(r, 0);
-> +
-> +        free_resource(&vpe_config_bo);
-> +        free_resource(&src_plane_bo);
-> +        free_resource(&dst_plane_bo);
-> +}
-> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
-> index f52fc3645..e82e02701 100644
-> --- a/tests/amdgpu/meson.build
-> +++ b/tests/amdgpu/meson.build
-> @@ -36,6 +36,7 @@ if libdrm_amdgpu.found()
->  			  'amd_vrr_range',
->  			  'amd_mall',
->  			  'amd_odm',
-> +			  'amd_vpe',
->  			]
->  	if libdrm_amdgpu.version().version_compare('> 2.4.97')
->  		amdgpu_progs +=[ 'amd_syncobj', ]
-> -- 
-> 2.25.1
-> 
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRGFuZGFtdWRpLCBQcml5
+YW5rYSA8cHJpeWFua2EuZGFuZGFtdWRpQGludGVsLmNvbT4NCj4gU2VudDogVGh1cnNkYXksIE5v
+dmVtYmVyIDksIDIwMjMgMjo0MiBQTQ0KPiBUbzogRGFuZGFtdWRpLCBQcml5YW5rYSA8cHJpeWFu
+a2EuZGFuZGFtdWRpQGludGVsLmNvbT47IEt1bWFyLCBKYW5nYQ0KPiBSYWh1bCA8amFuZ2EucmFo
+dWwua3VtYXJAaW50ZWwuY29tPjsgaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gU3Vi
+amVjdDogW1BBVENIXSB0ZXN0cy9pbnRlbC94ZV9lbmdpbmVfcHJvcGVydHk6IEFkZCBlbmdpbmUg
+c2V0IHByb3BlcnR5DQo+IHRlc3RzDQo+IA0KPiBGcm9tOiBQcml5YW5rYSBEYW5kYW11ZGkgPHBy
+aXlhbmthLmRhbmRhbXVkaUBpbnRlbC5jb20+DQo+IA0KPiBBZGRlZCB0ZXN0cyB0byBjaGVjayBl
+bmdpbmUgc2V0IHByb3BlcnRpZXMuDQo+IEl0IHRlc3RzIGJhc2ljIHBvc2l0aXZlIGFuZCBpbnZh
+bGlkIHZhbHVlcyBmb3IgYWxsIHByb3BlcnRpZXMuDQo+IA0KPiBDYzogSmFuZ2EgUmFodWwgS3Vt
+YXIgPGphbmdhLnJhaHVsLmt1bWFyQGludGVsLmNvbT4NCj4gU2lnbmVkLW9mZi1ieTogUHJpeWFu
+a2EgRGFuZGFtdWRpIDxwcml5YW5rYS5kYW5kYW11ZGlAaW50ZWwuY29tPg0KPiAtLS0NCj4gIHRl
+c3RzL2ludGVsL3hlX2VuZ2luZV9wcm9wZXJ0eS5jIHwgMTkxICsrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysNCj4gIHRlc3RzL21lc29uLmJ1aWxkICAgICAgICAgICAgICAgIHwgICAxICsN
+Cj4gIDIgZmlsZXMgY2hhbmdlZCwgMTkyIGluc2VydGlvbnMoKykNCj4gIGNyZWF0ZSBtb2RlIDEw
+MDY0NCB0ZXN0cy9pbnRlbC94ZV9lbmdpbmVfcHJvcGVydHkuYw0KPiANCj4gZGlmZiAtLWdpdCBh
+L3Rlc3RzL2ludGVsL3hlX2VuZ2luZV9wcm9wZXJ0eS5jDQo+IGIvdGVzdHMvaW50ZWwveGVfZW5n
+aW5lX3Byb3BlcnR5LmMNCj4gbmV3IGZpbGUgbW9kZSAxMDA2NDQNCj4gaW5kZXggMDAwMDAwMDAw
+Li4wNjQ0MGJmMzYNCj4gLS0tIC9kZXYvbnVsbA0KPiArKysgYi90ZXN0cy9pbnRlbC94ZV9lbmdp
+bmVfcHJvcGVydHkuYw0KPiBAQCAtMCwwICsxLDE5MSBAQA0KPiArLy8gU1BEWC1MaWNlbnNlLUlk
+ZW50aWZpZXI6IE1JVA0KPiArLyoNCj4gKyAqIENvcHlyaWdodCDCqSAyMDIzIEludGVsIENvcnBv
+cmF0aW9uDQo+ICsgKi8NCj4gKw0KPiArLyoqDQo+ICsgKiBURVNUOiBCYXNpYyB0ZXN0cyB0byBj
+aGVjayBlbmdpbmUgc2V0IHByb3BlcnR5IGZ1bmN0aW9uYWxpdHkNCj4gKyAqIENhdGVnb3J5OiBT
+b2Z0d2FyZSBidWlsZGluZyBibG9jaw0KPiArICogUnVuIHR5cGU6IEZVTEwNCj4gKyAqIFN1Yi1j
+YXRlZ29yeTogZW5naW5lIHByb3BlcnR5DQo+ICsgKiBGdW5jdGlvbmFsaXR5OiBlbmdpbmUgc2V0
+IHByb3BlcnR5DQo+ICsgKiBUZXN0IGNhdGVnb3J5OiBmdW5jdGlvbmFsaXR5IHRlc3QNCj4gKyAq
+IFNVQlRFU1Q6IHByaW9yaXR5LXNldC1wcm9wZXJ0eQ0KPiArICogRGVzY3JpcHRpb246IHRlc3Rz
+IGJhc2ljIHByaW9yaXR5IHByb3BlcnR5IGJ5IHNldHRpbmcgaW52YWxpZCB2YWx1ZXMgYW5kDQo+
+IHBvc2l0aXZlIHZhbHVlcy4NCj4gKyAqIFNVQlRFU1Q6IHBlcnNpc3RlbmNlLXNldC1wcm9wZXJ0
+eQ0KPiArICogRGVzY3JpcHRpb246IHRlc3RzIGJhc2ljIHBlcnNpc3RlbmNlIHByb3BlcnR5IGJ5
+IHNldHRpbmcgcG9zaXRpdmUNCj4gK3ZhbHVlcw0KPiArICogU1VCVEVTVDogJXMtcHJvcGVydHkt
+bWluLW1heA0KPiArICogRGVzY3JpcHRpb246IFRlc3QgdG8gY2hlY2sgaWYgJXMgYXJnWzFdIHNj
+aGVkdWxlIHBhcmFtZXRlciBjaGVja3MgZm9yIG1pbg0KPiBtYXggdmFsdWVzLg0KPiArICoNCj4g
+KyAqIGFyZ1sxXToNCj4gKyAqDQo+ICsgKiBAcHJlZW1wdF90aW1lb3V0X3VzOgkJcHJlZW1wdCB0
+aW1lb3V0IHVzDQo+ICsgKiBAdGltZXNsaWNlX2R1cmF0aW9uX3VzOgl0aW1lc2xpY2UgZHVyYXRp
+b24gdXMNCj4gKyAqIEBqb2JfdGltZW91dF9tczoJCWpvYiB0aW1lb3V0IG1zDQo+ICsgKi8NCj4g
+Kw0KPiArI2luY2x1ZGUgImlndC5oIg0KPiArI2luY2x1ZGUgImxpYi9pZ3Rfc3luY29iai5oIg0K
+PiArI2luY2x1ZGUgImxpYi9pbnRlbF9yZWcuaCINCj4gKyNpbmNsdWRlICJ4ZV9kcm0uaCINCj4g
+KyNpbmNsdWRlIDxzeXMvc3RhdC5oPg0KPiArI2luY2x1ZGUgPHN5cy90eXBlcy5oPg0KPiArI2lu
+Y2x1ZGUgInhlL3hlX2lvY3RsLmgiDQo+ICsjaW5jbHVkZSAieGUveGVfcXVlcnkuaCINCj4gKyNp
+bmNsdWRlIDxzdHJpbmcuaD4NCj4gKyNpbmNsdWRlICJpZ3Rfc3lzZnMuaCINCj4gKyNpbmNsdWRl
+IDxkaXJlbnQuaD4NCj4gKyNpbmNsdWRlIDxmY250bC5oPg0KPiArDQo+ICsjZGVmaW5lIERSTV9T
+Q0hFRF9QUklPUklUWV9ISUdIICAyDQo+ICsjZGVmaW5lIERSTV9TQ0hFRF9QUklPUklUWV9OT1JN
+QUwgMQ0KPiArDQo+ICtzdGF0aWMgaW50IGdldF9wcm9wZXJ0eV9uYW1lKGNvbnN0IGNoYXIgKnBy
+b3BlcnR5KSB7DQo+ICsJaWYgKHN0cnN0cihwcm9wZXJ0eSwgInByZWVtcHQiKSkNCj4gKwkJcmV0
+dXJuDQo+IFhFX0VYRUNfUVVFVUVfU0VUX1BST1BFUlRZX1BSRUVNUFRJT05fVElNRU9VVDsNCj4g
+KwllbHNlIGlmIChzdHJzdHIocHJvcGVydHksICJqb2JfdGltZW91dCIpKQ0KPiArCQlyZXR1cm4g
+WEVfRVhFQ19RVUVVRV9TRVRfUFJPUEVSVFlfSk9CX1RJTUVPVVQ7DQo+ICsJZWxzZSBpZiAoc3Ry
+c3RyKHByb3BlcnR5LCAidGltZXNsaWNlIikpDQo+ICsJCXJldHVybiBYRV9FWEVDX1FVRVVFX1NF
+VF9QUk9QRVJUWV9USU1FU0xJQ0U7DQo+ICsJZWxzZQ0KPiArCQlyZXR1cm4gLTE7DQo+ICt9DQo+
+ICsNCj4gK3N0YXRpYyB2b2lkIHRlc3Rfc2V0X3Byb3BlcnR5KGludCB4ZSwgaW50IHByb3BlcnR5
+X25hbWUsDQo+ICsJCQkgICAgICBpbnQgcHJvcGVydHlfdmFsdWUsIGludCBlcnJfdmFsKSB7DQo+
+ICsJc3RydWN0IGRybV94ZV9lbmdpbmVfY2xhc3NfaW5zdGFuY2UgaW5zdGFuY2UgPSB7DQo+ICsJ
+CQkuZW5naW5lX2NsYXNzID0NCj4gRFJNX1hFX0VOR0lORV9DTEFTU19WTV9CSU5EX1NZTkMsDQo+
+ICsJfTsNCj4gKwlzdHJ1Y3QgZHJtX3hlX2V4dF9zZXRfcHJvcGVydHkgZXh0ID0gew0KPiArCQku
+YmFzZS5uZXh0X2V4dGVuc2lvbiA9IDAsDQo+ICsJCS5iYXNlLm5hbWUgPSBYRV9FWEVDX1FVRVVF
+X0VYVEVOU0lPTl9TRVRfUFJPUEVSVFksDQo+ICsJCS5wcm9wZXJ0eSA9IHByb3BlcnR5X25hbWUs
+DQo+ICsJCS52YWx1ZSA9IHByb3BlcnR5X3ZhbHVlLA0KPiArCX07DQo+ICsNCj4gKwlzdHJ1Y3Qg
+ZHJtX3hlX2V4ZWNfcXVldWVfY3JlYXRlIGNyZWF0ZSA9IHsNCj4gKwkJLmV4dGVuc2lvbnMgPSB0
+b191c2VyX3BvaW50ZXIoJmV4dCksDQo+ICsJCS53aWR0aCA9IDEsDQo+ICsJCS5udW1fcGxhY2Vt
+ZW50cyA9IDEsDQo+ICsJCS5pbnN0YW5jZXMgPSB0b191c2VyX3BvaW50ZXIoJmluc3RhbmNlKSwN
+Cj4gKwkJLnZtX2lkID0geGVfdm1fY3JlYXRlKHhlLCAwLCAwKSwNCj4gKwl9Ow0KPiArCWludCBy
+ZXQgPSAwOw0KPiArDQo+ICsJaWYgKGlndF9pb2N0bCh4ZSwgRFJNX0lPQ1RMX1hFX0VYRUNfUVVF
+VUVfQ1JFQVRFLCAmY3JlYXRlKSkgew0KPiArCQlyZXQgPSAtZXJybm87DQo+ICsJCWVycm5vID0g
+MDsNCj4gKwl9DQo+ICsJaWd0X2Fzc2VydF9lcShyZXQsIGVycl92YWwpOw0KPiArfQ0KPiArDQo+
+ICtzdGF0aWMgdm9pZCB0ZXN0X3Byb3BlcnR5X21pbl9tYXgoaW50IHhlLCBpbnQgZW5naW5lLCBj
+b25zdCBjaGFyDQo+ICsqKnByb3BlcnR5KSB7DQo+ICsJdW5zaWduZWQgaW50IG1heDsNCj4gKwl1
+bnNpZ25lZCBpbnQgbWluOw0KPiArCXVuc2lnbmVkIGludCBzZXQ7DQo+ICsJaW50IHByb3BlcnR5
+X25hbWU7DQo+ICsJaW50IGRlZmF1bHRzOw0KPiArDQo+ICsJZGVmYXVsdHMgPSBvcGVuYXQoZW5n
+aW5lLCAiLmRlZmF1bHRzIiwgT19ESVJFQ1RPUlkpOw0KPiArCWlndF9yZXF1aXJlKGRlZmF1bHRz
+ICE9IC0xKTsNCj4gKw0KPiArCWlndF9zeXNmc19zY2FuZihkZWZhdWx0cywgcHJvcGVydHlbMl0s
+ICIldSIsICZtYXgpOw0KPiArCWlndF9zeXNmc19zY2FuZihkZWZhdWx0cywgcHJvcGVydHlbMV0s
+ICIldSIsICZtaW4pOw0KPiArCWlndF9zeXNmc19zY2FuZihlbmdpbmUsIHByb3BlcnR5WzBdLCAi
+JXUiLCAmc2V0KTsNCj4gKw0KPiArCXByb3BlcnR5X25hbWUgPSBnZXRfcHJvcGVydHlfbmFtZShw
+cm9wZXJ0eVswXSk7DQo+ICsJaWd0X2Fzc2VydF9uZXEocHJvcGVydHlfbmFtZSwgLTEpOw0KPiAr
+DQo+ICsJLyogVGVzdHMgc2NoZWR1bGVyIHByb3BlcnRpZXMgYnkgc2V0dGluZyBwb3NpdGl2ZSB2
+YWx1ZXMgKi8NCj4gKwl0ZXN0X3NldF9wcm9wZXJ0eSh4ZSwgcHJvcGVydHlfbmFtZSwgbWF4LCAw
+KTsNCj4gKwl0ZXN0X3NldF9wcm9wZXJ0eSh4ZSwgcHJvcGVydHlfbmFtZSwgbWluLCAwKTsNCj4g
+Kw0KPiArCS8qIFRlc3RzIHNjaGVkdWxlciBwcm9wZXJ0aWVzIGJ5IHNldHRpbmcgaW52YWxpZCB2
+YWx1ZXMgKi8NCj4gKwl0ZXN0X3NldF9wcm9wZXJ0eSh4ZSwgcHJvcGVydHlfbmFtZSwgbWF4ICsg
+MSwgLUVJTlZBTCk7DQo+ICsJdGVzdF9zZXRfcHJvcGVydHkoeGUsIHByb3BlcnR5X25hbWUsIG1p
+biAtIDEsIC1FSU5WQUwpOyB9DQo+ICsNCj4gK2lndF9tYWluDQo+ICt7DQo+ICsJc3RhdGljIGNv
+bnN0IHN0cnVjdCB7DQo+ICsJCWNvbnN0IGNoYXIgKm5hbWU7DQo+ICsJCXZvaWQgKCpmbikoaW50
+LCBpbnQsIGNvbnN0IGNoYXIgKiopOw0KPiArCX0gdGVzdHNbXSA9IHt7InByb3BlcnR5LW1pbi1t
+YXgiLCB0ZXN0X3Byb3BlcnR5X21pbl9tYXh9LCB7fSB9Ow0KPiArDQo+ICsJY29uc3QgY2hhciAq
+cHJvcGVydHlbXVszXSA9IHsgeyJwcmVlbXB0X3RpbWVvdXRfdXMiLA0KPiAicHJlZW1wdF90aW1l
+b3V0X21pbiIsICJwcmVlbXB0X3RpbWVvdXRfbWF4In0sDQo+ICsJCQkJICAgICAgeyJ0aW1lc2xp
+Y2VfZHVyYXRpb25fdXMiLA0KPiAidGltZXNsaWNlX2R1cmF0aW9uX21pbiIsICJ0aW1lc2xpY2Vf
+ZHVyYXRpb25fbWF4In0sDQo+ICsJCQkJICAgICAgeyJqb2JfdGltZW91dF9tcyIsICJqb2JfdGlt
+ZW91dF9taW4iLA0KPiAiam9iX3RpbWVvdXRfbWF4In0sDQo+ICsJfTsNCj4gKwlpbnQgY291bnQg
+PSBzaXplb2YocHJvcGVydHkpIC8gc2l6ZW9mKHByb3BlcnR5WzBdKTsNCj4gKwlpbnQgc3lzX2Zk
+Ow0KPiArCWludCB4ZTsNCj4gKwlpbnQgZ3Q7DQo+ICsNCj4gKwlpZ3RfZml4dHVyZSB7DQo+ICsJ
+CXVpbnQxNl90IGRldmlkOw0KPiArDQo+ICsJCXhlID0gZHJtX29wZW5fZHJpdmVyKERSSVZFUl9Y
+RSk7DQo+ICsJCWRldmlkID0gaW50ZWxfZ2V0X2RybV9kZXZpZCh4ZSk7DQo+ICsNCj4gKwkJaWd0
+X3JlcXVpcmUoeGVfc3VwcG9ydHNfZmF1bHRzKHhlKSk7DQo+ICsJCWlndF9yZXF1aXJlKElTX1BP
+TlRFVkVDQ0hJTyhkZXZpZCkpOw0KV2h5IGFib3ZlIGNoZWNrcyByZXF1aXJlZCBoZXJlPyBJY290
+bCBzaG91bGQgYmUgd29ya2luZyBvbiBhbGwgcGxhdGZvcm1zLiBJZiBhbnkgc3VidGVzdCByZXF1
+aXJlIHRoaXMgdGhhbiBtb3ZlIGl0IGluc2lkZSBzdWJ0ZXN0Lg0KDQo+ICsNCj4gKwkJc3lzX2Zk
+ID0gaWd0X3N5c2ZzX29wZW4oeGUpOw0KPiArCQlpZ3RfcmVxdWlyZShzeXNfZmQgIT0gLTEpOw0K
+PiArCQljbG9zZShzeXNfZmQpOw0KPiArCX0NCj4gKw0KPiArCWlndF9zdWJ0ZXN0KCJwcmlvcml0
+eS1zZXQtcHJvcGVydHkiKSB7DQo+ICsJCS8qIFRlc3RzIHByaW9yaXR5IHByb3BlcnR5IGJ5IHNl
+dHRpbmcgcG9zaXRpdmUgdmFsdWVzLiAqLw0KPiArCQl0ZXN0X3NldF9wcm9wZXJ0eSh4ZSwNCj4g
+WEVfRVhFQ19RVUVVRV9TRVRfUFJPUEVSVFlfUFJJT1JJVFksDQo+ICsJCQkJICBEUk1fU0NIRURf
+UFJJT1JJVFlfTk9STUFMLCAwKTsNCj4gKw0KPiArCQkvKiBUZXN0cyBwcmlvcml0eSBwcm9wZXJ0
+eSBieSBzZXR0aW5nIGludmFsaWQgdmFsdWUuICovDQo+ICsJCXRlc3Rfc2V0X3Byb3BlcnR5KHhl
+LA0KPiBYRV9FWEVDX1FVRVVFX1NFVF9QUk9QRVJUWV9QUklPUklUWSwNCj4gKwkJCQkgIERSTV9T
+Q0hFRF9QUklPUklUWV9ISUdIICsgMSwgLUVJTlZBTCk7DQo+ICsJCWlndF9mb3JrKGNoaWxkLCAx
+KSB7DQo+ICsJCQlpZ3RfZHJvcF9yb290KCk7DQo+ICsNCj4gKwkJCS8qIFRlc3RzIHByaW9yaXR5
+IHByb3BlcnR5IGJ5IGRyb3BwaW5nIHJvb3QNCj4gcGVybWlzc2lvbnMuICovDQo+ICsJCQl0ZXN0
+X3NldF9wcm9wZXJ0eSh4ZSwNCj4gWEVfRVhFQ19RVUVVRV9TRVRfUFJPUEVSVFlfUFJJT1JJVFks
+DQo+ICsJCQkJCSAgRFJNX1NDSEVEX1BSSU9SSVRZX0hJR0gsIC0NCj4gRVBFUk0pOw0KPiArCQkJ
+dGVzdF9zZXRfcHJvcGVydHkoeGUsDQo+IFhFX0VYRUNfUVVFVUVfU0VUX1BST1BFUlRZX1BSSU9S
+SVRZLA0KPiArCQkJCQkgIERSTV9TQ0hFRF9QUklPUklUWV9OT1JNQUwsIDApOw0KPiArCQl9DQo+
+ICsJCWlndF93YWl0Y2hpbGRyZW4oKTsNCj4gKwl9DQo+ICsNCj4gKwlpZ3Rfc3VidGVzdCgicGVy
+c2lzdGVuY2Utc2V0LXByb3BlcnR5Iikgew0KPiArCQkvKiBUZXN0cyBwZXJzaXN0ZW5jZSBwcm9w
+ZXJ0eSBieSBzZXR0aW5nIHBvc2l0aXZlIHZhbHVlcy4gKi8NCj4gKwkJdGVzdF9zZXRfcHJvcGVy
+dHkoeGUsDQo+IFhFX0VYRUNfUVVFVUVfU0VUX1BST1BFUlRZX1BFUlNJU1RFTkNFLCAxLCAwKTsN
+Cj4gKw0KPiArCX0NCj4gKw0KPiArCWZvciAoaW50IGkgPSAwOyBpIDwgY291bnQ7IGkrKykgew0K
+PiArCQlmb3IgKHR5cGVvZigqdGVzdHMpICp0ID0gdGVzdHM7IHQtPm5hbWU7IHQrKykgew0KPiAr
+CQkJaWd0X3N1YnRlc3Rfd2l0aF9keW5hbWljX2YoIiVzLSVzIiwgcHJvcGVydHlbaV1bMF0sDQo+
+IHQtPm5hbWUpIHsNCj4gKwkJCQl4ZV9mb3JfZWFjaF9ndCh4ZSwgZ3QpIHsNCj4gKwkJCQkJaW50
+IGVuZ2luZXNfZmQgPSAtMTsNCj4gKwkJCQkJaW50IGd0X2ZkID0gLTE7DQo+ICsNCj4gKwkJCQkJ
+Z3RfZmQgPSB4ZV9zeXNmc19ndF9vcGVuKHhlLCBndCk7DQo+ICsJCQkJCWlndF9yZXF1aXJlKGd0
+X2ZkICE9IC0xKTsNCj4gKwkJCQkJZW5naW5lc19mZCA9IG9wZW5hdChndF9mZCwgImVuZ2luZXMi
+LA0KPiBPX1JET05MWSk7DQo+ICsJCQkJCWlndF9yZXF1aXJlKGVuZ2luZXNfZmQgIT0gLTEpOw0K
+PiArDQo+ICsJCQkJCWlndF9zeXNmc19lbmdpbmVzKHhlLCBlbmdpbmVzX2ZkLA0KPiBwcm9wZXJ0
+eVtpXSwgdC0+Zm4pOw0KPiArCQkJCQljbG9zZShlbmdpbmVzX2ZkKTsNCj4gKwkJCQkJY2xvc2Uo
+Z3RfZmQpOw0KPiArCQkJCX0NCj4gKwkJCX0NCj4gKwkJfQ0KPiArCX0NCj4gKw0KPiArCWlndF9m
+aXh0dXJlIHsNCj4gKwkJeGVfZGV2aWNlX3B1dCh4ZSk7DQo+ICsJCWRybV9jbG9zZV9kcml2ZXIo
+eGUpOw0KPiArCX0NCj4gK30NCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL21lc29uLmJ1aWxkIGIvdGVz
+dHMvbWVzb24uYnVpbGQgaW5kZXgNCj4gZGU5MWI0NDE4Li5jOGQwMmNmOTAgMTAwNjQ0DQo+IC0t
+LSBhL3Rlc3RzL21lc29uLmJ1aWxkDQo+ICsrKyBiL3Rlc3RzL21lc29uLmJ1aWxkDQo+IEBAIC0z
+MTAsNiArMzEwLDcgQEAgaW50ZWxfeGVfcHJvZ3MgPSBbDQo+ICAJJ3hlX3NwaW5fYmF0Y2gnLA0K
+PiAgCSd4ZV9zeXNmc19kZWZhdWx0cycsDQo+ICAJJ3hlX3N5c2ZzX3NjaGVkdWxlcicsDQo+ICsJ
+J3hlX2VuZ2luZV9wcm9wZXJ0eScsDQpQbHMgYWRkIHRoaXMgZW50cnkgaW4gYWxwaGFiZXRpY2Fs
+bHkgc29ydGVkIG1hbm5lcg0KDQpTdWdnZXN0IHlvdSB0byBhZGQgZWFjaCBzdWJ0ZXN0IGluIGRp
+ZmZlcmVudCBwYXRjaC4NCg0KVGhhbmtzLA0KUmFodWwNCj4gIF0NCj4gDQo+ICBtc21fcHJvZ3Mg
+PSBbDQo+IC0tDQo+IDIuMjUuMQ0KDQo=
