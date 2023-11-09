@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5715C10E072
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Nov 2023 06:39:37 +0000 (UTC)
-Message-ID: <314938e1-4163-4923-a902-e817efe0b2d4@amd.com>
-Date: Tue, 7 Nov 2023 23:39:33 -0700
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8223B10E212
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 13:41:40 +0000 (UTC)
+Message-ID: <5214fd60-8fde-13c8-f3ec-02391d846ae6@collabora.com>
+Date: Thu, 9 Nov 2023 19:11:33 +0530
+MIME-Version: 1.0
 Content-Language: en-US
-To: Aurabindo Pillai <aurabindo.pillai@amd.com>, igt-dev@lists.freedesktop.org
-References: <20231103182230.1039191-1-aurabindo.pillai@amd.com>
- <20231103182230.1039191-4-aurabindo.pillai@amd.com>
-From: Alex Hung <alex.hung@amd.com>
-In-Reply-To: <20231103182230.1039191-4-aurabindo.pillai@amd.com>
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
+ daniels@collabora.com, igt-dev@lists.freedesktop.org
+References: <20231108062902.390248-1-vignesh.raman@collabora.com>
+ <d55de7e5-a23e-5a5d-794f-cc38e159e440@intel.com>
+From: Vignesh Raman <vignesh.raman@collabora.com>
+In-Reply-To: <d55de7e5-a23e-5a5d-794f-cc38e159e440@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 3/5] lib/amd: improve readablity for
- MALL capability check
+Subject: Re: [igt-dev] [PATCH i-g-t v3] lib/igt_kms: Fix memory corruption
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,46 +22,33 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: hersenxs.wu@amd.com
+Cc: helen.koike@collabora.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Reviewed-by: Alex Hung <alex.hung@amd.com>
+Hi Bhanu,
 
-On 2023-11-03 12:22, Aurabindo Pillai wrote:
-> Move the hard coded string out of the function and define
-> an identifier for checking MALL supported/enabled status
+On 09/11/23 17:19, Modem, Bhanuprakash wrote:
+> Hi Vignesh,
 > 
-> Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-> ---
->   lib/igt_amd.c | 6 ++++--
->   1 file changed, 4 insertions(+), 2 deletions(-)
+> As we introduced the IGT documentation[1] to generate the testlist, we 
+> need a fix in few kms tests to compile the IGT.
 > 
-> diff --git a/lib/igt_amd.c b/lib/igt_amd.c
-> index 8c736b3e2..177a1094d 100644
-> --- a/lib/igt_amd.c
-> +++ b/lib/igt_amd.c
-> @@ -45,6 +45,8 @@
->   #define Y6 64
->   #define Y7 128
->   
-> +#define mall_supported "mall supported: yes"
-> +#define mall_enabled "mall supported: yes, enabled: yes"
->   
->   uint32_t igt_amd_create_bo(int fd, uint64_t size)
->   {
-> @@ -1192,11 +1194,11 @@ void igt_amd_get_mall_status(int drm_fd, bool *supported, bool *enabled)
->   	if (!get_dm_capabilities(drm_fd, buf, 1024))
->   		return;
->   
-> -	mall_loc = strstr(buf, "mall supported: yes");
-> +	mall_loc = strstr(buf, mall_supported);
->   	if (mall_loc)
->   		*supported = true;
->   
-> -	mall_loc = strstr(buf, "enabled: yes");
-> +	mall_loc = strstr(buf, mall_enabled);
->   	if (mall_loc && *supported)
->   		*enabled = true;
->   }
+> Also, needs few changes in intel-ci/ to avoid noise in the CI.
+> 
+> [1]: 
+> https://cgit.freedesktop.org/drm/igt-gpu-tools/tree/docs/test_documentation.md
+
+Are you referring to the pipeline failures in 
+https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1029126
+
+In my forked branch the pipeline fails in containers stage,
+https://gitlab.freedesktop.org/vigneshraman/igt-gpu-tools/-/pipelines/1030263
+
+Is there a way to run the pipeline in my fork or should I
+locally build docs (build igt-gpu-tools-doc) with the patch
+and check the issue?
+
+Regards,
+Vignesh
