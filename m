@@ -1,22 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AA6A610E93C
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Nov 2023 07:36:37 +0000 (UTC)
-From: "Hogander, Jouni" <jouni.hogander@intel.com>
-To: "Joshi, Kunal1" <kunal1.joshi@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Fri, 10 Nov 2023 07:35:43 +0000
-Message-ID: <bd0dd6cae329d579704e566dae9fcec18ad6ba6e.camel@intel.com>
-References: <20231110071624.1365998-1-kunal1.joshi@intel.com>
- <20231110071624.1365998-6-kunal1.joshi@intel.com>
-In-Reply-To: <20231110071624.1365998-6-kunal1.joshi@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <33DF6747B7BC2B4FAB7A7D1D77724E5C@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Content-Type: multipart/alternative;
+ boundary="===============2829127430085980284=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 5/7] lib/igt_psr: modified psr_get_mode
- for pr compatability
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: priyanka.dandamudi@intel.com
+Date: Thu, 09 Nov 2023 19:09:12 -0000
+Message-ID: <169955695229.26588.2511406790757796458@emeril.freedesktop.org>
+References: <20231109151347.2129614-1-priyanka.dandamudi@intel.com>
+In-Reply-To: <20231109151347.2129614-1-priyanka.dandamudi@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_Tests_fo?=
+ =?utf-8?q?r_engine_set_property?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,28 +17,124 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Murthy, Arun R" <arun.r.murthy@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCAyMDIzLTExLTEwIGF0IDEyOjQ2ICswNTMwLCBLdW5hbCBKb3NoaSB3cm90ZToKPiBN
-b2RpZmllZCBwc3JfZ2V0X21vZGUgZm9yIFBSX01PREUKPiAKPiBDYzogSm91bmkgSMO2Z2FuZGVy
-IDxqb3VuaS5ob2dhbmRlckBpbnRlbC5jb20+Cj4gQ2M6IEFuaW1lc2ggTWFubmEgPGFuaW1lc2gu
-bWFubmFAaW50ZWwuY29tPgo+IENjOiBBcnVuIFIgTXVydGh5IDxhcnVuLnIubXVydGh5QGludGVs
-LmNvbT4KPiBTaWduZWQtb2ZmLWJ5OiBLdW5hbCBKb3NoaSA8a3VuYWwxLmpvc2hpQGludGVsLmNv
-bT4KClJldmlld2VkLWJ5OiBKb3VuaSBIw7ZnYW5kZXIgPGpvdW5pLmhvZ2FuZGVyQGludGVsLmNv
-bT4KPiAtLS0KPiDCoGxpYi9pZ3RfcHNyLmMgfCA0ICsrKy0KPiDCoDEgZmlsZSBjaGFuZ2VkLCAz
-IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKPiAKPiBkaWZmIC0tZ2l0IGEvbGliL2lndF9w
-c3IuYyBiL2xpYi9pZ3RfcHNyLmMKPiBpbmRleCA0MTA5N2I0OTYuLmE4ODJkNzc0ZiAxMDA2NDQK
-PiAtLS0gYS9saWIvaWd0X3Bzci5jCj4gKysrIGIvbGliL2lndF9wc3IuYwo+IEBAIC0zODYsNyAr
-Mzg2LDkgQEAgZW51bSBwc3JfbW9kZSBwc3JfZ2V0X21vZGUoaW50IGRlYnVnZnNfZmQpCj4gwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXR1cm4gUFNSX0RJU0FCTEVEOwo+IMKgwqDC
-oMKgwqDCoMKgwqB9Cj4gwqAKPiAtwqDCoMKgwqDCoMKgwqBpZiAoc3Ryc3RyKGJ1ZiwgIlBTUjIg
-c2VsZWN0aXZlIGZldGNoOiBlbmFibGVkIikpCj4gK8KgwqDCoMKgwqDCoMKgaWYgKHN0cnN0cihi
-dWYsICJQYW5lbCBSZXBsYXkgRW5hYmxlZCIpKQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqByZXR1cm4gUFJfTU9ERTsKPiArwqDCoMKgwqDCoMKgwqBlbHNlIGlmIChzdHJzdHIoYnVm
-LCAiUFNSMiBzZWxlY3RpdmUgZmV0Y2g6IGVuYWJsZWQiKSkKPiDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoHJldHVybiBQU1JfTU9ERV8yX1NFTF9GRVRDSDsKPiDCoMKgwqDCoMKgwqDC
-oMKgZWxzZSBpZiAoc3Ryc3RyKGJ1ZiwgIlBTUjIgZW5hYmxlZCIpKQo+IMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuIFBTUl9NT0RFXzI7Cgo=
+--===============2829127430085980284==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: Tests for engine set property
+URL   : https://patchwork.freedesktop.org/series/126201/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7580_BAT -> XEIGTPW_10152_BAT
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with XEIGTPW_10152_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_10152_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (2 -> 0)
+------------------------------
+
+  ERROR: It appears as if the changes made in XEIGTPW_10152_BAT prevented too many machines from booting.
+
+  Missing    (2): bat-pvc-2 bat-atsm-2 
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7580 -> IGTPW_10152
+  * Linux: xe-481-7a0da606f1fcf4b59d7164419f1ccd1c48d366af -> xe-483-2096aea11094f62fea27af97d949423bea156686
+
+  IGTPW_10152: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10152/index.html
+  IGT_7580: 847ee1e7d365e2fb08bf4198d3bf5ee8a852649f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-481-7a0da606f1fcf4b59d7164419f1ccd1c48d366af: 7a0da606f1fcf4b59d7164419f1ccd1c48d366af
+  xe-483-2096aea11094f62fea27af97d949423bea156686: 2096aea11094f62fea27af97d949423bea156686
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10152/index.html
+
+--===============2829127430085980284==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Tests for engine set property</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126201/">https://patchwork.freedesktop.org/series/126201/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10152/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10152/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7580_BAT -&gt; XEIGTPW_10152_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_10152_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_10152_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (2 -&gt; 0)</h2>
+<p>ERROR: It appears as if the changes made in XEIGTPW_10152_BAT prevented too many machines from booting.</p>
+<p>Missing    (2): bat-pvc-2 bat-atsm-2 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7580 -&gt; IGTPW_10152</li>
+<li>Linux: xe-481-7a0da606f1fcf4b59d7164419f1ccd1c48d366af -&gt; xe-483-2096aea11094f62fea27af97d949423bea156686</li>
+</ul>
+<p>IGTPW_10152: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10152/index.html<br />
+  IGT_7580: 847ee1e7d365e2fb08bf4198d3bf5ee8a852649f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-481-7a0da606f1fcf4b59d7164419f1ccd1c48d366af: 7a0da606f1fcf4b59d7164419f1ccd1c48d366af<br />
+  xe-483-2096aea11094f62fea27af97d949423bea156686: 2096aea11094f62fea27af97d949423bea156686</p>
+
+</body>
+</html>
+
+--===============2829127430085980284==--
