@@ -1,18 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5317E10E208
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2CC4210E201
  for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 11:08:51 +0000 (UTC)
-Date: Thu, 9 Nov 2023 12:08:46 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20231109110846.p2oqrokkcz7zd7c4@kamilkon-desk.igk.intel.com>
-References: <20231109070735.1957435-1-Lang.Yu@amd.com>
+From: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>
+To: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Gandi,
+ Ramadevi" <ramadevi.gandi@intel.com>, "Kumar, Janga Rahul"
+ <janga.rahul.kumar@intel.com>
+Date: Thu, 9 Nov 2023 11:08:42 +0000
+Message-ID: <CH3PR11MB84349FEF4A9ED8666631DF358DAFA@CH3PR11MB8434.namprd11.prod.outlook.com>
+References: <20231108112251.819141-1-janga.rahul.kumar@intel.com>
+ <20231108112251.819141-2-janga.rahul.kumar@intel.com>
+In-Reply-To: <20231108112251.819141-2-janga.rahul.kumar@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231109070735.1957435-1-Lang.Yu@amd.com>
-Subject: Re: [igt-dev] [PATCH 1/2] include/drm-uapi/amdgpu_drm.h: update
- amdgpu_drm.h
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] tests/intel/xe_waitfence: Add
+ invalid-flag subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,172 +25,95 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Alex Deucher <alexander.deucher@amd.com>, Lang Yu <Lang.Yu@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Lang,
-On 2023-11-09 at 15:07:34 +0800, Lang Yu wrote:
-> Take from https://anongit.freedesktop.org/git/drm/drm.git.
-> 
-> branch: drm-next
-> commit: 9ccde17d46554dbb2757c427f2cdf67688701f96
-> 
-> Signed-off-by: Lang Yu <Lang.Yu@amd.com>
 
-This is already part of igt, see latest i-g-t
-commit: 63945e20f drm-uapi/amdgpu: sync with drm-next
 
-so you can safely drop first patch.
-Side note: please add i-g-t into subject, so it will look:
-
-[PATCH i-g-t 1/2] your_patch_subject_here
-
-Regards,
-Kamil
-
+> -----Original Message-----
+> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
+> janga.rahul.kumar@intel.com
+> Sent: Wednesday, November 8, 2023 4:53 PM
+> To: igt-dev@lists.freedesktop.org; Gandi, Ramadevi
+> <ramadevi.gandi@intel.com>; Kumar, Janga Rahul
+> <janga.rahul.kumar@intel.com>
+> Subject: [igt-dev] [PATCH i-g-t 1/3] tests/intel/xe_waitfence: Add invali=
+d-flag
+> subtest
+>=20
+> From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+>=20
+> Negative test to check ioctl returns expected error when invalid flag par=
+am
+> is used.
+>=20
+> Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 > ---
->  include/drm-uapi/amdgpu_drm.h | 50 ++++++++++++++++++++++++++---------
->  1 file changed, 38 insertions(+), 12 deletions(-)
-> 
-> diff --git a/include/drm-uapi/amdgpu_drm.h b/include/drm-uapi/amdgpu_drm.h
-> index f44e140ad..ad21c613f 100644
-> --- a/include/drm-uapi/amdgpu_drm.h
-> +++ b/include/drm-uapi/amdgpu_drm.h
-> @@ -94,6 +94,9 @@ extern "C" {
->   *
->   * %AMDGPU_GEM_DOMAIN_OA	Ordered append, used by 3D or Compute engines
->   * for appending data.
-> + *
-> + * %AMDGPU_GEM_DOMAIN_DOORBELL	Doorbell. It is an MMIO region for
-> + * signalling user mode queues.
->   */
->  #define AMDGPU_GEM_DOMAIN_CPU		0x1
->  #define AMDGPU_GEM_DOMAIN_GTT		0x2
-> @@ -101,12 +104,14 @@ extern "C" {
->  #define AMDGPU_GEM_DOMAIN_GDS		0x8
->  #define AMDGPU_GEM_DOMAIN_GWS		0x10
->  #define AMDGPU_GEM_DOMAIN_OA		0x20
-> +#define AMDGPU_GEM_DOMAIN_DOORBELL	0x40
->  #define AMDGPU_GEM_DOMAIN_MASK		(AMDGPU_GEM_DOMAIN_CPU | \
->  					 AMDGPU_GEM_DOMAIN_GTT | \
->  					 AMDGPU_GEM_DOMAIN_VRAM | \
->  					 AMDGPU_GEM_DOMAIN_GDS | \
->  					 AMDGPU_GEM_DOMAIN_GWS | \
-> -					 AMDGPU_GEM_DOMAIN_OA)
-> +					 AMDGPU_GEM_DOMAIN_OA | \
-> +					 AMDGPU_GEM_DOMAIN_DOORBELL)
->  
->  /* Flag that CPU access will be required for the case of VRAM domain */
->  #define AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED	(1 << 0)
-> @@ -145,7 +150,7 @@ extern "C" {
->   */
->  #define AMDGPU_GEM_CREATE_DISCARDABLE		(1 << 12)
->  /* Flag that BO is shared coherently between multiple devices or CPU threads.
-> - * May depend on GPU instructions to flush caches explicitly
-> + * May depend on GPU instructions to flush caches to system scope explicitly.
->   *
->   * This influences the choice of MTYPE in the PTEs on GFXv9 and later GPUs and
->   * may override the MTYPE selected in AMDGPU_VA_OP_MAP.
-> @@ -158,6 +163,14 @@ extern "C" {
->   * may override the MTYPE selected in AMDGPU_VA_OP_MAP.
->   */
->  #define AMDGPU_GEM_CREATE_UNCACHED		(1 << 14)
-> +/* Flag that BO should be coherent across devices when using device-level
-> + * atomics. May depend on GPU instructions to flush caches to device scope
-> + * explicitly, promoting them to system scope automatically.
-> + *
-> + * This influences the choice of MTYPE in the PTEs on GFXv9 and later GPUs and
-> + * may override the MTYPE selected in AMDGPU_VA_OP_MAP.
-> + */
-> +#define AMDGPU_GEM_CREATE_EXT_COHERENT		(1 << 15)
->  
->  struct drm_amdgpu_gem_create_in  {
->  	/** the requested memory size */
-> @@ -236,9 +249,9 @@ union drm_amdgpu_bo_list {
->  /* unknown cause */
->  #define AMDGPU_CTX_UNKNOWN_RESET	3
->  
-> -/* indicate gpu reset occured after ctx created */
-> +/* indicate gpu reset occurred after ctx created */
->  #define AMDGPU_CTX_QUERY2_FLAGS_RESET    (1<<0)
-> -/* indicate vram lost occured after ctx created */
-> +/* indicate vram lost occurred after ctx created */
->  #define AMDGPU_CTX_QUERY2_FLAGS_VRAMLOST (1<<1)
->  /* indicate some job from this context once cause gpu hang */
->  #define AMDGPU_CTX_QUERY2_FLAGS_GUILTY   (1<<2)
-> @@ -259,13 +272,6 @@ union drm_amdgpu_bo_list {
->  */
->  #define AMDGPU_CTX_PRIORITY_HIGH        512
->  #define AMDGPU_CTX_PRIORITY_VERY_HIGH   1023
-> -/* select a stable profiling pstate for perfmon tools */
-> -#define AMDGPU_CTX_STABLE_PSTATE_FLAGS_MASK  0xf
-> -#define AMDGPU_CTX_STABLE_PSTATE_NONE  0
-> -#define AMDGPU_CTX_STABLE_PSTATE_STANDARD  1
-> -#define AMDGPU_CTX_STABLE_PSTATE_MIN_SCLK  2
-> -#define AMDGPU_CTX_STABLE_PSTATE_MIN_MCLK  3
-> -#define AMDGPU_CTX_STABLE_PSTATE_PEAK  4
->  
->  /* select a stable profiling pstate for perfmon tools */
->  #define AMDGPU_CTX_STABLE_PSTATE_FLAGS_MASK  0xf
-> @@ -588,7 +594,8 @@ struct drm_amdgpu_gem_va {
->   */
->  #define AMDGPU_HW_IP_VCN_ENC      7
->  #define AMDGPU_HW_IP_VCN_JPEG     8
-> -#define AMDGPU_HW_IP_NUM          9
-> +#define AMDGPU_HW_IP_VPE          9
-> +#define AMDGPU_HW_IP_NUM          10
->  
->  #define AMDGPU_HW_IP_INSTANCE_MAX_COUNT 1
->  
-> @@ -799,6 +806,8 @@ struct drm_amdgpu_cs_chunk_cp_gfx_shadow {
->  	#define AMDGPU_INFO_FW_MES		0x1a
->  	/* Subquery id: Query IMU firmware version */
->  	#define AMDGPU_INFO_FW_IMU		0x1b
-> +	/* Subquery id: Query VPE firmware version */
-> +	#define AMDGPU_INFO_FW_VPE		0x1c
->  
->  /* number of bytes moved for TTM migration */
->  #define AMDGPU_INFO_NUM_BYTES_MOVED		0x0f
-> @@ -897,6 +906,8 @@ struct drm_amdgpu_cs_chunk_cp_gfx_shadow {
->  	#define AMDGPU_INFO_VIDEO_CAPS_ENCODE		1
->  /* Query the max number of IBs per gang per submission */
->  #define AMDGPU_INFO_MAX_IBS			0x22
-> +/* query last page fault info */
-> +#define AMDGPU_INFO_GPUVM_FAULT			0x23
->  
->  #define AMDGPU_INFO_MMR_SE_INDEX_SHIFT	0
->  #define AMDGPU_INFO_MMR_SE_INDEX_MASK	0xff
-> @@ -1222,6 +1233,20 @@ struct drm_amdgpu_info_video_caps {
->  	struct drm_amdgpu_info_video_codec_info codec_info[AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_COUNT];
->  };
->  
-> +#define AMDGPU_VMHUB_TYPE_MASK			0xff
-> +#define AMDGPU_VMHUB_TYPE_SHIFT			0
-> +#define AMDGPU_VMHUB_TYPE_GFX			0
-> +#define AMDGPU_VMHUB_TYPE_MM0			1
-> +#define AMDGPU_VMHUB_TYPE_MM1			2
-> +#define AMDGPU_VMHUB_IDX_MASK			0xff00
-> +#define AMDGPU_VMHUB_IDX_SHIFT			8
-> +
-> +struct drm_amdgpu_info_gpuvm_fault {
-> +	__u64 addr;
-> +	__u32 status;
-> +	__u32 vmhub;
-> +};
-> +
->  /*
->   * Supported GPU families
->   */
-> @@ -1240,6 +1265,7 @@ struct drm_amdgpu_info_video_caps {
->  #define AMDGPU_FAMILY_GC_11_0_1			148 /* GC 11.0.1 */
->  #define AMDGPU_FAMILY_GC_10_3_6			149 /* GC 10.3.6 */
->  #define AMDGPU_FAMILY_GC_10_3_7			151 /* GC 10.3.7 */
-> +#define AMDGPU_FAMILY_GC_11_5_0			150 /* GC 11.5.0 */
->  
->  #if defined(__cplusplus)
+LGTM Reviewed-by:Priyanka Dandamudi <Priyanka.dandamudi@intel.com>
+>  tests/intel/xe_waitfence.c | 40
+> ++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 40 insertions(+)
+>=20
+> diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c inde=
+x
+> e0116f181..32ffc6eca 100644
+> --- a/tests/intel/xe_waitfence.c
+> +++ b/tests/intel/xe_waitfence.c
+> @@ -98,6 +98,43 @@ waitfence(int fd, enum waittype wt)
+>  	}
 >  }
-> -- 
+>=20
+> +/**
+> + * TEST: Negative test for wait ufence ioctl
+> + * Category: Software building block
+> + * Sub-category: waitfence
+> + * Functionality: waitfence
+> + * Run type: FULL
+> + * Test category: negative test
+> + *
+> + * SUBTEST: invalid-flag
+> + * Description: Check query with invalid flag returns expected error
+> +code  */
+> +
+> +static void
+> +invalid_flag(int fd)
+> +{
+> +	uint32_t bo;
+> +
+> +	struct drm_xe_wait_user_fence wait =3D {
+> +		.addr =3D to_user_pointer(&wait_fence),
+> +		.op =3D DRM_XE_UFENCE_WAIT_EQ,
+> +		.flags =3D -1,
+> +		.value =3D 1,
+> +		.mask =3D DRM_XE_UFENCE_WAIT_U64,
+> +		.timeout =3D -1,
+> +		.num_engines =3D 0,
+> +		.instances =3D 0,
+> +	};
+> +
+> +	uint32_t vm =3D xe_vm_create(fd,
+> DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
+> +
+> +	bo =3D xe_bo_create_flags(fd, vm, 0x40000, MY_FLAG);
+> +
+> +	do_bind(fd, vm, bo, 0, 0x200000, 0x40000, 1);
+> +
+> +	do_ioctl_err(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait, EINVAL);
+> }
+> +
+>  igt_main
+>  {
+>  	int fd;
+> @@ -111,6 +148,9 @@ igt_main
+>  	igt_subtest("abstime")
+>  		waitfence(fd, ABSTIME);
+>=20
+> +	igt_subtest("invalid-flag")
+> +		invalid_flag(fd);
+> +
+>  	igt_fixture
+>  		drm_close_driver(fd);
+>  }
+> --
 > 2.25.1
-> 
