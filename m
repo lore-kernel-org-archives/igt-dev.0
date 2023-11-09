@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============6098768312947704639=="
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ECFDC10E896
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 10:24:29 +0000 (UTC)
+Message-ID: <01e6c47b-e4d6-4ff6-848b-287f07278acb@intel.com>
+Date: Thu, 9 Nov 2023 15:54:13 +0530
+To: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20231109063212.359798-1-sujaritha.sundaresan@intel.com>
+ <20231109063212.359798-5-sujaritha.sundaresan@intel.com>
+Content-Language: en-US
+From: Riana Tauro <riana.tauro@intel.com>
+In-Reply-To: <20231109063212.359798-5-sujaritha.sundaresan@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Sujaritha Sundaresan" <sujaritha.sundaresan@intel.com>
-Date: Thu, 09 Nov 2023 10:17:22 -0000
-Message-ID: <169952504232.26588.15166328963380903366@emeril.freedesktop.org>
-References: <20231109091510.371016-1-sujaritha.sundaresan@intel.com>
-In-Reply-To: <20231109091510.371016-1-sujaritha.sundaresan@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_Testing_?=
- =?utf-8?q?rc6_residency_with_multi-gt?=
+Subject: Re: [igt-dev] [PATCH 4/5] tests/intel: Print drpc info for
+ rc6_residency test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,310 +23,121 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============6098768312947704639==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Suja
 
-== Series Details ==
-
-Series: Testing rc6 residency with multi-gt
-URL   : https://patchwork.freedesktop.org/series/126183/
-State : failure
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7578_BAT -> XEIGTPW_10147_BAT
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with XEIGTPW_10147_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_10147_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  
-
-Participating hosts (3 -> 4)
-------------------------------
-
-  Additional (1): bat-dg2-oem2 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_10147_BAT:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@xe_exec_balancer@twice-virtual-basic:
-    - bat-pvc-2:          NOTRUN -> [INCOMPLETE][1]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10147/bat-pvc-2/igt@xe_exec_balancer@twice-virtual-basic.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10147_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][2] ([Intel XE#623])
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10147/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-
-  * igt@kms_addfb_basic@basic-y-tiled-legacy:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][3] ([Intel XE#624])
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10147/bat-dg2-oem2/igt@kms_addfb_basic@basic-y-tiled-legacy.html
-
-  * igt@kms_addfb_basic@tile-pitch-mismatch:
-    - bat-dg2-oem2:       NOTRUN -> [FAIL][4] ([Intel XE#609]) +1 other test fail
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10147/bat-dg2-oem2/igt@kms_addfb_basic@tile-pitch-mismatch.html
-
-  * igt@kms_dsc@dsc-basic:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][5] ([Intel XE#423])
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10147/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:
-    - bat-adlp-7:         [PASS][6] -> [FAIL][7] ([Intel XE#480]) +1 other test fail
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7578/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10147/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
-
-  * igt@kms_force_connector_basic@prune-stale-modes:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][8] ([i915#5274])
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10147/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-dg2-oem2:       NOTRUN -> [FAIL][9] ([Intel XE#608])
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10147/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
-    - bat-dg2-oem2:       NOTRUN -> [FAIL][10] ([Intel XE#400] / [Intel XE#616]) +2 other tests fail
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10147/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
-
-  * igt@kms_psr@primary_page_flip:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][11] ([Intel XE#535]) +2 other tests skip
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10147/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html
-
-  * igt@xe_compute@compute-square:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][12] ([Intel XE#672])
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10147/bat-dg2-oem2/igt@xe_compute@compute-square.html
-
-  * igt@xe_exec_fault_mode@twice-invalid-fault:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][13] ([Intel XE#288]) +17 other tests skip
-   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10147/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-invalid-fault.html
-
-  * igt@xe_huc_copy@huc_copy:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][14] ([Intel XE#255])
-   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10147/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html
-
-  
-#### Warnings ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [DMESG-FAIL][15] ([Intel XE#282] / [i915#2017]) -> [FAIL][16] ([Intel XE#616] / [Intel XE#750])
-   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7578/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10147/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#255]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/255
-  [Intel XE#282]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/282
-  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
-  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
-  [Intel XE#423]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/423
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
-  [Intel XE#535]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/535
-  [Intel XE#608]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/608
-  [Intel XE#609]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/609
-  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
-  [Intel XE#623]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/623
-  [Intel XE#624]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/624
-  [Intel XE#672]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/672
-  [Intel XE#750]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/750
-  [Intel XE#854]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/854
-  [Intel XE#862]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/862
-  [i915#2017]: https://gitlab.freedesktop.org/drm/intel/issues/2017
-  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
-
-
-Build changes
--------------
-
-  * IGT: IGT_7578 -> IGTPW_10147
-
-  IGTPW_10147: 10147
-  IGT_7578: 2cf20c8dc5e372674ec3e3dd30b042794e9520ab @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-481-7a0da606f1fcf4b59d7164419f1ccd1c48d366af: 7a0da606f1fcf4b59d7164419f1ccd1c48d366af
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10147/index.html
-
---===============6098768312947704639==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Testing rc6 residency with multi-gt</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126183/">https://patchwork.freedesktop.org/series/126183/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10147/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10147/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7578_BAT -&gt; XEIGTPW_10147_BAT</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_10147_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_10147_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (3 -&gt; 4)</h2>
-<p>Additional (1): bat-dg2-oem2 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_10147_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@xe_exec_balancer@twice-virtual-basic:<ul>
-<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10147/bat-pvc-2/igt@xe_exec_balancer@twice-virtual-basic.html">INCOMPLETE</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10147_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10147/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/623">Intel XE#623</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@basic-y-tiled-legacy:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10147/bat-dg2-oem2/igt@kms_addfb_basic@basic-y-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/624">Intel XE#624</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@tile-pitch-mismatch:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10147/bat-dg2-oem2/igt@kms_addfb_basic@tile-pitch-mismatch.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/609">Intel XE#609</a>) +1 other test fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_dsc@dsc-basic:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10147/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/423">Intel XE#423</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7578/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10147/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@prune-stale-modes:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10147/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5274">i915#5274</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10147/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/608">Intel XE#608</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10147/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>) +2 other tests fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@primary_page_flip:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10147/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/535">Intel XE#535</a>) +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_compute@compute-square:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10147/bat-dg2-oem2/igt@xe_compute@compute-square.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/672">Intel XE#672</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_fault_mode@twice-invalid-fault:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10147/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-invalid-fault.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +17 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_huc_copy@huc_copy:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10147/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_frontbuffer_tracking@basic:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7578/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2017">i915#2017</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10147/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/750">Intel XE#750</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7578 -&gt; IGTPW_10147</li>
-</ul>
-<p>IGTPW_10147: 10147<br />
-  IGT_7578: 2cf20c8dc5e372674ec3e3dd30b042794e9520ab @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-481-7a0da606f1fcf4b59d7164419f1ccd1c48d366af: 7a0da606f1fcf4b59d7164419f1ccd1c48d366af</p>
-
-</body>
-</html>
-
---===============6098768312947704639==--
+On 11/9/2023 12:02 PM, Sujaritha Sundaresan wrote:
+> Add drpc debug info for the rc6_residency test.
+> 
+> Signed-off-by: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
+> ---
+>   tests/intel/i915_pm_rc6_residency.c | 47 ++++++++++++++++++++++-------
+>   1 file changed, 36 insertions(+), 11 deletions(-)
+> 
+> diff --git a/tests/intel/i915_pm_rc6_residency.c b/tests/intel/i915_pm_rc6_residency.c
+> index 6c8ba52ae..a929a2175 100644
+> --- a/tests/intel/i915_pm_rc6_residency.c
+> +++ b/tests/intel/i915_pm_rc6_residency.c
+> @@ -36,6 +36,7 @@
+>   #include "i915/gem.h"
+>   #include "i915/gem_create.h"
+>   #include "igt.h"
+> +#include "igt_debugfs.h"
+>   #include "igt_perf.h"
+>   #include "igt_power.h"
+>   #include "igt_sysfs.h"
+> @@ -233,14 +234,27 @@ static uint64_t pmu_read_single(int fd)
+>   	return __pmu_read_single(fd, NULL);
+>   }
+>   
+> -#define __assert_within_epsilon(x, ref, tol_up, tol_down) \
+> -	igt_assert_f((x) <= (ref) * (1.0 + (tol_up)/100.) && \
+> -		     (x) >= (ref) * (1.0 - (tol_down)/100.), \
+> -		     "'%s' != '%s' (%.3g not within +%d%%/-%d%% tolerance of %.3g)\n",\
+> -		     #x, #ref, (double)(x), (tol_up), (tol_down), (double)(ref))
+> +#define __assert_within_epsilon(x, ref, tol_up, tol_down, debug_data) \
+> +	igt_assert_f((double)(x) <= (1.0 + (tol_up)) * (double)(ref) && \
+> +		     (double)(x) >= (1.0 - (tol_down)) * (double)(ref), \
+> +		     "'%s' != '%s' (%f not within +%.1f%%/-%.1f%% tolerance of %f)\n %s\n",\
+> +		     #x, #ref, (double)(x), \
+> +		     (tol_up) * 100.0, (tol_down) * 100.0, \
+> +		     (double)(ref), debug_data)
+>   
+> -#define assert_within_epsilon(x, ref, tolerance) \
+> -	__assert_within_epsilon(x, ref, tolerance, tolerance)
+> +#define assert_within_epsilon(x, ref, tolerance, debug_data) \
+> +	__assert_within_epsilon(x, ref, tolerance, tolerance, debug_data)
+> +
+> +char *drpc;
+> +
+> +static char *get_drpc(int i915, int gt_id)
+> +{
+> +	int gt_dir;
+> +
+> +	gt_dir = igt_debugfs_gt_dir(i915, gt_id);
+> +	igt_assert(gt_dir != -1);
+> +	return igt_sysfs_get(gt_dir, "drpc");
+> +}
+>   
+>   static bool __pmu_wait_for_rc6(int fd)
+>   {
+> @@ -417,7 +431,9 @@ static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags, unsigned int gt)
+>   			"Total energy used while idle: %.1fmJ (%.1fmW)\n",
+>   			idle, (idle * 1e9) / slept);
+>   	}
+> -	assert_within_epsilon(rc6, ts[1] - ts[0], 5);
+> +	drpc = get_drpc(i915, igt_sysfs_get_u32(gt, "id"));
+This should be get_drpc(i915,gt);
+> +
+> +	assert_within_epsilon(rc6, ts[1] - ts[0], 5, drpc);
+>   
+>   	done = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
+>   
+> @@ -453,7 +469,10 @@ static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags, unsigned int gt)
+>   		igt_assert(cycles >= SLEEP_DURATION);
+>   
+>   		/* While very nearly idle, expect full RC6 */
+> -		assert_within_epsilon(rc6, ts[1] - ts[0], tolerance);
+> +		assert_within_epsilon(rc6, ts[1] - ts[0], tolerance, drpc);
+> +
+> +		free(drpc);
+> +		drpc = NULL;
+>   	}
+>   
+>   	munmap(done, 4096);
+> @@ -506,7 +525,9 @@ static void rc6_fence(int i915, unsigned int gt)
+>   			"Total energy used while idle: %.1fmJ (%.1fmW)\n",
+>   			idle, (idle * 1e9) / slept);
+>   	}
+> -	assert_within_epsilon(rc6, ts[1] - ts[0], 5);
+> +	drpc = get_drpc(i915, igt_sysfs_get_u32(gt, "id"));
+> +
+> +	assert_within_epsilon(rc6, ts[1] - ts[0], 5, drpc);
+>   
+>   	/* Submit but delay execution, we should be idle and conserving power */
+>   	ctx = intel_ctx_create_for_gt(i915, gt);
+> @@ -547,8 +568,11 @@ static void rc6_fence(int i915, unsigned int gt)
+>   
+>   		close(timeline);
+>   
+> -		assert_within_epsilon(rc6, ts[1] - ts[0], tolerance);
+> +		assert_within_epsilon(rc6, ts[1] - ts[0], tolerance, drpc);
+This will print old drpc value. call the function here as well
+>   		gem_quiescent_gpu(i915);
+> +
+> +		free(drpc);
+> +		drpc = NULL;
+>   	}
+>   	put_ahnd(ahnd);
+>   	intel_ctx_destroy(i915, ctx);
+> @@ -637,6 +661,7 @@ igt_main
+>   	}
+>   
+>   	igt_fixture {
+> +		free(drpc);
+>   		drm_close_driver(i915);
+>   	}
+>   }
