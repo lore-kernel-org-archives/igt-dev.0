@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ABF0A10E1B7
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 06:01:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9A28110E1BF
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 06:01:57 +0000 (UTC)
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  9 Nov 2023 11:39:25 +0530
-Message-Id: <20231109060931.1347354-2-kunal1.joshi@intel.com>
+Date: Thu,  9 Nov 2023 11:39:28 +0530
+Message-Id: <20231109060931.1347354-5-kunal1.joshi@intel.com>
 In-Reply-To: <20231109060931.1347354-1-kunal1.joshi@intel.com>
 References: <20231109060931.1347354-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/7] lib/igt_psr: added enum for panel replay
+Subject: [igt-dev] [PATCH i-g-t 4/7] lib/igt_psr: modified psr_set for pr
+ compatability
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,7 +26,8 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Added enum for PR
+Modified psr_set to add support PR_MODE and
+PR_MODE_SEL_FETCH
 
 Cc: Jouni Högander <jouni.hogander@intel.com>
 Cc: Animesh Manna <animesh.manna@intel.com>
@@ -33,21 +35,25 @@ Cc: Arun R Murthy <arun.r.murthy@intel.com>
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 Reviewed-by: Jouni Högander <jouni.hogander@intel.com>
 ---
- lib/igt_psr.h | 2 ++
- 1 file changed, 2 insertions(+)
+ lib/igt_psr.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/lib/igt_psr.h b/lib/igt_psr.h
-index 12ffc9d6c..243154897 100644
---- a/lib/igt_psr.h
-+++ b/lib/igt_psr.h
-@@ -34,6 +34,8 @@ enum psr_mode {
- 	PSR_MODE_1,
- 	PSR_MODE_2,
- 	PSR_MODE_2_SEL_FETCH,
-+	PR_MODE,
-+	PR_MODE_SEL_FETCH,
- 	PSR_DISABLED,
- };
- 
+diff --git a/lib/igt_psr.c b/lib/igt_psr.c
+index 818151228..df1007628 100644
+--- a/lib/igt_psr.c
++++ b/lib/igt_psr.c
+@@ -168,6 +168,12 @@ static bool psr_set(int device, int debugfs_fd, int mode)
+ 		case PSR_MODE_2_SEL_FETCH:
+ 			debug_val = "0x4";
+ 			break;
++		case PR_MODE:
++			debug_val = "0x5";
++			break;
++		case PR_MODE_SEL_FETCH:
++			debug_val = "0x6";
++			break;
+ 		default:
+ 			/* Disables PSR */
+ 			debug_val = "0x1";
 -- 
 2.25.1
