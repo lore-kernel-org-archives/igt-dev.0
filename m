@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 76EF810E20E
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 09:01:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E07FC10E1F7
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 09:01:49 +0000 (UTC)
 From: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  9 Nov 2023 14:45:10 +0530
-Message-Id: <20231109091510.371016-5-sujaritha.sundaresan@intel.com>
-In-Reply-To: <20231109091510.371016-1-sujaritha.sundaresan@intel.com>
-References: <20231109091510.371016-1-sujaritha.sundaresan@intel.com>
+Date: Thu,  9 Nov 2023 14:45:06 +0530
+Message-Id: <20231109091510.371016-1-sujaritha.sundaresan@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 4/4] HAX: Add rc6 residency test to fast feedback
- testlist
+Subject: [igt-dev] [PATCH 0/4] [TEST] Testing rc6 residency with multi-gt
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,25 +20,17 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add rc6 residency to fast feedback testlist
+This is only a test run patch. Kindly do not review.
 
-Signed-off-by: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
----
- tests/intel-ci/fast-feedback.testlist | 2 ++
- 1 file changed, 2 insertions(+)
+Sujaritha Sundaresan (4):
+  tests/intel: Add multi-gt support for rc6-idle test
+  tests/intel: Add multi-gt support for rc6-fence test
+  tests/intel: Add multi-gt support for rc6-accuracy test
+  HAX: Add rc6 residency test to fast feedback testlist
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index c252e2cf0..f2b680f4a 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -54,6 +54,8 @@ igt@i915_getparams_basic@basic-eu-total
- igt@i915_getparams_basic@basic-subslice-total
- igt@i915_hangman@error-state-basic
- igt@i915_pciid
-+igt@i915_pm_rc6_residency@rc6-fence
-+igt@i915_pm_rc6_residency@rc6-idle
- igt@kms_addfb_basic@addfb25-4-tiled
- igt@kms_addfb_basic@addfb25-bad-modifier
- igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
+ tests/intel-ci/fast-feedback.testlist |  2 +
+ tests/intel/i915_pm_rc6_residency.c   | 79 +++++++++++++++------------
+ 2 files changed, 45 insertions(+), 36 deletions(-)
+
 -- 
 2.25.1
