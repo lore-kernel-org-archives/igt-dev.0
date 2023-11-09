@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7615410E1FA
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 09:01:52 +0000 (UTC)
-From: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu,  9 Nov 2023 14:45:09 +0530
-Message-Id: <20231109091510.371016-4-sujaritha.sundaresan@intel.com>
-In-Reply-To: <20231109091510.371016-1-sujaritha.sundaresan@intel.com>
-References: <20231109091510.371016-1-sujaritha.sundaresan@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============4719074310590355788=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 3/4] tests/intel: Add multi-gt support for
- rc6-accuracy test
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
+Date: Thu, 09 Nov 2023 09:04:41 -0000
+Message-ID: <169952068106.26589.17936316219045274967@emeril.freedesktop.org>
+References: <20231109081616.912332-1-janga.rahul.kumar@intel.com>
+In-Reply-To: <20231109081616.912332-1-janga.rahul.kumar@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?intel/xe=5Fvm=3A_Correct_stride_to_avoid_address_range_collisio?=
+ =?utf-8?q?n_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,160 +18,272 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add multi-gt support for rc6-accuracy subtest.
+--===============4719074310590355788==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
----
- tests/intel/i915_pm_rc6_residency.c | 48 ++++++++++++++---------------
- 1 file changed, 23 insertions(+), 25 deletions(-)
+== Series Details ==
 
-diff --git a/tests/intel/i915_pm_rc6_residency.c b/tests/intel/i915_pm_rc6_residency.c
-index 5dc785792..6e491f270 100644
---- a/tests/intel/i915_pm_rc6_residency.c
-+++ b/tests/intel/i915_pm_rc6_residency.c
-@@ -82,23 +82,19 @@ static unsigned long get_rc6_enabled_mask(void)
- 	return enabled;
- }
- 
--static bool has_rc6_residency(const char *name)
-+static bool has_rc6_residency(int dirfd, enum i915_attr_id id)
- {
- 	unsigned long residency;
--	char path[128];
- 
--	sprintf(path, "power/%s_residency_ms", name);
--	return igt_sysfs_scanf(sysfs, path, "%lu", &residency) == 1;
-+	return igt_sysfs_rps_scanf(dirfd, id, "%lu", &residency) == 1;
- }
- 
--static unsigned long read_rc6_residency(const char *name)
-+static unsigned long read_rc6_residency(int dirfd, enum i915_attr_id id)
- {
- 	unsigned long residency;
--	char path[128];
- 
- 	residency = 0;
--	sprintf(path, "power/%s_residency_ms", name);
--	igt_assert(igt_sysfs_scanf(sysfs, path, "%lu", &residency) == 1);
-+	igt_assert(igt_sysfs_rps_scanf(dirfd, id, "%lu", &residency) == 1);
- 	return residency;
- }
- 
-@@ -125,28 +121,28 @@ static unsigned long gettime_ms(void)
- 	return ts.tv_sec * 1000 + ts.tv_nsec / 1000000;
- }
- 
--static void read_residencies(int devid, unsigned int mask,
-+static void read_residencies(int devid, int dirfd, unsigned int mask,
- 			     struct residencies *res)
- {
- 	res->duration = gettime_ms();
- 
- 	if (mask & RC6_ENABLED)
--		res->rc6 = read_rc6_residency("rc6");
-+		res->rc6 = read_rc6_residency(dirfd, RC6_RESIDENCY_MS);
- 
- 	if ((mask & RC6_ENABLED) &&
- 	    (IS_VALLEYVIEW(devid) || IS_CHERRYVIEW(devid)))
--		res->media_rc6 = read_rc6_residency("media_rc6");
-+		res->media_rc6 = read_rc6_residency(dirfd, MEDIA_RC6_RESIDENCY_MS);
- 
- 	if (mask & RC6P_ENABLED)
--		res->rc6p = read_rc6_residency("rc6p");
-+		res->rc6p = read_rc6_residency(dirfd, RC6P_RESIDENCY_MS);
- 
- 	if (mask & RC6PP_ENABLED)
--		res->rc6pp = read_rc6_residency("rc6pp");
-+		res->rc6pp = read_rc6_residency(dirfd, RC6PP_RESIDENCY_MS);
- 
- 	res->duration += (gettime_ms() - res->duration) / 2;
- }
- 
--static void measure_residencies(int devid, unsigned int mask,
-+static void measure_residencies(int devid, int dirfd, unsigned int mask,
- 				struct residencies *res)
- {
- 	struct residencies start = { };
-@@ -158,13 +154,13 @@ static void measure_residencies(int devid, unsigned int mask,
- 	 * measurement, since the valid counter range is different on
- 	 * different platforms and so fixing it up would be non-trivial.
- 	 */
--	read_residencies(devid, mask, &end);
-+	read_residencies(devid, dirfd, mask, &end);
- 	igt_debug("time=%d: rc6=(%d, %d), rc6p=%d, rc6pp=%d\n",
- 		  end.duration, end.rc6, end.media_rc6, end.rc6p, end.rc6pp);
- 	for (retry = 0; retry < 2; retry++) {
- 		start = end;
- 		sleep(SLEEP_DURATION);
--		read_residencies(devid, mask, &end);
-+		read_residencies(devid, dirfd, mask, &end);
- 
- 		igt_debug("time=%d: rc6=(%d, %d), rc6p=%d, rc6pp=%d\n",
- 			  end.duration,
-@@ -196,7 +192,7 @@ static void measure_residencies(int devid, unsigned int mask,
- 	res->rc6 += res->rc6p;
- }
- 
--static bool wait_for_rc6(void)
-+static bool wait_for_rc6(int dirfd)
- {
- 	struct timespec tv = {};
- 	unsigned long start, now;
-@@ -205,11 +201,11 @@ static bool wait_for_rc6(void)
- 	usleep(160 * 1000);
- 
- 	/* Then poll for RC6 to start ticking */
--	now = read_rc6_residency("rc6");
-+	now = read_rc6_residency(dirfd, RC6_RESIDENCY_MS);
- 	do {
- 		start = now;
- 		usleep(5000);
--		now = read_rc6_residency("rc6");
-+		now = read_rc6_residency(dirfd, RC6_RESIDENCY_MS);
- 		if (now - start > 1)
- 			return true;
- 	} while (!igt_seconds_elapsed(&tv));
-@@ -605,21 +601,23 @@ igt_main
- 			devid = intel_get_drm_devid(i915);
- 			sysfs = igt_sysfs_open(i915);
- 
--			igt_require(has_rc6_residency("rc6"));
-+			igt_require(has_rc6_residency(dirfd, RC6_RESIDENCY_MS));
- 
- 			/* Make sure rc6 counters are running */
- 			igt_drop_caches_set(i915, DROP_IDLE);
--			igt_require(wait_for_rc6());
-+			igt_require(wait_for_rc6(dirfd));
- 
- 			rc6_enabled = get_rc6_enabled_mask();
- 			igt_require(rc6_enabled & RC6_ENABLED);
- 		}
- 
- 		igt_subtest("rc6-accuracy") {
--			struct residencies res;
-+			for_each_sysfs_gt_dirfd(i915, dirfd, gt) {
-+				struct residencies res;
- 
--			measure_residencies(devid, rc6_enabled, &res);
--			residency_accuracy(res.rc6, res.duration, "rc6");
-+				measure_residencies(devid, dirfd, rc6_enabled, &res);
-+				residency_accuracy(res.rc6, res.duration, "rc6");
-+			}
- 		}
- 
- 		igt_subtest("media-rc6-accuracy") {
-@@ -627,7 +625,7 @@ igt_main
- 
- 			igt_require(IS_VALLEYVIEW(devid) || IS_CHERRYVIEW(devid));
- 
--			measure_residencies(devid, rc6_enabled, &res);
-+			measure_residencies(devid, sysfs, rc6_enabled, &res);
- 			residency_accuracy(res.media_rc6, res.duration, "media_rc6");
- 		}
- 
--- 
-2.25.1
+Series: tests/intel/xe_vm: Correct stride to avoid address range collision (rev2)
+URL   : https://patchwork.freedesktop.org/series/126059/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_7578 -> IGTPW_10145
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10145/index.html
+
+Participating hosts (34 -> 33)
+------------------------------
+
+  Additional (2): fi-kbl-soraka bat-adlp-11 
+  Missing    (3): fi-hsw-4770 bat-dg2-9 fi-pnv-d510 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10145 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@debugfs_test@basic-hwmon:
+    - bat-adlp-11:        NOTRUN -> [SKIP][1] ([i915#9318])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10145/bat-adlp-11/igt@debugfs_test@basic-hwmon.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#2190])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10145/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][3] ([fdo#109271] / [i915#4613]) +3 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10145/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
+
+  * igt@gem_tiled_pread_basic:
+    - bat-adlp-11:        NOTRUN -> [SKIP][4] ([i915#3282])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10145/bat-adlp-11/igt@gem_tiled_pread_basic.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][5] ([i915#1886])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10145/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
+    - bat-adlp-11:        NOTRUN -> [SKIP][6] ([i915#4103] / [i915#5608]) +1 other test skip
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10145/bat-adlp-11/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+
+  * igt@kms_dsc@dsc-basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][7] ([fdo#109271]) +9 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10145/fi-kbl-soraka/igt@kms_dsc@dsc-basic.html
+    - bat-adlp-11:        NOTRUN -> [SKIP][8] ([i915#3555] / [i915#3840])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10145/bat-adlp-11/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_force_connector_basic@prune-stale-modes:
+    - bat-adlp-11:        NOTRUN -> [SKIP][9] ([i915#4093]) +3 other tests skip
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10145/bat-adlp-11/igt@kms_force_connector_basic@prune-stale-modes.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - bat-adlp-11:        NOTRUN -> [SKIP][10] ([i915#4369])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10145/bat-adlp-11/igt@kms_hdmi_inject@inject-audio.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-skl-guc:         [DMESG-FAIL][11] ([i915#9549]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7578/fi-skl-guc/igt@i915_selftest@live@hangcheck.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10145/fi-skl-guc/igt@i915_selftest@live@hangcheck.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+  [i915#3546]: https://gitlab.freedesktop.org/drm/intel/issues/3546
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3840]: https://gitlab.freedesktop.org/drm/intel/issues/3840
+  [i915#4093]: https://gitlab.freedesktop.org/drm/intel/issues/4093
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4369]: https://gitlab.freedesktop.org/drm/intel/issues/4369
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#5608]: https://gitlab.freedesktop.org/drm/intel/issues/5608
+  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
+  [i915#9318]: https://gitlab.freedesktop.org/drm/intel/issues/9318
+  [i915#9549]: https://gitlab.freedesktop.org/drm/intel/issues/9549
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7578 -> IGTPW_10145
+
+  CI-20190529: 20190529
+  CI_DRM_13852: 8040e9d346531d98ca164092c860c24c1dd6e845 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10145: 10145
+  IGT_7578: 2cf20c8dc5e372674ec3e3dd30b042794e9520ab @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
+-igt@sriov_basic@bind-unbind-vf
+-igt@sriov_basic@enable-vfs-autoprobe-off
+-igt@sriov_basic@enable-vfs-autoprobe-on
+-igt@sriov_basic@enable-vfs-bind-all-unbind-all
+-igt@sriov_basic@enable-vfs-bind-unbind-each
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10145/index.html
+
+--===============4719074310590355788==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_vm: Correct stride to avoid address range collision (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126059/">https://patchwork.freedesktop.org/series/126059/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10145/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10145/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7578 -&gt; IGTPW_10145</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10145/index.html</p>
+<h2>Participating hosts (34 -&gt; 33)</h2>
+<p>Additional (2): fi-kbl-soraka bat-adlp-11 <br />
+  Missing    (3): fi-hsw-4770 bat-dg2-9 fi-pnv-d510 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10145 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@debugfs_test@basic-hwmon:</p>
+<ul>
+<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10145/bat-adlp-11/igt@debugfs_test@basic-hwmon.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9318">i915#9318</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10145/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10145/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_pread_basic:</p>
+<ul>
+<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10145/bat-adlp-11/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3282">i915#3282</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10145/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
+<ul>
+<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10145/bat-adlp-11/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5608">i915#5608</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>
+<p>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10145/fi-kbl-soraka/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +9 other tests skip</p>
+</li>
+<li>
+<p>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10145/bat-adlp-11/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3840">i915#3840</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@prune-stale-modes:</p>
+<ul>
+<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10145/bat-adlp-11/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4093">i915#4093</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10145/bat-adlp-11/igt@kms_hdmi_inject@inject-audio.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4369">i915#4369</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@hangcheck:<ul>
+<li>fi-skl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7578/fi-skl-guc/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9549">i915#9549</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10145/fi-skl-guc/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7578 -&gt; IGTPW_10145</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13852: 8040e9d346531d98ca164092c860c24c1dd6e845 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10145: 10145<br />
+  IGT_7578: 2cf20c8dc5e372674ec3e3dd30b042794e9520ab @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>-igt@sriov_basic@bind-unbind-vf<br />
+-igt@sriov_basic@enable-vfs-autoprobe-off<br />
+-igt@sriov_basic@enable-vfs-autoprobe-on<br />
+-igt@sriov_basic@enable-vfs-bind-all-unbind-all<br />
+-igt@sriov_basic@enable-vfs-bind-unbind-each</p>
+
+</body>
+</html>
+
+--===============4719074310590355788==--
