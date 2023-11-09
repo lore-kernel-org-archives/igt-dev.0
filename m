@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F3A7D10E8E0
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 15:54:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0DD1A10E8DE
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 15:54:49 +0000 (UTC)
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  9 Nov 2023 15:53:25 +0000
-Message-Id: <20231109155410.7-13-francois.dugast@intel.com>
+Date: Thu,  9 Nov 2023 15:53:14 +0000
+Message-Id: <20231109155410.7-2-francois.dugast@intel.com>
 In-Reply-To: <20231109155410.7-1-francois.dugast@intel.com>
 References: <20231109155410.7-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 12/57] drm-uapi/xe: Remove GT_TYPE_REMOTE.
+Subject: [igt-dev] [PATCH v3 01/57] drm-uapi/xe: Add check for access
+ counter granularity
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,36 +19,41 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Align with commit ("drm/xe/xe_exec_queue: Add check for access counter granularity")
 
-Align with commit ("drm/xe/uapi: Remove GT_TYPE_REMOTE")
-
-Cc: Francois Dugast <francois.dugast@intel.com>
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 ---
- include/drm-uapi/xe_drm.h | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ include/drm-uapi/xe_drm.h | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
 diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index 96236e95c..aa2b5d8f0 100644
+index 6ff1106e4..66658d76c 100644
 --- a/include/drm-uapi/xe_drm.h
 +++ b/include/drm-uapi/xe_drm.h
-@@ -379,9 +379,8 @@ struct drm_xe_query_config {
-  */
- struct drm_xe_query_gt {
- #define DRM_XE_QUERY_GT_TYPE_MAIN		0
--#define DRM_XE_QUERY_GT_TYPE_REMOTE		1
--#define DRM_XE_QUERY_GT_TYPE_MEDIA		2
--	/** @type: GT type: Main, Remote, or Media */
-+#define DRM_XE_QUERY_GT_TYPE_MEDIA		1
-+	/** @type: GT type: Main or Media */
- 	__u16 type;
- 	/** @gt_id: Unique ID of this GT within the PCI Device */
- 	__u16 gt_id;
+@@ -731,6 +731,20 @@ struct drm_xe_vm_bind {
+ 	__u64 reserved[2];
+ };
+ 
++/* For use with XE_EXEC_QUEUE_SET_PROPERTY_ACC_GRANULARITY */
++
++/* Monitor 128KB contiguous region with 4K sub-granularity */
++#define XE_ACC_GRANULARITY_128K 0
++
++/* Monitor 2MB contiguous region with 64KB sub-granularity */
++#define XE_ACC_GRANULARITY_2M 1
++
++/* Monitor 16MB contiguous region with 512KB sub-granularity */
++#define XE_ACC_GRANULARITY_16M 2
++
++/* Monitor 64MB contiguous region with 2M sub-granularity */
++#define XE_ACC_GRANULARITY_64M 3
++
+ /**
+  * struct drm_xe_exec_queue_set_property - exec queue set property
+  *
 -- 
 2.34.1
