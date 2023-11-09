@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 99CAA10E8E5
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8FA5710E8E3
  for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 15:55:42 +0000 (UTC)
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  9 Nov 2023 15:53:47 +0000
-Message-Id: <20231109155410.7-35-francois.dugast@intel.com>
+Date: Thu,  9 Nov 2023 15:53:46 +0000
+Message-Id: <20231109155410.7-34-francois.dugast@intel.com>
 In-Reply-To: <20231109155410.7-1-francois.dugast@intel.com>
 References: <20231109155410.7-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 34/57] drm-uapi/xe: Differentiate WAIT_OP from
- WAIT_MASK
+Subject: [igt-dev] [PATCH v3 33/57] drm-uapi/xe:
+ s/FLAGS_HAS_VRAM/FLAG_HAS_VRAM
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,117 +26,104 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-Align with kernel commit ("drm/xe/uapi: Differentiate WAIT_OP from WAIT_MASK")
+Align with commit ("drm/xe/uapi: Standardize the FLAG naming and assignment")
 
 Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- include/drm-uapi/xe_drm.h | 41 ++++++++++++++++++++-------------------
- lib/xe/xe_ioctl.c         |  8 ++++----
- 2 files changed, 25 insertions(+), 24 deletions(-)
+ include/drm-uapi/xe_drm.h | 20 ++++++++++----------
+ tests/intel/xe_debugfs.c  |  4 ++--
+ tests/intel/xe_query.c    |  4 ++--
+ 3 files changed, 14 insertions(+), 14 deletions(-)
 
 diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index eb70c3202..e33d2a5ae 100644
+index 8ff76ab31..eb70c3202 100644
 --- a/include/drm-uapi/xe_drm.h
 +++ b/include/drm-uapi/xe_drm.h
-@@ -1140,22 +1140,22 @@ struct drm_xe_exec_queue_get_property {
-  * Returns to user on user fence completion or timeout.
+@@ -354,7 +354,7 @@ struct drm_xe_query_mem_regions {
+  *  - %DRM_XE_QUERY_CONFIG_FLAGS - Flags describing the device
+  *    configuration, see list below
   *
-  * The wait @op can be:
-- *  - %DRM_XE_UFENCE_WAIT_EQ
-- *  - %DRM_XE_UFENCE_WAIT_NEQ
-- *  - %DRM_XE_UFENCE_WAIT_GT
-- *  - %DRM_XE_UFENCE_WAIT_GTE
-- *  - %DRM_XE_UFENCE_WAIT_LT
-- *  - %DRM_XE_UFENCE_WAIT_LTE
-+ *  - %DRM_XE_UFENCE_WAIT_OP_EQ
-+ *  - %DRM_XE_UFENCE_WAIT_OP_NEQ
-+ *  - %DRM_XE_UFENCE_WAIT_OP_GT
-+ *  - %DRM_XE_UFENCE_WAIT_OP_GTE
-+ *  - %DRM_XE_UFENCE_WAIT_OP_LT
-+ *  - %DRM_XE_UFENCE_WAIT_OP_LTE
-  *
-  * The wait @flags can be:
-  *  - %DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP
-  *  - %DRM_XE_UFENCE_WAIT_FLAG_ABSTIME
-  *
-  * The wait @mask can be:
-- *  - %DRM_XE_UFENCE_WAIT_U8
-- *  - %DRM_XE_UFENCE_WAIT_U16
-- *  - %DRM_XE_UFENCE_WAIT_U32
-- *  - %DRM_XE_UFENCE_WAIT_U64
-+ *  - %DRM_XE_UFENCE_WAIT_MASK_U8
-+ *  - %DRM_XE_UFENCE_WAIT_MASK_U16
-+ *  - %DRM_XE_UFENCE_WAIT_MASK_U32
-+ *  - %DRM_XE_UFENCE_WAIT_MASK_U64
-  *
-  */
- struct drm_xe_wait_user_fence {
-@@ -1167,12 +1167,12 @@ struct drm_xe_wait_user_fence {
- 	 */
- 	__u64 addr;
+- *    - %DRM_XE_QUERY_CONFIG_FLAGS_HAS_VRAM - Flag is set if the device
++ *    - %DRM_XE_QUERY_CONFIG_FLAG_HAS_VRAM - Flag is set if the device
+  *      has usable VRAM
+  *  - %DRM_XE_QUERY_CONFIG_MIN_ALIGNMENT - Minimal memory alignment
+  *    required by this device, typically SZ_4K or SZ_64K
+@@ -371,7 +371,7 @@ struct drm_xe_query_config {
  
--#define DRM_XE_UFENCE_WAIT_EQ	0
--#define DRM_XE_UFENCE_WAIT_NEQ	1
--#define DRM_XE_UFENCE_WAIT_GT	2
--#define DRM_XE_UFENCE_WAIT_GTE	3
--#define DRM_XE_UFENCE_WAIT_LT	4
--#define DRM_XE_UFENCE_WAIT_LTE	5
-+#define DRM_XE_UFENCE_WAIT_OP_EQ	0x0
-+#define DRM_XE_UFENCE_WAIT_OP_NEQ	0x1
-+#define DRM_XE_UFENCE_WAIT_OP_GT	0x2
-+#define DRM_XE_UFENCE_WAIT_OP_GTE	0x3
-+#define DRM_XE_UFENCE_WAIT_OP_LT	0x4
-+#define DRM_XE_UFENCE_WAIT_OP_LTE	0x5
- 	/** @op: wait operation (type of comparison) */
- 	__u16 op;
+ #define DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID		0
+ #define DRM_XE_QUERY_CONFIG_FLAGS			1
+-	#define DRM_XE_QUERY_CONFIG_FLAGS_HAS_VRAM	(0x1 << 0)
++	#define DRM_XE_QUERY_CONFIG_FLAG_HAS_VRAM	(1 << 0)
+ 	/*
+ 	 * DRM_XE_QUERY_CONFIG_MIN_ALIGNMENT - This returns the
+ 	 * maximum value of the &min_page_size across all memory regions
+@@ -755,10 +755,10 @@ struct drm_xe_vm_create {
+ 	/** @extensions: Pointer to the first extension struct, if any */
+ 	__u64 extensions;
  
-@@ -1187,12 +1187,13 @@ struct drm_xe_wait_user_fence {
- 	/** @value: compare value */
- 	__u64 value;
+-#define DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE	(0x1 << 0)
+-#define DRM_XE_VM_CREATE_FLAG_COMPUTE_MODE	(0x1 << 1)
+-#define DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT	(0x1 << 2)
+-#define DRM_XE_VM_CREATE_FLAG_FAULT_MODE	(0x1 << 3)
++#define DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE	(1 << 0)
++#define DRM_XE_VM_CREATE_FLAG_COMPUTE_MODE	(1 << 1)
++#define DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT	(1 << 2)
++#define DRM_XE_VM_CREATE_FLAG_FAULT_MODE	(1 << 3)
+ 	/** @flags: Flags */
+ 	__u32 flags;
  
--#define DRM_XE_UFENCE_WAIT_U8		0xffu
--#define DRM_XE_UFENCE_WAIT_U16		0xffffu
--#define DRM_XE_UFENCE_WAIT_U32		0xffffffffu
--#define DRM_XE_UFENCE_WAIT_U64		0xffffffffffffffffu
-+#define DRM_XE_UFENCE_WAIT_MASK_U8	0xffu
-+#define DRM_XE_UFENCE_WAIT_MASK_U16	0xffffu
-+#define DRM_XE_UFENCE_WAIT_MASK_U32	0xffffffffu
-+#define DRM_XE_UFENCE_WAIT_MASK_U64	0xffffffffffffffffu
- 	/** @mask: comparison mask */
- 	__u64 mask;
-+
- 	/**
- 	 * @timeout: how long to wait before bailing, value in nanoseconds.
- 	 * Without DRM_XE_UFENCE_WAIT_FLAG_ABSTIME flag set (relative timeout)
-diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index e928148ee..5d4f2fcd8 100644
---- a/lib/xe/xe_ioctl.c
-+++ b/lib/xe/xe_ioctl.c
-@@ -422,10 +422,10 @@ int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
- {
- 	struct drm_xe_wait_user_fence wait = {
- 		.addr = to_user_pointer(addr),
--		.op = DRM_XE_UFENCE_WAIT_EQ,
-+		.op = DRM_XE_UFENCE_WAIT_OP_EQ,
- 		.flags = !eci ? DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP : 0,
- 		.value = value,
--		.mask = DRM_XE_UFENCE_WAIT_U64,
-+		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
- 		.timeout = timeout,
- 		.num_engines = eci ? 1 :0,
- 		.instances = eci ? to_user_pointer(eci) : 0,
-@@ -454,10 +454,10 @@ int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
- {
- 	struct drm_xe_wait_user_fence wait = {
- 		.addr = to_user_pointer(addr),
--		.op = DRM_XE_UFENCE_WAIT_EQ,
-+		.op = DRM_XE_UFENCE_WAIT_OP_EQ,
- 		.flags = !eci ? DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP | DRM_XE_UFENCE_WAIT_FLAG_ABSTIME : 0,
- 		.value = value,
--		.mask = DRM_XE_UFENCE_WAIT_U64,
-+		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
- 		.timeout = timeout,
- 		.num_engines = eci ? 1 : 0,
- 		.instances = eci ? to_user_pointer(eci) : 0,
+@@ -852,10 +852,10 @@ struct drm_xe_vm_bind_op {
+ 	/** @op: Bind operation to perform */
+ 	__u32 op;
+ 
+-#define DRM_XE_VM_BIND_FLAG_READONLY	(0x1 << 0)
+-#define DRM_XE_VM_BIND_FLAG_ASYNC	(0x1 << 1)
+-#define DRM_XE_VM_BIND_FLAG_IMMEDIATE	(0x1 << 2)
+-#define DRM_XE_VM_BIND_FLAG_NULL	(0x1 << 3)
++#define DRM_XE_VM_BIND_FLAG_READONLY	(1 << 0)
++#define DRM_XE_VM_BIND_FLAG_ASYNC	(1 << 1)
++#define DRM_XE_VM_BIND_FLAG_IMMEDIATE	(1 << 2)
++#define DRM_XE_VM_BIND_FLAG_NULL	(1 << 3)
+ 	/** @flags: Bind flags */
+ 	__u32 flags;
+ 
+diff --git a/tests/intel/xe_debugfs.c b/tests/intel/xe_debugfs.c
+index 60ddceda7..4fd5ebc28 100644
+--- a/tests/intel/xe_debugfs.c
++++ b/tests/intel/xe_debugfs.c
+@@ -99,7 +99,7 @@ test_base(int fd, struct drm_xe_query_config *config)
+ 	igt_assert(igt_debugfs_search(fd, "info", reference));
+ 
+ 	sprintf(reference, "is_dgfx %s", config->info[DRM_XE_QUERY_CONFIG_FLAGS] &
+-		DRM_XE_QUERY_CONFIG_FLAGS_HAS_VRAM ? "yes" : "no");
++		DRM_XE_QUERY_CONFIG_FLAG_HAS_VRAM ? "yes" : "no");
+ 
+ 	igt_assert(igt_debugfs_search(fd, "info", reference));
+ 
+@@ -125,7 +125,7 @@ test_base(int fd, struct drm_xe_query_config *config)
+ 	igt_assert(igt_debugfs_exists(fd, "gtt_mm", O_RDONLY));
+ 	igt_debugfs_dump(fd, "gtt_mm");
+ 
+-	if (config->info[DRM_XE_QUERY_CONFIG_FLAGS] & DRM_XE_QUERY_CONFIG_FLAGS_HAS_VRAM) {
++	if (config->info[DRM_XE_QUERY_CONFIG_FLAGS] & DRM_XE_QUERY_CONFIG_FLAG_HAS_VRAM) {
+ 		igt_assert(igt_debugfs_exists(fd, "vram0_mm", O_RDONLY));
+ 		igt_debugfs_dump(fd, "vram0_mm");
+ 	}
+diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
+index e5739ad78..80510146f 100644
+--- a/tests/intel/xe_query.c
++++ b/tests/intel/xe_query.c
+@@ -367,9 +367,9 @@ test_query_config(int fd)
+ 		config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff);
+ 	igt_info("DRM_XE_QUERY_CONFIG_FLAGS\t\t\t%#llx\n",
+ 		config->info[DRM_XE_QUERY_CONFIG_FLAGS]);
+-	igt_info("  DRM_XE_QUERY_CONFIG_FLAGS_HAS_VRAM\t%s\n",
++	igt_info("  DRM_XE_QUERY_CONFIG_FLAG_HAS_VRAM\t%s\n",
+ 		config->info[DRM_XE_QUERY_CONFIG_FLAGS] &
+-		DRM_XE_QUERY_CONFIG_FLAGS_HAS_VRAM ? "ON":"OFF");
++		DRM_XE_QUERY_CONFIG_FLAG_HAS_VRAM ? "ON":"OFF");
+ 	igt_info("DRM_XE_QUERY_CONFIG_MIN_ALIGNMENT\t\t%#llx\n",
+ 		config->info[DRM_XE_QUERY_CONFIG_MIN_ALIGNMENT]);
+ 	igt_info("DRM_XE_QUERY_CONFIG_VA_BITS\t\t\t%llu\n",
 -- 
 2.34.1
