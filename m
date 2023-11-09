@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 379CD10E8E2
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 15:54:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D828410E8EB
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 15:55:02 +0000 (UTC)
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  9 Nov 2023 15:53:22 +0000
-Message-Id: <20231109155410.7-10-francois.dugast@intel.com>
+Date: Thu,  9 Nov 2023 15:53:39 +0000
+Message-Id: <20231109155410.7-27-francois.dugast@intel.com>
 In-Reply-To: <20231109155410.7-1-francois.dugast@intel.com>
 References: <20231109155410.7-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 09/57] drm-uapi/xe: Add _FLAG to uAPI constants
- usable for flags
+Subject: [igt-dev] [PATCH v3 26/57] drm-uapi/xe: Align with
+ drm_xe_query_engine_info
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,1956 +19,282 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Align with commit ("drm/xe/uapi: Add _FLAG to uAPI constants usable for flags")
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+Align with kernel commit ("drm/xe: Make DRM_XE_DEVICE_QUERY_ENGINES future proof")
+
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- benchmarks/gem_wsim.c              |  12 +--
- include/drm-uapi/xe_drm.h          |  30 +++----
- lib/igt_fb.c                       |   2 +-
- lib/intel_batchbuffer.c            |  12 +--
- lib/intel_compute.c                |   6 +-
- lib/intel_ctx.c                    |   4 +-
- lib/xe/xe_ioctl.c                  |   6 +-
- lib/xe/xe_query.c                  |   4 +-
- lib/xe/xe_spin.c                   |   4 +-
- lib/xe/xe_util.c                   |   4 +-
- tests/intel/xe_ccs.c               |   4 +-
- tests/intel/xe_copy_basic.c        |   2 +-
- tests/intel/xe_create.c            |   6 +-
- tests/intel/xe_dma_buf_sync.c      |   4 +-
- tests/intel/xe_drm_fdinfo.c        |  18 ++---
- tests/intel/xe_evict.c             |  24 +++---
- tests/intel/xe_evict_ccs.c         |   2 +-
- tests/intel/xe_exec_balancer.c     |  34 ++++----
- tests/intel/xe_exec_basic.c        |  16 ++--
- tests/intel/xe_exec_compute_mode.c |   6 +-
- tests/intel/xe_exec_fault_mode.c   |  14 ++--
- tests/intel/xe_exec_reset.c        |  42 +++++-----
- tests/intel/xe_exec_store.c        |  26 +++---
- tests/intel/xe_exec_threads.c      |  44 +++++-----
- tests/intel/xe_exercise_blt.c      |   2 +-
- tests/intel/xe_guc_pc.c            |  12 +--
- tests/intel/xe_huc_copy.c          |   4 +-
- tests/intel/xe_intel_bb.c          |   2 +-
- tests/intel/xe_noexec_ping_pong.c  |   2 +-
- tests/intel/xe_perf_pmu.c          |  24 +++---
- tests/intel/xe_pm.c                |  12 +--
- tests/intel/xe_pm_residency.c      |   2 +-
- tests/intel/xe_spin_batch.c        |   2 +-
- tests/intel/xe_vm.c                | 126 ++++++++++++++---------------
- tests/intel/xe_waitfence.c         |   4 +-
- 35 files changed, 259 insertions(+), 259 deletions(-)
+ benchmarks/gem_wsim.c             |  2 +-
+ include/drm-uapi/xe_drm.h         | 19 +++++++++++++++++++
+ lib/xe/xe_query.c                 | 16 ++++++++--------
+ lib/xe/xe_query.h                 |  8 ++++----
+ tests/intel/xe_create.c           |  7 ++++---
+ tests/intel/xe_drm_fdinfo.c       |  5 +++--
+ tests/intel/xe_exec_store.c       |  8 ++++----
+ tests/intel/xe_intel_bb.c         |  3 ++-
+ tests/intel/xe_noexec_ping_pong.c |  5 +++--
+ 9 files changed, 48 insertions(+), 25 deletions(-)
 
 diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-index 28b809520..df4850086 100644
+index d451b8733..5d5353c94 100644
 --- a/benchmarks/gem_wsim.c
 +++ b/benchmarks/gem_wsim.c
-@@ -1772,21 +1772,21 @@ xe_alloc_step_batch(struct workload *wrk, struct w_step *w)
- 	i = 0;
- 	/* out fence */
- 	w->xe.syncs[i].handle = syncobj_create(fd, 0);
--	w->xe.syncs[i++].flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL;
-+	w->xe.syncs[i++].flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL;
- 	/* in fence(s) */
- 	for_each_dep(dep, w->data_deps) {
- 		int dep_idx = w->idx + dep->target;
+@@ -688,7 +688,7 @@ xe_get_default_engine(void)
+ 	struct drm_xe_engine_class_instance default_hwe, *hwe;
  
- 		igt_assert(wrk->steps[dep_idx].xe.syncs && wrk->steps[dep_idx].xe.syncs[0].handle);
- 		w->xe.syncs[i].handle = wrk->steps[dep_idx].xe.syncs[0].handle;
--		w->xe.syncs[i++].flags = DRM_XE_SYNC_SYNCOBJ;
-+		w->xe.syncs[i++].flags = DRM_XE_SYNC_FLAG_SYNCOBJ;
- 	}
- 	for_each_dep(dep, w->fence_deps) {
- 		int dep_idx = w->idx + dep->target;
- 
- 		igt_assert(wrk->steps[dep_idx].xe.syncs && wrk->steps[dep_idx].xe.syncs[0].handle);
- 		w->xe.syncs[i].handle = wrk->steps[dep_idx].xe.syncs[0].handle;
--		w->xe.syncs[i++].flags = DRM_XE_SYNC_SYNCOBJ;
-+		w->xe.syncs[i++].flags = DRM_XE_SYNC_FLAG_SYNCOBJ;
- 	}
- 	w->xe.exec.syncs = to_user_pointer(w->xe.syncs);
- }
-@@ -2024,8 +2024,8 @@ static void xe_vm_create_(struct xe_vm *vm)
- 	uint32_t flags = 0;
- 
- 	if (vm->compute_mode)
--		flags |= DRM_XE_VM_CREATE_ASYNC_DEFAULT |
--			 DRM_XE_VM_CREATE_COMPUTE_MODE;
-+		flags |= DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT |
-+			 DRM_XE_VM_CREATE_FLAG_COMPUTE_MODE;
- 
- 	vm->id = xe_vm_create(fd, flags, 0);
- }
-@@ -2363,7 +2363,7 @@ static int xe_prepare_contexts(unsigned int id, struct workload *wrk)
- 		if (w->type == SW_FENCE) {
- 			w->xe.syncs = calloc(1, sizeof(struct drm_xe_sync));
- 			w->xe.syncs[0].handle = syncobj_create(fd, 0);
--			w->xe.syncs[0].flags = DRM_XE_SYNC_SYNCOBJ;
-+			w->xe.syncs[0].flags = DRM_XE_SYNC_FLAG_SYNCOBJ;
- 		}
- 
- 	return 0;
+ 	/* select RCS0 | CCS0 or first available engine */
+-	default_hwe = *xe_engine(fd, 0);
++	default_hwe = xe_engine(fd, 0)->instance;
+ 	xe_for_each_engine(fd, hwe) {
+ 		if ((hwe->engine_class == DRM_XE_ENGINE_CLASS_RENDER ||
+ 		     hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE) &&
 diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index 8d0abf31c..01a276376 100644
+index 0aa63f130..c5cd94808 100644
 --- a/include/drm-uapi/xe_drm.h
 +++ b/include/drm-uapi/xe_drm.h
-@@ -675,10 +675,10 @@ struct drm_xe_vm_create {
- 	/** @extensions: Pointer to the first extension struct, if any */
- 	__u64 extensions;
+@@ -127,6 +127,10 @@ struct xe_user_extension {
+ /**
+  * struct drm_xe_engine_class_instance - instance of an engine class
+  *
++ * It is returned as part of the @drm_xe_query_engine_info, but it also is
++ * used as the input of engine selection for both @drm_xe_exec_queue_create
++ * and @drm_xe_query_engine_cycles
++ *
+  * The @engine_class can be:
+  *  - %DRM_XE_ENGINE_CLASS_RENDER
+  *  - %DRM_XE_ENGINE_CLASS_COPY
+@@ -161,6 +165,21 @@ struct drm_xe_engine_class_instance {
+ 	__u16 pad;
+ };
  
--#define DRM_XE_VM_CREATE_SCRATCH_PAGE		(0x1 << 0)
--#define DRM_XE_VM_CREATE_COMPUTE_MODE		(0x1 << 1)
--#define DRM_XE_VM_CREATE_ASYNC_DEFAULT		(0x1 << 2)
--#define DRM_XE_VM_CREATE_FAULT_MODE		(0x1 << 3)
-+#define DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE	(0x1 << 0)
-+#define DRM_XE_VM_CREATE_FLAG_COMPUTE_MODE	(0x1 << 1)
-+#define DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT	(0x1 << 2)
-+#define DRM_XE_VM_CREATE_FLAG_FAULT_MODE	(0x1 << 3)
- 	/** @flags: Flags */
- 	__u32 flags;
- 
-@@ -924,11 +924,11 @@ struct drm_xe_sync {
- 	/** @extensions: Pointer to the first extension struct, if any */
- 	__u64 extensions;
- 
--#define DRM_XE_SYNC_SYNCOBJ		0x0
--#define DRM_XE_SYNC_TIMELINE_SYNCOBJ	0x1
--#define DRM_XE_SYNC_DMA_BUF		0x2
--#define DRM_XE_SYNC_USER_FENCE		0x3
--#define DRM_XE_SYNC_SIGNAL		0x10
-+#define DRM_XE_SYNC_FLAG_SYNCOBJ		0x0
-+#define DRM_XE_SYNC_FLAG_TIMELINE_SYNCOBJ	0x1
-+#define DRM_XE_SYNC_FLAG_DMA_BUF		0x2
-+#define DRM_XE_SYNC_FLAG_USER_FENCE		0x3
-+#define DRM_XE_SYNC_FLAG_SIGNAL		0x10
- 	__u32 flags;
- 
- 	/** @pad: MBZ */
-@@ -1014,8 +1014,8 @@ struct drm_xe_wait_user_fence {
- 	/** @op: wait operation (type of comparison) */
- 	__u16 op;
- 
--#define DRM_XE_UFENCE_WAIT_SOFT_OP	(1 << 0)	/* e.g. Wait on VM bind */
--#define DRM_XE_UFENCE_WAIT_ABSTIME	(1 << 1)
-+#define DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP	(1 << 0)	/* e.g. Wait on VM bind */
-+#define DRM_XE_UFENCE_WAIT_FLAG_ABSTIME	(1 << 1)
- 	/** @flags: wait flags */
- 	__u16 flags;
- 
-@@ -1033,10 +1033,10 @@ struct drm_xe_wait_user_fence {
- 	__u64 mask;
- 	/**
- 	 * @timeout: how long to wait before bailing, value in nanoseconds.
--	 * Without DRM_XE_UFENCE_WAIT_ABSTIME flag set (relative timeout)
-+	 * Without DRM_XE_UFENCE_WAIT_FLAG_ABSTIME flag set (relative timeout)
- 	 * it contains timeout expressed in nanoseconds to wait (fence will
- 	 * expire at now() + timeout).
--	 * When DRM_XE_UFENCE_WAIT_ABSTIME flat is set (absolute timeout) wait
-+	 * When DRM_XE_UFENCE_WAIT_FLAG_ABSTIME flat is set (absolute timeout) wait
- 	 * will end at timeout (uses system MONOTONIC_CLOCK).
- 	 * Passing negative timeout leads to neverending wait.
- 	 *
-@@ -1049,13 +1049,13 @@ struct drm_xe_wait_user_fence {
- 
- 	/**
- 	 * @num_engines: number of engine instances to wait on, must be zero
--	 * when DRM_XE_UFENCE_WAIT_SOFT_OP set
-+	 * when DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP set
- 	 */
- 	__u64 num_engines;
- 
- 	/**
- 	 * @instances: user pointer to array of drm_xe_engine_class_instance to
--	 * wait on, must be NULL when DRM_XE_UFENCE_WAIT_SOFT_OP set
-+	 * wait on, must be NULL when DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP set
- 	 */
- 	__u64 instances;
- 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index e531a041e..e70d2e3ce 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -2892,7 +2892,7 @@ static void blitcopy(const struct igt_fb *dst_fb,
- 							  &bb_size,
- 							  mem_region) == 0);
- 	} else if (is_xe) {
--		vm = xe_vm_create(dst_fb->fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+		vm = xe_vm_create(dst_fb->fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 		exec_queue = xe_exec_queue_create(dst_fb->fd, vm, &inst, 0);
- 		xe_ctx = intel_ctx_xe(dst_fb->fd, vm, exec_queue, 0, 0, 0);
- 		mem_region = vram_if_possible(dst_fb->fd, 0);
-diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index eb47ede50..b59c490db 100644
---- a/lib/intel_batchbuffer.c
-+++ b/lib/intel_batchbuffer.c
-@@ -953,7 +953,7 @@ __intel_bb_create(int fd, uint32_t ctx, uint32_t vm, const intel_ctx_cfg_t *cfg,
- 
- 		if (!vm) {
- 			igt_assert_f(!ctx, "No vm provided for engine");
--			vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+			vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 		}
- 
- 		ibb->uses_full_ppgtt = true;
-@@ -1315,8 +1315,8 @@ static struct drm_xe_vm_bind_op *xe_alloc_bind_ops(struct intel_bb *ibb,
- static void __unbind_xe_objects(struct intel_bb *ibb)
- {
- 	struct drm_xe_sync syncs[2] = {
--		{ .flags = DRM_XE_SYNC_SYNCOBJ },
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
- 	};
- 	int ret;
- 
-@@ -2302,8 +2302,8 @@ __xe_bb_exec(struct intel_bb *ibb, uint64_t flags, bool sync)
- 	uint32_t engine = flags & (I915_EXEC_BSD_MASK | I915_EXEC_RING_MASK);
- 	uint32_t engine_id;
- 	struct drm_xe_sync syncs[2] = {
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
- 	};
- 	struct drm_xe_vm_bind_op *bind_ops;
- 	void *map;
-@@ -2371,7 +2371,7 @@ __xe_bb_exec(struct intel_bb *ibb, uint64_t flags, bool sync)
- 	}
- 	ibb->xe_bound = true;
- 
--	syncs[0].flags &= ~DRM_XE_SYNC_SIGNAL;
-+	syncs[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
- 	ibb->engine_syncobj = syncobj_create(ibb->fd, 0);
- 	syncs[1].handle = ibb->engine_syncobj;
- 
-diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index 7f1ea90e7..7cb0f001c 100644
---- a/lib/intel_compute.c
-+++ b/lib/intel_compute.c
-@@ -80,7 +80,7 @@ static void bo_execenv_create(int fd, struct bo_execenv *execenv)
- 		else
- 			engine_class = DRM_XE_ENGINE_CLASS_COMPUTE;
- 
--		execenv->vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+		execenv->vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 		execenv->exec_queue = xe_exec_queue_create_class(fd, execenv->vm,
- 								 engine_class);
- 	}
-@@ -106,7 +106,7 @@ static void bo_execenv_bind(struct bo_execenv *execenv,
- 		uint64_t alignment = xe_get_default_alignment(fd);
- 		struct drm_xe_sync sync = { 0 };
- 
--		sync.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL;
-+		sync.flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL;
- 		sync.handle = syncobj_create(fd, 0);
- 
- 		for (int i = 0; i < entries; i++) {
-@@ -162,7 +162,7 @@ static void bo_execenv_unbind(struct bo_execenv *execenv,
- 		uint32_t vm = execenv->vm;
- 		struct drm_xe_sync sync = { 0 };
- 
--		sync.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL;
-+		sync.flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL;
- 		sync.handle = syncobj_create(fd, 0);
- 
- 		for (int i = 0; i < entries; i++) {
-diff --git a/lib/intel_ctx.c b/lib/intel_ctx.c
-index f927b7df8..f82564572 100644
---- a/lib/intel_ctx.c
-+++ b/lib/intel_ctx.c
-@@ -423,8 +423,8 @@ intel_ctx_t *intel_ctx_xe(int fd, uint32_t vm, uint32_t exec_queue,
- int __intel_ctx_xe_exec(const intel_ctx_t *ctx, uint64_t ahnd, uint64_t bb_offset)
- {
- 	struct drm_xe_sync syncs[2] = {
--		{ .flags = DRM_XE_SYNC_SYNCOBJ, },
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
- 	};
- 	struct drm_xe_exec exec = {
- 		.exec_queue_id = ctx->exec_queue,
-diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index 21a85225f..06c3cb782 100644
---- a/lib/xe/xe_ioctl.c
-+++ b/lib/xe/xe_ioctl.c
-@@ -399,7 +399,7 @@ void xe_exec_sync(int fd, uint32_t exec_queue, uint64_t addr,
- void xe_exec_wait(int fd, uint32_t exec_queue, uint64_t addr)
- {
- 	struct drm_xe_sync sync = {
--		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
-+		.flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL,
- 		.handle = syncobj_create(fd, 0),
- 	};
- 
-@@ -416,7 +416,7 @@ int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
- 	struct drm_xe_wait_user_fence wait = {
- 		.addr = to_user_pointer(addr),
- 		.op = DRM_XE_UFENCE_WAIT_EQ,
--		.flags = !eci ? DRM_XE_UFENCE_WAIT_SOFT_OP : 0,
-+		.flags = !eci ? DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP : 0,
- 		.value = value,
- 		.mask = DRM_XE_UFENCE_WAIT_U64,
- 		.timeout = timeout,
-@@ -448,7 +448,7 @@ int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
- 	struct drm_xe_wait_user_fence wait = {
- 		.addr = to_user_pointer(addr),
- 		.op = DRM_XE_UFENCE_WAIT_EQ,
--		.flags = !eci ? DRM_XE_UFENCE_WAIT_SOFT_OP | DRM_XE_UFENCE_WAIT_ABSTIME : 0,
-+		.flags = !eci ? DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP | DRM_XE_UFENCE_WAIT_FLAG_ABSTIME : 0,
- 		.value = value,
- 		.mask = DRM_XE_UFENCE_WAIT_U64,
- 		.timeout = timeout,
++/**
++ * struct drm_xe_query_engine_info - describe hardware engine
++ *
++ * If a query is made with a struct @drm_xe_device_query where .query
++ * is equal to %DRM_XE_DEVICE_QUERY_ENGINES, then the reply uses an array of
++ * struct @drm_xe_query_engine_info in .data.
++ */
++struct drm_xe_query_engine_info {
++	/** @instance: The @drm_xe_engine_class_instance */
++	struct drm_xe_engine_class_instance instance;
++
++	/** @reserved: Reserved */
++	__u64 reserved[5];
++};
++
+ /**
+  * enum drm_xe_memory_class - Supported memory classes.
+  */
 diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index 0fa21465b..9f1ab0cd9 100644
+index 10ceef665..de0f8a78f 100644
 --- a/lib/xe/xe_query.c
 +++ b/lib/xe/xe_query.c
-@@ -316,8 +316,8 @@ bool xe_supports_faults(int fd)
- 	bool supports_faults;
+@@ -72,10 +72,10 @@ static uint64_t __memory_regions(const struct drm_xe_query_gt_list *gt_list)
+ 	return regions;
+ }
  
- 	struct drm_xe_vm_create create = {
--		.flags = DRM_XE_VM_CREATE_ASYNC_DEFAULT |
--			 DRM_XE_VM_CREATE_FAULT_MODE,
-+		.flags = DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT |
-+			 DRM_XE_VM_CREATE_FLAG_FAULT_MODE,
- 	};
- 
- 	supports_faults = !igt_ioctl(fd, DRM_IOCTL_XE_VM_CREATE, &create);
-diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-index b05b38829..cfc663acc 100644
---- a/lib/xe/xe_spin.c
-+++ b/lib/xe/xe_spin.c
-@@ -191,7 +191,7 @@ xe_spin_create(int fd, const struct igt_spin_factory *opt)
- 	struct igt_spin *spin;
- 	struct xe_spin *xe_spin;
- 	struct drm_xe_sync sync = {
--		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
-+		.flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL,
- 	};
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
-@@ -288,7 +288,7 @@ void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
- 	uint32_t vm, bo, exec_queue, syncobj;
- 	struct xe_spin *spin;
- 	struct drm_xe_sync sync = {
--		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
-+		.flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL,
- 	};
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
-diff --git a/lib/xe/xe_util.c b/lib/xe/xe_util.c
-index 780125f92..2635edf72 100644
---- a/lib/xe/xe_util.c
-+++ b/lib/xe/xe_util.c
-@@ -179,8 +179,8 @@ void xe_bind_unbind_async(int xe, uint32_t vm, uint32_t bind_engine,
+-static struct drm_xe_engine_class_instance *
+-xe_query_engines_new(int fd, unsigned int *num_engines)
++static struct drm_xe_query_engine_info *
++xe_query_engines(int fd, unsigned int *num_engines)
  {
- 	struct drm_xe_vm_bind_op *bind_ops;
- 	struct drm_xe_sync tabsyncs[2] = {
--		{ .flags = DRM_XE_SYNC_SYNCOBJ, .handle = sync_in },
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, .handle = sync_out },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ, .handle = sync_in },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, .handle = sync_out },
- 	};
- 	struct drm_xe_sync *syncs;
- 	uint32_t num_binds = 0;
-diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
-index bb844b641..465f67e23 100644
---- a/tests/intel/xe_ccs.c
-+++ b/tests/intel/xe_ccs.c
-@@ -343,7 +343,7 @@ static void block_copy(int xe,
- 		uint32_t vm, exec_queue;
+-	struct drm_xe_engine_class_instance *engines;
++	struct drm_xe_query_engine_info *engines;
+ 	struct drm_xe_device_query query = {
+ 		.extensions = 0,
+ 		.query = DRM_XE_DEVICE_QUERY_ENGINES,
+@@ -253,7 +253,7 @@ struct xe_device *xe_device_get(int fd)
+ 	xe_dev->dev_id = xe_dev->config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff;
+ 	xe_dev->gt_list = xe_query_gt_list_new(fd);
+ 	xe_dev->memory_regions = __memory_regions(xe_dev->gt_list);
+-	xe_dev->engines = xe_query_engines_new(fd, &xe_dev->number_engines);
++	xe_dev->engines = xe_query_engines(fd, &xe_dev->number_engines);
+ 	xe_dev->mem_regions = xe_query_mem_regions_new(fd);
+ 	xe_dev->vram_size = calloc(xe_dev->gt_list->num_gt, sizeof(*xe_dev->vram_size));
+ 	xe_dev->visible_vram_size = calloc(xe_dev->gt_list->num_gt, sizeof(*xe_dev->visible_vram_size));
+@@ -417,16 +417,16 @@ uint64_t vram_if_possible(int fd, int gt)
+  *
+  * Returns engines array of xe device @fd.
+  */
+-xe_dev_FN(xe_engines, engines, struct drm_xe_engine_class_instance *);
++xe_dev_FN(xe_engines, engines, struct drm_xe_query_engine_info *);
  
- 		if (config->new_ctx) {
--			vm = xe_vm_create(xe, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+			vm = xe_vm_create(xe, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 			exec_queue = xe_exec_queue_create(xe, vm, &inst, 0);
- 			surf_ctx = intel_ctx_xe(xe, vm, exec_queue, 0, 0, 0);
- 			surf_ahnd = intel_allocator_open(xe, surf_ctx->vm,
-@@ -550,7 +550,7 @@ static void block_copy_test(int xe,
- 				      copyfns[copy_function].suffix) {
- 				uint32_t sync_bind, sync_out;
+ /**
+  * xe_engine:
+  * @fd: xe device fd
+  * @idx: engine index
+  *
+- * Returns engine instance of xe device @fd and @idx.
++ * Returns engine info of xe device @fd and @idx.
+  */
+-struct drm_xe_engine_class_instance *xe_engine(int fd, int idx)
++struct drm_xe_query_engine_info *xe_engine(int fd, int idx)
+ {
+ 	struct xe_device *xe_dev;
  
--				vm = xe_vm_create(xe, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+				vm = xe_vm_create(xe, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 				exec_queue = xe_exec_queue_create(xe, vm, &inst, 0);
- 				sync_bind = syncobj_create(xe, 0);
- 				sync_out = syncobj_create(xe, 0);
-diff --git a/tests/intel/xe_copy_basic.c b/tests/intel/xe_copy_basic.c
-index 1dafbb276..191c29155 100644
---- a/tests/intel/xe_copy_basic.c
-+++ b/tests/intel/xe_copy_basic.c
-@@ -134,7 +134,7 @@ static void copy_test(int fd, uint32_t size, enum blt_cmd_type cmd, uint32_t reg
+@@ -644,7 +644,7 @@ bool xe_has_engine_class(int fd, uint16_t engine_class)
+ 	igt_assert(xe_dev);
  
- 	src_handle = xe_bo_create_flags(fd, 0, bo_size, region);
- 	dst_handle = xe_bo_create_flags(fd, 0, bo_size, region);
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 	exec_queue = xe_exec_queue_create(fd, vm, &inst, 0);
- 	ctx = intel_ctx_xe(fd, vm, exec_queue, 0, 0, 0);
+ 	for (int i = 0; i < xe_dev->number_engines; i++)
+-		if (xe_dev->engines[i].engine_class == engine_class)
++		if (xe_dev->engines[i].instance.engine_class == engine_class)
+ 			return true;
  
+ 	return false;
+diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+index bf9f2b955..fede00036 100644
+--- a/lib/xe/xe_query.h
++++ b/lib/xe/xe_query.h
+@@ -33,7 +33,7 @@ struct xe_device {
+ 	uint64_t memory_regions;
+ 
+ 	/** @engines: array of hardware engines */
+-	struct drm_xe_engine_class_instance *engines;
++	struct drm_xe_query_engine_info *engines;
+ 
+ 	/** @number_engines: length of hardware engines array */
+ 	unsigned int number_engines;
+@@ -62,7 +62,7 @@ struct xe_device {
+ 
+ #define xe_for_each_engine(__fd, __hwe) \
+ 	for (int __i = 0; __i < xe_number_engines(__fd) && \
+-	     (__hwe = xe_engine(__fd, __i)); ++__i)
++	     (__hwe = &xe_engine(__fd, __i)->instance); ++__i)
+ #define xe_for_each_engine_class(__class) \
+ 	for (__class = 0; __class < DRM_XE_ENGINE_CLASS_COMPUTE + 1; \
+ 	     ++__class)
+@@ -81,8 +81,8 @@ uint64_t all_memory_regions(int fd);
+ uint64_t system_memory(int fd);
+ uint64_t vram_memory(int fd, int gt);
+ uint64_t vram_if_possible(int fd, int gt);
+-struct drm_xe_engine_class_instance *xe_engines(int fd);
+-struct drm_xe_engine_class_instance *xe_engine(int fd, int idx);
++struct drm_xe_query_engine_info *xe_engines(int fd);
++struct drm_xe_query_engine_info *xe_engine(int fd, int idx);
+ struct drm_xe_query_mem_region *xe_mem_region(int fd, uint64_t region);
+ const char *xe_region_name(uint64_t region);
+ uint16_t xe_region_class(int fd, uint64_t region);
 diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
-index d99bd51cf..4242e1a67 100644
+index 9d71b7463..b04a3443f 100644
 --- a/tests/intel/xe_create.c
 +++ b/tests/intel/xe_create.c
-@@ -54,7 +54,7 @@ static void create_invalid_size(int fd)
- 	uint32_t handle;
- 	int ret;
+@@ -148,7 +148,7 @@ static void create_execqueues(int fd, enum exec_queue_destroy ed)
+ 	igt_nsec_elapsed(&tv);
  
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
+ 	igt_fork(n, nproc) {
+-		struct drm_xe_engine_class_instance *hwe;
++		struct drm_xe_query_engine_info *engine;
+ 		uint32_t exec_queue, exec_queues[exec_queues_per_process];
+ 		int idx, err, i;
  
- 	xe_for_each_mem_region(fd, memreg, region) {
- 		memregion = xe_mem_region(fd, region);
-@@ -140,7 +140,7 @@ static void create_execqueues(int fd, enum exec_queue_destroy ed)
+@@ -156,8 +156,9 @@ static void create_execqueues(int fd, enum exec_queue_destroy ed)
  
- 	fd = drm_reopen_driver(fd);
- 	num_engines = xe_number_hw_engines(fd);
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 
- 	exec_queues_per_process = max_t(uint32_t, 1, MAXEXECQUEUES / nproc);
- 	igt_debug("nproc: %u, exec_queues per process: %u\n", nproc, exec_queues_per_process);
-@@ -199,7 +199,7 @@ static void create_massive_size(int fd)
- 	uint32_t handle;
- 	int ret;
- 
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 
- 	xe_for_each_mem_region(fd, memreg, region) {
- 		ret = __create_bo(fd, vm, -1ULL << 32, region, &handle);
-diff --git a/tests/intel/xe_dma_buf_sync.c b/tests/intel/xe_dma_buf_sync.c
-index 5c401b6dd..0d835dddb 100644
---- a/tests/intel/xe_dma_buf_sync.c
-+++ b/tests/intel/xe_dma_buf_sync.c
-@@ -144,8 +144,8 @@ test_export_dma_buf(struct drm_xe_engine_class_instance *hwe0,
- 		uint64_t sdi_addr = addr + sdi_offset;
- 		uint64_t spin_offset = (char *)&data[i]->spin - (char *)data[i];
- 		struct drm_xe_sync sync[2] = {
--			{ .flags = DRM_XE_SYNC_SYNCOBJ, },
--			{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
-+			{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ, },
-+			{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
- 		};
- 		struct drm_xe_exec exec = {
- 			.num_batch_buffer = 1,
+ 		for (i = 0; i < exec_queues_per_process; i++) {
+ 			idx = rand() % num_engines;
+-			hwe = xe_engine(fd, idx);
+-			err = __xe_exec_queue_create(fd, vm, hwe, 0, &exec_queue);
++			engine = xe_engine(fd, idx);
++			err = __xe_exec_queue_create(fd, vm, &engine->instance,
++						     0, &exec_queue);
+ 			igt_debug("[%2d] Create exec_queue: err=%d, exec_queue=%u [idx = %d]\n",
+ 				  n, err, exec_queue, i);
+ 			if (err)
 diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
-index 64168ed19..4ef30cf49 100644
+index d50cc6df1..cec3e0825 100644
 --- a/tests/intel/xe_drm_fdinfo.c
 +++ b/tests/intel/xe_drm_fdinfo.c
-@@ -48,8 +48,8 @@ static void test_active(int fd, struct drm_xe_engine_class_instance *eci)
- 	uint32_t vm;
- 	uint64_t addr = 0x1a0000;
- 	struct drm_xe_sync sync[2] = {
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
- 	};
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
-@@ -71,7 +71,7 @@ static void test_active(int fd, struct drm_xe_engine_class_instance *eci)
- 	struct xe_spin_opts spin_opts = { .preempt = true };
- 	int i, b, ret;
+@@ -40,7 +40,7 @@ IGT_TEST_DESCRIPTION("Read and verify drm client memory consumption using fdinfo
+ #define BO_SIZE (65536)
  
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 	bo_size = sizeof(*data) * N_EXEC_QUEUES;
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
- 			xe_get_default_alignment(fd));
-@@ -110,20 +110,20 @@ static void test_active(int fd, struct drm_xe_engine_class_instance *eci)
- 				xe_spin_init(&data[i].spin, &spin_opts);
- 				exec.exec_queue_id = exec_queues[e];
- 				exec.address = spin_opts.addr;
--				sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
--				sync[1].flags |= DRM_XE_SYNC_SIGNAL;
-+				sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+				sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 				sync[1].handle = syncobjs[e];
- 				xe_exec(fd, &exec);
- 				xe_spin_wait_started(&data[i].spin);
- 
- 				addr += bo_size;
--				sync[1].flags &= ~DRM_XE_SYNC_SIGNAL;
-+				sync[1].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
- 				sync[1].handle = syncobjs[e];
- 				xe_vm_bind_async(fd, vm, bind_exec_queues[e], bo, 0, addr,
- 						 bo_size, sync + 1, 1);
- 				addr += bo_size;
- 			} else {
--				sync[0].flags |= DRM_XE_SYNC_SIGNAL;
-+				sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 				xe_vm_bind_async(fd, vm, bind_exec_queues[e], bo, 0, addr,
- 						 bo_size, sync, 1);
- 			}
-@@ -149,7 +149,7 @@ static void test_active(int fd, struct drm_xe_engine_class_instance *eci)
- 
- 		syncobj_destroy(fd, sync[0].handle);
- 		sync[0].handle = syncobj_create(fd, 0);
--		sync[0].flags |= DRM_XE_SYNC_SIGNAL;
-+		sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 		xe_vm_unbind_all_async(fd, vm, 0, bo, sync, 1);
- 		igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
- 
-@@ -221,7 +221,7 @@ static void test_total_resident(int xe)
- 	uint64_t addr = 0x1a0000;
- 	int ret;
- 
--	vm = xe_vm_create(xe, DRM_XE_VM_CREATE_SCRATCH_PAGE, 0);
-+	vm = xe_vm_create(xe, DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE, 0);
- 
- 	xe_for_each_mem_region(xe, memreg, region) {
- 		uint64_t pre_size;
-diff --git a/tests/intel/xe_evict.c b/tests/intel/xe_evict.c
-index 5d8463270..6d953e58b 100644
---- a/tests/intel/xe_evict.c
-+++ b/tests/intel/xe_evict.c
-@@ -38,8 +38,8 @@ test_evict(int fd, struct drm_xe_engine_class_instance *eci,
- 	uint32_t bind_exec_queues[3] = { 0, 0, 0 };
- 	uint64_t addr = 0x100000000, base_addr = 0x100000000;
- 	struct drm_xe_sync sync[2] = {
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
- 	};
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
-@@ -63,12 +63,12 @@ test_evict(int fd, struct drm_xe_engine_class_instance *eci,
- 
- 	fd = drm_open_driver(DRIVER_XE);
- 
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 	if (flags & BIND_EXEC_QUEUE)
- 		bind_exec_queues[0] = xe_bind_exec_queue_create(fd, vm, 0, true);
- 	if (flags & MULTI_VM) {
--		vm2 = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
--		vm3 = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+		vm2 = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
-+		vm3 = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 		if (flags & BIND_EXEC_QUEUE) {
- 			bind_exec_queues[1] = xe_bind_exec_queue_create(fd, vm2,
- 									0, true);
-@@ -121,7 +121,7 @@ test_evict(int fd, struct drm_xe_engine_class_instance *eci,
- 				 ALIGN(sizeof(*data) * n_execs, 0x1000));
- 
- 		if (i < n_execs / 2) {
--			sync[0].flags |= DRM_XE_SYNC_SIGNAL;
-+			sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 			sync[0].handle = syncobj_create(fd, 0);
- 			if (flags & MULTI_VM) {
- 				xe_vm_bind_async(fd, vm3, bind_exec_queues[2], __bo,
-@@ -149,7 +149,7 @@ test_evict(int fd, struct drm_xe_engine_class_instance *eci,
- 		data[i].batch[b++] = MI_BATCH_BUFFER_END;
- 		igt_assert(b <= ARRAY_SIZE(data[i].batch));
- 
--		sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
-+		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
- 		if (i >= n_exec_queues)
- 			syncobj_reset(fd, &syncobjs[e], 1);
- 		sync[1].handle = syncobjs[e];
-@@ -216,7 +216,7 @@ test_evict_cm(int fd, struct drm_xe_engine_class_instance *eci,
- 	uint64_t addr = 0x100000000, base_addr = 0x100000000;
- #define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
- 	struct drm_xe_sync sync[1] = {
--		{ .flags = DRM_XE_SYNC_USER_FENCE | DRM_XE_SYNC_SIGNAL,
-+		{ .flags = DRM_XE_SYNC_FLAG_USER_FENCE | DRM_XE_SYNC_FLAG_SIGNAL,
- 		  .timeline_value = USER_FENCE_VALUE },
- 	};
- 	struct drm_xe_exec exec = {
-@@ -242,13 +242,13 @@ test_evict_cm(int fd, struct drm_xe_engine_class_instance *eci,
- 
- 	fd = drm_open_driver(DRIVER_XE);
- 
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT |
--			  DRM_XE_VM_CREATE_COMPUTE_MODE, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT |
-+			  DRM_XE_VM_CREATE_FLAG_COMPUTE_MODE, 0);
- 	if (flags & BIND_EXEC_QUEUE)
- 		bind_exec_queues[0] = xe_bind_exec_queue_create(fd, vm, 0, true);
- 	if (flags & MULTI_VM) {
--		vm2 = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT |
--				   DRM_XE_VM_CREATE_COMPUTE_MODE, 0);
-+		vm2 = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT |
-+				   DRM_XE_VM_CREATE_FLAG_COMPUTE_MODE, 0);
- 		if (flags & BIND_EXEC_QUEUE)
- 			bind_exec_queues[1] = xe_bind_exec_queue_create(fd, vm2,
- 									0, true);
-diff --git a/tests/intel/xe_evict_ccs.c b/tests/intel/xe_evict_ccs.c
-index 4f2876ecb..1f5c795ef 100644
---- a/tests/intel/xe_evict_ccs.c
-+++ b/tests/intel/xe_evict_ccs.c
-@@ -226,7 +226,7 @@ static void evict_single(int fd, int child, const struct config *config)
- 	uint32_t kb_left = config->mb_per_proc * SZ_1K;
- 	uint32_t min_alloc_kb = config->param->min_size_kb;
- 	uint32_t max_alloc_kb = config->param->max_size_kb;
--	uint32_t vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+	uint32_t vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 	uint64_t ahnd = intel_allocator_open(fd, vm, INTEL_ALLOCATOR_RELOC);
- 	uint8_t uc_mocs = intel_get_uc_mocs_index(fd);
- 	struct object *obj, *tmp;
-diff --git a/tests/intel/xe_exec_balancer.c b/tests/intel/xe_exec_balancer.c
-index 3ca3de881..8a0165b8c 100644
---- a/tests/intel/xe_exec_balancer.c
-+++ b/tests/intel/xe_exec_balancer.c
-@@ -37,8 +37,8 @@ static void test_all_active(int fd, int gt, int class)
- 	uint32_t vm;
- 	uint64_t addr = 0x1a0000;
- 	struct drm_xe_sync sync[2] = {
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
- 	};
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
-@@ -66,7 +66,7 @@ static void test_all_active(int fd, int gt, int class)
- 	if (num_placements < 2)
- 		return;
- 
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 	bo_size = sizeof(*data) * num_placements;
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
- 
-@@ -93,8 +93,8 @@ static void test_all_active(int fd, int gt, int class)
- 	for (i = 0; i < num_placements; i++) {
- 		spin_opts.addr = addr + (char *)&data[i].spin - (char *)data;
- 		xe_spin_init(&data[i].spin, &spin_opts);
--		sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
--		sync[1].flags |= DRM_XE_SYNC_SIGNAL;
-+		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 		sync[1].handle = syncobjs[i];
- 
- 		exec.exec_queue_id = exec_queues[i];
-@@ -110,7 +110,7 @@ static void test_all_active(int fd, int gt, int class)
- 	}
- 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
- 
--	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
-+	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
- 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
- 
-@@ -176,8 +176,8 @@ test_exec(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 	uint32_t vm;
- 	uint64_t addr = 0x1a0000;
- 	struct drm_xe_sync sync[2] = {
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
- 	};
- 	struct drm_xe_exec exec = {
- 		.num_syncs = 2,
-@@ -207,7 +207,7 @@ test_exec(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 	if (num_placements < 2)
- 		return;
- 
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 	bo_size = sizeof(*data) * n_execs;
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
- 
-@@ -269,8 +269,8 @@ test_exec(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 		data[i].batch[b++] = MI_BATCH_BUFFER_END;
- 		igt_assert(b <= ARRAY_SIZE(data[i].batch));
- 
--		sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
--		sync[1].flags |= DRM_XE_SYNC_SIGNAL;
-+		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 		sync[1].handle = syncobjs[e];
- 
- 		exec.exec_queue_id = exec_queues[e];
-@@ -281,11 +281,11 @@ test_exec(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 		xe_exec(fd, &exec);
- 
- 		if (flags & REBIND && i + 1 != n_execs) {
--			sync[1].flags &= ~DRM_XE_SYNC_SIGNAL;
-+			sync[1].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
- 			xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size,
- 					   sync + 1, 1);
- 
--			sync[0].flags |= DRM_XE_SYNC_SIGNAL;
-+			sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 			addr += bo_size;
- 			if (bo)
- 				xe_vm_bind_async(fd, vm, 0, bo, 0, addr,
-@@ -329,7 +329,7 @@ test_exec(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 					NULL));
- 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
- 
--	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
-+	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
- 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
- 
-@@ -399,7 +399,7 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 	uint64_t addr = 0x1a0000;
- #define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
- 	struct drm_xe_sync sync[1] = {
--		{ .flags = DRM_XE_SYNC_USER_FENCE | DRM_XE_SYNC_SIGNAL,
-+		{ .flags = DRM_XE_SYNC_FLAG_USER_FENCE | DRM_XE_SYNC_FLAG_SIGNAL,
- 	          .timeline_value = USER_FENCE_VALUE },
- 	};
- 	struct drm_xe_exec exec = {
-@@ -433,8 +433,8 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 	if (num_placements < 2)
- 		return;
- 
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT |
--			  DRM_XE_VM_CREATE_COMPUTE_MODE, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT |
-+			  DRM_XE_VM_CREATE_FLAG_COMPUTE_MODE, 0);
- 	bo_size = sizeof(*data) * n_execs;
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
- 			xe_get_default_alignment(fd));
-diff --git a/tests/intel/xe_exec_basic.c b/tests/intel/xe_exec_basic.c
-index 232ddde8e..a401f0165 100644
---- a/tests/intel/xe_exec_basic.c
-+++ b/tests/intel/xe_exec_basic.c
-@@ -81,8 +81,8 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 	  int n_exec_queues, int n_execs, int n_vm, unsigned int flags)
+ /* Subtests */
+-static void test_active(int fd, struct drm_xe_engine_class_instance *eci)
++static void test_active(int fd, struct drm_xe_query_engine_info *engine)
  {
- 	struct drm_xe_sync sync[2] = {
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
- 	};
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
-@@ -109,7 +109,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 	igt_assert(n_vm <= MAX_N_EXEC_QUEUES);
+ 	struct drm_xe_query_mem_region *memregion;
+ 	uint64_t memreg = all_memory_regions(fd), region;
+@@ -89,7 +89,8 @@ static void test_active(int fd, struct drm_xe_engine_class_instance *eci)
+ 		data = xe_bo_map(fd, bo, bo_size);
  
- 	for (i = 0; i < n_vm; ++i)
--		vm[i] = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+		vm[i] = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 	bo_size = sizeof(*data) * n_execs;
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
- 			xe_get_default_alignment(fd));
-@@ -199,9 +199,9 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 		data[i].batch[b++] = MI_BATCH_BUFFER_END;
- 		igt_assert(b <= ARRAY_SIZE(data[i].batch));
- 
--		sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
-+		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
- 		sync[0].handle = bind_syncobjs[cur_vm];
--		sync[1].flags |= DRM_XE_SYNC_SIGNAL;
-+		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 		sync[1].handle = syncobjs[e];
- 
- 		exec.exec_queue_id = exec_queues[e];
-@@ -213,11 +213,11 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 		if (flags & REBIND && i + 1 != n_execs) {
- 			uint32_t __vm = vm[cur_vm];
- 
--			sync[1].flags &= ~DRM_XE_SYNC_SIGNAL;
-+			sync[1].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
- 			xe_vm_unbind_async(fd, __vm, bind_exec_queues[e], 0,
- 					   __addr, bo_size, sync + 1, 1);
- 
--			sync[0].flags |= DRM_XE_SYNC_SIGNAL;
-+			sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 			addr[i % n_vm] += bo_size;
- 			__addr = addr[i % n_vm];
- 			if (bo)
-@@ -266,7 +266,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 		igt_assert(syncobj_wait(fd, &bind_syncobjs[i], 1, INT64_MAX, 0,
- 					NULL));
- 
--	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
-+	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 	for (i = 0; i < n_vm; ++i) {
- 		syncobj_reset(fd, &sync[0].handle, 1);
- 		xe_vm_unbind_async(fd, vm[i], bind_exec_queues[i], 0, addr[i],
-diff --git a/tests/intel/xe_exec_compute_mode.c b/tests/intel/xe_exec_compute_mode.c
-index b0a677dca..20d3fc6e8 100644
---- a/tests/intel/xe_exec_compute_mode.c
-+++ b/tests/intel/xe_exec_compute_mode.c
-@@ -88,7 +88,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 	uint64_t addr = 0x1a0000;
- #define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
- 	struct drm_xe_sync sync[1] = {
--		{ .flags = DRM_XE_SYNC_USER_FENCE | DRM_XE_SYNC_SIGNAL,
-+		{ .flags = DRM_XE_SYNC_FLAG_USER_FENCE | DRM_XE_SYNC_FLAG_SIGNAL,
- 	          .timeline_value = USER_FENCE_VALUE },
- 	};
- 	struct drm_xe_exec exec = {
-@@ -113,8 +113,8 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 
- 	igt_assert(n_exec_queues <= MAX_N_EXECQUEUES);
- 
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT |
--			  DRM_XE_VM_CREATE_COMPUTE_MODE, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT |
-+			  DRM_XE_VM_CREATE_FLAG_COMPUTE_MODE, 0);
- 	bo_size = sizeof(*data) * n_execs;
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
- 			xe_get_default_alignment(fd));
-diff --git a/tests/intel/xe_exec_fault_mode.c b/tests/intel/xe_exec_fault_mode.c
-index 92359d1a7..b66f31419 100644
---- a/tests/intel/xe_exec_fault_mode.c
-+++ b/tests/intel/xe_exec_fault_mode.c
-@@ -8,7 +8,7 @@
-  * Category: Hardware building block
-  * Sub-category: execbuf
-  * Functionality: fault mode
-- * GPU requirements: GPU needs support for DRM_XE_VM_CREATE_FAULT_MODE
-+ * GPU requirements: GPU needs support for DRM_XE_VM_CREATE_FLAG_FAULT_MODE
-  */
- 
- #include <fcntl.h>
-@@ -107,7 +107,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 	uint64_t addr = 0x1a0000;
- #define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
- 	struct drm_xe_sync sync[1] = {
--		{ .flags = DRM_XE_SYNC_USER_FENCE | DRM_XE_SYNC_SIGNAL,
-+		{ .flags = DRM_XE_SYNC_FLAG_USER_FENCE | DRM_XE_SYNC_FLAG_SIGNAL,
- 	          .timeline_value = USER_FENCE_VALUE },
- 	};
- 	struct drm_xe_exec exec = {
-@@ -131,8 +131,8 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 
- 	igt_assert(n_exec_queues <= MAX_N_EXEC_QUEUES);
- 
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT |
--			  DRM_XE_VM_CREATE_FAULT_MODE, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT |
-+			  DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
- 	bo_size = sizeof(*data) * n_execs;
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
- 			xe_get_default_alignment(fd));
-@@ -347,7 +347,7 @@ test_atomic(int fd, struct drm_xe_engine_class_instance *eci,
- 	uint64_t addr = 0x1a0000, addr_wait;
- #define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
- 	struct drm_xe_sync sync[1] = {
--		{ .flags = DRM_XE_SYNC_USER_FENCE | DRM_XE_SYNC_SIGNAL,
-+		{ .flags = DRM_XE_SYNC_FLAG_USER_FENCE | DRM_XE_SYNC_FLAG_SIGNAL,
- 	          .timeline_value = USER_FENCE_VALUE },
- 	};
- 	struct drm_xe_exec exec = {
-@@ -375,8 +375,8 @@ test_atomic(int fd, struct drm_xe_engine_class_instance *eci,
- 	uint32_t *ptr;
- 	int i, b, wait_idx = 0;
- 
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT |
--			  DRM_XE_VM_CREATE_FAULT_MODE, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT |
-+			  DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
- 	bo_size = sizeof(*data) * n_atomic;
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
- 			xe_get_default_alignment(fd));
-diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-index 39647b736..195e62911 100644
---- a/tests/intel/xe_exec_reset.c
-+++ b/tests/intel/xe_exec_reset.c
-@@ -30,8 +30,8 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci)
- 	uint32_t vm;
- 	uint64_t addr = 0x1a0000;
- 	struct drm_xe_sync sync[2] = {
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
- 	};
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
-@@ -45,7 +45,7 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci)
- 	struct xe_spin *spin;
- 	struct xe_spin_opts spin_opts = { .addr = addr, .preempt = false };
- 
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 	bo_size = sizeof(*spin);
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
- 			xe_get_default_alignment(fd));
-@@ -62,8 +62,8 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci)
- 
- 	xe_spin_init(spin, &spin_opts);
- 
--	sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
--	sync[1].flags |= DRM_XE_SYNC_SIGNAL;
-+	sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+	sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 	sync[1].handle = syncobj;
- 
- 	exec.exec_queue_id = exec_queue;
-@@ -78,7 +78,7 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci)
- 	igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
- 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
- 
--	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
-+	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
- 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
- 
-@@ -140,8 +140,8 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 	uint32_t vm;
- 	uint64_t addr = 0x1a0000;
- 	struct drm_xe_sync sync[2] = {
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
- 	};
- 	struct drm_xe_exec exec = {
- 		.num_syncs = 2,
-@@ -176,7 +176,7 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 	if (num_placements < 2)
- 		return;
- 
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 	bo_size = sizeof(*data) * n_execs;
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
- 			xe_get_default_alignment(fd));
-@@ -257,8 +257,8 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 		for (j = 0; j < num_placements && flags & PARALLEL; ++j)
- 			batches[j] = exec_addr;
- 
--		sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
--		sync[1].flags |= DRM_XE_SYNC_SIGNAL;
-+		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 		sync[1].handle = syncobjs[e];
- 
- 		exec.exec_queue_id = exec_queues[e];
-@@ -288,7 +288,7 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 					NULL));
- 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
- 
--	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
-+	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
- 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
- 
-@@ -336,8 +336,8 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
- 	uint32_t vm;
- 	uint64_t addr = 0x1a0000;
- 	struct drm_xe_sync sync[2] = {
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
- 	};
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
-@@ -362,7 +362,7 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
- 	if (flags & CLOSE_FD)
- 		fd = drm_open_driver(DRIVER_XE);
- 
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 	bo_size = sizeof(*data) * n_execs;
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
- 			xe_get_default_alignment(fd));
-@@ -425,8 +425,8 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
- 			exec_addr = batch_addr;
+ 		for (i = 0; i < N_EXEC_QUEUES; i++) {
+-			exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
++			exec_queues[i] = xe_exec_queue_create(fd, vm,
++							      &engine->instance, 0);
+ 			bind_exec_queues[i] = xe_bind_exec_queue_create(fd, vm, 0, true);
+ 			syncobjs[i] = syncobj_create(fd, 0);
  		}
- 
--		sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
--		sync[1].flags |= DRM_XE_SYNC_SIGNAL;
-+		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 		sync[1].handle = syncobjs[e];
- 
- 		exec.exec_queue_id = exec_queues[e];
-@@ -455,7 +455,7 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
- 					NULL));
- 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
- 
--	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
-+	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
- 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
- 
-@@ -501,7 +501,7 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
- 	uint64_t addr = 0x1a0000;
- #define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
- 	struct drm_xe_sync sync[1] = {
--		{ .flags = DRM_XE_SYNC_USER_FENCE | DRM_XE_SYNC_SIGNAL,
-+		{ .flags = DRM_XE_SYNC_FLAG_USER_FENCE | DRM_XE_SYNC_FLAG_SIGNAL,
- 	          .timeline_value = USER_FENCE_VALUE },
- 	};
- 	struct drm_xe_exec exec = {
-@@ -528,8 +528,8 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
- 	if (flags & CLOSE_FD)
- 		fd = drm_open_driver(DRIVER_XE);
- 
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT |
--			  DRM_XE_VM_CREATE_COMPUTE_MODE, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT |
-+			  DRM_XE_VM_CREATE_FLAG_COMPUTE_MODE, 0);
- 	bo_size = sizeof(*data) * n_execs;
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
- 			xe_get_default_alignment(fd));
 diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
-index 4ca76b43a..9c14bfd14 100644
+index 0b7b3d3e9..48e843af5 100644
 --- a/tests/intel/xe_exec_store.c
 +++ b/tests/intel/xe_exec_store.c
-@@ -55,7 +55,7 @@ static void store_dword_batch(struct data *data, uint64_t addr, int value)
- static void store(int fd)
- {
- 	struct drm_xe_sync sync = {
--		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
-+		.flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL,
+@@ -63,7 +63,7 @@ static void store(int fd)
+ 		.syncs = to_user_pointer(&sync),
  	};
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
-@@ -75,7 +75,7 @@ static void store(int fd)
- 	syncobj = syncobj_create(fd, 0);
- 	sync.handle = syncobj;
+ 	struct data *data;
+-	struct drm_xe_engine_class_instance *engine;
++	struct drm_xe_query_engine_info *engine;
+ 	uint32_t vm;
+ 	uint32_t exec_queue;
+ 	uint32_t syncobj;
+@@ -82,14 +82,14 @@ static void store(int fd)
  
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 	bo_size = sizeof(*data);
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
- 			xe_get_default_alignment(fd));
-@@ -91,7 +91,7 @@ static void store(int fd)
- 	exec_queue = xe_exec_queue_create(fd, vm, hw_engine, 0);
+ 	engine = xe_engine(fd, 1);
+ 	bo = xe_bo_create(fd, vm, bo_size,
+-			  vram_if_possible(fd, engine->gt_id),
++			  vram_if_possible(fd, engine->instance.gt_id),
+ 			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+ 
+-	xe_vm_bind_async(fd, vm, engine->gt_id, bo, 0, addr, bo_size, &sync, 1);
++	xe_vm_bind_async(fd, vm, engine->instance.gt_id, bo, 0, addr, bo_size, &sync, 1);
+ 	data = xe_bo_map(fd, bo, bo_size);
+ 	store_dword_batch(data, addr, value);
+ 
+-	exec_queue = xe_exec_queue_create(fd, vm, engine, 0);
++	exec_queue = xe_exec_queue_create(fd, vm, &engine->instance, 0);
  	exec.exec_queue_id = exec_queue;
  	exec.address = data->addr;
--	sync.flags &= DRM_XE_SYNC_SIGNAL;
-+	sync.flags &= DRM_XE_SYNC_FLAG_SIGNAL;
- 	xe_exec(fd, &exec);
- 
- 	igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
-@@ -121,8 +121,8 @@ static void store_cachelines(int fd, struct drm_xe_engine_class_instance *eci,
- 			     unsigned int flags)
- {
- 	struct drm_xe_sync sync[2] = {
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, }
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, }
- 	};
- 
- 	struct drm_xe_exec exec = {
-@@ -143,7 +143,7 @@ static void store_cachelines(int fd, struct drm_xe_engine_class_instance *eci,
- 	size_t bo_size = 4096;
- 
- 	bo_size = ALIGN(bo_size, xe_get_default_alignment(fd));
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_SIMPLE);
- 	exec_queues = xe_exec_queue_create(fd, vm, eci, 0);
- 	syncobjs = syncobj_create(fd, 0);
-@@ -173,8 +173,8 @@ static void store_cachelines(int fd, struct drm_xe_engine_class_instance *eci,
- 		batch_map[b++] = value[n];
- 	}
- 	batch_map[b++] = MI_BATCH_BUFFER_END;
--	sync[0].flags &= DRM_XE_SYNC_SIGNAL;
--	sync[1].flags |= DRM_XE_SYNC_SIGNAL;
-+	sync[0].flags &= DRM_XE_SYNC_FLAG_SIGNAL;
-+	sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 	sync[1].handle = syncobjs;
- 	exec.exec_queue_id = exec_queues;
- 	xe_exec(fd, &exec);
-@@ -210,8 +210,8 @@ static void store_cachelines(int fd, struct drm_xe_engine_class_instance *eci,
- static void store_all(int fd, int gt, int class)
- {
- 	struct drm_xe_sync sync[2] = {
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, }
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, }
- 	};
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
-@@ -230,7 +230,7 @@ static void store_all(int fd, int gt, int class)
- 	struct drm_xe_engine_class_instance *hwe;
- 	int i, num_placements = 0;
- 
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 	bo_size = sizeof(*data);
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
- 			xe_get_default_alignment(fd));
-@@ -267,8 +267,8 @@ static void store_all(int fd, int gt, int class)
- 	for (i = 0; i < num_placements; i++) {
- 
- 		store_dword_batch(data, addr, i);
--		sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
--		sync[1].flags |= DRM_XE_SYNC_SIGNAL;
-+		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 		sync[1].handle = syncobjs[i];
- 
- 		exec.exec_queue_id = exec_queues[i];
-diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
-index b814dcdf5..bb979b18c 100644
---- a/tests/intel/xe_exec_threads.c
-+++ b/tests/intel/xe_exec_threads.c
-@@ -47,8 +47,8 @@ test_balancer(int fd, int gt, uint32_t vm, uint64_t addr, uint64_t userptr,
- 	      int class, int n_exec_queues, int n_execs, unsigned int flags)
- {
- 	struct drm_xe_sync sync[2] = {
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
- 	};
- 	struct drm_xe_sync sync_all[MAX_N_EXEC_QUEUES];
- 	struct drm_xe_exec exec = {
-@@ -77,7 +77,7 @@ test_balancer(int fd, int gt, uint32_t vm, uint64_t addr, uint64_t userptr,
- 	}
- 
- 	if (!vm) {
--		vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+		vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 		owns_vm = true;
- 	}
- 
-@@ -125,7 +125,7 @@ test_balancer(int fd, int gt, uint32_t vm, uint64_t addr, uint64_t userptr,
- 					&create), 0);
- 		exec_queues[i] = create.exec_queue_id;
- 		syncobjs[i] = syncobj_create(fd, 0);
--		sync_all[i].flags = DRM_XE_SYNC_SYNCOBJ;
-+		sync_all[i].flags = DRM_XE_SYNC_FLAG_SYNCOBJ;
- 		sync_all[i].handle = syncobjs[i];
- 	};
- 	exec.num_batch_buffer = flags & PARALLEL ? num_placements : 1;
-@@ -158,8 +158,8 @@ test_balancer(int fd, int gt, uint32_t vm, uint64_t addr, uint64_t userptr,
- 		data[i].batch[b++] = MI_BATCH_BUFFER_END;
- 		igt_assert(b <= ARRAY_SIZE(data[i].batch));
- 
--		sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
--		sync[1].flags |= DRM_XE_SYNC_SIGNAL;
-+		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 		sync[1].handle = syncobjs[e];
- 
- 		exec.exec_queue_id = exec_queues[e];
-@@ -173,7 +173,7 @@ test_balancer(int fd, int gt, uint32_t vm, uint64_t addr, uint64_t userptr,
- 			xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size,
- 					   sync_all, n_exec_queues);
- 
--			sync[0].flags |= DRM_XE_SYNC_SIGNAL;
-+			sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 			addr += bo_size;
- 			if (bo)
- 				xe_vm_bind_async(fd, vm, 0, bo, 0, addr,
-@@ -221,7 +221,7 @@ test_balancer(int fd, int gt, uint32_t vm, uint64_t addr, uint64_t userptr,
- 					NULL));
- 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
- 
--	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
-+	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
- 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
- 
-@@ -254,7 +254,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- {
- #define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
- 	struct drm_xe_sync sync[1] = {
--		{ .flags = DRM_XE_SYNC_USER_FENCE | DRM_XE_SYNC_SIGNAL,
-+		{ .flags = DRM_XE_SYNC_FLAG_USER_FENCE | DRM_XE_SYNC_FLAG_SIGNAL,
- 	          .timeline_value = USER_FENCE_VALUE },
- 	};
- 	struct drm_xe_exec exec = {
-@@ -285,8 +285,8 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 	}
- 
- 	if (!vm) {
--		vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT |
--				  DRM_XE_VM_CREATE_COMPUTE_MODE, 0);
-+		vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT |
-+				  DRM_XE_VM_CREATE_FLAG_COMPUTE_MODE, 0);
- 		owns_vm = true;
- 	}
- 
-@@ -457,8 +457,8 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 		 int n_execs, unsigned int flags)
- {
- 	struct drm_xe_sync sync[2] = {
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
- 	};
- 	struct drm_xe_sync sync_all[MAX_N_EXEC_QUEUES];
- 	struct drm_xe_exec exec = {
-@@ -489,7 +489,7 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 	}
- 
- 	if (!vm) {
--		vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+		vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 		owns_vm = true;
- 	}
- 
-@@ -536,7 +536,7 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 		else
- 			bind_exec_queues[i] = 0;
- 		syncobjs[i] = syncobj_create(fd, 0);
--		sync_all[i].flags = DRM_XE_SYNC_SYNCOBJ;
-+		sync_all[i].flags = DRM_XE_SYNC_FLAG_SYNCOBJ;
- 		sync_all[i].handle = syncobjs[i];
- 	};
- 
-@@ -576,8 +576,8 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 			exec_addr = batch_addr;
- 		}
- 
--		sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
--		sync[1].flags |= DRM_XE_SYNC_SIGNAL;
-+		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 		sync[1].handle = syncobjs[e];
- 
- 		exec.exec_queue_id = exec_queues[e];
-@@ -599,7 +599,7 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 					   0, addr, bo_size,
- 					   sync_all, n_exec_queues);
- 
--			sync[0].flags |= DRM_XE_SYNC_SIGNAL;
-+			sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 			addr += bo_size;
- 			if (bo)
- 				xe_vm_bind_async(fd, vm, bind_exec_queues[e],
-@@ -649,7 +649,7 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 					NULL));
- 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
- 
--	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
-+	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 	xe_vm_unbind_async(fd, vm, bind_exec_queues[0], 0, addr,
- 			   bo_size, sync, 1);
- 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-@@ -1001,11 +1001,11 @@ static void threads(int fd, int flags)
- 
- 	if (flags & SHARED_VM) {
- 		vm_legacy_mode = xe_vm_create(fd,
--					      DRM_XE_VM_CREATE_ASYNC_DEFAULT,
-+					      DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT,
- 					      0);
- 		vm_compute_mode = xe_vm_create(fd,
--					       DRM_XE_VM_CREATE_ASYNC_DEFAULT |
--					       DRM_XE_VM_CREATE_COMPUTE_MODE,
-+					       DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT |
-+					       DRM_XE_VM_CREATE_FLAG_COMPUTE_MODE,
- 					       0);
- 	}
- 
-diff --git a/tests/intel/xe_exercise_blt.c b/tests/intel/xe_exercise_blt.c
-index df774130f..fd310138d 100644
---- a/tests/intel/xe_exercise_blt.c
-+++ b/tests/intel/xe_exercise_blt.c
-@@ -280,7 +280,7 @@ static void fast_copy_test(int xe,
- 			region1 = igt_collection_get_value(regions, 0);
- 			region2 = igt_collection_get_value(regions, 1);
- 
--			vm = xe_vm_create(xe, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+			vm = xe_vm_create(xe, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 			exec_queue = xe_exec_queue_create(xe, vm, &inst, 0);
- 			ctx = intel_ctx_xe(xe, vm, exec_queue, 0, 0, 0);
- 
-diff --git a/tests/intel/xe_guc_pc.c b/tests/intel/xe_guc_pc.c
-index 3f2c4ae23..fa2f20cca 100644
---- a/tests/intel/xe_guc_pc.c
-+++ b/tests/intel/xe_guc_pc.c
-@@ -37,8 +37,8 @@ static void exec_basic(int fd, struct drm_xe_engine_class_instance *eci,
- 	uint32_t vm;
- 	uint64_t addr = 0x1a0000;
- 	struct drm_xe_sync sync[2] = {
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
- 	};
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
-@@ -60,7 +60,7 @@ static void exec_basic(int fd, struct drm_xe_engine_class_instance *eci,
- 	igt_assert(n_exec_queues <= MAX_N_EXEC_QUEUES);
- 	igt_assert(n_execs > 0);
- 
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 	bo_size = sizeof(*data) * n_execs;
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
- 			xe_get_default_alignment(fd));
-@@ -95,8 +95,8 @@ static void exec_basic(int fd, struct drm_xe_engine_class_instance *eci,
- 		data[i].batch[b++] = MI_BATCH_BUFFER_END;
- 		igt_assert(b <= ARRAY_SIZE(data[i].batch));
- 
--		sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
--		sync[1].flags |= DRM_XE_SYNC_SIGNAL;
-+		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 		sync[1].handle = syncobjs[e];
- 
- 		exec.exec_queue_id = exec_queues[e];
-@@ -114,7 +114,7 @@ static void exec_basic(int fd, struct drm_xe_engine_class_instance *eci,
- 
- 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
- 
--	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
-+	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 	xe_vm_unbind_async(fd, vm, bind_exec_queues[0], 0, addr,
- 			   bo_size, sync, 1);
- 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-diff --git a/tests/intel/xe_huc_copy.c b/tests/intel/xe_huc_copy.c
-index 4f5ce2212..eda9e5216 100644
---- a/tests/intel/xe_huc_copy.c
-+++ b/tests/intel/xe_huc_copy.c
-@@ -118,7 +118,7 @@ __test_huc_copy(int fd, uint32_t vm, struct drm_xe_engine_class_instance *hwe)
- 	};
- 
- 	exec_queue = xe_exec_queue_create(fd, vm, hwe, 0);
--	sync.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL;
-+	sync.flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL;
- 	sync.handle = syncobj_create(fd, 0);
- 
- 	for(int i = 0; i < BO_DICT_ENTRIES; i++) {
-@@ -156,7 +156,7 @@ test_huc_copy(int fd)
- 	uint32_t vm;
- 	uint32_t tested_gts = 0;
- 
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 
- 	xe_for_each_hw_engine(fd, hwe) {
- 		if (hwe->engine_class == DRM_XE_ENGINE_CLASS_VIDEO_DECODE &&
+ 	sync.flags &= DRM_XE_SYNC_FLAG_SIGNAL;
 diff --git a/tests/intel/xe_intel_bb.c b/tests/intel/xe_intel_bb.c
-index 26e4dcc85..d66996cd5 100644
+index e7a566f62..b64812f9d 100644
 --- a/tests/intel/xe_intel_bb.c
 +++ b/tests/intel/xe_intel_bb.c
-@@ -191,7 +191,7 @@ static void simple_bb(struct buf_ops *bops, bool new_context)
- 	intel_bb_reset(ibb, true);
+@@ -192,7 +192,8 @@ static void simple_bb(struct buf_ops *bops, bool new_context)
  
  	if (new_context) {
--		vm = xe_vm_create(xe, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+		vm = xe_vm_create(xe, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 		ctx = xe_exec_queue_create(xe, vm, xe_hw_engine(xe, 0), 0);
+ 		vm = xe_vm_create(xe, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
+-		ctx = xe_exec_queue_create(xe, vm, xe_engine(xe, 0), 0);
++		ctx = xe_exec_queue_create(xe, vm, &xe_engine(xe, 0)->instance,
++					   0);
  		intel_bb_destroy(ibb);
  		ibb = intel_bb_create_with_context(xe, ctx, vm, NULL, PAGE_SIZE);
+ 		intel_bb_out(ibb, MI_BATCH_BUFFER_END);
 diff --git a/tests/intel/xe_noexec_ping_pong.c b/tests/intel/xe_noexec_ping_pong.c
-index 88b22ed11..9c2a70ff3 100644
+index e27cc4582..585af413d 100644
 --- a/tests/intel/xe_noexec_ping_pong.c
 +++ b/tests/intel/xe_noexec_ping_pong.c
-@@ -64,7 +64,7 @@ static void test_ping_pong(int fd, struct drm_xe_engine_class_instance *eci)
- 	 * stats.
- 	 */
- 	for (i = 0; i < NUM_VMS; ++i) {
--		vm[i] = xe_vm_create(fd, DRM_XE_VM_CREATE_COMPUTE_MODE, 0);
-+		vm[i] = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_COMPUTE_MODE, 0);
- 		for (j = 0; j < NUM_BOS; ++j) {
- 			igt_debug("Creating bo size %lu for vm %u\n",
- 				  (unsigned long) bo_size,
-diff --git a/tests/intel/xe_perf_pmu.c b/tests/intel/xe_perf_pmu.c
-index a0dd30e50..e9d05cf2b 100644
---- a/tests/intel/xe_perf_pmu.c
-+++ b/tests/intel/xe_perf_pmu.c
-@@ -81,8 +81,8 @@ static void test_any_engine_busyness(int fd, struct drm_xe_engine_class_instance
- 	uint32_t vm;
- 	uint64_t addr = 0x1a0000;
- 	struct drm_xe_sync sync[2] = {
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
- 	};
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
-@@ -98,7 +98,7 @@ static void test_any_engine_busyness(int fd, struct drm_xe_engine_class_instance
- 	uint32_t pmu_fd;
- 	uint64_t count, idle;
+@@ -43,7 +43,7 @@
+   *	there is worked queued on one of the VM's compute exec_queues.
+  */
  
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 	bo_size = sizeof(*spin);
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
- 			xe_get_default_alignment(fd));
-@@ -118,8 +118,8 @@ static void test_any_engine_busyness(int fd, struct drm_xe_engine_class_instance
- 
- 	xe_spin_init(spin, &spin_opts);
- 
--	sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
--	sync[1].flags |= DRM_XE_SYNC_SIGNAL;
-+	sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+	sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 	sync[1].handle = syncobj;
- 
- 	exec.exec_queue_id = exec_queue;
-@@ -135,7 +135,7 @@ static void test_any_engine_busyness(int fd, struct drm_xe_engine_class_instance
- 	igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
- 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
- 
--	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
-+	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
- 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
- 
-@@ -185,8 +185,8 @@ static void test_engine_group_busyness(int fd, int gt, int class, const char *na
- 	uint32_t vm;
- 	uint64_t addr = 0x1a0000;
- 	struct drm_xe_sync sync[2] = {
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
- 	};
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
-@@ -219,7 +219,7 @@ static void test_engine_group_busyness(int fd, int gt, int class, const char *na
- 	igt_skip_on_f(!num_placements, "Engine class:%d gt:%d not enabled on this platform\n",
- 		      class, gt);
- 
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 	bo_size = sizeof(*data) * num_placements;
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
- 
-@@ -250,8 +250,8 @@ static void test_engine_group_busyness(int fd, int gt, int class, const char *na
- 	for (i = 0; i < num_placements; i++) {
- 		spin_opts.addr = addr + (char *)&data[i].spin - (char *)data;
- 		xe_spin_init(&data[i].spin, &spin_opts);
--		sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
--		sync[1].flags |= DRM_XE_SYNC_SIGNAL;
-+		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 		sync[1].handle = syncobjs[i];
- 
- 		exec.exec_queue_id = exec_queues[i];
-@@ -268,7 +268,7 @@ static void test_engine_group_busyness(int fd, int gt, int class, const char *na
- 
- 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
- 
--	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
-+	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
- 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
- 
-diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-index d07ed4535..18afb68b0 100644
---- a/tests/intel/xe_pm.c
-+++ b/tests/intel/xe_pm.c
-@@ -231,8 +231,8 @@ test_exec(device_t device, struct drm_xe_engine_class_instance *eci,
- 	uint32_t vm;
- 	uint64_t addr = 0x1a0000;
- 	struct drm_xe_sync sync[2] = {
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
- 	};
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
-@@ -259,7 +259,7 @@ test_exec(device_t device, struct drm_xe_engine_class_instance *eci,
- 	if (check_rpm)
- 		igt_assert(in_d3(device, d_state));
- 
--	vm = xe_vm_create(device.fd_xe, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+	vm = xe_vm_create(device.fd_xe, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 
- 	if (check_rpm)
- 		igt_assert(out_of_d3(device, d_state));
-@@ -304,8 +304,8 @@ test_exec(device_t device, struct drm_xe_engine_class_instance *eci,
- 		data[i].batch[b++] = MI_BATCH_BUFFER_END;
- 		igt_assert(b <= ARRAY_SIZE(data[i].batch));
- 
--		sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
--		sync[1].flags |= DRM_XE_SYNC_SIGNAL;
-+		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 		sync[1].handle = syncobjs[e];
- 
- 		exec.exec_queue_id = exec_queues[e];
-@@ -331,7 +331,7 @@ test_exec(device_t device, struct drm_xe_engine_class_instance *eci,
- 	if (check_rpm && runtime_usage_available(device.pci_xe))
- 		rpm_usage = igt_pm_get_runtime_usage(device.pci_xe);
- 
--	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
-+	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 	xe_vm_unbind_async(device.fd_xe, vm, bind_exec_queues[0], 0, addr,
- 			   bo_size, sync, 1);
- 	igt_assert(syncobj_wait(device.fd_xe, &sync[0].handle, 1, INT64_MAX, 0,
-diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
-index 8e9197fae..c87eeef3c 100644
---- a/tests/intel/xe_pm_residency.c
-+++ b/tests/intel/xe_pm_residency.c
-@@ -87,7 +87,7 @@ static void exec_load(int fd, struct drm_xe_engine_class_instance *hwe, unsigned
- 	} *data;
- 
- 	struct drm_xe_sync sync = {
--		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
-+		.flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL,
- 	};
- 
- 	struct drm_xe_exec exec = {
-diff --git a/tests/intel/xe_spin_batch.c b/tests/intel/xe_spin_batch.c
-index eb5d6aba8..6ab604d9b 100644
---- a/tests/intel/xe_spin_batch.c
-+++ b/tests/intel/xe_spin_batch.c
-@@ -145,7 +145,7 @@ static void xe_spin_fixed_duration(int fd)
+-static void test_ping_pong(int fd, struct drm_xe_engine_class_instance *eci)
++static void test_ping_pong(int fd, struct drm_xe_query_engine_info *engine)
  {
- 	struct drm_xe_sync sync = {
- 		.handle = syncobj_create(fd, 0),
--		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
-+		.flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL,
- 	};
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
-diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-index c1de18e65..48834f2de 100644
---- a/tests/intel/xe_vm.c
-+++ b/tests/intel/xe_vm.c
-@@ -89,7 +89,7 @@ write_dwords(int fd, uint32_t vm, int n_dwords, uint64_t *addrs)
- static void
- test_scratch(int fd)
- {
--	uint32_t vm = xe_vm_create(fd, DRM_XE_VM_CREATE_SCRATCH_PAGE, 0);
-+	uint32_t vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE, 0);
- 	uint64_t addrs[] = {
- 		0x000000000000ull,
- 		0x7ffdb86402d8ull,
-@@ -124,7 +124,7 @@ __test_bind_one_bo(int fd, uint32_t vm, int n_addrs, uint64_t *addrs)
- 		uint64_t bind_addr = addrs[i] & ~(uint64_t)(bo_size - 1);
- 
- 		if (!vm)
--			vms[i] = xe_vm_create(fd, DRM_XE_VM_CREATE_SCRATCH_PAGE,
-+			vms[i] = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE,
- 					      0);
- 		igt_debug("Binding addr %"PRIx64"\n", addrs[i]);
- 		xe_vm_bind_sync(fd, vm ? vm : vms[i], bo, 0,
-@@ -214,7 +214,7 @@ test_bind_once(int fd)
- 	uint64_t addr = 0x7ffdb86402d8ull;
- 
- 	__test_bind_one_bo(fd,
--			   xe_vm_create(fd, DRM_XE_VM_CREATE_SCRATCH_PAGE, 0),
-+			   xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE, 0),
- 			   1, &addr);
- }
- 
-@@ -234,7 +234,7 @@ test_bind_one_bo_many_times(int fd)
- 						ARRAY_SIZE(addrs_48b);
- 
- 	__test_bind_one_bo(fd,
--			   xe_vm_create(fd, DRM_XE_VM_CREATE_SCRATCH_PAGE, 0),
-+			   xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE, 0),
- 			   addrs_size, addrs);
- }
- 
-@@ -265,14 +265,14 @@ test_bind_one_bo_many_times_many_vm(int fd)
- 
- static void test_partial_unbinds(int fd)
- {
--	uint32_t vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+	uint32_t vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 	size_t bo_size = 3 * xe_get_default_alignment(fd);
- 	uint32_t bo = xe_bo_create(fd, 0, vm, bo_size);
- 	uint64_t unbind_size = bo_size / 3;
- 	uint64_t addr = 0x1a0000;
- 
- 	struct drm_xe_sync sync = {
--	    .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
-+	    .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL,
- 	    .handle = syncobj_create(fd, 0),
- 	};
- 
-@@ -312,10 +312,10 @@ static void unbind_all(int fd, int n_vmas)
- 	uint32_t vm;
- 	int i;
- 	struct drm_xe_sync sync[1] = {
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
- 	};
- 
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 	bo = xe_bo_create(fd, 0, vm, bo_size);
- 
- 	for (i = 0; i < n_vmas; ++i)
-@@ -387,8 +387,8 @@ shared_pte_page(int fd, struct drm_xe_engine_class_instance *eci, int n_bo,
- 	uint32_t vm;
- 	uint64_t addr = 0x1000 * 512;
- 	struct drm_xe_sync sync[2] = {
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
- 	};
- 	struct drm_xe_sync sync_all[MAX_N_EXEC_QUEUES + 1];
- 	struct drm_xe_exec exec = {
-@@ -412,7 +412,7 @@ shared_pte_page(int fd, struct drm_xe_engine_class_instance *eci, int n_bo,
- 	data = malloc(sizeof(*data) * n_bo);
- 	igt_assert(data);
- 
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 	bo_size = sizeof(struct shared_pte_page_data);
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
- 			xe_get_default_alignment(fd));
-@@ -427,7 +427,7 @@ shared_pte_page(int fd, struct drm_xe_engine_class_instance *eci, int n_bo,
- 	for (i = 0; i < n_exec_queues; i++) {
- 		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
- 		syncobjs[i] = syncobj_create(fd, 0);
--		sync_all[i].flags = DRM_XE_SYNC_SYNCOBJ;
-+		sync_all[i].flags = DRM_XE_SYNC_FLAG_SYNCOBJ;
- 		sync_all[i].handle = syncobjs[i];
- 	};
- 
-@@ -452,8 +452,8 @@ shared_pte_page(int fd, struct drm_xe_engine_class_instance *eci, int n_bo,
- 		data[i]->batch[b++] = MI_BATCH_BUFFER_END;
- 		igt_assert(b <= ARRAY_SIZE(data[i]->batch));
- 
--		sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
--		sync[1].flags |= DRM_XE_SYNC_SIGNAL;
-+		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 		sync[1].handle = syncobjs[e];
- 
- 		exec.exec_queue_id = exec_queues[e];
-@@ -465,7 +465,7 @@ shared_pte_page(int fd, struct drm_xe_engine_class_instance *eci, int n_bo,
- 		if (i % 2)
- 			continue;
- 
--		sync_all[n_execs].flags = DRM_XE_SYNC_SIGNAL;
-+		sync_all[n_execs].flags = DRM_XE_SYNC_FLAG_SIGNAL;
- 		sync_all[n_execs].handle = sync[0].handle;
- 		xe_vm_unbind_async(fd, vm, 0, 0, addr + i * addr_stride,
- 				   bo_size, sync_all, n_execs + 1);
-@@ -501,8 +501,8 @@ shared_pte_page(int fd, struct drm_xe_engine_class_instance *eci, int n_bo,
- 		data[i]->batch[b++] = MI_BATCH_BUFFER_END;
- 		igt_assert(b <= ARRAY_SIZE(data[i]->batch));
- 
--		sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
--		sync[1].flags |= DRM_XE_SYNC_SIGNAL;
-+		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 		sync[1].handle = syncobjs[e];
- 
- 		exec.exec_queue_id = exec_queues[e];
-@@ -515,7 +515,7 @@ shared_pte_page(int fd, struct drm_xe_engine_class_instance *eci, int n_bo,
- 		if (!(i % 2))
- 			continue;
- 
--		sync_all[n_execs].flags = DRM_XE_SYNC_SIGNAL;
-+		sync_all[n_execs].flags = DRM_XE_SYNC_FLAG_SIGNAL;
- 		sync_all[n_execs].handle = sync[0].handle;
- 		xe_vm_unbind_async(fd, vm, 0, 0, addr + i * addr_stride,
- 				   bo_size, sync_all, n_execs + 1);
-@@ -570,8 +570,8 @@ test_bind_execqueues_independent(int fd, struct drm_xe_engine_class_instance *ec
- 	uint32_t vm;
- 	uint64_t addr = 0x1a0000;
- 	struct drm_xe_sync sync[2] = {
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
- 	};
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
-@@ -593,7 +593,7 @@ test_bind_execqueues_independent(int fd, struct drm_xe_engine_class_instance *ec
- 	struct xe_spin_opts spin_opts = { .preempt = true };
- 	int i, b;
- 
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 	bo_size = sizeof(*data) * N_EXEC_QUEUES;
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
- 			xe_get_default_alignment(fd));
-@@ -627,22 +627,22 @@ test_bind_execqueues_independent(int fd, struct drm_xe_engine_class_instance *ec
- 			xe_spin_init(&data[i].spin, &spin_opts);
- 			exec.exec_queue_id = exec_queues[e];
- 			exec.address = spin_opts.addr;
--			sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
--			sync[1].flags |= DRM_XE_SYNC_SIGNAL;
-+			sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+			sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 			sync[1].handle = syncobjs[e];
- 			xe_exec(fd, &exec);
- 			xe_spin_wait_started(&data[i].spin);
- 
- 			/* Do bind to 1st exec_queue blocked on cork */
- 			addr += (flags & CONFLICT) ? (0x1 << 21) : bo_size;
--			sync[1].flags &= ~DRM_XE_SYNC_SIGNAL;
-+			sync[1].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
- 			sync[1].handle = syncobjs[e];
- 			xe_vm_bind_async(fd, vm, bind_exec_queues[e], bo, 0, addr,
- 					 bo_size, sync + 1, 1);
- 			addr += bo_size;
- 		} else {
- 			/* Do bind to 2nd exec_queue which blocks write below */
--			sync[0].flags |= DRM_XE_SYNC_SIGNAL;
-+			sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 			xe_vm_bind_async(fd, vm, bind_exec_queues[e], bo, 0, addr,
- 					 bo_size, sync, 1);
+ 	size_t vram_size = xe_vram_size(fd, 0);
+ 	size_t align = xe_get_default_alignment(fd);
+@@ -75,7 +75,8 @@ static void test_ping_pong(int fd, struct drm_xe_engine_class_instance *eci)
+ 			xe_vm_bind(fd, vm[i], bo[i][j], 0, 0x40000 + j*bo_size,
+ 				   bo_size, NULL, 0);
  		}
-@@ -660,8 +660,8 @@ test_bind_execqueues_independent(int fd, struct drm_xe_engine_class_instance *ec
- 		data[i].batch[b++] = MI_BATCH_BUFFER_END;
- 		igt_assert(b <= ARRAY_SIZE(data[i].batch));
- 
--		sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
--		sync[1].flags |= DRM_XE_SYNC_SIGNAL;
-+		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 		sync[1].handle = syncobjs[!i ? N_EXEC_QUEUES : e];
- 
- 		exec.num_syncs = 2;
-@@ -705,7 +705,7 @@ test_bind_execqueues_independent(int fd, struct drm_xe_engine_class_instance *ec
- 
- 	syncobj_destroy(fd, sync[0].handle);
- 	sync[0].handle = syncobj_create(fd, 0);
--	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
-+	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 	xe_vm_unbind_all_async(fd, vm, 0, bo, sync, 1);
- 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
- 
-@@ -752,8 +752,8 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
- 	uint32_t vm;
- 	uint64_t addr = 0x1a0000, base_addr = 0x1a0000;
- 	struct drm_xe_sync sync[2] = {
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
- 	};
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
-@@ -773,7 +773,7 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
- 
- 	igt_assert(n_execs <= BIND_ARRAY_MAX_N_EXEC);
- 
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 	bo_size = sizeof(*data) * n_execs;
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
- 			xe_get_default_alignment(fd));
-@@ -819,8 +819,8 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
- 		data[i].batch[b++] = MI_BATCH_BUFFER_END;
- 		igt_assert(b <= ARRAY_SIZE(data[i].batch));
- 
--		sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
--		sync[1].flags |= DRM_XE_SYNC_SIGNAL;
-+		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 		if (i == n_execs - 1) {
- 			sync[1].handle = syncobj_create(fd, 0);
- 			exec.num_syncs = 2;
-@@ -842,8 +842,8 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
+-		exec_queues[i] = xe_exec_queue_create(fd, vm[i], eci, 0);
++		exec_queues[i] = xe_exec_queue_create(fd, vm[i],
++						      &engine->instance, 0);
  	}
  
- 	syncobj_reset(fd, &sync[0].handle, 1);
--	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
--	sync[1].flags &= ~DRM_XE_SYNC_SIGNAL;
-+	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-+	sync[1].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
- 	xe_vm_bind_array(fd, vm, bind_exec_queue, bind_ops, n_execs, sync, 2);
- 
- 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-@@ -940,8 +940,8 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
- 		 unsigned int flags)
- {
- 	struct drm_xe_sync sync[2] = {
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
- 	};
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
-@@ -967,7 +967,7 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
- 	}
- 
- 	igt_assert(n_exec_queues <= MAX_N_EXEC_QUEUES);
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 
- 	if (flags & LARGE_BIND_FLAG_USERPTR) {
- 		map = aligned_alloc(xe_get_default_alignment(fd), bo_size);
-@@ -1024,8 +1024,8 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
- 		data[i].batch[b++] = MI_BATCH_BUFFER_END;
- 		igt_assert(b <= ARRAY_SIZE(data[i].batch));
- 
--		sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
--		sync[1].flags |= DRM_XE_SYNC_SIGNAL;
-+		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 		sync[1].handle = syncobjs[e];
- 
- 		if (i != e)
-@@ -1047,7 +1047,7 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
- 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
- 
- 	syncobj_reset(fd, &sync[0].handle, 1);
--	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
-+	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 	if (flags & LARGE_BIND_FLAG_SPLIT) {
- 		xe_vm_unbind_async(fd, vm, 0, 0, base_addr,
- 				   bo_size / 2, NULL, 0);
-@@ -1100,7 +1100,7 @@ static void *hammer_thread(void *tdata)
- {
- 	struct thread_data *t = tdata;
- 	struct drm_xe_sync sync[1] = {
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
- 	};
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
-@@ -1224,8 +1224,8 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
- 			 unsigned int flags)
- {
- 	struct drm_xe_sync sync[2] = {
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
- 	};
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
-@@ -1259,7 +1259,7 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
- 			unbind_n_page_offset *= n_page_per_2mb;
- 	}
- 
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 	bo_size = page_size * bo_n_pages;
- 
- 	if (flags & MAP_FLAG_USERPTR) {
-@@ -1327,10 +1327,10 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
- 		data->batch[b++] = MI_BATCH_BUFFER_END;
- 		igt_assert(b <= ARRAY_SIZE(data[i].batch));
- 
--		sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
-+		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
- 		if (i)
- 			syncobj_reset(fd, &sync[1].handle, 1);
--		sync[1].flags |= DRM_XE_SYNC_SIGNAL;
-+		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 
- 		exec.exec_queue_id = exec_queue;
- 		exec.address = batch_addr;
-@@ -1342,8 +1342,8 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
- 
- 	/* Unbind some of the pages */
- 	syncobj_reset(fd, &sync[0].handle, 1);
--	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
--	sync[1].flags &= ~DRM_XE_SYNC_SIGNAL;
-+	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-+	sync[1].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
- 	xe_vm_unbind_async(fd, vm, 0, 0,
- 			   addr + unbind_n_page_offset * page_size,
- 			   unbind_n_pages * page_size, sync, 2);
-@@ -1384,9 +1384,9 @@ try_again_after_invalidate:
- 			data->batch[b++] = MI_BATCH_BUFFER_END;
- 			igt_assert(b <= ARRAY_SIZE(data[i].batch));
- 
--			sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
-+			sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
- 			syncobj_reset(fd, &sync[1].handle, 1);
--			sync[1].flags |= DRM_XE_SYNC_SIGNAL;
-+			sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 
- 			exec.exec_queue_id = exec_queue;
- 			exec.address = batch_addr;
-@@ -1427,7 +1427,7 @@ try_again_after_invalidate:
- 
- 	/* Confirm unbound region can be rebound */
- 	syncobj_reset(fd, &sync[0].handle, 1);
--	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
-+	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 	if (flags & MAP_FLAG_USERPTR)
- 		xe_vm_bind_userptr_async(fd, vm, 0,
- 					 addr + unbind_n_page_offset * page_size,
-@@ -1455,9 +1455,9 @@ try_again_after_invalidate:
- 		data->batch[b++] = MI_BATCH_BUFFER_END;
- 		igt_assert(b <= ARRAY_SIZE(data[i].batch));
- 
--		sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
-+		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
- 		syncobj_reset(fd, &sync[1].handle, 1);
--		sync[1].flags |= DRM_XE_SYNC_SIGNAL;
-+		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 
- 		exec.exec_queue_id = exec_queue;
- 		exec.address = batch_addr;
-@@ -1525,8 +1525,8 @@ test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
- 		     int unbind_n_pages, unsigned int flags)
- {
- 	struct drm_xe_sync sync[2] = {
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
--		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
- 	};
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
-@@ -1559,7 +1559,7 @@ test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
- 			unbind_n_page_offset *= n_page_per_2mb;
- 	}
- 
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 	bo_size = page_size * bo_n_pages;
- 
- 	if (flags & MAP_FLAG_USERPTR) {
-@@ -1633,10 +1633,10 @@ test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
- 		data->batch[b++] = MI_BATCH_BUFFER_END;
- 		igt_assert(b <= ARRAY_SIZE(data[i].batch));
- 
--		sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
-+		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
- 		if (i)
- 			syncobj_reset(fd, &sync[1].handle, 1);
--		sync[1].flags |= DRM_XE_SYNC_SIGNAL;
-+		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 
- 		exec.exec_queue_id = exec_queue;
- 		exec.address = batch_addr;
-@@ -1648,8 +1648,8 @@ test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
- 
- 	/* Bind some of the pages to different BO / userptr */
- 	syncobj_reset(fd, &sync[0].handle, 1);
--	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
--	sync[1].flags &= ~DRM_XE_SYNC_SIGNAL;
-+	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-+	sync[1].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
- 	if (flags & MAP_FLAG_USERPTR)
- 		xe_vm_bind_userptr_async(fd, vm, 0, addr + bo_size +
- 					 unbind_n_page_offset * page_size,
-@@ -1701,10 +1701,10 @@ test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
- 		data->batch[b++] = MI_BATCH_BUFFER_END;
- 		igt_assert(b <= ARRAY_SIZE(data[i].batch));
- 
--		sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
-+		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
- 		if (i)
- 			syncobj_reset(fd, &sync[1].handle, 1);
--		sync[1].flags |= DRM_XE_SYNC_SIGNAL;
-+		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
- 
- 		exec.exec_queue_id = exec_queue;
- 		exec.address = batch_addr;
-diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
-index e0116f181..05060f329 100644
---- a/tests/intel/xe_waitfence.c
-+++ b/tests/intel/xe_waitfence.c
-@@ -30,7 +30,7 @@ static void do_bind(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
- 		    uint64_t addr, uint64_t size, uint64_t val)
- {
- 	struct drm_xe_sync sync[1] = {};
--	sync[0].flags = DRM_XE_SYNC_USER_FENCE | DRM_XE_SYNC_SIGNAL;
-+	sync[0].flags = DRM_XE_SYNC_FLAG_USER_FENCE | DRM_XE_SYNC_FLAG_SIGNAL;
- 
- 	sync[0].addr = to_user_pointer(&wait_fence);
- 	sync[0].timeline_value = val;
-@@ -63,7 +63,7 @@ waitfence(int fd, enum waittype wt)
- 	uint32_t bo_7;
- 	int64_t timeout;
- 
--	uint32_t vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+	uint32_t vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 	bo_1 = xe_bo_create_flags(fd, vm, 0x40000, MY_FLAG);
- 	do_bind(fd, vm, bo_1, 0, 0x200000, 0x40000, 1);
- 	bo_2 = xe_bo_create_flags(fd, vm, 0x40000, MY_FLAG);
+ 	igt_info("Now sleeping for %ds.\n", SECONDS_TO_WAIT);
 -- 
 2.34.1
