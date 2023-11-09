@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1D3C410E8E7
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 15:55:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C4FF910E8F0
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 15:55:12 +0000 (UTC)
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  9 Nov 2023 15:53:54 +0000
-Message-Id: <20231109155410.7-42-francois.dugast@intel.com>
+Date: Thu,  9 Nov 2023 15:53:42 +0000
+Message-Id: <20231109155410.7-30-francois.dugast@intel.com>
 In-Reply-To: <20231109155410.7-1-francois.dugast@intel.com>
 References: <20231109155410.7-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 41/57] tests/intel/xe_query: Fix
- test_query_engines
+Subject: [igt-dev] [PATCH v3 29/57] drm-uapi/xe: Reject bo creation of
+ unaligned size
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,76 +19,321 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Align with kernel commit ("drm/xe/uapi: Reject bo creation of unaligned size")
 
-Let's not confuse gt_id with tile_id.
-
-Also, make test_query_engines to really query for the info
-instead of just printing the info.
-
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 ---
- tests/intel/xe_query.c | 32 ++++++++++++++++++++++++++------
- 1 file changed, 26 insertions(+), 6 deletions(-)
+ include/drm-uapi/xe_drm.h          | 25 +++++++++++++++++--------
+ tests/intel/xe_mmap.c              | 22 ++++++++++++----------
+ tests/intel/xe_prime_self_import.c | 26 +++++++++++++++++++++++++-
+ tests/intel/xe_vm.c                | 13 ++++++-------
+ 4 files changed, 60 insertions(+), 26 deletions(-)
 
-diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
-index 80510146f..16097cba7 100644
---- a/tests/intel/xe_query.c
-+++ b/tests/intel/xe_query.c
-@@ -172,23 +172,43 @@ const char *get_topo_name(int value)
+diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+index bc52971a2..a2f66d44e 100644
+--- a/include/drm-uapi/xe_drm.h
++++ b/include/drm-uapi/xe_drm.h
+@@ -219,11 +219,13 @@ struct drm_xe_query_mem_region {
+ 	 *
+ 	 * When the kernel allocates memory for this region, the
+ 	 * underlying pages will be at least @min_page_size in size.
+-	 *
+-	 * Important note: When userspace allocates a GTT address which
+-	 * can point to memory allocated from this region, it must also
+-	 * respect this minimum alignment. This is enforced by the
+-	 * kernel.
++	 * Buffer objects with an allowable placement in this region must be
++	 * created with a size aligned to this value.
++	 * GPU virtual address mappings of (parts of) buffer objects that
++	 * may be placed in this region must also have their GPU virtual
++	 * address and range aligned to this value.
++	 * Affected IOCTLS will return %-EINVAL if alignment restrictions are
++	 * not met.
+ 	 */
+ 	__u32 min_page_size;
+ 	/**
+@@ -372,6 +374,14 @@ struct drm_xe_query_config {
+ #define DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID		0
+ #define DRM_XE_QUERY_CONFIG_FLAGS			1
+ 	#define DRM_XE_QUERY_CONFIG_FLAGS_HAS_VRAM	(0x1 << 0)
++	/*
++	 * DRM_XE_QUERY_CONFIG_MIN_ALIGNMENT - This returns the
++	 * maximum value of the &min_page_size across all memory regions
++	 * the device implements. User-space code that does not want
++	 * to track @min_page_size per region can use this value for
++	 * a buffer-object size and GPU virtual address and -range
++	 * alignment value that is valid for all regions.
++	 */
+ #define DRM_XE_QUERY_CONFIG_MIN_ALIGNMENT		2
+ #define DRM_XE_QUERY_CONFIG_VA_BITS			3
+ #define DRM_XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY	4
+@@ -625,9 +635,8 @@ struct drm_xe_gem_create {
+ 	__u64 extensions;
  
- /**
-  * SUBTEST: query-engines
-- * Description: Display engine classes available for xe device
-+ * Description: Display engines available for xe device
-  * Test category: functionality test
-  */
+ 	/**
+-	 * @size: Requested size for the object
+-	 *
+-	 * The (page-aligned) allocated size for the object will be returned.
++	 * @size: Size of the object to be created, must match region
++	 * (system or vram) minimum alignment (&min_page_size).
+ 	 */
+ 	__u64 size;
+ 
+diff --git a/tests/intel/xe_mmap.c b/tests/intel/xe_mmap.c
+index 965644e22..d6c8d5114 100644
+--- a/tests/intel/xe_mmap.c
++++ b/tests/intel/xe_mmap.c
+@@ -47,17 +47,18 @@
  static void
- test_query_engines(int fd)
+ test_mmap(int fd, uint32_t placement, uint32_t flags)
  {
-+	struct drm_xe_query_engine_info *engines;
- 	struct drm_xe_engine_class_instance *eci;
--	int i = 0;
-+	struct drm_xe_device_query query = {
-+		.extensions = 0,
-+		.query = DRM_XE_DEVICE_QUERY_ENGINES,
-+		.size = 0,
-+		.data = 0,
-+	};
-+	int num_engines, i;
++	size_t bo_size = xe_get_default_alignment(fd);
+ 	uint32_t bo;
+ 	void *map;
  
--	xe_for_each_engine_instance(fd, eci) {
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-+
-+	engines = malloc(query.size);
-+	igt_assert(engines);
-+
-+	query.data = to_user_pointer(engines);
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-+
-+	num_engines = query.size / sizeof(*engines);
-+
-+	for (i = 0; i < num_engines; i++) {
-+		eci = &engines[i].instance;
- 		igt_assert(eci);
--		igt_info("engine %d: %s, engine instance: %d, tile: TILE-%d\n", i++,
--			 xe_engine_class_string(eci->engine_class), eci->engine_instance,
--								    eci->gt_id);
-+		igt_info("engine %d: %s, engine instance: %d, gt: GT-%d\n", i,
-+			 xe_engine_class_string(eci->engine_class),
-+			 eci->engine_instance,
-+			 eci->gt_id);
- 	}
+ 	igt_require_f(placement, "Device doesn't support such memory region\n");
  
- 	igt_assert(i > 0);
-+	free(engines);
+-	bo = xe_bo_create(fd, 0, 4096, placement, flags);
++	bo = xe_bo_create(fd, 0, bo_size, placement, flags);
+ 
+-	map = xe_bo_map(fd, bo, 4096);
++	map = xe_bo_map(fd, bo, bo_size);
+ 	strcpy(map, "Write some data to the BO!");
+ 
+-	munmap(map, 4096);
++	munmap(map, bo_size);
+ 
+ 	gem_close(fd, bo);
  }
+@@ -156,13 +157,14 @@ static void trap_sigbus(uint32_t *ptr)
+  */
+ static void test_small_bar(int fd)
+ {
++	size_t page_size = xe_get_default_alignment(fd);
+ 	uint32_t visible_size = xe_visible_vram_size(fd, 0);
+ 	uint32_t bo;
+ 	uint64_t mmo;
+ 	uint32_t *map;
  
- /**
+ 	/* 2BIG invalid case */
+-	igt_assert_neq(__xe_bo_create(fd, 0, visible_size + 4096,
++	igt_assert_neq(__xe_bo_create(fd, 0, visible_size + page_size,
+ 				      vram_memory(fd, 0),
+ 				      DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
+ 				      &bo),
+@@ -172,12 +174,12 @@ static void test_small_bar(int fd)
+ 	bo = xe_bo_create(fd, 0, visible_size / 4, vram_memory(fd, 0),
+ 			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+ 	mmo = xe_bo_mmap_offset(fd, bo);
+-	map = mmap(NULL, 4096, PROT_WRITE, MAP_SHARED, fd, mmo);
++	map = mmap(NULL, page_size, PROT_WRITE, MAP_SHARED, fd, mmo);
+ 	igt_assert(map != MAP_FAILED);
+ 
+ 	map[0] = 0xdeadbeaf;
+ 
+-	munmap(map, 4096);
++	munmap(map, page_size);
+ 	gem_close(fd, bo);
+ 
+ 	/* Normal operation with system memory spilling */
+@@ -186,18 +188,18 @@ static void test_small_bar(int fd)
+ 			  system_memory(fd),
+ 			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+ 	mmo = xe_bo_mmap_offset(fd, bo);
+-	map = mmap(NULL, 4096, PROT_WRITE, MAP_SHARED, fd, mmo);
++	map = mmap(NULL, page_size, PROT_WRITE, MAP_SHARED, fd, mmo);
+ 	igt_assert(map != MAP_FAILED);
+ 
+ 	map[0] = 0xdeadbeaf;
+ 
+-	munmap(map, 4096);
++	munmap(map, page_size);
+ 	gem_close(fd, bo);
+ 
+ 	/* Bogus operation with SIGBUS */
+-	bo = xe_bo_create(fd, 0, visible_size + 4096, vram_memory(fd, 0), 0);
++	bo = xe_bo_create(fd, 0, visible_size + page_size, vram_memory(fd, 0), 0);
+ 	mmo = xe_bo_mmap_offset(fd, bo);
+-	map = mmap(NULL, 4096, PROT_WRITE, MAP_SHARED, fd, mmo);
++	map = mmap(NULL, page_size, PROT_WRITE, MAP_SHARED, fd, mmo);
+ 	igt_assert(map != MAP_FAILED);
+ 
+ 	trap_sigbus(map);
+diff --git a/tests/intel/xe_prime_self_import.c b/tests/intel/xe_prime_self_import.c
+index 9a263d326..504e6a13d 100644
+--- a/tests/intel/xe_prime_self_import.c
++++ b/tests/intel/xe_prime_self_import.c
+@@ -61,13 +61,19 @@ static int g_time_out = 5;
+ static pthread_barrier_t g_barrier;
+ static size_t bo_size;
+ 
++static size_t get_min_bo_size(int fd1, int fd2)
++{
++	return 4 * max(xe_get_default_alignment(fd1),
++		       xe_get_default_alignment(fd2));
++}
++
+ static void
+ check_bo(int fd1, uint32_t handle1, int fd2, uint32_t handle2)
+ {
++	size_t bo_size = get_min_bo_size(fd1, fd2);
+ 	char *ptr1, *ptr2;
+ 	int i;
+ 
+-
+ 	ptr1 = xe_bo_map(fd1, handle1, bo_size);
+ 	ptr2 = xe_bo_map(fd2, handle2, bo_size);
+ 
+@@ -97,6 +103,7 @@ check_bo(int fd1, uint32_t handle1, int fd2, uint32_t handle2)
+ static void test_with_fd_dup(void)
+ {
+ 	int fd1, fd2;
++	size_t bo_size;
+ 	uint32_t handle, handle_import;
+ 	int dma_buf_fd1, dma_buf_fd2;
+ 
+@@ -105,6 +112,8 @@ static void test_with_fd_dup(void)
+ 	fd1 = drm_open_driver(DRIVER_XE);
+ 	fd2 = drm_open_driver(DRIVER_XE);
+ 
++	bo_size = get_min_bo_size(fd1, fd2);
++
+ 	handle = xe_bo_create(fd1, 0, bo_size, vram_if_possible(fd1, 0),
+ 			      DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+ 
+@@ -131,6 +140,7 @@ static void test_with_fd_dup(void)
+ static void test_with_two_bos(void)
+ {
+ 	int fd1, fd2;
++	size_t bo_size;
+ 	uint32_t handle1, handle2, handle_import;
+ 	int dma_buf_fd;
+ 
+@@ -139,6 +149,8 @@ static void test_with_two_bos(void)
+ 	fd1 = drm_open_driver(DRIVER_XE);
+ 	fd2 = drm_open_driver(DRIVER_XE);
+ 
++	bo_size = get_min_bo_size(fd1, fd2);
++
+ 	handle1 = xe_bo_create(fd1, 0, bo_size, vram_if_possible(fd1, 0),
+ 			       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+ 	handle2 = xe_bo_create(fd1, 0, bo_size, vram_if_possible(fd1, 0),
+@@ -171,12 +183,15 @@ static void test_with_two_bos(void)
+ static void test_with_one_bo_two_files(void)
+ {
+ 	int fd1, fd2;
++	size_t bo_size;
+ 	uint32_t handle_import, handle_open, handle_orig, flink_name;
+ 	int dma_buf_fd1, dma_buf_fd2;
+ 
+ 	fd1 = drm_open_driver(DRIVER_XE);
+ 	fd2 = drm_open_driver(DRIVER_XE);
+ 
++	bo_size = get_min_bo_size(fd1, fd2);
++
+ 	handle_orig = xe_bo_create(fd1, 0, bo_size,
+ 				   vram_if_possible(fd1, 0),
+ 				   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+@@ -205,12 +220,15 @@ static void test_with_one_bo_two_files(void)
+ static void test_with_one_bo(void)
+ {
+ 	int fd1, fd2;
++	size_t bo_size;
+ 	uint32_t handle, handle_import1, handle_import2, handle_selfimport;
+ 	int dma_buf_fd;
+ 
+ 	fd1 = drm_open_driver(DRIVER_XE);
+ 	fd2 = drm_open_driver(DRIVER_XE);
+ 
++	bo_size = get_min_bo_size(fd1, fd2);
++
+ 	handle = xe_bo_create(fd1, 0, bo_size, vram_if_possible(fd1, 0),
+ 			      DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+ 
+@@ -279,6 +297,7 @@ static void *thread_fn_reimport_vs_close(void *p)
+ 	pthread_t *threads;
+ 	int r, i, num_threads;
+ 	int fds[2];
++	size_t bo_size;
+ 	int obj_count;
+ 	void *status;
+ 	uint32_t handle;
+@@ -298,6 +317,8 @@ static void *thread_fn_reimport_vs_close(void *p)
+ 
+ 	fds[0] = drm_open_driver(DRIVER_XE);
+ 
++	bo_size = xe_get_default_alignment(fds[0]);
++
+ 	handle = xe_bo_create(fds[0], 0, bo_size,
+ 			      vram_if_possible(fds[0], 0),
+ 			      DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+@@ -336,6 +357,7 @@ static void *thread_fn_export_vs_close(void *p)
+ 	struct drm_prime_handle prime_h2f;
+ 	struct drm_gem_close close_bo;
+ 	int fd = (uintptr_t)p;
++	size_t bo_size = xe_get_default_alignment(fd);
+ 	uint32_t handle;
+ 
+ 	pthread_barrier_wait(&g_barrier);
+@@ -463,6 +485,7 @@ static void test_llseek_size(void)
+ static void test_llseek_bad(void)
+ {
+ 	int fd;
++	size_t bo_size;
+ 	uint32_t handle;
+ 	int dma_buf_fd;
+ 
+@@ -470,6 +493,7 @@ static void test_llseek_bad(void)
+ 
+ 	fd = drm_open_driver(DRIVER_XE);
+ 
++	bo_size = 4 * xe_get_default_alignment(fd);
+ 	handle = xe_bo_create(fd, 0, bo_size,
+ 			      vram_if_possible(fd, 0),
+ 			      DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+index 08c38bae1..f53e9edf9 100644
+--- a/tests/intel/xe_vm.c
++++ b/tests/intel/xe_vm.c
+@@ -1307,11 +1307,10 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
+ 	if (flags & MAP_FLAG_HAMMER_FIRST_PAGE) {
+ 		t.fd = fd;
+ 		t.vm = vm;
+-#define PAGE_SIZE	4096
+-		t.addr = addr + PAGE_SIZE / 2;
++		t.addr = addr + page_size / 2;
+ 		t.eci = eci;
+ 		t.exit = &exit;
+-		t.map = map + PAGE_SIZE / 2;
++		t.map = map + page_size / 2;
+ 		t.barrier = &barrier;
+ 		pthread_barrier_init(&barrier, NULL, 2);
+ 		pthread_create(&t.thread, 0, hammer_thread, &t);
+@@ -1364,8 +1363,8 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
+ 		igt_assert_eq(data->data, 0xc0ffee);
+ 	}
+ 	if (flags & MAP_FLAG_HAMMER_FIRST_PAGE) {
+-		memset(map, 0, PAGE_SIZE / 2);
+-		memset(map + PAGE_SIZE, 0, bo_size - PAGE_SIZE);
++		memset(map, 0, page_size / 2);
++		memset(map + page_size, 0, bo_size - page_size);
+ 	} else {
+ 		memset(map, 0, bo_size);
+ 	}
+@@ -1414,8 +1413,8 @@ try_again_after_invalidate:
+ 		}
+ 	}
+ 	if (flags & MAP_FLAG_HAMMER_FIRST_PAGE) {
+-		memset(map, 0, PAGE_SIZE / 2);
+-		memset(map + PAGE_SIZE, 0, bo_size - PAGE_SIZE);
++		memset(map, 0, page_size / 2);
++		memset(map + page_size, 0, bo_size - page_size);
+ 	} else {
+ 		memset(map, 0, bo_size);
+ 	}
 -- 
 2.34.1
