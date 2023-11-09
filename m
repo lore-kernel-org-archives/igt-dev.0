@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9F42D10E1B0
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 03:29:45 +0000 (UTC)
-From: Kunal Joshi <kunal1.joshi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu,  9 Nov 2023 09:07:02 +0530
-Message-Id: <20231109033706.1344465-4-kunal1.joshi@intel.com>
-In-Reply-To: <20231109033706.1344465-1-kunal1.joshi@intel.com>
-References: <20231109033706.1344465-1-kunal1.joshi@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============2636680626113153979=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/7] lib/igt_psr: modified psr_active_check
- for pr compatability
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kunal Joshi" <kunal1.joshi@intel.com>
+Date: Thu, 09 Nov 2023 04:13:05 -0000
+Message-ID: <169950318567.26590.17085841453367826568@emeril.freedesktop.org>
+References: <20231109033706.1344465-1-kunal1.joshi@intel.com>
+In-Reply-To: <20231109033706.1344465-1-kunal1.joshi@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_extend_k?=
+ =?utf-8?q?ms=5Fpsr_test_to_validate_pr_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,291 +17,312 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Kunal Joshi <kunal1.joshi@intel.com>,
- Arun R Murthy <arun.r.murthy@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Whenever PR is active, system will be in SRDENT,
-modify psr_active_check to accomadte PR_MODE
+--===============2636680626113153979==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Cc: Jouni Högander <jouni.hogander@intel.com>
-Cc: Animesh Manna <animesh.manna@intel.com>
-Cc: Arun R Murthy <arun.r.murthy@intel.com>
-Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-Reviewed-by: Jouni Högander <jouni.hogander@intel.com>
----
- lib/igt_psr.c                          | 24 +++++++++++++++---------
- lib/igt_psr.h                          |  6 +++---
- tests/intel/kms_dirtyfb.c              |  2 +-
- tests/intel/kms_fbcon_fbt.c            |  4 ++--
- tests/intel/kms_frontbuffer_tracking.c |  4 ++--
- tests/intel/kms_pm_dc.c                |  6 +++---
- tests/intel/kms_psr.c                  |  4 ++--
- tests/intel/kms_psr2_sf.c              | 10 +++++-----
- tests/intel/kms_psr2_su.c              |  4 ++--
- tests/intel/kms_psr_stress_test.c      |  2 +-
- 10 files changed, 36 insertions(+), 30 deletions(-)
+== Series Details ==
 
-diff --git a/lib/igt_psr.c b/lib/igt_psr.c
-index 054622d79..818151228 100644
---- a/lib/igt_psr.c
-+++ b/lib/igt_psr.c
-@@ -47,13 +47,19 @@ bool psr2_selective_fetch_check(int debugfs_fd)
- 	return strstr(buf, "PSR2 selective fetch: enabled");
- }
- 
--static bool psr_active_check(int debugfs_fd, enum psr_mode mode)
-+static bool psr_active_check(int debugfs_fd, enum psr_mode mode, igt_output_t *output)
- {
-+	char debugfs_file[128] = {0};
- 	char buf[PSR_STATUS_MAX_LEN];
--	const char *state = mode == PSR_MODE_1 ? "SRDENT" : "DEEP_SLEEP";
-+	const char *state = mode == PSR_MODE_1 || PR_MODE ? "SRDENT" : "DEEP_SLEEP";
- 	int ret;
- 
--	ret = igt_debugfs_simple_read(debugfs_fd, "i915_edp_psr_status",
-+	if (output)
-+		sprintf(debugfs_file, "%s/i915_psr_status", output->name);
-+	else
-+		sprintf(debugfs_file, "%s", "i915_edp_psr_status");
-+
-+	ret = igt_debugfs_simple_read(debugfs_fd, debugfs_file,
- 				     buf, sizeof(buf));
- 	if (ret < 0) {
- 		igt_info("Could not read i915_edp_psr_status: %s\n",
-@@ -69,19 +75,19 @@ static bool psr_active_check(int debugfs_fd, enum psr_mode mode)
- /*
-  * For PSR1, we wait until PSR is active. We wait until DEEP_SLEEP for PSR2.
-  */
--bool psr_wait_entry(int debugfs_fd, enum psr_mode mode)
-+bool psr_wait_entry(int debugfs_fd, enum psr_mode mode, igt_output_t *output)
- {
--	return igt_wait(psr_active_check(debugfs_fd, mode), 500, 20);
-+	return igt_wait(psr_active_check(debugfs_fd, mode, output), 500, 20);
- }
- 
--bool psr_wait_update(int debugfs_fd, enum psr_mode mode)
-+bool psr_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *output)
- {
--	return igt_wait(!psr_active_check(debugfs_fd, mode), 40, 10);
-+	return igt_wait(!psr_active_check(debugfs_fd, mode, output), 40, 10);
- }
- 
--bool psr_long_wait_update(int debugfs_fd, enum psr_mode mode)
-+bool psr_long_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *output)
- {
--	return igt_wait(!psr_active_check(debugfs_fd, mode), 500, 10);
-+	return igt_wait(!psr_active_check(debugfs_fd, mode, output), 500, 10);
- }
- 
- static ssize_t psr_write(int debugfs_fd, const char *buf)
-diff --git a/lib/igt_psr.h b/lib/igt_psr.h
-index e213b05e9..a30330e6c 100644
---- a/lib/igt_psr.h
-+++ b/lib/igt_psr.h
-@@ -42,9 +42,9 @@ enum psr_mode {
- 
- bool psr_disabled_check(int debugfs_fd);
- bool psr2_selective_fetch_check(int debugfs_fd);
--bool psr_wait_entry(int debugfs_fd, enum psr_mode mode);
--bool psr_wait_update(int debugfs_fd, enum psr_mode mode);
--bool psr_long_wait_update(int debugfs_fd, enum psr_mode mode);
-+bool psr_wait_entry(int debugfs_fd, enum psr_mode mode, igt_output_t *output);
-+bool psr_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *output);
-+bool psr_long_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *output);
- bool psr_enable(int device, int debugfs_fd, enum psr_mode);
- bool psr_disable(int device, int debugfs_fd);
- bool psr_sink_support(int device, int debugfs_fd, enum psr_mode mode, igt_output_t *output);
-diff --git a/tests/intel/kms_dirtyfb.c b/tests/intel/kms_dirtyfb.c
-index f7ff1ac0b..b14cc8bec 100644
---- a/tests/intel/kms_dirtyfb.c
-+++ b/tests/intel/kms_dirtyfb.c
-@@ -135,7 +135,7 @@ static void check_feature(data_t *data)
- 			     "FBC still disabled");
- 		break;
- 	case FEATURE_PSR:
--		igt_assert_f(psr_wait_entry(data->debugfs_fd, PSR_MODE_1),
-+		igt_assert_f(psr_wait_entry(data->debugfs_fd, PSR_MODE_1, NULL),
- 			     "PSR still disabled\n");
- 		break;
- 	case FEATURE_DRRS:
-diff --git a/tests/intel/kms_fbcon_fbt.c b/tests/intel/kms_fbcon_fbt.c
-index a7f24e669..4078309d9 100644
---- a/tests/intel/kms_fbcon_fbt.c
-+++ b/tests/intel/kms_fbcon_fbt.c
-@@ -253,7 +253,7 @@ static void psr_print_status(int debugfs_fd)
- 
- static bool psr_wait_until_enabled(int debugfs_fd)
- {
--	bool r = psr_wait_entry(debugfs_fd, PSR_MODE_1);
-+	bool r = psr_wait_entry(debugfs_fd, PSR_MODE_1, NULL);
- 
- 	psr_print_status(debugfs_fd);
- 	return r;
-@@ -274,7 +274,7 @@ static bool psr_supported_on_chipset(int device, int debugfs_fd)
- 
- static bool psr_wait_until_update(struct drm_info *drm)
- {
--	return psr_long_wait_update(drm->debugfs_fd, PSR_MODE_1);
-+	return psr_long_wait_update(drm->debugfs_fd, PSR_MODE_1, NULL);
- }
- 
- static void disable_features(int device, int debugfs_fd)
-diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-index 3cfa22bbf..e5f139195 100644
---- a/tests/intel/kms_frontbuffer_tracking.c
-+++ b/tests/intel/kms_frontbuffer_tracking.c
-@@ -1584,10 +1584,10 @@ static void do_status_assertions(int flags)
- 	}
- 
- 	if (flags & ASSERT_PSR_ENABLED)
--		igt_assert_f(psr_wait_entry(drm.debugfs, PSR_MODE_1),
-+		igt_assert_f(psr_wait_entry(drm.debugfs, PSR_MODE_1, NULL),
- 			     "PSR still disabled\n");
- 	else if (flags & ASSERT_PSR_DISABLED)
--		igt_assert_f(psr_wait_update(drm.debugfs, PSR_MODE_1),
-+		igt_assert_f(psr_wait_update(drm.debugfs, PSR_MODE_1, NULL),
- 			     "PSR still enabled\n");
- }
- 
-diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
-index e5daacb84..a3c7c4018 100644
---- a/tests/intel/kms_pm_dc.c
-+++ b/tests/intel/kms_pm_dc.c
-@@ -382,7 +382,7 @@ static void setup_dc3co(data_t *data)
- {
- 	data->op_psr_mode = PSR_MODE_2;
- 	psr_enable(data->drm_fd, data->debugfs_fd, data->op_psr_mode);
--	igt_require_f(psr_wait_entry(data->debugfs_fd, data->op_psr_mode),
-+	igt_require_f(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, NULL),
- 		      "PSR2 is not enabled\n");
- }
- 
-@@ -418,7 +418,7 @@ static void test_dc_state_psr(data_t *data, int dc_flag)
- 	dc_counter_before_psr = read_dc_counter(data->debugfs_fd, dc_flag);
- 	setup_output(data);
- 	setup_primary(data);
--	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode));
-+	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, NULL));
- 	check_dc_counter(data, dc_flag, dc_counter_before_psr);
- 	cleanup_dc_psr(data);
- }
-@@ -624,7 +624,7 @@ static void test_pkgc_state_psr(data_t *data)
- 	prev_value = read_pkgc_counter(data->debugfs_root_fd);
- 	setup_output(data);
- 	setup_primary(data);
--	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode));
-+	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, NULL));
- 	psr_dpms(data, DRM_MODE_DPMS_OFF);
- 	igt_wait((cur_value = read_pkgc_counter(data->debugfs_root_fd)) > prev_value,
- 		  timeout_sec * 1000, 100);
-diff --git a/tests/intel/kms_psr.c b/tests/intel/kms_psr.c
-index 260095aec..8485e9894 100644
---- a/tests/intel/kms_psr.c
-+++ b/tests/intel/kms_psr.c
-@@ -441,7 +441,7 @@ static bool psr_wait_entry_if_enabled(data_t *data)
- 	if (data->with_psr_disabled)
- 		return true;
- 
--	return psr_wait_entry(data->debugfs_fd, data->op_psr_mode);
-+	return psr_wait_entry(data->debugfs_fd, data->op_psr_mode, data->output);
- }
- 
- static bool psr_wait_update_if_enabled(data_t *data)
-@@ -449,7 +449,7 @@ static bool psr_wait_update_if_enabled(data_t *data)
- 	if (data->with_psr_disabled)
- 		return true;
- 
--	return psr_wait_update(data->debugfs_fd, data->op_psr_mode);
-+	return psr_wait_update(data->debugfs_fd, data->op_psr_mode, data->output);
- }
- 
- static bool psr_enable_if_enabled(data_t *data)
-diff --git a/tests/intel/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
-index 2d05f1110..9f5186eee 100644
---- a/tests/intel/kms_psr2_sf.c
-+++ b/tests/intel/kms_psr2_sf.c
-@@ -677,7 +677,7 @@ static void damaged_plane_move(data_t *data)
- 
- 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
- 
--	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2));
-+	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2, NULL));
- 
- 	expected_output(data);
- }
-@@ -777,7 +777,7 @@ static void plane_move_continuous(data_t *data)
- {
- 	int target_x, target_y;
- 
--	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2));
-+	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2, NULL));
- 
- 	get_target_coords(data, &target_x, &target_y);
- 
-@@ -854,7 +854,7 @@ static void damaged_plane_update(data_t *data)
- 	igt_plane_set_position(data->test_plane, 0, 0);
- 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
- 
--	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2));
-+	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2, NULL));
- 
- 	expected_output(data);
- }
-@@ -863,7 +863,7 @@ static void run(data_t *data)
- {
- 	int i;
- 
--	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2));
-+	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2, NULL));
- 
- 	data->screen_changes = 0;
- 
-@@ -941,7 +941,7 @@ static int check_psr2_support(data_t *data)
- 	int status;
- 
- 	prepare(data);
--	status = psr_wait_entry(data->debugfs_fd, PSR_MODE_2);
-+	status = psr_wait_entry(data->debugfs_fd, PSR_MODE_2, NULL);
- 	cleanup(data);
- 
- 	return status;
-diff --git a/tests/intel/kms_psr2_su.c b/tests/intel/kms_psr2_su.c
-index 2f89de435..3506409b7 100644
---- a/tests/intel/kms_psr2_su.c
-+++ b/tests/intel/kms_psr2_su.c
-@@ -258,7 +258,7 @@ static void run(data_t *data, igt_output_t *output)
- {
- 	bool result = false;
- 
--	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2));
-+	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2, output));
- 
- 	for (data->screen_changes = 0;
- 	     data->screen_changes < MAX_SCREEN_CHANGES && !result;
-@@ -304,7 +304,7 @@ static int check_psr2_support(data_t *data, enum pipe pipe)
- 	igt_output_set_pipe(output, pipe);
- 
- 	prepare(data, output);
--	status = psr_wait_entry(data->debugfs_fd, PSR_MODE_2);
-+	status = psr_wait_entry(data->debugfs_fd, PSR_MODE_2, output);
- 	cleanup(data, output);
- 
- 	return status;
-diff --git a/tests/intel/kms_psr_stress_test.c b/tests/intel/kms_psr_stress_test.c
-index beded3b94..e3b21603a 100644
---- a/tests/intel/kms_psr_stress_test.c
-+++ b/tests/intel/kms_psr_stress_test.c
-@@ -232,7 +232,7 @@ static void prepare(data_t *data)
- 
- 	data->initial_state = psr_get_mode(data->debugfs_fd);
- 	igt_require(data->initial_state != PSR_DISABLED);
--	igt_require(psr_wait_entry(data->debugfs_fd, data->initial_state));
-+	igt_require(psr_wait_entry(data->debugfs_fd, data->initial_state, NULL));
- }
- 
- static void cleanup(data_t *data)
--- 
-2.25.1
+Series: extend kms_psr test to validate pr (rev4)
+URL   : https://patchwork.freedesktop.org/series/125379/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7578_BAT -> XEIGTPW_10139_BAT
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with XEIGTPW_10139_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_10139_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (3 -> 4)
+------------------------------
+
+  Additional (1): bat-dg2-oem2 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_10139_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_psr@primary_page_flip:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][1] +2 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html
+    - bat-adlp-7:         [PASS][2] -> [SKIP][3] +2 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7578/bat-adlp-7/igt@kms_psr@primary_page_flip.html
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/bat-adlp-7/igt@kms_psr@primary_page_flip.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10139_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][4] ([Intel XE#623])
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_addfb_basic@basic-y-tiled-legacy:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][5] ([Intel XE#624])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/bat-dg2-oem2/igt@kms_addfb_basic@basic-y-tiled-legacy.html
+
+  * igt@kms_addfb_basic@tile-pitch-mismatch:
+    - bat-dg2-oem2:       NOTRUN -> [FAIL][6] ([Intel XE#609]) +1 other test fail
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/bat-dg2-oem2/igt@kms_addfb_basic@tile-pitch-mismatch.html
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:
+    - bat-dg2-oem2:       NOTRUN -> [FAIL][7] ([i915#2346])
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][8] ([Intel XE#423])
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
+    - bat-adlp-7:         [PASS][9] -> [FAIL][10] ([Intel XE#480]) +1 other test fail
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7578/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+
+  * igt@kms_force_connector_basic@prune-stale-modes:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][11] ([i915#5274])
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-dg2-oem2:       NOTRUN -> [FAIL][12] ([Intel XE#608])
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
+    - bat-dg2-oem2:       NOTRUN -> [FAIL][13] ([Intel XE#400] / [Intel XE#616]) +2 other tests fail
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
+
+  * igt@xe_compute@compute-square:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][14] ([Intel XE#672])
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/bat-dg2-oem2/igt@xe_compute@compute-square.html
+
+  * igt@xe_exec_fault_mode@many-basic:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][15] ([Intel XE#288]) +17 other tests skip
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html
+
+  * igt@xe_huc_copy@huc_copy:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][16] ([Intel XE#255])
+   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html
+
+  * igt@xe_module_load@load:
+    - bat-atsm-2:         [PASS][17] -> [INCOMPLETE][18] ([Intel XE#714])
+   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7578/bat-atsm-2/igt@xe_module_load@load.html
+   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/bat-atsm-2/igt@xe_module_load@load.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#255]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/255
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
+  [Intel XE#423]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/423
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+  [Intel XE#608]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/608
+  [Intel XE#609]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/609
+  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
+  [Intel XE#623]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/623
+  [Intel XE#624]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/624
+  [Intel XE#672]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/672
+  [Intel XE#714]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/714
+  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
+  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7578 -> IGTPW_10139
+
+  IGTPW_10139: 10139
+  IGT_7578: 2cf20c8dc5e372674ec3e3dd30b042794e9520ab @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-481-7a0da606f1fcf4b59d7164419f1ccd1c48d366af: 7a0da606f1fcf4b59d7164419f1ccd1c48d366af
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/index.html
+
+--===============2636680626113153979==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>extend kms_psr test to validate pr (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/125379/">https://patchwork.freedesktop.org/series/125379/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7578_BAT -&gt; XEIGTPW_10139_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_10139_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_10139_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (3 -&gt; 4)</h2>
+<p>Additional (1): bat-dg2-oem2 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_10139_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@kms_psr@primary_page_flip:</p>
+<ul>
+<li>
+<p>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html">SKIP</a> +2 other tests skip</p>
+</li>
+<li>
+<p>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7578/bat-adlp-7/igt@kms_psr@primary_page_flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/bat-adlp-7/igt@kms_psr@primary_page_flip.html">SKIP</a> +2 other tests skip</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10139_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/623">Intel XE#623</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@basic-y-tiled-legacy:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/bat-dg2-oem2/igt@kms_addfb_basic@basic-y-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/624">Intel XE#624</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@tile-pitch-mismatch:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/bat-dg2-oem2/igt@kms_addfb_basic@tile-pitch-mismatch.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/609">Intel XE#609</a>) +1 other test fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/423">Intel XE#423</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7578/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@prune-stale-modes:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5274">i915#5274</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/608">Intel XE#608</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>) +2 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_compute@compute-square:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/bat-dg2-oem2/igt@xe_compute@compute-square.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/672">Intel XE#672</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@many-basic:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +17 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_huc_copy@huc_copy:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_module_load@load:</p>
+<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7578/bat-atsm-2/igt@xe_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10139/bat-atsm-2/igt@xe_module_load@load.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/714">Intel XE#714</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7578 -&gt; IGTPW_10139</li>
+</ul>
+<p>IGTPW_10139: 10139<br />
+  IGT_7578: 2cf20c8dc5e372674ec3e3dd30b042794e9520ab @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-481-7a0da606f1fcf4b59d7164419f1ccd1c48d366af: 7a0da606f1fcf4b59d7164419f1ccd1c48d366af</p>
+
+</body>
+</html>
+
+--===============2636680626113153979==--
