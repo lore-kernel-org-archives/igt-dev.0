@@ -1,21 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 177D210E1B7
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 06:37:00 +0000 (UTC)
-From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Thu, 9 Nov 2023 06:36:51 +0000
-Message-ID: <MW3PR11MB4748FFB027F138B270EB2C40AEAFA@MW3PR11MB4748.namprd11.prod.outlook.com>
-References: <20231107174349.60255-1-kamil.konieczny@linux.intel.com>
- <20231107174349.60255-6-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20231107174349.60255-6-kamil.konieczny@linux.intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6A70010E1BD
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 06:51:59 +0000 (UTC)
+From: Lukasz Laguna <lukasz.laguna@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu,  9 Nov 2023 07:51:39 +0100
+Message-Id: <20231109065147.9479-1-lukasz.laguna@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v1 5/5] drm-uapi/virtgpu: sync with
- drm-next
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 0/8] Initial SR-IOV validation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,155 +16,43 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Helen Koike <helen.koike@collabora.com>,
- Daniel Stone <daniels@collabora.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LGTM, Verified the below changes are in sync with drm-next repo.
+Series introduces a basic SR-IOV test that validates VFs enabling in
+different scenarios together with VF DRM driver binding. Implemented
+library helpers rely on generic PCI device attributes defined in ABI.
 
-Reviewed-by: Janga Rahul Kumar<janga.rahul.kumar@intel.com>
+Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
 
-> -----Original Message-----
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Kamil
-> Konieczny
-> Sent: Tuesday, November 7, 2023 11:14 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Helen Koike <helen.koike@collabora.com>; Daniel Stone
-> <daniels@collabora.com>
-> Subject: [igt-dev] [PATCH i-g-t v1 5/5] drm-uapi/virtgpu: sync with drm-n=
-ext
->=20
-> Sync with drm-next commit
-> ("f2cab4b318ee8023f4ad640b906ae268942a7db4")
->=20
-> Cc: Helen Koike <helen.koike@collabora.com>
-> Cc: Daniel Stone <daniels@collabora.com>
-> Cc: Vignesh Raman <vignesh.raman@collabora.com>
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  include/drm-uapi/virtgpu_drm.h | 49
-> ++++++++++++++++++++++++++++++++++
->  1 file changed, 49 insertions(+)
->=20
-> diff --git a/include/drm-uapi/virtgpu_drm.h b/include/drm-
-> uapi/virtgpu_drm.h index b9ec26e9c..b1d0e5656 100644
-> --- a/include/drm-uapi/virtgpu_drm.h
-> +++ b/include/drm-uapi/virtgpu_drm.h
-> @@ -47,12 +47,15 @@ extern "C" {
->  #define DRM_VIRTGPU_WAIT     0x08
->  #define DRM_VIRTGPU_GET_CAPS  0x09
->  #define DRM_VIRTGPU_RESOURCE_CREATE_BLOB 0x0a
-> +#define DRM_VIRTGPU_CONTEXT_INIT 0x0b
->=20
->  #define VIRTGPU_EXECBUF_FENCE_FD_IN	0x01
->  #define VIRTGPU_EXECBUF_FENCE_FD_OUT	0x02
-> +#define VIRTGPU_EXECBUF_RING_IDX	0x04
->  #define VIRTGPU_EXECBUF_FLAGS  (\
->  		VIRTGPU_EXECBUF_FENCE_FD_IN |\
->  		VIRTGPU_EXECBUF_FENCE_FD_OUT |\
-> +		VIRTGPU_EXECBUF_RING_IDX |\
->  		0)
->=20
->  struct drm_virtgpu_map {
-> @@ -61,6 +64,17 @@ struct drm_virtgpu_map {
->  	__u32 pad;
->  };
->=20
-> +#define VIRTGPU_EXECBUF_SYNCOBJ_RESET		0x01
-> +#define VIRTGPU_EXECBUF_SYNCOBJ_FLAGS ( \
-> +		VIRTGPU_EXECBUF_SYNCOBJ_RESET | \
-> +		0)
-> +struct drm_virtgpu_execbuffer_syncobj {
-> +	__u32 handle;
-> +	__u32 flags;
-> +	__u64 point;
-> +};
-> +
-> +/* fence_fd is modified on success if VIRTGPU_EXECBUF_FENCE_FD_OUT
-> flag
-> +is set. */
->  struct drm_virtgpu_execbuffer {
->  	__u32 flags;
->  	__u32 size;
-> @@ -68,6 +82,12 @@ struct drm_virtgpu_execbuffer {
->  	__u64 bo_handles;
->  	__u32 num_bo_handles;
->  	__s32 fence_fd; /* in/out fence fd (see
-> VIRTGPU_EXECBUF_FENCE_FD_IN/OUT) */
-> +	__u32 ring_idx; /* command ring index (see
-> VIRTGPU_EXECBUF_RING_IDX) */
-> +	__u32 syncobj_stride; /* size of @drm_virtgpu_execbuffer_syncobj
-> */
-> +	__u32 num_in_syncobjs;
-> +	__u32 num_out_syncobjs;
-> +	__u64 in_syncobjs;
-> +	__u64 out_syncobjs;
->  };
->=20
->  #define VIRTGPU_PARAM_3D_FEATURES 1 /* do we have 3D features in the
-> hw */ @@ -75,6 +95,8 @@ struct drm_virtgpu_execbuffer {  #define
-> VIRTGPU_PARAM_RESOURCE_BLOB 3 /*
-> DRM_VIRTGPU_RESOURCE_CREATE_BLOB */  #define
-> VIRTGPU_PARAM_HOST_VISIBLE 4 /* Host blob resources are mappable */
-> #define VIRTGPU_PARAM_CROSS_DEVICE 5 /* Cross virtio-device resource
-> sharing  */
-> +#define VIRTGPU_PARAM_CONTEXT_INIT 6 /*
-> DRM_VIRTGPU_CONTEXT_INIT */
-> +#define VIRTGPU_PARAM_SUPPORTED_CAPSET_IDs 7 /* Bitmask of
-> supported
-> +capability set ids */
->=20
->  struct drm_virtgpu_getparam {
->  	__u64 param;
-> @@ -173,6 +195,29 @@ struct drm_virtgpu_resource_create_blob {
->  	__u64 blob_id;
->  };
->=20
-> +#define VIRTGPU_CONTEXT_PARAM_CAPSET_ID       0x0001
-> +#define VIRTGPU_CONTEXT_PARAM_NUM_RINGS       0x0002
-> +#define VIRTGPU_CONTEXT_PARAM_POLL_RINGS_MASK 0x0003 struct
-> +drm_virtgpu_context_set_param {
-> +	__u64 param;
-> +	__u64 value;
-> +};
-> +
-> +struct drm_virtgpu_context_init {
-> +	__u32 num_params;
-> +	__u32 pad;
-> +
-> +	/* pointer to drm_virtgpu_context_set_param array */
-> +	__u64 ctx_set_params;
-> +};
-> +
-> +/*
-> + * Event code that's given when
-> VIRTGPU_CONTEXT_PARAM_POLL_RINGS_MASK
-> +is in
-> + * effect.  The event size is sizeof(drm_event), since there is no
-> +additional
-> + * payload.
-> + */
-> +#define VIRTGPU_EVENT_FENCE_SIGNALED 0x90000000
-> +
->  #define DRM_IOCTL_VIRTGPU_MAP \
->  	DRM_IOWR(DRM_COMMAND_BASE + DRM_VIRTGPU_MAP, struct
-> drm_virtgpu_map)
->=20
-> @@ -212,6 +257,10 @@ struct drm_virtgpu_resource_create_blob {
->  	DRM_IOWR(DRM_COMMAND_BASE +
-> DRM_VIRTGPU_RESOURCE_CREATE_BLOB,	\
->  		struct drm_virtgpu_resource_create_blob)
->=20
-> +#define DRM_IOCTL_VIRTGPU_CONTEXT_INIT
-> 	\
-> +	DRM_IOWR(DRM_COMMAND_BASE + DRM_VIRTGPU_CONTEXT_INIT,
-> 		\
-> +		struct drm_virtgpu_context_init)
-> +
->  #if defined(__cplusplus)
->  }
->  #endif
-> --
-> 2.42.0
+Daniel Mrzyglod (1):
+  lib/igt_sriov_device: add helper for checking if VF DRM driver is
+    probed
+
+Katarzyna Dec (4):
+  lib/igt_sriov_device: add core SR-IOV helpers
+  lib/igt_sriov_device: add helper for opening VF device
+  tests/sriov_basic: add basic tests for enabling SR-IOV VFs
+  tests/sriov_basic: validate driver binding to VFs
+
+Lukasz Laguna (3):
+  lib/igt_sriov_device: add helpers for operations in different VFs
+    scenarios
+  lib/igt_sriov_device: add helpers for VF DRM driver bind and unbind
+  tests/sriov_basic: add more tests for VF driver binding
+
+ lib/drmtest.c          |  17 ++-
+ lib/drmtest.h          |   1 +
+ lib/igt_sriov_device.c | 310 +++++++++++++++++++++++++++++++++++++++++
+ lib/igt_sriov_device.h |  65 +++++++++
+ lib/meson.build        |   1 +
+ tests/meson.build      |   1 +
+ tests/sriov_basic.c    | 260 ++++++++++++++++++++++++++++++++++
+ 7 files changed, 651 insertions(+), 4 deletions(-)
+ create mode 100644 lib/igt_sriov_device.c
+ create mode 100644 lib/igt_sriov_device.h
+ create mode 100644 tests/sriov_basic.c
+
+-- 
+2.40.0
