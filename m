@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam10on2062.outbound.protection.outlook.com [40.107.94.62])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9744610E1AD
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 02:42:02 +0000 (UTC)
-From: Jesse Zhang <jesse.zhang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Thu, 9 Nov 2023 10:41:50 +0800
-Message-ID: <20231109024150.2950150-1-jesse.zhang@amd.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 42AA810E1AD
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Nov 2023 03:29:45 +0000 (UTC)
+From: Kunal Joshi <kunal1.joshi@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu,  9 Nov 2023 09:06:59 +0530
+Message-Id: <20231109033706.1344465-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH V4 i-g-t 2/3] lib/amdgpu: add apu check for
- pciplug test
+Subject: [igt-dev] [PATCH i-g-t 0/7] extend kms_psr test to validate pr
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,70 +17,36 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Tim Huang <tim.huang@amd.com>, Luben Tuikov <luben.tuikov@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>, Christian
- Koenig <christian.koenig@amd.com>
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-It is integrated with cpu,
-for APU(Accelerated Processing Unit CPU + iGPU).
-So hotplug test should be unnecessary for it.
+Panel Replay behaves same as PSR for DP connector,
+modify kms_psr test to validate pr feature as well
 
-V4:
- - place the APU check in particular subtests.(Kamil)
- - Add igt_info about skipping tests (Vitaly) 
+Kunal Joshi (7):
+  lib/igt_psr: added enum for panel replay
+  lib/igt_psr: modified psr_sink_support for pr compatability
+  lib/igt_psr: modified psr_active_check for pr compatability
+  lib/igt_psr: modified psr_set for pr compatability
+  lib/igt_psr: modified psr_get_mode for pr compatability
+  tests/intel/kms_psr: made test compaitable with pr
+  HAX PATCH DO NOT MERGE
 
-Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Cc: Luben Tuikov <luben.tuikov@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian Koenig <christian.koenig@amd.com>
-Cc: Tim Huang <tim.huang@amd.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+ lib/igt_psr.c                          |  90 ++++--
+ lib/igt_psr.h                          |  11 +-
+ tests/intel-ci/fast-feedback.testlist  |  65 ++++
+ tests/intel/kms_dirtyfb.c              |   4 +-
+ tests/intel/kms_fbcon_fbt.c            |   8 +-
+ tests/intel/kms_frontbuffer_tracking.c |   6 +-
+ tests/intel/kms_pm_dc.c                |  15 +-
+ tests/intel/kms_psr.c                  | 393 ++++++++++++++++++-------
+ tests/intel/kms_psr2_sf.c              |  13 +-
+ tests/intel/kms_psr2_su.c              |   7 +-
+ tests/intel/kms_psr_stress_test.c      |   4 +-
+ tests/kms_feature_discovery.c          |   4 +-
+ 12 files changed, 461 insertions(+), 159 deletions(-)
 
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Reviewed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
----
- lib/amdgpu/amd_pci_unplug.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/lib/amdgpu/amd_pci_unplug.c b/lib/amdgpu/amd_pci_unplug.c
-index 047a8700b..b7af95dec 100644
---- a/lib/amdgpu/amd_pci_unplug.c
-+++ b/lib/amdgpu/amd_pci_unplug.c
-@@ -92,6 +92,7 @@ amdgpu_hotunplug_setup_test(bool render_mode, const struct amd_pci_unplug_setup
- 	bool ret = false;
- 	int r;
- 	uint32_t  major_version, minor_version;
-+	struct amdgpu_gpu_info gpu_info = {0};
- 
- 	unplug->num_devices = amdgpu_open_devices(render_mode, MAX_CARDS_SUPPORTED,
- 											  unplug->drm_amdgpu_fds);
-@@ -118,6 +119,12 @@ amdgpu_hotunplug_setup_test(bool render_mode, const struct amd_pci_unplug_setup
- 	if (minor_version < setup->minor_version_req)
- 		goto release;
- 
-+	/* skip hotplug test on APU (Accelerated Processing Unit CPU + iGPU) */
-+	r = amdgpu_query_gpu_info(unplug->device_handle, &gpu_info);
-+	igt_assert_eq(r, 0);
-+	if (gpu_info.ids_flags & AMDGPU_IDS_FLAGS_FUSION)
-+		igt_skip_on_f(!ret, "SKIP ... APU does not require this test\n");
-+
- 	if (!setup->open_device) {
- 			/* device handle is not always required for test */
- 			/* but for drm version is required always */
-@@ -132,6 +139,11 @@ amdgpu_hotunplug_setup_test(bool render_mode, const struct amd_pci_unplug_setup
- 			goto release;
- 		if (minor_version < setup->minor_version_req)
- 			goto release;
-+
-+		r = amdgpu_query_gpu_info(unplug->device_handle2, &gpu_info);
-+		igt_assert_eq(r, 0);
-+		if (gpu_info.ids_flags & AMDGPU_IDS_FLAGS_FUSION)
-+			igt_skip_on_f(!ret, "SKIP ... APU does not require this test\n");
- 	}
- 	ret = true;
- release:
 -- 
 2.25.1
