@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam10on2089.outbound.protection.outlook.com [40.107.94.89])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7634510E23D
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Nov 2023 02:54:16 +0000 (UTC)
-From: Lang Yu <Lang.Yu@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Fri, 10 Nov 2023 10:53:27 +0800
-Message-ID: <20231110025327.7395-1-Lang.Yu@amd.com>
+Content-Type: multipart/alternative;
+ boundary="===============7597556283340238745=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH v2] tests/amdgpu: add VPE tests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Lang Yu" <lang.yu@amd.com>
+Date: Fri, 10 Nov 2023 03:35:51 -0000
+Message-ID: <169958735134.31678.12807558124580528616@emeril.freedesktop.org>
+References: <20231110025327.7395-1-Lang.Yu@amd.com>
+In-Reply-To: <20231110025327.7395-1-Lang.Yu@amd.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/am?=
+ =?utf-8?q?dgpu=3A_add_VPE_tests?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,308 +17,427 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Deucher Alexander <Alexander.Deucher@amd.com>, Lang Yu <Lang.Yu@amd.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add tests for Video Processing Engine,
-including fence and blit tests.
+--===============7597556283340238745==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Lang Yu <Lang.Yu@amd.com>
----
- lib/amdgpu/amd_mmd_shared.h |   5 +
- tests/amdgpu/amd_vpe.c      | 253 ++++++++++++++++++++++++++++++++++++
- tests/amdgpu/meson.build    |   1 +
- 3 files changed, 259 insertions(+)
- create mode 100644 tests/amdgpu/amd_vpe.c
+== Series Details ==
 
-diff --git a/lib/amdgpu/amd_mmd_shared.h b/lib/amdgpu/amd_mmd_shared.h
-index 82e732509..14f9ecb4d 100644
---- a/lib/amdgpu/amd_mmd_shared.h
-+++ b/lib/amdgpu/amd_mmd_shared.h
-@@ -54,6 +54,11 @@ struct mmd_context {
- 	bool enc_ring;
- 	/* jpeg */
- 	bool jpeg_direct_reg;
-+
-+	/*vpe*/
-+	uint32_t vpe_ip_version_major;
-+	uint32_t vpe_ip_version_minor;
-+	bool vpe_ring;
- };
- 
- struct amdgpu_mmd_bo {
-diff --git a/tests/amdgpu/amd_vpe.c b/tests/amdgpu/amd_vpe.c
-new file mode 100644
-index 000000000..782f10915
---- /dev/null
-+++ b/tests/amdgpu/amd_vpe.c
-@@ -0,0 +1,253 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright 2023 Advanced Micro Devices, Inc.
-+ */
-+
-+#include <amdgpu.h>
-+#include "amdgpu_drm.h"
-+
-+#include "igt.h"
-+
-+#include "lib/amdgpu/amd_mmd_shared.h"
-+
-+IGT_TEST_DESCRIPTION("Test VPE functionality");
-+
-+#define IB_SIZE                 4096
-+#define MAX_RESOURCES           16
-+
-+#define PLANE_WIDTH             1024
-+#define PLANE_HEIGHT            256
-+#define PLANE_SIZE              (PLANE_WIDTH*PLANE_HEIGHT*4)
-+
-+#define SRC_PLANE_PATTERN       0x12345678
-+#define DST_PLANE_PATTERN       0xff123456
-+
-+static uint32_t vpe_descriptor[] = {
-+0x00000001, 0x33002200, 0xff000021, 0x00000003, 0x33002234, 0xff000021, 0x33002328, 0xff000021,
-+0x33002384, 0xff000021, 0x330023c0, 0xff000021,
-+};
-+
-+static uint32_t vpe_config[] = {
-+0x00000002, 0x00000000, 0xbeefbe00, 0xff005678, 0x000003ff, 0x00000000, 0x00ff43ff, 0x00000000,
-+0xbeefbe00, 0xff005679, 0x000003ff, 0x00000000, 0x00ff43ff, 0x003b0003, 0x00047808, 0x00000809,
-+0x0004780c, 0x000000e4, 0x00047d10, 0x00000009, 0x00047d14, 0x00000101, 0x00047d18, 0x00000000,
-+0x00047d1c, 0x00000000, 0x00047d20, 0x00000000, 0x00047d24, 0x0001f010, 0x00047d28, 0x0001f010,
-+0x00047d2c, 0x0001f010, 0x00547ee9, 0x00002000, 0x00000000, 0x20000000, 0x00000000, 0x00000000,
-+0x00002000, 0x00047ee4, 0x00000001, 0x00047ee0, 0x00000000, 0x00047f24, 0x00000000, 0x00047fc4,
-+0x00000000, 0x00547f05, 0x00002000, 0x00000000, 0x20000000, 0x00000000, 0x00000000, 0x00002000,
-+0x00047f00, 0x00000001, 0x00049700, 0x00000000, 0x00049704, 0x0000000f, 0x00049f30, 0x00000000,
-+0x00049708, 0x00000000, 0x0004970c, 0xffff0462, 0x0004a208, 0x00000000, 0x0004971c, 0x00000000,
-+0x00047fc0, 0x0001f000, 0x00150003, 0x00047df8, 0x00000001, 0x00047dfc, 0x00000001, 0x00047da8,
-+0x00000006, 0x00047e18, 0x00000000, 0x0004970c, 0xffff0422, 0x00049710, 0x0001f000, 0x00049714,
-+0x0001f000, 0x00049718, 0x0001f000, 0x00049720, 0x00000000, 0x00049724, 0x00000000, 0x00049728,
-+0x00000000, 0x000d0003, 0x00047810, 0x00000000, 0x00047814, 0x01000400, 0x00047818, 0x00000000,
-+0x0004781c, 0x01000400, 0x00047e00, 0x00000000, 0x00047e04, 0x01000400, 0x00047e08, 0x01000400,
-+0x00280003, 0x00047820, 0x00000036, 0x00047824, 0x0960f015, 0x0004972c, 0x00000014, 0x0004972c,
-+0x00000014, 0x0004972c, 0x00000014, 0x00049f90, 0x00000000, 0x00049f94, 0x00000001, 0x00549f99,
-+0x00002000, 0x00000000, 0x20000000, 0x00000000, 0x00000000, 0x00002000, 0x00049850, 0x00000000,
-+0x00049f34, 0x00000000, 0x00049f38, 0x02fff000, 0x00049f3c, 0x00fff000, 0x00049f40, 0x00fff000,
-+0x0004aba0, 0xffff0000, 0x0004aba0, 0xffff0000, 0x0004aacc, 0x00000000, 0x0004aad4, 0x00000013,
-+0x0004aad4, 0x00000013,
-+};
-+
-+static bool is_vpe_tests_enabled(amdgpu_device_handle device_handle,
-+                                 struct mmd_context *context)
-+{
-+        struct drm_amdgpu_info_hw_ip info;
-+        int r;
-+
-+        r = amdgpu_query_hw_ip_info(device_handle, AMDGPU_HW_IP_VPE, 0, &info);
-+        igt_assert_eq(r, 0);
-+
-+        context->vpe_ip_version_major = info.hw_ip_version_major;
-+        context->vpe_ip_version_minor = info.hw_ip_version_minor;
-+        context->vpe_ring = !!info.available_rings;
-+
-+        if (!context->vpe_ring) {
-+                igt_info("VPE no available rings");
-+		igt_info("VPE fence test disable");
-+		igt_info("VPE blit test disable");
-+        }
-+
-+	return true;
-+}
-+
-+static void amdgpu_cs_vpe_fence(amdgpu_device_handle device_handle,
-+                                struct mmd_context *context)
-+{
-+        const uint32_t test_pattern = 0xdeadbeef;
-+        uint32_t *ib_cpu = context->ib_cpu;
-+        struct amdgpu_mmd_bo test_bo;
-+        int r;
-+
-+        context->num_resources = 0;
-+        alloc_resource(device_handle, &test_bo, 4096, AMDGPU_GEM_DOMAIN_GTT);
-+        context->resources[context->num_resources++] = test_bo.handle;
-+
-+        r = amdgpu_bo_cpu_map(test_bo.handle, (void **)&test_bo.ptr);
-+        igt_assert_eq(r, 0);
-+
-+        memset(test_bo.ptr, 0, 4096);
-+
-+        memset(ib_cpu, 0, IB_SIZE);
-+
-+        ib_cpu[0] = 0x5;
-+        ib_cpu[1] = 0xfffffffc & test_bo.addr;
-+        ib_cpu[2] = (0xffffffff00000000 & test_bo.addr) >> 32;
-+        ib_cpu[3] = test_pattern;
-+        ib_cpu[4] = 0x0;
-+        ib_cpu[5] = 0x0;
-+        ib_cpu[6] = 0x0;
-+        ib_cpu[7] = 0x0;
-+
-+        context->resources[context->num_resources++] = context->ib_handle;
-+
-+        r = submit(device_handle, context, 8, AMDGPU_HW_IP_VPE);
-+        igt_assert_eq(r, 0);
-+
-+        igt_assert_eq(((uint32_t *)test_bo.ptr)[0], test_pattern);
-+
-+        r = amdgpu_bo_cpu_unmap(test_bo.handle);
-+        igt_assert_eq(r, 0);
-+
-+        free_resource(&test_bo);
-+}
-+
-+// a in byte 0, b in byte 1, g in byte 2, r in byte 3
-+static void create_rgba8888(void *addr, uint32_t width, uint32_t height)
-+{
-+        uint32_t *ptr = (uint32_t *)addr;
-+
-+        for (int i = 0; i < height; i++) {
-+                for (int j = 0; j < width; j++)
-+                        ptr[j] = SRC_PLANE_PATTERN;
-+                ptr += width;
-+        }
-+}
-+// b in byte 0, g in byte 1, r in byte 2, a in byte 3
-+static int check_argb8888(void *addr, uint32_t width, uint32_t height)
-+{
-+        uint32_t *ptr = (uint32_t *)addr;
-+
-+        for (int i = 0; i < height; i++) {
-+                for (int j = 0; j < width; j++)
-+                        if (ptr[j] != DST_PLANE_PATTERN)
-+                                return 1;
-+                ptr += width;
-+        }
-+
-+        return 0;
-+}
-+
-+static void amdgpu_cs_vpe_blit(amdgpu_device_handle device_handle,
-+                               struct mmd_context *context)
-+{
-+        const uint32_t vpep_config_offsets[] = {0x34, 0x128, 0x184, 0x1c0};
-+        struct amdgpu_mmd_bo vpe_config_bo, src_plane_bo, dst_plane_bo;
-+        int r;
-+
-+        context->num_resources = 0;
-+
-+        alloc_resource(device_handle, &vpe_config_bo, sizeof(vpe_config), AMDGPU_GEM_DOMAIN_GTT);
-+        alloc_resource(device_handle, &src_plane_bo, PLANE_SIZE, AMDGPU_GEM_DOMAIN_GTT);
-+        alloc_resource(device_handle, &dst_plane_bo, PLANE_SIZE, AMDGPU_GEM_DOMAIN_GTT);
-+
-+        r = amdgpu_bo_cpu_map(vpe_config_bo.handle, (void **)&vpe_config_bo.ptr);
-+        igt_assert_eq(r, 0);
-+
-+        r = amdgpu_bo_cpu_map(src_plane_bo.handle, (void **)&src_plane_bo.ptr);
-+        igt_assert_eq(r, 0);
-+
-+        r = amdgpu_bo_cpu_map(dst_plane_bo.handle, (void **)&dst_plane_bo.ptr);
-+        igt_assert_eq(r, 0);
-+
-+        context->resources[context->num_resources++] = vpe_config_bo.handle;
-+        context->resources[context->num_resources++] = src_plane_bo.handle;
-+        context->resources[context->num_resources++] = dst_plane_bo.handle;
-+
-+        // plane config gpu addr
-+        *(uint64_t *)(vpe_descriptor + 1) = vpe_config_bo.addr;
-+        // vpep config0 gpu addr
-+        *(uint64_t *)(vpe_descriptor + 4) = vpe_config_bo.addr + vpep_config_offsets[0];
-+        // vpep config1 gpu addr
-+        *(uint64_t *)(vpe_descriptor + 6) = vpe_config_bo.addr + vpep_config_offsets[1];
-+        // vpep config2 gpu addr
-+        *(uint64_t *)(vpe_descriptor + 8) = vpe_config_bo.addr + vpep_config_offsets[2];
-+        // vpep config3 gpu addr
-+        *(uint64_t *)(vpe_descriptor + 10) = vpe_config_bo.addr + vpep_config_offsets[3];
-+
-+        memset(src_plane_bo.ptr, 0, PLANE_SIZE);
-+        memset(dst_plane_bo.ptr, 0, PLANE_SIZE);
-+        create_rgba8888(src_plane_bo.ptr, PLANE_WIDTH, PLANE_HEIGHT);
-+
-+        /* gpu address of src */
-+        *(uint64_t *)(vpe_config + 2) = src_plane_bo.addr;
-+        /* gpu address of dst */
-+        *(uint64_t *)(vpe_config + 8) = dst_plane_bo.addr;
-+
-+        memset(vpe_config_bo.ptr, 0, sizeof(vpe_config));
-+        memcpy(vpe_config_bo.ptr, vpe_config, sizeof(vpe_config));
-+
-+        memset(context->ib_cpu, 0, IB_SIZE);
-+        memcpy(context->ib_cpu, vpe_descriptor, sizeof(vpe_descriptor));
-+
-+        context->resources[context->num_resources++] = context->ib_handle;
-+
-+        r = submit(device_handle, context, sizeof(vpe_descriptor)/4, AMDGPU_HW_IP_VPE);
-+        igt_assert_eq(r, 0);
-+
-+        r = check_argb8888(dst_plane_bo.ptr, PLANE_WIDTH, PLANE_HEIGHT);
-+        igt_assert_eq(r, 0);
-+
-+        r = amdgpu_bo_cpu_unmap(vpe_config_bo.handle);
-+        igt_assert_eq(r, 0);
-+
-+        r = amdgpu_bo_cpu_unmap(src_plane_bo.handle);
-+        igt_assert_eq(r, 0);
-+
-+        r = amdgpu_bo_cpu_unmap(dst_plane_bo.handle);
-+        igt_assert_eq(r, 0);
-+
-+        free_resource(&vpe_config_bo);
-+        free_resource(&src_plane_bo);
-+        free_resource(&dst_plane_bo);
-+}
-+
-+igt_main
-+{
-+        struct mmd_context context = {};
-+	amdgpu_device_handle device;
-+	int fd = -1;
-+
-+	igt_fixture {
-+		uint32_t major, minor;
-+		int r;
-+
-+		fd = drm_open_driver(DRIVER_AMDGPU);
-+                igt_require(fd > 0);
-+
-+		r = amdgpu_device_initialize(fd, &major, &minor, &device);
-+		igt_require(r == 0);
-+
-+		igt_info("Initialized amdgpu, driver version %d.%d\n", major, minor);
-+
-+		r = mmd_context_init(device, &context);
-+		igt_require(r == 0);
-+
-+		igt_skip_on(!is_vpe_tests_enabled(device, &context));
-+	}
-+
-+        igt_describe("Test VPE fence");
-+	igt_subtest("vpe-fence-test")
-+	amdgpu_cs_vpe_fence(device, &context);
-+
-+        igt_describe("Test VPE blit");
-+	igt_subtest("vpe-blit-test")
-+	amdgpu_cs_vpe_blit(device, &context);
-+
-+	igt_fixture {
-+		amdgpu_device_deinitialize(device);
-+		drm_close_driver(fd);
-+	}
-+
-+}
-diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
-index efd911fab..bbb8edc93 100644
---- a/tests/amdgpu/meson.build
-+++ b/tests/amdgpu/meson.build
-@@ -37,6 +37,7 @@ if libdrm_amdgpu.found()
- 			  'amd_mall',
- 			  'amd_odm',
- 			  'amd_subvp',
-+			  'amd_vpe',
- 			]
- 	if libdrm_amdgpu.version().version_compare('> 2.4.97')
- 		amdgpu_progs +=[ 'amd_syncobj', ]
--- 
-2.25.1
+Series: tests/amdgpu: add VPE tests
+URL   : https://patchwork.freedesktop.org/series/126237/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7581_BAT -> XEIGTPW_10155_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (0 -> 3)
+------------------------------
+
+  Additional (3): bat-dg2-oem2 bat-adlp-7 bat-atsm-2 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10155_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][1] ([Intel XE#623])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_addfb_basic@basic-y-tiled-legacy:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][2] ([Intel XE#624])
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-dg2-oem2/igt@kms_addfb_basic@basic-y-tiled-legacy.html
+
+  * igt@kms_addfb_basic@invalid-set-prop-any:
+    - bat-atsm-2:         NOTRUN -> [SKIP][3] ([i915#6077]) +33 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-atsm-2/igt@kms_addfb_basic@invalid-set-prop-any.html
+
+  * igt@kms_addfb_basic@tile-pitch-mismatch:
+    - bat-dg2-oem2:       NOTRUN -> [FAIL][4] ([Intel XE#609]) +1 other test fail
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-dg2-oem2/igt@kms_addfb_basic@tile-pitch-mismatch.html
+    - bat-adlp-7:         NOTRUN -> [FAIL][5] ([Intel XE#609]) +2 other tests fail
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-adlp-7/igt@kms_addfb_basic@tile-pitch-mismatch.html
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:
+    - bat-atsm-2:         NOTRUN -> [SKIP][6] ([Intel XE#782]) +5 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-atsm-2/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
+
+  * igt@kms_cursor_legacy@basic-flip-before-cursor-atomic:
+    - bat-dg2-oem2:       NOTRUN -> [FAIL][7] ([i915#2346])
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-atsm-2:         NOTRUN -> [SKIP][8] ([Intel XE#784])
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-atsm-2/igt@kms_dsc@dsc-basic.html
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][9] ([Intel XE#423])
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
+    - bat-adlp-7:         NOTRUN -> [SKIP][10] ([Intel XE#423])
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-adlp-7/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - bat-atsm-2:         NOTRUN -> [SKIP][11] ([Intel XE#541]) +3 other tests skip
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-atsm-2/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  * igt@kms_force_connector_basic@prune-stale-modes:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][12] ([i915#5274])
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-dg2-oem2:       NOTRUN -> [FAIL][13] ([Intel XE#608])
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html
+    - bat-adlp-7:         NOTRUN -> [FAIL][14] ([Intel XE#616] / [Intel XE#750])
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+    - bat-atsm-2:         NOTRUN -> [SKIP][15] ([Intel XE#783])
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-atsm-2/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - bat-atsm-2:         NOTRUN -> [SKIP][16] ([Intel XE#540]) +3 other tests skip
+   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-atsm-2/igt@kms_hdmi_inject@inject-audio.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3:
+    - bat-dg2-oem2:       NOTRUN -> [FAIL][17] ([Intel XE#400] / [Intel XE#616]) +2 other tests fail
+   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:
+    - bat-atsm-2:         NOTRUN -> [SKIP][18] ([i915#1836]) +6 other tests skip
+   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-atsm-2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html
+
+  * igt@kms_prop_blob@basic:
+    - bat-atsm-2:         NOTRUN -> [SKIP][19] ([Intel XE#780])
+   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-atsm-2/igt@kms_prop_blob@basic.html
+
+  * igt@kms_psr@primary_page_flip:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][20] ([Intel XE#535]) +2 other tests skip
+   [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html
+
+  * igt@kms_psr@sprite_plane_onoff:
+    - bat-atsm-2:         NOTRUN -> [SKIP][21] ([Intel XE#535]) +2 other tests skip
+   [21]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-atsm-2/igt@kms_psr@sprite_plane_onoff.html
+
+  * igt@xe_compute@compute-square:
+    - bat-atsm-2:         NOTRUN -> [SKIP][22] ([Intel XE#672])
+   [22]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-atsm-2/igt@xe_compute@compute-square.html
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][23] ([Intel XE#672])
+   [23]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-dg2-oem2/igt@xe_compute@compute-square.html
+
+  * igt@xe_evict@evict-beng-small-external:
+    - bat-adlp-7:         NOTRUN -> [SKIP][24] ([Intel XE#261] / [Intel XE#688]) +15 other tests skip
+   [24]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-adlp-7/igt@xe_evict@evict-beng-small-external.html
+
+  * igt@xe_exec_fault_mode@many-basic:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][25] ([Intel XE#288]) +17 other tests skip
+   [25]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html
+
+  * igt@xe_exec_fault_mode@twice-userptr-invalidate:
+    - bat-adlp-7:         NOTRUN -> [SKIP][26] ([Intel XE#288]) +17 other tests skip
+   [26]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-adlp-7/igt@xe_exec_fault_mode@twice-userptr-invalidate.html
+
+  * igt@xe_exec_fault_mode@twice-userptr-invalidate-imm:
+    - bat-atsm-2:         NOTRUN -> [SKIP][27] ([Intel XE#288]) +17 other tests skip
+   [27]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-atsm-2/igt@xe_exec_fault_mode@twice-userptr-invalidate-imm.html
+
+  * igt@xe_huc_copy@huc_copy:
+    - bat-atsm-2:         NOTRUN -> [SKIP][28] ([Intel XE#255])
+   [28]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-atsm-2/igt@xe_huc_copy@huc_copy.html
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][29] ([Intel XE#255])
+   [29]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html
+
+  * igt@xe_mmap@vram:
+    - bat-adlp-7:         NOTRUN -> [SKIP][30] ([Intel XE#263])
+   [30]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-adlp-7/igt@xe_mmap@vram.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#255]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/255
+  [Intel XE#261]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/261
+  [Intel XE#263]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/263
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
+  [Intel XE#423]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/423
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+  [Intel XE#535]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/535
+  [Intel XE#540]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/540
+  [Intel XE#541]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/541
+  [Intel XE#608]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/608
+  [Intel XE#609]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/609
+  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
+  [Intel XE#623]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/623
+  [Intel XE#624]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/624
+  [Intel XE#672]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/672
+  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
+  [Intel XE#750]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/750
+  [Intel XE#780]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/780
+  [Intel XE#782]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/782
+  [Intel XE#783]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/783
+  [Intel XE#784]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/784
+  [i915#1836]: https://gitlab.freedesktop.org/drm/intel/issues/1836
+  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
+  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
+  [i915#6077]: https://gitlab.freedesktop.org/drm/intel/issues/6077
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7581 -> IGTPW_10155
+  * Linux: xe-484-b11007e91f8785a96903d9d3c3d1efbe7e969eaf -> xe-485-b3890fb4386dcef68a96888141c4cc773f6241ce
+
+  IGTPW_10155: 10155
+  IGT_7581: 7581
+  xe-484-b11007e91f8785a96903d9d3c3d1efbe7e969eaf: b11007e91f8785a96903d9d3c3d1efbe7e969eaf
+  xe-485-b3890fb4386dcef68a96888141c4cc773f6241ce: b3890fb4386dcef68a96888141c4cc773f6241ce
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/index.html
+
+--===============7597556283340238745==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/amdgpu: add VPE tests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126237/">https://patchwork.freedesktop.org/series/126237/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7581_BAT -&gt; XEIGTPW_10155_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (0 -&gt; 3)</h2>
+<p>Additional (3): bat-dg2-oem2 bat-adlp-7 bat-atsm-2 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10155_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/623">Intel XE#623</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@basic-y-tiled-legacy:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-dg2-oem2/igt@kms_addfb_basic@basic-y-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/624">Intel XE#624</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@invalid-set-prop-any:</p>
+<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-atsm-2/igt@kms_addfb_basic@invalid-set-prop-any.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6077">i915#6077</a>) +33 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@tile-pitch-mismatch:</p>
+<ul>
+<li>
+<p>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-dg2-oem2/igt@kms_addfb_basic@tile-pitch-mismatch.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/609">Intel XE#609</a>) +1 other test fail</p>
+</li>
+<li>
+<p>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-adlp-7/igt@kms_addfb_basic@tile-pitch-mismatch.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/609">Intel XE#609</a>) +2 other tests fail</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:</p>
+<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-atsm-2/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/782">Intel XE#782</a>) +5 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-before-cursor-atomic:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>
+<p>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-atsm-2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/784">Intel XE#784</a>)</p>
+</li>
+<li>
+<p>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/423">Intel XE#423</a>)</p>
+</li>
+<li>
+<p>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-adlp-7/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/423">Intel XE#423</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank:</p>
+<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-atsm-2/igt@kms_flip@basic-flip-vs-wf_vblank.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/541">Intel XE#541</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@prune-stale-modes:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5274">i915#5274</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>
+<p>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/608">Intel XE#608</a>)</p>
+</li>
+<li>
+<p>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/750">Intel XE#750</a>)</p>
+</li>
+<li>
+<p>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-atsm-2/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/783">Intel XE#783</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-atsm-2/igt@kms_hdmi_inject@inject-audio.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/540">Intel XE#540</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>) +2 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:</p>
+<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-atsm-2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1836">i915#1836</a>) +6 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_prop_blob@basic:</p>
+<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-atsm-2/igt@kms_prop_blob@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/780">Intel XE#780</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_page_flip:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/535">Intel XE#535</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@sprite_plane_onoff:</p>
+<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-atsm-2/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/535">Intel XE#535</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_compute@compute-square:</p>
+<ul>
+<li>
+<p>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-atsm-2/igt@xe_compute@compute-square.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/672">Intel XE#672</a>)</p>
+</li>
+<li>
+<p>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-dg2-oem2/igt@xe_compute@compute-square.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/672">Intel XE#672</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-beng-small-external:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-adlp-7/igt@xe_evict@evict-beng-small-external.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/261">Intel XE#261</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +15 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@many-basic:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +17 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@twice-userptr-invalidate:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-adlp-7/igt@xe_exec_fault_mode@twice-userptr-invalidate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +17 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@twice-userptr-invalidate-imm:</p>
+<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-atsm-2/igt@xe_exec_fault_mode@twice-userptr-invalidate-imm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +17 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_huc_copy@huc_copy:</p>
+<ul>
+<li>
+<p>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-atsm-2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>)</p>
+</li>
+<li>
+<p>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_mmap@vram:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10155/bat-adlp-7/igt@xe_mmap@vram.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/263">Intel XE#263</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7581 -&gt; IGTPW_10155</li>
+<li>Linux: xe-484-b11007e91f8785a96903d9d3c3d1efbe7e969eaf -&gt; xe-485-b3890fb4386dcef68a96888141c4cc773f6241ce</li>
+</ul>
+<p>IGTPW_10155: 10155<br />
+  IGT_7581: 7581<br />
+  xe-484-b11007e91f8785a96903d9d3c3d1efbe7e969eaf: b11007e91f8785a96903d9d3c3d1efbe7e969eaf<br />
+  xe-485-b3890fb4386dcef68a96888141c4cc773f6241ce: b3890fb4386dcef68a96888141c4cc773f6241ce</p>
+
+</body>
+</html>
+
+--===============7597556283340238745==--
