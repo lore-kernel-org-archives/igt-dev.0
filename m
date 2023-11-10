@@ -1,22 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3467110E264
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Nov 2023 08:25:33 +0000 (UTC)
-From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
-To: "Hogander, Jouni" <jouni.hogander@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Fri, 10 Nov 2023 08:25:13 +0000
-Message-ID: <CY8PR11MB68898BBD1CCBC8E7A7D0FA40DAAEA@CY8PR11MB6889.namprd11.prod.outlook.com>
-References: <20231110081544.1377420-1-kunal1.joshi@intel.com>
- <20231110081544.1377420-7-kunal1.joshi@intel.com>
- <f521fac978416275977087cb9cea004e2bbca7b4.camel@intel.com>
-In-Reply-To: <f521fac978416275977087cb9cea004e2bbca7b4.camel@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from madras.collabora.co.uk (madras.collabora.co.uk
+ [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7A9F810E266
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Nov 2023 08:41:19 +0000 (UTC)
+From: Vignesh Raman <vignesh.raman@collabora.com>
+To: bhanuprakash.modem@intel.com, daniels@collabora.com,
+ helen.koike@collabora.com, juhapekka.heikkila@gmail.com,
+ igt-dev@lists.freedesktop.org
+Date: Fri, 10 Nov 2023 14:11:04 +0530
+Message-Id: <20231110084106.655504-1-vignesh.raman@collabora.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 6/7] tests/intel/kms_psr: made test
- compaitable with pr
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/3 v5] lib/igt_kms: Fix memory corruption
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,19 +19,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Murthy, Arun R" <arun.r.murthy@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9kaXNwbGF5X3JlcXVpcmUoJmRh
-dGEuZGlzcGxheSwgZGF0YS5kcm1fZmQpOw0KPj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoGRhdGEuc3VwcG9ydHNfcHNyMiA9IGRhdGEuc3VwcG9ydHNfcHNyMiB8DQo+PiBzaW5rX3N1
-cHBvcnQoJmRhdGEsIFBTUl9NT0RFXzIpOw0KDQo+IFlvdSBuZWVkIHRvIGRyb3AgdGhpcyBsaW5l
-IGFzIHdlbGwuIE90aGVyd2lzZSBpdCB3b250IGJ1aWxkLg0KPg0KPiBCUiwNCj4NCj4gSm91bmkg
-SMO2Z2FuZGVyDQoNCkhlbGxvIEpvdW5pLA0KDQp0aGlzIHdhcyBwcmVzZW50IGluIHRoZSBsZWdh
-Y3kgY29kZSBhbmQgSSBkaWRuJ3QgcmVtb3ZlIHRoaXMsDQpJdCdzIHVzZWQgaW4gdGVzdF9zZXR1
-cCBmdW5jdGlvbiwNCg0KICAgICAgICAgICAgICAgIGlmIChkYXRhLT5vcF9wc3JfbW9kZSA9PSBQ
-U1JfTU9ERV8yKQ0KICAgICAgICAgICAgICAgICAgICAgICAgaWd0X3JlcXVpcmUoZGF0YS0+c3Vw
-cG9ydHNfcHNyMik7DQoNCkJ1dCBub3cgdGhpcyBsb2dpYyBpcyByZWR1bmRhbnQgc28gd2lsbCBy
-ZW1vdmUgdGhpcy4NCg0KVGhhbmtzIGFuZCBSZWdhcmRzDQpLdW5hbCBKb3NoaQ0K
+virtio-gpu kernel driver, which provides KMS, reports 16 for count_crtcs
+which exceeds IGT_MAX_PIPES set to 8. The function igt_display_require
+allocates memory for IGT_MAX_PIPES members of igt_pipe_t structures,
+but then writes into it based on the count_crtcs reported by the kernel,
+resulting in memory corruption.
+
+ # malloc(): corrupted top size
+ # Received signal SIGABRT.
+ # Stack trace:
+ #  #0 [fatal_sig_handler+0x17b]
+ #  #1 [__sigaction+0x40]
+ #  #2 [pthread_key_delete+0x14c]
+ #  #3 [gsignal+0x12]
+ #  #4 [abort+0xd3]
+ #  #5 [__fsetlocking+0x290]
+ #  #6 [timer_settime+0x37a]
+ #  #7 [__default_morecore+0x1f1b]
+ #  #8 [__libc_calloc+0x161]
+ #  #9 [drmModeGetPlaneResources+0x44]
+ #  #10 [igt_display_require+0x194]
+ #  #11 [__igt_unique____real_main1356+0x93c]
+ #  #12 [main+0x3f]
+ #  #13 [__libc_init_first+0x8a]
+ #  #14 [__libc_start_main+0x85]
+ #  #15 [_start+0x21]
+
+Increase IGT_MAX_PIPES to 16 to fix this memory corruption issue.
+igt_display_require initializes display and allocate resources as
+a prerequisite for the tests. Skip the test if count_crtcs exceeds
+IGT_MAX_PIPES with debug information.
+
+This fix is required for drm-ci to run igt tests on virtio-gpu.
+
+Reviewed-by: Daniel Stone <daniels@collabora.com>
+Acked-by: Helen Koike <helen.koike@collabora.com>
+Suggested-by: Daniel Stone <daniels@collabora.com>
+Suggested-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Signed-off-by: Vignesh Raman <vignesh.raman@collabora.com>
+---
+
+v2:
+  - Rework the fix to increase IGT_MAX_PIPES to 16.
+
+v3:
+  - Fail the test if count_crtcs exceeds IGT_MAX_PIPES with debug information.
+
+v4:
+  - Update test documentation and blacklist tests.
+
+v5:
+  - Skip the test if count_crtcs exceeds IGT_MAX_PIPES with debug information.
+    Split the commits.
+
+---
+ lib/igt_kms.c |  6 +++++-
+ lib/igt_kms.h | 20 +++++++++++++++++++-
+ 2 files changed, 24 insertions(+), 2 deletions(-)
+
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 453103f90..bbcc12b47 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -906,7 +906,7 @@ static igt_plane_t *igt_get_assigned_primary(igt_output_t *output, igt_pipe_t *p
+  */
+ const char *kmstest_pipe_name(enum pipe pipe)
+ {
+-	static const char str[] = "A\0B\0C\0D\0E\0F\0G\0H";
++	static const char str[] = "A\0B\0C\0D\0E\0F\0G\0H\0I\0J\0K\0L\0M\0N\0O\0P";
+ 
+ 	_Static_assert(sizeof(str) == IGT_MAX_PIPES * 2,
+ 		       "Missing pipe name");
+@@ -2770,6 +2770,10 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+ 	}
+ #endif
+ 
++	igt_require_f(resources->count_crtcs <= IGT_MAX_PIPES,
++		     "count_crtcs exceeds IGT_MAX_PIPES, resources->count_crtcs=%d, IGT_MAX_PIPES=%d\n",
++		     resources->count_crtcs, IGT_MAX_PIPES);
++
+ 	display->n_pipes = IGT_MAX_PIPES;
+ 	display->pipes = calloc(sizeof(igt_pipe_t), display->n_pipes);
+ 	igt_assert_f(display->pipes, "Failed to allocate memory for %d pipes\n", display->n_pipes);
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 9028ab9be..5c705b585 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -57,6 +57,16 @@
+  * @PIPE_D: Fourth crtc.
+  * @PIPE_E: Fifth crtc.
+  * @PIPE_F: Sixth crtc.
++ * @PIPE_G: Seventh crtc.
++ * @PIPE_H: Eighth crtc.
++ * @PIPE_I: Ninth crtc.
++ * @PIPE_J: Tenth crtc.
++ * @PIPE_K: Eleventh crtc.
++ * @PIPE_L: Twelfth crtc.
++ * @PIPE_M: Thirteenth crtc.
++ * @PIPE_N: Fourteenth crtc.
++ * @PIPE_O: Fifteenth crtc.
++ * @PIPE_P: Sixteenth crtc.
+  * @IGT_MAX_PIPES: Max number of pipes allowed.
+  */
+ enum pipe {
+@@ -70,7 +80,15 @@ enum pipe {
+         PIPE_F,
+ 	PIPE_G,
+ 	PIPE_H,
+-        IGT_MAX_PIPES
++	PIPE_I,
++	PIPE_J,
++	PIPE_K,
++	PIPE_L,
++	PIPE_M,
++	PIPE_N,
++	PIPE_O,
++	PIPE_P,
++	IGT_MAX_PIPES
+ };
+ const char *kmstest_pipe_name(enum pipe pipe);
+ int kmstest_pipe_to_index(char pipe);
+-- 
+2.40.1
