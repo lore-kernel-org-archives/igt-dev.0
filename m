@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D58D110E963
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Nov 2023 09:44:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CEEE710E964
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Nov 2023 09:44:54 +0000 (UTC)
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 10 Nov 2023 15:22:29 +0530
-Message-Id: <20231110095232.1401758-5-kunal1.joshi@intel.com>
+Date: Fri, 10 Nov 2023 15:22:30 +0530
+Message-Id: <20231110095232.1401758-6-kunal1.joshi@intel.com>
 In-Reply-To: <20231110095232.1401758-1-kunal1.joshi@intel.com>
 References: <20231110095232.1401758-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 4/7] lib/igt_psr: modified psr_set for pr
- compatability
+Subject: [igt-dev] [PATCH i-g-t 5/7] lib/igt_psr: modified psr_get_mode for
+ pr compatability
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,8 +26,7 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Modified psr_set to add support PR_MODE and
-PR_MODE_SEL_FETCH
+Modified psr_get_mode for PR_MODE
 
 Cc: Jouni Högander <jouni.hogander@intel.com>
 Cc: Animesh Manna <animesh.manna@intel.com>
@@ -35,25 +34,23 @@ Cc: Arun R Murthy <arun.r.murthy@intel.com>
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 Reviewed-by: Jouni Högander <jouni.hogander@intel.com>
 ---
- lib/igt_psr.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ lib/igt_psr.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/lib/igt_psr.c b/lib/igt_psr.c
-index 6f1886938..a974036fd 100644
+index a974036fd..c9fd3ee58 100644
 --- a/lib/igt_psr.c
 +++ b/lib/igt_psr.c
-@@ -168,6 +168,12 @@ static bool psr_set(int device, int debugfs_fd, int mode)
- 		case PSR_MODE_2_SEL_FETCH:
- 			debug_val = "0x4";
- 			break;
-+		case PR_MODE:
-+			debug_val = "0x5";
-+			break;
-+		case PR_MODE_SEL_FETCH:
-+			debug_val = "0x6";
-+			break;
- 		default:
- 			/* Disables PSR */
- 			debug_val = "0x1";
+@@ -383,7 +383,9 @@ enum psr_mode psr_get_mode(int debugfs_fd)
+ 		return PSR_DISABLED;
+ 	}
+ 
+-	if (strstr(buf, "PSR2 selective fetch: enabled"))
++	if (strstr(buf, "Panel Replay Enabled"))
++		return PR_MODE;
++	else if (strstr(buf, "PSR2 selective fetch: enabled"))
+ 		return PSR_MODE_2_SEL_FETCH;
+ 	else if (strstr(buf, "PSR2 enabled"))
+ 		return PSR_MODE_2;
 -- 
 2.25.1
