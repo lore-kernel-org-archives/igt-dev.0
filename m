@@ -4,12 +4,12 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: =?utf-8?q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>
-Date: Fri, 10 Nov 2023 18:48:08 -0000
-Message-ID: <169964208844.31677.12793454863477253684@emeril.freedesktop.org>
+Date: Fri, 10 Nov 2023 18:54:10 -0000
+Message-ID: <169964245012.31676.11086930600926755828@emeril.freedesktop.org>
 References: <20231110163811.24158-1-andrealmeid@igalia.com>
 In-Reply-To: <20231110163811.24158-1-andrealmeid@igalia.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBBZGQg?=
- =?utf-8?q?test_for_atomic_async_page_flip?=
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_A?=
+ =?utf-8?q?dd_test_for_atomic_async_page_flip?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,62 +27,145 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Series: Add test for atomic async page flip
 URL   : https://patchwork.freedesktop.org/series/126282/
-State : failure
+State : warning
 
 == Summary ==
 
-IGT patchset build failed on latest successful build
-453b9df12fbc9fff561bdb4eb97992983e74c3d4 tests/intel/xe_exec_queue_property: Add scheduler exec queue set property
+Pipeline status: FAILED.
 
-Tail of build.log:
-[1613/1657] Linking target tools/intel_gem_info.
-[1614/1657] Linking target tools/intel_vbt_decode.
-[1615/1657] Linking target tools/intel_watermark.
-[1616/1657] Linking target tools/intel_residency.
-[1617/1657] Generating gem_stress.testlist with a meson_exe.py custom command.
-[1618/1657] Linking target runner/igt_runner.
-[1619/1657] Linking target tools/amd_hdmi_compliance.
-[1620/1657] Linking target tools/msm_dp_compliance.
-[1621/1657] Linking target runner/testdata/skippers.
-[1622/1657] Linking target tools/intel_dp_compliance.
-[1623/1657] Linking target runner/testdata/abort-simple.
-[1624/1657] Linking target runner/runner_json_test.
-[1625/1657] Linking target tools/lsgpu.
-[1626/1657] Linking target runner/igt_comms_decoder.
-[1627/1657] Linking target runner/testdata/successtest.
-[1628/1657] Linking target runner/testdata/abort.
-[1629/1657] Linking target runner/testdata/abort-fixture.
-[1630/1657] Linking target runner/testdata/abort-dynamic.
-[1631/1657] Linking target runner/testdata/dynamic.
-[1632/1657] Linking target runner/igt_results.
-[1633/1657] Linking target runner/igt_resume.
-[1634/1657] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_mtlgt3.c.o'.
-[1635/1657] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt1.c.o'.
-[1636/1657] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
-[1637/1657] Linking target runner/runner_test.
-[1638/1657] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt2.c.o'.
-[1639/1657] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt3.c.o'.
-[1640/1657] Linking target lib/libi915_perf.so.1.5.
-[1641/1657] Generating symbol file 'lib/76b5a35@@i915_perf@sha/libi915_perf.so.1.5.symbols'.
-[1642/1657] Linking target tools/i915-perf/i915-perf-configs.
-[1643/1657] Linking target tools/i915-perf/i915-perf-reader.
-[1644/1657] Linking target tools/i915-perf/i915-perf-recorder.
-[1645/1657] Linking target tests/core_hotunplug.
-[1646/1657] Linking target tests/gem_barrier_race.
-[1647/1657] Linking target tests/perf.
-[1648/1657] Generating core_hotunplug.testlist with a meson_exe.py custom command.
-[1649/1657] Generating perf.testlist with a meson_exe.py custom command.
-[1650/1657] Generating gem_barrier_race.testlist with a meson_exe.py custom command.
-[1651/1657] Generating xe_tests.rst with a custom command.
-[1652/1657] Generating i915_tests.rst with a custom command.
-[1653/1657] Generating kms_tests.rst with a custom command.
-FAILED: docs/testplan/kms_tests.rst 
-/usr/src/igt-gpu-tools/scripts/igt_doc.py --config /usr/src/igt-gpu-tools/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /opt/igt/build
-Warning: Missing documentation for igt@kms_async_flips@atomic-async-flip
-Warning: Missing documentation for igt@kms_async_flips@invalid-atomic-async-flip
-Warning: Missing documentation for igt@kms_async_flips@modeset-atomic-async-flip
-Please refer: docs/test_documentation.md for more details
-[1654/1657] Generating xe_tests.html with a custom command.
-[1655/1657] Generating i915_tests.html with a custom command.
-ninja: build stopped: subcommand failed.
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1031373 for the overview.
 
+build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/51451523):
+  [1644/1647] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
+  [1645/1647] Generating i915_tests.html with a custom command.
+  ninja: build stopped: subcommand failed.
+  ninja: Entering directory `build'
+  [1/730] Generating version.h with a custom command.
+  [2/4] Linking target runner/runner_test.
+  [3/4] Generating kms_tests.rst with a custom command.
+  FAILED: docs/testplan/kms_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+  Warning: Missing documentation for igt@kms_async_flips@atomic-async-flip
+  Warning: Missing documentation for igt@kms_async_flips@invalid-atomic-async-flip
+  Warning: Missing documentation for igt@kms_async_flips@modeset-atomic-async-flip
+  Please refer: docs/test_documentation.md for more details
+  ninja: build stopped: subcommand failed.
+  section_end:1699642173:step_script
+  section_start:1699642173:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1699642174:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/51451518):
+  [1650/1653] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
+  [1651/1653] Generating i915_tests.html with a custom command.
+  ninja: build stopped: subcommand failed.
+  ninja: Entering directory `build'
+  [1/732] Generating version.h with a custom command.
+  [2/4] Linking target runner/runner_test.
+  [3/4] Generating kms_tests.rst with a custom command.
+  FAILED: docs/testplan/kms_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+  Warning: Missing documentation for igt@kms_async_flips@atomic-async-flip
+  Warning: Missing documentation for igt@kms_async_flips@invalid-atomic-async-flip
+  Warning: Missing documentation for igt@kms_async_flips@modeset-atomic-async-flip
+  Please refer: docs/test_documentation.md for more details
+  ninja: build stopped: subcommand failed.
+  section_end:1699642161:step_script
+  section_start:1699642161:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1699642162:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/51451522):
+  Warning: Missing documentation for igt@kms_async_flips@modeset-atomic-async-flip
+  Please refer: docs/test_documentation.md for more details
+  [1652/1653] Generating i915_tests.html with a custom command.
+  ninja: build stopped: subcommand failed.
+  ninja: Entering directory `build'
+  [1/732] Generating version.h with a custom command.
+  [2/3] Generating kms_tests.rst with a custom command.
+  FAILED: docs/testplan/kms_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+  Warning: Missing documentation for igt@kms_async_flips@atomic-async-flip
+  Warning: Missing documentation for igt@kms_async_flips@invalid-atomic-async-flip
+  Warning: Missing documentation for igt@kms_async_flips@modeset-atomic-async-flip
+  Please refer: docs/test_documentation.md for more details
+  ninja: build stopped: subcommand failed.
+  section_end:1699642182:step_script
+  section_start:1699642182:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1699642182:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/51451521):
+  [1492/1495] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
+  [1493/1495] Generating i915_tests.html with a custom command.
+  ninja: build stopped: subcommand failed.
+  ninja: Entering directory `build'
+  [1/685] Generating version.h with a custom command.
+  [2/4] Linking target runner/runner_test.
+  [3/4] Generating kms_tests.rst with a custom command.
+  FAILED: docs/testplan/kms_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+  Warning: Missing documentation for igt@kms_async_flips@atomic-async-flip
+  Warning: Missing documentation for igt@kms_async_flips@invalid-atomic-async-flip
+  Warning: Missing documentation for igt@kms_async_flips@modeset-atomic-async-flip
+  Please refer: docs/test_documentation.md for more details
+  ninja: build stopped: subcommand failed.
+  section_end:1699642174:step_script
+  section_start:1699642174:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1699642175:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/51451519):
+  [1650/1653] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
+  [1651/1653] Generating i915_tests.html with a custom command.
+  ninja: build stopped: subcommand failed.
+  ninja: Entering directory `build'
+  [1/732] Generating version.h with a custom command.
+  [2/4] Linking target runner/runner_test.
+  [3/4] Generating kms_tests.rst with a custom command.
+  FAILED: docs/testplan/kms_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+  Warning: Missing documentation for igt@kms_async_flips@atomic-async-flip
+  Warning: Missing documentation for igt@kms_async_flips@invalid-atomic-async-flip
+  Warning: Missing documentation for igt@kms_async_flips@modeset-atomic-async-flip
+  Please refer: docs/test_documentation.md for more details
+  ninja: build stopped: subcommand failed.
+  section_end:1699642161:step_script
+  section_start:1699642161:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1699642162:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/51451520):
+  [1650/1653] Compiling C object 'runner/runner@@runner_test@exe/runner_tests.c.o'.
+  [1651/1653] Generating i915_tests.html with a custom command.
+  ninja: build stopped: subcommand failed.
+  ninja: Entering directory `build'
+  [1/732] Generating version.h with a custom command.
+  [2/4] Linking target runner/runner_test.
+  [3/4] Generating kms_tests.rst with a custom command.
+  FAILED: docs/testplan/kms_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json --rest docs/testplan/kms_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+  Warning: Missing documentation for igt@kms_async_flips@atomic-async-flip
+  Warning: Missing documentation for igt@kms_async_flips@invalid-atomic-async-flip
+  Warning: Missing documentation for igt@kms_async_flips@modeset-atomic-async-flip
+  Please refer: docs/test_documentation.md for more details
+  ninja: build stopped: subcommand failed.
+  section_end:1699642175:step_script
+  section_start:1699642175:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1699642176:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1031373
