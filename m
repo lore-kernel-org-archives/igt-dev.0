@@ -1,22 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BDC7910E994
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Nov 2023 11:38:15 +0000 (UTC)
-Message-ID: <5299cd15-dc06-5431-a13c-627b962646be@collabora.com>
-Date: Fri, 10 Nov 2023 17:08:08 +0530
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
- daniels@collabora.com, helen.koike@collabora.com,
- juhapekka.heikkila@gmail.com, igt-dev@lists.freedesktop.org
-References: <20231110084106.655504-1-vignesh.raman@collabora.com>
- <b4585b60-0fa7-c139-401d-fb215fac4336@intel.com>
-Content-Language: en-US
-From: Vignesh Raman <vignesh.raman@collabora.com>
-In-Reply-To: <b4585b60-0fa7-c139-401d-fb215fac4336@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t 1/3 v5] lib/igt_kms: Fix memory
- corruption
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: sai.gowtham.ch@intel.com
+Date: Fri, 10 Nov 2023 11:43:58 -0000
+Message-ID: <169961663886.31676.12180969493336812191@emeril.freedesktop.org>
+References: <20231110110759.11719-1-sai.gowtham.ch@intel.com>
+In-Reply-To: <20231110110759.11719-1-sai.gowtham.ch@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
+ =?utf-8?q?s/intel/xe=5Fexec=5Fqueue=5Fproperty=3A_Negative_tests_for_get_?=
+ =?utf-8?q?exec=5Fqueue_property_ioctl=2E?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,69 +18,72 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Bhanu,
+== Series Details ==
 
-On 10/11/23 15:21, Modem, Bhanuprakash wrote:
->> @@ -2770,6 +2770,10 @@ void igt_display_require(igt_display_t 
->> *display, int drm_fd)
->>       }
->>   #endif
->> +    igt_require_f(resources->count_crtcs <= IGT_MAX_PIPES,
-> ---------------------------------------------^
-> As pipe index starts from 0, we must use '<' not '<='.
+Series: tests/intel/xe_exec_queue_property: Negative tests for get exec_queue property ioctl.
+URL   : https://patchwork.freedesktop.org/series/126266/
+State : failure
 
-igt_require_f - Skip a (sub-)test if a condition is not met
+== Summary ==
 
-igt_require_f(resources->count_crtcs <= IGT_MAX_PIPES,
-                      "count_crtcs exceeds IGT_MAX_PIPES, 
-resources->count_crtcs=%d, IGT_MAX_PIPES=%d\n",
-                      resources->count_crtcs, IGT_MAX_PIPES);
+IGT patchset build failed on latest successful build
+453b9df12fbc9fff561bdb4eb97992983e74c3d4 tests/intel/xe_exec_queue_property: Add scheduler exec queue set property
 
-If count_crtcs=16 and IGT_MAX_PIPES=16 (In the current case with 
-virtio-gpu),
+Tail of build.log:
+[1610/1657] Linking target tools/intel_gvtg_test.
+[1611/1657] Linking target tools/intel_dp_compliance.
+[1612/1657] Linking target tools/intel_residency.
+[1613/1657] Linking target runner/testdata/skippers.
+[1614/1657] Linking target runner/testdata/successtest.
+[1615/1657] Linking target tools/intel_reg_checker.
+[1616/1657] Linking target tools/amd_hdmi_compliance.
+[1617/1657] Linking target tools/intel_watermark.
+[1618/1657] Linking target runner/testdata/abort-simple.
+[1619/1657] Linking target runner/igt_runner.
+[1620/1657] Linking target tools/intel_vbt_decode.
+[1621/1657] Linking target runner/testdata/dynamic.
+[1622/1657] Linking target tools/intel_reg.
+[1623/1657] Linking target runner/igt_results.
+[1624/1657] Linking target runner/testdata/abort-fixture.
+[1625/1657] Linking target runner/testdata/abort.
+[1626/1657] Linking target tools/lsgpu.
+[1627/1657] Generating gem_stress.testlist with a meson_exe.py custom command.
+[1628/1657] Linking target runner/testdata/no-subtests.
+[1629/1657] Linking target runner/runner_json_test.
+[1630/1657] Linking target runner/igt_comms_decoder.
+[1631/1657] Linking target tools/intel_l3_parity.
+[1632/1657] Linking target tools/msm_dp_compliance.
+[1633/1657] Linking target runner/igt_resume.
+[1634/1657] Linking target runner/testdata/abort-dynamic.
+[1635/1657] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt1.c.o'.
+[1636/1657] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
+[1637/1657] Linking target runner/runner_test.
+[1638/1657] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt2.c.o'.
+[1639/1657] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt3.c.o'.
+[1640/1657] Linking target lib/libi915_perf.so.1.5.
+[1641/1657] Generating symbol file 'lib/76b5a35@@i915_perf@sha/libi915_perf.so.1.5.symbols'.
+[1642/1657] Linking target tools/i915-perf/i915-perf-configs.
+[1643/1657] Linking target tools/i915-perf/i915-perf-recorder.
+[1644/1657] Linking target tools/i915-perf/i915-perf-reader.
+[1645/1657] Linking target tests/gem_barrier_race.
+[1646/1657] Linking target tests/perf.
+[1647/1657] Linking target tests/core_hotunplug.
+[1648/1657] Generating gem_barrier_race.testlist with a meson_exe.py custom command.
+[1649/1657] Generating core_hotunplug.testlist with a meson_exe.py custom command.
+[1650/1657] Generating perf.testlist with a meson_exe.py custom command.
+[1651/1657] Generating xe_tests.rst with a custom command.
+FAILED: docs/testplan/xe_tests.rst 
+/usr/src/igt-gpu-tools/scripts/igt_doc.py --config /usr/src/igt-gpu-tools/tests/intel/xe_test_config.json --rest docs/testplan/xe_tests.rst --check-testlist --igt-build-path /opt/igt/build
+Warning: Documented igt@xe_exec_queue_property@Invalid_exec_queue doesn't exist on source files
+Warning: Missing documentation for igt@xe_exec_queue_property@Invalid-exec-queue
+Please refer: docs/test_documentation.md for more details
+[1652/1657] Generating i915_tests.rst with a custom command.
+[1653/1657] Generating kms_tests.rst with a custom command.
+ninja: build stopped: subcommand failed.
 
-count_crtcs <= IGT_MAX_PIPES will be true and test requirement is passed 
-and following statement will be executed.
-display->n_pipes = IGT_MAX_PIPES;
-
-In another case,
-count_crtcs < IGT_MAX_PIPES will be false and test will be skipped,
-
-So we need to use <= right?
-
->>   enum pipe {
->> @@ -70,7 +80,15 @@ enum pipe {
->>           PIPE_F,
->>       PIPE_G,
->>       PIPE_H,
->> -        IGT_MAX_PIPES
->> +    PIPE_I,
->> +    PIPE_J,
->> +    PIPE_K,
->> +    PIPE_L,
->> +    PIPE_M,
->> +    PIPE_N,
->> +    PIPE_O,
->> +    PIPE_P,
->> +    IGT_MAX_PIPES
-> 
-> Please don't mix tabs & spaces, and try to align with the declaration of 
-> previous pipes.
-
-The previous ones G and H used tabs and the rest were spaces. I will use 
-spaces for all now.
-
-> 
-> Apart from these minor fixes, this patch LGTM. With above comments 
-> addressed, this patch is
-> 
-> Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-
-Thank you.
-
-Regards,
-Vignesh
