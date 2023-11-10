@@ -1,15 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============2602682668751799701=="
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BDC7910E994
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Nov 2023 11:38:15 +0000 (UTC)
+Message-ID: <5299cd15-dc06-5431-a13c-627b962646be@collabora.com>
+Date: Fri, 10 Nov 2023 17:08:08 +0530
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Joshi, Kunal1" <kunal1.joshi@intel.com>
-Date: Fri, 10 Nov 2023 11:31:51 -0000
-Message-ID: <169961591175.31679.15389839271514448518@emeril.freedesktop.org>
-References: <20231110095232.1401758-1-kunal1.joshi@intel.com>
-In-Reply-To: <20231110095232.1401758-1-kunal1.joshi@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_extend_k?=
- =?utf-8?q?ms=5Fpsr_test_to_validate_pr_=28rev9=29?=
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
+ daniels@collabora.com, helen.koike@collabora.com,
+ juhapekka.heikkila@gmail.com, igt-dev@lists.freedesktop.org
+References: <20231110084106.655504-1-vignesh.raman@collabora.com>
+ <b4585b60-0fa7-c139-401d-fb215fac4336@intel.com>
+Content-Language: en-US
+From: Vignesh Raman <vignesh.raman@collabora.com>
+In-Reply-To: <b4585b60-0fa7-c139-401d-fb215fac4336@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3 v5] lib/igt_kms: Fix memory
+ corruption
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,193 +24,69 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2602682668751799701==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Bhanu,
 
-== Series Details ==
+On 10/11/23 15:21, Modem, Bhanuprakash wrote:
+>> @@ -2770,6 +2770,10 @@ void igt_display_require(igt_display_t 
+>> *display, int drm_fd)
+>>       }
+>>   #endif
+>> +    igt_require_f(resources->count_crtcs <= IGT_MAX_PIPES,
+> ---------------------------------------------^
+> As pipe index starts from 0, we must use '<' not '<='.
 
-Series: extend kms_psr test to validate pr (rev9)
-URL   : https://patchwork.freedesktop.org/series/125379/
-State : failure
+igt_require_f - Skip a (sub-)test if a condition is not met
 
-== Summary ==
+igt_require_f(resources->count_crtcs <= IGT_MAX_PIPES,
+                      "count_crtcs exceeds IGT_MAX_PIPES, 
+resources->count_crtcs=%d, IGT_MAX_PIPES=%d\n",
+                      resources->count_crtcs, IGT_MAX_PIPES);
 
-CI Bug Log - changes from XEIGT_7582_BAT -> XEIGTPW_10162_BAT
-====================================================
+If count_crtcs=16 and IGT_MAX_PIPES=16 (In the current case with 
+virtio-gpu),
 
-Summary
--------
+count_crtcs <= IGT_MAX_PIPES will be true and test requirement is passed 
+and following statement will be executed.
+display->n_pipes = IGT_MAX_PIPES;
 
-  **FAILURE**
+In another case,
+count_crtcs < IGT_MAX_PIPES will be false and test will be skipped,
 
-  Serious unknown changes coming with XEIGTPW_10162_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_10162_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+So we need to use <= right?
 
-  
+>>   enum pipe {
+>> @@ -70,7 +80,15 @@ enum pipe {
+>>           PIPE_F,
+>>       PIPE_G,
+>>       PIPE_H,
+>> -        IGT_MAX_PIPES
+>> +    PIPE_I,
+>> +    PIPE_J,
+>> +    PIPE_K,
+>> +    PIPE_L,
+>> +    PIPE_M,
+>> +    PIPE_N,
+>> +    PIPE_O,
+>> +    PIPE_P,
+>> +    IGT_MAX_PIPES
+> 
+> Please don't mix tabs & spaces, and try to align with the declaration of 
+> previous pipes.
 
-Participating hosts (3 -> 3)
-------------------------------
+The previous ones G and H used tabs and the rest were spaces. I will use 
+spaces for all now.
 
-  No changes in participating hosts
+> 
+> Apart from these minor fixes, this patch LGTM. With above comments 
+> addressed, this patch is
+> 
+> Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-Possible new issues
--------------------
+Thank you.
 
-  Here are the unknown changes that may have been introduced in XEIGTPW_10162_BAT:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_psr@primary_page_flip:
-    - bat-adlp-7:         [PASS][1] -> [SKIP][2] +2 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7582/bat-adlp-7/igt@kms_psr@primary_page_flip.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10162/bat-adlp-7/igt@kms_psr@primary_page_flip.html
-
-  
-#### Warnings ####
-
-  * igt@kms_psr@cursor_plane_move:
-    - bat-atsm-2:         [SKIP][3] ([Intel XE#535]) -> [SKIP][4] +2 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7582/bat-atsm-2/igt@kms_psr@cursor_plane_move.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10162/bat-atsm-2/igt@kms_psr@cursor_plane_move.html
-
-  * igt@kms_psr@primary_page_flip:
-    - bat-dg2-oem2:       [SKIP][5] ([Intel XE#535]) -> [SKIP][6] +2 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7582/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10162/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10162_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Warnings ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [FAIL][7] ([Intel XE#616] / [Intel XE#750]) -> [DMESG-FAIL][8] ([Intel XE#282] / [i915#2017])
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7582/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10162/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  
-  [Intel XE#282]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/282
-  [Intel XE#535]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/535
-  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
-  [Intel XE#750]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/750
-  [i915#2017]: https://gitlab.freedesktop.org/drm/intel/issues/2017
-
-
-Build changes
--------------
-
-  * IGT: IGT_7582 -> IGTPW_10162
-
-  IGTPW_10162: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10162/index.html
-  IGT_7582: 453b9df12fbc9fff561bdb4eb97992983e74c3d4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-485-b3890fb4386dcef68a96888141c4cc773f6241ce: b3890fb4386dcef68a96888141c4cc773f6241ce
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10162/index.html
-
---===============2602682668751799701==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>extend kms_psr test to validate pr (rev9)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/125379/">https://patchwork.freedesktop.org/series/125379/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10162/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10162/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7582_BAT -&gt; XEIGTPW_10162_BAT</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_10162_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_10162_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (3 -&gt; 3)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_10162_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@kms_psr@primary_page_flip:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7582/bat-adlp-7/igt@kms_psr@primary_page_flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10162/bat-adlp-7/igt@kms_psr@primary_page_flip.html">SKIP</a> +2 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@kms_psr@cursor_plane_move:</p>
-<ul>
-<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7582/bat-atsm-2/igt@kms_psr@cursor_plane_move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/535">Intel XE#535</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10162/bat-atsm-2/igt@kms_psr@cursor_plane_move.html">SKIP</a> +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@primary_page_flip:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7582/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/535">Intel XE#535</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10162/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html">SKIP</a> +2 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10162_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_frontbuffer_tracking@basic:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7582/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/750">Intel XE#750</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10162/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2017">i915#2017</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7582 -&gt; IGTPW_10162</li>
-</ul>
-<p>IGTPW_10162: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10162/index.html<br />
-  IGT_7582: 453b9df12fbc9fff561bdb4eb97992983e74c3d4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-485-b3890fb4386dcef68a96888141c4cc773f6241ce: b3890fb4386dcef68a96888141c4cc773f6241ce</p>
-
-</body>
-</html>
-
---===============2602682668751799701==--
+Regards,
+Vignesh
