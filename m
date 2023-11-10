@@ -1,21 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 231FB10E656
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Nov 2023 05:40:18 +0000 (UTC)
-From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
-To: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Fri, 10 Nov 2023 05:40:13 +0000
-Message-ID: <MW3PR11MB47481C86FBF848C0D81FCE52AEAEA@MW3PR11MB4748.namprd11.prod.outlook.com>
-References: <20231110052746.2131907-1-priyanka.dandamudi@intel.com>
- <20231110052746.2131907-3-priyanka.dandamudi@intel.com>
-In-Reply-To: <20231110052746.2131907-3-priyanka.dandamudi@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8CAB110E690
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Nov 2023 06:07:10 +0000 (UTC)
+Message-ID: <905fb4ec-5d8a-73df-2841-a0affe98768f@intel.com>
+Date: Fri, 10 Nov 2023 11:36:32 +0530
 Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+To: Vignesh Raman <vignesh.raman@collabora.com>, <daniels@collabora.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20231110040647.630223-1-vignesh.raman@collabora.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20231110040647.630223-1-vignesh.raman@collabora.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/intel/xe_exec_queue_property:
- Add scheduler exec queue set property
+Subject: Re: [igt-dev] [PATCH i-g-t v4] lib/igt_kms: Fix memory corruption
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,179 +21,257 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: helen.koike@collabora.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Hi Vignesh,
 
-
-> -----Original Message-----
-> From: Dandamudi, Priyanka <priyanka.dandamudi@intel.com>
-> Sent: Friday, November 10, 2023 10:58 AM
-> To: Dandamudi, Priyanka <priyanka.dandamudi@intel.com>; Kumar, Janga
-> Rahul <janga.rahul.kumar@intel.com>; igt-dev@lists.freedesktop.org
-> Subject: [PATCH i-g-t 2/2] tests/intel/xe_exec_queue_property: Add
-> scheduler exec queue set property
->=20
-> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
->=20
-> Added tests to check scheduler exec queue set properties.
-> Schedulers inclcude job timeout, preempt timeout and timeslice.
->=20
-> v2: Moved sysfs related fixture code to subtest group.(Rahul)
->=20
-> Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-
-LGTM,
-Reviewed-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+On Fri-10-11-2023 09:36 am, Vignesh Raman wrote:
+> virtio-gpu kernel driver, which provides KMS, reports 16 for count_crtcs
+> which exceeds IGT_MAX_PIPES set to 8. The function igt_display_require
+> allocates memory for IGT_MAX_PIPES members of igt_pipe_t structures,
+> but then writes into it based on the count_crtcs reported by the kernel,
+> resulting in memory corruption.
+> 
+>   # malloc(): corrupted top size
+>   # Received signal SIGABRT.
+>   # Stack trace:
+>   #  #0 [fatal_sig_handler+0x17b]
+>   #  #1 [__sigaction+0x40]
+>   #  #2 [pthread_key_delete+0x14c]
+>   #  #3 [gsignal+0x12]
+>   #  #4 [abort+0xd3]
+>   #  #5 [__fsetlocking+0x290]
+>   #  #6 [timer_settime+0x37a]
+>   #  #7 [__default_morecore+0x1f1b]
+>   #  #8 [__libc_calloc+0x161]
+>   #  #9 [drmModeGetPlaneResources+0x44]
+>   #  #10 [igt_display_require+0x194]
+>   #  #11 [__igt_unique____real_main1356+0x93c]
+>   #  #12 [main+0x3f]
+>   #  #13 [__libc_init_first+0x8a]
+>   #  #14 [__libc_start_main+0x85]
+>   #  #15 [_start+0x21]
+> 
+> Increase IGT_MAX_PIPES to 16 to fix this memory corruption issue.
+> igt_display_require initializes display and allocate resources as
+> a prerequisite for the tests. Fail the test if count_crtcs exceeds
+> IGT_MAX_PIPES with debug information. Additionally, update the test
+> documentation to cover up to 16 pipes, and blacklist tests from
+> pipe-i to pipe-p on both the XE blocklist and the intel-ci blacklist.
+> 
+> This fix is required for drm-ci to run igt tests on virtio-gpu.
+> 
+> Reviewed-by: Daniel Stone <daniels@collabora.com>
+> Acked-by: Helen Koike <helen.koike@collabora.com>
+> Suggested-by: Daniel Stone <daniels@collabora.com>
+> Suggested-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> Signed-off-by: Vignesh Raman <vignesh.raman@collabora.com>
 > ---
->  tests/intel/xe_exec_queue_property.c | 90 +++++++++++++++++++++++++++-
->  1 file changed, 89 insertions(+), 1 deletion(-)
->=20
-> diff --git a/tests/intel/xe_exec_queue_property.c
-> b/tests/intel/xe_exec_queue_property.c
-> index f61ab1a19..4e32aefa5 100644
-> --- a/tests/intel/xe_exec_queue_property.c
-> +++ b/tests/intel/xe_exec_queue_property.c
-> @@ -13,6 +13,14 @@
->   * Description: tests basic priority property by setting invalid values =
-and
-> positive values.
->   * SUBTEST: persistence-set-property
->   * Description: tests basic persistence property by setting positive val=
-ues
-> + * SUBTEST: %s-property-min-max
-> + * Description: Test to check if %s arg[1] schedule parameter checks for=
- min
-> max values.
-> + *
-> + * arg[1]:
-> + *
-> + * @preempt_timeout_us:		preempt timeout us
-> + * @timeslice_duration_us:	timeslice duration us
-> + * @job_timeout_ms:		job timeout ms
->   */
->=20
->  #include <dirent.h>
-> @@ -22,15 +30,28 @@
->  #include <sys/types.h>
->=20
->  #include "igt.h"
-> -#include "xe_drm.h"
-> +#include "igt_sysfs.h"
->  #include "lib/igt_syncobj.h"
->  #include "lib/intel_reg.h"
-> +#include "xe_drm.h"
->  #include "xe/xe_ioctl.h"
->  #include "xe/xe_query.h"
->=20
->  #define DRM_SCHED_PRIORITY_HIGH  2
->  #define DRM_SCHED_PRIORITY_NORMAL 1
->=20
-> +static int get_property_name(const char *property) {
-> +	if (strstr(property, "preempt"))
-> +		return
-> XE_EXEC_QUEUE_SET_PROPERTY_PREEMPTION_TIMEOUT;
-> +	else if (strstr(property, "job_timeout"))
-> +		return XE_EXEC_QUEUE_SET_PROPERTY_JOB_TIMEOUT;
-> +	else if (strstr(property, "timeslice"))
-> +		return XE_EXEC_QUEUE_SET_PROPERTY_TIMESLICE;
-> +	else
-> +		return -1;
-> +}
+>   lib/igt_kms.c                   |  6 +++++-
+>   lib/igt_kms.h                   | 20 +++++++++++++++++++-
+>   tests/intel-ci/blacklist.txt    | 10 +++++++++-
+>   tests/intel-ci/xe.blocklist.txt |  6 +++---
+>   tests/intel/kms_ccs.c           | 24 ++++++++++++++++++++++++
+>   tests/kms_bw.c                  |  2 +-
+
+Probably, you need to split this patch into 3.
+
+1- lib
+2- tests
+3- intel-ci
+
+>   6 files changed, 61 insertions(+), 7 deletions(-)
+> 
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 453103f90..6ad7cc127 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -906,7 +906,7 @@ static igt_plane_t *igt_get_assigned_primary(igt_output_t *output, igt_pipe_t *p
+>    */
+>   const char *kmstest_pipe_name(enum pipe pipe)
+>   {
+> -	static const char str[] = "A\0B\0C\0D\0E\0F\0G\0H";
+> +	static const char str[] = "A\0B\0C\0D\0E\0F\0G\0H\0I\0J\0K\0L\0M\0N\0O\0P";
+>   
+>   	_Static_assert(sizeof(str) == IGT_MAX_PIPES * 2,
+>   		       "Missing pipe name");
+> @@ -2770,6 +2770,10 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+>   	}
+>   #endif
+>   
+> +	igt_assert_f(resources->count_crtcs <= IGT_MAX_PIPES,
+--------^
+Could be igt_require_f()?
+
+IMHO, we need to skip the test instead of fail. Since it is a basic 
+requirement to fill display struct.
+
+> +		     "count_crtcs exceeds IGT_MAX_PIPES, resources->count_crtcs=%d, IGT_MAX_PIPES=%d\n",
+> +		     resources->count_crtcs, IGT_MAX_PIPES);
 > +
->  static void test_set_property(int xe, int property_name,
->  			      int property_value, int err_val)  { @@ -60,9
-> +81,48 @@ static void test_set_property(int xe, int property_name,
->  	igt_assert_eq(ret, err_val);
->  }
->=20
-> +static void test_property_min_max(int xe, int engine, const char
-> +**property) {
-> +	unsigned int max;
-> +	unsigned int min;
-> +	unsigned int set;
-> +	int property_name;
-> +	int defaults;
-> +
-> +	defaults =3D openat(engine, ".defaults", O_DIRECTORY);
-> +	igt_require(defaults !=3D -1);
-> +
-> +	igt_sysfs_scanf(defaults, property[2], "%u", &max);
-> +	igt_sysfs_scanf(defaults, property[1], "%u", &min);
-> +	igt_sysfs_scanf(engine, property[0], "%u", &set);
-> +
-> +	property_name =3D get_property_name(property[0]);
-> +	igt_assert_neq(property_name, -1);
-> +
-> +	/* Tests scheduler properties by setting positive values */
-> +	test_set_property(xe, property_name, max, 0);
-> +	test_set_property(xe, property_name, min, 0);
-> +
-> +	/* Tests scheduler properties by setting invalid values */
-> +	test_set_property(xe, property_name, max + 1, -EINVAL);
-> +	test_set_property(xe, property_name, min - 1, -EINVAL); }
-> +
->  igt_main
->  {
-> +	static const struct {
-> +		const char *name;
-> +		void (*fn)(int, int, const char **);
-> +	} tests[] =3D {{"property-min-max", test_property_min_max}, {} };
-> +
-> +	const char *property[][3] =3D { {"preempt_timeout_us",
-> "preempt_timeout_min", "preempt_timeout_max"},
-> +				      {"timeslice_duration_us",
-> "timeslice_duration_min", "timeslice_duration_max"},
-> +				      {"job_timeout_ms", "job_timeout_min",
-> "job_timeout_max"},
-> +	};
-> +	int count =3D sizeof(property) / sizeof(property[0]);
-> +	int sys_fd;
->  	int xe;
-> +	int gt;
->=20
->  	igt_fixture {
->  		xe =3D drm_open_driver(DRIVER_XE);
-> @@ -94,6 +154,34 @@ igt_main
->=20
->  	}
->=20
-> +	igt_subtest_group {
-> +		igt_fixture {
-> +			sys_fd =3D igt_sysfs_open(xe);
-> +			igt_require(sys_fd !=3D -1);
-> +			close(sys_fd);
-> +		}
-> +
-> +		for (int i =3D 0; i < count; i++) {
-> +			for (typeof(*tests) *t =3D tests; t->name; t++) {
-> +				igt_subtest_with_dynamic_f("%s-%s",
-> property[i][0], t->name) {
-> +					xe_for_each_gt(xe, gt) {
-> +						int engines_fd =3D -1;
-> +						int gt_fd =3D -1;
-> +
-> +						gt_fd =3D xe_sysfs_gt_open(xe,
-> gt);
-> +						igt_require(gt_fd !=3D -1);
-> +						engines_fd =3D openat(gt_fd,
-> "engines", O_RDONLY);
-> +						igt_require(engines_fd !=3D -1);
-> +
-> +						igt_sysfs_engines(xe,
-> engines_fd, property[i], t->fn);
-> +						close(engines_fd);
-> +						close(gt_fd);
-> +					}
-> +				}
-> +			}
-> +		}
-> +	}
-> +
->  	igt_fixture {
->  		xe_device_put(xe);
->  		drm_close_driver(xe);
-> --
-> 2.25.1
+>   	display->n_pipes = IGT_MAX_PIPES;
+>   	display->pipes = calloc(sizeof(igt_pipe_t), display->n_pipes);
+>   	igt_assert_f(display->pipes, "Failed to allocate memory for %d pipes\n", display->n_pipes);
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index 9028ab9be..5c705b585 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -57,6 +57,16 @@
+>    * @PIPE_D: Fourth crtc.
+>    * @PIPE_E: Fifth crtc.
+>    * @PIPE_F: Sixth crtc.
+> + * @PIPE_G: Seventh crtc.
+> + * @PIPE_H: Eighth crtc.
+> + * @PIPE_I: Ninth crtc.
+> + * @PIPE_J: Tenth crtc.
+> + * @PIPE_K: Eleventh crtc.
+> + * @PIPE_L: Twelfth crtc.
+> + * @PIPE_M: Thirteenth crtc.
+> + * @PIPE_N: Fourteenth crtc.
+> + * @PIPE_O: Fifteenth crtc.
+> + * @PIPE_P: Sixteenth crtc.
+>    * @IGT_MAX_PIPES: Max number of pipes allowed.
+>    */
+>   enum pipe {
+> @@ -70,7 +80,15 @@ enum pipe {
+>           PIPE_F,
+>   	PIPE_G,
+>   	PIPE_H,
+> -        IGT_MAX_PIPES
+> +	PIPE_I,
+> +	PIPE_J,
+> +	PIPE_K,
+> +	PIPE_L,
+> +	PIPE_M,
+> +	PIPE_N,
+> +	PIPE_O,
+> +	PIPE_P,
+> +	IGT_MAX_PIPES
+>   };
+>   const char *kmstest_pipe_name(enum pipe pipe);
+>   int kmstest_pipe_to_index(char pipe);
+> diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
+> index e13759d3e..e439e2af4 100644
+> --- a/tests/intel-ci/blacklist.txt
+> +++ b/tests/intel-ci/blacklist.txt
+> @@ -117,12 +117,20 @@ igt@gem_ctx_isolation@.*-s4
+>   ###############################################
+>   igt@i915_suspend@shrink
+>   ###############################################
+> -# pipe-e, pipe-f, pipe-g, pipe-h no current HW support
+> +# pipe-e, pipe-f, pipe-g, pipe-h, pipe-i, pipe-j, pipe-k, pipe-l, pipe-m, pipe-n, pipe-o, pipe-p no current HW support
+>   ###############################################
+>   igt@.*@.*pipe-e($|-.*)
+>   igt@.*@.*pipe-f($|-.*)
+>   igt@.*@.*pipe-g($|-.*)
+>   igt@.*@.*pipe-h($|-.*)
+> +igt@.*@.*pipe-i($|-.*)
+> +igt@.*@.*pipe-j($|-.*)
+> +igt@.*@.*pipe-k($|-.*)
+> +igt@.*@.*pipe-l($|-.*)
+> +igt@.*@.*pipe-m($|-.*)
+> +igt@.*@.*pipe-n($|-.*)
+> +igt@.*@.*pipe-o($|-.*)
+> +igt@.*@.*pipe-p($|-.*)
+
+Shall we simplify the regex as below?
+
+igt@.*@.*pipe-[e-pE-P]($|-.*)
+
+>   
+>   ###############################################
+>   # Temporary workarounds for CI-impacting bugs
+> diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
+> index 135ab18a3..bec6ee23b 100644
+> --- a/tests/intel-ci/xe.blocklist.txt
+> +++ b/tests/intel-ci/xe.blocklist.txt
+> @@ -44,11 +44,11 @@ igt@syncobj_.*
+>   igt@template
+>   igt@tools_test
+>   ##################################################################
+> -# KMS: Pipe E, F, G and H are not available on Intel hardware,
+> +# KMS: Pipe E, F, G, H, I, J, K, L, M, N, O and P are not available on Intel hardware,
+>   # hence can't use more than 4 displays.
+>   ##################################################################
+> -igt@.*@.*pipe-(e|f|g|h).*
+> -igt@kms_bw@.*-(5|6|7|8)-displays-.*
+> +igt@.*@.*pipe-(e|f|g|h|i|j|k|l|m|n|o|p).*
+> +igt@kms_bw@.*-(5|6|7|8|9|10|11|12|13|14|15|16)-displays-.*
+
+igt@.*@.*pipe-[e-pE-P].*
+igt@kms_bw@.*-([5-9]|1[0-6])-displays-.*
+
+I used to validate my regex at https://regex101.com/
+
+You can get my R-b after addressing above comments.
+
+- Bhanu
+
+>   ##################################################################
+>   # KMS: Tests specific to i915 driver
+>   ##################################################################
+> diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
+> index 93e837b84..6dc30ac24 100644
+> --- a/tests/intel/kms_ccs.c
+> +++ b/tests/intel/kms_ccs.c
+> @@ -53,6 +53,14 @@
+>    * @pipe-F:                    Pipe F
+>    * @pipe-G:                    Pipe G
+>    * @pipe-H:                    Pipe H
+> + * @pipe-I:                    Pipe I
+> + * @pipe-J:                    Pipe J
+> + * @pipe-K:                    Pipe K
+> + * @pipe-L:                    Pipe L
+> + * @pipe-M:                    Pipe M
+> + * @pipe-N:                    Pipe N
+> + * @pipe-O:                    Pipe O
+> + * @pipe-P:                    Pipe P
+>    *
+>    * arg[2]:
+>    *
+> @@ -90,6 +98,14 @@
+>    * @pipe-F:                      Pipe F
+>    * @pipe-G:                      Pipe G
+>    * @pipe-H:                      Pipe H
+> + * @pipe-I:                      Pipe I
+> + * @pipe-J:                      Pipe J
+> + * @pipe-K:                      Pipe K
+> + * @pipe-L:                      Pipe L
+> + * @pipe-M:                      Pipe M
+> + * @pipe-N:                      Pipe N
+> + * @pipe-O:                      Pipe O
+> + * @pipe-P:                      Pipe P
+>    *
+>    * arg[2]:
+>    *
+> @@ -131,6 +147,14 @@
+>    * @pipe-F:                      Pipe F
+>    * @pipe-G:                      Pipe G
+>    * @pipe-H:                      Pipe H
+> + * @pipe-I:                      Pipe I
+> + * @pipe-J:                      Pipe J
+> + * @pipe-K:                      Pipe K
+> + * @pipe-L:                      Pipe L
+> + * @pipe-M:                      Pipe M
+> + * @pipe-N:                      Pipe N
+> + * @pipe-O:                      Pipe O
+> + * @pipe-P:                      Pipe P
+>    *
+>    * arg[2]:
+>    *
+> diff --git a/tests/kms_bw.c b/tests/kms_bw.c
+> index 5f9a020da..896114a3a 100644
+> --- a/tests/kms_bw.c
+> +++ b/tests/kms_bw.c
+> @@ -37,7 +37,7 @@
+>    * Mega feature: General Display Features
+>    * Test category: functionality test
+>    *
+> - * arg[1].values: 1, 2, 3, 4, 5, 6, 7, 8
+> + * arg[1].values: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+>    *
+>    * arg[2]:
+>    *
