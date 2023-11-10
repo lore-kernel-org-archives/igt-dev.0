@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============1898410580523697057=="
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Vignesh Raman" <vignesh.raman@collabora.com>
-Date: Fri, 10 Nov 2023 10:21:52 -0000
-Message-ID: <169961171238.31679.11014051872878980477@emeril.freedesktop.org>
-References: <20231110084106.655504-1-vignesh.raman@collabora.com>
-In-Reply-To: <20231110084106.655504-1-vignesh.raman@collabora.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_s?=
- =?utf-8?q?tarting_with_=5Bi-g-t=2C1/3=2Cv5=5D_lib/igt=5Fkms=3A_Fix_memory?=
- =?utf-8?q?_corruption?=
+To: "Akshata Jahagirdar" <akshata.jahagirdar@intel.com>
+Date: Fri, 10 Nov 2023 10:29:55 -0000
+Message-ID: <169961219511.31676.14671123813449595228@emeril.freedesktop.org>
+References: <cover.1699647258.git.akshata.jahagirdar@intel.com>
+In-Reply-To: <cover.1699647258.git.akshata.jahagirdar@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBDb21w?=
+ =?utf-8?q?ression_support_for_Lunarlake?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,121 +23,25 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1898410580523697057==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
 == Series Details ==
 
-Series: series starting with [i-g-t,1/3,v5] lib/igt_kms: Fix memory corruption
-URL   : https://patchwork.freedesktop.org/series/126251/
-State : success
+Series: Compression support for Lunarlake
+URL   : https://patchwork.freedesktop.org/series/126254/
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_7582_BAT -> XEIGTPW_10160_BAT
-====================================================
+Applying: lib: add blt command properties for lunarlake
+Applying: lib/intel_blt: Update calculation of ccs_size and size_of_ctrl_copy
+Using index info to reconstruct a base tree...
+M	lib/intel_blt.c
+M	lib/intel_blt.h
+Falling back to patching base and 3-way merge...
+Auto-merging lib/intel_blt.h
+Auto-merging lib/intel_blt.c
+CONFLICT (content): Merge conflict in lib/intel_blt.c
+Patch failed at 0002 lib/intel_blt: Update calculation of ccs_size and size_of_ctrl_copy
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (3 -> 3)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10160_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3:
-    - bat-dg2-oem2:       [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 other test fail
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7582/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10160/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3.html
-
-  
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-
-
-Build changes
--------------
-
-  * IGT: IGT_7582 -> IGTPW_10160
-
-  IGTPW_10160: 10160
-  IGT_7582: 453b9df12fbc9fff561bdb4eb97992983e74c3d4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-485-b3890fb4386dcef68a96888141c4cc773f6241ce: b3890fb4386dcef68a96888141c4cc773f6241ce
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10160/index.html
-
---===============1898410580523697057==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/3,v5] lib/igt_kms: Fix memory corruption</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126251/">https://patchwork.freedesktop.org/series/126251/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10160/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10160/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7582_BAT -&gt; XEIGTPW_10160_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (3 -&gt; 3)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10160_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7582/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10160/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7582 -&gt; IGTPW_10160</li>
-</ul>
-<p>IGTPW_10160: 10160<br />
-  IGT_7582: 453b9df12fbc9fff561bdb4eb97992983e74c3d4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-485-b3890fb4386dcef68a96888141c4cc773f6241ce: b3890fb4386dcef68a96888141c4cc773f6241ce</p>
-
-</body>
-</html>
-
---===============1898410580523697057==--
