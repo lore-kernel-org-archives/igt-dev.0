@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C5DB010E033
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Nov 2023 13:50:38 +0000 (UTC)
-Message-ID: <d9324cf9-35cc-45b7-b558-f99420ce7689@intel.com>
-Date: Fri, 10 Nov 2023 19:20:28 +0530
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EE52010E02B
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Nov 2023 13:52:50 +0000 (UTC)
+Message-ID: <5c07e5b9-28cf-40c5-9d02-81bea7e9cc64@intel.com>
+Date: Fri, 10 Nov 2023 19:22:41 +0530
 Content-Language: en-US
 To: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>,
  <igt-dev@lists.freedesktop.org>
 References: <20231109110050.388343-1-sujaritha.sundaresan@intel.com>
- <20231109110050.388343-2-sujaritha.sundaresan@intel.com>
+ <20231109110050.388343-3-sujaritha.sundaresan@intel.com>
 From: Riana Tauro <riana.tauro@intel.com>
-In-Reply-To: <20231109110050.388343-2-sujaritha.sundaresan@intel.com>
+In-Reply-To: <20231109110050.388343-3-sujaritha.sundaresan@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [v2 1/5] tests/intel: Add multi-gt support for
- rc6-idle test
+Subject: Re: [igt-dev] [v2 2/5] tests/intel: Add multi-gt support for
+ rc6-fence test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,77 +27,76 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Suja
+
 
 On 11/9/2023 4:30 PM, Sujaritha Sundaresan wrote:
-> Adding multi-gt support for the rc6-idle subtest
+> Add multi-gt support for the rc6-fence subtest.
 > 
 > Signed-off-by: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
+LGTM.
+
+Reviewed-by: Riana Tauro <riana.tauro@intel.com>
 > ---
->   tests/intel/i915_pm_rc6_residency.c | 18 +++++++++++-------
->   1 file changed, 11 insertions(+), 7 deletions(-)
+>   tests/intel/i915_pm_rc6_residency.c | 13 +++++++++----
+>   1 file changed, 9 insertions(+), 4 deletions(-)
 > 
 > diff --git a/tests/intel/i915_pm_rc6_residency.c b/tests/intel/i915_pm_rc6_residency.c
-> index b266680ac..57ac5c721 100644
+> index 57ac5c721..5dc785792 100644
 > --- a/tests/intel/i915_pm_rc6_residency.c
 > +++ b/tests/intel/i915_pm_rc6_residency.c
-> @@ -376,7 +376,7 @@ static void kill_children(int sig)
->   	signal(sig, old);
+> @@ -471,12 +471,13 @@ static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags, unsigned int gt)
+>   	}
 >   }
 >   
-> -static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags)
-> +static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags, unsigned int gt)
+> -static void rc6_fence(int i915, const intel_ctx_t *ctx)
+> +static void rc6_fence(int i915, unsigned int gt)
 >   {
 >   	const int64_t duration_ns = SLEEP_DURATION * (int64_t)NSEC_PER_SEC;
 >   	const int tolerance = 20; /* Some RC6 is better than none! */
-> @@ -397,7 +397,7 @@ static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags)
->   	struct igt_power gpu;
->   	int fd;
+>   	const unsigned int gen = intel_gen(intel_get_drm_devid(i915));
+>   	const struct intel_execution_engine2 *e;
+> +	const intel_ctx_t *ctx;
+>   	struct power_sample sample[2];
+>   	unsigned long slept;
+>   	uint64_t rc6, ts[2], ahnd;
+> @@ -485,7 +486,7 @@ static void rc6_fence(int i915, const intel_ctx_t *ctx)
+>   
+>   	igt_require_sw_sync();
 >   
 > -	fd = open_pmu(i915, I915_PMU_RC6_RESIDENCY);
 > +	fd = open_pmu(i915, __I915_PMU_RC6_RESIDENCY(gt));
 >   	igt_drop_caches_set(i915, DROP_IDLE);
 >   	igt_require(__pmu_wait_for_rc6(fd));
 >   	igt_power_open(i915, &gpu, "gpu");
-> @@ -558,6 +558,7 @@ static void rc6_fence(int i915, const intel_ctx_t *ctx)
->   igt_main
->   {
->   	int i915 = -1;
-> +	unsigned int dirfd, gt;
->   	const intel_ctx_t *ctx;
+> @@ -509,6 +510,7 @@ static void rc6_fence(int i915, const intel_ctx_t *ctx)
+>   	assert_within_epsilon(rc6, ts[1] - ts[0], 5);
 >   
-There is
-ctx = intel_ctx_create_all_physical(i915);
-in fixture. Please remove that as it is duplicate
-
-Thanks
-Riana
->   	/* Use drm_open_driver to verify device existence */
-> @@ -572,11 +573,15 @@ igt_main
->   		igt_require_gem(i915);
+>   	/* Submit but delay execution, we should be idle and conserving power */
+> +	ctx = intel_ctx_create_for_gt(i915, gt);
+>   	ahnd = get_reloc_ahnd(i915, ctx->id);
+>   	for_each_ctx_engine(i915, ctx, e) {
+>   		igt_spin_t *spin;
+> @@ -550,6 +552,7 @@ static void rc6_fence(int i915, const intel_ctx_t *ctx)
 >   		gem_quiescent_gpu(i915);
+>   	}
+>   	put_ahnd(ahnd);
+> +	intel_ctx_destroy(i915, ctx);
 >   
-> -		for_each_ctx_engine(i915, ctx, e) {
-> -			if (e->instance == 0) {
-> -				igt_dynamic_f("%s", e->name)
-> -					rc6_idle(i915, ctx->id, e->flags);
-> +		i915_for_each_gt(i915, dirfd, gt) {
-> +			ctx = intel_ctx_create_for_gt(i915, gt);
-> +			for_each_ctx_engine(i915, ctx, e) {
-> +				if (e->instance == 0) {
-> +					igt_dynamic_f("gt%u-%s", gt, e->name)
-> +						rc6_idle(i915, ctx->id, e->flags, gt);
-> +				}
->   			}
-> +			intel_ctx_destroy(i915, ctx);
+>   	igt_power_close(&gpu);
+>   	close(fd);
+> @@ -585,11 +588,13 @@ igt_main
 >   		}
 >   	}
 >   
-> @@ -626,7 +631,6 @@ igt_main
+> -	igt_subtest("rc6-fence") {
+> +	igt_subtest_with_dynamic("rc6-fence") {
+>   		igt_require_gem(i915);
+>   		gem_quiescent_gpu(i915);
+>   
+> -		rc6_fence(i915, ctx);
+> +		i915_for_each_gt(i915, dirfd, gt)
+> +			igt_dynamic_f("gt%u", gt)
+> +				rc6_fence(i915, gt);
 >   	}
 >   
->   	igt_fixture {
-> -		intel_ctx_destroy(i915, ctx);
->   		drm_close_driver(i915);
->   	}
->   }
+>   	igt_subtest_group {
