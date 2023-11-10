@@ -1,18 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2A5C810E651
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Nov 2023 05:32:11 +0000 (UTC)
-From: priyanka.dandamudi@intel.com
-To: priyanka.dandamudi@intel.com, janga.rahul.kumar@intel.com,
- igt-dev@lists.freedesktop.org
-Date: Fri, 10 Nov 2023 10:57:46 +0530
-Message-Id: <20231110052746.2131907-3-priyanka.dandamudi@intel.com>
-In-Reply-To: <20231110052746.2131907-1-priyanka.dandamudi@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0021610E68D
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Nov 2023 05:39:53 +0000 (UTC)
+From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
+To: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Fri, 10 Nov 2023 05:39:48 +0000
+Message-ID: <MW3PR11MB47489BEB8177199BC1A72B46AEAEA@MW3PR11MB4748.namprd11.prod.outlook.com>
 References: <20231110052746.2131907-1-priyanka.dandamudi@intel.com>
+ <20231110052746.2131907-2-priyanka.dandamudi@intel.com>
+In-Reply-To: <20231110052746.2131907-2-priyanka.dandamudi@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] tests/intel/xe_exec_queue_property: Add
- scheduler exec queue set property
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/intel/xe_exec_queue_property:
+ Add exec queue set property tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,151 +27,89 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-
-Added tests to check scheduler exec queue set properties.
-Schedulers inclcude job timeout, preempt timeout and timeslice.
-
-v2: Moved sysfs related fixture code to subtest group.(Rahul)
-
-Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
----
- tests/intel/xe_exec_queue_property.c | 90 +++++++++++++++++++++++++++-
- 1 file changed, 89 insertions(+), 1 deletion(-)
-
-diff --git a/tests/intel/xe_exec_queue_property.c b/tests/intel/xe_exec_queue_property.c
-index f61ab1a19..4e32aefa5 100644
---- a/tests/intel/xe_exec_queue_property.c
-+++ b/tests/intel/xe_exec_queue_property.c
-@@ -13,6 +13,14 @@
-  * Description: tests basic priority property by setting invalid values and positive values.
-  * SUBTEST: persistence-set-property
-  * Description: tests basic persistence property by setting positive values
-+ * SUBTEST: %s-property-min-max
-+ * Description: Test to check if %s arg[1] schedule parameter checks for min max values.
-+ *
-+ * arg[1]:
-+ *
-+ * @preempt_timeout_us:		preempt timeout us
-+ * @timeslice_duration_us:	timeslice duration us
-+ * @job_timeout_ms:		job timeout ms
-  */
- 
- #include <dirent.h>
-@@ -22,15 +30,28 @@
- #include <sys/types.h>
- 
- #include "igt.h"
--#include "xe_drm.h"
-+#include "igt_sysfs.h"
- #include "lib/igt_syncobj.h"
- #include "lib/intel_reg.h"
-+#include "xe_drm.h"
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
- 
- #define DRM_SCHED_PRIORITY_HIGH  2
- #define DRM_SCHED_PRIORITY_NORMAL 1
- 
-+static int get_property_name(const char *property)
-+{
-+	if (strstr(property, "preempt"))
-+		return XE_EXEC_QUEUE_SET_PROPERTY_PREEMPTION_TIMEOUT;
-+	else if (strstr(property, "job_timeout"))
-+		return XE_EXEC_QUEUE_SET_PROPERTY_JOB_TIMEOUT;
-+	else if (strstr(property, "timeslice"))
-+		return XE_EXEC_QUEUE_SET_PROPERTY_TIMESLICE;
-+	else
-+		return -1;
-+}
-+
- static void test_set_property(int xe, int property_name,
- 			      int property_value, int err_val)
- {
-@@ -60,9 +81,48 @@ static void test_set_property(int xe, int property_name,
- 	igt_assert_eq(ret, err_val);
- }
- 
-+static void test_property_min_max(int xe, int engine, const char **property)
-+{
-+	unsigned int max;
-+	unsigned int min;
-+	unsigned int set;
-+	int property_name;
-+	int defaults;
-+
-+	defaults = openat(engine, ".defaults", O_DIRECTORY);
-+	igt_require(defaults != -1);
-+
-+	igt_sysfs_scanf(defaults, property[2], "%u", &max);
-+	igt_sysfs_scanf(defaults, property[1], "%u", &min);
-+	igt_sysfs_scanf(engine, property[0], "%u", &set);
-+
-+	property_name = get_property_name(property[0]);
-+	igt_assert_neq(property_name, -1);
-+
-+	/* Tests scheduler properties by setting positive values */
-+	test_set_property(xe, property_name, max, 0);
-+	test_set_property(xe, property_name, min, 0);
-+
-+	/* Tests scheduler properties by setting invalid values */
-+	test_set_property(xe, property_name, max + 1, -EINVAL);
-+	test_set_property(xe, property_name, min - 1, -EINVAL);
-+}
-+
- igt_main
- {
-+	static const struct {
-+		const char *name;
-+		void (*fn)(int, int, const char **);
-+	} tests[] = {{"property-min-max", test_property_min_max}, {} };
-+
-+	const char *property[][3] = { {"preempt_timeout_us", "preempt_timeout_min", "preempt_timeout_max"},
-+				      {"timeslice_duration_us", "timeslice_duration_min", "timeslice_duration_max"},
-+				      {"job_timeout_ms", "job_timeout_min", "job_timeout_max"},
-+	};
-+	int count = sizeof(property) / sizeof(property[0]);
-+	int sys_fd;
- 	int xe;
-+	int gt;
- 
- 	igt_fixture {
- 		xe = drm_open_driver(DRIVER_XE);
-@@ -94,6 +154,34 @@ igt_main
- 
- 	}
- 
-+	igt_subtest_group {
-+		igt_fixture {
-+			sys_fd = igt_sysfs_open(xe);
-+			igt_require(sys_fd != -1);
-+			close(sys_fd);
-+		}
-+
-+		for (int i = 0; i < count; i++) {
-+			for (typeof(*tests) *t = tests; t->name; t++) {
-+				igt_subtest_with_dynamic_f("%s-%s", property[i][0], t->name) {
-+					xe_for_each_gt(xe, gt) {
-+						int engines_fd = -1;
-+						int gt_fd = -1;
-+
-+						gt_fd = xe_sysfs_gt_open(xe, gt);
-+						igt_require(gt_fd != -1);
-+						engines_fd = openat(gt_fd, "engines", O_RDONLY);
-+						igt_require(engines_fd != -1);
-+
-+						igt_sysfs_engines(xe, engines_fd, property[i], t->fn);
-+						close(engines_fd);
-+						close(gt_fd);
-+					}
-+				}
-+			}
-+		}
-+	}
-+
- 	igt_fixture {
- 		xe_device_put(xe);
- 		drm_close_driver(xe);
--- 
-2.25.1
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRGFuZGFtdWRpLCBQcml5
+YW5rYSA8cHJpeWFua2EuZGFuZGFtdWRpQGludGVsLmNvbT4NCj4gU2VudDogRnJpZGF5LCBOb3Zl
+bWJlciAxMCwgMjAyMyAxMDo1OCBBTQ0KPiBUbzogRGFuZGFtdWRpLCBQcml5YW5rYSA8cHJpeWFu
+a2EuZGFuZGFtdWRpQGludGVsLmNvbT47IEt1bWFyLCBKYW5nYQ0KPiBSYWh1bCA8amFuZ2EucmFo
+dWwua3VtYXJAaW50ZWwuY29tPjsgaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gU3Vi
+amVjdDogW1BBVENIIGktZy10IDEvMl0gdGVzdHMvaW50ZWwveGVfZXhlY19xdWV1ZV9wcm9wZXJ0
+eTogQWRkIGV4ZWMNCj4gcXVldWUgc2V0IHByb3BlcnR5IHRlc3RzDQo+IA0KPiBGcm9tOiBQcml5
+YW5rYSBEYW5kYW11ZGkgPHByaXlhbmthLmRhbmRhbXVkaUBpbnRlbC5jb20+DQo+IA0KPiBBZGRl
+ZCB0ZXN0cyB0byBjaGVjayBleGVjX3F1ZXVlIHNldCBwcm9wZXJ0aWVzLg0KPiBJdCB0ZXN0cyBi
+YXNpYyBwb3NpdGl2ZSBhbmQgaW52YWxpZCB2YWx1ZXMgZm9yIHByaW9yaXR5IGFuZCBwZXJzaXN0
+ZW5jZS4NCj4gDQo+IHYyOiBNb2RpZmllZCB0ZXN0IGRlc2NyaXB0aW9uLihNYXR0KQ0KPiBhbmQg
+bWludXRlIGNoYW5nZXMgaW4gZGVzY3JpcHRpb24uKEthbWlsKQ0KPiANCj4gQ2M6IE1hdHRoZXcg
+QnJvc3QgPG1hdHRoZXcuYnJvc3RAaW50ZWwuY29tPg0KPiBDYzogS2FtaWwgS29uaWVjem55IDxr
+YW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tPg0KPiBDYzogSmFuZ2EgUmFodWwgS3VtYXIg
+PGphbmdhLnJhaHVsLmt1bWFyQGludGVsLmNvbT4NCj4gU2lnbmVkLW9mZi1ieTogUHJpeWFua2Eg
+RGFuZGFtdWRpIDxwcml5YW5rYS5kYW5kYW11ZGlAaW50ZWwuY29tPg0KDQpMR1RNLA0KUmV2aWV3
+ZWQtYnk6IEphbmdhIFJhaHVsIEt1bWFyIDxqYW5nYS5yYWh1bC5rdW1hckBpbnRlbC5jb20+DQo+
+IC0tLQ0KPiAgdGVzdHMvaW50ZWwveGVfZXhlY19xdWV1ZV9wcm9wZXJ0eS5jIHwgMTAxDQo+ICsr
+KysrKysrKysrKysrKysrKysrKysrKysrKw0KPiAgdGVzdHMvbWVzb24uYnVpbGQgICAgICAgICAg
+ICAgICAgICAgIHwgICAxICsNCj4gIDIgZmlsZXMgY2hhbmdlZCwgMTAyIGluc2VydGlvbnMoKykN
+Cj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCB0ZXN0cy9pbnRlbC94ZV9leGVjX3F1ZXVlX3Byb3BlcnR5
+LmMNCj4gDQo+IGRpZmYgLS1naXQgYS90ZXN0cy9pbnRlbC94ZV9leGVjX3F1ZXVlX3Byb3BlcnR5
+LmMNCj4gYi90ZXN0cy9pbnRlbC94ZV9leGVjX3F1ZXVlX3Byb3BlcnR5LmMNCj4gbmV3IGZpbGUg
+bW9kZSAxMDA2NDQNCj4gaW5kZXggMDAwMDAwMDAwLi5mNjFhYjFhMTkNCj4gLS0tIC9kZXYvbnVs
+bA0KPiArKysgYi90ZXN0cy9pbnRlbC94ZV9leGVjX3F1ZXVlX3Byb3BlcnR5LmMNCj4gQEAgLTAs
+MCArMSwxMDEgQEANCj4gKy8vIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBNSVQNCj4gKy8qDQo+
+ICsgKiBDb3B5cmlnaHQgwqkgMjAyMyBJbnRlbCBDb3Jwb3JhdGlvbg0KPiArICovDQo+ICsNCj4g
+Ky8qKg0KPiArICogVEVTVDogQmFzaWMgdGVzdHMgdG8gY2hlY2sgZXhlY19xdWV1ZSBzZXQgcHJv
+cGVydHkgZnVuY3Rpb25hbGl0eQ0KPiArICogQ2F0ZWdvcnk6IFNvZnR3YXJlIGJ1aWxkaW5nIGJs
+b2NrDQo+ICsgKiBTdWItY2F0ZWdvcnk6IGV4ZWMgcXVldWUgcHJvcGVydHkNCj4gKyAqIEZ1bmN0
+aW9uYWxpdHk6IGV4ZWMgcXVldWUgc2V0IHByb3BlcnR5DQo+ICsgKiBUZXN0IGNhdGVnb3J5OiBm
+dW5jdGlvbmFsaXR5IHRlc3QNCj4gKyAqIFNVQlRFU1Q6IHByaW9yaXR5LXNldC1wcm9wZXJ0eQ0K
+PiArICogRGVzY3JpcHRpb246IHRlc3RzIGJhc2ljIHByaW9yaXR5IHByb3BlcnR5IGJ5IHNldHRp
+bmcgaW52YWxpZCB2YWx1ZXMgYW5kDQo+IHBvc2l0aXZlIHZhbHVlcy4NCj4gKyAqIFNVQlRFU1Q6
+IHBlcnNpc3RlbmNlLXNldC1wcm9wZXJ0eQ0KPiArICogRGVzY3JpcHRpb246IHRlc3RzIGJhc2lj
+IHBlcnNpc3RlbmNlIHByb3BlcnR5IGJ5IHNldHRpbmcgcG9zaXRpdmUNCj4gK3ZhbHVlcyAgKi8N
+Cj4gKw0KPiArI2luY2x1ZGUgPGRpcmVudC5oPg0KPiArI2luY2x1ZGUgPGZjbnRsLmg+DQo+ICsj
+aW5jbHVkZSA8c3RyaW5nLmg+DQo+ICsjaW5jbHVkZSA8c3lzL3N0YXQuaD4NCj4gKyNpbmNsdWRl
+IDxzeXMvdHlwZXMuaD4NCj4gKw0KPiArI2luY2x1ZGUgImlndC5oIg0KPiArI2luY2x1ZGUgInhl
+X2RybS5oIg0KPiArI2luY2x1ZGUgImxpYi9pZ3Rfc3luY29iai5oIg0KPiArI2luY2x1ZGUgImxp
+Yi9pbnRlbF9yZWcuaCINCj4gKyNpbmNsdWRlICJ4ZS94ZV9pb2N0bC5oIg0KPiArI2luY2x1ZGUg
+InhlL3hlX3F1ZXJ5LmgiDQo+ICsNCj4gKyNkZWZpbmUgRFJNX1NDSEVEX1BSSU9SSVRZX0hJR0gg
+IDINCj4gKyNkZWZpbmUgRFJNX1NDSEVEX1BSSU9SSVRZX05PUk1BTCAxDQo+ICsNCj4gK3N0YXRp
+YyB2b2lkIHRlc3Rfc2V0X3Byb3BlcnR5KGludCB4ZSwgaW50IHByb3BlcnR5X25hbWUsDQo+ICsJ
+CQkgICAgICBpbnQgcHJvcGVydHlfdmFsdWUsIGludCBlcnJfdmFsKSB7DQo+ICsJc3RydWN0IGRy
+bV94ZV9lbmdpbmVfY2xhc3NfaW5zdGFuY2UgaW5zdGFuY2UgPSB7DQo+ICsJCQkuZW5naW5lX2Ns
+YXNzID0NCj4gRFJNX1hFX0VOR0lORV9DTEFTU19WTV9CSU5EX1NZTkMsDQo+ICsJfTsNCj4gKwlz
+dHJ1Y3QgZHJtX3hlX2V4dF9zZXRfcHJvcGVydHkgZXh0ID0gew0KPiArCQkuYmFzZS5uZXh0X2V4
+dGVuc2lvbiA9IDAsDQo+ICsJCS5iYXNlLm5hbWUgPSBYRV9FWEVDX1FVRVVFX0VYVEVOU0lPTl9T
+RVRfUFJPUEVSVFksDQo+ICsJCS5wcm9wZXJ0eSA9IHByb3BlcnR5X25hbWUsDQo+ICsJCS52YWx1
+ZSA9IHByb3BlcnR5X3ZhbHVlLA0KPiArCX07DQo+ICsNCj4gKwlzdHJ1Y3QgZHJtX3hlX2V4ZWNf
+cXVldWVfY3JlYXRlIGNyZWF0ZSA9IHsNCj4gKwkJLmV4dGVuc2lvbnMgPSB0b191c2VyX3BvaW50
+ZXIoJmV4dCksDQo+ICsJCS53aWR0aCA9IDEsDQo+ICsJCS5udW1fcGxhY2VtZW50cyA9IDEsDQo+
+ICsJCS5pbnN0YW5jZXMgPSB0b191c2VyX3BvaW50ZXIoJmluc3RhbmNlKSwNCj4gKwkJLnZtX2lk
+ID0geGVfdm1fY3JlYXRlKHhlLCAwLCAwKSwNCj4gKwl9Ow0KPiArCWludCByZXQgPSAwOw0KPiAr
+DQo+ICsJaWYgKGlndF9pb2N0bCh4ZSwgRFJNX0lPQ1RMX1hFX0VYRUNfUVVFVUVfQ1JFQVRFLCAm
+Y3JlYXRlKSkgew0KPiArCQlyZXQgPSAtZXJybm87DQo+ICsJCWVycm5vID0gMDsNCj4gKwl9DQo+
+ICsJaWd0X2Fzc2VydF9lcShyZXQsIGVycl92YWwpOw0KPiArfQ0KPiArDQo+ICtpZ3RfbWFpbg0K
+PiArew0KPiArCWludCB4ZTsNCj4gKw0KPiArCWlndF9maXh0dXJlIHsNCj4gKwkJeGUgPSBkcm1f
+b3Blbl9kcml2ZXIoRFJJVkVSX1hFKTsNCj4gKwl9DQo+ICsNCj4gKwlpZ3Rfc3VidGVzdCgicHJp
+b3JpdHktc2V0LXByb3BlcnR5Iikgew0KPiArCQkvKiBUZXN0cyBwcmlvcml0eSBwcm9wZXJ0eSBi
+eSBzZXR0aW5nIHBvc2l0aXZlIHZhbHVlcy4gKi8NCj4gKwkJdGVzdF9zZXRfcHJvcGVydHkoeGUs
+DQo+IFhFX0VYRUNfUVVFVUVfU0VUX1BST1BFUlRZX1BSSU9SSVRZLA0KPiArCQkJCSAgRFJNX1ND
+SEVEX1BSSU9SSVRZX05PUk1BTCwgMCk7DQo+ICsNCj4gKwkJLyogVGVzdHMgcHJpb3JpdHkgcHJv
+cGVydHkgYnkgc2V0dGluZyBpbnZhbGlkIHZhbHVlLiAqLw0KPiArCQl0ZXN0X3NldF9wcm9wZXJ0
+eSh4ZSwNCj4gWEVfRVhFQ19RVUVVRV9TRVRfUFJPUEVSVFlfUFJJT1JJVFksDQo+ICsJCQkJICBE
+Uk1fU0NIRURfUFJJT1JJVFlfSElHSCArIDEsIC1FSU5WQUwpOw0KPiArCQlpZ3RfZm9yayhjaGls
+ZCwgMSkgew0KPiArCQkJaWd0X2Ryb3Bfcm9vdCgpOw0KPiArDQo+ICsJCQkvKiBUZXN0cyBwcmlv
+cml0eSBwcm9wZXJ0eSBieSBkcm9wcGluZyByb290DQo+IHBlcm1pc3Npb25zLiAqLw0KPiArCQkJ
+dGVzdF9zZXRfcHJvcGVydHkoeGUsDQo+IFhFX0VYRUNfUVVFVUVfU0VUX1BST1BFUlRZX1BSSU9S
+SVRZLA0KPiArCQkJCQkgIERSTV9TQ0hFRF9QUklPUklUWV9ISUdILCAtDQo+IEVQRVJNKTsNCj4g
+KwkJCXRlc3Rfc2V0X3Byb3BlcnR5KHhlLA0KPiBYRV9FWEVDX1FVRVVFX1NFVF9QUk9QRVJUWV9Q
+UklPUklUWSwNCj4gKwkJCQkJICBEUk1fU0NIRURfUFJJT1JJVFlfTk9STUFMLCAwKTsNCj4gKwkJ
+fQ0KPiArCQlpZ3Rfd2FpdGNoaWxkcmVuKCk7DQo+ICsJfQ0KPiArDQo+ICsJaWd0X3N1YnRlc3Qo
+InBlcnNpc3RlbmNlLXNldC1wcm9wZXJ0eSIpIHsNCj4gKwkJLyogVGVzdHMgcGVyc2lzdGVuY2Ug
+cHJvcGVydHkgYnkgc2V0dGluZyBwb3NpdGl2ZSB2YWx1ZXMuICovDQo+ICsJCXRlc3Rfc2V0X3By
+b3BlcnR5KHhlLA0KPiBYRV9FWEVDX1FVRVVFX1NFVF9QUk9QRVJUWV9QRVJTSVNURU5DRSwgMSwg
+MCk7DQo+ICsNCj4gKwl9DQo+ICsNCj4gKwlpZ3RfZml4dHVyZSB7DQo+ICsJCXhlX2RldmljZV9w
+dXQoeGUpOw0KPiArCQlkcm1fY2xvc2VfZHJpdmVyKHhlKTsNCj4gKwl9DQo+ICt9DQo+IGRpZmYg
+LS1naXQgYS90ZXN0cy9tZXNvbi5idWlsZCBiL3Rlc3RzL21lc29uLmJ1aWxkIGluZGV4DQo+IDYy
+NzIxMTU3ZC4uM2U0ZDU0NjAxIDEwMDY0NA0KPiAtLS0gYS90ZXN0cy9tZXNvbi5idWlsZA0KPiAr
+KysgYi90ZXN0cy9tZXNvbi5idWlsZA0KPiBAQCAtMjg3LDYgKzI4Nyw3IEBAIGludGVsX3hlX3By
+b2dzID0gWw0KPiAgCSd4ZV9leGVjX2Jhc2ljJywNCj4gIAkneGVfZXhlY19jb21wdXRlX21vZGUn
+LA0KPiAgCSd4ZV9leGVjX2ZhdWx0X21vZGUnLA0KPiArCSd4ZV9leGVjX3F1ZXVlX3Byb3BlcnR5
+JywNCj4gIAkneGVfZXhlY19yZXNldCcsDQo+ICAJJ3hlX2V4ZWNfc3RvcmUnLA0KPiAgCSd4ZV9l
+eGVjX3RocmVhZHMnLA0KPiAtLQ0KPiAyLjI1LjENCg0K
