@@ -1,16 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Fri, 10 Nov 2023 08:52:04 +0100
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Message-ID: <20231110085204.2244899e@maurocar-mobl2>
-In-Reply-To: <20231106095935.7031-6-janusz.krzysztofik@linux.intel.com>
-References: <20231106095935.7031-4-janusz.krzysztofik@linux.intel.com>
- <20231106095935.7031-6-janusz.krzysztofik@linux.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0C3CB10E941
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Nov 2023 07:53:45 +0000 (UTC)
+From: "Hogander, Jouni" <jouni.hogander@intel.com>
+To: "Joshi, Kunal1" <kunal1.joshi@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+Date: Fri, 10 Nov 2023 07:53:40 +0000
+Message-ID: <ee4437702a5d0b1224bf7535ac87d0523d4f4fa9.camel@intel.com>
+References: <20231109060931.1347354-1-kunal1.joshi@intel.com>
+ <20231109060931.1347354-3-kunal1.joshi@intel.com>
+In-Reply-To: <20231109060931.1347354-3-kunal1.joshi@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <440D1101DD0EC8458BECC281B3FEE6A9@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] lib/kunit: Execute test cases
- synchronously
+Subject: Re: [igt-dev] [PATCH i-g-t 2/7] lib/igt_psr: modified
+ psr_sink_support for pr compatability
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,263 +24,294 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org
+Cc: "Murthy, Arun R" <arun.r.murthy@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon,  6 Nov 2023 10:59:38 +0100
-Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com> wrote:
-
-> Up to now we've been loading a KUnit test module in background and parsing
-> in parallel its KTAP output with results from all the module's test cases.
-> However, recent KUnit implementation is capable of executing only those
-> test cases that match a user filter specified on test module load.
-> 
-> Stop loading the KUnit test module in background once per the whole
-> subtest.  Instead, load the module on each dynamic sub-subtest execution
-> with a filter that selects a specific test case and wait for its
-> completion.  If successful and no kernel taint then parse the whole KTAP
-> report it has produced and translate it to IGT result of the sub-subtest.
-> 
-> With that in place, we no longer need to skip the whole subtest on a
-> failure from module loading or KTAP reading or parsing.  Since such event
-> is now local to execution of an individual test case, only fail its
-> corresponding dynamic sub-subtests and continue with subsequent ones.
-> However, still omit execution of subsequent test cases once the kernel
-> gets tainted.
-
-The main reason why loading the module in background was done in the
-first place was because if there is a BUG() or PANIC() or gpu hang
-while executing KUnit, the dmesg KUnit parser was not producing anything,
-and were blocking normal dmesg parsing by IGT runner. While I didn't
-test such changes, we need to check what will be there at the JSON file
-when IGT resume run is enabled, and those kind of bugs are triggered.
-
--
-
-Yet, let's take one step back, as IMO this may not solve the issues.
-See, when you say:  
-
-> only fail its
-> corresponding dynamic sub-subtests and continue with subsequent ones.
-
-When a normal failure happens on KUnit, other tests will be executed. This
-is the normal KUnit behavior. So, except if we're doing something wrong on
-Xe or KMS tests, the other subtests after the failure will be tested.
-
-However, if such failure is calling BUG_ON(), then the driver will be
-tainted, and will prevent module unload. On such case, it doesn't matter
-if tests are executed in batch or not: IGT will try to unload the
-KUnit module but it will fail due to BUG_ON() behavior.
-
-Also, doing module unload/reload every time will bring some performance penalty,
-as loading/unloading KUnit for every individual test case will increase the
-time to execute such tests.
-
-Ok, if are there filtering rules on IGT limiting what subtests will be
-executed, then be it.  But for normal execution, I can't see why we
-would be adding a performance penalty.
-
-Regards,
-Mauro
-
-> 
-> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> ---
->  lib/igt_kmod.c | 135 ++++++++++++-------------------------------------
->  1 file changed, 31 insertions(+), 104 deletions(-)
-> 
-> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-> index 37591b7389..5bd8f56088 100644
-> --- a/lib/igt_kmod.c
-> +++ b/lib/igt_kmod.c
-> @@ -960,6 +960,7 @@ static int kunit_kmsg_get_results(struct igt_list_head *results,
->  {
->  	char *suite_name = NULL, *case_name = NULL;
->  	struct igt_ktap_results *ktap;
-> +	unsigned long taints;
->  	int flags, err;
->  
->  	if (igt_debug_on(tst->kmsg < 0))
-> @@ -998,6 +999,11 @@ static int kunit_kmsg_get_results(struct igt_list_head *results,
->  	if (err)
->  		goto out_kmod_unload;
->  
-> +	if (igt_debug_on(igt_kernel_tainted(&taints))) {
-> +		err = -ENOTRECOVERABLE;
-> +		goto out_remove_module;
-> +	}
-> +
->  	ktap = igt_ktap_alloc(results);
->  	if (igt_debug_on(!ktap)) {
->  		err = -ENOMEM;
-> @@ -1203,84 +1209,43 @@ static void __igt_kunit(struct igt_ktest *tst,
->  			const char *opts,
->  			struct igt_list_head *tests)
->  {
-> -	struct modprobe_data modprobe = { tst->kmod, opts, 0, pthread_self(), };
-> -	char *suite_name = NULL, *case_name = NULL;
-> -	struct igt_ktap_result *t, *r = NULL;
-> -	struct igt_ktap_results *ktap;
-> -	pthread_mutexattr_t attr;
-> -	IGT_LIST_HEAD(results);
-> -	int ret = -EINPROGRESS;
-> -	unsigned long taints;
-> -
-> -	igt_skip_on(lseek(tst->kmsg, 0, SEEK_END) < 0);
-> -
-> -	ktap = igt_ktap_alloc(&results);
-> -	igt_require(ktap);
-> +	struct igt_ktap_result *t;
->  
->  	igt_list_for_each_entry(t, tests, link) {
-> +		char *suite_name = NULL, *case_name = NULL;
-> +		IGT_LIST_HEAD(results);
-> +		unsigned long taints;
-> +
->  		igt_dynamic_f("%s%s%s",
->  			      strcmp(t->suite_name, name) ?  t->suite_name : "",
->  			      strcmp(t->suite_name, name) ? "-" : "",
->  			      t->case_name) {
-> +			struct igt_ktap_result *r = NULL;
-> +			char filter[1024];
-> +			int expect = 2;
->  
-> -			if (!modprobe.thread) {
-> -				igt_assert_eq(pthread_mutexattr_init(&attr), 0);
-> -				igt_assert_eq(pthread_mutexattr_setrobust(&attr,
-> -							  PTHREAD_MUTEX_ROBUST),
-> -					      0);
-> -				igt_assert_eq(pthread_mutex_init(&modprobe.lock,
-> -								 &attr), 0);
-> -
-> -				modprobe.err = pthread_create(&modprobe.thread,
-> -							      NULL,
-> -							      modprobe_task,
-> -							      &modprobe);
-> -				igt_assert_eq(modprobe.err, 0);
-> -
-> -				igt_assert(igt_list_empty(&results));
-> -				igt_assert_eq(ret, -EINPROGRESS);
-> -				ret = kunit_kmsg_result_get(&results, &modprobe,
-> -							    tst->kmsg, ktap);
-> -				igt_fail_on(igt_list_empty(&results));
-> -
-> -				r = igt_list_first_entry(&results, r, link);
-> -			}
-> +			igt_skip_on(igt_kernel_tainted(&taints));
->  
-> -			while (igt_debug_on_f(strcmp(r->suite_name, t->suite_name),
-> -					      "suite_name expected: %s, got: %s\n",
-> -					      t->suite_name, r->suite_name) ||
-> -			       igt_debug_on_f(strcmp(r->case_name, t->case_name),
-> -					      "case_name expected: %s, got: %s\n",
-> -					      t->case_name, r->case_name) ||
-> -			       r->code == IGT_EXIT_INVALID) {
-> +			igt_assert_lt(snprintf(filter, sizeof(filter), "filter_glob=%s.%s",
-> +					       t->suite_name, t->case_name), sizeof(filter));
-> +			igt_assert_eq(kunit_kmsg_get_results(&results, tst, filter, opts), 0);
->  
-> -				int code = r->code;
-> +			do {
-> +				igt_fail_on_f(!expect--, "Invalid result code\n");
->  
->  				kunit_result_free(&r, &suite_name, &case_name);
-> -				if (igt_list_empty(&results)) {
-> -					igt_assert_eq(ret, -EINPROGRESS);
-> -					ret = kunit_kmsg_result_get(&results,
-> -								    &modprobe,
-> -								    tst->kmsg,
-> -								    ktap);
-> -					igt_fail_on(igt_list_empty(&results));
-> -				}
-> +				igt_fail_on(igt_list_empty(&results));
->  
->  				r = igt_list_first_entry(&results, r, link);
->  
-> -				if (code != IGT_EXIT_INVALID)
-> -					continue;
-> -
-> -				/* result from parametrized test case */
-> -				igt_fail_on_f(strcmp(r->suite_name, suite_name),
-> +				igt_fail_on_f(strcmp(r->suite_name, t->suite_name),
->  					      "suite_name expected: %s, got: %s\n",
-> -					      suite_name, r->suite_name);
-> -				igt_fail_on_f(strcmp(r->case_name, case_name),
-> +					      t->suite_name, r->suite_name);
-> +				igt_fail_on_f(strcmp(r->case_name, t->case_name),
->  					      "case_name expected: %s, got: %s\n",
-> -					      case_name, r->case_name);
-> -			}
-> +					      t->case_name, r->case_name);
->  
-> -			igt_assert_neq(r->code, IGT_EXIT_INVALID);
-> +			} while (r->code == IGT_EXIT_INVALID);
->  
->  			if (r->msg && *r->msg) {
->  				igt_skip_on_f(r->code == IGT_EXIT_SKIP,
-> @@ -1297,57 +1262,19 @@ static void __igt_kunit(struct igt_ktest *tst,
->  			}
->  			igt_assert_eq(r->code, IGT_EXIT_SUCCESS);
->  
-> -			switch (pthread_mutex_lock(&modprobe.lock)) {
-> -			case 0:
-> -				igt_debug_on(pthread_mutex_unlock(&modprobe.lock));
-> -				break;
-> -			case EOWNERDEAD:
-> -				/* leave the mutex unrecoverable */
-> -				igt_debug_on(pthread_mutex_unlock(&modprobe.lock));
-> -				__attribute__ ((fallthrough));
-> -			case ENOTRECOVERABLE:
-> -				igt_assert_eq(modprobe.err, 0);
-> -				break;
-> -			default:
-> -				igt_debug("pthread_mutex_lock() failed\n");
-> -				break;
-> -			}
-> -
->  			igt_assert_eq(igt_kernel_tainted(&taints), 0);
->  		}
->  
-> -		if (igt_debug_on(ret != -EINPROGRESS))
-> -			break;
-> -	}
-> +		kunit_results_free(&results, &suite_name, &case_name);
->  
-> -	kunit_results_free(&results, &suite_name, &case_name);
-> +		igt_debug_on(kmod_module_remove_module(tst->kmod, KMOD_REMOVE_FORCE));
-> +		igt_debug_on(igt_kmod_unload("kunit", KMOD_REMOVE_FORCE));
->  
-> -	if (modprobe.thread) {
-> -		switch (pthread_mutex_lock(&modprobe.lock)) {
-> -		case 0:
-> -			igt_debug_on(pthread_cancel(modprobe.thread));
-> -			igt_debug_on(pthread_mutex_unlock(&modprobe.lock));
-> -			igt_debug_on(pthread_join(modprobe.thread, NULL));
-> -			break;
-> -		case EOWNERDEAD:
-> -			/* leave the mutex unrecoverable */
-> -			igt_debug_on(pthread_mutex_unlock(&modprobe.lock));
-> -			break;
-> -		case ENOTRECOVERABLE:
-> -			break;
-> -		default:
-> -			igt_debug("pthread_mutex_lock() failed\n");
-> -			igt_debug_on(pthread_join(modprobe.thread, NULL));
-> +		if (igt_debug_on(igt_kernel_tainted(&taints))) {
-> +			igt_info("Kernel tainted, not executing more selftests.\n");
->  			break;
->  		}
->  	}
-> -
-> -	igt_ktap_free(ktap);
-> -
-> -	igt_skip_on(modprobe.err);
-> -	igt_skip_on(igt_kernel_tainted(&taints));
-> -	if (ret != -EINPROGRESS)
-> -		igt_skip_on_f(ret, "KTAP parser failed\n");
->  }
->  
->  /**
+T24gVGh1LCAyMDIzLTExLTA5IGF0IDExOjM5ICswNTMwLCBLdW5hbCBKb3NoaSB3cm90ZToKPiBO
+ZXcgZGVidWdmcyBkaXJlY3RvcnkgZm9yIGFsbCBEUCBjb25uZWN0b3JzIHdpbGwgYmUgYWRkZWQK
+PiB3aXRoIGJlbG93IHBhdGNoIHNlcmllcwo+IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9w
+Lm9yZy9zZXJpZXMvOTQ0NzAvCj4gCj4gRm9yIERQIENvbm5lY3RvcnMKPiDCoMKgwqDCoMKgwqDC
+oMKgL3N5cy9rZXJuZWwvZGVidWcvZHJpLzAvRFAteC9pOTE1X3Bzcl9zdGF0dXMKPiAKPiBGb3Ig
+ZURQIENvbm5lY3RvcnMKPiDCoMKgwqDCoMKgwqDCoMKgL3N5cy9rZXJuZWwvZGVidWcvZHJpLzAv
+aTkxNV9lZHBfcHNyX3N0YXR1cwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoG9yCj4gwqDCoMKgwqDCoMKgwqDCoC9zeXMva2VybmVsL2RlYnVnL2RyaS8w
+L2VEUC14L2k5MTVfcHNyX3N0YXR1cwo+IAo+IHYyOiByZXVzZSBwc3Jfc2lua19zdXBwb3J0IChK
+b3VuaSkKPiAKPiBDYzogSm91bmkgSMO2Z2FuZGVyIDxqb3VuaS5ob2dhbmRlckBpbnRlbC5jb20+
+Cj4gQ2M6IEFuaW1lc2ggTWFubmEgPGFuaW1lc2gubWFubmFAaW50ZWwuY29tPgo+IENjOiBBcnVu
+IFIgTXVydGh5IDxhcnVuLnIubXVydGh5QGludGVsLmNvbT4KPiBTaWduZWQtb2ZmLWJ5OiBLdW5h
+bCBKb3NoaSA8a3VuYWwxLmpvc2hpQGludGVsLmNvbT4KPiAtLS0KPiDCoGxpYi9pZ3RfcHNyLmPC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8IDU2ICsr
+KysrKysrKysrKysrKysrKy0tLS0tLQo+IC0tCj4gwqBsaWIvaWd0X3Bzci5owqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfMKgIDMgKy0KPiDCoHRlc3Rz
+L2ludGVsL2ttc19kaXJ0eWZiLmPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8wqAgMiArLQo+
+IMKgdGVzdHMvaW50ZWwva21zX2ZiY29uX2ZidC5jwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8wqAg
+NCArLQo+IMKgdGVzdHMvaW50ZWwva21zX2Zyb250YnVmZmVyX3RyYWNraW5nLmMgfMKgIDIgKy0K
+PiDCoHRlc3RzL2ludGVsL2ttc19wbV9kYy5jwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+IHzCoCA5ICsrKy0tCj4gwqB0ZXN0cy9pbnRlbC9rbXNfcHNyLmPCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgIHzCoCAyICstCj4gwqB0ZXN0cy9pbnRlbC9rbXNfcHNyMl9zZi5jwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfMKgIDMgKy0KPiDCoHRlc3RzL2ludGVsL2ttc19wc3Iy
+X3N1LmPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8wqAgMyArLQo+IMKgdGVzdHMvaW50ZWwv
+a21zX3Bzcl9zdHJlc3NfdGVzdC5jwqDCoMKgwqDCoCB8wqAgMiArLQo+IMKgdGVzdHMva21zX2Zl
+YXR1cmVfZGlzY292ZXJ5LmPCoMKgwqDCoMKgwqDCoMKgwqAgfMKgIDQgKy0KPiDCoDExIGZpbGVz
+IGNoYW5nZWQsIDU5IGluc2VydGlvbnMoKyksIDMxIGRlbGV0aW9ucygtKQo+IAo+IGRpZmYgLS1n
+aXQgYS9saWIvaWd0X3Bzci5jIGIvbGliL2lndF9wc3IuYwo+IGluZGV4IDEzZjdjNTY3ZC4uMDU0
+NjIyZDc5IDEwMDY0NAo+IC0tLSBhL2xpYi9pZ3RfcHNyLmMKPiArKysgYi9saWIvaWd0X3Bzci5j
+Cj4gQEAgLTE5MiwzMSArMTkyLDUzIEBAIGJvb2wgcHNyX2Rpc2FibGUoaW50IGRldmljZSwgaW50
+IGRlYnVnZnNfZmQpCj4gwqDCoMKgwqDCoMKgwqDCoHJldHVybiBwc3Jfc2V0KGRldmljZSwgZGVi
+dWdmc19mZCwgLTEpOwo+IMKgfQo+IMKgCj4gLWJvb2wgcHNyX3Npbmtfc3VwcG9ydChpbnQgZGV2
+aWNlLCBpbnQgZGVidWdmc19mZCwgZW51bSBwc3JfbW9kZQo+IG1vZGUpCj4gK2Jvb2wgcHNyX3Np
+bmtfc3VwcG9ydChpbnQgZGV2aWNlLCBpbnQgZGVidWdmc19mZCwgZW51bSBwc3JfbW9kZQo+IG1v
+ZGUsIGlndF9vdXRwdXRfdCAqb3V0cHV0KQo+IMKgewo+ICvCoMKgwqDCoMKgwqDCoGNoYXIgKmxp
+bmU7Cj4gK8KgwqDCoMKgwqDCoMKgY2hhciBkZWJ1Z2ZzX2ZpbGVbMTI4XSA9IHswfTsKPiDCoMKg
+wqDCoMKgwqDCoMKgY2hhciBidWZbUFNSX1NUQVRVU19NQVhfTEVOXTsKPiDCoMKgwqDCoMKgwqDC
+oMKgaW50IHJldDsKPiDCoAo+IC3CoMKgwqDCoMKgwqDCoHJldCA9IGlndF9kZWJ1Z2ZzX3NpbXBs
+ZV9yZWFkKGRlYnVnZnNfZmQsCj4gImk5MTVfZWRwX3Bzcl9zdGF0dXMiLCBidWYsCj4gK8KgwqDC
+oMKgwqDCoMKgaWYgKG91dHB1dCkKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgc3By
+aW50ZihkZWJ1Z2ZzX2ZpbGUsICIlcy9pOTE1X3Bzcl9zdGF0dXMiLCBvdXRwdXQtCj4gPm5hbWUp
+Owo+ICvCoMKgwqDCoMKgwqDCoGVsc2UKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+c3ByaW50ZihkZWJ1Z2ZzX2ZpbGUsICIlcyIsICJpOTE1X2VkcF9wc3Jfc3RhdHVzIik7Cj4gKwo+
+ICvCoMKgwqDCoMKgwqDCoHJldCA9IGlndF9kZWJ1Z2ZzX3NpbXBsZV9yZWFkKGRlYnVnZnNfZmQs
+IGRlYnVnZnNfZmlsZSwgYnVmLAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHNpemVvZihidWYpKTsKPiDC
+oMKgwqDCoMKgwqDCoMKgaWYgKHJldCA8IDEpCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqByZXR1cm4gZmFsc2U7Cj4gwqAKPiAtwqDCoMKgwqDCoMKgwqBpZiAobW9kZSA9PSBQU1Jf
+TU9ERV8xKQo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXR1cm4gc3Ryc3RyKGJ1
+ZiwgIlNpbmtfU3VwcG9ydDogeWVzXG4iKSB8fAo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqAgc3Ryc3RyKGJ1ZiwgIlNpbmsgc3VwcG9ydDogeWVzIik7Cj4gLcKg
+wqDCoMKgwqDCoMKgZWxzZQo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAvKgo+IC3C
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKiBpOTE1IHJlcXVpcmVzIFBTUiB2ZXJzaW9u
+IDB4MDMgdGhhdCBpcyBQU1IyICsgU1UKPiB3aXRoCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoCAqIFktY29vcmRpbmF0ZSB0byBzdXBwb3J0IFBTUjIKPiAtwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgICoKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICogb3IK
+PiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICoKPiAtwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgICogUFNSIHZlcnNpb24gMHg0IHRoYXQgaXMgUFNSMiArIFNVIHcvIFktY29v
+cmRpbmF0ZQo+IGFuZCBTVQo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKiBSZWdp
+b24gRWFybHkgVHJhbnNwb3J0IHRvIHN1cHBvcnQgUFNSMiAoZURQIDEuNSkKPiAtwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgICovCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oHJldHVybiBzdHJzdHIoYnVmLCAiU2luayBzdXBwb3J0OiB5ZXMgWzB4MDNdIikgfHwKPiAtwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHN0cnN0cihidWYsICJTaW5r
+IHN1cHBvcnQ6IHllcyBbMHgwNF0iKTsKPiArwqDCoMKgwqDCoMKgwqBsaW5lID0gc3Ryc3RyKGJ1
+ZiwgIlNpbmsgc3VwcG9ydDogIik7Cj4gK8KgwqDCoMKgwqDCoMKgaWYgKCFsaW5lKQo+ICvCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXR1cm4gZmFsc2U7Cj4gKwo+ICvCoMKgwqDCoMKg
+wqDCoHN3aXRjaCAobW9kZSkgewo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBjYXNl
+IFBTUl9NT0RFXzE6Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqByZXR1cm4gc3Ryc3RyKGxpbmUsICJQU1IgPSB5ZXMiKSB8fAo+ICvCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHN0cnN0cihidWYs
+ICJTaW5rX1N1cHBvcnQ6IHllc1xuIikgfHwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBzdHJzdHIoYnVmLCAiU2luayBzdXBwb3J0
+OiB5ZXMiKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgY2FzZSBQU1JfTU9ERV8y
+Ogo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBjYXNlIFBTUl9NT0RFXzJfU0VMX0ZF
+VENIOgo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLyoK
+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAqIGk5MTUg
+cmVxdWlyZXMgUFNSIHZlcnNpb24gMHgwMyB0aGF0IGlzCj4gUFNSMiArIFNVIHdpdGgKPiArwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAqIFktY29vcmRpbmF0
+ZSB0byBzdXBwb3J0IFBTUjIKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoCAqIG9yCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqAgKgo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgICogUFNSIHZlcnNpb24gMHg0IHRoYXQgaXMgUFNSMiArIFNVIHcvIFktCj4gY29vcmRpbmF0
+ZSBhbmQgU1UKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oCAqIFJlZ2lvbiBFYXJseSBUcmFuc3BvcnQgdG8gc3VwcG9ydCBQU1IyCj4gKGVEUCAxLjUpCj4g
+K8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKi8KPiArwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldHVybiBzdHJzdHIo
+bGluZSwgIlBTUiA9IHllcyIpICYmCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKHN0cnN0cihsaW5lLCAiWzB4MDNdIikgfHwKPiBz
+dHJzdHIobGluZSwgIlsweDA0XSIpKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+Y2FzZSBQUl9NT0RFOgo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgcmV0dXJuIHN0cnN0cihsaW5lLCAiUGFuZWwgUmVwbGF5ID0geWVzIik7Cj4gK8KgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGNhc2UgUFJfTU9ERV9TRUxfRkVUQ0g6Cj4gK8KgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXR1cm4gc3Ryc3RyKGxp
+bmUsICJQYW5lbCBSZXBsYXkgPSB5ZXMiKSAmJgo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHN0cnN0cihidWYsICJQU1IyIHNlbGVj
+dGl2ZSBmZXRjaDoKPiBlbmFibGVkIik7CgpJIHRoaW5rIHBhdGNoZXMgZnJvbSBhbmltZXNoIGFy
+ZSBub3QgeWV0IGltcGxlbWVudGluZyBzaW5rIHBhbmVsIHJlcGxheQpzZWxlY3RpdmUgZmV0Y2gv
+dXBkYXRlIHN1cHBvcnQgaW5mbyBpbiBkZWJ1Z2ZzLiBBbnl3YXlzIHRoaXMgIlBTUjIKc2VsZWN0
+aXZlIGZldGNoIGVuYWJsZTogZW5hYmxlZCIgaXMgbm90IGFib3V0IHNpbmsgc3VwcG9ydC4gSXQg
+aXMKZ2VuZXJhbGx5IHNlbGVjdGl2ZSBmZXRjaCBzdGF0dXMuIEl0IG1heSBiZSBkaXNhYmxlZCBh
+cyB3ZWxsIGV2ZW4gd2hlbgpQYW5lbCBSZXBsYXkgc2VsZWN0aXZlIGZldGNoL3VwZGF0ZSBpcyBz
+dXBwb3J0ZWQgYnkgdGhlIHBhbmVsLgoKQlIsCgpKb3VuaSBIw7ZnYW5kZXIKPiArwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgZGVmYXVsdDoKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9hc3NlcnRfZihmYWxzZSwgIkludmFsaWQgcHNyIG1v
+ZGVcbiIpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+cmV0dXJuIGZhbHNlOwo+ICvCoMKgwqDCoMKgwqDCoH0KPiDCoH0KPiDCoAo+IMKgI2RlZmluZSBQ
+U1IyX1NVX0JMT0NLX1NUUl9MT09LVVAgIlBTUjIgU1UgYmxvY2tzOlxuMFx0Igo+IGRpZmYgLS1n
+aXQgYS9saWIvaWd0X3Bzci5oIGIvbGliL2lndF9wc3IuaAo+IGluZGV4IDI0MzE1NDg5Ny4uZTIx
+M2IwNWU5IDEwMDY0NAo+IC0tLSBhL2xpYi9pZ3RfcHNyLmgKPiArKysgYi9saWIvaWd0X3Bzci5o
+Cj4gQEAgLTI3LDYgKzI3LDcgQEAKPiDCoCNpbmNsdWRlICJpZ3RfZGVidWdmcy5oIgo+IMKgI2lu
+Y2x1ZGUgImlndF9jb3JlLmgiCj4gwqAjaW5jbHVkZSAiaWd0X2F1eC5oIgo+ICsjaW5jbHVkZSAi
+aWd0X2ttcy5oIgo+IMKgCj4gwqAjZGVmaW5lIFBTUl9TVEFUVVNfTUFYX0xFTiA1MTIKPiDCoAo+
+IEBAIC00Niw3ICs0Nyw3IEBAIGJvb2wgcHNyX3dhaXRfdXBkYXRlKGludCBkZWJ1Z2ZzX2ZkLCBl
+bnVtIHBzcl9tb2RlCj4gbW9kZSk7Cj4gwqBib29sIHBzcl9sb25nX3dhaXRfdXBkYXRlKGludCBk
+ZWJ1Z2ZzX2ZkLCBlbnVtIHBzcl9tb2RlIG1vZGUpOwo+IMKgYm9vbCBwc3JfZW5hYmxlKGludCBk
+ZXZpY2UsIGludCBkZWJ1Z2ZzX2ZkLCBlbnVtIHBzcl9tb2RlKTsKPiDCoGJvb2wgcHNyX2Rpc2Fi
+bGUoaW50IGRldmljZSwgaW50IGRlYnVnZnNfZmQpOwo+IC1ib29sIHBzcl9zaW5rX3N1cHBvcnQo
+aW50IGRldmljZSwgaW50IGRlYnVnZnNfZmQsIGVudW0gcHNyX21vZGUKPiBtb2RlKTsKPiArYm9v
+bCBwc3Jfc2lua19zdXBwb3J0KGludCBkZXZpY2UsIGludCBkZWJ1Z2ZzX2ZkLCBlbnVtIHBzcl9t
+b2RlCj4gbW9kZSwgaWd0X291dHB1dF90ICpvdXRwdXQpOwo+IMKgYm9vbCBwc3IyX3dhaXRfc3Uo
+aW50IGRlYnVnZnNfZmQsIHVpbnQxNl90ICpudW1fc3VfYmxvY2tzKTsKPiDCoHZvaWQgcHNyX3By
+aW50X2RlYnVnZnMoaW50IGRlYnVnZnNfZmQpOwo+IMKgZW51bSBwc3JfbW9kZSBwc3JfZ2V0X21v
+ZGUoaW50IGRlYnVnZnNfZmQpOwo+IGRpZmYgLS1naXQgYS90ZXN0cy9pbnRlbC9rbXNfZGlydHlm
+Yi5jIGIvdGVzdHMvaW50ZWwva21zX2RpcnR5ZmIuYwo+IGluZGV4IGNjOTUyOTE3OC4uZjdmZjFh
+YzBiIDEwMDY0NAo+IC0tLSBhL3Rlc3RzL2ludGVsL2ttc19kaXJ0eWZiLmMKPiArKysgYi90ZXN0
+cy9pbnRlbC9rbXNfZGlydHlmYi5jCj4gQEAgLTkyLDcgKzkyLDcgQEAgc3RhdGljIGJvb2wgY2hl
+Y2tfc3VwcG9ydChkYXRhX3QgKmRhdGEpCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqAgRFJNX01PREVfQ09OTkVDVE9SX2VEUCkKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXR1cm4gZmFsc2U7Cj4gwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqByZXR1cm4gcHNyX3Npbmtfc3VwcG9ydChkYXRhLT5kcm1fZmQsIGRh
+dGEtCj4gPmRlYnVnZnNfZmQsCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoFBTUl9NT0RFXzEpOwo+
+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBQU1JfTU9ERV8xLCBOVUxMKTsKPiDCoMKgwqDCoMKgwqDC
+oMKgY2FzZSBGRUFUVVJFX0RSUlM6Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBy
+ZXR1cm4gaW50ZWxfaXNfZHJyc19zdXBwb3J0ZWQoZGF0YS0+ZHJtX2ZkLCBkYXRhLQo+ID5waXBl
+KSAmJgo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlu
+dGVsX291dHB1dF9oYXNfZHJycyhkYXRhLT5kcm1fZmQsIGRhdGEtCj4gPm91dHB1dCk7Cj4gZGlm
+ZiAtLWdpdCBhL3Rlc3RzL2ludGVsL2ttc19mYmNvbl9mYnQuYwo+IGIvdGVzdHMvaW50ZWwva21z
+X2ZiY29uX2ZidC5jCj4gaW5kZXggOGQ2YmIzY2I2Li5hN2YyNGU2NjkgMTAwNjQ0Cj4gLS0tIGEv
+dGVzdHMvaW50ZWwva21zX2ZiY29uX2ZidC5jCj4gKysrIGIvdGVzdHMvaW50ZWwva21zX2ZiY29u
+X2ZidC5jCj4gQEAgLTI2OSw3ICsyNjksNyBAQCBzdGF0aWMgYm9vbCBwc3JfaXNfZGlzYWJsZWQo
+aW50IGRlYnVnZnNfZmQpCj4gwqAKPiDCoHN0YXRpYyBib29sIHBzcl9zdXBwb3J0ZWRfb25fY2hp
+cHNldChpbnQgZGV2aWNlLCBpbnQgZGVidWdmc19mZCkKPiDCoHsKPiAtwqDCoMKgwqDCoMKgwqBy
+ZXR1cm4gcHNyX3Npbmtfc3VwcG9ydChkZXZpY2UsIGRlYnVnZnNfZmQsIFBTUl9NT0RFXzEpOwo+
+ICvCoMKgwqDCoMKgwqDCoHJldHVybiBwc3Jfc2lua19zdXBwb3J0KGRldmljZSwgZGVidWdmc19m
+ZCwgUFNSX01PREVfMSwKPiBOVUxMKTsKPiDCoH0KPiDCoAo+IMKgc3RhdGljIGJvb2wgcHNyX3dh
+aXRfdW50aWxfdXBkYXRlKHN0cnVjdCBkcm1faW5mbyAqZHJtKQo+IEBAIC0yODAsNyArMjgwLDcg
+QEAgc3RhdGljIGJvb2wgcHNyX3dhaXRfdW50aWxfdXBkYXRlKHN0cnVjdCBkcm1faW5mbwo+ICpk
+cm0pCj4gwqBzdGF0aWMgdm9pZCBkaXNhYmxlX2ZlYXR1cmVzKGludCBkZXZpY2UsIGludCBkZWJ1
+Z2ZzX2ZkKQo+IMKgewo+IMKgwqDCoMKgwqDCoMKgwqBpZ3Rfc2V0X21vZHVsZV9wYXJhbV9pbnQo
+ZGV2aWNlLCAiZW5hYmxlX2ZiYyIsIDApOwo+IC3CoMKgwqDCoMKgwqDCoGlmIChwc3Jfc2lua19z
+dXBwb3J0KGRldmljZSwgZGVidWdmc19mZCwgUFNSX01PREVfMSkpCj4gK8KgwqDCoMKgwqDCoMKg
+aWYgKHBzcl9zaW5rX3N1cHBvcnQoZGV2aWNlLCBkZWJ1Z2ZzX2ZkLCBQU1JfTU9ERV8xLCBOVUxM
+KSkKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHBzcl9kaXNhYmxlKGRldmljZSwg
+ZGVidWdmc19mZCk7Cj4gwqB9Cj4gwqAKPiBkaWZmIC0tZ2l0IGEvdGVzdHMvaW50ZWwva21zX2Zy
+b250YnVmZmVyX3RyYWNraW5nLmMKPiBiL3Rlc3RzL2ludGVsL2ttc19mcm9udGJ1ZmZlcl90cmFj
+a2luZy5jCj4gaW5kZXggYmUzNDBhOTk3Li4zY2ZhMjJiYmYgMTAwNjQ0Cj4gLS0tIGEvdGVzdHMv
+aW50ZWwva21zX2Zyb250YnVmZmVyX3RyYWNraW5nLmMKPiArKysgYi90ZXN0cy9pbnRlbC9rbXNf
+ZnJvbnRidWZmZXJfdHJhY2tpbmcuYwo+IEBAIC0xMzgzLDcgKzEzODMsNyBAQCBzdGF0aWMgdm9p
+ZCBzZXR1cF9wc3Iodm9pZCkKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldHVy
+bjsKPiDCoMKgwqDCoMKgwqDCoMKgfQo+IMKgCj4gLcKgwqDCoMKgwqDCoMKgaWYgKCFwc3Jfc2lu
+a19zdXBwb3J0KGRybS5mZCwgZHJtLmRlYnVnZnMsIFBTUl9NT0RFXzEpKSB7Cj4gK8KgwqDCoMKg
+wqDCoMKgaWYgKCFwc3Jfc2lua19zdXBwb3J0KGRybS5mZCwgZHJtLmRlYnVnZnMsIFBTUl9NT0RF
+XzEsIE5VTEwpKQo+IHsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9pbmZv
+KCJDYW4ndCB0ZXN0IFBTUjogbm90IHN1cHBvcnRlZCBieSBzaW5rLlxuIik7Cj4gwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXR1cm47Cj4gwqDCoMKgwqDCoMKgwqDCoH0KPiBkaWZm
+IC0tZ2l0IGEvdGVzdHMvaW50ZWwva21zX3BtX2RjLmMgYi90ZXN0cy9pbnRlbC9rbXNfcG1fZGMu
+Ywo+IGluZGV4IDFlOWNhNWQ2Yy4uZTVkYWFjYjg0IDEwMDY0NAo+IC0tLSBhL3Rlc3RzL2ludGVs
+L2ttc19wbV9kYy5jCj4gKysrIGIvdGVzdHMvaW50ZWwva21zX3BtX2RjLmMKPiBAQCAtNjczLDE0
+ICs2NzMsMTYgQEAgaWd0X21haW4KPiDCoMKgwqDCoMKgwqDCoMKgaWd0X2Rlc2NyaWJlKCJJbiB0
+aGlzIHRlc3Qgd2UgbWFrZSBzdXJlIHRoYXQgc3lzdGVtIGVudGVycwo+IERDM0NPICIKPiDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICJ3aGVuIFBTUjIgaXMgYWN0aXZl
+IGFuZCBzeXN0ZW0gaXMgaW4gU0xFRVAKPiBzdGF0ZSIpOwo+IMKgwqDCoMKgwqDCoMKgwqBpZ3Rf
+c3VidGVzdCgiZGMzY28tdnBiLXNpbXVsYXRpb24iKSB7Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoGlndF9yZXF1aXJlKHBzcl9zaW5rX3N1cHBvcnQoZGF0YS5kcm1fZmQsCj4gZGF0
+YS5kZWJ1Z2ZzX2ZkLCBQU1JfTU9ERV8yKSk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoGlndF9yZXF1aXJlKHBzcl9zaW5rX3N1cHBvcnQoZGF0YS5kcm1fZmQsCj4gZGF0YS5kZWJ1
+Z2ZzX2ZkLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBQU1JfTU9ERV8yLCBOVUxM
+KSk7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB0ZXN0X2RjM2NvX3ZwYl9zaW11
+bGF0aW9uKCZkYXRhKTsKPiDCoMKgwqDCoMKgwqDCoMKgfQo+IMKgCj4gwqDCoMKgwqDCoMKgwqDC
+oGlndF9kZXNjcmliZSgiVGhpcyB0ZXN0IHZhbGlkYXRlcyBkaXNwbGF5IGVuZ2luZSBlbnRyeSB0
+byBEQzUKPiBzdGF0ZSAiCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oCAid2hpbGUgUFNSIGlzIGFjdGl2ZSIpOwo+IMKgwqDCoMKgwqDCoMKgwqBpZ3Rfc3VidGVzdCgi
+ZGM1LXBzciIpIHsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3JlcXVpcmUo
+cHNyX3Npbmtfc3VwcG9ydChkYXRhLmRybV9mZCwKPiBkYXRhLmRlYnVnZnNfZmQsIFBTUl9NT0RF
+XzEpKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3JlcXVpcmUocHNyX3Np
+bmtfc3VwcG9ydChkYXRhLmRybV9mZCwKPiBkYXRhLmRlYnVnZnNfZmQsCj4gK8KgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgIFBTUl9NT0RFXzEsIE5VTEwpKTsKPiDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoGRhdGEub3BfcHNyX21vZGUgPSBQU1JfTU9ERV8xOwo+IMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcHNyX2VuYWJsZShkYXRhLmRybV9mZCwgZGF0YS5kZWJ1
+Z2ZzX2ZkLAo+IGRhdGEub3BfcHNyX21vZGUpOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgdGVzdF9kY19zdGF0ZV9wc3IoJmRhdGEsIENIRUNLX0RDNSk7Cj4gQEAgLTY4OSw3ICs2
+OTEsOCBAQCBpZ3RfbWFpbgo+IMKgwqDCoMKgwqDCoMKgwqBpZ3RfZGVzY3JpYmUoIlRoaXMgdGVz
+dCB2YWxpZGF0ZXMgZGlzcGxheSBlbmdpbmUgZW50cnkgdG8gREM2Cj4gc3RhdGUgIgo+IMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgIndoaWxlIFBTUiBpcyBhY3RpdmUi
+KTsKPiDCoMKgwqDCoMKgwqDCoMKgaWd0X3N1YnRlc3QoImRjNi1wc3IiKSB7Cj4gLcKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9yZXF1aXJlKHBzcl9zaW5rX3N1cHBvcnQoZGF0YS5k
+cm1fZmQsCj4gZGF0YS5kZWJ1Z2ZzX2ZkLCBQU1JfTU9ERV8xKSk7Cj4gK8KgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoGlndF9yZXF1aXJlKHBzcl9zaW5rX3N1cHBvcnQoZGF0YS5kcm1fZmQs
+Cj4gZGF0YS5kZWJ1Z2ZzX2ZkLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBQU1Jf
+TU9ERV8xLCBOVUxMKSk7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLm9w
+X3Bzcl9tb2RlID0gUFNSX01PREVfMTsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oHBzcl9lbmFibGUoZGF0YS5kcm1fZmQsIGRhdGEuZGVidWdmc19mZCwKPiBkYXRhLm9wX3Bzcl9t
+b2RlKTsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9yZXF1aXJlX2YoaWd0
+X3BtX3BjOF9wbHVzX3Jlc2lkZW5jaWVzX2VuYWJsZWQoZGF0Cj4gYS5tc3JfZmQpLAo+IGRpZmYg
+LS1naXQgYS90ZXN0cy9pbnRlbC9rbXNfcHNyLmMgYi90ZXN0cy9pbnRlbC9rbXNfcHNyLmMKPiBp
+bmRleCBmZmVjYzUyMjIuLjI2MDA5NWFlYyAxMDA2NDQKPiAtLS0gYS90ZXN0cy9pbnRlbC9rbXNf
+cHNyLmMKPiArKysgYi90ZXN0cy9pbnRlbC9rbXNfcHNyLmMKPiBAQCAtNDMzLDcgKzQzMyw3IEBA
+IHN0YXRpYyB2b2lkIGZpbGxfcmVuZGVyKGRhdGFfdCAqZGF0YSwgY29uc3QKPiBzdHJ1Y3QgaWd0
+X2ZiICpmYiwKPiDCoHN0YXRpYyBib29sIHNpbmtfc3VwcG9ydChkYXRhX3QgKmRhdGEsIGVudW0g
+cHNyX21vZGUgbW9kZSkKPiDCoHsKPiDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuIGRhdGEtPndpdGhf
+cHNyX2Rpc2FibGVkIHx8Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHBzcl9zaW5rX3N1
+cHBvcnQoZGF0YS0+ZHJtX2ZkLCBkYXRhLT5kZWJ1Z2ZzX2ZkLAo+IG1vZGUpOwo+ICvCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoCBwc3Jfc2lua19zdXBwb3J0KGRhdGEtPmRybV9mZCwgZGF0YS0+
+ZGVidWdmc19mZCwgbW9kZSwKPiBOVUxMKTsKPiDCoH0KPiDCoAo+IMKgc3RhdGljIGJvb2wgcHNy
+X3dhaXRfZW50cnlfaWZfZW5hYmxlZChkYXRhX3QgKmRhdGEpCj4gZGlmZiAtLWdpdCBhL3Rlc3Rz
+L2ludGVsL2ttc19wc3IyX3NmLmMgYi90ZXN0cy9pbnRlbC9rbXNfcHNyMl9zZi5jCj4gaW5kZXgg
+ZDdhNzQ2MjExLi4yZDA1ZjExMTAgMTAwNjQ0Cj4gLS0tIGEvdGVzdHMvaW50ZWwva21zX3BzcjJf
+c2YuYwo+ICsrKyBiL3Rlc3RzL2ludGVsL2ttc19wc3IyX3NmLmMKPiBAQCAtOTgwLDcgKzk4MCw4
+IEBAIGlndF9tYWluCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBrbXN0ZXN0X3Nl
+dF92dF9ncmFwaGljc19tb2RlKCk7Cj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoGlndF9yZXF1aXJlX2YocHNyX3Npbmtfc3VwcG9ydChkYXRhLmRybV9mZCwKPiAtwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGRhdGEuZGVidWdmc19mZCwKPiBQU1JfTU9ERV8y
+KSwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGRhdGEuZGVidWdmc19mZCwK
+PiBQU1JfTU9ERV8yLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgTlVMTCks
+Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoCAiU2luayBkb2VzIG5vdCBzdXBwb3J0IFBTUjJcbiIpOwo+IMKgCj4gwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqBkaXNwbGF5X2luaXQoJmRhdGEpOwo+IGRpZmYgLS1naXQgYS90
+ZXN0cy9pbnRlbC9rbXNfcHNyMl9zdS5jIGIvdGVzdHMvaW50ZWwva21zX3BzcjJfc3UuYwo+IGlu
+ZGV4IDgzNGZlYzFlYy4uMmY4OWRlNDM1IDEwMDY0NAo+IC0tLSBhL3Rlc3RzL2ludGVsL2ttc19w
+c3IyX3N1LmMKPiArKysgYi90ZXN0cy9pbnRlbC9rbXNfcHNyMl9zdS5jCj4gQEAgLTMyNyw3ICsz
+MjcsOCBAQCBpZ3RfbWFpbgo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKga21zdGVz
+dF9zZXRfdnRfZ3JhcGhpY3NfbW9kZSgpOwo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqBpZ3RfcmVxdWlyZV9mKHBzcl9zaW5rX3N1cHBvcnQoZGF0YS5kcm1fZmQsCj4gLcKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBkYXRhLmRlYnVnZnNfZmQsCj4gUFNSX01P
+REVfMiksCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBkYXRhLmRlYnVnZnNf
+ZmQsCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBQU1JfTU9ERV8yLCBOVUxM
+KSwKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgICJTaW5rIGRvZXMgbm90IHN1cHBvcnQgUFNSMlxuIik7Cj4gwqAKPiDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9yZXF1aXJlX2YoaW50ZWxfZGlzcGxheV92ZXIoaW50
+ZWxfZ2V0X2RybV9kZXZpZChkCj4gYXRhLmRybV9mZCkpIDwgMTMsCj4gZGlmZiAtLWdpdCBhL3Rl
+c3RzL2ludGVsL2ttc19wc3Jfc3RyZXNzX3Rlc3QuYwo+IGIvdGVzdHMvaW50ZWwva21zX3Bzcl9z
+dHJlc3NfdGVzdC5jCj4gaW5kZXggYjY3NTllZWNlLi5iZWRlZDNiOTQgMTAwNjQ0Cj4gLS0tIGEv
+dGVzdHMvaW50ZWwva21zX3Bzcl9zdHJlc3NfdGVzdC5jCj4gKysrIGIvdGVzdHMvaW50ZWwva21z
+X3Bzcl9zdHJlc3NfdGVzdC5jCj4gQEAgLTM1Nyw3ICszNTcsNyBAQCBpZ3RfbWFpbgo+IMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKga21zdGVzdF9zZXRfdnRfZ3JhcGhpY3NfbW9kZSgp
+Owo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfcmVxdWlyZV9mKHBz
+cl9zaW5rX3N1cHBvcnQoZGF0YS5kcm1fZmQsCj4gZGF0YS5kZWJ1Z2ZzX2ZkLAo+IC3CoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgUFNSX01PREVfMSksCj4gK8KgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoCBQU1JfTU9ERV8xLCBOVUxMKSwKPiDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICJTaW5rIGRvZXMgbm90
+IHN1cHBvcnQgUFNSXG4iKTsKPiDCoAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+c2V0dXBfb3V0cHV0KCZkYXRhKTsKPiBkaWZmIC0tZ2l0IGEvdGVzdHMva21zX2ZlYXR1cmVfZGlz
+Y292ZXJ5LmMKPiBiL3Rlc3RzL2ttc19mZWF0dXJlX2Rpc2NvdmVyeS5jCj4gaW5kZXggM2ExZjZk
+MjFkLi40MjhmOTdmZmUgMTAwNjQ0Cj4gLS0tIGEvdGVzdHMva21zX2ZlYXR1cmVfZGlzY292ZXJ5
+LmMKPiArKysgYi90ZXN0cy9rbXNfZmVhdHVyZV9kaXNjb3ZlcnkuYwo+IEBAIC0xNTksMTIgKzE1
+OSwxMiBAQCBpZ3RfbWFpbiB7Cj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oGlndF9kZXNjcmliZSgiTWFrZSBzdXJlIHRoYXQgd2UgaGF2ZSBlRFAgcGFuZWwgd2l0aAo+IFBT
+UjEgc3VwcG9ydC4iKTsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9zdWJ0
+ZXN0KCJwc3IxIikgewo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgaWd0X3JlcXVpcmUocHNyX3Npbmtfc3VwcG9ydChmZCwgZGVidWdmc19mZCwKPiBQU1Jf
+TU9ERV8xKSk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqBpZ3RfcmVxdWlyZShwc3Jfc2lua19zdXBwb3J0KGZkLCBkZWJ1Z2ZzX2ZkLAo+IFBTUl9NT0RF
+XzEsIE5VTEwpKTsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH0KPiDCoAo+IMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2Rlc2NyaWJlKCJNYWtlIHN1cmUgdGhh
+dCB3ZSBoYXZlIGVEUCBwYW5lbCB3aXRoCj4gUFNSMiBzdXBwb3J0LiIpOwo+IMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3N1YnRlc3QoInBzcjIiKSB7Cj4gLcKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfcmVxdWlyZShwc3Jfc2lua19z
+dXBwb3J0KGZkLCBkZWJ1Z2ZzX2ZkLAo+IFBTUl9NT0RFXzIpKTsKPiArwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9yZXF1aXJlKHBzcl9zaW5rX3N1cHBv
+cnQoZmQsIGRlYnVnZnNfZmQsCj4gUFNSX01PREVfMiwgTlVMTCkpOwo+IMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgfQo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqBpZ3RfZGVzY3JpYmUoIk1ha2Ugc3VyZSB0aGF0IHdlIGhhdmUgRFAtTVNUCj4gY29uZmlndXJh
+dGlvbi4iKTsKCg==
