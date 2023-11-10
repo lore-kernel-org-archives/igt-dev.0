@@ -1,22 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4861810E215
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Nov 2023 19:37:12 +0000 (UTC)
-Message-ID: <0e07ddc8-a5f0-4b82-a2e3-aefffa3f4040@intel.com>
-Date: Fri, 10 Nov 2023 20:37:07 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3A04710E1D9
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Nov 2023 19:44:20 +0000 (UTC)
+Message-ID: <e8d16680-0b19-44d1-9cbc-3cbd7b295c03@intel.com>
+Date: Fri, 10 Nov 2023 20:44:15 +0100
 MIME-Version: 1.0
 Content-Language: en-US
 To: "Laguna, Lukasz" <lukasz.laguna@intel.com>, igt-dev@lists.freedesktop.org
 References: <20231106195947.14640-1-lukasz.laguna@intel.com>
- <20231106195947.14640-6-lukasz.laguna@intel.com>
- <0a0e6099-9fab-4906-ba18-81c615867ce1@intel.com>
- <c1dfe50d-c46c-97cb-600e-33f095d93089@intel.com>
+ <20231106195947.14640-8-lukasz.laguna@intel.com>
+ <ede911d8-3053-4446-b69e-427c473e7a20@intel.com>
+ <cfd5dfb7-25bd-b6d1-069b-cf53c9c021d9@intel.com>
 From: Michal Wajdeczko <michal.wajdeczko@intel.com>
-In-Reply-To: <c1dfe50d-c46c-97cb-600e-33f095d93089@intel.com>
+In-Reply-To: <cfd5dfb7-25bd-b6d1-069b-cf53c9c021d9@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t 5/8] tests/sriov_basic: add basic tests
- for enabling SR-IOV VFs
+Subject: Re: [igt-dev] [PATCH i-g-t 7/8] tests/sriov_basic: validate driver
+ binding to VFs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,257 +30,151 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 
 
-On 09.11.2023 08:04, Laguna, Lukasz wrote:
+On 09.11.2023 08:06, Laguna, Lukasz wrote:
 > 
-> On 11/6/2023 23:46, Michal Wajdeczko wrote:
+> On 11/6/2023 23:59, Michal Wajdeczko wrote:
 >>
 >> On 06.11.2023 20:59, Lukasz Laguna wrote:
 >>> From: Katarzyna Dec <katarzyna.dec@intel.com>
 >>>
->>> Add subtests that validate SR-IOV VFs enabling in two variants: with
->>> autoprobe disabled and enabled.
->>>
+>>> Test enables VFs in range <1..totalvfs>, bind driver to all of them and
+>>> then unbind driver from all of them.
+>> commit message seems outdated
+> What do you mean? I don't see anything wrong
+>>
 >>> Signed-off-by: Katarzyna Dec <katarzyna.dec@intel.com>
 >>> Reviewed-by: Lukasz Laguna <lukasz.laguna@intel.com>
 >>> Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
 >>> Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 >>> ---
->>>   tests/meson.build   |   1 +
->>>   tests/sriov_basic.c | 126 ++++++++++++++++++++++++++++++++++++++++++++
->>>   2 files changed, 127 insertions(+)
->>>   create mode 100644 tests/sriov_basic.c
+>>>   tests/sriov_basic.c | 51 +++++++++++++++++++++++++++++++++++++++++++++
+>>>   1 file changed, 51 insertions(+)
 >>>
->>> diff --git a/tests/meson.build b/tests/meson.build
->>> index 62721157d..7413d978c 100644
->>> --- a/tests/meson.build
->>> +++ b/tests/meson.build
->>> @@ -71,6 +71,7 @@ test_progs = [
->>>       'panfrost_submit',
->>>       'prime_udl',
->>>       'prime_vgem',
->>> +    'sriov_basic',
->>>       'syncobj_basic',
->>>       'syncobj_eventfd',
->>>       'syncobj_wait',
 >>> diff --git a/tests/sriov_basic.c b/tests/sriov_basic.c
->>> new file mode 100644
->>> index 000000000..fc0914962
->>> --- /dev/null
+>>> index fc0914962..179731daf 100644
+>>> --- a/tests/sriov_basic.c
 >>> +++ b/tests/sriov_basic.c
->>> @@ -0,0 +1,126 @@
->>> +// SPDX-License-Identifier: MIT
->>> +/*
->>> + * Copyright(c) 2023 Intel Corporation. All rights reserved.
->>> + */
->>> +
->>> +#include "drmtest.h"
->>> +#include "igt_core.h"
->>> +#include "igt_sriov_device.h"
->>> +
->>> +IGT_TEST_DESCRIPTION("Basic tests for enabling SR-IOV Virtual
->>> Functions");
->>> +
->>> +/**
->>> + * TEST: sriov_basic
->>> + * Category: Software building block
->>> + * Mega feature: SR-IOV
->>> + * Sub-category: VFs enabling
->>> + * Run type: BAT
->>> + * Description: Validate SR-IOV VFs enabling
->>> + */
->>> +
->>> +/**
->>> + * SUBTEST: enable-vfs-autoprobe-off
+>>> @@ -61,6 +61,38 @@ static void probe_disable_vfs(int pf_fd, unsigned
+>>> int num_vfs)
+>>>       igt_assert(!err);
+>>>   }
+>>>   +/**
+>>> + * SUBTEST: enable-vfs-bind-all-unbind-all
 >>> + * Description:
->>> + *   Verify VFs enabling without probing VF driver
+>>> + *   Verify VFs enabling, binding the driver and then unbinding it
+>>> from all of them
 >>> + */
->>> +static void enable_disable_vfs(int pf_fd, unsigned int num_vfs)
->>     "enable-vfs-autoprobe-off"
->> and
->>     "enable_disable_vfs"
->> are different
->> shouldn't they match somehow ?
-> Done
->>
+>>> +static void enable_vfs_bind_all_unbind_all(int pf_fd, unsigned int
+>>> num_vfs)
 >>> +{
 >>> +    igt_debug("Using num_vfs=%u\n", num_vfs);
->>> +
->>> +    igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
->> this seems to duplicate first fixture, do we really need to repeat that
->> over and over ?
-> It's not the same. First fixtureis not executed between dynamic subtests.
-
-hmm, I'm not an igt expert, but this seems to be little broken
-
->>
->>> +    igt_assert(igt_sriov_disable_driver_autoprobe(pf_fd));
->>> +    igt_assert(!igt_sriov_is_driver_autoprobe_enabled(pf_fd));
->> this seems crazy and unrelated to test scope - we are not checking here
->> the behavior of the "driver_autoprobe" attribute, we should just trust
->> that 'disable' above worked since it returned true and we already
->> asserted that
+>> nit: "Testing %u VFs" ?
 > Done
 >>
->>> +    igt_assert(igt_sriov_enable_vfs(pf_fd, num_vfs));
->>> +    igt_assert_eq(num_vfs, igt_sriov_get_enabled_vfs(pf_fd));
->> this should be "expect" type of check, as we still want to disable VFs
-> VFs will be disabled in exit fixture. VFs disabling in subtest is needed
+>>> +
+>>> +    igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
+>> duplicates main fixture
+> As already answered in different patch - first fixtureis not executed
 > between dynamic subtests.
 >>
->>> +    igt_assert(igt_sriov_disable_vfs(pf_fd));
->> maybe assert here that enabled_vfs == num_vfs ?
-> Some time ago we've got a sugesstion that we should have seperate test
-> for VFs disabling. We can check
->     igt_assert_eq(0, igt_sriov_get_enabled_vfs(pf_fd));
-> there,  when implemented.
->>
->>> +}
->>> +
->>> +/**
->>> + * SUBTEST: enable-vfs-autoprobe-on
->>> + * Description:
->>> + *   Verify VFs enabling and auto-probing VF driver
->>> + */
->>> +static void probe_disable_vfs(int pf_fd, unsigned int num_vfs)
->> here is even more different
->>
->>     "enable-vfs-autoprobe-on"
->> vs
->>     "probe_disable_vfs"
->>
->> also "probe" here may clash with future test that will "probe" just
->> selected VF
+>>> +    igt_warn_on(!igt_sriov_disable_driver_autoprobe(pf_fd));
+>>> +    igt_skip_on(igt_sriov_is_driver_autoprobe_enabled(pf_fd));
+>> why do we need warn/skip here ?
+>> can't we just assert that 'disable' worked ?
 > Done
 >>
->>> +{
->>> +    bool err = false;
 >>> +
->>> +    igt_debug("Using num_vfs=%u\n", num_vfs);
->>> +
->>> +    igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
->> ditto
+>>> +    igt_warn_on(!igt_sriov_enable_vfs(pf_fd, num_vfs));
+>> can't we just assert ?
+> Done
 >>
->>> +    igt_assert(igt_sriov_enable_driver_autoprobe(pf_fd));
->>> +    igt_assert(igt_sriov_is_driver_autoprobe_enabled(pf_fd));
->> ditto
->>
->>> +    igt_assert(igt_sriov_enable_vfs(pf_fd, num_vfs));
 >>> +    igt_assert_eq(num_vfs, igt_sriov_get_enabled_vfs(pf_fd));
->> ditto
+>> why we care here ? if not all are enabled then we fail just later
+>> and this is not a test for "enable VFs" that enabled==requested
+> Done
 >>
->>> +    for (int vf_num = 1; vf_num <= num_vfs; ++vf_num) {
->>> +        if (!igt_sriov_is_vf_drm_driver_probed(pf_fd, vf_num)) {
->>> +            igt_debug("VF%u probe failed\n", vf_num);
->>> +            err = true;
->>> +        }
+>>> +    igt_warn_on(!igt_sriov_enable_driver_autoprobe(pf_fd));
+>>> +    igt_assert(igt_sriov_is_driver_autoprobe_enabled(pf_fd));
+>> can't we just warn ?
+>> if that we fail to enable then probe below will fail anyway
+> Done
+>>
+>>> +
+>>> +    for (int i = 1; i <= num_vfs; i++) {
+>>> +        igt_assert(!igt_sriov_is_vf_drm_driver_probed(pf_fd, i));
+>>> +        igt_assert(igt_sriov_bind_vf_drm_driver(pf_fd, i));
+>>> +        igt_assert(igt_sriov_is_vf_drm_driver_probed(pf_fd, i));
+>> shouldn't we just "expect" to make sure to call "disable VFs" ?
+> VFs will be disabled in exit fixture. VFs disabling in subtest is needed
+> between dynamic subtests.
+
+but if test passed, then it should do a proper cleanup
+
+maybe problem is that if something went wrong, your igt_assert() aborts
+current test which doesn't have a chance to do proper cleanup ?
+
+or maybe that cleanup should be in some mid-test fixture ?
+
+anyway, just seems broken that we need to duplicate the code/logic every
+time
+
+>>
 >>> +    }
+>>> +
+>>> +    for (int i = 1; i <= num_vfs; i++) {
+>>> +        igt_assert(igt_sriov_unbind_vf_drm_driver(pf_fd, i));
+>>> +        igt_assert(!igt_sriov_is_vf_drm_driver_probed(pf_fd, i));
+>> do we need to have all VFs loaded ?
+>> maybe for BAT test we can just bind/unload one VF at the time ?
+> We have such test as well:
+> [PATCH i-g-t 8/8] tests/sriov_basic: add more tests for VF driver binding
+>     SUBTEST: enable-vfs-bind-unbind-each
+>     SUBTEST: bind-unbind-vf
+
+that's good
+
+but the question is still open?
+what the benefit of having this test which just open-coded the VF probe
+loop that would be otherwise done by the PCI subsystem ?
+
+and again, like autoprobe-on, this doesn't seem good candidate for "BAT"
+runs, more like a "STRESS"
+
+>>
+>> otherwise it will be almost the same level of stress as in
+>> "enable-vfs-autoprobe-on" but with 'manual probe' loop of all VFs
+>>
+>>> +    }
+>>> +
 >>> +    igt_assert(igt_sriov_disable_vfs(pf_fd));
->> disabling VFs immediately after enabling could be treated as a "stress"
->> test - shouldn't we have some grace period for a "basic" class test ?
-> I can add some sleep before VFs disabling. Do you have some specific
-> value we should use in mind? 2s?
-
-dunno
-
-but I still doubt that enabling all VFs in autoprobe mode is a good test
-for "basic" scenario (the only argument for being 'basic' is that is is
-1-liner from test point-of-view, but definitely it is not 'basic' from
-the system and driver POV)
-
-in basic tests we should just try enable 1 VF at the time, unload it,
-then try with next one
-
-"autoprobe all" shouldn't be "Run type: BAT"
-
->> stress loop with probe/unload could be different test case
-> Yeah, it's in another patch from this series
->>
->>> +    igt_assert(!err);
 >>> +}
 >>> +
->>> +igt_main
->>> +{
->>> +    int pf_fd;
->>> +    bool autoprobe;
->>> +
->>> +    igt_fixture {
->>> +        pf_fd = drm_open_driver(DRIVER_ANY);
->>> +        igt_require(igt_sriov_is_pf(pf_fd));
->>> +        igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
->>> +        autoprobe = igt_sriov_is_driver_autoprobe_enabled(pf_fd);
->>> +
->>> +        igt_srandom();
->> shouldn't this be part of the main() or something ?
-> Probably it could be, but no one has implemented it yet. There are many
-> other tests that initializes seed in fixture.
-
-but why follow bad design/pattern ?
-
->>> +    }
->>> +
->>> +    igt_describe("Verify VFs enabling without probing VF driver");
->>> +    igt_subtest_with_dynamic("enable-vfs-autoprobe-off") {
+>>>   igt_main
+>>>   {
+>>>       int pf_fd;
+>>> @@ -113,6 +145,25 @@ igt_main
+>>>           }
+>>>       }
+>>>   +    igt_describe("Verify VFs enabling, binding the driver and then
+>>> unbinding it from all of them");
+>>> +    igt_subtest_with_dynamic("enable-vfs-bind-all-unbind-all") {
 >>> +        for_each_num_vfs(pf_fd, num_vfs) {
 >>> +            igt_dynamic_f("numvfs-%u", num_vfs) {
->>> +                enable_disable_vfs(pf_fd, num_vfs);
+>>> +                enable_vfs_bind_all_unbind_all(pf_fd, num_vfs);
 >>> +            }
 >>> +        }
 >>> +        for_random_num_vfs(pf_fd, num_vfs) {
 >>> +            igt_dynamic_f("numvfs-random") {
->>> +                enable_disable_vfs(pf_fd, num_vfs);
+>>> +                enable_vfs_bind_all_unbind_all(pf_fd, num_vfs);
 >>> +            }
 >>> +        }
 >>> +        for_max_num_vfs(pf_fd, num_vfs) {
 >>> +            igt_dynamic_f("numvfs-all") {
->>> +                enable_disable_vfs(pf_fd, num_vfs);
+>>> +                enable_vfs_bind_all_unbind_all(pf_fd, num_vfs);
 >>> +            }
 >>> +        }
 >>> +    }
 >>> +
->>> +    igt_describe("Verify VFs enabling and auto-probing VF driver");
->>> +    igt_subtest_with_dynamic("enable-vfs-autoprobe-on") {
->>> +        for_each_num_vfs(pf_fd, num_vfs) {
->>> +            igt_dynamic_f("numvfs-%u", num_vfs) {
->>> +                probe_disable_vfs(pf_fd, num_vfs);
->>> +            }
->>> +        }
->>> +        for_random_num_vfs(pf_fd, num_vfs) {
->>> +            igt_dynamic_f("numvfs-random") {
->>> +                probe_disable_vfs(pf_fd, num_vfs);
->>> +            }
->>> +        }
->>> +        for_max_num_vfs(pf_fd, num_vfs) {
->>> +            igt_dynamic_f("numvfs-all") {
->>> +                probe_disable_vfs(pf_fd, num_vfs);
->>> +            }
->>> +        }
->>> +    }
->>> +
->>> +    igt_fixture {
->>> +        igt_sriov_disable_vfs(pf_fd);
->>> +        /* abort to avoid execution of next tests with enabled VFs */
->>> +        igt_abort_on_f(igt_sriov_get_enabled_vfs(pf_fd) > 0, "Failed
->>> to disable VF(s)");
->> can't this be just:
->>
->>     igt_abort_on_f(!igt_sriov_disable_vfs(pf_fd), "");
->>     igt_abort_on_f(!igt_sriov_set_driver_autoprobe(autoprobe), "");
-> It's for case when helper e.g. igt_sriov_disable_vfsdoesn't return
-> error, but VFs are still enabled.
-
-but do we care here ?
-
-I'm not sure that we should add test code to test other test code, as
-then you will just write code and miss what was the original goal of the
-test.
-
-
->>> +        autoprobe ? igt_sriov_enable_driver_autoprobe(pf_fd) :
->>> +                igt_sriov_disable_driver_autoprobe(pf_fd);
->>> +        igt_abort_on_f(autoprobe !=
->>> igt_sriov_is_driver_autoprobe_enabled(pf_fd),
->>> +                   "Failed to restore sriov_drivers_autoprobe
->>> value\n");
->>> +        close(pf_fd);
->>> +    }
->>> +}
+>>>       igt_fixture {
+>>>           igt_sriov_disable_vfs(pf_fd);
+>>>           /* abort to avoid execution of next tests with enabled VFs */
