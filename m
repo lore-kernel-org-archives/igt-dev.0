@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2187510E103
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Nov 2023 15:52:27 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B742D10E103
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Nov 2023 15:52:25 +0000 (UTC)
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 10 Nov 2023 15:52:06 +0000
-Message-Id: <20231110155211.7-3-francois.dugast@intel.com>
+Date: Fri, 10 Nov 2023 15:52:05 +0000
+Message-Id: <20231110155211.7-2-francois.dugast@intel.com>
 In-Reply-To: <20231110155211.7-1-francois.dugast@intel.com>
 References: <20231110155211.7-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v1 2/7] drm-uapi/xe: Remove GT_TYPE_REMOTE.
+Subject: [igt-dev] [PATCH v1 1/7] drm-uapi/xe: Remove useless
+ XE_QUERY_CONFIG_NUM_PARAM
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,37 +19,28 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Align with commit ("drm/xe/uapi: Remove useless XE_QUERY_CONFIG_NUM_PARAM")
 
-Align with commit ("drm/xe/uapi: Remove GT_TYPE_REMOTE")
-
-Cc: Francois Dugast <francois.dugast@intel.com>
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 ---
- include/drm-uapi/xe_drm.h | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ include/drm-uapi/xe_drm.h | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index b316868de..8a18e1726 100644
+index 66658d76c..b316868de 100644
 --- a/include/drm-uapi/xe_drm.h
 +++ b/include/drm-uapi/xe_drm.h
-@@ -343,9 +343,8 @@ struct drm_xe_query_config {
-  */
- struct drm_xe_query_gt {
- #define XE_QUERY_GT_TYPE_MAIN		0
--#define XE_QUERY_GT_TYPE_REMOTE		1
--#define XE_QUERY_GT_TYPE_MEDIA		2
--	/** @type: GT type: Main, Remote, or Media */
-+#define XE_QUERY_GT_TYPE_MEDIA		1
-+	/** @type: GT type: Main or Media */
- 	__u16 type;
- 	/** @gt_id: Unique ID of this GT within the PCI Device */
- 	__u16 gt_id;
+@@ -329,7 +329,6 @@ struct drm_xe_query_config {
+ #define XE_QUERY_CONFIG_GT_COUNT		4
+ #define XE_QUERY_CONFIG_MEM_REGION_COUNT	5
+ #define XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY	6
+-#define XE_QUERY_CONFIG_NUM_PARAM		(XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY + 1)
+ 	/** @info: array of elements containing the config info */
+ 	__u64 info[];
+ };
 -- 
 2.34.1
