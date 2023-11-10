@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DF64710E04E
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Nov 2023 13:46:22 +0000 (UTC)
-Message-ID: <27e4da09-0e15-48e0-a43f-55cc3074a613@intel.com>
-Date: Fri, 10 Nov 2023 19:16:11 +0530
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C5DB010E033
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Nov 2023 13:50:38 +0000 (UTC)
+Message-ID: <d9324cf9-35cc-45b7-b558-f99420ce7689@intel.com>
+Date: Fri, 10 Nov 2023 19:20:28 +0530
+Content-Language: en-US
 To: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>,
  <igt-dev@lists.freedesktop.org>
 References: <20231109110050.388343-1-sujaritha.sundaresan@intel.com>
  <20231109110050.388343-2-sujaritha.sundaresan@intel.com>
-Content-Language: en-US
 From: Riana Tauro <riana.tauro@intel.com>
 In-Reply-To: <20231109110050.388343-2-sujaritha.sundaresan@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
@@ -27,15 +27,12 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
+Hi Suja
 
 On 11/9/2023 4:30 PM, Sujaritha Sundaresan wrote:
 > Adding multi-gt support for the rc6-idle subtest
 > 
 > Signed-off-by: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
-Looks good to me
-
-Reviewed-by: Riana Tauro <riana.tauro@intel.com>
 > ---
 >   tests/intel/i915_pm_rc6_residency.c | 18 +++++++++++-------
 >   1 file changed, 11 insertions(+), 7 deletions(-)
@@ -69,6 +66,12 @@ Reviewed-by: Riana Tauro <riana.tauro@intel.com>
 > +	unsigned int dirfd, gt;
 >   	const intel_ctx_t *ctx;
 >   
+There is
+ctx = intel_ctx_create_all_physical(i915);
+in fixture. Please remove that as it is duplicate
+
+Thanks
+Riana
 >   	/* Use drm_open_driver to verify device existence */
 > @@ -572,11 +573,15 @@ igt_main
 >   		igt_require_gem(i915);
