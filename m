@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6538910E034
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Nov 2023 06:58:41 +0000 (UTC)
-From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Mon, 13 Nov 2023 06:58:33 +0000
-Message-ID: <MW3PR11MB474882F45888BFF45CAB5EC3AEB3A@MW3PR11MB4748.namprd11.prod.outlook.com>
-References: <20231113052304.1092040-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20231113052304.1092040-1-bhanuprakash.modem@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/alternative;
+ boundary="===============2003717274096150787=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t] tests/syncobj_timeline: Fix testplan
- documentation
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Lang Yu" <lang.yu@amd.com>
+Date: Mon, 13 Nov 2023 07:28:10 -0000
+Message-ID: <169986049084.24212.12771720224554324862@emeril.freedesktop.org>
+References: <20231113065259.106348-1-Lang.Yu@amd.com>
+In-Reply-To: <20231113065259.106348-1-Lang.Yu@amd.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/am?=
+ =?utf-8?q?dgpu=3A_add_VPE_tests_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,78 +17,156 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Simon Ser <contact@emersion.fr>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogaWd0LWRldiA8aWd0LWRl
-di1ib3VuY2VzQGxpc3RzLmZyZWVkZXNrdG9wLm9yZz4gT24gQmVoYWxmIE9mDQo+IEJoYW51cHJh
-a2FzaCBNb2RlbQ0KPiBTZW50OiBNb25kYXksIE5vdmVtYmVyIDEzLCAyMDIzIDEwOjUzIEFNDQo+
-IFRvOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBDYzogU2ltb24gU2VyIDxjb250
-YWN0QGVtZXJzaW9uLmZyPg0KPiBTdWJqZWN0OiBbaWd0LWRldl0gW2ktZy10XSB0ZXN0cy9zeW5j
-b2JqX3RpbWVsaW5lOiBGaXggdGVzdHBsYW4gZG9jdW1lbnRhdGlvbg0KPiANCj4gRml4IHRlc3Rw
-bGFuIGRvY3VtZW50YWlvbiB0byBidWlsZCB0aGUgSUdULg0KPiANCj4gRml4ZXM6IGY2ZjU5MDMz
-NCBzeW5jb2JqX3RpbWVsaW5lOiBkb24ndCBleHBlY3QgRUlOVkFMIGZvcg0KPiBXQUlUX1VOU1VC
-TUlUVEVELCB8IFdBSVRfQVZBSUxBQkxFDQo+IENjOiBFcmlrIEt1cnppbmdlciA8ZWt1cnppbmdl
-ckBudmlkaWEuY29tPg0KPiBDYzogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1w
-Y3p5bnNraUBpbnRlbC5jb20+DQo+IENjOiBTaW1vbiBTZXIgPGNvbnRhY3RAZW1lcnNpb24uZnI+
-DQo+IFNpZ25lZC1vZmYtYnk6IEJoYW51cHJha2FzaCBNb2RlbSA8YmhhbnVwcmFrYXNoLm1vZGVt
-QGludGVsLmNvbT4NCj4gLS0tDQo+ICB0ZXN0cy9zeW5jb2JqX3RpbWVsaW5lLmMgfCAyMCArKysr
-KysrKysrLS0tLS0tLS0tLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDEwIGluc2VydGlvbnMoKyksIDEw
-IGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL3N5bmNvYmpfdGltZWxpbmUu
-YyBiL3Rlc3RzL3N5bmNvYmpfdGltZWxpbmUuYyBpbmRleA0KPiAwNDIyYmNhNTEuLmVhODM0MWEz
-MCAxMDA2NDQNCj4gLS0tIGEvdGVzdHMvc3luY29ial90aW1lbGluZS5jDQo+ICsrKyBiL3Rlc3Rz
-L3N5bmNvYmpfdGltZWxpbmUuYw0KPiBAQCAtMTM1LDE2ICsxMzUsMTYgQEANCj4gICAqICAgVmVy
-aWZpZXMgdGhhdCBhcyB3ZSBzaWduYWwgcG9pbnRzIGZyb20gdGhlIGhvc3QsIHRoZSBzeW5jb2Jq
-IHRpbWVsaW5lDQo+IHZhbHVlIGluY3JlbWVudHMgYW5kDQo+ICAgKiAgIHRoYXQgd2FpdHMgZm9y
-IHN1Ym1pdHMvc2lnbmFscyB3b3JrcyBwcm9wZXJseS4NCj4gICAqDQo+IC0gKiBTVUJURVNUOiBp
-bnZhbGlkLW11bHRpLXdhaXQtYWxsLWF2YWlsYWJsZS11bnN1Ym1pdHRlZA0KPiArICogU1VCVEVT
-VDogZXRpbWUtbXVsdGktd2FpdC1hbGwtYXZhaWxhYmxlLXVuc3VibWl0dGVkDQo+ICAgKiBEZXNj
-cmlwdGlvbjogVmVyaWZpZXMgd2FpdGluZyBvbiBhIGxpc3Qgb2YgdGltZWxpbmUgc3luY29ianMN
-Cj4gICAqDQo+IC0gKiBTVUJURVNUOiBpbnZhbGlkLW11bHRpLXdhaXQtYWxsLWF2YWlsYWJsZS11
-bnN1Ym1pdHRlZC1zaWduYWxlZA0KPiArICogU1VCVEVTVDogZXRpbWUtbXVsdGktd2FpdC1hbGwt
-YXZhaWxhYmxlLXVuc3VibWl0dGVkLXNpZ25hbGVkDQo+ICAgKiBEZXNjcmlwdGlvbjogVmVyaWZp
-ZXMgd2FpdGluZyBvbiBhIGxpc3Qgb2YgdGltZWxpbmUgc3luY29ianMNCj4gICAqDQo+IC0gKiBT
-VUJURVNUOiBpbnZhbGlkLW11bHRpLXdhaXQtYWxsLWF2YWlsYWJsZS11bnN1Ym1pdHRlZC1zdWJt
-aXR0ZWQNCj4gKyAqIFNVQlRFU1Q6IGV0aW1lLW11bHRpLXdhaXQtYWxsLWF2YWlsYWJsZS11bnN1
-Ym1pdHRlZC1zdWJtaXR0ZWQNCj4gICAqIERlc2NyaXB0aW9uOiBWZXJpZmllcyB3YWl0aW5nIG9u
-IGEgbGlzdCBvZiB0aW1lbGluZSBzeW5jb2Jqcw0KPiAgICoNCj4gLSAqIFNVQlRFU1Q6IGludmFs
-aWQtbXVsdGktd2FpdC1hbGwtYXZhaWxhYmxlLXVuc3VibWl0dGVkLXN1Ym1pdHRlZC1zaWduYWxl
-ZA0KPiArICogU1VCVEVTVDoNCj4gKyBldGltZS1tdWx0aS13YWl0LWFsbC1hdmFpbGFibGUtdW5z
-dWJtaXR0ZWQtc3VibWl0dGVkLXNpZ25hbGVkDQpBZGp1c3QgaW4gc2luZ2xlIGxpbmUuIFdpdGgg
-dGhhdCBjaGFuZ2UsDQoNClJldmlld2VkLWJ5OiBKYW5nYSBSYWh1bCBLdW1hciA8amFuZ2EucmFo
-dWwua3VtYXJAaW50ZWwuY29tPg0KDQo+ICAgKiBEZXNjcmlwdGlvbjogVmVyaWZpZXMgd2FpdGlu
-ZyBvbiBhIGxpc3Qgb2YgdGltZWxpbmUgc3luY29ianMNCj4gICAqDQo+ICAgKiBTVUJURVNUOiBp
-bnZhbGlkLW11bHRpLXdhaXQtYWxsLXVuc3VibWl0dGVkDQo+IEBAIC0xNTksMTYgKzE1OSwxNiBA
-QA0KPiAgICogU1VCVEVTVDogaW52YWxpZC1tdWx0aS13YWl0LWFsbC11bnN1Ym1pdHRlZC1zdWJt
-aXR0ZWQtc2lnbmFsZWQNCj4gICAqIERlc2NyaXB0aW9uOiBWZXJpZmllcyB3YWl0aW5nIG9uIGEg
-bGlzdCBvZiB0aW1lbGluZSBzeW5jb2Jqcw0KPiAgICoNCj4gLSAqIFNVQlRFU1Q6IGludmFsaWQt
-bXVsdGktd2FpdC1hdmFpbGFibGUtdW5zdWJtaXR0ZWQNCj4gKyAqIFNVQlRFU1Q6IGV0aW1lLW11
-bHRpLXdhaXQtYXZhaWxhYmxlLXVuc3VibWl0dGVkDQo+ICAgKiBEZXNjcmlwdGlvbjogVmVyaWZp
-ZXMgd2FpdGluZyBvbiBhIGxpc3Qgb2YgdGltZWxpbmUgc3luY29ianMNCj4gICAqDQo+IC0gKiBT
-VUJURVNUOiBpbnZhbGlkLW11bHRpLXdhaXQtYXZhaWxhYmxlLXVuc3VibWl0dGVkLXNpZ25hbGVk
-DQo+ICsgKiBTVUJURVNUOiBtdWx0aS13YWl0LWF2YWlsYWJsZS11bnN1Ym1pdHRlZC1zaWduYWxl
-ZA0KPiAgICogRGVzY3JpcHRpb246IFZlcmlmaWVzIHdhaXRpbmcgb24gYSBsaXN0IG9mIHRpbWVs
-aW5lIHN5bmNvYmpzDQo+ICAgKg0KPiAtICogU1VCVEVTVDogaW52YWxpZC1tdWx0aS13YWl0LWF2
-YWlsYWJsZS11bnN1Ym1pdHRlZC1zdWJtaXR0ZWQNCj4gKyAqIFNVQlRFU1Q6IG11bHRpLXdhaXQt
-YXZhaWxhYmxlLXVuc3VibWl0dGVkLXN1Ym1pdHRlZA0KPiAgICogRGVzY3JpcHRpb246IFZlcmlm
-aWVzIHdhaXRpbmcgb24gYSBsaXN0IG9mIHRpbWVsaW5lIHN5bmNvYmpzDQo+ICAgKg0KPiAtICog
-U1VCVEVTVDogaW52YWxpZC1tdWx0aS13YWl0LWF2YWlsYWJsZS11bnN1Ym1pdHRlZC1zdWJtaXR0
-ZWQtc2lnbmFsZWQNCj4gKyAqIFNVQlRFU1Q6IG11bHRpLXdhaXQtYXZhaWxhYmxlLXVuc3VibWl0
-dGVkLXN1Ym1pdHRlZC1zaWduYWxlZA0KPiAgICogRGVzY3JpcHRpb246IFZlcmlmaWVzIHdhaXRp
-bmcgb24gYSBsaXN0IG9mIHRpbWVsaW5lIHN5bmNvYmpzDQo+ICAgKg0KPiAgICogU1VCVEVTVDog
-aW52YWxpZC1tdWx0aS13YWl0LXVuc3VibWl0dGVkIEBAIC0yMTMsMTMgKzIxMywxMyBAQA0KPiAg
-ICogU1VCVEVTVDogaW52YWxpZC1zaWduYWwtemVyby1oYW5kbGVzDQo+ICAgKiBEZXNjcmlwdGlv
-bjogVmVyaWZ5IHRoYXQgc2lnbmFsaW5nIGFuIGVtcHR5IGxpc3Qgb2Ygc3luY29iaiBoYW5kbGVz
-IGlzDQo+IHJlamVjdGVkDQo+ICAgKg0KPiAtICogU1VCVEVTVDogaW52YWxpZC1zaW5nbGUtd2Fp
-dC1hbGwtYXZhaWxhYmxlLXVuc3VibWl0dGVkDQo+ICsgKiBTVUJURVNUOiBldGltZS1zaW5nbGUt
-d2FpdC1hbGwtYXZhaWxhYmxlLXVuc3VibWl0dGVkDQo+ICAgKiBEZXNjcmlwdGlvbjogVmVyaWZp
-ZXMgd2FpdCBiZWhhdmlvciBvbiBhIHNpbmdsZSB0aW1lbGluZSBzeW5jb2JqDQo+ICAgKg0KPiAg
-ICogU1VCVEVTVDogaW52YWxpZC1zaW5nbGUtd2FpdC1hbGwtdW5zdWJtaXR0ZWQNCj4gICAqIERl
-c2NyaXB0aW9uOiBWZXJpZmllcyB3YWl0IGJlaGF2aW9yIG9uIGEgc2luZ2xlIHRpbWVsaW5lIHN5
-bmNvYmoNCj4gICAqDQo+IC0gKiBTVUJURVNUOiBpbnZhbGlkLXNpbmdsZS13YWl0LWF2YWlsYWJs
-ZS11bnN1Ym1pdHRlZA0KPiArICogU1VCVEVTVDogZXRpbWUtc2luZ2xlLXdhaXQtYXZhaWxhYmxl
-LXVuc3VibWl0dGVkDQo+ICAgKiBEZXNjcmlwdGlvbjogVmVyaWZpZXMgd2FpdCBiZWhhdmlvciBv
-biBhIHNpbmdsZSB0aW1lbGluZSBzeW5jb2JqDQo+ICAgKg0KPiAgICogU1VCVEVTVDogaW52YWxp
-ZC1zaW5nbGUtd2FpdC11bnN1Ym1pdHRlZA0KPiAtLQ0KPiAyLjQwLjANCg0K
+--===============2003717274096150787==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: tests/amdgpu: add VPE tests (rev2)
+URL   : https://patchwork.freedesktop.org/series/126237/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7582_BAT -> XEIGTPW_10169_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (3 -> 3)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10169_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - bat-dg2-oem2:       [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 other test fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7582/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10169/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  
+#### Warnings ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [FAIL][3] ([Intel XE#616] / [Intel XE#750]) -> [DMESG-FAIL][4] ([Intel XE#282] / [i915#2017])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7582/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10169/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#282]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/282
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
+  [Intel XE#750]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/750
+  [i915#2017]: https://gitlab.freedesktop.org/drm/intel/issues/2017
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7582 -> IGTPW_10169
+  * Linux: xe-485-b3890fb4386dcef68a96888141c4cc773f6241ce -> xe-486-edeb8b8fa330a62d4a07b37d08145d86114bc151
+
+  IGTPW_10169: 10169
+  IGT_7582: 453b9df12fbc9fff561bdb4eb97992983e74c3d4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-485-b3890fb4386dcef68a96888141c4cc773f6241ce: b3890fb4386dcef68a96888141c4cc773f6241ce
+  xe-486-edeb8b8fa330a62d4a07b37d08145d86114bc151: edeb8b8fa330a62d4a07b37d08145d86114bc151
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10169/index.html
+
+--===============2003717274096150787==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/amdgpu: add VPE tests (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126237/">https://patchwork.freedesktop.org/series/126237/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10169/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10169/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7582_BAT -&gt; XEIGTPW_10169_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (3 -&gt; 3)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10169_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7582/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10169/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_frontbuffer_tracking@basic:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7582/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/750">Intel XE#750</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10169/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2017">i915#2017</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7582 -&gt; IGTPW_10169</li>
+<li>Linux: xe-485-b3890fb4386dcef68a96888141c4cc773f6241ce -&gt; xe-486-edeb8b8fa330a62d4a07b37d08145d86114bc151</li>
+</ul>
+<p>IGTPW_10169: 10169<br />
+  IGT_7582: 453b9df12fbc9fff561bdb4eb97992983e74c3d4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-485-b3890fb4386dcef68a96888141c4cc773f6241ce: b3890fb4386dcef68a96888141c4cc773f6241ce<br />
+  xe-486-edeb8b8fa330a62d4a07b37d08145d86114bc151: edeb8b8fa330a62d4a07b37d08145d86114bc151</p>
+
+</body>
+</html>
+
+--===============2003717274096150787==--
