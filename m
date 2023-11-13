@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============7929855483098394708=="
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F284D10E0B9
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Nov 2023 18:17:21 +0000 (UTC)
+Date: Mon, 13 Nov 2023 19:16:58 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20231113181658.bvagiunzoroub54k@kamilkon-desk.igk.intel.com>
+References: <20231113154417.1169830-1-david.kershner@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Vignesh Raman" <vignesh.raman@collabora.com>
-Date: Mon, 13 Nov 2023 12:21:46 -0000
-Message-ID: <169987810612.24215.9144315177721233082@emeril.freedesktop.org>
-References: <20231113100419.1111165-1-vignesh.raman@collabora.com>
-In-Reply-To: <20231113100419.1111165-1-vignesh.raman@collabora.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_s?=
- =?utf-8?q?tarting_with_=5Bi-g-t=2C1/3=2Cv6=5D_lib/igt=5Fkms=3A_Fix_memory?=
- =?utf-8?q?_corruption?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231113154417.1169830-1-david.kershner@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/intel: Add Xe peer2peer test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,304 +20,453 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: john.fleck@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7929855483098394708==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi David,
+On 2023-11-13 at 10:44:17 -0500, David Kershner wrote:
+> Add tests to read/write data between two different GPUs using DMABUF
+> and P2PDMA. The kernel must have P2PDMA and DMABUF enabled for the test
+> to pass.
+> 
+> Signed-off-by: David Kershner <david.kershner@intel.com>
+> ---
+>  tests/intel/xe_peer2peer.c | 386 +++++++++++++++++++++++++++++++++++++
+>  tests/meson.build          |   1 +
+>  2 files changed, 387 insertions(+)
+>  create mode 100644 tests/intel/xe_peer2peer.c
+> 
+> diff --git a/tests/intel/xe_peer2peer.c b/tests/intel/xe_peer2peer.c
+> new file mode 100644
+> index 000000000..008a464ee
+> --- /dev/null
+> +++ b/tests/intel/xe_peer2peer.c
+> @@ -0,0 +1,386 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2023 Intel Corporation
+> + */
+> +
+> +#include "igt.h"
+> +#include "igt_device.h"
+> +#include "drm.h"
+------------ ^
+Move this as first include, keep them sorted.
 
-== Series Details ==
+> +#include "lib/intel_chipset.h"
+------------ ^
+Move this after "intel_...h" headers.
 
-Series: series starting with [i-g-t,1/3,v6] lib/igt_kms: Fix memory corruption
-URL   : https://patchwork.freedesktop.org/series/126327/
-State : success
+> +#include "intel_blt.h"
+> +#include "intel_mocs.h"
+> +#include "xe/xe_ioctl.h"
+> +#include "xe/xe_query.h"
+> +#include "xe/xe_util.h"
+> +
+> +/**
+> + * TEST: xe peer to peer
+> + * Category: Hardware building block
+> + * Sub-category: blitter
+> + * Functionality: flat_ccs
+> + * Description: Exercise blitter copy between Xe devices
+> + * Test category: functionality test
+> + *
+> + * SUBTEST: read
+> + * Description:
+> + *   Check read from remote(imported) buffer
+> + *   blitter
+> + *
+> + * SUBTEST: write
+> + * Description:
+> + *   Check write to remote(imported) buffer
+> + *   blitter
+> + */
+> +
+> +IGT_TEST_DESCRIPTION("Exercise blitter read/writes between two Xe devices");
+> +
+> +struct blt_fast_copy_data {
+> +	int xe;
+> +	struct blt_copy_object src;
+> +	struct blt_copy_object mid;
+> +	struct blt_copy_object dst;
+> +
+> +	struct blt_copy_batch bb;
+> +	enum blt_color_depth color_depth;
+> +};
+> +
+> +struct gpu_info {
+> +	uint32_t id;
+> +	int fd;
+> +	struct igt_collection *set;
+> +};
+> +
+> +static bool has_prime(int fd)
+> +{
+> +        uint64_t value;
+> +        uint64_t mask = DRM_PRIME_CAP_IMPORT | DRM_PRIME_CAP_EXPORT;
+> +
+> +        if (drmGetCap(fd, DRM_CAP_PRIME, &value))
+> +                return false;
+> +
+> +        return (value & mask) == mask;
+> +}
+> +
+> +static int get_device_info(struct gpu_info gpus[], int num_gpus)
+> +{
+> +        char dev_name[20];
+> +        int cnt;
+> +        int xe;
+> +        int i;
+> +
+> +        for (i = 0, cnt = 0; cnt < num_gpus; i++) {
+------------------------------- ^
+imho add also "i < 128 && "
 
-== Summary ==
+> +		const struct pci_device *pdev;
+> +
+> +		xe = __drm_open_driver_another(i, DRIVER_XE);
+> +		if (xe < 0)
+> +			break;
+> +
+> +		/* dma-buf is required */
+> +		if (!has_prime(xe)) {
+> +			close(xe);
+> +			continue;
+> +		}
+> +
+> +		igt_require(blt_has_fast_copy(xe));
+------- ^
+Better move on to next gpu, you can have iGPU and two dGPUs,
+or print igt_debug if skip will happen later.
 
-CI Bug Log - changes from XEIGT_7584_BAT -> XEIGTPW_10172_BAT
-====================================================
+> +
+> +		pdev = igt_device_get_pci_device(xe);
+------- ^^^
+Unused.
 
-Summary
--------
+> +		snprintf(dev_name, sizeof(dev_name),
+---------------- ^
+Unused.
 
-  **SUCCESS**
+Please also use checkpatch.pl from linux kernel and correct
+whitespace and spelling errors.
 
-  No regressions found.
+Regards,
+Kamil
 
-  
-
-Participating hosts (2 -> 3)
-------------------------------
-
-  Additional (1): bat-dg2-oem2 
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10172_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][1] ([Intel XE#623])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-
-  * igt@kms_addfb_basic@basic-y-tiled-legacy:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][2] ([Intel XE#624])
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/bat-dg2-oem2/igt@kms_addfb_basic@basic-y-tiled-legacy.html
-
-  * igt@kms_addfb_basic@tile-pitch-mismatch:
-    - bat-dg2-oem2:       NOTRUN -> [FAIL][3] ([Intel XE#609]) +1 other test fail
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/bat-dg2-oem2/igt@kms_addfb_basic@tile-pitch-mismatch.html
-
-  * igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size:
-    - bat-adlp-7:         [PASS][4] -> [FAIL][5] ([i915#2346])
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7584/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
-
-  * igt@kms_dsc@dsc-basic:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][6] ([Intel XE#423])
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
-
-  * igt@kms_force_connector_basic@prune-stale-modes:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][7] ([i915#5274])
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-dg2-oem2:       NOTRUN -> [FAIL][8] ([Intel XE#608])
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
-    - bat-dg2-oem2:       NOTRUN -> [FAIL][9] ([Intel XE#400] / [Intel XE#616]) +2 other tests fail
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
-
-  * igt@kms_psr@primary_page_flip:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][10] ([Intel XE#535]) +2 other tests skip
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html
-
-  * igt@xe_compute@compute-square:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][11] ([Intel XE#672])
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/bat-dg2-oem2/igt@xe_compute@compute-square.html
-
-  * igt@xe_exec_fault_mode@many-basic:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][12] ([Intel XE#288]) +17 other tests skip
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html
-
-  * igt@xe_huc_copy@huc_copy:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][13] ([Intel XE#255])
-   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
-    - bat-adlp-7:         [FAIL][14] ([Intel XE#480]) -> [PASS][15] +1 other test pass
-   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7584/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-
-  * {igt@xe_create@create-execqueues-noleak}:
-    - bat-adlp-7:         [FAIL][16] ([Intel XE#524]) -> [PASS][17]
-   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7584/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
-   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
-
-  
-#### Warnings ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [DMESG-FAIL][18] ([Intel XE#282] / [i915#2017]) -> [FAIL][19] ([Intel XE#616] / [Intel XE#750])
-   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7584/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#255]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/255
-  [Intel XE#282]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/282
-  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
-  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
-  [Intel XE#423]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/423
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
-  [Intel XE#535]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/535
-  [Intel XE#608]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/608
-  [Intel XE#609]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/609
-  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
-  [Intel XE#623]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/623
-  [Intel XE#624]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/624
-  [Intel XE#672]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/672
-  [Intel XE#750]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/750
-  [i915#2017]: https://gitlab.freedesktop.org/drm/intel/issues/2017
-  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
-  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
-
-
-Build changes
--------------
-
-  * IGT: IGT_7584 -> IGTPW_10172
-
-  IGTPW_10172: 10172
-  IGT_7584: 30e6ded90039edde8aa6c435001f8d63159356bb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-486-edeb8b8fa330a62d4a07b37d08145d86114bc151: edeb8b8fa330a62d4a07b37d08145d86114bc151
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/index.html
-
---===============7929855483098394708==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/3,v6] lib/igt_kms: Fix memory corruption</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126327/">https://patchwork.freedesktop.org/series/126327/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7584_BAT -&gt; XEIGTPW_10172_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (2 -&gt; 3)</h2>
-<p>Additional (1): bat-dg2-oem2 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10172_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/623">Intel XE#623</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@basic-y-tiled-legacy:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/bat-dg2-oem2/igt@kms_addfb_basic@basic-y-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/624">Intel XE#624</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@tile-pitch-mismatch:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/bat-dg2-oem2/igt@kms_addfb_basic@tile-pitch-mismatch.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/609">Intel XE#609</a>) +1 other test fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7584/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_dsc@dsc-basic:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/423">Intel XE#423</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@prune-stale-modes:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5274">i915#5274</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/608">Intel XE#608</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>) +2 other tests fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@primary_page_flip:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/535">Intel XE#535</a>) +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_compute@compute-square:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/bat-dg2-oem2/igt@xe_compute@compute-square.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/672">Intel XE#672</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_fault_mode@many-basic:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +17 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_huc_copy@huc_copy:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7584/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>{igt@xe_create@create-execqueues-noleak}:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7584/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_frontbuffer_tracking@basic:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7584/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2017">i915#2017</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10172/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/750">Intel XE#750</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7584 -&gt; IGTPW_10172</li>
-</ul>
-<p>IGTPW_10172: 10172<br />
-  IGT_7584: 30e6ded90039edde8aa6c435001f8d63159356bb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-486-edeb8b8fa330a62d4a07b37d08145d86114bc151: edeb8b8fa330a62d4a07b37d08145d86114bc151</p>
-
-</body>
-</html>
-
---===============7929855483098394708==--
+> +		"%04x:%02x:%02x.%d",
+> +		pdev->domain, pdev->bus,
+> +		pdev->dev, pdev->func);
+> +
+> +		gpus[cnt].fd = xe;
+> +		gpus[cnt].set = xe_get_memory_region_set(xe,
+> +							 XE_MEM_REGION_CLASS_SYSMEM,
+> +							 XE_MEM_REGION_CLASS_VRAM);
+> +		cnt++;
+> +	}
+> +
+> +	return cnt;
+> +}
+> +
+> +/**
+> + * test_read - Read an imported buffer from an external GPU via dma-buf
+> + * @ex_gpu: device providing the original object
+> + * @im_gpu: device doing the read
+> + * @ex_reg: the source region to copy from
+> + * @im_reg: the destination region to copy to
+> + *
+> + */
+> +static void test_read(struct gpu_info *ex_gpu, struct gpu_info *im_gpu,
+> +		      uint32_t ex_reg, uint32_t im_reg)
+> +{
+> +	struct blt_copy_data im_blt = {};
+> +	struct blt_copy_data ex_blt = {};
+> +	struct blt_copy_object *dst;
+> +	struct blt_copy_object *im_src;
+> +	struct blt_copy_object *src;
+> +	const uint32_t bpp = 32;
+> +	uint64_t im_bb_size = xe_get_default_alignment(im_gpu->fd);
+> +	uint64_t ahnd;
+> +	uint32_t bb;
+> +	uint32_t width = 1024, height = 1024;
+> +	int result;
+> +	uint32_t vm, exec_queue;
+> +	uint32_t ex_xe = ex_gpu->fd;
+> +	uint32_t im_xe = im_gpu->fd;
+> +	uint32_t ex_src, dmabuf;
+> +	uint32_t stride;
+> +
+> +	struct drm_xe_engine_class_instance inst = {
+> +		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
+> +	};
+> +	intel_ctx_t *ctx;
+> +
+> +	vm = xe_vm_create(im_xe, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
+> +	exec_queue = xe_exec_queue_create(im_xe, vm, &inst, 0);
+> +	ctx = intel_ctx_xe(im_xe, vm, exec_queue, 0, 0, 0);
+> +	ahnd = intel_allocator_open_full(im_xe, ctx->vm, 0, 0,
+> +					 INTEL_ALLOCATOR_SIMPLE,
+> +					 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
+> +
+> +	blt_copy_init(ex_xe, &ex_blt);
+> +	blt_copy_init(im_xe, &im_blt);
+> +
+> +	src = blt_create_object(&ex_blt, ex_reg, width, height, bpp, 0,
+> +				T_LINEAR, COMPRESSION_DISABLED, 0, true);
+> +	dst = blt_create_object(&im_blt, im_reg, width, height, bpp, 0,
+> +				T_LINEAR, COMPRESSION_DISABLED, 0, true);
+> +	blt_surface_fill_rect(ex_xe, src, width, height);
+> +
+> +	dmabuf = prime_handle_to_fd(ex_xe, src->handle);
+> +	ex_src = prime_fd_to_handle(im_xe, dmabuf);
+> +	im_src = calloc(1, sizeof(*im_src));
+> +
+> +	stride = width * 4;
+> +	blt_set_object(im_src, ex_src, src->size, ex_reg, 0,
+> +		       T_LINEAR, COMPRESSION_DISABLED, 0);
+> +	blt_set_geom(im_src, stride, 0, 0, width, height, 0, 0);
+> +	igt_assert(im_src->size == dst->size);
+> +
+> +	im_blt.color_depth = CD_32bit;
+> +	blt_set_copy_object(&im_blt.src, im_src);
+> +	blt_set_copy_object(&im_blt.dst, dst);
+> +
+> +	bb = xe_bo_create_flags(im_xe, 0, im_bb_size, im_reg);
+> +	blt_set_batch(&im_blt.bb, bb, im_bb_size, im_reg);
+> +
+> +	blt_fast_copy(im_xe, ctx, NULL, ahnd, &im_blt);
+> +
+> +	result = memcmp(src->ptr, im_blt.dst.ptr, src->size);
+> +
+> +	put_offset(ahnd, im_src->handle);
+> +	put_offset(ahnd, dst->handle);
+> +	put_offset(ahnd, bb);
+> +	intel_allocator_bind(ahnd, 0, 0);
+> +	blt_destroy_object(im_xe, im_src);
+> +	blt_destroy_object(im_xe, dst);
+> +	blt_destroy_object(ex_xe, src);
+> +	put_ahnd(ahnd);
+> +
+> +	igt_assert_f(!result, "source and destination surfaces differs!\n");
+> +}
+> +
+> +/**
+> + * test_write - Write an imported buffer to an external GPU via dma-buf
+> + * @ex_gpu: device providing the desination object
+> + * @im_gpu: device doing the write
+> + * @ex_reg: the source region to copy from
+> + * @im_reg: the destination region to copy to
+> + *
+> + */
+> +static void test_write(struct gpu_info *ex_gpu, struct gpu_info *im_gpu,
+> +		       uint32_t ex_reg, uint32_t im_reg)
+> +{
+> +	struct blt_copy_data im_blt = {};
+> +	struct blt_copy_data ex_blt = {};
+> +	struct blt_copy_object *dst;
+> +	struct blt_copy_object *im_dst;
+> +	struct blt_copy_object *src;
+> +	const uint32_t bpp = 32;
+> +	uint64_t im_bb_size = xe_get_default_alignment(im_gpu->fd);
+> +	uint64_t ahnd;
+> +	uint32_t bb;
+> +	uint32_t width = 1024, height = 1024;
+> +	int result;
+> +	uint32_t vm, exec_queue;
+> +	uint32_t ex_xe = ex_gpu->fd;
+> +	uint32_t im_xe = im_gpu->fd;
+> +	uint32_t ex_dst, dmabuf;
+> +	uint32_t stride;
+> +
+> +	struct drm_xe_engine_class_instance inst = {
+> +		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
+> +	};
+> +	intel_ctx_t *ctx;
+> +
+> +	vm = xe_vm_create(im_xe, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
+> +	exec_queue = xe_exec_queue_create(im_xe, vm, &inst, 0);
+> +	ctx = intel_ctx_xe(im_xe, vm, exec_queue, 0, 0, 0);
+> +	ahnd = intel_allocator_open_full(im_xe, ctx->vm, 0, 0,
+> +					 INTEL_ALLOCATOR_SIMPLE,
+> +					 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
+> +
+> +	blt_copy_init(ex_xe, &ex_blt);
+> +	blt_copy_init(im_xe, &im_blt);
+> +
+> +	dst = blt_create_object(&ex_blt, ex_reg, width, height, bpp, 0,
+> +				T_LINEAR, COMPRESSION_DISABLED, 0, true);
+> +	src = blt_create_object(&im_blt, im_reg, width, height, bpp, 0,
+> +				T_LINEAR, COMPRESSION_DISABLED, 0, true);
+> +	blt_surface_fill_rect(im_xe, src, width, height);
+> +
+> +	dmabuf = prime_handle_to_fd(ex_xe, dst->handle);
+> +	ex_dst = prime_fd_to_handle(im_xe, dmabuf);
+> +	im_dst = calloc(1, sizeof(*im_dst));
+> +
+> +
+> +	stride = width * 4;
+> +	blt_set_object(im_dst, ex_dst, src->size, ex_reg, 0,
+> +		       T_LINEAR, COMPRESSION_DISABLED, 0);
+> +	blt_set_geom(im_dst, stride, 0, 0, width, height, 0, 0);
+> +	igt_assert(im_dst->size == src->size);
+> +
+> +	im_blt.color_depth = CD_32bit;
+> +	blt_set_copy_object(&im_blt.src, src);
+> +	blt_set_copy_object(&im_blt.dst, im_dst);
+> +
+> +	bb = xe_bo_create_flags(im_xe, 0, im_bb_size, im_reg);
+> +	blt_set_batch(&im_blt.bb, bb, im_bb_size, im_reg);
+> +
+> +	blt_fast_copy(im_xe, ctx, NULL, ahnd, &im_blt);
+> +
+> +	result = memcmp(dst->ptr, im_blt.src.ptr, src->size);
+> +
+> +	put_offset(ahnd, im_dst->handle);
+> +	put_offset(ahnd, dst->handle);
+> +	put_offset(ahnd, bb);
+> +	intel_allocator_bind(ahnd, 0, 0);
+> +	blt_destroy_object(im_xe, src);
+> +	blt_destroy_object(im_xe, im_dst);
+> +	blt_destroy_object(ex_xe, dst);
+> +	put_ahnd(ahnd);
+> +
+> +	igt_assert_f(!result, "source and destination surfaces differs!\n");
+> +}
+> +
+> +static const char *p2p_path(int ex_reg, struct gpu_info *ex_gpu, struct gpu_info *im_gpu)
+> +{
+> +        return "-p2p";
+> +}
+> +
+> +static char *region_name(int xe, uint32_t region)
+> +{
+> +	char *name, *p;
+> +	struct drm_xe_query_mem_region *memreg;
+> +	int r;
+> +	int len = 7;
+> +
+> +	/* enough for "name%d" * n */
+> +	p = name = malloc(len);
+> +	igt_assert(name);
+> +
+> +	memreg = xe_mem_region(xe, region);
+> +
+> +	if (XE_IS_CLASS_VRAM(memreg))
+> +		r = snprintf(p, len, "%s%d",
+> +			     xe_region_name(region),
+> +			     memreg->instance);
+> +	else
+> +		r = snprintf(p, len, "%s",
+> +			     xe_region_name(region));
+> +
+> +	igt_assert(r > 0);
+> +
+> +	return name;
+> +}
+> +
+> +/**
+> + * gpu_read - Set up a read from the exporting GPU to the importing GPU
+> + * @ex_gpu: GPU that is exporting a buffer for read
+> + * @im_gpu: GPU that is importing and reading the buffer
+> + */
+> +static void gpu_read(struct gpu_info *ex_gpu, struct gpu_info *im_gpu)
+> +{
+> +	struct igt_collection *ex_regs, *im_regs;
+> +	int ex_reg, im_reg;
+> +	char *ex_name, *im_name;
+> +	const char *path;
+> +
+> +	for_each_variation_r(ex_regs, 1, ex_gpu->set) {
+> +		ex_reg = igt_collection_get_value(ex_regs, 0);
+> +		ex_name = region_name(ex_gpu->fd, ex_reg);
+> +
+> +		for_each_variation_r(im_regs, 1, im_gpu->set) {
+> +			im_reg = igt_collection_get_value(im_regs, 0);
+> +			im_name = region_name(im_gpu->fd, im_reg);
+> +
+> +			path = p2p_path(ex_reg, ex_gpu, im_gpu);
+> +			igt_dynamic_f("read-gpuA-%s-gpuB-%s%s", ex_name,
+> +				      im_name, path)
+> +			test_read(ex_gpu, im_gpu, ex_reg, im_reg);
+> +
+> +			free(im_name);
+> +		}
+> +		free(ex_name);
+> +	}
+> +}
+> +
+> +/**
+> + * gpu_write - Set up a write from the importing GPU to the exporting GPU
+> + * @ex_gpu: GPU that is exporting a buffer for read
+> + * @im_gpu: GPU that is importing and reading the buffer
+> + */
+> +static void gpu_write(struct gpu_info *ex_gpu, struct gpu_info *im_gpu)
+> +{
+> +	struct igt_collection *ex_regs, *im_regs;
+> +	int ex_reg, im_reg;
+> +	char *ex_name, *im_name;
+> +	const char *path;
+> +
+> +	for_each_variation_r(ex_regs, 1, ex_gpu->set) {
+> +		ex_reg = igt_collection_get_value(ex_regs, 0);
+> +		ex_name = region_name(ex_gpu->fd, ex_reg);
+> +
+> +		for_each_variation_r(im_regs, 1, im_gpu->set) {
+> +			im_reg = igt_collection_get_value(im_regs, 0);
+> +			im_name = region_name(im_gpu->fd, im_reg);
+> +
+> +			path = p2p_path(ex_reg, ex_gpu, im_gpu);
+> +			igt_dynamic_f("write-gpuA-%s-gpuB-%s%s", ex_name,
+> +				      im_name, path)
+> +			test_write(ex_gpu, im_gpu, ex_reg, im_reg);
+> +
+> +			free(im_name);
+> +		}
+> +		free(ex_name);
+> +	}
+> +}
+> +#define DEFAULT_SIZE 0
+> +
+> +igt_main_args("", NULL, NULL, NULL, NULL)
+> +{
+> +	struct gpu_info gpus[2];
+> +	int gpu_cnt;
+> +
+> +	igt_fixture {
+> +		gpu_cnt = get_device_info(gpus, ARRAY_SIZE(gpus));
+> +		igt_skip_on(gpu_cnt < 2);
+> +	}
+> +
+> +	igt_describe("dmabuf gpu-gpu read");
+> +	igt_subtest_with_dynamic_f("read")
+> +		gpu_read(&gpus[0], &gpus[1]);
+> +
+> +	igt_describe("dmabuf gpu-gpu write");
+> +	igt_subtest_with_dynamic_f("write")
+> +		gpu_write(&gpus[0], &gpus[1]);
+> +
+> +	igt_fixture {
+> +		int cnt;
+> +
+> +		for (cnt = 0; cnt < gpu_cnt; cnt++)
+> +			drm_close_driver(gpus[cnt].fd);
+> +	}
+> +	return;
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 3e4d54601..73184e658 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -301,6 +301,7 @@ intel_xe_progs = [
+>  	'xe_mmap',
+>  	'xe_module_load',
+>  	'xe_noexec_ping_pong',
+> +	'xe_peer2peer',
+>  	'xe_pm',
+>  	'xe_pm_residency',
+>  	'xe_prime_self_import',
+> -- 
+> 2.38.1
+> 
