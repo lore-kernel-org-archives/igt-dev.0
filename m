@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7DB5110E202
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 13:44:39 +0000 (UTC)
-From: Francois Dugast <francois.dugast@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8877610E2D4
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Nov 2023 08:29:30 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 14 Nov 2023 13:44:18 +0000
-Message-Id: <20231114134426.7-1-francois.dugast@intel.com>
+Date: Mon, 13 Nov 2023 13:49:29 +0530
+Message-Id: <20231113081930.1189688-5-bhanuprakash.modem@intel.com>
+In-Reply-To: <20231113081930.1189688-1-bhanuprakash.modem@intel.com>
+References: <20231113081930.1189688-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v1 0/8] uAPI Alignment - Renaming
+Subject: [igt-dev] [i-g-t 4/5] tests/kms_flip: Fix Bigjoiner checks
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,65 +22,84 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This aligns on kernel series:
-https://patchwork.freedesktop.org/series/126399/
+Bigjoiner will come in the picture when the resolution > 5K or
+clock > max dot-clock. Add a support to check the selected mode
+clock is greater than the max dot-clock.
 
-Francois Dugast (3):
-  drm-uapi/xe: Add missing DRM_ prefix in uAPI constants
-  drm-uapi/xe: Add _FLAG to uAPI constants usable for flags
-  drm-uapi/xe: Change rsvd to pad in struct drm_xe_class_instance
+V2: - Limit the bigjoiner checks to intel hardware
 
-Rodrigo Vivi (5):
-  drm-uapi/xe: Rename *_mem_regions mask.
-  drm-uapi/xe: Rename query's mem_usage to mem_regions
-  drm-uapi/xe: s/FLAGS_HAS_VRAM/FLAG_HAS_VRAM
-  drm-uapi/xe: Differentiate WAIT_OP from WAIT_MASK
-  drm-uapi/xe: Be more specific about vm_bind prefetch region
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+---
+ tests/kms_flip.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
- benchmarks/gem_wsim.c                |  12 +-
- include/drm-uapi/xe_drm.h            | 205 ++++++++++++++-------------
- lib/igt_fb.c                         |   2 +-
- lib/intel_batchbuffer.c              |  24 ++--
- lib/intel_blt.c                      |   2 +-
- lib/intel_compute.c                  |   6 +-
- lib/intel_ctx.c                      |   4 +-
- lib/xe/xe_ioctl.c                    |  44 +++---
- lib/xe/xe_ioctl.h                    |   2 +-
- lib/xe/xe_query.c                    |  88 ++++++------
- lib/xe/xe_query.h                    |   8 +-
- lib/xe/xe_spin.c                     |   4 +-
- lib/xe/xe_util.c                     |  16 +--
- lib/xe/xe_util.h                     |   4 +-
- tests/intel/xe_access_counter.c      |   4 +-
- tests/intel/xe_ccs.c                 |   8 +-
- tests/intel/xe_copy_basic.c          |   6 +-
- tests/intel/xe_create.c              |   6 +-
- tests/intel/xe_debugfs.c             |  12 +-
- tests/intel/xe_dma_buf_sync.c        |   4 +-
- tests/intel/xe_drm_fdinfo.c          |  18 +--
- tests/intel/xe_evict.c               |  24 ++--
- tests/intel/xe_evict_ccs.c           |   2 +-
- tests/intel/xe_exec_balancer.c       |  34 ++---
- tests/intel/xe_exec_basic.c          |  24 ++--
- tests/intel/xe_exec_compute_mode.c   |   6 +-
- tests/intel/xe_exec_fault_mode.c     |  12 +-
- tests/intel/xe_exec_queue_property.c |  18 +--
- tests/intel/xe_exec_reset.c          |  62 ++++----
- tests/intel/xe_exec_store.c          |  26 ++--
- tests/intel/xe_exec_threads.c        |  48 +++----
- tests/intel/xe_exercise_blt.c        |   6 +-
- tests/intel/xe_guc_pc.c              |  12 +-
- tests/intel/xe_huc_copy.c            |   4 +-
- tests/intel/xe_intel_bb.c            |   2 +-
- tests/intel/xe_noexec_ping_pong.c    |   2 +-
- tests/intel/xe_perf_pmu.c            |  32 ++---
- tests/intel/xe_pm.c                  |  30 ++--
- tests/intel/xe_pm_residency.c        |   2 +-
- tests/intel/xe_query.c               | 106 +++++++-------
- tests/intel/xe_spin_batch.c          |   2 +-
- tests/intel/xe_vm.c                  | 138 +++++++++---------
- tests/intel/xe_waitfence.c           |  20 +--
- 43 files changed, 549 insertions(+), 542 deletions(-)
-
+diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+index fc7cee050..d34596599 100755
+--- a/tests/kms_flip.c
++++ b/tests/kms_flip.c
+@@ -328,8 +328,6 @@
+ #define RUN_TEST		1
+ #define RUN_PAIR		2
+ 
+-#define MAX_HDISPLAY_PER_CRTC 5120
+-
+ #ifndef DRM_CAP_TIMESTAMP_MONOTONIC
+ #define DRM_CAP_TIMESTAMP_MONOTONIC 6
+ #endif
+@@ -343,6 +341,7 @@ uint32_t devid;
+ int test_time = 3;
+ static bool monotonic_timestamp;
+ static pthread_t vblank_wait_thread;
++static int max_dotclock;
+ 
+ static drmModeConnector *last_connector;
+ 
+@@ -1782,21 +1781,24 @@ static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
+ 	igt_assert_eq(o->count, crtc_count);
+ 
+ 	/*
+-	 * Handle BW limitations:
++	 * Handle BW limitations on intel hardware:
+ 	 *
+-	 * if mode.hdisplay > 5120, then ignore
++	 * if mode resolution > 5K (or) mode clock > max_dotclock, then ignore
+ 	 *  - last crtc in single/multi-connector config
+ 	 *  - consecutive crtcs in multi-connector config
+ 	 *
+ 	 * in multi-connector config ignore if
+-	 *  - previous crtc mode.hdisplay > 5120 and
++	 *  - previous crtc (mode resolution > 5K or mode clock > max_dotclock) and
+ 	 *  - current & previous crtcs are consecutive
+ 	 */
++	if (!is_intel_device(drm_fd))
++		goto test;
++
+ 	for (i = 0; i < crtc_count; i++) {
+-		if (((o->kmode[i].hdisplay > MAX_HDISPLAY_PER_CRTC) &&
++		if ((igt_bigjoiner_possible(&o->kmode[i], max_dotclock) &&
+ 		     ((crtc_idxs[i] >= (total_crtcs - 1)) ||
+ 		      ((i < (crtc_count - 1)) && (abs(crtc_idxs[i + 1] - crtc_idxs[i]) <= 1)))) ||
+-		    ((i > 0) && (o->kmode[i - 1].hdisplay > MAX_HDISPLAY_PER_CRTC) &&
++		    ((i > 0) && igt_bigjoiner_possible(&o->kmode[i - 1], max_dotclock) &&
+ 		     (abs(crtc_idxs[i] - crtc_idxs[i - 1]) <= 1))) {
+ 
+ 			igt_debug("Combo: %s is not possible with selected mode(s).\n", test_name);
+@@ -1804,6 +1806,7 @@ static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
+ 		}
+ 	}
+ 
++test:
+ 	igt_dynamic_f("%s", test_name)
+ 		__run_test_on_crtc_set(o, crtc_idxs, crtc_count, duration_ms);
+ }
+@@ -2136,6 +2139,7 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ 			for (i = 0; i < sizeof(tests) / sizeof(tests[0]); i++)
+ 				tests[i].flags &= ~(TEST_CHECK_TS | TEST_VBLANK_EXPIRED_SEQ);
+ 		}
++		max_dotclock = igt_get_max_dotclock(drm_fd);
+ 	}
+ 
+ 	igt_describe("Tests that nonblocking reading fails correctly");
 -- 
-2.34.1
+2.40.0
