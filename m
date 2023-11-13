@@ -1,16 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8877610E2D4
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Nov 2023 08:29:30 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 13 Nov 2023 13:49:29 +0530
-Message-Id: <20231113081930.1189688-5-bhanuprakash.modem@intel.com>
-In-Reply-To: <20231113081930.1189688-1-bhanuprakash.modem@intel.com>
-References: <20231113081930.1189688-1-bhanuprakash.modem@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D130310E18A
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Nov 2023 08:42:14 +0000 (UTC)
+Message-ID: <57c57f09-eadc-4a9a-86a9-c40b72caca98@intel.com>
+Date: Mon, 13 Nov 2023 09:42:09 +0100
+To: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+References: <cover.1699647258.git.akshata.jahagirdar@intel.com>
+ <4f3357f4020e149066b73f6e6d2bf9ed025f4c31.1699647258.git.akshata.jahagirdar@intel.com>
+Content-Language: en-US
+From: Karolina Stolarek <karolina.stolarek@intel.com>
+In-Reply-To: <4f3357f4020e149066b73f6e6d2bf9ed025f4c31.1699647258.git.akshata.jahagirdar@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 4/5] tests/kms_flip: Fix Bigjoiner checks
+Subject: Re: [igt-dev] [PATCH i-g-t 1/5] lib: add blt command properties for
+ lunarlake
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,88 +22,105 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, ayaz.siddiqui@intel.com,
+ matthew.auld@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Bigjoiner will come in the picture when the resolution > 5K or
-clock > max dot-clock. Add a support to check the selected mode
-clock is greater than the max dot-clock.
 
-V2: - Limit the bigjoiner checks to intel hardware
+On 10.11.2023 22:24, Akshata Jahagirdar wrote:
+> Add blt_cmd_info structs to describe properties of XY_BLOCK_COPY and XY_FAST_COPY blitter commands for XE2 platform. Updated the definitions for Lunarlake.
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
----
- tests/kms_flip.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+Nit: break the commit message at 80 column
 
-diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-index fc7cee050..d34596599 100755
---- a/tests/kms_flip.c
-+++ b/tests/kms_flip.c
-@@ -328,8 +328,6 @@
- #define RUN_TEST		1
- #define RUN_PAIR		2
- 
--#define MAX_HDISPLAY_PER_CRTC 5120
--
- #ifndef DRM_CAP_TIMESTAMP_MONOTONIC
- #define DRM_CAP_TIMESTAMP_MONOTONIC 6
- #endif
-@@ -343,6 +341,7 @@ uint32_t devid;
- int test_time = 3;
- static bool monotonic_timestamp;
- static pthread_t vblank_wait_thread;
-+static int max_dotclock;
- 
- static drmModeConnector *last_connector;
- 
-@@ -1782,21 +1781,24 @@ static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
- 	igt_assert_eq(o->count, crtc_count);
- 
- 	/*
--	 * Handle BW limitations:
-+	 * Handle BW limitations on intel hardware:
- 	 *
--	 * if mode.hdisplay > 5120, then ignore
-+	 * if mode resolution > 5K (or) mode clock > max_dotclock, then ignore
- 	 *  - last crtc in single/multi-connector config
- 	 *  - consecutive crtcs in multi-connector config
- 	 *
- 	 * in multi-connector config ignore if
--	 *  - previous crtc mode.hdisplay > 5120 and
-+	 *  - previous crtc (mode resolution > 5K or mode clock > max_dotclock) and
- 	 *  - current & previous crtcs are consecutive
- 	 */
-+	if (!is_intel_device(drm_fd))
-+		goto test;
-+
- 	for (i = 0; i < crtc_count; i++) {
--		if (((o->kmode[i].hdisplay > MAX_HDISPLAY_PER_CRTC) &&
-+		if ((igt_bigjoiner_possible(&o->kmode[i], max_dotclock) &&
- 		     ((crtc_idxs[i] >= (total_crtcs - 1)) ||
- 		      ((i < (crtc_count - 1)) && (abs(crtc_idxs[i + 1] - crtc_idxs[i]) <= 1)))) ||
--		    ((i > 0) && (o->kmode[i - 1].hdisplay > MAX_HDISPLAY_PER_CRTC) &&
-+		    ((i > 0) && igt_bigjoiner_possible(&o->kmode[i - 1], max_dotclock) &&
- 		     (abs(crtc_idxs[i] - crtc_idxs[i - 1]) <= 1))) {
- 
- 			igt_debug("Combo: %s is not possible with selected mode(s).\n", test_name);
-@@ -1804,6 +1806,7 @@ static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
- 		}
- 	}
- 
-+test:
- 	igt_dynamic_f("%s", test_name)
- 		__run_test_on_crtc_set(o, crtc_idxs, crtc_count, duration_ms);
- }
-@@ -2136,6 +2139,7 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 			for (i = 0; i < sizeof(tests) / sizeof(tests[0]); i++)
- 				tests[i].flags &= ~(TEST_CHECK_TS | TEST_VBLANK_EXPIRED_SEQ);
- 		}
-+		max_dotclock = igt_get_max_dotclock(drm_fd);
- 	}
- 
- 	igt_describe("Tests that nonblocking reading fails correctly");
--- 
-2.40.0
+> 
+> Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+> ---
+>   lib/intel_cmds_info.c   | 24 ++++++++++++++++++++++++
+>   lib/intel_cmds_info.h   |  1 +
+>   lib/intel_device_info.c |  2 +-
+>   3 files changed, 26 insertions(+), 1 deletion(-)
+> 
+> diff --git a/lib/intel_cmds_info.c b/lib/intel_cmds_info.c
+> index 2e51ec081..fc3554271 100644
+> --- a/lib/intel_cmds_info.c
+> +++ b/lib/intel_cmds_info.c
+> @@ -67,6 +67,22 @@ static const struct blt_cmd_info
+>   						 BLT_CMD_EXTENDED |
+>   						 BLT_CMD_SUPPORTS_COMPRESSION);
+>   
+> +static const struct blt_cmd_info				
+> +		xe2_xy_block_copy = BLT_INFO_EXT(XY_BLOCK_COPY,
+> +						 BIT(T_LINEAR) |
+> +						 BIT(T_XMAJOR) |
+> +						 BIT(T_TILE4)  |
+> +						 BIT(T_TILE64),
+> +						 BLT_CMD_EXTENDED |
+> +						 BLT_CMD_SUPPORTS_COMPRESSION);
+
+I know this might be too much work, but could we confirm that XMAJOR is
+actually supported with block copy on this platform? This could be as
+easy as running xe_ccs test with -p parameter, and then checking the mid
+image and the tiling pattern. But I won't argue it's essential for r-b,
+it's more of a sanity check.
+
+> +
+> +static const struct blt_cmd_info
+> +		xe2_xy_fast_copy = BLT_INFO(XY_FAST_COPY,
+> +					    BIT(T_LINEAR) |
+> +					    BIT(T_XMAJOR) |
+> +					    BIT(T_TILE4)  |
+> +					    BIT(T_TILE64));
+
+This looks a lot like dg2_xy_fast_copy definition. Why not reuse it when
+defining xe2_cmds_info?
+
+With these comments addressed:
+
+Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
+
+> +
+>   static const struct blt_cmd_info
+>   		mtl_xy_block_copy = BLT_INFO_EXT(XY_BLOCK_COPY,
+>   						 BIT(T_LINEAR) |
+> @@ -169,6 +185,14 @@ const struct intel_cmds_info gen12_pvc_cmds_info = {
+>   	}
+>   };
+>   
+> +
+> +const struct intel_cmds_info xe2_cmds_info  = {
+> +	.blt_cmds = {
+> +		[XY_FAST_COPY] = &xe2_xy_fast_copy,
+> +		[XY_BLOCK_COPY] = &xe2_xy_block_copy,
+> +	}
+> +};
+> +
+>   const struct blt_cmd_info *blt_get_cmd_info(const struct intel_cmds_info *cmds_info,
+>   					    enum blt_cmd_type cmd)
+>   {
+> diff --git a/lib/intel_cmds_info.h b/lib/intel_cmds_info.h
+> index f9e3932d1..0a83b6a44 100644
+> --- a/lib/intel_cmds_info.h
+> +++ b/lib/intel_cmds_info.h
+> @@ -55,6 +55,7 @@ extern const struct intel_cmds_info gen12_cmds_info;
+>   extern const struct intel_cmds_info gen12_dg2_cmds_info;
+>   extern const struct intel_cmds_info gen12_mtl_cmds_info;
+>   extern const struct intel_cmds_info gen12_pvc_cmds_info;
+> +extern const struct intel_cmds_info xe2_cmds_info;
+>   
+>   #define for_each_tiling(__tiling) \
+>   	for (__tiling = T_LINEAR; __tiling < __BLT_MAX_TILING; __tiling++)
+> diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+> index 34817f7b6..a669797c3 100644
+> --- a/lib/intel_device_info.c
+> +++ b/lib/intel_device_info.c
+> @@ -511,7 +511,7 @@ static const struct intel_device_info intel_lunarlake_info = {
+>   	.has_4tile = true,
+>   	.is_lunarlake = true,
+>   	.codename = "lunarlake",
+> -	.cmds_info = &gen12_pvc_cmds_info,
+> +	.cmds_info = &xe2_cmds_info,
+>   };
+>   
+>   static const struct pci_id_match intel_device_match[] = {
