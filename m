@@ -1,16 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 04B1810E2F9
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Nov 2023 08:29:31 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 13 Nov 2023 13:49:30 +0530
-Message-Id: <20231113081930.1189688-6-bhanuprakash.modem@intel.com>
-In-Reply-To: <20231113081930.1189688-1-bhanuprakash.modem@intel.com>
-References: <20231113081930.1189688-1-bhanuprakash.modem@intel.com>
-MIME-Version: 1.0
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AFF3210E034
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Nov 2023 05:43:50 +0000 (UTC)
+Message-ID: <b4fcc296-e894-1bc3-c699-cba331f3f68a@intel.com>
+Date: Mon, 13 Nov 2023 11:13:29 +0530
+Content-Language: en-US
+To: Vignesh Raman <vignesh.raman@collabora.com>, <daniels@collabora.com>,
+ <helen.koike@collabora.com>, <juhapekka.heikkila@gmail.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20231110084106.655504-1-vignesh.raman@collabora.com>
+ <b4585b60-0fa7-c139-401d-fb215fac4336@intel.com>
+ <5299cd15-dc06-5431-a13c-627b962646be@collabora.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <5299cd15-dc06-5431-a13c-627b962646be@collabora.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 5/5] tests/kms_setmode: Fix Bigjoiner checks
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3 v5] lib/igt_kms: Fix memory
+ corruption
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,86 +29,72 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Bigjoiner will come in the picture when the resolution > 5K or
-clock > max dot-clock. Add a support to check the selected mode
-clock is greater than the max dot-clock.
 
-V2: - Limit the bigjoiner checks to intel hardware
-V3: - Rebase
+On Fri-10-11-2023 05:08 pm, Vignesh Raman wrote:
+> Hi Bhanu,
+> 
+> On 10/11/23 15:21, Modem, Bhanuprakash wrote:
+>>> @@ -2770,6 +2770,10 @@ void igt_display_require(igt_display_t 
+>>> *display, int drm_fd)
+>>>       }
+>>>   #endif
+>>> +    igt_require_f(resources->count_crtcs <= IGT_MAX_PIPES,
+>> ---------------------------------------------^
+>> As pipe index starts from 0, we must use '<' not '<='.
+> 
+> igt_require_f - Skip a (sub-)test if a condition is not met
+> 
+> igt_require_f(resources->count_crtcs <= IGT_MAX_PIPES,
+>                       "count_crtcs exceeds IGT_MAX_PIPES, 
+> resources->count_crtcs=%d, IGT_MAX_PIPES=%d\n",
+>                       resources->count_crtcs, IGT_MAX_PIPES);
+> 
+> If count_crtcs=16 and IGT_MAX_PIPES=16 (In the current case with 
+> virtio-gpu),
+> 
+> count_crtcs <= IGT_MAX_PIPES will be true and test requirement is passed 
+> and following statement will be executed.
+> display->n_pipes = IGT_MAX_PIPES;
+> 
+> In another case,
+> count_crtcs < IGT_MAX_PIPES will be false and test will be skipped,
+> 
+> So we need to use <= right?
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_setmode.c | 22 +++++++++++++++-------
- 1 file changed, 15 insertions(+), 7 deletions(-)
+Correct, please ignore my previous comment. Thanks for the clarification.
 
-diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-index 98e49bbf9..d66ee97c8 100644
---- a/tests/kms_setmode.c
-+++ b/tests/kms_setmode.c
-@@ -98,13 +98,12 @@
- /* restricted pipe count */
- #define CRTC_RESTRICT_CNT 2
- 
--#define MAX_HDISPLAY_PER_CRTC 5120
--
- static int drm_fd;
- static drmModeRes *drm_resources;
- static int filter_test_id;
- static bool dry_run;
- static bool extended = false;
-+static int max_dotclock;
- 
- const drmModeModeInfo mode_640_480 = {
- 	.name		= "640x480",
-@@ -721,28 +720,35 @@ static void test_one_combination(const struct test_config *tconf,
- 			pos += get_test_name_str(&crtcs[i], &test_name[pos], ARRAY_SIZE(test_name) - pos);
- 		}
- 
-+		if (!is_intel_device(drm_fd))
-+			goto test;
-+
- 		for (i = 0; i < crtc_count; i++) {
- 			struct crtc_config *crtc = &crtcs[i];
- 
- 			/*
--			 * if mode.hdisplay > 5120, then ignore
-+			 * Handle BW limitations on intel hardware:
-+			 *
-+			 * if mode resolution > 5K (or) mode clock > max_dotclock,
-+			 * then ignore
- 			 *   - last crtc in single/multi-connector config
- 			 *   - consecutive crtcs in multi-connector config
- 			 *
- 			 * in multi-connector config ignore if
--			 *   - previous crtc mode.hdisplay > 5120 and
-+			 *   - previous crtc (mode resolution > 5K (or)
-+			 *     mode clock > max_dotclock) and
- 			 *   - current & previous crtcs are consecutive
- 			 */
--			if (((crtc->mode.hdisplay > MAX_HDISPLAY_PER_CRTC) &&
-+			if ((igt_bigjoiner_possible(&crtc->mode, max_dotclock) &&
- 			     ((crtc->crtc_idx >= (tconf->resources->count_crtcs - 1)) ||
- 			      ((i < (crtc_count - 1)) && (abs(crtcs[i + 1].crtc_idx - crtc->crtc_idx) <= 1)))) ||
--			    ((i > 0) && (crtc[i - 1].mode.hdisplay > MAX_HDISPLAY_PER_CRTC) &&
-+			    ((i > 0) && igt_bigjoiner_possible(&crtc[i - 1].mode, max_dotclock) &&
- 			     (abs(crtc->crtc_idx - crtcs[i - 1].crtc_idx) <= 1))) {
- 				igt_info("Combo: %s is not possible with selected mode(s).\n", test_name);
- 				goto out;
- 			}
- 		}
--
-+test:
- 		igt_dynamic_f("%s", test_name)
- 			test_crtc_config(tconf, crtcs, crtc_count);
- 	}
-@@ -1016,6 +1022,8 @@ igt_main_args("det:", NULL, help_str, opt_handler, NULL)
- 
- 		drm_resources = drmModeGetResources(drm_fd);
- 		igt_require(drm_resources);
-+
-+		max_dotclock = igt_get_max_dotclock(drm_fd);
- 	}
- 
- 	for (i = 0; i < ARRAY_SIZE(tests); i++) {
--- 
-2.40.0
+- Bhanu
+
+> 
+>>>   enum pipe {
+>>> @@ -70,7 +80,15 @@ enum pipe {
+>>>           PIPE_F,
+>>>       PIPE_G,
+>>>       PIPE_H,
+>>> -        IGT_MAX_PIPES
+>>> +    PIPE_I,
+>>> +    PIPE_J,
+>>> +    PIPE_K,
+>>> +    PIPE_L,
+>>> +    PIPE_M,
+>>> +    PIPE_N,
+>>> +    PIPE_O,
+>>> +    PIPE_P,
+>>> +    IGT_MAX_PIPES
+>>
+>> Please don't mix tabs & spaces, and try to align with the declaration 
+>> of previous pipes.
+> 
+> The previous ones G and H used tabs and the rest were spaces. I will use 
+> spaces for all now.
+> 
+>>
+>> Apart from these minor fixes, this patch LGTM. With above comments 
+>> addressed, this patch is
+>>
+>> Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> 
+> Thank you.
+> 
+> Regards,
+> Vignesh
