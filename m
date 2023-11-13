@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E842910E030
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Nov 2023 20:38:48 +0000 (UTC)
-Date: Mon, 13 Nov 2023 15:38:41 -0500
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DA8CC10E030
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Nov 2023 20:39:33 +0000 (UTC)
+Date: Mon, 13 Nov 2023 15:39:26 -0500
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 To: Francois Dugast <francois.dugast@intel.com>
-Message-ID: <ZVKJUWaCskhCDZEZ@intel.com>
+Message-ID: <ZVKJfq+1SGrRiqHC@intel.com>
 References: <20231110155211.7-1-francois.dugast@intel.com>
- <20231110155211.7-5-francois.dugast@intel.com>
+ <20231110155211.7-7-francois.dugast@intel.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20231110155211.7-5-francois.dugast@intel.com>
+In-Reply-To: <20231110155211.7-7-francois.dugast@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v1 4/7] drm-uapi/xe: Remove unused
- inaccessible memory region
+Subject: Re: [igt-dev] [PATCH v1 6/7] drm-uapi/xe: Remove unused
+ QUERY_CONFIG_GT_COUNT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,49 +26,117 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Nov 10, 2023 at 03:52:08PM +0000, Francois Dugast wrote:
-> Align with commit ("drm/xe/uapi: Remove unused inaccessible memory region")
+On Fri, Nov 10, 2023 at 03:52:10PM +0000, Francois Dugast wrote:
+> Align with commit ("drm/xe/uapi: Remove unused QUERY_CONFIG_GT_COUNT")
 > 
 > Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 
-
 Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-
 > ---
->  include/drm-uapi/xe_drm.h | 5 -----
->  tests/intel/xe_query.c    | 2 --
->  2 files changed, 7 deletions(-)
+>  include/drm-uapi/xe_drm.h |  3 +--
+>  lib/xe/xe_query.c         | 11 +++++------
+>  lib/xe/xe_query.h         |  3 ---
+>  tests/intel/xe_debugfs.c  |  2 --
+>  tests/intel/xe_query.c    |  2 --
+>  5 files changed, 6 insertions(+), 15 deletions(-)
 > 
 > diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-> index 1d8dc1b9c..68317a82e 100644
+> index db883fb6b..0f4c83e4c 100644
 > --- a/include/drm-uapi/xe_drm.h
 > +++ b/include/drm-uapi/xe_drm.h
-> @@ -360,11 +360,6 @@ struct drm_xe_query_gt {
->  	 * they live on a different GPU/Tile.
->  	 */
->  	__u64 slow_mem_regions;
-> -	/**
-> -	 * @inaccessible_mem_regions: Bit mask of instances from
-> -	 * drm_xe_query_mem_usage that is not accessible by this GT at all.
-> -	 */
-> -	__u64 inaccessible_mem_regions;
->  	/** @reserved: Reserved */
->  	__u64 reserved[8];
+> @@ -325,8 +325,7 @@ struct drm_xe_query_config {
+>  	#define XE_QUERY_CONFIG_FLAGS_HAS_VRAM		(0x1 << 0)
+>  #define XE_QUERY_CONFIG_MIN_ALIGNMENT		2
+>  #define XE_QUERY_CONFIG_VA_BITS			3
+> -#define XE_QUERY_CONFIG_GT_COUNT		4
+> -#define XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY	5
+> +#define XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY	4
+>  	/** @info: array of elements containing the config info */
+>  	__u64 info[];
 >  };
+> diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+> index 986a3a0c1..06d216cf9 100644
+> --- a/lib/xe/xe_query.c
+> +++ b/lib/xe/xe_query.c
+> @@ -249,16 +249,15 @@ struct xe_device *xe_device_get(int fd)
+>  
+>  	xe_dev->fd = fd;
+>  	xe_dev->config = xe_query_config_new(fd);
+> -	xe_dev->number_gt = xe_dev->config->info[XE_QUERY_CONFIG_GT_COUNT];
+>  	xe_dev->va_bits = xe_dev->config->info[XE_QUERY_CONFIG_VA_BITS];
+>  	xe_dev->dev_id = xe_dev->config->info[XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff;
+>  	xe_dev->gt_list = xe_query_gt_list_new(fd);
+>  	xe_dev->memory_regions = __memory_regions(xe_dev->gt_list);
+>  	xe_dev->hw_engines = xe_query_engines_new(fd, &xe_dev->number_hw_engines);
+>  	xe_dev->mem_usage = xe_query_mem_usage_new(fd);
+> -	xe_dev->vram_size = calloc(xe_dev->number_gt, sizeof(*xe_dev->vram_size));
+> -	xe_dev->visible_vram_size = calloc(xe_dev->number_gt, sizeof(*xe_dev->visible_vram_size));
+> -	for (int gt = 0; gt < xe_dev->number_gt; gt++) {
+> +	xe_dev->vram_size = calloc(xe_dev->gt_list->num_gt, sizeof(*xe_dev->vram_size));
+> +	xe_dev->visible_vram_size = calloc(xe_dev->gt_list->num_gt, sizeof(*xe_dev->visible_vram_size));
+> +	for (int gt = 0; gt < xe_dev->gt_list->num_gt; gt++) {
+>  		xe_dev->vram_size[gt] = gt_vram_size(xe_dev->mem_usage,
+>  						     xe_dev->gt_list, gt);
+>  		xe_dev->visible_vram_size[gt] =
+> @@ -358,7 +357,7 @@ _TYPE _NAME(int fd)			\
+>   *
+>   * Return number of gt_list for xe device fd.
+>   */
+> -xe_dev_FN(xe_number_gt, number_gt, unsigned int);
+> +xe_dev_FN(xe_number_gt, gt_list->num_gt, unsigned int);
+>  
+>  /**
+>   * all_memory_regions:
+> @@ -394,7 +393,7 @@ uint64_t vram_memory(int fd, int gt)
+>  
+>  	xe_dev = find_in_cache(fd);
+>  	igt_assert(xe_dev);
+> -	igt_assert(gt >= 0 && gt < xe_dev->number_gt);
+> +	igt_assert(gt >= 0 && gt < xe_dev->gt_list->num_gt);
+>  
+>  	return xe_has_vram(fd) ? native_region_for_gt(xe_dev->gt_list, gt) : 0;
+>  }
+> diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+> index 7c0849bc1..fc81cc263 100644
+> --- a/lib/xe/xe_query.h
+> +++ b/lib/xe/xe_query.h
+> @@ -27,9 +27,6 @@ struct xe_device {
+>  	/** @gt_list: gt info */
+>  	struct drm_xe_query_gt_list *gt_list;
+>  
+> -	/** @number_gt: number of gt */
+> -	unsigned int number_gt;
+> -
+>  	/** @gt_list: bitmask of all memory regions */
+>  	uint64_t memory_regions;
+>  
+> diff --git a/tests/intel/xe_debugfs.c b/tests/intel/xe_debugfs.c
+> index e5bbb364c..4104bf5ae 100644
+> --- a/tests/intel/xe_debugfs.c
+> +++ b/tests/intel/xe_debugfs.c
+> @@ -121,8 +121,6 @@ test_base(int fd, struct drm_xe_query_config *config)
+>  	igt_assert(igt_debugfs_search(fd, "info", reference));
+>  
+>  	igt_assert(igt_debugfs_exists(fd, "gt0", O_RDONLY));
+> -	if (config->info[XE_QUERY_CONFIG_GT_COUNT] > 1)
+> -		igt_assert(igt_debugfs_exists(fd, "gt1", O_RDONLY));
+>  
+>  	igt_assert(igt_debugfs_exists(fd, "gtt_mm", O_RDONLY));
+>  	igt_debugfs_dump(fd, "gtt_mm");
 > diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
-> index 2cff75414..e6258ff01 100644
+> index 66a714518..cf966d40d 100644
 > --- a/tests/intel/xe_query.c
 > +++ b/tests/intel/xe_query.c
-> @@ -285,8 +285,6 @@ test_query_gt_list(int fd)
->  		       gt_list->gt_list[i].native_mem_regions);
->  		igt_info("slow_mem_regions: 0x%016llx\n",
->  		       gt_list->gt_list[i].slow_mem_regions);
-> -		igt_info("inaccessible_mem_regions: 0x%016llx\n",
-> -		       gt_list->gt_list[i].inaccessible_mem_regions);
->  	}
->  }
->  
+> @@ -374,8 +374,6 @@ test_query_config(int fd)
+>  		config->info[XE_QUERY_CONFIG_MIN_ALIGNMENT]);
+>  	igt_info("XE_QUERY_CONFIG_VA_BITS\t\t\t%llu\n",
+>  		config->info[XE_QUERY_CONFIG_VA_BITS]);
+> -	igt_info("XE_QUERY_CONFIG_GT_COUNT\t\t%llu\n",
+> -		config->info[XE_QUERY_CONFIG_GT_COUNT]);
+>  	igt_info("XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY\t%llu\n",
+>  		config->info[XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY]);
+>  	dump_hex_debug(config, query.size);
 > -- 
 > 2.34.1
 > 
