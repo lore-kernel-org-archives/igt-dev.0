@@ -1,15 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E2C9410E341
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Nov 2023 10:53:26 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 13 Nov 2023 16:13:32 +0530
-Message-Id: <20231113104332.1266113-1-bhanuprakash.modem@intel.com>
+Received: from mail-40136.proton.ch (mail-40136.proton.ch [185.70.40.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 77E0D10E35D
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Nov 2023 11:47:07 +0000 (UTC)
+Date: Mon, 13 Nov 2023 11:46:45 +0000
+To: juhapekka.heikkila@gmail.com
+From: Simon Ser <contact@emersion.fr>
+Message-ID: <RBv73V9tBY5v9RoBCCo0x8DrwaKptu65pORGT5K-wBmHBSfM0IXu4ZhW9fzNY5iGhSXZZCOZ0_uq9dYhMmBlxhC6C134AhoOrcGR8IsMF-Q=@emersion.fr>
+In-Reply-To: <f4924d25-142d-458d-bdbd-ee4b799e5308@gmail.com>
+References: <20231113094353.1232575-1-bhanuprakash.modem@intel.com>
+ <8HEEyr-hZOCEfFX_B7QVCqB5hDIu6JDdaZPl1vyqw6Ep-AMyApTLBdgROVNAKPiKb6fXfAr-Yqz-HcQ4evk3knZ-lGv5F9xjpILCCztDf4c=@emersion.fr>
+ <11ff717a-06d2-49fd-b73d-0a372f1c80c8@gmail.com>
+ <-X2kuWRq8oIQ1Lco4I-MR9aiuCxru-OYWgvZpjoaH-Vhou2l_0l7ojH97Xet1fRob4VpnlImB3BpP-lC0rTo80o4-xAYiK2hbo1_YgyD2ew=@emersion.fr>
+ <7e113968-b406-4753-a407-a7fc8ee3e908@gmail.com>
+ <i8_3cM1wQXQV0rRJ1PxYHAe03idImtlCfV5UXOCcGrCxTt0ta1pjY0SuhPZvLTIyXqtLco3NawRlMKPy5ANYBwChb6oXvdQ2xcAKLF6QPdo=@emersion.fr>
+ <f4924d25-142d-458d-bdbd-ee4b799e5308@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t] syncobj_timeline: don't expect EINVAL for
- WAIT_UNSUBMITTED | WAIT_AVAILABLE
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [igt-dev] [i-g-t] Revert "syncobj_timeline: don't expect EINVAL
+ for WAIT_UNSUBMITTED, | WAIT_AVAILABLE"
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,110 +26,11 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, Jani Nikula <jani.nikula@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Erik Kurzinger <ekurzinger@nvidia.com>
-
-The syncobj_timeline test expects waiting for an unsubmitted fence with
-the WAIT_AVAILABLE flag set to fail with EINVAL. While this matches the
-behavior of current kernels, that behavior is incorrect and will be
-fixed by
-https://lists.freedesktop.org/archives/dri-devel/2023-August/418710.html
-
-With that fix, the WAIT_AVAILABLE flag will have the intended semantics
-of waiting for an unsubmitted fence to be submitted instead of failing.
-
-Note that this will cause the test to fail with kernels that lack the
-fix, but such failures will reflect a genuine defect.
-
-V2: Fix testplan documentation
-
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/syncobj_timeline.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
-
-diff --git a/tests/syncobj_timeline.c b/tests/syncobj_timeline.c
-index b4e1d093a..ea8341a30 100644
---- a/tests/syncobj_timeline.c
-+++ b/tests/syncobj_timeline.c
-@@ -135,16 +135,16 @@
-  *   Verifies that as we signal points from the host, the syncobj timeline value increments and
-  *   that waits for submits/signals works properly.
-  *
-- * SUBTEST: invalid-multi-wait-all-available-unsubmitted
-+ * SUBTEST: etime-multi-wait-all-available-unsubmitted
-  * Description: Verifies waiting on a list of timeline syncobjs
-  *
-- * SUBTEST: invalid-multi-wait-all-available-unsubmitted-signaled
-+ * SUBTEST: etime-multi-wait-all-available-unsubmitted-signaled
-  * Description: Verifies waiting on a list of timeline syncobjs
-  *
-- * SUBTEST: invalid-multi-wait-all-available-unsubmitted-submitted
-+ * SUBTEST: etime-multi-wait-all-available-unsubmitted-submitted
-  * Description: Verifies waiting on a list of timeline syncobjs
-  *
-- * SUBTEST: invalid-multi-wait-all-available-unsubmitted-submitted-signaled
-+ * SUBTEST: etime-multi-wait-all-available-unsubmitted-submitted-signaled
-  * Description: Verifies waiting on a list of timeline syncobjs
-  *
-  * SUBTEST: invalid-multi-wait-all-unsubmitted
-@@ -159,16 +159,16 @@
-  * SUBTEST: invalid-multi-wait-all-unsubmitted-submitted-signaled
-  * Description: Verifies waiting on a list of timeline syncobjs
-  *
-- * SUBTEST: invalid-multi-wait-available-unsubmitted
-+ * SUBTEST: etime-multi-wait-available-unsubmitted
-  * Description: Verifies waiting on a list of timeline syncobjs
-  *
-- * SUBTEST: invalid-multi-wait-available-unsubmitted-signaled
-+ * SUBTEST: multi-wait-available-unsubmitted-signaled
-  * Description: Verifies waiting on a list of timeline syncobjs
-  *
-- * SUBTEST: invalid-multi-wait-available-unsubmitted-submitted
-+ * SUBTEST: multi-wait-available-unsubmitted-submitted
-  * Description: Verifies waiting on a list of timeline syncobjs
-  *
-- * SUBTEST: invalid-multi-wait-available-unsubmitted-submitted-signaled
-+ * SUBTEST: multi-wait-available-unsubmitted-submitted-signaled
-  * Description: Verifies waiting on a list of timeline syncobjs
-  *
-  * SUBTEST: invalid-multi-wait-unsubmitted
-@@ -213,13 +213,13 @@
-  * SUBTEST: invalid-signal-zero-handles
-  * Description: Verify that signaling an empty list of syncobj handles is rejected
-  *
-- * SUBTEST: invalid-single-wait-all-available-unsubmitted
-+ * SUBTEST: etime-single-wait-all-available-unsubmitted
-  * Description: Verifies wait behavior on a single timeline syncobj
-  *
-  * SUBTEST: invalid-single-wait-all-unsubmitted
-  * Description: Verifies wait behavior on a single timeline syncobj
-  *
-- * SUBTEST: invalid-single-wait-available-unsubmitted
-+ * SUBTEST: etime-single-wait-available-unsubmitted
-  * Description: Verifies wait behavior on a single timeline syncobj
-  *
-  * SUBTEST: invalid-single-wait-unsubmitted
-@@ -1782,7 +1782,7 @@ igt_main
- 						WAIT_SIGNALED)) != 1)
- 			continue;
- 
--		if ((flags & WAIT_UNSUBMITTED) && !(flags & WAIT_FOR_SUBMIT))
-+		if ((flags & WAIT_UNSUBMITTED) && !((flags & WAIT_FOR_SUBMIT) || (flags & WAIT_AVAILABLE)))
- 			err = -EINVAL;
- 		else if (!(flags & WAIT_SIGNALED) && !((flags & WAIT_SUBMITTED) && (flags & WAIT_AVAILABLE)))
- 			err = -ETIME;
-@@ -1851,7 +1851,7 @@ igt_main
- 			continue;
- 
- 		err = 0;
--		if ((flags & WAIT_UNSUBMITTED) && !(flags & WAIT_FOR_SUBMIT)) {
-+		if ((flags & WAIT_UNSUBMITTED) && !((flags & WAIT_FOR_SUBMIT) || (flags & WAIT_AVAILABLE))) {
- 			err = -EINVAL;
- 		} else if (flags & WAIT_ALL) {
- 			if (flags & (WAIT_UNSUBMITTED | WAIT_SUBMITTED))
--- 
-2.40.0
+Apologies. Jani highlights that the bugfix does update the testlist
+(dynamically generated), and I completely missed that. The CI failure
+makes a lot more sense now.
