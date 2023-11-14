@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D86A510E166
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Nov 2023 08:29:28 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7DB5110E202
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 13:44:39 +0000 (UTC)
+From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 13 Nov 2023 13:49:28 +0530
-Message-Id: <20231113081930.1189688-4-bhanuprakash.modem@intel.com>
-In-Reply-To: <20231113081930.1189688-1-bhanuprakash.modem@intel.com>
-References: <20231113081930.1189688-1-bhanuprakash.modem@intel.com>
+Date: Tue, 14 Nov 2023 13:44:18 +0000
+Message-Id: <20231114134426.7-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 3/5] tests/i915/kms_big_joiner: Fix Bigjoiner
- checks
+Subject: [igt-dev] [PATCH v1 0/8] uAPI Alignment - Renaming
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,258 +16,69 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Bigjoiner will come in the picture when the resolution > 5K or
-clock > max dot-clock. Add a support to check the selected mode
-clock is greater than the max dot-clock.
+This aligns on kernel series:
+https://patchwork.freedesktop.org/series/126399/
 
-V2: - Handle both 5k & max dot clock cases
-    - Other minor cleanups
-V3: - Fix the logic to avoid the retry
-V4: - consistent naming for bigjoiner
+Francois Dugast (3):
+  drm-uapi/xe: Add missing DRM_ prefix in uAPI constants
+  drm-uapi/xe: Add _FLAG to uAPI constants usable for flags
+  drm-uapi/xe: Change rsvd to pad in struct drm_xe_class_instance
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
----
- tests/intel/kms_big_joiner.c | 106 ++++++++++++++++++++---------------
- 1 file changed, 61 insertions(+), 45 deletions(-)
+Rodrigo Vivi (5):
+  drm-uapi/xe: Rename *_mem_regions mask.
+  drm-uapi/xe: Rename query's mem_usage to mem_regions
+  drm-uapi/xe: s/FLAGS_HAS_VRAM/FLAG_HAS_VRAM
+  drm-uapi/xe: Differentiate WAIT_OP from WAIT_MASK
+  drm-uapi/xe: Be more specific about vm_bind prefetch region
 
-diff --git a/tests/intel/kms_big_joiner.c b/tests/intel/kms_big_joiner.c
-index a555ca799..2f81204f5 100644
---- a/tests/intel/kms_big_joiner.c
-+++ b/tests/intel/kms_big_joiner.c
-@@ -31,10 +31,13 @@
-  */
- #include "igt.h"
- 
--#define MAX_HDISPLAY_PER_PIPE 5120
--
- IGT_TEST_DESCRIPTION("Test big joiner");
- 
-+struct bigjoiner_output {
-+	uint32_t output_id;
-+	drmModeModeInfo mode;
-+};
-+
- typedef struct {
- 	int drm_fd;
- 	igt_display_t display;
-@@ -42,9 +45,11 @@ typedef struct {
- 	int n_pipes;
- 	enum pipe pipe1;
- 	enum pipe pipe2;
--	uint32_t big_joiner_output[2];
-+	struct bigjoiner_output output[2];
- } data_t;
- 
-+static int max_dotclock;
-+
- /**
-  * SUBTEST: invalid-modeset
-  * Description: Verify if the modeset on the adjoining pipe is rejected when
-@@ -105,7 +110,7 @@ static void test_invalid_modeset(data_t *data)
- static void test_basic_modeset(data_t *data)
- {
- 	drmModeModeInfo *mode;
--	igt_output_t *output, *big_joiner_output = NULL;
-+	igt_output_t *output, *bigjoiner_output = NULL;
- 	igt_display_t *display = &data->display;
- 	igt_pipe_t *pipe;
- 	igt_plane_t *plane;
-@@ -113,18 +118,16 @@ static void test_basic_modeset(data_t *data)
- 	igt_display_reset(display);
- 
- 	for_each_connected_output(display, output) {
--		if (data->big_joiner_output[0] == output->id) {
--			big_joiner_output = output;
-+		if (data->output[0].output_id == output->id) {
-+			bigjoiner_output = output;
- 			break;
- 		}
- 	}
- 
--	igt_output_set_pipe(big_joiner_output, data->pipe1);
-+	igt_output_set_pipe(bigjoiner_output, data->pipe1);
- 
--	igt_sort_connector_modes(big_joiner_output->config.connector,
--				 sort_drm_modes_by_res_dsc);
--	mode = &big_joiner_output->config.connector->modes[0];
--	igt_output_override_mode(big_joiner_output, mode);
-+	mode = &data->output[0].mode;
-+	igt_output_override_mode(bigjoiner_output, mode);
- 
- 	pipe = &display->pipes[data->pipe1];
- 	plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-@@ -135,7 +138,7 @@ static void test_basic_modeset(data_t *data)
- 
- 	igt_display_commit2(display, COMMIT_ATOMIC);
- 
--	igt_output_set_pipe(big_joiner_output, PIPE_NONE);
-+	igt_output_set_pipe(bigjoiner_output, PIPE_NONE);
- 	igt_plane_set_fb(plane, NULL);
- 	igt_display_commit2(display, COMMIT_ATOMIC);
- }
-@@ -151,7 +154,7 @@ static void test_basic_modeset(data_t *data)
- static void test_dual_display(data_t *data)
- {
- 	drmModeModeInfo *mode;
--	igt_output_t *output, *big_joiner_output[2];
-+	igt_output_t *output, *bigjoiner_output[2];
- 	igt_display_t *display = &data->display;
- 	igt_pipe_t *pipe;
- 	igt_plane_t *plane1, *plane2;
-@@ -160,8 +163,8 @@ static void test_dual_display(data_t *data)
- 	igt_display_reset(display);
- 
- 	for_each_connected_output(display, output) {
--		if (data->big_joiner_output[count] == output->id) {
--			big_joiner_output[count] = output;
-+		if (data->output[count].output_id == output->id) {
-+			bigjoiner_output[count] = output;
- 			count++;
- 		}
- 
-@@ -169,14 +172,12 @@ static void test_dual_display(data_t *data)
- 			break;
- 	}
- 
--	igt_output_set_pipe(big_joiner_output[0], data->pipe1);
--	igt_output_set_pipe(big_joiner_output[1], data->pipe2);
-+	igt_output_set_pipe(bigjoiner_output[0], data->pipe1);
-+	igt_output_set_pipe(bigjoiner_output[1], data->pipe2);
- 
- 	/* Set up first big joiner output on Pipe A*/
--	igt_sort_connector_modes(big_joiner_output[0]->config.connector,
--				 sort_drm_modes_by_res_dsc);
--	mode = &big_joiner_output[0]->config.connector->modes[0];
--	igt_output_override_mode(big_joiner_output[0], mode);
-+	mode = &data->output[0].mode;
-+	igt_output_override_mode(bigjoiner_output[0], mode);
- 
- 	pipe = &display->pipes[data->pipe1];
- 	plane1 = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-@@ -186,10 +187,8 @@ static void test_dual_display(data_t *data)
- 	igt_plane_set_size(plane1, mode->hdisplay, mode->vdisplay);
- 
- 	/* Set up second big joiner output on Pipe C*/
--	igt_sort_connector_modes(big_joiner_output[1]->config.connector,
--				 sort_drm_modes_by_res_dsc);
--	mode = &big_joiner_output[1]->config.connector->modes[0];
--	igt_output_override_mode(big_joiner_output[1], mode);
-+	mode = &data->output[1].mode;
-+	igt_output_override_mode(bigjoiner_output[1], mode);
- 
- 	pipe = &display->pipes[data->pipe2];
- 	plane2 = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-@@ -201,13 +200,23 @@ static void test_dual_display(data_t *data)
- 	igt_display_commit2(display, COMMIT_ATOMIC);
- 
- 	/* Clean up */
--	igt_output_set_pipe(big_joiner_output[0], PIPE_NONE);
--	igt_output_set_pipe(big_joiner_output[1], PIPE_NONE);
-+	igt_output_set_pipe(bigjoiner_output[0], PIPE_NONE);
-+	igt_output_set_pipe(bigjoiner_output[1], PIPE_NONE);
- 	igt_plane_set_fb(plane1, NULL);
- 	igt_plane_set_fb(plane2, NULL);
- 	igt_display_commit2(display, COMMIT_ATOMIC);
- }
- 
-+static bool bigjoiner_mode_found(drmModeConnector *connector,
-+				 int (*sort_method)(const void *, const void*),
-+				 drmModeModeInfo *mode)
-+{
-+	igt_sort_connector_modes(connector, sort_method);
-+	*mode = connector->modes[0];
-+
-+	return igt_bigjoiner_possible(mode, max_dotclock);
-+}
-+
- igt_main
- {
- 	data_t data;
-@@ -224,13 +233,24 @@ igt_main
- 		igt_display_require(&data.display, data.drm_fd);
- 		igt_require(data.display.is_atomic);
- 
--		for_each_connected_output(&data.display, output) {
--			igt_sort_connector_modes(output->config.connector,
--						 sort_drm_modes_by_res_dsc);
-+		max_dotclock = igt_get_max_dotclock(data.drm_fd);
- 
--			mode = &output->config.connector->modes[0];
--			if (mode->hdisplay > MAX_HDISPLAY_PER_PIPE) {
--				data.big_joiner_output[count++] = output->id;
-+		for_each_connected_output(&data.display, output) {
-+			bool found = false;
-+			drmModeConnector *connector = output->config.connector;
-+
-+			/*
-+			 * Bigjoiner will come in to the picture when the
-+			 * resolution > 5K or clock > max-dot-clock.
-+			 */
-+			found = (bigjoiner_mode_found(connector, sort_drm_modes_by_res_dsc, mode) ||
-+				 bigjoiner_mode_found(connector, sort_drm_modes_by_clk_dsc, mode)) ?
-+					true : false;
-+
-+			if (found) {
-+				data.output[count].output_id = output->id;
-+				memcpy(&data.output[count].mode, mode, sizeof(drmModeModeInfo));
-+				count++;
- 
- 				width = max(width, mode->hdisplay);
- 				height = max(height, mode->vdisplay);
-@@ -245,7 +265,7 @@ igt_main
- 			j++;
- 		}
- 
--		igt_require_f(count > 0, "No output with 5k+ mode found\n");
-+		igt_require_f(count > 0, "No output with 5k+ mode (or) clock > max-dot-clock found\n");
- 
- 		igt_create_pattern_fb(data.drm_fd, width, height, DRM_FORMAT_XRGB8888,
- 				      DRM_FORMAT_MOD_LINEAR, &data.fb);
-@@ -267,14 +287,12 @@ igt_main
- 
- 		igt_display_reset(&data.display);
- 		for_each_connected_output(&data.display, output) {
--			if (data.big_joiner_output[0] != output->id)
-+			if (data.output[0].output_id != output->id)
- 				continue;
- 
--			igt_sort_connector_modes(output->config.connector,
--						 sort_drm_modes_by_res_dsc);
--
-+			mode = &data.output[0].mode;
- 			igt_output_set_pipe(output, data.pipe1);
--			igt_output_override_mode(output, &output->config.connector->modes[0]);
-+			igt_output_override_mode(output, mode);
- 
- 			igt_dynamic_f("pipe-%s-%s",
- 				      kmstest_pipe_name(data.pipe1),
-@@ -291,17 +309,15 @@ igt_main
- 
- 				igt_display_reset(&data.display);
- 				for_each_connected_output(&data.display, output) {
--					igt_sort_connector_modes(output->config.connector,
--								 sort_drm_modes_by_res_dsc);
--
--					if (data.big_joiner_output[0] == output->id) {
-+					if (data.output[0].output_id == output->id) {
- 						first_output = output;
-+						mode = &data.output[0].mode;
-+
- 						igt_output_set_pipe(output, data.pipe1);
--						igt_output_override_mode(output, &output->config.connector->modes[0]);
-+						igt_output_override_mode(output, mode);
- 					} else if (second_output == NULL) {
- 						second_output = output;
- 						igt_output_set_pipe(output, data.pipe2);
--						igt_output_override_mode(output, &output->config.connector->modes[0]);
- 
- 						break;
- 					}
+ benchmarks/gem_wsim.c                |  12 +-
+ include/drm-uapi/xe_drm.h            | 205 ++++++++++++++-------------
+ lib/igt_fb.c                         |   2 +-
+ lib/intel_batchbuffer.c              |  24 ++--
+ lib/intel_blt.c                      |   2 +-
+ lib/intel_compute.c                  |   6 +-
+ lib/intel_ctx.c                      |   4 +-
+ lib/xe/xe_ioctl.c                    |  44 +++---
+ lib/xe/xe_ioctl.h                    |   2 +-
+ lib/xe/xe_query.c                    |  88 ++++++------
+ lib/xe/xe_query.h                    |   8 +-
+ lib/xe/xe_spin.c                     |   4 +-
+ lib/xe/xe_util.c                     |  16 +--
+ lib/xe/xe_util.h                     |   4 +-
+ tests/intel/xe_access_counter.c      |   4 +-
+ tests/intel/xe_ccs.c                 |   8 +-
+ tests/intel/xe_copy_basic.c          |   6 +-
+ tests/intel/xe_create.c              |   6 +-
+ tests/intel/xe_debugfs.c             |  12 +-
+ tests/intel/xe_dma_buf_sync.c        |   4 +-
+ tests/intel/xe_drm_fdinfo.c          |  18 +--
+ tests/intel/xe_evict.c               |  24 ++--
+ tests/intel/xe_evict_ccs.c           |   2 +-
+ tests/intel/xe_exec_balancer.c       |  34 ++---
+ tests/intel/xe_exec_basic.c          |  24 ++--
+ tests/intel/xe_exec_compute_mode.c   |   6 +-
+ tests/intel/xe_exec_fault_mode.c     |  12 +-
+ tests/intel/xe_exec_queue_property.c |  18 +--
+ tests/intel/xe_exec_reset.c          |  62 ++++----
+ tests/intel/xe_exec_store.c          |  26 ++--
+ tests/intel/xe_exec_threads.c        |  48 +++----
+ tests/intel/xe_exercise_blt.c        |   6 +-
+ tests/intel/xe_guc_pc.c              |  12 +-
+ tests/intel/xe_huc_copy.c            |   4 +-
+ tests/intel/xe_intel_bb.c            |   2 +-
+ tests/intel/xe_noexec_ping_pong.c    |   2 +-
+ tests/intel/xe_perf_pmu.c            |  32 ++---
+ tests/intel/xe_pm.c                  |  30 ++--
+ tests/intel/xe_pm_residency.c        |   2 +-
+ tests/intel/xe_query.c               | 106 +++++++-------
+ tests/intel/xe_spin_batch.c          |   2 +-
+ tests/intel/xe_vm.c                  | 138 +++++++++---------
+ tests/intel/xe_waitfence.c           |  20 +--
+ 43 files changed, 549 insertions(+), 542 deletions(-)
+
 -- 
-2.40.0
+2.34.1
