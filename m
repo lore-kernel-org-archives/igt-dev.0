@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0E0E210E1DD
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 09:28:24 +0000 (UTC)
-Date: Tue, 14 Nov 2023 10:28:14 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Francois Dugast <francois.dugast@intel.com>
-Message-ID: <20231114092814.bctx6igpnibshzfq@zkempczy-mobl2>
-References: <20231107144803.165466-1-zbigniew.kempczynski@intel.com>
- <20231107144803.165466-2-zbigniew.kempczynski@intel.com>
- <ZVM2CL5coi4BKNlS@fdugast-desk.home>
+Content-Type: multipart/alternative;
+ boundary="===============9033147939495082979=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZVM2CL5coi4BKNlS@fdugast-desk.home>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/intel_compute: Prepare tgllp
- compute functions to be dg1 ready
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Vinod Govindapillai" <vinod.govindapillai@intel.com>
+Date: Tue, 14 Nov 2023 09:31:43 -0000
+Message-ID: <169995430382.29257.15420306229049903922@emeril.freedesktop.org>
+References: <20231114084504.159561-1-vinod.govindapillai@intel.com>
+In-Reply-To: <20231114084504.159561-1-vinod.govindapillai@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fflip=3A_add_provision_to_ignore_long_HPDs?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,241 +17,192 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Nov 14, 2023 at 09:55:36AM +0100, Francois Dugast wrote:
-> Hi,
-> 
-> On Tue, Nov 07, 2023 at 03:48:02PM +0100, Zbigniew Kempczyński wrote:
-> > Preparing dynamic, surface and indirect data states is similar between
-> > platforms so let's rename it to "xe" prefix. It might be confusing
-> > at first glance do to "xe" prefix clash between platform and new
-> > driver but it is closed (static) in this compilation unit.
-> > Preparing indirect data was rewritten to generate input for kernels.
-> 
-> I see the point but still I believe using "xe" as prefix here is very
-> confusing as it is used in other IGT files to prefix functions which
-> are specific to the Xe KMD.
-> 
-> As those functions are static, is a prefix needed at all? How about
-> going with simply "create_indirect_data" and so on?
+--===============9033147939495082979==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Ok, for xe (platform related) I can remove the prefix.
+== Series Details ==
 
-> 
-> > 
-> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> > Cc: Francois Dugast <francois.dugast@intel.com>
-> > ---
-> >  lib/intel_compute.c | 110 ++++++++++++--------------------------------
-> >  1 file changed, 30 insertions(+), 80 deletions(-)
-> > 
-> > diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-> > index 7f1ea90e72..0c7a87dab3 100644
-> > --- a/lib/intel_compute.c
-> > +++ b/lib/intel_compute.c
-> > @@ -203,120 +203,70 @@ static void bo_execenv_exec(struct bo_execenv *execenv, uint64_t start_addr)
-> >   */
-> >  
-> >  /**
-> > - * tgllp_create_indirect_data:
-> > + * xe_create_indirect_data:
-> >   * @addr_bo_buffer_batch: pointer to batch buffer
-> >   * @addr_input: input buffer gpu offset
-> >   * @addr_output: output buffer gpu offset
-> >   *
-> >   * Prepares indirect data for compute pipeline.
-> >   */
-> > -static void tgllp_create_indirect_data(uint32_t *addr_bo_buffer_batch,
-> > -				       uint64_t addr_input,
-> > -				       uint64_t addr_output)
-> > +static void xe_create_indirect_data(uint32_t *addr_bo_buffer_batch,
-> > +				     uint64_t addr_input,
-> > +				     uint64_t addr_output,
-> > +				     uint32_t end_value)
-> >  {
-> > -	int b = 0;
-> > +	uint32_t val = 0;
-> > +	int b = 0, curr = 0;
-> >  
-> >  	addr_bo_buffer_batch[b++] = 0x00000000;
-> >  	addr_bo_buffer_batch[b++] = 0x00000000;
-> >  	addr_bo_buffer_batch[b++] = 0x00000000;
-> >  	addr_bo_buffer_batch[b++] = 0x00000200;
-> > +
-> >  	addr_bo_buffer_batch[b++] = 0x00000001;
-> >  	addr_bo_buffer_batch[b++] = 0x00000001;
-> >  	addr_bo_buffer_batch[b++] = 0x00000000;
-> >  	addr_bo_buffer_batch[b++] = 0x00000000;
-> > +
-> >  	addr_bo_buffer_batch[b++] = addr_input & 0xffffffff;
-> >  	addr_bo_buffer_batch[b++] = addr_input >> 32;
-> >  	addr_bo_buffer_batch[b++] = addr_output & 0xffffffff;
-> >  	addr_bo_buffer_batch[b++] = addr_output >> 32;
-> > +
-> >  	addr_bo_buffer_batch[b++] = 0x00000400;
-> >  	addr_bo_buffer_batch[b++] = 0x00000000;
-> >  	addr_bo_buffer_batch[b++] = 0x00000000;
-> >  	addr_bo_buffer_batch[b++] = 0x00000000;
-> > +
-> >  	addr_bo_buffer_batch[b++] = 0x00000200;
-> >  	addr_bo_buffer_batch[b++] = 0x00000001;
-> >  	addr_bo_buffer_batch[b++] = 0x00000001;
-> >  	addr_bo_buffer_batch[b++] = 0x00000000;
-> > +
-> >  	addr_bo_buffer_batch[b++] = 0x00000000;
-> >  	addr_bo_buffer_batch[b++] = 0x00000000;
-> >  	addr_bo_buffer_batch[b++] = 0x00000000;
-> >  	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00010000;
-> > -	addr_bo_buffer_batch[b++] = 0x00030002;
-> > -	addr_bo_buffer_batch[b++] = 0x00050004;
-> > -	addr_bo_buffer_batch[b++] = 0x00070006;
-> > -	addr_bo_buffer_batch[b++] = 0x00090008;
-> > -	addr_bo_buffer_batch[b++] = 0x000B000A;
-> > -	addr_bo_buffer_batch[b++] = 0x000D000C;
-> > -	addr_bo_buffer_batch[b++] = 0x000F000E;
-> > -	addr_bo_buffer_batch[b++] = 0x00110010;
-> > -	addr_bo_buffer_batch[b++] = 0x00130012;
-> > -	addr_bo_buffer_batch[b++] = 0x00150014;
-> > -	addr_bo_buffer_batch[b++] = 0x00170016;
-> > -	addr_bo_buffer_batch[b++] = 0x00190018;
-> > -	addr_bo_buffer_batch[b++] = 0x001B001A;
-> > -	addr_bo_buffer_batch[b++] = 0x001D001C;
-> > -	addr_bo_buffer_batch[b++] = 0x001F001E;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00000000;
-> > -	addr_bo_buffer_batch[b++] = 0x00210020;
-> > -	addr_bo_buffer_batch[b++] = 0x00230022;
-> > -	addr_bo_buffer_batch[b++] = 0x00250024;
-> > -	addr_bo_buffer_batch[b++] = 0x00270026;
-> > -	addr_bo_buffer_batch[b++] = 0x00290028;
-> > -	addr_bo_buffer_batch[b++] = 0x002B002A;
-> > -	addr_bo_buffer_batch[b++] = 0x002D002C;
-> > -	addr_bo_buffer_batch[b++] = 0x002F002E;
-> > -	addr_bo_buffer_batch[b++] = 0x00310030;
-> > -	addr_bo_buffer_batch[b++] = 0x00330032;
-> > -	addr_bo_buffer_batch[b++] = 0x00350034;
-> > -	addr_bo_buffer_batch[b++] = 0x00370036;
-> > -	addr_bo_buffer_batch[b++] = 0x00390038;
-> > -	addr_bo_buffer_batch[b++] = 0x003B003A;
-> > -	addr_bo_buffer_batch[b++] = 0x003D003C;
-> > -	addr_bo_buffer_batch[b++] = 0x003F003E;
-> > +
-> > +	while (val < end_value) {
-> > +		addr_bo_buffer_batch[b++] = val | ((val + 1) << 16);
-> > +		val += 2;
-> > +		if (++curr % 16 == 0)
-> > +			b += 32;
-> > +	}
-> 
-> Please add a comment to explain what is happening here.
+Series: tests/kms_flip: add provision to ignore long HPDs
+URL   : https://patchwork.freedesktop.org/series/126382/
+State : success
 
-This is reversed and I've seen this pattern so instead
-hardcoding a lot of lines for dg1. I'll comment this
-in v2.
+== Summary ==
 
-Thanks for the review.
+CI Bug Log - changes from IGT_7585 -> IGTPW_10181
+====================================================
 
---
-Zbigniew
+Summary
+-------
 
-> 
-> Francois
-> 
-> >  }
-> >  
-> >  /**
-> > - * tgllp_create_surface_state:
-> > + * xe_create_surface_state:
-> >   * @addr_bo_buffer_batch: pointer to batch buffer
-> >   * @addr_input: input buffer gpu offset
-> >   * @addr_output: output buffer gpu offset
-> >   *
-> >   * Prepares surface state for compute pipeline.
-> >   */
-> > -static void tgllp_create_surface_state(uint32_t *addr_bo_buffer_batch,
-> > -				       uint64_t addr_input,
-> > -				       uint64_t addr_output)
-> > +static void xe_create_surface_state(uint32_t *addr_bo_buffer_batch,
-> > +				    uint64_t addr_input,
-> > +				    uint64_t addr_output)
-> >  {
-> >  	int b = 0;
-> >  
-> > @@ -387,14 +337,14 @@ static void tgllp_create_surface_state(uint32_t *addr_bo_buffer_batch,
-> >  }
-> >  
-> >  /**
-> > - * tgllp_create_dynamic_state:
-> > + * xe_create_dynamic_state:
-> >   * @addr_bo_buffer_batch: pointer to batch buffer
-> >   * @offset_kernel: gpu offset of the shader
-> >   *
-> >   * Prepares dynamic state for compute pipeline.
-> >   */
-> > -static void tgllp_create_dynamic_state(uint32_t *addr_bo_buffer_batch,
-> > -				       uint64_t offset_kernel)
-> > +static void xe_create_dynamic_state(uint32_t *addr_bo_buffer_batch,
-> > +				    uint64_t offset_kernel)
-> >  {
-> >  	int b = 0;
-> >  
-> > @@ -582,9 +532,9 @@ static void tgl_compute_exec(int fd, const unsigned char *kernel,
-> >  	bo_execenv_bind(&execenv, bo_dict, TGL_BO_DICT_ENTRIES);
-> >  
-> >  	memcpy(bo_dict[0].data, kernel, size);
-> > -	tgllp_create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
-> > -	tgllp_create_surface_state(bo_dict[2].data, ADDR_INPUT, ADDR_OUTPUT);
-> > -	tgllp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT);
-> > +	xe_create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
-> > +	xe_create_surface_state(bo_dict[2].data, ADDR_INPUT, ADDR_OUTPUT);
-> > +	xe_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT, 0x40);
-> >  
-> >  	dinput = (float *)bo_dict[4].data;
-> >  	srand(time(NULL));
-> > @@ -852,7 +802,7 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
-> >  	bo_execenv_bind(&execenv, bo_dict, XEHP_BO_DICT_ENTRIES);
-> >  
-> >  	memcpy(bo_dict[0].data, kernel, size);
-> > -	tgllp_create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
-> > +	xe_create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
-> >  	xehp_create_surface_state(bo_dict[2].data, ADDR_INPUT, ADDR_OUTPUT);
-> >  	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT);
-> >  	xehp_create_surface_state(bo_dict[7].data, ADDR_INPUT, ADDR_OUTPUT);
-> > -- 
-> > 2.34.1
-> > 
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10181/index.html
+
+Participating hosts (34 -> 33)
+------------------------------
+
+  Additional (1): bat-kbl-2 
+  Missing    (2): fi-bsw-nick fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10181 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@fbdev@info:
+    - bat-kbl-2:          NOTRUN -> [SKIP][1] ([fdo#109271] / [i915#1849])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10181/bat-kbl-2/igt@fbdev@info.html
+
+  * igt@gem_lmem_swapping@parallel-random-engines:
+    - bat-kbl-2:          NOTRUN -> [SKIP][2] ([fdo#109271]) +24 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10181/bat-kbl-2/igt@gem_lmem_swapping@parallel-random-engines.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-4770:        [PASS][3] -> [INCOMPLETE][4] ([i915#9527])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7585/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10181/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence:
+    - bat-kbl-2:          NOTRUN -> [SKIP][5] ([fdo#109271] / [i915#1845]) +14 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10181/bat-kbl-2/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:
+    - bat-rplp-1:         [ABORT][6] ([i915#8668]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7585/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10181/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
+  [i915#7359]: https://gitlab.freedesktop.org/drm/intel/issues/7359
+  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
+  [i915#8981]: https://gitlab.freedesktop.org/drm/intel/issues/8981
+  [i915#9527]: https://gitlab.freedesktop.org/drm/intel/issues/9527
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7585 -> IGTPW_10181
+
+  CI-20190529: 20190529
+  CI_DRM_13871: 811507c09ec3722450601b3642c47ab63830112b @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10181: 10181
+  IGT_7585: 7585
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10181/index.html
+
+--===============9033147939495082979==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_flip: add provision to ignore long HPDs</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126382/">https://patchwork.freedesktop.org/series/126382/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10181/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10181/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7585 -&gt; IGTPW_10181</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10181/index.html</p>
+<h2>Participating hosts (34 -&gt; 33)</h2>
+<p>Additional (1): bat-kbl-2 <br />
+  Missing    (2): fi-bsw-nick fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10181 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@fbdev@info:</p>
+<ul>
+<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10181/bat-kbl-2/igt@fbdev@info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
+<ul>
+<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10181/bat-kbl-2/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +24 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7585/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10181/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9527">i915#9527</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence:</p>
+<ul>
+<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10181/bat-kbl-2/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>) +14 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7585/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10181/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7585 -&gt; IGTPW_10181</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13871: 811507c09ec3722450601b3642c47ab63830112b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10181: 10181<br />
+  IGT_7585: 7585</p>
+
+</body>
+</html>
+
+--===============9033147939495082979==--
