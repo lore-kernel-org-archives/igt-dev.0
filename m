@@ -1,19 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AA5F210E48B
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 17:05:14 +0000 (UTC)
-Date: Tue, 14 Nov 2023 18:04:50 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20231114170450.ghx42q6y22vlbn6n@kamilkon-desk.igk.intel.com>
-References: <20231114134426.7-1-francois.dugast@intel.com>
- <20231114134426.7-9-francois.dugast@intel.com>
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com
+ [IPv6:2a00:1450:4864:20::52e])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 919E710E498
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 17:37:35 +0000 (UTC)
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-53e751aeb3cso9157119a12.2
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 09:37:35 -0800 (PST)
+Message-ID: <1ca0b43f-27b8-4654-9855-bae69722fbd6@gmail.com>
+Date: Tue, 14 Nov 2023 19:37:23 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231114134426.7-9-francois.dugast@intel.com>
-Subject: Re: [igt-dev] [PATCH v1 8/8] drm-uapi/xe: Be more specific about
- vm_bind prefetch region
+Content-Language: en-US
+To: Kunal Joshi <kunal1.joshi@intel.com>, igt-dev@lists.freedesktop.org
+References: <20231102062304.1204625-1-kunal1.joshi@intel.com>
+ <20231102062304.1204625-2-kunal1.joshi@intel.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+In-Reply-To: <20231102062304.1204625-2-kunal1.joshi@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/igt_debugfs: added helper to
+ enable/disable dark screen detection
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,149 +26,94 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Reply-To: juhapekka.heikkila@gmail.com
+Cc: Nemesa Garg <nemesa.garg@intel.com>,
+ Arun R Murthy <arun.r.murthy@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Francois,
-On 2023-11-14 at 13:44:26 +0000, Francois Dugast wrote:
-> From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+On 2.11.2023 8.23, Kunal Joshi wrote:
+> added helper function for dark screen detection
 > 
-> Align with kernel commit ("drm/xe/uapi: Be more specific about the vm_bind prefetch region")
-> 
-> Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+> Cc: Nemesa Garg <nemesa.garg@intel.com>
+> Cc: Arun R Murthy <arun.r.murthy@intel.com>
+> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 > ---
->  include/drm-uapi/xe_drm.h | 8 ++++++--
->  lib/intel_batchbuffer.c   | 4 ++--
->  lib/xe/xe_ioctl.c         | 8 ++++----
->  lib/xe/xe_ioctl.h         | 2 +-
->  lib/xe/xe_util.c          | 2 +-
->  tests/intel/xe_vm.c       | 2 +-
->  6 files changed, 15 insertions(+), 11 deletions(-)
+>   lib/igt_debugfs.c | 41 +++++++++++++++++++++++++++++++++++++++++
+>   lib/igt_debugfs.h |  3 +++
+>   2 files changed, 44 insertions(+)
 > 
-> diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-> index 7a02b78bf..af32ec161 100644
-> --- a/include/drm-uapi/xe_drm.h
-> +++ b/include/drm-uapi/xe_drm.h
-> @@ -672,8 +672,12 @@ struct drm_xe_vm_bind_op {
->  	/** @flags: Bind flags */
->  	__u32 flags;
->  
-> -	/** @mem_region: Memory region to prefetch VMA to, instance not a mask */
-> -	__u32 region;
-> +	/**
-> +	 * @prefetch_mem_region_instance: Memory region to prefetch VMA to.
-> +	 * It is a region instance, not a mask.
-> +	 * To be used only with %DRM_XE_VM_BIND_OP_PREFETCH operation.
-> +	 */
-> +	__u32 prefetch_mem_region_instance;
->  
->  	/** @reserved: Reserved */
->  	__u64 reserved[2];
-> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-> index b59c490db..f12d6219d 100644
-> --- a/lib/intel_batchbuffer.c
-> +++ b/lib/intel_batchbuffer.c
-> @@ -1282,7 +1282,7 @@ void intel_bb_destroy(struct intel_bb *ibb)
->  
->  static struct drm_xe_vm_bind_op *xe_alloc_bind_ops(struct intel_bb *ibb,
->  						   uint32_t op, uint32_t flags,
-> -						   uint32_t region)
-> +						   uint32_t prefetch_region)
->  {
->  	struct drm_i915_gem_exec_object2 **objects = ibb->objects;
->  	struct drm_xe_vm_bind_op *bind_ops, *ops;
-> @@ -1303,7 +1303,7 @@ static struct drm_xe_vm_bind_op *xe_alloc_bind_ops(struct intel_bb *ibb,
->  		ops->obj_offset = 0;
->  		ops->addr = objects[i]->offset;
->  		ops->range = objects[i]->rsvd1;
-> -		ops->region = region;
-> +		ops->prefetch_mem_region_instance = prefetch_region;
->  
->  		igt_debug("  [%d]: handle: %u, offset: %llx, size: %llx\n",
->  			  i, ops->obj, (long long)ops->addr, (long long)ops->range);
-> diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-> index a9cfdbf9d..738c4ffdb 100644
-> --- a/lib/xe/xe_ioctl.c
-> +++ b/lib/xe/xe_ioctl.c
-> @@ -92,7 +92,7 @@ void xe_vm_bind_array(int fd, uint32_t vm, uint32_t exec_queue,
->  int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
->  		  uint64_t offset, uint64_t addr, uint64_t size, uint32_t op,
->  		  uint32_t flags, struct drm_xe_sync *sync, uint32_t num_syncs,
-> -		  uint32_t region, uint64_t ext)
-> +		  uint32_t prefetch_region, uint64_t ext)
+> diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
+> index a7b54bae5..e2a4b17ea 100644
+> --- a/lib/igt_debugfs.c
+> +++ b/lib/igt_debugfs.c
+> @@ -743,3 +743,44 @@ void __igt_debugfs_dump(int device, const char *filename, int level)
+>   	igt_log(IGT_LOG_DOMAIN, level, "%s:\n%s\n", filename, contents);
+>   	free(contents);
+>   }
+> +
+> +bool igt_is_dark_screen_supported(int drm_fd, enum pipe pipe)
+> +{
+> +        char buf[256];
+> +        int dir;
+> +
+> +        dir = igt_debugfs_pipe_dir(drm_fd, pipe, O_DIRECTORY);
+> +        igt_require_fd(dir);
+> +        igt_debugfs_simple_read(dir, "i915_darkscreen_status", buf, sizeof(buf));
+> +        close(dir);
+> +        if (*buf == '\0')
+> +                return false;
+> +
+> +        return strcasestr(buf, "0") || strcasestr(buf, "1");
+> +}
+> +
+> +ssize_t igt_enable_dark_screen_detection(int drm_fd, enum pipe pipe)
+> +{
+> +        char buf[2];
+> +        int dir;
+> +	int enable_dark_screen_detection;
+> +
+> +	enable_dark_screen_detection = 1;
+> +        snprintf(buf, sizeof(buf), "%d", enable_dark_screen_detection);
 
-Make this change also in header lib/xe/xe_ioctl.h
+This feels bit excessive handling just to get char buf that says "1"
 
-With this
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> +        dir = igt_debugfs_pipe_dir(drm_fd, pipe, O_DIRECTORY);
+> +        igt_require_fd(dir);
+> +        return igt_sysfs_write(dir, "i915_darkscreen_status", buf, sizeof(buf) - 1);
+> +}
+> +
+> +ssize_t igt_disable_dark_screen_detection(int drm_fd, enum pipe pipe)
+> +{
+> +        char buf[2];
+> +        int dir;
+> +	int disable_dark_screen_detection;
+> +
+> +	disable_dark_screen_detection = 0;
+> +        snprintf(buf, sizeof(buf), "%d", disable_dark_screen_detection);
 
->  {
->  	struct drm_xe_vm_bind bind = {
->  		.extensions = ext,
-> @@ -104,7 +104,7 @@ int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
->  		.bind.addr = addr,
->  		.bind.op = op,
->  		.bind.flags = flags,
-> -		.bind.region = region,
-> +		.bind.prefetch_mem_region_instance = prefetch_region,
->  		.num_syncs = num_syncs,
->  		.syncs = (uintptr_t)sync,
->  		.exec_queue_id = exec_queue,
-> @@ -119,10 +119,10 @@ int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
->  void  __xe_vm_bind_assert(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
->  			  uint64_t offset, uint64_t addr, uint64_t size,
->  			  uint32_t op, uint32_t flags, struct drm_xe_sync *sync,
-> -			  uint32_t num_syncs, uint32_t region, uint64_t ext)
-> +			  uint32_t num_syncs, uint32_t prefetch_region, uint64_t ext)
->  {
->  	igt_assert_eq(__xe_vm_bind(fd, vm, exec_queue, bo, offset, addr, size,
-> -				   op, flags, sync, num_syncs, region, ext), 0);
-> +				   op, flags, sync, num_syncs, prefetch_region, ext), 0);
->  }
->  
->  void xe_vm_bind(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
-> diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-> index d9c97bf22..a9171bcf7 100644
-> --- a/lib/xe/xe_ioctl.h
-> +++ b/lib/xe/xe_ioctl.h
-> @@ -24,7 +24,7 @@ int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
->  void  __xe_vm_bind_assert(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
->  			  uint64_t offset, uint64_t addr, uint64_t size,
->  			  uint32_t op, uint32_t flags, struct drm_xe_sync *sync,
-> -			  uint32_t num_syncs, uint32_t region, uint64_t ext);
-> +			  uint32_t num_syncs, uint32_t prefetch_region, uint64_t ext);
->  void xe_vm_bind(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
->  		uint64_t addr, uint64_t size,
->  		struct drm_xe_sync *sync, uint32_t num_syncs);
-> diff --git a/lib/xe/xe_util.c b/lib/xe/xe_util.c
-> index 2635edf72..742e6333e 100644
-> --- a/lib/xe/xe_util.c
-> +++ b/lib/xe/xe_util.c
-> @@ -147,7 +147,7 @@ static struct drm_xe_vm_bind_op *xe_alloc_bind_ops(struct igt_list_head *obj_lis
->  		ops->obj_offset = 0;
->  		ops->addr = obj->offset;
->  		ops->range = obj->size;
-> -		ops->region = 0;
-> +		ops->prefetch_mem_region_instance = 0;
->  
->  		bind_info("  [%d]: [%6s] handle: %u, offset: %llx, size: %llx\n",
->  			  i, obj->bind_op == XE_OBJECT_BIND ? "BIND" : "UNBIND",
-> diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-> index 86c8d0c5d..05e8e7516 100644
-> --- a/tests/intel/xe_vm.c
-> +++ b/tests/intel/xe_vm.c
-> @@ -797,7 +797,7 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
->  		bind_ops[i].tile_mask = 0x1 << eci->gt_id;
->  		bind_ops[i].op = DRM_XE_VM_BIND_OP_MAP;
->  		bind_ops[i].flags = DRM_XE_VM_BIND_FLAG_ASYNC;
-> -		bind_ops[i].region = 0;
-> +		bind_ops[i].prefetch_mem_region_instance = 0;
->  		bind_ops[i].reserved[0] = 0;
->  		bind_ops[i].reserved[1] = 0;
->  
-> -- 
-> 2.34.1
-> 
+Here same as above. Also this patch has some indentations done with 
+spaces instead of tab. Patch generally seems ok, just these small detail.
+
+/Juha-Pekka
+
+> +        dir = igt_debugfs_pipe_dir(drm_fd, pipe, O_DIRECTORY);
+> +        igt_require_fd(dir);
+> +        return igt_sysfs_write(dir, "i915_darkscreen_status", buf, sizeof(buf) - 1);
+> +}
+> diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
+> index 3e6194ade..bd539f54d 100644
+> --- a/lib/igt_debugfs.h
+> +++ b/lib/igt_debugfs.h
+> @@ -77,6 +77,9 @@ void igt_hpd_storm_reset(int fd);
+>   bool igt_hpd_storm_detected(int fd);
+>   void igt_require_hpd_storm_ctl(int fd);
+>   bool igt_ignore_long_hpd(int fd, bool enable);
+> +bool igt_is_dark_screen_supported(int drm_fd, enum pipe pipe);
+> +ssize_t igt_enable_dark_screen_detection(int drm_fd, enum pipe pipe);
+> +ssize_t igt_disable_dark_screen_detection(int drm_fd, enum pipe pipe);
+>   
+>   /*
+>    * Drop caches
