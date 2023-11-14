@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A648210E337
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 06:42:53 +0000 (UTC)
-Message-ID: <3c75baaa-c364-4974-b8a5-a17875ec1701@intel.com>
-Date: Tue, 14 Nov 2023 12:12:41 +0530
-To: Riana Tauro <riana.tauro@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20231114045224.622841-1-sujaritha.sundaresan@intel.com>
- <20231114045224.622841-5-sujaritha.sundaresan@intel.com>
- <3e263845-9b9b-43a9-8292-cc174200fc36@intel.com>
-Content-Language: en-US
-From: "Sundaresan, Sujaritha" <sujaritha.sundaresan@intel.com>
-In-Reply-To: <3e263845-9b9b-43a9-8292-cc174200fc36@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4AE0A10E1B5
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 06:56:29 +0000 (UTC)
+Date: Tue, 14 Nov 2023 07:56:23 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+Message-ID: <20231114065623.e4ica7ldf5rzro6u@zkempczy-mobl2>
+References: <20231114004451.2445-1-niranjana.vishwanathapura@intel.com>
+ <20231114004451.2445-2-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [v3 4/6] tests/intel: Add multi-gt support for
- rc6-accuracy test
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231114004451.2445-2-niranjana.vishwanathapura@intel.com>
+Subject: Re: [igt-dev] [RFC v3 i-g-t 1/3] lib/xe: Add
+ __xe_exec_queue_create()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,201 +22,130 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+On Mon, Nov 13, 2023 at 04:44:49PM -0800, Niranjana Vishwanathapura wrote:
+> Add __xe_exec_queue_create() which does not assert upon error.
+> 
+> Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 
-On 11/14/2023 12:01 PM, Riana Tauro wrote:
-> Hi Suja
->
-> On 11/14/2023 10:22 AM, Sujaritha Sundaresan wrote:
->> Add multi-gt support for the rc6_accuracy subtest
->>
->> v3: Align get_rc6_enabled_mask with other changes
->>      Introduce rc6_enabled_mask
->>
->> Signed-off-by: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
->> ---
->>   tests/intel/i915_pm_rc6_residency.c | 75 ++++++++++++++++-------------
->>   1 file changed, 41 insertions(+), 34 deletions(-)
->>
->> diff --git a/tests/intel/i915_pm_rc6_residency.c 
->> b/tests/intel/i915_pm_rc6_residency.c
->> index e84e8ea96..0f427687d 100644
->> --- a/tests/intel/i915_pm_rc6_residency.c
->> +++ b/tests/intel/i915_pm_rc6_residency.c
->> @@ -73,32 +73,28 @@ struct residencies {
->>       int duration;
->>   };
->>   -static unsigned long get_rc6_enabled_mask(void)
->> +static unsigned long get_rc6_enabled_mask(int dirfd)
->>   {
->>       unsigned long enabled;
->>         enabled = 0;
->> -    igt_sysfs_scanf(sysfs, "power/rc6_enable", "%lu", &enabled);
->> +    igt_sysfs_rps_scanf(dirfd, RC6_ENABLE, "%lu", &enabled);
->>       return enabled;
->>   }
->>   -static bool has_rc6_residency(const char *name)
->> +static bool has_rc6_residency(int dirfd, enum i915_attr_id id)
->>   {
->>       unsigned long residency;
->> -    char path[128];
->>   -    sprintf(path, "power/%s_residency_ms", name);
->> -    return igt_sysfs_scanf(sysfs, path, "%lu", &residency) == 1;
->> +    return igt_sysfs_rps_scanf(dirfd, id, "%lu", &residency) == 1;
->>   }
->>   -static unsigned long read_rc6_residency(const char *name)
->> +static unsigned long read_rc6_residency(int dirfd, enum i915_attr_id 
->> id)
->>   {
->>       unsigned long residency;
->> -    char path[128];
->>         residency = 0;
->> -    sprintf(path, "power/%s_residency_ms", name);
->> -    igt_assert(igt_sysfs_scanf(sysfs, path, "%lu", &residency) == 1);
->> +    igt_assert(igt_sysfs_rps_scanf(dirfd, id, "%lu", &residency) == 1);
->>       return residency;
->>   }
->>   @@ -125,28 +121,28 @@ static unsigned long gettime_ms(void)
->>       return ts.tv_sec * 1000 + ts.tv_nsec / 1000000;
->>   }
->>   -static void read_residencies(int devid, unsigned int mask,
->> +static void read_residencies(int devid, int dirfd, unsigned int mask,
->>                    struct residencies *res)
->>   {
->>       res->duration = gettime_ms();
->>         if (mask & RC6_ENABLED)
->> -        res->rc6 = read_rc6_residency("rc6");
->> +        res->rc6 = read_rc6_residency(dirfd, RC6_RESIDENCY_MS);
->>         if ((mask & RC6_ENABLED) &&
->>           (IS_VALLEYVIEW(devid) || IS_CHERRYVIEW(devid)))
->> -        res->media_rc6 = read_rc6_residency("media_rc6");
->> +        res->media_rc6 = read_rc6_residency(dirfd, 
->> MEDIA_RC6_RESIDENCY_MS);
->>         if (mask & RC6P_ENABLED)
->> -        res->rc6p = read_rc6_residency("rc6p");
->> +        res->rc6p = read_rc6_residency(dirfd, RC6P_RESIDENCY_MS);
->>         if (mask & RC6PP_ENABLED)
->> -        res->rc6pp = read_rc6_residency("rc6pp");
->> +        res->rc6pp = read_rc6_residency(dirfd, RC6PP_RESIDENCY_MS);
->>         res->duration += (gettime_ms() - res->duration) / 2;
->>   }
->>   -static void measure_residencies(int devid, unsigned int mask,
->> +static void measure_residencies(int devid, int dirfd, unsigned int 
->> mask,
->>                   struct residencies *res)
->>   {
->>       struct residencies start = { };
->> @@ -158,13 +154,13 @@ static void measure_residencies(int devid, 
->> unsigned int mask,
->>        * measurement, since the valid counter range is different on
->>        * different platforms and so fixing it up would be non-trivial.
->>        */
->> -    read_residencies(devid, mask, &end);
->> +    read_residencies(devid, dirfd, mask, &end);
->>       igt_debug("time=%d: rc6=(%d, %d), rc6p=%d, rc6pp=%d\n",
->>             end.duration, end.rc6, end.media_rc6, end.rc6p, end.rc6pp);
->>       for (retry = 0; retry < 2; retry++) {
->>           start = end;
->>           sleep(SLEEP_DURATION);
->> -        read_residencies(devid, mask, &end);
->> +        read_residencies(devid, dirfd, mask, &end);
->>             igt_debug("time=%d: rc6=(%d, %d), rc6p=%d, rc6pp=%d\n",
->>                 end.duration,
->> @@ -196,7 +192,7 @@ static void measure_residencies(int devid, 
->> unsigned int mask,
->>       res->rc6 += res->rc6p;
->>   }
->>   -static bool wait_for_rc6(void)
->> +static bool wait_for_rc6(int dirfd)
->>   {
->>       struct timespec tv = {};
->>       unsigned long start, now;
->> @@ -205,11 +201,11 @@ static bool wait_for_rc6(void)
->>       usleep(160 * 1000);
->>         /* Then poll for RC6 to start ticking */
->> -    now = read_rc6_residency("rc6");
->> +    now = read_rc6_residency(dirfd, RC6_RESIDENCY_MS);
->>       do {
->>           start = now;
->>           usleep(5000);
->> -        now = read_rc6_residency("rc6");
->> +        now = read_rc6_residency(dirfd, RC6_RESIDENCY_MS);
->>           if (now - start > 1)
->>               return true;
->>       } while (!igt_seconds_elapsed(&tv));
->> @@ -558,6 +554,17 @@ static void rc6_fence(int i915, unsigned int gt)
->>       close(fd);
->>   }
->>   +static unsigned int rc6_enabled_mask(int i915, int dirfd)
->> +{
->> +    igt_require(has_rc6_residency(dirfd, RC6_RESIDENCY_MS));
->> +
->> +    /* Make sure rc6 counters are running */
->> +    igt_drop_caches_set(i915, DROP_IDLE);
->> +    igt_require(wait_for_rc6(dirfd));
->> +
->> +    return get_rc6_enabled_mask(dirfd);
->> +}
->> +
->>   igt_main
->>   {
->>       int i915 = -1;
->> @@ -603,22 +610,19 @@ igt_main
->>           igt_fixture {
->>               devid = intel_get_drm_devid(i915);
->>               sysfs = igt_sysfs_open(i915);
->> -
->> -            igt_require(has_rc6_residency("rc6"));
->> -
->> -            /* Make sure rc6 counters are running */
->> -            igt_drop_caches_set(i915, DROP_IDLE);
->> -            igt_require(wait_for_rc6());
->> -
->> -            rc6_enabled = get_rc6_enabled_mask();
->> -            igt_require(rc6_enabled & RC6_ENABLED);
->> +            igt_assert(sysfs != 1);
->>           }
->>             igt_subtest("rc6-accuracy") {
->> -            struct residencies res;
->> +            for_each_sysfs_gt_dirfd(i915, dirfd, gt) {
-> Lets keep the gt loop consistent across the file
-> i915_for_each_gt or for_each_sysfs_gt_dirfd
-This I can fix.
->
-> Also should this be a dynamic subtest to identify which gt caused
-> a failure?
+I've already given r-b in v2 and keep it here as I see no changes
+in this patch.
 
-That might be a little iffy to make it dynamic. Since it's not a 
-straightforward call
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-like rc6_idle or rc6_fence.
+--
+Zbigniew
 
-Thanks,
-
-Suja
-
->> +                struct residencies res;
->>   -            measure_residencies(devid, rc6_enabled, &res);
->> -            residency_accuracy(res.rc6, res.duration, "rc6");
->> +                rc6_enabled = rc6_enabled_mask(i915, dirfd);
->> +                igt_require(rc6_enabled & RC6_ENABLED);
->> +
->> +                measure_residencies(devid, dirfd, rc6_enabled, &res);
->> +                residency_accuracy(res.rc6, res.duration, "rc6");
->> +            }
->>           }
->>             igt_subtest("media-rc6-accuracy") {
->> @@ -626,7 +630,10 @@ igt_main
->>                 igt_require(IS_VALLEYVIEW(devid) || 
->> IS_CHERRYVIEW(devid));
->>   -            measure_residencies(devid, rc6_enabled, &res);
->> +            rc6_enabled = rc6_enabled_mask(i915, sysfs);
->> +            igt_require(rc6_enabled & RC6_ENABLED);
->> +
->> +            measure_residencies(devid, sysfs, rc6_enabled, &res);
->>               residency_accuracy(res.media_rc6, res.duration, 
->> "media_rc6");
->>           }
+> ---
+>  lib/xe/xe_ioctl.c       | 29 ++++++++++++++++++++++++-----
+>  lib/xe/xe_ioctl.h       |  3 +++
+>  tests/intel/xe_create.c | 26 --------------------------
+>  3 files changed, 27 insertions(+), 31 deletions(-)
+> 
+> diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+> index 895e3bd4e..6f06c304c 100644
+> --- a/lib/xe/xe_ioctl.c
+> +++ b/lib/xe/xe_ioctl.c
+> @@ -287,9 +287,9 @@ uint32_t xe_bind_exec_queue_create(int fd, uint32_t vm, uint64_t ext, bool async
+>  	return create.exec_queue_id;
+>  }
+>  
+> -uint32_t xe_exec_queue_create(int fd, uint32_t vm,
+> -			  struct drm_xe_engine_class_instance *instance,
+> -			  uint64_t ext)
+> +uint32_t __xe_exec_queue_create(int fd, uint32_t vm,
+> +				struct drm_xe_engine_class_instance *instance,
+> +				uint64_t ext, uint32_t *exec_queue_id)
+>  {
+>  	struct drm_xe_exec_queue_create create = {
+>  		.extensions = ext,
+> @@ -298,10 +298,29 @@ uint32_t xe_exec_queue_create(int fd, uint32_t vm,
+>  		.num_placements = 1,
+>  		.instances = to_user_pointer(instance),
+>  	};
+> +	int err;
+>  
+> -	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC_QUEUE_CREATE, &create), 0);
+> +	err = igt_ioctl(fd, DRM_IOCTL_XE_EXEC_QUEUE_CREATE, &create);
+> +	if (err) {
+> +		err = -errno;
+> +		igt_assume(err);
+> +		errno = 0;
+> +		return err;
+> +	}
+>  
+> -	return create.exec_queue_id;
+> +	*exec_queue_id = create.exec_queue_id;
+> +	return 0;
+> +}
+> +
+> +uint32_t xe_exec_queue_create(int fd, uint32_t vm,
+> +			      struct drm_xe_engine_class_instance *instance,
+> +			      uint64_t ext)
+> +{
+> +	uint32_t exec_queue_id;
+> +
+> +	igt_assert_eq(__xe_exec_queue_create(fd, vm, instance, ext, &exec_queue_id), 0);
+> +
+> +	return exec_queue_id;
+>  }
+>  
+>  uint32_t xe_exec_queue_create_class(int fd, uint32_t vm, uint16_t class)
+> diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+> index a8dbcf376..96aac8544 100644
+> --- a/lib/xe/xe_ioctl.h
+> +++ b/lib/xe/xe_ioctl.h
+> @@ -68,6 +68,9 @@ uint32_t __xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags
+>  			      uint32_t *handle);
+>  uint32_t xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags);
+>  uint32_t xe_bo_create(int fd, int gt, uint32_t vm, uint64_t size);
+> +uint32_t __xe_exec_queue_create(int fd, uint32_t vm,
+> +				struct drm_xe_engine_class_instance *instance,
+> +				uint64_t ext, uint32_t *exec_queue_id);
+>  uint32_t xe_exec_queue_create(int fd, uint32_t vm,
+>  			  struct drm_xe_engine_class_instance *instance,
+>  			  uint64_t ext);
+> diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+> index d99bd51cf..145d936f2 100644
+> --- a/tests/intel/xe_create.c
+> +++ b/tests/intel/xe_create.c
+> @@ -92,32 +92,6 @@ enum exec_queue_destroy {
+>  	LEAK
+>  };
+>  
+> -static uint32_t __xe_exec_queue_create(int fd, uint32_t vm,
+> -				   struct drm_xe_engine_class_instance *instance,
+> -				   uint64_t ext,
+> -				   uint32_t *exec_queuep)
+> -{
+> -	struct drm_xe_exec_queue_create create = {
+> -		.extensions = ext,
+> -		.vm_id = vm,
+> -		.width = 1,
+> -		.num_placements = 1,
+> -		.instances = to_user_pointer(instance),
+> -	};
+> -	int err = 0;
+> -
+> -	if (igt_ioctl(fd, DRM_IOCTL_XE_EXEC_QUEUE_CREATE, &create) == 0) {
+> -		*exec_queuep = create.exec_queue_id;
+> -	} else {
+> -		igt_warn("Can't create exec_queue, errno: %d\n", errno);
+> -		err = -errno;
+> -		igt_assume(err);
+> -	}
+> -	errno = 0;
+> -
+> -	return err;
+> -}
+> -
+>  #define MAXEXECQUEUES 2048
+>  #define MAXTIME 5
+>  
+> -- 
+> 2.21.0.rc0.32.g243a4c7e27
+> 
