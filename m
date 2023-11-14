@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5FDB210E1C2
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 06:32:11 +0000 (UTC)
-Message-ID: <3e263845-9b9b-43a9-8292-cc174200fc36@intel.com>
-Date: Tue, 14 Nov 2023 12:01:05 +0530
-To: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20231114045224.622841-1-sujaritha.sundaresan@intel.com>
- <20231114045224.622841-5-sujaritha.sundaresan@intel.com>
-Content-Language: en-US
-From: Riana Tauro <riana.tauro@intel.com>
-In-Reply-To: <20231114045224.622841-5-sujaritha.sundaresan@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0241110E1C2
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 06:35:54 +0000 (UTC)
+Date: Tue, 14 Nov 2023 07:35:50 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Matthew Auld <matthew.auld@intel.com>
+Message-ID: <20231114063441.ldpn7fls5ggf277n@zkempczy-mobl2>
+References: <20231109171554.313952-1-zbigniew.kempczynski@intel.com>
+ <f09a03dc-f488-a931-3ee9-5a37f9d99569@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [v3 4/6] tests/intel: Add multi-gt support for
- rc6-accuracy test
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <f09a03dc-f488-a931-3ee9-5a37f9d99569@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe_evict_ccs: Disable compression
+ on platforms without flatccs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,204 +22,105 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Suja
+On Thu, Nov 09, 2023 at 05:35:06PM +0000, Matthew Auld wrote:
+> On 09/11/2023 17:15, Zbigniew Kempczyński wrote:
+> > Platforms like PVC don't use flatccs compression so on them exercise
+> > eviction only. Rename all subtests and remove "-ccs-" part in it.
+> > 
+> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > Cc: Matthew Auld <matthew.auld@intel.com>
+> 
+> Curious to see what PVC says with this,
+> Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+> 
+> It's a bit funny having a test called xe_evict_ccs which doesn't use ccs? I
+> guess skipping would be another option, but then again these tests have
+> proven to be really good at finding general eviction bugs so that would be
+> quite a loss of coverage on platforms like PVC. Do we need to marry together
+> xe_evict and xe_evict_ccs, possibility extracting a couple more testcases
+> from xe_evict_ccs that turn off compression and can be made part of
+> xe_evict, or perhaps moving xe_evict into here somehow?
 
-On 11/14/2023 10:22 AM, Sujaritha Sundaresan wrote:
-> Add multi-gt support for the rc6_accuracy subtest
-> 
-> v3: Align get_rc6_enabled_mask with other changes
->      Introduce rc6_enabled_mask
-> 
-> Signed-off-by: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
-> ---
->   tests/intel/i915_pm_rc6_residency.c | 75 ++++++++++++++++-------------
->   1 file changed, 41 insertions(+), 34 deletions(-)
-> 
-> diff --git a/tests/intel/i915_pm_rc6_residency.c b/tests/intel/i915_pm_rc6_residency.c
-> index e84e8ea96..0f427687d 100644
-> --- a/tests/intel/i915_pm_rc6_residency.c
-> +++ b/tests/intel/i915_pm_rc6_residency.c
-> @@ -73,32 +73,28 @@ struct residencies {
->   	int duration;
->   };
->   
-> -static unsigned long get_rc6_enabled_mask(void)
-> +static unsigned long get_rc6_enabled_mask(int dirfd)
->   {
->   	unsigned long enabled;
->   
->   	enabled = 0;
-> -	igt_sysfs_scanf(sysfs, "power/rc6_enable", "%lu", &enabled);
-> +	igt_sysfs_rps_scanf(dirfd, RC6_ENABLE, "%lu", &enabled);
->   	return enabled;
->   }
->   
-> -static bool has_rc6_residency(const char *name)
-> +static bool has_rc6_residency(int dirfd, enum i915_attr_id id)
->   {
->   	unsigned long residency;
-> -	char path[128];
->   
-> -	sprintf(path, "power/%s_residency_ms", name);
-> -	return igt_sysfs_scanf(sysfs, path, "%lu", &residency) == 1;
-> +	return igt_sysfs_rps_scanf(dirfd, id, "%lu", &residency) == 1;
->   }
->   
-> -static unsigned long read_rc6_residency(const char *name)
-> +static unsigned long read_rc6_residency(int dirfd, enum i915_attr_id id)
->   {
->   	unsigned long residency;
-> -	char path[128];
->   
->   	residency = 0;
-> -	sprintf(path, "power/%s_residency_ms", name);
-> -	igt_assert(igt_sysfs_scanf(sysfs, path, "%lu", &residency) == 1);
-> +	igt_assert(igt_sysfs_rps_scanf(dirfd, id, "%lu", &residency) == 1);
->   	return residency;
->   }
->   
-> @@ -125,28 +121,28 @@ static unsigned long gettime_ms(void)
->   	return ts.tv_sec * 1000 + ts.tv_nsec / 1000000;
->   }
->   
-> -static void read_residencies(int devid, unsigned int mask,
-> +static void read_residencies(int devid, int dirfd, unsigned int mask,
->   			     struct residencies *res)
->   {
->   	res->duration = gettime_ms();
->   
->   	if (mask & RC6_ENABLED)
-> -		res->rc6 = read_rc6_residency("rc6");
-> +		res->rc6 = read_rc6_residency(dirfd, RC6_RESIDENCY_MS);
->   
->   	if ((mask & RC6_ENABLED) &&
->   	    (IS_VALLEYVIEW(devid) || IS_CHERRYVIEW(devid)))
-> -		res->media_rc6 = read_rc6_residency("media_rc6");
-> +		res->media_rc6 = read_rc6_residency(dirfd, MEDIA_RC6_RESIDENCY_MS);
->   
->   	if (mask & RC6P_ENABLED)
-> -		res->rc6p = read_rc6_residency("rc6p");
-> +		res->rc6p = read_rc6_residency(dirfd, RC6P_RESIDENCY_MS);
->   
->   	if (mask & RC6PP_ENABLED)
-> -		res->rc6pp = read_rc6_residency("rc6pp");
-> +		res->rc6pp = read_rc6_residency(dirfd, RC6PP_RESIDENCY_MS);
->   
->   	res->duration += (gettime_ms() - res->duration) / 2;
->   }
->   
-> -static void measure_residencies(int devid, unsigned int mask,
-> +static void measure_residencies(int devid, int dirfd, unsigned int mask,
->   				struct residencies *res)
->   {
->   	struct residencies start = { };
-> @@ -158,13 +154,13 @@ static void measure_residencies(int devid, unsigned int mask,
->   	 * measurement, since the valid counter range is different on
->   	 * different platforms and so fixing it up would be non-trivial.
->   	 */
-> -	read_residencies(devid, mask, &end);
-> +	read_residencies(devid, dirfd, mask, &end);
->   	igt_debug("time=%d: rc6=(%d, %d), rc6p=%d, rc6pp=%d\n",
->   		  end.duration, end.rc6, end.media_rc6, end.rc6p, end.rc6pp);
->   	for (retry = 0; retry < 2; retry++) {
->   		start = end;
->   		sleep(SLEEP_DURATION);
-> -		read_residencies(devid, mask, &end);
-> +		read_residencies(devid, dirfd, mask, &end);
->   
->   		igt_debug("time=%d: rc6=(%d, %d), rc6p=%d, rc6pp=%d\n",
->   			  end.duration,
-> @@ -196,7 +192,7 @@ static void measure_residencies(int devid, unsigned int mask,
->   	res->rc6 += res->rc6p;
->   }
->   
-> -static bool wait_for_rc6(void)
-> +static bool wait_for_rc6(int dirfd)
->   {
->   	struct timespec tv = {};
->   	unsigned long start, now;
-> @@ -205,11 +201,11 @@ static bool wait_for_rc6(void)
->   	usleep(160 * 1000);
->   
->   	/* Then poll for RC6 to start ticking */
-> -	now = read_rc6_residency("rc6");
-> +	now = read_rc6_residency(dirfd, RC6_RESIDENCY_MS);
->   	do {
->   		start = now;
->   		usleep(5000);
-> -		now = read_rc6_residency("rc6");
-> +		now = read_rc6_residency(dirfd, RC6_RESIDENCY_MS);
->   		if (now - start > 1)
->   			return true;
->   	} while (!igt_seconds_elapsed(&tv));
-> @@ -558,6 +554,17 @@ static void rc6_fence(int i915, unsigned int gt)
->   	close(fd);
->   }
->   
-> +static unsigned int rc6_enabled_mask(int i915, int dirfd)
-> +{
-> +	igt_require(has_rc6_residency(dirfd, RC6_RESIDENCY_MS));
-> +
-> +	/* Make sure rc6 counters are running */
-> +	igt_drop_caches_set(i915, DROP_IDLE);
-> +	igt_require(wait_for_rc6(dirfd));
-> +
-> +	return get_rc6_enabled_mask(dirfd);
-> +}
-> +
->   igt_main
->   {
->   	int i915 = -1;
-> @@ -603,22 +610,19 @@ igt_main
->   		igt_fixture {
->   			devid = intel_get_drm_devid(i915);
->   			sysfs = igt_sysfs_open(i915);
-> -
-> -			igt_require(has_rc6_residency("rc6"));
-> -
-> -			/* Make sure rc6 counters are running */
-> -			igt_drop_caches_set(i915, DROP_IDLE);
-> -			igt_require(wait_for_rc6());
-> -
-> -			rc6_enabled = get_rc6_enabled_mask();
-> -			igt_require(rc6_enabled & RC6_ENABLED);
-> +			igt_assert(sysfs != 1);
->   		}
->   
->   		igt_subtest("rc6-accuracy") {
-> -			struct residencies res;
-> +			for_each_sysfs_gt_dirfd(i915, dirfd, gt) {
-Lets keep the gt loop consistent across the file
-i915_for_each_gt or for_each_sysfs_gt_dirfd
+You're right, I also have some doubts regarding mixin no-ccs eviction
+test into xe_evict_ccs but I had no better idea then. Maybe I should
+rename the test from xe_evict_ccs to xe_evict_vram and subtests
+would be called with/without "-ccs-" inside?
 
-Also should this be a dynamic subtest to identify which gt caused
-a failure?
-> +				struct residencies res;
->   
-> -			measure_residencies(devid, rc6_enabled, &res);
-> -			residency_accuracy(res.rc6, res.duration, "rc6");
-> +				rc6_enabled = rc6_enabled_mask(i915, dirfd);
-> +				igt_require(rc6_enabled & RC6_ENABLED);
-> +
-> +				measure_residencies(devid, dirfd, rc6_enabled, &res);
-> +				residency_accuracy(res.rc6, res.duration, "rc6");
-> +			}
->   		}
->   
->   		igt_subtest("media-rc6-accuracy") {
-> @@ -626,7 +630,10 @@ igt_main
->   
->   			igt_require(IS_VALLEYVIEW(devid) || IS_CHERRYVIEW(devid));
->   
-> -			measure_residencies(devid, rc6_enabled, &res);
-> +			rc6_enabled = rc6_enabled_mask(i915, sysfs);
-> +			igt_require(rc6_enabled & RC6_ENABLED);
-> +
-> +			measure_residencies(devid, sysfs, rc6_enabled, &res);
->   			residency_accuracy(res.media_rc6, res.duration, "media_rc6");
->   		}
->   
+--
+Zbigniew
+
+> 
+> > ---
+> >   tests/intel-ci/xe-fast-feedback.testlist |  4 ++--
+> >   tests/intel/xe_evict_ccs.c               | 17 ++++++++++++-----
+> >   2 files changed, 14 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+> > index f11761ac85..e9ff5cb4fe 100644
+> > --- a/tests/intel-ci/xe-fast-feedback.testlist
+> > +++ b/tests/intel-ci/xe-fast-feedback.testlist
+> > @@ -26,8 +26,8 @@ igt@xe_evict@evict-small-external-cm
+> >   igt@xe_evict@evict-small-multi-vm
+> >   igt@xe_evict@evict-small-multi-vm-cm
+> >   igt@xe_evict@evict-threads-small
+> > -igt@xe_evict_ccs@evict-ccs-overcommit-simple
+> > -igt@xe_evict_ccs@evict-ccs-overcommit-parallel-nofree-samefd
+> > +igt@xe_evict_ccs@evict-overcommit-simple
+> > +igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd
+> >   igt@xe_exec_balancer@twice-virtual-basic
+> >   igt@xe_exec_balancer@no-exec-virtual-basic
+> >   igt@xe_exec_balancer@twice-cm-virtual-basic
+> > diff --git a/tests/intel/xe_evict_ccs.c b/tests/intel/xe_evict_ccs.c
+> > index 4f2876ecb2..8a98aae8f3 100644
+> > --- a/tests/intel/xe_evict_ccs.c
+> > +++ b/tests/intel/xe_evict_ccs.c
+> > @@ -380,15 +380,15 @@ static void evict_ccs(int fd, uint32_t flags, const struct param *param)
+> >   /**
+> >    *
+> > - * SUBTEST: evict-ccs-overcommit-simple
+> > - * Description: FlatCCS eviction test.
+> > + * SUBTEST: evict-overcommit-simple
+> > + * Description: Eviction test - exercises FlatCCS if possible.
+> >    * Feature: flatccs
+> >    * Test category: stress test
+> >    */
+> >   /**
+> >    *
+> > - * SUBTEST: evict-ccs-overcommit-%s-%s-%s
+> > - * Description: FlatCCS eviction test.
+> > + * SUBTEST: evict-overcommit-%s-%s-%s
+> > + * Description: Eviction test - exercises FlatCCS if possible.
+> >    * Feature: flatccs
+> >    * Test category: stress test
+> >    *
+> > @@ -490,6 +490,7 @@ igt_main_args("bdDn:p:s:S:V", NULL, help_str, opt_handler, NULL)
+> >   		{ },
+> >   	};
+> >   	uint64_t vram_size;
+> > +	bool has_flatccs;
+> >   	int fd;
+> >   	igt_fixture {
+> > @@ -497,14 +498,20 @@ igt_main_args("bdDn:p:s:S:V", NULL, help_str, opt_handler, NULL)
+> >   		igt_require(xe_has_vram(fd));
+> >   		vram_size = xe_visible_vram_size(fd, 0);
+> >   		igt_assert(vram_size);
+> > +		has_flatccs = HAS_FLATCCS(intel_get_drm_devid(fd));
+> >   	}
+> >   	igt_fixture
+> >   		intel_allocator_multiprocess_start();
+> >   	for (const struct ccs *s = ccs; s->name; s++) {
+> > -		igt_subtest_f("evict-ccs-overcommit-%s", s->name)
+> > +		igt_subtest_f("evict-overcommit-%s", s->name) {
+> > +			if (!params.disable_compression && !has_flatccs) {
+> > +				igt_info("Device has no flatccs, disabling compression\n");
+> > +				params.disable_compression = true;
+> > +			}
+> >   			evict_ccs(fd, s->flags, &params);
+> > +		}
+> >   	}
+> >   	igt_fixture {
