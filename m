@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7B41410E433
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 07:18:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B8F0910E441
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 07:18:25 +0000 (UTC)
 From: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 14 Nov 2023 13:01:42 +0530
-Message-Id: <20231114073144.708242-4-sujaritha.sundaresan@intel.com>
+Date: Tue, 14 Nov 2023 13:01:43 +0530
+Message-Id: <20231114073144.708242-5-sujaritha.sundaresan@intel.com>
 In-Reply-To: <20231114073144.708242-1-sujaritha.sundaresan@intel.com>
 References: <20231114073144.708242-1-sujaritha.sundaresan@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v4 3/5] tests/intel: Add multi-gt support for
- rc6-accuracy test
+Subject: [igt-dev] [v4 4/5] tests/intel: Print drpc info for rc6_residency
+ test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,198 +23,129 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add multi-gt support for the rc6_accuracy subtest
+Add dprc debug dump to help assertain if we are hitting
+genuine rc6 failures.
 
-v3: Align get_rc6_enabled_mask with other changes
-    Introduce rc6_enabled_mask
+v3: Fix review comments (Riana)
 
-v4: Make test dynamic (Riana)
-
+Reviewed-by: Riana Tauro <riana.tauro@intel.com>
 Signed-off-by: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
 ---
- tests/intel/i915_pm_rc6_residency.c | 78 ++++++++++++++++-------------
- 1 file changed, 43 insertions(+), 35 deletions(-)
+ tests/intel/i915_pm_rc6_residency.c | 51 ++++++++++++++++++++++-------
+ 1 file changed, 40 insertions(+), 11 deletions(-)
 
 diff --git a/tests/intel/i915_pm_rc6_residency.c b/tests/intel/i915_pm_rc6_residency.c
-index e84e8ea96..be5722662 100644
+index be5722662..be474b786 100644
 --- a/tests/intel/i915_pm_rc6_residency.c
 +++ b/tests/intel/i915_pm_rc6_residency.c
-@@ -73,32 +73,28 @@ struct residencies {
- 	int duration;
- };
+@@ -36,6 +36,7 @@
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
+ #include "igt.h"
++#include "igt_debugfs.h"
+ #include "igt_perf.h"
+ #include "igt_power.h"
+ #include "igt_sysfs.h"
+@@ -63,6 +64,8 @@
+ #define RC6P_ENABLED	2
+ #define RC6PP_ENABLED	4
  
--static unsigned long get_rc6_enabled_mask(void)
-+static unsigned long get_rc6_enabled_mask(int dirfd)
- {
- 	unsigned long enabled;
++char *drpc;
++
+ static int sysfs;
  
- 	enabled = 0;
--	igt_sysfs_scanf(sysfs, "power/rc6_enable", "%lu", &enabled);
-+	igt_sysfs_rps_scanf(dirfd, RC6_ENABLE, "%lu", &enabled);
- 	return enabled;
+ struct residencies {
+@@ -230,14 +233,25 @@ static uint64_t pmu_read_single(int fd)
+ 	return __pmu_read_single(fd, NULL);
  }
  
--static bool has_rc6_residency(const char *name)
-+static bool has_rc6_residency(int dirfd, enum i915_attr_id id)
- {
- 	unsigned long residency;
--	char path[128];
- 
--	sprintf(path, "power/%s_residency_ms", name);
--	return igt_sysfs_scanf(sysfs, path, "%lu", &residency) == 1;
-+	return igt_sysfs_rps_scanf(dirfd, id, "%lu", &residency) == 1;
- }
- 
--static unsigned long read_rc6_residency(const char *name)
-+static unsigned long read_rc6_residency(int dirfd, enum i915_attr_id id)
- {
- 	unsigned long residency;
--	char path[128];
- 
- 	residency = 0;
--	sprintf(path, "power/%s_residency_ms", name);
--	igt_assert(igt_sysfs_scanf(sysfs, path, "%lu", &residency) == 1);
-+	igt_assert(igt_sysfs_rps_scanf(dirfd, id, "%lu", &residency) == 1);
- 	return residency;
- }
- 
-@@ -125,28 +121,28 @@ static unsigned long gettime_ms(void)
- 	return ts.tv_sec * 1000 + ts.tv_nsec / 1000000;
- }
- 
--static void read_residencies(int devid, unsigned int mask,
-+static void read_residencies(int devid, int dirfd, unsigned int mask,
- 			     struct residencies *res)
- {
- 	res->duration = gettime_ms();
- 
- 	if (mask & RC6_ENABLED)
--		res->rc6 = read_rc6_residency("rc6");
-+		res->rc6 = read_rc6_residency(dirfd, RC6_RESIDENCY_MS);
- 
- 	if ((mask & RC6_ENABLED) &&
- 	    (IS_VALLEYVIEW(devid) || IS_CHERRYVIEW(devid)))
--		res->media_rc6 = read_rc6_residency("media_rc6");
-+		res->media_rc6 = read_rc6_residency(dirfd, MEDIA_RC6_RESIDENCY_MS);
- 
- 	if (mask & RC6P_ENABLED)
--		res->rc6p = read_rc6_residency("rc6p");
-+		res->rc6p = read_rc6_residency(dirfd, RC6P_RESIDENCY_MS);
- 
- 	if (mask & RC6PP_ENABLED)
--		res->rc6pp = read_rc6_residency("rc6pp");
-+		res->rc6pp = read_rc6_residency(dirfd, RC6PP_RESIDENCY_MS);
- 
- 	res->duration += (gettime_ms() - res->duration) / 2;
- }
- 
--static void measure_residencies(int devid, unsigned int mask,
-+static void measure_residencies(int devid, int dirfd, unsigned int mask,
- 				struct residencies *res)
- {
- 	struct residencies start = { };
-@@ -158,13 +154,13 @@ static void measure_residencies(int devid, unsigned int mask,
- 	 * measurement, since the valid counter range is different on
- 	 * different platforms and so fixing it up would be non-trivial.
- 	 */
--	read_residencies(devid, mask, &end);
-+	read_residencies(devid, dirfd, mask, &end);
- 	igt_debug("time=%d: rc6=(%d, %d), rc6p=%d, rc6pp=%d\n",
- 		  end.duration, end.rc6, end.media_rc6, end.rc6p, end.rc6pp);
- 	for (retry = 0; retry < 2; retry++) {
- 		start = end;
- 		sleep(SLEEP_DURATION);
--		read_residencies(devid, mask, &end);
-+		read_residencies(devid, dirfd, mask, &end);
- 
- 		igt_debug("time=%d: rc6=(%d, %d), rc6p=%d, rc6pp=%d\n",
- 			  end.duration,
-@@ -196,7 +192,7 @@ static void measure_residencies(int devid, unsigned int mask,
- 	res->rc6 += res->rc6p;
- }
- 
--static bool wait_for_rc6(void)
-+static bool wait_for_rc6(int dirfd)
- {
- 	struct timespec tv = {};
- 	unsigned long start, now;
-@@ -205,11 +201,11 @@ static bool wait_for_rc6(void)
- 	usleep(160 * 1000);
- 
- 	/* Then poll for RC6 to start ticking */
--	now = read_rc6_residency("rc6");
-+	now = read_rc6_residency(dirfd, RC6_RESIDENCY_MS);
- 	do {
- 		start = now;
- 		usleep(5000);
--		now = read_rc6_residency("rc6");
-+		now = read_rc6_residency(dirfd, RC6_RESIDENCY_MS);
- 		if (now - start > 1)
- 			return true;
- 	} while (!igt_seconds_elapsed(&tv));
-@@ -558,6 +554,17 @@ static void rc6_fence(int i915, unsigned int gt)
- 	close(fd);
- }
- 
-+static unsigned int rc6_enabled_mask(int i915, int dirfd)
+-#define __assert_within_epsilon(x, ref, tol_up, tol_down) \
+-	igt_assert_f((x) <= (ref) * (1.0 + (tol_up)/100.) && \
+-		     (x) >= (ref) * (1.0 - (tol_down)/100.), \
+-		     "'%s' != '%s' (%.3g not within +%d%%/-%d%% tolerance of %.3g)\n",\
+-		     #x, #ref, (double)(x), (tol_up), (tol_down), (double)(ref))
++#define __assert_within_epsilon(x, ref, tol_up, tol_down, debug_data) \
++	igt_assert_f((double)(x) <= (1.0 + (tol_up)) * (double)(ref) && \
++		     (double)(x) >= (1.0 - (tol_down)) * (double)(ref), \
++		     "'%s' != '%s' (%f not within +%.1f%%/-%.1f%% tolerance of %f)\n %s\n",\
++		     #x, #ref, (double)(x), \
++		     (tol_up) * 100.0, (tol_down) * 100.0, \
++		     (double)(ref), debug_data)
++
++#define assert_within_epsilon(x, ref, tolerance, debug_data) \
++	__assert_within_epsilon(x, ref, tolerance, tolerance, debug_data)
++
++static char *get_drpc(int i915, int gt_id)
 +{
-+	igt_require(has_rc6_residency(dirfd, RC6_RESIDENCY_MS));
-+
-+	/* Make sure rc6 counters are running */
-+	igt_drop_caches_set(i915, DROP_IDLE);
-+	igt_require(wait_for_rc6(dirfd));
-+
-+	return get_rc6_enabled_mask(dirfd);
++	int gt_dir;
+ 
+-#define assert_within_epsilon(x, ref, tolerance) \
+-	__assert_within_epsilon(x, ref, tolerance, tolerance)
++	gt_dir = igt_debugfs_gt_dir(i915, gt_id);
++	igt_assert(gt_dir != -1);
++	return igt_sysfs_get(gt_dir, "drpc");
 +}
-+
- igt_main
+ 
+ static bool __pmu_wait_for_rc6(int fd)
  {
- 	int i915 = -1;
-@@ -603,22 +610,20 @@ igt_main
- 		igt_fixture {
- 			devid = intel_get_drm_devid(i915);
- 			sysfs = igt_sysfs_open(i915);
--
--			igt_require(has_rc6_residency("rc6"));
--
--			/* Make sure rc6 counters are running */
--			igt_drop_caches_set(i915, DROP_IDLE);
--			igt_require(wait_for_rc6());
--
--			rc6_enabled = get_rc6_enabled_mask();
--			igt_require(rc6_enabled & RC6_ENABLED);
-+			igt_assert(sysfs != 1);
- 		}
- 
--		igt_subtest("rc6-accuracy") {
--			struct residencies res;
-+		igt_subtest_with_dynamic("rc6-accuracy") {
-+			i915_for_each_gt(i915, dirfd, gt) {
-+				struct residencies res;
- 
--			measure_residencies(devid, rc6_enabled, &res);
--			residency_accuracy(res.rc6, res.duration, "rc6");
-+				rc6_enabled = rc6_enabled_mask(i915, dirfd);
-+				igt_require(rc6_enabled & RC6_ENABLED);
+@@ -414,7 +428,9 @@ static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags, unsigned int gt)
+ 			"Total energy used while idle: %.1fmJ (%.1fmW)\n",
+ 			idle, (idle * 1e9) / slept);
+ 	}
+-	assert_within_epsilon(rc6, ts[1] - ts[0], 5);
++	drpc = get_drpc(i915, gt);
 +
-+				igt_dynamic_f("gt%u", gt)
-+				measure_residencies(devid, dirfd, rc6_enabled, &res);
-+				residency_accuracy(res.rc6, res.duration, "rc6");
-+			}
- 		}
++	assert_within_epsilon(rc6, ts[1] - ts[0], 5, drpc);
  
- 		igt_subtest("media-rc6-accuracy") {
-@@ -626,7 +631,10 @@ igt_main
+ 	done = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
  
- 			igt_require(IS_VALLEYVIEW(devid) || IS_CHERRYVIEW(devid));
+@@ -450,7 +466,12 @@ static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags, unsigned int gt)
+ 		igt_assert(cycles >= SLEEP_DURATION);
  
--			measure_residencies(devid, rc6_enabled, &res);
-+			rc6_enabled = rc6_enabled_mask(i915, sysfs);
-+			igt_require(rc6_enabled & RC6_ENABLED);
+ 		/* While very nearly idle, expect full RC6 */
+-		assert_within_epsilon(rc6, ts[1] - ts[0], tolerance);
++		drpc = get_drpc(i915, gt);
 +
-+			measure_residencies(devid, sysfs, rc6_enabled, &res);
- 			residency_accuracy(res.media_rc6, res.duration, "media_rc6");
- 		}
++		assert_within_epsilon(rc6, ts[1] - ts[0], tolerance, drpc);
++
++		free(drpc);
++		drpc = NULL;
+ 	}
  
+ 	munmap(done, 4096);
+@@ -503,7 +524,9 @@ static void rc6_fence(int i915, unsigned int gt)
+ 			"Total energy used while idle: %.1fmJ (%.1fmW)\n",
+ 			idle, (idle * 1e9) / slept);
+ 	}
+-	assert_within_epsilon(rc6, ts[1] - ts[0], 5);
++	drpc = get_drpc(i915, gt);
++
++	assert_within_epsilon(rc6, ts[1] - ts[0], 5, drpc);
+ 
+ 	/* Submit but delay execution, we should be idle and conserving power */
+ 	ctx = intel_ctx_create_for_gt(i915, gt);
+@@ -544,8 +567,13 @@ static void rc6_fence(int i915, unsigned int gt)
+ 
+ 		close(timeline);
+ 
+-		assert_within_epsilon(rc6, ts[1] - ts[0], tolerance);
++		drpc = get_drpc(i915, gt);
++
++		assert_within_epsilon(rc6, ts[1] - ts[0], tolerance, drpc);
+ 		gem_quiescent_gpu(i915);
++
++		free(drpc);
++		drpc = NULL;
+ 	}
+ 	put_ahnd(ahnd);
+ 	intel_ctx_destroy(i915, ctx);
+@@ -643,6 +671,7 @@ igt_main
+ 	}
+ 
+ 	igt_fixture {
++		free(drpc);
+ 		drm_close_driver(i915);
+ 	}
+ }
 -- 
 2.25.1
