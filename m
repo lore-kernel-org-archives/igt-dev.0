@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7493710E0D7
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 14:44:28 +0000 (UTC)
-Date: Tue, 14 Nov 2023 15:44:06 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 55C7F10E21D
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 15:07:06 +0000 (UTC)
+Date: Tue, 14 Nov 2023 16:06:07 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20231114144406.nivn77naiwkqhhgb@kamilkon-desk.igk.intel.com>
-References: <20231114134426.7-1-francois.dugast@intel.com>
- <20231114134426.7-5-francois.dugast@intel.com>
+Message-ID: <20231114150607.ozwoggr5kcdrf3tt@kamilkon-desk.igk.intel.com>
+References: <20231110155211.7-1-francois.dugast@intel.com>
+ <20231110155211.7-3-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231114134426.7-5-francois.dugast@intel.com>
-Subject: Re: [igt-dev] [PATCH v1 4/8] drm-uapi/xe: Rename *_mem_regions mask.
+In-Reply-To: <20231110155211.7-3-francois.dugast@intel.com>
+Subject: Re: [igt-dev] [PATCH v1 2/7] drm-uapi/xe: Remove GT_TYPE_REMOTE.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,104 +26,46 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Francois,
-On 2023-11-14 at 13:44:22 +0000, Francois Dugast wrote:
-
-please remove last dot "." from subject:
-
-[PATCH v1 4/8] drm-uapi/xe: Rename *_mem_regions mask.
------------------------------------------------------^
-s/mask\./mask/
-
-with that:
-
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
+On 2023-11-10 at 15:52:06 +0000, Francois Dugast wrote:
 > From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 > 
-> Align with kernel commit ("drm/xe/uapi: Rename *_mem_regions masks")
+
+please remove last dot "." from subject (you can do it at merge):
+
+[PATCH v1 2/7] drm-uapi/xe: Remove GT_TYPE_REMOTE.
+-------------------------------------------------^
+
+Regards,
+Kamil
+
+> Align with commit ("drm/xe/uapi: Remove GT_TYPE_REMOTE")
 > 
+> Cc: Francois Dugast <francois.dugast@intel.com>
+----- ^^^^^^^^^^^^^^^
+Btw do you need to add yourself at Cc when you have s-o-b?
+
 > Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 > Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 > ---
->  include/drm-uapi/xe_drm.h | 17 +++++++++--------
->  lib/xe/xe_query.c         |  6 +++---
->  tests/intel/xe_query.c    |  8 ++++----
->  3 files changed, 16 insertions(+), 15 deletions(-)
+>  include/drm-uapi/xe_drm.h | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
 > 
 > diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-> index 32f6cf631..621d6c0e3 100644
+> index b316868de..8a18e1726 100644
 > --- a/include/drm-uapi/xe_drm.h
 > +++ b/include/drm-uapi/xe_drm.h
-> @@ -349,17 +349,18 @@ struct drm_xe_query_gt {
->  	/** @clock_freq: A clock frequency for timestamp */
->  	__u32 clock_freq;
->  	/**
-> -	 * @native_mem_regions: Bit mask of instances from
-> -	 * drm_xe_query_mem_usage that lives on the same GPU/Tile and have
-> -	 * direct access.
-> +	 * @near_mem_regions: Bit mask of instances from
-> +	 * drm_xe_query_mem_usage that is near the current engines of this GT.
->  	 */
-> -	__u64 native_mem_regions;
-> +	__u64 near_mem_regions;
->  	/**
-> -	 * @slow_mem_regions: Bit mask of instances from
-> -	 * drm_xe_query_mem_usage that this GT can indirectly access, although
-> -	 * they live on a different GPU/Tile.
-> +	 * @far_mem_regions: Bit mask of instances from
-> +	 * drm_xe_query_mem_usage that is far from the engines of this GT.
-> +	 * In general, it has extra indirections when compared to the
-> +	 * @near_mem_regions. For a discrete device this could mean system
-> +	 * memory and memory living in a different Tile.
->  	 */
-> -	__u64 slow_mem_regions;
-> +	__u64 far_mem_regions;
->  	/** @reserved: Reserved */
->  	__u64 reserved[8];
->  };
-> diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-> index d459893e1..c33bfd432 100644
-> --- a/lib/xe/xe_query.c
-> +++ b/lib/xe/xe_query.c
-> @@ -66,8 +66,8 @@ static uint64_t __memory_regions(const struct drm_xe_query_gt_list *gt_list)
->  	int i;
->  
->  	for (i = 0; i < gt_list->num_gt; i++)
-> -		regions |= gt_list->gt_list[i].native_mem_regions |
-> -			   gt_list->gt_list[i].slow_mem_regions;
-> +		regions |= gt_list->gt_list[i].near_mem_regions |
-> +			   gt_list->gt_list[i].far_mem_regions;
->  
->  	return regions;
->  }
-> @@ -123,7 +123,7 @@ static uint64_t native_region_for_gt(const struct drm_xe_query_gt_list *gt_list,
->  	uint64_t region;
->  
->  	igt_assert(gt_list->num_gt > gt);
-> -	region = gt_list->gt_list[gt].native_mem_regions;
-> +	region = gt_list->gt_list[gt].near_mem_regions;
->  	igt_assert(region);
->  
->  	return region;
-> diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
-> index 969ad1c7f..b960ccfa2 100644
-> --- a/tests/intel/xe_query.c
-> +++ b/tests/intel/xe_query.c
-> @@ -281,10 +281,10 @@ test_query_gt_list(int fd)
->  		igt_info("type: %d\n", gt_list->gt_list[i].type);
->  		igt_info("gt_id: %d\n", gt_list->gt_list[i].gt_id);
->  		igt_info("clock_freq: %u\n", gt_list->gt_list[i].clock_freq);
-> -		igt_info("native_mem_regions: 0x%016llx\n",
-> -		       gt_list->gt_list[i].native_mem_regions);
-> -		igt_info("slow_mem_regions: 0x%016llx\n",
-> -		       gt_list->gt_list[i].slow_mem_regions);
-> +		igt_info("near_mem_regions: 0x%016llx\n",
-> +		       gt_list->gt_list[i].near_mem_regions);
-> +		igt_info("far_mem_regions: 0x%016llx\n",
-> +		       gt_list->gt_list[i].far_mem_regions);
->  	}
->  }
->  
+> @@ -343,9 +343,8 @@ struct drm_xe_query_config {
+>   */
+>  struct drm_xe_query_gt {
+>  #define XE_QUERY_GT_TYPE_MAIN		0
+> -#define XE_QUERY_GT_TYPE_REMOTE		1
+> -#define XE_QUERY_GT_TYPE_MEDIA		2
+> -	/** @type: GT type: Main, Remote, or Media */
+> +#define XE_QUERY_GT_TYPE_MEDIA		1
+> +	/** @type: GT type: Main or Media */
+>  	__u16 type;
+>  	/** @gt_id: Unique ID of this GT within the PCI Device */
+>  	__u16 gt_id;
 > -- 
 > 2.34.1
 > 
