@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A712610E436
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CF80210E433
  for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 00:45:00 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 13 Nov 2023 16:44:50 -0800
-Message-Id: <20231114004451.2445-3-niranjana.vishwanathapura@intel.com>
+Date: Mon, 13 Nov 2023 16:44:51 -0800
+Message-Id: <20231114004451.2445-4-niranjana.vishwanathapura@intel.com>
 In-Reply-To: <20231114004451.2445-1-niranjana.vishwanathapura@intel.com>
 References: <20231114004451.2445-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [RFC v3 i-g-t 2/3] lib/intel_compute: Update
- intel_compute to run on specified engine
+Subject: [igt-dev] [RFC v3 i-g-t 3/3] tests/xe_compute: Validate ccs_mode
+ setting
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,210 +23,186 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-With CCS_MODE setting, available compute slices can be assigned
-to specific compute engines. Update intel_compute library to
-be able to run compute kernel on specified compute or render
-engine.
+Validate 'ccs_mode' sysfs uapi interface and ensure compute
+kernels can be run on enabled compute engines.
 
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/intel_compute.c | 76 +++++++++++++++++++++++++++++++--------------
- lib/intel_compute.h |  3 ++
- 2 files changed, 56 insertions(+), 23 deletions(-)
+ tests/intel/xe_compute.c | 146 ++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 144 insertions(+), 2 deletions(-)
 
-diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index 7f1ea90e7..ba85d805d 100644
---- a/lib/intel_compute.c
-+++ b/lib/intel_compute.c
-@@ -16,7 +16,6 @@
+diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
+index 35ba8b346..a8bacf0b1 100644
+--- a/tests/intel/xe_compute.c
++++ b/tests/intel/xe_compute.c
+@@ -13,9 +13,143 @@
+ #include <string.h>
+ 
+ #include "igt.h"
++#include "igt_sysfs.h"
  #include "intel_compute.h"
- #include "lib/igt_syncobj.h"
- #include "lib/intel_reg.h"
--#include "xe_drm.h"
- #include "xe/xe_ioctl.h"
++#include "xe/xe_ioctl.h"
  #include "xe/xe_query.h"
- #include "xehp_media.h"
-@@ -62,7 +61,8 @@ struct bo_execenv {
- 	struct drm_i915_gem_exec_object2 *obj;
- };
  
--static void bo_execenv_create(int fd, struct bo_execenv *execenv)
-+static void bo_execenv_create(int fd, struct bo_execenv *execenv,
-+			      struct drm_xe_engine_class_instance *eci)
- {
- 	igt_assert(execenv);
- 
-@@ -71,18 +71,23 @@ static void bo_execenv_create(int fd, struct bo_execenv *execenv)
- 	execenv->driver = get_intel_driver(fd);
- 
- 	if (execenv->driver == INTEL_DRIVER_XE) {
--		uint16_t engine_class;
--		uint32_t devid = intel_get_drm_devid(fd);
--		const struct intel_device_info *info = intel_get_device_info(devid);
--
--		if (info->graphics_ver >= 12 && info->graphics_rel < 60)
--			engine_class = DRM_XE_ENGINE_CLASS_RENDER;
--		else
--			engine_class = DRM_XE_ENGINE_CLASS_COMPUTE;
--
- 		execenv->vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
--		execenv->exec_queue = xe_exec_queue_create_class(fd, execenv->vm,
--								 engine_class);
-+		if (eci) {
-+			execenv->exec_queue = xe_exec_queue_create(fd, execenv->vm,
-+								   eci, 0);
-+		} else {
-+			uint16_t engine_class;
-+			uint32_t devid = intel_get_drm_devid(fd);
-+			const struct intel_device_info *info = intel_get_device_info(devid);
++static int gt_sysfs_open(int gt)
++{
++	int fd, gt_fd;
 +
-+			if (info->graphics_ver >= 12 && info->graphics_rel < 60)
-+				engine_class = DRM_XE_ENGINE_CLASS_RENDER;
-+			else
-+				engine_class = DRM_XE_ENGINE_CLASS_COMPUTE;
++	fd = drm_open_driver(DRIVER_XE);
++	gt_fd = xe_sysfs_gt_open(fd, gt);
++	drm_close_driver(fd);
 +
-+			execenv->exec_queue = xe_exec_queue_create_class(fd, execenv->vm,
-+									 engine_class);
++	return gt_fd;
++}
++
++static bool get_ccs_mode_num_slices(u32 gt, u32 *num_slices)
++{
++	int gt_fd, ret;
++	u32 num_engines;
++
++	gt_fd = gt_sysfs_open(gt);
++	ret = igt_sysfs_scanf(gt_fd, "ccs_mode",
++			      "Enabled compute engines %d; Number of compute slices %d",
++			      &num_engines, num_slices);
++	close(gt_fd);
++
++	return ret > 0;
++}
++
++/**
++ * SUBTEST: ccs-mode-basic
++ * GPU requirement: PVC
++ * Description: Validate 'ccs_mode' sysfs uapi
++ * Functionality: ccs_mode user interface
++ */
++static void
++test_ccs_mode(int num_gt)
++{
++	struct drm_xe_engine_class_instance *hwe;
++	u32 gt, m, ccs_mode, vm, q, num_slices;
++	int fd, gt_fd;
++
++	for (gt = 0; gt < num_gt; gt++) {
++		igt_require(get_ccs_mode_num_slices(gt, &num_slices));
++
++		gt_fd = gt_sysfs_open(gt);
++		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", 0) < 0);
++		for (m = 1; m <= num_slices; m++) {
++			/* compute slices are to be equally distributed among enabled engines */
++			if (num_slices % m) {
++				igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", m) < 0);
++				continue;
++			}
++
++			/* Validate allowed ccs mode setting by reading it back */
++			igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", m) > 0);
++			igt_assert(igt_sysfs_scanf(gt_fd, "ccs_mode", "Enabled compute engines %d", &ccs_mode) > 0);
++			igt_assert(m == ccs_mode);
++
++			fd = drm_open_driver(DRIVER_XE);
++			vm = xe_vm_create(fd, 0, 0);
++			xe_for_each_hw_engine(fd, hwe) {
++				if (hwe->gt_id != gt ||
++				    hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
++					continue;
++
++				q = xe_exec_queue_create(fd, vm, hwe, 0);
++				xe_exec_queue_destroy(fd, q);
++			}
++			hwe->gt_id = gt;
++			hwe->engine_class = DRM_XE_ENGINE_CLASS_COMPUTE;
++			hwe->engine_instance = m;
++			igt_assert_neq(__xe_exec_queue_create(fd, vm, hwe, 0, &q), 0);
++
++			xe_vm_destroy(fd, vm);
++			drm_close_driver(fd);
 +		}
- 	}
- }
- 
-@@ -546,7 +551,8 @@ static void tgllp_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
-  * @size: size of @kernel.
-  */
- static void tgl_compute_exec(int fd, const unsigned char *kernel,
--			     unsigned int size)
-+			     unsigned int size,
-+			     struct drm_xe_engine_class_instance *eci)
- {
- #define TGL_BO_DICT_ENTRIES 7
- 	struct bo_dict_entry bo_dict[TGL_BO_DICT_ENTRIES] = {
-@@ -574,7 +580,7 @@ static void tgl_compute_exec(int fd, const unsigned char *kernel,
- 	struct bo_execenv execenv;
- 	float *dinput;
- 
--	bo_execenv_create(fd, &execenv);
-+	bo_execenv_create(fd, &execenv, eci);
- 
- 	/* Sets Kernel size */
- 	bo_dict[0].size = ALIGN(size, 0x1000);
-@@ -814,7 +820,8 @@ static void xehp_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
-  * @size: size of @kernel.
-  */
- static void xehp_compute_exec(int fd, const unsigned char *kernel,
--			     unsigned int size)
-+			      unsigned int size,
-+			      struct drm_xe_engine_class_instance *eci)
- {
- #define XEHP_BO_DICT_ENTRIES 9
- 	struct bo_dict_entry bo_dict[XEHP_BO_DICT_ENTRIES] = {
-@@ -844,7 +851,7 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
- 	struct bo_execenv execenv;
- 	float *dinput;
- 
--	bo_execenv_create(fd, &execenv);
-+	bo_execenv_create(fd, &execenv, eci);
- 
- 	/* Sets Kernel size */
- 	bo_dict[0].size = ALIGN(size, 0x1000);
-@@ -1028,7 +1035,8 @@ static void xehpc_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
-  * @size: size of @kernel.
-  */
- static void xehpc_compute_exec(int fd, const unsigned char *kernel,
--			       unsigned int size)
-+			       unsigned int size,
-+			       struct drm_xe_engine_class_instance *eci)
- {
- #define XEHPC_BO_DICT_ENTRIES 6
- 	struct bo_dict_entry bo_dict[XEHPC_BO_DICT_ENTRIES] = {
-@@ -1049,7 +1057,7 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
- 	struct bo_execenv execenv;
- 	float *dinput;
- 
--	bo_execenv_create(fd, &execenv);
-+	bo_execenv_create(fd, &execenv, eci);
- 
- 	/* Sets Kernel size */
- 	bo_dict[0].size = ALIGN(size, 0x1000);
-@@ -1103,7 +1111,8 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
- static const struct {
- 	unsigned int ip_ver;
- 	void (*compute_exec)(int fd, const unsigned char *kernel,
--			     unsigned int size);
-+			     unsigned int size,
-+			     struct drm_xe_engine_class_instance *eci);
- 	uint32_t compat;
- } intel_compute_batches[] = {
- 	{
-@@ -1123,7 +1132,8 @@ static const struct {
- 	},
- };
- 
--bool run_intel_compute_kernel(int fd)
-+static bool __run_intel_compute_kernel(int fd,
-+				       struct drm_xe_engine_class_instance *eci)
- {
- 	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
- 	unsigned int batch;
-@@ -1134,8 +1144,10 @@ bool run_intel_compute_kernel(int fd)
- 		if (ip_ver == intel_compute_batches[batch].ip_ver)
- 			break;
- 	}
--	if (batch == ARRAY_SIZE(intel_compute_batches))
-+	if (batch == ARRAY_SIZE(intel_compute_batches)) {
-+		igt_debug("GPU version 0x%x not supported\n", ip_ver);
- 		return false;
-+	}
- 
- 	if (!(COMPAT_DRIVER_FLAG(driver) & intel_compute_batches[batch].compat)) {
- 		igt_debug("Driver is not supported: flags %x & %x\n",
-@@ -1153,7 +1165,25 @@ bool run_intel_compute_kernel(int fd)
- 		return 1;
- 
- 	intel_compute_batches[batch].compute_exec(fd, kernels->kernel,
--						  kernels->size);
-+						  kernels->size, eci);
- 
- 	return true;
- }
++		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", m) < 0);
 +
-+bool run_intel_compute_kernel(int fd)
-+{
-+	return __run_intel_compute_kernel(fd, NULL);
++		/* Can't change ccs_mode with an open exec_queue */
++		fd = drm_open_driver(DRIVER_XE);
++		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", 1) < 0);
++		drm_close_driver(fd);
++
++		/* Set ccs_mode back to default value */
++		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", 1) > 0);
++
++		close(gt_fd);
++	}
 +}
 +
-+bool run_intel_compute_kernel_on_engine(int fd,
-+					struct drm_xe_engine_class_instance *eci)
++/**
++ * SUBTEST: ccs-mode-compute-kernel
++ * GPU requirement: PVC
++ * Description: Validate 'ccs_mode' by running compute kernel
++ * Functionality: CCS mode funtionality
++ */
++static void
++test_compute_kernel_with_ccs_mode(int num_gt)
 +{
-+	if (eci->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE &&
-+	    eci->engine_class != DRM_XE_ENGINE_CLASS_RENDER) {
-+		igt_debug("%s engine class not supported\n",
-+			  xe_engine_class_string(eci->engine_class));
-+		return false;
++	struct drm_xe_engine_class_instance *hwe;
++	u32 gt, m, num_slices;
++	int fd, gt_fd;
++
++	for (gt = 0; gt < num_gt; gt++) {
++		igt_require(get_ccs_mode_num_slices(gt, &num_slices));
++
++		gt_fd = gt_sysfs_open(gt);
++		for (m = 1; m <= num_slices; m++) {
++			if (num_slices % m)
++				continue;
++
++			igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", m) > 0);
++
++			/* Run compute kernel on enabled engines */
++			fd = drm_open_driver(DRIVER_XE);
++			xe_for_each_hw_engine(fd, hwe) {
++				if (hwe->gt_id != gt ||
++				    hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
++					continue;
++
++				igt_info("GT-%d ccs_mode %d ccs engine instance %d\n",
++					 gt, m, hwe->engine_instance);
++				igt_assert_f(run_intel_compute_kernel_on_engine(fd, hwe),
++					     "Unable to run compute kernel successfully\n");
++			}
++			drm_close_driver(fd);
++		}
++
++		/* Set ccs_mode back to default value */
++		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", 1) > 0);
++
++		close(gt_fd);
 +	}
-+
-+	return __run_intel_compute_kernel(fd, eci);
 +}
-diff --git a/lib/intel_compute.h b/lib/intel_compute.h
-index ba153f064..5d81c3d62 100644
---- a/lib/intel_compute.h
-+++ b/lib/intel_compute.h
-@@ -9,6 +9,8 @@
- #ifndef INTEL_COMPUTE_H
- #define INTEL_COMPUTE_H
- 
-+#include "xe_drm.h"
 +
- /*
-  * OpenCL Kernels are generated using:
-  *
-@@ -28,5 +30,6 @@ struct intel_compute_kernels {
- extern const struct intel_compute_kernels intel_compute_square_kernels[];
+ /**
+  * SUBTEST: compute-square
+  * GPU requirement: TGL, PVC
+@@ -32,14 +166,22 @@ test_compute_square(int fd)
  
- bool run_intel_compute_kernel(int fd);
-+bool run_intel_compute_kernel_on_engine(int fd, struct drm_xe_engine_class_instance *eci);
+ igt_main
+ {
+-	int xe;
++	int xe, num_gt;
  
- #endif	/* INTEL_COMPUTE_H */
+-	igt_fixture
++	igt_fixture {
+ 		xe = drm_open_driver(DRIVER_XE);
++		num_gt = xe_number_gt(xe);
++	}
+ 
+ 	igt_subtest("compute-square")
+ 		test_compute_square(xe);
+ 
+ 	igt_fixture
+ 		drm_close_driver(xe);
++
++	igt_subtest("ccs-mode-basic")
++		test_ccs_mode(num_gt);
++
++	igt_subtest("ccs-mode-compute-kernel")
++		test_compute_kernel_with_ccs_mode(num_gt);
+ }
 -- 
 2.21.0.rc0.32.g243a4c7e27
