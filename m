@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 26F7310E433
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7F18510E433
  for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 00:45:00 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 13 Nov 2023 16:44:48 -0800
-Message-Id: <20231114004451.2445-1-niranjana.vishwanathapura@intel.com>
+Date: Mon, 13 Nov 2023 16:44:49 -0800
+Message-Id: <20231114004451.2445-2-niranjana.vishwanathapura@intel.com>
+In-Reply-To: <20231114004451.2445-1-niranjana.vishwanathapura@intel.com>
+References: <20231114004451.2445-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [RFC v3 i-g-t 0/3] xe: Validate fixed CCS mode setting
+Subject: [igt-dev] [RFC v3 i-g-t 1/3] lib/xe: Add __xe_exec_queue_create()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,36 +22,114 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Validate static assignment of compute slices to a user selected
-number of compute engines. Select number of compute engines by
-writing it to the per-tile 'ccs_mode' sysfs interface. Validate
-that compute kernels can be run on enabled CCS engines and
-submitting jobs on disabled compute engines is not permitted.
-
-v2: Validate by running compute kernel on all possible CCS modes
-    and enabled CCS engines. Ensure no exec queue is created with
-    disabled CCS engines.
-v3: ccs_mode a per 'gt' entry instead of per tile.
-    ccs_mode update only allowed when there are no drm clients.
-
-NOTE: Corresponding driver changes is,
-[RFC v3 0/2] drm/xe/pvc: Enable fixed CCS mode
+Add __xe_exec_queue_create() which does not assert upon error.
 
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+---
+ lib/xe/xe_ioctl.c       | 29 ++++++++++++++++++++++++-----
+ lib/xe/xe_ioctl.h       |  3 +++
+ tests/intel/xe_create.c | 26 --------------------------
+ 3 files changed, 27 insertions(+), 31 deletions(-)
 
-
-Niranjana Vishwanathapura (3):
-  lib/xe: Add __xe_exec_queue_create()
-  lib/intel_compute: Update intel_compute to run on specified engine
-  tests/xe_compute: Validate ccs_mode setting
-
- lib/intel_compute.c      |  76 ++++++++++++++------
- lib/intel_compute.h      |   3 +
- lib/xe/xe_ioctl.c        |  29 ++++++--
- lib/xe/xe_ioctl.h        |   3 +
- tests/intel/xe_compute.c | 146 ++++++++++++++++++++++++++++++++++++++-
- tests/intel/xe_create.c  |  26 -------
- 6 files changed, 227 insertions(+), 56 deletions(-)
-
+diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+index 895e3bd4e..6f06c304c 100644
+--- a/lib/xe/xe_ioctl.c
++++ b/lib/xe/xe_ioctl.c
+@@ -287,9 +287,9 @@ uint32_t xe_bind_exec_queue_create(int fd, uint32_t vm, uint64_t ext, bool async
+ 	return create.exec_queue_id;
+ }
+ 
+-uint32_t xe_exec_queue_create(int fd, uint32_t vm,
+-			  struct drm_xe_engine_class_instance *instance,
+-			  uint64_t ext)
++uint32_t __xe_exec_queue_create(int fd, uint32_t vm,
++				struct drm_xe_engine_class_instance *instance,
++				uint64_t ext, uint32_t *exec_queue_id)
+ {
+ 	struct drm_xe_exec_queue_create create = {
+ 		.extensions = ext,
+@@ -298,10 +298,29 @@ uint32_t xe_exec_queue_create(int fd, uint32_t vm,
+ 		.num_placements = 1,
+ 		.instances = to_user_pointer(instance),
+ 	};
++	int err;
+ 
+-	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC_QUEUE_CREATE, &create), 0);
++	err = igt_ioctl(fd, DRM_IOCTL_XE_EXEC_QUEUE_CREATE, &create);
++	if (err) {
++		err = -errno;
++		igt_assume(err);
++		errno = 0;
++		return err;
++	}
+ 
+-	return create.exec_queue_id;
++	*exec_queue_id = create.exec_queue_id;
++	return 0;
++}
++
++uint32_t xe_exec_queue_create(int fd, uint32_t vm,
++			      struct drm_xe_engine_class_instance *instance,
++			      uint64_t ext)
++{
++	uint32_t exec_queue_id;
++
++	igt_assert_eq(__xe_exec_queue_create(fd, vm, instance, ext, &exec_queue_id), 0);
++
++	return exec_queue_id;
+ }
+ 
+ uint32_t xe_exec_queue_create_class(int fd, uint32_t vm, uint16_t class)
+diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+index a8dbcf376..96aac8544 100644
+--- a/lib/xe/xe_ioctl.h
++++ b/lib/xe/xe_ioctl.h
+@@ -68,6 +68,9 @@ uint32_t __xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags
+ 			      uint32_t *handle);
+ uint32_t xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags);
+ uint32_t xe_bo_create(int fd, int gt, uint32_t vm, uint64_t size);
++uint32_t __xe_exec_queue_create(int fd, uint32_t vm,
++				struct drm_xe_engine_class_instance *instance,
++				uint64_t ext, uint32_t *exec_queue_id);
+ uint32_t xe_exec_queue_create(int fd, uint32_t vm,
+ 			  struct drm_xe_engine_class_instance *instance,
+ 			  uint64_t ext);
+diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+index d99bd51cf..145d936f2 100644
+--- a/tests/intel/xe_create.c
++++ b/tests/intel/xe_create.c
+@@ -92,32 +92,6 @@ enum exec_queue_destroy {
+ 	LEAK
+ };
+ 
+-static uint32_t __xe_exec_queue_create(int fd, uint32_t vm,
+-				   struct drm_xe_engine_class_instance *instance,
+-				   uint64_t ext,
+-				   uint32_t *exec_queuep)
+-{
+-	struct drm_xe_exec_queue_create create = {
+-		.extensions = ext,
+-		.vm_id = vm,
+-		.width = 1,
+-		.num_placements = 1,
+-		.instances = to_user_pointer(instance),
+-	};
+-	int err = 0;
+-
+-	if (igt_ioctl(fd, DRM_IOCTL_XE_EXEC_QUEUE_CREATE, &create) == 0) {
+-		*exec_queuep = create.exec_queue_id;
+-	} else {
+-		igt_warn("Can't create exec_queue, errno: %d\n", errno);
+-		err = -errno;
+-		igt_assume(err);
+-	}
+-	errno = 0;
+-
+-	return err;
+-}
+-
+ #define MAXEXECQUEUES 2048
+ #define MAXTIME 5
+ 
 -- 
 2.21.0.rc0.32.g243a4c7e27
