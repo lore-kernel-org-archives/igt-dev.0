@@ -1,16 +1,30 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============7219976224730014738=="
+Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com
+ [IPv6:2607:f8b0:4864:20::22b])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C247610E461
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 16:19:51 +0000 (UTC)
+Received: by mail-oi1-x22b.google.com with SMTP id
+ 5614622812f47-3b3ec45d6e9so3576203b6e.0
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 08:19:51 -0800 (PST)
+Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com.
+ [209.85.161.52]) by smtp.gmail.com with ESMTPSA id
+ n21-20020a05680803b500b003a78d196acasm1162694oie.32.2023.11.14.08.19.48
+ for <igt-dev@lists.freedesktop.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 14 Nov 2023 08:19:48 -0800 (PST)
+Received: by mail-oo1-f52.google.com with SMTP id
+ 006d021491bc7-586753b0ab0so3210342eaf.0
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 08:19:48 -0800 (PST)
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: sai.gowtham.ch@intel.com
-Date: Tue, 14 Nov 2023 16:26:52 -0000
-Message-ID: <169997921233.29257.4048712865303686846@emeril.freedesktop.org>
-References: <20231114122810.6838-1-sai.gowtham.ch@intel.com>
-In-Reply-To: <20231114122810.6838-1-sai.gowtham.ch@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/in?=
- =?utf-8?q?tel/xe=5Fexec=5Fqueue=5Fproperty=3A_Negative_tests_for_get_exec?=
- =?utf-8?q?=5Fqueue_property_ioctl_=28rev2=29?=
+References: <20231023205910.3556533-1-sean@poorly.run>
+In-Reply-To: <20231023205910.3556533-1-sean@poorly.run>
+From: Sean Paul <seanpaul@chromium.org>
+Date: Tue, 14 Nov 2023 11:19:10 -0500
+Message-ID: <CAOw6vbKBCHreAuaW0d3qB5hk4FcJZAqLSU6yOL=o_DwHtU_1Qw@mail.gmail.com>
+To: Sean Paul <sean@poorly.run>
+Content-Type: multipart/alternative; boundary="000000000000cc445c060a1f27f0"
+Subject: Re: [igt-dev] [PATCH v2 0/8] tests/kms_vrr: Modify kms_vrr to allow
+ flicker profiling
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,242 +32,80 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7219976224730014738==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+--000000000000cc445c060a1f27f0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-== Series Details ==
+Friendly review ping.
 
-Series: tests/intel/xe_exec_queue_property: Negative tests for get exec_queue property ioctl (rev2)
-URL   : https://patchwork.freedesktop.org/series/126374/
-State : success
+On Mon, Oct 23, 2023 at 4:59=E2=80=AFPM Sean Paul <sean@poorly.run> wrote:
 
-== Summary ==
+> From: Sean Paul <seanpaul@chromium.org>
+>
+> Second revision of the set. New version addresses the review comments
+> from Bhanu and adds a new maxmin subtest which alternates the rate
+> between max and min every frame.
+>
+> Sean Paul (8):
+>   tests/kms_vrr: Move fb0 and fb1 to an array
+>   tests/kms_vrr: Move vtest_ns into data_t
+>   tests/kms_vrr: Allow test rate to be altered from the command line
+>   tests/kms_vrr: Allow test duration to be specified from the command
+>     line
+>   tests/kms_vrr: Change the pattern displayed in the test
+>   tests/kms_vrr: Add ability to flip static image for flicker profiling
+>   tests/kms_vrr: Allow for multiple rates in a test
+>   tests/kms_vrr: Add a max/min test to oscillate between rates
+>
+>  tests/kms_vrr.c | 213 +++++++++++++++++++++++++++++++++++-------------
+>  1 file changed, 156 insertions(+), 57 deletions(-)
+>
+> --
+> Sean Paul, Software Engineer, Google / Chromium OS
+>
+>
 
-CI Bug Log - changes from XEIGT_7587_BAT -> XEIGTPW_10184_BAT
-====================================================
+--000000000000cc445c060a1f27f0
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Summary
--------
+<div dir=3D"ltr">Friendly review ping.</div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Mon, Oct 23, 2023 at 4:59=E2=80=AF=
+PM Sean Paul &lt;sean@poorly.run&gt; wrote:<br></div><blockquote class=3D"g=
+mail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204=
+,204,204);padding-left:1ex">From: Sean Paul &lt;<a href=3D"mailto:seanpaul@=
+chromium.org" target=3D"_blank">seanpaul@chromium.org</a>&gt;<br>
+<br>
+Second revision of the set. New version addresses the review comments<br>
+from Bhanu and adds a new maxmin subtest which alternates the rate<br>
+between max and min every frame.<br>
+<br>
+Sean Paul (8):<br>
+=C2=A0 tests/kms_vrr: Move fb0 and fb1 to an array<br>
+=C2=A0 tests/kms_vrr: Move vtest_ns into data_t<br>
+=C2=A0 tests/kms_vrr: Allow test rate to be altered from the command line<b=
+r>
+=C2=A0 tests/kms_vrr: Allow test duration to be specified from the command<=
+br>
+=C2=A0 =C2=A0 line<br>
+=C2=A0 tests/kms_vrr: Change the pattern displayed in the test<br>
+=C2=A0 tests/kms_vrr: Add ability to flip static image for flicker profilin=
+g<br>
+=C2=A0 tests/kms_vrr: Allow for multiple rates in a test<br>
+=C2=A0 tests/kms_vrr: Add a max/min test to oscillate between rates<br>
+<br>
+=C2=A0tests/kms_vrr.c | 213 +++++++++++++++++++++++++++++++++++------------=
+-<br>
+=C2=A01 file changed, 156 insertions(+), 57 deletions(-)<br>
+<br>
+-- <br>
+Sean Paul, Software Engineer, Google / Chromium OS<br>
+<br>
+</blockquote></div>
 
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10184_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3:
-    - bat-dg2-oem2:       NOTRUN -> [FAIL][1] ([Intel XE#400] / [Intel XE#616])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html
-
-  * igt@kms_psr@primary_page_flip:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][2] ([Intel XE#535]) +2 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html
-
-  * igt@xe_exec_fault_mode@many-basic:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][3] ([Intel XE#288]) +17 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
-    - bat-adlp-7:         [FAIL][4] ([Intel XE#480]) -> [PASS][5] +1 other test pass
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7587/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-
-  * igt@kms_pipe_crc_basic@hang-read-crc:
-    - bat-dg2-oem2:       [INCOMPLETE][6] ([Intel XE#282] / [Intel XE#749]) -> [PASS][7]
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7587/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html
-
-  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3:
-    - bat-dg2-oem2:       [INCOMPLETE][8] ([Intel XE#282] / [Intel XE#545]) -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7587/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html
-
-  
-#### Warnings ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [DMESG-FAIL][10] ([Intel XE#282] / [i915#2017]) -> [FAIL][11] ([Intel XE#616] / [Intel XE#750])
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7587/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
-    - bat-dg2-oem2:       [TIMEOUT][12] ([Intel XE#430] / [Intel XE#530]) -> [FAIL][13] ([Intel XE#400] / [Intel XE#616])
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7587/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
-   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3:
-    - bat-dg2-oem2:       [TIMEOUT][14] ([Intel XE#530]) -> [FAIL][15] ([Intel XE#400] / [Intel XE#616])
-   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7587/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3.html
-   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#282]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/282
-  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
-  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
-  [Intel XE#430]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/430
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#530]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/530
-  [Intel XE#535]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/535
-  [Intel XE#545]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/545
-  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
-  [Intel XE#749]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/749
-  [Intel XE#750]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/750
-  [i915#2017]: https://gitlab.freedesktop.org/drm/intel/issues/2017
-
-
-Build changes
--------------
-
-  * IGT: IGT_7587 -> IGTPW_10184
-
-  IGTPW_10184: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10184/index.html
-  IGT_7587: bec435c24d23524d55f419a02af375e84c9be9d3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-488-7dc3dda9b2df5a5c8949532f254a0689de70f093: 7dc3dda9b2df5a5c8949532f254a0689de70f093
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/index.html
-
---===============7219976224730014738==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_queue_property: Negative tests for get exec_queue property ioctl (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126374/">https://patchwork.freedesktop.org/series/126374/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7587_BAT -&gt; XEIGTPW_10184_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10184_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@primary_page_flip:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/535">Intel XE#535</a>) +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_fault_mode@many-basic:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +17 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7587/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@hang-read-crc:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7587/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/749">Intel XE#749</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7587/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/545">Intel XE#545</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7587/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2017">i915#2017</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/750">Intel XE#750</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7587/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/430">Intel XE#430</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/530">Intel XE#530</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7587/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/530">Intel XE#530</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7587 -&gt; IGTPW_10184</li>
-</ul>
-<p>IGTPW_10184: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10184/index.html<br />
-  IGT_7587: bec435c24d23524d55f419a02af375e84c9be9d3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-488-7dc3dda9b2df5a5c8949532f254a0689de70f093: 7dc3dda9b2df5a5c8949532f254a0689de70f093</p>
-
-</body>
-</html>
-
---===============7219976224730014738==--
+--000000000000cc445c060a1f27f0--
