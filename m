@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 36A3810E44C
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 13:44:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2E22F10E449
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 13:44:49 +0000 (UTC)
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 14 Nov 2023 13:44:26 +0000
-Message-Id: <20231114134426.7-9-francois.dugast@intel.com>
+Date: Tue, 14 Nov 2023 13:44:25 +0000
+Message-Id: <20231114134426.7-8-francois.dugast@intel.com>
 In-Reply-To: <20231114134426.7-1-francois.dugast@intel.com>
 References: <20231114134426.7-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v1 8/8] drm-uapi/xe: Be more specific about
- vm_bind prefetch region
+Subject: [igt-dev] [PATCH v1 7/8] drm-uapi/xe: Differentiate WAIT_OP from
+ WAIT_MASK
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,133 +26,125 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-Align with kernel commit ("drm/xe/uapi: Be more specific about the vm_bind prefetch region")
+Align with kernel commit ("drm/xe/uapi: Differentiate WAIT_OP from WAIT_MASK")
 
 Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 ---
- include/drm-uapi/xe_drm.h | 8 ++++++--
- lib/intel_batchbuffer.c   | 4 ++--
- lib/xe/xe_ioctl.c         | 8 ++++----
- lib/xe/xe_ioctl.h         | 2 +-
- lib/xe/xe_util.c          | 2 +-
- tests/intel/xe_vm.c       | 2 +-
- 6 files changed, 15 insertions(+), 11 deletions(-)
+ include/drm-uapi/xe_drm.h  | 21 +++++++++++----------
+ lib/xe/xe_ioctl.c          |  8 ++++----
+ tests/intel/xe_waitfence.c | 10 +++++-----
+ 3 files changed, 20 insertions(+), 19 deletions(-)
 
 diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index 7a02b78bf..af32ec161 100644
+index 2dae8b03e..7a02b78bf 100644
 --- a/include/drm-uapi/xe_drm.h
 +++ b/include/drm-uapi/xe_drm.h
-@@ -672,8 +672,12 @@ struct drm_xe_vm_bind_op {
- 	/** @flags: Bind flags */
- 	__u32 flags;
+@@ -914,12 +914,12 @@ struct drm_xe_wait_user_fence {
+ 	 */
+ 	__u64 addr;
  
--	/** @mem_region: Memory region to prefetch VMA to, instance not a mask */
--	__u32 region;
-+	/**
-+	 * @prefetch_mem_region_instance: Memory region to prefetch VMA to.
-+	 * It is a region instance, not a mask.
-+	 * To be used only with %DRM_XE_VM_BIND_OP_PREFETCH operation.
-+	 */
-+	__u32 prefetch_mem_region_instance;
+-#define DRM_XE_UFENCE_WAIT_EQ	0
+-#define DRM_XE_UFENCE_WAIT_NEQ	1
+-#define DRM_XE_UFENCE_WAIT_GT	2
+-#define DRM_XE_UFENCE_WAIT_GTE	3
+-#define DRM_XE_UFENCE_WAIT_LT	4
+-#define DRM_XE_UFENCE_WAIT_LTE	5
++#define DRM_XE_UFENCE_WAIT_OP_EQ	0x0
++#define DRM_XE_UFENCE_WAIT_OP_NEQ	0x1
++#define DRM_XE_UFENCE_WAIT_OP_GT	0x2
++#define DRM_XE_UFENCE_WAIT_OP_GTE	0x3
++#define DRM_XE_UFENCE_WAIT_OP_LT	0x4
++#define DRM_XE_UFENCE_WAIT_OP_LTE	0x5
+ 	/** @op: wait operation (type of comparison) */
+ 	__u16 op;
  
- 	/** @reserved: Reserved */
- 	__u64 reserved[2];
-diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index b59c490db..f12d6219d 100644
---- a/lib/intel_batchbuffer.c
-+++ b/lib/intel_batchbuffer.c
-@@ -1282,7 +1282,7 @@ void intel_bb_destroy(struct intel_bb *ibb)
+@@ -934,12 +934,13 @@ struct drm_xe_wait_user_fence {
+ 	/** @value: compare value */
+ 	__u64 value;
  
- static struct drm_xe_vm_bind_op *xe_alloc_bind_ops(struct intel_bb *ibb,
- 						   uint32_t op, uint32_t flags,
--						   uint32_t region)
-+						   uint32_t prefetch_region)
- {
- 	struct drm_i915_gem_exec_object2 **objects = ibb->objects;
- 	struct drm_xe_vm_bind_op *bind_ops, *ops;
-@@ -1303,7 +1303,7 @@ static struct drm_xe_vm_bind_op *xe_alloc_bind_ops(struct intel_bb *ibb,
- 		ops->obj_offset = 0;
- 		ops->addr = objects[i]->offset;
- 		ops->range = objects[i]->rsvd1;
--		ops->region = region;
-+		ops->prefetch_mem_region_instance = prefetch_region;
- 
- 		igt_debug("  [%d]: handle: %u, offset: %llx, size: %llx\n",
- 			  i, ops->obj, (long long)ops->addr, (long long)ops->range);
+-#define DRM_XE_UFENCE_WAIT_U8		0xffu
+-#define DRM_XE_UFENCE_WAIT_U16		0xffffu
+-#define DRM_XE_UFENCE_WAIT_U32		0xffffffffu
+-#define DRM_XE_UFENCE_WAIT_U64		0xffffffffffffffffu
++#define DRM_XE_UFENCE_WAIT_MASK_U8	0xffu
++#define DRM_XE_UFENCE_WAIT_MASK_U16	0xffffu
++#define DRM_XE_UFENCE_WAIT_MASK_U32	0xffffffffu
++#define DRM_XE_UFENCE_WAIT_MASK_U64	0xffffffffffffffffu
+ 	/** @mask: comparison mask */
+ 	__u64 mask;
++
+ 	/**
+ 	 * @timeout: how long to wait before bailing, value in nanoseconds.
+ 	 * Without DRM_XE_UFENCE_WAIT_FLAG_ABSTIME flag set (relative timeout)
 diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index a9cfdbf9d..738c4ffdb 100644
+index db41d5ba5..a9cfdbf9d 100644
 --- a/lib/xe/xe_ioctl.c
 +++ b/lib/xe/xe_ioctl.c
-@@ -92,7 +92,7 @@ void xe_vm_bind_array(int fd, uint32_t vm, uint32_t exec_queue,
- int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
- 		  uint64_t offset, uint64_t addr, uint64_t size, uint32_t op,
- 		  uint32_t flags, struct drm_xe_sync *sync, uint32_t num_syncs,
--		  uint32_t region, uint64_t ext)
-+		  uint32_t prefetch_region, uint64_t ext)
+@@ -415,10 +415,10 @@ int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
  {
- 	struct drm_xe_vm_bind bind = {
- 		.extensions = ext,
-@@ -104,7 +104,7 @@ int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
- 		.bind.addr = addr,
- 		.bind.op = op,
- 		.bind.flags = flags,
--		.bind.region = region,
-+		.bind.prefetch_mem_region_instance = prefetch_region,
- 		.num_syncs = num_syncs,
- 		.syncs = (uintptr_t)sync,
- 		.exec_queue_id = exec_queue,
-@@ -119,10 +119,10 @@ int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
- void  __xe_vm_bind_assert(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
- 			  uint64_t offset, uint64_t addr, uint64_t size,
- 			  uint32_t op, uint32_t flags, struct drm_xe_sync *sync,
--			  uint32_t num_syncs, uint32_t region, uint64_t ext)
-+			  uint32_t num_syncs, uint32_t prefetch_region, uint64_t ext)
+ 	struct drm_xe_wait_user_fence wait = {
+ 		.addr = to_user_pointer(addr),
+-		.op = DRM_XE_UFENCE_WAIT_EQ,
++		.op = DRM_XE_UFENCE_WAIT_OP_EQ,
+ 		.flags = !eci ? DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP : 0,
+ 		.value = value,
+-		.mask = DRM_XE_UFENCE_WAIT_U64,
++		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
+ 		.timeout = timeout,
+ 		.num_engines = eci ? 1 :0,
+ 		.instances = eci ? to_user_pointer(eci) : 0,
+@@ -447,10 +447,10 @@ int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
  {
- 	igt_assert_eq(__xe_vm_bind(fd, vm, exec_queue, bo, offset, addr, size,
--				   op, flags, sync, num_syncs, region, ext), 0);
-+				   op, flags, sync, num_syncs, prefetch_region, ext), 0);
- }
+ 	struct drm_xe_wait_user_fence wait = {
+ 		.addr = to_user_pointer(addr),
+-		.op = DRM_XE_UFENCE_WAIT_EQ,
++		.op = DRM_XE_UFENCE_WAIT_OP_EQ,
+ 		.flags = !eci ? DRM_XE_UFENCE_WAIT_FLAG_SOFT_OP | DRM_XE_UFENCE_WAIT_FLAG_ABSTIME : 0,
+ 		.value = value,
+-		.mask = DRM_XE_UFENCE_WAIT_U64,
++		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
+ 		.timeout = timeout,
+ 		.num_engines = eci ? 1 : 0,
+ 		.instances = eci ? to_user_pointer(eci) : 0,
+diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
+index 2efdc1245..b1cae0d9b 100644
+--- a/tests/intel/xe_waitfence.c
++++ b/tests/intel/xe_waitfence.c
+@@ -123,10 +123,10 @@ invalid_flag(int fd)
  
- void xe_vm_bind(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
-diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index d9c97bf22..a9171bcf7 100644
---- a/lib/xe/xe_ioctl.h
-+++ b/lib/xe/xe_ioctl.h
-@@ -24,7 +24,7 @@ int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
- void  __xe_vm_bind_assert(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
- 			  uint64_t offset, uint64_t addr, uint64_t size,
- 			  uint32_t op, uint32_t flags, struct drm_xe_sync *sync,
--			  uint32_t num_syncs, uint32_t region, uint64_t ext);
-+			  uint32_t num_syncs, uint32_t prefetch_region, uint64_t ext);
- void xe_vm_bind(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
- 		uint64_t addr, uint64_t size,
- 		struct drm_xe_sync *sync, uint32_t num_syncs);
-diff --git a/lib/xe/xe_util.c b/lib/xe/xe_util.c
-index 2635edf72..742e6333e 100644
---- a/lib/xe/xe_util.c
-+++ b/lib/xe/xe_util.c
-@@ -147,7 +147,7 @@ static struct drm_xe_vm_bind_op *xe_alloc_bind_ops(struct igt_list_head *obj_lis
- 		ops->obj_offset = 0;
- 		ops->addr = obj->offset;
- 		ops->range = obj->size;
--		ops->region = 0;
-+		ops->prefetch_mem_region_instance = 0;
+ 	struct drm_xe_wait_user_fence wait = {
+ 		.addr = to_user_pointer(&wait_fence),
+-		.op = DRM_XE_UFENCE_WAIT_EQ,
++		.op = DRM_XE_UFENCE_WAIT_OP_EQ,
+ 		.flags = -1,
+ 		.value = 1,
+-		.mask = DRM_XE_UFENCE_WAIT_U64,
++		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
+ 		.timeout = -1,
+ 		.num_engines = 0,
+ 		.instances = 0,
+@@ -151,7 +151,7 @@ invalid_ops(int fd)
+ 		.op = -1,
+ 		.flags = 0,
+ 		.value = 1,
+-		.mask = DRM_XE_UFENCE_WAIT_U64,
++		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
+ 		.timeout = 1,
+ 		.num_engines = 0,
+ 		.instances = 0,
+@@ -173,10 +173,10 @@ invalid_engine(int fd)
  
- 		bind_info("  [%d]: [%6s] handle: %u, offset: %llx, size: %llx\n",
- 			  i, obj->bind_op == XE_OBJECT_BIND ? "BIND" : "UNBIND",
-diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-index 86c8d0c5d..05e8e7516 100644
---- a/tests/intel/xe_vm.c
-+++ b/tests/intel/xe_vm.c
-@@ -797,7 +797,7 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
- 		bind_ops[i].tile_mask = 0x1 << eci->gt_id;
- 		bind_ops[i].op = DRM_XE_VM_BIND_OP_MAP;
- 		bind_ops[i].flags = DRM_XE_VM_BIND_FLAG_ASYNC;
--		bind_ops[i].region = 0;
-+		bind_ops[i].prefetch_mem_region_instance = 0;
- 		bind_ops[i].reserved[0] = 0;
- 		bind_ops[i].reserved[1] = 0;
- 
+ 	struct drm_xe_wait_user_fence wait = {
+ 		.addr = to_user_pointer(&wait_fence),
+-		.op = DRM_XE_UFENCE_WAIT_EQ,
++		.op = DRM_XE_UFENCE_WAIT_OP_EQ,
+ 		.flags = 0,
+ 		.value = 1,
+-		.mask = DRM_XE_UFENCE_WAIT_U64,
++		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
+ 		.timeout = -1,
+ 		.num_engines = 1,
+ 		.instances = 0,
 -- 
 2.34.1
