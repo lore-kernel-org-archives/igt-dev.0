@@ -1,21 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0139C10E456
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 15:50:49 +0000 (UTC)
-From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
-To: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Ch, Sai
- Gowtham" <sai.gowtham.ch@intel.com>
-Date: Tue, 14 Nov 2023 15:50:11 +0000
-Message-ID: <MW3PR11MB47489AAF69EA2BC1E298CD38AEB2A@MW3PR11MB4748.namprd11.prod.outlook.com>
+Content-Type: multipart/alternative;
+ boundary="===============7219976224730014738=="
+MIME-Version: 1.0
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: sai.gowtham.ch@intel.com
+Date: Tue, 14 Nov 2023 16:26:52 -0000
+Message-ID: <169997921233.29257.4048712865303686846@emeril.freedesktop.org>
 References: <20231114122810.6838-1-sai.gowtham.ch@intel.com>
 In-Reply-To: <20231114122810.6838-1-sai.gowtham.ch@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/intel/xe_exec_queue_property:
- Negative tests for get exec_queue property ioctl
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/in?=
+ =?utf-8?q?tel/xe=5Fexec=5Fqueue=5Fproperty=3A_Negative_tests_for_get_exec?=
+ =?utf-8?q?=5Fqueue_property_ioctl_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,146 +18,242 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============7219976224730014738==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: tests/intel/xe_exec_queue_property: Negative tests for get exec_queue property ioctl (rev2)
+URL   : https://patchwork.freedesktop.org/series/126374/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7587_BAT -> XEIGTPW_10184_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10184_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3:
+    - bat-dg2-oem2:       NOTRUN -> [FAIL][1] ([Intel XE#400] / [Intel XE#616])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html
+
+  * igt@kms_psr@primary_page_flip:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][2] ([Intel XE#535]) +2 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html
+
+  * igt@xe_exec_fault_mode@many-basic:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][3] ([Intel XE#288]) +17 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
+    - bat-adlp-7:         [FAIL][4] ([Intel XE#480]) -> [PASS][5] +1 other test pass
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7587/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+
+  * igt@kms_pipe_crc_basic@hang-read-crc:
+    - bat-dg2-oem2:       [INCOMPLETE][6] ([Intel XE#282] / [Intel XE#749]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7587/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3:
+    - bat-dg2-oem2:       [INCOMPLETE][8] ([Intel XE#282] / [Intel XE#545]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7587/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html
+
+  
+#### Warnings ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [DMESG-FAIL][10] ([Intel XE#282] / [i915#2017]) -> [FAIL][11] ([Intel XE#616] / [Intel XE#750])
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7587/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
+    - bat-dg2-oem2:       [TIMEOUT][12] ([Intel XE#430] / [Intel XE#530]) -> [FAIL][13] ([Intel XE#400] / [Intel XE#616])
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7587/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3:
+    - bat-dg2-oem2:       [TIMEOUT][14] ([Intel XE#530]) -> [FAIL][15] ([Intel XE#400] / [Intel XE#616])
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7587/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3.html
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#282]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/282
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
+  [Intel XE#430]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/430
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#530]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/530
+  [Intel XE#535]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/535
+  [Intel XE#545]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/545
+  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
+  [Intel XE#749]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/749
+  [Intel XE#750]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/750
+  [i915#2017]: https://gitlab.freedesktop.org/drm/intel/issues/2017
 
 
-> -----Original Message-----
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
-> sai.gowtham.ch@intel.com
-> Sent: Tuesday, November 14, 2023 5:58 PM
-> To: igt-dev@lists.freedesktop.org; Ch, Sai Gowtham
-> <sai.gowtham.ch@intel.com>
-> Subject: [igt-dev] [PATCH i-g-t] tests/intel/xe_exec_queue_property: Nega=
-tive
-> tests for get exec_queue property ioctl
->=20
-> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
->=20
-> Add Negative tests for get exec_queue property ioctl.
->=20
-> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-> ---
->  tests/intel/xe_exec_queue_property.c | 77 +++++++++++++++++++++++++++-
->  1 file changed, 76 insertions(+), 1 deletion(-)
->=20
-> diff --git a/tests/intel/xe_exec_queue_property.c
-> b/tests/intel/xe_exec_queue_property.c
-> index 4e32aefa5..5278304be 100644
-> --- a/tests/intel/xe_exec_queue_property.c
-> +++ b/tests/intel/xe_exec_queue_property.c
-> @@ -4,7 +4,7 @@
->   */
->=20
->  /**
-> - * TEST: Basic tests to check exec_queue set property functionality
-> + * TEST: Basic tests to check exec_queue set/get property functionality
->   * Category: Software building block
->   * Sub-category: exec queue property
->   * Functionality: exec queue set property @@ -108,6 +108,72 @@ static vo=
-id
-> test_property_min_max(int xe, int engine, const char **property)
->  	test_set_property(xe, property_name, min - 1, -EINVAL);  }
->=20
-> +/**
-> + * SUBTEST: Invalid-exec-queue
-> + * Description: Negative test to check the expected behaviour with inval=
-id
-> exec_queue_id.
-> + * Test category: functionality test
-> + */
-> +static void Invalid_exec_queue_id(int xe) {
-> +	struct drm_xe_exec_queue_get_property args =3D {
-> +		.exec_queue_id =3D 0xffff,
-> +		.property =3D XE_EXEC_QUEUE_GET_PROPERTY_BAN,
-> +	};
-> +
-> +	do_ioctl_err(xe, DRM_IOCTL_XE_EXEC_QUEUE_GET_PROPERTY,
-> &args, ENOENT);
-> +}
-> +
-> +/**
-> + * SUBTEST: non-zero-reserved
-> + * Description: Negative test to check the expected behaviour with non-z=
-ero
-> reserved.
-> + * Test category: functionality test
-> + */
-> +static void non_zero_reserved(int xe)
-> +{
-> +	struct drm_xe_exec_queue_get_property args =3D {
-> +		.reserved[0] =3D 0xffff,
-> +		.property =3D XE_EXEC_QUEUE_GET_PROPERTY_BAN,
-> +	};
-> +	uint32_t vm;
-> +	uint32_t exec_queue;
-> +
-> +	vm =3D xe_vm_create(xe, 0, 0);
-> +	exec_queue =3D xe_exec_queue_create_class(xe, vm,
-> DRM_XE_ENGINE_CLASS_COPY);
-> +	args.exec_queue_id =3D exec_queue;
-> +
-> +	do_ioctl_err(xe, DRM_IOCTL_XE_EXEC_QUEUE_GET_PROPERTY,
-> &args, EINVAL);
-> +
-> +	xe_exec_queue_destroy(xe, exec_queue);
-> +	xe_vm_destroy(xe, vm);
-> +}
-> +
-> +/**
-> + * SUBTEST: invalid-value
-This looks like a basic test more than a negative test. Pls update the test=
- name wherever required.
-With that change,
-Reviewed-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+Build changes
+-------------
+
+  * IGT: IGT_7587 -> IGTPW_10184
+
+  IGTPW_10184: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10184/index.html
+  IGT_7587: bec435c24d23524d55f419a02af375e84c9be9d3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-488-7dc3dda9b2df5a5c8949532f254a0689de70f093: 7dc3dda9b2df5a5c8949532f254a0689de70f093
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/index.html
+
+--===============7219976224730014738==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
 
-> + * Description: Check if get property value works fine.
-> + * Test category: functionality test
-> + */
-> +static void invalid_value(int xe)
-> +{
-> +	struct drm_xe_exec_queue_get_property args =3D {
-> +		.value =3D -1,
-> +		.reserved[0] =3D 0,
-> +		.property =3D XE_EXEC_QUEUE_GET_PROPERTY_BAN,
-> +	};
-> +
-> +	uint32_t exec_queue;
-> +	uint32_t vm;
-> +
-> +	vm =3D xe_vm_create(xe, 0, 0);
-> +	exec_queue =3D xe_exec_queue_create_class(xe, vm,
-> DRM_XE_ENGINE_CLASS_COPY);
-> +	args.exec_queue_id =3D exec_queue;
-> +
-> +	do_ioctl(xe, DRM_IOCTL_XE_EXEC_QUEUE_GET_PROPERTY, &args);
-> +	igt_assert(args.value =3D=3D 0);
-> +
-> +	xe_exec_queue_destroy(xe, exec_queue);
-> +	xe_vm_destroy(xe, vm);
-> +}
-> +
->  igt_main
->  {
->  	static const struct {
-> @@ -182,6 +248,15 @@ igt_main
->  		}
->  	}
->=20
-> +	igt_subtest("Invalid-exec-queue")
-> +		Invalid_exec_queue_id(xe);
-> +
-> +	igt_subtest("non-zero-reserved")
-> +		non_zero_reserved(xe);
-> +
-> +	igt_subtest("invalid-value")
-> +		invalid_value(xe);
-> +
->  	igt_fixture {
->  		xe_device_put(xe);
->  		drm_close_driver(xe);
-> --
-> 2.39.1
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_queue_property: Negative tests for get exec_queue property ioctl (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126374/">https://patchwork.freedesktop.org/series/126374/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7587_BAT -&gt; XEIGTPW_10184_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10184_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_page_flip:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/535">Intel XE#535</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@many-basic:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +17 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7587/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7587/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/749">Intel XE#749</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7587/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/545">Intel XE#545</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7587/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2017">i915#2017</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/750">Intel XE#750</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7587/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/430">Intel XE#430</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/530">Intel XE#530</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7587/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/530">Intel XE#530</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10184/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7587 -&gt; IGTPW_10184</li>
+</ul>
+<p>IGTPW_10184: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10184/index.html<br />
+  IGT_7587: bec435c24d23524d55f419a02af375e84c9be9d3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-488-7dc3dda9b2df5a5c8949532f254a0689de70f093: 7dc3dda9b2df5a5c8949532f254a0689de70f093</p>
+
+</body>
+</html>
+
+--===============7219976224730014738==--
