@@ -1,30 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com
- [IPv6:2607:f8b0:4864:20::22b])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C247610E461
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 16:19:51 +0000 (UTC)
-Received: by mail-oi1-x22b.google.com with SMTP id
- 5614622812f47-3b3ec45d6e9so3576203b6e.0
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 08:19:51 -0800 (PST)
-Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com.
- [209.85.161.52]) by smtp.gmail.com with ESMTPSA id
- n21-20020a05680803b500b003a78d196acasm1162694oie.32.2023.11.14.08.19.48
- for <igt-dev@lists.freedesktop.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 14 Nov 2023 08:19:48 -0800 (PST)
-Received: by mail-oo1-f52.google.com with SMTP id
- 006d021491bc7-586753b0ab0so3210342eaf.0
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 08:19:48 -0800 (PST)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 098D010E47E
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 16:54:50 +0000 (UTC)
+From: David Kershner <david.kershner@intel.com>
+To: igt-dev@lists.freedesktop.org, michael.j.ruhl@intel.com,
+ john.fleck@intel.com
+Date: Tue, 14 Nov 2023 11:54:40 -0500
+Message-Id: <20231114165440.1200752-1-david.kershner@intel.com>
 MIME-Version: 1.0
-References: <20231023205910.3556533-1-sean@poorly.run>
-In-Reply-To: <20231023205910.3556533-1-sean@poorly.run>
-From: Sean Paul <seanpaul@chromium.org>
-Date: Tue, 14 Nov 2023 11:19:10 -0500
-Message-ID: <CAOw6vbKBCHreAuaW0d3qB5hk4FcJZAqLSU6yOL=o_DwHtU_1Qw@mail.gmail.com>
-To: Sean Paul <sean@poorly.run>
-Content-Type: multipart/alternative; boundary="000000000000cc445c060a1f27f0"
-Subject: Re: [igt-dev] [PATCH v2 0/8] tests/kms_vrr: Modify kms_vrr to allow
- flicker profiling
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2] tests/intel: Add Xe peer2peer test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,80 +18,417 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---000000000000cc445c060a1f27f0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Add tests to read/write data between two different GPUs using DMABUF
+and P2PDMA. The kernel must have P2PDMA and DMABUF enabled for the test
+pass.
 
-Friendly review ping.
+Signed-off-by: David Kershner <david.kershner@intel.com>
+---
+Changes from v1 --
+   - fixed whitespace issues
+   - fixed review comments
+---
+ tests/intel/xe_peer2peer.c | 375 +++++++++++++++++++++++++++++++++++++
+ tests/meson.build          |   1 +
+ 2 files changed, 376 insertions(+)
+ create mode 100644 tests/intel/xe_peer2peer.c
 
-On Mon, Oct 23, 2023 at 4:59=E2=80=AFPM Sean Paul <sean@poorly.run> wrote:
-
-> From: Sean Paul <seanpaul@chromium.org>
->
-> Second revision of the set. New version addresses the review comments
-> from Bhanu and adds a new maxmin subtest which alternates the rate
-> between max and min every frame.
->
-> Sean Paul (8):
->   tests/kms_vrr: Move fb0 and fb1 to an array
->   tests/kms_vrr: Move vtest_ns into data_t
->   tests/kms_vrr: Allow test rate to be altered from the command line
->   tests/kms_vrr: Allow test duration to be specified from the command
->     line
->   tests/kms_vrr: Change the pattern displayed in the test
->   tests/kms_vrr: Add ability to flip static image for flicker profiling
->   tests/kms_vrr: Allow for multiple rates in a test
->   tests/kms_vrr: Add a max/min test to oscillate between rates
->
->  tests/kms_vrr.c | 213 +++++++++++++++++++++++++++++++++++-------------
->  1 file changed, 156 insertions(+), 57 deletions(-)
->
-> --
-> Sean Paul, Software Engineer, Google / Chromium OS
->
->
-
---000000000000cc445c060a1f27f0
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Friendly review ping.</div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Mon, Oct 23, 2023 at 4:59=E2=80=AF=
-PM Sean Paul &lt;sean@poorly.run&gt; wrote:<br></div><blockquote class=3D"g=
-mail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204=
-,204,204);padding-left:1ex">From: Sean Paul &lt;<a href=3D"mailto:seanpaul@=
-chromium.org" target=3D"_blank">seanpaul@chromium.org</a>&gt;<br>
-<br>
-Second revision of the set. New version addresses the review comments<br>
-from Bhanu and adds a new maxmin subtest which alternates the rate<br>
-between max and min every frame.<br>
-<br>
-Sean Paul (8):<br>
-=C2=A0 tests/kms_vrr: Move fb0 and fb1 to an array<br>
-=C2=A0 tests/kms_vrr: Move vtest_ns into data_t<br>
-=C2=A0 tests/kms_vrr: Allow test rate to be altered from the command line<b=
-r>
-=C2=A0 tests/kms_vrr: Allow test duration to be specified from the command<=
-br>
-=C2=A0 =C2=A0 line<br>
-=C2=A0 tests/kms_vrr: Change the pattern displayed in the test<br>
-=C2=A0 tests/kms_vrr: Add ability to flip static image for flicker profilin=
-g<br>
-=C2=A0 tests/kms_vrr: Allow for multiple rates in a test<br>
-=C2=A0 tests/kms_vrr: Add a max/min test to oscillate between rates<br>
-<br>
-=C2=A0tests/kms_vrr.c | 213 +++++++++++++++++++++++++++++++++++------------=
--<br>
-=C2=A01 file changed, 156 insertions(+), 57 deletions(-)<br>
-<br>
--- <br>
-Sean Paul, Software Engineer, Google / Chromium OS<br>
-<br>
-</blockquote></div>
-
---000000000000cc445c060a1f27f0--
+diff --git a/tests/intel/xe_peer2peer.c b/tests/intel/xe_peer2peer.c
+new file mode 100644
+index 000000000..1b0521997
+--- /dev/null
++++ b/tests/intel/xe_peer2peer.c
+@@ -0,0 +1,375 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2023 Intel Corporation
++ */
++
++#include "drm.h"
++#include "igt.h"
++#include "igt_device.h"
++#include "intel_blt.h"
++#include "intel_mocs.h"
++#include "lib/igt_sysfs.h"
++#include "lib/intel_chipset.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++#include "xe/xe_util.h"
++
++/**
++ * TEST: xe peer to peer
++ * Category: Hardware building block
++ * Sub-category: blitter
++ * Functionality: flat_ccs
++ * Description: Exercise blitter copy between Xe devices
++ * Test category: functionality test
++ *
++ * SUBTEST: read
++ * Description:
++ *   Check read from remote(imported) buffer
++ *   blitter
++ *
++ * SUBTEST: write
++ * Description:
++ *   Check write to remote(imported) buffer
++ *   blitter
++ */
++
++IGT_TEST_DESCRIPTION("Exercise blitter read/writes between two Xe devices");
++
++struct blt_fast_copy_data {
++	int xe;
++	struct blt_copy_object src;
++	struct blt_copy_object mid;
++	struct blt_copy_object dst;
++
++	struct blt_copy_batch bb;
++	enum blt_color_depth color_depth;
++};
++
++struct gpu_info {
++	uint32_t id;
++	int fd;
++	struct igt_collection *set;
++};
++
++static bool has_prime(int fd)
++{
++	uint64_t value;
++	uint64_t mask = DRM_PRIME_CAP_IMPORT | DRM_PRIME_CAP_EXPORT;
++
++	if (drmGetCap(fd, DRM_CAP_PRIME, &value))
++		return false;
++
++	return (value & mask) == mask;
++}
++
++static int get_device_info(struct gpu_info gpus[], int num_gpus)
++{
++	int cnt;
++	int xe;
++	int i;
++
++	for (i = 0, cnt = 0 && i < 128; cnt < num_gpus; i++) {
++		xe = __drm_open_driver_another(i, DRIVER_XE);
++		if (xe < 0)
++			break;
++
++		/* dma-buf is required */
++		if (!has_prime(xe) || !blt_has_fast_copy(xe)) {
++			close(xe);
++			continue;
++		}
++
++		gpus[cnt].fd = xe;
++		gpus[cnt].set = xe_get_memory_region_set(xe,
++							 XE_MEM_REGION_CLASS_SYSMEM,
++							 XE_MEM_REGION_CLASS_VRAM);
++		cnt++;
++	}
++
++	return cnt;
++}
++
++/**
++ * test_read - Read an imported buffer from an external GPU via dma-buf
++ * @ex_gpu: device providing the original object
++ * @im_gpu: device doing the read
++ * @ex_reg: the source region to copy from
++ * @im_reg: the destination region to copy to
++ *
++ */
++static void test_read(struct gpu_info *ex_gpu, struct gpu_info *im_gpu,
++		      uint32_t ex_reg, uint32_t im_reg)
++{
++	struct blt_copy_data im_blt = {};
++	struct blt_copy_data ex_blt = {};
++	struct blt_copy_object *dst;
++	struct blt_copy_object *im_src;
++	struct blt_copy_object *src;
++	const uint32_t bpp = 32;
++	uint64_t im_bb_size = xe_get_default_alignment(im_gpu->fd);
++	uint64_t ahnd;
++	uint32_t bb;
++	uint32_t width = 1024, height = 1024;
++	int result;
++	uint32_t vm, exec_queue;
++	uint32_t ex_xe = ex_gpu->fd;
++	uint32_t im_xe = im_gpu->fd;
++	uint32_t ex_src, dmabuf;
++	uint32_t stride;
++
++	struct drm_xe_engine_class_instance inst = {
++		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
++	};
++	intel_ctx_t *ctx;
++
++	vm = xe_vm_create(im_xe, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
++	exec_queue = xe_exec_queue_create(im_xe, vm, &inst, 0);
++	ctx = intel_ctx_xe(im_xe, vm, exec_queue, 0, 0, 0);
++	ahnd = intel_allocator_open_full(im_xe, ctx->vm, 0, 0,
++					 INTEL_ALLOCATOR_SIMPLE,
++					 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
++
++	blt_copy_init(ex_xe, &ex_blt);
++	blt_copy_init(im_xe, &im_blt);
++
++	src = blt_create_object(&ex_blt, ex_reg, width, height, bpp, 0,
++				T_LINEAR, COMPRESSION_DISABLED, 0, true);
++	dst = blt_create_object(&im_blt, im_reg, width, height, bpp, 0,
++				T_LINEAR, COMPRESSION_DISABLED, 0, true);
++	blt_surface_fill_rect(ex_xe, src, width, height);
++
++	dmabuf = prime_handle_to_fd(ex_xe, src->handle);
++	ex_src = prime_fd_to_handle(im_xe, dmabuf);
++	im_src = calloc(1, sizeof(*im_src));
++
++	stride = width * 4;
++	blt_set_object(im_src, ex_src, src->size, ex_reg, 0,
++		       T_LINEAR, COMPRESSION_DISABLED, 0);
++	blt_set_geom(im_src, stride, 0, 0, width, height, 0, 0);
++	igt_assert(im_src->size == dst->size);
++
++	im_blt.color_depth = CD_32bit;
++	blt_set_copy_object(&im_blt.src, im_src);
++	blt_set_copy_object(&im_blt.dst, dst);
++
++	bb = xe_bo_create_flags(im_xe, 0, im_bb_size, im_reg);
++	blt_set_batch(&im_blt.bb, bb, im_bb_size, im_reg);
++
++	blt_fast_copy(im_xe, ctx, NULL, ahnd, &im_blt);
++
++	result = memcmp(src->ptr, im_blt.dst.ptr, src->size);
++
++	put_offset(ahnd, im_src->handle);
++	put_offset(ahnd, dst->handle);
++	put_offset(ahnd, bb);
++	intel_allocator_bind(ahnd, 0, 0);
++	blt_destroy_object(im_xe, im_src);
++	blt_destroy_object(im_xe, dst);
++	blt_destroy_object(ex_xe, src);
++	put_ahnd(ahnd);
++
++	igt_assert_f(!result, "source and destination surfaces differs!\n");
++}
++
++/**
++ * test_write - Write an imported buffer to an external GPU via dma-buf
++ * @ex_gpu: device providing the destination object
++ * @im_gpu: device doing the write
++ * @ex_reg: the source region to copy from
++ * @im_reg: the destination region to copy to
++ *
++ */
++static void test_write(struct gpu_info *ex_gpu, struct gpu_info *im_gpu,
++		       uint32_t ex_reg, uint32_t im_reg)
++{
++	struct blt_copy_data im_blt = {};
++	struct blt_copy_data ex_blt = {};
++	struct blt_copy_object *dst;
++	struct blt_copy_object *im_dst;
++	struct blt_copy_object *src;
++	const uint32_t bpp = 32;
++	uint64_t im_bb_size = xe_get_default_alignment(im_gpu->fd);
++	uint64_t ahnd;
++	uint32_t bb;
++	uint32_t width = 1024, height = 1024;
++	int result;
++	uint32_t vm, exec_queue;
++	uint32_t ex_xe = ex_gpu->fd;
++	uint32_t im_xe = im_gpu->fd;
++	uint32_t ex_dst, dmabuf;
++	uint32_t stride;
++
++	struct drm_xe_engine_class_instance inst = {
++		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
++	};
++	intel_ctx_t *ctx;
++
++	vm = xe_vm_create(im_xe, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
++	exec_queue = xe_exec_queue_create(im_xe, vm, &inst, 0);
++	ctx = intel_ctx_xe(im_xe, vm, exec_queue, 0, 0, 0);
++	ahnd = intel_allocator_open_full(im_xe, ctx->vm, 0, 0,
++					 INTEL_ALLOCATOR_SIMPLE,
++					 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
++
++	blt_copy_init(ex_xe, &ex_blt);
++	blt_copy_init(im_xe, &im_blt);
++
++	dst = blt_create_object(&ex_blt, ex_reg, width, height, bpp, 0,
++				T_LINEAR, COMPRESSION_DISABLED, 0, true);
++	src = blt_create_object(&im_blt, im_reg, width, height, bpp, 0,
++				T_LINEAR, COMPRESSION_DISABLED, 0, true);
++	blt_surface_fill_rect(im_xe, src, width, height);
++
++	dmabuf = prime_handle_to_fd(ex_xe, dst->handle);
++	ex_dst = prime_fd_to_handle(im_xe, dmabuf);
++	im_dst = calloc(1, sizeof(*im_dst));
++
++	stride = width * 4;
++	blt_set_object(im_dst, ex_dst, src->size, ex_reg, 0,
++		       T_LINEAR, COMPRESSION_DISABLED, 0);
++	blt_set_geom(im_dst, stride, 0, 0, width, height, 0, 0);
++	igt_assert(im_dst->size == src->size);
++
++	im_blt.color_depth = CD_32bit;
++	blt_set_copy_object(&im_blt.src, src);
++	blt_set_copy_object(&im_blt.dst, im_dst);
++
++	bb = xe_bo_create_flags(im_xe, 0, im_bb_size, im_reg);
++	blt_set_batch(&im_blt.bb, bb, im_bb_size, im_reg);
++
++	blt_fast_copy(im_xe, ctx, NULL, ahnd, &im_blt);
++
++	result = memcmp(dst->ptr, im_blt.src.ptr, src->size);
++
++	put_offset(ahnd, im_dst->handle);
++	put_offset(ahnd, dst->handle);
++	put_offset(ahnd, bb);
++	intel_allocator_bind(ahnd, 0, 0);
++	blt_destroy_object(im_xe, src);
++	blt_destroy_object(im_xe, im_dst);
++	blt_destroy_object(ex_xe, dst);
++	put_ahnd(ahnd);
++
++	igt_assert_f(!result, "source and destination surfaces differs!\n");
++}
++
++static const char *p2p_path(int ex_reg, struct gpu_info *ex_gpu, struct gpu_info *im_gpu)
++{
++	return "-p2p";
++}
++
++static char *region_name(int xe, uint32_t region)
++{
++	char *name;
++	struct drm_xe_query_mem_region *memreg;
++	int r;
++	int len = 7;
++
++	/* enough for "name%d" * n */
++	name = malloc(len);
++	igt_assert(name);
++
++	memreg = xe_mem_region(xe, region);
++
++	if (XE_IS_CLASS_VRAM(memreg))
++		r = snprintf(name, len, "%s%d",
++			     xe_region_name(region),
++			     memreg->instance);
++	else
++		r = snprintf(name, len, "%s",
++			     xe_region_name(region));
++
++	igt_assert(r > 0);
++
++	return name;
++}
++
++/**
++ * gpu_read - Set up a read from the exporting GPU to the importing GPU
++ * @ex_gpu: GPU that is exporting a buffer for read
++ * @im_gpu: GPU that is importing and reading the buffer
++ */
++static void gpu_read(struct gpu_info *ex_gpu, struct gpu_info *im_gpu)
++{
++	struct igt_collection *ex_regs, *im_regs;
++	int ex_reg, im_reg;
++	char *ex_name, *im_name;
++	const char *path;
++
++	for_each_variation_r(ex_regs, 1, ex_gpu->set) {
++		ex_reg = igt_collection_get_value(ex_regs, 0);
++		ex_name = region_name(ex_gpu->fd, ex_reg);
++
++		for_each_variation_r(im_regs, 1, im_gpu->set) {
++			im_reg = igt_collection_get_value(im_regs, 0);
++			im_name = region_name(im_gpu->fd, im_reg);
++
++			path = p2p_path(ex_reg, ex_gpu, im_gpu);
++			igt_dynamic_f("read-gpuA-%s-gpuB-%s%s", ex_name,
++				      im_name, path)
++			test_read(ex_gpu, im_gpu, ex_reg, im_reg);
++
++			free(im_name);
++		}
++		free(ex_name);
++	}
++}
++
++/**
++ * gpu_write - Set up a write from the importing GPU to the exporting GPU
++ * @ex_gpu: GPU that is exporting a buffer for read
++ * @im_gpu: GPU that is importing and reading the buffer
++ */
++static void gpu_write(struct gpu_info *ex_gpu, struct gpu_info *im_gpu)
++{
++	struct igt_collection *ex_regs, *im_regs;
++	int ex_reg, im_reg;
++	char *ex_name, *im_name;
++	const char *path;
++
++	for_each_variation_r(ex_regs, 1, ex_gpu->set) {
++		ex_reg = igt_collection_get_value(ex_regs, 0);
++		ex_name = region_name(ex_gpu->fd, ex_reg);
++
++		for_each_variation_r(im_regs, 1, im_gpu->set) {
++			im_reg = igt_collection_get_value(im_regs, 0);
++			im_name = region_name(im_gpu->fd, im_reg);
++
++			path = p2p_path(ex_reg, ex_gpu, im_gpu);
++			igt_dynamic_f("write-gpuA-%s-gpuB-%s%s", ex_name,
++				      im_name, path)
++			test_write(ex_gpu, im_gpu, ex_reg, im_reg);
++
++			free(im_name);
++		}
++		free(ex_name);
++	}
++}
++
++#define DEFAULT_SIZE 0
++
++igt_main_args("", NULL, NULL, NULL, NULL)
++{
++	struct gpu_info gpus[2];
++	int gpu_cnt;
++
++	igt_fixture {
++		gpu_cnt = get_device_info(gpus, ARRAY_SIZE(gpus));
++		igt_skip_on(gpu_cnt < 2);
++	}
++
++	igt_describe("dmabuf gpu-gpu read");
++	igt_subtest_with_dynamic_f("read")
++		gpu_read(&gpus[0], &gpus[1]);
++
++	igt_describe("dmabuf gpu-gpu write");
++	igt_subtest_with_dynamic_f("write")
++		gpu_write(&gpus[0], &gpus[1]);
++
++	igt_fixture {
++		int cnt;
++
++		for (cnt = 0; cnt < gpu_cnt; cnt++)
++			drm_close_driver(gpus[cnt].fd);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 3e4d54601..73184e658 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -301,6 +301,7 @@ intel_xe_progs = [
+ 	'xe_mmap',
+ 	'xe_module_load',
+ 	'xe_noexec_ping_pong',
++	'xe_peer2peer',
+ 	'xe_pm',
+ 	'xe_pm_residency',
+ 	'xe_prime_self_import',
+-- 
+2.38.1
