@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5472A10E1B8
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 04:38:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C3BC710E3FA
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 04:38:58 +0000 (UTC)
 From: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 14 Nov 2023 10:22:19 +0530
-Message-Id: <20231114045224.622841-2-sujaritha.sundaresan@intel.com>
+Date: Tue, 14 Nov 2023 10:22:20 +0530
+Message-Id: <20231114045224.622841-3-sujaritha.sundaresan@intel.com>
 In-Reply-To: <20231114045224.622841-1-sujaritha.sundaresan@intel.com>
 References: <20231114045224.622841-1-sujaritha.sundaresan@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v3 1/6] Revert "syncobj_timeline: don't expect EINVAL
- for WAIT_UNSUBMITTED, | WAIT_AVAILABLE"
+Subject: [igt-dev] [v3 2/6] tests/intel: Add multi-gt support for rc6-idle
+ test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,74 +19,82 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Simon Ser <contact@emersion.fr>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Add multi-gt support for rc_idle subtest
 
-This reverts commit f6f5903348eff6510f8877043f9397a2a5cb94b3.
+v3: Remove intel_ctx_create_all_physical call (Riana)
 
-This patch is causing the regression in CI.
-
-[1767/1775] Generating i915_tests.rst with a custom command
-FAILED: docs/testplan/i915_tests.rst
-./igt_doc.py --config ../tests/intel/i915_test_config.json --rest docs/testplan/i915_tests.rst --check-testlist --igt-build-path ./build
-Warning: Documented igt@syncobj_timeline@invalid-multi-wait-all-available-unsubmitted doesn't exist on source files
-Warning: Documented igt@syncobj_timeline@invalid-multi-wait-all-available-unsubmitted-signaled doesn't exist on source files
-Warning: Documented igt@syncobj_timeline@invalid-multi-wait-all-available-unsubmitted-submitted doesn't exist on source files
-Warning: Documented igt@syncobj_timeline@invalid-multi-wait-all-available-unsubmitted-submitted-signaled doesn't exist on source files
-Warning: Documented igt@syncobj_timeline@invalid-multi-wait-available-unsubmitted doesn't exist on source files
-Warning: Documented igt@syncobj_timeline@invalid-multi-wait-available-unsubmitted-signaled doesn't exist on source files
-Warning: Documented igt@syncobj_timeline@invalid-multi-wait-available-unsubmitted-submitted doesn't exist on source files
-Warning: Documented igt@syncobj_timeline@invalid-multi-wait-available-unsubmitted-submitted-signaled doesn't exist on source files
-Warning: Documented igt@syncobj_timeline@invalid-single-wait-all-available-unsubmitted doesn't exist on source files
-Warning: Documented igt@syncobj_timeline@invalid-single-wait-available-unsubmitted doesn't exist on source files
-Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted
-Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-signaled
-Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-submitted
-Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-all-available-unsubmitted-submitted-signaled
-Warning: Missing documentation for igt@syncobj_timeline@etime-multi-wait-available-unsubmitted
-Warning: Missing documentation for igt@syncobj_timeline@etime-single-wait-all-available-unsubmitted
-Warning: Missing documentation for igt@syncobj_timeline@etime-single-wait-available-unsubmitted
-Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-signaled
-Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-submitted
-Warning: Missing documentation for igt@syncobj_timeline@multi-wait-available-unsubmitted-submitted-signaled
-Please refer: docs/test_documentation.md for more details
-[1771/1775] Compiling C object runner/runner_test.p/runner_tests.c.o
-ninja: build stopped: subcommand failed.
-
-Cc: Erik Kurzinger <ekurzinger@nvidia.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Simon Ser <contact@emersion.fr>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Acked-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Signed-off-by: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
 ---
- tests/syncobj_timeline.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/intel/i915_pm_rc6_residency.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/tests/syncobj_timeline.c b/tests/syncobj_timeline.c
-index 0422bca51..b4e1d093a 100644
---- a/tests/syncobj_timeline.c
-+++ b/tests/syncobj_timeline.c
-@@ -1782,7 +1782,7 @@ igt_main
- 						WAIT_SIGNALED)) != 1)
- 			continue;
+diff --git a/tests/intel/i915_pm_rc6_residency.c b/tests/intel/i915_pm_rc6_residency.c
+index b266680ac..34619b79c 100644
+--- a/tests/intel/i915_pm_rc6_residency.c
++++ b/tests/intel/i915_pm_rc6_residency.c
+@@ -376,7 +376,7 @@ static void kill_children(int sig)
+ 	signal(sig, old);
+ }
  
--		if ((flags & WAIT_UNSUBMITTED) && !((flags & WAIT_FOR_SUBMIT) || (flags & WAIT_AVAILABLE)))
-+		if ((flags & WAIT_UNSUBMITTED) && !(flags & WAIT_FOR_SUBMIT))
- 			err = -EINVAL;
- 		else if (!(flags & WAIT_SIGNALED) && !((flags & WAIT_SUBMITTED) && (flags & WAIT_AVAILABLE)))
- 			err = -ETIME;
-@@ -1851,7 +1851,7 @@ igt_main
- 			continue;
+-static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags)
++static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags, unsigned int gt)
+ {
+ 	const int64_t duration_ns = SLEEP_DURATION * (int64_t)NSEC_PER_SEC;
+ 	const int tolerance = 20; /* Some RC6 is better than none! */
+@@ -397,7 +397,7 @@ static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags)
+ 	struct igt_power gpu;
+ 	int fd;
  
- 		err = 0;
--		if ((flags & WAIT_UNSUBMITTED) && !((flags & WAIT_FOR_SUBMIT) || (flags & WAIT_AVAILABLE))) {
-+		if ((flags & WAIT_UNSUBMITTED) && !(flags & WAIT_FOR_SUBMIT)) {
- 			err = -EINVAL;
- 		} else if (flags & WAIT_ALL) {
- 			if (flags & (WAIT_UNSUBMITTED | WAIT_SUBMITTED))
+-	fd = open_pmu(i915, I915_PMU_RC6_RESIDENCY);
++	fd = open_pmu(i915, __I915_PMU_RC6_RESIDENCY(gt));
+ 	igt_drop_caches_set(i915, DROP_IDLE);
+ 	igt_require(__pmu_wait_for_rc6(fd));
+ 	igt_power_open(i915, &gpu, "gpu");
+@@ -558,12 +558,12 @@ static void rc6_fence(int i915, const intel_ctx_t *ctx)
+ igt_main
+ {
+ 	int i915 = -1;
++	unsigned int dirfd, gt;
+ 	const intel_ctx_t *ctx;
+ 
+ 	/* Use drm_open_driver to verify device existence */
+ 	igt_fixture {
+ 		i915 = drm_open_driver(DRIVER_INTEL);
+-		ctx = intel_ctx_create_all_physical(i915);
+ 	}
+ 
+ 	igt_subtest_with_dynamic("rc6-idle") {
+@@ -572,11 +572,15 @@ igt_main
+ 		igt_require_gem(i915);
+ 		gem_quiescent_gpu(i915);
+ 
+-		for_each_ctx_engine(i915, ctx, e) {
+-			if (e->instance == 0) {
+-				igt_dynamic_f("%s", e->name)
+-					rc6_idle(i915, ctx->id, e->flags);
++		i915_for_each_gt(i915, dirfd, gt) {
++			ctx = intel_ctx_create_for_gt(i915, gt);
++			for_each_ctx_engine(i915, ctx, e) {
++				if (e->instance == 0) {
++					igt_dynamic_f("gt%u-%s", gt, e->name)
++						rc6_idle(i915, ctx->id, e->flags, gt);
++				}
+ 			}
++			intel_ctx_destroy(i915, ctx);
+ 		}
+ 	}
+ 
+@@ -626,7 +630,6 @@ igt_main
+ 	}
+ 
+ 	igt_fixture {
+-		intel_ctx_destroy(i915, ctx);
+ 		drm_close_driver(i915);
+ 	}
+ }
 -- 
 2.25.1
