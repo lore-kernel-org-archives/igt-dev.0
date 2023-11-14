@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3284110E209
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 13:48:17 +0000 (UTC)
-Date: Tue, 14 Nov 2023 08:48:08 -0500
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-To: Francois Dugast <francois.dugast@intel.com>
-Message-ID: <ZVN6mAQ+bKyiXxhU@intel.com>
-References: <20231114134426.7-1-francois.dugast@intel.com>
- <20231114134426.7-2-francois.dugast@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20231114134426.7-2-francois.dugast@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============1314017678182844683=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v1 1/8] drm-uapi/xe: Add missing DRM_ prefix
- in uAPI constants
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Tue, 14 Nov 2023 14:00:23 -0000
+Message-ID: <169997042321.29255.17515467365744670687@emeril.freedesktop.org>
+References: <20231114114943.79965-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20231114114943.79965-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgQWRkIGRn?=
+ =?utf-8?q?1_compute_pipeline_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,1030 +17,430 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Nov 14, 2023 at 01:44:19PM +0000, Francois Dugast wrote:
-> Align with commit ("drm/xe/uapi: Add missing DRM_ prefix in uAPI constants")
-> 
-> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+--===============1314017678182844683==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: Add dg1 compute pipeline (rev3)
+URL   : https://patchwork.freedesktop.org/series/126077/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_13873 -> IGTPW_10182
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_10182 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_10182, please notify your bug team (lgci.bug.filing@intel.com) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/index.html
+
+Participating hosts (37 -> 36)
+------------------------------
+
+  Additional (2): bat-rpls-1 bat-kbl-2 
+  Missing    (3): bat-mtlp-8 bat-adlp-6 fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_10182:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@gt_lrc:
+    - bat-rpls-1:         NOTRUN -> [INCOMPLETE][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-rpls-1/igt@i915_selftest@live@gt_lrc.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10182 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@debugfs_test@basic-hwmon:
+    - bat-rpls-1:         NOTRUN -> [SKIP][2] ([i915#9318])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-rpls-1/igt@debugfs_test@basic-hwmon.html
+
+  * igt@fbdev@info:
+    - bat-rpls-1:         NOTRUN -> [SKIP][3] ([i915#1849] / [i915#2582])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-rpls-1/igt@fbdev@info.html
+    - bat-kbl-2:          NOTRUN -> [SKIP][4] ([fdo#109271] / [i915#1849])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-kbl-2/igt@fbdev@info.html
+
+  * igt@fbdev@write:
+    - bat-rpls-1:         NOTRUN -> [SKIP][5] ([i915#2582]) +3 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-rpls-1/igt@fbdev@write.html
+
+  * igt@gem_exec_suspend@basic-s0@smem:
+    - bat-jsl-3:          [PASS][6] -> [INCOMPLETE][7] ([i915#9275])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13873/bat-jsl-3/igt@gem_exec_suspend@basic-s0@smem.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-jsl-3/igt@gem_exec_suspend@basic-s0@smem.html
+
+  * igt@gem_lmem_swapping@parallel-random-engines:
+    - bat-kbl-2:          NOTRUN -> [SKIP][8] ([fdo#109271]) +24 other tests skip
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-kbl-2/igt@gem_lmem_swapping@parallel-random-engines.html
+
+  * igt@gem_lmem_swapping@random-engines:
+    - bat-rpls-1:         NOTRUN -> [SKIP][9] ([i915#4613]) +3 other tests skip
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-rpls-1/igt@gem_lmem_swapping@random-engines.html
+
+  * igt@gem_tiled_pread_basic:
+    - bat-rpls-1:         NOTRUN -> [SKIP][10] ([i915#3282])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-rpls-1/igt@gem_tiled_pread_basic.html
+
+  * igt@i915_pm_rps@basic-api:
+    - bat-rpls-1:         NOTRUN -> [SKIP][11] ([i915#6621])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-rpls-1/igt@i915_pm_rps@basic-api.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-apl-guc:         [PASS][12] -> [DMESG-FAIL][13] ([i915#5334])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13873/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-4770:        [PASS][14] -> [INCOMPLETE][15] ([i915#9527])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13873/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_suspend@basic-s3-without-i915:
+    - bat-jsl-3:          [PASS][16] -> [FAIL][17] ([fdo#103375])
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13873/bat-jsl-3/igt@i915_suspend@basic-s3-without-i915.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-jsl-3/igt@i915_suspend@basic-s3-without-i915.html
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:
+    - bat-rpls-1:         NOTRUN -> [SKIP][18] ([i915#1845]) +16 other tests skip
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-rpls-1/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
+
+  * igt@kms_flip@basic-flip-vs-modeset:
+    - bat-rpls-1:         NOTRUN -> [SKIP][19] ([i915#3637]) +3 other tests skip
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-rpls-1/igt@kms_flip@basic-flip-vs-modeset.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - bat-rpls-1:         NOTRUN -> [SKIP][20] ([fdo#109285])
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-rpls-1/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-rpls-1:         NOTRUN -> [SKIP][21] ([i915#1849])
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-rpls-1/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
+    - bat-dg2-11:         NOTRUN -> [SKIP][22] ([i915#1845] / [i915#9197]) +3 other tests skip
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence:
+    - bat-kbl-2:          NOTRUN -> [SKIP][23] ([fdo#109271] / [i915#1845]) +14 other tests skip
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-kbl-2/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html
+
+  * igt@kms_psr@cursor_plane_move:
+    - bat-rpls-1:         NOTRUN -> [SKIP][24] ([i915#1072]) +3 other tests skip
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-rpls-1/igt@kms_psr@cursor_plane_move.html
+
+  * igt@kms_psr@sprite_plane_onoff:
+    - bat-jsl-1:          [PASS][25] -> [SKIP][26] ([i915#9648]) +2 other tests skip
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13873/bat-jsl-1/igt@kms_psr@sprite_plane_onoff.html
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-jsl-1/igt@kms_psr@sprite_plane_onoff.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - bat-rpls-1:         NOTRUN -> [SKIP][27] ([i915#3555])
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-rpls-1/igt@kms_setmode@basic-clone-single-crtc.html
+
+  * igt@prime_vgem@basic-fence-flip:
+    - bat-rpls-1:         NOTRUN -> [SKIP][28] ([fdo#109295] / [i915#1845] / [i915#3708])
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-rpls-1/igt@prime_vgem@basic-fence-flip.html
+
+  * igt@prime_vgem@basic-write:
+    - bat-rpls-1:         NOTRUN -> [SKIP][29] ([fdo#109295] / [i915#3708]) +2 other tests skip
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-rpls-1/igt@prime_vgem@basic-write.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_psr@sprite_plane_onoff:
+    - bat-jsl-3:          [SKIP][30] ([i915#9648]) -> [PASS][31] +3 other tests pass
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13873/bat-jsl-3/igt@kms_psr@sprite_plane_onoff.html
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-jsl-3/igt@kms_psr@sprite_plane_onoff.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#103375]: https://bugs.freedesktop.org/show_bug.cgi?id=103375
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
+  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
+  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
+  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
+  [i915#9197]: https://gitlab.freedesktop.org/drm/intel/issues/9197
+  [i915#9275]: https://gitlab.freedesktop.org/drm/intel/issues/9275
+  [i915#9318]: https://gitlab.freedesktop.org/drm/intel/issues/9318
+  [i915#9527]: https://gitlab.freedesktop.org/drm/intel/issues/9527
+  [i915#9648]: https://gitlab.freedesktop.org/drm/intel/issues/9648
 
 
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7587 -> IGTPW_10182
+
+  CI-20190529: 20190529
+  CI_DRM_13873: 2b0a5e9915c131825481a9cc2aecb89088f51c00 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10182: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/index.html
+  IGT_7587: bec435c24d23524d55f419a02af375e84c9be9d3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/index.html
+
+--===============1314017678182844683==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
 
-> ---
->  include/drm-uapi/xe_drm.h            | 124 +++++++++++++--------------
->  lib/intel_batchbuffer.c              |   8 +-
->  lib/intel_blt.c                      |   2 +-
->  lib/xe/xe_ioctl.c                    |  22 ++---
->  lib/xe/xe_query.c                    |  12 +--
->  lib/xe/xe_query.h                    |   4 +-
->  lib/xe/xe_util.c                     |  10 +--
->  lib/xe/xe_util.h                     |   4 +-
->  tests/intel/xe_access_counter.c      |   4 +-
->  tests/intel/xe_ccs.c                 |   4 +-
->  tests/intel/xe_copy_basic.c          |   4 +-
->  tests/intel/xe_debugfs.c             |  12 +--
->  tests/intel/xe_exec_basic.c          |   8 +-
->  tests/intel/xe_exec_fault_mode.c     |   4 +-
->  tests/intel/xe_exec_queue_property.c |  18 ++--
->  tests/intel/xe_exec_reset.c          |  20 ++---
->  tests/intel/xe_exec_threads.c        |   4 +-
->  tests/intel/xe_exercise_blt.c        |   4 +-
->  tests/intel/xe_perf_pmu.c            |   8 +-
->  tests/intel/xe_pm.c                  |   2 +-
->  tests/intel/xe_query.c               |  40 ++++-----
->  tests/intel/xe_vm.c                  |  10 +--
->  22 files changed, 164 insertions(+), 164 deletions(-)
-> 
-> diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-> index babfaf0fe..9ab6c3269 100644
-> --- a/include/drm-uapi/xe_drm.h
-> +++ b/include/drm-uapi/xe_drm.h
-> @@ -19,12 +19,12 @@ extern "C" {
->  /**
->   * DOC: uevent generated by xe on it's pci node.
->   *
-> - * XE_RESET_FAILED_UEVENT - Event is generated when attempt to reset gt
-> + * DRM_XE_RESET_FAILED_UEVENT - Event is generated when attempt to reset gt
->   * fails. The value supplied with the event is always "NEEDS_RESET".
->   * Additional information supplied is tile id and gt id of the gt unit for
->   * which reset has failed.
->   */
-> -#define XE_RESET_FAILED_UEVENT "DEVICE_STATUS"
-> +#define DRM_XE_RESET_FAILED_UEVENT "DEVICE_STATUS"
->  
->  /**
->   * struct xe_user_extension - Base class for defining a chain of extensions
-> @@ -148,14 +148,14 @@ struct drm_xe_engine_class_instance {
->   * enum drm_xe_memory_class - Supported memory classes.
->   */
->  enum drm_xe_memory_class {
-> -	/** @XE_MEM_REGION_CLASS_SYSMEM: Represents system memory. */
-> -	XE_MEM_REGION_CLASS_SYSMEM = 0,
-> +	/** @DRM_XE_MEM_REGION_CLASS_SYSMEM: Represents system memory. */
-> +	DRM_XE_MEM_REGION_CLASS_SYSMEM = 0,
->  	/**
-> -	 * @XE_MEM_REGION_CLASS_VRAM: On discrete platforms, this
-> +	 * @DRM_XE_MEM_REGION_CLASS_VRAM: On discrete platforms, this
->  	 * represents the memory that is local to the device, which we
->  	 * call VRAM. Not valid on integrated platforms.
->  	 */
-> -	XE_MEM_REGION_CLASS_VRAM
-> +	DRM_XE_MEM_REGION_CLASS_VRAM
->  };
->  
->  /**
-> @@ -215,7 +215,7 @@ struct drm_xe_query_mem_region {
->  	 * always equal the @total_size, since all of it will be CPU
->  	 * accessible.
->  	 *
-> -	 * Note this is only tracked for XE_MEM_REGION_CLASS_VRAM
-> +	 * Note this is only tracked for DRM_XE_MEM_REGION_CLASS_VRAM
->  	 * regions (for other types the value here will always equal
->  	 * zero).
->  	 */
-> @@ -227,7 +227,7 @@ struct drm_xe_query_mem_region {
->  	 * Requires CAP_PERFMON or CAP_SYS_ADMIN to get reliable
->  	 * accounting. Without this the value here will always equal
->  	 * zero.  Note this is only currently tracked for
-> -	 * XE_MEM_REGION_CLASS_VRAM regions (for other types the value
-> +	 * DRM_XE_MEM_REGION_CLASS_VRAM regions (for other types the value
->  	 * here will always be zero).
->  	 */
->  	__u64 cpu_visible_used;
-> @@ -320,12 +320,12 @@ struct drm_xe_query_config {
->  	/** @pad: MBZ */
->  	__u32 pad;
->  
-> -#define XE_QUERY_CONFIG_REV_AND_DEVICE_ID	0
-> -#define XE_QUERY_CONFIG_FLAGS			1
-> -	#define XE_QUERY_CONFIG_FLAGS_HAS_VRAM		(0x1 << 0)
-> -#define XE_QUERY_CONFIG_MIN_ALIGNMENT		2
-> -#define XE_QUERY_CONFIG_VA_BITS			3
-> -#define XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY	4
-> +#define DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID	0
-> +#define DRM_XE_QUERY_CONFIG_FLAGS			1
-> +	#define DRM_XE_QUERY_CONFIG_FLAGS_HAS_VRAM		(0x1 << 0)
-> +#define DRM_XE_QUERY_CONFIG_MIN_ALIGNMENT		2
-> +#define DRM_XE_QUERY_CONFIG_VA_BITS			3
-> +#define DRM_XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY	4
->  	/** @info: array of elements containing the config info */
->  	__u64 info[];
->  };
-> @@ -339,8 +339,8 @@ struct drm_xe_query_config {
->   * implementing graphics and/or media operations.
->   */
->  struct drm_xe_query_gt {
-> -#define XE_QUERY_GT_TYPE_MAIN		0
-> -#define XE_QUERY_GT_TYPE_MEDIA		1
-> +#define DRM_XE_QUERY_GT_TYPE_MAIN		0
-> +#define DRM_XE_QUERY_GT_TYPE_MEDIA		1
->  	/** @type: GT type: Main or Media */
->  	__u16 type;
->  	/** @gt_id: Unique ID of this GT within the PCI Device */
-> @@ -400,7 +400,7 @@ struct drm_xe_query_topology_mask {
->  	 *   DSS_GEOMETRY    ff ff ff ff 00 00 00 00
->  	 * means 32 DSS are available for geometry.
->  	 */
-> -#define XE_TOPO_DSS_GEOMETRY	(1 << 0)
-> +#define DRM_XE_TOPO_DSS_GEOMETRY	(1 << 0)
->  	/*
->  	 * To query the mask of Dual Sub Slices (DSS) available for compute
->  	 * operations. For example a query response containing the following
-> @@ -408,7 +408,7 @@ struct drm_xe_query_topology_mask {
->  	 *   DSS_COMPUTE    ff ff ff ff 00 00 00 00
->  	 * means 32 DSS are available for compute.
->  	 */
-> -#define XE_TOPO_DSS_COMPUTE	(1 << 1)
-> +#define DRM_XE_TOPO_DSS_COMPUTE		(1 << 1)
->  	/*
->  	 * To query the mask of Execution Units (EU) available per Dual Sub
->  	 * Slices (DSS). For example a query response containing the following
-> @@ -416,7 +416,7 @@ struct drm_xe_query_topology_mask {
->  	 *   EU_PER_DSS    ff ff 00 00 00 00 00 00
->  	 * means each DSS has 16 EU.
->  	 */
-> -#define XE_TOPO_EU_PER_DSS	(1 << 2)
-> +#define DRM_XE_TOPO_EU_PER_DSS		(1 << 2)
->  	/** @type: type of mask */
->  	__u16 type;
->  
-> @@ -497,8 +497,8 @@ struct drm_xe_gem_create {
->  	 */
->  	__u64 size;
->  
-> -#define XE_GEM_CREATE_FLAG_DEFER_BACKING	(0x1 << 24)
-> -#define XE_GEM_CREATE_FLAG_SCANOUT		(0x1 << 25)
-> +#define DRM_XE_GEM_CREATE_FLAG_DEFER_BACKING		(0x1 << 24)
-> +#define DRM_XE_GEM_CREATE_FLAG_SCANOUT			(0x1 << 25)
->  /*
->   * When using VRAM as a possible placement, ensure that the corresponding VRAM
->   * allocation will always use the CPU accessible part of VRAM. This is important
-> @@ -514,7 +514,7 @@ struct drm_xe_gem_create {
->   * display surfaces, therefore the kernel requires setting this flag for such
->   * objects, otherwise an error is thrown on small-bar systems.
->   */
-> -#define XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM	(0x1 << 26)
-> +#define DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM	(0x1 << 26)
->  	/**
->  	 * @flags: Flags, currently a mask of memory instances of where BO can
->  	 * be placed
-> @@ -581,14 +581,14 @@ struct drm_xe_ext_set_property {
->  };
->  
->  struct drm_xe_vm_create {
-> -#define XE_VM_EXTENSION_SET_PROPERTY	0
-> +#define DRM_XE_VM_EXTENSION_SET_PROPERTY	0
->  	/** @extensions: Pointer to the first extension struct, if any */
->  	__u64 extensions;
->  
-> -#define DRM_XE_VM_CREATE_SCRATCH_PAGE	(0x1 << 0)
-> -#define DRM_XE_VM_CREATE_COMPUTE_MODE	(0x1 << 1)
-> -#define DRM_XE_VM_CREATE_ASYNC_DEFAULT	(0x1 << 2)
-> -#define DRM_XE_VM_CREATE_FAULT_MODE	(0x1 << 3)
-> +#define DRM_XE_VM_CREATE_SCRATCH_PAGE		(0x1 << 0)
-> +#define DRM_XE_VM_CREATE_COMPUTE_MODE		(0x1 << 1)
-> +#define DRM_XE_VM_CREATE_ASYNC_DEFAULT		(0x1 << 2)
-> +#define DRM_XE_VM_CREATE_FAULT_MODE		(0x1 << 3)
->  	/** @flags: Flags */
->  	__u32 flags;
->  
-> @@ -644,29 +644,29 @@ struct drm_xe_vm_bind_op {
->  	 */
->  	__u64 tile_mask;
->  
-> -#define XE_VM_BIND_OP_MAP		0x0
-> -#define XE_VM_BIND_OP_UNMAP		0x1
-> -#define XE_VM_BIND_OP_MAP_USERPTR	0x2
-> -#define XE_VM_BIND_OP_UNMAP_ALL		0x3
-> -#define XE_VM_BIND_OP_PREFETCH		0x4
-> +#define DRM_XE_VM_BIND_OP_MAP		0x0
-> +#define DRM_XE_VM_BIND_OP_UNMAP		0x1
-> +#define DRM_XE_VM_BIND_OP_MAP_USERPTR	0x2
-> +#define DRM_XE_VM_BIND_OP_UNMAP_ALL	0x3
-> +#define DRM_XE_VM_BIND_OP_PREFETCH	0x4
->  	/** @op: Bind operation to perform */
->  	__u32 op;
->  
-> -#define XE_VM_BIND_FLAG_READONLY	(0x1 << 0)
-> -#define XE_VM_BIND_FLAG_ASYNC		(0x1 << 1)
-> +#define DRM_XE_VM_BIND_FLAG_READONLY	(0x1 << 0)
-> +#define DRM_XE_VM_BIND_FLAG_ASYNC	(0x1 << 1)
->  	/*
->  	 * Valid on a faulting VM only, do the MAP operation immediately rather
->  	 * than deferring the MAP to the page fault handler.
->  	 */
-> -#define XE_VM_BIND_FLAG_IMMEDIATE	(0x1 << 2)
-> +#define DRM_XE_VM_BIND_FLAG_IMMEDIATE	(0x1 << 2)
->  	/*
->  	 * When the NULL flag is set, the page tables are setup with a special
->  	 * bit which indicates writes are dropped and all reads return zero.  In
-> -	 * the future, the NULL flags will only be valid for XE_VM_BIND_OP_MAP
-> +	 * the future, the NULL flags will only be valid for DRM_XE_VM_BIND_OP_MAP
->  	 * operations, the BO handle MBZ, and the BO offset MBZ. This flag is
->  	 * intended to implement VK sparse bindings.
->  	 */
-> -#define XE_VM_BIND_FLAG_NULL		(0x1 << 3)
-> +#define DRM_XE_VM_BIND_FLAG_NULL	(0x1 << 3)
->  	/** @flags: Bind flags */
->  	__u32 flags;
->  
-> @@ -721,19 +721,19 @@ struct drm_xe_vm_bind {
->  	__u64 reserved[2];
->  };
->  
-> -/* For use with XE_EXEC_QUEUE_SET_PROPERTY_ACC_GRANULARITY */
-> +/* For use with DRM_XE_EXEC_QUEUE_SET_PROPERTY_ACC_GRANULARITY */
->  
->  /* Monitor 128KB contiguous region with 4K sub-granularity */
-> -#define XE_ACC_GRANULARITY_128K 0
-> +#define DRM_XE_ACC_GRANULARITY_128K 0
->  
->  /* Monitor 2MB contiguous region with 64KB sub-granularity */
-> -#define XE_ACC_GRANULARITY_2M 1
-> +#define DRM_XE_ACC_GRANULARITY_2M 1
->  
->  /* Monitor 16MB contiguous region with 512KB sub-granularity */
-> -#define XE_ACC_GRANULARITY_16M 2
-> +#define DRM_XE_ACC_GRANULARITY_16M 2
->  
->  /* Monitor 64MB contiguous region with 2M sub-granularity */
-> -#define XE_ACC_GRANULARITY_64M 3
-> +#define DRM_XE_ACC_GRANULARITY_64M 3
->  
->  /**
->   * struct drm_xe_exec_queue_set_property - exec queue set property
-> @@ -747,14 +747,14 @@ struct drm_xe_exec_queue_set_property {
->  	/** @exec_queue_id: Exec queue ID */
->  	__u32 exec_queue_id;
->  
-> -#define XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY		0
-> -#define XE_EXEC_QUEUE_SET_PROPERTY_TIMESLICE		1
-> -#define XE_EXEC_QUEUE_SET_PROPERTY_PREEMPTION_TIMEOUT	2
-> -#define XE_EXEC_QUEUE_SET_PROPERTY_PERSISTENCE		3
-> -#define XE_EXEC_QUEUE_SET_PROPERTY_JOB_TIMEOUT		4
-> -#define XE_EXEC_QUEUE_SET_PROPERTY_ACC_TRIGGER		5
-> -#define XE_EXEC_QUEUE_SET_PROPERTY_ACC_NOTIFY		6
-> -#define XE_EXEC_QUEUE_SET_PROPERTY_ACC_GRANULARITY	7
-> +#define DRM_XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY			0
-> +#define DRM_XE_EXEC_QUEUE_SET_PROPERTY_TIMESLICE		1
-> +#define DRM_XE_EXEC_QUEUE_SET_PROPERTY_PREEMPTION_TIMEOUT	2
-> +#define DRM_XE_EXEC_QUEUE_SET_PROPERTY_PERSISTENCE		3
-> +#define DRM_XE_EXEC_QUEUE_SET_PROPERTY_JOB_TIMEOUT		4
-> +#define DRM_XE_EXEC_QUEUE_SET_PROPERTY_ACC_TRIGGER		5
-> +#define DRM_XE_EXEC_QUEUE_SET_PROPERTY_ACC_NOTIFY		6
-> +#define DRM_XE_EXEC_QUEUE_SET_PROPERTY_ACC_GRANULARITY		7
->  	/** @property: property to set */
->  	__u32 property;
->  
-> @@ -766,7 +766,7 @@ struct drm_xe_exec_queue_set_property {
->  };
->  
->  struct drm_xe_exec_queue_create {
-> -#define XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY               0
-> +#define DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY               0
->  	/** @extensions: Pointer to the first extension struct, if any */
->  	__u64 extensions;
->  
-> @@ -805,7 +805,7 @@ struct drm_xe_exec_queue_get_property {
->  	/** @exec_queue_id: Exec queue ID */
->  	__u32 exec_queue_id;
->  
-> -#define XE_EXEC_QUEUE_GET_PROPERTY_BAN			0
-> +#define DRM_XE_EXEC_QUEUE_GET_PROPERTY_BAN	0
->  	/** @property: property to get */
->  	__u32 property;
->  
-> @@ -973,11 +973,11 @@ struct drm_xe_wait_user_fence {
->  /**
->   * DOC: XE PMU event config IDs
->   *
-> - * Check 'man perf_event_open' to use the ID's XE_PMU_XXXX listed in xe_drm.h
-> + * Check 'man perf_event_open' to use the ID's DRM_XE_PMU_XXXX listed in xe_drm.h
->   * in 'struct perf_event_attr' as part of perf_event_open syscall to read a
->   * particular event.
->   *
-> - * For example to open the XE_PMU_RENDER_GROUP_BUSY(0):
-> + * For example to open the DRMXE_PMU_RENDER_GROUP_BUSY(0):
->   *
->   * .. code-block:: C
->   *
-> @@ -991,7 +991,7 @@ struct drm_xe_wait_user_fence {
->   *	attr.read_format = PERF_FORMAT_TOTAL_TIME_ENABLED;
->   *	attr.use_clockid = 1;
->   *	attr.clockid = CLOCK_MONOTONIC;
-> - *	attr.config = XE_PMU_RENDER_GROUP_BUSY(0);
-> + *	attr.config = DRM_XE_PMU_RENDER_GROUP_BUSY(0);
->   *
->   *	fd = syscall(__NR_perf_event_open, &attr, -1, cpu, -1, 0);
->   */
-> @@ -999,15 +999,15 @@ struct drm_xe_wait_user_fence {
->  /*
->   * Top bits of every counter are GT id.
->   */
-> -#define __XE_PMU_GT_SHIFT (56)
-> +#define __DRM_XE_PMU_GT_SHIFT (56)
->  
-> -#define ___XE_PMU_OTHER(gt, x) \
-> -	(((__u64)(x)) | ((__u64)(gt) << __XE_PMU_GT_SHIFT))
-> +#define ___DRM_XE_PMU_OTHER(gt, x) \
-> +	(((__u64)(x)) | ((__u64)(gt) << __DRM_XE_PMU_GT_SHIFT))
->  
-> -#define XE_PMU_RENDER_GROUP_BUSY(gt)		___XE_PMU_OTHER(gt, 0)
-> -#define XE_PMU_COPY_GROUP_BUSY(gt)		___XE_PMU_OTHER(gt, 1)
-> -#define XE_PMU_MEDIA_GROUP_BUSY(gt)		___XE_PMU_OTHER(gt, 2)
-> -#define XE_PMU_ANY_ENGINE_GROUP_BUSY(gt)	___XE_PMU_OTHER(gt, 3)
-> +#define DRM_XE_PMU_RENDER_GROUP_BUSY(gt)	___DRM_XE_PMU_OTHER(gt, 0)
-> +#define DRM_XE_PMU_COPY_GROUP_BUSY(gt)		___DRM_XE_PMU_OTHER(gt, 1)
-> +#define DRM_XE_PMU_MEDIA_GROUP_BUSY(gt)		___DRM_XE_PMU_OTHER(gt, 2)
-> +#define DRM_XE_PMU_ANY_ENGINE_GROUP_BUSY(gt)	___DRM_XE_PMU_OTHER(gt, 3)
->  
->  #if defined(__cplusplus)
->  }
-> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-> index c32d04302..eb47ede50 100644
-> --- a/lib/intel_batchbuffer.c
-> +++ b/lib/intel_batchbuffer.c
-> @@ -1286,7 +1286,7 @@ static struct drm_xe_vm_bind_op *xe_alloc_bind_ops(struct intel_bb *ibb,
->  {
->  	struct drm_i915_gem_exec_object2 **objects = ibb->objects;
->  	struct drm_xe_vm_bind_op *bind_ops, *ops;
-> -	bool set_obj = (op & 0xffff) == XE_VM_BIND_OP_MAP;
-> +	bool set_obj = (op & 0xffff) == DRM_XE_VM_BIND_OP_MAP;
->  
->  	bind_ops = calloc(ibb->num_objects, sizeof(*bind_ops));
->  	igt_assert(bind_ops);
-> @@ -1325,8 +1325,8 @@ static void __unbind_xe_objects(struct intel_bb *ibb)
->  
->  	if (ibb->num_objects > 1) {
->  		struct drm_xe_vm_bind_op *bind_ops;
-> -		uint32_t op = XE_VM_BIND_OP_UNMAP;
-> -		uint32_t flags = XE_VM_BIND_FLAG_ASYNC;
-> +		uint32_t op = DRM_XE_VM_BIND_OP_UNMAP;
-> +		uint32_t flags = DRM_XE_VM_BIND_FLAG_ASYNC;
->  
->  		bind_ops = xe_alloc_bind_ops(ibb, op, flags, 0);
->  		xe_vm_bind_array(ibb->fd, ibb->vm_id, 0, bind_ops,
-> @@ -2357,7 +2357,7 @@ __xe_bb_exec(struct intel_bb *ibb, uint64_t flags, bool sync)
->  
->  	syncs[0].handle = syncobj_create(ibb->fd, 0);
->  	if (ibb->num_objects > 1) {
-> -		bind_ops = xe_alloc_bind_ops(ibb, XE_VM_BIND_OP_MAP, XE_VM_BIND_FLAG_ASYNC, 0);
-> +		bind_ops = xe_alloc_bind_ops(ibb, DRM_XE_VM_BIND_OP_MAP, DRM_XE_VM_BIND_FLAG_ASYNC, 0);
->  		xe_vm_bind_array(ibb->fd, ibb->vm_id, 0, bind_ops,
->  				 ibb->num_objects, syncs, 1);
->  		free(bind_ops);
-> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-> index 5b682c2b6..2edcd72f3 100644
-> --- a/lib/intel_blt.c
-> +++ b/lib/intel_blt.c
-> @@ -1804,7 +1804,7 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
->  		uint64_t flags = region;
->  
->  		if (create_mapping && region != system_memory(blt->fd))
-> -			flags |= XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
-> +			flags |= DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
->  
->  		size = ALIGN(size, xe_get_default_alignment(blt->fd));
->  		handle = xe_bo_create_flags(blt->fd, 0, size, flags);
-> diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-> index c4077801e..36f10a49a 100644
-> --- a/lib/xe/xe_ioctl.c
-> +++ b/lib/xe/xe_ioctl.c
-> @@ -67,7 +67,7 @@ void xe_vm_unbind_all_async(int fd, uint32_t vm, uint32_t exec_queue,
->  			    uint32_t num_syncs)
->  {
->  	__xe_vm_bind_assert(fd, vm, exec_queue, bo, 0, 0, 0,
-> -			    XE_VM_BIND_OP_UNMAP_ALL, XE_VM_BIND_FLAG_ASYNC,
-> +			    DRM_XE_VM_BIND_OP_UNMAP_ALL, DRM_XE_VM_BIND_FLAG_ASYNC,
->  			    sync, num_syncs, 0, 0);
->  }
->  
-> @@ -130,7 +130,7 @@ void xe_vm_bind(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
->  		struct drm_xe_sync *sync, uint32_t num_syncs)
->  {
->  	__xe_vm_bind_assert(fd, vm, 0, bo, offset, addr, size,
-> -			    XE_VM_BIND_OP_MAP, 0, sync, num_syncs, 0, 0);
-> +			    DRM_XE_VM_BIND_OP_MAP, 0, sync, num_syncs, 0, 0);
->  }
->  
->  void xe_vm_unbind(int fd, uint32_t vm, uint64_t offset,
-> @@ -138,7 +138,7 @@ void xe_vm_unbind(int fd, uint32_t vm, uint64_t offset,
->  		  struct drm_xe_sync *sync, uint32_t num_syncs)
->  {
->  	__xe_vm_bind_assert(fd, vm, 0, 0, offset, addr, size,
-> -			    XE_VM_BIND_OP_UNMAP, 0, sync, num_syncs, 0, 0);
-> +			    DRM_XE_VM_BIND_OP_UNMAP, 0, sync, num_syncs, 0, 0);
->  }
->  
->  void xe_vm_prefetch_async(int fd, uint32_t vm, uint32_t exec_queue, uint64_t offset,
-> @@ -147,7 +147,7 @@ void xe_vm_prefetch_async(int fd, uint32_t vm, uint32_t exec_queue, uint64_t off
->  			  uint32_t region)
->  {
->  	__xe_vm_bind_assert(fd, vm, exec_queue, 0, offset, addr, size,
-> -			    XE_VM_BIND_OP_PREFETCH, XE_VM_BIND_FLAG_ASYNC,
-> +			    DRM_XE_VM_BIND_OP_PREFETCH, DRM_XE_VM_BIND_FLAG_ASYNC,
->  			    sync, num_syncs, region, 0);
->  }
->  
-> @@ -156,7 +156,7 @@ void xe_vm_bind_async(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
->  		      struct drm_xe_sync *sync, uint32_t num_syncs)
->  {
->  	__xe_vm_bind_assert(fd, vm, exec_queue, bo, offset, addr, size,
-> -			    XE_VM_BIND_OP_MAP, XE_VM_BIND_FLAG_ASYNC, sync,
-> +			    DRM_XE_VM_BIND_OP_MAP, DRM_XE_VM_BIND_FLAG_ASYNC, sync,
->  			    num_syncs, 0, 0);
->  }
->  
-> @@ -166,7 +166,7 @@ void xe_vm_bind_async_flags(int fd, uint32_t vm, uint32_t exec_queue, uint32_t b
->  			    uint32_t flags)
->  {
->  	__xe_vm_bind_assert(fd, vm, exec_queue, bo, offset, addr, size,
-> -			    XE_VM_BIND_OP_MAP, XE_VM_BIND_FLAG_ASYNC | flags,
-> +			    DRM_XE_VM_BIND_OP_MAP, DRM_XE_VM_BIND_FLAG_ASYNC | flags,
->  			    sync, num_syncs, 0, 0);
->  }
->  
-> @@ -175,7 +175,7 @@ void xe_vm_bind_userptr_async(int fd, uint32_t vm, uint32_t exec_queue,
->  			      struct drm_xe_sync *sync, uint32_t num_syncs)
->  {
->  	__xe_vm_bind_assert(fd, vm, exec_queue, 0, userptr, addr, size,
-> -			    XE_VM_BIND_OP_MAP_USERPTR, XE_VM_BIND_FLAG_ASYNC,
-> +			    DRM_XE_VM_BIND_OP_MAP_USERPTR, DRM_XE_VM_BIND_FLAG_ASYNC,
->  			    sync, num_syncs, 0, 0);
->  }
->  
-> @@ -185,7 +185,7 @@ void xe_vm_bind_userptr_async_flags(int fd, uint32_t vm, uint32_t exec_queue,
->  				    uint32_t num_syncs, uint32_t flags)
->  {
->  	__xe_vm_bind_assert(fd, vm, exec_queue, 0, userptr, addr, size,
-> -			    XE_VM_BIND_OP_MAP_USERPTR, XE_VM_BIND_FLAG_ASYNC |
-> +			    DRM_XE_VM_BIND_OP_MAP_USERPTR, DRM_XE_VM_BIND_FLAG_ASYNC |
->  			    flags, sync, num_syncs, 0, 0);
->  }
->  
-> @@ -194,7 +194,7 @@ void xe_vm_unbind_async(int fd, uint32_t vm, uint32_t exec_queue,
->  			struct drm_xe_sync *sync, uint32_t num_syncs)
->  {
->  	__xe_vm_bind_assert(fd, vm, exec_queue, 0, offset, addr, size,
-> -			    XE_VM_BIND_OP_UNMAP, XE_VM_BIND_FLAG_ASYNC, sync,
-> +			    DRM_XE_VM_BIND_OP_UNMAP, DRM_XE_VM_BIND_FLAG_ASYNC, sync,
->  			    num_syncs, 0, 0);
->  }
->  
-> @@ -208,13 +208,13 @@ static void __xe_vm_bind_sync(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
->  void xe_vm_bind_sync(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
->  		     uint64_t addr, uint64_t size)
->  {
-> -	__xe_vm_bind_sync(fd, vm, bo, offset, addr, size, XE_VM_BIND_OP_MAP);
-> +	__xe_vm_bind_sync(fd, vm, bo, offset, addr, size, DRM_XE_VM_BIND_OP_MAP);
->  }
->  
->  void xe_vm_unbind_sync(int fd, uint32_t vm, uint64_t offset,
->  		       uint64_t addr, uint64_t size)
->  {
-> -	__xe_vm_bind_sync(fd, vm, 0, offset, addr, size, XE_VM_BIND_OP_UNMAP);
-> +	__xe_vm_bind_sync(fd, vm, 0, offset, addr, size, DRM_XE_VM_BIND_OP_UNMAP);
->  }
->  
->  void xe_vm_destroy(int fd, uint32_t vm)
-> diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-> index 06d216cf9..8df3d317a 100644
-> --- a/lib/xe/xe_query.c
-> +++ b/lib/xe/xe_query.c
-> @@ -249,8 +249,8 @@ struct xe_device *xe_device_get(int fd)
->  
->  	xe_dev->fd = fd;
->  	xe_dev->config = xe_query_config_new(fd);
-> -	xe_dev->va_bits = xe_dev->config->info[XE_QUERY_CONFIG_VA_BITS];
-> -	xe_dev->dev_id = xe_dev->config->info[XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff;
-> +	xe_dev->va_bits = xe_dev->config->info[DRM_XE_QUERY_CONFIG_VA_BITS];
-> +	xe_dev->dev_id = xe_dev->config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff;
->  	xe_dev->gt_list = xe_query_gt_list_new(fd);
->  	xe_dev->memory_regions = __memory_regions(xe_dev->gt_list);
->  	xe_dev->hw_engines = xe_query_engines_new(fd, &xe_dev->number_hw_engines);
-> @@ -414,7 +414,7 @@ static uint64_t __xe_visible_vram_size(int fd, int gt)
->   * @gt: gt id
->   *
->   * Returns vram memory bitmask for xe device @fd and @gt id, with
-> - * XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM also set, to ensure that CPU access is
-> + * DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM also set, to ensure that CPU access is
->   * possible.
->   */
->  uint64_t visible_vram_memory(int fd, int gt)
-> @@ -424,7 +424,7 @@ uint64_t visible_vram_memory(int fd, int gt)
->  	 * has landed.
->  	 */
->  	if (__xe_visible_vram_size(fd, gt))
-> -		return vram_memory(fd, gt) | XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
-> +		return vram_memory(fd, gt) | DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
->  	else
->  		return vram_memory(fd, gt); /* older kernel */
->  }
-> @@ -449,7 +449,7 @@ uint64_t vram_if_possible(int fd, int gt)
->   *
->   * Returns vram memory bitmask for xe device @fd and @gt id or system memory if
->   * there's no vram memory available for @gt. Also attaches the
-> - * XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM to ensure that CPU access is possible
-> + * DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM to ensure that CPU access is possible
->   * when using vram.
->   */
->  uint64_t visible_vram_if_possible(int fd, int gt)
-> @@ -463,7 +463,7 @@ uint64_t visible_vram_if_possible(int fd, int gt)
->  	 * has landed.
->  	 */
->  	if (__xe_visible_vram_size(fd, gt))
-> -		return vram ? vram | XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM : system_memory;
-> +		return vram ? vram | DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM : system_memory;
->  	else
->  		return vram ? vram : system_memory; /* older kernel */
->  }
-> diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-> index fc81cc263..3d7e22a9b 100644
-> --- a/lib/xe/xe_query.h
-> +++ b/lib/xe/xe_query.h
-> @@ -71,8 +71,8 @@ struct xe_device {
->  	for (uint64_t __i = 0; __i < igt_fls(__memreg); __i++) \
->  		for_if(__r = (__memreg & (1ull << __i)))
->  
-> -#define XE_IS_CLASS_SYSMEM(__region) ((__region)->mem_class == XE_MEM_REGION_CLASS_SYSMEM)
-> -#define XE_IS_CLASS_VRAM(__region) ((__region)->mem_class == XE_MEM_REGION_CLASS_VRAM)
-> +#define XE_IS_CLASS_SYSMEM(__region) ((__region)->mem_class == DRM_XE_MEM_REGION_CLASS_SYSMEM)
-> +#define XE_IS_CLASS_VRAM(__region) ((__region)->mem_class == DRM_XE_MEM_REGION_CLASS_VRAM)
->  
->  unsigned int xe_number_gt(int fd);
->  uint64_t all_memory_regions(int fd);
-> diff --git a/lib/xe/xe_util.c b/lib/xe/xe_util.c
-> index 5fa4d4610..780125f92 100644
-> --- a/lib/xe/xe_util.c
-> +++ b/lib/xe/xe_util.c
-> @@ -134,12 +134,12 @@ static struct drm_xe_vm_bind_op *xe_alloc_bind_ops(struct igt_list_head *obj_lis
->  		ops = &bind_ops[i];
->  
->  		if (obj->bind_op == XE_OBJECT_BIND) {
-> -			op = XE_VM_BIND_OP_MAP;
-> -			flags = XE_VM_BIND_FLAG_ASYNC;
-> +			op = DRM_XE_VM_BIND_OP_MAP;
-> +			flags = DRM_XE_VM_BIND_FLAG_ASYNC;
->  			ops->obj = obj->handle;
->  		} else {
-> -			op = XE_VM_BIND_OP_UNMAP;
-> -			flags = XE_VM_BIND_FLAG_ASYNC;
-> +			op = DRM_XE_VM_BIND_OP_UNMAP;
-> +			flags = DRM_XE_VM_BIND_FLAG_ASYNC;
->  		}
->  
->  		ops->op = op;
-> @@ -211,7 +211,7 @@ void xe_bind_unbind_async(int xe, uint32_t vm, uint32_t bind_engine,
->  		  tabsyncs[0].handle, tabsyncs[1].handle);
->  
->  	if (num_binds == 1) {
-> -		if ((bind_ops[0].op & 0xffff) == XE_VM_BIND_OP_MAP)
-> +		if ((bind_ops[0].op & 0xffff) == DRM_XE_VM_BIND_OP_MAP)
->  			xe_vm_bind_async(xe, vm, bind_engine, bind_ops[0].obj, 0,
->  					 bind_ops[0].addr, bind_ops[0].range,
->  					 syncs, num_syncs);
-> diff --git a/lib/xe/xe_util.h b/lib/xe/xe_util.h
-> index e97d236b8..21b312071 100644
-> --- a/lib/xe/xe_util.h
-> +++ b/lib/xe/xe_util.h
-> @@ -13,9 +13,9 @@
->  #include <xe_drm.h>
->  
->  #define XE_IS_SYSMEM_MEMORY_REGION(fd, region) \
-> -	(xe_region_class(fd, region) == XE_MEM_REGION_CLASS_SYSMEM)
-> +	(xe_region_class(fd, region) == DRM_XE_MEM_REGION_CLASS_SYSMEM)
->  #define XE_IS_VRAM_MEMORY_REGION(fd, region) \
-> -	(xe_region_class(fd, region) == XE_MEM_REGION_CLASS_VRAM)
-> +	(xe_region_class(fd, region) == DRM_XE_MEM_REGION_CLASS_VRAM)
->  
->  struct igt_collection *
->  __xe_get_memory_region_set(int xe, uint32_t *mem_regions_type, int num_regions);
-> diff --git a/tests/intel/xe_access_counter.c b/tests/intel/xe_access_counter.c
-> index b738ebc86..8966bfc9c 100644
-> --- a/tests/intel/xe_access_counter.c
-> +++ b/tests/intel/xe_access_counter.c
-> @@ -47,8 +47,8 @@ igt_main
->  
->  		struct drm_xe_ext_set_property ext = {
->  			.base.next_extension = 0,
-> -			.base.name = XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-> -			.property = XE_EXEC_QUEUE_SET_PROPERTY_ACC_GRANULARITY,
-> +			.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-> +			.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_ACC_GRANULARITY,
->  			.value = SIZE_64M + 1,
->  		};
->  
-> diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
-> index 876c239e4..bb844b641 100644
-> --- a/tests/intel/xe_ccs.c
-> +++ b/tests/intel/xe_ccs.c
-> @@ -634,8 +634,8 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
->  		xe_device_get(xe);
->  
->  		set = xe_get_memory_region_set(xe,
-> -					       XE_MEM_REGION_CLASS_SYSMEM,
-> -					       XE_MEM_REGION_CLASS_VRAM);
-> +					       DRM_XE_MEM_REGION_CLASS_SYSMEM,
-> +					       DRM_XE_MEM_REGION_CLASS_VRAM);
->  	}
->  
->  	igt_describe("Check block-copy uncompressed blit");
-> diff --git a/tests/intel/xe_copy_basic.c b/tests/intel/xe_copy_basic.c
-> index fe78ac50f..1dafbb276 100644
-> --- a/tests/intel/xe_copy_basic.c
-> +++ b/tests/intel/xe_copy_basic.c
-> @@ -164,8 +164,8 @@ igt_main
->  		fd = drm_open_driver(DRIVER_XE);
->  		xe_device_get(fd);
->  		set = xe_get_memory_region_set(fd,
-> -					       XE_MEM_REGION_CLASS_SYSMEM,
-> -					       XE_MEM_REGION_CLASS_VRAM);
-> +					       DRM_XE_MEM_REGION_CLASS_SYSMEM,
-> +					       DRM_XE_MEM_REGION_CLASS_VRAM);
->  	}
->  
->  	for (int i = 0; i < ARRAY_SIZE(size); i++) {
-> diff --git a/tests/intel/xe_debugfs.c b/tests/intel/xe_debugfs.c
-> index 4104bf5ae..60ddceda7 100644
-> --- a/tests/intel/xe_debugfs.c
-> +++ b/tests/intel/xe_debugfs.c
-> @@ -91,20 +91,20 @@ test_base(int fd, struct drm_xe_query_config *config)
->  
->  	igt_assert(config);
->  	sprintf(reference, "devid 0x%llx",
-> -			config->info[XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff);
-> +			config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff);
->  	igt_assert(igt_debugfs_search(fd, "info", reference));
->  
->  	sprintf(reference, "revid %lld",
-> -			config->info[XE_QUERY_CONFIG_REV_AND_DEVICE_ID] >> 16);
-> +			config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] >> 16);
->  	igt_assert(igt_debugfs_search(fd, "info", reference));
->  
-> -	sprintf(reference, "is_dgfx %s", config->info[XE_QUERY_CONFIG_FLAGS] &
-> -		XE_QUERY_CONFIG_FLAGS_HAS_VRAM ? "yes" : "no");
-> +	sprintf(reference, "is_dgfx %s", config->info[DRM_XE_QUERY_CONFIG_FLAGS] &
-> +		DRM_XE_QUERY_CONFIG_FLAGS_HAS_VRAM ? "yes" : "no");
->  
->  	igt_assert(igt_debugfs_search(fd, "info", reference));
->  
->  	if (!AT_LEAST_GEN(devid, 20)) {
-> -		switch (config->info[XE_QUERY_CONFIG_VA_BITS]) {
-> +		switch (config->info[DRM_XE_QUERY_CONFIG_VA_BITS]) {
->  		case 48:
->  			val = 3;
->  			break;
-> @@ -125,7 +125,7 @@ test_base(int fd, struct drm_xe_query_config *config)
->  	igt_assert(igt_debugfs_exists(fd, "gtt_mm", O_RDONLY));
->  	igt_debugfs_dump(fd, "gtt_mm");
->  
-> -	if (config->info[XE_QUERY_CONFIG_FLAGS] & XE_QUERY_CONFIG_FLAGS_HAS_VRAM) {
-> +	if (config->info[DRM_XE_QUERY_CONFIG_FLAGS] & DRM_XE_QUERY_CONFIG_FLAGS_HAS_VRAM) {
->  		igt_assert(igt_debugfs_exists(fd, "vram0_mm", O_RDONLY));
->  		igt_debugfs_dump(fd, "vram0_mm");
->  	}
-> diff --git a/tests/intel/xe_exec_basic.c b/tests/intel/xe_exec_basic.c
-> index 8dbce524d..232ddde8e 100644
-> --- a/tests/intel/xe_exec_basic.c
-> +++ b/tests/intel/xe_exec_basic.c
-> @@ -138,7 +138,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
->  
->  		bo_flags = visible_vram_if_possible(fd, eci->gt_id);
->  		if (flags & DEFER_ALLOC)
-> -			bo_flags |= XE_GEM_CREATE_FLAG_DEFER_BACKING;
-> +			bo_flags |= DRM_XE_GEM_CREATE_FLAG_DEFER_BACKING;
->  
->  		bo = xe_bo_create_flags(fd, n_vm == 1 ? vm[0] : 0,
->  					bo_size, bo_flags);
-> @@ -172,9 +172,9 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
->  		if (flags & SPARSE)
->  			__xe_vm_bind_assert(fd, vm[i], bind_exec_queues[i],
->  					    0, 0, sparse_addr[i], bo_size,
-> -					    XE_VM_BIND_OP_MAP,
-> -					    XE_VM_BIND_FLAG_ASYNC |
-> -					    XE_VM_BIND_FLAG_NULL, sync,
-> +					    DRM_XE_VM_BIND_OP_MAP,
-> +					    DRM_XE_VM_BIND_FLAG_ASYNC |
-> +					    DRM_XE_VM_BIND_FLAG_NULL, sync,
->  					    1, 0, 0);
->  	}
->  
-> diff --git a/tests/intel/xe_exec_fault_mode.c b/tests/intel/xe_exec_fault_mode.c
-> index 64b5c59a2..477d0824d 100644
-> --- a/tests/intel/xe_exec_fault_mode.c
-> +++ b/tests/intel/xe_exec_fault_mode.c
-> @@ -175,12 +175,12 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
->  		if (bo)
->  			xe_vm_bind_async_flags(fd, vm, bind_exec_queues[0], bo, 0,
->  					       addr, bo_size, sync, 1,
-> -					       XE_VM_BIND_FLAG_IMMEDIATE);
-> +					       DRM_XE_VM_BIND_FLAG_IMMEDIATE);
->  		else
->  			xe_vm_bind_userptr_async_flags(fd, vm, bind_exec_queues[0],
->  						       to_user_pointer(data),
->  						       addr, bo_size, sync, 1,
-> -						       XE_VM_BIND_FLAG_IMMEDIATE);
-> +						       DRM_XE_VM_BIND_FLAG_IMMEDIATE);
->  	} else {
->  		if (bo)
->  			xe_vm_bind_async(fd, vm, bind_exec_queues[0], bo, 0, addr,
-> diff --git a/tests/intel/xe_exec_queue_property.c b/tests/intel/xe_exec_queue_property.c
-> index 4e32aefa5..ae6b445cd 100644
-> --- a/tests/intel/xe_exec_queue_property.c
-> +++ b/tests/intel/xe_exec_queue_property.c
-> @@ -43,11 +43,11 @@
->  static int get_property_name(const char *property)
->  {
->  	if (strstr(property, "preempt"))
-> -		return XE_EXEC_QUEUE_SET_PROPERTY_PREEMPTION_TIMEOUT;
-> +		return DRM_XE_EXEC_QUEUE_SET_PROPERTY_PREEMPTION_TIMEOUT;
->  	else if (strstr(property, "job_timeout"))
-> -		return XE_EXEC_QUEUE_SET_PROPERTY_JOB_TIMEOUT;
-> +		return DRM_XE_EXEC_QUEUE_SET_PROPERTY_JOB_TIMEOUT;
->  	else if (strstr(property, "timeslice"))
-> -		return XE_EXEC_QUEUE_SET_PROPERTY_TIMESLICE;
-> +		return DRM_XE_EXEC_QUEUE_SET_PROPERTY_TIMESLICE;
->  	else
->  		return -1;
->  }
-> @@ -60,7 +60,7 @@ static void test_set_property(int xe, int property_name,
->  	};
->  	struct drm_xe_ext_set_property ext = {
->  		.base.next_extension = 0,
-> -		.base.name = XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-> +		.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
->  		.property = property_name,
->  		.value = property_value,
->  	};
-> @@ -130,19 +130,19 @@ igt_main
->  
->  	igt_subtest("priority-set-property") {
->  		/* Tests priority property by setting positive values. */
-> -		test_set_property(xe, XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY,
-> +		test_set_property(xe, DRM_XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY,
->  				  DRM_SCHED_PRIORITY_NORMAL, 0);
->  
->  		/* Tests priority property by setting invalid value. */
-> -		test_set_property(xe, XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY,
-> +		test_set_property(xe, DRM_XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY,
->  				  DRM_SCHED_PRIORITY_HIGH + 1, -EINVAL);
->  		igt_fork(child, 1) {
->  			igt_drop_root();
->  
->  			/* Tests priority property by dropping root permissions. */
-> -			test_set_property(xe, XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY,
-> +			test_set_property(xe, DRM_XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY,
->  					  DRM_SCHED_PRIORITY_HIGH, -EPERM);
-> -			test_set_property(xe, XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY,
-> +			test_set_property(xe, DRM_XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY,
->  					  DRM_SCHED_PRIORITY_NORMAL, 0);
->  		}
->  		igt_waitchildren();
-> @@ -150,7 +150,7 @@ igt_main
->  
->  	igt_subtest("persistence-set-property") {
->  		/* Tests persistence property by setting positive values. */
-> -		test_set_property(xe, XE_EXEC_QUEUE_SET_PROPERTY_PERSISTENCE, 1, 0);
-> +		test_set_property(xe, DRM_XE_EXEC_QUEUE_SET_PROPERTY_PERSISTENCE, 1, 0);
->  
->  	}
->  
-> diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-> index 44248776b..39647b736 100644
-> --- a/tests/intel/xe_exec_reset.c
-> +++ b/tests/intel/xe_exec_reset.c
-> @@ -187,14 +187,14 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
->  	for (i = 0; i < n_exec_queues; i++) {
->  		struct drm_xe_ext_set_property job_timeout = {
->  			.base.next_extension = 0,
-> -			.base.name = XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-> -			.property = XE_EXEC_QUEUE_SET_PROPERTY_JOB_TIMEOUT,
-> +			.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-> +			.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_JOB_TIMEOUT,
->  			.value = 50,
->  		};
->  		struct drm_xe_ext_set_property preempt_timeout = {
->  			.base.next_extension = 0,
-> -			.base.name = XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-> -			.property = XE_EXEC_QUEUE_SET_PROPERTY_PREEMPTION_TIMEOUT,
-> +			.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-> +			.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_PREEMPTION_TIMEOUT,
->  			.value = 1000,
->  		};
->  		struct drm_xe_exec_queue_create create = {
-> @@ -374,14 +374,14 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
->  	for (i = 0; i < n_exec_queues; i++) {
->  		struct drm_xe_ext_set_property job_timeout = {
->  			.base.next_extension = 0,
-> -			.base.name = XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-> -			.property = XE_EXEC_QUEUE_SET_PROPERTY_JOB_TIMEOUT,
-> +			.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-> +			.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_JOB_TIMEOUT,
->  			.value = 50,
->  		};
->  		struct drm_xe_ext_set_property preempt_timeout = {
->  			.base.next_extension = 0,
-> -			.base.name = XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-> -			.property = XE_EXEC_QUEUE_SET_PROPERTY_PREEMPTION_TIMEOUT,
-> +			.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-> +			.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_PREEMPTION_TIMEOUT,
->  			.value = 1000,
->  		};
->  		uint64_t ext = 0;
-> @@ -542,8 +542,8 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
->  	for (i = 0; i < n_exec_queues; i++) {
->  		struct drm_xe_ext_set_property preempt_timeout = {
->  			.base.next_extension = 0,
-> -			.base.name = XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-> -			.property = XE_EXEC_QUEUE_SET_PROPERTY_PREEMPTION_TIMEOUT,
-> +			.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-> +			.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_PREEMPTION_TIMEOUT,
->  			.value = 1000,
->  		};
->  		uint64_t ext = 0;
-> diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
-> index a0c96d08d..b814dcdf5 100644
-> --- a/tests/intel/xe_exec_threads.c
-> +++ b/tests/intel/xe_exec_threads.c
-> @@ -520,8 +520,8 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
->  	for (i = 0; i < n_exec_queues; i++) {
->  		struct drm_xe_ext_set_property preempt_timeout = {
->  			.base.next_extension = 0,
-> -			.base.name = XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-> -			.property = XE_EXEC_QUEUE_SET_PROPERTY_PREEMPTION_TIMEOUT,
-> +			.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-> +			.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_PREEMPTION_TIMEOUT,
->  			.value = 1000,
->  		};
->  		uint64_t ext = to_user_pointer(&preempt_timeout);
-> diff --git a/tests/intel/xe_exercise_blt.c b/tests/intel/xe_exercise_blt.c
-> index 2f349b16d..df774130f 100644
-> --- a/tests/intel/xe_exercise_blt.c
-> +++ b/tests/intel/xe_exercise_blt.c
-> @@ -358,8 +358,8 @@ igt_main_args("b:pst:W:H:", NULL, help_str, opt_handler, NULL)
->  		xe_device_get(xe);
->  
->  		set = xe_get_memory_region_set(xe,
-> -					       XE_MEM_REGION_CLASS_SYSMEM,
-> -					       XE_MEM_REGION_CLASS_VRAM);
-> +					       DRM_XE_MEM_REGION_CLASS_SYSMEM,
-> +					       DRM_XE_MEM_REGION_CLASS_VRAM);
->  	}
->  
->  	igt_describe("Check fast-copy blit");
-> diff --git a/tests/intel/xe_perf_pmu.c b/tests/intel/xe_perf_pmu.c
-> index 0b25a859f..a0dd30e50 100644
-> --- a/tests/intel/xe_perf_pmu.c
-> +++ b/tests/intel/xe_perf_pmu.c
-> @@ -51,15 +51,15 @@ static uint64_t engine_group_get_config(int gt, int class)
->  
->  	switch (class) {
->  	case DRM_XE_ENGINE_CLASS_COPY:
-> -		config = XE_PMU_COPY_GROUP_BUSY(gt);
-> +		config = DRM_XE_PMU_COPY_GROUP_BUSY(gt);
->  		break;
->  	case DRM_XE_ENGINE_CLASS_RENDER:
->  	case DRM_XE_ENGINE_CLASS_COMPUTE:
-> -		config = XE_PMU_RENDER_GROUP_BUSY(gt);
-> +		config = DRM_XE_PMU_RENDER_GROUP_BUSY(gt);
->  		break;
->  	case DRM_XE_ENGINE_CLASS_VIDEO_DECODE:
->  	case DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE:
-> -		config = XE_PMU_MEDIA_GROUP_BUSY(gt);
-> +		config = DRM_XE_PMU_MEDIA_GROUP_BUSY(gt);
->  		break;
->  	}
->  
-> @@ -112,7 +112,7 @@ static void test_any_engine_busyness(int fd, struct drm_xe_engine_class_instance
->  	sync[0].handle = syncobj_create(fd, 0);
->  	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
->  
-> -	pmu_fd = open_pmu(fd, XE_PMU_ANY_ENGINE_GROUP_BUSY(eci->gt_id));
-> +	pmu_fd = open_pmu(fd, DRM_XE_PMU_ANY_ENGINE_GROUP_BUSY(eci->gt_id));
->  	idle = pmu_read(pmu_fd);
->  	igt_assert(!idle);
->  
-> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-> index b2976ec84..d07ed4535 100644
-> --- a/tests/intel/xe_pm.c
-> +++ b/tests/intel/xe_pm.c
-> @@ -400,7 +400,7 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
->  	igt_assert_eq(igt_ioctl(device.fd_xe, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
->  
->  	for (i = 0; i < mem_usage->num_regions; i++) {
-> -		if (mem_usage->regions[i].mem_class == XE_MEM_REGION_CLASS_VRAM) {
-> +		if (mem_usage->regions[i].mem_class == DRM_XE_MEM_REGION_CLASS_VRAM) {
->  			vram_used_mb +=  (mem_usage->regions[i].used / (1024 * 1024));
->  			vram_total_mb += (mem_usage->regions[i].total_size / (1024 * 1024));
->  		}
-> diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
-> index cf966d40d..969ad1c7f 100644
-> --- a/tests/intel/xe_query.c
-> +++ b/tests/intel/xe_query.c
-> @@ -163,9 +163,9 @@ void process_hwconfig(void *data, uint32_t len)
->  const char *get_topo_name(int value)
->  {
->  	switch(value) {
-> -	case XE_TOPO_DSS_GEOMETRY: return "DSS_GEOMETRY";
-> -	case XE_TOPO_DSS_COMPUTE: return "DSS_COMPUTE";
-> -	case XE_TOPO_EU_PER_DSS: return "EU_PER_DSS";
-> +	case DRM_XE_TOPO_DSS_GEOMETRY: return "DSS_GEOMETRY";
-> +	case DRM_XE_TOPO_DSS_COMPUTE: return "DSS_COMPUTE";
-> +	case DRM_XE_TOPO_EU_PER_DSS: return "EU_PER_DSS";
->  	}
->  	return "??";
->  }
-> @@ -221,9 +221,9 @@ test_query_mem_usage(int fd)
->  	for (i = 0; i < mem_usage->num_regions; i++) {
->  		igt_info("mem region %d: %s\t%#llx / %#llx\n", i,
->  			mem_usage->regions[i].mem_class ==
-> -			XE_MEM_REGION_CLASS_SYSMEM ? "SYSMEM"
-> +			DRM_XE_MEM_REGION_CLASS_SYSMEM ? "SYSMEM"
->  			:mem_usage->regions[i].mem_class ==
-> -			XE_MEM_REGION_CLASS_VRAM ? "VRAM" : "?",
-> +			DRM_XE_MEM_REGION_CLASS_VRAM ? "VRAM" : "?",
->  			mem_usage->regions[i].used,
->  			mem_usage->regions[i].total_size
->  		);
-> @@ -359,23 +359,23 @@ test_query_config(int fd)
->  
->  	igt_assert(config->num_params > 0);
->  
-> -	igt_info("XE_QUERY_CONFIG_REV_AND_DEVICE_ID\t%#llx\n",
-> -		config->info[XE_QUERY_CONFIG_REV_AND_DEVICE_ID]);
-> +	igt_info("DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID\t%#llx\n",
-> +		config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID]);
->  	igt_info("  REV_ID\t\t\t\t%#llx\n",
-> -		config->info[XE_QUERY_CONFIG_REV_AND_DEVICE_ID] >> 16);
-> +		config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] >> 16);
->  	igt_info("  DEVICE_ID\t\t\t\t%#llx\n",
-> -		config->info[XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff);
-> -	igt_info("XE_QUERY_CONFIG_FLAGS\t\t\t%#llx\n",
-> -		config->info[XE_QUERY_CONFIG_FLAGS]);
-> -	igt_info("  XE_QUERY_CONFIG_FLAGS_HAS_VRAM\t%s\n",
-> -		config->info[XE_QUERY_CONFIG_FLAGS] &
-> -		XE_QUERY_CONFIG_FLAGS_HAS_VRAM ? "ON":"OFF");
-> -	igt_info("XE_QUERY_CONFIG_MIN_ALIGNMENT\t\t%#llx\n",
-> -		config->info[XE_QUERY_CONFIG_MIN_ALIGNMENT]);
-> -	igt_info("XE_QUERY_CONFIG_VA_BITS\t\t\t%llu\n",
-> -		config->info[XE_QUERY_CONFIG_VA_BITS]);
-> -	igt_info("XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY\t%llu\n",
-> -		config->info[XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY]);
-> +		config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff);
-> +	igt_info("DRM_XE_QUERY_CONFIG_FLAGS\t\t\t%#llx\n",
-> +		config->info[DRM_XE_QUERY_CONFIG_FLAGS]);
-> +	igt_info("  DRM_XE_QUERY_CONFIG_FLAGS_HAS_VRAM\t%s\n",
-> +		config->info[DRM_XE_QUERY_CONFIG_FLAGS] &
-> +		DRM_XE_QUERY_CONFIG_FLAGS_HAS_VRAM ? "ON":"OFF");
-> +	igt_info("DRM_XE_QUERY_CONFIG_MIN_ALIGNMENT\t\t%#llx\n",
-> +		config->info[DRM_XE_QUERY_CONFIG_MIN_ALIGNMENT]);
-> +	igt_info("DRM_XE_QUERY_CONFIG_VA_BITS\t\t\t%llu\n",
-> +		config->info[DRM_XE_QUERY_CONFIG_VA_BITS]);
-> +	igt_info("DRM_XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY\t%llu\n",
-> +		config->info[DRM_XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY]);
->  	dump_hex_debug(config, query.size);
->  
->  	free(config);
-> diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-> index f1ccd6c21..6700a6a55 100644
-> --- a/tests/intel/xe_vm.c
-> +++ b/tests/intel/xe_vm.c
-> @@ -356,7 +356,7 @@ static void userptr_invalid(int fd)
->  	vm = xe_vm_create(fd, 0, 0);
->  	munmap(data, size);
->  	ret = __xe_vm_bind(fd, vm, 0, 0, to_user_pointer(data), 0x40000,
-> -			   size, XE_VM_BIND_OP_MAP_USERPTR, 0, NULL, 0, 0, 0);
-> +			   size, DRM_XE_VM_BIND_OP_MAP_USERPTR, 0, NULL, 0, 0, 0);
->  	igt_assert(ret == -EFAULT);
->  
->  	xe_vm_destroy(fd, vm);
-> @@ -795,8 +795,8 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
->  		bind_ops[i].range = bo_size;
->  		bind_ops[i].addr = addr;
->  		bind_ops[i].tile_mask = 0x1 << eci->gt_id;
-> -		bind_ops[i].op = XE_VM_BIND_OP_MAP;
-> -		bind_ops[i].flags = XE_VM_BIND_FLAG_ASYNC;
-> +		bind_ops[i].op = DRM_XE_VM_BIND_OP_MAP;
-> +		bind_ops[i].flags = DRM_XE_VM_BIND_FLAG_ASYNC;
->  		bind_ops[i].region = 0;
->  		bind_ops[i].reserved[0] = 0;
->  		bind_ops[i].reserved[1] = 0;
-> @@ -840,8 +840,8 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
->  
->  	for (i = 0; i < n_execs; ++i) {
->  		bind_ops[i].obj = 0;
-> -		bind_ops[i].op = XE_VM_BIND_OP_UNMAP;
-> -		bind_ops[i].flags = XE_VM_BIND_FLAG_ASYNC;
-> +		bind_ops[i].op = DRM_XE_VM_BIND_OP_UNMAP;
-> +		bind_ops[i].flags = DRM_XE_VM_BIND_FLAG_ASYNC;
->  	}
->  
->  	syncobj_reset(fd, &sync[0].handle, 1);
-> -- 
-> 2.34.1
-> 
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add dg1 compute pipeline (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126077/">https://patchwork.freedesktop.org/series/126077/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13873 -&gt; IGTPW_10182</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_10182 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_10182, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/index.html</p>
+<h2>Participating hosts (37 -&gt; 36)</h2>
+<p>Additional (2): bat-rpls-1 bat-kbl-2 <br />
+  Missing    (3): bat-mtlp-8 bat-adlp-6 fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_10182:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@gt_lrc:<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-rpls-1/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10182 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@debugfs_test@basic-hwmon:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-rpls-1/igt@debugfs_test@basic-hwmon.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9318">i915#9318</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@fbdev@info:</p>
+<ul>
+<li>
+<p>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-rpls-1/igt@fbdev@info.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2582">i915#2582</a>)</p>
+</li>
+<li>
+<p>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-kbl-2/igt@fbdev@info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@fbdev@write:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-rpls-1/igt@fbdev@write.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2582">i915#2582</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s0@smem:</p>
+<ul>
+<li>bat-jsl-3:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13873/bat-jsl-3/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-jsl-3/igt@gem_exec_suspend@basic-s0@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9275">i915#9275</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
+<ul>
+<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-kbl-2/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +24 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@random-engines:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-rpls-1/igt@gem_lmem_swapping@random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_pread_basic:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-rpls-1/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3282">i915#3282</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rps@basic-api:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-rpls-1/igt@i915_pm_rps@basic-api.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6621">i915#6621</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13873/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13873/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9527">i915#9527</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s3-without-i915:</p>
+<ul>
+<li>bat-jsl-3:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13873/bat-jsl-3/igt@i915_suspend@basic-s3-without-i915.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-jsl-3/igt@i915_suspend@basic-s3-without-i915.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=103375">fdo#103375</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-rpls-1/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>) +16 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-rpls-1/igt@kms_flip@basic-flip-vs-modeset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3637">i915#3637</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-rpls-1/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-rpls-1/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9197">i915#9197</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence:</p>
+<ul>
+<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-kbl-2/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>) +14 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@cursor_plane_move:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-rpls-1/igt@kms_psr@cursor_plane_move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@sprite_plane_onoff:</p>
+<ul>
+<li>bat-jsl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13873/bat-jsl-1/igt@kms_psr@sprite_plane_onoff.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-jsl-1/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9648">i915#9648</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-rpls-1/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-fence-flip:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-rpls-1/igt@prime_vgem@basic-fence-flip.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-write:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-rpls-1/igt@prime_vgem@basic-write.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>) +2 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_psr@sprite_plane_onoff:<ul>
+<li>bat-jsl-3:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13873/bat-jsl-3/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9648">i915#9648</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/bat-jsl-3/igt@kms_psr@sprite_plane_onoff.html">PASS</a> +3 other tests pass</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7587 -&gt; IGTPW_10182</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13873: 2b0a5e9915c131825481a9cc2aecb89088f51c00 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10182: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10182/index.html<br />
+  IGT_7587: bec435c24d23524d55f419a02af375e84c9be9d3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============1314017678182844683==--
