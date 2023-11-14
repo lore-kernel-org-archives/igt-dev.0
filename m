@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A67DF10E06D
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 05:05:19 +0000 (UTC)
-Message-ID: <b9851ad6-43b9-7fa9-33d1-2774be34c929@intel.com>
-Date: Tue, 14 Nov 2023 10:34:51 +0530
-Content-Language: en-US
-To: <igt-dev@lists.freedesktop.org>
-References: <20231114044851.1324045-1-bhanuprakash.modem@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20231114044851.1324045-1-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/alternative;
+ boundary="===============0666946977000179470=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t V2] syncobj_timeline: don't expect EINVAL for
- WAIT_UNSUBMITTED | WAIT_AVAILABLE
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Sujaritha Sundaresan" <sujaritha.sundaresan@intel.com>
+Date: Tue, 14 Nov 2023 05:41:40 -0000
+Message-ID: <169994050089.29256.3259039084634897028@emeril.freedesktop.org>
+References: <20231114045224.622841-1-sujaritha.sundaresan@intel.com>
+In-Reply-To: <20231114045224.622841-1-sujaritha.sundaresan@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Add_mult?=
+ =?utf-8?q?i-gt_support_for_RC6_residency_test_=28rev6=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,123 +17,264 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Simon Ser <contact@emersion.fr>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
+--===============0666946977000179470==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-As there is only commit message change in this version, no need to go 
-through the CI again. Hence, I am going to Skip the CI & push.
+== Series Details ==
 
-Thanks,
-Bhanu
+Series: Add multi-gt support for RC6 residency test (rev6)
+URL   : https://patchwork.freedesktop.org/series/126169/
+State : success
 
-On Tue-14-11-2023 10:18 am, Bhanuprakash Modem wrote:
-> From: Erik Kurzinger <ekurzinger@nvidia.com>
-> 
-> The syncobj_timeline test expects waiting for an unsubmitted fence with
-> the WAIT_AVAILABLE flag set to fail with EINVAL. While this matches the
-> behavior of current kernels, that behavior is incorrect and will be
-> fixed by
-> https://lists.freedesktop.org/archives/dri-devel/2023-August/418710.html
-> 
-> With that fix, the WAIT_AVAILABLE flag will have the intended semantics
-> of waiting for an unsubmitted fence to be submitted instead of failing.
-> 
-> Note that this will cause the test to fail with kernels that lack the
-> fix, but such failures will reflect a genuine defect.
-> 
-> V2: Fix testplan documentation (Bhanuprakash)
-> 
-> Signed-off-by: Erik Kurzinger <ekurzinger@nvidia.com>
-> Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Acked-by: Simon Ser <contact@emersion.fr>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> Tested-by: Karolina Stolarek <karolina.stolarek@intel.com>
-> Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->   tests/syncobj_timeline.c | 24 ++++++++++++------------
->   1 file changed, 12 insertions(+), 12 deletions(-)
-> 
-> diff --git a/tests/syncobj_timeline.c b/tests/syncobj_timeline.c
-> index b4e1d093a..ea8341a30 100644
-> --- a/tests/syncobj_timeline.c
-> +++ b/tests/syncobj_timeline.c
-> @@ -135,16 +135,16 @@
->    *   Verifies that as we signal points from the host, the syncobj timeline value increments and
->    *   that waits for submits/signals works properly.
->    *
-> - * SUBTEST: invalid-multi-wait-all-available-unsubmitted
-> + * SUBTEST: etime-multi-wait-all-available-unsubmitted
->    * Description: Verifies waiting on a list of timeline syncobjs
->    *
-> - * SUBTEST: invalid-multi-wait-all-available-unsubmitted-signaled
-> + * SUBTEST: etime-multi-wait-all-available-unsubmitted-signaled
->    * Description: Verifies waiting on a list of timeline syncobjs
->    *
-> - * SUBTEST: invalid-multi-wait-all-available-unsubmitted-submitted
-> + * SUBTEST: etime-multi-wait-all-available-unsubmitted-submitted
->    * Description: Verifies waiting on a list of timeline syncobjs
->    *
-> - * SUBTEST: invalid-multi-wait-all-available-unsubmitted-submitted-signaled
-> + * SUBTEST: etime-multi-wait-all-available-unsubmitted-submitted-signaled
->    * Description: Verifies waiting on a list of timeline syncobjs
->    *
->    * SUBTEST: invalid-multi-wait-all-unsubmitted
-> @@ -159,16 +159,16 @@
->    * SUBTEST: invalid-multi-wait-all-unsubmitted-submitted-signaled
->    * Description: Verifies waiting on a list of timeline syncobjs
->    *
-> - * SUBTEST: invalid-multi-wait-available-unsubmitted
-> + * SUBTEST: etime-multi-wait-available-unsubmitted
->    * Description: Verifies waiting on a list of timeline syncobjs
->    *
-> - * SUBTEST: invalid-multi-wait-available-unsubmitted-signaled
-> + * SUBTEST: multi-wait-available-unsubmitted-signaled
->    * Description: Verifies waiting on a list of timeline syncobjs
->    *
-> - * SUBTEST: invalid-multi-wait-available-unsubmitted-submitted
-> + * SUBTEST: multi-wait-available-unsubmitted-submitted
->    * Description: Verifies waiting on a list of timeline syncobjs
->    *
-> - * SUBTEST: invalid-multi-wait-available-unsubmitted-submitted-signaled
-> + * SUBTEST: multi-wait-available-unsubmitted-submitted-signaled
->    * Description: Verifies waiting on a list of timeline syncobjs
->    *
->    * SUBTEST: invalid-multi-wait-unsubmitted
-> @@ -213,13 +213,13 @@
->    * SUBTEST: invalid-signal-zero-handles
->    * Description: Verify that signaling an empty list of syncobj handles is rejected
->    *
-> - * SUBTEST: invalid-single-wait-all-available-unsubmitted
-> + * SUBTEST: etime-single-wait-all-available-unsubmitted
->    * Description: Verifies wait behavior on a single timeline syncobj
->    *
->    * SUBTEST: invalid-single-wait-all-unsubmitted
->    * Description: Verifies wait behavior on a single timeline syncobj
->    *
-> - * SUBTEST: invalid-single-wait-available-unsubmitted
-> + * SUBTEST: etime-single-wait-available-unsubmitted
->    * Description: Verifies wait behavior on a single timeline syncobj
->    *
->    * SUBTEST: invalid-single-wait-unsubmitted
-> @@ -1782,7 +1782,7 @@ igt_main
->   						WAIT_SIGNALED)) != 1)
->   			continue;
->   
-> -		if ((flags & WAIT_UNSUBMITTED) && !(flags & WAIT_FOR_SUBMIT))
-> +		if ((flags & WAIT_UNSUBMITTED) && !((flags & WAIT_FOR_SUBMIT) || (flags & WAIT_AVAILABLE)))
->   			err = -EINVAL;
->   		else if (!(flags & WAIT_SIGNALED) && !((flags & WAIT_SUBMITTED) && (flags & WAIT_AVAILABLE)))
->   			err = -ETIME;
-> @@ -1851,7 +1851,7 @@ igt_main
->   			continue;
->   
->   		err = 0;
-> -		if ((flags & WAIT_UNSUBMITTED) && !(flags & WAIT_FOR_SUBMIT)) {
-> +		if ((flags & WAIT_UNSUBMITTED) && !((flags & WAIT_FOR_SUBMIT) || (flags & WAIT_AVAILABLE))) {
->   			err = -EINVAL;
->   		} else if (flags & WAIT_ALL) {
->   			if (flags & (WAIT_UNSUBMITTED | WAIT_SUBMITTED))
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7584_BAT -> XEIGTPW_10178_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (2 -> 3)
+------------------------------
+
+  Additional (1): bat-dg2-oem2 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10178_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][1] ([Intel XE#623])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10178/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_addfb_basic@basic-y-tiled-legacy:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][2] ([Intel XE#624])
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10178/bat-dg2-oem2/igt@kms_addfb_basic@basic-y-tiled-legacy.html
+
+  * igt@kms_addfb_basic@tile-pitch-mismatch:
+    - bat-dg2-oem2:       NOTRUN -> [FAIL][3] ([Intel XE#609]) +1 other test fail
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10178/bat-dg2-oem2/igt@kms_addfb_basic@tile-pitch-mismatch.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][4] ([Intel XE#423])
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10178/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_force_connector_basic@prune-stale-modes:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][5] ([i915#5274])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10178/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-dg2-oem2:       NOTRUN -> [FAIL][6] ([Intel XE#608])
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10178/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
+    - bat-dg2-oem2:       NOTRUN -> [FAIL][7] ([Intel XE#400] / [Intel XE#616]) +2 other tests fail
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10178/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
+
+  * igt@kms_psr@primary_page_flip:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][8] ([Intel XE#535]) +2 other tests skip
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10178/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html
+
+  * igt@xe_compute@compute-square:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][9] ([Intel XE#672])
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10178/bat-dg2-oem2/igt@xe_compute@compute-square.html
+
+  * igt@xe_exec_fault_mode@many-basic:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][10] ([Intel XE#288]) +17 other tests skip
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10178/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html
+
+  * igt@xe_huc_copy@huc_copy:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][11] ([Intel XE#255])
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10178/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html
+
+  
+#### Possible fixes ####
+
+  * {igt@xe_create@create-execqueues-noleak}:
+    - bat-atsm-2:         [FAIL][12] ([Intel XE#524]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7584/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10178/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#255]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/255
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
+  [Intel XE#423]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/423
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+  [Intel XE#535]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/535
+  [Intel XE#608]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/608
+  [Intel XE#609]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/609
+  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
+  [Intel XE#623]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/623
+  [Intel XE#624]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/624
+  [Intel XE#672]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/672
+  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7584 -> IGTPW_10178
+  * Linux: xe-486-edeb8b8fa330a62d4a07b37d08145d86114bc151 -> xe-488-7dc3dda9b2df5a5c8949532f254a0689de70f093
+
+  IGTPW_10178: 10178
+  IGT_7584: 30e6ded90039edde8aa6c435001f8d63159356bb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-486-edeb8b8fa330a62d4a07b37d08145d86114bc151: edeb8b8fa330a62d4a07b37d08145d86114bc151
+  xe-488-7dc3dda9b2df5a5c8949532f254a0689de70f093: 7dc3dda9b2df5a5c8949532f254a0689de70f093
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10178/index.html
+
+--===============0666946977000179470==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add multi-gt support for RC6 residency test (rev6)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126169/">https://patchwork.freedesktop.org/series/126169/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10178/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10178/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7584_BAT -&gt; XEIGTPW_10178_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (2 -&gt; 3)</h2>
+<p>Additional (1): bat-dg2-oem2 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10178_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10178/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/623">Intel XE#623</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@basic-y-tiled-legacy:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10178/bat-dg2-oem2/igt@kms_addfb_basic@basic-y-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/624">Intel XE#624</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@tile-pitch-mismatch:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10178/bat-dg2-oem2/igt@kms_addfb_basic@tile-pitch-mismatch.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/609">Intel XE#609</a>) +1 other test fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10178/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/423">Intel XE#423</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@prune-stale-modes:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10178/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5274">i915#5274</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10178/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/608">Intel XE#608</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10178/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>) +2 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_page_flip:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10178/bat-dg2-oem2/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/535">Intel XE#535</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_compute@compute-square:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10178/bat-dg2-oem2/igt@xe_compute@compute-square.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/672">Intel XE#672</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@many-basic:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10178/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +17 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_huc_copy@huc_copy:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10178/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>{igt@xe_create@create-execqueues-noleak}:<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7584/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10178/bat-atsm-2/igt@xe_create@create-execqueues-noleak.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7584 -&gt; IGTPW_10178</li>
+<li>Linux: xe-486-edeb8b8fa330a62d4a07b37d08145d86114bc151 -&gt; xe-488-7dc3dda9b2df5a5c8949532f254a0689de70f093</li>
+</ul>
+<p>IGTPW_10178: 10178<br />
+  IGT_7584: 30e6ded90039edde8aa6c435001f8d63159356bb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-486-edeb8b8fa330a62d4a07b37d08145d86114bc151: edeb8b8fa330a62d4a07b37d08145d86114bc151<br />
+  xe-488-7dc3dda9b2df5a5c8949532f254a0689de70f093: 7dc3dda9b2df5a5c8949532f254a0689de70f093</p>
+
+</body>
+</html>
+
+--===============0666946977000179470==--
