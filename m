@@ -1,16 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CD1BE10E06D
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 04:58:54 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 14 Nov 2023 10:18:51 +0530
-Message-Id: <20231114044851.1324045-1-bhanuprakash.modem@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 18C1910E06D
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 05:03:56 +0000 (UTC)
+Message-ID: <41b2060a-329c-44d1-a176-ff3e268c2571@intel.com>
+Date: Tue, 14 Nov 2023 10:33:45 +0530
+To: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20231114045224.622841-1-sujaritha.sundaresan@intel.com>
+ <20231114045224.622841-6-sujaritha.sundaresan@intel.com>
+Content-Language: en-US
+From: Riana Tauro <riana.tauro@intel.com>
+In-Reply-To: <20231114045224.622841-6-sujaritha.sundaresan@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2] syncobj_timeline: don't expect EINVAL for
- WAIT_UNSUBMITTED | WAIT_AVAILABLE
+Subject: Re: [igt-dev] [v3 5/6] tests/intel: Print drpc info for
+ rc6_residency test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,116 +23,135 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Simon Ser <contact@emersion.fr>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Erik Kurzinger <ekurzinger@nvidia.com>
 
-The syncobj_timeline test expects waiting for an unsubmitted fence with
-the WAIT_AVAILABLE flag set to fail with EINVAL. While this matches the
-behavior of current kernels, that behavior is incorrect and will be
-fixed by
-https://lists.freedesktop.org/archives/dri-devel/2023-August/418710.html
 
-With that fix, the WAIT_AVAILABLE flag will have the intended semantics
-of waiting for an unsubmitted fence to be submitted instead of failing.
-
-Note that this will cause the test to fail with kernels that lack the
-fix, but such failures will reflect a genuine defect.
-
-V2: Fix testplan documentation (Bhanuprakash)
-
-Signed-off-by: Erik Kurzinger <ekurzinger@nvidia.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Acked-by: Simon Ser <contact@emersion.fr>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Tested-by: Karolina Stolarek <karolina.stolarek@intel.com>
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/syncobj_timeline.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
-
-diff --git a/tests/syncobj_timeline.c b/tests/syncobj_timeline.c
-index b4e1d093a..ea8341a30 100644
---- a/tests/syncobj_timeline.c
-+++ b/tests/syncobj_timeline.c
-@@ -135,16 +135,16 @@
-  *   Verifies that as we signal points from the host, the syncobj timeline value increments and
-  *   that waits for submits/signals works properly.
-  *
-- * SUBTEST: invalid-multi-wait-all-available-unsubmitted
-+ * SUBTEST: etime-multi-wait-all-available-unsubmitted
-  * Description: Verifies waiting on a list of timeline syncobjs
-  *
-- * SUBTEST: invalid-multi-wait-all-available-unsubmitted-signaled
-+ * SUBTEST: etime-multi-wait-all-available-unsubmitted-signaled
-  * Description: Verifies waiting on a list of timeline syncobjs
-  *
-- * SUBTEST: invalid-multi-wait-all-available-unsubmitted-submitted
-+ * SUBTEST: etime-multi-wait-all-available-unsubmitted-submitted
-  * Description: Verifies waiting on a list of timeline syncobjs
-  *
-- * SUBTEST: invalid-multi-wait-all-available-unsubmitted-submitted-signaled
-+ * SUBTEST: etime-multi-wait-all-available-unsubmitted-submitted-signaled
-  * Description: Verifies waiting on a list of timeline syncobjs
-  *
-  * SUBTEST: invalid-multi-wait-all-unsubmitted
-@@ -159,16 +159,16 @@
-  * SUBTEST: invalid-multi-wait-all-unsubmitted-submitted-signaled
-  * Description: Verifies waiting on a list of timeline syncobjs
-  *
-- * SUBTEST: invalid-multi-wait-available-unsubmitted
-+ * SUBTEST: etime-multi-wait-available-unsubmitted
-  * Description: Verifies waiting on a list of timeline syncobjs
-  *
-- * SUBTEST: invalid-multi-wait-available-unsubmitted-signaled
-+ * SUBTEST: multi-wait-available-unsubmitted-signaled
-  * Description: Verifies waiting on a list of timeline syncobjs
-  *
-- * SUBTEST: invalid-multi-wait-available-unsubmitted-submitted
-+ * SUBTEST: multi-wait-available-unsubmitted-submitted
-  * Description: Verifies waiting on a list of timeline syncobjs
-  *
-- * SUBTEST: invalid-multi-wait-available-unsubmitted-submitted-signaled
-+ * SUBTEST: multi-wait-available-unsubmitted-submitted-signaled
-  * Description: Verifies waiting on a list of timeline syncobjs
-  *
-  * SUBTEST: invalid-multi-wait-unsubmitted
-@@ -213,13 +213,13 @@
-  * SUBTEST: invalid-signal-zero-handles
-  * Description: Verify that signaling an empty list of syncobj handles is rejected
-  *
-- * SUBTEST: invalid-single-wait-all-available-unsubmitted
-+ * SUBTEST: etime-single-wait-all-available-unsubmitted
-  * Description: Verifies wait behavior on a single timeline syncobj
-  *
-  * SUBTEST: invalid-single-wait-all-unsubmitted
-  * Description: Verifies wait behavior on a single timeline syncobj
-  *
-- * SUBTEST: invalid-single-wait-available-unsubmitted
-+ * SUBTEST: etime-single-wait-available-unsubmitted
-  * Description: Verifies wait behavior on a single timeline syncobj
-  *
-  * SUBTEST: invalid-single-wait-unsubmitted
-@@ -1782,7 +1782,7 @@ igt_main
- 						WAIT_SIGNALED)) != 1)
- 			continue;
- 
--		if ((flags & WAIT_UNSUBMITTED) && !(flags & WAIT_FOR_SUBMIT))
-+		if ((flags & WAIT_UNSUBMITTED) && !((flags & WAIT_FOR_SUBMIT) || (flags & WAIT_AVAILABLE)))
- 			err = -EINVAL;
- 		else if (!(flags & WAIT_SIGNALED) && !((flags & WAIT_SUBMITTED) && (flags & WAIT_AVAILABLE)))
- 			err = -ETIME;
-@@ -1851,7 +1851,7 @@ igt_main
- 			continue;
- 
- 		err = 0;
--		if ((flags & WAIT_UNSUBMITTED) && !(flags & WAIT_FOR_SUBMIT)) {
-+		if ((flags & WAIT_UNSUBMITTED) && !((flags & WAIT_FOR_SUBMIT) || (flags & WAIT_AVAILABLE))) {
- 			err = -EINVAL;
- 		} else if (flags & WAIT_ALL) {
- 			if (flags & (WAIT_UNSUBMITTED | WAIT_SUBMITTED))
--- 
-2.40.0
+On 11/14/2023 10:22 AM, Sujaritha Sundaresan wrote:
+> Add dprc debug dump to help assertain if we are hitting
+> genuine rc6 failures.
+> 
+> v3: Fix review comments (Riana)
+> 
+> Signed-off-by: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
+Looks good to me
+Reviewed-by: Riana Tauro <riana.tauro@intel.com>
+> ---
+>   tests/intel/i915_pm_rc6_residency.c | 51 ++++++++++++++++++++++-------
+>   1 file changed, 40 insertions(+), 11 deletions(-)
+> 
+> diff --git a/tests/intel/i915_pm_rc6_residency.c b/tests/intel/i915_pm_rc6_residency.c
+> index 0f427687d..5687852cb 100644
+> --- a/tests/intel/i915_pm_rc6_residency.c
+> +++ b/tests/intel/i915_pm_rc6_residency.c
+> @@ -36,6 +36,7 @@
+>   #include "i915/gem.h"
+>   #include "i915/gem_create.h"
+>   #include "igt.h"
+> +#include "igt_debugfs.h"
+>   #include "igt_perf.h"
+>   #include "igt_power.h"
+>   #include "igt_sysfs.h"
+> @@ -63,6 +64,8 @@
+>   #define RC6P_ENABLED	2
+>   #define RC6PP_ENABLED	4
+>   
+> +char *drpc;
+> +
+>   static int sysfs;
+>   
+>   struct residencies {
+> @@ -230,14 +233,25 @@ static uint64_t pmu_read_single(int fd)
+>   	return __pmu_read_single(fd, NULL);
+>   }
+>   
+> -#define __assert_within_epsilon(x, ref, tol_up, tol_down) \
+> -	igt_assert_f((x) <= (ref) * (1.0 + (tol_up)/100.) && \
+> -		     (x) >= (ref) * (1.0 - (tol_down)/100.), \
+> -		     "'%s' != '%s' (%.3g not within +%d%%/-%d%% tolerance of %.3g)\n",\
+> -		     #x, #ref, (double)(x), (tol_up), (tol_down), (double)(ref))
+> +#define __assert_within_epsilon(x, ref, tol_up, tol_down, debug_data) \
+> +	igt_assert_f((double)(x) <= (1.0 + (tol_up)) * (double)(ref) && \
+> +		     (double)(x) >= (1.0 - (tol_down)) * (double)(ref), \
+> +		     "'%s' != '%s' (%f not within +%.1f%%/-%.1f%% tolerance of %f)\n %s\n",\
+> +		     #x, #ref, (double)(x), \
+> +		     (tol_up) * 100.0, (tol_down) * 100.0, \
+> +		     (double)(ref), debug_data)
+> +
+> +#define assert_within_epsilon(x, ref, tolerance, debug_data) \
+> +	__assert_within_epsilon(x, ref, tolerance, tolerance, debug_data)
+> +
+> +static char *get_drpc(int i915, int gt_id)
+> +{
+> +	int gt_dir;
+>   
+> -#define assert_within_epsilon(x, ref, tolerance) \
+> -	__assert_within_epsilon(x, ref, tolerance, tolerance)
+> +	gt_dir = igt_debugfs_gt_dir(i915, gt_id);
+> +	igt_assert(gt_dir != -1);
+> +	return igt_sysfs_get(gt_dir, "drpc");
+> +}
+>   
+>   static bool __pmu_wait_for_rc6(int fd)
+>   {
+> @@ -414,7 +428,9 @@ static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags, unsigned int gt)
+>   			"Total energy used while idle: %.1fmJ (%.1fmW)\n",
+>   			idle, (idle * 1e9) / slept);
+>   	}
+> -	assert_within_epsilon(rc6, ts[1] - ts[0], 5);
+> +	drpc = get_drpc(i915, gt);
+> +
+> +	assert_within_epsilon(rc6, ts[1] - ts[0], 5, drpc);
+>   
+>   	done = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
+>   
+> @@ -450,7 +466,12 @@ static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags, unsigned int gt)
+>   		igt_assert(cycles >= SLEEP_DURATION);
+>   
+>   		/* While very nearly idle, expect full RC6 */
+> -		assert_within_epsilon(rc6, ts[1] - ts[0], tolerance);
+> +		drpc = get_drpc(i915, gt);
+> +
+> +		assert_within_epsilon(rc6, ts[1] - ts[0], tolerance, drpc);
+> +
+> +		free(drpc);
+> +		drpc = NULL;
+>   	}
+>   
+>   	munmap(done, 4096);
+> @@ -503,7 +524,9 @@ static void rc6_fence(int i915, unsigned int gt)
+>   			"Total energy used while idle: %.1fmJ (%.1fmW)\n",
+>   			idle, (idle * 1e9) / slept);
+>   	}
+> -	assert_within_epsilon(rc6, ts[1] - ts[0], 5);
+> +	drpc = get_drpc(i915, gt);
+> +
+> +	assert_within_epsilon(rc6, ts[1] - ts[0], 5, drpc);
+>   
+>   	/* Submit but delay execution, we should be idle and conserving power */
+>   	ctx = intel_ctx_create_for_gt(i915, gt);
+> @@ -544,8 +567,13 @@ static void rc6_fence(int i915, unsigned int gt)
+>   
+>   		close(timeline);
+>   
+> -		assert_within_epsilon(rc6, ts[1] - ts[0], tolerance);
+> +		drpc = get_drpc(i915, gt);
+> +
+> +		assert_within_epsilon(rc6, ts[1] - ts[0], tolerance, drpc);
+>   		gem_quiescent_gpu(i915);
+> +
+> +		free(drpc);
+> +		drpc = NULL;
+>   	}
+>   	put_ahnd(ahnd);
+>   	intel_ctx_destroy(i915, ctx);
+> @@ -642,6 +670,7 @@ igt_main
+>   	}
+>   
+>   	igt_fixture {
+> +		free(drpc);
+>   		drm_close_driver(i915);
+>   	}
+>   }
