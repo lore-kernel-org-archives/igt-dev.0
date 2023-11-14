@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5BEC410E3FA
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 04:39:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A39DB10E440
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 04:39:08 +0000 (UTC)
 From: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 14 Nov 2023 10:22:21 +0530
-Message-Id: <20231114045224.622841-4-sujaritha.sundaresan@intel.com>
+Date: Tue, 14 Nov 2023 10:22:23 +0530
+Message-Id: <20231114045224.622841-6-sujaritha.sundaresan@intel.com>
 In-Reply-To: <20231114045224.622841-1-sujaritha.sundaresan@intel.com>
 References: <20231114045224.622841-1-sujaritha.sundaresan@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v3 3/6] tests/intel: Add multi-gt support for rc6-fence
+Subject: [igt-dev] [v3 5/6] tests/intel: Print drpc info for rc6_residency
  test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -23,72 +23,128 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add multi-gt support for the rc6_fence subtest
+Add dprc debug dump to help assertain if we are hitting
+genuine rc6 failures.
+
+v3: Fix review comments (Riana)
 
 Signed-off-by: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
 ---
- tests/intel/i915_pm_rc6_residency.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ tests/intel/i915_pm_rc6_residency.c | 51 ++++++++++++++++++++++-------
+ 1 file changed, 40 insertions(+), 11 deletions(-)
 
 diff --git a/tests/intel/i915_pm_rc6_residency.c b/tests/intel/i915_pm_rc6_residency.c
-index 34619b79c..e84e8ea96 100644
+index 0f427687d..5687852cb 100644
 --- a/tests/intel/i915_pm_rc6_residency.c
 +++ b/tests/intel/i915_pm_rc6_residency.c
-@@ -471,12 +471,13 @@ static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags, unsigned int gt)
- 	}
+@@ -36,6 +36,7 @@
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
+ #include "igt.h"
++#include "igt_debugfs.h"
+ #include "igt_perf.h"
+ #include "igt_power.h"
+ #include "igt_sysfs.h"
+@@ -63,6 +64,8 @@
+ #define RC6P_ENABLED	2
+ #define RC6PP_ENABLED	4
+ 
++char *drpc;
++
+ static int sysfs;
+ 
+ struct residencies {
+@@ -230,14 +233,25 @@ static uint64_t pmu_read_single(int fd)
+ 	return __pmu_read_single(fd, NULL);
  }
  
--static void rc6_fence(int i915, const intel_ctx_t *ctx)
-+static void rc6_fence(int i915, unsigned int gt)
+-#define __assert_within_epsilon(x, ref, tol_up, tol_down) \
+-	igt_assert_f((x) <= (ref) * (1.0 + (tol_up)/100.) && \
+-		     (x) >= (ref) * (1.0 - (tol_down)/100.), \
+-		     "'%s' != '%s' (%.3g not within +%d%%/-%d%% tolerance of %.3g)\n",\
+-		     #x, #ref, (double)(x), (tol_up), (tol_down), (double)(ref))
++#define __assert_within_epsilon(x, ref, tol_up, tol_down, debug_data) \
++	igt_assert_f((double)(x) <= (1.0 + (tol_up)) * (double)(ref) && \
++		     (double)(x) >= (1.0 - (tol_down)) * (double)(ref), \
++		     "'%s' != '%s' (%f not within +%.1f%%/-%.1f%% tolerance of %f)\n %s\n",\
++		     #x, #ref, (double)(x), \
++		     (tol_up) * 100.0, (tol_down) * 100.0, \
++		     (double)(ref), debug_data)
++
++#define assert_within_epsilon(x, ref, tolerance, debug_data) \
++	__assert_within_epsilon(x, ref, tolerance, tolerance, debug_data)
++
++static char *get_drpc(int i915, int gt_id)
++{
++	int gt_dir;
+ 
+-#define assert_within_epsilon(x, ref, tolerance) \
+-	__assert_within_epsilon(x, ref, tolerance, tolerance)
++	gt_dir = igt_debugfs_gt_dir(i915, gt_id);
++	igt_assert(gt_dir != -1);
++	return igt_sysfs_get(gt_dir, "drpc");
++}
+ 
+ static bool __pmu_wait_for_rc6(int fd)
  {
- 	const int64_t duration_ns = SLEEP_DURATION * (int64_t)NSEC_PER_SEC;
- 	const int tolerance = 20; /* Some RC6 is better than none! */
- 	const unsigned int gen = intel_gen(intel_get_drm_devid(i915));
- 	const struct intel_execution_engine2 *e;
-+	const intel_ctx_t *ctx;
- 	struct power_sample sample[2];
- 	unsigned long slept;
- 	uint64_t rc6, ts[2], ahnd;
-@@ -485,7 +486,7 @@ static void rc6_fence(int i915, const intel_ctx_t *ctx)
+@@ -414,7 +428,9 @@ static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags, unsigned int gt)
+ 			"Total energy used while idle: %.1fmJ (%.1fmW)\n",
+ 			idle, (idle * 1e9) / slept);
+ 	}
+-	assert_within_epsilon(rc6, ts[1] - ts[0], 5);
++	drpc = get_drpc(i915, gt);
++
++	assert_within_epsilon(rc6, ts[1] - ts[0], 5, drpc);
  
- 	igt_require_sw_sync();
+ 	done = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
  
--	fd = open_pmu(i915, I915_PMU_RC6_RESIDENCY);
-+	fd = open_pmu(i915, __I915_PMU_RC6_RESIDENCY(gt));
- 	igt_drop_caches_set(i915, DROP_IDLE);
- 	igt_require(__pmu_wait_for_rc6(fd));
- 	igt_power_open(i915, &gpu, "gpu");
-@@ -509,6 +510,7 @@ static void rc6_fence(int i915, const intel_ctx_t *ctx)
- 	assert_within_epsilon(rc6, ts[1] - ts[0], 5);
+@@ -450,7 +466,12 @@ static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags, unsigned int gt)
+ 		igt_assert(cycles >= SLEEP_DURATION);
+ 
+ 		/* While very nearly idle, expect full RC6 */
+-		assert_within_epsilon(rc6, ts[1] - ts[0], tolerance);
++		drpc = get_drpc(i915, gt);
++
++		assert_within_epsilon(rc6, ts[1] - ts[0], tolerance, drpc);
++
++		free(drpc);
++		drpc = NULL;
+ 	}
+ 
+ 	munmap(done, 4096);
+@@ -503,7 +524,9 @@ static void rc6_fence(int i915, unsigned int gt)
+ 			"Total energy used while idle: %.1fmJ (%.1fmW)\n",
+ 			idle, (idle * 1e9) / slept);
+ 	}
+-	assert_within_epsilon(rc6, ts[1] - ts[0], 5);
++	drpc = get_drpc(i915, gt);
++
++	assert_within_epsilon(rc6, ts[1] - ts[0], 5, drpc);
  
  	/* Submit but delay execution, we should be idle and conserving power */
-+	ctx = intel_ctx_create_for_gt(i915, gt);
- 	ahnd = get_reloc_ahnd(i915, ctx->id);
- 	for_each_ctx_engine(i915, ctx, e) {
- 		igt_spin_t *spin;
-@@ -550,6 +552,7 @@ static void rc6_fence(int i915, const intel_ctx_t *ctx)
+ 	ctx = intel_ctx_create_for_gt(i915, gt);
+@@ -544,8 +567,13 @@ static void rc6_fence(int i915, unsigned int gt)
+ 
+ 		close(timeline);
+ 
+-		assert_within_epsilon(rc6, ts[1] - ts[0], tolerance);
++		drpc = get_drpc(i915, gt);
++
++		assert_within_epsilon(rc6, ts[1] - ts[0], tolerance, drpc);
  		gem_quiescent_gpu(i915);
++
++		free(drpc);
++		drpc = NULL;
  	}
  	put_ahnd(ahnd);
-+	intel_ctx_destroy(i915, ctx);
- 
- 	igt_power_close(&gpu);
- 	close(fd);
-@@ -584,11 +587,13 @@ igt_main
- 		}
+ 	intel_ctx_destroy(i915, ctx);
+@@ -642,6 +670,7 @@ igt_main
  	}
  
--	igt_subtest("rc6-fence") {
-+	igt_subtest_with_dynamic("rc6-fence") {
- 		igt_require_gem(i915);
- 		gem_quiescent_gpu(i915);
- 
--		rc6_fence(i915, ctx);
-+		i915_for_each_gt(i915, dirfd, gt)
-+			igt_dynamic_f("gt%u", gt)
-+				rc6_fence(i915, gt);
+ 	igt_fixture {
++		free(drpc);
+ 		drm_close_driver(i915);
  	}
- 
- 	igt_subtest_group {
+ }
 -- 
 2.25.1
