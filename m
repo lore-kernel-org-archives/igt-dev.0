@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============1165061379512434603=="
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0087610E214
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 12:19:30 +0000 (UTC)
+Date: Tue, 14 Nov 2023 13:19:26 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Francois Dugast <francois.dugast@intel.com>
+Message-ID: <20231114121926.ncz2kavyc77o2ukn@zkempczy-mobl2>
+References: <20231114114943.79965-1-zbigniew.kempczynski@intel.com>
+ <20231114114943.79965-3-zbigniew.kempczynski@intel.com>
+ <ZVNfZSrDLoMUvipt@fdugast-desk.home>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kunal Joshi" <kunal1.joshi@intel.com>
-Date: Fri, 10 Nov 2023 08:11:43 -0000
-Message-ID: <169960390325.31677.7803586804089059995@emeril.freedesktop.org>
-References: <20231110071624.1365998-1-kunal1.joshi@intel.com>
-In-Reply-To: <20231110071624.1365998-1-kunal1.joshi@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgZXh0ZW5k?=
- =?utf-8?q?_kms=5Fpsr_test_to_validate_pr_=28rev6=29?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZVNfZSrDLoMUvipt@fdugast-desk.home>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 2/2] lib/intel_compute: Add dg1
+ compute implementation for i915
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,1743 +23,289 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1165061379512434603==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: extend kms_psr test to validate pr (rev6)
-URL   : https://patchwork.freedesktop.org/series/125379/
-State : failure
-
-== Summary ==
-
-CI Bug Log - changes from IGT_7582 -> IGTPW_10158
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_10158 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_10158, please notify your bug team (lgci.bug.filing@intel.com) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/index.html
-
-Participating hosts (34 -> 33)
-------------------------------
-
-  Missing    (1): fi-hsw-4770 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_10158:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_selftest@live@gt_pm:
-    - bat-adls-5:         [PASS][1] -> [DMESG-FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/bat-adls-5/igt@i915_selftest@live@gt_pm.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-adls-5/igt@i915_selftest@live@gt_pm.html
-
-  * {igt@kms_psr@pr_cursor_blt} (NEW):
-    - bat-jsl-3:          NOTRUN -> [SKIP][3] +41 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-jsl-3/igt@kms_psr@pr_cursor_blt.html
-
-  * {igt@kms_psr@pr_cursor_mmap_cpu} (NEW):
-    - bat-adlp-6:         NOTRUN -> [SKIP][4] +20 other tests skip
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-adlp-6/igt@kms_psr@pr_cursor_mmap_cpu.html
-
-  * {igt@kms_psr@pr_primary_mmap_cpu} (NEW):
-    - bat-adls-5:         NOTRUN -> [SKIP][5] +20 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-adls-5/igt@kms_psr@pr_primary_mmap_cpu.html
-    - bat-adln-1:         NOTRUN -> [SKIP][6] +20 other tests skip
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-adln-1/igt@kms_psr@pr_primary_mmap_cpu.html
-
-  * {igt@kms_psr@pr_primary_mmap_gtt} (NEW):
-    - bat-rplp-1:         NOTRUN -> [SKIP][7] +62 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-rplp-1/igt@kms_psr@pr_primary_mmap_gtt.html
-
-  * {igt@kms_psr@pr_sprite_blt} (NEW):
-    - bat-dg2-11:         NOTRUN -> [SKIP][8] +62 other tests skip
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-dg2-11/igt@kms_psr@pr_sprite_blt.html
-    - {bat-dg2-14}:       NOTRUN -> [SKIP][9] +41 other tests skip
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-dg2-14/igt@kms_psr@pr_sprite_blt.html
-
-  * {igt@kms_psr@pr_sprite_render} (NEW):
-    - bat-adlp-11:        NOTRUN -> [SKIP][10] +62 other tests skip
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-adlp-11/igt@kms_psr@pr_sprite_render.html
-
-  * igt@kms_psr@primary_page_flip:
-    - bat-adls-5:         [PASS][11] -> [SKIP][12] +3 other tests skip
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/bat-adls-5/igt@kms_psr@primary_page_flip.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-adls-5/igt@kms_psr@primary_page_flip.html
-
-  * {igt@kms_psr@psr2_cursor_plane_move@edp-1} (NEW):
-    - bat-adlp-6:         NOTRUN -> [FAIL][13] +20 other tests fail
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-adlp-6/igt@kms_psr@psr2_cursor_plane_move@edp-1.html
-
-  * {igt@kms_psr@psr2_cursor_plane_onoff@edp-1} (NEW):
-    - bat-adln-1:         NOTRUN -> [FAIL][14] +20 other tests fail
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-adln-1/igt@kms_psr@psr2_cursor_plane_onoff@edp-1.html
-
-  * igt@kms_psr@psr2_primary_blt:
-    - bat-dg2-9:          NOTRUN -> [SKIP][15] +62 other tests skip
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-dg2-9/igt@kms_psr@psr2_primary_blt.html
-
-  * igt@kms_psr@psr2_primary_mmap_gtt:
-    - fi-tgl-1115g4:      NOTRUN -> [SKIP][16] +62 other tests skip
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-tgl-1115g4/igt@kms_psr@psr2_primary_mmap_gtt.html
-
-  * igt@kms_psr@psr2_primary_render:
-    - bat-mtlp-6:         NOTRUN -> [SKIP][17] +62 other tests skip
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-mtlp-6/igt@kms_psr@psr2_primary_render.html
-
-  * igt@kms_psr@psr2_sprite_plane_onoff:
-    - bat-adlp-9:         NOTRUN -> [SKIP][18] +62 other tests skip
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-adlp-9/igt@kms_psr@psr2_sprite_plane_onoff.html
-
-  * {igt@kms_psr@psr_primary_blt} (NEW):
-    - fi-rkl-11600:       NOTRUN -> [SKIP][19] +62 other tests skip
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-rkl-11600/igt@kms_psr@psr_primary_blt.html
-
-  * {igt@kms_psr@psr_primary_mmap_cpu} (NEW):
-    - bat-rpls-1:         NOTRUN -> [SKIP][20] +62 other tests skip
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-rpls-1/igt@kms_psr@psr_primary_mmap_cpu.html
-
-  * {igt@kms_psr@psr_suspend} (NEW):
-    - bat-adlm-1:         NOTRUN -> [SKIP][21] +62 other tests skip
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-adlm-1/igt@kms_psr@psr_suspend.html
-
-  
-#### Warnings ####
-
-  * igt@kms_psr@cursor_plane_move:
-    - bat-adlm-1:         [SKIP][22] ([i915#1072]) -> [SKIP][23] +3 other tests skip
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/bat-adlm-1/igt@kms_psr@cursor_plane_move.html
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-adlm-1/igt@kms_psr@cursor_plane_move.html
-    - bat-rpls-1:         [SKIP][24] ([i915#1072]) -> [SKIP][25] +3 other tests skip
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/bat-rpls-1/igt@kms_psr@cursor_plane_move.html
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-rpls-1/igt@kms_psr@cursor_plane_move.html
-
-  * igt@kms_psr@primary_page_flip:
-    - bat-adlp-9:         [SKIP][26] ([i915#1072]) -> [SKIP][27] +3 other tests skip
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/bat-adlp-9/igt@kms_psr@primary_page_flip.html
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-adlp-9/igt@kms_psr@primary_page_flip.html
-    - fi-rkl-11600:       [SKIP][28] ([i915#1072]) -> [SKIP][29] +3 other tests skip
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/fi-rkl-11600/igt@kms_psr@primary_page_flip.html
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-rkl-11600/igt@kms_psr@primary_page_flip.html
-    - bat-dg2-9:          [SKIP][30] ([i915#1072]) -> [SKIP][31] +3 other tests skip
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/bat-dg2-9/igt@kms_psr@primary_page_flip.html
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-dg2-9/igt@kms_psr@primary_page_flip.html
-    - fi-tgl-1115g4:      [SKIP][32] ([fdo#110189]) -> [SKIP][33] +3 other tests skip
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/fi-tgl-1115g4/igt@kms_psr@primary_page_flip.html
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-tgl-1115g4/igt@kms_psr@primary_page_flip.html
-    - bat-mtlp-6:         [SKIP][34] ([i915#1072]) -> [SKIP][35] +3 other tests skip
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/bat-mtlp-6/igt@kms_psr@primary_page_flip.html
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-mtlp-6/igt@kms_psr@primary_page_flip.html
-
-  * igt@kms_psr@sprite_plane_onoff:
-    - bat-dg2-11:         [SKIP][36] ([i915#1072]) -> [SKIP][37] +3 other tests skip
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/bat-dg2-11/igt@kms_psr@sprite_plane_onoff.html
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-dg2-11/igt@kms_psr@sprite_plane_onoff.html
-
-  
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@kms_psr@psr2_sprite_mmap_cpu:
-    - {bat-dg2-14}:       NOTRUN -> [SKIP][38] +20 other tests skip
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-dg2-14/igt@kms_psr@psr2_sprite_mmap_cpu.html
-
-  
-New tests
----------
-
-  New tests have been introduced between IGT_7582 and IGTPW_10158:
-
-### New IGT tests (84) ###
-
-  * igt@kms_psr@pr_basic:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@pr_cursor_blt:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@pr_cursor_mmap_cpu:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@pr_cursor_mmap_gtt:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@pr_cursor_plane_move:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@pr_cursor_plane_onoff:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@pr_cursor_render:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@pr_dpms:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@pr_no_drrs:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@pr_primary_blt:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@pr_primary_mmap_cpu:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@pr_primary_mmap_gtt:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@pr_primary_page_flip:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@pr_primary_render:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@pr_sprite_blt:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@pr_sprite_mmap_cpu:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@pr_sprite_mmap_gtt:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@pr_sprite_plane_move:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@pr_sprite_plane_onoff:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@pr_sprite_render:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@pr_suspend:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr2_basic@edp-1:
-    - Statuses : 2 fail(s) 1 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr2_cursor_blt@edp-1:
-    - Statuses : 2 fail(s) 1 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr2_cursor_mmap_cpu@edp-1:
-    - Statuses : 2 fail(s) 1 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr2_cursor_mmap_gtt@edp-1:
-    - Statuses : 2 fail(s) 1 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr2_cursor_plane_move@edp-1:
-    - Statuses : 2 fail(s) 1 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr2_cursor_plane_onoff@edp-1:
-    - Statuses : 2 fail(s) 1 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr2_cursor_render@edp-1:
-    - Statuses : 2 fail(s) 1 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr2_dpms@edp-1:
-    - Statuses : 2 fail(s) 1 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr2_no_drrs@edp-1:
-    - Statuses : 2 fail(s) 1 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr2_primary_blt@edp-1:
-    - Statuses : 2 fail(s) 1 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr2_primary_mmap_cpu@edp-1:
-    - Statuses : 2 fail(s) 1 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr2_primary_mmap_gtt@edp-1:
-    - Statuses : 2 fail(s) 1 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr2_primary_page_flip@edp-1:
-    - Statuses : 2 fail(s) 1 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr2_primary_render@edp-1:
-    - Statuses : 2 fail(s) 1 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr2_sprite_blt@edp-1:
-    - Statuses : 2 fail(s) 1 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr2_sprite_mmap_cpu@edp-1:
-    - Statuses : 2 fail(s) 1 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr2_sprite_mmap_gtt@edp-1:
-    - Statuses : 2 fail(s) 1 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr2_sprite_plane_move@edp-1:
-    - Statuses : 2 fail(s) 1 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr2_sprite_plane_onoff@edp-1:
-    - Statuses : 2 fail(s) 1 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr2_sprite_render@edp-1:
-    - Statuses : 2 fail(s) 1 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr2_suspend@edp-1:
-    - Statuses : 2 fail(s) 1 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_basic:
-    - Statuses : 27 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_basic@edp-1:
-    - Statuses : 5 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_cursor_blt:
-    - Statuses : 27 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_cursor_blt@edp-1:
-    - Statuses : 5 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_cursor_mmap_cpu:
-    - Statuses : 27 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_cursor_mmap_cpu@edp-1:
-    - Statuses : 5 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_cursor_mmap_gtt:
-    - Statuses : 27 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_cursor_mmap_gtt@edp-1:
-    - Statuses : 5 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_cursor_plane_move:
-    - Statuses : 27 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_cursor_plane_move@edp-1:
-    - Statuses : 5 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_cursor_plane_onoff:
-    - Statuses : 27 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_cursor_plane_onoff@edp-1:
-    - Statuses : 5 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_cursor_render:
-    - Statuses : 27 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_cursor_render@edp-1:
-    - Statuses : 5 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_dpms:
-    - Statuses : 27 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_dpms@edp-1:
-    - Statuses : 5 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_no_drrs:
-    - Statuses : 27 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_no_drrs@edp-1:
-    - Statuses : 5 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_primary_blt:
-    - Statuses : 27 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_primary_blt@edp-1:
-    - Statuses : 5 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_primary_mmap_cpu:
-    - Statuses : 27 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_primary_mmap_cpu@edp-1:
-    - Statuses : 5 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_primary_mmap_gtt:
-    - Statuses : 27 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_primary_mmap_gtt@edp-1:
-    - Statuses : 5 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_primary_page_flip:
-    - Statuses : 27 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_primary_page_flip@edp-1:
-    - Statuses : 5 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_primary_render:
-    - Statuses : 27 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_primary_render@edp-1:
-    - Statuses : 5 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_sprite_blt:
-    - Statuses : 27 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_sprite_blt@edp-1:
-    - Statuses : 5 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_sprite_mmap_cpu:
-    - Statuses : 27 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_sprite_mmap_cpu@edp-1:
-    - Statuses : 5 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_sprite_mmap_gtt:
-    - Statuses : 27 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_sprite_mmap_gtt@edp-1:
-    - Statuses : 5 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_sprite_plane_move:
-    - Statuses : 27 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_sprite_plane_move@edp-1:
-    - Statuses : 5 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_sprite_plane_onoff:
-    - Statuses : 27 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_sprite_plane_onoff@edp-1:
-    - Statuses : 5 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_sprite_render:
-    - Statuses : 27 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_sprite_render@edp-1:
-    - Statuses : 5 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_suspend:
-    - Statuses : 27 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_psr@psr_suspend@edp-1:
-    - Statuses : 5 pass(s)
-    - Exec time: [0.0] s
-
-  
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_10158 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_exec_suspend@basic-s3@smem:
-    - bat-rpls-1:         [PASS][39] -> [ABORT][40] ([i915#7978])
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html
-
-  * {igt@kms_psr@pr_cursor_blt} (NEW):
-    - bat-atsm-1:         NOTRUN -> [SKIP][41] ([i915#6078]) +62 other tests skip
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-atsm-1/igt@kms_psr@pr_cursor_blt.html
-
-  * {igt@kms_psr@pr_cursor_mmap_cpu} (NEW):
-    - fi-skl-6600u:       NOTRUN -> [SKIP][42] ([fdo#109271]) +41 other tests skip
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-skl-6600u/igt@kms_psr@pr_cursor_mmap_cpu.html
-
-  * {igt@kms_psr@pr_sprite_blt} (NEW):
-    - fi-cfl-8700k:       NOTRUN -> [SKIP][43] ([fdo#109271]) +62 other tests skip
-   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-cfl-8700k/igt@kms_psr@pr_sprite_blt.html
-
-  * {igt@kms_psr@pr_sprite_render} (NEW):
-    - fi-kbl-x1275:       NOTRUN -> [SKIP][44] ([fdo#109271]) +62 other tests skip
-   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-kbl-x1275/igt@kms_psr@pr_sprite_render.html
-
-  * {igt@kms_psr@pr_suspend} (NEW):
-    - fi-skl-guc:         NOTRUN -> [SKIP][45] ([fdo#109271]) +62 other tests skip
-   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-skl-guc/igt@kms_psr@pr_suspend.html
-
-  * igt@kms_psr@primary_page_flip:
-    - fi-skl-6600u:       [PASS][46] -> [SKIP][47] ([fdo#109271]) +3 other tests skip
-   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/fi-skl-6600u/igt@kms_psr@primary_page_flip.html
-   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-skl-6600u/igt@kms_psr@primary_page_flip.html
-
-  * igt@kms_psr@psr2_dpms:
-    - fi-blb-e6850:       NOTRUN -> [SKIP][48] ([fdo#109271]) +62 other tests skip
-   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-blb-e6850/igt@kms_psr@psr2_dpms.html
-
-  * igt@kms_psr@psr2_primary_render:
-    - fi-cfl-guc:         NOTRUN -> [SKIP][49] ([fdo#109271]) +62 other tests skip
-   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-cfl-guc/igt@kms_psr@psr2_primary_render.html
-
-  * igt@kms_psr@psr2_sprite_mmap_cpu:
-    - fi-elk-e7500:       NOTRUN -> [SKIP][50] ([fdo#109271]) +62 other tests skip
-   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-elk-e7500/igt@kms_psr@psr2_sprite_mmap_cpu.html
-    - fi-bsw-nick:        NOTRUN -> [SKIP][51] ([fdo#109271]) +62 other tests skip
-   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-bsw-nick/igt@kms_psr@psr2_sprite_mmap_cpu.html
-    - fi-kbl-guc:         NOTRUN -> [SKIP][52] ([fdo#109271]) +62 other tests skip
-   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-kbl-guc/igt@kms_psr@psr2_sprite_mmap_cpu.html
-
-  * igt@kms_psr@psr2_sprite_plane_move:
-    - fi-apl-guc:         NOTRUN -> [SKIP][53] ([fdo#109271]) +62 other tests skip
-   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-apl-guc/igt@kms_psr@psr2_sprite_plane_move.html
-
-  * igt@kms_psr@psr2_suspend:
-    - fi-cfl-8109u:       NOTRUN -> [SKIP][54] ([fdo#109271]) +62 other tests skip
-   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-cfl-8109u/igt@kms_psr@psr2_suspend.html
-    - fi-kbl-7567u:       NOTRUN -> [SKIP][55] ([fdo#109271]) +62 other tests skip
-   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-kbl-7567u/igt@kms_psr@psr2_suspend.html
-
-  * {igt@kms_psr@psr_cursor_blt} (NEW):
-    - fi-ivb-3770:        NOTRUN -> [SKIP][56] ([fdo#109271]) +62 other tests skip
-   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-ivb-3770/igt@kms_psr@psr_cursor_blt.html
-
-  * {igt@kms_psr@psr_cursor_render} (NEW):
-    - fi-ilk-650:         NOTRUN -> [SKIP][57] ([fdo#109271]) +62 other tests skip
-   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-ilk-650/igt@kms_psr@psr_cursor_render.html
-
-  * {igt@kms_psr@psr_dpms} (NEW):
-    - fi-glk-j4005:       NOTRUN -> [SKIP][58] ([fdo#109271]) +62 other tests skip
-   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-glk-j4005/igt@kms_psr@psr_dpms.html
-
-  * {igt@kms_psr@psr_sprite_blt} (NEW):
-    - fi-pnv-d510:        NOTRUN -> [SKIP][59] ([fdo#109271]) +62 other tests skip
-   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-pnv-d510/igt@kms_psr@psr_sprite_blt.html
-
-  * igt@kms_psr@sprite_plane_onoff:
-    - bat-jsl-3:          [PASS][60] -> [SKIP][61] ([fdo#112080]) +3 other tests skip
-   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/bat-jsl-3/igt@kms_psr@sprite_plane_onoff.html
-   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-jsl-3/igt@kms_psr@sprite_plane_onoff.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - fi-kbl-guc:         [FAIL][62] ([IGT#3]) -> [PASS][63]
-   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
-   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
-
-  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:
-    - bat-rplp-1:         [ABORT][64] ([i915#8668]) -> [PASS][65]
-   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
-   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
-
-  
-#### Warnings ####
-
-  * igt@kms_psr@sprite_plane_onoff:
-    - bat-atsm-1:         [SKIP][66] ([i915#1072]) -> [SKIP][67] ([i915#6078]) +3 other tests skip
-   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/bat-atsm-1/igt@kms_psr@sprite_plane_onoff.html
-   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-atsm-1/igt@kms_psr@sprite_plane_onoff.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [IGT#3]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#110189]: https://bugs.freedesktop.org/show_bug.cgi?id=110189
-  [fdo#112080]: https://bugs.freedesktop.org/show_bug.cgi?id=112080
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#6078]: https://gitlab.freedesktop.org/drm/intel/issues/6078
-  [i915#7978]: https://gitlab.freedesktop.org/drm/intel/issues/7978
-  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7582 -> IGTPW_10158
-
-  CI-20190529: 20190529
-  CI_DRM_13859: 9155ae0ae05f320d84eaf2c4e81413bf937a5f3c @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_10158: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/index.html
-  IGT_7582: 453b9df12fbc9fff561bdb4eb97992983e74c3d4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+igt@kms_psr@pr_basic
-+igt@kms_psr@pr_cursor_blt
-+igt@kms_psr@pr_cursor_mmap_cpu
-+igt@kms_psr@pr_cursor_mmap_gtt
-+igt@kms_psr@pr_cursor_plane_move
-+igt@kms_psr@pr_cursor_plane_onoff
-+igt@kms_psr@pr_cursor_render
-+igt@kms_psr@pr_dpms
-+igt@kms_psr@pr_no_drrs
-+igt@kms_psr@pr_primary_blt
-+igt@kms_psr@pr_primary_mmap_cpu
-+igt@kms_psr@pr_primary_mmap_gtt
-+igt@kms_psr@pr_primary_page_flip
-+igt@kms_psr@pr_primary_render
-+igt@kms_psr@pr_sprite_blt
-+igt@kms_psr@pr_sprite_mmap_cpu
-+igt@kms_psr@pr_sprite_mmap_gtt
-+igt@kms_psr@pr_sprite_plane_move
-+igt@kms_psr@pr_sprite_plane_onoff
-+igt@kms_psr@pr_sprite_render
-+igt@kms_psr@pr_suspend
-+igt@kms_psr@psr_basic
-+igt@kms_psr@psr_cursor_blt
-+igt@kms_psr@psr_cursor_mmap_cpu
-+igt@kms_psr@psr_cursor_mmap_gtt
-+igt@kms_psr@psr_cursor_plane_move
-+igt@kms_psr@psr_cursor_plane_onoff
-+igt@kms_psr@psr_cursor_render
-+igt@kms_psr@psr_dpms
-+igt@kms_psr@psr_no_drrs
-+igt@kms_psr@psr_primary_blt
-+igt@kms_psr@psr_primary_mmap_cpu
-+igt@kms_psr@psr_primary_mmap_gtt
-+igt@kms_psr@psr_primary_page_flip
-+igt@kms_psr@psr_primary_render
-+igt@kms_psr@psr_sprite_blt
-+igt@kms_psr@psr_sprite_mmap_cpu
-+igt@kms_psr@psr_sprite_mmap_gtt
-+igt@kms_psr@psr_sprite_plane_move
-+igt@kms_psr@psr_sprite_plane_onoff
-+igt@kms_psr@psr_sprite_render
-+igt@kms_psr@psr_suspend
--igt@kms_psr@basic
--igt@kms_psr@cursor_blt
--igt@kms_psr@cursor_mmap_cpu
--igt@kms_psr@cursor_mmap_gtt
--igt@kms_psr@cursor_plane_move
--igt@kms_psr@cursor_plane_onoff
--igt@kms_psr@cursor_render
--igt@kms_psr@dpms
--igt@kms_psr@no_drrs
--igt@kms_psr@primary_blt
--igt@kms_psr@primary_mmap_cpu
--igt@kms_psr@primary_mmap_gtt
--igt@kms_psr@primary_page_flip
--igt@kms_psr@primary_render
--igt@kms_psr@sprite_blt
--igt@kms_psr@sprite_mmap_cpu
--igt@kms_psr@sprite_mmap_gtt
--igt@kms_psr@sprite_plane_move
--igt@kms_psr@sprite_plane_onoff
--igt@kms_psr@sprite_render
--igt@kms_psr@suspend
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/index.html
-
---===============1165061379512434603==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>extend kms_psr test to validate pr (rev6)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/125379/">https://patchwork.freedesktop.org/series/125379/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_7582 -&gt; IGTPW_10158</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_10158 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_10158, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/index.html</p>
-<h2>Participating hosts (34 -&gt; 33)</h2>
-<p>Missing    (1): fi-hsw-4770 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_10158:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@gt_pm:</p>
-<ul>
-<li>bat-adls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/bat-adls-5/igt@i915_selftest@live@gt_pm.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-adls-5/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a></li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr@pr_cursor_blt} (NEW):</p>
-<ul>
-<li>bat-jsl-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-jsl-3/igt@kms_psr@pr_cursor_blt.html">SKIP</a> +41 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr@pr_cursor_mmap_cpu} (NEW):</p>
-<ul>
-<li>bat-adlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-adlp-6/igt@kms_psr@pr_cursor_mmap_cpu.html">SKIP</a> +20 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr@pr_primary_mmap_cpu} (NEW):</p>
-<ul>
-<li>
-<p>bat-adls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-adls-5/igt@kms_psr@pr_primary_mmap_cpu.html">SKIP</a> +20 other tests skip</p>
-</li>
-<li>
-<p>bat-adln-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-adln-1/igt@kms_psr@pr_primary_mmap_cpu.html">SKIP</a> +20 other tests skip</p>
-</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr@pr_primary_mmap_gtt} (NEW):</p>
-<ul>
-<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-rplp-1/igt@kms_psr@pr_primary_mmap_gtt.html">SKIP</a> +62 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr@pr_sprite_blt} (NEW):</p>
-<ul>
-<li>
-<p>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-dg2-11/igt@kms_psr@pr_sprite_blt.html">SKIP</a> +62 other tests skip</p>
-</li>
-<li>
-<p>{bat-dg2-14}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-dg2-14/igt@kms_psr@pr_sprite_blt.html">SKIP</a> +41 other tests skip</p>
-</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr@pr_sprite_render} (NEW):</p>
-<ul>
-<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-adlp-11/igt@kms_psr@pr_sprite_render.html">SKIP</a> +62 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@primary_page_flip:</p>
-<ul>
-<li>bat-adls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/bat-adls-5/igt@kms_psr@primary_page_flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-adls-5/igt@kms_psr@primary_page_flip.html">SKIP</a> +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr@psr2_cursor_plane_move@edp-1} (NEW):</p>
-<ul>
-<li>bat-adlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-adlp-6/igt@kms_psr@psr2_cursor_plane_move@edp-1.html">FAIL</a> +20 other tests fail</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr@psr2_cursor_plane_onoff@edp-1} (NEW):</p>
-<ul>
-<li>bat-adln-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-adln-1/igt@kms_psr@psr2_cursor_plane_onoff@edp-1.html">FAIL</a> +20 other tests fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2_primary_blt:</p>
-<ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-dg2-9/igt@kms_psr@psr2_primary_blt.html">SKIP</a> +62 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2_primary_mmap_gtt:</p>
-<ul>
-<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-tgl-1115g4/igt@kms_psr@psr2_primary_mmap_gtt.html">SKIP</a> +62 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2_primary_render:</p>
-<ul>
-<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-mtlp-6/igt@kms_psr@psr2_primary_render.html">SKIP</a> +62 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2_sprite_plane_onoff:</p>
-<ul>
-<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-adlp-9/igt@kms_psr@psr2_sprite_plane_onoff.html">SKIP</a> +62 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr@psr_primary_blt} (NEW):</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-rkl-11600/igt@kms_psr@psr_primary_blt.html">SKIP</a> +62 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr@psr_primary_mmap_cpu} (NEW):</p>
-<ul>
-<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-rpls-1/igt@kms_psr@psr_primary_mmap_cpu.html">SKIP</a> +62 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr@psr_suspend} (NEW):</p>
-<ul>
-<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-adlm-1/igt@kms_psr@psr_suspend.html">SKIP</a> +62 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@kms_psr@cursor_plane_move:</p>
-<ul>
-<li>
-<p>bat-adlm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/bat-adlm-1/igt@kms_psr@cursor_plane_move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-adlm-1/igt@kms_psr@cursor_plane_move.html">SKIP</a> +3 other tests skip</p>
-</li>
-<li>
-<p>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/bat-rpls-1/igt@kms_psr@cursor_plane_move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-rpls-1/igt@kms_psr@cursor_plane_move.html">SKIP</a> +3 other tests skip</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@primary_page_flip:</p>
-<ul>
-<li>
-<p>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/bat-adlp-9/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-adlp-9/igt@kms_psr@primary_page_flip.html">SKIP</a> +3 other tests skip</p>
-</li>
-<li>
-<p>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/fi-rkl-11600/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-rkl-11600/igt@kms_psr@primary_page_flip.html">SKIP</a> +3 other tests skip</p>
-</li>
-<li>
-<p>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/bat-dg2-9/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-dg2-9/igt@kms_psr@primary_page_flip.html">SKIP</a> +3 other tests skip</p>
-</li>
-<li>
-<p>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/fi-tgl-1115g4/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=110189">fdo#110189</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-tgl-1115g4/igt@kms_psr@primary_page_flip.html">SKIP</a> +3 other tests skip</p>
-</li>
-<li>
-<p>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/bat-mtlp-6/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-mtlp-6/igt@kms_psr@primary_page_flip.html">SKIP</a> +3 other tests skip</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@sprite_plane_onoff:</p>
-<ul>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/bat-dg2-11/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-dg2-11/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> +3 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>igt@kms_psr@psr2_sprite_mmap_cpu:<ul>
-<li>{bat-dg2-14}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-dg2-14/igt@kms_psr@psr2_sprite_mmap_cpu.html">SKIP</a> +20 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h2>New tests</h2>
-<p>New tests have been introduced between IGT_7582 and IGTPW_10158:</p>
-<h3>New IGT tests (84)</h3>
-<ul>
-<li>
-<p>igt@kms_psr@pr_basic:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@pr_cursor_blt:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@pr_cursor_mmap_cpu:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@pr_cursor_mmap_gtt:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@pr_cursor_plane_move:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@pr_cursor_plane_onoff:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@pr_cursor_render:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@pr_dpms:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@pr_no_drrs:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@pr_primary_blt:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@pr_primary_mmap_cpu:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@pr_primary_mmap_gtt:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@pr_primary_page_flip:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@pr_primary_render:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@pr_sprite_blt:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@pr_sprite_mmap_cpu:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@pr_sprite_mmap_gtt:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@pr_sprite_plane_move:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@pr_sprite_plane_onoff:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@pr_sprite_render:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@pr_suspend:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2_basic@edp-1:</p>
-<ul>
-<li>Statuses : 2 fail(s) 1 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2_cursor_blt@edp-1:</p>
-<ul>
-<li>Statuses : 2 fail(s) 1 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2_cursor_mmap_cpu@edp-1:</p>
-<ul>
-<li>Statuses : 2 fail(s) 1 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2_cursor_mmap_gtt@edp-1:</p>
-<ul>
-<li>Statuses : 2 fail(s) 1 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2_cursor_plane_move@edp-1:</p>
-<ul>
-<li>Statuses : 2 fail(s) 1 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2_cursor_plane_onoff@edp-1:</p>
-<ul>
-<li>Statuses : 2 fail(s) 1 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2_cursor_render@edp-1:</p>
-<ul>
-<li>Statuses : 2 fail(s) 1 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2_dpms@edp-1:</p>
-<ul>
-<li>Statuses : 2 fail(s) 1 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2_no_drrs@edp-1:</p>
-<ul>
-<li>Statuses : 2 fail(s) 1 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2_primary_blt@edp-1:</p>
-<ul>
-<li>Statuses : 2 fail(s) 1 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2_primary_mmap_cpu@edp-1:</p>
-<ul>
-<li>Statuses : 2 fail(s) 1 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2_primary_mmap_gtt@edp-1:</p>
-<ul>
-<li>Statuses : 2 fail(s) 1 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2_primary_page_flip@edp-1:</p>
-<ul>
-<li>Statuses : 2 fail(s) 1 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2_primary_render@edp-1:</p>
-<ul>
-<li>Statuses : 2 fail(s) 1 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2_sprite_blt@edp-1:</p>
-<ul>
-<li>Statuses : 2 fail(s) 1 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2_sprite_mmap_cpu@edp-1:</p>
-<ul>
-<li>Statuses : 2 fail(s) 1 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2_sprite_mmap_gtt@edp-1:</p>
-<ul>
-<li>Statuses : 2 fail(s) 1 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2_sprite_plane_move@edp-1:</p>
-<ul>
-<li>Statuses : 2 fail(s) 1 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2_sprite_plane_onoff@edp-1:</p>
-<ul>
-<li>Statuses : 2 fail(s) 1 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2_sprite_render@edp-1:</p>
-<ul>
-<li>Statuses : 2 fail(s) 1 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2_suspend@edp-1:</p>
-<ul>
-<li>Statuses : 2 fail(s) 1 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_basic:</p>
-<ul>
-<li>Statuses : 27 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_basic@edp-1:</p>
-<ul>
-<li>Statuses : 5 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_cursor_blt:</p>
-<ul>
-<li>Statuses : 27 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_cursor_blt@edp-1:</p>
-<ul>
-<li>Statuses : 5 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_cursor_mmap_cpu:</p>
-<ul>
-<li>Statuses : 27 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_cursor_mmap_cpu@edp-1:</p>
-<ul>
-<li>Statuses : 5 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_cursor_mmap_gtt:</p>
-<ul>
-<li>Statuses : 27 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_cursor_mmap_gtt@edp-1:</p>
-<ul>
-<li>Statuses : 5 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_cursor_plane_move:</p>
-<ul>
-<li>Statuses : 27 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_cursor_plane_move@edp-1:</p>
-<ul>
-<li>Statuses : 5 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_cursor_plane_onoff:</p>
-<ul>
-<li>Statuses : 27 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_cursor_plane_onoff@edp-1:</p>
-<ul>
-<li>Statuses : 5 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_cursor_render:</p>
-<ul>
-<li>Statuses : 27 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_cursor_render@edp-1:</p>
-<ul>
-<li>Statuses : 5 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_dpms:</p>
-<ul>
-<li>Statuses : 27 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_dpms@edp-1:</p>
-<ul>
-<li>Statuses : 5 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_no_drrs:</p>
-<ul>
-<li>Statuses : 27 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_no_drrs@edp-1:</p>
-<ul>
-<li>Statuses : 5 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_primary_blt:</p>
-<ul>
-<li>Statuses : 27 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_primary_blt@edp-1:</p>
-<ul>
-<li>Statuses : 5 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_primary_mmap_cpu:</p>
-<ul>
-<li>Statuses : 27 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_primary_mmap_cpu@edp-1:</p>
-<ul>
-<li>Statuses : 5 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_primary_mmap_gtt:</p>
-<ul>
-<li>Statuses : 27 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_primary_mmap_gtt@edp-1:</p>
-<ul>
-<li>Statuses : 5 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_primary_page_flip:</p>
-<ul>
-<li>Statuses : 27 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_primary_page_flip@edp-1:</p>
-<ul>
-<li>Statuses : 5 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_primary_render:</p>
-<ul>
-<li>Statuses : 27 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_primary_render@edp-1:</p>
-<ul>
-<li>Statuses : 5 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_sprite_blt:</p>
-<ul>
-<li>Statuses : 27 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_sprite_blt@edp-1:</p>
-<ul>
-<li>Statuses : 5 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_sprite_mmap_cpu:</p>
-<ul>
-<li>Statuses : 27 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_sprite_mmap_cpu@edp-1:</p>
-<ul>
-<li>Statuses : 5 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_sprite_mmap_gtt:</p>
-<ul>
-<li>Statuses : 27 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_sprite_mmap_gtt@edp-1:</p>
-<ul>
-<li>Statuses : 5 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_sprite_plane_move:</p>
-<ul>
-<li>Statuses : 27 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_sprite_plane_move@edp-1:</p>
-<ul>
-<li>Statuses : 5 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_sprite_plane_onoff:</p>
-<ul>
-<li>Statuses : 27 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_sprite_plane_onoff@edp-1:</p>
-<ul>
-<li>Statuses : 5 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_sprite_render:</p>
-<ul>
-<li>Statuses : 27 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_sprite_render@edp-1:</p>
-<ul>
-<li>Statuses : 5 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_suspend:</p>
-<ul>
-<li>Statuses : 27 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr_suspend@edp-1:</p>
-<ul>
-<li>Statuses : 5 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_10158 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s3@smem:</p>
-<ul>
-<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7978">i915#7978</a>)</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr@pr_cursor_blt} (NEW):</p>
-<ul>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-atsm-1/igt@kms_psr@pr_cursor_blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6078">i915#6078</a>) +62 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr@pr_cursor_mmap_cpu} (NEW):</p>
-<ul>
-<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-skl-6600u/igt@kms_psr@pr_cursor_mmap_cpu.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +41 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr@pr_sprite_blt} (NEW):</p>
-<ul>
-<li>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-cfl-8700k/igt@kms_psr@pr_sprite_blt.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +62 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr@pr_sprite_render} (NEW):</p>
-<ul>
-<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-kbl-x1275/igt@kms_psr@pr_sprite_render.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +62 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr@pr_suspend} (NEW):</p>
-<ul>
-<li>fi-skl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-skl-guc/igt@kms_psr@pr_suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +62 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@primary_page_flip:</p>
-<ul>
-<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/fi-skl-6600u/igt@kms_psr@primary_page_flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-skl-6600u/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2_dpms:</p>
-<ul>
-<li>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-blb-e6850/igt@kms_psr@psr2_dpms.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +62 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2_primary_render:</p>
-<ul>
-<li>fi-cfl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-cfl-guc/igt@kms_psr@psr2_primary_render.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +62 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2_sprite_mmap_cpu:</p>
-<ul>
-<li>
-<p>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-elk-e7500/igt@kms_psr@psr2_sprite_mmap_cpu.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +62 other tests skip</p>
-</li>
-<li>
-<p>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-bsw-nick/igt@kms_psr@psr2_sprite_mmap_cpu.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +62 other tests skip</p>
-</li>
-<li>
-<p>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-kbl-guc/igt@kms_psr@psr2_sprite_mmap_cpu.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +62 other tests skip</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2_sprite_plane_move:</p>
-<ul>
-<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-apl-guc/igt@kms_psr@psr2_sprite_plane_move.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +62 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2_suspend:</p>
-<ul>
-<li>
-<p>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-cfl-8109u/igt@kms_psr@psr2_suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +62 other tests skip</p>
-</li>
-<li>
-<p>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-kbl-7567u/igt@kms_psr@psr2_suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +62 other tests skip</p>
-</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr@psr_cursor_blt} (NEW):</p>
-<ul>
-<li>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-ivb-3770/igt@kms_psr@psr_cursor_blt.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +62 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr@psr_cursor_render} (NEW):</p>
-<ul>
-<li>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-ilk-650/igt@kms_psr@psr_cursor_render.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +62 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr@psr_dpms} (NEW):</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-glk-j4005/igt@kms_psr@psr_dpms.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +62 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr@psr_sprite_blt} (NEW):</p>
-<ul>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-pnv-d510/igt@kms_psr@psr_sprite_blt.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +62 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@sprite_plane_onoff:</p>
-<ul>
-<li>bat-jsl-3:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/bat-jsl-3/igt@kms_psr@sprite_plane_onoff.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-jsl-3/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=112080">fdo#112080</a>) +3 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_hdmi_inject@inject-audio:</p>
-<ul>
-<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3">IGT#3</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:</p>
-<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_psr@sprite_plane_onoff:<ul>
-<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7582/bat-atsm-1/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/bat-atsm-1/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6078">i915#6078</a>) +3 other tests skip</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7582 -&gt; IGTPW_10158</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13859: 9155ae0ae05f320d84eaf2c4e81413bf937a5f3c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_10158: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10158/index.html<br />
-  IGT_7582: 453b9df12fbc9fff561bdb4eb97992983e74c3d4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@kms_psr@pr_basic<br />
-+igt@kms_psr@pr_cursor_blt<br />
-+igt@kms_psr@pr_cursor_mmap_cpu<br />
-+igt@kms_psr@pr_cursor_mmap_gtt<br />
-+igt@kms_psr@pr_cursor_plane_move<br />
-+igt@kms_psr@pr_cursor_plane_onoff<br />
-+igt@kms_psr@pr_cursor_render<br />
-+igt@kms_psr@pr_dpms<br />
-+igt@kms_psr@pr_no_drrs<br />
-+igt@kms_psr@pr_primary_blt<br />
-+igt@kms_psr@pr_primary_mmap_cpu<br />
-+igt@kms_psr@pr_primary_mmap_gtt<br />
-+igt@kms_psr@pr_primary_page_flip<br />
-+igt@kms_psr@pr_primary_render<br />
-+igt@kms_psr@pr_sprite_blt<br />
-+igt@kms_psr@pr_sprite_mmap_cpu<br />
-+igt@kms_psr@pr_sprite_mmap_gtt<br />
-+igt@kms_psr@pr_sprite_plane_move<br />
-+igt@kms_psr@pr_sprite_plane_onoff<br />
-+igt@kms_psr@pr_sprite_render<br />
-+igt@kms_psr@pr_suspend<br />
-+igt@kms_psr@psr_basic<br />
-+igt@kms_psr@psr_cursor_blt<br />
-+igt@kms_psr@psr_cursor_mmap_cpu<br />
-+igt@kms_psr@psr_cursor_mmap_gtt<br />
-+igt@kms_psr@psr_cursor_plane_move<br />
-+igt@kms_psr@psr_cursor_plane_onoff<br />
-+igt@kms_psr@psr_cursor_render<br />
-+igt@kms_psr@psr_dpms<br />
-+igt@kms_psr@psr_no_drrs<br />
-+igt@kms_psr@psr_primary_blt<br />
-+igt@kms_psr@psr_primary_mmap_cpu<br />
-+igt@kms_psr@psr_primary_mmap_gtt<br />
-+igt@kms_psr@psr_primary_page_flip<br />
-+igt@kms_psr@psr_primary_render<br />
-+igt@kms_psr@psr_sprite_blt<br />
-+igt@kms_psr@psr_sprite_mmap_cpu<br />
-+igt@kms_psr@psr_sprite_mmap_gtt<br />
-+igt@kms_psr@psr_sprite_plane_move<br />
-+igt@kms_psr@psr_sprite_plane_onoff<br />
-+igt@kms_psr@psr_sprite_render<br />
-+igt@kms_psr@psr_suspend<br />
--igt@kms_psr@basic<br />
--igt@kms_psr@cursor_blt<br />
--igt@kms_psr@cursor_mmap_cpu<br />
--igt@kms_psr@cursor_mmap_gtt<br />
--igt@kms_psr@cursor_plane_move<br />
--igt@kms_psr@cursor_plane_onoff<br />
--igt@kms_psr@cursor_render<br />
--igt@kms_psr@dpms<br />
--igt@kms_psr@no_drrs<br />
--igt@kms_psr@primary_blt<br />
--igt@kms_psr@primary_mmap_cpu<br />
--igt@kms_psr@primary_mmap_gtt<br />
--igt@kms_psr@primary_page_flip<br />
--igt@kms_psr@primary_render<br />
--igt@kms_psr@sprite_blt<br />
--igt@kms_psr@sprite_mmap_cpu<br />
--igt@kms_psr@sprite_mmap_gtt<br />
--igt@kms_psr@sprite_plane_move<br />
--igt@kms_psr@sprite_plane_onoff<br />
--igt@kms_psr@sprite_render<br />
--igt@kms_psr@suspend</p>
-
-</body>
-</html>
-
---===============1165061379512434603==--
+On Tue, Nov 14, 2023 at 12:52:05PM +0100, Francois Dugast wrote:
+> On Tue, Nov 14, 2023 at 12:49:43PM +0100, Zbigniew Kempczyński wrote:
+> > Extend current testing for i915 and add dedicated to dg1 compute
+> > pipeline. Due to ppgtt limitation to 47 bits on dg1 alter offsets
+> > to use lower addresses.
+> > 
+> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > Cc: Francois Dugast <francois.dugast@intel.com>
+> 
+> Reviewed-by: Francois Dugast <francois.dugast@intel.com>
+
+Thank you for the review. I'll wait for the results and merge.
+
+--
+Zbigniew
+
+> 
+> > ---
+> >  lib/intel_compute.c                | 133 +++++++++++++++++++++++++----
+> >  lib/intel_compute_square_kernels.c |  42 +++++++++
+> >  2 files changed, 158 insertions(+), 17 deletions(-)
+> > 
+> > diff --git a/lib/intel_compute.c b/lib/intel_compute.c
+> > index 772c22fa37..689e012fa8 100644
+> > --- a/lib/intel_compute.c
+> > +++ b/lib/intel_compute.c
+> > @@ -33,9 +33,9 @@
+> >  #define ADDR_OUTPUT			0x300000UL
+> >  #define ADDR_SURFACE_STATE_BASE		0x400000UL
+> >  #define ADDR_DYNAMIC_STATE_BASE		0x500000UL
+> > -#define ADDR_INDIRECT_OBJECT_BASE	0x800100000000
+> > -#define OFFSET_INDIRECT_DATA_START	0xFFFDF000
+> > -#define OFFSET_KERNEL			0xFFFEF000
+> > +#define ADDR_INDIRECT_OBJECT_BASE	0x100000000
+> > +#define OFFSET_INDIRECT_DATA_START	0xFFFD0000
+> > +#define OFFSET_KERNEL			0xFFFE0000
+> >  
+> >  #define XEHP_ADDR_GENERAL_STATE_BASE		0x80000000UL
+> >  #define XEHP_ADDR_INSTRUCTION_STATE_BASE	0x90000000UL
+> > @@ -494,17 +494,102 @@ static void tgllp_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
+> >  }
+> >  
+> >  /**
+> > - * tgl_compute_exec - run a pipeline compatible with Tiger Lake
+> > + * dg1_compute_exec_compute:
+> > + * @addr_bo_buffer_batch: pointer to batch buffer
+> > + * @addr_surface_state_base: gpu offset of surface state data
+> > + * @addr_dynamic_state_base: gpu offset of dynamic state data
+> > + * @addr_indirect_object_base: gpu offset of indirect object data
+> > + * @offset_indirect_data_start: gpu offset of indirect data start
+> > + *
+> > + * Prepares compute pipeline.
+> > + */
+> > +static void dg1_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
+> > +				     uint64_t addr_surface_state_base,
+> > +				     uint64_t addr_dynamic_state_base,
+> > +				     uint64_t addr_indirect_object_base,
+> > +				     uint64_t offset_indirect_data_start)
+> > +{
+> > +	int b = 0;
+> > +
+> > +	addr_bo_buffer_batch[b++] = XEHP_STATE_COMPUTE_MODE;
+> > +	addr_bo_buffer_batch[b++] = 0x00180010;
+> > +
+> > +	addr_bo_buffer_batch[b++] = MEDIA_VFE_STATE | (9 - 2);
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x02FF0100;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x04000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +
+> > +	addr_bo_buffer_batch[b++] = MI_LOAD_REGISTER_IMM(1);
+> > +	addr_bo_buffer_batch[b++] = 0x00002580;
+> > +	addr_bo_buffer_batch[b++] = 0x00060002;
+> > +
+> > +	addr_bo_buffer_batch[b++] = STATE_BASE_ADDRESS | 0x14;
+> > +	addr_bo_buffer_batch[b++] = 0x00000001;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x000A0000;
+> > +	addr_bo_buffer_batch[b++] = (addr_surface_state_base & 0xffffffff) | 0x1;
+> > +	addr_bo_buffer_batch[b++] = addr_surface_state_base >> 32;
+> > +	addr_bo_buffer_batch[b++] = (addr_dynamic_state_base & 0xffffffff) | 0x1;
+> > +	addr_bo_buffer_batch[b++] = addr_dynamic_state_base >> 32;
+> > +	addr_bo_buffer_batch[b++] = (addr_indirect_object_base & 0xffffffff) | 0x1;
+> > +	addr_bo_buffer_batch[b++] = (addr_indirect_object_base >> 32) | 0xffff0000;
+> > +	addr_bo_buffer_batch[b++] = (addr_indirect_object_base & 0xffffffff) | 0xA1;
+> > +	addr_bo_buffer_batch[b++] = addr_indirect_object_base >> 32;
+> > +	addr_bo_buffer_batch[b++] = 0xFFFFF001;
+> > +	addr_bo_buffer_batch[b++] = 0x00010001;
+> > +	addr_bo_buffer_batch[b++] = 0xFFFFF001;
+> > +	addr_bo_buffer_batch[b++] = 0xFFFFF001;
+> > +	addr_bo_buffer_batch[b++] = (addr_surface_state_base & 0xffffffff) | 0xA1;
+> > +	addr_bo_buffer_batch[b++] = addr_surface_state_base >> 32;
+> > +	addr_bo_buffer_batch[b++] = 0x003BF000;
+> > +	addr_bo_buffer_batch[b++] = 0x000000A1;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +
+> > +	addr_bo_buffer_batch[b++] = MEDIA_INTERFACE_DESCRIPTOR_LOAD | (4 - 2);
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000020;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +
+> > +	addr_bo_buffer_batch[b++] = GPGPU_WALKER | 13;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000c80;
+> > +	addr_bo_buffer_batch[b++] = offset_indirect_data_start;
+> > +	addr_bo_buffer_batch[b++] = 0x8000000f;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000002;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000001;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000001;
+> > +	addr_bo_buffer_batch[b++] = 0xffffffff;
+> > +	addr_bo_buffer_batch[b++] = 0xffffffff;
+> > +
+> > +	addr_bo_buffer_batch[b++] = MEDIA_STATE_FLUSH;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +
+> > +	addr_bo_buffer_batch[b++] = MI_BATCH_BUFFER_END;
+> > +}
+> > +
+> > +/**
+> > + * compute_exec - run a pipeline compatible with Tiger Lake and DG1
+> >   *
+> >   * @fd: file descriptor of the opened DRM device
+> >   * @kernel: GPU Kernel binary to be executed
+> >   * @size: size of @kernel.
+> >   */
+> > -static void tgl_compute_exec(int fd, const unsigned char *kernel,
+> > -			     unsigned int size)
+> > +static void compute_exec(int fd, const unsigned char *kernel,
+> > +			 unsigned int size)
+> >  {
+> > -#define TGL_BO_DICT_ENTRIES 7
+> > -	struct bo_dict_entry bo_dict[TGL_BO_DICT_ENTRIES] = {
+> > +#define BO_DICT_ENTRIES 7
+> > +	struct bo_dict_entry bo_dict[BO_DICT_ENTRIES] = {
+> >  		{ .addr = ADDR_INDIRECT_OBJECT_BASE + OFFSET_KERNEL,
+> >  		  .name = "kernel" },
+> >  		{ .addr = ADDR_DYNAMIC_STATE_BASE,
+> > @@ -528,29 +613,38 @@ static void tgl_compute_exec(int fd, const unsigned char *kernel,
+> >  	};
+> >  	struct bo_execenv execenv;
+> >  	float *dinput;
+> > +	uint16_t devid = intel_get_drm_devid(fd);
+> >  
+> >  	bo_execenv_create(fd, &execenv);
+> >  
+> >  	/* Sets Kernel size */
+> >  	bo_dict[0].size = ALIGN(size, 0x1000);
+> >  
+> > -	bo_execenv_bind(&execenv, bo_dict, TGL_BO_DICT_ENTRIES);
+> > +	bo_execenv_bind(&execenv, bo_dict, BO_DICT_ENTRIES);
+> >  
+> >  	memcpy(bo_dict[0].data, kernel, size);
+> >  	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
+> >  	create_surface_state(bo_dict[2].data, ADDR_INPUT, ADDR_OUTPUT);
+> > -	create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT, 0x40);
+> > +	create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT,
+> > +			     IS_DG1(devid) ? 0x200 : 0x40);
+> >  
+> >  	dinput = (float *)bo_dict[4].data;
+> >  	srand(time(NULL));
+> >  	for (int i = 0; i < SIZE_DATA; i++)
+> >  		((float *)dinput)[i] = rand() / (float)RAND_MAX;
+> >  
+> > -	tgllp_compute_exec_compute(bo_dict[6].data,
+> > -				   ADDR_SURFACE_STATE_BASE,
+> > -				   ADDR_DYNAMIC_STATE_BASE,
+> > -				   ADDR_INDIRECT_OBJECT_BASE,
+> > -				   OFFSET_INDIRECT_DATA_START);
+> > +	if (IS_DG1(devid))
+> > +		dg1_compute_exec_compute(bo_dict[6].data,
+> > +					 ADDR_SURFACE_STATE_BASE,
+> > +					 ADDR_DYNAMIC_STATE_BASE,
+> > +					 ADDR_INDIRECT_OBJECT_BASE,
+> > +					 OFFSET_INDIRECT_DATA_START);
+> > +	else
+> > +		tgllp_compute_exec_compute(bo_dict[6].data,
+> > +					   ADDR_SURFACE_STATE_BASE,
+> > +					   ADDR_DYNAMIC_STATE_BASE,
+> > +					   ADDR_INDIRECT_OBJECT_BASE,
+> > +					   OFFSET_INDIRECT_DATA_START);
+> >  
+> >  	bo_execenv_exec(&execenv, ADDR_BATCH);
+> >  
+> > @@ -564,7 +658,7 @@ static void tgl_compute_exec(int fd, const unsigned char *kernel,
+> >  		igt_assert(f1 == f2 * f2);
+> >  	}
+> >  
+> > -	bo_execenv_unbind(&execenv, bo_dict, TGL_BO_DICT_ENTRIES);
+> > +	bo_execenv_unbind(&execenv, bo_dict, BO_DICT_ENTRIES);
+> >  	bo_execenv_destroy(&execenv);
+> >  }
+> >  
+> > @@ -1063,9 +1157,14 @@ static const struct {
+> >  } intel_compute_batches[] = {
+> >  	{
+> >  		.ip_ver = IP_VER(12, 0),
+> > -		.compute_exec = tgl_compute_exec,
+> > +		.compute_exec = compute_exec,
+> >  		.compat = COMPAT_DRIVER_I915 | COMPAT_DRIVER_XE,
+> >  	},
+> > +	{
+> > +		.ip_ver = IP_VER(12, 10),
+> > +		.compute_exec = compute_exec,
+> > +		.compat = COMPAT_DRIVER_I915,
+> > +	},
+> >  	{
+> >  		.ip_ver = IP_VER(12, 55),
+> >  		.compute_exec = xehp_compute_exec,
+> > diff --git a/lib/intel_compute_square_kernels.c b/lib/intel_compute_square_kernels.c
+> > index d094c23ccb..3d5b1ad475 100644
+> > --- a/lib/intel_compute_square_kernels.c
+> > +++ b/lib/intel_compute_square_kernels.c
+> > @@ -61,6 +61,43 @@ static const unsigned char tgllp_kernel_square_bin[] = {
+> >  	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+> >  };
+> >  
+> > +static const unsigned char dg1_kernel_square_bin[] = {
+> > +	0x61, 0x00, 0x03, 0x80, 0x20, 0x02, 0x05, 0x03, 0x04, 0x00, 0x10, 0x00,
+> > +	0x00, 0x00, 0x00, 0x00, 0x66, 0x01, 0x00, 0x80, 0x20, 0x82, 0x01, 0x80,
+> > +	0x00, 0x80, 0x00, 0x01, 0xc0, 0x04, 0xc0, 0x04, 0x41, 0x01, 0x20, 0x22,
+> > +	0x16, 0x09, 0x11, 0x03, 0x49, 0x00, 0x04, 0xa2, 0x12, 0x09, 0x11, 0x03,
+> > +	0x40, 0x01, 0x04, 0x00, 0x60, 0x06, 0x05, 0x05, 0x04, 0x04, 0x00, 0x01,
+> > +	0x05, 0x01, 0x58, 0x00, 0x40, 0x00, 0x24, 0x00, 0x60, 0x06, 0x05, 0x0a,
+> > +	0x04, 0x04, 0x00, 0x01, 0x05, 0x02, 0x58, 0x00, 0x40, 0x02, 0x0c, 0xa0,
+> > +	0x02, 0x05, 0x10, 0x07, 0x40, 0x02, 0x0e, 0xa6, 0x02, 0x0a, 0x10, 0x07,
+> > +	0x70, 0x02, 0x04, 0x00, 0x60, 0x02, 0x01, 0x00, 0x05, 0x0c, 0x46, 0x52,
+> > +	0x84, 0x08, 0x00, 0x00, 0x70, 0x02, 0x24, 0x00, 0x60, 0x02, 0x01, 0x00,
+> > +	0x05, 0x0e, 0x46, 0x52, 0x84, 0x08, 0x00, 0x00, 0x72, 0x00, 0x02, 0x80,
+> > +	0x50, 0x0d, 0x04, 0x01, 0x05, 0x01, 0x05, 0x1d, 0x05, 0x01, 0x05, 0x01,
+> > +	0x22, 0x00, 0x05, 0x01, 0x00, 0xc0, 0x00, 0x00, 0x90, 0x00, 0x00, 0x00,
+> > +	0x90, 0x00, 0x00, 0x00, 0x69, 0x00, 0x10, 0x60, 0x02, 0x0c, 0x20, 0x00,
+> > +	0x69, 0x00, 0x12, 0x66, 0x02, 0x0e, 0x20, 0x00, 0x40, 0x02, 0x14, 0xa0,
+> > +	0x32, 0x10, 0x10, 0x08, 0x40, 0x02, 0x16, 0xa6, 0x32, 0x12, 0x10, 0x08,
+> > +	0x31, 0xa0, 0x04, 0x00, 0x00, 0x00, 0x14, 0x18, 0x14, 0x14, 0x00, 0xcc,
+> > +	0x00, 0x00, 0x16, 0x00, 0x31, 0x91, 0x24, 0x00, 0x00, 0x00, 0x14, 0x1a,
+> > +	0x14, 0x16, 0x00, 0xcc, 0x00, 0x00, 0x16, 0x00, 0x40, 0x00, 0x10, 0xa0,
+> > +	0x4a, 0x10, 0x10, 0x08, 0x40, 0x00, 0x12, 0xa6, 0x4a, 0x12, 0x10, 0x08,
+> > +	0x41, 0x20, 0x18, 0x20, 0x00, 0x18, 0x00, 0x18, 0x41, 0x21, 0x1a, 0x26,
+> > +	0x00, 0x1a, 0x00, 0x1a, 0x31, 0xa2, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+> > +	0x14, 0x10, 0x02, 0xcc, 0x14, 0x18, 0x96, 0x00, 0x31, 0x93, 0x24, 0x00,
+> > +	0x00, 0x00, 0x00, 0x00, 0x14, 0x12, 0x02, 0xcc, 0x14, 0x1a, 0x96, 0x00,
+> > +	0x25, 0x00, 0x05, 0x00, 0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> > +	0x10, 0x00, 0x00, 0x00, 0x61, 0x00, 0x7f, 0x64, 0x00, 0x03, 0x10, 0x00,
+> > +	0x31, 0x44, 0x03, 0x80, 0x00, 0x00, 0x0c, 0x1c, 0x0c, 0x03, 0x00, 0xa0,
+> > +	0x00, 0x00, 0x78, 0x02, 0x61, 0x24, 0x03, 0x80, 0x20, 0x02, 0x01, 0x00,
+> > +	0x05, 0x1c, 0x46, 0x00, 0x00, 0x00, 0x00, 0x00, 0x61, 0x00, 0x04, 0x80,
+> > +	0xa0, 0x4a, 0x01, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> > +	0x31, 0x01, 0x03, 0x80, 0x04, 0x00, 0x00, 0x00, 0x0c, 0x7f, 0x20, 0x70,
+> > +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> > +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> > +	0x00, 0x00, 0x00, 0x00
+> > +};
+> > +
+> >  static const unsigned char xehp_kernel_square_bin[] = {
+> >  	0x61, 0x31, 0x03, 0x80, 0x20, 0x42, 0x05, 0x7f, 0x00, 0x00, 0x00, 0x00,
+> >  	0x00, 0x00, 0x00, 0x00, 0x65, 0x00, 0x00, 0x80, 0x20, 0x82, 0x45, 0x7f,
+> > @@ -152,6 +189,11 @@ const struct intel_compute_kernels intel_compute_square_kernels[] = {
+> >  		.size = sizeof(tgllp_kernel_square_bin),
+> >  		.kernel = tgllp_kernel_square_bin,
+> >  	},
+> > +	{
+> > +		.ip_ver = IP_VER(12, 10),
+> > +		.size = sizeof(dg1_kernel_square_bin),
+> > +		.kernel = dg1_kernel_square_bin,
+> > +	},
+> >  	{
+> >  		.ip_ver = IP_VER(12, 55),
+> >  		.size = sizeof(xehp_kernel_square_bin),
+> > -- 
+> > 2.34.1
+> > 
