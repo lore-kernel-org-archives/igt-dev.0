@@ -1,24 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com
- [IPv6:2a00:1450:4864:20::52e])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 919E710E498
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 17:37:35 +0000 (UTC)
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-53e751aeb3cso9157119a12.2
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 09:37:35 -0800 (PST)
-Message-ID: <1ca0b43f-27b8-4654-9855-bae69722fbd6@gmail.com>
-Date: Tue, 14 Nov 2023 19:37:23 +0200
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com
+ [IPv6:2a00:1450:4864:20::52c])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CC8D310E498
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 17:37:55 +0000 (UTC)
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-53db360294fso9171671a12.3
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Nov 2023 09:37:55 -0800 (PST)
+Message-ID: <7450e0a5-e869-42a1-b3bc-614d6a6c9d82@gmail.com>
+Date: Tue, 14 Nov 2023 19:37:47 +0200
 MIME-Version: 1.0
 Content-Language: en-US
 To: Kunal Joshi <kunal1.joshi@intel.com>, igt-dev@lists.freedesktop.org
 References: <20231102062304.1204625-1-kunal1.joshi@intel.com>
- <20231102062304.1204625-2-kunal1.joshi@intel.com>
+ <20231102062304.1204625-3-kunal1.joshi@intel.com>
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20231102062304.1204625-2-kunal1.joshi@intel.com>
+In-Reply-To: <20231102062304.1204625-3-kunal1.joshi@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/igt_debugfs: added helper to
- enable/disable dark screen detection
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/kms_pipe_crc_basic: added new
+ subtest for darkscreen detection
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -33,87 +33,143 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+This patch has some indentations with spaces. With those fixed you can add
+
+Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+
+
 On 2.11.2023 8.23, Kunal Joshi wrote:
-> added helper function for dark screen detection
+> dark screen detection feature when enable will monitor frames
+> and if black frame is detcted it will raise drm_error, added
+> two tests for positive (black frame) and negative case (white frame)
 > 
 > Cc: Nemesa Garg <nemesa.garg@intel.com>
 > Cc: Arun R Murthy <arun.r.murthy@intel.com>
 > Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 > ---
->   lib/igt_debugfs.c | 41 +++++++++++++++++++++++++++++++++++++++++
->   lib/igt_debugfs.h |  3 +++
->   2 files changed, 44 insertions(+)
+>   tests/kms_pipe_crc_basic.c | 60 +++++++++++++++++++++++++++++++++-----
+>   1 file changed, 52 insertions(+), 8 deletions(-)
 > 
-> diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
-> index a7b54bae5..e2a4b17ea 100644
-> --- a/lib/igt_debugfs.c
-> +++ b/lib/igt_debugfs.c
-> @@ -743,3 +743,44 @@ void __igt_debugfs_dump(int device, const char *filename, int level)
->   	igt_log(IGT_LOG_DOMAIN, level, "%s:\n%s\n", filename, contents);
->   	free(contents);
->   }
-> +
-> +bool igt_is_dark_screen_supported(int drm_fd, enum pipe pipe)
-> +{
-> +        char buf[256];
-> +        int dir;
-> +
-> +        dir = igt_debugfs_pipe_dir(drm_fd, pipe, O_DIRECTORY);
-> +        igt_require_fd(dir);
-> +        igt_debugfs_simple_read(dir, "i915_darkscreen_status", buf, sizeof(buf));
-> +        close(dir);
-> +        if (*buf == '\0')
-> +                return false;
-> +
-> +        return strcasestr(buf, "0") || strcasestr(buf, "1");
-> +}
-> +
-> +ssize_t igt_enable_dark_screen_detection(int drm_fd, enum pipe pipe)
-> +{
-> +        char buf[2];
-> +        int dir;
-> +	int enable_dark_screen_detection;
-> +
-> +	enable_dark_screen_detection = 1;
-> +        snprintf(buf, sizeof(buf), "%d", enable_dark_screen_detection);
-
-This feels bit excessive handling just to get char buf that says "1"
-
-> +        dir = igt_debugfs_pipe_dir(drm_fd, pipe, O_DIRECTORY);
-> +        igt_require_fd(dir);
-> +        return igt_sysfs_write(dir, "i915_darkscreen_status", buf, sizeof(buf) - 1);
-> +}
-> +
-> +ssize_t igt_disable_dark_screen_detection(int drm_fd, enum pipe pipe)
-> +{
-> +        char buf[2];
-> +        int dir;
-> +	int disable_dark_screen_detection;
-> +
-> +	disable_dark_screen_detection = 0;
-> +        snprintf(buf, sizeof(buf), "%d", disable_dark_screen_detection);
-
-Here same as above. Also this patch has some indentations done with 
-spaces instead of tab. Patch generally seems ok, just these small detail.
-
-/Juha-Pekka
-
-> +        dir = igt_debugfs_pipe_dir(drm_fd, pipe, O_DIRECTORY);
-> +        igt_require_fd(dir);
-> +        return igt_sysfs_write(dir, "i915_darkscreen_status", buf, sizeof(buf) - 1);
-> +}
-> diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
-> index 3e6194ade..bd539f54d 100644
-> --- a/lib/igt_debugfs.h
-> +++ b/lib/igt_debugfs.h
-> @@ -77,6 +77,9 @@ void igt_hpd_storm_reset(int fd);
->   bool igt_hpd_storm_detected(int fd);
->   void igt_require_hpd_storm_ctl(int fd);
->   bool igt_ignore_long_hpd(int fd, bool enable);
-> +bool igt_is_dark_screen_supported(int drm_fd, enum pipe pipe);
-> +ssize_t igt_enable_dark_screen_detection(int drm_fd, enum pipe pipe);
-> +ssize_t igt_disable_dark_screen_detection(int drm_fd, enum pipe pipe);
+> diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
+> index d980c3786..479241e79 100644
+> --- a/tests/kms_pipe_crc_basic.c
+> +++ b/tests/kms_pipe_crc_basic.c
+> @@ -47,13 +47,10 @@ typedef struct {
+>   	struct igt_fb fb;
+>   } data_t;
 >   
->   /*
->    * Drop caches
+> -static struct {
+> +typedef struct {
+>   	double r, g, b;
+>   	igt_crc_t crc;
+> -} colors[2] = {
+> -	{ .r = 0.0, .g = 1.0, .b = 0.0 },
+> -	{ .r = 0.0, .g = 1.0, .b = 1.0 },
+> -};
+> +} color;
+>   
+>   static bool simulation_constraint(enum pipe pipe)
+>   {
+> @@ -92,6 +89,8 @@ enum {
+>   	TEST_NONBLOCK = 1 << 1,
+>   	TEST_SUSPEND = 1 << 2,
+>   	TEST_HANG = 1 << 3,
+> +	TEST_DARK_SCREEN = 1 << 4,
+> +	TEST_DARK_SCREEN_NEGATIVE = 1 << 5,
+>   };
+>   
+>   /**
+> @@ -136,6 +135,21 @@ enum {
+>    * Test category: functionality test
+>    * Functionality: crc, hang
+>    * Mega feature: General Display Features
+> + *
+> + * SUBTEST: darkscreen-read-crc
+> + * Description: Test dark screen detection works
+> + * Driver requirement: i915, xe
+> + * Test category: functionality test
+> + * Functionality: crc, hang, darkscreen
+> + * Mega feature: General Display Features
+> + *
+> + * SUBTEST: negative-darkscreen-read-crc
+> + * Description: Test false positives aren't reported by dark screen detection
+> + * Driver requirement: i915, xe
+> + * Test category: functionality test
+> + * Functionality: crc, hang, darkscreen
+> + * Mega feature: General Display Features
+> + *
+>    */
+>   static void test_read_crc(data_t *data, enum pipe pipe,
+>   			  igt_output_t *output, unsigned flags)
+> @@ -144,7 +158,8 @@ static void test_read_crc(data_t *data, enum pipe pipe,
+>   	igt_plane_t *primary;
+>   	drmModeModeInfo *mode;
+>   	igt_crc_t *crcs = NULL;
+> -	int c, j;
+> +        color *colors;
+> +	int c, j, no_of_colors;
+>   
+>   	igt_display_reset(display);
+>   
+> @@ -153,7 +168,24 @@ static void test_read_crc(data_t *data, enum pipe pipe,
+>   
+>   	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+>   
+> -	for (c = 0; c < ARRAY_SIZE(colors); c++) {
+> +	if (flags & TEST_DARK_SCREEN) {
+> +		no_of_colors = 1;
+> +		colors = (color*)malloc(no_of_colors * sizeof(color));
+> +		colors[0] = (color){ .r = 0.0, .g = 0.0, .b = 0.0 };
+> +	}
+> +	else if (flags & TEST_DARK_SCREEN_NEGATIVE) {
+> +                no_of_colors = 1;
+> +                colors = (color*)malloc(no_of_colors * sizeof(color));
+> +                colors[0] = (color){ .r = 1.0, .g = 1.0, .b = 1.0 };
+> +	}
+> +	else {
+> +		no_of_colors = 2;
+> +		colors = (color*)malloc(no_of_colors * sizeof(color));
+> +		colors[0] = (color){ .r = 0.0, .g = 1.0, .b = 0.0 };
+> +		colors[1] = (color){ .r = 0.0, .g = 1.0, .b = 1.0 };
+> +	}
+> +
+> +	for (c = 0; c < no_of_colors; c++) {
+>   		char *crc_str;
+>   		int n_crcs;
+>   
+> @@ -229,6 +261,7 @@ static void test_read_crc(data_t *data, enum pipe pipe,
+>   	}
+>   
+>   	/* Clean-up */
+> +	free(colors);
+>   	igt_output_set_pipe(output, PIPE_NONE);
+>   	igt_plane_set_fb(primary, NULL);
+>   	igt_display_commit(display);
+> @@ -422,6 +455,10 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+>   			"Suspend test for pipe CRC reads." },
+>   		{ "hang-read-crc", TEST_HANG,
+>   			"Hang test for pipe CRC read." },
+> +		{"darkscreen-read-crc", TEST_DARK_SCREEN,
+> +			"Test dark screen detection works."},
+> +		{"negative-darkscreen-read-crc", TEST_DARK_SCREEN_NEGATIVE,
+> +			"Test false positives aren't reported by dark screen detection."},
+>   	};
+>   	int i;
+>   	last_pipe = 0;
+> @@ -475,7 +512,14 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+>   						test_read_crc(&data, pipe, output, 0);
+>   
+>   						igt_disallow_hang(data.drm_fd, hang);
+> -					} else {
+> +					} else if (tests[i].flags & TEST_DARK_SCREEN || tests[i].flags & TEST_DARK_SCREEN_NEGATIVE) {
+> +						igt_require_f(igt_is_dark_screen_supported(data.drm_fd, pipe),
+> +							     "Dark Screen Detection not supported\n");
+> +						igt_enable_dark_screen_detection(data.drm_fd, pipe);
+> +						test_read_crc(&data, pipe, output, tests[i].flags);
+> +						igt_disable_dark_screen_detection(data.drm_fd, pipe);
+> +					}
+> +					else {
+>   						test_read_crc(&data, pipe, output, tests[i].flags);
+>   					}
+>   				}
