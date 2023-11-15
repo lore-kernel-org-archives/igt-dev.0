@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D769110E0C2
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Nov 2023 13:12:39 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E2D1D10E0E6
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Nov 2023 13:12:41 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 15 Nov 2023 18:32:35 +0530
-Message-Id: <20231115130237.1522518-3-bhanuprakash.modem@intel.com>
+Date: Wed, 15 Nov 2023 18:32:36 +0530
+Message-Id: <20231115130237.1522518-4-bhanuprakash.modem@intel.com>
 In-Reply-To: <20231115130237.1522518-1-bhanuprakash.modem@intel.com>
 References: <20231115130237.1522518-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 2/4] tests/intel/kms_fbt: Fill fb region with
- requested draw method
+Subject: [igt-dev] [i-g-t V2 3/4] tests/intel/kms_dirtyfb: Use blitter if
+ rendercopy isn't present
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,177 +24,95 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Instead of assuming Blitter as a default method to draw/fill
-fb region, use the requested draw method by test.
+As Rendercopy support in IGT is not present for few latest
+platforms. So, fallback to use Blitter if Rendercopy isn't
+present.
+
+V2: Use rendorcopy check for entire test.
 
 Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Cc: Jouni Högander <jouni.hogander@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Jouni Högander <jouni.hogander@intel.com>
 ---
- tests/intel/kms_frontbuffer_tracking.c | 39 ++++++++++++++------------
- 1 file changed, 21 insertions(+), 18 deletions(-)
+ tests/intel/kms_dirtyfb.c | 24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
-diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-index eac33f48b..213069947 100644
---- a/tests/intel/kms_frontbuffer_tracking.c
-+++ b/tests/intel/kms_frontbuffer_tracking.c
-@@ -1084,11 +1084,13 @@ static void draw_rect_igt_fb(struct draw_pattern_info *pattern,
- 	draw_rect(pattern, &region, method, r);
- }
+diff --git a/tests/intel/kms_dirtyfb.c b/tests/intel/kms_dirtyfb.c
+index b14cc8bec..151dceb93 100644
+--- a/tests/intel/kms_dirtyfb.c
++++ b/tests/intel/kms_dirtyfb.c
+@@ -60,6 +60,7 @@ typedef struct {
+ 		FEATURE_COUNT = 8,
+ 		FEATURE_DEFAULT = 8,
+ 	} feature;
++	igt_render_copyfunc_t rendercopy;
+ } data_t;
  
--static void fill_fb_region(struct fb_region *region, enum color ecolor)
-+static void fill_fb_region(struct fb_region *region,
-+			   enum igt_draw_method method,
-+			   enum color ecolor)
- {
- 	uint32_t color = pick_color(region->fb, ecolor);
+ static const char *feature_str(int feature)
+@@ -177,7 +178,8 @@ static void prepare(data_t *data)
+ 			    &data->fbs[0]);
  
--	igt_draw_rect_fb(drm.fd, drm.bops, 0, region->fb, IGT_DRAW_BLT,
-+	igt_draw_rect_fb(drm.fd, drm.bops, 0, region->fb, method,
- 			 region->x, region->y, region->w, region->h,
- 			 color);
- }
-@@ -1635,7 +1637,7 @@ static void __do_assertions(const struct test_mode *t, int flags,
+ 	igt_draw_rect_fb(data->drm_fd, data->bops, 0, &data->fbs[0],
+-			 IGT_DRAW_RENDER, 0, 0, data->fbs[0].width,
++			 data->rendercopy ? IGT_DRAW_RENDER : IGT_DRAW_BLT,
++			 0, 0, data->fbs[0].width,
+ 			 data->fbs[0].height, 0xFF);
  
- static void enable_prim_screen_and_wait(const struct test_mode *t)
- {
--	fill_fb_region(&prim_mode_params.primary, COLOR_PRIM_BG);
-+	fill_fb_region(&prim_mode_params.primary, t->method, COLOR_PRIM_BG);
- 	set_mode_for_params(&prim_mode_params);
+ 	primary = igt_output_get_plane_type(data->output,
+@@ -197,7 +199,8 @@ static void prepare(data_t *data)
+ 			    DRM_FORMAT_MOD_LINEAR, 0.0, 1.0, 0.0,
+ 			    &data->fbs[1]);
+ 	igt_draw_rect_fb(data->drm_fd, data->bops, 0, &data->fbs[1],
+-			 IGT_DRAW_RENDER, 0, 0, data->fbs[1].width,
++			 data->rendercopy ? IGT_DRAW_RENDER : IGT_DRAW_BLT,
++			 0, 0, data->fbs[1].width,
+ 			 data->fbs[1].height, 0xFF);
  
- 	wanted_crc = &blue_crcs[t->format].crc;
-@@ -1644,7 +1646,7 @@ static void enable_prim_screen_and_wait(const struct test_mode *t)
- 	do_assertions(ASSERT_NO_ACTION_CHANGE);
- }
+ 	igt_create_color_fb(data->drm_fd, data->mode->hdisplay,
+@@ -233,12 +236,8 @@ static void run_test(data_t *data)
+ 	struct intel_buf *src, *dst;
+ 	struct intel_bb *ibb;
+ 	igt_spin_t *spin;
+-	uint32_t devid = intel_get_drm_devid(data->drm_fd);
+-	igt_render_copyfunc_t rendercopy = igt_get_render_copyfunc(devid);
+ 	int r;
  
--static void update_modeset_cached_params(void)
-+static void update_modeset_cached_params(enum igt_draw_method method)
- {
- 	bool found = false;
+-	igt_skip_on(!rendercopy);
+-
+ 	src = intel_buf_create_full(data->bops, data->fbs[1].gem_handle,
+ 				    data->fbs[1].width,
+ 				    data->fbs[1].height,
+@@ -259,13 +258,19 @@ static void run_test(data_t *data)
+ 	spin = igt_spin_new(data->drm_fd, .ahnd = ibb->allocator_handle);
+ 	igt_spin_set_timeout(spin, NSEC_PER_SEC);
  
-@@ -1662,8 +1664,8 @@ static void update_modeset_cached_params(void)
- 	scnd_mode_params.primary.w = scnd_mode_params.mode.hdisplay;
- 	scnd_mode_params.primary.h = scnd_mode_params.mode.vdisplay;
+-	rendercopy(ibb, src, 0, 0, data->fbs[2].width, data->fbs[2].height, dst, 0, 0);
++	if (data->rendercopy) {
++		data->rendercopy(ibb, src, 0, 0, data->fbs[2].width, data->fbs[2].height, dst, 0, 0);
++	} else {
++		intel_bb_blt_copy(ibb, src, 0, 0, src->surface[0].stride,
++				  dst, 0, 0, dst->surface[0].stride,
++				  data->fbs[2].width, data->fbs[2].height, dst->bpp);
++	}
  
--	fill_fb_region(&prim_mode_params.primary, COLOR_PRIM_BG);
--	fill_fb_region(&scnd_mode_params.primary, COLOR_SCND_BG);
-+	fill_fb_region(&prim_mode_params.primary, method, COLOR_PRIM_BG);
-+	fill_fb_region(&scnd_mode_params.primary, method, COLOR_SCND_BG);
+-	/* Perfom dirtyfb right after initiating rendercopy */
++	/* Perfom dirtyfb right after initiating rendercopy/blitter */
+ 	r = drmModeDirtyFB(data->drm_fd, data->fbs[2].fb_id, NULL, 0);
+ 	igt_assert(r == 0 || r == -ENOSYS);
  
- 	__set_mode_for_params(&prim_mode_params);
- 	__set_mode_for_params(&scnd_mode_params);
-@@ -1673,8 +1675,8 @@ static void enable_both_screens_and_wait(const struct test_mode *t)
- {
- 	int ret;
+-	/* Ensure rendercopy is complete */
++	/* Ensure rendercopy/blitter is complete */
+ 	intel_bb_sync(ibb);
  
--	fill_fb_region(&prim_mode_params.primary, COLOR_PRIM_BG);
--	fill_fb_region(&scnd_mode_params.primary, COLOR_SCND_BG);
-+	fill_fb_region(&prim_mode_params.primary, t->method, COLOR_PRIM_BG);
-+	fill_fb_region(&scnd_mode_params.primary, t->method, COLOR_SCND_BG);
+ 	igt_pipe_crc_collect_crc(data->pipe_crc, &crc);
+@@ -289,6 +294,7 @@ igt_main
+ 		igt_display_require(&data.display, data.drm_fd);
  
- 	__set_mode_for_params(&prim_mode_params);
- 	__set_mode_for_params(&scnd_mode_params);
-@@ -1688,7 +1690,7 @@ static void enable_both_screens_and_wait(const struct test_mode *t)
- 		ret = igt_display_try_commit2(&drm.display, COMMIT_LEGACY);
+ 		data.bops = buf_ops_create(data.drm_fd);
++		data.rendercopy = igt_get_render_copyfunc(intel_get_drm_devid(data.drm_fd));
  
- 	if (ret)
--		update_modeset_cached_params();
-+		update_modeset_cached_params(t->method);
- 
- 	igt_display_commit2(&drm.display, drm.display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
- 
-@@ -1701,7 +1703,7 @@ static void enable_both_screens_and_wait(const struct test_mode *t)
- static void set_region_for_test(const struct test_mode *t,
- 				struct fb_region *reg)
- {
--	fill_fb_region(reg, COLOR_PRIM_BG);
-+	fill_fb_region(reg, t->method, COLOR_PRIM_BG);
- 
- 	igt_plane_set_fb(reg->plane, reg->fb);
- 	igt_plane_set_position(reg->plane, 0, 0);
-@@ -1721,7 +1723,7 @@ static void set_plane_for_test_fbc(const struct test_mode *t, igt_plane_t *plane
- 
- 	create_fb(t->format, prim_mode_params.mode.hdisplay, prim_mode_params.mode.vdisplay, t->tiling, t->plane, &fb);
- 	color = pick_color(&fb, COLOR_PRIM_BG);
--	igt_draw_rect_fb(drm.fd, drm.bops, 0, &fb, IGT_DRAW_BLT,
-+	igt_draw_rect_fb(drm.fd, drm.bops, 0, &fb, t->method,
- 			 0, 0, fb.width, fb.height,
- 			 color);
- 
-@@ -1856,7 +1858,7 @@ static void prepare_subtest_data(const struct test_mode *t,
- 	set_crtc_fbs(t);
- 
- 	if (t->screen == SCREEN_OFFSCREEN)
--		fill_fb_region(&offscreen_fb, COLOR_OFFSCREEN_BG);
-+		fill_fb_region(&offscreen_fb, t->method, COLOR_OFFSCREEN_BG);
- 
- 	igt_display_reset(&drm.display);
- 	if (need_modeset)
-@@ -2886,7 +2888,7 @@ static void multidraw_subtest(const struct test_mode *t)
- 				do_assertions(assertions);
- 			}
- 
--			fill_fb_region(target, COLOR_PRIM_BG);
-+			fill_fb_region(target, m2, COLOR_PRIM_BG);
- 			_fb_dirty_ioctl(target);
- 
- 			update_wanted_crc(t, &blue_crcs[t->format].crc);
-@@ -2942,7 +2944,7 @@ static void badformat_subtest(const struct test_mode *t)
- 
- 	prepare_subtest_data(t, NULL);
- 
--	fill_fb_region(&prim_mode_params.primary, COLOR_PRIM_BG);
-+	fill_fb_region(&prim_mode_params.primary, t->method, COLOR_PRIM_BG);
- 	set_mode_for_params(&prim_mode_params);
- 
- 	wanted_crc = &blue_crcs[t->format].crc;
-@@ -4573,7 +4575,7 @@ static void stridechange_subtest(const struct test_mode *t)
- 	igt_assert(old_fb->strides[0] != new_fb->strides[0]);
- 
- 	params->primary.fb = new_fb;
--	fill_fb_region(&params->primary, COLOR_PRIM_BG);
-+	fill_fb_region(&params->primary, t->method, COLOR_PRIM_BG);
- 
- 	set_mode_for_params(params);
- 	do_assertions(DONT_ASSERT_FBC_STATUS);
-@@ -4742,7 +4744,7 @@ static void basic_subtest(const struct test_mode *t)
- 		if (r == pattern->n_rects) {
- 			params->primary.fb = (params->primary.fb == fb1) ? &fb2 : fb1;
- 
--			fill_fb_region(&params->primary, COLOR_PRIM_BG);
-+			fill_fb_region(&params->primary, method, COLOR_PRIM_BG);
- 			update_wanted_crc(t, &blue_crcs[t->format].crc);
- 
- 			page_flip_for_params(params, t->flip);
-@@ -5028,9 +5030,9 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 			t.plane = PLANE_PRI;
- 			t.fbs = FBS_INDIVIDUAL;
- 			t.format = FORMAT_DEFAULT;
-+			t.method = IGT_DRAW_BLT;
- 			/* Make sure nothing is using these values. */
- 			t.flip = -1;
--			t.method = -1;
- 			t.tiling = opt.tiling;
- 
- 			igt_subtest_f("%s-%s-rte",
-@@ -5045,9 +5047,9 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 	t.screen = SCREEN_PRIM;
- 	t.fbs = FBS_INDIVIDUAL;
- 	t.format = FORMAT_DEFAULT;
-+	t.method = IGT_DRAW_BLT;
- 	/* Make sure nothing is using these values. */
- 	t.flip = -1;
--	t.method = -1;
- 	t.tiling = opt.tiling;
- 
- 	igt_subtest_f("plane-fbc-rte") {
-@@ -5309,6 +5311,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 	t.feature = FEATURE_DEFAULT;
- 	t.format = FORMAT_DEFAULT;
- 	t.flip = FLIP_PAGEFLIP;
-+	t.method = IGT_DRAW_BLT;
- 	t.tiling = opt.tiling;
- 	igt_subtest("basic") {
- 		if (!is_xe_device(drm.fd))
+ 		igt_display_reset(&data.display);
+ 	}
 -- 
 2.40.0
