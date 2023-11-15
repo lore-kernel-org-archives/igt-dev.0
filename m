@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8336F10E4A8
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Nov 2023 05:27:57 +0000 (UTC)
-From: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5CED010E51B
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Nov 2023 10:24:58 +0000 (UTC)
+Date: Wed, 15 Nov 2023 11:24:39 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 15 Nov 2023 11:11:24 +0530
-Message-Id: <20231115054128.788684-2-sujaritha.sundaresan@intel.com>
-In-Reply-To: <20231115054128.788684-1-sujaritha.sundaresan@intel.com>
-References: <20231115054128.788684-1-sujaritha.sundaresan@intel.com>
+Message-ID: <20231115102439.su7cbrgykeeq7dcg@kamilkon-desk.igk.intel.com>
+References: <20231114122810.6838-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v5 1/5] tests/intel: Add multi-gt support for rc6-idle
- test
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231114122810.6838-1-sai.gowtham.ch@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/intel/xe_exec_queue_property:
+ Negative tests for get exec_queue property ioctl
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,79 +24,125 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add multi-gt support for rc_idle subtest
+Hi sai.gowtham.ch,
+On 2023-11-14 at 17:58:10 +0530, sai.gowtham.ch@intel.com wrote:
+> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> 
+> Add Negative tests for get exec_queue property ioctl.
+> 
+> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-v3: Remove intel_ctx_create_all_physical call (Riana)
+Thank you for patch, did you address Rahul comment?
 
-Reviewed-by: Riana Tauro <riana.tauro@intel.com>
-Signed-off-by: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
----
- tests/intel/i915_pm_rc6_residency.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+Regards,
+Kamil
 
-diff --git a/tests/intel/i915_pm_rc6_residency.c b/tests/intel/i915_pm_rc6_residency.c
-index b266680ac..34619b79c 100644
---- a/tests/intel/i915_pm_rc6_residency.c
-+++ b/tests/intel/i915_pm_rc6_residency.c
-@@ -376,7 +376,7 @@ static void kill_children(int sig)
- 	signal(sig, old);
- }
- 
--static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags)
-+static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags, unsigned int gt)
- {
- 	const int64_t duration_ns = SLEEP_DURATION * (int64_t)NSEC_PER_SEC;
- 	const int tolerance = 20; /* Some RC6 is better than none! */
-@@ -397,7 +397,7 @@ static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags)
- 	struct igt_power gpu;
- 	int fd;
- 
--	fd = open_pmu(i915, I915_PMU_RC6_RESIDENCY);
-+	fd = open_pmu(i915, __I915_PMU_RC6_RESIDENCY(gt));
- 	igt_drop_caches_set(i915, DROP_IDLE);
- 	igt_require(__pmu_wait_for_rc6(fd));
- 	igt_power_open(i915, &gpu, "gpu");
-@@ -558,12 +558,12 @@ static void rc6_fence(int i915, const intel_ctx_t *ctx)
- igt_main
- {
- 	int i915 = -1;
-+	unsigned int dirfd, gt;
- 	const intel_ctx_t *ctx;
- 
- 	/* Use drm_open_driver to verify device existence */
- 	igt_fixture {
- 		i915 = drm_open_driver(DRIVER_INTEL);
--		ctx = intel_ctx_create_all_physical(i915);
- 	}
- 
- 	igt_subtest_with_dynamic("rc6-idle") {
-@@ -572,11 +572,15 @@ igt_main
- 		igt_require_gem(i915);
- 		gem_quiescent_gpu(i915);
- 
--		for_each_ctx_engine(i915, ctx, e) {
--			if (e->instance == 0) {
--				igt_dynamic_f("%s", e->name)
--					rc6_idle(i915, ctx->id, e->flags);
-+		i915_for_each_gt(i915, dirfd, gt) {
-+			ctx = intel_ctx_create_for_gt(i915, gt);
-+			for_each_ctx_engine(i915, ctx, e) {
-+				if (e->instance == 0) {
-+					igt_dynamic_f("gt%u-%s", gt, e->name)
-+						rc6_idle(i915, ctx->id, e->flags, gt);
-+				}
- 			}
-+			intel_ctx_destroy(i915, ctx);
- 		}
- 	}
- 
-@@ -626,7 +630,6 @@ igt_main
- 	}
- 
- 	igt_fixture {
--		intel_ctx_destroy(i915, ctx);
- 		drm_close_driver(i915);
- 	}
- }
--- 
-2.25.1
+> ---
+>  tests/intel/xe_exec_queue_property.c | 77 +++++++++++++++++++++++++++-
+>  1 file changed, 76 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/intel/xe_exec_queue_property.c b/tests/intel/xe_exec_queue_property.c
+> index 4e32aefa5..5278304be 100644
+> --- a/tests/intel/xe_exec_queue_property.c
+> +++ b/tests/intel/xe_exec_queue_property.c
+> @@ -4,7 +4,7 @@
+>   */
+>  
+>  /**
+> - * TEST: Basic tests to check exec_queue set property functionality
+> + * TEST: Basic tests to check exec_queue set/get property functionality
+>   * Category: Software building block
+>   * Sub-category: exec queue property
+>   * Functionality: exec queue set property
+> @@ -108,6 +108,72 @@ static void test_property_min_max(int xe, int engine, const char **property)
+>  	test_set_property(xe, property_name, min - 1, -EINVAL);
+>  }
+>  
+> +/**
+> + * SUBTEST: Invalid-exec-queue
+> + * Description: Negative test to check the expected behaviour with invalid exec_queue_id.
+> + * Test category: functionality test
+> + */
+> +static void Invalid_exec_queue_id(int xe)
+> +{
+> +	struct drm_xe_exec_queue_get_property args = {
+> +		.exec_queue_id = 0xffff,
+> +		.property = XE_EXEC_QUEUE_GET_PROPERTY_BAN,
+> +	};
+> +
+> +	do_ioctl_err(xe, DRM_IOCTL_XE_EXEC_QUEUE_GET_PROPERTY, &args, ENOENT);
+> +}
+> +
+> +/**
+> + * SUBTEST: non-zero-reserved
+> + * Description: Negative test to check the expected behaviour with non-zero reserved.
+> + * Test category: functionality test
+> + */
+> +static void non_zero_reserved(int xe)
+> +{
+> +	struct drm_xe_exec_queue_get_property args = {
+> +		.reserved[0] = 0xffff,
+> +		.property = XE_EXEC_QUEUE_GET_PROPERTY_BAN,
+> +	};
+> +	uint32_t vm;
+> +	uint32_t exec_queue;
+> +
+> +	vm = xe_vm_create(xe, 0, 0);
+> +	exec_queue = xe_exec_queue_create_class(xe, vm, DRM_XE_ENGINE_CLASS_COPY);
+> +	args.exec_queue_id = exec_queue;
+> +
+> +	do_ioctl_err(xe, DRM_IOCTL_XE_EXEC_QUEUE_GET_PROPERTY, &args, EINVAL);
+> +
+> +	xe_exec_queue_destroy(xe, exec_queue);
+> +	xe_vm_destroy(xe, vm);
+> +}
+> +
+> +/**
+> + * SUBTEST: invalid-value
+> + * Description: Check if get property value works fine.
+> + * Test category: functionality test
+> + */
+> +static void invalid_value(int xe)
+> +{
+> +	struct drm_xe_exec_queue_get_property args = {
+> +		.value = -1,
+> +		.reserved[0] = 0,
+> +		.property = XE_EXEC_QUEUE_GET_PROPERTY_BAN,
+> +	};
+> +
+> +	uint32_t exec_queue;
+> +	uint32_t vm;
+> +
+> +	vm = xe_vm_create(xe, 0, 0);
+> +	exec_queue = xe_exec_queue_create_class(xe, vm, DRM_XE_ENGINE_CLASS_COPY);
+> +	args.exec_queue_id = exec_queue;
+> +
+> +	do_ioctl(xe, DRM_IOCTL_XE_EXEC_QUEUE_GET_PROPERTY, &args);
+> +	igt_assert(args.value == 0);
+> +
+> +	xe_exec_queue_destroy(xe, exec_queue);
+> +	xe_vm_destroy(xe, vm);
+> +}
+> +
+>  igt_main
+>  {
+>  	static const struct {
+> @@ -182,6 +248,15 @@ igt_main
+>  		}
+>  	}
+>  
+> +	igt_subtest("Invalid-exec-queue")
+> +		Invalid_exec_queue_id(xe);
+> +
+> +	igt_subtest("non-zero-reserved")
+> +		non_zero_reserved(xe);
+> +
+> +	igt_subtest("invalid-value")
+> +		invalid_value(xe);
+> +
+>  	igt_fixture {
+>  		xe_device_put(xe);
+>  		drm_close_driver(xe);
+> -- 
+> 2.39.1
+> 
