@@ -1,20 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2A96010E070
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Nov 2023 12:02:07 +0000 (UTC)
-Message-ID: <73973ce7-da93-4085-2dd1-5a2e5188b107@intel.com>
-Date: Wed, 15 Nov 2023 17:31:47 +0530
-Content-Language: en-US
-To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-References: <20231115090605.1506704-1-bhanuprakash.modem@intel.com>
- <ZVSmcDIr7pVS_odg@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <ZVSmcDIr7pVS_odg@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1705010E54D
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Nov 2023 12:32:51 +0000 (UTC)
+Date: Wed, 15 Nov 2023 13:32:25 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20231115123225.ma3n2hspzyrinwz6@kamilkon-desk.igk.intel.com>
+References: <20231110142440.7-1-francois.dugast@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t] lib/igt_kms: Don't read max dotclock on
- non-display platforms
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231110142440.7-1-francois.dugast@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] drm-uapi/xe: Add check for access
+ counter granularity
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,46 +20,51 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-On Wed-15-11-2023 04:37 pm, Ville Syrjälä wrote:
-> On Wed, Nov 15, 2023 at 02:36:05PM +0530, Bhanuprakash Modem wrote:
->> On non-display platforms, there is no point in checking for
->> max dotclock.
->>
->> Fixes: https://gitlab.freedesktop.org/drm/intel/-/issues/9672
->> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
->> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
->> ---
->>   lib/igt_kms.c | 3 ++-
->>   1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
->> index 89510ff22..2073fae53 100644
->> --- a/lib/igt_kms.c
->> +++ b/lib/igt_kms.c
->> @@ -6056,7 +6056,8 @@ int igt_get_max_dotclock(int fd)
->>   	char *s;
->>   	int dir, res, max_dotclock = 0;
->>   
->> -	if (!is_intel_device(fd))
->> +	/* If there is no display, then no point to check for dotclock. */
->> +	if (!is_intel_device(fd) || !drmModeGetResources(fd))
+Hi Francois,
+On 2023-11-10 at 14:24:40 +0000, Francois Dugast wrote:
+> Align with commit ("drm/xe/xe_exec_queue: Add check for access counter granularity")
 > 
-> That will leak.
+> CC: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+- ^^
+s/CC/Cc/
 
-I'm really sorry I couldn't get you. Can you elaborate, please? :-)
+With or without that:
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-- Bhanu
-
+> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+> ---
+>  include/drm-uapi/xe_drm.h | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
 > 
->>   		return max_dotclock;
->>   
->>   	dir = igt_debugfs_dir(fd);
->> -- 
->> 2.40.0
+> diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+> index d6dd9a388..b316868de 100644
+> --- a/include/drm-uapi/xe_drm.h
+> +++ b/include/drm-uapi/xe_drm.h
+> @@ -730,6 +730,20 @@ struct drm_xe_vm_bind {
+>  	__u64 reserved[2];
+>  };
+>  
+> +/* For use with XE_EXEC_QUEUE_SET_PROPERTY_ACC_GRANULARITY */
+> +
+> +/* Monitor 128KB contiguous region with 4K sub-granularity */
+> +#define XE_ACC_GRANULARITY_128K 0
+> +
+> +/* Monitor 2MB contiguous region with 64KB sub-granularity */
+> +#define XE_ACC_GRANULARITY_2M 1
+> +
+> +/* Monitor 16MB contiguous region with 512KB sub-granularity */
+> +#define XE_ACC_GRANULARITY_16M 2
+> +
+> +/* Monitor 64MB contiguous region with 2M sub-granularity */
+> +#define XE_ACC_GRANULARITY_64M 3
+> +
+>  /**
+>   * struct drm_xe_exec_queue_set_property - exec queue set property
+>   *
+> -- 
+> 2.34.1
 > 
