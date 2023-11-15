@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9354110E4FA
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Nov 2023 07:13:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EAFB110E4F9
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Nov 2023 07:13:52 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 15 Nov 2023 12:33:40 +0530
-Message-Id: <20231115070344.1488683-2-bhanuprakash.modem@intel.com>
-In-Reply-To: <20231115070344.1488683-1-bhanuprakash.modem@intel.com>
-References: <20231115070344.1488683-1-bhanuprakash.modem@intel.com>
+Date: Wed, 15 Nov 2023 12:33:39 +0530
+Message-Id: <20231115070344.1488683-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 1/5] tests/intel/kms_fbt: Use blitter as a default
- draw method
+Subject: [igt-dev] [i-g-t 0/5] Fix the usage of Rendercopy in KMS tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,34 +21,21 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As Rendercopy support in IGT is not present for few latest
-platforms, use Blitter as default draw method.
+Fix the usage of Rendercopy in KMS tests:
+- Use blitter as a default method instead of render
+- Fallback to use blitter if rendercopy support isn't present
+- Restructure dynamic subtests for kms_dirtyfb
 
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: Jouni Högander <jouni.hogander@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/intel/kms_frontbuffer_tracking.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Bhanuprakash Modem (5):
+  tests/intel/kms_fbt: Use blitter as a default draw method
+  tests/intel/kms_fbt: Fill fb region with requested draw method
+  tests/intel/kms_dirtyfb: Use blitter as a default draw method
+  tests/intel/kms_dirtyfb: Use blitter if rendercopy isn't present
+  tests/intel/kms_dirtyfb: Restructure dynamic subtests
 
-diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-index 60a469901..eac33f48b 100644
---- a/tests/intel/kms_frontbuffer_tracking.c
-+++ b/tests/intel/kms_frontbuffer_tracking.c
-@@ -1236,12 +1236,12 @@ static void init_crcs(enum pixel_format format, enum tiling_type tiling,
- 			for (r_ = 0; r_ <= r; r_++)
- 				draw_rect_igt_fb(pattern, &tmp_fbs[r],
- 						 igt_draw_supports_method(drm.fd, IGT_DRAW_PWRITE) ?
--						 IGT_DRAW_PWRITE : IGT_DRAW_RENDER,
-+						 IGT_DRAW_PWRITE : IGT_DRAW_BLT,
- 						 r_);
- 	} else {
- 		for (r = 0; r < pattern->n_rects; r++)
- 			draw_rect_igt_fb(pattern, &tmp_fbs[r], igt_draw_supports_method(drm.fd, IGT_DRAW_PWRITE) ?
--					 IGT_DRAW_PWRITE : IGT_DRAW_RENDER, r);
-+					 IGT_DRAW_PWRITE : IGT_DRAW_BLT, r);
- 	}
- 
- 	igt_output_set_pipe(prim_mode_params.output, prim_mode_params.pipe);
--- 
+ tests/intel/kms_dirtyfb.c              | 85 +++++++++++++++++---------
+ tests/intel/kms_frontbuffer_tracking.c | 43 +++++++------
+ 2 files changed, 80 insertions(+), 48 deletions(-)
+
+--
 2.40.0
