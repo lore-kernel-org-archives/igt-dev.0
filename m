@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 687B910E53C
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Nov 2023 10:33:28 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B4F5D10E53E
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Nov 2023 10:33:56 +0000 (UTC)
 From: "Piatkowski, Dominik Karol" <dominik.karol.piatkowski@intel.com>
 To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Wed, 15 Nov 2023 10:33:15 +0000
-Message-ID: <BL0PR11MB347523FE137AA1ECC3FAF9DFD9B1A@BL0PR11MB3475.namprd11.prod.outlook.com>
+Date: Wed, 15 Nov 2023 10:33:51 +0000
+Message-ID: <BL0PR11MB3475543B762A5CF89AC8FE67D9B1A@BL0PR11MB3475.namprd11.prod.outlook.com>
 References: <20231103160148.94811-1-kamil.konieczny@linux.intel.com>
- <20231103160148.94811-2-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20231103160148.94811-2-kamil.konieczny@linux.intel.com>
+ <20231103160148.94811-3-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20231103160148.94811-3-kamil.konieczny@linux.intel.com>
 Content-Language: en-US
 Content-Type: text/plain; charset="iso-8859-2"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/3] lib/igt_device_scan: add
- multigpu filtering view
+Subject: Re: [igt-dev] [PATCH i-g-t v2 2/3] lib/drmtest: add multi-GPU
+ helpers for filtered devices
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -35,123 +35,104 @@ Reviewed-by: Dominik Karol Pi=B1tkowski <dominik.karol.piatkowski@intel.com=
 > Konieczny
 > Sent: Friday, November 3, 2023 5:02 PM
 > To: igt-dev@lists.freedesktop.org
-> Subject: [igt-dev] [PATCH i-g-t v2 1/3] lib/igt_device_scan: add multigpu
-> filtering view
+> Subject: [igt-dev] [PATCH i-g-t v2 2/3] lib/drmtest: add multi-GPU helper=
+s for
+> filtered devices
 >=20
-> Created multiGPU filtering for GPU cards. When used with --device or
-> IGT_DEVICE, this will just count cards found with given filtering options=
-,
-> otherwise will count them with the help of vendor filtering.
->     Filtering is not restricted and will allow to re-open already opened =
-card, if
-> user gives something like:
+> Created multiGPU helpers for filtering and opening GPU cards.
+> Opening card depend only on index as chipset was given during filtering.
 >=20
-> IGT_DEVICE=3Dpci:vendor=3Dintel,device=3Ddiscrete,card=3D0\;pci:vendor=3D=
-intel,device
-> =3Ddiscrete,card=3D0
-> or
-> IGT_DEVICE=3Dpci:vendor=3Dintel,card=3D0\;pci:vendor=3Dintel,card=3D0
->=20
-> For discrete cards one can use:
-> IGT_DEVICE=3Dpci:vendor=3Dintel,device=3Ddiscrete,card=3Dall
->=20
-> v2: move filtering into igt_device_scan.c (Zbigniew)
->   filter all GPUs, not only discrete (Zbigniew)
->   simplify checks for unsupported drivers like vgem (Kamil)
+> v2: simplify filtering as it moved to igt_device_scan (Zbigniew)
+>   simplify also opening, add new function chipset_to_vendor_str,
+>   removed clearing opened devices as it is not essential (Kamil)
 >=20
 > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > ---
->  lib/igt_device_scan.c | 62
-> +++++++++++++++++++++++++++++++++++++++++++
->  lib/igt_device_scan.h |  3 +++
->  2 files changed, 65 insertions(+)
+>  lib/drmtest.c | 49
+> +++++++++++++++++++++++++++++++++++++++++++++++++
+>  lib/drmtest.h |  3 +++
+>  2 files changed, 52 insertions(+)
 >=20
-> diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c index
-> f4f95fef3..fbf3fa482 100644
-> --- a/lib/igt_device_scan.c
-> +++ b/lib/igt_device_scan.c
-> @@ -2065,3 +2065,65 @@ int igt_open_render(struct igt_device_card *card)
->=20
->  	return open(card->render, O_RDWR);
+> diff --git a/lib/drmtest.c b/lib/drmtest.c index e1da66c87..5c19fd21d 100=
+644
+> --- a/lib/drmtest.c
+> +++ b/lib/drmtest.c
+> @@ -627,6 +627,11 @@ static const char *chipset_to_str(int chipset)
+>  	}
 >  }
+>=20
+> +static const char *chipset_to_vendor_str(int chipset) {
+> +	return chipset =3D=3D DRIVER_XE ? chipset_to_str(DRIVER_INTEL) :
+> +chipset_to_str(chipset); }
+> +
+>  /**
+>   * drm_open_driver:
+>   * @chipset: OR'd flags for each chipset to search, eg. #DRIVER_INTEL @@=
+ -
+> 777,6 +782,50 @@ int drm_reopen_driver(int fd)
+>  	return fd;
+>  }
+>=20
+> +int drm_prepare_filtered_multigpu(int chipset) {
+> +	const char *vendor =3D chipset_to_vendor_str(chipset);
+> +
+> +	return igt_device_prepare_filtered_view(vendor);
+> +}
 > +
 > +/**
-> + * igt_device_prepare_filtered_view:
-> + * @vendor: name for GPUs vendor to search, eg. "intel"
+> + * drm_open_filtered_card:
+> + * @idx: index for GPU to open
 > + *
-> + * Filter GPU devices for given vendor or with supplied --device
-> + * option or IGT_DEVICE environment variable.
+> + * Open N-th GPU from filtered list
 > + *
 > + * Returns:
-> + * Number of filtered GPUs for a vendor or number of filters.
+> + * Opened device or -1 if error.
 > + */
-> +int igt_device_prepare_filtered_view(const char *vendor) {
-> +	int gpu_count;
+> +int drm_open_filtered_card(int idx)
+> +{
+> +	struct igt_device_card card;
+> +	const char *filter;
+> +	int fd =3D -1;
 > +
-> +	gpu_count =3D igt_device_filter_count();
-> +	if (!gpu_count) {
-> +		char gpu_filter[256];
-> +
-> +		igt_assert(vendor);
-> +		if (!strcmp(vendor, "vgem") || !strcmp(vendor, "other")) {
-> +			igt_debug("Unsupported vendor: %s\n", vendor);
-> +			return 0;
-> +		}
-> +
-> +		if (!strcmp(vendor, "any")) {
-> +			igt_debug("Chipset DRIVER_ANY unsupported
-> without --device filters\n");
-> +			return 0;
-> +		}
-> +
-> +		igt_assert(snprintf(gpu_filter, sizeof(gpu_filter),
-> "pci:vendor=3D%s,card=3Dall",
-> +				    vendor) < sizeof(gpu_filter));
-> +
-> +		igt_device_filter_add(gpu_filter); // fill-in filters for all GPUs
-> +		gpu_count =3D igt_device_filter_count();
-> +		igt_debug("Found %d GPUs for vendor: %s\n", gpu_count,
-> vendor);
-> +	} else {
-> +		struct igt_device_card card;
-> +		bool found;
-> +		int count =3D 0;
-> +
-> +		for (int i =3D 0; i < gpu_count; i++) {
-> +			const char *filter;
-> +
-> +			filter =3D igt_device_filter_get(i);
-> +			found =3D igt_device_card_match(filter, &card);
-> +			if (found && strlen(card.card)) {
-> +				igt_debug("Found GPU%d card %s\n", i,
-> card.card);
-> +				++count;
-> +			}
-> +		}
-> +
-> +		if (count < gpu_count) {
-> +			igt_debug("Counted GPUs %d lower than number of
-> filters %d\n", count, gpu_count);
-> +			gpu_count =3D count;
-> +		} else {
-> +			igt_debug("Found %d GPUs\n", gpu_count);
-> +		}
+> +	if (idx < 0 || idx >=3D igt_device_filter_count()) {
+> +		igt_debug("Invalid filter index %d\n", idx);
+> +		return -1;
 > +	}
 > +
-> +	return gpu_count;
-> +}
-> diff --git a/lib/igt_device_scan.h b/lib/igt_device_scan.h index
-> b8f6a843d..48690e236 100644
-> --- a/lib/igt_device_scan.h
-> +++ b/lib/igt_device_scan.h
-> @@ -93,4 +93,7 @@ char *igt_device_get_pretty_name(struct
-> igt_device_card *card, bool numeric);  int igt_open_card(struct
-> igt_device_card *card);  int igt_open_render(struct igt_device_card *card=
-);
->=20
-> +/* Add or use filters to match multiGPU devices */ int
-> +igt_device_prepare_filtered_view(const char *vendor);
+> +	filter =3D igt_device_filter_get(idx);
+> +	if (igt_device_card_match(filter, &card))
+> +		fd =3D igt_open_card(&card);
 > +
->  #endif /* __IGT_DEVICE_SCAN_H__ */
+> +	if (fd >=3D 0) {
+> +		igt_debug("Opened GPU%d card: %s\n", idx, card.card);
+> +		log_opened_device_path(card.card);
+> +		/* Cache xe_device struct. */
+> +		if (is_xe_device(fd))
+> +			xe_device_get(fd);
+> +	} else {
+> +		igt_debug("Opening GPU%d failed, card: %s\n", idx,
+> card.card);
+> +	}
+> +
+> +	return fd;
+> +}
+> +
+>  void igt_require_amdgpu(int fd)
+>  {
+>  	igt_require(is_amdgpu_device(fd));
+> diff --git a/lib/drmtest.h b/lib/drmtest.h index 97ab6e759..909a0c12c
+> 100644
+> --- a/lib/drmtest.h
+> +++ b/lib/drmtest.h
+> @@ -109,6 +109,9 @@ int drm_close_driver(int fd);
+>=20
+>  int drm_reopen_driver(int fd);
+>=20
+> +int drm_prepare_filtered_multigpu(int chipset); int
+> +drm_open_filtered_card(int idx);
+> +
+>  void igt_require_amdgpu(int fd);
+>  void igt_require_intel(int fd);
+>  void igt_require_i915(int fd);
 > --
 > 2.42.0
