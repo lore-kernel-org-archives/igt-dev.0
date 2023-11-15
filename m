@@ -1,23 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com
- [IPv6:2a00:1450:4864:20::32f])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4314D10E025
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Nov 2023 14:00:43 +0000 (UTC)
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-40806e4106dso5487305e9.1
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Nov 2023 06:00:43 -0800 (PST)
-Message-ID: <63f3773b-c560-4fa9-8d93-19d1393741ec@gmail.com>
-Date: Wed, 15 Nov 2023 16:00:29 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C77F510E02B
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Nov 2023 14:12:42 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 15 Nov 2023 19:32:31 +0530
+Message-Id: <20231115140231.1555702-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20231115133923.1539402-1-bhanuprakash.modem@intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20231115133923.1539402-1-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [i-g-t] lib/igt_draw: Check for Rendercopy support
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t V2] lib/igt_kms: Don't read max dotclock on
+ non-display platforms
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,38 +18,44 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+On non-display platforms, there is no point in checking for
+max dotclock.
 
-On 15.11.2023 15.39, Bhanuprakash Modem wrote:
-> igt_draw_supports_method() is initially designed to identify
-> that the given driver (i915/xe) supports the slected draw
-> method.
-> 
-> Even though Rendercopy support in IGT is not present for few
-> latest platforms, this api assums that Rendercopy is present.
-> Add a check if Rendercopy supports on given platform or not.
-> 
-> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->   lib/igt_draw.c | 3 +++
->   1 file changed, 3 insertions(+)
-> 
-> diff --git a/lib/igt_draw.c b/lib/igt_draw.c
-> index 9a7664a37..498c69a56 100644
-> --- a/lib/igt_draw.c
-> +++ b/lib/igt_draw.c
-> @@ -950,5 +950,8 @@ bool igt_draw_supports_method(int fd, enum igt_draw_method method)
->   	if (method == IGT_DRAW_MMAP_CPU || method == IGT_DRAW_PWRITE)
->   		return is_i915_device(fd);
->   
-> +	if (method == IGT_DRAW_RENDER)
-> +		return !!igt_get_render_copyfunc(intel_get_drm_devid(fd));
-> +
->   	return true;
->   }
+V2: Fix resource leak
+
+Fixes: https://gitlab.freedesktop.org/drm/intel/-/issues/9672
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ lib/igt_kms.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 89510ff22..0aa8f4a46 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -6055,10 +6055,18 @@ int igt_get_max_dotclock(int fd)
+ 	char buf[4096];
+ 	char *s;
+ 	int dir, res, max_dotclock = 0;
++	drmModeRes *resources;
+ 
+ 	if (!is_intel_device(fd))
+ 		return max_dotclock;
+ 
++	/* If there is no display, then no point to check for dotclock. */
++	resources = drmModeGetResources(fd);
++	if (!resources)
++		return max_dotclock;
++	else
++		drmModeFreeResources(resources);
++
+ 	dir = igt_debugfs_dir(fd);
+ 	igt_require(dir);
+ 
+-- 
+2.40.0
