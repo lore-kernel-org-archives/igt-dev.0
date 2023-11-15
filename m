@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 04C7D10E4EF
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Nov 2023 06:35:11 +0000 (UTC)
-From: Kunal Joshi <kunal1.joshi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 15 Nov 2023 12:12:53 +0530
-Message-Id: <20231115064253.1680913-3-kunal1.joshi@intel.com>
-In-Reply-To: <20231115064253.1680913-1-kunal1.joshi@intel.com>
-References: <20231115064253.1680913-1-kunal1.joshi@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============7063799471160692718=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] tests/kms_pipe_crc_basic: added new
- subtest for darkscreen detection
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Wed, 15 Nov 2023 06:50:46 -0000
+Message-ID: <170003104688.647.6599684069862320918@emeril.freedesktop.org>
+References: <20231114114943.79965-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20231114114943.79965-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Add_dg1_?=
+ =?utf-8?q?compute_pipeline_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,143 +17,247 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Kunal Joshi <kunal1.joshi@intel.com>, Nemesa Garg <nemesa.garg@intel.com>,
- Arun R Murthy <arun.r.murthy@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-dark screen detection feature when enable will monitor frames
-and if black frame is detcted it will raise drm_error, added
-two tests for positive (black frame) and negative case (white frame)
+--===============7063799471160692718==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: Fix indentation (JP)
+== Series Details ==
 
-Cc: Nemesa Garg <nemesa.garg@intel.com>
-Cc: Arun R Murthy <arun.r.murthy@intel.com>
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- tests/kms_pipe_crc_basic.c | 55 +++++++++++++++++++++++++++++++++-----
- 1 file changed, 48 insertions(+), 7 deletions(-)
+Series: Add dg1 compute pipeline (rev4)
+URL   : https://patchwork.freedesktop.org/series/126077/
+State : success
 
-diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-index 94252415b..3c1ad3097 100644
---- a/tests/kms_pipe_crc_basic.c
-+++ b/tests/kms_pipe_crc_basic.c
-@@ -47,13 +47,10 @@ typedef struct {
- 	struct igt_fb fb;
- } data_t;
- 
--static struct {
-+typedef struct {
- 	double r, g, b;
- 	igt_crc_t crc;
--} colors[2] = {
--	{ .r = 0.0, .g = 1.0, .b = 0.0 },
--	{ .r = 0.0, .g = 1.0, .b = 1.0 },
--};
-+} color;
- 
- static bool simulation_constraint(enum pipe pipe)
- {
-@@ -92,6 +89,8 @@ enum {
- 	TEST_NONBLOCK = 1 << 1,
- 	TEST_SUSPEND = 1 << 2,
- 	TEST_HANG = 1 << 3,
-+	TEST_DARK_SCREEN = 1 << 4,
-+	TEST_DARK_SCREEN_NEGATIVE = 1 << 5,
- };
- 
- /**
-@@ -136,6 +135,21 @@ enum {
-  * Test category: functionality test
-  * Functionality: crc, hang
-  * Mega feature: General Display Features
-+ *
-+ * SUBTEST: darkscreen-read-crc
-+ * Description: Test dark screen detection works
-+ * Driver requirement: i915, xe
-+ * Test category: functionality test
-+ * Functionality: crc, hang, darkscreen
-+ * Mega feature: General Display Features
-+ *
-+ * SUBTEST: negative-darkscreen-read-crc
-+ * Description: Test false positives aren't reported by dark screen detection
-+ * Driver requirement: i915, xe
-+ * Test category: functionality test
-+ * Functionality: crc, hang, darkscreen
-+ * Mega feature: General Display Features
-+ *
-  */
- static void test_read_crc(data_t *data, enum pipe pipe,
- 			  igt_output_t *output, unsigned flags)
-@@ -144,7 +158,8 @@ static void test_read_crc(data_t *data, enum pipe pipe,
- 	igt_plane_t *primary;
- 	drmModeModeInfo *mode;
- 	igt_crc_t *crcs = NULL;
--	int c, j;
-+	color *colors;
-+	int c, j, no_of_colors;
- 
- 	igt_display_reset(display);
- 
-@@ -153,7 +168,22 @@ static void test_read_crc(data_t *data, enum pipe pipe,
- 
- 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
- 
--	for (c = 0; c < ARRAY_SIZE(colors); c++) {
-+	if (flags & TEST_DARK_SCREEN) {
-+		no_of_colors = 1;
-+		colors = (color *)malloc(no_of_colors * sizeof(color));
-+		colors[0] = (color){ .r = 0.0, .g = 0.0, .b = 0.0 };
-+	} else if (flags & TEST_DARK_SCREEN_NEGATIVE) {
-+		no_of_colors = 1;
-+		colors = (color *)malloc(no_of_colors * sizeof(color));
-+		colors[0] = (color){ .r = 1.0, .g = 1.0, .b = 1.0 };
-+	} else {
-+		no_of_colors = 2;
-+		colors = (color *)malloc(no_of_colors * sizeof(color));
-+		colors[0] = (color){ .r = 0.0, .g = 1.0, .b = 0.0 };
-+		colors[1] = (color){ .r = 0.0, .g = 1.0, .b = 1.0 };
-+	}
-+
-+	for (c = 0; c < no_of_colors; c++) {
- 		char *crc_str;
- 		int n_crcs;
- 
-@@ -229,6 +259,7 @@ static void test_read_crc(data_t *data, enum pipe pipe,
- 	}
- 
- 	/* Clean-up */
-+	free(colors);
- 	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_plane_set_fb(primary, NULL);
- 	igt_display_commit(display);
-@@ -422,6 +453,10 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 			"Suspend test for pipe CRC reads." },
- 		{ "hang-read-crc", TEST_HANG,
- 			"Hang test for pipe CRC read." },
-+		{"darkscreen-read-crc", TEST_DARK_SCREEN,
-+			"Test dark screen detection works."},
-+		{"negative-darkscreen-read-crc", TEST_DARK_SCREEN_NEGATIVE,
-+			"Test false positives aren't reported by dark screen detection."},
- 	};
- 	int i;
- 	last_pipe = 0;
-@@ -475,6 +510,12 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 						test_read_crc(&data, pipe, output, 0);
- 
- 						igt_disallow_hang(data.drm_fd, hang);
-+					} else if (tests[i].flags & TEST_DARK_SCREEN || tests[i].flags & TEST_DARK_SCREEN_NEGATIVE) {
-+						igt_require_f(igt_is_dark_screen_supported(data.drm_fd, pipe),
-+							     "Dark Screen Detection not supported\n");
-+						igt_set_dark_screen_detection(data.drm_fd, pipe, true);
-+						test_read_crc(&data, pipe, output, tests[i].flags);
-+						igt_set_dark_screen_detection(data.drm_fd, pipe, false);
- 					} else {
- 						test_read_crc(&data, pipe, output, tests[i].flags);
- 					}
--- 
-2.25.1
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7589_BAT -> XEIGTPW_10188_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_10188_BAT:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * {igt@kms_psr@psr_cursor_plane_move}:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][1] +2 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10188/bat-dg2-oem2/igt@kms_psr@psr_cursor_plane_move.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10188_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_exec_fault_mode@many-basic:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][2] ([Intel XE#288]) +17 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10188/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:
+    - bat-adlp-7:         [FAIL][3] ([Intel XE#480]) -> [PASS][4] +3 other tests pass
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7589/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10188/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
+
+  * igt@kms_pipe_crc_basic@hang-read-crc:
+    - bat-dg2-oem2:       [INCOMPLETE][5] ([Intel XE#282] / [Intel XE#749]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7589/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10188/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3:
+    - bat-dg2-oem2:       [INCOMPLETE][7] ([Intel XE#282] / [Intel XE#545]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7589/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10188/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html
+
+  * {igt@xe_create@create-execqueues-leak}:
+    - bat-atsm-2:         [FAIL][9] ([Intel XE#524]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7589/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10188/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
+
+  
+#### Warnings ####
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
+    - bat-dg2-oem2:       [TIMEOUT][11] ([Intel XE#430] / [Intel XE#530]) -> [FAIL][12] ([Intel XE#400] / [Intel XE#616])
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7589/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10188/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3:
+    - bat-dg2-oem2:       [TIMEOUT][13] ([Intel XE#530]) -> [FAIL][14] ([Intel XE#400] / [Intel XE#616])
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7589/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10188/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#282]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/282
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
+  [Intel XE#430]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/430
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+  [Intel XE#530]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/530
+  [Intel XE#545]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/545
+  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
+  [Intel XE#749]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/749
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7589 -> IGTPW_10188
+
+  IGTPW_10188: 10188
+  IGT_7589: bfba7de83474a6fee994ba845ab3d9a79bc2b5b0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-490-2fe82053d916d09ffcc92bc27294c9eed4e4804b: 2fe82053d916d09ffcc92bc27294c9eed4e4804b
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10188/index.html
+
+--===============7063799471160692718==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add dg1 compute pipeline (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126077/">https://patchwork.freedesktop.org/series/126077/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10188/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10188/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7589_BAT -&gt; XEIGTPW_10188_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_10188_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>{igt@kms_psr@psr_cursor_plane_move}:<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10188/bat-dg2-oem2/igt@kms_psr@psr_cursor_plane_move.html">SKIP</a> +2 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10188_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@xe_exec_fault_mode@many-basic:<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10188/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +17 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7589/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10188/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">PASS</a> +3 other tests pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7589/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/749">Intel XE#749</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10188/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7589/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/545">Intel XE#545</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10188/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>{igt@xe_create@create-execqueues-leak}:</p>
+<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7589/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10188/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7589/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/430">Intel XE#430</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/530">Intel XE#530</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10188/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7589/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/530">Intel XE#530</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10188/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7589 -&gt; IGTPW_10188</li>
+</ul>
+<p>IGTPW_10188: 10188<br />
+  IGT_7589: bfba7de83474a6fee994ba845ab3d9a79bc2b5b0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-490-2fe82053d916d09ffcc92bc27294c9eed4e4804b: 2fe82053d916d09ffcc92bc27294c9eed4e4804b</p>
+
+</body>
+</html>
+
+--===============7063799471160692718==--
