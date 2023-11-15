@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5EA1110E4F9
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9354110E4FA
  for <igt-dev@lists.freedesktop.org>; Wed, 15 Nov 2023 07:13:53 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 15 Nov 2023 12:33:42 +0530
-Message-Id: <20231115070344.1488683-4-bhanuprakash.modem@intel.com>
+Date: Wed, 15 Nov 2023 12:33:40 +0530
+Message-Id: <20231115070344.1488683-2-bhanuprakash.modem@intel.com>
 In-Reply-To: <20231115070344.1488683-1-bhanuprakash.modem@intel.com>
 References: <20231115070344.1488683-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 3/5] tests/intel/kms_dirtyfb: Use blitter as a
- default draw method
+Subject: [igt-dev] [i-g-t 1/5] tests/intel/kms_fbt: Use blitter as a default
+ draw method
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,30 +31,27 @@ Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Cc: Jouni Högander <jouni.hogander@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/intel/kms_dirtyfb.c | 4 ++--
+ tests/intel/kms_frontbuffer_tracking.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/intel/kms_dirtyfb.c b/tests/intel/kms_dirtyfb.c
-index b14cc8bec..c072c221d 100644
---- a/tests/intel/kms_dirtyfb.c
-+++ b/tests/intel/kms_dirtyfb.c
-@@ -177,7 +177,7 @@ static void prepare(data_t *data)
- 			    &data->fbs[0]);
+diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+index 60a469901..eac33f48b 100644
+--- a/tests/intel/kms_frontbuffer_tracking.c
++++ b/tests/intel/kms_frontbuffer_tracking.c
+@@ -1236,12 +1236,12 @@ static void init_crcs(enum pixel_format format, enum tiling_type tiling,
+ 			for (r_ = 0; r_ <= r; r_++)
+ 				draw_rect_igt_fb(pattern, &tmp_fbs[r],
+ 						 igt_draw_supports_method(drm.fd, IGT_DRAW_PWRITE) ?
+-						 IGT_DRAW_PWRITE : IGT_DRAW_RENDER,
++						 IGT_DRAW_PWRITE : IGT_DRAW_BLT,
+ 						 r_);
+ 	} else {
+ 		for (r = 0; r < pattern->n_rects; r++)
+ 			draw_rect_igt_fb(pattern, &tmp_fbs[r], igt_draw_supports_method(drm.fd, IGT_DRAW_PWRITE) ?
+-					 IGT_DRAW_PWRITE : IGT_DRAW_RENDER, r);
++					 IGT_DRAW_PWRITE : IGT_DRAW_BLT, r);
+ 	}
  
- 	igt_draw_rect_fb(data->drm_fd, data->bops, 0, &data->fbs[0],
--			 IGT_DRAW_RENDER, 0, 0, data->fbs[0].width,
-+			 IGT_DRAW_BLT, 0, 0, data->fbs[0].width,
- 			 data->fbs[0].height, 0xFF);
- 
- 	primary = igt_output_get_plane_type(data->output,
-@@ -197,7 +197,7 @@ static void prepare(data_t *data)
- 			    DRM_FORMAT_MOD_LINEAR, 0.0, 1.0, 0.0,
- 			    &data->fbs[1]);
- 	igt_draw_rect_fb(data->drm_fd, data->bops, 0, &data->fbs[1],
--			 IGT_DRAW_RENDER, 0, 0, data->fbs[1].width,
-+			 IGT_DRAW_BLT, 0, 0, data->fbs[1].width,
- 			 data->fbs[1].height, 0xFF);
- 
- 	igt_create_color_fb(data->drm_fd, data->mode->hdisplay,
+ 	igt_output_set_pipe(prim_mode_params.output, prim_mode_params.pipe);
 -- 
 2.40.0
