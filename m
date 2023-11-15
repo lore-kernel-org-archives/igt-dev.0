@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============5730215039154286244=="
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6544110E26B
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Nov 2023 21:39:02 +0000 (UTC)
+From: "Jahagirdar, Akshata" <akshata.jahagirdar@intel.com>
+To: "Auld, Matthew" <matthew.auld@intel.com>
+Date: Wed, 15 Nov 2023 21:38:56 +0000
+Message-ID: <CO1PR11MB4977B4F97E5DF24BB22CE12A8DB1A@CO1PR11MB4977.namprd11.prod.outlook.com>
+References: <cover.1699647258.git.akshata.jahagirdar@intel.com>
+ <39483ac499dfb72f44809147050d632498d4363d.1699647258.git.akshata.jahagirdar@intel.com>
+ <ae6f034d-be74-5995-aa73-5a33a28bdd1f@intel.com>
+In-Reply-To: <ae6f034d-be74-5995-aa73-5a33a28bdd1f@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jagmeet Randhawa" <jagmeet.randhawa@intel.com>
-Date: Wed, 15 Nov 2023 21:31:45 -0000
-Message-ID: <170008390575.647.12230596951391657257@emeril.freedesktop.org>
-References: <20231107205932.701351-1-jagmeet.randhawa@intel.com>
-In-Reply-To: <20231107205932.701351-1-jagmeet.randhawa@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/gpgp?=
- =?utf-8?q?u=5Ffill=3A_Add_support_for_Xe2_platforms_=28rev2=29?=
+Subject: Re: [igt-dev] [PATCH i-g-t 3/5] lib/intel_pat : Add uc_comp
+ pat_index
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,259 +23,61 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Siddiqui,
+ Ayaz A" <ayaz.siddiqui@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============5730215039154286244==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: lib/gpgpu_fill: Add support for Xe2 platforms (rev2)
-URL   : https://patchwork.freedesktop.org/series/126096/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7590_BAT -> XEIGTPW_10197_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10197_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@b-dp3:
-    - bat-dg2-oem2:       [PASS][1] -> [FAIL][2] ([Intel XE#480])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7590/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@b-dp3.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10197/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@b-dp3.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1:
-    - bat-adlp-7:         [PASS][3] -> [FAIL][4] ([Intel XE#480])
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7590/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10197/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html
-
-  * igt@xe_exec_fault_mode@many-basic:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][5] ([Intel XE#288]) +17 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10197/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:
-    - bat-adlp-7:         [FAIL][6] ([i915#2346]) -> [PASS][7]
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7590/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10197/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
-    - bat-adlp-7:         [FAIL][8] ([Intel XE#480]) -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7590/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10197/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3:
-    - bat-dg2-oem2:       [FAIL][10] ([Intel XE#480]) -> [PASS][11]
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7590/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10197/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html
-
-  * igt@kms_pipe_crc_basic@hang-read-crc:
-    - bat-dg2-oem2:       [INCOMPLETE][12] ([Intel XE#282] / [Intel XE#749]) -> [PASS][13]
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7590/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html
-   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10197/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html
-
-  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3:
-    - bat-dg2-oem2:       [INCOMPLETE][14] ([Intel XE#282] / [Intel XE#545]) -> [PASS][15]
-   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7590/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html
-   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10197/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html
-
-  
-#### Warnings ####
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
-    - bat-dg2-oem2:       [TIMEOUT][16] ([Intel XE#430] / [Intel XE#530]) -> [FAIL][17] ([Intel XE#400] / [Intel XE#616])
-   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7590/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
-   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10197/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3:
-    - bat-dg2-oem2:       [TIMEOUT][18] ([Intel XE#530]) -> [FAIL][19] ([Intel XE#400] / [Intel XE#616])
-   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7590/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html
-   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10197/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#282]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/282
-  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
-  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
-  [Intel XE#430]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/430
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
-  [Intel XE#530]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/530
-  [Intel XE#545]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/545
-  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
-  [Intel XE#749]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/749
-  [Intel XE#929]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/929
-  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
-
-
-Build changes
--------------
-
-  * IGT: IGT_7590 -> IGTPW_10197
-  * Linux: xe-492-14d1d786caacdb3438d07ab86fabf2e36c8151cc -> xe-493-eba8bfb1dc87535362e28de282addc8752204df4
-
-  IGTPW_10197: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10197/index.html
-  IGT_7590: c484e1422184a3183d11f1595e53a6715574520f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-492-14d1d786caacdb3438d07ab86fabf2e36c8151cc: 14d1d786caacdb3438d07ab86fabf2e36c8151cc
-  xe-493-eba8bfb1dc87535362e28de282addc8752204df4: eba8bfb1dc87535362e28de282addc8752204df4
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10197/index.html
-
---===============5730215039154286244==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/gpgpu_fill: Add support for Xe2 platforms (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126096/">https://patchwork.freedesktop.org/series/126096/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10197/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10197/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7590_BAT -&gt; XEIGTPW_10197_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10197_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@b-dp3:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7590/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@b-dp3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10197/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@b-dp3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7590/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10197/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_fault_mode@many-basic:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10197/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +17 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7590/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10197/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7590/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10197/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7590/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10197/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@hang-read-crc:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7590/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/749">Intel XE#749</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10197/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7590/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/545">Intel XE#545</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10197/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7590/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/430">Intel XE#430</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/530">Intel XE#530</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10197/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7590/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/530">Intel XE#530</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10197/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7590 -&gt; IGTPW_10197</li>
-<li>Linux: xe-492-14d1d786caacdb3438d07ab86fabf2e36c8151cc -&gt; xe-493-eba8bfb1dc87535362e28de282addc8752204df4</li>
-</ul>
-<p>IGTPW_10197: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10197/index.html<br />
-  IGT_7590: c484e1422184a3183d11f1595e53a6715574520f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-492-14d1d786caacdb3438d07ab86fabf2e36c8151cc: 14d1d786caacdb3438d07ab86fabf2e36c8151cc<br />
-  xe-493-eba8bfb1dc87535362e28de282addc8752204df4: eba8bfb1dc87535362e28de282addc8752204df4</p>
-
-</body>
-</html>
-
---===============5730215039154286244==--
+SEksDQoNCkNvbW1lbnRzIGlubGluZS4NCg0KQmVzdCwNCkFrc2hhdGENCg0KLS0tLS1PcmlnaW5h
+bCBNZXNzYWdlLS0tLS0NCkZyb206IEF1bGQsIE1hdHRoZXcgPG1hdHRoZXcuYXVsZEBpbnRlbC5j
+b20+IA0KU2VudDogRnJpZGF5LCBOb3ZlbWJlciAxMCwgMjAyMyAzOjA2IEFNDQpUbzogSmFoYWdp
+cmRhciwgQWtzaGF0YSA8YWtzaGF0YS5qYWhhZ2lyZGFyQGludGVsLmNvbT4NCkNjOiBpZ3QtZGV2
+QGxpc3RzLmZyZWVkZXNrdG9wLm9yZzsgU2lkZGlxdWksIEF5YXogQSA8YXlhei5zaWRkaXF1aUBp
+bnRlbC5jb20+OyBTdG9sYXJlaywgS2Fyb2xpbmEgPGthcm9saW5hLnN0b2xhcmVrQGludGVsLmNv
+bT47IEtlbXBjenluc2tpLCBaYmlnbmlldyA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29t
+Pg0KU3ViamVjdDogUmU6IFtQQVRDSCBpLWctdCAzLzVdIGxpYi9pbnRlbF9wYXQgOiBBZGQgdWNf
+Y29tcCBwYXRfaW5kZXgNCg0KT24gMTAvMTEvMjAyMyAyMToyNCwgQWtzaGF0YSBKYWhhZ2lyZGFy
+IHdyb3RlOg0KPiBDb21wcmVzc2lvbiBpbiBYRTIgaXMgcHJvZ3JhbW1lZCB0aHJvdWdoIHBhdC1p
+bmRleCBhdHRyaWJ1dGUuIEFkZCBhIGRlZGljYXRlZCBwYXQtaW5kZXggZm9yIGNvbXByZXNzaW9u
+IGZvciBYRTIgYW5kIGxhdGVyIHBsYXRmb3Jtcy4gVGhlIGhlbHBlciBmdW5jdGlvbiByZXR1cm5z
+IHVjX3BhdF9pbmRleCBmb3IgcHJldmlvdXMgcGxhdGZvcm1zLg0KPiANCj4gU2lnbmVkLW9mZi1i
+eTogQWtzaGF0YSBKYWhhZ2lyZGFyIDxha3NoYXRhLmphaGFnaXJkYXJAaW50ZWwuY29tPg0KPiAt
+LS0NCj4gICBsaWIvaW50ZWxfcGF0LmMgfCAxMiArKysrKysrKysrKy0NCj4gICBsaWIvaW50ZWxf
+cGF0LmggfCAgMSArDQo+ICAgMiBmaWxlcyBjaGFuZ2VkLCAxMiBpbnNlcnRpb25zKCspLCAxIGRl
+bGV0aW9uKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvbGliL2ludGVsX3BhdC5jIGIvbGliL2ludGVs
+X3BhdC5jIGluZGV4IA0KPiAyYjg5MmVlNTIuLjM2ZjEzNjQyZiAxMDA2NDQNCj4gLS0tIGEvbGli
+L2ludGVsX3BhdC5jDQo+ICsrKyBiL2xpYi9pbnRlbF9wYXQuYw0KPiBAQCAtMTEsNyArMTEsNyBA
+QCBzdHJ1Y3QgaW50ZWxfcGF0X2NhY2hlIHsNCj4gICAJdWludDhfdCB1YzsgLyogVUMgKyBDT0hf
+Tk9ORSAqLw0KPiAgIAl1aW50OF90IHd0OyAvKiBXVCArIENPSF9OT05FICovDQo+ICAgCXVpbnQ4
+X3Qgd2I7IC8qIFdCICsgQ09IX0FUX0xFQVNUXzFXQVkgKi8NCj4gLQ0KPiArCXVpbnQ4X3QgdWNf
+Y29tcDsgLyogVUMgKyBDT0hfTk9ORSArIENPTVBSRVNTSU9OKi8NCg0KTWF5YmUgcHJlZml4IHRo
+aXMgd2l0aCB4ZTI/IGkuZSB4ZTJfdWNfY29tcC4NCg0KQUo6IHllcywgd2lsbCBmaXggdGhpcy4N
+Cg0KPiAgIAl1aW50OF90IG1heF9pbmRleDsNCj4gICB9Ow0KPiAgIA0KPiBAQCAtMjMsNiArMjMs
+NyBAQCBzdGF0aWMgdm9pZCBpbnRlbF9nZXRfcGF0X2lkeChpbnQgZmQsIHN0cnVjdCBpbnRlbF9w
+YXRfY2FjaGUgKnBhdCkNCj4gICAJCXBhdC0+dWMgPSAzOw0KPiAgIAkJcGF0LT53dCA9IDE1OyAv
+KiBDb21wcmVzc2VkICsgV0ItdHJhbnNpZW50ICovDQo+ICAgCQlwYXQtPndiID0gMjsNCj4gKwkJ
+cGF0LT51Y19jb21wID0gMTI7IC8qIENvbXByZXNzZWQgKyBVQyAqLw0KPiAgIAkJcGF0LT5tYXhf
+aW5kZXggPSAzMTsNCj4gICAJfSBlbHNlIGlmIChJU19NRVRFT1JMQUtFKGRldl9pZCkpIHsNCj4g
+ICAJCXBhdC0+dWMgPSAyOw0KPiBAQCAtNjAsNiArNjEsMTUgQEAgdWludDhfdCBpbnRlbF9nZXRf
+cGF0X2lkeF91YyhpbnQgZmQpDQo+ICAgCXJldHVybiBwYXQudWM7DQo+ICAgfQ0KPiAgIA0KPiAr
+dWludDhfdCBpbnRlbF9nZXRfcGF0X2lkeF91Y19jb21wKGludCBmZCkgew0KPiArCXN0cnVjdCBp
+bnRlbF9wYXRfY2FjaGUgcGF0ID0ge307DQo+ICsJdWludDE2X3QgZGV2X2lkID0gaW50ZWxfZ2V0
+X2RybV9kZXZpZChmZCk7DQo+ICsJDQo+ICsJaW50ZWxfZ2V0X3BhdF9pZHgoZmQsICZwYXQpOw0K
+PiArCXJldHVybiAoaW50ZWxfZ2V0X2RldmljZV9pbmZvKGRldl9pZCktPmdyYXBoaWNzX3ZlciA+
+PSAyMCkgPyANCj4gK3BhdC51Y19jb21wIDogcGF0LnVjOw0KDQpNYXliZSBtYWtlIGp1c3QgbWFr
+ZSB0aGlzIHhlMl9nZXRfcGF0X2lkeF91Y19jb21wKCk/IE9yIGlmIHdlIHJlYWxseSBkbyB3YW50
+IHRvIHJldHVybiBwbGFpbiB1YyBvbiBwcmUteGUyIHRoZW4gbWF5YmUgbWFrZSB0aGF0IGNsZWFy
+ZXIgc29tZWhvdyBpbiB0aGUgYXBpPyBpbnRlbF9nZXRfcGF0X2lkeF91Y19jb21wX2lmX3Bvc3Np
+YmxlKCk/IEJ1dCBwZXJoYXBzIGNhbGxlciBzaG91bGQganVzdCBoYW5kbGUgdGhpcy4NCg0KQUo6
+IHllYWgsIEkgdGhpbmsgd2UgY2FuIG1ha2UgaXQgeGUyX2dldF9wYXRfaWR4X3VjX2NvbXAoKSBh
+bmQgbm90IHJldHVybiBwcmUteGUyLCBpbnN0ZWFkIGhhbmRsZSBpdCBmcm9tIGNhbGxlci4NCg0K
+PiArfQ0KPiArDQo+ICAgdWludDhfdCBpbnRlbF9nZXRfcGF0X2lkeF93dChpbnQgZmQpDQo+ICAg
+ew0KPiAgIAlzdHJ1Y3QgaW50ZWxfcGF0X2NhY2hlIHBhdCA9IHt9Ow0KPiBkaWZmIC0tZ2l0IGEv
+bGliL2ludGVsX3BhdC5oIGIvbGliL2ludGVsX3BhdC5oIGluZGV4IA0KPiBjMjRkYmMyNzUuLjZk
+NjhiOWZjMiAxMDA2NDQNCj4gLS0tIGEvbGliL2ludGVsX3BhdC5oDQo+ICsrKyBiL2xpYi9pbnRl
+bF9wYXQuaA0KPiBAQCAtMTMsNiArMTMsNyBAQA0KPiAgIHVpbnQ4X3QgaW50ZWxfZ2V0X21heF9w
+YXRfaW5kZXgoaW50IGZkKTsNCj4gICANCj4gICB1aW50OF90IGludGVsX2dldF9wYXRfaWR4X3Vj
+KGludCBmZCk7DQo+ICt1aW50OF90IGludGVsX2dldF9wYXRfaWR4X3VjX2NvbXAoaW50IGZkKTsN
+Cj4gICB1aW50OF90IGludGVsX2dldF9wYXRfaWR4X3d0KGludCBmZCk7DQo+ICAgdWludDhfdCBp
+bnRlbF9nZXRfcGF0X2lkeF93YihpbnQgZmQpOw0KPiAgIA0K
