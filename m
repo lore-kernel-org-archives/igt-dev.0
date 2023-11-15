@@ -1,22 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A707810E51C
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Nov 2023 10:20:24 +0000 (UTC)
-From: "Hogander, Jouni" <jouni.hogander@intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Modem,
- Bhanuprakash" <bhanuprakash.modem@intel.com>
-Date: Wed, 15 Nov 2023 10:19:55 +0000
-Message-ID: <11ce2f7dcaa83740b75551a7ccb3a99261b3fe92.camel@intel.com>
-References: <20231115070344.1488683-1-bhanuprakash.modem@intel.com>
- <20231115070344.1488683-6-bhanuprakash.modem@intel.com>
-In-Reply-To: <20231115070344.1488683-6-bhanuprakash.modem@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 687B910E53C
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Nov 2023 10:33:28 +0000 (UTC)
+From: "Piatkowski, Dominik Karol" <dominik.karol.piatkowski@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Wed, 15 Nov 2023 10:33:15 +0000
+Message-ID: <BL0PR11MB347523FE137AA1ECC3FAF9DFD9B1A@BL0PR11MB3475.namprd11.prod.outlook.com>
+References: <20231103160148.94811-1-kamil.konieczny@linux.intel.com>
+ <20231103160148.94811-2-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20231103160148.94811-2-kamil.konieczny@linux.intel.com>
 Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <F8D20FF1562D764089157EA2ED90C81D@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-2"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t 5/5] tests/intel/kms_dirtyfb: Restructure
- dynamic subtests
+Subject: Re: [igt-dev] [PATCH i-g-t v2 1/3] lib/igt_device_scan: add
+ multigpu filtering view
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,124 +27,131 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gV2VkLCAyMDIzLTExLTE1IGF0IDEyOjMzICswNTMwLCBCaGFudXByYWthc2ggTW9kZW0gd3Jv
-dGU6Cj4gSW5zdGVhZCBvZiBoYXZpbmcgYWxsIGZlYXR1cmVzIHVuZGVyIHNpbmdsZSBzdWJ0ZXN0
-LCBjcmVhdGUKPiBhIHN1YnRlc3QgZm9yIGVhY2ggZmVhdHVyZS4KPiAKPiBCZWZvcmU6Cj4gaWd0
-QGttc19kaXJ0eWZiQGRpcnR5ZmItaW9jdGxAcHNyLWVEUC0xCj4gaWd0QGttc19kaXJ0eWZiQGRp
-cnR5ZmItaW9jdGxAZmJjLWVEUC0xCj4gaWd0QGttc19kaXJ0eWZiQGRpcnR5ZmItaW9jdGxAZHJy
-cy1lRFAtMQo+IAo+IEFmdGVyOgo+IGlndEBrbXNfZGlydHlmYkBwc3ItZGlydHlmYi1pb2N0bEBw
-aXBlLUEtZURQLTEKPiBpZ3RAa21zX2RpcnR5ZmJAZmJjLWRpcnR5ZmItaW9jdGxAcGlwZS1BLWVE
-UC0xCj4gaWd0QGttc19kaXJ0eWZiQGRycnMtZGlydHlmYi1pb2N0bEBwaXBlLUEtZURQLTEKCk9i
-dmlvdXNseSB5b3UgaGF2ZSBzb21lIHNwZWNpZmljIHJlYXNvbiBmb3IgdGhpcyBjaGFuZ2U6CgpS
-ZXZpZXdlZC1ieTogSm91bmkgSMO2Z2FuZGVyIDxqb3VuaS5ob2dhbmRlckBpbnRlbC5jb20+CgpK
-dXN0IGZvciBjdXJpb3NpdHksIHdoYXQgaXMgdGhlIHByb2JsZW0gd2l0aCB0aGUgb3JpZ2luYWwg
-YXBwcm9hY2g/CgpCUiwKCkpvdW5pIEjDtmdhbmRlcgo+IAo+IENjOiBKdWhhLVBla2thIEhlaWtr
-aWxhIDxqdWhhcGVra2EuaGVpa2tpbGFAZ21haWwuY29tPgo+IENjOiBKb3VuaSBIw7ZnYW5kZXIg
-PGpvdW5pLmhvZ2FuZGVyQGludGVsLmNvbT4KPiBTaWduZWQtb2ZmLWJ5OiBCaGFudXByYWthc2gg
-TW9kZW0gPGJoYW51cHJha2FzaC5tb2RlbUBpbnRlbC5jb20+Cj4gLS0tCj4gwqB0ZXN0cy9pbnRl
-bC9rbXNfZGlydHlmYi5jIHwgNjcgKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0t
-LQo+IC0tCj4gwqAxIGZpbGUgY2hhbmdlZCwgNDYgaW5zZXJ0aW9ucygrKSwgMjEgZGVsZXRpb25z
-KC0pCj4gCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ludGVsL2ttc19kaXJ0eWZiLmMgYi90ZXN0cy9p
-bnRlbC9rbXNfZGlydHlmYi5jCj4gaW5kZXggYTBmNjFiN2EzLi41YWIyZGM1OWYgMTAwNjQ0Cj4g
-LS0tIGEvdGVzdHMvaW50ZWwva21zX2RpcnR5ZmIuYwo+ICsrKyBiL3Rlc3RzL2ludGVsL2ttc19k
-aXJ0eWZiLmMKPiBAQCAtMjAsMTUgKzIwLDI2IEBAIElHVF9URVNUX0RFU0NSSVBUSU9OKCJUZXN0
-IHRoZSBESVJUWUZCIGlvY3RsIGlzCj4gd29ya2luZyBwcm9wZXJseSB3aXRoICIKPiDCoCAqIFRF
-U1Q6IGttcyBkaXJ0eWZiCj4gwqAgKiBDYXRlZ29yeTogRGlzcGxheQo+IMKgICogRGVzY3JpcHRp
-b246IFRlc3QgRElSVFlGQiBpb2N0bCBmdW5jdGlvbmFsaXR5Lgo+ICsgKiBEcml2ZXIgcmVxdWly
-ZW1lbnQ6IGk5MTUsIHhlCj4gKyAqIEZ1bmN0aW9uYWxpdHk6IGRpcnR5ZmIKPiArICogTWVnYSBm
-ZWF0dXJlOiBHZW5lcmFsIERpc3BsYXkgRmVhdHVyZXMKPiArICogVGVzdCBjYXRlZ29yeTogZnVu
-Y3Rpb25hbGl0eSB0ZXN0Cj4gwqAgKgo+IC0gKiBTVUJURVNUOiBkaXJ0eWZiLWlvY3RsCj4gKyAq
-IFNVQlRFU1Q6IGRlZmF1bHQtZGlydHlmYi1pb2N0bAo+IMKgICogRGVzY3JpcHRpb246IFRlc3Qg
-RElSVFlGQiBpb2N0bCBpcyB3b3JraW5nIHByb3Blcmx5IHVzaW5nIEdQVQo+IMKgICrCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoCBmcm9udGJ1ZmZlciByZW5kZXJpbmcgd2l0aCBmZWF0dXJlcyBs
-aWtlIEZCQywgUFNSCj4gwqAgKsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGFuZCBEUlJTLgo+
-IC0gKiBEcml2ZXIgcmVxdWlyZW1lbnQ6IGk5MTUsIHhlCj4gLSAqIEZ1bmN0aW9uYWxpdHk6IGRp
-cnR5ZmIsIGZiYywgcHNyLCBkcnJzCj4gLSAqIE1lZ2EgZmVhdHVyZTogR2VuZXJhbCBEaXNwbGF5
-IEZlYXR1cmVzCj4gLSAqIFRlc3QgY2F0ZWdvcnk6IGZ1bmN0aW9uYWxpdHkgdGVzdAo+ICsgKgo+
-ICsgKiBTVUJURVNUOiAlcy1kaXJ0eWZiLWlvY3RsCj4gKyAqIERlc2NyaXB0aW9uOiBUZXN0IERJ
-UlRZRkIgaW9jdGwgaXMgd29ya2luZyBwcm9wZXJseSB1c2luZyBHUFUKPiArICrCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoCBmcm9udGJ1ZmZlciByZW5kZXJpbmcgd2l0aCAlYXJnWzFdIGZlYXR1
-cmUuCj4gKyAqIEZ1bmN0aW9uYWxpdHk6IGRpcnR5ZmIsICVhcmdbMV0KPiArICoKPiArICogYXJn
-WzFdOgo+ICsgKgo+ICsgKiBAZHJyczrCoMKgwqAgZHJycwo+ICsgKiBAZmJjOsKgwqDCoMKgIGZi
-Ywo+ICsgKiBAcHNyOsKgwqDCoMKgIHBzcjEKPiDCoCAqLwo+IMKgCj4gwqAjaWZuZGVmIFBBR0Vf
-QUxJR04KPiBAQCAtMTYwLDEwICsxNzEsNiBAQCBzdGF0aWMgdm9pZCBwcmVwYXJlKGRhdGFfdCAq
-ZGF0YSkKPiDCoHsKPiDCoMKgwqDCoMKgwqDCoMKgaWd0X3BsYW5lX3QgKnByaW1hcnk7Cj4gwqAK
-PiAtwqDCoMKgwqDCoMKgwqBpZ3Rfc2tpcF9vbighY2hlY2tfc3VwcG9ydChkYXRhKSk7Cj4gLQo+
-IC3CoMKgwqDCoMKgwqDCoGlndF9kaXNwbGF5X3Jlc2V0KCZkYXRhLT5kaXNwbGF5KTsKPiAtCj4g
-wqDCoMKgwqDCoMKgwqDCoGRhdGEtPm1vZGUgPSBpZ3Rfb3V0cHV0X2dldF9tb2RlKGRhdGEtPm91
-dHB1dCk7Cj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgaWd0X291dHB1dF9zZXRfcGlwZShkYXRhLT5v
-dXRwdXQsIGRhdGEtPnBpcGUpOwo+IEBAIC0yOTcsMTkgKzMwNCwzNyBAQCBpZ3RfbWFpbgo+IMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2Rpc3BsYXlfcmVzZXQoJmRhdGEuZGlz
-cGxheSk7Cj4gwqDCoMKgwqDCoMKgwqDCoH0KPiDCoAo+IC3CoMKgwqDCoMKgwqDCoGlndF9kZXNj
-cmliZSgiVGVzdCBkaXJ0eUZCIGlvY3RsIik7Cj4gLcKgwqDCoMKgwqDCoMKgaWd0X3N1YnRlc3Rf
-d2l0aF9keW5hbWljKCJkaXJ0eWZiLWlvY3RsIikgewo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqBkYXRhLnBpcGUgPSBQSVBFX0E7Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoGZvcl9lYWNoX3ZhbGlkX291dHB1dF9vbl9waXBlKCZkYXRhLmRpc3BsYXksCj4gZGF0YS5w
-aXBlLAo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGRhdGEub3V0cHV0KSB7Cj4g
-LcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBmb3IgKGRhdGEu
-ZmVhdHVyZSA9IEZFQVRVUkVfREVGQVVMVDsKPiBkYXRhLmZlYXR1cmUgPiAwOwo+IC3CoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZGF0YS5mZWF0
-dXJlID0gZGF0YS5mZWF0dXJlID4+IDEpIHsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfZHluYW1pY19mKCIlcy0lcyIs
-Cj4gZmVhdHVyZV9zdHIoZGF0YS5mZWF0dXJlKSwKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoAo+IGlndF9vdXRwdXRfbmFtZShkYXRhLm91dHB1dCkpIHsKPiAtwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgcHJlcGFyZSgmZGF0YSk7Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJ1bl90ZXN0
-KCZkYXRhKTsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgY2xlYW51cCgmZGF0YSk7Cj4gK8KgwqDC
-oMKgwqDCoMKgZm9yIChkYXRhLmZlYXR1cmUgPSBGRUFUVVJFX0RFRkFVTFQ7IGRhdGEuZmVhdHVy
-ZSA+IDA7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZGF0YS5mZWF0dXJlID0gZGF0YS5mZWF0
-dXJlID4+IDEpIHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2Rlc2NyaWJl
-X2YoIlRlc3QgZGlydHlGQiBpb2N0bCB3aXRoICVzIiwKPiBmZWF0dXJlX3N0cihkYXRhLmZlYXR1
-cmUpKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3N1YnRlc3Rfd2l0aF9k
-eW5hbWljX2YoIiVzLWRpcnR5ZmItaW9jdGwiLAo+IGZlYXR1cmVfc3RyKGRhdGEuZmVhdHVyZSkp
-IHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGZvcl9l
-YWNoX3BpcGUoJmRhdGEuZGlzcGxheSwgZGF0YS5waXBlKSB7Cj4gK8KgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaW50IHZhbGlkX3Rl
-c3RzID0gMDsKPiArCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgZm9yX2VhY2hfdmFsaWRfb3V0cHV0X29uX3BpcGUoJmRhdGEu
-ZAo+IGlzcGxheSwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4gZGF0YS5waXBlLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAKPiBkYXRhLm91dHB1
-dCkgewo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZiAoIWNoZWNrX3N1cHBvcnQoJmRhdGEpKQo+
-ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgY29udGludWU7Cj4gKwo+ICvC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfZGlzcGxheV9yZXNldCgmZGF0YS5kaXNwbAo+IGF5KTsK
-PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X291dHB1dF9zZXRfcGlwZShkYXRhLm91dHAKPiB1
-dCwgZGF0YS5waXBlKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYKPiAoIWludGVsX3BpcGVf
-b3V0cHV0X2NvbWJvX3ZhbGlkKCZkYXRhLmRpc3BsYXkpKQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgY29udGludWU7Cj4gKwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB2
-YWxpZF90ZXN0cysrOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfZHluYW1pY19mKCIlcy0l
-cyIsCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4g
-a21zdGVzdF9waXBlX25hbWUoZGF0YS5waXBlKSwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAKPiBpZ3Rfb3V0cHV0X25hbWUoZGF0YS5vdXRwdXQpKSB7
-Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBwcmVwYXJlKCZkYXRhKTsK
-PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJ1bl90ZXN0KCZkYXRhKTsK
-PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGNsZWFudXAoJmRhdGEpOwo+
-ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH0KPiArCj4gK8KgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLyogT25lIHBp
-cGUgaXMgZW5vdWdoLiAqLwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlmICh2YWxpZF90ZXN0cykKPiArwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgYnJlYWs7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgfQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfQo+IMKgwqDCoMKg
-wqDCoMKgwqB9Cgo=
+Reviewed-by: Dominik Karol Pi=B1tkowski <dominik.karol.piatkowski@intel.com=
+>
+
+> -----Original Message-----
+> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Kamil
+> Konieczny
+> Sent: Friday, November 3, 2023 5:02 PM
+> To: igt-dev@lists.freedesktop.org
+> Subject: [igt-dev] [PATCH i-g-t v2 1/3] lib/igt_device_scan: add multigpu
+> filtering view
+>=20
+> Created multiGPU filtering for GPU cards. When used with --device or
+> IGT_DEVICE, this will just count cards found with given filtering options=
+,
+> otherwise will count them with the help of vendor filtering.
+>     Filtering is not restricted and will allow to re-open already opened =
+card, if
+> user gives something like:
+>=20
+> IGT_DEVICE=3Dpci:vendor=3Dintel,device=3Ddiscrete,card=3D0\;pci:vendor=3D=
+intel,device
+> =3Ddiscrete,card=3D0
+> or
+> IGT_DEVICE=3Dpci:vendor=3Dintel,card=3D0\;pci:vendor=3Dintel,card=3D0
+>=20
+> For discrete cards one can use:
+> IGT_DEVICE=3Dpci:vendor=3Dintel,device=3Ddiscrete,card=3Dall
+>=20
+> v2: move filtering into igt_device_scan.c (Zbigniew)
+>   filter all GPUs, not only discrete (Zbigniew)
+>   simplify checks for unsupported drivers like vgem (Kamil)
+>=20
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  lib/igt_device_scan.c | 62
+> +++++++++++++++++++++++++++++++++++++++++++
+>  lib/igt_device_scan.h |  3 +++
+>  2 files changed, 65 insertions(+)
+>=20
+> diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c index
+> f4f95fef3..fbf3fa482 100644
+> --- a/lib/igt_device_scan.c
+> +++ b/lib/igt_device_scan.c
+> @@ -2065,3 +2065,65 @@ int igt_open_render(struct igt_device_card *card)
+>=20
+>  	return open(card->render, O_RDWR);
+>  }
+> +
+> +/**
+> + * igt_device_prepare_filtered_view:
+> + * @vendor: name for GPUs vendor to search, eg. "intel"
+> + *
+> + * Filter GPU devices for given vendor or with supplied --device
+> + * option or IGT_DEVICE environment variable.
+> + *
+> + * Returns:
+> + * Number of filtered GPUs for a vendor or number of filters.
+> + */
+> +int igt_device_prepare_filtered_view(const char *vendor) {
+> +	int gpu_count;
+> +
+> +	gpu_count =3D igt_device_filter_count();
+> +	if (!gpu_count) {
+> +		char gpu_filter[256];
+> +
+> +		igt_assert(vendor);
+> +		if (!strcmp(vendor, "vgem") || !strcmp(vendor, "other")) {
+> +			igt_debug("Unsupported vendor: %s\n", vendor);
+> +			return 0;
+> +		}
+> +
+> +		if (!strcmp(vendor, "any")) {
+> +			igt_debug("Chipset DRIVER_ANY unsupported
+> without --device filters\n");
+> +			return 0;
+> +		}
+> +
+> +		igt_assert(snprintf(gpu_filter, sizeof(gpu_filter),
+> "pci:vendor=3D%s,card=3Dall",
+> +				    vendor) < sizeof(gpu_filter));
+> +
+> +		igt_device_filter_add(gpu_filter); // fill-in filters for all GPUs
+> +		gpu_count =3D igt_device_filter_count();
+> +		igt_debug("Found %d GPUs for vendor: %s\n", gpu_count,
+> vendor);
+> +	} else {
+> +		struct igt_device_card card;
+> +		bool found;
+> +		int count =3D 0;
+> +
+> +		for (int i =3D 0; i < gpu_count; i++) {
+> +			const char *filter;
+> +
+> +			filter =3D igt_device_filter_get(i);
+> +			found =3D igt_device_card_match(filter, &card);
+> +			if (found && strlen(card.card)) {
+> +				igt_debug("Found GPU%d card %s\n", i,
+> card.card);
+> +				++count;
+> +			}
+> +		}
+> +
+> +		if (count < gpu_count) {
+> +			igt_debug("Counted GPUs %d lower than number of
+> filters %d\n", count, gpu_count);
+> +			gpu_count =3D count;
+> +		} else {
+> +			igt_debug("Found %d GPUs\n", gpu_count);
+> +		}
+> +	}
+> +
+> +	return gpu_count;
+> +}
+> diff --git a/lib/igt_device_scan.h b/lib/igt_device_scan.h index
+> b8f6a843d..48690e236 100644
+> --- a/lib/igt_device_scan.h
+> +++ b/lib/igt_device_scan.h
+> @@ -93,4 +93,7 @@ char *igt_device_get_pretty_name(struct
+> igt_device_card *card, bool numeric);  int igt_open_card(struct
+> igt_device_card *card);  int igt_open_render(struct igt_device_card *card=
+);
+>=20
+> +/* Add or use filters to match multiGPU devices */ int
+> +igt_device_prepare_filtered_view(const char *vendor);
+> +
+>  #endif /* __IGT_DEVICE_SCAN_H__ */
+> --
+> 2.42.0
