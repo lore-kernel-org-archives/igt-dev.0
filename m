@@ -1,20 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 62B2810E26E
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Nov 2023 11:19:49 +0000 (UTC)
-Date: Thu, 16 Nov 2023 12:19:44 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20231116111944.4y2k6g7hqidh3hd5@kamilkon-desk.igk.intel.com>
-References: <20231107205932.701351-1-jagmeet.randhawa@intel.com>
- <170008209095.646.16459294130461686148@emeril.freedesktop.org>
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com
+ [IPv6:2a00:1450:4864:20::332])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2039A10E276
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Nov 2023 11:40:17 +0000 (UTC)
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4083740f92dso5458855e9.3
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Nov 2023 03:40:17 -0800 (PST)
+Message-ID: <51f014ca-fd5f-431b-87e8-876421e8ac9f@gmail.com>
+Date: Thu, 16 Nov 2023 13:40:04 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <170008209095.646.16459294130461686148@emeril.freedesktop.org>
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSAgZm9yIGxpYi9n?=
- =?utf-8?q?pgpu=5Ffill=3A_Add_support_for_Xe2_platforms_=28rev2=29?=
+Content-Language: en-US
+To: Kunal Joshi <kunal1.joshi@intel.com>, igt-dev@lists.freedesktop.org
+References: <20231115064253.1680913-1-kunal1.joshi@intel.com>
+ <20231115064253.1680913-2-kunal1.joshi@intel.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+In-Reply-To: <20231115064253.1680913-2-kunal1.joshi@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/igt_debugfs: added helper to
+ enable/disable dark screen detection
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,149 +26,80 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: SaiX Nandan Yedireswarapu <saix.nandan.yedireswarapu@intel.com>,
- lgci.bug.filing@intel.com
+Reply-To: juhapekka.heikkila@gmail.com
+Cc: Nemesa Garg <nemesa.garg@intel.com>,
+ Arun R Murthy <arun.r.murthy@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
+On 15.11.2023 8.42, Kunal Joshi wrote:
+> added helper function for dark screen detection
+> 
+> v2: Fix indentation (JP)
+>      Reduce complexity and redundancy (JP)
+> 
+> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> Cc: Nemesa Garg <nemesa.garg@intel.com>
+> Cc: Arun R Murthy <arun.r.murthy@intel.com>
+> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+> ---
+>   lib/igt_debugfs.c | 23 +++++++++++++++++++++++
+>   lib/igt_debugfs.h |  2 ++
+>   2 files changed, 25 insertions(+)
+> 
+> diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
+> index a7b54bae5..c4a8b532d 100644
+> --- a/lib/igt_debugfs.c
+> +++ b/lib/igt_debugfs.c
+> @@ -743,3 +743,26 @@ void __igt_debugfs_dump(int device, const char *filename, int level)
+>   	igt_log(IGT_LOG_DOMAIN, level, "%s:\n%s\n", filename, contents);
+>   	free(contents);
+>   }
+> +
+> +bool igt_is_dark_screen_supported(int drm_fd, enum pipe pipe)
+> +{
+> +	char buf[256];
+> +	int dir;
+> +
+> +	dir = igt_debugfs_pipe_dir(drm_fd, pipe, O_DIRECTORY);
+> +	igt_require_fd(dir);
+> +	igt_debugfs_simple_read(dir, "i915_darkscreen_status", buf, sizeof(buf));
+> +	close(dir);
+> +	return (*buf == '0' || *buf == '1');
+> +}
+> +
+> +ssize_t igt_set_dark_screen_detection(int drm_fd, enum pipe pipe, bool enable)
+> +{
+> +	char buf[2];
+> +	int dir;
+> +
+> +	snprintf(buf, sizeof(buf), "%d", enable ? 1 : 0);
+> +	dir = igt_debugfs_pipe_dir(drm_fd, pipe, O_DIRECTORY);
+> +	igt_require_fd(dir);
+> +	return igt_sysfs_write(dir, "i915_darkscreen_status", buf, sizeof(buf) - 1);
 
-On 2023-11-15 at 21:01:30 -0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: lib/gpgpu_fill: Add support for Xe2 platforms (rev2)
-> URL   : https://patchwork.freedesktop.org/series/126096/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from CI_DRM_13881 -> IGTPW_10197
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_10197 absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_10197, please notify your bug team (lgci.bug.filing@intel.com) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10197/index.html
-> 
-> Participating hosts (40 -> 38)
-> ------------------------------
-> 
->   Additional (1): fi-kbl-soraka 
->   Missing    (3): fi-hsw-4770 bat-atsm-1 fi-snb-2520m 
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_10197:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@i915_selftest@live@dmabuf:
->     - bat-mtlp-6:         [PASS][1] -> [DMESG-FAIL][2]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13881/bat-mtlp-6/igt@i915_selftest@live@dmabuf.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10197/bat-mtlp-6/igt@i915_selftest@live@dmabuf.html
-> 
->   * igt@i915_selftest@live@perf:
->     - fi-kbl-soraka:      NOTRUN -> [ABORT][3]
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10197/fi-kbl-soraka/igt@i915_selftest@live@perf.html
-> 
+Would something like
+igt_sysfs_write(dir, "i915_darkscreen_status", enable ? "1" : "0", 1);
+work?
 
-This is unrelated to a change, please supress and respin.
+Also I think you'll need to close dir before return
 
-Regards,
-Kamil
+/Juha-Pekka
 
+> +}
+> diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
+> index 3e6194ade..68f25be59 100644
+> --- a/lib/igt_debugfs.h
+> +++ b/lib/igt_debugfs.h
+> @@ -77,6 +77,8 @@ void igt_hpd_storm_reset(int fd);
+>   bool igt_hpd_storm_detected(int fd);
+>   void igt_require_hpd_storm_ctl(int fd);
+>   bool igt_ignore_long_hpd(int fd, bool enable);
+> +bool igt_is_dark_screen_supported(int drm_fd, enum pipe pipe);
+> +ssize_t igt_set_dark_screen_detection(int drm_fd, enum pipe pipe, bool enable);
 >   
-> Known issues
-> ------------
-> 
->   Here are the changes found in IGTPW_10197 that come from known issues:
-> 
-> ### IGT changes ###
-> 
-> #### Issues hit ####
-> 
->   * igt@gem_huc_copy@huc-copy:
->     - fi-kbl-soraka:      NOTRUN -> [SKIP][4] ([fdo#109271] / [i915#2190])
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10197/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
-> 
->   * igt@gem_lmem_swapping@basic:
->     - fi-kbl-soraka:      NOTRUN -> [SKIP][5] ([fdo#109271] / [i915#4613]) +3 other tests skip
->    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10197/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
-> 
->   * igt@gem_lmem_swapping@random-engines:
->     - fi-bsw-n3050:       NOTRUN -> [SKIP][6] ([fdo#109271]) +14 other tests skip
->    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10197/fi-bsw-n3050/igt@gem_lmem_swapping@random-engines.html
-> 
->   * igt@i915_selftest@live@gt_pm:
->     - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][7] ([i915#1886])
->    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10197/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
-> 
->   * igt@i915_suspend@basic-s3-without-i915:
->     - bat-rpls-1:         [PASS][8] -> [ABORT][9] ([i915#7978] / [i915#9631])
->    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13881/bat-rpls-1/igt@i915_suspend@basic-s3-without-i915.html
->    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10197/bat-rpls-1/igt@i915_suspend@basic-s3-without-i915.html
-> 
->   * igt@kms_dsc@dsc-basic:
->     - fi-kbl-soraka:      NOTRUN -> [SKIP][10] ([fdo#109271]) +9 other tests skip
->    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10197/fi-kbl-soraka/igt@kms_dsc@dsc-basic.html
-> 
->   * igt@kms_hdmi_inject@inject-audio:
->     - fi-bsw-n3050:       NOTRUN -> [FAIL][11] ([IGT#3])
->    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10197/fi-bsw-n3050/igt@kms_hdmi_inject@inject-audio.html
-> 
->   
-> #### Possible fixes ####
-> 
->   * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:
->     - bat-rplp-1:         [ABORT][12] ([i915#8668]) -> [PASS][13]
->    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13881/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
->    [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10197/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
-> 
->   
->   {name}: This element is suppressed. This means it is ignored when computing
->           the status of the difference (SUCCESS, WARNING, or FAILURE).
-> 
->   [IGT#3]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3
->   [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
->   [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
->   [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
->   [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
->   [i915#7978]: https://gitlab.freedesktop.org/drm/intel/issues/7978
->   [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
->   [i915#9631]: https://gitlab.freedesktop.org/drm/intel/issues/9631
->   [i915#9648]: https://gitlab.freedesktop.org/drm/intel/issues/9648
-> 
-> 
-> Build changes
-> -------------
-> 
->   * CI: CI-20190529 -> None
->   * IGT: IGT_7590 -> IGTPW_10197
-> 
->   CI-20190529: 20190529
->   CI_DRM_13881: 36732395a74634a9ff9db10c79c4c52719cdab40 @ git://anongit.freedesktop.org/gfx-ci/linux
->   IGTPW_10197: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10197/index.html
->   IGT_7590: c484e1422184a3183d11f1595e53a6715574520f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-> 
-> 
-> Testlist changes
-> ----------------
-> 
-> -igt@xe_waitfence@hasengine
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10197/index.html
+>   /*
+>    * Drop caches
