@@ -1,17 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6504010E269
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Nov 2023 11:13:16 +0000 (UTC)
-Date: Thu, 16 Nov 2023 12:13:00 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 62B2810E26E
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Nov 2023 11:19:49 +0000 (UTC)
+Date: Thu, 16 Nov 2023 12:19:44 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20231116111300.lm5n2r454wpq36lr@kamilkon-desk.igk.intel.com>
-References: <20231116082553.400258-1-ankit.k.nautiyal@intel.com>
+Message-ID: <20231116111944.4y2k6g7hqidh3hd5@kamilkon-desk.igk.intel.com>
+References: <20231107205932.701351-1-jagmeet.randhawa@intel.com>
+ <170008209095.646.16459294130461686148@emeril.freedesktop.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231116082553.400258-1-ankit.k.nautiyal@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_kms: Fix typo in documentation
+In-Reply-To: <170008209095.646.16459294130461686148@emeril.freedesktop.org>
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSAgZm9yIGxpYi9n?=
+ =?utf-8?q?pgpu=5Ffill=3A_Add_support_for_Xe2_platforms_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,71 +22,149 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: SaiX Nandan Yedireswarapu <saix.nandan.yedireswarapu@intel.com>,
+ lgci.bug.filing@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Ankit,
-On 2023-11-16 at 13:55:53 +0530, Ankit Nautiyal wrote:
-> Fix few typographical errors in comments/documentation.
-> 
-> Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Hi,
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+On 2023-11-15 at 21:01:30 -0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: lib/gpgpu_fill: Add support for Xe2 platforms (rev2)
+> URL   : https://patchwork.freedesktop.org/series/126096/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from CI_DRM_13881 -> IGTPW_10197
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_10197 absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_10197, please notify your bug team (lgci.bug.filing@intel.com) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10197/index.html
+> 
+> Participating hosts (40 -> 38)
+> ------------------------------
+> 
+>   Additional (1): fi-kbl-soraka 
+>   Missing    (3): fi-hsw-4770 bat-atsm-1 fi-snb-2520m 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_10197:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@i915_selftest@live@dmabuf:
+>     - bat-mtlp-6:         [PASS][1] -> [DMESG-FAIL][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13881/bat-mtlp-6/igt@i915_selftest@live@dmabuf.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10197/bat-mtlp-6/igt@i915_selftest@live@dmabuf.html
+> 
+>   * igt@i915_selftest@live@perf:
+>     - fi-kbl-soraka:      NOTRUN -> [ABORT][3]
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10197/fi-kbl-soraka/igt@i915_selftest@live@perf.html
+> 
 
-> ---
->  lib/igt_kms.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
+This is unrelated to a change, please supress and respin.
+
+Regards,
+Kamil
+
+>   
+> Known issues
+> ------------
 > 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 89510ff22b40..c381fed71e30 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -749,7 +749,7 @@ igt_plane_rotations(igt_display_t *display, igt_plane_t *plane,
->  }
->  
->  /*
-> - * Retrieve all the properies specified in props_name and store them into
-> + * Retrieve all the properties specified in props_name and store them into
->   * plane->props.
->   */
->  static void
-> @@ -789,7 +789,7 @@ igt_fill_plane_props(igt_display_t *display, igt_plane_t *plane,
->  }
->  
->  /*
-> - * Retrieve all the properies specified in props_name and store them into
-> + * Retrieve all the properties specified in props_name and store them into
->   * config->atomic_props_crtc and config->atomic_props_connector.
->   */
->  static void
-> @@ -4511,7 +4511,7 @@ void igt_display_commit_atomic(igt_display_t *display, uint32_t flags, void *use
->   * This function should only be used to commit changes that are expected to
->   * succeed, since any failure during the commit process will cause the IGT
->   * subtest to fail.  To commit changes that are expected to fail, use
-> - * @igt_try_display_commit2 instead.
-> + * @igt_display_try_commit2 instead.
->   *
->   * Returns: 0 upon success.  This function will never return upon failure
->   * since igt_fail() at lower levels will longjmp out of it.
-> @@ -4568,7 +4568,7 @@ int igt_display_commit(igt_display_t *display)
->   * @display: DRM device handle
->   *
->   * Nonblockingly reads all current events and drops them, for highest
-> - * reliablility, call igt_display_commit2() first to flush all outstanding
-> + * reliability, call igt_display_commit2() first to flush all outstanding
->   * events.
->   *
->   * This will be called on the first commit after igt_display_reset() too,
-> @@ -5691,7 +5691,7 @@ void igt_parse_connector_tile_blob(drmModePropertyBlobPtr blob,
->   *
->   * Reduce @format to a base format. The aim is to allow grouping
->   * sufficiently similar formats into classes. Formats with identical
-> - * component sizes, overall pixel size, chroma subsamling, etc. are
-> + * component sizes, overall pixel size, chroma subsampling, etc. are
->   * considered part of the same class, no matter in which order the
->   * components appear. We arbitrarily choose one of the formats in
->   * the class as the base format. Note that the base format itself
-> -- 
-> 2.40.1
+>   Here are the changes found in IGTPW_10197 that come from known issues:
 > 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@gem_huc_copy@huc-copy:
+>     - fi-kbl-soraka:      NOTRUN -> [SKIP][4] ([fdo#109271] / [i915#2190])
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10197/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+> 
+>   * igt@gem_lmem_swapping@basic:
+>     - fi-kbl-soraka:      NOTRUN -> [SKIP][5] ([fdo#109271] / [i915#4613]) +3 other tests skip
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10197/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
+> 
+>   * igt@gem_lmem_swapping@random-engines:
+>     - fi-bsw-n3050:       NOTRUN -> [SKIP][6] ([fdo#109271]) +14 other tests skip
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10197/fi-bsw-n3050/igt@gem_lmem_swapping@random-engines.html
+> 
+>   * igt@i915_selftest@live@gt_pm:
+>     - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][7] ([i915#1886])
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10197/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+> 
+>   * igt@i915_suspend@basic-s3-without-i915:
+>     - bat-rpls-1:         [PASS][8] -> [ABORT][9] ([i915#7978] / [i915#9631])
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13881/bat-rpls-1/igt@i915_suspend@basic-s3-without-i915.html
+>    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10197/bat-rpls-1/igt@i915_suspend@basic-s3-without-i915.html
+> 
+>   * igt@kms_dsc@dsc-basic:
+>     - fi-kbl-soraka:      NOTRUN -> [SKIP][10] ([fdo#109271]) +9 other tests skip
+>    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10197/fi-kbl-soraka/igt@kms_dsc@dsc-basic.html
+> 
+>   * igt@kms_hdmi_inject@inject-audio:
+>     - fi-bsw-n3050:       NOTRUN -> [FAIL][11] ([IGT#3])
+>    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10197/fi-bsw-n3050/igt@kms_hdmi_inject@inject-audio.html
+> 
+>   
+> #### Possible fixes ####
+> 
+>   * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:
+>     - bat-rplp-1:         [ABORT][12] ([i915#8668]) -> [PASS][13]
+>    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13881/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+>    [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10197/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+> 
+>   
+>   {name}: This element is suppressed. This means it is ignored when computing
+>           the status of the difference (SUCCESS, WARNING, or FAILURE).
+> 
+>   [IGT#3]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3
+>   [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+>   [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+>   [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+>   [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+>   [i915#7978]: https://gitlab.freedesktop.org/drm/intel/issues/7978
+>   [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
+>   [i915#9631]: https://gitlab.freedesktop.org/drm/intel/issues/9631
+>   [i915#9648]: https://gitlab.freedesktop.org/drm/intel/issues/9648
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_7590 -> IGTPW_10197
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_13881: 36732395a74634a9ff9db10c79c4c52719cdab40 @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_10197: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10197/index.html
+>   IGT_7590: c484e1422184a3183d11f1595e53a6715574520f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+> 
+> 
+> Testlist changes
+> ----------------
+> 
+> -igt@xe_waitfence@hasengine
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10197/index.html
