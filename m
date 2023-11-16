@@ -1,21 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B3CC910E26C
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Nov 2023 21:55:48 +0000 (UTC)
-From: "Jahagirdar, Akshata" <akshata.jahagirdar@intel.com>
-To: "Stolarek, Karolina" <karolina.stolarek@intel.com>
-Date: Wed, 15 Nov 2023 21:55:40 +0000
-Message-ID: <CO1PR11MB49779C6398469906DDDCDF868DB1A@CO1PR11MB4977.namprd11.prod.outlook.com>
-References: <cover.1699647258.git.akshata.jahagirdar@intel.com>
- <4f3357f4020e149066b73f6e6d2bf9ed025f4c31.1699647258.git.akshata.jahagirdar@intel.com>
- <57c57f09-eadc-4a9a-86a9-c40b72caca98@intel.com>
-In-Reply-To: <57c57f09-eadc-4a9a-86a9-c40b72caca98@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6DBD210E056
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Nov 2023 03:28:53 +0000 (UTC)
+From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 15 Nov 2023 19:28:36 -0800
+Message-Id: <20231116032837.1629-3-niranjana.vishwanathapura@intel.com>
+In-Reply-To: <20231116032837.1629-1-niranjana.vishwanathapura@intel.com>
+References: <20231116032837.1629-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/5] lib: add blt command properties for
- lunarlake
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 2/3] lib/intel_compute: Update intel_compute
+ to run on specified engine
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,82 +20,214 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Siddiqui,
- Ayaz A" <ayaz.siddiqui@intel.com>, "Auld, Matthew" <matthew.auld@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SEksDQpDb21tZW50cyBpbmxpbmUuDQoNCg0KLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCkZy
-b206IFN0b2xhcmVrLCBLYXJvbGluYSA8a2Fyb2xpbmEuc3RvbGFyZWtAaW50ZWwuY29tPiANClNl
-bnQ6IE1vbmRheSwgTm92ZW1iZXIgMTMsIDIwMjMgMTI6NDIgQU0NClRvOiBKYWhhZ2lyZGFyLCBB
-a3NoYXRhIDxha3NoYXRhLmphaGFnaXJkYXJAaW50ZWwuY29tPg0KQ2M6IGlndC1kZXZAbGlzdHMu
-ZnJlZWRlc2t0b3Aub3JnOyBTaWRkaXF1aSwgQXlheiBBIDxheWF6LnNpZGRpcXVpQGludGVsLmNv
-bT47IEtlbXBjenluc2tpLCBaYmlnbmlldyA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29t
-PjsgQXVsZCwgTWF0dGhldyA8bWF0dGhldy5hdWxkQGludGVsLmNvbT4NClN1YmplY3Q6IFJlOiBb
-UEFUQ0ggaS1nLXQgMS81XSBsaWI6IGFkZCBibHQgY29tbWFuZCBwcm9wZXJ0aWVzIGZvciBsdW5h
-cmxha2UNCg0KDQpPbiAxMC4xMS4yMDIzIDIyOjI0LCBBa3NoYXRhIEphaGFnaXJkYXIgd3JvdGU6
-DQo+IEFkZCBibHRfY21kX2luZm8gc3RydWN0cyB0byBkZXNjcmliZSBwcm9wZXJ0aWVzIG9mIFhZ
-X0JMT0NLX0NPUFkgYW5kIFhZX0ZBU1RfQ09QWSBibGl0dGVyIGNvbW1hbmRzIGZvciBYRTIgcGxh
-dGZvcm0uIFVwZGF0ZWQgdGhlIGRlZmluaXRpb25zIGZvciBMdW5hcmxha2UuDQoNCk5pdDogYnJl
-YWsgdGhlIGNvbW1pdCBtZXNzYWdlIGF0IDgwIGNvbHVtbg0KDQpBSjogV2lsbCBmaXggdGhpcy4N
-Cg0KPiANCj4gU2lnbmVkLW9mZi1ieTogQWtzaGF0YSBKYWhhZ2lyZGFyIDxha3NoYXRhLmphaGFn
-aXJkYXJAaW50ZWwuY29tPg0KPiAtLS0NCj4gICBsaWIvaW50ZWxfY21kc19pbmZvLmMgICB8IDI0
-ICsrKysrKysrKysrKysrKysrKysrKysrKw0KPiAgIGxpYi9pbnRlbF9jbWRzX2luZm8uaCAgIHwg
-IDEgKw0KPiAgIGxpYi9pbnRlbF9kZXZpY2VfaW5mby5jIHwgIDIgKy0NCj4gICAzIGZpbGVzIGNo
-YW5nZWQsIDI2IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkNCj4gDQo+IGRpZmYgLS1naXQg
-YS9saWIvaW50ZWxfY21kc19pbmZvLmMgYi9saWIvaW50ZWxfY21kc19pbmZvLmMgaW5kZXggDQo+
-IDJlNTFlYzA4MS4uZmMzNTU0MjcxIDEwMDY0NA0KPiAtLS0gYS9saWIvaW50ZWxfY21kc19pbmZv
-LmMNCj4gKysrIGIvbGliL2ludGVsX2NtZHNfaW5mby5jDQo+IEBAIC02Nyw2ICs2NywyMiBAQCBz
-dGF0aWMgY29uc3Qgc3RydWN0IGJsdF9jbWRfaW5mbw0KPiAgIAkJCQkJCSBCTFRfQ01EX0VYVEVO
-REVEIHwNCj4gICAJCQkJCQkgQkxUX0NNRF9TVVBQT1JUU19DT01QUkVTU0lPTik7DQo+ICAgDQo+
-ICtzdGF0aWMgY29uc3Qgc3RydWN0IGJsdF9jbWRfaW5mbwkJCQkNCj4gKwkJeGUyX3h5X2Jsb2Nr
-X2NvcHkgPSBCTFRfSU5GT19FWFQoWFlfQkxPQ0tfQ09QWSwNCj4gKwkJCQkJCSBCSVQoVF9MSU5F
-QVIpIHwNCj4gKwkJCQkJCSBCSVQoVF9YTUFKT1IpIHwNCj4gKwkJCQkJCSBCSVQoVF9USUxFNCkg
-IHwNCj4gKwkJCQkJCSBCSVQoVF9USUxFNjQpLA0KPiArCQkJCQkJIEJMVF9DTURfRVhURU5ERUQg
-fA0KPiArCQkJCQkJIEJMVF9DTURfU1VQUE9SVFNfQ09NUFJFU1NJT04pOw0KDQpJIGtub3cgdGhp
-cyBtaWdodCBiZSB0b28gbXVjaCB3b3JrLCBidXQgY291bGQgd2UgY29uZmlybSB0aGF0IFhNQUpP
-UiBpcyBhY3R1YWxseSBzdXBwb3J0ZWQgd2l0aCBibG9jayBjb3B5IG9uIHRoaXMgcGxhdGZvcm0/
-IFRoaXMgY291bGQgYmUgYXMgZWFzeSBhcyBydW5uaW5nIHhlX2NjcyB0ZXN0IHdpdGggLXAgcGFy
-YW1ldGVyLCBhbmQgdGhlbiBjaGVja2luZyB0aGUgbWlkIGltYWdlIGFuZCB0aGUgdGlsaW5nIHBh
-dHRlcm4uIEJ1dCBJIHdvbid0IGFyZ3VlIGl0J3MgZXNzZW50aWFsIGZvciByLWIsIGl0J3MgbW9y
-ZSBvZiBhIHNhbml0eSBjaGVjay4NCg0KQUo6IEkgaGF2ZSB2ZXJpZmllZCB0aGlzIHRocm91Z2gg
-YnNwZWMsIGFzIHdlbGwgYXMgdGVzdHMgYXJlIHBhc3Npbmcgb24gdGhlIHBsYXRmb3JtLg0KPiAr
-DQo+ICtzdGF0aWMgY29uc3Qgc3RydWN0IGJsdF9jbWRfaW5mbw0KPiArCQl4ZTJfeHlfZmFzdF9j
-b3B5ID0gQkxUX0lORk8oWFlfRkFTVF9DT1BZLA0KPiArCQkJCQkgICAgQklUKFRfTElORUFSKSB8
-DQo+ICsJCQkJCSAgICBCSVQoVF9YTUFKT1IpIHwNCj4gKwkJCQkJICAgIEJJVChUX1RJTEU0KSAg
-fA0KPiArCQkJCQkgICAgQklUKFRfVElMRTY0KSk7DQoNClRoaXMgbG9va3MgYSBsb3QgbGlrZSBk
-ZzJfeHlfZmFzdF9jb3B5IGRlZmluaXRpb24uIFdoeSBub3QgcmV1c2UgaXQgd2hlbiBkZWZpbmlu
-ZyB4ZTJfY21kc19pbmZvPw0KDQpBSjogWWVzLCBJIHRob3VnaHQgb2Yga2VlcGluZyBpdCBzZXBh
-cmF0ZSB0byBhZGRyZXNzIGFueSBvdGhlciBkaWZmZXJlbmNlcy4NCg0KV2l0aCB0aGVzZSBjb21t
-ZW50cyBhZGRyZXNzZWQ6DQoNClJldmlld2VkLWJ5OiBLYXJvbGluYSBTdG9sYXJlayA8a2Fyb2xp
-bmEuc3RvbGFyZWtAaW50ZWwuY29tPg0KDQo+ICsNCj4gICBzdGF0aWMgY29uc3Qgc3RydWN0IGJs
-dF9jbWRfaW5mbw0KPiAgIAkJbXRsX3h5X2Jsb2NrX2NvcHkgPSBCTFRfSU5GT19FWFQoWFlfQkxP
-Q0tfQ09QWSwNCj4gICAJCQkJCQkgQklUKFRfTElORUFSKSB8DQo+IEBAIC0xNjksNiArMTg1LDE0
-IEBAIGNvbnN0IHN0cnVjdCBpbnRlbF9jbWRzX2luZm8gZ2VuMTJfcHZjX2NtZHNfaW5mbyA9IHsN
-Cj4gICAJfQ0KPiAgIH07DQo+ICAgDQo+ICsNCj4gK2NvbnN0IHN0cnVjdCBpbnRlbF9jbWRzX2lu
-Zm8geGUyX2NtZHNfaW5mbyAgPSB7DQo+ICsJLmJsdF9jbWRzID0gew0KPiArCQlbWFlfRkFTVF9D
-T1BZXSA9ICZ4ZTJfeHlfZmFzdF9jb3B5LA0KPiArCQlbWFlfQkxPQ0tfQ09QWV0gPSAmeGUyX3h5
-X2Jsb2NrX2NvcHksDQo+ICsJfQ0KPiArfTsNCj4gKw0KPiAgIGNvbnN0IHN0cnVjdCBibHRfY21k
-X2luZm8gKmJsdF9nZXRfY21kX2luZm8oY29uc3Qgc3RydWN0IGludGVsX2NtZHNfaW5mbyAqY21k
-c19pbmZvLA0KPiAgIAkJCQkJICAgIGVudW0gYmx0X2NtZF90eXBlIGNtZCkNCj4gICB7DQo+IGRp
-ZmYgLS1naXQgYS9saWIvaW50ZWxfY21kc19pbmZvLmggYi9saWIvaW50ZWxfY21kc19pbmZvLmgg
-aW5kZXggDQo+IGY5ZTM5MzJkMS4uMGE4M2I2YTQ0IDEwMDY0NA0KPiAtLS0gYS9saWIvaW50ZWxf
-Y21kc19pbmZvLmgNCj4gKysrIGIvbGliL2ludGVsX2NtZHNfaW5mby5oDQo+IEBAIC01NSw2ICs1
-NSw3IEBAIGV4dGVybiBjb25zdCBzdHJ1Y3QgaW50ZWxfY21kc19pbmZvIGdlbjEyX2NtZHNfaW5m
-bzsNCj4gICBleHRlcm4gY29uc3Qgc3RydWN0IGludGVsX2NtZHNfaW5mbyBnZW4xMl9kZzJfY21k
-c19pbmZvOw0KPiAgIGV4dGVybiBjb25zdCBzdHJ1Y3QgaW50ZWxfY21kc19pbmZvIGdlbjEyX210
-bF9jbWRzX2luZm87DQo+ICAgZXh0ZXJuIGNvbnN0IHN0cnVjdCBpbnRlbF9jbWRzX2luZm8gZ2Vu
-MTJfcHZjX2NtZHNfaW5mbzsNCj4gK2V4dGVybiBjb25zdCBzdHJ1Y3QgaW50ZWxfY21kc19pbmZv
-IHhlMl9jbWRzX2luZm87DQo+ICAgDQo+ICAgI2RlZmluZSBmb3JfZWFjaF90aWxpbmcoX190aWxp
-bmcpIFwNCj4gICAJZm9yIChfX3RpbGluZyA9IFRfTElORUFSOyBfX3RpbGluZyA8IF9fQkxUX01B
-WF9USUxJTkc7IF9fdGlsaW5nKyspIA0KPiBkaWZmIC0tZ2l0IGEvbGliL2ludGVsX2RldmljZV9p
-bmZvLmMgYi9saWIvaW50ZWxfZGV2aWNlX2luZm8uYyBpbmRleCANCj4gMzQ4MTdmN2I2Li5hNjY5
-Nzk3YzMgMTAwNjQ0DQo+IC0tLSBhL2xpYi9pbnRlbF9kZXZpY2VfaW5mby5jDQo+ICsrKyBiL2xp
-Yi9pbnRlbF9kZXZpY2VfaW5mby5jDQo+IEBAIC01MTEsNyArNTExLDcgQEAgc3RhdGljIGNvbnN0
-IHN0cnVjdCBpbnRlbF9kZXZpY2VfaW5mbyBpbnRlbF9sdW5hcmxha2VfaW5mbyA9IHsNCj4gICAJ
-Lmhhc180dGlsZSA9IHRydWUsDQo+ICAgCS5pc19sdW5hcmxha2UgPSB0cnVlLA0KPiAgIAkuY29k
-ZW5hbWUgPSAibHVuYXJsYWtlIiwNCj4gLQkuY21kc19pbmZvID0gJmdlbjEyX3B2Y19jbWRzX2lu
-Zm8sDQo+ICsJLmNtZHNfaW5mbyA9ICZ4ZTJfY21kc19pbmZvLA0KPiAgIH07DQo+ICAgDQo+ICAg
-c3RhdGljIGNvbnN0IHN0cnVjdCBwY2lfaWRfbWF0Y2ggaW50ZWxfZGV2aWNlX21hdGNoW10gPSB7
-DQo=
+With CCS_MODE setting, available compute slices can be assigned
+to specific compute engines. Update intel_compute library to
+be able to run compute kernel on specified compute or render
+engine.
+
+Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ lib/intel_compute.c | 76 +++++++++++++++++++++++++++++++--------------
+ lib/intel_compute.h |  3 ++
+ 2 files changed, 56 insertions(+), 23 deletions(-)
+
+diff --git a/lib/intel_compute.c b/lib/intel_compute.c
+index 7f1ea90e7..ba85d805d 100644
+--- a/lib/intel_compute.c
++++ b/lib/intel_compute.c
+@@ -16,7 +16,6 @@
+ #include "intel_compute.h"
+ #include "lib/igt_syncobj.h"
+ #include "lib/intel_reg.h"
+-#include "xe_drm.h"
+ #include "xe/xe_ioctl.h"
+ #include "xe/xe_query.h"
+ #include "xehp_media.h"
+@@ -62,7 +61,8 @@ struct bo_execenv {
+ 	struct drm_i915_gem_exec_object2 *obj;
+ };
+ 
+-static void bo_execenv_create(int fd, struct bo_execenv *execenv)
++static void bo_execenv_create(int fd, struct bo_execenv *execenv,
++			      struct drm_xe_engine_class_instance *eci)
+ {
+ 	igt_assert(execenv);
+ 
+@@ -71,18 +71,23 @@ static void bo_execenv_create(int fd, struct bo_execenv *execenv)
+ 	execenv->driver = get_intel_driver(fd);
+ 
+ 	if (execenv->driver == INTEL_DRIVER_XE) {
+-		uint16_t engine_class;
+-		uint32_t devid = intel_get_drm_devid(fd);
+-		const struct intel_device_info *info = intel_get_device_info(devid);
+-
+-		if (info->graphics_ver >= 12 && info->graphics_rel < 60)
+-			engine_class = DRM_XE_ENGINE_CLASS_RENDER;
+-		else
+-			engine_class = DRM_XE_ENGINE_CLASS_COMPUTE;
+-
+ 		execenv->vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
+-		execenv->exec_queue = xe_exec_queue_create_class(fd, execenv->vm,
+-								 engine_class);
++		if (eci) {
++			execenv->exec_queue = xe_exec_queue_create(fd, execenv->vm,
++								   eci, 0);
++		} else {
++			uint16_t engine_class;
++			uint32_t devid = intel_get_drm_devid(fd);
++			const struct intel_device_info *info = intel_get_device_info(devid);
++
++			if (info->graphics_ver >= 12 && info->graphics_rel < 60)
++				engine_class = DRM_XE_ENGINE_CLASS_RENDER;
++			else
++				engine_class = DRM_XE_ENGINE_CLASS_COMPUTE;
++
++			execenv->exec_queue = xe_exec_queue_create_class(fd, execenv->vm,
++									 engine_class);
++		}
+ 	}
+ }
+ 
+@@ -546,7 +551,8 @@ static void tgllp_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
+  * @size: size of @kernel.
+  */
+ static void tgl_compute_exec(int fd, const unsigned char *kernel,
+-			     unsigned int size)
++			     unsigned int size,
++			     struct drm_xe_engine_class_instance *eci)
+ {
+ #define TGL_BO_DICT_ENTRIES 7
+ 	struct bo_dict_entry bo_dict[TGL_BO_DICT_ENTRIES] = {
+@@ -574,7 +580,7 @@ static void tgl_compute_exec(int fd, const unsigned char *kernel,
+ 	struct bo_execenv execenv;
+ 	float *dinput;
+ 
+-	bo_execenv_create(fd, &execenv);
++	bo_execenv_create(fd, &execenv, eci);
+ 
+ 	/* Sets Kernel size */
+ 	bo_dict[0].size = ALIGN(size, 0x1000);
+@@ -814,7 +820,8 @@ static void xehp_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
+  * @size: size of @kernel.
+  */
+ static void xehp_compute_exec(int fd, const unsigned char *kernel,
+-			     unsigned int size)
++			      unsigned int size,
++			      struct drm_xe_engine_class_instance *eci)
+ {
+ #define XEHP_BO_DICT_ENTRIES 9
+ 	struct bo_dict_entry bo_dict[XEHP_BO_DICT_ENTRIES] = {
+@@ -844,7 +851,7 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
+ 	struct bo_execenv execenv;
+ 	float *dinput;
+ 
+-	bo_execenv_create(fd, &execenv);
++	bo_execenv_create(fd, &execenv, eci);
+ 
+ 	/* Sets Kernel size */
+ 	bo_dict[0].size = ALIGN(size, 0x1000);
+@@ -1028,7 +1035,8 @@ static void xehpc_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
+  * @size: size of @kernel.
+  */
+ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
+-			       unsigned int size)
++			       unsigned int size,
++			       struct drm_xe_engine_class_instance *eci)
+ {
+ #define XEHPC_BO_DICT_ENTRIES 6
+ 	struct bo_dict_entry bo_dict[XEHPC_BO_DICT_ENTRIES] = {
+@@ -1049,7 +1057,7 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
+ 	struct bo_execenv execenv;
+ 	float *dinput;
+ 
+-	bo_execenv_create(fd, &execenv);
++	bo_execenv_create(fd, &execenv, eci);
+ 
+ 	/* Sets Kernel size */
+ 	bo_dict[0].size = ALIGN(size, 0x1000);
+@@ -1103,7 +1111,8 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
+ static const struct {
+ 	unsigned int ip_ver;
+ 	void (*compute_exec)(int fd, const unsigned char *kernel,
+-			     unsigned int size);
++			     unsigned int size,
++			     struct drm_xe_engine_class_instance *eci);
+ 	uint32_t compat;
+ } intel_compute_batches[] = {
+ 	{
+@@ -1123,7 +1132,8 @@ static const struct {
+ 	},
+ };
+ 
+-bool run_intel_compute_kernel(int fd)
++static bool __run_intel_compute_kernel(int fd,
++				       struct drm_xe_engine_class_instance *eci)
+ {
+ 	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
+ 	unsigned int batch;
+@@ -1134,8 +1144,10 @@ bool run_intel_compute_kernel(int fd)
+ 		if (ip_ver == intel_compute_batches[batch].ip_ver)
+ 			break;
+ 	}
+-	if (batch == ARRAY_SIZE(intel_compute_batches))
++	if (batch == ARRAY_SIZE(intel_compute_batches)) {
++		igt_debug("GPU version 0x%x not supported\n", ip_ver);
+ 		return false;
++	}
+ 
+ 	if (!(COMPAT_DRIVER_FLAG(driver) & intel_compute_batches[batch].compat)) {
+ 		igt_debug("Driver is not supported: flags %x & %x\n",
+@@ -1153,7 +1165,25 @@ bool run_intel_compute_kernel(int fd)
+ 		return 1;
+ 
+ 	intel_compute_batches[batch].compute_exec(fd, kernels->kernel,
+-						  kernels->size);
++						  kernels->size, eci);
+ 
+ 	return true;
+ }
++
++bool run_intel_compute_kernel(int fd)
++{
++	return __run_intel_compute_kernel(fd, NULL);
++}
++
++bool run_intel_compute_kernel_on_engine(int fd,
++					struct drm_xe_engine_class_instance *eci)
++{
++	if (eci->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE &&
++	    eci->engine_class != DRM_XE_ENGINE_CLASS_RENDER) {
++		igt_debug("%s engine class not supported\n",
++			  xe_engine_class_string(eci->engine_class));
++		return false;
++	}
++
++	return __run_intel_compute_kernel(fd, eci);
++}
+diff --git a/lib/intel_compute.h b/lib/intel_compute.h
+index ba153f064..5d81c3d62 100644
+--- a/lib/intel_compute.h
++++ b/lib/intel_compute.h
+@@ -9,6 +9,8 @@
+ #ifndef INTEL_COMPUTE_H
+ #define INTEL_COMPUTE_H
+ 
++#include "xe_drm.h"
++
+ /*
+  * OpenCL Kernels are generated using:
+  *
+@@ -28,5 +30,6 @@ struct intel_compute_kernels {
+ extern const struct intel_compute_kernels intel_compute_square_kernels[];
+ 
+ bool run_intel_compute_kernel(int fd);
++bool run_intel_compute_kernel_on_engine(int fd, struct drm_xe_engine_class_instance *eci);
+ 
+ #endif	/* INTEL_COMPUTE_H */
+-- 
+2.21.0.rc0.32.g243a4c7e27
