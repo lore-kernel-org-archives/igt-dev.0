@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 29CDF10E099
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Nov 2023 08:25:13 +0000 (UTC)
-Message-ID: <f7139162-51d6-7829-1ffe-5deb9515e923@intel.com>
-Date: Thu, 16 Nov 2023 13:54:46 +0530
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5F45410E24F
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Nov 2023 08:25:25 +0000 (UTC)
+Message-ID: <64e81c86-4676-375b-c8be-d140de1256b0@intel.com>
+Date: Thu, 16 Nov 2023 13:55:07 +0530
 Content-Language: en-US
 To: Sean Paul <sean@poorly.run>, <igt-dev@lists.freedesktop.org>
 References: <20231023205910.3556533-1-sean@poorly.run>
- <20231023205910.3556533-7-sean@poorly.run>
+ <20231023205910.3556533-6-sean@poorly.run>
 From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20231023205910.3556533-7-sean@poorly.run>
+In-Reply-To: <20231023205910.3556533-6-sean@poorly.run>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v2 6/8] tests/kms_vrr: Add ability to flip
- static image for flicker profiling
+Subject: Re: [igt-dev] [PATCH v2 5/8] tests/kms_vrr: Change the pattern
+ displayed in the test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,124 +31,100 @@ List-ID: <igt-dev@lists.freedesktop.org>
 On Tue-24-10-2023 02:26 am, Sean Paul wrote:
 > From: Sean Paul <seanpaul@chromium.org>
 > 
-> Add a --static-image argument which will paint both framebuffers
-> identically. This allows us to profile VRR flicker on the panel.
+> Upgrade the tiny box in the top left corner to some vertical color
+> bars with horizontal grey and white bars at the bottom.
 > 
 > Cc: Mark Yacoub <markyacoub@chromium.org>
+> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > Signed-off-by: Sean Paul <seanpaul@chromium.org>
 > 
-> Changes in v2:
-> - Add short opt to the main callsite (Bhanu)
+> Changes in v2 (Bhanu):
+> - Removed hardcoded bar heights
+> - Made number of vertical bars configurable
+> - Fill in the entire screen horizontally
 > ---
->   tests/kms_vrr.c | 53 ++++++++++++++++++++++++++++++-------------------
->   1 file changed, 33 insertions(+), 20 deletions(-)
+>   tests/kms_vrr.c | 45 +++++++++++++++++++++++++++++++++++++++++----
+>   1 file changed, 41 insertions(+), 4 deletions(-)
 > 
 > diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-> index 34d75d648..57bd87ddf 100644
+> index af61c312e..34d75d648 100644
 > --- a/tests/kms_vrr.c
 > +++ b/tests/kms_vrr.c
-> @@ -110,6 +110,7 @@ typedef struct data {
->   	range_t range;
->   	vtest_ns_t vtest_ns;
->   	uint64_t duration_ns;
-> +	bool static_image;
->   } data_t;
+> @@ -232,11 +232,31 @@ static void set_vrr_on_pipe(data_t *data, enum pipe pipe, bool enabled)
+>   	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+>   }
 >   
->   typedef void (*test_t)(data_t*, enum pipe, igt_output_t*, uint32_t);
-> @@ -257,6 +258,7 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
+> +static void paint_bar(cairo_t *cr, unsigned int x, unsigned int y,
+> +		      unsigned int w, unsigned int h,
+> +		      unsigned int bar, unsigned int num_bars,
+> +		      float start_r, float start_g, float start_b,
+> +		      float end_r, float end_g, float end_b)
+> +{
+> +	float progress = (float)bar / (float)num_bars;
+> +	float color[] = {
+> +		start_r + progress * (end_r - start_r),
+> +		start_g + progress * (end_g - start_g),
+> +		start_b + progress * (end_b - start_b)
+> +	};
+> +	igt_paint_color(cr, x, y, w, h,
+> +			color[0] > 0 ? color[0] : 0.0,
+> +			color[1] > 0 ? color[1] : 0.0,
+> +			color[2] > 0 ? color[2] : 0.0);
+> +}
+> +
+>   /* Prepare the display for testing on the given pipe. */
+>   static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
+>   {
+> +	static const unsigned int num_bars = 256;
+
+Why static?
+
 >   	drmModeModeInfo mode;
 >   	cairo_t *cr;
->   	int bar_width, bar_height, bar_remaining, horizontal_bar_height;
-> +	int num_painted_fbs;
+> +	int bar_width, bar_height, bar_remaining, horizontal_bar_height;
 >   
 >   	/* Reset output */
 >   	igt_display_reset(&data->display);
-> @@ -303,25 +305,31 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
->   	horizontal_bar_height = mode.vdisplay / 8;
->   	bar_height = mode.vdisplay - horizontal_bar_height * 2;
->   	bar_remaining = mode.hdisplay % bar_width;
-> -	cr = igt_get_cairo_ctx(data->drm_fd, &data->fb[0]);
-> -	for (int j = 0; j < num_bars; ++j) {
-> -		unsigned int width = bar_width;
-> -		if (j == num_bars - 1)
-> -			width += bar_remaining;
+> @@ -279,11 +299,28 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
+>   			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+>   			    0.50, 0.50, 0.50, &data->fb[1]);
+>   
+> +	bar_width = mode.hdisplay / num_bars;
+> +	horizontal_bar_height = mode.vdisplay / 8 > +	bar_height = mode.vdisplay - horizontal_bar_height * 2;
+> +	bar_remaining = mode.hdisplay % bar_width;
+>   	cr = igt_get_cairo_ctx(data->drm_fd, &data->fb[0]);
 > -
-> -		/* Red->Green->Blue gradient */
-> -		if (j < num_bars / 2)
-> -			paint_bar(cr, j * bar_width, 0, width, bar_height,
-> -				  j, num_bars / 2,
-> -				  1.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-> -		else
-> -			paint_bar(cr, j * bar_width, 0, width, bar_height,
-> -				  j - num_bars / 2, num_bars / 2,
-> -				  0.0, 1.0, 0.0, 0.0, 0.0, 1.0);
-> +	num_painted_fbs = data->static_image ? 2 : 1;
-> +	for (int i = 0; i < num_painted_fbs; ++i) {
-> +		cr = igt_get_cairo_ctx(data->drm_fd, &data->fb[i]);
-> +		for (int j = 0; j < num_bars; ++j) {
-> +			unsigned int width = bar_width;
-> +			if (j == num_bars - 1)
-> +				width += bar_remaining;
+> -	igt_paint_color(cr, 0, 0, mode.hdisplay / 10, mode.vdisplay / 10,
+> -			1.00, 0.00, 0.00);
+> -
+> +	for (int j = 0; j < num_bars; ++j) {
+> +		unsigned int width = bar_width;
+> +		if (j == num_bars - 1)
+> +			width += bar_remaining;
 > +
-> +			/* Red->Green->Blue gradient */
-> +			if (j < num_bars / 2)
-> +				paint_bar(cr, j * bar_width, 0, width,
-> +					  bar_height,
-> +					  j, num_bars / 2,
-> +					  1.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-> +			else
-> +				paint_bar(cr, j * bar_width, 0, width,
-> +					  bar_height,
-> +					  j - num_bars / 2, num_bars / 2,
-> +					  0.0, 1.0, 0.0, 0.0, 0.0, 1.0);
-> +		}
-> +		igt_paint_color(cr, 0, mode.vdisplay - horizontal_bar_height,
-> +				mode.hdisplay, horizontal_bar_height,
-> +				1.00, 1.00, 1.00);
-> +		igt_put_cairo_ctx(cr);
->   	}
-> -	igt_paint_color(cr, 0, mode.vdisplay - horizontal_bar_height,
-> -			mode.hdisplay, horizontal_bar_height, 1.00, 1.00, 1.00);
-> -	igt_put_cairo_ctx(cr);
->   
->   	/* Take care of any required modesetting before the test begins. */
->   	data->primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> @@ -585,6 +593,9 @@ static int opt_handler(int opt, int opt_index, void *_data)
->   	case 'r':
->   		data->vtest_ns.rate_ns = rate_from_refresh(atoi(optarg));
->   		break;
-> +	case 's':
-> +		data->static_image = true;
-> +		break;
->   	}
->   	return IGT_OPT_HANDLER_SUCCESS;
->   }
-> @@ -592,16 +603,18 @@ static int opt_handler(int opt, int opt_index, void *_data)
->   static const struct option long_opts[] = {
->   	{ .name = "duration", .has_arg = true, .val = 'd', },
->   	{ .name = "refresh-rate", .has_arg = true, .val = 'r', },
-> +	{ .name = "static-image", .has_arg = false, .val = 's', },
->   	{}
->   };
->   
->   static const char help_str[] =
->   	"  --duration <duration-seconds>\t\tHow long to run the test for\n"
-> -	"  --refresh-rate <refresh-hz>\t\tThe refresh rate to flip at\n";
-> +	"  --refresh-rate <refresh-hz>\t\tThe refresh rate to flip at\n"
-> +	"  --static-image\t\tFlip a static image for flicker profiling\n";
->   
->   static data_t data;
->   
-> -igt_main_args("d:r:", long_opts, help_str, opt_handler, &data)
-> +igt_main_args("d:r:s", long_opts, help_str, opt_handler, &data)
-------------------^
-Nit: s/"d:r:s"/"drs:"/
+> +		/* Red->Green->Blue gradient */
+> +		if (j < num_bars / 2)
+> +			paint_bar(cr, j * bar_width, 0, width, bar_height,
+> +				  j, num_bars / 2,
+> +				  1.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+> +		else
+> +			paint_bar(cr, j * bar_width, 0, width, bar_height,
+> +				  j - num_bars / 2, num_bars / 2,
+> +				  0.0, 1.0, 0.0, 0.0, 0.0, 1.0);
+> +	}
 
-With this change, please add my
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+As per the commit message, grey bar is missing here.
+
+igt_paint_color(cr, 0, bar_height,
+		mode.hdisplay, horizontal_bar_height, 0.5, 0.5, 0.5);
+
+> +	igt_paint_color(cr, 0, mode.vdisplay - horizontal_bar_height,
+-------------------------------^
+Should be (bar_height + horizontal_bar_height), right?
 
 - Bhanu
 
->   {
->   	igt_fixture {
->   		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+> +			mode.hdisplay, horizontal_bar_height, 1.00, 1.00, 1.00);
+>   	igt_put_cairo_ctx(cr);
+>   
+>   	/* Take care of any required modesetting before the test begins. */
