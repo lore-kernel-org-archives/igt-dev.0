@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 802C710E243
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Nov 2023 08:24:55 +0000 (UTC)
-Message-ID: <f6edeabb-427c-6b98-f291-a191cc9a915b@intel.com>
-Date: Thu, 16 Nov 2023 13:54:31 +0530
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 29CDF10E099
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Nov 2023 08:25:13 +0000 (UTC)
+Message-ID: <f7139162-51d6-7829-1ffe-5deb9515e923@intel.com>
+Date: Thu, 16 Nov 2023 13:54:46 +0530
 Content-Language: en-US
 To: Sean Paul <sean@poorly.run>, <igt-dev@lists.freedesktop.org>
 References: <20231023205910.3556533-1-sean@poorly.run>
- <20231023205910.3556533-8-sean@poorly.run>
+ <20231023205910.3556533-7-sean@poorly.run>
 From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20231023205910.3556533-8-sean@poorly.run>
+In-Reply-To: <20231023205910.3556533-7-sean@poorly.run>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v2 7/8] tests/kms_vrr: Allow for multiple
- rates in a test
+Subject: Re: [igt-dev] [PATCH v2 6/8] tests/kms_vrr: Add ability to flip
+ static image for flicker profiling
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,138 +31,124 @@ List-ID: <igt-dev@lists.freedesktop.org>
 On Tue-24-10-2023 02:26 am, Sean Paul wrote:
 > From: Sean Paul <seanpaul@chromium.org>
 > 
-> Instead of passing just one rate into flip_and_measure, pass in an array
-> to allow for tests which vary the refresh rate from one frame to the
-> next. Currently the test will just cycle through the rates in order per
-> frame.
+> Add a --static-image argument which will paint both framebuffers
+> identically. This allows us to profile VRR flicker on the panel.
 > 
-> Just framework, no changes to any tests.
-> 
+> Cc: Mark Yacoub <markyacoub@chromium.org>
 > Signed-off-by: Sean Paul <seanpaul@chromium.org>
-
-LGTM:
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-
 > 
 > Changes in v2:
-> - Added to the set
+> - Add short opt to the main callsite (Bhanu)
 > ---
->   tests/kms_vrr.c | 43 ++++++++++++++++++++++++-------------------
->   1 file changed, 24 insertions(+), 19 deletions(-)
+>   tests/kms_vrr.c | 53 ++++++++++++++++++++++++++++++-------------------
+>   1 file changed, 33 insertions(+), 20 deletions(-)
 > 
 > diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-> index 57bd87ddf..b986087f0 100644
+> index 34d75d648..57bd87ddf 100644
 > --- a/tests/kms_vrr.c
 > +++ b/tests/kms_vrr.c
-> @@ -375,7 +375,7 @@ do_flip(data_t *data, igt_fb_t *fb)
->    */
->   static uint32_t
->   flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
-> -		 uint64_t rate_ns, uint64_t duration_ns)
-> +		 uint64_t *rates_ns, int num_rates, uint64_t duration_ns)
->   {
->   	uint64_t start_ns, last_event_ns, target_ns;
->   	uint32_t total_flip = 0, total_pass = 0;
-> @@ -387,9 +387,10 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
->   	start_ns = last_event_ns = target_ns = get_kernel_event_ns(data,
->   							DRM_EVENT_FLIP_COMPLETE);
->   
-> -	for (;;) {
-> +	for (int i = 0;;++i) {
->   		uint64_t event_ns, wait_ns;
->   		int64_t diff_ns;
-> +		uint64_t rate_ns = rates_ns[i % num_rates];
->   
->   		front = !front;
->   		do_flip(data, front ? &data->fb[1] : &data->fb[0]);
-> @@ -440,8 +441,12 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
->   		while (get_time_ns() < target_ns - 10);
->   	}
->   
-> -	igt_info("Completed %u flips, %u were in threshold for (%llu Hz) %"PRIu64"ns.\n",
-> -		 total_flip, total_pass, (NSECS_PER_SEC/rate_ns), rate_ns);
-> +	igt_info("Completed %u flips, %u were in threshold for [", total_flip, total_pass);
-> +	for (int i = 0; i < num_rates; ++i) {
-> +		igt_info("(%llu Hz) %"PRIu64"ns%s", (NSECS_PER_SEC/rates_ns[i]), rates_ns[i],
-> +			 i < num_rates - 1 ? "," : "");
-> +	}
-> +	igt_info("]\n");
->   
->   	return total_flip ? ((total_pass * 100) / total_flip) : 0;
->   }
-> @@ -453,12 +458,12 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
->   	uint32_t result;
->   	vtest_ns_t vtest_ns;
+> @@ -110,6 +110,7 @@ typedef struct data {
 >   	range_t range;
-> -	uint64_t rate;
-> +	uint64_t rate[] = {0};
+>   	vtest_ns_t vtest_ns;
+>   	uint64_t duration_ns;
+> +	bool static_image;
+>   } data_t;
 >   
->   	prepare_test(data, output, pipe);
->   	range = data->range;
->   	vtest_ns = data->vtest_ns;
-> -	rate = vtest_ns.rate_ns;
-> +	rate[0] = vtest_ns.rate_ns;
+>   typedef void (*test_t)(data_t*, enum pipe, igt_output_t*, uint32_t);
+> @@ -257,6 +258,7 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
+>   	drmModeModeInfo mode;
+>   	cairo_t *cr;
+>   	int bar_width, bar_height, bar_remaining, horizontal_bar_height;
+> +	int num_painted_fbs;
 >   
->   	igt_info("VRR Test execution on %s, PIPE_%s with VRR range: (%u-%u) Hz\n",
->   		 output->name, kmstest_pipe_name(pipe), range.min, range.max);
-> @@ -470,7 +475,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
->   	 * This is to make sure we were actually in the middle of
->   	 * active flipping before doing the DPMS/suspend steps.
->   	 */
-> -	flip_and_measure(data, output, pipe, rate, 250000000ull);
-> +	flip_and_measure(data, output, pipe, rate, 1, 250000000ull);
->   
->   	if (flags & TEST_DPMS) {
->   		kmstest_set_connector_dpms(output->display->drm_fd,
-> @@ -501,27 +506,27 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
->   	 *      next Vmin.
->   	 */
->   	if (flags & TEST_FLIPLINE) {
-> -		rate = rate_from_refresh(range.max + 5);
-> -		result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
-> +		rate[0] = rate_from_refresh(range.max + 5);
-> +		result = flip_and_measure(data, output, pipe, rate, 1, data->duration_ns);
->   		igt_assert_f(result > 75,
->   			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
-> -			     (range.max + 5), rate, result);
-> +			     (range.max + 5), rate[0], result);
+>   	/* Reset output */
+>   	igt_display_reset(&data->display);
+> @@ -303,25 +305,31 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
+>   	horizontal_bar_height = mode.vdisplay / 8;
+>   	bar_height = mode.vdisplay - horizontal_bar_height * 2;
+>   	bar_remaining = mode.hdisplay % bar_width;
+> -	cr = igt_get_cairo_ctx(data->drm_fd, &data->fb[0]);
+> -	for (int j = 0; j < num_bars; ++j) {
+> -		unsigned int width = bar_width;
+> -		if (j == num_bars - 1)
+> -			width += bar_remaining;
+> -
+> -		/* Red->Green->Blue gradient */
+> -		if (j < num_bars / 2)
+> -			paint_bar(cr, j * bar_width, 0, width, bar_height,
+> -				  j, num_bars / 2,
+> -				  1.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+> -		else
+> -			paint_bar(cr, j * bar_width, 0, width, bar_height,
+> -				  j - num_bars / 2, num_bars / 2,
+> -				  0.0, 1.0, 0.0, 0.0, 0.0, 1.0);
+> +	num_painted_fbs = data->static_image ? 2 : 1;
+> +	for (int i = 0; i < num_painted_fbs; ++i) {
+> +		cr = igt_get_cairo_ctx(data->drm_fd, &data->fb[i]);
+> +		for (int j = 0; j < num_bars; ++j) {
+> +			unsigned int width = bar_width;
+> +			if (j == num_bars - 1)
+> +				width += bar_remaining;
+> +
+> +			/* Red->Green->Blue gradient */
+> +			if (j < num_bars / 2)
+> +				paint_bar(cr, j * bar_width, 0, width,
+> +					  bar_height,
+> +					  j, num_bars / 2,
+> +					  1.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+> +			else
+> +				paint_bar(cr, j * bar_width, 0, width,
+> +					  bar_height,
+> +					  j - num_bars / 2, num_bars / 2,
+> +					  0.0, 1.0, 0.0, 0.0, 0.0, 1.0);
+> +		}
+> +		igt_paint_color(cr, 0, mode.vdisplay - horizontal_bar_height,
+> +				mode.hdisplay, horizontal_bar_height,
+> +				1.00, 1.00, 1.00);
+> +		igt_put_cairo_ctx(cr);
 >   	}
+> -	igt_paint_color(cr, 0, mode.vdisplay - horizontal_bar_height,
+> -			mode.hdisplay, horizontal_bar_height, 1.00, 1.00, 1.00);
+> -	igt_put_cairo_ctx(cr);
 >   
->   	if (flags & ~TEST_NEGATIVE) {
-> -		rate = vtest_ns.rate_ns;
-> -		result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
-> +		rate[0] = vtest_ns.rate_ns;
-> +		result = flip_and_measure(data, output, pipe, rate, 1, data->duration_ns);
->   		igt_assert_f(result > 75,
->   			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
-> -			     ((range.max + range.min) / 2), rate, result);
-> +			     ((range.max + range.min) / 2), rate[0], result);
+>   	/* Take care of any required modesetting before the test begins. */
+>   	data->primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+> @@ -585,6 +593,9 @@ static int opt_handler(int opt, int opt_index, void *_data)
+>   	case 'r':
+>   		data->vtest_ns.rate_ns = rate_from_refresh(atoi(optarg));
+>   		break;
+> +	case 's':
+> +		data->static_image = true;
+> +		break;
 >   	}
+>   	return IGT_OPT_HANDLER_SUCCESS;
+>   }
+> @@ -592,16 +603,18 @@ static int opt_handler(int opt, int opt_index, void *_data)
+>   static const struct option long_opts[] = {
+>   	{ .name = "duration", .has_arg = true, .val = 'd', },
+>   	{ .name = "refresh-rate", .has_arg = true, .val = 'r', },
+> +	{ .name = "static-image", .has_arg = false, .val = 's', },
+>   	{}
+>   };
 >   
->   	if (flags & TEST_FLIPLINE) {
-> -		rate = rate_from_refresh(range.min - 5);
-> -		result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
-> +		rate[0] = rate_from_refresh(range.min - 5);
-> +		result = flip_and_measure(data, output, pipe, rate, 1, data->duration_ns);
->   		igt_assert_f(result < 50,
->   			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold exceeded, result was %u%%\n",
-> -			     (range.min - 5), rate, result);
-> +			     (range.min - 5), rate[0], result);
->   	}
+>   static const char help_str[] =
+>   	"  --duration <duration-seconds>\t\tHow long to run the test for\n"
+> -	"  --refresh-rate <refresh-hz>\t\tThe refresh rate to flip at\n";
+> +	"  --refresh-rate <refresh-hz>\t\tThe refresh rate to flip at\n"
+> +	"  --static-image\t\tFlip a static image for flicker profiling\n";
 >   
->   	/*
-> @@ -530,11 +535,11 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
->   	 * a VRR capable panel.
->   	 */
->   	set_vrr_on_pipe(data, pipe, (flags & TEST_NEGATIVE)? true : false);
-> -	rate = vtest_ns.rate_ns;
-> -	result = flip_and_measure(data, output, pipe, rate, data->duration_ns);
-> +	rate[0] = vtest_ns.rate_ns;
-> +	result = flip_and_measure(data, output, pipe, rate, 1, data->duration_ns);
->   	igt_assert_f(result < 10,
->   		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold exceeded, result was %u%%\n",
-> -		     ((range.max + range.min) / 2), rate, (flags & TEST_NEGATIVE)? "on" : "off", result);
-> +		     ((range.max + range.min) / 2), rate[0], (flags & TEST_NEGATIVE)? "on" : "off", result);
+>   static data_t data;
 >   
->   	/* Clean-up */
->   	igt_plane_set_fb(data->primary, NULL);
+> -igt_main_args("d:r:", long_opts, help_str, opt_handler, &data)
+> +igt_main_args("d:r:s", long_opts, help_str, opt_handler, &data)
+------------------^
+Nit: s/"d:r:s"/"drs:"/
+
+With this change, please add my
+Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+
+- Bhanu
+
+>   {
+>   	igt_fixture {
+>   		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
