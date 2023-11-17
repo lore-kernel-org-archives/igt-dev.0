@@ -1,16 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0E94210E08E
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Nov 2023 13:16:05 +0000 (UTC)
-From: Nirmoy Das <nirmoy.das@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 17 Nov 2023 14:03:16 +0100
-Message-ID: <20231117130316.5498-1-nirmoy.das@intel.com>
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com
+ [IPv6:2a00:1450:4864:20::32d])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4350510E08E
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Nov 2023 13:24:09 +0000 (UTC)
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-4084b0223ccso15412355e9.2
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Nov 2023 05:24:09 -0800 (PST)
+Message-ID: <b5d01969-9a50-4647-9312-152a72a2b718@gmail.com>
+Date: Fri, 17 Nov 2023 15:23:57 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Language: en-US
+To: Ville Syrjala <ville.syrjala@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20231116132452.2671-1-ville.syrjala@linux.intel.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+In-Reply-To: <20231116132452.2671-1-ville.syrjala@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] test/xe_spin_batch: Add
- spin-fixed-duration-with-preempter
+Subject: Re: [igt-dev] [PATCH i-g-t 1/4] lib/igt_fb: Rework
+ igt_fb_modifier_name()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,205 +26,92 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nirmoy Das <nirmoy.das@intel.com>
+Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add a variation of spin-fixed-duration where the spinners
-gets preempted with a short duration high priority task.
+Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 
-This validates preemption in GPU and xe_spin.
-
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
----
- tests/intel/xe_spin_batch.c | 126 ++++++++++++++++++++++++++++++++++--
- 1 file changed, 122 insertions(+), 4 deletions(-)
-
-diff --git a/tests/intel/xe_spin_batch.c b/tests/intel/xe_spin_batch.c
-index eb5d6aba8..9293d3a74 100644
---- a/tests/intel/xe_spin_batch.c
-+++ b/tests/intel/xe_spin_batch.c
-@@ -136,12 +136,102 @@ static void spin_all(int fd, int gt, int class)
- 	xe_vm_destroy(fd, vm);
- }
- 
-+struct data {
-+	uint32_t batch[16];
-+	uint64_t pad;
-+	uint32_t data;
-+	uint64_t addr;
-+};
-+
-+static void store_dword_batch(struct data *data, uint64_t addr, int value)
-+{
-+	int b;
-+	uint64_t batch_offset = (char *)&(data->batch) - (char *)data;
-+	uint64_t batch_addr = addr + batch_offset;
-+	uint64_t sdi_offset = (char *)&(data->data) - (char *)data;
-+	uint64_t sdi_addr = addr + sdi_offset;
-+
-+	b = 0;
-+	data->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-+	data->batch[b++] = sdi_addr;
-+	data->batch[b++] = sdi_addr >> 32;
-+	data->batch[b++] = value;
-+	data->batch[b++] = MI_BATCH_BUFFER_END;
-+	igt_assert(b <= ARRAY_SIZE(data->batch));
-+
-+	data->addr = batch_addr;
-+}
-+
-+static void preempter(int fd, struct drm_xe_engine_class_instance *hwe)
-+{
-+	struct drm_xe_sync sync = {
-+		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
-+	};
-+	struct drm_xe_exec exec = {
-+		.num_batch_buffer = 1,
-+		.num_syncs = 1,
-+		.syncs = to_user_pointer(&sync),
-+	};
-+	struct drm_xe_ext_set_property ext = {
-+		.base.next_extension = 0,
-+		.base.name = XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-+		.property = XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY,
-+		.value = 2, /* High priority */
-+	};
-+	struct data *data;
-+	uint32_t vm;
-+	uint32_t exec_queue;
-+	uint32_t syncobj;
-+	size_t bo_size;
-+	int value = 0x123456;
-+	uint64_t addr = 0x100000;
-+	uint32_t bo = 0;
-+
-+	syncobj = syncobj_create(fd, 0);
-+	sync.handle = syncobj;
-+
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_DEFAULT, 0);
-+	bo_size = sizeof(*data);
-+	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
-+			xe_get_default_alignment(fd));
-+
-+	bo = xe_bo_create_flags(fd, vm, bo_size,
-+				visible_vram_if_possible(fd, hwe->gt_id));
-+
-+	xe_vm_bind_async(fd, vm, hwe->gt_id, bo, 0, addr, bo_size, &sync, 1);
-+	data = xe_bo_map(fd, bo, bo_size);
-+	store_dword_batch(data, addr, value);
-+
-+	exec_queue = xe_exec_queue_create(fd, vm, hwe, to_user_pointer(&ext));
-+	exec.exec_queue_id = exec_queue;
-+	exec.address = data->addr;
-+	sync.flags &= DRM_XE_SYNC_SIGNAL;
-+	xe_exec(fd, &exec);
-+
-+	igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
-+	igt_assert_eq(data->data, value);
-+
-+	syncobj_destroy(fd, syncobj);
-+	munmap(data, bo_size);
-+	gem_close(fd, bo);
-+
-+	xe_exec_queue_destroy(fd, exec_queue);
-+	xe_vm_destroy(fd, vm);
-+}
-+
-+#define SPIN_FIX_DURATION_NORMAL		0
-+#define SPIN_FIX_DURATION_PREEMPT		1
- /**
-  * SUBTEST: spin-fixed-duration
-  * Description: Basic test which validates the functionality of xe_spin with fixed duration.
-  * Run type: FULL
-  */
--static void xe_spin_fixed_duration(int fd)
-+/**
-+ * SUBTEST: spin-fixed-duration-with-preempter
-+ * Description: Basic test which validates the functionality of xe_spin preemption which gets preempted with a short duration high-priority task.
-+ * Run type: FULL
-+ */
-+static void xe_spin_fixed_duration(int fd, int gt, int class, int flags)
- {
- 	struct drm_xe_sync sync = {
- 		.handle = syncobj_create(fd, 0),
-@@ -152,12 +242,20 @@ static void xe_spin_fixed_duration(int fd)
- 		.num_syncs = 1,
- 		.syncs = to_user_pointer(&sync),
- 	};
-+	struct drm_xe_ext_set_property ext_prio = {
-+		.base.next_extension = 0,
-+		.base.name = XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-+		.property = XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY,
-+		.value = 0, /* Low priority */
-+	};
-+	struct drm_xe_engine_class_instance *hwe = NULL, *_hwe;
- 	const uint64_t duration_ns = NSEC_PER_SEC / 10; /* 100ms */
- 	uint64_t spin_addr;
- 	uint64_t ahnd;
- 	uint32_t exec_queue;
- 	uint32_t vm;
- 	uint32_t bo;
-+	uint64_t ext = 0;
- 	size_t bo_size;
- 	struct xe_spin *spin;
- 	struct timespec tv;
-@@ -165,8 +263,18 @@ static void xe_spin_fixed_duration(int fd)
- 	igt_stats_t stats;
- 	int i;
- 
-+	if (flags & SPIN_FIX_DURATION_PREEMPT)
-+		ext = to_user_pointer(&ext_prio);
-+
-+	xe_for_each_hw_engine(fd, _hwe)
-+		if (_hwe->engine_class == class && _hwe->gt_id == gt)
-+			hwe = _hwe;
-+
-+	if (!hwe)
-+		return;
-+
- 	vm = xe_vm_create(fd, 0, 0);
--	exec_queue = xe_exec_queue_create_class(fd, vm, DRM_XE_ENGINE_CLASS_COPY);
-+	exec_queue = xe_exec_queue_create(fd, vm, hwe, ext);
- 	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
- 	bo_size = ALIGN(sizeof(*spin) + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
- 	bo = xe_bo_create(fd, 0, vm, bo_size);
-@@ -186,13 +294,17 @@ static void xe_spin_fixed_duration(int fd)
- 		igt_gettime(&tv);
- 		xe_exec(fd, &exec);
- 		xe_spin_wait_started(spin);
-+		if (flags & SPIN_FIX_DURATION_PREEMPT)
-+			preempter(fd, hwe);
-+
- 		igt_assert(syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL));
- 		igt_stats_push_float(&stats, igt_nsec_elapsed(&tv) * 1e-6);
- 		syncobj_reset(fd, &sync.handle, 1);
- 		igt_debug("i=%d %.2fms\n", i, stats.values_f[i]);
- 	}
- 	elapsed_ms = igt_stats_get_median(&stats);
--	igt_info("%.0fms spin took %.2fms (median)\n", duration_ns * 1e-6, elapsed_ms);
-+	igt_info("%s: %.0fms spin took %.2fms (median)\n", xe_engine_class_string(hwe->engine_class),
-+		 duration_ns * 1e-6, elapsed_ms);
- 	igt_assert(elapsed_ms < duration_ns * 1.5e-6 && elapsed_ms > duration_ns * 0.5e-6);
- 
- 	xe_vm_unbind_sync(fd, vm, 0, spin_addr, bo_size);
-@@ -230,7 +342,13 @@ igt_main
- 	}
- 
- 	igt_subtest("spin-fixed-duration")
--		xe_spin_fixed_duration(fd);
-+		xe_spin_fixed_duration(fd, 0, DRM_XE_ENGINE_CLASS_COPY, SPIN_FIX_DURATION_NORMAL);
-+
-+
-+	igt_subtest("spin-fixed-duration-with-preempter")
-+		xe_for_each_gt(fd, gt)
-+			xe_for_each_hw_engine_class(class)
-+				xe_spin_fixed_duration(fd, gt, class, SPIN_FIX_DURATION_PREEMPT);
- 
- 	igt_fixture
- 		drm_close_driver(fd);
--- 
-2.42.0
+On 16.11.2023 15.24, Ville Syrjala wrote:
+> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> 
+> Replace the switch statement in igt_fb_modifier_name() with
+> a table so that we'll be able to also do the reverse mapping.
+> 
+> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> ---
+>   lib/igt_fb.c | 59 ++++++++++++++++++++++++----------------------------
+>   1 file changed, 27 insertions(+), 32 deletions(-)
+> 
+> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> index e531a041e567..5670bc06c778 100644
+> --- a/lib/igt_fb.c
+> +++ b/lib/igt_fb.c
+> @@ -4913,39 +4913,34 @@ void igt_format_array_fill(uint32_t **formats_array, unsigned int *count,
+>   	}
+>   }
+>   
+> +static const struct {
+> +	uint64_t modifier;
+> +	const char *name;
+> +} modifiers[] = {
+> +	{ .modifier = DRM_FORMAT_MOD_LINEAR, .name = "linear", },
+> +	{ .modifier = I915_FORMAT_MOD_X_TILED, .name = "x", },
+> +	{ .modifier = I915_FORMAT_MOD_Y_TILED, .name = "y", },
+> +	{ .modifier = I915_FORMAT_MOD_Yf_TILED, .name = "yf", },
+> +	{ .modifier = I915_FORMAT_MOD_Y_TILED_CCS, .name = "y-ccs", },
+> +	{ .modifier = I915_FORMAT_MOD_Yf_TILED_CCS, .name = "yf-ccs", },
+> +	{ .modifier = I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS, .name = "y-rc-ccs", },
+> +	{ .modifier = I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC, .name = "y-rc-ccs-cc", },
+> +	{ .modifier = I915_FORMAT_MOD_Y_TILED_GEN12_MC_CCS, .name = "y-mc-ccs", },
+> +	{ .modifier = I915_FORMAT_MOD_4_TILED, .name = "4", },
+> +	{ .modifier = I915_FORMAT_MOD_4_TILED_DG2_RC_CCS, .name = "4-rc-ccs", },
+> +	{ .modifier = I915_FORMAT_MOD_4_TILED_DG2_MC_CCS, .name = "4-mc-ccs", },
+> +	{ .modifier = I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC, .name = "4-rc-ccs-cc", },
+> +	{ .modifier = I915_FORMAT_MOD_4_TILED_MTL_RC_CCS, .name = "4-rc-ccs", },
+> +	{ .modifier = I915_FORMAT_MOD_4_TILED_MTL_MC_CCS, .name = "4-rc-ccs", },
+> +	{ .modifier = I915_FORMAT_MOD_4_TILED_MTL_RC_CCS_CC, .name = "4-rc-ccs-cc", },
+> +};
+> +
+>   const char *igt_fb_modifier_name(uint64_t modifier)
+>   {
+> -	switch (modifier) {
+> -	case DRM_FORMAT_MOD_LINEAR:
+> -		return "linear";
+> -	case I915_FORMAT_MOD_X_TILED:
+> -		return "x";
+> -	case I915_FORMAT_MOD_Y_TILED:
+> -		return "y";
+> -	case I915_FORMAT_MOD_Yf_TILED:
+> -		return "yf";
+> -	case I915_FORMAT_MOD_Y_TILED_CCS:
+> -		return "y-ccs";
+> -	case I915_FORMAT_MOD_Yf_TILED_CCS:
+> -		return "yf-ccs";
+> -	case I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS:
+> -		return "y-rc-ccs";
+> -	case I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC:
+> -		return "y-rc-ccs-cc";
+> -	case I915_FORMAT_MOD_Y_TILED_GEN12_MC_CCS:
+> -		return "y-mc-ccs";
+> -	case I915_FORMAT_MOD_4_TILED:
+> -		return "4";
+> -	case I915_FORMAT_MOD_4_TILED_MTL_RC_CCS:
+> -	case I915_FORMAT_MOD_4_TILED_DG2_RC_CCS:
+> -		return "4-rc-ccs";
+> -	case I915_FORMAT_MOD_4_TILED_MTL_MC_CCS:
+> -	case I915_FORMAT_MOD_4_TILED_DG2_MC_CCS:
+> -		return "4-mc-ccs";
+> -	case I915_FORMAT_MOD_4_TILED_MTL_RC_CCS_CC:
+> -	case I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC:
+> -		return "4-rc-ccs-cc";
+> -	default:
+> -		return "?";
+> +	for (int i = 0; i < ARRAY_SIZE(modifiers); i++) {
+> +		if (modifier == modifiers[i].modifier)
+> +			return modifiers[i].name;
+>   	}
+> +
+> +	return "?";
+>   }
