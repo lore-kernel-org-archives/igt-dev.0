@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============6335936192506741383=="
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jonathan Cavitt" <jonathan.cavitt@intel.com>
-Date: Fri, 17 Nov 2023 00:49:33 -0000
-Message-ID: <170018217347.7874.10949803951312064990@emeril.freedesktop.org>
-References: <20231116234312.3045053-1-jonathan.cavitt@intel.com>
-In-Reply-To: <20231116234312.3045053-1-jonathan.cavitt@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?intel=3A_Do_not_error_on_-ECANCELED_in_xe=5Fvm_tests?=
+To: "Matt Roper" <matthew.d.roper@intel.com>
+Date: Fri, 17 Nov 2023 00:50:54 -0000
+Message-ID: <170018225472.7875.2843437274862152321@emeril.freedesktop.org>
+References: <20231117001704.2816232-1-matthew.d.roper@intel.com>
+In-Reply-To: <20231117001704.2816232-1-matthew.d.roper@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_l?=
+ =?utf-8?q?ib/igt=5Fkmod=3A_Fix_uninitialized_variable_during_module_unloa?=
+ =?utf-8?q?d?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,258 +24,62 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============6335936192506741383==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
 == Series Details ==
 
-Series: tests/intel: Do not error on -ECANCELED in xe_vm tests
-URL   : https://patchwork.freedesktop.org/series/126563/
-State : failure
+Series: lib/igt_kmod: Fix uninitialized variable during module unload
+URL   : https://patchwork.freedesktop.org/series/126564/
+State : warning
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_13885 -> IGTPW_10205
-====================================================
+Pipeline status: FAILED.
 
-Summary
--------
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1036243 for the overview.
 
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_10205 absolutely need to be
-  verified manually.
+build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/51690118):
+  Checking if the user of the pipeline is allowed...
+  Checking if the job's project is part of a well-known group...
+  Thank you for contributing to freedesktop.org
+  Fetching changes...
+  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  Checking out e0618b0c as detached HEAD (ref is intel/IGTPW_10206)...
+  Removing build/
+  Removing lib/i915/perf-configs/__pycache__/
+  Removing scripts/__pycache__/
   
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_10205, please notify your bug team (lgci.bug.filing@intel.com) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+  Skipping Git submodules setup
+  section_end:1700181903:get_sources
+  section_start:1700181903:step_script
+  Executing "step_script" stage of the job script
+  Using docker image sha256:cc55efdc667be826910d414a562c76ce1130a9c15255a0dd115431bc42f83448 for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips:commit-e0618b0cc1bcd33696ad16308f10331a51c77044 with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips@sha256:c829c44880da4782b7a72626c259ac6904b4bd5f08601e66b3be889ca1c0cf79 ...
+  section_end:1700181906:step_script
+  section_start:1700181906:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1700181907:cleanup_file_variables
+  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:cc55efdc667be826910d414a562c76ce1130a9c15255a0dd115431bc42f83448: image not known (docker.go:570:0s)
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10205/index.html
-
-Participating hosts (36 -> 35)
-------------------------------
-
-  Additional (3): bat-kbl-2 fi-ivb-3770 fi-bsw-n3050 
-  Missing    (4): fi-kbl-soraka fi-hsw-4770 fi-snb-2520m bat-dg1-5 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_10205:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@gem_exec_suspend@basic-s0@smem:
-    - fi-bsw-nick:        [PASS][1] -> [INCOMPLETE][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13885/fi-bsw-nick/igt@gem_exec_suspend@basic-s0@smem.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10205/fi-bsw-nick/igt@gem_exec_suspend@basic-s0@smem.html
-
+build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/51690113):
+  section_start:1700181892:get_sources
+  Getting source from Git repository
+  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh -s -- pre_get_sources_script
+  Checking if the user of the pipeline is allowed...
+  Checking if the job's project is part of a well-known group...
+  Thank you for contributing to freedesktop.org
+  Fetching changes...
+  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  Checking out e0618b0c as detached HEAD (ref is intel/IGTPW_10206)...
   
-Known issues
-------------
-
-  Here are the changes found in IGTPW_10205 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@fbdev@info:
-    - bat-kbl-2:          NOTRUN -> [SKIP][3] ([fdo#109271] / [i915#1849])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10205/bat-kbl-2/igt@fbdev@info.html
-
-  * igt@gem_exec_suspend@basic-s0@lmem0:
-    - bat-dg2-9:          [PASS][4] -> [INCOMPLETE][5] ([i915#9275])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13885/bat-dg2-9/igt@gem_exec_suspend@basic-s0@lmem0.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10205/bat-dg2-9/igt@gem_exec_suspend@basic-s0@lmem0.html
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-ivb-3770:        NOTRUN -> [SKIP][6] ([fdo#109271]) +15 other tests skip
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10205/fi-ivb-3770/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@parallel-random-engines:
-    - bat-kbl-2:          NOTRUN -> [SKIP][7] ([fdo#109271]) +20 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10205/bat-kbl-2/igt@gem_lmem_swapping@parallel-random-engines.html
-
-  * igt@gem_lmem_swapping@random-engines:
-    - fi-bsw-n3050:       NOTRUN -> [SKIP][8] ([fdo#109271]) +14 other tests skip
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10205/fi-bsw-n3050/igt@gem_lmem_swapping@random-engines.html
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - fi-bsw-n3050:       NOTRUN -> [FAIL][9] ([IGT#3])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10205/fi-bsw-n3050/igt@kms_hdmi_inject@inject-audio.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
-    - bat-adlp-9:         NOTRUN -> [SKIP][10] ([i915#1845] / [i915#3546]) +2 other tests skip
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10205/bat-adlp-9/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
-
-  * igt@kms_pipe_crc_basic@read-crc-frame-sequence:
-    - bat-kbl-2:          NOTRUN -> [SKIP][11] ([fdo#109271] / [i915#1845]) +14 other tests skip
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10205/bat-kbl-2/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html
-
-  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:
-    - bat-rplp-1:         [PASS][12] -> [ABORT][13] ([i915#8668])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13885/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10205/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [IGT#3]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
-  [i915#3546]: https://gitlab.freedesktop.org/drm/intel/issues/3546
-  [i915#7359]: https://gitlab.freedesktop.org/drm/intel/issues/7359
-  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
-  [i915#8981]: https://gitlab.freedesktop.org/drm/intel/issues/8981
-  [i915#9275]: https://gitlab.freedesktop.org/drm/intel/issues/9275
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7591 -> IGTPW_10205
-
-  CI-20190529: 20190529
-  CI_DRM_13885: 346f47e69d27a4b3177c2939b1f6f26d093ad8c4 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_10205: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10205/index.html
-  IGT_7591: b88e512c11fb52704d388a1314614905f2704457 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  Skipping Git submodules setup
+  section_end:1700181903:get_sources
+  section_start:1700181903:step_script
+  Executing "step_script" stage of the job script
+  Using docker image sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-e0618b0cc1bcd33696ad16308f10331a51c77044 with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora@sha256:17d64607d998df2bf29a56b88922d3a598e6f1daa3b51ece2a892c2f293daf83 ...
+  section_end:1700181906:step_script
+  section_start:1700181906:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1700181907:cleanup_file_variables
+  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f: image not known (docker.go:570:0s)
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10205/index.html
-
---===============6335936192506741383==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel: Do not error on -ECANCELED in xe_vm tests</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126563/">https://patchwork.freedesktop.org/series/126563/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10205/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10205/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_13885 -&gt; IGTPW_10205</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_10205 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_10205, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10205/index.html</p>
-<h2>Participating hosts (36 -&gt; 35)</h2>
-<p>Additional (3): bat-kbl-2 fi-ivb-3770 fi-bsw-n3050 <br />
-  Missing    (4): fi-kbl-soraka fi-hsw-4770 fi-snb-2520m bat-dg1-5 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_10205:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@gem_exec_suspend@basic-s0@smem:<ul>
-<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13885/fi-bsw-nick/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10205/fi-bsw-nick/igt@gem_exec_suspend@basic-s0@smem.html">INCOMPLETE</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_10205 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@fbdev@info:</p>
-<ul>
-<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10205/bat-kbl-2/igt@fbdev@info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_suspend@basic-s0@lmem0:</p>
-<ul>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13885/bat-dg2-9/igt@gem_exec_suspend@basic-s0@lmem0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10205/bat-dg2-9/igt@gem_exec_suspend@basic-s0@lmem0.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9275">i915#9275</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10205/fi-ivb-3770/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +15 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
-<ul>
-<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10205/bat-kbl-2/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +20 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@random-engines:</p>
-<ul>
-<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10205/fi-bsw-n3050/igt@gem_lmem_swapping@random-engines.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +14 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_hdmi_inject@inject-audio:</p>
-<ul>
-<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10205/fi-bsw-n3050/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3">IGT#3</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:</p>
-<ul>
-<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10205/bat-adlp-9/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3546">i915#3546</a>) +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence:</p>
-<ul>
-<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10205/bat-kbl-2/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>) +14 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:</p>
-<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13885/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10205/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7591 -&gt; IGTPW_10205</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13885: 346f47e69d27a4b3177c2939b1f6f26d093ad8c4 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_10205: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10205/index.html<br />
-  IGT_7591: b88e512c11fb52704d388a1314614905f2704457 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============6335936192506741383==--
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1036243
