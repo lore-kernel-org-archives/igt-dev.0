@@ -1,25 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com
- [IPv6:2a00:1450:4864:20::32f])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C8F1410E08E
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Nov 2023 13:24:23 +0000 (UTC)
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-40853c639abso15592475e9.0
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Nov 2023 05:24:23 -0800 (PST)
-Message-ID: <15ad1e3d-0b6c-47a9-a143-91fc44254b65@gmail.com>
-Date: Fri, 17 Nov 2023 15:24:15 +0200
+Content-Type: multipart/alternative;
+ boundary="===============7921229569437610563=="
 MIME-Version: 1.0
-Content-Language: en-US
-To: Ville Syrjala <ville.syrjala@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20231116132452.2671-1-ville.syrjala@linux.intel.com>
- <20231116132452.2671-2-ville.syrjala@linux.intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20231116132452.2671-2-ville.syrjala@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t 2/4] lib/igt_fb: Provide
- igt_fb_modifier_for_name()
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
+Date: Fri, 17 Nov 2023 14:22:30 -0000
+Message-ID: <170023095078.7873.7916059082294269444@emeril.freedesktop.org>
+References: <20231116202442.70153-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20231116202442.70153-1-kamil.konieczny@linux.intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/drmt?=
+ =?utf-8?q?est=3A_load_forced_module?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,55 +17,108 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+--===============7921229569437610563==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 16.11.2023 15.24, Ville Syrjala wrote:
-> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> 
-> Add a function that given a modifier's human readable
-> name returns the actual modifier magic number.
-> 
-> TODO: figure out what to do about the "same" modifier with
->        multiple platform variants...
-> 
-> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> ---
->   lib/igt_fb.c | 10 ++++++++++
->   lib/igt_fb.h |  1 +
->   2 files changed, 11 insertions(+)
-> 
-> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> index 5670bc06c778..24275c06354b 100644
-> --- a/lib/igt_fb.c
-> +++ b/lib/igt_fb.c
-> @@ -4944,3 +4944,13 @@ const char *igt_fb_modifier_name(uint64_t modifier)
->   
->   	return "?";
->   }
-> +
-> +uint64_t igt_fb_modifier_for_name(const char *name)
-> +{
-> +	for (int i = 0; i < ARRAY_SIZE(modifiers); i++) {
-> +		if (!strcasecmp(name, modifiers[i].name))
-> +			return modifiers[i].modifier;
-> +	}
-> +
-> +	return DRM_FORMAT_MOD_INVALID;
-> +}
-> diff --git a/lib/igt_fb.h b/lib/igt_fb.h
-> index 834aaef54dea..3bb577c02cd9 100644
-> --- a/lib/igt_fb.h
-> +++ b/lib/igt_fb.h
-> @@ -230,6 +230,7 @@ int igt_fill_cts_color_square_framebuffer(uint32_t *pixmap,
->   
->   int igt_fb_get_fnv1a_crc(struct igt_fb *fb, igt_crc_t *crc);
->   const char *igt_fb_modifier_name(uint64_t modifier);
-> +uint64_t igt_fb_modifier_for_name(const char *name);
->   
->   #endif /* __IGT_FB_H__ */
->   
+== Series Details ==
+
+Series: lib/drmtest: load forced module
+URL   : https://patchwork.freedesktop.org/series/126550/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7591_BAT -> XEIGTPW_10204_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7591 -> IGTPW_10204
+
+  IGTPW_10204: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10204/index.html
+  IGT_7591: b88e512c11fb52704d388a1314614905f2704457 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-500-dd0e0baa9a0a039ae1d8d61b98507f46776f7a22: dd0e0baa9a0a039ae1d8d61b98507f46776f7a22
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10204/index.html
+
+--===============7921229569437610563==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/drmtest: load forced module</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126550/">https://patchwork.freedesktop.org/series/126550/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10204/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10204/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7591_BAT -&gt; XEIGTPW_10204_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7591 -&gt; IGTPW_10204</li>
+</ul>
+<p>IGTPW_10204: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10204/index.html<br />
+  IGT_7591: b88e512c11fb52704d388a1314614905f2704457 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-500-dd0e0baa9a0a039ae1d8d61b98507f46776f7a22: dd0e0baa9a0a039ae1d8d61b98507f46776f7a22</p>
+
+</body>
+</html>
+
+--===============7921229569437610563==--
