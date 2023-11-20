@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E6EDC10E0FF
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Nov 2023 18:24:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7EF0610E10C
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Nov 2023 18:24:52 +0000 (UTC)
 From: Matthew Auld <matthew.auld@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 20 Nov 2023 18:24:16 +0000
-Message-ID: <20231120182430.88753-2-matthew.auld@intel.com>
+Date: Mon, 20 Nov 2023 18:24:19 +0000
+Message-ID: <20231120182430.88753-5-matthew.auld@intel.com>
 In-Reply-To: <20231120182430.88753-1-matthew.auld@intel.com>
 References: <20231120182430.88753-1-matthew.auld@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v10 01/15] drm-uapi/xe_drm: sync to get pat
- and coherency bits
+Subject: [igt-dev] [PATCH i-g-t v10 04/15] lib/xe: support explicit
+ cpu_caching gem_create
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,96 +24,138 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Grab the PAT & coherency uapi additions.
+Most tests shouldn't about such things, so likely it's just a case of
+picking the most sane default. However we also add some helpers for the
+tests that do care.
+
+v2: Rebase on coh_mode removal
 
 Signed-off-by: Matthew Auld <matthew.auld@intel.com>
 Cc: José Roberto de Souza <jose.souza@intel.com>
 Cc: Pallavi Mishra <pallavi.mishra@intel.com>
 Reviewed-by: Pallavi Mishra <pallavi.mishra@intel.com>
 ---
- include/drm-uapi/xe_drm.h | 61 +++++++++++++++++++++++++++++++++++++--
- 1 file changed, 59 insertions(+), 2 deletions(-)
+ lib/xe/xe_ioctl.c       | 55 ++++++++++++++++++++++++++++++++---------
+ lib/xe/xe_ioctl.h       |  5 ++++
+ tests/intel/xe_create.c |  1 +
+ 3 files changed, 50 insertions(+), 11 deletions(-)
 
-diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index 255b360a1..9fedaaa63 100644
---- a/include/drm-uapi/xe_drm.h
-+++ b/include/drm-uapi/xe_drm.h
-@@ -541,8 +541,25 @@ struct drm_xe_gem_create {
- 	 */
- 	__u32 handle;
+diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+index 738c4ffdb..94cb6d43b 100644
+--- a/lib/xe/xe_ioctl.c
++++ b/lib/xe/xe_ioctl.c
+@@ -226,13 +226,24 @@ void xe_vm_destroy(int fd, uint32_t vm)
+ 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_VM_DESTROY, &destroy), 0);
+ }
  
-+	/**
-+	 * @cpu_caching: The CPU caching mode to select for this object. If
-+	 * mmaping the object the mode selected here will also be used.
-+	 *
-+	 * Supported values:
-+	 *
-+	 * DRM_XE_GEM_CPU_CACHING_WB: Allocate the pages with write-back
-+	 * caching.  On iGPU this can't be used for scanout surfaces. Currently
-+	 * not allowed for objects placed in VRAM.
-+	 *
-+	 * DRM_XE_GEM_CPU_CACHING_WC: Allocate the pages as write-combined. This
-+	 * is uncached. Scanout surfaces should likely use this. All objects
-+	 * that can be placed in VRAM must use this.
-+	 */
-+#define DRM_XE_GEM_CPU_CACHING_WB                      1
-+#define DRM_XE_GEM_CPU_CACHING_WC                      2
-+	__u16 cpu_caching;
- 	/** @pad: MBZ */
--	__u32 pad;
-+	__u16 pad;
- 
- 	/** @reserved: Reserved */
- 	__u64 reserved[2];
-@@ -619,8 +636,48 @@ struct drm_xe_vm_bind_op {
- 	 */
- 	__u32 obj;
- 
-+	/**
-+	 * @pat_index: The platform defined @pat_index to use for this mapping.
-+	 * The index basically maps to some predefined memory attributes,
-+	 * including things like caching, coherency, compression etc.  The exact
-+	 * meaning of the pat_index is platform specific and defined in the
-+	 * Bspec and PRMs.  When the KMD sets up the binding the index here is
-+	 * encoded into the ppGTT PTE.
-+	 *
-+	 * For coherency the @pat_index needs to be at least 1way coherent when
-+	 * drm_xe_gem_create.cpu_caching is DRM_XE_GEM_CPU_CACHING_WB. The KMD
-+	 * will extract the coherency mode from the @pat_index and reject if
-+	 * there is a mismatch (see note below for pre-MTL platforms).
-+	 *
-+	 * Note: On pre-MTL platforms there is only a caching mode and no
-+	 * explicit coherency mode, but on such hardware there is always a
-+	 * shared-LLC (or is dgpu) so all GT memory accesses are coherent with
-+	 * CPU caches even with the caching mode set as uncached.  It's only the
-+	 * display engine that is incoherent (on dgpu it must be in VRAM which
-+	 * is always mapped as WC on the CPU). However to keep the uapi somewhat
-+	 * consistent with newer platforms the KMD groups the different cache
-+	 * levels into the following coherency buckets on all pre-MTL platforms:
-+	 *
-+	 *	ppGTT UC -> COH_NONE
-+	 *	ppGTT WC -> COH_NONE
-+	 *	ppGTT WT -> COH_NONE
-+	 *	ppGTT WB -> COH_AT_LEAST_1WAY
-+	 *
-+	 * In practice UC/WC/WT should only ever used for scanout surfaces on
-+	 * such platforms (or perhaps in general for dma-buf if shared with
-+	 * another device) since it is only the display engine that is actually
-+	 * incoherent.  Everything else should typically use WB given that we
-+	 * have a shared-LLC.  On MTL+ this completely changes and the HW
-+	 * defines the coherency mode as part of the @pat_index, where
-+	 * incoherent GT access is possible.
-+	 *
-+	 * Note: For userptr and externally imported dma-buf the kernel expects
-+	 * either 1WAY or 2WAY for the @pat_index.
-+	 */
-+	__u16 pat_index;
+-uint32_t __xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags,
+-			      uint32_t *handle)
++uint16_t __xe_default_cpu_caching_from_flags(int fd, uint32_t flags)
++{
++	if ((flags & all_memory_regions(fd)) != system_memory(fd) ||
++	    flags & DRM_XE_GEM_CREATE_FLAG_SCANOUT)
++		/* VRAM placements or scanout should always use WC */
++		return DRM_XE_GEM_CPU_CACHING_WC;
 +
- 	/** @pad: MBZ */
--	__u32 pad;
-+	__u16 pad;
++	return DRM_XE_GEM_CPU_CACHING_WB;
++}
++
++static uint32_t ___xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags,
++				      uint16_t cpu_caching, uint32_t *handle)
+ {
+ 	struct drm_xe_gem_create create = {
+ 		.vm_id = vm,
+ 		.size = size,
+ 		.flags = flags,
++		.cpu_caching = cpu_caching,
+ 	};
+ 	int err;
  
- 	union {
- 		/**
+@@ -242,6 +253,15 @@ uint32_t __xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags
+ 
+ 	*handle = create.handle;
+ 	return 0;
++
++}
++
++uint32_t __xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags,
++			      uint32_t *handle)
++{
++	uint16_t cpu_caching = __xe_default_cpu_caching_from_flags(fd, flags);
++
++	return ___xe_bo_create_flags(fd, vm, size, flags, cpu_caching, handle);
+ }
+ 
+ uint32_t xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags)
+@@ -253,19 +273,32 @@ uint32_t xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags)
+ 	return handle;
+ }
+ 
++uint32_t __xe_bo_create_caching(int fd, uint32_t vm, uint64_t size, uint32_t flags,
++				uint16_t cpu_caching, uint32_t *handle)
++{
++	return ___xe_bo_create_flags(fd, vm, size, flags, cpu_caching,
++				     handle);
++}
++
++uint32_t xe_bo_create_caching(int fd, uint32_t vm, uint64_t size, uint32_t flags,
++			      uint16_t cpu_caching)
++{
++	uint32_t handle;
++
++	igt_assert_eq(__xe_bo_create_caching(fd, vm, size, flags,
++					     cpu_caching, &handle), 0);
++
++	return handle;
++}
++
+ uint32_t xe_bo_create(int fd, int gt, uint32_t vm, uint64_t size)
+ {
+-	struct drm_xe_gem_create create = {
+-		.vm_id = vm,
+-		.size = size,
+-		.flags = vram_if_possible(fd, gt),
+-	};
+-	int err;
++	uint32_t handle;
+ 
+-	err = igt_ioctl(fd, DRM_IOCTL_XE_GEM_CREATE, &create);
+-	igt_assert_eq(err, 0);
++	igt_assert_eq(__xe_bo_create_flags(fd, vm, size, vram_if_possible(fd, gt),
++					   &handle), 0);
+ 
+-	return create.handle;
++	return handle;
+ }
+ 
+ uint32_t xe_bind_exec_queue_create(int fd, uint32_t vm, uint64_t ext, bool async)
+diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+index a9171bcf7..2696cc24e 100644
+--- a/lib/xe/xe_ioctl.h
++++ b/lib/xe/xe_ioctl.h
+@@ -67,6 +67,11 @@ void xe_vm_destroy(int fd, uint32_t vm);
+ uint32_t __xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags,
+ 			      uint32_t *handle);
+ uint32_t xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags);
++uint32_t __xe_bo_create_caching(int fd, uint32_t vm, uint64_t size, uint32_t flags,
++				uint16_t cpu_caching, uint32_t *handle);
++uint32_t xe_bo_create_caching(int fd, uint32_t vm, uint64_t size, uint32_t flags,
++			      uint16_t cpu_caching);
++uint16_t __xe_default_cpu_caching_from_flags(int fd, uint32_t flags);
+ uint32_t xe_bo_create(int fd, int gt, uint32_t vm, uint64_t size);
+ uint32_t xe_exec_queue_create(int fd, uint32_t vm,
+ 			  struct drm_xe_engine_class_instance *instance,
+diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+index f4633cfb3..bb55a15e1 100644
+--- a/tests/intel/xe_create.c
++++ b/tests/intel/xe_create.c
+@@ -25,6 +25,7 @@ static int __create_bo(int fd, uint32_t vm, uint64_t size, uint32_t flags,
+ 		.vm_id = vm,
+ 		.size = size,
+ 		.flags = flags,
++		.cpu_caching = __xe_default_cpu_caching_from_flags(fd, flags),
+ 	};
+ 	int ret = 0;
+ 
 -- 
 2.42.0
