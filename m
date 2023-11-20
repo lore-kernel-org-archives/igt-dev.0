@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C0AB810E322
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Nov 2023 08:35:13 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	mitulkumar.ajitkumar.golani@intel.com
-Date: Mon, 20 Nov 2023 13:54:59 +0530
-Message-Id: <20231120082459.1859375-3-bhanuprakash.modem@intel.com>
-In-Reply-To: <20231120082459.1859375-1-bhanuprakash.modem@intel.com>
-References: <20231120082459.1859375-1-bhanuprakash.modem@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============9026518570024362354=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 2/2] tests/kms_vrr: New subtest for CMRR
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Vignesh Raman" <vignesh.raman@collabora.com>
+Date: Mon, 20 Nov 2023 08:43:20 -0000
+Message-ID: <170046980087.29474.10373172067612538186@emeril.freedesktop.org>
+References: <20231113100419.1111165-1-vignesh.raman@collabora.com>
+In-Reply-To: <20231113100419.1111165-1-vignesh.raman@collabora.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_s?=
+ =?utf-8?q?tarting_with_=5Bi-g-t=2C1/3=2Cv6=5D_lib/igt=5Fkms=3A_Fix_memory?=
+ =?utf-8?q?_corruption_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,158 +18,235 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-CMRR is an variation of VRR where it varies Vtotal slightly
-(between additional 0 and 1 Vtotal scanlines) to match content
-rate exactly without frame drops using the adaptive sync framework.
+--===============9026518570024362354==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This patch creates a new subtest to validate the CMRR as below:
-- Request flips with the refresh_rate * 1.001
-- Flips should happen at the frequency of refresh_rate.
+== Series Details ==
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_vrr.c | 97 +++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 97 insertions(+)
+Series: series starting with [i-g-t,1/3,v6] lib/igt_kms: Fix memory corruption (rev3)
+URL   : https://patchwork.freedesktop.org/series/126327/
+State : success
 
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 741a13be6..351645da5 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -29,6 +29,14 @@
-  * Category: Display
-  * Description: Test to validate diffent features of VRR
-  *
-+ * SUBTEST: cmrr
-+ * Description: Test to validate the content rate to exactly match with the
-+ *              requested rate without any frame drops.
-+ * Driver requirement: i915, xe
-+ * Functionality: adaptive_sync
-+ * Mega feature: VRR
-+ * Test category: functionality test
-+ *
-  * SUBTEST: flip-basic
-  * Description: Tests that VRR is enabled and that the difference between flip
-  *              timestamps converges to the requested rate
-@@ -83,6 +91,8 @@
- 	(m)->vdisplay, (m)->vsync_start, (m)->vsync_end, (m)->vtotal, \
- 	(m)->type, (m)->flags
- 
-+#define CMRR_FACTOR 1.001
-+
- enum {
- 	TEST_BASIC = 1 << 0,
- 	TEST_DPMS = 1 << 1,
-@@ -332,6 +342,57 @@ do_flip(data_t *data, igt_fb_t *fb)
- 	igt_reset_timeout();
- }
- 
-+static uint32_t
-+flip_and_measure_cmrr(data_t *data, igt_output_t *output, enum pipe pipe,
-+		      unsigned int refresh_rate, uint64_t duration_ns)
-+{
-+	uint64_t start_ns, last_event_ns, event_ns;
-+	uint32_t total_flip = 0, total_pass = 0;
-+	bool front = false;
-+	drmModeModeInfoPtr mode = igt_output_get_mode(output);
-+	uint64_t req_rate_ns = rate_from_refresh(refresh_rate * CMRR_FACTOR);
-+	uint64_t exp_rate_ns = rate_from_refresh(refresh_rate);
-+	uint64_t threshold_ns = exp_rate_ns / mode->vdisplay; /* Upto 1 scan line. */
-+
-+	igt_info("CMRR on: requested rate: %"PRIu64" ns (%f Hz) "
-+		 "expected rate: %"PRIu64" ns - %"PRIu64" ns (%f-%f Hz)\n",
-+		 req_rate_ns, refresh_rate * CMRR_FACTOR,
-+		 (exp_rate_ns - threshold_ns), (exp_rate_ns + threshold_ns),
-+		 (float)NSECS_PER_SEC / (exp_rate_ns + threshold_ns),
-+		 (float)NSECS_PER_SEC / (exp_rate_ns - threshold_ns));
-+
-+	do_flip(data, &data->fb0);
-+	start_ns = last_event_ns = get_kernel_event_ns(data, DRM_EVENT_FLIP_COMPLETE);
-+	do {
-+		int64_t target_ns, wait_ns, diff_ns = exp_rate_ns;
-+
-+		front = !front;
-+		do_flip(data, front ? &data->fb1 : &data->fb0);
-+
-+		event_ns = get_kernel_event_ns(data, DRM_EVENT_VBLANK);
-+		igt_debug("event_ns - last_event_ns: %"PRIu64" ns (%f Hz)\n",
-+			  event_ns - last_event_ns, (float)NSECS_PER_SEC / (event_ns - last_event_ns));
-+
-+		diff_ns -= event_ns - last_event_ns;
-+		if (llabs(diff_ns) <= threshold_ns)
-+			total_pass += 1;
-+		total_flip += 1;
-+
-+		diff_ns = event_ns - start_ns;
-+		wait_ns = ((diff_ns + req_rate_ns - 1) / req_rate_ns) * req_rate_ns;
-+		wait_ns -= diff_ns;
-+		target_ns = event_ns + wait_ns;
-+		while (get_time_ns() < target_ns - 10);
-+
-+		last_event_ns = get_time_ns();
-+	} while (event_ns - start_ns <= duration_ns);
-+
-+	igt_info("Completed %u flips, %u vblanks were in threshold for (%u Hz) %"PRIu64"ns.\n",
-+		 total_flip, total_pass, refresh_rate, req_rate_ns);
-+
-+	return total_flip ? ((total_pass * 100) / total_flip) : 0;
-+}
-+
- /*
-  * Flips at the given rate and measures against the expected value.
-  * Returns the pass rate as a percentage from 0 - 100.
-@@ -414,6 +475,34 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
- 	return total_flip ? ((total_pass * 100) / total_flip) : 0;
- }
- 
-+static void
-+test_cmrr(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
-+{
-+	uint32_t result;
-+	range_t range;
-+
-+	prepare_test(data, output, pipe);
-+	range = data->range;
-+
-+	igt_info("CMRR test execution on %s, PIPE_%s with VRR range: (%u-%u) Hz\n",
-+		 output->name, kmstest_pipe_name(pipe), range.min, range.max);
-+
-+	result = flip_and_measure_cmrr(data, output, pipe, range.max, TEST_DURATION_NS);
-+
-+	/* Clean-up */
-+	igt_plane_set_fb(data->primary, NULL);
-+	igt_output_set_pipe(output, PIPE_NONE);
-+	igt_output_override_mode(output, NULL);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
-+	igt_remove_fb(data->drm_fd, &data->fb1);
-+	igt_remove_fb(data->drm_fd, &data->fb0);
-+
-+	igt_assert_f(result > 75,
-+		     "Refresh rate (%u Hz) %"PRIu64"ns: Target CMRR on threshold not reached, result was %u%%\n",
-+		     range.max, rate_from_refresh(range.max), result);
-+}
-+
- /* Basic VRR flip functionality test - enable, measure, disable, measure */
- static void
- test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
-@@ -587,6 +676,14 @@ igt_main
- 	igt_subtest_with_dynamic("negative-basic")
- 		run_vrr_test(&data, test_basic, TEST_NEGATIVE);
- 
-+	igt_describe("Test to validate the the content rate exactly match with the "
-+		     "requested rate without any frame drops.");
-+	igt_subtest_with_dynamic("cmrr") {
-+		igt_require(is_intel_device(data.drm_fd) &&
-+			    intel_display_ver(intel_get_drm_devid(data.drm_fd)) >= 20);
-+		run_vrr_test(&data, test_cmrr, TEST_BASIC);
-+	}
-+
- 	igt_fixture {
- 		igt_display_fini(&data.display);
- 		drm_close_driver(data.drm_fd);
--- 
-2.40.0
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7595_BAT -> XEIGTPW_10214_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10214_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:
+    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 other test fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10214/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
+
+  * igt@xe_exec_fault_mode@many-basic:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][3] ([Intel XE#288]) +17 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10214/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:
+    - bat-adlp-7:         [FAIL][4] ([i915#2346]) -> [PASS][5]
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10214/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
+
+  * igt@kms_pipe_crc_basic@hang-read-crc:
+    - bat-dg2-oem2:       [INCOMPLETE][6] ([Intel XE#749]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10214/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3:
+    - bat-dg2-oem2:       [INCOMPLETE][8] ([Intel XE#545]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10214/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html
+
+  
+#### Warnings ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [FAIL][10] ([Intel XE#616] / [Intel XE#750]) -> [DMESG-FAIL][11] ([Intel XE#282] / [i915#2017])
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10214/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
+    - bat-dg2-oem2:       [TIMEOUT][12] ([Intel XE#430] / [Intel XE#530]) -> [FAIL][13] ([Intel XE#400] / [Intel XE#616])
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10214/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3:
+    - bat-dg2-oem2:       [TIMEOUT][14] ([Intel XE#530]) -> [FAIL][15] ([Intel XE#400] / [Intel XE#616])
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10214/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#282]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/282
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
+  [Intel XE#430]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/430
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+  [Intel XE#530]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/530
+  [Intel XE#545]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/545
+  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
+  [Intel XE#749]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/749
+  [Intel XE#750]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/750
+  [Intel XE#929]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/929
+  [i915#2017]: https://gitlab.freedesktop.org/drm/intel/issues/2017
+  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7595 -> IGTPW_10214
+
+  IGTPW_10214: 10214
+  IGT_7595: cfa00d99b1dfa0621ea552d1ed54907798da1a1a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-505-b25aa17bffa88c86fec716e40bdb3848eea17b23: b25aa17bffa88c86fec716e40bdb3848eea17b23
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10214/index.html
+
+--===============9026518570024362354==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/3,v6] lib/igt_kms: Fix memory corruption (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126327/">https://patchwork.freedesktop.org/series/126327/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10214/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10214/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7595_BAT -&gt; XEIGTPW_10214_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10214_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10214/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@many-basic:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10214/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +17 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10214/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/749">Intel XE#749</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10214/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/545">Intel XE#545</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10214/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/750">Intel XE#750</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10214/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2017">i915#2017</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/430">Intel XE#430</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/530">Intel XE#530</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10214/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/530">Intel XE#530</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10214/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7595 -&gt; IGTPW_10214</li>
+</ul>
+<p>IGTPW_10214: 10214<br />
+  IGT_7595: cfa00d99b1dfa0621ea552d1ed54907798da1a1a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-505-b25aa17bffa88c86fec716e40bdb3848eea17b23: b25aa17bffa88c86fec716e40bdb3848eea17b23</p>
+
+</body>
+</html>
+
+--===============9026518570024362354==--
