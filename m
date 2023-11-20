@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1174410E3D8
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Nov 2023 14:15:24 +0000 (UTC)
-From: Lukasz Laguna <lukasz.laguna@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 20 Nov 2023 15:14:55 +0100
-Message-Id: <20231120141459.7445-5-lukasz.laguna@intel.com>
-In-Reply-To: <20231120141459.7445-1-lukasz.laguna@intel.com>
-References: <20231120141459.7445-1-lukasz.laguna@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8004D10E3E1
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Nov 2023 14:16:02 +0000 (UTC)
+Message-ID: <6d5fbd57-d6eb-444b-9963-8fa36c9b82fb@intel.com>
+Date: Mon, 20 Nov 2023 19:45:47 +0530
+To: Anshuman Gupta <anshuman.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20231120135344.4182454-1-anshuman.gupta@intel.com>
+Content-Language: en-US
+From: Riana Tauro <riana.tauro@intel.com>
+In-Reply-To: <20231120135344.4182454-1-anshuman.gupta@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 4/8] lib/igt_sriov_device: add helpers for
- operations in different VFs scenarios
+Subject: Re: [igt-dev] [PATCH i-g-t] test/intel/xe_guc_pc: Add debug message
+ for gt freq
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,70 +25,33 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Added helpers:
-- for_each_vf and for_each_num_vfs
-- for_random_vf and for_random_num_vfs
-- for_last_vf and for_max_num_vfs
 
-v2:
- - document helpers (Michal)
+Hi Anshuman
 
-Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
----
- lib/igt_sriov_device.h | 41 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
+On 11/20/2023 7:23 PM, Anshuman Gupta wrote:
+> Adding a igt_debug() message for gt freq, it will be
+> useful to debug the xe_guc_pc igt test failures.
+> 
+> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+> ---
+>   tests/intel/xe_guc_pc.c | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/tests/intel/xe_guc_pc.c b/tests/intel/xe_guc_pc.c
+> index fa2f20cca..37c6fd9e0 100644
+> --- a/tests/intel/xe_guc_pc.c
+> +++ b/tests/intel/xe_guc_pc.c
+> @@ -166,6 +166,8 @@ static uint32_t get_freq(int fd, int gt_id, const char *freq_name)
+>   	while (err == -EAGAIN)
+>   		err = igt_sysfs_scanf(gt_fd, freq_attr, "%u", &freq);
+>   
+> +	igt_debug("gt%d: %s freq\n", gt_id, freq_name);
+should print freq read as well?
+it will be useful for tests that are failing on comparison
 
-diff --git a/lib/igt_sriov_device.h b/lib/igt_sriov_device.h
-index 84f033f52..3ab984720 100644
---- a/lib/igt_sriov_device.h
-+++ b/lib/igt_sriov_device.h
-@@ -28,4 +28,45 @@ void igt_sriov_disable_driver_autoprobe(int pf);
- int igt_sriov_open_vf_drm_device(int pf, unsigned int vf_num);
- bool igt_sriov_is_vf_drm_driver_probed(int pf, unsigned int vf_num);
- 
-+/**
-+ * for_each_vf - Helper for running code on each VF
-+ * @__pf_fd: PF device file descriptor
-+ * @__vf_num: VFs iterator
-+ *
-+ * For loop that iterates over all VFs associated with given PF @__pf_fd.
-+ */
-+#define for_each_vf(__pf_fd, __vf_num) \
-+	for (unsigned int __vf_num = 1, __total_vfs = igt_sriov_get_total_vfs(__pf_fd); \
-+	     __vf_num <= __total_vfs; \
-+	     ++__vf_num)
-+#define for_each_num_vfs for_each_vf
-+
-+/**
-+ * for_random_vf - Helper for running code on random VF
-+ * @__pf_fd: PF device file descriptor
-+ * @__vf_num: stores random VF
-+ *
-+ * Helper allows to run code using random VF number (stored in @__vf_num)
-+ * picked from the range of all VFs associated with given PF @__pf_fd.
-+ */
-+#define for_random_vf(__pf_fd, __vf_num) \
-+	for (unsigned int __vf_num = 1 + random() % igt_sriov_get_total_vfs(__pf_fd), __tmp = 0; \
-+	     __tmp < 1; \
-+	     ++__tmp)
-+#define for_random_num_vfs for_random_vf
-+
-+/**
-+ * for_last_vf - Helper for running code on last VF
-+ * @__pf_fd: PF device file descriptor
-+ * @__vf_num: stores last VF number
-+ *
-+ * Helper allows to run code using last VF number (stored in @__vf_num)
-+ * associated with given PF @__pf_fd.
-+ */
-+#define for_last_vf(__pf_fd, __vf_num) \
-+	for (unsigned int __vf_num = igt_sriov_get_total_vfs(__pf_fd), __tmp = 0; \
-+	     __tmp < 1; \
-+	     ++__tmp)
-+#define for_max_num_vfs for_last_vf
-+
- #endif /* __IGT_SRIOV_DEVICE_H__ */
--- 
-2.40.0
+Thanks
+Riana
+> +
+>   	close(gt_fd);
+>   	return freq;
+>   }
