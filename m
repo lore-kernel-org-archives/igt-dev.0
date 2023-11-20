@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A753E10E469
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Nov 2023 18:25:07 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1A09E10E20E
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Nov 2023 18:25:04 +0000 (UTC)
 From: Matthew Auld <matthew.auld@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 20 Nov 2023 18:24:28 +0000
-Message-ID: <20231120182430.88753-14-matthew.auld@intel.com>
+Date: Mon, 20 Nov 2023 18:24:26 +0000
+Message-ID: <20231120182430.88753-12-matthew.auld@intel.com>
 In-Reply-To: <20231120182430.88753-1-matthew.auld@intel.com>
 References: <20231120182430.88753-1-matthew.auld@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v10 13/15] lib/intel_batchbuffer: extend to
- include optional alignment
+Subject: [igt-dev] [PATCH i-g-t v10 11/15] lib/intel_allocator: treat
+ default_alignment as the minimum
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,8 +24,13 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Extend intel_bb_create_full() to support specifying the alignment for
-the allocator. This will be useful in some upcoming test.
+If something overrides the default alignment, we should only apply the
+alignment if it is larger than the default_alignment.
+
+v2 (Niranjana):
+  - Simplify slightly
+v3:
+  - Also update the default-alignment testcase
 
 Signed-off-by: Matthew Auld <matthew.auld@intel.com>
 Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
@@ -34,136 +39,54 @@ Cc: Pallavi Mishra <pallavi.mishra@intel.com>
 Reviewed-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/intel_batchbuffer.c | 30 +++++++++++++++++++-----------
- lib/intel_batchbuffer.h |  2 +-
- 2 files changed, 20 insertions(+), 12 deletions(-)
+ lib/intel_allocator.c             | 4 ++--
+ tests/intel/api_intel_allocator.c | 8 ++++----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index ed604efb4..ba48bef84 100644
---- a/lib/intel_batchbuffer.c
-+++ b/lib/intel_batchbuffer.c
-@@ -894,7 +894,7 @@ static inline uint64_t __intel_bb_get_offset(struct intel_bb *ibb,
- static struct intel_bb *
- __intel_bb_create(int fd, uint32_t ctx, uint32_t vm, const intel_ctx_cfg_t *cfg,
- 		  uint32_t size, bool do_relocs,
--		  uint64_t start, uint64_t end,
-+		  uint64_t start, uint64_t end, uint64_t alignment,
- 		  uint8_t allocator_type, enum allocator_strategy strategy)
+diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
+index 01e025b46..341db2a50 100644
+--- a/lib/intel_allocator.c
++++ b/lib/intel_allocator.c
+@@ -584,8 +584,8 @@ static int handle_request(struct alloc_req *req, struct alloc_resp *resp)
+ 			break;
+ 
+ 		case REQ_ALLOC:
+-			if (!req->alloc.alignment)
+-				req->alloc.alignment = ial->default_alignment;
++			req->alloc.alignment = max(ial->default_alignment,
++						   req->alloc.alignment);
+ 
+ 			resp->response_type = RESP_ALLOC;
+ 			resp->alloc.offset = ial->alloc(ial,
+diff --git a/tests/intel/api_intel_allocator.c b/tests/intel/api_intel_allocator.c
+index d19be3ce9..8e13a8808 100644
+--- a/tests/intel/api_intel_allocator.c
++++ b/tests/intel/api_intel_allocator.c
+@@ -206,7 +206,7 @@ static void reserve(int fd, uint8_t type)
+ static void default_alignment(int fd)
  {
- 	struct drm_i915_gem_exec_object2 *object;
-@@ -918,7 +918,11 @@ __intel_bb_create(int fd, uint32_t ctx, uint32_t vm, const intel_ctx_cfg_t *cfg,
- 	 */
- 	if (ibb->driver == INTEL_DRIVER_I915) {
- 		ibb->uses_full_ppgtt = gem_uses_full_ppgtt(fd);
--		ibb->alignment = gem_detect_safe_alignment(fd);
-+
-+		if (!alignment)
-+			alignment = gem_detect_safe_alignment(fd);
-+
-+		ibb->alignment = alignment;
- 		ibb->gtt_size = gem_aperture_size(fd);
- 		ibb->handle = gem_create(fd, size);
+ 	struct test_obj obj[3];
+-	uint64_t ahnd, default_alignment = 0x4000;
++	uint64_t ahnd, default_alignment = SZ_4K;
  
-@@ -947,7 +951,10 @@ __intel_bb_create(int fd, uint32_t ctx, uint32_t vm, const intel_ctx_cfg_t *cfg,
- 	} else {
- 		igt_assert(!do_relocs);
+ 	ahnd = intel_allocator_open_full(fd, 0, 0, 0, INTEL_ALLOCATOR_SIMPLE,
+ 					 ALLOC_STRATEGY_LOW_TO_HIGH,
+@@ -214,13 +214,13 @@ static void default_alignment(int fd)
  
--		ibb->alignment = xe_get_default_alignment(fd);
-+		if (!alignment)
-+			alignment = xe_get_default_alignment(fd);
-+
-+		ibb->alignment = alignment;
- 		size = ALIGN(size, ibb->alignment);
- 		ibb->handle = xe_bo_create_flags(fd, 0, size, visible_vram_if_possible(fd, 0));
+ 	for (int i = 0; i < ARRAY_SIZE(obj); i++) {
+ 		obj[i].handle = gem_handle_gen();
+-		obj[i].offset = intel_allocator_alloc(ahnd, obj[i].handle, 4096,
+-				i == 2 ? 4096 : 0);
++		obj[i].offset = intel_allocator_alloc(ahnd, obj[i].handle,
++						      SZ_4K, i == 2 ? 0 : SZ_16K);
+ 		igt_debug("obj[%d].offset: %llx, handle: %u\n", i,
+ 			 (long long) obj[i].offset, obj[i].handle);
+ 	}
  
-@@ -1018,6 +1025,7 @@ __intel_bb_create(int fd, uint32_t ctx, uint32_t vm, const intel_ctx_cfg_t *cfg,
-  * @size: size of the batchbuffer
-  * @start: allocator vm start address
-  * @end: allocator vm start address
-+ * @alignment: alignment to use for allocator, zero for default
-  * @allocator_type: allocator type, SIMPLE, RELOC, ...
-  * @strategy: allocation strategy
-  *
-@@ -1034,11 +1042,11 @@ __intel_bb_create(int fd, uint32_t ctx, uint32_t vm, const intel_ctx_cfg_t *cfg,
- struct intel_bb *intel_bb_create_full(int fd, uint32_t ctx, uint32_t vm,
- 				      const intel_ctx_cfg_t *cfg, uint32_t size,
- 				      uint64_t start, uint64_t end,
--				      uint8_t allocator_type,
-+				      uint64_t alignment, uint8_t allocator_type,
- 				      enum allocator_strategy strategy)
- {
- 	return __intel_bb_create(fd, ctx, vm, cfg, size, false, start, end,
--				 allocator_type, strategy);
-+				 alignment, allocator_type, strategy);
- }
- 
- /**
-@@ -1063,7 +1071,7 @@ struct intel_bb *intel_bb_create_with_allocator(int fd, uint32_t ctx, uint32_t v
- 						uint32_t size,
- 						uint8_t allocator_type)
- {
--	return __intel_bb_create(fd, ctx, vm, cfg, size, false, 0, 0,
-+	return __intel_bb_create(fd, ctx, vm, cfg, size, false, 0, 0, 0,
- 				 allocator_type, ALLOC_STRATEGY_HIGH_TO_LOW);
- }
- 
-@@ -1102,7 +1110,7 @@ struct intel_bb *intel_bb_create(int fd, uint32_t size)
- 	bool relocs = is_i915_device(fd) && gem_has_relocations(fd);
- 
- 	return __intel_bb_create(fd, 0, 0, NULL, size,
--				 relocs && !aux_needs_softpin(fd), 0, 0,
-+				 relocs && !aux_needs_softpin(fd), 0, 0, 0,
- 				 INTEL_ALLOCATOR_SIMPLE,
- 				 ALLOC_STRATEGY_HIGH_TO_LOW);
- }
-@@ -1129,7 +1137,7 @@ intel_bb_create_with_context(int fd, uint32_t ctx, uint32_t vm,
- 	bool relocs = is_i915_device(fd) && gem_has_relocations(fd);
- 
- 	return __intel_bb_create(fd, ctx, vm, cfg, size,
--				 relocs && !aux_needs_softpin(fd), 0, 0,
-+				 relocs && !aux_needs_softpin(fd), 0, 0, 0,
- 				 INTEL_ALLOCATOR_SIMPLE,
- 				 ALLOC_STRATEGY_HIGH_TO_LOW);
- }
-@@ -1150,7 +1158,7 @@ struct intel_bb *intel_bb_create_with_relocs(int fd, uint32_t size)
- {
- 	igt_require(is_i915_device(fd) && gem_has_relocations(fd));
- 
--	return __intel_bb_create(fd, 0, 0, NULL, size, true, 0, 0,
-+	return __intel_bb_create(fd, 0, 0, NULL, size, true, 0, 0, 0,
- 				 INTEL_ALLOCATOR_NONE, ALLOC_STRATEGY_NONE);
- }
- 
-@@ -1175,7 +1183,7 @@ intel_bb_create_with_relocs_and_context(int fd, uint32_t ctx,
- {
- 	igt_require(is_i915_device(fd) && gem_has_relocations(fd));
- 
--	return __intel_bb_create(fd, ctx, 0, cfg, size, true, 0, 0,
-+	return __intel_bb_create(fd, ctx, 0, cfg, size, true, 0, 0, 0,
- 				 INTEL_ALLOCATOR_NONE, ALLOC_STRATEGY_NONE);
- }
- 
-@@ -1195,7 +1203,7 @@ struct intel_bb *intel_bb_create_no_relocs(int fd, uint32_t size)
- {
- 	igt_require(gem_uses_full_ppgtt(fd));
- 
--	return __intel_bb_create(fd, 0, 0, NULL, size, false, 0, 0,
-+	return __intel_bb_create(fd, 0, 0, NULL, size, false, 0, 0, 0,
- 				 INTEL_ALLOCATOR_SIMPLE,
- 				 ALLOC_STRATEGY_HIGH_TO_LOW);
- }
-diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
-index bdb3b6a67..8738cb5c4 100644
---- a/lib/intel_batchbuffer.h
-+++ b/lib/intel_batchbuffer.h
-@@ -307,7 +307,7 @@ struct intel_bb {
- struct intel_bb *
- intel_bb_create_full(int fd, uint32_t ctx, uint32_t vm,
- 		     const intel_ctx_cfg_t *cfg, uint32_t size, uint64_t start,
--		     uint64_t end, uint8_t allocator_type,
-+		     uint64_t end, uint64_t alignment, uint8_t allocator_type,
- 		     enum allocator_strategy strategy);
- struct intel_bb *
- intel_bb_create_with_allocator(int fd, uint32_t ctx, uint32_t vm,
+-	igt_assert_eq(obj[1].offset - obj[0].offset, default_alignment);
++	igt_assert_eq(obj[1].offset - obj[0].offset, SZ_16K);
+ 	/* obj[2] should be between obj[0] and obj[1] */
+ 	igt_assert(obj[0].offset < obj[2].offset);
+ 	igt_assert(obj[2].offset < obj[1].offset);
 -- 
 2.42.0
