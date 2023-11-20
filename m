@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8004D10E3E1
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Nov 2023 14:16:02 +0000 (UTC)
-Message-ID: <6d5fbd57-d6eb-444b-9963-8fa36c9b82fb@intel.com>
-Date: Mon, 20 Nov 2023 19:45:47 +0530
-To: Anshuman Gupta <anshuman.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20231120135344.4182454-1-anshuman.gupta@intel.com>
-Content-Language: en-US
-From: Riana Tauro <riana.tauro@intel.com>
-In-Reply-To: <20231120135344.4182454-1-anshuman.gupta@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A561010E3E0
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Nov 2023 14:16:45 +0000 (UTC)
+From: Lukasz Laguna <lukasz.laguna@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 20 Nov 2023 15:14:57 +0100
+Message-Id: <20231120141459.7445-7-lukasz.laguna@intel.com>
+In-Reply-To: <20231120141459.7445-1-lukasz.laguna@intel.com>
+References: <20231120141459.7445-1-lukasz.laguna@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] test/intel/xe_guc_pc: Add debug message
- for gt freq
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 6/8] lib/igt_sriov_device: add helpers for
+ VF DRM driver bind and unbind
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,33 +23,99 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Helpers allow to bind and unbind a DRM driver for specified VF of a
+given PF device.
 
-Hi Anshuman
+Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
+---
+ lib/igt_sriov_device.c | 52 ++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_sriov_device.h |  2 ++
+ 2 files changed, 54 insertions(+)
 
-On 11/20/2023 7:23 PM, Anshuman Gupta wrote:
-> Adding a igt_debug() message for gt freq, it will be
-> useful to debug the xe_guc_pc igt test failures.
-> 
-> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> ---
->   tests/intel/xe_guc_pc.c | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/tests/intel/xe_guc_pc.c b/tests/intel/xe_guc_pc.c
-> index fa2f20cca..37c6fd9e0 100644
-> --- a/tests/intel/xe_guc_pc.c
-> +++ b/tests/intel/xe_guc_pc.c
-> @@ -166,6 +166,8 @@ static uint32_t get_freq(int fd, int gt_id, const char *freq_name)
->   	while (err == -EAGAIN)
->   		err = igt_sysfs_scanf(gt_fd, freq_attr, "%u", &freq);
->   
-> +	igt_debug("gt%d: %s freq\n", gt_id, freq_name);
-should print freq read as well?
-it will be useful for tests that are failing on comparison
-
-Thanks
-Riana
-> +
->   	close(gt_fd);
->   	return freq;
->   }
+diff --git a/lib/igt_sriov_device.c b/lib/igt_sriov_device.c
+index 315de353a..c53f8696f 100644
+--- a/lib/igt_sriov_device.c
++++ b/lib/igt_sriov_device.c
+@@ -5,9 +5,11 @@
+ 
+ #include <dirent.h>
+ #include <errno.h>
++#include <pciaccess.h>
+ 
+ #include "drmtest.h"
+ #include "igt_core.h"
++#include "igt_device.h"
+ #include "igt_sriov_device.h"
+ #include "igt_sysfs.h"
+ 
+@@ -287,3 +289,53 @@ bool igt_sriov_is_vf_drm_driver_probed(int pf, unsigned int vf_num)
+ 
+ 	return ret;
+ }
++
++static bool __igt_sriov_bind_vf_drm_driver(int pf, unsigned int vf_num, bool bind)
++{
++	int sysfs, ret;
++	struct pci_device *pci_dev;
++	char pci_slot[14];
++
++	igt_assert(vf_num > 0);
++
++	pci_dev = __igt_device_get_pci_device(pf, vf_num);
++	igt_assert_f(pci_dev, "No PCI device for given VF number: %d\n", vf_num);
++	sprintf(pci_slot, "%04x:%02x:%02x.%x",
++		pci_dev->domain_16, pci_dev->bus, pci_dev->dev, pci_dev->func);
++
++	sysfs = igt_sysfs_open(pf);
++	igt_assert_fd(sysfs);
++
++	igt_debug("vf_num: %u, pci_slot: %s\n", vf_num, pci_slot);
++	ret = igt_sysfs_set(sysfs, bind ? "device/driver/bind" : "device/driver/unbind", pci_slot);
++
++	close(sysfs);
++
++	return ret;
++}
++
++/**
++ * igt_sriov_bind_vf_drm_driver - Bind DRM driver to VF
++ * @pf: PF device file descriptor
++ * @vf_num: VF number (1-based to identify single VF)
++ *
++ * Bind the DRM driver to given VF.
++ * It asserts on failure.
++ */
++void igt_sriov_bind_vf_drm_driver(int pf, unsigned int vf_num)
++{
++	igt_assert(__igt_sriov_bind_vf_drm_driver(pf, vf_num, true));
++}
++
++/**
++ * igt_sriov_unbind_vf_drm_driver - Unbind DRM driver from VF
++ * @pf: PF device file descriptor
++ * @vf_num: VF number (1-based to identify single VF)
++ *
++ * Unbind the DRM driver from given VF.
++ * It asserts on failure.
++ */
++void igt_sriov_unbind_vf_drm_driver(int pf, unsigned int vf_num)
++{
++	igt_assert(__igt_sriov_bind_vf_drm_driver(pf, vf_num, false));
++}
+diff --git a/lib/igt_sriov_device.h b/lib/igt_sriov_device.h
+index 3ab984720..354beb23d 100644
+--- a/lib/igt_sriov_device.h
++++ b/lib/igt_sriov_device.h
+@@ -27,6 +27,8 @@ void igt_sriov_enable_driver_autoprobe(int pf);
+ void igt_sriov_disable_driver_autoprobe(int pf);
+ int igt_sriov_open_vf_drm_device(int pf, unsigned int vf_num);
+ bool igt_sriov_is_vf_drm_driver_probed(int pf, unsigned int vf_num);
++void igt_sriov_bind_vf_drm_driver(int pf, unsigned int vf_num);
++void igt_sriov_unbind_vf_drm_driver(int pf, unsigned int vf_num);
+ 
+ /**
+  * for_each_vf - Helper for running code on each VF
+-- 
+2.40.0
