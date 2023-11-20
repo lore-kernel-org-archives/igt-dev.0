@@ -1,17 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8F05010E3E1
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Nov 2023 14:16:47 +0000 (UTC)
-From: Lukasz Laguna <lukasz.laguna@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 20 Nov 2023 15:14:59 +0100
-Message-Id: <20231120141459.7445-9-lukasz.laguna@intel.com>
-In-Reply-To: <20231120141459.7445-1-lukasz.laguna@intel.com>
-References: <20231120141459.7445-1-lukasz.laguna@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D5B0D10E3D8
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Nov 2023 14:22:28 +0000 (UTC)
+Message-ID: <adbb417d-827d-af98-9f38-eb64bdc56e86@intel.com>
+Date: Mon, 20 Nov 2023 15:22:22 +0100
+Content-Language: pl
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ <igt-dev@lists.freedesktop.org>, Marcin Bernatowicz
+ <marcin.bernatowicz@linux.intel.com>, Michal Wajdeczko
+ <michal.wajdeczko@intel.com>
+References: <20231109065147.9479-1-lukasz.laguna@intel.com>
+ <20231109065147.9479-5-lukasz.laguna@intel.com>
+ <20231109120349.dkglxfvdpdceus3b@kamilkon-desk.igk.intel.com>
+From: "Laguna, Lukasz" <lukasz.laguna@intel.com>
+In-Reply-To: <20231109120349.dkglxfvdpdceus3b@kamilkon-desk.igk.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 8/8] tests/sriov_basic: add more tests for
- VF driver binding
+Subject: Re: [igt-dev] [PATCH i-g-t 4/8] lib/igt_sriov_device: add helpers
+ for operations in different VFs scenarios
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,127 +30,88 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-- bind-unbind-vf: validate driver binding and unbinding to specified VF
-- enable-vfs-bind-unbind-each: validate driver binding and unbinding to
-  VFs from specified range.
 
-v2:
- - remove checks that are outside the scope of the test (Michal)
+On 11/9/2023 13:03, Kamil Konieczny wrote:
+> Hi Lukasz,
+> On 2023-11-09 at 07:51:43 +0100, Lukasz Laguna wrote:
+>> Added helpers:
+>> - for_each_vf and for_each_num_vfs
+>> - for_random_vf and for_random_num_vfs
+>> - for_last_vf and for_max_num_vfs
+>>
+> What changed in v2? Please describe like:
+>
+> v2: document macro parameters (Michal)
+>
+> Add here Cc:
+> Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
+> Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 
-Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
----
- tests/sriov_basic.c | 90 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 90 insertions(+)
+Done
 
-diff --git a/tests/sriov_basic.c b/tests/sriov_basic.c
-index 866bb88e4..72541fe2f 100644
---- a/tests/sriov_basic.c
-+++ b/tests/sriov_basic.c
-@@ -90,6 +90,58 @@ static void enable_vfs_bind_all_unbind_all(int pf_fd, unsigned int num_vfs)
- 	igt_sriov_disable_vfs(pf_fd);
- }
- 
-+/**
-+ * SUBTEST: enable-vfs-bind-unbind-each
-+ * Description:
-+ *   Verify VFs enabling with binding and unbinding the driver one be one to each of them
-+ * Run type: BAT
-+ */
-+static void enable_vfs_bind_unbind_each(int pf_fd, unsigned int num_vfs)
-+{
-+	igt_debug("Testing %u VFs\n", num_vfs);
-+
-+	igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
-+
-+	igt_sriov_disable_driver_autoprobe(pf_fd);
-+	igt_sriov_enable_vfs(pf_fd, num_vfs);
-+	igt_sriov_enable_driver_autoprobe(pf_fd);
-+
-+	for (int i = 1; i <= num_vfs; i++) {
-+		igt_assert(!igt_sriov_is_vf_drm_driver_probed(pf_fd, i));
-+		igt_sriov_bind_vf_drm_driver(pf_fd, i);
-+		igt_assert(igt_sriov_is_vf_drm_driver_probed(pf_fd, i));
-+		igt_sriov_unbind_vf_drm_driver(pf_fd, i);
-+		igt_assert(!igt_sriov_is_vf_drm_driver_probed(pf_fd, i));
-+	}
-+
-+	igt_sriov_disable_vfs(pf_fd);
-+}
-+
-+/**
-+ * SUBTEST: bind-unbind-vf
-+ * Description:
-+ *   Verify binding and unbinding the driver to specific VF
-+ * Run type: BAT
-+ */
-+static void bind_unbind_vf(int pf_fd, unsigned int vf_num)
-+{
-+	igt_debug("Testing VF%u\n", vf_num);
-+
-+	igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
-+
-+	igt_sriov_disable_driver_autoprobe(pf_fd);
-+	igt_sriov_enable_vfs(pf_fd, vf_num);
-+	igt_sriov_enable_driver_autoprobe(pf_fd);
-+
-+	igt_assert(!igt_sriov_is_vf_drm_driver_probed(pf_fd, vf_num));
-+	igt_sriov_bind_vf_drm_driver(pf_fd, vf_num);
-+	igt_assert(igt_sriov_is_vf_drm_driver_probed(pf_fd, vf_num));
-+	igt_sriov_unbind_vf_drm_driver(pf_fd, vf_num);
-+	igt_assert(!igt_sriov_is_vf_drm_driver_probed(pf_fd, vf_num));
-+
-+	igt_sriov_disable_vfs(pf_fd);
-+}
-+
- igt_main
- {
- 	int pf_fd;
-@@ -159,6 +211,44 @@ igt_main
- 		}
- 	}
- 
-+	igt_describe("Verify VFs enabling with binding and unbinding the driver one be one to each of them");
-+	igt_subtest_with_dynamic("enable-vfs-bind-unbind-each") {
-+		for_each_num_vfs(pf_fd, num_vfs) {
-+			igt_dynamic_f("numvfs-%u", num_vfs) {
-+				enable_vfs_bind_unbind_each(pf_fd, num_vfs);
-+			}
-+		}
-+		for_random_num_vfs(pf_fd, num_vfs) {
-+			igt_dynamic_f("numvfs-random") {
-+				enable_vfs_bind_unbind_each(pf_fd, num_vfs);
-+			}
-+		}
-+		for_max_num_vfs(pf_fd, num_vfs) {
-+			igt_dynamic_f("numvfs-all") {
-+				enable_vfs_bind_unbind_each(pf_fd, num_vfs);
-+			}
-+		}
-+	}
-+
-+	igt_describe("Test binds and unbinds the driver to specific VF");
-+	igt_subtest_with_dynamic("bind-unbind-vf") {
-+		for_each_vf(pf_fd, vf) {
-+			igt_dynamic_f("vf-%u", vf) {
-+				bind_unbind_vf(pf_fd, vf);
-+			}
-+		}
-+		for_random_vf(pf_fd, vf) {
-+			igt_dynamic_f("vf-random") {
-+				bind_unbind_vf(pf_fd, vf);
-+			}
-+		}
-+		for_last_vf(pf_fd, vf) {
-+			igt_dynamic_f("vf-last") {
-+				bind_unbind_vf(pf_fd, vf);
-+			}
-+		}
-+	}
-+
- 	igt_fixture {
- 		igt_sriov_disable_vfs(pf_fd);
- 		/* abort to avoid execution of next tests with enabled VFs */
--- 
-2.40.0
+>> Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
+>> Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> - ^^^^^^^^^^^^
+> This should be removed.
+Done
+>
+> Regards,
+> Kamil
+>
+>> ---
+>>   lib/igt_sriov_device.h | 41 +++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 41 insertions(+)
+>>
+>> diff --git a/lib/igt_sriov_device.h b/lib/igt_sriov_device.h
+>> index be4e56cf3..1b99fb8ce 100644
+>> --- a/lib/igt_sriov_device.h
+>> +++ b/lib/igt_sriov_device.h
+>> @@ -19,4 +19,45 @@ bool igt_sriov_disable_driver_autoprobe(int pf);
+>>   int igt_sriov_open_vf_drm_device(int pf, unsigned int vf_num);
+>>   bool igt_sriov_is_vf_drm_driver_probed(int pf, unsigned int vf_num);
+>>   
+>> +/**
+>> + * for_each_vf:
+>> + * @__pf_fd: PF device file descriptor
+>> + * @__vf_num: VFs iterator
+>> + *
+>> + * For loop that iterates over all VFs associated with given PF @__pf_fd.
+>> + */
+>> +#define for_each_vf(__pf_fd, __vf_num) \
+>> +	for (unsigned int __vf_num = 1, __total_vfs = igt_sriov_get_total_vfs(__pf_fd); \
+>> +	     __vf_num <= __total_vfs; \
+>> +	     ++__vf_num)
+>> +#define for_each_num_vfs for_each_vf
+>> +
+>> +/**
+>> + * for_random_vf:
+>> + * @__pf_fd: PF device file descriptor
+>> + * @__vf_num: stores random VF
+>> + *
+>> + * Helper allows to run code using random VF number (stored in @__vf_num)
+>> + * picked from the range of all VFs associated with given PF @__pf_fd.
+>> + */
+>> +#define for_random_vf(__pf_fd, __vf_num) \
+>> +	for (unsigned int __vf_num = 1 + random() % igt_sriov_get_total_vfs(__pf_fd), __tmp = 0; \
+>> +	     __tmp < 1; \
+>> +	     ++__tmp)
+>> +#define for_random_num_vfs for_random_vf
+>> +
+>> +/**
+>> + * for_last_vf:
+>> + * @__pf_fd: PF device file descriptor
+>> + * @__vf_num: stores last VF number
+>> + *
+>> + * Helper allows to run code using last VF number (stored in @__vf_num)
+>> + * associated with given PF @__pf_fd.
+>> + */
+>> +#define for_last_vf(__pf_fd, __vf_num) \
+>> +	for (unsigned int __vf_num = igt_sriov_get_total_vfs(__pf_fd), __tmp = 0; \
+>> +	     __tmp < 1; \
+>> +	     ++__tmp)
+>> +#define for_max_num_vfs for_last_vf
+>> +
+>>   #endif /* __IGT_SRIOV_DEVICE_H__ */
+>> -- 
+>> 2.40.0
+>>
