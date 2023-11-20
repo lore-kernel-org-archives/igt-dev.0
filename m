@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============3771491258934586165=="
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1FA3810E0C2
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Nov 2023 14:15:12 +0000 (UTC)
+From: Lukasz Laguna <lukasz.laguna@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 20 Nov 2023 15:14:51 +0100
+Message-Id: <20231120141459.7445-1-lukasz.laguna@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
-Date: Mon, 20 Nov 2023 14:07:42 -0000
-Message-ID: <170048926215.29475.10409795303366332851@emeril.freedesktop.org>
-References: <20231120082459.1859375-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20231120082459.1859375-1-bhanuprakash.modem@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_New_subt?=
- =?utf-8?q?est_for_CMRR?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 0/8] Initial SR-IOV validation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,206 +16,43 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3771491258934586165==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Series introduces a basic SR-IOV test that validates VFs enabling in
+different scenarios together with VF DRM driver binding. Implemented
+library helpers rely on generic PCI device attributes defined in ABI.
 
-== Series Details ==
+Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
 
-Series: New subtest for CMRR
-URL   : https://patchwork.freedesktop.org/series/126639/
-State : success
+Daniel Mrzyglod (1):
+  lib/igt_sriov_device: add helper for checking if VF DRM driver is
+    probed
 
-== Summary ==
+Katarzyna Dec (4):
+  lib/igt_sriov_device: add core SR-IOV helpers
+  lib/igt_sriov_device: add helper for opening VF device
+  tests/sriov_basic: add basic tests for enabling SR-IOV VFs
+  tests/sriov_basic: validate driver binding to VFs
 
-CI Bug Log - changes from XEIGT_7595_BAT -> XEIGTPW_10215_BAT
-====================================================
+Lukasz Laguna (3):
+  lib/igt_sriov_device: add helpers for operations in different VFs
+    scenarios
+  lib/igt_sriov_device: add helpers for VF DRM driver bind and unbind
+  tests/sriov_basic: add more tests for VF driver binding
 
-Summary
--------
+ lib/drmtest.c          |  17 +-
+ lib/drmtest.h          |   1 +
+ lib/igt_sriov_device.c | 341 +++++++++++++++++++++++++++++++++++++++++
+ lib/igt_sriov_device.h |  74 +++++++++
+ lib/meson.build        |   1 +
+ tests/meson.build      |   1 +
+ tests/sriov_basic.c    | 262 +++++++++++++++++++++++++++++++
+ 7 files changed, 693 insertions(+), 4 deletions(-)
+ create mode 100644 lib/igt_sriov_device.c
+ create mode 100644 lib/igt_sriov_device.h
+ create mode 100644 tests/sriov_basic.c
 
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10215_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_exec_fault_mode@many-basic:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][1] ([Intel XE#288]) +17 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10215/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:
-    - bat-adlp-7:         [FAIL][2] ([i915#2346]) -> [PASS][3]
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10215/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
-
-  * igt@kms_pipe_crc_basic@hang-read-crc:
-    - bat-dg2-oem2:       [INCOMPLETE][4] ([Intel XE#749]) -> [PASS][5]
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10215/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html
-
-  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3:
-    - bat-dg2-oem2:       [INCOMPLETE][6] ([Intel XE#545]) -> [PASS][7]
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10215/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html
-
-  
-#### Warnings ####
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
-    - bat-dg2-oem2:       [TIMEOUT][8] ([Intel XE#430] / [Intel XE#530]) -> [FAIL][9] ([Intel XE#400] / [Intel XE#616])
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10215/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3:
-    - bat-dg2-oem2:       [TIMEOUT][10] ([Intel XE#530]) -> [FAIL][11] ([Intel XE#400] / [Intel XE#616])
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10215/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
-  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
-  [Intel XE#430]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/430
-  [Intel XE#530]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/530
-  [Intel XE#545]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/545
-  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
-  [Intel XE#749]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/749
-  [Intel XE#929]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/929
-  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
-
-
-Build changes
--------------
-
-  * IGT: IGT_7595 -> IGTPW_10215
-
-  IGTPW_10215: 10215
-  IGT_7595: cfa00d99b1dfa0621ea552d1ed54907798da1a1a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-505-b25aa17bffa88c86fec716e40bdb3848eea17b23: b25aa17bffa88c86fec716e40bdb3848eea17b23
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10215/index.html
-
---===============3771491258934586165==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>New subtest for CMRR</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126639/">https://patchwork.freedesktop.org/series/126639/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10215/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10215/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7595_BAT -&gt; XEIGTPW_10215_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10215_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@xe_exec_fault_mode@many-basic:<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10215/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +17 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10215/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@hang-read-crc:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/749">Intel XE#749</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10215/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/545">Intel XE#545</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10215/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/430">Intel XE#430</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/530">Intel XE#530</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10215/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/530">Intel XE#530</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10215/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7595 -&gt; IGTPW_10215</li>
-</ul>
-<p>IGTPW_10215: 10215<br />
-  IGT_7595: cfa00d99b1dfa0621ea552d1ed54907798da1a1a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-505-b25aa17bffa88c86fec716e40bdb3848eea17b23: b25aa17bffa88c86fec716e40bdb3848eea17b23</p>
-
-</body>
-</html>
-
---===============3771491258934586165==--
+-- 
+2.40.0
