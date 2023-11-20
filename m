@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D9D3910E089
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Nov 2023 16:15:54 +0000 (UTC)
-Date: Mon, 20 Nov 2023 17:15:30 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1174410E3D8
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Nov 2023 14:15:24 +0000 (UTC)
+From: Lukasz Laguna <lukasz.laguna@intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20231120161530.eva2nyhivg4gzp23@kamilkon-desk.igk.intel.com>
-References: <20231115155626.756378-1-daniel.t.mrzyglod@intel.com>
- <20231117092829.1177588-1-daniel.t.mrzyglod@intel.com>
+Date: Mon, 20 Nov 2023 15:14:55 +0100
+Message-Id: <20231120141459.7445-5-lukasz.laguna@intel.com>
+In-Reply-To: <20231120141459.7445-1-lukasz.laguna@intel.com>
+References: <20231120141459.7445-1-lukasz.laguna@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231117092829.1177588-1-daniel.t.mrzyglod@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/intel/xe_waitfence: add
- subtest with provided engine class instance
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 4/8] lib/igt_sriov_device: add helpers for
+ operations in different VFs scenarios
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,123 +23,70 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Daniel,
-On 2023-11-17 at 10:28:29 +0100, Daniel Mrzyglod wrote:
-> Postive test to check XE_WAIT_USER_FENCE ioctl where
-> engine class instance is provided.
+Added helpers:
+- for_each_vf and for_each_num_vfs
+- for_random_vf and for_random_num_vfs
+- for_last_vf and for_max_num_vfs
 
-There were xe drm-uapi changes merged recently so you need to correct
-op/flags in few places.
+v2:
+ - document helpers (Michal)
 
-> 
-> v2: Fix review comments (Kamil)
->     provide ABSTIME as proper time format
-> 
-> Signed-off-by: Daniel Mrzyglod <daniel.t.mrzyglod@intel.com>
-> ---
->  tests/intel/xe_waitfence.c | 48 +++++++++++++++++++++++++++++++++++---
->  1 file changed, 45 insertions(+), 3 deletions(-)
-> 
-> diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
-> index ac7e99dde..a88d3b9af 100644
-> --- a/tests/intel/xe_waitfence.c
-> +++ b/tests/intel/xe_waitfence.c
-> @@ -37,9 +37,32 @@ static void do_bind(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
->  	xe_vm_bind_async(fd, vm, 0, bo, offset, addr, size, sync, 1);
->  }
->  
-> +static int64_t wait_with_eci_abstime(int fd, uint64_t *addr, uint64_t value,
-> +				     struct drm_xe_engine_class_instance *eci,
-> +				     int64_t timeout)
-> +{
-> +	struct drm_xe_wait_user_fence wait = {
-> +		.addr = to_user_pointer(addr),
-> +		.op = DRM_XE_UFENCE_WAIT_EQ,
+Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
+---
+ lib/igt_sriov_device.h | 41 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
-.op = DRM_XE_UFENCE_WAIT_OP_EQ,
-
-> +		.flags = !eci ? 0 : DRM_XE_UFENCE_WAIT_ABSTIME,
-
-DRM_XE_UFENCE_WAIT_FLAG_ABSTIME
-
-> +		.value = value,
-> +		.mask = DRM_XE_UFENCE_WAIT_U64,
-
-DRM_XE_UFENCE_WAIT_FLAG_ABSTIME
-
-Regards,
-Kamil
-
-> +		.timeout = timeout,
-> +		.num_engines = eci ? 1 : 0,
-> +		.instances = eci ? to_user_pointer(eci) : 0,
-> +	};
-> +	struct timespec ts;
-> +
-> +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait), 0);
-> +	igt_assert_eq(clock_gettime(CLOCK_MONOTONIC, &ts), 0);
-> +
-> +	return ts.tv_sec * 1e9 + ts.tv_nsec;
-> +}
-> +
->  enum waittype {
->  	RELTIME,
->  	ABSTIME,
-> +	ENGINE,
->  };
->  
->  /**
-> @@ -50,10 +73,18 @@ enum waittype {
->   * SUBTEST: abstime
->   * Description: Check basic waitfences functionality with timeout
->   *              passed as absolute time in nanoseconds
-> + *
-> + * SUBTEST: engine
-> + * Description: Check basic waitfences functionality with timeout
-> + *              passed as relative time in nanoseconds and provide engine class
-> + *              instance
->   */
->  static void
->  waitfence(int fd, enum waittype wt)
->  {
-> +	struct drm_xe_engine_class_instance *eci = NULL;
-> +	struct timespec ts;
-> +	int64_t current, signalled;
->  	uint32_t bo_1;
->  	uint32_t bo_2;
->  	uint32_t bo_3;
-> @@ -83,10 +114,18 @@ waitfence(int fd, enum waittype wt)
->  		timeout = xe_wait_ufence(fd, &wait_fence, 7, NULL, MS_TO_NS(10));
->  		igt_debug("wait type: RELTIME - timeout: %ld, timeout left: %ld\n",
->  			  MS_TO_NS(10), timeout);
-> +	} else if (wt == ENGINE) {
-> +		eci = xe_hw_engine(fd, 1);
-> +		igt_assert(eci);
-> +		clock_gettime(CLOCK_MONOTONIC, &ts);
-> +		current = ts.tv_sec * 1e9 + ts.tv_nsec;
-> +		timeout = current + MS_TO_NS(10);
-> +		signalled = wait_with_eci_abstime(fd, &wait_fence, 7, eci, timeout);
-> +		igt_debug("wait type: ENGINE ABSTIME - timeout: %" PRId64
-> +			  ", signalled: %" PRId64
-> +			  ", elapsed: %" PRId64 "\n",
-> +			  timeout, signalled, signalled - current);
->  	} else {
-> -		struct timespec ts;
-> -		int64_t current, signalled;
-> -
->  		clock_gettime(CLOCK_MONOTONIC, &ts);
->  		current = ts.tv_sec * 1e9 + ts.tv_nsec;
->  		timeout = current + MS_TO_NS(10);
-> @@ -205,6 +244,9 @@ igt_main
->  	igt_subtest("abstime")
->  		waitfence(fd, ABSTIME);
->  
-> +	igt_subtest("engine")
-> +		waitfence(fd, ENGINE);
-> +
->  	igt_subtest("invalid-flag")
->  		invalid_flag(fd);
->  
-> -- 
-> 2.41.0
-> 
+diff --git a/lib/igt_sriov_device.h b/lib/igt_sriov_device.h
+index 84f033f52..3ab984720 100644
+--- a/lib/igt_sriov_device.h
++++ b/lib/igt_sriov_device.h
+@@ -28,4 +28,45 @@ void igt_sriov_disable_driver_autoprobe(int pf);
+ int igt_sriov_open_vf_drm_device(int pf, unsigned int vf_num);
+ bool igt_sriov_is_vf_drm_driver_probed(int pf, unsigned int vf_num);
+ 
++/**
++ * for_each_vf - Helper for running code on each VF
++ * @__pf_fd: PF device file descriptor
++ * @__vf_num: VFs iterator
++ *
++ * For loop that iterates over all VFs associated with given PF @__pf_fd.
++ */
++#define for_each_vf(__pf_fd, __vf_num) \
++	for (unsigned int __vf_num = 1, __total_vfs = igt_sriov_get_total_vfs(__pf_fd); \
++	     __vf_num <= __total_vfs; \
++	     ++__vf_num)
++#define for_each_num_vfs for_each_vf
++
++/**
++ * for_random_vf - Helper for running code on random VF
++ * @__pf_fd: PF device file descriptor
++ * @__vf_num: stores random VF
++ *
++ * Helper allows to run code using random VF number (stored in @__vf_num)
++ * picked from the range of all VFs associated with given PF @__pf_fd.
++ */
++#define for_random_vf(__pf_fd, __vf_num) \
++	for (unsigned int __vf_num = 1 + random() % igt_sriov_get_total_vfs(__pf_fd), __tmp = 0; \
++	     __tmp < 1; \
++	     ++__tmp)
++#define for_random_num_vfs for_random_vf
++
++/**
++ * for_last_vf - Helper for running code on last VF
++ * @__pf_fd: PF device file descriptor
++ * @__vf_num: stores last VF number
++ *
++ * Helper allows to run code using last VF number (stored in @__vf_num)
++ * associated with given PF @__pf_fd.
++ */
++#define for_last_vf(__pf_fd, __vf_num) \
++	for (unsigned int __vf_num = igt_sriov_get_total_vfs(__pf_fd), __tmp = 0; \
++	     __tmp < 1; \
++	     ++__tmp)
++#define for_max_num_vfs for_last_vf
++
+ #endif /* __IGT_SRIOV_DEVICE_H__ */
+-- 
+2.40.0
