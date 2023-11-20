@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E838B10E45F
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Nov 2023 18:25:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 592D210E20E
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Nov 2023 18:25:02 +0000 (UTC)
 From: Matthew Auld <matthew.auld@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 20 Nov 2023 18:24:27 +0000
-Message-ID: <20231120182430.88753-13-matthew.auld@intel.com>
+Date: Mon, 20 Nov 2023 18:24:25 +0000
+Message-ID: <20231120182430.88753-11-matthew.auld@intel.com>
 In-Reply-To: <20231120182430.88753-1-matthew.auld@intel.com>
 References: <20231120182430.88753-1-matthew.auld@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v10 12/15] lib/intel_blt: tidy up alignment
- usage
+Subject: [igt-dev] [PATCH i-g-t v10 10/15] lib/xe_ioctl: update vm_bind to
+ account for pat_index
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,236 +24,104 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-No need to select get_default_alignment() all over the place; the
-allocator should know the required default alignment. If we need
-something specific like in the case of the ctrl surf we can now just set
-whatever, safe in the knowledge that the allocator will already consider
-the default allocator alignment as the min.
+Keep things minimal and select the 1way+ by default on all platforms.
+Other users can use intel_buf, get_offset_pat_index etc or use
+__xe_vm_bind() directly.  Display tests don't directly use this
+interface.
 
 Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 Cc: José Roberto de Souza <jose.souza@intel.com>
 Cc: Pallavi Mishra <pallavi.mishra@intel.com>
 Reviewed-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 ---
- lib/intel_blt.c | 78 +++++++++++++++++++------------------------------
- 1 file changed, 30 insertions(+), 48 deletions(-)
+ lib/xe/xe_ioctl.c   | 8 ++++++--
+ lib/xe/xe_ioctl.h   | 2 +-
+ tests/intel/xe_vm.c | 5 ++++-
+ 3 files changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index 62f593054..e501acbc3 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -783,14 +783,6 @@ static void dump_bb_ext(struct gen12_block_copy_data_ext *data)
- 		 data->dw21.src_array_index);
+diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+index 94cb6d43b..a5fe7dd79 100644
+--- a/lib/xe/xe_ioctl.c
++++ b/lib/xe/xe_ioctl.c
+@@ -41,6 +41,7 @@
+ #include "config.h"
+ #include "drmtest.h"
+ #include "igt_syncobj.h"
++#include "intel_pat.h"
+ #include "ioctl_wrappers.h"
+ #include "xe_ioctl.h"
+ #include "xe_query.h"
+@@ -92,7 +93,7 @@ void xe_vm_bind_array(int fd, uint32_t vm, uint32_t exec_queue,
+ int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
+ 		  uint64_t offset, uint64_t addr, uint64_t size, uint32_t op,
+ 		  uint32_t flags, struct drm_xe_sync *sync, uint32_t num_syncs,
+-		  uint32_t prefetch_region, uint64_t ext)
++		  uint32_t prefetch_region, uint8_t pat_index, uint64_t ext)
+ {
+ 	struct drm_xe_vm_bind bind = {
+ 		.extensions = ext,
+@@ -108,6 +109,8 @@ int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
+ 		.num_syncs = num_syncs,
+ 		.syncs = (uintptr_t)sync,
+ 		.exec_queue_id = exec_queue,
++		.bind.pat_index = (pat_index == DEFAULT_PAT_INDEX) ?
++			intel_get_pat_idx_wb(fd) : pat_index,
+ 	};
+ 
+ 	if (igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind))
+@@ -122,7 +125,8 @@ void  __xe_vm_bind_assert(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
+ 			  uint32_t num_syncs, uint32_t prefetch_region, uint64_t ext)
+ {
+ 	igt_assert_eq(__xe_vm_bind(fd, vm, exec_queue, bo, offset, addr, size,
+-				   op, flags, sync, num_syncs, prefetch_region, ext), 0);
++				   op, flags, sync, num_syncs, prefetch_region,
++				   DEFAULT_PAT_INDEX, ext), 0);
  }
  
--static uint64_t get_default_alignment(int fd, enum intel_driver driver)
--{
--	if (driver == INTEL_DRIVER_XE)
--		return xe_get_default_alignment(fd);
--
--	return gem_detect_safe_alignment(fd);
--}
--
- static void *bo_map(int fd, uint32_t handle, uint64_t size,
- 		    enum intel_driver driver)
- {
-@@ -842,21 +834,20 @@ uint64_t emit_blt_block_copy(int fd,
- 	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
- 	struct gen12_block_copy_data data = {};
- 	struct gen12_block_copy_data_ext dext = {};
--	uint64_t dst_offset, src_offset, bb_offset, alignment;
-+	uint64_t dst_offset, src_offset, bb_offset;
- 	uint32_t bbe = MI_BATCH_BUFFER_END;
- 	uint8_t *bb;
+ void xe_vm_bind(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
+diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+index 2696cc24e..6d91d3e8e 100644
+--- a/lib/xe/xe_ioctl.h
++++ b/lib/xe/xe_ioctl.h
+@@ -20,7 +20,7 @@ uint32_t xe_vm_create(int fd, uint32_t flags, uint64_t ext);
+ int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
+ 		  uint64_t offset, uint64_t addr, uint64_t size, uint32_t op,
+ 		  uint32_t flags, struct drm_xe_sync *sync, uint32_t num_syncs,
+-		  uint32_t region, uint64_t ext);
++		  uint32_t region, uint8_t pat_index, uint64_t ext);
+ void  __xe_vm_bind_assert(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
+ 			  uint64_t offset, uint64_t addr, uint64_t size,
+ 			  uint32_t op, uint32_t flags, struct drm_xe_sync *sync,
+diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+index 05e8e7516..74cfb6fc4 100644
+--- a/tests/intel/xe_vm.c
++++ b/tests/intel/xe_vm.c
+@@ -10,6 +10,7 @@
+  */
  
- 	igt_assert_f(ahnd, "block-copy supports softpin only\n");
- 	igt_assert_f(blt, "block-copy requires data to do blit\n");
+ #include "igt.h"
++#include "intel_pat.h"
+ #include "lib/igt_syncobj.h"
+ #include "lib/intel_reg.h"
+ #include "xe_drm.h"
+@@ -356,7 +357,8 @@ static void userptr_invalid(int fd)
+ 	vm = xe_vm_create(fd, 0, 0);
+ 	munmap(data, size);
+ 	ret = __xe_vm_bind(fd, vm, 0, 0, to_user_pointer(data), 0x40000,
+-			   size, DRM_XE_VM_BIND_OP_MAP_USERPTR, 0, NULL, 0, 0, 0);
++			   size, DRM_XE_VM_BIND_OP_MAP_USERPTR, 0, NULL, 0, 0,
++			   DEFAULT_PAT_INDEX, 0);
+ 	igt_assert(ret == -EFAULT);
  
--	alignment = get_default_alignment(fd, blt->driver);
- 	src_offset = get_offset_pat_index(ahnd, blt->src.handle, blt->src.size,
--					  alignment, blt->src.pat_index);
-+					  0, blt->src.pat_index);
- 	src_offset += blt->src.plane_offset;
- 	dst_offset = get_offset_pat_index(ahnd, blt->dst.handle, blt->dst.size,
--					  alignment, blt->dst.pat_index);
-+					  0, blt->dst.pat_index);
- 	dst_offset += blt->dst.plane_offset;
--	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
-+	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, 0);
- 
- 	fill_data(&data, blt, src_offset, dst_offset, ext, ip_ver);
- 
-@@ -918,19 +909,18 @@ int blt_block_copy(int fd,
- {
- 	struct drm_i915_gem_execbuffer2 execbuf = {};
- 	struct drm_i915_gem_exec_object2 obj[3] = {};
--	uint64_t dst_offset, src_offset, bb_offset, alignment;
-+	uint64_t dst_offset, src_offset, bb_offset;
- 	int ret;
- 
- 	igt_assert_f(ahnd, "block-copy supports softpin only\n");
- 	igt_assert_f(blt, "block-copy requires data to do blit\n");
- 	igt_assert_neq(blt->driver, 0);
- 
--	alignment = get_default_alignment(fd, blt->driver);
- 	src_offset = get_offset_pat_index(ahnd, blt->src.handle, blt->src.size,
--					  alignment, blt->src.pat_index);
-+					  0, blt->src.pat_index);
- 	dst_offset = get_offset_pat_index(ahnd, blt->dst.handle, blt->dst.size,
--					  alignment, blt->dst.pat_index);
--	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
-+					  0, blt->dst.pat_index);
-+	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, 0);
- 
- 	emit_blt_block_copy(fd, ahnd, blt, ext, 0, true);
- 
-@@ -1132,7 +1122,7 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
- 	igt_assert_f(ahnd, "ctrl-surf-copy supports softpin only\n");
- 	igt_assert_f(surf, "ctrl-surf-copy requires data to do ctrl-surf-copy blit\n");
- 
--	alignment = max_t(uint64_t, get_default_alignment(fd, surf->driver), 1ull << 16);
-+	alignment = 1ull << 16;
- 	src_offset = get_offset_pat_index(ahnd, surf->src.handle, surf->src.size,
- 					  alignment, surf->src.pat_index);
- 	dst_offset = get_offset_pat_index(ahnd, surf->dst.handle, surf->dst.size,
-@@ -1236,7 +1226,7 @@ int blt_ctrl_surf_copy(int fd,
- 	igt_assert_f(surf, "ctrl-surf-copy requires data to do ctrl-surf-copy blit\n");
- 	igt_assert_neq(surf->driver, 0);
- 
--	alignment = max_t(uint64_t, get_default_alignment(fd, surf->driver), 1ull << 16);
-+	alignment = 1ull << 16;
- 	src_offset = get_offset_pat_index(ahnd, surf->src.handle, surf->src.size,
- 					  alignment, surf->src.pat_index);
- 	dst_offset = get_offset_pat_index(ahnd, surf->dst.handle, surf->dst.size,
-@@ -1443,13 +1433,10 @@ uint64_t emit_blt_fast_copy(int fd,
- {
- 	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
- 	struct gen12_fast_copy_data data = {};
--	uint64_t dst_offset, src_offset, bb_offset, alignment;
-+	uint64_t dst_offset, src_offset, bb_offset;
- 	uint32_t bbe = MI_BATCH_BUFFER_END;
- 	uint32_t *bb;
- 
--
--	alignment = get_default_alignment(fd, blt->driver);
--
- 	data.dw00.client = 0x2;
- 	data.dw00.opcode = 0x42;
- 	data.dw00.dst_tiling = __fast_tiling(blt->dst.tiling);
-@@ -1480,12 +1467,12 @@ uint64_t emit_blt_fast_copy(int fd,
- 	data.dw03.dst_y2 = blt->dst.y2;
- 
- 	src_offset = get_offset_pat_index(ahnd, blt->src.handle, blt->src.size,
--					  alignment, blt->src.pat_index);
-+					  0, blt->src.pat_index);
- 	src_offset += blt->src.plane_offset;
--	dst_offset = get_offset_pat_index(ahnd, blt->dst.handle, blt->dst.size, alignment,
-+	dst_offset = get_offset_pat_index(ahnd, blt->dst.handle, blt->dst.size, 0,
- 					  blt->dst.pat_index);
- 	dst_offset += blt->dst.plane_offset;
--	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
-+	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, 0);
- 
- 	data.dw04.dst_address_lo = dst_offset;
- 	data.dw05.dst_address_hi = dst_offset >> 32;
-@@ -1550,19 +1537,18 @@ int blt_fast_copy(int fd,
- {
- 	struct drm_i915_gem_execbuffer2 execbuf = {};
- 	struct drm_i915_gem_exec_object2 obj[3] = {};
--	uint64_t dst_offset, src_offset, bb_offset, alignment;
-+	uint64_t dst_offset, src_offset, bb_offset;
- 	int ret;
- 
- 	igt_assert_f(ahnd, "fast-copy supports softpin only\n");
- 	igt_assert_f(blt, "fast-copy requires data to do fast-copy blit\n");
- 	igt_assert_neq(blt->driver, 0);
- 
--	alignment = get_default_alignment(fd, blt->driver);
- 	src_offset = get_offset_pat_index(ahnd, blt->src.handle, blt->src.size,
--					  alignment, blt->src.pat_index);
-+					  0, blt->src.pat_index);
- 	dst_offset = get_offset_pat_index(ahnd, blt->dst.handle, blt->dst.size,
--					  alignment, blt->dst.pat_index);
--	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
-+					  0, blt->dst.pat_index);
-+	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, 0);
- 
- 	emit_blt_fast_copy(fd, ahnd, blt, 0, true);
- 
-@@ -1610,16 +1596,15 @@ void blt_mem_init(int fd, struct blt_mem_data *mem)
- 
- static void emit_blt_mem_copy(int fd, uint64_t ahnd, const struct blt_mem_data *mem)
- {
--	uint64_t dst_offset, src_offset, alignment;
-+	uint64_t dst_offset, src_offset;
- 	int i;
- 	uint32_t *batch;
- 	uint32_t optype;
- 
--	alignment = get_default_alignment(fd, mem->driver);
- 	src_offset = get_offset_pat_index(ahnd, mem->src.handle, mem->src.size,
--					  alignment, mem->src.pat_index);
-+					  0, mem->src.pat_index);
- 	dst_offset = get_offset_pat_index(ahnd, mem->dst.handle, mem->dst.size,
--					  alignment, mem->dst.pat_index);
-+					  0, mem->dst.pat_index);
- 
- 	batch = bo_map(fd, mem->bb.handle, mem->bb.size, mem->driver);
- 	optype = mem->src.type == M_MATRIX ? 1 << 17 : 0;
-@@ -1660,15 +1645,14 @@ int blt_mem_copy(int fd, const intel_ctx_t *ctx,
- {
- 	struct drm_i915_gem_execbuffer2 execbuf = {};
- 	struct drm_i915_gem_exec_object2 obj[3] = {};
--	uint64_t dst_offset, src_offset, bb_offset, alignment;
-+	uint64_t dst_offset, src_offset, bb_offset;
- 	int ret;
- 
--	alignment = get_default_alignment(fd, mem->driver);
- 	src_offset = get_offset_pat_index(ahnd, mem->src.handle, mem->src.size,
--					  alignment, mem->src.pat_index);
-+					  0, mem->src.pat_index);
- 	dst_offset = get_offset_pat_index(ahnd, mem->dst.handle, mem->dst.size,
--					  alignment, mem->dst.pat_index);
--	bb_offset = get_offset(ahnd, mem->bb.handle, mem->bb.size, alignment);
-+					  0, mem->dst.pat_index);
-+	bb_offset = get_offset(ahnd, mem->bb.handle, mem->bb.size, 0);
- 
- 	emit_blt_mem_copy(fd, ahnd, mem);
- 
-@@ -1701,14 +1685,13 @@ int blt_mem_copy(int fd, const intel_ctx_t *ctx,
- static void emit_blt_mem_set(int fd, uint64_t ahnd, const struct blt_mem_data *mem,
- 			     uint8_t fill_data)
- {
--	uint64_t dst_offset, alignment;
-+	uint64_t dst_offset;
- 	int b;
- 	uint32_t *batch;
- 	uint32_t value;
- 
--	alignment = get_default_alignment(fd, mem->driver);
- 	dst_offset = get_offset_pat_index(ahnd, mem->dst.handle, mem->dst.size,
--					  alignment, mem->dst.pat_index);
-+					  0, mem->dst.pat_index);
- 
- 	batch = bo_map(fd, mem->bb.handle, mem->bb.size, mem->driver);
- 	value = (uint32_t)fill_data << 24;
-@@ -1747,13 +1730,12 @@ int blt_mem_set(int fd, const intel_ctx_t *ctx,
- {
- 	struct drm_i915_gem_execbuffer2 execbuf = {};
- 	struct drm_i915_gem_exec_object2 obj[2] = {};
--	uint64_t dst_offset, bb_offset, alignment;
-+	uint64_t dst_offset, bb_offset;
- 	int ret;
- 
--	alignment = get_default_alignment(fd, mem->driver);
- 	dst_offset = get_offset_pat_index(ahnd, mem->dst.handle, mem->dst.size,
--					  alignment, mem->dst.pat_index);
--	bb_offset = get_offset(ahnd, mem->bb.handle, mem->bb.size, alignment);
-+					  0, mem->dst.pat_index);
-+	bb_offset = get_offset(ahnd, mem->bb.handle, mem->bb.size, 0);
- 
- 	emit_blt_mem_set(fd, ahnd, mem, fill_data);
+ 	xe_vm_destroy(fd, vm);
+@@ -798,6 +800,7 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
+ 		bind_ops[i].op = DRM_XE_VM_BIND_OP_MAP;
+ 		bind_ops[i].flags = DRM_XE_VM_BIND_FLAG_ASYNC;
+ 		bind_ops[i].prefetch_mem_region_instance = 0;
++		bind_ops[i].pat_index = intel_get_pat_idx_wb(fd);
+ 		bind_ops[i].reserved[0] = 0;
+ 		bind_ops[i].reserved[1] = 0;
  
 -- 
 2.42.0
