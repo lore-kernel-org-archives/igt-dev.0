@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4279210E4B1
- for <igt-dev@lists.freedesktop.org>; Tue, 21 Nov 2023 13:50:52 +0000 (UTC)
-From: Marcin Bernatowicz <marcin.bernatowicz@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 21 Nov 2023 14:50:20 +0100
-Message-Id: <20231121135020.15451-1-marcin.bernatowicz@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============5232119368181712944=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] xe_create: create-big-vram subtest
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jeevan B" <jeevan.b@intel.com>
+Date: Tue, 21 Nov 2023 10:54:41 -0000
+Message-ID: <170056408177.30157.13861901375765674569@emeril.freedesktop.org>
+References: <20231121062320.1860993-1-jeevan.b@intel.com>
+In-Reply-To: <20231121062320.1860993-1-jeevan.b@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQWRkIEZC?=
+ =?utf-8?q?C_support_to_PSR/PSR2_tests_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,130 +17,191 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: jakub1.kolakowski@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Validates the creation of significant Buffer Objects (BO) within VRAM,
-accounting for 75% of the CPU-visible VRAM size.
-The size of the created BO can be adjusted using command line parameters,
-with '-S' representing BO size in MB,
-and '-p' representing BO size as a percentage of the VRAM size.
+--===============5232119368181712944==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: rebased, updated to uAPI changes (DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT),
-    after review corrections: 1024UL -> 1024ULL,
-    int -> unsigned int (Kamil)
+== Series Details ==
 
-Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@intel.com>
----
- tests/intel/xe_create.c | 80 ++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 79 insertions(+), 1 deletion(-)
+Series: Add FBC support to PSR/PSR2 tests (rev2)
+URL   : https://patchwork.freedesktop.org/series/126689/
+State : success
 
-diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
-index f4633cfb3..3ff9bb750 100644
---- a/tests/intel/xe_create.c
-+++ b/tests/intel/xe_create.c
-@@ -18,6 +18,14 @@
- 
- #define PAGE_SIZE 0x1000
- 
-+static struct param {
-+	unsigned int size_MB;
-+	unsigned int vram_percent;
-+} params = {
-+	.size_MB = 0,
-+	.vram_percent = 75,
-+};
-+
- static int __create_bo(int fd, uint32_t vm, uint64_t size, uint32_t flags,
- 		       uint32_t *handlep)
- {
-@@ -214,7 +222,73 @@ static void create_massive_size(int fd)
- 	}
- }
- 
--igt_main
-+/**
-+ * SUBTEST: create-big-vram
-+ * Functionality: BO creation
-+ * Test category: functionality test
-+ * Description: Validates the creation of substantial BO within VRAM
-+ *              (constituting 75% of the CPU-visible VRAM).
-+ */
-+static void create_big_vram(int fd)
-+{
-+	uint64_t bo_size, size, vram_size, alignment;
-+	uint32_t bo_handle;
-+	char *bo_ptr = NULL;
-+	uint64_t vm = 0;
-+	int gt;
-+
-+	igt_require(xe_has_vram(fd));
-+	alignment = xe_get_default_alignment(fd);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
-+
-+	xe_for_each_gt(fd, gt) {
-+		vram_size = xe_visible_vram_size(fd, gt);
-+		bo_size = params.size_MB ? params.size_MB * 1024ULL * 1024ULL
-+					 : ALIGN(vram_size * params.vram_percent / 100, alignment);
-+		igt_debug("gt%u bo_size=%lu visible_vram_size=%lu\n", gt, bo_size, vram_size);
-+
-+		igt_assert_eq(0, __create_bo(fd, vm, bo_size, vram_memory(fd, gt), &bo_handle));
-+		bo_ptr = xe_bo_map(fd, bo_handle, bo_size);
-+		size = bo_size - 1;
-+		while (size > SZ_64K) {
-+			igt_assert_eq(0, READ_ONCE(bo_ptr[size]));
-+			WRITE_ONCE(bo_ptr[size], 'A');
-+			igt_assert_eq('A', READ_ONCE(bo_ptr[size]));
-+			size >>= 1;
-+		}
-+
-+		igt_assert_eq(0, bo_ptr[0]);
-+		munmap(bo_ptr, bo_size);
-+		gem_close(fd, bo_handle);
-+	}
-+
-+	xe_vm_destroy(fd, vm);
-+}
-+
-+static int opt_handler(int opt, int opt_index, void *data)
-+{
-+	switch (opt) {
-+	case 'S':
-+		params.size_MB = atoi(optarg);
-+		igt_debug("Size MB: %d\n", params.size_MB);
-+		break;
-+	case 'p':
-+		params.vram_percent = atoi(optarg);
-+		igt_debug("Percent of VRAM: %d\n", params.vram_percent);
-+		break;
-+	default:
-+		return IGT_OPT_HANDLER_ERROR;
-+	}
-+
-+	return IGT_OPT_HANDLER_SUCCESS;
-+}
-+
-+const char *help_str =
-+	"  -S\tBO size in MB\n"
-+	"  -p\tPercent of VRAM for BO (default 75% of visible VRAM size)\n"
-+	;
-+
-+igt_main_args("S:p:", NULL, help_str, opt_handler, NULL)
- {
- 	int xe;
- 
-@@ -254,6 +328,10 @@ igt_main
- 	}
- 
- 
-+	igt_subtest("create-big-vram") {
-+		create_big_vram(xe);
-+	}
-+
- 	igt_fixture
- 		drm_close_driver(xe);
- }
--- 
-2.31.1
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_13904 -> IGTPW_10225
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10225/index.html
+
+Participating hosts (28 -> 26)
+------------------------------
+
+  Additional (1): fi-pnv-d510 
+  Missing    (3): bat-jsl-1 fi-snb-2520m bat-dg1-5 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_10225:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * {igt@kms_psr@psr_primary_mmap_gtt}:
+    - fi-rkl-11600:       [SKIP][1] ([i915#9673]) -> [SKIP][2] +3 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13904/fi-rkl-11600/igt@kms_psr@psr_primary_mmap_gtt.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10225/fi-rkl-11600/igt@kms_psr@psr_primary_mmap_gtt.html
+    - bat-adlm-1:         [SKIP][3] ([i915#9673]) -> [SKIP][4] +3 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13904/bat-adlm-1/igt@kms_psr@psr_primary_mmap_gtt.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10225/bat-adlm-1/igt@kms_psr@psr_primary_mmap_gtt.html
+    - fi-tgl-1115g4:      [SKIP][5] ([i915#9673]) -> [SKIP][6] +3 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13904/fi-tgl-1115g4/igt@kms_psr@psr_primary_mmap_gtt.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10225/fi-tgl-1115g4/igt@kms_psr@psr_primary_mmap_gtt.html
+    - bat-mtlp-6:         [SKIP][7] ([i915#9673]) -> [SKIP][8] +3 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13904/bat-mtlp-6/igt@kms_psr@psr_primary_mmap_gtt.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10225/bat-mtlp-6/igt@kms_psr@psr_primary_mmap_gtt.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10225 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][9] ([fdo#109271]) +25 other tests skip
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10225/fi-pnv-d510/igt@gem_lmem_swapping@basic.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#9673]: https://gitlab.freedesktop.org/drm/intel/issues/9673
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7595 -> IGTPW_10225
+
+  CI-20190529: 20190529
+  CI_DRM_13904: e7f3669de4cd241d80b35b37ddf7c5e0a2129516 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10225: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10225/index.html
+  IGT_7595: cfa00d99b1dfa0621ea552d1ed54907798da1a1a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10225/index.html
+
+--===============5232119368181712944==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add FBC support to PSR/PSR2 tests (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126689/">https://patchwork.freedesktop.org/series/126689/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10225/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10225/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13904 -&gt; IGTPW_10225</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10225/index.html</p>
+<h2>Participating hosts (28 -&gt; 26)</h2>
+<p>Additional (1): fi-pnv-d510 <br />
+  Missing    (3): bat-jsl-1 fi-snb-2520m bat-dg1-5 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_10225:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>
+<p>{igt@kms_psr@psr_primary_mmap_gtt}:</p>
+<ul>
+<li>
+<p>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13904/fi-rkl-11600/igt@kms_psr@psr_primary_mmap_gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9673">i915#9673</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10225/fi-rkl-11600/igt@kms_psr@psr_primary_mmap_gtt.html">SKIP</a> +3 other tests skip</p>
+</li>
+<li>
+<p>bat-adlm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13904/bat-adlm-1/igt@kms_psr@psr_primary_mmap_gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9673">i915#9673</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10225/bat-adlm-1/igt@kms_psr@psr_primary_mmap_gtt.html">SKIP</a> +3 other tests skip</p>
+</li>
+<li>
+<p>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13904/fi-tgl-1115g4/igt@kms_psr@psr_primary_mmap_gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9673">i915#9673</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10225/fi-tgl-1115g4/igt@kms_psr@psr_primary_mmap_gtt.html">SKIP</a> +3 other tests skip</p>
+</li>
+<li>
+<p>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13904/bat-mtlp-6/igt@kms_psr@psr_primary_mmap_gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9673">i915#9673</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10225/bat-mtlp-6/igt@kms_psr@psr_primary_mmap_gtt.html">SKIP</a> +3 other tests skip</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10225 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@gem_lmem_swapping@basic:<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10225/fi-pnv-d510/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +25 other tests skip</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7595 -&gt; IGTPW_10225</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13904: e7f3669de4cd241d80b35b37ddf7c5e0a2129516 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10225: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10225/index.html<br />
+  IGT_7595: cfa00d99b1dfa0621ea552d1ed54907798da1a1a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============5232119368181712944==--
