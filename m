@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1AFB210E24E
+ for <igt-dev@lists.freedesktop.org>; Tue, 21 Nov 2023 08:05:45 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org,
+	swati2.sharma@intel.com
+Date: Tue, 21 Nov 2023 13:24:50 +0530
+Message-Id: <20231121075451.2012768-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jeevan B" <jeevan.b@intel.com>
-Date: Tue, 21 Nov 2023 07:50:58 -0000
-Message-ID: <170055305820.30158.4750246498412973361@emeril.freedesktop.org>
-References: <20231121062320.1860993-1-jeevan.b@intel.com>
-In-Reply-To: <20231121062320.1860993-1-jeevan.b@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_A?=
- =?utf-8?q?dd_FBC_support_to_PSR/PSR2_tests?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t 1/2] tests/kms_feature_discovery: Fix display
+ subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,67 +18,63 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Instead of doing nothing, check the connected platform really
+supports the display or not.
 
-Series: Add FBC support to PSR/PSR2 tests
-URL   : https://patchwork.freedesktop.org/series/126689/
-State : warning
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_feature_discovery.c | 22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
 
-== Summary ==
-
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1039154 for the overview.
-
-test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/51851735):
-  376/380 assembler test/rnde-intsrc              OK       0.01 s 
-  377/380 assembler test/rndz                     OK       0.01 s 
-  378/380 assembler test/lzd                      OK       0.01 s 
-  379/380 assembler test/not                      OK       0.01 s 
-  380/380 assembler test/immediate                OK       0.02 s 
-  
-  Ok:                  375
-  Expected Fail:         4
-  Fail:                  1
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1700552933:step_script
-  section_start:1700552933:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1700552933:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/51851734):
-  376/380 assembler test/rnde-intsrc              OK       0.01 s 
-  377/380 assembler test/rndz                     OK       0.01 s 
-  378/380 assembler test/lzd                      OK       0.01 s 
-  379/380 assembler test/not                      OK       0.02 s 
-  380/380 assembler test/immediate                OK       0.01 s 
-  
-  Ok:                  375
-  Expected Fail:         4
-  Fail:                  1
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1700552933:step_script
-  section_start:1700552933:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1700552933:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1039154
+diff --git a/tests/kms_feature_discovery.c b/tests/kms_feature_discovery.c
+index 428f97ffe..81064aa0e 100644
+--- a/tests/kms_feature_discovery.c
++++ b/tests/kms_feature_discovery.c
+@@ -30,8 +30,7 @@
+  *		anything else means we have a serious problem.
+  *
+  * SUBTEST: display
+- * Description: Make sure that we have display support with
+- * 		some outputs connected.
++ * Description: Make sure that we have display support.
+  * Driver requirement: i915, xe
+  * Functionality: feature_discovery
+  * Mega feature: General Display Features
+@@ -97,18 +96,25 @@ igt_main {
+ 	igt_fixture {
+ 		fd = drm_open_driver_master(DRIVER_ANY);
+ 		debugfs_fd = igt_debugfs_dir(fd);
++
++		errno = 0;
+ 	}
+ 
+ 	igt_subtest_group {
+-		igt_fixture {
+-			igt_display_require(&display, fd);
+-		}
+-
+-		igt_describe("Make sure that we have display support with some outputs connected.");
++		igt_describe("Make sure that we have display support.");
+ 		igt_subtest("display") {
+-			/* will skip because of the fixture */
++			drmModeResPtr resources = drmModeGetResources(fd);
++
++			/* Operation not supported on non-display platforms. */
++			if (!resources)
++				igt_assert_eq(errno, EOPNOTSUPP);
++
++			drmModeFreeResources(resources);
+ 		}
+ 
++		igt_fixture
++			igt_display_require(&display, fd);
++
+ 		igt_subtest_group {
+ 			volatile int output_count = 0;
+ 			igt_output_t *output;
+-- 
+2.40.0
