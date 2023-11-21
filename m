@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 117C010E2A7
- for <igt-dev@lists.freedesktop.org>; Tue, 21 Nov 2023 11:14:25 +0000 (UTC)
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 21 Nov 2023 16:54:21 +0530
-Message-Id: <20231121112421.16563-1-nidhi1.gupta@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============3331835587050642028=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/intel/kms_frontbuffer_tracking: Add
- new subtest to test FBC on each pipe
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Date: Tue, 21 Nov 2023 11:24:11 -0000
+Message-ID: <170056585139.30158.6326440073536967021@emeril.freedesktop.org>
+References: <20231121075451.2012768-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20231121075451.2012768-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_tests/kms=5Ffeature=5Fdiscover?=
+ =?utf-8?q?y=3A_Fix_display_subtest?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,128 +18,160 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Added a new subtest as kms_frontbuffer_tracking@pipe-fbc-rte.
-It will execute on each pipe with valid output and check if
-FBC is enabled or not.
+--===============3331835587050642028==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
----
- tests/intel/kms_frontbuffer_tracking.c | 77 ++++++++++++++++++++++++++
- 1 file changed, 77 insertions(+)
+== Series Details ==
 
-diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-index 213069947..68448d1a8 100644
---- a/tests/intel/kms_frontbuffer_tracking.c
-+++ b/tests/intel/kms_frontbuffer_tracking.c
-@@ -53,6 +53,15 @@
-  * Test category: functionality test
-  */
- 
-+/**
-+ * SUBTEST: pipe-fbc-rte
-+ * Description: Sanity test to enable FBC on each pipe.
-+ * Driver requirement: i915, xe
-+ * Functionality: fbc
-+ * Mega feature: General Display Features
-+ * Test category: functionality test
-+ */
-+
- #define TIME SLOW_QUICK(1000, 10000)
- 
- IGT_TEST_DESCRIPTION("Test the Kernel's frontbuffer tracking mechanism and "
-@@ -2047,6 +2056,42 @@ static void plane_fbc_rte_subtest(const struct test_mode *t)
- 	igt_display_reset(&drm.display);
- }
- 
-+/**
-+ * pipe-fbc-rte - the basic sanity test
-+ *
-+ * METHOD
-+ *   Just disable primary screen, assert everything is disabled, then
-+ *   enable single screen on each pipe and assert that the tested fbc is
-+ *   enabled for the particular pipe.
-+ *
-+ * EXPECTED RESULTS
-+ *   FBC feature enabled.
-+ *
-+ * FAILURES
-+ *   A failure here means that fbc is not getting enabled for requested pipe. It means
-+ *   kernel is not able to enable fbc on the requested pipe.
-+ */
-+
-+static void pipe_fbc_rte_subtest(const struct test_mode *t)
-+{
-+	int ver;
-+
-+	ver = intel_display_ver(intel_get_drm_devid(drm.fd));
-+	igt_require_f((ver >= 20), "Can't test fbc for each pipe\n");
-+
-+	prepare_subtest_data(t, NULL);
-+	unset_all_crtcs();
-+	do_assertions(ASSERT_FBC_DISABLED | DONT_ASSERT_CRC);
-+
-+	igt_output_override_mode(prim_mode_params.output, &prim_mode_params.mode);
-+	igt_output_set_pipe(prim_mode_params.output, prim_mode_params.pipe);
-+	set_mode_for_params(&prim_mode_params);
-+
-+	do_assertions(ASSERT_FBC_ENABLED | DONT_ASSERT_CRC);
-+
-+	igt_display_reset(&drm.display);
-+}
-+
- static void update_wanted_crc(const struct test_mode *t, igt_crc_t *crc)
- {
- 	if (t->screen == SCREEN_PRIM)
-@@ -5016,6 +5061,8 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- {
- 	struct test_mode t;
- 	int devid;
-+	enum pipe pipe;
-+	igt_output_t *output;
- 
- 	igt_fixture {
- 		setup_environment();
-@@ -5056,6 +5103,36 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		plane_fbc_rte_subtest(&t);
- 	}
- 
-+	igt_subtest_with_dynamic("pipe-fbc-rte") {
-+
-+		t.pipes = PIPE_SINGLE;
-+		t.feature = FEATURE_FBC;
-+		t.screen = SCREEN_PRIM;
-+		t.fbs = FBS_INDIVIDUAL;
-+		t.format = FORMAT_DEFAULT;
-+		/* Make sure nothing is using these values. */
-+		t.flip = -1;
-+		t.method = -1;
-+		t.tiling = opt.tiling;
-+
-+		for_each_pipe_with_valid_output(&drm.display, pipe, output) {
-+
-+			igt_output_set_pipe(output, pipe);
-+			igt_output_override_mode(output, connector_get_mode(output));
-+
-+			if (!intel_pipe_output_combo_valid(&drm.display))
-+				continue;
-+
-+			init_mode_params(&prim_mode_params, output, pipe);
-+
-+			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
-+					igt_output_name(output)) {
-+				init_mode_params(&prim_mode_params, output, pipe);
-+				pipe_fbc_rte_subtest(&t);
-+			}
-+		}
-+	}
-+
- 	TEST_MODE_ITER_BEGIN(t)
- 
- 		igt_subtest_f("%s-%s-%s-%s-%s-draw-%s",
--- 
-2.39.0
+Series: series starting with [i-g-t,1/2] tests/kms_feature_discovery: Fix display subtest
+URL   : https://patchwork.freedesktop.org/series/126693/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_13904 -> IGTPW_10226
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10226/index.html
+
+Participating hosts (28 -> 28)
+------------------------------
+
+  Additional (1): fi-pnv-d510 
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10226 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][1] ([fdo#109271]) +25 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10226/fi-pnv-d510/igt@gem_lmem_swapping@basic.html
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:
+    - bat-rplp-1:         [PASS][2] -> [ABORT][3] ([i915#8668])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13904/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10226/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7595 -> IGTPW_10226
+
+  CI-20190529: 20190529
+  CI_DRM_13904: e7f3669de4cd241d80b35b37ddf7c5e0a2129516 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10226: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10226/index.html
+  IGT_7595: cfa00d99b1dfa0621ea552d1ed54907798da1a1a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@kms_feature_discovery@display-1x
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10226/index.html
+
+--===============3331835587050642028==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] tests/kms_feature_discovery: Fix display subtest</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126693/">https://patchwork.freedesktop.org/series/126693/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10226/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10226/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13904 -&gt; IGTPW_10226</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10226/index.html</p>
+<h2>Participating hosts (28 -&gt; 28)</h2>
+<p>Additional (1): fi-pnv-d510 <br />
+  Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10226 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10226/fi-pnv-d510/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +25 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:</p>
+<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13904/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10226/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7595 -&gt; IGTPW_10226</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13904: e7f3669de4cd241d80b35b37ddf7c5e0a2129516 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10226: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10226/index.html<br />
+  IGT_7595: cfa00d99b1dfa0621ea552d1ed54907798da1a1a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@kms_feature_discovery@display-1x</p>
+
+</body>
+</html>
+
+--===============3331835587050642028==--
