@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 04E3510E251
- for <igt-dev@lists.freedesktop.org>; Tue, 21 Nov 2023 09:32:02 +0000 (UTC)
-From: Karthik Poosa <karthik.poosa@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9CF2C10E250
+ for <igt-dev@lists.freedesktop.org>; Tue, 21 Nov 2023 10:14:41 +0000 (UTC)
+From: Daniel Mrzyglod <daniel.t.mrzyglod@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 21 Nov 2023 15:09:08 +0530
-Message-Id: <20231121093908.144717-1-karthik.poosa@intel.com>
+Date: Tue, 21 Nov 2023 11:14:20 +0100
+Message-ID: <20231121101420.1390606-1-daniel.t.mrzyglod@intel.com>
+In-Reply-To: <20231115155626.756378-1-daniel.t.mrzyglod@intel.com>
+References: <20231115155626.756378-1-daniel.t.mrzyglod@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] tests/intel/xe_guc_pc: Add changes to
- use new sysfs frequency entries
+Subject: [igt-dev] [PATCH i-g-t v3] tests/intel/xe_waitfence: add subtest
+ with provided engine class instance
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,39 +23,107 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Updated xe set_freq and get_freq definitions to use new sysfs entries.
-The new entries will be under sub-directory freq.
-Names of the entries have also changed. They will be suffixed with _freq
-i.e /device/tile<n>/gt<n>/freq/*_freq instead of prefix.
+Postive test to check XE_WAIT_USER_FENCE ioctl where
+engine class instance is provided.
 
-v2: Updated commit message based on review comments. [Riana]
+v2: Fix review comments (Kamil)
+    provide ABSTIME as proper time format.
 
-Signed-off-by: Karthik Poosa <karthik.poosa@intel.com>
+v3: Fix review comments (Kamil)
+    recent uapi defines changes
+
+Signed-off-by: Daniel Mrzyglod <daniel.t.mrzyglod@intel.com>
 ---
- tests/intel/xe_guc_pc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/intel/xe_waitfence.c | 48 +++++++++++++++++++++++++++++++++++---
+ 1 file changed, 45 insertions(+), 3 deletions(-)
 
-diff --git a/tests/intel/xe_guc_pc.c b/tests/intel/xe_guc_pc.c
-index fa2f20cca..bb6344449 100644
---- a/tests/intel/xe_guc_pc.c
-+++ b/tests/intel/xe_guc_pc.c
-@@ -141,7 +141,7 @@ static int set_freq(int fd, int gt_id, const char *freq_name, uint32_t freq)
- 	char freq_attr[16];
- 	int gt_fd;
+diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
+index b1cae0d9b..ed672de0c 100644
+--- a/tests/intel/xe_waitfence.c
++++ b/tests/intel/xe_waitfence.c
+@@ -37,9 +37,32 @@ static void do_bind(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
+ 	xe_vm_bind_async(fd, vm, 0, bo, offset, addr, size, sync, 1);
+ }
  
--	snprintf(freq_attr, sizeof(freq_attr), "freq_%s", freq_name);
-+	snprintf(freq_attr, sizeof(freq_attr), "freq/%s_freq", freq_name);
- 	gt_fd = xe_sysfs_gt_open(fd, gt_id);
- 	igt_assert(gt_fd >= 0);
++static int64_t wait_with_eci_abstime(int fd, uint64_t *addr, uint64_t value,
++				     struct drm_xe_engine_class_instance *eci,
++				     int64_t timeout)
++{
++	struct drm_xe_wait_user_fence wait = {
++		.addr = to_user_pointer(addr),
++		.op = DRM_XE_UFENCE_WAIT_OP_EQ,
++		.flags = !eci ? 0 : DRM_XE_UFENCE_WAIT_FLAG_ABSTIME,
++		.value = value,
++		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
++		.timeout = timeout,
++		.num_engines = eci ? 1 : 0,
++		.instances = eci ? to_user_pointer(eci) : 0,
++	};
++	struct timespec ts;
++
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait), 0);
++	igt_assert_eq(clock_gettime(CLOCK_MONOTONIC, &ts), 0);
++
++	return ts.tv_sec * 1e9 + ts.tv_nsec;
++}
++
+ enum waittype {
+ 	RELTIME,
+ 	ABSTIME,
++	ENGINE,
+ };
  
-@@ -159,7 +159,7 @@ static uint32_t get_freq(int fd, int gt_id, const char *freq_name)
- 	char freq_attr[16];
- 	int gt_fd;
+ /**
+@@ -50,10 +73,18 @@ enum waittype {
+  * SUBTEST: abstime
+  * Description: Check basic waitfences functionality with timeout
+  *              passed as absolute time in nanoseconds
++ *
++ * SUBTEST: engine
++ * Description: Check basic waitfences functionality with timeout
++ *              passed as relative time in nanoseconds and provide engine class
++ *              instance
+  */
+ static void
+ waitfence(int fd, enum waittype wt)
+ {
++	struct drm_xe_engine_class_instance *eci = NULL;
++	struct timespec ts;
++	int64_t current, signalled;
+ 	uint32_t bo_1;
+ 	uint32_t bo_2;
+ 	uint32_t bo_3;
+@@ -83,10 +114,18 @@ waitfence(int fd, enum waittype wt)
+ 		timeout = xe_wait_ufence(fd, &wait_fence, 7, NULL, MS_TO_NS(10));
+ 		igt_debug("wait type: RELTIME - timeout: %ld, timeout left: %ld\n",
+ 			  MS_TO_NS(10), timeout);
++	} else if (wt == ENGINE) {
++		eci = xe_hw_engine(fd, 1);
++		igt_assert(eci);
++		clock_gettime(CLOCK_MONOTONIC, &ts);
++		current = ts.tv_sec * 1e9 + ts.tv_nsec;
++		timeout = current + MS_TO_NS(10);
++		signalled = wait_with_eci_abstime(fd, &wait_fence, 7, eci, timeout);
++		igt_debug("wait type: ENGINE ABSTIME - timeout: %" PRId64
++			  ", signalled: %" PRId64
++			  ", elapsed: %" PRId64 "\n",
++			  timeout, signalled, signalled - current);
+ 	} else {
+-		struct timespec ts;
+-		int64_t current, signalled;
+-
+ 		clock_gettime(CLOCK_MONOTONIC, &ts);
+ 		current = ts.tv_sec * 1e9 + ts.tv_nsec;
+ 		timeout = current + MS_TO_NS(10);
+@@ -205,6 +244,9 @@ igt_main
+ 	igt_subtest("abstime")
+ 		waitfence(fd, ABSTIME);
  
--	snprintf(freq_attr, sizeof(freq_attr), "freq_%s", freq_name);
-+	snprintf(freq_attr, sizeof(freq_attr), "freq/%s_freq", freq_name);
- 	gt_fd = xe_sysfs_gt_open(fd, gt_id);
- 	igt_assert(gt_fd >= 0);
++	igt_subtest("engine")
++		waitfence(fd, ENGINE);
++
+ 	igt_subtest("invalid-flag")
+ 		invalid_flag(fd);
  
 -- 
-2.25.1
+2.42.0
