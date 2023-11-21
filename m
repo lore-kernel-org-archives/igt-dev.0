@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7536710E4B0
+ for <igt-dev@lists.freedesktop.org>; Tue, 21 Nov 2023 13:56:43 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============3758638575958449248=="
+ boundary="------------DbkutgLOST4FJ7hD00JqHKNT"
+Message-ID: <3adf02ee-174a-59d6-f958-a4defe6134bc@intel.com>
+Date: Tue, 21 Nov 2023 14:56:03 +0100
+Content-Language: pl
+To: Marcin Bernatowicz <marcin.bernatowicz@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20231121135020.15451-1-marcin.bernatowicz@intel.com>
+From: "Laguna, Lukasz" <lukasz.laguna@intel.com>
+In-Reply-To: <20231121135020.15451-1-marcin.bernatowicz@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-Date: Tue, 21 Nov 2023 13:39:08 -0000
-Message-ID: <170057394805.30158.10189971707830291690@emeril.freedesktop.org>
-References: <20231121082047.2037754-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20231121082047.2037754-1-bhanuprakash.modem@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/in?=
- =?utf-8?q?tel/kms=5Fpsr=3A_Use_blitter_if_rendercopy_isn=27t_present?=
+Subject: Re: [igt-dev] [PATCH i-g-t] xe_create: create-big-vram subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,205 +21,300 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: jakub1.kolakowski@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3758638575958449248==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
+--------------DbkutgLOST4FJ7hD00JqHKNT
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 
-== Series Details ==
+On 11/21/2023 14:50, Marcin Bernatowicz wrote:
+> Validates the creation of significant Buffer Objects (BO) within VRAM,
+> accounting for 75% of the CPU-visible VRAM size.
 
-Series: tests/intel/kms_psr: Use blitter if rendercopy isn't present
-URL   : https://patchwork.freedesktop.org/series/126694/
-State : success
+maybe create BO with CPU-*available *VRAM size (CPU-visible VRAM size - 
+used VRAM)?
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7595_BAT -> XEIGTPW_10227_BAT
-====================================================
-
-Summary
--------
-
-  **WARNING**
-
-  Minor unknown changes coming with XEIGTPW_10227_BAT need to be verified
-  manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_10227_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  
-
-Participating hosts (4 -> 2)
-------------------------------
-
-  Missing    (2): bat-dg2-oem2 bat-adlp-7 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_10227_BAT:
-
-### IGT changes ###
-
-#### Warnings ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - bat-atsm-2:         [INCOMPLETE][1] ([Intel XE#764]) -> [DMESG-WARN][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-atsm-2/igt@core_hotunplug@unbind-rebind.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10227/bat-atsm-2/igt@core_hotunplug@unbind-rebind.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10227_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_exec_fault_mode@twice-userptr-invalidate-imm:
-    - bat-atsm-2:         NOTRUN -> [SKIP][3] ([Intel XE#288]) +17 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10227/bat-atsm-2/igt@xe_exec_fault_mode@twice-userptr-invalidate-imm.html
-
-  * igt@xe_guc_pc@freq_basic_api:
-    - bat-pvc-2:          [PASS][4] -> [FAIL][5] ([Intel XE#935])
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-pvc-2/igt@xe_guc_pc@freq_basic_api.html
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10227/bat-pvc-2/igt@xe_guc_pc@freq_basic_api.html
-    - bat-atsm-2:         [PASS][6] -> [FAIL][7] ([Intel XE#935])
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-atsm-2/igt@xe_guc_pc@freq_basic_api.html
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10227/bat-atsm-2/igt@xe_guc_pc@freq_basic_api.html
-
-  * igt@xe_guc_pc@freq_fixed_idle:
-    - bat-atsm-2:         [PASS][8] -> [FAIL][9] ([Intel XE#940]) +1 other test fail
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-atsm-2/igt@xe_guc_pc@freq_fixed_idle.html
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10227/bat-atsm-2/igt@xe_guc_pc@freq_fixed_idle.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
-  [Intel XE#764]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/764
-  [Intel XE#935]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/935
-  [Intel XE#940]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/940
-
-
-Build changes
--------------
-
-  * IGT: IGT_7595 -> IGTPW_10227
-  * Linux: xe-505-b25aa17bffa88c86fec716e40bdb3848eea17b23 -> xe-513-c9574aef8b5eb68398936c2c14fe4a54fa4e5849
-
-  IGTPW_10227: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10227/index.html
-  IGT_7595: cfa00d99b1dfa0621ea552d1ed54907798da1a1a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-505-b25aa17bffa88c86fec716e40bdb3848eea17b23: b25aa17bffa88c86fec716e40bdb3848eea17b23
-  xe-513-c9574aef8b5eb68398936c2c14fe4a54fa4e5849: c9574aef8b5eb68398936c2c14fe4a54fa4e5849
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10227/index.html
-
---===============3758638575958449248==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
+> The size of the created BO can be adjusted using command line parameters,
+> with '-S' representing BO size in MB,
+> and '-p' representing BO size as a percentage of the VRAM size.
+>
+> v2: rebased, updated to uAPI changes (DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT),
+>      after review corrections: 1024UL -> 1024ULL,
+>      int -> unsigned int (Kamil)
+>
+> Signed-off-by: Marcin Bernatowicz<marcin.bernatowicz@intel.com>
+> ---
+>   tests/intel/xe_create.c | 80 ++++++++++++++++++++++++++++++++++++++++-
+>   1 file changed, 79 insertions(+), 1 deletion(-)
+>
+> diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+> index f4633cfb3..3ff9bb750 100644
+> --- a/tests/intel/xe_create.c
+> +++ b/tests/intel/xe_create.c
+> @@ -18,6 +18,14 @@
+>   
+>   #define PAGE_SIZE 0x1000
+>   
+> +static struct param {
+> +	unsigned int size_MB;
+nit: size_mb?
+> +	unsigned int vram_percent;
+> +} params = {
+> +	.size_MB = 0,
+> +	.vram_percent = 75,
+> +};
+> +
+>   static int __create_bo(int fd, uint32_t vm, uint64_t size, uint32_t flags,
+>   		       uint32_t *handlep)
+>   {
+> @@ -214,7 +222,73 @@ static void create_massive_size(int fd)
+>   	}
+>   }
+>   
+> -igt_main
+> +/**
+> + * SUBTEST: create-big-vram
+> + * Functionality: BO creation
+> + * Test category: functionality test
+> + * Description: Validates the creation of substantial BO within VRAM
+> + *              (constituting 75% of the CPU-visible VRAM).
+> + */
+> +static void create_big_vram(int fd)
+> +{
+> +	uint64_t bo_size, size, vram_size, alignment;
+> +	uint32_t bo_handle;
+> +	char *bo_ptr = NULL;
+> +	uint64_t vm = 0;
+> +	int gt;
+> +
+> +	igt_require(xe_has_vram(fd));
+> +	alignment = xe_get_default_alignment(fd);
+> +	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
+> +
+> +	xe_for_each_gt(fd, gt) {
+> +		vram_size = xe_visible_vram_size(fd, gt);
+> +		bo_size = params.size_MB ? params.size_MB * 1024ULL * 1024ULL
+> +					 : ALIGN(vram_size * params.vram_percent / 100, alignment);
+if you decide to don't use percentages you can use (xe_visible_vram_size 
+- mem_region.used) when params.size_MB is 0 here. In such case I'm not 
+sure if -p option is needed.
+> +		igt_debug("gt%u bo_size=%lu visible_vram_size=%lu\n", gt, bo_size, vram_size);
+> +
+> +		igt_assert_eq(0, __create_bo(fd, vm, bo_size, vram_memory(fd, gt), &bo_handle));
+nit: xe_bo_create_flags can be used instead
+> +		bo_ptr = xe_bo_map(fd, bo_handle, bo_size);
+> +		size = bo_size - 1;
+> +		while (size > SZ_64K) {
+> +			igt_assert_eq(0, READ_ONCE(bo_ptr[size]));
+> +			WRITE_ONCE(bo_ptr[size], 'A');
+> +			igt_assert_eq('A', READ_ONCE(bo_ptr[size]));
+> +			size >>= 1;
+> +		}
+> +
+> +		igt_assert_eq(0, bo_ptr[0]);
+> +		munmap(bo_ptr, bo_size);
+> +		gem_close(fd, bo_handle);
+> +	}
+> +
+> +	xe_vm_destroy(fd, vm);
+> +}
+> +
+> +static int opt_handler(int opt, int opt_index, void *data)
+> +{
+> +	switch (opt) {
+> +	case 'S':
+> +		params.size_MB = atoi(optarg);
+> +		igt_debug("Size MB: %d\n", params.size_MB);
+> +		break;
+> +	case 'p':
+> +		params.vram_percent = atoi(optarg);
+> +		igt_debug("Percent of VRAM: %d\n", params.vram_percent);
+> +		break;
+> +	default:
+> +		return IGT_OPT_HANDLER_ERROR;
+> +	}
+> +
+> +	return IGT_OPT_HANDLER_SUCCESS;
+> +}
+> +
+> +const char *help_str =
+> +	"  -S\tBO size in MB\n"
+> +	"  -p\tPercent of VRAM for BO (default 75% of visible VRAM size)\n"
+> +	;
+> +
+> +igt_main_args("S:p:", NULL, help_str, opt_handler, NULL)
+>   {
+>   	int xe;
+>   
+> @@ -254,6 +328,10 @@ igt_main
+>   	}
+>   
+>   
+> +	igt_subtest("create-big-vram") {
+> +		create_big_vram(xe);
+> +	}
+> +
+>   	igt_fixture
+>   		drm_close_driver(xe);
+>   }
+--------------DbkutgLOST4FJ7hD00JqHKNT
+Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
 
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body>
+    <div class="moz-cite-prefix">On 11/21/2023 14:50, Marcin Bernatowicz
+      wrote:<br>
+    </div>
+    <blockquote type="cite" cite="mid:20231121135020.15451-1-marcin.bernatowicz@intel.com">
+      <pre class="moz-quote-pre" wrap="">Validates the creation of significant Buffer Objects (BO) within VRAM,
+accounting for 75% of the CPU-visible VRAM size.</pre>
+    </blockquote>
+    <p>maybe create BO with CPU-<b>available </b>VRAM size (CPU-visible
+      VRAM size - used VRAM)?<br>
+    </p>
+    <blockquote type="cite" cite="mid:20231121135020.15451-1-marcin.bernatowicz@intel.com">
+      <pre class="moz-quote-pre" wrap="">
+The size of the created BO can be adjusted using command line parameters,
+with '-S' representing BO size in MB,
+and '-p' representing BO size as a percentage of the VRAM size.
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
+v2: rebased, updated to uAPI changes (DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT),
+    after review corrections: 1024UL -&gt; 1024ULL,
+    int -&gt; unsigned int (Kamil)
 
+Signed-off-by: Marcin Bernatowicz <a class="moz-txt-link-rfc2396E" href="mailto:marcin.bernatowicz@intel.com">&lt;marcin.bernatowicz@intel.com&gt;</a>
+---
+ tests/intel/xe_create.c | 80 ++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 79 insertions(+), 1 deletion(-)
 
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/kms_psr: Use blitter if rendercopy isn&#39;t present</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126694/">https://patchwork.freedesktop.org/series/126694/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10227/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10227/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7595_BAT -&gt; XEIGTPW_10227_BAT</h1>
-<h2>Summary</h2>
-<p><strong>WARNING</strong></p>
-<p>Minor unknown changes coming with XEIGTPW_10227_BAT need to be verified<br />
-  manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_10227_BAT, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (4 -&gt; 2)</h2>
-<p>Missing    (2): bat-dg2-oem2 bat-adlp-7 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_10227_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Warnings</h4>
-<ul>
-<li>igt@core_hotunplug@unbind-rebind:<ul>
-<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-atsm-2/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/764">Intel XE#764</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10227/bat-atsm-2/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10227_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@xe_exec_fault_mode@twice-userptr-invalidate-imm:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10227/bat-atsm-2/igt@xe_exec_fault_mode@twice-userptr-invalidate-imm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +17 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_guc_pc@freq_basic_api:</p>
-<ul>
-<li>
-<p>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-pvc-2/igt@xe_guc_pc@freq_basic_api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10227/bat-pvc-2/igt@xe_guc_pc@freq_basic_api.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/935">Intel XE#935</a>)</p>
-</li>
-<li>
-<p>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-atsm-2/igt@xe_guc_pc@freq_basic_api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10227/bat-atsm-2/igt@xe_guc_pc@freq_basic_api.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/935">Intel XE#935</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_guc_pc@freq_fixed_idle:</p>
-<ul>
-<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7595/bat-atsm-2/igt@xe_guc_pc@freq_fixed_idle.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10227/bat-atsm-2/igt@xe_guc_pc@freq_fixed_idle.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/940">Intel XE#940</a>) +1 other test fail</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7595 -&gt; IGTPW_10227</li>
-<li>Linux: xe-505-b25aa17bffa88c86fec716e40bdb3848eea17b23 -&gt; xe-513-c9574aef8b5eb68398936c2c14fe4a54fa4e5849</li>
-</ul>
-<p>IGTPW_10227: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10227/index.html<br />
-  IGT_7595: cfa00d99b1dfa0621ea552d1ed54907798da1a1a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-505-b25aa17bffa88c86fec716e40bdb3848eea17b23: b25aa17bffa88c86fec716e40bdb3848eea17b23<br />
-  xe-513-c9574aef8b5eb68398936c2c14fe4a54fa4e5849: c9574aef8b5eb68398936c2c14fe4a54fa4e5849</p>
-
-</body>
+diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+index f4633cfb3..3ff9bb750 100644
+--- a/tests/intel/xe_create.c
++++ b/tests/intel/xe_create.c
+@@ -18,6 +18,14 @@
+ 
+ #define PAGE_SIZE 0x1000
+ 
++static struct param {
++	unsigned int size_MB;</pre>
+    </blockquote>
+    nit: size_mb?<br>
+    <blockquote type="cite" cite="mid:20231121135020.15451-1-marcin.bernatowicz@intel.com">
+      <pre class="moz-quote-pre" wrap="">
++	unsigned int vram_percent;
++} params = {
++	.size_MB = 0,
++	.vram_percent = 75,
++};
++
+ static int __create_bo(int fd, uint32_t vm, uint64_t size, uint32_t flags,
+ 		       uint32_t *handlep)
+ {
+@@ -214,7 +222,73 @@ static void create_massive_size(int fd)
+ 	}
+ }
+ 
+-igt_main
++/**
++ * SUBTEST: create-big-vram
++ * Functionality: BO creation
++ * Test category: functionality test
++ * Description: Validates the creation of substantial BO within VRAM
++ *              (constituting 75% of the CPU-visible VRAM).
++ */
++static void create_big_vram(int fd)
++{
++	uint64_t bo_size, size, vram_size, alignment;
++	uint32_t bo_handle;
++	char *bo_ptr = NULL;
++	uint64_t vm = 0;
++	int gt;
++
++	igt_require(xe_has_vram(fd));
++	alignment = xe_get_default_alignment(fd);
++	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
++
++	xe_for_each_gt(fd, gt) {
++		vram_size = xe_visible_vram_size(fd, gt);
++		bo_size = params.size_MB ? params.size_MB * 1024ULL * 1024ULL
++					 : ALIGN(vram_size * params.vram_percent / 100, alignment);</pre>
+    </blockquote>
+    if you decide to don't use percentages you can use
+    (xe_visible_vram_size - mem_region.used) when params.size_MB is 0
+    here. In such case I'm not sure if -p option is needed.<br>
+    <blockquote type="cite" cite="mid:20231121135020.15451-1-marcin.bernatowicz@intel.com">
+      <pre class="moz-quote-pre" wrap="">
++		igt_debug(&quot;gt%u bo_size=%lu visible_vram_size=%lu\n&quot;, gt, bo_size, vram_size);
++
++		igt_assert_eq(0, __create_bo(fd, vm, bo_size, vram_memory(fd, gt), &amp;bo_handle));</pre>
+    </blockquote>
+    nit: xe_bo_create_flags can be used instead<br>
+    <blockquote type="cite" cite="mid:20231121135020.15451-1-marcin.bernatowicz@intel.com">
+      <pre class="moz-quote-pre" wrap="">
++		bo_ptr = xe_bo_map(fd, bo_handle, bo_size);
++		size = bo_size - 1;
++		while (size &gt; SZ_64K) {
++			igt_assert_eq(0, READ_ONCE(bo_ptr[size]));
++			WRITE_ONCE(bo_ptr[size], 'A');
++			igt_assert_eq('A', READ_ONCE(bo_ptr[size]));
++			size &gt;&gt;= 1;
++		}
++
++		igt_assert_eq(0, bo_ptr[0]);
++		munmap(bo_ptr, bo_size);
++		gem_close(fd, bo_handle);
++	}
++
++	xe_vm_destroy(fd, vm);
++}
++
++static int opt_handler(int opt, int opt_index, void *data)
++{
++	switch (opt) {
++	case 'S':
++		params.size_MB = atoi(optarg);
++		igt_debug(&quot;Size MB: %d\n&quot;, params.size_MB);
++		break;
++	case 'p':
++		params.vram_percent = atoi(optarg);
++		igt_debug(&quot;Percent of VRAM: %d\n&quot;, params.vram_percent);
++		break;
++	default:
++		return IGT_OPT_HANDLER_ERROR;
++	}
++
++	return IGT_OPT_HANDLER_SUCCESS;
++}
++
++const char *help_str =
++	&quot;  -S\tBO size in MB\n&quot;
++	&quot;  -p\tPercent of VRAM for BO (default 75% of visible VRAM size)\n&quot;
++	;
++
++igt_main_args(&quot;S:p:&quot;, NULL, help_str, opt_handler, NULL)
+ {
+ 	int xe;
+ 
+@@ -254,6 +328,10 @@ igt_main
+ 	}
+ 
+ 
++	igt_subtest(&quot;create-big-vram&quot;) {
++		create_big_vram(xe);
++	}
++
+ 	igt_fixture
+ 		drm_close_driver(xe);
+ }
+</pre>
+    </blockquote>
+  </body>
 </html>
 
---===============3758638575958449248==--
+--------------DbkutgLOST4FJ7hD00JqHKNT--
