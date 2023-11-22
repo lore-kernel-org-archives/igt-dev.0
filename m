@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2184810E0C1
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Nov 2023 16:43:43 +0000 (UTC)
-From: Daniel Mrzyglod <daniel.t.mrzyglod@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 538E610E2F6
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Nov 2023 16:43:47 +0000 (UTC)
+Date: Wed, 22 Nov 2023 17:43:36 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 22 Nov 2023 17:43:17 +0100
-Message-ID: <20231122164317.1469088-1-daniel.t.mrzyglod@intel.com>
-In-Reply-To: <20231115155626.756378-1-daniel.t.mrzyglod@intel.com>
-References: <20231115155626.756378-1-daniel.t.mrzyglod@intel.com>
+Message-ID: <20231122164336.vfq25vbotiw2vqy7@kamilkon-desk.igk.intel.com>
+References: <20231122130021.20536-1-lukasz.laguna@intel.com>
+ <20231122130021.20536-2-lukasz.laguna@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4] tests/intel/xe_waitfence: add subtest
- with provided engine class instance
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231122130021.20536-2-lukasz.laguna@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/1] xe/xe_query: add media GT presence
+ checker
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,110 +25,72 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Postive test to check XE_WAIT_USER_FENCE ioctl where
-engine class instance is provided.
+Hi Lukasz,
+On 2023-11-22 at 14:00:21 +0100, Lukasz Laguna wrote:
 
-v2: Fix review comments (Kamil)
-    provide ABSTIME as proper time format.
+please add "lib/" to subject, 
 
-v3: Fix review comments (Kamil)
-    rebase after recent uapi changes.
+[PATCH i-g-t 1/1] xe/xe_query: add media GT presence checker
+----------------- ^
 
-v4: Fix review comments (Kamil)
-    move assert to the function, fix subtest description
+This should be:
 
-Signed-off-by: Daniel Mrzyglod <daniel.t.mrzyglod@intel.com>
----
- tests/intel/xe_waitfence.c | 48 +++++++++++++++++++++++++++++++++++---
- 1 file changed, 45 insertions(+), 3 deletions(-)
+[PATCH i-g-t 1/1] lib/xe/xe_query: add media GT presence checker
 
-diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
-index b1cae0d9b..08d588add 100644
---- a/tests/intel/xe_waitfence.c
-+++ b/tests/intel/xe_waitfence.c
-@@ -37,9 +37,33 @@ static void do_bind(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
- 	xe_vm_bind_async(fd, vm, 0, bo, offset, addr, size, sync, 1);
- }
- 
-+static int64_t wait_with_eci_abstime(int fd, uint64_t *addr, uint64_t value,
-+				     struct drm_xe_engine_class_instance *eci,
-+				     int64_t timeout)
-+{
-+	struct drm_xe_wait_user_fence wait = {
-+		.addr = to_user_pointer(addr),
-+		.op = DRM_XE_UFENCE_WAIT_OP_EQ,
-+		.flags = !eci ? 0 : DRM_XE_UFENCE_WAIT_FLAG_ABSTIME,
-+		.value = value,
-+		.mask = DRM_XE_UFENCE_WAIT_MASK_U64,
-+		.timeout = timeout,
-+		.num_engines = eci ? 1 : 0,
-+		.instances = eci ? to_user_pointer(eci) : 0,
-+	};
-+	struct timespec ts;
-+
-+	igt_assert(eci);
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait), 0);
-+	igt_assert_eq(clock_gettime(CLOCK_MONOTONIC, &ts), 0);
-+
-+	return ts.tv_sec * 1e9 + ts.tv_nsec;
-+}
-+
- enum waittype {
- 	RELTIME,
- 	ABSTIME,
-+	ENGINE,
- };
- 
- /**
-@@ -50,10 +74,18 @@ enum waittype {
-  * SUBTEST: abstime
-  * Description: Check basic waitfences functionality with timeout
-  *              passed as absolute time in nanoseconds
-+ *
-+ * SUBTEST: engine
-+ * Description: Check basic waitfences functionality with timeout
-+ *              passed as absolute time in nanoseconds and provide engine class
-+ *              instance
-  */
- static void
- waitfence(int fd, enum waittype wt)
- {
-+	struct drm_xe_engine_class_instance *eci = NULL;
-+	struct timespec ts;
-+	int64_t current, signalled;
- 	uint32_t bo_1;
- 	uint32_t bo_2;
- 	uint32_t bo_3;
-@@ -83,10 +115,17 @@ waitfence(int fd, enum waittype wt)
- 		timeout = xe_wait_ufence(fd, &wait_fence, 7, NULL, MS_TO_NS(10));
- 		igt_debug("wait type: RELTIME - timeout: %ld, timeout left: %ld\n",
- 			  MS_TO_NS(10), timeout);
-+	} else if (wt == ENGINE) {
-+		eci = xe_hw_engine(fd, 1);
-+		clock_gettime(CLOCK_MONOTONIC, &ts);
-+		current = ts.tv_sec * 1e9 + ts.tv_nsec;
-+		timeout = current + MS_TO_NS(10);
-+		signalled = wait_with_eci_abstime(fd, &wait_fence, 7, eci, timeout);
-+		igt_debug("wait type: ENGINE ABSTIME - timeout: %" PRId64
-+			  ", signalled: %" PRId64
-+			  ", elapsed: %" PRId64 "\n",
-+			  timeout, signalled, signalled - current);
- 	} else {
--		struct timespec ts;
--		int64_t current, signalled;
--
- 		clock_gettime(CLOCK_MONOTONIC, &ts);
- 		current = ts.tv_sec * 1e9 + ts.tv_nsec;
- 		timeout = current + MS_TO_NS(10);
-@@ -205,6 +244,9 @@ igt_main
- 	igt_subtest("abstime")
- 		waitfence(fd, ABSTIME);
- 
-+	igt_subtest("engine")
-+		waitfence(fd, ENGINE);
-+
- 	igt_subtest("invalid-flag")
- 		invalid_flag(fd);
- 
--- 
-2.42.0
+Regards,
+Kamil
+
+> Add helper checking if platform is equipped with media GT.
+> 
+> Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
+> ---
+>  lib/xe/xe_query.c | 20 ++++++++++++++++++++
+>  lib/xe/xe_query.h |  1 +
+>  2 files changed, 21 insertions(+)
+> 
+> diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+> index afd443be3..1759d1e93 100644
+> --- a/lib/xe/xe_query.c
+> +++ b/lib/xe/xe_query.c
+> @@ -711,6 +711,26 @@ bool xe_has_engine_class(int fd, uint16_t engine_class)
+>  	return false;
+>  }
+>  
+> +/**
+> + * xe_has_media_gt:
+> + * @fd: xe device fd
+> + *
+> + * Returns true if device @fd has media GT otherwise false.
+> + */
+> +bool xe_has_media_gt(int fd)
+> +{
+> +	struct xe_device *xe_dev;
+> +
+> +	xe_dev = find_in_cache(fd);
+> +	igt_assert(xe_dev);
+> +
+> +	for (int i = 0; i < xe_dev->gt_list->num_gt; i++)
+> +		if (xe_dev->gt_list->gt_list[i].type == DRM_XE_QUERY_GT_TYPE_MEDIA)
+> +			return true;
+> +
+> +	return false;
+> +}
+> +
+>  igt_constructor
+>  {
+>  	xe_device_cache_init();
+> diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+> index 38e9aa440..66a62eeb8 100644
+> --- a/lib/xe/xe_query.h
+> +++ b/lib/xe/xe_query.h
+> @@ -99,6 +99,7 @@ uint16_t xe_dev_id(int fd);
+>  bool xe_supports_faults(int fd);
+>  const char *xe_engine_class_string(uint32_t engine_class);
+>  bool xe_has_engine_class(int fd, uint16_t engine_class);
+> +bool xe_has_media_gt(int fd);
+>  
+>  struct xe_device *xe_device_get(int fd);
+>  void xe_device_put(int fd);
+> -- 
+> 2.40.0
+> 
