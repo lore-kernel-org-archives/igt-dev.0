@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============2133509678514380120=="
+ boundary="===============1017333805494100561=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Hersen Wu" <hersenxs.wu@amd.com>
-Date: Wed, 22 Nov 2023 22:37:55 -0000
-Message-ID: <170069267520.4728.4072420625099333131@emeril.freedesktop.org>
-References: <20231122172034.65982-1-hersenxs.wu@amd.com>
-In-Reply-To: <20231122172034.65982-1-hersenxs.wu@amd.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_s?=
- =?utf-8?q?tarting_with_=5B1/2=2Ci-g-t=5D_lib/igt=5Famd=3A_Re-try_display?=
- =?utf-8?q?=5Frequire_if_require_output_is_not_valid?=
+To: "Daniel Mrzyglod" <daniel.t.mrzyglod@intel.com>
+Date: Wed, 22 Nov 2023 21:20:43 -0000
+Message-ID: <170068804300.4725.14142817416728921760@emeril.freedesktop.org>
+References: <20231115155626.756378-1-daniel.t.mrzyglod@intel.com>
+In-Reply-To: <20231115155626.756378-1-daniel.t.mrzyglod@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/in?=
+ =?utf-8?q?tel/xe=5Fwaitfence=3A_add_positive_subtest_with_eci_engine_prov?=
+ =?utf-8?q?ided_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,20 +24,20 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2133509678514380120==
+--===============1017333805494100561==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: series starting with [1/2,i-g-t] lib/igt_amd: Re-try display_require if require output is not valid
-URL   : https://patchwork.freedesktop.org/series/126778/
+Series: tests/intel/xe_waitfence: add positive subtest with eci engine provided (rev4)
+URL   : https://patchwork.freedesktop.org/series/126483/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_7597_BAT -> XEIGTPW_10247_BAT
+CI Bug Log - changes from XEIGT_7597_BAT -> XEIGTPW_10246_BAT
 ====================================================
 
 Summary
@@ -57,35 +57,38 @@ Participating hosts (4 -> 4)
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_10247_BAT that come from known issues:
+  Here are the changes found in XEIGTPW_10246_BAT that come from known issues:
 
 ### IGT changes ###
 
-#### Issues hit ####
+#### Warnings ####
 
-  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
-    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 other test fail
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7597/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10247/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [DMESG-FAIL][1] ([Intel XE#282] / [i915#2017]) -> [FAIL][2] ([Intel XE#616] / [Intel XE#750])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7597/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10246/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
 
   
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#282]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/282
+  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
+  [Intel XE#750]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/750
+  [i915#2017]: https://gitlab.freedesktop.org/drm/intel/issues/2017
 
 
 Build changes
 -------------
 
-  * IGT: IGT_7597 -> IGTPW_10247
+  * IGT: IGT_7597 -> IGTPW_10246
 
-  IGTPW_10247: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10247/index.html
+  IGTPW_10246: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10246/index.html
   IGT_7597: 380983dbd9bb2f7eea5e917e8fed0569bfe8cf9c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   xe-516-59f2e73469cace9c78aab7506284ae446d57b8bc: 59f2e73469cace9c78aab7506284ae446d57b8bc
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10247/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10246/index.html
 
---===============2133509678514380120==
+--===============1017333805494100561==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -105,40 +108,40 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>series starting with [1/2,i-g-t] lib/igt_amd: Re-try display_require if require output is not valid</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126778/">https://patchwork.freedesktop.org/series/126778/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_waitfence: add positive subtest with eci engine provided (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126483/">https://patchwork.freedesktop.org/series/126483/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10247/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10247/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10246/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10246/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_7597_BAT -&gt; XEIGTPW_10247_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_7597_BAT -&gt; XEIGTPW_10246_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
 <h2>Participating hosts (4 -&gt; 4)</h2>
 <p>No changes in participating hosts</p>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10247_BAT that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_10246_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
-<h4>Issues hit</h4>
+<h4>Warnings</h4>
 <ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7597/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10247/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
+<li>igt@kms_frontbuffer_tracking@basic:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7597/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2017">i915#2017</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10246/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/750">Intel XE#750</a>)</li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_7597 -&gt; IGTPW_10247</li>
+<li>IGT: IGT_7597 -&gt; IGTPW_10246</li>
 </ul>
-<p>IGTPW_10247: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10247/index.html<br />
+<p>IGTPW_10246: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10246/index.html<br />
   IGT_7597: 380983dbd9bb2f7eea5e917e8fed0569bfe8cf9c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   xe-516-59f2e73469cace9c78aab7506284ae446d57b8bc: 59f2e73469cace9c78aab7506284ae446d57b8bc</p>
 
 </body>
 </html>
 
---===============2133509678514380120==--
+--===============1017333805494100561==--
