@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E693C10E654
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Nov 2023 14:44:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A732210E65C
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Nov 2023 14:44:59 +0000 (UTC)
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 22 Nov 2023 14:44:05 +0000
-Message-Id: <20231122144406.6-19-francois.dugast@intel.com>
+Date: Wed, 22 Nov 2023 14:44:01 +0000
+Message-Id: <20231122144406.6-15-francois.dugast@intel.com>
 In-Reply-To: <20231122144406.6-1-francois.dugast@intel.com>
 References: <20231122144406.6-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 18/19] drm-uapi/xe: Fix various struct padding
- for 64b alignment
+Subject: [igt-dev] [PATCH v2 14/19] drm-uapi/xe: Kill tile_mask
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,77 +22,51 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Align with commit ("drm/xe/uapi: Fix various struct padding for
-64b alignment")
+Align with commit ("drm/xe/uapi: Kill tile_mask")
 
 Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 ---
- include/drm-uapi/xe_drm.h | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ include/drm-uapi/xe_drm.h | 8 +-------
+ tests/intel/xe_vm.c       | 1 -
+ 2 files changed, 1 insertion(+), 8 deletions(-)
 
 diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index 555560e43..f5078fd99 100644
+index 1e98363b2..2a4ac6e8e 100644
 --- a/include/drm-uapi/xe_drm.h
 +++ b/include/drm-uapi/xe_drm.h
-@@ -211,8 +211,6 @@ struct drm_xe_mem_region {
- 	 * a unique pair.
- 	 */
- 	__u16 instance;
--	/** @pad: MBZ */
--	__u32 pad;
- 	/**
- 	 * @min_page_size: Min page-size in bytes for this region.
- 	 *
-@@ -381,6 +379,8 @@ struct drm_xe_gt {
- 	__u16 tile_id;
- 	/** @gt_id: Unique ID of this GT within the PCI Device */
- 	__u16 gt_id;
-+	/** @pad: MBZ */
-+	__u16 pad[3];
- 	/** @reference_clock: A clock frequency for timestamp */
- 	__u32 reference_clock;
- 	/**
-@@ -715,6 +715,9 @@ struct drm_xe_vm_bind_op {
- 	 */
+@@ -683,12 +683,6 @@ struct drm_xe_vm_bind_op {
+ 	/** @addr: Address to operate on, MBZ for UNMAP_ALL */
+ 	__u64 addr;
+ 
+-	/**
+-	 * @tile_mask: Mask for which tiles to create binds for, 0 == All tiles,
+-	 * only applies to creating new VMAs
+-	 */
+-	__u64 tile_mask;
+-
+ #define DRM_XE_VM_BIND_OP_MAP		0x0
+ #define DRM_XE_VM_BIND_OP_UNMAP		0x1
+ #define DRM_XE_VM_BIND_OP_MAP_USERPTR	0x2
+@@ -723,7 +717,7 @@ struct drm_xe_vm_bind_op {
  	__u32 prefetch_mem_region_instance;
  
-+	/** @pad: MBZ */
-+	__u32 pad2;
-+
  	/** @reserved: Reserved */
- 	__u64 reserved[3];
+-	__u64 reserved[2];
++	__u64 reserved[3];
  };
-@@ -733,12 +736,12 @@ struct drm_xe_vm_bind {
- 	 */
- 	__u32 exec_queue_id;
  
--	/** @num_binds: number of binds in this IOCTL */
--	__u32 num_binds;
--
- 	/** @pad: MBZ */
- 	__u32 pad;
- 
-+	/** @num_binds: number of binds in this IOCTL */
-+	__u32 num_binds;
-+
- 	union {
- 		/** @bind: used if num_binds == 1 */
- 		struct drm_xe_vm_bind_op bind;
-@@ -750,12 +753,12 @@ struct drm_xe_vm_bind {
- 		__u64 vector_of_binds;
- 	};
- 
-+	/** @pad: MBZ */
-+	__u32 pad2;
-+
- 	/** @num_syncs: amount of syncs to wait on */
- 	__u32 num_syncs;
- 
--	/** @pad2: MBZ */
--	__u32 pad2;
--
- 	/** @syncs: pointer to struct drm_xe_sync array */
- 	__u64 syncs;
- 
+ struct drm_xe_vm_bind {
+diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+index 5fe8e2dd7..e0d4de5fa 100644
+--- a/tests/intel/xe_vm.c
++++ b/tests/intel/xe_vm.c
+@@ -799,7 +799,6 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
+ 		bind_ops[i].obj_offset = 0;
+ 		bind_ops[i].range = bo_size;
+ 		bind_ops[i].addr = addr;
+-		bind_ops[i].tile_mask = 0x1 << eci->gt_id;
+ 		bind_ops[i].op = DRM_XE_VM_BIND_OP_MAP;
+ 		bind_ops[i].flags = DRM_XE_VM_BIND_FLAG_ASYNC;
+ 		bind_ops[i].prefetch_mem_region_instance = 0;
 -- 
 2.34.1
