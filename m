@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3F6D710E631
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0EEDB10E62E
  for <igt-dev@lists.freedesktop.org>; Wed, 22 Nov 2023 13:01:08 +0000 (UTC)
 From: Lukasz Laguna <lukasz.laguna@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 22 Nov 2023 14:00:21 +0100
-Message-Id: <20231122130021.20536-2-lukasz.laguna@intel.com>
-In-Reply-To: <20231122130021.20536-1-lukasz.laguna@intel.com>
-References: <20231122130021.20536-1-lukasz.laguna@intel.com>
+Date: Wed, 22 Nov 2023 14:00:20 +0100
+Message-Id: <20231122130021.20536-1-lukasz.laguna@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/1] xe/xe_query: add media GT presence
+Subject: [igt-dev] [PATCH i-g-t 0/1] xe/xe_query: add media GT presence
  checker
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -23,56 +21,14 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add helper checking if platform is equipped with media GT.
-
 Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
----
+
+Lukasz Laguna (1):
+  xe/xe_query: add media GT presence checker
+
  lib/xe/xe_query.c | 20 ++++++++++++++++++++
  lib/xe/xe_query.h |  1 +
  2 files changed, 21 insertions(+)
 
-diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index afd443be3..1759d1e93 100644
---- a/lib/xe/xe_query.c
-+++ b/lib/xe/xe_query.c
-@@ -711,6 +711,26 @@ bool xe_has_engine_class(int fd, uint16_t engine_class)
- 	return false;
- }
- 
-+/**
-+ * xe_has_media_gt:
-+ * @fd: xe device fd
-+ *
-+ * Returns true if device @fd has media GT otherwise false.
-+ */
-+bool xe_has_media_gt(int fd)
-+{
-+	struct xe_device *xe_dev;
-+
-+	xe_dev = find_in_cache(fd);
-+	igt_assert(xe_dev);
-+
-+	for (int i = 0; i < xe_dev->gt_list->num_gt; i++)
-+		if (xe_dev->gt_list->gt_list[i].type == DRM_XE_QUERY_GT_TYPE_MEDIA)
-+			return true;
-+
-+	return false;
-+}
-+
- igt_constructor
- {
- 	xe_device_cache_init();
-diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-index 38e9aa440..66a62eeb8 100644
---- a/lib/xe/xe_query.h
-+++ b/lib/xe/xe_query.h
-@@ -99,6 +99,7 @@ uint16_t xe_dev_id(int fd);
- bool xe_supports_faults(int fd);
- const char *xe_engine_class_string(uint32_t engine_class);
- bool xe_has_engine_class(int fd, uint16_t engine_class);
-+bool xe_has_media_gt(int fd);
- 
- struct xe_device *xe_device_get(int fd);
- void xe_device_put(int fd);
 -- 
 2.40.0
