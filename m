@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4E36A10E657
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Nov 2023 14:44:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2E2CD10E654
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Nov 2023 14:44:58 +0000 (UTC)
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 22 Nov 2023 14:43:59 +0000
-Message-Id: <20231122144406.6-13-francois.dugast@intel.com>
+Date: Wed, 22 Nov 2023 14:44:02 +0000
+Message-Id: <20231122144406.6-16-francois.dugast@intel.com>
 In-Reply-To: <20231122144406.6-1-francois.dugast@intel.com>
 References: <20231122144406.6-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 12/19] drm-uapi/xe: Align on a common way to
- return arrays (engines)
+Subject: [igt-dev] [PATCH v2 15/19] drm-uapi/xe: Crystal Reference Clock
+ updates
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,302 +23,147 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Align with commit ("drm/xe/uapi: Align on a common way to return
-arrays (engines)")
+Align with commit ("drm/xe/uapi: Crystal Reference Clock updates")
 
+Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 ---
- include/drm-uapi/xe_drm.h         | 78 +++++++++++++++++++------------
- lib/xe/xe_query.c                 | 24 ++++------
- lib/xe/xe_query.h                 | 11 ++---
- tests/intel/xe_create.c           |  2 +-
- tests/intel/xe_drm_fdinfo.c       |  2 +-
- tests/intel/xe_exec_store.c       |  2 +-
- tests/intel/xe_noexec_ping_pong.c |  2 +-
- 7 files changed, 65 insertions(+), 56 deletions(-)
+ include/drm-uapi/xe_drm.h | 11 ++++-------
+ lib/xe/xe_spin.c          |  2 +-
+ tests/intel/xe_query.c    | 35 +++++++++++++++++++++++++++--------
+ 3 files changed, 32 insertions(+), 16 deletions(-)
 
 diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index 735576f91..8bc669c55 100644
+index 2a4ac6e8e..0b9047086 100644
 --- a/include/drm-uapi/xe_drm.h
 +++ b/include/drm-uapi/xe_drm.h
-@@ -127,9 +127,9 @@ struct xe_user_extension {
- /**
-  * struct drm_xe_engine_class_instance - instance of an engine class
+@@ -280,8 +280,8 @@ struct drm_xe_mem_region {
+  * in .data. struct drm_xe_query_engine_cycles is allocated by the user and
+  * .data points to this allocated structure.
   *
-- * It is returned as part of the @drm_xe_query_engine_info, but it also is
-- * used as the input of engine selection for both @drm_xe_exec_queue_create
-- * and @drm_xe_query_engine_cycles
-+ * It is returned as part of the @drm_xe_engine, but it also is used as
-+ * the input of engine selection for both @drm_xe_exec_queue_create and
-+ * @drm_xe_query_engine_cycles
-  *
+- * The query returns the engine cycles and the frequency that can
+- * be used to calculate the engine timestamp. In addition the
++ * The query returns the engine cycles, which along with GT's @reference_clock,
++ * can be used to calculate the engine timestamp. In addition the
+  * query returns a set of cpu timestamps that indicate when the command
+  * streamer cycle count was captured.
   */
- struct drm_xe_engine_class_instance {
-@@ -153,13 +153,9 @@ struct drm_xe_engine_class_instance {
- };
+@@ -309,9 +309,6 @@ struct drm_xe_query_engine_cycles {
+ 	 */
+ 	__u64 engine_cycles;
  
- /**
-- * struct drm_xe_query_engine_info - describe hardware engine
-- *
-- * If a query is made with a struct @drm_xe_device_query where .query
-- * is equal to %DRM_XE_DEVICE_QUERY_ENGINES, then the reply uses an array of
-- * struct @drm_xe_query_engine_info in .data.
-+ * struct drm_xe_engine - describe hardware engine
-  */
--struct drm_xe_query_engine_info {
-+struct drm_xe_engine {
- 	/** @instance: The @drm_xe_engine_class_instance */
- 	struct drm_xe_engine_class_instance instance;
+-	/** @engine_frequency: Frequency of the engine cycles in Hz. */
+-	__u64 engine_frequency;
+-
+ 	/**
+ 	 * @cpu_timestamp: CPU timestamp in ns. The timestamp is captured before
+ 	 * reading the engine_cycles register using the reference clockid set by the
+@@ -382,8 +379,8 @@ struct drm_xe_gt {
+ 	__u16 type;
+ 	/** @gt_id: Unique ID of this GT within the PCI Device */
+ 	__u16 gt_id;
+-	/** @clock_freq: A clock frequency for timestamp */
+-	__u32 clock_freq;
++	/** @reference_clock: A clock frequency for timestamp */
++	__u32 reference_clock;
+ 	/**
+ 	 * @near_mem_regions: Bit mask of instances from
+ 	 * drm_xe_query_mem_regions that are nearest to the current engines
+diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
+index deba06f73..243e97047 100644
+--- a/lib/xe/xe_spin.c
++++ b/lib/xe/xe_spin.c
+@@ -23,7 +23,7 @@ static uint32_t read_timestamp_frequency(int fd, int gt_id)
+ 	igt_assert(dev && dev->gt_list && dev->gt_list->num_gt);
+ 	igt_assert(gt_id >= 0 && gt_id <= dev->gt_list->num_gt);
  
-@@ -167,6 +163,22 @@ struct drm_xe_query_engine_info {
- 	__u64 reserved[5];
- };
+-	return dev->gt_list->gt_list[gt_id].clock_freq;
++	return dev->gt_list->gt_list[gt_id].reference_clock;
+ }
  
-+/**
-+ * struct drm_xe_query_engines - describe engines
-+ *
-+ * If a query is made with a struct @drm_xe_device_query where .query
-+ * is equal to %DRM_XE_DEVICE_QUERY_ENGINES, then the reply uses an array of
-+ * struct @drm_xe_query_engines in .data.
-+ */
-+struct drm_xe_query_engines {
-+	/** @num_engines: number of engines returned in @engines */
-+	__u32 num_engines;
-+	/** @pad: MBZ */
-+	__u32 pad;
-+	/** @engines: The returned engines for this device */
-+	struct drm_xe_engine engines[];
-+};
+ static uint64_t div64_u64_round_up(const uint64_t x, const uint64_t y)
+diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
+index 207785a38..7afea9945 100644
+--- a/tests/intel/xe_query.c
++++ b/tests/intel/xe_query.c
+@@ -280,7 +280,7 @@ test_query_gt_list(int fd)
+ 	for (i = 0; i < gt_list->num_gt; i++) {
+ 		igt_info("type: %d\n", gt_list->gt_list[i].type);
+ 		igt_info("gt_id: %d\n", gt_list->gt_list[i].gt_id);
+-		igt_info("clock_freq: %u\n", gt_list->gt_list[i].clock_freq);
++		igt_info("reference_clock: %u\n", gt_list->gt_list[i].reference_clock);
+ 		igt_info("near_mem_regions: 0x%016llx\n",
+ 		       gt_list->gt_list[i].near_mem_regions);
+ 		igt_info("far_mem_regions: 0x%016llx\n",
+@@ -496,6 +496,23 @@ query_engine_cycles(int fd, struct drm_xe_query_engine_cycles *resp)
+ 	igt_assert(query.size);
+ }
+ 
++static uint32_t
++__engine_reference_clock(int fd, int gt_id)
++{
++	uint32_t reference_clock = 0;
++	struct xe_device *xe_dev = xe_device_get(fd);
 +
- /**
-  * enum drm_xe_memory_class - Supported memory classes.
-  */
-@@ -466,28 +478,32 @@ struct drm_xe_query_topology_mask {
-  *
-  * .. code-block:: C
-  *
-- *	struct drm_xe_engine_class_instance *hwe;
-- *	struct drm_xe_device_query query = {
-- *		.extensions = 0,
-- *		.query = DRM_XE_DEVICE_QUERY_ENGINES,
-- *		.size = 0,
-- *		.data = 0,
-- *	};
-- *	ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query);
-- *	hwe = malloc(query.size);
-- *	query.data = (uintptr_t)hwe;
-- *	ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query);
-- *	int num_engines = query.size / sizeof(*hwe);
-- *	for (int i = 0; i < num_engines; i++) {
-- *		printf("Engine %d: %s\n", i,
-- *			hwe[i].engine_class == DRM_XE_ENGINE_CLASS_RENDER ? "RENDER":
-- *			hwe[i].engine_class == DRM_XE_ENGINE_CLASS_COPY ? "COPY":
-- *			hwe[i].engine_class == DRM_XE_ENGINE_CLASS_VIDEO_DECODE ? "VIDEO_DECODE":
-- *			hwe[i].engine_class == DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE ? "VIDEO_ENHANCE":
-- *			hwe[i].engine_class == DRM_XE_ENGINE_CLASS_COMPUTE ? "COMPUTE":
-- *			"UNKNOWN");
-- *	}
-- *	free(hwe);
-+ *     struct drm_xe_query_engines *engines;
-+ *     struct drm_xe_device_query query = {
-+ *         .extensions = 0,
-+ *         .query = DRM_XE_DEVICE_QUERY_ENGINES,
-+ *         .size = 0,
-+ *         .data = 0,
-+ *     };
-+ *     ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query);
-+ *     engines = malloc(query.size);
-+ *     query.data = (uintptr_t)engines;
-+ *     ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query);
-+ *     for (int i = 0; i < engines->num_engines; i++) {
-+ *         printf("Engine %d: %s\n", i,
-+ *             engines->engines[i].instance.engine_class ==
-+ *                 DRM_XE_ENGINE_CLASS_RENDER ? "RENDER":
-+ *             engines->engines[i].instance.engine_class ==
-+ *                 DRM_XE_ENGINE_CLASS_COPY ? "COPY":
-+ *             engines->engines[i].instance.engine_class ==
-+ *                 DRM_XE_ENGINE_CLASS_VIDEO_DECODE ? "VIDEO_DECODE":
-+ *             engines->engines[i].instance.engine_class ==
-+ *                 DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE ? "VIDEO_ENHANCE":
-+ *             engines->engines[i].instance.engine_class ==
-+ *                 DRM_XE_ENGINE_CLASS_COMPUTE ? "COMPUTE":
-+ *             "UNKNOWN");
-+ *     }
-+ *     free(engines);
-  */
- struct drm_xe_device_query {
- 	/** @extensions: Pointer to the first extension struct, if any */
-diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index d00051bd9..fa2b49079 100644
---- a/lib/xe/xe_query.c
-+++ b/lib/xe/xe_query.c
-@@ -72,10 +72,9 @@ static uint64_t __memory_regions(const struct drm_xe_query_gt_list *gt_list)
- 	return regions;
- }
- 
--static struct drm_xe_query_engine_info *
--xe_query_engines(int fd, unsigned int *num_engines)
-+static struct drm_xe_query_engines *xe_query_engines(int fd)
++	for (int gt = 0; gt < xe_dev->gt_list->num_gt; gt++) {
++		if (gt == gt_id) {
++			reference_clock = xe_dev->gt_list->gt_list[gt].reference_clock;
++			break;
++		}
++	}
++	igt_assert(reference_clock);
++
++	return reference_clock;
++}
++
+ static void
+ __engine_cycles(int fd, struct drm_xe_engine_class_instance *hwe)
  {
--	struct drm_xe_query_engine_info *engines;
-+	struct drm_xe_query_engines *engines;
- 	struct drm_xe_device_query query = {
- 		.extensions = 0,
- 		.query = DRM_XE_DEVICE_QUERY_ENGINES,
-@@ -83,7 +82,6 @@ xe_query_engines(int fd, unsigned int *num_engines)
- 		.data = 0,
- 	};
+@@ -506,7 +523,7 @@ __engine_cycles(int fd, struct drm_xe_engine_class_instance *hwe)
+ 	int i, usable = 0;
+ 	igt_spin_t *spin;
+ 	uint64_t ahnd;
+-	uint32_t vm;
++	uint32_t vm, engine_frequency1, engine_frequency2;
+ 	struct {
+ 		int32_t id;
+ 		const char *name;
+@@ -539,28 +556,30 @@ __engine_cycles(int fd, struct drm_xe_engine_class_instance *hwe)
+ 		ts2.clockid = clock[index].id;
  
--	igt_assert(num_engines);
- 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+ 		query_engine_cycles(fd, &ts1);
++		engine_frequency1 = __engine_reference_clock(fd, hwe->gt_id);
+ 		query_engine_cycles(fd, &ts2);
++		engine_frequency2 = __engine_reference_clock(fd, hwe->gt_id);
  
- 	engines = malloc(query.size);
-@@ -92,8 +90,6 @@ xe_query_engines(int fd, unsigned int *num_engines)
- 	query.data = to_user_pointer(engines);
- 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+ 		igt_debug("[1] cpu_ts before %llu, reg read time %llu\n",
+ 			  ts1.cpu_timestamp,
+ 			  ts1.cpu_delta);
+-		igt_debug("[1] engine_ts %llu, freq %llu Hz, width %u\n",
+-			  ts1.engine_cycles, ts1.engine_frequency, ts1.width);
++		igt_debug("[1] engine_ts %llu, freq %u Hz, width %u\n",
++			  ts1.engine_cycles, engine_frequency1, ts1.width);
  
--	*num_engines = query.size / sizeof(*engines);
--
- 	return engines;
- }
+ 		igt_debug("[2] cpu_ts before %llu, reg read time %llu\n",
+ 			  ts2.cpu_timestamp,
+ 			  ts2.cpu_delta);
+-		igt_debug("[2] engine_ts %llu, freq %llu Hz, width %u\n",
+-			  ts2.engine_cycles, ts2.engine_frequency, ts2.width);
++		igt_debug("[2] engine_ts %llu, freq %u Hz, width %u\n",
++			  ts2.engine_cycles, engine_frequency2, ts2.width);
  
-@@ -253,7 +249,7 @@ struct xe_device *xe_device_get(int fd)
- 	xe_dev->dev_id = xe_dev->config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff;
- 	xe_dev->gt_list = xe_query_gt_list_new(fd);
- 	xe_dev->memory_regions = __memory_regions(xe_dev->gt_list);
--	xe_dev->engines = xe_query_engines(fd, &xe_dev->number_engines);
-+	xe_dev->engines = xe_query_engines(fd);
- 	xe_dev->mem_regions = xe_query_mem_regions_new(fd);
- 	xe_dev->vram_size = calloc(xe_dev->gt_list->num_gt, sizeof(*xe_dev->vram_size));
- 	xe_dev->visible_vram_size = calloc(xe_dev->gt_list->num_gt, sizeof(*xe_dev->visible_vram_size));
-@@ -427,7 +423,7 @@ uint64_t vram_if_possible(int fd, int gt)
-  *
-  * Returns engines array of xe device @fd.
-  */
--xe_dev_FN(xe_engines, engines, struct drm_xe_query_engine_info *);
-+xe_dev_FN(xe_engines, engines->engines, struct drm_xe_engine *);
+ 		delta_cpu = ts2.cpu_timestamp - ts1.cpu_timestamp;
  
- /**
-  * xe_engine:
-@@ -436,15 +432,15 @@ xe_dev_FN(xe_engines, engines, struct drm_xe_query_engine_info *);
-  *
-  * Returns engine info of xe device @fd and @idx.
-  */
--struct drm_xe_query_engine_info *xe_engine(int fd, int idx)
-+struct drm_xe_engine *xe_engine(int fd, int idx)
- {
- 	struct xe_device *xe_dev;
+ 		if (ts2.engine_cycles >= ts1.engine_cycles)
+ 			delta_cs = (ts2.engine_cycles - ts1.engine_cycles) *
+-				   NSEC_PER_SEC / ts1.engine_frequency;
++				   NSEC_PER_SEC / engine_frequency1;
+ 		else
+ 			delta_cs = (((1 << ts2.width) - ts2.engine_cycles) + ts1.engine_cycles) *
+-				   NSEC_PER_SEC / ts1.engine_frequency;
++				   NSEC_PER_SEC / engine_frequency1;
  
- 	xe_dev = find_in_cache(fd);
- 	igt_assert(xe_dev);
--	igt_assert(idx >= 0 && idx < xe_dev->number_engines);
-+	igt_assert(idx >= 0 && idx < xe_dev->engines->num_engines);
- 
--	return &xe_dev->engines[idx];
-+	return &xe_dev->engines->engines[idx];
- }
- 
- /**
-@@ -534,7 +530,7 @@ xe_dev_FN(xe_config, config, struct drm_xe_query_config *);
-  *
-  * Returns number of hw engines of xe device @fd.
-  */
--xe_dev_FN(xe_number_engines, number_engines, unsigned int);
-+xe_dev_FN(xe_number_engines, engines->num_engines, unsigned int);
- 
- /**
-  * xe_has_vram:
-@@ -657,8 +653,8 @@ bool xe_has_engine_class(int fd, uint16_t engine_class)
- 	xe_dev = find_in_cache(fd);
- 	igt_assert(xe_dev);
- 
--	for (int i = 0; i < xe_dev->number_engines; i++)
--		if (xe_dev->engines[i].instance.engine_class == engine_class)
-+	for (int i = 0; i < xe_dev->engines->num_engines; i++)
-+		if (xe_dev->engines->engines[i].instance.engine_class == engine_class)
- 			return true;
- 
- 	return false;
-diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-index 5862ecba6..883cabb7d 100644
---- a/lib/xe/xe_query.h
-+++ b/lib/xe/xe_query.h
-@@ -32,11 +32,8 @@ struct xe_device {
- 	/** @gt_list: bitmask of all memory regions */
- 	uint64_t memory_regions;
- 
--	/** @engines: array of hardware engines */
--	struct drm_xe_query_engine_info *engines;
--
--	/** @number_engines: length of hardware engines array */
--	unsigned int number_engines;
-+	/** @engines: hardware engines */
-+	struct drm_xe_query_engines *engines;
- 
- 	/** @mem_regions: regions memory information and usage */
- 	struct drm_xe_query_mem_regions *mem_regions;
-@@ -81,8 +78,8 @@ uint64_t all_memory_regions(int fd);
- uint64_t system_memory(int fd);
- uint64_t vram_memory(int fd, int gt);
- uint64_t vram_if_possible(int fd, int gt);
--struct drm_xe_query_engine_info *xe_engines(int fd);
--struct drm_xe_query_engine_info *xe_engine(int fd, int idx);
-+struct drm_xe_engine *xe_engines(int fd);
-+struct drm_xe_engine *xe_engine(int fd, int idx);
- struct drm_xe_mem_region *xe_mem_region(int fd, uint64_t region);
- const char *xe_region_name(uint64_t region);
- uint16_t xe_region_class(int fd, uint64_t region);
-diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
-index 865cb9840..94ef7f013 100644
---- a/tests/intel/xe_create.c
-+++ b/tests/intel/xe_create.c
-@@ -148,7 +148,7 @@ static void create_execqueues(int fd, enum exec_queue_destroy ed)
- 	igt_nsec_elapsed(&tv);
- 
- 	igt_fork(n, nproc) {
--		struct drm_xe_query_engine_info *engine;
-+		struct drm_xe_engine *engine;
- 		uint32_t exec_queue, exec_queues[exec_queues_per_process];
- 		int idx, err, i;
- 
-diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
-index fc39649ea..ec457b1c1 100644
---- a/tests/intel/xe_drm_fdinfo.c
-+++ b/tests/intel/xe_drm_fdinfo.c
-@@ -40,7 +40,7 @@ IGT_TEST_DESCRIPTION("Read and verify drm client memory consumption using fdinfo
- #define BO_SIZE (65536)
- 
- /* Subtests */
--static void test_active(int fd, struct drm_xe_query_engine_info *engine)
-+static void test_active(int fd, struct drm_xe_engine *engine)
- {
- 	struct drm_xe_mem_region *memregion;
- 	uint64_t memreg = all_memory_regions(fd), region;
-diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
-index 48e843af5..2927214e3 100644
---- a/tests/intel/xe_exec_store.c
-+++ b/tests/intel/xe_exec_store.c
-@@ -63,7 +63,7 @@ static void store(int fd)
- 		.syncs = to_user_pointer(&sync),
- 	};
- 	struct data *data;
--	struct drm_xe_query_engine_info *engine;
-+	struct drm_xe_engine *engine;
- 	uint32_t vm;
- 	uint32_t exec_queue;
- 	uint32_t syncobj;
-diff --git a/tests/intel/xe_noexec_ping_pong.c b/tests/intel/xe_noexec_ping_pong.c
-index 585af413d..9659272b5 100644
---- a/tests/intel/xe_noexec_ping_pong.c
-+++ b/tests/intel/xe_noexec_ping_pong.c
-@@ -43,7 +43,7 @@
-   *	there is worked queued on one of the VM's compute exec_queues.
-  */
- 
--static void test_ping_pong(int fd, struct drm_xe_query_engine_info *engine)
-+static void test_ping_pong(int fd, struct drm_xe_engine *engine)
- {
- 	size_t vram_size = xe_vram_size(fd, 0);
- 	size_t align = xe_get_default_alignment(fd);
+ 		igt_debug("delta_cpu[%lu], delta_cs[%lu]\n",
+ 			  delta_cpu, delta_cs);
 -- 
 2.34.1
