@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 721EC10E316
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Nov 2023 16:17:06 +0000 (UTC)
-Date: Wed, 22 Nov 2023 17:16:18 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20231122161618.ydn2k4fhyceigxin@kamilkon-desk.igk.intel.com>
-References: <20231122101951.6568-1-marcin.bernatowicz@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============9219007195787627701=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231122101951.6568-1-marcin.bernatowicz@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] xe_create: create-big-vram subtest
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Lukasz Laguna" <lukasz.laguna@intel.com>
+Date: Wed, 22 Nov 2023 16:20:39 -0000
+Message-ID: <170067003903.4727.16514777615138053459@emeril.freedesktop.org>
+References: <20231122124052.16906-1-lukasz.laguna@intel.com>
+In-Reply-To: <20231122124052.16906-1-lukasz.laguna@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgbGliL2ln?=
+ =?utf-8?q?t=5Fcore=3A_initialize_srandom_seed_on_startup?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,284 +17,312 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: matthew.auld@intel.com, Marcin Bernatowicz <marcin.bernatowicz@intel.com>,
- jakub1.kolakowski@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Marcin,
-On 2023-11-22 at 11:19:51 +0100, Marcin Bernatowicz wrote:
+--===============9219007195787627701==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-please add version info to your patches and also add tests/intel/
-or lib/xe as prefix, for example instead of:
+== Series Details ==
 
-[PATCH i-g-t] xe_create: create-big-vram subtest
+Series: lib/igt_core: initialize srandom seed on startup
+URL   : https://patchwork.freedesktop.org/series/126757/
+State : failure
 
-write:
+== Summary ==
 
-[PATCH v3 i-g-t] tests/intel/xe_create: create-big-vram subtest
+CI Bug Log - changes from IGT_7596 -> IGTPW_10242
+====================================================
 
-For lib change:
+Summary
+-------
 
-[PATCH v3 i-g-t] lib/xe/xe_query: describe here your change
+  **FAILURE**
 
-> Validates the creation of significant Buffer Object (BO) within VRAM,
-> considering the entire available CPU-visible VRAM size.
-> The size of the created BO can be adjusted using
-> '-S' command line parameter, representing BO size in MB.
-> 
-> v2: rebased, updated to uAPI changes (DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT),
->     after review corrections: 1024UL -> 1024ULL,
->     int -> unsigned int (Kamil)
-> v3: provided a flag to allocate the memory within the CPU-visible
->       portion of VRAM (Matt)
->     __create_bo replaced with xe_bo_create_flags (Lukasz)
->     removed the percent command line parameter (Lukasz)
->     renamed size_MB to size_mb (Lukasz)
->     added helper function to query available CPU-visible VRAM size,
->     renamed 'xe_vram_available' to 'xe_available_vram_size' for
->       consistency with other function names
-> 
-> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@intel.com>
-> ---
->  lib/xe/xe_query.c          | 57 ++++++++++++++++++++++-------
->  lib/xe/xe_query.h          |  3 +-
+  Serious unknown changes coming with IGTPW_10242 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_10242, please notify your bug team (lgci.bug.filing@intel.com) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-Please split this into separate patch and send Cc to Francois Dugas,
-he is currently changing xe uapi.
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/index.html
 
->  tests/intel/xe_create.c    | 75 +++++++++++++++++++++++++++++++++++++-
->  tests/intel/xe_evict_ccs.c |  2 +-
->  4 files changed, 120 insertions(+), 17 deletions(-)
-> 
-> diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-> index afd443be3..de3296062 100644
-> --- a/lib/xe/xe_query.c
-> +++ b/lib/xe/xe_query.c
-> @@ -629,20 +629,20 @@ uint64_t xe_visible_vram_size(int fd, int gt)
->  
->  	return visible_size;
->  }
-> -/**
-> - * xe_vram_available:
-> - * @fd: xe device fd
-> - * @gt: gt
-> - *
-> - * Returns available vram of xe device @fd and @gt.
-> - */
-> -uint64_t xe_vram_available(int fd, int gt)
-> +
-> +struct __available_vram {
-> +	uint64_t total_available;
-> +	uint64_t cpu_visible_available;
-> +};
-> +
-> +static void __xe_available_vram_size_snapshot(int fd, int gt, struct __available_vram *avail_vram)
->  {
->  	struct xe_device *xe_dev;
->  	int region_idx;
->  	struct drm_xe_query_mem_region *mem_region;
->  	struct drm_xe_query_mem_regions *mem_regions;
->  
-> +	igt_assert(avail_vram);
->  	xe_dev = find_in_cache(fd);
->  	igt_assert(xe_dev);
->  
-> @@ -650,19 +650,48 @@ uint64_t xe_vram_available(int fd, int gt)
->  	mem_region = &xe_dev->mem_regions->regions[region_idx];
->  
->  	if (XE_IS_CLASS_VRAM(mem_region)) {
-> -		uint64_t available_vram;
-> -
->  		mem_regions = xe_query_mem_regions_new(fd);
->  		pthread_mutex_lock(&cache.cache_mutex);
->  		mem_region->used = mem_regions->regions[region_idx].used;
-> -		available_vram = mem_region->total_size - mem_region->used;
-> +		mem_region->cpu_visible_used = mem_regions->regions[region_idx].cpu_visible_used;
-> +		avail_vram->total_available = mem_region->total_size - mem_region->used;
-> +		avail_vram->cpu_visible_available =
-> +			mem_region->cpu_visible_size - mem_region->cpu_visible_used;
->  		pthread_mutex_unlock(&cache.cache_mutex);
->  		free(mem_regions);
-> -
-> -		return available_vram;
->  	}
-> +}
->  
-> -	return 0;
-> +/**
-> + * xe_available_vram_size:
-> + * @fd: xe device fd
-> + * @gt: gt
-> + *
-> + * Returns size of available vram of xe device @fd and @gt.
-> + */
-> +uint64_t xe_available_vram_size(int fd, int gt)
-> +{
-> +	struct __available_vram available_vram = {};
-> +
-> +	__xe_available_vram_size_snapshot(fd, gt, &available_vram);
-> +
-> +	return available_vram.total_available;
-> +}
-> +
-> +/**
-> + * xe_visible_available_vram_size:
-> + * @fd: xe device fd
-> + * @gt: gt
-> + *
-> + * Returns size of visible available vram of xe device @fd and @gt.
-> + */
-> +uint64_t xe_visible_available_vram_size(int fd, int gt)
-> +{
-> +	struct __available_vram available_vram = {};
-> +
-> +	__xe_available_vram_size_snapshot(fd, gt, &available_vram);
-> +
-> +	return available_vram.cpu_visible_available;
->  }
->  
->  /**
-> diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-> index 38e9aa440..503d60b44 100644
-> --- a/lib/xe/xe_query.h
-> +++ b/lib/xe/xe_query.h
-> @@ -92,7 +92,8 @@ unsigned int xe_number_hw_engines(int fd);
->  bool xe_has_vram(int fd);
->  uint64_t xe_vram_size(int fd, int gt);
->  uint64_t xe_visible_vram_size(int fd, int gt);
-> -uint64_t xe_vram_available(int fd, int gt);
-> +uint64_t xe_available_vram_size(int fd, int gt);
-> +uint64_t xe_visible_available_vram_size(int fd, int gt);
->  uint32_t xe_get_default_alignment(int fd);
->  uint32_t xe_va_bits(int fd);
->  uint16_t xe_dev_id(int fd);
-> diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
-> index f4633cfb3..082e9b440 100644
-> --- a/tests/intel/xe_create.c
-> +++ b/tests/intel/xe_create.c
-> @@ -18,6 +18,12 @@
->  
->  #define PAGE_SIZE 0x1000
->  
-> +static struct param {
-> +	unsigned int size_mb;
-> +} params = {
-> +	.size_mb = 0,
-> +};
-> +
->  static int __create_bo(int fd, uint32_t vm, uint64_t size, uint32_t flags,
->  		       uint32_t *handlep)
->  {
-> @@ -214,7 +220,70 @@ static void create_massive_size(int fd)
->  	}
->  }
->  
-> -igt_main
-> +/**
-> + * SUBTEST: create-big-vram
-> + * Functionality: BO creation
-> + * Test category: functionality test
-> + * Description: Verifies the creation of substantial BO within VRAM,
-> + *		constituting all available CPU-visible VRAM.
-> + */
-> +static void create_big_vram(int fd)
-> +{
-> +	uint64_t bo_size, size, visible_avail_size, alignment;
-> +	uint32_t bo_handle;
-> +	char *bo_ptr = NULL;
-> +	uint64_t vm = 0;
-> +	int gt;
-> +
-> +	igt_require(xe_has_vram(fd));
-> +	alignment = xe_get_default_alignment(fd);
-> +	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
-> +
-> +	xe_for_each_gt(fd, gt) {
-> +		visible_avail_size = xe_visible_available_vram_size(fd, gt);
-> +		bo_size = params.size_mb ? params.size_mb * 1024ULL * 1024ULL
-> +					 : ALIGN_DOWN(visible_avail_size, alignment);
-> +		igt_debug("gt%u bo_size=%lu visible_available_vram_size=%lu\n",
-> +			gt, bo_size, visible_avail_size);
-> +
-> +		bo_handle = xe_bo_create_flags(fd, vm, bo_size, visible_vram_memory(fd, gt));
-> +		bo_ptr = xe_bo_map(fd, bo_handle, bo_size);
-> +
-> +		size = bo_size - 1;
-> +		while (size > SZ_64K) {
-> +			igt_assert_eq(0, READ_ONCE(bo_ptr[size]));
-> +			WRITE_ONCE(bo_ptr[size], 'A');
-> +			igt_assert_eq('A', READ_ONCE(bo_ptr[size]));
-> +			size >>= 1;
-> +		}
-> +		igt_assert_eq(0, bo_ptr[0]);
-> +
-> +		munmap(bo_ptr, bo_size);
-> +		gem_close(fd, bo_handle);
-> +	}
-> +
-> +	xe_vm_destroy(fd, vm);
-> +}
-> +
-> +static int opt_handler(int opt, int opt_index, void *data)
-> +{
-> +	switch (opt) {
-> +	case 'S':
-> +		params.size_mb = atoi(optarg);
-> +		igt_debug("Size MB: %d\n", params.size_mb);
-> +		break;
-> +	default:
-> +		return IGT_OPT_HANDLER_ERROR;
-> +	}
-> +
-> +	return IGT_OPT_HANDLER_SUCCESS;
-> +}
-> +
-> +const char *help_str =
-> +	"  -S\tBO size in MB\n"
+Participating hosts (37 -> 37)
+------------------------------
 
-Why not percentage? imho percentage is easier to use.
+  Additional (2): bat-rpls-1 bat-kbl-2 
+  Missing    (2): bat-mtlp-8 fi-snb-2520m 
 
-> +	;
-> +
-> +igt_main_args("S:", NULL, help_str, opt_handler, NULL)
->  {
->  	int xe;
->  
-> @@ -254,6 +323,10 @@ igt_main
->  	}
->  
->  
+Possible new issues
+-------------------
 
-Remove one empty line.
+  Here are the unknown changes that may have been introduced in IGTPW_10242:
 
-> +	igt_subtest("create-big-vram") {
-> +		create_big_vram(xe);
-> +	}
-> +
->  	igt_fixture
->  		drm_close_driver(xe);
->  }
-> diff --git a/tests/intel/xe_evict_ccs.c b/tests/intel/xe_evict_ccs.c
-> index d7244f620..b04c20935 100644
-> --- a/tests/intel/xe_evict_ccs.c
-> +++ b/tests/intel/xe_evict_ccs.c
-> @@ -325,7 +325,7 @@ static void set_config(int fd, uint32_t flags, const struct param *param,
->  	config->param = param;
->  	config->flags = flags;
->  	config->free_mb = xe_visible_vram_size(fd, 0) / SZ_1M;
-> -	config->total_mb = xe_vram_available(fd, 0) / SZ_1M;
-> +	config->total_mb = xe_available_vram_size(fd, 0) / SZ_1M;
+### IGT changes ###
 
-This should go with lib change.
+#### Possible regressions ####
 
-Regards,
-Kamil
+  * igt@i915_module_load@load:
+    - bat-rpls-1:         NOTRUN -> [INCOMPLETE][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/bat-rpls-1/igt@i915_module_load@load.html
+    - bat-dg1-7:          [PASS][2] -> [ABORT][3]
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7596/bat-dg1-7/igt@i915_module_load@load.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/bat-dg1-7/igt@i915_module_load@load.html
 
->  	config->test_mb = min_t(int, config->free_mb * config->param->vram_percent / 100,
->  				config->total_mb * config->param->vram_percent / 100);
->  
-> -- 
-> 2.31.1
-> 
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10242 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@debugfs_test@basic-hwmon:
+    - bat-jsl-1:          NOTRUN -> [SKIP][4] ([i915#9318])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/bat-jsl-1/igt@debugfs_test@basic-hwmon.html
+
+  * igt@fbdev@info:
+    - bat-kbl-2:          NOTRUN -> [SKIP][5] ([fdo#109271] / [i915#1849])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/bat-kbl-2/igt@fbdev@info.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - bat-jsl-1:          NOTRUN -> [SKIP][6] ([i915#2190])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/bat-jsl-1/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@parallel-random-engines:
+    - bat-kbl-2:          NOTRUN -> [SKIP][7] ([fdo#109271]) +20 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/bat-kbl-2/igt@gem_lmem_swapping@parallel-random-engines.html
+
+  * igt@gem_lmem_swapping@verify-random:
+    - bat-jsl-1:          NOTRUN -> [SKIP][8] ([i915#4613]) +3 other tests skip
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/bat-jsl-1/igt@gem_lmem_swapping@verify-random.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
+    - bat-jsl-1:          NOTRUN -> [SKIP][9] ([i915#4103]) +1 other test skip
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/bat-jsl-1/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-jsl-1:          NOTRUN -> [SKIP][10] ([i915#3555]) +1 other test skip
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/bat-jsl-1/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - bat-jsl-1:          NOTRUN -> [SKIP][11] ([fdo#109285])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/bat-jsl-1/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - fi-kbl-guc:         [PASS][12] -> [FAIL][13] ([IGT#3])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7596/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence:
+    - bat-kbl-2:          NOTRUN -> [SKIP][14] ([fdo#109271] / [i915#1845]) +14 other tests skip
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/bat-kbl-2/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:
+    - bat-rplp-1:         [PASS][15] -> [ABORT][16] ([i915#8668])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7596/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-apl-guc:         [DMESG-FAIL][17] ([i915#5334]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7596/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [IGT#3]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
+  [i915#9318]: https://gitlab.freedesktop.org/drm/intel/issues/9318
+  [i915#9648]: https://gitlab.freedesktop.org/drm/intel/issues/9648
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7596 -> IGTPW_10242
+
+  CI-20190529: 20190529
+  CI_DRM_13910: a6fa1fefc44d92897a3be86430dde647f665f3a3 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10242: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/index.html
+  IGT_7596: 9179b4310586865a1308634c22f19f7ebca98f61 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/index.html
+
+--===============9219007195787627701==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/igt_core: initialize srandom seed on startup</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126757/">https://patchwork.freedesktop.org/series/126757/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7596 -&gt; IGTPW_10242</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_10242 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_10242, please notify your bug team (lgci.bug.filing@intel.com) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/index.html</p>
+<h2>Participating hosts (37 -&gt; 37)</h2>
+<p>Additional (2): bat-rpls-1 bat-kbl-2 <br />
+  Missing    (2): bat-mtlp-8 fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_10242:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@i915_module_load@load:</p>
+<ul>
+<li>
+<p>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/bat-rpls-1/igt@i915_module_load@load.html">INCOMPLETE</a></p>
+</li>
+<li>
+<p>bat-dg1-7:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7596/bat-dg1-7/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/bat-dg1-7/igt@i915_module_load@load.html">ABORT</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10242 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@debugfs_test@basic-hwmon:</p>
+<ul>
+<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/bat-jsl-1/igt@debugfs_test@basic-hwmon.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9318">i915#9318</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@fbdev@info:</p>
+<ul>
+<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/bat-kbl-2/igt@fbdev@info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/bat-jsl-1/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
+<ul>
+<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/bat-kbl-2/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +20 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@verify-random:</p>
+<ul>
+<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/bat-jsl-1/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
+<ul>
+<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/bat-jsl-1/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/bat-jsl-1/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/bat-jsl-1/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7596/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3">IGT#3</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence:</p>
+<ul>
+<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/bat-kbl-2/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>) +14 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:</p>
+<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7596/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@gt_heartbeat:<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7596/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7596 -&gt; IGTPW_10242</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13910: a6fa1fefc44d92897a3be86430dde647f665f3a3 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10242: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10242/index.html<br />
+  IGT_7596: 9179b4310586865a1308634c22f19f7ebca98f61 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============9219007195787627701==--
