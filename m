@@ -1,16 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============1570668508274236161=="
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E084010E084
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Nov 2023 14:40:50 +0000 (UTC)
+From: "Hogander, Jouni" <jouni.hogander@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "kamil.konieczny@linux.intel.com" <kamil.konieczny@linux.intel.com>
+Date: Thu, 23 Nov 2023 14:40:46 +0000
+Message-ID: <819f6b8ba5a2e490790bb5fe9c7c5f8f92fd5105.camel@intel.com>
+References: <20231123102601.1748229-1-jouni.hogander@intel.com>
+ <20231123131206.b4pz4w4pa7lodbsr@kamilkon-desk.igk.intel.com>
+In-Reply-To: <20231123131206.b4pz4w4pa7lodbsr@kamilkon-desk.igk.intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <E07E502213C279408F2D60609FC51668@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Nidhi Gupta" <nidhi1.gupta@intel.com>
-Date: Thu, 23 Nov 2023 14:12:11 -0000
-Message-ID: <170074873168.8135.9298292765980792937@emeril.freedesktop.org>
-References: <20231123113228.30729-1-nidhi1.gupta@intel.com>
-In-Reply-To: <20231123113228.30729-1-nidhi1.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/in?=
- =?utf-8?q?tel/kms=5Ffrontbuffer=5Ftracking=3A_Add_new_subtest_to_test_FBC?=
- =?utf-8?q?_on_each_pipe_=28rev2=29?=
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_addfb_basic: Skip not
+ relevant subtests for Xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,283 +24,101 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1570668508274236161==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: tests/intel/kms_frontbuffer_tracking: Add new subtest to test FBC on each pipe (rev2)
-URL   : https://patchwork.freedesktop.org/series/126708/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7598_BAT -> XEIGTPW_10254_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10254_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][1] ([Intel XE#623])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10254/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-
-  * igt@kms_addfb_basic@basic-y-tiled-legacy:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][2] ([Intel XE#624])
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10254/bat-dg2-oem2/igt@kms_addfb_basic@basic-y-tiled-legacy.html
-
-  * igt@kms_addfb_basic@tile-pitch-mismatch:
-    - bat-dg2-oem2:       NOTRUN -> [FAIL][3] ([Intel XE#609]) +1 other test fail
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10254/bat-dg2-oem2/igt@kms_addfb_basic@tile-pitch-mismatch.html
-
-  * igt@kms_dsc@dsc-basic:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][4] ([Intel XE#423])
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10254/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:
-    - bat-adlp-7:         [PASS][5] -> [FAIL][6] ([Intel XE#480]) +1 other test fail
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7598/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10254/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
-
-  * igt@kms_force_connector_basic@prune-stale-modes:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][7] ([i915#5274])
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10254/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-dg2-oem2:       NOTRUN -> [FAIL][8] ([Intel XE#608])
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10254/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
-    - bat-dg2-oem2:       NOTRUN -> [FAIL][9] ([Intel XE#400] / [Intel XE#616]) +2 other tests fail
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10254/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
-
-  * igt@xe_exec_fault_mode@many-basic:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][10] ([Intel XE#288]) +17 other tests skip
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10254/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html
-
-  * igt@xe_huc_copy@huc_copy:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][11] ([Intel XE#255])
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10254/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html
-
-  
-#### Possible fixes ####
-
-  * {igt@xe_create@create-execqueues-noleak}:
-    - bat-adlp-7:         [FAIL][12] ([Intel XE#524]) -> [PASS][13]
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7598/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
-   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10254/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html
-
-  * igt@xe_exec_compute_mode@twice-userptr:
-    - bat-dg2-oem2:       [INCOMPLETE][14] ([Intel XE#948]) -> [PASS][15]
-   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7598/bat-dg2-oem2/igt@xe_exec_compute_mode@twice-userptr.html
-   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10254/bat-dg2-oem2/igt@xe_exec_compute_mode@twice-userptr.html
-
-  
-#### Warnings ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [DMESG-FAIL][16] ([Intel XE#282] / [i915#2017]) -> [FAIL][17] ([Intel XE#616] / [Intel XE#750])
-   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7598/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10254/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#255]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/255
-  [Intel XE#282]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/282
-  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
-  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
-  [Intel XE#423]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/423
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
-  [Intel XE#608]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/608
-  [Intel XE#609]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/609
-  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
-  [Intel XE#623]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/623
-  [Intel XE#624]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/624
-  [Intel XE#750]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/750
-  [Intel XE#929]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/929
-  [Intel XE#948]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/948
-  [i915#2017]: https://gitlab.freedesktop.org/drm/intel/issues/2017
-  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
-
-
-Build changes
--------------
-
-  * IGT: IGT_7598 -> IGTPW_10254
-
-  IGTPW_10254: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10254/index.html
-  IGT_7598: 6be4fb999857e135d54a6643a57dfe394e9c6f2e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-517-501feae7afed8e9b21700d1185532c18d62ca33a: 501feae7afed8e9b21700d1185532c18d62ca33a
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10254/index.html
-
---===============1570668508274236161==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/kms_frontbuffer_tracking: Add new subtest to test FBC on each pipe (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126708/">https://patchwork.freedesktop.org/series/126708/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10254/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10254/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7598_BAT -&gt; XEIGTPW_10254_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10254_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10254/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/623">Intel XE#623</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@basic-y-tiled-legacy:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10254/bat-dg2-oem2/igt@kms_addfb_basic@basic-y-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/624">Intel XE#624</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@tile-pitch-mismatch:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10254/bat-dg2-oem2/igt@kms_addfb_basic@tile-pitch-mismatch.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/609">Intel XE#609</a>) +1 other test fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_dsc@dsc-basic:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10254/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/423">Intel XE#423</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7598/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10254/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@prune-stale-modes:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10254/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5274">i915#5274</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10254/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/608">Intel XE#608</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10254/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>) +2 other tests fail</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_fault_mode@many-basic:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10254/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +17 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_huc_copy@huc_copy:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10254/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>{igt@xe_create@create-execqueues-noleak}:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7598/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10254/bat-adlp-7/igt@xe_create@create-execqueues-noleak.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_compute_mode@twice-userptr:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7598/bat-dg2-oem2/igt@xe_exec_compute_mode@twice-userptr.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/948">Intel XE#948</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10254/bat-dg2-oem2/igt@xe_exec_compute_mode@twice-userptr.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_frontbuffer_tracking@basic:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7598/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2017">i915#2017</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10254/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/750">Intel XE#750</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7598 -&gt; IGTPW_10254</li>
-</ul>
-<p>IGTPW_10254: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10254/index.html<br />
-  IGT_7598: 6be4fb999857e135d54a6643a57dfe394e9c6f2e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-517-501feae7afed8e9b21700d1185532c18d62ca33a: 501feae7afed8e9b21700d1185532c18d62ca33a</p>
-
-</body>
-</html>
-
---===============1570668508274236161==--
+T24gVGh1LCAyMDIzLTExLTIzIGF0IDE0OjEyICswMTAwLCBLYW1pbCBLb25pZWN6bnkgd3JvdGU6
+Cj4gSGkgSm91bmksCj4gT24gMjAyMy0xMS0yMyBhdCAxMjoyNjowMSArMDIwMCwgSm91bmkgSMO2
+Z2FuZGVyIHdyb3RlOgo+ID4gU2tpcCBmb2xsb3dpbmcgdGVzdHMgZm9yIFhlOgo+ID4gCj4gPiB0
+aWxlLXBpdGNoLW1pc21hdGNoCj4gPiBhZGRmYjI1LXgtdGlsZWQtbWlzbWF0Y2gtbGVnYWN5Cj4g
+PiAKPiA+IFRoZXkgYXJlIG5vdCByZWxldmFudCBmb3IgWGUgYXMgdGlsaW5nIGluZm9ybWF0aW9u
+IGlzIG5vdCBlbmNvZGVkCj4gPiBpbnRvCj4gPiBiYWNraW5nIG9iamVjdC4KPiA+IAo+ID4gU2tp
+cCBmb2xsb3dpbmcgdGVzdCBmb3IgWGUKPiA+IAo+ID4gYmFzaWMteS10aWxlZC1sZWdhY3kKPiA+
+IAo+ID4gQXMgWGUgc3VwcG9ydHMgeS10aWxlZCBmb3JtYXQgb24gbGVnYWN5IGFkZGZiLgo+ID4g
+Cj4gCj4gUGxlYXNlIHJlcGx5IHRvIFN3YXRpIHF1ZXN0aW9uczoKPiAKPiBTd2F0aTogV2hhdCBh
+Ym91dCB5ZiB0aWxlZD8KPiBTd2F0aTogT24gbGVnYWN5IGFkZGZiIHdoaWNoIGFsbCBtb2RpZmll
+cnMgYXJlIHN1cHBvcnRlZD8KPiAKPiBQbGVhc2UgYWRkIGhlcmUgSnVoYS1QZWtrYSBhbmQgU3dh
+dGkgdG8gQ2MgYW5kIGFzIFN3YXRpIHBvaW50ZWQsCj4gYWRkIGFsc28gIkNsb3NlcyI6Cj4gCj4g
+Q2xvc2VzOiBodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL3hlL2tlcm5lbC8tL2lz
+c3Vlcy82MDkKPiBDYzogSnVoYS1QZWtrYSBIZWlra2lsYSA8anVoYXBla2thLmhlaWtraWxhQGdt
+YWlsLmNvbT4KPiBDYzogU3dhdGkgU2hhcm1hIDxzd2F0aTIuc2hhcm1hQGludGVsLmNvbT4KPiBT
+aWduZWQtb2ZmLWJ5OiBKb3VuaSBIw7ZnYW5kZXIgPGpvdW5pLmhvZ2FuZGVyQGludGVsLmNvbT4K
+ClRoYW5rIHlvdSBLYW1pbCBmb3IgY2hlY2tpbmcgbXkgcGF0Y2guIFBsZWFzZSBjaGVjayB2ZXJz
+aW9uIDMuIHdoZXJlIEkKaGF2ZSBhZGRyZXNzZWQgeW91ciBjb21tZW50cy4KCkJSLAoKSm91bmkg
+SMO2Z2FuZGVyCgo+IAo+IFJlZ2FyZHMsCj4gS2FtaWwKPiAKPiA+IC0tLQo+ID4gwqB0ZXN0cy9r
+bXNfYWRkZmJfYmFzaWMuYyB8IDIxICsrKysrKysrKystLS0tLS0tLS0tLQo+ID4gwqAxIGZpbGUg
+Y2hhbmdlZCwgMTAgaW5zZXJ0aW9ucygrKSwgMTEgZGVsZXRpb25zKC0pCj4gPiAKPiA+IGRpZmYg
+LS1naXQgYS90ZXN0cy9rbXNfYWRkZmJfYmFzaWMuYyBiL3Rlc3RzL2ttc19hZGRmYl9iYXNpYy5j
+Cj4gPiBpbmRleCBmYzE2Yjg4MTQuLjQyNjI3NzQyMiAxMDA2NDQKPiA+IC0tLSBhL3Rlc3RzL2tt
+c19hZGRmYl9iYXNpYy5jCj4gPiArKysgYi90ZXN0cy9rbXNfYWRkZmJfYmFzaWMuYwo+ID4gQEAg
+LTM5Niw3ICszOTYsNyBAQCBzdGF0aWMgdm9pZCBwaXRjaF90ZXN0cyhpbnQgZmQpCj4gPiDCoC8q
+Kgo+ID4gwqAgKiBTVUJURVNUOiBiYXNpYy0lcy10aWxlZC1sZWdhY3kKPiA+IMKgICogRGVzY3Jp
+cHRpb246IENoZWNrIGlmIGFkZGZiMiBhbmQgcm1mYiBjYWxsIHdvcmtzIGZvciBiYXNpYwo+ID4g
+JWFyZ1sxXSB0ZXN0Cj4gPiAtICogRHJpdmVyIHJlcXVpcmVtZW50OiBpOTE1LCB4ZQo+ID4gKyAq
+IERyaXZlciByZXF1aXJlbWVudDogaTkxNQo+ID4gwqAgKiBUZXN0IGNhdGVnb3J5OiBmdW5jdGlv
+bmFsaXR5IHRlc3QKPiA+IMKgICogRnVuY3Rpb25hbGl0eToga21zX2dlbV9pbnRlcm9wLCB0aWxp
+bmcKPiA+IMKgICogTWVnYSBmZWF0dXJlOiBHZW5lcmFsIERpc3BsYXkgRmVhdHVyZXMKPiA+IEBA
+IC00MTAsNyArNDEwLDcgQEAgc3RhdGljIHZvaWQgcGl0Y2hfdGVzdHMoaW50IGZkKQo+ID4gwqAg
+Kgo+ID4gwqAgKiBTVUJURVNUOiB0aWxlLXBpdGNoLW1pc21hdGNoCj4gPiDCoCAqIERlc2NyaXB0
+aW9uOiBUZXN0IHRoYXQgYWRkZmIyIGNhbGwgZmFpbHMgY29ycmVjdGx5IGZvciBwaXRjaGVzCj4g
+PiBtaXNtYXRjaAo+ID4gLSAqIERyaXZlciByZXF1aXJlbWVudDogaTkxNSwgeGUKPiA+ICsgKiBE
+cml2ZXIgcmVxdWlyZW1lbnQ6IGk5MTUKPiA+IMKgICogVGVzdCBjYXRlZ29yeTogZnVuY3Rpb25h
+bGl0eSB0ZXN0Cj4gPiDCoCAqIEZ1bmN0aW9uYWxpdHk6IGttc19nZW1faW50ZXJvcCwgdGlsaW5n
+Cj4gPiDCoCAqIE1lZ2EgZmVhdHVyZTogR2VuZXJhbCBEaXNwbGF5IEZlYXR1cmVzCj4gPiBAQCAt
+NDc4LDggKzQ3OCw4IEBAIHN0YXRpYyB2b2lkIHRpbGluZ190ZXN0cyhpbnQgZmQpCj4gPiDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9kZXNjcmliZSgiVGVzdCB0aGF0IGFkZGZi
+MiBjYWxsIGZhaWxzIGNvcnJlY3RseQo+ID4gZm9yIHBpdGNoZXMgbWlzbWF0Y2giKTsKPiA+IMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGYucGl0Y2hlc1sw
+XSA9IDUxMio0Owo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3Rfc3VidGVz
+dCgidGlsZS1waXRjaC1taXNtYXRjaCIpIHsKPiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKGlzX2k5MTVfZGV2aWNlKGZkKSkKPiA+IC0KPiA+IMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgaWd0X3JlcXVpcmUoZ2VtX2F2YWlsYWJsZV9mZW5jZXMoZmQpCj4gPiA+IDApOwo+ID4gK8Kg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfcmVxdWlyZV9p
+OTE1KGZkKTsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgaWd0X3JlcXVpcmUoZ2VtX2F2YWlsYWJsZV9mZW5jZXMoZmQpID4gMCk7Cj4gPiDCoAo+ID4g
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZi5oYW5kbGVz
+WzBdID0gdGlsZWRfeF9ibzsKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoGRvX2lvY3RsX2VycihmZCwgRFJNX0lPQ1RMX01PREVfQURERkIyLCAmZiwK
+PiA+IEVJTlZBTCk7Cj4gPiBAQCAtNDg4LDEyICs0ODgsMTAgQEAgc3RhdGljIHZvaWQgdGlsaW5n
+X3Rlc3RzKGludCBmZCkKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2Rl
+c2NyaWJlKCJUZXN0IHRoYXQgYWRkZmIyIGNhbGwgZmFpbHMgY29ycmVjdGx5Cj4gPiBmb3IgYmFz
+aWMgeS10aWxpbmcgdGVzdCIpOwo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBm
+LnBpdGNoZXNbMF0gPSAxMDI0KjQ7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oGlndF9zdWJ0ZXN0KCJiYXNpYy15LXRpbGVkLWxlZ2FjeSIpIHsKPiA+IC3CoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKGlzX2k5MTVfZGV2aWNlKGZkKSkg
+ewo+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgaWd0X3JlcXVpcmUoIWdlbV9oYXNfbG1lbShmZCkpOwo+ID4gLQo+ID4gwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqBpZ3RfcmVxdWlyZShnZW1fYXZhaWxhYmxlX2ZlbmNlcyhmZCkKPiA+ID4gMCk7Cj4gPiAtwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH0gZWxzZSB7Cj4gPiAt
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqBpZ3RfcmVxdWlyZSgheGVfaGFzX3ZyYW0oZmQpKTsKPiA+IC3CoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfcmVxdWlyZV9pOTE1KGZkKTsKPiA+ICvCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3JlcXVpcmUoIWdl
+bV9oYXNfbG1lbShmZCkpOwo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqBpZ3RfcmVxdWlyZShnZW1fYXZhaWxhYmxlX2ZlbmNlcyhmZCkgPiAwKTsKPiA+
+ICsKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGYu
+aGFuZGxlc1swXSA9IHRpbGVkX3lfYm87Cj4gPiDCoAo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZG9faW9jdGxfZXJyKGZkLCBEUk1fSU9DVExfTU9E
+RV9BRERGQjIsICZmLAo+ID4gRUlOVkFMKTsKPiA+IEBAIC02ODIsNyArNjgwLDcgQEAgc3RhdGlj
+IHZvaWQgc2l6ZV90ZXN0cyhpbnQgZmQpCj4gPiDCoCAqCj4gPiDCoCAqIFNVQlRFU1Q6IGFkZGZi
+MjUteC10aWxlZC1taXNtYXRjaC1sZWdhY3kKPiA+IMKgICogRGVzY3JpcHRpb246IFRlc3QgdGhh
+dCBhZGRmYjIgY2FsbCBmYWlscyBjb3JyZWN0bHkgZm9yCj4gPiBpcnJlbGV2YW50IHgtdGlsaW5n
+Cj4gPiAtICogRHJpdmVyIHJlcXVpcmVtZW50OiBpOTE1LCB4ZQo+ID4gKyAqIERyaXZlciByZXF1
+aXJlbWVudDogaTkxNQo+ID4gwqAgKiBUZXN0IGNhdGVnb3J5OiBmdW5jdGlvbmFsaXR5IHRlc3QK
+PiA+IMKgICogRnVuY3Rpb25hbGl0eToga21zX2dlbV9pbnRlcm9wLCB0aWxpbmcKPiA+IMKgICog
+TWVnYSBmZWF0dXJlOiBHZW5lcmFsIERpc3BsYXkgRmVhdHVyZXMKPiA+IEBAIC03NTIsNiArNzUw
+LDcgQEAgc3RhdGljIHZvaWQgYWRkZmIyNV90ZXN0cyhpbnQgZmQpCj4gPiDCoAo+ID4gwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfZGVzY3JpYmUoIlRlc3QgdGhhdCBhZGRmYjIg
+Y2FsbCBmYWlscyBjb3JyZWN0bHkKPiA+IGZvciBpcnJlbGV2YW50IHgtdGlsaW5nIik7Cj4gPiDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9zdWJ0ZXN0KCJhZGRmYjI1LXgtdGls
+ZWQtbWlzbWF0Y2gtbGVnYWN5Iikgewo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqBpZ3RfcmVxdWlyZV9pOTE1KGZkKTsKPiA+IMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGYubW9kaWZpZXJbMF0gPSBEUk1fRk9S
+TUFUX01PRF9MSU5FQVI7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqBkb19pb2N0bF9lcnIoZmQsIERSTV9JT0NUTF9NT0RFX0FEREZCMiwgJmYsCj4g
+PiBFSU5WQUwpOwo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9Cj4gPiAtLSAK
+PiA+IDIuMzQuMQo+ID4gCgo=
