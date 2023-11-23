@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============2708701036085686606=="
-MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Swati Sharma" <swati2.sharma@intel.com>
-Date: Thu, 23 Nov 2023 08:14:20 -0000
-Message-ID: <170072726055.8136.10104219198659467403@emeril.freedesktop.org>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3718210E6E6
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Nov 2023 08:20:11 +0000 (UTC)
+Date: Thu, 23 Nov 2023 09:19:43 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20231123081943.fr7uoup3vozumhpd@kamilkon-desk.igk.intel.com>
 References: <20231123064405.157754-1-swati2.sharma@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 In-Reply-To: <20231123064405.157754-1-swati2.sharma@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_s?=
- =?utf-8?q?tarting_with_=5Bi-g-t=2C1/3=5D_tests/kms=5Ffeature=5Fdiscovery?=
- =?utf-8?q?=3A_check_display_support_only?=
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] tests/kms_feature_discovery: check
+ display support only
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,133 +20,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2708701036085686606==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Swati,
+On 2023-11-23 at 12:14:03 +0530, Swati Sharma wrote:
+> This test to be used only to check display support.
+> 
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 
-== Series Details ==
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Series: series starting with [i-g-t,1/3] tests/kms_feature_discovery: check display support only
-URL   : https://patchwork.freedesktop.org/series/126803/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7597_BAT -> XEIGTPW_10250_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10250_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank:
-    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 other test fail
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7597/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10250/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
-
-
-Build changes
--------------
-
-  * IGT: IGT_7597 -> IGTPW_10250
-
-  IGTPW_10250: 10250
-  IGT_7597: 380983dbd9bb2f7eea5e917e8fed0569bfe8cf9c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-516-59f2e73469cace9c78aab7506284ae446d57b8bc: 59f2e73469cace9c78aab7506284ae446d57b8bc
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10250/index.html
-
---===============2708701036085686606==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/3] tests/kms_feature_discovery: check display support only</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126803/">https://patchwork.freedesktop.org/series/126803/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10250/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10250/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7597_BAT -&gt; XEIGTPW_10250_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10250_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7597/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10250/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7597 -&gt; IGTPW_10250</li>
-</ul>
-<p>IGTPW_10250: 10250<br />
-  IGT_7597: 380983dbd9bb2f7eea5e917e8fed0569bfe8cf9c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-516-59f2e73469cace9c78aab7506284ae446d57b8bc: 59f2e73469cace9c78aab7506284ae446d57b8bc</p>
-
-</body>
-</html>
-
---===============2708701036085686606==--
+> ---
+>  tests/kms_feature_discovery.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+> 
+> diff --git a/tests/kms_feature_discovery.c b/tests/kms_feature_discovery.c
+> index 428f97ffe..56da009b7 100644
+> --- a/tests/kms_feature_discovery.c
+> +++ b/tests/kms_feature_discovery.c
+> @@ -30,8 +30,7 @@
+>   *		anything else means we have a serious problem.
+>   *
+>   * SUBTEST: display
+> - * Description: Make sure that we have display support with
+> - * 		some outputs connected.
+> + * Description: Make sure that we have display support.
+>   * Driver requirement: i915, xe
+>   * Functionality: feature_discovery
+>   * Mega feature: General Display Features
+> @@ -104,7 +103,7 @@ igt_main {
+>  			igt_display_require(&display, fd);
+>  		}
+>  
+> -		igt_describe("Make sure that we have display support with some outputs connected.");
+> +		igt_describe("Make sure that we have display support.");
+>  		igt_subtest("display") {
+>  			/* will skip because of the fixture */
+>  		}
+> -- 
+> 2.25.1
+> 
