@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 768F510E796
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Nov 2023 02:06:23 +0000 (UTC)
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5C5A310E08B
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Nov 2023 15:08:54 +0000 (UTC)
+From: Marcin Bernatowicz <marcin.bernatowicz@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 24 Nov 2023 07:46:23 +0530
-Message-Id: <20231124021623.21746-1-nidhi1.gupta@intel.com>
+Date: Thu, 23 Nov 2023 16:08:22 +0100
+Message-Id: <20231123150823.25862-2-marcin.bernatowicz@intel.com>
+In-Reply-To: <20231123150823.25862-1-marcin.bernatowicz@intel.com>
+References: <20231123150823.25862-1-marcin.bernatowicz@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_vrr: New subtest for toggle VRR
- during fastsets
+Subject: [igt-dev] [PATCH v4 i-g-t 1/2] lib/xe/xe_query:
+ xe_visible_available_vram_size helper
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,114 +20,142 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
+Cc: adam.miszczak@intel.com, matthew.auld@intel.com,
+ jakub1.kolakowski@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Added 'xe_visible_available_vram_size' helper function
+to query the available CPU-visible VRAM size.
 
-Allow VRR to be toggled during fastsets, without
-the need of full modeset.
+Also, renamed 'xe_vram_available' to 'xe_available_vram_size'
+for consistency with other function names.
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+Cc: Francois Dugast <francois.dugast@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Laguna, Lukasz <lukasz.laguna@intel.com>
+Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@intel.com>
 ---
- tests/kms_vrr.c | 38 +++++++++++++++++++++++++++++++++-----
- 1 file changed, 33 insertions(+), 5 deletions(-)
+ lib/xe/xe_query.c          | 57 ++++++++++++++++++++++++++++----------
+ lib/xe/xe_query.h          |  3 +-
+ tests/intel/xe_evict_ccs.c |  2 +-
+ 3 files changed, 46 insertions(+), 16 deletions(-)
 
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index f26adbccf..843740858 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -37,6 +37,13 @@
-  * Mega feature: VRR
-  * Test category: functionality test
-  *
-+ * SUBTEST: flip-basic-fastset
-+ * Description: Tests that VRR basic without modeset
-+ * Driver requirement: i915, xe
-+ * Functionality: adaptive_sync
-+ * Mega feature: VRR
-+ * Test category: functionality test
-+ *
-  * SUBTEST: flip-dpms
-  * Description: Tests with DPMS that VRR is enabled and that the difference
-  *              between flip timestamps converges to the requested rate.
-@@ -88,7 +95,8 @@ enum {
- 	TEST_DPMS = 1 << 1,
- 	TEST_SUSPEND = 1 << 2,
- 	TEST_FLIPLINE = 1 << 3,
--	TEST_NEGATIVE = 1 << 4,
-+	TEST_FASTSET = 1 << 4,
-+	TEST_NEGATIVE = 1 << 5,
- };
+diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+index afd443be3..eb4759094 100644
+--- a/lib/xe/xe_query.c
++++ b/lib/xe/xe_query.c
+@@ -629,20 +629,20 @@ uint64_t xe_visible_vram_size(int fd, int gt)
  
- typedef struct range {
-@@ -236,11 +244,15 @@ static bool vrr_capable(igt_output_t *output)
+ 	return visible_size;
  }
- 
- /* Toggles variable refresh rate on the pipe. */
--static void set_vrr_on_pipe(data_t *data, enum pipe pipe, bool enabled)
-+static void set_vrr_on_pipe(data_t *data, enum pipe pipe,
-+			    bool need_modeset, bool enabled)
+-/**
+- * xe_vram_available:
+- * @fd: xe device fd
+- * @gt: gt
+- *
+- * Returns available vram of xe device @fd and @gt.
+- */
+-uint64_t xe_vram_available(int fd, int gt)
++
++struct __available_vram {
++	uint64_t total_available;
++	uint64_t cpu_visible_available;
++};
++
++static void __available_vram_size_snapshot(int fd, int gt, struct __available_vram *vram)
  {
- 	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED,
- 				enabled);
--	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+	igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
+ 	struct xe_device *xe_dev;
+ 	int region_idx;
+ 	struct drm_xe_query_mem_region *mem_region;
+ 	struct drm_xe_query_mem_regions *mem_regions;
+ 
++	igt_assert(vram);
+ 	xe_dev = find_in_cache(fd);
+ 	igt_assert(xe_dev);
+ 
+@@ -650,19 +650,48 @@ uint64_t xe_vram_available(int fd, int gt)
+ 	mem_region = &xe_dev->mem_regions->regions[region_idx];
+ 
+ 	if (XE_IS_CLASS_VRAM(mem_region)) {
+-		uint64_t available_vram;
+-
+ 		mem_regions = xe_query_mem_regions_new(fd);
+ 		pthread_mutex_lock(&cache.cache_mutex);
+ 		mem_region->used = mem_regions->regions[region_idx].used;
+-		available_vram = mem_region->total_size - mem_region->used;
++		mem_region->cpu_visible_used = mem_regions->regions[region_idx].cpu_visible_used;
++		vram->total_available = mem_region->total_size - mem_region->used;
++		vram->cpu_visible_available =
++			mem_region->cpu_visible_size - mem_region->cpu_visible_used;
+ 		pthread_mutex_unlock(&cache.cache_mutex);
+ 		free(mem_regions);
+-
+-		return available_vram;
+ 	}
++}
+ 
+-	return 0;
++/**
++ * xe_available_vram_size:
++ * @fd: xe device fd
++ * @gt: gt
++ *
++ * Returns size of available vram of xe device @fd and @gt.
++ */
++uint64_t xe_available_vram_size(int fd, int gt)
++{
++	struct __available_vram vram = {};
 +
-+	if (need_modeset)
-+		igt_display_commit2(&data->display, COMMIT_ATOMIC);
++	__available_vram_size_snapshot(fd, gt, &vram);
++
++	return vram.total_available;
++}
++
++/**
++ * xe_visible_available_vram_size:
++ * @fd: xe device fd
++ * @gt: gt
++ *
++ * Returns size of visible available vram of xe device @fd and @gt.
++ */
++uint64_t xe_visible_available_vram_size(int fd, int gt)
++{
++	struct __available_vram vram = {};
++
++	__available_vram_size_snapshot(fd, gt, &vram);
++
++	return vram.cpu_visible_available;
  }
  
- /* Prepare the display for testing on the given pipe. */
-@@ -413,7 +425,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
- 	igt_info("VRR Test execution on %s, PIPE_%s with VRR range: (%u-%u) Hz\n",
- 		 output->name, kmstest_pipe_name(pipe), range.min, range.max);
+ /**
+diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+index 38e9aa440..503d60b44 100644
+--- a/lib/xe/xe_query.h
++++ b/lib/xe/xe_query.h
+@@ -92,7 +92,8 @@ unsigned int xe_number_hw_engines(int fd);
+ bool xe_has_vram(int fd);
+ uint64_t xe_vram_size(int fd, int gt);
+ uint64_t xe_visible_vram_size(int fd, int gt);
+-uint64_t xe_vram_available(int fd, int gt);
++uint64_t xe_available_vram_size(int fd, int gt);
++uint64_t xe_visible_available_vram_size(int fd, int gt);
+ uint32_t xe_get_default_alignment(int fd);
+ uint32_t xe_va_bits(int fd);
+ uint16_t xe_dev_id(int fd);
+diff --git a/tests/intel/xe_evict_ccs.c b/tests/intel/xe_evict_ccs.c
+index d7244f620..b04c20935 100644
+--- a/tests/intel/xe_evict_ccs.c
++++ b/tests/intel/xe_evict_ccs.c
+@@ -325,7 +325,7 @@ static void set_config(int fd, uint32_t flags, const struct param *param,
+ 	config->param = param;
+ 	config->flags = flags;
+ 	config->free_mb = xe_visible_vram_size(fd, 0) / SZ_1M;
+-	config->total_mb = xe_vram_available(fd, 0) / SZ_1M;
++	config->total_mb = xe_available_vram_size(fd, 0) / SZ_1M;
+ 	config->test_mb = min_t(int, config->free_mb * config->param->vram_percent / 100,
+ 				config->total_mb * config->param->vram_percent / 100);
  
--	set_vrr_on_pipe(data, pipe, true);
-+	set_vrr_on_pipe(data, pipe, true, true);
- 
- 	/*
- 	 * Do a short run with VRR, but don't check the result.
-@@ -479,13 +491,23 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
- 	 * modeset. And the expected behavior is the same as disabling VRR on
- 	 * a VRR capable panel.
- 	 */
--	set_vrr_on_pipe(data, pipe, (flags & TEST_NEGATIVE)? true : false);
-+	set_vrr_on_pipe(data, pipe, !(flags & TEST_FASTSET), (flags & TEST_NEGATIVE) ? true : false);
- 	rate = vtest_ns.mid;
- 	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
- 	igt_assert_f(result < 10,
- 		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold exceeded, result was %u%%\n",
- 		     ((range.max + range.min) / 2), rate, (flags & TEST_NEGATIVE)? "on" : "off", result);
- 
-+	if (flags & TEST_FASTSET) {
-+		set_vrr_on_pipe(data, pipe, false, true);
-+
-+		rate = vtest_ns.mid;
-+		result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
-+		igt_assert_f(result > 75,
-+			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
-+			     ((range.max + range.min) / 2), rate, result);
-+	}
-+
- 	/* Clean-up */
- 	igt_plane_set_fb(data->primary, NULL);
- 	igt_output_set_pipe(output, PIPE_NONE);
-@@ -569,6 +591,12 @@ igt_main
- 	igt_subtest_with_dynamic("negative-basic")
- 		run_vrr_test(&data, test_basic, TEST_NEGATIVE);
- 
-+	igt_describe("Tests that VRR basic without modeset");
-+	igt_subtest_with_dynamic("flip-basic-fastset") {
-+		igt_require_intel(data.drm_fd);
-+		run_vrr_test(&data, test_basic, TEST_FASTSET);
-+	}
-+
- 	igt_fixture {
- 		igt_display_fini(&data.display);
- 		drm_close_driver(data.drm_fd);
 -- 
-2.39.0
+2.31.1
