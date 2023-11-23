@@ -1,22 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E084010E084
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Nov 2023 14:40:50 +0000 (UTC)
-From: "Hogander, Jouni" <jouni.hogander@intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "kamil.konieczny@linux.intel.com" <kamil.konieczny@linux.intel.com>
-Date: Thu, 23 Nov 2023 14:40:46 +0000
-Message-ID: <819f6b8ba5a2e490790bb5fe9c7c5f8f92fd5105.camel@intel.com>
-References: <20231123102601.1748229-1-jouni.hogander@intel.com>
- <20231123131206.b4pz4w4pa7lodbsr@kamilkon-desk.igk.intel.com>
-In-Reply-To: <20231123131206.b4pz4w4pa7lodbsr@kamilkon-desk.igk.intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <E07E502213C279408F2D60609FC51668@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E576910E08A
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Nov 2023 15:08:47 +0000 (UTC)
+From: Marcin Bernatowicz <marcin.bernatowicz@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 23 Nov 2023 16:08:21 +0100
+Message-Id: <20231123150823.25862-1-marcin.bernatowicz@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_addfb_basic: Skip not
- relevant subtests for Xe
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH v4 i-g-t 0/2] add create-big-vram subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,101 +17,24 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: adam.miszczak@intel.com, matthew.auld@intel.com,
+ jakub1.kolakowski@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVGh1LCAyMDIzLTExLTIzIGF0IDE0OjEyICswMTAwLCBLYW1pbCBLb25pZWN6bnkgd3JvdGU6
-Cj4gSGkgSm91bmksCj4gT24gMjAyMy0xMS0yMyBhdCAxMjoyNjowMSArMDIwMCwgSm91bmkgSMO2
-Z2FuZGVyIHdyb3RlOgo+ID4gU2tpcCBmb2xsb3dpbmcgdGVzdHMgZm9yIFhlOgo+ID4gCj4gPiB0
-aWxlLXBpdGNoLW1pc21hdGNoCj4gPiBhZGRmYjI1LXgtdGlsZWQtbWlzbWF0Y2gtbGVnYWN5Cj4g
-PiAKPiA+IFRoZXkgYXJlIG5vdCByZWxldmFudCBmb3IgWGUgYXMgdGlsaW5nIGluZm9ybWF0aW9u
-IGlzIG5vdCBlbmNvZGVkCj4gPiBpbnRvCj4gPiBiYWNraW5nIG9iamVjdC4KPiA+IAo+ID4gU2tp
-cCBmb2xsb3dpbmcgdGVzdCBmb3IgWGUKPiA+IAo+ID4gYmFzaWMteS10aWxlZC1sZWdhY3kKPiA+
-IAo+ID4gQXMgWGUgc3VwcG9ydHMgeS10aWxlZCBmb3JtYXQgb24gbGVnYWN5IGFkZGZiLgo+ID4g
-Cj4gCj4gUGxlYXNlIHJlcGx5IHRvIFN3YXRpIHF1ZXN0aW9uczoKPiAKPiBTd2F0aTogV2hhdCBh
-Ym91dCB5ZiB0aWxlZD8KPiBTd2F0aTogT24gbGVnYWN5IGFkZGZiIHdoaWNoIGFsbCBtb2RpZmll
-cnMgYXJlIHN1cHBvcnRlZD8KPiAKPiBQbGVhc2UgYWRkIGhlcmUgSnVoYS1QZWtrYSBhbmQgU3dh
-dGkgdG8gQ2MgYW5kIGFzIFN3YXRpIHBvaW50ZWQsCj4gYWRkIGFsc28gIkNsb3NlcyI6Cj4gCj4g
-Q2xvc2VzOiBodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL3hlL2tlcm5lbC8tL2lz
-c3Vlcy82MDkKPiBDYzogSnVoYS1QZWtrYSBIZWlra2lsYSA8anVoYXBla2thLmhlaWtraWxhQGdt
-YWlsLmNvbT4KPiBDYzogU3dhdGkgU2hhcm1hIDxzd2F0aTIuc2hhcm1hQGludGVsLmNvbT4KPiBT
-aWduZWQtb2ZmLWJ5OiBKb3VuaSBIw7ZnYW5kZXIgPGpvdW5pLmhvZ2FuZGVyQGludGVsLmNvbT4K
-ClRoYW5rIHlvdSBLYW1pbCBmb3IgY2hlY2tpbmcgbXkgcGF0Y2guIFBsZWFzZSBjaGVjayB2ZXJz
-aW9uIDMuIHdoZXJlIEkKaGF2ZSBhZGRyZXNzZWQgeW91ciBjb21tZW50cy4KCkJSLAoKSm91bmkg
-SMO2Z2FuZGVyCgo+IAo+IFJlZ2FyZHMsCj4gS2FtaWwKPiAKPiA+IC0tLQo+ID4gwqB0ZXN0cy9r
-bXNfYWRkZmJfYmFzaWMuYyB8IDIxICsrKysrKysrKystLS0tLS0tLS0tLQo+ID4gwqAxIGZpbGUg
-Y2hhbmdlZCwgMTAgaW5zZXJ0aW9ucygrKSwgMTEgZGVsZXRpb25zKC0pCj4gPiAKPiA+IGRpZmYg
-LS1naXQgYS90ZXN0cy9rbXNfYWRkZmJfYmFzaWMuYyBiL3Rlc3RzL2ttc19hZGRmYl9iYXNpYy5j
-Cj4gPiBpbmRleCBmYzE2Yjg4MTQuLjQyNjI3NzQyMiAxMDA2NDQKPiA+IC0tLSBhL3Rlc3RzL2tt
-c19hZGRmYl9iYXNpYy5jCj4gPiArKysgYi90ZXN0cy9rbXNfYWRkZmJfYmFzaWMuYwo+ID4gQEAg
-LTM5Niw3ICszOTYsNyBAQCBzdGF0aWMgdm9pZCBwaXRjaF90ZXN0cyhpbnQgZmQpCj4gPiDCoC8q
-Kgo+ID4gwqAgKiBTVUJURVNUOiBiYXNpYy0lcy10aWxlZC1sZWdhY3kKPiA+IMKgICogRGVzY3Jp
-cHRpb246IENoZWNrIGlmIGFkZGZiMiBhbmQgcm1mYiBjYWxsIHdvcmtzIGZvciBiYXNpYwo+ID4g
-JWFyZ1sxXSB0ZXN0Cj4gPiAtICogRHJpdmVyIHJlcXVpcmVtZW50OiBpOTE1LCB4ZQo+ID4gKyAq
-IERyaXZlciByZXF1aXJlbWVudDogaTkxNQo+ID4gwqAgKiBUZXN0IGNhdGVnb3J5OiBmdW5jdGlv
-bmFsaXR5IHRlc3QKPiA+IMKgICogRnVuY3Rpb25hbGl0eToga21zX2dlbV9pbnRlcm9wLCB0aWxp
-bmcKPiA+IMKgICogTWVnYSBmZWF0dXJlOiBHZW5lcmFsIERpc3BsYXkgRmVhdHVyZXMKPiA+IEBA
-IC00MTAsNyArNDEwLDcgQEAgc3RhdGljIHZvaWQgcGl0Y2hfdGVzdHMoaW50IGZkKQo+ID4gwqAg
-Kgo+ID4gwqAgKiBTVUJURVNUOiB0aWxlLXBpdGNoLW1pc21hdGNoCj4gPiDCoCAqIERlc2NyaXB0
-aW9uOiBUZXN0IHRoYXQgYWRkZmIyIGNhbGwgZmFpbHMgY29ycmVjdGx5IGZvciBwaXRjaGVzCj4g
-PiBtaXNtYXRjaAo+ID4gLSAqIERyaXZlciByZXF1aXJlbWVudDogaTkxNSwgeGUKPiA+ICsgKiBE
-cml2ZXIgcmVxdWlyZW1lbnQ6IGk5MTUKPiA+IMKgICogVGVzdCBjYXRlZ29yeTogZnVuY3Rpb25h
-bGl0eSB0ZXN0Cj4gPiDCoCAqIEZ1bmN0aW9uYWxpdHk6IGttc19nZW1faW50ZXJvcCwgdGlsaW5n
-Cj4gPiDCoCAqIE1lZ2EgZmVhdHVyZTogR2VuZXJhbCBEaXNwbGF5IEZlYXR1cmVzCj4gPiBAQCAt
-NDc4LDggKzQ3OCw4IEBAIHN0YXRpYyB2b2lkIHRpbGluZ190ZXN0cyhpbnQgZmQpCj4gPiDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9kZXNjcmliZSgiVGVzdCB0aGF0IGFkZGZi
-MiBjYWxsIGZhaWxzIGNvcnJlY3RseQo+ID4gZm9yIHBpdGNoZXMgbWlzbWF0Y2giKTsKPiA+IMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGYucGl0Y2hlc1sw
-XSA9IDUxMio0Owo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3Rfc3VidGVz
-dCgidGlsZS1waXRjaC1taXNtYXRjaCIpIHsKPiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKGlzX2k5MTVfZGV2aWNlKGZkKSkKPiA+IC0KPiA+IMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgaWd0X3JlcXVpcmUoZ2VtX2F2YWlsYWJsZV9mZW5jZXMoZmQpCj4gPiA+IDApOwo+ID4gK8Kg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfcmVxdWlyZV9p
-OTE1KGZkKTsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgaWd0X3JlcXVpcmUoZ2VtX2F2YWlsYWJsZV9mZW5jZXMoZmQpID4gMCk7Cj4gPiDCoAo+ID4g
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZi5oYW5kbGVz
-WzBdID0gdGlsZWRfeF9ibzsKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoGRvX2lvY3RsX2VycihmZCwgRFJNX0lPQ1RMX01PREVfQURERkIyLCAmZiwK
-PiA+IEVJTlZBTCk7Cj4gPiBAQCAtNDg4LDEyICs0ODgsMTAgQEAgc3RhdGljIHZvaWQgdGlsaW5n
-X3Rlc3RzKGludCBmZCkKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2Rl
-c2NyaWJlKCJUZXN0IHRoYXQgYWRkZmIyIGNhbGwgZmFpbHMgY29ycmVjdGx5Cj4gPiBmb3IgYmFz
-aWMgeS10aWxpbmcgdGVzdCIpOwo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBm
-LnBpdGNoZXNbMF0gPSAxMDI0KjQ7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oGlndF9zdWJ0ZXN0KCJiYXNpYy15LXRpbGVkLWxlZ2FjeSIpIHsKPiA+IC3CoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKGlzX2k5MTVfZGV2aWNlKGZkKSkg
-ewo+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgaWd0X3JlcXVpcmUoIWdlbV9oYXNfbG1lbShmZCkpOwo+ID4gLQo+ID4gwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqBpZ3RfcmVxdWlyZShnZW1fYXZhaWxhYmxlX2ZlbmNlcyhmZCkKPiA+ID4gMCk7Cj4gPiAtwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH0gZWxzZSB7Cj4gPiAt
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqBpZ3RfcmVxdWlyZSgheGVfaGFzX3ZyYW0oZmQpKTsKPiA+IC3CoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfcmVxdWlyZV9pOTE1KGZkKTsKPiA+ICvCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3JlcXVpcmUoIWdl
-bV9oYXNfbG1lbShmZCkpOwo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqBpZ3RfcmVxdWlyZShnZW1fYXZhaWxhYmxlX2ZlbmNlcyhmZCkgPiAwKTsKPiA+
-ICsKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGYu
-aGFuZGxlc1swXSA9IHRpbGVkX3lfYm87Cj4gPiDCoAo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZG9faW9jdGxfZXJyKGZkLCBEUk1fSU9DVExfTU9E
-RV9BRERGQjIsICZmLAo+ID4gRUlOVkFMKTsKPiA+IEBAIC02ODIsNyArNjgwLDcgQEAgc3RhdGlj
-IHZvaWQgc2l6ZV90ZXN0cyhpbnQgZmQpCj4gPiDCoCAqCj4gPiDCoCAqIFNVQlRFU1Q6IGFkZGZi
-MjUteC10aWxlZC1taXNtYXRjaC1sZWdhY3kKPiA+IMKgICogRGVzY3JpcHRpb246IFRlc3QgdGhh
-dCBhZGRmYjIgY2FsbCBmYWlscyBjb3JyZWN0bHkgZm9yCj4gPiBpcnJlbGV2YW50IHgtdGlsaW5n
-Cj4gPiAtICogRHJpdmVyIHJlcXVpcmVtZW50OiBpOTE1LCB4ZQo+ID4gKyAqIERyaXZlciByZXF1
-aXJlbWVudDogaTkxNQo+ID4gwqAgKiBUZXN0IGNhdGVnb3J5OiBmdW5jdGlvbmFsaXR5IHRlc3QK
-PiA+IMKgICogRnVuY3Rpb25hbGl0eToga21zX2dlbV9pbnRlcm9wLCB0aWxpbmcKPiA+IMKgICog
-TWVnYSBmZWF0dXJlOiBHZW5lcmFsIERpc3BsYXkgRmVhdHVyZXMKPiA+IEBAIC03NTIsNiArNzUw
-LDcgQEAgc3RhdGljIHZvaWQgYWRkZmIyNV90ZXN0cyhpbnQgZmQpCj4gPiDCoAo+ID4gwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfZGVzY3JpYmUoIlRlc3QgdGhhdCBhZGRmYjIg
-Y2FsbCBmYWlscyBjb3JyZWN0bHkKPiA+IGZvciBpcnJlbGV2YW50IHgtdGlsaW5nIik7Cj4gPiDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9zdWJ0ZXN0KCJhZGRmYjI1LXgtdGls
-ZWQtbWlzbWF0Y2gtbGVnYWN5Iikgewo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqBpZ3RfcmVxdWlyZV9pOTE1KGZkKTsKPiA+IMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGYubW9kaWZpZXJbMF0gPSBEUk1fRk9S
-TUFUX01PRF9MSU5FQVI7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqBkb19pb2N0bF9lcnIoZmQsIERSTV9JT0NUTF9NT0RFX0FEREZCMiwgJmYsCj4g
-PiBFSU5WQUwpOwo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9Cj4gPiAtLSAK
-PiA+IDIuMzQuMQo+ID4gCgo=
+Validate the creation of significant Buffer Object (BO) within VRAM,
+considering the entire available CPU-visible VRAM size.
+
+Marcin Bernatowicz (2):
+  lib/xe/xe_query: xe_visible_available_vram_size helper
+  tests/intel/xe_create: create-big-vram subtest
+
+ lib/xe/xe_query.c          | 57 +++++++++++++++++++-------
+ lib/xe/xe_query.h          |  3 +-
+ tests/intel/xe_create.c    | 84 +++++++++++++++++++++++++++++++++++++-
+ tests/intel/xe_evict_ccs.c |  2 +-
+ 4 files changed, 129 insertions(+), 17 deletions(-)
+
+-- 
+2.31.1
