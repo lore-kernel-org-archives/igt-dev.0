@@ -1,23 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5D44810E713
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Nov 2023 10:24:37 +0000 (UTC)
-Message-ID: <46c781e7-f3e1-4ba8-84aa-fcdee01e0576@linux.intel.com>
-Date: Thu, 23 Nov 2023 11:24:32 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9972310E716
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Nov 2023 10:25:53 +0000 (UTC)
+Message-ID: <9e8fbe16-edbd-4ad1-bfee-8022821eb670@intel.com>
+Date: Thu, 23 Nov 2023 15:55:48 +0530
 MIME-Version: 1.0
 Content-Language: en-US
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Marcin Bernatowicz <marcin.bernatowicz@intel.com>, matthew.auld@intel.com,
- zbigniew.kempczynski@intel.com, lukasz.laguna@intel.com,
- adam.miszczak@linux.intel.com, jakub1.kolakowski@intel.com
-References: <20231122101951.6568-1-marcin.bernatowicz@intel.com>
- <20231122161618.ydn2k4fhyceigxin@kamilkon-desk.igk.intel.com>
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20231122161618.ydn2k4fhyceigxin@kamilkon-desk.igk.intel.com>
+To: Kunal Joshi <kunal1.joshi@intel.com>, igt-dev@lists.freedesktop.org
+References: <20231120100151.1792953-1-kunal1.joshi@intel.com>
+ <20231120100151.1792953-2-kunal1.joshi@intel.com>
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20231120100151.1792953-2-kunal1.joshi@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] xe_create: create-big-vram subtest
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/intel/kms_big_joiner: added
+ new subtest simultaneous-modeset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,294 +26,202 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Hi Kunal,
 
+Subject line should be "add new subtest".
 
-On 11/22/2023 5:16 PM, Kamil Konieczny wrote:
-> Hi Marcin,
-> On 2023-11-22 at 11:19:51 +0100, Marcin Bernatowicz wrote:
+On 20-Nov-23 3:31 PM, Kunal Joshi wrote:
+> newly added test tries to have as many outputs as possible,
+> prefernce is given to big_joiner outputs, with this we can
+> stress on bw
 > 
-> please add version info to your patches and also add tests/intel/
-> or lib/xe as prefix, for example instead of:
+> v2: Sorting not needed when output count is 1
+>      Skip if output count is 0
+> v3: Rebase
 > 
-> [PATCH i-g-t] xe_create: create-big-vram subtest
+> Cc: Karthik B S <karthik.b.s@intel.com>
+> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+> ---
+>   tests/intel/kms_big_joiner.c | 118 ++++++++++++++++++++++++++++++++---
+>   1 file changed, 108 insertions(+), 10 deletions(-)
 > 
-> write:
-> 
-> [PATCH v3 i-g-t] tests/intel/xe_create: create-big-vram subtest
-> 
-> For lib change:
-> 
-> [PATCH v3 i-g-t] lib/xe/xe_query: describe here your change
-> 
->> Validates the creation of significant Buffer Object (BO) within VRAM,
->> considering the entire available CPU-visible VRAM size.
->> The size of the created BO can be adjusted using
->> '-S' command line parameter, representing BO size in MB.
->>
->> v2: rebased, updated to uAPI changes (DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT),
->>      after review corrections: 1024UL -> 1024ULL,
->>      int -> unsigned int (Kamil)
->> v3: provided a flag to allocate the memory within the CPU-visible
->>        portion of VRAM (Matt)
->>      __create_bo replaced with xe_bo_create_flags (Lukasz)
->>      removed the percent command line parameter (Lukasz)
->>      renamed size_MB to size_mb (Lukasz)
->>      added helper function to query available CPU-visible VRAM size,
->>      renamed 'xe_vram_available' to 'xe_available_vram_size' for
->>        consistency with other function names
->>
->> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@intel.com>
->> ---
->>   lib/xe/xe_query.c          | 57 ++++++++++++++++++++++-------
->>   lib/xe/xe_query.h          |  3 +-
-> 
-> Please split this into separate patch and send Cc to Francois Dugas,
-> he is currently changing xe uapi.
-
-Just realized I touched more files and forgot to split patches :/
-
-> 
->>   tests/intel/xe_create.c    | 75 +++++++++++++++++++++++++++++++++++++-
->>   tests/intel/xe_evict_ccs.c |  2 +-
->>   4 files changed, 120 insertions(+), 17 deletions(-)
->>
->> diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
->> index afd443be3..de3296062 100644
->> --- a/lib/xe/xe_query.c
->> +++ b/lib/xe/xe_query.c
->> @@ -629,20 +629,20 @@ uint64_t xe_visible_vram_size(int fd, int gt)
->>   
->>   	return visible_size;
->>   }
->> -/**
->> - * xe_vram_available:
->> - * @fd: xe device fd
->> - * @gt: gt
->> - *
->> - * Returns available vram of xe device @fd and @gt.
->> - */
->> -uint64_t xe_vram_available(int fd, int gt)
->> +
->> +struct __available_vram {
->> +	uint64_t total_available;
->> +	uint64_t cpu_visible_available;
->> +};
->> +
->> +static void __xe_available_vram_size_snapshot(int fd, int gt, struct __available_vram *avail_vram)
->>   {
->>   	struct xe_device *xe_dev;
->>   	int region_idx;
->>   	struct drm_xe_query_mem_region *mem_region;
->>   	struct drm_xe_query_mem_regions *mem_regions;
->>   
->> +	igt_assert(avail_vram);
->>   	xe_dev = find_in_cache(fd);
->>   	igt_assert(xe_dev);
->>   
->> @@ -650,19 +650,48 @@ uint64_t xe_vram_available(int fd, int gt)
->>   	mem_region = &xe_dev->mem_regions->regions[region_idx];
->>   
->>   	if (XE_IS_CLASS_VRAM(mem_region)) {
->> -		uint64_t available_vram;
->> -
->>   		mem_regions = xe_query_mem_regions_new(fd);
->>   		pthread_mutex_lock(&cache.cache_mutex);
->>   		mem_region->used = mem_regions->regions[region_idx].used;
->> -		available_vram = mem_region->total_size - mem_region->used;
->> +		mem_region->cpu_visible_used = mem_regions->regions[region_idx].cpu_visible_used;
->> +		avail_vram->total_available = mem_region->total_size - mem_region->used;
->> +		avail_vram->cpu_visible_available =
->> +			mem_region->cpu_visible_size - mem_region->cpu_visible_used;
->>   		pthread_mutex_unlock(&cache.cache_mutex);
->>   		free(mem_regions);
->> -
->> -		return available_vram;
->>   	}
->> +}
->>   
->> -	return 0;
->> +/**
->> + * xe_available_vram_size:
->> + * @fd: xe device fd
->> + * @gt: gt
->> + *
->> + * Returns size of available vram of xe device @fd and @gt.
->> + */
->> +uint64_t xe_available_vram_size(int fd, int gt)
->> +{
->> +	struct __available_vram available_vram = {};
->> +
->> +	__xe_available_vram_size_snapshot(fd, gt, &available_vram);
->> +
->> +	return available_vram.total_available;
->> +}
->> +
->> +/**
->> + * xe_visible_available_vram_size:
->> + * @fd: xe device fd
->> + * @gt: gt
->> + *
->> + * Returns size of visible available vram of xe device @fd and @gt.
->> + */
->> +uint64_t xe_visible_available_vram_size(int fd, int gt)
->> +{
->> +	struct __available_vram available_vram = {};
->> +
->> +	__xe_available_vram_size_snapshot(fd, gt, &available_vram);
->> +
->> +	return available_vram.cpu_visible_available;
->>   }
->>   
->>   /**
->> diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
->> index 38e9aa440..503d60b44 100644
->> --- a/lib/xe/xe_query.h
->> +++ b/lib/xe/xe_query.h
->> @@ -92,7 +92,8 @@ unsigned int xe_number_hw_engines(int fd);
->>   bool xe_has_vram(int fd);
->>   uint64_t xe_vram_size(int fd, int gt);
->>   uint64_t xe_visible_vram_size(int fd, int gt);
->> -uint64_t xe_vram_available(int fd, int gt);
->> +uint64_t xe_available_vram_size(int fd, int gt);
->> +uint64_t xe_visible_available_vram_size(int fd, int gt);
->>   uint32_t xe_get_default_alignment(int fd);
->>   uint32_t xe_va_bits(int fd);
->>   uint16_t xe_dev_id(int fd);
->> diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
->> index f4633cfb3..082e9b440 100644
->> --- a/tests/intel/xe_create.c
->> +++ b/tests/intel/xe_create.c
->> @@ -18,6 +18,12 @@
->>   
->>   #define PAGE_SIZE 0x1000
->>   
->> +static struct param {
->> +	unsigned int size_mb;
->> +} params = {
->> +	.size_mb = 0,
->> +};
->> +
->>   static int __create_bo(int fd, uint32_t vm, uint64_t size, uint32_t flags,
->>   		       uint32_t *handlep)
->>   {
->> @@ -214,7 +220,70 @@ static void create_massive_size(int fd)
->>   	}
->>   }
->>   
->> -igt_main
->> +/**
->> + * SUBTEST: create-big-vram
->> + * Functionality: BO creation
->> + * Test category: functionality test
->> + * Description: Verifies the creation of substantial BO within VRAM,
->> + *		constituting all available CPU-visible VRAM.
->> + */
->> +static void create_big_vram(int fd)
->> +{
->> +	uint64_t bo_size, size, visible_avail_size, alignment;
->> +	uint32_t bo_handle;
->> +	char *bo_ptr = NULL;
->> +	uint64_t vm = 0;
->> +	int gt;
->> +
->> +	igt_require(xe_has_vram(fd));
->> +	alignment = xe_get_default_alignment(fd);
->> +	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
->> +
->> +	xe_for_each_gt(fd, gt) {
->> +		visible_avail_size = xe_visible_available_vram_size(fd, gt);
->> +		bo_size = params.size_mb ? params.size_mb * 1024ULL * 1024ULL
->> +					 : ALIGN_DOWN(visible_avail_size, alignment);
->> +		igt_debug("gt%u bo_size=%lu visible_available_vram_size=%lu\n",
->> +			gt, bo_size, visible_avail_size);
->> +
->> +		bo_handle = xe_bo_create_flags(fd, vm, bo_size, visible_vram_memory(fd, gt));
->> +		bo_ptr = xe_bo_map(fd, bo_handle, bo_size);
->> +
->> +		size = bo_size - 1;
->> +		while (size > SZ_64K) {
->> +			igt_assert_eq(0, READ_ONCE(bo_ptr[size]));
->> +			WRITE_ONCE(bo_ptr[size], 'A');
->> +			igt_assert_eq('A', READ_ONCE(bo_ptr[size]));
->> +			size >>= 1;
->> +		}
->> +		igt_assert_eq(0, bo_ptr[0]);
->> +
->> +		munmap(bo_ptr, bo_size);
->> +		gem_close(fd, bo_handle);
->> +	}
->> +
->> +	xe_vm_destroy(fd, vm);
->> +}
->> +
->> +static int opt_handler(int opt, int opt_index, void *data)
->> +{
->> +	switch (opt) {
->> +	case 'S':
->> +		params.size_mb = atoi(optarg);
->> +		igt_debug("Size MB: %d\n", params.size_mb);
->> +		break;
->> +	default:
->> +		return IGT_OPT_HANDLER_ERROR;
->> +	}
->> +
->> +	return IGT_OPT_HANDLER_SUCCESS;
->> +}
->> +
->> +const char *help_str =
->> +	"  -S\tBO size in MB\n"
-> 
-> Why not percentage? imho percentage is easier to use.
-
-I can revert to the first version and keep both options. In some 
-scenarios, size is more beneficial, for example, when we want to verify 
-the provisioned LMEM value in SR-IOV.
-
-> 
->> +	;
->> +
->> +igt_main_args("S:", NULL, help_str, opt_handler, NULL)
->>   {
->>   	int xe;
->>   
->> @@ -254,6 +323,10 @@ igt_main
->>   	}
->>   
->>   
-> 
-> Remove one empty line.
-ok
-> 
->> +	igt_subtest("create-big-vram") {
->> +		create_big_vram(xe);
->> +	}
->> +
->>   	igt_fixture
->>   		drm_close_driver(xe);
->>   }
->> diff --git a/tests/intel/xe_evict_ccs.c b/tests/intel/xe_evict_ccs.c
->> index d7244f620..b04c20935 100644
->> --- a/tests/intel/xe_evict_ccs.c
->> +++ b/tests/intel/xe_evict_ccs.c
->> @@ -325,7 +325,7 @@ static void set_config(int fd, uint32_t flags, const struct param *param,
->>   	config->param = param;
->>   	config->flags = flags;
->>   	config->free_mb = xe_visible_vram_size(fd, 0) / SZ_1M;
->> -	config->total_mb = xe_vram_available(fd, 0) / SZ_1M;
->> +	config->total_mb = xe_available_vram_size(fd, 0) / SZ_1M;
-> 
-> This should go with lib change.
-ok
-> 
-> Regards,
-> Kamil
-
-Thanks for review,
-marcin
-> 
->>   	config->test_mb = min_t(int, config->free_mb * config->param->vram_percent / 100,
->>   				config->total_mb * config->param->vram_percent / 100);
->>   
->> -- 
->> 2.31.1
->>
+> diff --git a/tests/intel/kms_big_joiner.c b/tests/intel/kms_big_joiner.c
+> index 2f81204f5..73d3b20ae 100644
+> --- a/tests/intel/kms_big_joiner.c
+> +++ b/tests/intel/kms_big_joiner.c
+> @@ -46,10 +46,101 @@ typedef struct {
+>   	enum pipe pipe1;
+>   	enum pipe pipe2;
+>   	struct bigjoiner_output output[2];
+> +	int no_of_big_joiner_outputs;
+> +	igt_output_t **sorted_outputs;
+> +	int no_sorted_outputs;
+>   } data_t;
+>   
+>   static int max_dotclock;
+>   
+> +/*
+> + *  Sort outputs based on hdisplay
+> + */
+> +static int compare_outputs(const void *a, const void *b)
+> +{
+> +	igt_output_t *outputA = *(igt_output_t **)a;
+> +	igt_output_t *outputB = *(igt_output_t **)b;
+> +
+> +	return outputB->config.connector->modes[0].hdisplay - outputA->config.connector->modes[0].hdisplay;
+> +}
+> +
+> +/*
+> + * Function to add connected outputs to an array and sort them by hdisplay
+> + */
+> +static void set_sorted_outputs(data_t *data)
+> +{
+> +	int i;
+> +	igt_output_t *output;
+> +
+> +	i = 0;
+> +	for_each_connected_output(&data->display, output)
+> +		data->no_sorted_outputs++;
+> +
+> +	igt_skip_on_f(data->no_sorted_outputs <= 0, "No output found\n");
+> +	/*
+> +	 * Create an array to store igt_output_t pointers
+> +	 */
+> +	data->sorted_outputs = (igt_output_t **)malloc(sizeof(igt_output_t *) * data->no_sorted_outputs);
+> +	/*
+> +	 * Add connected outputs to the array
+> +	 */
+> +	for_each_connected_output(&data->display, output)
+> +		data->sorted_outputs[i++] = output;
+> +
+> +	if (data->no_sorted_outputs > 1)
+> +		/*
+> +		 * Sort the array based on hdisplay
+> +		 */
+> +		qsort(data->sorted_outputs, data->no_sorted_outputs,
+> +		      sizeof(igt_output_t *), compare_outputs);
+> +}
+> +
+> +/**
+> + * SUBTEST: simultaneous-modeset
+> + * Description: Try to do modeset with as many output as possible
+> + *		with big joiner given as priority
+> + * Driver requirement: i915, xe
+> + * Functionality: BW
+> + * Mega feature: Bigjoiner, BW
+> + * Test category: BW test
+> + */
+> +static int run_simultaneous_modeset(data_t *data)
+> +{
+> +	int pipe, i, j;
+> +	int remanining_big_joiner_outputs;
+> +	struct igt_fb *primary_fb = malloc(data->n_pipes * sizeof(struct igt_fb));
+> +	igt_plane_t **primary = malloc(data->n_pipes * sizeof(igt_plane_t *));
+> +	drmModeModeInfo *mode;
+> +	igt_output_t *output;
+> +
+> +	remanining_big_joiner_outputs = data->no_of_big_joiner_outputs;
+> +	pipe = i = j = 0;
+> +	set_sorted_outputs(data);
+> +
+> +	while (pipe < data->n_pipes) {
+> +		output = i < data->no_sorted_outputs ? data->sorted_outputs[i] : NULL;
+> +		if (output == NULL)
+> +			break;
+> +		mode = igt_output_get_mode(output);
+> +		igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+> +				    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, 1.0, 0.0, 0.0, &primary_fb[i]);
+> +		igt_output_set_pipe(output, pipe);
+> +		igt_info("Using (pipe %s + %s) to run the subtest with mode %dx%d.\n",
+> +				kmstest_pipe_name(pipe), igt_output_name(output),
+> +				mode->hdisplay, mode->vdisplay);
+> +		primary[i] = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+> +		igt_plane_set_fb(primary[i], &primary_fb[i]);
+> +		i++;
+> +		pipe = pipe + remanining_big_joiner_outputs > 0 ? 2 : 1;
+> +	       --remanining_big_joiner_outputs;
+> +	}
+> +	if (igt_display_try_commit2(&data->display, COMMIT_ATOMIC) == 0) {
+> +		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> +		return 0;
+> +	} else
+> +		return igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
+> +}
+> +
+>   /**
+>    * SUBTEST: invalid-modeset
+>    * Description: Verify if the modeset on the adjoining pipe is rejected when
+> @@ -222,7 +313,7 @@ igt_main
+>   	data_t data;
+>   	igt_output_t *output;
+>   	drmModeModeInfo *mode;
+> -	int valid_output = 0, i, count = 0, j = 0;
+> +	int valid_output = 0, i, j = 0;
+>   	uint16_t width = 0, height = 0;
+>   	enum pipe pipe_seq[IGT_MAX_PIPES];
+>   
+> @@ -248,9 +339,8 @@ igt_main
+>   					true : false;
+>   
+>   			if (found) {
+> -				data.output[count].output_id = output->id;
+> -				memcpy(&data.output[count].mode, mode, sizeof(drmModeModeInfo));
+> -				count++;
+> +				data.output[data.no_of_big_joiner_outputs].output_id = output->id;
+> +				memcpy(&data.output[data.no_of_big_joiner_outputs++].mode, mode, sizeof(drmModeModeInfo));
+>   
+>   				width = max(width, mode->hdisplay);
+>   				height = max(height, mode->vdisplay);
+> @@ -264,15 +354,13 @@ igt_main
+>   			pipe_seq[j] = i;
+>   			j++;
+>   		}
+> -
+> -		igt_require_f(count > 0, "No output with 5k+ mode (or) clock > max-dot-clock found\n");
+> -
+> -		igt_create_pattern_fb(data.drm_fd, width, height, DRM_FORMAT_XRGB8888,
+> -				      DRM_FORMAT_MOD_LINEAR, &data.fb);
+>   	}
+>   
+>   	igt_describe("Verify the basic modeset on big joiner mode on all pipes");
+>   	igt_subtest_with_dynamic("basic") {
+> +		igt_require_f(data.no_of_big_joiner_outputs > 0, "No output with 5k+ mode (or) clock > max-dot-clock found\n");
+> +		igt_create_pattern_fb(data.drm_fd, width, height, DRM_FORMAT_XRGB8888,
+> +				      DRM_FORMAT_MOD_LINEAR, &data.fb);
+>   		for (i = 0; i < data.n_pipes - 1; i++) {
+>   			data.pipe1 = pipe_seq[i];
+>   			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe_seq[i]))
+> @@ -283,6 +371,10 @@ igt_main
+>   	igt_describe("Verify if the modeset on the adjoining pipe is rejected "
+>   		     "when the pipe is active with a big joiner modeset");
+>   	igt_subtest_with_dynamic("invalid-modeset") {
+> +		igt_require_f(data.no_of_big_joiner_outputs > 0, "No output with 5k+ mode (or) clock > max-dot-clock found\n");
+> +		igt_create_pattern_fb(data.drm_fd, width, height, DRM_FORMAT_XRGB8888,
+> +				      DRM_FORMAT_MOD_LINEAR, &data.fb);
+> +
+>   		data.pipe1 = pipe_seq[j - 1];
+>   
+>   		igt_display_reset(&data.display);
+> @@ -335,7 +427,9 @@ igt_main
+>   
+>   	igt_describe("Verify simultaneous modeset on 2 big joiner outputs");
+>   	igt_subtest_with_dynamic("2x-modeset") {
+> -		igt_require_f(count > 1, "2 outputs with big joiner modes are required\n");
+> +		igt_require_f(data.no_of_big_joiner_outputs > 1, "2 outputs with big joiner modes are required\n");
+> +		igt_create_pattern_fb(data.drm_fd, width, height, DRM_FORMAT_XRGB8888,
+> +				      DRM_FORMAT_MOD_LINEAR, &data.fb);
+>   		igt_require_f(data.n_pipes > 3, "Minumum of 4 pipes are required\n");
+>   		for (i = 0; (i + 2) < data.n_pipes - 1; i++) {
+>   			data.pipe1 = pipe_seq[i];
+> @@ -345,6 +439,10 @@ igt_main
+>   		}
+>   	}
+>   
+> +	igt_describe("Simultaneous moseset on all pipes possible");
+> +	igt_subtest("simultaneous-modeset")
+> +		igt_assert_f(run_simultaneous_modeset(&data) == 0, "Commit failure\n");
+> +
+>   	igt_fixture {
+>   		igt_remove_fb(data.drm_fd, &data.fb);
+>   		igt_display_fini(&data.display);
