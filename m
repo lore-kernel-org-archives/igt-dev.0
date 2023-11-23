@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B6BFD10E09F
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Nov 2023 15:35:11 +0000 (UTC)
-Date: Thu, 23 Nov 2023 16:34:53 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: janga.rahul.kumar@intel.com
-Message-ID: <20231123153453.m7cxwxpmnuwp7zt2@kamilkon-desk.igk.intel.com>
-References: <20231109091136.2119007-1-priyanka.dandamudi@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CC89210E16B
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Nov 2023 15:56:36 +0000 (UTC)
+Message-ID: <f7632dbe-25d6-43b2-90ec-d070b762967d@intel.com>
+Date: Thu, 23 Nov 2023 21:26:30 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Language: en-US
+To: =?UTF-8?Q?Jouni_H=C3=B6gander?= <jouni.hogander@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20231123140807.1889536-1-jouni.hogander@intel.com>
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20231123140807.1889536-1-jouni.hogander@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231109091136.2119007-1-priyanka.dandamudi@intel.com>
-Subject: Re: [igt-dev] [PATCH] tests/intel/xe_engine_property: Add engine
- set property tests
+Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/kms_addfb_basic: Skip not
+ relevant subtests for Xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,255 +22,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi priyanka.dandamudi,
-On 2023-11-09 at 14:41:36 +0530, priyanka.dandamudi@intel.com wrote:
-> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+LGTM
+
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+
+On 23-Nov-23 7:38 PM, Jouni Högander wrote:
+> Skip following tests for Xe:
 > 
-> Added tests to check engine set properties.
-> It tests basic positive and invalid values for all properties.
+> tile-pitch-mismatch
+> addfb25-x-tiled-mismatch-legacy
 > 
-> Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> They are not relevant for Xe as tiling information is not encoded into
+> backing object.
+> 
+> Skip following test for Xe
+> 
+> basic-y-tiled-legacy
+> 
+> As Xe supports y-tiled format on legacy addfb.
+> 
+> v3:
+>    - Closes tag added to commit message
+>    - Cc tags added to commit message
+> v2: Commit message subject modified
+> 
+> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/609
+> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> Cc: Swati Sharma <swati2.sharma@intel.com>
+> Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
 > ---
->  tests/intel/xe_engine_property.c | 191 +++++++++++++++++++++++++++++++
->  tests/meson.build                |   1 +
->  2 files changed, 192 insertions(+)
->  create mode 100644 tests/intel/xe_engine_property.c
+>   tests/kms_addfb_basic.c | 21 ++++++++++-----------
+>   1 file changed, 10 insertions(+), 11 deletions(-)
 > 
-> diff --git a/tests/intel/xe_engine_property.c b/tests/intel/xe_engine_property.c
-> new file mode 100644
-> index 000000000..06440bf36
-> --- /dev/null
-> +++ b/tests/intel/xe_engine_property.c
-> @@ -0,0 +1,191 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2023 Intel Corporation
-> + */
+> diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
+> index fc16b8814..426277422 100644
+> --- a/tests/kms_addfb_basic.c
+> +++ b/tests/kms_addfb_basic.c
+> @@ -396,7 +396,7 @@ static void pitch_tests(int fd)
+>   /**
+>    * SUBTEST: basic-%s-tiled-legacy
+>    * Description: Check if addfb2 and rmfb call works for basic %arg[1] test
+> - * Driver requirement: i915, xe
+> + * Driver requirement: i915
+>    * Test category: functionality test
+>    * Functionality: kms_gem_interop, tiling
+>    * Mega feature: General Display Features
+> @@ -410,7 +410,7 @@ static void pitch_tests(int fd)
+>    *
+>    * SUBTEST: tile-pitch-mismatch
+>    * Description: Test that addfb2 call fails correctly for pitches mismatch
+> - * Driver requirement: i915, xe
+> + * Driver requirement: i915
+>    * Test category: functionality test
+>    * Functionality: kms_gem_interop, tiling
+>    * Mega feature: General Display Features
+> @@ -478,8 +478,8 @@ static void tiling_tests(int fd)
+>   		igt_describe("Test that addfb2 call fails correctly for pitches mismatch");
+>   			f.pitches[0] = 512*4;
+>   		igt_subtest("tile-pitch-mismatch") {
+> -			if (is_i915_device(fd))
+> -				igt_require(gem_available_fences(fd) > 0);
+> +			igt_require_i915(fd);
+> +			igt_require(gem_available_fences(fd) > 0);
+>   
+>   			f.handles[0] = tiled_x_bo;
+>   			do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
+> @@ -488,12 +488,10 @@ static void tiling_tests(int fd)
+>   		igt_describe("Test that addfb2 call fails correctly for basic y-tiling test");
+>   		f.pitches[0] = 1024*4;
+>   		igt_subtest("basic-y-tiled-legacy") {
+> -			if (is_i915_device(fd)) {
+> -				igt_require(!gem_has_lmem(fd));
+> -				igt_require(gem_available_fences(fd) > 0);
+> -			} else {
+> -				igt_require(!xe_has_vram(fd));
+> -			}
+> +			igt_require_i915(fd);
+> +			igt_require(!gem_has_lmem(fd));
+> +			igt_require(gem_available_fences(fd) > 0);
 > +
-> +/**
-> + * TEST: Basic tests to check engine set property functionality
-> + * Category: Software building block
-> + * Run type: FULL
-> + * Sub-category: engine property
-> + * Functionality: engine set property
-> + * Test category: functionality test
-> + * SUBTEST: priority-set-property
-> + * Description: tests basic priority property by setting invalid values and positive values.
-> + * SUBTEST: persistence-set-property
-> + * Description: tests basic persistence property by setting positive values
-> + * SUBTEST: %s-property-min-max
-> + * Description: Test to check if %s arg[1] schedule parameter checks for min max values.
-> + *
-> + * arg[1]:
-> + *
-> + * @preempt_timeout_us:		preempt timeout us
-> + * @timeslice_duration_us:	timeslice duration us
-> + * @job_timeout_ms:		job timeout ms
-> + */
-> +
-> +#include "igt.h"
-> +#include "lib/igt_syncobj.h"
-> +#include "lib/intel_reg.h"
-> +#include "xe_drm.h"
-> +#include <sys/stat.h>
-> +#include <sys/types.h>
-> +#include "xe/xe_ioctl.h"
-> +#include "xe/xe_query.h"
-> +#include <string.h>
-> +#include "igt_sysfs.h"
-> +#include <dirent.h>
-> +#include <fcntl.h>
-
-Please sort headers alphabetically, first system ones,
-then igt.
-
-> +
-> +#define DRM_SCHED_PRIORITY_HIGH  2
-> +#define DRM_SCHED_PRIORITY_NORMAL 1
----------- ^
-
-This should be in drm u-api?
-
-
-> +
-> +static int get_property_name(const char *property)
-> +{
-> +	if (strstr(property, "preempt"))
-> +		return XE_EXEC_QUEUE_SET_PROPERTY_PREEMPTION_TIMEOUT;
-> +	else if (strstr(property, "job_timeout"))
-> +		return XE_EXEC_QUEUE_SET_PROPERTY_JOB_TIMEOUT;
-> +	else if (strstr(property, "timeslice"))
-> +		return XE_EXEC_QUEUE_SET_PROPERTY_TIMESLICE;
-> +	else
-> +		return -1;
-> +}
-> +
-> +static void test_set_property(int xe, int property_name,
-> +			      int property_value, int err_val)
-> +{
-> +	struct drm_xe_engine_class_instance instance = {
-> +			.engine_class = DRM_XE_ENGINE_CLASS_VM_BIND_SYNC,
-> +	};
-> +	struct drm_xe_ext_set_property ext = {
-> +		.base.next_extension = 0,
-> +		.base.name = XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-> +		.property = property_name,
-> +		.value = property_value,
-> +	};
-> +
-> +	struct drm_xe_exec_queue_create create = {
-> +		.extensions = to_user_pointer(&ext),
-> +		.width = 1,
-> +		.num_placements = 1,
-> +		.instances = to_user_pointer(&instance),
-> +		.vm_id = xe_vm_create(xe, 0, 0),
-> +	};
-> +	int ret = 0;
-> +
-> +	if (igt_ioctl(xe, DRM_IOCTL_XE_EXEC_QUEUE_CREATE, &create)) {
-> +		ret = -errno;
-> +		errno = 0;
-> +	}
-> +	igt_assert_eq(ret, err_val);
-> +}
-> +
-> +static void test_property_min_max(int xe, int engine, const char **property)
-> +{
-> +	unsigned int max;
-> +	unsigned int min;
-> +	unsigned int set;
-> +	int property_name;
-> +	int defaults;
-> +
-> +	defaults = openat(engine, ".defaults", O_DIRECTORY);
-> +	igt_require(defaults != -1);
-> +
-> +	igt_sysfs_scanf(defaults, property[2], "%u", &max);
-> +	igt_sysfs_scanf(defaults, property[1], "%u", &min);
-> +	igt_sysfs_scanf(engine, property[0], "%u", &set);
-> +
-> +	property_name = get_property_name(property[0]);
-> +	igt_assert_neq(property_name, -1);
-> +
-> +	/* Tests scheduler properties by setting positive values */
-> +	test_set_property(xe, property_name, max, 0);
-> +	test_set_property(xe, property_name, min, 0);
-> +
-> +	/* Tests scheduler properties by setting invalid values */
-> +	test_set_property(xe, property_name, max + 1, -EINVAL);
-> +	test_set_property(xe, property_name, min - 1, -EINVAL);
-
-Add also restore for defaults after test fails.
-
-> +}
-> +
-> +igt_main
-> +{
-> +	static const struct {
-> +		const char *name;
-> +		void (*fn)(int, int, const char **);
-> +	} tests[] = {{"property-min-max", test_property_min_max}, {} };
-> +
-> +	const char *property[][3] = { {"preempt_timeout_us", "preempt_timeout_min", "preempt_timeout_max"},
-> +				      {"timeslice_duration_us", "timeslice_duration_min", "timeslice_duration_max"},
-> +				      {"job_timeout_ms", "job_timeout_min", "job_timeout_max"},
-> +	};
-> +	int count = sizeof(property) / sizeof(property[0]);
-> +	int sys_fd;
-> +	int xe;
-> +	int gt;
-> +
-> +	igt_fixture {
-> +		uint16_t devid;
-> +
-> +		xe = drm_open_driver(DRIVER_XE);
-> +		devid = intel_get_drm_devid(xe);
-> +
-> +		igt_require(xe_supports_faults(xe));
-> +		igt_require(IS_PONTEVECCHIO(devid));
-> +
-> +		sys_fd = igt_sysfs_open(xe);
-> +		igt_require(sys_fd != -1);
-> +		close(sys_fd);
-> +	}
-> +
-> +	igt_subtest("priority-set-property") {
-> +		/* Tests priority property by setting positive values. */
-> +		test_set_property(xe, XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY,
-> +				  DRM_SCHED_PRIORITY_NORMAL, 0);
-> +
-> +		/* Tests priority property by setting invalid value. */
-> +		test_set_property(xe, XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY,
-> +				  DRM_SCHED_PRIORITY_HIGH + 1, -EINVAL);
-> +		igt_fork(child, 1) {
-> +			igt_drop_root();
-> +
-> +			/* Tests priority property by dropping root permissions. */
-> +			test_set_property(xe, XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY,
-> +					  DRM_SCHED_PRIORITY_HIGH, -EPERM);
-> +			test_set_property(xe, XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY,
-> +					  DRM_SCHED_PRIORITY_NORMAL, 0);
-> +		}
-> +		igt_waitchildren();
-> +	}
-> +
-> +	igt_subtest("persistence-set-property") {
-> +		/* Tests persistence property by setting positive values. */
-> +		test_set_property(xe, XE_EXEC_QUEUE_SET_PROPERTY_PERSISTENCE, 1, 0);
-> +
-> +	}
-> +
-> +	for (int i = 0; i < count; i++) {
-> +		for (typeof(*tests) *t = tests; t->name; t++) {
-> +			igt_subtest_with_dynamic_f("%s-%s", property[i][0], t->name) {
-> +				xe_for_each_gt(xe, gt) {
-> +					int engines_fd = -1;
-> +					int gt_fd = -1;
-> +
-> +					gt_fd = xe_sysfs_gt_open(xe, gt);
-> +					igt_require(gt_fd != -1);
-> +					engines_fd = openat(gt_fd, "engines", O_RDONLY);
-> +					igt_require(engines_fd != -1);
-> +
-> +					igt_sysfs_engines(xe, engines_fd, property[i], t->fn);
-> +					close(engines_fd);
-> +					close(gt_fd);
-> +				}
-> +			}
-> +		}
-> +	}
-> +
-> +	igt_fixture {
-> +		xe_device_put(xe);
---------^
-Remove this, drm_close_driver() is taking care of this.
-> +		drm_close_driver(xe);
-> +	}
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index de91b4418..c8d02cf90 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -310,6 +310,7 @@ intel_xe_progs = [
->  	'xe_spin_batch',
->  	'xe_sysfs_defaults',
->  	'xe_sysfs_scheduler',
-> +	'xe_engine_property',
-
-This aslo should be in alphabeticall order.
-
-Regards,
-Kamil
-
->  ]
->  
->  msm_progs = [
-> -- 
-> 2.25.1
-> 
+>   			f.handles[0] = tiled_y_bo;
+>   
+>   			do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
+> @@ -682,7 +680,7 @@ static void size_tests(int fd)
+>    *
+>    * SUBTEST: addfb25-x-tiled-mismatch-legacy
+>    * Description: Test that addfb2 call fails correctly for irrelevant x-tiling
+> - * Driver requirement: i915, xe
+> + * Driver requirement: i915
+>    * Test category: functionality test
+>    * Functionality: kms_gem_interop, tiling
+>    * Mega feature: General Display Features
+> @@ -752,6 +750,7 @@ static void addfb25_tests(int fd)
+>   
+>   		igt_describe("Test that addfb2 call fails correctly for irrelevant x-tiling");
+>   		igt_subtest("addfb25-x-tiled-mismatch-legacy") {
+> +			igt_require_i915(fd);
+>   			f.modifier[0] = DRM_FORMAT_MOD_LINEAR;
+>   			do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
+>   		}
