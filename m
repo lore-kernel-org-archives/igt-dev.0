@@ -1,17 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E6C3E10E713
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Nov 2023 10:26:12 +0000 (UTC)
-From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
-To: igt-dev@lists.freedesktop.org, kamil.konieczny@linux.intel.com,
- juhapekka.heikkila@gmail.com
-Date: Thu, 23 Nov 2023 12:26:01 +0200
-Message-Id: <20231123102601.1748229-1-jouni.hogander@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3616010E713
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Nov 2023 10:27:21 +0000 (UTC)
+From: "Hogander, Jouni" <jouni.hogander@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "kamil.konieczny@linux.intel.com" <kamil.konieczny@linux.intel.com>
+Date: Thu, 23 Nov 2023 10:27:12 +0000
+Message-ID: <e0fc0d4f4ba349daef98ae8c0c6fadef9c6dce1f.camel@intel.com>
+References: <20231122133612.973677-1-jouni.hogander@intel.com>
+ <20231123100305.u74e6uoyqwma4rjn@kamilkon-desk.igk.intel.com>
+In-Reply-To: <20231123100305.u74e6uoyqwma4rjn@kamilkon-desk.igk.intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <E55E607C49BF2D4B93F164740D04B033@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] tests/kms_addfb_basic: Skip not relevant
- subtests for Xe
+Subject: Re: [igt-dev] [PATCH i-g-t] kms_addfb_basic: Skip not relevant test
+ for Xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,91 +28,92 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Skip following tests for Xe:
-
-tile-pitch-mismatch
-addfb25-x-tiled-mismatch-legacy
-
-They are not relevant for Xe as tiling information is not encoded into
-backing object.
-
-Skip following test for Xe
-
-basic-y-tiled-legacy
-
-As Xe supports y-tiled format on legacy addfb.
-
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
----
- tests/kms_addfb_basic.c | 21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
-
-diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
-index fc16b8814..426277422 100644
---- a/tests/kms_addfb_basic.c
-+++ b/tests/kms_addfb_basic.c
-@@ -396,7 +396,7 @@ static void pitch_tests(int fd)
- /**
-  * SUBTEST: basic-%s-tiled-legacy
-  * Description: Check if addfb2 and rmfb call works for basic %arg[1] test
-- * Driver requirement: i915, xe
-+ * Driver requirement: i915
-  * Test category: functionality test
-  * Functionality: kms_gem_interop, tiling
-  * Mega feature: General Display Features
-@@ -410,7 +410,7 @@ static void pitch_tests(int fd)
-  *
-  * SUBTEST: tile-pitch-mismatch
-  * Description: Test that addfb2 call fails correctly for pitches mismatch
-- * Driver requirement: i915, xe
-+ * Driver requirement: i915
-  * Test category: functionality test
-  * Functionality: kms_gem_interop, tiling
-  * Mega feature: General Display Features
-@@ -478,8 +478,8 @@ static void tiling_tests(int fd)
- 		igt_describe("Test that addfb2 call fails correctly for pitches mismatch");
- 			f.pitches[0] = 512*4;
- 		igt_subtest("tile-pitch-mismatch") {
--			if (is_i915_device(fd))
--				igt_require(gem_available_fences(fd) > 0);
-+			igt_require_i915(fd);
-+			igt_require(gem_available_fences(fd) > 0);
- 
- 			f.handles[0] = tiled_x_bo;
- 			do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
-@@ -488,12 +488,10 @@ static void tiling_tests(int fd)
- 		igt_describe("Test that addfb2 call fails correctly for basic y-tiling test");
- 		f.pitches[0] = 1024*4;
- 		igt_subtest("basic-y-tiled-legacy") {
--			if (is_i915_device(fd)) {
--				igt_require(!gem_has_lmem(fd));
--				igt_require(gem_available_fences(fd) > 0);
--			} else {
--				igt_require(!xe_has_vram(fd));
--			}
-+			igt_require_i915(fd);
-+			igt_require(!gem_has_lmem(fd));
-+			igt_require(gem_available_fences(fd) > 0);
-+
- 			f.handles[0] = tiled_y_bo;
- 
- 			do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
-@@ -682,7 +680,7 @@ static void size_tests(int fd)
-  *
-  * SUBTEST: addfb25-x-tiled-mismatch-legacy
-  * Description: Test that addfb2 call fails correctly for irrelevant x-tiling
-- * Driver requirement: i915, xe
-+ * Driver requirement: i915
-  * Test category: functionality test
-  * Functionality: kms_gem_interop, tiling
-  * Mega feature: General Display Features
-@@ -752,6 +750,7 @@ static void addfb25_tests(int fd)
- 
- 		igt_describe("Test that addfb2 call fails correctly for irrelevant x-tiling");
- 		igt_subtest("addfb25-x-tiled-mismatch-legacy") {
-+			igt_require_i915(fd);
- 			f.modifier[0] = DRM_FORMAT_MOD_LINEAR;
- 			do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
- 		}
--- 
-2.34.1
+T24gVGh1LCAyMDIzLTExLTIzIGF0IDExOjAzICswMTAwLCBLYW1pbCBLb25pZWN6bnkgd3JvdGU6
+Cj4gSGkgSm91bmksCj4gT24gMjAyMy0xMS0yMiBhdCAxNTozNjoxMiArMDIwMCwgSm91bmkgSMO2
+Z2FuZGVyIHdyb3RlOgo+IAo+IGFkZCAidGVzdHMvIiBpbiB5b3VyIHN1YmplY3QgbGluZSBhbmQg
+dXNlIHBsdXJhbCwgbGlrZToKPiAKPiBbUEFUQ0ggaS1nLXRdIHRlc3RzL2ttc19hZGRmYl9iYXNp
+YzogU2tpcCBub3QgcmVsZXZhbnQgc3VidGVzdHMgZm9yCj4gWGUKClRoYW5rIHlvdSBLYW1pbCBm
+b3IgY2hlY2tpbmcgbXkgcGF0Y2guIEkgaGF2ZSBhZGRyZXNzZWQgeW91ciBjb21tZW50cwppbiB2
+ZXJzaW9uIDIgb2YgbXkgcGF0Y2guIFBsZWFzZSBjaGVjay4KCkJSLAoKSm91bmkgSMO2Z2FuZGVy
+Cgo+IAo+IFJlZ2FyZHMsCj4gS2FtaWwKPiAKPiA+IFNraXAgZm9sbG93aW5nIHRlc3RzIGZvciBY
+ZToKPiA+IAo+ID4gdGlsZS1waXRjaC1taXNtYXRjaAo+ID4gYWRkZmIyNS14LXRpbGVkLW1pc21h
+dGNoLWxlZ2FjeQo+ID4gCj4gPiBUaGV5IGFyZSBub3QgcmVsZXZhbnQgZm9yIFhlIGFzIHRpbGlu
+ZyBpbmZvcm1hdGlvbiBpcyBub3QgZW5jb2RlZAo+ID4gaW50bwo+ID4gYmFja2luZyBvYmplY3Qu
+Cj4gPiAKPiA+IFNraXAgZm9sbG93aW5nIHRlc3QgZm9yIFhlCj4gPiAKPiA+IGJhc2ljLXktdGls
+ZWQtbGVnYWN5Cj4gPiAKPiA+IEFzIFhlIHN1cHBvcnRzIHktdGlsZWQgZm9ybWF0IG9uIGxlZ2Fj
+eSBhZGRmYi4KPiA+IAo+ID4gU2lnbmVkLW9mZi1ieTogSm91bmkgSMO2Z2FuZGVyIDxqb3VuaS5o
+b2dhbmRlckBpbnRlbC5jb20+Cj4gPiAtLS0KPiA+IMKgdGVzdHMva21zX2FkZGZiX2Jhc2ljLmMg
+fCAyMSArKysrKysrKysrLS0tLS0tLS0tLS0KPiA+IMKgMSBmaWxlIGNoYW5nZWQsIDEwIGluc2Vy
+dGlvbnMoKyksIDExIGRlbGV0aW9ucygtKQo+ID4gCj4gPiBkaWZmIC0tZ2l0IGEvdGVzdHMva21z
+X2FkZGZiX2Jhc2ljLmMgYi90ZXN0cy9rbXNfYWRkZmJfYmFzaWMuYwo+ID4gaW5kZXggZmMxNmI4
+ODE0Li40MjYyNzc0MjIgMTAwNjQ0Cj4gPiAtLS0gYS90ZXN0cy9rbXNfYWRkZmJfYmFzaWMuYwo+
+ID4gKysrIGIvdGVzdHMva21zX2FkZGZiX2Jhc2ljLmMKPiA+IEBAIC0zOTYsNyArMzk2LDcgQEAg
+c3RhdGljIHZvaWQgcGl0Y2hfdGVzdHMoaW50IGZkKQo+ID4gwqAvKioKPiA+IMKgICogU1VCVEVT
+VDogYmFzaWMtJXMtdGlsZWQtbGVnYWN5Cj4gPiDCoCAqIERlc2NyaXB0aW9uOiBDaGVjayBpZiBh
+ZGRmYjIgYW5kIHJtZmIgY2FsbCB3b3JrcyBmb3IgYmFzaWMKPiA+ICVhcmdbMV0gdGVzdAo+ID4g
+LSAqIERyaXZlciByZXF1aXJlbWVudDogaTkxNSwgeGUKPiA+ICsgKiBEcml2ZXIgcmVxdWlyZW1l
+bnQ6IGk5MTUKPiA+IMKgICogVGVzdCBjYXRlZ29yeTogZnVuY3Rpb25hbGl0eSB0ZXN0Cj4gPiDC
+oCAqIEZ1bmN0aW9uYWxpdHk6IGttc19nZW1faW50ZXJvcCwgdGlsaW5nCj4gPiDCoCAqIE1lZ2Eg
+ZmVhdHVyZTogR2VuZXJhbCBEaXNwbGF5IEZlYXR1cmVzCj4gPiBAQCAtNDEwLDcgKzQxMCw3IEBA
+IHN0YXRpYyB2b2lkIHBpdGNoX3Rlc3RzKGludCBmZCkKPiA+IMKgICoKPiA+IMKgICogU1VCVEVT
+VDogdGlsZS1waXRjaC1taXNtYXRjaAo+ID4gwqAgKiBEZXNjcmlwdGlvbjogVGVzdCB0aGF0IGFk
+ZGZiMiBjYWxsIGZhaWxzIGNvcnJlY3RseSBmb3IgcGl0Y2hlcwo+ID4gbWlzbWF0Y2gKPiA+IC0g
+KiBEcml2ZXIgcmVxdWlyZW1lbnQ6IGk5MTUsIHhlCj4gPiArICogRHJpdmVyIHJlcXVpcmVtZW50
+OiBpOTE1Cj4gPiDCoCAqIFRlc3QgY2F0ZWdvcnk6IGZ1bmN0aW9uYWxpdHkgdGVzdAo+ID4gwqAg
+KiBGdW5jdGlvbmFsaXR5OiBrbXNfZ2VtX2ludGVyb3AsIHRpbGluZwo+ID4gwqAgKiBNZWdhIGZl
+YXR1cmU6IEdlbmVyYWwgRGlzcGxheSBGZWF0dXJlcwo+ID4gQEAgLTQ3OCw4ICs0NzgsOCBAQCBz
+dGF0aWMgdm9pZCB0aWxpbmdfdGVzdHMoaW50IGZkKQo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqBpZ3RfZGVzY3JpYmUoIlRlc3QgdGhhdCBhZGRmYjIgY2FsbCBmYWlscyBjb3Jy
+ZWN0bHkKPiA+IGZvciBwaXRjaGVzIG1pc21hdGNoIik7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBmLnBpdGNoZXNbMF0gPSA1MTIqNDsKPiA+IMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3N1YnRlc3QoInRpbGUtcGl0Y2gtbWlz
+bWF0Y2giKSB7Cj4gPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoGlmIChpc19pOTE1X2RldmljZShmZCkpCj4gPiAtCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9yZXF1aXJlKGdl
+bV9hdmFpbGFibGVfZmVuY2VzKGZkKQo+ID4gPiAwKTsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3JlcXVpcmVfaTkxNShmZCk7Cj4gPiArwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9yZXF1aXJlKGdl
+bV9hdmFpbGFibGVfZmVuY2VzKGZkKSA+IDApOwo+ID4gwqAKPiA+IMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGYuaGFuZGxlc1swXSA9IHRpbGVkX3hfYm87
+Cj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkb19p
+b2N0bF9lcnIoZmQsIERSTV9JT0NUTF9NT0RFX0FEREZCMiwgJmYsCj4gPiBFSU5WQUwpOwo+ID4g
+QEAgLTQ4OCwxMiArNDg4LDEwIEBAIHN0YXRpYyB2b2lkIHRpbGluZ190ZXN0cyhpbnQgZmQpCj4g
+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9kZXNjcmliZSgiVGVzdCB0aGF0
+IGFkZGZiMiBjYWxsIGZhaWxzIGNvcnJlY3RseQo+ID4gZm9yIGJhc2ljIHktdGlsaW5nIHRlc3Qi
+KTsKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZi5waXRjaGVzWzBdID0gMTAy
+NCo0Owo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3Rfc3VidGVzdCgiYmFz
+aWMteS10aWxlZC1sZWdhY3kiKSB7Cj4gPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoGlmIChpc19pOTE1X2RldmljZShmZCkpIHsKPiA+IC3CoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9y
+ZXF1aXJlKCFnZW1faGFzX2xtZW0oZmQpKTsKPiA+IC0KPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3JlcXVpcmUoZ2Vt
+X2F2YWlsYWJsZV9mZW5jZXMoZmQpCj4gPiA+IDApOwo+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9IGVsc2Ugewo+ID4gLcKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3JlcXVpcmUo
+IXhlX2hhc192cmFtKGZkKSk7Cj4gPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoH0KPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgaWd0X3JlcXVpcmVfaTkxNShmZCk7Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9yZXF1aXJlKCFnZW1faGFzX2xtZW0oZmQpKTsK
+PiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3Jl
+cXVpcmUoZ2VtX2F2YWlsYWJsZV9mZW5jZXMoZmQpID4gMCk7Cj4gPiArCj4gPiDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBmLmhhbmRsZXNbMF0gPSB0aWxl
+ZF95X2JvOwo+ID4gwqAKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoGRvX2lvY3RsX2VycihmZCwgRFJNX0lPQ1RMX01PREVfQURERkIyLCAmZiwKPiA+
+IEVJTlZBTCk7Cj4gPiBAQCAtNjgyLDcgKzY4MCw3IEBAIHN0YXRpYyB2b2lkIHNpemVfdGVzdHMo
+aW50IGZkKQo+ID4gwqAgKgo+ID4gwqAgKiBTVUJURVNUOiBhZGRmYjI1LXgtdGlsZWQtbWlzbWF0
+Y2gtbGVnYWN5Cj4gPiDCoCAqIERlc2NyaXB0aW9uOiBUZXN0IHRoYXQgYWRkZmIyIGNhbGwgZmFp
+bHMgY29ycmVjdGx5IGZvcgo+ID4gaXJyZWxldmFudCB4LXRpbGluZwo+ID4gLSAqIERyaXZlciBy
+ZXF1aXJlbWVudDogaTkxNSwgeGUKPiA+ICsgKiBEcml2ZXIgcmVxdWlyZW1lbnQ6IGk5MTUKPiA+
+IMKgICogVGVzdCBjYXRlZ29yeTogZnVuY3Rpb25hbGl0eSB0ZXN0Cj4gPiDCoCAqIEZ1bmN0aW9u
+YWxpdHk6IGttc19nZW1faW50ZXJvcCwgdGlsaW5nCj4gPiDCoCAqIE1lZ2EgZmVhdHVyZTogR2Vu
+ZXJhbCBEaXNwbGF5IEZlYXR1cmVzCj4gPiBAQCAtNzUyLDYgKzc1MCw3IEBAIHN0YXRpYyB2b2lk
+IGFkZGZiMjVfdGVzdHMoaW50IGZkKQo+ID4gwqAKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgaWd0X2Rlc2NyaWJlKCJUZXN0IHRoYXQgYWRkZmIyIGNhbGwgZmFpbHMgY29ycmVj
+dGx5Cj4gPiBmb3IgaXJyZWxldmFudCB4LXRpbGluZyIpOwo+ID4gwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqBpZ3Rfc3VidGVzdCgiYWRkZmIyNS14LXRpbGVkLW1pc21hdGNoLWxlZ2Fj
+eSIpIHsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+aWd0X3JlcXVpcmVfaTkxNShmZCk7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqBmLm1vZGlmaWVyWzBdID0gRFJNX0ZPUk1BVF9NT0RfTElORUFSOwo+
+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZG9faW9j
+dGxfZXJyKGZkLCBEUk1fSU9DVExfTU9ERV9BRERGQjIsICZmLAo+ID4gRUlOVkFMKTsKPiA+IMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfQo+ID4gLS0gCj4gPiAyLjM0LjEKPiA+IAoK
