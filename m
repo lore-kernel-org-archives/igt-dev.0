@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 19F9510E074
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Nov 2023 05:39:58 +0000 (UTC)
-Message-ID: <76fc7db5-e536-4ddf-ac67-152418ac215e@intel.com>
-Date: Mon, 27 Nov 2023 11:09:31 +0530
-Content-Language: en-US
-To: Nidhi Gupta <nidhi1.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20231123113228.30729-1-nidhi1.gupta@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20231123113228.30729-1-nidhi1.gupta@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative;
+ boundary="===============6223819513949905071=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2]
- tests/intel/kms_frontbuffer_tracking: Add new subtest to test FBC on each
- pipe
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Lukasz Laguna" <lukasz.laguna@intel.com>
+Date: Thu, 23 Nov 2023 11:32:55 -0000
+Message-ID: <170073917574.8137.2831631110121166942@emeril.freedesktop.org>
+References: <20231123085527.8126-1-lukasz.laguna@intel.com>
+In-Reply-To: <20231123085527.8126-1-lukasz.laguna@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/xe/x?=
+ =?utf-8?q?e=5Fquery=3A_add_media_GT_presence_checker?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,114 +17,117 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Nidhi,
+--===============6223819513949905071==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 23-11-2023 05:02 pm, Nidhi Gupta wrote:
-> Added a new subtest as kms_frontbuffer_tracking@pipe-fbc-rte.
-> It will execute on each pipe with valid output and check if FBC is
-> enabled or not.
+== Series Details ==
 
-Please maintain the rev history.
+Series: lib/xe/xe_query: add media GT presence checker
+URL   : https://patchwork.freedesktop.org/series/126810/
+State : success
 
-> 
-> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
-> ---
->   tests/intel/kms_frontbuffer_tracking.c | 50 ++++++++++++++++++++++++++
->   1 file changed, 50 insertions(+)
-> 
-> diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-> index 213069947..bb29be831 100644
-> --- a/tests/intel/kms_frontbuffer_tracking.c
-> +++ b/tests/intel/kms_frontbuffer_tracking.c
-> @@ -53,6 +53,15 @@
->    * Test category: functionality test
->    */
->   
-> +/**
-> + * SUBTEST: pipe-fbc-rte
-> + * Description: Sanity test to enable FBC on each pipe.
-> + * Driver requirement: i915, xe
-> + * Functionality: fbc
-> + * Mega feature: General Display Features
-> + * Test category: functionality test
-> + */
-> +
->   #define TIME SLOW_QUICK(1000, 10000)
->   
->   IGT_TEST_DESCRIPTION("Test the Kernel's frontbuffer tracking mechanism and "
-> @@ -5015,7 +5024,10 @@ struct option long_options[] = {
->   igt_main_args("", long_options, help_str, opt_handler, NULL)
->   {
->   	struct test_mode t;
-> +	struct modeset_params default_mode_params;
->   	int devid;
-> +	enum pipe pipe;
-> +	igt_output_t *output;
->   
->   	igt_fixture {
->   		setup_environment();
-> @@ -5056,6 +5068,44 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
->   		plane_fbc_rte_subtest(&t);
->   	}
->   
-> +	igt_subtest_with_dynamic("pipe-fbc-rte") {
-> +
-> +		t.pipes = PIPE_SINGLE;
-> +		t.feature = FEATURE_FBC;
-> +		t.screen = SCREEN_PRIM;
-> +		t.fbs = FBS_INDIVIDUAL;
-> +		t.format = FORMAT_DEFAULT;
-> +		t.method = IGT_DRAW_BLT;
-> +		/* Make sure nothing is using these values. */
-> +		t.flip = -1;
-> +		t.tiling = opt.tiling;
-> +
-> +		default_mode_params = prim_mode_params;
+== Summary ==
 
-Only prim_mode_params.pipe is enough, right?
+CI Bug Log - changes from XEIGT_7597_BAT -> XEIGTPW_10252_BAT
+====================================================
 
-> +
-> +		for_each_pipe(&drm.display, pipe) {
-> +
-> +			if (pipe == default_mode_params.pipe) {
-> +				igt_info("pipe-%s: FBC validated in other subtest\n", kmstest_pipe_name(pipe));
-> +				continue;
-> +			}
-> +
-> +			if (!intel_fbc_supported_on_chipset(drm.fd, pipe)) {
-> +				igt_info("Can't test FBC: not supported on pipe-%s\n", kmstest_pipe_name(pipe));
-> +				continue;
-> +			}
-> +
-> +			for_each_valid_output_on_pipe(&drm.display, pipe, output) {
-> +				init_mode_params(&prim_mode_params, output, pipe);
-> +				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
-> +					      igt_output_name(output))
-> +					rte_subtest(&t);
+Summary
+-------
 
-We must configure/set the fbc 'setup_fbc()' before starting the subtest.
+  **SUCCESS**
 
-> +				break; /* One output is enough. */
-> +			}
-> +
-> +			prim_mode_params = default_mode_params;
+  No regressions found.
 
-Do we really need this step for each pipe?
+  
 
-Also, as we are updating 'prim_mode_params', it may effect other tests 
-if this test fails.
+Participating hosts (4 -> 4)
+------------------------------
 
-Perhaps, you need a igt_fixture to restore 'prim_mode_params' to default.
+  No changes in participating hosts
 
-- Bhanu
+Known issues
+------------
 
-> +		}
-> +	}
-> +
->   	TEST_MODE_ITER_BEGIN(t)
->   
->   		igt_subtest_f("%s-%s-%s-%s-%s-draw-%s",
+  Here are the changes found in XEIGTPW_10252_BAT that come from known issues:
+
+### IGT changes ###
+
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7597 -> IGTPW_10252
+
+  IGTPW_10252: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10252/index.html
+  IGT_7597: 380983dbd9bb2f7eea5e917e8fed0569bfe8cf9c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-516-59f2e73469cace9c78aab7506284ae446d57b8bc: 59f2e73469cace9c78aab7506284ae446d57b8bc
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10252/index.html
+
+--===============6223819513949905071==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/xe/xe_query: add media GT presence checker</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126810/">https://patchwork.freedesktop.org/series/126810/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10252/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10252/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7597_BAT -&gt; XEIGTPW_10252_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10252_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7597 -&gt; IGTPW_10252</li>
+</ul>
+<p>IGTPW_10252: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10252/index.html<br />
+  IGT_7597: 380983dbd9bb2f7eea5e917e8fed0569bfe8cf9c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-516-59f2e73469cace9c78aab7506284ae446d57b8bc: 59f2e73469cace9c78aab7506284ae446d57b8bc</p>
+
+</body>
+</html>
+
+--===============6223819513949905071==--
