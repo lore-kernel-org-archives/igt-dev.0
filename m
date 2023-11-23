@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5CAB410E70F
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Nov 2023 10:03:25 +0000 (UTC)
-Date: Thu, 23 Nov 2023 11:03:05 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20231123100305.u74e6uoyqwma4rjn@kamilkon-desk.igk.intel.com>
-References: <20231122133612.973677-1-jouni.hogander@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============1379675795917425507=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231122133612.973677-1-jouni.hogander@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] kms_addfb_basic: Skip not relevant test
- for Xe
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Lukasz Laguna" <lukasz.laguna@intel.com>
+Date: Thu, 23 Nov 2023 10:05:41 -0000
+Message-ID: <170073394101.8138.12351741960955311848@emeril.freedesktop.org>
+References: <20231123085346.8067-1-lukasz.laguna@intel.com>
+In-Reply-To: <20231123085346.8067-1-lukasz.laguna@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIENJLnhlQkFUOiBzdWNjZXNzIGZvciB4ZS94ZV9x?=
+ =?utf-8?q?uery=3A_add_media_GT_presence_checker_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,106 +17,130 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Jouni,
-On 2023-11-22 at 15:36:12 +0200, Jouni Högander wrote:
+--===============1379675795917425507==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-add "tests/" in your subject line and use plural, like:
+== Series Details ==
 
-[PATCH i-g-t] tests/kms_addfb_basic: Skip not relevant subtests for Xe
+Series: xe/xe_query: add media GT presence checker (rev2)
+URL   : https://patchwork.freedesktop.org/series/126762/
+State : success
 
-Regards,
-Kamil
+== Summary ==
 
-> Skip following tests for Xe:
-> 
-> tile-pitch-mismatch
-> addfb25-x-tiled-mismatch-legacy
-> 
-> They are not relevant for Xe as tiling information is not encoded into
-> backing object.
-> 
-> Skip following test for Xe
-> 
-> basic-y-tiled-legacy
-> 
-> As Xe supports y-tiled format on legacy addfb.
-> 
-> Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-> ---
->  tests/kms_addfb_basic.c | 21 ++++++++++-----------
->  1 file changed, 10 insertions(+), 11 deletions(-)
-> 
-> diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
-> index fc16b8814..426277422 100644
-> --- a/tests/kms_addfb_basic.c
-> +++ b/tests/kms_addfb_basic.c
-> @@ -396,7 +396,7 @@ static void pitch_tests(int fd)
->  /**
->   * SUBTEST: basic-%s-tiled-legacy
->   * Description: Check if addfb2 and rmfb call works for basic %arg[1] test
-> - * Driver requirement: i915, xe
-> + * Driver requirement: i915
->   * Test category: functionality test
->   * Functionality: kms_gem_interop, tiling
->   * Mega feature: General Display Features
-> @@ -410,7 +410,7 @@ static void pitch_tests(int fd)
->   *
->   * SUBTEST: tile-pitch-mismatch
->   * Description: Test that addfb2 call fails correctly for pitches mismatch
-> - * Driver requirement: i915, xe
-> + * Driver requirement: i915
->   * Test category: functionality test
->   * Functionality: kms_gem_interop, tiling
->   * Mega feature: General Display Features
-> @@ -478,8 +478,8 @@ static void tiling_tests(int fd)
->  		igt_describe("Test that addfb2 call fails correctly for pitches mismatch");
->  			f.pitches[0] = 512*4;
->  		igt_subtest("tile-pitch-mismatch") {
-> -			if (is_i915_device(fd))
-> -				igt_require(gem_available_fences(fd) > 0);
-> +			igt_require_i915(fd);
-> +			igt_require(gem_available_fences(fd) > 0);
->  
->  			f.handles[0] = tiled_x_bo;
->  			do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
-> @@ -488,12 +488,10 @@ static void tiling_tests(int fd)
->  		igt_describe("Test that addfb2 call fails correctly for basic y-tiling test");
->  		f.pitches[0] = 1024*4;
->  		igt_subtest("basic-y-tiled-legacy") {
-> -			if (is_i915_device(fd)) {
-> -				igt_require(!gem_has_lmem(fd));
-> -				igt_require(gem_available_fences(fd) > 0);
-> -			} else {
-> -				igt_require(!xe_has_vram(fd));
-> -			}
-> +			igt_require_i915(fd);
-> +			igt_require(!gem_has_lmem(fd));
-> +			igt_require(gem_available_fences(fd) > 0);
-> +
->  			f.handles[0] = tiled_y_bo;
->  
->  			do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
-> @@ -682,7 +680,7 @@ static void size_tests(int fd)
->   *
->   * SUBTEST: addfb25-x-tiled-mismatch-legacy
->   * Description: Test that addfb2 call fails correctly for irrelevant x-tiling
-> - * Driver requirement: i915, xe
-> + * Driver requirement: i915
->   * Test category: functionality test
->   * Functionality: kms_gem_interop, tiling
->   * Mega feature: General Display Features
-> @@ -752,6 +750,7 @@ static void addfb25_tests(int fd)
->  
->  		igt_describe("Test that addfb2 call fails correctly for irrelevant x-tiling");
->  		igt_subtest("addfb25-x-tiled-mismatch-legacy") {
-> +			igt_require_i915(fd);
->  			f.modifier[0] = DRM_FORMAT_MOD_LINEAR;
->  			do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
->  		}
-> -- 
-> 2.34.1
-> 
+CI Bug Log - changes from XEIGT_7597_BAT -> XEIGTPW_10251_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10251_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Warnings ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [DMESG-FAIL][1] ([Intel XE#282] / [i915#2017]) -> [FAIL][2] ([Intel XE#616] / [Intel XE#750])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7597/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10251/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  [Intel XE#282]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/282
+  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
+  [Intel XE#750]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/750
+  [i915#2017]: https://gitlab.freedesktop.org/drm/intel/issues/2017
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7597 -> IGTPW_10251
+
+  IGTPW_10251: 10251
+  IGT_7597: 380983dbd9bb2f7eea5e917e8fed0569bfe8cf9c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-516-59f2e73469cace9c78aab7506284ae446d57b8bc: 59f2e73469cace9c78aab7506284ae446d57b8bc
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10251/index.html
+
+--===============1379675795917425507==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>xe/xe_query: add media GT presence checker (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126762/">https://patchwork.freedesktop.org/series/126762/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10251/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10251/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7597_BAT -&gt; XEIGTPW_10251_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10251_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_frontbuffer_tracking@basic:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7597/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2017">i915#2017</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10251/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/750">Intel XE#750</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7597 -&gt; IGTPW_10251</li>
+</ul>
+<p>IGTPW_10251: 10251<br />
+  IGT_7597: 380983dbd9bb2f7eea5e917e8fed0569bfe8cf9c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-516-59f2e73469cace9c78aab7506284ae446d57b8bc: 59f2e73469cace9c78aab7506284ae446d57b8bc</p>
+
+</body>
+</html>
+
+--===============1379675795917425507==--
