@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 39B9210E092
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Nov 2023 15:09:01 +0000 (UTC)
-From: Marcin Bernatowicz <marcin.bernatowicz@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 23 Nov 2023 16:08:23 +0100
-Message-Id: <20231123150823.25862-3-marcin.bernatowicz@intel.com>
-In-Reply-To: <20231123150823.25862-1-marcin.bernatowicz@intel.com>
-References: <20231123150823.25862-1-marcin.bernatowicz@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B6BFD10E09F
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Nov 2023 15:35:11 +0000 (UTC)
+Date: Thu, 23 Nov 2023 16:34:53 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: janga.rahul.kumar@intel.com
+Message-ID: <20231123153453.m7cxwxpmnuwp7zt2@kamilkon-desk.igk.intel.com>
+References: <20231109091136.2119007-1-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v4 i-g-t 2/2] tests/intel/xe_create:
- create-big-vram subtest
+In-Reply-To: <20231109091136.2119007-1-priyanka.dandamudi@intel.com>
+Subject: Re: [igt-dev] [PATCH] tests/intel/xe_engine_property: Add engine
+ set property tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,152 +21,255 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: adam.miszczak@intel.com, matthew.auld@intel.com,
- jakub1.kolakowski@intel.com
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Validates the creation of significant Buffer Object (BO) within VRAM,
-considering the entire available CPU-visible VRAM size.
-The size of the created BO can be adjusted using command line
-parameters, with '-S' representing BO size in MB,
-and '-p' representing BO size as a percentage of the VRAM size.
+Hi priyanka.dandamudi,
+On 2023-11-09 at 14:41:36 +0530, priyanka.dandamudi@intel.com wrote:
+> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> 
+> Added tests to check engine set properties.
+> It tests basic positive and invalid values for all properties.
+> 
+> Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> ---
+>  tests/intel/xe_engine_property.c | 191 +++++++++++++++++++++++++++++++
+>  tests/meson.build                |   1 +
+>  2 files changed, 192 insertions(+)
+>  create mode 100644 tests/intel/xe_engine_property.c
+> 
+> diff --git a/tests/intel/xe_engine_property.c b/tests/intel/xe_engine_property.c
+> new file mode 100644
+> index 000000000..06440bf36
+> --- /dev/null
+> +++ b/tests/intel/xe_engine_property.c
+> @@ -0,0 +1,191 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2023 Intel Corporation
+> + */
+> +
+> +/**
+> + * TEST: Basic tests to check engine set property functionality
+> + * Category: Software building block
+> + * Run type: FULL
+> + * Sub-category: engine property
+> + * Functionality: engine set property
+> + * Test category: functionality test
+> + * SUBTEST: priority-set-property
+> + * Description: tests basic priority property by setting invalid values and positive values.
+> + * SUBTEST: persistence-set-property
+> + * Description: tests basic persistence property by setting positive values
+> + * SUBTEST: %s-property-min-max
+> + * Description: Test to check if %s arg[1] schedule parameter checks for min max values.
+> + *
+> + * arg[1]:
+> + *
+> + * @preempt_timeout_us:		preempt timeout us
+> + * @timeslice_duration_us:	timeslice duration us
+> + * @job_timeout_ms:		job timeout ms
+> + */
+> +
+> +#include "igt.h"
+> +#include "lib/igt_syncobj.h"
+> +#include "lib/intel_reg.h"
+> +#include "xe_drm.h"
+> +#include <sys/stat.h>
+> +#include <sys/types.h>
+> +#include "xe/xe_ioctl.h"
+> +#include "xe/xe_query.h"
+> +#include <string.h>
+> +#include "igt_sysfs.h"
+> +#include <dirent.h>
+> +#include <fcntl.h>
 
-v2: rebased, updated to uAPI changes (DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT),
-    after review corrections: 1024UL -> 1024ULL,
-    int -> unsigned int (Kamil)
+Please sort headers alphabetically, first system ones,
+then igt.
 
-v3: provided a flag to allocate the memory within the CPU-visible
-      portion of VRAM (Matt)
-    __create_bo replaced with xe_bo_create_flags (Lukasz)
-    removed the percent command line parameter (Lukasz)
-    renamed size_MB to size_mb (Lukasz)
-    added helper function to query available CPU-visible VRAM size,
-    renamed 'xe_vram_available' to 'xe_available_vram_size' for
-      consistency with other function names
+> +
+> +#define DRM_SCHED_PRIORITY_HIGH  2
+> +#define DRM_SCHED_PRIORITY_NORMAL 1
+---------- ^
 
-v4: split lib and test changes into separate patches (Lukasz, Kamil)
-    added prefixes to titles (Kamil)
-    restored percent command line parameter (Kamil)
-    whitespace correction (Kamil)
+This should be in drm u-api?
 
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Laguna, Lukasz <lukasz.laguna@intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@intel.com>
----
- tests/intel/xe_create.c | 84 ++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 83 insertions(+), 1 deletion(-)
 
-diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
-index f4633cfb3..194c677ee 100644
---- a/tests/intel/xe_create.c
-+++ b/tests/intel/xe_create.c
-@@ -18,6 +18,14 @@
- 
- #define PAGE_SIZE 0x1000
- 
-+static struct param {
-+	unsigned int size_mb;
-+	unsigned int vram_percent;
-+} params = {
-+	.size_mb = 0,
-+	.vram_percent = 0,
-+};
-+
- static int __create_bo(int fd, uint32_t vm, uint64_t size, uint32_t flags,
- 		       uint32_t *handlep)
- {
-@@ -214,7 +222,78 @@ static void create_massive_size(int fd)
- 	}
- }
- 
--igt_main
-+/**
-+ * SUBTEST: create-big-vram
-+ * Functionality: BO creation
-+ * Test category: functionality test
-+ * Description: Verifies the creation of substantial BO within VRAM,
-+ *		constituting all available CPU-visible VRAM.
-+ */
-+static void create_big_vram(int fd)
-+{
-+	uint64_t bo_size, size, visible_avail_size, alignment;
-+	uint32_t bo_handle;
-+	char *bo_ptr = NULL;
-+	uint64_t vm = 0;
-+	int gt;
-+
-+	igt_require(xe_has_vram(fd));
-+	alignment = xe_get_default_alignment(fd);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
-+
-+	xe_for_each_gt(fd, gt) {
-+		visible_avail_size = xe_visible_available_vram_size(fd, gt);
-+		bo_size = params.size_mb
-+			  ? params.size_mb * 1024ULL * 1024ULL
-+			  : params.vram_percent
-+				? ALIGN(visible_avail_size * params.vram_percent / 100, alignment)
-+				: ALIGN_DOWN(visible_avail_size, alignment);
-+		igt_info("gt%u bo_size=%lu visible_available_vram_size=%lu\n",
-+			gt, bo_size, visible_avail_size);
-+
-+		bo_handle = xe_bo_create_flags(fd, vm, bo_size, visible_vram_memory(fd, gt));
-+		bo_ptr = xe_bo_map(fd, bo_handle, bo_size);
-+
-+		size = bo_size - 1;
-+		while (size > SZ_64K) {
-+			igt_assert_eq(0, READ_ONCE(bo_ptr[size]));
-+			WRITE_ONCE(bo_ptr[size], 'A');
-+			igt_assert_eq('A', READ_ONCE(bo_ptr[size]));
-+			size >>= 1;
-+		}
-+		igt_assert_eq(0, bo_ptr[0]);
-+
-+		munmap(bo_ptr, bo_size);
-+		gem_close(fd, bo_handle);
-+	}
-+
-+	xe_vm_destroy(fd, vm);
-+}
-+
-+static int opt_handler(int opt, int opt_index, void *data)
-+{
-+	switch (opt) {
-+	case 'S':
-+		params.size_mb = atoi(optarg);
-+		igt_debug("Size MB: %d\n", params.size_mb);
-+		break;
-+	case 'p':
-+		params.vram_percent = atoi(optarg);
-+		igt_debug("Percent of VRAM: %d\n", params.vram_percent);
-+		break;
-+	default:
-+		return IGT_OPT_HANDLER_ERROR;
-+	}
-+
-+	return IGT_OPT_HANDLER_SUCCESS;
-+}
-+
-+const char *help_str =
-+	"  -S\tBO size in MB\n"
-+	"  -p\tPercent of VRAM for BO\n"
-+	;
-+
-+igt_main_args("S:p:", NULL, help_str, opt_handler, NULL)
- {
- 	int xe;
- 
-@@ -253,6 +332,9 @@ igt_main
- 		igt_waitchildren();
- 	}
- 
-+	igt_subtest("create-big-vram") {
-+		create_big_vram(xe);
-+	}
- 
- 	igt_fixture
- 		drm_close_driver(xe);
--- 
-2.31.1
+> +
+> +static int get_property_name(const char *property)
+> +{
+> +	if (strstr(property, "preempt"))
+> +		return XE_EXEC_QUEUE_SET_PROPERTY_PREEMPTION_TIMEOUT;
+> +	else if (strstr(property, "job_timeout"))
+> +		return XE_EXEC_QUEUE_SET_PROPERTY_JOB_TIMEOUT;
+> +	else if (strstr(property, "timeslice"))
+> +		return XE_EXEC_QUEUE_SET_PROPERTY_TIMESLICE;
+> +	else
+> +		return -1;
+> +}
+> +
+> +static void test_set_property(int xe, int property_name,
+> +			      int property_value, int err_val)
+> +{
+> +	struct drm_xe_engine_class_instance instance = {
+> +			.engine_class = DRM_XE_ENGINE_CLASS_VM_BIND_SYNC,
+> +	};
+> +	struct drm_xe_ext_set_property ext = {
+> +		.base.next_extension = 0,
+> +		.base.name = XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
+> +		.property = property_name,
+> +		.value = property_value,
+> +	};
+> +
+> +	struct drm_xe_exec_queue_create create = {
+> +		.extensions = to_user_pointer(&ext),
+> +		.width = 1,
+> +		.num_placements = 1,
+> +		.instances = to_user_pointer(&instance),
+> +		.vm_id = xe_vm_create(xe, 0, 0),
+> +	};
+> +	int ret = 0;
+> +
+> +	if (igt_ioctl(xe, DRM_IOCTL_XE_EXEC_QUEUE_CREATE, &create)) {
+> +		ret = -errno;
+> +		errno = 0;
+> +	}
+> +	igt_assert_eq(ret, err_val);
+> +}
+> +
+> +static void test_property_min_max(int xe, int engine, const char **property)
+> +{
+> +	unsigned int max;
+> +	unsigned int min;
+> +	unsigned int set;
+> +	int property_name;
+> +	int defaults;
+> +
+> +	defaults = openat(engine, ".defaults", O_DIRECTORY);
+> +	igt_require(defaults != -1);
+> +
+> +	igt_sysfs_scanf(defaults, property[2], "%u", &max);
+> +	igt_sysfs_scanf(defaults, property[1], "%u", &min);
+> +	igt_sysfs_scanf(engine, property[0], "%u", &set);
+> +
+> +	property_name = get_property_name(property[0]);
+> +	igt_assert_neq(property_name, -1);
+> +
+> +	/* Tests scheduler properties by setting positive values */
+> +	test_set_property(xe, property_name, max, 0);
+> +	test_set_property(xe, property_name, min, 0);
+> +
+> +	/* Tests scheduler properties by setting invalid values */
+> +	test_set_property(xe, property_name, max + 1, -EINVAL);
+> +	test_set_property(xe, property_name, min - 1, -EINVAL);
+
+Add also restore for defaults after test fails.
+
+> +}
+> +
+> +igt_main
+> +{
+> +	static const struct {
+> +		const char *name;
+> +		void (*fn)(int, int, const char **);
+> +	} tests[] = {{"property-min-max", test_property_min_max}, {} };
+> +
+> +	const char *property[][3] = { {"preempt_timeout_us", "preempt_timeout_min", "preempt_timeout_max"},
+> +				      {"timeslice_duration_us", "timeslice_duration_min", "timeslice_duration_max"},
+> +				      {"job_timeout_ms", "job_timeout_min", "job_timeout_max"},
+> +	};
+> +	int count = sizeof(property) / sizeof(property[0]);
+> +	int sys_fd;
+> +	int xe;
+> +	int gt;
+> +
+> +	igt_fixture {
+> +		uint16_t devid;
+> +
+> +		xe = drm_open_driver(DRIVER_XE);
+> +		devid = intel_get_drm_devid(xe);
+> +
+> +		igt_require(xe_supports_faults(xe));
+> +		igt_require(IS_PONTEVECCHIO(devid));
+> +
+> +		sys_fd = igt_sysfs_open(xe);
+> +		igt_require(sys_fd != -1);
+> +		close(sys_fd);
+> +	}
+> +
+> +	igt_subtest("priority-set-property") {
+> +		/* Tests priority property by setting positive values. */
+> +		test_set_property(xe, XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY,
+> +				  DRM_SCHED_PRIORITY_NORMAL, 0);
+> +
+> +		/* Tests priority property by setting invalid value. */
+> +		test_set_property(xe, XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY,
+> +				  DRM_SCHED_PRIORITY_HIGH + 1, -EINVAL);
+> +		igt_fork(child, 1) {
+> +			igt_drop_root();
+> +
+> +			/* Tests priority property by dropping root permissions. */
+> +			test_set_property(xe, XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY,
+> +					  DRM_SCHED_PRIORITY_HIGH, -EPERM);
+> +			test_set_property(xe, XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY,
+> +					  DRM_SCHED_PRIORITY_NORMAL, 0);
+> +		}
+> +		igt_waitchildren();
+> +	}
+> +
+> +	igt_subtest("persistence-set-property") {
+> +		/* Tests persistence property by setting positive values. */
+> +		test_set_property(xe, XE_EXEC_QUEUE_SET_PROPERTY_PERSISTENCE, 1, 0);
+> +
+> +	}
+> +
+> +	for (int i = 0; i < count; i++) {
+> +		for (typeof(*tests) *t = tests; t->name; t++) {
+> +			igt_subtest_with_dynamic_f("%s-%s", property[i][0], t->name) {
+> +				xe_for_each_gt(xe, gt) {
+> +					int engines_fd = -1;
+> +					int gt_fd = -1;
+> +
+> +					gt_fd = xe_sysfs_gt_open(xe, gt);
+> +					igt_require(gt_fd != -1);
+> +					engines_fd = openat(gt_fd, "engines", O_RDONLY);
+> +					igt_require(engines_fd != -1);
+> +
+> +					igt_sysfs_engines(xe, engines_fd, property[i], t->fn);
+> +					close(engines_fd);
+> +					close(gt_fd);
+> +				}
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_fixture {
+> +		xe_device_put(xe);
+--------^
+Remove this, drm_close_driver() is taking care of this.
+> +		drm_close_driver(xe);
+> +	}
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index de91b4418..c8d02cf90 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -310,6 +310,7 @@ intel_xe_progs = [
+>  	'xe_spin_batch',
+>  	'xe_sysfs_defaults',
+>  	'xe_sysfs_scheduler',
+> +	'xe_engine_property',
+
+This aslo should be in alphabeticall order.
+
+Regards,
+Kamil
+
+>  ]
+>  
+>  msm_progs = [
+> -- 
+> 2.25.1
+> 
