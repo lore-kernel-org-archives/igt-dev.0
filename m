@@ -1,26 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 41B5610E19B
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Nov 2023 08:18:40 +0000 (UTC)
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.249.154.110])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 39FE7580E3A
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Nov 2023 00:18:39 -0800 (PST)
-Received: from maurocar by linux.intel.com with local (Exim 4.96.2)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1r6ROX-0008nb-06
- for igt-dev@lists.freedesktop.org; Fri, 24 Nov 2023 09:18:37 +0100
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 615EB10E7AD
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Nov 2023 08:37:46 +0000 (UTC)
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 24 Nov 2023 09:16:06 +0100
-Message-ID: <20231124081834.33714-3-mauro.chehab@linux.intel.com>
-In-Reply-To: <20231124081834.33714-1-mauro.chehab@linux.intel.com>
-References: <20231124081834.33714-1-mauro.chehab@linux.intel.com>
+Date: Fri, 24 Nov 2023 13:57:12 +0530
+Message-Id: <20231124082712.2384183-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20220422002230.19535-1-mohammed.thasleem@intel.com>
+References: <20220422002230.19535-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] scripts/test_list.py: don't add a blank
- description
+Subject: [igt-dev] [PATCH i-g-t] tests/intel/kms_pm_dc: Fix dc9-dpms test on
+ LNL
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,29 +23,49 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+DC5 counter on disp ver >=14 is not expected to get reset in DC9 state.
+Add condition to check runtime_suspended_time value to validate
+DC9 dpms test.
 
-At the first versions, it was assumed that a Description field
-would always exist. This is not true anymore.
-
-Stop artificially creating one with an empty value by default.
-
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- scripts/test_list.py | 1 -
- 1 file changed, 1 deletion(-)
+ lib/intel_chipset.h     | 1 +
+ tests/intel/kms_pm_dc.c | 4 ++--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/test_list.py b/scripts/test_list.py
-index 5ff2b18c2dd8..20377b708f83 100644
---- a/scripts/test_list.py
-+++ b/scripts/test_list.py
-@@ -1270,7 +1270,6 @@ class TestList:
-                         self.doc[current_test]["subtest"][current_subtest][field] = self.doc[current_test][field]
+diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+index 1edc8e92c..3f2534519 100644
+--- a/lib/intel_chipset.h
++++ b/lib/intel_chipset.h
+@@ -208,6 +208,7 @@ void intel_check_pch(void);
  
-                     self.doc[current_test]["subtest"][current_subtest]["_summary_"] = match.group(1)
--                    self.doc[current_test]["subtest"][current_subtest]["Description"] = ''
-                     self.doc[current_test]["_subtest_line_"][current_subtest] = file_ln
+ #define IS_GEN(devid, x)	(intel_get_device_info(devid)->graphics_ver == x)
+ #define AT_LEAST_GEN(devid, x)	(intel_get_device_info(devid)->graphics_ver >= x)
++#define AT_LEAST_DISPLAY(devid, x) (intel_get_device_info(devid)->display_ver >= x)
  
-                     if not arg_ref:
+ #define IS_GEN2(devid)		IS_GEN(devid, 2)
+ #define IS_GEN3(devid)		IS_GEN(devid, 3)
+diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
+index a3c7c4018..6990f91a2 100644
+--- a/tests/intel/kms_pm_dc.c
++++ b/tests/intel/kms_pm_dc.c
+@@ -107,7 +107,7 @@
+ #define KMS_HELPER "/sys/module/drm_kms_helper/parameters/"
+ #define PACKAGE_CSTATE_PATH  "pmc_core/package_cstate_show"
+ #define KMS_POLL_DISABLE 0
+-#define DC9_RESETS_DC_COUNTERS(devid) (!(IS_DG1(devid) || IS_DG2(devid) || IS_METEORLAKE(devid)))
++#define DC9_RESETS_DC_COUNTERS(devid) (!(IS_DG1(devid) || IS_DG2(devid) || AT_LEAST_DISPLAY(devid, 14)))
+ 
+ IGT_TEST_DESCRIPTION("Tests to validate display power DC states.");
+ 
+@@ -524,7 +524,7 @@ static bool dc9_wait_entry(data_t *data, int dc_target, int prev_dc, int prev_rp
+ 	 * Runtime suspended residency should increment once DC9 is achieved;
+ 	 * this condition is valid for all platforms.
+ 	 * However, resetting of dc5/dc6 counter to check if display engine was in DC9;
+-	 * this condition at present can be skipped for dg1, dg2 and MTL platforms.
++	 * this condition at present can be skipped for dg1, dg2 and MTL+ platforms.
+ 	 */
+ 	return igt_wait((read_runtime_suspended_time(data->drm_fd) > prev_rpm) &&
+ 			(!DC9_RESETS_DC_COUNTERS(data->devid) ||
 -- 
-2.42.0
+2.25.1
