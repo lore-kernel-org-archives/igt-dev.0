@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============6106019345103310051=="
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EF05C10E7D3
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Nov 2023 10:21:23 +0000 (UTC)
+From: Badal Nilawar <badal.nilawar@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 24 Nov 2023 15:59:46 +0530
+Message-Id: <20231124102946.2650848-3-badal.nilawar@intel.com>
+In-Reply-To: <20231124102946.2650848-1-badal.nilawar@intel.com>
+References: <20231124102946.2650848-1-badal.nilawar@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Nidhi Gupta" <nidhi1.gupta@intel.com>
-Date: Fri, 24 Nov 2023 02:53:41 -0000
-Message-ID: <170079442104.13025.16885913350983846464@emeril.freedesktop.org>
-References: <20231124021623.21746-1-nidhi1.gupta@intel.com>
-In-Reply-To: <20231124021623.21746-1-nidhi1.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/km?=
- =?utf-8?q?s=5Fvrr=3A_New_subtest_for_toggle_VRR_during_fastsets_=28rev3?=
- =?utf-8?q?=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 2/2] test/intel/xe_guc_pc: Fix freq_low_max
+ test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,150 +19,30 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============6106019345103310051==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+freq_low_max test is intended to validate GuC PC (SLPC) behaviour
+when max freq set to less than min freq. As workloads are not being
+run validating cur freq is enough.
 
-== Series Details ==
+Signed-off-by: Badal Nilawar <badal.nilawar@intel.com>
+---
+ tests/intel/xe_guc_pc.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Series: tests/kms_vrr: New subtest for toggle VRR during fastsets (rev3)
-URL   : https://patchwork.freedesktop.org/series/119421/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7600_BAT -> XEIGTPW_10258_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10258_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank:
-    - bat-adlp-7:         [FAIL][1] ([Intel XE#480]) -> [PASS][2] +1 other test pass
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7600/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10258/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3:
-    - bat-dg2-oem2:       [FAIL][3] ([Intel XE#480]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7600/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10258/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
-
-
-Build changes
--------------
-
-  * IGT: IGT_7600 -> IGTPW_10258
-  * Linux: xe-517-501feae7afed8e9b21700d1185532c18d62ca33a -> xe-518-1832821c7e4c5bd24353183f060f1435b2eb7992
-
-  IGTPW_10258: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10258/index.html
-  IGT_7600: b889fd01780dc79f6fcc8545346c81f5c79f5efb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-517-501feae7afed8e9b21700d1185532c18d62ca33a: 501feae7afed8e9b21700d1185532c18d62ca33a
-  xe-518-1832821c7e4c5bd24353183f060f1435b2eb7992: 1832821c7e4c5bd24353183f060f1435b2eb7992
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10258/index.html
-
---===============6106019345103310051==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_vrr: New subtest for toggle VRR during fastsets (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/119421/">https://patchwork.freedesktop.org/series/119421/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10258/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10258/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7600_BAT -&gt; XEIGTPW_10258_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10258_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7600/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10258/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7600/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10258/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7600 -&gt; IGTPW_10258</li>
-<li>Linux: xe-517-501feae7afed8e9b21700d1185532c18d62ca33a -&gt; xe-518-1832821c7e4c5bd24353183f060f1435b2eb7992</li>
-</ul>
-<p>IGTPW_10258: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10258/index.html<br />
-  IGT_7600: b889fd01780dc79f6fcc8545346c81f5c79f5efb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-517-501feae7afed8e9b21700d1185532c18d62ca33a: 501feae7afed8e9b21700d1185532c18d62ca33a<br />
-  xe-518-1832821c7e4c5bd24353183f060f1435b2eb7992: 1832821c7e4c5bd24353183f060f1435b2eb7992</p>
-
-</body>
-</html>
-
---===============6106019345103310051==--
+diff --git a/tests/intel/xe_guc_pc.c b/tests/intel/xe_guc_pc.c
+index c23017501..70548ba0e 100644
+--- a/tests/intel/xe_guc_pc.c
++++ b/tests/intel/xe_guc_pc.c
+@@ -220,7 +220,6 @@ static void test_freq_low_max(int fd, int gt_id)
+ 	igt_assert(set_freq(fd, gt_id, "max", rpn) > 0);
+ 	usleep(ACT_FREQ_LATENCY_US);
+ 	igt_assert(get_freq(fd, gt_id, "cur") == rpe);
+-	igt_assert(get_freq(fd, gt_id, "act") == rpe);
+ }
+ 
+ /**
+-- 
+2.25.1
