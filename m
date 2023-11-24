@@ -1,21 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CBB2210E205
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Nov 2023 13:32:59 +0000 (UTC)
-Message-ID: <722a1c33-d384-4f9c-8652-3d09b8dca950@intel.com>
-Date: Fri, 24 Nov 2023 19:02:55 +0530
-MIME-Version: 1.0
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E924010E7F7
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Nov 2023 13:42:29 +0000 (UTC)
+From: "Hogander, Jouni" <jouni.hogander@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Sharma,
+ Swati2" <swati2.sharma@intel.com>
+Date: Fri, 24 Nov 2023 13:42:27 +0000
+Message-ID: <dd153803ec1f80f45fac9cc19320d600d5d99c9b.camel@intel.com>
+References: <20231123140807.1889536-1-jouni.hogander@intel.com>
+ <f7632dbe-25d6-43b2-90ec-d070b762967d@intel.com>
+In-Reply-To: <f7632dbe-25d6-43b2-90ec-d070b762967d@intel.com>
 Content-Language: en-US
-To: Mohammed Thasleem <mohammed.thasleem@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20220422002230.19535-1-mohammed.thasleem@intel.com>
- <20231124082712.2384183-1-mohammed.thasleem@intel.com>
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20231124082712.2384183-1-mohammed.thasleem@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/intel/kms_pm_dc: Fix dc9-dpms
- test on LNL
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <084ACA9A0E23A64D9CCD998DD81A31C3@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/kms_addfb_basic: Skip not
+ relevant subtests for Xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,59 +28,95 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Thasleem,
-
-First of all, this patch is not fixing dc9-dpms test.
-Rephrase your subject line.
-
-On 24-Nov-23 1:57 PM, Mohammed Thasleem wrote:
-> DC5 counter on disp ver >=14 is not expected to get reset in DC9 state.
-> Add condition to check runtime_suspended_time value to validate
-> DC9 dpms test.
-
-Also, you are not adding any condition, you are just adding platform to 
-existing condition.
-
-Please fix both subject and commit message.
-
-> 
-> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
-> ---
->   lib/intel_chipset.h     | 1 +
->   tests/intel/kms_pm_dc.c | 4 ++--
->   2 files changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
-> index 1edc8e92c..3f2534519 100644
-> --- a/lib/intel_chipset.h
-> +++ b/lib/intel_chipset.h
-> @@ -208,6 +208,7 @@ void intel_check_pch(void);
->   
->   #define IS_GEN(devid, x)	(intel_get_device_info(devid)->graphics_ver == x)
->   #define AT_LEAST_GEN(devid, x)	(intel_get_device_info(devid)->graphics_ver >= x)
-> +#define AT_LEAST_DISPLAY(devid, x) (intel_get_device_info(devid)->display_ver >= x)
->   
->   #define IS_GEN2(devid)		IS_GEN(devid, 2)
->   #define IS_GEN3(devid)		IS_GEN(devid, 3)
-> diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
-> index a3c7c4018..6990f91a2 100644
-> --- a/tests/intel/kms_pm_dc.c
-> +++ b/tests/intel/kms_pm_dc.c
-> @@ -107,7 +107,7 @@
->   #define KMS_HELPER "/sys/module/drm_kms_helper/parameters/"
->   #define PACKAGE_CSTATE_PATH  "pmc_core/package_cstate_show"
->   #define KMS_POLL_DISABLE 0
-> -#define DC9_RESETS_DC_COUNTERS(devid) (!(IS_DG1(devid) || IS_DG2(devid) || IS_METEORLAKE(devid)))
-> +#define DC9_RESETS_DC_COUNTERS(devid) (!(IS_DG1(devid) || IS_DG2(devid) || AT_LEAST_DISPLAY(devid, 14)))
->   
->   IGT_TEST_DESCRIPTION("Tests to validate display power DC states.");
->   
-> @@ -524,7 +524,7 @@ static bool dc9_wait_entry(data_t *data, int dc_target, int prev_dc, int prev_rp
->   	 * Runtime suspended residency should increment once DC9 is achieved;
->   	 * this condition is valid for all platforms.
->   	 * However, resetting of dc5/dc6 counter to check if display engine was in DC9;
-> -	 * this condition at present can be skipped for dg1, dg2 and MTL platforms.
-> +	 * this condition at present can be skipped for dg1, dg2 and MTL+ platforms.
->   	 */
->   	return igt_wait((read_runtime_suspended_time(data->drm_fd) > prev_rpm) &&
->   			(!DC9_RESETS_DC_COUNTERS(data->devid) ||
+T24gVGh1LCAyMDIzLTExLTIzIGF0IDIxOjI2ICswNTMwLCBTaGFybWEsIFN3YXRpMiB3cm90ZToK
+PiBMR1RNCj4gCj4gUmV2aWV3ZWQtYnk6IFN3YXRpIFNoYXJtYSA8c3dhdGkyLnNoYXJtYUBpbnRl
+bC5jb20+CgpUaGFuayB5b3UgU3dhdGkgZm9yIGNoZWNraW5nIG15IHBhdGNoLiBUaGlzIGlzIG5v
+dyBtZXJnZWQuCgpCUiwKCkpvdW5pIEjDtmdhbmRlcgoKPiAKPiBPbiAyMy1Ob3YtMjMgNzozOCBQ
+TSwgSm91bmkgSMO2Z2FuZGVyIHdyb3RlOgo+ID4gU2tpcCBmb2xsb3dpbmcgdGVzdHMgZm9yIFhl
+Ogo+ID4gCj4gPiB0aWxlLXBpdGNoLW1pc21hdGNoCj4gPiBhZGRmYjI1LXgtdGlsZWQtbWlzbWF0
+Y2gtbGVnYWN5Cj4gPiAKPiA+IFRoZXkgYXJlIG5vdCByZWxldmFudCBmb3IgWGUgYXMgdGlsaW5n
+IGluZm9ybWF0aW9uIGlzIG5vdCBlbmNvZGVkCj4gPiBpbnRvCj4gPiBiYWNraW5nIG9iamVjdC4K
+PiA+IAo+ID4gU2tpcCBmb2xsb3dpbmcgdGVzdCBmb3IgWGUKPiA+IAo+ID4gYmFzaWMteS10aWxl
+ZC1sZWdhY3kKPiA+IAo+ID4gQXMgWGUgc3VwcG9ydHMgeS10aWxlZCBmb3JtYXQgb24gbGVnYWN5
+IGFkZGZiLgo+ID4gCj4gPiB2MzoKPiA+IMKgwqAgLSBDbG9zZXMgdGFnIGFkZGVkIHRvIGNvbW1p
+dCBtZXNzYWdlCj4gPiDCoMKgIC0gQ2MgdGFncyBhZGRlZCB0byBjb21taXQgbWVzc2FnZQo+ID4g
+djI6IENvbW1pdCBtZXNzYWdlIHN1YmplY3QgbW9kaWZpZWQKPiA+IAo+ID4gQ2xvc2VzOiBodHRw
+czovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL3hlL2tlcm5lbC8tL2lzc3Vlcy82MDkKPiA+
+IENjOiBKdWhhLVBla2thIEhlaWtraWxhIDxqdWhhcGVra2EuaGVpa2tpbGFAZ21haWwuY29tPgo+
+ID4gQ2M6IFN3YXRpIFNoYXJtYSA8c3dhdGkyLnNoYXJtYUBpbnRlbC5jb20+Cj4gPiBTaWduZWQt
+b2ZmLWJ5OiBKb3VuaSBIw7ZnYW5kZXIgPGpvdW5pLmhvZ2FuZGVyQGludGVsLmNvbT4KPiA+IC0t
+LQo+ID4gwqAgdGVzdHMva21zX2FkZGZiX2Jhc2ljLmMgfCAyMSArKysrKysrKysrLS0tLS0tLS0t
+LS0KPiA+IMKgIDEgZmlsZSBjaGFuZ2VkLCAxMCBpbnNlcnRpb25zKCspLCAxMSBkZWxldGlvbnMo
+LSkKPiA+IAo+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19hZGRmYl9iYXNpYy5jIGIvdGVzdHMv
+a21zX2FkZGZiX2Jhc2ljLmMKPiA+IGluZGV4IGZjMTZiODgxNC4uNDI2Mjc3NDIyIDEwMDY0NAo+
+ID4gLS0tIGEvdGVzdHMva21zX2FkZGZiX2Jhc2ljLmMKPiA+ICsrKyBiL3Rlc3RzL2ttc19hZGRm
+Yl9iYXNpYy5jCj4gPiBAQCAtMzk2LDcgKzM5Niw3IEBAIHN0YXRpYyB2b2lkIHBpdGNoX3Rlc3Rz
+KGludCBmZCkKPiA+IMKgIC8qKgo+ID4gwqDCoCAqIFNVQlRFU1Q6IGJhc2ljLSVzLXRpbGVkLWxl
+Z2FjeQo+ID4gwqDCoCAqIERlc2NyaXB0aW9uOiBDaGVjayBpZiBhZGRmYjIgYW5kIHJtZmIgY2Fs
+bCB3b3JrcyBmb3IgYmFzaWMKPiA+ICVhcmdbMV0gdGVzdAo+ID4gLSAqIERyaXZlciByZXF1aXJl
+bWVudDogaTkxNSwgeGUKPiA+ICsgKiBEcml2ZXIgcmVxdWlyZW1lbnQ6IGk5MTUKPiA+IMKgwqAg
+KiBUZXN0IGNhdGVnb3J5OiBmdW5jdGlvbmFsaXR5IHRlc3QKPiA+IMKgwqAgKiBGdW5jdGlvbmFs
+aXR5OiBrbXNfZ2VtX2ludGVyb3AsIHRpbGluZwo+ID4gwqDCoCAqIE1lZ2EgZmVhdHVyZTogR2Vu
+ZXJhbCBEaXNwbGF5IEZlYXR1cmVzCj4gPiBAQCAtNDEwLDcgKzQxMCw3IEBAIHN0YXRpYyB2b2lk
+IHBpdGNoX3Rlc3RzKGludCBmZCkKPiA+IMKgwqAgKgo+ID4gwqDCoCAqIFNVQlRFU1Q6IHRpbGUt
+cGl0Y2gtbWlzbWF0Y2gKPiA+IMKgwqAgKiBEZXNjcmlwdGlvbjogVGVzdCB0aGF0IGFkZGZiMiBj
+YWxsIGZhaWxzIGNvcnJlY3RseSBmb3IgcGl0Y2hlcwo+ID4gbWlzbWF0Y2gKPiA+IC0gKiBEcml2
+ZXIgcmVxdWlyZW1lbnQ6IGk5MTUsIHhlCj4gPiArICogRHJpdmVyIHJlcXVpcmVtZW50OiBpOTE1
+Cj4gPiDCoMKgICogVGVzdCBjYXRlZ29yeTogZnVuY3Rpb25hbGl0eSB0ZXN0Cj4gPiDCoMKgICog
+RnVuY3Rpb25hbGl0eToga21zX2dlbV9pbnRlcm9wLCB0aWxpbmcKPiA+IMKgwqAgKiBNZWdhIGZl
+YXR1cmU6IEdlbmVyYWwgRGlzcGxheSBGZWF0dXJlcwo+ID4gQEAgLTQ3OCw4ICs0NzgsOCBAQCBz
+dGF0aWMgdm9pZCB0aWxpbmdfdGVzdHMoaW50IGZkKQo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqBpZ3RfZGVzY3JpYmUoIlRlc3QgdGhhdCBhZGRmYjIgY2FsbCBmYWlscyBjb3Jy
+ZWN0bHkKPiA+IGZvciBwaXRjaGVzIG1pc21hdGNoIik7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBmLnBpdGNoZXNbMF0gPSA1MTIqNDsKPiA+IMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3N1YnRlc3QoInRpbGUtcGl0Y2gtbWlz
+bWF0Y2giKSB7Cj4gPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoGlmIChpc19pOTE1X2RldmljZShmZCkpCj4gPiAtCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9yZXF1aXJlKGdl
+bV9hdmFpbGFibGVfZmVuY2VzKGZkKQo+ID4gPiAwKTsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3JlcXVpcmVfaTkxNShmZCk7Cj4gPiArwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9yZXF1aXJlKGdl
+bV9hdmFpbGFibGVfZmVuY2VzKGZkKSA+IDApOwo+ID4gwqAgCj4gPiDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBmLmhhbmRsZXNbMF0gPSB0aWxlZF94X2Jv
+Owo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZG9f
+aW9jdGxfZXJyKGZkLCBEUk1fSU9DVExfTU9ERV9BRERGQjIsICZmLAo+ID4gRUlOVkFMKTsKPiA+
+IEBAIC00ODgsMTIgKzQ4OCwxMCBAQCBzdGF0aWMgdm9pZCB0aWxpbmdfdGVzdHMoaW50IGZkKQo+
+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfZGVzY3JpYmUoIlRlc3QgdGhh
+dCBhZGRmYjIgY2FsbCBmYWlscyBjb3JyZWN0bHkKPiA+IGZvciBiYXNpYyB5LXRpbGluZyB0ZXN0
+Iik7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGYucGl0Y2hlc1swXSA9IDEw
+MjQqNDsKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3N1YnRlc3QoImJh
+c2ljLXktdGlsZWQtbGVnYWN5Iikgewo+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqBpZiAoaXNfaTkxNV9kZXZpY2UoZmQpKSB7Cj4gPiAtwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3Rf
+cmVxdWlyZSghZ2VtX2hhc19sbWVtKGZkKSk7Cj4gPiAtCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9yZXF1aXJlKGdl
+bV9hdmFpbGFibGVfZmVuY2VzKGZkKQo+ID4gPiAwKTsKPiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfSBlbHNlIHsKPiA+IC3CoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9yZXF1aXJl
+KCF4ZV9oYXNfdnJhbShmZCkpOwo+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqB9Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoGlndF9yZXF1aXJlX2k5MTUoZmQpOwo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfcmVxdWlyZSghZ2VtX2hhc19sbWVtKGZkKSk7
+Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9y
+ZXF1aXJlKGdlbV9hdmFpbGFibGVfZmVuY2VzKGZkKSA+IDApOwo+ID4gKwo+ID4gwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZi5oYW5kbGVzWzBdID0gdGls
+ZWRfeV9ibzsKPiA+IMKgIAo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgZG9faW9jdGxfZXJyKGZkLCBEUk1fSU9DVExfTU9ERV9BRERGQjIsICZmLAo+
+ID4gRUlOVkFMKTsKPiA+IEBAIC02ODIsNyArNjgwLDcgQEAgc3RhdGljIHZvaWQgc2l6ZV90ZXN0
+cyhpbnQgZmQpCj4gPiDCoMKgICoKPiA+IMKgwqAgKiBTVUJURVNUOiBhZGRmYjI1LXgtdGlsZWQt
+bWlzbWF0Y2gtbGVnYWN5Cj4gPiDCoMKgICogRGVzY3JpcHRpb246IFRlc3QgdGhhdCBhZGRmYjIg
+Y2FsbCBmYWlscyBjb3JyZWN0bHkgZm9yCj4gPiBpcnJlbGV2YW50IHgtdGlsaW5nCj4gPiAtICog
+RHJpdmVyIHJlcXVpcmVtZW50OiBpOTE1LCB4ZQo+ID4gKyAqIERyaXZlciByZXF1aXJlbWVudDog
+aTkxNQo+ID4gwqDCoCAqIFRlc3QgY2F0ZWdvcnk6IGZ1bmN0aW9uYWxpdHkgdGVzdAo+ID4gwqDC
+oCAqIEZ1bmN0aW9uYWxpdHk6IGttc19nZW1faW50ZXJvcCwgdGlsaW5nCj4gPiDCoMKgICogTWVn
+YSBmZWF0dXJlOiBHZW5lcmFsIERpc3BsYXkgRmVhdHVyZXMKPiA+IEBAIC03NTIsNiArNzUwLDcg
+QEAgc3RhdGljIHZvaWQgYWRkZmIyNV90ZXN0cyhpbnQgZmQpCj4gPiDCoCAKPiA+IMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2Rlc2NyaWJlKCJUZXN0IHRoYXQgYWRkZmIyIGNh
+bGwgZmFpbHMgY29ycmVjdGx5Cj4gPiBmb3IgaXJyZWxldmFudCB4LXRpbGluZyIpOwo+ID4gwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3Rfc3VidGVzdCgiYWRkZmIyNS14LXRpbGVk
+LW1pc21hdGNoLWxlZ2FjeSIpIHsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgaWd0X3JlcXVpcmVfaTkxNShmZCk7Cj4gPiDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBmLm1vZGlmaWVyWzBdID0gRFJNX0ZPUk1B
+VF9NT0RfTElORUFSOwo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgZG9faW9jdGxfZXJyKGZkLCBEUk1fSU9DVExfTU9ERV9BRERGQjIsICZmLAo+ID4g
+RUlOVkFMKTsKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfQoK
