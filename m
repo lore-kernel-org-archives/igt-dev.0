@@ -3,13 +3,13 @@ Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Francois Dugast" <francois.dugast@intel.com>
-Date: Wed, 29 Nov 2023 15:16:32 -0000
-Message-ID: <170127099269.12091.11242011367996859851@emeril.freedesktop.org>
-References: <20231129145457.7-1-francois.dugast@intel.com>
-In-Reply-To: <20231129145457.7-1-francois.dugast@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB1QVBJ?=
- =?utf-8?q?_Alignment_-_Cleanup_and_future_proof_=28rev4=29?=
+To: "Jeevan B" <jeevan.b@intel.com>
+Date: Fri, 24 Nov 2023 16:04:16 -0000
+Message-ID: <170084185654.13022.103808388901795534@emeril.freedesktop.org>
+References: <20231124160456.2137059-1-jeevan.b@intel.com>
+In-Reply-To: <20231124160456.2137059-1-jeevan.b@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBBZGQg?=
+ =?utf-8?q?FBC_support_to_PSR/PSR2_tests_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,25 +25,19 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: uAPI Alignment - Cleanup and future proof (rev4)
-URL   : https://patchwork.freedesktop.org/series/126537/
+Series: Add FBC support to PSR/PSR2 tests (rev4)
+URL   : https://patchwork.freedesktop.org/series/126689/
 State : failure
 
 == Summary ==
 
-Applying: drm-uapi/xe: Extend drm_xe_vm_bind_op
-Applying: xe_ioctl: Converge bo_create to the most used version
+Applying: tests/intel/kms_psr: Add FBC support to PSR/PSR2 tests
 Using index info to reconstruct a base tree...
-M	lib/xe/xe_ioctl.c
-M	lib/xe/xe_ioctl.h
-M	tests/intel/xe_vm.c
+M	tests/intel/kms_psr.c
 Falling back to patching base and 3-way merge...
-Auto-merging tests/intel/xe_vm.c
-Auto-merging lib/xe/xe_ioctl.h
-CONFLICT (content): Merge conflict in lib/xe/xe_ioctl.h
-Auto-merging lib/xe/xe_ioctl.c
-CONFLICT (content): Merge conflict in lib/xe/xe_ioctl.c
-Patch failed at 0002 xe_ioctl: Converge bo_create to the most used version
+Auto-merging tests/intel/kms_psr.c
+CONFLICT (content): Merge conflict in tests/intel/kms_psr.c
+Patch failed at 0001 tests/intel/kms_psr: Add FBC support to PSR/PSR2 tests
 When you have resolved this problem, run "git am --continue".
 If you prefer to skip this patch, run "git am --skip" instead.
 To restore the original branch and stop patching, run "git am --abort".
