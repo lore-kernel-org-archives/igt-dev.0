@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 098FC10E09D
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Nov 2023 14:25:07 +0000 (UTC)
-Date: Thu, 2 Nov 2023 15:24:45 +0100
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7F3FB10E206
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Nov 2023 16:42:49 +0000 (UTC)
+Date: Fri, 24 Nov 2023 17:42:45 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20231102142445.7bw5jsvd4rgjrgy2@kamilkon-desk.igk.intel.com>
-References: <20231102114256.297063-1-mauro.chehab@linux.intel.com>
+Message-ID: <20231124164245.ws6udiujq3sxrryo@kamilkon-desk.igk.intel.com>
+References: <20231124081834.33714-1-mauro.chehab@linux.intel.com>
+ <20231124081834.33714-3-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231102114256.297063-1-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2] intel/intel_hwmon.c: Fix test
- documentation
+In-Reply-To: <20231124081834.33714-3-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] scripts/test_list.py: don't add a
+ blank description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,44 +26,35 @@ To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Mauro,
-On 2023-11-02 at 12:42:56 +0100, Mauro Carvalho Chehab wrote:
+On 2023-11-24 at 09:16:06 +0100, Mauro Carvalho Chehab wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
-> The test documentation is incomplete, causing warnings:
+> At the first versions, it was assumed that a Description field
+> would always exist. This is not true anymore.
 > 
-> Warning: igt@intel_hwmon@hwmon-read Category documentation is missing
-> Warning: igt@intel_hwmon@hwmon-read Functionality documentation is missing
-> Warning: igt@intel_hwmon@hwmon-read Sub-category documentation is missing
-> Warning: igt@intel_hwmon@hwmon-write Category documentation is missing
-> Warning: igt@intel_hwmon@hwmon-write Functionality documentation is missing
-> Warning: igt@intel_hwmon@hwmon-write Sub-category documentation is missing
+> Stop artificially creating one with an empty value by default.
 > 
-> Reported-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Cc: Badal Nilawar <badal.nilawar@intel.com>
 > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 > ---
->  tests/intel/intel_hwmon.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+>  scripts/test_list.py | 1 -
+>  1 file changed, 1 deletion(-)
 > 
-> diff --git a/tests/intel/intel_hwmon.c b/tests/intel/intel_hwmon.c
-> index 1cc9cd399c85..c3e5033d52ff 100644
-> --- a/tests/intel/intel_hwmon.c
-> +++ b/tests/intel/intel_hwmon.c
-> @@ -11,7 +11,9 @@
->  /**
->   * TEST: intel hwmon
->   * Description: Tests for intel hwmon
-> - * Feature: hwmon
-> + * Category: Software Building Block
-> + * Sub-category: RAS
-> + * Functionality: hwmon
->   * Run type: FULL
->   * Test category: functionality
->   *
+> diff --git a/scripts/test_list.py b/scripts/test_list.py
+> index 5ff2b18c2dd8..20377b708f83 100644
+> --- a/scripts/test_list.py
+> +++ b/scripts/test_list.py
+> @@ -1270,7 +1270,6 @@ class TestList:
+>                          self.doc[current_test]["subtest"][current_subtest][field] = self.doc[current_test][field]
+>  
+>                      self.doc[current_test]["subtest"][current_subtest]["_summary_"] = match.group(1)
+> -                    self.doc[current_test]["subtest"][current_subtest]["Description"] = ''
+>                      self.doc[current_test]["_subtest_line_"][current_subtest] = file_ln
+>  
+>                      if not arg_ref:
 > -- 
-> 2.41.0
+> 2.42.0
 > 
 
