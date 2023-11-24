@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C7C2010E7C0
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Nov 2023 08:53:12 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8CB0210E7C6
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Nov 2023 08:53:19 +0000 (UTC)
 From: Lukasz Laguna <lukasz.laguna@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 24 Nov 2023 09:52:53 +0100
-Message-Id: <20231124085259.1777-3-lukasz.laguna@intel.com>
+Date: Fri, 24 Nov 2023 09:52:55 +0100
+Message-Id: <20231124085259.1777-5-lukasz.laguna@intel.com>
 In-Reply-To: <20231124085259.1777-1-lukasz.laguna@intel.com>
 References: <20231124085259.1777-1-lukasz.laguna@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/8] lib/igt_sriov_device: add helper for
- opening VF device
+Subject: [igt-dev] [PATCH i-g-t 4/8] lib/igt_sriov_device: add helpers for
+ operations in different VFs scenarios
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,157 +23,70 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Katarzyna Dec <katarzyna.dec@intel.com>
-
-Helper opens DRM device node and returns its file descriptor.
+Added helpers:
+- for_each_vf and for_each_num_vfs
+- for_random_vf and for_random_num_vfs
+- for_last_vf and for_max_num_vfs
 
 v2:
- - s/drm_open_device/__drm_open_device (Kamil)
- - combine string with one go (Kamil)
+ - document helpers (Michal)
 
 Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Signed-off-by: Katarzyna Dec <katarzyna.dec@intel.com>
 Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
 ---
- lib/drmtest.c          | 17 ++++++++++++----
- lib/drmtest.h          |  1 +
- lib/igt_sriov_device.c | 46 ++++++++++++++++++++++++++++++++++++++++++
- lib/igt_sriov_device.h |  1 +
- 4 files changed, 61 insertions(+), 4 deletions(-)
+ lib/igt_sriov_device.h | 41 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
-diff --git a/lib/drmtest.c b/lib/drmtest.c
-index f0b97e362..8aa510695 100644
---- a/lib/drmtest.c
-+++ b/lib/drmtest.c
-@@ -245,7 +245,16 @@ static void log_opened_device_path(const char *device_path)
- 	igt_info("Opened device: %s\n", item->path);
- }
- 
--static int open_device(const char *name, unsigned int chipset)
-+/**
-+ * __drm_open_device:
-+ * @name: DRM node name
-+ * @chipset: OR'd flags for each chipset to search, eg. #DRIVER_INTEL
-+ *
-+ * Open a drm legacy device node.
-+ *
-+ * Returns: DRM file descriptor or -1 on error
-+ */
-+int __drm_open_device(const char *name, unsigned int chipset)
- {
- 	const char *forced;
- 	char dev_name[16] = "";
-@@ -350,7 +359,7 @@ static int __search_and_open(const char *base, int offset, unsigned int chipset,
- 		if (_is_already_opened(name, as_idx))
- 			continue;
- 
--		fd = open_device(name, chipset);
-+		fd = __drm_open_device(name, chipset);
- 		if (fd != -1)
- 			return fd;
- 	}
-@@ -392,13 +401,13 @@ static int __open_driver_exact(const char *name, unsigned int chipset)
- {
- 	int fd;
- 
--	fd = open_device(name, chipset);
-+	fd = __drm_open_device(name, chipset);
- 	if (fd != -1)
- 		return fd;
- 
- 	drm_load_module(chipset);
- 
--	return open_device(name, chipset);
-+	return __drm_open_device(name, chipset);
- }
- 
- /*
-diff --git a/lib/drmtest.h b/lib/drmtest.h
-index 909a0c12c..271a93e8b 100644
---- a/lib/drmtest.h
-+++ b/lib/drmtest.h
-@@ -98,6 +98,7 @@ void __set_forced_driver(const char *name);
-  */
- #define ALIGN_DOWN(x, a)	ALIGN((x) - ((a) - 1), (a))
- 
-+int __drm_open_device(const char *name, unsigned int chipset);
- void drm_load_module(unsigned int chipset);
- int drm_open_driver(int chipset);
- int drm_open_driver_master(int chipset);
-diff --git a/lib/igt_sriov_device.c b/lib/igt_sriov_device.c
-index c5c594c2c..8e4d30b91 100644
---- a/lib/igt_sriov_device.c
-+++ b/lib/igt_sriov_device.c
-@@ -3,8 +3,10 @@
-  * Copyright(c) 2023 Intel Corporation. All rights reserved.
-  */
- 
-+#include <dirent.h>
- #include <errno.h>
- 
-+#include "drmtest.h"
- #include "igt_core.h"
- #include "igt_sriov_device.h"
- #include "igt_sysfs.h"
-@@ -211,3 +213,47 @@ void igt_sriov_disable_driver_autoprobe(int pf)
- {
- 	pf_attr_set_u32(pf,  "device/sriov_drivers_autoprobe", false);
- }
-+
-+/**
-+ * igt_sriov_open_vf_drm_device - Open VF DRM device node
-+ * @pf: PF device file descriptor
-+ * @vf_num: VF number (1-based to identify single VF)
-+ *
-+ * Open DRM device node for given VF.
-+ *
-+ * Return:
-+ * VF file descriptor or -1 on error.
-+ */
-+int igt_sriov_open_vf_drm_device(int pf, unsigned int vf_num)
-+{
-+	char dir_path[PATH_MAX], path[256], dev_name[16];
-+	DIR *dir;
-+	struct dirent *de;
-+	bool found = false;
-+
-+	igt_assert(vf_num > 0);
-+
-+	if (!igt_sysfs_path(pf, path, sizeof(path)))
-+		return -1;
-+	/* vf_num is 1-based, but virtfn is 0-based */
-+	snprintf(dir_path, sizeof(dir_path), "%s/device/virtfn%u/drm", path, vf_num - 1);
-+
-+	dir = opendir(dir_path);
-+	if (!dir)
-+		return -1;
-+	while ((de = readdir(dir))) {
-+		unsigned int card_num;
-+
-+		if (sscanf(de->d_name, "card%d", &card_num) == 1) {
-+			snprintf(dev_name, sizeof(dev_name), "/dev/dri/card%u", card_num);
-+			found = true;
-+			break;
-+		}
-+	}
-+	closedir(dir);
-+
-+	if (!found)
-+		return -1;
-+
-+	return __drm_open_device(dev_name, DRIVER_ANY);
-+}
 diff --git a/lib/igt_sriov_device.h b/lib/igt_sriov_device.h
-index 337fdf84b..4e57f0dcb 100644
+index 84f033f52..3ab984720 100644
 --- a/lib/igt_sriov_device.h
 +++ b/lib/igt_sriov_device.h
-@@ -25,5 +25,6 @@ void igt_sriov_disable_vfs(int pf);
- bool igt_sriov_is_driver_autoprobe_enabled(int pf);
- void igt_sriov_enable_driver_autoprobe(int pf);
- void igt_sriov_disable_driver_autoprobe(int pf);
-+int igt_sriov_open_vf_drm_device(int pf, unsigned int vf_num);
+@@ -28,4 +28,45 @@ void igt_sriov_disable_driver_autoprobe(int pf);
+ int igt_sriov_open_vf_drm_device(int pf, unsigned int vf_num);
+ bool igt_sriov_is_vf_drm_driver_probed(int pf, unsigned int vf_num);
  
++/**
++ * for_each_vf - Helper for running code on each VF
++ * @__pf_fd: PF device file descriptor
++ * @__vf_num: VFs iterator
++ *
++ * For loop that iterates over all VFs associated with given PF @__pf_fd.
++ */
++#define for_each_vf(__pf_fd, __vf_num) \
++	for (unsigned int __vf_num = 1, __total_vfs = igt_sriov_get_total_vfs(__pf_fd); \
++	     __vf_num <= __total_vfs; \
++	     ++__vf_num)
++#define for_each_num_vfs for_each_vf
++
++/**
++ * for_random_vf - Helper for running code on random VF
++ * @__pf_fd: PF device file descriptor
++ * @__vf_num: stores random VF
++ *
++ * Helper allows to run code using random VF number (stored in @__vf_num)
++ * picked from the range of all VFs associated with given PF @__pf_fd.
++ */
++#define for_random_vf(__pf_fd, __vf_num) \
++	for (unsigned int __vf_num = 1 + random() % igt_sriov_get_total_vfs(__pf_fd), __tmp = 0; \
++	     __tmp < 1; \
++	     ++__tmp)
++#define for_random_num_vfs for_random_vf
++
++/**
++ * for_last_vf - Helper for running code on last VF
++ * @__pf_fd: PF device file descriptor
++ * @__vf_num: stores last VF number
++ *
++ * Helper allows to run code using last VF number (stored in @__vf_num)
++ * associated with given PF @__pf_fd.
++ */
++#define for_last_vf(__pf_fd, __vf_num) \
++	for (unsigned int __vf_num = igt_sriov_get_total_vfs(__pf_fd), __tmp = 0; \
++	     __tmp < 1; \
++	     ++__tmp)
++#define for_max_num_vfs for_last_vf
++
  #endif /* __IGT_SRIOV_DEVICE_H__ */
 -- 
 2.40.0
