@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3E97010E0AD
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Nov 2023 14:04:24 +0000 (UTC)
-From: Daniel Mrzyglod <daniel.t.mrzyglod@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 24 Nov 2023 15:04:03 +0100
-Message-ID: <20231124140403.1503568-1-daniel.t.mrzyglod@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 528AD10E0AD
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Nov 2023 14:37:28 +0000 (UTC)
+Message-ID: <e2d9cf4e-940a-4c9a-acbb-ee762c582556@intel.com>
+Date: Fri, 24 Nov 2023 20:07:20 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] intel-ci/xe-fast-feedback: Add xe_waitfence
- subtest for Xe run
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20231124093602.2358565-1-bhanuprakash.modem@intel.com>
+Content-Language: en-US
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20231124093602.2358565-1-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [i-g-t 0/5] Optimize kms tesplan documentation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,26 +25,112 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-There is subtest which should be run in bat.
-Test is simple check of waitfence with provided
-engine class instance.
+The whole series LGTM
 
-Signed-off-by: Daniel Mrzyglod <daniel.t.mrzyglod@intel.com>
----
- tests/intel-ci/xe-fast-feedback.testlist | 1 +
- 1 file changed, 1 insertion(+)
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index 2a95bd037..ddf5bd208 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -149,6 +149,7 @@ igt@xe_vm@munmap-style-unbind-userptr-inval-end
- igt@xe_vm@munmap-style-unbind-userptr-inval-front
- igt@xe_waitfence@abstime
- igt@xe_waitfence@reltime
-+igt@xe_waitfence@engine
- igt@kms_addfb_basic@addfb25-4-tiled
- igt@kms_addfb_basic@addfb25-bad-modifier
- igt@kms_addfb_basic@addfb25-modifier-no-flag
--- 
-2.42.0
+On 24-Nov-23 3:05 PM, Bhanuprakash Modem wrote:
+> Optimizations:
+> - Move common stuff to TEST level
+> - Move documentation to beginning of the file
+> - Align Mega features to internal tools
+> - Avoid duplicate names on Mega feature vs Functionality
+> 
+> V2: Rebase
+> 
+> Bhanuprakash Modem (5):
+>    tests/kms/testplan: Move testplan documentation to beginning of the
+>      file
+>    tests/kms/testplan: Regroup testplan documentation
+>    tests/kms/testplan: Optimize KMS testplan documentation
+>    tests/kms/testplan: Fix Mega Feature in testplan documentation
+>    tests/kms/testplan: Avoid duplicate names on Mega feature vs
+>      Functionality
+> 
+>   tests/chamelium/kms_chamelium_audio.c  |   68 +-
+>   tests/chamelium/kms_chamelium_color.c  |   59 +-
+>   tests/chamelium/kms_chamelium_edid.c   |  181 +-
+>   tests/chamelium/kms_chamelium_frames.c |  181 +-
+>   tests/chamelium/kms_chamelium_hpd.c    |  362 +-
+>   tests/intel/kms_big_fb.c               |  275 +-
+>   tests/intel/kms_big_joiner.c           |   42 +-
+>   tests/intel/kms_busy.c                 |   90 +-
+>   tests/intel/kms_ccs.c                  |   16 +-
+>   tests/intel/kms_cdclk.c                |   41 +-
+>   tests/intel/kms_dirtyfb.c              |   24 +-
+>   tests/intel/kms_draw_crc.c             |   72 +-
+>   tests/intel/kms_dsc.c                  |    9 +-
+>   tests/intel/kms_fb_coherency.c         |   21 +-
+>   tests/intel/kms_fbcon_fbt.c            |   26 +-
+>   tests/intel/kms_fence_pin_leak.c       |   11 +-
+>   tests/intel/kms_flip_scaled_crc.c      |   71 +-
+>   tests/intel/kms_flip_tiling.c          |   11 +-
+>   tests/intel/kms_frontbuffer_tracking.c | 5746 +++++++++++-------------
+>   tests/intel/kms_legacy_colorkey.c      |   18 +-
+>   tests/intel/kms_mmap_write_crc.c       |   13 +-
+>   tests/intel/kms_pipe_b_c_ivb.c         |   29 +-
+>   tests/intel/kms_pm_backlight.c         |   33 +-
+>   tests/intel/kms_pm_dc.c                |   43 +-
+>   tests/intel/kms_pm_lpsp.c              |   20 +-
+>   tests/intel/kms_pm_rpm.c               |    4 +
+>   tests/intel/kms_psr.c                  |  155 +-
+>   tests/intel/kms_psr2_sf.c              |   49 +-
+>   tests/intel/kms_psr2_su.c              |   20 +-
+>   tests/intel/kms_psr_stress_test.c      |   22 +-
+>   tests/intel/kms_pwrite_crc.c           |   10 +-
+>   tests/kms_3d.c                         |    9 +-
+>   tests/kms_addfb_basic.c                |  356 +-
+>   tests/kms_async_flips.c                |   82 +-
+>   tests/kms_atomic.c                     |  141 +-
+>   tests/kms_atomic_interruptible.c       |   88 +-
+>   tests/kms_atomic_transition.c          |  157 +-
+>   tests/kms_bw.c                         |   19 +-
+>   tests/kms_color.c                      |  124 +-
+>   tests/kms_concurrent.c                 |    9 +-
+>   tests/kms_content_protection.c         |  120 +-
+>   tests/kms_cursor_crc.c                 |  131 +-
+>   tests/kms_cursor_edge_walk.c           |   20 +-
+>   tests/kms_cursor_legacy.c              |  426 +-
+>   tests/kms_display_modes.c              |   34 +-
+>   tests/kms_dither.c                     |   28 +-
+>   tests/kms_dp_aux_dev.c                 |   11 +-
+>   tests/kms_feature_discovery.c          |   43 +-
+>   tests/kms_flip.c                       |  229 +-
+>   tests/kms_flip_event_leak.c            |   10 +-
+>   tests/kms_force_connector_basic.c      |   52 +-
+>   tests/kms_getfb.c                      |  139 +-
+>   tests/kms_hdmi_inject.c                |   25 +-
+>   tests/kms_hdr.c                        |  106 +-
+>   tests/kms_invalid_mode.c               |    9 +-
+>   tests/kms_lease.c                      |   88 +-
+>   tests/kms_multipipe_modeset.c          |    7 +-
+>   tests/kms_panel_fitting.c              |   23 +-
+>   tests/kms_pipe_crc_basic.c             |  120 +-
+>   tests/kms_plane.c                      |  114 +-
+>   tests/kms_plane_alpha_blend.c          |   82 +-
+>   tests/kms_plane_cursor.c               |   20 +-
+>   tests/kms_plane_lowres.c               |   47 +-
+>   tests/kms_plane_multiple.c             |   51 +-
+>   tests/kms_plane_scaling.c              |  400 +-
+>   tests/kms_prime.c                      |   26 +-
+>   tests/kms_prop_blob.c                  |   84 +-
+>   tests/kms_properties.c                 |   43 +-
+>   tests/kms_rmfb.c                       |   25 +-
+>   tests/kms_rotation_crc.c               |  202 +-
+>   tests/kms_scaling_modes.c              |   13 +-
+>   tests/kms_selftest.c                   |   13 +-
+>   tests/kms_sequence.c                   |   56 +-
+>   tests/kms_setmode.c                    |   40 +-
+>   tests/kms_sysfs_edid_timing.c          |   12 +-
+>   tests/kms_tiled_display.c              |   10 +-
+>   tests/kms_tv_load_detect.c             |    7 +-
+>   tests/kms_universal_plane.c            |   33 +-
+>   tests/kms_vblank.c                     |   61 +-
+>   tests/kms_vrr.c                        |   33 +-
+>   tests/kms_writeback.c                  |   43 +-
+>   tests/testdisplay.c                    |   12 +-
+>   82 files changed, 5026 insertions(+), 6729 deletions(-)
+> 
+> --
+> 2.40.0
+> 
