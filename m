@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E9E3E10E7CB
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Nov 2023 09:46:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2E60C10E7CC
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Nov 2023 09:46:22 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	swati2.sharma@intel.com
-Date: Fri, 24 Nov 2023 15:05:57 +0530
-Message-Id: <20231124093602.2358565-1-bhanuprakash.modem@intel.com>
+Date: Fri, 24 Nov 2023 15:05:59 +0530
+Message-Id: <20231124093602.2358565-3-bhanuprakash.modem@intel.com>
+In-Reply-To: <20231124093602.2358565-1-bhanuprakash.modem@intel.com>
+References: <20231124093602.2358565-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 0/5] Optimize kms tesplan documentation
+Subject: [igt-dev] [i-g-t 2/5] tests/kms/testplan: Regroup testplan
+ documentation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,106 +24,562 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Optimizations:
-- Move common stuff to TEST level
-- Move documentation to beginning of the file
-- Align Mega features to internal tools
-- Avoid duplicate names on Mega feature vs Functionality
+For redability purpose, re-group testplan documentation.
 
-V2: Rebase
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/intel/kms_big_fb.c   |  46 +++++----------
+ tests/intel/kms_busy.c     |  33 ++++++-----
+ tests/intel/kms_draw_crc.c |  16 +++--
+ tests/kms_atomic.c         |  75 ++++++++++--------------
+ tests/kms_cursor_legacy.c  |   7 ---
+ tests/kms_flip.c           | 116 ++++++++++++++++---------------------
+ tests/kms_plane.c          |  16 +++--
+ tests/kms_rotation_crc.c   |  16 +++--
+ 8 files changed, 133 insertions(+), 192 deletions(-)
 
-Bhanuprakash Modem (5):
-  tests/kms/testplan: Move testplan documentation to beginning of the
-    file
-  tests/kms/testplan: Regroup testplan documentation
-  tests/kms/testplan: Optimize KMS testplan documentation
-  tests/kms/testplan: Fix Mega Feature in testplan documentation
-  tests/kms/testplan: Avoid duplicate names on Mega feature vs
-    Functionality
-
- tests/chamelium/kms_chamelium_audio.c  |   68 +-
- tests/chamelium/kms_chamelium_color.c  |   59 +-
- tests/chamelium/kms_chamelium_edid.c   |  181 +-
- tests/chamelium/kms_chamelium_frames.c |  181 +-
- tests/chamelium/kms_chamelium_hpd.c    |  362 +-
- tests/intel/kms_big_fb.c               |  275 +-
- tests/intel/kms_big_joiner.c           |   42 +-
- tests/intel/kms_busy.c                 |   90 +-
- tests/intel/kms_ccs.c                  |   16 +-
- tests/intel/kms_cdclk.c                |   41 +-
- tests/intel/kms_dirtyfb.c              |   24 +-
- tests/intel/kms_draw_crc.c             |   72 +-
- tests/intel/kms_dsc.c                  |    9 +-
- tests/intel/kms_fb_coherency.c         |   21 +-
- tests/intel/kms_fbcon_fbt.c            |   26 +-
- tests/intel/kms_fence_pin_leak.c       |   11 +-
- tests/intel/kms_flip_scaled_crc.c      |   71 +-
- tests/intel/kms_flip_tiling.c          |   11 +-
- tests/intel/kms_frontbuffer_tracking.c | 5746 +++++++++++-------------
- tests/intel/kms_legacy_colorkey.c      |   18 +-
- tests/intel/kms_mmap_write_crc.c       |   13 +-
- tests/intel/kms_pipe_b_c_ivb.c         |   29 +-
- tests/intel/kms_pm_backlight.c         |   33 +-
- tests/intel/kms_pm_dc.c                |   43 +-
- tests/intel/kms_pm_lpsp.c              |   20 +-
- tests/intel/kms_pm_rpm.c               |    4 +
- tests/intel/kms_psr.c                  |  155 +-
- tests/intel/kms_psr2_sf.c              |   49 +-
- tests/intel/kms_psr2_su.c              |   20 +-
- tests/intel/kms_psr_stress_test.c      |   22 +-
- tests/intel/kms_pwrite_crc.c           |   10 +-
- tests/kms_3d.c                         |    9 +-
- tests/kms_addfb_basic.c                |  356 +-
- tests/kms_async_flips.c                |   82 +-
- tests/kms_atomic.c                     |  141 +-
- tests/kms_atomic_interruptible.c       |   88 +-
- tests/kms_atomic_transition.c          |  157 +-
- tests/kms_bw.c                         |   19 +-
- tests/kms_color.c                      |  124 +-
- tests/kms_concurrent.c                 |    9 +-
- tests/kms_content_protection.c         |  120 +-
- tests/kms_cursor_crc.c                 |  131 +-
- tests/kms_cursor_edge_walk.c           |   20 +-
- tests/kms_cursor_legacy.c              |  426 +-
- tests/kms_display_modes.c              |   34 +-
- tests/kms_dither.c                     |   28 +-
- tests/kms_dp_aux_dev.c                 |   11 +-
- tests/kms_feature_discovery.c          |   43 +-
- tests/kms_flip.c                       |  229 +-
- tests/kms_flip_event_leak.c            |   10 +-
- tests/kms_force_connector_basic.c      |   52 +-
- tests/kms_getfb.c                      |  139 +-
- tests/kms_hdmi_inject.c                |   25 +-
- tests/kms_hdr.c                        |  106 +-
- tests/kms_invalid_mode.c               |    9 +-
- tests/kms_lease.c                      |   88 +-
- tests/kms_multipipe_modeset.c          |    7 +-
- tests/kms_panel_fitting.c              |   23 +-
- tests/kms_pipe_crc_basic.c             |  120 +-
- tests/kms_plane.c                      |  114 +-
- tests/kms_plane_alpha_blend.c          |   82 +-
- tests/kms_plane_cursor.c               |   20 +-
- tests/kms_plane_lowres.c               |   47 +-
- tests/kms_plane_multiple.c             |   51 +-
- tests/kms_plane_scaling.c              |  400 +-
- tests/kms_prime.c                      |   26 +-
- tests/kms_prop_blob.c                  |   84 +-
- tests/kms_properties.c                 |   43 +-
- tests/kms_rmfb.c                       |   25 +-
- tests/kms_rotation_crc.c               |  202 +-
- tests/kms_scaling_modes.c              |   13 +-
- tests/kms_selftest.c                   |   13 +-
- tests/kms_sequence.c                   |   56 +-
- tests/kms_setmode.c                    |   40 +-
- tests/kms_sysfs_edid_timing.c          |   12 +-
- tests/kms_tiled_display.c              |   10 +-
- tests/kms_tv_load_detect.c             |    7 +-
- tests/kms_universal_plane.c            |   33 +-
- tests/kms_vblank.c                     |   61 +-
- tests/kms_vrr.c                        |   33 +-
- tests/kms_writeback.c                  |   43 +-
- tests/testdisplay.c                    |   12 +-
- 82 files changed, 5026 insertions(+), 6729 deletions(-)
-
---
+diff --git a/tests/intel/kms_big_fb.c b/tests/intel/kms_big_fb.c
+index 2fb435ff4..cce7027e9 100644
+--- a/tests/intel/kms_big_fb.c
++++ b/tests/intel/kms_big_fb.c
+@@ -141,51 +141,33 @@
+  */
+ 
+ /**
+- * SUBTEST: %s-addfb-size-overflow
+- * Description: Sanity check if addfb ioctl fails correctly for (%arg[1]) modifier
+- *              with small bo.
++ * SUBTEST: linear-addfb
++ * Description: Sanity check if addfb ioctl works correctly with Linear modifier
++ *              for given size and strides of fb
+  * Driver requirement: i915, xe
+- * Functionality: big_fbs, kms_gem_interop, tiling
++ * Functionality: big_fbs, kms_gem_interop
+  * Mega feature: General Display Features
+  * Test category: functionality test
+  *
+- * arg[1]:
+- *
+- * @4-tiled:    TILE-4
+- * @x-tiled:    TILE-X
+- * @y-tiled:    TILE-Y
+- * @yf-tiled:   TILE-YF
+- */
+-
+-/**
+- * SUBTEST: %s-addfb-size-offset-overflow
+- * Description: Sanity check if addfb ioctl fails correctly for (%arg[1]) modifier
+- *              and offsets with small bo
++ * SUBTEST: %s-addfb
++ * Description: Sanity check if addfb ioctl works correctly with %arg[1] modifier
++ *              for given size and strides of fb
+  * Driver requirement: i915, xe
+  * Functionality: big_fbs, kms_gem_interop, tiling
+  * Mega feature: General Display Features
+  * Test category: functionality test
+  *
+- * arg[1]:
+- *
+- * @4-tiled:    TILE-4
+- * @x-tiled:    TILE-X
+- * @y-tiled:    TILE-Y
+- * @yf-tiled:   TILE-YF
+- */
+-
+-/**
+- * SUBTEST: linear-addfb
+- * Description: Sanity check if addfb ioctl works correctly with Linear modifier
+- *              for given size and strides of fb
++ * SUBTEST: %s-addfb-size-overflow
++ * Description: Sanity check if addfb ioctl fails correctly for (%arg[1]) modifier
++ *              with small bo.
+  * Driver requirement: i915, xe
+- * Functionality: big_fbs, kms_gem_interop
++ * Functionality: big_fbs, kms_gem_interop, tiling
+  * Mega feature: General Display Features
+  * Test category: functionality test
+  *
+- * SUBTEST: %s-addfb
+- * Description: Sanity check if addfb ioctl works correctly with %arg[1] modifier
+- *              for given size and strides of fb
++ * SUBTEST: %s-addfb-size-offset-overflow
++ * Description: Sanity check if addfb ioctl fails correctly for (%arg[1]) modifier
++ *              and offsets with small bo
+  * Driver requirement: i915, xe
+  * Functionality: big_fbs, kms_gem_interop, tiling
+  * Mega feature: General Display Features
+diff --git a/tests/intel/kms_busy.c b/tests/intel/kms_busy.c
+index c65d71b19..63d1bbf71 100644
+--- a/tests/intel/kms_busy.c
++++ b/tests/intel/kms_busy.c
+@@ -48,25 +48,14 @@
+  * Functionality: kms_core, hang
+  * Mega feature: General Display Features
+  * Test category: functionality test
+- */
+-
+-/**
+- * SUBTEST: extended-modeset-hang-%s
++ *
++ * SUBTEST: extended-pageflip-modeset-hang-oldfb
+  * Description: Test for basic check of KMS ABI with busy framebuffers.
+  * Driver requirement: i915
+  * Functionality: kms_core, hang
+  * Mega feature: General Display Features
+  * Test category: functionality test
+  *
+- * arg[1]:
+- *
+- * @newfb:                New framebuffer
+- * @oldfb:                Old framebuffer
+- * @newfb-with-reset:     New framebuffer with reset
+- * @oldfb-with-reset:     Old framebuffer with reset
+- */
+-
+-/**
+  * SUBTEST: extended-pageflip-hang-%s
+  * Description: Test for basic check of KMS ABI with busy framebuffers.
+  * Driver requirement: i915
+@@ -74,19 +63,31 @@
+  * Mega feature: General Display Features
+  * Test category: functionality test
+  *
++ * SUBTEST: extended-modeset-hang-%s
++ * Description: Test for basic check of KMS ABI with busy framebuffers.
++ * Driver requirement: i915
++ * Functionality: kms_core, hang
++ * Mega feature: General Display Features
++ * Test category: functionality test
++ *
+  * arg[1]:
+  *
+- * @newfb:     New framebuffer
+- * @oldfb:     Old framebuffer
++ * @newfb:                New framebuffer
++ * @oldfb:                Old framebuffer
+  */
+ 
+ /**
+- * SUBTEST: extended-pageflip-modeset-hang-oldfb
++ * SUBTEST: extended-modeset-hang-%s
+  * Description: Test for basic check of KMS ABI with busy framebuffers.
+  * Driver requirement: i915
+  * Functionality: kms_core, hang
+  * Mega feature: General Display Features
+  * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @newfb-with-reset:     New framebuffer with reset
++ * @oldfb-with-reset:     Old framebuffer with reset
+  */
+ 
+ IGT_TEST_DESCRIPTION("Basic check of KMS ABI with busy framebuffers.");
+diff --git a/tests/intel/kms_draw_crc.c b/tests/intel/kms_draw_crc.c
+index 7cd4c3ff1..b9d9cd6e4 100644
+--- a/tests/intel/kms_draw_crc.c
++++ b/tests/intel/kms_draw_crc.c
+@@ -32,6 +32,13 @@
+ #include "igt.h"
+ 
+ /**
++ * SUBTEST: fill-fb
++ * Description: This subtest verifies CRC after filling fb with x-tiling or none.
++ * Driver requirement: i915, xe
++ * Functionality: kms_core, tiling
++ * Mega feature: General Display Features
++ * Test category: functionality test
++ *
+  * SUBTEST: draw-method-%s
+  * Description: Verify that igt draw library works for the %arg[1] method with
+  *              different modifiers & DRM formats.
+@@ -63,15 +70,6 @@
+  * @pwrite:       PWRITE
+  */
+ 
+-/**
+- * SUBTEST: fill-fb
+- * Description: This subtest verifies CRC after filling fb with x-tiling or none.
+- * Driver requirement: i915, xe
+- * Functionality: kms_core, tiling
+- * Mega feature: General Display Features
+- * Test category: functionality test
+- */
+-
+ #define MAX_CONNECTORS 32
+ 
+ int drm_fd;
+diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
+index 28af27f22..9b69fc892 100644
+--- a/tests/kms_atomic.c
++++ b/tests/kms_atomic.c
+@@ -49,6 +49,30 @@
+ #include "sw_sync.h"
+ 
+ /**
++ * SUBTEST: atomic-invalid-params
++ * Description: Test abuse the atomic ioctl directly in order to test various
++ *              invalid conditions which the libdrm wrapper won't allow us to
++ *              create.
++ * Driver requirement: i915, xe
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Test category: functionality test
++ *
++ * SUBTEST: atomic-plane-damage
++ * Description: Simple test cases to use FB_DAMAGE_CLIPS plane property
++ * Driver requirement: i915, xe
++ * Functionality: kms_core, plane
++ * Mega feature: General Display Features
++ * Test category: functionality test
++ *
++ * SUBTEST: test-only
++ * Description: Test to ensure that DRM_MODE_ATOMIC_TEST_ONLY really only touches
++ *              the free-standing state objects and nothing else.
++ * Driver requirement: i915, xe
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Test category: functionality test
++ *
+  * SUBTEST: plane-primary-overlay-mutable-zpos
+  * Description: Verify that the overlay plane can cover the primary one (and
+  *              vice versa) by changing their zpos property.
+@@ -81,18 +105,8 @@
+  */
+ 
+ /**
+- * SUBTEST: test-only
+- * Description: Test to ensure that DRM_MODE_ATOMIC_TEST_ONLY really only touches
+- *              the free-standing state objects and nothing else.
+- * Driver requirement: i915, xe
+- * Functionality: kms_core
+- * Mega feature: General Display Features
+- * Test category: functionality test
+- */
+-
+-/**
+- * SUBTEST: plane-invalid-%s
+- * Description: Test error handling when invalid %arg[1] are passed
++ * SUBTEST: %s-invalid-%s
++ * Description: Test error handling when invalid %arg[1] %arg[2] are passed
+  * Driver requirement: i915, xe
+  * Functionality: kms_core, plane
+  * Mega feature: General Display Features
+@@ -100,41 +114,16 @@
+  *
+  * arg[1]:
+  *
+- * @params:           plane parameters
+- * @params-fence:     plane fence parameters
+- */
+-
+-/**
+- * SUBTEST: crtc-invalid-%s
+- * Description: Test error handling when invalid %arg[1] are passed
+- * Driver requirement: i915, xe
+- * Functionality: kms_core
+- * Mega feature: General Display Features
+- * Test category: functionality test
++ * @crtc:             CRTC
++ * @plane:            Plane
+  *
+- * arg[1]:
++ * arg[2]:
+  *
+- * @params:           crtc parameters
+- * @params-fence:     crtc fence parameters
++ * @params:           parameters
++ * @params-fence:     fence parameters
+  */
+ 
+-/**
+- * SUBTEST: atomic-invalid-params
+- * Description: Test abuse the atomic ioctl directly in order to test various
+- *              invalid conditions which the libdrm wrapper won't allow us to
+- *              create.
+- * Driver requirement: i915, xe
+- * Functionality: kms_core
+- * Mega feature: General Display Features
+- * Test category: functionality test
+- *
+- * SUBTEST: atomic-plane-damage
+- * Description: Simple test cases to use FB_DAMAGE_CLIPS plane property
+- * Driver requirement: i915, xe
+- * Functionality: kms_core, plane
+- * Mega feature: General Display Features
+- * Test category: functionality test
+- */
++
+ 
+ #ifndef DRM_CAP_CURSOR_WIDTH
+ #define DRM_CAP_CURSOR_WIDTH 0x8
+diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
+index 6a4955ef1..2e2710ae4 100644
+--- a/tests/kms_cursor_legacy.c
++++ b/tests/kms_cursor_legacy.c
+@@ -257,13 +257,6 @@
+  * Mega feature: General Display Features
+  * Test category: functionality test
+  *
+- * arg[1]:
+- *
+- * @atomic:
+- * @legacy:
+- */
+-
+-/**
+  * SUBTEST: flip-vs-cursor-busy-crc-%s
+  * Description: this test perform a busy bo update followed by a cursor update
+  * Driver requirement: i915, xe
+diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+index 798103682..9afb78757 100755
+--- a/tests/kms_flip.c
++++ b/tests/kms_flip.c
+@@ -55,63 +55,53 @@
+ #include "xe/xe_query.h"
+ 
+ /**
+- * SUBTEST: 2x-flip-vs-fences
+- * Description: Test to validate pageflips along with avialable fences on a pair
+- *              of connected displays
++ * SUBTEST: %s
++ * Description: %arg[1] test to validate pageflips with available fences
+  * Driver requirement: i915
+  * Functionality: gtt, vblank
+  * Mega feature: General Display Features
+  * Test category: functionality test
+  *
+- * SUBTEST: 2x-flip-vs-fences-interruptible
+- * Description: Interrupt test to validate pageflips along with available fences
++ * SUBTEST: 2x-%s
++ * Description: %arg[1] test to validate pageflips along with available fences
+  *              on a pair of connected displays
+- * Driver requirement: i915, xe
+- * Functionality: gtt, vblank
+- * Mega feature: General Display Features
+- * Test category: functionality test
+- *
+- * SUBTEST: flip-vs-fences
+- * Description: Basic test to validate pageflips with avialable fences
+  * Driver requirement: i915
+  * Functionality: gtt, vblank
+  * Mega feature: General Display Features
+  * Test category: functionality test
+  *
+- * SUBTEST: flip-vs-fences-interruptible
+- * Description: Interrupt test to validate pageflips with available fences
+- * Driver requirement: i915
+- * Functionality: gtt, vblank
+- * Mega feature: General Display Features
+- * Test category: functionality test
++ * arg[1]:
+  *
+- * SUBTEST: dpms-off-confusion
+- * Description: Basic test to validate pageflips by disabling other connectors usng dpms
++ * @flip-vs-fences:                 Basic
++ * @flip-vs-fences-interruptible:   Interrupt
++ */
++
++/**
++ * SUBTEST: dpms-off-%s
++ * Description: %arg[1] test to validate pageflips by disabling other connectors usng dpms
+  * Driver requirement: i915, xe
+  * Functionality: dpms, vblank
+  * Mega feature: General Display Features
+  * Test category: functionality test
+  *
+- * SUBTEST: dpms-off-confusion-interruptible
+- * Description: Interrupt test to validate pageflips by disabling other connectors using dpms
+- * Driver requirement: i915, xe
+- * Functionality: dpms, vblank
+- * Mega feature: General Display Features
+- * Test category: functionality test
++ * arg[1]:
+  *
+- * SUBTEST: bo-too-big
+- * Description: Basic test to validate pageflips with large BO in size
++ * @confusion:                      Basic
++ * @confusion-interruptible:        Interrupt
++ */
++
++/**
++ * SUBTEST: %s
++ * Description: %arg[1] test to validate pageflips with large BO in size
+  * Driver requirement: i915, xe
+  * Functionality: kms_gem_interop, vblank
+  * Mega feature: General Display Features
+  * Test category: functionality test
+  *
+- * SUBTEST: bo-too-big-interruptible
+- * Description: Interrupt test to validate pageflips with large BO in size
+- * Driver requirement: i915, xe
+- * Functionality: kms_gem_interop, vblank
+- * Mega feature: General Display Features
+- * Test category: functionality test
++ * arg[1]:
++ *
++ * @bo-too-big:                     Basic
++ * @bo-too-big-interruptible:       Interrupt
+  */
+ 
+ /**
+@@ -169,36 +159,28 @@
+  */
+ 
+ /**
+- * SUBTEST: flip-vs-suspend
+- * Description: Basic test to validate pageflips with suspend cycle
+- * Driver requirement: i915, xe
+- * Functionality: suspend, vblank
+- * Mega feature: General Display Features
+- * Test category: functionality test
+- *
+- * SUBTEST: 2x-flip-vs-suspend
+- * Description: Basic test to validate pageflips with suspend cycle on a pair of
+- *              connected displays
+- * Driver requirement: i915, xe
+- * Functionality: suspend, vblank
+- * Mega feature: General Display Features
+- * Test category: functionality test
+- *
+- * SUBTEST: flip-vs-suspend-interruptible
+- * Description: Interrupt test to validate pageflips with suspend cycle
++ * SUBTEST: %s
++ * Description: %arg[1] test to validate pageflips with suspend cycle
+  * Driver requirement: i915, xe
+  * Functionality: suspend, vblank
+  * Mega feature: General Display Features
+  * Test category: functionality test
+  *
+- * SUBTEST: 2x-flip-vs-suspend-interruptible
+- * Description: Interrupt test to validate pageflips with suspend cycle on a pair
++ * SUBTEST: 2x-%s
++ * Description: %arg[1] test to validate pageflips with suspend cycle on a pair
+  *              of connected displays
+  * Driver requirement: i915, xe
+  * Functionality: suspend, vblank
+  * Mega feature: General Display Features
+  * Test category: functionality test
+  *
++ * arg[1]:
++ *
++ * @flip-vs-suspend:                   Basic
++ * @flip-vs-suspend-interruptible:     Interrupt
++ */
++
++/**
+  * SUBTEST: %s
+  * Description: Basic test to validate %arg[1]
+  * Driver requirement: i915, xe
+@@ -293,6 +275,20 @@
+  */
+ 
+ /**
++ * SUBTEST: basic-plain-flip
++ * Description: Basic test for validating page flip
++ * Driver requirement: i915, xe
++ * Test category: functionality test
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ *
++ * SUBTEST: nonblocking-read
++ * Description: Tests that nonblocking reading fails correctly
++ * Driver requirement: i915, xe
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Test category: functionality test
++ *
+  * SUBTEST: basic-flip-vs-dpms
+  * Description: Basic test to valide pageflip with dpms
+  * Driver requirement: i915, xe
+@@ -311,20 +307,6 @@
+  *
+  * @modeset:      modeset
+  * @wf_vblank:    wait for vblank
+- *
+- * SUBTEST: basic-plain-flip
+- * Description: Basic test for validating page flip
+- * Driver requirement: i915, xe
+- * Test category: functionality test
+- * Functionality: vblank
+- * Mega feature: General Display Features
+- *
+- * SUBTEST: nonblocking-read
+- * Description: Tests that nonblocking reading fails correctly
+- * Driver requirement: i915, xe
+- * Functionality: vblank
+- * Mega feature: General Display Features
+- * Test category: functionality test
+  */
+ 
+ #define TEST_DPMS		(1 << 0)
+diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+index 17550e168..29cf45974 100644
+--- a/tests/kms_plane.c
++++ b/tests/kms_plane.c
+@@ -39,6 +39,13 @@
+ #include "xe/xe_query.h"
+ 
+ /**
++ * SUBTEST: planar-pixel-format-settings
++ * Description: verify planar settings for pixel format are handled correctly
++ * Driver requirement: i915, xe
++ * Functionality: pixel_format, plane
++ * Mega feature: General Display Features
++ * Test category: functionality test
++ *
+  * SUBTEST: plane-position-%s
+  * Description: Verify plane position using two planes to create a %arg[1]
+  * Driver requirement: i915, xe
+@@ -96,15 +103,6 @@
+  * @format-source-clamping:          with source clamping
+  */
+ 
+-/**
+- * SUBTEST: planar-pixel-format-settings
+- * Description: verify planar settings for pixel format are handled correctly
+- * Driver requirement: i915, xe
+- * Functionality: pixel_format, plane
+- * Mega feature: General Display Features
+- * Test category: functionality test
+- */
+-
+ /*
+  * Throw away enough lsbs in pixel formats tests
+  * to get a match despite some differences between
+diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
+index b2e877a4b..bb082af68 100644
+--- a/tests/kms_rotation_crc.c
++++ b/tests/kms_rotation_crc.c
+@@ -77,6 +77,13 @@
+  * Functionality: plane, rotation, tiling
+  * Mega feature: General Display Features
+  * Test category: functionality test
++ *
++ * SUBTEST: exhaust-fences
++ * Description: This test intends to check for fence leaks exhaustively
++ * Driver requirement: i915
++ * Functionality: plane, rotation
++ * Mega feature: General Display Features
++ * Test category: functionality test
+  */
+ 
+ /**
+@@ -142,15 +149,6 @@
+  * @top:      top
+  */
+ 
+-/**
+- * SUBTEST: exhaust-fences
+- * Description: This test intends to check for fence leaks exhaustively
+- * Driver requirement: i915
+- * Functionality: plane, rotation
+- * Mega feature: General Display Features
+- * Test category: functionality test
+- */
+-
+ #define MAX_FENCES 32
+ #define MAXMULTIPLANESAMOUNT 2
+ #define TEST_MAX_WIDTH 640
+-- 
 2.40.0
