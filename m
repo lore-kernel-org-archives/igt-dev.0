@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 92CE210E042
+ for <igt-dev@lists.freedesktop.org>; Sat, 25 Nov 2023 16:30:34 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org,
+	swati2.sharma@intel.com
+Date: Sat, 25 Nov 2023 21:50:12 +0530
+Message-Id: <20231125162013.2421478-5-bhanuprakash.modem@intel.com>
+In-Reply-To: <20231125162013.2421478-1-bhanuprakash.modem@intel.com>
+References: <20231125162013.2421478-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jeevan B" <jeevan.b@intel.com>
-Date: Mon, 27 Nov 2023 07:31:26 -0000
-Message-ID: <170107028622.3005.2486164643921100878@emeril.freedesktop.org>
-References: <20231127055526.2351645-1-jeevan.b@intel.com>
-In-Reply-To: <20231127055526.2351645-1-jeevan.b@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBBZGQg?=
- =?utf-8?q?FBC_support_to_PSR/PSR2_tests_=28rev5=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t 4/5] tests/kms/testplan: Fix Mega Feature in
+ testplan documentation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,72 +20,119 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Adjust KMS testplan Mega Feature to allign with internal tools.
 
-Series: Add FBC support to PSR/PSR2 tests (rev5)
-URL   : https://patchwork.freedesktop.org/series/126689/
-State : failure
+- s/Bigjoiner/Pipe Joiner/
+- s/Color mgmt/Color Management/
+- s/General Display Features/E2E Compression/ (CCS tests)
+- s/Display Power/Display Power Management/
 
-== Summary ==
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ tests/chamelium/kms_chamelium_color.c | 2 +-
+ tests/intel/kms_big_joiner.c          | 2 +-
+ tests/intel/kms_ccs.c                 | 2 +-
+ tests/intel/kms_pm_backlight.c        | 2 +-
+ tests/intel/kms_pm_dc.c               | 2 +-
+ tests/intel/kms_pm_lpsp.c             | 2 +-
+ tests/kms_color.c                     | 2 +-
+ 7 files changed, 7 insertions(+), 7 deletions(-)
 
-IGT patchset build failed on latest successful build
-d2af13d9f5be5ce23d996e4afd3e45990f5ab977 tests/intel/kms_pm_lpsp: Use lib helper to iterate connector modes
-
-Tail of build.log:
-Warning: Missing documentation for igt@kms_psr@fbc_pr_sprite_plane_move
-Warning: Missing documentation for igt@kms_psr@fbc_pr_sprite_plane_onoff
-Warning: Missing documentation for igt@kms_psr@fbc_pr_sprite_render
-Warning: Missing documentation for igt@kms_psr@fbc_pr_suspend
-Warning: Missing documentation for igt@kms_psr@fbc_psr2_basic
-Warning: Missing documentation for igt@kms_psr@fbc_psr2_cursor_blt
-Warning: Missing documentation for igt@kms_psr@fbc_psr2_cursor_mmap_cpu
-Warning: Missing documentation for igt@kms_psr@fbc_psr2_cursor_mmap_gtt
-Warning: Missing documentation for igt@kms_psr@fbc_psr2_cursor_plane_move
-Warning: Missing documentation for igt@kms_psr@fbc_psr2_cursor_plane_onoff
-Warning: Missing documentation for igt@kms_psr@fbc_psr2_cursor_render
-Warning: Missing documentation for igt@kms_psr@fbc_psr2_dpms
-Warning: Missing documentation for igt@kms_psr@fbc_psr2_no_drrs
-Warning: Missing documentation for igt@kms_psr@fbc_psr2_primary_blt
-Warning: Missing documentation for igt@kms_psr@fbc_psr2_primary_mmap_cpu
-Warning: Missing documentation for igt@kms_psr@fbc_psr2_primary_mmap_gtt
-Warning: Missing documentation for igt@kms_psr@fbc_psr2_primary_page_flip
-Warning: Missing documentation for igt@kms_psr@fbc_psr2_primary_render
-Warning: Missing documentation for igt@kms_psr@fbc_psr2_sprite_blt
-Warning: Missing documentation for igt@kms_psr@fbc_psr2_sprite_mmap_cpu
-Warning: Missing documentation for igt@kms_psr@fbc_psr2_sprite_mmap_gtt
-Warning: Missing documentation for igt@kms_psr@fbc_psr2_sprite_plane_move
-Warning: Missing documentation for igt@kms_psr@fbc_psr2_sprite_plane_onoff
-Warning: Missing documentation for igt@kms_psr@fbc_psr2_sprite_render
-Warning: Missing documentation for igt@kms_psr@fbc_psr2_suspend
-Warning: Missing documentation for igt@kms_psr@fbc_psr_basic
-Warning: Missing documentation for igt@kms_psr@fbc_psr_cursor_blt
-Warning: Missing documentation for igt@kms_psr@fbc_psr_cursor_mmap_cpu
-Warning: Missing documentation for igt@kms_psr@fbc_psr_cursor_mmap_gtt
-Warning: Missing documentation for igt@kms_psr@fbc_psr_cursor_plane_move
-Warning: Missing documentation for igt@kms_psr@fbc_psr_cursor_plane_onoff
-Warning: Missing documentation for igt@kms_psr@fbc_psr_cursor_render
-Warning: Missing documentation for igt@kms_psr@fbc_psr_dpms
-Warning: Missing documentation for igt@kms_psr@fbc_psr_no_drrs
-Warning: Missing documentation for igt@kms_psr@fbc_psr_primary_blt
-Warning: Missing documentation for igt@kms_psr@fbc_psr_primary_mmap_cpu
-Warning: Missing documentation for igt@kms_psr@fbc_psr_primary_mmap_gtt
-Warning: Missing documentation for igt@kms_psr@fbc_psr_primary_page_flip
-Warning: Missing documentation for igt@kms_psr@fbc_psr_primary_render
-Warning: Missing documentation for igt@kms_psr@fbc_psr_sprite_blt
-Warning: Missing documentation for igt@kms_psr@fbc_psr_sprite_mmap_cpu
-Warning: Missing documentation for igt@kms_psr@fbc_psr_sprite_mmap_gtt
-Warning: Missing documentation for igt@kms_psr@fbc_psr_sprite_plane_move
-Warning: Missing documentation for igt@kms_psr@fbc_psr_sprite_plane_onoff
-Warning: Missing documentation for igt@kms_psr@fbc_psr_sprite_render
-Warning: Missing documentation for igt@kms_psr@fbc_psr_suspend
-Please refer: docs/test_documentation.md for more details
-[1654/1657] Generating xe_tests.html with a custom command.
-[1655/1657] Generating i915_tests.html with a custom command.
-ninja: build stopped: subcommand failed.
-
+diff --git a/tests/chamelium/kms_chamelium_color.c b/tests/chamelium/kms_chamelium_color.c
+index e94e13e40..4156023da 100644
+--- a/tests/chamelium/kms_chamelium_color.c
++++ b/tests/chamelium/kms_chamelium_color.c
+@@ -28,7 +28,7 @@
+  * Description: Test Color Features at Pipe level using Chamelium to verify instead of CRC
+  * Driver requirement: i915, xe
+  * Functionality: chamelium, colorspace
+- * Mega feature: Color mgmt
++ * Mega feature: Color Management
+  * Test category: functionality test
+  */
+ 
+diff --git a/tests/intel/kms_big_joiner.c b/tests/intel/kms_big_joiner.c
+index c5f9f8db7..aba2adfbe 100644
+--- a/tests/intel/kms_big_joiner.c
++++ b/tests/intel/kms_big_joiner.c
+@@ -30,7 +30,7 @@
+  * Description: Test big joiner
+  * Driver requirement: i915, xe
+  * Functionality: 2p1p
+- * Mega feature: Bigjoiner
++ * Mega feature: Pipe Joiner
+  * Test category: functionality test
+  */
+ 
+diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
+index 0a202d037..7a3fd7cf6 100644
+--- a/tests/intel/kms_ccs.c
++++ b/tests/intel/kms_ccs.c
+@@ -30,7 +30,7 @@
+  *              uses to interpret the compressed data.
+  * Driver requirement: i915, xe
+  * Functionality: ccs, tiling
+- * Mega feature: General Display Features
++ * Mega feature: E2E Compression
+  * Test category: functionality test
+  */
+ 
+diff --git a/tests/intel/kms_pm_backlight.c b/tests/intel/kms_pm_backlight.c
+index 5b4c397bb..2e691dab0 100644
+--- a/tests/intel/kms_pm_backlight.c
++++ b/tests/intel/kms_pm_backlight.c
+@@ -31,7 +31,7 @@
+  * Description: Basic backlight sysfs test
+  * Driver requirement: i915, xe
+  * Functionality: backlight
+- * Mega feature: Display Power
++ * Mega feature: Display Power Management
+  * Test category: functionality test
+  */
+ 
+diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
+index f11d6d29a..739ed6112 100644
+--- a/tests/intel/kms_pm_dc.c
++++ b/tests/intel/kms_pm_dc.c
+@@ -28,7 +28,7 @@
+  * Description: Tests to validate display power DC states.
+  * Driver requirement: i915, xe
+  * Functionality: dpms, pm_dc
+- * Mega feature: Display Power
++ * Mega feature: Display Power Management
+  * Test category: functionality test
+  */
+ 
+diff --git a/tests/intel/kms_pm_lpsp.c b/tests/intel/kms_pm_lpsp.c
+index 30158f673..005438d87 100644
+--- a/tests/intel/kms_pm_lpsp.c
++++ b/tests/intel/kms_pm_lpsp.c
+@@ -29,7 +29,7 @@
+  * Category: Display
+  * Description: These tests validates display Low Power Single Pipe configurations
+  * Functionality: pm_lpsp
+- * Mega feature: Display Power
++ * Mega feature: Display Power Management
+  * Test category: functionality test
+  */
+ 
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index 39752de81..bdb80a4ad 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -28,7 +28,7 @@
+  * Description: Test Color Features at Pipe level
+  * Driver requirement: i915, xe
+  * Functionality: colorspace
+- * Mega feature: Color mgmt
++ * Mega feature: Color Management
+  * Test category: functionality test
+  */
+ 
+-- 
+2.40.0
