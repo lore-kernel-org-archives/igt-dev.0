@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4987610E067
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Nov 2023 17:10:56 +0000 (UTC)
-Date: Mon, 27 Nov 2023 18:08:18 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 19D7410E3B7
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Nov 2023 17:15:31 +0000 (UTC)
+Date: Mon, 27 Nov 2023 18:15:07 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20231127170818.673j6qkd7jp7jeqi@kamilkon-desk.igk.intel.com>
-References: <20231123085346.8067-1-lukasz.laguna@intel.com>
- <20231123085346.8067-2-lukasz.laguna@intel.com>
+Message-ID: <20231127171507.tqiguojxoykjnp2r@kamilkon-desk.igk.intel.com>
+References: <20231123150823.25862-1-marcin.bernatowicz@intel.com>
+ <20231123150823.25862-2-marcin.bernatowicz@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231123085346.8067-2-lukasz.laguna@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/1] lib/xe/xe_query: add media GT
- presence checker
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231123150823.25862-2-marcin.bernatowicz@intel.com>
+Subject: Re: [igt-dev] [PATCH v4 i-g-t 1/2] lib/xe/xe_query:
+ xe_visible_available_vram_size helper
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,70 +22,152 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: adam.miszczak@intel.com, matthew.auld@intel.com,
+ Marcin Bernatowicz <marcin.bernatowicz@intel.com>, jakub1.kolakowski@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Lukasz,
-On 2023-11-23 at 09:53:46 +0100, Lukasz Laguna wrote:
-> Add helper checking if platform is equipped with media GT.
+Hi Marcin,
+On 2023-11-23 at 16:08:22 +0100, Marcin Bernatowicz wrote:
+> Added 'xe_visible_available_vram_size' helper function
+> to query the available CPU-visible VRAM size.
 > 
-> v2: add "lib/" prefix to subject (Kamil)
+> Also, renamed 'xe_vram_available' to 'xe_available_vram_size'
+> for consistency with other function names.
 > 
-> Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
+> Cc: Francois Dugast <francois.dugast@intel.com>
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Laguna, Lukasz <lukasz.laguna@intel.com>
+----- ^ ----- ^
+This should be in other order:
+> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
 
-LGTM,
+With that:
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-
+> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@intel.com>
 > ---
->  lib/xe/xe_query.c | 20 ++++++++++++++++++++
->  lib/xe/xe_query.h |  1 +
->  2 files changed, 21 insertions(+)
+>  lib/xe/xe_query.c          | 57 ++++++++++++++++++++++++++++----------
+>  lib/xe/xe_query.h          |  3 +-
+>  tests/intel/xe_evict_ccs.c |  2 +-
+>  3 files changed, 46 insertions(+), 16 deletions(-)
 > 
 > diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-> index afd443be3..1759d1e93 100644
+> index afd443be3..eb4759094 100644
 > --- a/lib/xe/xe_query.c
 > +++ b/lib/xe/xe_query.c
-> @@ -711,6 +711,26 @@ bool xe_has_engine_class(int fd, uint16_t engine_class)
->  	return false;
->  }
+> @@ -629,20 +629,20 @@ uint64_t xe_visible_vram_size(int fd, int gt)
 >  
+>  	return visible_size;
+>  }
+> -/**
+> - * xe_vram_available:
+> - * @fd: xe device fd
+> - * @gt: gt
+> - *
+> - * Returns available vram of xe device @fd and @gt.
+> - */
+> -uint64_t xe_vram_available(int fd, int gt)
+> +
+> +struct __available_vram {
+> +	uint64_t total_available;
+> +	uint64_t cpu_visible_available;
+> +};
+> +
+> +static void __available_vram_size_snapshot(int fd, int gt, struct __available_vram *vram)
+>  {
+>  	struct xe_device *xe_dev;
+>  	int region_idx;
+>  	struct drm_xe_query_mem_region *mem_region;
+>  	struct drm_xe_query_mem_regions *mem_regions;
+>  
+> +	igt_assert(vram);
+>  	xe_dev = find_in_cache(fd);
+>  	igt_assert(xe_dev);
+>  
+> @@ -650,19 +650,48 @@ uint64_t xe_vram_available(int fd, int gt)
+>  	mem_region = &xe_dev->mem_regions->regions[region_idx];
+>  
+>  	if (XE_IS_CLASS_VRAM(mem_region)) {
+> -		uint64_t available_vram;
+> -
+>  		mem_regions = xe_query_mem_regions_new(fd);
+>  		pthread_mutex_lock(&cache.cache_mutex);
+>  		mem_region->used = mem_regions->regions[region_idx].used;
+> -		available_vram = mem_region->total_size - mem_region->used;
+> +		mem_region->cpu_visible_used = mem_regions->regions[region_idx].cpu_visible_used;
+> +		vram->total_available = mem_region->total_size - mem_region->used;
+> +		vram->cpu_visible_available =
+> +			mem_region->cpu_visible_size - mem_region->cpu_visible_used;
+>  		pthread_mutex_unlock(&cache.cache_mutex);
+>  		free(mem_regions);
+> -
+> -		return available_vram;
+>  	}
+> +}
+>  
+> -	return 0;
 > +/**
-> + * xe_has_media_gt:
+> + * xe_available_vram_size:
 > + * @fd: xe device fd
+> + * @gt: gt
 > + *
-> + * Returns true if device @fd has media GT otherwise false.
+> + * Returns size of available vram of xe device @fd and @gt.
 > + */
-> +bool xe_has_media_gt(int fd)
+> +uint64_t xe_available_vram_size(int fd, int gt)
 > +{
-> +	struct xe_device *xe_dev;
+> +	struct __available_vram vram = {};
 > +
-> +	xe_dev = find_in_cache(fd);
-> +	igt_assert(xe_dev);
+> +	__available_vram_size_snapshot(fd, gt, &vram);
 > +
-> +	for (int i = 0; i < xe_dev->gt_list->num_gt; i++)
-> +		if (xe_dev->gt_list->gt_list[i].type == DRM_XE_QUERY_GT_TYPE_MEDIA)
-> +			return true;
-> +
-> +	return false;
+> +	return vram.total_available;
 > +}
 > +
->  igt_constructor
->  {
->  	xe_device_cache_init();
+> +/**
+> + * xe_visible_available_vram_size:
+> + * @fd: xe device fd
+> + * @gt: gt
+> + *
+> + * Returns size of visible available vram of xe device @fd and @gt.
+> + */
+> +uint64_t xe_visible_available_vram_size(int fd, int gt)
+> +{
+> +	struct __available_vram vram = {};
+> +
+> +	__available_vram_size_snapshot(fd, gt, &vram);
+> +
+> +	return vram.cpu_visible_available;
+>  }
+>  
+>  /**
 > diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-> index 38e9aa440..66a62eeb8 100644
+> index 38e9aa440..503d60b44 100644
 > --- a/lib/xe/xe_query.h
 > +++ b/lib/xe/xe_query.h
-> @@ -99,6 +99,7 @@ uint16_t xe_dev_id(int fd);
->  bool xe_supports_faults(int fd);
->  const char *xe_engine_class_string(uint32_t engine_class);
->  bool xe_has_engine_class(int fd, uint16_t engine_class);
-> +bool xe_has_media_gt(int fd);
+> @@ -92,7 +92,8 @@ unsigned int xe_number_hw_engines(int fd);
+>  bool xe_has_vram(int fd);
+>  uint64_t xe_vram_size(int fd, int gt);
+>  uint64_t xe_visible_vram_size(int fd, int gt);
+> -uint64_t xe_vram_available(int fd, int gt);
+> +uint64_t xe_available_vram_size(int fd, int gt);
+> +uint64_t xe_visible_available_vram_size(int fd, int gt);
+>  uint32_t xe_get_default_alignment(int fd);
+>  uint32_t xe_va_bits(int fd);
+>  uint16_t xe_dev_id(int fd);
+> diff --git a/tests/intel/xe_evict_ccs.c b/tests/intel/xe_evict_ccs.c
+> index d7244f620..b04c20935 100644
+> --- a/tests/intel/xe_evict_ccs.c
+> +++ b/tests/intel/xe_evict_ccs.c
+> @@ -325,7 +325,7 @@ static void set_config(int fd, uint32_t flags, const struct param *param,
+>  	config->param = param;
+>  	config->flags = flags;
+>  	config->free_mb = xe_visible_vram_size(fd, 0) / SZ_1M;
+> -	config->total_mb = xe_vram_available(fd, 0) / SZ_1M;
+> +	config->total_mb = xe_available_vram_size(fd, 0) / SZ_1M;
+>  	config->test_mb = min_t(int, config->free_mb * config->param->vram_percent / 100,
+>  				config->total_mb * config->param->vram_percent / 100);
 >  
->  struct xe_device *xe_device_get(int fd);
->  void xe_device_put(int fd);
 > -- 
-> 2.40.0
+> 2.31.1
 > 
