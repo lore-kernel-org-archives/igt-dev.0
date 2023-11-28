@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E794010E08B
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Nov 2023 17:38:25 +0000 (UTC)
-From: Jeevan B <jeevan.b@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 28 Nov 2023 23:10:45 +0530
-Message-Id: <20231128174046.2497024-2-jeevan.b@intel.com>
-In-Reply-To: <20231128174046.2497024-1-jeevan.b@intel.com>
-References: <20231128174046.2497024-1-jeevan.b@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============2521035351138078493=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] tests/intel/kms_psr: Add FBC support to
- PSR/PSR2/PR tests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Date: Tue, 28 Nov 2023 19:25:47 -0000
+Message-ID: <170119954761.8219.10625823419568645431@emeril.freedesktop.org>
+References: <20231128143127.203892-1-swati2.sharma@intel.com>
+In-Reply-To: <20231128143127.203892-1-swati2.sharma@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fsysfs=5Fedid=5Ftiming=3A_reduce_num_of_iterations?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,767 +17,319 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For LunarLake (intel_display_ver 20), FBC can be enabled along with
-PSR/PSR2/PR, thereby adding FBC checks to validate this scenario.
+--===============2521035351138078493==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
----
- lib/igt_psr.h         |   5 +
- tests/intel/kms_psr.c | 446 ++++++++++++++++++++++++++++--------------
- 2 files changed, 308 insertions(+), 143 deletions(-)
+== Series Details ==
 
-diff --git a/lib/igt_psr.h b/lib/igt_psr.h
-index a30330e6c..fee9df6b3 100644
---- a/lib/igt_psr.h
-+++ b/lib/igt_psr.h
-@@ -40,6 +40,11 @@ enum psr_mode {
- 	PSR_DISABLED,
- };
- 
-+enum fbc_mode {
-+	FBC_ENABLED,
-+	FBC_DISABLED,
-+};
-+
- bool psr_disabled_check(int debugfs_fd);
- bool psr2_selective_fetch_check(int debugfs_fd);
- bool psr_wait_entry(int debugfs_fd, enum psr_mode mode, igt_output_t *output);
-diff --git a/tests/intel/kms_psr.c b/tests/intel/kms_psr.c
-index 7fe6a2c30..bfa713b60 100644
---- a/tests/intel/kms_psr.c
-+++ b/tests/intel/kms_psr.c
-@@ -34,6 +34,7 @@
- #include "igt.h"
- #include "igt_sysfs.h"
- #include "igt_psr.h"
-+#include "i915/intel_fbc.h"
- #include <errno.h>
- #include <stdbool.h>
- #include <stdio.h>
-@@ -42,16 +43,24 @@
- #include "xe/xe_query.h"
- 
- /**
-- * SUBTEST: psr_basic
-+ * SUBTEST: psr-basic
-  * Description: Basic check for psr if it is detecting changes made in planes
-  * Functionality: psr1
-  *
-- * SUBTEST: psr_%s_%s
-+ * SUBTEST: fbc-psr-basic
-+ * Description: Basic check for psr if it is detecting changes made in planes
-+ * Functionality: psr, fbc
-+ *
-+ * SUBTEST: psr-%s-%s
-  * Description: Check if psr is detecting memory mapping, rendering and plane
-  *              operations performed on %arg[1]
-- * Driver requirement: i915
-  * Functionality: kms_core, plane, psr1
-  *
-+ * SUBTEST: fbc-psr-%s-%s
-+ * Description: Check if fbc with psr is detecting memory mapping, rendering and plane
-+ *              operations performed on %arg[1]
-+ * Functionality: kms_core, plane, psr, fbc
-+ *
-  * arg[1]:
-  *
-  * @cursor:             Cursor plane
-@@ -65,16 +74,26 @@
-  */
- 
- /**
-- * SUBTEST: psr_sprite_plane_move
-+ * SUBTEST: psr-sprite-plane-move
-  * Description: Check if psr is detecting memory mapping, rendering and plane
-  *              operations performed on sprite planes
-  * Functionality: plane, psr1
-  *
-- * SUBTEST: psr_%s_%s
-+ * SUBTEST: fbc-psr-sprite-plane-move
-+ * Description: Check if fbc with psr is detecting memory mapping, rendering and plane
-+ *              operations performed on sprite planes
-+ * Functionality: plane, psr, fbc
-+ *
-+ * SUBTEST: psr-%s-%s
-  * Description: Check if psr is detecting memory mapping, rendering and plane
-  *              operations performed on %arg[1] planes
-  * Functionality: kms_core, plane, psr1
-  *
-+ * SUBTEST: fbc-psr-%s-%s
-+ * Description: Check if fbc with psr is detecting memory mapping, rendering and plane
-+ *              operations performed on %arg[1] planes
-+ * Functionality: kms_core, plane, psr, fbc
-+ *
-  * arg[1]:
-  *
-  * @cursor:             Cursor plane
-@@ -88,11 +107,16 @@
-  */
- 
- /**
-- * SUBTEST: psr_primary_%s
-+ * SUBTEST: psr-primary-%s
-  * Description: Check if psr is detecting memory mapping, rendering and plane
-  *              operations performed on %arg[1] planes
-  * Functionality: kms_core, psr1
-  *
-+ * SUBTEST: fbc-psr-primary-%s
-+ * Description: Check if fbc with psr is detecting memory mapping, rendering and plane
-+ *              operations performed on %arg[1] planes
-+ * Functionality: kms_core, psr, fbc
-+ *
-  * arg[1]:
-  *
-  * @blt:                Blitter
-@@ -100,44 +124,81 @@
-  */
- 
- /**
-- * SUBTEST: psr_dpms
-+ * SUBTEST: psr-dpms
-  * Description: Check if psr is detecting changes when rendering operation is
-  *              performed  with dpms enabled or disabled
-  * Functionality: dpms, psr1
-  *
-- * SUBTEST: psr_no_drrs
-+ * SUBTEST: fbc-psr-dpms
-+ * Description: Check if fbc with psr is detecting changes when rendering operation is
-+ *              performed  with dpms enabled or disabled
-+ * Functionality: dpms, psr, fbc
-+ *
-+ * SUBTEST: psr-no-drrs
-  * Description: Check if psr is detecting changes when drrs is disabled
-  * Functionality: drrs, psr1
-  *
-- * SUBTEST: psr_suspend
-+ * SUBTEST: fbc-psr-no-drrs
-+ * Description: Check if fbc with psr is detecting changes when drrs is disabled
-+ * Functionality: drrs, psr, fbc
-+ *
-+ * SUBTEST: psr-suspend
-  * Description: Check if psr is detecting changes when plane operation
-  *              is performed with suspend resume cycles
-  * Functionality: psr1, suspend
-  *
-- * SUBTEST: psr2_dpms
-+ * SUBTEST: fbc-psr-suspend
-+ * Description: Check if fbc with psr is detecting changes when plane operation
-+ *              is performed with suspend resume cycles
-+ * Functionality: psr, suspend, fbc
-+ *
-+ * SUBTEST: psr2-dpms
-  * Description: Check if psr is detecting changes when rendering operation
-  *              is performed  with dpms enabled or disabled
-  * Functionality: dpms, psr2
-  *
-- * SUBTEST: psr2_no_drrs
-+ * SUBTEST: fbc-psr2-dpms
-+ * Description: Check if fbc with psr is detecting changes when rendering operation
-+ *              is performed  with dpms enabled or disabled
-+ * Functionality: dpms, psr, psr2, fbc
-+ *
-+ * SUBTEST: psr2-no-drrs
-  * Description: Check if psr is detecting changes when drrs is disabled
-  * Functionality: drrs, psr2
-  *
-- * SUBTEST: psr2_suspend
-+ * SUBTEST: fbc-psr2-no-drrs
-+ * Description: Check if fbc with psr is detecting changes when drrs is disabled
-+ * Functionality: drrs, psr, psr2, fbc
-+ *
-+ * SUBTEST: psr2-suspend
-  * Description: Check if psr is detecting changes when plane operation is
-  *              performed with suspend resume cycles
-  * Functionality: psr2, suspend
-  *
-- * SUBTEST: psr2_basic
-+ * SUBTEST: fbc-psr2-suspend
-+ * Description: Check if fbc with psr is detecting changes when plane operation is
-+ *              performed with suspend resume cycles
-+ * Functionality: psr, psr2, suspend, fbc
-+ *
-+ * SUBTEST: psr2-basic
-  * Description: Basic check for psr if it is detecting changes made in planes
-  * Functionality: psr2
-  *
-- * SUBTEST: psr2_%s_%s
-+ * SUBTEST: fbc-psr2-basic
-+ * Description: Basic check for fbc with psr if it is detecting changes made in planes
-+ * Functionality: psr, psr2, fbc
-+ *
-+ * SUBTEST: psr2-%s-%s
-  * Description: Check if psr2 is detecting memory mapping, rendering and plane
-  *              operations performed on %arg[1] planes
-  * Driver requirement: i915
-  * Functionality: kms_core, plane, psr2
-  *
-+ * SUBTEST: fbc-psr2-%s-%s
-+ * Description: Check if fbc with psr2 is detecting memory mapping, rendering and plane
-+ *              operations performed on %arg[1] planes
-+ * Functionality: kms_core, plane, psr, psr2, fbc
-+ *
-  * arg[1]:
-  *
-  * @cursor:             Cursor plane
-@@ -151,16 +212,26 @@
-  */
- 
- /**
-- * SUBTEST: psr2_primary_page_flip
-+ * SUBTEST: psr2-primary-page-flip
-  * Description: Check if psr is detecting memory mapping, rendering and plane
-  *              operations performed on primary planes
-  * Functionality: plane, psr2
-  *
-- * SUBTEST: psr2_primary_%s
-+ * SUBTEST: fbc-psr2-primary-page-flip
-+ * Description: Check if fbc with psr is detecting memory mapping, rendering and plane
-+ *              operations performed on primary planes
-+ * Functionality: plane, psr, psr2, fbc
-+ *
-+ * SUBTEST: psr2-primary-%s
-  * Description: Check if psr is detecting memory mapping, rendering and plane
-  *              operations performed on primary planes
-  * Functionality: kms_core, plane, psr2
-  *
-+ * SUBTEST: fbc-psr2-primary-%s
-+ * Description: Check if fbc with psr is detecting memory mapping, rendering and plane
-+ *              operations performed on primary planes
-+ * Functionality: kms_core, plane, psr, psr2, fbc
-+ *
-  * arg[1]:
-  *
-  * @blt:                Blitter
-@@ -168,11 +239,16 @@
-  */
- 
- /**
-- * SUBTEST: psr2_%s_%s
-+ * SUBTEST: psr2-%s-%s
-  * Description: Check if psr is detecting memory mapping, rendering and plane
-  *              operations performed on %arg[1] planes
-  * Functionality: kms_core, plane, psr2
-  *
-+ * SUBTEST: fbc-psr2-%s-%s
-+ * Description: Check if psr is detecting memory mapping, rendering and plane
-+ *              operations performed on %arg[1] planes
-+ * Functionality: kms_core, plane, psr, psr2, fbc
-+ *
-  * arg[1]:
-  *
-  * @cursor:             Cursor plane
-@@ -187,37 +263,60 @@
-  */
- 
- /**
-- * SUBTEST: pr_dpms
-+ * SUBTEST: pr-dpms
-  * Description: Check if pr is detecting changes when rendering operation
-  *              is performed with dpms enabled or disabled
-  * Functionality: dpms, pr
-  * Mega feature: Panel Replay
-  *
-- * SUBTEST: pr_no_drrs
-+ * SUBTEST: fbc-pr-dpms
-+ * Description: Check if fbc with pr is detecting changes when rendering operation
-+ *              is performed with dpms enabled or disabled
-+ * Functionality: dpms, pr, fbc
-+ *
-+ * SUBTEST: pr-no-drrs
-  * Description: Check if pr is detecting changes when drrs is disabled
-  * Functionality: drrs, pr
-- * Mega feature: Panel Replay
-  *
-- * SUBTEST: pr_suspend
-+ * SUBTEST: fbc-pr-no-drrs
-+ * Description: Check if pr is detecting changes when drrs is disabled
-+ * Functionality: drrs, pr, fbc
-+ *
-+ * SUBTEST: pr-suspend
-  * Description: Check if pr is detecting changes when plane operation is
-  *              performed with suspend resume cycles
-  * Functionality: pr, suspend
-- * Mega feature: Panel Replay
-  *
-- * SUBTEST: pr_basic
-+ * SUBTEST: fbc-pr-suspend
-+ * Description: Check if fbc with pr is detecting changes when plane operation is
-+ *              performed with suspend resume cycles
-+ * Functionality: pr, suspend, fbc
-+ *
-+ * SUBTEST: pr-basic
-  * Description: Basic check for pr if it is detecting changes made in planes
-  * Functionality: pr
-- * Mega feature: Panel Replay
-+ *
-+ * SUBTEST: fbc-pr-basic
-+ * Description: Basic check for fbc with pr if it is detecting changes made in planes
-+ * Functionality: pr, fbc
-  */
- 
- /**
-- * SUBTEST: pr_%s_%s
-+ * SUBTEST: pr-%s-%s
-  * Description: Check if pr is detecting memory mapping, rendering and plane
-  *              operations performed on %arg[1] planes
-  * Driver requirement: i915
-  * Functionality: kms_core, plane, pr
-  * Mega feature: Panel Replay
-  *
-+ * SUBTEST: fbc-pr-%s-%s
-+ * Description: Check if fbc with pr is detecting memory mapping, rendering and plane
-+ *              operations performed on %arg[1] planes
-+ * Driver requirement: i915
-+ * Functionality: kms_core, plane, pr, fbc
-+ * Mega feature: Panel Replay, FBC
-+ * Test category: functionality test
-+ *
-  * arg[1]:
-  *
-  * @cursor:             Cursor plane
-@@ -231,18 +330,30 @@
-  */
- 
- /**
-- * SUBTEST: pr_primary_page_flip
-+ * SUBTEST: pr-primary-page-flip
-  * Description: Check if pr is detecting memory mapping, rendering and plane
-  *              operations performed on primary planes
-  * Functionality: plane, pr
-  * Mega feature: Panel Replay
-  *
-- * SUBTEST: pr_primary_%s
-+ * SUBTEST: fbc-pr-primary-page-flip
-+ * Description: Check if fbc with pr is detecting memory mapping, rendering and plane
-+ *              operations performed on primary planes
-+ * Functionality: plane, pr, fbc
-+ * Mega feature: Panel Replay, FBC
-+ *
-+ * SUBTEST: pr-primary-%s
-  * Description: Check if pr is detecting memory mapping, rendering and plane
-  *              operations performed on primary planes
-  * Functionality: kms_core, plane, pr
-  * Mega feature: Panel Replay
-  *
-+ * SUBTEST: fbc-pr-primary-%s
-+ * Description: Check if fbc with pr is detecting memory mapping, rendering and plane
-+ *              operations performed on primary planes
-+ * Functionality: kms_core, plane, pr, fbc
-+ * Mega feature: Panel Replay, FBC
-+ *
-  * arg[1]:
-  *
-  * @blt:                Blitter
-@@ -250,12 +361,18 @@
-  */
- 
- /**
-- * SUBTEST: pr_%s_%s
-+ * SUBTEST: pr-%s-%s
-  * Description: Check if pr is detecting memory mapping, rendering and plane
-  *              operations performed on %arg[1] planes
-  * Functionality: kms_core, plane, pr
-  * Mega feature: Panel Replay
-  *
-+ * SUBTEST: fbc-pr-%s-%s
-+ * Description: Check if fbc with pr is detecting memory mapping, rendering and plane
-+ *              operations performed on %arg[1] planes
-+ * Functionality: kms_core, plane, pr, fbc
-+ * Mega feature: Panel Replay, FBC
-+ *
-  * arg[1]:
-  *
-  * @cursor:             Cursor plane
-@@ -270,20 +387,35 @@
-  */
- 
- /**
-- * SUBTEST: psr_cursor_plane_move
-+ * SUBTEST: psr-cursor-plane-move
-  * Description: Check if psr is detecting the plane operations performed on
-  *		cursor planes
-  * Functionality: psr1
-  *
-- * SUBTEST: psr_primary_page_flip
-+ * SUBTEST: fbc-psr-cursor-plane-move
-+ * Description: Check if fbc with psr is detecting the plane operations performed on
-+ *              cursor planes
-+ * Functionality: psr1, fbc
-+ *
-+ * SUBTEST: psr-primary-page-flip
-  * Description: Check if psr is detecting page-flipping operations performed
-  *		on primary planes
-  * Functionality: psr1
-  *
-- * SUBTEST: psr_sprite_plane_onoff
-+ * SUBTEST: fbc-psr-primary-page-flip
-+ * Description: Check if psr is detecting page-flipping operations performed
-+ *              on primary planes
-+ * Functionality: psr1, fbc
-+ *
-+ * SUBTEST: psr-sprite-plane-onoff
-  * Description: Check if psr is detecting the plane operations performed on
-  *		sprite planes
-  * Functionality: psr1
-+ *
-+ * SUBTEST: fbc-psr-sprite-plane-onoff
-+ * Description: Check if psr is detecting the plane operations performed on
-+ *              sprite planes
-+ * Functionality: psr1, fbc
-  */
- 
- enum operations {
-@@ -299,13 +431,13 @@ enum operations {
- static const char *op_str(enum operations op)
- {
- 	static const char * const name[] = {
--		[PAGE_FLIP] = "page_flip",
--		[MMAP_GTT] = "mmap_gtt",
--		[MMAP_CPU] = "mmap_cpu",
-+		[PAGE_FLIP] = "page-flip",
-+		[MMAP_GTT] = "mmap-gtt",
-+		[MMAP_CPU] = "mmap-cpu",
- 		[BLT] = "blt",
- 		[RENDER] = "render",
--		[PLANE_MOVE] = "plane_move",
--		[PLANE_ONOFF] = "plane_onoff",
-+		[PLANE_MOVE] = "plane-move",
-+		[PLANE_ONOFF] = "plane-onoff",
- 	};
- 
- 	return name[op];
-@@ -317,6 +449,7 @@ typedef struct {
- 	enum operations op;
- 	int test_plane_id;
- 	enum psr_mode op_psr_mode;
-+	enum fbc_mode op_fbc_mode;
- 	uint32_t devid;
- 	uint32_t crtc_id;
- 	igt_display_t display;
-@@ -327,6 +460,7 @@ typedef struct {
- 	int mod_stride;
- 	drmModeModeInfo *mode;
- 	igt_output_t *output;
-+	bool fbc_flag;
- } data_t;
- 
- static void create_cursor_fb(data_t *data)
-@@ -707,6 +841,11 @@ static void test_setup(data_t *data)
- 	igt_require_f(data->output,
- 		      "No available output found\n");
- 
-+	if (data->fbc_flag)
-+		igt_assert_f(intel_fbc_wait_until_enabled(data->drm_fd,
-+							  pipe),
-+							  "FBC still disabled");
-+
- 	pipe = get_pipe_for_output(&data->display, data->output);
- 	igt_output_set_pipe(data->output, pipe);
- 	igt_require_f(intel_pipe_output_combo_valid(&data->display),
-@@ -744,14 +883,20 @@ data_t data = {};
- 
- igt_main
- {
--	int z;
-+	int z, y;
- 	enum operations op;
-+	enum pipe pipe;
- 	const char *append_subtest_name[3] = {
--		"psr_",
--		"psr2_",
--		"pr_"
-+		"psr-",
-+		"psr2-",
-+		"pr-"
-+	};
-+	const char *append_fbc_subtest[2] = {
-+		"",
-+		"fbc-"
- 	};
- 	int modes[] = {PSR_MODE_1, PSR_MODE_2, PR_MODE};
-+	int fbc_status[] = {FBC_DISABLED, FBC_ENABLED};
- 	igt_output_t *output;
- 
- 	igt_fixture {
-@@ -762,52 +907,40 @@ igt_main
- 		data.bops = buf_ops_create(data.drm_fd);
- 		igt_display_require(&data.display, data.drm_fd);
- 		igt_require_f(output_supports_psr(&data), "Sink does not support PSR/PSR2/PR\n");
--	}
--
--	for (z = 0; z < ARRAY_SIZE(modes); z++) {
--		data.op_psr_mode = modes[z];
--
--		igt_describe("Basic check for psr if it is detecting changes made in planes");
--		igt_subtest_with_dynamic_f("%sbasic", append_subtest_name[z]) {
--			for_each_connected_output(&data.display, output) {
--				if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
--						      data.op_psr_mode, output))
--					continue;
--				igt_display_reset(&data.display);
--				data.output = output;
--				igt_dynamic_f("%s", data.output->name) {
--					data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
--					test_setup(&data);
--					test_cleanup(&data);
--				}
--			}
-+		if ((intel_display_ver(intel_get_drm_devid(data.drm_fd) == 20)) &&
-+		    (intel_fbc_supported_on_chipset(data.drm_fd, pipe))) {
-+			data.fbc_flag = true;
- 		}
-+	}
- 
--		igt_describe("Check if psr is detecting changes when drrs is disabled");
--		igt_subtest_with_dynamic_f("%sno_drrs", append_subtest_name[z]) {
--			for_each_connected_output(&data.display, output) {
--				if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
--						      data.op_psr_mode, output))
--					continue;
--				igt_display_reset(&data.display);
--				data.output = output;
--				igt_dynamic_f("%s", data.output->name) {
--					data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
--					test_setup(&data);
--					igt_assert(drrs_disabled(&data));
--					test_cleanup(&data);
-+	for (y = 0; y < ARRAY_SIZE(fbc_status); y++) {
-+		data.op_fbc_mode = fbc_status[y];
-+		if (data.op_fbc_mode == FBC_DISABLED)
-+			data.fbc_flag = false;
-+		for (z = 0; z < ARRAY_SIZE(modes); z++) {
-+			data.op_psr_mode = modes[z];
-+
-+			igt_describe("Basic check for psr if it is detecting changes made "
-+				     "in planes");
-+			igt_subtest_with_dynamic_f("%s%sbasic", append_fbc_subtest[y],
-+						   append_subtest_name[z]) {
-+				for_each_connected_output(&data.display, output) {
-+					if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
-+							      data.op_psr_mode, output))
-+						continue;
-+					igt_display_reset(&data.display);
-+					data.output = output;
-+					igt_dynamic_f("%s", data.output->name) {
-+						data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
-+						test_setup(&data);
-+						test_cleanup(&data);
-+					}
- 				}
- 			}
--		}
- 
--		for (op = PAGE_FLIP; op <= RENDER; op++) {
--			igt_describe("Check if psr is detecting page-flipping,memory mapping and "
--					"rendering operations performed on primary planes");
--			igt_subtest_with_dynamic_f("%sprimary_%s",
--				      append_subtest_name[z],
--				      op_str(op)) {
--				igt_skip_on(is_xe_device(data.drm_fd) &&
--					    (op == MMAP_CPU || op == MMAP_GTT));
-+			igt_describe("Check if psr is detecting changes when drrs is disabled");
-+			igt_subtest_with_dynamic_f("%s%sno-drrs", append_fbc_subtest[y],
-+						   append_subtest_name[z]) {
- 				for_each_connected_output(&data.display, output) {
- 					if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
- 							      data.op_psr_mode, output))
-@@ -815,24 +948,90 @@ igt_main
- 					igt_display_reset(&data.display);
- 					data.output = output;
- 					igt_dynamic_f("%s", data.output->name) {
--						data.op = op;
- 						data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
- 						test_setup(&data);
--						run_test(&data);
-+						igt_assert(drrs_disabled(&data));
- 						test_cleanup(&data);
- 					}
- 				}
- 			}
--		}
- 
--		for (op = MMAP_GTT; op <= PLANE_ONOFF; op++) {
--			igt_describe("Check if psr is detecting memory mapping,rendering "
--					"and plane operations performed on sprite planes");
--			igt_subtest_with_dynamic_f("%ssprite_%s",
--				      append_subtest_name[z],
--				      op_str(op)) {
--				igt_skip_on(is_xe_device(data.drm_fd) &&
--					    (op == MMAP_CPU || op == MMAP_GTT));
-+			for (op = PAGE_FLIP; op <= RENDER; op++) {
-+				igt_describe("Check if psr is detecting page-flipping,memory "
-+					     "mapping and rendering operations performed on "
-+					     "primary planes");
-+				igt_subtest_with_dynamic_f("%s%sprimary-%s", append_fbc_subtest[y],
-+					      append_subtest_name[z], op_str(op)) {
-+					igt_skip_on(is_xe_device(data.drm_fd) &&
-+						    (op == MMAP_CPU || op == MMAP_GTT));
-+					for_each_connected_output(&data.display, output) {
-+						if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
-+								      data.op_psr_mode, output))
-+							continue;
-+						igt_display_reset(&data.display);
-+						data.output = output;
-+						igt_dynamic_f("%s", data.output->name) {
-+							data.op = op;
-+							data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
-+							test_setup(&data);
-+							run_test(&data);
-+							test_cleanup(&data);
-+						}
-+					}
-+				}
-+			}
-+
-+			for (op = MMAP_GTT; op <= PLANE_ONOFF; op++) {
-+				igt_describe("Check if psr is detecting memory mapping,rendering "
-+						"and plane operations performed on sprite planes");
-+				igt_subtest_with_dynamic_f("%s%ssprite-%s", append_fbc_subtest[y],
-+					      append_subtest_name[z],
-+					      op_str(op)) {
-+					igt_skip_on(is_xe_device(data.drm_fd) &&
-+						    (op == MMAP_CPU || op == MMAP_GTT));
-+					for_each_connected_output(&data.display, output) {
-+						if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
-+								      data.op_psr_mode, output))
-+							continue;
-+						igt_display_reset(&data.display);
-+						data.output = output;
-+						igt_dynamic_f("%s", data.output->name) {
-+							data.op = op;
-+							data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
-+							test_setup(&data);
-+							run_test(&data);
-+							test_cleanup(&data);
-+						}
-+					}
-+				}
-+
-+				igt_describe("Check if psr is detecting memory mapping, rendering "
-+						"and plane operations performed on cursor planes");
-+				igt_subtest_with_dynamic_f("%s%scursor-%s", append_fbc_subtest[y],
-+					      append_subtest_name[z],
-+					      op_str(op)) {
-+					igt_skip_on(is_xe_device(data.drm_fd) &&
-+						    (op == MMAP_CPU || op == MMAP_GTT));
-+					for_each_connected_output(&data.display, output) {
-+						if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
-+								      data.op_psr_mode, output))
-+							continue;
-+						igt_display_reset(&data.display);
-+						data.output = output;
-+						igt_dynamic_f("%s", data.output->name) {
-+							data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
-+							test_setup(&data);
-+							run_test(&data);
-+							test_cleanup(&data);
-+						}
-+					}
-+				}
-+			}
-+
-+			igt_describe("Check if psr is detecting changes when rendering operation "
-+				     "is performed with dpms enabled or disabled");
-+			igt_subtest_with_dynamic_f("%s%sdpms", append_fbc_subtest[y],
-+						   append_subtest_name[z]) {
- 				for_each_connected_output(&data.display, output) {
- 					if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
- 							      data.op_psr_mode, output))
-@@ -840,22 +1039,21 @@ igt_main
- 					igt_display_reset(&data.display);
- 					data.output = output;
- 					igt_dynamic_f("%s", data.output->name) {
--						data.op = op;
--						data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
-+						data.op = igt_get_render_copyfunc(data.devid) ?
-+										  RENDER : BLT;
-+						data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
- 						test_setup(&data);
-+						dpms_off_on(&data);
- 						run_test(&data);
- 						test_cleanup(&data);
- 					}
- 				}
- 			}
- 
--			igt_describe("Check if psr is detecting memory mapping, rendering "
--					"and plane operations performed on cursor planes");
--			igt_subtest_with_dynamic_f("%scursor_%s",
--				      append_subtest_name[z],
--				      op_str(op)) {
--				igt_skip_on(is_xe_device(data.drm_fd) &&
--					    (op == MMAP_CPU || op == MMAP_GTT));
-+			igt_describe("Check if psr is detecting changes when plane operation is "
-+				     "performed with suspend resume cycles");
-+			igt_subtest_with_dynamic_f("%s%ssuspend", append_fbc_subtest[y],
-+						   append_subtest_name[z]) {
- 				for_each_connected_output(&data.display, output) {
- 					if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
- 							      data.op_psr_mode, output))
-@@ -863,56 +1061,18 @@ igt_main
- 					igt_display_reset(&data.display);
- 					data.output = output;
- 					igt_dynamic_f("%s", data.output->name) {
-+						data.op = PLANE_ONOFF;
- 						data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
- 						test_setup(&data);
-+						igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
-+									      SUSPEND_TEST_NONE);
-+						igt_assert(psr_wait_entry_if_enabled(&data));
- 						run_test(&data);
- 						test_cleanup(&data);
- 					}
- 				}
- 			}
- 		}
--
--		igt_describe("Check if psr is detecting changes when rendering operation is performed"
--				"  with dpms enabled or disabled");
--		igt_subtest_with_dynamic_f("%sdpms", append_subtest_name[z]) {
--			for_each_connected_output(&data.display, output) {
--				if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
--						      data.op_psr_mode, output))
--					continue;
--				igt_display_reset(&data.display);
--				data.output = output;
--				igt_dynamic_f("%s", data.output->name) {
--					data.op = igt_get_render_copyfunc(data.devid) ? RENDER : BLT;
--					data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
--					test_setup(&data);
--					dpms_off_on(&data);
--					run_test(&data);
--					test_cleanup(&data);
--				}
--			}
--		}
--
--		igt_describe("Check if psr is detecting changes when plane operation is performed "
--				"with suspend resume cycles");
--		igt_subtest_with_dynamic_f("%ssuspend", append_subtest_name[z]) {
--			for_each_connected_output(&data.display, output) {
--				if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
--						      data.op_psr_mode, output))
--					continue;
--				igt_display_reset(&data.display);
--				data.output = output;
--				igt_dynamic_f("%s", data.output->name) {
--					data.op = PLANE_ONOFF;
--					data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
--					test_setup(&data);
--					igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
--								      SUSPEND_TEST_NONE);
--					igt_assert(psr_wait_entry_if_enabled(&data));
--					run_test(&data);
--					test_cleanup(&data);
--				}
--			}
--		}
- 	}
- 
- 	igt_fixture {
--- 
-2.25.1
+Series: tests/kms_sysfs_edid_timing: reduce num of iterations
+URL   : https://patchwork.freedesktop.org/series/126989/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_13937 -> IGTPW_10281
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/index.html
+
+Participating hosts (38 -> 36)
+------------------------------
+
+  Missing    (2): bat-mtlp-8 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10281 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@debugfs_test@read_all_entries:
+    - bat-adlp-11:        [PASS][1] -> [DMESG-WARN][2] ([i915#6868])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13937/bat-adlp-11/igt@debugfs_test@read_all_entries.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/bat-adlp-11/igt@debugfs_test@read_all_entries.html
+
+  * igt@gem_exec_suspend@basic-s0@lmem0:
+    - bat-dg2-9:          [PASS][3] -> [INCOMPLETE][4] ([i915#9275])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13937/bat-dg2-9/igt@gem_exec_suspend@basic-s0@lmem0.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/bat-dg2-9/igt@gem_exec_suspend@basic-s0@lmem0.html
+
+  * igt@gem_lmem_swapping@random-engines:
+    - bat-rpls-1:         NOTRUN -> [SKIP][5] ([i915#4613]) +3 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/bat-rpls-1/igt@gem_lmem_swapping@random-engines.html
+
+  * igt@i915_pm_rps@basic-api:
+    - bat-rpls-1:         NOTRUN -> [SKIP][6] ([i915#6621])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/bat-rpls-1/igt@i915_pm_rps@basic-api.html
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-nick:        [PASS][7] -> [ABORT][8] ([i915#7911])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13937/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-apl-guc:         [PASS][9] -> [DMESG-FAIL][10] ([i915#5334])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13937/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_selftest@live@gt_lrc:
+    - bat-rpls-1:         NOTRUN -> [INCOMPLETE][11] ([i915#9667])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/bat-rpls-1/igt@i915_selftest@live@gt_lrc.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - bat-rpls-1:         NOTRUN -> [SKIP][12] ([fdo#109285])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/bat-rpls-1/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-rpls-1:         NOTRUN -> [SKIP][13] ([i915#1849] / [i915#5354])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/bat-rpls-1/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_pipe_crc_basic@read-crc:
+    - bat-rpls-1:         NOTRUN -> [SKIP][14] ([i915#1845]) +6 other tests skip
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/bat-rpls-1/igt@kms_pipe_crc_basic@read-crc.html
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:
+    - bat-rplp-1:         [PASS][15] -> [ABORT][16] ([i915#8668])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13937/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - bat-rpls-1:         NOTRUN -> [SKIP][17] ([i915#3555])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/bat-rpls-1/igt@kms_setmode@basic-clone-single-crtc.html
+
+  * igt@prime_vgem@basic-fence-flip:
+    - bat-rpls-1:         NOTRUN -> [SKIP][18] ([fdo#109295] / [i915#1845] / [i915#3708])
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/bat-rpls-1/igt@prime_vgem@basic-fence-flip.html
+
+  * igt@prime_vgem@basic-write:
+    - bat-rpls-1:         NOTRUN -> [SKIP][19] ([fdo#109295] / [i915#3708]) +2 other tests skip
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/bat-rpls-1/igt@prime_vgem@basic-write.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-11:         [DMESG-FAIL][20] ([i915#9500]) -> [PASS][21]
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13937/bat-dg2-11/igt@i915_selftest@live@workarounds.html
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/bat-dg2-11/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_force_connector_basic@force-connector-state:
+    - bat-rpls-1:         [ABORT][22] ([i915#9315]) -> [PASS][23]
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13937/bat-rpls-1/igt@kms_force_connector_basic@force-connector-state.html
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/bat-rpls-1/igt@kms_force_connector_basic@force-connector-state.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
+  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
+  [i915#6868]: https://gitlab.freedesktop.org/drm/intel/issues/6868
+  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
+  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
+  [i915#9275]: https://gitlab.freedesktop.org/drm/intel/issues/9275
+  [i915#9315]: https://gitlab.freedesktop.org/drm/intel/issues/9315
+  [i915#9500]: https://gitlab.freedesktop.org/drm/intel/issues/9500
+  [i915#9667]: https://gitlab.freedesktop.org/drm/intel/issues/9667
+  [i915#9673]: https://gitlab.freedesktop.org/drm/intel/issues/9673
+  [i915#9736]: https://gitlab.freedesktop.org/drm/intel/issues/9736
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7608 -> IGTPW_10281
+
+  CI-20190529: 20190529
+  CI_DRM_13937: ff3514f57510ac9c11a16d96185269cc16d9ae67 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10281: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/index.html
+  IGT_7608: 3e52de09140ec5ddf8919fcb11a858cfcc137359 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/index.html
+
+--===============2521035351138078493==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_sysfs_edid_timing: reduce num of iterations</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126989/">https://patchwork.freedesktop.org/series/126989/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13937 -&gt; IGTPW_10281</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/index.html</p>
+<h2>Participating hosts (38 -&gt; 36)</h2>
+<p>Missing    (2): bat-mtlp-8 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10281 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@debugfs_test@read_all_entries:</p>
+<ul>
+<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13937/bat-adlp-11/igt@debugfs_test@read_all_entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/bat-adlp-11/igt@debugfs_test@read_all_entries.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6868">i915#6868</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s0@lmem0:</p>
+<ul>
+<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13937/bat-dg2-9/igt@gem_exec_suspend@basic-s0@lmem0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/bat-dg2-9/igt@gem_exec_suspend@basic-s0@lmem0.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9275">i915#9275</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@random-engines:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/bat-rpls-1/igt@gem_lmem_swapping@random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rps@basic-api:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/bat-rpls-1/igt@i915_pm_rps@basic-api.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6621">i915#6621</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13937/fi-bsw-nick/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/fi-bsw-nick/igt@i915_selftest@live@execlists.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13937/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_lrc:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/bat-rpls-1/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9667">i915#9667</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/bat-rpls-1/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/bat-rpls-1/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/bat-rpls-1/igt@kms_pipe_crc_basic@read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>) +6 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:</p>
+<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13937/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/bat-rpls-1/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-fence-flip:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/bat-rpls-1/igt@prime_vgem@basic-fence-flip.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-write:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/bat-rpls-1/igt@prime_vgem@basic-write.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>) +2 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13937/bat-dg2-11/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9500">i915#9500</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/bat-dg2-11/igt@i915_selftest@live@workarounds.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-connector-state:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13937/bat-rpls-1/igt@kms_force_connector_basic@force-connector-state.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9315">i915#9315</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/bat-rpls-1/igt@kms_force_connector_basic@force-connector-state.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7608 -&gt; IGTPW_10281</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13937: ff3514f57510ac9c11a16d96185269cc16d9ae67 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10281: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/index.html<br />
+  IGT_7608: 3e52de09140ec5ddf8919fcb11a858cfcc137359 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============2521035351138078493==--
