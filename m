@@ -1,24 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com
- [IPv6:2a00:1450:4864:20::52d])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F1B5C10E166
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Nov 2023 16:12:45 +0000 (UTC)
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-54bb5ebbb35so882932a12.1
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Nov 2023 08:12:45 -0800 (PST)
-Message-ID: <1564f013-7cb4-408e-944f-c8430f9db4b7@gmail.com>
-Date: Tue, 28 Nov 2023 18:12:36 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F1F3A10E15F
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Nov 2023 16:45:55 +0000 (UTC)
+Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
+ [10.94.248.18])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id 585F2580B9B
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Nov 2023 08:45:54 -0800 (PST)
+Received: from maurocar by linux.intel.com with local (Exim 4.96.2)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1r81Dc-000K9x-1o
+ for igt-dev@lists.freedesktop.org; Tue, 28 Nov 2023 17:45:52 +0100
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 28 Nov 2023 17:43:02 +0100
+Message-ID: <20231128164551.77343-3-mauro.chehab@linux.intel.com>
+In-Reply-To: <20231128164551.77343-1-mauro.chehab@linux.intel.com>
+References: <20231128164551.77343-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Kunal Joshi <kunal1.joshi@intel.com>, igt-dev@lists.freedesktop.org
-References: <20231123062944.1889520-1-kunal1.joshi@intel.com>
- <20231123062944.1889520-2-kunal1.joshi@intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20231123062944.1889520-2-kunal1.joshi@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/igt_debugfs: added helper to
- enable/disable dark screen detection
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH RFC 2/3] scripts/igt_doc.py: add a logic to
+ generate Intel CI testlists
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,98 +28,234 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
-Cc: Nemesa Garg <nemesa.garg@intel.com>,
- Arun R Murthy <arun.r.murthy@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-On 23.11.2023 8.29, Kunal Joshi wrote:
-> added helper function for dark screen detection
-> 
-> v2: Fix indentation (JP)
->      Reduce complexity and redundancy (JP)
-> 
-> v3: Close fd (JP)
->      Use ternary operator (JP)
-> 
-> v4: Added comments for functions (JP)
-> 
-> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> Cc: Nemesa Garg <nemesa.garg@intel.com>
-> Cc: Arun R Murthy <arun.r.murthy@intel.com>
-> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-> ---
->   lib/igt_debugfs.c | 39 +++++++++++++++++++++++++++++++++++++++
->   lib/igt_debugfs.h |  2 ++
->   2 files changed, 41 insertions(+)
-> 
-> diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
-> index a7b54bae5..323030b19 100644
-> --- a/lib/igt_debugfs.c
-> +++ b/lib/igt_debugfs.c
-> @@ -743,3 +743,42 @@ void __igt_debugfs_dump(int device, const char *filename, int level)
->   	igt_log(IGT_LOG_DOMAIN, level, "%s:\n%s\n", filename, contents);
->   	free(contents);
->   }
-> +
-> +/**
-> + * igt_is_dark_screen_supported:
-> + * @drm_fd: fd of the device
-> + * @pipe: display pipe
-> + *
-> + * Returns true if dark screen detection supported on platform
-> + */
-> +bool igt_is_dark_screen_supported(int drm_fd, enum pipe pipe)
-> +{
-> +	char buf[256];
-> +	int dir;
-> +
-> +	dir = igt_debugfs_pipe_dir(drm_fd, pipe, O_DIRECTORY);
-> +	igt_require_fd(dir);
-> +	igt_debugfs_simple_read(dir, "i915_darkscreen_status", buf, sizeof(buf));
-> +	close(dir);
-> +	return (*buf == '0' || *buf == '1');
-> +}
-> +
-> +/**
-> + * igt_set_dark_screen_detection:
-> + * @drm_fd: fd of the device
-> + * @pipe: display pipe
-> + * @enable: bool to enable/disable dark screen detection
-> + *
-> + * Enable/Disable dark screen detection for given @pipe
+Testlist for Intel CI requires parsing not only IGT testlists,
+but also block and permit lists. This is currently handled
+internally, but not from the documentation.
 
-please include here also comment for the meaning of return value. With that
+Now that we have everything set in place, add a method for
+generating it at IGT. The logic there is somewhat generic,
+but it expects some fields with a namespace as defined on
+tests/intel/*.json files.
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+So, instead of placing at the generic code (test_list.py),
+add them to igt_doc.py, where IGT-specific glue can easily
+be added while keeping test_list.py generic enought to be
+used on other projects.
 
-> + */
-> +ssize_t igt_set_dark_screen_detection(int drm_fd, enum pipe pipe, bool enable)
-> +{
-> +	int dir;
-> +	int size;
-> +
-> +	dir = igt_debugfs_pipe_dir(drm_fd, pipe, O_DIRECTORY);
-> +	igt_require_fd(dir);
-> +	size = igt_sysfs_write(dir, "i915_darkscreen_status", enable ? "1" : "0", 1);
-> +	close(dir);
-> +	return size;
-> +}
-> diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
-> index 3e6194ade..68f25be59 100644
-> --- a/lib/igt_debugfs.h
-> +++ b/lib/igt_debugfs.h
-> @@ -77,6 +77,8 @@ void igt_hpd_storm_reset(int fd);
->   bool igt_hpd_storm_detected(int fd);
->   void igt_require_hpd_storm_ctl(int fd);
->   bool igt_ignore_long_hpd(int fd, bool enable);
-> +bool igt_is_dark_screen_supported(int drm_fd, enum pipe pipe);
-> +ssize_t igt_set_dark_screen_detection(int drm_fd, enum pipe pipe, bool enable);
->   
->   /*
->    * Drop caches
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ scripts/igt_doc.py   | 148 ++++++++++++++++++++++++++++++++++++++++++-
+ scripts/test_list.py |   3 +
+ 2 files changed, 150 insertions(+), 1 deletion(-)
+
+diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
+index ab6179366831..a807d2bb373d 100755
+--- a/scripts/igt_doc.py
++++ b/scripts/igt_doc.py
+@@ -11,10 +11,150 @@
+ """Maintain test plan and test implementation documentation on IGT."""
+ 
+ import argparse
++import os
++import re
+ import sys
+ 
+ from test_list import TestList
+ 
++class IgtTestList(TestList):
++    """
++        This class implements testlist generation as expected by Intel CI.
++        It does that by handling test lists split by "Run type" and
++        using GPU (or configuration) specific fields, being "GPU" for a
++        permit list of tests, and "GPU excluded platform" for a block
++        list of tests.
++
++        The logic below has "priority zero" rules, which are:
++
++        - if the test is not on any block lists nor it contains
++          "GPU" or "GPU excluded platform", it won't be blocked;
++        - if the test is in "all" block list, it will be blocked for all
++          GPUs. Values from "GPU" and "GPU excluded platform" will be ignored.
++
++        If none of the above rules apply, it will handle GPU positive
++        and negative rules:
++
++        - if "GPU" field is present on such test, the default is
++          is to block the test (default_gpu_value = False). If not
++          present, the default is to not block (default_gpu_value = True).
++
++        Now, it will check for "GPU" and "GPU excluded platform":
++
++        - it sets the default according to default_gpu_value.
++
++        Then:
++
++        - if "GPU" exists, for each GPU listed on the list, it will
++          unblock the test;
++        - if "GPU excluded platform" exists, for each GPU listed on
++          the list, it will block the test.
++    """
++    def gen_intelci_testlist(self): #pylint: disable=R0912
++        """Return a list of gpu configs and testlists."""
++
++        subtest_dict = self.expand_dictionary(True)
++
++        # Create a tests_per_list dict
++        gpus = set()
++        tests_per_list = {}
++        split_regex = re.compile(r",\s*")
++
++        for subname, subtest in subtest_dict.items():
++            run_type = subtest.get("Run type", "other")
++
++            run_type_set = set(split_regex.split(run_type))
++            for run_type in run_type_set:
++                if run_type not in tests_per_list:
++                    tests_per_list[run_type] = {}
++
++                if subname not in tests_per_list[run_type]:
++                    tests_per_list[run_type][subname] = {}
++
++                if "GPU" in subtest:
++                    for gpu_list in split_regex.split(subtest["GPU"]):
++                        gpus.add(gpu_list)
++                        tests_per_list[run_type][subname][gpu_list] = True
++
++                if "GPU excluded platform" in subtest:
++                    for gpu_list in split_regex.split(subtest["GPU excluded platform"]):
++                        gpus.add(gpu_list)
++                        tests_per_list[run_type][subname][gpu_list] = False
++
++        # Handle block and permit lists
++
++        for run_type in tests_per_list.keys(): # pylint: disable=C0201,C0206
++            for subname, gpu in tests_per_list[run_type].items():
++
++                # Trivial case: fields not defined
++                if not gpus:
++                    tests_per_list[run_type][subname]["all"] = True
++                    continue
++
++                if not gpu:
++                    tests_per_list[run_type][subname] = {}
++                    for gpu in gpus:
++                        tests_per_list[run_type][subname][gpu] = True
++                    continue
++
++                default_gpu_value = True
++                for gpu, value in tests_per_list[run_type][subname].items():
++                    if value:
++                        default_gpu_value = False
++                        break
++                    if not gpu in tests_per_list[run_type][subname]:
++                        for gpu in gpus:
++                            tests_per_list[run_type][subname][gpu] = default_gpu_value
++
++                if "all" in tests_per_list[run_type][subname]:
++                    if not tests_per_list[run_type][subname]["all"]:
++                        for gpu in gpus:
++                            tests_per_list[run_type][subname][gpu] = False
++
++        return (gpus, tests_per_list)
++
++    def write_intelci_testlist(self, directory):
++        '''Create testlist directory (if needed) and files'''
++
++        if not os.path.exists(directory):
++            os.makedirs(directory)
++
++        (gpus, tests_per_list)  = self.gen_intelci_testlist()
++        testlists = {}
++
++        for run_type in tests_per_list.keys(): # pylint: disable=C0201,C0206
++            for subname, gpu_dict in tests_per_list[run_type].items():
++                for gpu, value in gpu_dict.items():
++                    run_name = re.sub(r"[\W_]+", "-", run_type)
++                    gpu = re.sub(r"[\W_]+", "-", gpu)
++
++                    if gpus:
++                        name = f"{run_name}_{gpu}".lower()
++                    else:
++                        name = run_name.lower()
++
++                    if not name.startswith(self.driver_name.lower()):
++                        name = f"{self.driver_name.lower()}_{name}"
++
++                    name = re.sub(r"_+", "_", name)
++
++                    if name not in testlists:
++                        testlists[name] = set()
++
++                    if value:
++                        testlists[name].add(subname)
++
++        for testlist, subtests in testlists.items():
++            if testlist == "":
++                testlist = "other"
++
++
++            fname = os.path.join(directory, testlist) + ".testlist"
++            with open(fname, 'w', encoding='utf8') as handler:
++                for sub in sorted(subtests):
++                    handler.write (f"{sub}\n")
++                print(f"{fname} created.")
++
+ def main():
+     """
+     Main logic
+@@ -48,12 +188,14 @@ def main():
+                         default=igt_build_path)
+     parser.add_argument("--gen-testlist",
+                         help="Generate documentation at the GEN_TESTLIST directory, using SORT_FIELD to split the tests. Requires --sort-field.")
++    parser.add_argument("--intelci-testlist",
++                        help="Generate testlists for Intel CI integration at the INTELCI_TESTLIST directory.")
+     parser.add_argument('--files', nargs='+',
+                         help="File name(s) to be processed")
+ 
+     parse_args = parser.parse_args()
+ 
+-    tests = TestList(config_fname = parse_args.config,
++    tests = IgtTestList(config_fname = parse_args.config,
+                         include_plan = parse_args.include_plan,
+                         file_list = parse_args.files,
+                         igt_build_path = parse_args.igt_build_path)
+@@ -77,6 +219,10 @@ def main():
+             sys.exit("Need a field to split the testlists")
+         tests.gen_testlist(parse_args.gen_testlist, parse_args.sort_field)
+ 
++    if parse_args.intelci_testlist:
++        run = True
++        tests.write_intelci_testlist(parse_args.intelci_testlist)
++
+     if parse_args.to_json:
+         run = True
+         tests.print_json(parse_args.to_json)
+diff --git a/scripts/test_list.py b/scripts/test_list.py
+index 3954e883ada3..36eea5fb1c76 100644
+--- a/scripts/test_list.py
++++ b/scripts/test_list.py
+@@ -263,6 +263,7 @@ class TestList:
+         self.filters = {}
+         self.subtest_separator = subtest_separator
+         self.main_name = main_name
++        self.driver_name = ""
+ 
+         self.internal_fields =  [ '_summary_', '_arg_', '_subtest_line_' ]
+ 
+@@ -289,6 +290,8 @@ class TestList:
+             cfg_path = "./"
+             driver_name = main_name
+ 
++        self.driver_name = driver_name
++
+         if sources_path:
+             cfg_path = os.path.realpath(sources_path) + "/"
+ 
+-- 
+2.42.0
