@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6480110E188
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Nov 2023 20:32:37 +0000 (UTC)
-Date: Tue, 28 Nov 2023 21:31:03 +0100
-From: Francois Dugast <francois.dugast@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- <igt-dev@lists.freedesktop.org>
-Message-ID: <ZWZOB-3G9R0WEifr@fdugast-desk.home>
-References: <20231116145348.7-1-francois.dugast@intel.com>
- <20231116145348.7-10-francois.dugast@intel.com>
- <20231117184416.armzwzb3bxxwacjc@kamilkon-desk.igk.intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20231117184416.armzwzb3bxxwacjc@kamilkon-desk.igk.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============1267772128983756167=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v1 09/13] drm-uapi/xe: Reject bo creation of
- unaligned size
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Date: Tue, 28 Nov 2023 20:43:17 -0000
+Message-ID: <170120419749.8220.16403373873166845538@emeril.freedesktop.org>
+References: <20231128143127.203892-1-swati2.sharma@intel.com>
+In-Reply-To: <20231128143127.203892-1-swati2.sharma@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/km?=
+ =?utf-8?q?s=5Fsysfs=5Fedid=5Ftiming=3A_reduce_num_of_iterations?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,329 +17,500 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Nov 17, 2023 at 07:44:16PM +0100, Kamil Konieczny wrote:
-> Hi Francois,
-> On 2023-11-16 at 14:53:44 +0000, Francois Dugast wrote:
-> > Align with kernel commit ("drm/xe/uapi: Reject bo creation of unaligned size")
-> > 
-> > Signed-off-by: Francois Dugast <francois.dugast@intel.com>
-> > ---
-> >  include/drm-uapi/xe_drm.h          | 17 +++++++++--------
-> >  tests/intel/xe_mmap.c              | 22 ++++++++++++----------
-> >  tests/intel/xe_prime_self_import.c | 26 +++++++++++++++++++++++++-
-> 
-> There are now compilation warnings:
-> 
-> [1315/1777] Compiling C object tests/xe_prime_self_import.p/intel_xe_prime_self_import.c.o
-> ../tests/intel/xe_prime_self_import.c: In function 'check_bo':
-> ../tests/intel/xe_prime_self_import.c:73:16: warning: declaration of 'bo_size' shadows a global declaration [-Wshadow]
->    73 |         size_t bo_size = get_min_bo_size(fd1, fd2);
->       |                ^~~~~~~
-> 
-> so please delete global var bo_size and remove it also from fixup.
+--===============1267772128983756167==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-It will be removed in the next revision, thanks.
+== Series Details ==
 
-Francois
+Series: tests/kms_sysfs_edid_timing: reduce num of iterations
+URL   : https://patchwork.freedesktop.org/series/126989/
+State : success
 
-> 
-> Regards,
-> Kamil
-> 
-> >  tests/intel/xe_vm.c                | 13 ++++++-------
-> >  4 files changed, 52 insertions(+), 26 deletions(-)
-> > 
-> > diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-> > index 7aff66830..aa66b62e2 100644
-> > --- a/include/drm-uapi/xe_drm.h
-> > +++ b/include/drm-uapi/xe_drm.h
-> > @@ -206,11 +206,13 @@ struct drm_xe_query_mem_region {
-> >  	 *
-> >  	 * When the kernel allocates memory for this region, the
-> >  	 * underlying pages will be at least @min_page_size in size.
-> > -	 *
-> > -	 * Important note: When userspace allocates a GTT address which
-> > -	 * can point to memory allocated from this region, it must also
-> > -	 * respect this minimum alignment. This is enforced by the
-> > -	 * kernel.
-> > +	 * Buffer objects with an allowable placement in this region must be
-> > +	 * created with a size aligned to this value.
-> > +	 * GPU virtual address mappings of (parts of) buffer objects that
-> > +	 * may be placed in this region must also have their GPU virtual
-> > +	 * address and range aligned to this value.
-> > +	 * Affected IOCTLS will return %-EINVAL if alignment restrictions are
-> > +	 * not met.
-> >  	 */
-> >  	__u32 min_page_size;
-> >  	/**
-> > @@ -515,9 +517,8 @@ struct drm_xe_gem_create {
-> >  	__u64 extensions;
-> >  
-> >  	/**
-> > -	 * @size: Requested size for the object
-> > -	 *
-> > -	 * The (page-aligned) allocated size for the object will be returned.
-> > +	 * @size: Size of the object to be created, must match region
-> > +	 * (system or vram) minimum alignment (&min_page_size).
-> >  	 */
-> >  	__u64 size;
-> >  
-> > diff --git a/tests/intel/xe_mmap.c b/tests/intel/xe_mmap.c
-> > index 965644e22..d6c8d5114 100644
-> > --- a/tests/intel/xe_mmap.c
-> > +++ b/tests/intel/xe_mmap.c
-> > @@ -47,17 +47,18 @@
-> >  static void
-> >  test_mmap(int fd, uint32_t placement, uint32_t flags)
-> >  {
-> > +	size_t bo_size = xe_get_default_alignment(fd);
-> >  	uint32_t bo;
-> >  	void *map;
-> >  
-> >  	igt_require_f(placement, "Device doesn't support such memory region\n");
-> >  
-> > -	bo = xe_bo_create(fd, 0, 4096, placement, flags);
-> > +	bo = xe_bo_create(fd, 0, bo_size, placement, flags);
-> >  
-> > -	map = xe_bo_map(fd, bo, 4096);
-> > +	map = xe_bo_map(fd, bo, bo_size);
-> >  	strcpy(map, "Write some data to the BO!");
-> >  
-> > -	munmap(map, 4096);
-> > +	munmap(map, bo_size);
-> >  
-> >  	gem_close(fd, bo);
-> >  }
-> > @@ -156,13 +157,14 @@ static void trap_sigbus(uint32_t *ptr)
-> >   */
-> >  static void test_small_bar(int fd)
-> >  {
-> > +	size_t page_size = xe_get_default_alignment(fd);
-> >  	uint32_t visible_size = xe_visible_vram_size(fd, 0);
-> >  	uint32_t bo;
-> >  	uint64_t mmo;
-> >  	uint32_t *map;
-> >  
-> >  	/* 2BIG invalid case */
-> > -	igt_assert_neq(__xe_bo_create(fd, 0, visible_size + 4096,
-> > +	igt_assert_neq(__xe_bo_create(fd, 0, visible_size + page_size,
-> >  				      vram_memory(fd, 0),
-> >  				      DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
-> >  				      &bo),
-> > @@ -172,12 +174,12 @@ static void test_small_bar(int fd)
-> >  	bo = xe_bo_create(fd, 0, visible_size / 4, vram_memory(fd, 0),
-> >  			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  	mmo = xe_bo_mmap_offset(fd, bo);
-> > -	map = mmap(NULL, 4096, PROT_WRITE, MAP_SHARED, fd, mmo);
-> > +	map = mmap(NULL, page_size, PROT_WRITE, MAP_SHARED, fd, mmo);
-> >  	igt_assert(map != MAP_FAILED);
-> >  
-> >  	map[0] = 0xdeadbeaf;
-> >  
-> > -	munmap(map, 4096);
-> > +	munmap(map, page_size);
-> >  	gem_close(fd, bo);
-> >  
-> >  	/* Normal operation with system memory spilling */
-> > @@ -186,18 +188,18 @@ static void test_small_bar(int fd)
-> >  			  system_memory(fd),
-> >  			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  	mmo = xe_bo_mmap_offset(fd, bo);
-> > -	map = mmap(NULL, 4096, PROT_WRITE, MAP_SHARED, fd, mmo);
-> > +	map = mmap(NULL, page_size, PROT_WRITE, MAP_SHARED, fd, mmo);
-> >  	igt_assert(map != MAP_FAILED);
-> >  
-> >  	map[0] = 0xdeadbeaf;
-> >  
-> > -	munmap(map, 4096);
-> > +	munmap(map, page_size);
-> >  	gem_close(fd, bo);
-> >  
-> >  	/* Bogus operation with SIGBUS */
-> > -	bo = xe_bo_create(fd, 0, visible_size + 4096, vram_memory(fd, 0), 0);
-> > +	bo = xe_bo_create(fd, 0, visible_size + page_size, vram_memory(fd, 0), 0);
-> >  	mmo = xe_bo_mmap_offset(fd, bo);
-> > -	map = mmap(NULL, 4096, PROT_WRITE, MAP_SHARED, fd, mmo);
-> > +	map = mmap(NULL, page_size, PROT_WRITE, MAP_SHARED, fd, mmo);
-> >  	igt_assert(map != MAP_FAILED);
-> >  
-> >  	trap_sigbus(map);
-> > diff --git a/tests/intel/xe_prime_self_import.c b/tests/intel/xe_prime_self_import.c
-> > index 9a263d326..504e6a13d 100644
-> > --- a/tests/intel/xe_prime_self_import.c
-> > +++ b/tests/intel/xe_prime_self_import.c
-> > @@ -61,13 +61,19 @@ static int g_time_out = 5;
-> >  static pthread_barrier_t g_barrier;
-> >  static size_t bo_size;
-> >  
-> > +static size_t get_min_bo_size(int fd1, int fd2)
-> > +{
-> > +	return 4 * max(xe_get_default_alignment(fd1),
-> > +		       xe_get_default_alignment(fd2));
-> > +}
-> > +
-> >  static void
-> >  check_bo(int fd1, uint32_t handle1, int fd2, uint32_t handle2)
-> >  {
-> > +	size_t bo_size = get_min_bo_size(fd1, fd2);
-> >  	char *ptr1, *ptr2;
-> >  	int i;
-> >  
-> > -
-> >  	ptr1 = xe_bo_map(fd1, handle1, bo_size);
-> >  	ptr2 = xe_bo_map(fd2, handle2, bo_size);
-> >  
-> > @@ -97,6 +103,7 @@ check_bo(int fd1, uint32_t handle1, int fd2, uint32_t handle2)
-> >  static void test_with_fd_dup(void)
-> >  {
-> >  	int fd1, fd2;
-> > +	size_t bo_size;
-> >  	uint32_t handle, handle_import;
-> >  	int dma_buf_fd1, dma_buf_fd2;
-> >  
-> > @@ -105,6 +112,8 @@ static void test_with_fd_dup(void)
-> >  	fd1 = drm_open_driver(DRIVER_XE);
-> >  	fd2 = drm_open_driver(DRIVER_XE);
-> >  
-> > +	bo_size = get_min_bo_size(fd1, fd2);
-> > +
-> >  	handle = xe_bo_create(fd1, 0, bo_size, vram_if_possible(fd1, 0),
-> >  			      DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  
-> > @@ -131,6 +140,7 @@ static void test_with_fd_dup(void)
-> >  static void test_with_two_bos(void)
-> >  {
-> >  	int fd1, fd2;
-> > +	size_t bo_size;
-> >  	uint32_t handle1, handle2, handle_import;
-> >  	int dma_buf_fd;
-> >  
-> > @@ -139,6 +149,8 @@ static void test_with_two_bos(void)
-> >  	fd1 = drm_open_driver(DRIVER_XE);
-> >  	fd2 = drm_open_driver(DRIVER_XE);
-> >  
-> > +	bo_size = get_min_bo_size(fd1, fd2);
-> > +
-> >  	handle1 = xe_bo_create(fd1, 0, bo_size, vram_if_possible(fd1, 0),
-> >  			       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  	handle2 = xe_bo_create(fd1, 0, bo_size, vram_if_possible(fd1, 0),
-> > @@ -171,12 +183,15 @@ static void test_with_two_bos(void)
-> >  static void test_with_one_bo_two_files(void)
-> >  {
-> >  	int fd1, fd2;
-> > +	size_t bo_size;
-> >  	uint32_t handle_import, handle_open, handle_orig, flink_name;
-> >  	int dma_buf_fd1, dma_buf_fd2;
-> >  
-> >  	fd1 = drm_open_driver(DRIVER_XE);
-> >  	fd2 = drm_open_driver(DRIVER_XE);
-> >  
-> > +	bo_size = get_min_bo_size(fd1, fd2);
-> > +
-> >  	handle_orig = xe_bo_create(fd1, 0, bo_size,
-> >  				   vram_if_possible(fd1, 0),
-> >  				   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> > @@ -205,12 +220,15 @@ static void test_with_one_bo_two_files(void)
-> >  static void test_with_one_bo(void)
-> >  {
-> >  	int fd1, fd2;
-> > +	size_t bo_size;
-> >  	uint32_t handle, handle_import1, handle_import2, handle_selfimport;
-> >  	int dma_buf_fd;
-> >  
-> >  	fd1 = drm_open_driver(DRIVER_XE);
-> >  	fd2 = drm_open_driver(DRIVER_XE);
-> >  
-> > +	bo_size = get_min_bo_size(fd1, fd2);
-> > +
-> >  	handle = xe_bo_create(fd1, 0, bo_size, vram_if_possible(fd1, 0),
-> >  			      DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  
-> > @@ -279,6 +297,7 @@ static void *thread_fn_reimport_vs_close(void *p)
-> >  	pthread_t *threads;
-> >  	int r, i, num_threads;
-> >  	int fds[2];
-> > +	size_t bo_size;
-> >  	int obj_count;
-> >  	void *status;
-> >  	uint32_t handle;
-> > @@ -298,6 +317,8 @@ static void *thread_fn_reimport_vs_close(void *p)
-> >  
-> >  	fds[0] = drm_open_driver(DRIVER_XE);
-> >  
-> > +	bo_size = xe_get_default_alignment(fds[0]);
-> > +
-> >  	handle = xe_bo_create(fds[0], 0, bo_size,
-> >  			      vram_if_possible(fds[0], 0),
-> >  			      DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> > @@ -336,6 +357,7 @@ static void *thread_fn_export_vs_close(void *p)
-> >  	struct drm_prime_handle prime_h2f;
-> >  	struct drm_gem_close close_bo;
-> >  	int fd = (uintptr_t)p;
-> > +	size_t bo_size = xe_get_default_alignment(fd);
-> >  	uint32_t handle;
-> >  
-> >  	pthread_barrier_wait(&g_barrier);
-> > @@ -463,6 +485,7 @@ static void test_llseek_size(void)
-> >  static void test_llseek_bad(void)
-> >  {
-> >  	int fd;
-> > +	size_t bo_size;
-> >  	uint32_t handle;
-> >  	int dma_buf_fd;
-> >  
-> > @@ -470,6 +493,7 @@ static void test_llseek_bad(void)
-> >  
-> >  	fd = drm_open_driver(DRIVER_XE);
-> >  
-> > +	bo_size = 4 * xe_get_default_alignment(fd);
-> >  	handle = xe_bo_create(fd, 0, bo_size,
-> >  			      vram_if_possible(fd, 0),
-> >  			      DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> > diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-> > index ea93d7b2e..2c563c64f 100644
-> > --- a/tests/intel/xe_vm.c
-> > +++ b/tests/intel/xe_vm.c
-> > @@ -1310,11 +1310,10 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
-> >  	if (flags & MAP_FLAG_HAMMER_FIRST_PAGE) {
-> >  		t.fd = fd;
-> >  		t.vm = vm;
-> > -#define PAGE_SIZE	4096
-> > -		t.addr = addr + PAGE_SIZE / 2;
-> > +		t.addr = addr + page_size / 2;
-> >  		t.eci = eci;
-> >  		t.exit = &exit;
-> > -		t.map = map + PAGE_SIZE / 2;
-> > +		t.map = map + page_size / 2;
-> >  		t.barrier = &barrier;
-> >  		pthread_barrier_init(&barrier, NULL, 2);
-> >  		pthread_create(&t.thread, 0, hammer_thread, &t);
-> > @@ -1367,8 +1366,8 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
-> >  		igt_assert_eq(data->data, 0xc0ffee);
-> >  	}
-> >  	if (flags & MAP_FLAG_HAMMER_FIRST_PAGE) {
-> > -		memset(map, 0, PAGE_SIZE / 2);
-> > -		memset(map + PAGE_SIZE, 0, bo_size - PAGE_SIZE);
-> > +		memset(map, 0, page_size / 2);
-> > +		memset(map + page_size, 0, bo_size - page_size);
-> >  	} else {
-> >  		memset(map, 0, bo_size);
-> >  	}
-> > @@ -1417,8 +1416,8 @@ try_again_after_invalidate:
-> >  		}
-> >  	}
-> >  	if (flags & MAP_FLAG_HAMMER_FIRST_PAGE) {
-> > -		memset(map, 0, PAGE_SIZE / 2);
-> > -		memset(map + PAGE_SIZE, 0, bo_size - PAGE_SIZE);
-> > +		memset(map, 0, page_size / 2);
-> > +		memset(map + page_size, 0, bo_size - page_size);
-> >  	} else {
-> >  		memset(map, 0, bo_size);
-> >  	}
-> > -- 
-> > 2.34.1
-> > 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7608_BAT -> XEIGTPW_10281_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (1 -> 4)
+------------------------------
+
+  Additional (3): bat-pvc-2 bat-dg2-oem2 bat-atsm-2 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10281_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-atsm-2:         NOTRUN -> [INCOMPLETE][1] ([Intel XE#764])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-atsm-2/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@kms_addfb_basic@addfb25-x-tiled-legacy:
+    - bat-pvc-2:          NOTRUN -> [SKIP][2] ([i915#6077]) +33 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-pvc-2/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][3] ([Intel XE#623])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_addfb_basic@basic-y-tiled-legacy:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][4] ([Intel XE#388]) +2 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-dg2-oem2/igt@kms_addfb_basic@basic-y-tiled-legacy.html
+
+  * igt@kms_addfb_basic@invalid-set-prop-any:
+    - bat-atsm-2:         NOTRUN -> [SKIP][5] ([i915#6077]) +33 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-atsm-2/igt@kms_addfb_basic@invalid-set-prop-any.html
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:
+    - bat-pvc-2:          NOTRUN -> [SKIP][6] ([Intel XE#782]) +5 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-pvc-2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+
+  * igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:
+    - bat-atsm-2:         NOTRUN -> [SKIP][7] ([Intel XE#782]) +5 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-atsm-2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-atsm-2:         NOTRUN -> [SKIP][8] ([Intel XE#784])
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-atsm-2/igt@kms_dsc@dsc-basic.html
+    - bat-pvc-2:          NOTRUN -> [SKIP][9] ([Intel XE#784])
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-pvc-2/igt@kms_dsc@dsc-basic.html
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][10] ([Intel XE#423])
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_flip@basic-flip-vs-dpms:
+    - bat-pvc-2:          NOTRUN -> [SKIP][11] ([Intel XE#947]) +3 other tests skip
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-pvc-2/igt@kms_flip@basic-flip-vs-dpms.html
+
+  * igt@kms_flip@basic-flip-vs-modeset:
+    - bat-atsm-2:         NOTRUN -> [SKIP][12] ([Intel XE#947]) +3 other tests skip
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-atsm-2/igt@kms_flip@basic-flip-vs-modeset.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
+    - bat-adlp-7:         [PASS][13] -> [FAIL][14] ([Intel XE#480])
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7608/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+
+  * igt@kms_force_connector_basic@force-connector-state:
+    - bat-pvc-2:          NOTRUN -> [SKIP][15] ([Intel XE#540]) +3 other tests skip
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-pvc-2/igt@kms_force_connector_basic@force-connector-state.html
+    - bat-atsm-2:         NOTRUN -> [SKIP][16] ([Intel XE#540]) +3 other tests skip
+   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-atsm-2/igt@kms_force_connector_basic@force-connector-state.html
+
+  * igt@kms_force_connector_basic@prune-stale-modes:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][17] ([i915#5274])
+   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-pvc-2:          NOTRUN -> [SKIP][18] ([Intel XE#783])
+   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-pvc-2/igt@kms_frontbuffer_tracking@basic.html
+    - bat-dg2-oem2:       NOTRUN -> [FAIL][19] ([Intel XE#608])
+   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html
+    - bat-atsm-2:         NOTRUN -> [SKIP][20] ([Intel XE#783])
+   [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-atsm-2/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
+    - bat-dg2-oem2:       NOTRUN -> [FAIL][21] ([Intel XE#400] / [Intel XE#616]) +2 other tests fail
+   [21]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:
+    - bat-atsm-2:         NOTRUN -> [SKIP][22] ([i915#1836]) +6 other tests skip
+   [22]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-atsm-2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
+    - bat-pvc-2:          NOTRUN -> [SKIP][23] ([Intel XE#829]) +6 other tests skip
+   [23]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-pvc-2/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+
+  * igt@kms_prop_blob@basic:
+    - bat-pvc-2:          NOTRUN -> [SKIP][24] ([Intel XE#780])
+   [24]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-pvc-2/igt@kms_prop_blob@basic.html
+    - bat-atsm-2:         NOTRUN -> [SKIP][25] ([Intel XE#780])
+   [25]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-atsm-2/igt@kms_prop_blob@basic.html
+
+  * igt@xe_compute@compute-square:
+    - bat-atsm-2:         NOTRUN -> [SKIP][26] ([Intel XE#672])
+   [26]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-atsm-2/igt@xe_compute@compute-square.html
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][27] ([Intel XE#672])
+   [27]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-dg2-oem2/igt@xe_compute@compute-square.html
+
+  * igt@xe_evict@evict-beng-small-external:
+    - bat-pvc-2:          NOTRUN -> [FAIL][28] ([Intel XE#936]) +3 other tests fail
+   [28]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-pvc-2/igt@xe_evict@evict-beng-small-external.html
+
+  * igt@xe_evict@evict-small-cm:
+    - bat-pvc-2:          NOTRUN -> [DMESG-FAIL][29] ([Intel XE#482]) +3 other tests dmesg-fail
+   [29]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-pvc-2/igt@xe_evict@evict-small-cm.html
+
+  * igt@xe_exec_fault_mode@many-basic:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][30] ([Intel XE#288]) +17 other tests skip
+   [30]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html
+
+  * igt@xe_guc_pc@freq_range_idle:
+    - bat-pvc-2:          NOTRUN -> [SKIP][31] ([Intel XE#533]) +1 other test skip
+   [31]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-pvc-2/igt@xe_guc_pc@freq_range_idle.html
+
+  * igt@xe_huc_copy@huc_copy:
+    - bat-pvc-2:          NOTRUN -> [SKIP][32] ([Intel XE#255])
+   [32]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-pvc-2/igt@xe_huc_copy@huc_copy.html
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][33] ([Intel XE#255])
+   [33]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html
+    - bat-atsm-2:         NOTRUN -> [SKIP][34] ([Intel XE#255])
+   [34]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-atsm-2/igt@xe_huc_copy@huc_copy.html
+
+  * igt@xe_intel_bb@render:
+    - bat-pvc-2:          NOTRUN -> [SKIP][35] ([Intel XE#532])
+   [35]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-pvc-2/igt@xe_intel_bb@render.html
+
+  * igt@xe_module_load@load:
+    - bat-pvc-2:          NOTRUN -> [SKIP][36] ([Intel XE#378])
+   [36]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-pvc-2/igt@xe_module_load@load.html
+
+  * igt@xe_pm_residency@gt-c6-on-idle:
+    - bat-pvc-2:          NOTRUN -> [SKIP][37] ([Intel XE#531])
+   [37]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-pvc-2/igt@xe_pm_residency@gt-c6-on-idle.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
+    - bat-adlp-7:         [FAIL][38] ([Intel XE#480]) -> [PASS][39]
+   [38]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7608/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+   [39]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#255]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/255
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+  [Intel XE#378]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/378
+  [Intel XE#388]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/388
+  [Intel XE#392]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/392
+  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
+  [Intel XE#423]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/423
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#482]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/482
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+  [Intel XE#531]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/531
+  [Intel XE#532]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/532
+  [Intel XE#533]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/533
+  [Intel XE#540]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/540
+  [Intel XE#608]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/608
+  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
+  [Intel XE#623]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/623
+  [Intel XE#672]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/672
+  [Intel XE#764]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/764
+  [Intel XE#780]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/780
+  [Intel XE#782]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/782
+  [Intel XE#783]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/783
+  [Intel XE#784]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/784
+  [Intel XE#829]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/829
+  [Intel XE#926]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/926
+  [Intel XE#929]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/929
+  [Intel XE#936]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/936
+  [Intel XE#947]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/947
+  [i915#1836]: https://gitlab.freedesktop.org/drm/intel/issues/1836
+  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
+  [i915#6077]: https://gitlab.freedesktop.org/drm/intel/issues/6077
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7608 -> IGTPW_10281
+  * Linux: xe-526-c9cb0a921a297d66c6c413e6cd6fad7530107ce8 -> xe-527-b06c9f366cd09b888be061d23eecffed7139c09b
+
+  IGTPW_10281: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/index.html
+  IGT_7608: 3e52de09140ec5ddf8919fcb11a858cfcc137359 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-526-c9cb0a921a297d66c6c413e6cd6fad7530107ce8: c9cb0a921a297d66c6c413e6cd6fad7530107ce8
+  xe-527-b06c9f366cd09b888be061d23eecffed7139c09b: b06c9f366cd09b888be061d23eecffed7139c09b
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/index.html
+
+--===============1267772128983756167==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_sysfs_edid_timing: reduce num of iterations</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126989/">https://patchwork.freedesktop.org/series/126989/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7608_BAT -&gt; XEIGTPW_10281_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (1 -&gt; 4)</h2>
+<p>Additional (3): bat-pvc-2 bat-dg2-oem2 bat-atsm-2 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10281_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-atsm-2/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/764">Intel XE#764</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@addfb25-x-tiled-legacy:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-pvc-2/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6077">i915#6077</a>) +33 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/623">Intel XE#623</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@basic-y-tiled-legacy:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-dg2-oem2/igt@kms_addfb_basic@basic-y-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/388">Intel XE#388</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@invalid-set-prop-any:</p>
+<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-atsm-2/igt@kms_addfb_basic@invalid-set-prop-any.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6077">i915#6077</a>) +33 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-pvc-2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/782">Intel XE#782</a>) +5 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:</p>
+<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-atsm-2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/782">Intel XE#782</a>) +5 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>
+<p>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-atsm-2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/784">Intel XE#784</a>)</p>
+</li>
+<li>
+<p>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-pvc-2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/784">Intel XE#784</a>)</p>
+</li>
+<li>
+<p>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/423">Intel XE#423</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-dpms:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-pvc-2/igt@kms_flip@basic-flip-vs-dpms.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/947">Intel XE#947</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset:</p>
+<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-atsm-2/igt@kms_flip@basic-flip-vs-modeset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/947">Intel XE#947</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7608/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-connector-state:</p>
+<ul>
+<li>
+<p>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-pvc-2/igt@kms_force_connector_basic@force-connector-state.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/540">Intel XE#540</a>) +3 other tests skip</p>
+</li>
+<li>
+<p>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-atsm-2/igt@kms_force_connector_basic@force-connector-state.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/540">Intel XE#540</a>) +3 other tests skip</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@prune-stale-modes:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5274">i915#5274</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>
+<p>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-pvc-2/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/783">Intel XE#783</a>)</p>
+</li>
+<li>
+<p>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/608">Intel XE#608</a>)</p>
+</li>
+<li>
+<p>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-atsm-2/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/783">Intel XE#783</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>) +2 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:</p>
+<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-atsm-2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1836">i915#1836</a>) +6 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-pvc-2/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/829">Intel XE#829</a>) +6 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_prop_blob@basic:</p>
+<ul>
+<li>
+<p>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-pvc-2/igt@kms_prop_blob@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/780">Intel XE#780</a>)</p>
+</li>
+<li>
+<p>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-atsm-2/igt@kms_prop_blob@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/780">Intel XE#780</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_compute@compute-square:</p>
+<ul>
+<li>
+<p>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-atsm-2/igt@xe_compute@compute-square.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/672">Intel XE#672</a>)</p>
+</li>
+<li>
+<p>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-dg2-oem2/igt@xe_compute@compute-square.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/672">Intel XE#672</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-beng-small-external:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-pvc-2/igt@xe_evict@evict-beng-small-external.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/936">Intel XE#936</a>) +3 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-small-cm:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-pvc-2/igt@xe_evict@evict-small-cm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/482">Intel XE#482</a>) +3 other tests dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@many-basic:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +17 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_guc_pc@freq_range_idle:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-pvc-2/igt@xe_guc_pc@freq_range_idle.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/533">Intel XE#533</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_huc_copy@huc_copy:</p>
+<ul>
+<li>
+<p>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-pvc-2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>)</p>
+</li>
+<li>
+<p>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>)</p>
+</li>
+<li>
+<p>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-atsm-2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_intel_bb@render:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-pvc-2/igt@xe_intel_bb@render.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/532">Intel XE#532</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_module_load@load:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-pvc-2/igt@xe_module_load@load.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/378">Intel XE#378</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pm_residency@gt-c6-on-idle:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-pvc-2/igt@xe_pm_residency@gt-c6-on-idle.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/531">Intel XE#531</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7608/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10281/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7608 -&gt; IGTPW_10281</li>
+<li>Linux: xe-526-c9cb0a921a297d66c6c413e6cd6fad7530107ce8 -&gt; xe-527-b06c9f366cd09b888be061d23eecffed7139c09b</li>
+</ul>
+<p>IGTPW_10281: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10281/index.html<br />
+  IGT_7608: 3e52de09140ec5ddf8919fcb11a858cfcc137359 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-526-c9cb0a921a297d66c6c413e6cd6fad7530107ce8: c9cb0a921a297d66c6c413e6cd6fad7530107ce8<br />
+  xe-527-b06c9f366cd09b888be061d23eecffed7139c09b: b06c9f366cd09b888be061d23eecffed7139c09b</p>
+
+</body>
+</html>
+
+--===============1267772128983756167==--
