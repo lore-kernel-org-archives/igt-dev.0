@@ -3,13 +3,13 @@ Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
-Date: Tue, 28 Nov 2023 21:59:26 -0000
-Message-ID: <170120876666.8221.5590032445445408341@emeril.freedesktop.org>
-References: <20230718110852.2965553-1-anshuman.gupta@intel.com>
-In-Reply-To: <20230718110852.2965553-1-anshuman.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB2cmFt?=
- =?utf-8?q?_d3cold_threshold_test_=28rev8=29?=
+To: "Jeevan B" <jeevan.b@intel.com>
+Date: Tue, 28 Nov 2023 22:01:37 -0000
+Message-ID: <170120889711.8218.10501809104831756697@emeril.freedesktop.org>
+References: <20231128174046.2497024-1-jeevan.b@intel.com>
+In-Reply-To: <20231128174046.2497024-1-jeevan.b@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_A?=
+ =?utf-8?q?dd_FBC_support_to_PSR/PSR2_tests_=28rev7=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,15 +25,147 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: vram d3cold threshold test (rev8)
-URL   : https://patchwork.freedesktop.org/series/119914/
-State : failure
+Series: Add FBC support to PSR/PSR2 tests (rev7)
+URL   : https://patchwork.freedesktop.org/series/126689/
+State : warning
 
 == Summary ==
 
-Applying: tests/intel/xe_pm: Add helper to turn on and off the displays
-Patch failed at 0001 tests/intel/xe_pm: Add helper to turn on and off the displays
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
+Pipeline status: FAILED.
 
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1044574 for the overview.
+
+build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/52117714):
+  Warning: Missing documentation for igt@kms_psr@psr-sprite-mmap-cpu
+  Warning: Missing documentation for igt@kms_psr@psr-sprite-mmap-gtt
+  Warning: Missing documentation for igt@kms_psr@psr2-cursor-mmap-cpu
+  Warning: Missing documentation for igt@kms_psr@psr2-cursor-mmap-gtt
+  Warning: Missing documentation for igt@kms_psr@psr2-cursor-plane-move
+  Warning: Missing documentation for igt@kms_psr@psr2-cursor-plane-onoff
+  Warning: Missing documentation for igt@kms_psr@psr2-primary-mmap-cpu
+  Warning: Missing documentation for igt@kms_psr@psr2-primary-mmap-gtt
+  Warning: Missing documentation for igt@kms_psr@psr2-sprite-mmap-cpu
+  Warning: Missing documentation for igt@kms_psr@psr2-sprite-mmap-gtt
+  Warning: Missing documentation for igt@kms_psr@psr2-sprite-plane-move
+  Warning: Missing documentation for igt@kms_psr@psr2-sprite-plane-onoff
+  Please refer: docs/test_documentation.md for more details
+  ninja: build stopped: subcommand failed.
+  section_end:1701208822:step_script
+  section_start:1701208822:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1701208822:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/52117709):
+  Warning: Missing documentation for igt@kms_psr@psr-sprite-mmap-cpu
+  Warning: Missing documentation for igt@kms_psr@psr-sprite-mmap-gtt
+  Warning: Missing documentation for igt@kms_psr@psr2-cursor-mmap-cpu
+  Warning: Missing documentation for igt@kms_psr@psr2-cursor-mmap-gtt
+  Warning: Missing documentation for igt@kms_psr@psr2-cursor-plane-move
+  Warning: Missing documentation for igt@kms_psr@psr2-cursor-plane-onoff
+  Warning: Missing documentation for igt@kms_psr@psr2-primary-mmap-cpu
+  Warning: Missing documentation for igt@kms_psr@psr2-primary-mmap-gtt
+  Warning: Missing documentation for igt@kms_psr@psr2-sprite-mmap-cpu
+  Warning: Missing documentation for igt@kms_psr@psr2-sprite-mmap-gtt
+  Warning: Missing documentation for igt@kms_psr@psr2-sprite-plane-move
+  Warning: Missing documentation for igt@kms_psr@psr2-sprite-plane-onoff
+  Please refer: docs/test_documentation.md for more details
+  ninja: build stopped: subcommand failed.
+  section_end:1701208832:step_script
+  section_start:1701208832:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1701208833:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/52117713):
+  Warning: Missing documentation for igt@kms_psr@psr-sprite-mmap-cpu
+  Warning: Missing documentation for igt@kms_psr@psr-sprite-mmap-gtt
+  Warning: Missing documentation for igt@kms_psr@psr2-cursor-mmap-cpu
+  Warning: Missing documentation for igt@kms_psr@psr2-cursor-mmap-gtt
+  Warning: Missing documentation for igt@kms_psr@psr2-cursor-plane-move
+  Warning: Missing documentation for igt@kms_psr@psr2-cursor-plane-onoff
+  Warning: Missing documentation for igt@kms_psr@psr2-primary-mmap-cpu
+  Warning: Missing documentation for igt@kms_psr@psr2-primary-mmap-gtt
+  Warning: Missing documentation for igt@kms_psr@psr2-sprite-mmap-cpu
+  Warning: Missing documentation for igt@kms_psr@psr2-sprite-mmap-gtt
+  Warning: Missing documentation for igt@kms_psr@psr2-sprite-plane-move
+  Warning: Missing documentation for igt@kms_psr@psr2-sprite-plane-onoff
+  Please refer: docs/test_documentation.md for more details
+  ninja: build stopped: subcommand failed.
+  section_end:1701208833:step_script
+  section_start:1701208833:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1701208833:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/52117712):
+  Warning: Missing documentation for igt@kms_psr@psr-sprite-mmap-cpu
+  Warning: Missing documentation for igt@kms_psr@psr-sprite-mmap-gtt
+  Warning: Missing documentation for igt@kms_psr@psr2-cursor-mmap-cpu
+  Warning: Missing documentation for igt@kms_psr@psr2-cursor-mmap-gtt
+  Warning: Missing documentation for igt@kms_psr@psr2-cursor-plane-move
+  Warning: Missing documentation for igt@kms_psr@psr2-cursor-plane-onoff
+  Warning: Missing documentation for igt@kms_psr@psr2-primary-mmap-cpu
+  Warning: Missing documentation for igt@kms_psr@psr2-primary-mmap-gtt
+  Warning: Missing documentation for igt@kms_psr@psr2-sprite-mmap-cpu
+  Warning: Missing documentation for igt@kms_psr@psr2-sprite-mmap-gtt
+  Warning: Missing documentation for igt@kms_psr@psr2-sprite-plane-move
+  Warning: Missing documentation for igt@kms_psr@psr2-sprite-plane-onoff
+  Please refer: docs/test_documentation.md for more details
+  ninja: build stopped: subcommand failed.
+  section_end:1701208822:step_script
+  section_start:1701208822:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1701208823:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/52117710):
+  Warning: Missing documentation for igt@kms_psr@psr-sprite-mmap-cpu
+  Warning: Missing documentation for igt@kms_psr@psr-sprite-mmap-gtt
+  Warning: Missing documentation for igt@kms_psr@psr2-cursor-mmap-cpu
+  Warning: Missing documentation for igt@kms_psr@psr2-cursor-mmap-gtt
+  Warning: Missing documentation for igt@kms_psr@psr2-cursor-plane-move
+  Warning: Missing documentation for igt@kms_psr@psr2-cursor-plane-onoff
+  Warning: Missing documentation for igt@kms_psr@psr2-primary-mmap-cpu
+  Warning: Missing documentation for igt@kms_psr@psr2-primary-mmap-gtt
+  Warning: Missing documentation for igt@kms_psr@psr2-sprite-mmap-cpu
+  Warning: Missing documentation for igt@kms_psr@psr2-sprite-mmap-gtt
+  Warning: Missing documentation for igt@kms_psr@psr2-sprite-plane-move
+  Warning: Missing documentation for igt@kms_psr@psr2-sprite-plane-onoff
+  Please refer: docs/test_documentation.md for more details
+  ninja: build stopped: subcommand failed.
+  section_end:1701208823:step_script
+  section_start:1701208823:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1701208824:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/52117711):
+  Warning: Missing documentation for igt@kms_psr@psr-sprite-mmap-cpu
+  Warning: Missing documentation for igt@kms_psr@psr-sprite-mmap-gtt
+  Warning: Missing documentation for igt@kms_psr@psr2-cursor-mmap-cpu
+  Warning: Missing documentation for igt@kms_psr@psr2-cursor-mmap-gtt
+  Warning: Missing documentation for igt@kms_psr@psr2-cursor-plane-move
+  Warning: Missing documentation for igt@kms_psr@psr2-cursor-plane-onoff
+  Warning: Missing documentation for igt@kms_psr@psr2-primary-mmap-cpu
+  Warning: Missing documentation for igt@kms_psr@psr2-primary-mmap-gtt
+  Warning: Missing documentation for igt@kms_psr@psr2-sprite-mmap-cpu
+  Warning: Missing documentation for igt@kms_psr@psr2-sprite-mmap-gtt
+  Warning: Missing documentation for igt@kms_psr@psr2-sprite-plane-move
+  Warning: Missing documentation for igt@kms_psr@psr2-sprite-plane-onoff
+  Please refer: docs/test_documentation.md for more details
+  ninja: build stopped: subcommand failed.
+  section_end:1701208823:step_script
+  section_start:1701208823:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1701208824:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1044574
