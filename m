@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2C2D910E46D
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Nov 2023 09:21:01 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9CB1F10E473
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Nov 2023 09:50:46 +0000 (UTC)
 From: Nidhi Gupta <nidhi1.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 28 Nov 2023 15:01:08 +0530
-Message-Id: <20231128093108.31801-1-nidhi1.gupta@intel.com>
+Date: Tue, 28 Nov 2023 15:30:45 +0530
+Message-Id: <20231128100045.32687-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5] tests/intel/kms_frontbuffer_tracking:
+Subject: [igt-dev] [PATCH i-g-t v6] tests/intel/kms_frontbuffer_tracking:
  Add new subtest to test FBC on each pipe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -37,13 +37,15 @@ v4: fixed nitpicks (Bhanu)
 v5: create igt_subtest_group and move igt_fixture
     inside the group (Bhanu)
 
+v6: fixed nitpicks (Bhanu)
+
 Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 ---
- tests/intel/kms_frontbuffer_tracking.c | 51 ++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
+ tests/intel/kms_frontbuffer_tracking.c | 50 ++++++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
 
 diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-index 259dfd136..405a8a178 100644
+index 259dfd136..6cf9861d0 100644
 --- a/tests/intel/kms_frontbuffer_tracking.c
 +++ b/tests/intel/kms_frontbuffer_tracking.c
 @@ -57,6 +57,10 @@
@@ -57,23 +59,23 @@ index 259dfd136..405a8a178 100644
   * SUBTEST: drrs-%dp-rte
   * Description: Sanity test to enable DRRS with %arg[1] panels.
   * Functionality: fbt, drrs
-@@ -4459,7 +4463,10 @@ struct option long_options[] = {
- igt_main_args("", long_options, help_str, opt_handler, NULL)
+@@ -4460,6 +4464,8 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
  {
  	struct test_mode t;
-+	struct modeset_params default_mode_params;
  	int devid;
 +	enum pipe pipe;
 +	igt_output_t *output;
  
  	igt_fixture {
  		setup_environment();
-@@ -4500,6 +4507,50 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+@@ -4500,6 +4506,50 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
  		plane_fbc_rte_subtest(&t);
  	}
  
 +	igt_subtest_group {
 +		igt_subtest_with_dynamic("pipe-fbc-rte") {
++
++			enum pipe default_pipe = prim_mode_params.pipe;
 +
 +			t.pipes = PIPE_SINGLE;
 +			t.feature = FEATURE_FBC;
@@ -85,11 +87,9 @@ index 259dfd136..405a8a178 100644
 +			t.flip = -1;
 +			t.tiling = opt.tiling;
 +
-+			default_mode_params.pipe = prim_mode_params.pipe;
-+
 +			for_each_pipe(&drm.display, pipe) {
 +
-+				if (pipe == default_mode_params.pipe) {
++				if (pipe == default_pipe) {
 +					igt_info("pipe-%s: FBC validated in other subtest\n", kmstest_pipe_name(pipe));
 +					continue;
 +				}
