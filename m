@@ -1,18 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BE6F410E61D
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Nov 2023 15:46:37 +0000 (UTC)
-Date: Wed, 29 Nov 2023 16:46:33 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20231129154633.pesaxacfm452njey@kamilkon-desk.igk.intel.com>
-References: <20231129123221.98948-1-mauro.chehab@linux.intel.com>
- <20231129123221.98948-4-mauro.chehab@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============2368256968641768007=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231129123221.98948-4-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 3/3] scripts/igt_doc.py: add a logic to
- generate Intel CI testlists
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 28 Nov 2023 11:59:53 -0000
+Message-ID: <170117279390.8219.17435415567862199050@emeril.freedesktop.org>
+References: <20231128105054.24317-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20231128105054.24317-1-mauro.chehab@linux.intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Do_dome_?=
+ =?utf-8?q?cleanups_at_IGT_doc_tools?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,269 +16,491 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mauro,
-On 2023-11-29 at 13:25:36 +0100, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> Testlist for Intel CI requires parsing not only IGT testlists,
-> but also block and permit lists. This is currently handled
-> internally, but not from the documentation.
-> 
-> Now that we have everything set in place, add a method for
-> generating it at IGT. The logic there is somewhat generic,
-> but it expects some fields with a namespace as defined on
-> tests/intel/*.json files.
-> 
-> So, instead of placing at the generic code (test_list.py),
-> add them to igt_doc.py, where IGT-specific glue can easily
-> be added while keeping test_list.py generic enought to be
-> used on other projects.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+--===============2368256968641768007==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+== Series Details ==
 
-> ---
->  scripts/igt_doc.py | 192 ++++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 190 insertions(+), 2 deletions(-)
-> 
-> diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
-> index ab6179366831..0ec6e3e5ec97 100755
-> --- a/scripts/igt_doc.py
-> +++ b/scripts/igt_doc.py
-> @@ -1,5 +1,5 @@
->  #!/usr/bin/env python3
-> -# pylint: disable=C0301
-> +# pylint: disable=C0301,C0201,C0206
->  # SPDX-License-Identifier: (GPL-2.0 OR MIT)
->  
->  ## Copyright (C) 2023    Intel Corporation                 ##
-> @@ -11,10 +11,192 @@
->  """Maintain test plan and test implementation documentation on IGT."""
->  
->  import argparse
-> +import os
-> +import re
->  import sys
->  
->  from test_list import TestList
->  
-> +class IgtTestList(TestList):
-> +    """
-> +        This class implements testlist generation as expected by Intel CI.
-> +        It does that by handling test lists split by "Run type" and
-> +        using GPU (or configuration) specific fields, being "GPU" for a
-> +        permit list of tests, and "GPU excluded platform" for a block
-> +        list of tests.
-> +
-> +        The logic below has "priority zero" rules, which are:
-> +
-> +        - if the test is not on any block lists nor it contains
-> +          "GPU" or "GPU excluded platform", it won't be blocked;
-> +        - if the test is in "all" block list, it will be blocked for all
-> +          GPUs. Values from "GPU" and "GPU excluded platform" will be ignored.
-> +
-> +        If none of the above rules apply, it will handle GPU positive
-> +        and negative rules:
-> +
-> +        - if "GPU" field is present on such test, the default is
-> +          is to block the test (default_gpu_value = False). If not
-> +          present, the default is to not block (default_gpu_value = True).
-> +
-> +        Now, it will check for "GPU" and "GPU excluded platform":
-> +
-> +        - it sets the default according to default_gpu_value.
-> +
-> +        Then:
-> +
-> +        - if "GPU" exists, for each GPU listed on the list, it will
-> +          unblock the test;
-> +        - if "GPU excluded platform" exists, for each GPU listed on
-> +          the list, it will block the test.
-> +    """
-> +    def gen_intelci_testlist(self): #pylint: disable=R0912
-> +        """Return a list of gpu configs and testlists."""
-> +
-> +        subtest_dict = self.expand_dictionary(True)
-> +
-> +        # Create a tests_per_list dict
-> +        gpus = set()
-> +        tests_per_list = {}
-> +        split_regex = re.compile(r",\s*")
-> +
-> +        for subname, subtest in subtest_dict.items():
-> +            run_types = subtest.get("Run type", "other")
-> +            run_type_set = set(split_regex.split(run_types))
-> +
-> +            run_type_set = set()
-> +            for run_type in set(split_regex.split(run_types)):
-> +                run_type = run_type.lower()
-> +
-> +                if run_type.startswith(tuple(self.drivers)):
-> +                    run_type_set.add(run_type)
-> +                else:
-> +                    for driver in self.drivers:
-> +                        run_type = f"{driver.lower()}_{run_type}"
-> +                        run_type_set.add(run_type)
-> +
-> +            for run_type in run_type_set:
-> +                if run_type not in tests_per_list:
-> +                    tests_per_list[run_type] = {}
-> +
-> +                if subname not in tests_per_list[run_type]:
-> +                    tests_per_list[run_type][subname] = {}
-> +
-> +                if "GPU" in subtest:
-> +                    for gpu_list in split_regex.split(subtest["GPU"]):
-> +                        gpus.add(gpu_list)
-> +                        tests_per_list[run_type][subname][gpu_list] = True
-> +
-> +                if "GPU excluded platform" in subtest:
-> +                    for gpu_list in split_regex.split(subtest["GPU excluded platform"]):
-> +                        gpus.add(gpu_list)
-> +                        tests_per_list[run_type][subname][gpu_list] = False
-> +
-> +        # Handle block and permit lists
-> +
-> +        for run_type in tests_per_list.keys():
-> +            for subname, gpu in tests_per_list[run_type].items():
-> +
-> +                # Trivial case: fields not defined
-> +                if not gpus:
-> +                    tests_per_list[run_type][subname]["default"] = True
-> +                    continue
-> +
-> +                if not gpu:
-> +                    tests_per_list[run_type][subname] = {}
-> +                    for gpu in gpus:
-> +                        tests_per_list[run_type][subname][gpu] = True
-> +                    continue
-> +
-> +                default_gpu_value = True
-> +                for gpu, value in tests_per_list[run_type][subname].items():
-> +                    if value:
-> +                        default_gpu_value = False
-> +                        break
-> +                    if not gpu in tests_per_list[run_type][subname]:
-> +                        for gpu in gpus:
-> +                            tests_per_list[run_type][subname][gpu] = default_gpu_value
-> +
-> +                if "all" in tests_per_list[run_type][subname]:
-> +                    if not tests_per_list[run_type][subname]["all"]:
-> +                        for gpu in gpus:
-> +                            tests_per_list[run_type][subname][gpu] = False
-> +
-> +                if default_gpu_value:
-> +                    tests_per_list[run_type][subname]["default"] = True
-> +
-> +        return (gpus, tests_per_list)
-> +
-> +    def write_intelci_testlist(self, directory):
-> +        '''Create testlist directory (if needed) and files'''
-> +
-> +        if not os.path.exists(directory):
-> +            os.makedirs(directory)
-> +
-> +        (gpus, tests_per_list)  = self.gen_intelci_testlist()
-> +        testlists = {}
-> +
-> +        for run_type in tests_per_list.keys():
-> +            for subname, gpu_dict in tests_per_list[run_type].items():
-> +                for gpu, value in gpu_dict.items():
-> +                    if gpu == "all":
-> +                        continue
-> +
-> +                    gpu = re.sub(r"[\W_]+", "-", gpu).lower()
-> +                    name = re.sub(r"[\W_]+", "-", run_type).lower()
-> +                    name = re.sub(r"_+", "_", name)
-> +
-> +                    drivers = set(self.drivers)
-> +
-> +                    for driver in self.drivers:
-> +                        driver = driver.lower()
-> +
-> +                        if name.startswith(driver):
-> +                            all_drivers = False
-> +                            name = re.sub(r"^" + driver + r"[\W_]*", "", name)
-> +                            drivers = set([driver])
-> +                            break
-> +
-> +                    for driver in drivers:
-> +                        if driver not in testlists:
-> +                            testlists[driver] = {}
-> +
-> +                        if gpu not in testlists[driver]:
-> +                            testlists[driver][gpu] = {}
-> +
-> +                        if name not in testlists[driver][gpu]:
-> +                            testlists[driver][gpu][name] = set()
-> +
-> +                        testlists[driver][gpu][name].add(subname)
-> +
-> +        for driver in testlists.keys():
-> +            driver_path = os.path.join(directory, driver)
-> +            try:
-> +                os.makedirs(driver_path)
-> +            except FileExistsError:
-> +                pass
-> +
-> +            for gpu, names in testlists[driver].items():
-> +                dname = os.path.join(driver_path, gpu)
-> +                try:
-> +                    os.makedirs(dname)
-> +                except FileExistsError:
-> +                    pass
-> +
-> +                for testlist, subtests in names.items():
-> +                    if testlist == "":
-> +                        testlist = "other"
-> +
-> +                    if not subtests:
-> +                        print(f"Warning: empty testlist: {testlist}")
-> +                        continue
-> +
-> +                    fname = os.path.join(dname, testlist) + ".testlist"
-> +                    with open(fname, 'w', encoding='utf8') as handler:
-> +                        for sub in sorted(subtests):
-> +                            handler.write (f"{sub}\n")
-> +                        print(f"{fname} created.")
-> +
->  def main():
->      """
->      Main logic
-> @@ -48,12 +230,14 @@ def main():
->                          default=igt_build_path)
->      parser.add_argument("--gen-testlist",
->                          help="Generate documentation at the GEN_TESTLIST directory, using SORT_FIELD to split the tests. Requires --sort-field.")
-> +    parser.add_argument("--intelci-testlist",
-> +                        help="Generate testlists for Intel CI integration at the INTELCI_TESTLIST directory.")
->      parser.add_argument('--files', nargs='+',
->                          help="File name(s) to be processed")
->  
->      parse_args = parser.parse_args()
->  
-> -    tests = TestList(config_fname = parse_args.config,
-> +    tests = IgtTestList(config_fname = parse_args.config,
->                          include_plan = parse_args.include_plan,
->                          file_list = parse_args.files,
->                          igt_build_path = parse_args.igt_build_path)
-> @@ -77,6 +261,10 @@ def main():
->              sys.exit("Need a field to split the testlists")
->          tests.gen_testlist(parse_args.gen_testlist, parse_args.sort_field)
->  
-> +    if parse_args.intelci_testlist:
-> +        run = True
-> +        tests.write_intelci_testlist(parse_args.intelci_testlist)
-> +
->      if parse_args.to_json:
->          run = True
->          tests.print_json(parse_args.to_json)
-> -- 
-> 2.42.0
-> 
+Series: Do dome cleanups at IGT doc tools
+URL   : https://patchwork.freedesktop.org/series/126972/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7605_BAT -> XEIGTPW_10279_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (1 -> 4)
+------------------------------
+
+  Additional (3): bat-pvc-2 bat-dg2-oem2 bat-atsm-2 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10279_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-atsm-2:         NOTRUN -> [INCOMPLETE][1] ([Intel XE#764])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-atsm-2/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@kms_addfb_basic@addfb25-x-tiled-legacy:
+    - bat-pvc-2:          NOTRUN -> [SKIP][2] ([i915#6077]) +33 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-pvc-2/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][3] ([Intel XE#623])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_addfb_basic@basic-y-tiled-legacy:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][4] ([Intel XE#388]) +2 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-dg2-oem2/igt@kms_addfb_basic@basic-y-tiled-legacy.html
+
+  * igt@kms_addfb_basic@invalid-set-prop-any:
+    - bat-atsm-2:         NOTRUN -> [SKIP][5] ([i915#6077]) +33 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-atsm-2/igt@kms_addfb_basic@invalid-set-prop-any.html
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:
+    - bat-pvc-2:          NOTRUN -> [SKIP][6] ([Intel XE#782]) +5 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-pvc-2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+
+  * igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:
+    - bat-atsm-2:         NOTRUN -> [SKIP][7] ([Intel XE#782]) +5 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-atsm-2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-atsm-2:         NOTRUN -> [SKIP][8] ([Intel XE#784])
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-atsm-2/igt@kms_dsc@dsc-basic.html
+    - bat-pvc-2:          NOTRUN -> [SKIP][9] ([Intel XE#784])
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-pvc-2/igt@kms_dsc@dsc-basic.html
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][10] ([Intel XE#423])
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_flip@basic-flip-vs-dpms:
+    - bat-pvc-2:          NOTRUN -> [SKIP][11] ([Intel XE#947]) +3 other tests skip
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-pvc-2/igt@kms_flip@basic-flip-vs-dpms.html
+
+  * igt@kms_flip@basic-flip-vs-modeset:
+    - bat-atsm-2:         NOTRUN -> [SKIP][12] ([Intel XE#947]) +3 other tests skip
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-atsm-2/igt@kms_flip@basic-flip-vs-modeset.html
+
+  * igt@kms_force_connector_basic@force-connector-state:
+    - bat-pvc-2:          NOTRUN -> [SKIP][13] ([Intel XE#540]) +3 other tests skip
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-pvc-2/igt@kms_force_connector_basic@force-connector-state.html
+    - bat-atsm-2:         NOTRUN -> [SKIP][14] ([Intel XE#540]) +3 other tests skip
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-atsm-2/igt@kms_force_connector_basic@force-connector-state.html
+
+  * igt@kms_force_connector_basic@prune-stale-modes:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][15] ([i915#5274])
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-pvc-2:          NOTRUN -> [SKIP][16] ([Intel XE#783])
+   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-pvc-2/igt@kms_frontbuffer_tracking@basic.html
+    - bat-dg2-oem2:       NOTRUN -> [FAIL][17] ([Intel XE#608])
+   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html
+    - bat-atsm-2:         NOTRUN -> [SKIP][18] ([Intel XE#783])
+   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-atsm-2/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
+    - bat-dg2-oem2:       NOTRUN -> [FAIL][19] ([Intel XE#400] / [Intel XE#616]) +2 other tests fail
+   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:
+    - bat-atsm-2:         NOTRUN -> [SKIP][20] ([i915#1836]) +6 other tests skip
+   [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-atsm-2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
+    - bat-pvc-2:          NOTRUN -> [SKIP][21] ([Intel XE#829]) +6 other tests skip
+   [21]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-pvc-2/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+
+  * igt@kms_prop_blob@basic:
+    - bat-pvc-2:          NOTRUN -> [SKIP][22] ([Intel XE#780])
+   [22]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-pvc-2/igt@kms_prop_blob@basic.html
+    - bat-atsm-2:         NOTRUN -> [SKIP][23] ([Intel XE#780])
+   [23]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-atsm-2/igt@kms_prop_blob@basic.html
+
+  * igt@xe_compute@compute-square:
+    - bat-atsm-2:         NOTRUN -> [SKIP][24] ([Intel XE#672])
+   [24]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-atsm-2/igt@xe_compute@compute-square.html
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][25] ([Intel XE#672])
+   [25]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-dg2-oem2/igt@xe_compute@compute-square.html
+
+  * igt@xe_evict@evict-beng-small-external:
+    - bat-pvc-2:          NOTRUN -> [FAIL][26] ([Intel XE#936]) +3 other tests fail
+   [26]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-pvc-2/igt@xe_evict@evict-beng-small-external.html
+
+  * igt@xe_evict@evict-small-cm:
+    - bat-pvc-2:          NOTRUN -> [DMESG-FAIL][27] ([Intel XE#482]) +3 other tests dmesg-fail
+   [27]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-pvc-2/igt@xe_evict@evict-small-cm.html
+
+  * igt@xe_exec_fault_mode@many-basic:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][28] ([Intel XE#288]) +17 other tests skip
+   [28]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html
+
+  * igt@xe_guc_pc@freq_range_idle:
+    - bat-pvc-2:          NOTRUN -> [SKIP][29] ([Intel XE#533]) +1 other test skip
+   [29]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-pvc-2/igt@xe_guc_pc@freq_range_idle.html
+
+  * igt@xe_huc_copy@huc_copy:
+    - bat-pvc-2:          NOTRUN -> [SKIP][30] ([Intel XE#255])
+   [30]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-pvc-2/igt@xe_huc_copy@huc_copy.html
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][31] ([Intel XE#255])
+   [31]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html
+    - bat-atsm-2:         NOTRUN -> [SKIP][32] ([Intel XE#255])
+   [32]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-atsm-2/igt@xe_huc_copy@huc_copy.html
+
+  * igt@xe_intel_bb@render:
+    - bat-pvc-2:          NOTRUN -> [SKIP][33] ([Intel XE#532])
+   [33]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-pvc-2/igt@xe_intel_bb@render.html
+
+  * igt@xe_module_load@load:
+    - bat-pvc-2:          NOTRUN -> [SKIP][34] ([Intel XE#378])
+   [34]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-pvc-2/igt@xe_module_load@load.html
+
+  * igt@xe_pm_residency@gt-c6-on-idle:
+    - bat-pvc-2:          NOTRUN -> [SKIP][35] ([Intel XE#531])
+   [35]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-pvc-2/igt@xe_pm_residency@gt-c6-on-idle.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - bat-adlp-7:         [FAIL][36] ([Intel XE#480]) -> [PASS][37] +1 other test pass
+   [36]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7605/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html
+   [37]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#255]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/255
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+  [Intel XE#378]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/378
+  [Intel XE#388]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/388
+  [Intel XE#392]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/392
+  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
+  [Intel XE#423]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/423
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#482]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/482
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+  [Intel XE#531]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/531
+  [Intel XE#532]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/532
+  [Intel XE#533]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/533
+  [Intel XE#540]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/540
+  [Intel XE#608]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/608
+  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
+  [Intel XE#623]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/623
+  [Intel XE#672]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/672
+  [Intel XE#764]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/764
+  [Intel XE#780]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/780
+  [Intel XE#782]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/782
+  [Intel XE#783]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/783
+  [Intel XE#784]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/784
+  [Intel XE#829]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/829
+  [Intel XE#926]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/926
+  [Intel XE#929]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/929
+  [Intel XE#936]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/936
+  [Intel XE#947]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/947
+  [i915#1836]: https://gitlab.freedesktop.org/drm/intel/issues/1836
+  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
+  [i915#6077]: https://gitlab.freedesktop.org/drm/intel/issues/6077
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7605 -> IGTPW_10279
+  * Linux: xe-520-7c4b213b5a33fc591a5c92910292aea30193f96c -> xe-525-417251e59231e74f32b995403a66588e6960da2b
+
+  IGTPW_10279: 10279
+  IGT_7605: 7605
+  xe-520-7c4b213b5a33fc591a5c92910292aea30193f96c: 7c4b213b5a33fc591a5c92910292aea30193f96c
+  xe-525-417251e59231e74f32b995403a66588e6960da2b: 417251e59231e74f32b995403a66588e6960da2b
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/index.html
+
+--===============2368256968641768007==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Do dome cleanups at IGT doc tools</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126972/">https://patchwork.freedesktop.org/series/126972/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7605_BAT -&gt; XEIGTPW_10279_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (1 -&gt; 4)</h2>
+<p>Additional (3): bat-pvc-2 bat-dg2-oem2 bat-atsm-2 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10279_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-atsm-2/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/764">Intel XE#764</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@addfb25-x-tiled-legacy:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-pvc-2/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6077">i915#6077</a>) +33 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/623">Intel XE#623</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@basic-y-tiled-legacy:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-dg2-oem2/igt@kms_addfb_basic@basic-y-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/388">Intel XE#388</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@invalid-set-prop-any:</p>
+<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-atsm-2/igt@kms_addfb_basic@invalid-set-prop-any.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6077">i915#6077</a>) +33 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-pvc-2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/782">Intel XE#782</a>) +5 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:</p>
+<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-atsm-2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/782">Intel XE#782</a>) +5 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>
+<p>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-atsm-2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/784">Intel XE#784</a>)</p>
+</li>
+<li>
+<p>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-pvc-2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/784">Intel XE#784</a>)</p>
+</li>
+<li>
+<p>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/423">Intel XE#423</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-dpms:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-pvc-2/igt@kms_flip@basic-flip-vs-dpms.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/947">Intel XE#947</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset:</p>
+<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-atsm-2/igt@kms_flip@basic-flip-vs-modeset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/947">Intel XE#947</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-connector-state:</p>
+<ul>
+<li>
+<p>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-pvc-2/igt@kms_force_connector_basic@force-connector-state.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/540">Intel XE#540</a>) +3 other tests skip</p>
+</li>
+<li>
+<p>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-atsm-2/igt@kms_force_connector_basic@force-connector-state.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/540">Intel XE#540</a>) +3 other tests skip</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@prune-stale-modes:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5274">i915#5274</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>
+<p>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-pvc-2/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/783">Intel XE#783</a>)</p>
+</li>
+<li>
+<p>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/608">Intel XE#608</a>)</p>
+</li>
+<li>
+<p>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-atsm-2/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/783">Intel XE#783</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>) +2 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:</p>
+<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-atsm-2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1836">i915#1836</a>) +6 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-pvc-2/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/829">Intel XE#829</a>) +6 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_prop_blob@basic:</p>
+<ul>
+<li>
+<p>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-pvc-2/igt@kms_prop_blob@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/780">Intel XE#780</a>)</p>
+</li>
+<li>
+<p>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-atsm-2/igt@kms_prop_blob@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/780">Intel XE#780</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_compute@compute-square:</p>
+<ul>
+<li>
+<p>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-atsm-2/igt@xe_compute@compute-square.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/672">Intel XE#672</a>)</p>
+</li>
+<li>
+<p>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-dg2-oem2/igt@xe_compute@compute-square.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/672">Intel XE#672</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-beng-small-external:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-pvc-2/igt@xe_evict@evict-beng-small-external.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/936">Intel XE#936</a>) +3 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-small-cm:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-pvc-2/igt@xe_evict@evict-small-cm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/482">Intel XE#482</a>) +3 other tests dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@many-basic:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +17 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_guc_pc@freq_range_idle:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-pvc-2/igt@xe_guc_pc@freq_range_idle.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/533">Intel XE#533</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_huc_copy@huc_copy:</p>
+<ul>
+<li>
+<p>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-pvc-2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>)</p>
+</li>
+<li>
+<p>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>)</p>
+</li>
+<li>
+<p>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-atsm-2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_intel_bb@render:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-pvc-2/igt@xe_intel_bb@render.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/532">Intel XE#532</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_module_load@load:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-pvc-2/igt@xe_module_load@load.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/378">Intel XE#378</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pm_residency@gt-c6-on-idle:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-pvc-2/igt@xe_pm_residency@gt-c6-on-idle.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/531">Intel XE#531</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7605/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10279/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7605 -&gt; IGTPW_10279</li>
+<li>Linux: xe-520-7c4b213b5a33fc591a5c92910292aea30193f96c -&gt; xe-525-417251e59231e74f32b995403a66588e6960da2b</li>
+</ul>
+<p>IGTPW_10279: 10279<br />
+  IGT_7605: 7605<br />
+  xe-520-7c4b213b5a33fc591a5c92910292aea30193f96c: 7c4b213b5a33fc591a5c92910292aea30193f96c<br />
+  xe-525-417251e59231e74f32b995403a66588e6960da2b: 417251e59231e74f32b995403a66588e6960da2b</p>
+
+</body>
+</html>
+
+--===============2368256968641768007==--
 
