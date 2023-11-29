@@ -1,15 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============9195282658154707730=="
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam12on2069.outbound.protection.outlook.com [40.107.244.69])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4A48F10E392
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Nov 2023 09:17:40 +0000 (UTC)
+From: "Zhang, Jesse(Jie)" <Jesse.Zhang@amd.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Wed, 29 Nov 2023 09:17:36 +0000
+Message-ID: <DM4PR12MB5152B4EE14C7BF8F371A8ACBE383A@DM4PR12MB5152.namprd12.prod.outlook.com>
+References: <20231109024229.2950206-1-jesse.zhang@amd.com>
+ <20231109161800.hro2pwbkviih46yx@kamilkon-desk.igk.intel.com>
+In-Reply-To: <20231109161800.hro2pwbkviih46yx@kamilkon-desk.igk.intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jesse Zhang" <jesse.zhang@amd.com>
-Date: Wed, 29 Nov 2023 08:55:41 -0000
-Message-ID: <170124814107.12090.11958396400681460257@emeril.freedesktop.org>
-References: <20231129080307.135383-1-jesse.zhang@amd.com>
-In-Reply-To: <20231129080307.135383-1-jesse.zhang@amd.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?amdgpu=3A_fix_secure_bounce_test_issue?=
+Subject: Re: [igt-dev] [PATCH i-g-t 3/3] lib/amdgpu:fix the error when skip
+ hotplug test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,168 +24,99 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: "Deucher, Alexander" <Alexander.Deucher@amd.com>, "Huang,
+ Tim" <Tim.Huang@amd.com>, "Tuikov, Luben" <Luben.Tuikov@amd.com>, "Koenig,
+ Christian" <Christian.Koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============9195282658154707730==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: tests/amdgpu: fix secure bounce test issue
-URL   : https://patchwork.freedesktop.org/series/127022/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_13943 -> IGTPW_10287
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10287/index.html
-
-Participating hosts (39 -> 37)
-------------------------------
-
-  Missing    (2): bat-dg2-9 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_10287 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_force_connector_basic@force-connector-state:
-    - bat-rpls-1:         [PASS][1] -> [ABORT][2] ([i915#9315])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13943/bat-rpls-1/igt@kms_force_connector_basic@force-connector-state.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10287/bat-rpls-1/igt@kms_force_connector_basic@force-connector-state.html
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - fi-kbl-guc:         [PASS][3] -> [FAIL][4] ([IGT#3])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13943/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10287/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
-
-  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:
-    - bat-rplp-1:         [PASS][5] -> [ABORT][6] ([i915#8668])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13943/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10287/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
-
-  
-  [IGT#3]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3
-  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
-  [i915#9315]: https://gitlab.freedesktop.org/drm/intel/issues/9315
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7609 -> IGTPW_10287
-
-  CI-20190529: 20190529
-  CI_DRM_13943: 0417ec152200d74916f157bfe76677b3b4af8224 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_10287: 10287
-  IGT_7609: 72a759595100b8d167ca78cd2d62e9acd97e36bf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+++ 63 lines
---- 139 lines
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10287/index.html
-
---===============9195282658154707730==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/amdgpu: fix secure bounce test issue</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127022/">https://patchwork.freedesktop.org/series/127022/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10287/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10287/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_13943 -&gt; IGTPW_10287</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10287/index.html</p>
-<h2>Participating hosts (39 -&gt; 37)</h2>
-<p>Missing    (2): bat-dg2-9 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_10287 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_force_connector_basic@force-connector-state:</p>
-<ul>
-<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13943/bat-rpls-1/igt@kms_force_connector_basic@force-connector-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10287/bat-rpls-1/igt@kms_force_connector_basic@force-connector-state.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9315">i915#9315</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_hdmi_inject@inject-audio:</p>
-<ul>
-<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13943/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10287/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3">IGT#3</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:</p>
-<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13943/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10287/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7609 -&gt; IGTPW_10287</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13943: 0417ec152200d74916f157bfe76677b3b4af8224 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_10287: 10287<br />
-  IGT_7609: 72a759595100b8d167ca78cd2d62e9acd97e36bf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+++ 63 lines<br />
---- 139 lines</p>
-
-</body>
-</html>
-
---===============9195282658154707730==--
+W0FNRCBPZmZpY2lhbCBVc2UgT25seSAtIEdlbmVyYWxdDQoNCkhJIEthbWlsLA0KICBTb3JyeSBm
+b3IgbWlzc2luZyB0aGlzIGVtYWlsLg0KLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCkZyb206
+IEthbWlsIEtvbmllY3pueSA8a2FtaWwua29uaWVjem55QGxpbnV4LmludGVsLmNvbT4NClNlbnQ6
+IEZyaWRheSwgTm92ZW1iZXIgMTAsIDIwMjMgMTI6MTggQU0NClRvOiBpZ3QtZGV2QGxpc3RzLmZy
+ZWVkZXNrdG9wLm9yZw0KQ2M6IFpoYW5nLCBKZXNzZShKaWUpIDxKZXNzZS5aaGFuZ0BhbWQuY29t
+PjsgUHJvc3lhaywgVml0YWx5IDxWaXRhbHkuUHJvc3lha0BhbWQuY29tPjsgRGV1Y2hlciwgQWxl
+eGFuZGVyIDxBbGV4YW5kZXIuRGV1Y2hlckBhbWQuY29tPjsgVHVpa292LCBMdWJlbiA8THViZW4u
+VHVpa292QGFtZC5jb20+OyBLb2VuaWcsIENocmlzdGlhbiA8Q2hyaXN0aWFuLktvZW5pZ0BhbWQu
+Y29tPjsgSHVhbmcsIFRpbSA8VGltLkh1YW5nQGFtZC5jb20+DQpTdWJqZWN0OiBSZTogW1BBVENI
+IGktZy10IDMvM10gbGliL2FtZGdwdTpmaXggdGhlIGVycm9yIHdoZW4gc2tpcCBob3RwbHVnIHRl
+c3QNCg0KSGkgSmVzc2UsDQoNCm9uZSBzbWFsbCBuaXQgYWJvdXQgc3ViamVjdCwgcHV0IHNwYWNl
+IGFmdGVyICc6JywNCg0KW1BBVENIIGktZy10IDMvM10gbGliL2FtZGdwdTpmaXggdGhlIGVycm9y
+IHdoZW4gc2tpcCBob3RwbHVnIHRlc3QgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLV5eDQpz
+L2FtZGdwdTpmaXgvYW1kZ3B1OiBmaXgvDQoNCnNob3VsZCBiZToNCltQQVRDSCBpLWctdCAzLzNd
+IGxpYi9hbWRncHU6IGZpeCB0aGUgZXJyb3Igd2hlbiBza2lwIGhvdHBsdWcgdGVzdA0KICAgICAg
+ICBbWmhhbmcsIEplc3NlKEppZSldICAgeWVzLCB0aGFua3MgZm9yIHRoaXMgY29tbWVudC4NCk9u
+IDIwMjMtMTEtMDkgYXQgMTA6NDI6MjkgKzA4MDAsIEplc3NlIFpoYW5nIHdyb3RlOg0KPiBGb3Ig
+c2tpcHBlZCBjYXNlcywgd2Ugc2hvdWxkIHByaW50ICJTS0lQIg0KPiByYXRoZXIgdGhhbiAiZmFp
+bHVyZS4iIEZvciBleGFtcGxlDQo+DQo+IElHVC1WZXJzaW9uOiAxLjI4LWc0YjNlMWRjMzcgKHg4
+Nl82NCkgKExpbnV4OiA2LjMuNysgeDg2XzY0KSBTdGFydGluZw0KPiBzdWJ0ZXN0OiBhbWRncHVf
+aG90dW5wbHVnX3NpbXBsZSBTS0lQIC4uLiBtb3JlIHRoYW4gMSBHUFUgaXMgcmVxdWlyZWQNCj4g
+Zm9yIHRoaXMgdGVzdA0KPiAoYW1kX3BjaV91bnBsdWc6NzA0OTYpIGFtZGdwdS9hbWRfcGNpX3Vu
+cGx1Zy1DUklUSUNBTDogVGVzdCBhc3NlcnRpb24gZmFpbHVyZSBmdW5jdGlvbiBhbWRncHVfaG90
+dW5wbHVnX3Rlc3QsIGZpbGUgLi4vbGliL2FtZGdwdS9hbWRfcGNpX3VucGx1Zy5jOjMwNToNCj4g
+KGFtZF9wY2lfdW5wbHVnOjcwNDk2KSBhbWRncHUvYW1kX3BjaV91bnBsdWctQ1JJVElDQUw6IEZh
+aWxlZA0KPiBhc3NlcnRpb246IHIgPT0gMQ0KPiAoYW1kX3BjaV91bnBsdWc6NzA0OTYpIGFtZGdw
+dS9hbWRfcGNpX3VucGx1Zy1DUklUSUNBTDogTGFzdCBlcnJubzogMjIsDQo+IEludmFsaWQgYXJn
+dW1lbnQNCj4gKGFtZF9wY2lfdW5wbHVnOjcwNDk2KSBhbWRncHUvYW1kX3BjaV91bnBsdWctQ1JJ
+VElDQUw6IGVycm9yOiAwICE9IDENCj4gU3RhY2sgdHJhY2U6DQo+ICAgIzAgLi4vbGliL2lndF9j
+b3JlLmM6MTk4OCBfX2lndF9mYWlsX2Fzc2VydCgpDQo+ICAgIzEgLi4vbGliL2FtZGdwdS9hbWRf
+cGNpX3VucGx1Zy5jOjMwNQ0KPiBhbWRncHVfaG90dW5wbHVnX3Rlc3QuY29uc3Rwcm9wLjAuaXNy
+YS4wKCkNCi0tLS0tLS0tLSBeXl4gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0gXl5eXg0KDQpEaWQgeW91IHdyaXRlIHRlc3QgaW5zaWRlIGxpYnJhcnk/IElzIGl0
+IGNhbGxlZCBmcm9tIG90aGVyIHRlc3RzPw0KW1poYW5nLCBKZXNzZShKaWUpXSBoaSBLYW1pbCwg
+SSBqdXN0IHdyb3RlIHNvbWUgbmVnYXRpdmUgdGVzdHMgaW5zaWRlIGxpYnJhcnkuDQpGb3IgZXhh
+bXBsZSwgdmVyc2lvbiBtaXNtYXRjaC4gSXQgc2hvdWxkIHByaW50ICJTS0lQIiBmb3IgdGhpcyB0
+ZXN0LCBhbmQgaXQgc2hvdWxkIG5vdCBmYWlsLg0KUmVnYXJkcw0KSmVzc2UNCg0KUmVnYXJkcywN
+CkthbWlsDQoNCj4gICAjMiBbYW1kZ3B1X2hvdHVucGx1Z19zaW1wbGUrMHgyOV0NCj4gICAjMyAu
+Li90ZXN0cy9hbWRncHUvYW1kX3BjaV91bnBsdWcuYzo0NCBfX2lndF91bmlxdWVfX19fcmVhbF9t
+YWluMzQoKQ0KPiAgICM0IC4uL3Rlc3RzL2FtZGdwdS9hbWRfcGNpX3VucGx1Zy5jOjM0IG1haW4o
+KQ0KPiAgICM1IC4uL3N5c2RlcHMvbnB0bC9saWJjX3N0YXJ0X2NhbGxfbWFpbi5oOjU4IF9fbGli
+Y19zdGFydF9jYWxsX21haW4oKQ0KPiAgICM2IC4uL2NzdS9saWJjLXN0YXJ0LmM6MTI4IF9fbGli
+Y19zdGFydF9tYWluQEBHTElCQ18yLjM0KCkNCj4gICAjNyBbX3N0YXJ0KzB4MjVdDQo+IFN1YnRl
+c3QgYW1kZ3B1X2hvdHVucGx1Z19zaW1wbGUgZmFpbGVkLg0KPg0KPiBWMjoNCj4gICAtIHJlcGxh
+Y2UgaWd0X3NraXBfb24gd2l0aCBpZ3Rfc2tpcF9mKEthbWlsKQ0KPg0KPiBDYzogVml0YWx5IFBy
+b3N5YWsgPHZpdGFseS5wcm9zeWFrQGFtZC5jb20+DQo+IENjOiBMdWJlbiBUdWlrb3YgPGx1YmVu
+LnR1aWtvdkBhbWQuY29tPg0KPiBDYzogQWxleCBEZXVjaGVyIDxhbGV4YW5kZXIuZGV1Y2hlckBh
+bWQuY29tPg0KPiBDYzogQ2hyaXN0aWFuIEtvZW5pZyA8Y2hyaXN0aWFuLmtvZW5pZ0BhbWQuY29t
+Pg0KPiBDYzogVGltIEh1YW5nIDx0aW0uaHVhbmdAYW1kLmNvbT4NCj4gQ2M6IEthbWlsIEtvbmll
+Y3pueSA8a2FtaWwua29uaWVjem55QGxpbnV4LmludGVsLmNvbT4NCj4NCj4gU2lnbmVkLW9mZi1i
+eTogSmVzc2UgWmhhbmcgPEplc3NlLlpoYW5nQGFtZC5jb20+DQo+IFJldmlld2VkLWJ5OiBWaXRh
+bHkgUHJvc3lhayA8dml0YWx5LnByb3N5YWtAYW1kLmNvbT4NCj4gLS0tDQo+ICBsaWIvYW1kZ3B1
+L2FtZF9wY2lfdW5wbHVnLmMgfCAxMSArKysrKysrLS0tLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDcg
+aW5zZXJ0aW9ucygrKSwgNCBkZWxldGlvbnMoLSkNCj4NCj4gZGlmZiAtLWdpdCBhL2xpYi9hbWRn
+cHUvYW1kX3BjaV91bnBsdWcuYyBiL2xpYi9hbWRncHUvYW1kX3BjaV91bnBsdWcuYw0KPiBpbmRl
+eCBiN2FmOTVkZWMuLjgzNDZhZWI5OCAxMDA2NDQNCj4gLS0tIGEvbGliL2FtZGdwdS9hbWRfcGNp
+X3VucGx1Zy5jDQo+ICsrKyBiL2xpYi9hbWRncHUvYW1kX3BjaV91bnBsdWcuYw0KPiBAQCAtMTAx
+LDggKzEwMSw3IEBAIGFtZGdwdV9ob3R1bnBsdWdfc2V0dXBfdGVzdChib29sIHJlbmRlcl9tb2Rl
+LA0KPiBjb25zdCBzdHJ1Y3QgYW1kX3BjaV91bnBsdWdfc2V0dXANCj4NCj4gICAgICAgaWYgKHNl
+dHVwLT5vcGVuX2RldmljZSAmJiBzZXR1cC0+b3Blbl9kZXZpY2UyICYmIHVucGx1Zy0+bnVtX2Rl
+dmljZXMgPCAyKSB7DQo+ICAgICAgICAgICAgICAgLypOb3QgZW5vdWdoIGJvYXJkIGZvciB0aGUg
+dGVzdCovDQo+IC0gICAgICAgICAgICAgcHJpbnRmKCJTS0lQIC4uLiBtb3JlIHRoYW4gMSBHUFUg
+aXMgcmVxdWlyZWQgZm9yIHRoaXMgdGVzdFxuIik7DQo+IC0gICAgICAgICAgICAgZ290byByZWxl
+YXNlOw0KPiArICAgICAgICAgICAgIGlndF9za2lwX29uX2YocmV0LCAiU0tJUCAuLi4gbW9yZSB0
+aGFuIDEgR1BVIGlzIHJlcXVpcmVkIGZvciB0aGlzDQo+ICt0ZXN0XG4iKTsNCj4gICAgICAgfQ0K
+Pg0KPiAgICAgICB0bXBfc3RyID0gYW1kZ3B1X2dldF9kZXZpY2VfZnJvbV9mZCh1bnBsdWctPmRy
+bV9hbWRncHVfZmRzWzBdKTsNCj4gQEAgLTExNyw3ICsxMTYsOSBAQCBhbWRncHVfaG90dW5wbHVn
+X3NldHVwX3Rlc3QoYm9vbCByZW5kZXJfbW9kZSwgY29uc3Qgc3RydWN0IGFtZF9wY2lfdW5wbHVn
+X3NldHVwDQo+ICAgICAgICAgICAgICAgZ290byByZWxlYXNlOw0KPg0KPiAgICAgICBpZiAobWlu
+b3JfdmVyc2lvbiA8IHNldHVwLT5taW5vcl92ZXJzaW9uX3JlcSkNCj4gLSAgICAgICAgICAgICBn
+b3RvIHJlbGVhc2U7DQo+ICsgICAgICAgICAgICAgaWd0X3NraXBfb25fZihtaW5vcl92ZXJzaW9u
+IDwgc2V0dXAtPm1pbm9yX3ZlcnNpb25fcmVxLA0KPiArICAgICAgICAgICAgICAgICAgICAgIkl0
+IGhhcyBtaW5vcl92ZXJzaW9uOiAlZCBidXQgaXQgaXMgcmVxdWlyZWQ6ICVkIGZvciB0aGlzIHRl
+c3RcbiIsDQo+ICsgICAgICAgICAgICAgICAgICAgICBtaW5vcl92ZXJzaW9uLCBzZXR1cC0+bWlu
+b3JfdmVyc2lvbl9yZXEpOw0KPg0KPiAgICAgICAvKiBza2lwIGhvdHBsdWcgdGVzdCBvbiBBUFUg
+KEFjY2VsZXJhdGVkIFByb2Nlc3NpbmcgVW5pdCBDUFUgKyBpR1BVKSAqLw0KPiAgICAgICByID0g
+YW1kZ3B1X3F1ZXJ5X2dwdV9pbmZvKHVucGx1Zy0+ZGV2aWNlX2hhbmRsZSwgJmdwdV9pbmZvKTsg
+QEANCj4gLTEzOCw3ICsxMzksOSBAQCBhbWRncHVfaG90dW5wbHVnX3NldHVwX3Rlc3QoYm9vbCBy
+ZW5kZXJfbW9kZSwgY29uc3Qgc3RydWN0IGFtZF9wY2lfdW5wbHVnX3NldHVwDQo+ICAgICAgICAg
+ICAgICAgaWYgKHIgIT0gMCkNCj4gICAgICAgICAgICAgICAgICAgICAgIGdvdG8gcmVsZWFzZTsN
+Cj4gICAgICAgICAgICAgICBpZiAobWlub3JfdmVyc2lvbiA8IHNldHVwLT5taW5vcl92ZXJzaW9u
+X3JlcSkNCj4gLSAgICAgICAgICAgICAgICAgICAgIGdvdG8gcmVsZWFzZTsNCj4gKyAgICAgICAg
+ICAgICAgICAgICAgIGlndF9za2lwX29uX2YobWlub3JfdmVyc2lvbiA8IHNldHVwLT5taW5vcl92
+ZXJzaW9uX3JlcSwNCj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIkl0IGhhcyBtaW5v
+cl92ZXJzaW9uOiAlZCBidXQgaXQgaXMgcmVxdWlyZWQ6ICVkIGZvciB0aGlzIHRlc3RcbiIsDQo+
+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG1pbm9yX3ZlcnNpb24sIHNldHVwLT5taW5v
+cl92ZXJzaW9uX3JlcSk7DQo+DQo+ICAgICAgICAgICAgICAgciA9IGFtZGdwdV9xdWVyeV9ncHVf
+aW5mbyh1bnBsdWctPmRldmljZV9oYW5kbGUyLCAmZ3B1X2luZm8pOw0KPiAgICAgICAgICAgICAg
+IGlndF9hc3NlcnRfZXEociwgMCk7DQo+IC0tDQo+IDIuMjUuMQ0KPg0K
