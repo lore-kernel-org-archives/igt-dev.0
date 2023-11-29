@@ -1,16 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EC26610E678
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Nov 2023 20:37:05 +0000 (UTC)
-From: David Kershner <david.kershner@intel.com>
-To: igt-dev@lists.freedesktop.org, michael.j.ruhl@intel.com,
- john.fleck@intel.com, katarzyna.piecielska@intel.com
-Date: Wed, 29 Nov 2023 15:37:00 -0500
-Message-Id: <20231129203700.4079222-1-david.kershner@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 65E4210E66C
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Nov 2023 20:41:26 +0000 (UTC)
+From: "Ruhl, Michael J" <michael.j.ruhl@intel.com>
+To: "Kershner, David" <david.kershner@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Fleck,
+ John" <john.fleck@intel.com>, "Piecielska, Katarzyna"
+ <katarzyna.piecielska@intel.com>
+Date: Wed, 29 Nov 2023 20:41:13 +0000
+Message-ID: <IA1PR11MB6418646CDAE629031B632EB9C183A@IA1PR11MB6418.namprd11.prod.outlook.com>
+References: <20231129203700.4079222-1-david.kershner@intel.com>
+In-Reply-To: <20231129203700.4079222-1-david.kershner@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3] tests/intel: Add Xe peer2peer test
+Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/intel: Add Xe peer2peer test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,414 +27,222 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add tests to read/write data between two different GPUs using DMABUF
-and P2PDMA. The kernel must have P2PDMA and DMABUF enabled for the test
-pass.
-
-Signed-off-by: David Kershner <david.kershner@intel.com>
----
-Changes from v1 --
-   - fixed whitespace issues
-   - fixed review comments
-Changes from v2 --
-   - fixed peer2peer test description
-   - updates due to rebase
----
- tests/intel/xe_peer2peer.c | 373 +++++++++++++++++++++++++++++++++++++
- tests/meson.build          |   1 +
- 2 files changed, 374 insertions(+)
- create mode 100644 tests/intel/xe_peer2peer.c
-
-diff --git a/tests/intel/xe_peer2peer.c b/tests/intel/xe_peer2peer.c
-new file mode 100644
-index 000000000..ec7865bae
---- /dev/null
-+++ b/tests/intel/xe_peer2peer.c
-@@ -0,0 +1,373 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ */
-+
-+#include "drm.h"
-+#include "igt.h"
-+#include "igt_device.h"
-+#include "intel_blt.h"
-+#include "intel_mocs.h"
-+#include "lib/igt_sysfs.h"
-+#include "lib/intel_chipset.h"
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
-+#include "xe/xe_util.h"
-+
-+/**
-+ * TEST: xe_peer2peer
-+ * Category: Hardware building block
-+ * Sub-category: MultiGPU
-+ * Functionality: dma buf copy
-+ * Description: Peer2peer dma buf copy tests
-+ * Test category: xe
-+ *
-+ * SUBTEST: read
-+ * Description:
-+ *   dma buf copy read
-+ *
-+ * SUBTEST: write
-+ * Description:
-+ *   dma buf copy write
-+ */
-+
-+IGT_TEST_DESCRIPTION("Exercise blitter read/writes between two Xe devices");
-+
-+struct blt_fast_copy_data {
-+	int xe;
-+	struct blt_copy_object src;
-+	struct blt_copy_object mid;
-+	struct blt_copy_object dst;
-+
-+	struct blt_copy_batch bb;
-+	enum blt_color_depth color_depth;
-+};
-+
-+struct gpu_info {
-+	uint32_t id;
-+	int fd;
-+	struct igt_collection *set;
-+};
-+
-+static bool has_prime(int fd)
-+{
-+	uint64_t value;
-+	uint64_t mask = DRM_PRIME_CAP_IMPORT | DRM_PRIME_CAP_EXPORT;
-+
-+	if (drmGetCap(fd, DRM_CAP_PRIME, &value))
-+		return false;
-+
-+	return (value & mask) == mask;
-+}
-+
-+static int get_device_info(struct gpu_info gpus[], int num_gpus)
-+{
-+	int cnt;
-+	int xe;
-+	int i;
-+
-+	for (i = 0, cnt = 0 && i < 128; cnt < num_gpus; i++) {
-+		xe = __drm_open_driver_another(i, DRIVER_XE);
-+		if (xe < 0)
-+			break;
-+
-+		/* dma-buf is required */
-+		if (!has_prime(xe) || !blt_has_fast_copy(xe)) {
-+			close(xe);
-+			continue;
-+		}
-+
-+		gpus[cnt].fd = xe;
-+		gpus[cnt].set = xe_get_memory_region_set(xe,
-+							 DRM_XE_MEM_REGION_CLASS_SYSMEM,
-+							 DRM_XE_MEM_REGION_CLASS_VRAM);
-+		cnt++;
-+	}
-+
-+	return cnt;
-+}
-+
-+/**
-+ * test_read - Read an imported buffer from an external GPU via dma-buf
-+ * @ex_gpu: device providing the original object
-+ * @im_gpu: device doing the read
-+ * @ex_reg: the source region to copy from
-+ * @im_reg: the destination region to copy to
-+ *
-+ */
-+static void test_read(struct gpu_info *ex_gpu, struct gpu_info *im_gpu,
-+		      uint32_t ex_reg, uint32_t im_reg)
-+{
-+	struct blt_copy_data im_blt = {};
-+	struct blt_copy_data ex_blt = {};
-+	struct blt_copy_object *dst;
-+	struct blt_copy_object *im_src;
-+	struct blt_copy_object *src;
-+	const uint32_t bpp = 32;
-+	uint64_t im_bb_size = xe_get_default_alignment(im_gpu->fd);
-+	uint64_t ahnd;
-+	uint32_t bb;
-+	uint32_t width = 1024, height = 1024;
-+	int result;
-+	uint32_t vm, exec_queue;
-+	uint32_t ex_xe = ex_gpu->fd;
-+	uint32_t im_xe = im_gpu->fd;
-+	uint32_t ex_src, dmabuf;
-+	uint32_t stride;
-+
-+	struct drm_xe_engine_class_instance inst = {
-+		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
-+	};
-+	intel_ctx_t *ctx;
-+
-+	vm = xe_vm_create(im_xe, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
-+	exec_queue = xe_exec_queue_create(im_xe, vm, &inst, 0);
-+	ctx = intel_ctx_xe(im_xe, vm, exec_queue, 0, 0, 0);
-+	ahnd = intel_allocator_open_full(im_xe, ctx->vm, 0, 0,
-+					 INTEL_ALLOCATOR_SIMPLE,
-+					 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-+
-+	blt_copy_init(ex_xe, &ex_blt);
-+	blt_copy_init(im_xe, &im_blt);
-+
-+	src = blt_create_object(&ex_blt, ex_reg, width, height, bpp, 0,
-+				T_LINEAR, COMPRESSION_DISABLED, 0, true);
-+	dst = blt_create_object(&im_blt, im_reg, width, height, bpp, 0,
-+				T_LINEAR, COMPRESSION_DISABLED, 0, true);
-+	blt_surface_fill_rect(ex_xe, src, width, height);
-+
-+	dmabuf = prime_handle_to_fd(ex_xe, src->handle);
-+	ex_src = prime_fd_to_handle(im_xe, dmabuf);
-+	im_src = calloc(1, sizeof(*im_src));
-+
-+	stride = width * 4;
-+	blt_set_object(im_src, ex_src, src->size, ex_reg, 0,
-+		       T_LINEAR, COMPRESSION_DISABLED, 0);
-+	blt_set_geom(im_src, stride, 0, 0, width, height, 0, 0);
-+	igt_assert(im_src->size == dst->size);
-+
-+	im_blt.color_depth = CD_32bit;
-+	blt_set_copy_object(&im_blt.src, im_src);
-+	blt_set_copy_object(&im_blt.dst, dst);
-+
-+	bb = xe_bo_create_flags(im_xe, 0, im_bb_size, im_reg);
-+	blt_set_batch(&im_blt.bb, bb, im_bb_size, im_reg);
-+
-+	blt_fast_copy(im_xe, ctx, NULL, ahnd, &im_blt);
-+
-+	result = memcmp(src->ptr, im_blt.dst.ptr, src->size);
-+
-+	put_offset(ahnd, im_src->handle);
-+	put_offset(ahnd, dst->handle);
-+	put_offset(ahnd, bb);
-+	intel_allocator_bind(ahnd, 0, 0);
-+	blt_destroy_object(im_xe, im_src);
-+	blt_destroy_object(im_xe, dst);
-+	blt_destroy_object(ex_xe, src);
-+	put_ahnd(ahnd);
-+
-+	igt_assert_f(!result, "source and destination surfaces differs!\n");
-+}
-+
-+/**
-+ * test_write - Write an imported buffer to an external GPU via dma-buf
-+ * @ex_gpu: device providing the destination object
-+ * @im_gpu: device doing the write
-+ * @ex_reg: the source region to copy from
-+ * @im_reg: the destination region to copy to
-+ *
-+ */
-+static void test_write(struct gpu_info *ex_gpu, struct gpu_info *im_gpu,
-+		       uint32_t ex_reg, uint32_t im_reg)
-+{
-+	struct blt_copy_data im_blt = {};
-+	struct blt_copy_data ex_blt = {};
-+	struct blt_copy_object *dst;
-+	struct blt_copy_object *im_dst;
-+	struct blt_copy_object *src;
-+	const uint32_t bpp = 32;
-+	uint64_t im_bb_size = xe_get_default_alignment(im_gpu->fd);
-+	uint64_t ahnd;
-+	uint32_t bb;
-+	uint32_t width = 1024, height = 1024;
-+	int result;
-+	uint32_t vm, exec_queue;
-+	uint32_t ex_xe = ex_gpu->fd;
-+	uint32_t im_xe = im_gpu->fd;
-+	uint32_t ex_dst, dmabuf;
-+	uint32_t stride;
-+
-+	struct drm_xe_engine_class_instance inst = {
-+		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
-+	};
-+	intel_ctx_t *ctx;
-+
-+	vm = xe_vm_create(im_xe, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
-+	exec_queue = xe_exec_queue_create(im_xe, vm, &inst, 0);
-+	ctx = intel_ctx_xe(im_xe, vm, exec_queue, 0, 0, 0);
-+	ahnd = intel_allocator_open_full(im_xe, ctx->vm, 0, 0,
-+					 INTEL_ALLOCATOR_SIMPLE,
-+					 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-+
-+	blt_copy_init(ex_xe, &ex_blt);
-+	blt_copy_init(im_xe, &im_blt);
-+
-+	dst = blt_create_object(&ex_blt, ex_reg, width, height, bpp, 0,
-+				T_LINEAR, COMPRESSION_DISABLED, 0, true);
-+	src = blt_create_object(&im_blt, im_reg, width, height, bpp, 0,
-+				T_LINEAR, COMPRESSION_DISABLED, 0, true);
-+	blt_surface_fill_rect(im_xe, src, width, height);
-+
-+	dmabuf = prime_handle_to_fd(ex_xe, dst->handle);
-+	ex_dst = prime_fd_to_handle(im_xe, dmabuf);
-+	im_dst = calloc(1, sizeof(*im_dst));
-+
-+	stride = width * 4;
-+	blt_set_object(im_dst, ex_dst, src->size, ex_reg, 0,
-+		       T_LINEAR, COMPRESSION_DISABLED, 0);
-+	blt_set_geom(im_dst, stride, 0, 0, width, height, 0, 0);
-+	igt_assert(im_dst->size == src->size);
-+
-+	im_blt.color_depth = CD_32bit;
-+	blt_set_copy_object(&im_blt.src, src);
-+	blt_set_copy_object(&im_blt.dst, im_dst);
-+
-+	bb = xe_bo_create_flags(im_xe, 0, im_bb_size, im_reg);
-+	blt_set_batch(&im_blt.bb, bb, im_bb_size, im_reg);
-+
-+	blt_fast_copy(im_xe, ctx, NULL, ahnd, &im_blt);
-+
-+	result = memcmp(dst->ptr, im_blt.src.ptr, src->size);
-+
-+	put_offset(ahnd, im_dst->handle);
-+	put_offset(ahnd, dst->handle);
-+	put_offset(ahnd, bb);
-+	intel_allocator_bind(ahnd, 0, 0);
-+	blt_destroy_object(im_xe, src);
-+	blt_destroy_object(im_xe, im_dst);
-+	blt_destroy_object(ex_xe, dst);
-+	put_ahnd(ahnd);
-+
-+	igt_assert_f(!result, "source and destination surfaces differs!\n");
-+}
-+
-+static const char *p2p_path(int ex_reg, struct gpu_info *ex_gpu, struct gpu_info *im_gpu)
-+{
-+	return "-p2p";
-+}
-+
-+static char *region_name(int xe, uint32_t region)
-+{
-+	char *name;
-+	struct drm_xe_query_mem_region *memreg;
-+	int r;
-+	int len = 7;
-+
-+	/* enough for "name%d" * n */
-+	name = malloc(len);
-+	igt_assert(name);
-+
-+	memreg = xe_mem_region(xe, region);
-+
-+	if (XE_IS_CLASS_VRAM(memreg))
-+		r = snprintf(name, len, "%s%d",
-+			     xe_region_name(region),
-+			     memreg->instance);
-+	else
-+		r = snprintf(name, len, "%s",
-+			     xe_region_name(region));
-+
-+	igt_assert(r > 0);
-+
-+	return name;
-+}
-+
-+/**
-+ * gpu_read - Set up a read from the exporting GPU to the importing GPU
-+ * @ex_gpu: GPU that is exporting a buffer for read
-+ * @im_gpu: GPU that is importing and reading the buffer
-+ */
-+static void gpu_read(struct gpu_info *ex_gpu, struct gpu_info *im_gpu)
-+{
-+	struct igt_collection *ex_regs, *im_regs;
-+	int ex_reg, im_reg;
-+	char *ex_name, *im_name;
-+	const char *path;
-+
-+	for_each_variation_r(ex_regs, 1, ex_gpu->set) {
-+		ex_reg = igt_collection_get_value(ex_regs, 0);
-+		ex_name = region_name(ex_gpu->fd, ex_reg);
-+
-+		for_each_variation_r(im_regs, 1, im_gpu->set) {
-+			im_reg = igt_collection_get_value(im_regs, 0);
-+			im_name = region_name(im_gpu->fd, im_reg);
-+
-+			path = p2p_path(ex_reg, ex_gpu, im_gpu);
-+			igt_dynamic_f("read-gpuA-%s-gpuB-%s%s", ex_name,
-+				      im_name, path)
-+			test_read(ex_gpu, im_gpu, ex_reg, im_reg);
-+
-+			free(im_name);
-+		}
-+		free(ex_name);
-+	}
-+}
-+
-+/**
-+ * gpu_write - Set up a write from the importing GPU to the exporting GPU
-+ * @ex_gpu: GPU that is exporting a buffer for read
-+ * @im_gpu: GPU that is importing and reading the buffer
-+ */
-+static void gpu_write(struct gpu_info *ex_gpu, struct gpu_info *im_gpu)
-+{
-+	struct igt_collection *ex_regs, *im_regs;
-+	int ex_reg, im_reg;
-+	char *ex_name, *im_name;
-+	const char *path;
-+
-+	for_each_variation_r(ex_regs, 1, ex_gpu->set) {
-+		ex_reg = igt_collection_get_value(ex_regs, 0);
-+		ex_name = region_name(ex_gpu->fd, ex_reg);
-+
-+		for_each_variation_r(im_regs, 1, im_gpu->set) {
-+			im_reg = igt_collection_get_value(im_regs, 0);
-+			im_name = region_name(im_gpu->fd, im_reg);
-+
-+			path = p2p_path(ex_reg, ex_gpu, im_gpu);
-+			igt_dynamic_f("write-gpuA-%s-gpuB-%s%s", ex_name,
-+				      im_name, path)
-+			test_write(ex_gpu, im_gpu, ex_reg, im_reg);
-+
-+			free(im_name);
-+		}
-+		free(ex_name);
-+	}
-+}
-+
-+#define DEFAULT_SIZE 0
-+
-+igt_main_args("", NULL, NULL, NULL, NULL)
-+{
-+	struct gpu_info gpus[2];
-+	int gpu_cnt;
-+
-+	igt_fixture {
-+		gpu_cnt = get_device_info(gpus, ARRAY_SIZE(gpus));
-+		igt_skip_on(gpu_cnt < 2);
-+	}
-+
-+	igt_describe("dmabuf gpu-gpu read");
-+	igt_subtest_with_dynamic_f("read")
-+		gpu_read(&gpus[0], &gpus[1]);
-+
-+	igt_describe("dmabuf gpu-gpu write");
-+	igt_subtest_with_dynamic_f("write")
-+		gpu_write(&gpus[0], &gpus[1]);
-+
-+	igt_fixture {
-+		int cnt;
-+
-+		for (cnt = 0; cnt < gpu_cnt; cnt++)
-+			drm_close_driver(gpus[cnt].fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 3e4d54601..73184e658 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -301,6 +301,7 @@ intel_xe_progs = [
- 	'xe_mmap',
- 	'xe_module_load',
- 	'xe_noexec_ping_pong',
-+	'xe_peer2peer',
- 	'xe_pm',
- 	'xe_pm_residency',
- 	'xe_prime_self_import',
--- 
-2.38.1
+Pi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+RnJvbTogS2Vyc2huZXIsIERhdmlkIDxkYXZp
+ZC5rZXJzaG5lckBpbnRlbC5jb20+DQo+U2VudDogV2VkbmVzZGF5LCBOb3ZlbWJlciAyOSwgMjAy
+MyAzOjM3IFBNDQo+VG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnOyBSdWhsLCBNaWNo
+YWVsIEogPG1pY2hhZWwuai5ydWhsQGludGVsLmNvbT47DQo+RmxlY2ssIEpvaG4gPGpvaG4uZmxl
+Y2tAaW50ZWwuY29tPjsgUGllY2llbHNrYSwgS2F0YXJ6eW5hDQo+PGthdGFyenluYS5waWVjaWVs
+c2thQGludGVsLmNvbT4NCj5TdWJqZWN0OiBbUEFUQ0ggaS1nLXQgdjNdIHRlc3RzL2ludGVsOiBB
+ZGQgWGUgcGVlcjJwZWVyIHRlc3QNCj4NCj5BZGQgdGVzdHMgdG8gcmVhZC93cml0ZSBkYXRhIGJl
+dHdlZW4gdHdvIGRpZmZlcmVudCBHUFVzIHVzaW5nIERNQUJVRg0KPmFuZCBQMlBETUEuIFRoZSBr
+ZXJuZWwgbXVzdCBoYXZlIFAyUERNQSBhbmQgRE1BQlVGIGVuYWJsZWQgZm9yIHRoZQ0KPnRlc3QN
+Cj5wYXNzLg0KDQpBY2tlZC1ieTogTWljaGFlbCBKLiBSdWhsIDxtaWNoYWVsLmoucnVobEBpbnRl
+bC5jb20+DQoNCm0NCg0KPlNpZ25lZC1vZmYtYnk6IERhdmlkIEtlcnNobmVyIDxkYXZpZC5rZXJz
+aG5lckBpbnRlbC5jb20+DQo+LS0tDQo+Q2hhbmdlcyBmcm9tIHYxIC0tDQo+ICAgLSBmaXhlZCB3
+aGl0ZXNwYWNlIGlzc3Vlcw0KPiAgIC0gZml4ZWQgcmV2aWV3IGNvbW1lbnRzDQo+Q2hhbmdlcyBm
+cm9tIHYyIC0tDQo+ICAgLSBmaXhlZCBwZWVyMnBlZXIgdGVzdCBkZXNjcmlwdGlvbg0KPiAgIC0g
+dXBkYXRlcyBkdWUgdG8gcmViYXNlDQo+LS0tDQo+IHRlc3RzL2ludGVsL3hlX3BlZXIycGVlci5j
+IHwgMzczDQo+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKw0KPiB0ZXN0cy9t
+ZXNvbi5idWlsZCAgICAgICAgICB8ICAgMSArDQo+IDIgZmlsZXMgY2hhbmdlZCwgMzc0IGluc2Vy
+dGlvbnMoKykNCj4gY3JlYXRlIG1vZGUgMTAwNjQ0IHRlc3RzL2ludGVsL3hlX3BlZXIycGVlci5j
+DQo+DQo+ZGlmZiAtLWdpdCBhL3Rlc3RzL2ludGVsL3hlX3BlZXIycGVlci5jIGIvdGVzdHMvaW50
+ZWwveGVfcGVlcjJwZWVyLmMNCj5uZXcgZmlsZSBtb2RlIDEwMDY0NA0KPmluZGV4IDAwMDAwMDAw
+MC4uZWM3ODY1YmFlDQo+LS0tIC9kZXYvbnVsbA0KPisrKyBiL3Rlc3RzL2ludGVsL3hlX3BlZXIy
+cGVlci5jDQo+QEAgLTAsMCArMSwzNzMgQEANCj4rLy8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6
+IE1JVA0KPisvKg0KPisgKiBDb3B5cmlnaHQgwqkgMjAyMyBJbnRlbCBDb3Jwb3JhdGlvbg0KPisg
+Ki8NCj4rDQo+KyNpbmNsdWRlICJkcm0uaCINCj4rI2luY2x1ZGUgImlndC5oIg0KPisjaW5jbHVk
+ZSAiaWd0X2RldmljZS5oIg0KPisjaW5jbHVkZSAiaW50ZWxfYmx0LmgiDQo+KyNpbmNsdWRlICJp
+bnRlbF9tb2NzLmgiDQo+KyNpbmNsdWRlICJsaWIvaWd0X3N5c2ZzLmgiDQo+KyNpbmNsdWRlICJs
+aWIvaW50ZWxfY2hpcHNldC5oIg0KPisjaW5jbHVkZSAieGUveGVfaW9jdGwuaCINCj4rI2luY2x1
+ZGUgInhlL3hlX3F1ZXJ5LmgiDQo+KyNpbmNsdWRlICJ4ZS94ZV91dGlsLmgiDQo+Kw0KPisvKioN
+Cj4rICogVEVTVDogeGVfcGVlcjJwZWVyDQo+KyAqIENhdGVnb3J5OiBIYXJkd2FyZSBidWlsZGlu
+ZyBibG9jaw0KPisgKiBTdWItY2F0ZWdvcnk6IE11bHRpR1BVDQo+KyAqIEZ1bmN0aW9uYWxpdHk6
+IGRtYSBidWYgY29weQ0KPisgKiBEZXNjcmlwdGlvbjogUGVlcjJwZWVyIGRtYSBidWYgY29weSB0
+ZXN0cw0KPisgKiBUZXN0IGNhdGVnb3J5OiB4ZQ0KPisgKg0KPisgKiBTVUJURVNUOiByZWFkDQo+
+KyAqIERlc2NyaXB0aW9uOg0KPisgKiAgIGRtYSBidWYgY29weSByZWFkDQo+KyAqDQo+KyAqIFNV
+QlRFU1Q6IHdyaXRlDQo+KyAqIERlc2NyaXB0aW9uOg0KPisgKiAgIGRtYSBidWYgY29weSB3cml0
+ZQ0KPisgKi8NCj4rDQo+K0lHVF9URVNUX0RFU0NSSVBUSU9OKCJFeGVyY2lzZSBibGl0dGVyIHJl
+YWQvd3JpdGVzIGJldHdlZW4gdHdvIFhlDQo+ZGV2aWNlcyIpOw0KPisNCj4rc3RydWN0IGJsdF9m
+YXN0X2NvcHlfZGF0YSB7DQo+KwlpbnQgeGU7DQo+KwlzdHJ1Y3QgYmx0X2NvcHlfb2JqZWN0IHNy
+YzsNCj4rCXN0cnVjdCBibHRfY29weV9vYmplY3QgbWlkOw0KPisJc3RydWN0IGJsdF9jb3B5X29i
+amVjdCBkc3Q7DQo+Kw0KPisJc3RydWN0IGJsdF9jb3B5X2JhdGNoIGJiOw0KPisJZW51bSBibHRf
+Y29sb3JfZGVwdGggY29sb3JfZGVwdGg7DQo+K307DQo+Kw0KPitzdHJ1Y3QgZ3B1X2luZm8gew0K
+PisJdWludDMyX3QgaWQ7DQo+KwlpbnQgZmQ7DQo+KwlzdHJ1Y3QgaWd0X2NvbGxlY3Rpb24gKnNl
+dDsNCj4rfTsNCj4rDQo+K3N0YXRpYyBib29sIGhhc19wcmltZShpbnQgZmQpDQo+K3sNCj4rCXVp
+bnQ2NF90IHZhbHVlOw0KPisJdWludDY0X3QgbWFzayA9IERSTV9QUklNRV9DQVBfSU1QT1JUIHwN
+Cj5EUk1fUFJJTUVfQ0FQX0VYUE9SVDsNCj4rDQo+KwlpZiAoZHJtR2V0Q2FwKGZkLCBEUk1fQ0FQ
+X1BSSU1FLCAmdmFsdWUpKQ0KPisJCXJldHVybiBmYWxzZTsNCj4rDQo+KwlyZXR1cm4gKHZhbHVl
+ICYgbWFzaykgPT0gbWFzazsNCj4rfQ0KPisNCj4rc3RhdGljIGludCBnZXRfZGV2aWNlX2luZm8o
+c3RydWN0IGdwdV9pbmZvIGdwdXNbXSwgaW50IG51bV9ncHVzKQ0KPit7DQo+KwlpbnQgY250Ow0K
+PisJaW50IHhlOw0KPisJaW50IGk7DQo+Kw0KPisJZm9yIChpID0gMCwgY250ID0gMCAmJiBpIDwg
+MTI4OyBjbnQgPCBudW1fZ3B1czsgaSsrKSB7DQo+KwkJeGUgPSBfX2RybV9vcGVuX2RyaXZlcl9h
+bm90aGVyKGksIERSSVZFUl9YRSk7DQo+KwkJaWYgKHhlIDwgMCkNCj4rCQkJYnJlYWs7DQo+Kw0K
+PisJCS8qIGRtYS1idWYgaXMgcmVxdWlyZWQgKi8NCj4rCQlpZiAoIWhhc19wcmltZSh4ZSkgfHwg
+IWJsdF9oYXNfZmFzdF9jb3B5KHhlKSkgew0KPisJCQljbG9zZSh4ZSk7DQo+KwkJCWNvbnRpbnVl
+Ow0KPisJCX0NCj4rDQo+KwkJZ3B1c1tjbnRdLmZkID0geGU7DQo+KwkJZ3B1c1tjbnRdLnNldCA9
+IHhlX2dldF9tZW1vcnlfcmVnaW9uX3NldCh4ZSwNCj4rDQo+RFJNX1hFX01FTV9SRUdJT05fQ0xB
+U1NfU1lTTUVNLA0KPisNCj5EUk1fWEVfTUVNX1JFR0lPTl9DTEFTU19WUkFNKTsNCj4rCQljbnQr
+KzsNCj4rCX0NCj4rDQo+KwlyZXR1cm4gY250Ow0KPit9DQo+Kw0KPisvKioNCj4rICogdGVzdF9y
+ZWFkIC0gUmVhZCBhbiBpbXBvcnRlZCBidWZmZXIgZnJvbSBhbiBleHRlcm5hbCBHUFUgdmlhIGRt
+YS1idWYNCj4rICogQGV4X2dwdTogZGV2aWNlIHByb3ZpZGluZyB0aGUgb3JpZ2luYWwgb2JqZWN0
+DQo+KyAqIEBpbV9ncHU6IGRldmljZSBkb2luZyB0aGUgcmVhZA0KPisgKiBAZXhfcmVnOiB0aGUg
+c291cmNlIHJlZ2lvbiB0byBjb3B5IGZyb20NCj4rICogQGltX3JlZzogdGhlIGRlc3RpbmF0aW9u
+IHJlZ2lvbiB0byBjb3B5IHRvDQo+KyAqDQo+KyAqLw0KPitzdGF0aWMgdm9pZCB0ZXN0X3JlYWQo
+c3RydWN0IGdwdV9pbmZvICpleF9ncHUsIHN0cnVjdCBncHVfaW5mbyAqaW1fZ3B1LA0KPisJCSAg
+ICAgIHVpbnQzMl90IGV4X3JlZywgdWludDMyX3QgaW1fcmVnKQ0KPit7DQo+KwlzdHJ1Y3QgYmx0
+X2NvcHlfZGF0YSBpbV9ibHQgPSB7fTsNCj4rCXN0cnVjdCBibHRfY29weV9kYXRhIGV4X2JsdCA9
+IHt9Ow0KPisJc3RydWN0IGJsdF9jb3B5X29iamVjdCAqZHN0Ow0KPisJc3RydWN0IGJsdF9jb3B5
+X29iamVjdCAqaW1fc3JjOw0KPisJc3RydWN0IGJsdF9jb3B5X29iamVjdCAqc3JjOw0KPisJY29u
+c3QgdWludDMyX3QgYnBwID0gMzI7DQo+Kwl1aW50NjRfdCBpbV9iYl9zaXplID0geGVfZ2V0X2Rl
+ZmF1bHRfYWxpZ25tZW50KGltX2dwdS0+ZmQpOw0KPisJdWludDY0X3QgYWhuZDsNCj4rCXVpbnQz
+Ml90IGJiOw0KPisJdWludDMyX3Qgd2lkdGggPSAxMDI0LCBoZWlnaHQgPSAxMDI0Ow0KPisJaW50
+IHJlc3VsdDsNCj4rCXVpbnQzMl90IHZtLCBleGVjX3F1ZXVlOw0KPisJdWludDMyX3QgZXhfeGUg
+PSBleF9ncHUtPmZkOw0KPisJdWludDMyX3QgaW1feGUgPSBpbV9ncHUtPmZkOw0KPisJdWludDMy
+X3QgZXhfc3JjLCBkbWFidWY7DQo+Kwl1aW50MzJfdCBzdHJpZGU7DQo+Kw0KPisJc3RydWN0IGRy
+bV94ZV9lbmdpbmVfY2xhc3NfaW5zdGFuY2UgaW5zdCA9IHsNCj4rCQkuZW5naW5lX2NsYXNzID0g
+RFJNX1hFX0VOR0lORV9DTEFTU19DT1BZLA0KPisJfTsNCj4rCWludGVsX2N0eF90ICpjdHg7DQo+
+Kw0KPisJdm0gPSB4ZV92bV9jcmVhdGUoaW1feGUsDQo+RFJNX1hFX1ZNX0NSRUFURV9GTEFHX0FT
+WU5DX0RFRkFVTFQsIDApOw0KPisJZXhlY19xdWV1ZSA9IHhlX2V4ZWNfcXVldWVfY3JlYXRlKGlt
+X3hlLCB2bSwgJmluc3QsIDApOw0KPisJY3R4ID0gaW50ZWxfY3R4X3hlKGltX3hlLCB2bSwgZXhl
+Y19xdWV1ZSwgMCwgMCwgMCk7DQo+KwlhaG5kID0gaW50ZWxfYWxsb2NhdG9yX29wZW5fZnVsbChp
+bV94ZSwgY3R4LT52bSwgMCwgMCwNCj4rCQkJCQkgSU5URUxfQUxMT0NBVE9SX1NJTVBMRSwNCj4r
+CQkJCQkgQUxMT0NfU1RSQVRFR1lfTE9XX1RPX0hJR0gsIDApOw0KPisNCj4rCWJsdF9jb3B5X2lu
+aXQoZXhfeGUsICZleF9ibHQpOw0KPisJYmx0X2NvcHlfaW5pdChpbV94ZSwgJmltX2JsdCk7DQo+
+Kw0KPisJc3JjID0gYmx0X2NyZWF0ZV9vYmplY3QoJmV4X2JsdCwgZXhfcmVnLCB3aWR0aCwgaGVp
+Z2h0LCBicHAsIDAsDQo+KwkJCQlUX0xJTkVBUiwgQ09NUFJFU1NJT05fRElTQUJMRUQsIDAsIHRy
+dWUpOw0KPisJZHN0ID0gYmx0X2NyZWF0ZV9vYmplY3QoJmltX2JsdCwgaW1fcmVnLCB3aWR0aCwg
+aGVpZ2h0LCBicHAsIDAsDQo+KwkJCQlUX0xJTkVBUiwgQ09NUFJFU1NJT05fRElTQUJMRUQsIDAs
+IHRydWUpOw0KPisJYmx0X3N1cmZhY2VfZmlsbF9yZWN0KGV4X3hlLCBzcmMsIHdpZHRoLCBoZWln
+aHQpOw0KPisNCj4rCWRtYWJ1ZiA9IHByaW1lX2hhbmRsZV90b19mZChleF94ZSwgc3JjLT5oYW5k
+bGUpOw0KPisJZXhfc3JjID0gcHJpbWVfZmRfdG9faGFuZGxlKGltX3hlLCBkbWFidWYpOw0KPisJ
+aW1fc3JjID0gY2FsbG9jKDEsIHNpemVvZigqaW1fc3JjKSk7DQo+Kw0KPisJc3RyaWRlID0gd2lk
+dGggKiA0Ow0KPisJYmx0X3NldF9vYmplY3QoaW1fc3JjLCBleF9zcmMsIHNyYy0+c2l6ZSwgZXhf
+cmVnLCAwLA0KPisJCSAgICAgICBUX0xJTkVBUiwgQ09NUFJFU1NJT05fRElTQUJMRUQsIDApOw0K
+PisJYmx0X3NldF9nZW9tKGltX3NyYywgc3RyaWRlLCAwLCAwLCB3aWR0aCwgaGVpZ2h0LCAwLCAw
+KTsNCj4rCWlndF9hc3NlcnQoaW1fc3JjLT5zaXplID09IGRzdC0+c2l6ZSk7DQo+Kw0KPisJaW1f
+Ymx0LmNvbG9yX2RlcHRoID0gQ0RfMzJiaXQ7DQo+KwlibHRfc2V0X2NvcHlfb2JqZWN0KCZpbV9i
+bHQuc3JjLCBpbV9zcmMpOw0KPisJYmx0X3NldF9jb3B5X29iamVjdCgmaW1fYmx0LmRzdCwgZHN0
+KTsNCj4rDQo+KwliYiA9IHhlX2JvX2NyZWF0ZV9mbGFncyhpbV94ZSwgMCwgaW1fYmJfc2l6ZSwg
+aW1fcmVnKTsNCj4rCWJsdF9zZXRfYmF0Y2goJmltX2JsdC5iYiwgYmIsIGltX2JiX3NpemUsIGlt
+X3JlZyk7DQo+Kw0KPisJYmx0X2Zhc3RfY29weShpbV94ZSwgY3R4LCBOVUxMLCBhaG5kLCAmaW1f
+Ymx0KTsNCj4rDQo+KwlyZXN1bHQgPSBtZW1jbXAoc3JjLT5wdHIsIGltX2JsdC5kc3QucHRyLCBz
+cmMtPnNpemUpOw0KPisNCj4rCXB1dF9vZmZzZXQoYWhuZCwgaW1fc3JjLT5oYW5kbGUpOw0KPisJ
+cHV0X29mZnNldChhaG5kLCBkc3QtPmhhbmRsZSk7DQo+KwlwdXRfb2Zmc2V0KGFobmQsIGJiKTsN
+Cj4rCWludGVsX2FsbG9jYXRvcl9iaW5kKGFobmQsIDAsIDApOw0KPisJYmx0X2Rlc3Ryb3lfb2Jq
+ZWN0KGltX3hlLCBpbV9zcmMpOw0KPisJYmx0X2Rlc3Ryb3lfb2JqZWN0KGltX3hlLCBkc3QpOw0K
+PisJYmx0X2Rlc3Ryb3lfb2JqZWN0KGV4X3hlLCBzcmMpOw0KPisJcHV0X2FobmQoYWhuZCk7DQo+
+Kw0KPisJaWd0X2Fzc2VydF9mKCFyZXN1bHQsICJzb3VyY2UgYW5kIGRlc3RpbmF0aW9uIHN1cmZh
+Y2VzIGRpZmZlcnMhXG4iKTsNCj4rfQ0KPisNCj4rLyoqDQo+KyAqIHRlc3Rfd3JpdGUgLSBXcml0
+ZSBhbiBpbXBvcnRlZCBidWZmZXIgdG8gYW4gZXh0ZXJuYWwgR1BVIHZpYSBkbWEtYnVmDQo+KyAq
+IEBleF9ncHU6IGRldmljZSBwcm92aWRpbmcgdGhlIGRlc3RpbmF0aW9uIG9iamVjdA0KPisgKiBA
+aW1fZ3B1OiBkZXZpY2UgZG9pbmcgdGhlIHdyaXRlDQo+KyAqIEBleF9yZWc6IHRoZSBzb3VyY2Ug
+cmVnaW9uIHRvIGNvcHkgZnJvbQ0KPisgKiBAaW1fcmVnOiB0aGUgZGVzdGluYXRpb24gcmVnaW9u
+IHRvIGNvcHkgdG8NCj4rICoNCj4rICovDQo+K3N0YXRpYyB2b2lkIHRlc3Rfd3JpdGUoc3RydWN0
+IGdwdV9pbmZvICpleF9ncHUsIHN0cnVjdCBncHVfaW5mbyAqaW1fZ3B1LA0KPisJCSAgICAgICB1
+aW50MzJfdCBleF9yZWcsIHVpbnQzMl90IGltX3JlZykNCj4rew0KPisJc3RydWN0IGJsdF9jb3B5
+X2RhdGEgaW1fYmx0ID0ge307DQo+KwlzdHJ1Y3QgYmx0X2NvcHlfZGF0YSBleF9ibHQgPSB7fTsN
+Cj4rCXN0cnVjdCBibHRfY29weV9vYmplY3QgKmRzdDsNCj4rCXN0cnVjdCBibHRfY29weV9vYmpl
+Y3QgKmltX2RzdDsNCj4rCXN0cnVjdCBibHRfY29weV9vYmplY3QgKnNyYzsNCj4rCWNvbnN0IHVp
+bnQzMl90IGJwcCA9IDMyOw0KPisJdWludDY0X3QgaW1fYmJfc2l6ZSA9IHhlX2dldF9kZWZhdWx0
+X2FsaWdubWVudChpbV9ncHUtPmZkKTsNCj4rCXVpbnQ2NF90IGFobmQ7DQo+Kwl1aW50MzJfdCBi
+YjsNCj4rCXVpbnQzMl90IHdpZHRoID0gMTAyNCwgaGVpZ2h0ID0gMTAyNDsNCj4rCWludCByZXN1
+bHQ7DQo+Kwl1aW50MzJfdCB2bSwgZXhlY19xdWV1ZTsNCj4rCXVpbnQzMl90IGV4X3hlID0gZXhf
+Z3B1LT5mZDsNCj4rCXVpbnQzMl90IGltX3hlID0gaW1fZ3B1LT5mZDsNCj4rCXVpbnQzMl90IGV4
+X2RzdCwgZG1hYnVmOw0KPisJdWludDMyX3Qgc3RyaWRlOw0KPisNCj4rCXN0cnVjdCBkcm1feGVf
+ZW5naW5lX2NsYXNzX2luc3RhbmNlIGluc3QgPSB7DQo+KwkJLmVuZ2luZV9jbGFzcyA9IERSTV9Y
+RV9FTkdJTkVfQ0xBU1NfQ09QWSwNCj4rCX07DQo+KwlpbnRlbF9jdHhfdCAqY3R4Ow0KPisNCj4r
+CXZtID0geGVfdm1fY3JlYXRlKGltX3hlLA0KPkRSTV9YRV9WTV9DUkVBVEVfRkxBR19BU1lOQ19E
+RUZBVUxULCAwKTsNCj4rCWV4ZWNfcXVldWUgPSB4ZV9leGVjX3F1ZXVlX2NyZWF0ZShpbV94ZSwg
+dm0sICZpbnN0LCAwKTsNCj4rCWN0eCA9IGludGVsX2N0eF94ZShpbV94ZSwgdm0sIGV4ZWNfcXVl
+dWUsIDAsIDAsIDApOw0KPisJYWhuZCA9IGludGVsX2FsbG9jYXRvcl9vcGVuX2Z1bGwoaW1feGUs
+IGN0eC0+dm0sIDAsIDAsDQo+KwkJCQkJIElOVEVMX0FMTE9DQVRPUl9TSU1QTEUsDQo+KwkJCQkJ
+IEFMTE9DX1NUUkFURUdZX0xPV19UT19ISUdILCAwKTsNCj4rDQo+KwlibHRfY29weV9pbml0KGV4
+X3hlLCAmZXhfYmx0KTsNCj4rCWJsdF9jb3B5X2luaXQoaW1feGUsICZpbV9ibHQpOw0KPisNCj4r
+CWRzdCA9IGJsdF9jcmVhdGVfb2JqZWN0KCZleF9ibHQsIGV4X3JlZywgd2lkdGgsIGhlaWdodCwg
+YnBwLCAwLA0KPisJCQkJVF9MSU5FQVIsIENPTVBSRVNTSU9OX0RJU0FCTEVELCAwLCB0cnVlKTsN
+Cj4rCXNyYyA9IGJsdF9jcmVhdGVfb2JqZWN0KCZpbV9ibHQsIGltX3JlZywgd2lkdGgsIGhlaWdo
+dCwgYnBwLCAwLA0KPisJCQkJVF9MSU5FQVIsIENPTVBSRVNTSU9OX0RJU0FCTEVELCAwLCB0cnVl
+KTsNCj4rCWJsdF9zdXJmYWNlX2ZpbGxfcmVjdChpbV94ZSwgc3JjLCB3aWR0aCwgaGVpZ2h0KTsN
+Cj4rDQo+KwlkbWFidWYgPSBwcmltZV9oYW5kbGVfdG9fZmQoZXhfeGUsIGRzdC0+aGFuZGxlKTsN
+Cj4rCWV4X2RzdCA9IHByaW1lX2ZkX3RvX2hhbmRsZShpbV94ZSwgZG1hYnVmKTsNCj4rCWltX2Rz
+dCA9IGNhbGxvYygxLCBzaXplb2YoKmltX2RzdCkpOw0KPisNCj4rCXN0cmlkZSA9IHdpZHRoICog
+NDsNCj4rCWJsdF9zZXRfb2JqZWN0KGltX2RzdCwgZXhfZHN0LCBzcmMtPnNpemUsIGV4X3JlZywg
+MCwNCj4rCQkgICAgICAgVF9MSU5FQVIsIENPTVBSRVNTSU9OX0RJU0FCTEVELCAwKTsNCj4rCWJs
+dF9zZXRfZ2VvbShpbV9kc3QsIHN0cmlkZSwgMCwgMCwgd2lkdGgsIGhlaWdodCwgMCwgMCk7DQo+
+KwlpZ3RfYXNzZXJ0KGltX2RzdC0+c2l6ZSA9PSBzcmMtPnNpemUpOw0KPisNCj4rCWltX2JsdC5j
+b2xvcl9kZXB0aCA9IENEXzMyYml0Ow0KPisJYmx0X3NldF9jb3B5X29iamVjdCgmaW1fYmx0LnNy
+Yywgc3JjKTsNCj4rCWJsdF9zZXRfY29weV9vYmplY3QoJmltX2JsdC5kc3QsIGltX2RzdCk7DQo+
+Kw0KPisJYmIgPSB4ZV9ib19jcmVhdGVfZmxhZ3MoaW1feGUsIDAsIGltX2JiX3NpemUsIGltX3Jl
+Zyk7DQo+KwlibHRfc2V0X2JhdGNoKCZpbV9ibHQuYmIsIGJiLCBpbV9iYl9zaXplLCBpbV9yZWcp
+Ow0KPisNCj4rCWJsdF9mYXN0X2NvcHkoaW1feGUsIGN0eCwgTlVMTCwgYWhuZCwgJmltX2JsdCk7
+DQo+Kw0KPisJcmVzdWx0ID0gbWVtY21wKGRzdC0+cHRyLCBpbV9ibHQuc3JjLnB0ciwgc3JjLT5z
+aXplKTsNCj4rDQo+KwlwdXRfb2Zmc2V0KGFobmQsIGltX2RzdC0+aGFuZGxlKTsNCj4rCXB1dF9v
+ZmZzZXQoYWhuZCwgZHN0LT5oYW5kbGUpOw0KPisJcHV0X29mZnNldChhaG5kLCBiYik7DQo+Kwlp
+bnRlbF9hbGxvY2F0b3JfYmluZChhaG5kLCAwLCAwKTsNCj4rCWJsdF9kZXN0cm95X29iamVjdChp
+bV94ZSwgc3JjKTsNCj4rCWJsdF9kZXN0cm95X29iamVjdChpbV94ZSwgaW1fZHN0KTsNCj4rCWJs
+dF9kZXN0cm95X29iamVjdChleF94ZSwgZHN0KTsNCj4rCXB1dF9haG5kKGFobmQpOw0KPisNCj4r
+CWlndF9hc3NlcnRfZighcmVzdWx0LCAic291cmNlIGFuZCBkZXN0aW5hdGlvbiBzdXJmYWNlcyBk
+aWZmZXJzIVxuIik7DQo+K30NCj4rDQo+K3N0YXRpYyBjb25zdCBjaGFyICpwMnBfcGF0aChpbnQg
+ZXhfcmVnLCBzdHJ1Y3QgZ3B1X2luZm8gKmV4X2dwdSwgc3RydWN0DQo+Z3B1X2luZm8gKmltX2dw
+dSkNCj4rew0KPisJcmV0dXJuICItcDJwIjsNCj4rfQ0KPisNCj4rc3RhdGljIGNoYXIgKnJlZ2lv
+bl9uYW1lKGludCB4ZSwgdWludDMyX3QgcmVnaW9uKQ0KPit7DQo+KwljaGFyICpuYW1lOw0KPisJ
+c3RydWN0IGRybV94ZV9xdWVyeV9tZW1fcmVnaW9uICptZW1yZWc7DQo+KwlpbnQgcjsNCj4rCWlu
+dCBsZW4gPSA3Ow0KPisNCj4rCS8qIGVub3VnaCBmb3IgIm5hbWUlZCIgKiBuICovDQo+KwluYW1l
+ID0gbWFsbG9jKGxlbik7DQo+KwlpZ3RfYXNzZXJ0KG5hbWUpOw0KPisNCj4rCW1lbXJlZyA9IHhl
+X21lbV9yZWdpb24oeGUsIHJlZ2lvbik7DQo+Kw0KPisJaWYgKFhFX0lTX0NMQVNTX1ZSQU0obWVt
+cmVnKSkNCj4rCQlyID0gc25wcmludGYobmFtZSwgbGVuLCAiJXMlZCIsDQo+KwkJCSAgICAgeGVf
+cmVnaW9uX25hbWUocmVnaW9uKSwNCj4rCQkJICAgICBtZW1yZWctPmluc3RhbmNlKTsNCj4rCWVs
+c2UNCj4rCQlyID0gc25wcmludGYobmFtZSwgbGVuLCAiJXMiLA0KPisJCQkgICAgIHhlX3JlZ2lv
+bl9uYW1lKHJlZ2lvbikpOw0KPisNCj4rCWlndF9hc3NlcnQociA+IDApOw0KPisNCj4rCXJldHVy
+biBuYW1lOw0KPit9DQo+Kw0KPisvKioNCj4rICogZ3B1X3JlYWQgLSBTZXQgdXAgYSByZWFkIGZy
+b20gdGhlIGV4cG9ydGluZyBHUFUgdG8gdGhlIGltcG9ydGluZyBHUFUNCj4rICogQGV4X2dwdTog
+R1BVIHRoYXQgaXMgZXhwb3J0aW5nIGEgYnVmZmVyIGZvciByZWFkDQo+KyAqIEBpbV9ncHU6IEdQ
+VSB0aGF0IGlzIGltcG9ydGluZyBhbmQgcmVhZGluZyB0aGUgYnVmZmVyDQo+KyAqLw0KPitzdGF0
+aWMgdm9pZCBncHVfcmVhZChzdHJ1Y3QgZ3B1X2luZm8gKmV4X2dwdSwgc3RydWN0IGdwdV9pbmZv
+ICppbV9ncHUpDQo+K3sNCj4rCXN0cnVjdCBpZ3RfY29sbGVjdGlvbiAqZXhfcmVncywgKmltX3Jl
+Z3M7DQo+KwlpbnQgZXhfcmVnLCBpbV9yZWc7DQo+KwljaGFyICpleF9uYW1lLCAqaW1fbmFtZTsN
+Cj4rCWNvbnN0IGNoYXIgKnBhdGg7DQo+Kw0KPisJZm9yX2VhY2hfdmFyaWF0aW9uX3IoZXhfcmVn
+cywgMSwgZXhfZ3B1LT5zZXQpIHsNCj4rCQlleF9yZWcgPSBpZ3RfY29sbGVjdGlvbl9nZXRfdmFs
+dWUoZXhfcmVncywgMCk7DQo+KwkJZXhfbmFtZSA9IHJlZ2lvbl9uYW1lKGV4X2dwdS0+ZmQsIGV4
+X3JlZyk7DQo+Kw0KPisJCWZvcl9lYWNoX3ZhcmlhdGlvbl9yKGltX3JlZ3MsIDEsIGltX2dwdS0+
+c2V0KSB7DQo+KwkJCWltX3JlZyA9IGlndF9jb2xsZWN0aW9uX2dldF92YWx1ZShpbV9yZWdzLCAw
+KTsNCj4rCQkJaW1fbmFtZSA9IHJlZ2lvbl9uYW1lKGltX2dwdS0+ZmQsIGltX3JlZyk7DQo+Kw0K
+PisJCQlwYXRoID0gcDJwX3BhdGgoZXhfcmVnLCBleF9ncHUsIGltX2dwdSk7DQo+KwkJCWlndF9k
+eW5hbWljX2YoInJlYWQtZ3B1QS0lcy1ncHVCLSVzJXMiLCBleF9uYW1lLA0KPisJCQkJICAgICAg
+aW1fbmFtZSwgcGF0aCkNCj4rCQkJdGVzdF9yZWFkKGV4X2dwdSwgaW1fZ3B1LCBleF9yZWcsIGlt
+X3JlZyk7DQo+Kw0KPisJCQlmcmVlKGltX25hbWUpOw0KPisJCX0NCj4rCQlmcmVlKGV4X25hbWUp
+Ow0KPisJfQ0KPit9DQo+Kw0KPisvKioNCj4rICogZ3B1X3dyaXRlIC0gU2V0IHVwIGEgd3JpdGUg
+ZnJvbSB0aGUgaW1wb3J0aW5nIEdQVSB0byB0aGUgZXhwb3J0aW5nIEdQVQ0KPisgKiBAZXhfZ3B1
+OiBHUFUgdGhhdCBpcyBleHBvcnRpbmcgYSBidWZmZXIgZm9yIHJlYWQNCj4rICogQGltX2dwdTog
+R1BVIHRoYXQgaXMgaW1wb3J0aW5nIGFuZCByZWFkaW5nIHRoZSBidWZmZXINCj4rICovDQo+K3N0
+YXRpYyB2b2lkIGdwdV93cml0ZShzdHJ1Y3QgZ3B1X2luZm8gKmV4X2dwdSwgc3RydWN0IGdwdV9p
+bmZvICppbV9ncHUpDQo+K3sNCj4rCXN0cnVjdCBpZ3RfY29sbGVjdGlvbiAqZXhfcmVncywgKmlt
+X3JlZ3M7DQo+KwlpbnQgZXhfcmVnLCBpbV9yZWc7DQo+KwljaGFyICpleF9uYW1lLCAqaW1fbmFt
+ZTsNCj4rCWNvbnN0IGNoYXIgKnBhdGg7DQo+Kw0KPisJZm9yX2VhY2hfdmFyaWF0aW9uX3IoZXhf
+cmVncywgMSwgZXhfZ3B1LT5zZXQpIHsNCj4rCQlleF9yZWcgPSBpZ3RfY29sbGVjdGlvbl9nZXRf
+dmFsdWUoZXhfcmVncywgMCk7DQo+KwkJZXhfbmFtZSA9IHJlZ2lvbl9uYW1lKGV4X2dwdS0+ZmQs
+IGV4X3JlZyk7DQo+Kw0KPisJCWZvcl9lYWNoX3ZhcmlhdGlvbl9yKGltX3JlZ3MsIDEsIGltX2dw
+dS0+c2V0KSB7DQo+KwkJCWltX3JlZyA9IGlndF9jb2xsZWN0aW9uX2dldF92YWx1ZShpbV9yZWdz
+LCAwKTsNCj4rCQkJaW1fbmFtZSA9IHJlZ2lvbl9uYW1lKGltX2dwdS0+ZmQsIGltX3JlZyk7DQo+
+Kw0KPisJCQlwYXRoID0gcDJwX3BhdGgoZXhfcmVnLCBleF9ncHUsIGltX2dwdSk7DQo+KwkJCWln
+dF9keW5hbWljX2YoIndyaXRlLWdwdUEtJXMtZ3B1Qi0lcyVzIiwgZXhfbmFtZSwNCj4rCQkJCSAg
+ICAgIGltX25hbWUsIHBhdGgpDQo+KwkJCXRlc3Rfd3JpdGUoZXhfZ3B1LCBpbV9ncHUsIGV4X3Jl
+ZywgaW1fcmVnKTsNCj4rDQo+KwkJCWZyZWUoaW1fbmFtZSk7DQo+KwkJfQ0KPisJCWZyZWUoZXhf
+bmFtZSk7DQo+Kwl9DQo+K30NCj4rDQo+KyNkZWZpbmUgREVGQVVMVF9TSVpFIDANCj4rDQo+K2ln
+dF9tYWluX2FyZ3MoIiIsIE5VTEwsIE5VTEwsIE5VTEwsIE5VTEwpDQo+K3sNCj4rCXN0cnVjdCBn
+cHVfaW5mbyBncHVzWzJdOw0KPisJaW50IGdwdV9jbnQ7DQo+Kw0KPisJaWd0X2ZpeHR1cmUgew0K
+PisJCWdwdV9jbnQgPSBnZXRfZGV2aWNlX2luZm8oZ3B1cywgQVJSQVlfU0laRShncHVzKSk7DQo+
+KwkJaWd0X3NraXBfb24oZ3B1X2NudCA8IDIpOw0KPisJfQ0KPisNCj4rCWlndF9kZXNjcmliZSgi
+ZG1hYnVmIGdwdS1ncHUgcmVhZCIpOw0KPisJaWd0X3N1YnRlc3Rfd2l0aF9keW5hbWljX2YoInJl
+YWQiKQ0KPisJCWdwdV9yZWFkKCZncHVzWzBdLCAmZ3B1c1sxXSk7DQo+Kw0KPisJaWd0X2Rlc2Ny
+aWJlKCJkbWFidWYgZ3B1LWdwdSB3cml0ZSIpOw0KPisJaWd0X3N1YnRlc3Rfd2l0aF9keW5hbWlj
+X2YoIndyaXRlIikNCj4rCQlncHVfd3JpdGUoJmdwdXNbMF0sICZncHVzWzFdKTsNCj4rDQo+Kwlp
+Z3RfZml4dHVyZSB7DQo+KwkJaW50IGNudDsNCj4rDQo+KwkJZm9yIChjbnQgPSAwOyBjbnQgPCBn
+cHVfY250OyBjbnQrKykNCj4rCQkJZHJtX2Nsb3NlX2RyaXZlcihncHVzW2NudF0uZmQpOw0KPisJ
+fQ0KPit9DQo+ZGlmZiAtLWdpdCBhL3Rlc3RzL21lc29uLmJ1aWxkIGIvdGVzdHMvbWVzb24uYnVp
+bGQNCj5pbmRleCAzZTRkNTQ2MDEuLjczMTg0ZTY1OCAxMDA2NDQNCj4tLS0gYS90ZXN0cy9tZXNv
+bi5idWlsZA0KPisrKyBiL3Rlc3RzL21lc29uLmJ1aWxkDQo+QEAgLTMwMSw2ICszMDEsNyBAQCBp
+bnRlbF94ZV9wcm9ncyA9IFsNCj4gCSd4ZV9tbWFwJywNCj4gCSd4ZV9tb2R1bGVfbG9hZCcsDQo+
+IAkneGVfbm9leGVjX3BpbmdfcG9uZycsDQo+KwkneGVfcGVlcjJwZWVyJywNCj4gCSd4ZV9wbScs
+DQo+IAkneGVfcG1fcmVzaWRlbmN5JywNCj4gCSd4ZV9wcmltZV9zZWxmX2ltcG9ydCcsDQo+LS0N
+Cj4yLjM4LjENCg0K
