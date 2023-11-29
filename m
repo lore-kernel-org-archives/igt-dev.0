@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B7F9410E4B5
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Nov 2023 10:27:46 +0000 (UTC)
-From: sai.gowtham.ch@intel.com
-To: igt-dev@lists.freedesktop.org,
-	sai.gowtham.ch@intel.com
-Date: Wed, 29 Nov 2023 15:56:28 +0530
-Message-Id: <20231129102628.30848-1-sai.gowtham.ch@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4D6EA10E479
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Nov 2023 10:29:43 +0000 (UTC)
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 29 Nov 2023 15:49:00 +0530
+Message-Id: <20231129101900.2647416-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20231124082712.2384183-1-mohammed.thasleem@intel.com>
+References: <20231124082712.2384183-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] intel/xe_exec_store.c: Fix the check for
- num of placements in store_all.
+Subject: [igt-dev] [PATCH i-g-t] tests/intel/kms_pm_dc: Add LNL platform for
+ dc9-dpms validation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,46 +23,51 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+DC5 counter on disp ver >=14 is not expected to get reset in DC9 state.
+Add LNL patform to use runtime_suspended_time value to validate DC9
+dpms test.
 
-Adjust the store_all execution with dynamic subtest, so that test will
-skip the engines with no instances and executes on the engines with instances.
+v2: Update subject and commit message. (Swati)
 
-Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/intel/xe_exec_store.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ lib/intel_chipset.h     | 1 +
+ tests/intel/kms_pm_dc.c | 4 ++--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
-index 9c14bfd14..95c678bf7 100644
---- a/tests/intel/xe_exec_store.c
-+++ b/tests/intel/xe_exec_store.c
-@@ -245,7 +245,8 @@ static void store_all(int fd, int gt, int class)
- 		eci[num_placements++] = *hwe;
- 	}
+diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+index 1edc8e92c..3f2534519 100644
+--- a/lib/intel_chipset.h
++++ b/lib/intel_chipset.h
+@@ -208,6 +208,7 @@ void intel_check_pch(void);
  
--	igt_require(num_placements);
-+	igt_skip_on_f(!num_placements, "Engine class:%d gt:%d not enabled on this platform\n",
-+			class, gt);
+ #define IS_GEN(devid, x)	(intel_get_device_info(devid)->graphics_ver == x)
+ #define AT_LEAST_GEN(devid, x)	(intel_get_device_info(devid)->graphics_ver >= x)
++#define AT_LEAST_DISPLAY(devid, x) (intel_get_device_info(devid)->display_ver >= x)
  
- 	for (i = 0; i < num_placements; i++) {
- 		struct drm_xe_exec_queue_create create = {
-@@ -304,10 +305,13 @@ igt_main
- 	igt_subtest("basic-store")
- 		store(fd);
+ #define IS_GEN2(devid)		IS_GEN(devid, 2)
+ #define IS_GEN3(devid)		IS_GEN(devid, 3)
+diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
+index 8006e54de..0d5824e67 100644
+--- a/tests/intel/kms_pm_dc.c
++++ b/tests/intel/kms_pm_dc.c
+@@ -88,7 +88,7 @@
+ #define KMS_HELPER "/sys/module/drm_kms_helper/parameters/"
+ #define PACKAGE_CSTATE_PATH  "pmc_core/package_cstate_show"
+ #define KMS_POLL_DISABLE 0
+-#define DC9_RESETS_DC_COUNTERS(devid) (!(IS_DG1(devid) || IS_DG2(devid) || IS_METEORLAKE(devid)))
++#define DC9_RESETS_DC_COUNTERS(devid) (!(IS_DG1(devid) || IS_DG2(devid) || AT_LEAST_DISPLAY(devid, 14)))
  
--	igt_subtest("basic-all") {
-+	igt_subtest_with_dynamic("basic-all") {
- 		xe_for_each_gt(fd, gt)
--			xe_for_each_hw_engine_class(class)
--				store_all(fd, gt, class);
-+			xe_for_each_hw_engine_class(class) {
-+				igt_dynamic_f("class-%d", class) {
-+					store_all(fd, gt, class);
-+				}
-+			}
- 	}
+ IGT_TEST_DESCRIPTION("Tests to validate display power DC states.");
  
- 	igt_subtest("cachelines")
+@@ -505,7 +505,7 @@ static bool dc9_wait_entry(data_t *data, int dc_target, int prev_dc, int prev_rp
+ 	 * Runtime suspended residency should increment once DC9 is achieved;
+ 	 * this condition is valid for all platforms.
+ 	 * However, resetting of dc5/dc6 counter to check if display engine was in DC9;
+-	 * this condition at present can be skipped for dg1, dg2 and MTL platforms.
++	 * this condition at present can be skipped for dg1, dg2 and MTL+ platforms.
+ 	 */
+ 	return igt_wait((read_runtime_suspended_time(data->drm_fd) > prev_rpm) &&
+ 			(!DC9_RESETS_DC_COUNTERS(data->devid) ||
 -- 
-2.39.1
+2.25.1
