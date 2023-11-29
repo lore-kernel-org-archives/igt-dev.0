@@ -1,21 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D577610E1B2
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Nov 2023 11:54:37 +0000 (UTC)
-From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
-To: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Ch, Sai
- Gowtham" <sai.gowtham.ch@intel.com>
-Date: Wed, 29 Nov 2023 11:54:34 +0000
-Message-ID: <MW3PR11MB4748A289C0B4DF02804F1925AE83A@MW3PR11MB4748.namprd11.prod.outlook.com>
-References: <20231129102628.30848-1-sai.gowtham.ch@intel.com>
-In-Reply-To: <20231129102628.30848-1-sai.gowtham.ch@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CE72810E082
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Nov 2023 12:32:26 +0000 (UTC)
+Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
+ [10.249.140.150])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id D1AA2580E3A
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Nov 2023 04:32:24 -0800 (PST)
+Received: from maurocar by linux.intel.com with local (Exim 4.96.2)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1r8Jjq-000PqG-1z
+ for igt-dev@lists.freedesktop.org; Wed, 29 Nov 2023 13:32:22 +0100
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 29 Nov 2023 13:25:36 +0100
+Message-ID: <20231129123221.98948-4-mauro.chehab@linux.intel.com>
+In-Reply-To: <20231129123221.98948-1-mauro.chehab@linux.intel.com>
+References: <20231129123221.98948-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] intel/xe_exec_store.c: Fix the check
- for num of placements in store_all.
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 3/3] scripts/igt_doc.py: add a logic to
+ generate Intel CI testlists
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,82 +32,257 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
+Testlist for Intel CI requires parsing not only IGT testlists,
+but also block and permit lists. This is currently handled
+internally, but not from the documentation.
 
-> -----Original Message-----
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
-> sai.gowtham.ch@intel.com
-> Sent: Wednesday, November 29, 2023 3:56 PM
-> To: igt-dev@lists.freedesktop.org; Ch, Sai Gowtham
-> <sai.gowtham.ch@intel.com>
-> Subject: [igt-dev] [PATCH i-g-t] intel/xe_exec_store.c: Fix the check for=
- num of
-> placements in store_all.
->=20
-> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
->=20
-> Adjust the store_all execution with dynamic subtest, so that test will sk=
-ip the
-> engines with no instances and executes on the engines with instances.
->=20
-> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-> ---
->  tests/intel/xe_exec_store.c | 12 ++++++++----
->  1 file changed, 8 insertions(+), 4 deletions(-)
->=20
-> diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c in=
-dex
-> 9c14bfd14..95c678bf7 100644
-> --- a/tests/intel/xe_exec_store.c
-> +++ b/tests/intel/xe_exec_store.c
-> @@ -245,7 +245,8 @@ static void store_all(int fd, int gt, int class)
->  		eci[num_placements++] =3D *hwe;
->  	}
->=20
-> -	igt_require(num_placements);
-> +	igt_skip_on_f(!num_placements, "Engine class:%d gt:%d not enabled on
-> this platform\n",
-> +			class, gt);
->=20
->  	for (i =3D 0; i < num_placements; i++) {
->  		struct drm_xe_exec_queue_create create =3D { @@ -304,10
-> +305,13 @@ igt_main
->  	igt_subtest("basic-store")
->  		store(fd);
->=20
-> -	igt_subtest("basic-all") {
-> +	igt_subtest_with_dynamic("basic-all") {
->  		xe_for_each_gt (fd, gt)
-> -			xe_for_each_hw_engine_class(class)
-> -				store_all(fd, gt, class);
-> +			xe_for_each_hw_engine_class (class) {
-The problem here is, test is failing as we are trying to check all the engi=
-ne classes on all gt's. Test is skipping in cases where the engine class is=
- not present on a particular engine or an hardware.
+Now that we have everything set in place, add a method for
+generating it at IGT. The logic there is somewhat generic,
+but it expects some fields with a namespace as defined on
+tests/intel/*.json files.
 
-Here the correct solution will be using " xe_for_each_hw_engine " instead o=
-f using xe_for_each_gt and xe_for_each_hw_engine_class.
+So, instead of placing at the generic code (test_list.py),
+add them to igt_doc.py, where IGT-specific glue can easily
+be added while keeping test_list.py generic enought to be
+used on other projects.
 
-xe_for_each_hw_engine internally uses query ioctl to get the existing engin=
-es info on a hardware. Each engine id, class, instance , gt id is returned =
-which can be used to pass gt and class data to store_all.
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ scripts/igt_doc.py | 192 ++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 190 insertions(+), 2 deletions(-)
 
-JFYI
-xe_for_each_gt - iterates over all gt's
-xe_for_each_hw_engine_class - loop iterates over all the known engines clas=
-ses including the ones which are not present on the GT or on the platform.
-
-By passing only existing engine class info, above check " igt_require(num_p=
-lacements)" won't be required.
-
-Thanks,
-Rahul
-> +				igt_dynamic_f("class-%d", class) {
-> +					store_all(fd, gt, class);
-> +				}
-> +			}
->  	}
->=20
->  	igt_subtest("cachelines")
-> --
-> 2.39.1
+diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
+index ab6179366831..0ec6e3e5ec97 100755
+--- a/scripts/igt_doc.py
++++ b/scripts/igt_doc.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-# pylint: disable=C0301
++# pylint: disable=C0301,C0201,C0206
+ # SPDX-License-Identifier: (GPL-2.0 OR MIT)
+ 
+ ## Copyright (C) 2023    Intel Corporation                 ##
+@@ -11,10 +11,192 @@
+ """Maintain test plan and test implementation documentation on IGT."""
+ 
+ import argparse
++import os
++import re
+ import sys
+ 
+ from test_list import TestList
+ 
++class IgtTestList(TestList):
++    """
++        This class implements testlist generation as expected by Intel CI.
++        It does that by handling test lists split by "Run type" and
++        using GPU (or configuration) specific fields, being "GPU" for a
++        permit list of tests, and "GPU excluded platform" for a block
++        list of tests.
++
++        The logic below has "priority zero" rules, which are:
++
++        - if the test is not on any block lists nor it contains
++          "GPU" or "GPU excluded platform", it won't be blocked;
++        - if the test is in "all" block list, it will be blocked for all
++          GPUs. Values from "GPU" and "GPU excluded platform" will be ignored.
++
++        If none of the above rules apply, it will handle GPU positive
++        and negative rules:
++
++        - if "GPU" field is present on such test, the default is
++          is to block the test (default_gpu_value = False). If not
++          present, the default is to not block (default_gpu_value = True).
++
++        Now, it will check for "GPU" and "GPU excluded platform":
++
++        - it sets the default according to default_gpu_value.
++
++        Then:
++
++        - if "GPU" exists, for each GPU listed on the list, it will
++          unblock the test;
++        - if "GPU excluded platform" exists, for each GPU listed on
++          the list, it will block the test.
++    """
++    def gen_intelci_testlist(self): #pylint: disable=R0912
++        """Return a list of gpu configs and testlists."""
++
++        subtest_dict = self.expand_dictionary(True)
++
++        # Create a tests_per_list dict
++        gpus = set()
++        tests_per_list = {}
++        split_regex = re.compile(r",\s*")
++
++        for subname, subtest in subtest_dict.items():
++            run_types = subtest.get("Run type", "other")
++            run_type_set = set(split_regex.split(run_types))
++
++            run_type_set = set()
++            for run_type in set(split_regex.split(run_types)):
++                run_type = run_type.lower()
++
++                if run_type.startswith(tuple(self.drivers)):
++                    run_type_set.add(run_type)
++                else:
++                    for driver in self.drivers:
++                        run_type = f"{driver.lower()}_{run_type}"
++                        run_type_set.add(run_type)
++
++            for run_type in run_type_set:
++                if run_type not in tests_per_list:
++                    tests_per_list[run_type] = {}
++
++                if subname not in tests_per_list[run_type]:
++                    tests_per_list[run_type][subname] = {}
++
++                if "GPU" in subtest:
++                    for gpu_list in split_regex.split(subtest["GPU"]):
++                        gpus.add(gpu_list)
++                        tests_per_list[run_type][subname][gpu_list] = True
++
++                if "GPU excluded platform" in subtest:
++                    for gpu_list in split_regex.split(subtest["GPU excluded platform"]):
++                        gpus.add(gpu_list)
++                        tests_per_list[run_type][subname][gpu_list] = False
++
++        # Handle block and permit lists
++
++        for run_type in tests_per_list.keys():
++            for subname, gpu in tests_per_list[run_type].items():
++
++                # Trivial case: fields not defined
++                if not gpus:
++                    tests_per_list[run_type][subname]["default"] = True
++                    continue
++
++                if not gpu:
++                    tests_per_list[run_type][subname] = {}
++                    for gpu in gpus:
++                        tests_per_list[run_type][subname][gpu] = True
++                    continue
++
++                default_gpu_value = True
++                for gpu, value in tests_per_list[run_type][subname].items():
++                    if value:
++                        default_gpu_value = False
++                        break
++                    if not gpu in tests_per_list[run_type][subname]:
++                        for gpu in gpus:
++                            tests_per_list[run_type][subname][gpu] = default_gpu_value
++
++                if "all" in tests_per_list[run_type][subname]:
++                    if not tests_per_list[run_type][subname]["all"]:
++                        for gpu in gpus:
++                            tests_per_list[run_type][subname][gpu] = False
++
++                if default_gpu_value:
++                    tests_per_list[run_type][subname]["default"] = True
++
++        return (gpus, tests_per_list)
++
++    def write_intelci_testlist(self, directory):
++        '''Create testlist directory (if needed) and files'''
++
++        if not os.path.exists(directory):
++            os.makedirs(directory)
++
++        (gpus, tests_per_list)  = self.gen_intelci_testlist()
++        testlists = {}
++
++        for run_type in tests_per_list.keys():
++            for subname, gpu_dict in tests_per_list[run_type].items():
++                for gpu, value in gpu_dict.items():
++                    if gpu == "all":
++                        continue
++
++                    gpu = re.sub(r"[\W_]+", "-", gpu).lower()
++                    name = re.sub(r"[\W_]+", "-", run_type).lower()
++                    name = re.sub(r"_+", "_", name)
++
++                    drivers = set(self.drivers)
++
++                    for driver in self.drivers:
++                        driver = driver.lower()
++
++                        if name.startswith(driver):
++                            all_drivers = False
++                            name = re.sub(r"^" + driver + r"[\W_]*", "", name)
++                            drivers = set([driver])
++                            break
++
++                    for driver in drivers:
++                        if driver not in testlists:
++                            testlists[driver] = {}
++
++                        if gpu not in testlists[driver]:
++                            testlists[driver][gpu] = {}
++
++                        if name not in testlists[driver][gpu]:
++                            testlists[driver][gpu][name] = set()
++
++                        testlists[driver][gpu][name].add(subname)
++
++        for driver in testlists.keys():
++            driver_path = os.path.join(directory, driver)
++            try:
++                os.makedirs(driver_path)
++            except FileExistsError:
++                pass
++
++            for gpu, names in testlists[driver].items():
++                dname = os.path.join(driver_path, gpu)
++                try:
++                    os.makedirs(dname)
++                except FileExistsError:
++                    pass
++
++                for testlist, subtests in names.items():
++                    if testlist == "":
++                        testlist = "other"
++
++                    if not subtests:
++                        print(f"Warning: empty testlist: {testlist}")
++                        continue
++
++                    fname = os.path.join(dname, testlist) + ".testlist"
++                    with open(fname, 'w', encoding='utf8') as handler:
++                        for sub in sorted(subtests):
++                            handler.write (f"{sub}\n")
++                        print(f"{fname} created.")
++
+ def main():
+     """
+     Main logic
+@@ -48,12 +230,14 @@ def main():
+                         default=igt_build_path)
+     parser.add_argument("--gen-testlist",
+                         help="Generate documentation at the GEN_TESTLIST directory, using SORT_FIELD to split the tests. Requires --sort-field.")
++    parser.add_argument("--intelci-testlist",
++                        help="Generate testlists for Intel CI integration at the INTELCI_TESTLIST directory.")
+     parser.add_argument('--files', nargs='+',
+                         help="File name(s) to be processed")
+ 
+     parse_args = parser.parse_args()
+ 
+-    tests = TestList(config_fname = parse_args.config,
++    tests = IgtTestList(config_fname = parse_args.config,
+                         include_plan = parse_args.include_plan,
+                         file_list = parse_args.files,
+                         igt_build_path = parse_args.igt_build_path)
+@@ -77,6 +261,10 @@ def main():
+             sys.exit("Need a field to split the testlists")
+         tests.gen_testlist(parse_args.gen_testlist, parse_args.sort_field)
+ 
++    if parse_args.intelci_testlist:
++        run = True
++        tests.write_intelci_testlist(parse_args.intelci_testlist)
++
+     if parse_args.to_json:
+         run = True
+         tests.print_json(parse_args.to_json)
+-- 
+2.42.0
