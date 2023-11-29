@@ -1,14 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============5564687921133068571=="
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BE6F410E61D
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Nov 2023 15:46:37 +0000 (UTC)
+Date: Wed, 29 Nov 2023 16:46:33 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20231129154633.pesaxacfm452njey@kamilkon-desk.igk.intel.com>
+References: <20231129123221.98948-1-mauro.chehab@linux.intel.com>
+ <20231129123221.98948-4-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 28 Nov 2023 21:22:21 -0000
-Message-ID: <170120654125.8221.14353736662375905147@emeril.freedesktop.org>
-References: <20231128164551.77343-1-mauro.chehab@linux.intel.com>
-In-Reply-To: <20231128164551.77343-1-mauro.chehab@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgUHJvZHVj?=
- =?utf-8?q?e_per-GPU_testlists_for_IntelCI?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231129123221.98948-4-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 3/3] scripts/igt_doc.py: add a logic to
+ generate Intel CI testlists
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,371 +20,269 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============5564687921133068571==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Mauro,
+On 2023-11-29 at 13:25:36 +0100, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> Testlist for Intel CI requires parsing not only IGT testlists,
+> but also block and permit lists. This is currently handled
+> internally, but not from the documentation.
+> 
+> Now that we have everything set in place, add a method for
+> generating it at IGT. The logic there is somewhat generic,
+> but it expects some fields with a namespace as defined on
+> tests/intel/*.json files.
+> 
+> So, instead of placing at the generic code (test_list.py),
+> add them to igt_doc.py, where IGT-specific glue can easily
+> be added while keeping test_list.py generic enought to be
+> used on other projects.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-== Series Details ==
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Series: Produce per-GPU testlists for IntelCI
-URL   : https://patchwork.freedesktop.org/series/126999/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_13939 -> IGTPW_10282
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/index.html
-
-Participating hosts (37 -> 34)
-------------------------------
-
-  Additional (2): bat-mtlp-8 fi-pnv-d510 
-  Missing    (5): bat-kbl-2 bat-dg1-5 bat-dg2-9 fi-snb-2520m bat-jsl-3 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_10282 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@debugfs_test@basic-hwmon:
-    - bat-mtlp-8:         NOTRUN -> [SKIP][1] ([i915#9318])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@debugfs_test@basic-hwmon.html
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-pnv-d510:        NOTRUN -> [SKIP][2] ([fdo#109271]) +25 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/fi-pnv-d510/igt@gem_lmem_swapping@basic.html
-
-  * igt@gem_lmem_swapping@verify-random:
-    - bat-mtlp-8:         NOTRUN -> [SKIP][3] ([i915#4613]) +3 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@gem_lmem_swapping@verify-random.html
-
-  * igt@gem_mmap@basic:
-    - bat-mtlp-8:         NOTRUN -> [SKIP][4] ([i915#4083])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@gem_mmap@basic.html
-
-  * igt@gem_mmap_gtt@basic:
-    - bat-mtlp-8:         NOTRUN -> [SKIP][5] ([i915#4077]) +2 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@gem_mmap_gtt@basic.html
-
-  * igt@gem_render_tiled_blits@basic:
-    - bat-mtlp-8:         NOTRUN -> [SKIP][6] ([i915#4079]) +1 other test skip
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@gem_render_tiled_blits@basic.html
-
-  * igt@i915_pm_rps@basic-api:
-    - bat-mtlp-8:         NOTRUN -> [SKIP][7] ([i915#6621])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@i915_pm_rps@basic-api.html
-
-  * igt@i915_suspend@basic-s3-without-i915:
-    - bat-mtlp-8:         NOTRUN -> [SKIP][8] ([i915#6645])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@i915_suspend@basic-s3-without-i915.html
-
-  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
-    - bat-mtlp-8:         NOTRUN -> [SKIP][9] ([i915#5190])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-
-  * igt@kms_addfb_basic@basic-y-tiled-legacy:
-    - bat-mtlp-8:         NOTRUN -> [SKIP][10] ([i915#4212]) +8 other tests skip
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@kms_addfb_basic@basic-y-tiled-legacy.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
-    - bat-mtlp-8:         NOTRUN -> [SKIP][11] ([i915#4213]) +1 other test skip
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
-
-  * igt@kms_dsc@dsc-basic:
-    - bat-mtlp-8:         NOTRUN -> [SKIP][12] ([i915#3555] / [i915#3840] / [i915#4098] / [i915#9159])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@kms_dsc@dsc-basic.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - bat-mtlp-8:         NOTRUN -> [SKIP][13] ([fdo#109285])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_force_connector_basic@prune-stale-modes:
-    - bat-mtlp-8:         NOTRUN -> [SKIP][14] ([i915#5274])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@kms_force_connector_basic@prune-stale-modes.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-c-dp-5:
-    - bat-adlp-11:        [PASS][15] -> [DMESG-FAIL][16] ([i915#6868])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13939/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-c-dp-5.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-c-dp-5.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-5:
-    - bat-adlp-11:        [PASS][17] -> [FAIL][18] ([i915#9666])
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13939/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-5.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-5.html
-
-  * igt@kms_pipe_crc_basic@suspend-read-crc:
-    - bat-rpls-1:         NOTRUN -> [SKIP][19] ([i915#1845])
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-rpls-1/igt@kms_pipe_crc_basic@suspend-read-crc.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - bat-mtlp-8:         NOTRUN -> [SKIP][20] ([i915#3555] / [i915#8809])
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@kms_setmode@basic-clone-single-crtc.html
-
-  * igt@prime_vgem@basic-fence-mmap:
-    - bat-mtlp-8:         NOTRUN -> [SKIP][21] ([i915#3708] / [i915#4077]) +1 other test skip
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@prime_vgem@basic-fence-mmap.html
-
-  * igt@prime_vgem@basic-fence-read:
-    - bat-mtlp-8:         NOTRUN -> [SKIP][22] ([i915#3708]) +2 other tests skip
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@prime_vgem@basic-fence-read.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@gt_contexts:
-    - bat-rpls-1:         [INCOMPLETE][23] ([i915#9756]) -> [PASS][24]
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13939/bat-rpls-1/igt@i915_selftest@live@gt_contexts.html
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-rpls-1/igt@i915_selftest@live@gt_contexts.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#3840]: https://gitlab.freedesktop.org/drm/intel/issues/3840
-  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
-  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
-  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
-  [i915#4098]: https://gitlab.freedesktop.org/drm/intel/issues/4098
-  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
-  [i915#4213]: https://gitlab.freedesktop.org/drm/intel/issues/4213
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#5190]: https://gitlab.freedesktop.org/drm/intel/issues/5190
-  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
-  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
-  [i915#6645]: https://gitlab.freedesktop.org/drm/intel/issues/6645
-  [i915#6868]: https://gitlab.freedesktop.org/drm/intel/issues/6868
-  [i915#8809]: https://gitlab.freedesktop.org/drm/intel/issues/8809
-  [i915#9159]: https://gitlab.freedesktop.org/drm/intel/issues/9159
-  [i915#9318]: https://gitlab.freedesktop.org/drm/intel/issues/9318
-  [i915#9666]: https://gitlab.freedesktop.org/drm/intel/issues/9666
-  [i915#9756]: https://gitlab.freedesktop.org/drm/intel/issues/9756
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7608 -> IGTPW_10282
-
-  CI-20190529: 20190529
-  CI_DRM_13939: 444a2d69536b9fb289e86b48f53b6f212a4d6fac @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_10282: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/index.html
-  IGT_7608: 3e52de09140ec5ddf8919fcb11a858cfcc137359 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/index.html
-
---===============5564687921133068571==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Produce per-GPU testlists for IntelCI</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126999/">https://patchwork.freedesktop.org/series/126999/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_13939 -&gt; IGTPW_10282</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/index.html</p>
-<h2>Participating hosts (37 -&gt; 34)</h2>
-<p>Additional (2): bat-mtlp-8 fi-pnv-d510 <br />
-  Missing    (5): bat-kbl-2 bat-dg1-5 bat-dg2-9 fi-snb-2520m bat-jsl-3 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_10282 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@debugfs_test@basic-hwmon:</p>
-<ul>
-<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@debugfs_test@basic-hwmon.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9318">i915#9318</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/fi-pnv-d510/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +25 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@verify-random:</p>
-<ul>
-<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_mmap@basic:</p>
-<ul>
-<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@gem_mmap@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4083">i915#4083</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_mmap_gtt@basic:</p>
-<ul>
-<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@gem_mmap_gtt@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4077">i915#4077</a>) +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_render_tiled_blits@basic:</p>
-<ul>
-<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@gem_render_tiled_blits@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4079">i915#4079</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rps@basic-api:</p>
-<ul>
-<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@i915_pm_rps@basic-api.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6621">i915#6621</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s3-without-i915:</p>
-<ul>
-<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@i915_suspend@basic-s3-without-i915.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6645">i915#6645</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
-<ul>
-<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5190">i915#5190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@basic-y-tiled-legacy:</p>
-<ul>
-<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@kms_addfb_basic@basic-y-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4212">i915#4212</a>) +8 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
-<ul>
-<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4213">i915#4213</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_dsc@dsc-basic:</p>
-<ul>
-<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3840">i915#3840</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4098">i915#4098</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/9159">i915#9159</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@prune-stale-modes:</p>
-<ul>
-<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5274">i915#5274</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-c-dp-5:</p>
-<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13939/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-c-dp-5.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-c-dp-5.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6868">i915#6868</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-5:</p>
-<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13939/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-5.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-5.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9666">i915#9666</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@suspend-read-crc:</p>
-<ul>
-<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-rpls-1/igt@kms_pipe_crc_basic@suspend-read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8809">i915#8809</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-fence-mmap:</p>
-<ul>
-<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@prime_vgem@basic-fence-mmap.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4077">i915#4077</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-fence-read:</p>
-<ul>
-<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-mtlp-8/igt@prime_vgem@basic-fence-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>) +2 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@gt_contexts:<ul>
-<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13939/bat-rpls-1/igt@i915_selftest@live@gt_contexts.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9756">i915#9756</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/bat-rpls-1/igt@i915_selftest@live@gt_contexts.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7608 -&gt; IGTPW_10282</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13939: 444a2d69536b9fb289e86b48f53b6f212a4d6fac @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_10282: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10282/index.html<br />
-  IGT_7608: 3e52de09140ec5ddf8919fcb11a858cfcc137359 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============5564687921133068571==--
+> ---
+>  scripts/igt_doc.py | 192 ++++++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 190 insertions(+), 2 deletions(-)
+> 
+> diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
+> index ab6179366831..0ec6e3e5ec97 100755
+> --- a/scripts/igt_doc.py
+> +++ b/scripts/igt_doc.py
+> @@ -1,5 +1,5 @@
+>  #!/usr/bin/env python3
+> -# pylint: disable=C0301
+> +# pylint: disable=C0301,C0201,C0206
+>  # SPDX-License-Identifier: (GPL-2.0 OR MIT)
+>  
+>  ## Copyright (C) 2023    Intel Corporation                 ##
+> @@ -11,10 +11,192 @@
+>  """Maintain test plan and test implementation documentation on IGT."""
+>  
+>  import argparse
+> +import os
+> +import re
+>  import sys
+>  
+>  from test_list import TestList
+>  
+> +class IgtTestList(TestList):
+> +    """
+> +        This class implements testlist generation as expected by Intel CI.
+> +        It does that by handling test lists split by "Run type" and
+> +        using GPU (or configuration) specific fields, being "GPU" for a
+> +        permit list of tests, and "GPU excluded platform" for a block
+> +        list of tests.
+> +
+> +        The logic below has "priority zero" rules, which are:
+> +
+> +        - if the test is not on any block lists nor it contains
+> +          "GPU" or "GPU excluded platform", it won't be blocked;
+> +        - if the test is in "all" block list, it will be blocked for all
+> +          GPUs. Values from "GPU" and "GPU excluded platform" will be ignored.
+> +
+> +        If none of the above rules apply, it will handle GPU positive
+> +        and negative rules:
+> +
+> +        - if "GPU" field is present on such test, the default is
+> +          is to block the test (default_gpu_value = False). If not
+> +          present, the default is to not block (default_gpu_value = True).
+> +
+> +        Now, it will check for "GPU" and "GPU excluded platform":
+> +
+> +        - it sets the default according to default_gpu_value.
+> +
+> +        Then:
+> +
+> +        - if "GPU" exists, for each GPU listed on the list, it will
+> +          unblock the test;
+> +        - if "GPU excluded platform" exists, for each GPU listed on
+> +          the list, it will block the test.
+> +    """
+> +    def gen_intelci_testlist(self): #pylint: disable=R0912
+> +        """Return a list of gpu configs and testlists."""
+> +
+> +        subtest_dict = self.expand_dictionary(True)
+> +
+> +        # Create a tests_per_list dict
+> +        gpus = set()
+> +        tests_per_list = {}
+> +        split_regex = re.compile(r",\s*")
+> +
+> +        for subname, subtest in subtest_dict.items():
+> +            run_types = subtest.get("Run type", "other")
+> +            run_type_set = set(split_regex.split(run_types))
+> +
+> +            run_type_set = set()
+> +            for run_type in set(split_regex.split(run_types)):
+> +                run_type = run_type.lower()
+> +
+> +                if run_type.startswith(tuple(self.drivers)):
+> +                    run_type_set.add(run_type)
+> +                else:
+> +                    for driver in self.drivers:
+> +                        run_type = f"{driver.lower()}_{run_type}"
+> +                        run_type_set.add(run_type)
+> +
+> +            for run_type in run_type_set:
+> +                if run_type not in tests_per_list:
+> +                    tests_per_list[run_type] = {}
+> +
+> +                if subname not in tests_per_list[run_type]:
+> +                    tests_per_list[run_type][subname] = {}
+> +
+> +                if "GPU" in subtest:
+> +                    for gpu_list in split_regex.split(subtest["GPU"]):
+> +                        gpus.add(gpu_list)
+> +                        tests_per_list[run_type][subname][gpu_list] = True
+> +
+> +                if "GPU excluded platform" in subtest:
+> +                    for gpu_list in split_regex.split(subtest["GPU excluded platform"]):
+> +                        gpus.add(gpu_list)
+> +                        tests_per_list[run_type][subname][gpu_list] = False
+> +
+> +        # Handle block and permit lists
+> +
+> +        for run_type in tests_per_list.keys():
+> +            for subname, gpu in tests_per_list[run_type].items():
+> +
+> +                # Trivial case: fields not defined
+> +                if not gpus:
+> +                    tests_per_list[run_type][subname]["default"] = True
+> +                    continue
+> +
+> +                if not gpu:
+> +                    tests_per_list[run_type][subname] = {}
+> +                    for gpu in gpus:
+> +                        tests_per_list[run_type][subname][gpu] = True
+> +                    continue
+> +
+> +                default_gpu_value = True
+> +                for gpu, value in tests_per_list[run_type][subname].items():
+> +                    if value:
+> +                        default_gpu_value = False
+> +                        break
+> +                    if not gpu in tests_per_list[run_type][subname]:
+> +                        for gpu in gpus:
+> +                            tests_per_list[run_type][subname][gpu] = default_gpu_value
+> +
+> +                if "all" in tests_per_list[run_type][subname]:
+> +                    if not tests_per_list[run_type][subname]["all"]:
+> +                        for gpu in gpus:
+> +                            tests_per_list[run_type][subname][gpu] = False
+> +
+> +                if default_gpu_value:
+> +                    tests_per_list[run_type][subname]["default"] = True
+> +
+> +        return (gpus, tests_per_list)
+> +
+> +    def write_intelci_testlist(self, directory):
+> +        '''Create testlist directory (if needed) and files'''
+> +
+> +        if not os.path.exists(directory):
+> +            os.makedirs(directory)
+> +
+> +        (gpus, tests_per_list)  = self.gen_intelci_testlist()
+> +        testlists = {}
+> +
+> +        for run_type in tests_per_list.keys():
+> +            for subname, gpu_dict in tests_per_list[run_type].items():
+> +                for gpu, value in gpu_dict.items():
+> +                    if gpu == "all":
+> +                        continue
+> +
+> +                    gpu = re.sub(r"[\W_]+", "-", gpu).lower()
+> +                    name = re.sub(r"[\W_]+", "-", run_type).lower()
+> +                    name = re.sub(r"_+", "_", name)
+> +
+> +                    drivers = set(self.drivers)
+> +
+> +                    for driver in self.drivers:
+> +                        driver = driver.lower()
+> +
+> +                        if name.startswith(driver):
+> +                            all_drivers = False
+> +                            name = re.sub(r"^" + driver + r"[\W_]*", "", name)
+> +                            drivers = set([driver])
+> +                            break
+> +
+> +                    for driver in drivers:
+> +                        if driver not in testlists:
+> +                            testlists[driver] = {}
+> +
+> +                        if gpu not in testlists[driver]:
+> +                            testlists[driver][gpu] = {}
+> +
+> +                        if name not in testlists[driver][gpu]:
+> +                            testlists[driver][gpu][name] = set()
+> +
+> +                        testlists[driver][gpu][name].add(subname)
+> +
+> +        for driver in testlists.keys():
+> +            driver_path = os.path.join(directory, driver)
+> +            try:
+> +                os.makedirs(driver_path)
+> +            except FileExistsError:
+> +                pass
+> +
+> +            for gpu, names in testlists[driver].items():
+> +                dname = os.path.join(driver_path, gpu)
+> +                try:
+> +                    os.makedirs(dname)
+> +                except FileExistsError:
+> +                    pass
+> +
+> +                for testlist, subtests in names.items():
+> +                    if testlist == "":
+> +                        testlist = "other"
+> +
+> +                    if not subtests:
+> +                        print(f"Warning: empty testlist: {testlist}")
+> +                        continue
+> +
+> +                    fname = os.path.join(dname, testlist) + ".testlist"
+> +                    with open(fname, 'w', encoding='utf8') as handler:
+> +                        for sub in sorted(subtests):
+> +                            handler.write (f"{sub}\n")
+> +                        print(f"{fname} created.")
+> +
+>  def main():
+>      """
+>      Main logic
+> @@ -48,12 +230,14 @@ def main():
+>                          default=igt_build_path)
+>      parser.add_argument("--gen-testlist",
+>                          help="Generate documentation at the GEN_TESTLIST directory, using SORT_FIELD to split the tests. Requires --sort-field.")
+> +    parser.add_argument("--intelci-testlist",
+> +                        help="Generate testlists for Intel CI integration at the INTELCI_TESTLIST directory.")
+>      parser.add_argument('--files', nargs='+',
+>                          help="File name(s) to be processed")
+>  
+>      parse_args = parser.parse_args()
+>  
+> -    tests = TestList(config_fname = parse_args.config,
+> +    tests = IgtTestList(config_fname = parse_args.config,
+>                          include_plan = parse_args.include_plan,
+>                          file_list = parse_args.files,
+>                          igt_build_path = parse_args.igt_build_path)
+> @@ -77,6 +261,10 @@ def main():
+>              sys.exit("Need a field to split the testlists")
+>          tests.gen_testlist(parse_args.gen_testlist, parse_args.sort_field)
+>  
+> +    if parse_args.intelci_testlist:
+> +        run = True
+> +        tests.write_intelci_testlist(parse_args.intelci_testlist)
+> +
+>      if parse_args.to_json:
+>          run = True
+>          tests.print_json(parse_args.to_json)
+> -- 
+> 2.42.0
+> 
 
