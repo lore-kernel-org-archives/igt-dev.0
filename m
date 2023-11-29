@@ -1,23 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F157710E297
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Nov 2023 19:49:24 +0000 (UTC)
-Date: Tue, 28 Nov 2023 20:49:17 +0100
-From: Francois Dugast <francois.dugast@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- <igt-dev@lists.freedesktop.org>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>, Bhanuprakash Modem
- <bhanuprakash.modem@intel.com>
-Message-ID: <ZWZEPQT890IId4dz@fdugast-desk.home>
-References: <20231116145348.7-1-francois.dugast@intel.com>
- <20231116145348.7-6-francois.dugast@intel.com>
- <20231121174010.zycj3x6nz2tzkmg4@kamilkon-desk.igk.intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20231121174010.zycj3x6nz2tzkmg4@kamilkon-desk.igk.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EBB4310E5FC
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Nov 2023 05:28:17 +0000 (UTC)
+From: Jeevan B <jeevan.b@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 29 Nov 2023 11:06:00 +0530
+Message-Id: <20231129053601.2078736-2-jeevan.b@intel.com>
+In-Reply-To: <20231129053601.2078736-1-jeevan.b@intel.com>
+References: <20231129053601.2078736-1-jeevan.b@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v1 05/13] xe_query: Kill
- visible_vram_if_possible
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/2] tests/intel/kms_psr: Add FBC support to
+ PSR/PSR2/PR tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,717 +23,803 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Nov 21, 2023 at 06:40:10PM +0100, Kamil Konieczny wrote:
-> Hi Francois,
-> On 2023-11-16 at 14:53:40 +0000, Francois Dugast wrote:
-> > From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> > 
-> > Let the caller set the flag and the xe_bo_query clear if
-> > not needed.
-> > 
-> > Although the current helper makes the code cleaner, the
-> > goal is to split the flags into placement and flags as two
-> > different arguments on xe_bo_create. So, the flag decision
-> > cannot be hidden under the helper.
-> > 
-> > Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> > Signed-off-by: Francois Dugast <francois.dugast@intel.com>
-> 
-> Overall looks good, I am thinking about adding igt_debug at
-> __xe_bo_create (see below) but that can go in separate,
-> follow-up patch.
-> 
-> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> 
-> > ---
-> >  benchmarks/gem_wsim.c              |  3 ++-
-> >  lib/igt_draw.c                     |  3 ++-
-> >  lib/igt_fb.c                       |  3 ++-
-> >  lib/intel_batchbuffer.c            |  6 ++++--
-> >  lib/xe/xe_ioctl.c                  | 19 +++++++++++++++++++
-> >  lib/xe/xe_query.c                  | 26 --------------------------
-> >  lib/xe/xe_query.h                  |  1 -
-> >  lib/xe/xe_spin.c                   |  7 ++++---
-> >  tests/intel/kms_ccs.c              |  3 ++-
-> >  tests/intel/xe_dma_buf_sync.c      |  3 ++-
-> >  tests/intel/xe_exec_balancer.c     |  9 ++++++---
-> >  tests/intel/xe_exec_basic.c        |  2 +-
-> >  tests/intel/xe_exec_compute_mode.c |  3 ++-
-> >  tests/intel/xe_exec_fault_mode.c   |  6 ++++--
-> >  tests/intel/xe_exec_reset.c        | 14 +++++++++-----
-> >  tests/intel/xe_exec_store.c        |  9 ++++++---
-> >  tests/intel/xe_exec_threads.c      |  9 ++++++---
-> >  tests/intel/xe_guc_pc.c            |  3 ++-
-> >  tests/intel/xe_mmap.c              |  9 ++++++---
-> >  tests/intel/xe_pm.c                |  3 ++-
-> >  tests/intel/xe_pm_residency.c      |  3 ++-
-> >  tests/intel/xe_prime_self_import.c | 27 ++++++++++++++++++---------
-> >  tests/intel/xe_vm.c                | 21 ++++++++++++++-------
-> >  23 files changed, 115 insertions(+), 77 deletions(-)
-> > 
-> > diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-> > index d6d3deb5f..966d9b465 100644
-> > --- a/benchmarks/gem_wsim.c
-> > +++ b/benchmarks/gem_wsim.c
-> > @@ -1735,7 +1735,8 @@ xe_alloc_step_batch(struct workload *wrk, struct w_step *w)
-> >  	int i;
-> >  
-> >  	w->bb_handle = xe_bo_create(fd, vm->id, PAGE_SIZE,
-> > -				visible_vram_if_possible(fd, eq->hwe_list[0].gt_id));
-> > +				    vram_if_possible(fd, eq->hwe_list[0].gt_id) |
-> > +				    DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  	w->xe.data = xe_bo_map(fd, w->bb_handle, PAGE_SIZE);
-> >  	w->xe.exec.address =
-> >  		intel_allocator_alloc_with_strategy(vm->ahnd, w->bb_handle, PAGE_SIZE,
-> > diff --git a/lib/igt_draw.c b/lib/igt_draw.c
-> > index 5935eb058..b16afd799 100644
-> > --- a/lib/igt_draw.c
-> > +++ b/lib/igt_draw.c
-> > @@ -797,7 +797,8 @@ static void draw_rect_render(int fd, struct cmd_data *cmd_data,
-> >  	else
-> >  		tmp.handle = xe_bo_create(fd, 0,
-> >  					  ALIGN(tmp.size, xe_get_default_alignment(fd)),
-> > -					  visible_vram_if_possible(fd, 0));
-> > +					  vram_if_possible(fd, 0) |
-> > +					  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  
-> >  	tmp.stride = rect->w * pixel_size;
-> >  	tmp.bpp = buf->bpp;
-> > diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> > index f96dca7a4..0a6aa27c8 100644
-> > --- a/lib/igt_fb.c
-> > +++ b/lib/igt_fb.c
-> > @@ -1206,7 +1206,8 @@ static int create_bo_for_fb(struct igt_fb *fb, bool prefer_sysmem)
-> >  			igt_assert(err == 0 || err == -EOPNOTSUPP);
-> >  		} else if (is_xe_device(fd)) {
-> >  			fb->gem_handle = xe_bo_create(fd, 0, fb->size,
-> > -						      visible_vram_if_possible(fd, 0));
-> > +						      vram_if_possible(fd, 0)
-> > +						      | DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  		} else if (is_vc4_device(fd)) {
-> >  			fb->gem_handle = igt_vc4_create_bo(fd, fb->size);
-> >  
-> > diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-> > index 7fa4e3487..45b1665f7 100644
-> > --- a/lib/intel_batchbuffer.c
-> > +++ b/lib/intel_batchbuffer.c
-> > @@ -945,7 +945,8 @@ __intel_bb_create(int fd, uint32_t ctx, uint32_t vm, const intel_ctx_cfg_t *cfg,
-> >  
-> >  		ibb->alignment = xe_get_default_alignment(fd);
-> >  		size = ALIGN(size, ibb->alignment);
-> > -		ibb->handle = xe_bo_create(fd, 0, size, visible_vram_if_possible(fd, 0));
-> > +		ibb->handle = xe_bo_create(fd, 0, size, vram_if_possible(fd, 0) |
-> > +					   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  
-> >  		/* Limit to 48-bit due to MI_* address limitation */
-> >  		ibb->gtt_size = 1ull << min_t(uint32_t, xe_va_bits(fd), 48);
-> > @@ -1404,7 +1405,8 @@ void intel_bb_reset(struct intel_bb *ibb, bool purge_objects_cache)
-> >  		ibb->handle = gem_create(ibb->fd, ibb->size);
-> >  	else
-> >  		ibb->handle = xe_bo_create(ibb->fd, 0, ibb->size,
-> > -					   visible_vram_if_possible(ibb->fd, 0));
-> > +					   vram_if_possible(ibb->fd, 0) |
-> > +					   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  
-> >  	/* Reacquire offset for RELOC and SIMPLE */
-> >  	if (ibb->allocator_type == INTEL_ALLOCATOR_SIMPLE ||
-> > diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-> > index 63fa2ae25..1d63081d6 100644
-> > --- a/lib/xe/xe_ioctl.c
-> > +++ b/lib/xe/xe_ioctl.c
-> > @@ -226,6 +226,18 @@ void xe_vm_destroy(int fd, uint32_t vm)
-> >  	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_VM_DESTROY, &destroy), 0);
-> >  }
-> >  
-> > +static bool vram_selected(int fd, uint32_t selected_regions)
-> > +{
-> > +	uint64_t regions = all_memory_regions(fd) & selected_regions;
-> > +	uint64_t region;
-> > +
-> > +	xe_for_each_mem_region(fd, regions, region)
-> > +		if (xe_mem_region(fd, region)->mem_class == DRM_XE_MEM_REGION_CLASS_VRAM)
-> > +			return true;
-> > +
-> > +	return false;
-> > +}
-> > +
-> >  uint32_t __xe_bo_create(int fd, uint32_t vm, uint64_t size, uint32_t flags,
-> >  			uint32_t *handle)
-> >  {
-> > @@ -236,6 +248,13 @@ uint32_t __xe_bo_create(int fd, uint32_t vm, uint64_t size, uint32_t flags,
-> >  	};
-> >  	int err;
-> >  
-> > +	/*
-> > +	 * In case vram_if_possible returned system_memory,
-> > +	 *  visible VRAM cannot be requested through flags
-> -------^
-> Remove one space before "visible" word.
+For LunarLake (intel_display_ver 20), FBC can be enabled along with
+PSR/PSR2/PR, thereby adding FBC checks to validate this scenario.
 
-Sure, will fix.
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
+---
+ lib/igt_psr.h         |   5 +
+ tests/intel/kms_psr.c | 468 ++++++++++++++++++++++++++++--------------
+ 2 files changed, 319 insertions(+), 154 deletions(-)
 
-> I am not sure, maybe we should add here igt_debug when
-> 		flags & DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM
-> 
-> Adding Bhanu and Juha-Pekka to Cc.
-
-Folks, we will proceed with this as it has been reviewed but feel free
-to add the suggested igt_debug in another patch, thanks.
-
-Francois
-
-> 
-> Regards,
-> Kamil
-> 
-> 
-> > +	 */
-> > +	if (!vram_selected(fd, flags))
-> > +		create.flags &= ~DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
-> > +
-> >  	err = igt_ioctl(fd, DRM_IOCTL_XE_GEM_CREATE, &create);
-> >  	if (err)
-> >  		return err;
-> > diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-> > index afd443be3..760a150db 100644
-> > --- a/lib/xe/xe_query.c
-> > +++ b/lib/xe/xe_query.c
-> > @@ -442,32 +442,6 @@ uint64_t vram_if_possible(int fd, int gt)
-> >  	return vram_memory(fd, gt) ?: system_memory(fd);
-> >  }
-> >  
-> > -/**
-> > - * visible_vram_if_possible:
-> > - * @fd: xe device fd
-> > - * @gt: gt id
-> > - *
-> > - * Returns vram memory bitmask for xe device @fd and @gt id or system memory if
-> > - * there's no vram memory available for @gt. Also attaches the
-> > - * DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM to ensure that CPU access is possible
-> > - * when using vram.
-> > - */
-> > -uint64_t visible_vram_if_possible(int fd, int gt)
-> > -{
-> > -	uint64_t regions = all_memory_regions(fd);
-> > -	uint64_t system_memory = regions & 0x1;
-> > -	uint64_t vram = regions & (0x2 << gt);
-> > -
-> > -	/*
-> > -	 * TODO: Keep it backwards compat for now. Fixup once the kernel side
-> > -	 * has landed.
-> > -	 */
-> > -	if (__xe_visible_vram_size(fd, gt))
-> > -		return vram ? vram | DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM : system_memory;
-> > -	else
-> > -		return vram ? vram : system_memory; /* older kernel */
-> > -}
-> > -
-> >  /**
-> >   * xe_hw_engines:
-> >   * @fd: xe device fd
-> > diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-> > index 7b3fc3100..4dd0ad573 100644
-> > --- a/lib/xe/xe_query.h
-> > +++ b/lib/xe/xe_query.h
-> > @@ -82,7 +82,6 @@ uint64_t system_memory(int fd);
-> >  uint64_t vram_memory(int fd, int gt);
-> >  uint64_t visible_vram_memory(int fd, int gt);
-> >  uint64_t vram_if_possible(int fd, int gt);
-> > -uint64_t visible_vram_if_possible(int fd, int gt);
-> >  struct drm_xe_engine_class_instance *xe_hw_engines(int fd);
-> >  struct drm_xe_engine_class_instance *xe_hw_engine(int fd, int idx);
-> >  struct drm_xe_query_mem_region *xe_mem_region(int fd, uint64_t region);
-> > diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-> > index 828938434..270b58bf5 100644
-> > --- a/lib/xe/xe_spin.c
-> > +++ b/lib/xe/xe_spin.c
-> > @@ -220,7 +220,8 @@ xe_spin_create(int fd, const struct igt_spin_factory *opt)
-> >  	}
-> >  
-> >  	spin->handle = xe_bo_create(fd, spin->vm, bo_size,
-> > -				    visible_vram_if_possible(fd, 0));
-> > +				    vram_if_possible(fd, 0) |
-> > +				    DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  	xe_spin = xe_bo_map(fd, spin->handle, bo_size);
-> >  	addr = intel_allocator_alloc_with_strategy(ahnd, spin->handle, bo_size, 0, ALLOC_STRATEGY_LOW_TO_HIGH);
-> >  	xe_vm_bind_sync(fd, spin->vm, spin->handle, 0, addr, bo_size);
-> > @@ -298,8 +299,8 @@ void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
-> >  
-> >  	vm = xe_vm_create(fd, 0, 0);
-> >  
-> > -	bo = xe_bo_create(fd, vm, bo_size,
-> > -			  visible_vram_if_possible(fd, hwe->gt_id));
-> > +	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, hwe->gt_id) |
-> > +			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  	spin = xe_bo_map(fd, bo, 0x1000);
-> >  
-> >  	xe_vm_bind_sync(fd, vm, bo, 0, addr, bo_size);
-> > diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
-> > index 337afc00c..5ae28615f 100644
-> > --- a/tests/intel/kms_ccs.c
-> > +++ b/tests/intel/kms_ccs.c
-> > @@ -435,7 +435,8 @@ static void test_bad_ccs_plane(data_t *data, int width, int height, int ccs_plan
-> >  		bad_ccs_bo = is_i915_device(data->drm_fd) ?
-> >  				gem_create(data->drm_fd, fb.size) :
-> >  				xe_bo_create(data->drm_fd, 0, fb.size,
-> > -					     visible_vram_if_possible(data->drm_fd, 0));
-> > +					     vram_if_possible(data->drm_fd, 0) |
-> > +					     DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  		f.handles[ccs_plane] = bad_ccs_bo;
-> >  	}
-> >  
-> > diff --git a/tests/intel/xe_dma_buf_sync.c b/tests/intel/xe_dma_buf_sync.c
-> > index ac9d9d767..9318647af 100644
-> > --- a/tests/intel/xe_dma_buf_sync.c
-> > +++ b/tests/intel/xe_dma_buf_sync.c
-> > @@ -120,7 +120,8 @@ test_export_dma_buf(struct drm_xe_engine_class_instance *hwe0,
-> >  			xe_get_default_alignment(fd[0]));
-> >  	for (i = 0; i < n_bo; ++i) {
-> >  		bo[i] = xe_bo_create(fd[0], 0, bo_size,
-> > -				     visible_vram_if_possible(fd[0], hwe0->gt_id));
-> > +				     vram_if_possible(fd[0], hwe0->gt_id) |
-> > +				     DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  		dma_buf_fd[i] = prime_handle_to_fd(fd[0], bo[i]);
-> >  		import_bo[i] = prime_fd_to_handle(fd[1], dma_buf_fd[i]);
-> >  
-> > diff --git a/tests/intel/xe_exec_balancer.c b/tests/intel/xe_exec_balancer.c
-> > index da34e117d..388bb6185 100644
-> > --- a/tests/intel/xe_exec_balancer.c
-> > +++ b/tests/intel/xe_exec_balancer.c
-> > @@ -70,7 +70,8 @@ static void test_all_active(int fd, int gt, int class)
-> >  	bo_size = sizeof(*data) * num_placements;
-> >  	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
-> >  
-> > -	bo = xe_bo_create(fd, vm, bo_size, visible_vram_if_possible(fd, gt));
-> > +	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, gt) |
-> > +			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  	data = xe_bo_map(fd, bo, bo_size);
-> >  
-> >  	for (i = 0; i < num_placements; i++) {
-> > @@ -224,7 +225,8 @@ test_exec(int fd, int gt, int class, int n_exec_queues, int n_execs,
-> >  		}
-> >  		memset(data, 0, bo_size);
-> >  	} else {
-> > -		bo = xe_bo_create(fd, vm, bo_size, visible_vram_if_possible(fd, gt));
-> > +		bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, gt) |
-> > +				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  		data = xe_bo_map(fd, bo, bo_size);
-> >  	}
-> >  
-> > @@ -452,7 +454,8 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
-> >  			igt_assert(data);
-> >  		}
-> >  	} else {
-> > -		bo = xe_bo_create(fd, vm, bo_size, visible_vram_if_possible(fd, gt));
-> > +		bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, gt) |
-> > +				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  		data = xe_bo_map(fd, bo, bo_size);
-> >  	}
-> >  	memset(data, 0, bo_size);
-> > diff --git a/tests/intel/xe_exec_basic.c b/tests/intel/xe_exec_basic.c
-> > index 841696b68..ca287b2e5 100644
-> > --- a/tests/intel/xe_exec_basic.c
-> > +++ b/tests/intel/xe_exec_basic.c
-> > @@ -136,7 +136,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
-> >  	} else {
-> >  		uint32_t bo_flags;
-> >  
-> > -		bo_flags = visible_vram_if_possible(fd, eci->gt_id);
-> > +		bo_flags = vram_if_possible(fd, eci->gt_id) | DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
-> >  		if (flags & DEFER_ALLOC)
-> >  			bo_flags |= DRM_XE_GEM_CREATE_FLAG_DEFER_BACKING;
-> >  
-> > diff --git a/tests/intel/xe_exec_compute_mode.c b/tests/intel/xe_exec_compute_mode.c
-> > index beb962f79..07a27fd29 100644
-> > --- a/tests/intel/xe_exec_compute_mode.c
-> > +++ b/tests/intel/xe_exec_compute_mode.c
-> > @@ -142,7 +142,8 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
-> >  		}
-> >  	} else {
-> >  		bo = xe_bo_create(fd, flags & VM_FOR_BO ? vm : 0,
-> > -				  bo_size, visible_vram_if_possible(fd, eci->gt_id));
-> > +				  bo_size, vram_if_possible(fd, eci->gt_id) |
-> > +				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  		data = xe_bo_map(fd, bo, bo_size);
-> >  	}
-> >  	memset(data, 0, bo_size);
-> > diff --git a/tests/intel/xe_exec_fault_mode.c b/tests/intel/xe_exec_fault_mode.c
-> > index 903ad430d..bfd61c4ea 100644
-> > --- a/tests/intel/xe_exec_fault_mode.c
-> > +++ b/tests/intel/xe_exec_fault_mode.c
-> > @@ -153,10 +153,12 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
-> >  		if (flags & PREFETCH)
-> >  			bo = xe_bo_create(fd, 0, bo_size,
-> >  					  all_memory_regions(fd) |
-> > -					  visible_vram_if_possible(fd, 0));
-> > +					  vram_if_possible(fd, 0) |
-> > +					  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  		else
-> >  			bo = xe_bo_create(fd, 0, bo_size,
-> > -					  visible_vram_if_possible(fd, eci->gt_id));
-> > +					  vram_if_possible(fd, eci->gt_id) |
-> > +					  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  		data = xe_bo_map(fd, bo, bo_size);
-> >  	}
-> >  	memset(data, 0, bo_size);
-> > diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-> > index 704690e83..3affb19ae 100644
-> > --- a/tests/intel/xe_exec_reset.c
-> > +++ b/tests/intel/xe_exec_reset.c
-> > @@ -51,7 +51,8 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci)
-> >  			xe_get_default_alignment(fd));
-> >  
-> >  	bo = xe_bo_create(fd, vm, bo_size,
-> > -			  visible_vram_if_possible(fd, eci->gt_id));
-> > +			  vram_if_possible(fd, eci->gt_id) |
-> > +			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  	spin = xe_bo_map(fd, bo, bo_size);
-> >  
-> >  	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
-> > @@ -181,7 +182,8 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
-> >  	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
-> >  			xe_get_default_alignment(fd));
-> >  
-> > -	bo = xe_bo_create(fd, vm, bo_size, visible_vram_if_possible(fd, gt));
-> > +	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, gt) |
-> > +			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  	data = xe_bo_map(fd, bo, bo_size);
-> >  
-> >  	for (i = 0; i < n_exec_queues; i++) {
-> > @@ -368,7 +370,7 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
-> >  			xe_get_default_alignment(fd));
-> >  
-> >  	bo = xe_bo_create(fd, vm, bo_size,
-> > -			  visible_vram_if_possible(fd, eci->gt_id));
-> > +			  vram_if_possible(fd, eci->gt_id) | DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  	data = xe_bo_map(fd, bo, bo_size);
-> >  
-> >  	for (i = 0; i < n_exec_queues; i++) {
-> > @@ -535,7 +537,8 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
-> >  			xe_get_default_alignment(fd));
-> >  
-> >  	bo = xe_bo_create(fd, vm, bo_size,
-> > -			  visible_vram_if_possible(fd, eci->gt_id));
-> > +			  vram_if_possible(fd, eci->gt_id) |
-> > +			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  	data = xe_bo_map(fd, bo, bo_size);
-> >  	memset(data, 0, bo_size);
-> >  
-> > @@ -661,7 +664,8 @@ static void submit_jobs(struct gt_thread_data *t)
-> >  	uint32_t bo;
-> >  	uint32_t *data;
-> >  
-> > -	bo = xe_bo_create(fd, vm, bo_size, visible_vram_if_possible(fd, 0));
-> > +	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, 0) |
-> > +			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  	data = xe_bo_map(fd, bo, bo_size);
-> >  	data[0] = MI_BATCH_BUFFER_END;
-> >  
-> > diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
-> > index bcc4de8d0..884183202 100644
-> > --- a/tests/intel/xe_exec_store.c
-> > +++ b/tests/intel/xe_exec_store.c
-> > @@ -82,7 +82,8 @@ static void store(int fd)
-> >  
-> >  	hw_engine = xe_hw_engine(fd, 1);
-> >  	bo = xe_bo_create(fd, vm, bo_size,
-> > -			  visible_vram_if_possible(fd, hw_engine->gt_id));
-> > +			  vram_if_possible(fd, hw_engine->gt_id) |
-> > +			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  
-> >  	xe_vm_bind_async(fd, vm, hw_engine->gt_id, bo, 0, addr, bo_size, &sync, 1);
-> >  	data = xe_bo_map(fd, bo, bo_size);
-> > @@ -151,7 +152,8 @@ static void store_cachelines(int fd, struct drm_xe_engine_class_instance *eci,
-> >  
-> >  	for (i = 0; i < count; i++) {
-> >  		bo[i] = xe_bo_create(fd, vm, bo_size,
-> > -				     visible_vram_if_possible(fd, eci->gt_id));
-> > +				     vram_if_possible(fd, eci->gt_id) |
-> > +				     DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  		bo_map[i] = xe_bo_map(fd, bo[i], bo_size);
-> >  		dst_offset[i] = intel_allocator_alloc_with_strategy(ahnd, bo[i],
-> >  								    bo_size, 0,
-> > @@ -236,7 +238,8 @@ static void store_all(int fd, int gt, int class)
-> >  			xe_get_default_alignment(fd));
-> >  
-> >  	bo = xe_bo_create(fd, vm, bo_size,
-> > -			  visible_vram_if_possible(fd, 0));
-> > +			  vram_if_possible(fd, 0) |
-> > +			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  	data = xe_bo_map(fd, bo, bo_size);
-> >  
-> >  	xe_for_each_hw_engine(fd, hwe) {
-> > diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
-> > index a9b0c0b09..ebc41dadd 100644
-> > --- a/tests/intel/xe_exec_threads.c
-> > +++ b/tests/intel/xe_exec_threads.c
-> > @@ -107,7 +107,8 @@ test_balancer(int fd, int gt, uint32_t vm, uint64_t addr, uint64_t userptr,
-> >  		}
-> >  	} else {
-> >  		bo = xe_bo_create(fd, vm, bo_size,
-> > -				  visible_vram_if_possible(fd, gt));
-> > +				  vram_if_possible(fd, gt) |
-> > +				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  		data = xe_bo_map(fd, bo, bo_size);
-> >  	}
-> >  	memset(data, 0, bo_size);
-> > @@ -308,7 +309,8 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
-> >  		}
-> >  	} else {
-> >  		bo = xe_bo_create(fd, 0, bo_size,
-> > -				  visible_vram_if_possible(fd, eci->gt_id));
-> > +				  vram_if_possible(fd, eci->gt_id) |
-> > +				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  		data = xe_bo_map(fd, bo, bo_size);
-> >  	}
-> >  	memset(data, 0, bo_size);
-> > @@ -511,7 +513,8 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
-> >  		}
-> >  	} else {
-> >  		bo = xe_bo_create(fd, vm, bo_size,
-> > -				  visible_vram_if_possible(fd, eci->gt_id));
-> > +				  vram_if_possible(fd, eci->gt_id) |
-> > +				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  		data = xe_bo_map(fd, bo, bo_size);
-> >  	}
-> >  	memset(data, 0, bo_size);
-> > diff --git a/tests/intel/xe_guc_pc.c b/tests/intel/xe_guc_pc.c
-> > index 1e29d8905..4234475e0 100644
-> > --- a/tests/intel/xe_guc_pc.c
-> > +++ b/tests/intel/xe_guc_pc.c
-> > @@ -66,7 +66,8 @@ static void exec_basic(int fd, struct drm_xe_engine_class_instance *eci,
-> >  			xe_get_default_alignment(fd));
-> >  
-> >  	bo = xe_bo_create(fd, vm, bo_size,
-> > -			  visible_vram_if_possible(fd, eci->gt_id));
-> > +			  vram_if_possible(fd, eci->gt_id) |
-> > +			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  	data = xe_bo_map(fd, bo, bo_size);
-> >  
-> >  	for (i = 0; i < n_exec_queues; i++) {
-> > diff --git a/tests/intel/xe_mmap.c b/tests/intel/xe_mmap.c
-> > index a805eabda..a4b53ad48 100644
-> > --- a/tests/intel/xe_mmap.c
-> > +++ b/tests/intel/xe_mmap.c
-> > @@ -73,7 +73,8 @@ static void test_bad_flags(int fd)
-> >  	uint64_t size = xe_get_default_alignment(fd);
-> >  	struct drm_xe_gem_mmap_offset mmo = {
-> >  		.handle = xe_bo_create(fd, 0, size,
-> > -				       visible_vram_if_possible(fd, 0)),
-> > +				       vram_if_possible(fd, 0) |
-> > +				       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM),
-> >  		.flags = -1u,
-> >  	};
-> >  
-> > @@ -93,7 +94,8 @@ static void test_bad_extensions(int fd)
-> >  	struct xe_user_extension ext;
-> >  	struct drm_xe_gem_mmap_offset mmo = {
-> >  		.handle = xe_bo_create(fd, 0, size,
-> > -				       visible_vram_if_possible(fd, 0)),
-> > +				       vram_if_possible(fd, 0) |
-> > +				       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM),
-> >  	};
-> >  
-> >  	mmo.extensions = to_user_pointer(&ext);
-> > @@ -114,7 +116,8 @@ static void test_bad_object(int fd)
-> >  	uint64_t size = xe_get_default_alignment(fd);
-> >  	struct drm_xe_gem_mmap_offset mmo = {
-> >  		.handle = xe_bo_create(fd, 0, size,
-> > -				       visible_vram_if_possible(fd, 0)),
-> > +				       vram_if_possible(fd, 0) |
-> > +				       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM),
-> >  	};
-> >  
-> >  	mmo.handle = 0xdeadbeef;
-> > diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-> > index 9bfe1acad..9fd3527f7 100644
-> > --- a/tests/intel/xe_pm.c
-> > +++ b/tests/intel/xe_pm.c
-> > @@ -272,7 +272,8 @@ test_exec(device_t device, struct drm_xe_engine_class_instance *eci,
-> >  		rpm_usage = igt_pm_get_runtime_usage(device.pci_xe);
-> >  
-> >  	bo = xe_bo_create(device.fd_xe, vm, bo_size,
-> > -			  visible_vram_if_possible(device.fd_xe, eci->gt_id));
-> > +			  vram_if_possible(device.fd_xe, eci->gt_id) |
-> > +			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  	data = xe_bo_map(device.fd_xe, bo, bo_size);
-> >  
-> >  	for (i = 0; i < n_exec_queues; i++) {
-> > diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
-> > index cc133f5fb..40a1693b8 100644
-> > --- a/tests/intel/xe_pm_residency.c
-> > +++ b/tests/intel/xe_pm_residency.c
-> > @@ -101,7 +101,8 @@ static void exec_load(int fd, struct drm_xe_engine_class_instance *hwe, unsigned
-> >  	bo_size = xe_get_default_alignment(fd);
-> >  
-> >  	bo = xe_bo_create(fd, vm, bo_size,
-> > -			  visible_vram_if_possible(fd, hwe->gt_id));
-> > +			  vram_if_possible(fd, hwe->gt_id) |
-> > +			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  	data = xe_bo_map(fd, bo, bo_size);
-> >  	syncobj = syncobj_create(fd, 0);
-> >  
-> > diff --git a/tests/intel/xe_prime_self_import.c b/tests/intel/xe_prime_self_import.c
-> > index 378368eaa..2c2f2898c 100644
-> > --- a/tests/intel/xe_prime_self_import.c
-> > +++ b/tests/intel/xe_prime_self_import.c
-> > @@ -105,7 +105,8 @@ static void test_with_fd_dup(void)
-> >  	fd1 = drm_open_driver(DRIVER_XE);
-> >  	fd2 = drm_open_driver(DRIVER_XE);
-> >  
-> > -	handle = xe_bo_create(fd1, 0, bo_size, visible_vram_if_possible(fd1, 0));
-> > +	handle = xe_bo_create(fd1, 0, bo_size, vram_if_possible(fd1, 0) |
-> > +			      DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  
-> >  	dma_buf_fd1 = prime_handle_to_fd(fd1, handle);
-> >  	gem_close(fd1, handle);
-> > @@ -138,8 +139,10 @@ static void test_with_two_bos(void)
-> >  	fd1 = drm_open_driver(DRIVER_XE);
-> >  	fd2 = drm_open_driver(DRIVER_XE);
-> >  
-> > -	handle1 = xe_bo_create(fd1, 0, bo_size, visible_vram_if_possible(fd1, 0));
-> > -	handle2 = xe_bo_create(fd1, 0, bo_size, visible_vram_if_possible(fd1, 0));
-> > +	handle1 = xe_bo_create(fd1, 0, bo_size, vram_if_possible(fd1, 0) |
-> > +			       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> > +	handle2 = xe_bo_create(fd1, 0, bo_size, vram_if_possible(fd1, 0) |
-> > +			       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  
-> >  	dma_buf_fd = prime_handle_to_fd(fd1, handle1);
-> >  	handle_import = prime_fd_to_handle(fd2, dma_buf_fd);
-> > @@ -175,7 +178,8 @@ static void test_with_one_bo_two_files(void)
-> >  	fd2 = drm_open_driver(DRIVER_XE);
-> >  
-> >  	handle_orig = xe_bo_create(fd1, 0, bo_size,
-> > -				   visible_vram_if_possible(fd1, 0));
-> > +				   vram_if_possible(fd1, 0) |
-> > +				   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  	dma_buf_fd1 = prime_handle_to_fd(fd1, handle_orig);
-> >  
-> >  	flink_name = gem_flink(fd1, handle_orig);
-> > @@ -207,7 +211,8 @@ static void test_with_one_bo(void)
-> >  	fd1 = drm_open_driver(DRIVER_XE);
-> >  	fd2 = drm_open_driver(DRIVER_XE);
-> >  
-> > -	handle = xe_bo_create(fd1, 0, bo_size, visible_vram_if_possible(fd1, 0));
-> > +	handle = xe_bo_create(fd1, 0, bo_size, vram_if_possible(fd1, 0) |
-> > +			      DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  
-> >  	dma_buf_fd = prime_handle_to_fd(fd1, handle);
-> >  	handle_import1 = prime_fd_to_handle(fd2, dma_buf_fd);
-> > @@ -294,7 +299,8 @@ static void *thread_fn_reimport_vs_close(void *p)
-> >  	fds[0] = drm_open_driver(DRIVER_XE);
-> >  
-> >  	handle = xe_bo_create(fds[0], 0, bo_size,
-> > -			      visible_vram_if_possible(fds[0], 0));
-> > +			      vram_if_possible(fds[0], 0) |
-> > +			      DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  
-> >  	fds[1] = prime_handle_to_fd(fds[0], handle);
-> >  	pthread_barrier_init(&g_barrier, NULL, num_threads);
-> > @@ -337,7 +343,8 @@ static void *thread_fn_export_vs_close(void *p)
-> >  	igt_until_timeout(g_time_out) {
-> >  		/* We want to race gem close against prime export on handle one.*/
-> >  		handle = xe_bo_create(fd, 0, bo_size,
-> > -				      visible_vram_if_possible(fd, 0));
-> > +				      vram_if_possible(fd, 0) |
-> > +				      DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  		if (handle != 1)
-> >  			gem_close(fd, handle);
-> >  
-> > @@ -434,7 +441,8 @@ static void test_llseek_size(void)
-> >  		int bufsz = xe_get_default_alignment(fd) << i;
-> >  
-> >  		handle = xe_bo_create(fd, 0, bufsz,
-> > -				      visible_vram_if_possible(fd, 0));
-> > +				      vram_if_possible(fd, 0) |
-> > +				      DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  		dma_buf_fd = prime_handle_to_fd(fd, handle);
-> >  
-> >  		gem_close(fd, handle);
-> > @@ -463,7 +471,8 @@ static void test_llseek_bad(void)
-> >  	fd = drm_open_driver(DRIVER_XE);
-> >  
-> >  	handle = xe_bo_create(fd, 0, bo_size,
-> > -			      visible_vram_if_possible(fd, 0));
-> > +			      vram_if_possible(fd, 0) |
-> > +			      DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  	dma_buf_fd = prime_handle_to_fd(fd, handle);
-> >  
-> >  	gem_close(fd, handle);
-> > diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-> > index 52195737c..eb2e0078d 100644
-> > --- a/tests/intel/xe_vm.c
-> > +++ b/tests/intel/xe_vm.c
-> > @@ -52,7 +52,8 @@ write_dwords(int fd, uint32_t vm, int n_dwords, uint64_t *addrs)
-> >  	batch_size = ALIGN(batch_size + xe_cs_prefetch_size(fd),
-> >  			   xe_get_default_alignment(fd));
-> >  	batch_bo = xe_bo_create(fd, vm, batch_size,
-> > -				visible_vram_if_possible(fd, 0));
-> > +				vram_if_possible(fd, 0) |
-> > +				DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  	batch_map = xe_bo_map(fd, batch_bo, batch_size);
-> >  
-> >  	for (i = 0; i < n_dwords; i++) {
-> > @@ -116,7 +117,8 @@ __test_bind_one_bo(int fd, uint32_t vm, int n_addrs, uint64_t *addrs)
-> >  		vms = malloc(sizeof(*vms) * n_addrs);
-> >  		igt_assert(vms);
-> >  	}
-> > -	bo = xe_bo_create(fd, vm, bo_size, visible_vram_if_possible(fd, 0));
-> > +	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, 0) |
-> > +			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  	map = xe_bo_map(fd, bo, bo_size);
-> >  	memset(map, 0, bo_size);
-> >  
-> > @@ -422,7 +424,8 @@ shared_pte_page(int fd, struct drm_xe_engine_class_instance *eci, int n_bo,
-> >  
-> >  	for (i = 0; i < n_bo; ++i) {
-> >  		bo[i] = xe_bo_create(fd, vm, bo_size,
-> > -				     visible_vram_if_possible(fd, eci->gt_id));
-> > +				     vram_if_possible(fd, eci->gt_id) |
-> > +				     DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  		data[i] = xe_bo_map(fd, bo[i], bo_size);
-> >  	}
-> >  
-> > @@ -601,7 +604,8 @@ test_bind_execqueues_independent(int fd, struct drm_xe_engine_class_instance *ec
-> >  	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
-> >  			xe_get_default_alignment(fd));
-> >  	bo = xe_bo_create(fd, vm, bo_size,
-> > -			  visible_vram_if_possible(fd, eci->gt_id));
-> > +			  vram_if_possible(fd, eci->gt_id) |
-> > +			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  	data = xe_bo_map(fd, bo, bo_size);
-> >  
-> >  	for (i = 0; i < N_EXEC_QUEUES; i++) {
-> > @@ -782,7 +786,8 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
-> >  			xe_get_default_alignment(fd));
-> >  
-> >  	bo = xe_bo_create(fd, vm, bo_size,
-> > -			  visible_vram_if_possible(fd, eci->gt_id));
-> > +			  vram_if_possible(fd, eci->gt_id) |
-> > +			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  	data = xe_bo_map(fd, bo, bo_size);
-> >  
-> >  	if (flags & BIND_ARRAY_BIND_EXEC_QUEUE_FLAG)
-> > @@ -980,7 +985,8 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
-> >  			    xe_visible_vram_size(fd, 0));
-> >  
-> >  		bo = xe_bo_create(fd, vm, bo_size,
-> > -				  visible_vram_if_possible(fd, eci->gt_id));
-> > +				  vram_if_possible(fd, eci->gt_id) |
-> > +				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  		map = xe_bo_map(fd, bo, bo_size);
-> >  	}
-> >  
-> > @@ -1272,7 +1278,8 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
-> >  		igt_assert(map != MAP_FAILED);
-> >  	} else {
-> >  		bo = xe_bo_create(fd, vm, bo_size,
-> > -				  visible_vram_if_possible(fd, eci->gt_id));
-> > +				  vram_if_possible(fd, eci->gt_id) |
-> > +				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> >  		map = xe_bo_map(fd, bo, bo_size);
-> >  	}
-> >  	memset(map, 0, bo_size);
-> > -- 
-> > 2.34.1
-> > 
+diff --git a/lib/igt_psr.h b/lib/igt_psr.h
+index a30330e6c..fee9df6b3 100644
+--- a/lib/igt_psr.h
++++ b/lib/igt_psr.h
+@@ -40,6 +40,11 @@ enum psr_mode {
+ 	PSR_DISABLED,
+ };
+ 
++enum fbc_mode {
++	FBC_ENABLED,
++	FBC_DISABLED,
++};
++
+ bool psr_disabled_check(int debugfs_fd);
+ bool psr2_selective_fetch_check(int debugfs_fd);
+ bool psr_wait_entry(int debugfs_fd, enum psr_mode mode, igt_output_t *output);
+diff --git a/tests/intel/kms_psr.c b/tests/intel/kms_psr.c
+index 7fe6a2c30..ddb0f0141 100644
+--- a/tests/intel/kms_psr.c
++++ b/tests/intel/kms_psr.c
+@@ -34,6 +34,7 @@
+ #include "igt.h"
+ #include "igt_sysfs.h"
+ #include "igt_psr.h"
++#include "i915/intel_fbc.h"
+ #include <errno.h>
+ #include <stdbool.h>
+ #include <stdio.h>
+@@ -42,16 +43,24 @@
+ #include "xe/xe_query.h"
+ 
+ /**
+- * SUBTEST: psr_basic
++ * SUBTEST: psr-basic
+  * Description: Basic check for psr if it is detecting changes made in planes
+  * Functionality: psr1
+  *
+- * SUBTEST: psr_%s_%s
++ * SUBTEST: fbc-psr-basic
++ * Description: Basic check for psr if it is detecting changes made in planes
++ * Functionality: psr, fbc
++ *
++ * SUBTEST: psr-%s-%s
+  * Description: Check if psr is detecting memory mapping, rendering and plane
+  *              operations performed on %arg[1]
+- * Driver requirement: i915
+  * Functionality: kms_core, plane, psr1
+  *
++ * SUBTEST: fbc-psr-%s-%s
++ * Description: Check if fbc with psr is detecting memory mapping, rendering and plane
++ *              operations performed on %arg[1]
++ * Functionality: kms_core, plane, psr, fbc
++ *
+  * arg[1]:
+  *
+  * @cursor:             Cursor plane
+@@ -60,21 +69,31 @@
+  *
+  * arg[2]:
+  *
+- * @mmap_cpu:           MMAP CPU
+- * @mmap_gtt:           MMAP GTT
++ * @mmap-cpu:           MMAP CPU
++ * @mmap-gtt:           MMAP GTT
+  */
+ 
+ /**
+- * SUBTEST: psr_sprite_plane_move
++ * SUBTEST: psr-sprite-plane-move
+  * Description: Check if psr is detecting memory mapping, rendering and plane
+  *              operations performed on sprite planes
+  * Functionality: plane, psr1
+  *
+- * SUBTEST: psr_%s_%s
++ * SUBTEST: fbc-psr-sprite-plane-move
++ * Description: Check if fbc with psr is detecting memory mapping, rendering and plane
++ *              operations performed on sprite planes
++ * Functionality: plane, psr, fbc
++ *
++ * SUBTEST: psr-%s-%s
+  * Description: Check if psr is detecting memory mapping, rendering and plane
+  *              operations performed on %arg[1] planes
+  * Functionality: kms_core, plane, psr1
+  *
++ * SUBTEST: fbc-psr-%s-%s
++ * Description: Check if fbc with psr is detecting memory mapping, rendering and plane
++ *              operations performed on %arg[1] planes
++ * Functionality: kms_core, plane, psr, fbc
++ *
+  * arg[1]:
+  *
+  * @cursor:             Cursor plane
+@@ -84,15 +103,20 @@
+  *
+  * @blt:                Blitter
+  * @render:             Render
+- * @plane_onoff:        Plane On off
++ * @plane-onoff:        Plane On off
+  */
+ 
+ /**
+- * SUBTEST: psr_primary_%s
++ * SUBTEST: psr-primary-%s
+  * Description: Check if psr is detecting memory mapping, rendering and plane
+  *              operations performed on %arg[1] planes
+  * Functionality: kms_core, psr1
+  *
++ * SUBTEST: fbc-psr-primary-%s
++ * Description: Check if fbc with psr is detecting memory mapping, rendering and plane
++ *              operations performed on %arg[1] planes
++ * Functionality: kms_core, psr, fbc
++ *
+  * arg[1]:
+  *
+  * @blt:                Blitter
+@@ -100,44 +124,81 @@
+  */
+ 
+ /**
+- * SUBTEST: psr_dpms
++ * SUBTEST: psr-dpms
+  * Description: Check if psr is detecting changes when rendering operation is
+  *              performed  with dpms enabled or disabled
+  * Functionality: dpms, psr1
+  *
+- * SUBTEST: psr_no_drrs
++ * SUBTEST: fbc-psr-dpms
++ * Description: Check if fbc with psr is detecting changes when rendering operation is
++ *              performed  with dpms enabled or disabled
++ * Functionality: dpms, psr, fbc
++ *
++ * SUBTEST: psr-no-drrs
+  * Description: Check if psr is detecting changes when drrs is disabled
+  * Functionality: drrs, psr1
+  *
+- * SUBTEST: psr_suspend
++ * SUBTEST: fbc-psr-no-drrs
++ * Description: Check if fbc with psr is detecting changes when drrs is disabled
++ * Functionality: drrs, psr, fbc
++ *
++ * SUBTEST: psr-suspend
+  * Description: Check if psr is detecting changes when plane operation
+  *              is performed with suspend resume cycles
+  * Functionality: psr1, suspend
+  *
+- * SUBTEST: psr2_dpms
++ * SUBTEST: fbc-psr-suspend
++ * Description: Check if fbc with psr is detecting changes when plane operation
++ *              is performed with suspend resume cycles
++ * Functionality: psr, suspend, fbc
++ *
++ * SUBTEST: psr2-dpms
+  * Description: Check if psr is detecting changes when rendering operation
+  *              is performed  with dpms enabled or disabled
+  * Functionality: dpms, psr2
+  *
+- * SUBTEST: psr2_no_drrs
++ * SUBTEST: fbc-psr2-dpms
++ * Description: Check if fbc with psr is detecting changes when rendering operation
++ *              is performed  with dpms enabled or disabled
++ * Functionality: dpms, psr, psr2, fbc
++ *
++ * SUBTEST: psr2-no-drrs
+  * Description: Check if psr is detecting changes when drrs is disabled
+  * Functionality: drrs, psr2
+  *
+- * SUBTEST: psr2_suspend
++ * SUBTEST: fbc-psr2-no-drrs
++ * Description: Check if fbc with psr is detecting changes when drrs is disabled
++ * Functionality: drrs, psr, psr2, fbc
++ *
++ * SUBTEST: psr2-suspend
+  * Description: Check if psr is detecting changes when plane operation is
+  *              performed with suspend resume cycles
+  * Functionality: psr2, suspend
+  *
+- * SUBTEST: psr2_basic
++ * SUBTEST: fbc-psr2-suspend
++ * Description: Check if fbc with psr is detecting changes when plane operation is
++ *              performed with suspend resume cycles
++ * Functionality: psr, psr2, suspend, fbc
++ *
++ * SUBTEST: psr2-basic
+  * Description: Basic check for psr if it is detecting changes made in planes
+  * Functionality: psr2
+  *
+- * SUBTEST: psr2_%s_%s
++ * SUBTEST: fbc-psr2-basic
++ * Description: Basic check for fbc with psr if it is detecting changes made in planes
++ * Functionality: psr, psr2, fbc
++ *
++ * SUBTEST: psr2-%s-%s
+  * Description: Check if psr2 is detecting memory mapping, rendering and plane
+  *              operations performed on %arg[1] planes
+  * Driver requirement: i915
+  * Functionality: kms_core, plane, psr2
+  *
++ * SUBTEST: fbc-psr2-%s-%s
++ * Description: Check if fbc with psr2 is detecting memory mapping, rendering and plane
++ *              operations performed on %arg[1] planes
++ * Functionality: kms_core, plane, psr, psr2, fbc
++ *
+  * arg[1]:
+  *
+  * @cursor:             Cursor plane
+@@ -146,21 +207,31 @@
+  *
+  * arg[2]:
+  *
+- * @mmap_cpu:           MMAP CPU
+- * @mmap_gtt:           MMAP GTT
++ * @mmap-cpu:           MMAP CPU
++ * @mmap-gtt:           MMAP GTT
+  */
+ 
+ /**
+- * SUBTEST: psr2_primary_page_flip
++ * SUBTEST: psr2-primary-page-flip
+  * Description: Check if psr is detecting memory mapping, rendering and plane
+  *              operations performed on primary planes
+  * Functionality: plane, psr2
+  *
+- * SUBTEST: psr2_primary_%s
++ * SUBTEST: fbc-psr2-primary-page-flip
++ * Description: Check if fbc with psr is detecting memory mapping, rendering and plane
++ *              operations performed on primary planes
++ * Functionality: plane, psr, psr2, fbc
++ *
++ * SUBTEST: psr2-primary-%s
+  * Description: Check if psr is detecting memory mapping, rendering and plane
+  *              operations performed on primary planes
+  * Functionality: kms_core, plane, psr2
+  *
++ * SUBTEST: fbc-psr2-primary-%s
++ * Description: Check if fbc with psr is detecting memory mapping, rendering and plane
++ *              operations performed on primary planes
++ * Functionality: kms_core, plane, psr, psr2, fbc
++ *
+  * arg[1]:
+  *
+  * @blt:                Blitter
+@@ -168,11 +239,16 @@
+  */
+ 
+ /**
+- * SUBTEST: psr2_%s_%s
++ * SUBTEST: psr2-%s-%s
+  * Description: Check if psr is detecting memory mapping, rendering and plane
+  *              operations performed on %arg[1] planes
+  * Functionality: kms_core, plane, psr2
+  *
++ * SUBTEST: fbc-psr2-%s-%s
++ * Description: Check if psr is detecting memory mapping, rendering and plane
++ *              operations performed on %arg[1] planes
++ * Functionality: kms_core, plane, psr, psr2, fbc
++ *
+  * arg[1]:
+  *
+  * @cursor:             Cursor plane
+@@ -182,42 +258,65 @@
+  *
+  * @blt:                Blitter
+  * @render:             Render
+- * @plane_onoff:        Plane On off
+- * @plane_move:         Move plane position
++ * @plane-onoff:        Plane On off
++ * @plane-move:         Move plane position
+  */
+ 
+ /**
+- * SUBTEST: pr_dpms
++ * SUBTEST: pr-dpms
+  * Description: Check if pr is detecting changes when rendering operation
+  *              is performed with dpms enabled or disabled
+  * Functionality: dpms, pr
+  * Mega feature: Panel Replay
+  *
+- * SUBTEST: pr_no_drrs
++ * SUBTEST: fbc-pr-dpms
++ * Description: Check if fbc with pr is detecting changes when rendering operation
++ *              is performed with dpms enabled or disabled
++ * Functionality: dpms, pr, fbc
++ *
++ * SUBTEST: pr-no-drrs
+  * Description: Check if pr is detecting changes when drrs is disabled
+  * Functionality: drrs, pr
+- * Mega feature: Panel Replay
+  *
+- * SUBTEST: pr_suspend
++ * SUBTEST: fbc-pr-no-drrs
++ * Description: Check if pr is detecting changes when drrs is disabled
++ * Functionality: drrs, pr, fbc
++ *
++ * SUBTEST: pr-suspend
+  * Description: Check if pr is detecting changes when plane operation is
+  *              performed with suspend resume cycles
+  * Functionality: pr, suspend
+- * Mega feature: Panel Replay
+  *
+- * SUBTEST: pr_basic
++ * SUBTEST: fbc-pr-suspend
++ * Description: Check if fbc with pr is detecting changes when plane operation is
++ *              performed with suspend resume cycles
++ * Functionality: pr, suspend, fbc
++ *
++ * SUBTEST: pr-basic
+  * Description: Basic check for pr if it is detecting changes made in planes
+  * Functionality: pr
+- * Mega feature: Panel Replay
++ *
++ * SUBTEST: fbc-pr-basic
++ * Description: Basic check for fbc with pr if it is detecting changes made in planes
++ * Functionality: pr, fbc
+  */
+ 
+ /**
+- * SUBTEST: pr_%s_%s
++ * SUBTEST: pr-%s-%s
+  * Description: Check if pr is detecting memory mapping, rendering and plane
+  *              operations performed on %arg[1] planes
+  * Driver requirement: i915
+  * Functionality: kms_core, plane, pr
+  * Mega feature: Panel Replay
+  *
++ * SUBTEST: fbc-pr-%s-%s
++ * Description: Check if fbc with pr is detecting memory mapping, rendering and plane
++ *              operations performed on %arg[1] planes
++ * Driver requirement: i915
++ * Functionality: kms_core, plane, pr, fbc
++ * Mega feature: Panel Replay, FBC
++ * Test category: functionality test
++ *
+  * arg[1]:
+  *
+  * @cursor:             Cursor plane
+@@ -226,23 +325,35 @@
+  *
+  * arg[2]:
+  *
+- * @mmap_cpu:           MMAP CPU
+- * @mmap_gtt:           MMAP GTT
++ * @mmap-cpu:           MMAP CPU
++ * @mmap-gtt:           MMAP GTT
+  */
+ 
+ /**
+- * SUBTEST: pr_primary_page_flip
++ * SUBTEST: pr-primary-page-flip
+  * Description: Check if pr is detecting memory mapping, rendering and plane
+  *              operations performed on primary planes
+  * Functionality: plane, pr
+  * Mega feature: Panel Replay
+  *
+- * SUBTEST: pr_primary_%s
++ * SUBTEST: fbc-pr-primary-page-flip
++ * Description: Check if fbc with pr is detecting memory mapping, rendering and plane
++ *              operations performed on primary planes
++ * Functionality: plane, pr, fbc
++ * Mega feature: Panel Replay, FBC
++ *
++ * SUBTEST: pr-primary-%s
+  * Description: Check if pr is detecting memory mapping, rendering and plane
+  *              operations performed on primary planes
+  * Functionality: kms_core, plane, pr
+  * Mega feature: Panel Replay
+  *
++ * SUBTEST: fbc-pr-primary-%s
++ * Description: Check if fbc with pr is detecting memory mapping, rendering and plane
++ *              operations performed on primary planes
++ * Functionality: kms_core, plane, pr, fbc
++ * Mega feature: Panel Replay, FBC
++ *
+  * arg[1]:
+  *
+  * @blt:                Blitter
+@@ -250,12 +361,18 @@
+  */
+ 
+ /**
+- * SUBTEST: pr_%s_%s
++ * SUBTEST: pr-%s-%s
+  * Description: Check if pr is detecting memory mapping, rendering and plane
+  *              operations performed on %arg[1] planes
+  * Functionality: kms_core, plane, pr
+  * Mega feature: Panel Replay
+  *
++ * SUBTEST: fbc-pr-%s-%s
++ * Description: Check if fbc with pr is detecting memory mapping, rendering and plane
++ *              operations performed on %arg[1] planes
++ * Functionality: kms_core, plane, pr, fbc
++ * Mega feature: Panel Replay, FBC
++ *
+  * arg[1]:
+  *
+  * @cursor:             Cursor plane
+@@ -265,25 +382,40 @@
+  *
+  * @blt:                Blitter
+  * @render:             Render
+- * @plane_onoff:        Plane On off
+- * @plane_move:         Move plane position
++ * @plane-onoff:        Plane On off
++ * @plane-move:         Move plane position
+  */
+ 
+ /**
+- * SUBTEST: psr_cursor_plane_move
++ * SUBTEST: psr-cursor-plane-move
+  * Description: Check if psr is detecting the plane operations performed on
+  *		cursor planes
+  * Functionality: psr1
+  *
+- * SUBTEST: psr_primary_page_flip
++ * SUBTEST: fbc-psr-cursor-plane-move
++ * Description: Check if fbc with psr is detecting the plane operations performed on
++ *              cursor planes
++ * Functionality: psr1, fbc
++ *
++ * SUBTEST: psr-primary-page-flip
+  * Description: Check if psr is detecting page-flipping operations performed
+  *		on primary planes
+  * Functionality: psr1
+  *
+- * SUBTEST: psr_sprite_plane_onoff
++ * SUBTEST: fbc-psr-primary-page-flip
++ * Description: Check if psr is detecting page-flipping operations performed
++ *              on primary planes
++ * Functionality: psr1, fbc
++ *
++ * SUBTEST: psr-sprite-plane-onoff
+  * Description: Check if psr is detecting the plane operations performed on
+  *		sprite planes
+  * Functionality: psr1
++ *
++ * SUBTEST: fbc-psr-sprite-plane-onoff
++ * Description: Check if psr is detecting the plane operations performed on
++ *              sprite planes
++ * Functionality: psr1, fbc
+  */
+ 
+ enum operations {
+@@ -299,13 +431,13 @@ enum operations {
+ static const char *op_str(enum operations op)
+ {
+ 	static const char * const name[] = {
+-		[PAGE_FLIP] = "page_flip",
+-		[MMAP_GTT] = "mmap_gtt",
+-		[MMAP_CPU] = "mmap_cpu",
++		[PAGE_FLIP] = "page-flip",
++		[MMAP_GTT] = "mmap-gtt",
++		[MMAP_CPU] = "mmap-cpu",
+ 		[BLT] = "blt",
+ 		[RENDER] = "render",
+-		[PLANE_MOVE] = "plane_move",
+-		[PLANE_ONOFF] = "plane_onoff",
++		[PLANE_MOVE] = "plane-move",
++		[PLANE_ONOFF] = "plane-onoff",
+ 	};
+ 
+ 	return name[op];
+@@ -317,6 +449,7 @@ typedef struct {
+ 	enum operations op;
+ 	int test_plane_id;
+ 	enum psr_mode op_psr_mode;
++	enum fbc_mode op_fbc_mode;
+ 	uint32_t devid;
+ 	uint32_t crtc_id;
+ 	igt_display_t display;
+@@ -327,6 +460,7 @@ typedef struct {
+ 	int mod_stride;
+ 	drmModeModeInfo *mode;
+ 	igt_output_t *output;
++	bool fbc_flag;
+ } data_t;
+ 
+ static void create_cursor_fb(data_t *data)
+@@ -707,6 +841,11 @@ static void test_setup(data_t *data)
+ 	igt_require_f(data->output,
+ 		      "No available output found\n");
+ 
++	if (data->fbc_flag)
++		igt_assert_f(intel_fbc_wait_until_enabled(data->drm_fd,
++							  pipe),
++							  "FBC still disabled");
++
+ 	pipe = get_pipe_for_output(&data->display, data->output);
+ 	igt_output_set_pipe(data->output, pipe);
+ 	igt_require_f(intel_pipe_output_combo_valid(&data->display),
+@@ -744,14 +883,20 @@ data_t data = {};
+ 
+ igt_main
+ {
+-	int z;
++	int z, y;
+ 	enum operations op;
++	enum pipe pipe;
+ 	const char *append_subtest_name[3] = {
+-		"psr_",
+-		"psr2_",
+-		"pr_"
++		"psr-",
++		"psr2-",
++		"pr-"
++	};
++	const char *append_fbc_subtest[2] = {
++		"",
++		"fbc-"
+ 	};
+ 	int modes[] = {PSR_MODE_1, PSR_MODE_2, PR_MODE};
++	int fbc_status[] = {FBC_DISABLED, FBC_ENABLED};
+ 	igt_output_t *output;
+ 
+ 	igt_fixture {
+@@ -762,52 +907,40 @@ igt_main
+ 		data.bops = buf_ops_create(data.drm_fd);
+ 		igt_display_require(&data.display, data.drm_fd);
+ 		igt_require_f(output_supports_psr(&data), "Sink does not support PSR/PSR2/PR\n");
+-	}
+-
+-	for (z = 0; z < ARRAY_SIZE(modes); z++) {
+-		data.op_psr_mode = modes[z];
+-
+-		igt_describe("Basic check for psr if it is detecting changes made in planes");
+-		igt_subtest_with_dynamic_f("%sbasic", append_subtest_name[z]) {
+-			for_each_connected_output(&data.display, output) {
+-				if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
+-						      data.op_psr_mode, output))
+-					continue;
+-				igt_display_reset(&data.display);
+-				data.output = output;
+-				igt_dynamic_f("%s", data.output->name) {
+-					data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
+-					test_setup(&data);
+-					test_cleanup(&data);
+-				}
+-			}
++		if ((intel_display_ver(intel_get_drm_devid(data.drm_fd) == 20)) &&
++		    (intel_fbc_supported_on_chipset(data.drm_fd, pipe))) {
++			data.fbc_flag = true;
+ 		}
++	}
+ 
+-		igt_describe("Check if psr is detecting changes when drrs is disabled");
+-		igt_subtest_with_dynamic_f("%sno_drrs", append_subtest_name[z]) {
+-			for_each_connected_output(&data.display, output) {
+-				if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
+-						      data.op_psr_mode, output))
+-					continue;
+-				igt_display_reset(&data.display);
+-				data.output = output;
+-				igt_dynamic_f("%s", data.output->name) {
+-					data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
+-					test_setup(&data);
+-					igt_assert(drrs_disabled(&data));
+-					test_cleanup(&data);
++	for (y = 0; y < ARRAY_SIZE(fbc_status); y++) {
++		data.op_fbc_mode = fbc_status[y];
++		if (data.op_fbc_mode == FBC_DISABLED)
++			data.fbc_flag = false;
++		for (z = 0; z < ARRAY_SIZE(modes); z++) {
++			data.op_psr_mode = modes[z];
++
++			igt_describe("Basic check for psr if it is detecting changes made "
++				     "in planes");
++			igt_subtest_with_dynamic_f("%s%sbasic", append_fbc_subtest[y],
++						   append_subtest_name[z]) {
++				for_each_connected_output(&data.display, output) {
++					if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
++							      data.op_psr_mode, output))
++						continue;
++					igt_display_reset(&data.display);
++					data.output = output;
++					igt_dynamic_f("%s", data.output->name) {
++						data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
++						test_setup(&data);
++						test_cleanup(&data);
++					}
+ 				}
+ 			}
+-		}
+ 
+-		for (op = PAGE_FLIP; op <= RENDER; op++) {
+-			igt_describe("Check if psr is detecting page-flipping,memory mapping and "
+-					"rendering operations performed on primary planes");
+-			igt_subtest_with_dynamic_f("%sprimary_%s",
+-				      append_subtest_name[z],
+-				      op_str(op)) {
+-				igt_skip_on(is_xe_device(data.drm_fd) &&
+-					    (op == MMAP_CPU || op == MMAP_GTT));
++			igt_describe("Check if psr is detecting changes when drrs is disabled");
++			igt_subtest_with_dynamic_f("%s%sno-drrs", append_fbc_subtest[y],
++						   append_subtest_name[z]) {
+ 				for_each_connected_output(&data.display, output) {
+ 					if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
+ 							      data.op_psr_mode, output))
+@@ -815,24 +948,90 @@ igt_main
+ 					igt_display_reset(&data.display);
+ 					data.output = output;
+ 					igt_dynamic_f("%s", data.output->name) {
+-						data.op = op;
+ 						data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
+ 						test_setup(&data);
+-						run_test(&data);
++						igt_assert(drrs_disabled(&data));
+ 						test_cleanup(&data);
+ 					}
+ 				}
+ 			}
+-		}
+ 
+-		for (op = MMAP_GTT; op <= PLANE_ONOFF; op++) {
+-			igt_describe("Check if psr is detecting memory mapping,rendering "
+-					"and plane operations performed on sprite planes");
+-			igt_subtest_with_dynamic_f("%ssprite_%s",
+-				      append_subtest_name[z],
+-				      op_str(op)) {
+-				igt_skip_on(is_xe_device(data.drm_fd) &&
+-					    (op == MMAP_CPU || op == MMAP_GTT));
++			for (op = PAGE_FLIP; op <= RENDER; op++) {
++				igt_describe("Check if psr is detecting page-flipping,memory "
++					     "mapping and rendering operations performed on "
++					     "primary planes");
++				igt_subtest_with_dynamic_f("%s%sprimary-%s", append_fbc_subtest[y],
++					      append_subtest_name[z], op_str(op)) {
++					igt_skip_on(is_xe_device(data.drm_fd) &&
++						    (op == MMAP_CPU || op == MMAP_GTT));
++					for_each_connected_output(&data.display, output) {
++						if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
++								      data.op_psr_mode, output))
++							continue;
++						igt_display_reset(&data.display);
++						data.output = output;
++						igt_dynamic_f("%s", data.output->name) {
++							data.op = op;
++							data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
++							test_setup(&data);
++							run_test(&data);
++							test_cleanup(&data);
++						}
++					}
++				}
++			}
++
++			for (op = MMAP_GTT; op <= PLANE_ONOFF; op++) {
++				igt_describe("Check if psr is detecting memory mapping,rendering "
++						"and plane operations performed on sprite planes");
++				igt_subtest_with_dynamic_f("%s%ssprite-%s", append_fbc_subtest[y],
++					      append_subtest_name[z],
++					      op_str(op)) {
++					igt_skip_on(is_xe_device(data.drm_fd) &&
++						    (op == MMAP_CPU || op == MMAP_GTT));
++					for_each_connected_output(&data.display, output) {
++						if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
++								      data.op_psr_mode, output))
++							continue;
++						igt_display_reset(&data.display);
++						data.output = output;
++						igt_dynamic_f("%s", data.output->name) {
++							data.op = op;
++							data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
++							test_setup(&data);
++							run_test(&data);
++							test_cleanup(&data);
++						}
++					}
++				}
++
++				igt_describe("Check if psr is detecting memory mapping, rendering "
++						"and plane operations performed on cursor planes");
++				igt_subtest_with_dynamic_f("%s%scursor-%s", append_fbc_subtest[y],
++					      append_subtest_name[z],
++					      op_str(op)) {
++					igt_skip_on(is_xe_device(data.drm_fd) &&
++						    (op == MMAP_CPU || op == MMAP_GTT));
++					for_each_connected_output(&data.display, output) {
++						if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
++								      data.op_psr_mode, output))
++							continue;
++						igt_display_reset(&data.display);
++						data.output = output;
++						igt_dynamic_f("%s", data.output->name) {
++							data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
++							test_setup(&data);
++							run_test(&data);
++							test_cleanup(&data);
++						}
++					}
++				}
++			}
++
++			igt_describe("Check if psr is detecting changes when rendering operation "
++				     "is performed with dpms enabled or disabled");
++			igt_subtest_with_dynamic_f("%s%sdpms", append_fbc_subtest[y],
++						   append_subtest_name[z]) {
+ 				for_each_connected_output(&data.display, output) {
+ 					if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
+ 							      data.op_psr_mode, output))
+@@ -840,22 +1039,21 @@ igt_main
+ 					igt_display_reset(&data.display);
+ 					data.output = output;
+ 					igt_dynamic_f("%s", data.output->name) {
+-						data.op = op;
+-						data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
++						data.op = igt_get_render_copyfunc(data.devid) ?
++										  RENDER : BLT;
++						data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
+ 						test_setup(&data);
++						dpms_off_on(&data);
+ 						run_test(&data);
+ 						test_cleanup(&data);
+ 					}
+ 				}
+ 			}
+ 
+-			igt_describe("Check if psr is detecting memory mapping, rendering "
+-					"and plane operations performed on cursor planes");
+-			igt_subtest_with_dynamic_f("%scursor_%s",
+-				      append_subtest_name[z],
+-				      op_str(op)) {
+-				igt_skip_on(is_xe_device(data.drm_fd) &&
+-					    (op == MMAP_CPU || op == MMAP_GTT));
++			igt_describe("Check if psr is detecting changes when plane operation is "
++				     "performed with suspend resume cycles");
++			igt_subtest_with_dynamic_f("%s%ssuspend", append_fbc_subtest[y],
++						   append_subtest_name[z]) {
+ 				for_each_connected_output(&data.display, output) {
+ 					if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
+ 							      data.op_psr_mode, output))
+@@ -863,56 +1061,18 @@ igt_main
+ 					igt_display_reset(&data.display);
+ 					data.output = output;
+ 					igt_dynamic_f("%s", data.output->name) {
++						data.op = PLANE_ONOFF;
+ 						data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
+ 						test_setup(&data);
++						igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
++									      SUSPEND_TEST_NONE);
++						igt_assert(psr_wait_entry_if_enabled(&data));
+ 						run_test(&data);
+ 						test_cleanup(&data);
+ 					}
+ 				}
+ 			}
+ 		}
+-
+-		igt_describe("Check if psr is detecting changes when rendering operation is performed"
+-				"  with dpms enabled or disabled");
+-		igt_subtest_with_dynamic_f("%sdpms", append_subtest_name[z]) {
+-			for_each_connected_output(&data.display, output) {
+-				if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
+-						      data.op_psr_mode, output))
+-					continue;
+-				igt_display_reset(&data.display);
+-				data.output = output;
+-				igt_dynamic_f("%s", data.output->name) {
+-					data.op = igt_get_render_copyfunc(data.devid) ? RENDER : BLT;
+-					data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
+-					test_setup(&data);
+-					dpms_off_on(&data);
+-					run_test(&data);
+-					test_cleanup(&data);
+-				}
+-			}
+-		}
+-
+-		igt_describe("Check if psr is detecting changes when plane operation is performed "
+-				"with suspend resume cycles");
+-		igt_subtest_with_dynamic_f("%ssuspend", append_subtest_name[z]) {
+-			for_each_connected_output(&data.display, output) {
+-				if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
+-						      data.op_psr_mode, output))
+-					continue;
+-				igt_display_reset(&data.display);
+-				data.output = output;
+-				igt_dynamic_f("%s", data.output->name) {
+-					data.op = PLANE_ONOFF;
+-					data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
+-					test_setup(&data);
+-					igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
+-								      SUSPEND_TEST_NONE);
+-					igt_assert(psr_wait_entry_if_enabled(&data));
+-					run_test(&data);
+-					test_cleanup(&data);
+-				}
+-			}
+-		}
+ 	}
+ 
+ 	igt_fixture {
+-- 
+2.25.1
