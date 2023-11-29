@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8D01510E60E
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Nov 2023 14:55:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4267B10E60F
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Nov 2023 14:55:17 +0000 (UTC)
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 29 Nov 2023 14:54:40 +0000
-Message-Id: <20231129145457.7-4-francois.dugast@intel.com>
+Date: Wed, 29 Nov 2023 14:54:45 +0000
+Message-Id: <20231129145457.7-9-francois.dugast@intel.com>
 In-Reply-To: <20231129145457.7-1-francois.dugast@intel.com>
 References: <20231129145457.7-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v4 03/20] xe_ioctl: Rename *xe_bo_create_flags to
- simply xe_bo_create
+Subject: [igt-dev] [PATCH v4 08/20] drm-uapi/xe: Make
+ DRM_XE_DEVICE_QUERY_ENGINES future proof
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,1226 +26,309 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-Now that we have only one variant we can unify to the
-simplest version.
+Align with kernel commit ("drm/xe: Make DRM_XE_DEVICE_QUERY_ENGINES future proof")
 
 Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 ---
- benchmarks/gem_wsim.c              |  4 +--
- lib/igt_draw.c                     |  6 ++---
- lib/igt_fb.c                       |  6 ++---
- lib/intel_batchbuffer.c            |  6 ++---
- lib/intel_blt.c                    |  2 +-
- lib/intel_bufops.c                 |  2 +-
- lib/xe/xe_ioctl.c                  |  8 +++---
- lib/xe/xe_ioctl.h                  |  6 ++---
- lib/xe/xe_spin.c                   |  8 +++---
- tests/intel/api_intel_allocator.c  |  4 +--
- tests/intel/kms_big_fb.c           | 22 ++++++++--------
- tests/intel/kms_ccs.c              |  4 +--
- tests/intel/xe_ccs.c               | 12 ++++-----
- tests/intel/xe_copy_basic.c        |  8 +++---
- tests/intel/xe_dma_buf_sync.c      |  4 +--
- tests/intel/xe_drm_fdinfo.c        |  6 ++---
- tests/intel/xe_evict.c             | 40 +++++++++++++++---------------
- tests/intel/xe_evict_ccs.c         |  6 ++---
- tests/intel/xe_exec_balancer.c     |  6 ++---
- tests/intel/xe_exec_basic.c        |  3 +--
- tests/intel/xe_exec_compute_mode.c |  4 +--
- tests/intel/xe_exec_fault_mode.c   | 10 ++++----
- tests/intel/xe_exec_reset.c        | 16 ++++++------
- tests/intel/xe_exec_store.c        | 12 ++++-----
- tests/intel/xe_exec_threads.c      | 12 ++++-----
- tests/intel/xe_exercise_blt.c      |  4 +--
- tests/intel/xe_intel_bb.c          |  2 +-
- tests/intel/xe_mmap.c              | 32 ++++++++++++------------
- tests/intel/xe_noexec_ping_pong.c  |  4 +--
- tests/intel/xe_perf_pmu.c          |  4 +--
- tests/intel/xe_pm.c                |  6 ++---
- tests/intel/xe_pm_residency.c      |  4 +--
- tests/intel/xe_prime_self_import.c | 28 ++++++++++-----------
- tests/intel/xe_spin_batch.c        |  2 +-
- tests/intel/xe_vm.c                | 34 ++++++++++++-------------
- tests/intel/xe_waitfence.c         | 20 +++++++--------
- tests/kms_addfb_basic.c            |  2 +-
- tests/kms_getfb.c                  |  2 +-
- 38 files changed, 180 insertions(+), 181 deletions(-)
+ benchmarks/gem_wsim.c             |  2 +-
+ include/drm-uapi/xe_drm.h         | 24 +++++++++++++++++++++++-
+ lib/xe/xe_query.c                 | 16 ++++++++--------
+ lib/xe/xe_query.h                 |  8 ++++----
+ tests/intel/xe_create.c           |  7 ++++---
+ tests/intel/xe_drm_fdinfo.c       |  5 +++--
+ tests/intel/xe_exec_store.c       |  8 ++++----
+ tests/intel/xe_intel_bb.c         |  3 ++-
+ tests/intel/xe_noexec_ping_pong.c |  5 +++--
+ tests/intel/xe_waitfence.c        |  6 +++---
+ 10 files changed, 55 insertions(+), 29 deletions(-)
 
 diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-index b60cde177..cb19ad505 100644
+index abbe49a06..514fa4ba7 100644
 --- a/benchmarks/gem_wsim.c
 +++ b/benchmarks/gem_wsim.c
-@@ -1745,8 +1745,8 @@ xe_alloc_step_batch(struct workload *wrk, struct w_step *w)
+@@ -689,7 +689,7 @@ xe_get_default_engine(void)
+ 	struct drm_xe_engine_class_instance default_hwe, *hwe;
  
- 	w->bb_size = ALIGN(PAGE_SIZE + xe_cs_prefetch_size(fd),
- 			   xe_get_default_alignment(fd));
--	w->bb_handle = xe_bo_create_flags(fd, vm->id, w->bb_size,
--				visible_vram_if_possible(fd, eq->hwe_list[0].gt_id));
-+	w->bb_handle = xe_bo_create(fd, vm->id, w->bb_size,
-+				    visible_vram_if_possible(fd, eq->hwe_list[0].gt_id));
- 	w->xe.data = xe_bo_map(fd, w->bb_handle, w->bb_size);
- 	w->xe.exec.address =
- 		intel_allocator_alloc_with_strategy(vm->ahnd, w->bb_handle, w->bb_size,
-diff --git a/lib/igt_draw.c b/lib/igt_draw.c
-index 498c69a56..bad6f455a 100644
---- a/lib/igt_draw.c
-+++ b/lib/igt_draw.c
-@@ -795,9 +795,9 @@ static void draw_rect_render(int fd, struct cmd_data *cmd_data,
- 	if (is_i915_device(fd))
- 		tmp.handle = gem_create(fd, tmp.size);
- 	else
--		tmp.handle = xe_bo_create_flags(fd, 0,
--						ALIGN(tmp.size, xe_get_default_alignment(fd)),
--						visible_vram_if_possible(fd, 0));
-+		tmp.handle = xe_bo_create(fd, 0,
-+					  ALIGN(tmp.size, xe_get_default_alignment(fd)),
-+					  visible_vram_if_possible(fd, 0));
+ 	/* select RCS0 | CCS0 or first available engine */
+-	default_hwe = *xe_engine(fd, 0);
++	default_hwe = xe_engine(fd, 0)->instance;
+ 	xe_for_each_engine(fd, hwe) {
+ 		if ((hwe->engine_class == DRM_XE_ENGINE_CLASS_RENDER ||
+ 		     hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE) &&
+diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+index 26c1a8604..187e02e30 100644
+--- a/include/drm-uapi/xe_drm.h
++++ b/include/drm-uapi/xe_drm.h
+@@ -124,7 +124,14 @@ struct xe_user_extension {
+ #define DRM_IOCTL_XE_EXEC_QUEUE_GET_PROPERTY	DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_EXEC_QUEUE_GET_PROPERTY, struct drm_xe_exec_queue_get_property)
+ #define DRM_IOCTL_XE_WAIT_USER_FENCE		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_WAIT_USER_FENCE, struct drm_xe_wait_user_fence)
  
- 	tmp.stride = rect->w * pixel_size;
- 	tmp.bpp = buf->bpp;
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index e70d2e3ce..f96dca7a4 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -1205,8 +1205,8 @@ static int create_bo_for_fb(struct igt_fb *fb, bool prefer_sysmem)
- 			/* If we can't use fences, we won't use ggtt detiling later. */
- 			igt_assert(err == 0 || err == -EOPNOTSUPP);
- 		} else if (is_xe_device(fd)) {
--			fb->gem_handle = xe_bo_create_flags(fd, 0, fb->size,
--							visible_vram_if_possible(fd, 0));
-+			fb->gem_handle = xe_bo_create(fd, 0, fb->size,
-+						      visible_vram_if_possible(fd, 0));
- 		} else if (is_vc4_device(fd)) {
- 			fb->gem_handle = igt_vc4_create_bo(fd, fb->size);
+-/** struct drm_xe_engine_class_instance - instance of an engine class */
++/**
++ * struct drm_xe_engine_class_instance - instance of an engine class
++ *
++ * It is returned as part of the @drm_xe_query_engine_info, but it also is
++ * used as the input of engine selection for both @drm_xe_exec_queue_create
++ * and @drm_xe_query_engine_cycles
++ *
++ */
+ struct drm_xe_engine_class_instance {
+ #define DRM_XE_ENGINE_CLASS_RENDER		0
+ #define DRM_XE_ENGINE_CLASS_COPY		1
+@@ -145,6 +152,21 @@ struct drm_xe_engine_class_instance {
+ 	__u16 pad;
+ };
  
-@@ -2903,7 +2903,7 @@ static void blitcopy(const struct igt_fb *dst_fb,
- 
- 		bb_size = ALIGN(bb_size + xe_cs_prefetch_size(dst_fb->fd),
- 				xe_get_default_alignment(dst_fb->fd));
--		xe_bb = xe_bo_create_flags(dst_fb->fd, 0, bb_size, mem_region);
-+		xe_bb = xe_bo_create(dst_fb->fd, 0, bb_size, mem_region);
- 	}
- 
- 	for (int i = 0; i < dst_fb->num_planes - dst_cc; i++) {
-diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index 570b35072..c38eda771 100644
---- a/lib/intel_batchbuffer.c
-+++ b/lib/intel_batchbuffer.c
-@@ -947,7 +947,7 @@ __intel_bb_create(int fd, uint32_t ctx, uint32_t vm, const intel_ctx_cfg_t *cfg,
- 
- 		ibb->alignment = xe_get_default_alignment(fd);
- 		size = ALIGN(size, ibb->alignment);
--		ibb->handle = xe_bo_create_flags(fd, 0, size, visible_vram_if_possible(fd, 0));
-+		ibb->handle = xe_bo_create(fd, 0, size, visible_vram_if_possible(fd, 0));
- 
- 		/* Limit to 48-bit due to MI_* address limitation */
- 		ibb->gtt_size = 1ull << min_t(uint32_t, xe_va_bits(fd), 48);
-@@ -1405,8 +1405,8 @@ void intel_bb_reset(struct intel_bb *ibb, bool purge_objects_cache)
- 	if (ibb->driver == INTEL_DRIVER_I915)
- 		ibb->handle = gem_create(ibb->fd, ibb->size);
- 	else
--		ibb->handle = xe_bo_create_flags(ibb->fd, 0, ibb->size,
--						 visible_vram_if_possible(ibb->fd, 0));
-+		ibb->handle = xe_bo_create(ibb->fd, 0, ibb->size,
-+					   visible_vram_if_possible(ibb->fd, 0));
- 
- 	/* Reacquire offset for RELOC and SIMPLE */
- 	if (ibb->allocator_type == INTEL_ALLOCATOR_SIMPLE ||
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index 2edcd72f3..36830fb3e 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -1807,7 +1807,7 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
- 			flags |= DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
- 
- 		size = ALIGN(size, xe_get_default_alignment(blt->fd));
--		handle = xe_bo_create_flags(blt->fd, 0, size, flags);
-+		handle = xe_bo_create(blt->fd, 0, size, flags);
- 	} else {
- 		igt_assert(__gem_create_in_memory_regions(blt->fd, &handle,
- 							  &size, region) == 0);
-diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-index 2c91adb88..6f3a77f47 100644
---- a/lib/intel_bufops.c
-+++ b/lib/intel_bufops.c
-@@ -920,7 +920,7 @@ static void __intel_buf_init(struct buf_ops *bops,
- 				igt_assert_eq(__gem_create(bops->fd, &size, &buf->handle), 0);
- 		} else {
- 			size = ALIGN(size, xe_get_default_alignment(bops->fd));
--			buf->handle = xe_bo_create_flags(bops->fd, 0, size, region);
-+			buf->handle = xe_bo_create(bops->fd, 0, size, region);
- 		}
- 	}
- 
-diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index 78d431ab2..63fa2ae25 100644
---- a/lib/xe/xe_ioctl.c
-+++ b/lib/xe/xe_ioctl.c
-@@ -226,8 +226,8 @@ void xe_vm_destroy(int fd, uint32_t vm)
- 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_VM_DESTROY, &destroy), 0);
++/**
++ * struct drm_xe_query_engine_info - describe hardware engine
++ *
++ * If a query is made with a struct @drm_xe_device_query where .query
++ * is equal to %DRM_XE_DEVICE_QUERY_ENGINES, then the reply uses an array of
++ * struct @drm_xe_query_engine_info in .data.
++ */
++struct drm_xe_query_engine_info {
++	/** @instance: The @drm_xe_engine_class_instance */
++	struct drm_xe_engine_class_instance instance;
++
++	/** @reserved: Reserved */
++	__u64 reserved[5];
++};
++
+ /**
+  * enum drm_xe_memory_class - Supported memory classes.
+  */
+diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+index ef7aaa6a1..f9dec1f7a 100644
+--- a/lib/xe/xe_query.c
++++ b/lib/xe/xe_query.c
+@@ -72,10 +72,10 @@ static uint64_t __memory_regions(const struct drm_xe_query_gt_list *gt_list)
+ 	return regions;
  }
  
--uint32_t __xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags,
--			      uint32_t *handle)
-+uint32_t __xe_bo_create(int fd, uint32_t vm, uint64_t size, uint32_t flags,
-+			uint32_t *handle)
+-static struct drm_xe_engine_class_instance *
+-xe_query_engines_new(int fd, unsigned int *num_engines)
++static struct drm_xe_query_engine_info *
++xe_query_engines(int fd, unsigned int *num_engines)
  {
- 	struct drm_xe_gem_create create = {
- 		.vm_id = vm,
-@@ -244,11 +244,11 @@ uint32_t __xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags
- 	return 0;
- }
+-	struct drm_xe_engine_class_instance *engines;
++	struct drm_xe_query_engine_info *engines;
+ 	struct drm_xe_device_query query = {
+ 		.extensions = 0,
+ 		.query = DRM_XE_DEVICE_QUERY_ENGINES,
+@@ -253,7 +253,7 @@ struct xe_device *xe_device_get(int fd)
+ 	xe_dev->dev_id = xe_dev->config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff;
+ 	xe_dev->gt_list = xe_query_gt_list_new(fd);
+ 	xe_dev->memory_regions = __memory_regions(xe_dev->gt_list);
+-	xe_dev->engines = xe_query_engines_new(fd, &xe_dev->number_engines);
++	xe_dev->engines = xe_query_engines(fd, &xe_dev->number_engines);
+ 	xe_dev->mem_regions = xe_query_mem_regions_new(fd);
+ 	xe_dev->vram_size = calloc(xe_dev->gt_list->num_gt, sizeof(*xe_dev->vram_size));
+ 	xe_dev->visible_vram_size = calloc(xe_dev->gt_list->num_gt, sizeof(*xe_dev->visible_vram_size));
+@@ -427,16 +427,16 @@ uint64_t vram_if_possible(int fd, int gt)
+  *
+  * Returns engines array of xe device @fd.
+  */
+-xe_dev_FN(xe_engines, engines, struct drm_xe_engine_class_instance *);
++xe_dev_FN(xe_engines, engines, struct drm_xe_query_engine_info *);
  
--uint32_t xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags)
-+uint32_t xe_bo_create(int fd, uint32_t vm, uint64_t size, uint32_t flags)
+ /**
+  * xe_engine:
+  * @fd: xe device fd
+  * @idx: engine index
+  *
+- * Returns engine instance of xe device @fd and @idx.
++ * Returns engine info of xe device @fd and @idx.
+  */
+-struct drm_xe_engine_class_instance *xe_engine(int fd, int idx)
++struct drm_xe_query_engine_info *xe_engine(int fd, int idx)
  {
- 	uint32_t handle;
+ 	struct xe_device *xe_dev;
  
--	igt_assert_eq(__xe_bo_create_flags(fd, vm, size, flags, &handle), 0);
-+	igt_assert_eq(__xe_bo_create(fd, vm, size, flags, &handle), 0);
+@@ -658,7 +658,7 @@ bool xe_has_engine_class(int fd, uint16_t engine_class)
+ 	igt_assert(xe_dev);
  
- 	return handle;
- }
-diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index fb191d98f..1ec29c2c5 100644
---- a/lib/xe/xe_ioctl.h
-+++ b/lib/xe/xe_ioctl.h
-@@ -64,9 +64,9 @@ void xe_vm_unbind_all_async(int fd, uint32_t vm, uint32_t exec_queue,
- 			    uint32_t bo, struct drm_xe_sync *sync,
- 			    uint32_t num_syncs);
- void xe_vm_destroy(int fd, uint32_t vm);
--uint32_t __xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags,
--			      uint32_t *handle);
--uint32_t xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags);
-+uint32_t __xe_bo_create(int fd, uint32_t vm, uint64_t size, uint32_t flags,
-+			uint32_t *handle);
-+uint32_t xe_bo_create(int fd, uint32_t vm, uint64_t size, uint32_t flags);
- uint32_t xe_exec_queue_create(int fd, uint32_t vm,
- 			  struct drm_xe_engine_class_instance *instance,
- 			  uint64_t ext);
-diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-index cfc663acc..828938434 100644
---- a/lib/xe/xe_spin.c
-+++ b/lib/xe/xe_spin.c
-@@ -219,8 +219,8 @@ xe_spin_create(int fd, const struct igt_spin_factory *opt)
- 			spin->engine = xe_exec_queue_create_class(fd, spin->vm, DRM_XE_ENGINE_CLASS_COPY);
- 	}
+ 	for (int i = 0; i < xe_dev->number_engines; i++)
+-		if (xe_dev->engines[i].engine_class == engine_class)
++		if (xe_dev->engines[i].instance.engine_class == engine_class)
+ 			return true;
  
--	spin->handle = xe_bo_create_flags(fd, spin->vm, bo_size,
--					  visible_vram_if_possible(fd, 0));
-+	spin->handle = xe_bo_create(fd, spin->vm, bo_size,
-+				    visible_vram_if_possible(fd, 0));
- 	xe_spin = xe_bo_map(fd, spin->handle, bo_size);
- 	addr = intel_allocator_alloc_with_strategy(ahnd, spin->handle, bo_size, 0, ALLOC_STRATEGY_LOW_TO_HIGH);
- 	xe_vm_bind_sync(fd, spin->vm, spin->handle, 0, addr, bo_size);
-@@ -298,8 +298,8 @@ void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
+ 	return false;
+diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+index bf9f2b955..fede00036 100644
+--- a/lib/xe/xe_query.h
++++ b/lib/xe/xe_query.h
+@@ -33,7 +33,7 @@ struct xe_device {
+ 	uint64_t memory_regions;
  
- 	vm = xe_vm_create(fd, 0, 0);
+ 	/** @engines: array of hardware engines */
+-	struct drm_xe_engine_class_instance *engines;
++	struct drm_xe_query_engine_info *engines;
  
--	bo = xe_bo_create_flags(fd, vm, bo_size,
--				visible_vram_if_possible(fd, hwe->gt_id));
-+	bo = xe_bo_create(fd, vm, bo_size,
-+			  visible_vram_if_possible(fd, hwe->gt_id));
- 	spin = xe_bo_map(fd, bo, 0x1000);
+ 	/** @number_engines: length of hardware engines array */
+ 	unsigned int number_engines;
+@@ -62,7 +62,7 @@ struct xe_device {
  
- 	xe_vm_bind_sync(fd, vm, bo, 0, addr, bo_size);
-diff --git a/tests/intel/api_intel_allocator.c b/tests/intel/api_intel_allocator.c
-index f3fcf8a34..158fd86a1 100644
---- a/tests/intel/api_intel_allocator.c
-+++ b/tests/intel/api_intel_allocator.c
-@@ -468,8 +468,8 @@ static void __simple_allocs(int fd)
+ #define xe_for_each_engine(__fd, __hwe) \
+ 	for (int __i = 0; __i < xe_number_engines(__fd) && \
+-	     (__hwe = xe_engine(__fd, __i)); ++__i)
++	     (__hwe = &xe_engine(__fd, __i)->instance); ++__i)
+ #define xe_for_each_engine_class(__class) \
+ 	for (__class = 0; __class < DRM_XE_ENGINE_CLASS_COMPUTE + 1; \
+ 	     ++__class)
+@@ -81,8 +81,8 @@ uint64_t all_memory_regions(int fd);
+ uint64_t system_memory(int fd);
+ uint64_t vram_memory(int fd, int gt);
+ uint64_t vram_if_possible(int fd, int gt);
+-struct drm_xe_engine_class_instance *xe_engines(int fd);
+-struct drm_xe_engine_class_instance *xe_engine(int fd, int idx);
++struct drm_xe_query_engine_info *xe_engines(int fd);
++struct drm_xe_query_engine_info *xe_engine(int fd, int idx);
+ struct drm_xe_query_mem_region *xe_mem_region(int fd, uint64_t region);
+ const char *xe_region_name(uint64_t region);
+ uint16_t xe_region_class(int fd, uint64_t region);
+diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+index 16a371964..03feecd25 100644
+--- a/tests/intel/xe_create.c
++++ b/tests/intel/xe_create.c
+@@ -148,7 +148,7 @@ static void create_execqueues(int fd, enum exec_queue_destroy ed)
+ 	igt_nsec_elapsed(&tv);
  
- 		size = (rand() % 4 + 1) * 0x1000;
- 		if (is_xe)
--			handles[i] = xe_bo_create_flags(fd, 0, size,
--							system_memory(fd));
-+			handles[i] = xe_bo_create(fd, 0, size,
-+						  system_memory(fd));
- 		else
- 			handles[i] = gem_create(fd, size);
+ 	igt_fork(n, nproc) {
+-		struct drm_xe_engine_class_instance *hwe;
++		struct drm_xe_query_engine_info *engine;
+ 		uint32_t exec_queue, exec_queues[exec_queues_per_process];
+ 		int idx, err, i;
  
-diff --git a/tests/intel/kms_big_fb.c b/tests/intel/kms_big_fb.c
-index 82aff532b..b627ce659 100644
---- a/tests/intel/kms_big_fb.c
-+++ b/tests/intel/kms_big_fb.c
-@@ -776,10 +776,10 @@ test_size_overflow(data_t *data)
- 	if (is_i915_device(data->drm_fd))
- 		bo = gem_buffer_create_fb_obj(data->drm_fd, (1ULL << 32) - 4096);
- 	else
--		bo = xe_bo_create_flags(data->drm_fd, 0,
--					ALIGN(((1ULL << 32) - 4096),
--					      xe_get_default_alignment(data->drm_fd)),
--					vram_if_possible(data->drm_fd, 0));
-+		bo = xe_bo_create(data->drm_fd, 0,
-+				  ALIGN(((1ULL << 32) - 4096),
-+					xe_get_default_alignment(data->drm_fd)),
-+				  vram_if_possible(data->drm_fd, 0));
- 	igt_require(bo);
+@@ -156,8 +156,9 @@ static void create_execqueues(int fd, enum exec_queue_destroy ed)
  
- 	ret = __kms_addfb(data->drm_fd, bo,
-@@ -820,10 +820,10 @@ test_size_offset_overflow(data_t *data)
- 	if (is_i915_device(data->drm_fd))
- 		bo = gem_buffer_create_fb_obj(data->drm_fd, (1ULL << 32) - 4096);
- 	else
--		bo = xe_bo_create_flags(data->drm_fd, 0,
--					ALIGN(((1ULL << 32) - 4096),
--					      xe_get_default_alignment(data->drm_fd)),
--					vram_if_possible(data->drm_fd, 0));
-+		bo = xe_bo_create(data->drm_fd, 0,
-+				  ALIGN(((1ULL << 32) - 4096),
-+					xe_get_default_alignment(data->drm_fd)),
-+				  vram_if_possible(data->drm_fd, 0));
- 	igt_require(bo);
- 
- 	offsets[0] = 0;
-@@ -885,9 +885,9 @@ test_addfb(data_t *data)
- 	if (is_i915_device(data->drm_fd))
- 		bo = gem_buffer_create_fb_obj(data->drm_fd, size);
- 	else
--		bo = xe_bo_create_flags(data->drm_fd, 0,
--					ALIGN(size, xe_get_default_alignment(data->drm_fd)),
--					vram_if_possible(data->drm_fd, 0));
-+		bo = xe_bo_create(data->drm_fd, 0,
-+				  ALIGN(size, xe_get_default_alignment(data->drm_fd)),
-+				  vram_if_possible(data->drm_fd, 0));
- 	igt_require(bo);
- 
- 	if (is_i915_device(data->drm_fd) && intel_display_ver(data->devid) < 4)
-diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
-index 7a3fd7cf6..a5a8abb28 100644
---- a/tests/intel/kms_ccs.c
-+++ b/tests/intel/kms_ccs.c
-@@ -452,8 +452,8 @@ static void test_bad_ccs_plane(data_t *data, int width, int height, int ccs_plan
- 	if (data->flags & TEST_BAD_CCS_HANDLE) {
- 		bad_ccs_bo = is_i915_device(data->drm_fd) ?
- 				gem_create(data->drm_fd, fb.size) :
--				xe_bo_create_flags(data->drm_fd, 0, fb.size,
--						   visible_vram_if_possible(data->drm_fd, 0));
-+				xe_bo_create(data->drm_fd, 0, fb.size,
-+					     visible_vram_if_possible(data->drm_fd, 0));
- 		f.handles[ccs_plane] = bad_ccs_bo;
- 	}
- 
-diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
-index 465f67e23..ceecba416 100644
---- a/tests/intel/xe_ccs.c
-+++ b/tests/intel/xe_ccs.c
-@@ -102,8 +102,8 @@ static void surf_copy(int xe,
- 
- 	igt_assert(mid->compression);
- 	ccscopy = (uint32_t *) malloc(ccssize);
--	ccs = xe_bo_create_flags(xe, 0, ccssize, sysmem);
--	ccs2 = xe_bo_create_flags(xe, 0, ccssize, sysmem);
-+	ccs = xe_bo_create(xe, 0, ccssize, sysmem);
-+	ccs2 = xe_bo_create(xe, 0, ccssize, sysmem);
- 
- 	blt_ctrl_surf_copy_init(xe, &surf);
- 	surf.print_bb = param.print_bb;
-@@ -111,7 +111,7 @@ static void surf_copy(int xe,
- 				 uc_mocs, BLT_INDIRECT_ACCESS);
- 	blt_set_ctrl_surf_object(&surf.dst, ccs, sysmem, ccssize, uc_mocs, DIRECT_ACCESS);
- 	bb_size = xe_get_default_alignment(xe);
--	bb1 = xe_bo_create_flags(xe, 0, bb_size, sysmem);
-+	bb1 = xe_bo_create(xe, 0, bb_size, sysmem);
- 	blt_set_batch(&surf.bb, bb1, bb_size, sysmem);
- 	blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
- 	intel_ctx_xe_sync(ctx, true);
-@@ -166,7 +166,7 @@ static void surf_copy(int xe,
- 	blt_set_copy_object(&blt.dst, dst);
- 	blt_set_object_ext(&ext.src, mid->compression_type, mid->x2, mid->y2, SURFACE_TYPE_2D);
- 	blt_set_object_ext(&ext.dst, 0, dst->x2, dst->y2, SURFACE_TYPE_2D);
--	bb2 = xe_bo_create_flags(xe, 0, bb_size, sysmem);
-+	bb2 = xe_bo_create(xe, 0, bb_size, sysmem);
- 	blt_set_batch(&blt.bb, bb2, bb_size, sysmem);
- 	blt_block_copy(xe, ctx, NULL, ahnd, &blt, &ext);
- 	intel_ctx_xe_sync(ctx, true);
-@@ -297,7 +297,7 @@ static void block_copy(int xe,
- 	uint8_t uc_mocs = intel_get_uc_mocs_index(xe);
- 	int result;
- 
--	bb = xe_bo_create_flags(xe, 0, bb_size, region1);
-+	bb = xe_bo_create(xe, 0, bb_size, region1);
- 
- 	if (!blt_uses_extended_block_copy(xe))
- 		pext = NULL;
-@@ -418,7 +418,7 @@ static void block_multicopy(int xe,
- 	uint8_t uc_mocs = intel_get_uc_mocs_index(xe);
- 	int result;
- 
--	bb = xe_bo_create_flags(xe, 0, bb_size, region1);
-+	bb = xe_bo_create(xe, 0, bb_size, region1);
- 
- 	if (!blt_uses_extended_block_copy(xe))
- 		pext3 = NULL;
-diff --git a/tests/intel/xe_copy_basic.c b/tests/intel/xe_copy_basic.c
-index 191c29155..715f7d3b5 100644
---- a/tests/intel/xe_copy_basic.c
-+++ b/tests/intel/xe_copy_basic.c
-@@ -52,7 +52,7 @@ mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_ctx_t *ct
- 	uint32_t bb;
- 	int result;
- 
--	bb = xe_bo_create_flags(fd, 0, bb_size, region);
-+	bb = xe_bo_create(fd, 0, bb_size, region);
- 
- 	blt_mem_init(fd, &mem);
- 	blt_set_mem_object(&mem.src, src_handle, size, 0, width, height,
-@@ -102,7 +102,7 @@ mem_set(int fd, uint32_t dst_handle, const intel_ctx_t *ctx, uint32_t size,
- 	uint32_t bb;
- 	uint8_t *result;
- 
--	bb = xe_bo_create_flags(fd, 0, bb_size, region);
-+	bb = xe_bo_create(fd, 0, bb_size, region);
- 	blt_mem_init(fd, &mem);
- 	blt_set_mem_object(&mem.dst, dst_handle, size, 0, width, height, region,
- 			   dst_mocs, M_LINEAR, COMPRESSION_DISABLED);
-@@ -132,8 +132,8 @@ static void copy_test(int fd, uint32_t size, enum blt_cmd_type cmd, uint32_t reg
- 	uint32_t bo_size = ALIGN(size, xe_get_default_alignment(fd));
- 	intel_ctx_t *ctx;
- 
--	src_handle = xe_bo_create_flags(fd, 0, bo_size, region);
--	dst_handle = xe_bo_create_flags(fd, 0, bo_size, region);
-+	src_handle = xe_bo_create(fd, 0, bo_size, region);
-+	dst_handle = xe_bo_create(fd, 0, bo_size, region);
- 	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 	exec_queue = xe_exec_queue_create(fd, vm, &inst, 0);
- 	ctx = intel_ctx_xe(fd, vm, exec_queue, 0, 0, 0);
-diff --git a/tests/intel/xe_dma_buf_sync.c b/tests/intel/xe_dma_buf_sync.c
-index 0d835dddb..ac9d9d767 100644
---- a/tests/intel/xe_dma_buf_sync.c
-+++ b/tests/intel/xe_dma_buf_sync.c
-@@ -119,8 +119,8 @@ test_export_dma_buf(struct drm_xe_engine_class_instance *hwe0,
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd[0]),
- 			xe_get_default_alignment(fd[0]));
- 	for (i = 0; i < n_bo; ++i) {
--		bo[i] = xe_bo_create_flags(fd[0], 0, bo_size,
--					   visible_vram_if_possible(fd[0], hwe0->gt_id));
-+		bo[i] = xe_bo_create(fd[0], 0, bo_size,
-+				     visible_vram_if_possible(fd[0], hwe0->gt_id));
- 		dma_buf_fd[i] = prime_handle_to_fd(fd[0], bo[i]);
- 		import_bo[i] = prime_fd_to_handle(fd[1], dma_buf_fd[i]);
- 
+ 		for (i = 0; i < exec_queues_per_process; i++) {
+ 			idx = rand() % num_engines;
+-			hwe = xe_engine(fd, idx);
+-			err = __xe_exec_queue_create(fd, vm, hwe, 0, &exec_queue);
++			engine = xe_engine(fd, idx);
++			err = __xe_exec_queue_create(fd, vm, &engine->instance,
++						     0, &exec_queue);
+ 			igt_debug("[%2d] Create exec_queue: err=%d, exec_queue=%u [idx = %d]\n",
+ 				  n, err, exec_queue, i);
+ 			if (err)
 diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
-index 4ef30cf49..8f737a533 100644
+index d50cc6df1..cec3e0825 100644
 --- a/tests/intel/xe_drm_fdinfo.c
 +++ b/tests/intel/xe_drm_fdinfo.c
-@@ -85,7 +85,7 @@ static void test_active(int fd, struct drm_xe_engine_class_instance *eci)
- 		igt_assert_f(ret != 0, "failed with err:%d\n", errno);
- 		pre_size = info.region_mem[memregion->instance + 1].active;
+@@ -40,7 +40,7 @@ IGT_TEST_DESCRIPTION("Read and verify drm client memory consumption using fdinfo
+ #define BO_SIZE (65536)
  
--		bo = xe_bo_create_flags(fd, vm, bo_size, region);
-+		bo = xe_bo_create(fd, vm, bo_size, region);
+ /* Subtests */
+-static void test_active(int fd, struct drm_xe_engine_class_instance *eci)
++static void test_active(int fd, struct drm_xe_query_engine_info *engine)
+ {
+ 	struct drm_xe_query_mem_region *memregion;
+ 	uint64_t memreg = all_memory_regions(fd), region;
+@@ -89,7 +89,8 @@ static void test_active(int fd, struct drm_xe_engine_class_instance *eci)
  		data = xe_bo_map(fd, bo, bo_size);
  
  		for (i = 0; i < N_EXEC_QUEUES; i++) {
-@@ -185,7 +185,7 @@ static void test_shared(int xe)
- 		igt_assert_f(ret != 0, "failed with err:%d\n", errno);
- 		pre_size = info.region_mem[memregion->instance + 1].shared;
- 
--		bo = xe_bo_create_flags(xe, 0, BO_SIZE, region);
-+		bo = xe_bo_create(xe, 0, BO_SIZE, region);
- 
- 		flink.handle = bo;
- 		ret = igt_ioctl(xe, DRM_IOCTL_GEM_FLINK, &flink);
-@@ -232,7 +232,7 @@ static void test_total_resident(int xe)
- 		igt_assert_f(ret != 0, "failed with err:%d\n", errno);
- 		pre_size = info.region_mem[memregion->instance + 1].shared;
- 
--		handle = xe_bo_create_flags(xe, vm, BO_SIZE, region);
-+		handle = xe_bo_create(xe, vm, BO_SIZE, region);
- 		xe_vm_bind_sync(xe, vm, handle, 0, addr, BO_SIZE);
- 
- 		ret = igt_parse_drm_fdinfo(xe, &info, NULL, 0, NULL, 0);
-diff --git a/tests/intel/xe_evict.c b/tests/intel/xe_evict.c
-index 6d953e58b..a9d501d5f 100644
---- a/tests/intel/xe_evict.c
-+++ b/tests/intel/xe_evict.c
-@@ -99,18 +99,18 @@ test_evict(int fd, struct drm_xe_engine_class_instance *eci,
-                                 i < n_execs / 8 ? 0 : vm;
- 
- 			if (flags & MULTI_VM) {
--				__bo = bo[i] = xe_bo_create_flags(fd, 0,
--								  bo_size,
--								  visible_vram_memory(fd, eci->gt_id));
-+				__bo = bo[i] = xe_bo_create(fd, 0,
-+							    bo_size,
-+							    visible_vram_memory(fd, eci->gt_id));
- 			} else if (flags & THREADED) {
--				__bo = bo[i] = xe_bo_create_flags(fd, vm,
--								  bo_size,
--								  visible_vram_memory(fd, eci->gt_id));
-+				__bo = bo[i] = xe_bo_create(fd, vm,
-+							    bo_size,
-+							    visible_vram_memory(fd, eci->gt_id));
- 			} else {
--				__bo = bo[i] = xe_bo_create_flags(fd, _vm,
--								  bo_size,
--								  visible_vram_memory(fd, eci->gt_id) |
--								  system_memory(fd));
-+				__bo = bo[i] = xe_bo_create(fd, _vm,
-+							    bo_size,
-+							    visible_vram_memory(fd, eci->gt_id) |
-+							    system_memory(fd));
- 			}
- 		} else {
- 			__bo = bo[i % (n_execs / 2)];
-@@ -275,18 +275,18 @@ test_evict_cm(int fd, struct drm_xe_engine_class_instance *eci,
-                                 i < n_execs / 8 ? 0 : vm;
- 
- 			if (flags & MULTI_VM) {
--				__bo = bo[i] = xe_bo_create_flags(fd, 0,
--								  bo_size,
--								  visible_vram_memory(fd, eci->gt_id));
-+				__bo = bo[i] = xe_bo_create(fd, 0,
-+							    bo_size,
-+							    visible_vram_memory(fd, eci->gt_id));
- 			} else if (flags & THREADED) {
--				__bo = bo[i] = xe_bo_create_flags(fd, vm,
--								  bo_size,
--								  visible_vram_memory(fd, eci->gt_id));
-+				__bo = bo[i] = xe_bo_create(fd, vm,
-+							    bo_size,
-+							    visible_vram_memory(fd, eci->gt_id));
- 			} else {
--				__bo = bo[i] = xe_bo_create_flags(fd, _vm,
--								  bo_size,
--								  visible_vram_memory(fd, eci->gt_id) |
--								  system_memory(fd));
-+				__bo = bo[i] = xe_bo_create(fd, _vm,
-+							    bo_size,
-+							    visible_vram_memory(fd, eci->gt_id) |
-+							    system_memory(fd));
- 			}
- 		} else {
- 			__bo = bo[i % (n_execs / 2)];
-diff --git a/tests/intel/xe_evict_ccs.c b/tests/intel/xe_evict_ccs.c
-index d7244f620..35a588521 100644
---- a/tests/intel/xe_evict_ccs.c
-+++ b/tests/intel/xe_evict_ccs.c
-@@ -82,7 +82,7 @@ static void copy_obj(struct blt_copy_data *blt,
- 	w = src_obj->x2;
- 	h = src_obj->y2;
- 
--	bb = xe_bo_create_flags(fd, 0, bb_size, visible_vram_memory(fd, 0));
-+	bb = xe_bo_create(fd, 0, bb_size, visible_vram_memory(fd, 0));
- 
- 	blt->color_depth = CD_32bit;
- 	blt->print_bb = params.print_bb;
-@@ -274,8 +274,8 @@ static void evict_single(int fd, int child, const struct config *config)
+-			exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
++			exec_queues[i] = xe_exec_queue_create(fd, vm,
++							      &engine->instance, 0);
+ 			bind_exec_queues[i] = xe_bind_exec_queue_create(fd, vm, 0, true);
+ 			syncobjs[i] = syncobj_create(fd, 0);
  		}
- 
- 		if (config->flags & TEST_SIMPLE) {
--			big_obj = xe_bo_create_flags(fd, vm, kb_left * SZ_1K,
--						     vram_memory(fd, 0));
-+			big_obj = xe_bo_create(fd, vm, kb_left * SZ_1K,
-+					       vram_memory(fd, 0));
- 			break;
- 		}
- 
-diff --git a/tests/intel/xe_exec_balancer.c b/tests/intel/xe_exec_balancer.c
-index 8a0165b8c..da34e117d 100644
---- a/tests/intel/xe_exec_balancer.c
-+++ b/tests/intel/xe_exec_balancer.c
-@@ -70,7 +70,7 @@ static void test_all_active(int fd, int gt, int class)
- 	bo_size = sizeof(*data) * num_placements;
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
- 
--	bo = xe_bo_create_flags(fd, vm, bo_size, visible_vram_if_possible(fd, gt));
-+	bo = xe_bo_create(fd, vm, bo_size, visible_vram_if_possible(fd, gt));
- 	data = xe_bo_map(fd, bo, bo_size);
- 
- 	for (i = 0; i < num_placements; i++) {
-@@ -224,7 +224,7 @@ test_exec(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 		}
- 		memset(data, 0, bo_size);
- 	} else {
--		bo = xe_bo_create_flags(fd, vm, bo_size, visible_vram_if_possible(fd, gt));
-+		bo = xe_bo_create(fd, vm, bo_size, visible_vram_if_possible(fd, gt));
- 		data = xe_bo_map(fd, bo, bo_size);
- 	}
- 
-@@ -452,7 +452,7 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 			igt_assert(data);
- 		}
- 	} else {
--		bo = xe_bo_create_flags(fd, vm, bo_size, visible_vram_if_possible(fd, gt));
-+		bo = xe_bo_create(fd, vm, bo_size, visible_vram_if_possible(fd, gt));
- 		data = xe_bo_map(fd, bo, bo_size);
- 	}
- 	memset(data, 0, bo_size);
-diff --git a/tests/intel/xe_exec_basic.c b/tests/intel/xe_exec_basic.c
-index a401f0165..841696b68 100644
---- a/tests/intel/xe_exec_basic.c
-+++ b/tests/intel/xe_exec_basic.c
-@@ -140,8 +140,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 		if (flags & DEFER_ALLOC)
- 			bo_flags |= DRM_XE_GEM_CREATE_FLAG_DEFER_BACKING;
- 
--		bo = xe_bo_create_flags(fd, n_vm == 1 ? vm[0] : 0,
--					bo_size, bo_flags);
-+		bo = xe_bo_create(fd, n_vm == 1 ? vm[0] : 0, bo_size, bo_flags);
- 		if (!(flags & DEFER_BIND))
- 			data = xe_bo_map(fd, bo, bo_size);
- 	}
-diff --git a/tests/intel/xe_exec_compute_mode.c b/tests/intel/xe_exec_compute_mode.c
-index 20d3fc6e8..beb962f79 100644
---- a/tests/intel/xe_exec_compute_mode.c
-+++ b/tests/intel/xe_exec_compute_mode.c
-@@ -141,8 +141,8 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 			igt_assert(data);
- 		}
- 	} else {
--		bo = xe_bo_create_flags(fd, flags & VM_FOR_BO ? vm : 0,
--					bo_size, visible_vram_if_possible(fd, eci->gt_id));
-+		bo = xe_bo_create(fd, flags & VM_FOR_BO ? vm : 0,
-+				  bo_size, visible_vram_if_possible(fd, eci->gt_id));
- 		data = xe_bo_map(fd, bo, bo_size);
- 	}
- 	memset(data, 0, bo_size);
-diff --git a/tests/intel/xe_exec_fault_mode.c b/tests/intel/xe_exec_fault_mode.c
-index 92d552f97..903ad430d 100644
---- a/tests/intel/xe_exec_fault_mode.c
-+++ b/tests/intel/xe_exec_fault_mode.c
-@@ -151,12 +151,12 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 		}
- 	} else {
- 		if (flags & PREFETCH)
--			bo = xe_bo_create_flags(fd, 0, bo_size,
--						all_memory_regions(fd) |
--						visible_vram_if_possible(fd, 0));
-+			bo = xe_bo_create(fd, 0, bo_size,
-+					  all_memory_regions(fd) |
-+					  visible_vram_if_possible(fd, 0));
- 		else
--			bo = xe_bo_create_flags(fd, 0, bo_size,
--						visible_vram_if_possible(fd, eci->gt_id));
-+			bo = xe_bo_create(fd, 0, bo_size,
-+					  visible_vram_if_possible(fd, eci->gt_id));
- 		data = xe_bo_map(fd, bo, bo_size);
- 	}
- 	memset(data, 0, bo_size);
-diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-index 195e62911..704690e83 100644
---- a/tests/intel/xe_exec_reset.c
-+++ b/tests/intel/xe_exec_reset.c
-@@ -50,8 +50,8 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci)
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
- 			xe_get_default_alignment(fd));
- 
--	bo = xe_bo_create_flags(fd, vm, bo_size,
--				visible_vram_if_possible(fd, eci->gt_id));
-+	bo = xe_bo_create(fd, vm, bo_size,
-+			  visible_vram_if_possible(fd, eci->gt_id));
- 	spin = xe_bo_map(fd, bo, bo_size);
- 
- 	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
-@@ -181,7 +181,7 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
- 			xe_get_default_alignment(fd));
- 
--	bo = xe_bo_create_flags(fd, vm, bo_size, visible_vram_if_possible(fd, gt));
-+	bo = xe_bo_create(fd, vm, bo_size, visible_vram_if_possible(fd, gt));
- 	data = xe_bo_map(fd, bo, bo_size);
- 
- 	for (i = 0; i < n_exec_queues; i++) {
-@@ -367,8 +367,8 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
- 			xe_get_default_alignment(fd));
- 
--	bo = xe_bo_create_flags(fd, vm, bo_size,
--				visible_vram_if_possible(fd, eci->gt_id));
-+	bo = xe_bo_create(fd, vm, bo_size,
-+			  visible_vram_if_possible(fd, eci->gt_id));
- 	data = xe_bo_map(fd, bo, bo_size);
- 
- 	for (i = 0; i < n_exec_queues; i++) {
-@@ -534,8 +534,8 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
- 			xe_get_default_alignment(fd));
- 
--	bo = xe_bo_create_flags(fd, vm, bo_size,
--				visible_vram_if_possible(fd, eci->gt_id));
-+	bo = xe_bo_create(fd, vm, bo_size,
-+			  visible_vram_if_possible(fd, eci->gt_id));
- 	data = xe_bo_map(fd, bo, bo_size);
- 	memset(data, 0, bo_size);
- 
-@@ -661,7 +661,7 @@ static void submit_jobs(struct gt_thread_data *t)
- 	uint32_t bo;
- 	uint32_t *data;
- 
--	bo = xe_bo_create_flags(fd, vm, bo_size, visible_vram_if_possible(fd, 0));
-+	bo = xe_bo_create(fd, vm, bo_size, visible_vram_if_possible(fd, 0));
- 	data = xe_bo_map(fd, bo, bo_size);
- 	data[0] = MI_BATCH_BUFFER_END;
- 
 diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
-index 9c14bfd14..bcc4de8d0 100644
+index 0b7b3d3e9..48e843af5 100644
 --- a/tests/intel/xe_exec_store.c
 +++ b/tests/intel/xe_exec_store.c
-@@ -81,8 +81,8 @@ static void store(int fd)
- 			xe_get_default_alignment(fd));
+@@ -63,7 +63,7 @@ static void store(int fd)
+ 		.syncs = to_user_pointer(&sync),
+ 	};
+ 	struct data *data;
+-	struct drm_xe_engine_class_instance *engine;
++	struct drm_xe_query_engine_info *engine;
+ 	uint32_t vm;
+ 	uint32_t exec_queue;
+ 	uint32_t syncobj;
+@@ -82,14 +82,14 @@ static void store(int fd)
  
- 	hw_engine = xe_hw_engine(fd, 1);
--	bo = xe_bo_create_flags(fd, vm, bo_size,
--				visible_vram_if_possible(fd, hw_engine->gt_id));
-+	bo = xe_bo_create(fd, vm, bo_size,
-+			  visible_vram_if_possible(fd, hw_engine->gt_id));
+ 	engine = xe_engine(fd, 1);
+ 	bo = xe_bo_create(fd, vm, bo_size,
+-			  vram_if_possible(fd, engine->gt_id),
++			  vram_if_possible(fd, engine->instance.gt_id),
+ 			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
  
- 	xe_vm_bind_async(fd, vm, hw_engine->gt_id, bo, 0, addr, bo_size, &sync, 1);
+-	xe_vm_bind_async(fd, vm, engine->gt_id, bo, 0, addr, bo_size, &sync, 1);
++	xe_vm_bind_async(fd, vm, engine->instance.gt_id, bo, 0, addr, bo_size, &sync, 1);
  	data = xe_bo_map(fd, bo, bo_size);
-@@ -150,8 +150,8 @@ static void store_cachelines(int fd, struct drm_xe_engine_class_instance *eci,
- 	sync[0].handle = syncobj_create(fd, 0);
+ 	store_dword_batch(data, addr, value);
  
- 	for (i = 0; i < count; i++) {
--		bo[i] = xe_bo_create_flags(fd, vm, bo_size,
--					       visible_vram_if_possible(fd, eci->gt_id));
-+		bo[i] = xe_bo_create(fd, vm, bo_size,
-+				     visible_vram_if_possible(fd, eci->gt_id));
- 		bo_map[i] = xe_bo_map(fd, bo[i], bo_size);
- 		dst_offset[i] = intel_allocator_alloc_with_strategy(ahnd, bo[i],
- 								    bo_size, 0,
-@@ -235,8 +235,8 @@ static void store_all(int fd, int gt, int class)
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
- 			xe_get_default_alignment(fd));
- 
--	bo = xe_bo_create_flags(fd, vm, bo_size,
--				visible_vram_if_possible(fd, 0));
-+	bo = xe_bo_create(fd, vm, bo_size,
-+			  visible_vram_if_possible(fd, 0));
- 	data = xe_bo_map(fd, bo, bo_size);
- 
- 	xe_for_each_hw_engine(fd, hwe) {
-diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
-index bb979b18c..a9b0c0b09 100644
---- a/tests/intel/xe_exec_threads.c
-+++ b/tests/intel/xe_exec_threads.c
-@@ -106,8 +106,8 @@ test_balancer(int fd, int gt, uint32_t vm, uint64_t addr, uint64_t userptr,
- 			igt_assert(data);
- 		}
- 	} else {
--		bo = xe_bo_create_flags(fd, vm, bo_size,
--					visible_vram_if_possible(fd, gt));
-+		bo = xe_bo_create(fd, vm, bo_size,
-+				  visible_vram_if_possible(fd, gt));
- 		data = xe_bo_map(fd, bo, bo_size);
- 	}
- 	memset(data, 0, bo_size);
-@@ -307,8 +307,8 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 			igt_assert(data);
- 		}
- 	} else {
--		bo = xe_bo_create_flags(fd, 0, bo_size,
--					visible_vram_if_possible(fd, eci->gt_id));
-+		bo = xe_bo_create(fd, 0, bo_size,
-+				  visible_vram_if_possible(fd, eci->gt_id));
- 		data = xe_bo_map(fd, bo, bo_size);
- 	}
- 	memset(data, 0, bo_size);
-@@ -510,8 +510,8 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 			igt_assert(data);
- 		}
- 	} else {
--		bo = xe_bo_create_flags(fd, vm, bo_size,
--					visible_vram_if_possible(fd, eci->gt_id));
-+		bo = xe_bo_create(fd, vm, bo_size,
-+				  visible_vram_if_possible(fd, eci->gt_id));
- 		data = xe_bo_map(fd, bo, bo_size);
- 	}
- 	memset(data, 0, bo_size);
-diff --git a/tests/intel/xe_exercise_blt.c b/tests/intel/xe_exercise_blt.c
-index fd310138d..9c69be3ef 100644
---- a/tests/intel/xe_exercise_blt.c
-+++ b/tests/intel/xe_exercise_blt.c
-@@ -125,7 +125,7 @@ static void fast_copy_emit(int xe, const intel_ctx_t *ctx,
- 	uint32_t bb, width = param.width, height = param.height;
- 	int result;
- 
--	bb = xe_bo_create_flags(xe, 0, bb_size, region1);
-+	bb = xe_bo_create(xe, 0, bb_size, region1);
- 
- 	blt_copy_init(xe, &bltinit);
- 	src = blt_create_object(&bltinit, region1, width, height, bpp, 0,
-@@ -184,7 +184,7 @@ static void fast_copy(int xe, const intel_ctx_t *ctx,
- 	uint32_t width = param.width, height = param.height;
- 	int result;
- 
--	bb = xe_bo_create_flags(xe, 0, bb_size, region1);
-+	bb = xe_bo_create(xe, 0, bb_size, region1);
- 
- 	blt_copy_init(xe, &blt);
- 	src = blt_create_object(&blt, region1, width, height, bpp, 0,
+-	exec_queue = xe_exec_queue_create(fd, vm, engine, 0);
++	exec_queue = xe_exec_queue_create(fd, vm, &engine->instance, 0);
+ 	exec.exec_queue_id = exec_queue;
+ 	exec.address = data->addr;
+ 	sync.flags &= DRM_XE_SYNC_FLAG_SIGNAL;
 diff --git a/tests/intel/xe_intel_bb.c b/tests/intel/xe_intel_bb.c
-index d66996cd5..a3a315297 100644
+index e7a566f62..b64812f9d 100644
 --- a/tests/intel/xe_intel_bb.c
 +++ b/tests/intel/xe_intel_bb.c
-@@ -396,7 +396,7 @@ static void create_in_region(struct buf_ops *bops, uint64_t region)
- 		intel_bb_set_debug(ibb, true);
+@@ -192,7 +192,8 @@ static void simple_bb(struct buf_ops *bops, bool new_context)
  
- 	size = xe_min_page_size(xe, system_memory(xe));
--	handle = xe_bo_create_flags(xe, 0, size, system_memory(xe));
-+	handle = xe_bo_create(xe, 0, size, system_memory(xe));
- 	intel_buf_init_full(bops, handle, &buf,
- 			    width/4, height, 32, 0,
- 			    I915_TILING_NONE, 0,
-diff --git a/tests/intel/xe_mmap.c b/tests/intel/xe_mmap.c
-index 7e7e43c00..a805eabda 100644
---- a/tests/intel/xe_mmap.c
-+++ b/tests/intel/xe_mmap.c
-@@ -52,7 +52,7 @@ test_mmap(int fd, uint32_t flags)
- 
- 	igt_require_f(flags, "Device doesn't support such memory region\n");
- 
--	bo = xe_bo_create_flags(fd, 0, 4096, flags);
-+	bo = xe_bo_create(fd, 0, 4096, flags);
- 
- 	map = xe_bo_map(fd, bo, 4096);
- 	strcpy(map, "Write some data to the BO!");
-@@ -72,8 +72,8 @@ static void test_bad_flags(int fd)
- {
- 	uint64_t size = xe_get_default_alignment(fd);
- 	struct drm_xe_gem_mmap_offset mmo = {
--		.handle = xe_bo_create_flags(fd, 0, size,
--					     visible_vram_if_possible(fd, 0)),
-+		.handle = xe_bo_create(fd, 0, size,
-+				       visible_vram_if_possible(fd, 0)),
- 		.flags = -1u,
- 	};
- 
-@@ -92,8 +92,8 @@ static void test_bad_extensions(int fd)
- 	uint64_t size = xe_get_default_alignment(fd);
- 	struct xe_user_extension ext;
- 	struct drm_xe_gem_mmap_offset mmo = {
--		.handle = xe_bo_create_flags(fd, 0, size,
--					     visible_vram_if_possible(fd, 0)),
-+		.handle = xe_bo_create(fd, 0, size,
-+				       visible_vram_if_possible(fd, 0)),
- 	};
- 
- 	mmo.extensions = to_user_pointer(&ext);
-@@ -113,8 +113,8 @@ static void test_bad_object(int fd)
- {
- 	uint64_t size = xe_get_default_alignment(fd);
- 	struct drm_xe_gem_mmap_offset mmo = {
--		.handle = xe_bo_create_flags(fd, 0, size,
--					     visible_vram_if_possible(fd, 0)),
-+		.handle = xe_bo_create(fd, 0, size,
-+				       visible_vram_if_possible(fd, 0)),
- 	};
- 
- 	mmo.handle = 0xdeadbeef;
-@@ -159,13 +159,13 @@ static void test_small_bar(int fd)
- 	uint32_t *map;
- 
- 	/* 2BIG invalid case */
--	igt_assert_neq(__xe_bo_create_flags(fd, 0, visible_size + 4096,
--					    visible_vram_memory(fd, 0), &bo),
-+	igt_assert_neq(__xe_bo_create(fd, 0, visible_size + 4096,
-+				      visible_vram_memory(fd, 0), &bo),
- 		       0);
- 
- 	/* Normal operation */
--	bo = xe_bo_create_flags(fd, 0, visible_size / 4,
--				visible_vram_memory(fd, 0));
-+	bo = xe_bo_create(fd, 0, visible_size / 4,
-+			  visible_vram_memory(fd, 0));
- 	mmo = xe_bo_mmap_offset(fd, bo);
- 	map = mmap(NULL, 4096, PROT_WRITE, MAP_SHARED, fd, mmo);
- 	igt_assert(map != MAP_FAILED);
-@@ -176,9 +176,9 @@ static void test_small_bar(int fd)
- 	gem_close(fd, bo);
- 
- 	/* Normal operation with system memory spilling */
--	bo = xe_bo_create_flags(fd, 0, visible_size,
--				visible_vram_memory(fd, 0) |
--				system_memory(fd));
-+	bo = xe_bo_create(fd, 0, visible_size,
-+			  visible_vram_memory(fd, 0) |
-+			  system_memory(fd));
- 	mmo = xe_bo_mmap_offset(fd, bo);
- 	map = mmap(NULL, 4096, PROT_WRITE, MAP_SHARED, fd, mmo);
- 	igt_assert(map != MAP_FAILED);
-@@ -189,8 +189,8 @@ static void test_small_bar(int fd)
- 	gem_close(fd, bo);
- 
- 	/* Bogus operation with SIGBUS */
--	bo = xe_bo_create_flags(fd, 0, visible_size + 4096,
--				vram_memory(fd, 0));
-+	bo = xe_bo_create(fd, 0, visible_size + 4096,
-+			  vram_memory(fd, 0));
- 	mmo = xe_bo_mmap_offset(fd, bo);
- 	map = mmap(NULL, 4096, PROT_WRITE, MAP_SHARED, fd, mmo);
- 	igt_assert(map != MAP_FAILED);
+ 	if (new_context) {
+ 		vm = xe_vm_create(xe, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
+-		ctx = xe_exec_queue_create(xe, vm, xe_engine(xe, 0), 0);
++		ctx = xe_exec_queue_create(xe, vm, &xe_engine(xe, 0)->instance,
++					   0);
+ 		intel_bb_destroy(ibb);
+ 		ibb = intel_bb_create_with_context(xe, ctx, vm, NULL, PAGE_SIZE);
+ 		intel_bb_out(ibb, MI_BATCH_BUFFER_END);
 diff --git a/tests/intel/xe_noexec_ping_pong.c b/tests/intel/xe_noexec_ping_pong.c
-index 9c2a70ff3..88ef39783 100644
+index e27cc4582..585af413d 100644
 --- a/tests/intel/xe_noexec_ping_pong.c
 +++ b/tests/intel/xe_noexec_ping_pong.c
-@@ -70,8 +70,8 @@ static void test_ping_pong(int fd, struct drm_xe_engine_class_instance *eci)
- 				  (unsigned long) bo_size,
- 				  (unsigned int) vm[i]);
+@@ -43,7 +43,7 @@
+   *	there is worked queued on one of the VM's compute exec_queues.
+  */
  
--			bo[i][j] = xe_bo_create_flags(fd, vm[i], bo_size,
--						      vram_memory(fd, 0));
-+			bo[i][j] = xe_bo_create(fd, vm[i], bo_size,
-+						vram_memory(fd, 0));
+-static void test_ping_pong(int fd, struct drm_xe_engine_class_instance *eci)
++static void test_ping_pong(int fd, struct drm_xe_query_engine_info *engine)
+ {
+ 	size_t vram_size = xe_vram_size(fd, 0);
+ 	size_t align = xe_get_default_alignment(fd);
+@@ -75,7 +75,8 @@ static void test_ping_pong(int fd, struct drm_xe_engine_class_instance *eci)
  			xe_vm_bind(fd, vm[i], bo[i][j], 0, 0x40000 + j*bo_size,
  				   bo_size, NULL, 0);
  		}
-diff --git a/tests/intel/xe_perf_pmu.c b/tests/intel/xe_perf_pmu.c
-index 196e4d2e6..9f1627727 100644
---- a/tests/intel/xe_perf_pmu.c
-+++ b/tests/intel/xe_perf_pmu.c
-@@ -103,7 +103,7 @@ static void test_any_engine_busyness(int fd, struct drm_xe_engine_class_instance
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
- 			xe_get_default_alignment(fd));
- 
--	bo = xe_bo_create_flags(fd, vm, bo_size, vram_if_possible(fd, eci->gt_id));
-+	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, eci->gt_id));
- 	spin = xe_bo_map(fd, bo, bo_size);
- 
- 	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
-@@ -223,7 +223,7 @@ static void test_engine_group_busyness(int fd, int gt, int class, const char *na
- 	bo_size = sizeof(*data) * num_placements;
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
- 
--	bo = xe_bo_create_flags(fd, vm, bo_size, vram_if_possible(fd, gt));
-+	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, gt));
- 	data = xe_bo_map(fd, bo, bo_size);
- 
- 	for (i = 0; i < num_placements; i++) {
-diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-index 9423984cc..9bfe1acad 100644
---- a/tests/intel/xe_pm.c
-+++ b/tests/intel/xe_pm.c
-@@ -271,8 +271,8 @@ test_exec(device_t device, struct drm_xe_engine_class_instance *eci,
- 	if (check_rpm && runtime_usage_available(device.pci_xe))
- 		rpm_usage = igt_pm_get_runtime_usage(device.pci_xe);
- 
--	bo = xe_bo_create_flags(device.fd_xe, vm, bo_size,
--				visible_vram_if_possible(device.fd_xe, eci->gt_id));
-+	bo = xe_bo_create(device.fd_xe, vm, bo_size,
-+			  visible_vram_if_possible(device.fd_xe, eci->gt_id));
- 	data = xe_bo_map(device.fd_xe, bo, bo_size);
- 
- 	for (i = 0; i < n_exec_queues; i++) {
-@@ -409,7 +409,7 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
- 	threshold = vram_used_mb + (SIZE / 1024 /1024);
- 	igt_require(threshold < vram_total_mb);
- 
--	bo = xe_bo_create_flags(device.fd_xe, 0, SIZE, flags);
-+	bo = xe_bo_create(device.fd_xe, 0, SIZE, flags);
- 	map = xe_bo_map(device.fd_xe, bo, SIZE);
- 	memset(map, 0, SIZE);
- 	munmap(map, SIZE);
-diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
-index c87eeef3c..cc133f5fb 100644
---- a/tests/intel/xe_pm_residency.c
-+++ b/tests/intel/xe_pm_residency.c
-@@ -100,8 +100,8 @@ static void exec_load(int fd, struct drm_xe_engine_class_instance *hwe, unsigned
- 	exec_queue = xe_exec_queue_create(fd, vm, hwe, 0);
- 	bo_size = xe_get_default_alignment(fd);
- 
--	bo = xe_bo_create_flags(fd, vm, bo_size,
--				visible_vram_if_possible(fd, hwe->gt_id));
-+	bo = xe_bo_create(fd, vm, bo_size,
-+			  visible_vram_if_possible(fd, hwe->gt_id));
- 	data = xe_bo_map(fd, bo, bo_size);
- 	syncobj = syncobj_create(fd, 0);
- 
-diff --git a/tests/intel/xe_prime_self_import.c b/tests/intel/xe_prime_self_import.c
-index 536230f9f..378368eaa 100644
---- a/tests/intel/xe_prime_self_import.c
-+++ b/tests/intel/xe_prime_self_import.c
-@@ -105,7 +105,7 @@ static void test_with_fd_dup(void)
- 	fd1 = drm_open_driver(DRIVER_XE);
- 	fd2 = drm_open_driver(DRIVER_XE);
- 
--	handle = xe_bo_create_flags(fd1, 0, bo_size, visible_vram_if_possible(fd1, 0));
-+	handle = xe_bo_create(fd1, 0, bo_size, visible_vram_if_possible(fd1, 0));
- 
- 	dma_buf_fd1 = prime_handle_to_fd(fd1, handle);
- 	gem_close(fd1, handle);
-@@ -138,8 +138,8 @@ static void test_with_two_bos(void)
- 	fd1 = drm_open_driver(DRIVER_XE);
- 	fd2 = drm_open_driver(DRIVER_XE);
- 
--	handle1 = xe_bo_create_flags(fd1, 0, bo_size, visible_vram_if_possible(fd1, 0));
--	handle2 = xe_bo_create_flags(fd1, 0, bo_size, visible_vram_if_possible(fd1, 0));
-+	handle1 = xe_bo_create(fd1, 0, bo_size, visible_vram_if_possible(fd1, 0));
-+	handle2 = xe_bo_create(fd1, 0, bo_size, visible_vram_if_possible(fd1, 0));
- 
- 	dma_buf_fd = prime_handle_to_fd(fd1, handle1);
- 	handle_import = prime_fd_to_handle(fd2, dma_buf_fd);
-@@ -174,8 +174,8 @@ static void test_with_one_bo_two_files(void)
- 	fd1 = drm_open_driver(DRIVER_XE);
- 	fd2 = drm_open_driver(DRIVER_XE);
- 
--	handle_orig = xe_bo_create_flags(fd1, 0, bo_size,
--					 visible_vram_if_possible(fd1, 0));
-+	handle_orig = xe_bo_create(fd1, 0, bo_size,
-+				   visible_vram_if_possible(fd1, 0));
- 	dma_buf_fd1 = prime_handle_to_fd(fd1, handle_orig);
- 
- 	flink_name = gem_flink(fd1, handle_orig);
-@@ -207,7 +207,7 @@ static void test_with_one_bo(void)
- 	fd1 = drm_open_driver(DRIVER_XE);
- 	fd2 = drm_open_driver(DRIVER_XE);
- 
--	handle = xe_bo_create_flags(fd1, 0, bo_size, visible_vram_if_possible(fd1, 0));
-+	handle = xe_bo_create(fd1, 0, bo_size, visible_vram_if_possible(fd1, 0));
- 
- 	dma_buf_fd = prime_handle_to_fd(fd1, handle);
- 	handle_import1 = prime_fd_to_handle(fd2, dma_buf_fd);
-@@ -293,8 +293,8 @@ static void *thread_fn_reimport_vs_close(void *p)
- 
- 	fds[0] = drm_open_driver(DRIVER_XE);
- 
--	handle = xe_bo_create_flags(fds[0], 0, bo_size,
--				    visible_vram_if_possible(fds[0], 0));
-+	handle = xe_bo_create(fds[0], 0, bo_size,
-+			      visible_vram_if_possible(fds[0], 0));
- 
- 	fds[1] = prime_handle_to_fd(fds[0], handle);
- 	pthread_barrier_init(&g_barrier, NULL, num_threads);
-@@ -336,8 +336,8 @@ static void *thread_fn_export_vs_close(void *p)
- 
- 	igt_until_timeout(g_time_out) {
- 		/* We want to race gem close against prime export on handle one.*/
--		handle = xe_bo_create_flags(fd, 0, bo_size,
--					    visible_vram_if_possible(fd, 0));
-+		handle = xe_bo_create(fd, 0, bo_size,
-+				      visible_vram_if_possible(fd, 0));
- 		if (handle != 1)
- 			gem_close(fd, handle);
- 
-@@ -433,8 +433,8 @@ static void test_llseek_size(void)
- 	for (i = 0; i < 10; i++) {
- 		int bufsz = xe_get_default_alignment(fd) << i;
- 
--		handle = xe_bo_create_flags(fd, 0, bufsz,
--					    visible_vram_if_possible(fd, 0));
-+		handle = xe_bo_create(fd, 0, bufsz,
-+				      visible_vram_if_possible(fd, 0));
- 		dma_buf_fd = prime_handle_to_fd(fd, handle);
- 
- 		gem_close(fd, handle);
-@@ -462,8 +462,8 @@ static void test_llseek_bad(void)
- 
- 	fd = drm_open_driver(DRIVER_XE);
- 
--	handle = xe_bo_create_flags(fd, 0, bo_size,
--				    visible_vram_if_possible(fd, 0));
-+	handle = xe_bo_create(fd, 0, bo_size,
-+			      visible_vram_if_possible(fd, 0));
- 	dma_buf_fd = prime_handle_to_fd(fd, handle);
- 
- 	gem_close(fd, handle);
-diff --git a/tests/intel/xe_spin_batch.c b/tests/intel/xe_spin_batch.c
-index 261fde9af..c1b161f9c 100644
---- a/tests/intel/xe_spin_batch.c
-+++ b/tests/intel/xe_spin_batch.c
-@@ -169,7 +169,7 @@ static void xe_spin_fixed_duration(int fd)
- 	exec_queue = xe_exec_queue_create_class(fd, vm, DRM_XE_ENGINE_CLASS_COPY);
- 	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
- 	bo_size = ALIGN(sizeof(*spin) + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
--	bo = xe_bo_create_flags(fd, vm, bo_size, vram_if_possible(fd, 0));
-+	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, 0));
- 	spin = xe_bo_map(fd, bo, bo_size);
- 	spin_addr = intel_allocator_alloc_with_strategy(ahnd, bo, bo_size, 0,
- 							ALLOC_STRATEGY_LOW_TO_HIGH);
-diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-index b4577fb6e..52241314c 100644
---- a/tests/intel/xe_vm.c
-+++ b/tests/intel/xe_vm.c
-@@ -51,8 +51,8 @@ write_dwords(int fd, uint32_t vm, int n_dwords, uint64_t *addrs)
- 	batch_size = (n_dwords * 4 + 1) * sizeof(uint32_t);
- 	batch_size = ALIGN(batch_size + xe_cs_prefetch_size(fd),
- 			   xe_get_default_alignment(fd));
--	batch_bo = xe_bo_create_flags(fd, vm, batch_size,
--				      visible_vram_if_possible(fd, 0));
-+	batch_bo = xe_bo_create(fd, vm, batch_size,
-+				visible_vram_if_possible(fd, 0));
- 	batch_map = xe_bo_map(fd, batch_bo, batch_size);
- 
- 	for (i = 0; i < n_dwords; i++) {
-@@ -116,7 +116,7 @@ __test_bind_one_bo(int fd, uint32_t vm, int n_addrs, uint64_t *addrs)
- 		vms = malloc(sizeof(*vms) * n_addrs);
- 		igt_assert(vms);
- 	}
--	bo = xe_bo_create_flags(fd, vm, bo_size, visible_vram_if_possible(fd, 0));
-+	bo = xe_bo_create(fd, vm, bo_size, visible_vram_if_possible(fd, 0));
- 	map = xe_bo_map(fd, bo, bo_size);
- 	memset(map, 0, bo_size);
- 
-@@ -267,7 +267,7 @@ static void test_partial_unbinds(int fd)
- {
- 	uint32_t vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 	size_t bo_size = 3 * xe_get_default_alignment(fd);
--	uint32_t bo = xe_bo_create_flags(fd, vm, bo_size, vram_if_possible(fd, 0));
-+	uint32_t bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, 0));
- 	uint64_t unbind_size = bo_size / 3;
- 	uint64_t addr = 0x1a0000;
- 
-@@ -316,7 +316,7 @@ static void unbind_all(int fd, int n_vmas)
- 	};
- 
- 	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
--	bo = xe_bo_create_flags(fd, vm, bo_size, vram_if_possible(fd, 0));
-+	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, 0));
- 
- 	for (i = 0; i < n_vmas; ++i)
- 		xe_vm_bind_async(fd, vm, 0, bo, 0, addr + i * bo_size,
-@@ -421,8 +421,8 @@ shared_pte_page(int fd, struct drm_xe_engine_class_instance *eci, int n_bo,
- 		addr_stride = addr_stride + bo_size;
- 
- 	for (i = 0; i < n_bo; ++i) {
--		bo[i] = xe_bo_create_flags(fd, vm, bo_size,
--					   visible_vram_if_possible(fd, eci->gt_id));
-+		bo[i] = xe_bo_create(fd, vm, bo_size,
-+				     visible_vram_if_possible(fd, eci->gt_id));
- 		data[i] = xe_bo_map(fd, bo[i], bo_size);
+-		exec_queues[i] = xe_exec_queue_create(fd, vm[i], eci, 0);
++		exec_queues[i] = xe_exec_queue_create(fd, vm[i],
++						      &engine->instance, 0);
  	}
  
-@@ -600,8 +600,8 @@ test_bind_execqueues_independent(int fd, struct drm_xe_engine_class_instance *ec
- 	bo_size = sizeof(*data) * N_EXEC_QUEUES;
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
- 			xe_get_default_alignment(fd));
--	bo = xe_bo_create_flags(fd, vm, bo_size,
--				visible_vram_if_possible(fd, eci->gt_id));
-+	bo = xe_bo_create(fd, vm, bo_size,
-+			  visible_vram_if_possible(fd, eci->gt_id));
- 	data = xe_bo_map(fd, bo, bo_size);
- 
- 	for (i = 0; i < N_EXEC_QUEUES; i++) {
-@@ -781,8 +781,8 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
- 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
- 			xe_get_default_alignment(fd));
- 
--	bo = xe_bo_create_flags(fd, vm, bo_size,
--				visible_vram_if_possible(fd, eci->gt_id));
-+	bo = xe_bo_create(fd, vm, bo_size,
-+			  visible_vram_if_possible(fd, eci->gt_id));
- 	data = xe_bo_map(fd, bo, bo_size);
- 
- 	if (flags & BIND_ARRAY_BIND_EXEC_QUEUE_FLAG)
-@@ -979,8 +979,8 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
- 		igt_skip_on(xe_visible_vram_size(fd, 0) && bo_size >
- 			    xe_visible_vram_size(fd, 0));
- 
--		bo = xe_bo_create_flags(fd, vm, bo_size,
--					visible_vram_if_possible(fd, eci->gt_id));
-+		bo = xe_bo_create(fd, vm, bo_size,
-+				  visible_vram_if_possible(fd, eci->gt_id));
- 		map = xe_bo_map(fd, bo, bo_size);
- 	}
- 
-@@ -1273,8 +1273,8 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
- 			    MAP_ANONYMOUS, -1, 0);
- 		igt_assert(map != MAP_FAILED);
- 	} else {
--		bo = xe_bo_create_flags(fd, vm, bo_size,
--					visible_vram_if_possible(fd, eci->gt_id));
-+		bo = xe_bo_create(fd, vm, bo_size,
-+				  visible_vram_if_possible(fd, eci->gt_id));
- 		map = xe_bo_map(fd, bo, bo_size);
- 	}
- 	memset(map, 0, bo_size);
-@@ -1577,9 +1577,9 @@ test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
- 		igt_assert(map0 != MAP_FAILED);
- 		igt_assert(map1 != MAP_FAILED);
- 	} else {
--		bo0 = xe_bo_create_flags(fd, vm, bo_size, vram_if_possible(fd, eci->gt_id));
-+		bo0 = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, eci->gt_id));
- 		map0 = xe_bo_map(fd, bo0, bo_size);
--		bo1 = xe_bo_create_flags(fd, vm, bo_size, vram_if_possible(fd, eci->gt_id));
-+		bo1 = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, eci->gt_id));
- 		map1 = xe_bo_map(fd, bo1, bo_size);
- 	}
- 	memset(map0, 0, bo_size);
+ 	igt_info("Now sleeping for %ds.\n", SECONDS_TO_WAIT);
 diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
-index 08d588add..eaef0185f 100644
+index ad8adc2b0..bab2bed42 100644
 --- a/tests/intel/xe_waitfence.c
 +++ b/tests/intel/xe_waitfence.c
-@@ -96,19 +96,19 @@ waitfence(int fd, enum waittype wt)
- 	int64_t timeout;
- 
- 	uint32_t vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
--	bo_1 = xe_bo_create_flags(fd, vm, 0x40000, MY_FLAG);
-+	bo_1 = xe_bo_create(fd, vm, 0x40000, MY_FLAG);
- 	do_bind(fd, vm, bo_1, 0, 0x200000, 0x40000, 1);
--	bo_2 = xe_bo_create_flags(fd, vm, 0x40000, MY_FLAG);
-+	bo_2 = xe_bo_create(fd, vm, 0x40000, MY_FLAG);
- 	do_bind(fd, vm, bo_2, 0, 0xc0000000, 0x40000, 2);
--	bo_3 = xe_bo_create_flags(fd, vm, 0x40000, MY_FLAG);
-+	bo_3 = xe_bo_create(fd, vm, 0x40000, MY_FLAG);
- 	do_bind(fd, vm, bo_3, 0, 0x180000000, 0x40000, 3);
--	bo_4 = xe_bo_create_flags(fd, vm, 0x10000, MY_FLAG);
-+	bo_4 = xe_bo_create(fd, vm, 0x10000, MY_FLAG);
- 	do_bind(fd, vm, bo_4, 0, 0x140000000, 0x10000, 4);
--	bo_5 = xe_bo_create_flags(fd, vm, 0x100000, MY_FLAG);
-+	bo_5 = xe_bo_create(fd, vm, 0x100000, MY_FLAG);
- 	do_bind(fd, vm, bo_5, 0, 0x100000000, 0x100000, 5);
--	bo_6 = xe_bo_create_flags(fd, vm, 0x1c0000, MY_FLAG);
-+	bo_6 = xe_bo_create(fd, vm, 0x1c0000, MY_FLAG);
- 	do_bind(fd, vm, bo_6, 0, 0xc0040000, 0x1c0000, 6);
--	bo_7 = xe_bo_create_flags(fd, vm, 0x10000, MY_FLAG);
-+	bo_7 = xe_bo_create(fd, vm, 0x10000, MY_FLAG);
- 	do_bind(fd, vm, bo_7, 0, 0xeffff0000, 0x10000, 7);
- 
- 	if (wt == RELTIME) {
-@@ -173,7 +173,7 @@ invalid_flag(int fd)
- 
- 	uint32_t vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 
--	bo = xe_bo_create_flags(fd, vm, 0x40000, MY_FLAG);
-+	bo = xe_bo_create(fd, vm, 0x40000, MY_FLAG);
- 
- 	do_bind(fd, vm, bo, 0, 0x200000, 0x40000, 1);
- 
-@@ -198,7 +198,7 @@ invalid_ops(int fd)
- 
- 	uint32_t vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 
--	bo = xe_bo_create_flags(fd, vm, 0x40000, MY_FLAG);
-+	bo = xe_bo_create(fd, vm, 0x40000, MY_FLAG);
- 
- 	do_bind(fd, vm, bo, 0, 0x200000, 0x40000, 1);
- 
-@@ -223,7 +223,7 @@ invalid_engine(int fd)
- 
- 	uint32_t vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
- 
--	bo = xe_bo_create_flags(fd, vm, 0x40000, MY_FLAG);
-+	bo = xe_bo_create(fd, vm, 0x40000, MY_FLAG);
- 
- 	do_bind(fd, vm, bo, 0, 0x200000, 0x40000, 1);
- 
-diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
-index 337fef77e..1e34eaa54 100644
---- a/tests/kms_addfb_basic.c
-+++ b/tests/kms_addfb_basic.c
-@@ -307,7 +307,7 @@ static void invalid_tests(int fd)
- 			handle = gem_create_in_memory_regions(fd, size, REGION_SMEM);
- 		} else {
- 			igt_require(xe_has_vram(fd));
--			handle = xe_bo_create_flags(fd, 0, size, system_memory(fd));
-+			handle = xe_bo_create(fd, 0, size, system_memory(fd));
- 		}
- 
- 		f.handles[0] = handle;
-diff --git a/tests/kms_getfb.c b/tests/kms_getfb.c
-index e6b8dd873..2d93a032d 100644
---- a/tests/kms_getfb.c
-+++ b/tests/kms_getfb.c
-@@ -210,7 +210,7 @@ static void get_ccs_fb(int fd, struct drm_mode_fb_cmd2 *ret)
- 	if (is_i915_device(fd))
- 		add.handles[0] = gem_buffer_create_fb_obj(fd, size);
- 	else
--		add.handles[0] = xe_bo_create_flags(fd, 0, size, vram_if_possible(fd, 0));
-+		add.handles[0] = xe_bo_create(fd, 0, size, vram_if_possible(fd, 0));
- 	igt_require(add.handles[0] != 0);
- 
- 	if (!HAS_FLATCCS(devid))
+@@ -81,7 +81,7 @@ enum waittype {
+ static void
+ waitfence(int fd, enum waittype wt)
+ {
+-	struct drm_xe_engine_class_instance *eci = NULL;
++	struct drm_xe_query_engine_info *engine = NULL;
+ 	struct timespec ts;
+ 	int64_t current, signalled;
+ 	uint32_t bo_1;
+@@ -114,11 +114,11 @@ waitfence(int fd, enum waittype wt)
+ 		igt_debug("wait type: RELTIME - timeout: %ld, timeout left: %ld\n",
+ 			  MS_TO_NS(10), timeout);
+ 	} else if (wt == ENGINE) {
+-		eci = xe_engine(fd, 1);
++		engine = xe_engine(fd, 1);
+ 		clock_gettime(CLOCK_MONOTONIC, &ts);
+ 		current = ts.tv_sec * 1e9 + ts.tv_nsec;
+ 		timeout = current + MS_TO_NS(10);
+-		signalled = wait_with_eci_abstime(fd, &wait_fence, 7, eci, timeout);
++		signalled = wait_with_eci_abstime(fd, &wait_fence, 7, &engine->instance, timeout);
+ 		igt_debug("wait type: ENGINE ABSTIME - timeout: %" PRId64
+ 			  ", signalled: %" PRId64
+ 			  ", elapsed: %" PRId64 "\n",
 -- 
 2.34.1
