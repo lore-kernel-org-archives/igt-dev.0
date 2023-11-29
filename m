@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0C4E410E205
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Nov 2023 14:04:26 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 526A010E53C
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Nov 2023 14:04:27 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 29 Nov 2023 19:16:55 +0530
-Message-Id: <20231129134657.2826744-5-bhanuprakash.modem@intel.com>
+Date: Wed, 29 Nov 2023 19:16:56 +0530
+Message-Id: <20231129134657.2826744-6-bhanuprakash.modem@intel.com>
 In-Reply-To: <20231129134657.2826744-1-bhanuprakash.modem@intel.com>
 References: <20231129134657.2826744-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 4/6] tests/kms_vrr: Fix bigjoiner constraint
+Subject: [igt-dev] [i-g-t 5/6] tests/kms_vrr: Add new subtest to switch RR
+ without modeset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,133 +23,257 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Before starting the subtest, we are checking the selected pipe/output
-combo validity with default mode, but inside the subtest we are using
-the mode with highest resolution.
+Add new subtest to switch between low refresh rate to high
+refresh rate and vice versa seamlessly without modeset.
 
-Few panels exposing 4K as a default mode even though it supports 8K,
-in this scenario test may misbehave due to the bigjoiner involvement.
+Below are the sequence of operations to perform:
+
+With VRR:
++---------------------------+
+| Step | VRR  | Mode | Flip |
++------+------+------+------+
+| 1    | Off  | High | Yes  |
+| 2    | On   | Low  | Yes  |
+| 3    | On   | High | Yes  |
+| 4    | Off  | High | No   |
++------+------+------+------+
+
+Without VRR:
++---------------------------+
+| Step | VRR  | Mode | Flip |
++------+------+------+------+
+| 1    | Off  | High | Yes  |
+| 2    | Off  | Low  | Yes  |
+| 3    | Off  | High | Yes  |
++------+------+------+------+
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_vrr.c | 67 +++++++++++++++++++++++++++++++------------------
- 1 file changed, 42 insertions(+), 25 deletions(-)
+ tests/kms_vrr.c | 136 +++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 124 insertions(+), 12 deletions(-)
 
 diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 09b97862e..363649294 100644
+index 363649294..1d2e3d70c 100644
 --- a/tests/kms_vrr.c
 +++ b/tests/kms_vrr.c
-@@ -230,37 +230,21 @@ static void set_vrr_on_pipe(data_t *data, enum pipe pipe, bool enabled)
- /* Prepare the display for testing on the given pipe. */
+@@ -53,6 +53,10 @@
+  * SUBTEST: flipline
+  * Description: Make sure that flips happen at flipline decision boundary.
+  *
++ * SUBTEST: seamless-rr-switch
++ * Description: Test to switch RR seamlessly without modeset.
++ * Functionality: adaptive_sync, drrs, lrr
++ *
+  * SUBTEST: negative-basic
+  * Description: Make sure that VRR should not be enabled on the Non-VRR panel.
+  */
+@@ -70,7 +74,14 @@ enum {
+ 	TEST_DPMS = 1 << 1,
+ 	TEST_SUSPEND = 1 << 2,
+ 	TEST_FLIPLINE = 1 << 3,
+-	TEST_NEGATIVE = 1 << 4,
++	TEST_SEAMLESS_RR = 1 << 4,
++	TEST_NEGATIVE = 1 << 5,
++};
++
++enum {
++	HIGH_RR_MODE,
++	LOW_RR_MODE,
++	RR_MODES_COUNT,
+ };
+ 
+ typedef struct range {
+@@ -85,6 +96,7 @@ typedef struct data {
+ 	igt_fb_t fb0;
+ 	igt_fb_t fb1;
+ 	range_t range;
++	drmModeModeInfo switch_modes[RR_MODES_COUNT];
+ } data_t;
+ 
+ typedef struct vtest_ns {
+@@ -169,6 +181,24 @@ output_mode_with_maxrate(igt_output_t *output, unsigned int vrr_max)
+ 	return mode;
+ }
+ 
++static drmModeModeInfo
++low_rr_mode_with_same_res(igt_output_t *output, unsigned int vrr_min)
++{
++	int i;
++	drmModeConnectorPtr connector = output->config.connector;
++	drmModeModeInfo mode = *igt_output_get_mode(output);
++
++	for (i = 0; i < connector->count_modes; i++)
++		/* TODO: Improve checks for downclock */
++		if (connector->modes[i].hdisplay == mode.hdisplay &&
++		    connector->modes[i].vdisplay == mode.vdisplay &&
++		    connector->modes[i].vrefresh < mode.vrefresh &&
++		    connector->modes[i].vrefresh >= vrr_min)
++			mode = connector->modes[i];
++
++	return mode;
++}
++
+ /* Read min and max vrr range from the connector debugfs. */
+ static range_t
+ get_vrr_range(data_t *data, igt_output_t *output)
+@@ -231,7 +261,7 @@ static void set_vrr_on_pipe(data_t *data, enum pipe pipe, bool enabled)
  static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
  {
--	drmModeModeInfo mode;
  	cairo_t *cr;
--
--	/* Reset output */
--	igt_display_reset(&data->display);
--	igt_output_set_pipe(output, pipe);
--
--	/* Capture VRR range */
--	data->range = get_vrr_range(data, output);
--
--	/* Override mode with max vrefresh.
--	 *   - vrr_min range should be less than the override mode vrefresh.
--	 *   - Limit the vrr_max range with the override mode vrefresh.
--	 */
--	mode = output_mode_with_maxrate(output, data->range.max);
--	igt_require(mode.vrefresh > data->range.min);
--	data->range.max = mode.vrefresh;
--	igt_output_override_mode(output, &mode);
-+	drmModeModeInfo *mode = igt_output_get_mode(output);
+-	drmModeModeInfo *mode = igt_output_get_mode(output);
++	drmModeModeInfo *mode = &data->switch_modes[HIGH_RR_MODE];
  
  	/* Prepare resources */
--	igt_create_color_fb(data->drm_fd, mode.hdisplay, mode.vdisplay,
-+	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
- 			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
- 			    0.50, 0.50, 0.50, &data->fb0);
+ 	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+@@ -457,7 +487,9 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
  
--	igt_create_color_fb(data->drm_fd, mode.hdisplay, mode.vdisplay,
-+	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
- 			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
- 			    0.50, 0.50, 0.50, &data->fb1);
- 
- 	cr = igt_get_cairo_ctx(data->drm_fd, &data->fb0);
- 
--	igt_paint_color(cr, 0, 0, mode.hdisplay / 10, mode.vdisplay / 10,
-+	igt_paint_color(cr, 0, 0, mode->hdisplay / 10, mode->vdisplay / 10,
- 			1.00, 0.00, 0.00);
- 
- 	igt_put_cairo_ctx(cr);
-@@ -483,7 +467,36 @@ static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *output)
+ static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *output)
+ {
+-	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED, false);
++	if (vrr_capable(output))
++		igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED, false);
++
+ 	igt_plane_set_fb(data->primary, NULL);
+ 	igt_output_set_pipe(output, PIPE_NONE);
+ 	igt_output_override_mode(output, NULL);
+@@ -467,9 +499,64 @@ static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *output)
  	igt_remove_fb(data->drm_fd, &data->fb0);
  }
  
--static bool config_constraint(igt_output_t *output, uint32_t flags)
-+static bool output_constraint(data_t *data, igt_output_t *output)
-+{
-+	drmModeModeInfo mode;
+-static bool output_constraint(data_t *data, igt_output_t *output)
++static void
++test_seamless_rr_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ {
+-	drmModeModeInfo mode;
++	uint32_t result;
++	vtest_ns_t vtest_ns;
++	uint64_t rate;
++	bool vrr = vrr_capable(output);
 +
-+	/* Reset output */
-+	igt_display_reset(&data->display);
++	igt_info("Use HIGH_RR Mode as default (VRR: OFF): ");
++	kmstest_dump_mode(&data->switch_modes[HIGH_RR_MODE]);
 +
-+	/* Capture VRR range */
-+	data->range = get_vrr_range(data, output);
++	prepare_test(data, output, pipe);
++	vtest_ns = get_test_rate_ns(data->range);
 +
-+	/*
-+	 * Override mode with max vrefresh.
-+	 *   - vrr_min range should be less than the override mode vrefresh.
-+	 *   - Limit the vrr_max range with the override mode vrefresh.
-+	 */
-+	mode = output_mode_with_maxrate(output, data->range.max);
-+	if (mode.vrefresh < data->range.min)
-+		return false;
++	rate = vtest_ns.max;
++	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
++	igt_assert_f(result < 10,
++		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR off threshold exceeded, result was %u%%\n",
++		     data->range.max, rate, result);
 +
-+	data->range.max = mode.vrefresh;
++	/* Switch to low rr mode without modeset. */
++	igt_info("Switch to LOW_RR Mode (VRR: %s): ", vrr ? "ON" : "OFF");
++	kmstest_dump_mode(&data->switch_modes[LOW_RR_MODE]);
++	igt_output_override_mode(output, &data->switch_modes[LOW_RR_MODE]);
++	if (vrr)
++		igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED, true);
++	igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
 +
-+	igt_info("Override Mode: ");
-+	kmstest_dump_mode(&mode);
++	rate = vtest_ns.min;
++	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
++	igt_assert_f(vrr ? (result > 75) : (result < 10),
++		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold %s exceeded, result was %u%%\n",
++		     data->range.min, rate, vrr ? "on" : "off", vrr ? "not reached" : "exceeded", result);
 +
-+	igt_output_override_mode(output, &mode);
++	/* Switch back to high rr mode without modeset. */
++	igt_info("Switch back to HIGH_RR Mode (VRR: %s): ", vrr ? "ON" : "OFF");
++	kmstest_dump_mode(&data->switch_modes[HIGH_RR_MODE]);
++	igt_output_override_mode(output, &data->switch_modes[HIGH_RR_MODE]);
++	igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
 +
-+	return true;
++	rate = vtest_ns.max;
++	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
++	igt_assert_f(vrr ? (result > 75) : (result < 10),
++		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold %s exceeded, result was %u%%\n",
++		     data->range.max, rate, vrr ? "on" : "off", vrr ? "not reached" : "exceeded", result);
++
++	if (vrr) {
++		igt_info("Disable VRR.\n");
++		igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED, true);
++		igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
++	}
 +}
 +
-+static bool config_constraint(data_t *data, igt_output_t *output, uint32_t flags)
- {
- 	if (!has_vrr(output))
- 		return false;
-@@ -495,6 +508,9 @@ static bool config_constraint(igt_output_t *output, uint32_t flags)
- 	if (!(flags & TEST_NEGATIVE) && !vrr_capable(output))
- 		return false;
++static bool output_constraint(data_t *data, igt_output_t *output, uint32_t flags)
++{
++	if ((flags & TEST_SEAMLESS_RR) &&
++	    output->config.connector->connector_type != DRM_MODE_CONNECTOR_eDP)
++		return false;
  
-+	if (!output_constraint(data, output))
+ 	/* Reset output */
+ 	igt_display_reset(&data->display);
+@@ -477,21 +564,40 @@ static bool output_constraint(data_t *data, igt_output_t *output)
+ 	/* Capture VRR range */
+ 	data->range = get_vrr_range(data, output);
+ 
++	/*
++	 * FIXME: Read the DRRS capability, currently assuming:
++	 * - Panel should contain 2 modes only
++	 * - Both modes should have the same resolution but different RR
++	 */
++	if (!vrr_capable(output) && output->config.connector->count_modes != 2)
 +		return false;
 +
+ 	/*
+ 	 * Override mode with max vrefresh.
+ 	 *   - vrr_min range should be less than the override mode vrefresh.
+ 	 *   - Limit the vrr_max range with the override mode vrefresh.
+ 	 */
+-	mode = output_mode_with_maxrate(output, data->range.max);
+-	if (mode.vrefresh < data->range.min)
++	data->switch_modes[HIGH_RR_MODE] = output_mode_with_maxrate(output, data->range.max);
++	if (data->switch_modes[HIGH_RR_MODE].vrefresh < data->range.min)
+ 		return false;
+ 
+-	data->range.max = mode.vrefresh;
++	data->range.max = data->switch_modes[HIGH_RR_MODE].vrefresh;
+ 
+ 	igt_info("Override Mode: ");
+-	kmstest_dump_mode(&mode);
++	kmstest_dump_mode(&data->switch_modes[HIGH_RR_MODE]);
++
++	igt_output_override_mode(output, &data->switch_modes[HIGH_RR_MODE]);
+ 
+-	igt_output_override_mode(output, &mode);
++	if (!(flags & TEST_SEAMLESS_RR))
++		return true;
++
++	/* Search for a low refresh rate mode */
++	data->switch_modes[LOW_RR_MODE] =
++		low_rr_mode_with_same_res(output, data->range.min);
++	if (data->switch_modes[LOW_RR_MODE].vrefresh == data->switch_modes[HIGH_RR_MODE].vrefresh)
++		return false;
++
++	data->range.min = data->switch_modes[LOW_RR_MODE].vrefresh;
+ 
  	return true;
  }
+@@ -505,10 +611,10 @@ static bool config_constraint(data_t *data, igt_output_t *output, uint32_t flags
+ 	if ((flags & TEST_NEGATIVE) && vrr_capable(output))
+ 		return false;
  
-@@ -507,16 +523,17 @@ run_vrr_test(data_t *data, test_t test, uint32_t flags)
- 	for_each_connected_output(&data->display, output) {
- 		enum pipe pipe;
+-	if (!(flags & TEST_NEGATIVE) && !vrr_capable(output))
++	if (!(flags & (TEST_SEAMLESS_RR | TEST_NEGATIVE)) && !vrr_capable(output))
+ 		return false;
  
--		if (!config_constraint(output, flags))
-+		if (!config_constraint(data, output, flags))
- 			continue;
+-	if (!output_constraint(data, output))
++	if (!output_constraint(data, output, flags))
+ 		return false;
  
- 		for_each_pipe(&data->display, pipe) {
- 			if (igt_pipe_connector_valid(pipe, output)) {
--				igt_display_reset(&data->display);
--
- 				igt_output_set_pipe(output, pipe);
--				if (!intel_pipe_output_combo_valid(&data->display))
+ 	return true;
+@@ -584,6 +690,12 @@ igt_main
+ 	igt_subtest_with_dynamic("negative-basic")
+ 		run_vrr_test(&data, test_basic, TEST_NEGATIVE);
+ 
++	igt_describe("Test to switch RR seamlessly without modeset.");
++	igt_subtest_with_dynamic("seamless-rr-switch") {
++		igt_require_intel(data.drm_fd);
++		run_vrr_test(&data, test_seamless_rr_basic, TEST_SEAMLESS_RR);
++	}
 +
-+				if (!intel_pipe_output_combo_valid(&data->display)) {
-+					igt_output_set_pipe(output, PIPE_NONE);
- 					continue;
-+				}
- 
- 				igt_dynamic_f("pipe-%s-%s",
- 					      kmstest_pipe_name(pipe), output->name)
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
+ 		drm_close_driver(data.drm_fd);
 -- 
 2.40.0
