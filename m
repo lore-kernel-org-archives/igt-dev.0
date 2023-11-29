@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4A40110E206
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Nov 2023 16:41:55 +0000 (UTC)
-Date: Fri, 24 Nov 2023 17:41:31 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6798A10E1CE
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Nov 2023 13:00:44 +0000 (UTC)
+Date: Wed, 29 Nov 2023 14:00:40 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20231124164131.i6fklyzzl456alpq@kamilkon-desk.igk.intel.com>
-References: <20231124081834.33714-1-mauro.chehab@linux.intel.com>
- <20231124081834.33714-2-mauro.chehab@linux.intel.com>
+Message-ID: <20231129130040.fnz4bte22es7ftsf@kamilkon-desk.igk.intel.com>
+References: <20231128164551.77343-1-mauro.chehab@linux.intel.com>
+ <20231128164551.77343-4-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231124081834.33714-2-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] scripts/test_list.py: better expand
- subtests
+In-Reply-To: <20231128164551.77343-4-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH RFC 3/3] igt_doc: ensure that the driver name
+ will be there
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,53 +26,93 @@ To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Mauro,
-On 2023-11-24 at 09:16:05 +0100, Mauro Carvalho Chehab wrote:
+On 2023-11-28 at 17:43:03 +0100, Mauro Carvalho Chehab wrote:
+
+One more nit about subject:
+
+[PATCH RFC 3/3] igt_doc: ensure that the driver name will be there
+
+Please add "scripts/" there, also imho it could be shorter (I am not sure):
+
+[PATCH RFC 3/3] scripts/igt_doc: ensure driver name will be there
+
+Regards,
+Kamil
+
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
-> Use a better regex when splitting subtests, as used when reading
-> testlists.
-> 
 > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
 > ---
->  scripts/test_list.py | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
+>  scripts/igt_doc.py   | 22 ++++++++++++++++++----
+>  scripts/test_list.py |  5 +++++
+>  2 files changed, 23 insertions(+), 4 deletions(-)
 > 
+> diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
+> index a807d2bb373d..c982a97148c9 100755
+> --- a/scripts/igt_doc.py
+> +++ b/scripts/igt_doc.py
+> @@ -61,9 +61,20 @@ class IgtTestList(TestList):
+>          split_regex = re.compile(r",\s*")
+>  
+>          for subname, subtest in subtest_dict.items():
+> -            run_type = subtest.get("Run type", "other")
+> +            run_types = subtest.get("Run type", "other")
+> +            run_type_set = set(split_regex.split(run_types))
+> +
+> +            run_type_set = set()
+> +            for run_type in set(split_regex.split(run_types)):
+> +                run_type = run_type.lower()
+> +
+> +                if run_type.startswith(tuple(self.drivers)):
+> +                    run_type_set.add(run_type)
+> +                else:
+> +                    for driver in self.drivers:
+> +                        run_type = f"{driver.lower()}_{run_type}"
+> +                        run_type_set.add(run_type)
+>  
+> -            run_type_set = set(split_regex.split(run_type))
+>              for run_type in run_type_set:
+>                  if run_type not in tests_per_list:
+>                      tests_per_list[run_type] = {}
+> @@ -126,10 +137,10 @@ class IgtTestList(TestList):
+>              for subname, gpu_dict in tests_per_list[run_type].items():
+>                  for gpu, value in gpu_dict.items():
+>                      run_name = re.sub(r"[\W_]+", "-", run_type)
+> -                    gpu = re.sub(r"[\W_]+", "-", gpu)
+> +                    gpu = re.sub(r"[\W_]+", "-", gpu).lower()
+>  
+>                      if gpus:
+> -                        name = f"{run_name}_{gpu}".lower()
+> +                        name = f"{run_name}_{gpu}"
+>                      else:
+>                          name = run_name.lower()
+>  
+> @@ -148,6 +159,9 @@ class IgtTestList(TestList):
+>              if testlist == "":
+>                  testlist = "other"
+>  
+> +            if not subtests:
+> +                print(f"Warning: empty testlist: {testlist}")
+> +                continue
+>  
+>              fname = os.path.join(directory, testlist) + ".testlist"
+>              with open(fname, 'w', encoding='utf8') as handler:
 > diff --git a/scripts/test_list.py b/scripts/test_list.py
-> index 13f788783483..5ff2b18c2dd8 100644
+> index 36eea5fb1c76..1164f5bc40df 100644
 > --- a/scripts/test_list.py
 > +++ b/scripts/test_list.py
-> @@ -1010,6 +1010,9 @@ class TestList:
+> @@ -292,6 +292,11 @@ class TestList:
 >  
->          order = None
+>          self.driver_name = driver_name
 >  
-> +        if expand:
-> +            expand = re.compile(expand)
+> +        if "drivers" in self.config:
+> +            self.drivers = self.config["drivers"]
+> +        else:
+> +            self.drivers = [driver_name]
 > +
->          if sort_field:
->              if sort_field.lower() not in self.field_list:
->                  sys.exit(f"Field '{sort_field}' is not defined")
-> @@ -1039,8 +1042,7 @@ class TestList:
->              if sort_field:
->                  if sort_field in subtest:
->                      if expand:
-> -                        test_list = subtest[sort_field].split(expand)
-> -                        test_list = [s.strip() for s in test_list]
-> +                        test_list = expand.split(subtest[sort_field])
+>          if sources_path:
+>              cfg_path = os.path.realpath(sources_path) + "/"
 >  
->                          for test_elem in test_list:
->                              if test_elem not in subtests:
-> @@ -1407,7 +1409,7 @@ class TestList:
->  
->  
->          # NOTE: currently, it uses a comma for multi-value delimitter
-> -        test_subtests = self.get_subtests(sort_field, ",", with_order = True)
-> +        test_subtests = self.get_subtests(sort_field, ",\s*", with_order = True)
->  
->          if not os.path.exists(directory):
->              os.makedirs(directory)
 > -- 
 > 2.42.0
 > 
