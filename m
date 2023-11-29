@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6342A10E5F0
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Nov 2023 14:45:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6190710E5F0
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Nov 2023 14:45:57 +0000 (UTC)
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 29 Nov 2023 20:16:33 +0530
-Message-Id: <20231129144634.2091171-2-jeevan.b@intel.com>
+Date: Wed, 29 Nov 2023 20:16:34 +0530
+Message-Id: <20231129144634.2091171-3-jeevan.b@intel.com>
 In-Reply-To: <20231129144634.2091171-1-jeevan.b@intel.com>
 References: <20231129144634.2091171-1-jeevan.b@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] tests/intel/kms_psr: Add FBC support to
- PSR/PSR2/PR tests
+Subject: [igt-dev] [PATCH i-g-t 2/2] tests/intel/kms_psr2_sf: Add FBC
+ support to PSR2 tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,800 +23,784 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For LunarLake (intel_display_ver 20), FBC can be enabled along with
-PSR/PSR2/PR, thereby adding FBC checks to validate this scenario.
+For LunarLake (intel_display_ver 20), FBC can be enabled along with PSR2,
+thereby adding FBC checks to validate this scenario.
 
 Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- lib/igt_psr.h         |   5 +
- tests/intel/kms_psr.c | 464 ++++++++++++++++++++++++++++--------------
- 2 files changed, 316 insertions(+), 153 deletions(-)
+ tests/intel/kms_psr2_sf.c | 607 +++++++++++++++++++++-----------------
+ 1 file changed, 336 insertions(+), 271 deletions(-)
 
-diff --git a/lib/igt_psr.h b/lib/igt_psr.h
-index a30330e6c..36711c0d4 100644
---- a/lib/igt_psr.h
-+++ b/lib/igt_psr.h
-@@ -40,6 +40,11 @@ enum psr_mode {
- 	PSR_DISABLED,
- };
- 
-+enum fbc_mode {
-+	FBC_DISABLED,
-+	FBC_ENABLED,
-+};
-+
- bool psr_disabled_check(int debugfs_fd);
- bool psr2_selective_fetch_check(int debugfs_fd);
- bool psr_wait_entry(int debugfs_fd, enum psr_mode mode, igt_output_t *output);
-diff --git a/tests/intel/kms_psr.c b/tests/intel/kms_psr.c
-index 7fe6a2c30..9d54c5b4d 100644
---- a/tests/intel/kms_psr.c
-+++ b/tests/intel/kms_psr.c
-@@ -34,6 +34,7 @@
- #include "igt.h"
+diff --git a/tests/intel/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
+index 27faa93d9..f7c7536b8 100644
+--- a/tests/intel/kms_psr2_sf.c
++++ b/tests/intel/kms_psr2_sf.c
+@@ -37,6 +37,7 @@
  #include "igt_sysfs.h"
  #include "igt_psr.h"
+ #include "kms_dsc_helper.h"
 +#include "i915/intel_fbc.h"
  #include <errno.h>
  #include <stdbool.h>
  #include <stdio.h>
-@@ -42,16 +43,24 @@
- #include "xe/xe_query.h"
- 
- /**
-- * SUBTEST: psr_basic
-+ * SUBTEST: psr-basic
-  * Description: Basic check for psr if it is detecting changes made in planes
-  * Functionality: psr1
+@@ -47,6 +48,10 @@
+  * Description: Test that selective fetch works on moving %arg[1] plane %arg[2]
+  *              visible area (no update)
   *
-- * SUBTEST: psr_%s_%s
-+ * SUBTEST: fbc-psr-basic
-+ * Description: Basic check for psr if it is detecting changes made in planes
-+ * Functionality: psr, fbc
-+ *
-+ * SUBTEST: psr-%s-%s
-  * Description: Check if psr is detecting memory mapping, rendering and plane
-  *              operations performed on %arg[1]
-- * Driver requirement: i915
-  * Functionality: kms_core, plane, psr1
-  *
-+ * SUBTEST: fbc-psr-%s-%s
-+ * Description: Check if fbc with psr is detecting memory mapping, rendering and plane
-+ *              operations performed on %arg[1]
-+ * Functionality: kms_core, plane, psr, fbc
++ * SUBTEST: fbc-%s-plane-move-continuous-%s
++ * Description: Test that fbc with selective fetch works on moving %arg[1] plane %arg[2]
++ *              visible area (no update)
 + *
   * arg[1]:
   *
-  * @cursor:             Cursor plane
-@@ -60,21 +69,31 @@
+  * @cursor:               Cursor
+@@ -63,24 +68,46 @@
+  * SUBTEST: cursor-plane-update-sf
+  * Description: Test that selective fetch works on cursor plane
   *
-  * arg[2]:
++ * SUBTEST: fbc-cursor-plane-update-continuous-sf
++ * Description: Test that fbc with selective fetch works on cursor plane
++ *
+  * SUBTEST: overlay-plane-update-continuous-sf
+  * Description: Test that selective fetch works on overlay plane
   *
-- * @mmap_cpu:           MMAP CPU
-- * @mmap_gtt:           MMAP GTT
-+ * @mmap-cpu:           MMAP CPU
-+ * @mmap-gtt:           MMAP GTT
++ * SUBTEST: fbc-overlay-plane-update-continuous-sf
++ * Description: Test that fbc with selective fetch works on overlay plane
++ *
+  * SUBTEST: overlay-plane-update-sf-dmg-area
+  * Description: Test that selective fetch works on overlay plane
+  *
++ * SUBTEST: fbc-overlay-plane-update-continuous-sf-dmg-area
++ * Description: Test that fbc with selective fetch works on overlay plane
++ *
+  * SUBTEST: overlay-primary-update-sf-dmg-area
+  * Description: Test that selective fetch works on primary plane with blended
+  *              overlay plane
+  *
++ * SUBTEST: fbc-overlay-primary-update-sf-dmg-area
++ * Description: Test that fbc with selective fetch works on primary plane with blended
++ *              overlay plane
++ *
+  * SUBTEST: plane-move-sf-dmg-area
+  * Description: Test that selective fetch works on moving overlay plane
+  *
++ * SUBTEST: fbc-plane-move-sf-dmg-area
++ * Description: Test that fbc with selective fetch works on moving overlay plane
++ *
+  * SUBTEST: primary-plane-update-sf-dmg-area
+  * Description: Test that selective fetch works on primary plane
+  *
++ * SUBTEST: fbc-primary-plane-update-continuous-sf-dmg-area
++ * Description: Test that fbc with selective fetch works on primary plane
++ *
+  * SUBTEST: primary-plane-update-sf-dmg-area-big-fb
+  * Description: Test that selective fetch works on primary plane with big fb
++ *
++ * SUBTEST: fbc-primary-plane-update-continuous-sf-dmg-area-big-fb
++ * Description: Test that fbc with selective fetch works on primary plane with big fb
   */
  
- /**
-- * SUBTEST: psr_sprite_plane_move
-+ * SUBTEST: psr-sprite-plane-move
-  * Description: Check if psr is detecting memory mapping, rendering and plane
-  *              operations performed on sprite planes
-  * Functionality: plane, psr1
-  *
-- * SUBTEST: psr_%s_%s
-+ * SUBTEST: fbc-psr-sprite-plane-move
-+ * Description: Check if fbc with psr is detecting memory mapping, rendering and plane
-+ *              operations performed on sprite planes
-+ * Functionality: plane, psr, fbc
-+ *
-+ * SUBTEST: psr-%s-%s
-  * Description: Check if psr is detecting memory mapping, rendering and plane
-  *              operations performed on %arg[1] planes
-  * Functionality: kms_core, plane, psr1
-  *
-+ * SUBTEST: fbc-psr-%s-%s
-+ * Description: Check if fbc with psr is detecting memory mapping, rendering and plane
-+ *              operations performed on %arg[1] planes
-+ * Functionality: kms_core, plane, psr, fbc
-+ *
-  * arg[1]:
-  *
-  * @cursor:             Cursor plane
-@@ -84,15 +103,20 @@
-  *
-  * @blt:                Blitter
-  * @render:             Render
-- * @plane_onoff:        Plane On off
-+ * @plane-onoff:        Plane On off
-  */
- 
- /**
-- * SUBTEST: psr_primary_%s
-+ * SUBTEST: psr-primary-%s
-  * Description: Check if psr is detecting memory mapping, rendering and plane
-  *              operations performed on %arg[1] planes
-  * Functionality: kms_core, psr1
-  *
-+ * SUBTEST: fbc-psr-primary-%s
-+ * Description: Check if fbc with psr is detecting memory mapping, rendering and plane
-+ *              operations performed on %arg[1] planes
-+ * Functionality: kms_core, psr, fbc
-+ *
-  * arg[1]:
-  *
-  * @blt:                Blitter
-@@ -100,44 +124,81 @@
-  */
- 
- /**
-- * SUBTEST: psr_dpms
-+ * SUBTEST: psr-dpms
-  * Description: Check if psr is detecting changes when rendering operation is
-  *              performed  with dpms enabled or disabled
-  * Functionality: dpms, psr1
-  *
-- * SUBTEST: psr_no_drrs
-+ * SUBTEST: fbc-psr-dpms
-+ * Description: Check if fbc with psr is detecting changes when rendering operation is
-+ *              performed  with dpms enabled or disabled
-+ * Functionality: dpms, psr, fbc
-+ *
-+ * SUBTEST: psr-no-drrs
-  * Description: Check if psr is detecting changes when drrs is disabled
-  * Functionality: drrs, psr1
-  *
-- * SUBTEST: psr_suspend
-+ * SUBTEST: fbc-psr-no-drrs
-+ * Description: Check if fbc with psr is detecting changes when drrs is disabled
-+ * Functionality: drrs, psr, fbc
-+ *
-+ * SUBTEST: psr-suspend
-  * Description: Check if psr is detecting changes when plane operation
-  *              is performed with suspend resume cycles
-  * Functionality: psr1, suspend
-  *
-- * SUBTEST: psr2_dpms
-+ * SUBTEST: fbc-psr-suspend
-+ * Description: Check if fbc with psr is detecting changes when plane operation
-+ *              is performed with suspend resume cycles
-+ * Functionality: psr, suspend, fbc
-+ *
-+ * SUBTEST: psr2-dpms
-  * Description: Check if psr is detecting changes when rendering operation
-  *              is performed  with dpms enabled or disabled
-  * Functionality: dpms, psr2
-  *
-- * SUBTEST: psr2_no_drrs
-+ * SUBTEST: fbc-psr2-dpms
-+ * Description: Check if fbc with psr is detecting changes when rendering operation
-+ *              is performed  with dpms enabled or disabled
-+ * Functionality: dpms, psr, psr2, fbc
-+ *
-+ * SUBTEST: psr2-no-drrs
-  * Description: Check if psr is detecting changes when drrs is disabled
-  * Functionality: drrs, psr2
-  *
-- * SUBTEST: psr2_suspend
-+ * SUBTEST: fbc-psr2-no-drrs
-+ * Description: Check if fbc with psr is detecting changes when drrs is disabled
-+ * Functionality: drrs, psr, psr2, fbc
-+ *
-+ * SUBTEST: psr2-suspend
-  * Description: Check if psr is detecting changes when plane operation is
-  *              performed with suspend resume cycles
-  * Functionality: psr2, suspend
-  *
-- * SUBTEST: psr2_basic
-+ * SUBTEST: fbc-psr2-suspend
-+ * Description: Check if fbc with psr is detecting changes when plane operation is
-+ *              performed with suspend resume cycles
-+ * Functionality: psr, psr2, suspend, fbc
-+ *
-+ * SUBTEST: psr2-basic
-  * Description: Basic check for psr if it is detecting changes made in planes
-  * Functionality: psr2
-  *
-- * SUBTEST: psr2_%s_%s
-+ * SUBTEST: fbc-psr2-basic
-+ * Description: Basic check for fbc with psr if it is detecting changes made in planes
-+ * Functionality: psr, psr2, fbc
-+ *
-+ * SUBTEST: psr2-%s-%s
-  * Description: Check if psr2 is detecting memory mapping, rendering and plane
-  *              operations performed on %arg[1] planes
-  * Driver requirement: i915
-  * Functionality: kms_core, plane, psr2
-  *
-+ * SUBTEST: fbc-psr2-%s-%s
-+ * Description: Check if fbc with psr2 is detecting memory mapping, rendering and plane
-+ *              operations performed on %arg[1] planes
-+ * Functionality: kms_core, plane, psr, psr2, fbc
-+ *
-  * arg[1]:
-  *
-  * @cursor:             Cursor plane
-@@ -146,21 +207,31 @@
-  *
-  * arg[2]:
-  *
-- * @mmap_cpu:           MMAP CPU
-- * @mmap_gtt:           MMAP GTT
-+ * @mmap-cpu:           MMAP CPU
-+ * @mmap-gtt:           MMAP GTT
-  */
- 
- /**
-- * SUBTEST: psr2_primary_page_flip
-+ * SUBTEST: psr2-primary-page-flip
-  * Description: Check if psr is detecting memory mapping, rendering and plane
-  *              operations performed on primary planes
-  * Functionality: plane, psr2
-  *
-- * SUBTEST: psr2_primary_%s
-+ * SUBTEST: fbc-psr2-primary-page-flip
-+ * Description: Check if fbc with psr is detecting memory mapping, rendering and plane
-+ *              operations performed on primary planes
-+ * Functionality: plane, psr, psr2, fbc
-+ *
-+ * SUBTEST: psr2-primary-%s
-  * Description: Check if psr is detecting memory mapping, rendering and plane
-  *              operations performed on primary planes
-  * Functionality: kms_core, plane, psr2
-  *
-+ * SUBTEST: fbc-psr2-primary-%s
-+ * Description: Check if fbc with psr is detecting memory mapping, rendering and plane
-+ *              operations performed on primary planes
-+ * Functionality: kms_core, plane, psr, psr2, fbc
-+ *
-  * arg[1]:
-  *
-  * @blt:                Blitter
-@@ -168,11 +239,16 @@
-  */
- 
- /**
-- * SUBTEST: psr2_%s_%s
-+ * SUBTEST: psr2-%s-%s
-  * Description: Check if psr is detecting memory mapping, rendering and plane
-  *              operations performed on %arg[1] planes
-  * Functionality: kms_core, plane, psr2
-  *
-+ * SUBTEST: fbc-psr2-%s-%s
-+ * Description: Check if psr is detecting memory mapping, rendering and plane
-+ *              operations performed on %arg[1] planes
-+ * Functionality: kms_core, plane, psr, psr2, fbc
-+ *
-  * arg[1]:
-  *
-  * @cursor:             Cursor plane
-@@ -182,42 +258,65 @@
-  *
-  * @blt:                Blitter
-  * @render:             Render
-- * @plane_onoff:        Plane On off
-- * @plane_move:         Move plane position
-+ * @plane-onoff:        Plane On off
-+ * @plane-move:         Move plane position
-  */
- 
- /**
-- * SUBTEST: pr_dpms
-+ * SUBTEST: pr-dpms
-  * Description: Check if pr is detecting changes when rendering operation
-  *              is performed with dpms enabled or disabled
-  * Functionality: dpms, pr
-  * Mega feature: Panel Replay
-  *
-- * SUBTEST: pr_no_drrs
-+ * SUBTEST: fbc-pr-dpms
-+ * Description: Check if fbc with pr is detecting changes when rendering operation
-+ *              is performed with dpms enabled or disabled
-+ * Functionality: dpms, pr, fbc
-+ *
-+ * SUBTEST: pr-no-drrs
-  * Description: Check if pr is detecting changes when drrs is disabled
-  * Functionality: drrs, pr
-- * Mega feature: Panel Replay
-  *
-- * SUBTEST: pr_suspend
-+ * SUBTEST: fbc-pr-no-drrs
-+ * Description: Check if pr is detecting changes when drrs is disabled
-+ * Functionality: drrs, pr, fbc
-+ *
-+ * SUBTEST: pr-suspend
-  * Description: Check if pr is detecting changes when plane operation is
-  *              performed with suspend resume cycles
-  * Functionality: pr, suspend
-- * Mega feature: Panel Replay
-  *
-- * SUBTEST: pr_basic
-+ * SUBTEST: fbc-pr-suspend
-+ * Description: Check if fbc with pr is detecting changes when plane operation is
-+ *              performed with suspend resume cycles
-+ * Functionality: pr, suspend, fbc
-+ *
-+ * SUBTEST: pr-basic
-  * Description: Basic check for pr if it is detecting changes made in planes
-  * Functionality: pr
-- * Mega feature: Panel Replay
-+ *
-+ * SUBTEST: fbc-pr-basic
-+ * Description: Basic check for fbc with pr if it is detecting changes made in planes
-+ * Functionality: pr, fbc
-  */
- 
- /**
-- * SUBTEST: pr_%s_%s
-+ * SUBTEST: pr-%s-%s
-  * Description: Check if pr is detecting memory mapping, rendering and plane
-  *              operations performed on %arg[1] planes
-  * Driver requirement: i915
-  * Functionality: kms_core, plane, pr
-  * Mega feature: Panel Replay
-  *
-+ * SUBTEST: fbc-pr-%s-%s
-+ * Description: Check if fbc with pr is detecting memory mapping, rendering and plane
-+ *              operations performed on %arg[1] planes
-+ * Driver requirement: i915
-+ * Functionality: kms_core, plane, pr, fbc
-+ * Mega feature: Panel Replay, FBC
-+ * Test category: functionality test
-+ *
-  * arg[1]:
-  *
-  * @cursor:             Cursor plane
-@@ -226,23 +325,35 @@
-  *
-  * arg[2]:
-  *
-- * @mmap_cpu:           MMAP CPU
-- * @mmap_gtt:           MMAP GTT
-+ * @mmap-cpu:           MMAP CPU
-+ * @mmap-gtt:           MMAP GTT
-  */
- 
- /**
-- * SUBTEST: pr_primary_page_flip
-+ * SUBTEST: pr-primary-page-flip
-  * Description: Check if pr is detecting memory mapping, rendering and plane
-  *              operations performed on primary planes
-  * Functionality: plane, pr
-  * Mega feature: Panel Replay
-  *
-- * SUBTEST: pr_primary_%s
-+ * SUBTEST: fbc-pr-primary-page-flip
-+ * Description: Check if fbc with pr is detecting memory mapping, rendering and plane
-+ *              operations performed on primary planes
-+ * Functionality: plane, pr, fbc
-+ * Mega feature: Panel Replay, FBC
-+ *
-+ * SUBTEST: pr-primary-%s
-  * Description: Check if pr is detecting memory mapping, rendering and plane
-  *              operations performed on primary planes
-  * Functionality: kms_core, plane, pr
-  * Mega feature: Panel Replay
-  *
-+ * SUBTEST: fbc-pr-primary-%s
-+ * Description: Check if fbc with pr is detecting memory mapping, rendering and plane
-+ *              operations performed on primary planes
-+ * Functionality: kms_core, plane, pr, fbc
-+ * Mega feature: Panel Replay, FBC
-+ *
-  * arg[1]:
-  *
-  * @blt:                Blitter
-@@ -250,12 +361,18 @@
-  */
- 
- /**
-- * SUBTEST: pr_%s_%s
-+ * SUBTEST: pr-%s-%s
-  * Description: Check if pr is detecting memory mapping, rendering and plane
-  *              operations performed on %arg[1] planes
-  * Functionality: kms_core, plane, pr
-  * Mega feature: Panel Replay
-  *
-+ * SUBTEST: fbc-pr-%s-%s
-+ * Description: Check if fbc with pr is detecting memory mapping, rendering and plane
-+ *              operations performed on %arg[1] planes
-+ * Functionality: kms_core, plane, pr, fbc
-+ * Mega feature: Panel Replay, FBC
-+ *
-  * arg[1]:
-  *
-  * @cursor:             Cursor plane
-@@ -265,25 +382,40 @@
-  *
-  * @blt:                Blitter
-  * @render:             Render
-- * @plane_onoff:        Plane On off
-- * @plane_move:         Move plane position
-+ * @plane-onoff:        Plane On off
-+ * @plane-move:         Move plane position
-  */
- 
- /**
-- * SUBTEST: psr_cursor_plane_move
-+ * SUBTEST: psr-cursor-plane-move
-  * Description: Check if psr is detecting the plane operations performed on
-  *		cursor planes
-  * Functionality: psr1
-  *
-- * SUBTEST: psr_primary_page_flip
-+ * SUBTEST: fbc-psr-cursor-plane-move
-+ * Description: Check if fbc with psr is detecting the plane operations performed on
-+ *              cursor planes
-+ * Functionality: psr1, fbc
-+ *
-+ * SUBTEST: psr-primary-page-flip
-  * Description: Check if psr is detecting page-flipping operations performed
-  *		on primary planes
-  * Functionality: psr1
-  *
-- * SUBTEST: psr_sprite_plane_onoff
-+ * SUBTEST: fbc-psr-primary-page-flip
-+ * Description: Check if psr is detecting page-flipping operations performed
-+ *              on primary planes
-+ * Functionality: psr1, fbc
-+ *
-+ * SUBTEST: psr-sprite-plane-onoff
-  * Description: Check if psr is detecting the plane operations performed on
-  *		sprite planes
-  * Functionality: psr1
-+ *
-+ * SUBTEST: fbc-psr-sprite-plane-onoff
-+ * Description: Check if psr is detecting the plane operations performed on
-+ *              sprite planes
-+ * Functionality: psr1, fbc
-  */
- 
- enum operations {
-@@ -299,13 +431,13 @@ enum operations {
- static const char *op_str(enum operations op)
- {
- 	static const char * const name[] = {
--		[PAGE_FLIP] = "page_flip",
--		[MMAP_GTT] = "mmap_gtt",
--		[MMAP_CPU] = "mmap_cpu",
-+		[PAGE_FLIP] = "page-flip",
-+		[MMAP_GTT] = "mmap-gtt",
-+		[MMAP_CPU] = "mmap-cpu",
- 		[BLT] = "blt",
- 		[RENDER] = "render",
--		[PLANE_MOVE] = "plane_move",
--		[PLANE_ONOFF] = "plane_onoff",
-+		[PLANE_MOVE] = "plane-move",
-+		[PLANE_ONOFF] = "plane-onoff",
- 	};
- 
- 	return name[op];
-@@ -317,6 +449,7 @@ typedef struct {
+ IGT_TEST_DESCRIPTION("Tests to varify PSR2 selective fetch by sending multiple"
+@@ -132,9 +159,11 @@ typedef struct {
+ 	struct drm_mode_rect cursor_clip;
  	enum operations op;
- 	int test_plane_id;
- 	enum psr_mode op_psr_mode;
+ 	enum plane_move_postion pos;
 +	enum fbc_mode op_fbc_mode;
- 	uint32_t devid;
- 	uint32_t crtc_id;
- 	igt_display_t display;
-@@ -327,6 +460,7 @@ typedef struct {
- 	int mod_stride;
- 	drmModeModeInfo *mode;
- 	igt_output_t *output;
+ 	int test_plane_id;
+ 	igt_plane_t *test_plane;
+ 	bool big_fb_test;
 +	bool fbc_flag;
- } data_t;
+ 	cairo_t *cr;
+ 	uint32_t screen_changes;
+ 	int cur_x, cur_y;
+@@ -840,6 +869,11 @@ static void run(data_t *data)
  
- static void create_cursor_fb(data_t *data)
-@@ -707,6 +841,11 @@ static void test_setup(data_t *data)
- 	igt_require_f(data->output,
- 		      "No available output found\n");
+ 	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2, NULL));
  
 +	if (data->fbc_flag == true && data->op_fbc_mode == FBC_ENABLED)
 +		igt_assert_f(intel_fbc_wait_until_enabled(data->drm_fd,
-+							  pipe),
++							  data->pipe),
 +							  "FBC still disabled");
 +
- 	pipe = get_pipe_for_output(&data->display, data->output);
- 	igt_output_set_pipe(data->output, pipe);
- 	igt_require_f(intel_pipe_output_combo_valid(&data->display),
-@@ -744,14 +883,20 @@ data_t data = {};
+ 	data->screen_changes = 0;
  
- igt_main
+ 	switch (data->op) {
+@@ -942,10 +976,15 @@ igt_main
  {
--	int z;
-+	int z, y;
- 	enum operations op;
-+	enum pipe pipe;
- 	const char *append_subtest_name[3] = {
--		"psr_",
--		"psr2_",
--		"pr_"
-+		"psr-",
-+		"psr2-",
-+		"pr-"
-+	};
+ 	data_t data = {};
+ 	igt_output_t *outputs[IGT_MAX_PIPES * IGT_MAX_PIPES];
+-	int i, j, k;
++	int i, j, k, y;
+ 	int pipes[IGT_MAX_PIPES * IGT_MAX_PIPES];
+ 	int n_pipes = 0;
+ 	int coexist_features[IGT_MAX_PIPES * IGT_MAX_PIPES];
 +	const char *append_fbc_subtest[2] = {
 +		"",
 +		"fbc-"
- 	};
- 	int modes[] = {PSR_MODE_1, PSR_MODE_2, PR_MODE};
++	};
 +	int fbc_status[] = {FBC_DISABLED, FBC_ENABLED};
- 	igt_output_t *output;
  
  	igt_fixture {
-@@ -762,52 +907,38 @@ igt_main
- 		data.bops = buf_ops_create(data.drm_fd);
- 		igt_display_require(&data.display, data.drm_fd);
- 		igt_require_f(output_supports_psr(&data), "Sink does not support PSR/PSR2/PR\n");
+ 		drmModeResPtr res;
+@@ -961,6 +1000,11 @@ igt_main
+ 
+ 		display_init(&data);
+ 
 +		if ((intel_display_ver(intel_get_drm_devid(data.drm_fd) == 20)) &&
-+		    (intel_fbc_supported_on_chipset(data.drm_fd, pipe))) {
++		    (intel_fbc_supported_on_chipset(data.drm_fd, data.pipe))) {
 +			data.fbc_flag = true;
 +		}
++
+ 		/* Test if PSR2 can be enabled */
+ 		igt_require_f(psr_enable(data.drm_fd,
+ 					 data.debugfs_fd, PSR_MODE_2_SEL_FETCH),
+@@ -995,54 +1039,117 @@ igt_main
+ 		}
  	}
  
--	for (z = 0; z < ARRAY_SIZE(modes); z++) {
--		data.op_psr_mode = modes[z];
--
--		igt_describe("Basic check for psr if it is detecting changes made in planes");
--		igt_subtest_with_dynamic_f("%sbasic", append_subtest_name[z]) {
--			for_each_connected_output(&data.display, output) {
--				if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
--						      data.op_psr_mode, output))
--					continue;
--				igt_display_reset(&data.display);
--				data.output = output;
--				igt_dynamic_f("%s", data.output->name) {
--					data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
--					test_setup(&data);
--					test_cleanup(&data);
--				}
--			}
--		}
+-	/* Verify primary plane selective fetch */
+-	igt_describe("Test that selective fetch works on primary plane");
+-	igt_subtest_with_dynamic_f("primary-%s-sf-dmg-area", op_str(data.op)) {
+-		for (i = 0; i < n_pipes; i++) {
+-			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+-				continue;
 +	for (y = 0; y < ARRAY_SIZE(fbc_status); y++) {
 +		data.op_fbc_mode = fbc_status[y];
-+		for (z = 0; z < ARRAY_SIZE(modes); z++) {
-+			data.op_psr_mode = modes[z];
  
--		igt_describe("Check if psr is detecting changes when drrs is disabled");
--		igt_subtest_with_dynamic_f("%sno_drrs", append_subtest_name[z]) {
--			for_each_connected_output(&data.display, output) {
--				if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
--						      data.op_psr_mode, output))
--					continue;
--				igt_display_reset(&data.display);
--				data.output = output;
--				igt_dynamic_f("%s", data.output->name) {
+-			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+-				if (j != FEATURE_NONE && !(coexist_features[i] & j))
++		/* Verify primary plane selective fetch */
++		igt_describe("Test that selective fetch works on primary plane");
++		igt_subtest_with_dynamic_f("%sprimary-%s-sf-dmg-area", append_fbc_subtest[y],
++					    op_str(data.op)) {
++			for (i = 0; i < n_pipes; i++) {
++				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+ 					continue;
+-				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+-					      igt_output_name(outputs[i]),
+-					      coexist_feature_str(j)) {
+-					data.pipe = pipes[i];
+-					data.output = outputs[i];
 -					data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
--					test_setup(&data);
--					igt_assert(drrs_disabled(&data));
--					test_cleanup(&data);
-+			igt_describe("Basic check for psr if it is detecting changes made "
-+				     "in planes");
-+			igt_subtest_with_dynamic_f("%s%sbasic", append_fbc_subtest[y],
-+						   append_subtest_name[z]) {
-+				for_each_connected_output(&data.display, output) {
-+					if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
-+							      data.op_psr_mode, output))
+-					data.coexist_feature = j;
+-					for (k = 1; k <= MAX_DAMAGE_AREAS; k++) {
+-						data.damage_area_count = k;
+-						prepare(&data);
+-						run(&data);
+-						cleanup(&data);
++
++				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
++					if (j != FEATURE_NONE && !(coexist_features[i] & j))
 +						continue;
-+					igt_display_reset(&data.display);
-+					data.output = output;
-+					igt_dynamic_f("%s", data.output->name) {
++					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
++						      igt_output_name(outputs[i]),
++						      coexist_feature_str(j)) {
++						data.pipe = pipes[i];
++						data.output = outputs[i];
 +						data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
-+						test_setup(&data);
-+						test_cleanup(&data);
-+					}
- 				}
- 			}
--		}
- 
--		for (op = PAGE_FLIP; op <= RENDER; op++) {
--			igt_describe("Check if psr is detecting page-flipping,memory mapping and "
--					"rendering operations performed on primary planes");
--			igt_subtest_with_dynamic_f("%sprimary_%s",
--				      append_subtest_name[z],
--				      op_str(op)) {
--				igt_skip_on(is_xe_device(data.drm_fd) &&
--					    (op == MMAP_CPU || op == MMAP_GTT));
-+			igt_describe("Check if psr is detecting changes when drrs is disabled");
-+			igt_subtest_with_dynamic_f("%s%sno-drrs", append_fbc_subtest[y],
-+						   append_subtest_name[z]) {
- 				for_each_connected_output(&data.display, output) {
- 					if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
- 							      data.op_psr_mode, output))
-@@ -815,24 +946,90 @@ igt_main
- 					igt_display_reset(&data.display);
- 					data.output = output;
- 					igt_dynamic_f("%s", data.output->name) {
--						data.op = op;
- 						data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
- 						test_setup(&data);
--						run_test(&data);
-+						igt_assert(drrs_disabled(&data));
- 						test_cleanup(&data);
- 					}
- 				}
- 			}
--		}
- 
--		for (op = MMAP_GTT; op <= PLANE_ONOFF; op++) {
--			igt_describe("Check if psr is detecting memory mapping,rendering "
--					"and plane operations performed on sprite planes");
--			igt_subtest_with_dynamic_f("%ssprite_%s",
--				      append_subtest_name[z],
--				      op_str(op)) {
--				igt_skip_on(is_xe_device(data.drm_fd) &&
--					    (op == MMAP_CPU || op == MMAP_GTT));
-+			for (op = PAGE_FLIP; op <= RENDER; op++) {
-+				igt_describe("Check if psr is detecting page-flipping,memory "
-+					     "mapping and rendering operations performed on "
-+					     "primary planes");
-+				igt_subtest_with_dynamic_f("%s%sprimary-%s", append_fbc_subtest[y],
-+					      append_subtest_name[z], op_str(op)) {
-+					igt_skip_on(is_xe_device(data.drm_fd) &&
-+						    (op == MMAP_CPU || op == MMAP_GTT));
-+					for_each_connected_output(&data.display, output) {
-+						if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
-+								      data.op_psr_mode, output))
-+							continue;
-+						igt_display_reset(&data.display);
-+						data.output = output;
-+						igt_dynamic_f("%s", data.output->name) {
-+							data.op = op;
-+							data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
-+							test_setup(&data);
-+							run_test(&data);
-+							test_cleanup(&data);
++						data.coexist_feature = j;
++						for (k = 1; k <= MAX_DAMAGE_AREAS; k++) {
++							data.damage_area_count = k;
++							prepare(&data);
++							run(&data);
++							cleanup(&data);
 +						}
-+					}
-+				}
-+			}
-+
-+			for (op = MMAP_GTT; op <= PLANE_ONOFF; op++) {
-+				igt_describe("Check if psr is detecting memory mapping,rendering "
-+						"and plane operations performed on sprite planes");
-+				igt_subtest_with_dynamic_f("%s%ssprite-%s", append_fbc_subtest[y],
-+					      append_subtest_name[z],
-+					      op_str(op)) {
-+					igt_skip_on(is_xe_device(data.drm_fd) &&
-+						    (op == MMAP_CPU || op == MMAP_GTT));
-+					for_each_connected_output(&data.display, output) {
-+						if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
-+								      data.op_psr_mode, output))
-+							continue;
-+						igt_display_reset(&data.display);
-+						data.output = output;
-+						igt_dynamic_f("%s", data.output->name) {
-+							data.op = op;
-+							data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
-+							test_setup(&data);
-+							run_test(&data);
-+							test_cleanup(&data);
-+						}
-+					}
-+				}
-+
-+				igt_describe("Check if psr is detecting memory mapping, rendering "
-+						"and plane operations performed on cursor planes");
-+				igt_subtest_with_dynamic_f("%s%scursor-%s", append_fbc_subtest[y],
-+					      append_subtest_name[z],
-+					      op_str(op)) {
-+					igt_skip_on(is_xe_device(data.drm_fd) &&
-+						    (op == MMAP_CPU || op == MMAP_GTT));
-+					for_each_connected_output(&data.display, output) {
-+						if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
-+								      data.op_psr_mode, output))
-+							continue;
-+						igt_display_reset(&data.display);
-+						data.output = output;
-+						igt_dynamic_f("%s", data.output->name) {
-+							data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
-+							test_setup(&data);
-+							run_test(&data);
-+							test_cleanup(&data);
-+						}
-+					}
-+				}
-+			}
-+
-+			igt_describe("Check if psr is detecting changes when rendering operation "
-+				     "is performed with dpms enabled or disabled");
-+			igt_subtest_with_dynamic_f("%s%sdpms", append_fbc_subtest[y],
-+						   append_subtest_name[z]) {
- 				for_each_connected_output(&data.display, output) {
- 					if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
- 							      data.op_psr_mode, output))
-@@ -840,22 +1037,21 @@ igt_main
- 					igt_display_reset(&data.display);
- 					data.output = output;
- 					igt_dynamic_f("%s", data.output->name) {
--						data.op = op;
--						data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
-+						data.op = igt_get_render_copyfunc(data.devid) ?
-+										  RENDER : BLT;
-+						data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
- 						test_setup(&data);
-+						dpms_off_on(&data);
- 						run_test(&data);
- 						test_cleanup(&data);
- 					}
- 				}
- 			}
- 
--			igt_describe("Check if psr is detecting memory mapping, rendering "
--					"and plane operations performed on cursor planes");
--			igt_subtest_with_dynamic_f("%scursor_%s",
--				      append_subtest_name[z],
--				      op_str(op)) {
--				igt_skip_on(is_xe_device(data.drm_fd) &&
--					    (op == MMAP_CPU || op == MMAP_GTT));
-+			igt_describe("Check if psr is detecting changes when plane operation is "
-+				     "performed with suspend resume cycles");
-+			igt_subtest_with_dynamic_f("%s%ssuspend", append_fbc_subtest[y],
-+						   append_subtest_name[z]) {
- 				for_each_connected_output(&data.display, output) {
- 					if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
- 							      data.op_psr_mode, output))
-@@ -863,56 +1059,18 @@ igt_main
- 					igt_display_reset(&data.display);
- 					data.output = output;
- 					igt_dynamic_f("%s", data.output->name) {
-+						data.op = PLANE_ONOFF;
- 						data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
- 						test_setup(&data);
-+						igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
-+									      SUSPEND_TEST_NONE);
-+						igt_assert(psr_wait_entry_if_enabled(&data));
- 						run_test(&data);
- 						test_cleanup(&data);
  					}
  				}
  			}
  		}
--
--		igt_describe("Check if psr is detecting changes when rendering operation is performed"
--				"  with dpms enabled or disabled");
--		igt_subtest_with_dynamic_f("%sdpms", append_subtest_name[z]) {
--			for_each_connected_output(&data.display, output) {
--				if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
--						      data.op_psr_mode, output))
--					continue;
--				igt_display_reset(&data.display);
--				data.output = output;
--				igt_dynamic_f("%s", data.output->name) {
--					data.op = igt_get_render_copyfunc(data.devid) ? RENDER : BLT;
+-	}
+ 
+-	/* Verify primary plane selective fetch with big fb */
+-	data.big_fb_test = 1;
+-	igt_describe("Test that selective fetch works on primary plane with big fb");
+-	igt_subtest_with_dynamic_f("primary-%s-sf-dmg-area-big-fb", op_str(data.op)) {
+-		for (i = 0; i < n_pipes; i++) {
+-			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+-				continue;
++		/* Verify primary plane selective fetch with big fb */
++		data.big_fb_test = 1;
++		igt_describe("Test that selective fetch works on primary plane with big fb");
++		igt_subtest_with_dynamic_f("%sprimary-%s-sf-dmg-area-big-fb", append_fbc_subtest[y],
++					    op_str(data.op)) {
++			for (i = 0; i < n_pipes; i++) {
++				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
++					continue;
+ 
+-			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+-				if (j != FEATURE_NONE && !(coexist_features[i] & j))
++				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
++					if (j != FEATURE_NONE && !(coexist_features[i] & j))
++						continue;
++					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
++						      igt_output_name(outputs[i]),
++						      coexist_feature_str(j)) {
++						data.pipe = pipes[i];
++						data.output = outputs[i];
++						data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
++						data.coexist_feature = j;
++						for (k = 1; k <= MAX_DAMAGE_AREAS; k++) {
++							data.damage_area_count = k;
++							prepare(&data);
++							run(&data);
++							cleanup(&data);
++						}
++					}
++				}
++			}
++		}
++
++		data.big_fb_test = 0;
++		/* Verify overlay plane selective fetch */
++		igt_describe("Test that selective fetch works on overlay plane");
++		igt_subtest_with_dynamic_f("%soverlay-%s-sf-dmg-area", append_fbc_subtest[y],
++					    op_str(data.op)) {
++			for (i = 0; i < n_pipes; i++) {
++				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+ 					continue;
+-				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+-					      igt_output_name(outputs[i]),
+-					      coexist_feature_str(j)) {
+-					data.pipe = pipes[i];
+-					data.output = outputs[i];
 -					data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
--					test_setup(&data);
--					dpms_off_on(&data);
--					run_test(&data);
--					test_cleanup(&data);
--				}
--			}
--		}
+-					data.coexist_feature = j;
+-					for (k = 1; k <= MAX_DAMAGE_AREAS; k++) {
+-						data.damage_area_count = k;
++
++				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
++					if (j != FEATURE_NONE && !(coexist_features[i] & j))
++						continue;
++					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
++						      igt_output_name(outputs[i]),
++						      coexist_feature_str(j)) {
++						data.pipe = pipes[i];
++						data.output = outputs[i];
++						data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
++						data.coexist_feature = j;
++						for (k = 1; k <= MAX_DAMAGE_AREAS; k++) {
++							data.damage_area_count = k;
++							prepare(&data);
++							run(&data);
++							cleanup(&data);
++						}
++					}
++				}
++			}
++		}
++
++		data.damage_area_count = 1;
++		/* Verify cursor plane selective fetch */
++		igt_describe("Test that selective fetch works on cursor plane");
++		igt_subtest_with_dynamic_f("%scursor-%s-sf", append_fbc_subtest[y],
++					    op_str(data.op)) {
++			for (i = 0; i < n_pipes; i++) {
++				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
++					continue;
++
++				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
++					if (j != FEATURE_NONE && !(coexist_features[i] & j))
++						continue;
++					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
++						      igt_output_name(outputs[i]),
++						      coexist_feature_str(j)) {
++						data.pipe = pipes[i];
++						data.output = outputs[i];
++						data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
++						data.coexist_feature = j;
+ 						prepare(&data);
+ 						run(&data);
+ 						cleanup(&data);
+@@ -1050,28 +1157,25 @@ igt_main
+ 				}
+ 			}
+ 		}
+-	}
+ 
+-	data.big_fb_test = 0;
+-	/* Verify overlay plane selective fetch */
+-	igt_describe("Test that selective fetch works on overlay plane");
+-	igt_subtest_with_dynamic_f("overlay-%s-sf-dmg-area", op_str(data.op)) {
+-		for (i = 0; i < n_pipes; i++) {
+-			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+-				continue;
 -
--		igt_describe("Check if psr is detecting changes when plane operation is performed "
--				"with suspend resume cycles");
--		igt_subtest_with_dynamic_f("%ssuspend", append_subtest_name[z]) {
--			for_each_connected_output(&data.display, output) {
--				if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
--						      data.op_psr_mode, output))
--					continue;
--				igt_display_reset(&data.display);
--				data.output = output;
--				igt_dynamic_f("%s", data.output->name) {
--					data.op = PLANE_ONOFF;
+-			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+-				if (j != FEATURE_NONE && !(coexist_features[i] & j))
++		data.op = PLANE_MOVE_CONTINUOUS;
++		igt_describe("Test that selective fetch works on moving cursor plane (no update)");
++		igt_subtest_with_dynamic_f("%scursor-%s-sf", append_fbc_subtest[y],
++					    op_str(data.op)) {
++			for (i = 0; i < n_pipes; i++) {
++				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+ 					continue;
+-				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+-					      igt_output_name(outputs[i]),
+-					      coexist_feature_str(j)) {
+-					data.pipe = pipes[i];
+-					data.output = outputs[i];
+-					data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+-					data.coexist_feature = j;
+-					for (k = 1; k <= MAX_DAMAGE_AREAS; k++) {
+-						data.damage_area_count = k;
++
++				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
++					if (j != FEATURE_NONE && !(coexist_features[i] & j))
++						continue;
++					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
++						      igt_output_name(outputs[i]),
++						      coexist_feature_str(j)) {
++						data.pipe = pipes[i];
++						data.output = outputs[i];
++						data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
++						data.coexist_feature = j;
+ 						prepare(&data);
+ 						run(&data);
+ 						cleanup(&data);
+@@ -1079,130 +1183,137 @@ igt_main
+ 				}
+ 			}
+ 		}
+-	}
+-
+-	data.damage_area_count = 1;
+-	/* Verify cursor plane selective fetch */
+-	igt_describe("Test that selective fetch works on cursor plane");
+-	igt_subtest_with_dynamic_f("cursor-%s-sf", op_str(data.op)) {
+-		for (i = 0; i < n_pipes; i++) {
+-			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+-				continue;
+ 
+-			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+-				if (j != FEATURE_NONE && !(coexist_features[i] & j))
++		data.op = PLANE_MOVE_CONTINUOUS_EXCEED;
++		igt_describe("Test that selective fetch works on moving cursor plane exceeding "
++			     "partially visible area (no update)");
++		igt_subtest_with_dynamic_f("%scursor-%s-sf", append_fbc_subtest[y],
++					    op_str(data.op)) {
++			for (i = 0; i < n_pipes; i++) {
++				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+ 					continue;
+-				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+-					      igt_output_name(outputs[i]),
+-					      coexist_feature_str(j)) {
+-					data.pipe = pipes[i];
+-					data.output = outputs[i];
 -					data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
--					test_setup(&data);
--					igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
--								      SUSPEND_TEST_NONE);
--					igt_assert(psr_wait_entry_if_enabled(&data));
--					run_test(&data);
--					test_cleanup(&data);
+-					data.coexist_feature = j;
+-					prepare(&data);
+-					run(&data);
+-					cleanup(&data);
++
++				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
++					if (j != FEATURE_NONE && !(coexist_features[i] & j))
++						continue;
++					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
++						      igt_output_name(outputs[i]),
++						      coexist_feature_str(j)) {
++						data.pipe = pipes[i];
++						data.output = outputs[i];
++						data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
++						data.coexist_feature = j;
++						prepare(&data);
++						run(&data);
++						cleanup(&data);
++					}
+ 				}
+ 			}
+ 		}
+-	}
+ 
+-	data.op = PLANE_MOVE_CONTINUOUS;
+-	igt_describe("Test that selective fetch works on moving cursor plane (no update)");
+-	igt_subtest_with_dynamic_f("cursor-%s-sf", op_str(data.op)) {
+-		for (i = 0; i < n_pipes; i++) {
+-			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+-				continue;
+-
+-			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+-				if (j != FEATURE_NONE && !(coexist_features[i] & j))
++		data.op = PLANE_MOVE_CONTINUOUS_EXCEED_FULLY;
++		igt_describe("Test that selective fetch works on moving cursor plane exceeding "
++			     "fully visible area (no update)");
++		igt_subtest_with_dynamic_f("%scursor-%s-sf", append_fbc_subtest[y],
++					   op_str(data.op)) {
++			for (i = 0; i < n_pipes; i++) {
++				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+ 					continue;
+-				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+-					      igt_output_name(outputs[i]),
+-					      coexist_feature_str(j)) {
+-					data.pipe = pipes[i];
+-					data.output = outputs[i];
+-					data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
+-					data.coexist_feature = j;
+-					prepare(&data);
+-					run(&data);
+-					cleanup(&data);
++
++				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
++					if (j != FEATURE_NONE && !(coexist_features[i] & j))
++						continue;
++					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
++						      igt_output_name(outputs[i]),
++						      coexist_feature_str(j)) {
++						data.pipe = pipes[i];
++						data.output = outputs[i];
++						data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
++						data.coexist_feature = j;
++						prepare(&data);
++						run(&data);
++						cleanup(&data);
++					}
+ 				}
+ 			}
+ 		}
+-	}
+ 
+-	data.op = PLANE_MOVE_CONTINUOUS_EXCEED;
+-	igt_describe("Test that selective fetch works on moving cursor plane exceeding partially visible area (no update)");
+-	igt_subtest_with_dynamic_f("cursor-%s-sf", op_str(data.op)) {
+-		for (i = 0; i < n_pipes; i++) {
+-			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+-				continue;
+-
+-			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+-				if (j != FEATURE_NONE && !(coexist_features[i] & j))
++		/* Only for overlay plane */
++		data.op = PLANE_MOVE;
++		/* Verify overlay plane move selective fetch */
++		igt_describe("Test that selective fetch works on moving overlay plane");
++		igt_subtest_with_dynamic_f("%s%s-sf-dmg-area", append_fbc_subtest[y],
++					    op_str(data.op)) {
++			for (i = 0; i < n_pipes; i++) {
++				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+ 					continue;
+-				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+-					      igt_output_name(outputs[i]),
+-					      coexist_feature_str(j)) {
+-					data.pipe = pipes[i];
+-					data.output = outputs[i];
+-					data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
+-					data.coexist_feature = j;
+-					prepare(&data);
+-					run(&data);
+-					cleanup(&data);
++
++				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
++					if (j != FEATURE_NONE && !(coexist_features[i] & j))
++						continue;
++					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
++						      igt_output_name(outputs[i]),
++						      coexist_feature_str(j)) {
++						data.pipe = pipes[i];
++						data.output = outputs[i];
++						data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
++						data.coexist_feature = j;
++						for (k = POS_TOP_LEFT; k <= POS_BOTTOM_RIGHT ; k++) {
++							data.pos = k;
++							prepare(&data);
++							run(&data);
++							cleanup(&data);
++						}
++					}
+ 				}
+ 			}
+ 		}
+-	}
+-
+-	data.op = PLANE_MOVE_CONTINUOUS_EXCEED_FULLY;
+-	igt_describe("Test that selective fetch works on moving cursor plane exceeding fully visible area (no update)");
+-	igt_subtest_with_dynamic_f("cursor-%s-sf", op_str(data.op)) {
+-		for (i = 0; i < n_pipes; i++) {
+-			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+-				continue;
+ 
+-			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+-				if (j != FEATURE_NONE && !(coexist_features[i] & j))
++		data.op = PLANE_MOVE_CONTINUOUS;
++		igt_describe("Test that selective fetch works on moving overlay plane (no update)");
++		igt_subtest_with_dynamic_f("%soverlay-%s-sf", append_fbc_subtest[y],
++					    op_str(data.op)) {
++			for (i = 0; i < n_pipes; i++) {
++				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+ 					continue;
+-				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+-					      igt_output_name(outputs[i]),
+-					      coexist_feature_str(j)) {
++
++				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
++					if (j != FEATURE_NONE && !(coexist_features[i] & j))
++						continue;
++					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
++						      igt_output_name(outputs[i]),
++						      coexist_feature_str(j)) {
+ 					data.pipe = pipes[i];
+ 					data.output = outputs[i];
+-					data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
++					data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+ 					data.coexist_feature = j;
+ 					prepare(&data);
+ 					run(&data);
+ 					cleanup(&data);
++					}
+ 				}
+ 			}
+ 		}
+-	}
+ 
+-	/* Only for overlay plane */
+-	data.op = PLANE_MOVE;
+-	/* Verify overlay plane move selective fetch */
+-	igt_describe("Test that selective fetch works on moving overlay plane");
+-	igt_subtest_with_dynamic_f("%s-sf-dmg-area", op_str(data.op)) {
+-		for (i = 0; i < n_pipes; i++) {
+-			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+-				continue;
+-
+-			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+-				if (j != FEATURE_NONE && !(coexist_features[i] & j))
++		data.op = PLANE_MOVE_CONTINUOUS_EXCEED;
++		igt_describe("Test that selective fetch works on moving overlay plane partially "
++			     "exceeding visible area (no update)");
++		igt_subtest_with_dynamic_f("%soverlay-%s-sf", append_fbc_subtest[y],
++					   op_str(data.op)) {
++			for (i = 0; i < n_pipes; i++) {
++				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+ 					continue;
+-				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+-					      igt_output_name(outputs[i]),
+-					      coexist_feature_str(j)) {
+-					data.pipe = pipes[i];
+-					data.output = outputs[i];
+-					data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+-					data.coexist_feature = j;
+-					for (k = POS_TOP_LEFT; k <= POS_BOTTOM_RIGHT ; k++) {
+-						data.pos = k;
++
++				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
++					if (j != FEATURE_NONE && !(coexist_features[i] & j))
++						continue;
++					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
++						      igt_output_name(outputs[i]),
++						      coexist_feature_str(j)) {
++						data.pipe = pipes[i];
++						data.output = outputs[i];
++						data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
++						data.coexist_feature = j;
+ 						prepare(&data);
+ 						run(&data);
+ 						cleanup(&data);
+@@ -1210,103 +1321,88 @@ igt_main
+ 				}
+ 			}
+ 		}
+-	}
+ 
+-	data.op = PLANE_MOVE_CONTINUOUS;
+-	igt_describe("Test that selective fetch works on moving overlay plane (no update)");
+-	igt_subtest_with_dynamic_f("overlay-%s-sf", op_str(data.op)) {
+-		for (i = 0; i < n_pipes; i++) {
+-			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+-				continue;
+-
+-			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+-				if (j != FEATURE_NONE && !(coexist_features[i] & j))
++		data.op = PLANE_MOVE_CONTINUOUS_EXCEED_FULLY;
++		igt_describe("Test that selective fetch works on moving overlay plane fully "
++			     "exceeding visible area (no update)");
++		igt_subtest_with_dynamic_f("%soverlay-%s-sf", append_fbc_subtest[y],
++					   op_str(data.op)) {
++			for (i = 0; i < n_pipes; i++) {
++				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+ 					continue;
+-				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+-					      igt_output_name(outputs[i]),
+-					      coexist_feature_str(j)) {
+-				data.pipe = pipes[i];
+-				data.output = outputs[i];
+-				data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+-				data.coexist_feature = j;
+-				prepare(&data);
+-				run(&data);
+-				cleanup(&data);
 -				}
 -			}
 -		}
+-	}
+ 
+-	data.op = PLANE_MOVE_CONTINUOUS_EXCEED;
+-	igt_describe("Test that selective fetch works on moving overlay plane partially exceeding visible area (no update)");
+-	igt_subtest_with_dynamic_f("overlay-%s-sf", op_str(data.op)) {
+-		for (i = 0; i < n_pipes; i++) {
+-			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+-				continue;
+-
+-			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+-				if (j != FEATURE_NONE && !(coexist_features[i] & j))
+-					continue;
+-				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+-					      igt_output_name(outputs[i]),
+-					      coexist_feature_str(j)) {
+-					data.pipe = pipes[i];
+-					data.output = outputs[i];
+-					data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+-					data.coexist_feature = j;
+-					prepare(&data);
+-					run(&data);
+-					cleanup(&data);
++				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
++					if (j != FEATURE_NONE && !(coexist_features[i] & j))
++						continue;
++					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
++						      igt_output_name(outputs[i]),
++						      coexist_feature_str(j)) {
++						data.pipe = pipes[i];
++						data.output = outputs[i];
++						data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
++						data.coexist_feature = j;
++						prepare(&data);
++						run(&data);
++						cleanup(&data);
++					}
+ 				}
+ 			}
+ 		}
+-	}
+-
+-	data.op = PLANE_MOVE_CONTINUOUS_EXCEED_FULLY;
+-	igt_describe("Test that selective fetch works on moving overlay plane fully exceeding visible area (no update)");
+-	igt_subtest_with_dynamic_f("overlay-%s-sf", op_str(data.op)) {
+-		for (i = 0; i < n_pipes; i++) {
+-			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+-				continue;
+ 
+-			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+-				if (j != FEATURE_NONE && !(coexist_features[i] & j))
++		/* Verify primary plane selective fetch with overplay plane blended */
++		data.op = OVERLAY_PRIM_UPDATE;
++		igt_describe("Test that selective fetch works on primary plane "
++			     "with blended overlay plane");
++		igt_subtest_with_dynamic_f("%s%s-sf-dmg-area", append_fbc_subtest[y],
++					   op_str(data.op)) {
++			for (i = 0; i < n_pipes; i++) {
++				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+ 					continue;
+-				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+-					      igt_output_name(outputs[i]),
+-					      coexist_feature_str(j)) {
+-					data.pipe = pipes[i];
+-					data.output = outputs[i];
+-					data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+-					data.coexist_feature = j;
+-					prepare(&data);
+-					run(&data);
+-					cleanup(&data);
++
++				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
++					if (j != FEATURE_NONE && !(coexist_features[i] & j))
++						continue;
++					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
++						      igt_output_name(outputs[i]),
++						      coexist_feature_str(j)) {
++						data.pipe = pipes[i];
++						data.output = outputs[i];
++						for (k = 1; k <= MAX_DAMAGE_AREAS; k++) {
++							data.damage_area_count = k;
++							data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
++							data.coexist_feature = j;
++							prepare(&data);
++							run(&data);
++							cleanup(&data);
++						}
++					}
+ 				}
+ 			}
+ 		}
+-	}
+ 
+-	/* Verify primary plane selective fetch with overplay plane blended */
+-	data.op = OVERLAY_PRIM_UPDATE;
+-	igt_describe("Test that selective fetch works on primary plane "
+-		     "with blended overlay plane");
+-	igt_subtest_with_dynamic_f("%s-sf-dmg-area", op_str(data.op)) {
+-		for (i = 0; i < n_pipes; i++) {
+-			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+-				continue;
+-
+-			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+-				if (j != FEATURE_NONE && !(coexist_features[i] & j))
++		/*
++		 * Verify overlay plane selective fetch using NV12 primary
++		 * plane and continuous updates.
++		 */
++		data.op = PLANE_UPDATE_CONTINUOUS;
++		data.primary_format = DRM_FORMAT_NV12;
++		igt_describe("Test that selective fetch works on overlay plane");
++		igt_subtest_with_dynamic_f("%soverlay-%s-sf", append_fbc_subtest[y],
++					   op_str(data.op)) {
++			for (i = 0; i < n_pipes; i++) {
++				if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+ 					continue;
+-				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+-					      igt_output_name(outputs[i]),
+-					      coexist_feature_str(j)) {
+-					data.pipe = pipes[i];
+-					data.output = outputs[i];
+-					for (k = 1; k <= MAX_DAMAGE_AREAS; k++) {
+-						data.damage_area_count = k;
+-						data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
++
++				for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
++					if (j != FEATURE_NONE && !(coexist_features[i] & j))
++						continue;
++					igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
++						      igt_output_name(outputs[i]),
++						      coexist_feature_str(j)) {
++						data.pipe = pipes[i];
++						data.output = outputs[i];
++						data.damage_area_count = 1;
++						data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+ 						data.coexist_feature = j;
+ 						prepare(&data);
+ 						run(&data);
+@@ -1317,37 +1413,6 @@ igt_main
+ 		}
  	}
  
+-	/*
+-	 * Verify overlay plane selective fetch using NV12 primary
+-	 * plane and continuous updates.
+-	 */
+-	data.op = PLANE_UPDATE_CONTINUOUS;
+-	data.primary_format = DRM_FORMAT_NV12;
+-	igt_describe("Test that selective fetch works on overlay plane");
+-	igt_subtest_with_dynamic_f("overlay-%s-sf", op_str(data.op)) {
+-		for (i = 0; i < n_pipes; i++) {
+-			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
+-				continue;
+-
+-			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+-				if (j != FEATURE_NONE && !(coexist_features[i] & j))
+-					continue;
+-				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
+-					      igt_output_name(outputs[i]),
+-					      coexist_feature_str(j)) {
+-					data.pipe = pipes[i];
+-					data.output = outputs[i];
+-					data.damage_area_count = 1;
+-					data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+-					data.coexist_feature = j;
+-					prepare(&data);
+-					run(&data);
+-					cleanup(&data);
+-				}
+-			}
+-		}
+-	}
+-
  	igt_fixture {
+ 		close(data.debugfs_fd);
+ 		display_fini(&data);
 -- 
 2.25.1
