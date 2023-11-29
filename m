@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2D6A310E61A
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Nov 2023 15:41:45 +0000 (UTC)
-Date: Wed, 29 Nov 2023 16:41:40 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3902710E1C8
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Nov 2023 12:36:24 +0000 (UTC)
+Date: Wed, 29 Nov 2023 13:28:57 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20231129154140.nlublqmr6fbxvtf4@kamilkon-desk.igk.intel.com>
-References: <20231129123221.98948-1-mauro.chehab@linux.intel.com>
+Message-ID: <20231129122857.vlqrqftt7k5pj3sh@kamilkon-desk.igk.intel.com>
+References: <20231128164551.77343-1-mauro.chehab@linux.intel.com>
+ <20231128164551.77343-2-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231129123221.98948-1-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 0/3] Produce per-GPU testlists for
- IntelCI
+In-Reply-To: <20231128164551.77343-2-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH RFC 1/3] tests/intel: *.json: specify what
+ drivers use such tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,61 +26,59 @@ To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Mauro,
-On 2023-11-29 at 13:25:33 +0100, Mauro Carvalho Chehab wrote:
+On 2023-11-28 at 17:43:01 +0100, Mauro Carvalho Chehab wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
-> This series contain an improvement to IGT documentation tool to
-> help generating per-GPU testlists.
+> The test sets defined at the JSON files are meant to be used
+> by one or more drivers. Specify the driver(s) at the JSON
+> config file.
 > 
-> This helps producing testlists to be used by Intel CI automation,
-> as tests that are specific to certain GPUs or ones that won't be
-> running on some specific configurations can be excluded from
-> the testlists, making the test results more reliable, saving
-> execution time on CI and keeping such exclusions properly
-> documented.
-> 
-> With such change, assuming that some tests would be needed to
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Could you add this description starting from word "assuming"
-into documentation (python source code) or at least copy it
-into patch description?
-It shows how to use your change and what is expected output.
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Regards,
-Kamil
-
-> be blocked on a "foo" configutation, running
+> ---
+>  tests/intel/i915_test_config.json | 1 +
+>  tests/intel/kms_test_config.json  | 1 +
+>  tests/intel/xe_test_config.json   | 1 +
+>  3 files changed, 3 insertions(+)
 > 
-> 	./scripts/igt_doc.py --config tests/intel/xe_test_config.json --intelci-testlist intel-ci
-> 
-> will produce a set of testlist files like:
-> 
-> 	intel-ci/
-> 	└── xe
-> 	    ├── default
-> 	    │   ├── bat.testlist
-> 	    │   ├── full.testlist
-> 	    │   └── other.testlist
-> 	    └── foo
-> 	        ├── bat.testlist
-> 	        ├── full.testlist
-> 	        └── other.testlist
-> 
-> Where the "foo" testlists will have a different set of sets on
-> their testlists, due to blocklisted tests.
-> 
-> Mauro Carvalho Chehab (3):
->   igt_doc: Add driver name list at JSON configuration
->   tests/intel: *.json: specify what drivers use such tests
->   scripts/igt_doc.py: add a logic to generate Intel CI testlists
-> 
->  scripts/igt_doc.py                | 192 +++++++++++++++++++++++++++++-
->  scripts/test_list.py              |   5 +
->  tests/intel/i915_test_config.json |   1 +
->  tests/intel/kms_test_config.json  |   1 +
->  tests/intel/xe_test_config.json   |   1 +
->  5 files changed, 198 insertions(+), 2 deletions(-)
-> 
+> diff --git a/tests/intel/i915_test_config.json b/tests/intel/i915_test_config.json
+> index c15ef2580688..ad59677f8126 100644
+> --- a/tests/intel/i915_test_config.json
+> +++ b/tests/intel/i915_test_config.json
+> @@ -1,6 +1,7 @@
+>  {
+>      "description": "JSON file to be used to parse i915 documentation",
+>      "name": "Tests for i915 Driver",
+> +    "drivers": [ "i915" ],
+>      "files": [ "*.c", "../core_auth.c", "../core_getclient.c",
+>                 "../core_getstats.c", "../core_getversion.c",
+>                 "../core_hotunplug.c", "../core_setmaster.c",
+> diff --git a/tests/intel/kms_test_config.json b/tests/intel/kms_test_config.json
+> index d38562c02ed6..f3f6bfad6eac 100644
+> --- a/tests/intel/kms_test_config.json
+> +++ b/tests/intel/kms_test_config.json
+> @@ -1,6 +1,7 @@
+>  {
+>      "description": "JSON file to be used to parse KMS documentation",
+>      "name": "Display and KMS Tests for Intel i915 and Xe Drivers",
+> +    "drivers": [ "xe", "i915" ],
+>      "files": [ "../chamelium/kms_*.c", "../kms_*.c", "../testdisplay.c", "kms_*.c" ],
+>      "exclude_files": [ "../chamelium/kms_chamelium_helper.c", "../kms_color_helper.c",
+>                         "kms_dsc_helper.c" ],
+> diff --git a/tests/intel/xe_test_config.json b/tests/intel/xe_test_config.json
+> index a2d764307831..3944a9c8028b 100644
+> --- a/tests/intel/xe_test_config.json
+> +++ b/tests/intel/xe_test_config.json
+> @@ -1,6 +1,7 @@
+>  {
+>      "description": "JSON file to be used to parse Xe documentation",
+>      "name": "Tests for Xe Driver",
+> +    "drivers": [ "xe" ],
+>      "files": [ "xe_*.c", "../core_hotunplug.c", "intel_hwmon.c" ],
+>      "fields": {
+>          "Category": {
 > -- 
 > 2.42.0
 > 
