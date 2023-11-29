@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 526A010E53C
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Nov 2023 14:04:27 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 29 Nov 2023 19:16:56 +0530
-Message-Id: <20231129134657.2826744-6-bhanuprakash.modem@intel.com>
-In-Reply-To: <20231129134657.2826744-1-bhanuprakash.modem@intel.com>
-References: <20231129134657.2826744-1-bhanuprakash.modem@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============3340030541501818736=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 5/6] tests/kms_vrr: Add new subtest to switch RR
- without modeset
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
+Date: Wed, 29 Nov 2023 14:13:57 -0000
+Message-ID: <170126723735.12093.14849252814426340557@emeril.freedesktop.org>
+References: <20220422002230.19535-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20220422002230.19535-1-mohammed.thasleem@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/in?=
+ =?utf-8?q?tel/kms=5Fpm=5Fdc=3A_Fix_dc9-dpms_test_on_LNL_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,261 +17,302 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add new subtest to switch between low refresh rate to high
-refresh rate and vice versa seamlessly without modeset.
+--===============3340030541501818736==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Below are the sequence of operations to perform:
+== Series Details ==
 
-With VRR:
-+---------------------------+
-| Step | VRR  | Mode | Flip |
-+------+------+------+------+
-| 1    | Off  | High | Yes  |
-| 2    | On   | Low  | Yes  |
-| 3    | On   | High | Yes  |
-| 4    | Off  | High | No   |
-+------+------+------+------+
+Series: tests/intel/kms_pm_dc: Fix dc9-dpms test on LNL (rev3)
+URL   : https://patchwork.freedesktop.org/series/126834/
+State : success
 
-Without VRR:
-+---------------------------+
-| Step | VRR  | Mode | Flip |
-+------+------+------+------+
-| 1    | Off  | High | Yes  |
-| 2    | Off  | Low  | Yes  |
-| 3    | Off  | High | Yes  |
-+------+------+------+------+
+== Summary ==
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_vrr.c | 136 +++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 124 insertions(+), 12 deletions(-)
+CI Bug Log - changes from XEIGT_7609_BAT -> XEIGTPW_10290_BAT
+====================================================
 
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 363649294..1d2e3d70c 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -53,6 +53,10 @@
-  * SUBTEST: flipline
-  * Description: Make sure that flips happen at flipline decision boundary.
-  *
-+ * SUBTEST: seamless-rr-switch
-+ * Description: Test to switch RR seamlessly without modeset.
-+ * Functionality: adaptive_sync, drrs, lrr
-+ *
-  * SUBTEST: negative-basic
-  * Description: Make sure that VRR should not be enabled on the Non-VRR panel.
-  */
-@@ -70,7 +74,14 @@ enum {
- 	TEST_DPMS = 1 << 1,
- 	TEST_SUSPEND = 1 << 2,
- 	TEST_FLIPLINE = 1 << 3,
--	TEST_NEGATIVE = 1 << 4,
-+	TEST_SEAMLESS_RR = 1 << 4,
-+	TEST_NEGATIVE = 1 << 5,
-+};
-+
-+enum {
-+	HIGH_RR_MODE,
-+	LOW_RR_MODE,
-+	RR_MODES_COUNT,
- };
- 
- typedef struct range {
-@@ -85,6 +96,7 @@ typedef struct data {
- 	igt_fb_t fb0;
- 	igt_fb_t fb1;
- 	range_t range;
-+	drmModeModeInfo switch_modes[RR_MODES_COUNT];
- } data_t;
- 
- typedef struct vtest_ns {
-@@ -169,6 +181,24 @@ output_mode_with_maxrate(igt_output_t *output, unsigned int vrr_max)
- 	return mode;
- }
- 
-+static drmModeModeInfo
-+low_rr_mode_with_same_res(igt_output_t *output, unsigned int vrr_min)
-+{
-+	int i;
-+	drmModeConnectorPtr connector = output->config.connector;
-+	drmModeModeInfo mode = *igt_output_get_mode(output);
-+
-+	for (i = 0; i < connector->count_modes; i++)
-+		/* TODO: Improve checks for downclock */
-+		if (connector->modes[i].hdisplay == mode.hdisplay &&
-+		    connector->modes[i].vdisplay == mode.vdisplay &&
-+		    connector->modes[i].vrefresh < mode.vrefresh &&
-+		    connector->modes[i].vrefresh >= vrr_min)
-+			mode = connector->modes[i];
-+
-+	return mode;
-+}
-+
- /* Read min and max vrr range from the connector debugfs. */
- static range_t
- get_vrr_range(data_t *data, igt_output_t *output)
-@@ -231,7 +261,7 @@ static void set_vrr_on_pipe(data_t *data, enum pipe pipe, bool enabled)
- static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
- {
- 	cairo_t *cr;
--	drmModeModeInfo *mode = igt_output_get_mode(output);
-+	drmModeModeInfo *mode = &data->switch_modes[HIGH_RR_MODE];
- 
- 	/* Prepare resources */
- 	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-@@ -457,7 +487,9 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
- 
- static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *output)
- {
--	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED, false);
-+	if (vrr_capable(output))
-+		igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED, false);
-+
- 	igt_plane_set_fb(data->primary, NULL);
- 	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_output_override_mode(output, NULL);
-@@ -467,9 +499,64 @@ static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *output)
- 	igt_remove_fb(data->drm_fd, &data->fb0);
- }
- 
--static bool output_constraint(data_t *data, igt_output_t *output)
-+static void
-+test_seamless_rr_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
- {
--	drmModeModeInfo mode;
-+	uint32_t result;
-+	vtest_ns_t vtest_ns;
-+	uint64_t rate;
-+	bool vrr = vrr_capable(output);
-+
-+	igt_info("Use HIGH_RR Mode as default (VRR: OFF): ");
-+	kmstest_dump_mode(&data->switch_modes[HIGH_RR_MODE]);
-+
-+	prepare_test(data, output, pipe);
-+	vtest_ns = get_test_rate_ns(data->range);
-+
-+	rate = vtest_ns.max;
-+	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
-+	igt_assert_f(result < 10,
-+		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR off threshold exceeded, result was %u%%\n",
-+		     data->range.max, rate, result);
-+
-+	/* Switch to low rr mode without modeset. */
-+	igt_info("Switch to LOW_RR Mode (VRR: %s): ", vrr ? "ON" : "OFF");
-+	kmstest_dump_mode(&data->switch_modes[LOW_RR_MODE]);
-+	igt_output_override_mode(output, &data->switch_modes[LOW_RR_MODE]);
-+	if (vrr)
-+		igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED, true);
-+	igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
-+
-+	rate = vtest_ns.min;
-+	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
-+	igt_assert_f(vrr ? (result > 75) : (result < 10),
-+		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold %s exceeded, result was %u%%\n",
-+		     data->range.min, rate, vrr ? "on" : "off", vrr ? "not reached" : "exceeded", result);
-+
-+	/* Switch back to high rr mode without modeset. */
-+	igt_info("Switch back to HIGH_RR Mode (VRR: %s): ", vrr ? "ON" : "OFF");
-+	kmstest_dump_mode(&data->switch_modes[HIGH_RR_MODE]);
-+	igt_output_override_mode(output, &data->switch_modes[HIGH_RR_MODE]);
-+	igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
-+
-+	rate = vtest_ns.max;
-+	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
-+	igt_assert_f(vrr ? (result > 75) : (result < 10),
-+		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold %s exceeded, result was %u%%\n",
-+		     data->range.max, rate, vrr ? "on" : "off", vrr ? "not reached" : "exceeded", result);
-+
-+	if (vrr) {
-+		igt_info("Disable VRR.\n");
-+		igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED, true);
-+		igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
-+	}
-+}
-+
-+static bool output_constraint(data_t *data, igt_output_t *output, uint32_t flags)
-+{
-+	if ((flags & TEST_SEAMLESS_RR) &&
-+	    output->config.connector->connector_type != DRM_MODE_CONNECTOR_eDP)
-+		return false;
- 
- 	/* Reset output */
- 	igt_display_reset(&data->display);
-@@ -477,21 +564,40 @@ static bool output_constraint(data_t *data, igt_output_t *output)
- 	/* Capture VRR range */
- 	data->range = get_vrr_range(data, output);
- 
-+	/*
-+	 * FIXME: Read the DRRS capability, currently assuming:
-+	 * - Panel should contain 2 modes only
-+	 * - Both modes should have the same resolution but different RR
-+	 */
-+	if (!vrr_capable(output) && output->config.connector->count_modes != 2)
-+		return false;
-+
- 	/*
- 	 * Override mode with max vrefresh.
- 	 *   - vrr_min range should be less than the override mode vrefresh.
- 	 *   - Limit the vrr_max range with the override mode vrefresh.
- 	 */
--	mode = output_mode_with_maxrate(output, data->range.max);
--	if (mode.vrefresh < data->range.min)
-+	data->switch_modes[HIGH_RR_MODE] = output_mode_with_maxrate(output, data->range.max);
-+	if (data->switch_modes[HIGH_RR_MODE].vrefresh < data->range.min)
- 		return false;
- 
--	data->range.max = mode.vrefresh;
-+	data->range.max = data->switch_modes[HIGH_RR_MODE].vrefresh;
- 
- 	igt_info("Override Mode: ");
--	kmstest_dump_mode(&mode);
-+	kmstest_dump_mode(&data->switch_modes[HIGH_RR_MODE]);
-+
-+	igt_output_override_mode(output, &data->switch_modes[HIGH_RR_MODE]);
- 
--	igt_output_override_mode(output, &mode);
-+	if (!(flags & TEST_SEAMLESS_RR))
-+		return true;
-+
-+	/* Search for a low refresh rate mode */
-+	data->switch_modes[LOW_RR_MODE] =
-+		low_rr_mode_with_same_res(output, data->range.min);
-+	if (data->switch_modes[LOW_RR_MODE].vrefresh == data->switch_modes[HIGH_RR_MODE].vrefresh)
-+		return false;
-+
-+	data->range.min = data->switch_modes[LOW_RR_MODE].vrefresh;
- 
- 	return true;
- }
-@@ -505,10 +611,10 @@ static bool config_constraint(data_t *data, igt_output_t *output, uint32_t flags
- 	if ((flags & TEST_NEGATIVE) && vrr_capable(output))
- 		return false;
- 
--	if (!(flags & TEST_NEGATIVE) && !vrr_capable(output))
-+	if (!(flags & (TEST_SEAMLESS_RR | TEST_NEGATIVE)) && !vrr_capable(output))
- 		return false;
- 
--	if (!output_constraint(data, output))
-+	if (!output_constraint(data, output, flags))
- 		return false;
- 
- 	return true;
-@@ -584,6 +690,12 @@ igt_main
- 	igt_subtest_with_dynamic("negative-basic")
- 		run_vrr_test(&data, test_basic, TEST_NEGATIVE);
- 
-+	igt_describe("Test to switch RR seamlessly without modeset.");
-+	igt_subtest_with_dynamic("seamless-rr-switch") {
-+		igt_require_intel(data.drm_fd);
-+		run_vrr_test(&data, test_seamless_rr_basic, TEST_SEAMLESS_RR);
-+	}
-+
- 	igt_fixture {
- 		igt_display_fini(&data.display);
- 		drm_close_driver(data.drm_fd);
--- 
-2.40.0
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10290_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][1] ([Intel XE#623])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_addfb_basic@basic-y-tiled-legacy:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][2] ([Intel XE#388]) +2 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/bat-dg2-oem2/igt@kms_addfb_basic@basic-y-tiled-legacy.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][3] ([Intel XE#423])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_force_connector_basic@prune-stale-modes:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][4] ([i915#5274])
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-dg2-oem2:       NOTRUN -> [FAIL][5] ([Intel XE#608])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
+    - bat-dg2-oem2:       NOTRUN -> [TIMEOUT][6] ([Intel XE#430] / [Intel XE#530])
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3:
+    - bat-dg2-oem2:       NOTRUN -> [FAIL][7] ([Intel XE#400] / [Intel XE#616])
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3:
+    - bat-dg2-oem2:       NOTRUN -> [TIMEOUT][8] ([Intel XE#530])
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html
+
+  * igt@kms_pipe_crc_basic@hang-read-crc:
+    - bat-dg2-oem2:       NOTRUN -> [INCOMPLETE][9] ([Intel XE#282] / [Intel XE#749])
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3:
+    - bat-dg2-oem2:       NOTRUN -> [INCOMPLETE][10] ([Intel XE#282] / [Intel XE#545])
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html
+
+  * igt@xe_exec_fault_mode@twice-userptr-invalidate-imm:
+    - bat-atsm-2:         NOTRUN -> [SKIP][11] ([Intel XE#288]) +17 other tests skip
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/bat-atsm-2/igt@xe_exec_fault_mode@twice-userptr-invalidate-imm.html
+
+  * igt@xe_huc_copy@huc_copy:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][12] ([Intel XE#255])
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html
+
+  
+#### Possible fixes ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-atsm-2:         [INCOMPLETE][13] ([Intel XE#764]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7609/bat-atsm-2/igt@core_hotunplug@unbind-rebind.html
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/bat-atsm-2/igt@core_hotunplug@unbind-rebind.html
+
+  * {igt@xe_create@create-execqueues-leak}:
+    - bat-atsm-2:         [FAIL][15] ([Intel XE#524]) -> [PASS][16]
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7609/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
+   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
+
+  * igt@xe_exec_compute_mode@twice-userptr:
+    - bat-dg2-oem2:       [INCOMPLETE][17] ([Intel XE#948]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7609/bat-dg2-oem2/igt@xe_exec_compute_mode@twice-userptr.html
+   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/bat-dg2-oem2/igt@xe_exec_compute_mode@twice-userptr.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#255]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/255
+  [Intel XE#282]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/282
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+  [Intel XE#388]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/388
+  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
+  [Intel XE#423]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/423
+  [Intel XE#430]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/430
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+  [Intel XE#530]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/530
+  [Intel XE#545]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/545
+  [Intel XE#608]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/608
+  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
+  [Intel XE#623]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/623
+  [Intel XE#749]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/749
+  [Intel XE#764]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/764
+  [Intel XE#948]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/948
+  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7609 -> IGTPW_10290
+  * Linux: xe-527-b06c9f366cd09b888be061d23eecffed7139c09b -> xe-531-83c1bf3deb455028a343dba6d855341472b7bf71
+
+  IGTPW_10290: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10290/index.html
+  IGT_7609: 72a759595100b8d167ca78cd2d62e9acd97e36bf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-527-b06c9f366cd09b888be061d23eecffed7139c09b: b06c9f366cd09b888be061d23eecffed7139c09b
+  xe-531-83c1bf3deb455028a343dba6d855341472b7bf71: 83c1bf3deb455028a343dba6d855341472b7bf71
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/index.html
+
+--===============3340030541501818736==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/kms_pm_dc: Fix dc9-dpms test on LNL (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126834/">https://patchwork.freedesktop.org/series/126834/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7609_BAT -&gt; XEIGTPW_10290_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10290_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/623">Intel XE#623</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@basic-y-tiled-legacy:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/bat-dg2-oem2/igt@kms_addfb_basic@basic-y-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/388">Intel XE#388</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/423">Intel XE#423</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@prune-stale-modes:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/bat-dg2-oem2/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5274">i915#5274</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/608">Intel XE#608</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/430">Intel XE#430</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/530">Intel XE#530</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/530">Intel XE#530</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/749">Intel XE#749</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/545">Intel XE#545</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@twice-userptr-invalidate-imm:</p>
+<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/bat-atsm-2/igt@xe_exec_fault_mode@twice-userptr-invalidate-imm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +17 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_huc_copy@huc_copy:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7609/bat-atsm-2/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/764">Intel XE#764</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/bat-atsm-2/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>{igt@xe_create@create-execqueues-leak}:</p>
+<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7609/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_compute_mode@twice-userptr:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7609/bat-dg2-oem2/igt@xe_exec_compute_mode@twice-userptr.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/948">Intel XE#948</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10290/bat-dg2-oem2/igt@xe_exec_compute_mode@twice-userptr.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7609 -&gt; IGTPW_10290</li>
+<li>Linux: xe-527-b06c9f366cd09b888be061d23eecffed7139c09b -&gt; xe-531-83c1bf3deb455028a343dba6d855341472b7bf71</li>
+</ul>
+<p>IGTPW_10290: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10290/index.html<br />
+  IGT_7609: 72a759595100b8d167ca78cd2d62e9acd97e36bf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-527-b06c9f366cd09b888be061d23eecffed7139c09b: b06c9f366cd09b888be061d23eecffed7139c09b<br />
+  xe-531-83c1bf3deb455028a343dba6d855341472b7bf71: 83c1bf3deb455028a343dba6d855341472b7bf71</p>
+
+</body>
+</html>
+
+--===============3340030541501818736==--
