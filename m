@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1B81D10E750
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Nov 2023 18:12:13 +0000 (UTC)
-Date: Thu, 30 Nov 2023 19:11:53 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20231130181153.dwekjhxtwczdv6yi@kamilkon-desk.igk.intel.com>
-References: <20231130173837.2915568-1-bhanuprakash.modem@intel.com>
- <20231130173837.2915568-7-bhanuprakash.modem@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 95D8F10E038
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Nov 2023 20:05:05 +0000 (UTC)
+Date: Thu, 30 Nov 2023 15:04:26 -0500
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: Francois Dugast <francois.dugast@intel.com>
+Message-ID: <ZWjqys8lOt50I-CY@intel.com>
+References: <20231130184536.7-1-francois.dugast@intel.com>
+ <20231130184536.7-13-francois.dugast@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20231130173837.2915568-7-bhanuprakash.modem@intel.com>
-Subject: Re: [igt-dev] [i-g-t V2 6/6] HAX: Add seamless-rr-switch subtest to
- BAT
+In-Reply-To: <20231130184536.7-13-francois.dugast@intel.com>
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH v5 12/21] drm-uapi/xe: Align on a common way
+ to return arrays (engines)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,494 +21,326 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Bhanuprakash,
-On 2023-11-30 at 23:08:37 +0530, Bhanuprakash Modem wrote:
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->  tests/intel-ci/fast-feedback.testlist    | 177 +--------------
->  tests/intel-ci/xe-fast-feedback.testlist | 267 +----------------------
->  2 files changed, 6 insertions(+), 438 deletions(-)
-
-You subject: is misleading, you actually want to test only your
-own tests and for that you are removing all others, so please
-instead of:
-
-[i-g-t V2 6/6] HAX: Add seamless-rr-switch subtest to BAT
-
-write something like:
-
-[i-g-t V2 6/6] DO_NOT_MERGE: test only seamless-rr-switch
-
-+cc Swati
-
-Regards,
-Kamil
-
+On Thu, Nov 30, 2023 at 06:45:27PM +0000, Francois Dugast wrote:
+> Align with commit ("drm/xe/uapi: Align on a common way to return
+> arrays (engines)")
 > 
-> diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-> index aeba0ab29..5a990a859 100644
-> --- a/tests/intel-ci/fast-feedback.testlist
-> +++ b/tests/intel-ci/fast-feedback.testlist
-> @@ -1,177 +1,6 @@
->  # Try to load the driver if it's not available yet.
->  igt@i915_module_load@load
+> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+
+> ---
+>  include/drm-uapi/xe_drm.h         | 78 +++++++++++++++++++------------
+>  lib/xe/xe_query.c                 | 24 ++++------
+>  lib/xe/xe_query.h                 | 11 ++---
+>  tests/intel/xe_create.c           |  2 +-
+>  tests/intel/xe_drm_fdinfo.c       |  2 +-
+>  tests/intel/xe_exec_store.c       |  2 +-
+>  tests/intel/xe_noexec_ping_pong.c |  2 +-
+>  tests/intel/xe_waitfence.c        |  2 +-
+>  8 files changed, 66 insertions(+), 57 deletions(-)
+> 
+> diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+> index d37266072..55b3edc93 100644
+> --- a/include/drm-uapi/xe_drm.h
+> +++ b/include/drm-uapi/xe_drm.h
+> @@ -127,9 +127,9 @@ struct xe_user_extension {
+>  /**
+>   * struct drm_xe_engine_class_instance - instance of an engine class
+>   *
+> - * It is returned as part of the @drm_xe_query_engine_info, but it also is
+> - * used as the input of engine selection for both @drm_xe_exec_queue_create
+> - * and @drm_xe_query_engine_cycles
+> + * It is returned as part of the @drm_xe_engine, but it also is used as
+> + * the input of engine selection for both @drm_xe_exec_queue_create and
+> + * @drm_xe_query_engine_cycles
+>   *
+>   */
+>  struct drm_xe_engine_class_instance {
+> @@ -153,13 +153,9 @@ struct drm_xe_engine_class_instance {
+>  };
 >  
-> -# Keep alphabetically sorted by default
-> -igt@core_auth@basic-auth
-> -igt@debugfs_test@read_all_entries
-> -igt@debugfs_test@basic-hwmon
-> -igt@fbdev@eof
-> -igt@fbdev@info
-> -igt@fbdev@nullptr
-> -igt@fbdev@read
-> -igt@fbdev@write
-> -igt@gem_basic@bad-close
-> -igt@gem_basic@create-close
-> -igt@gem_basic@create-fd-close
-> -igt@gem_busy@busy@all-engines
-> -igt@gem_close_race@basic-process
-> -igt@gem_close_race@basic-threads
-> -igt@gem_ctx_create@basic
-> -igt@gem_ctx_create@basic-files
-> -igt@gem_ctx_exec@basic
-> -igt@gem_exec_basic@basic
-> -igt@gem_exec_create@basic
-> -igt@gem_exec_fence@basic-busy
-> -igt@gem_exec_fence@basic-wait
-> -igt@gem_exec_fence@basic-await
-> -igt@gem_exec_fence@nb-await
-> -igt@gem_exec_gttfill@basic
-> -igt@gem_exec_parallel@engines
-> -igt@gem_exec_store@basic
-> -igt@gem_flink_basic@bad-flink
-> -igt@gem_flink_basic@bad-open
-> -igt@gem_flink_basic@basic
-> -igt@gem_flink_basic@double-flink
-> -igt@gem_flink_basic@flink-lifetime
-> -igt@gem_huc_copy@huc-copy
-> -igt@gem_linear_blits@basic
-> -igt@gem_mmap@basic
-> -igt@gem_mmap_gtt@basic
-> -igt@gem_render_linear_blits@basic
-> -igt@gem_render_tiled_blits@basic
-> -igt@gem_ringfill@basic-all
-> -igt@gem_softpin@allocator-basic
-> -igt@gem_softpin@allocator-basic-reserve
-> -igt@gem_softpin@safe-alignment
-> -igt@gem_sync@basic-all
-> -igt@gem_sync@basic-each
-> -igt@gem_tiled_blits@basic
-> -igt@gem_tiled_fence_blits@basic
-> -igt@gem_tiled_pread_basic
-> -igt@gem_wait@busy@all-engines
-> -igt@gem_wait@wait@all-engines
-> -igt@i915_getparams_basic@basic-eu-total
-> -igt@i915_getparams_basic@basic-subslice-total
-> -igt@i915_hangman@error-state-basic
-> -igt@i915_pciid
-> -igt@kms_addfb_basic@addfb25-4-tiled
-> -igt@kms_addfb_basic@addfb25-bad-modifier
-> -igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
-> -igt@kms_addfb_basic@addfb25-modifier-no-flag
-> -igt@kms_addfb_basic@addfb25-x-tiled-legacy
-> -igt@kms_addfb_basic@addfb25-x-tiled-mismatch-legacy
-> -igt@kms_addfb_basic@addfb25-yf-tiled-legacy
-> -igt@kms_addfb_basic@addfb25-y-tiled-legacy
-> -igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
-> -igt@kms_addfb_basic@bad-pitch-0
-> -igt@kms_addfb_basic@bad-pitch-1024
-> -igt@kms_addfb_basic@bad-pitch-128
-> -igt@kms_addfb_basic@bad-pitch-256
-> -igt@kms_addfb_basic@bad-pitch-32
-> -igt@kms_addfb_basic@bad-pitch-63
-> -igt@kms_addfb_basic@bad-pitch-65536
-> -igt@kms_addfb_basic@bad-pitch-999
-> -igt@kms_addfb_basic@basic
-> -igt@kms_addfb_basic@basic-x-tiled-legacy
-> -igt@kms_addfb_basic@basic-y-tiled-legacy
-> -igt@kms_addfb_basic@bo-too-small
-> -igt@kms_addfb_basic@bo-too-small-due-to-tiling
-> -igt@kms_addfb_basic@clobberred-modifier
-> -igt@kms_addfb_basic@framebuffer-vs-set-tiling
-> -igt@kms_addfb_basic@invalid-get-prop
-> -igt@kms_addfb_basic@invalid-get-prop-any
-> -igt@kms_addfb_basic@invalid-set-prop
-> -igt@kms_addfb_basic@invalid-set-prop-any
-> -igt@kms_addfb_basic@no-handle
-> -igt@kms_addfb_basic@size-max
-> -igt@kms_addfb_basic@small-bo
-> -igt@kms_addfb_basic@tile-pitch-mismatch
-> -igt@kms_addfb_basic@too-high
-> -igt@kms_addfb_basic@too-wide
-> -igt@kms_addfb_basic@unused-handle
-> -igt@kms_addfb_basic@unused-modifier
-> -igt@kms_addfb_basic@unused-offsets
-> -igt@kms_addfb_basic@unused-pitches
-> -igt@kms_busy@basic
-> -igt@kms_prop_blob@basic
-> -igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic
-> -igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy
-> -igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
-> -igt@kms_cursor_legacy@basic-flip-after-cursor-legacy
-> -igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
-> -igt@kms_cursor_legacy@basic-flip-before-cursor-atomic
-> -igt@kms_cursor_legacy@basic-flip-before-cursor-legacy
-> -igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size
-> -igt@kms_dsc@dsc-basic
-> -igt@kms_flip@basic-flip-vs-dpms
-> -igt@kms_flip@basic-flip-vs-modeset
-> -igt@kms_flip@basic-flip-vs-wf_vblank
-> -igt@kms_flip@basic-plain-flip
-> -igt@kms_force_connector_basic@force-connector-state
-> -igt@kms_force_connector_basic@force-edid
-> -igt@kms_force_connector_basic@force-load-detect
-> -igt@kms_force_connector_basic@prune-stale-modes
-> -igt@kms_frontbuffer_tracking@basic
-> -igt@kms_hdmi_inject@inject-audio
-> -igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24
-> -igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12
-> -igt@kms_pipe_crc_basic@hang-read-crc
-> -igt@kms_pipe_crc_basic@nonblocking-crc
-> -igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
-> -igt@kms_pipe_crc_basic@read-crc
-> -igt@kms_pipe_crc_basic@read-crc-frame-sequence
-> -igt@kms_pm_backlight@basic-brightness
-> -igt@kms_pm_rpm@basic-pci-d3-state
-> -igt@kms_pm_rpm@basic-rte
-> -igt@kms_psr@psr_primary_page_flip
-> -igt@kms_psr@psr_cursor_plane_move
-> -igt@kms_psr@psr_sprite_plane_onoff
-> -igt@kms_psr@psr_primary_mmap_gtt
-> -igt@kms_setmode@basic-clone-single-crtc
-> -igt@i915_pm_rps@basic-api
-> -igt@prime_self_import@basic-llseek-bad
-> -igt@prime_self_import@basic-llseek-size
-> -igt@prime_self_import@basic-with_fd_dup
-> -igt@prime_self_import@basic-with_one_bo
-> -igt@prime_self_import@basic-with_one_bo_two_files
-> -igt@prime_self_import@basic-with_two_bos
-> -igt@prime_vgem@basic-fence-flip
-> -igt@prime_vgem@basic-fence-mmap
-> -igt@prime_vgem@basic-fence-read
-> -igt@prime_vgem@basic-gtt
-> -igt@prime_vgem@basic-read
-> -igt@prime_vgem@basic-write
-> -igt@vgem_basic@setversion
-> -igt@vgem_basic@create
-> -igt@vgem_basic@debugfs
-> -igt@vgem_basic@dmabuf-export
-> -igt@vgem_basic@dmabuf-fence
-> -igt@vgem_basic@dmabuf-fence-before
-> -igt@vgem_basic@dmabuf-mmap
-> -igt@vgem_basic@mmap
-> -igt@vgem_basic@second-client
-> -igt@vgem_basic@sysfs
-> -
-> -# All tests that do module unloading and reloading are executed last.
-> -# They will sometimes reveal issues of earlier tests leaving the
-> -# driver in a broken state that is not otherwise noticed in that test.
-> -
-> -igt@core_hotunplug@unbind-rebind
-> -igt@vgem_basic@unload
-> -igt@i915_module_load@reload
-> -igt@gem_lmem_swapping@basic
-> -igt@gem_lmem_swapping@parallel-random-engines
-> -igt@gem_lmem_swapping@random-engines
-> -igt@gem_lmem_swapping@verify-random
-> -igt@i915_pm_rpm@module-reload
-> -
-> -# Kernel selftests
-> -igt@i915_selftest@live
-> -igt@dmabuf@all-tests
-> -
-> -# System wide suspend tests
-> -igt@i915_suspend@basic-s2idle-without-i915
-> -igt@i915_suspend@basic-s3-without-i915
-> -igt@gem_exec_suspend@basic-s0
-> -igt@gem_exec_suspend@basic-s3
-> -igt@kms_pipe_crc_basic@suspend-read-crc
-> +igt@kms_vrr@flip-basic
-> +igt@kms_vrr@seamless-rr-switch
-> +igt@kms_vrr@negative-basic
-> diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-> index 5c53e249d..6b74df53a 100644
-> --- a/tests/intel-ci/xe-fast-feedback.testlist
-> +++ b/tests/intel-ci/xe-fast-feedback.testlist
-> @@ -1,267 +1,6 @@
->  # Should be the first test
->  igt@xe_module_load@load
+>  /**
+> - * struct drm_xe_query_engine_info - describe hardware engine
+> - *
+> - * If a query is made with a struct @drm_xe_device_query where .query
+> - * is equal to %DRM_XE_DEVICE_QUERY_ENGINES, then the reply uses an array of
+> - * struct @drm_xe_query_engine_info in .data.
+> + * struct drm_xe_engine - describe hardware engine
+>   */
+> -struct drm_xe_query_engine_info {
+> +struct drm_xe_engine {
+>  	/** @instance: The @drm_xe_engine_class_instance */
+>  	struct drm_xe_engine_class_instance instance;
 >  
-> -igt@xe_compute@compute-square
-> -igt@xe_create@create-execqueues-noleak
-> -igt@xe_create@create-execqueues-leak
-> -igt@xe_create@create-massive-size
-> -igt@xe_debugfs@base
-> -igt@xe_debugfs@gt
-> -igt@xe_debugfs@forcewake
-> -igt@xe_dma_buf_sync@export-dma-buf-once
-> -igt@xe_dma_buf_sync@export-dma-buf-once-read-sync
-> -igt@xe_evict@evict-beng-mixed-threads-small-multi-vm
-> -igt@xe_evict@evict-beng-small
-> -igt@xe_evict@evict-beng-small-cm
-> -igt@xe_evict@evict-beng-small-external
-> -igt@xe_evict@evict-beng-small-external-cm
-> -igt@xe_evict@evict-beng-small-multi-vm
-> -igt@xe_evict@evict-cm-threads-small
-> -igt@xe_evict@evict-mixed-threads-small
-> -igt@xe_evict@evict-mixed-threads-small-multi-vm
-> -igt@xe_evict@evict-small
-> -igt@xe_evict@evict-small-cm
-> -igt@xe_evict@evict-small-external
-> -igt@xe_evict@evict-small-external-cm
-> -igt@xe_evict@evict-small-multi-vm
-> -igt@xe_evict@evict-small-multi-vm-cm
-> -igt@xe_evict@evict-threads-small
-> -igt@xe_evict_ccs@evict-overcommit-simple
-> -igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd
-> -igt@xe_exec_balancer@twice-virtual-basic
-> -igt@xe_exec_balancer@no-exec-virtual-basic
-> -igt@xe_exec_balancer@twice-cm-virtual-basic
-> -igt@xe_exec_balancer@no-exec-cm-virtual-basic
-> -igt@xe_exec_balancer@twice-virtual-userptr
-> -igt@xe_exec_balancer@twice-cm-virtual-userptr
-> -igt@xe_exec_balancer@twice-virtual-rebind
-> -igt@xe_exec_balancer@twice-cm-virtual-rebind
-> -igt@xe_exec_balancer@twice-virtual-userptr-rebind
-> -igt@xe_exec_balancer@twice-cm-virtual-userptr-rebind
-> -igt@xe_exec_balancer@twice-virtual-userptr-invalidate
-> -igt@xe_exec_balancer@twice-cm-virtual-userptr-invalidate
-> -igt@xe_exec_balancer@twice-parallel-basic
-> -igt@xe_exec_balancer@no-exec-parallel-basic
-> -igt@xe_exec_balancer@twice-parallel-userptr
-> -igt@xe_exec_balancer@twice-parallel-rebind
-> -igt@xe_exec_balancer@twice-parallel-userptr-rebind
-> -igt@xe_exec_balancer@twice-parallel-userptr-invalidate
-> -igt@xe_exec_basic@twice-basic
-> -igt@xe_exec_basic@no-exec-basic
-> -igt@xe_exec_basic@twice-basic-defer-mmap
-> -igt@xe_exec_basic@twice-basic-defer-bind
-> -igt@xe_exec_basic@twice-userptr
-> -igt@xe_exec_basic@twice-rebind
-> -igt@xe_exec_basic@twice-userptr-rebind
-> -igt@xe_exec_basic@twice-userptr-invalidate
-> -igt@xe_exec_basic@no-exec-userptr-invalidate
-> -igt@xe_exec_basic@twice-bindexecqueue
-> -igt@xe_exec_basic@no-exec-bindexecqueue
-> -igt@xe_exec_basic@twice-bindexecqueue-userptr
-> -igt@xe_exec_basic@twice-bindexecqueue-rebind
-> -igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind
-> -igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate
-> -igt@xe_exec_compute_mode@twice-basic
-> -igt@xe_exec_compute_mode@twice-preempt-fence-early
-> -igt@xe_exec_compute_mode@twice-userptr
-> -igt@xe_exec_compute_mode@twice-rebind
-> -igt@xe_exec_compute_mode@twice-userptr-rebind
-> -igt@xe_exec_compute_mode@twice-userptr-invalidate
-> -igt@xe_exec_compute_mode@twice-bindexecqueue
-> -igt@xe_exec_compute_mode@twice-bindexecqueue-userptr
-> -igt@xe_exec_compute_mode@twice-bindexecqueue-rebind
-> -igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-rebind
-> -igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate
-> -igt@xe_exec_reset@close-fd-no-exec
-> -igt@xe_exec_reset@cm-close-fd-no-exec
-> -igt@xe_exec_reset@virtual-close-fd-no-exec
-> -igt@xe_exec_store@basic-store
-> -igt@xe_exec_threads@threads-basic
-> -igt@xe_exec_threads@threads-mixed-basic
-> -igt@xe_exec_threads@threads-mixed-shared-vm-basic
-> -igt@xe_exec_threads@threads-mixed-fd-basic
-> -igt@xe_exec_threads@threads-mixed-userptr-invalidate
-> -igt@xe_exec_threads@threads-mixed-shared-vm-userptr-invalidate-race
-> -igt@xe_gpgpu_fill@basic
-> -igt@xe_guc_pc@freq_basic_api
-> -igt@xe_guc_pc@freq_fixed_idle
-> -igt@xe_guc_pc@freq_range_idle
-> -igt@xe_huc_copy@huc_copy
-> -igt@xe_intel_bb@add-remove-objects
-> -igt@xe_intel_bb@bb-with-allocator
-> -igt@xe_intel_bb@blit-reloc
-> -igt@xe_intel_bb@blit-simple
-> -igt@xe_intel_bb@create-in-region
-> -igt@xe_intel_bb@delta-check
-> -igt@xe_intel_bb@destroy-bb
-> -igt@xe_intel_bb@intel-bb-blit-none
-> -igt@xe_intel_bb@intel-bb-blit-x
-> -igt@xe_intel_bb@intel-bb-blit-y
-> -igt@xe_intel_bb@lot-of-buffers
-> -igt@xe_intel_bb@offset-control
-> -igt@xe_intel_bb@purge-bb
-> -igt@xe_intel_bb@render
-> -igt@xe_intel_bb@reset-bb
-> -igt@xe_intel_bb@simple-bb
-> -igt@xe_intel_bb@simple-bb-ctx
-> -igt@xe_mmap@bad-extensions
-> -igt@xe_mmap@bad-flags
-> -igt@xe_mmap@bad-object
-> -igt@xe_mmap@cpu-caching
-> -igt@xe_mmap@system
-> -igt@xe_mmap@vram
-> -igt@xe_mmap@vram-system
-> -igt@xe_pm_residency@gt-c6-on-idle
-> -igt@xe_prime_self_import@basic-with_one_bo
-> -igt@xe_prime_self_import@basic-with_fd_dup
-> -#igt@xe_prime_self_import@basic-llseek-size
-> -igt@xe_query@query-engines
-> -igt@xe_query@query-mem-usage
-> -igt@xe_query@query-gt-list
-> -igt@xe_query@query-config
-> -igt@xe_query@query-hwconfig
-> -igt@xe_query@query-topology
-> -igt@xe_query@query-invalid-extension
-> -igt@xe_query@query-invalid-query
-> -igt@xe_query@query-invalid-size
-> -igt@xe_spin_batch@spin-basic
-> -igt@xe_spin_batch@spin-batch
-> -igt@xe_sysfs_defaults@engine-defaults
-> -igt@xe_sysfs_scheduler@preempt_timeout_us-invalid
-> -igt@xe_sysfs_scheduler@preempt_timeout_us-min-max
-> -igt@xe_sysfs_scheduler@timeslice_duration_us-invalid
-> -igt@xe_sysfs_scheduler@timeslice_duration_us-min-max
-> -igt@xe_sysfs_scheduler@job_timeout_ms-invalid
-> -igt@xe_sysfs_scheduler@job_timeout_ms-min-max
-> -#igt@xe_vm@bind-once
-> -#igt@xe_vm@scratch
-> -igt@xe_vm@shared-pte-page
-> -igt@xe_vm@shared-pde-page
-> -igt@xe_vm@shared-pde2-page
-> -igt@xe_vm@shared-pde3-page
-> -igt@xe_vm@bind-execqueues-independent
-> -igt@xe_vm@munmap-style-unbind-one-partial
-> -igt@xe_vm@munmap-style-unbind-end
-> -igt@xe_vm@munmap-style-unbind-front
-> -igt@xe_vm@munmap-style-unbind-userptr-one-partial
-> -igt@xe_vm@munmap-style-unbind-userptr-end
-> -igt@xe_vm@munmap-style-unbind-userptr-front
-> -igt@xe_vm@munmap-style-unbind-userptr-inval-end
-> -igt@xe_vm@munmap-style-unbind-userptr-inval-front
-> -igt@xe_pat@userptr-coh-none
-> -igt@xe_pat@prime-self-import-coh
-> -igt@xe_pat@prime-external-import-coh
-> -igt@xe_pat@pat-index-all
-> -igt@xe_pat@pat-index-xelp
-> -igt@xe_pat@pat-index-xehpc
-> -igt@xe_pat@pat-index-xelpg
-> -igt@xe_pat@pat-index-xe2
-> -igt@xe_waitfence@abstime
-> -igt@xe_waitfence@engine
-> -igt@xe_waitfence@reltime
-> -igt@kms_addfb_basic@addfb25-4-tiled
-> -igt@kms_addfb_basic@addfb25-bad-modifier
-> -igt@kms_addfb_basic@addfb25-modifier-no-flag
-> -igt@kms_addfb_basic@addfb25-x-tiled-legacy
-> -igt@kms_addfb_basic@addfb25-x-tiled-mismatch-legacy
-> -igt@kms_addfb_basic@addfb25-yf-tiled-legacy
-> -igt@kms_addfb_basic@addfb25-y-tiled-legacy
-> -igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
-> -igt@kms_addfb_basic@bad-pitch-0
-> -igt@kms_addfb_basic@bad-pitch-1024
-> -igt@kms_addfb_basic@bad-pitch-128
-> -igt@kms_addfb_basic@bad-pitch-256
-> -igt@kms_addfb_basic@bad-pitch-32
-> -igt@kms_addfb_basic@bad-pitch-63
-> -igt@kms_addfb_basic@bad-pitch-65536
-> -igt@kms_addfb_basic@bad-pitch-999
-> -igt@kms_addfb_basic@basic
-> -igt@kms_addfb_basic@basic-x-tiled-legacy
-> -igt@kms_addfb_basic@basic-y-tiled-legacy
-> -igt@kms_addfb_basic@bo-too-small
-> -igt@kms_addfb_basic@invalid-get-prop
-> -igt@kms_addfb_basic@invalid-get-prop-any
-> -igt@kms_addfb_basic@invalid-set-prop
-> -igt@kms_addfb_basic@invalid-set-prop-any
-> -igt@kms_addfb_basic@no-handle
-> -igt@kms_addfb_basic@size-max
-> -igt@kms_addfb_basic@small-bo
-> -igt@kms_addfb_basic@tile-pitch-mismatch
-> -igt@kms_addfb_basic@too-high
-> -igt@kms_addfb_basic@too-wide
-> -igt@kms_addfb_basic@unused-handle
-> -igt@kms_addfb_basic@unused-modifier
-> -igt@kms_addfb_basic@unused-offsets
-> -igt@kms_addfb_basic@unused-pitches
-> -igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
-> -igt@kms_cursor_legacy@basic-flip-after-cursor-legacy
-> -igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
-> -igt@kms_cursor_legacy@basic-flip-before-cursor-atomic
-> -igt@kms_cursor_legacy@basic-flip-before-cursor-legacy
-> -igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size
-> -igt@kms_dsc@dsc-basic
-> -igt@kms_flip@basic-flip-vs-dpms
-> -igt@kms_flip@basic-flip-vs-modeset
-> -igt@kms_flip@basic-flip-vs-wf_vblank
-> -igt@kms_flip@basic-plain-flip
-> -igt@kms_force_connector_basic@force-connector-state
-> -igt@kms_force_connector_basic@force-edid
-> -igt@kms_force_connector_basic@prune-stale-modes
-> -igt@kms_frontbuffer_tracking@basic
-> -igt@kms_hdmi_inject@inject-audio
-> -igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24
-> -igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12
-> -igt@kms_pipe_crc_basic@hang-read-crc
-> -igt@kms_pipe_crc_basic@nonblocking-crc
-> -igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
-> -igt@kms_pipe_crc_basic@read-crc
-> -igt@kms_pipe_crc_basic@read-crc-frame-sequence
-> -igt@kms_prop_blob@basic
-> -igt@kms_psr@psr_primary_page_flip
-> -igt@kms_psr@psr_cursor_plane_move
-> -igt@kms_psr@psr_sprite_plane_onoff
+> @@ -167,6 +163,22 @@ struct drm_xe_query_engine_info {
+>  	__u64 reserved[3];
+>  };
+>  
+> +/**
+> + * struct drm_xe_query_engines - describe engines
+> + *
+> + * If a query is made with a struct @drm_xe_device_query where .query
+> + * is equal to %DRM_XE_DEVICE_QUERY_ENGINES, then the reply uses an array of
+> + * struct @drm_xe_query_engines in .data.
+> + */
+> +struct drm_xe_query_engines {
+> +	/** @num_engines: number of engines returned in @engines */
+> +	__u32 num_engines;
+> +	/** @pad: MBZ */
+> +	__u32 pad;
+> +	/** @engines: The returned engines for this device */
+> +	struct drm_xe_engine engines[];
+> +};
+> +
+>  /**
+>   * enum drm_xe_memory_class - Supported memory classes.
+>   */
+> @@ -466,28 +478,32 @@ struct drm_xe_query_topology_mask {
+>   *
+>   * .. code-block:: C
+>   *
+> - *	struct drm_xe_engine_class_instance *hwe;
+> - *	struct drm_xe_device_query query = {
+> - *		.extensions = 0,
+> - *		.query = DRM_XE_DEVICE_QUERY_ENGINES,
+> - *		.size = 0,
+> - *		.data = 0,
+> - *	};
+> - *	ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query);
+> - *	hwe = malloc(query.size);
+> - *	query.data = (uintptr_t)hwe;
+> - *	ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query);
+> - *	int num_engines = query.size / sizeof(*hwe);
+> - *	for (int i = 0; i < num_engines; i++) {
+> - *		printf("Engine %d: %s\n", i,
+> - *			hwe[i].engine_class == DRM_XE_ENGINE_CLASS_RENDER ? "RENDER":
+> - *			hwe[i].engine_class == DRM_XE_ENGINE_CLASS_COPY ? "COPY":
+> - *			hwe[i].engine_class == DRM_XE_ENGINE_CLASS_VIDEO_DECODE ? "VIDEO_DECODE":
+> - *			hwe[i].engine_class == DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE ? "VIDEO_ENHANCE":
+> - *			hwe[i].engine_class == DRM_XE_ENGINE_CLASS_COMPUTE ? "COMPUTE":
+> - *			"UNKNOWN");
+> - *	}
+> - *	free(hwe);
+> + *     struct drm_xe_query_engines *engines;
+> + *     struct drm_xe_device_query query = {
+> + *         .extensions = 0,
+> + *         .query = DRM_XE_DEVICE_QUERY_ENGINES,
+> + *         .size = 0,
+> + *         .data = 0,
+> + *     };
+> + *     ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query);
+> + *     engines = malloc(query.size);
+> + *     query.data = (uintptr_t)engines;
+> + *     ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query);
+> + *     for (int i = 0; i < engines->num_engines; i++) {
+> + *         printf("Engine %d: %s\n", i,
+> + *             engines->engines[i].instance.engine_class ==
+> + *                 DRM_XE_ENGINE_CLASS_RENDER ? "RENDER":
+> + *             engines->engines[i].instance.engine_class ==
+> + *                 DRM_XE_ENGINE_CLASS_COPY ? "COPY":
+> + *             engines->engines[i].instance.engine_class ==
+> + *                 DRM_XE_ENGINE_CLASS_VIDEO_DECODE ? "VIDEO_DECODE":
+> + *             engines->engines[i].instance.engine_class ==
+> + *                 DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE ? "VIDEO_ENHANCE":
+> + *             engines->engines[i].instance.engine_class ==
+> + *                 DRM_XE_ENGINE_CLASS_COMPUTE ? "COMPUTE":
+> + *             "UNKNOWN");
+> + *     }
+> + *     free(engines);
+>   */
+>  struct drm_xe_device_query {
+>  	/** @extensions: Pointer to the first extension struct, if any */
+> diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+> index d00051bd9..fa2b49079 100644
+> --- a/lib/xe/xe_query.c
+> +++ b/lib/xe/xe_query.c
+> @@ -72,10 +72,9 @@ static uint64_t __memory_regions(const struct drm_xe_query_gt_list *gt_list)
+>  	return regions;
+>  }
+>  
+> -static struct drm_xe_query_engine_info *
+> -xe_query_engines(int fd, unsigned int *num_engines)
+> +static struct drm_xe_query_engines *xe_query_engines(int fd)
+>  {
+> -	struct drm_xe_query_engine_info *engines;
+> +	struct drm_xe_query_engines *engines;
+>  	struct drm_xe_device_query query = {
+>  		.extensions = 0,
+>  		.query = DRM_XE_DEVICE_QUERY_ENGINES,
+> @@ -83,7 +82,6 @@ xe_query_engines(int fd, unsigned int *num_engines)
+>  		.data = 0,
+>  	};
+>  
+> -	igt_assert(num_engines);
+>  	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+>  
+>  	engines = malloc(query.size);
+> @@ -92,8 +90,6 @@ xe_query_engines(int fd, unsigned int *num_engines)
+>  	query.data = to_user_pointer(engines);
+>  	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+>  
+> -	*num_engines = query.size / sizeof(*engines);
 > -
-> -# All tests that do module unloading and reloading are executed last.
-> -# They will sometimes reveal issues of earlier tests leaving the
-> -# driver in a broken state that is not otherwise noticed in that test.
-> -igt@core_hotunplug@unbind-rebind
+>  	return engines;
+>  }
+>  
+> @@ -253,7 +249,7 @@ struct xe_device *xe_device_get(int fd)
+>  	xe_dev->dev_id = xe_dev->config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff;
+>  	xe_dev->gt_list = xe_query_gt_list_new(fd);
+>  	xe_dev->memory_regions = __memory_regions(xe_dev->gt_list);
+> -	xe_dev->engines = xe_query_engines(fd, &xe_dev->number_engines);
+> +	xe_dev->engines = xe_query_engines(fd);
+>  	xe_dev->mem_regions = xe_query_mem_regions_new(fd);
+>  	xe_dev->vram_size = calloc(xe_dev->gt_list->num_gt, sizeof(*xe_dev->vram_size));
+>  	xe_dev->visible_vram_size = calloc(xe_dev->gt_list->num_gt, sizeof(*xe_dev->visible_vram_size));
+> @@ -427,7 +423,7 @@ uint64_t vram_if_possible(int fd, int gt)
+>   *
+>   * Returns engines array of xe device @fd.
+>   */
+> -xe_dev_FN(xe_engines, engines, struct drm_xe_query_engine_info *);
+> +xe_dev_FN(xe_engines, engines->engines, struct drm_xe_engine *);
+>  
+>  /**
+>   * xe_engine:
+> @@ -436,15 +432,15 @@ xe_dev_FN(xe_engines, engines, struct drm_xe_query_engine_info *);
+>   *
+>   * Returns engine info of xe device @fd and @idx.
+>   */
+> -struct drm_xe_query_engine_info *xe_engine(int fd, int idx)
+> +struct drm_xe_engine *xe_engine(int fd, int idx)
+>  {
+>  	struct xe_device *xe_dev;
+>  
+>  	xe_dev = find_in_cache(fd);
+>  	igt_assert(xe_dev);
+> -	igt_assert(idx >= 0 && idx < xe_dev->number_engines);
+> +	igt_assert(idx >= 0 && idx < xe_dev->engines->num_engines);
+>  
+> -	return &xe_dev->engines[idx];
+> +	return &xe_dev->engines->engines[idx];
+>  }
+>  
+>  /**
+> @@ -534,7 +530,7 @@ xe_dev_FN(xe_config, config, struct drm_xe_query_config *);
+>   *
+>   * Returns number of hw engines of xe device @fd.
+>   */
+> -xe_dev_FN(xe_number_engines, number_engines, unsigned int);
+> +xe_dev_FN(xe_number_engines, engines->num_engines, unsigned int);
+>  
+>  /**
+>   * xe_has_vram:
+> @@ -657,8 +653,8 @@ bool xe_has_engine_class(int fd, uint16_t engine_class)
+>  	xe_dev = find_in_cache(fd);
+>  	igt_assert(xe_dev);
+>  
+> -	for (int i = 0; i < xe_dev->number_engines; i++)
+> -		if (xe_dev->engines[i].instance.engine_class == engine_class)
+> +	for (int i = 0; i < xe_dev->engines->num_engines; i++)
+> +		if (xe_dev->engines->engines[i].instance.engine_class == engine_class)
+>  			return true;
+>  
+>  	return false;
+> diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+> index 5862ecba6..883cabb7d 100644
+> --- a/lib/xe/xe_query.h
+> +++ b/lib/xe/xe_query.h
+> @@ -32,11 +32,8 @@ struct xe_device {
+>  	/** @gt_list: bitmask of all memory regions */
+>  	uint64_t memory_regions;
+>  
+> -	/** @engines: array of hardware engines */
+> -	struct drm_xe_query_engine_info *engines;
 > -
-> -# Run KUnit tests at the end
-> -igt@xe_live_ktest@bo
-> -igt@xe_live_ktest@dmabuf
-> -igt@xe_live_ktest@migrate
-> -
-> -# Move fault_mode tests at the end to unblock execution
-> -igt@xe_exec_fault_mode@twice-basic
-> -igt@xe_exec_fault_mode@many-basic
-> -igt@xe_exec_fault_mode@twice-userptr
-> -igt@xe_exec_fault_mode@twice-rebind
-> -igt@xe_exec_fault_mode@twice-userptr-rebind
-> -igt@xe_exec_fault_mode@twice-userptr-invalidate
-> -igt@xe_exec_fault_mode@twice-bindexecqueue
-> -igt@xe_exec_fault_mode@twice-bindexecqueue-userptr
-> -igt@xe_exec_fault_mode@twice-bindexecqueue-rebind
-> -igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind
-> -igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate
-> -igt@xe_exec_fault_mode@twice-basic-imm
-> -igt@xe_exec_fault_mode@twice-userptr-imm
-> -igt@xe_exec_fault_mode@twice-rebind-imm
-> -igt@xe_exec_fault_mode@twice-userptr-rebind-imm
-> -igt@xe_exec_fault_mode@twice-userptr-invalidate-imm
-> -igt@xe_exec_fault_mode@twice-bindexecqueue-imm
-> -igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-imm
-> -igt@xe_exec_fault_mode@twice-bindexecqueue-rebind-imm
-> -igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind-imm
-> -igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate-imm
-> -igt@xe_exec_fault_mode@twice-basic-prefetch
-> -igt@xe_exec_fault_mode@twice-userptr-prefetch
-> -igt@xe_exec_fault_mode@twice-rebind-prefetch
-> -igt@xe_exec_fault_mode@twice-userptr-rebind-prefetch
-> -igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch
-> -igt@xe_exec_fault_mode@twice-bindexecqueue-prefetch
-> -igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-prefetch
-> -igt@xe_exec_fault_mode@twice-bindexecqueue-rebind-prefetch
-> -igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind-prefetch
-> -igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate-prefetch
-> -igt@xe_exec_fault_mode@twice-invalid-fault
-> -igt@xe_exec_fault_mode@twice-invalid-userptr-fault
-> +igt@kms_vrr@flip-basic
-> +igt@kms_vrr@seamless-rr-switch
-> +igt@kms_vrr@negative-basic
+> -	/** @number_engines: length of hardware engines array */
+> -	unsigned int number_engines;
+> +	/** @engines: hardware engines */
+> +	struct drm_xe_query_engines *engines;
+>  
+>  	/** @mem_regions: regions memory information and usage */
+>  	struct drm_xe_query_mem_regions *mem_regions;
+> @@ -81,8 +78,8 @@ uint64_t all_memory_regions(int fd);
+>  uint64_t system_memory(int fd);
+>  uint64_t vram_memory(int fd, int gt);
+>  uint64_t vram_if_possible(int fd, int gt);
+> -struct drm_xe_query_engine_info *xe_engines(int fd);
+> -struct drm_xe_query_engine_info *xe_engine(int fd, int idx);
+> +struct drm_xe_engine *xe_engines(int fd);
+> +struct drm_xe_engine *xe_engine(int fd, int idx);
+>  struct drm_xe_mem_region *xe_mem_region(int fd, uint64_t region);
+>  const char *xe_region_name(uint64_t region);
+>  uint16_t xe_region_class(int fd, uint64_t region);
+> diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+> index 773f1446b..bbdddc7c9 100644
+> --- a/tests/intel/xe_create.c
+> +++ b/tests/intel/xe_create.c
+> @@ -149,7 +149,7 @@ static void create_execqueues(int fd, enum exec_queue_destroy ed)
+>  	igt_nsec_elapsed(&tv);
+>  
+>  	igt_fork(n, nproc) {
+> -		struct drm_xe_query_engine_info *engine;
+> +		struct drm_xe_engine *engine;
+>  		uint32_t exec_queue, exec_queues[exec_queues_per_process];
+>  		int idx, err, i;
+>  
+> diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
+> index fc39649ea..ec457b1c1 100644
+> --- a/tests/intel/xe_drm_fdinfo.c
+> +++ b/tests/intel/xe_drm_fdinfo.c
+> @@ -40,7 +40,7 @@ IGT_TEST_DESCRIPTION("Read and verify drm client memory consumption using fdinfo
+>  #define BO_SIZE (65536)
+>  
+>  /* Subtests */
+> -static void test_active(int fd, struct drm_xe_query_engine_info *engine)
+> +static void test_active(int fd, struct drm_xe_engine *engine)
+>  {
+>  	struct drm_xe_mem_region *memregion;
+>  	uint64_t memreg = all_memory_regions(fd), region;
+> diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
+> index 48e843af5..2927214e3 100644
+> --- a/tests/intel/xe_exec_store.c
+> +++ b/tests/intel/xe_exec_store.c
+> @@ -63,7 +63,7 @@ static void store(int fd)
+>  		.syncs = to_user_pointer(&sync),
+>  	};
+>  	struct data *data;
+> -	struct drm_xe_query_engine_info *engine;
+> +	struct drm_xe_engine *engine;
+>  	uint32_t vm;
+>  	uint32_t exec_queue;
+>  	uint32_t syncobj;
+> diff --git a/tests/intel/xe_noexec_ping_pong.c b/tests/intel/xe_noexec_ping_pong.c
+> index 585af413d..9659272b5 100644
+> --- a/tests/intel/xe_noexec_ping_pong.c
+> +++ b/tests/intel/xe_noexec_ping_pong.c
+> @@ -43,7 +43,7 @@
+>    *	there is worked queued on one of the VM's compute exec_queues.
+>   */
+>  
+> -static void test_ping_pong(int fd, struct drm_xe_query_engine_info *engine)
+> +static void test_ping_pong(int fd, struct drm_xe_engine *engine)
+>  {
+>  	size_t vram_size = xe_vram_size(fd, 0);
+>  	size_t align = xe_get_default_alignment(fd);
+> diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
+> index bab2bed42..a902ad408 100644
+> --- a/tests/intel/xe_waitfence.c
+> +++ b/tests/intel/xe_waitfence.c
+> @@ -81,7 +81,7 @@ enum waittype {
+>  static void
+>  waitfence(int fd, enum waittype wt)
+>  {
+> -	struct drm_xe_query_engine_info *engine = NULL;
+> +	struct drm_xe_engine *engine = NULL;
+>  	struct timespec ts;
+>  	int64_t current, signalled;
+>  	uint32_t bo_1;
 > -- 
-> 2.40.0
+> 2.34.1
 > 
