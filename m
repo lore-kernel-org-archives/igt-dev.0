@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 66D5410E751
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Nov 2023 17:48:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 91DA010E750
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Nov 2023 17:49:00 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 30 Nov 2023 23:08:31 +0530
-Message-Id: <20231130173837.2915568-1-bhanuprakash.modem@intel.com>
+Date: Thu, 30 Nov 2023 23:08:32 +0530
+Message-Id: <20231130173837.2915568-2-bhanuprakash.modem@intel.com>
+In-Reply-To: <20231130173837.2915568-1-bhanuprakash.modem@intel.com>
+References: <20231130173837.2915568-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 0/6] tests/kms_vrr: Add new subtest to switch
- RR without modeset
+Subject: [igt-dev] [i-g-t V2 1/6] tests/kms_vrr: Use lib helper to print
+ connector modes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,23 +23,50 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add new subtest to switch between low refresh rate to high
-refresh rate and vice versa seamlessly without modeset.
+Instead of writing a new logic at test level, use library helper
+to print connector modes.
 
-V2: Minor cleanups
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_vrr.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
-Bhanuprakash Modem (6):
-  tests/kms_vrr: Use lib helper to print connector modes
-  tests/kms_vrr: Clear VRR before exit
-  tests/kms_vrr: Move all config constaints to new function
-  tests/kms_vrr: Fix bigjoiner constraint
-  tests/kms_vrr: Add new subtest to switch RR without modeset
-  HAX: Add seamless-rr-switch subtest to BAT
-
- tests/intel-ci/fast-feedback.testlist    | 177 +--------------
- tests/intel-ci/xe-fast-feedback.testlist | 267 +----------------------
- tests/kms_vrr.c                          | 216 ++++++++++++++----
- 3 files changed, 183 insertions(+), 477 deletions(-)
-
---
+diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+index 13b347631..a9098597b 100644
+--- a/tests/kms_vrr.c
++++ b/tests/kms_vrr.c
+@@ -65,13 +65,6 @@
+  */
+ #define TEST_DURATION_NS (5000000000ull)
+ 
+-#define DRM_MODE_FMT    "\"%s\": %d %d %d %d %d %d %d %d %d %d 0x%x 0x%x"
+-#define DRM_MODE_ARG(m) \
+-	(m)->name, (m)->vrefresh, (m)->clock, \
+-	(m)->hdisplay, (m)->hsync_start, (m)->hsync_end, (m)->htotal, \
+-	(m)->vdisplay, (m)->vsync_start, (m)->vsync_end, (m)->vtotal, \
+-	(m)->type, (m)->flags
+-
+ enum {
+ 	TEST_BASIC = 1 << 0,
+ 	TEST_DPMS = 1 << 1,
+@@ -162,14 +155,16 @@ output_mode_with_maxrate(igt_output_t *output, unsigned int vrr_max)
+ 	drmModeConnectorPtr connector = output->config.connector;
+ 	drmModeModeInfo mode = *igt_output_get_mode(output);
+ 
+-	igt_debug("Default Mode " DRM_MODE_FMT "\n", DRM_MODE_ARG(&mode));
++	igt_info("Default Mode: ");
++	kmstest_dump_mode(&mode);
+ 
+ 	for (i = 0; i < connector->count_modes; i++)
+ 		if (connector->modes[i].vrefresh > mode.vrefresh &&
+ 		    connector->modes[i].vrefresh <= vrr_max)
+ 			mode = connector->modes[i];
+ 
+-	igt_debug("Override Mode " DRM_MODE_FMT "\n", DRM_MODE_ARG(&mode));
++	igt_info("Override Mode: ");
++	kmstest_dump_mode(&mode);
+ 
+ 	return mode;
+ }
+-- 
 2.40.0
