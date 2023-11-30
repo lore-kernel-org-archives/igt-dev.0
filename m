@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F3D8910E23E
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Nov 2023 12:50:49 +0000 (UTC)
-From: Lukasz Laguna <lukasz.laguna@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 100C810E12B
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Nov 2023 13:13:04 +0000 (UTC)
+From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 30 Nov 2023 13:48:41 +0100
-Message-Id: <20231130124841.16248-9-lukasz.laguna@intel.com>
-In-Reply-To: <20231130124841.16248-1-lukasz.laguna@intel.com>
-References: <20231130124841.16248-1-lukasz.laguna@intel.com>
+Date: Thu, 30 Nov 2023 18:50:46 +0530
+Message-Id: <20231130132050.2132447-1-jeevan.b@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 8/8] tests/sriov_basic: add more tests for
- VF driver binding
+Subject: [igt-dev] [PATCH i-g-t 0/4] Update PSR/PSR2_SF documenation and Add
+ FBC support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,127 +21,23 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-- bind-unbind-vf: validate driver binding and unbinding to specified VF
-- enable-vfs-bind-unbind-each: validate driver binding and unbinding to
-  VFs from specified range.
+fix kms_psr documentation, subtest naming and add fbc support/test
+for kms_psr, kms_psr2_sf.
 
-v2:
- - remove checks that are outside the scope of the test (Michal)
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
 
-Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
----
- tests/sriov_basic.c | 90 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 90 insertions(+)
+Jeevan B (3):
+  tests/intel/kms_psr: fix subtest naming
+  tests/intel/kms_psr: Add FBC support to PSR/PSR2/PR tests
+  tests/intel/kms_psr2_sf: Add FBC support to PSR2 tests
 
-diff --git a/tests/sriov_basic.c b/tests/sriov_basic.c
-index 866bb88e4..72541fe2f 100644
---- a/tests/sriov_basic.c
-+++ b/tests/sriov_basic.c
-@@ -90,6 +90,58 @@ static void enable_vfs_bind_all_unbind_all(int pf_fd, unsigned int num_vfs)
- 	igt_sriov_disable_vfs(pf_fd);
- }
- 
-+/**
-+ * SUBTEST: enable-vfs-bind-unbind-each
-+ * Description:
-+ *   Verify VFs enabling with binding and unbinding the driver one be one to each of them
-+ * Run type: BAT
-+ */
-+static void enable_vfs_bind_unbind_each(int pf_fd, unsigned int num_vfs)
-+{
-+	igt_debug("Testing %u VFs\n", num_vfs);
-+
-+	igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
-+
-+	igt_sriov_disable_driver_autoprobe(pf_fd);
-+	igt_sriov_enable_vfs(pf_fd, num_vfs);
-+	igt_sriov_enable_driver_autoprobe(pf_fd);
-+
-+	for (int i = 1; i <= num_vfs; i++) {
-+		igt_assert(!igt_sriov_is_vf_drm_driver_probed(pf_fd, i));
-+		igt_sriov_bind_vf_drm_driver(pf_fd, i);
-+		igt_assert(igt_sriov_is_vf_drm_driver_probed(pf_fd, i));
-+		igt_sriov_unbind_vf_drm_driver(pf_fd, i);
-+		igt_assert(!igt_sriov_is_vf_drm_driver_probed(pf_fd, i));
-+	}
-+
-+	igt_sriov_disable_vfs(pf_fd);
-+}
-+
-+/**
-+ * SUBTEST: bind-unbind-vf
-+ * Description:
-+ *   Verify binding and unbinding the driver to specific VF
-+ * Run type: BAT
-+ */
-+static void bind_unbind_vf(int pf_fd, unsigned int vf_num)
-+{
-+	igt_debug("Testing VF%u\n", vf_num);
-+
-+	igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
-+
-+	igt_sriov_disable_driver_autoprobe(pf_fd);
-+	igt_sriov_enable_vfs(pf_fd, vf_num);
-+	igt_sriov_enable_driver_autoprobe(pf_fd);
-+
-+	igt_assert(!igt_sriov_is_vf_drm_driver_probed(pf_fd, vf_num));
-+	igt_sriov_bind_vf_drm_driver(pf_fd, vf_num);
-+	igt_assert(igt_sriov_is_vf_drm_driver_probed(pf_fd, vf_num));
-+	igt_sriov_unbind_vf_drm_driver(pf_fd, vf_num);
-+	igt_assert(!igt_sriov_is_vf_drm_driver_probed(pf_fd, vf_num));
-+
-+	igt_sriov_disable_vfs(pf_fd);
-+}
-+
- igt_main
- {
- 	int pf_fd;
-@@ -159,6 +211,44 @@ igt_main
- 		}
- 	}
- 
-+	igt_describe("Verify VFs enabling with binding and unbinding the driver one be one to each of them");
-+	igt_subtest_with_dynamic("enable-vfs-bind-unbind-each") {
-+		for_each_num_vfs(pf_fd, num_vfs) {
-+			igt_dynamic_f("numvfs-%u", num_vfs) {
-+				enable_vfs_bind_unbind_each(pf_fd, num_vfs);
-+			}
-+		}
-+		for_random_num_vfs(pf_fd, num_vfs) {
-+			igt_dynamic_f("numvfs-random") {
-+				enable_vfs_bind_unbind_each(pf_fd, num_vfs);
-+			}
-+		}
-+		for_max_num_vfs(pf_fd, num_vfs) {
-+			igt_dynamic_f("numvfs-all") {
-+				enable_vfs_bind_unbind_each(pf_fd, num_vfs);
-+			}
-+		}
-+	}
-+
-+	igt_describe("Test binds and unbinds the driver to specific VF");
-+	igt_subtest_with_dynamic("bind-unbind-vf") {
-+		for_each_vf(pf_fd, vf) {
-+			igt_dynamic_f("vf-%u", vf) {
-+				bind_unbind_vf(pf_fd, vf);
-+			}
-+		}
-+		for_random_vf(pf_fd, vf) {
-+			igt_dynamic_f("vf-random") {
-+				bind_unbind_vf(pf_fd, vf);
-+			}
-+		}
-+		for_last_vf(pf_fd, vf) {
-+			igt_dynamic_f("vf-last") {
-+				bind_unbind_vf(pf_fd, vf);
-+			}
-+		}
-+	}
-+
- 	igt_fixture {
- 		igt_sriov_disable_vfs(pf_fd);
- 		/* abort to avoid execution of next tests with enabled VFs */
+Swati Sharma (1):
+  tests/intel/kms_psr: fix documentation
+
+ lib/igt_psr.h             |   5 +
+ tests/intel/kms_psr.c     | 569 ++++++++++++++++++-----------------
+ tests/intel/kms_psr2_sf.c | 606 +++++++++++++++++++++-----------------
+ 3 files changed, 646 insertions(+), 534 deletions(-)
+
 -- 
-2.40.0
+2.25.1
