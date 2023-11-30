@@ -1,17 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5681610E21A
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Nov 2023 00:35:40 +0000 (UTC)
-From: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
-To: 
-Date: Thu, 30 Nov 2023 04:35:30 -0800
-Message-Id: <e35c5d3f599acd2d3083a3ff3f36c3a4374f8462.1701180818.git.akshata.jahagirdar@intel.com>
-In-Reply-To: <cover.1701180818.git.akshata.jahagirdar@intel.com>
-References: <cover.1701180818.git.akshata.jahagirdar@intel.com>
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam10on2061.outbound.protection.outlook.com [40.107.94.61])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 16D0610E448
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Nov 2023 01:09:11 +0000 (UTC)
+From: "Zhang, Jesse(Jie)" <Jesse.Zhang@amd.com>
+To: "Prosyak, Vitaly" <Vitaly.Prosyak@amd.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Thu, 30 Nov 2023 01:09:07 +0000
+Message-ID: <DM4PR12MB5152CC2A6E12578ADEDBE7F0E382A@DM4PR12MB5152.namprd12.prod.outlook.com>
+References: <20231129080307.135383-1-jesse.zhang@amd.com>
+ <1dc2450f-9e96-4b9b-af5d-eebb84c50aee@amd.com>
+In-Reply-To: <1dc2450f-9e96-4b9b-af5d-eebb84c50aee@amd.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 6/6] tests/intel/xe_ccs: Add compression
- support for Lunarlake
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/amdgpu: fix secure bounce test
+ issue
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,137 +24,58 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Mmatthew.auld@intel.com, igt-dev@lists.freedesktop.org,
- ayaz.siddiqui@intel.com, Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+Cc: "Deucher, Alexander" <Alexander.Deucher@amd.com>, "Tuikov,
+ Luben" <Luben.Tuikov@amd.com>, "Koenig, Christian" <Christian.Koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In XE2 IGFX platform, sysmem also participates in compression.
-So, create all blt objects in sysmem itself, and update the pat-index to reflect
-the compression status. Since we need to align the buffer object size with page
-size and also have the src size and dst size of CCS copy to be equal, change the
-default width and height to 1024.
-
-Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
----
- tests/intel/xe_ccs.c | 44 +++++++++++++++++++++++++-------------------
- 1 file changed, 25 insertions(+), 19 deletions(-)
-
-diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
-index 647a6bd2e..bcf6cbd29 100644
---- a/tests/intel/xe_ccs.c
-+++ b/tests/intel/xe_ccs.c
-@@ -63,8 +63,8 @@ static struct param {
- 	.write_png = false,
- 	.print_bb = false,
- 	.print_surface_info = false,
--	.width = 512,
--	.height = 512,
-+	.width = 1024,
-+	.height = 1024,
- };
- 
- struct test_config {
-@@ -95,21 +95,27 @@ static void surf_copy(int xe,
- 	struct blt_block_copy_data_ext ext = {};
- 	struct blt_ctrl_surf_copy_data surf = {};
- 	uint32_t bb1, bb2, ccs, ccs2, *ccsmap, *ccsmap2;
--	uint64_t bb_size, ccssize = mid->size / CCS_RATIO;
-+	uint64_t bb_size, ccssize = mid->size / (CCS_RATIO(xe));
- 	uint32_t *ccscopy;
- 	uint8_t uc_mocs = intel_get_uc_mocs_index(xe);
-+	uint8_t comp_pat_index = DEFAULT_PAT_INDEX;
-+	uint16_t cpu_caching = DRM_XE_GEM_CPU_CACHING_WB;
- 	uint32_t sysmem = system_memory(xe);
- 	int result;
- 
- 	igt_assert(mid->compression);
-+	if(AT_LEAST_GEN(intel_get_drm_devid(xe), 20) && mid->compression){
-+		comp_pat_index = xe2_get_pat_idx_uc_comp(xe);
-+		cpu_caching = DRM_XE_GEM_CPU_CACHING_WC;
-+	}
- 	ccscopy = (uint32_t *) malloc(ccssize);
--	ccs = xe_bo_create_flags(xe, 0, ccssize, sysmem);
--	ccs2 = xe_bo_create_flags(xe, 0, ccssize, sysmem);
-+	ccs = xe_bo_create_caching(xe, 0, ccssize, sysmem, cpu_caching);
-+	ccs2 = xe_bo_create_caching(xe, 0, ccssize, sysmem, cpu_caching);
- 
- 	blt_ctrl_surf_copy_init(xe, &surf);
- 	surf.print_bb = param.print_bb;
- 	blt_set_ctrl_surf_object(&surf.src, mid->handle, mid->region, mid->size,
--				 uc_mocs, DEFAULT_PAT_INDEX, BLT_INDIRECT_ACCESS);
-+				 uc_mocs, comp_pat_index, BLT_INDIRECT_ACCESS);
- 	blt_set_ctrl_surf_object(&surf.dst, ccs, sysmem, ccssize, uc_mocs,
- 				 DEFAULT_PAT_INDEX, DIRECT_ACCESS);
- 	bb_size = xe_get_default_alignment(xe);
-@@ -157,7 +163,7 @@ static void surf_copy(int xe,
- 	blt_set_ctrl_surf_object(&surf.src, ccs, sysmem, ccssize,
- 				 uc_mocs, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
- 	blt_set_ctrl_surf_object(&surf.dst, mid->handle, mid->region, mid->size,
--				 uc_mocs, DEFAULT_PAT_INDEX, INDIRECT_ACCESS);
-+				 uc_mocs, comp_pat_index, INDIRECT_ACCESS);
- 	blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
- 	intel_ctx_xe_sync(ctx, true);
- 
-@@ -234,10 +240,10 @@ static int blt_block_copy3(int xe,
- 	igt_assert_f(blt3, "block-copy3 requires data to do blit\n");
- 
- 	alignment = xe_get_default_alignment(xe);
--	get_offset(ahnd, blt3->src.handle, blt3->src.size, alignment);
--	get_offset(ahnd, blt3->mid.handle, blt3->mid.size, alignment);
--	get_offset(ahnd, blt3->dst.handle, blt3->dst.size, alignment);
--	get_offset(ahnd, blt3->final.handle, blt3->final.size, alignment);
-+	get_offset_pat_index(ahnd, blt3->src.handle, blt3->src.size, alignment, blt3->src.pat_index);
-+	get_offset_pat_index(ahnd, blt3->mid.handle, blt3->mid.size, alignment, blt3->mid.pat_index);
-+	get_offset_pat_index(ahnd, blt3->dst.handle, blt3->dst.size, alignment, blt3->dst.pat_index);
-+	get_offset_pat_index(ahnd, blt3->final.handle, blt3->final.size, alignment, blt3->final.pat_index);
- 	bb_offset = get_offset(ahnd, blt3->bb.handle, blt3->bb.size, alignment);
- 
- 	/* First blit src -> mid */
-@@ -291,8 +297,8 @@ static void block_copy(int xe,
- 	uint64_t bb_size = xe_get_default_alignment(xe);
- 	uint64_t ahnd = intel_allocator_open(xe, ctx->vm, INTEL_ALLOCATOR_RELOC);
- 	uint32_t run_id = mid_tiling;
--	uint32_t mid_region = region2, bb;
--	uint32_t width = param.width, height = param.height;
-+	uint32_t mid_region = (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) & !xe_has_vram(xe)) ? region1 : region2;
-+	uint32_t width = param.width, height = param.height, bb;
- 	enum blt_compression mid_compression = config->compression;
- 	int mid_compression_format = param.compression_format;
- 	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
-@@ -413,8 +419,8 @@ static void block_multicopy(int xe,
- 	uint64_t bb_size = xe_get_default_alignment(xe);
- 	uint64_t ahnd = intel_allocator_open(xe, ctx->vm, INTEL_ALLOCATOR_RELOC);
- 	uint32_t run_id = mid_tiling;
--	uint32_t mid_region = region2, bb;
--	uint32_t width = param.width, height = param.height;
-+	uint32_t mid_region = (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) & !xe_has_vram(xe)) ? region1 : region2;
-+	uint32_t width = param.width, height = param.height, bb;
- 	enum blt_compression mid_compression = config->compression;
- 	int mid_compression_format = param.compression_format;
- 	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
-@@ -539,8 +545,8 @@ static void block_copy_test(int xe,
- 			region1 = igt_collection_get_value(regions, 0);
- 			region2 = igt_collection_get_value(regions, 1);
- 
--			/* Compressed surface must be in device memory */
--			if (config->compression && !XE_IS_VRAM_MEMORY_REGION(xe, region2))
-+			/* if not XE2, then Compressed surface must be in device memory */
-+			if (config->compression && !(AT_LEAST_GEN((intel_get_drm_devid(xe)), 20)) && !XE_IS_VRAM_MEMORY_REGION(xe, region2))
- 				continue;
- 
- 			regtxt = xe_memregion_dynamic_subtest_name(xe, regions);
-@@ -621,8 +627,8 @@ const char *help_str =
- 	"  -p\tWrite PNG\n"
- 	"  -s\tPrint surface info\n"
- 	"  -t\tTiling format (0 - linear, 1 - XMAJOR, 2 - YMAJOR, 3 - TILE4, 4 - TILE64)\n"
--	"  -W\tWidth (default 512)\n"
--	"  -H\tHeight (default 512)"
-+	"  -W\tWidth (default 1024)\n"
-+	"  -H\tHeight (default 1024)"
- 	;
- 
- igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
--- 
-2.34.1
+W0FNRCBPZmZpY2lhbCBVc2UgT25seSAtIEdlbmVyYWxdDQoNCi0tLS0tT3JpZ2luYWwgTWVzc2Fn
+ZS0tLS0tDQpGcm9tOiBQcm9zeWFrLCBWaXRhbHkgPFZpdGFseS5Qcm9zeWFrQGFtZC5jb20+DQpT
+ZW50OiBUaHVyc2RheSwgTm92ZW1iZXIgMzAsIDIwMjMgNDoxNiBBTQ0KVG86IFpoYW5nLCBKZXNz
+ZShKaWUpIDxKZXNzZS5aaGFuZ0BhbWQuY29tPjsgaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5v
+cmcNCkNjOiBQcm9zeWFrLCBWaXRhbHkgPFZpdGFseS5Qcm9zeWFrQGFtZC5jb20+OyBEZXVjaGVy
+LCBBbGV4YW5kZXIgPEFsZXhhbmRlci5EZXVjaGVyQGFtZC5jb20+OyBUdWlrb3YsIEx1YmVuIDxM
+dWJlbi5UdWlrb3ZAYW1kLmNvbT47IEtvZW5pZywgQ2hyaXN0aWFuIDxDaHJpc3RpYW4uS29lbmln
+QGFtZC5jb20+OyBLYW1pbCBLb25pZWN6bnkgPGthbWlsLmtvbmllY3pueUBsaW51eC5pbnRlbC5j
+b20+DQpTdWJqZWN0OiBSZTogW1BBVENIIGktZy10XSB0ZXN0cy9hbWRncHU6IGZpeCBzZWN1cmUg
+Ym91bmNlIHRlc3QgaXNzdWUNCg0KSGkgSmVzc2UsDQoNCldoaWNoIEFTSUMgY2F1c2VzIGZhaWx1
+cmUgZm9yIHRoaXMgdGVzdCBmb3IgU0RNQSBjb3B5IG9mIHNlY3VyZWQgYnVmZmVyPw0KW1poYW5n
+LCBKZXNzZShKaWUpXSBIaSBWaXRhbHksDQpBUFUgR0ZYMTEgdGVzdCBmYWlsZWQgd2hlbiBydW4g
+dGhlIHNlY3VyZSBib3VuY2UuDQpUaGFua3MNCkplc3NlDQoNClRoYW5rcywgVml0YWx5DQoNCk9u
+IDIwMjMtMTEtMjkgMDM6MDMsIEplc3NlIFpoYW5nIHdyb3RlOg0KPiBUbyB0aGUgc2VjdXJlIG1l
+bW9yeSwgdGhlIGRlc3RpbmF0aW9uIGRhdGEoYm8yKSBoYXMgYmVlbiBlbmNyeXB0ZWQsDQo+IGFm
+dGVyIGNvcHlpbmcgaXQgdmlhIFNETUEgZnJvbSBibyB0byBibzIuDQo+IEl0IGNhbm5vdCBjb21w
+YXJlIGJvMiB3aXRoIHRoZSBvcmlnaW5hbCBkYXRhLg0KPiBUaGVyZWZvcmUsIHNraXAgdGhpcyBt
+ZW1vcnkgY2hlY2suDQo+DQo+IENjOiBWaXRhbHkgUHJvc3lhayA8dml0YWx5LnByb3N5YWtAYW1k
+LmNvbT4NCj4gQ2M6IEx1YmVuIFR1aWtvdiA8bHViZW4udHVpa292QGFtZC5jb20+DQo+IENjOiBB
+bGV4IERldWNoZXIgPGFsZXhhbmRlci5kZXVjaGVyQGFtZC5jb20+DQo+IENjOiBDaHJpc3RpYW4g
+S29lbmlnIDxjaHJpc3RpYW4ua29lbmlnQGFtZC5jb20+DQo+IENjOiBLYW1pbCBLb25pZWN6bnkg
+PGthbWlsLmtvbmllY3pueUBsaW51eC5pbnRlbC5jb20+DQpQbGVhc2UsIHJlbW92ZSB0aGUgZW1w
+dHkgbGluZSBoZXJlIGFuZCBmcm9tIG90aGVyIGNoYW5nZSBhbHNvDQo+IFNpZ25lZC1vZmYtYnk6
+IEplc3NlIFpoYW5nIDxKZXNzZS5aaGFuZ0BhbWQuY29tPg0KPiAtLS0NCj4gIHRlc3RzL2FtZGdw
+dS9hbWRfc2VjdXJpdHkuYyB8IDE4ICsrKysrKysrKystLS0tLS0tLQ0KPiAgMSBmaWxlIGNoYW5n
+ZWQsIDEwIGluc2VydGlvbnMoKyksIDggZGVsZXRpb25zKC0pDQo+DQo+IGRpZmYgLS1naXQgYS90
+ZXN0cy9hbWRncHUvYW1kX3NlY3VyaXR5LmMgYi90ZXN0cy9hbWRncHUvYW1kX3NlY3VyaXR5LmMN
+Cj4gaW5kZXggZDExNDZhN2NlLi42NzgyNzBmZGYgMTAwNjQ0DQo+IC0tLSBhL3Rlc3RzL2FtZGdw
+dS9hbWRfc2VjdXJpdHkuYw0KPiArKysgYi90ZXN0cy9hbWRncHUvYW1kX3NlY3VyaXR5LmMNCj4g
+QEAgLTIyNSwxNCArMjI1LDE2IEBAIGFtZGdwdV9zZWN1cmVfYm91bmNlKGFtZGdwdV9kZXZpY2Vf
+aGFuZGxlIGRldmljZV9oYW5kbGUsIGludCBmZCwNCj4gICAgICAgICAgICAgICAgICAgICAgIHNl
+Y3VyZSA9PSB0cnVlID8gMSA6IDApOw0KPg0KPiAgICAgICAvKiBWZXJpZnkgdGhlIGNvbnRlbnRz
+IG9mIEJvYi4gKi8NCj4gLSAgICAgZm9yIChwcCA9IChfX3R5cGVvZl9fKHBwKSlyaW5nX2NvbnRl
+eHQtPmJvMl9jcHU7DQo+IC0gICAgICAgICAgcHAgPCAoX190eXBlb2ZfXyhwcCkpIHJpbmdfY29u
+dGV4dC0+Ym8yX2NwdSArIFNFQ1VSRV9CVUZGRVJfU0laRTsNCj4gLSAgICAgICAgICBwcCArPSBz
+aXplb2Yoc2VjdXJlX3BhdHRlcm4pKSB7DQo+IC0gICAgICAgICAgICAgciA9IG1lbWNtcChwcCwg
+c2VjdXJlX3BhdHRlcm4sIHNpemVvZihzZWN1cmVfcGF0dGVybikpOw0KPiAtICAgICAgICAgICAg
+IGlmIChyKSB7DQo+IC0gICAgICAgICAgICAgICAgICAgICAvLyB0ZXN0IGZhaWx1cmUNCj4gLSAg
+ICAgICAgICAgICAgICAgICAgIGlndF9hc3NlcnQoZmFsc2UpOw0KPiAtICAgICAgICAgICAgICAg
+ICAgICAgYnJlYWs7DQo+ICsgICAgIGlmICghc2VjdXJlKSB7DQo+ICsgICAgICAgICAgICAgZm9y
+IChwcCA9IChfX3R5cGVvZl9fKHBwKSlyaW5nX2NvbnRleHQtPmJvMl9jcHU7DQo+ICsgICAgICAg
+ICAgICAgICAgICAgICBwcCA8IChfX3R5cGVvZl9fKHBwKSkgcmluZ19jb250ZXh0LT5ibzJfY3B1
+ICsgU0VDVVJFX0JVRkZFUl9TSVpFOw0KPiArICAgICAgICAgICAgICAgICAgICAgcHAgKz0gc2l6
+ZW9mKHNlY3VyZV9wYXR0ZXJuKSkgew0KPiArICAgICAgICAgICAgICAgICAgICAgciA9IG1lbWNt
+cChwcCwgc2VjdXJlX3BhdHRlcm4sIHNpemVvZihzZWN1cmVfcGF0dGVybikpOw0KPiArICAgICAg
+ICAgICAgICAgICAgICAgaWYgKHIpIHsNCj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+Ly8gdGVzdCBmYWlsdXJlDQo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGlndF9hc3Nl
+cnQoZmFsc2UpOw0KPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICBicmVhazsNCj4gKyAg
+ICAgICAgICAgICAgICAgICAgIH0NCj4gICAgICAgICAgICAgICB9DQo+ICAgICAgIH0NCj4NCg==
