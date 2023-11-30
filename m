@@ -1,22 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam10on2061.outbound.protection.outlook.com [40.107.94.61])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 16D0610E448
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Nov 2023 01:09:11 +0000 (UTC)
-From: "Zhang, Jesse(Jie)" <Jesse.Zhang@amd.com>
-To: "Prosyak, Vitaly" <Vitaly.Prosyak@amd.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Thu, 30 Nov 2023 01:09:07 +0000
-Message-ID: <DM4PR12MB5152CC2A6E12578ADEDBE7F0E382A@DM4PR12MB5152.namprd12.prod.outlook.com>
-References: <20231129080307.135383-1-jesse.zhang@amd.com>
- <1dc2450f-9e96-4b9b-af5d-eebb84c50aee@amd.com>
-In-Reply-To: <1dc2450f-9e96-4b9b-af5d-eebb84c50aee@amd.com>
-Content-Language: en-US
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/amdgpu: fix secure bounce test
- issue
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Akshata Jahagirdar" <akshata.jahagirdar@intel.com>
+Date: Thu, 30 Nov 2023 02:31:48 -0000
+Message-ID: <170131150861.15643.277808671847555620@emeril.freedesktop.org>
+References: <cover.1701180818.git.akshata.jahagirdar@intel.com>
+In-Reply-To: <cover.1701180818.git.akshata.jahagirdar@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBDb21w?=
+ =?utf-8?q?ression_support_for_Lunarlake_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,58 +17,72 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Deucher, Alexander" <Alexander.Deucher@amd.com>, "Tuikov,
- Luben" <Luben.Tuikov@amd.com>, "Koenig, Christian" <Christian.Koenig@amd.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-W0FNRCBPZmZpY2lhbCBVc2UgT25seSAtIEdlbmVyYWxdDQoNCi0tLS0tT3JpZ2luYWwgTWVzc2Fn
-ZS0tLS0tDQpGcm9tOiBQcm9zeWFrLCBWaXRhbHkgPFZpdGFseS5Qcm9zeWFrQGFtZC5jb20+DQpT
-ZW50OiBUaHVyc2RheSwgTm92ZW1iZXIgMzAsIDIwMjMgNDoxNiBBTQ0KVG86IFpoYW5nLCBKZXNz
-ZShKaWUpIDxKZXNzZS5aaGFuZ0BhbWQuY29tPjsgaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5v
-cmcNCkNjOiBQcm9zeWFrLCBWaXRhbHkgPFZpdGFseS5Qcm9zeWFrQGFtZC5jb20+OyBEZXVjaGVy
-LCBBbGV4YW5kZXIgPEFsZXhhbmRlci5EZXVjaGVyQGFtZC5jb20+OyBUdWlrb3YsIEx1YmVuIDxM
-dWJlbi5UdWlrb3ZAYW1kLmNvbT47IEtvZW5pZywgQ2hyaXN0aWFuIDxDaHJpc3RpYW4uS29lbmln
-QGFtZC5jb20+OyBLYW1pbCBLb25pZWN6bnkgPGthbWlsLmtvbmllY3pueUBsaW51eC5pbnRlbC5j
-b20+DQpTdWJqZWN0OiBSZTogW1BBVENIIGktZy10XSB0ZXN0cy9hbWRncHU6IGZpeCBzZWN1cmUg
-Ym91bmNlIHRlc3QgaXNzdWUNCg0KSGkgSmVzc2UsDQoNCldoaWNoIEFTSUMgY2F1c2VzIGZhaWx1
-cmUgZm9yIHRoaXMgdGVzdCBmb3IgU0RNQSBjb3B5IG9mIHNlY3VyZWQgYnVmZmVyPw0KW1poYW5n
-LCBKZXNzZShKaWUpXSBIaSBWaXRhbHksDQpBUFUgR0ZYMTEgdGVzdCBmYWlsZWQgd2hlbiBydW4g
-dGhlIHNlY3VyZSBib3VuY2UuDQpUaGFua3MNCkplc3NlDQoNClRoYW5rcywgVml0YWx5DQoNCk9u
-IDIwMjMtMTEtMjkgMDM6MDMsIEplc3NlIFpoYW5nIHdyb3RlOg0KPiBUbyB0aGUgc2VjdXJlIG1l
-bW9yeSwgdGhlIGRlc3RpbmF0aW9uIGRhdGEoYm8yKSBoYXMgYmVlbiBlbmNyeXB0ZWQsDQo+IGFm
-dGVyIGNvcHlpbmcgaXQgdmlhIFNETUEgZnJvbSBibyB0byBibzIuDQo+IEl0IGNhbm5vdCBjb21w
-YXJlIGJvMiB3aXRoIHRoZSBvcmlnaW5hbCBkYXRhLg0KPiBUaGVyZWZvcmUsIHNraXAgdGhpcyBt
-ZW1vcnkgY2hlY2suDQo+DQo+IENjOiBWaXRhbHkgUHJvc3lhayA8dml0YWx5LnByb3N5YWtAYW1k
-LmNvbT4NCj4gQ2M6IEx1YmVuIFR1aWtvdiA8bHViZW4udHVpa292QGFtZC5jb20+DQo+IENjOiBB
-bGV4IERldWNoZXIgPGFsZXhhbmRlci5kZXVjaGVyQGFtZC5jb20+DQo+IENjOiBDaHJpc3RpYW4g
-S29lbmlnIDxjaHJpc3RpYW4ua29lbmlnQGFtZC5jb20+DQo+IENjOiBLYW1pbCBLb25pZWN6bnkg
-PGthbWlsLmtvbmllY3pueUBsaW51eC5pbnRlbC5jb20+DQpQbGVhc2UsIHJlbW92ZSB0aGUgZW1w
-dHkgbGluZSBoZXJlIGFuZCBmcm9tIG90aGVyIGNoYW5nZSBhbHNvDQo+IFNpZ25lZC1vZmYtYnk6
-IEplc3NlIFpoYW5nIDxKZXNzZS5aaGFuZ0BhbWQuY29tPg0KPiAtLS0NCj4gIHRlc3RzL2FtZGdw
-dS9hbWRfc2VjdXJpdHkuYyB8IDE4ICsrKysrKysrKystLS0tLS0tLQ0KPiAgMSBmaWxlIGNoYW5n
-ZWQsIDEwIGluc2VydGlvbnMoKyksIDggZGVsZXRpb25zKC0pDQo+DQo+IGRpZmYgLS1naXQgYS90
-ZXN0cy9hbWRncHUvYW1kX3NlY3VyaXR5LmMgYi90ZXN0cy9hbWRncHUvYW1kX3NlY3VyaXR5LmMN
-Cj4gaW5kZXggZDExNDZhN2NlLi42NzgyNzBmZGYgMTAwNjQ0DQo+IC0tLSBhL3Rlc3RzL2FtZGdw
-dS9hbWRfc2VjdXJpdHkuYw0KPiArKysgYi90ZXN0cy9hbWRncHUvYW1kX3NlY3VyaXR5LmMNCj4g
-QEAgLTIyNSwxNCArMjI1LDE2IEBAIGFtZGdwdV9zZWN1cmVfYm91bmNlKGFtZGdwdV9kZXZpY2Vf
-aGFuZGxlIGRldmljZV9oYW5kbGUsIGludCBmZCwNCj4gICAgICAgICAgICAgICAgICAgICAgIHNl
-Y3VyZSA9PSB0cnVlID8gMSA6IDApOw0KPg0KPiAgICAgICAvKiBWZXJpZnkgdGhlIGNvbnRlbnRz
-IG9mIEJvYi4gKi8NCj4gLSAgICAgZm9yIChwcCA9IChfX3R5cGVvZl9fKHBwKSlyaW5nX2NvbnRl
-eHQtPmJvMl9jcHU7DQo+IC0gICAgICAgICAgcHAgPCAoX190eXBlb2ZfXyhwcCkpIHJpbmdfY29u
-dGV4dC0+Ym8yX2NwdSArIFNFQ1VSRV9CVUZGRVJfU0laRTsNCj4gLSAgICAgICAgICBwcCArPSBz
-aXplb2Yoc2VjdXJlX3BhdHRlcm4pKSB7DQo+IC0gICAgICAgICAgICAgciA9IG1lbWNtcChwcCwg
-c2VjdXJlX3BhdHRlcm4sIHNpemVvZihzZWN1cmVfcGF0dGVybikpOw0KPiAtICAgICAgICAgICAg
-IGlmIChyKSB7DQo+IC0gICAgICAgICAgICAgICAgICAgICAvLyB0ZXN0IGZhaWx1cmUNCj4gLSAg
-ICAgICAgICAgICAgICAgICAgIGlndF9hc3NlcnQoZmFsc2UpOw0KPiAtICAgICAgICAgICAgICAg
-ICAgICAgYnJlYWs7DQo+ICsgICAgIGlmICghc2VjdXJlKSB7DQo+ICsgICAgICAgICAgICAgZm9y
-IChwcCA9IChfX3R5cGVvZl9fKHBwKSlyaW5nX2NvbnRleHQtPmJvMl9jcHU7DQo+ICsgICAgICAg
-ICAgICAgICAgICAgICBwcCA8IChfX3R5cGVvZl9fKHBwKSkgcmluZ19jb250ZXh0LT5ibzJfY3B1
-ICsgU0VDVVJFX0JVRkZFUl9TSVpFOw0KPiArICAgICAgICAgICAgICAgICAgICAgcHAgKz0gc2l6
-ZW9mKHNlY3VyZV9wYXR0ZXJuKSkgew0KPiArICAgICAgICAgICAgICAgICAgICAgciA9IG1lbWNt
-cChwcCwgc2VjdXJlX3BhdHRlcm4sIHNpemVvZihzZWN1cmVfcGF0dGVybikpOw0KPiArICAgICAg
-ICAgICAgICAgICAgICAgaWYgKHIpIHsNCj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-Ly8gdGVzdCBmYWlsdXJlDQo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGlndF9hc3Nl
-cnQoZmFsc2UpOw0KPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICBicmVhazsNCj4gKyAg
-ICAgICAgICAgICAgICAgICAgIH0NCj4gICAgICAgICAgICAgICB9DQo+ICAgICAgIH0NCj4NCg==
+== Series Details ==
+
+Series: Compression support for Lunarlake (rev3)
+URL   : https://patchwork.freedesktop.org/series/126254/
+State : failure
+
+== Summary ==
+
+IGT patchset build failed on latest successful build
+1d3bb21672bde1a423133738dc56611531ba7535 tests/intel-ci/xe: add pat and caching related tests
+
+Tail of build.log:
+[267/1662] Compiling C object 'lib/76b5a35@@igt-runnercomms_c@sta/runnercomms.c.o'.
+[268/1662] Compiling C object 'lib/76b5a35@@igt-igt_infoframe_c@sta/igt_infoframe.c.o'.
+[269/1662] Compiling C object 'lib/76b5a35@@igt-rendercopy_i915_c@sta/rendercopy_i915.c.o'.
+[270/1662] Compiling C object 'lib/76b5a35@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o'.
+[271/1662] Compiling C object 'tests/59830eb@@kms_lease@exe/kms_lease.c.o'.
+[272/1662] Compiling C object 'lib/76b5a35@@igt-intel_allocator_simple_c@sta/intel_allocator_simple.c.o'.
+[273/1662] Compiling C object 'lib/76b5a35@@igt-igt_panfrost_c@sta/igt_panfrost.c.o'.
+[274/1662] Compiling C object 'lib/76b5a35@@igt-igt_psr_c@sta/igt_psr.c.o'.
+[275/1662] Compiling C object 'lib/76b5a35@@igt-intel_aux_pgtable_c@sta/intel_aux_pgtable.c.o'.
+[276/1662] Compiling C object 'lib/76b5a35@@igt-igt_eld_c@sta/igt_eld.c.o'.
+[277/1662] Compiling C object 'lib/76b5a35@@igt-igt_ktap_c@sta/igt_ktap.c.o'.
+[278/1662] Compiling C object 'lib/76b5a35@@igt-igt_dsc_c@sta/igt_dsc.c.o'.
+[279/1662] Compiling C object 'lib/76b5a35@@igt-igt_msm_c@sta/igt_msm.c.o'.
+[280/1662] Compiling C object 'lib/76b5a35@@igt-igt_edid_c@sta/igt_edid.c.o'.
+[281/1662] Compiling C object 'lib/76b5a35@@igt-intel_compute_c@sta/intel_compute.c.o'.
+[282/1662] Compiling C object 'lib/76b5a35@@igt-ioctl_wrappers_c@sta/ioctl_wrappers.c.o'.
+[283/1662] Compiling C object 'lib/76b5a35@@igt-igt_vc4_c@sta/igt_vc4.c.o'.
+[284/1662] Compiling C object 'lib/76b5a35@@igt-igt_dummyload_c@sta/igt_dummyload.c.o'.
+[285/1662] Compiling C object 'lib/76b5a35@@igt-igt_aux_c@sta/igt_aux.c.o'.
+[286/1662] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen4_c@sta/rendercopy_gen4.c.o'.
+[287/1662] Compiling C object 'lib/76b5a35@@igt-intel_allocator_c@sta/intel_allocator.c.o'.
+[288/1662] Compiling C object 'lib/76b5a35@@igt-veboxcopy_gen12_c@sta/veboxcopy_gen12.c.o'.
+[289/1662] Compiling C object 'lib/76b5a35@@igt-igt_v3d_c@sta/igt_v3d.c.o'.
+[290/1662] Compiling C object 'tests/59830eb@@kms_plane_scaling@exe/kms_plane_scaling.c.o'.
+[291/1662] Compiling C object 'lib/76b5a35@@igt-instdone_c@sta/instdone.c.o'.
+[292/1662] Compiling C object 'lib/76b5a35@@igt-igt_draw_c@sta/igt_draw.c.o'.
+[293/1662] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen6_c@sta/rendercopy_gen6.c.o'.
+[294/1662] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen7_c@sta/rendercopy_gen7.c.o'.
+[295/1662] Compiling C object 'lib/76b5a35@@igt-igt_device_scan_c@sta/igt_device_scan.c.o'.
+[296/1662] Compiling C object 'tests/59830eb@@kms_flip@exe/kms_flip.c.o'.
+[297/1662] Compiling C object 'lib/76b5a35@@igt-gpu_cmds_c@sta/gpu_cmds.c.o'.
+[298/1662] Compiling C object 'lib/76b5a35@@igt-igt_vmwgfx_c@sta/igt_vmwgfx.c.o'.
+[299/1662] Compiling C object 'lib/76b5a35@@igt-intel_bufops_c@sta/intel_bufops.c.o'.
+[300/1662] Compiling C object 'lib/76b5a35@@igt-igt_pm_c@sta/igt_pm.c.o'.
+[301/1662] Compiling C object 'lib/76b5a35@@igt-igt_kmod_c@sta/igt_kmod.c.o'.
+[302/1662] Generating i915-perf-registers-acmgt3 with a custom command.
+[303/1662] Compiling C object 'lib/76b5a35@@igt-igt_amd_c@sta/igt_amd.c.o'.
+[304/1662] Compiling C object 'tests/59830eb@@kms_atomic@exe/kms_atomic.c.o'.
+[305/1662] Generating i915-perf-metrics-acmgt3 with a custom command.
+[306/1662] Compiling C object 'tests/59830eb@@kms_cursor_legacy@exe/kms_cursor_legacy.c.o'.
+[307/1662] Compiling C object 'lib/76b5a35@@igt-intel_batchbuffer_c@sta/intel_batchbuffer.c.o'.
+[308/1662] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen8_c@sta/rendercopy_gen8.c.o'.
+[309/1662] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen9_c@sta/rendercopy_gen9.c.o'.
+[310/1662] Compiling C object 'lib/76b5a35@@igt-igt_core_c@sta/igt_core.c.o'.
+[311/1662] Compiling C object 'tests/59830eb@@gem_userptr_blits@exe/intel_gem_userptr_blits.c.o'.
+[312/1662] Compiling C object 'lib/76b5a35@@igt-i915_intel_decode_c@sta/i915_intel_decode.c.o'.
+[313/1662] Compiling C object 'lib/76b5a35@@igt-igt_fb_c@sta/igt_fb.c.o'.
+[314/1662] Compiling C object 'lib/76b5a35@@igt-igt_kms_c@sta/igt_kms.c.o'.
+[315/1662] Generating i915-perf-equations with a custom command.
+ninja: build stopped: subcommand failed.
+
