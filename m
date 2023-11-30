@@ -1,17 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C323710E23E
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Nov 2023 12:49:03 +0000 (UTC)
-From: Lukasz Laguna <lukasz.laguna@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EB99410E2FF
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Nov 2023 12:49:36 +0000 (UTC)
+Date: Thu, 30 Nov 2023 13:49:11 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 30 Nov 2023 13:48:34 +0100
-Message-Id: <20231130124841.16248-2-lukasz.laguna@intel.com>
-In-Reply-To: <20231130124841.16248-1-lukasz.laguna@intel.com>
-References: <20231130124841.16248-1-lukasz.laguna@intel.com>
+Message-ID: <20231130124911.3owtijmtffcvf4pk@kamilkon-desk.igk.intel.com>
+References: <20231123150823.25862-1-marcin.bernatowicz@intel.com>
+ <20231123150823.25862-3-marcin.bernatowicz@intel.com>
+ <20231123172439.s6mnw54uny7mxphg@kamilkon-desk.igk.intel.com>
+ <6d48e4f7-5bb0-4190-8755-d2cfc6bd3bfd@linux.intel.com>
+ <20231129175648.2b37g62gqloxa3re@kamilkon-desk.igk.intel.com>
+ <2fe0accf-c58c-4ce7-bf84-9daf23edc6c6@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/8] lib/igt_sriov_device: add core SR-IOV
- helpers
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <2fe0accf-c58c-4ce7-bf84-9daf23edc6c6@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH v4 i-g-t 2/2] tests/intel/xe_create:
+ create-big-vram subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,302 +25,227 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: adam.miszczak@intel.com, matthew.auld@intel.com,
+ Marcin Bernatowicz <marcin.bernatowicz@intel.com>, jakub1.kolakowski@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Katarzyna Dec <katarzyna.dec@intel.com>
+Hi Marcin,
 
-Create lib for core SR-IOV (Single Root I/O Virtualization) helpers
-that allow to manage SR-IOV devices.
+On 2023-11-30 at 11:11:21 +0100, Bernatowicz, Marcin wrote:
+> Hi,
+> 
+> On 11/29/2023 6:56 PM, Kamil Konieczny wrote:
+> > Hi Marcin,
+> > 
+> > On 2023-11-23 at 19:50:31 +0100, Bernatowicz, Marcin wrote:
+> > > Hi,
+> > > 
+> > > On 11/23/2023 6:24 PM, Kamil Konieczny wrote:
+> > > > Hi Marcin,
+> > > > On 2023-11-23 at 16:08:23 +0100, Marcin Bernatowicz wrote:
+> > > > > Validates the creation of significant Buffer Object (BO) within VRAM,
+> > > > > considering the entire available CPU-visible VRAM size.
+> > > > > The size of the created BO can be adjusted using command line
+> > > > > parameters, with '-S' representing BO size in MB,
+> > > > > and '-p' representing BO size as a percentage of the VRAM size.
+> > > > > 
+> > > > > v2: rebased, updated to uAPI changes (DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT),
+> > > > >       after review corrections: 1024UL -> 1024ULL,
+> > > > >       int -> unsigned int (Kamil)
+> > > > > 
+> > > > > v3: provided a flag to allocate the memory within the CPU-visible
+> > > > >         portion of VRAM (Matt)
+> > > > >       __create_bo replaced with xe_bo_create_flags (Lukasz)
+> > > > >       removed the percent command line parameter (Lukasz)
+> > > > >       renamed size_MB to size_mb (Lukasz)
+> > > > >       added helper function to query available CPU-visible VRAM size,
+> > > > >       renamed 'xe_vram_available' to 'xe_available_vram_size' for
+> > > > >         consistency with other function names
+> > > > > 
+> > > > > v4: split lib and test changes into separate patches (Lukasz, Kamil)
+> > > > >       added prefixes to titles (Kamil)
+> > > > >       restored percent command line parameter (Kamil)
+> > > > >       whitespace correction (Kamil)
+> > > > > 
+> > > > > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > > > > Cc: Laguna, Lukasz <lukasz.laguna@intel.com>
+> > > > > Cc: Matthew Auld <matthew.auld@intel.com>
+> > > > > Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@intel.com>
+> > > > > ---
+> > > > >    tests/intel/xe_create.c | 84 ++++++++++++++++++++++++++++++++++++++++-
+> > > > >    1 file changed, 83 insertions(+), 1 deletion(-)
+> > > > > 
+> > > > > diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+> > > > > index f4633cfb3..194c677ee 100644
+> > > > > --- a/tests/intel/xe_create.c
+> > > > > +++ b/tests/intel/xe_create.c
+> > > > > @@ -18,6 +18,14 @@
+> > > > >    #define PAGE_SIZE 0x1000
+> > > > > +static struct param {
+> > > > > +	unsigned int size_mb;
+> > > > > +	unsigned int vram_percent;
+> > > > > +} params = {
+> > > > > +	.size_mb = 0,
+> > > > > +	.vram_percent = 0,
+> > > > > +};
+> > > > > +
+> > > > >    static int __create_bo(int fd, uint32_t vm, uint64_t size, uint32_t flags,
+> > > > >    		       uint32_t *handlep)
+> > > > >    {
+> > > > > @@ -214,7 +222,78 @@ static void create_massive_size(int fd)
+> > > > >    	}
+> > > > >    }
+> > > > > -igt_main
+> > > > > +/**
+> > > > > + * SUBTEST: create-big-vram
+> > > > > + * Functionality: BO creation
+> > > > > + * Test category: functionality test
+> > > > > + * Description: Verifies the creation of substantial BO within VRAM,
+> > > > > + *		constituting all available CPU-visible VRAM.
+> > > > > + */
+> > > > > +static void create_big_vram(int fd)
+> > > > > +{
+> > > > > +	uint64_t bo_size, size, visible_avail_size, alignment;
+> > > > > +	uint32_t bo_handle;
+> > > > > +	char *bo_ptr = NULL;
+> > > > > +	uint64_t vm = 0;
+> > > > > +	int gt;
+> > > > > +
+> > > > > +	igt_require(xe_has_vram(fd));
+> > > > > +	alignment = xe_get_default_alignment(fd);
+> > > > > +	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
+> > > > > +
+> > > > > +	xe_for_each_gt(fd, gt) {
+> > > > > +		visible_avail_size = xe_visible_available_vram_size(fd, gt);
+> > > > 
+> > > > Skip (continue) if == 0?
+> > > 
+> > > Do we expect it to be zero ?
+> > > 
+> > 
+> > It do not to be here, it can be added below.
+> > 
+> > > > 
+> > > > > +		bo_size = params.size_mb
+> > > > > +			  ? params.size_mb * 1024ULL * 1024ULL
+> > > > > +			  : params.vram_percent
+> > > > > +				? ALIGN(visible_avail_size * params.vram_percent / 100, alignment)
+> > > > > +				: ALIGN_DOWN(visible_avail_size, alignment);
+> 
+> I'll simplify the bo_size to:
+> 
+> bo_size = params.size_mb ? params.size_mb * 1024ULL * 1024ULL
+>           : ALIGN_DOWN(visible_avail_size * params.vram_percent / 100,
+> 		       alignment);
+> 
+> with vram_percent defaulting to 100.
+> 
+> > > > > +		igt_info("gt%u bo_size=%lu visible_available_vram_size=%lu\n",
+> > > > > +			gt, bo_size, visible_avail_size);
+> > > > > +
+> > > > 
+> > > > Should it skip if calculated bo_size == 0?
+> > > > In case of skips you can make it dynamic or count number
+> > > > of performed tests (it should be > 0).
+> > > 
+> > > Is it expected to be zero ? I would just let it go (and fail).
+> > > 
+> > > --
+> > > marcin
+> > > > 
+> > > > Regards,
+> > > > Kamil
+> > > > 
+> > > > > +		bo_handle = xe_bo_create_flags(fd, vm, bo_size, visible_vram_memory(fd, gt));
+> > > > > +		bo_ptr = xe_bo_map(fd, bo_handle, bo_size);
+> > 
+> > Please add assert here:
+> >      igt_assert(bo_ptr);
+> 
+> xe_bo_map asserts if mmap fails
+> 
+> > 
+> > > > > +
+> > > > > +		size = bo_size - 1;
+> > 
+> > Here imho you should add
+> >      igt_assert_lt_u64(SZ_64K, size);
+> > 
+> > Point is you will not test anything if size is too small.
+> 
+> There will be no write, but still we have a check for zero value read at
+> index 0 (the assert after while).
+> I think SZ_64K is the minimum page size for vram, so perhaps we would fail
+> earlier on xe_bo_create (due to visible_vram_memory returning 0?).
+> 
+> I'll split the check per gt with dynamic subtests in case any gt's visible
+> available vram returns 0. I'm contemplating using a skip instead of an
+> assert in such cases, as it might be more appropriate. What are your
+> thoughts on this approach?
 
-v2:
- - change functions description (Michal)
-v3:
- - decipher SR-IOV shortcut in commit message (Kamil)
- - add SR-IOV description in header file (Kamil)
- - remove old r-b and add cc (Kamil)
- - return bool result in functions prefixed with "__" (Kamil)
- - add brief description in functions documentation (Michal)
- - add asserts in helpers (Michal)
+Seems good, imho skip is better.
 
-Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Signed-off-by: Katarzyna Dec <katarzyna.dec@intel.com>
-Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
----
- lib/igt_sriov_device.c | 213 +++++++++++++++++++++++++++++++++++++++++
- lib/igt_sriov_device.h |  29 ++++++
- lib/meson.build        |   1 +
- 3 files changed, 243 insertions(+)
- create mode 100644 lib/igt_sriov_device.c
- create mode 100644 lib/igt_sriov_device.h
+Regards,
+Kamil
 
-diff --git a/lib/igt_sriov_device.c b/lib/igt_sriov_device.c
-new file mode 100644
-index 000000000..c5c594c2c
---- /dev/null
-+++ b/lib/igt_sriov_device.c
-@@ -0,0 +1,213 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright(c) 2023 Intel Corporation. All rights reserved.
-+ */
-+
-+#include <errno.h>
-+
-+#include "igt_core.h"
-+#include "igt_sriov_device.h"
-+#include "igt_sysfs.h"
-+
-+/**
-+ * igt_sriov_is_pf - Check if device is PF
-+ * @device: device file descriptor
-+ *
-+ * Determine if device is PF by checking existence of sriov_totalvfs file.
-+ *
-+ * Return:
-+ * True if device is PF, false otherwise.
-+ */
-+bool igt_sriov_is_pf(int device)
-+{
-+	int sysfs;
-+	bool ret;
-+
-+	sysfs = igt_sysfs_open(device);
-+	igt_assert_fd(sysfs);
-+
-+	ret = igt_sysfs_has_attr(sysfs, "device/sriov_totalvfs");
-+	close(sysfs);
-+
-+	return ret;
-+}
-+
-+static bool __pf_attr_get_u32(int pf, const char *attr, uint32_t *value)
-+{
-+	int sysfs;
-+	bool ret;
-+
-+	igt_assert(igt_sriov_is_pf(pf));
-+
-+	sysfs = igt_sysfs_open(pf);
-+	igt_assert_fd(sysfs);
-+
-+	ret = __igt_sysfs_get_u32(sysfs, attr, value);
-+	close(sysfs);
-+
-+	return ret;
-+}
-+
-+static uint32_t pf_attr_get_u32(int pf, const char *attr)
-+{
-+	uint32_t value;
-+
-+	igt_assert_f(__pf_attr_get_u32(pf, attr, &value),
-+		     "Failed to read %s attribute (%s)\n", attr, strerror(errno));
-+
-+	return value;
-+}
-+
-+static bool __pf_attr_set_u32(int pf, const char *attr, uint32_t value)
-+{
-+	int sysfs;
-+	bool ret;
-+
-+	igt_assert(igt_sriov_is_pf(pf));
-+
-+	sysfs = igt_sysfs_open(pf);
-+	igt_assert_fd(sysfs);
-+
-+	ret = __igt_sysfs_set_u32(sysfs, attr, value);
-+	close(sysfs);
-+
-+	return ret;
-+}
-+
-+static void pf_attr_set_u32(int pf, const char *attr, uint32_t value)
-+{
-+	igt_assert_f(__pf_attr_set_u32(pf, attr, value),
-+		     "Failed to write %u to %s attribute (%s)\n", value, attr, strerror(errno));
-+}
-+
-+/**
-+ * igt_sriov_vfs_supported - Check if VFs are supported
-+ * @pf: PF device file descriptor
-+ *
-+ * Determine VFs support by checking if value of sriov_totalvfs attribute
-+ * corresponding to @pf device is bigger than 0.
-+ *
-+ * Return:
-+ * True if VFs are supported, false otherwise.
-+ */
-+bool igt_sriov_vfs_supported(int pf)
-+{
-+	uint32_t totalvfs;
-+
-+	if (!__pf_attr_get_u32(pf, "device/sriov_totalvfs", &totalvfs))
-+		return false;
-+
-+	return totalvfs > 0;
-+}
-+
-+/**
-+ * igt_sriov_get_totalvfs - Get maximum number of VFs that can be enabled
-+ * @pf: PF device file descriptor
-+ *
-+ * Maximum number of VFs that can be enabled is checked by reading
-+ * sriov_totalvfs attribute corresponding to @pf device.
-+ *
-+ * It asserts on failure.
-+ *
-+ * Return:
-+ * Maximum number of VFs that can be associated with given PF.
-+ */
-+unsigned int igt_sriov_get_total_vfs(int pf)
-+{
-+	return pf_attr_get_u32(pf, "device/sriov_totalvfs");
-+}
-+
-+/**
-+ * igt_sriov_get_numvfs - Get number of enabled VFs
-+ * @pf: PF device file descriptor
-+ *
-+ * Number of enabled VFs is checked by reading sriov_numvfs attribute
-+ * corresponding to @pf device.
-+ *
-+ * It asserts on failure.
-+ *
-+ * Return:
-+ * Number of VFs enabled by given PF.
-+ */
-+unsigned int igt_sriov_get_enabled_vfs(int pf)
-+{
-+	return pf_attr_get_u32(pf, "device/sriov_numvfs");
-+}
-+
-+/**
-+ * igt_sriov_enable_vfs - Enable VFs
-+ * @pf: PF device file descriptor
-+ * @num_vfs: Number of virtual functions to be enabled
-+ *
-+ * Enable VFs by writing @num_vfs to sriov_numvfs attribute corresponding to
-+ * @pf device.
-+ * It asserts on failure.
-+ */
-+void igt_sriov_enable_vfs(int pf, unsigned int num_vfs)
-+{
-+	igt_assert(num_vfs > 0);
-+
-+	igt_debug("Enabling %u VFs\n", num_vfs);
-+	pf_attr_set_u32(pf, "device/sriov_numvfs", num_vfs);
-+}
-+
-+/**
-+ * igt_sriov_disable_vfs - Disable VFs
-+ * @pf: PF device file descriptor
-+ *
-+ * Disable VFs by writing 0 to sriov_numvfs attribute corresponding to @pf
-+ * device.
-+ * It asserts on failure.
-+ */
-+void igt_sriov_disable_vfs(int pf)
-+{
-+	pf_attr_set_u32(pf, "device/sriov_numvfs", 0);
-+}
-+
-+/**
-+ * igt_sriov_is_driver_autoprobe_enabled - Get VF driver autoprobe setting
-+ * @pf: PF device file descriptor
-+ *
-+ * Get current VF driver autoprobe setting by reading sriov_drivers_autoprobe
-+ * attribute corresponding to @pf device.
-+ *
-+ * It asserts on failure.
-+ *
-+ * Return:
-+ * True if autoprobe is enabled, false otherwise.
-+ */
-+bool igt_sriov_is_driver_autoprobe_enabled(int pf)
-+{
-+	return pf_attr_get_u32(pf, "device/sriov_drivers_autoprobe");
-+}
-+
-+/**
-+ * igt_sriov_enable_driver_autoprobe - Enable VF driver autoprobe
-+ * @pf: PF device file descriptor
-+ *
-+ * Enable VF driver autoprobe setting by writing 1 to sriov_drivers_autoprobe
-+ * attribute corresponding to @pf device.
-+ *
-+ * If successful, kernel will automatically bind VFs to a compatible driver
-+ * immediately after they are enabled.
-+ * It asserts on failure.
-+ */
-+void igt_sriov_enable_driver_autoprobe(int pf)
-+{
-+	pf_attr_set_u32(pf,  "device/sriov_drivers_autoprobe", true);
-+}
-+
-+/**
-+ * igt_sriov_disable_driver_autoprobe - Disable VF driver autoprobe
-+ * @pf: PF device file descriptor
-+ *
-+ * Disable VF driver autoprobe setting by writing 0 to sriov_drivers_autoprobe
-+ * attribute corresponding to @pf device.
-+ *
-+ * During VFs enabling driver won't be bound to VFs.
-+ * It asserts on failure.
-+ */
-+void igt_sriov_disable_driver_autoprobe(int pf)
-+{
-+	pf_attr_set_u32(pf,  "device/sriov_drivers_autoprobe", false);
-+}
-diff --git a/lib/igt_sriov_device.h b/lib/igt_sriov_device.h
-new file mode 100644
-index 000000000..337fdf84b
---- /dev/null
-+++ b/lib/igt_sriov_device.h
-@@ -0,0 +1,29 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright(c) 2023 Intel Corporation. All rights reserved.
-+ */
-+
-+#ifndef __IGT_SRIOV_DEVICE_H__
-+#define __IGT_SRIOV_DEVICE_H__
-+
-+/* Library for managing SR-IOV (Single Root I/O Virtualization)
-+ * devices.
-+ *
-+ * SR-IOV is a specification that allows a single PCIe physical
-+ * device to appear as a physical function (PF) and multiple virtual
-+ * functions (VFs) to the operating system.
-+ */
-+
-+#include <stdint.h>
-+
-+bool igt_sriov_is_pf(int device);
-+bool igt_sriov_vfs_supported(int pf);
-+unsigned int igt_sriov_get_total_vfs(int pf);
-+unsigned int igt_sriov_get_enabled_vfs(int pf);
-+void igt_sriov_enable_vfs(int pf, unsigned int num_vfs);
-+void igt_sriov_disable_vfs(int pf);
-+bool igt_sriov_is_driver_autoprobe_enabled(int pf);
-+void igt_sriov_enable_driver_autoprobe(int pf);
-+void igt_sriov_disable_driver_autoprobe(int pf);
-+
-+#endif /* __IGT_SRIOV_DEVICE_H__ */
-diff --git a/lib/meson.build b/lib/meson.build
-index 48466a2e9..0fc11b26c 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -38,6 +38,7 @@ lib_sources = [
- 	'igt_primes.c',
- 	'igt_pci.c',
- 	'igt_rand.c',
-+	'igt_sriov_device.c',
- 	'igt_stats.c',
- 	'igt_syncobj.c',
- 	'igt_sysfs.c',
--- 
-2.40.0
+> 
+> --
+> marcin
+> > 
+> > Regards,
+> > Kamil
+> > 
+> > > > > +		while (size > SZ_64K) {
+> > > > > +			igt_assert_eq(0, READ_ONCE(bo_ptr[size]));
+> > > > > +			WRITE_ONCE(bo_ptr[size], 'A');
+> > > > > +			igt_assert_eq('A', READ_ONCE(bo_ptr[size]));
+> > > > > +			size >>= 1;
+> > > > > +		}
+> > > > > +		igt_assert_eq(0, bo_ptr[0]);
+> > > > > +
+> > > > > +		munmap(bo_ptr, bo_size);
+> > > > > +		gem_close(fd, bo_handle);
+> > > > > +	}
+> > > > > +
+> > > > > +	xe_vm_destroy(fd, vm);
+> > > > > +}
+> > > > > +
+> > > > > +static int opt_handler(int opt, int opt_index, void *data)
+> > > > > +{
+> > > > > +	switch (opt) {
+> > > > > +	case 'S':
+> > > > > +		params.size_mb = atoi(optarg);
+> > > > > +		igt_debug("Size MB: %d\n", params.size_mb);
+> > > > > +		break;
+> > > > > +	case 'p':
+> > > > > +		params.vram_percent = atoi(optarg);
+> > > > > +		igt_debug("Percent of VRAM: %d\n", params.vram_percent);
+> > > > > +		break;
+> > > > > +	default:
+> > > > > +		return IGT_OPT_HANDLER_ERROR;
+> > > > > +	}
+> > > > > +
+> > > > > +	return IGT_OPT_HANDLER_SUCCESS;
+> > > > > +}
+> > > > > +
+> > > > > +const char *help_str =
+> > > > > +	"  -S\tBO size in MB\n"
+> > > > > +	"  -p\tPercent of VRAM for BO\n"
+> > > > > +	;
+> > > > > +
+> > > > > +igt_main_args("S:p:", NULL, help_str, opt_handler, NULL)
+> > > > >    {
+> > > > >    	int xe;
+> > > > > @@ -253,6 +332,9 @@ igt_main
+> > > > >    		igt_waitchildren();
+> > > > >    	}
+> > > > > +	igt_subtest("create-big-vram") {
+> > > > > +		create_big_vram(xe);
+> > > > > +	}
+> > > > >    	igt_fixture
+> > > > >    		drm_close_driver(xe);
+> > > > > -- 
+> > > > > 2.31.1
+> > > > > 
