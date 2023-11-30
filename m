@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 90E8B10E747
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Nov 2023 17:08:27 +0000 (UTC)
-Date: Thu, 30 Nov 2023 18:07:28 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9050A10E74B
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Nov 2023 17:19:06 +0000 (UTC)
+From: Matthew Auld <matthew.auld@intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20231130170728.pepzvmqa6wmk5wje@kamilkon-desk.igk.intel.com>
-References: <20231130111735.435263-1-matthew.auld@intel.com>
- <20231130111735.435263-2-matthew.auld@intel.com>
- <20231130135556.crdwx3uzgmcym5qo@kamilkon-desk.igk.intel.com>
- <57854b8e-adda-46a6-bf95-327c98fa7486@intel.com>
+Date: Thu, 30 Nov 2023 17:18:49 +0000
+Message-ID: <20231130171850.461941-1-matthew.auld@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <57854b8e-adda-46a6-bf95-327c98fa7486@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/intel-ci/xe-fast-feedback:
- add create-invalid-mbz
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2 1/2] tests/intel/xe_create: sanity check
+ all MBZ fields
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,77 +17,117 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Matthew Auld <matthew.auld@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Matthew,
-On 2023-11-30 at 15:00:32 +0000, Matthew Auld wrote:
-> On 30/11/2023 13:55, Kamil Konieczny wrote:
-> > Hi Matthew,
-> > On 2023-11-30 at 11:17:35 +0000, Matthew Auld wrote:
-> > > Ensure we have some coverage in BAT for gem_create MBZ fields.
-> > > 
-> > > Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-> > > Cc: Pallavi Mishra <pallavi.mishra@intel.com>
-> > > Cc: Francois Dugast <francois.dugast@intel.com>
-> > > ---
-> > >   tests/intel-ci/xe-fast-feedback.testlist | 1 +
-> > >   1 file changed, 1 insertion(+)
-> > > 
-> > > diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-> > > index 5c53e249d..a83c17de7 100644
-> > > --- a/tests/intel-ci/xe-fast-feedback.testlist
-> > > +++ b/tests/intel-ci/xe-fast-feedback.testlist
-> > > @@ -2,6 +2,7 @@
-> > >   igt@xe_module_load@load
-> > >   igt@xe_compute@compute-square
-> > > +igt@xe_create@create-invalid-mbz
-> > 
-> > Please move it before @create-massive-size,
-> > it should be sorted alphabetically.
-> 
-> Ok, I didn't realise that was a requirement. I can move it.
-> 
-> Note that there are a bunch of tests in this list not following any kind of
-> alphabetical sorting, but is more ordered/grouped/structured by
-> functionality, which I think makes more sense IMO. Like here
-> create-invalid-mbz is just a really simple sanity check for gem_create so
-> running it first made sense to me. A better example is maybe xe_vm@shared-*,
-> since for that it makes sense to run the pte subtest first, with every next
-> test being the next level up in the paging structures:
-> 
-> igt@xe_vm@shared-pte-page
-> igt@xe_vm@shared-pde-page
-> igt@xe_vm@shared-pde2-page
-> igt@xe_vm@shared-pde3-page
-> 
-> So here it rather ordered by functionally. Anyway, I think if we intend to
-> sort this alphabetically we should put a comment at the top of the file or
-> something, and then also send a patch to sort everything?
-> 
+Explicitly check that all MBZ (must-be-zero) fields are currently
+rejected, including the currently unused extensions.
 
-imho when we put something out-of-order we should write comment, like:
+v2: (Kamil)
+  - Various improvements
 
-# A comment why this should run before other tests
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Pallavi Mishra <pallavi.mishra@intel.com>
+Cc: Francois Dugast <francois.dugast@intel.com>
+---
+ tests/intel/xe_create.c | 59 +++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 54 insertions(+), 5 deletions(-)
 
-or
-
-# A comment why this should run after other tests
-
-Then with such comment you can have non-alphabetical order.
-
-Regards,
-Kamil
-
-> > 
-> > Regards,
-> > Kamil
-> > 
-> > >   igt@xe_create@create-execqueues-noleak
-> > >   igt@xe_create@create-execqueues-leak
-> > >   igt@xe_create@create-massive-size
-> > > -- 
-> > > 2.43.0
-> > > 
+diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+index bb55a15e1..986b078dd 100644
+--- a/tests/intel/xe_create.c
++++ b/tests/intel/xe_create.c
+@@ -18,6 +18,18 @@
+ 
+ #define PAGE_SIZE 0x1000
+ 
++static int __ioctl_create(int fd, struct drm_xe_gem_create *create)
++{
++	int ret = 0;
++
++	if (igt_ioctl(fd, DRM_IOCTL_XE_GEM_CREATE, create)) {
++		ret = -errno;
++		errno = 0;
++	}
++
++	return ret;
++}
++
+ static int __create_bo(int fd, uint32_t vm, uint64_t size, uint32_t flags,
+ 		       uint32_t *handlep)
+ {
+@@ -27,14 +39,11 @@ static int __create_bo(int fd, uint32_t vm, uint64_t size, uint32_t flags,
+ 		.flags = flags,
+ 		.cpu_caching = __xe_default_cpu_caching_from_flags(fd, flags),
+ 	};
+-	int ret = 0;
++	int ret;
+ 
+ 	igt_assert(handlep);
+ 
+-	if (igt_ioctl(fd, DRM_IOCTL_XE_GEM_CREATE, &create)) {
+-		ret = -errno;
+-		errno = 0;
+-	}
++	ret = __ioctl_create(fd, &create);
+ 	*handlep = create.handle;
+ 
+ 	return ret;
+@@ -88,6 +97,43 @@ static void create_invalid_size(int fd)
+ 	xe_vm_destroy(fd, vm);
+ }
+ 
++/**
++ * SUBTEST: create-invalid-mbz
++ * Functionality: ioctl
++ * Test category: negative test
++ * Description: Verifies xe bo create returns expected error code on all MBZ fields.
++ */
++static void create_invalid_mbz(int fd)
++{
++	struct drm_xe_gem_create create = {
++		.size = PAGE_SIZE,
++		.flags = system_memory(fd),
++		.cpu_caching = DRM_XE_GEM_CPU_CACHING_WB,
++	};
++	int i;
++
++	/* Make sure the baseline passes */
++	igt_assert_eq(__ioctl_create(fd, &create), 0);
++	gem_close(fd, create.handle);
++	create.handle = 0;
++
++	/* No supported extensions yet */
++	create.extensions = -1;
++	igt_assert_eq(__ioctl_create(fd, &create), -EINVAL);
++	create.extensions = 0;
++
++	/* Make sure KMD rejects non-zero padding/reserved fields */
++	create.pad = -1;
++	igt_assert_eq(__ioctl_create(fd, &create), -EINVAL);
++	create.pad = 0;
++
++	for (i = 0; i < ARRAY_SIZE(create.reserved); i++) {
++		create.reserved[i] = -1;
++		igt_assert_eq(__ioctl_create(fd, &create), -EINVAL);
++		create.reserved[i] = 0;
++	}
++}
++
+ enum exec_queue_destroy {
+ 	NOLEAK,
+ 	LEAK
+@@ -222,6 +268,9 @@ igt_main
+ 	igt_fixture
+ 		xe = drm_open_driver(DRIVER_XE);
+ 
++	igt_subtest("create-invalid-mbz")
++		create_invalid_mbz(xe);
++
+ 	igt_subtest("create-invalid-size") {
+ 		create_invalid_size(xe);
+ 	}
+-- 
+2.43.0
