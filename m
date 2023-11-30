@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AC9F810E76E
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Nov 2023 19:04:58 +0000 (UTC)
-Date: Thu, 30 Nov 2023 14:04:31 -0500
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CDD6610E76F
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Nov 2023 19:05:01 +0000 (UTC)
+Date: Thu, 30 Nov 2023 14:04:49 -0500
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 To: Francois Dugast <francois.dugast@intel.com>
-Message-ID: <ZWjcv-ABVEtncJvv@intel.com>
+Message-ID: <ZWjc0UMWsRV0B8X8@intel.com>
 References: <20231130184536.7-1-francois.dugast@intel.com>
- <20231130184536.7-19-francois.dugast@intel.com>
+ <20231130184536.7-17-francois.dugast@intel.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20231130184536.7-19-francois.dugast@intel.com>
+In-Reply-To: <20231130184536.7-17-francois.dugast@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v5 18/21] drm-uapi/xe: Move xe_exec after
- xe_exec_queue
+Subject: Re: [igt-dev] [PATCH v5 16/21] drm-uapi/xe: Add Tile ID information
+ to the GT info query
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,51 +26,31 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Nov 30, 2023 at 06:45:33PM +0000, Francois Dugast wrote:
-> Align with commit ("drm/xe/uapi: Move xe_exec after xe_exec_queue")
+On Thu, Nov 30, 2023 at 06:45:31PM +0000, Francois Dugast wrote:
+> Align with commit ("drm/xe/uapi: Add Tile ID information to the GT
+> info query")
 > 
 > Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 
 Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
 > ---
->  include/drm-uapi/xe_drm.h | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
+>  include/drm-uapi/xe_drm.h | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
 > diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-> index 3938e553d..aa524f26e 100644
+> index 0850e5ee5..b703dc7ce 100644
 > --- a/include/drm-uapi/xe_drm.h
 > +++ b/include/drm-uapi/xe_drm.h
-> @@ -103,11 +103,11 @@ struct xe_user_extension {
->  #define DRM_XE_VM_CREATE		0x03
->  #define DRM_XE_VM_DESTROY		0x04
->  #define DRM_XE_VM_BIND			0x05
-> -#define DRM_XE_EXEC			0x06
-> -#define DRM_XE_EXEC_QUEUE_CREATE	0x07
-> -#define DRM_XE_EXEC_QUEUE_DESTROY	0x08
-> -#define DRM_XE_EXEC_QUEUE_SET_PROPERTY	0x09
-> -#define DRM_XE_EXEC_QUEUE_GET_PROPERTY	0x0a
-> +#define DRM_XE_EXEC_QUEUE_CREATE	0x06
-> +#define DRM_XE_EXEC_QUEUE_DESTROY	0x07
-> +#define DRM_XE_EXEC_QUEUE_SET_PROPERTY	0x08
-> +#define DRM_XE_EXEC_QUEUE_GET_PROPERTY	0x09
-> +#define DRM_XE_EXEC			0x0a
->  #define DRM_XE_WAIT_USER_FENCE		0x0b
->  /* Must be kept compact -- no holes */
->  
-> @@ -117,11 +117,11 @@ struct xe_user_extension {
->  #define DRM_IOCTL_XE_VM_CREATE			DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_VM_CREATE, struct drm_xe_vm_create)
->  #define DRM_IOCTL_XE_VM_DESTROY			DRM_IOW(DRM_COMMAND_BASE + DRM_XE_VM_DESTROY, struct drm_xe_vm_destroy)
->  #define DRM_IOCTL_XE_VM_BIND			DRM_IOW(DRM_COMMAND_BASE + DRM_XE_VM_BIND, struct drm_xe_vm_bind)
-> -#define DRM_IOCTL_XE_EXEC			DRM_IOW(DRM_COMMAND_BASE + DRM_XE_EXEC, struct drm_xe_exec)
->  #define DRM_IOCTL_XE_EXEC_QUEUE_CREATE		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_EXEC_QUEUE_CREATE, struct drm_xe_exec_queue_create)
->  #define DRM_IOCTL_XE_EXEC_QUEUE_DESTROY		DRM_IOW(DRM_COMMAND_BASE + DRM_XE_EXEC_QUEUE_DESTROY, struct drm_xe_exec_queue_destroy)
->  #define DRM_IOCTL_XE_EXEC_QUEUE_SET_PROPERTY	DRM_IOW(DRM_COMMAND_BASE + DRM_XE_EXEC_QUEUE_SET_PROPERTY, struct drm_xe_exec_queue_set_property)
->  #define DRM_IOCTL_XE_EXEC_QUEUE_GET_PROPERTY	DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_EXEC_QUEUE_GET_PROPERTY, struct drm_xe_exec_queue_get_property)
-> +#define DRM_IOCTL_XE_EXEC			DRM_IOW(DRM_COMMAND_BASE + DRM_XE_EXEC, struct drm_xe_exec)
->  #define DRM_IOCTL_XE_WAIT_USER_FENCE		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_WAIT_USER_FENCE, struct drm_xe_wait_user_fence)
->  
->  /**
+> @@ -377,6 +377,8 @@ struct drm_xe_gt {
+>  #define DRM_XE_QUERY_GT_TYPE_MEDIA		1
+>  	/** @type: GT type: Main or Media */
+>  	__u16 type;
+> +	/** @tile_id: Tile ID where this GT lives (Information only) */
+> +	__u16 tile_id;
+>  	/** @gt_id: Unique ID of this GT within the PCI Device */
+>  	__u16 gt_id;
+>  	/** @reference_clock: A clock frequency for timestamp */
 > -- 
 > 2.34.1
 > 
