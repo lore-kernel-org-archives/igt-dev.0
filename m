@@ -1,20 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3010410E239
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Nov 2023 14:01:43 +0000 (UTC)
-Date: Thu, 30 Nov 2023 15:01:14 +0100
+Date: Thu, 30 Nov 2023 15:07:06 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20231130140114.usu5r6grr74rpkr6@kamilkon-desk.igk.intel.com>
-References: <20231017125428.607100-1-marcin.bernatowicz@linux.intel.com>
- <169757011230.14379.7167114649167668325@emeril.freedesktop.org>
+Message-ID: <20231130140706.s3fhrtjmeitegrpi@kamilkon-desk.igk.intel.com>
+References: <20231130032130.2709-1-quic_abhinavk@quicinc.com>
+ <170131887097.15646.16663714203706169165@emeril.freedesktop.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <169757011230.14379.7167114649167668325@emeril.freedesktop.org>
+In-Reply-To: <170131887097.15646.16663714203706169165@emeril.freedesktop.org>
 Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSAgZm9yIGxpYi9k?=
- =?utf-8?q?rmtest=2Eh=3A_make_ALIGN_work_with_uint64=5Ft_values?=
+ =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fwriteback=3A_fix_kms=5Fwriteback_failure_for_XRGB8888_onl?=
+ =?utf-8?q?y_devices?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,29 +20,28 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: lgci.bug.filing@intel.com
+Cc: lgci.bug.filing@intel.com, I915-ci-infra@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi,
 
-below regressions were unrelated to change,
-no need for respining tests.
+below change is unrelated to kmw_writeback tests.
 
 Regards,
 Kamil
 
-On 2023-10-17 at 19:15:12 -0000, Patchwork wrote:
+On 2023-11-30 at 04:34:30 -0000, Patchwork wrote:
 > == Series Details ==
 > 
-> Series: lib/drmtest.h: make ALIGN work with uint64_t values
-> URL   : https://patchwork.freedesktop.org/series/125235/
+> Series: tests/kms_writeback: fix kms_writeback failure for XRGB8888 only devices
+> URL   : https://patchwork.freedesktop.org/series/127097/
 > State : failure
 > 
 > == Summary ==
 > 
-> CI Bug Log - changes from IGT_7543_full -> IGTPW_10017_full
+> CI Bug Log - changes from CI_DRM_13951 -> IGTPW_10298
 > ====================================================
 > 
 > Summary
@@ -52,58 +49,53 @@ On 2023-10-17 at 19:15:12 -0000, Patchwork wrote:
 > 
 >   **FAILURE**
 > 
->   Serious unknown changes coming with IGTPW_10017_full absolutely need to be
+>   Serious unknown changes coming with IGTPW_10298 absolutely need to be
 >   verified manually.
 >   
 >   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_10017_full, please notify your bug team (lgci.bug.filing@intel.com) to allow them
+>   introduced in IGTPW_10298, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
 >   to document this new failure mode, which will reduce false positives in CI.
 > 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10017/index.html
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10298/index.html
 > 
-> Participating hosts (10 -> 10)
+> Participating hosts (36 -> 35)
 > ------------------------------
 > 
->   Additional (1): shard-rkl0 
->   Missing    (1): shard-tglu0 
+>   Additional (2): bat-kbl-2 bat-mtlp-8 
+>   Missing    (3): bat-jsl-1 fi-snb-2520m bat-dg1-5 
 > 
 > Possible new issues
 > -------------------
 > 
->   Here are the unknown changes that may have been introduced in IGTPW_10017_full:
+>   Here are the unknown changes that may have been introduced in IGTPW_10298:
 > 
 > ### IGT changes ###
 > 
 > #### Possible regressions ####
 > 
->   * igt@gem_exec_parallel@contexts@vcs0:
->     - shard-tglu:         NOTRUN -> [INCOMPLETE][1]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10017/shard-tglu-9/igt@gem_exec_parallel@contexts@vcs0.html
+>   * igt@i915_selftest@live@gt_timelines:
+>     - bat-rpls-1:         [PASS][1] -> [INCOMPLETE][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13951/bat-rpls-1/igt@i915_selftest@live@gt_timelines.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10298/bat-rpls-1/igt@i915_selftest@live@gt_timelines.html
 > 
->   * igt@kms_psr@psr2_sprite_render:
->     - shard-mtlp:         [PASS][2] -> [FAIL][3]
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7543/shard-mtlp-4/igt@kms_psr@psr2_sprite_render.html
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10017/shard-mtlp-8/igt@kms_psr@psr2_sprite_render.html
-> 
->   * igt@sw_sync@sync_busy_fork:
->     - shard-tglu:         [PASS][4] -> [INCOMPLETE][5]
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7543/shard-tglu-3/igt@sw_sync@sync_busy_fork.html
->    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10017/shard-tglu-7/igt@sw_sync@sync_busy_fork.html
-> 
->   
-> #### Warnings ####
-> 
->   * igt@i915_suspend@basic-s3-without-i915:
->     - shard-snb:          [DMESG-WARN][6] ([i915#8841]) -> [INCOMPLETE][7]
->    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7543/shard-snb1/igt@i915_suspend@basic-s3-without-i915.html
->    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10017/shard-snb1/igt@i915_suspend@basic-s3-without-i915.html
+>   * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-c-dp-5:
+>     - bat-adlp-11:        [PASS][3] -> [FAIL][4] +1 other test fail
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13951/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-c-dp-5.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10298/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-c-dp-5.html
 > 
 >   
 > Known issues
 > ------------
 > 
->   Here are the changes found in IGTPW_10017_full that come from known issues:
+>   Here are the changes found in IGTPW_10298 that come from known issues:
 > 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@debugfs_test@basic-hwmon:
+>     - bat-mtlp-8:         NOTRUN -> [SKIP][5] ([i915#9318])
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10298/bat-mtlp-8/igt@debugfs_test@basic-hwmon.html
 
 [...cut...]
 
@@ -112,13 +104,19 @@ On 2023-10-17 at 19:15:12 -0000, Patchwork wrote:
 > -------------
 > 
 >   * CI: CI-20190529 -> None
->   * IGT: IGT_7543 -> IGTPW_10017
+>   * IGT: IGT_7610 -> IGTPW_10298
 > 
 >   CI-20190529: 20190529
->   CI_DRM_13765: 201c8a7bd1f3f415920a2df4b8a8817e973f42fe @ git://anongit.freedesktop.org/gfx-ci/linux
->   IGTPW_10017: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10017/index.html
->   IGT_7543: 688f12831f876590e084e9b13b4d5ab85fe13d51 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   CI_DRM_13951: 7bd342323d5bd405b02fd21cd78f157f363278ac @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_10298: 10298
+>   IGT_7610: 7610
+> 
+> 
+> Testlist changes
+> ----------------
+> 
+> -igt@kms_vrr@seamless-rr-switch
 > 
 > == Logs ==
 > 
-> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10017/index.html
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10298/index.html
