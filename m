@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D4FBF10E0EC
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Nov 2023 00:35:38 +0000 (UTC)
+From: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+To: 
+Date: Thu, 30 Nov 2023 04:35:26 -0800
+Message-Id: <e0faf098fd704d50c06d584cc46e5fc8192d9aea.1701180818.git.akshata.jahagirdar@intel.com>
+In-Reply-To: <cover.1701180818.git.akshata.jahagirdar@intel.com>
+References: <cover.1701180818.git.akshata.jahagirdar@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "David Kershner" <david.kershner@intel.com>
-Date: Wed, 29 Nov 2023 21:46:57 -0000
-Message-ID: <170129441713.12091.9620331313478989662@emeril.freedesktop.org>
-References: <20231129203700.4079222-1-david.kershner@intel.com>
-In-Reply-To: <20231129203700.4079222-1-david.kershner@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
- =?utf-8?q?s/intel=3A_Add_Xe_peer2peer_test_=28rev3=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v3 2/6] lib/intel_blt: Update calculation of
+ ccs_size and size_of_ctrl_copy
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,28 +19,93 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Mmatthew.auld@intel.com, igt-dev@lists.freedesktop.org,
+ ayaz.siddiqui@intel.com, Akshata Jahagirdar <akshata.jahagirdar@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+The Main-to-CCS Ratio for XE2 has been changed to 512:1.
+Update the CCS_RATIO macro to select relevant ratio based on platform.
+Since the PAGE_SIZE of sysmem is 4K, update the size of ctrl_copy to reflect this change.
 
-Series: tests/intel: Add Xe peer2peer test (rev3)
-URL   : https://patchwork.freedesktop.org/series/126343/
-State : failure
+Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+---
+ lib/intel_blt.c | 14 ++++++++------
+ lib/intel_blt.h |  2 +-
+ 2 files changed, 9 insertions(+), 7 deletions(-)
 
-== Summary ==
-
-Applying: tests/intel: Add Xe peer2peer test
-Using index info to reconstruct a base tree...
-M	tests/meson.build
-Falling back to patching base and 3-way merge...
-Auto-merging tests/meson.build
-CONFLICT (content): Merge conflict in tests/meson.build
-Patch failed at 0001 tests/intel: Add Xe peer2peer test
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
-
+diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+index c0593930c..938165063 100644
+--- a/lib/intel_blt.c
++++ b/lib/intel_blt.c
+@@ -948,15 +948,16 @@ int blt_block_copy(int fd,
+ 	return ret;
+ }
+ 
+-static uint16_t __ccs_size(const struct blt_ctrl_surf_copy_data *surf)
++static uint16_t __ccs_size(int fd, const struct blt_ctrl_surf_copy_data *surf)
+ {
+ 	uint32_t src_size, dst_size;
++	uint16_t ccsratio = CCS_RATIO(fd);
+ 
+ 	src_size = surf->src.access_type == DIRECT_ACCESS ?
+-				surf->src.size : surf->src.size / CCS_RATIO;
++				surf->src.size : surf->src.size / ccsratio;
+ 
+ 	dst_size = surf->dst.access_type == DIRECT_ACCESS ?
+-				surf->dst.size : surf->dst.size / CCS_RATIO;
++				surf->dst.size : surf->dst.size / ccsratio;
+ 
+ 	igt_assert_f(src_size <= dst_size, "dst size must be >= src size for CCS copy\n");
+ 
+@@ -1118,6 +1119,7 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
+ 	uint64_t dst_offset, src_offset, bb_offset, alignment;
+ 	uint32_t bbe = MI_BATCH_BUFFER_END;
+ 	uint32_t *bb;
++	uint16_t num_ccs_blocks = xe_get_default_alignment(fd) / (CCS_RATIO(fd));
+ 
+ 	igt_assert_f(ahnd, "ctrl-surf-copy supports softpin only\n");
+ 	igt_assert_f(surf, "ctrl-surf-copy requires data to do ctrl-surf-copy blit\n");
+@@ -1136,7 +1138,7 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
+ 		data.xe2.dw00.dst_access_type = surf->dst.access_type;
+ 
+ 		/* Ensure dst has size capable to keep src ccs aux */
+-		data.xe2.dw00.size_of_ctrl_copy = __ccs_size(surf) / CCS_RATIO - 1;
++		data.xe2.dw00.size_of_ctrl_copy = __ccs_size(fd, surf) / num_ccs_blocks - 1;
+ 		data.xe2.dw00.length = 0x3;
+ 
+ 		data.xe2.dw01.src_address_lo = src_offset;
+@@ -1155,7 +1157,7 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
+ 		data.gen12.dw00.dst_access_type = surf->dst.access_type;
+ 
+ 		/* Ensure dst has size capable to keep src ccs aux */
+-		data.gen12.dw00.size_of_ctrl_copy = __ccs_size(surf) / CCS_RATIO - 1;
++		data.gen12.dw00.size_of_ctrl_copy = __ccs_size(fd,surf) / num_ccs_blocks - 1;
+ 		data.gen12.dw00.length = 0x3;
+ 
+ 		data.gen12.dw01.src_address_lo = src_offset;
+@@ -1808,7 +1810,7 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
+ 			flags |= XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
+ 
+ 		size = ALIGN(size, xe_get_default_alignment(blt->fd));
+-		handle = xe_bo_create_flags(blt->fd, 0, size, flags);
++		handle = xe_bo_create_flags(blt->fd, 0, size, region);
+ 	} else {
+ 		igt_assert(__gem_create_in_memory_regions(blt->fd, &handle,
+ 							  &size, region) == 0);
+diff --git a/lib/intel_blt.h b/lib/intel_blt.h
+index 5934ccd67..a7aeab595 100644
+--- a/lib/intel_blt.h
++++ b/lib/intel_blt.h
+@@ -52,7 +52,7 @@
+ #include "igt.h"
+ #include "intel_cmds_info.h"
+ 
+-#define CCS_RATIO 256
++#define CCS_RATIO(xe) AT_LEAST_GEN(intel_get_drm_devid(xe), 20) ? 512 : 256
+ 
+ enum blt_color_depth {
+ 	CD_8bit,
+-- 
+2.34.1
