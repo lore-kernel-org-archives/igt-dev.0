@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4F6C910E62A
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Nov 2023 16:07:32 +0000 (UTC)
-Date: Wed, 29 Nov 2023 09:05:46 +0000
-From: Matthew Brost <matthew.brost@intel.com>
-To: Francois Dugast <francois.dugast@intel.com>
-Message-ID: <ZWb+6i+2KlOeeW7L@DUT025-TGLU.fm.intel.com>
-References: <20231129145457.7-1-francois.dugast@intel.com>
- <20231129145457.7-15-francois.dugast@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20231129145457.7-15-francois.dugast@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3A20A10E116
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Nov 2023 07:48:14 +0000 (UTC)
+Message-ID: <ed408f06-0a28-45bb-9562-6f077ebe5ac3@intel.com>
+Date: Thu, 30 Nov 2023 08:40:41 +0100
+Content-Language: en-US
+To: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+References: <cover.1701180818.git.akshata.jahagirdar@intel.com>
+ <49026bb5be7adbd33485c61581824076397a0c38.1701180818.git.akshata.jahagirdar@intel.com>
+From: Karolina Stolarek <karolina.stolarek@intel.com>
+In-Reply-To: <49026bb5be7adbd33485c61581824076397a0c38.1701180818.git.akshata.jahagirdar@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v4 14/20] drm-uapi/xe: Kill tile_mask
+Subject: Re: [igt-dev] [PATCH i-g-t v3 1/6] lib: Add blt command properties
+ for lunarlake
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,61 +22,89 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, ayaz.siddiqui@intel.com,
+ Mmatthew.auld@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Nov 29, 2023 at 02:54:51PM +0000, Francois Dugast wrote:
-> Align with commit ("drm/xe/uapi: Kill tile_mask")
+
+On 30.11.2023 13:35, Akshata Jahagirdar wrote:
+> Add blt_cmd_info structs to describe properties of XY_BLOCK_COPY and XY_FAST_COPY blitter commands for XE2 platform. Updated the definitions for Lunarlake.
 > 
-> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
-
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-
+> Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
 > ---
->  include/drm-uapi/xe_drm.h | 8 +-------
->  tests/intel/xe_vm.c       | 1 -
->  2 files changed, 1 insertion(+), 8 deletions(-)
+>   lib/intel_cmds_info.c   | 17 +++++++++++++++++
+>   lib/intel_cmds_info.h   |  1 +
+>   lib/intel_device_info.c |  2 +-
+>   3 files changed, 19 insertions(+), 1 deletion(-)
 > 
-> diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-> index 1e98363b2..2a4ac6e8e 100644
-> --- a/include/drm-uapi/xe_drm.h
-> +++ b/include/drm-uapi/xe_drm.h
-> @@ -683,12 +683,6 @@ struct drm_xe_vm_bind_op {
->  	/** @addr: Address to operate on, MBZ for UNMAP_ALL */
->  	__u64 addr;
->  
-> -	/**
-> -	 * @tile_mask: Mask for which tiles to create binds for, 0 == All tiles,
-> -	 * only applies to creating new VMAs
-> -	 */
-> -	__u64 tile_mask;
-> -
->  #define DRM_XE_VM_BIND_OP_MAP		0x0
->  #define DRM_XE_VM_BIND_OP_UNMAP		0x1
->  #define DRM_XE_VM_BIND_OP_MAP_USERPTR	0x2
-> @@ -723,7 +717,7 @@ struct drm_xe_vm_bind_op {
->  	__u32 prefetch_mem_region_instance;
->  
->  	/** @reserved: Reserved */
-> -	__u64 reserved[2];
-> +	__u64 reserved[3];
->  };
->  
->  struct drm_xe_vm_bind {
-> diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-> index 7871fa789..4122b5e49 100644
-> --- a/tests/intel/xe_vm.c
-> +++ b/tests/intel/xe_vm.c
-> @@ -799,7 +799,6 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
->  		bind_ops[i].obj_offset = 0;
->  		bind_ops[i].range = bo_size;
->  		bind_ops[i].addr = addr;
-> -		bind_ops[i].tile_mask = 0x1 << eci->gt_id;
->  		bind_ops[i].op = DRM_XE_VM_BIND_OP_MAP;
->  		bind_ops[i].flags = DRM_XE_VM_BIND_FLAG_ASYNC;
->  		bind_ops[i].prefetch_mem_region_instance = 0;
-> -- 
-> 2.34.1
-> 
+> diff --git a/lib/intel_cmds_info.c b/lib/intel_cmds_info.c
+> index 2e51ec081..7c8790d8e 100644
+> --- a/lib/intel_cmds_info.c
+> +++ b/lib/intel_cmds_info.c
+> @@ -67,6 +67,15 @@ static const struct blt_cmd_info
+>   						 BLT_CMD_EXTENDED |
+>   						 BLT_CMD_SUPPORTS_COMPRESSION);
+>   
+> +static const struct blt_cmd_info				
+> +		xe2_xy_block_copy = BLT_INFO_EXT(XY_BLOCK_COPY,
+> +						 BIT(T_LINEAR) |
+> +						 BIT(T_XMAJOR) |
+> +						 BIT(T_TILE4)  |
+> +						 BIT(T_TILE64),
+> +						 BLT_CMD_EXTENDED |
+> +						 BLT_CMD_SUPPORTS_COMPRESSION);
+> +
+>   static const struct blt_cmd_info
+>   		mtl_xy_block_copy = BLT_INFO_EXT(XY_BLOCK_COPY,
+>   						 BIT(T_LINEAR) |
+> @@ -169,6 +178,14 @@ const struct intel_cmds_info gen12_pvc_cmds_info = {
+>   	}
+>   };
+>   
+> +
+
+This blank line is unnecessary. Once you fix that and wrap the commit
+message to 80 chars, feel free to add my:
+
+Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
+
+All the best,
+Karolina
+
+> +const struct intel_cmds_info xe2_cmds_info  = {
+> +	.blt_cmds = {
+> +		[XY_FAST_COPY] = &dg2_xy_fast_copy,
+> +		[XY_BLOCK_COPY] = &xe2_xy_block_copy,
+> +	}
+> +};
+> +
+>   const struct blt_cmd_info *blt_get_cmd_info(const struct intel_cmds_info *cmds_info,
+>   					    enum blt_cmd_type cmd)
+>   {
+> diff --git a/lib/intel_cmds_info.h b/lib/intel_cmds_info.h
+> index f9e3932d1..0a83b6a44 100644
+> --- a/lib/intel_cmds_info.h
+> +++ b/lib/intel_cmds_info.h
+> @@ -55,6 +55,7 @@ extern const struct intel_cmds_info gen12_cmds_info;
+>   extern const struct intel_cmds_info gen12_dg2_cmds_info;
+>   extern const struct intel_cmds_info gen12_mtl_cmds_info;
+>   extern const struct intel_cmds_info gen12_pvc_cmds_info;
+> +extern const struct intel_cmds_info xe2_cmds_info;
+>   
+>   #define for_each_tiling(__tiling) \
+>   	for (__tiling = T_LINEAR; __tiling < __BLT_MAX_TILING; __tiling++)
+> diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+> index 34817f7b6..a669797c3 100644
+> --- a/lib/intel_device_info.c
+> +++ b/lib/intel_device_info.c
+> @@ -511,7 +511,7 @@ static const struct intel_device_info intel_lunarlake_info = {
+>   	.has_4tile = true,
+>   	.is_lunarlake = true,
+>   	.codename = "lunarlake",
+> -	.cmds_info = &gen12_pvc_cmds_info,
+> +	.cmds_info = &xe2_cmds_info,
+>   };
+>   
+>   static const struct pci_id_match intel_device_match[] = {
