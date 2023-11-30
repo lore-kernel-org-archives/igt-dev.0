@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EFEAD10E763
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Nov 2023 18:46:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 31DB710E76A
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Nov 2023 18:46:15 +0000 (UTC)
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 30 Nov 2023 18:45:31 +0000
-Message-Id: <20231130184536.7-17-francois.dugast@intel.com>
+Date: Thu, 30 Nov 2023 18:45:35 +0000
+Message-Id: <20231130184536.7-21-francois.dugast@intel.com>
 In-Reply-To: <20231130184536.7-1-francois.dugast@intel.com>
 References: <20231130184536.7-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v5 16/21] drm-uapi/xe: Add Tile ID information to
- the GT info query
+Subject: [igt-dev] [PATCH v5 20/21] drm-uapi/xe: Remove unused extension
+ definition
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,26 +23,24 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Align with commit ("drm/xe/uapi: Add Tile ID information to the GT
-info query")
+Align with commit ("drm/xe: Remove unused extension definition")
 
 Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 ---
- include/drm-uapi/xe_drm.h | 2 ++
- 1 file changed, 2 insertions(+)
+ include/drm-uapi/xe_drm.h | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index 0850e5ee5..b703dc7ce 100644
+index 43be76f4d..e2cce951c 100644
 --- a/include/drm-uapi/xe_drm.h
 +++ b/include/drm-uapi/xe_drm.h
-@@ -377,6 +377,8 @@ struct drm_xe_gt {
- #define DRM_XE_QUERY_GT_TYPE_MEDIA		1
- 	/** @type: GT type: Main or Media */
- 	__u16 type;
-+	/** @tile_id: Tile ID where this GT lives (Information only) */
-+	__u16 tile_id;
- 	/** @gt_id: Unique ID of this GT within the PCI Device */
- 	__u16 gt_id;
- 	/** @reference_clock: A clock frequency for timestamp */
+@@ -642,7 +642,6 @@ struct drm_xe_ext_set_property {
+ };
+ 
+ struct drm_xe_vm_create {
+-#define DRM_XE_VM_EXTENSION_SET_PROPERTY	0
+ 	/** @extensions: Pointer to the first extension struct, if any */
+ 	__u64 extensions;
+ 
 -- 
 2.34.1
