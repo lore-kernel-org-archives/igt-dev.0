@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CAB2510E239
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Nov 2023 13:56:00 +0000 (UTC)
-Date: Thu, 30 Nov 2023 14:55:56 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20231130135556.crdwx3uzgmcym5qo@kamilkon-desk.igk.intel.com>
-References: <20231130111735.435263-1-matthew.auld@intel.com>
- <20231130111735.435263-2-matthew.auld@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2EAF510E32F
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Nov 2023 13:57:53 +0000 (UTC)
+From: priyanka.dandamudi@intel.com
+To: priyanka.dandamudi@intel.com, janga.rahul.kumar@intel.com,
+ sai.gowtham.ch@intel.com, igt-dev@lists.freedesktop.org
+Date: Thu, 30 Nov 2023 19:22:59 +0530
+Message-Id: <20231130135259.2220370-1-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231130111735.435263-2-matthew.auld@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/intel-ci/xe-fast-feedback:
- add create-invalid-mbz
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/intel/xe_exec_store: Test to check
+ CONDITIONAL_BATCH_BUFFER_END
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,41 +18,101 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Matthew Auld <matthew.auld@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Matthew,
-On 2023-11-30 at 11:17:35 +0000, Matthew Auld wrote:
-> Ensure we have some coverage in BAT for gem_create MBZ fields.
-> 
-> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-> Cc: Pallavi Mishra <pallavi.mishra@intel.com>
-> Cc: Francois Dugast <francois.dugast@intel.com>
-> ---
->  tests/intel-ci/xe-fast-feedback.testlist | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-> index 5c53e249d..a83c17de7 100644
-> --- a/tests/intel-ci/xe-fast-feedback.testlist
-> +++ b/tests/intel-ci/xe-fast-feedback.testlist
-> @@ -2,6 +2,7 @@
->  igt@xe_module_load@load
->  
->  igt@xe_compute@compute-square
-> +igt@xe_create@create-invalid-mbz
+From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-Please move it before @create-massive-size,
-it should be sorted alphabetically.
+Added a basic test to check MI_CONDITIONAL_BATCH_BUFFER_END instruction.
 
-Regards,
-Kamil
+Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+---
+ tests/intel/xe_exec_store.c | 45 ++++++++++++++++++++++++++++++++++---
+ 1 file changed, 42 insertions(+), 3 deletions(-)
 
->  igt@xe_create@create-execqueues-noleak
->  igt@xe_create@create-execqueues-leak
->  igt@xe_create@create-massive-size
-> -- 
-> 2.43.0
-> 
+diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
+index 9c14bfd14..66fbacc77 100644
+--- a/tests/intel/xe_exec_store.c
++++ b/tests/intel/xe_exec_store.c
+@@ -21,6 +21,8 @@
+  */
+ 
+ #define MAX_INSTANCE 9
++#define STORE 0
++#define COND_BATCH 1
+ 
+ struct data {
+ 	uint32_t batch[16];
+@@ -48,11 +50,38 @@ static void store_dword_batch(struct data *data, uint64_t addr, int value)
+ 	data->addr = batch_addr;
+ }
+ 
++static void cond_batch(struct data *data, uint64_t addr, int value)
++{
++	int b;
++	uint64_t batch_offset = (char *)&(data->batch) - (char *)data;
++	uint64_t batch_addr = addr + batch_offset;
++	uint64_t sdi_offset = (char *)&(data->data) - (char *)data;
++	uint64_t sdi_addr = addr + sdi_offset;
++
++	b = 0;
++	data->batch[b++] = MI_ATOMIC | MI_ATOMIC_INC;
++	data->batch[b++] = sdi_addr;
++	data->batch[b++] = sdi_addr >> 32;
++	data->batch[b++] = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | 5 << 12 | 2;
++	data->batch[b++] = value;
++	data->batch[b++] = sdi_addr;
++	data->batch[b++] = sdi_addr >> 32;
++	data->batch[b++] = MI_BATCH_BUFFER_START | 1;
++	data->batch[b++] = lower_32_bits(batch_addr);
++	data->batch[b++] = upper_32_bits(batch_addr);
++	data->batch[b++] = MI_BATCH_BUFFER_END;
++	igt_assert(b <= ARRAY_SIZE(data->batch));
++
++	data->addr = batch_addr;
++}
++
+ /**
+  * SUBTEST: basic-store
+  * Description: Basic test to verify store dword.
++ * SUBTEST: basic-cond-batch
++ * Description: Basic test to verify cond batch end instruction.
+  */
+-static void store(int fd)
++static void basic_inst(int fd, int inst_type)
+ {
+ 	struct drm_xe_sync sync = {
+ 		.flags = DRM_XE_SYNC_FLAG_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL,
+@@ -86,7 +115,14 @@ static void store(int fd)
+ 
+ 	xe_vm_bind_async(fd, vm, hw_engine->gt_id, bo, 0, addr, bo_size, &sync, 1);
+ 	data = xe_bo_map(fd, bo, bo_size);
+-	store_dword_batch(data, addr, value);
++
++	if (inst_type == STORE)
++		store_dword_batch(data, addr, value);
++	else {
++		/* A random value where it stops at the below value. */
++		value = 20;
++		cond_batch(data, addr, value);
++	}
+ 
+ 	exec_queue = xe_exec_queue_create(fd, vm, hw_engine, 0);
+ 	exec.exec_queue_id = exec_queue;
+@@ -302,7 +338,10 @@ igt_main
+ 	}
+ 
+ 	igt_subtest("basic-store")
+-		store(fd);
++		basic_inst(fd, STORE);
++
++	igt_subtest("basic-cond-batch")
++		basic_inst(fd, COND_BATCH);
+ 
+ 	igt_subtest("basic-all") {
+ 		xe_for_each_gt(fd, gt)
+-- 
+2.25.1
