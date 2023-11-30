@@ -1,14 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============2573264157008328681=="
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 693CE10E07B
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Nov 2023 10:47:38 +0000 (UTC)
+Date: Thu, 30 Nov 2023 11:47:15 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20231130104715.5tz6l57bzqkwxt5h@kamilkon-desk.igk.intel.com>
+References: <20231130071253.114028-1-mauro.chehab@linux.intel.com>
+ <20231130071253.114028-2-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 24 Nov 2023 10:22:05 -0000
-Message-ID: <170082132586.13025.13000888855655848532@emeril.freedesktop.org>
-References: <20231124081834.33714-1-mauro.chehab@linux.intel.com>
-In-Reply-To: <20231124081834.33714-1-mauro.chehab@linux.intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Small_fi?=
- =?utf-8?q?xes/cleanups_for_test=5Flist=2Epy?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231130071253.114028-2-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/1] scripts/igt_doc.py: rewrite intelci
+ testlist logic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,221 +20,276 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2573264157008328681==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Mauro,
+On 2023-11-30 at 08:11:50 +0100, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> Cleanup the block/accept testlist code, reducing one step on it,
+> and fixing some issues at testlist generation.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-== Series Details ==
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Series: Small fixes/cleanups for test_list.py
-URL   : https://patchwork.freedesktop.org/series/126858/
-State : success
+Btw could you add in separate patch documentation for this new option?
+I am afraid it wil be lost in patchwork but should be in code
+or in one of commit description. Alternativly, write it somewhere,
+what about igt_doc_examples.txt with examples?
 
-== Summary ==
+Regards,
+Kamil
 
-CI Bug Log - changes from XEIGT_7601_BAT -> XEIGTPW_10260_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10260_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
-    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 other test fail
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7601/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10260/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3:
-    - bat-dg2-oem2:       NOTRUN -> [FAIL][3] ([Intel XE#400] / [Intel XE#616])
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10260/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html
-
-  * igt@xe_exec_fault_mode@many-basic:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][4] ([Intel XE#288]) +17 other tests skip
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10260/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_pipe_crc_basic@hang-read-crc:
-    - bat-dg2-oem2:       [INCOMPLETE][5] ([Intel XE#282] / [Intel XE#749]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7601/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10260/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html
-
-  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3:
-    - bat-dg2-oem2:       [INCOMPLETE][7] ([Intel XE#282] / [Intel XE#545]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7601/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10260/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html
-
-  
-#### Warnings ####
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
-    - bat-dg2-oem2:       [TIMEOUT][9] ([Intel XE#430] / [Intel XE#530]) -> [FAIL][10] ([Intel XE#400] / [Intel XE#616])
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7601/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10260/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3:
-    - bat-dg2-oem2:       [TIMEOUT][11] ([Intel XE#530]) -> [FAIL][12] ([Intel XE#400] / [Intel XE#616])
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7601/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3.html
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10260/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#282]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/282
-  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
-  [Intel XE#400]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/400
-  [Intel XE#430]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/430
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#530]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/530
-  [Intel XE#545]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/545
-  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
-  [Intel XE#749]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/749
-  [Intel XE#929]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/929
-
-
-Build changes
--------------
-
-  * IGT: IGT_7601 -> IGTPW_10260
-
-  IGTPW_10260: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10260/index.html
-  IGT_7601: 9c6e7f255724e327627be7c8ed30e23742e97386 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-518-1832821c7e4c5bd24353183f060f1435b2eb7992: 1832821c7e4c5bd24353183f060f1435b2eb7992
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10260/index.html
-
---===============2573264157008328681==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Small fixes/cleanups for test_list.py</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/126858/">https://patchwork.freedesktop.org/series/126858/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10260/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10260/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7601_BAT -&gt; XEIGTPW_10260_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10260_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7601/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10260/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10260/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-d-dp-3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_fault_mode@many-basic:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10260/bat-dg2-oem2/igt@xe_exec_fault_mode@many-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +17 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_pipe_crc_basic@hang-read-crc:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7601/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/749">Intel XE#749</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10260/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7601/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/282">Intel XE#282</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/545">Intel XE#545</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10260/bat-dg2-oem2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-3.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7601/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/430">Intel XE#430</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/530">Intel XE#530</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10260/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7601/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/530">Intel XE#530</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10260/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/400">Intel XE#400</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7601 -&gt; IGTPW_10260</li>
-</ul>
-<p>IGTPW_10260: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10260/index.html<br />
-  IGT_7601: 9c6e7f255724e327627be7c8ed30e23742e97386 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-518-1832821c7e4c5bd24353183f060f1435b2eb7992: 1832821c7e4c5bd24353183f060f1435b2eb7992</p>
-
-</body>
-</html>
-
---===============2573264157008328681==--
+> ---
+>  scripts/igt_doc.py | 181 +++++++++++++++++++++++++--------------------
+>  1 file changed, 99 insertions(+), 82 deletions(-)
+> 
+> diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
+> index 0ec6e3e5ec97..df3f72c8d69f 100755
+> --- a/scripts/igt_doc.py
+> +++ b/scripts/igt_doc.py
+> @@ -1,5 +1,5 @@
+>  #!/usr/bin/env python3
+> -# pylint: disable=C0301,C0201,C0206
+> +# pylint: disable=C0301,R0914,R0915,R1702
+>  # SPDX-License-Identifier: (GPL-2.0 OR MIT)
+>  
+>  ## Copyright (C) 2023    Intel Corporation                 ##
+> @@ -56,7 +56,7 @@ class IgtTestList(TestList):
+>          subtest_dict = self.expand_dictionary(True)
+>  
+>          # Create a tests_per_list dict
+> -        gpus = set()
+> +        gpu_set = set()
+>          tests_per_list = {}
+>          split_regex = re.compile(r",\s*")
+>  
+> @@ -68,115 +68,126 @@ class IgtTestList(TestList):
+>              for run_type in set(split_regex.split(run_types)):
+>                  run_type = run_type.lower()
+>  
+> -                if run_type.startswith(tuple(self.drivers)):
+> -                    run_type_set.add(run_type)
+> -                else:
+> -                    for driver in self.drivers:
+> -                        run_type = f"{driver.lower()}_{run_type}"
+> -                        run_type_set.add(run_type)
+> +                drivers = set(self.drivers)
+>  
+> -            for run_type in run_type_set:
+> -                if run_type not in tests_per_list:
+> -                    tests_per_list[run_type] = {}
+> +                for driver in self.drivers:
+> +                    driver = driver.lower()
+>  
+> -                if subname not in tests_per_list[run_type]:
+> -                    tests_per_list[run_type][subname] = {}
+> -
+> -                if "GPU" in subtest:
+> -                    for gpu_list in split_regex.split(subtest["GPU"]):
+> -                        gpus.add(gpu_list)
+> -                        tests_per_list[run_type][subname][gpu_list] = True
+> -
+> -                if "GPU excluded platform" in subtest:
+> -                    for gpu_list in split_regex.split(subtest["GPU excluded platform"]):
+> -                        gpus.add(gpu_list)
+> -                        tests_per_list[run_type][subname][gpu_list] = False
+> -
+> -        # Handle block and permit lists
+> -
+> -        for run_type in tests_per_list.keys():
+> -            for subname, gpu in tests_per_list[run_type].items():
+> -
+> -                # Trivial case: fields not defined
+> -                if not gpus:
+> -                    tests_per_list[run_type][subname]["default"] = True
+> -                    continue
+> -
+> -                if not gpu:
+> -                    tests_per_list[run_type][subname] = {}
+> -                    for gpu in gpus:
+> -                        tests_per_list[run_type][subname][gpu] = True
+> -                    continue
+> -
+> -                default_gpu_value = True
+> -                for gpu, value in tests_per_list[run_type][subname].items():
+> -                    if value:
+> -                        default_gpu_value = False
+> +                    if run_type.startswith(driver):
+> +                        run_type = re.sub(r"^" + driver + r"[\W_]*", "", run_type)
+> +                        drivers = set([driver])
+>                          break
+> -                    if not gpu in tests_per_list[run_type][subname]:
+> -                        for gpu in gpus:
+> -                            tests_per_list[run_type][subname][gpu] = default_gpu_value
+>  
+> -                if "all" in tests_per_list[run_type][subname]:
+> -                    if not tests_per_list[run_type][subname]["all"]:
+> -                        for gpu in gpus:
+> -                            tests_per_list[run_type][subname][gpu] = False
+> +                run_type_set.add(run_type)
+>  
+> -                if default_gpu_value:
+> -                    tests_per_list[run_type][subname]["default"] = True
+> +            for driver in drivers:
+> +                if driver not in tests_per_list:
+> +                    tests_per_list[driver] = {}
+>  
+> -        return (gpus, tests_per_list)
+> +                for run_type in run_type_set:
+> +                    if run_type not in tests_per_list[driver]:
+> +                        tests_per_list[driver][run_type] = {}
+>  
+> -    def write_intelci_testlist(self, directory):
+> -        '''Create testlist directory (if needed) and files'''
+> +                    if subname not in tests_per_list[driver][run_type]:
+> +                        tests_per_list[driver][run_type][subname] = {}
+>  
+> -        if not os.path.exists(directory):
+> -            os.makedirs(directory)
+> +                    if "GPU" in subtest:
+> +                        for gpu in split_regex.split(subtest["GPU"]):
+> +                            gpu_set.add(gpu)
+> +                            tests_per_list[driver][run_type][subname][gpu] = True
+> +
+> +                    if "GPU excluded platform" in subtest:
+> +                        for gpu in split_regex.split(subtest["GPU excluded platform"]):
+> +                            gpu_set.add(gpu)
+> +                            tests_per_list[driver][run_type][subname][gpu] = False
+> +
+> +        # Create a testlist dictionary
+>  
+> -        (gpus, tests_per_list)  = self.gen_intelci_testlist()
+>          testlists = {}
+>  
+> -        for run_type in tests_per_list.keys():
+> -            for subname, gpu_dict in tests_per_list[run_type].items():
+> -                for gpu, value in gpu_dict.items():
+> -                    if gpu == "all":
+> +        for driver, run_types in tests_per_list.items():
+> +            testlists[driver] = {}
+> +            for run_type, subnames in run_types.items():
+> +                for subname, gpus in subnames.items():
+> +                    if not gpu_set:
+> +                        gpu = "default"
+> +
+> +                    if gpu not in testlists[driver]:
+> +                        testlists[driver][gpu] = {}
+> +
+> +                    if run_type not in testlists[driver][gpu]:
+> +                        testlists[driver][gpu][run_type] = set()
+> +
+> +                    # Trivial case: fields not defined
+> +                    if not gpu_set:
+> +                        testlists[driver][gpu][run_type].add(subname)
+> +                        continue
+> +
+> +                    # Globally blocklisted values
+> +                    if "all" in tests_per_list[driver][run_type][subname]:
+>                          continue
+>  
+> -                    gpu = re.sub(r"[\W_]+", "-", gpu).lower()
+> -                    name = re.sub(r"[\W_]+", "-", run_type).lower()
+> -                    name = re.sub(r"_+", "_", name)
+> +                    # Nothing blocked of explicitly added.
+> +                    # It means that test should be on testlists
+> +                    if not gpus:
+> +                        for gpu in gpu_set:
+> +                            if gpu == "all":
+> +                                continue
+> +
+> +                            if gpu not in testlists[driver]:
+> +                                testlists[driver][gpu] = {}
+>  
+> -                    drivers = set(self.drivers)
+> +                            if run_type not in testlists[driver][gpu]:
+> +                                testlists[driver][gpu][run_type] = set()
+> +
+> +                            testlists[driver][gpu][run_type].add(subname)
+> +                        continue
+>  
+> -                    for driver in self.drivers:
+> -                        driver = driver.lower()
+> +                    default_gpu_value = True
+>  
+> -                        if name.startswith(driver):
+> -                            all_drivers = False
+> -                            name = re.sub(r"^" + driver + r"[\W_]*", "", name)
+> -                            drivers = set([driver])
+> +                    # If GPU field is used, default is to block list
+> +                    for gpu, value in gpus.items():
+> +                        if value:
+> +                            default_gpu_value = False
+>                              break
+>  
+> -                    for driver in drivers:
+> -                        if driver not in testlists:
+> -                            testlists[driver] = {}
+> -
+> +                    for gpu, value in gpus.items():
+>                          if gpu not in testlists[driver]:
+>                              testlists[driver][gpu] = {}
+>  
+> -                        if name not in testlists[driver][gpu]:
+> -                            testlists[driver][gpu][name] = set()
+> +                        if run_type not in testlists[driver][gpu]:
+> +                            testlists[driver][gpu][run_type] = set()
+>  
+> -                        testlists[driver][gpu][name].add(subname)
+> +                        value = default_gpu_value
+> +                        if gpu in tests_per_list[driver][run_type][subname]:
+> +                            value = tests_per_list[driver][run_type][subname]
+>  
+> -        for driver in testlists.keys():
+> +                        if value:
+> +                            testlists[driver][gpu][run_type].add(subname)
+> +
+> +                    if default_gpu_value:
+> +                        testlists[driver][gpu][run_type].add(subname)
+> +
+> +        return (testlists, gpu_set)
+> +
+> +    def write_intelci_testlist(self, directory):
+> +        '''Create testlist directory (if needed) and files'''
+> +
+> +        if not os.path.exists(directory):
+> +            os.makedirs(directory)
+> +
+> +        testlists = self.gen_intelci_testlist()
+> +
+> +        for driver, gpus in testlists[0].items():
+>              driver_path = os.path.join(directory, driver)
+>              try:
+>                  os.makedirs(driver_path)
+>              except FileExistsError:
+>                  pass
+>  
+> -            for gpu, names in testlists[driver].items():
+> +            for gpu, names in gpus.items():
+> +                gpu = re.sub(r"[\W_]+", "-", gpu).lower()
+> +
+>                  dname = os.path.join(driver_path, gpu)
+>                  try:
+>                      os.makedirs(dname)
+> @@ -185,7 +196,13 @@ class IgtTestList(TestList):
+>  
+>                  for testlist, subtests in names.items():
+>                      if testlist == "":
+> +                        if not subtests:
+> +                            continue
+> +
+>                          testlist = "other"
+> +                    else:
+> +                        testlist = re.sub(r"[\W_]+", "-", testlist).lower()
+> +                        testlist = re.sub(r"_+", "_", testlist)
+>  
+>                      if not subtests:
+>                          print(f"Warning: empty testlist: {testlist}")
+> -- 
+> 2.42.0
+> 
 
