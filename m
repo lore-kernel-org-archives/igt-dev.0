@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AA9FA10E21A
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Nov 2023 00:35:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 96B2E10E0EC
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Nov 2023 00:35:39 +0000 (UTC)
 From: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
 To: 
-Date: Thu, 30 Nov 2023 04:35:25 -0800
-Message-Id: <49026bb5be7adbd33485c61581824076397a0c38.1701180818.git.akshata.jahagirdar@intel.com>
+Date: Thu, 30 Nov 2023 04:35:28 -0800
+Message-Id: <cb64eef6d9f2680139fa675d1283cfb220b97f85.1701180818.git.akshata.jahagirdar@intel.com>
 In-Reply-To: <cover.1701180818.git.akshata.jahagirdar@intel.com>
 References: <cover.1701180818.git.akshata.jahagirdar@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 1/6] lib: Add blt command properties for
- lunarlake
+Subject: [igt-dev] [PATCH i-g-t v3 4/6] lib/intel_blt: Update caching mode
+ and pat_index
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,74 +25,51 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add blt_cmd_info structs to describe properties of XY_BLOCK_COPY and XY_FAST_COPY blitter commands for XE2 platform. Updated the definitions for Lunarlake.
+The pat-index and caching mode for compression need to change to uc_comp and WC in case
+of compression, else they just take the default value of pat_index and WB.
 
 Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
 ---
- lib/intel_cmds_info.c   | 17 +++++++++++++++++
- lib/intel_cmds_info.h   |  1 +
- lib/intel_device_info.c |  2 +-
- 3 files changed, 19 insertions(+), 1 deletion(-)
+ lib/intel_blt.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/lib/intel_cmds_info.c b/lib/intel_cmds_info.c
-index 2e51ec081..7c8790d8e 100644
---- a/lib/intel_cmds_info.c
-+++ b/lib/intel_cmds_info.c
-@@ -67,6 +67,15 @@ static const struct blt_cmd_info
- 						 BLT_CMD_EXTENDED |
- 						 BLT_CMD_SUPPORTS_COMPRESSION);
+diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+index 938165063..764b27213 100644
+--- a/lib/intel_blt.c
++++ b/lib/intel_blt.c
+@@ -1796,7 +1796,8 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
+ 	uint64_t size = width * height * bpp / 8;
+ 	uint32_t stride = tiling == T_LINEAR ? width * 4 : width;
+ 	uint32_t handle;
+-
++	uint8_t pat_index = intel_get_pat_idx_uc(blt->fd);
++	uint16_t cpu_caching = DRM_XE_GEM_CPU_CACHING_WB;
+ 	igt_assert_f(blt->driver, "Driver isn't set, have you called blt_copy_init()?\n");
  
-+static const struct blt_cmd_info				
-+		xe2_xy_block_copy = BLT_INFO_EXT(XY_BLOCK_COPY,
-+						 BIT(T_LINEAR) |
-+						 BIT(T_XMAJOR) |
-+						 BIT(T_TILE4)  |
-+						 BIT(T_TILE64),
-+						 BLT_CMD_EXTENDED |
-+						 BLT_CMD_SUPPORTS_COMPRESSION);
-+
- static const struct blt_cmd_info
- 		mtl_xy_block_copy = BLT_INFO_EXT(XY_BLOCK_COPY,
- 						 BIT(T_LINEAR) |
-@@ -169,6 +178,14 @@ const struct intel_cmds_info gen12_pvc_cmds_info = {
+ 	obj = calloc(1, sizeof(*obj));
+@@ -1806,17 +1807,21 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
+ 	if (blt->driver == INTEL_DRIVER_XE) {
+ 		uint64_t flags = region;
+ 
++		if(AT_LEAST_GEN(intel_get_drm_devid(xe), 20) && mid->compression){
++			pat_index = xe2_get_pat_idx_uc_comp(blt->fd);
++			cpu_caching = DRM_XE_GEM_CPU_CACHING_WC;
++		}
+ 		if (create_mapping && region != system_memory(blt->fd))
+ 			flags |= XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
+ 
+ 		size = ALIGN(size, xe_get_default_alignment(blt->fd));
+-		handle = xe_bo_create_flags(blt->fd, 0, size, region);
++		handle = xe_bo_create_caching(blt->fd, 0, size, region, cpu_caching);
+ 	} else {
+ 		igt_assert(__gem_create_in_memory_regions(blt->fd, &handle,
+ 							  &size, region) == 0);
  	}
- };
  
-+
-+const struct intel_cmds_info xe2_cmds_info  = {
-+	.blt_cmds = {
-+		[XY_FAST_COPY] = &dg2_xy_fast_copy,
-+		[XY_BLOCK_COPY] = &xe2_xy_block_copy,
-+	}
-+};
-+
- const struct blt_cmd_info *blt_get_cmd_info(const struct intel_cmds_info *cmds_info,
- 					    enum blt_cmd_type cmd)
- {
-diff --git a/lib/intel_cmds_info.h b/lib/intel_cmds_info.h
-index f9e3932d1..0a83b6a44 100644
---- a/lib/intel_cmds_info.h
-+++ b/lib/intel_cmds_info.h
-@@ -55,6 +55,7 @@ extern const struct intel_cmds_info gen12_cmds_info;
- extern const struct intel_cmds_info gen12_dg2_cmds_info;
- extern const struct intel_cmds_info gen12_mtl_cmds_info;
- extern const struct intel_cmds_info gen12_pvc_cmds_info;
-+extern const struct intel_cmds_info xe2_cmds_info;
+-	blt_set_object(obj, handle, size, region, mocs_index, DEFAULT_PAT_INDEX, tiling,
++	blt_set_object(obj, handle, size, region, mocs_index, pat_index, tiling,
+ 		       compression, compression_type);
+ 	blt_set_geom(obj, stride, 0, 0, width, height, 0, 0);
  
- #define for_each_tiling(__tiling) \
- 	for (__tiling = T_LINEAR; __tiling < __BLT_MAX_TILING; __tiling++)
-diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
-index 34817f7b6..a669797c3 100644
---- a/lib/intel_device_info.c
-+++ b/lib/intel_device_info.c
-@@ -511,7 +511,7 @@ static const struct intel_device_info intel_lunarlake_info = {
- 	.has_4tile = true,
- 	.is_lunarlake = true,
- 	.codename = "lunarlake",
--	.cmds_info = &gen12_pvc_cmds_info,
-+	.cmds_info = &xe2_cmds_info,
- };
- 
- static const struct pci_id_match intel_device_match[] = {
 -- 
 2.34.1
