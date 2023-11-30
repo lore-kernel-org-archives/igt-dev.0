@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 13B1410E774
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Nov 2023 18:46:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 037AF10E76F
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Nov 2023 18:46:07 +0000 (UTC)
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 30 Nov 2023 18:45:32 +0000
-Message-Id: <20231130184536.7-18-francois.dugast@intel.com>
+Date: Thu, 30 Nov 2023 18:45:30 +0000
+Message-Id: <20231130184536.7-16-francois.dugast@intel.com>
 In-Reply-To: <20231130184536.7-1-francois.dugast@intel.com>
 References: <20231130184536.7-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v5 17/21] drm-uapi/xe: Fix various struct padding
- for 64b alignment
+Subject: [igt-dev] [PATCH v5 15/21] drm-uapi/xe: Crystal Reference Clock
+ updates
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,86 +23,147 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Align with commit ("drm/xe/uapi: Fix various struct padding for
-64b alignment")
+Align with commit ("drm/xe/uapi: Crystal Reference Clock updates")
 
+Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 ---
- include/drm-uapi/xe_drm.h | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ include/drm-uapi/xe_drm.h | 11 ++++-------
+ lib/xe/xe_spin.c          |  2 +-
+ tests/intel/xe_query.c    | 35 +++++++++++++++++++++++++++--------
+ 3 files changed, 32 insertions(+), 16 deletions(-)
 
 diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index b703dc7ce..3938e553d 100644
+index 7ac8aaf78..0850e5ee5 100644
 --- a/include/drm-uapi/xe_drm.h
 +++ b/include/drm-uapi/xe_drm.h
-@@ -211,8 +211,6 @@ struct drm_xe_mem_region {
- 	 * a unique pair.
+@@ -280,8 +280,8 @@ struct drm_xe_mem_region {
+  * in .data. struct drm_xe_query_engine_cycles is allocated by the user and
+  * .data points to this allocated structure.
+  *
+- * The query returns the engine cycles and the frequency that can
+- * be used to calculate the engine timestamp. In addition the
++ * The query returns the engine cycles, which along with GT's @reference_clock,
++ * can be used to calculate the engine timestamp. In addition the
+  * query returns a set of cpu timestamps that indicate when the command
+  * streamer cycle count was captured.
+  */
+@@ -309,9 +309,6 @@ struct drm_xe_query_engine_cycles {
  	 */
- 	__u16 instance;
--	/** @pad: MBZ */
--	__u32 pad;
+ 	__u64 engine_cycles;
+ 
+-	/** @engine_frequency: Frequency of the engine cycles in Hz. */
+-	__u64 engine_frequency;
+-
  	/**
- 	 * @min_page_size: Min page-size in bytes for this region.
- 	 *
-@@ -381,6 +379,8 @@ struct drm_xe_gt {
- 	__u16 tile_id;
+ 	 * @cpu_timestamp: CPU timestamp in ns. The timestamp is captured before
+ 	 * reading the engine_cycles register using the reference clockid set by the
+@@ -382,8 +379,8 @@ struct drm_xe_gt {
+ 	__u16 type;
  	/** @gt_id: Unique ID of this GT within the PCI Device */
  	__u16 gt_id;
-+	/** @pad: MBZ */
-+	__u16 pad[3];
- 	/** @reference_clock: A clock frequency for timestamp */
- 	__u32 reference_clock;
+-	/** @clock_freq: A clock frequency for timestamp */
+-	__u32 clock_freq;
++	/** @reference_clock: A clock frequency for timestamp */
++	__u32 reference_clock;
  	/**
-@@ -600,7 +600,7 @@ struct drm_xe_gem_create {
- #define DRM_XE_GEM_CPU_CACHING_WC                      2
- 	__u16 cpu_caching;
- 	/** @pad: MBZ */
--	__u16 pad;
-+	__u16 pad[3];
+ 	 * @near_mem_regions: Bit mask of instances from
+ 	 * drm_xe_query_mem_regions that are nearest to the current engines
+diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
+index deba06f73..243e97047 100644
+--- a/lib/xe/xe_spin.c
++++ b/lib/xe/xe_spin.c
+@@ -23,7 +23,7 @@ static uint32_t read_timestamp_frequency(int fd, int gt_id)
+ 	igt_assert(dev && dev->gt_list && dev->gt_list->num_gt);
+ 	igt_assert(gt_id >= 0 && gt_id <= dev->gt_list->num_gt);
  
- 	/** @reserved: Reserved */
- 	__u64 reserved[2];
-@@ -775,6 +775,9 @@ struct drm_xe_vm_bind_op {
- 	 */
- 	__u32 prefetch_mem_region_instance;
+-	return dev->gt_list->gt_list[gt_id].clock_freq;
++	return dev->gt_list->gt_list[gt_id].reference_clock;
+ }
  
-+	/** @pad: MBZ */
-+	__u32 pad2;
+ static uint64_t div64_u64_round_up(const uint64_t x, const uint64_t y)
+diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
+index 207785a38..7afea9945 100644
+--- a/tests/intel/xe_query.c
++++ b/tests/intel/xe_query.c
+@@ -280,7 +280,7 @@ test_query_gt_list(int fd)
+ 	for (i = 0; i < gt_list->num_gt; i++) {
+ 		igt_info("type: %d\n", gt_list->gt_list[i].type);
+ 		igt_info("gt_id: %d\n", gt_list->gt_list[i].gt_id);
+-		igt_info("clock_freq: %u\n", gt_list->gt_list[i].clock_freq);
++		igt_info("reference_clock: %u\n", gt_list->gt_list[i].reference_clock);
+ 		igt_info("near_mem_regions: 0x%016llx\n",
+ 		       gt_list->gt_list[i].near_mem_regions);
+ 		igt_info("far_mem_regions: 0x%016llx\n",
+@@ -496,6 +496,23 @@ query_engine_cycles(int fd, struct drm_xe_query_engine_cycles *resp)
+ 	igt_assert(query.size);
+ }
+ 
++static uint32_t
++__engine_reference_clock(int fd, int gt_id)
++{
++	uint32_t reference_clock = 0;
++	struct xe_device *xe_dev = xe_device_get(fd);
 +
- 	/** @reserved: Reserved */
- 	__u64 reserved[3];
- };
-@@ -793,12 +796,12 @@ struct drm_xe_vm_bind {
- 	 */
- 	__u32 exec_queue_id;
- 
--	/** @num_binds: number of binds in this IOCTL */
--	__u32 num_binds;
--
- 	/** @pad: MBZ */
- 	__u32 pad;
- 
-+	/** @num_binds: number of binds in this IOCTL */
-+	__u32 num_binds;
++	for (int gt = 0; gt < xe_dev->gt_list->num_gt; gt++) {
++		if (gt == gt_id) {
++			reference_clock = xe_dev->gt_list->gt_list[gt].reference_clock;
++			break;
++		}
++	}
++	igt_assert(reference_clock);
 +
- 	union {
- 		/** @bind: used if num_binds == 1 */
- 		struct drm_xe_vm_bind_op bind;
-@@ -810,12 +813,12 @@ struct drm_xe_vm_bind {
- 		__u64 vector_of_binds;
- 	};
- 
-+	/** @pad: MBZ */
-+	__u32 pad2;
++	return reference_clock;
++}
 +
- 	/** @num_syncs: amount of syncs to wait on */
- 	__u32 num_syncs;
+ static void
+ __engine_cycles(int fd, struct drm_xe_engine_class_instance *hwe)
+ {
+@@ -506,7 +523,7 @@ __engine_cycles(int fd, struct drm_xe_engine_class_instance *hwe)
+ 	int i, usable = 0;
+ 	igt_spin_t *spin;
+ 	uint64_t ahnd;
+-	uint32_t vm;
++	uint32_t vm, engine_frequency1, engine_frequency2;
+ 	struct {
+ 		int32_t id;
+ 		const char *name;
+@@ -539,28 +556,30 @@ __engine_cycles(int fd, struct drm_xe_engine_class_instance *hwe)
+ 		ts2.clockid = clock[index].id;
  
--	/** @pad2: MBZ */
--	__u32 pad2;
--
- 	/** @syncs: pointer to struct drm_xe_sync array */
- 	__u64 syncs;
+ 		query_engine_cycles(fd, &ts1);
++		engine_frequency1 = __engine_reference_clock(fd, hwe->gt_id);
+ 		query_engine_cycles(fd, &ts2);
++		engine_frequency2 = __engine_reference_clock(fd, hwe->gt_id);
  
+ 		igt_debug("[1] cpu_ts before %llu, reg read time %llu\n",
+ 			  ts1.cpu_timestamp,
+ 			  ts1.cpu_delta);
+-		igt_debug("[1] engine_ts %llu, freq %llu Hz, width %u\n",
+-			  ts1.engine_cycles, ts1.engine_frequency, ts1.width);
++		igt_debug("[1] engine_ts %llu, freq %u Hz, width %u\n",
++			  ts1.engine_cycles, engine_frequency1, ts1.width);
+ 
+ 		igt_debug("[2] cpu_ts before %llu, reg read time %llu\n",
+ 			  ts2.cpu_timestamp,
+ 			  ts2.cpu_delta);
+-		igt_debug("[2] engine_ts %llu, freq %llu Hz, width %u\n",
+-			  ts2.engine_cycles, ts2.engine_frequency, ts2.width);
++		igt_debug("[2] engine_ts %llu, freq %u Hz, width %u\n",
++			  ts2.engine_cycles, engine_frequency2, ts2.width);
+ 
+ 		delta_cpu = ts2.cpu_timestamp - ts1.cpu_timestamp;
+ 
+ 		if (ts2.engine_cycles >= ts1.engine_cycles)
+ 			delta_cs = (ts2.engine_cycles - ts1.engine_cycles) *
+-				   NSEC_PER_SEC / ts1.engine_frequency;
++				   NSEC_PER_SEC / engine_frequency1;
+ 		else
+ 			delta_cs = (((1 << ts2.width) - ts2.engine_cycles) + ts1.engine_cycles) *
+-				   NSEC_PER_SEC / ts1.engine_frequency;
++				   NSEC_PER_SEC / engine_frequency1;
+ 
+ 		igt_debug("delta_cpu[%lu], delta_cs[%lu]\n",
+ 			  delta_cpu, delta_cs);
 -- 
 2.34.1
