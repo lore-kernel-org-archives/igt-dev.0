@@ -1,19 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1E31E10E701
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Nov 2023 14:17:17 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="------------6wEgDj3Qmu0cICnh0N48ZJ04"
-Message-ID: <40c9c57d-1fde-4bf5-909f-49d8327e97f0@intel.com>
-Date: Thu, 30 Nov 2023 15:10:04 +0100
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20231130131850.14637-1-kamil.konieczny@linux.intel.com>
-Content-Language: pl
-From: "Laguna, Lukasz" <lukasz.laguna@intel.com>
-In-Reply-To: <20231130131850.14637-1-kamil.konieczny@linux.intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 06C9010E32F
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Nov 2023 14:35:01 +0000 (UTC)
+Message-ID: <584c8af1-c4c8-4aa6-87ae-dcac3b7c634c@intel.com>
+Date: Thu, 30 Nov 2023 14:34:56 +0000
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/drmtest: load forced module
+Content-Language: en-GB
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Pallavi Mishra <pallavi.mishra@intel.com>,
+ Francois Dugast <francois.dugast@intel.com>
+References: <20231130111735.435263-1-matthew.auld@intel.com>
+ <20231130135406.upn52625xf5alg24@kamilkon-desk.igk.intel.com>
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <20231130135406.upn52625xf5alg24@kamilkon-desk.igk.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/intel/xe_create: sanity check
+ all MBZ fields
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,275 +28,140 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---------------6wEgDj3Qmu0cICnh0N48ZJ04
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+On 30/11/2023 13:54, Kamil Konieczny wrote:
+> Hi Matthew,
+> On 2023-11-30 at 11:17:34 +0000, Matthew Auld wrote:
+>> Explicitly check that all MBZ fields are rejected by the KMD.
+> 
+> Please add also info about testing extension, which is now unused.
+> Write also what MBZ means, for example:
+> 
+> Explicitly check that all MBZ (Must Be Zero) fields are rejected.
+> 
+> Btw no need to mension Xe driver.
+> 
+>>
+>> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+>> Cc: Pallavi Mishra <pallavi.mishra@intel.com>
+>> Cc: Francois Dugast <francois.dugast@intel.com>
+>> ---
+>>   tests/intel/xe_create.c | 59 +++++++++++++++++++++++++++++++++++++----
+>>   1 file changed, 54 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+>> index bb55a15e1..b0051f5d5 100644
+>> --- a/tests/intel/xe_create.c
+>> +++ b/tests/intel/xe_create.c
+>> @@ -18,6 +18,18 @@
+>>   
+>>   #define PAGE_SIZE 0x1000
+>>   
+>> +static int ___create_bo(int fd, struct drm_xe_gem_create *create)
+> 
+> Could you avoid adding yet enother underscore? I would suggest
+> something simple:
+> 
+> static int __ioctl_create(int fd, struct drm_xe_gem_create *create)
+> 
+> or just __create:
+> 
+> static int __create(int fd, struct drm_xe_gem_create *create)
+> 
+>> +{
+>> +	int ret = 0;
+>> +
+>> +	if (igt_ioctl(fd, DRM_IOCTL_XE_GEM_CREATE, create)) {
+>> +		ret = -errno;
+>> +		errno = 0;
+>> +	}
+>> +
+>> +	return ret;
+>> +}
+>> +
+>>   static int __create_bo(int fd, uint32_t vm, uint64_t size, uint32_t flags,
+>>   		       uint32_t *handlep)
+>>   {
+>> @@ -27,14 +39,11 @@ static int __create_bo(int fd, uint32_t vm, uint64_t size, uint32_t flags,
+>>   		.flags = flags,
+>>   		.cpu_caching = __xe_default_cpu_caching_from_flags(fd, flags),
+>>   	};
+>> -	int ret = 0;
+>> +	int ret;
+>>   
+>>   	igt_assert(handlep);
+>>   
+>> -	if (igt_ioctl(fd, DRM_IOCTL_XE_GEM_CREATE, &create)) {
+>> -		ret = -errno;
+>> -		errno = 0;
+>> -	}
+>> +	ret = ___create_bo(fd, &create);
+> 
+> Please avoid mixing optimizations, here it is simple and may be
+> accepted but with longer patches would be cumbersome.
 
+Thanks for reviewing. So should I split this change or can I leave it?
 
-On 11/30/2023 14:18, Kamil Konieczny wrote:
-> Opening drm card may end up in loading kernel module. Take into
-> account forced driver set by IGT_FORCE_DRIVER and load that one.
-> If forced is in known ones, use function for loading it
-> otherwise load it only when requested was DRIVER_ANY. Special
-> case is VGEM which should alwayes be loaded as itself. It can
-typo: s/alwayes/always
-> end up in not loading any module in case when igt test requested
-> specific one, for example i915 but forced is different.
->
-> Cc: Rob Clark<robdclark@gmail.com>
-> Cc: Rob Clark<robdclark@chromium.org>
-> Cc: Helen Koike<helen.koike@collabora.com>
-> Cc: Janusz Krzysztofik<janusz.krzysztofik@linux.intel.com>
-> Signed-off-by: Kamil Konieczny<kamil.konieczny@linux.intel.com>
-> ---
->   lib/drmtest.c | 65 ++++++++++++++++++++++++++++++++++++---------------
->   1 file changed, 46 insertions(+), 19 deletions(-)
->
-> diff --git a/lib/drmtest.c b/lib/drmtest.c
-> index f0b97e362..b524a9eb3 100644
-> --- a/lib/drmtest.c
-> +++ b/lib/drmtest.c
-> @@ -221,6 +221,26 @@ struct _opened_device_path {
->   	struct igt_list_head link;
->   };
->   
-> +static void modulename_to_chipset(const char *name, unsigned int *chip)
-> +{
-> +	if (!name)
-> +		return;
-> +
-> +	for (int start = 0, end = ARRAY_SIZE(modules) - 1; start < end; ) {
-> +		int mid = start + (end - start) / 2;
-> +		int ret = strcmp(modules[mid].module, name);
-> +
-> +		if (ret < 0) {
-> +			start = mid + 1;
-> +		} else if (ret > 0) {
-> +			end = mid;
-> +		} else {
-> +			*chip = modules[mid].bit;
-> +			break;
-> +		}
-> +	}
-> +}
-> +
->   /*
->    * Logs path of opened device. Device path opened for the first time is logged at info level,
->    * subsequent opens (if any) are logged at debug level.
-> @@ -249,7 +269,7 @@ static int open_device(const char *name, unsigned int chipset)
->   {
->   	const char *forced;
->   	char dev_name[16] = "";
-> -	int chip = DRIVER_ANY;
-> +	unsigned int chip = DRIVER_ANY;
->   	int fd;
->   
->   	fd = open(name, O_RDWR);
-> @@ -266,18 +286,7 @@ static int open_device(const char *name, unsigned int chipset)
->   		goto err;
->   	}
->   
-> -	for (int start = 0, end = ARRAY_SIZE(modules) - 1; start < end; ){
-> -		int mid = start + (end - start) / 2;
-> -		int ret = strcmp(modules[mid].module, dev_name);
-> -		if (ret < 0) {
-> -			start = mid + 1;
-> -		} else if (ret > 0) {
-> -			end = mid;
-> -		} else {
-> -			chip = modules[mid].bit;
-> -			break;
-> -		}
-> -	}
-> +	modulename_to_chipset(dev_name, &chip);
->   
->   	if ((chipset & chip) == chip) {
->   		log_opened_device_path(name);
-> @@ -361,16 +370,34 @@ static int __search_and_open(const char *base, int offset, unsigned int chipset,
->   void drm_load_module(unsigned int chipset)
->   {
->   	static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-> +	const char *forced = forced_driver();
-> +	unsigned int chip = 0;
-> +	bool want_any = chipset == DRIVER_ANY;
-> +
-> +	if (forced) {
-> +		if (chipset == DRIVER_VGEM)
-> +			chip = DRIVER_VGEM; /* ignore forced */
-> +		else
-> +			modulename_to_chipset(forced, &chip);
-> +
-> +		chipset &= chip; /* forced can be in known modules */
-> +	}
->   
->   	pthread_mutex_lock(&mutex);
-> -	for (const struct module *m = modules; m->module; m++) {
-> -		if (chipset & m->bit) {
-> -			if (m->modprobe)
-> -				m->modprobe(m->module);
-> -			else
-> -				modprobe(m->module);
-> +	if (forced && chipset == 0) {
-> +		if (want_any)
-> +			modprobe(forced);
-> +	} else {
-> +		for (const struct module *m = modules; m->module; m++) {
-> +			if (chipset & m->bit) {
-> +				if (m->modprobe)
-> +					m->modprobe(m->module);
-> +				else
-> +					modprobe(m->module);
-> +			}
->   		}
->   	}
-> +
->   	pthread_mutex_unlock(&mutex);
->   	igt_devices_scan(true);
->   }
-With typo fixed,
-Reviewed-by: Lukasz Laguna <lukasz.laguna@intel.com 
-<mailto:lukasz.laguna@intel.com>>
---------------6wEgDj3Qmu0cICnh0N48ZJ04
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-
-<!DOCTYPE html><html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">On 11/30/2023 14:18, Kamil Konieczny
-      wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:20231130131850.14637-1-kamil.konieczny@linux.intel.com">
-      <pre class="moz-quote-pre" wrap="">Opening drm card may end up in loading kernel module. Take into
-account forced driver set by IGT_FORCE_DRIVER and load that one.
-If forced is in known ones, use function for loading it
-otherwise load it only when requested was DRIVER_ANY. Special
-case is VGEM which should alwayes be loaded as itself. It can</pre>
-    </blockquote>
-    typo: s/alwayes/always<br>
-    <blockquote type="cite" cite="mid:20231130131850.14637-1-kamil.konieczny@linux.intel.com">
-      <pre class="moz-quote-pre" wrap="">
-end up in not loading any module in case when igt test requested
-specific one, for example i915 but forced is different.
-
-Cc: Rob Clark <a class="moz-txt-link-rfc2396E" href="mailto:robdclark@gmail.com">&lt;robdclark@gmail.com&gt;</a>
-Cc: Rob Clark <a class="moz-txt-link-rfc2396E" href="mailto:robdclark@chromium.org">&lt;robdclark@chromium.org&gt;</a>
-Cc: Helen Koike <a class="moz-txt-link-rfc2396E" href="mailto:helen.koike@collabora.com">&lt;helen.koike@collabora.com&gt;</a>
-Cc: Janusz Krzysztofik <a class="moz-txt-link-rfc2396E" href="mailto:janusz.krzysztofik@linux.intel.com">&lt;janusz.krzysztofik@linux.intel.com&gt;</a>
-Signed-off-by: Kamil Konieczny <a class="moz-txt-link-rfc2396E" href="mailto:kamil.konieczny@linux.intel.com">&lt;kamil.konieczny@linux.intel.com&gt;</a>
----
- lib/drmtest.c | 65 ++++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 46 insertions(+), 19 deletions(-)
-
-diff --git a/lib/drmtest.c b/lib/drmtest.c
-index f0b97e362..b524a9eb3 100644
---- a/lib/drmtest.c
-+++ b/lib/drmtest.c
-@@ -221,6 +221,26 @@ struct _opened_device_path {
- 	struct igt_list_head link;
- };
- 
-+static void modulename_to_chipset(const char *name, unsigned int *chip)
-+{
-+	if (!name)
-+		return;
-+
-+	for (int start = 0, end = ARRAY_SIZE(modules) - 1; start &lt; end; ) {
-+		int mid = start + (end - start) / 2;
-+		int ret = strcmp(modules[mid].module, name);
-+
-+		if (ret &lt; 0) {
-+			start = mid + 1;
-+		} else if (ret &gt; 0) {
-+			end = mid;
-+		} else {
-+			*chip = modules[mid].bit;
-+			break;
-+		}
-+	}
-+}
-+
- /*
-  * Logs path of opened device. Device path opened for the first time is logged at info level,
-  * subsequent opens (if any) are logged at debug level.
-@@ -249,7 +269,7 @@ static int open_device(const char *name, unsigned int chipset)
- {
- 	const char *forced;
- 	char dev_name[16] = &quot;&quot;;
--	int chip = DRIVER_ANY;
-+	unsigned int chip = DRIVER_ANY;
- 	int fd;
- 
- 	fd = open(name, O_RDWR);
-@@ -266,18 +286,7 @@ static int open_device(const char *name, unsigned int chipset)
- 		goto err;
- 	}
- 
--	for (int start = 0, end = ARRAY_SIZE(modules) - 1; start &lt; end; ){
--		int mid = start + (end - start) / 2;
--		int ret = strcmp(modules[mid].module, dev_name);
--		if (ret &lt; 0) {
--			start = mid + 1;
--		} else if (ret &gt; 0) {
--			end = mid;
--		} else {
--			chip = modules[mid].bit;
--			break;
--		}
--	}
-+	modulename_to_chipset(dev_name, &amp;chip);
- 
- 	if ((chipset &amp; chip) == chip) {
- 		log_opened_device_path(name);
-@@ -361,16 +370,34 @@ static int __search_and_open(const char *base, int offset, unsigned int chipset,
- void drm_load_module(unsigned int chipset)
- {
- 	static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-+	const char *forced = forced_driver();
-+	unsigned int chip = 0;
-+	bool want_any = chipset == DRIVER_ANY;
-+
-+	if (forced) {
-+		if (chipset == DRIVER_VGEM)
-+			chip = DRIVER_VGEM; /* ignore forced */
-+		else
-+			modulename_to_chipset(forced, &amp;chip);
-+
-+		chipset &amp;= chip; /* forced can be in known modules */
-+	}
- 
- 	pthread_mutex_lock(&amp;mutex);
--	for (const struct module *m = modules; m-&gt;module; m++) {
--		if (chipset &amp; m-&gt;bit) {
--			if (m-&gt;modprobe)
--				m-&gt;modprobe(m-&gt;module);
--			else
--				modprobe(m-&gt;module);
-+	if (forced &amp;&amp; chipset == 0) {
-+		if (want_any)
-+			modprobe(forced);
-+	} else {
-+		for (const struct module *m = modules; m-&gt;module; m++) {
-+			if (chipset &amp; m-&gt;bit) {
-+				if (m-&gt;modprobe)
-+					m-&gt;modprobe(m-&gt;module);
-+				else
-+					modprobe(m-&gt;module);
-+			}
- 		}
- 	}
-+
- 	pthread_mutex_unlock(&amp;mutex);
- 	igt_devices_scan(true);
- }</pre>
-    </blockquote>
-    With typo fixed,<br>
-    <span lang="en-US">Reviewed-by: </span><span lang="pl">L</span><span lang="en-US">ukasz </span><span lang="pl">L</span><span lang="en-US">aguna &lt;</span><a href="mailto:lukasz.laguna@intel.com"><span lang="en-US">lukasz.laguna@intel.com</span></a><span lang="en-US">&gt;</span><span style="white-space: pre-wrap">
-</span>
-  </body>
-</html>
-
---------------6wEgDj3Qmu0cICnh0N48ZJ04--
+> 
+> Regards,
+> Kamil
+> 
+>>   	*handlep = create.handle;
+>>   
+>>   	return ret;
+>> @@ -88,6 +97,43 @@ static void create_invalid_size(int fd)
+>>   	xe_vm_destroy(fd, vm);
+>>   }
+>>   
+>> +/**
+>> + * SUBTEST: create-invalid-mbz
+>> + * Functionality: ioctl
+>> + * Test category: negative test
+>> + * Description: Verifies xe bo create returns expected error code on all MBZ fields.
+>> + */
+>> +static void create_invalid_mbz(int fd)
+>> +{
+>> +	struct drm_xe_gem_create create = {
+>> +		.size = PAGE_SIZE,
+>> +		.flags = system_memory(fd),
+>> +		.cpu_caching = DRM_XE_GEM_CPU_CACHING_WB,
+>> +	};
+>> +	int i;
+>> +
+>> +	/* Make sure the baseline passes */
+>> +	igt_assert_eq(___create_bo(fd, &create), 0);
+>> +	gem_close(fd, create.handle);
+>> +	create.handle = 0;
+>> +
+>> +	/* No supported extensions yet */
+>> +	create.extensions = -1;
+>> +	igt_assert_eq(___create_bo(fd, &create), -EINVAL);
+>> +	create.extensions = 0;
+>> +
+>> +	/* Make sure KMD rejects non-zero padding/reserved fields */
+>> +	create.pad = -1;
+>> +	igt_assert_eq(___create_bo(fd, &create), -EINVAL);
+>> +	create.pad = 0;
+>> +
+>> +	for (i = 0; i < ARRAY_SIZE(create.reserved); i++) {
+>> +		create.reserved[i] = -1;
+>> +		igt_assert_eq(___create_bo(fd, &create), -EINVAL);
+>> +		create.reserved[i] = 0;
+>> +	}
+>> +}
+>> +
+>>   enum exec_queue_destroy {
+>>   	NOLEAK,
+>>   	LEAK
+>> @@ -222,6 +268,9 @@ igt_main
+>>   	igt_fixture
+>>   		xe = drm_open_driver(DRIVER_XE);
+>>   
+>> +	igt_subtest("create-invalid-mbz")
+>> +		create_invalid_mbz(xe);
+>> +
+>>   	igt_subtest("create-invalid-size") {
+>>   		create_invalid_size(xe);
+>>   	}
+>> -- 
+>> 2.43.0
+>>
