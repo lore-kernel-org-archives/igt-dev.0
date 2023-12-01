@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============1569591664555440101=="
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B064D10E859
+ for <igt-dev@lists.freedesktop.org>; Fri,  1 Dec 2023 12:39:54 +0000 (UTC)
+From: Jeevan B <jeevan.b@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri,  1 Dec 2023 18:17:34 +0530
+Message-Id: <20231201124737.2172099-2-jeevan.b@intel.com>
+In-Reply-To: <20231201124737.2172099-1-jeevan.b@intel.com>
+References: <20231201124737.2172099-1-jeevan.b@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
-Date: Fri, 01 Dec 2023 12:08:18 -0000
-Message-ID: <170143249826.19688.5756820929711886764@emeril.freedesktop.org>
-References: <20231201100725.8646-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20231201100725.8646-1-mohammed.thasleem@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIENJLnhlQkFUOiBzdWNjZXNzIGZvciBMTkxfREM5?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/4] tests/intel/kms_psr: fix documentation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,179 +18,330 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1569591664555440101==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Swati Sharma <swati2.sharma@intel.com>
 
-== Series Details ==
+Optimize documentation and update mega features accordingly.
 
-Series: LNL_DC9
-URL   : https://patchwork.freedesktop.org/series/127180/
-State : success
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+Reviewed-by: Jeevan B <jeevan.b@intel.com>
+---
+ tests/intel/kms_psr.c | 215 +++++++++++++++---------------------------
+ 1 file changed, 74 insertions(+), 141 deletions(-)
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7613_BAT -> XEIGTPW_10315_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10315_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_cursor_legacy@basic-flip-before-cursor-atomic:
-    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([i915#2346])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7613/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10315/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank:
-    - bat-adlp-7:         [PASS][3] -> [FAIL][4] ([Intel XE#480]) +1 other test fail
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7613/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10315/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@b-dp3:
-    - bat-dg2-oem2:       [FAIL][5] ([Intel XE#480]) -> [PASS][6] +1 other test pass
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7613/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@b-dp3.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10315/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@b-dp3.html
-
-  * {igt@xe_create@create-execqueues-leak}:
-    - bat-atsm-2:         [FAIL][7] ([Intel XE#524]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7613/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10315/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
-  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
-
-
-Build changes
--------------
-
-  * IGT: IGT_7613 -> IGTPW_10315
-  * Linux: xe-542-84f2c2adec155170779f65ff63b4e80a51d22448 -> xe-544-a8b405ffc0326c79abf737389d99c290648f381d
-
-  IGTPW_10315: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10315/index.html
-  IGT_7613: 378017d8fa63defde11c0b4bc72025c64b70607d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-542-84f2c2adec155170779f65ff63b4e80a51d22448: 84f2c2adec155170779f65ff63b4e80a51d22448
-  xe-544-a8b405ffc0326c79abf737389d99c290648f381d: a8b405ffc0326c79abf737389d99c290648f381d
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10315/index.html
-
---===============1569591664555440101==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>LNL_DC9</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127180/">https://patchwork.freedesktop.org/series/127180/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10315/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10315/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7613_BAT -&gt; XEIGTPW_10315_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10315_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_cursor_legacy@basic-flip-before-cursor-atomic:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7613/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10315/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7613/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10315/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@b-dp3:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7613/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@b-dp3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10315/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@b-dp3.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>{igt@xe_create@create-execqueues-leak}:</p>
-<ul>
-<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7613/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10315/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7613 -&gt; IGTPW_10315</li>
-<li>Linux: xe-542-84f2c2adec155170779f65ff63b4e80a51d22448 -&gt; xe-544-a8b405ffc0326c79abf737389d99c290648f381d</li>
-</ul>
-<p>IGTPW_10315: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10315/index.html<br />
-  IGT_7613: 378017d8fa63defde11c0b4bc72025c64b70607d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-542-84f2c2adec155170779f65ff63b4e80a51d22448: 84f2c2adec155170779f65ff63b4e80a51d22448<br />
-  xe-544-a8b405ffc0326c79abf737389d99c290648f381d: a8b405ffc0326c79abf737389d99c290648f381d</p>
-
-</body>
-</html>
-
---===============1569591664555440101==--
+diff --git a/tests/intel/kms_psr.c b/tests/intel/kms_psr.c
+index 05bdd7b98..31d6f779c 100644
+--- a/tests/intel/kms_psr.c
++++ b/tests/intel/kms_psr.c
+@@ -43,143 +43,93 @@
+ #include "xe/xe_query.h"
+ 
+ /**
+- * SUBTEST: psr_basic
+- * Description: Basic check for psr if it is detecting changes made in planes
+- * Functionality: psr1
++ * SUBTEST: %s_basic
++ * Description: Basic check for %arg[1] if it is detecting changes made in planes
++ * Functionality: %arg[1]
+  *
+- * SUBTEST: psr_%s_%s
+- * Description: Check if psr is detecting memory mapping, rendering and plane
+- *              operations performed on %arg[1]
+- * Driver requirement: i915
+- * Functionality: kms_core, plane, psr1
+- *
+- * arg[1]:
+- *
+- * @cursor:             Cursor plane
+- * @primary:            Primary plane
+- * @sprite:             Sprite plane
+- *
+- * arg[2]:
++ * SUBTEST: %s_dpms
++ * Description: Check if %arg[1] is detecting changes when rendering operation
++ *              is performed with dpms enabled or disabled
++ * Functionality: %arg[1], dpms
+  *
+- * @mmap_cpu:           MMAP CPU
+- * @mmap_gtt:           MMAP GTT
+- */
+-
+-/**
+- * SUBTEST: psr_sprite_plane_move
+- * Description: Check if psr is detecting memory mapping, rendering and plane
+- *              operations performed on sprite planes
+- * Functionality: plane, psr1
++ * SUBTEST: %s_no_drrs
++ * Description: Check if %arg[1] is detecting changes when drrs is disabled
++ * Functionality: %arg[1], drrs
+  *
+- * SUBTEST: psr_%s_%s
+- * Description: Check if psr is detecting memory mapping, rendering and plane
+- *              operations performed on %arg[1] planes
+- * Functionality: kms_core, plane, psr1
++ * SUBTEST: %s_suspend
++ * Description: Check if %arg[1] is detecting changes when plane operation is
++ *              performed with suspend resume cycles
++ * Functionality: %arg[1], suspend
+  *
+  * arg[1]:
+  *
+- * @cursor:             Cursor plane
+- * @sprite:             Sprite plane
+- *
+- * arg[2]:
+- *
+- * @blt:                Blitter
+- * @render:             Render
+- * @plane_onoff:        Plane On off
++ * @psr:             psr1
++ * @psr2:            psr2
+  */
+ 
+ /**
+- * SUBTEST: psr_primary_%s
+- * Description: Check if psr is detecting memory mapping, rendering and plane
+- *              operations performed on %arg[1] planes
+- * Functionality: kms_core, psr1
++ * SUBTEST: %s_%s_%s
++ * Description: Check if %arg[1] is detecting memory mapping %arg[3] operations
++ * 		performed on %arg[2] planes
++ * Driver requirement: i915
++ * Functionality: %arg[1], plane
+  *
+  * arg[1]:
+  *
+- * @blt:                Blitter
+- * @render:             Render
+- */
+-
+-/**
+- * SUBTEST: psr_dpms
+- * Description: Check if psr is detecting changes when rendering operation is
+- *              performed  with dpms enabled or disabled
+- * Functionality: dpms, psr1
+- *
+- * SUBTEST: psr_no_drrs
+- * Description: Check if psr is detecting changes when drrs is disabled
+- * Functionality: drrs, psr1
+- *
+- * SUBTEST: psr_suspend
+- * Description: Check if psr is detecting changes when plane operation
+- *              is performed with suspend resume cycles
+- * Functionality: psr1, suspend
+- *
+- * SUBTEST: psr2_dpms
+- * Description: Check if psr is detecting changes when rendering operation
+- *              is performed  with dpms enabled or disabled
+- * Functionality: dpms, psr2
+- *
+- * SUBTEST: psr2_no_drrs
+- * Description: Check if psr is detecting changes when drrs is disabled
+- * Functionality: drrs, psr2
+- *
+- * SUBTEST: psr2_suspend
+- * Description: Check if psr is detecting changes when plane operation is
+- *              performed with suspend resume cycles
+- * Functionality: psr2, suspend
+- *
+- * SUBTEST: psr2_basic
+- * Description: Basic check for psr if it is detecting changes made in planes
+- * Functionality: psr2
++ * @psr:		psr1
++ * @psr2:		psr2
+  *
+- * SUBTEST: psr2_%s_%s
+- * Description: Check if psr2 is detecting memory mapping, rendering and plane
+- *              operations performed on %arg[1] planes
+- * Driver requirement: i915
+- * Functionality: kms_core, plane, psr2
+- *
+- * arg[1]:
++ * arg[2]:
+  *
+  * @cursor:             Cursor plane
+  * @primary:            Primary plane
+  * @sprite:             Sprite plane
+  *
+- * arg[2]:
++ * arg[3]:
+  *
+  * @mmap_cpu:           MMAP CPU
+  * @mmap_gtt:           MMAP GTT
+  */
+ 
+ /**
+- * SUBTEST: psr2_primary_page_flip
+- * Description: Check if psr is detecting memory mapping, rendering and plane
+- *              operations performed on primary planes
+- * Functionality: plane, psr2
++ * SUBTEST: %s_primary_page_flip
++ * Description: Check if %arg[1] is detecting page-flipping operation
++ * 		performed on primary plane
++ * Functionality: %arg[1], plane
+  *
+- * SUBTEST: psr2_primary_%s
+- * Description: Check if psr is detecting memory mapping, rendering and plane
+- *              operations performed on primary planes
+- * Functionality: kms_core, plane, psr2
++ * SUBTEST: %s_primary_%s
++ * Description: Check if %arg[1] is detecting rendering operations %arg[2]
++ * 		when performed on primary plane
++ * Functionality: %arg[1], plane
+  *
+  * arg[1]:
+  *
++ * @psr:		psr1
++ * @psr2:		psr2
++ *
++ * arg[2]:
++ *
+  * @blt:                Blitter
+  * @render:             Render
+  */
+ 
+ /**
+- * SUBTEST: psr2_%s_%s
+- * Description: Check if psr is detecting memory mapping, rendering and plane
+- *              operations performed on %arg[1] planes
+- * Functionality: kms_core, plane, psr2
++ * SUBTEST: %s_%s_%s
++ * Description: Check if %arg[1] is detecting rendering and plane
++ *              operations %arg[3] performed on %arg[2] planes
++ * Functionality: %arg[1], plane
+  *
+  * arg[1]:
+  *
++ * @psr:		psr1
++ * @psr2:		psr2
++ *
++ * arg[2]:
++ *
+  * @cursor:             Cursor plane
+  * @sprite:             Sprite plane
+  *
+- * arg[2]:
++ * arg[3]:
+  *
+  * @blt:                Blitter
+  * @render:             Render
+@@ -188,36 +138,36 @@
+  */
+ 
+ /**
++ * SUBTEST: pr_basic
++ * Description: Basic check for pr if it is detecting changes made in planes
++ * Functionality: pr
++ * Mega feature: DP2.0
++ *
+  * SUBTEST: pr_dpms
+  * Description: Check if pr is detecting changes when rendering operation
+  *              is performed with dpms enabled or disabled
+- * Functionality: dpms, pr
+- * Mega feature: Panel Replay
++ * Functionality: pr, dpms
++ * Mega feature: DP2.0
+  *
+  * SUBTEST: pr_no_drrs
+  * Description: Check if pr is detecting changes when drrs is disabled
+- * Functionality: drrs, pr
+- * Mega feature: Panel Replay
++ * Functionality: pr, drrs
++ * Mega feature: DP2.0
+  *
+  * SUBTEST: pr_suspend
+  * Description: Check if pr is detecting changes when plane operation is
+  *              performed with suspend resume cycles
+  * Functionality: pr, suspend
+- * Mega feature: Panel Replay
+- *
+- * SUBTEST: pr_basic
+- * Description: Basic check for pr if it is detecting changes made in planes
+- * Functionality: pr
+- * Mega feature: Panel Replay
++ * Mega feature: DP2.0
+  */
+ 
+ /**
+  * SUBTEST: pr_%s_%s
+- * Description: Check if pr is detecting memory mapping, rendering and plane
+- *              operations performed on %arg[1] planes
++ * Description: Check if pr is detecting memory mapping %arg[2] operations
++ * 		performed on %arg[1] planes
+  * Driver requirement: i915
+- * Functionality: kms_core, plane, pr
+- * Mega feature: Panel Replay
++ * Functionality: pr, plane
++ * Mega feature: DP2.0
+  *
+  * arg[1]:
+  *
+@@ -233,16 +183,16 @@
+ 
+ /**
+  * SUBTEST: pr_primary_page_flip
+- * Description: Check if pr is detecting memory mapping, rendering and plane
+- *              operations performed on primary planes
+- * Functionality: plane, pr
+- * Mega feature: Panel Replay
++ * Description: Check if pr is detecting page-flipping operation
++ * 		performed on primary plane
++ * Functionality: pr, plane
++ * Mega feature: DP2.0
+  *
+  * SUBTEST: pr_primary_%s
+- * Description: Check if pr is detecting memory mapping, rendering and plane
+- *              operations performed on primary planes
+- * Functionality: kms_core, plane, pr
+- * Mega feature: Panel Replay
++ * Description: Check if pr is detecting rendering operations %arg[1]
++ * 		when performed on primary plane
++ * Functionality: pr, plane
++ * Mega feature: DP2.0
+  *
+  * arg[1]:
+  *
+@@ -252,10 +202,10 @@
+ 
+ /**
+  * SUBTEST: pr_%s_%s
+- * Description: Check if pr is detecting memory mapping, rendering and plane
+- *              operations performed on %arg[1] planes
+- * Functionality: kms_core, plane, pr
+- * Mega feature: Panel Replay
++ * Description: Check if pr is detecting rendering and plane
++ *              operations %arg[2] performed on %arg[1] planes
++ * Functionality: pr, plane
++ * Mega feature: DP2.0
+  *
+  * arg[1]:
+  *
+@@ -270,23 +220,6 @@
+  * @plane_move:         Move plane position
+  */
+ 
+-/**
+- * SUBTEST: psr_cursor_plane_move
+- * Description: Check if psr is detecting the plane operations performed on
+- *		cursor planes
+- * Functionality: psr1
+- *
+- * SUBTEST: psr_primary_page_flip
+- * Description: Check if psr is detecting page-flipping operations performed
+- *		on primary planes
+- * Functionality: psr1
+- *
+- * SUBTEST: psr_sprite_plane_onoff
+- * Description: Check if psr is detecting the plane operations performed on
+- *		sprite planes
+- * Functionality: psr1
+- */
+-
+ enum operations {
+ 	PAGE_FLIP,
+ 	MMAP_GTT,
+-- 
+2.25.1
