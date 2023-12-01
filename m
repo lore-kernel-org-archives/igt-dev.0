@@ -1,21 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 07EED10E7DD
- for <igt-dev@lists.freedesktop.org>; Fri,  1 Dec 2023 05:06:36 +0000 (UTC)
-From: "B, Jeevan" <jeevan.b@intel.com>
-To: "B, Jeevan" <jeevan.b@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Fri, 1 Dec 2023 05:06:33 +0000
-Message-ID: <DM4PR11MB631206E90CF9F7731007FEBF9081A@DM4PR11MB6312.namprd11.prod.outlook.com>
-References: <20231130132050.2132447-1-jeevan.b@intel.com>
- <20231130132050.2132447-2-jeevan.b@intel.com>
-In-Reply-To: <20231130132050.2132447-2-jeevan.b@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/alternative;
+ boundary="===============8461828051279603830=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/4] tests/intel/kms_psr: fix
- documentation
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Date: Fri, 01 Dec 2023 05:09:24 -0000
+Message-ID: <170140736463.19689.12498441208264618439@emeril.freedesktop.org>
+References: <20231201040119.2954812-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20231201040119.2954812-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fvrr=3A_Add_new_subtest_to_switch_RR_without_modeset_=28re?=
+ =?utf-8?b?djQp?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,371 +18,496 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LGTM
+--===============8461828051279603830==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Reviewed-by: Jeevan B <jeevan.b@intel.com>
+== Series Details ==
 
-> -----Original Message-----
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Jeevan=
- B
-> Sent: Thursday, November 30, 2023 6:51 PM
-> To: igt-dev@lists.freedesktop.org
-> Subject: [igt-dev] [PATCH i-g-t 1/4] tests/intel/kms_psr: fix documentati=
-on
->=20
-> From: Swati Sharma <swati2.sharma@intel.com>
->=20
-> Optimize documentation and update mega features accordingly.
->=20
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> ---
->  tests/intel/kms_psr.c | 215 +++++++++++++++---------------------------
->  1 file changed, 74 insertions(+), 141 deletions(-)
->=20
-> diff --git a/tests/intel/kms_psr.c b/tests/intel/kms_psr.c index
-> 05bdd7b98..31d6f779c 100644
-> --- a/tests/intel/kms_psr.c
-> +++ b/tests/intel/kms_psr.c
-> @@ -43,143 +43,93 @@
->  #include "xe/xe_query.h"
->=20
->  /**
-> - * SUBTEST: psr_basic
-> - * Description: Basic check for psr if it is detecting changes made in p=
-lanes
-> - * Functionality: psr1
-> + * SUBTEST: %s_basic
-> + * Description: Basic check for %arg[1] if it is detecting changes made
-> + in planes
-> + * Functionality: %arg[1]
->   *
-> - * SUBTEST: psr_%s_%s
-> - * Description: Check if psr is detecting memory mapping, rendering and =
-plane
-> - *              operations performed on %arg[1]
-> - * Driver requirement: i915
-> - * Functionality: kms_core, plane, psr1
-> - *
-> - * arg[1]:
-> - *
-> - * @cursor:             Cursor plane
-> - * @primary:            Primary plane
-> - * @sprite:             Sprite plane
-> - *
-> - * arg[2]:
-> + * SUBTEST: %s_dpms
-> + * Description: Check if %arg[1] is detecting changes when rendering ope=
-ration
-> + *              is performed with dpms enabled or disabled
-> + * Functionality: %arg[1], dpms
->   *
-> - * @mmap_cpu:           MMAP CPU
-> - * @mmap_gtt:           MMAP GTT
-> - */
-> -
-> -/**
-> - * SUBTEST: psr_sprite_plane_move
-> - * Description: Check if psr is detecting memory mapping, rendering and =
-plane
-> - *              operations performed on sprite planes
-> - * Functionality: plane, psr1
-> + * SUBTEST: %s_no_drrs
-> + * Description: Check if %arg[1] is detecting changes when drrs is
-> + disabled
-> + * Functionality: %arg[1], drrs
->   *
-> - * SUBTEST: psr_%s_%s
-> - * Description: Check if psr is detecting memory mapping, rendering and =
-plane
-> - *              operations performed on %arg[1] planes
-> - * Functionality: kms_core, plane, psr1
-> + * SUBTEST: %s_suspend
-> + * Description: Check if %arg[1] is detecting changes when plane operati=
-on is
-> + *              performed with suspend resume cycles
-> + * Functionality: %arg[1], suspend
->   *
->   * arg[1]:
->   *
-> - * @cursor:             Cursor plane
-> - * @sprite:             Sprite plane
-> - *
-> - * arg[2]:
-> - *
-> - * @blt:                Blitter
-> - * @render:             Render
-> - * @plane_onoff:        Plane On off
-> + * @psr:             psr1
-> + * @psr2:            psr2
->   */
->=20
->  /**
-> - * SUBTEST: psr_primary_%s
-> - * Description: Check if psr is detecting memory mapping, rendering and =
-plane
-> - *              operations performed on %arg[1] planes
-> - * Functionality: kms_core, psr1
-> + * SUBTEST: %s_%s_%s
-> + * Description: Check if %arg[1] is detecting memory mapping %arg[3]
-> operations
-> + * 		performed on %arg[2] planes
-> + * Driver requirement: i915
-> + * Functionality: %arg[1], plane
->   *
->   * arg[1]:
->   *
-> - * @blt:                Blitter
-> - * @render:             Render
-> - */
-> -
-> -/**
-> - * SUBTEST: psr_dpms
-> - * Description: Check if psr is detecting changes when rendering operati=
-on is
-> - *              performed  with dpms enabled or disabled
-> - * Functionality: dpms, psr1
-> - *
-> - * SUBTEST: psr_no_drrs
-> - * Description: Check if psr is detecting changes when drrs is disabled
-> - * Functionality: drrs, psr1
-> - *
-> - * SUBTEST: psr_suspend
-> - * Description: Check if psr is detecting changes when plane operation
-> - *              is performed with suspend resume cycles
-> - * Functionality: psr1, suspend
-> - *
-> - * SUBTEST: psr2_dpms
-> - * Description: Check if psr is detecting changes when rendering operati=
-on
-> - *              is performed  with dpms enabled or disabled
-> - * Functionality: dpms, psr2
-> - *
-> - * SUBTEST: psr2_no_drrs
-> - * Description: Check if psr is detecting changes when drrs is disabled
-> - * Functionality: drrs, psr2
-> - *
-> - * SUBTEST: psr2_suspend
-> - * Description: Check if psr is detecting changes when plane operation i=
-s
-> - *              performed with suspend resume cycles
-> - * Functionality: psr2, suspend
-> - *
-> - * SUBTEST: psr2_basic
-> - * Description: Basic check for psr if it is detecting changes made in p=
-lanes
-> - * Functionality: psr2
-> + * @psr:		psr1
-> + * @psr2:		psr2
->   *
-> - * SUBTEST: psr2_%s_%s
-> - * Description: Check if psr2 is detecting memory mapping, rendering and=
- plane
-> - *              operations performed on %arg[1] planes
-> - * Driver requirement: i915
-> - * Functionality: kms_core, plane, psr2
-> - *
-> - * arg[1]:
-> + * arg[2]:
->   *
->   * @cursor:             Cursor plane
->   * @primary:            Primary plane
->   * @sprite:             Sprite plane
->   *
-> - * arg[2]:
-> + * arg[3]:
->   *
->   * @mmap_cpu:           MMAP CPU
->   * @mmap_gtt:           MMAP GTT
->   */
->=20
->  /**
-> - * SUBTEST: psr2_primary_page_flip
-> - * Description: Check if psr is detecting memory mapping, rendering and =
-plane
-> - *              operations performed on primary planes
-> - * Functionality: plane, psr2
-> + * SUBTEST: %s_primary_page_flip
-> + * Description: Check if %arg[1] is detecting page-flipping operation
-> + * 		performed on primary plane
-> + * Functionality: %arg[1], plane
->   *
-> - * SUBTEST: psr2_primary_%s
-> - * Description: Check if psr is detecting memory mapping, rendering and =
-plane
-> - *              operations performed on primary planes
-> - * Functionality: kms_core, plane, psr2
-> + * SUBTEST: %s_primary_%s
-> + * Description: Check if %arg[1] is detecting rendering operations %arg[=
-2]
-> + * 		when performed on primary plane
-> + * Functionality: %arg[1], plane
->   *
->   * arg[1]:
->   *
-> + * @psr:		psr1
-> + * @psr2:		psr2
-> + *
-> + * arg[2]:
-> + *
->   * @blt:                Blitter
->   * @render:             Render
->   */
->=20
->  /**
-> - * SUBTEST: psr2_%s_%s
-> - * Description: Check if psr is detecting memory mapping, rendering and =
-plane
-> - *              operations performed on %arg[1] planes
-> - * Functionality: kms_core, plane, psr2
-> + * SUBTEST: %s_%s_%s
-> + * Description: Check if %arg[1] is detecting rendering and plane
-> + *              operations %arg[3] performed on %arg[2] planes
-> + * Functionality: %arg[1], plane
->   *
->   * arg[1]:
->   *
-> + * @psr:		psr1
-> + * @psr2:		psr2
-> + *
-> + * arg[2]:
-> + *
->   * @cursor:             Cursor plane
->   * @sprite:             Sprite plane
->   *
-> - * arg[2]:
-> + * arg[3]:
->   *
->   * @blt:                Blitter
->   * @render:             Render
-> @@ -188,36 +138,36 @@
->   */
->=20
->  /**
-> + * SUBTEST: pr_basic
-> + * Description: Basic check for pr if it is detecting changes made in
-> + planes
-> + * Functionality: pr
-> + * Mega feature: DP2.0
-> + *
->   * SUBTEST: pr_dpms
->   * Description: Check if pr is detecting changes when rendering operatio=
-n
->   *              is performed with dpms enabled or disabled
-> - * Functionality: dpms, pr
-> - * Mega feature: Panel Replay
-> + * Functionality: pr, dpms
-> + * Mega feature: DP2.0
->   *
->   * SUBTEST: pr_no_drrs
->   * Description: Check if pr is detecting changes when drrs is disabled
-> - * Functionality: drrs, pr
-> - * Mega feature: Panel Replay
-> + * Functionality: pr, drrs
-> + * Mega feature: DP2.0
->   *
->   * SUBTEST: pr_suspend
->   * Description: Check if pr is detecting changes when plane operation is
->   *              performed with suspend resume cycles
->   * Functionality: pr, suspend
-> - * Mega feature: Panel Replay
-> - *
-> - * SUBTEST: pr_basic
-> - * Description: Basic check for pr if it is detecting changes made in pl=
-anes
-> - * Functionality: pr
-> - * Mega feature: Panel Replay
-> + * Mega feature: DP2.0
->   */
->=20
->  /**
->   * SUBTEST: pr_%s_%s
-> - * Description: Check if pr is detecting memory mapping, rendering and p=
-lane
-> - *              operations performed on %arg[1] planes
-> + * Description: Check if pr is detecting memory mapping %arg[2] operatio=
-ns
-> + * 		performed on %arg[1] planes
->   * Driver requirement: i915
-> - * Functionality: kms_core, plane, pr
-> - * Mega feature: Panel Replay
-> + * Functionality: pr, plane
-> + * Mega feature: DP2.0
->   *
->   * arg[1]:
->   *
-> @@ -233,16 +183,16 @@
->=20
->  /**
->   * SUBTEST: pr_primary_page_flip
-> - * Description: Check if pr is detecting memory mapping, rendering and p=
-lane
-> - *              operations performed on primary planes
-> - * Functionality: plane, pr
-> - * Mega feature: Panel Replay
-> + * Description: Check if pr is detecting page-flipping operation
-> + * 		performed on primary plane
-> + * Functionality: pr, plane
-> + * Mega feature: DP2.0
->   *
->   * SUBTEST: pr_primary_%s
-> - * Description: Check if pr is detecting memory mapping, rendering and p=
-lane
-> - *              operations performed on primary planes
-> - * Functionality: kms_core, plane, pr
-> - * Mega feature: Panel Replay
-> + * Description: Check if pr is detecting rendering operations %arg[1]
-> + * 		when performed on primary plane
-> + * Functionality: pr, plane
-> + * Mega feature: DP2.0
->   *
->   * arg[1]:
->   *
-> @@ -252,10 +202,10 @@
->=20
->  /**
->   * SUBTEST: pr_%s_%s
-> - * Description: Check if pr is detecting memory mapping, rendering and p=
-lane
-> - *              operations performed on %arg[1] planes
-> - * Functionality: kms_core, plane, pr
-> - * Mega feature: Panel Replay
-> + * Description: Check if pr is detecting rendering and plane
-> + *              operations %arg[2] performed on %arg[1] planes
-> + * Functionality: pr, plane
-> + * Mega feature: DP2.0
->   *
->   * arg[1]:
->   *
-> @@ -270,23 +220,6 @@
->   * @plane_move:         Move plane position
->   */
->=20
-> -/**
-> - * SUBTEST: psr_cursor_plane_move
-> - * Description: Check if psr is detecting the plane operations performed=
- on
-> - *		cursor planes
-> - * Functionality: psr1
-> - *
-> - * SUBTEST: psr_primary_page_flip
-> - * Description: Check if psr is detecting page-flipping operations perfo=
-rmed
-> - *		on primary planes
-> - * Functionality: psr1
-> - *
-> - * SUBTEST: psr_sprite_plane_onoff
-> - * Description: Check if psr is detecting the plane operations performed=
- on
-> - *		sprite planes
-> - * Functionality: psr1
-> - */
-> -
->  enum operations {
->  	PAGE_FLIP,
->  	MMAP_GTT,
-> --
-> 2.25.1
+Series: tests/kms_vrr: Add new subtest to switch RR without modeset (rev4)
+URL   : https://patchwork.freedesktop.org/series/127047/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_7613 -> IGTPW_10314
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/index.html
+
+Participating hosts (37 -> 37)
+------------------------------
+
+  Additional (3): bat-rpls-1 bat-kbl-2 bat-dg2-8 
+  Missing    (3): fi-bsw-n3050 fi-snb-2520m fi-pnv-d510 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_10314:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * {igt@kms_vrr@seamless-rr-switch} (NEW):
+    - fi-rkl-11600:       NOTRUN -> [SKIP][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-rkl-11600/igt@kms_vrr@seamless-rr-switch.html
+    - bat-adls-5:         NOTRUN -> [SKIP][2]
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-adls-5/igt@kms_vrr@seamless-rr-switch.html
+    - bat-adlp-9:         NOTRUN -> [SKIP][3]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-adlp-9/igt@kms_vrr@seamless-rr-switch.html
+    - bat-dg2-11:         NOTRUN -> [SKIP][4]
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-dg2-11/igt@kms_vrr@seamless-rr-switch.html
+    - {bat-dg2-14}:       NOTRUN -> [SKIP][5]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-dg2-14/igt@kms_vrr@seamless-rr-switch.html
+    - bat-dg2-8:          NOTRUN -> [SKIP][6]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-dg2-8/igt@kms_vrr@seamless-rr-switch.html
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][7]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-tgl-1115g4/igt@kms_vrr@seamless-rr-switch.html
+    - bat-dg2-9:          NOTRUN -> [SKIP][8]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-dg2-9/igt@kms_vrr@seamless-rr-switch.html
+    - bat-adlp-11:        NOTRUN -> [SKIP][9]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-adlp-11/igt@kms_vrr@seamless-rr-switch.html
+    - bat-mtlp-8:         NOTRUN -> [SKIP][10]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-mtlp-8/igt@kms_vrr@seamless-rr-switch.html
+
+  * {igt@kms_vrr@seamless-rr-switch@pipe-a-edp-1} (NEW):
+    - bat-jsl-3:          NOTRUN -> [FAIL][11]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-jsl-3/igt@kms_vrr@seamless-rr-switch@pipe-a-edp-1.html
+    - bat-jsl-1:          NOTRUN -> [FAIL][12]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-jsl-1/igt@kms_vrr@seamless-rr-switch@pipe-a-edp-1.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between IGT_7613 and IGTPW_10314:
+
+### New IGT tests (2) ###
+
+  * igt@kms_vrr@seamless-rr-switch:
+    - Statuses : 31 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_vrr@seamless-rr-switch@pipe-a-edp-1:
+    - Statuses : 2 fail(s) 3 pass(s)
+    - Exec time: [0.0] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_10314 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_vrr@flip-basic:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][13] ([i915#3555]) +2 other tests skip
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-rkl-11600/igt@kms_vrr@flip-basic.html
+    - bat-atsm-1:         NOTRUN -> [SKIP][14] ([i915#6078]) +3 other tests skip
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-atsm-1/igt@kms_vrr@flip-basic.html
+    - fi-cfl-guc:         NOTRUN -> [SKIP][15] ([fdo#109271]) +3 other tests skip
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-cfl-guc/igt@kms_vrr@flip-basic.html
+    - bat-jsl-3:          NOTRUN -> [SKIP][16] ([i915#3555]) +1 other test skip
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-jsl-3/igt@kms_vrr@flip-basic.html
+    - bat-dg2-9:          NOTRUN -> [SKIP][17] ([i915#3555]) +2 other tests skip
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-dg2-9/igt@kms_vrr@flip-basic.html
+    - fi-kbl-x1275:       NOTRUN -> [SKIP][18] ([fdo#109271] / [i915#1845]) +2 other tests skip
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-kbl-x1275/igt@kms_vrr@flip-basic.html
+    - bat-adlp-11:        NOTRUN -> [SKIP][19] ([i915#3555]) +2 other tests skip
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-adlp-11/igt@kms_vrr@flip-basic.html
+    - fi-cfl-8109u:       NOTRUN -> [SKIP][20] ([fdo#109271]) +3 other tests skip
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-cfl-8109u/igt@kms_vrr@flip-basic.html
+    - bat-adln-1:         NOTRUN -> [SKIP][21] ([i915#3555]) +1 other test skip
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-adln-1/igt@kms_vrr@flip-basic.html
+    - fi-ivb-3770:        NOTRUN -> [SKIP][22] ([fdo#109271]) +3 other tests skip
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-ivb-3770/igt@kms_vrr@flip-basic.html
+    - bat-mtlp-8:         NOTRUN -> [SKIP][23] ([i915#3555] / [i915#8808]) +2 other tests skip
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-mtlp-8/igt@kms_vrr@flip-basic.html
+    - fi-elk-e7500:       NOTRUN -> [SKIP][24] ([fdo#109271]) +3 other tests skip
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-elk-e7500/igt@kms_vrr@flip-basic.html
+    - bat-dg2-8:          NOTRUN -> [SKIP][25] ([i915#3555]) +2 other tests skip
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-dg2-8/igt@kms_vrr@flip-basic.html
+    - fi-kbl-guc:         NOTRUN -> [SKIP][26] ([fdo#109271] / [i915#1845]) +2 other tests skip
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-kbl-guc/igt@kms_vrr@flip-basic.html
+    - bat-adlm-1:         NOTRUN -> [SKIP][27] ([i915#1845]) +3 other tests skip
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-adlm-1/igt@kms_vrr@flip-basic.html
+    - fi-ilk-650:         NOTRUN -> [SKIP][28] ([fdo#109271]) +3 other tests skip
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-ilk-650/igt@kms_vrr@flip-basic.html
+    - bat-jsl-1:          NOTRUN -> [SKIP][29] ([i915#3555]) +1 other test skip
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-jsl-1/igt@kms_vrr@flip-basic.html
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][30] ([i915#3555]) +2 other tests skip
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-tgl-1115g4/igt@kms_vrr@flip-basic.html
+    - bat-mtlp-6:         NOTRUN -> [SKIP][31] ([i915#1845]) +3 other tests skip
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-mtlp-6/igt@kms_vrr@flip-basic.html
+
+  * igt@kms_vrr@flipline:
+    - fi-skl-guc:         NOTRUN -> [SKIP][32] ([fdo#109271]) +3 other tests skip
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-skl-guc/igt@kms_vrr@flipline.html
+    - fi-cfl-8700k:       NOTRUN -> [SKIP][33] ([fdo#109271]) +3 other tests skip
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-cfl-8700k/igt@kms_vrr@flipline.html
+    - fi-blb-e6850:       NOTRUN -> [SKIP][34] ([fdo#109271]) +3 other tests skip
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-blb-e6850/igt@kms_vrr@flipline.html
+    - fi-bsw-nick:        NOTRUN -> [SKIP][35] ([fdo#109271]) +3 other tests skip
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-bsw-nick/igt@kms_vrr@flipline.html
+    - bat-adlp-6:         NOTRUN -> [SKIP][36] ([i915#3555])
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-adlp-6/igt@kms_vrr@flipline.html
+    - bat-rplp-1:         NOTRUN -> [SKIP][37] ([i915#3555]) +1 other test skip
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-rplp-1/igt@kms_vrr@flipline.html
+    - bat-dg1-7:          NOTRUN -> [SKIP][38] ([i915#1845]) +2 other tests skip
+   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-dg1-7/igt@kms_vrr@flipline.html
+
+  * igt@kms_vrr@negative-basic:
+    - bat-kbl-2:          NOTRUN -> [SKIP][39] ([fdo#109271] / [i915#1845]) +2 other tests skip
+   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-kbl-2/igt@kms_vrr@negative-basic.html
+    - fi-skl-6600u:       NOTRUN -> [SKIP][40] ([fdo#109271]) +3 other tests skip
+   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-skl-6600u/igt@kms_vrr@negative-basic.html
+    - bat-adls-5:         NOTRUN -> [SKIP][41] ([i915#3555])
+   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-adls-5/igt@kms_vrr@negative-basic.html
+    - fi-apl-guc:         NOTRUN -> [SKIP][42] ([fdo#109271]) +3 other tests skip
+   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-apl-guc/igt@kms_vrr@negative-basic.html
+    - bat-dg1-7:          NOTRUN -> [SKIP][43] ([i915#1845] / [i915#4078])
+   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-dg1-7/igt@kms_vrr@negative-basic.html
+    - bat-dg2-11:         NOTRUN -> [SKIP][44] ([i915#3555]) +2 other tests skip
+   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-dg2-11/igt@kms_vrr@negative-basic.html
+    - fi-kbl-7567u:       NOTRUN -> [SKIP][45] ([fdo#109271]) +3 other tests skip
+   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-kbl-7567u/igt@kms_vrr@negative-basic.html
+    - bat-adlp-9:         NOTRUN -> [SKIP][46] ([i915#3555])
+   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-adlp-9/igt@kms_vrr@negative-basic.html
+
+  * {igt@kms_vrr@seamless-rr-switch} (NEW):
+    - bat-rpls-1:         NOTRUN -> [SKIP][47] ([i915#1845]) +3 other tests skip
+   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-rpls-1/igt@kms_vrr@seamless-rr-switch.html
+    - bat-kbl-2:          NOTRUN -> [SKIP][48] ([fdo#109271])
+   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-kbl-2/igt@kms_vrr@seamless-rr-switch.html
+    - fi-glk-j4005:       NOTRUN -> [SKIP][49] ([fdo#109271]) +3 other tests skip
+   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-glk-j4005/igt@kms_vrr@seamless-rr-switch.html
+    - fi-kbl-guc:         NOTRUN -> [SKIP][50] ([fdo#109271])
+   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-kbl-guc/igt@kms_vrr@seamless-rr-switch.html
+    - fi-kbl-x1275:       NOTRUN -> [SKIP][51] ([fdo#109271])
+   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-kbl-x1275/igt@kms_vrr@seamless-rr-switch.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#4078]: https://gitlab.freedesktop.org/drm/intel/issues/4078
+  [i915#6078]: https://gitlab.freedesktop.org/drm/intel/issues/6078
+  [i915#8808]: https://gitlab.freedesktop.org/drm/intel/issues/8808
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7613 -> IGTPW_10314
+
+  CI-20190529: 20190529
+  CI_DRM_13956: b59a0a6520764f36a79ba6b4c590e243ac6b913d @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_10314: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/index.html
+  IGT_7613: 378017d8fa63defde11c0b4bc72025c64b70607d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@kms_vrr@seamless-rr-switch
+-igt@xe_peer2peer@read
+-igt@xe_peer2peer@write
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/index.html
+
+--===============8461828051279603830==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_vrr: Add new subtest to switch RR without modeset (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127047/">https://patchwork.freedesktop.org/series/127047/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7613 -&gt; IGTPW_10314</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/index.html</p>
+<h2>Participating hosts (37 -&gt; 37)</h2>
+<p>Additional (3): bat-rpls-1 bat-kbl-2 bat-dg2-8 <br />
+  Missing    (3): fi-bsw-n3050 fi-snb-2520m fi-pnv-d510 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_10314:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>{igt@kms_vrr@seamless-rr-switch} (NEW):</p>
+<ul>
+<li>
+<p>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-rkl-11600/igt@kms_vrr@seamless-rr-switch.html">SKIP</a></p>
+</li>
+<li>
+<p>bat-adls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-adls-5/igt@kms_vrr@seamless-rr-switch.html">SKIP</a></p>
+</li>
+<li>
+<p>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-adlp-9/igt@kms_vrr@seamless-rr-switch.html">SKIP</a></p>
+</li>
+<li>
+<p>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-dg2-11/igt@kms_vrr@seamless-rr-switch.html">SKIP</a></p>
+</li>
+<li>
+<p>{bat-dg2-14}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-dg2-14/igt@kms_vrr@seamless-rr-switch.html">SKIP</a></p>
+</li>
+<li>
+<p>bat-dg2-8:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-dg2-8/igt@kms_vrr@seamless-rr-switch.html">SKIP</a></p>
+</li>
+<li>
+<p>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-tgl-1115g4/igt@kms_vrr@seamless-rr-switch.html">SKIP</a></p>
+</li>
+<li>
+<p>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-dg2-9/igt@kms_vrr@seamless-rr-switch.html">SKIP</a></p>
+</li>
+<li>
+<p>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-adlp-11/igt@kms_vrr@seamless-rr-switch.html">SKIP</a></p>
+</li>
+<li>
+<p>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-mtlp-8/igt@kms_vrr@seamless-rr-switch.html">SKIP</a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>{igt@kms_vrr@seamless-rr-switch@pipe-a-edp-1} (NEW):</p>
+<ul>
+<li>
+<p>bat-jsl-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-jsl-3/igt@kms_vrr@seamless-rr-switch@pipe-a-edp-1.html">FAIL</a></p>
+</li>
+<li>
+<p>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-jsl-1/igt@kms_vrr@seamless-rr-switch@pipe-a-edp-1.html">FAIL</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between IGT_7613 and IGTPW_10314:</p>
+<h3>New IGT tests (2)</h3>
+<ul>
+<li>
+<p>igt@kms_vrr@seamless-rr-switch:</p>
+<ul>
+<li>Statuses : 31 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@seamless-rr-switch@pipe-a-edp-1:</p>
+<ul>
+<li>Statuses : 2 fail(s) 3 pass(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_10314 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_vrr@flip-basic:</p>
+<ul>
+<li>
+<p>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-rkl-11600/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>) +2 other tests skip</p>
+</li>
+<li>
+<p>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-atsm-1/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6078">i915#6078</a>) +3 other tests skip</p>
+</li>
+<li>
+<p>fi-cfl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-cfl-guc/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 other tests skip</p>
+</li>
+<li>
+<p>bat-jsl-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-jsl-3/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>) +1 other test skip</p>
+</li>
+<li>
+<p>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-dg2-9/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>) +2 other tests skip</p>
+</li>
+<li>
+<p>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-kbl-x1275/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>) +2 other tests skip</p>
+</li>
+<li>
+<p>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-adlp-11/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>) +2 other tests skip</p>
+</li>
+<li>
+<p>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-cfl-8109u/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 other tests skip</p>
+</li>
+<li>
+<p>bat-adln-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-adln-1/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>) +1 other test skip</p>
+</li>
+<li>
+<p>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-ivb-3770/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 other tests skip</p>
+</li>
+<li>
+<p>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-mtlp-8/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8808">i915#8808</a>) +2 other tests skip</p>
+</li>
+<li>
+<p>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-elk-e7500/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 other tests skip</p>
+</li>
+<li>
+<p>bat-dg2-8:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-dg2-8/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>) +2 other tests skip</p>
+</li>
+<li>
+<p>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-kbl-guc/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>) +2 other tests skip</p>
+</li>
+<li>
+<p>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-adlm-1/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>) +3 other tests skip</p>
+</li>
+<li>
+<p>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-ilk-650/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 other tests skip</p>
+</li>
+<li>
+<p>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-jsl-1/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>) +1 other test skip</p>
+</li>
+<li>
+<p>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-tgl-1115g4/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>) +2 other tests skip</p>
+</li>
+<li>
+<p>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-mtlp-6/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>) +3 other tests skip</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@flipline:</p>
+<ul>
+<li>
+<p>fi-skl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-skl-guc/igt@kms_vrr@flipline.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 other tests skip</p>
+</li>
+<li>
+<p>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-cfl-8700k/igt@kms_vrr@flipline.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 other tests skip</p>
+</li>
+<li>
+<p>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-blb-e6850/igt@kms_vrr@flipline.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 other tests skip</p>
+</li>
+<li>
+<p>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-bsw-nick/igt@kms_vrr@flipline.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 other tests skip</p>
+</li>
+<li>
+<p>bat-adlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-adlp-6/igt@kms_vrr@flipline.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>)</p>
+</li>
+<li>
+<p>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-rplp-1/igt@kms_vrr@flipline.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>) +1 other test skip</p>
+</li>
+<li>
+<p>bat-dg1-7:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-dg1-7/igt@kms_vrr@flipline.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>) +2 other tests skip</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@negative-basic:</p>
+<ul>
+<li>
+<p>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-kbl-2/igt@kms_vrr@negative-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>) +2 other tests skip</p>
+</li>
+<li>
+<p>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-skl-6600u/igt@kms_vrr@negative-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 other tests skip</p>
+</li>
+<li>
+<p>bat-adls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-adls-5/igt@kms_vrr@negative-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>)</p>
+</li>
+<li>
+<p>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-apl-guc/igt@kms_vrr@negative-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 other tests skip</p>
+</li>
+<li>
+<p>bat-dg1-7:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-dg1-7/igt@kms_vrr@negative-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4078">i915#4078</a>)</p>
+</li>
+<li>
+<p>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-dg2-11/igt@kms_vrr@negative-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>) +2 other tests skip</p>
+</li>
+<li>
+<p>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-kbl-7567u/igt@kms_vrr@negative-basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 other tests skip</p>
+</li>
+<li>
+<p>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-adlp-9/igt@kms_vrr@negative-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>{igt@kms_vrr@seamless-rr-switch} (NEW):</p>
+<ul>
+<li>
+<p>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-rpls-1/igt@kms_vrr@seamless-rr-switch.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>) +3 other tests skip</p>
+</li>
+<li>
+<p>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/bat-kbl-2/igt@kms_vrr@seamless-rr-switch.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
+</li>
+<li>
+<p>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-glk-j4005/igt@kms_vrr@seamless-rr-switch.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 other tests skip</p>
+</li>
+<li>
+<p>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-kbl-guc/igt@kms_vrr@seamless-rr-switch.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
+</li>
+<li>
+<p>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/fi-kbl-x1275/igt@kms_vrr@seamless-rr-switch.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7613 -&gt; IGTPW_10314</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13956: b59a0a6520764f36a79ba6b4c590e243ac6b913d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_10314: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10314/index.html<br />
+  IGT_7613: 378017d8fa63defde11c0b4bc72025c64b70607d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@kms_vrr@seamless-rr-switch<br />
+-igt@xe_peer2peer@read<br />
+-igt@xe_peer2peer@write</p>
+
+</body>
+</html>
+
+--===============8461828051279603830==--
