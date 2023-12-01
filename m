@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============1755243687628205074=="
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 22EE010E868
+ for <igt-dev@lists.freedesktop.org>; Fri,  1 Dec 2023 13:27:29 +0000 (UTC)
+From: Melissa Wen <mwen@igalia.com>
+To: igt-dev@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>,
+ Arkadiusz Hiler <arek@hiler.eu>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Date: Fri,  1 Dec 2023 12:26:09 -0100
+Message-ID: <20231201132706.84787-1-mwen@igalia.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: janga.rahul.kumar@intel.com
-Date: Fri, 01 Dec 2023 13:20:06 -0000
-Message-ID: <170143680605.19690.13576716250776577274@emeril.freedesktop.org>
-References: <20231201113507.3535939-1-janga.rahul.kumar@intel.com>
-In-Reply-To: <20231201113507.3535939-1-janga.rahul.kumar@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Extend_c?=
- =?utf-8?q?ompute_square_test_to_Xe2_platform?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2] tests/kms_atomic: skip mutable zpos test
+ on non-mutable planes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,159 +22,109 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: kernel-dev@igalia.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1755243687628205074==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+plane-primary-overlay-mutable-zpos only works if both plane types have
+mutable zpos property. However, drivers usually set primary zpos as
+immutable and the test case just fails. Create a helper to check if a
+plane have mutable zpos and skip the test case if zpos changes are not
+allowed.
 
-== Series Details ==
+v1: https://patchwork.freedesktop.org/patch/554257
 
-Series: Extend compute square test to Xe2 platform
-URL   : https://patchwork.freedesktop.org/series/127184/
-State : success
+v2:
+- document the new public function (Kamil)
+- improve commit message (Kamil)
+- rebase on master and replace has_zpos() by has_mutable_zpos()
 
-== Summary ==
+Signed-off-by: Melissa Wen <mwen@igalia.com>
+---
+ lib/igt_kms.c      | 28 ++++++++++++++++++++++++++++
+ lib/igt_kms.h      |  2 ++
+ tests/kms_atomic.c |  8 ++++----
+ 3 files changed, 34 insertions(+), 4 deletions(-)
 
-CI Bug Log - changes from XEIGT_7613_BAT -> XEIGTPW_10317_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_10317_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3:
-    - bat-dg2-oem2:       [PASS][1] -> [FAIL][2] ([Intel XE#480])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7613/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10317/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
-    - bat-adlp-7:         [PASS][3] -> [FAIL][4] ([Intel XE#480]) +1 other test fail
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7613/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10317/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@b-dp3:
-    - bat-dg2-oem2:       [FAIL][5] ([Intel XE#480]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7613/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@b-dp3.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10317/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@b-dp3.html
-
-  
-  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
-
-
-Build changes
--------------
-
-  * IGT: IGT_7613 -> IGTPW_10317
-  * Linux: xe-542-84f2c2adec155170779f65ff63b4e80a51d22448 -> xe-544-a8b405ffc0326c79abf737389d99c290648f381d
-
-  IGTPW_10317: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10317/index.html
-  IGT_7613: 378017d8fa63defde11c0b4bc72025c64b70607d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-542-84f2c2adec155170779f65ff63b4e80a51d22448: 84f2c2adec155170779f65ff63b4e80a51d22448
-  xe-544-a8b405ffc0326c79abf737389d99c290648f381d: a8b405ffc0326c79abf737389d99c290648f381d
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10317/index.html
-
---===============1755243687628205074==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Extend compute square test to Xe2 platform</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127184/">https://patchwork.freedesktop.org/series/127184/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10317/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10317/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7613_BAT -&gt; XEIGTPW_10317_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_10317_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7613/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10317/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7613/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10317/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank@b-dp3:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7613/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@b-dp3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10317/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@b-dp3.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7613 -&gt; IGTPW_10317</li>
-<li>Linux: xe-542-84f2c2adec155170779f65ff63b4e80a51d22448 -&gt; xe-544-a8b405ffc0326c79abf737389d99c290648f381d</li>
-</ul>
-<p>IGTPW_10317: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10317/index.html<br />
-  IGT_7613: 378017d8fa63defde11c0b4bc72025c64b70607d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-542-84f2c2adec155170779f65ff63b4e80a51d22448: 84f2c2adec155170779f65ff63b4e80a51d22448<br />
-  xe-544-a8b405ffc0326c79abf737389d99c290648f381d: a8b405ffc0326c79abf737389d99c290648f381d</p>
-
-</body>
-</html>
-
---===============1755243687628205074==--
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 28105a9ef..e4dea1a60 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -3970,6 +3970,34 @@ void igt_plane_set_prop_enum(igt_plane_t *plane,
+ 	igt_assert(igt_plane_try_prop_enum(plane, prop, val));
+ }
+ 
++/**
++ * igt_plane_check_prop_is_mutable:
++ * @plane: Target plane.
++ * @prop: Property to check.
++ *
++ * Check if a plane supports a given property and if this property is mutable.
++ *
++ * Returns true if the plane has the mutable property. False if the property is
++ * not support or it's immutable.
++ */
++bool igt_plane_check_prop_is_mutable(igt_plane_t *plane,
++				     enum igt_atomic_plane_properties igt_prop)
++{
++	drmModePropertyPtr prop;
++	uint64_t value;
++	bool has_prop;
++
++	has_prop = kmstest_get_property(plane->pipe->display->drm_fd,
++					plane->drm_plane->plane_id,
++					DRM_MODE_OBJECT_PLANE,
++				        igt_plane_prop_names[igt_prop], NULL,
++					&value, &prop);
++	if (!has_prop)
++		return false;
++
++	return !(prop->flags & DRM_MODE_PROP_IMMUTABLE);
++}
++
+ /**
+  * igt_plane_replace_prop_blob:
+  * @plane: plane to set property on.
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 8e7801a78..b3882808b 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -812,6 +812,8 @@ extern void igt_plane_replace_prop_blob(igt_plane_t *plane,
+ 					enum igt_atomic_plane_properties prop,
+ 					const void *ptr, size_t length);
+ 
++extern bool igt_plane_check_prop_is_mutable(igt_plane_t *plane,
++					    enum igt_atomic_plane_properties igt_prop);
+ /**
+  * igt_output_has_prop:
+  * @output: Output to check.
+diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
+index aa3af936a..96cd58571 100644
+--- a/tests/kms_atomic.c
++++ b/tests/kms_atomic.c
+@@ -1354,10 +1354,10 @@ static void atomic_clear(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	igt_remove_fb(data->drm_fd, &data->fb);
+ }
+ 
+-/* Returns true if plane supports zpos property. */
+-static bool has_zpos(igt_plane_t *plane)
++/* Returns true if plane supports zpos property and it's mutable. */
++static bool has_mutable_zpos(igt_plane_t *plane)
+ {
+-	return igt_plane_has_prop(plane, IGT_PLANE_ZPOS);
++	return igt_plane_check_prop_is_mutable(plane, IGT_PLANE_ZPOS);
+ }
+ 
+ static bool
+@@ -1457,7 +1457,7 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ 			atomic_setup(&data, pipe, output);
+ 			if (!overlay)
+ 				continue;
+-			if (!has_zpos(data.primary) || !has_zpos(overlay))
++			if (!has_mutable_zpos(data.primary) || !has_mutable_zpos(overlay))
+ 				continue;
+ 			if (!igt_plane_has_format_mod(data.primary, DRM_FORMAT_ARGB8888, 0x0) ||
+ 			    !igt_plane_has_format_mod(overlay, DRM_FORMAT_ARGB1555, 0x0))
+-- 
+2.42.0
