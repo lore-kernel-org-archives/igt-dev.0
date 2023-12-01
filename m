@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============0018614717747419729=="
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AF14310E830
+ for <igt-dev@lists.freedesktop.org>; Fri,  1 Dec 2023 09:51:45 +0000 (UTC)
+Date: Fri, 1 Dec 2023 10:51:26 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20231201095126.zoezsvh7a53ks5do@kamilkon-desk.igk.intel.com>
+References: <20231130184536.7-1-francois.dugast@intel.com>
+ <20231130184536.7-3-francois.dugast@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Zhang, Jesse(Jie)" <jesse.zhang@amd.com>
-Date: Fri, 01 Dec 2023 09:43:09 -0000
-Message-ID: <170142378987.19688.17792796083050269533@emeril.freedesktop.org>
-References: <20231129080502.135689-1-jesse.zhang@amd.com>
-In-Reply-To: <20231129080502.135689-1-jesse.zhang@amd.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2Ft?=
- =?utf-8?q?dgpu=3A_add_GFX1150_chips_for_IGT_tests?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231130184536.7-3-francois.dugast@intel.com>
+Subject: Re: [igt-dev] [PATCH v5 02/21] xe_ioctl: Converge bo_create to the
+ most used version
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,198 +21,136 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0018614717747419729==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Francois,
+On 2023-11-30 at 18:45:17 +0000, Francois Dugast wrote:
+> From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> 
+> Let's unify the call instead of having 2 separated
+> options for the same goal.
+> 
+> v2: Fix some xe_bo_create_flags arguments, remove extra new
+>     line (Kamil Konieczny)
+> 
+> Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 
-== Series Details ==
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Series: lib/amdgpu: add GFX1150 chips for IGT tests
-URL   : https://patchwork.freedesktop.org/series/127023/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_13943 -> IGTPW_10288
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10288/index.html
-
-Participating hosts (39 -> 36)
-------------------------------
-
-  Missing    (3): bat-adlp-11 bat-jsl-1 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_10288 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_exec_suspend@basic-s0@smem:
-    - bat-dg2-9:          [PASS][1] -> [INCOMPLETE][2] ([i915#9275])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13943/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10288/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-apl-guc:         [PASS][3] -> [DMESG-FAIL][4] ([i915#5334])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13943/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10288/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@i915_selftest@live@requests:
-    - bat-rpls-1:         [PASS][5] -> [INCOMPLETE][6] ([i915#9773])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13943/bat-rpls-1/igt@i915_selftest@live@requests.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10288/bat-rpls-1/igt@i915_selftest@live@requests.html
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - fi-kbl-guc:         [PASS][7] -> [FAIL][8] ([IGT#3])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13943/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10288/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html
-
-  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:
-    - bat-rplp-1:         [PASS][9] -> [ABORT][10] ([i915#8668])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13943/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10288/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-adls-5:         [DMESG-WARN][11] ([i915#5591]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13943/bat-adls-5/igt@i915_selftest@live@hangcheck.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10288/bat-adls-5/igt@i915_selftest@live@hangcheck.html
-
-  
-  [IGT#3]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3
-  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
-  [i915#5591]: https://gitlab.freedesktop.org/drm/intel/issues/5591
-  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
-  [i915#9275]: https://gitlab.freedesktop.org/drm/intel/issues/9275
-  [i915#9773]: https://gitlab.freedesktop.org/drm/intel/issues/9773
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7609 -> IGTPW_10288
-
-  CI-20190529: 20190529
-  CI_DRM_13943: 0417ec152200d74916f157bfe76677b3b4af8224 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_10288: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10288/index.html
-  IGT_7609: 72a759595100b8d167ca78cd2d62e9acd97e36bf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10288/index.html
-
---===============0018614717747419729==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/amdgpu: add GFX1150 chips for IGT tests</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127023/">https://patchwork.freedesktop.org/series/127023/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10288/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10288/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_13943 -&gt; IGTPW_10288</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10288/index.html</p>
-<h2>Participating hosts (39 -&gt; 36)</h2>
-<p>Missing    (3): bat-adlp-11 bat-jsl-1 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_10288 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s0@smem:</p>
-<ul>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13943/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10288/bat-dg2-9/igt@gem_exec_suspend@basic-s0@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9275">i915#9275</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13943/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10288/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13943/bat-rpls-1/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10288/bat-rpls-1/igt@i915_selftest@live@requests.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/9773">i915#9773</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_hdmi_inject@inject-audio:</p>
-<ul>
-<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13943/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10288/fi-kbl-guc/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/3">IGT#3</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:</p>
-<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13943/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10288/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@hangcheck:<ul>
-<li>bat-adls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13943/bat-adls-5/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5591">i915#5591</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10288/bat-adls-5/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7609 -&gt; IGTPW_10288</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13943: 0417ec152200d74916f157bfe76677b3b4af8224 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_10288: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10288/index.html<br />
-  IGT_7609: 72a759595100b8d167ca78cd2d62e9acd97e36bf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============0018614717747419729==--
+> ---
+>  lib/xe/xe_ioctl.c           | 10 ----------
+>  lib/xe/xe_ioctl.h           |  1 -
+>  tests/intel/xe_perf_pmu.c   |  4 ++--
+>  tests/intel/xe_spin_batch.c |  2 +-
+>  tests/intel/xe_vm.c         |  8 ++++----
+>  5 files changed, 7 insertions(+), 18 deletions(-)
+> 
+> diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+> index a5fe7dd79..a33a7dc91 100644
+> --- a/lib/xe/xe_ioctl.c
+> +++ b/lib/xe/xe_ioctl.c
+> @@ -295,16 +295,6 @@ uint32_t xe_bo_create_caching(int fd, uint32_t vm, uint64_t size, uint32_t flags
+>  	return handle;
+>  }
+>  
+> -uint32_t xe_bo_create(int fd, int gt, uint32_t vm, uint64_t size)
+> -{
+> -	uint32_t handle;
+> -
+> -	igt_assert_eq(__xe_bo_create_flags(fd, vm, size, vram_if_possible(fd, gt),
+> -					   &handle), 0);
+> -
+> -	return handle;
+> -}
+> -
+>  uint32_t xe_bind_exec_queue_create(int fd, uint32_t vm, uint64_t ext, bool async)
+>  {
+>  	struct drm_xe_engine_class_instance instance = {
+> diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+> index 6d91d3e8e..ff5d3d8fa 100644
+> --- a/lib/xe/xe_ioctl.h
+> +++ b/lib/xe/xe_ioctl.h
+> @@ -72,7 +72,6 @@ uint32_t __xe_bo_create_caching(int fd, uint32_t vm, uint64_t size, uint32_t fla
+>  uint32_t xe_bo_create_caching(int fd, uint32_t vm, uint64_t size, uint32_t flags,
+>  			      uint16_t cpu_caching);
+>  uint16_t __xe_default_cpu_caching_from_flags(int fd, uint32_t flags);
+> -uint32_t xe_bo_create(int fd, int gt, uint32_t vm, uint64_t size);
+>  uint32_t xe_exec_queue_create(int fd, uint32_t vm,
+>  			  struct drm_xe_engine_class_instance *instance,
+>  			  uint64_t ext);
+> diff --git a/tests/intel/xe_perf_pmu.c b/tests/intel/xe_perf_pmu.c
+> index e9d05cf2b..196e4d2e6 100644
+> --- a/tests/intel/xe_perf_pmu.c
+> +++ b/tests/intel/xe_perf_pmu.c
+> @@ -103,7 +103,7 @@ static void test_any_engine_busyness(int fd, struct drm_xe_engine_class_instance
+>  	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
+>  			xe_get_default_alignment(fd));
+>  
+> -	bo = xe_bo_create(fd, eci->gt_id, vm, bo_size);
+> +	bo = xe_bo_create_flags(fd, vm, bo_size, vram_if_possible(fd, eci->gt_id));
+>  	spin = xe_bo_map(fd, bo, bo_size);
+>  
+>  	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
+> @@ -223,7 +223,7 @@ static void test_engine_group_busyness(int fd, int gt, int class, const char *na
+>  	bo_size = sizeof(*data) * num_placements;
+>  	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
+>  
+> -	bo = xe_bo_create(fd, gt, vm, bo_size);
+> +	bo = xe_bo_create_flags(fd, vm, bo_size, vram_if_possible(fd, gt));
+>  	data = xe_bo_map(fd, bo, bo_size);
+>  
+>  	for (i = 0; i < num_placements; i++) {
+> diff --git a/tests/intel/xe_spin_batch.c b/tests/intel/xe_spin_batch.c
+> index 6ab604d9b..261fde9af 100644
+> --- a/tests/intel/xe_spin_batch.c
+> +++ b/tests/intel/xe_spin_batch.c
+> @@ -169,7 +169,7 @@ static void xe_spin_fixed_duration(int fd)
+>  	exec_queue = xe_exec_queue_create_class(fd, vm, DRM_XE_ENGINE_CLASS_COPY);
+>  	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
+>  	bo_size = ALIGN(sizeof(*spin) + xe_cs_prefetch_size(fd), xe_get_default_alignment(fd));
+> -	bo = xe_bo_create(fd, 0, vm, bo_size);
+> +	bo = xe_bo_create_flags(fd, vm, bo_size, vram_if_possible(fd, 0));
+>  	spin = xe_bo_map(fd, bo, bo_size);
+>  	spin_addr = intel_allocator_alloc_with_strategy(ahnd, bo, bo_size, 0,
+>  							ALLOC_STRATEGY_LOW_TO_HIGH);
+> diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+> index fc0396890..b7b297413 100644
+> --- a/tests/intel/xe_vm.c
+> +++ b/tests/intel/xe_vm.c
+> @@ -268,7 +268,7 @@ static void test_partial_unbinds(int fd)
+>  {
+>  	uint32_t vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
+>  	size_t bo_size = 3 * xe_get_default_alignment(fd);
+> -	uint32_t bo = xe_bo_create(fd, 0, vm, bo_size);
+> +	uint32_t bo = xe_bo_create_flags(fd, vm, bo_size, vram_if_possible(fd, 0));
+>  	uint64_t unbind_size = bo_size / 3;
+>  	uint64_t addr = 0x1a0000;
+>  
+> @@ -317,7 +317,7 @@ static void unbind_all(int fd, int n_vmas)
+>  	};
+>  
+>  	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
+> -	bo = xe_bo_create(fd, 0, vm, bo_size);
+> +	bo = xe_bo_create_flags(fd, vm, bo_size, vram_if_possible(fd, 0));
+>  
+>  	for (i = 0; i < n_vmas; ++i)
+>  		xe_vm_bind_async(fd, vm, 0, bo, 0, addr + i * bo_size,
+> @@ -1580,9 +1580,9 @@ test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
+>  		igt_assert(map0 != MAP_FAILED);
+>  		igt_assert(map1 != MAP_FAILED);
+>  	} else {
+> -		bo0 = xe_bo_create(fd, eci->gt_id, vm, bo_size);
+> +		bo0 = xe_bo_create_flags(fd, vm, bo_size, vram_if_possible(fd, eci->gt_id));
+>  		map0 = xe_bo_map(fd, bo0, bo_size);
+> -		bo1 = xe_bo_create(fd, eci->gt_id, vm, bo_size);
+> +		bo1 = xe_bo_create_flags(fd, vm, bo_size, vram_if_possible(fd, eci->gt_id));
+>  		map1 = xe_bo_map(fd, bo1, bo_size);
+>  	}
+>  	memset(map0, 0, bo_size);
+> -- 
+> 2.34.1
+> 
