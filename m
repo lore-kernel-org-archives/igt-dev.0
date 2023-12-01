@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 56F1210E8BB
- for <igt-dev@lists.freedesktop.org>; Fri,  1 Dec 2023 14:27:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A92B510E8B6
+ for <igt-dev@lists.freedesktop.org>; Fri,  1 Dec 2023 14:27:32 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  1 Dec 2023 19:47:03 +0530
-Message-Id: <20231201141703.3013801-8-bhanuprakash.modem@intel.com>
+Date: Fri,  1 Dec 2023 19:47:02 +0530
+Message-Id: <20231201141703.3013801-7-bhanuprakash.modem@intel.com>
 In-Reply-To: <20231201141703.3013801-1-bhanuprakash.modem@intel.com>
 References: <20231201141703.3013801-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 7/7] HAX: DO_NOT_MERGE: test only
- seamless-rr-switch
+Subject: [igt-dev] [i-g-t V4 6/7] tests/kms_vrr: Add new subtest to switch
+ RR without modeset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,470 +23,240 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Add new subtest to switch between low refresh rate to high
+refresh rate and vice versa seamlessly without modeset.
+
+Below are the sequence of operations to perform:
+
+1. Use High RR mode + VRR On (if panel supports) -> Measure vblank timings
+2. Switch to Low RR mode -> Measure vblank timings
+3. Switch back to High RR mode -> Measure vblank timings
+
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/intel-ci/fast-feedback.testlist    | 178 +--------------
- tests/intel-ci/xe-fast-feedback.testlist | 265 +----------------------
- 2 files changed, 8 insertions(+), 435 deletions(-)
+ tests/kms_vrr.c | 135 ++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 124 insertions(+), 11 deletions(-)
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index aeba0ab29..73ddbda4e 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -1,177 +1,7 @@
- # Try to load the driver if it's not available yet.
- igt@i915_module_load@load
+diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+index 422d89073..8b89d1a87 100644
+--- a/tests/kms_vrr.c
++++ b/tests/kms_vrr.c
+@@ -53,6 +53,10 @@
+  * SUBTEST: flipline
+  * Description: Make sure that flips happen at flipline decision boundary.
+  *
++ * SUBTEST: seamless-rr-switch
++ * Description: Test to switch RR seamlessly without modeset.
++ * Functionality: adaptive_sync, drrs, lrr
++ *
+  * SUBTEST: negative-basic
+  * Description: Make sure that VRR should not be enabled on the Non-VRR panel.
+  */
+@@ -70,7 +74,14 @@ enum {
+ 	TEST_DPMS = 1 << 1,
+ 	TEST_SUSPEND = 1 << 2,
+ 	TEST_FLIPLINE = 1 << 3,
+-	TEST_NEGATIVE = 1 << 4,
++	TEST_SEAMLESS_RR = 1 << 4,
++	TEST_NEGATIVE = 1 << 5,
++};
++
++enum {
++	HIGH_RR_MODE,
++	LOW_RR_MODE,
++	RR_MODES_COUNT,
+ };
  
--# Keep alphabetically sorted by default
--igt@core_auth@basic-auth
--igt@debugfs_test@read_all_entries
--igt@debugfs_test@basic-hwmon
--igt@fbdev@eof
--igt@fbdev@info
--igt@fbdev@nullptr
--igt@fbdev@read
--igt@fbdev@write
--igt@gem_basic@bad-close
--igt@gem_basic@create-close
--igt@gem_basic@create-fd-close
--igt@gem_busy@busy@all-engines
--igt@gem_close_race@basic-process
--igt@gem_close_race@basic-threads
--igt@gem_ctx_create@basic
--igt@gem_ctx_create@basic-files
--igt@gem_ctx_exec@basic
--igt@gem_exec_basic@basic
--igt@gem_exec_create@basic
--igt@gem_exec_fence@basic-busy
--igt@gem_exec_fence@basic-wait
--igt@gem_exec_fence@basic-await
--igt@gem_exec_fence@nb-await
--igt@gem_exec_gttfill@basic
--igt@gem_exec_parallel@engines
--igt@gem_exec_store@basic
--igt@gem_flink_basic@bad-flink
--igt@gem_flink_basic@bad-open
--igt@gem_flink_basic@basic
--igt@gem_flink_basic@double-flink
--igt@gem_flink_basic@flink-lifetime
--igt@gem_huc_copy@huc-copy
--igt@gem_linear_blits@basic
--igt@gem_mmap@basic
--igt@gem_mmap_gtt@basic
--igt@gem_render_linear_blits@basic
--igt@gem_render_tiled_blits@basic
--igt@gem_ringfill@basic-all
--igt@gem_softpin@allocator-basic
--igt@gem_softpin@allocator-basic-reserve
--igt@gem_softpin@safe-alignment
--igt@gem_sync@basic-all
--igt@gem_sync@basic-each
--igt@gem_tiled_blits@basic
--igt@gem_tiled_fence_blits@basic
--igt@gem_tiled_pread_basic
--igt@gem_wait@busy@all-engines
--igt@gem_wait@wait@all-engines
--igt@i915_getparams_basic@basic-eu-total
--igt@i915_getparams_basic@basic-subslice-total
--igt@i915_hangman@error-state-basic
--igt@i915_pciid
--igt@kms_addfb_basic@addfb25-4-tiled
--igt@kms_addfb_basic@addfb25-bad-modifier
--igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
--igt@kms_addfb_basic@addfb25-modifier-no-flag
--igt@kms_addfb_basic@addfb25-x-tiled-legacy
--igt@kms_addfb_basic@addfb25-x-tiled-mismatch-legacy
--igt@kms_addfb_basic@addfb25-yf-tiled-legacy
--igt@kms_addfb_basic@addfb25-y-tiled-legacy
--igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
--igt@kms_addfb_basic@bad-pitch-0
--igt@kms_addfb_basic@bad-pitch-1024
--igt@kms_addfb_basic@bad-pitch-128
--igt@kms_addfb_basic@bad-pitch-256
--igt@kms_addfb_basic@bad-pitch-32
--igt@kms_addfb_basic@bad-pitch-63
--igt@kms_addfb_basic@bad-pitch-65536
--igt@kms_addfb_basic@bad-pitch-999
--igt@kms_addfb_basic@basic
--igt@kms_addfb_basic@basic-x-tiled-legacy
--igt@kms_addfb_basic@basic-y-tiled-legacy
--igt@kms_addfb_basic@bo-too-small
--igt@kms_addfb_basic@bo-too-small-due-to-tiling
--igt@kms_addfb_basic@clobberred-modifier
--igt@kms_addfb_basic@framebuffer-vs-set-tiling
--igt@kms_addfb_basic@invalid-get-prop
--igt@kms_addfb_basic@invalid-get-prop-any
--igt@kms_addfb_basic@invalid-set-prop
--igt@kms_addfb_basic@invalid-set-prop-any
--igt@kms_addfb_basic@no-handle
--igt@kms_addfb_basic@size-max
--igt@kms_addfb_basic@small-bo
--igt@kms_addfb_basic@tile-pitch-mismatch
--igt@kms_addfb_basic@too-high
--igt@kms_addfb_basic@too-wide
--igt@kms_addfb_basic@unused-handle
--igt@kms_addfb_basic@unused-modifier
--igt@kms_addfb_basic@unused-offsets
--igt@kms_addfb_basic@unused-pitches
--igt@kms_busy@basic
--igt@kms_prop_blob@basic
--igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic
--igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy
--igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
--igt@kms_cursor_legacy@basic-flip-after-cursor-legacy
--igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
--igt@kms_cursor_legacy@basic-flip-before-cursor-atomic
--igt@kms_cursor_legacy@basic-flip-before-cursor-legacy
--igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size
--igt@kms_dsc@dsc-basic
--igt@kms_flip@basic-flip-vs-dpms
--igt@kms_flip@basic-flip-vs-modeset
--igt@kms_flip@basic-flip-vs-wf_vblank
--igt@kms_flip@basic-plain-flip
--igt@kms_force_connector_basic@force-connector-state
--igt@kms_force_connector_basic@force-edid
--igt@kms_force_connector_basic@force-load-detect
--igt@kms_force_connector_basic@prune-stale-modes
--igt@kms_frontbuffer_tracking@basic
--igt@kms_hdmi_inject@inject-audio
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12
--igt@kms_pipe_crc_basic@hang-read-crc
--igt@kms_pipe_crc_basic@nonblocking-crc
--igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
--igt@kms_pipe_crc_basic@read-crc
--igt@kms_pipe_crc_basic@read-crc-frame-sequence
--igt@kms_pm_backlight@basic-brightness
--igt@kms_pm_rpm@basic-pci-d3-state
--igt@kms_pm_rpm@basic-rte
--igt@kms_psr@psr_primary_page_flip
--igt@kms_psr@psr_cursor_plane_move
--igt@kms_psr@psr_sprite_plane_onoff
--igt@kms_psr@psr_primary_mmap_gtt
--igt@kms_setmode@basic-clone-single-crtc
--igt@i915_pm_rps@basic-api
--igt@prime_self_import@basic-llseek-bad
--igt@prime_self_import@basic-llseek-size
--igt@prime_self_import@basic-with_fd_dup
--igt@prime_self_import@basic-with_one_bo
--igt@prime_self_import@basic-with_one_bo_two_files
--igt@prime_self_import@basic-with_two_bos
--igt@prime_vgem@basic-fence-flip
--igt@prime_vgem@basic-fence-mmap
--igt@prime_vgem@basic-fence-read
--igt@prime_vgem@basic-gtt
--igt@prime_vgem@basic-read
--igt@prime_vgem@basic-write
--igt@vgem_basic@setversion
--igt@vgem_basic@create
--igt@vgem_basic@debugfs
--igt@vgem_basic@dmabuf-export
--igt@vgem_basic@dmabuf-fence
--igt@vgem_basic@dmabuf-fence-before
--igt@vgem_basic@dmabuf-mmap
--igt@vgem_basic@mmap
--igt@vgem_basic@second-client
--igt@vgem_basic@sysfs
--
--# All tests that do module unloading and reloading are executed last.
--# They will sometimes reveal issues of earlier tests leaving the
--# driver in a broken state that is not otherwise noticed in that test.
--
--igt@core_hotunplug@unbind-rebind
--igt@vgem_basic@unload
--igt@i915_module_load@reload
--igt@gem_lmem_swapping@basic
--igt@gem_lmem_swapping@parallel-random-engines
--igt@gem_lmem_swapping@random-engines
--igt@gem_lmem_swapping@verify-random
--igt@i915_pm_rpm@module-reload
--
--# Kernel selftests
--igt@i915_selftest@live
--igt@dmabuf@all-tests
--
--# System wide suspend tests
--igt@i915_suspend@basic-s2idle-without-i915
--igt@i915_suspend@basic-s3-without-i915
--igt@gem_exec_suspend@basic-s0
--igt@gem_exec_suspend@basic-s3
--igt@kms_pipe_crc_basic@suspend-read-crc
-+igt@kms_vrr@flip-basic
-+igt@kms_vrr@seamless-rr-switch
-+igt@kms_vrr@flipline
-+igt@kms_vrr@negative-basic
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index f48e8fb67..89a1a2882 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -1,264 +1,7 @@
- # Should be the first test
- igt@xe_module_load@load
+ typedef struct range {
+@@ -85,6 +96,7 @@ typedef struct data {
+ 	igt_fb_t fb0;
+ 	igt_fb_t fb1;
+ 	range_t range;
++	drmModeModeInfo switch_modes[RR_MODES_COUNT];
+ } data_t;
  
--igt@xe_compute@compute-square
--igt@xe_create@create-execqueues-noleak
--igt@xe_create@create-execqueues-leak
--igt@xe_create@create-massive-size
--igt@xe_debugfs@base
--igt@xe_debugfs@gt
--igt@xe_debugfs@forcewake
--igt@xe_dma_buf_sync@export-dma-buf-once
--igt@xe_dma_buf_sync@export-dma-buf-once-read-sync
--igt@xe_evict@evict-beng-mixed-threads-small-multi-vm
--igt@xe_evict@evict-beng-small
--igt@xe_evict@evict-beng-small-cm
--igt@xe_evict@evict-beng-small-external
--igt@xe_evict@evict-beng-small-external-cm
--igt@xe_evict@evict-beng-small-multi-vm
--igt@xe_evict@evict-cm-threads-small
--igt@xe_evict@evict-mixed-threads-small
--igt@xe_evict@evict-mixed-threads-small-multi-vm
--igt@xe_evict@evict-small
--igt@xe_evict@evict-small-cm
--igt@xe_evict@evict-small-external
--igt@xe_evict@evict-small-external-cm
--igt@xe_evict@evict-small-multi-vm
--igt@xe_evict@evict-small-multi-vm-cm
--igt@xe_evict@evict-threads-small
--igt@xe_evict_ccs@evict-overcommit-simple
--igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd
--igt@xe_exec_balancer@twice-virtual-basic
--igt@xe_exec_balancer@no-exec-virtual-basic
--igt@xe_exec_balancer@twice-cm-virtual-basic
--igt@xe_exec_balancer@no-exec-cm-virtual-basic
--igt@xe_exec_balancer@twice-virtual-userptr
--igt@xe_exec_balancer@twice-cm-virtual-userptr
--igt@xe_exec_balancer@twice-virtual-rebind
--igt@xe_exec_balancer@twice-cm-virtual-rebind
--igt@xe_exec_balancer@twice-virtual-userptr-rebind
--igt@xe_exec_balancer@twice-cm-virtual-userptr-rebind
--igt@xe_exec_balancer@twice-virtual-userptr-invalidate
--igt@xe_exec_balancer@twice-cm-virtual-userptr-invalidate
--igt@xe_exec_balancer@twice-parallel-basic
--igt@xe_exec_balancer@no-exec-parallel-basic
--igt@xe_exec_balancer@twice-parallel-userptr
--igt@xe_exec_balancer@twice-parallel-rebind
--igt@xe_exec_balancer@twice-parallel-userptr-rebind
--igt@xe_exec_balancer@twice-parallel-userptr-invalidate
--igt@xe_exec_basic@twice-basic
--igt@xe_exec_basic@no-exec-basic
--igt@xe_exec_basic@twice-basic-defer-mmap
--igt@xe_exec_basic@twice-basic-defer-bind
--igt@xe_exec_basic@twice-userptr
--igt@xe_exec_basic@twice-rebind
--igt@xe_exec_basic@twice-userptr-rebind
--igt@xe_exec_basic@twice-userptr-invalidate
--igt@xe_exec_basic@no-exec-userptr-invalidate
--igt@xe_exec_basic@twice-bindexecqueue
--igt@xe_exec_basic@no-exec-bindexecqueue
--igt@xe_exec_basic@twice-bindexecqueue-userptr
--igt@xe_exec_basic@twice-bindexecqueue-rebind
--igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind
--igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate
--igt@xe_exec_compute_mode@twice-basic
--igt@xe_exec_compute_mode@twice-preempt-fence-early
--igt@xe_exec_compute_mode@twice-userptr
--igt@xe_exec_compute_mode@twice-rebind
--igt@xe_exec_compute_mode@twice-userptr-rebind
--igt@xe_exec_compute_mode@twice-userptr-invalidate
--igt@xe_exec_compute_mode@twice-bindexecqueue
--igt@xe_exec_compute_mode@twice-bindexecqueue-userptr
--igt@xe_exec_compute_mode@twice-bindexecqueue-rebind
--igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-rebind
--igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate
--igt@xe_exec_reset@close-fd-no-exec
--igt@xe_exec_reset@cm-close-fd-no-exec
--igt@xe_exec_reset@virtual-close-fd-no-exec
--igt@xe_exec_store@basic-store
--igt@xe_exec_threads@threads-basic
--igt@xe_exec_threads@threads-mixed-basic
--igt@xe_exec_threads@threads-mixed-shared-vm-basic
--igt@xe_exec_threads@threads-mixed-fd-basic
--igt@xe_exec_threads@threads-mixed-userptr-invalidate
--igt@xe_exec_threads@threads-mixed-shared-vm-userptr-invalidate-race
--igt@xe_gpgpu_fill@basic
--igt@xe_guc_pc@freq_basic_api
--igt@xe_guc_pc@freq_fixed_idle
--igt@xe_guc_pc@freq_range_idle
--igt@xe_huc_copy@huc_copy
--igt@xe_intel_bb@add-remove-objects
--igt@xe_intel_bb@bb-with-allocator
--igt@xe_intel_bb@blit-reloc
--igt@xe_intel_bb@blit-simple
--igt@xe_intel_bb@create-in-region
--igt@xe_intel_bb@delta-check
--igt@xe_intel_bb@destroy-bb
--igt@xe_intel_bb@intel-bb-blit-none
--igt@xe_intel_bb@intel-bb-blit-x
--igt@xe_intel_bb@intel-bb-blit-y
--igt@xe_intel_bb@lot-of-buffers
--igt@xe_intel_bb@offset-control
--igt@xe_intel_bb@purge-bb
--igt@xe_intel_bb@render
--igt@xe_intel_bb@reset-bb
--igt@xe_intel_bb@simple-bb
--igt@xe_intel_bb@simple-bb-ctx
--igt@xe_mmap@bad-extensions
--igt@xe_mmap@bad-flags
--igt@xe_mmap@bad-object
--igt@xe_mmap@cpu-caching
--igt@xe_mmap@system
--igt@xe_mmap@vram
--igt@xe_mmap@vram-system
--igt@xe_pm_residency@gt-c6-on-idle
--igt@xe_prime_self_import@basic-with_one_bo
--igt@xe_prime_self_import@basic-with_fd_dup
--#igt@xe_prime_self_import@basic-llseek-size
--igt@xe_query@query-engines
--igt@xe_query@query-mem-usage
--igt@xe_query@query-gt-list
--igt@xe_query@query-config
--igt@xe_query@query-hwconfig
--igt@xe_query@query-topology
--igt@xe_query@query-invalid-extension
--igt@xe_query@query-invalid-query
--igt@xe_query@query-invalid-size
--igt@xe_spin_batch@spin-basic
--igt@xe_spin_batch@spin-batch
--igt@xe_sysfs_defaults@engine-defaults
--igt@xe_sysfs_scheduler@preempt_timeout_us-invalid
--igt@xe_sysfs_scheduler@preempt_timeout_us-min-max
--igt@xe_sysfs_scheduler@timeslice_duration_us-invalid
--igt@xe_sysfs_scheduler@timeslice_duration_us-min-max
--igt@xe_sysfs_scheduler@job_timeout_ms-invalid
--igt@xe_sysfs_scheduler@job_timeout_ms-min-max
--#igt@xe_vm@bind-once
--#igt@xe_vm@scratch
--igt@xe_vm@shared-pte-page
--igt@xe_vm@shared-pde-page
--igt@xe_vm@shared-pde2-page
--igt@xe_vm@shared-pde3-page
--igt@xe_vm@bind-execqueues-independent
--igt@xe_vm@munmap-style-unbind-one-partial
--igt@xe_vm@munmap-style-unbind-end
--igt@xe_vm@munmap-style-unbind-front
--igt@xe_vm@munmap-style-unbind-userptr-one-partial
--igt@xe_vm@munmap-style-unbind-userptr-end
--igt@xe_vm@munmap-style-unbind-userptr-front
--igt@xe_vm@munmap-style-unbind-userptr-inval-end
--igt@xe_vm@munmap-style-unbind-userptr-inval-front
--igt@xe_pat@userptr-coh-none
--igt@xe_pat@prime-self-import-coh
--igt@xe_pat@prime-external-import-coh
--igt@xe_pat@pat-index-all
--igt@xe_pat@pat-index-xelp
--igt@xe_pat@pat-index-xehpc
--igt@xe_pat@pat-index-xelpg
--igt@xe_pat@pat-index-xe2
--igt@xe_waitfence@abstime
--igt@xe_waitfence@engine
--igt@xe_waitfence@reltime
--igt@kms_addfb_basic@addfb25-4-tiled
--igt@kms_addfb_basic@addfb25-bad-modifier
--igt@kms_addfb_basic@addfb25-modifier-no-flag
--igt@kms_addfb_basic@addfb25-x-tiled-legacy
--igt@kms_addfb_basic@addfb25-yf-tiled-legacy
--igt@kms_addfb_basic@addfb25-y-tiled-legacy
--igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
--igt@kms_addfb_basic@bad-pitch-0
--igt@kms_addfb_basic@bad-pitch-1024
--igt@kms_addfb_basic@bad-pitch-128
--igt@kms_addfb_basic@bad-pitch-256
--igt@kms_addfb_basic@bad-pitch-32
--igt@kms_addfb_basic@bad-pitch-63
--igt@kms_addfb_basic@bad-pitch-65536
--igt@kms_addfb_basic@bad-pitch-999
--igt@kms_addfb_basic@basic
--igt@kms_addfb_basic@basic-x-tiled-legacy
--igt@kms_addfb_basic@bo-too-small
--igt@kms_addfb_basic@invalid-get-prop
--igt@kms_addfb_basic@invalid-get-prop-any
--igt@kms_addfb_basic@invalid-set-prop
--igt@kms_addfb_basic@invalid-set-prop-any
--igt@kms_addfb_basic@no-handle
--igt@kms_addfb_basic@size-max
--igt@kms_addfb_basic@small-bo
--igt@kms_addfb_basic@too-high
--igt@kms_addfb_basic@too-wide
--igt@kms_addfb_basic@unused-handle
--igt@kms_addfb_basic@unused-modifier
--igt@kms_addfb_basic@unused-offsets
--igt@kms_addfb_basic@unused-pitches
--igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
--igt@kms_cursor_legacy@basic-flip-after-cursor-legacy
--igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
--igt@kms_cursor_legacy@basic-flip-before-cursor-atomic
--igt@kms_cursor_legacy@basic-flip-before-cursor-legacy
--igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size
--igt@kms_dsc@dsc-basic
--igt@kms_flip@basic-flip-vs-dpms
--igt@kms_flip@basic-flip-vs-modeset
--igt@kms_flip@basic-flip-vs-wf_vblank
--igt@kms_flip@basic-plain-flip
--igt@kms_force_connector_basic@force-connector-state
--igt@kms_force_connector_basic@force-edid
--igt@kms_force_connector_basic@prune-stale-modes
--igt@kms_frontbuffer_tracking@basic
--igt@kms_hdmi_inject@inject-audio
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12
--igt@kms_pipe_crc_basic@hang-read-crc
--igt@kms_pipe_crc_basic@nonblocking-crc
--igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
--igt@kms_pipe_crc_basic@read-crc
--igt@kms_pipe_crc_basic@read-crc-frame-sequence
--igt@kms_prop_blob@basic
--igt@kms_psr@psr_primary_page_flip
--igt@kms_psr@psr_cursor_plane_move
--igt@kms_psr@psr_sprite_plane_onoff
--
--# All tests that do module unloading and reloading are executed last.
--# They will sometimes reveal issues of earlier tests leaving the
--# driver in a broken state that is not otherwise noticed in that test.
--igt@core_hotunplug@unbind-rebind
--
--# Run KUnit tests at the end
--igt@xe_live_ktest@bo
--igt@xe_live_ktest@dmabuf
--igt@xe_live_ktest@migrate
--
--# Move fault_mode tests at the end to unblock execution
--igt@xe_exec_fault_mode@twice-basic
--igt@xe_exec_fault_mode@many-basic
--igt@xe_exec_fault_mode@twice-userptr
--igt@xe_exec_fault_mode@twice-rebind
--igt@xe_exec_fault_mode@twice-userptr-rebind
--igt@xe_exec_fault_mode@twice-userptr-invalidate
--igt@xe_exec_fault_mode@twice-bindexecqueue
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr
--igt@xe_exec_fault_mode@twice-bindexecqueue-rebind
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate
--igt@xe_exec_fault_mode@twice-basic-imm
--igt@xe_exec_fault_mode@twice-userptr-imm
--igt@xe_exec_fault_mode@twice-rebind-imm
--igt@xe_exec_fault_mode@twice-userptr-rebind-imm
--igt@xe_exec_fault_mode@twice-userptr-invalidate-imm
--igt@xe_exec_fault_mode@twice-bindexecqueue-imm
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-imm
--igt@xe_exec_fault_mode@twice-bindexecqueue-rebind-imm
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind-imm
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate-imm
--igt@xe_exec_fault_mode@twice-basic-prefetch
--igt@xe_exec_fault_mode@twice-userptr-prefetch
--igt@xe_exec_fault_mode@twice-rebind-prefetch
--igt@xe_exec_fault_mode@twice-userptr-rebind-prefetch
--igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch
--igt@xe_exec_fault_mode@twice-bindexecqueue-prefetch
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-prefetch
--igt@xe_exec_fault_mode@twice-bindexecqueue-rebind-prefetch
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind-prefetch
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate-prefetch
--igt@xe_exec_fault_mode@twice-invalid-fault
--igt@xe_exec_fault_mode@twice-invalid-userptr-fault
-+igt@kms_vrr@flip-basic
-+igt@kms_vrr@seamless-rr-switch
-+igt@kms_vrr@flipline
-+igt@kms_vrr@negative-basic
+ typedef struct vtest_ns {
+@@ -166,6 +178,24 @@ output_mode_with_maxrate(igt_output_t *output, unsigned int vrr_max)
+ 	return mode;
+ }
+ 
++static drmModeModeInfo
++low_rr_mode_with_same_res(igt_output_t *output, unsigned int vrr_min)
++{
++	int i;
++	drmModeConnectorPtr connector = output->config.connector;
++	drmModeModeInfo mode = *igt_output_get_mode(output);
++
++	for (i = 0; i < connector->count_modes; i++)
++		/* TODO: Improve checks for downclock */
++		if (connector->modes[i].hdisplay == mode.hdisplay &&
++		    connector->modes[i].vdisplay == mode.vdisplay &&
++		    connector->modes[i].vrefresh < mode.vrefresh &&
++		    connector->modes[i].vrefresh >= vrr_min)
++			mode = connector->modes[i];
++
++	return mode;
++}
++
+ /* Read min and max vrr range from the connector debugfs. */
+ static range_t
+ get_vrr_range(data_t *data, igt_output_t *output)
+@@ -380,6 +410,9 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 	igt_info("VRR Test execution on %s, PIPE_%s with VRR range: (%u-%u) Hz\n",
+ 		 output->name, kmstest_pipe_name(pipe), range.min, range.max);
+ 
++	igt_info("Override Mode: ");
++	kmstest_dump_mode(&data->switch_modes[HIGH_RR_MODE]);
++
+ 	set_vrr_on_pipe(data, pipe, true);
+ 
+ 	/*
+@@ -456,7 +489,9 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 
+ static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *output)
+ {
+-	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED, false);
++	if (vrr_capable(output))
++		igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED, false);
++
+ 	igt_plane_set_fb(data->primary, NULL);
+ 	igt_output_set_pipe(output, PIPE_NONE);
+ 	igt_output_override_mode(output, NULL);
+@@ -466,9 +501,71 @@ static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	igt_remove_fb(data->drm_fd, &data->fb0);
+ }
+ 
+-static bool output_constraint(data_t *data, igt_output_t *output)
++static void
++test_seamless_rr_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ {
+-	drmModeModeInfo mode;
++	uint32_t result;
++	vtest_ns_t vtest_ns;
++	uint64_t rate;
++	bool vrr = vrr_capable(output);
++
++	igt_info("Use HIGH_RR Mode as default (VRR: %s): ", vrr ? "ON" : "OFF");
++	kmstest_dump_mode(&data->switch_modes[HIGH_RR_MODE]);
++
++	prepare_test(data, output, pipe);
++	vtest_ns = get_test_rate_ns(data->range);
++
++	if (vrr) {
++		igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED, true);
++		igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
++	}
++
++	rate = vtest_ns.max;
++	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
++	igt_assert_f(result > 75,
++		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold not reached, result was %u%%\n",
++		     data->range.max, rate, vrr ? "on" : "off", result);
++
++	/* Switch to low rr mode without modeset. */
++	igt_info("Switch to LOW_RR Mode (VRR: %s): ", vrr ? "ON" : "OFF");
++	kmstest_dump_mode(&data->switch_modes[LOW_RR_MODE]);
++	igt_output_override_mode(output, &data->switch_modes[LOW_RR_MODE]);
++	igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
++
++	rate = vtest_ns.min;
++	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
++	igt_assert_f(result > 75,
++		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold not reached, result was %u%%\n",
++		     data->range.min, rate, vrr ? "on" : "off", result);
++
++	/* Switch back to high rr mode without modeset. */
++	igt_info("Switch back to HIGH_RR Mode (VRR: %s): ", vrr ? "ON" : "OFF");
++	kmstest_dump_mode(&data->switch_modes[HIGH_RR_MODE]);
++	igt_output_override_mode(output, &data->switch_modes[HIGH_RR_MODE]);
++	igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
++
++	rate = vtest_ns.mid;
++	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
++	igt_assert_f(vrr ? (result > 75) : (result < 10),
++		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold %s, result was %u%%\n",
++		     ((data->range.max + data->range.min) / 2), rate,
++		     vrr ? "on" : "off", vrr ? "not reached" : "exceeded", result);
++}
++
++static bool output_constraint(data_t *data, igt_output_t *output, uint32_t flags)
++{
++	if ((flags & TEST_SEAMLESS_RR) &&
++	    output->config.connector->connector_type != DRM_MODE_CONNECTOR_eDP)
++		return false;
++
++	/*
++	 * FIXME: Read the DRRS capability, currently assuming:
++	 * - Panel should contain 2 modes only
++	 * - Both modes should have the same resolution but different RR
++	 */
++	if ((flags & TEST_SEAMLESS_RR) &&
++	    !vrr_capable(output) && output->config.connector->count_modes != 2)
++		return false;
+ 
+ 	/* Reset output */
+ 	igt_display_reset(&data->display);
+@@ -481,16 +578,22 @@ static bool output_constraint(data_t *data, igt_output_t *output)
+ 	 *   - vrr_min range should be less than the override mode vrefresh.
+ 	 *   - Limit the vrr_max range with the override mode vrefresh.
+ 	 */
+-	mode = output_mode_with_maxrate(output, data->range.max);
+-	if (mode.vrefresh < data->range.min)
++	data->switch_modes[HIGH_RR_MODE] = output_mode_with_maxrate(output, data->range.max);
++	if (data->switch_modes[HIGH_RR_MODE].vrefresh < data->range.min)
+ 		return false;
+ 
+-	data->range.max = mode.vrefresh;
++	data->range.max = data->switch_modes[HIGH_RR_MODE].vrefresh;
++	igt_output_override_mode(output, &data->switch_modes[HIGH_RR_MODE]);
+ 
+-	igt_info("Override Mode: ");
+-	kmstest_dump_mode(&mode);
++	/* Search for a low refresh rate mode. */
++	if (!(flags & TEST_SEAMLESS_RR))
++		return true;
++
++	data->switch_modes[LOW_RR_MODE] = low_rr_mode_with_same_res(output, data->range.min);
++	if (data->switch_modes[LOW_RR_MODE].vrefresh == data->switch_modes[HIGH_RR_MODE].vrefresh)
++		return false;
+ 
+-	igt_output_override_mode(output, &mode);
++	data->range.min = data->switch_modes[LOW_RR_MODE].vrefresh;
+ 
+ 	return true;
+ }
+@@ -500,6 +603,9 @@ static bool config_constraint(data_t *data, igt_output_t *output, uint32_t flags
+ 	if (!has_vrr(output))
+ 		return false;
+ 
++	if (flags & TEST_SEAMLESS_RR)
++		goto out;
++
+ 	/* For Negative tests, panel should be non-vrr. */
+ 	if ((flags & TEST_NEGATIVE) && vrr_capable(output))
+ 		return false;
+@@ -507,7 +613,8 @@ static bool config_constraint(data_t *data, igt_output_t *output, uint32_t flags
+ 	if ((flags & ~TEST_NEGATIVE) && !vrr_capable(output))
+ 		return false;
+ 
+-	if (!output_constraint(data, output))
++out:
++	if (!output_constraint(data, output, flags))
+ 		return false;
+ 
+ 	return true;
+@@ -583,6 +690,12 @@ igt_main
+ 	igt_subtest_with_dynamic("negative-basic")
+ 		run_vrr_test(&data, test_basic, TEST_NEGATIVE);
+ 
++	igt_describe("Test to switch RR seamlessly without modeset.");
++	igt_subtest_with_dynamic("seamless-rr-switch") {
++		igt_require_intel(data.drm_fd);
++		run_vrr_test(&data, test_seamless_rr_basic, TEST_SEAMLESS_RR);
++	}
++
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
+ 		drm_close_driver(data.drm_fd);
 -- 
 2.40.0
