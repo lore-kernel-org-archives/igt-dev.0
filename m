@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============4308303605195873746=="
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B013F10E85E
+ for <igt-dev@lists.freedesktop.org>; Fri,  1 Dec 2023 12:39:58 +0000 (UTC)
+From: Jeevan B <jeevan.b@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri,  1 Dec 2023 18:17:35 +0530
+Message-Id: <20231201124737.2172099-3-jeevan.b@intel.com>
+In-Reply-To: <20231201124737.2172099-1-jeevan.b@intel.com>
+References: <20231201124737.2172099-1-jeevan.b@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Lucas De Marchi" <lucas.demarchi@intel.com>
-Date: Wed, 06 Dec 2023 00:04:25 -0000
-Message-ID: <170182106510.26424.11093725381265176581@emeril.freedesktop.org>
-References: <20231205224926.2188996-1-lucas.demarchi@intel.com>
-In-Reply-To: <20231205224926.2188996-1-lucas.demarchi@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgeGVfbGl2?=
- =?utf-8?q?e=5Fktest=3A_Use_xe=5Flive=5Ftest_kernel_module?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 2/4] tests/intel/kms_psr: fix subtest naming
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,226 +18,240 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============4308303605195873746==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+update subtest naming from sub_test to sub-test.
 
-== Series Details ==
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
+---
+ tests/intel/kms_psr.c | 72 +++++++++++++++++++++----------------------
+ 1 file changed, 36 insertions(+), 36 deletions(-)
 
-Series: xe_live_ktest: Use xe_live_test kernel module
-URL   : https://patchwork.freedesktop.org/series/127396/
-State : failure
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_13983 -> IGTPW_10347
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_10347 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_10347, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10347/index.html
-
-Participating hosts (35 -> 21)
-------------------------------
-
-  Missing    (14): fi-rkl-11600 bat-dg2-14 bat-adls-5 fi-bsw-n3050 bat-dg2-9 fi-cfl-8700k fi-snb-2520m fi-cfl-guc fi-kbl-guc bat-atsm-1 bat-jsl-3 bat-rplp-1 fi-bsw-nick bat-jsl-1 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_10347:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
-    - bat-adlp-9:         NOTRUN -> [SKIP][1] +2 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10347/bat-adlp-9/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_10347 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-flip-vs-dpms@b-dp5:
-    - bat-adlp-11:        [PASS][2] -> [DMESG-FAIL][3] ([i915#6868])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13983/bat-adlp-11/igt@kms_flip@basic-flip-vs-dpms@b-dp5.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10347/bat-adlp-11/igt@kms_flip@basic-flip-vs-dpms@b-dp5.html
-
-  * igt@kms_flip@basic-flip-vs-dpms@d-dp6:
-    - bat-adlp-11:        [PASS][4] -> [FAIL][5] ([i915#6121]) +5 other tests fail
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13983/bat-adlp-11/igt@kms_flip@basic-flip-vs-dpms@d-dp6.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10347/bat-adlp-11/igt@kms_flip@basic-flip-vs-dpms@d-dp6.html
-
-  * igt@kms_flip@basic-flip-vs-modeset@b-dp5:
-    - bat-adlp-11:        [PASS][6] -> [DMESG-WARN][7] ([i915#6868])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13983/bat-adlp-11/igt@kms_flip@basic-flip-vs-modeset@b-dp5.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10347/bat-adlp-11/igt@kms_flip@basic-flip-vs-modeset@b-dp5.html
-
-  
-  [i915#6121]: https://gitlab.freedesktop.org/drm/intel/issues/6121
-  [i915#6868]: https://gitlab.freedesktop.org/drm/intel/issues/6868
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7622 -> IGTPW_10347
-
-  CI-20190529: 20190529
-  CI_DRM_13983: a9d99261a978835b02e248fe18af3026416af3e8 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_10347: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10347/index.html
-  IGT_7622: 48a47d91b7727215b965690c69d84159c8fb1aa2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+igt@xe_guc_pc@freq_basic_api
-+igt@xe_guc_pc@freq_fixed_idle
-+igt@xe_guc_pc@freq_low_max
-+igt@xe_guc_pc@freq_range_idle
-+igt@xe_guc_pc@freq_reset
-+igt@xe_guc_pc@freq_reset_multiple
-+igt@xe_guc_pc@freq_suspend
--igt@xe_gt_freq@freq_basic_api
--igt@xe_gt_freq@freq_fixed_idle
--igt@xe_gt_freq@freq_low_max
--igt@xe_gt_freq@freq_range_idle
--igt@xe_gt_freq@freq_reset
--igt@xe_gt_freq@freq_reset_multiple
--igt@xe_gt_freq@freq_suspend
--igt@xe_gt_freq@throttle_basic_api
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10347/index.html
-
---===============4308303605195873746==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>xe_live_ktest: Use xe_live_test kernel module</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127396/">https://patchwork.freedesktop.org/series/127396/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10347/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10347/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_13983 -&gt; IGTPW_10347</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_10347 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_10347, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10347/index.html</p>
-<h2>Participating hosts (35 -&gt; 21)</h2>
-<p>Missing    (14): fi-rkl-11600 bat-dg2-14 bat-adls-5 fi-bsw-n3050 bat-dg2-9 fi-cfl-8700k fi-snb-2520m fi-cfl-guc fi-kbl-guc bat-atsm-1 bat-jsl-3 bat-rplp-1 fi-bsw-nick bat-jsl-1 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_10347:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:<ul>
-<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10347/bat-adlp-9/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> +2 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_10347 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-dpms@b-dp5:</p>
-<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13983/bat-adlp-11/igt@kms_flip@basic-flip-vs-dpms@b-dp5.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10347/bat-adlp-11/igt@kms_flip@basic-flip-vs-dpms@b-dp5.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6868">i915#6868</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-dpms@d-dp6:</p>
-<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13983/bat-adlp-11/igt@kms_flip@basic-flip-vs-dpms@d-dp6.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10347/bat-adlp-11/igt@kms_flip@basic-flip-vs-dpms@d-dp6.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6121">i915#6121</a>) +5 other tests fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-modeset@b-dp5:</p>
-<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13983/bat-adlp-11/igt@kms_flip@basic-flip-vs-modeset@b-dp5.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10347/bat-adlp-11/igt@kms_flip@basic-flip-vs-modeset@b-dp5.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6868">i915#6868</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7622 -&gt; IGTPW_10347</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13983: a9d99261a978835b02e248fe18af3026416af3e8 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_10347: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10347/index.html<br />
-  IGT_7622: 48a47d91b7727215b965690c69d84159c8fb1aa2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@xe_guc_pc@freq_basic_api<br />
-+igt@xe_guc_pc@freq_fixed_idle<br />
-+igt@xe_guc_pc@freq_low_max<br />
-+igt@xe_guc_pc@freq_range_idle<br />
-+igt@xe_guc_pc@freq_reset<br />
-+igt@xe_guc_pc@freq_reset_multiple<br />
-+igt@xe_guc_pc@freq_suspend<br />
--igt@xe_gt_freq@freq_basic_api<br />
--igt@xe_gt_freq@freq_fixed_idle<br />
--igt@xe_gt_freq@freq_low_max<br />
--igt@xe_gt_freq@freq_range_idle<br />
--igt@xe_gt_freq@freq_reset<br />
--igt@xe_gt_freq@freq_reset_multiple<br />
--igt@xe_gt_freq@freq_suspend<br />
--igt@xe_gt_freq@throttle_basic_api</p>
-
-</body>
-</html>
-
---===============4308303605195873746==--
+diff --git a/tests/intel/kms_psr.c b/tests/intel/kms_psr.c
+index 31d6f779c..aea8b0b3f 100644
+--- a/tests/intel/kms_psr.c
++++ b/tests/intel/kms_psr.c
+@@ -43,20 +43,20 @@
+ #include "xe/xe_query.h"
+ 
+ /**
+- * SUBTEST: %s_basic
++ * SUBTEST: %s-basic
+  * Description: Basic check for %arg[1] if it is detecting changes made in planes
+  * Functionality: %arg[1]
+  *
+- * SUBTEST: %s_dpms
++ * SUBTEST: %s-dpms
+  * Description: Check if %arg[1] is detecting changes when rendering operation
+  *              is performed with dpms enabled or disabled
+  * Functionality: %arg[1], dpms
+  *
+- * SUBTEST: %s_no_drrs
++ * SUBTEST: %s-no-drrs
+  * Description: Check if %arg[1] is detecting changes when drrs is disabled
+  * Functionality: %arg[1], drrs
+  *
+- * SUBTEST: %s_suspend
++ * SUBTEST: %s-suspend
+  * Description: Check if %arg[1] is detecting changes when plane operation is
+  *              performed with suspend resume cycles
+  * Functionality: %arg[1], suspend
+@@ -68,7 +68,7 @@
+  */
+ 
+ /**
+- * SUBTEST: %s_%s_%s
++ * SUBTEST: %s-%s-%s
+  * Description: Check if %arg[1] is detecting memory mapping %arg[3] operations
+  * 		performed on %arg[2] planes
+  * Driver requirement: i915
+@@ -87,17 +87,17 @@
+  *
+  * arg[3]:
+  *
+- * @mmap_cpu:           MMAP CPU
+- * @mmap_gtt:           MMAP GTT
++ * @mmap-cpu:           MMAP CPU
++ * @mmap-gtt:           MMAP GTT
+  */
+ 
+ /**
+- * SUBTEST: %s_primary_page_flip
++ * SUBTEST: %s-primary-page-flip
+  * Description: Check if %arg[1] is detecting page-flipping operation
+  * 		performed on primary plane
+  * Functionality: %arg[1], plane
+  *
+- * SUBTEST: %s_primary_%s
++ * SUBTEST: %s-primary-%s
+  * Description: Check if %arg[1] is detecting rendering operations %arg[2]
+  * 		when performed on primary plane
+  * Functionality: %arg[1], plane
+@@ -114,7 +114,7 @@
+  */
+ 
+ /**
+- * SUBTEST: %s_%s_%s
++ * SUBTEST: %s-%s-%s
+  * Description: Check if %arg[1] is detecting rendering and plane
+  *              operations %arg[3] performed on %arg[2] planes
+  * Functionality: %arg[1], plane
+@@ -133,28 +133,28 @@
+  *
+  * @blt:                Blitter
+  * @render:             Render
+- * @plane_onoff:        Plane On off
+- * @plane_move:         Move plane position
++ * @plane-onoff:        Plane On off
++ * @plane-move:         Move plane position
+  */
+ 
+ /**
+- * SUBTEST: pr_basic
++ * SUBTEST: pr-basic
+  * Description: Basic check for pr if it is detecting changes made in planes
+  * Functionality: pr
+  * Mega feature: DP2.0
+  *
+- * SUBTEST: pr_dpms
++ * SUBTEST: pr-dpms
+  * Description: Check if pr is detecting changes when rendering operation
+  *              is performed with dpms enabled or disabled
+  * Functionality: pr, dpms
+  * Mega feature: DP2.0
+  *
+- * SUBTEST: pr_no_drrs
++ * SUBTEST: pr-no-drrs
+  * Description: Check if pr is detecting changes when drrs is disabled
+  * Functionality: pr, drrs
+  * Mega feature: DP2.0
+  *
+- * SUBTEST: pr_suspend
++ * SUBTEST: pr-suspend
+  * Description: Check if pr is detecting changes when plane operation is
+  *              performed with suspend resume cycles
+  * Functionality: pr, suspend
+@@ -162,7 +162,7 @@
+  */
+ 
+ /**
+- * SUBTEST: pr_%s_%s
++ * SUBTEST: pr-%s-%s
+  * Description: Check if pr is detecting memory mapping %arg[2] operations
+  * 		performed on %arg[1] planes
+  * Driver requirement: i915
+@@ -177,18 +177,18 @@
+  *
+  * arg[2]:
+  *
+- * @mmap_cpu:           MMAP CPU
+- * @mmap_gtt:           MMAP GTT
++ * @mmap-cpu:           MMAP CPU
++ * @mmap-gtt:           MMAP GTT
+  */
+ 
+ /**
+- * SUBTEST: pr_primary_page_flip
++ * SUBTEST: pr-primary-page-flip
+  * Description: Check if pr is detecting page-flipping operation
+  * 		performed on primary plane
+  * Functionality: pr, plane
+  * Mega feature: DP2.0
+  *
+- * SUBTEST: pr_primary_%s
++ * SUBTEST: pr-primary-%s
+  * Description: Check if pr is detecting rendering operations %arg[1]
+  * 		when performed on primary plane
+  * Functionality: pr, plane
+@@ -201,7 +201,7 @@
+  */
+ 
+ /**
+- * SUBTEST: pr_%s_%s
++ * SUBTEST: pr-%s-%s
+  * Description: Check if pr is detecting rendering and plane
+  *              operations %arg[2] performed on %arg[1] planes
+  * Functionality: pr, plane
+@@ -216,8 +216,8 @@
+  *
+  * @blt:                Blitter
+  * @render:             Render
+- * @plane_onoff:        Plane On off
+- * @plane_move:         Move plane position
++ * @plane-onoff:        Plane On off
++ * @plane-move:         Move plane position
+  */
+ 
+ enum operations {
+@@ -233,13 +233,13 @@ enum operations {
+ static const char *op_str(enum operations op)
+ {
+ 	static const char * const name[] = {
+-		[PAGE_FLIP] = "page_flip",
+-		[MMAP_GTT] = "mmap_gtt",
+-		[MMAP_CPU] = "mmap_cpu",
++		[PAGE_FLIP] = "page-flip",
++		[MMAP_GTT] = "mmap-gtt",
++		[MMAP_CPU] = "mmap-cpu",
+ 		[BLT] = "blt",
+ 		[RENDER] = "render",
+-		[PLANE_MOVE] = "plane_move",
+-		[PLANE_ONOFF] = "plane_onoff",
++		[PLANE_MOVE] = "plane-move",
++		[PLANE_ONOFF] = "plane-onoff",
+ 	};
+ 
+ 	return name[op];
+@@ -682,9 +682,9 @@ igt_main
+ 	int z;
+ 	enum operations op;
+ 	const char *append_subtest_name[3] = {
+-		"psr_",
+-		"psr2_",
+-		"pr_"
++		"psr-",
++		"psr2-",
++		"pr-"
+ 	};
+ 	int modes[] = {PSR_MODE_1, PSR_MODE_2, PR_MODE};
+ 	igt_output_t *output;
+@@ -719,7 +719,7 @@ igt_main
+ 		}
+ 
+ 		igt_describe("Check if psr is detecting changes when drrs is disabled");
+-		igt_subtest_with_dynamic_f("%sno_drrs", append_subtest_name[z]) {
++		igt_subtest_with_dynamic_f("%sno-drrs", append_subtest_name[z]) {
+ 			for_each_connected_output(&data.display, output) {
+ 				if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
+ 						      data.op_psr_mode, output))
+@@ -738,7 +738,7 @@ igt_main
+ 		for (op = PAGE_FLIP; op <= RENDER; op++) {
+ 			igt_describe("Check if psr is detecting page-flipping,memory mapping and "
+ 					"rendering operations performed on primary planes");
+-			igt_subtest_with_dynamic_f("%sprimary_%s",
++			igt_subtest_with_dynamic_f("%sprimary-%s",
+ 				      append_subtest_name[z],
+ 				      op_str(op)) {
+ 				igt_skip_on(is_xe_device(data.drm_fd) &&
+@@ -763,7 +763,7 @@ igt_main
+ 		for (op = MMAP_GTT; op <= PLANE_ONOFF; op++) {
+ 			igt_describe("Check if psr is detecting memory mapping,rendering "
+ 					"and plane operations performed on sprite planes");
+-			igt_subtest_with_dynamic_f("%ssprite_%s",
++			igt_subtest_with_dynamic_f("%ssprite-%s",
+ 				      append_subtest_name[z],
+ 				      op_str(op)) {
+ 				igt_skip_on(is_xe_device(data.drm_fd) &&
+@@ -786,7 +786,7 @@ igt_main
+ 
+ 			igt_describe("Check if psr is detecting memory mapping, rendering "
+ 					"and plane operations performed on cursor planes");
+-			igt_subtest_with_dynamic_f("%scursor_%s",
++			igt_subtest_with_dynamic_f("%scursor-%s",
+ 				      append_subtest_name[z],
+ 				      op_str(op)) {
+ 				igt_skip_on(is_xe_device(data.drm_fd) &&
+-- 
+2.25.1
