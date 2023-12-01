@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3742410E02C
- for <igt-dev@lists.freedesktop.org>; Fri,  1 Dec 2023 15:47:10 +0000 (UTC)
-Date: Fri, 1 Dec 2023 16:46:02 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20231201154602.23nhmop2tpqvklqu@kamilkon-desk.igk.intel.com>
-References: <20231130124841.16248-1-lukasz.laguna@intel.com>
- <20231130124841.16248-5-lukasz.laguna@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============6758366556765778847=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231130124841.16248-5-lukasz.laguna@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 4/8] lib/igt_sriov_device: add helpers
- for operations in different VFs scenarios
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Melissa Wen" <mwen@igalia.com>
+Date: Fri, 01 Dec 2023 16:00:32 -0000
+Message-ID: <170144643267.19690.18367301780981233808@emeril.freedesktop.org>
+References: <20231201132706.84787-1-mwen@igalia.com>
+In-Reply-To: <20231201132706.84787-1-mwen@igalia.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/km?=
+ =?utf-8?q?s=5Fatomic=3A_skip_mutable_zpos_test_on_non-mutable_planes?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,95 +17,175 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Lukasz,
-On 2023-11-30 at 13:48:37 +0100, Lukasz Laguna wrote:
-> Added helpers:
-> - for_each_vf and for_each_num_vfs
-> - for_random_vf and for_random_num_vfs
-> - for_last_vf and for_max_num_vfs
-> 
-> v2:
->  - document helpers (Michal)
-> 
-> Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
-> Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
-> ---
->  lib/igt_sriov_device.h | 41 +++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 41 insertions(+)
-> 
-> diff --git a/lib/igt_sriov_device.h b/lib/igt_sriov_device.h
-> index 84f033f52..3ab984720 100644
-> --- a/lib/igt_sriov_device.h
-> +++ b/lib/igt_sriov_device.h
-> @@ -28,4 +28,45 @@ void igt_sriov_disable_driver_autoprobe(int pf);
->  int igt_sriov_open_vf_drm_device(int pf, unsigned int vf_num);
->  bool igt_sriov_is_vf_drm_driver_probed(int pf, unsigned int vf_num);
->  
-> +/**
-> + * for_each_vf - Helper for running code on each VF
-> + * @__pf_fd: PF device file descriptor
-> + * @__vf_num: VFs iterator
-> + *
-> + * For loop that iterates over all VFs associated with given PF @__pf_fd.
-> + */
-> +#define for_each_vf(__pf_fd, __vf_num) \
-> +	for (unsigned int __vf_num = 1, __total_vfs = igt_sriov_get_total_vfs(__pf_fd); \
-> +	     __vf_num <= __total_vfs; \
-> +	     ++__vf_num)
-> +#define for_each_num_vfs for_each_vf
-> +
-> +/**
-> + * for_random_vf - Helper for running code on random VF
-> + * @__pf_fd: PF device file descriptor
-> + * @__vf_num: stores random VF
-> + *
-> + * Helper allows to run code using random VF number (stored in @__vf_num)
-> + * picked from the range of all VFs associated with given PF @__pf_fd.
-> + */
-> +#define for_random_vf(__pf_fd, __vf_num) \
-> +	for (unsigned int __vf_num = 1 + random() % igt_sriov_get_total_vfs(__pf_fd), __tmp = 0; \
-> +	     __tmp < 1; \
-> +	     ++__tmp)
-> +#define for_random_num_vfs for_random_vf
-> +
-> +/**
-> + * for_last_vf - Helper for running code on last VF
-> + * @__pf_fd: PF device file descriptor
-> + * @__vf_num: stores last VF number
-> + *
-> + * Helper allows to run code using last VF number (stored in @__vf_num)
-> + * associated with given PF @__pf_fd.
-> + */
-> +#define for_last_vf(__pf_fd, __vf_num) \
-> +	for (unsigned int __vf_num = igt_sriov_get_total_vfs(__pf_fd), __tmp = 0; \
-> +	     __tmp < 1; \
-> +	     ++__tmp)
-> +#define for_max_num_vfs for_last_vf
+--===============6758366556765778847==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Could these macros have _sriov_ in its name? For example:
+== Series Details ==
 
-#define for_random_sriov for_random_sriov_vf
+Series: tests/kms_atomic: skip mutable zpos test on non-mutable planes
+URL   : https://patchwork.freedesktop.org/series/127190/
+State : success
 
-Depending on number of heavy useage _vf may be dropped, imho this
-is also good, like all usage will be mainly in VF:
+== Summary ==
 
-    for_last_sriov
-    for_random_sriov
-    for_each_sriov
+CI Bug Log - changes from XEIGT_7614_BAT -> XEIGTPW_10319_BAT
+====================================================
 
-One final note, maybe in one of previous patch but please also
-add descriptions for PF and VF shortcuts (like that for SR-IOV).
+Summary
+-------
 
-Regards,
-Kamil
+  **SUCCESS**
 
-> +
->  #endif /* __IGT_SRIOV_DEVICE_H__ */
-> -- 
-> 2.40.0
-> 
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_10319_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#480]) +1 other test fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7614/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10319/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@a-dp3:
+    - bat-dg2-oem2:       [PASS][3] -> [FAIL][4] ([Intel XE#480]) +1 other test fail
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7614/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@a-dp3.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10319/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@a-dp3.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:
+    - bat-adlp-7:         [FAIL][5] ([i915#2346]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7614/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10319/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+
+  * {igt@xe_create@create-execqueues-leak}:
+    - bat-atsm-2:         [FAIL][7] ([Intel XE#524]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7614/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10319/bat-atsm-2/igt@xe_create@create-execqueues-leak.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/480
+  [Intel XE#524]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/524
+  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7614 -> IGTPW_10319
+
+  IGTPW_10319: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10319/index.html
+  IGT_7614: c7298ec108dc1c861c9a2593e973648ad9b420b4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-544-a8b405ffc0326c79abf737389d99c290648f381d: a8b405ffc0326c79abf737389d99c290648f381d
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10319/index.html
+
+--===============6758366556765778847==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_atomic: skip mutable zpos test on non-mutable planes</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127190/">https://patchwork.freedesktop.org/series/127190/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10319/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10319/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7614_BAT -&gt; XEIGTPW_10319_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_10319_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7614/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10319/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@a-dp3:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7614/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@a-dp3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10319/bat-dg2-oem2/igt@kms_flip@basic-flip-vs-wf_vblank@a-dp3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/480">Intel XE#480</a>) +1 other test fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7614/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10319/bat-adlp-7/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>{igt@xe_create@create-execqueues-leak}:</p>
+<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7614/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/524">Intel XE#524</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_10319/bat-atsm-2/igt@xe_create@create-execqueues-leak.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7614 -&gt; IGTPW_10319</li>
+</ul>
+<p>IGTPW_10319: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_10319/index.html<br />
+  IGT_7614: c7298ec108dc1c861c9a2593e973648ad9b420b4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-544-a8b405ffc0326c79abf737389d99c290648f381d: a8b405ffc0326c79abf737389d99c290648f381d</p>
+
+</body>
+</html>
+
+--===============6758366556765778847==--
